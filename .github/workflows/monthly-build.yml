@@ -4,8 +4,8 @@ name: Build & publish data
 # releases publish here, so the repo's own GITHUB_TOKEN can upload assets and
 # open failure issues — the same layout OpenASN runs in production.
 #
-# While vehiclesdb/pipeline is PRIVATE, checking it out needs one secret:
-#   PIPELINE_REPO_TOKEN — a fine-grained PAT that can READ vehiclesdb/pipeline
+# While vehiclesdb/vehiclesdb-pipeline is PRIVATE, checking it out needs one secret:
+#   PIPELINE_REPO_TOKEN — a fine-grained PAT that can READ vehiclesdb/vehiclesdb-pipeline
 #   (Repository access = pipeline only, Contents: Read). Add it under
 #   Settings → Secrets and variables → Actions. If the pipeline repo ever goes
 #   public, delete the secret; the fallback to github.token takes over.
@@ -58,17 +58,25 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: data-repo
+          # Full history + tags: the pipeline derives the next free
+          # YYYY.MM.P version from existing tags (autopilot idempotency).
+          fetch-depth: 0
 
       - name: Checkout pipeline
         uses: actions/checkout@v4
         with:
-          repository: vehiclesdb/pipeline
+          repository: vehiclesdb/vehiclesdb-pipeline
           path: pipeline-repo
           token: ${{ secrets.PIPELINE_REPO_TOKEN || github.token }}
 
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
+
+      - name: Install duckdb (parquet emitter)
+        run: |
+          curl -sL https://install.duckdb.org | sh
+          echo "$HOME/.duckdb/cli/latest" >> "$GITHUB_PATH"
 
       - name: Restore source cache
         uses: actions/cache@v4
@@ -108,11 +116,12 @@ jobs:
           if-no-files-found: ignore
 
       - name: Commit, tag and release (publish runs)
-        if: env.PUBLISH == 'true' || (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish)
+        if: (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish)
         working-directory: data-repo
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           VERSION=$(cat VERSION)
           git config user.name "vehiclesdb-pipeline"
           git config user.email "pipeline@vehiclesdb.com"
@@ -121,12 +130,30 @@ jobs:
             echo "No data changes this cycle — skipping release."
             exit 0
           fi
+          # The pipeline already derived a version whose tag is FREE (it reads
+          # this clone's tags), so tag/release collisions mean a real bug —
+          # no `|| true` blindfolds here; fail loud instead of half-releasing.
           git commit -m "Release ${VERSION}"
-          git tag "v${VERSION}" || true
+          git tag "v${VERSION}"
           git push && git push --tags
+          MODELS=$(ruby -rjson -e 'puts JSON.parse(File.read("manifest.json"))["kinds"].sum { |_, v| v["models"] }')
+          PARQUET=""
+          [ -f dist/vehicles.parquet ] && PARQUET="dist/vehicles.parquet"
           gh release create "v${VERSION}" --title "VehiclesDB ${VERSION}" \
-            --notes "Automated monthly data release. See CHANGELOG.md and manifest.json for source provenance." \
-            dist/vehicles.json dist/vehicles.csv dist/vehicles.min.json dist/catalog.sqlite manifest.json ATTRIBUTION.md || true
+            --notes "Automated data release: ${MODELS} models. Sources, licenses and provenance: manifest.json + ATTRIBUTION.md; changes: CHANGELOG.md." \
+            dist/vehicles.json dist/vehicles.csv dist/vehicles.min.json dist/catalog.sqlite ${PARQUET} manifest.json ATTRIBUTION.md
+
+      # jsDelivr caches @latest aggressively; purging right after the release
+      # makes the new data reach CDN consumers (incl. the gem's refresh) in
+      # minutes instead of up to a week. Purge failures are non-fatal — the
+      # cache expires on its own.
+      - name: Purge jsDelivr @latest
+        if: success() && ((github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish))
+        run: |
+          for f in manifest.json dist/vehicles.json dist/vehicles.min.json dist/vehicles.csv dist/catalog.sqlite dist/vehicles.parquet; do
+            curl -fsS "https://purge.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/${f}" > /dev/null || true
+          done
+          echo "jsDelivr purge requested."
 
       # A failed scheduled build must page a human. One issue, updated — never
       # a new issue per failure night (the OpenASN pattern, verbatim).
@@ -139,7 +166,7 @@ jobs:
           body="The scheduled build failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
           Most likely causes (see the job log for the gate that tripped):
-          - Pipeline checkout: PIPELINE_REPO_TOKEN missing/expired (needed while vehiclesdb/pipeline is private)
+          - Pipeline checkout: PIPELINE_REPO_TOKEN missing/expired (needed while vehiclesdb/vehiclesdb-pipeline is private)
           - License gate: an upstream changed its terms text (data/licenses/ pins — review + rake licenses:pin)
           - Delta gate: a kind's model count moved >±20% (source outage or format change)
           - Geo-gated fetch: TH/LV endpoints reject datacenter IPs (keep-last-good covers cached CI, but a cold cache fails)

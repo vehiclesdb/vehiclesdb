@@ -96,11 +96,30 @@ typography, marks never in domains or subdomains. Word marks in a factual
 database are nominative fair use; logos are a separate (image) trademark
 question and stay out of every tier.
 
+## Formats
+
+**We publish: JSON (nested + array-packed), CSV, Parquet, SQLite — and
+nothing else.** Each earns its place: `vehicles.json` is the SDK contract;
+`vehicles.min.json` the payload-optimized picker feed; `vehicles.csv` the
+spreadsheet/BI lingua franca; `vehicles.parquet` the data-science and
+HuggingFace native (generated from the canonical CSV via DuckDB, so the two
+can never disagree); `catalog.sqlite` the "real database in one file" for SQL
+consumers. Explicitly rejected: a custom binary format (OpenASN ships .mmdb
+because IP-range lookup demands a b-tree — a make/model taxonomy has no
+lookup problem SQLite doesn't already solve) and XML/YAML (no audience that
+the five above don't serve better).
+
 ## Cadence
 
-**Monthly releases, weekly validate-only runs, human-gated publish.** The
-spine sources update monthly (ES/DE/MY/TH/AR/UA) or quarterly (UK); nightly
-would be theater. The weekly validate run exists to catch upstream drift
-(license pins, URL rotations, format changes) within days instead of at
-release time. Versioning is `YYYY.MM.PATCH` — the version tells you the
-freshness.
+**Monthly automated releases, weekly validate-only runs.** The spine sources
+update monthly (ES/DE/MY/TH/AR/UA) or quarterly (UK); nightly would be
+theater. The monthly scheduled run builds, validates through all six gates,
+and — only when every gate is green AND the data actually changed — commits,
+tags, and cuts the GitHub release itself. The weekly validate run catches
+upstream drift (license pins, URL rotations, format changes) within days
+instead of at release time; failures open a `pipeline-failure` issue.
+Versioning is `YYYY.MM.PATCH` — the version tells you the freshness, and the
+patch number auto-increments so intra-month re-releases can never collide.
+(Chosen over OpenASN's rolling-`latest` + dated-pin scheme: for a monthly
+dataset, a meaningful version beats a date, and jsDelivr's `@latest` already
+provides the rolling pointer for free.)

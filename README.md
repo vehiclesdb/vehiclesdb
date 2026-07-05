@@ -27,7 +27,7 @@ variants down to what's real).
 curl -sL https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/dist/vehicles.json
 ```
 
-**Rails / Ruby** — use the [`vehicles`](https://github.com/rameerez/vehicles)
+**Rails / Ruby** — use the [`vehicles`](https://github.com/vehiclesdb/vehicles)
 gem: bundled offline snapshot, dropdown helpers, validators, popularity and
 availability accessors, plus a built-in MCP server (`vehicles-mcp`) for agents.
 
@@ -38,7 +38,7 @@ sqlite3 catalog.sqlite "SELECT name FROM models WHERE kind='car'
                         ORDER BY global_popularity_decile LIMIT 10"
 ```
 
-**Spreadsheets / pandas** — `dist/vehicles.csv`, one row per model.
+**Spreadsheets / pandas / notebooks** — `dist/vehicles.csv` or `dist/vehicles.parquet`, one row per model.
 
 **Everything else** — `catalog/<kind>/models.json` is the full-fidelity
 taxonomy (per-country popularity ranks, availability evidence, source ids,
@@ -56,6 +56,7 @@ dist/                      projections for the common cases
   vehicles.json            nested make→models (what the gem bundles)
   vehicles.min.json        the same, array-packed (~60% smaller — pickers)
   vehicles.csv             flat table
+  vehicles.parquet         the same table as Parquet (pandas/duckdb/HF-native)
   catalog.sqlite           SQL access to everything above
 ATTRIBUTION.md             generated per release — the required CC-BY notices
 SCHEMA.md                  shapes + the growth/versioning contract

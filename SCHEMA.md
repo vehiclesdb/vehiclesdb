@@ -14,7 +14,7 @@ Current versions: **catalog `schema_version: 3`** · **dist `schema_version: 2`*
 | Artifact | What | Who reads it |
 |---|---|---|
 | **`catalog/`** | The normalized taxonomy — the database. Per **kind** (`catalog/car/…`), split into `makes.json` + `models.json`, with availability, popularity, sources, and crosswalks. | Anyone who wants the structured data; analytics; tooling |
-| **`dist/`** | Flat **projections**: `vehicles.json` (nested, the [`vehicles`](https://github.com/rameerez/vehicles) gem contract), `vehicles.min.json` (array-packed), `vehicles.csv`, `catalog.sqlite`. | Pickers, spreadsheets, SQL, the gem, CDN users |
+| **`dist/`** | Flat **projections**: `vehicles.json` (nested, the [`vehicles`](https://github.com/vehiclesdb/vehicles) gem contract), `vehicles.min.json` (array-packed), `vehicles.csv`, `vehicles.parquet`, `catalog.sqlite`. | Pickers, spreadsheets, SQL, the gem, CDN users |
 
 `dist/` is generated from `catalog/`. Most consumers want `dist/`; the
 catalogue is for when you need everything.

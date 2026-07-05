@@ -53,7 +53,7 @@ official registers (14+ countries)
      → reconcile (≥2 sources or count threshold) → validate (6 gates)
   → THIS repo: catalog/ + dist/ + manifest.json + ATTRIBUTION.md   (build outputs)
      with overrides/ + spotchecks.yml as the curated INPUT the pipeline reads
-  → SDKs (rameerez/vehicles gem, …) bundle dist/ snapshots
+  → SDKs (vehiclesdb/vehicles gem, …) bundle dist/ snapshots
 ```
 
 A monthly scheduled workflow builds and releases; a weekly one validates
