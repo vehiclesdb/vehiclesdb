@@ -87,6 +87,10 @@ jobs:
 
       - name: Run pipeline tests
         working-directory: pipeline-repo
+        env:
+          # The golden tests load the curated overrides from the data repo —
+          # CI's checkout layout differs from the local sibling-dir default.
+          VDB_DATA_REPO: ${{ github.workspace }}/data-repo
         run: rake test
 
       - name: Build (validate always; sync only when publishing)
