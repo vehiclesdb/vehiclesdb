@@ -1,0 +1,198 @@
+# Body-type curation, three layers (checked in this order by the pipeline):
+#   1. overrides  — "Make|Model" → type. Highest priority, hand-checked. For
+#                   collision-prone names (GT, Manta, Tigra…) and exceptions.
+#   2. keywords   — regex on the nameplate. Productive multi-word families.
+#   3. sets       — exact-match category sets. Multi-word names spelled in full.
+# After these, make-aware family rules (code: pipeline/lib/normalizer.rb) and
+# only THEN the registry's own signal — because registry body data is coarse:
+# RDW `inrichting`'s "stationwagen" is a catch-all that lumps estates, SUVs,
+# crossovers and even Golf hatchbacks (verified live 2026-06; only 1,756
+# vehicles in the whole NL fleet use the honest `terreinvoertuig` tag).
+# Canonical vocabulary: hatchback sedan wagon suv mpv coupe convertible
+# roadster pickup van (PRD-2 §9.2, unchanged).
+
+overrides:
+  Alfa Romeo|GT: coupe
+  Opel|GT: roadster
+  Opel|Manta: coupe
+  Opel|Tigra: coupe
+  Opel|Cascada: convertible
+  Chevrolet|Corvette: coupe
+  Ford|Capri: coupe
+  Ford|Mustang: coupe            # the coupé; Mustang Mach-E is a separate nameplate (spotcheck)
+  Peugeot|RCZ: coupe
+  Peugeot|306: hatchback
+  Peugeot|406: sedan
+  Toyota|Celica: coupe
+  Toyota|Prius: hatchback
+  Toyota|Corolla: hatchback      # EU-dominant body; sedan exists but hatch is the dropdown expectation
+  Volkswagen|Scirocco: coupe
+  Volkswagen|Eos: convertible
+  Volkswagen|Beetle: hatchback
+  Volkswagen|California: van
+  Fiat|Barchetta: roadster
+  Fiat|500X: suv
+  MG|B: roadster                 # the classic MGB
+  MG|Mgf: roadster
+  MG|MG5: wagon                  # the EV estate sold in EU
+  Triumph|Spitfire 1500 Tc: convertible
+  Honda|Civic 3: hatchback
+  Honda|Civic 5: hatchback
+  Lancia|Delta: hatchback
+  Hyundai|ix35: suv
+  Hyundai|ix20: mpv
+  Hyundai|Ioniq: hatchback
+  Hyundai|Ioniq 5: suv
+  Hyundai|Ioniq 6: sedan
+  Chrysler|Pt Cruiser: wagon
+  Chrysler|Grand Voyager: mpv
+  Citroën|C5 X: wagon
+  Citroën|C4 Cactus: suv
+  Smart|Smart: hatchback
+  Smart|Fortwo: hatchback
+  Smart|Forfour: hatchback
+  Daihatsu|Materia: mpv
+  Nissan|Note: hatchback
+  Nissan|Leaf: hatchback
+
+keywords:                        # [type, ruby-regex] — checked before the sets
+  - [suv, '\b(Aircross|Crossback|Cross)\b']   # *Cross / Aircross / Crossback crossovers
+  - [mpv, '\b(Picasso|Spacetourer)\b']
+  - [mpv, 'Max\b']                            # C-Max / S-Max / B-Max / Grand C-Max
+
+suv:                             # exact nameplate matches (post-normalization)
+  - Stelvio
+  - Tonale
+  - Junior
+  - Captiva
+  - Duster
+  - Spring
+  - Bigster
+  - Terios
+  - Sedici
+  - "600"                        # Fiat 600(e) crossover revival
+  - Kuga
+  - Puma
+  - Ecosport
+  - Explorer
+  - Mustang Mach                 # Mach-E post-normalization form
+  - Cr-V
+  - HR-V
+  - Kona
+  - Tucson
+  - Santa Fe
+  - Bayon
+  - Inster
+  - JAECOO7
+  - Outlander
+  - Asx
+  - Qashqai
+  - Juke
+  - X-Trail
+  - Ariya
+  - Mokka
+  - Crossland
+  - Grandland
+  - Frontera
+  - Antara
+  - Captur
+  - Kadjar
+  - Arkana
+  - Austral
+  - Symbioz
+  - Rafale
+  - Arona
+  - Ateca
+  - Tarraco
+  - Formentor
+  - Terramar
+  - Tavascan
+  - Forester
+  - Xv
+  - Vitara
+  - Grand Vitara
+  - Jimny
+  - Ignis
+  - RAV4
+  - C-HR
+  - bZ4X
+  - Urban Cruiser
+  - Tiguan
+  - T-Roc
+  - Taigo
+  - Touareg
+  - Tayron
+  - G6                            # XPeng
+  - G9
+  - Kodiaq
+  - Karoq
+  - Kamiq
+  - Enyaq
+  - Elroq
+  - Yeti
+  - Zs
+  - Zs Ev
+  - Ehs
+  - HS
+  - Atto 3
+  - Seal U
+  - "2008"                        # Peugeot crossovers
+  - "3008"
+  - "5008"
+
+mpv:
+  - Grand Voyager
+  - Galaxy
+  - Fusion                        # Ford Fusion EU = mini-MPV (not the US sedan)
+  - Fr-V
+  - Matrix
+  - Grandis
+  - Meriva
+  - Zafira
+  - Modus
+  - Almera Tino
+  - Scenic
+  - Espace
+  - Altea
+  - Alhambra
+  - Touran
+  - Sharan
+  - Verso
+  - Verso-S
+  - Idea
+  - 500L
+  - Premacy
+  - Carens
+  - Venga
+
+wagon:
+  - Lancer Wagon
+  - "001"                         # Zeekr 001 shooting brake
+
+sedan:
+  - i40
+  - Accent
+  - Avensis
+  - Passat
+  - Jetta
+  - Bora
+  - Arteon
+  - Superb
+  - Rapid
+  - Insignia
+  - Vectra
+  - Talisman
+  - Accord
+  - Insight
+  - Legacy
+  - Primera
+  - Giulia
+  - "159"
+  - Seal
+  - Cordoba
+  - Toledo
+  - Almera
+  - Carisma
+  - Lancer
+  - Cruze
+  - Mondeo

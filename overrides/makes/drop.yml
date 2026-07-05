@@ -1,0 +1,76 @@
+# Makes to DROP for the given kind (they belong to another kind, or are
+# coachbuilders/converters that pollute passenger-car data).
+#
+# Shape: kind → list of raw UPPERCASE make strings (as sources emit them),
+# each with a reason. Dropping here only affects that kind's build — e.g.
+# IVECO is dropped from `car` but is a legitimate `van`/`truck` make.
+#
+# Provenance: seeded from the RDW MVP curation (scripts/build.rb DROP_MAKES,
+# validated against live RDW pulls 2026-06); grows per-source as reconciliation
+# surfaces leakage. RDW "Personenauto" famously includes camper/kombi
+# conversions registered as cars — see Dossier §4.2.
+
+car:
+  - IVECO           # truck/van maker; leaks into car data via camper conversions
+  - MAN             # truck maker; camper conversions
+  - DAF             # truck maker; classic-car tail + conversions
+  - SCANIA          # truck maker
+  - VOLVO TRUCKS    # RDW splits from VOLVO; trucks kind picks it up
+  - ADRIA MOBIL     # motorhome coachbuilder
+  - KNAUS           # caravan/motorhome builder
+  - WEINSBERG       # motorhome builder
+  - HYMER           # motorhome builder
+  - DETHLEFFS       # motorhome builder
+  - HOBBY           # caravan builder
+  - FORD-CNG-TECHNIK  # Ford gas-conversion outfitter (RDW quirk), not a make
+  - BURSTNER        # motorhome builder (UK/DE sources)
+  - BÜRSTNER        # motorhome builder (diacritic variant)
+  - CARTHAGO        # motorhome builder
+  - CHAUSSON        # motorhome builder
+  - PILOTE          # motorhome builder
+  - RAPIDO          # motorhome builder
+  - WESTFALIA       # camper converter (VW California's ancestor lives under VW)
+  - AUTO-SLEEPERS   # UK motorhome converter (VEH0120)
+  - AUTOTRAIL       # UK motorhome builder
+  - SWIFT           # UK caravan/motorhome builder — NOT the Suzuki Swift (that's a model)
+  - ELDDIS          # UK motorhome builder
+  - COACHMEN        # US RV builder
+  - WINNEBAGO       # US RV builder
+  # Motorhome/camper coachbuilders surfaced by FI/ES ingestion (registered as
+  # M1 "cars" in those registers — audit 2026-07-05):
+  - ETRUSCO         # motorhome brand (Hymer group) — FI/ES M1 registrations
+  - MOBILVETTA      # motorhome brand (SEA group)
+  - MCLOUIS         # motorhome brand (SEA group)
+  - XGO             # motorhome brand (Rimor)
+  - RANDGER         # motorhome brand (FI registrations)
+  - FIAT/HYMER      # RDW/FI compound base-vehicle+builder string
+  - REMETZ          # NL hearse/limo coachbuilder
+  - ALLIED VEHICLES LTD  # UK wheelchair-accessible converter
+  - BENIMAR         # motorhome builder (ES — *51 code rows too)
+  - ROLLER-TEAM     # motorhome builder (IT)
+  - ROLLER TEAM     # spelling variant of the above
+  - BUNKERVAN       # ES camper converter
+  - GIOTTILINE      # motorhome builder (IT)
+  - ELNAGH          # motorhome builder (SEA group)
+  - RIMOR           # motorhome builder (IT)
+  - CHALLENGER      # motorhome brand (Trigano) — NOT the Dodge Challenger (model, not make)
+  - ITINEO          # motorhome brand (Rapido group)
+  - SUNLIGHT        # motorhome brand (Erwin Hymer)
+  - LAIKA           # motorhome builder (Hymer group)
+  - MALIBU          # motorhome brand (Carthago) — NOT the Chevrolet Malibu (model)
+  - POSSL           # camper converter (DE)
+  - PÖSSL           # diacritic variant of the above
+  - GLOBECAR        # camper brand (Pössl group)
+  - LMC             # motorhome builder (Erwin Hymer)
+  - NIESMANN+BISCHOFF  # motorhome builder (Hymer group)
+  - FRANKIA         # motorhome builder (Pilote group)
+  - RAPIDO          # motorhome builder (FR) — second listing guards the FI spelling
+
+moped: []           # no drops yet; curation TBD when the kind ships
+
+motorcycle:
+  - POLARIS         # ATV/side-by-side maker leaking into moto registries; revisit if quads become a kind
+
+van: []
+truck: []
+bus: []

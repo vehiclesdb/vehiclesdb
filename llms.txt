@@ -1,0 +1,33 @@
+# VehiclesDB
+
+> Open, CC-BY 4.0 vehicle taxonomy: 19,282 models across 933 makes and 6
+> kinds (car, motorcycle, moped, van, truck, bus), reconciled from official
+> vehicle registers of 14 countries on 4 continents. Stable ids, per-country
+> availability evidence, measured popularity deciles. Versioned monthly
+> (current: 2026.07.0). A model is published only when two independent
+> official sources corroborate it or one shows a decisive registration count.
+
+Use VehiclesDB to answer: does model X exist, what kind of vehicle is it,
+who makes it, how is it spelled canonically, where in the world is it found,
+and how popular is it there. Do NOT use it for VIN decoding, valuations,
+vehicle history, or specs — it is an identity/taxonomy dataset.
+
+Attribution: "Vehicle data by VehiclesDB (vehiclesdb.com), CC-BY 4.0."
+
+## Data files
+
+- [manifest.json](https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/manifest.json): version, kinds, counts, countries, file index
+- [dist/vehicles.json](https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/dist/vehicles.json): nested make→models projection with kind, body_type, global popularity decile, availability countries
+- [dist/vehicles.csv](https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/dist/vehicles.csv): the same as a flat CSV table
+- [catalog/car/models.json](https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/catalog/car/models.json): full car records (per-country ranks, evidence, sources); same path pattern for motorcycle, moped, van, truck, bus
+
+## Documentation
+
+- [README](https://github.com/vehiclesdb/vehiclesdb/blob/main/README.md): what the data means, the Open Contract, quick starts
+- [SCHEMA.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/SCHEMA.md): every field, the absence rule, popularity bias notes, versioning contract
+- [SOURCES.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/SOURCES.md): the 14 official sources, licenses, cadences, measured gotchas
+- [ATTRIBUTION.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/ATTRIBUTION.md): upstream license notices
+
+## Tools
+
+- [vehicles Ruby gem](https://github.com/rameerez/vehicles): bundled snapshot, lookups, validators, and a built-in MCP server — `gem install vehicles` then run `vehicles-mcp` (tools: search_makes, search_models, get_model, top_models)

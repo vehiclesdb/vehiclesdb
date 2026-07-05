@@ -1,0 +1,24 @@
+# UK DfT/DVLA VEH0120 source mapping — BodyType → kind.
+# Dataset: "Vehicle licensing statistics data files", df_VEH0120_UK.csv (OGL v3),
+# https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+# Measured 2026-07-04 (Dossier §4.1): Cars 124,118 rows / Motorcycles 24,234 /
+# LGV 34,699 / HGV 8,906 / Buses 5,475 / Other 16,644.
+#
+# GOTCHAS (all measured):
+# - GenModel strings are prefixed with the make ("BMW 2 SERIES") — the
+#   normalizer strips the prefix before nameplate rules run.
+# - 7,694 rows have GenModel containing "MISSING" → dropped by the junk filter.
+# - Misclassifications exist (Honda ACCORD under Motorcycles, Audi A4 under
+#   Buses) → cross-kind sanity is handled by reconciliation confidence, and the
+#   same model appearing under two BodyTypes keeps only its dominant kind per
+#   make unless curated otherwise.
+# - UK merges mopeds INTO Motorcycles (no separate class) → UK contributes
+#   evidence to kind=motorcycle only; moped identities come from NL/FI/ES.
+
+kinds:
+  Cars: car
+  Motorcycles: motorcycle
+  Light goods vehicles: van
+  Heavy goods vehicles: truck
+  Buses and coaches: bus
+  Other vehicles: null    # plant, agricultural, trikes, ambiguous — skipped, counted in build log

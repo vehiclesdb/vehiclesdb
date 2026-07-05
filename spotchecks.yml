@@ -1,0 +1,127 @@
+# spotchecks.yml — the accuracy tripwire panel (PRD-3 §13.6).
+#
+# Every build must pass 100% of these. NEVER bulk-edit rows to make CI green:
+# each row change needs a reviewed reason in the PR (the panel is a tripwire,
+# not gospel — same contract as OpenASN's spotchecks).
+#
+# Row vocabulary (validate.rb gate_spotchecks):
+#   id / make               — model id ("make/model") or make id
+#   kind                    — defaults to car
+#   exists: false           — asserts ABSENCE
+#   body_types_include      — list that must be ⊆ model.body_types
+#   availability_includes   — country codes that must be present
+#   global_decile_max       — popularity.global_decile must be ≤ this
+#   skip_if_kind_absent     — row only runs when that kind is in the build
+#   reason                  — why this row exists (shown on failure)
+
+checks:
+  # --- identity & normalization tripwires (cars) -----------------------------
+  - id: volkswagen/golf
+    body_types_include: [hatchback, wagon]      # Golf Variant folded in → wagon secondary
+    availability_includes: [nl, gb]
+    # ≤2, not 1: global = mean of per-country deciles, and the dataset now
+    # spans SE Asia/LatAm where the Golf is honestly mid-pack (measured
+    # 2026-07: rank 1-2 in NL/LU/FI/GB but rank 305 in TH, 106 in MY).
+    # If this ever drifts past 2, popularity aggregation broke.
+    global_decile_max: 2
+    reason: "The canonical nameplate: normalization (GOLF VII VARIANT→Golf), estate-secondary heuristic, multi-source join, top-of-Europe popularity"
+  - id: bmw/2-series
+    availability_includes: [nl]
+    reason: "Family-rule tripwire: 218I/M240I/2ER collapse into 2 Series (and UK 'BMW 2 SERIES' prefix strip)"
+  - id: volkswagen/id-3
+    reason: "ID.3 PRO 150 KW → ID.3 (dot-family rule + styling)"
+  - id: skoda/octavia
+    availability_includes: [nl, gb]
+    reason: "Diacritic slug gotcha: Škoda → skoda (NFKD strip), not s-koda"
+  - id: ford/mustang
+    body_types_include: [coupe]
+    reason: "Mustang stays the coupé…"
+  - id: ford/mustang-mach-e
+    reason: "…and Mach-E is a SEPARATE nameplate (PRD-2 §19.2 decision)"
+  - id: hyundai/ioniq-5
+    reason: "IONIQ5 → Ioniq 5 family rule; separate from hyundai/ioniq"
+  - id: toyota/corolla
+    body_types_include: [hatchback]
+    availability_includes: [gb]
+    reason: "Hand override beats registry dominance (EU-dominant hatch)"
+
+  # --- recent-EV tripwires (the dataset must never go stale on launches) -----
+  - id: byd/atto-3
+    reason: "Recent Chinese EV present (BYD Atto 3, EU launch 2022)"
+  - id: mg/mg4
+    reason: "MG4 present (EU top-selling EV hatch; MG family rule re-attaches the prefix UK strips)"
+  - id: tesla/model-y
+    body_types_include: [suv]
+    reason: "Tesla family body rule"
+
+  # --- make-level tripwires ---------------------------------------------------
+  - make: vauxhall
+    reason: "Vauxhall and Opel are SEPARATE makes by decision (PRD-2 §19.1)"
+  - make: opel
+    reason: "See vauxhall row"
+  - make: cupra
+    reason: "Post-2018 make present (SEAT spin-off) — new-brand detection works"
+  - make: man
+    exists: false
+    reason: "Truck maker must NOT appear as a car make (drop.yml); belongs to kind=truck"
+    kind: car
+
+  # --- van leakage (the RDW Personenauto camper/kombi quirk) ------------------
+  - id: volkswagen/caddy
+    kind: car
+    exists: false
+    reason: "Caddy is kind=van; must not leak into cars (drop_patterns.yml)"
+  - id: mercedes-benz/sprinter
+    kind: car
+    exists: false
+    reason: "Sprinter is kind=van/truck; must not leak into cars"
+
+  # --- non-car kinds (rows activate as the kinds build) -----------------------
+  - id: volkswagen/transporter
+    kind: van
+    skip_if_kind_absent: true
+    reason: "The van kind owns the Transporter"
+  - id: daf/xf
+    kind: truck
+    skip_if_kind_absent: true
+    availability_includes: [nl]
+    reason: "Truck spine sanity (DAF XF — top NL heavy truck, measured)"
+  - id: vdl/citea
+    kind: bus
+    skip_if_kind_absent: true
+    reason: "Bus spine sanity (VDL — top NL bus make, measured)"
+  - make: piaggio
+    kind: moped
+    skip_if_kind_absent: true
+    reason: "Moped kind non-empty (NL Bromfiets: Piaggio 222,657 measured 2026-07-04)"
+  - id: yamaha/mt-07
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [nl]
+    reason: "Motorcycle kind sanity — mainstream nameplate present"
+  - id: honda/gold-wing
+    kind: motorcycle
+    skip_if_kind_absent: true
+    reason: "vPIC-confirmed moto nameplate (US cross-check, measured 2026-07-04)"
+
+  # --- global-spine tripwires (Phase 3 markets must never silently drop) ------
+  - id: perodua/myvi
+    availability_includes: [my]
+    reason: "Malaysia spine alive: Perodua (MY #1 make) exists nowhere in EU/US registers"
+  - id: toyota/hilux
+    availability_includes: [my, nz]
+    reason: "Global pickup: joins across EU + SE Asia + Oceania registers (8 countries measured 2026-07)"
+  - id: yamaha/nmax
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [th]
+    reason: "Thailand spine alive: TH is our best Global-South motorcycle source (Dossier §10.1)"
+  - id: honda/civic
+    availability_includes: [us]
+    # ≤2 like the Golf row: every market added to the global mean moves
+    # icons' deciles (measured: Civic went 1→2 when DE+UA joined the mean).
+    global_decile_max: 2
+    reason: "US approval evidence (fueleconomy.gov) joins with registration evidence; a global icon stays near the top"
+  - id: chevrolet/corvette
+    availability_includes: [us]
+    reason: "US-market coverage: catalog-only source (approval evidence, no counts) still publishes"

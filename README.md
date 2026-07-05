@@ -1,62 +1,148 @@
 # VehiclesDB — open vehicle data
 
-Free, open, versioned data for **every kind of vehicle** — the catalogue of what
-vehicles exist and how they're organized. Cars today; vans, motorcycles, trucks,
-buses, trains, and more as they land. This is the open core of
-[VehiclesDB](https://vehiclesdb.com), published as flat files so anyone can use it.
+**The open catalogue of what vehicles exist**: makes, models, kinds, body
+types, popularity, and where in the world each model is actually found —
+reconciled from **official registers of 14 countries on 4 continents**,
+versioned, and free forever under CC-BY 4.0.
 
-> **Status:** EU cars — 47 makes, 456 model nameplates (dataset `2026.06.0`).
-> The schema already models the full universe (kinds, makes, models, generations,
-> variants) and grows **without breaking changes**. See [SCHEMA.md](SCHEMA.md).
+> **Dataset `2026.07.0`** — 19,282 models · 933 makes · 6 kinds · 14 countries
+>
+> | kind | models | makes | | kind | models | makes |
+> |---|---:|---:|---|---|---:|---:|
+> | 🚗 car | 8,901 | 316 | | 🚐 van | 1,617 | 147 |
+> | 🏍️ motorcycle | 5,934 | 262 | | 🚚 truck | 1,082 | 97 |
+> | 🛵 moped | 1,330 | 288 | | 🚌 bus | 418 | 97 |
 
-## What's here
-
-```
-manifest.json            index: version, kinds, regions, files, counts
-catalog/                 the normalized taxonomy — THE database
-  car/
-    makes.json           [{ id, slug, name, kinds }]
-    models.json          [{ id, make_id, slug, name, kind, body_types, generations?, variants? }]
-dist/
-    vehicles.json        flat make→model projection for dropdowns (what the gem reads)
-    vehicles.csv         the same projection as CSV (spreadsheets / BI / humans)
-SCHEMA.md  CHANGELOG.md  VERSION  LICENSE
-```
-
-Two layers, on purpose: **`catalog/`** is the structured database (grows in
-breadth — more kinds — and depth — generations, variants); **`dist/vehicles.json`**
-is a small, stable projection for the common case (a make/model picker).
+Every record is corroborated: a model ships when **two independent official
+sources agree** (or one shows a fleet count no typo could produce), so you get
+the Golf and the Corolla — and the Perodua Myvi, the Honda Wave 125i, the
+Bogdan A092 — without the registry noise (we reconcile ~76,000 raw car name
+variants down to what's real).
 
 ## Use it
 
-Most apps want the projection:
+**Grab a file** (CDN, always the latest release):
 
 ```bash
-curl -sL https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/dist/vehicles.json   # or vehicles.csv
+curl -sL https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/dist/vehicles.json
 ```
 
-In Ruby/Rails, don't fetch it yourself — use the
-[`vehicles`](https://github.com/rameerez/vehicles) gem (bundled offline + refresh).
-Prefer a spreadsheet? Grab `dist/vehicles.csv`. Want the full tree (generations,
-variants)? Read `catalog/car/*.json`.
+**Rails / Ruby** — use the [`vehicles`](https://github.com/rameerez/vehicles)
+gem: bundled offline snapshot, dropdown helpers, validators, popularity and
+availability accessors, plus a built-in MCP server (`vehicles-mcp`) for agents.
 
-## How deep does it go?
+**SQL** — `dist/catalog.sqlite` is the full catalog as a single-file database:
 
-The schema is built to hold the whole vehicle universe. A few real examples
-already carry depth:
+```bash
+sqlite3 catalog.sqlite "SELECT name FROM models WHERE kind='car'
+                        ORDER BY global_popularity_decile LIMIT 10"
+```
 
-- **Suzuki Jimny → `JB74`** is a *generation* (chassis code `JB74`, 2018–) under
-  `suzuki/jimny`. Older `JB43` sits alongside it.
-- **BMW M2** is a `performance` *variant* of `bmw/2-series` (`bmw/2-series/m2`).
+**Spreadsheets / pandas** — `dist/vehicles.csv`, one row per model.
 
-Per-config **specs, configurations, and images** (engine, drivetrain, power,
-year-accurate photos…) are the paid [VehiclesDB API](https://vehiclesdb.com),
-keyed to these same ids. The open repo is the taxonomy; the API is the detail.
+**Everything else** — `catalog/<kind>/models.json` is the full-fidelity
+taxonomy (per-country popularity ranks, availability evidence, source ids,
+type-approval crosswalks where measured).
 
-## Versioning & licensing
+## The files
 
-Date-based `YYYY.MM.patch`, one git tag per release; new kinds/makes/models and
-optional layers ship without breaking consumers (see [SCHEMA.md](SCHEMA.md)).
+```
+manifest.json              index: version, kinds, counts, countries, files
+catalog/<kind>/            THE database — full records
+  makes.json               [{ id, slug, name }]
+  models.json              [{ id, make_id, slug, name, kind, body_types?,
+                              availability, popularity?, sources, xrefs? }]
+dist/                      projections for the common cases
+  vehicles.json            nested make→models (what the gem bundles)
+  vehicles.min.json        the same, array-packed (~60% smaller — pickers)
+  vehicles.csv             flat table
+  catalog.sqlite           SQL access to everything above
+ATTRIBUTION.md             generated per release — the required CC-BY notices
+SCHEMA.md                  shapes + the growth/versioning contract
+SOURCES.md                 every source: license, cadence, measured gotchas
+overrides/  spotchecks.yml the human-curated inputs (see Contributing)
+```
 
-Data is **CC-BY 4.0**. Today's data derives from [RDW Open Data](https://opendata.rdw.nl/) (CC0).
-Attribution: *"Vehicle data from VehiclesDB (CC-BY 4.0)."*
+Ids are stable forever (kind + make + model slugs, e.g. `volkswagen/golf`
+within `catalog/car/`). Renames alias, nothing is silently deleted, and
+absent optional keys mean *not catalogued yet* — never a schema change.
+Details: [SCHEMA.md](SCHEMA.md).
+
+## What this data means (read this once)
+
+A model's presence means we found evidence of it in at least one covered
+market's official sources (registration, type approval, or verified sales
+reporting) — see each record's `sources` and `availability.evidence`. Absence
+means *we haven't catalogued it yet*, not that it doesn't exist.
+`availability` is evidence of presence, **not** proof a vehicle was officially
+marketed there (grey imports count — they're real vehicles on real roads).
+Year ranges from registration data are accurate to ±1 year by construction.
+Nameplate granularity: one model covers its trims unless `variants` says
+otherwise; two-wheelers keep displacement granularity (`Wave110i` and
+`Wave125i` are how riders and registers both speak). Popularity deciles are
+measured from real registration/fleet counts where `confidence: "measured"`
+and proxied from public-attention signals where `confidence: "proxy"` — the
+biases of each are documented in SCHEMA.md.
+
+**Wrong users:** if you need VIN decoding (use [NHTSA vPIC](https://vpic.nhtsa.dot.gov/api/)),
+valuations, vehicle history, or insurance rating data, this is not your
+dataset.
+
+## The Open Contract
+
+1. **The skeleton is open forever.** Ids, names, taxonomy structure, body
+   types, year ranges, availability evidence, popularity deciles, and the
+   type-approval crosswalks are CC-BY 4.0 in perpetuity. We will never
+   paywall them, relicense them restrictively, or delete them. (This niche
+   has seen four documented free-tier rug-pulls; this contract is the
+   antidote, in writing.)
+2. **What funds the project:** depth (full specs and configurations, images
+   beyond the free silhouettes, absolute popularity counts and time series),
+   freshness SLAs, a hosted API, redistribution licenses with indemnity, and
+   support. Paid never means crippling open. Commercial inquiries:
+   `commercial@vehiclesdb.com`.
+3. **Trademark:** "VehiclesDB" is the project's mark; forks must rename (the
+   OpenStreetMap precedent — data open, brand protected). Some company and
+   product names in this dataset may be trademarks or registered trademarks
+   of individual companies and are respectfully acknowledged; they appear as
+   plain-text facts, with no logos and no implied endorsement.
+4. **Provenance promise:** every record carries its sources; every source's
+   license text is pinned in-repo (`data/licenses/`); the build fails rather
+   than ship on license drift.
+
+## Where the data comes from
+
+Official, openly-licensed sources only — vehicle registers, type-approval
+catalogs, and government statistics from NL, GB, ES, FI, LU, IE, DE, US, CA,
+NZ, MY, TH, UA, AR. Every source, its license, its update cadence, and its
+measured quirks: [SOURCES.md](SOURCES.md). The exact attribution notices each
+license prescribes: [ATTRIBUTION.md](ATTRIBUTION.md). ShareAlike, NC, and
+scraped sources never enter this dataset — by build gate, not by promise.
+
+Fresh data lands monthly (`YYYY.MM.PATCH` versions — the version *is* the
+freshness), with weekly automated validation against upstream drift in
+between.
+
+## Contributing
+
+The build outputs (`catalog/`, `dist/`, `manifest.json`) are generated —
+don't PR them. What we love PRs and issues for:
+
+- **A wrong name, a junk model, a missing alias** → edit `overrides/`
+  (every line carries a `#` comment saying why; CI lints in seconds:
+  `ruby scripts/lint_overrides.rb`).
+- **A model that should never disappear** → add a row to `spotchecks.yml`.
+- **An official open source we're missing** — especially outside Europe —
+  → open an issue with the URL and its license text. Highest-leverage
+  contribution there is.
+
+House rules: [AGENTS.md](AGENTS.md) · Why things are the way they are:
+[DECISIONS.md](DECISIONS.md)
+
+## License
+
+Data: [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) — free for
+any use, including commercial, with attribution:
+
+> Vehicle data by [VehiclesDB](https://vehiclesdb.com) (CC-BY 4.0), built
+> from official public registers — see ATTRIBUTION.md for source notices.

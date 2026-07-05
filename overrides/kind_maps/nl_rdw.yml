@@ -1,0 +1,41 @@
+# NL RDW source mapping — voertuigsoort → kind, inrichting → body_type.
+# Dataset: Gekentekende_voertuigen m9d7-ebf2 (CC0),
+# https://opendata.rdw.nl/Voertuigen/Open-Data-RDW-Gekentekende_voertuigen/m9d7-ebf2
+# Kind volumes measured 2026-07-04 via SODA group-by (Dossier §4.2):
+# Personenauto 10,774,905 · Bedrijfsauto 1,509,614 (N1 1,276,938 / N2 48,943 /
+# N3 183,733) · Bromfiets 1,373,537 · Motorfiets 893,465 · Bus 12,418.
+
+kinds:
+  Personenauto: car
+  Motorfiets: motorcycle
+  Motorfiets met zijspan: motorcycle     # sidecar rigs fold into motorcycle
+  Bromfiets: moped                       # PRD-3 D4: mopeds are a first-class kind
+  Bus: bus
+  # Bedrijfsauto splits by europese_voertuigcategorie (the EU legal category is
+  # the stable truth — PRD-3 §6.1): N1 → van, N2/N3 → truck.
+  Bedrijfsauto:
+    by_eu_category:
+      N1: van
+      N2: truck
+      N3: truck
+  Driewielig motorrijtuig: motorcycle    # L5e trikes → motorcycle + body_type trike (D4)
+  # Everything else (Aanhangwagen/Oplegger trailers, Land- of bosbouwtrekker
+  # tractors, etc.) is out of scope for now — unmapped soorten are skipped and
+  # counted in the build log so new categories can't slip through silently.
+
+body_types:
+  # RDW `inrichting` → canonical body type. COARSE — see body_types.yml header:
+  # "stationwagen" is a catch-all (estates+SUVs+crossovers+even Golf hatches),
+  # so it maps to wagon and curation resolves the truth. Unmapped inrichting
+  # values (kampeerwagen, ambulance, lijkwagen, taxi, "Niet geregistreerd", …)
+  # are treated as noise.
+  hatchback: hatchback
+  sedan: sedan
+  limousine: sedan
+  stationwagen: wagon          # CATCH-ALL — resolved by curation layers
+  truckstationwagen: wagon
+  MPV: mpv
+  coupe: coupe
+  cabriolet: convertible
+  terreinvoertuig: suv
+  pick-up truck: pickup

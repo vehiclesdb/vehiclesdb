@@ -1,0 +1,54 @@
+# Model-string DROP patterns, per kind. Ruby regex source strings (case
+# applied against the UPCASED raw model string). A hit drops the row for that
+# kind — used to keep other kinds' nameplates from leaking in.
+#
+# The `car` list exists because registries' "passenger car" classes include
+# camper & kombi CONVERSIONS of vans registered as cars (RDW "Personenauto"
+# quirk — Dossier §4.2; same pattern seen in UK VEH0120 and LU). Those
+# nameplates are real — they belong to kind `van`, whose build ingests them
+# via kind_maps instead. Dropping here ≠ dropping from the dataset.
+
+car:
+  - '\bSPRINTER\b'    # Mercedes van
+  - '\bTRANSIT\b'     # Ford van family (incl. TOURNEO CONNECT etc. below)
+  - '\bTRANSPORTER\b' # VW T-series van
+  - '\bCRAFTER\b'     # VW van
+  - '\bCADDY\b'       # VW van — RDW even has "CADDY MODIFIED PARTITION WALL" (25,250 rows measured)
+  - '\bBERLINGO\b'    # Citroën van (passenger Berlingo handled under van kind)
+  - '\bKANGOO\b'      # Renault van
+  - '\bPARTNER\b'     # Peugeot van
+  - '\bRIFTER\b'      # Peugeot van (passenger)
+  - '\bDOBLO\b'       # Fiat van
+  - '\bDUCATO\b'      # Fiat large van (top camper base)
+  - '\bJUMPER\b'      # Citroën large van
+  - '\bJUMPY\b'       # Citroën mid van
+  - '\bBOXER\b'       # Peugeot large van — NOTE: "Boxer" is also a Bajaj MOTORCYCLE (Kenya boda-boda staple); kind context keeps these apart
+  - '\bEXPERT\b'      # Peugeot mid van
+  - '\bVITO\b'        # Mercedes van
+  - '\bVIANO\b'       # Mercedes passenger van
+  - '\bMASTER\b'      # Renault large van
+  - '\bTRAFIC\b'      # Renault mid van
+  - '\bMOVANO\b'      # Opel large van
+  - '\bDOKKER\b'      # Dacia van
+  - '\bLODGY\b'       # Dacia MPV-van
+  - '\bSCUDO\b'       # Fiat van
+  - '\bNV\d'          # Nissan NV200/NV300/NV400 vans
+  - '\bPROACE\b'      # Toyota van
+  - '\bCOMBO\b'       # Opel van
+  - '\bVIVARO\b'      # Opel van
+  - '\bTOURNEO\b'     # Ford passenger van
+  - '\bCONNECT\b'     # Ford Transit/Tourneo Connect
+  - '\bEXPRESS\b'     # Renault Express van
+  - '\bTALENTO\b'     # Fiat van (Trafic twin)
+  - '\bTGE\b'         # MAN TGE van (VW Crafter twin)
+  - '\bDAILY\b'       # Iveco Daily (belt & braces alongside make drop)
+  - '\bT[- ]?CLASS\b' # Mercedes T-Class small van (passenger Citan)
+  - '\bCITAN\b'       # Mercedes small van
+  - '\A10-11\s?C\z'   # VW "10-11C": Finnish register type code for vintage Beetles, not a nameplate (measured 2026-07-05)
+
+van: []
+motorcycle: []
+moped: []
+truck:
+  - '\A80-13\s?A?\z'  # Iveco-Magirus "80-13A": chassis config code that survives series collapse (digit-leading, no letter stem)
+bus: []

@@ -1,0 +1,188 @@
+# Make aliases — raw source strings (UPPERCASE) → canonical display name.
+#
+# This is curation DATA, not code: every line is reviewable, PR-able, and linted
+# (scripts/lint_overrides.rb). Anything not listed gets smart-title-cased by the
+# pipeline; add a line here whenever a source spells a make in a way the default
+# casing gets wrong, or when two raw spellings must merge into one make.
+#
+# Sources of raw spellings seen so far: NL RDW `merk` (https://opendata.rdw.nl/resource/m9d7-ebf2.json),
+# UK DfT VEH0120 `Make` (https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files),
+# ES DGT MARCA_ITV (https://www.dgt.es/menusecundario/dgt-en-cifras/matraba-listados/matriculaciones-automoviles-mensual.html),
+# FI Traficom merkkiSelvakielinen, LU SNCA LIBMRQ, BE FPS Make, MY JPJ maker,
+# UA MVS BRAND, AR DNRPA marca_descripcion.
+#
+# Rule of thumb: keys are raw UPPERCASE strings exactly as sources emit them;
+# values are our canonical display names. One canonical name per real-world make.
+
+VOLKSWAGEN: Volkswagen
+VW: Volkswagen                       # UK/BE/UA shorthand; BE even emits "VOLKSWAGEN, VW" (see models/drop_patterns note)
+VOLKSWAGEN, VW: Volkswagen           # BE FPS Mobility combined label (measured 2026-07-05, raw-findings/regional)
+MERCEDES-BENZ: Mercedes-Benz
+MERCEDES BENZ: Mercedes-Benz
+MERCEDES: Mercedes-Benz              # LU register uses bare MERCEDES alongside MERCEDES-BENZ (measured: 1,015 vs 1,033 rows in one month)
+MERCEDES-AMG: Mercedes-Benz          # AMG models fold into the parent make; AMG survives as variant naming
+BMW: BMW
+BMW I: BMW                           # RDW splits "BMW I" (i3/i8 era) as a separate merk — same make
+MINI: Mini
+MICRO COMPACT CAR SMART: Smart       # RDW legacy name for early Smarts (MCC era)
+SMART: Smart
+CITROEN: Citroën
+CITROËN: Citroën
+SKODA: Škoda
+ŠKODA: Škoda
+SEAT: SEAT
+CUPRA: Cupra
+DS: DS
+DS AUTOMOBILES: DS
+MG: MG
+BYD: BYD
+KIA: Kia
+MAZDA: Mazda
+FIAT: Fiat
+OPEL: Opel
+VAUXHALL: Vauxhall                   # UK sibling of Opel — kept as a SEPARATE make by decision (PRD-2 §19.1, PRD-3 spotcheck)
+AUDI: Audi
+FORD: Ford
+TOYOTA: Toyota
+RENAULT: Renault
+PEUGEOT: Peugeot
+NISSAN: Nissan
+HYUNDAI: Hyundai
+VOLVO: Volvo
+TESLA: Tesla
+TESLA MOTORS: Tesla
+LEXUS: Lexus
+HONDA: Honda
+SUZUKI: Suzuki
+DACIA: Dacia
+MITSUBISHI: Mitsubishi
+JEEP: Jeep
+LAND ROVER: Land Rover
+LAND-ROVER: Land Rover               # ES DGT hyphenates
+JAGUAR: Jaguar
+PORSCHE: Porsche
+ALFA ROMEO: Alfa Romeo
+ALFA-ROMEO: Alfa Romeo               # ES DGT hyphenates
+LANCIA: Lancia
+SUBARU: Subaru
+CHEVROLET: Chevrolet
+DAIHATSU: Daihatsu
+POLESTAR: Polestar
+XPENG: XPeng
+NIO: Nio
+ABARTH: Abarth
+SAAB: Saab
+CHRYSLER: Chrysler
+DODGE: Dodge
+INFINITI: Infiniti
+MASERATI: Maserati
+BENTLEY: Bentley
+GENESIS: Genesis
+SSANGYONG: SsangYong
+KGM: KGM                             # SsangYong's 2023 rebrand; kept separate (different badge era); alias candidates reviewed per-source
+LYNK & CO: Lynk & Co
+LYNK&CO: Lynk & Co
+LYNK AND CO: Lynk & Co
+LEAPMOTOR: Leapmotor
+ROLLS ROYCE: Rolls-Royce
+ROLLS-ROYCE: Rolls-Royce
+ASTON MARTIN: Aston Martin
+FERRARI: Ferrari
+LAMBORGHINI: Lamborghini
+MCLAREN: McLaren
+LOTUS: Lotus
+ALPINE: Alpine
+MORGAN: Morgan
+CATERHAM: Caterham
+GREAT WALL: Great Wall
+GWM: Great Wall                      # Great Wall Motor initialism (UK/AU sources)
+GWM ORA: Ora                         # UK lists GWM ORA; Ora is the retail brand
+ORA: Ora
+OMODA: Omoda
+JAECOO: Jaecoo
+CHERY: Chery
+HAVAL: Haval
+GEELY: Geely
+ZEEKR: Zeekr
+XIAOMI: Xiaomi
+DONGFENG: Dongfeng
+MAXUS: Maxus
+AIWAYS: Aiways
+SERES: Seres
+HONGQI: Hongqi
+GAC: GAC
+AION: Aion                           # GAC's EV brand appears standalone in TH DLT (e.g. "AION UT") — kept as its own make
+ISUZU: Isuzu
+INEOS: INEOS                          # INEOS Grenadier; brand styles itself all-caps
+INEOS GRENADIER: INEOS
+PERODUA: Perodua                     # MY national make (JPJ measured top seller)
+PROTON: Proton                       # MY national make
+LADA: Lada                           # UA/CIS registries (VAZ heritage)
+VAZ: Lada                            # Soviet-era raw string for Lada in UA data
+ZAZ: ZAZ                             # UA-only make (spotcheck row: ua availability)
+UAZ: UAZ
+GAZ: GAZ
+MOSKVICH: Moskvich
+DAEWOO: Daewoo
+ROVER: Rover
+MG ROVER: Rover                      # UK VEH lists "MG ROVER" for late Rover Group; MG stays separate
+AUSTIN: Austin
+TRIUMPH: Triumph                     # NOTE: Triumph is BOTH a classic car make and a motorcycle make — kind context disambiguates; do NOT merge
+VDL: VDL
+VDL BERKHOF: VDL                     # Berkhof merged into VDL (2003); fleet continuity under one make
+VDL BUS: VDL
+BOVA: Bova                           # pre-merger VDL brand kept separate (historic coaches keep their badge)
+EBUSCO: Ebusco
+ALEXANDER DENNIS: Alexander Dennis
+WRIGHTBUS: Wrightbus
+YUTONG: Yutong
+SOLARIS: Solaris
+VAN HOOL: Van Hool
+SETRA: Setra
+EVOBUS: Setra                        # EvoBus = Daimler's bus entity; RDW EVOBUS rows are Setra-badged coaches
+IRISBUS: Irisbus
+HEULIEZ BUS: Heuliez Bus
+HIGER: Higer
+DAF: DAF
+MAN: MAN
+SCANIA: Scania
+IVECO: Iveco
+RENAULT TRUCKS: Renault Trucks
+VOLVO TRUCKS: Volvo Trucks
+MERCEDES-BENZ TRUCKS: Mercedes-Benz
+FUSO: Fuso
+HINO: Hino
+KENWORTH: Kenworth
+PETERBILT: Peterbilt
+FREIGHTLINER: Freightliner
+MACK: Mack
+LANDROVER: Land Rover                # IE CSO TEM20 writes it as one word (measured)
+MERCEDES-BENZS: Mercedes-Benz
+QUATTRO: Audi                        # RDW registers some Audi Quattros with merk=QUATTRO (quirk, audit 2026-07-05)
+MG ROEWE: MG                         # FI compound label; Roewe models sold as MG in EU
+BAIC: BAIC
+DS AUTOMOBILES ONE: DS
+DAF TRUCKS: DAF
+DENNIS: Alexander Dennis             # UK legacy 'DENNIS' rows = the same builder lineage (Alexander Dennis)
+
+# --- CIS marques (Cyrillic raw strings from the UA register, ua_mvs) ---------
+# Volumes measured 2026-07-05 in reestrtz2026 (H1). Without these aliases the
+# Cyrillic folds to an empty slug and the normalizer drops the row.
+"ВАЗ": Lada              # 32,201 rows — VAZ = the Lada factory (АвтоВАЗ); merges with Latin LADA rows
+"ЗАЗ": ZAZ               # 8,985 — Zaporizhzhia Automobile Plant (Tavria, Slavuta, Sens)
+"ЗАЗ-DAEWOO": ZAZ        # 2,943 — the ZAZ-Daewoo era (Lanos/Sens built in Zaporizhzhia)
+"ГАЗ": GAZ               # 4,869 — Gorky Automobile Plant (Volga, Gazelle)
+"УАЗ": UAZ               # 888 — Ulyanovsk (469, Hunter, Patriot)
+"АЗЛК": Moskvich         # 526 — АЗЛК = the Moskvich factory (2140/2141)
+"МОСКВИЧ": Moskvich      # spelling variant of the above
+"ДНІПРО": Dnepr          # 851 — Dnepr heavy motorcycles (KMZ, Kyiv)
+"КМЗ": Dnepr             # 316 — Kyiv Motorcycle Plant, maker of Dnepr; registered under the factory acronym
+"ИЖ": IZh                # 668 — Izhevsk (Planeta/Jupiter motorcycles, 2126 cars; Russian spelling)
+"ІЖ": IZh                # Ukrainian spelling of the above
+"БОГДАН": Bogdan         # 622 — Ukrainian bus maker (A091/A092 city buses)
+"БАЗ": BAZ               # 376 — Boryspil bus plant (Bogdan group chassis)
+"МАЗ": MAZ               # 847 — Minsk Automobile Plant (buses reach the bus kind; freight is skipped)
+"КАМАЗ": KamAZ           # 1,355 — Kama trucks (mostly freight-skipped; buses exist)
+"КРАЗ": KrAZ             # 415 — Kremenchuk trucks
+"ЗИЛ": ZIL               # 1,370 — Moscow plant (freight-skipped; the rare limousines are cars)
+"ЛУАЗ": LuAZ             # LuAZ 969 amphibious 4x4s — iconic UA marque, low volume but CIS-only

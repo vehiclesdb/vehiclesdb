@@ -1,27 +1,211 @@
 {
-  "version": "2026.06.0",
-  "homepage": "https://vehiclesdb.com",
+  "version": "2026.07.0",
+  "edition": "open",
+  "built_at": "2026-07-05T13:50:25Z",
+  "schema_version": 3,
+  "dist_schema_version": 2,
   "license": "CC-BY-4.0",
-  "kinds": [
-    "car"
-  ],
-  "regions": [
-    "EU"
+  "homepage": "https://vehiclesdb.com",
+  "kinds": {
+    "car": {
+      "makes": 316,
+      "models": 8901
+    },
+    "motorcycle": {
+      "makes": 262,
+      "models": 5934
+    },
+    "moped": {
+      "makes": 288,
+      "models": 1330
+    },
+    "van": {
+      "makes": 147,
+      "models": 1617
+    },
+    "truck": {
+      "makes": 97,
+      "models": 1082
+    },
+    "bus": {
+      "makes": 97,
+      "models": 418
+    }
+  },
+  "countries": [
+    "ar",
+    "ca",
+    "de",
+    "es",
+    "fi",
+    "gb",
+    "ie",
+    "lu",
+    "my",
+    "nl",
+    "nz",
+    "th",
+    "ua",
+    "us"
   ],
   "catalog": {
     "car": {
       "makes": "catalog/car/makes.json",
       "models": "catalog/car/models.json"
+    },
+    "motorcycle": {
+      "makes": "catalog/motorcycle/makes.json",
+      "models": "catalog/motorcycle/models.json"
+    },
+    "moped": {
+      "makes": "catalog/moped/makes.json",
+      "models": "catalog/moped/models.json"
+    },
+    "van": {
+      "makes": "catalog/van/makes.json",
+      "models": "catalog/van/models.json"
+    },
+    "truck": {
+      "makes": "catalog/truck/makes.json",
+      "models": "catalog/truck/models.json"
+    },
+    "bus": {
+      "makes": "catalog/bus/makes.json",
+      "models": "catalog/bus/models.json"
     }
   },
   "dist": {
     "vehicles": "dist/vehicles.json",
-    "vehicles_csv": "dist/vehicles.csv"
+    "vehicles_csv": "dist/vehicles.csv",
+    "vehicles_min": "dist/vehicles.min.json",
+    "catalog_sqlite": "dist/catalog.sqlite"
   },
-  "counts": {
-    "car": {
-      "makes": 47,
-      "models": 456
+  "sources": [
+    {
+      "id": "ar_dnrpa",
+      "country": "ar",
+      "name": "Argentine initial car registrations (DNRPA microdata)",
+      "url": "https://datos.jus.gob.ar/dataset/inscripciones-iniciales-de-autos",
+      "license": "CC-BY-4.0",
+      "license_url": "https://datos.gob.ar/acerca/seccion/marco-legal",
+      "evidence": "registration"
+    },
+    {
+      "id": "ca_nrcan",
+      "country": "ca",
+      "name": "Canadian fuel consumption ratings (Natural Resources Canada)",
+      "url": "https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64",
+      "license": "OGL-Canada-2.0",
+      "license_url": "https://open.canada.ca/en/open-government-licence-canada",
+      "evidence": "approval"
+    },
+    {
+      "id": "de_kba_fz10",
+      "country": "de",
+      "name": "German new car registrations by make and model series (KBA FZ10)",
+      "url": "https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz10/fz10_gentab.html",
+      "license": "DL-DE-BY-2.0",
+      "license_url": "https://www.govdata.de/dl-de/by-2-0",
+      "evidence": "registration"
+    },
+    {
+      "id": "es_dgt",
+      "country": "es",
+      "name": "Spanish vehicle registrations (DGT microdata, MATRABA)",
+      "url": "https://www.dgt.es/menusecundario/dgt-en-cifras/matraba-listados/matriculaciones-automoviles-mensual.html",
+      "license": "Ley-37/2007",
+      "license_url": "https://datos.gob.es/es/aviso-legal",
+      "evidence": "registration"
+    },
+    {
+      "id": "fi_traficom",
+      "country": "fi",
+      "name": "Finnish vehicle register open data (Traficom)",
+      "url": "https://tieto.traficom.fi/en/datatraficom/open-data",
+      "license": "CC-BY-4.0",
+      "license_url": "https://tieto.traficom.fi/en/datatraficom/open-data",
+      "evidence": "registration"
+    },
+    {
+      "id": "ie_cso",
+      "country": "ie",
+      "name": "Irish new private car licensing statistics (CSO table TEM20)",
+      "url": "https://data.cso.ie/table/TEM20",
+      "license": "CC-BY-4.0",
+      "license_url": "https://www.cso.ie/en/aboutus/whoweare/copyrightpolicy/",
+      "evidence": "registration"
+    },
+    {
+      "id": "lu_snca",
+      "country": "lu",
+      "name": "Luxembourg vehicle register operations (SNCA)",
+      "url": "https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/",
+      "license": "CC0-1.0",
+      "license_url": "https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/",
+      "evidence": "registration"
+    },
+    {
+      "id": "my_jpj",
+      "country": "my",
+      "name": "Malaysian car registration transactions (JPJ via data.gov.my)",
+      "url": "https://data.gov.my/data-catalogue/registration_transactions_car",
+      "license": "CC-BY-4.0",
+      "license_url": "https://data.gov.my/data-catalogue/registration_transactions_car",
+      "evidence": "registration"
+    },
+    {
+      "id": "nl_rdw",
+      "country": "nl",
+      "name": "Dutch vehicle register (RDW Open Data)",
+      "url": "https://opendata.rdw.nl/Voertuigen/Open-Data-RDW-Gekentekende_voertuigen/m9d7-ebf2",
+      "license": "CC0-1.0",
+      "license_url": "https://data.overheid.nl/dataset/11441-open-data-rdw--gekentekende-voertuigen",
+      "evidence": "registration"
+    },
+    {
+      "id": "nz_nzta",
+      "country": "nz",
+      "name": "New Zealand Motor Vehicle Register (Waka Kotahi NZTA open data)",
+      "url": "https://opendata-nzta.opendata.arcgis.com/datasets/NZTA::motor-vehicle-register/about",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/legalcode.en",
+      "evidence": "registration"
+    },
+    {
+      "id": "th_dlt",
+      "country": "th",
+      "name": "Thai new vehicle registrations by brand and model (DLT)",
+      "url": "https://gdcatalog.dlt.go.th/dataset/59a045dc-3ec4-4908-b035-ba789101b7f5",
+      "license": "TH-OpenDataCommon",
+      "license_url": "https://gdcatalog.dlt.go.th/dataset/59a045dc-3ec4-4908-b035-ba789101b7f5",
+      "evidence": "registration"
+    },
+    {
+      "id": "ua_mvs",
+      "country": "ua",
+      "name": "Ukrainian vehicle registration operations (MVS/HSC open data)",
+      "url": "https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0",
+      "license": "CC-BY-4.0",
+      "license_url": "https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0",
+      "evidence": "registration"
+    },
+    {
+      "id": "uk_dft",
+      "country": "gb",
+      "name": "UK vehicle licensing statistics (DfT/DVLA table VEH0120)",
+      "url": "https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files",
+      "license": "OGL-UK-3.0",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "evidence": "registration"
+    },
+    {
+      "id": "us_fueleconomy",
+      "country": "us",
+      "name": "US EPA/DOE fuel economy vehicle catalog (fueleconomy.gov)",
+      "url": "https://www.fueleconomy.gov/feg/download.shtml",
+      "license": "US-PD",
+      "license_url": "https://www.energy.gov/web-policies",
+      "evidence": "approval"
     }
-  }
+  ]
 }

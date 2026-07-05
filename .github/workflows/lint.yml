@@ -1,0 +1,21 @@
+name: Lint data
+
+# Fast PR feedback for data contributions (override lines, spot-panel rows).
+# Stdlib-only, no secrets, no pipeline checkout — the authoritative validation
+# still happens inside every scheduled build (monthly-build.yml).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+      - name: Lint curated data files
+        run: ruby scripts/lint_overrides.rb

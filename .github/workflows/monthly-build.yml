@@ -1,0 +1,152 @@
+name: Build & publish data
+
+# The data build. Lives in THIS repo (not the pipeline repo) on purpose:
+# releases publish here, so the repo's own GITHUB_TOKEN can upload assets and
+# open failure issues — the same layout OpenASN runs in production.
+#
+# While vehiclesdb/pipeline is PRIVATE, checking it out needs one secret:
+#   PIPELINE_REPO_TOKEN — a fine-grained PAT that can READ vehiclesdb/pipeline
+#   (Repository access = pipeline only, Contents: Read). Add it under
+#   Settings → Secrets and variables → Actions. If the pipeline repo ever goes
+#   public, delete the secret; the fallback to github.token takes over.
+#
+# Cadence (PRD-3 D12):
+#   * weekly VALIDATE-ONLY run (Mondays 04:23 UTC) — catches upstream drift
+#     (license pins, URL rotations, format changes) within days, publishes
+#     nothing;
+#   * monthly PUBLISH run (12th, 04:23 UTC) — after the month's uploads land
+#     upstream (KOTSA ~2nd, KBA ~5th, JPJ ~10th).
+#   Cron minutes/hours are deliberately off-round: GitHub delays on-the-hour
+#   crons under load, and upstreams appreciate the jitter.
+#
+# On gate failure a `pipeline-failure` issue is opened/updated so a broken
+# build is impossible to miss (license drift, delta trips, geo-blocked
+# fetches, upstream URL scheme changes — the UK rotates asset URLs per
+# release, Thailand 403s datacenter IPs; both are handled but watched).
+
+on:
+  schedule:
+    - cron: "23 4 * * 1"   # weekly validate-only
+    - cron: "23 4 12 * *"  # monthly publish
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish this build (sync + release)"
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - "overrides/**"
+      - "spotchecks.yml"
+      - "data/licenses/**"
+      - ".github/workflows/monthly-build.yml"
+
+concurrency:
+  group: data-build
+  cancel-in-progress: false # never kill a publish mid-release
+
+permissions:
+  contents: write # push the release commit + tag
+  issues: write   # open pipeline-failure issues
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90 # FI (190MB) + UA (36MB) + full parses fit comfortably
+    steps:
+      - name: Checkout data repo (this repo)
+        uses: actions/checkout@v4
+        with:
+          path: data-repo
+
+      - name: Checkout pipeline
+        uses: actions/checkout@v4
+        with:
+          repository: vehiclesdb/pipeline
+          path: pipeline-repo
+          token: ${{ secrets.PIPELINE_REPO_TOKEN || github.token }}
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+
+      - name: Restore source cache
+        uses: actions/cache@v4
+        with:
+          path: pipeline-repo/cache
+          key: source-cache-${{ github.run_id }}
+          restore-keys: source-cache-
+
+      - name: Run pipeline tests
+        working-directory: pipeline-repo
+        run: rake test
+
+      - name: Build (validate always; sync only when publishing)
+        working-directory: pipeline-repo
+        env:
+          VDB_DATA_REPO: ${{ github.workspace }}/data-repo
+          # The monthly cron (day 12) and dispatch-with-publish sync + release;
+          # weekly cron and PRs validate only.
+          PUBLISH: ${{ (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish) }}
+        run: |
+          if [ "$PUBLISH" = "true" ]; then
+            ruby pipeline/run.rb --publish
+          else
+            ruby pipeline/run.rb
+          fi
+
+      - name: Upload build artifacts for inspection (non-publish runs)
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vehiclesdb-build
+          path: |
+            pipeline-repo/build/out
+            pipeline-repo/build/report.json
+            pipeline-repo/build/candidates
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Commit, tag and release (publish runs)
+        if: env.PUBLISH == 'true' || (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish)
+        working-directory: data-repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(cat VERSION)
+          git config user.name "vehiclesdb-pipeline"
+          git config user.email "pipeline@vehiclesdb.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No data changes this cycle — skipping release."
+            exit 0
+          fi
+          git commit -m "Release ${VERSION}"
+          git tag "v${VERSION}" || true
+          git push && git push --tags
+          gh release create "v${VERSION}" --title "VehiclesDB ${VERSION}" \
+            --notes "Automated monthly data release. See CHANGELOG.md and manifest.json for source provenance." \
+            dist/vehicles.json dist/vehicles.csv dist/vehicles.min.json dist/catalog.sqlite manifest.json ATTRIBUTION.md || true
+
+      # A failed scheduled build must page a human. One issue, updated — never
+      # a new issue per failure night (the OpenASN pattern, verbatim).
+      - name: Open/update pipeline-failure issue
+        if: failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Scheduled data build failed"
+          body="The scheduled build failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          Most likely causes (see the job log for the gate that tripped):
+          - Pipeline checkout: PIPELINE_REPO_TOKEN missing/expired (needed while vehiclesdb/pipeline is private)
+          - License gate: an upstream changed its terms text (data/licenses/ pins — review + rake licenses:pin)
+          - Delta gate: a kind's model count moved >±20% (source outage or format change)
+          - Geo-gated fetch: TH/LV endpoints reject datacenter IPs (keep-last-good covers cached CI, but a cold cache fails)
+          - An upstream URL scheme changed (UK rotates asset URLs per release; NZ renames its MVR_* service monthly)"
+          existing=$(gh issue list --label pipeline-failure --state open --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          else
+            gh issue create --title "$title" --body "$body" --label pipeline-failure
+          fi
