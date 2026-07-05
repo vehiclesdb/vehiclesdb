@@ -56,6 +56,7 @@ shapes below) and fill in over time.
 | `id` | string | stable, e.g. `"bmw"` |
 | `slug` | string | lowercase ASCII (NFKD-folded — `škoda` → `skoda`) |
 | `name` | string | `"BMW"` |
+| `aliases` | string[]? | published alternate names — nicknames, initialisms, native scripts (`["Chevy"]`, `["比亚迪"]`); absent when none curated |
 | `country` | string? | ISO-3166 alpha-2 of origin *(optional, future)* |
 | `aliases` | string[]? | alternate spellings *(optional, future)* |
 
@@ -71,7 +72,9 @@ shapes below) and fill in over time.
 | `name` | string | `"2 Series"` |
 | `kind` | string | `car` · `motorcycle` · `moped` · `van` · `truck` · `bus` |
 | `body_types` | string[]? | see *Body types* below — **absent = not catalogued** |
+| `aliases` | string[]? | documented alternate names — native scripts, market names, nicknames (`["Rabbit"]` for the Golf); absent when none curated |
 | `availability` | object[] | where the model is evidenced — see below |
+| `regions` | string[] | continents rolled up from `availability` — `eu`,`na`,`sa`,`as`,`oc`,`af` (the cheap continent filter) |
 | `popularity` | object? | measured popularity — see below; absent = no counts yet |
 | `sources` | string[] | ids of the sources that evidence this record (see SOURCES.md) |
 | `xrefs` | object? | crosswalks; today `{"tan": [...]}` EU type-approval numbers where measured |
@@ -110,6 +113,20 @@ registers — absent, per the absence rule, until one exists).
 
 Availability is **evidence of presence, not marketing history**: New
 Zealand's grey-imported JDM models are correctly listed as available in `nz`.
+
+### Regions
+
+`regions` is the continent rollup of `availability`, computed by the pipeline
+so downstream apps don't keep rebuilding their own country→continent table:
+
+| code | continent |
+|---|---|
+| `eu` | Europe | `na` North America | `sa` South America |
+| `as` | Asia | `oc` Oceania | `af` Africa |
+
+"European-only" filtering is then `regions == ["eu"]`; "available in Asia" is
+`regions.includes("as")`. Same coverage caveat as popularity: a continent
+appears only where we hold a source for it (see `manifest.json.countries`).
 
 ### Popularity
 

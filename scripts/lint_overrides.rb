@@ -81,6 +81,8 @@ if (body = load_yaml("overrides/body_types/body_types.yml"))
   end
 end
 
+load_yaml("overrides/makes/search_aliases.yml")
+load_yaml("overrides/models/aliases.yml")
 load_yaml("overrides/models/renames.yml")
 load_yaml("overrides/styling.yml")
 Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].each { |f| load_yaml(f.sub("#{ROOT}/", "")) }

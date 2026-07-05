@@ -159,6 +159,20 @@ jobs:
             --notes "Automated data release: ${MODELS} models. Sources, licenses and provenance: manifest.json + ATTRIBUTION.md; changes: CHANGELOG.md." \
             dist/vehicles.json dist/vehicles.csv dist/vehicles.min.json dist/catalog.sqlite ${PARQUET} manifest.json ATTRIBUTION.md
 
+      # Mirror the release to the HuggingFace dataset (parquet-native card).
+      # NON-FATAL by design: the HF_TOKEN is an OAuth token that can expire —
+      # a dead mirror must never block a data release. If this step starts
+      # failing, mint a fine-grained WRITE token at hf.co/settings/tokens
+      # (scope: vehiclesdb datasets) and `gh secret set HF_TOKEN`.
+      - name: Mirror release to HuggingFace
+        if: success() && ((github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish))
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then echo "no HF_TOKEN — skipping mirror"; exit 0; fi
+          pip install -q "huggingface_hub[cli]" 2>/dev/null || pipx install huggingface_hub 2>/dev/null || true
+          VDB_DATA_REPO="$PWD/data-repo" bash pipeline-repo/huggingface/push.sh || echo "::warning::HF mirror failed (release itself is fine) — check/replace HF_TOKEN"
+
       # jsDelivr caches @latest aggressively; purging right after the release
       # makes the new data reach CDN consumers (incl. the gem's refresh) in
       # minutes instead of up to a week. Purge failures are non-fatal — the
