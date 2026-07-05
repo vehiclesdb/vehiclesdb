@@ -4,20 +4,26 @@ Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
 ## [2026.07.0] - 2026-07-05
 
-The multi-source, multi-kind, multi-continent release: **456 → 19,282 models**.
+The multi-source, multi-kind, multi-continent release: **456 → 18,556 models**.
 
 - **14 official sources, 14 countries, 4 continents**: NL RDW · UK DfT
   VEH0120 · ES DGT microdata · FI Traficom · LU SNCA · IE CSO · DE KBA FZ 10 ·
   US fueleconomy.gov · CA NRCan · NZ Waka Kotahi MVR · MY JPJ · TH DLT ·
   UA MVS/HSC · AR DNRPA. Every license pinned by SHA-256 (`data/licenses/`);
   per-source notes and measured gotchas in the new [SOURCES.md](SOURCES.md).
-- **Six kinds shipped**: car 8,901 · motorcycle 5,934 · van 1,617 · moped
-  1,330 · truck 1,082 · bus 418 (mopeds first-class, separate from
+- **Six kinds shipped**: car 8,785 · motorcycle 5,916 · van 1,119 · moped
+  1,304 · truck 1,043 · bus 389 (mopeds first-class, separate from
   motorcycles; trikes fold into motorcycles as `body_types: ["trike"]`).
 - **Reconciliation, not aggregation**: a model publishes when ≥2 independent
   sources corroborate it or one source shows a fleet count no typo could
   produce. ~76,000 raw car name-variants reconciled; the long tail waits in
   a private candidate queue instead of polluting the dataset.
+- **Cross-kind dominance prune**: registries miscategorize (tax-scheme "grey
+  license plate" registrations put passenger cars in the van class; data-entry
+  slips put an Audi A3 in two countries' motorcycle tables) — when ≥97% of a
+  model's observed count sits in one kind, minority-kind echoes are dropped
+  (662 removed this release, incl. every tax-scheme Audi 'van'). Legit multi-kind nameplates (Toyota Hilux,
+  Aixam's microcars) survive on real shares.
 - **New open fields** (catalog `schema_version` 2 → 3, additive):
   `availability` (per-country evidence: registration/approval/sales + source
   id), `popularity` (per-country rank + decile from real counts, plus

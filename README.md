@@ -5,13 +5,13 @@ types, popularity, and where in the world each model is actually found —
 reconciled from **official registers of 14 countries on 4 continents**,
 versioned, and free forever under CC-BY 4.0.
 
-> **Dataset `2026.07.0`** — 19,282 models · 933 makes · 6 kinds · 14 countries
+> **Dataset `2026.07.0`** — 18,556 models · 928 makes · 6 kinds · 14 countries
 >
 > | kind | models | makes | | kind | models | makes |
 > |---|---:|---:|---|---|---:|---:|
-> | 🚗 car | 8,901 | 316 | | 🚐 van | 1,617 | 147 |
-> | 🏍️ motorcycle | 5,934 | 262 | | 🚚 truck | 1,082 | 97 |
-> | 🛵 moped | 1,330 | 288 | | 🚌 bus | 418 | 97 |
+> | 🚗 car | 8,785 | 312 | | 🚐 van | 1,119 | 137 |
+> | 🏍️ motorcycle | 5,916 | 260 | | 🚚 truck | 1,043 | 96 |
+> | 🛵 moped | 1,304 | 288 | | 🚌 bus | 389 | 93 |
 
 Every record is corroborated: a model ships when **two independent official
 sources agree** (or one shows a fleet count no typo could produce), so you get
