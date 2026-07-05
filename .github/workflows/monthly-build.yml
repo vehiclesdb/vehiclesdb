@@ -85,6 +85,18 @@ jobs:
           key: source-cache-${{ github.run_id }}
           restore-keys: source-cache-
 
+      # Some portals reject datacenter IPs (measured: Thailand DLT resets
+      # GitHub runners). The pipeline's keep-last-good fetch layer handles
+      # that FINE — as long as a last-good copy exists. This seed guarantees
+      # one on cold caches; warm caches carry it forward via actions/cache,
+      # and --skip-existing keeps newer cached copies over the seed.
+      - name: Seed geo-gated source files (cold caches only)
+        env:
+          GH_TOKEN: ${{ secrets.PIPELINE_REPO_TOKEN || github.token }}
+        run: |
+          gh release download ci-cache-seed -R vehiclesdb/vehiclesdb-pipeline \
+            --dir pipeline-repo/cache --skip-existing || echo "no seed release — continuing"
+
       - name: Run pipeline tests
         working-directory: pipeline-repo
         env:
