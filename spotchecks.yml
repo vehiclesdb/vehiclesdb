@@ -135,3 +135,263 @@ checks:
     kind: motorcycle
     exists: false
     reason: "ES+GB both hold miscategorized 'Audi A3' motorcycles — multi-source agreement must not corroborate cross-kind garbage"
+
+  # === ES-brand cleanup tripwires (2026-07-12 multi-agent audit) ==============
+  # --- SEAT/Cupra split --------------------------------------------------------
+  - id: seat/formentor
+    exists: false
+    reason: "Formentor is Cupra-exclusive (first Cupra-only model, 2020); SEAT-parented rows were brand-transition registry noise (renames null)"
+  - id: seat/cupra
+    exists: false
+    reason: "Brand-as-model row ('SEAT CUPRA') must stay dead — Cupra is a make (see make: cupra row), never a SEAT nameplate"
+  - id: seat/cupra-leon
+    exists: false
+    reason: "Post-2018 Cupra models must not resurface under SEAT (their TANs e9*2007/46*3167* live on cupra/leon)"
+  - id: seat/cupra-ateca
+    exists: false
+    reason: "Post-2018 Cupra Ateca must not resurface under SEAT (TAN family e9*2007/46*6394* lives on cupra/ateca)"
+  - id: seat/ibiza-cupra
+    exists: false
+    reason: "Pre-2018 Cupra is a SEAT trim — folds into Ibiza (renames.yml)"
+  - id: seat/leon-cupra
+    exists: false
+    reason: "Pre-2018 Cupra is a SEAT trim — folds into Leon (renames.yml)"
+  - id: cupra/formentor
+    availability_includes: [es, fi, nl]
+    reason: "Cupra-side canonical keeps the countries the dropped SEAT-parented rows carried"
+  - id: seat/468
+    exists: false
+    reason: "KBA FZ10 numeric type-codes are not nameplates (Tesla 512 precedent); seat/468 held DE rank 33 and polluted popularity"
+  - id: seat/127
+    availability_includes: [es]
+    reason: "'127 Sport' -> '127' fold intentionally creates the classic supermini nameplate with its ES evidence"
+  - id: cupra/tavascan
+    availability_includes: [gb]
+    reason: "'Tavascan V1 EV' (UK trim string) folds in — gb evidence must land on the nameplate"
+  - id: cupra/terramar
+    availability_includes: [gb]
+    reason: "'Terramar Amrica Cp Ed' (UK edition string) folds in — gb evidence must land on the nameplate"
+  # --- Derbi (incl. kind-blind rename tripwires) -------------------------------
+  - id: derbi/senda-50
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [fi, nl]
+    reason: "Senda 50 canonical: 13 trim/edition/registry-code records fold here (TAN bases e9*2002/24*0001, e9*2002/24*0053, e1*168/2013*00126; RDW type-codes SDR/AB)"
+  - id: derbi/senda-sm
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "'Senda Sm' must stay folded into Senda 50 — a silent rename-key miss would resurrect it"
+  - id: derbi/senda-125
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [fi, nl]
+    reason: "Senda 125 canonical (TAN family e9*92/61*0130: Senda + SM125 + SM125 4T)"
+  - id: derbi/senda-125
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "kind-blind rename tripwire: 'Senda' -> 'Senda 125' must never materialize in moped kind (moped Sendas are 50s)"
+  - id: derbi/senda-50
+    kind: motorcycle
+    skip_if_kind_absent: true
+    exists: false
+    reason: "kind-blind rename tripwire: moped Senda trim folds must not leak into motorcycle kind"
+  - id: derbi/gpr-50
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [fi, nl]
+    reason: "GPR Nude 50 + GPR 50 Racing are one approved type (identical TAN e9*2002/24*0011*06) -> GPR 50"
+  - id: derbi/dfw50
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "DFW 50 is a quad (ATV) — dropped pending a quad kind (POLARIS precedent); delete this row if quads become a kind"
+  # --- classic trials ----------------------------------------------------------
+  - id: bultaco/brinco
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [fi, nl]
+    reason: "Brinco C (equipment trim) folds into the created Brinco nameplate; the 2 kW e-revival lives in kind=moped"
+  - id: bultaco/brinco-c
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "trim suffix must stay folded (renames.yml Bultaco)"
+  - id: montesa/cota-4rt
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [gb, nl]
+    reason: "COTA4RT -> Cota 4RT respace; displacement granularity keeps Cota 4RT / 4RT 260 / 4RT 301RR separate"
+  - id: montesa/cota4rt
+    kind: motorcycle
+    skip_if_kind_absent: true
+    exists: false
+    reason: "unspaced digit-frozen registry token must not resurface (renames.yml Montesa)"
+  # --- modern trials/enduro ----------------------------------------------------
+  - id: gas-gas/ec
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [fi, gb, nl]
+    reason: "EC family holds: Enducross + RDW type-code CG rows fold into EC (shared TAN e9*92/61*0062)"
+  - id: gas-gas/es-700
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [fi, gb, nl, nz]
+    reason: "ES 700 unifies bare gb/nz 'ES' rows with brand-prefixed fi/nl 'GASGAS ES 700' rows"
+  - id: gas-gas/txt
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [gb, nl]
+    reason: "TXT stays a nameplate (top UK Gas Gas string) and gains nl from the TG type-code fold"
+  - id: gas-gas/trial
+    kind: motorcycle
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Generic category strings (TRIAL/ENDURO) must not survive as Gas Gas nameplates"
+  - id: sherco/300-se
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [es, fi, nl]
+    reason: "Racing/Factory trim folds + '300 2ST' merge; '300 SE-F' is the 2T Factory (293cc), not the SEF 4T"
+  - id: sherco/sherco
+    kind: motorcycle
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Make-as-model placeholder must not survive"
+  - id: sherco/n-a
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "RDW 'N/A' placeholder resolved to the 50 family; must not reappear"
+  - id: sherco/50
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [es, nl]
+    reason: "Sherco 50 moped family: placeholder rename preserves ES top-3 moped evidence (~800 NL rows, all 50cc)"
+  - id: trs/one-300
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [es, nl]
+    reason: "Type-code 'TR1 300' resolves to One 300 (RDW type 'TR 1 A' = TRS trials range)"
+  # --- Rieju / Motorhispania ---------------------------------------------------
+  - id: rieju/nkd-125
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [es]
+    reason: "ES two-wheeler spine + respace rule: DGT 'NKD125' publishes as the official 'NKD 125'"
+  - id: rieju/n-a
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Registry 'N.a.' placeholder must never publish as a Rieju nameplate (renames.yml null)"
+  - make: motorhispania
+    kind: moped
+    skip_if_kind_absent: true
+    reason: "Defunct Seville marque stays cataloged (Furia Max); 'MH'/'Motor Hispania' search aliases resolve here, not to a new make"
+  # --- ES e-mobility -----------------------------------------------------------
+  - make: scutum
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Scutum Logistic is Silence's legal entity — raw SCUTUM merges into make silence (makes/aliases.yml)"
+  - id: silence/s04
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [es, nl]
+    reason: "S04 Nanocar keeps both countries after absorbing SCUTUM-badged rows"
+  - id: silence/s01
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [es, nl]
+    reason: "S01LS (L1e) folds to S01 within kind=moped; the L3e S01 lives in kind=motorcycle"
+  - id: silence/s02
+    kind: moped
+    skip_if_kind_absent: true
+    availability_includes: [es, fi, nl]
+    reason: "S02LS merge must carry the Finnish evidence into the S02 nameplate"
+  - make: e-broh
+    kind: motorcycle
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Raw E-BROH resolves to make ebroh via aliases.yml — the hyphenated make must not survive"
+  - make: e-broh
+    kind: moped
+    skip_if_kind_absent: true
+    exists: false
+    reason: "same as the motorcycle row — both kinds carry one E-Broh model each today"
+  - id: ebroh/bravo-gle
+    kind: motorcycle
+    skip_if_kind_absent: true
+    availability_includes: [es, nl]
+    reason: "Bravo GLE keeps its evidence across the E-BROH -> Ebroh rename"
+  - id: mitt/gt-max-300
+    kind: motorcycle
+    skip_if_kind_absent: true
+    reason: "Registry '300GT MAX' renamed to the official GT-MAX 300 (renames.yml + MITT casing pin)"
+  # --- ES cars misc ------------------------------------------------------------
+  - make: moncayo
+    kind: car
+    exists: false
+    reason: "Caravan/camper builder (RDW inrichting=kampeerwagen) must not appear as a car make (drop.yml)"
+  - make: pla
+    kind: car
+    exists: false
+    reason: "P.L.A. motorhome coachbuilder (all RDW rows kampeerwagen) must not appear as a car make (drop.yml)"
+  - make: ilusion
+    kind: car
+    exists: false
+    reason: "Ilusion Caravaning motorhomes must not appear as a car make (drop.yml)"
+  - id: ebro/s400
+    availability_includes: [es]
+    reason: "Ebro revival (2024, ex-Nissan Barcelona) lives in kind=car — never drop EBRO from cars for its historic truck era; S400 HEV powertrain suffix folds into S400"
+  - id: santana/ps10
+    kind: van
+    skip_if_kind_absent: true
+    availability_includes: [gb, nl]
+    reason: "Santana PS-10 (Aníbal) utility 4x4 stays kind=van (RDW Bedrijfsauto rows)"
+  # --- ES bus industry (bodybuilder-as-make invariants) ------------------------
+  - make: irizar
+    kind: bus
+    skip_if_kind_absent: true
+    reason: "Spanish bodybuilder-as-make invariant: Irizar exists as a bus make (i6/i8), never as a model under chassis makes"
+  - id: scania/irizar
+    kind: bus
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Bodybuilder is a MAKE in bus kind (Plaxton/Caetano precedent): SCANIA+IRIZAR chassis/body strings must not form a Scania nameplate"
+  - id: irizar/16
+    kind: bus
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Registry digit-typo 'IRIZAR 16' merges into irizar/i6 (renames); Irizar has no model 16"
+  - id: irizar/i6
+    kind: bus
+    skip_if_kind_absent: true
+    availability_includes: [es, nl]
+    reason: "Irizar flagship survives the 16->i6 merge and the scania/irizar drop with ES+NL evidence intact (ES rank 2, measured 2026-07)"
+  - id: unvi/microbus
+    kind: bus
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Approval type-code 'MICROBUS_2' fallback string is not a nameplate (renames drop); UNVI's range is Compa/Urbis/Vega"
+  - id: iveco/sunrise
+    kind: bus
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Coachbuilder-bodied minibuses live under the coachbuilder make (ferqui/sunrise)"
+  - id: ferqui/sunrise
+    kind: bus
+    skip_if_kind_absent: true
+    availability_includes: [es]
+    reason: "Ferqui Sunrise canonical survives the chassis-make drop"
+  - id: iveco/wing
+    kind: bus
+    skip_if_kind_absent: true
+    exists: false
+    reason: "Indcar Wing body on Iveco Daily chassis — lives under indcar/wing (renames drop; documented ua evidence loss)"
+  - id: indcar/wing
+    kind: bus
+    skip_if_kind_absent: true
+    availability_includes: [es]
+    reason: "Indcar Wing canonical survives the chassis-make drop"
