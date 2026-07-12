@@ -74,3 +74,154 @@ Chrysler:
 
 Tesla:
   "512": null   # data error — Tesla never made a "512" (likely a miscoded Ferrari/other); drop
+
+# =============================================================================
+# ES-brand audit (2026-07-12, multi-agent find→verify pass). NOTE these blocks
+# are make-scoped but kind-blind — kind hazards are tripwired in spotchecks.yml.
+# =============================================================================
+
+SEAT:
+  # Cupra split (brand standalone since 2018; pre-2018 Cupra = SEAT trim):
+  Cupra: null              # brand-as-model row ("SEAT CUPRA", nl/nz) — Cupra is a make, never a SEAT nameplate; unresolvable to one model (https://en.wikipedia.org/wiki/Cupra_(marque))
+  Cupra Leon: null         # post-2018 Cupra Leon misparented under SEAT — TANs e9*2007/46*3167*06/10/12/17 identical to cupra/leon's; no cross-make move exists, cupra/leon covers all its countries
+  Cupra Ateca: null        # post-2018 Cupra Ateca under SEAT — TAN e9*2007/46*6394*40 shared with cupra/ateca (same approval family); cupra/ateca covers it
+  Formentor: null          # Formentor is Cupra-exclusive (first Cupra-only model, 2020) — TANs e9*2007/46*4008*03/07 shared with cupra/formentor (https://en.wikipedia.org/wiki/Cupra_Formentor)
+  Leon Cupra: Leon         # pre-2018 Cupra = SEAT performance trim (nameplate-first word order); folds per policy
+  Ibiza Cupra: Ibiza       # pre-2018 Cupra trim of the Ibiza; folds per policy
+  # Body/trim/generation variants of existing nameplates:
+  Leon Sc: Leon            # SC = 3-door "Sports Coupé" body of the Leon III — TANs e9*2007/46*0094*05/25 sit inside seat/leon's own approval family
+  Leon Sportourer: Leon    # ST/Sportstourer estate body — TANs e9*2007/46*0094*37/38, same family; seat.es sells "León Sportstourer"
+  Leon X-Perience: Leon    # AWD crossover trim of the Leon ST — TAN e9*2007/46*0094*12, same family
+  Leon 1: Leon             # registry generation marker (Leon Mk1) — TAN e9*98/14*0026*20 = the 0026 family seat/leon already carries
+  Altea Freetrack: Altea   # crossover trim of the Altea XL — TAN e9*2001/116*0050*33 is a revision of seat/altea's approval
+  Altea 4 Freetrack: Altea # 4WD Freetrack spelling — its TAN e9*2001/116*0050*18 is literally also present on seat/altea
+  127 Sport: "127"         # sport sub-badge folds; rename intentionally CREATES the missing 127 nameplate (Cee D precedent; SEAT 127 1972-82, 1.24M units). NB: no factory SEAT "127 Sport" trim documented — string is likely Fiat 127 Sport badge-bleed (https://en.wikipedia.org/wiki/SEAT_127)
+  Terra: null              # Marbella-based panel van (1987-96) leaking into cars via camper/kombi car-class rows — van-kind nameplate (Evito precedent). CAUTION kind-blind: if the van build ever ingests raw SEAT TERRA rows, this null suppresses them too (van/seat currently holds only Inca)
+  # de_kba_fz10 numeric type-codes, not nameplates (Tesla "512" precedent);
+  # single-source de-only block 468–474, seat/468 even held DE rank 33:
+  "468": null              # KBA type-code
+  "469": null              # KBA type-code
+  "470": null              # KBA type-code
+  "471": null              # KBA type-code
+  "472": null              # KBA type-code
+  "473": null              # KBA type-code
+  "474": null              # KBA type-code
+
+Cupra:
+  Tavascan V1 EV: Tavascan          # V1 = UK entry trim (V1/V2/VZ1/VZ2 lineup) + EV fuel marker in the uk_dft string; adds gb to the nameplate
+  Terramar Amrica Cp Ed: Terramar   # truncated uk_dft string for the "Terramar America's Cup Edition" launch edition; editions fold
+
+Derbi:
+  # moped Senda 50 — one nameplate: every 50cc trim/edition/registry-code row
+  # folds here. TAN families each prove one approved type: e9*2002/24*0001
+  # (R/Sm/X-Trem), e9*2002/24*0053 (R50AF=SM50AF identical), e1*168/2013*00126
+  # (2016+ X-Treme/Racing gen). Rename CREATES the Senda 50 canonical.
+  Senda R: Senda 50               # 50cc enduro trim (TAN base e9*2002/24*0001)
+  Senda Sm: Senda 50              # supermoto trim, same type (e9*2002/24*0001*03)
+  Senda R X-Trem: Senda 50        # trim (TAN e9*2002/24*0001*01)
+  Senda R50AF: Senda 50           # registry variant string; TAN e9*2002/24*0053*00 IDENTICAL to SM50AF
+  Senda SM50AF: Senda 50          # registry variant string; same TAN e9*2002/24*0053*00
+  Senda RACING50SM: Senda 50      # 2016+ gen trim (TAN e1*168/2013*00126*00)
+  Senda X-Treme Limited: Senda 50 # special edition, same type
+  Senda X-TREME50R: Senda 50      # trim, same type
+  Senda X-TREME50SM: Senda 50     # trim, same type
+  Black Devil: Senda 50           # special edition of the Senda 50 — TAN e9*2002/24*0001*01 IDENTICAL to Senda R X-Trem; sold as "Senda SM/R 50 Black Devil"
+  Sm X-Trem: Senda 50             # RDW handelsbenaming with the family name dropped — TAN e9*2002/24*0001*00/*01 (CC0 RDW API, 2026-07-12)
+  Sdr: Senda 50                   # RDW type-code "SDR" for the 1997-2005 Senda 50 gen: TAN base e9*92/61*0027, L1e 45 km/h, Senda R/SM geometry (CC0 RDW API 2026-07-12)
+  Ab: Senda 50                    # RDW junk type-string "AB": every row TAN e11*2002/24*1050*00 = the 2010+ Piaggio-built Senda DRD 50; same TAN also registered as "SENDA DRD X-TREME SM"
+  # motorcycle Senda 125 (displacement granularity keeps 50 vs 125 apart):
+  Senda SM125: Senda 125     # supermoto trim of the 125 (TAN base e9*92/61*0130 shared across the family)
+  Senda SM125 4T: Senda 125  # "4T" = engine descriptor (all Senda 125s are 4T), not a nameplate (TAN e9*92/61*0130*05/*09)
+  Senda: Senda 125           # motorcycle-kind bare Senda: FI rows are the 125 (TAN e9*92/61*0130*01); UK rows land here too (VEH0120 merges mopeds into Motorcycles by design — kind_maps/uk_dft.yml)
+  # GPR sport family (Racing/Nude are the two catalog versions of one type):
+  Gpr NUDE50: GPR 50   # naked variant — TAN e9*2002/24*0011*06 IDENTICAL to GPR50RACING (https://es.wikipedia.org/wiki/Derbi_(motocicletas))
+  GPR50RACING: GPR 50  # faired variant, same type (TAN e9*2002/24*0011*06)
+  GPR50: GPR 50        # official spaced form; UK motorcycle-class rows (UK merges mopeds into Motorcycles, kind_maps/uk_dft.yml)
+  GPR125: GPR 125      # official spaced form (GPR 125 Racing/Nude, 2005-2015) — same respace as GPR50; motorcycle-kind only (https://en.wikipedia.org/wiki/Derbi_GPR125)
+  # Display/casing renames + family folds:
+  MULHACEN125: Mulhacén 125  # official accented name (after the Mulhacén peak), scrambler 2007-2013 (https://www.autoevolution.com/moto/derbi/mulhacen/)
+  MULHACEN659: Mulhacén 659  # official accented name; 659cc Yamaha-engined single (2006-2013)
+  BOULEVARD50: Boulevard 50  # display spacing; Derbi-badged scooter line (TAN e9*2002/24*0329*01, no cross-make twin in catalog)
+  Variant Start: Variant     # Start (1984) is a version of the Variant family (América/Start/Sport/Box) — folds to the nameplate (https://blog.terranea.es/variant-ciclomotor-volador-derbi/)
+  DFW50: null                # DFW 50 is a 50cc QUAD (ATV) — no quad kind exists (POLARIS precedent in makes/drop.yml: "revisit if quads become a kind"); https://www.autoevolution.com/moto/derbi-dfw-50-2005.html
+
+Bultaco:
+  Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
+
+Montesa:
+  COTA315R: Cota 315R           # digit-frozen registry token; official spacing of the 1997-2004 two-stroke Cota (https://www.retrotrials.com/montesa--montesa-honda-motorcycles.html)
+  COTA4RT: Cota 4RT             # official naming (https://montesa.com/en/montesa-range/); 249cc 2005-13 — stays separate from 260/301RR per displacement granularity
+  COTA4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
+  COTA4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
+
+Gas Gas:
+  Enducross: EC          # same nameplate: EC is short for Enducross — shared TAN e9*92/61*0062*09 with gas-gas/ec (https://en.wikipedia.org/wiki/Gas_Gas)
+  Cg: EC                 # CG = GasGas Motos' type code for the EC 2-stroke enduro family — RDW CG rows are 125-299cc on the EC approvals e9*2002/24*0506 and e9*168/2013*30006 (measured 2026-07-12)
+  Cg-EC300: EC 300       # registry compound "type code + commercial name"; 299cc on e9*168/2013*30006 = the EC 300 (targets the respaced canonical directly — rename chaining is not assumed)
+  # EC-number family respace to the official forms (gasgas.com model pages) —
+  # same canonical style as ES 700/SM 700 above:
+  EC250: EC 250          # official spacing (2T enduro)
+  EC250F: EC 250F        # official "EC 250F" (4T)
+  EC300: EC 300          # official spacing; also the Cg-EC300 merge destination
+  EC350F: EC 350F        # official
+  EC450F: EC 450F        # official
+  EC500F: EC 500F        # official (MY2024+)
+  Tg: TXT                # TG = type code of the TXT trials family — RDW TG rows are 248/294cc trials engines; the record's TAN e9*168/2013*30004*04 is the TXT Racing 300 approval
+  Es: ES 700             # Gas Gas has only ever made one ES — the ES 700 dual-sport (2022+, 693cc, e1*168/2013*00298); bare gb/nz "ES" strings are that bike (https://www.gasgas.com/en-us/models/travel/es-700-2024.html)
+  Gasgas ES700: ES 700   # strip the embedded brand (raw "GASGAS ES700", unspaced, missed the make-prefix strip) + official spacing (gasgas.com)
+  Gasgas SM700: SM 700   # same fix for the supermoto sibling (https://www.gasgas.com/en-us/models/supermoto/sm-700-2024.html)
+  Trial: null            # generic category string, not a nameplate — RDW "TRIAL" rows span 49-294cc across eras; unresolvable to TXT/TX/Contact
+  Enduro: null           # generic category string — RDW "ENDURO" rows are the FSE/FSR 400-515 four-strokes (444-503cc, e9*92/61*0081); displacement split unrecoverable
+
+Sherco:
+  # -R (Racing) trim folds; nameplate = displacement + line (sherco.com):
+  125SE-R: 125 SE        # Racing trim of the 125 SE 2T enduro
+  250SE-R: 250 SE        # same
+  300SE-R: 300 SE        # same
+  250SEF-R: 250 SEF      # SEF = the 4T enduro line; Racing trim folds
+  300SEF-R: 300 SEF      # same
+  450SEF-R: 450 SEF      # same
+  500SEF-R: 500 SEF      # same
+  300SE-F: 300 SE        # NOT the SEF 4T: TAN e13*168/2013*00113*07 + RDW 293cc prove the 2-stroke SE — trailing F is the FACTORY trim
+  250 2ST: 250 SE        # "2ST" = registry shorthand for 2-stroke; Sherco's only 250 2T enduro is the SE (RDW 249cc, e13*2002/24*0620)
+  300 2ST: 300 SE        # same — RDW 293cc = SE 300 2T
+  125 4T EUR5: 125 4T    # strip the Euro-5 emissions token; "125 4T" is Sherco's family name for the 124cc four-strokes (sherco.com)
+  Sherco: null           # make-as-model placeholder (RDW "SHERCO SHERCO" at 294cc trials AND 249cc enduro — unresolvable mixture)
+  "N.a": "50"            # RDW registers Sherco's 50cc mopeds as handelsbenaming "N/A" (~806 rows, all 50cc, e13*168/2013*00339); rename to the honest displacement family instead of dropping ES's top-3 moped
+  "50SM": 50 SM          # supermoto 50 line per Sherco's "<cc> <line>" schema (sherco.com "50 SM-R FACTORY"); respace like 125SE-R → 125 SE; the "50" umbrella stays for the unresolvable N/A rows
+
+TRS:
+  Trrs One: One          # strip the embedded badge — bikes are badged TRRS but the make resolves to TRS, so the prefix strip missed (trsmotorcycles.com); CREATES the One canonical
+  TR1 300: One 300       # TR1 = TRS's homologation type code (RDW type "TR 1 A", e9*168/2013*30008, 294cc), not a nameplate; road range is the One family
+
+Rieju:
+  "N.a.": null                   # registry "not available" placeholder (es_dgt + nl_rdw rows), not a nameplate; rieju keeps es via e-Tango (es_dgt)
+  AVENTURA500: Aventura 500      # official spacing (471cc A2 twin trail; https://www.diariomotor.com/motos/rieju-aventura-500/)
+  NKD125: NKD 125                # official "NKD 125" naked, NKD stays caps (https://rieju.com/us/naked/130/524/nkd-125)
+  RALLY307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
+  XPLORA557: Xplora 557          # official "Xplora 557" 554cc A2 twin (https://www.motorbikemag.es/rieju-xplora-557-xplora-707-2025-prueba-opiniones/)
+  XPLORA707: Xplora 707          # sibling 693cc twin (https://rieju.com/en/news/new-rieju-xplora-707/257/294); consecutive TANs e9*168/2013*16461/16462 prove two approved models, not dupes
+
+Silence:
+  S02LS: S02             # "S02 LS" = the L1e speed variant; kind=moped already encodes the class — RDW writes both strings for the same scooter (681 S02LS vs 104 S02 bromfiets rows; Silence's manual says "S02 LS")
+  S01LS: S01             # L1e (45 km/h, 4 kW) version of the S01 — same nameplate, kind captures the class; intentionally CREATES the moped-kind S01 beside the L3e motorcycle record
+
+MITT:
+  300GT Max: GT-MAX 300  # registry writes "300GT MAX" (RDW measured 2026-07-12); official model name is GT-MAX 300 (https://mittmotors.com/vehiculo/mitt-gt-max-125-330)
+
+EBRO:
+  S400 Hev: S400         # HEV is the powertrain badge, not the nameplate — official lineup is s400/s700/s800 (sold as "s400 HEV"; sibling records are already powertrain-bare); folds like Leaf 40KWH (https://www.ebroauto.com/)
+  S400 HEV: S400         # same fold — key form that applies once HEV joins styling.yml acronyms (the caser runs before renames; cf. the "Town&country LX" key, LX being an acronym)
+
+Irizar:
+  "16": i6               # digit-1 typo of I6 — RDW merk IRIZAR carries "16 14.07.37 EFFICIENT" beside "I6 14.07.37 EFFICIENT"; Irizar's range has no "16" (https://www.irizar.com/en/products-technologies/all-models); target is the post-styling lowercase i6
+
+Scania:
+  Irizar: null           # chassis+bodybuilder registration strings ("SCANIA IRIZAR I4/NEW CENTURY", RDW), not a Scania nameplate — in bus kind the bodybuilder IS the make (Plaxton/Caetano precedent; irizar/i4-i6-i8 exist). NOTE: drops ua evidence (Century/PB-era bodies not yet catalogued under irizar)
+
+UNVI:
+  Microbus: null         # approval type-designation fallback, not a nameplate — EU approval e9*2007/46*6019*02 type field reads "MICROBUS_2"; UNVI's real range is Compa/Urbis/Vega/Sil/Vendal (https://unvibus.com/product/) — Tesla "512" precedent
+
+Iveco:
+  Sunrise: null          # Ferqui Sunrise minicoach body on Iveco Daily chassis, registered under the chassis make; canonical is ferqui/sunrise (https://ferqui.com/en/sunrisef2/). NOTE: loses nl evidence (ferqui/sunrise currently es,fi)
+  Wing: null             # Indcar Wing minibus body on Iveco Daily 70C, same pattern; canonical is indcar/wing (https://en.wikipedia.org/wiki/Indcar). NOTE: loses ua evidence (indcar/wing currently es,fi,gb,nl)
