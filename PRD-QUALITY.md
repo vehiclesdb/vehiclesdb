@@ -265,6 +265,17 @@ model to move TO — the model column holds only the make). Least-bad
 candidates: move to `<Make>|<Make>` as honest make-as-model debt rows under
 the right makes (`bus/geely` already exists), or debt in place. Decide
 against the NZTA raws; never the drop.
+**RESOLVED 2026-07-25 (data#20)**: moved to make-as-model rows with
+cross-make former_ids (legal — the pseudo-make left the build entirely);
+~600 sub-threshold candidate rows remain under factory-built for per-row
+moves as batches reach them.
+
+**G23 — Classic/vintage/discontinued program** (BOTH halves; owner directive
+2026-07-25). Production years (`year_start`/`year_end`) per id + emit-time
+DERIVED era tags (`discontinued`/`classic`/`vintage` — 30-year H-Kennzeichen
+line, pre-1931 vintage line). Full spec §14.4; implementation order G23a-d
+there. Store facts, derive labels; capture years at zero marginal cost during
+§7 review batches.
 
 ### 2.3 What must NOT be re-litigated (settled, with evidence)
 
@@ -1011,6 +1022,57 @@ power figures) as pointers in the batch notes — captured, not published.
 Unit normalization declared (kW vs PS vs hp; mm; kg); every numeric spec carries
 source + model-year applicability; range checks (a 50cc moped with 150 kW fails
 loudly); conflicting sources recorded as conflicts, not averaged.
+
+### 14.4 CLASSIC / VINTAGE / DISCONTINUED program (owner directive, 2026-07-25)
+
+The owner's framing: production-era data is "CANDY for classic collectors" —
+the catalogs already carry thousands of still-registered classics (Triumph
+TR2s, Volvo P1800s, W111 Mercedes, BMW airheads, a 1929 Harley DL) with no way
+to find them. This is a first-class program item, gap-registered as **G23**.
+
+**Design principle: store FACTS, derive LABELS.** The dataset stores
+`year_start`/`year_end` (production years, per id, sourced). Era tags are
+DERIVED at emit time, never hand-curated — derived labels cannot rot or drift:
+
+| derived tag | rule | rationale |
+|---|---|---|
+| `discontinued` | `year_end` present and in the past | plain fact |
+| `classic` | `year_end ≤ build_year − 30` | the 30-year line is the dominant legal/insurance convention (Germany's H-Kennzeichen §2 Nr. 22 FZV; most collector-insurance definitions) |
+| `vintage` | `year_end ≤ 1930` | pre-1931 per the common veteran/vintage boundary |
+
+Rules are configurable constants in the emitter with the source for each
+boundary in a comment; a record with no `year_end` gets NO era tag (unknown is
+not current).
+
+**Storage** (rides the §14.1 plumbing): `overrides/enrich/<make>.yml`, keys are
+ids, values `{year_start:, year_end:}`, per-line citation mandatory. Years are
+NAMEPLATE-level (the whole production run across generations); per-generation
+years belong to `generations` entries when those land. A nameplate still in
+production has `year_start` only.
+
+**Sourcing hierarchy** (same bar as §12): manufacturer heritage archives
+(media.volvocars.com press library, mercedes-benz-publicarchive.com,
+Honda/BMW/Ducati heritage pages) → marque registries/clubs (volvoclub.org.uk
+already precedent-cited in-repo) → period regulator documents. Wikipedia
+locates, never sources (CC-BY-SA — invariant).
+
+**Zero-marginal-cost capture**: the §7 review protocol ALREADY has researchers
+inside manufacturer/heritage pages verifying nameplates. Amend the researcher
+prompt: when the source in hand states production years, record
+`year_start`/`year_end` + citation in the batch notes (ledger `note:` or a
+sidecar proposal file) — capture is mandatory when the evidence is already
+open, dedicated year-research swarms come later for the remainder.
+
+**Not in the open layer**: valuations, survival counts, auction data,
+collector-market signals — depth-layer material (§14.2, PRD-DEPTH).
+
+**Implementation order** (G23a-d): (a) pipeline emit support for
+`year_start`/`year_end` + derived `era` on the record (additive, minor schema
+bump); (b) `overrides/enrich/` loader + lint (dup-keys, id-liveness,
+year sanity: 1885 ≤ start ≤ end ≤ build year+1); (c) researcher-prompt
+amendment (capture rule above); (d) backfill sweep prioritized by the makes
+with the largest classic populations already published (mercedes-benz, volvo,
+triumph, ford, bmw — measured from the catalogs, not guessed).
 
 ---
 
