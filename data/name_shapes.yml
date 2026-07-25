@@ -143,6 +143,47 @@ legit:
     pattern: '\A\d{3,4}\z'
     why: "bus designations are model-series numbers (DAF 200, LDV 200/400, Volvo 8707, Mercedes 300/312/400); see NAMING.md §7"
 
+  # ── G9: two-wheel make-prefix FALSE POSITIVES, and product-is-the-brand
+  #    rows (S2W, 2026-07-25) ────────────────────────────────────────────────
+  - id: sym-symphony-family
+    owner: s2w
+    category: embedded_make
+    id_list: [sym/symphony, sym/symphony-st,
+              sym/symphony-new125sr-c, sym/symnh-t, sym/symply]
+    why: >-
+      FALSE POSITIVES of the embedded-make detector, not defects. The detector
+      flags a model string starting with the make name, and SYM genuinely names
+      its scooters Symphony, Symphony ST and Symply — the collision is with the
+      three letters of the marque and nothing more. Verified against SYM Global
+      (https://www.sym-global.com/all-models). Do NOT strip the prefix: it would
+      produce "phony" and "ply".
+  - id: micro-microlino
+    owner: s2w
+    category: embedded_make
+    id_list: [micro/microlino]
+    why: >-
+      Same false positive. Micro Mobility Systems names the vehicle Microlino;
+      the make is Micro. Four-country evidence (es,fi,lu,nl).
+  - id: talaria-xxx
+    owner: s2w
+    id_list: [talaria/xxx]
+    why: >-
+      The Talaria XXX is a real e-motorbike, not a redaction placeholder.
+      Independently confirmed by S4W when the same string was queried in
+      styling.yml (NEGOTIATION Turn 56).
+  - id: product-is-the-brand-2w
+    owner: s2w
+    category: make_as_model
+    id_list: [paxster/paxster, cyclemaster/cyclemaster, veeley/veeley]
+    why: >-
+      THE G9 SPLIT. These three are make-as-model and CORRECT that way, because
+      the product name IS the brand: Paxster builds one thing, the Paxster
+      delivery vehicle; the Cyclemaster was a wheel-hub engine sold as the
+      Cyclemaster; Veeley is a single-product e-moped marque. Inventing a model
+      name for any of them would be worse than the honest row. The other four in
+      this class (ural, ebretti, nicom, lvtong) are genuine artefacts and are
+      tracked under make-as-model-2w below — that separation is what G9 asked
+      for, and it is the whole point: the class was never homogeneous.
 debt:
   # ── the German shared-string leak (fix is merged in the pipeline, awaiting a
   #    build; see vehiclesdb/vehiclesdb-pipeline#1) ────────────────────────────
@@ -181,10 +222,10 @@ debt:
       name from 1992 until the H1 rename in 1999. NOTE corroboration does NOT
       clear this class — every one of the 51 was multi-source, because registers
       share the same fallback habit when a model field is blank. What remains:
-      van/uaz/uaz, whose true identity is one of UAZ's own numeric type
+      uaz/uaz, whose true identity is one of UAZ's own numeric type
       designations (452 / 469 / 3741 / 2206 — that IS their naming convention)
-      and cannot be recovered from an aggregate row; plus bus/geely/geely,
-      bus/yutong/yutong, bus/zhongtong/zhongtong — DELIBERATE additions from
+      and cannot be recovered from an aggregate row; plus geely/geely,
+      yutong/yutong, zhongtong/zhongtong — DELIBERATE additions from
       dissolving NZTA's "FACTORY BUILT" pseudo-make (moves.yml 2026-07-25),
       where the marque was ALL the model column carried, so make-as-model is
       the honest maximum. Tracked rather than guessed: guessing at an
@@ -214,7 +255,7 @@ debt:
       JAECOO5 HEV→Jaecoo 5, OMODA5 HEV→Omoda 5, Lynk Co 01→01) or nulled with
       a removals.yml manifest (Volkswagen-Vw — make twice, zero model info);
       Jensen-Healey was a real nameplate, moved to legit. What remains is
-      van/palfinger/palfinger-p200txe-l-f24p-e6 — a crane-body type code
+      palfinger/palfinger-p200txe-l-f24p-e6 — a crane-body type code
       (PALFINGER_P200TXE-L_F24P_E6, fi/nl) that needs the coachbuilder
       treatment, not a rename.
 
@@ -231,6 +272,41 @@ debt:
       a JOIN KEY, but the collapsed key is also used as the DISPLAY name, so
       "BANDIT 1200" publishes as BANDIT1200. Remedy is an identity/display split
       restoring the dominant spaced raw form, not override lines.
+  # ── G9: the research-blocked half (S2W, 2026-07-25) ────────────────────────
+  - id: make-as-model-2w
+    owner: s2w
+    category: make_as_model
+    id_list: [ural/ural, ebretti/ebretti, nicom/nicom, lvtong/lvtong]
+    count: 4
+    why: >-
+      Four sole-model rows where the make name is all the model column carried,
+      SPLIT OUT from the seven originally in this class (the other three are
+      product-is-the-brand-2w in legit above). URAL has a real model range (Gear
+      Up, cT, Sportsman) so a bare "Ural" is a genuine artefact and should
+      resolve to one of them, but which cannot be recovered from an aggregate
+      count. EBRETTI, NICOM and LVTONG need marque research first: all three are
+      single-source or low-source e-moped importers and it is not established
+      that they market a named model at all. Blocker is marque research, not
+      tooling.
+  - id: bare-displacement-2w
+    owner: s2w
+    category: numeric_only
+    count: 21
+    why: >-
+      Bare numeric nameplates on two-wheel makes (ktm/200, ktm/390, ktm/790,
+      ktm/890, cfmoto/450, cfmoto/800, bmw/259, ccm/404, sherco/250,
+      motobecane/5000, saxonette/529, solex/701, solex/800, skyteam/04 …). NOT
+      the corroborated-numeric-nameplates class above (Peugeot 208, Volvo 240):
+      for these makes the number is a DISPLACEMENT and the nameplate needs the
+      family word the register dropped — KTM sells the 390 Duke, 390 Adventure
+      and 390 SMC R, so a bare "390" is three bikes at once. bmw/259 is not even
+      a displacement: it is BMW's internal type code for the R1100 series.
+      Resolvable per record against the type-approval number the reconciler
+      already carries, or by the family word where one survives in the raw — but
+      never by picking the commonest model, which is how a wrong confident
+      answer gets published. COUNT IS MEASURED, not estimated: my first figure
+      was 15, taken from the ids visible in the head of the lint output without
+      scrolling, and the debt-growth check caught it.
   # ── G20/D23: the two-wheel acronym-make tail (S2W, 2026-07-25) ─────────────
   - id: acronym-make-casing-2w-tail
     owner: s2w
