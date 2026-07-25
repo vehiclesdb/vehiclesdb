@@ -1671,6 +1671,103 @@ Zero Motorcycles:
   # plural-insensitive prefix match is not obviously safe across 849 makes).
   Motorcycle Xb: Xb    # raw handelsbenaming "ZERO MOTORCYCLE XB" (2 rows); merges into the existing moped/zero-motorcycles/xb
   Motorcycle Xe: Xe    # raw handelsbenaming "ZERO MOTORCYCLE XE" (1 row); merges into the existing motorcycle/zero-motorcycles/xe
+Yamaha:
+  # YAMAHA CONVENTION DOSSIER (§11.2). FOUR rules, and they contradict each
+  # other — which is exactly why nothing mechanical can resolve this make and
+  # why the detector's canonical() column is unusable here:
+  #
+  #  1. MT series — HYPHENATED, uppercase, leading zero kept: MT-03, MT-07,
+  #     MT-09, MT-125.
+  #     https://www.yamaha-motor.eu/gb/en/motorcycles/hyper-naked/pdp/mt-07-2025/
+  #  2. MAX series — ALL-CAPS and CLOSED, no hyphen, no space: TMAX, XMAX,
+  #     NMAX. Yamaha's own MAX-series page:
+  #     https://global.yamaha-motor.com/business/mc/lineup/max/
+  #     Displacement is appended with a SPACE ("TMAX 500", "XMAX 300").
+  #     So MT-07 hyphenates and XMAX does not: both are correct.
+  #  3. Type codes — CLOSED uppercase (FZS1000, TZR250, YL1, FS1), EXCEPT when
+  #     the suffix is a VARIANT marker, which Yamaha hyphenates: FZ1-N (naked),
+  #     FZ1-S (Fazer, semi-faired), FZ1-SA (ABS), FZ6-S. First-generation
+  #     Europe was FZS1000 Fazer, closed.
+  #     https://global.yamaha-motor.com/news/2005/0929/fz1.html
+  #  4. Model NAMES follow Yamaha's own spelling, which is NOT uniform.
+  #     "DragStar" is camelCase — Yamaha Communication Plaza, "1999 XVS1100
+  #     DragStar" (https://global.yamaha-motor.com/showroom/cp/collection/xvs1100dragstar/)
+  #     while "Road Star" is TWO words — "1999 XV1600 Road Star"
+  #     (https://global.yamaha-motor.com/showroom/cp/collection/xv1600roadstar/).
+  #     Same company, same era, same product category, opposite conventions.
+  #     "Neo's" carries the apostrophe.
+  #
+  # THE CONVENTION CHANGE, recorded rather than flattened: the 1985 model was
+  # the V-Max and Yamaha RENAMED it VMAX for the 2009 relaunch, so BOTH
+  # spellings are historically correct for their own era. Merged to VMAX (the
+  # marque's current form) because a model record is a NAMEPLATE covering its
+  # generations, and the schema has no year fields yet to carry the split
+  # (G16). If year_start/year_end ever land, this is the first candidate to
+  # split back apart — do not treat the merge as settling the history.
+  #
+  # 23 of the lines below are DISPLAY-ONLY (same slug, e.g. Mt-07 -> MT-07):
+  # they change `name`, not `id`, and correctly carry no former_ids entry.
+  Drag Star:                 DragStar               # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Drag Star 1100:            DragStar 1100          # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Drag Star Classic:         DragStar Classic       # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Dragstar:                  DragStar               # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  FZ1-Sa:                    FZ1-SA                 # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS) (display-only)
+  FZ1N:                      FZ1-N                  # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  FZ1S:                      FZ1-S                  # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  FZ1SA:                     FZ1-SA                 # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  FZ6S:                      FZ6-S                  # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  Fs-1:                      FS1                    # type code — closed uppercase
+  Fzs-1000:                  FZS1000                # type code — closed uppercase
+  MT01:                      MT-01                  # MT series — hyphenated (yamaha-motor.eu)
+  MT03:                      MT-03                  # MT series — hyphenated (yamaha-motor.eu)
+  MT07:                      MT-07                  # MT series — hyphenated (yamaha-motor.eu)
+  MT09:                      MT-09                  # MT series — hyphenated (yamaha-motor.eu)
+  MT09 Tracer:               MT-09 Tracer           # MT series — hyphenated (yamaha-motor.eu)
+  MT09A:                     MT-09A                 # MT series — hyphenated (yamaha-motor.eu)
+  MT09SP:                    MT-09SP                # MT series — hyphenated (yamaha-motor.eu)
+  MT125:                     MT-125                 # MT series — hyphenated (yamaha-motor.eu)
+  "Mt  09SP":                MT-09SP                # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-01:                     MT-01                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-03:                     MT-03                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-07:                     MT-07                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-09:                     MT-09                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-09 Tracer:              MT-09 Tracer           # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-09A:                    MT-09A                 # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-125:                    MT-125                 # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Neo S:                     Neo's                  # Yamaha writes it with the apostrophe (display-only)
+  Neos:                      Neo's                  # Yamaha writes it with the apostrophe
+  Neos 100:                  Neo's 100              # Yamaha writes it with the apostrophe
+  Nmax:                      NMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Nmax 150:                  NMAX 150               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Nmax Tech Max:             NMAX Tech Max          # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Roadstar:                  Road Star              # Road Star is TWO words in Yamaha's own usage — opposite to DragStar, same era
+  T MAX500:                  TMAX 500               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  Tmax 500:                  TMAX 500               # the ALREADY-CLOSED raw "TMAX 500" title-cases to "Tmax 500", a third spelling of this id; same slug, so display-only, but without it the catalog shows whichever raw the reconciler picked
+  T-MAX530:                  TMAX 530               # "T-MAX 530" collapses to "T-MAX530" (pass 1 closes the letter/digit gap, pass 2 needs 4+ letters to reopen it and "MAX" is 3). Not a collision the detector could see — t-max530 is below threshold and lives in candidates
+  T Max:                     TMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  T-Max:                     TMAX                   # ANOTHER spelling of the same id: t-max is produced by "T Max" AND "T-Max", and which one shows in the catalog depends on which the reconciler picks that build. Keying only one leaves the id standing
+  Tmax:                      TMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Tzr-250:                   TZR250                 # type code — closed uppercase
+  V-MAX1200:                 VMAX 1200              # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  V-Max:                     VMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  V Max:                     VMAX                   # as above — v-max is produced by "V-Max" AND "V Max"
+  Vmax:                      VMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  X-MAX125:                  XMAX 125               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  X-MAX300:                  XMAX 300               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  X-MAX400:                  XMAX 400               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  XP500 Tmax:                XP500 TMAX             # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  XVS1100 Drag Star:         XVS1100 DragStar       # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  XVS1100 Dragstar:          XVS1100 DragStar       # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  XVS1100/A:                 XVS1100A               # type code — closed uppercase
+  XVS1100A Dragstar:         XVS1100A DragStar      # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  XVS650 Drag Star:          XVS650 DragStar        # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  XVS650 Dragstar:           XVS650 DragStar        # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  XVS650A Drag Star:         XVS650A DragStar       # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Xmax:                      XMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Xmax 300:                  XMAX 300               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Yl-1:                      YL1                    # type code — closed uppercase
+  Yzf-R1:                    YZF-R1                 # type code — closed uppercase (display-only)
+  Yzfr 1:                    YZF-R1                 # type code — closed uppercase
 
 Zundapp:
   Zundapp: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
