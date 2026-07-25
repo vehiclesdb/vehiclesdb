@@ -676,8 +676,21 @@ Luqi:
 
 # Display name is "Lynk & Co" (catalog car/makes.json) — renames are keyed by
 # make DISPLAY NAME, and a key of "Lynk Co" would be silently inert.
+#
+# HISTORY, worth keeping: car/lynk-co/lynk-co-01 (was es+nl published) lost
+# its ES evidence when the 2026-07 es_dgt re-pin changed the raw spelling to
+# one that folds straight to "01" — the record DEMOTED to candidates rather
+# than merged, stranding the nl/fi residue spellings below (the exact
+# stranded-spelling failure moves.yml's LESSON block describes). A first fix
+# keyed "Lynk Co 01" — the OLD es form that no longer occurs anywhere — and
+# was caught by the reachability test as never-matching. Keys below are the
+# PRODUCED forms verified against build/candidates natives ("LYNK&CO |
+# LYNK &CO 01" and "LYNK&CO | Lynk and Co 01").
 "Lynk & Co":
-  Lynk Co 01: "01"                        # es_dgt/nl_rdw wrote the marque into the model column; the nameplate is just "01" (https://www.lynkco.com/en/01) — merges into the 5-source lynk-co/01 id. "01" QUOTED: bare 01 would parse as Integer 1
+  Lynk &co 01: "01"                       # nl_rdw residue (69 regs): marque fused into the model column; the nameplate is just "01" (https://www.lynkco.com/en/01) — merges into the 5-source lynk-co/01 id. "01" QUOTED: bare 01 would parse as Integer 1
+  Lynk And Co 01: "01"                    # fi_traficom residue (22 regs): same marque-in-model habit, spelled out
+  Lynk Co 01: "01"                        # es_dgt residue (10 regs): the pre-2026-07 ES spelling still trickles in. NB the reachability test once called this key dead — false positive from replaying under the display make instead of the raw "LYNK&CO" (fixed in the test, raw-make variants)
+  "Link & Co 01": "01"                    # es_dgt residue (3 regs): registry misspelling (LINK for LYNK) of the same car
 
 MAN:
   Man: null                                   # registry rows where the make was written into the model column (truck kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
