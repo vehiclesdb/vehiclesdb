@@ -42,7 +42,13 @@ NOTES = []
 def fail!(msg) = FAILURES << msg
 def note!(msg) = NOTES << msg
 
-CURATION_GLOBS = ["overrides/**/*.yml", "spotchecks.yml"].freeze
+# data/ is included because the duplicate-key check below is the single
+# highest-value rule here and it was NOT covering the files most likely to trip
+# it. Confirmed the hard way 2026-07-25: appending a second `debt:` key to
+# data/name_shapes.yml silently discarded the existing SIX debt entries — YAML
+# keeps only the last — and this lint said OK, because name_shapes.yml was
+# outside the globs. The ledger files under data/review/ have the same exposure.
+CURATION_GLOBS = ["overrides/**/*.yml", "spotchecks.yml", "data/**/*.yml"].freeze
 
 # Files where every hand-written mapping is a decision that needs a reason.
 # styling.yml is deliberately absent: a pure casing pin (`EQA: EQA`) explains
