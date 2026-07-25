@@ -114,3 +114,100 @@ cross-check that made it rigorous (399/399 Modellreihen reconcile;
 
 Neither maintainer will act on this unilaterally. Both halves are otherwise
 complete and green; this is the one open question that spans them.
+
+---
+
+# DECISION (2026-07-25) — made on the owner's instruction, with research
+
+The owner asked for these three questions to be researched and decided rather
+than escalated. Answers, evidence, and what is actually implementable.
+
+## Q1. Is `kind` a legal-category axis or a marketing axis? → **LEGAL.**
+
+Not a judgement call — the current approach is demonstrably incoherent. **The
+same vehicle is published in three kinds at once:**
+
+```
+car         renault/twizy   ar|gb|my|ua
+motorcycle  renault/twizy   nl
+moped       renault/twizy   es|fi|nz
+```
+
+Citroën Ami spans car + moped + van; Aixam spans car(9) + moped(5) + van(1).
+Registers disagree with each other about the same vehicle because each one's
+vehicle-type word is an *administrative* label. The EU category is the legal
+fact and the only axis on which the six sources agree.
+
+**Decided: derive `kind` from the EU category; treat the register's own word as
+a hint, never as truth.** This is already the pattern for `Bedrijfsauto`
+(N1→van, N2/N3→truck) — it just was never applied to `Bromfiets`.
+
+## Q2. Where do L6e/L7e go? → **`car`, with `body_types: ["quadricycle"]`.**
+
+**Not a new kind.** The deciding factor is binding internal precedent —
+DECISIONS.md line 23:
+
+> *"Three-wheelers fold into `motorcycle` with `body_types: ["trike"]` — no kind
+> explosion."*
+
+L5e is an EU category in its own right and it was folded into the kind it
+physically resembles, with the legal category preserved as a body type. L6e/L7e
+are four-wheeled, enclosed, steering-wheel, side-by-side-seat vehicles, so by
+parity the kind they physically resemble is `car`.
+
+Supporting evidence, and the one thing that argues the other way:
+
+* EU 168/2013: L6e = 4 wheels, ≤425 kg, ≤45 km/h, ≤6 kW; L7e ≤15 kW, up to
+  ~90 km/h. Both are quadricycles, distinct from L1e mopeds AND from M1 cars.
+* **Against:** Citroën explicitly markets the Ami as *"technically not a car"*,
+  an "urban mobility object", and L6e is drivable on an **AM (moped) licence** —
+  age 14 in France, 16 in the UK. L7e needs B1/full car licence, age 17.
+* **Why `car` still wins:** the licence axis splits L6e from L7e, so honouring it
+  would mean L6e→moped and L7e→car — which would put an enclosed four-wheel Ami
+  in with Vespas and split the Aixam range across two kinds. The trike precedent
+  resolves this: fold by physical form, record the legal category in the body
+  type. `body_types: ["quadricycle"]` keeps the AM-licence information
+  recoverable by filtering, which is all a consumer needs.
+* It also *unifies* makes currently split three ways (aixam, renault/twizy).
+
+`quadricycle` over `microcar`: it maps 1:1 to the legal category, whereas
+"microcar" also covers M1 cars (Isetta, Smart Fortwo).
+
+## Q3. Migration in one release? → **Yes, additive — but NOT yet implementable.**
+
+`former_ids` makes the id changes additive, and adding a `body_types` vocabulary
+value is additive per SCHEMA.md's growth contract. So the release shape is fine.
+
+**I attempted the implementation and it is not a one-file change. Scoped by
+trial, then reverted rather than half-shipped:**
+
+1. `nl_rdw` was straightforward — `by_eu_category` already existed for
+   `Bedrijfsauto`, so `Bromfiets` needed the same treatment. It worked.
+2. **But only `nl_rdw` plumbs `eu_category` into a `Row`.** `es_dgt`,
+   `fi_traficom`, `lu_snca`, `ua_mvs` and `nz_nzta` also feed `moped` and do
+   not. So routing one source produced exactly the incoherence it was meant to
+   fix: aixam car(9)/moped(5), ligier car(1)/moped(3).
+3. Records fell off entirely: `silence/s04` (the S04 **Nanocar**, an L6e) and
+   `opel/rocks-e` vanished — moved into `car` but failed the car-kind
+   publication threshold on their remaining evidence.
+4. The moved rows got `hatchback`/`convertible` from the car body rules, not
+   `quadricycle` — `body_rows` only fetches the body signal for `Personenauto`.
+
+### The implementable plan, in dependency order
+
+1. **Plumb `eu_category` into `Row` for every source that has it** — es_dgt,
+   fi_traficom, lu_snca, ua_mvs, nz_nzta. This is the real prerequisite and it
+   is per-source work, not a curation change.
+2. Add `by_eu_category` to each source's `kind_map` (data, reviewable).
+3. Derive `body_types: ["quadricycle"]` from `eu_category` at reconcile time so
+   it does not depend on a per-source body signal.
+4. Re-check the publication threshold for the moved records before shipping —
+   an L6e with only NL+ES evidence must not silently vanish from `car`.
+5. Generate `former_ids` for every moved id (the generator reads intent from
+   the override layer, so it needs the kind_map change to be visible to it —
+   currently it only reads renames/moves, so this needs extending).
+
+**Recommendation: do it as its own release, not bundled.** It touches five
+sources, both maintainers' kinds, the body-type vocabulary and ~40k
+registrations of evidence. The current state is *known*-wrong and tripwired; a
+half-migration would be *unknown*-wrong.
