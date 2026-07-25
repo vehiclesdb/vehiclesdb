@@ -11,7 +11,20 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
 3. `DECISIONS.md` — why things are the way they are (do not re-litigate)
 4. `SOURCES.md` — per-source operational notes and gotchas
 5. `NAMING.md` — the naming canon and evidence standards (what to call things)
-6. This file
+6. **The 2026-07 correction-pass briefs** — the long-form context that does not
+   fit in a rules file: how the parser bugs happened, why two "obvious" cleanups
+   destroyed real data, the verified per-marque naming conventions with sources,
+   and the open items. Written to be read cold, assuming nothing.
+   - **Curation, canon, incidents, open items** —
+     https://github.com/vehiclesdb/vehiclesdb/pull/4#issuecomment-5079545135
+   - **Code contracts (xlsx reader, KBA source, moves, test seams, licence pins)** —
+     https://github.com/vehiclesdb/vehiclesdb-pipeline/pull/1#issuecomment-5079564588
+
+   If you are about to delete records whose names look like registry junk, read
+   the first one before you do. That exact reasoning deleted SEAT’s entire
+   current German lineup once, and nearly deleted 148 more records including the
+   best-selling car in Germany.
+7. This file
 
 ## Invariants (never break)
 
