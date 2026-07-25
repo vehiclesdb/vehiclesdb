@@ -77,6 +77,33 @@ legit:
       The Jensen-Healey (1972-1976, ~10,500 built) is a real nameplate — a
       Jensen Motors / Donald Healey joint venture, sold under exactly that
       hyphenated name. https://en.wikipedia.org/wiki/Jensen-Healey
+  - id: auto-union-audi-80
+    category: code_string
+    make: auto-union
+    pattern: '\AAudi 80\z'
+    why: >-
+      Historically CORRECT cross-marque filing: the F103 was developed and sold
+      by Auto Union GmbH from 1965 under the revived "Audi" name — the Audi 80
+      variant is the 80 PS model — before Audi NSU Auto Union AG existed. A
+      classic NL registration under AUTO UNION is the period truth, not a
+      registry error. https://en.wikipedia.org/wiki/Audi_F103
+  - id: peugeot-django
+    category: code_string
+    make: peugeot
+    pattern: '\ADjango \d{2,3}\z'
+    why: >-
+      The Peugeot Django is a real retro scooter line (2014+); the number is
+      displacement, which STAYS SEPARATE on two-wheelers by rule.
+      https://www.peugeotmotocycles.com/ (Django range)
+  - id: maico-maicoletta
+    category: embedded_make
+    make: maico
+    pattern: '\AMaicoletta\z'
+    why: >-
+      The Maicoletta (1955-1966) is one of the era's best-known German
+      scooters — a genuine Maico product name, the Humberette/Fordson class.
+      Cross-owner add by S4W during the post-publish sweep, flagged in
+      NEGOTIATION Turn 71. https://en.wikipedia.org/wiki/Maico
 
   # ── modern marques whose OFFICIAL nameplates embed the make ────────────────
   # These are not prefix-strip failures: the manufacturer's own naming puts the
@@ -214,9 +241,9 @@ debt:
   - id: make-as-model-4w
     owner: s4w
     category: make_as_model
-    count: 5
+    count: 6
     why: >-
-      Was 51, then 2, now 5. Dropped 49 registry rows where the make was written
+      Was 51, then 2, then 5, now 6. Dropped 49 registry rows where the make was written
       into the model column ("Audi Audi", "Toyota Toyota"); merged hummer/hummer
       into H1, because the civilian AM General Hummer really was sold under that
       name from 1992 until the H1 rename in 1999. NOTE corroboration does NOT
@@ -229,7 +256,11 @@ debt:
       dissolving NZTA's "FACTORY BUILT" pseudo-make (moves.yml 2026-07-25),
       where the marque was ALL the model column carried, so make-as-model is
       the honest maximum. Tracked rather than guessed: guessing at an
-      unresolvable row is what produced the SEAT incident.
+      unresolvable row is what produced the SEAT incident. The +1 (2026-07-26):
+      car/vanster/vanster joined the bucket when OWNERSHIP regen assigned the
+      previously-orphaned make to s4w — possibly the product-is-the-brand
+      class (the G9 paxster precedent); needs marque research before moving
+      to legit.
 
   - id: spec-token-4w
     owner: s4w
@@ -389,3 +420,34 @@ debt:
       This is the third time this pass that a claim of mine was plausible,
       well-sourced-looking and wrong in a detail nobody checks because it is not
       the conclusion.
+
+  - id: icaur-sub-brand-under-chery
+    owner: s4w
+    category: code_string
+    id_list: [chery/icaur-03]
+    count: 1
+    why: >-
+      iCAUR is Chery's sub-brand (iCAR, renamed for export); my_jpj files the
+      03 under the parent. The clean fix is a move to an icaur make, but that
+      mints a single-record my-only make — blocked on a second source or a
+      threshold decision. Do not strip the prefix; iCAUR 03 is the name.
+  - id: mega-marque-research
+    owner: s2w
+    category: make_as_model
+    id_list: [mega/mega]
+    count: 1
+    why: >-
+      moped/mega/mega (lu,nl) — either the product-is-the-brand class (G9
+      precedent) or Aixam's Mega utility marque with a blank model column.
+      Filed for S2W marque research (NEGOTIATION Turn 71); do not guess.
+
+  - id: fixed-awaiting-publish
+    owner: s2w
+    category: spec_token
+    id_list: [triumph/tiger-800xc-abs]
+    count: 1
+    why: >-
+      The fix (ABS fold rename + alias) is MERGED but the record is still in
+      the published catalog this lint measures — the pending-publish window,
+      same class lint_review already tolerates via alias-target liveness.
+      Empties at the next release; if it survives one, something is wrong.
