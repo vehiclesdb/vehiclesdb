@@ -296,6 +296,27 @@ Jawa:       { Jawa: null }         # motorcycle fi|nl
 Kawasaki:   { Kawasaki: null }     # motorcycle gb|nl
 Moto Guzzi: { Moto-Guzzi: null }   # motorcycle es|nl — hyphenated by the caser from raw "MOTO-GUZZI"
 Norton:     { Norton: null }       # motorcycle nl|nz
-Piaggio:    { Piaggio: null }      # moped fi|nl
+Piaggio:
+  Piaggio: null              # make-as-model registry noise, moped fi|nl
+  # L1e speed-class strings: "45 km/h" IS the moped class, which `kind` already
+  # encodes, so it must never enter a nameplate (NAMING.md §6). NL-only rows.
+  Ciao 25KM/H: Ciao          # the 1967-2006 Ciao; class marker folds
+  Ciao 45KM/H: Ciao
+  Velofax 25KM/H: Velofax
+  # Mojibake/keystroke noise: no source spells it "Vespà" (grave accent on a
+  # word that has none). NB this record ALSO needs a cross-make move to
+  # vespa/ — Piaggio is the type-approval holder for Vespa, so RDW files
+  # Vespas under merk=PIAGGIO (130 names, 79,569 regs measured 2026-07-25).
+  # Fixing the accent now is orthogonal to and safe before that move.
+  "Vespà GTS250": Vespa GTS250
+  Vespa Et -2 45KM/H: Vespa ET2   # class marker + spacing noise; the ET2 nameplate
 Triumph:    { Triumph: null }      # motorcycle nl|nz
-Vespa:      { Vespa: null }        # motorcycle es|nl AND moped nl|nz
+Vespa:
+  Vespa: null                # make-as-model registry noise, motorcycle es|nl + moped nl|nz
+Gilera:
+  Runner 45KM/H: Runner      # L1e class marker folds (NAMING.md §6); the Runner nameplate covers it
+Emax:
+  Emax-110S: 110S            # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-110S"); E-Max sells the 110S/90S (make+model reads "E-Max 110S")
+  Emax-90S: 90S
+Coopop:
+  Coopop-Q1: Q1              # same hyphenated-badge case; Coopop Q1
