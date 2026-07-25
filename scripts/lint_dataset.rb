@@ -37,6 +37,12 @@ require "yaml"
 require "set"
 
 ROOT   = File.expand_path("..", __dir__)
+# G13: the lint's baseline and its subject must be the SAME build. catalog/
+# in the repo is the last RELEASE, which lags merged overrides by up to a
+# month — so "re-measure after the build" was a wait. VDB_CATALOG points the
+# audit at a fresh build/out (e.g. VDB_CATALOG=~/…/pipeline/build/out/catalog)
+# and turns it into a flag.
+CATALOG_DIR = ENV["VDB_CATALOG"] ? File.expand_path(ENV["VDB_CATALOG"]) : File.join(ROOT, "catalog")
 KINDS  = %w[car van motorcycle moped truck bus].freeze
 REPORT = ARGV.include?("--report")
 OWNER  = ARGV.find { |a| a.start_with?("--owner=") }&.split("=", 2)&.last
@@ -78,8 +84,8 @@ DETECTORS = {
 models = []
 makes  = {}
 KINDS.each do |kind|
-  mk_path = File.join(ROOT, "catalog", kind, "makes.json")
-  md_path = File.join(ROOT, "catalog", kind, "models.json")
+  mk_path = File.join(CATALOG_DIR, kind, "makes.json")
+  md_path = File.join(CATALOG_DIR, kind, "models.json")
   next unless File.exist?(md_path)
   JSON.parse(File.read(mk_path)).each { |m| makes[[kind, m["id"]]] = m["name"] }
   JSON.parse(File.read(md_path)).each { |m| models << m.merge("_kind" => kind) }
