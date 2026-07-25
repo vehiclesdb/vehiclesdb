@@ -295,3 +295,47 @@ CRRC: CRRC               # CRRC Corporation, all-caps throughout (https://www.cr
 # within a make and is blind to this class by construction.
 EMAX: E-Max       # RDW carries BOTH merk spellings for one marque: merk=EMAX (models "EMAX-110S","EMAX-90S","LB1") and merk=E-MAX (models "110S","80L","90S","ALL-4") — same scooters, same register, same month (m9d7-ebf2, measured 2026-07-25). Brand writes itself "e-max": manufacturer manual "emax_90s_110s_brugermanual.pdf" and Vmoto's own copy ("the Vmoto e-max 110S", https://www.carsguide.com.au/car-reviews/vmoto-e-max-110s-scooter-review-11234); hyphen is evidenced, lowercase-initial is not carried through smart_case, so "E-Max". The EMAX rows' embedded prefix is already stripped by strip_make_prefix, so no rename lines are needed. Co-batch with Vmoto/Super Soco: Vmoto acquired the brand
 ZERO: Zero Motorcycles   # UK/NZ/UA/FI register the marque as bare "ZERO" (models DS, DSR, FX, S, SR, SR/F, SR/S — unambiguously Zero Motorcycles' lineup); NL/ES/FI/LU use "ZERO MOTORCYCLES" (82 rows measured in m9d7-ebf2). Merging INTO the longer form, not the shorter: the manufacturer's own pages carry no "Zero <model>" product string — body copy is the bare model code and the brand appears only as "Zero Motorcycles" / "Zero Motorcycles, Inc." (https://zeromotorcycles.com/model/zero-dsrx, footer 2026). Bare "Zero" would also be a uniquely collision-prone make name. EXACT-key alias, deliberately: RDW also has merk="ZEROBIKES" (20 rows) and merk="ELI ZERO" (2 rows), which are different marques and must NOT match
+
+# --- S2W acronym-make casing pass (2026-07-25) -------------------------------
+# DEFECT CLASS. normalizer.rb:86 is
+#   make = make_aliases.fetch(raw_make) { smart_case(raw_make) }
+# and smart_case consults styling.yml's `stylings` (whole-string) and `acronyms`
+# (token list) — BOTH curated for MODEL names. Nothing in the pipeline knows a
+# MAKE can be an initialism, so KTM fell through to `w.capitalize` and published
+# as "Ktm" for the entire life of the dataset. 47 two-wheel makes / 569 records
+# were affected; these 18 are the researched ones (454 records).
+#
+# WHY HERE AND NOT IN styling.yml — this is the load-bearing part. PRD-QUALITY
+# §6.2 rule 3 forbids adding acronym TOKENS because a token re-cases every model
+# string containing it catalog-wide and orphans other batches' rename keys.
+# Adding "KTM" to `acronyms` would be a whole-catalog blast radius for a make-name
+# problem. A makes/aliases.yml entry is scoped to the make name and cannot reach
+# another batch. Precedent: d3642f5 did MV Agusta / GMC / NSU / TGB this way.
+#
+# THESE ARE IDENTITY PINS (key == value), same shape as MITT/TRS/OSSA/EBRO above.
+# Every key was verified to be an EXACT raw string present in the cached
+# snapshots — an alias keyed on a spelling no register emits is inert.
+#
+# GOTCHA THAT ALMOST BIT: renaming a make display name silently orphans any
+# renames.yml block filed under the OLD name. `Sym:` and `Btc:` both existed and
+# were rekeyed to `SYM:`/`BTC:` in the same commit. Always grep renames.yml,
+# models/aliases.yml, moves.yml and body_types.yml for the old display name
+# before landing one of these. See pipeline test_rename_make_blocks_are_reachable.
+KTM: KTM      # KTM AG, Mattighofen — brand is all-caps throughout its own site (https://www.ktm.com/en-int/ktm-world/stories/the-logo-and-the-look.html). Etymology is disputed (Kronreif/Trunkenpolz/Mattighofen vs Kraftfahrzeuge Trunkenpolz Mattighofen) but irrelevant to styling. 152 records — the single biggest win in the 2W half
+BSA: BSA      # Birmingham Small Arms, founded 1861; revived 2016 under Classic Legends (Mahindra). All-caps on the marque's own site (https://www.bsacompany.co.uk/). 91 records. Same source confirms the model is "Gold Star" (two words), which settles one of the 165 collision groups
+SYM: SYM      # Sanyang Motor Co., Ltd., Taiwan — "abbreviated as SYM", stylized all-caps (https://www.sym-global.com/about). 64 records
+ZNEN: ZNEN    # Zhongneng Vehicle Group, Taizhou — all-caps on its own site (https://www.znen.com/). NOTE for the co-batch list: the same group owns Fosti, Motowin and Fuxianda, and `fosti` is published here as a separate make
+AGM: AGM      # AGM Scooters, largest Dutch scooter brand, founded 2004, 200+ dealers (https://agm.nl/over-agm/wie-zijn-wij/)
+MZ: MZ        # Motorenwerke Zschopau (the acronym's meaning since 1956); MZ Motorrad- und Zweiradwerk GmbH, Saxony. Historic marque, all-caps
+SWM: SWM      # Speedy Working Motors / originally Sironi-Vergani, Vimercate; revived 2014 under Shineray. All-caps on its own site (https://swm-motorcycles.it/)
+PGO: PGO      # Motive Power Industry, Taiwan, founded 1964; the name comes from its 1972-82 Piaggio collaboration ("Piag-Gi-O"). All-caps (https://pgo.com.tw/en/about/)
+BTC: BTC      # Dutch scooter marque (BTC Riva / e-Riva), moped and 45 km/h classes. All-caps in the brand's own model naming
+CPI: CPI      # CPI Motor Company, Taiwan — scooters, ATVs, enduros
+MBK: MBK      # French; Motobécane from 1923, bankrupt 1981, bought by Yamaha and reformed as MBK in 1984 (Rouvroy, Picardy). All-caps. Its platform-sharing note also confirms Yamaha's own "BW's" spelling, which settles another collision group
+GPX: GPX      # GPX Racing, Thailand, founded 2007 (formerly ATV Panther, now GP Motor (Thailand) Co.) — all-caps (https://www.gpxthailand.com/EN/about-us)
+CCM: CCM      # Clews Competition Machines/Motorcycles, Bolton, founded 1971 by Alan Clews. All-caps. (Entered administration June 2025 — the marque's historic records stay regardless)
+CZ: ČZ        # Česká zbrojovka Strakonice, founded 1919 — the marque writes itself "ČZ" with the háček, and Škoda/Citroën are the precedent for keeping a marque's own orthography. The id is unaffected: the slug fold strips diacritics, so this stays `cz`. Related: "JAWA-CZ" above merges to Jawa (the 1949-nationalised joint-era badge) — that is a DIFFERENT entity from ČZ Strakonice standing alone and the two must not be merged
+DKW: DKW      # Dampf-Kraft-Wagen, founded 1916 by Jørgen Skafte Rasmussen; merged into Auto Union 1932 (hence Audi's four rings), VW Group from 1964. All-caps
+LML: LML      # Lohia Machinery Limited, Kanpur — Piaggio technical partner from 1984, equal-equity partner 1990, insolvent 2017. All-caps
+FN: FN        # Fabrique Nationale de Herstal, Belgium — arms from 1889, motorcycles 1901-1967; built one of the first four-cylinder motorcycles. All-caps
+EBR: EBR      # Erik Buell Racing, East Troy, Wisconsin — all-caps on its own site (https://erikbuellracing.jp/contents/about_ebr/index.php)

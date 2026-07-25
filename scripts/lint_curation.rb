@@ -238,6 +238,16 @@ end
   display_names[canonical] ||= slugify(canonical)
 end
 
+# Display names the OVERRIDE LAYER declares, which may not be in the catalog
+# yet. `makes/aliases.yml` maps raw UPPERCASE registry strings to display names,
+# so its VALUES are exactly the set of names the next build can produce.
+pending_display_names = begin
+  (YAML.safe_load_file(File.join(ROOT, "overrides/makes/aliases.yml"), permitted_classes: [], aliases: false) || {})
+    .values.compact.map(&:to_s).to_set
+rescue
+  Set.new
+end
+
 if display_names.empty?
   note! "no catalog/*/makes.json found — skipping make-key validation"
 else
@@ -261,6 +271,26 @@ else
       #   has not cleared the publish threshold yet (S2W's `Unu:` block is the
       #   live example — unu is measured in the RDW raws but not yet published).
       #   Inert today, correct tomorrow, so it gets a note rather than a failure.
+      #   PENDING AN ALIAS — the near-miss is the display name the CATALOG still
+      #   carries, but makes/aliases.yml already declares the new one. This lint
+      #   reads catalog/, which is the LAST RELEASE, so during the release that
+      #   renames a make the correct block name looks like a typo and the stale
+      #   one looks right. Exactly backwards.
+      #
+      #   This is not hypothetical: it is why this lint stayed green while the
+      #   `Emax:` block went inert under the E-Max merge (2026-07-25). The block
+      #   matched the stale catalog perfectly. A rename block is only safe if it
+      #   matches what the pipeline WILL produce, so consult the override layer's
+      #   own declared display names too. The pipeline-side hermetic version of
+      #   this check is `test_rename_make_blocks_are_reachable`; the two are
+      #   complementary — that one computes the name from the override layer,
+      #   this one sees the built reality.
+      if pending_display_names.include?(make)
+        note! "#{rel}: #{what} #{make.inspect} matches a makes/aliases.yml display name not yet in the " \
+              "catalog — correct for the build that lands the rename; verify it after the next build."
+        next
+      end
+
       near = display_names.keys.select { |n| slugify(n) == slugify(make) }
       if near.empty?
         note! "#{rel}: #{what} #{make.inspect} matches no published make — inert until that make " \
