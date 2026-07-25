@@ -237,13 +237,26 @@ else
         next
       end
 
-      # A make key that matches nothing is inert FOREVER and fails silently —
-      # the same class as a rename key that misses. Offer the near-miss, since
-      # the usual cause is casing or punctuation ("Gas Gas" vs "Gas-Gas").
+      # Two very different situations, and only one is a bug:
+      #
+      #   NEAR-MISS — a make with the same SLUG but a different display form
+      #   exists ("Mercedes Benz" vs "Mercedes-Benz", "smart" vs "Smart"). That
+      #   is a typo, the block is inert forever, and it must fail.
+      #
+      #   ABSENT ENTIRELY — no make with that slug is published at all. That is
+      #   a legitimate FORWARD-LOOKING block: curation written for a make that
+      #   has not cleared the publish threshold yet (S2W's `Unu:` block is the
+      #   live example — unu is measured in the RDW raws but not yet published).
+      #   Inert today, correct tomorrow, so it gets a note rather than a failure.
       near = display_names.keys.select { |n| slugify(n) == slugify(make) }
-      hint = near.empty? ? "no make with a matching slug either" : "did you mean #{near.first.inspect}?"
-      fail! "#{rel}: #{what} #{make.inspect} does not match any catalog make DISPLAY NAME — " \
-            "the pipeline keys renames by display name, so this block is inert. #{hint}"
+      if near.empty?
+        note! "#{rel}: #{what} #{make.inspect} matches no published make — inert until that make " \
+              "publishes. Fine for forward-looking curation; check the spelling if it was meant to be live."
+      else
+        fail! "#{rel}: #{what} #{make.inspect} does not match any catalog make DISPLAY NAME — " \
+              "the pipeline keys renames by display name, so this block is inert. " \
+              "Did you mean #{near.first.inspect}?"
+      end
     end
   end
 end
