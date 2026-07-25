@@ -11,6 +11,10 @@
 # boundary — see NEGOTIATION.md Turn 1/2).
 #
 # Run after any release that adds makes:  ruby scripts/gen_ownership.rb
+# (G19: every build can mint makes belonging to nobody — 17 orphans measured
+#  2026-07-25. Regenerating assigns them by the same dominant-kind rule; a
+#  NEW TIE aborts with instructions rather than guessing, because a silent
+#  tie-flip is how two sessions end up editing one make block.)
 # Review the diff — a make changing owner mid-cleanup needs both sides to ack.
 
 require "json"

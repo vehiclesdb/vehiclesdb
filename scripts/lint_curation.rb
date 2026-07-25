@@ -92,6 +92,19 @@ curation_files.each do |abs|
   end
 end
 
+# ── 1a2. no EMPTY make blocks ────────────────────────────────────────────────
+#
+# A make block with no entries (`Yamaha:` followed by nothing) parses as nil.
+# Harmless to the pipeline (nil block = no renames) but it crashes naive
+# iteration (`.values.map(&:size)`) — which it did, twice, in maintainer
+# tooling — and it reads as work someone forgot to finish. Six of them were
+# left behind by an ownership-boundary revert; delete the header when you
+# delete the last entry.
+%w[overrides/models/renames.yml overrides/models/aliases.yml].each do |rel|
+  doc = YAML.safe_load_file(File.join(ROOT, rel), permitted_classes: [], aliases: false) || {}
+  doc.each { |mk, v| fail! "#{rel}: make block #{mk.inspect} is EMPTY (parses as nil) — delete the header or add entries" if v.nil? }
+end
+
 # ── 1b. block style only: no inline flow mappings ────────────────────────────
 #
 # `Honda: { Honda: null }   # comment` is valid YAML and parses identically to a
