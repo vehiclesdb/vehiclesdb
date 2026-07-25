@@ -1,0 +1,75 @@
+# MOVES-S2W-staging.yml — 46 two-wheeler moves, HANDED BACK UNAPPLIED.
+#
+# I folded these into overrides/models/moves.yml as agreed, and the build's own
+# reachability test rejected all 46. Returning them rather than guessing at a
+# fix, because the correct keys are ambiguous and the makes are yours.
+#
+# DIAGNOSIS — it is the same trap that killed my "SEAT|Cupra Leon" key.
+# Move keys match the POST-normalization nameplate, and the make-prefix strip
+# removes the embedded brand BEFORE moves run:
+#
+#     raw:      merk=PIAGGIO  handelsbenaming="VESPA SPRINT"
+#     produced: "Sprint"      (not "Vespa Sprint")
+#
+# So every "Piaggio|Vespa X" key matches nothing. Mechanically the keys could be
+# rewritten to "Piaggio|Sprint" — but that is NOT safe: post-strip a Vespa-badged
+# row is indistinguishable from a genuine Piaggio row, so the move would capture
+# both. Exactly why I could not move "SEAT|Cupra Leon" (the pooled row).
+#
+# The real fix is in normalizer.rb (your file): either run moves BEFORE the
+# prefix strip, or have the strip record what it removed so a move can key on it.
+# Both are small; neither is mine to choose.
+#
+# My 10 four-wheel moves ARE reachable and stayed in moves.yml, because KBA puts
+# the marque in the MAKE column ("SEAT" + "FORMENTOR") rather than inside the
+# model string — nothing gets stripped, so the key survives.
+#
+# Below: your 46 keys, each annotated with the nameplate the pipeline actually
+# produces, so a rekey can be mechanical once the normalizer question is settled.
+
+"Piaggio|Vespa 50":                "Vespa|50"               # pipeline produces ["50"]
+"Piaggio|Vespa 50ET2":             "Vespa|50ET2"            # pipeline produces ["50ET2"]
+"Piaggio|Vespa 50N":               "Vespa|50N"              # pipeline produces ["50N"]
+"Piaggio|Vespa 50R":               "Vespa|50R"              # pipeline produces ["50R"]
+"Piaggio|Vespa 50S":               "Vespa|50S"              # pipeline produces ["50S"]
+"Piaggio|Vespa C16":               "Vespa|C16"              # pipeline produces ["C16"]
+"Piaggio|Vespa ET2":               "Vespa|ET2"              # pipeline produces ["ET2"]
+"Piaggio|Vespa Elettrica":         "Vespa|Elettrica"        # pipeline produces ["Elettrica"]
+"Piaggio|Vespa LX50":              "Vespa|LX50"             # pipeline produces ["LX50"]
+"Piaggio|Vespa PK50XL":            "Vespa|PK50XL"           # pipeline produces ["PK50XL"]
+"Piaggio|Vespa Primavera":         "Vespa|Primavera"        # pipeline produces ["Primavera"]
+"Piaggio|Vespa Primavera 50":      "Vespa|Primavera 50"     # pipeline produces ["Primavera 50"]
+"Piaggio|Vespa Primavera Elettrica": "Vespa|Primavera Elettrica" # pipeline produces ["Primavera Elettrica"]
+"Piaggio|Vespa S50":               "Vespa|S50"              # pipeline produces ["S50"]
+"Piaggio|Vespa Sprint":            "Vespa|Sprint"           # pipeline produces ["Sprint"]
+"Piaggio|Vespa Sprint 50":         "Vespa|Sprint 50"        # pipeline produces ["Sprint 50"]
+"Piaggio|Vespa 150 Super":         "Vespa|150 Super"        # pipeline produces ["150 Super"]
+"Piaggio|Vespa 150GL":             "Vespa|150GL"            # pipeline produces ["150GL"]
+"Piaggio|Vespa 946":               "Vespa|946"              # pipeline produces ["946"]
+"Piaggio|Vespa Cosa":              "Vespa|Cosa"             # pipeline produces ["Cosa"]
+"Piaggio|Vespa Cosa 200":          "Vespa|Cosa 200"         # pipeline produces ["Cosa 200"]
+"Piaggio|Vespa ET4 125":           "Vespa|ET4 125"          # pipeline produces ["ET4 125"]
+"Piaggio|Vespa ET4 150":           "Vespa|ET4 150"          # pipeline produces ["ET4 150"]
+"Piaggio|Vespa GT125":             "Vespa|GT125"            # pipeline produces ["GT125"]
+"Piaggio|Vespa GTS125":            "Vespa|GTS125"           # pipeline produces ["GTS125"]
+"Piaggio|Vespa GTS250":            "Vespa|GTS250"           # pipeline produces ["GTS250"]
+"Piaggio|Vespa GTS300 Super":      "Vespa|GTS300 Super"     # pipeline produces ["GTS300 Super"]
+"Piaggio|Vespa GTV125":            "Vespa|GTV125"           # pipeline produces ["GTV125"]
+"Piaggio|Vespa Gts":               "Vespa|Gts"              # pipeline produces ["Vespa", "Gts"]
+"Piaggio|Vespa Gts Super 300":     "Vespa|Gts Super 300"    # pipeline produces ["Vespa", "Gts Super 300"]
+"Piaggio|Vespa Gts Supertech":     "Vespa|Gts Supertech"    # pipeline produces ["Vespa", "Gts Supertech"]
+"Piaggio|Vespa Gtv":               "Vespa|Gtv"              # pipeline produces ["Gtv"]
+"Piaggio|Vespa LX125":             "Vespa|LX125"            # pipeline produces ["LX125"]
+"Piaggio|Vespa LX125I.E.":         "Vespa|LX125I.E."        # pipeline produces ["Vespa LX125I.E", "LX125I.E."]
+"Piaggio|Vespa LXV125":            "Vespa|LXV125"           # pipeline produces ["LXV125"]
+"Piaggio|Vespa PX125E":            "Vespa|PX125E"           # pipeline produces ["PX125E"]
+"Piaggio|Vespa PX150":             "Vespa|PX150"            # pipeline produces ["PX150"]
+"Piaggio|Vespa PX150E":            "Vespa|PX150E"           # pipeline produces ["PX150E"]
+"Piaggio|Vespa PX200E":            "Vespa|PX200E"           # pipeline produces ["PX200E"]
+"Piaggio|Vespa Primavera 125":     "Vespa|Primavera 125"    # pipeline produces ["Primavera 125"]
+"Piaggio|Vespa Primavera 125ABS":  "Vespa|Primavera 125ABS" # pipeline produces ["Primavera 125ABS"]
+"Piaggio|Vespa Primavera 150ABS":  "Vespa|Primavera 150ABS" # pipeline produces ["Primavera 150ABS"]
+"Piaggio|Vespa Sei Giorni":        "Vespa|Sei Giorni"       # pipeline produces ["Sei Giorni"]
+"Piaggio|Vespa Seigiorni":         "Vespa|Seigiorni"        # pipeline produces ["Seigiorni"]
+"Piaggio|Vespa Sprint 125":        "Vespa|Sprint 125"       # pipeline produces ["Sprint 125"]
+"Piaggio|Vespa Sprint 125ABS":     "Vespa|Sprint 125ABS"    # pipeline produces ["Sprint 125ABS"]
