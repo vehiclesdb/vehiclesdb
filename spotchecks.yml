@@ -563,3 +563,26 @@ checks:
     kind: moped
     availability_includes: [fi, nl]
     reason: "RDW carries BOTH merk spellings (EMAX and E-MAX) for one marque in the same file. Guards the merge AND the rekeyed `E-Max:` renames block: a make display-name change silently orphans rename blocks filed under the old name, which would resurrect `e-max/emax-90s` beside this record."
+  # --- Harley-Davidson convention tripwires (S2W B5 batch 1, 2026-07-25) ------
+  # The two H-D rules pull in OPPOSITE directions, so a single regression can only
+  # be caught by asserting both: codes close up, registered names space out.
+  - id: harley-davidson/fxrs
+    kind: motorcycle
+    availability_includes: [nl]
+    reason: "CODE rule: H-D model codes are continuous uppercase (harley-davidson.com model-codes page). Three registry spellings fold here — 'Fxr-S', 'Fxrs' and a published 'F X R S'. If f-x-r-s or fxr-s reappears, a registry re-split the code and the renames went inert."
+  - id: harley-davidson/flhtc
+    kind: motorcycle
+    availability_includes: [nl]
+    reason: "same CODE rule, and the nastiest split of the set: 'FL Htc' was published as its own id. Guards against the detector's proposal being applied by mistake — canonical() suggested 'FL Htc' as the canonical form."
+  - id: harley-davidson/fat-boy
+    kind: motorcycle
+    availability_includes: [nl]
+    reason: "NAME rule, opposite direction to the codes above: H-D registers 'Fat Boy®' as two words, so fatboy folds into fat-boy. If both ids exist again the batch regressed."
+  - id: harley-davidson/panhead
+    kind: motorcycle
+    availability_includes: [nl]
+    reason: "the EXCEPTION that proves no mechanical rule works here: engine-era nicknames (Panhead, Shovelhead, Knucklehead) are ONE word while registered model names are spaced. A rule that got Fat Boy right and this wrong would look correct in aggregate."
+  - id: harley-davidson/sportster
+    kind: motorcycle
+    availability_includes: [nl]
+    reason: "guards the worst false positive available: two registries genuinely publish 'SPORT STER', and find_duplicate_spellings.rb proposed 'Sport Ster' as canonical because it has more tokens. Sportster® is one word."

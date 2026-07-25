@@ -352,6 +352,99 @@ Gilera:
 GMC:
   Pickup: Pick-Up                             # spelling variant of "Pick-Up" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+Harley-Davidson:
+  # H-D CONVENTION DOSSIER (§11.2). Two rules, both from Harley's own pages,
+  # and rows routinely need both at once ("FLSTF Fat Boy"):
+  #
+  #  1. MODEL CODES are continuous UPPERCASE alphanumeric — no spaces, no
+  #     hyphens: FXST, FLHTCU, FXRS, FLSTF, FLHXS, RA1250, RH1250S.
+  #     https://www.harley-davidson.com/us/en/content/expert-advice/harley-davidson-model-codes.html
+  #     Prefix = engine family (F = Big Twin, XL = Sportster), then the model
+  #     family (FL, FXD), then variant suffixes (C = Custom/Classic, I = fuel
+  #     injection, R = Roadster/Road King/Racing). Registries split these codes
+  #     on arbitrary boundaries ("FL Htc", "F X R S", "Fx Stc"), which is what
+  #     produced most of the collisions below.
+  #  2. MODEL NAMES are SPACED, in H-D's registered forms: Fat Boy®,
+  #     Low Rider®, Wide Glide®, Super Glide®, Electra Glide®, Road King®,
+  #     Softail® Deluxe, Sportster®, Street Bob®. Same page + the model pages.
+  #
+  # ENGINE-ERA NICKNAMES (Panhead, Shovelhead, Knucklehead) are ONE word. They
+  # are heritage/enthusiast terms rather than registered model names, and the
+  # closed form is universal usage — so they go the OPPOSITE way from the
+  # registered names above. That split is exactly why no mechanical rule works
+  # here; see the note below.
+  #
+  # WHY THESE ARE HAND-RESOLVED. find_duplicate_spellings.rb's `canonical()`
+  # picks the variant with the MOST tokens, which for an alphanumeric type code
+  # selects the registry-mangled spelling. Measured on this make it was right on
+  # 10 of 34 groups; it proposed "F X R S" for FXRS, "FL Htc" for FLHTC,
+  # "W L C" for WLC and "Sport Ster" for Sportster. Treat its canonical column
+  # as a candidate, never as evidence.
+  #
+  # 20 of these lines are DISPLAY-ONLY (both spellings already slug the same,
+  # e.g. Fxstc -> FXSTC), so they change `name` and not `id` and correctly have
+  # no former_ids entry — rule 1 there forbids aliasing an id that still lives.
+  # The other 35 are real id changes and every one MERGES into an id that
+  # already exists, so nothing can vanish.
+  Dyna Lowrider:               Dyna Low Rider           # registered spelling
+  Dyna Wideglide:              Dyna Wide Glide          # registered spelling
+  Electraglide:                Electra Glide            # registered spelling
+  F X R S:                     FXRS                     # type code — uppercase, closed
+  FL Htc:                      FLHTC                    # type code — uppercase, closed
+  Fatboy:                      Fat Boy                  # registered spelling
+  Flh Electra-Glide:           FLH Electra Glide        # code closed + registered name spaced (display-only, id stable)
+  Flh Electraglide:            FLH Electra Glide        # code closed + registered name spaced
+  Flh-1200:                    FLH1200                  # type code — uppercase, closed
+  Flhrc Road King:             FLHRC Road King          # code closed + registered name spaced (display-only, id stable)
+  Flhrc Roadking:              FLHRC Road King          # code closed + registered name spaced
+  Flhri Road King:             FLHRI Road King          # code closed + registered name spaced (display-only, id stable)
+  Flhri Roadking:              FLHRI Road King          # code closed + registered name spaced
+  Flhtc:                       FLHTC                    # type code — uppercase, closed (display-only, id stable)
+  Flhtc-I:                     FLHTCI                   # type code — uppercase, closed
+  Flhtci:                      FLHTCI                   # type code — uppercase, closed (display-only, id stable)
+  Flhtcu-I:                    FLHTCUI                  # type code — uppercase, closed
+  Flhtcui:                     FLHTCUI                  # type code — uppercase, closed (display-only, id stable)
+  Flst-F:                      FLSTF                    # type code — uppercase, closed
+  Flstf:                       FLSTF                    # type code — uppercase, closed (display-only, id stable)
+  Flstf Fat Boy:               FLSTF Fat Boy            # code closed + registered name spaced (display-only, id stable)
+  Flstf Fatboy:                FLSTF Fat Boy            # code closed + registered name spaced
+  Flstn Softail De Luxe:       FLSTN Softail Deluxe     # code closed + registered name spaced
+  Flstn Softail Deluxe:        FLSTN Softail Deluxe     # code closed + registered name spaced (display-only, id stable)
+  Fx St:                       FXST                     # type code — uppercase, closed
+  Fx Stc:                      FXSTC                    # type code — uppercase, closed
+  Fxst-C:                      FXSTC                    # same as Fxe-F above: a third hyphenated spelling of the same code, invisible in the detector output because it reports one representative name per id
+  Fxd/i Dyna Super Glide:      FXDI Dyna Super Glide    # code closed + registered name spaced
+  Fxdi Dyna Super Glide:       FXDI Dyna Super Glide    # code closed + registered name spaced (display-only, id stable)
+  Fxe F:                       FXEF                     # type code — uppercase, closed
+  Fxe-F:                       FXEF                     # SAME id, DIFFERENT nameplate string: the raws carry "FXE F" and "FXE-F" and both slug to fxe-f, so whichever the reconciler picks as the display name is the one a rename must match. Keying only the space form left this behind — a rename must cover every spelling the pipeline can PRODUCE, not just the one the catalog happens to show
+  "Fxe/f":                     FXEF                     # the DOMINANT raw spelling and the one that actually held the fxe-f id: "FXE/F 1340" (153 rows) with a SLASH. Harley's code is FXEF (the Fat Bob) and the raws confirm it themselves — "FXE/F 1340 FAT BOB", "FXE/F FAT BOB". Found only by grepping the snapshots for every FXE spelling after two rebuilds still left fxe-f standing; the detector never showed it, because it reports ONE representative name per id and the representative changed between builds
+  Fxe-1200:                    FXE1200                  # type code — uppercase, closed
+  Fxef:                        FXEF                     # type code — uppercase, closed (display-only, id stable)
+  Fxr Super Glide:             FXR Super Glide          # code closed + registered name spaced (display-only, id stable)
+  Fxr Superglide:              FXR Super Glide          # code closed + registered name spaced
+  Fxr-S:                       FXRS                     # type code — uppercase, closed
+  Fxrs:                        FXRS                     # type code — uppercase, closed (display-only, id stable)
+  Fxrs Low Rider:              FXRS Low Rider           # code closed + registered name spaced (display-only, id stable)
+  Fxrs Lowrider:               FXRS Low Rider           # code closed + registered name spaced
+  Fxs Low Rider:               FXS Low Rider            # code closed + registered name spaced (display-only, id stable)
+  Fxs Lowrider:                FXS Low Rider            # code closed + registered name spaced
+  Fxst:                        FXST                     # type code — uppercase, closed (display-only, id stable)
+  Fxst-S:                      FXSTS                    # type code — uppercase, closed
+  Fxstc:                       FXSTC                    # type code — uppercase, closed (display-only, id stable)
+  Fxsts:                       FXSTS                    # type code — uppercase, closed (display-only, id stable)
+  Lowrider:                    Low Rider                # registered spelling
+  Pan Head:                    Panhead                  # engine-era nickname, one word in universal usage
+  Shovel Head:                 Shovelhead               # engine-era nickname, one word in universal usage
+  Softail Fatboy:              Softail Fat Boy          # registered spelling
+  Sport Ster:                  Sportster                # registered spelling
+  Superglide:                  Super Glide              # registered spelling
+  Vrod:                        V-Rod                    # registered spelling
+  Vrsca V-Rod:                 VRSCA V-Rod              # code closed + registered name spaced (display-only, id stable)
+  Vrsca Vrod:                  VRSCA V-Rod              # code closed + registered name spaced
+  W L C:                       WLC                      # type code — uppercase, closed
+  Wideglide:                   Wide Glide               # registered spelling
+  Wlc:                         WLC                      # type code — uppercase, closed (display-only, id stable)
+
 Honda:
   Honda: null                             # motorcycle fi|nl AND moped nl|nz — one make-scoped key covers both kinds (renames are kind-blind)
 
@@ -1560,6 +1653,104 @@ Willys:
   Mb Jeep: M B Jeep                           # spelling variant of "M B Jeep" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Cj 3B: CJ3B                                 # spelling variant of "CJ3B" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Cj-5: CJ5                                   # spelling variant of "CJ5" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+
+Yamaha:
+  # YAMAHA CONVENTION DOSSIER (§11.2). FOUR rules, and they contradict each
+  # other — which is exactly why nothing mechanical can resolve this make and
+  # why the detector's canonical() column is unusable here:
+  #
+  #  1. MT series — HYPHENATED, uppercase, leading zero kept: MT-03, MT-07,
+  #     MT-09, MT-125.
+  #     https://www.yamaha-motor.eu/gb/en/motorcycles/hyper-naked/pdp/mt-07-2025/
+  #  2. MAX series — ALL-CAPS and CLOSED, no hyphen, no space: TMAX, XMAX,
+  #     NMAX. Yamaha's own MAX-series page:
+  #     https://global.yamaha-motor.com/business/mc/lineup/max/
+  #     Displacement is appended with a SPACE ("TMAX 500", "XMAX 300").
+  #     So MT-07 hyphenates and XMAX does not: both are correct.
+  #  3. Type codes — CLOSED uppercase (FZS1000, TZR250, YL1, FS1), EXCEPT when
+  #     the suffix is a VARIANT marker, which Yamaha hyphenates: FZ1-N (naked),
+  #     FZ1-S (Fazer, semi-faired), FZ1-SA (ABS), FZ6-S. First-generation
+  #     Europe was FZS1000 Fazer, closed.
+  #     https://global.yamaha-motor.com/news/2005/0929/fz1.html
+  #  4. Model NAMES follow Yamaha's own spelling, which is NOT uniform.
+  #     "DragStar" is camelCase — Yamaha Communication Plaza, "1999 XVS1100
+  #     DragStar" (https://global.yamaha-motor.com/showroom/cp/collection/xvs1100dragstar/)
+  #     while "Road Star" is TWO words — "1999 XV1600 Road Star"
+  #     (https://global.yamaha-motor.com/showroom/cp/collection/xv1600roadstar/).
+  #     Same company, same era, same product category, opposite conventions.
+  #     "Neo's" carries the apostrophe.
+  #
+  # THE CONVENTION CHANGE, recorded rather than flattened: the 1985 model was
+  # the V-Max and Yamaha RENAMED it VMAX for the 2009 relaunch, so BOTH
+  # spellings are historically correct for their own era. Merged to VMAX (the
+  # marque's current form) because a model record is a NAMEPLATE covering its
+  # generations, and the schema has no year fields yet to carry the split
+  # (G16). If year_start/year_end ever land, this is the first candidate to
+  # split back apart — do not treat the merge as settling the history.
+  #
+  # 23 of the lines below are DISPLAY-ONLY (same slug, e.g. Mt-07 -> MT-07):
+  # they change `name`, not `id`, and correctly carry no former_ids entry.
+  Drag Star:                 DragStar               # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Drag Star 1100:            DragStar 1100          # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Drag Star Classic:         DragStar Classic       # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Dragstar:                  DragStar               # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  FZ1-Sa:                    FZ1-SA                 # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS) (display-only)
+  FZ1N:                      FZ1-N                  # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  FZ1S:                      FZ1-S                  # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  FZ1SA:                     FZ1-SA                 # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  FZ6S:                      FZ6-S                  # hyphenated VARIANT suffix (N=naked, S=Fazer semi-faired, A=ABS)
+  Fs-1:                      FS1                    # type code — closed uppercase
+  Fzs-1000:                  FZS1000                # type code — closed uppercase
+  MT01:                      MT-01                  # MT series — hyphenated (yamaha-motor.eu)
+  MT03:                      MT-03                  # MT series — hyphenated (yamaha-motor.eu)
+  MT07:                      MT-07                  # MT series — hyphenated (yamaha-motor.eu)
+  MT09:                      MT-09                  # MT series — hyphenated (yamaha-motor.eu)
+  MT09 Tracer:               MT-09 Tracer           # MT series — hyphenated (yamaha-motor.eu)
+  MT09A:                     MT-09A                 # MT series — hyphenated (yamaha-motor.eu)
+  MT09SP:                    MT-09SP                # MT series — hyphenated (yamaha-motor.eu)
+  MT125:                     MT-125                 # MT series — hyphenated (yamaha-motor.eu)
+  "Mt  09SP":                MT-09SP                # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-01:                     MT-01                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-03:                     MT-03                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-07:                     MT-07                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-09:                     MT-09                  # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-09 Tracer:              MT-09 Tracer           # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-09A:                    MT-09A                 # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Mt-125:                    MT-125                 # MT series — hyphenated (yamaha-motor.eu) (display-only)
+  Neo S:                     Neo's                  # Yamaha writes it with the apostrophe (display-only)
+  Neos:                      Neo's                  # Yamaha writes it with the apostrophe
+  Neos 100:                  Neo's 100              # Yamaha writes it with the apostrophe
+  Nmax:                      NMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Nmax 150:                  NMAX 150               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Nmax Tech Max:             NMAX Tech Max          # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Roadstar:                  Road Star              # Road Star is TWO words in Yamaha's own usage — opposite to DragStar, same era
+  T MAX500:                  TMAX 500               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  Tmax 500:                  TMAX 500               # the ALREADY-CLOSED raw "TMAX 500" title-cases to "Tmax 500", a third spelling of this id; same slug, so display-only, but without it the catalog shows whichever raw the reconciler picked
+  T-MAX530:                  TMAX 530               # "T-MAX 530" collapses to "T-MAX530" (pass 1 closes the letter/digit gap, pass 2 needs 4+ letters to reopen it and "MAX" is 3). Not a collision the detector could see — t-max530 is below threshold and lives in candidates
+  T Max:                     TMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  T-Max:                     TMAX                   # ANOTHER spelling of the same id: t-max is produced by "T Max" AND "T-Max", and which one shows in the catalog depends on which the reconciler picks that build. Keying only one leaves the id standing
+  Tmax:                      TMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Tzr-250:                   TZR250                 # type code — closed uppercase
+  V-MAX1200:                 VMAX 1200              # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  V-Max:                     VMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  V Max:                     VMAX                   # as above — v-max is produced by "V-Max" AND "V Max"
+  Vmax:                      VMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  X-MAX125:                  XMAX 125               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  X-MAX300:                  XMAX 300               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  X-MAX400:                  XMAX 400               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page)
+  XP500 Tmax:                XP500 TMAX             # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  XVS1100 Drag Star:         XVS1100 DragStar       # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  XVS1100 Dragstar:          XVS1100 DragStar       # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  XVS1100/A:                 XVS1100A               # type code — closed uppercase
+  XVS1100A Dragstar:         XVS1100A DragStar      # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  XVS650 Drag Star:          XVS650 DragStar        # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  XVS650 Dragstar:           XVS650 DragStar        # DragStar is camelCase in Yamaha's own usage (Communication Plaza) (display-only)
+  XVS650A Drag Star:         XVS650A DragStar       # DragStar is camelCase in Yamaha's own usage (Communication Plaza)
+  Xmax:                      XMAX                   # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Xmax 300:                  XMAX 300               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
+  Yl-1:                      YL1                    # type code — closed uppercase
+  Yzf-R1:                    YZF-R1                 # type code — closed uppercase (display-only)
+  Yzfr 1:                    YZF-R1                 # type code — closed uppercase
 
 Zero Motorcycles:
   # Residue of a SINGULAR/PLURAL mismatch between the two columns, not a naming
