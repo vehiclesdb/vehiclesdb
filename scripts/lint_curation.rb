@@ -100,9 +100,17 @@ end
 Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].sort.each do |abs|
   rel = abs.sub("#{ROOT}/", "")
   doc = YAML.safe_load_file(abs, permitted_classes: [], aliases: false) || {}
-  unknown = doc.keys - %w[kinds body_types notes]
-  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/notes)" unless unknown.empty?
+  # `by_model` routes individual nameplates to a kind, for sources whose file has
+  # no vehicle-class column at all. Germany's KBA FZ 10.1 is the case: every row
+  # is EU class M1 by construction, and M1 includes the passenger versions of
+  # vans, so the kind has to come from the nameplate.
+  unknown = doc.keys - %w[kinds body_types by_model notes]
+  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/notes)" unless unknown.empty?
   fail! "#{rel}: missing the `kinds:` map" unless doc.key?("kinds")
+  (doc["by_model"] || {}).each do |model, kind|
+    next if %w[car van motorcycle moped truck bus].include?(kind.to_s)
+    fail! "#{rel}: by_model #{model.inspect} → #{kind.inspect} is not a known kind"
+  end
 end
 
 # ── 3. make keys must resolve to a real make ─────────────────────────────────
