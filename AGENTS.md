@@ -27,12 +27,18 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
    the first one before you do. That exact reasoning deleted SEAT’s entire
    current German lineup once, and nearly deleted 148 more records including the
    best-selling car in Germany.
-7. `CORRECTION-PASS-2026-07-LOG.md` — the verbatim 40-turn working log behind those
+7. `PRD-QUALITY.md` — **the operating document for all quality work**: the
+   defect taxonomy, the verification ledger, batch/swarm orchestration, dedup
+   and canonicality specs, the gates still to build, and the program phases.
+   If you are here to review, fix, dedupe, enrich or extend the data, this is
+   your work order. It also carries the gap register — the authoritative
+   list of everything currently known to need fixing.
+8. `CORRECTION-PASS-2026-07-LOG.md` — the verbatim 40-turn working log behind those
    briefs. Read it when you need to know WHY a decision went the way it did, or want
    the raw measurement behind a claim. It deliberately contains the wrong turns as
    well as the right ones: several of the most expensive lessons here only make
    sense alongside the mistake that produced them.
-8. This file
+9. This file
 
 ## Invariants (never break)
 
