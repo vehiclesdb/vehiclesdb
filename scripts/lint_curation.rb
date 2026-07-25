@@ -138,6 +138,33 @@ end
   end
 end
 
+# ── 1d. a null rename must not contradict a move ─────────────────────────────
+#
+# A `null` rename BEATS a move by design (an explicit drop is a stronger
+# statement than a routing rule). So if renames.yml drops "SEAT|Formentor" while
+# moves.yml routes it to Cupra, the move is dead and NOTHING says so: the record
+# just quietly disappears instead of moving.
+#
+# This is not hypothetical — it happened three times, because a union merge
+# cannot tell a deliberate DELETION from an entry the other side simply lacks, so
+# every merge from main resurrected the retired null and silently re-killed the
+# Cupra move. Contradiction is now a lint failure rather than a silent one.
+moves_path = File.join(ROOT, "overrides/models/moves.yml")
+if File.exist?(moves_path)
+  moves = YAML.safe_load_file(moves_path, permitted_classes: [], aliases: false) || {}
+  renames = YAML.safe_load_file(File.join(ROOT, "overrides/models/renames.yml"),
+                                permitted_classes: [], aliases: false) || {}
+  moves.each_key do |from|
+    make, model = from.to_s.split("|", 2).map(&:strip)
+    next unless make && model
+    next unless renames[make]&.key?(model)
+    next unless renames[make][model].nil?
+    fail! "overrides/models/renames.yml: #{make.inspect} #{model.inspect} is dropped (null) while " \
+          "moves.yml routes it to #{moves[from].inspect}. A null rename BEATS a move, so the move is " \
+          "dead and the record vanishes instead of moving. Retire the null, or delete the move."
+  end
+end
+
 # ── 2. kind_maps shape ───────────────────────────────────────────────────────
 #
 # These files are SOURCE-keyed, not kind-keyed, so both maintainers' kinds live
