@@ -543,3 +543,23 @@ checks:
     kind: motorcycle
     availability_includes: [gb, nl]
     reason: "same split: gb wrote 'PIAGGIO PK50 XL' (25 regs) and nl 'PK50XL' (27) — reuniting them is what gets this published at all"
+  # --- make-merge tripwires (S2W, 2026-07-25) --------------------------------
+  # These guard MAKE merges, which fail differently from model merges: nothing
+  # vanishes at the model level, the make id just silently forks back into two
+  # and every consumer sees the marque twice with half its countries each.
+  - id: zero-motorcycles/sr-f
+    kind: motorcycle
+    availability_includes: [gb, nl, nz]
+    reason: "MERGE GUARD: UK/NZ register the marque as bare 'ZERO', NL/ES/FI as 'ZERO MOTORCYCLES'. gb+nz here proves the ZERO alias is still firing; nl proves the union actually happened rather than the two ids merely coexisting. If gb/nz drop off, `motorcycle/zero/*` has reappeared as a second make."
+  - id: zero/sr-f
+    kind: motorcycle
+    exists: false
+    reason: "the losing side of the same merge. It must stay dead: `zero` is a uniquely collision-prone make string and its former_ids aliases only stay honest while nothing is published under it."
+  - id: zero-motorcycles/xe
+    kind: motorcycle
+    availability_includes: [es, nl]
+    reason: "RDW writes merk 'ZERO MOTORCYCLES' (plural) with handelsbenaming 'ZERO MOTORCYCLE XE' (singular), so the exact prefix strip misses and the first-token fallback leaves 'Motorcycle' in the nameplate. If `zero-motorcycles/motorcycle-xe` returns, the renames.yml lines went inert."
+  - id: e-max/90s
+    kind: moped
+    availability_includes: [fi, nl]
+    reason: "RDW carries BOTH merk spellings (EMAX and E-MAX) for one marque in the same file. Guards the merge AND the rekeyed `E-Max:` renames block: a make display-name change silently orphans rename blocks filed under the old name, which would resurrect `e-max/emax-90s` beside this record."
