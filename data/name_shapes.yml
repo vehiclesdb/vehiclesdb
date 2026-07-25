@@ -69,6 +69,56 @@ legit:
     why: >-
       The Humberette (1903-1905, revived 1913) is a real Humber model name.
       https://en.wikipedia.org/wiki/Humberette
+  - id: jensen-healey
+    category: embedded_make
+    make: jensen
+    pattern: '\AJensen-Healey\z'
+    why: >-
+      The Jensen-Healey (1972-1976, ~10,500 built) is a real nameplate — a
+      Jensen Motors / Donald Healey joint venture, sold under exactly that
+      hyphenated name. https://en.wikipedia.org/wiki/Jensen-Healey
+
+  # ── modern marques whose OFFICIAL nameplates embed the make ────────────────
+  # These are not prefix-strip failures: the manufacturer's own naming puts the
+  # marque INSIDE the model name. Patterns are exact-list, never open-ended —
+  # a new "Mazda7" appearing tomorrow should surface as a suspect, not be
+  # silently excused by a wildcard.
+  - id: mazda-fused-official-names
+    category: embedded_make
+    make: mazda
+    pattern: '\AMAZDA[2356]\z'
+    why: >-
+      Since 2002 Mazda's official nameplates ARE the fused form — "Mazda2",
+      "Mazda3", "Mazda5", "Mazda6" (https://www.mazda.com/en/about/profile/library/,
+      and every national Mazda site: https://www.mazdausa.com/vehicles/mazda3-sedan).
+      13 sources corroborate. All-caps display styling is a display-form
+      question, not a shape defect.
+  - id: polestar-numbered-official-names
+    category: embedded_make
+    make: polestar
+    pattern: '\APolestar [2-6]\z'
+    why: >-
+      Polestar's models are officially named "Polestar 2" … "Polestar 5" — the
+      marque word is part of the nameplate (https://www.polestar.com/us/polestar-2/).
+      10-12 sources corroborate each.
+  - id: omoda-numbered-official-names
+    category: embedded_make
+    make: omoda
+    pattern: '\AOmoda (5|7|9|E5)\z'
+    why: >-
+      Chery's Omoda marque names its cars "Omoda 5", "Omoda 9", "Omoda E5" —
+      marque-in-the-name, per the brand's own European sites
+      (https://www.omodajaecoo-auto.de/modelle/omoda-5, https://omodauk.com).
+      The FUSED registry forms (OMODA5, OMODA5 EV/HEV) are folded into these
+      by renames.yml — only the spaced official forms are legitimate.
+  - id: jaecoo-numbered-official-names
+    category: embedded_make
+    make: jaecoo
+    pattern: '\AJaecoo [5-8]\z'
+    why: >-
+      Chery's Jaecoo marque names its cars "Jaecoo 5" … "Jaecoo 8"
+      (https://www.omodajaecoo-auto.de/modelle/jaecoo-7, https://www.jaecoo.co.uk).
+      Same structure as Omoda above; fused registry forms fold via renames.yml.
 
   # ── numeric type designations in the commercial kinds ─────────────────────
   # NAMING.md §7 makes this verdict explicitly KIND-DEPENDENT: in van, truck and
@@ -123,18 +173,22 @@ debt:
   - id: make-as-model-4w
     owner: s4w
     category: make_as_model
-    count: 2
+    count: 5
     why: >-
-      Was 51, now 2. Dropped 49 registry rows where the make was written into the
-      model column ("Audi Audi", "Toyota Toyota"); merged hummer/hummer into H1,
-      because the civilian AM General Hummer really was sold under that name from
-      1992 until the H1 rename in 1999. NOTE corroboration does NOT clear this
-      class — every one of the 51 was multi-source, because registers share the
-      same fallback habit when a model field is blank. What remains is
+      Was 51, then 2, now 5. Dropped 49 registry rows where the make was written
+      into the model column ("Audi Audi", "Toyota Toyota"); merged hummer/hummer
+      into H1, because the civilian AM General Hummer really was sold under that
+      name from 1992 until the H1 rename in 1999. NOTE corroboration does NOT
+      clear this class — every one of the 51 was multi-source, because registers
+      share the same fallback habit when a model field is blank. What remains:
       van/uaz/uaz, whose true identity is one of UAZ's own numeric type
       designations (452 / 469 / 3741 / 2206 — that IS their naming convention)
-      and cannot be recovered from an aggregate row. Tracked rather than guessed:
-      guessing at an unresolvable row is what produced the SEAT incident.
+      and cannot be recovered from an aggregate row; plus bus/geely/geely,
+      bus/yutong/yutong, bus/zhongtong/zhongtong — DELIBERATE additions from
+      dissolving NZTA's "FACTORY BUILT" pseudo-make (moves.yml 2026-07-25),
+      where the marque was ALL the model column carried, so make-as-model is
+      the honest maximum. Tracked rather than guessed: guessing at an
+      unresolvable row is what produced the SEAT incident.
 
   - id: spec-token-4w
     owner: s4w
@@ -148,12 +202,21 @@ debt:
   - id: embedded-make-prefix-4w
     owner: s4w
     category: embedded_make
-    count: 22
+    count: 1
     why: >-
-      Model names repeating their own make ("JAECOO5 EV", "OMODA5",
-      "Volkswagen-Vw"). Note multi-source corroboration does NOT clear this
-      class: every register shares the habit of prefixing the make, so it needs
-      per-record judgment against the manufacturer's own naming.
+      Was 22 declared / 24 measured (es_dgt re-land added two). Resolved
+      2026-07-25 by per-record judgment against the manufacturer's own naming,
+      exactly as this entry prescribed: 15 records were OFFICIAL
+      marque-in-the-name nameplates, moved to legit (mazda/polestar/omoda/
+      jaecoo entries above) with brand-site evidence; 7 were genuine fused or
+      repeated-make artifacts, merged into their corroborated canonical ids
+      via renames.yml + former_ids (AUDIA6→A6, Audi Q5→Q5, FIAT500→500,
+      JAECOO5 HEV→Jaecoo 5, OMODA5 HEV→Omoda 5, Lynk Co 01→01) or nulled with
+      a removals.yml manifest (Volkswagen-Vw — make twice, zero model info);
+      Jensen-Healey was a real nameplate, moved to legit. What remains is
+      van/palfinger/palfinger-p200txe-l-f24p-e6 — a crane-body type code
+      (PALFINGER_P200TXE-L_F24P_E6, fi/nl) that needs the coachbuilder
+      treatment, not a rename.
 
   # ── 2W half (S2W) — seeded from their measurement so the counter exists;
   #    they own the entries and the remedy (NEGOTIATION.md Turn 8 §4/§5) ──────

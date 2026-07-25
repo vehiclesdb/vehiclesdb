@@ -161,3 +161,27 @@
 "Piaggio|Primavera 50": "Vespa|Primavera 50"
 "Piaggio|S50": "Vespa|S50"
 "Piaggio|Sprint": "Vespa|Sprint"
+
+# ── NZ NZTA "FACTORY BUILT" pseudo-make (bus imports) ────────────────────────
+# NZTA's fleet data writes make="FACTORY BUILT" for fully-imported (non-NZ-
+# coachbuilt) buses and puts the ACTUAL MARQUE in the model column — it is a
+# body-provenance flag, not a manufacturer. Verified against the published
+# build 2026-07-25: the pseudo-make's only ≥threshold rows are `FACTORY BUILT |
+# GEELY / YUTONG / ZHONGTONG` (bus, nz_nzta single-source), and all three
+# target makes already exist in the bus kind (geely/c13e, yutong/e9…, and
+# zhongtong/lck — the latter also NZ-only). The model column carries no
+# nameplate beyond the marque, so the target is an honest make-as-model row
+# (van/uaz/uaz precedent) — tracked in data/name_shapes.yml debt
+# `make-as-model-4w`, NOT guessed into a specific nameplate (a Yutong bus in
+# NZ could be a ZK6119 or an E9; guessing is the SEAT-incident failure mode).
+#
+# HEADS-UP for whoever tackles the rest: ~600 sub-threshold candidate rows
+# remain under factory-built across ALL kinds (real historical marques in the
+# model column: Douglas, Francis Barnett, Dnepr, Optare, King Long…). Those
+# need per-row moves like these three — the pseudo-make must NEVER be allowed
+# to publish a record under its own name. After these moves the make has zero
+# published records, which is what makes the cross-make former_ids aliases
+# legal (former_ids.yml rule 3: old make gone from the build entirely).
+"Factory Built|Geely": "Geely|Geely"
+"Factory Built|Yutong": "Yutong|Yutong"
+"Factory Built|Zhongtong": "Zhongtong|Zhongtong"

@@ -19,6 +19,8 @@ Aston Martin:
 Audi:
   "5000S": "5000 S"                           # spelling variant of "5000 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Audi: null                                  # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+  AUDIA6: A6                                  # es_dgt/nl_rdw glue artifact ("AUDIA6") — the make fused onto the nameplate; merges into the 14-source A6 id
+  Audi Q5: Q5                                 # make repeated in the model column with a space, which strip_make_prefix misses when the RAW make spelling differs from the model's prefix; merges into the 14-source Q5 id
   A 2: A2                                     # spelling variant of "A2" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   A 3: A3                                     # spelling variant of "A3" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   A 4: A4                                     # spelling variant of "A4" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -265,6 +267,7 @@ Ferrari:
   F 430: F430                                 # spelling variant of "F430" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
 Fiat:
+  FIAT500: "500"                              # es_dgt/nl_rdw glue artifact — make fused onto the nameplate; merges into the corroborated 500 id. Value QUOTED: a bare 500 parses as Integer and crashes slugify (lint_curation catches this, but don't rely on it)
   "126P": "126 P"                             # spelling variant of "126 P" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "2300S": "2300 S"                           # spelling variant of "2300 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "500C": "500 C"                             # spelling variant of "500 C" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -393,6 +396,7 @@ Iveco:
 
 Jaecoo:
   "7": Jaecoo 7                           # official European name is "Jaecoo 7" (https://www.omodajaecoo-auto.de/modelle/jaecoo-7); "J7" is the China-market designation. Bare "7" is not self-identifying so the marque word stays (NAMING.md §1).
+  JAECOO5 HEV: Jaecoo 5                   # es_dgt form: marque fused + powertrain badge (HEV); folds into the 5-source Jaecoo 5 id like the OMODA5 EV precedent below
   J7: Jaecoo 7                            # China-market designation of the same car
   JAECOO7: Jaecoo 7                       # registry form with the marque fused; official spelling is spaced
   "7 Luxury": Jaecoo 7                    # trim level folds
@@ -669,6 +673,24 @@ Lincoln:
 
 Luqi:
   Luqi: null                              # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
+
+# Display name is "Lynk & Co" (catalog car/makes.json) — renames are keyed by
+# make DISPLAY NAME, and a key of "Lynk Co" would be silently inert.
+#
+# HISTORY, worth keeping: car/lynk-co/lynk-co-01 (was es+nl published) lost
+# its ES evidence when the 2026-07 es_dgt re-pin changed the raw spelling to
+# one that folds straight to "01" — the record DEMOTED to candidates rather
+# than merged, stranding the nl/fi residue spellings below (the exact
+# stranded-spelling failure moves.yml's LESSON block describes). A first fix
+# keyed "Lynk Co 01" — the OLD es form that no longer occurs anywhere — and
+# was caught by the reachability test as never-matching. Keys below are the
+# PRODUCED forms verified against build/candidates natives ("LYNK&CO |
+# LYNK &CO 01" and "LYNK&CO | Lynk and Co 01").
+"Lynk & Co":
+  Lynk &co 01: "01"                       # nl_rdw residue (69 regs): marque fused into the model column; the nameplate is just "01" (https://www.lynkco.com/en/01) — merges into the 5-source lynk-co/01 id. "01" QUOTED: bare 01 would parse as Integer 1
+  Lynk And Co 01: "01"                    # fi_traficom residue (22 regs): same marque-in-model habit, spelled out
+  Lynk Co 01: "01"                        # es_dgt residue (10 regs): the pre-2026-07 ES spelling still trickles in. NB the reachability test once called this key dead — false positive from replaying under the display make instead of the raw "LYNK&CO" (fixed in the test, raw-make variants)
+  "Link & Co 01": "01"                    # es_dgt residue (3 regs): registry misspelling (LINK for LYNK) of the same car
 
 MAN:
   Man: null                                   # registry rows where the make was written into the model column (truck kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
@@ -1102,6 +1124,7 @@ Omoda:
   C5: Omoda 5                             # China-market designation of the same car
   OMODA5: Omoda 5                         # registry form with the marque fused
   OMODA5 EV: Omoda 5                      # marque fused + powertrain badge
+  OMODA5 HEV: Omoda 5                     # es_dgt 2026-07 newcomer — same fused-marque habit, hybrid badge this time
   OMODA5 Hev: Omoda 5                     # as above
   C5 EV Long Range Max: Omoda 5           # China name + powertrain/range/trim tokens
   "5 Comfort Auto": Omoda 5               # trim + transmission tokens fold
@@ -1400,8 +1423,16 @@ TRS:
   Trrs One: One          # strip the embedded badge — bikes are badged TRRS but the make resolves to TRS, so the prefix strip missed (trsmotorcycles.com); CREATES the One canonical
   TR1 300: One 300       # TR1 = TRS's homologation type code (RDW type "TR 1 A", e9*168/2013*30008, 294cc), not a nameplate; road range is the One family
 
-Tvr:
-  "350I": "350 I"                             # spelling variant of "350 I" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+TVR:
+  # Block rekeyed Tvr → TVR 2026-07-25: the display-name pin changed the make's
+  # canonical form and orphaned the old block key (found by pipeline#8's
+  # block-reachability test; handed over in NEGOTIATION Turn 49). The old
+  # "350 I" target was also wrong — a mechanical spelling merge that predated
+  # the marque research. TVR's own wedge-era naming is lowercase-i "350i"
+  # (Tasmin 350i, 1983-89; https://www.tvr-car-club.co.uk/ and period press) —
+  # same convention family as BMW's i suffix.
+  "350I": 350i                                # registry casing of the TVR 350i (wedge era); official form is lowercase i
+  "350 I": 350i                               # spaced registry variant of the same car
 
 Unu:
   Unu: Scooter
@@ -1424,6 +1455,7 @@ Vmoto:
 
 Volkswagen:
   Buggy: null            # kit-car/beach-buggy registrations on Beetle base
+  Volkswagen-Vw: null    # fi/nl rows whose model column literally reads "VOLKSWAGEN-VW" — the make twice, zero model information. Unlike make-as-model keeps (van/uaz/uaz), there is no single-model marque hypothesis to preserve; removal manifest: removals.yml
   Kever: null            # Dutch for Beetle — classic-era rows; Beetle nameplate covers it
   Multivan: null         # van kind (T-series passenger)
   Kombi: null            # van kind

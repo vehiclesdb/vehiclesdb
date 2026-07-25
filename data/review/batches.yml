@@ -1,0 +1,46 @@
+# batches.yml — the REVIEW DISPATCH BOARD (PRD-QUALITY §6).
+#
+# One entry per batch of makes. A batch is CLAIMED by writing `claimed_by`,
+# DONE when every make in it has a ledger file that passes lint_review.rb
+# with dual signatures. Claim before working — two swarms researching the
+# same make burns tokens and produces two conflicting ledgers.
+#
+# RULES (from PRD §6, enforced socially + by lint where possible):
+#   * Batches are MAKE-sets, never kind-sets: the make's owner curates it in
+#     every kind (OWNERSHIP.yml is the owner map).
+#   * Approval-holder clusters must stay in ONE batch (a Vespa verdict written
+#     without the Piaggio context re-creates the split it exists to fix).
+#     Mandatory co-batches are listed in PRD §6.2 — {Piaggio,Vespa,Aprilia,
+#     Moto Guzzi,Derbi,Gilera}, {KTM,Husqvarna,GasGas}, {SEAT,Cupra},
+#     {Hyundai,Genesis}, {Honda,Montesa}, and the rest.
+#   * researcher != verifier within a batch, and the HARNESS AUTHOR never
+#     pilots their own harness (I-11): the pilot batch is run by S2W because
+#     S4W built lint_review + gen_review_pack.
+#
+# WORKFLOW per batch (PRD §7 has the full researcher/verifier prompts):
+#   1. build:  ruby pipeline/run.rb            (fresh build/out + candidates)
+#   2. pack:   ruby pipeline/tools/gen_review_pack.rb <makes…>
+#   3. research: one Opus researcher per make, pack + internet → draft ledger
+#   4. verify:  a DIFFERENT Opus verifier re-derives verdicts from evidence
+#   5. lint:   ruby scripts/lint_review.rb     (data repo; VDB_PACKS=… for
+#              staleness, VDB_CATALOG=… to measure against the fresh build)
+#   6. PR with ledger + any override fixes the review produced; CI green;
+#      merge; coverage baseline update (`lint_review.rb --update`) in the PR.
+#
+# status: open | claimed | in_review | done
+
+batches:
+  B-000:
+    makes: [iva]
+    owner: s2w            # moped-dominant make → S2W per OWNERSHIP.yml
+    status: open
+    claimed_by: null
+    notes: >-
+      PILOT (PRD P1). Deliberately small (16 published moped records, 34
+      candidate rows, 1 dropped row) and deliberately dirty: the pack already
+      shows a three-way duplicate-spelling split published as separate records
+      (iva/iva-ra9015 vs iva/ra-9015 vs iva/ra9015, and the ra9011 family
+      split across published+candidates) plus prefix-strip merges to sanity-
+      check (JET50, LUX50, VENTI 50). Run by S2W because S4W authored the
+      harness (I-11). The pilot's job is to break the harness, not to be
+      efficient — every friction point goes in the negotiation log.
