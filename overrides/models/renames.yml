@@ -1654,23 +1654,6 @@ Willys:
   Cj 3B: CJ3B                                 # spelling variant of "CJ3B" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Cj-5: CJ5                                   # spelling variant of "CJ5" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
-Zero Motorcycles:
-  # Residue of a SINGULAR/PLURAL mismatch between the two columns, not a naming
-  # choice. RDW writes merk="ZERO MOTORCYCLES" (plural) but handelsbenaming
-  # "ZERO MOTORCYCLE XB"/"XE" (singular). strip_make_prefix tries the exact raw
-  # make first (no match — plural ≠ singular), then falls back to the raw make's
-  # FIRST TOKEN, which strips only "ZERO " and leaves "MOTORCYCLE" sitting in
-  # the nameplate. Verified against the current normalizer: the plural form
-  # "ZERO MOTORCYCLES XE" strips correctly to "Xe", so this is specific to the
-  # 3 singular rows (measured 2026-07-25, m9d7-ebf2).
-  #
-  # Fixed with override lines rather than a prefix-normalizing rule on purpose:
-  # NAMING.md "Rule-first" sets the bar at ~20 instances and this is 3. A
-  # singular/plural-tolerant strip is also the kind of loosening that would
-  # start eating real nameplates (a "Motorcycle"-prefixed model is rare but a
-  # plural-insensitive prefix match is not obviously safe across 849 makes).
-  Motorcycle Xb: Xb    # raw handelsbenaming "ZERO MOTORCYCLE XB" (2 rows); merges into the existing moped/zero-motorcycles/xb
-  Motorcycle Xe: Xe    # raw handelsbenaming "ZERO MOTORCYCLE XE" (1 row); merges into the existing motorcycle/zero-motorcycles/xe
 Yamaha:
   # YAMAHA CONVENTION DOSSIER (§11.2). FOUR rules, and they contradict each
   # other — which is exactly why nothing mechanical can resolve this make and
@@ -1768,6 +1751,24 @@ Yamaha:
   Yl-1:                      YL1                    # type code — closed uppercase
   Yzf-R1:                    YZF-R1                 # type code — closed uppercase (display-only)
   Yzfr 1:                    YZF-R1                 # type code — closed uppercase
+
+Zero Motorcycles:
+  # Residue of a SINGULAR/PLURAL mismatch between the two columns, not a naming
+  # choice. RDW writes merk="ZERO MOTORCYCLES" (plural) but handelsbenaming
+  # "ZERO MOTORCYCLE XB"/"XE" (singular). strip_make_prefix tries the exact raw
+  # make first (no match — plural ≠ singular), then falls back to the raw make's
+  # FIRST TOKEN, which strips only "ZERO " and leaves "MOTORCYCLE" sitting in
+  # the nameplate. Verified against the current normalizer: the plural form
+  # "ZERO MOTORCYCLES XE" strips correctly to "Xe", so this is specific to the
+  # 3 singular rows (measured 2026-07-25, m9d7-ebf2).
+  #
+  # Fixed with override lines rather than a prefix-normalizing rule on purpose:
+  # NAMING.md "Rule-first" sets the bar at ~20 instances and this is 3. A
+  # singular/plural-tolerant strip is also the kind of loosening that would
+  # start eating real nameplates (a "Motorcycle"-prefixed model is rare but a
+  # plural-insensitive prefix match is not obviously safe across 849 makes).
+  Motorcycle Xb: Xb    # raw handelsbenaming "ZERO MOTORCYCLE XB" (2 rows); merges into the existing moped/zero-motorcycles/xb
+  Motorcycle Xe: Xe    # raw handelsbenaming "ZERO MOTORCYCLE XE" (1 row); merges into the existing motorcycle/zero-motorcycles/xe
 
 Zundapp:
   Zundapp: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
