@@ -176,6 +176,68 @@ if File.exist?(moves_path)
           "moves.yml routes it to #{moves[from].inspect}. A null rename BEATS a move, so the move is " \
           "dead and the record vanishes instead of moving. Retire the null, or delete the move."
   end
+
+  # ── 1e. a move TARGET must already be canonical ────────────────────────────
+  #
+  # RENAMES RUN BEFORE MOVES, so a move's target nameplate is NOT re-normalized
+  # against the destination make. If moves.yml routes to "Vespa|Seigiorni" while
+  # renames.yml has `Vespa: Seigiorni -> Sei Giorni`, the rename never fires for
+  # those rows — at rename time the make is still the SOURCE make (Piaggio), so
+  # the Vespa block is never consulted — and the move publishes a second,
+  # non-canonical record beside the canonical one, forever.
+  #
+  # Found the hard way: it was the last surviving duplicate-spelling group in
+  # the two-wheel half after 163 others had been resolved, and it survived a
+  # full batch precisely because the rename LOOKED correct in isolation
+  # (classify("VESPA","SEIGIORNI") returns "Sei Giorni" — it is only rows
+  # arriving as PIAGGIO that miss).
+  moves.each do |from, to|
+    next unless to.is_a?(String)
+    t_make, t_model = to.split("|", 2).map { |s| s&.strip }
+    next unless t_make && t_model
+    next unless renames[t_make]&.key?(t_model)
+    canon = renames[t_make][t_model]
+    next if canon.nil? # a null target is check 1d's problem, not this one
+    fail! "overrides/models/moves.yml: #{from.inspect} targets #{to.inspect}, but #{t_make.inspect} " \
+          "renames #{t_model.inspect} -> #{canon.inspect}. Renames run BEFORE moves, so the move target " \
+          "is NOT re-normalized and this publishes a non-canonical record beside the canonical one. " \
+          "Write the canonical form directly in the move target."
+  end
+end
+
+# ── 1f. former_ids must not chain or cycle ───────────────────────────────────
+#
+# An alias whose TARGET is itself an alias key sends a consumer to an id that is
+# also dead — one redirect short of useful at best, and an infinite loop at
+# worst. Two shapes, both seen for real:
+#
+#   CHAIN  a -> b -> c, because a later batch relocated b after a was written.
+#          Three of these existed at once after the tail batch moved Vespa's
+#          "Seigiorni" and Aprilia's "Capo Nord".
+#   CYCLE  a -> b AND b -> a. This is the DIRECTION WAR that S4W found in
+#          renames.yml (NEGOTIATION Turn 56), in the alias file instead: an
+#          auto-generated de-hyphenation alias (gsx-r -> gsxr) met a later batch
+#          that reversed the canonical (Gsxr -> GSX-R), and the pair published
+#          two live records pointing at each other. Keys are unique so the
+#          duplicate-key check cannot see it, and both halves look right alone.
+fi_path = File.join(ROOT, "overrides/models/former_ids.yml")
+if File.exist?(fi_path)
+  fi = YAML.safe_load_file(fi_path, permitted_classes: [], aliases: false) || {}
+  target = ->(v) { v.is_a?(Hash) ? v["to"] : v }
+  fi.each do |old_id, v|
+    tgt = target.call(v)
+    next unless fi.key?(tgt)
+    if target.call(fi[tgt]) == old_id
+      fail! "overrides/models/former_ids.yml: DIRECTION WAR — #{old_id.inspect} -> #{tgt.inspect} and " \
+            "#{tgt.inspect} -> #{old_id.inspect}. Each alias names the other's key, so both ids are " \
+            "'former' and a consumer holding either is sent to a dead id. Pick one canonical and delete " \
+            "the reverse."
+    else
+      fail! "overrides/models/former_ids.yml: CHAIN — #{old_id.inspect} -> #{tgt.inspect}, but " \
+            "#{tgt.inspect} is itself an alias for #{target.call(fi[tgt]).inspect}. Point the first one " \
+            "straight at the final target: a consumer following one redirect lands on another dead id."
+    end
+  end
 end
 
 # ── DIRECTION WAR: a rename whose TARGET is also a KEY in the same block ─────
