@@ -10,7 +10,8 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
 2. `SCHEMA.md` — the shapes and the growth/versioning contract
 3. `DECISIONS.md` — why things are the way they are (do not re-litigate)
 4. `SOURCES.md` — per-source operational notes and gotchas
-5. This file
+5. `NAMING.md` — the naming canon and evidence standards (what to call things)
+6. This file
 
 ## Invariants (never break)
 
@@ -34,6 +35,51 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
 - **No logos, no vehicle imagery.** Word marks as plain-text facts only.
 - **Ids are append-only.** Never rename or delete a published id; renames
   happen through the pipeline's alias mechanism.
+
+## Two maintainers, one dataset (read before you edit anything)
+
+Curation is split by MAKE, not by kind: **one make = one owner, across all six
+kinds and all defect classes.** The owner is the side that owns the make's
+dominant kind by record count. The map is generated into `OWNERSHIP.yml` by
+`scripts/gen_ownership.rb` — 860 makes, zero overlap, with the 26 makes that
+span both kind groups listed explicitly.
+
+- **s4w** — car, van, truck, bus (427 makes)
+- **s2w** — motorcycle, moped (433 makes)
+
+Consequence worth internalising: each owner curates their makes **in every
+kind**, so each side holds records inside the other's kinds (measured: 427
+four-wheel records under two-wheel-owned makes, 81 the other way). "Done" is
+therefore defined per make-set, never per kind-set.
+
+### Working rules
+
+- **Never work in the primary clones.** `~/GitHub/vehiclesdb` and
+  `~/GitHub/vehiclesdb-pipeline` are read-only, for reading merged state. Each
+  maintainer works in their own `git worktree` (`s4w/…` / `s2w/…` branches), so
+  a `checkout` on one side cannot change the other's tree mid-edit.
+- **Append-only inside your own region; never reorder another's lines.** Make
+  blocks are kept alphabetical (`scripts/reorg_make_blocks.rb`) so concurrent
+  edits land in different places and merge cleanly.
+- **Duplicate YAML keys destroy work silently.** `YAML.safe_load` keeps the
+  LAST duplicate: two `Honda:` blocks means one block vanishes with lint green,
+  build green, and renames failing silently by design.
+  `scripts/lint_curation.rb` is the guard. Run it.
+- **No force-push anywhere**, including `main` in either repo.
+- Pipeline repo is partitioned by FILE, not by make — see NEGOTIATION.md.
+
+## The curation scripts
+
+| script | what it catches |
+|---|---|
+| `lint_overrides.rb` | shape/vocabulary of the override files (pre-existing) |
+| `lint_curation.rb` | duplicate YAML keys, make keys that match no display name (inert forever), curation added without a stated reason |
+| `lint_dataset.rb` | name-SHAPE defects in the published catalog + drop-list effectiveness; `legit`/`debt` buckets in `data/name_shapes.yml` |
+| `reorg_make_blocks.rb` | keeps make blocks alphabetical (`--check` in CI) |
+| `gen_ownership.rb` | regenerates `OWNERSHIP.yml` from the catalog |
+
+All five run in CI on every PR (`.github/workflows/lint.yml`) and in seconds
+locally. `lint_dataset.rb` is report-only until the `debt` section is empty.
 
 ## Safe things to do here
 

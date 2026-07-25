@@ -1,111 +1,14 @@
-# Final per-make nameplate corrections, applied AFTER the pipeline's
-# normalization. `null` drops the entry; a string renames/merges it into
-# another nameplate. Keys are canonical make display names; sub-keys are the
-# post-normalization nameplate as the pipeline produced it (that's why some
-# look odd — they're what survives normalization, e.g. "Cee D").
-#
-# This is the "last word" file (PRD-2 §8.7 spirit): don't fight it, but every
-# line must say WHY. Seeded from the RDW MVP (scripts/build.rb OVERRIDES,
-# hand-verified against live RDW 2026-06); extended during multi-source
-# reconciliation (source noted per line).
-
-Mercedes-Benz:
-  Evito: null            # eVito is the van kind (electric Vito), leaks via RDW car class
-  "200": null            # bare engine-code registrations (W123/W124 era), not nameplates
-  200 D: null
-  300 D: null
-  280 SE: null
-Volkswagen:
-  Buggy: null            # kit-car/beach-buggy registrations on Beetle base
-  Kever: null            # Dutch for Beetle — classic-era rows; Beetle nameplate covers it
-  Multivan: null         # van kind (T-series passenger)
-  Kombi: null            # van kind
-  Passat CC: Passat      # CC marketed as Passat CC then standalone; folded (dropdown UX)
-  Touareg R: Touareg     # R is a trim
-Opel:
-  Karl / Viva: Karl      # RDW dual-market label
-  Karl/viva: Karl
-  Karl Rocks / Viva Rocks: Karl
-  Karl Rocks: Karl       # Rocks is a trim
-  Crossland X: Crossland # X dropped in 2020 facelift; one nameplate
-  Grandland X: Grandland
-  Mokka X: Mokka
-  Insignia Grand Sport: Insignia
-  Astra Twin Top: Astra  # coupé-cabrio variant
-  Astra-CC: Astra
-  Astra-Caravan: Astra   # estate variant
-Renault:
-  Megane Scenic: Scenic  # first-gen Scenic was badged Megane Scenic
-  Grand Scenic: Scenic   # LWB variant
-Kia:
-  Cee D: Ceed            # RDW writes "CEE D" / "CEE'D"; official spelling since 2018 is Ceed
-  Cee'd: Ceed
-Citroën:
-  C4 Space: C4           # C4 Spacetourer → keyword rule handles body; name folds to C4? NO —
-                         # kept from MVP; revisit: Spacetourer is arguably its own MPV nameplate
-  2CV6: null             # trim of 2CV; classic tail
-Toyota:
-  Prius Plus: Prius      # Prius+ (7-seat) folded per nameplate-granularity policy
-  Prius Plug-In: Prius
-Hyundai:
-  Atos-Prime: Atos
-Nissan:
-  Leaf 40KWH: Leaf       # battery-size registrations
-  Leaf 62KWH: Leaf
-  QASHQAI+2: Qashqai     # 7-seat variant
-Suzuki:
-  Wagon-R: Wagon R
-Škoda:
-  Enyaq 60: Enyaq        # battery-size registrations
-  Enyaq 80: Enyaq
-  Enyaq 85: Enyaq
-  Elroq 50: Elroq
-  Elroq 60: Elroq
-  Elroq 85: Elroq
-Volvo:
-  240 Polar U9: null     # single-trim registration noise
-
-Ford:
-  Mustang Mach: Mustang Mach-E  # the -E stripper (for Corsa-E) eats Mach-E; restore the official name
+Bultaco:
+  Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
 
 Chrysler:
   Town&country LX: Town & Country       # fueleconomy.gov spells it without spaces + trim; official name has them
   Town&country Touring: Town & Country  # same, Touring trim
 
-Tesla:
-  "512": null   # data error — Tesla never made a "512" (likely a miscoded Ferrari/other); drop
-
-# =============================================================================
-# ES-brand audit (2026-07-12, multi-agent find→verify pass). NOTE these blocks
-# are make-scoped but kind-blind — kind hazards are tripwired in spotchecks.yml.
-# =============================================================================
-
-SEAT:
-  # Cupra split (brand standalone since 2018; pre-2018 Cupra = SEAT trim):
-  Cupra: null              # brand-as-model row ("SEAT CUPRA", nl/nz) — Cupra is a make, never a SEAT nameplate; unresolvable to one model (https://en.wikipedia.org/wiki/Cupra_(marque))
-  Cupra Leon: null         # post-2018 Cupra Leon misparented under SEAT — TANs e9*2007/46*3167*06/10/12/17 identical to cupra/leon's; no cross-make move exists, cupra/leon covers all its countries
-  Cupra Ateca: null        # post-2018 Cupra Ateca under SEAT — TAN e9*2007/46*6394*40 shared with cupra/ateca (same approval family); cupra/ateca covers it
-  Formentor: null          # Formentor is Cupra-exclusive (first Cupra-only model, 2020) — TANs e9*2007/46*4008*03/07 shared with cupra/formentor (https://en.wikipedia.org/wiki/Cupra_Formentor)
-  Leon Cupra: Leon         # pre-2018 Cupra = SEAT performance trim (nameplate-first word order); folds per policy
-  Ibiza Cupra: Ibiza       # pre-2018 Cupra trim of the Ibiza; folds per policy
-  # Body/trim/generation variants of existing nameplates:
-  Leon Sc: Leon            # SC = 3-door "Sports Coupé" body of the Leon III — TANs e9*2007/46*0094*05/25 sit inside seat/leon's own approval family
-  Leon Sportourer: Leon    # ST/Sportstourer estate body — TANs e9*2007/46*0094*37/38, same family; seat.es sells "León Sportstourer"
-  Leon X-Perience: Leon    # AWD crossover trim of the Leon ST — TAN e9*2007/46*0094*12, same family
-  Leon 1: Leon             # registry generation marker (Leon Mk1) — TAN e9*98/14*0026*20 = the 0026 family seat/leon already carries
-  Altea Freetrack: Altea   # crossover trim of the Altea XL — TAN e9*2001/116*0050*33 is a revision of seat/altea's approval
-  Altea 4 Freetrack: Altea # 4WD Freetrack spelling — its TAN e9*2001/116*0050*18 is literally also present on seat/altea
-  127 Sport: "127"         # sport sub-badge folds; rename intentionally CREATES the missing 127 nameplate (Cee D precedent; SEAT 127 1972-82, 1.24M units). NB: no factory SEAT "127 Sport" trim documented — string is likely Fiat 127 Sport badge-bleed (https://en.wikipedia.org/wiki/SEAT_127)
-  Terra: null              # Marbella-based panel van (1987-96) leaking into cars via camper/kombi car-class rows — van-kind nameplate (Evito precedent). CAUTION kind-blind: if the van build ever ingests raw SEAT TERRA rows, this null suppresses them too (van/seat currently holds only Inca)
-  # de_kba_fz10 numeric type-codes, not nameplates (Tesla "512" precedent);
-  # single-source de-only block 468–474, seat/468 even held DE rank 33:
-  "468": null              # KBA type-code
-  "469": null              # KBA type-code
-  "470": null              # KBA type-code
-  "471": null              # KBA type-code
-  "472": null              # KBA type-code
-  "473": null              # KBA type-code
-  "474": null              # KBA type-code
+Citroën:
+  C4 Space: C4           # C4 Spacetourer → keyword rule handles body; name folds to C4? NO —
+                         # kept from MVP; revisit: Spacetourer is arguably its own MPV nameplate
+  2CV6: null             # trim of 2CV; classic tail
 
 Cupra:
   Tavascan V1 EV: Tavascan          # V1 = UK entry trim (V1/V2/VZ1/VZ2 lineup) + EV fuel marker in the uk_dft string; adds gb to the nameplate
@@ -145,14 +48,12 @@ Derbi:
   Variant Start: Variant     # Start (1984) is a version of the Variant family (América/Start/Sport/Box) — folds to the nameplate (https://blog.terranea.es/variant-ciclomotor-volador-derbi/)
   DFW50: null                # DFW 50 is a 50cc QUAD (ATV) — no quad kind exists (POLARIS precedent in makes/drop.yml: "revisit if quads become a kind"); https://www.autoevolution.com/moto/derbi-dfw-50-2005.html
 
-Bultaco:
-  Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
+EBRO:
+  S400 Hev: S400         # HEV is the powertrain badge, not the nameplate — official lineup is s400/s700/s800 (sold as "s400 HEV"; sibling records are already powertrain-bare); folds like Leaf 40KWH (https://www.ebroauto.com/)
+  S400 HEV: S400         # same fold — key form that applies once HEV joins styling.yml acronyms (the caser runs before renames; cf. the "Town&country LX" key, LX being an acronym)
 
-Montesa:
-  COTA315R: Cota 315R           # digit-frozen registry token; official spacing of the 1997-2004 two-stroke Cota (https://www.retrotrials.com/montesa--montesa-honda-motorcycles.html)
-  COTA4RT: Cota 4RT             # official naming (https://montesa.com/en/montesa-range/); 249cc 2005-13 — stays separate from 260/301RR per displacement granularity
-  COTA4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
-  COTA4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
+Ford:
+  Mustang Mach: Mustang Mach-E  # the -E stripper (for Corsa-E) eats Mach-E; restore the official name
 
 Gas Gas:
   Enducross: EC          # same nameplate: EC is short for Enducross — shared TAN e9*92/61*0062*09 with gas-gas/ec (https://en.wikipedia.org/wiki/Gas_Gas)
@@ -173,6 +74,108 @@ Gas Gas:
   Trial: null            # generic category string, not a nameplate — RDW "TRIAL" rows span 49-294cc across eras; unresolvable to TXT/TX/Contact
   Enduro: null           # generic category string — RDW "ENDURO" rows are the FSE/FSR 400-515 four-strokes (444-503cc, e9*92/61*0081); displacement split unrecoverable
 
+Hyundai:
+  Atos-Prime: Atos                          # facelift trim name (Atos Prime, 1999-2003) — same nameplate; registries emit both
+
+Irizar:
+  "16": i6               # digit-1 typo of I6 — RDW merk IRIZAR carries "16 14.07.37 EFFICIENT" beside "I6 14.07.37 EFFICIENT"; Irizar's range has no "16" (https://www.irizar.com/en/products-technologies/all-models); target is the post-styling lowercase i6
+
+Iveco:
+  Sunrise: null          # Ferqui Sunrise minicoach body on Iveco Daily chassis, registered under the chassis make; canonical is ferqui/sunrise (https://ferqui.com/en/sunrisef2/). NOTE: loses nl evidence (ferqui/sunrise currently es,fi)
+  Wing: null             # Indcar Wing minibus body on Iveco Daily 70C, same pattern; canonical is indcar/wing (https://en.wikipedia.org/wiki/Indcar). NOTE: loses ua evidence (indcar/wing currently es,fi,gb,nl)
+
+Kia:
+  Cee D: Ceed            # RDW writes "CEE D" / "CEE'D"; official spelling since 2018 is Ceed
+  Cee'd: Ceed                               # Kia dropped the apostrophe with the 3rd gen in 2018 (ceed.kia.com); old spelling folds
+
+# Final per-make nameplate corrections, applied AFTER the pipeline's
+# normalization. `null` drops the entry; a string renames/merges it into
+# another nameplate. Keys are canonical make display names; sub-keys are the
+# post-normalization nameplate as the pipeline produced it (that's why some
+# look odd — they're what survives normalization, e.g. "Cee D").
+#
+# This is the "last word" file (PRD-2 §8.7 spirit): don't fight it, but every
+# line must say WHY. Seeded from the RDW MVP (scripts/build.rb OVERRIDES,
+# hand-verified against live RDW 2026-06); extended during multi-source
+# reconciliation (source noted per line).
+Mercedes-Benz:
+  Evito: null            # eVito is the van kind (electric Vito), leaks via RDW car class
+  "200": null            # bare engine-code registrations (W123/W124 era), not nameplates
+  200 D: null                               # pre-1994 Mercedes naming is <displacement><fuel/trim>, an engine designation not a nameplate (W115/W123 era)
+  300 D: null                               # same engine-designation class as "200 D" — the nameplate is the chassis class, not the engine
+  280 SE: null                              # same class (W108/W116 engine designation). NB currently INERT: no post-cased record matches this key; kept as a guard in case the raw form reappears
+
+MITT:
+  300GT Max: GT-MAX 300  # registry writes "300GT MAX" (RDW measured 2026-07-12); official model name is GT-MAX 300 (https://mittmotors.com/vehiculo/mitt-gt-max-125-330)
+
+Montesa:
+  COTA315R: Cota 315R           # digit-frozen registry token; official spacing of the 1997-2004 two-stroke Cota (https://www.retrotrials.com/montesa--montesa-honda-motorcycles.html)
+  COTA4RT: Cota 4RT             # official naming (https://montesa.com/en/montesa-range/); 249cc 2005-13 — stays separate from 260/301RR per displacement granularity
+  COTA4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
+  COTA4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
+
+Nissan:
+  Leaf 40KWH: Leaf       # battery-size registrations
+  Leaf 62KWH: Leaf                          # battery-capacity suffix (62 kWh pack), not a nameplate — cf. the Ebro "S400 HEV" powertrain-badge fold
+  QASHQAI+2: Qashqai     # 7-seat variant
+
+Opel:
+  Karl / Viva: Karl      # RDW dual-market label
+  Karl/viva: Karl                           # Opel Karl and its Vauxhall-badged twin Viva registered as one string; Karl is the Opel nameplate
+  Karl Rocks / Viva Rocks: Karl             # same twin-string case for the raised "Rocks" trim — trim folds into the nameplate
+  Karl Rocks: Karl       # Rocks is a trim
+  Crossland X: Crossland # X dropped in 2020 facelift; one nameplate
+  Grandland X: Grandland                    # Opel dropped the X at the 2021 facelift (opel.de/fahrzeuge/grandland) — one nameplate
+  Mokka X: Mokka                            # Mokka X (2016-2019) is the same nameplate as the 2020+ Mokka; the X was dropped
+  Insignia Grand Sport: Insignia            # Grand Sport is the liftback BODY of Insignia B (Sports Tourer is the estate) — bodies fold
+  Astra Twin Top: Astra  # coupé-cabrio variant
+  Astra-CC: Astra                           # registry contraction of the Astra convertible/coupe body — folds into the nameplate
+  Astra-Caravan: Astra   # estate variant
+
+Renault:
+  Megane Scenic: Scenic  # first-gen Scenic was badged Megane Scenic
+  Grand Scenic: Scenic   # LWB variant
+
+Rieju:
+  "N.a.": null                   # registry "not available" placeholder (es_dgt + nl_rdw rows), not a nameplate; rieju keeps es via e-Tango (es_dgt)
+  AVENTURA500: Aventura 500      # official spacing (471cc A2 twin trail; https://www.diariomotor.com/motos/rieju-aventura-500/)
+  NKD125: NKD 125                # official "NKD 125" naked, NKD stays caps (https://rieju.com/us/naked/130/524/nkd-125)
+  RALLY307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
+  XPLORA557: Xplora 557          # official "Xplora 557" 554cc A2 twin (https://www.motorbikemag.es/rieju-xplora-557-xplora-707-2025-prueba-opiniones/)
+  XPLORA707: Xplora 707          # sibling 693cc twin (https://rieju.com/en/news/new-rieju-xplora-707/257/294); consecutive TANs e9*168/2013*16461/16462 prove two approved models, not dupes
+
+Scania:
+  Irizar: null           # chassis+bodybuilder registration strings ("SCANIA IRIZAR I4/NEW CENTURY", RDW), not a Scania nameplate — in bus kind the bodybuilder IS the make (Plaxton/Caetano precedent; irizar/i4-i6-i8 exist). NOTE: drops ua evidence (Century/PB-era bodies not yet catalogued under irizar)
+
+# ES-brand audit (2026-07-12, multi-agent find→verify pass). NOTE these blocks
+# are make-scoped but kind-blind — kind hazards are tripwired in spotchecks.yml.
+SEAT:
+  # Cupra split (brand standalone since 2018; pre-2018 Cupra = SEAT trim):
+  Cupra: null              # brand-as-model row ("SEAT CUPRA", nl/nz) — Cupra is a make, never a SEAT nameplate; unresolvable to one model (https://en.wikipedia.org/wiki/Cupra_(marque))
+  Cupra Leon: null         # post-2018 Cupra Leon misparented under SEAT — TANs e9*2007/46*3167*06/10/12/17 identical to cupra/leon's; no cross-make move exists, cupra/leon covers all its countries
+  Cupra Ateca: null        # post-2018 Cupra Ateca under SEAT — TAN e9*2007/46*6394*40 shared with cupra/ateca (same approval family); cupra/ateca covers it
+  Formentor: null          # Formentor is Cupra-exclusive (first Cupra-only model, 2020) — TANs e9*2007/46*4008*03/07 shared with cupra/formentor (https://en.wikipedia.org/wiki/Cupra_Formentor)
+  Leon Cupra: Leon         # pre-2018 Cupra = SEAT performance trim (nameplate-first word order); folds per policy
+  Ibiza Cupra: Ibiza       # pre-2018 Cupra trim of the Ibiza; folds per policy
+  # Body/trim/generation variants of existing nameplates:
+  Leon Sc: Leon            # SC = 3-door "Sports Coupé" body of the Leon III — TANs e9*2007/46*0094*05/25 sit inside seat/leon's own approval family
+  Leon Sportourer: Leon    # ST/Sportstourer estate body — TANs e9*2007/46*0094*37/38, same family; seat.es sells "León Sportstourer"
+  Leon X-Perience: Leon    # AWD crossover trim of the Leon ST — TAN e9*2007/46*0094*12, same family
+  Leon 1: Leon             # registry generation marker (Leon Mk1) — TAN e9*98/14*0026*20 = the 0026 family seat/leon already carries
+  Altea Freetrack: Altea   # crossover trim of the Altea XL — TAN e9*2001/116*0050*33 is a revision of seat/altea's approval
+  Altea 4 Freetrack: Altea # 4WD Freetrack spelling — its TAN e9*2001/116*0050*18 is literally also present on seat/altea
+  127 Sport: "127"         # sport sub-badge folds; rename intentionally CREATES the missing 127 nameplate (Cee D precedent; SEAT 127 1972-82, 1.24M units). NB: no factory SEAT "127 Sport" trim documented — string is likely Fiat 127 Sport badge-bleed (https://en.wikipedia.org/wiki/SEAT_127)
+  Terra: null              # Marbella-based panel van (1987-96) leaking into cars via camper/kombi car-class rows — van-kind nameplate (Evito precedent). CAUTION kind-blind: if the van build ever ingests raw SEAT TERRA rows, this null suppresses them too (van/seat currently holds only Inca)
+  # de_kba_fz10 numeric type-codes, not nameplates (Tesla "512" precedent);
+  # single-source de-only block 468–474, seat/468 even held DE rank 33:
+  "468": null              # KBA type-code
+  "469": null              # KBA type-code
+  "470": null              # KBA type-code
+  "471": null              # KBA type-code
+  "472": null              # KBA type-code
+  "473": null              # KBA type-code
+  "474": null              # KBA type-code
+
 Sherco:
   # -R (Racing) trim folds; nameplate = displacement + line (sherco.com):
   125SE-R: 125 SE        # Racing trim of the 125 SE 2T enduro
@@ -190,38 +193,43 @@ Sherco:
   "N.a": "50"            # RDW registers Sherco's 50cc mopeds as handelsbenaming "N/A" (~806 rows, all 50cc, e13*168/2013*00339); rename to the honest displacement family instead of dropping ES's top-3 moped
   "50SM": 50 SM          # supermoto 50 line per Sherco's "<cc> <line>" schema (sherco.com "50 SM-R FACTORY"); respace like 125SE-R → 125 SE; the "50" umbrella stays for the unresolvable N/A rows
 
-TRS:
-  Trrs One: One          # strip the embedded badge — bikes are badged TRRS but the make resolves to TRS, so the prefix strip missed (trsmotorcycles.com); CREATES the One canonical
-  TR1 300: One 300       # TR1 = TRS's homologation type code (RDW type "TR 1 A", e9*168/2013*30008, 294cc), not a nameplate; road range is the One family
-
-Rieju:
-  "N.a.": null                   # registry "not available" placeholder (es_dgt + nl_rdw rows), not a nameplate; rieju keeps es via e-Tango (es_dgt)
-  AVENTURA500: Aventura 500      # official spacing (471cc A2 twin trail; https://www.diariomotor.com/motos/rieju-aventura-500/)
-  NKD125: NKD 125                # official "NKD 125" naked, NKD stays caps (https://rieju.com/us/naked/130/524/nkd-125)
-  RALLY307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
-  XPLORA557: Xplora 557          # official "Xplora 557" 554cc A2 twin (https://www.motorbikemag.es/rieju-xplora-557-xplora-707-2025-prueba-opiniones/)
-  XPLORA707: Xplora 707          # sibling 693cc twin (https://rieju.com/en/news/new-rieju-xplora-707/257/294); consecutive TANs e9*168/2013*16461/16462 prove two approved models, not dupes
-
 Silence:
   S02LS: S02             # "S02 LS" = the L1e speed variant; kind=moped already encodes the class — RDW writes both strings for the same scooter (681 S02LS vs 104 S02 bromfiets rows; Silence's manual says "S02 LS")
   S01LS: S01             # L1e (45 km/h, 4 kW) version of the S01 — same nameplate, kind captures the class; intentionally CREATES the moped-kind S01 beside the L3e motorcycle record
 
-MITT:
-  300GT Max: GT-MAX 300  # registry writes "300GT MAX" (RDW measured 2026-07-12); official model name is GT-MAX 300 (https://mittmotors.com/vehiculo/mitt-gt-max-125-330)
+Suzuki:
+  Wagon-R: Wagon R                          # hyphenation variant of Suzuki Wagon R (global-suzuki.com) — spacing, not a different model
 
-EBRO:
-  S400 Hev: S400         # HEV is the powertrain badge, not the nameplate — official lineup is s400/s700/s800 (sold as "s400 HEV"; sibling records are already powertrain-bare); folds like Leaf 40KWH (https://www.ebroauto.com/)
-  S400 HEV: S400         # same fold — key form that applies once HEV joins styling.yml acronyms (the caser runs before renames; cf. the "Town&country LX" key, LX being an acronym)
+Tesla:
+  "512": null   # data error — Tesla never made a "512" (likely a miscoded Ferrari/other); drop
 
-Irizar:
-  "16": i6               # digit-1 typo of I6 — RDW merk IRIZAR carries "16 14.07.37 EFFICIENT" beside "I6 14.07.37 EFFICIENT"; Irizar's range has no "16" (https://www.irizar.com/en/products-technologies/all-models); target is the post-styling lowercase i6
+Toyota:
+  Prius Plus: Prius      # Prius+ (7-seat) folded per nameplate-granularity policy
+  Prius Plug-In: Prius                      # plug-in variant (Prius Plug-in Hybrid / Prime) folds into the nameplate per the trim policy
 
-Scania:
-  Irizar: null           # chassis+bodybuilder registration strings ("SCANIA IRIZAR I4/NEW CENTURY", RDW), not a Scania nameplate — in bus kind the bodybuilder IS the make (Plaxton/Caetano precedent; irizar/i4-i6-i8 exist). NOTE: drops ua evidence (Century/PB-era bodies not yet catalogued under irizar)
+TRS:
+  Trrs One: One          # strip the embedded badge — bikes are badged TRRS but the make resolves to TRS, so the prefix strip missed (trsmotorcycles.com); CREATES the One canonical
+  TR1 300: One 300       # TR1 = TRS's homologation type code (RDW type "TR 1 A", e9*168/2013*30008, 294cc), not a nameplate; road range is the One family
 
 UNVI:
   Microbus: null         # approval type-designation fallback, not a nameplate — EU approval e9*2007/46*6019*02 type field reads "MICROBUS_2"; UNVI's real range is Compa/Urbis/Vega/Sil/Vendal (https://unvibus.com/product/) — Tesla "512" precedent
 
-Iveco:
-  Sunrise: null          # Ferqui Sunrise minicoach body on Iveco Daily chassis, registered under the chassis make; canonical is ferqui/sunrise (https://ferqui.com/en/sunrisef2/). NOTE: loses nl evidence (ferqui/sunrise currently es,fi)
-  Wing: null             # Indcar Wing minibus body on Iveco Daily 70C, same pattern; canonical is indcar/wing (https://en.wikipedia.org/wiki/Indcar). NOTE: loses ua evidence (indcar/wing currently es,fi,gb,nl)
+Volkswagen:
+  Buggy: null            # kit-car/beach-buggy registrations on Beetle base
+  Kever: null            # Dutch for Beetle — classic-era rows; Beetle nameplate covers it
+  Multivan: null         # van kind (T-series passenger)
+  Kombi: null            # van kind
+  Passat CC: Passat      # CC marketed as Passat CC then standalone; folded (dropdown UX)
+  Touareg R: Touareg     # R is a trim
+
+Volvo:
+  240 Polar U9: null     # single-trim registration noise
+
+Škoda:
+  Enyaq 60: Enyaq        # battery-size registrations
+  Enyaq 80: Enyaq                           # battery/power trim number (80 = 82 kWh RWD) — trim, not nameplate (skoda-auto.com/models/enyaq)
+  Enyaq 85: Enyaq                           # same trim-number class as Enyaq 80
+  Elroq 50: Elroq                           # battery/power trim number (50 = 55 kWh) — trim, not nameplate
+  Elroq 60: Elroq                           # same trim-number class as Elroq 50
+  Elroq 85: Elroq                           # same trim-number class as Elroq 50
+

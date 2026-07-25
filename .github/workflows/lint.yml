@@ -14,8 +14,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # lint_curation.rb's provenance check diffs added lines against the
+          # base ref, so it needs history, not a shallow clone.
+          fetch-depth: 0
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
-      - name: Lint curated data files
+      - name: Lint curated data files (shape, vocabulary, provenance)
         run: ruby scripts/lint_overrides.rb
+      - name: Lint curation structure (duplicate keys, make keys, added-line reasons)
+        # Catches the failure modes that are otherwise SILENT: a duplicate YAML
+        # key (safe_load keeps the last and discards the other block), a make
+        # block whose key matches no display name (inert forever), and curation
+        # added without a stated reason.
+        run: ruby scripts/lint_curation.rb --base=origin/${{ github.base_ref || 'main' }}
+      - name: Verify make blocks are alphabetical
+        # Alphabetical order is what lets two maintainers append concurrently
+        # without conflicting, and what stops a second `Honda:` block appearing.
+        run: ruby scripts/reorg_make_blocks.rb --check
+      - name: Verify OWNERSHIP.yml matches the catalog
+        # Regenerating must be a no-op; a diff here means a release added makes
+        # and the ownership map needs regenerating + both maintainers acking.
+        run: |
+          ruby scripts/gen_ownership.rb
+          git diff --exit-code OWNERSHIP.yml || {
+            echo "::error::OWNERSHIP.yml is stale — run scripts/gen_ownership.rb and commit"
+            exit 1
+          }
+      - name: Dataset name-shape report (non-blocking until debt is zero)
+        run: ruby scripts/lint_dataset.rb --report
