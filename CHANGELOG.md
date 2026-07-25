@@ -2,6 +2,54 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [Unreleased] — the correction release
+
+The next build corrects identity errors rather than adding data. Two parser bugs
+had been fabricating model names, and a curation pass had begun deleting the
+real records those bugs produced. **Ids change in this release** — see
+*Migration* below.
+
+### Germany: 148 records were shared-string indices, not model names
+
+`XlsxLite`'s cell regex let an empty XLSX cell swallow the next cell's `<v>`, so
+KBA FZ 10 published shared-string **indices** where model names belong, across
+29 makes. `volkswagen/552` **was the Golf** — Germany's best-selling car — while
+`volkswagen/golf` carried twelve countries and no `de`. Every German popularity
+figure for the country's best sellers sat on a garbage id, and the real
+nameplates were ranked as if Germany did not exist.
+
+The integers looked exactly like registry type-codes, and the previous release
+had already deleted SEAT's entire current German lineup on that reading:
+`seat/468`–`474` were ATECA, BORN, FORMENTOR, IBIZA, LEON, TAVASCAN, TERRAMAR.
+Those drops are retired here. The rule that came out of it is in
+[NAMING.md](NAMING.md) §2.1: *a bare integer, single-source, is a parser suspect
+before it is a data suspect*.
+
+### Also corrected
+
+- **Cross-make moves** (`overrides/models/moves.yml`, new): registers file
+  sub-brands under the type-approval holder, so every Cupra arrives as a SEAT
+  and every Genesis as a Hyundai. ~26,500 German registrations now reach the
+  right marque instead of being dropped.
+- **KBA temporal merges**: `"GLK, GLC"` and friends splice a nameplate to its
+  renamed successor in one cell; 22k registrations were landing on nameplates
+  dead since 2015.
+- **390 duplicate spellings merged**: `280 Se` and `280SE` were separate ids for
+  the same W108, each with four sources.
+- **161 non-vehicles removed** from the car kind: 14 motorhome builders (measured
+  against RDW's CC0 register), 49 rows where a register wrote the make into the
+  model column, and assorted junk strings.
+
+### Migration
+
+Ids that changed carry `former_ids` (a new optional field — additive, so not a
+breaking change under [SCHEMA.md](SCHEMA.md)). Look a missing id up there before
+assuming a model was removed.
+
+**97 ids were removed with no successor.** They are motorhome floorplan codes
+(Bürstner, Pössl, Niesmann+Bischoff) that were never cars; they have no alias
+because there is nothing to alias them to.
+
 ## [2026.07.0] - 2026-07-05
 
 The multi-source, multi-kind, multi-continent release: **456 → 18,556 models**.
