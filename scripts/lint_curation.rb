@@ -178,6 +178,33 @@ if File.exist?(moves_path)
   end
 end
 
+# ── DIRECTION WAR: a rename whose TARGET is also a KEY in the same block ─────
+#
+# Found in the Volvo collision batch (data#22): one block held BOTH
+# `C70: C-70` (mechanical) and `C-70: C70` (sourced) — every raw spelling
+# renamed to the OTHER form, so BOTH records published forever. Invisible to
+# every other check: keys are unique, each key individually reachable, build
+# green throughout. Renames apply ONCE (the value is final, never re-looked-up),
+# so `A: B` alongside `B: C` means raws producing A land on B while raws
+# producing B land on C — two different finals for one nameplate family, a
+# guaranteed latent split even when it isn't a 2-cycle. Generalized per S2W's
+# Turn 57 request: flag ANY value that is also a key in its own block.
+# (Cross-make targets are moves.yml business and out of scope here.)
+renames_all = YAML.safe_load_file(File.join(ROOT, "overrides/models/renames.yml"),
+                                  permitted_classes: [], aliases: false) || {}
+renames_all.each do |make, map|
+  next unless map.is_a?(Hash)
+  map.each do |key, value|
+    next if value.nil? # drops have no target to war with
+    next unless map.key?(value.to_s) && value.to_s != key.to_s
+    onward = map[value.to_s]
+    fail! "overrides/models/renames.yml: DIRECTION WAR in #{make.inspect} — #{key.inspect} → " \
+          "#{value.inspect}, but #{value.to_s.inspect} is itself a key (→ #{onward.inspect}). " \
+          "Renames apply once, so these raws land on DIFFERENT finals and both records publish. " \
+          "Pick ONE canonical (the sourced one) and point every spelling at it."
+  end
+end
+
 # ── 2. kind_maps shape ───────────────────────────────────────────────────────
 #
 # These files are SOURCE-keyed, not kind-keyed, so both maintainers' kinds live
