@@ -152,18 +152,43 @@ by_make.each do |_, gs|
     flag = g[:variants].include?(g[:canonical]) ? " " : "*"
     puts format("%s %-11s %-16s %-24s ← %s", flag, g[:kind], g[:make], g[:canonical].inspect,
                 others.map(&:inspect).join(" + "))
+    puts format("  %sids: %s", " " * 12, g[:records].map { |r| r["id"] }.join("  "))
   end
 end
 puts
 puts "* = the canonical form is NEW (no existing variant spells it correctly)"
 
-# YAML fragment
+# YAML fragment — with FLAP INSURANCE (NEGOTIATION Turn 57, one-id-many-names:
+# an id whose same-slug raws tie can publish a DIFFERENT display next build —
+# FXE/F cost 3 rebuilds, T-Max 2, GT-6 2. Same-slug displays can differ ONLY
+# in space-vs-hyphen at separator positions, so we emit EVERY separator
+# permutation of every variant as a sibling key. Extra keys mapping to the
+# same target are exactly the belt-and-braces class the reachability test
+# tolerates by rule; inert ones cost nothing, and no future build can pick a
+# display no key matches.)
+def flap_forms(name)
+  idx = name.chars.each_index.select { |i| [" ", "-"].include?(name[i]) }
+  return [name] if idx.empty? || idx.size > 3 # cap 2^3; longer names do not flap in practice
+  [" ", "-"].repeated_permutation(idx.size).map do |combo|
+    t = name.dup
+    idx.each_with_index { |pos, j| t[pos] = combo[j] }
+    t
+  end.uniq
+end
+
 frag = Hash.new { |h, k| h[k] = {} }
+flaps = 0
 groups.each do |g|
-  (g[:variants] - [g[:canonical]]).each { |v| frag[g[:make_name]][v] = g[:canonical] }
+  (g[:variants] + [g[:canonical]]).uniq.each do |v|
+    flap_forms(v).each do |form|
+      next if form == g[:canonical]
+      flaps += 1 unless g[:variants].include?(form)
+      frag[g[:make_name]][form] ||= g[:canonical]
+    end
+  end
 end
 File.write("#{OUT}/collision_renames_#{SIDE}.yml", frag.to_h.transform_values { |v| v.sort.to_h }.to_yaml)
-puts "\nwrote #{OUT}/collision_renames_#{SIDE}.yml — #{frag.values.sum(&:size)} rename entries across #{frag.size} makes"
+puts "\nwrote #{OUT}/collision_renames_#{SIDE}.yml — #{frag.values.sum(&:size)} rename entries across #{frag.size} makes (#{flaps} flap-insurance siblings)"
 
 # --- split by risk class for review ---
 existing = groups.select { |g| g[:variants].include?(g[:canonical]) }
