@@ -1637,14 +1637,61 @@ Volvo:
   240 Polar U9: null     # single-trim registration noise
   "123GT": "123 GT"                           # spelling variant of "123 GT" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "164E": "164 E"                             # spelling variant of "164 E" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "1800E": "1800 E"                           # spelling variant of "1800 E" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "1800S": "1800 S"                           # spelling variant of "1800 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  # ── DIRECTION WAR RESOLVED (2026-07-25, collision batch 1). This block held
+  # BOTH directions for five nameplates: mechanical top entries (C70->C-70,
+  # P1800->P-1800, L3304->L-3304, 1800E->"1800 E", 1800S->"1800 S") vs the
+  # sourced D23 entries further down mapping the opposite way (C-70->C70 etc.,
+  # volvocars.com press release 49793: the family is P1800 -> 1800S -> 1800E
+  # -> 1800ES, FUSED). Each raw spelling renamed to the other form, so BOTH
+  # records published simultaneously — the circular pair is what the collision
+  # detector flagged. The mechanical entries are DELETED (their raw forms now
+  # yield the sourced canonical on their own — reachability deletion rule);
+  # the sourced entries below stay. Do not re-add the deleted keys.
+  "P-1800 S": 1800S                       # hyphenated registry form of the 1800 S — same press-release chain as the P1800 S / P 1800 S keys below
   "244GLE": "244 GLE"                         # spelling variant of "244 GLE" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "740GLE": "740 GLE"                         # spelling variant of "740 GLE" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "760GLE": "760 GLE"                         # spelling variant of "760 GLE" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  C70: C-70                                   # spelling variant of "C-70" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  L3304: L-3304                               # spelling variant of "L-3304" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  P1800: P-1800                               # spelling variant of "P-1800" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  # ── classic trim-designation fused merges (collision batch 1, detector-
+  # verified against the 2026-07-25 build; GL/GLT/DL are now acronym tokens
+  # in styling.yml, so the spaced raws case correctly on their own — these
+  # keys catch the FUSED registry forms) ───────────────────────────────────
+  "240DL": 240 DL                         # fused registry variant of the spaced trim designation (Volvo DL = De Luxe line); merges into 240-dl
+  "240GL": 240 GL                         # fused variant; GL = Grand Luxe — nameplate-level on classic Volvos, not a foldable trim
+  "240GLT": 240 GLT                       # fused variant; GLT = Grand Luxe Touring
+  "244DL": 244 DL                         # fused variant, same class
+  "244GL": 244 GL                         # fused variant, same class
+  "245DL": 245 DL                         # fused variant, same class
+  "245GL": 245 GL                         # fused variant, same class
+  "340GL": 340 GL                         # fused variant, same class
+  "360GLT": 360 GLT                       # fused variant, same class
+  "740GL": 740 GL                         # fused variant, same class
+  "480ES": 480 ES                         # Volvo 480 ES is SPACED (launch name, 1986) — unlike the fused 1800ES; the inconsistency is Volvo's own. Cased via the "480 ES" styling pin, not an ES acronym (an ES token orphaned Gas Gas "Es: ES 700" and un-folded the whole Lexus ES family — measured, reverted)
+  # ── PV 444 hyphenated produced forms — extends the volvoclub.org.uk series-
+  # letter research below (trailing letters are PRODUCTION SERIES, they fold)
+  # to the raws that arrive hyphenated and thus missed the spaced keys ──────
+  "Pv-444": PV444                         # hyphenated registry form; canonical is fused PV444 (see series research below)
+  "Pv-444 Es": PV444                      # ES here is a production series letter pair, folds like Es/K/L/C/DS below
+  "Pv-444 Cs": PV444                      # CS production series, same research
+  "Pv 444-H": PV444                       # H production series, hyphen variant
+  "Pv 444 H": PV444                       # H production series, spaced variant (both raw shapes occur in fi/nl)
+  # ── engine/powertrain badge folds (spec-token policy: the nameplate is the
+  # line, the badge is not a model) ────────────────────────────────────────
+  "V 70 2.4T": V70                        # displacement badge; folds per trim policy
+  "V70 2.4T": V70                         # same, fused-make spelling
+  "V70 Bi Fuel": V70                      # CNG powertrain badge, not a nameplate
+  "V70 Bifuel": V70                       # same, registry-fused spelling
+  "V70 Bi-Fuel": V70                      # same, hyphenated spelling — third raw shape, found by the liveness gate
+  "XC 60 T6": XC60                        # engine badge folds
+  "XC60 T6": XC60                         # same
+  # ── distinct model lines, canonical display fixes ────────────────────────
+  "V60 CC": V60 Cross Country             # official name is spelled out (https://www.volvocars.com/en-us/cars/v60-cross-country/); "CC" is registry shorthand. Cross Country IS a distinct model line, not a trim — do not fold into V60
+  "V60CC": V60 Cross Country              # same, fused
+  "V70XC": V70 XC                         # the 1997-2000 pre-XC70 line; existing volvo/v70-xc is canonical
+  # HEADS-UP for the volvo batch reviewer (deliberately NOT touched here):
+  # the PV family (Pv-444/PV444/pv-444-cs/-h, PV544/P544/544/544 Sport) needs
+  # period-literature research on PV 444 vs PV444 spacing before merging —
+  # same fused-vs-spaced trap as the 1800 family, and Volvo's own materials
+  # use both. The 244-883/245-833 Dutch type-code records too.
   P 1800E: 1800E                          # Volvo dropped the P and never wrote "P1800E": the family is P1800 -> 1800S -> 1800E -> 1800ES (https://www.media.volvocars.com/global/en-gb/media/pressreleases/49793/volvo-p18001800-1961-19721)
   P1800 E: 1800E                          # Volvo dropped the P and never wrote "P1800E": the family is P1800 -> 1800S -> 1800E -> 1800ES (https://www.media.volvocars.com/global/en-gb/media/pressreleases/49793/volvo-p18001800-1961-19721)
   P1800 Es: 1800ES                        # Volvo dropped the P and never wrote "P1800E": the family is P1800 -> 1800S -> 1800E -> 1800ES (https://www.media.volvocars.com/global/en-gb/media/pressreleases/49793/volvo-p18001800-1961-19721)
@@ -1655,8 +1702,10 @@ Volvo:
   C 30: C30                                   # spelling variant of "C30" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   C 303: C303                                 # spelling variant of "C303" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   C-70: C70                                   # spelling variant of "C70" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  C 70: C70                                   # spaced registry variant — the D23 pass keyed C 30/C 202/C 303 spaced forms but missed C 70; found by the no-vanish gate 2026-07-25
   L-3304: L3304                               # spelling variant of "L3304" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   P-1800: P1800                               # spelling variant of "P1800" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  P 1800: P1800                               # bare spaced registry variant — the D23 pass keyed P 1800 E/S/Es but missed the bare pair; found by the liveness gate 2026-07-25
   P 1800 E: 1800E                         # Volvo dropped the P and never wrote "P1800E": the family is P1800 -> 1800S -> 1800E -> 1800ES (https://www.media.volvocars.com/global/en-gb/media/pressreleases/49793/volvo-p18001800-1961-19721)
   P 1800 S: 1800S                         # Volvo dropped the P and never wrote "P1800E": the family is P1800 -> 1800S -> 1800E -> 1800ES (https://www.media.volvocars.com/global/en-gb/media/pressreleases/49793/volvo-p18001800-1961-19721)
   P 544: P544                                 # spelling variant of "P544" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
