@@ -167,9 +167,11 @@ sweep has never been run on the 2W half** (S2W). Detector:
 `scripts/find_duplicate_spellings.rb`. Remember it reads the PUBLISHED catalog —
 counts do not move until a build.
 
-**G9 — Six sole-model make-as-model rows** (S2W, documented): Paxster,
-Cyclemaster, unu et al., where the product name IS the brand and inventing a
-model name is worse than leaving it. Plus `van/uaz/uaz` (S4W): UAZ's convention
+**G9 — Six sole-model make-as-model rows** (S2W, documented) — SPLIT per Turn
+42: `paxster`/`cyclemaster`/`veeley` are marques whose product name IS the
+brand — mark `legit` with that reasoning, nothing to research, a debt entry
+would imply someone should fix them; `ebretti`/`nicom` are genuinely unresolved
+and stay debt. Plus `van/uaz/uaz` (S4W): UAZ's convention
 is numeric type designations, identity unrecoverable from an aggregate row —
 tracked as debt, not guessed. Plus `ebretti`/`nicom` marque research (S2W) and 2
 ambiguous Piaggio rows.
@@ -194,7 +196,12 @@ forever.
 boundary revert). Harmless to the pipeline but crashes naive iteration
 (`.values.map(&:size)`) — clean up and add a lint for empty blocks.
 
-**G13 — `data/name_shapes.yml` debt is stale-dated** (JOINT). Entries
+**G13 — `data/name_shapes.yml` debt is stale-dated** (JOINT) — post-build
+numbers now measured (Turn 42): `poessl`/`buerstner` GONE (68 records healed by
+the drop-fold); `niesmann-bischoff` survives only via the G18 kind-scoping gap.
+The structural fix: `lint_dataset` gains a `VDB_CATALOG` env so its baseline
+and its subject are the same build, turning "re-measure after the build" into
+a flag rather than a wait. Entries
 `de-kba-shared-string-leak=171` and `normalizer-space-collapse-display-names=269`
 describe defects whose fixes are merged; the counters heal to ~0 at the next
 build. After the first post-correction build, re-measure and rewrite the debt
@@ -217,6 +224,47 @@ reserved kinds (agricultural, etc.) unshipped.
 **G17 — Enrichment plumbing does not exist** (JOINT; §14). There is no override
 surface or emit support for years/generations/variants. Must be built before
 enrichment swarms deploy, or their output has nowhere to land.
+
+**G18 — Drop kind-scoping leaks** (S4W). All 85 `drop.yml` entries are
+effectively car-scoped; 11 records across 6 makes leak into kinds the drop
+does not cover: `niesmann-bischoff` (truck 2), `hymer` (truck 2, van 1),
+`mobilvetta` (truck 1), `auto-trail` (van 1), `chausson` (van 1) — motorhome
+coachbuilders, same class as G7 — plus `m-a-n` (truck 2), which is a MERGE
+(`M.A.N.` → MAN), not a drop. The Scania/Iveco/DAF/MAN car-only drops are
+correct by design (411 truck records behaving as intended) — extend per kind
+with evidence, never blanket.
+
+**G19 — Ownership orphans** (S4W). `OWNERSHIP.yml` is a static snapshot;
+every build can mint makes belonging to nobody (17 in the fresh build:
+`m-a-n`, `karsan`, `kia-motors`, `opel-vauxhall`, `quadro-vehicles`,
+`westfalia-mobil-gmbh`, `unu`, `ebroh`, `xinri`…). Over 45–60 batches this
+compounds silently. Fix: `gen_ownership.rb --assign-new` (dominant-kind rule,
+ties to TIEBREAK) + a lint that fails on unowned published makes.
+
+**G20 — Acronym-make casings, D23 backlog** (SPLIT). Shortlist of 76
+candidate makes / 1,270 records (47 s2w — `Ktm` 152 and `Bsa` 91 are the two
+biggest single wins in either half — and 29 s4w). Research per marque; fix
+via `makes/aliases.yml`; the shortlist knowingly under-reports two-vowel
+initialisms (IVA, IFA, AWO, EVT) and carries deliberate false positives
+(Ford, Puch, Nash, Ram) — it is a research queue, not a verdict list.
+
+**G21 — Duplicate MAKES, pass 2** (SPLIT by ownership). `scripts/
+find_duplicate_makes.rb` (S2W-built): fold pass caught `man`/`m-a-n` and
+`e-max`/`emax`; legal-entity pass flags 32 makes / 71 records — and its own
+header leads with counterexamples because the obvious rule is wrong in both
+directions (Club Car IS the brand; Renault Trucks is a distinct legal
+manufacturer with its own approvals; Leyland DAF / Austin-Morris /
+Steyr-Puch / VDL Bova were real marques; `chevrolet-gmc` / `opel-vauxhall`
+probably are conflations). Approval-holder research, not string work.
+
+**G22 — `bus/factory-built` holds three real manufacturers as models**
+(S4W; the LIVE §8.3 example). `"Geely"`, `"Yutong"`, `"Zhongtong"` parsed
+into the model column by an NZTA origin flag; single-source nz. The obvious
+drop deletes three manufacturers; a clean move is impossible (there is no
+model to move TO — the model column holds only the make). Least-bad
+candidates: move to `<Make>|<Make>` as honest make-as-model debt rows under
+the right makes (`bus/geely` already exists), or debt in place. Decide
+against the NZTA raws; never the drop.
 
 ### 2.3 What must NOT be re-litigated (settled, with evidence)
 
@@ -329,6 +377,7 @@ before it is fixed at scale.
 | D20 | stale source payload | KBA served March for May | source month/title assertion | per-source freshness assertion |
 | D21 | licence-pin false signal | `my_jpj` monthly break; `be_fps` empty | pin-content review | phrase pins guarding real text |
 | D22 | curation-layer YAML hazards | dup keys, flow style, `244: 240` Integer, null-vs-move, dead keys, empty blocks (G12) | `lint_curation` + reachability test | mechanical; lint blocks merge |
+| D23 | acronym MAKE name title-cased | `Ktm` (152 recs), `Bsa` (91), `Tvr`, `Ldv` | single Titlecase token ≤4 chars ≤1 vowel (shortlist, NOT a verdict — `Iva` may genuinely be Iva) | `makes/aliases.yml` identity pin ONLY (§6.2 rule 3 corollary) — never a styling token. `smart_case` consults stylings/acronyms curated for MODEL names, so initialism makes fall through to `.capitalize` (normalizer.rb:86) |
 
 ---
 
@@ -395,15 +444,34 @@ like D9 but is Rieju's official model name, per rieju.com/…"). Verdicts are pe
 
 ### 5.4 Review packs (what makes a review take minutes, not hours)
 
-`scripts/gen_review_pack.rb <make>` (to build, Phase 1) emits one Markdown/YAML
-pack per make containing, per record: current id/name/kind, **all raw source
-strings** that reconcile into it (from pipeline cached snapshots — reviewing the
-published name without the raws is how the SEAT deletion happened), per-country
-counts and sources, collision candidates within the make (NFKD-folded), any
-moves/renames already touching it, detector flags with the D-class, the marque's
-known convention (§11.2) if recorded, and the raw fingerprint. Requires
-`VDB_DATA_REPO` + `VDB_CACHE_DIR`; must run offline from snapshots. The pack is
-the ONLY input a research agent needs besides the internet.
+`pipeline/tools/gen_review_pack.rb <make>` (to build, Phase 1) emits one pack
+per make containing, per record: current id/name/kind, **all raw source
+strings** that reconcile into it (from pipeline cached snapshots — reviewing
+the published name without the raws is how the SEAT deletion happened),
+per-country counts and sources, collision candidates within the make
+(NFKD-folded), any moves/renames already touching it, detector flags with the
+D-class, the marque convention (§11.2) if recorded, and the raw fingerprint.
+
+**Two sections are MANDATORY, because their absence is what hid the expensive
+failures** (Turn 42 review):
+
+1. **Candidate-queue rows** for the batch's makes (`build/candidates/*.jsonl`)
+   — a vanished record is absent from a per-published-record pack BY
+   DEFINITION; the queue is the only place a vanish is visible.
+2. **Dead override keys** — every renames/moves/drops key targeting these
+   makes that matched ZERO rows in the current build. A silent miss becomes a
+   visible line.
+
+**Implementation constraint:** the pack's curation lookup MUST be built on the
+pipeline's own fold/normalization by REQUIRING the pipeline code — never a
+reimplementation. A pack that resolves curation with plain string matching
+while the pipeline folds will report "no curation touches this record" for
+precisely the records whose curation silently failed — it does not merely omit
+the evidence, it asserts the opposite.
+
+Requires `VDB_DATA_REPO` + `VDB_CACHE_DIR`; must run offline from snapshots.
+The pack is the ONLY input a research agent needs besides the internet.
+
 
 ---
 
@@ -426,15 +494,41 @@ what the whole override layer is keyed for.
    `{Austin, Austin-Morris, Morris, Leyland*, BMC-era}` · `{Jawa, Jawa-CZ, CZ}` ·
    `{Zero, Zero-Motorcycles}` · `{E-max, Emax}` · `{Solex, E-Solex}` ·
    `{Iveco, Iveco-Bus}` · `{VDL-Bova, Bova}` · `{Daimler, DaimlerChrysler,
-   Chrysler}` · `{Toyota, Lexus}` · `{Fiat, Abarth}` · `{Volvo, Polestar}`.
+   Chrysler}` · `{Toyota, Lexus}` · `{Fiat, Abarth}` · `{Volvo, Polestar}` ·
+   `{Honda, Montesa}` (Montesa Honda S.A. ~88% Honda; co-badged, registries
+   file either way) · `{Silence, Scutum}` (legal-entity rebrand — the cluster
+   exists to stop a batch UN-merging the existing alias) · `{Vmoto, Super
+   Soco}` · `{Peugeot, Peugeot Motocycles}` (**cross-half**: Peugeot is s4w,
+   its mopeds are s2w; majority-Mahindra since 2015 but registries file the
+   scooters under PEUGEOT).
    Discovering a new holder relationship mid-batch → STOP, extend the batch,
    note it here.
+
+   **The rule that defines membership — approvals, not equity.** A cluster
+   follows TYPE APPROVALS, not ownership headlines: MV Agusta is
+   majority-Pierer since 2024 and is NOT in the KTM cluster, because it
+   retains its own approvals. Equity news is exactly what tempts a researcher
+   to over-merge; the question is always "whose approval do the registered
+   vehicles carry?"
+
+   **Why Vespa is in the Piaggio cluster — the precise mechanism, because it
+   is what caused the split:** RDW files Vespa rows under `merk=PIAGGIO` with
+   the badge stripped, so one nameplate exists in one register as
+   `VESPA ET4 150` and in another as bare `ET4 150`. Moving one spelling
+   without its twin leaves both single-source below threshold and both vanish.
+   A cluster is not "these brands are related" — it is **"these brands share
+   nameplate strings with and without a prefix."**
 2. **A batch owns its makes across ALL SIX KINDS** (renames are kind-blind; the
    26 arbitrated makes especially).
 3. **No batch may add `styling.yml` acronym tokens.** Tokens re-case the entire
    catalog and orphan other batches' rename keys. Whole-string pins are
    unrestricted; token requests go to the integrator queue (§8.4) with a
    full-catalog blast-radius sweep attached.
+   **Corollary — acronym MAKE names (D23) are fixed in `makes/aliases.yml`,
+   never via styling tokens**: an alias entry is scoped to the make name and
+   cannot blast another batch; a token re-cases every model string containing
+   it catalog-wide. Precedent: `d3642f5` fixed MV Agusta/GMC/NSU/TGB this way.
+   "How do I fix KTM then?" has exactly one right answer and it is this one.
 4. **No batch edits shared pipeline files** (`normalizer.rb`, `reconciler.rb`,
    `emit.rb`, multi-kind sources). Batches produce override lines, ledger
    verdicts and ISSUES; pipeline changes go through the two maintainer sessions.
@@ -608,7 +702,7 @@ source`) + the convention note + a list of anything that smells like a NEW
 defect class.
 ```
 
-### 8.4 Verifier prompt template
+### 8.4 Verifier prompt template (v2 — amended after S2W's structural review, Turn 42)
 
 ```
 You are the adversarial verifier for batch {ID}. Your job is to REFUTE.
@@ -617,18 +711,36 @@ Independence first: for {sample = all fixed/removed/moved verdicts + a ≥20%
 random sample of canonical}, re-derive the verdict from the pack's RAW strings
 and your own research BEFORE reading the researcher's evidence. Then compare.
 
+MANDATORY NON-SAMPLED SECTION (100%, every batch — three of the five failure
+shapes are OMISSIONS, which no sample of authored verdicts can find):
+  * the pack's candidate-queue section: every candidate row for this batch's
+    makes — is any of them a record that was published before this batch's
+    changes? That is a vanish in progress.
+  * the pack's dead-key section: every override key targeting these makes that
+    matched ZERO rows — each one is curation silently doing nothing.
+
 For each divergence: determine which side is wrong and WHY (bad source, altitude
 error, approval-holder miss, harness/tooling artifact…). For each agreement on
 fixed/removed/moved: independently confirm (a) the evidence URL actually says
-what is claimed, (b) the override line is reachable (post-cased key, correct
-display-name block, string values quoted), (c) no record can vanish — every
-merge/move target exists and every relocated spelling has ALL its register
-twins co-moved (the Vespa-split class), (d) former_ids covers every id change.
+what is claimed, (b) the override line is reachable — post-cased key, correct
+display-name block, string values quoted, AND the key survives the same fold
+the pipeline applies (diacritics, oe/ue/ae/ss digraphs, punctuation: BÜRSTNER
+in a drop list never matched the folded make, and the key was correctly cased,
+correctly placed, correctly quoted, and still dead), (c) former_ids covers
+every id change. Record-level vanish-proofing is the G2 GATE's job, not yours —
+your job is the two visibility sections above, which let a human see it coming.
+
+A canonical form emitted by a DETECTOR is a candidate, not evidence — the
+tooling's `canonical:` column has been measured at 86-91% wrong on alphanumeric
+type designations. Cite the marque archive or return debt; never confirm a
+canonical because the tooling proposed it.
 
 You are specifically hunting the five historical failure shapes: confident
-deletion of real data; the approval-holder trap; the badge-twin split; the
-threshold vanish; and canonical forms invented by rule rather than proven by
-archive. Output: per-record CONFIRMED / REVISED(with correction) /
+deletion of real data (live example: bus/factory-built holds models "Geely",
+"Yutong", "Zhongtong" — three real manufacturers parsed into the model column;
+the "obvious" drop deletes them); the approval-holder trap; the badge-twin
+split; the threshold vanish; and canonical forms invented by rule rather than
+proven by archive. Output: per-record CONFIRMED / REVISED(with correction) /
 REJECTED(with proof), plus anything the researcher missed entirely. If >10% of
 your sample is REVISED/REJECTED, halt and return the batch — do not patch it.
 ```
@@ -923,7 +1035,7 @@ row-count deltas >±20% flagged.
 | phase | content | exit criteria |
 |---|---|---|
 | **P0 — stabilize** (maintainers) | G1 gates, G2 no-vanish, G11 former_ids diff-run, G12/G13 hygiene, supervised publish (§16) | publish succeeds; 404-free migration verified; baselines re-cut |
-| **P1 — harness** (maintainers) | ledger schema + `lint_review` + `gen_review_pack` + `batches.yml`; pilot batch (one mid-size make end-to-end) to shake the tooling | pilot merged with dual-signed ledger; tooling docs in this file amended from pilot findings |
+| **P1 — harness** (maintainers) | ledger schema + `lint_review` + `gen_review_pack` + `batches.yml`; **pilot batch: `moped/iva`** (16 records, 4 defect classes in one tiny make — small enough to fully resolve, dense enough to shake the tooling; run by S2W, the harness NON-author, per I-11) | pilot merged with dual-signed ledger; tooling docs in this file amended from pilot findings |
 | **P2 — Tranche A swarms** | ~20 batches, decile 1–3, co-batch clusters | coverage ≥ 60% of decile-1..3 records; zero gate regressions |
 | **P3 — Tranche B + C swarms** | remaining curated makes; long-tail existence sweep | coverage 100%; debt register complete |
 | **P4 — structural** (parallel w/ P2–3, maintainers) | G3 kind migration (post Spain-code research), G4 FZ11.1, G5, G6, G7 | quadricycles landed no-vanish-clean; volvo/60 resolved |
