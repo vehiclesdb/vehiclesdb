@@ -1,0 +1,122 @@
+# VERIFICATION LEDGER — IVA (batch B-000, the A4 harness pilot)
+#
+# Reviewed against build/packs/iva.md. Verdicts are per PRD-QUALITY §5.2.
+#
+# READ THIS BEFORE TRUSTING THE COVERAGE NUMBER: this make splits cleanly into
+# two evidence classes, and only one of them can ever reach the PRD's stated bar
+# ("manufacturer sites, press releases, heritage archives, regulator documents
+# are your sources of record"):
+#
+#   * CURRENT LINEUP (E-GO series, NC series, Lux) — IVA Mobility publishes
+#     these, so the manufacturer store is a real source and the verdicts are
+#     genuinely evidenced.
+#   * DISCONTINUED / OEM-CODE MODELS (RA9015, RA9011, VENTI 50, JET50, LUX50,
+#     RIVALUX, plus the whole candidate tail: IBIZA, VENICE, LX02, LHU,
+#     DAGUIWANG, ZN50QT-E, TY50QT-G…) — IVA publishes NOTHING about them and no
+#     archive exists. The Dutch register is the only evidence there is.
+#
+# For the second class the honest ceiling is "the register says so, corroborated
+# across N raw spellings of the same row-set", and I have said exactly that
+# rather than dressing a retailer listing up as a source. See the friction
+# report in NEGOTIATION.md Turn 55 — this is the pilot's main finding about the
+# harness, not a property of IVA.
+make: iva                 # the SLUG, not the display name — lint matches this against the filename. Worth noting because everywhere ELSE in this repo `make` means the display name (renames.yml is keyed on it), so writing "IVA" here is the natural mistake and the error message does not say which is wanted.
+researcher: s2w-opus5
+# VERIFIER DELIBERATELY UNSET — see the friction report. I-11 requires
+# researcher != verifier, and a single session signing both fields would be the
+# letter of the rule with none of its substance. The whole reason this batch is
+# S2W's is that S4W authored the harness; by the same logic the verification
+# belongs to S4W. Filling this in myself would make the ledger's central claim
+# unfalsifiable.
+verifier: null
+reviewed_at: 2026-07-25
+raw_fingerprint: sha256:e512e024d1d9371fb87dcf3f660461974b1836e8971af2bd03f8d27a282b636a
+
+records:
+  # ── current lineup: manufacturer-evidenced ────────────────────────────────
+  - id: moped/iva/e-go-s2
+    verdict: fixed
+    note: >-
+      display "E-Go S2" -> "E-GO S2"; the manufacturer writes the series with a
+      hyphen and caps. smart_case cannot know that, so it is pinned per model.
+    evidence: https://www.ivamobility.com/en/collections/iva-e-go
+  - id: moped/iva/e-go-s4
+    verdict: fixed
+    note: >-
+      display cased to "E-GO S4", AND merged with the register's bare "S4" rows
+      (708 of them). IVA's catalogue contains exactly one S4 — the E-GO S4 — so
+      the bare rows are the same scooter recorded without the series prefix.
+    evidence: https://www.ivamobility.com/en/collections/iva-e-go
+  - id: moped/iva/e-go-s5
+    verdict: fixed
+    note: same as E-GO S4 — cased, and merged with 531 bare "S5" rows.
+    evidence: https://www.ivamobility.com/en/collections/iva-e-go
+  - id: moped/iva/e-go-s8
+    verdict: fixed
+    note: display cased to "E-GO S8".
+    evidence: https://www.ivamobility.com/en/collections/iva-e-go
+  - id: moped/iva/e-go-s4-new
+    verdict: debt
+    note: >-
+      the register writes "E-GO S4 NEW" (405 rows). IVA's catalogue has E-GO S4
+      and E-GO S4 2.0 but no "S4 NEW", so this is almost certainly the 2.0 sold
+      under a dealer label — but "almost certainly" is a guess and merging it
+      into either sibling on that basis is exactly the confident-wrong-answer
+      class. Cased only; identity left open. Resolve with an RDW type-approval
+      (TAN) comparison against E-GO S4 and S4 2.0, which is evidence rather than
+      inference.
+    evidence: https://www.ivamobility.com/en/collections/iva-e-go
+
+  # ── discontinued / OEM-code: the register is the only evidence ─────────────
+  - id: moped/iva/ra9015
+    verdict: fixed
+    note: >-
+      THE PILOT'S HEADLINE DEFECT. One scooter was published as THREE records —
+      iva-ra9015 "Iva-RA9015" (311 rows), ra-9015 "Ra-9015" (447), ra9015
+      "RA9015" (332) — because the register spells it three ways and
+      strip_make_prefix only strips a make prefix followed by WHITESPACE, so the
+      hyphen-joined "IVA-RA9015" kept its badge. Merged to the closed form: it
+      carries the plurality of rows and matches retail listings. No manufacturer
+      source exists (discontinued; absent from IVA's current store), so the
+      evidence is the register's own row-set, corroborated across all three
+      spellings resolving to one product.
+    evidence: https://opendata.rdw.nl/resource/m9d7-ebf2.json
+  - id: moped/iva/ra9011
+    verdict: fixed
+    note: >-
+      same shape as RA9015 and the reason it matters: the published record was
+      the badge-carrying "Iva-RA9011" (476) while its badge-free twins ra-9011
+      (197) and ra9011 (146) sat BELOW THRESHOLD in the candidate queue. The
+      published spelling was the minority of the evidence. Merged; the twins now
+      union into it.
+    evidence: https://opendata.rdw.nl/resource/m9d7-ebf2.json
+  - id: moped/iva/jet50
+    verdict: canonical
+    note: >-
+      prefix strip already working correctly — "IVA JET 50" (86), "JET 50" (382)
+      and "JET50" (7) all resolve here. Verified as a control that the
+      whitespace path is fine and the RA defect really is hyphen-specific.
+    evidence: https://opendata.rdw.nl/resource/m9d7-ebf2.json
+  - id: moped/iva/lux50
+    verdict: canonical
+    note: 'control, same as JET50: "IVA LUX50" (2000) + "LUX50" (447) already merge.'
+    evidence: https://opendata.rdw.nl/resource/m9d7-ebf2.json
+  - id: moped/iva/venti-50
+    verdict: canonical
+    note: 'control, same: "IVA VENTI 50" (1068) + "VENTI 50" (146) already merge.'
+    evidence: https://opendata.rdw.nl/resource/m9d7-ebf2.json
+  - id: moped/iva/e-riva
+    verdict: debt
+    note: >-
+      435 rows, single spelling, no manufacturer material. Plausibly related to
+      "Rivalux Electric" below (both Riva-named) but nothing establishes that,
+      and guessing would merge two products on a shared syllable.
+    evidence: https://opendata.rdw.nl/resource/m9d7-ebf2.json
+  - id: moped/iva/rivalux-electric
+    verdict: debt
+    note: >-
+      445 rows. IVA's current store lists "IVA Lux Electric 2.0", which may be
+      the successor — but "may be" is not evidence, and LUX50 is already a
+      separate live record, so a wrong merge here would fold three products into
+      one. Left open with the relationship named.
+    evidence: https://www.ivamobility.com/en/collections/scooters
