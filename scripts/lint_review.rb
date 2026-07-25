@@ -59,6 +59,17 @@ KINDS.each do |k|
   ids.each { |id| by_make[id.split("/").first] += 1 }
 end
 former = (YAML.safe_load_file(File.join(ROOT, "overrides/models/former_ids.yml")) rescue nil) || {}
+# former_ids has TWO authored shapes (flat string / nested {to:, accepted_loss:})
+# — normalize at the boundary exactly like the pipeline gate does (pipeline#10
+# fixed the same crash there; same lesson, same shape).
+former = former.transform_values { |v| v.is_a?(Hash) ? v["to"] : v }.compact
+# Alias TARGETS are ids guaranteed live in the NEXT build (the pipeline
+# liveness gate enforces it) but possibly absent from the PUBLISHED catalog
+# this lint measures between releases. A `fixed` verdict on a merge target
+# is exactly that state — the fix is merged, the publish is pending (§16).
+# Found by the B4 pilot verification: venti-50/ra9011/e-go-s4-new failed
+# the live check against the repo catalog while being fully correct.
+pending_publish = former.values.to_set
 removals = (YAML.safe_load_file(File.join(ROOT, "overrides/models/removals.yml")) rescue nil) || {}
 own = (YAML.safe_load_file(File.join(ROOT, "OWNERSHIP.yml")) rescue nil) || {}
 owner_of = ((own["s4w"] || []).to_h { |m| [m, "s4w"] }).merge((own["s2w"] || []).to_h { |m| [m, "s2w"] })
@@ -167,7 +178,7 @@ ledgers.sort.each do |abs|
       fail! "#{label}: #{verdict} requires a `note:` naming the blocker/mechanism"
     end
 
-    is_live = live[kind]&.include?(rest)
+    is_live = live[kind]&.include?(rest) || pending_publish.include?(id)
     case verdict
     when "canonical", "fixed", "debt"
       fail! "#{label}: verdict #{verdict} but the id is NOT live in the catalog being measured — " \
