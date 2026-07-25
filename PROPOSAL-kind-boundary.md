@@ -211,3 +211,74 @@ trial, then reverted rather than half-shipped:**
 sources, both maintainers' kinds, the body-type vocabulary and ~40k
 registrations of evidence. The current state is *known*-wrong and tripwired; a
 half-migration would be *unknown*-wrong.
+
+---
+
+## Q3, THIRD REVISION (2026-07-25, after building it) — the gating blocker is Spain
+
+I estimated this work three times and was wrong three times. All three are recorded
+so the next attempt does not repeat the sequence:
+
+| estimate | claim | why it was wrong |
+|---|---|---|
+| 1st | "plumb `eu_category` into `Row` for 5 sources" | 3 of the 5 already route on the EU category |
+| 2nd | "~6 map entries across 3 sources" | ignored what happens to records that SPLIT |
+| 3rd | **a Spanish national-code → EU-category mapping** | evidenced by building it and measuring |
+
+### What actually happens if you flip the maps today
+
+Built end to end (source maps + `nl_rdw` kind_map + `eu_cats` on the reconciler
+entity + a `quadricycle` body-type derivation + the validator vocabulary), then
+measured against the pre-change build:
+
+```
+body_types ["quadricycle"] derived correctly     76 records — the mechanism WORKS
+make/model pairs that VANISHED ENTIRELY          35
+    citroen/my-ami-buggy · fiat/topolino-dolcevita · chatenet/ch28 · ch28hdi
+    casalini/m12 · estrima/biro-van · aixam/k2 · aixam/s10-2
+    garia/club-car-urban-l7e-s · cpi/je50 · e-ton/viper-st-50 · flistar/ym2000 …
+```
+
+### Root cause — in `es_dgt.rb`'s own comment, which I read past twice
+
+> *"Spanish NATIONAL codes (asterisk series) — the bulk of ES two-wheelers arrives
+> under these, not EU categories"*
+
+`es_dgt` HAS an `EUCAT` field, but most Spanish two-wheelers arrive under `*02`,
+`*03`, `*05`… national codes carrying no L6e signal. So Spain cannot route L6e to
+`car`, and any L6e with Spanish evidence splits:
+
+```
+nl_rdw  L6  -> car    290 vehicles · single source · car threshold 1000   -> candidate
+es_dgt  *NN -> moped  single source               · moped threshold 300   -> candidate
+```
+
+Split across two kinds, single-source in each, clears neither threshold,
+**disappears from the catalog**. `silence/s04` — the S04 Nanocar, an L6e — was
+published `es|nl` and ends up in neither kind. Same shape as the Piaggio→Vespa
+split (relocating one register's rows while another's stay behind strands both
+below the bar), a lesson that was already written down when I did this.
+
+### Dependency-ordered plan, corrected
+
+1. **GATING: map DGT's national asterisk codes to EU categories** (`*02`…`*17` →
+   L1e/L3e/L6e). Research on DGT's published code list, not plumbing. Without it
+   Spain cannot participate and every ES-evidenced L6e is lost.
+2. Flip `L6E`/`L7E` to `:car` in `es_dgt`, `fi_traficom`, `lu_snca` (2 lines each).
+3. `nl_rdw`: `Bromfiets` under both `car` and `moped`, plus a `by_eu_category`
+   block in its kind_map. **Guard `is_a?(Hash)` before `dig`** —
+   `kind_map["kinds"][soort]` is a String for simple mappings and `Hash#dig` raises
+   `TypeError` on a String intermediate; without the guard nl_rdw silently
+   contributes ZERO rows for every simply-mapped soort (car 8,363→4,392, and only
+   the delta gate notices).
+4. Reconciler: `eu_cats` on the entity + a `quadricycle` short-circuit BEFORE the
+   car body rules (built, working — no registry body signal ever says
+   "quadricycle", so `body_type_for` would label a Citroën Ami a hatchback).
+5. `quadricycle` into `CANONICAL_BODY_TYPES` (validate.rb) and SCHEMA.md.
+6. **Verify no record vanishes, per id, not in aggregate** — then `former_ids` for
+   every moved id, and rekey the `silence/s04` spotcheck to `kind: car`.
+
+### Do not attempt this without step 1
+
+Steps 2-6 are about a day. Step 1 is the whole risk, and skipping it deletes ~35
+real microcars while every gate stays green.
