@@ -112,6 +112,11 @@ Cupra:
   Terramar Amrica Cp Ed: Terramar   # truncated uk_dft string for the "Terramar America's Cup Edition" launch edition; editions fold
 
 Derbi:
+  # NOTE (2026-07-25): keys below are the POST-spacing forms. normalizer.rb
+  # two_wheeler_spacing now re-opens word|digit boundaries, so the old
+  # digit-frozen keys (COTA4RT260, AVENTURA500, MULHACEN125 ...) can never be
+  # produced again. scripts/lint_dataset.rb asserts key reachability — if you
+  # change the spacing rule, re-run it and rekey, do not add a duplicate.
   # moped Senda 50 — one nameplate: every 50cc trim/edition/registry-code row
   # folds here. TAN families each prove one approved type: e9*2002/24*0001
   # (R/Sm/X-Trem), e9*2002/24*0053 (R50AF=SM50AF identical), e1*168/2013*00126
@@ -121,10 +126,10 @@ Derbi:
   Senda R X-Trem: Senda 50        # trim (TAN e9*2002/24*0001*01)
   Senda R50AF: Senda 50           # registry variant string; TAN e9*2002/24*0053*00 IDENTICAL to SM50AF
   Senda SM50AF: Senda 50          # registry variant string; same TAN e9*2002/24*0053*00
-  Senda RACING50SM: Senda 50      # 2016+ gen trim (TAN e1*168/2013*00126*00)
+  Senda Racing 50SM: Senda 50      # 2016+ gen trim (TAN e1*168/2013*00126*00)
   Senda X-Treme Limited: Senda 50 # special edition, same type
-  Senda X-TREME50R: Senda 50      # trim, same type
-  Senda X-TREME50SM: Senda 50     # trim, same type
+  Senda X-Treme 50R: Senda 50      # trim, same type
+  Senda X-Treme 50SM: Senda 50     # trim, same type
   Black Devil: Senda 50           # special edition of the Senda 50 — TAN e9*2002/24*0001*01 IDENTICAL to Senda R X-Trem; sold as "Senda SM/R 50 Black Devil"
   Sm X-Trem: Senda 50             # RDW handelsbenaming with the family name dropped — TAN e9*2002/24*0001*00/*01 (CC0 RDW API, 2026-07-12)
   Sdr: Senda 50                   # RDW type-code "SDR" for the 1997-2005 Senda 50 gen: TAN base e9*92/61*0027, L1e 45 km/h, Senda R/SM geometry (CC0 RDW API 2026-07-12)
@@ -134,14 +139,13 @@ Derbi:
   Senda SM125 4T: Senda 125  # "4T" = engine descriptor (all Senda 125s are 4T), not a nameplate (TAN e9*92/61*0130*05/*09)
   Senda: Senda 125           # motorcycle-kind bare Senda: FI rows are the 125 (TAN e9*92/61*0130*01); UK rows land here too (VEH0120 merges mopeds into Motorcycles by design — kind_maps/uk_dft.yml)
   # GPR sport family (Racing/Nude are the two catalog versions of one type):
-  Gpr NUDE50: GPR 50   # naked variant — TAN e9*2002/24*0011*06 IDENTICAL to GPR50RACING (https://es.wikipedia.org/wiki/Derbi_(motocicletas))
-  GPR50RACING: GPR 50  # faired variant, same type (TAN e9*2002/24*0011*06)
+  Gpr Nude 50: GPR 50   # naked variant — TAN e9*2002/24*0011*06 IDENTICAL to GPR50RACING (https://es.wikipedia.org/wiki/Derbi_(motocicletas))
+  GPR50 Racing: GPR 50  # faired variant, same type (TAN e9*2002/24*0011*06)
   GPR50: GPR 50        # official spaced form; UK motorcycle-class rows (UK merges mopeds into Motorcycles, kind_maps/uk_dft.yml)
   GPR125: GPR 125      # official spaced form (GPR 125 Racing/Nude, 2005-2015) — same respace as GPR50; motorcycle-kind only (https://en.wikipedia.org/wiki/Derbi_GPR125)
   # Display/casing renames + family folds:
-  MULHACEN125: Mulhacén 125  # official accented name (after the Mulhacén peak), scrambler 2007-2013 (https://www.autoevolution.com/moto/derbi/mulhacen/)
-  MULHACEN659: Mulhacén 659  # official accented name; 659cc Yamaha-engined single (2006-2013)
-  BOULEVARD50: Boulevard 50  # display spacing; Derbi-badged scooter line (TAN e9*2002/24*0329*01, no cross-make twin in catalog)
+  Mulhacen 125: Mulhacén 125  # official accented name (after the Mulhacén peak), scrambler 2007-2013 (https://www.autoevolution.com/moto/derbi/mulhacen/)
+  Mulhacen 659: Mulhacén 659  # official accented name; 659cc Yamaha-engined single (2006-2013)
   Variant Start: Variant     # Start (1984) is a version of the Variant family (América/Start/Sport/Box) — folds to the nameplate (https://blog.terranea.es/variant-ciclomotor-volador-derbi/)
   DFW50: null                # DFW 50 is a 50cc QUAD (ATV) — no quad kind exists (POLARIS precedent in makes/drop.yml: "revisit if quads become a kind"); https://www.autoevolution.com/moto/derbi-dfw-50-2005.html
 
@@ -149,10 +153,8 @@ Bultaco:
   Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
 
 Montesa:
-  COTA315R: Cota 315R           # digit-frozen registry token; official spacing of the 1997-2004 two-stroke Cota (https://www.retrotrials.com/montesa--montesa-honda-motorcycles.html)
-  COTA4RT: Cota 4RT             # official naming (https://montesa.com/en/montesa-range/); 249cc 2005-13 — stays separate from 260/301RR per displacement granularity
-  COTA4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
-  COTA4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
+  Cota 4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
+  Cota 4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
 
 Gas Gas:
   Enducross: EC          # same nameplate: EC is short for Enducross — shared TAN e9*92/61*0062*09 with gas-gas/ec (https://en.wikipedia.org/wiki/Gas_Gas)
@@ -196,11 +198,8 @@ TRS:
 
 Rieju:
   "N.a.": null                   # registry "not available" placeholder (es_dgt + nl_rdw rows), not a nameplate; rieju keeps es via e-Tango (es_dgt)
-  AVENTURA500: Aventura 500      # official spacing (471cc A2 twin trail; https://www.diariomotor.com/motos/rieju-aventura-500/)
   NKD125: NKD 125                # official "NKD 125" naked, NKD stays caps (https://rieju.com/us/naked/130/524/nkd-125)
-  RALLY307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
-  XPLORA557: Xplora 557          # official "Xplora 557" 554cc A2 twin (https://www.motorbikemag.es/rieju-xplora-557-xplora-707-2025-prueba-opiniones/)
-  XPLORA707: Xplora 707          # sibling 693cc twin (https://rieju.com/en/news/new-rieju-xplora-707/257/294); consecutive TANs e9*168/2013*16461/16462 prove two approved models, not dupes
+  Rally 307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
 
 Silence:
   S02LS: S02             # "S02 LS" = the L1e speed variant; kind=moped already encodes the class — RDW writes both strings for the same scooter (681 S02LS vs 104 S02 bromfiets rows; Silence's manual says "S02 LS")
