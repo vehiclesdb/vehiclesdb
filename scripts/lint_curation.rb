@@ -92,6 +92,30 @@ curation_files.each do |abs|
   end
 end
 
+# ── 1b. block style only: no inline flow mappings ────────────────────────────
+#
+# `Honda: { Honda: null }   # comment` is valid YAML and parses identically to a
+# block mapping — but it hides the entry from every line-based tool we have, and
+# both maintainers write line-based tools (alphabetizer, provenance checker,
+# collision merger, union merger).
+#
+# This cost 21 entries once: a batch of make-as-model drops was written in flow
+# style, a union merge could not see them, and they vanished from a branch with
+# no conflict and no lint failure — the exact silent-loss class this file exists
+# to prevent. One entry per line, with its own `#` reason, is the contract.
+FLOW_MAPPING = /\A\s*("[^"]+"|[^\s#][^:]*):\s*\{/
+%w[overrides/models/renames.yml overrides/models/aliases.yml overrides/models/moves.yml
+   overrides/makes/aliases.yml overrides/makes/search_aliases.yml].each do |rel|
+  abs = File.join(ROOT, rel)
+  next unless File.exist?(abs)
+  File.readlines(abs).each_with_index do |line, i|
+    next unless line.match?(FLOW_MAPPING)
+    fail! "#{rel}:#{i + 1}: inline flow mapping — write one entry per line in block style. " \
+          "Flow style is invisible to line-based tooling (it silently ate 21 entries once) " \
+          "and leaves no room for a per-line reason. Line: #{line.strip}"
+  end
+end
+
 # ── 2. kind_maps shape ───────────────────────────────────────────────────────
 #
 # These files are SOURCE-keyed, not kind-keyed, so both maintainers' kinds live

@@ -455,3 +455,45 @@ checks:
   - id: nio/el8
     availability_includes: [de]
     reason: "NIO renamed ES6/ES8 to EL6/EL8 for Europe; the catalog already carried EL6, so ES8 folds to EL8 for family consistency"
+  - id: aprilia/atlantic-500
+    kind: motorcycle
+    availability_includes: [fi, nl]
+    reason: "two_wheeler_spacing re-opens word|digit boundaries: raw 'ATLANTIC 500' published as ATLANTIC500 (a string in no source) until 2026-07-25. If this id reverts to atlantic500 the collapse-then-expand rule broke."
+  - id: aprilia/moto-6-5
+    kind: motorcycle
+    availability_includes: [nl]
+    reason: "junk?'s litre-displacement rule must stay car/van-only — bikes are sized in cc. Aprilia Moto 6.5 (228 NL regs) was deleted by that rule the moment spacing exposed the decimal."
+  - id: suzuki/burgman-400
+    kind: motorcycle
+    reason: "word|digit reopening + Title Case: was BURGMAN400 (SHOUTING, because case_token skips digit-bearing tokens)"
+  - id: honda/st1300
+    kind: motorcycle
+    reason: "COUNTER-tripwire: a <=3-letter type code must NOT be split. If this becomes st-1300 the >=4-letter boundary test regressed and ~thousands of code names will have been mangled."
+  - make: buerstner
+    kind: car
+    exists: false
+    reason: "drop.yml listed BÜRSTNER and BURSTNER but NL/FI transliterate umlauts (ü→ue), so the resolved make 'Buerstner' matched neither and 20 motorhome floorplan codes published as cars. Guards the transliteration fold in normalizer.rb#make_dropped?."
+  - make: poessl
+    kind: car
+    exists: false
+    reason: "same escape as buerstner: PÖSSL/POSSL listed, resolved make is 'Poessl' (49 records)"
+  - make: niesmann-bischoff
+    kind: car
+    exists: false
+    reason: "same escape: NIESMANN+BISCHOFF and NIESMANN BISCHOFF listed, resolved make is hyphenated (12 records)"
+  - id: talaria/xxx
+    kind: moped
+    availability_includes: [es, fi, nl]
+    reason: "Talaria XXX is a REAL model, not a placeholder — raw 'TL2500, XXX'. Needs the styling.yml XXX pin or it publishes as 'Xxx' and reads as junk; es arrives from the TL2500 fold."
+  - id: talaria/sting
+    kind: moped
+    availability_includes: [fi, nl]
+    reason: "TL3000 is the Sting's type code (raws 'TL3000, STING' n=53). GOTCHA: comma-joined semantics are SOURCE-SPECIFIC — KBA joins predecessor+successor, Talaria joins code+name."
+  - id: honda/honda
+    kind: motorcycle
+    exists: false
+    reason: "make-as-model registry noise; 24 such rows dropped catalog-wide. Kind-blind by design — the same key also clears the moped and car rows."
+  - make: askoll
+    kind: moped
+    exists: false
+    reason: "ALL 179 NL registrations are a literal N/A placeholder, so the make had no identifiable model. Deliberate erasure, recorded in the candidate queue: returns the moment a source emits eS1/eS2/eS3."

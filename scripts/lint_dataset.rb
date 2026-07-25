@@ -170,7 +170,12 @@ blame = {}
 if published_cutoff.positive?
   `git -C #{ROOT.inspect} blame --line-porcelain overrides/makes/drop.yml 2>/dev/null`.each_line do |l|
     @ts = l.split.last.to_i if l.start_with?("author-time ")
-    blame[l.sub(/\A\t/, "").strip] = @ts if l.start_with?("\t")
+    next unless l.start_with?("\t")
+    # Key by the ENTRY itself, not the whole line: matching by substring made
+    # a fresh `- SEA` entry look old because an existing comment mentioned
+    # "(SEA group)", so a pending drop was reported as a silent failure.
+    entry = l.sub(/\A\t/, "").strip[/\A-\s*(.+?)\s*(#.*)?\z/, 1]
+    blame[entry] = @ts if entry
   end
 end
 
@@ -180,7 +185,7 @@ drops.each do |kind, list|
     transliterations(raw).each do |slug|
       next unless makes.key?([kind, slug])
       n = models.count { |m| m["_kind"] == kind && m["make_id"] == slug }
-      added = blame.find { |line, _| line.include?(raw) }&.last
+      added = blame[raw]
       pending = published_cutoff.positive? && added && added > published_cutoff
       escapes << { kind: kind, raw: raw, slug: slug, models: n, pending: pending,
                    owner: owner_of[slug] || "?" }

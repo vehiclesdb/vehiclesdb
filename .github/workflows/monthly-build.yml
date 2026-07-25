@@ -84,6 +84,22 @@ jobs:
           path: pipeline-repo/cache
           key: source-cache-${{ github.run_id }}
           restore-keys: source-cache-
+          # save-always: actions/cache skips its post-job SAVE step when the job
+          # FAILED. Measured consequence during the 2026-07-12→25 outage: the
+          # repo held exactly ONE cache entry (source-cache-28779105628,
+          # 319.57 MiB, created 07-06) which every failing run restored but none
+          # refreshed — so each retry re-downloaded every file published after
+          # 07-06 (KBA June, DGT June…) from scratch, and the entry drifted
+          # toward GitHub's 7-day no-access eviction while the next weekly run
+          # sat exactly on that boundary. If it had been evicted, cold-cache
+          # fetches to the portals that reject datacenter IPs (th_dlt,
+          # fi_traficom — see the seed step below) would have started failing on
+          # top of the real cause, changing the symptom mid-investigation.
+          # Saving on failure keeps a broken build's downloads useful.
+          # NB actions/cache deprecates this input in favour of the separate
+          # actions/cache/restore + actions/cache/save pair; if you upgrade past
+          # v4, split the steps and put the save in an `if: always()` step.
+          save-always: true
 
       # Some portals reject datacenter IPs (measured: Thailand DLT resets
       # GitHub runners). The pipeline's keep-last-good fetch layer handles
