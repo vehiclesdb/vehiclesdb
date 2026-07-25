@@ -214,8 +214,12 @@ else
     abs = File.join(ROOT, rel)
     next unless File.exist?(abs)
 
-    diff = `git -C #{ROOT.inspect} diff -U0 #{base}...HEAD -- #{rel.inspect} 2>/dev/null`
-    diff = `git -C #{ROOT.inspect} diff -U0 #{base} -- #{rel.inspect} 2>/dev/null` if diff.strip.empty?
+    # Diff the base against the WORKING TREE, not against HEAD: we report line
+    # numbers from the file as it exists on disk, so the diff has to describe
+    # that same file. Using `base...HEAD` made the two disagree the moment there
+    # were uncommitted edits, and the lint then pointed at an innocent line.
+    diff = `git -C #{ROOT.inspect} diff -U0 #{base} -- #{rel.inspect} 2>/dev/null`
+    diff = `git -C #{ROOT.inspect} diff -U0 #{base}...HEAD -- #{rel.inspect} 2>/dev/null` if diff.strip.empty?
     next if diff.strip.empty?
 
     added = {} # line number in the new file => text

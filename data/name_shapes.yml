@@ -70,6 +70,29 @@ legit:
       The Humberette (1903-1905, revived 1913) is a real Humber model name.
       https://en.wikipedia.org/wiki/Humberette
 
+  # ── numeric type designations in the commercial kinds ─────────────────────
+  # NAMING.md §7 makes this verdict explicitly KIND-DEPENDENT: in van, truck and
+  # bus a bare number IS the naming convention (the designation encodes
+  # tonnage/power — Mercedes 311/313, DAF 200, LDV 200/400, Fiat 230/280/290,
+  # Volvo 8707, Hydrema 900), whereas in `car` it is a parser suspect. These are
+  # therefore legitimate without the two-source corroboration that car-kind
+  # numerics need. Scoped per kind so the entry can never excuse a car artifact.
+  - id: commercial-numeric-type-designations-van
+    category: numeric_only
+    kind: van
+    pattern: '\A\d{3,4}\z'
+    why: "van type designations encode payload/series (Fiat 230/280/290, LDV 200, VW 800/1000); see NAMING.md §7"
+  - id: commercial-numeric-type-designations-truck
+    category: numeric_only
+    kind: truck
+    pattern: '\A\d{3,4}\z'
+    why: "truck designations encode tonnage/power (Mercedes 311/313/400, Hydrema 900, Wacker Neuson 3000); see NAMING.md §7"
+  - id: commercial-numeric-type-designations-bus
+    category: numeric_only
+    kind: bus
+    pattern: '\A\d{3,4}\z'
+    why: "bus designations are model-series numbers (DAF 200, LDV 200/400, Volvo 8707, Mercedes 300/312/400); see NAMING.md §7"
+
 debt:
   # ── the German shared-string leak (fix is merged in the pipeline, awaiting a
   #    build; see vehiclesdb/vehiclesdb-pipeline#1) ────────────────────────────
