@@ -352,6 +352,99 @@ Gilera:
 GMC:
   Pickup: Pick-Up                             # spelling variant of "Pick-Up" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+Harley-Davidson:
+  # H-D CONVENTION DOSSIER (§11.2). Two rules, both from Harley's own pages,
+  # and rows routinely need both at once ("FLSTF Fat Boy"):
+  #
+  #  1. MODEL CODES are continuous UPPERCASE alphanumeric — no spaces, no
+  #     hyphens: FXST, FLHTCU, FXRS, FLSTF, FLHXS, RA1250, RH1250S.
+  #     https://www.harley-davidson.com/us/en/content/expert-advice/harley-davidson-model-codes.html
+  #     Prefix = engine family (F = Big Twin, XL = Sportster), then the model
+  #     family (FL, FXD), then variant suffixes (C = Custom/Classic, I = fuel
+  #     injection, R = Roadster/Road King/Racing). Registries split these codes
+  #     on arbitrary boundaries ("FL Htc", "F X R S", "Fx Stc"), which is what
+  #     produced most of the collisions below.
+  #  2. MODEL NAMES are SPACED, in H-D's registered forms: Fat Boy®,
+  #     Low Rider®, Wide Glide®, Super Glide®, Electra Glide®, Road King®,
+  #     Softail® Deluxe, Sportster®, Street Bob®. Same page + the model pages.
+  #
+  # ENGINE-ERA NICKNAMES (Panhead, Shovelhead, Knucklehead) are ONE word. They
+  # are heritage/enthusiast terms rather than registered model names, and the
+  # closed form is universal usage — so they go the OPPOSITE way from the
+  # registered names above. That split is exactly why no mechanical rule works
+  # here; see the note below.
+  #
+  # WHY THESE ARE HAND-RESOLVED. find_duplicate_spellings.rb's `canonical()`
+  # picks the variant with the MOST tokens, which for an alphanumeric type code
+  # selects the registry-mangled spelling. Measured on this make it was right on
+  # 10 of 34 groups; it proposed "F X R S" for FXRS, "FL Htc" for FLHTC,
+  # "W L C" for WLC and "Sport Ster" for Sportster. Treat its canonical column
+  # as a candidate, never as evidence.
+  #
+  # 20 of these lines are DISPLAY-ONLY (both spellings already slug the same,
+  # e.g. Fxstc -> FXSTC), so they change `name` and not `id` and correctly have
+  # no former_ids entry — rule 1 there forbids aliasing an id that still lives.
+  # The other 35 are real id changes and every one MERGES into an id that
+  # already exists, so nothing can vanish.
+  Dyna Lowrider:               Dyna Low Rider           # registered spelling
+  Dyna Wideglide:              Dyna Wide Glide          # registered spelling
+  Electraglide:                Electra Glide            # registered spelling
+  F X R S:                     FXRS                     # type code — uppercase, closed
+  FL Htc:                      FLHTC                    # type code — uppercase, closed
+  Fatboy:                      Fat Boy                  # registered spelling
+  Flh Electra-Glide:           FLH Electra Glide        # code closed + registered name spaced (display-only, id stable)
+  Flh Electraglide:            FLH Electra Glide        # code closed + registered name spaced
+  Flh-1200:                    FLH1200                  # type code — uppercase, closed
+  Flhrc Road King:             FLHRC Road King          # code closed + registered name spaced (display-only, id stable)
+  Flhrc Roadking:              FLHRC Road King          # code closed + registered name spaced
+  Flhri Road King:             FLHRI Road King          # code closed + registered name spaced (display-only, id stable)
+  Flhri Roadking:              FLHRI Road King          # code closed + registered name spaced
+  Flhtc:                       FLHTC                    # type code — uppercase, closed (display-only, id stable)
+  Flhtc-I:                     FLHTCI                   # type code — uppercase, closed
+  Flhtci:                      FLHTCI                   # type code — uppercase, closed (display-only, id stable)
+  Flhtcu-I:                    FLHTCUI                  # type code — uppercase, closed
+  Flhtcui:                     FLHTCUI                  # type code — uppercase, closed (display-only, id stable)
+  Flst-F:                      FLSTF                    # type code — uppercase, closed
+  Flstf:                       FLSTF                    # type code — uppercase, closed (display-only, id stable)
+  Flstf Fat Boy:               FLSTF Fat Boy            # code closed + registered name spaced (display-only, id stable)
+  Flstf Fatboy:                FLSTF Fat Boy            # code closed + registered name spaced
+  Flstn Softail De Luxe:       FLSTN Softail Deluxe     # code closed + registered name spaced
+  Flstn Softail Deluxe:        FLSTN Softail Deluxe     # code closed + registered name spaced (display-only, id stable)
+  Fx St:                       FXST                     # type code — uppercase, closed
+  Fx Stc:                      FXSTC                    # type code — uppercase, closed
+  Fxst-C:                      FXSTC                    # same as Fxe-F above: a third hyphenated spelling of the same code, invisible in the detector output because it reports one representative name per id
+  Fxd/i Dyna Super Glide:      FXDI Dyna Super Glide    # code closed + registered name spaced
+  Fxdi Dyna Super Glide:       FXDI Dyna Super Glide    # code closed + registered name spaced (display-only, id stable)
+  Fxe F:                       FXEF                     # type code — uppercase, closed
+  Fxe-F:                       FXEF                     # SAME id, DIFFERENT nameplate string: the raws carry "FXE F" and "FXE-F" and both slug to fxe-f, so whichever the reconciler picks as the display name is the one a rename must match. Keying only the space form left this behind — a rename must cover every spelling the pipeline can PRODUCE, not just the one the catalog happens to show
+  "Fxe/f":                     FXEF                     # the DOMINANT raw spelling and the one that actually held the fxe-f id: "FXE/F 1340" (153 rows) with a SLASH. Harley's code is FXEF (the Fat Bob) and the raws confirm it themselves — "FXE/F 1340 FAT BOB", "FXE/F FAT BOB". Found only by grepping the snapshots for every FXE spelling after two rebuilds still left fxe-f standing; the detector never showed it, because it reports ONE representative name per id and the representative changed between builds
+  Fxe-1200:                    FXE1200                  # type code — uppercase, closed
+  Fxef:                        FXEF                     # type code — uppercase, closed (display-only, id stable)
+  Fxr Super Glide:             FXR Super Glide          # code closed + registered name spaced (display-only, id stable)
+  Fxr Superglide:              FXR Super Glide          # code closed + registered name spaced
+  Fxr-S:                       FXRS                     # type code — uppercase, closed
+  Fxrs:                        FXRS                     # type code — uppercase, closed (display-only, id stable)
+  Fxrs Low Rider:              FXRS Low Rider           # code closed + registered name spaced (display-only, id stable)
+  Fxrs Lowrider:               FXRS Low Rider           # code closed + registered name spaced
+  Fxs Low Rider:               FXS Low Rider            # code closed + registered name spaced (display-only, id stable)
+  Fxs Lowrider:                FXS Low Rider            # code closed + registered name spaced
+  Fxst:                        FXST                     # type code — uppercase, closed (display-only, id stable)
+  Fxst-S:                      FXSTS                    # type code — uppercase, closed
+  Fxstc:                       FXSTC                    # type code — uppercase, closed (display-only, id stable)
+  Fxsts:                       FXSTS                    # type code — uppercase, closed (display-only, id stable)
+  Lowrider:                    Low Rider                # registered spelling
+  Pan Head:                    Panhead                  # engine-era nickname, one word in universal usage
+  Shovel Head:                 Shovelhead               # engine-era nickname, one word in universal usage
+  Softail Fatboy:              Softail Fat Boy          # registered spelling
+  Sport Ster:                  Sportster                # registered spelling
+  Superglide:                  Super Glide              # registered spelling
+  Vrod:                        V-Rod                    # registered spelling
+  Vrsca V-Rod:                 VRSCA V-Rod              # code closed + registered name spaced (display-only, id stable)
+  Vrsca Vrod:                  VRSCA V-Rod              # code closed + registered name spaced
+  W L C:                       WLC                      # type code — uppercase, closed
+  Wideglide:                   Wide Glide               # registered spelling
+  Wlc:                         WLC                      # type code — uppercase, closed (display-only, id stable)
+
 Honda:
   Honda: null                             # motorcycle fi|nl AND moped nl|nz — one make-scoped key covers both kinds (renames are kind-blind)
 
