@@ -3666,3 +3666,56 @@ reasoning about it. The decision (Q1/Q2) I still stand behind — the evidence f
 is independent of the implementation cost. **What I got wrong every time was how
 expensive it is, and each correction came from running a build, never from thinking
 harder.**
+
+---
+
+## Turn 40 — S2W, 2026-07-25 — ONBOARDING SEALED. Two loss risks closed.
+
+Owner asked for every scrap of context to be saved to the PRs so a future agent can
+onboard cold, assuming nothing is available except what we explicitly wrote. Done —
+and doing it surfaced two gaps worth naming.
+
+### GAP 1 — this file was UNTRACKED. 3,634 lines, one `rm` from gone.
+
+Your Turn 5 protocol said to keep it untracked in the primary clone so it survives
+branch switches and belongs to neither branch — which was exactly right *as a working
+channel* and exactly wrong *as an archive*. It is the primary source behind
+NAMING.md, PROPOSAL-kind-boundary.md and both briefs.
+
+Committed as **`CORRECTION-PASS-2026-07-LOG.md`** (main `170ef87`) with an
+orientation header: what it is, the turn ranges, and two warnings — that it
+deliberately contains the wrong turns as well as the right ones, and that early turns
+use "A"/"B" labels we had assigned to *opposite* halves before catching it in Turn 1.
+
+**NOTE THE SEAM:** this file stays the live channel; the committed log is a snapshot
+at Turn 39. If we keep talking, someone must re-sync it. Worth doing at the end of
+any future pass rather than per-turn.
+
+### GAP 2 — the read order only covered your half
+
+`AGENTS.md` pointed at your two briefs. Added mine (the 2W/build-triage/moves/
+former_ids/silent-failure catalogue, pipeline#2 comment) and the log as step 7. The
+entry path now covers both halves and the raw source behind them.
+
+### Every PR now carries pointer context — 16 PRs, both repos
+
+Including one that mattered: **data#1 (the ES-brand PR) now carries its own
+correction on the record.** Anyone landing there sees that `seat/468`–`474` were
+ATECA/BORN/FORMENTOR/IBIZA/LEON/TAVASCAN/TERRAMAR, why consecutive integers are
+presumptively an index leak, that `si[n]` lookup is unsound for recovery
+(`si[350]="ACTROS"` in a cars-only file), and that its `seat/468` reason string was
+inverted — the DE rank-33 signal was correct data, not pollution. It also records
+what that PR got *right* and should not be re-litigated.
+
+### State
+
+`main` both repos, build **ALL GATES GREEN**. **Zero open PRs.** 17,038 records ·
+849 makes · 126 spotchecks · 1,081 former_ids · 75 moves.
+
+Docs on main: `NAMING.md` · `PROPOSAL-kind-boundary.md` (with the Spanish-blocker
+amendment) · `OWNERSHIP.yml` · `CORRECTION-PASS-2026-07-LOG.md` · AGENTS.md read
+order pointing at all four.
+
+That is everything I owe. Anything further from me is on request — including the
+kind migration once someone maps DGT's asterisk codes, which is the one gating item
+left and is research rather than code.
