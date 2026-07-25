@@ -1207,7 +1207,6 @@
 "car/audi/q-5": "car/audi/q5"
 "car/austin/a-35": "car/austin/a35"
 "car/austin/a-50": "car/austin/a50"
-"car/austin/a40": "car/austin/a-40"
 "car/austin/healey3000": "car/austin/healey-3000"
 "car/auto-union/1000s": "car/auto-union/1000-s"
 "car/barkas/b-1000": "car/barkas/b1000"
@@ -1831,7 +1830,6 @@
 "car/volvo/c-202": "car/volvo/c202"
 "car/volvo/c-30": "car/volvo/c30"
 "car/volvo/c-303": "car/volvo/c303"
-"car/volvo/c70": "car/volvo/c-70"
 "car/volvo/p-1800-e": "car/volvo/1800e"
 "car/volvo/p-1800-es": "car/volvo/1800es"
 "car/volvo/p-1800e": "car/volvo/1800e"
@@ -1966,7 +1964,6 @@
 "motorcycle/yamaha/xvs650drag-star": "motorcycle/yamaha/xvs650-dragstar" # RE-CHAINED: pointed at motorcycle/yamaha/xvs650-drag-star, which this batch relocates
 "motorcycle/yamaha/xvs650dragstar": "motorcycle/yamaha/xvs650-dragstar" # RE-CHAINED: pointed at motorcycle/yamaha/xvs650-drag-star, which this batch relocates
 "truck/chevrolet/pickup": "truck/chevrolet/pick-up"
-"truck/ford/v-8": "truck/ford/v8"
 "truck/hummer/hummer": "truck/hummer/h1"
 "truck/iveco/35s": "truck/iveco/35-s"
 "truck/iveco/35s18": "van/iveco/35s18"
@@ -2030,7 +2027,6 @@
 "van/chevrolet/pickup": "van/chevrolet/pick-up"
 "van/chevrolet/trailblazer": "car/chevrolet/trail-blazer"
 "van/daihatsu/hijet": "van/daihatsu/hi-jet"
-"van/dodge/d150": "van/dodge/d-150"
 "van/dodge/ramcharger": "van/dodge/ram-charger"
 "van/ford/f100-pick-up": "van/ford/f-100-pick-up"
 "van/ford/f150-lariat": "van/ford/f-150-lariat"
@@ -2039,7 +2035,6 @@
 "van/ford/ranger-f150": "van/ford/ranger-f-150"
 "van/ford/transit-300s": "van/ford/transit-300-s"
 "van/gmc/pickup": "van/gmc/pick-up"
-"van/hyundai/h-1": "van/hyundai/h1"
 "van/hyundai/staria": "car/hyundai/staria"
 "van/isuzu/dmax": "van/isuzu/d-max"
 "van/isuzu/nlr85exxxb": "van/isuzu/n-series"
@@ -2151,6 +2146,18 @@
 "car/omoda/omoda5-hev":   "car/omoda/omoda-5"     # es ⊂ de,es,gb,lu,nl,nz,th
 "car/lynk-co/lynk-co-01": "car/lynk-co/01"        # es,nl ⊂ de,es,fi,nl,ua
 
+# --- 2026-07-25, S2W: B4 pilot batch (moped/iva) ------------------------------
+# All six are merges into a live id — evidence unions, nothing vanishes. The
+# id-contract gate demanded them, correctly: I wrote the renames and forgot this
+# step entirely, and no lint would have said so. Worth recording as a pilot
+# finding rather than quietly fixing — the gate is now the only thing standing
+# between a curation batch and a wave of 404s.
+"moped/iva/iva-ra9015": "moped/iva/ra9015"     # embedded make badge, hyphen-joined so strip_make_prefix (which needs whitespace after the prefix) missed it
+"moped/iva/ra-9015": "moped/iva/ra9015"        # third spelling of the same retro scooter
+"moped/iva/iva-ra9011": "moped/iva/ra9011"     # same shape, RA9011 family
+"moped/iva/s4": "moped/iva/e-go-s4"            # bare series model: IVA's only S4 IS the E-GO S4 (manufacturer catalogue), so these are the same scooter recorded without the series prefix
+"moped/iva/s5": "moped/iva/e-go-s5"            # ditto
+"moped/iva/e-go-s4new": "moped/iva/e-go-s4-new" # display-name fix ("E-Go S4NEW" -> "E-GO S4 NEW") that also moves the slug
 # --- 2026-07-25, S2W: Harley-Davidson convention batch (B5 batch 1) ---------
 # All 35 are the G11 MERGE class: the target id already exists, so evidence
 # unions and nothing can vanish. Resolved against H-D's own model-code page
@@ -2369,3 +2376,85 @@
 "car/honda/frv": "car/honda/fr-v" # "Frv" -> "Fr-V"
 "motorcycle/kawasaki/er5": "motorcycle/kawasaki/er-5" # "ER5" -> "Er-5"
 "motorcycle/suzuki/gsx-r": "motorcycle/suzuki/gsxr" # "Gsx-R" -> "Gsxr"
+# ---------------------------------------------------------------------------
+# 2026-07-25 — 4W collision batch 1: Volvo (21 detector groups; NEGOTIATION
+# Turn 54). Three classes: (a) fused registry variants merging into the
+# official spaced trim-designation forms now that GL/GLT/DL/ES are acronym
+# tokens; (b) the 1800-family direction fix — the sourced fused forms
+# (P1800 -> 1800S -> 1800E -> 1800ES, media.volvocars.com pr 49793) won over
+# the unsourced spaced entries that had been fighting them, so the SPACED ids
+# fold in; (c) engine-badge folds per the spec-token policy. Successor
+# country evidence verified superset-of-old in the 2026-07-25 build for
+# every line.
+"car/volvo/240dl":       "car/volvo/240-dl"     # nl,nz unchanged
+"car/volvo/240gl":       "car/volvo/240-gl"     # nl,nz unchanged
+"car/volvo/240glt":      "car/volvo/240-glt"    # nl,nz unchanged
+"car/volvo/244dl":       "car/volvo/244-dl"     # nl,nz unchanged
+"car/volvo/244gl":       "car/volvo/244-gl"     # fi,nl,nz unchanged
+"car/volvo/245dl":       "car/volvo/245-dl"     # nl,nz unchanged
+"car/volvo/245gl":       "car/volvo/245-gl"     # nl,nz unchanged
+"car/volvo/340gl":       "car/volvo/340-gl"     # nl,nz unchanged
+"car/volvo/360glt":      "car/volvo/360-glt"    # nl,nz unchanged
+"car/volvo/740gl":       "car/volvo/740-gl"     # fi,nl,nz unchanged
+"car/volvo/480es":       "car/volvo/480-es"     # nl,nz unchanged
+"car/volvo/1800-e":      "car/volvo/1800e"      # fi,nl -> fi,nl,nz (merge)
+"car/volvo/1800-s":      "car/volvo/1800s"      # fi,nl,nz unchanged (merge)
+"car/volvo/p-1800":      "car/volvo/p1800"      # -> union with p1800's 4 sources
+"car/volvo/p-1800-s":    "car/volvo/1800s"      # fi,nl subset of successor
+"car/volvo/c-70":        "car/volvo/c70"        # 10 countries carry over whole
+"car/volvo/l-3304":      "car/volvo/l3304"      # direction fix
+"car/volvo/v-70-2-4t":   "car/volvo/v70"        # badge fold; fi,nl subset
+"car/volvo/v70-2-4t":    "car/volvo/v70"        # badge fold; fi,nl subset
+"car/volvo/v70-bi-fuel": "car/volvo/v70"        # badge fold; fi,nl subset
+"car/volvo/v70-bifuel":  "car/volvo/v70"        # badge fold; fi,nl subset
+"car/volvo/xc-60-t6":    "car/volvo/xc60"       # badge fold; fi,nl subset
+"car/volvo/xc60-t6":     "car/volvo/xc60"       # badge fold; ca,fi,nl subset
+"car/volvo/v60-cc":      "car/volvo/v60-cross-country"  # ca,us -> ca,ua,us (merge)
+"car/volvo/v60cc":       "car/volvo/v60-cross-country"  # ua,us -> ca,ua,us (merge)
+"car/volvo/v70xc":       "car/volvo/v70-xc"     # fi,nl subset of the 5-source line
+"car/volvo/pv-444":      "car/volvo/pv444"      # hyphenated raws fold into the fused canonical (volvoclub series research)
+"car/volvo/pv-444-es":   "car/volvo/pv444"      # ES = production series letters, folds
+"car/volvo/pv-444-cs":   "car/volvo/pv444"      # CS = production series letters, folds
+"car/volvo/pv-444-h":    "car/volvo/pv444"      # H = production series letter, folds
+# ---------------------------------------------------------------------------
+# 2026-07-25 — DIRECTION-WAR resolution (the new lint_curation rule found 27
+# circular/contradicting rename pairs repo-wide on its first run: both
+# spellings of one nameplate each renamed to the other, BOTH publishing).
+# Canonicals per manufacturer: Ford F-Series/E-Series hyphenated (ford.com),
+# Mazda CX/MX/RX hyphenated (mazda.com), Hyundai H-1, Austin A40 closed,
+# Dodge D150 closed, Citroën DS 21 spaced (DS 19/21/23 heritage convention),
+# Valiant V-200. Two STALE opposite-direction aliases deleted above
+# (austin/a40→a-40, truck ford/v-8→v8 — the latter now a removals entry:
+# both truck ids dead by cross-kind prune, evidence lives on car/ford/v-8).
+"car/citroen/ds21":   "car/citroen/ds-21"    # → "DS 21" (slug unchanged from ds-21)
+"car/ford/f100":      "car/ford/f-100"
+"car/ford/f150":      "car/ford/f-150"
+"car/ford/f250":      "car/ford/f-250"
+"car/hyundai/h1":     "car/hyundai/h-1"
+"car/mazda/cx3":      "car/mazda/cx-3"
+"car/mazda/cx30":     "car/mazda/cx-30"
+"car/mazda/cx5":      "car/mazda/cx-5"
+"car/mazda/cx7":      "car/mazda/cx-7"
+"car/mazda/cx9":      "car/mazda/cx-9"
+"car/mazda/mx3":      "car/mazda/mx-3"
+"car/mazda/mx5":      "car/mazda/mx-5"
+"car/mazda/mx6":      "car/mazda/mx-6"
+"car/mazda/rx2":      "car/mazda/rx-2"
+"car/mazda/rx7":      "car/mazda/rx-7"
+"car/mazda/rx8":      "car/mazda/rx-8"
+"car/austin/a-40":    "car/austin/a40"       # reversal of the deleted stale alias — A40 closed is canonical
+"van/austin/a-40":    "van/austin/a40"
+"van/dodge/d-150":    "van/dodge/d150"
+"van/ford/f100":      "van/ford/f-100"
+"van/ford/f150":      "van/ford/f-150"
+"van/ford/f250":      "van/ford/f-250"
+"truck/ford/e350":    "truck/ford/e-350"
+"truck/ford/f150":    "truck/ford/f-150"
+"truck/ford/f250":    "truck/ford/f-250"
+"truck/ford/f350":    "truck/ford/f-350"
+"truck/ford/f450":    "truck/ford/f-450"
+"truck/ford/f600":    "truck/ford/f-600"
+"van/hyundai/h1":     "van/hyundai/h-1"       # reversal of the deleted stale alias — H-1 hyphenated is canonical (hyundai.com)
+# lu_snca 3-month accumulation surfaced two fused-marque spellings (pipeline#13):
+"car/jaecoo/jaecoo5": "car/jaecoo/jaecoo-5"   # JAECOO5 → Jaecoo 5, the OMODA5 precedent
+"van/ram/ram1500":    "van/ram/1500"          # RAM1500 → 1500
