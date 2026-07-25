@@ -1,0 +1,96 @@
+# MOVES-S2W-staging.yml — two-wheeler cross-make moves, ready to append to
+# overrides/models/moves.yml.
+#
+# STAGED rather than applied because `moves.yml` does not exist on main yet — it
+# arrives with the 4W session's curation PR. Creating the same file twice would
+# conflict; appending to an existing one will not. Merge these lines into
+# moves.yml and delete this file.
+#
+# ─── WHY THESE EXIST ─────────────────────────────────────────────────────────
+# RDW files Vespas under `merk=PIAGGIO` because **Piaggio is the type-approval
+# holder** and the register's make column is approval-derived — the same
+# mechanism the 4W session documented for KBA's HSN (Cupra under SEAT, Genesis
+# under Hyundai). Measured 2026-07-25 over
+# https://opendata.rdw.nl/resource/m9d7-ebf2.json (CC0):
+#
+#   merk=PIAGGIO carrying a Vespa badge: 130 distinct names, 79,569 registrations
+#     "VESPA SPRINT" 39,644 · "VESPA PRIMAVERA" 17,792 · "VESPA SPRINT 50" 13,596
+#     "VESPA GTS" 3,537 · "VESPA PRIMAVERA 50" 3,482
+#
+# 46 of those reached publication as `piaggio/vespa-*` records — the wrong make
+# AND an embedded brand — while the correct `vespa` make already holds 88 records
+# with the same nameplates. `strip_make_prefix` cannot catch it: it strips the
+# MAKE (PIAGGIO), and the embedded brand here is VESPA.
+#
+# A rename cannot cross makes and a null would delete 79,569 registrations' worth
+# of real evidence — exactly the trap PR #1 fell into with the Cupras. Hence
+# moves.
+#
+# ─── AUTHORING NOTES ─────────────────────────────────────────────────────────
+# * Keys are POST-rename, POST-casing pairs. Verified against a real build, not
+#   assumed — `pipeline/tests/test_override_key_reachability.rb` re-asserts it.
+# * 16 targets already exist under `vespa` and the move UNIONS the evidence;
+#   30 create the nameplate under its real marque, which is where it belongs.
+# * Target casing is left EXACTLY as the existing `vespa` records have it
+#   ("Gts", "Gtv"), so a move never silently changes a second thing. Fixing
+#   "Gts" -> "GTS" is a styling change and belongs in its own PR with a
+#   blast-radius sweep.
+# * Each moved id needs a former_ids entry — run
+#   `ruby scripts/propose_former_ids.rb <old> <new>` after the rebuild; the
+#   generator now reads moves.yml as intent, so it will propose all 46.
+#
+# ─── NOT MOVED, deliberately ─────────────────────────────────────────────────
+# * `motorcycle/piaggio/vespa` — the bare brand-as-model row (fi|gb|lu|nl|nz|ua).
+#   There is no single Vespa model to move it to, so it is unresolvable exactly
+#   like PR #1's `SEAT: Cupra: null`. It needs a null drop with that precedent
+#   cited, NOT a move; left out here so the decision is visible rather than
+#   buried in a 46-line block.
+# * KTM/Husqvarna — the raws exist (`"HUSQVARNA FE 350"` n=3, `"HUSQVARNA TE 300"`
+#   n=8 under merk=KTM) but neither reached publication, so there is nothing to
+#   move today. Re-check after any threshold change.
+"Piaggio|Vespa 50": "Vespa|50"                                                # moped, merges into existing vespa nameplate [nl|nz]
+"Piaggio|Vespa 50ET2": "Vespa|50ET2"                                          # moped, creates the nameplate under its real marque [nl|nz]
+"Piaggio|Vespa 50N": "Vespa|50N"                                              # moped, creates the nameplate under its real marque [nl|nz]
+"Piaggio|Vespa 50R": "Vespa|50R"                                              # moped, creates the nameplate under its real marque [nl|nz]
+"Piaggio|Vespa 50S": "Vespa|50S"                                              # moped, merges into existing vespa nameplate [nl|nz]
+"Piaggio|Vespa C16": "Vespa|C16"                                              # moped, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa ET2": "Vespa|ET2"                                              # moped, merges into existing vespa nameplate [nl|nz]
+"Piaggio|Vespa Elettrica": "Vespa|Elettrica"                                  # moped, creates the nameplate under its real marque [es|fi|nl]
+"Piaggio|Vespa LX50": "Vespa|LX50"                                            # moped, merges into existing vespa nameplate [fi|nl|nz]
+"Piaggio|Vespa PK50XL": "Vespa|PK50XL"                                        # moped, merges into existing vespa nameplate [nl|nz]
+"Piaggio|Vespa Primavera": "Vespa|Primavera"                                  # moped, merges into existing vespa nameplate [es|fi|lu|nl]
+"Piaggio|Vespa Primavera 50": "Vespa|Primavera 50"                            # moped, creates the nameplate under its real marque [es|fi|lu|nl]
+"Piaggio|Vespa Primavera Elettrica": "Vespa|Primavera Elettrica"              # moped, creates the nameplate under its real marque [fi|lu|nl]
+"Piaggio|Vespa S50": "Vespa|S50"                                              # moped, creates the nameplate under its real marque [fi|nl|nz]
+"Piaggio|Vespa Sprint": "Vespa|Sprint"                                        # moped, merges into existing vespa nameplate [es|fi|nl]
+"Piaggio|Vespa Sprint 50": "Vespa|Sprint 50"                                  # moped, creates the nameplate under its real marque [es|fi|nl]
+"Piaggio|Vespa 150 Super": "Vespa|150 Super"                                  # motorcycle, merges into existing vespa nameplate [nl|nz]
+"Piaggio|Vespa 150GL": "Vespa|150GL"                                          # motorcycle, creates the nameplate under its real marque [lu|nl]
+"Piaggio|Vespa 946": "Vespa|946"                                              # motorcycle, merges into existing vespa nameplate [es|fi|nl]
+"Piaggio|Vespa Cosa": "Vespa|Cosa"                                            # motorcycle, creates the nameplate under its real marque [es|nl]
+"Piaggio|Vespa Cosa 200": "Vespa|Cosa 200"                                    # motorcycle, merges into existing vespa nameplate [lu|nl]
+"Piaggio|Vespa ET4 125": "Vespa|ET4 125"                                      # motorcycle, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa ET4 150": "Vespa|ET4 150"                                      # motorcycle, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa GT125": "Vespa|GT125"                                          # motorcycle, creates the nameplate under its real marque [es|fi|nl]
+"Piaggio|Vespa GTS125": "Vespa|GTS125"                                        # motorcycle, creates the nameplate under its real marque [es|fi|lu|nl]
+"Piaggio|Vespa GTS250": "Vespa|GTS250"                                        # motorcycle, merges into existing vespa nameplate [es|fi|nl]
+"Piaggio|Vespa GTS300 Super": "Vespa|GTS300 Super"                            # motorcycle, creates the nameplate under its real marque [es|nl]
+"Piaggio|Vespa GTV125": "Vespa|GTV125"                                        # motorcycle, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa Gts": "Vespa|Gts"                                              # motorcycle, merges into existing vespa nameplate [es|fi|lu|nl]
+"Piaggio|Vespa Gts Super 300": "Vespa|Gts Super 300"                          # motorcycle, creates the nameplate under its real marque [fi|lu|nl]
+"Piaggio|Vespa Gts Supertech": "Vespa|Gts Supertech"                          # motorcycle, creates the nameplate under its real marque [es|nl]
+"Piaggio|Vespa Gtv": "Vespa|Gtv"                                              # motorcycle, merges into existing vespa nameplate [es|nl|ua]
+"Piaggio|Vespa LX125": "Vespa|LX125"                                          # motorcycle, creates the nameplate under its real marque [es|fi|nl]
+"Piaggio|Vespa LX125I.E.": "Vespa|LX125I.E."                                  # motorcycle, creates the nameplate under its real marque [es|fi]
+"Piaggio|Vespa LXV125": "Vespa|LXV125"                                        # motorcycle, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa PX125E": "Vespa|PX125E"                                        # motorcycle, merges into existing vespa nameplate [es|nl]
+"Piaggio|Vespa PX150": "Vespa|PX150"                                          # motorcycle, creates the nameplate under its real marque [es|fi|nl]
+"Piaggio|Vespa PX150E": "Vespa|PX150E"                                        # motorcycle, creates the nameplate under its real marque [nl|nz]
+"Piaggio|Vespa PX200E": "Vespa|PX200E"                                        # motorcycle, merges into existing vespa nameplate [nl|nz]
+"Piaggio|Vespa Primavera 125": "Vespa|Primavera 125"                          # motorcycle, merges into existing vespa nameplate [es|lu|nl]
+"Piaggio|Vespa Primavera 125ABS": "Vespa|Primavera 125ABS"                    # motorcycle, creates the nameplate under its real marque [es|fi|nl]
+"Piaggio|Vespa Primavera 150ABS": "Vespa|Primavera 150ABS"                    # motorcycle, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa Sei Giorni": "Vespa|Sei Giorni"                                # motorcycle, creates the nameplate under its real marque [fi|nl]
+"Piaggio|Vespa Seigiorni": "Vespa|Seigiorni"                                  # motorcycle, creates the nameplate under its real marque [es|lu|nl]
+"Piaggio|Vespa Sprint 125": "Vespa|Sprint 125"                                # motorcycle, creates the nameplate under its real marque [es|nl]
+"Piaggio|Vespa Sprint 125ABS": "Vespa|Sprint 125ABS"                          # motorcycle, creates the nameplate under its real marque [es|fi|nl]
