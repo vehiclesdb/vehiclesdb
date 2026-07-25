@@ -58,11 +58,16 @@
 # with SEAT), these strings name the marque explicitly, so they can be routed
 # without ambiguity. PR #1 dropped them for want of this mechanism; the moves
 # recover that evidence.
-"SEAT|Cupra Leon": "Cupra|Leon"       # TANs e9*2007/46*3167*06/10/12/17 are identical to cupra/leon's
-"SEAT|Cupra Ateca": "Cupra|Ateca"     # TAN e9*2007/46*6394*40 shared with cupra/ateca (same approval family)
 
+# NOT MOVABLE, and worth knowing why: NL/NZ emit "SEAT" + "CUPRA LEON", but the
+# make-prefix strip removes the embedded brand BEFORE moves run, so the row
+# arrives as "Leon" — indistinguishable from a genuine SEAT Leon. A move keyed
+# "SEAT|Cupra Leon" is unreachable (proved by test_override_key_reachability),
+# and moving a bare "SEAT|Leon" would hand SEAT`s own volume to Cupra. Recovering
+# these needs the prefix strip to preserve what it stripped, which is a
+# normalizer change, not a curation one. Filed rather than guessed.
 # ── historic corporate entity in the make column ─────────────────────────────
 # Auto Union was the pre-1985 corporate name of the group that became Audi AG;
 # registers that kept the entity name emit it as the make while the model string
 # names the actual marque. https://en.wikipedia.org/wiki/Auto_Union
-"Auto Union|Audi 80": "Audi|80"        # the Audi 80 is an Audi, not an "Auto Union Audi 80"; audi/80 already exists
+"Auto Union|80": "Audi|80"          # the Audi 80 is an Audi, not an "Auto Union Audi 80". NB keyed on the PRODUCED form: the embedded-brand strip turns "Audi 80" into "80" before moves run (test_override_key_reachability caught the naive key)
