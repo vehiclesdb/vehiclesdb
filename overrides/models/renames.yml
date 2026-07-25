@@ -480,6 +480,51 @@ Isuzu:
   Isuzu: null                                 # registry rows where the make was written into the model column (van kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   NLR85EXXXB: N-Series                    # NLR85 is a CHASSIS code, not a nameplate — Isuzu's light truck line is the N-Series (sold as Elf in Japan). The trailing EXXXB is a body/spec suffix. https://www.isuzu.co.jp/world/product/elf/
 
+IVA:
+  # IVA MOBILITY CONVENTION (§11.2), from the manufacturer's own store
+  # (https://www.ivamobility.com/en/collections/scooters):
+  #   * the series prefix is "E-GO" — hyphen, caps — then the model:
+  #     E-GO S3 / S4 / S4 2.0 / S5 / S8
+  #   * the NC line is NCS / NCE / NCE Pro / NCE S / NCF / NCF Delivery
+  #   * plus "IVA Lux Electric 2.0"
+  # smart_case renders "E-GO" as "E-Go", so the caps need pinning per model.
+  #
+  # HEADS UP for whoever works this make next: MOST of its records are
+  # DISCONTINUED or OEM-code models (RA9015, RA9011, VENTI 50, RIO 50, IBIZA,
+  # VENICE, LX02, LHU, DAGUIWANG, ZN50QT-E, TY50QT-G…) and IVA publishes
+  # nothing about them. For those THE REGISTER IS THE ONLY EVIDENCE, and that
+  # is the honest ceiling — do not mint a canonical from a retailer listing.
+  E-Go S2: E-GO S2                     # manufacturer styles the series "E-GO"
+  # The NC line, all-caps per the manufacturer store. FORWARD-LOOKING: every NC
+  # model is currently sub-threshold (moped/iva/nce alone is 269 rows in the
+  # candidate queue), so these are inert today and correct the moment one
+  # publishes. lint_curation notes rather than fails on forward-looking blocks.
+  Nce: NCE                             # NC line
+  Ncs: NCS                             # NC line
+  Ncf: NCF                             # NC line
+  Nce S: NCE S                         # a distinct model, not a stray suffix
+  Nce Pro: NCE Pro                     # NC line
+  E-Go S4: E-GO S4                     # ditto
+  E-Go S5: E-GO S5                     # ditto
+  E-Go S8: E-GO S8                     # ditto
+  E-Go S4NEW: E-GO S4 NEW              # ditto. The "NEW" suffix is the REGISTER's, not a manufacturer model name — filed as debt in the ledger rather than resolved to "S4 2.0", which would be a guess
+  # BARE SERIES MODELS. IVA's only S4/S5 are the E-GO S4/S5 — there is no other
+  # S4 in the catalogue — so the register's bare rows are the same scooters
+  # recorded without the series prefix. Merging unions the evidence.
+  S4: E-GO S4                          # 708 bare rows join 2,738 E-GO S4 rows
+  S5: E-GO S5                          # 531 bare rows join 2,111 E-GO S5 rows
+  # THE RA TRIPLET — the pilot's headline defect. ONE retro scooter published
+  # as THREE records, because the register spells it three ways and
+  # strip_make_prefix only strips a make prefix followed by WHITESPACE, never
+  # by a hyphen, so "IVA-RA9015" kept its badge:
+  #   iva-ra9015 "Iva-RA9015" (311) · ra-9015 "Ra-9015" (447) · ra9015 "RA9015" (332)
+  # Canonical is the closed form: the plurality of rows use it, and it is what
+  # the retail listings carry ("IVA Retroscooter RA9015").
+  Iva-RA9015: RA9015                   # embedded make badge, hyphen-joined, so the prefix strip missed it
+  Ra-9015: RA9015                      # same scooter, hyphenated spelling
+  Iva-RA9011: RA9011                   # same shape, RA9011 family
+  Ra-9011: RA9011                      # currently a candidate-queue spelling; merges in
+
 Iveco:
   Sunrise: null          # Ferqui Sunrise minicoach body on Iveco Daily chassis, registered under the chassis make; canonical is ferqui/sunrise (https://ferqui.com/en/sunrisef2/). NOTE: loses nl evidence (ferqui/sunrise currently es,fi)
   Wing: null             # Indcar Wing minibus body on Iveco Daily 70C, same pattern; canonical is indcar/wing (https://en.wikipedia.org/wiki/Indcar). NOTE: loses ua evidence (indcar/wing currently es,fi,gb,nl)
