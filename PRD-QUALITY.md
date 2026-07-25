@@ -985,9 +985,50 @@ arrivals that were published before are incidents (D14/D15); (b) periodically
 mine it for real long-tail models promotable via curation once verified (that is
 its design purpose); (c) queue depth per kind is reported at every build.
 
-### 13.4 Reserved kinds and body types
+### 13.4 Kind-taxonomy extension policy (G24 — owner directive, 2026-07-26)
 
-`train/plane/ship/agricultural` stay reserved until a consumer exists (settled).
+The owner's framing: the dataset should eventually make ROOM for vehicles
+beyond the six road kinds — bicycles, trains, planes, and whatever else we
+encounter — "nicely categorized and clustered", WITHOUT launching research
+teams for them now. This section is that room, made structural:
+
+**The id namespace already supports it.** Ids are `<kind>/<make>/<slug>`, so a
+new kind is a new namespace — it can never collide with or pollute existing
+ids. Kinds therefore extend ADDITIVELY (minor schema bump), and the risk is
+never mechanical; it is taxonomic (a sloppy kind boundary poisons every record
+inside it, which is why the vocabulary stays CLOSED and extension is a
+procedure, not an edit).
+
+**Extension procedure — a new kind lands only with ALL of:**
+1. a coherent legal/technical definition with non-overlap stated against every
+   existing kind (the quadricycle precedent: L6e/L7e were ADJUDICATED into
+   existing kinds rather than minted, because the boundary work is the hard
+   part);
+2. at least one licence-cleared source actually emitting the category
+   (§13.2 rules apply — licence first);
+3. a publication threshold (KIND_THRESHOLDS entry) argued from that source's
+   volume;
+4. an OWNERSHIP assignment for the new kind's makes;
+5. a PRD amendment recording 1-4. No speculative empty kinds.
+
+**The `domain` grouping (the "clustered" half).** When a second domain lands,
+records gain a DERIVED `domain` field — `road` today; `rail`, `air`, `water`,
+`human-powered` reserved — computed from kind at emit time, never stored
+(the §14.4 store-facts-derive-labels rule). Zero cost until needed.
+
+**The encountered-category inventory (measured 2026-07-26).** Sources already
+emit categories we drop, each logged per build — this is the "come across"
+list the policy exists for, with current dispositions:
+
+| category | volume | disposition |
+|---|---|---|
+| trailers/semi-trailers (ua ПРИЧІП/НАПІВПРИЧІП, es O2/O4) | ~37k rows/build | drop + log. Weak make/model semantics; first candidate IF a consumer appears |
+| quads/trikes (ua КВАДРОЦИКЛ/ТРИЦИКЛ, th 3-wheelers) | ~2.7k rows | L-category adjudication per G3 — existing kinds, S2W's call per row-class |
+| agricultural tractors (es T2A/T3B) | ~2.8k rows | reserved kind `agricultural`; drop + log until procedure runs |
+| e-bikes/speed-pedelecs with type approval (L1e-A) | already ingested | land in `moped` correctly (QWIC precedent) — unregistered bicycles have NO register and thus no source; a future `bicycle` kind would need catalog-type sources, different evidence rules |
+| ua ВАНТАЖНИЙ freight (66,956 rows) | NOT a taxonomy gap | existing kinds (van/truck) blocked on the BODY-column split — documented backlog in ua_mvs.rb, tracked as G25 |
+| trains / aircraft / vessels | 0 rows (no ingested source) | reserved kinds; aviation/rail registers are public and rich — future domains when a consumer exists |
+
 Body types: quadricycle vocabulary lands with G3; van/truck/bus body vocabulary
 only when derivable honestly from registers (absence rule — never guess).
 
@@ -1038,17 +1079,38 @@ DERIVED at emit time, never hand-curated — derived labels cannot rot or drift:
 |---|---|---|
 | `discontinued` | `year_end` present and in the past | plain fact |
 | `classic` | `year_end ≤ build_year − 30` | the 30-year line is the dominant legal/insurance convention (Germany's H-Kennzeichen §2 Nr. 22 FZV; most collector-insurance definitions) |
-| `vintage` | `year_end ≤ 1930` | pre-1931 per the common veteran/vintage boundary |
+| `vintage` | `year_end ≤ 1930` | pre-1931 — and NOT car-centric: the VMCC and FIVA class structures use the same line for motorcycles (Veteran pre-1905, Vintage 1905-1930, Post-Vintage 1931-45). Main competing convention for `classic`: the UK rolling 40-year historic exemption — noted so nobody "fixes" the 30-year line without reading this |
 
 Rules are configurable constants in the emitter with the source for each
 boundary in a comment; a record with no `year_end` gets NO era tag (unknown is
 not current).
 
 **Storage** (rides the §14.1 plumbing): `overrides/enrich/<make>.yml`, keys are
-ids, values `{year_start:, year_end:}`, per-line citation mandatory. Years are
-NAMEPLATE-level (the whole production run across generations); per-generation
-years belong to `generations` entries when those land. A nameplate still in
-production has `year_start` only.
+ids, values a list of production RUNS, per-line citation mandatory:
+
+```yaml
+motorcycle/triumph/bonneville:
+  runs:
+    - {year_start: 1959, year_end: 1983, note: Meriden}
+    - {year_start: 2001}                 # open run = in production
+```
+
+**Why runs, not a scalar pair (S2W's §14.4 review, Turn 66 — adopted whole):**
+marques revive heritage names AS A BUSINESS MODEL, concentrated in 2W but not
+confined to it (Speed Twin 1938→2018, Scout 1920→2015, Bonneville, Commando,
+Dax, Monkey, Fiat 500, Mini, Defender, Bronco — 18 published multi-source
+examples measured in the 2W half alone). A scalar `year_end` makes
+`discontinued`-then-`classic` fire on bikes currently in showrooms — and
+revived nameplates are PRECISELY what collectors search, so mislabeling them
+is worse than no tag. Derivation: `discontinued` iff EVERY run is closed;
+`classic` iff every run closed AND latest `year_end ≤ build_year − 30`. The
+scalar pair is the one-run case; nothing is lost. Per-generation years belong
+to `generations` entries when those land.
+
+**Registration cross-check (same review):** the registers we already ingest
+are a free CONTRADICTION DETECTOR — never a source for production years
+(lag, grey imports), but a curated closed `year_end: 1983` on a nameplate
+with 2024 registrations must FAIL the enrich lint, not publish.
 
 **Sourcing hierarchy** (same bar as §12): manufacturer heritage archives
 (media.volvocars.com press library, mercedes-benz-publicarchive.com,
@@ -1070,9 +1132,13 @@ collector-market signals — depth-layer material (§14.2, PRD-DEPTH).
 `year_start`/`year_end` + derived `era` on the record (additive, minor schema
 bump); (b) `overrides/enrich/` loader + lint (dup-keys, id-liveness,
 year sanity: 1885 ≤ start ≤ end ≤ build year+1); (c) researcher-prompt
-amendment (capture rule above); (d) backfill sweep prioritized by the makes
-with the largest classic populations already published (mercedes-benz, volvo,
-triumph, ford, bmw — measured from the catalogs, not guessed).
+amendment (capture rule above); (d) backfill sweep DEFUNCT-MARQUE-FIRST across BOTH halves (S2W review:
+416 records under 31 wholly-defunct 2W marques — bsa, norton, puch, jawa,
+ariel, matchless… — are 100% classic BY CONSTRUCTION; one heritage source
+per marque covers every record under it, several with live club archives:
+VMCC, BSA OC, VJMC). Live marques come after, where the revival problem
+makes every record a judgment call; 4W priority there: mercedes-benz,
+volvo, triumph, ford, bmw — measured from the catalogs, not guessed.
 
 ---
 
