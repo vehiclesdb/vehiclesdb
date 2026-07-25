@@ -1,0 +1,24 @@
+# VERIFICATION LEDGER — Spyder Wheelz (batch B-001, Tranche C)
+#
+# Reviewed against build/packs/spyder-wheelz.md. Verdicts per PRD-QUALITY §5.2.
+# Batch context, selection rule and the evidence ceiling: data/review/batches.yml B-001.
+make: spyder-wheelz
+researcher: s2w-opus5
+verifier: null            # I-11: the researcher does not verify their own batch
+status: awaiting_verification
+reviewed_at: 2026-07-26
+raw_fingerprint: sha256:5769702f7324c7c022e7108517fe3cef6745324d255e7b2a4048cc5da78d10de
+records:
+  - id: moped/spyder-wheelz/rent-group-nederland-bv
+    verdict: debt
+    note: >-
+      NOT A NAMEPLATE — the model column holds a rental operator's corporate name. Raw is
+      `SPYDER WHEELZ | SPYDER RENT GROUP NEDERLAND BV` across 6,435 rows: Spyder Wheelz is a
+      real Dutch two-wheeler marque, and Spyder Rent Group is its rental arm (~200 locations,
+      14 in NL), so these are fleet registrations filed under the operator rather than under
+      a model. Corroborated independently by voertuig-zoeker.nl, which lists the identical
+      make/model pair (6,356 machines). WHY strip_make_prefix DID NOT SAVE US: it requires
+      the FULL make name followed by [\s,]+, and the string begins "SPYDER RENT", not "SPYDER
+      WHEELZ" — so the shared first token buys nothing. No model can be recovered from the
+      register; a marque source naming the fleet model would be needed.
+    evidence: https://www.voertuig-zoeker.nl/bromfiets/spyder-wheelz/spyder-rent-group-nederland-bv/-/
