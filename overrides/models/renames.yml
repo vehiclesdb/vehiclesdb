@@ -1,3 +1,16 @@
+# S2W two-wheeler cleanup (2026-07-25). Placeholders, make-as-model rows and
+# type-code→nameplate resolutions. All evidence from the RDW `handelsbenaming`
+# aggregate (CC0, https://opendata.rdw.nl/resource/m9d7-ebf2.json, measured
+# 2026-07-25) unless stated. Keys are POST-casing forms — asserted reachable by
+# pipeline/tests/test_override_key_reachability.rb.
+
+# before dropping: these makes emit a literal "N/A"/"N.A."/"N.A" string, they
+# are not a truncated model name. Contrast Sherco, whose ~806 "N/A" rows were
+# ALL 50cc and so became an honest "50" family (PR #1) — that rescue is only
+# available when the placeholder block is homogeneous, which these are not.
+Askoll:
+  "N.a.": null   # ALL 179 NL registrations are literal N/A (164 "N/A" + 8 "N.A" + 7 "N.A."), zero real names. NB this ERASES the askoll make from moped: its only record was the placeholder. Askoll's real lineup is eS1/eS2/eS3 (https://www.askoll.com/eva/) — it returns the moment any source emits one. Recorded as candidate-queue debt, not a silent loss.
+
 Bultaco:
   Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
 
@@ -15,6 +28,11 @@ Cupra:
   Terramar Amrica Cp Ed: Terramar   # truncated uk_dft string for the "Terramar America's Cup Edition" launch edition; editions fold
 
 Derbi:
+  # NOTE (2026-07-25): keys below are the POST-spacing forms. normalizer.rb
+  # two_wheeler_spacing now re-opens word|digit boundaries, so the old
+  # digit-frozen keys (COTA4RT260, AVENTURA500, MULHACEN125 ...) can never be
+  # produced again. scripts/lint_dataset.rb asserts key reachability — if you
+  # change the spacing rule, re-run it and rekey, do not add a duplicate.
   # moped Senda 50 — one nameplate: every 50cc trim/edition/registry-code row
   # folds here. TAN families each prove one approved type: e9*2002/24*0001
   # (R/Sm/X-Trem), e9*2002/24*0053 (R50AF=SM50AF identical), e1*168/2013*00126
@@ -24,10 +42,10 @@ Derbi:
   Senda R X-Trem: Senda 50        # trim (TAN e9*2002/24*0001*01)
   Senda R50AF: Senda 50           # registry variant string; TAN e9*2002/24*0053*00 IDENTICAL to SM50AF
   Senda SM50AF: Senda 50          # registry variant string; same TAN e9*2002/24*0053*00
-  Senda RACING50SM: Senda 50      # 2016+ gen trim (TAN e1*168/2013*00126*00)
+  Senda Racing 50SM: Senda 50      # 2016+ gen trim (TAN e1*168/2013*00126*00)
   Senda X-Treme Limited: Senda 50 # special edition, same type
-  Senda X-TREME50R: Senda 50      # trim, same type
-  Senda X-TREME50SM: Senda 50     # trim, same type
+  Senda X-Treme 50R: Senda 50      # trim, same type
+  Senda X-Treme 50SM: Senda 50     # trim, same type
   Black Devil: Senda 50           # special edition of the Senda 50 — TAN e9*2002/24*0001*01 IDENTICAL to Senda R X-Trem; sold as "Senda SM/R 50 Black Devil"
   Sm X-Trem: Senda 50             # RDW handelsbenaming with the family name dropped — TAN e9*2002/24*0001*00/*01 (CC0 RDW API, 2026-07-12)
   Sdr: Senda 50                   # RDW type-code "SDR" for the 1997-2005 Senda 50 gen: TAN base e9*92/61*0027, L1e 45 km/h, Senda R/SM geometry (CC0 RDW API 2026-07-12)
@@ -37,14 +55,13 @@ Derbi:
   Senda SM125 4T: Senda 125  # "4T" = engine descriptor (all Senda 125s are 4T), not a nameplate (TAN e9*92/61*0130*05/*09)
   Senda: Senda 125           # motorcycle-kind bare Senda: FI rows are the 125 (TAN e9*92/61*0130*01); UK rows land here too (VEH0120 merges mopeds into Motorcycles by design — kind_maps/uk_dft.yml)
   # GPR sport family (Racing/Nude are the two catalog versions of one type):
-  Gpr NUDE50: GPR 50   # naked variant — TAN e9*2002/24*0011*06 IDENTICAL to GPR50RACING (https://es.wikipedia.org/wiki/Derbi_(motocicletas))
-  GPR50RACING: GPR 50  # faired variant, same type (TAN e9*2002/24*0011*06)
+  Gpr Nude 50: GPR 50   # naked variant — TAN e9*2002/24*0011*06 IDENTICAL to GPR50RACING (https://es.wikipedia.org/wiki/Derbi_(motocicletas))
+  GPR50 Racing: GPR 50  # faired variant, same type (TAN e9*2002/24*0011*06)
   GPR50: GPR 50        # official spaced form; UK motorcycle-class rows (UK merges mopeds into Motorcycles, kind_maps/uk_dft.yml)
   GPR125: GPR 125      # official spaced form (GPR 125 Racing/Nude, 2005-2015) — same respace as GPR50; motorcycle-kind only (https://en.wikipedia.org/wiki/Derbi_GPR125)
   # Display/casing renames + family folds:
-  MULHACEN125: Mulhacén 125  # official accented name (after the Mulhacén peak), scrambler 2007-2013 (https://www.autoevolution.com/moto/derbi/mulhacen/)
-  MULHACEN659: Mulhacén 659  # official accented name; 659cc Yamaha-engined single (2006-2013)
-  BOULEVARD50: Boulevard 50  # display spacing; Derbi-badged scooter line (TAN e9*2002/24*0329*01, no cross-make twin in catalog)
+  Mulhacen 125: Mulhacén 125  # official accented name (after the Mulhacén peak), scrambler 2007-2013 (https://www.autoevolution.com/moto/derbi/mulhacen/)
+  Mulhacen 659: Mulhacén 659  # official accented name; 659cc Yamaha-engined single (2006-2013)
   Variant Start: Variant     # Start (1984) is a version of the Variant family (América/Start/Sport/Box) — folds to the nameplate (https://blog.terranea.es/variant-ciclomotor-volador-derbi/)
   DFW50: null                # DFW 50 is a 50cc QUAD (ATV) — no quad kind exists (POLARIS precedent in makes/drop.yml: "revisit if quads become a kind"); https://www.autoevolution.com/moto/derbi-dfw-50-2005.html
 
@@ -84,6 +101,9 @@ Iveco:
   Sunrise: null          # Ferqui Sunrise minicoach body on Iveco Daily chassis, registered under the chassis make; canonical is ferqui/sunrise (https://ferqui.com/en/sunrisef2/). NOTE: loses nl evidence (ferqui/sunrise currently es,fi)
   Wing: null             # Indcar Wing minibus body on Iveco Daily 70C, same pattern; canonical is indcar/wing (https://en.wikipedia.org/wiki/Indcar). NOTE: loses ua evidence (indcar/wing currently es,fi,gb,nl)
 
+Jonway:
+  "N.a.": null   # 377 of 404 NL registrations are the placeholder; the make survives on EVO-MAXX E-LINE / MNY / X-JET / JSD50QT-27
+
 Kia:
   Cee D: Ceed            # RDW writes "CEE D" / "CEE'D"; official spelling since 2018 is Ceed
   Cee'd: Ceed                               # Kia dropped the apostrophe with the 3rd gen in 2018 (ceed.kia.com); old spelling folds
@@ -109,10 +129,8 @@ MITT:
   300GT Max: GT-MAX 300  # registry writes "300GT MAX" (RDW measured 2026-07-12); official model name is GT-MAX 300 (https://mittmotors.com/vehiculo/mitt-gt-max-125-330)
 
 Montesa:
-  COTA315R: Cota 315R           # digit-frozen registry token; official spacing of the 1997-2004 two-stroke Cota (https://www.retrotrials.com/montesa--montesa-honda-motorcycles.html)
-  COTA4RT: Cota 4RT             # official naming (https://montesa.com/en/montesa-range/); 249cc 2005-13 — stays separate from 260/301RR per displacement granularity
-  COTA4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
-  COTA4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
+  Cota 4RT260: Cota 4RT 260      # official spacing (current trim "Cota 4RT 260R"; https://montesa.com/en/modelos/cota-4rt-260r/); 259cc
+  Cota 4RT301RR: Cota 4RT 301RR  # official model-page name (https://montesa.com/en/modelos/cota-4rt-301rr/); 298cc race replica
 
 Nissan:
   Leaf 40KWH: Leaf       # battery-size registrations
@@ -138,11 +156,8 @@ Renault:
 
 Rieju:
   "N.a.": null                   # registry "not available" placeholder (es_dgt + nl_rdw rows), not a nameplate; rieju keeps es via e-Tango (es_dgt)
-  AVENTURA500: Aventura 500      # official spacing (471cc A2 twin trail; https://www.diariomotor.com/motos/rieju-aventura-500/)
   NKD125: NKD 125                # official "NKD 125" naked, NKD stays caps (https://rieju.com/us/naked/130/524/nkd-125)
-  RALLY307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
-  XPLORA557: Xplora 557          # official "Xplora 557" 554cc A2 twin (https://www.motorbikemag.es/rieju-xplora-557-xplora-707-2025-prueba-opiniones/)
-  XPLORA707: Xplora 707          # sibling 693cc twin (https://rieju.com/en/news/new-rieju-xplora-707/257/294); consecutive TANs e9*168/2013*16461/16462 prove two approved models, not dupes
+  Rally 307: Aventura Rally 307   # official product name incl. family prefix (https://rieju.com/us/off-road/121/522/aventura-rally-307); registry drops "AVENTURA" and the space
 
 Scania:
   Irizar: null           # chassis+bodybuilder registration strings ("SCANIA IRIZAR I4/NEW CENTURY", RDW), not a Scania nameplate — in bus kind the bodybuilder IS the make (Plaxton/Caetano precedent; irizar/i4-i6-i8 exist). NOTE: drops ua evidence (Century/PB-era bodies not yet catalogued under irizar)
@@ -176,6 +191,9 @@ SEAT:
   "473": null              # KBA type-code
   "474": null              # KBA type-code
 
+Segway:
+  "N.a": null    # 6,725 placeholder registrations (3,601 "N/A" + 2,563 "N.A." + 561 "N.A") sitting beside REAL models E110S (2,673), E110SE (2,272), E150S (994) — dropping the placeholder keeps every genuine Segway-Ninebot record
+
 Sherco:
   # -R (Racing) trim folds; nameplate = displacement + line (sherco.com):
   125SE-R: 125 SE        # Racing trim of the 125 SE 2T enduro
@@ -199,6 +217,58 @@ Silence:
 
 Suzuki:
   Wagon-R: Wagon R                          # hyphenation variant of Suzuki Wagon R (global-suzuki.com) — spacing, not a different model
+  # make-as-model registry noise ("SUZUKI SUZUKI", gb/nl/nz motorcycle rows).
+  # Appended INSIDE the existing block on purpose: a second `Suzuki:` key would
+  # make Psych keep only the last block and silently discard the other — see
+  # pipeline duplicate-key lint and NEGOTIATION.md Turn 5.
+  Suzuki: null
+
+Sym:
+  "N.a.": null   # small placeholder block against SYM's 56 real names (FIDDLE alone is 36,746 registrations)
+
+# The raws pair a type code with the commercial name in ONE comma-joined cell
+# ("TL3000, STING" n=53, "TL3000 STING" n=14, "TL2500, XXX" n=6), and the
+# normalizer keeps the FIRST element — which for this source is the type code,
+# i.e. the wrong half. GOTCHA for NAMING.md: comma-joined semantics are
+# SOURCE-SPECIFIC. KBA joins predecessor+successor (keep the later one); Talaria
+# joins code+name (keep the name). Never generalise one source's rule.
+Talaria:
+  TL3000: Sting   # type code for the Sting: raws "TL3000, STING" (53) and "TL3000 STING" (14) pair them explicitly, and bare "STING" (42) + "STING PRO" (54) are the same line (https://talaria.bike/)
+  TL2500: XXX     # type code for the Talaria XXX: raw "TL2500, XXX" (n=6). Deliberately NOT touching TL4000 (35 regs) — no raw pairs it with a commercial name, so mapping it would be a guess
+
+# registry noise ("HONDA HONDA"), never a nameplate. Only dropped where the make
+# keeps other models in that kind, so no marque disappears.
+# NOT DROPPED, recorded as debt instead — these 11 are their make's ONLY model in
+# their kind, so a drop would erase the marque itself: nimbus, can-am,
+# cyclemaster, ebretti, elmoto, lvtong, nicom, paxster, smc, unu, veeley.
+# Several are makes whose product line genuinely shares the brand name (Paxster,
+# Cyclemaster, unu) so the honest fix is a researched model name, not a drop.
+Aima:       { Aima: null }
+Aixam:      { Aixam: null }
+Baotian:    { Baotian: null }
+Btc:        { Btc: null }
+Capri:      { Capri: null }
+Indian:     { Indian: null }
+Leike:      { Leike: null }
+Luqi:       { Luqi: null }
+Panther:    { Panther: null }
+Rewaco:     { Rewaco: null }
+Zundapp:    { Zundapp: null }
+# Remaining make-as-model drops. Separate top-level blocks because none of these
+# makes had one before (verified — a duplicate key would silently destroy the
+# other block). Keys are the PUBLISHED forms, which is why BMW's is "Bmw" and
+# Moto Guzzi's is "Moto-Guzzi": smart_case produced those, and the rename lookup
+# happens after casing.
+BMW:        { Bmw: null }          # motorcycle nl|nz
+Ducati:     { Ducati: null }       # motorcycle nl|nz
+Honda:      { Honda: null }        # motorcycle fi|nl AND moped nl|nz — one make-scoped key covers both kinds (renames are kind-blind)
+Jawa:       { Jawa: null }         # motorcycle fi|nl
+Kawasaki:   { Kawasaki: null }     # motorcycle gb|nl
+Moto Guzzi: { Moto-Guzzi: null }   # motorcycle es|nl — hyphenated by the caser from raw "MOTO-GUZZI"
+Norton:     { Norton: null }       # motorcycle nl|nz
+Piaggio:    { Piaggio: null }      # moped fi|nl
+Triumph:    { Triumph: null }      # motorcycle nl|nz
+Vespa:      { Vespa: null }        # motorcycle es|nl AND moped nl|nz
 
 Tesla:
   "512": null   # data error — Tesla never made a "512" (likely a miscoded Ferrari/other); drop
@@ -213,6 +283,9 @@ TRS:
 
 UNVI:
   Microbus: null         # approval type-designation fallback, not a nameplate — EU approval e9*2007/46*6019*02 type field reads "MICROBUS_2"; UNVI's real range is Compa/Urbis/Vega/Sil/Vendal (https://unvibus.com/product/) — Tesla "512" precedent
+
+Vmoto:
+  "N.a.": null   # 169 placeholder rows; make survives on CITI / F01 / CPX / VS1 / CU ECONOMY / CUMINI ECONOMY
 
 Volkswagen:
   Buggy: null            # kit-car/beach-buggy registrations on Beetle base
