@@ -116,6 +116,28 @@ FLOW_MAPPING = /\A\s*("[^"]+"|[^\s#][^:]*):\s*\{/
   end
 end
 
+# ── 1c. rename/move values must be strings (or null) ─────────────────────────
+#
+# `244: 240` is valid YAML and parses the value as an INTEGER. The pipeline then
+# calls Support.slugify on it, which calls .downcase, and the whole build dies
+# with "undefined method 'downcase' for an instance of Integer" — a crash, not a
+# data error, from a line that looks perfectly reasonable.
+#
+# It cost a red build. Any all-digit nameplate must be quoted on BOTH sides.
+%w[overrides/models/renames.yml overrides/models/moves.yml].each do |rel|
+  abs = File.join(ROOT, rel)
+  next unless File.exist?(abs)
+  (YAML.safe_load_file(abs, permitted_classes: [], aliases: false) || {}).each do |make, entries|
+    entries = { make => entries } unless entries.is_a?(Hash)
+    entries.each do |key, value|
+      next if value.nil? || value.is_a?(String)
+      fail! "#{rel}: #{make} #{key.inspect} → #{value.inspect} is a #{value.class}, not a string. " \
+            "Quote it (\"#{value}\"): the pipeline slugifies rename targets and a bare integer " \
+            "crashes the build with \"undefined method 'downcase' for an instance of Integer\"."
+    end
+  end
+end
+
 # ── 2. kind_maps shape ───────────────────────────────────────────────────────
 #
 # These files are SOURCE-keyed, not kind-keyed, so both maintainers' kinds live
