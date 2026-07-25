@@ -1,0 +1,62 @@
+# models/moves.yml — CROSS-MAKE model moves.
+#
+# Shape:  "<Make>|<Model>": "<TargetMake>|<TargetModel>"
+#
+# WHY THIS FILE EXISTS. Several national registers put the TYPE-APPROVAL HOLDER
+# in the make column rather than the marque, because "make" is derived from a
+# manufacturer key printed on the registration document. Germany's KBA assigns
+# `Marke` from the HSN (Herstellerschlüsselnummer):
+# https://www.kba.de/DE/Statistik/Fahrzeuge/Marken_Hersteller/markenHersteller_node.html
+#
+# A rename cannot fix this (the correct nameplate lives under a different make)
+# and a `null` drop throws away real registration evidence. Before this file
+# existed the only options were "publish it under the wrong marque" or "delete
+# it", and the second is what PR #1 chose for the German Cupras — ~26,500
+# registrations.
+#
+# RULES (all three cost someone a red test or a bad merge, so they are load-bearing):
+#   1. Keys are POST-rename, POST-casing pairs, exactly like rename keys.
+#      "Hyundai|GV70", never "Hyundai|Gv70" — a wrong-form key is silently inert.
+#   2. A `null` rename in renames.yml BEATS a move, by design (an explicit drop
+#      is a stronger statement than a routing rule). Retiring a null and adding
+#      the move must therefore happen in the SAME change.
+#   3. Only move when the register is unambiguously filing ONE marque's model
+#      under another. Do NOT move a row that POOLS two marques' models — see the
+#      SEAT Leon/Ateca note below.
+
+# ── Cupra registered under SEAT (KBA HSN 7593 "SEAT (E)") ────────────────────
+# Cupra has no HSN of its own, so every Cupra in Germany is filed as a SEAT.
+# Verified in KBA FZ 6.1 (HSN/TSN → Handelsname, 1 Jan 2024): HSN 7593 rows read
+# 'FORMENTOR', 'BORN', 'CUPRA ATECA,ATECA', 'CUPRA LEON'.
+# https://www.kba.de/SharedDocs/Downloads/DE/Statistik/Fahrzeuge/FZ6/fz6_2024.xlsx
+# Each target already exists on the Cupra side, so these are pure re-attachments.
+"SEAT|Formentor": "Cupra|Formentor"   # Cupra-exclusive since 2020 (first Cupra-only model); 7,658 DE registrations Jan-May 2026
+"SEAT|Born": "Cupra|Born"             # Cupra Born, never badged SEAT (https://www.cupraofficial.com/cars/born); 6,785 DE
+"SEAT|Tavascan": "Cupra|Tavascan"     # Cupra Tavascan (https://www.cupraofficial.com/cars/tavascan); 6,009 DE
+"SEAT|Terramar": "Cupra|Terramar"     # Cupra Terramar (https://www.cupraofficial.com/cars/terramar); 6,016 DE
+"SEAT|Raval": "Cupra|Raval"           # CUPRA Raval, premiered 2026-04-09, built at Martorell (https://www.cupraofficial.com/cars/raval); 44 DE
+# NOT moved, deliberately: KBA's `SEAT/LEON` and `SEAT/ATECA` rows POOL the SEAT
+# and Cupra versions of one nameplate (FZ 6.1 shows 'CUPRA LEON' and
+# 'CUPRA ATECA,ATECA' under the same HSN). Moving them would hand SEAT's own
+# volume to Cupra; splitting is impossible from an aggregate row. They stay with
+# SEAT, which is where the majority of the volume belongs.
+
+# ── Genesis registered under Hyundai (KBA HSN 8252 "HYUNDAI MOTOR (ROK)") ────
+# Genesis is a separate marque with its own German retail network
+# (https://www.genesis.com/de/de.html) but has no HSN, so KBA files it under
+# Hyundai. FZ 6.1 HSN 8252 rows read 'GV60, GENESIS GV60', 'GV70, GENESIS GV70',
+# 'G80, GENESIS G80,GENESIS', 'G90,GENESIS G90'. FZ 10.1 has no GENESIS make row.
+# All four targets already exist under the genesis make.
+"Hyundai|GV60": "Genesis|GV60"        # Genesis GV60 EV; 206 DE registrations Jan-May 2026
+"Hyundai|GV70": "Genesis|GV70"        # covers the ICE GV70; the EV is catalogued as "Electrified GV70"; 132 DE
+"Hyundai|G80": "Genesis|G80"          # 5 DE
+"Hyundai|G90": "Genesis|G90"          # 1 DE — not in the official German lineup (EV-only there), so almost certainly an import; the marque is Genesis either way
+
+# ── Cupra models written with the marque IN the model string ─────────────────
+# NL/NZ registries emit "SEAT" + "CUPRA LEON"/"CUPRA ATECA". Unlike KBA's bare
+# `LEON`/`ATECA` rows (which POOL the SEAT and Cupra versions and therefore stay
+# with SEAT), these strings name the marque explicitly, so they can be routed
+# without ambiguity. PR #1 dropped them for want of this mechanism; the moves
+# recover that evidence.
+"SEAT|Cupra Leon": "Cupra|Leon"       # TANs e9*2007/46*3167*06/10/12/17 are identical to cupra/leon's
+"SEAT|Cupra Ateca": "Cupra|Ateca"     # TAN e9*2007/46*6394*40 shared with cupra/ateca (same approval family)

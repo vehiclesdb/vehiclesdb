@@ -395,3 +395,63 @@ checks:
     skip_if_kind_absent: true
     availability_includes: [es]
     reason: "Indcar Wing canonical survives the chassis-make drop"
+
+  # === German data heal (2026-07-25) ==========================================
+  # These pin the repair of the xlsx shared-string leak that published 148
+  # records across 29 makes as bare integers. Full account: NAMING.md §2.1 and
+  # pipeline/lib/xlsx_lite.rb. Presence rows here are the proof the heal landed;
+  # absence rows are the proof the artifacts stayed dead.
+  - id: volkswagen/golf
+    availability_includes: [de, nl, gb]
+    reason: "THE flagship regression: volkswagen/552 WAS the Golf (36,508 DE registrations Jan-May 2026) while volkswagen/golf carried 12 countries and no de. Germany must be present on Germany's best-selling car."
+  - id: audi/a3
+    availability_includes: [de]
+    reason: "audi/89 was the A3 (si[89]); the DE evidence belongs on the nameplate. NB audi/89 itself SURVIVES — NL genuinely registers the B3 Audi 80 as '89' — so this is an evidence move, not an id rename"
+  - id: audi/a5
+    availability_includes: [de]
+    reason: "audi/91 was the A5 (12,808 DE registrations) — heals to the nameplate"
+  - id: seat/ateca
+    availability_includes: [de, es]
+    reason: "seat/468 was the Ateca. PR #1 dropped 468-474 as 'KBA numeric type-codes'; they were SEAT's entire current German lineup (si[468..474] = ATECA, BORN, FORMENTOR, IBIZA, LEON, TAVASCAN, TERRAMAR)"
+  - id: seat/468
+    exists: false
+    reason: "the shared-string index must never publish as a nameplate again — but the RECORD it stood for is real and now lives on seat/ateca (see the row above). Absence here plus presence there is the whole fix."
+  - id: zeekr/neuzulassungen-insgesamt
+    exists: false
+    reason: "KBA's grand-total row ('Neuzulassungen insgesamt') parsed as a Zeekr model and held DE rank 1; the source now skips INSGESAMT/ZUSAMMEN/SONSTIGE rows"
+  - id: mercedes-benz/glc
+    availability_includes: [de]
+    reason: "KBA splices a nameplate to its renamed successor in one cell ('GLK, GLC'); the normalizer keeps the FIRST part, so 16,653 registrations were landing on the GLK, dead since 2015. Resolved in the source's COMMA_MERGED table."
+  - id: mercedes-benz/gle
+    availability_includes: [de]
+    reason: "same temporal-merge class: 'ML-KLASSE, GLE' was landing on the ML (renamed GLE in April 2015)"
+  # --- cross-make moves: registers file sub-brands under the type-approval holder
+  - id: cupra/formentor
+    availability_includes: [de, es, fi, nl]
+    reason: "Cupra has no HSN of its own, so KBA files every Cupra under HSN 7593 'SEAT'. moves.yml routes SEAT|Formentor to Cupra; PR #1 had dropped it for want of that mechanism, costing 7,658 German registrations"
+  - id: cupra/born
+    availability_includes: [de]
+    reason: "same HSN mechanism (6,785 DE registrations); cupra/born is the canonical, SEAT never badged a Born"
+  - id: seat/formentor
+    exists: false
+    reason: "the Formentor is Cupra-exclusive; it must never publish under SEAT. Moved, not dropped — the difference is 7,658 registrations of real evidence"
+  - id: genesis/gv60
+    availability_includes: [de]
+    reason: "Genesis rides Hyundai's HSN 8252 in KBA (FZ 6.1 reads 'GV60, GENESIS GV60'), so German registrations arrive under Hyundai; moves.yml routes them to the Genesis marque"
+  - id: hyundai/gv60
+    exists: false
+    reason: "GV60 is a Genesis model — Genesis has its own German retail network (https://www.genesis.com/de/de.html) and is a separate marque"
+  # --- KBA token-stripping and type codes (NAMING.md §7: KBA Modellreihe is a
+  #     normalized Handelsname, not a model name)
+  - id: mg/hs
+    availability_includes: [de]
+    reason: "KBA's 'RX6' is not a model at all — it is the type code for the MG HS/EHS (FZ 6.1 HSN 2180: 'MG RX6;-HS;-EHS;-EHS PHEV')"
+  - id: toyota/bz4x
+    availability_includes: [de]
+    reason: "KBA truncates to 'BZ4'; there is no such model. Official name is bZ4X and the truncation has been in the workbooks since 2023, so it was never a real nameplate"
+  - id: mazda/cx-6e
+    availability_includes: [de]
+    reason: "CX-6 is a REAL new model (CX-6e), NOT a CX-60 truncation: KBA lists CX-6, CX-60 and CX-80 as three separate rows and mazda.de lists the CX-6e. Do not fold it into CX-60."
+  - id: nio/el8
+    availability_includes: [de]
+    reason: "NIO renamed ES6/ES8 to EL6/EL8 for Europe; the catalog already carried EL6, so ES8 folds to EL8 for family consistency"
