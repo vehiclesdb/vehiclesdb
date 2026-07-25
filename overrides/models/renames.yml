@@ -1510,7 +1510,66 @@ Trigano:
   Trigano: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
 Triumph:
+  # TRIUMPH CONVENTION DOSSIER (§11.2). This make is TWO marques sharing a name,
+  # and makes/aliases.yml already warns about it — "Triumph is BOTH a classic car
+  # make and a motorcycle make; kind context disambiguates, do NOT merge". This
+  # batch is where that bites: the halves need different EVIDENCE and land in
+  # different kinds. Renames are kind-blind, so check the kind before editing.
+  #
+  #  MOTORCYCLES (Hinckley, 1990s-, live marque — manufacturer-sourced):
+  #    "Speed Twin" and "Speed Triple" are TWO words; "Speedmaster" is ONE (the
+  #    Bonneville Speedmaster). Same marque, same family, opposite conventions —
+  #    the Yamaha DragStar/Road Star lesson again.
+  #    https://www.triumphmotorcycles.com/motorcycles/classic/bonneville-speedmaster/speedmaster-2023
+  #    Motocross is "TF 250-X" on Triumph's own pages: SPACE after TF, HYPHEN
+  #    before the suffix letter.
+  #    https://www.triumphmotorcycles.com/motorcycles/off-road/motocross/tf-250-x-2025
+  #
+  #  CARS (Standard-Triumph, 1950s-80s, DEFUNCT — badge evidence, since there is
+  #  no company left to publish anything):
+  #    TR-series and GT6 are closed uppercase as badged. The register splits them
+  #    every way imaginable ("Tr 2", "TR4 A", "G.T.6").
+  #    Mk is ARABIC and CLOSED — Triumph's own script badge read "Mk3". Reference
+  #    works use Roman numerals (Mk I-IV), but no register emits them and no badge
+  #    showed them, so Roman would be inventing a third form.
+  #
+  # HOW THIS BLOCK WAS ALMOST LOST: the batch generator inserted a SECOND
+  # `Triumph:` block instead of merging into this one. YAML keeps only the last
+  # duplicate key, so one of the two would have vanished silently — the exact
+  # failure lint_curation's duplicate-key check exists for. The generator's own
+  # guard caught it and aborted; I misread the abort as success and shipped 22
+  # former_ids for renames that had never been applied. The gate caught THAT.
+  # If you add to this make, add HERE.
   Triumph: null                           # motorcycle nl|nz
+  G.T.6: GT6                              # TR-series/GT6 badge form: closed uppercase
+  GT 6: GT6                               # ditto
+  GT-6: GT6                               # FOURTH occurrence of one-id-many-names: gt-6 is published as "GT-6" (hyphen), not the "GT 6" I keyed from the detector output. The detector shows one representative name per id and it is not always the one your key matches
+  GT6 Mk 3: GT6 Mk3                       # Mk arabic + closed, per the badge
+  GT6 MK3: GT6 Mk3                        # ditto
+  Speed Master: Speedmaster               # Triumph writes the Bonneville Speedmaster as ONE word
+  Speedtriple: Speed Triple               # ...but Speed Triple as TWO. Same marque, opposite conventions
+  Speedtwin: Speed Twin                   # ...and Speed Twin as two
+  Spitfire Mk 2: Spitfire Mk2             # Mk arabic + closed, per the badge
+  Spitfire MK2: Spitfire Mk2              # ditto
+  Spitfire Mk 4: Spitfire Mk4             # ditto
+  Spitfire MK4: Spitfire Mk4              # ditto
+  Spitfire MK3: Spitfire Mk3              # not a collision group (no rival spelling) but the same Mk convention — left inconsistent it would be the only MK in the make
+  TF250-E: TF 250-E                       # motocross range is "TF 250-X": space after TF, hyphen before the suffix
+  TF250E: TF 250-E                        # ditto
+  TF450-E: TF 450-E                       # ditto
+  TF450E: TF 450-E                        # ditto
+  Tr 2: TR2                               # TR-series badge form: closed uppercase
+  Tr 3: TR3                               # ditto
+  Tr 6: TR6                               # ditto
+  Tr-6: TR6                               # same: tr-6 publishes as "Tr-6"
+  Tr 7: TR7                               # ditto
+  Tr 8: TR8                               # ditto
+  Tr 250: TR250                           # ditto
+  Tr 4A: TR4A                             # ditto
+  TR3 A: TR3A                             # ditto
+  TR4 A: TR4A                             # ditto
+  TR6 Pi: TR6 PI                          # PI = petrol injection, an uppercase suffix on the badge
+  TR6PI: TR6 PI                           # ditto
 
 TRS:
   Trrs One: One          # strip the embedded badge — bikes are badged TRRS but the make resolves to TRS, so the prefix strip missed (trsmotorcycles.com); CREATES the One canonical
