@@ -185,3 +185,23 @@
 "Factory Built|Geely": "Geely|Geely"
 "Factory Built|Yutong": "Yutong|Yutong"
 "Factory Built|Zhongtong": "Zhongtong|Zhongtong"
+
+# --- B-001 (Tranche C): OEM in the make column, marque in the model column ----
+# NAMING.md line 24 ("the make is the marque, not the registrant") and line 30
+# ("builder in the make column, marque in the model column — the marque wins;
+# needs a cross-make move"). This is that rule's badge-engineering form, and the
+# MIRROR IMAGE of the Vespa/Piaggio split: there the PARENT brand was in the
+# make column, here it is the contract manufacturer.
+#
+# Benzhou Vehicle Industry is a Chinese scooter OEM that builds for European
+# importers who badge the result. RDW files some of those rows under the OEM and
+# some under the importer, so one product publishes twice under two makes:
+#   BENZHOU | IVA LUX50   318 rows   ->  published as moped/benzhou/iva-lux50
+#   IVA     | IVA LUX50 / LUX50      ->  published as moped/iva/lux50 (2,447 rows)
+# IVA is the marque (its own store lists the Lux line; established in B-000).
+#
+# TARGET IS THE CANONICAL FORM, not the raw: renames run BEFORE moves, so a move
+# target is never re-normalized against the destination make. Verified "LUX50"
+# is not itself a rename key under IVA. (That lint is the one this pass added
+# after the Vespa Seigiorni case.)
+"Benzhou|Iva LUX50":               "IVA|LUX50"
