@@ -429,6 +429,36 @@ detector flags requires the evidence to address the flag specifically ("looks
 like D9 but is Rieju's official model name, per rieju.com/…"). Verdicts are per
 **id**; a make is done when every published id under it has a non-stale verdict.
 
+**Two-phase state (amended after the B4 pilot, Turn 55 finding 1 — BLOCKING).**
+A researched-but-unverified ledger is a legitimate intermediate: the researcher
+ships with `status: awaiting_verification` + `verifier: null`. The lint
+tolerates exactly this pair (a signed verifier with awaiting status fails, and
+vice versa), and the make's verdicts are EXCLUDED from the coverage numerator
+until a verifier signs. Anything else would force single sessions to sign both
+fields — the letter of I-11 with none of its substance, which is how a
+verification ledger's central claim becomes unfalsifiable.
+
+**Evidence classes (amended after the B4 pilot, Turn 55 finding 3).** For
+long-tail makes the register IS the totality of available evidence — RA9015-
+class models have no manufacturer page, no press release, no archive, and
+Tranche C is ~400 makes of this. Forcing a URL there pushes researchers toward
+laundering retailer listings into "evidence", which is strictly worse than an
+honest ceiling statement. Sanctioned substitute:
+
+```yaml
+  - id: moped/iva/ra9015
+    verdict: fixed
+    evidence_class: register-only   # asserts: the pack's registry rows are the
+                                    # totality of evidence, corroborated across
+                                    # the raw spellings listed there
+```
+
+`register-only` verdicts count toward coverage (they are verified against the
+ceiling of what exists) but are tallied on their OWN coverage line so the split
+stays visible — the number stays honest instead of the verdicts getting
+optimistic. The class list is closed (the lint rejects others); propose new
+classes here first, with the failure mode they prevent.
+
 ### 5.3 Coverage metric and CI wiring
 
 `scripts/lint_review.rb` (to build, Phase 1):
@@ -681,7 +711,12 @@ HARD RULES YOU MUST NOT VIOLATE:
 - Wikipedia/wikis/other vehicle databases: use only to LOCATE primary sources.
   Never import their content or lists (they are ShareAlike; this dataset is
   CC-BY). Manufacturer sites, press releases, heritage archives, regulator
-  documents are your sources of record.
+  documents are your sources of record. When NONE of those exist for a model —
+  discontinued OEM-code long-tail, the RA9015 class — do NOT launder a retailer
+  listing into an "evidence" URL and do NOT park two-thirds of a make in debt
+  to look compliant: write `evidence_class: register-only` (§5.2), which
+  asserts the pack's registry rows are the totality of evidence. Honest ceiling
+  beats optimistic verdict, always.
 - Corroboration proves a record is REAL, not that its name is canonical — and
   proves nothing for make-as-model / embedded-make records.
 - Trims, editions, body styles and engine variants FOLD into the nameplate;
