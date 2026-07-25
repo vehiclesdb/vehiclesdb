@@ -19,12 +19,20 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
      https://github.com/vehiclesdb/vehiclesdb/pull/4#issuecomment-5079545135
    - **Code contracts (xlsx reader, KBA source, moves, test seams, licence pins)** —
      https://github.com/vehiclesdb/vehiclesdb-pipeline/pull/1#issuecomment-5079564588
+   - **Two-wheelers, build triage, cross-make moves, former_ids, the `kind`
+     decision, and the full silent-failure catalogue** —
+     https://github.com/vehiclesdb/vehiclesdb-pipeline/pull/2#issuecomment-5079726629
 
    If you are about to delete records whose names look like registry junk, read
    the first one before you do. That exact reasoning deleted SEAT’s entire
    current German lineup once, and nearly deleted 148 more records including the
    best-selling car in Germany.
-7. This file
+7. `CORRECTION-PASS-2026-07-LOG.md` — the verbatim 40-turn working log behind those
+   briefs. Read it when you need to know WHY a decision went the way it did, or want
+   the raw measurement behind a claim. It deliberately contains the wrong turns as
+   well as the right ones: several of the most expensive lessons here only make
+   sense alongside the mistake that produced them.
+8. This file
 
 ## Invariants (never break)
 
