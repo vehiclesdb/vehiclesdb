@@ -282,3 +282,153 @@ below the bar), a lesson that was already written down when I did this.
 
 Steps 2-6 are about a day. Step 1 is the whole risk, and skipping it deletes ~35
 real microcars while every gate stays green.
+
+---
+
+## B3 RESOLVED (2026-07-25) — the Spanish blocker was my own misreading
+
+**Estimate 4, and this one is measured end to end rather than reasoned about.**
+The three earlier estimates are above; this section supersedes the third,
+including its central claim.
+
+### What I got wrong in estimate 3
+
+> *"GATING: map DGT's national asterisk codes to EU categories (`*02`…`*17` →
+> L1e/L3e/L6e). Research on DGT's published code list, not plumbing. Without it
+> Spain cannot participate and every ES-evidenced L6e is lost."*
+
+Both halves of that are wrong.
+
+1. **The codes that carry quadricycles are `*19/*20/*21/*26/*27`, not
+   `*02`…`*17`.** `*02`–`*17` are mopeds and motorcycles and were never
+   relevant.
+2. **`es_dgt.rb` already maps all five of them** — to `:moped`, with a dated
+   sampling comment naming Aixam, Microlino and Silence. There was no missing
+   mapping to research. I read that comment twice and still described the file
+   as lacking the signal.
+
+**The real mechanism behind `silence/s04` vanishing:** `L6E` and `*21` both map
+to `:moped` today. My migration flipped `L6E` to `:car` and left `*21` at
+`:moped`. The S04 has **153 rows under `*21`** and 0 under `L6E`, so the flip
+moved its Dutch evidence to `car` while its Spanish evidence stayed in `moped`,
+and each half fell under its own threshold. A two-line omission, not a missing
+research artifact. The lesson is the one already written down after the Vespa
+split — **relocate a nameplate's evidence together or not at all** — and I
+reproduced it in a different register.
+
+### The mapping (measured, 3 months of DGT microdata: 2026-04/05/06)
+
+Flip these to `:car`, together, in one change:
+
+```
+L6E  L7E  *19  *20  *21  *26  *27
+```
+
+Everything else in `es_dgt.rb` stays exactly as it is.
+
+### Why these five codes are L6e/L7e — verified two independent ways, in-file
+
+I could not find a citable official table for the asterisk series, and I am
+recording that as an unknown rather than papering over it. **RD 2822/1998 Anexo
+II §B actively contradicts a naive reading** — there, `21` is *"Capitoné:
+vehículo destinado al transporte de mercancías en un receptáculo totalmente
+cerrado, acolchado"* (a padded furniture van), `20` is *"Caja cerrada"*, `27` is
+*"Cisterna"*, `02` is *"Bicicleta"*
+(https://www.iberley.es/legislacion/anexo-2-reglamento-general-vehiculos).
+None of that matches the rows. Per DGT's own interface document the Anexo II
+code lives in a **different field** (#53 `CLASIFICACIÓN_REGLAMENTO_VEHICULOS_ITV`)
+while these values appear in #48 `CATEGORÍA_HOMOLOGACIÓN_EUROPEA_ITV`
+(https://sedeapl.dgt.gob.es/IEST_INTER/pdfs/disenoRegistro/vehiculos/matriculaciones/MATRICULACIONES_MATRABA.pdf,
+Tabla 1). **Treat any published gloss of "`*21`" as unverified.**
+
+So the claim is verified from the data instead, and the evidence is stronger
+than a code table would have been:
+
+**(a) The EU-categorised rows and the asterisk rows carry the SAME RD 2822
+code.** Field #53 is in the file, so the two vocabularies can be cross-joined:
+
+| #48 value | rows | unladen mass p10/med/p90 | #53 (RD 2822 Anexo II) |
+|---|---|---|---|
+| `*19` | 47 | 267 / 407 / **425** | `0300` ×47 |
+| `*20` | 17 | 342 / 425 / **425** | `0320` `0300` `0311` |
+| `*21` | 813 | 406 / 425 / **425** | `0300` ×809 |
+| **`L6E`** | 6 | 350 / 420 / 480 | **`0300` `0320` `0311`** |
+| `*26` | 34 | 481 / 587 / 600 | `0617` `0600` `0611` |
+| `*27` | 120 | 435 / 439 / **450** | `0600` ×120 |
+| **`L7E`** | 16 | 200 / 450 / 645 | **`0600` `0611`** |
+| *control* `*05` | 35,647 | 117 / 136 / 167 | `0400` (motorcycles) |
+| *control* `M1` | 404,018 | 1210 / 1485 / 2010 | `1000` (turismos) |
+
+`L6E` lands on `0300/0311/0320` — the identical code set as `*19/*20/*21`.
+`L7E` lands on `0600/0611` — the identical set as `*26/*27`. The register is
+telling us, in its own second vocabulary, that these are the same vehicles.
+
+**(b) The mass distributions sit exactly on the regulatory limits.** Reg. (EU)
+168/2013 Annex I sets L6e unladen mass at **≤425 kg** and L7e at **≤450 kg**.
+`*21`'s p90 is **425**. `*27`'s p90 is **450**. Codes that were something else
+would not pile up on those two numbers.
+
+### Split risk — measured per nameplate, which is the check that was missing
+
+Every (make, model) in three months of microdata, asked whether it appears under
+BOTH a flipped code and a code that stays:
+
+```
+nameplates carrying ONLY flipped codes (whole nameplate moves cleanly):  75
+nameplates carrying BOTH flipped and staying codes (SPLIT RISK):          1
+```
+
+The one: **`BOMBARDIER CAN-AM`** — `*17`:1 and `L7E`:1, two registrations total.
+Can-Am's Spyder/Ryker are three-wheelers, which DECISIONS.md line 23 keeps in
+`motorcycle` on the trike precedent, so the right handling is to leave `*17`
+alone and accept one row moving. Verify it against the no-vanish gate like
+everything else; do not special-case it in advance.
+
+The 75 clean movers, largest first: `SILENCE S04` (206) · `LIGIER JS50` (182) ·
+`AIXAM S10` (155) · `AIXAM S10-2` (63) · `FIAT TOPOLINO` (62) ·
+`CITROEN AMI AMI` (55) · `LIGIER MYLI` (49) · `MOBILIZE DUO 45` (28) ·
+`BENTU STEED` (24) · `CITROEN MY AMI AMI` (21) · `MICRO MICROLINO` (16) ·
+`ZYCAR Z2L` (14) · `AIXAM M12RS` (12) · `ARES J3` (11) · `RUNHORSE TEV` (11) …
+
+Note `LIGIER JS50` already spans `*21`+`*27`+`L6E` and `MICRO MICROLINO` spans
+`*27`+`L6E`: they are only safe **because all three codes flip together.** Flip
+a subset and these split too. That is the whole reason the set is atomic.
+
+### Revised plan
+
+1. ~~Research DGT's code list~~ **— done, and it was not the blocker.**
+2. In `es_dgt.rb`, move `L6E L7E *19 *20 *21 *26 *27` to `:car`. One hash, seven
+   entries, and they must move in the same commit.
+3. `fi_traficom`, `lu_snca`: `L6E`/`L7E` → `:car` (2 lines each).
+4. `nl_rdw`: `Bromfiets` under both `car` and `moped` + a `by_eu_category`
+   block. **Guard `is_a?(Hash)` before `dig`** — `kind_map["kinds"][soort]` is a
+   String for simple mappings and `Hash#dig` raises `TypeError` on a String
+   intermediate; without the guard nl_rdw silently contributes ZERO rows (car
+   8,363→4,392) and only the delta gate notices.
+5. Reconciler: `eu_cats` on the entity + a `quadricycle` short-circuit BEFORE
+   the car body rules (built, works — 76 records got `quadricycle`).
+6. `quadricycle` into `CANONICAL_BODY_TYPES` (validate.rb) and SCHEMA.md.
+7. **Per-id no-vanish verification against a build, then `former_ids` for every
+   moved id**, and rekey the `silence/s04` spotcheck to `kind: car`.
+
+Step 1 is closed. Steps 2–7 are the day of work the third estimate described,
+and the gating item is now S4W's G2 gate rather than any research.
+
+### One real bug found while measuring, worth fixing on the way past
+
+`es_dgt.rb` reads `EUCAT = [426, 3]`. DGT declares field #48 as **CHAR(4)**.
+Measured across 586,765 rows the truncation bites **19 rows** — `L3E-` ×14,
+`M1SC` ×3, `N3SG` ×1, `L1E-` ×1 — of which `L3E`/`L1E` still map correctly by
+luck and 4 rows are silently dropped as unmapped. Negligible today, but Reg.
+168/2013 subcategories (`L6e-B`, `L3e-A1`) are 4+ characters, so this becomes a
+real loss the moment Spain starts emitting them. Change to `[426, 4]`; the
+`.strip` already handles the trailing space.
+
+The offset arithmetic is worth recording since nothing in the repo documents it:
+field #48 starts at 426 by summing the declared `CHAR()` lengths of fields 1–47
+in Tabla 1 of the interface document — and that it agrees with the offset
+already in the source is the check that the sum is right. Same method gives
+#46 `MASA_ORDEN_MARCHA` = 414, #47 `MASA_MÁXIMA` = 420, #49 `CARROCERIA` = 430,
+**#53 `CLASIFICACIÓN_REGLAMENTO_VEHICULOS_ITV` = 449** — that last one is the
+RD 2822 code used in the table above, and it is a genuinely useful second
+opinion on kind for any future boundary question.

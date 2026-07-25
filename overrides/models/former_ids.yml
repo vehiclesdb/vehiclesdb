@@ -19,7 +19,25 @@
 #      tell every consumer that a live id is an alias of a different car.
 #   2. APPEND-ONLY and ACCUMULATING. A record corrected twice keeps both old
 #      ids, or the migration path decays after one release.
-#   3. Same kind, same make. A cross-make correction is a `moves.yml` concern.
+#   3. Same kind, same make — with ONE named exception, added 2026-07-25.
+#
+#      The rule's purpose is to stop a MODEL that was filed under the wrong
+#      marque being papered over with an alias instead of relocated: that is a
+#      `moves.yml` concern, and the two makes both stay alive.
+#
+#      A MAKE MERGE is the opposite situation and `moves.yml` cannot express it.
+#      When two make ids turn out to be one marque (`zero` + `zero-motorcycles`,
+#      `emax` + `e-max`), the losing make ceases to exist entirely and every id
+#      under it changes slug. Consumers pinned to `motorcycle/zero/sr-f` 404
+#      unless something aliases it, and moves.yml relocates nameplates BETWEEN
+#      TWO LIVE MAKES — there is no live source make left to move from.
+#
+#      So a cross-make entry is permitted IF AND ONLY IF the old make no longer
+#      appears in the build at all. That condition is what makes the alias
+#      unambiguous: with `zero` gone, `motorcycle/zero/sr-f` can mean exactly
+#      one thing. If the old make still exists, this is a moves.yml problem and
+#      an alias here would be a lie about a live id (rule 1's failure mode).
+#      Verify the make is gone against a build, not against intent.
 #   4. Successor must carry a SUPERSET of the old id's country evidence — if
 #      evidence went missing, that is a different bug and must not be papered
 #      over with an alias.
@@ -1872,8 +1890,8 @@
 "moped/derbi/senda-x-treme50sm": "moped/derbi/senda-50"
 "moped/derbi/sm-x-trem": "moped/derbi/senda-50"
 "moped/derbi/variant-start": "moped/derbi/variant"
-"moped/emax/emax-110s": "moped/emax/110s"
-"moped/emax/emax-90s": "moped/emax/90s"
+"moped/emax/emax-110s": "moped/e-max/110s"   # RE-CHAINED 2026-07-25: pointed at moped/emax/110s, which the emax->e-max MAKE merge relocated. A dangling alias migrates consumers INTO a 404, so a rename must re-point every alias that already targets the id it moves
+"moped/emax/emax-90s": "moped/e-max/90s"     # RE-CHAINED, same reason
 "moped/honda/cf50chaly": "moped/honda/cf50-chaly"
 "moped/peugeot/speedfighter": "moped/peugeot/speedfight"
 "moped/piaggio/vespa-et-2-45km-h": "moped/vespa/et2"
@@ -2075,3 +2093,30 @@
 "van/volvo/145": "car/volvo/140"
 "van/volvo/xc-90": "car/volvo/xc90"
 "van/willys/cj-3b": "car/willys/cj3b"
+# --- 2026-07-25, S2W: two MAKE merges (see rule 3's named exception above) ----
+# `zero` -> `zero-motorcycles`: UK/NZ/UA register the marque as bare "ZERO",
+# NL/ES/FI/LU as "ZERO MOTORCYCLES". Merged toward the longer form because the
+# manufacturer's own pages carry no "Zero <model>" product string — body copy is
+# the bare model code and the brand appears only as "Zero Motorcycles" /
+# "Zero Motorcycles, Inc." (https://zeromotorcycles.com/model/zero-dsrx, 2026).
+# Every successor below GAINED evidence (verified per id against a build diff,
+# gains noted); nothing lost a country, so rule 4 holds with room to spare.
+"motorcycle/zero/ds": "motorcycle/zero-motorcycles/ds"        # gb,nz -> +nl
+"motorcycle/zero/dsr": "motorcycle/zero-motorcycles/dsr"      # gb,nz -> +nl
+"motorcycle/zero/fx": "motorcycle/zero-motorcycles/fx"        # gb,nz -> +es,nl (merged into a pre-existing id)
+"motorcycle/zero/s": "motorcycle/zero-motorcycles/s"          # gb,nz,ua -> +nl
+"motorcycle/zero/sr": "motorcycle/zero-motorcycles/sr"        # fi,gb,nz,ua -> +nl
+"motorcycle/zero/sr-f": "motorcycle/zero-motorcycles/sr-f"    # gb,nz -> +nl
+"motorcycle/zero/sr-s": "motorcycle/zero-motorcycles/sr-s"    # gb,ua -> +nl
+# Same merge, but these two are MODEL-level: RDW writes merk "ZERO MOTORCYCLES"
+# (plural) with handelsbenaming "ZERO MOTORCYCLE XB" (singular), so the exact
+# prefix strip missed and the first-token fallback left "Motorcycle" in the
+# nameplate. Fixed by renames.yml; the old fabricated ids still need aliases.
+"moped/zero-motorcycles/motorcycle-xb": "moped/zero-motorcycles/xb"              # es,fi,nl unchanged
+"motorcycle/zero-motorcycles/motorcycle-xe": "motorcycle/zero-motorcycles/xe"    # es,nl -> +fi,gb
+# `emax` -> `e-max`: RDW carries both merk spellings for one marque in the same
+# file; the brand writes itself hyphenated ("e-max", manufacturer manual and
+# Vmoto's own copy). Rekeying the make also required rekeying its renames block
+# from `Emax:` to `E-Max:` — see the note there.
+"moped/emax/110s": "moped/e-max/110s"    # fi,nl unchanged
+"moped/emax/90s": "moped/e-max/90s"      # fi,nl unchanged (merged into a pre-existing id)

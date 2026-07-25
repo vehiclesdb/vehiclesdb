@@ -87,6 +87,26 @@ load_yaml("overrides/models/renames.yml")
 load_yaml("overrides/styling.yml")
 Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].each { |f| load_yaml(f.sub("#{ROOT}/", "")) }
 
+# --- 4: empty make blocks -----------------------------------------------------
+# A bare `Yamaha:` with nothing under it parses as nil, not {}. The pipeline
+# tolerates it (`renames&.key?`), but any consumer that iterates values crashes:
+# `.values.map(&:size)` → NoMethodError on nil. Six of these accumulated in
+# renames.yml when a bulk PR generated make blocks and then had its entries
+# removed at the ownership boundary, leaving the keys behind — the block is a
+# fossil of work that did NOT happen, so it also misleads a reader into thinking
+# the make was curated. Fail on them; deleting the key is always the fix.
+{
+  "overrides/models/renames.yml" => nil,
+  "overrides/models/aliases.yml" => nil,
+  "overrides/makes/aliases.yml" => nil,
+}.each_key do |rel|
+  next unless (y = load_yaml(rel)).is_a?(Hash)
+  y.each do |k, v|
+    next unless v.nil? || (v.respond_to?(:empty?) && v.empty?)
+    fail! "#{rel}: make block #{k.inspect} is empty — delete the key (an empty block reads as 'curated' but holds nothing)"
+  end
+end
+
 # --- 5: spotchecks ------------------------------------------------------------
 if (spot = load_yaml("spotchecks.yml"))
   known = %w[id make kind exists body_types_include availability_includes global_decile_max skip_if_kind_absent reason]

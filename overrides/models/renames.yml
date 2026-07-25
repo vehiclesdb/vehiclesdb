@@ -60,7 +60,7 @@ BMW:
 Bricklin:
   Sv-1: SV1                                   # spelling variant of "SV1" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
-Btc:
+BTC:
   Btc: null                               # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Buick:
@@ -234,16 +234,27 @@ DS:
 Ducati:
   Ducati: null                            # motorcycle nl|nz
 
+# REKEYED 2026-07-25 from `Emax:` when makes/aliases.yml merged raw EMAX into
+# the E-Max marque. `@o.model_renames[make]` is keyed on the RESOLVED DISPLAY
+# NAME, so changing a make's display name silently orphans every rename block
+# under the old name — the lines stay in the file, lint stays green, and the
+# nameplates they were fixing quietly come back as new duplicate ids
+# (`e-max/emax-90s` beside `e-max/90s`). Caught here only by calling
+# Normalizer#classify on the raw rows before and after the alias.
+#
+# RULE, the hard way: an entry in makes/aliases.yml that changes a display name
+# is a two-file edit. Grep renames.yml AND aliases.yml for the old display name
+# in the same commit.
+E-Max:
+  Emax-110S: 110S            # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-110S"), and the hyphen also defeats its `[\s,]+` separator requirement; E-Max sells the 110S/90S (make+model reads "E-Max 110S")
+  Emax-90S: 90S                               # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-90S"); E-Max sells the 110S/90S [reason re-attached: the union merge lifted this line out of a block whose comment sat above it]
+
 EBRO:
   S400 Hev: S400         # HEV is the powertrain badge, not the nameplate — official lineup is s400/s700/s800 (sold as "s400 HEV"; sibling records are already powertrain-bare); folds like Leaf 40KWH (https://www.ebroauto.com/)
   S400 HEV: S400         # same fold — key form that applies once HEV joins styling.yml acronyms (the caser runs before renames; cf. the "Town&country LX" key, LX being an acronym)
 
 Elmoto:
   Elmoto: HR-2   # Elmoto built exactly ONE model, the HR-2 (Berlin, 2011-2016 e-motorbike). Raw NL has "ELMOTO" n=13 + "HR-2" n=1, so the bare-brand rows ARE the HR-2 — this keeps the marque AND names it honestly instead of publishing "Elmoto Elmoto"
-
-Emax:
-  Emax-110S: 110S            # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-110S"); E-Max sells the 110S/90S (make+model reads "E-Max 110S")
-  Emax-90S: 90S                               # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-90S"); E-Max sells the 110S/90S [reason re-attached: the union merge lifted this line out of a block whose comment sat above it]
 
 Ferrari:
   "400I": "400 I"                             # spelling variant of "400 I" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -1341,7 +1352,7 @@ Suzuki:
   Wagon-R: Wagon R                          # hyphenation variant of Suzuki Wagon R (global-suzuki.com) — spacing, not a different model
   Suzuki: null                              # registry row where the make was written into the model column (motorcycle+moped) — not a nameplate; restored from a flow-style entry
 
-Sym:
+SYM:
   "N.a.": null   # small placeholder block against SYM's 56 real names (FIDDLE alone is 36,746 registrations)
 
 Talaria:
@@ -1517,6 +1528,24 @@ Willys:
   Mb Jeep: M B Jeep                           # spelling variant of "M B Jeep" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Cj 3B: CJ3B                                 # spelling variant of "CJ3B" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Cj-5: CJ5                                   # spelling variant of "CJ5" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+
+Zero Motorcycles:
+  # Residue of a SINGULAR/PLURAL mismatch between the two columns, not a naming
+  # choice. RDW writes merk="ZERO MOTORCYCLES" (plural) but handelsbenaming
+  # "ZERO MOTORCYCLE XB"/"XE" (singular). strip_make_prefix tries the exact raw
+  # make first (no match — plural ≠ singular), then falls back to the raw make's
+  # FIRST TOKEN, which strips only "ZERO " and leaves "MOTORCYCLE" sitting in
+  # the nameplate. Verified against the current normalizer: the plural form
+  # "ZERO MOTORCYCLES XE" strips correctly to "Xe", so this is specific to the
+  # 3 singular rows (measured 2026-07-25, m9d7-ebf2).
+  #
+  # Fixed with override lines rather than a prefix-normalizing rule on purpose:
+  # NAMING.md "Rule-first" sets the bar at ~20 instances and this is 3. A
+  # singular/plural-tolerant strip is also the kind of loosening that would
+  # start eating real nameplates (a "Motorcycle"-prefixed model is rare but a
+  # plural-insensitive prefix match is not obviously safe across 849 makes).
+  Motorcycle Xb: Xb    # raw handelsbenaming "ZERO MOTORCYCLE XB" (2 rows); merges into the existing moped/zero-motorcycles/xb
+  Motorcycle Xe: Xe    # raw handelsbenaming "ZERO MOTORCYCLE XE" (1 row); merges into the existing motorcycle/zero-motorcycles/xe
 
 Zundapp:
   Zundapp: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)

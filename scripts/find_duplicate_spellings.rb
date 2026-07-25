@@ -15,10 +15,12 @@
 # READS THE PUBLISHED CATALOG, not the override layer. catalog/ is a monthly
 # build output, so merges you just authored do NOT reduce this count until a
 # build runs — expect the number to stay flat after a curation PR and drop in
-# one step at the next release. Simulate the pending state by applying
-# overrides/models/renames.yml yourself if you need the post-build figure.
+# one step at the next release. Point VDB_CATALOG at a fresh local build to see
+# the post-curation figure (see the env block below) — that is easier and more
+# faithful than replaying overrides/models/renames.yml by hand.
 #
 # Usage:  ruby scripts/find_duplicate_spellings.rb [--make=volvo]
+#         (env: VDB_SIDE / VDB_DATA_REPO / VDB_CATALOG / VDB_OUT — see below)
 #
 # It PROPOSES; it does not write. Two risk classes come out of it:
 #   * canonical already exists as one of the variants -> a safe merge
@@ -48,17 +50,40 @@ require "json"
 require "yaml"
 require "set"
 
-ROOT = File.expand_path("~/GitHub/.vdb-worktrees/s4w-data")
+# Parameterized so BOTH maintainer sides can run it (it was written s4w-hardcoded).
+# Defaults reproduce the original s4w behaviour exactly, so existing invocations
+# are unaffected.
+#   VDB_DATA_REPO  data repo / worktree holding OWNERSHIP.yml       (default: s4w worktree)
+#   VDB_SIDE       which OWNERSHIP.yml key selects "my" makes       (default: s4w)
+#   VDB_CATALOG    catalog/ dir to read                             (default: $VDB_DATA_REPO/catalog)
+#
+# WHY VDB_CATALOG is separate from VDB_DATA_REPO, and why you usually want it:
+# the committed catalog/ is the LAST RELEASE, so a curation pass you just merged
+# is invisible here until the next monthly build — you will "find" collisions you
+# already fixed and waste a review cycle re-proposing them. Point VDB_CATALOG at a
+# fresh local build instead:
+#
+#   VDB_SIDE=s2w VDB_DATA_REPO=~/GitHub/.vdb-worktrees/s2w-data \
+#   VDB_CATALOG=~/GitHub/.vdb-worktrees/s2w-pipeline/build/out/catalog \
+#     ruby scripts/find_duplicate_spellings.rb
+#
+# Output files are suffixed with the side for the same reason: two sides running
+# this concurrently used to overwrite each other's /tmp proposals silently.
+ROOT = File.expand_path(ENV["VDB_DATA_REPO"] || "~/GitHub/.vdb-worktrees/s4w-data")
+SIDE = ENV["VDB_SIDE"] || "s4w"
+CATALOG = File.expand_path(ENV["VDB_CATALOG"] || File.join(ROOT, "catalog"))
 KINDS = %w[car van motorcycle moped truck bus]
 own = YAML.safe_load_file(File.join(ROOT, "OWNERSHIP.yml"))
-MINE = Set.new(own["s4w"] || [])
+MINE = Set.new(own[SIDE] || [])
+raise "OWNERSHIP.yml has no make list under #{SIDE.inspect}" if MINE.empty?
+OUT = ENV["VDB_OUT"] || "/tmp"
 ONLY = ARGV.find { |a| a.start_with?("--make=") }&.split("=", 2)&.last
 
 makes = {}
 records = []
 KINDS.each do |k|
-  JSON.parse(File.read(File.join(ROOT, "catalog", k, "makes.json"))).each { |m| makes[[k, m["id"]]] = m["name"] }
-  JSON.parse(File.read(File.join(ROOT, "catalog", k, "models.json"))).each { |m| records << m.merge("_kind" => k) }
+  JSON.parse(File.read(File.join(CATALOG, k, "makes.json"))).each { |m| makes[[k, m["id"]]] = m["name"] }
+  JSON.parse(File.read(File.join(CATALOG, k, "models.json"))).each { |m| records << m.merge("_kind" => k) }
 end
 
 def tokens(name)
@@ -109,7 +134,7 @@ records.group_by { |m| [m["_kind"], m["make_id"]] }.each do |(kind, make_id), ms
   end
 end
 
-puts "#{groups.size} collision groups in the s4w half, #{groups.sum { |g| g[:records].size }} records"
+puts "#{groups.size} collision groups in the #{SIDE} half, #{groups.sum { |g| g[:records].size }} records (catalog: #{CATALOG})"
 puts
 
 by_make = groups.group_by { |g| g[:make] }.sort_by { |_, v| -v.sum { |g| g[:records].size } }
@@ -137,8 +162,8 @@ frag = Hash.new { |h, k| h[k] = {} }
 groups.each do |g|
   (g[:variants] - [g[:canonical]]).each { |v| frag[g[:make_name]][v] = g[:canonical] }
 end
-File.write("/tmp/collision_renames.yml", frag.to_h.transform_values { |v| v.sort.to_h }.to_yaml)
-puts "\nwrote /tmp/collision_renames.yml — #{frag.values.sum(&:size)} rename entries across #{frag.size} makes"
+File.write("#{OUT}/collision_renames_#{SIDE}.yml", frag.to_h.transform_values { |v| v.sort.to_h }.to_yaml)
+puts "\nwrote #{OUT}/collision_renames_#{SIDE}.yml — #{frag.values.sum(&:size)} rename entries across #{frag.size} makes"
 
 # --- split by risk class for review ---
 existing = groups.select { |g| g[:variants].include?(g[:canonical]) }
@@ -146,5 +171,5 @@ brandnew = groups - existing
 puts "\nSAFE (canonical already exists as a variant — pure merge): #{existing.size} groups / #{existing.sum { |g| g[:records].size }} records"
 puts "NEW  (canonical is a new string — mints an id):             #{brandnew.size} groups / #{brandnew.sum { |g| g[:records].size }} records"
 puts "NEW-class by make: " + brandnew.group_by { |g| g[:make] }.sort_by { |_, v| -v.size }.first(10).map { |mk, gs| "#{mk}:#{gs.size}" }.join(" ")
-File.write("/tmp/safe_groups.json", JSON.pretty_generate(existing.map { |g| { kind: g[:kind], make: g[:make_name], canonical: g[:canonical], others: g[:variants] - [g[:canonical]] } }))
-File.write("/tmp/new_groups.json", JSON.pretty_generate(brandnew.map { |g| { kind: g[:kind], make: g[:make_name], canonical: g[:canonical], variants: g[:variants] } }))
+File.write("#{OUT}/safe_groups_#{SIDE}.json", JSON.pretty_generate(existing.map { |g| { kind: g[:kind], make: g[:make_name], canonical: g[:canonical], others: g[:variants] - [g[:canonical]] } }))
+File.write("#{OUT}/new_groups_#{SIDE}.json", JSON.pretty_generate(brandnew.map { |g| { kind: g[:kind], make: g[:make_name], canonical: g[:canonical], variants: g[:variants] } }))
