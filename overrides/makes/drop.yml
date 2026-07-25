@@ -86,6 +86,27 @@ car:
   # --- junk make strings (audit, high-confidence) ---
   - FACTORY BUILT   # placeholder registration string, not a marque
   - EIGENBOUW       # Dutch "self-build" — kit/amateur builds, not a marque
+  # --- motorhome/caravan builders still published as car makes (2026-07-25).
+  # Same class as the BENIMAR/BUNKERVAN/BÜRSTNER/PÖSSL entries above: campers on
+  # a van or truck base are registered M1 ("Personenauto") in NL/ES/FI, so the
+  # builder surfaces as a car make. Each line below was MEASURED against the RDW
+  # open register (CC0) on 2026-07-25 rather than inferred from the brand name:
+  #   https://opendata.rdw.nl/resource/m9d7-ebf2.json?$select=voertuigsoort,inrichting,count(*)&$where=merk='<MERK>'&$group=voertuigsoort,inrichting
+  # Counts below are Personenauto rows carrying inrichting=kampeerwagen.
+  - KABE            # 79/79 kampeerwagen (plus 676 caravan trailers) — Swedish caravan/motorhome builder (https://www.kabe.se/)
+  - TRIGANO         # kampeerwagen rows only; Europe's largest RV group, and every catalogued model (Autoroller, Carioca, Granduca, Riviera, Pegaso, T-Line) is a motorhome floorplan (https://www.trigano.fr/)
+  - CI              # 166/166 kampeerwagen — Caravans International (https://www.ci-camper.com/)
+  - BAVARIA         # 217/218 kampeerwagen (1 MPV) — Bavaria Camp motorhomes; catalogued models are floorplan codes (F060XDG, I074LGJ, K600G)
+  - JOINT           # 254/254 kampeerwagen — Joint motorhomes (Rimor group)
+  - SEA             # 186/186 kampeerwagen — S.E.A. / Elnagh group motorhomes (IT)
+  - DREAMER         # 147/148 kampeerwagen — Dreamer campervans (Rapido group, https://www.dreamer-camper.com/)
+  - FORSTER         # 148/148 kampeerwagen — Forster motorhomes (Eura Mobil group)
+  - FLEURETTE       # 113 kampeerwagen — Fleurette motorhomes (FR, https://www.fleurette.fr/)
+  - KNAUS TABBERT   # parent group of the already-dropped KNAUS; the compound form escaped that entry (https://www.knaustabbert.de/)
+  - FENDT           # Fendt-Caravan motorhomes/caravans. NB the RDW rows under merk=FENDT are agricultural trailers (the tractor marque) — neither reading is a car, so the car-kind drop is correct either way, but do NOT extend it to other kinds without checking which Fendt you have.
+  - FIAT-PILOTE     # Pilote motorhome conversion on a Fiat Ducato base; PILOTE alone is already dropped, the compound escaped it
+  - FIAT-FLEURETTE  # as above, Fleurette conversion on a Ducato base
+  - FIAT DUCATO AFFINITY # as above — "Affinity Camper Van" is the model, the make string is chassis+converter
   # --- motorhome coachbuilders surfaced by the ES-brand audit (2026-07-12);
   # matched against the RESOLVED make (BENIMAR/BUNKERVAN precedent) ---
   - MONCAYO         # Caravanas Moncayo (Villanueva de Gállego, Zaragoza; defunct 2011) — NL RDW rows 100% inrichting=kampeerwagen; ES M1 leakage (https://opendata.rdw.nl/resource/m9d7-ebf2.json?merk=MONCAYO)

@@ -1,0 +1,81 @@
+# DE KBA FZ 10.1 source mapping — Modellreihe → kind.
+#
+# Dataset: "Neuzulassungen von Personenkraftwagen nach Marken und Modellreihen"
+# https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz10/fz10_gentab.html
+# Licence: DL-DE/BY-2.0 (pinned as de_kba).
+#
+# ── WHY THIS FILE EXISTS: Germany was missing from 2,550 records ─────────────
+#
+# FZ 10.1 is a PASSENGER-CAR table, but "Personenkraftwagen" means EU class M1,
+# and M1 is defined purely by seat count (≤8 besides the driver) with NO mass
+# ceiling — so it includes:
+#   * passenger versions of vans (Caddy Life, Multivan, Transit Custom Kombi…),
+#     which carry M1 type approvals disjoint from their N1 siblings; and
+#   * motorhomes, including 26-tonne liners on Actros chassis, as M1 special
+#     purpose "SA / Wohnmobil" (71,575 units = 2.5% of German Pkw in 2025).
+# KBA methodology: https://www.kba.de/DE/Statistik/Fahrzeuge/fz_methodik/fz_methodische_erlaueterungen_202402_pdf.pdf
+# M1 definition: 2007/46/EC Annex II, now Reg. (EU) 2018/858 Annex I.
+#
+# `overrides/models/drop_patterns.yml` drops those van nameplates from the car
+# kind with the comment "they belong to kind van, whose build ingests them via
+# kind_maps instead" — but no kind_map existed for this source and it only fed
+# the car kind, so the rows were dropped and NOTHING picked them up. Measured
+# 2026-07-25 on the published catalog: **0 of 1,120 van records, 0 of 1,045 truck
+# records and 0 of 385 bus records carried `de` evidence**, while Germany
+# registered 19,375 Caddy and 29,057 Transporter M1 vehicles in 2025 alone.
+#
+# The mapping below routes each Modellreihe to the kind whose catalogued
+# nameplate it actually is. Every entry was derived by resolving the KBA string
+# through the real normalizer and checking which kind already holds that id —
+# not from a hand-written guess. Counts are Jan–May 2026 YTD registrations.
+#
+# NOT ROUTED, deliberately: rows that are ~100% motorhome (Actros, Arocs,
+# Atego, Unimog, Volvo FH, MAN TGL/TGM/TGS/TGX, Iveco Stralis/Eurocargo,
+# DAF XF). FZ 11.1 — the same population cut by segment — places 100% of those
+# registrations in segment WOHNMOBILE, matching FZ 10.1 to the unit. They are
+# campers on a truck chassis, not trucks sold as trucks, so routing them to the
+# truck kind would assert a truck market that does not exist. They stay dropped.
+#
+# FUTURE IMPROVEMENT: joining FZ 11.1 (same publisher, same DL-DE/BY-2.0
+# licence) would make this principled instead of enumerated — its `UTILITIES`
+# segment is exactly "the M1 versions of nameplates that also have N1 versions",
+# i.e. KBA's own car/van boundary. Enumerating is the interim.
+
+kinds:
+  # FZ 10.1 has no vehicle-class column: every row is M1 by construction, so the
+  # kind comes from the nameplate (see by_model below) with car as the default.
+  Personenkraftwagen: car
+
+by_model:
+  # --- passenger versions of vans: route to the van kind, where the nameplate
+  # already exists and Germany is currently absent ---
+  DUCATO: van            # 16,040 — Fiat Ducato; also the single most-registered German motorhome base
+  TRANSPORTER: van       # 15,042 — absorbs Multivan/Caravelle/California (KBA has no separate rows for those)
+  TRANSIT CUSTOM: van    #  8,438
+  CADDY: van             #  7,914 — Caddy Life/Style/Maxi; disjoint Pkw TSNs from Caddy Cargo
+  TRANSIT: van           #  4,835 — the "TRANSIT, TOURNEO" row resolves here (Tourneo is the passenger Transit)
+  SPRINTER: van          #  3,969
+  TRANSIT CONNECT: van   #  3,086
+  CITAN: van             #  2,557
+  JUMPY: van             #  2,227
+  VITO: van              #  2,194
+  EXPERT: van            #  1,726
+  TRANSIT COURIER: van   #  1,710
+  PROACE: van            #  1,498
+  KANGOO: van            #  1,408
+  CRAFTER: van           #  1,345
+  BOXER: van             #    977
+  TOWNSTAR: van          #    857 — genuine M1 model: 2,862 Pkw registrations in FZ 4.2 for 2025, 5/7-seat Kombi, priced incl. VAT
+  BERLINGO: van          #    722
+  TRAFIC: van            #    688
+  COMBO: van             #    497
+  TGE: van               #    489 — MAN TGE, the VW Crafter twin (a van, unlike MAN's TG* trucks)
+  MASTER: van            #    455
+  DAILY: van             #    426
+  RIFTER: van            #    282
+  MOVANO: van            #    124
+  DOBLO: van             #     13
+  INTERSTAR: van         #      6 — no factory Pkw version (0 in FZ 4.2); these are bodybuilder conversions, but the nameplate is a van
+  VIVARO: van            #      4
+  SCUDO: van             #      4
+  DELIVER 7: van         #      1 — one camper conversion; the nameplate is a van (maxus.de lists it under Nutzfahrzeuge only)

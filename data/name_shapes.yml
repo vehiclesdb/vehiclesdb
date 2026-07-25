@@ -1,0 +1,170 @@
+# name_shapes.yml — the allowlist for scripts/lint_dataset.rb.
+#
+# The linter flags model names whose SHAPE suggests a defect (bare integers,
+# placeholders, make-as-model, registry code strings, leftover spec tokens,
+# statistical-table artifacts). Every flagged record must be explained here, in
+# exactly one of two buckets:
+#
+#   legit — the shape is CORRECT and permanent. `MAZDA3` really is the
+#           nameplate; Peugeot really does name cars 208. Entries must be
+#           SHAPE-GENERAL (a pattern or an evidence condition, not four
+#           spellings) and carry the same standard of evidence as an override
+#           line: a source URL, or an in-data proof.
+#
+#   debt  — the shape is WRONG and not fixed yet. Carries a `count`, which may
+#           only ever go DOWN; CI fails if it grows. "Spotless" means this
+#           section is empty.
+#
+# One bucket would let us reach zero by relabelling junk as legitimate. That is
+# how allowlists become landfills, so the split is load-bearing.
+#
+# Conditions available per entry: make, kind, category, pattern (regex, case-
+# insensitive), id_list, min_sources, min_countries.
+
+legit:
+  # ── corroboration: the dataset's own publish rule, reused as a shape rule ──
+  # DECISIONS.md § Sources & evidence: a model publishes when ≥2 independent
+  # official sources agree. That same bar distinguishes a genuinely odd
+  # nameplate from a parser artifact — two registries in different countries do
+  # not invent the same string by accident.
+  #
+  # Measured 2026-07-25 on 18,133 records: 890 of 1,061 bare-integer names are
+  # corroborated (Peugeot 208/2008, Abarth 595, Fiat 500, Porsche 911, Volvo
+  # 240, Mercedes 1824 trucks, Scania 143…), and the 171 thin ones are almost
+  # exactly the KBA shared-string leak. See NEGOTIATION.md Turns 4–8.
+  - id: corroborated-numeric-nameplates
+    category: numeric_only
+    min_sources: 2
+    min_countries: 2
+    why: >-
+      Numeric nameplates are normal in this industry (Peugeot 208, Fiat 500,
+      Porsche 911, Volvo 240) and universal in trucks/buses, where the
+      designation IS a number (Mercedes 1824 = 18t/240hp, Scania 143). Two
+      independent registers in two countries agreeing is the same evidence bar
+      the dataset uses to publish at all.
+
+  - id: corroborated-code-string-records
+    category: code_string
+    min_sources: 2
+    min_countries: 2
+    why: >-
+      Letters-glued-to-digits is how registers write many real nameplates
+      (MAZDA3, CX-5, DB11, BJ30, RS660). Corroboration proves the RECORD is
+      real, not that the spacing is canonical — display-form cleanup is tracked
+      separately under debt:display-form-*, not hidden here.
+
+  # ── historic nameplates that legitimately contain their own make ───────────
+  - id: ford-historic-make-derived-nameplates
+    category: embedded_make
+    make: ford
+    pattern: '\A(Fordor|Fordson)\z'
+    why: >-
+      Genuine Ford nameplates, not prefix-strip failures. "Fordor" was Ford's
+      own contraction of "four-door" used on Model A/T bodies; Fordson was
+      Ford's tractor/commercial marque. https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
+  - id: humber-humberette
+    category: embedded_make
+    make: humber
+    pattern: '\AHumberette\z'
+    why: >-
+      The Humberette (1903-1905, revived 1913) is a real Humber model name.
+      https://en.wikipedia.org/wiki/Humberette
+
+  # ── numeric type designations in the commercial kinds ─────────────────────
+  # NAMING.md §7 makes this verdict explicitly KIND-DEPENDENT: in van, truck and
+  # bus a bare number IS the naming convention (the designation encodes
+  # tonnage/power — Mercedes 311/313, DAF 200, LDV 200/400, Fiat 230/280/290,
+  # Volvo 8707, Hydrema 900), whereas in `car` it is a parser suspect. These are
+  # therefore legitimate without the two-source corroboration that car-kind
+  # numerics need. Scoped per kind so the entry can never excuse a car artifact.
+  - id: commercial-numeric-type-designations-van
+    category: numeric_only
+    kind: van
+    pattern: '\A\d{3,4}\z'
+    why: "van type designations encode payload/series (Fiat 230/280/290, LDV 200, VW 800/1000); see NAMING.md §7"
+  - id: commercial-numeric-type-designations-truck
+    category: numeric_only
+    kind: truck
+    pattern: '\A\d{3,4}\z'
+    why: "truck designations encode tonnage/power (Mercedes 311/313/400, Hydrema 900, Wacker Neuson 3000); see NAMING.md §7"
+  - id: commercial-numeric-type-designations-bus
+    category: numeric_only
+    kind: bus
+    pattern: '\A\d{3,4}\z'
+    why: "bus designations are model-series numbers (DAF 200, LDV 200/400, Volvo 8707, Mercedes 300/312/400); see NAMING.md §7"
+
+debt:
+  # ── the German shared-string leak (fix is merged in the pipeline, awaiting a
+  #    build; see vehiclesdb/vehiclesdb-pipeline#1) ────────────────────────────
+  - id: de-kba-shared-string-leak
+    category: numeric_only
+    kind: car
+    max_sources: 1
+    pattern: '\A\d{2,3}\z'
+    count: 171
+    why: >-
+      XlsxLite's cell regex let an empty cell swallow the next cell's <v>, so
+      KBA FZ10 published shared-string INDICES as model names — audi/91 is the
+      A5, volkswagen/552 is the Golf. Fixed in the pipeline (cell-bounded scan +
+      fail-loud audit gates); these records heal on the next build, they must
+      NOT be deleted. Two separate cleanup proposals nearly deleted Germany's
+      top sellers on the opposite assumption.
+
+  - id: de-kba-table-artifact
+    category: table_artifact
+    id_list: ["zeekr/neuzulassungen-insgesamt"]
+    count: 1
+    why: >-
+      KBA's grand-total row ("Neuzulassungen insgesamt") parsed as a Zeekr
+      model, and held rank 1 in Germany. The pipeline fix skips total rows;
+      heals on the next build.
+
+  # ── genuine curation backlog, 4W half (S4W) ───────────────────────────────
+  - id: make-as-model-4w
+    owner: s4w
+    category: make_as_model
+    count: 2
+    why: >-
+      Was 51, now 2. Dropped 49 registry rows where the make was written into the
+      model column ("Audi Audi", "Toyota Toyota"); merged hummer/hummer into H1,
+      because the civilian AM General Hummer really was sold under that name from
+      1992 until the H1 rename in 1999. NOTE corroboration does NOT clear this
+      class — every one of the 51 was multi-source, because registers share the
+      same fallback habit when a model field is blank. What remains is
+      van/uaz/uaz, whose true identity is one of UAZ's own numeric type
+      designations (452 / 469 / 3741 / 2206 — that IS their naming convention)
+      and cannot be recovered from an aggregate row. Tracked rather than guessed:
+      guessing at an unresolvable row is what produced the SEAT incident.
+
+  - id: spec-token-4w
+    owner: s4w
+    category: spec_token
+    count: 53
+    why: >-
+      Powertrain/drivetrain tokens left in nameplates ("S400 Hev",
+      "Explorer 2WD", "Bigster Expression Hev"). Folds into the nameplate per
+      the trim policy; being fixed make-by-make.
+
+  - id: embedded-make-prefix-4w
+    owner: s4w
+    category: embedded_make
+    count: 22
+    why: >-
+      Model names repeating their own make ("JAECOO5 EV", "OMODA5",
+      "Volkswagen-Vw"). Note multi-source corroboration does NOT clear this
+      class: every register shares the habit of prefixing the make, so it needs
+      per-record judgment against the manufacturer's own naming.
+
+  # ── 2W half (S2W) — seeded from their measurement so the counter exists;
+  #    they own the entries and the remedy (NEGOTIATION.md Turn 8 §4/§5) ──────
+  - id: normalizer-space-collapse-display-names
+    owner: s2w
+    category: code_string
+    max_sources: 1
+    count: 269
+    why: >-
+      normalizer.rb:153 collapses spaces at letter/digit boundaries for
+      motorcycles/mopeds to keep "AGILITY 50"/"AGILITY50" on one id — correct as
+      a JOIN KEY, but the collapsed key is also used as the DISPLAY name, so
+      "BANDIT 1200" publishes as BANDIT1200. Remedy is an identity/display split
+      restoring the dominant spaced raw form, not override lines.

@@ -45,6 +45,17 @@ car:
   - '\bT[- ]?CLASS\b' # Mercedes T-Class small van (passenger Citan)
   - '\bCITAN\b'       # Mercedes small van
   - '\A10-11\s?C\z'   # VW "10-11C": Finnish register type code for vintage Beetles, not a nameplate (measured 2026-07-05)
+  # --- commercial vehicles inside Germany's PASSENGER-CAR table (KBA FZ 10.1),
+  # surfaced 2026-07-25 once the xlsx parser fix made KBA model names readable.
+  # Mechanism: motorhomes built on truck chassis are registered as M1 in Germany
+  # (same reason the motorhome coachbuilders in makes/drop.yml appear as "car
+  # makes"), and some van derivatives are car-registered. Every nameplate below
+  # already exists in its correct kind, so dropping it from `car` loses nothing.
+  - '\bACTROS\b'      # Mercedes heavy truck — 13 DE car-class registrations Jan-May 2026; truck/mercedes-benz/actros is canonical
+  - '\bAROCS\b'       # Mercedes construction truck, same mechanism (9 units); truck/mercedes-benz/arocs is canonical
+  - '\bTOWNSTAR\b'    # Nissan van (Kangoo twin) — van/nissan/townstar is canonical
+  - '\bINTERSTAR\b'   # Nissan van (Master twin) — van/nissan/interstar is canonical
+  - '\bDELIVER\s?7\b' # Maxus Deliver 7 van — van/maxus/deliver-7 is canonical
 
 van: []
 motorcycle: []
