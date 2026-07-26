@@ -690,3 +690,35 @@
 "bus/van-hool/t": "series-collapse stub retired (pipeline stub fix 2026-07-26): pooled letter-series rows now land on their real series ids; no single alias target exists because the evidence redistributes across the family — see the control-build diff in the PR"
 "bus/volvo/b": "series-collapse stub retired (pipeline stub fix 2026-07-26): pooled letter-series rows now land on their real series ids; no single alias target exists because the evidence redistributes across the family — see the control-build diff in the PR"
 "bus/wrightbus/gb": "series-collapse stub retired (pipeline stub fix 2026-07-26): pooled letter-series rows now land on their real series ids; no single alias target exists because the evidence redistributes across the family — see the control-build diff in the PR"
+# ---------------------------------------------------------------------------
+# 2026-07-26 — BMW+Audi trim-fold batch: records with NO honest single
+# successor (each spans several live ids, or denotes no vehicle at all), so a
+# former_ids alias would assert an identity that does not exist. Every one is
+# dropped by an explicit null rename in renames.yml (same-line reason there)
+# and recorded HERE with its measured register population, per the
+# never-delete-silently directive. Evidence: the wave-2 granularity dossier,
+# aux/research/trims-2026-07/dossier-bmw-audi.md in the pipeline repo.
+# ── BMW register GROUP LABELS (family letter only — the register's "family
+# unknown" placeholders). normalizer.rb#bmw already drops the spelling-twins
+# "X REIHE" (12,077 veh) and "Z REIHE" (7,167 veh); these lines make the whole
+# class consistent (normalizer gaps G-2/G-3 are filed for the in-code cure).
+"car/bmw/m-series":  "register group label ('BMW M SERIES' uk_dft GenModel 6,112; 'M SERIES' nz 107). Spans M2/M3/M4/M5/M6/M8/X5 M/X6 M/XM - bmwusa.com/vehicles/bmw-m/models.html lists all of them separately. Not a nameplate; no single successor."
+"car/bmw/i":         "register group label ('I' nz_nzta 1,319; 'BMW i' fi_traficom make-column 1). 'i' is BMW's EV sub-brand letter, spanning i3/i4/i5/i7/i8/iX/iX1/iX2/iX3 - nz carries I3 (594), I8 (27), I4 (6), IX1 (2) separately, so these are the UNRESOLVED residue. Audit v2026.07.5: id D6 + name D9."
+"car/bmw/x-series":  "register group label ('X SERIES' nl_rdw 382, es_dgt 1). Spans X1-X7 + iX. Sibling 'X REIHE' (nl 12,009) is already dropped by normalizer.rb#bmw."
+"car/bmw/serie-x":   "register group label ('SERIE X' es_dgt 97, nl 6 + 'SERIE  X', 'SERIE X, X3', 'SERIE X, X3 2.0D', 'SERIE X XDRIVE40D'). Spanish DGT form of X-Reihe; the trailing-model rows prove the label wraps a specific X model it does not name."
+"car/bmw/xreihe":    "register group label ('XREIHE' es_dgt 1, nl_rdw 1) - the fused spelling of the already-dropped 'X REIHE'."
+"car/bmw/z-reihe":   "register group label ('Z-REIHE' nl_rdw 4, es_dgt 1) - the HYPHENATED spelling of the already-dropped 'Z REIHE' (nl 7,143 + es 24). z1/z3/z4/z8 are all live. Audit v2026.07.5: id D6 + name D9."
+"car/bmw/m-z-reihe": "register group label ('M Z REIHE' nl_rdw 48; 'M Z REIHE, M ROADSTER-' es 1) - Z-Reihe with an M prefix; the es row names M Roadster, which is separately live."
+"car/bmw/x":         "register group label ('X' lu_snca 2, es_dgt 1, fi_traficom 1; 'X SDRIVE 18D' es 1). Bare family letter."
+# ── BMW body-style words / register fragments / one phantom:
+"car/bmw/cabrio":    "body-style word in the model column ('CABRIO' nl 1 nz 1, 'BMW CABRIO' nl 1). BMW's cabrio bodies span 1/2/3/4/6/8 Series and Z1/Z3/Z4/Z8 - no single successor."
+"car/bmw/cabriolet": "body-style word ('CABRIOLET' nl 2 nz 2). Same class as car/bmw/cabrio."
+"car/bmw/coupe":     "body-style word ('COUPE' nl 2 es 1). Spans 2/4/6/8 Series + M Coupe."
+"car/bmw/tourer":    "body-style suffix ('Tourer' fi 1, 'TOURER' nz 1) - BMW's Active Tourer / Gran Tourer bodies are 2 Series; car/bmw/2-series' raw set already carries 40+ '216d Gran Tourer'-class strings."
+"car/bmw/ci":        "trim suffix, not a model ('BMW CI' uk_dft GenModel 375, 'CI CABRIO' nl 1). Ci = coupe+injection (318Ci/325Ci/330Ci/645Ci/840Ci); those strings are already on 3/6/8-Series. Audit v2026.07.5 name D9; two-country attestation of the STRING does not make it a nameplate (the VITO/MGA rule)."
+"car/bmw/3-c":       "unresolvable designation ('3/C' nl 4 fi 1, '3 C' nl 1, 'BMW 3. C' nl 1). No BMW article or archive maps to '3/C' - not 3/15 Dixi, not 3/20; enrich/bmw.yml already records it as unsourceable."
+"car/bmw/e90":       "DEVELOPMENT CODE published as a model ('E90' nl 2 nz 1). The corpus carries E12/E16/E21/E28/E30/E34/E36/E46/E60/E63/E70/E83/E84 in the same column the same way; enrich/bmw.yml's car/bmw/e90 entry re-keys to car/bmw/3-series."
+"car/bmw/x8":        "PHANTOM MODEL. Sole producer is the chassis-type string 'X83' (nl_rdw 3, fi_traficom 2) - the E83 X3's code, captured as 'X8' by normalizer.rb#bmw's /^(X\\d)/ (gap G-5). BMW has never sold an X8: bmwusa.com/vehicles.html lists X1,X2,X3,X5,X6,X7,iX3,iX,XM only; the X8 programme was rebadged XM."
+# ── Audi body-word / register fragments:
+"car/audi/avant": "body-style suffix in the model column ('AUDI AVANT' uk_dft GenModel 31; 'AVANT' nz 6 nl 3 fi 1; 'AVANT QUATTRO' + 4 engine-suffixed forms). Avant is Audi's estate body, spanning A4/A6/80/100/RS2/RS4/RS6 - no single successor. The correctly-qualified siblings (car/audi/a4, /a6, /80, /100, /rs2, /rs4, /rs6) already carry Avant rows."
+"car/audi/c":     "uk_dft GenModel truncation ('AUDI C' 155 + nl_rdw 5; 'C' nl 1). A bare letter with no Audi designation behind it - same class as the dropped 'BMW CI'. Two-country attestation of the STRING is not a nameplate (the VITO/MGA rule)."

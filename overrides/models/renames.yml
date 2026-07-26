@@ -61,7 +61,7 @@ Aston Martin:
   Db 9: DB9                                   # spelling variant of "DB9" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
 Audi:
-  "5000S": "5000 S"                           # spelling variant of "5000 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  "5000S": "5000"                             # RETARGET (2026-07-26 trim-fold dossier), was "5000 S" — S is a US trim-ladder rung on the 5000 (the US-market C2/C3 100/200); the earlier consolidation intent is preserved and now lands on the nameplate. Renames are single-pass, so this key moves WITH the "5000 S" key below (dossier §7)
   Audi: null                                  # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   AUDIA6: A6                                  # es_dgt/nl_rdw glue artifact ("AUDIA6") — the make fused onto the nameplate; merges into the 14-source A6 id
   Audi Q5: Q5                                 # make repeated in the model column with a space, which strip_make_prefix misses when the RAW make spelling differs from the model's prefix; merges into the 14-source Q5 id
@@ -73,6 +73,35 @@ Audi:
   A 8: A8                                     # spelling variant of "A8" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Q 5: Q5                                     # spelling variant of "Q5" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Ag: null                                    # NOT A VEHICLE. Raw is verbatim "AUDI AG" in BOTH es_dgt and fi_traficom — the company's legal name where a model belongs, with strip_make_prefix leaving the residue "Ag". Verified from the raws by S4W (NEGOTIATION Turn 102), who found it also carries an EU type-approval xref: a misfiled APPROVAL row, not a vehicle. NOTE two independent registers agreeing does NOT clear the class — it is a shared clerk habit, the same reasoning as the Jeep null note. Second instance after zundapp/werke; detector at scripts/find_corporate_strings.rb.
+  # ── 2026-07-26 trim-fold dossier (BMW+Audi wave 2; full evidence at
+  # aux/research/trims-2026-07/dossier-bmw-audi.md in the pipeline repo).
+  # Pre-A/Q numeric-family trims: normalizer.rb#audi has NO rule for the
+  # 60/80/100/200/5000/Coupe/Cabriolet/quattro era (gap G-7, filed), so its
+  # trims survived as models. ──
+  "100 CC":      "100"    # raw "100 CC" nl 2 fi 1, "AUDI 100 CC" nl 3, "AUDI 100 CC 101KW" nl 1, "AUDI 100 CC 101 KW" nl 1 — CC is a C3 trim level; nl_rdw ITSELF lists "AUDI 100,-CS,-CD,-CC" (nl 7) enumerating CC/CD/CS as 100 trims (dossier §7)
+  "200 Turbo":   "200"    # raw "200 TURBO" nz 3 nl 1, "AUDI 200 TURBO" nl 2, "200 Turbo" fi 1 — the 200 was turbocharged throughout; car/audi/200's raws already fold "200 QUATTRO"/"200 quattro 20v" (dossier §7)
+  "80 GT":       "80"     # raw "80 GT" fi 1 nl 1, "AUDI 80 GT" nl 1 — B1 trim; car/audi/80's raws already fold "80 QUATTRO", "80 AVANT", "80 CABRIO", "AUDI 80, GLS" (dossier §7)
+  "80 S":        "80"     # raw "80 S" fi 1 lu 1 nl 1 — same trim class (dossier §7)
+  "81":          "80"     # raw "81" nl 2 ua 2 — Typ 81 is the INTERNAL chassis designation of the Audi 80 B2, not a model name; a digit-only id with no marque source (dossier §7)
+  "5000 S":      "5000"   # raw "5000 S" nl 1 nz 1, "AUDI 5000S" nl 1, "5000 S quattro" us — S is a US trim rung; 5000 = the US-market name of the C2/C3 100/200: https://www.audi.com/en/innovation/product-innovation/audi-c-family/ (NEW-CANONICAL caution recorded, dossier U-4; audi/4000 is the in-catalog precedent for keeping the US name)
+  "5000 Cs Turbo": "5000" # raw "5000 CS TURBO" nl 1, "5000 CS Turbo" us — CS Turbo is the top rung of the US trim ladder (dossier §7)
+  # ── token-order inversions (gap G-8, filed): the family rule anchors at ^,
+  # so an Avant-/quattro-FIRST register string never reaches it. The correctly
+  # ordered sibling is separately live in every case. ──
+  "Avant RS2":   RS2      # raw "AVANT RS2 QUATTRO /260" fi 1, "AVANT RS2" nz 1 — Audi's own form is "RS 2 Avant"; car/audi/rs2 is live (uk 127, nz 11, nl 2). MAJORITY IS NOT AUTHORITY: both registers carry the inverted form, the marque's order wins (audit v2026.07.5: name D7 + MISSED_DEFECTS)
+  "Avant S6":    S6       # raw "Avant S6 quattro" fi 1, "AUDI AVANT S6" nl 1 — car/audi/s6 is live (dossier §8)
+  "Quattro RS4": RS4      # raw "Audi Quattro RS4" fi 1, "QUATTRO RS4 AVANT" nl 1, "QUATTRO RS4 AVANT 4.2" nl 1 — car/audi/rs4 is live (dossier §8)
+  "Coupe GT":    Coupe    # raw "COUPE GT" fi 1 nl 1, "Coupe GT" fi 1, "AUDI COUPE GT" nl 1, "COUPE GT 100 KW" nl 1 — GT is a trim word on the B2/B3 Coupé, which is separately live (dossier §8)
+  "GT":          Coupe    # raw "GT" nz 5 nl 1, "GT COUPE" nz 4 — nz_nzta's truncation of Coupe GT; the "GT COUPE" rows carry the body word explicitly (dossier §8)
+  "Cabriolet 2": Cabriolet  # raw "Cabriolet 2,3E" fi 1, "AUDI CABRIOLET 2,0 TFSI" nl 1 — an ENGINE code (2.3E / 2.0 TFSI) whose decimal comma the slugifier turned into a model number (dossier §8)
+  "Ur":          Quattro  # raw "UR QUATTRO" fi 1 nl 1 — "Ur-quattro" is the enthusiasts' retronym for the original; Audi's own name is "Audi quattro", and car/audi/quattro is live (dossier §8)
+  "Avant":       null     # body suffix: raw "AUDI AVANT" uk_dft GenModel 31, "AVANT" nz 6 nl 3 fi 1 + "AVANT QUATTRO" and 4 engine-suffixed forms — Avant is Audi's estate BODY word spanning A4/A6/80/100/RS2/RS4/RS6; no single successor (removals.yml carries the ledger line)
+  "C":           null     # register fragment: raw "AUDI C" uk_dft GenModel 155 + nl 5, "C" nl 1 — a bare letter with no Audi designation behind it; uk_dft GenModel truncation class, same shape as "BMW CI" (the VITO/MGA rule; removals.yml)
+  # ── e-tron GT family (dossier §9): the RS trim rung folds into the RS
+  # nameplate. NOTE the e-tron vs e-tron GT SPLIT itself (gap G-9: 1,619 GT
+  # vehicles inside audi/e-tron, incl. ALL 457 de rows) is a normalizer rule
+  # change — a rename cannot split one id into two — and is FILED, not here. ──
+  "RS E-Tron GT Performance": RS E-Tron GT   # raw "RS E-TRON GT PERFORMANCE" nl 17, "RS e-tron GT performance" fi 5, "RS e-tron GT Performance" us — "the new variants of the e-tron GT series", one rung above the RS: https://www.audi.com/en/press-releases/audis-most-powerful-production-vehicle-the-new-rs-e-tron-gt-performance-16222
 
 Austin:
   # ── swarm-dossier batch: Mk goes FUSED ROMAN here — Austin registers EMIT
@@ -135,14 +164,22 @@ BMW:
   # Airhead type codes keep their SLASH: R 80 G/S, R 90/S, R 60/2 — the slash
   # is part of the designation, not punctuation noise. R100GS (1987) genuinely
   # has no slash where R80G/S (1980) does.
-  # CARS: "i3" keeps its lowercase i (BMW i sub-brand). German-register rows
-  # carry "1er Reihe" / "Serie 3" — those are the German for "1 Series" and
-  # stay as the register wrote them; they are NOT the English nameplate.
-  "1 Er Reihe":                1er Reihe              # German-register nameplate; NOT the English 1 Series — left as the register wrote it
-  "1ERREIHE":                  1er Reihe              # German-register nameplate; NOT the English 1 Series — left as the register wrote it
+  # CARS: "i3" keeps its lowercase i (BMW i sub-brand).
+  # SETTLED-LINE NOTICE (2026-07-26 trim-fold dossier, aux/research/trims-2026-07/
+  # dossier-bmw-audi.md in the pipeline repo): the two keys below used to
+  # consolidate spellings onto "1er Reihe" as a German-register nameplate. The
+  # register emits "N-er Reihe"/"Serie N" ONLY when the specific model is
+  # unknown, and the digit resolves the family unambiguously — so the same
+  # consolidation now lands on the real nameplate (intent preserved+extended,
+  # not reversed). The fused "3ER REIHE" already folds in normalizer.rb#bmw;
+  # these are the spaced/fused forms it misses (gaps G-1/G-3, filed for the
+  # pipeline lane). If G-1/G-3 land in-code, these keys go DEAD and must be
+  # retired in the same change (the reachability test will list them).
+  "1 Er Reihe":                1 Series               # RETARGET, was "1er Reihe" — register family label WITH the digit; raw "1 ER REIHE" es 2 nl 2 lu 1 (dossier §1a)
+  "1ERREIHE":                  1 Series               # RETARGET, was "1er Reihe" — fused spelling of the same label; raw "1ERREIHE" es 2 nl 1 (dossier §1a)
   "30CS":                      3.0CS                  # closed/spaced per BMW usage
-  Activehybrid 7 L:            ActiveHybrid 7L        # closed/spaced per BMW usage
-  Activehybrid 7L:             ActiveHybrid 7L        # closed/spaced per BMW usage
+  Activehybrid 7 L:            ActiveHybrid 7         # RETARGET, was "ActiveHybrid 7L" — the 7L is the long-wheelbase BODY of the ActiveHybrid 7 (sole hybrid body 2012-2015), variant-layer inventory; raw "ACTIVEHYBRID 7 L" nl 18 (dossier §5; enrich/bmw.yml car/bmw/activehybrid-7 holds the variant)
+  Activehybrid 7L:             ActiveHybrid 7         # RETARGET, was "ActiveHybrid 7L" — same fold; raw "ActiveHybrid 7L" ca/us catalog rows (dossier §5)
   I 3:                         i3                     # BMW i sub-brand keeps the lowercase i
   R Nine T:                    R nineT                # BMW styles it R nineT — lowercase nine, uppercase T (bmwmotorcycles.com)
   R Nine T Pure:               R nineT Pure           # BMW styles it R nineT — lowercase nine, uppercase T (bmwmotorcycles.com)
@@ -162,9 +199,81 @@ BMW:
   # its own, so no replacement key is needed.
   R90/S: R90S                             # nl/nz registries DO write "R90/S" (operator habit) — those rows are the sport model; the /6-series would be written R90/6. Folds the miswriting into the real designation
   R90 / S: R90S                           # third raw shape (spaced slash) — the one-id-many-names flap set includes slash spacing too
-  SERIE3:                      Serie 3                # German-register nameplate; NOT the English 1 Series — left as the register wrote it
+  SERIE3:                      3 Series               # RETARGET, was "Serie 3" — register family label WITH the digit resolves to the nameplate (see the SETTLED-LINE NOTICE above); raw "SERIE3" es_dgt (dossier §1a; renames are single-pass, so this key moves WITH the "Serie 3" key below)
   Z 3:                         Z3                     # closed/spaced per BMW usage
   "Ce":                                  "CE"                                   # uniformly-wrong casing (invisible to the contradiction detector): BMW CE 04 and CE 02, the electric scooters (bmw-motorrad.com) (bmw/ce)
+  # ── 2026-07-26 trim-fold dossier (BMW+Audi wave 2; full evidence at
+  # aux/research/trims-2026-07/dossier-bmw-audi.md in the pipeline repo).
+  # CARS. Register GROUP LABELS carrying the family DIGIT resolve to the
+  # series; the fused "3ER REIHE"/"3 SERIES" already fold in normalizer.rb#bmw,
+  # these are the spaced/hyphenated/Spanish forms it misses (gaps G-1/G-3,
+  # filed for the pipeline lane — if they land in-code these keys go dead). ──
+  "3 Er Reihe":  3 Series      # raw "3 ER REIHE" nl 7 es 2 lu 1; "3 er Reihe" fi 2; "3-ER REIHE" nl 2; "3-ER REIHE CABRIO" nl 1 — register family label WITH the digit (dossier §1a)
+  "5 Er Reihe":  5 Series      # raw "5 ER REIHE" es 1 nl 1 — same class (dossier §1a)
+  "7 Er Reihe":  7 Series      # raw "7 ER REIHE" nl 1 ua 1 — same class (dossier §1a)
+  "Serie 1":     1 Series      # raw "SERIE 1" es 235 nl 3 lu 1 (+ "SERIE  1", "SERIE 1, 118D", "SERIE 1, 116I", "SERIE 1,116I", "SERIE 1,116D", "BMW SERIE 1") — Spanish DGT family label (dossier §1a)
+  "Serie 2":     2 Series      # raw "SERIE 2" es 3 nl 1 (dossier §1a)
+  "Serie 3":     3 Series      # raw "SERIE 3" es 117 nl 7 (+ "SERIE 3, 330 CI", "SERIE 3, 320D", "SERIE 3, 330D", "SERIE 3 CABRIOLET E93", "SERIE 3, X3 3.0D") (dossier §1a)
+  "Serie 4":     4 Series      # raw "SERIE 4" nl 2 es 1 lu 1 (dossier §1a)
+  "Serie 5":     5 Series      # raw "SERIE 5" es 41 nl 1 (+ "SERIE 5,520D", "SERIE 5, 530D") (dossier §1a)
+  "Serie 6":     6 Series      # raw "SERIE 6" es 7 nl 2 (dossier §1a)
+  "Serie 7":     7 Series      # raw "SERIE 7" es 5 lu 1 nl 1 (dossier §1a)
+  # ── family-letter-ONLY group labels: the register's "family unknown" rows.
+  # None resolves to one nameplate ("M SERIES" spans M2…M8+X5 M+XM; "X SERIES"
+  # spans X1…X7+iX; "I" spans the i/iX EV sub-brand), so no alias is honest —
+  # each drop's measured population is recorded in removals.yml. The spaced
+  # twins "X REIHE"/"Z REIHE" are already dropped by normalizer.rb#bmw; this
+  # makes the class consistent from the overrides layer (dossier §1b; the
+  # in-code cure is gaps G-2/G-3, filed). ──
+  "M Series":    null   # register group label: "BMW M SERIES" uk_dft GenModel 6,112 + "M SERIES" nz 107 — spans M2/M3/M4/M5/M6/M8/X5 M/X6 M/XM, all listed separately on bmwusa.com/vehicles/bmw-m/models.html (removals.yml carries the ledger line)
+  "I":           null   # register group label: "I" nz_nzta 1,319 — BMW's EV sub-brand letter; nz carries I3 (594), I8 (27), I4 (6), IX1 (2) separately, so these rows are the UNRESOLVED residue (audit v2026.07.5: id D6 + name D9)
+  "X":           null   # register group label: "X" lu_snca 2 es_dgt 1 fi_traficom 1; "X SDRIVE 18D" es 1 — bare family letter spanning X1-X7+iX (removals.yml)
+  "X Series":    null   # register group label: "X SERIES" nl_rdw 382 es_dgt 1 — sibling "X REIHE" (nl 12,009) is already dropped by normalizer.rb#bmw (removals.yml)
+  "Serie X":     null   # register group label: "SERIE X" es_dgt 97 nl 6 (+ "SERIE  X", "SERIE X, X3", "SERIE X, X3 2.0D", "SERIE X XDRIVE40D") — Spanish DGT form of X-Reihe; the trailing-model rows prove the label wraps a model it does not name (removals.yml)
+  "Xreihe":      null   # register group label: "XREIHE" es_dgt 1 nl_rdw 1 — the FUSED spelling of the already-dropped "X REIHE" (removals.yml)
+  "Z-Reihe":     null   # register group label: "Z-REIHE" nl_rdw 4 es_dgt 1 — the HYPHENATED spelling of the already-dropped "Z REIHE" (nl 7,143 + es 24); z1/z3/z4/z8 all live (audit v2026.07.5: id D6 + name D9; removals.yml)
+  "M Z Reihe":   null   # register group label: "M Z REIHE" nl_rdw 48 + "M Z REIHE, M ROADSTER-" es 1 — Z-Reihe with an M prefix; the es row names the M Roadster, which is separately live (removals.yml)
+  # ── "Performance M" TRIMS split from their series by a SPACE: normalizer.rb
+  # #bmw already folds the fused M340I class via /^M?(\d)\d\d/; the spaced
+  # register forms miss it (gap G-4, filed). bmwusa.com files M135i/M140i/M550d
+  # under "Performance M Models" — trims of the base series, NOT nameplates. ──
+  "M 135I":      1 Series      # raw "M 135I XDRIVE" es 2, "M 135I" es 1, "M 135i xDRIVE" fi 1 — "Performance M Models": https://www.bmwusa.com/vehicles/bmw-m/models.html
+  "M 140I":      1 Series      # raw "M 140i" fi 1, "M 140I XDRIVE" nl 1 — same source, same trim class
+  "M 550D":      5 Series      # raw "M 550D XDRIVE" nl 334; "M 550d xDRIVE" fi 131, "M 550d xDrive" fi 130, "M 550D xDrive" fi 2, "M 550d XDRIVE" fi 1 — Performance M trim of the 5 Series (same source; diesel-market sibling of M550i)
+  # ── M535i / M635CSi: PRODUCTS, kept — KEEP-and-rename to BMW's closed badge;
+  # the slug moves, so former_ids.yml carries the aliases. ──
+  "M 535":       M535i         # raw "M 535" nl 1 nz 1 — truncated register form of the M535i (E12 1980-81, E28 1985-88); BMW's badge is closed
+  "M 535 I":     M535i         # raw "M 535 I" nl 8 nz 1; "BMW M 535 I" nl 1 — one product, three register spellings, previously two ids (dossier §2)
+  "M 635 Csi":   M635CSi       # raw "M 635 CSI" nl 69 fi 1; "BMW M 635 CSI" nl 2 — closed badge M635CSi; "Csi" was the title-caser's output, present in no register and no marque source (audit v2026.07.5: name D7)
+  # ── body-style words / register fragments in the model column: each spans
+  # several series (or, X8, no vehicle at all) — no single alias target is
+  # honest, so each carries a removals.yml ledger line with its population. ──
+  "Cabrio":      null   # body word: raw "CABRIO" nl 1 nz 1, "BMW CABRIO" nl 1 — BMW cabrios span 1/2/3/4/6/8 Series + Z1/Z3/Z4/Z8 (dossier §3; removals.yml)
+  "Cabriolet":   null   # body word: raw "CABRIOLET" nl 2 nz 2 — same class (removals.yml)
+  "Coupe":       null   # body word: raw "COUPE" nl 2 es 1 — spans 2/4/6/8 Series + M Coupe (removals.yml)
+  "Tourer":      null   # body suffix: raw "Tourer" fi 1, "TOURER" nz 1 — BMW's Active/Gran Tourer bodies are 2 Series; the 2-Series raw set already carries 40+ "216d Gran Tourer"-class strings (removals.yml)
+  "Ci":          null   # trim suffix: raw "BMW CI" uk_dft GenModel 375, "CI CABRIO" nl 1 — Ci = coupe+injection (318Ci/325Ci/330Ci/645Ci/840Ci), those strings already live on the 3/6/8-Series raw sets; two-country attestation of a STRING is not a nameplate — the VITO/MGA rule (audit v2026.07.5: name D9; removals.yml)
+  "3/C":         null   # unresolvable designation: raw "3/C" nl 4 fi 1 — no BMW article or archive maps to "3/C" (not 3/15 Dixi, not 3/20); enrich/bmw.yml records it as unsourceable (removals.yml)
+  "3 C":         null   # sibling spelling of "3/C" (raw "3 C" nl 1) — same slug 3-c, so one key alone leaves the record alive on this form (caught by the post-fold control build, which republished bmw/3-c as "3 C")
+  "3. C":        null   # third sibling spelling (raw "BMW 3. C" nl 1) — same unresolvable designation, same slug after collapse
+  "E90":         null   # DEVELOPMENT CODE published as a model: raw "E90" nl 2 nz 1 — the corpus carries bare E12/E16/E21/E28/E30/E34/E36/E46/E60/E63/E70/E83/E84 in the same column the same way (gap G-5 filed; removals.yml; enrich facts re-keyed to car/bmw/3-series)
+  "X8":          null   # PHANTOM MODEL: sole producer is raw "X83" (nl 3, fi 2) = the E83 X3's type code, mis-captured by /^(X\d)/ (gap G-5, filed). BMW has never sold an X8 — bmwusa.com/vehicles.html lists X1,X2,X3,X5,X6,X7,iX3,iX,XM and no X8; the X8 programme was rebadged XM (removals.yml)
+  "Compact":     3 Series      # real body variant: raw "COMPACT" nz 310 nl 5 fi 1 — BMW's own name is "3 Series Compact" (E36/5 1993-2000, E46/5 2001-2005): https://www.press.bmwgroup.com/united-kingdom/article/detail/T0020291EN_GB/bmw-announces-3-series-compact-prices-and-two-new-models
+  # ── XM portfolio (dossier §4): press.bmwgroup.com/usa T0450677EN_US — "Two
+  # become one: the BMW XM portfolio is sharpening its focus, now offering just
+  # a single model; the BMW XM Label." Label and 50e are PORTFOLIO MEMBERS. ──
+  "Xm 50E":      XM     # raw "XM 50E" nl 379 es 75 ua 26; "XM 50e" nl 9 fi 3 — the six-cylinder PHEV powertrain variant of the XM (variant captured in enrich/bmw.yml)
+  "Xm Label":    XM     # raw "XM LABEL" nl 118 es 33 ua 17 lu 1; "XM Label" fi 2 nl 2 — https://www.press.bmwgroup.com/usa/article/detail/T0450677EN_US/the-2026-bmw-xm-label
+  "Xm":          XM     # D7 casing: BMW writes XM, the title-caser wrote "Xm" — display-only (slug unchanged), fixes the fold parent in the same block
+  # ── same-product duplicates (dossier §5). NOTE: the dossier's Isetta 250/300
+  # folds are deliberately NOT applied — bmw/isetta is live in TWO kinds
+  # (car fi,nl,nz + motorcycle nl,nz) and the kind boundary is unresolved
+  # (PROPOSAL-kind-boundary.md), so that fold is HELD, not implied. ──
+  "M":           M Roadster    # raw "BMW M COUPE" uk 486, "M COUPE" nl 126 fi 2 lu 1 nz 1, "BMW M Coupe" fi 1, "M COUPE-CM91/246" fi 1 = 618 of 674 veh — the Z3/Z4 M Coupé population dominates this record; the residual bare "M" (nz 54, nl 1, es 1) is unresolvable register residue riding along (dossier U-3 records the E36/8S-vs-E86 ambiguity)
+  "Activehybrid 7":  ActiveHybrid 7    # D7 casing — BMW's own camel case, emitted verbatim by fi_traficom and us_fueleconomy (audit v2026.07.5: name D7); display-only, slug unchanged
+  "Activehybrid 3":  ActiveHybrid 3    # same casing class, display-only (dossier §5)
+  "Activehybrid 5":  ActiveHybrid 5    # same casing class, display-only (dossier §5)
+  "Activehybrid X6": ActiveHybrid X6   # same casing class, display-only (dossier §5)
 
 Bricklin:
   Sv-1: SV1                                   # spelling variant of "SV1" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
