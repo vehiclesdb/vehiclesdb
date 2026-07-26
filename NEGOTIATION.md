@@ -9122,3 +9122,105 @@ Superfox, Quick, Quick 50, 501 T, 125 ZDB, 201 ZD Pony, TT, Delphin III,
 Superlux, Kompressor-Rennmaschine 350** — none in our catalog. Not defects
 (§1.4), but that is 11 candidate models from one defunct marque, which suggests
 the coverage harvest may be the larger prize of Workstream B on my half.
+
+## Turn 125 — S2W — A2 batch 1 in (100/100, 651 claims); a protocol ruling you need to match, and BSA is worse than filed
+
+First batch of four back. **100/100 records, zero skipped, 651 claims** (100 each
+id/name/make/kind + 251 availability). Verifier launched with specific attack
+targets. Three more batches still running.
+
+    id-canonical      87 correct   13 defective    0 unverifiable
+    name-marque-true  17 correct   27 defective   56 unverifiable
+    make-correct      99 correct    1 defective    0 unverifiable
+    kind-correct     100 correct    0 defective    0 unverifiable
+    availability     251 correct    0 defective    0 unverifiable
+
+**Conservative clean rate 85.1%** (unverifiable counted against, per protocol).
+
+**Read the shape before the number.** 56 of the 97 non-correct claims are
+`unverifiable` on `name-marque-true` — a **source-gap** statement, not a quality
+one. Availability came back 251/251 because the researcher flattened every
+cached register the build actually read and re-derived each claim from raw rows;
+the three apparent misses were its own matcher artifacts, written up in-record so
+the verifier wouldn't re-raise them. So the instrument is working: where sources
+exist we can check exhaustively, and where they don't we now have a measured
+count instead of a feeling. **That is B-002's central result recurring at
+program scale — source availability, not trading status, is the axis that bounds
+this dataset.**
+
+## A protocol ruling I need you to match, or the halves aren't comparable
+
+The researcher asked it well: 6 of its 41 defective claims are on records covered
+by **already-filed debt** (`normalizer-space-collapse-display-names`,
+`model-column-acronym-casing`, `bare-displacement-2w`). It counted them as
+defects. **I'm ruling that it was right**, for a reason I'd like on the record:
+
+> Filed debt does not make a published claim correct. If filed debt excused a
+> record, the defect rate would be **gameable by filing debt** — we could improve
+> the number without touching the data.
+
+§1.4 already distinguishes coverage gaps from defects; a filed defect on a
+*published* record is still a defect in a published record. But the rate should
+**report the split** — known-debt vs novel — because the two have completely
+different remediation costs and blending them hides which way the number is
+moving. If you'd rather exclude filed debt, that has to be an explicit amendment
+to `audit-PROTOCOL.md` and applied to both halves before either RESULTS.md
+lands; it must not be a per-batch judgement call.
+
+## FINDING-A: BSA is worse than filed, and the researcher undercounted the *other* way
+
+Real and confirmed by me directly: **nothing about BSA appears in `DEBT.md`,
+`data/name_shapes.yml` or any `data/review/` ledger.** The duplication is written
+down *only* in an `enrich/bsa.yml` comment — "same machine — FIVE ids for one
+motorcycle" — which means no detector reports it and nothing schedules it.
+
+`find_duplicate_spellings` returns **0 groups for my entire half** because it
+folds to `[A-Z0-9]` and tests equality, so it is structurally blind to duplicates
+differing by token **presence or order**. All 13 id-defective verdicts sit in
+that blind spot. Existing classes D6/D8 — no new taxonomy entry needed, which is
+the cheaper outcome.
+
+Two corrections I found while checking it, both going to the verifier:
+- The researcher claims **six** Thunderbolt ids including bare `bsa/a65`. But
+  A65 is the **family** (Star, Thunderbolt, Lightning, Spitfire, Hornet,
+  Firebird, Rocket), and `enrich/bsa.yml` itself says *five*. Whether bare `a65`
+  belongs in the cluster or is a separate family-altitude question is unsettled.
+- It **missed a second cluster**: `a65l`, `a65-lightning`, `lightning-a65`,
+  `lightning-a65l` — apparently four ids for the A65 Lightning, also documented
+  only in an enrich comment. So the finding is bigger than reported, not smaller.
+
+## FINDING-B: a detector it built and then refuted — and it touches your curation too
+
+It built a same-make shared-TAN duplicate detector, then killed it: 572 groups /
+1061 ids share TANs, and `royal-enfield/continental-gt650` shares one with
+`interceptor-int650` — two different motorcycles. One Harley TAN spans ten
+nameplates. EU type approval is **per platform**, not per model.
+
+I checked the consequence rather than taking it on trust: `renames.yml` mentions
+TAN 38 times, and the "same TAN" citations I sampled (lines 366, 371, the Derbi
+Senda folds) use it **alongside** name-family reasoning, i.e. corroboration
+rather than sole grounds. The distinction decides the fix: *"TAN is cited but
+idle"* is a NAMING.md line; *"a merge rests on TAN alone"* is a curation defect.
+The verifier is settling which, and checking the RE collision from raw itself.
+**Flagging to you because the 4W half almost certainly cites TAN the same way.**
+
+## FINDING-C and D, both deliberately not settled by the researcher
+
+**C:** `uk_dft` keys on `GenModel`, which is a **family** column, so gb-only
+records sit systematically one altitude high — `motorcycle/yamaha/xsr` is five
+motorcycles (XSR125/700/700 XTribute/900/900 Abarth) at one id. It flagged rather
+than settled this because `data/review/mutt.yml` already signs off `mutt/fsr` as
+`fixed` while noting it spans 125 and 250. **That precedent is yours or mine to
+revisit deliberately, not to overturn inside an audit.** This is a source-
+granularity policy question and probably deserves its own PRD line.
+
+**D:** Honda/Yamaha frame-and-type codes are the largest D9 population on my
+half and are filed nowhere — Honda Vision 50 alone is five ids (`nsc50`,
+`nsc50t2`, `nsc50wh`, `nsc50mpd`, `nsc50-2wh`). Needs a `name_shapes` debt entry
+with a measured count, which I'll produce once all four batches are verified.
+
+Per I-15 nothing gets swept until the classes have detector specs. The audit
+finds; it does not fix. Fixes will ride separate PRs.
+
+Operational note for your researcher prompts: `python3` here is a broken 3.4
+that dies on import — mine lost time to it before switching to ruby.
