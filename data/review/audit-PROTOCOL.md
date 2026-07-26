@@ -75,3 +75,13 @@ separately (it is the program's own error rate, §5.2).
 5. **Multi-twin rule**: canonicality checks enumerate ALL live candidate
    twins in-make before any verdict (the baseline's spot-check misses all
    compared against exactly one).
+
+## v1.2 amendments (from the 2W baseline round)
+
+6. **Pin the BUILD, not the tag**: the sampler's `--build=<dir>` records the
+   exact build the round measures (`build_pin` in the manifest); auditing a
+   tag while overrides move produced three disagreeing population figures
+   (RESULTS-s2w). Batches and verifiers read the pinned build only.
+7. **Superseded passes use distinct keys** in verify files (the 4W round's
+   corrected-in-place entries tripped the duplicate-key lint — YAML
+   last-wins silently discards audit history).

@@ -183,6 +183,7 @@ ARGV.each do |a|
   when /\A--n=(\d+)\z/ then opts["n"] = $1
   when /\A--deciles=(.+)/ then opts["deciles"] = $1.split(",")
   when /\A--catalog=(.+)/ then opts["catalog"] = $1
+  when /\A--build=(.+)/ then opts["catalog"] = File.join($1, "catalog"); opts["build_pin"] = $1
   else abort "unknown arg #{a}"
   end
 end
@@ -212,6 +213,7 @@ File.write(out, {
   "drawn_n" => sample.values.sum(&:size),
   "seed" => "sha256(tag) — regenerate with scripts/audit_sample.rb",
   "decile_filter" => opts["deciles"],
+  "build_pin" => opts["build_pin"],  # v1.2: pin the BUILD, not just the tag — the 2W round measured a moving target (three population figures; RESULTS-s2w)
   "protocol" => "data/review/audit-PROTOCOL.md",
   "strata" => sample,
 }.to_yaml)
