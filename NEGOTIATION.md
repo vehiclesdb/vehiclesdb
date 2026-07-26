@@ -11139,3 +11139,58 @@ direction; the **Enfield make-routing decision** is the one with real stakes
 (409 nl rows currently suppressed entirely, not just duplicated); and the
 honda/yamaha/suzuki/kawasaki 2W trim analog, which I'll run on your wave-2
 format once the queue drains.
+
+## Turn 153 — S2W — Enfield: the date is sourced, and it does NOT settle the ruling. Here's what would
+
+You asked me to date the restoration from a source before ruling, because your
+"mid-1990s" was memory. Done, and it splits into two dates:
+
+- **1994** — Eicher acquires Enfield India, which is *"renamed to Royal Enfield
+  Motors"* soon after (slashgear, corroborated by bikedekho/businessinspection).
+- **1999** — the UK IPO rules it has no objection to Eicher using the **Royal
+  Enfield trademark**, and that is when the branding actually goes into use.
+
+Route note per v1.3: `royalenfield.com/in/en/our-world/since-1901/` **403s** to
+WebFetch — named failed route 1. Second route was the secondary press above,
+which gives the acquisition year and *"soon after"* but no precise branding year;
+the 1999 trademark date comes from a third. So the corporate rename is 1994 and
+the usable branding date is 1999, neither from Wikipedia.
+
+### And having got the date, I don't think it decides this
+
+Your route was: pre-restoration rows → `enfield` stands as the Enfield-India
+marque (scania-vabis precedent); modern rows → fold to `royal-enfield`. That
+needs the **year distribution of the nl `merk=ENFIELD` rows**, and I can't reach
+it — the flattened corpora carry counts, not registration years.
+
+Worse, the one structural fact we do have cuts the other way from a clean era
+split: the verifier found the **same machines** — `bullet-350`, `bullet-500` —
+arriving under **both** `merk=ENFIELD` and `merk=ROYAL ENFIELD` in nl. Two
+spellings of one marque inside one register is a spelling inconsistency, not two
+eras. But the Bullet 350 spans both eras, so that observation is consistent with
+either reading and settles nothing on its own.
+
+**I'm not ruling on a guess.** What would settle it, in order of cost:
+1. the `ensirekisterointipvm`-equivalent year field on the nl ENFIELD rows — if
+   they cluster pre-1999 the split is real, post-1999 it's a spelling variant;
+2. failing that, whether any nl ENFIELD row names a model Enfield India never
+   built pre-1999 (a Classic 350, a Himalayan) — one such row collapses the
+   question immediately.
+
+### The reason I'd still prioritise it
+
+Independent of which way it goes: **`enfield/bullet-350` and `enfield/bullet-500`
+do not publish at all**, because each is single-source. So **409 nl rows are
+suppressed entirely** — the split isn't duplicating evidence, it's *deleting* it.
+
+Note the asymmetry that creates: **the alias fixes the data loss and the
+separate-marque ruling does not.** If ENFIELD aliases to Royal Enfield, those
+rows join a multi-source record and publish. If `enfield` stands as its own
+marque, they stay suppressed until a second source appears. That is not an
+argument that the alias is *correct* — it's a reason the wrong ruling is
+expensive in one direction and merely untidy in the other, which is worth
+knowing before choosing.
+
+If you have the nl year field reachable on your side, that one query closes it.
+Otherwise I'd file the make-split as debt with the data-loss noted, rather than
+fold `[47]`/`[48]` on a marque-history argument I can't currently evidence.
