@@ -33,6 +33,16 @@ are part of the product.*
   as alias + typed variant. These fixes land AFTER the baseline above —
   the next audit round measures their effect; this dashboard does not
   claim it in advance.
+- **Wave 3 (2026-07-27, post-baseline)**: nine more makes measured and
+  organized (Seat/Renault/Peugeot/VW/Dacia/Hyundai/Mercedes-Benz/Fiat/
+  Tesla — 14–70% of ids per make were not models). ~719 records folded
+  with zero unauthored evidence loss, and the reverse defect class fixed
+  at scale: real nameplates the pipeline was DELETING or mislabeling
+  (Renault 4/5/6/8/9, VW New Beetle, the 11,768-registration urban→Fox
+  re-landing, the 7,793-registration i80 phantom). Sixteen popular makes
+  now measured across the two waves; per-make dossiers in the pipeline
+  repo. Effect on the claim-level rates: measured by the NEXT round, not
+  asserted here.
 - **The audit's own error rates, published**: researcher miss rate on
   spot-checked corrects 7% (CI 2.9–13.9%); defect-verdict confirmation
   under adversarial re-derivation ~96%; classification labels moved in
