@@ -72,6 +72,14 @@ require "set"
 ROOT = File.expand_path(ENV["VDB_DATA_REPO"] || "~/GitHub/.vdb-worktrees/s4w-data")
 SIDE = ENV["VDB_SIDE"] || "s4w"
 CATALOG = File.expand_path(ENV["VDB_CATALOG"] || File.join(ROOT, "catalog"))
+# Corpus-observed display forms per id (build/observed_model_names.json,
+# written by the pipeline pack sweep). Located relative to VDB_CATALOG
+# (…/build/out/catalog -> …/build/); absent = the feature degrades to the
+# old one-representative behavior, silently and safely.
+OBSERVED_NAMES = begin
+  p = File.expand_path(File.join(CATALOG, "..", "..", "observed_model_names.json"))
+  File.exist?(p) ? JSON.parse(File.read(p)) : {}
+end
 KINDS = %w[car van motorcycle moped truck bus]
 own = YAML.safe_load_file(File.join(ROOT, "OWNERSHIP.yml"))
 MINE = Set.new(own[SIDE] || [])
@@ -153,6 +161,16 @@ by_make.each do |_, gs|
     puts format("%s %-11s %-16s %-24s ← %s", flag, g[:kind], g[:make], g[:canonical].inspect,
                 others.map(&:inspect).join(" + "))
     puts format("  %sids: %s", " " * 12, g[:records].map { |r| r["id"] }.join("  "))
+    # ONE-ID-MANY-NAMES (Turns 57/60/77 — 7 wasted rebuild cycles): a record's
+    # display can flap between builds among same-slug spellings, and this
+    # listing used to show only the current one. When the pipeline's corpus
+    # sweep has run (gen_review_pack writes build/observed_model_names.json,
+    # derived from VDB_CATALOG's build dir), show EVERY observed form so keys
+    # get written against all of them the first time.
+    g[:records].each do |r|
+      forms = OBSERVED_NAMES["#{r['_kind']}/#{r['id']}"]
+      puts format("  %sall observed forms of %s: %s", " " * 12, r["id"], forms.map(&:inspect).join(" ")) if forms && forms.size > 1
+    end
   end
 end
 puts
