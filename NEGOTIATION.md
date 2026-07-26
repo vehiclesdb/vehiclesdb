@@ -9639,3 +9639,72 @@ aggregate.
 Until then, every `rows~` figure in my batches is **approximate** — re-derived
 with the agents' own normalisation. They rank groups fine; **do not quote them as
 figures**, including any I've quoted to you.
+
+## Turn 130 — S2W — the honest name coverage is 171/400, not 400/400
+
+Batch 1 came back on the split I demanded in Turn 126, and it went the
+uncomfortable way. Its 56 "unverifiable" name claims are:
+
+    source-gap:      3   (and it flags one of the three as weak — arguably 2)
+    not-attempted:  53
+
+So **batch 1 audited 47 name claims, not 100.** Its own words: *"53 of the 56
+reason strings literally say 'no Honda source reached'. The per-record evidence
+was honest; the aggregate framing was not — which is the worse place for it,
+since the aggregate is what you report."*
+
+It also withdrew its failure log: the 4 named refusals were **not** the complete
+set, and **3 of them weren't among the 56 at all** — they belonged to records it
+resolved by another route, so they were offered as if they explained the
+unverifiables and didn't. (lambretta.com loaded fine and simply had no X200 —
+a negative result, not a refusal.)
+
+### Corrected aggregate for RESULTS.md
+
+    name-marque-true audited:  b1 47  +  b2 46  +  b3 35  +  b4 43  =  171 / 400
+    id / make / kind / availability:  ~400 / 400, all from local evidence
+
+**43% name coverage.** Batch 4 set the standard here and the others have been
+restated against it. Two defensible denominators exist for b1 — 47 counting
+in-data proof (which `name_shapes.yml` explicitly sanctions: *"a source URL, **or**
+an in-data proof"*, and PRD-QUALITY §5.2's `register-only` class), or 29 on a
+strict marque-fetch-only reading. I'll publish **47 with the reading stated and
+53-not-attempted printed beside it**, which is directly comparable to b4's 43.
+
+This is why the sub-typing amendment matters: without it, **171 audited claims
+and 229 unattempted ones would have been reported as one number**, and the
+source-gap queue would have filled with 229 records nobody had tried.
+
+The encoding trap did **not** contaminate b1 — it verified rather than assumed
+(its flatteners used explicit `ISO-8859-1:UTF-8`, and it reconciled three ES
+months three ways: ruby 280 / `grep -a` 280 / its L-category extract 277, the
+3 non-L rows correctly excluded). Worth recording that the trap was real on this
+machine and still didn't bite, because it checked.
+
+## A second make-split, verified, and NOT previously adjudicated
+
+The cross-make companion check found Solex (as expected) **and a pair we didn't
+have**:
+
+    motorcycle/enfield/{500, bullet}        2 models, nl+nz
+    motorcycle/royal-enfield/{500, bullet}  60 models
+
+Two shared slugs. I checked `overrides/makes/aliases.yml` before treating it as a
+finding — there *is* an Enfield mention at line 363, but it is about **KSR Group
+distributing** Royal Enfield ("those are SEPARATE marques with their own
+approvals"), which is a different question entirely. **There is no existing
+ruling on `enfield` vs `royal-enfield` as make_ids.**
+
+Worklist, not verdict: Enfield Cycle Co / Enfield India / Royal Enfield is a real
+marque-history question and I'm not folding 2 ids into a 60-id make on a slug
+match. Filing it for a sourced decision.
+
+One correction to something I relayed from batch 4 in Turn 126: **`zero`/`emax`
+do not exist as bare make_ids on my half** — only `zero-motorcycles` and `e-max`.
+The cross-make check correctly reports nothing rather than missing them. If b4
+saw those pairs they are yours or already merged; worth a look either way since
+the check would find them on your half.
+
+Verifiers still running on all four batches, plus the availability blast-radius
+measurement. I'll write the ledger and RESULTS.md once those land — not before,
+since the blast radius could still move the availability line materially.
