@@ -366,6 +366,18 @@ renames_all.each do |make, map|
     next if value.nil? # drops have no target to war with
     next unless map.key?(value.to_s) && value.to_s != key.to_s
     onward = map[value.to_s]
+    # A CONVERGED IDENTITY TARGET is not a war: `R4: "4"` beside `"4": "4"`
+    # sends every spelling to the SAME final ("4"), because the target key is
+    # an IDENTITY rename — the junk?-override rescue class (normalizer ORDER
+    # FIX 2026-07-25: an explicit rename entry beats the single-digit junk
+    # heuristic). Renault "4"/"5"/"8"/"9" are the first identity-FORM rescues:
+    # the marque's canonical form IS the bare numeral (renault.co.uk badges
+    # the current cars "Renault 4"/"Renault 5"), unlike Mazda's "3": MAZDA3
+    # where the canonical embeds the marque word. The war this check hunts is
+    # two spellings landing on DIFFERENT finals; a fixed-point target cannot
+    # produce that — flagging it would make every rescue key unusable as a
+    # fold target. (Renault+Dacia trim-fold batch, 2026-07-26.)
+    next if onward == value
     fail! "overrides/models/renames.yml: DIRECTION WAR in #{make.inspect} — #{key.inspect} → " \
           "#{value.inspect}, but #{value.to_s.inspect} is itself a key (→ #{onward.inspect}). " \
           "Renames apply once, so these raws land on DIFFERENT finals and both records publish. " \
