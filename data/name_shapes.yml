@@ -451,3 +451,58 @@ debt:
       the published catalog this lint measures — the pending-publish window,
       same class lint_review already tolerates via alias-target liveness.
       Empties at the next release; if it survives one, something is wrong.
+  # ── B-001 (Tranche C) cross-make findings, S2W 2026-07-26 ───────────────────
+  - id: model-column-acronym-casing
+    owner: s2w
+    category: model_casing
+    count: 511
+    why: >-
+      THE MAKE-COLUMN ACRONYM PROBLEM HAS A MODEL-COLUMN TWIN, and it is bigger.
+      smart_case title-cases any pure-alpha token missing from styling.yml's
+      `acronyms` list, so an unnoticed type code becomes a word: "CL" -> "Cl",
+      "KS Super" -> "Ks Super", "SC-153" -> "Sc-153", "LT-019" -> "Lt-019",
+      "SXL" -> "Sxl". B-001 hit five instances in 46 tiny makes, which is what
+      prompted measuring it globally.
+      MEASURED, not estimated, by scripts/find_published_name_defects.rb against
+      the build at the head of this branch: 1223 records over 305 distinct
+      tokens catalog-wide; 511 records over 201 tokens in the 2W half (mine).
+      The count is a WORKLIST, NOT A DEFECT COUNT — the check nominates any
+      token the catalog itself also spells in caps, and real nameplate words
+      leak through on purpose (MAX, PRO, LE, BOY, BOB, APE are genuine words
+      that also appear capitalised somewhere). Each TOKEN needs one human call;
+      ~305 calls covers the catalog, and a token pinned in `acronyms` fixes
+      every record carrying it at once.
+      THE UNAMBIGUOUS SUBSET, safe to fix without per-make research: Roman
+      numerals. "Iii", "Ii", "Ix" are never correct in any marque's naming —
+      22 records (moto-guzzi/850LE Mans Iii, moto-guzzi/California Iii,
+      norton/Commando 850MK Iii, harley-davidson/Fxrs Super Glide Ii,
+      ktm/Duke Ii, jaguar/Mark Ix …). Start there.
+      WHY NO EXISTING TOOL CATCHES IT: registers uppercase every string, so the
+      raw can never disprove a title-cased published name, and
+      find_duplicate_spellings compares raws to raws. This defect is introduced
+      AFTER normalisation and is only visible in the published catalog.
+      Fixed in this batch where B-001 owned the make (capri/cl, edwards/sc-153,
+      i-goo/lt019, e-solex/es, zundapp-famel/ks-super); the rest is a sweep of
+      its own, deliberately not smuggled into a Tranche C batch.
+  - id: nl-snorfiets-25-suffix
+    owner: s2w
+    category: variant_as_model
+    id_list: [moped/fosti/ft50qt-e-25, moped/znen/zn50qt-e-25, moped/znen/zn50qt-f-25, moped/zhongneng/zn50qt-e-25, moped/znen/zn50qt-e3-25]
+    count: 5
+    why: >-
+      Dutch law splits 50cc two-wheelers into the bromfiets (45 km/h, blue
+      plate) and the snorfiets (25 km/h), and RDW type designations mark the
+      speed-limited version by appending ".25" to the OEM type code. So
+      "FT50QT-E" and "FT50QT-E.25" are ONE nameplate in two speed variants, not
+      two models — SCHEMA.md puts speed variants below the model level.
+      Four of the five have their unsuffixed base ALSO published, so the merge
+      target already exists; znen/zn50qt-e3-25 does not and would need its base
+      to publish first or a rename to the bare code.
+      NOT ACTIONED because folding them means asserting the variant relationship
+      in a layer that does not exist yet — there is no model-level variant
+      store, so the only available "fix" is deleting a published id and losing
+      the distinction. Filed so the variant work has a concrete first case, and
+      so nobody merges them blind in the meantime.
+      Same convention explains the ".S" and "E3" suffixes in the same registers
+      (fosti RETRO / RETRO.S), which are NOT speed classes — do not generalise
+      the dot.

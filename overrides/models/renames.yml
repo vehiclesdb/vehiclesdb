@@ -141,6 +141,8 @@ Can-Am:
 
 Capri:
   Capri: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
+  Cl: CL                                    # raw "CL"; "Cl" is a title-cased initialism, not a nameplate
+  CL50: CL                                  # same moped as the "CL"/"CL 50" rows — one nameplate published under two ids because "CL50" keeps its caps (alphanumeric token) while bare "CL" gets title-cased. brommer.nl files them together: https://www.brommer.nl/merk/capri/cl/
 
 Chery:
   Icaur 03: iCAUR 03                      # official styling of Chery's off-road EV sub-brand is iCAUR (https://www.icaur.com/); the default caser yields "Icaur"
@@ -331,9 +333,15 @@ E-Max:
   Emax-110S: 110S            # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-110S"), and the hyphen also defeats its `[\s,]+` separator requirement; E-Max sells the 110S/90S (make+model reads "E-Max 110S")
   Emax-90S: 90S                               # embedded make: strip_make_prefix misses it because the raw badge is hyphenated to the model ("EMAX-90S"); E-Max sells the 110S/90S [reason re-attached: the union merge lifted this line out of a block whose comment sat above it]
 
+E-Solex:
+  Es: ES                                    # raw is "ES" in every row; "Es" is smart_case title-casing a two-letter type code into a non-word. Which words ES abbreviates is NOT established — e-Solex's own range was numbered (S2200, S3300) — so this fixes the casing only.
+
 EBRO:
   S400 Hev: S400         # HEV is the powertrain badge, not the nameplate — official lineup is s400/s700/s800 (sold as "s400 HEV"; sibling records are already powertrain-bare); folds like Leaf 40KWH (https://www.ebroauto.com/)
   S400 HEV: S400         # same fold — key form that applies once HEV joins styling.yml acronyms (the caser runs before renames; cf. the "Town&country LX" key, LX being an acronym)
+
+Edwards:
+  Sc-153: SC-153                            # raw "SC-153"; SC is a type-code prefix (siblings SC-151, SC-154 in the same register), not a word
 
 Elmoto:
   Elmoto: HR-2   # Elmoto built exactly ONE model, the HR-2 (Berlin, 2011-2016 e-motorbike). Raw NL has "ELMOTO" n=13 + "HR-2" n=1, so the bare-brand rows ARE the HR-2 — this keeps the marque AND names it honestly instead of publishing "Elmoto Elmoto"
@@ -571,6 +579,9 @@ Hyundai:
 
 I-Coco:
   Lt-018:                    LT018                # closed type code
+
+I-Goo:
+  Lt-019: LT019                             # closed, to match the I-Coco LT018 block above: i-coco/LT-018 and i-goo/LT-019 are consecutive type codes from one OEM and the register writes both open and closed. Neither form is manufacturer-attested; sibling consistency is the only argument available, and it is the reason stated.
 
 Imperial:
   Lebaron: Le Baron                           # spelling variant of "Le Baron" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -2158,6 +2169,9 @@ Zero Motorcycles:
 
 Zundapp:
   Zundapp: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
+
+Zundapp Famel:
+  Ks Super: KS Super                        # Famel KS Super, the Portuguese-built Zündapp-engined moped. KS is Zündapp's type prefix, never a word: https://zundapp.one/zundapp-models/9/zundapp-mebea-en-exoten/39/famel-ks-super
 
 Škoda:
   Enyaq 60: Enyaq        # battery-size registrations
