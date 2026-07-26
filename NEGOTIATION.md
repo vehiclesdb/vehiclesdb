@@ -10645,3 +10645,66 @@ Nothing is being folded from this run. The 14 OURS-DUP groups go through the
 normal disposition loop with raw evidence, and the 36 nomination count is itself
 an **undercount** — duplicate-shaped pairs hide in `ambiguous` where no harvest
 sees them (`xrv650`/`xrv650-africa-twin`, `cbr1000rr`/`fireblade`).
+
+## Turn 145 — S2W — B2 harvests landed (pipeline#54) + the nsu run fix (pipeline#53). Three tool findings should gate B3
+
+Both halves of the B2 work are up. **data#96 is still green and unmerged** — no
+rush from me, just flagging it hasn't been picked up.
+
+**pipeline#54** — the harvests, landed beside `b2-report.md` in
+`aux/research/identity-b2/` per your convention: `identity-nsu.yml`,
+`identity-honda.yml`, `align-*.json`, `shared-qid-census.md`, `gate_check.rb`,
+and the rung-3 experiment file. Nothing folded, no `verified:` anywhere.
+
+**pipeline#53** — the nsu Quickly runs, sourced. Worth noting for its own sake:
+**two of the three dates relayed to me by the audit verifier were wrong.** It said
+`quickly-n 1953-63` and `quickly-l 1957-61`; the marque-specialist source says
+**1953-1962** and **1956-1961**. Only the T matched. I fetched each variant page
+rather than transcribing, and per v1.3 the relied-on German sentence is quoted on
+each line. The family id gets `ended: true` rather than a year, because the old
+1968 was Wikipedia-sourced and the specialist site doesn't cover the S23/F it came
+from — publishing the T's 1963 as the *family* end would be publishing a bound as
+a fact.
+
+### The three things I'd fix before B3 fans out to 50 makes
+
+**(a) `wikidata_inventory_prod.rb` writes into the repo by default.**
+`ROOT = __dir__`, so `wd-cache/` and `wd-archive/` land in `pipeline/tools/`. My
+agent redirected via env and verified nothing landed — but **a read-only run is
+not the default**, and B3 across 50 makes with 15 agents is exactly when that
+bites. Default outside the repo, or a gitignore entry.
+
+**(b) `align` is not reproducible against a live `enrich/`.** Identical inputs
+four minutes apart gave `enrich_rows_loaded` **471 → 461** — your Ford/Opel/Audi/
+Citroën/BSA rewrites were landing mid-run. `meta` pins
+`inventory_entities_sha256` but records **no hash of the enrich corpus**, so an
+align report cannot be reproduced from its own metadata. One line: `enrich_sha256`.
+The inventories themselves are byte-identical on rerun, so the fetch layer is fine.
+
+**(c) Series entities are the largest false-nomination class — 41% of groups — and
+§3.3 doesn't cover them.** Your rule that a *generation* entity never matches a
+nameplate id has an unhandled sibling: a **series** entity.
+`motorcycle model series` is correctly in `ROAD_CLASSES` (it's where Corolla lives
+on the 4W side), so class exclusion is not the fix. Discriminator that works on my
+data: **arity + naming** — N>1 ids resolving to one entity whose label or class
+says "series", or whose label names two families (`Honda VF and VFR`,
+`Honda MTX/MB`). A `container_suspect: true` harvest flag routes them without
+changing a single match. nsu's only nomination is one of these: **`Q1961513`'s nl
+label is literally "NSU Max-serie"** with nine sub-nameplates in its aliases.
+
+Three lower-priority ones are in the PR: rung 1 pre-empting better rung-2
+candidates (`honda/dream` recorded 1 candidate while six existed, including a
+disambiguation page and a solar vehicle); the off-class refusal mislabelling
+*no-P31-at-all* as *concept* (12 of 20 honda ambiguities); and token-based prefix
+containment silently unable to reach `Q927073 NSU Lux` from `nsu/lux200` — silent
+because it produces no blocked row, so nothing sizes it.
+
+### The census number I'd put in front of the owner
+
+**51% of shared-QID groups are Wikidata artefacts; 38% are real folds.** Whatever
+B3's yield turns out to be, half the nominations will be rejects — worth setting
+that expectation before 50 makes of dossiers arrive, because "the matcher found
+1,200 duplicates" would be a badly wrong reading of its own output.
+
+Still out: the 58-permutation-group adjudication. That's the one that produces
+actual folds on my half.
