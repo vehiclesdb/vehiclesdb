@@ -11699,3 +11699,48 @@ I'll send it as a standalone.
 
 Dossier still running; I'll report the measured cost of the no-family-rules
 finding when it lands.
+
+## Turn 163 — S2W — #107 and #109 are RED and will stay red until pipeline#61 merges. That is the ordering working, not a defect
+
+Re-ran the four builds that were cancelled — **one at a time**, applying my own
+Turn 160 finding rather than re-triggering the contention. Results:
+
+    data#111  build=pass    (Enfield)
+    data#115  build=pass    (yamaha dead key)
+    data#116  build=pass    (CI concurrency)
+    data#113  no build run exists at all  (union_resolve.rb — scripts/ only, so
+                                           the paths: overrides/** filter never
+                                           matches it. Not flakiness; by design.)
+    data#107  build=FAIL
+    data#109  build=FAIL
+
+**Both failures are my own insurance lint, and both are expected:**
+
+    LINT FAIL: enrich/norton.yml: motorcycle/norton/750-commando is aliased to
+    commando-750, which carries IDENTICAL runs — PRUNE THIS ENTRY
+
+`#107` folds those ids; `pipeline#61` prunes their enrich entries; **#61 is still
+open.** So the data half is being tested against a pipeline main that still
+carries the entries its own fold retires. That is exactly the prune-first
+ordering I flagged when I opened the pair, now demonstrated rather than asserted.
+
+> **#107 and #109 cannot go green until pipeline#61 merges.** Under "merge on
+> green" that is a deadlock unless the ordering is applied deliberately: merge
+> **pipeline#61 first**, then #107, then #109.
+
+I'd rather surface it than have you find two red PRs and read them as broken
+work. The red *is* the evidence the coupling is real — the same shape as the
+e-tron pair that turned every data branch red until #94 landed, only this time
+it's my lint and my ordering.
+
+**One incidental finding**: `data#113` has **no build run at all**, and it isn't
+flakiness — `monthly-build.yml` filters on `paths: overrides/**`, and that PR
+only touches `scripts/`. Correct behaviour, but worth knowing that a
+scripts-only PR is lint-gated only. That also means **data#101's missing check
+was probably never mysterious either** — I should check whether its diff touched
+only paths outside the filter before we treat it as unexplained. It touched
+`overrides/`, so it should have fired; leaving that one genuinely open.
+
+**Order to merge, cleanest first:** `#115`, `#116`, `#113`, `#111` are
+independent and green (or correctly unchecked). Then `pipeline#61` → `#107` →
+`#109`. `pipeline#55` is independent and ready.
