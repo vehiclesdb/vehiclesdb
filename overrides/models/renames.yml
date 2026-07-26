@@ -1447,11 +1447,31 @@ MG:
   RX6: HS                                 # NOT a model name: KBA's internal type code for the MG HS/EHS. FZ 6.1 HSN 2180 Handelsname reads 'MG RX6;-HS;-EHS;-EHS PHEV' (https://dewiki.de/Lexikon/MG_HS)
   S6: MGS6 EV                             # official German name is the fused MGS6 EV (https://www.mgmotor.de/model/mgs6); KBA's make string "MG ROEWE" is SAIC's dual-brand label for HSN 2180 and there is no Roewe S6 — no Roewe is sold in Germany at all
   S9: MGS9 PHEV                           # same fused naming family, 7-seat SUV, DE launch 2026-04-18 (https://de.motor1.com/reviews/796581/mgs9-phev-2026-fahrbericht-siebensitzer/)
-  B GT: B G T                                 # spelling variant of "B G T" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Bgt: B G T                                  # spelling variant of "B G T" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  # ── lane-A corrections (swarm dossier 2026-07-26): "B G T"/"M G B" were
+  # STOP-SPLIT ARTIFACTS pinned as canonicals (raws "B.G.T"/"M.G.B"); MG
+  # writes GT fused on the MGB GT and MGB/MGA as closed tokens (en.wikipedia
+  # MG_MGB / MG_MGA; the block itself pinned Cgt: C GT one line up — the
+  # internal contradiction that exposed this). ──
+  "B G T": B GT                              # fold the artifact display back to the sourced form
+  "B.g.t": B GT                              # stop-form raw, uncased tail
+  "B. GT": B GT                              # leading stop survives as a token boundary
+  "B.gt": B GT                               # fused stop form
+  Bgt: B GT                                   # register shorthand for the MGB GT
+  "Bgt V8": B GT V8                          # MGB GT V8 (1973-76, Rover 3.5 V8 — en.wikipedia MGB_GT_V8); Bgt is shorthand, never a badge
+  BGTV8: B GT V8                              # fully fused register form
   Cgt: C GT                                   # spelling variant of "C GT" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  MG B: M G B                                 # spelling variant of "M G B" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Mgb: M G B                                  # spelling variant of "M G B" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  MG B: MGB                                   # MGB is one closed token (en.wikipedia MG_MGB); the old pin propagated the stop-split artifact
+  Mgb: MGB                                    # register shorthand, same closed token
+  "M G B": MGB                               # fold the shipped artifact display back
+  "M.g.b": MGB                               # stop-form raw
+  "M G A": MGA                               # same artifact class on the MGA (en.wikipedia MG_MGA); the styling pin MGA: MGA carries the casing — do NOT also key Mga (ordering hazard: the pin recases before renames run)
+  "M.g.a": MGA                               # stop-form raw
+  Midget Mk 3: Midget MkIII                   # MG registers EMIT Roman (Midget Mkii/Mkiii live in-catalog), so Roman is not a minted third form here — diverges from the Triumph Mk-arabic precedent DELIBERATELY, per its own conditional
+  Midget Mk3: Midget MkIII                    # arabic register variant folds
+  Midget MK3: Midget MkIII                    # all-caps register variant — the actual produced form (found by the liveness gate)
+  T D Roadster: TD Roadster                   # stop-split of the TD; canonical slugs to the existing td-roadster (casing fix + fi evidence gained)
+  T.d.roadster: TD Roadster                   # fused stop-form — the actual produced display (liveness gate find); the dot survives the caser as a token boundary
+  Tf 1500: TF1500                             # the factory designation is TF1500 fused (T-type source); the generator would have made the EXISTING value a key — the direction-war trap avoided
   Mgbgt: Mgb GT                               # spelling variant of "Mgb GT" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Tf: T F                                     # spelling variant of "T F" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   MG: null                                    # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
