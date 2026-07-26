@@ -1350,3 +1350,13 @@ Scattered U-items, dossier §UNCERTAINs and PR-body follow-ups are consolidated
 in `DEBT.md` (one line each, owner + source-of-record + resolution). Take an
 item → delete its line in the same PR. §17's phase table should be read
 through it.
+
+### 20.7 The program's continuation lives in PRD-FIVE-NINES.md
+
+With every self-consistency class at zero, the path to p99.999+ is external
+anchoring + measurement + prevention. The complete technical plan — the
+usage-weighted target and its honest math, the audit instrument, Wikidata
+entity anchoring (nominate-never-merge), convention enforcement at ingest,
+decile-weighted certification, and the paid-layer bar — is PRD-FIVE-NINES.md.
+This document remains the operating manual for the mechanisms; that one owns
+the program.
