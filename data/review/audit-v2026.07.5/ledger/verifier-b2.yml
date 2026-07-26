@@ -1,0 +1,827 @@
+# PRD-FIVE-NINES Workstream A2 — BATCH 2 INDEPENDENT VERIFICATION
+# tag v2026.07.5, S2W half.  Invariant I-11 satisfied: researcher ≠ verifier.
+# verifier: opus5/audit-b2-verifier   researcher: opus5/audit-b2 (result-b2.yml)
+# READ-ONLY run. Nothing written outside this scratchpad. No git operations.
+#
+# ═══════════════════════════════════════════════════════════════════════════
+# METHOD — what I re-derived, and how independently
+# ═══════════════════════════════════════════════════════════════════════════
+# I did not read the researcher's scripts or its flattened corpora. I wrote my
+# own flatteners from each adapter in pipeline/sources/ and my own matcher.
+# All ruby (python3 is SIGKILLed here); LC_ALL=C + explicit encodings on the
+# ISO-8859-1/CP-1251 corpora.
+#   flat_fi.rb    fi_traficom_register.zip -> 5,147,216 register rows scanned
+#                 (EXACTLY the researcher's figure), 7,858 L-class
+#                 (kind,make,model) groups with full TAN histograms
+#   flat_rest.rb  nl_rdw_{bromfiets,motorfiets,motorfiets-met-zijspan,
+#                 driewielig-motorrijtuig}.json -> 55,468 groups (soort kept, so
+#                 the zijspan/driewielig provenance of every row is visible);
+#                 nz_{moped,motorcycle}_*.json -> 12,211;
+#                 uk_veh0120_uk.csv -> 10,973 GenModel groups AND — the thing the
+#                 researcher did not build — 89,139 (GenModel × Model) groups
+#   flat_rest2.rb es_dgt_2026{04,05,06}.txt fixed-width [17,30)/[47,22)/[426,3)
+#                 -> 586,768 lines, 1,922 2W groups; lu_delta_2026-{05,06,07}.xml
+#                 -> 1,329 (kind,make,model) groups + TAN histograms
+#   flat_rest3.rb th_dlt_2568.csv -> 879 groups (matches the sibling verification)
+#   flat_ua.rb    ua_reestr_current.zip -> 3,379 2W groups, 51,101 deduped 2W
+#                 vehicles (dedup on the identifier column, as ua_mvs.rb does)
+#   avail.rb      my own availability matcher: make resolved through
+#                 overrides/makes/aliases.yml + slugify, model compared on
+#                 alphanumeric-only upcase with leading-marque-token stripping
+#   d24.rb/d24b.rb my own implementation of the researcher's OWN detector spec
+#   d25.rb        cross-kind and gb-only re-derivation from the catalog
+#   dup.rb        token-subset/permutation duplicate scan over the `correct` ids
+#   gbcheck.rb    NEW CHECK the researcher did not run: for every gb availability
+#                 claim in the batch, what the DVLA Model column actually says
+#
+# COVERAGE CHECK: all 100 proposal ids are members of
+# data/review/audit-v2026.07.5/SAMPLE-s2w.yml (400 ids) and all 100 are live in
+# the audited catalog. Zero fabricated, zero outside the seeded sample.
+#
+# SAMPLING vs the brief:
+#   defective verdicts        100% re-derived (84/84)
+#   calls asked to be overruled 100% (7/7)
+#   corpus-internal name calls  100% (15/15), ruled explicitly below
+#   availability              100% re-derived (236/236, not the required 20%)
+#   `correct` id claims       100% re-scanned (dup.rb) + 100% of the gb ones
+#                             re-checked against the DVLA Model column
+#   `unverifiable` claims     ~25% spot-checked (26/54), incl. every one whose
+#                             blocking source I could reach by another route
+
+headline:
+  upheld: 78                     # of 84 defective claims
+  overturned: 6
+  reclassified_but_still_defective: 3
+  additional_defects_found: 4    # among claims the researcher called `correct`
+  net_effect: >-
+    The evidence layer is as good as the researcher says — I reproduced
+    236/236 availability claims from my own flatteners, and dozens of its raw
+    counts match to the row. The id and enrichment layers are weaker than it
+    says, and in BOTH directions: it under-called three duplicates and
+    over-called three folds. Corrected conservative clean rate 500/640 = 78.1%
+    (researcher: 78.4%).
+    THE ONE FINDING THAT MATTERS MOST: the headline number `262` cannot be
+    reproduced from the researcher's own stated detector. Its companion figure
+    1,755 reproduces EXACTLY, and every one of D25's five numbers reproduces
+    exactly — which is what makes 262 stand out rather than excuse it.
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THE SIX ATTACK TARGETS
+# ═══════════════════════════════════════════════════════════════════════════
+
+target_1_D24_the_262:
+  verdict: "NOT REPRODUCIBLE. The number must not be quoted as a measurement."
+  what_i_did: >-
+    I implemented the researcher's own detector (2) verbatim — "within one
+    make+kind, name A's token list is a strict prefix of name B's, AND A's first
+    token matches a type-code shape (/\A[A-Z]{2,6}\d{0,4}[A-Z]{0,4}\z/ with a
+    digit, or >=3 caps)" — over the 7,083 published 2W records (moped 1,255,
+    motorcycle 5,828), and swept every reasonable reading of the ambiguities
+    (the regex applied to the published Title-Cased token vs upcased; the
+    ">=3 caps" disjunct in or out; A restricted to a single token; B restricted
+    to exactly one token longer).
+  results:
+    - "regex + digit, published case:                 207 pairs / 27 make-kinds"
+    - "regex + digit, upcased token:                  207 pairs / 27 make-kinds"
+    - "regex+digit OR >=3 caps  (closest to the text): 323 pairs / 32 make-kinds"
+    - "…same, B exactly one token longer:             246 pairs / 29 make-kinds"
+    - "…same, A a single token:                       292 pairs / 31 make-kinds"
+    - "…same, A single token AND B one token longer:  217 pairs / 28 make-kinds"
+  the_superset_claim_is_exact: >-
+    "1,755 strict-prefix name pairs in 2W overall" reproduces EXACTLY: 1,755
+    within make+kind with no code test. So the researcher's pipeline and mine
+    agree on the population; the disagreement is entirely in the code-shape
+    filter.
+  the_per_make_tally_does_not_reconcile_either: >-
+    The claimed top makes are "harley-davidson 72, honda 46, yamaha 44,
+    suzuki 21, kawasaki 16, piaggio 11, indian 8". No variant produces that
+    joint tally. The variant that gets harley-davidson closest (70) puts honda
+    at 52, not 46; the variant that matches suzuki 21 + kawasaki 16 + 29
+    make-kinds puts harley-davidson at 43, not 72. Something in the researcher's
+    filter is not in its written spec.
+  ruling: >-
+    UNRESOLVED, in the specific sense the protocol means: the CLASS is real and
+    large (my own runs bracket it at 207–323 pairs over 27–32 make/kinds), but
+    "262 pairs across 29 make/kinds" is not re-derivable from the ledger as
+    written and must not enter RESULTS.md as a measurement. WHAT WOULD SETTLE
+    IT: the researcher publishing the script, or the ledger restating the
+    detector so a third party reproduces the count. Until then quote the range,
+    or quote 1,755 (the reproducible worklist ceiling) with the caveat the
+    researcher already attached to it.
+  worst_family_claims:
+    "23 live VRSC* ids":        "UPHELD — exactly 23 harley-davidson ids contain 'vrsc'."
+    "8 XL1000V/Varadero/SD02":  "UPHELD — exactly 8 (sd02, varadero, xl1000, xl1000-varadero, xl1000v, xl1000v-varadero, xl1000va, xl1000va-varadero)."
+    "9 FLSTC* + 4 FLSTCI*":     >-
+      CORRECTED UPWARD: 10 + 4 = 14. The researcher's list of nine omits the
+      audited record itself (flstc-heritage-classic). Full set: flstc,
+      flstc-103, flstc-103-heritage-softail-classic, flstc-heritage,
+      flstc-heritage-classic, flstc-heritage-softail, flstc-heritage-softail-cl,
+      flstc-heritage-softail-classic, flstc-softail-classic,
+      flstc-softail-heritage-classic; flstci, flstci-heritage-softail,
+      flstci-heritage-softail-c, flstci-softail-classic.
+    "11 VT1100/Shadow ids":     >-
+      Numerically UPHELD (11) but the COMPOSITION IS UNSAFE. The researcher's
+      list includes `shadow-750` (a VT750 — a different motorcycle) and bare
+      `shadow`. From my own nl+fi derivation, bare SHADOW is a FAMILY word: the
+      same registers carry VT500C, VT600C, VT700(C), VT750C/C2 and VT1100
+      Shadows, and nl_rdw bromfiets even carries 'SHADOW 50' and 'SHADOW AF 20'.
+      nl bare 'SHADOW' n=339 and fi n=18 cannot be attributed to the 1100.
+      This is the dragstar trap the sibling verification proved can corrupt
+      data. The audited record's own verdict names only 1100-class partners
+      (vt1100c-shadow / vt1100-shadow / shadow-vt1100c2), so the VERDICT is
+      safe — the NOTE is not, and must not be turned into a worklist.
+
+target_2_the_four_traps:
+  "xlch vs xlch-1000":
+    verdict: "UPHELD — genuinely distinct, and now externally sourced."
+    evidence:
+      - "https://motogallery.com/blogs/harley-davidson-resource-guide/1958-1971-harley-davidson-xlch-900-sportster — the XLCH ran 1958-1971 in 883cc ('900 class') Ironhead form"
+      - "https://www.motorcycleclassics.com/classic-american-motorcycles/harley-davidson-sportster-1000 — displacement went to 1000cc for 1972"
+      - "IN-CORPUS: nl 'XLCH 900' n=1 and fi 'SPORSTER XLCH 900' n=1 sit beside nl 'XLCH 1000' n=2 / 'XLCH-1000' n=1 / 'XLCH 1000 SPORTSTER' n=2 and nz 'XLCH 1000' n=1 / 'XLCH1000' n=1. Bare XLCH spans both capacities."
+    note: "XLCH is NOT on harley-davidson.com's model-code page — I re-fetched it. The researcher's casing citation is therefore about H-D's code convention generally, not about XLCH specifically. Its `name: defective` still holds (see the casing ruling below); its `id: correct` is right."
+  "xt1200z vs xt1200ze":
+    verdict: "UPHELD as distinct — but NOT on the ground the researcher gives, and the TAN evidence cuts the other way."
+    evidence:
+      - "fi: 'XT1200Z' n=131 on TAN family e13*2002/24*0388*{00,01,02,03}; 'XT1200ZE (XT1200ZE Super Tenere)' n=37 on e13*168/2013*00062*00."
+      - "BUT fi ALSO carries 'XT1200Z (XT1200Z Super Tenere)' n=2 on e13*168/2013*00062*00 — the SAME approval as the ZE. So the TAN does not separate Z from ZE; a TAN-based split would be the FINDING-B error again."
+      - "What does separate them is that the registers spell them out separately in three countries (nl 'XT1200Z' 730 vs 'XT1200ZE' 87 + 62 parenthesised; ua both) and the ZE is a distinct specification. No Yamaha source reached (yamaha-motor.eu unreachable to me too)."
+    ruling: "Trap stands. Do not fold. But strike the implied TAN argument."
+  "fxr vs fxrp":
+    verdict: "UPHELD, with a marque source the researcher already had and one it did not use."
+    evidence:
+      - "https://www.harley-davidson.com/us/en/content/expert-advice/harley-davidson-model-codes.html — re-fetched: 'FXRP — Dyna Police Pursuit' is present verbatim. (FXR itself is NOT on that page.)"
+      - "IN-CORPUS corroboration the researcher missed: nl_rdw carries 'FXRP POLICE' n=1 and 'FXRP 1340' n=8+1 beside 'FXR SUPER GLIDE' n=246+5+1."
+    note: "Worth stating for the detector spec: fxr/fxrp do NOT match detector (2) at all — ['FXR'] is not a token prefix of ['Fxrp']. They match only a STRING-prefix fold, which is precisely what the researcher's own `do_not_do` forbids. The trap is correctly filed under 'do not bulk-fold on a code prefix'."
+  "husqvarna sm510 vs sm510r":
+    verdict: "TAN CLAIM UPHELD AND STRENGTHENED — and it wins. The researcher's weakest id call is OVERTURNED, exactly as it feared."
+    evidence_from_raw:
+      - "fi 'SM 510' n=3, TAN e3*2002/24*0100*06 (3/3)."
+      - "fi 'SM 510 R' n=8, TANs e3*2002/24*0482*03 (5) and *0482*02 (3) — a DIFFERENT APPROVAL BASE, not just a different extension."
+      - "DECISIVE, and the researcher did not have it: fi 'SMR 510' n=3 sits on e3*2002/24*0482*00 — the same base as SM 510 R. The *0482* family is the SMR/supermoto-R type; motorcycle/husqvarna/smr510 is a live separate id."
+      - "fi 'SM 510-H803CC/501' and 'SM 510-H813AB/501' sit on the older e3*92/61*0100*{04,05} — same *0100* lineage as bare SM 510."
+      - "COUNTER-CAUTION, in fairness: 'TE 510' n=12 straddles BOTH families (*0100*06 ×4 and *0482*00/02 ×6), so the Husqvarna TAN is not model-exclusive either. The split therefore rests on the *0100*/*0482* PATTERN plus SMR510's placement, not on TAN-as-identity."
+    the_gb_evidence_is_the_opposite_of_what_the_researcher_read: >-
+      DVLA GenModel 'HUSQVARNA SM 510' resolves to exactly ONE Model value:
+      'SM 510 R', n=77 — 100% of the UK rows. That does not show SM510 and
+      SM510R are one machine. It shows the UK evidence belongs to the R.
+    consequence: "id OVERTURNED to `correct`, AND a new defect: see additional_defects."
+
+target_3_honda_sd02:
+  verdict: "UPHELD, and it is the strongest record in the batch. Both halves reproduce to the row."
+  half_a_in_corpus_join: |
+    From my own fi derivation, under make Honda, L3e:
+      'VARADERO-SD02/996'            n=1   e9*92/61*0069*04
+      'VARADERO-SD02A/996'           n=3   e9*92/61*0059*00
+      'VARADERO-SD02B/996'           n=4   e9*92/61*0059*{00,02}
+      'VARADERO-SD02C/996'           n=2   e9*92/61*0059*04
+      'VARADERO-SD02D/996'           n=4   e9*92/61*0059*04
+      'XL1000V-SD02A/996 VARADERO'   n=1   e9*92/61*0059*03
+      'XL1000VA-SD02C/996'           n=1   e9*92/61*0059*04
+    Every count the researcher published matches mine exactly. STRONGER THAN
+    STATED: the whole e9*92/61*0059* approval family carries the bare nameplate
+    ('Varadero', 'VARADERO', 'XL 1000V VARADERO', 'XL1000VA VARADERO'), the bare
+    code, and the pairing — so the code→nameplate identity is attested on one
+    approval as well as in one cell.
+  half_b_the_475_dutch_rows: "nl_rdw motorfiets 'SD02' n=475, 'SD 02' n=3, 'HONDA SD02' n=1. Exact."
+  one_scoping_note: >-
+    SD02 covers the XL1000V AND the XL1000VA (ABS), so the merge target is a
+    family, not a single sibling — 'fold sd02 into xl1000v' would be wrong in
+    the same way as folding shadow into the 1100. Fold to the nameplate.
+  adjacent_positive: >-
+    nl also carries SD01 paired with the nameplate ('SD01 XL1000V-VARADERO' n=6,
+    'SD01 XL 1000V VARADERO' n=2, …) and there is NO sd01 id in the catalog.
+    The class does not fire everywhere; that is worth recording.
+
+target_4_D25:
+  verdict: "EVERY NUMBER UPHELD, EXACTLY. This is the best-measured claim in the batch."
+  rederived:
+    - "motorcycle records with gb-ONLY evidence: 258 ✓"
+    - "…of which an identically-slugged moped record exists: 18 ✓, and my list is identical to the researcher's, item for item: aprilia/rx50, aprilia/sx50, cpi/aragon, derbi/gpr-50, e-max/lb1, honda/nps50, honda/sfx50, honda/sh50, keeway/f-act, mash/fifty, peugeot/ludix, peugeot/trekker, rieju/mrt, rieju/rs2, sur-ron/light-bee, suzuki/ay50, sym/mask, yadea/g5"
+    - "ids live in >1 kind: 482 ✓ · moped+motorcycle: 95 ✓ · car+moped+motorcycle: 2 ✓ (piaggio/ape and renault/twizy)"
+    - "Renault Twizy in three kinds ✓ — moped/renault/twizy {es,fi,lu,nz}, motorcycle/renault/twizy {nl}, car/renault/twizy {gb,my,ua}, plus moped/renault/twizy-45 {es,fi,nl}"
+    - "the nl mechanism ✓ — nl_rdw voertuigsoort 'Driewielig motorrijtuig' carries 'RENAULT | TWIZY' n=598 and nothing else does; fi files the same vehicle L7e n=14 / L6e (Twizy 45) n=1 → moped; gb files it under Cars (518) and LGV (87)"
+  the_change_list_claim: >-
+    UPHELD. I read PROPOSAL-kind-boundary.md's final "Revised plan" (steps 1-7).
+    Step 4 is the only nl_rdw item and it is scoped to `Bromfiets` + a
+    `by_eu_category` block. `Driewielig motorrijtuig: motorcycle` appears
+    NOWHERE in any change list in that document. Since the Twizy's Dutch rows
+    arrive as Driewielig and not as Bromfiets, executing the plan as written
+    would move the FI/ES/LU/NZ Twizy to `car` and LEAVE the 598 Dutch rows in
+    `motorcycle` — i.e. it would not fix this record, it would split it further.
+    That is a concrete, actionable gap and the researcher found it.
+  new_in_data_support_the_researcher_did_not_have: >-
+    The DVLA Model column proves mechanism (a) rather than inferring it:
+    gb 'SYM MASK' pools 'MASK 50' 412 + 'MASK 50 E5' 558 + 'MASK 125' 180;
+    gb 'HONDA NPS50' is 'NPS 50-5'/'NPS 50-6'; gb 'APRILIA RX50' is 'RX 50 MY06'
+    /'RX 50 RACING'/'RX50'; gb 'APRILIA SX 50' is 'SX 50'/'SX 50 MY06'.
+    These are 50cc machines filed under BodyType Motorcycles because the UK has
+    no moped body type — exactly as overrides/kind_maps/uk_dft.yml says.
+
+target_5_the_two_enrichment_defects:
+  "moped/nsu/quickly-t":
+    verdict: "SUBSTANCE UPHELD. CITATION OVERTURNED — the researcher's cited source does not contain its claim, and says the opposite."
+    what_nsu24_de_actually_says: >-
+      I fetched the frameset (https://www.nsu24.de/html/nsu_quickly.html) and
+      then its body (https://www.nsu24.de/html/body_nsu_quickly.html). The page
+      gives "Baujahre: 1953 bis 1968" for the Quickly and "Gebaute Stückzahl:
+      fast 1 Million!" — i.e. the SAME 1953-1968 span the enrichment publishes —
+      and it explicitly DISPUTES 1963 as an end year ("the author owns a 1966
+      model, contradicting literature claiming 1963"). It lists the variants
+      (N, S, L, Cavallino, T, TT, TTK, S23, S2/23, N23, F23) but gives NO
+      per-variant years and NO per-variant unit counts. It cannot support
+      "the Quickly T 1959-1963, 38,605 built".
+      The researcher's second citation, https://nsu-quickly.de/en/models/
+      quickly-cavallino/ (and .../quickly-t/), is a parts shop: model navigation
+      and frame-number ranges, no years at all.
+    but_the_fact_is_right_and_i_sourced_it:
+      - "https://christian-koerkel.de/nsu-quickly-t/ — verbatim: \"Insgesamt wurden von 1959 – 1963 38.605 Stück verkauft.\""
+      - "https://www.nsu-quickly-club.de/fileadmin/user/pdf/Quickly-Uebersicht.pdf — the NSU-Quickly-Club's own model/year/frame-number overview (v1.23, 23.10.2015), which I read page 1. It dates and counts ALL THIRTEEN variants: N 1953-63 (539,793) · S 1956-63 (314,715) · L 1957-61 (86,067) · Cavallino 1958-60 (21,584) · T 1959-63 (38,605) · TT 1958-61 (23,952) · S/2 1960-61 (12,411) · TT/K 1961-63 (13,200) · S23 1961-68 (28,435) · S/2-23 1960-65 (22,322) · N23 1962-67 (11,347) · F 1962-68 (12,000) · Quick50 1962-65 (9,323) · Summe 1,124,431."
+    ruling: >-
+      enrichment `defective` UPHELD. The note's premise "no source separates the
+      variant runs" is FALSE — the marque club separates all thirteen with unit
+      counts — and the four-record fix is: quickly-t 1959-1963; quickly-n
+      1953-1963 (the researcher says 1953-62, the club table says 1963);
+      quickly-l 1957-1961; and bare `quickly` KEEPS 1953-1968, because the club
+      table shows S23 and F running to 1968 and the bare id is the family.
+      REPLACE the citation with the two above.
+    one_sub_point_i_reject: >-
+      "the file's own header contradicts 1968 too" — no. The header's 1963-65
+      ceiling is about NSU's MOTORCYCLES, Prima scooters and the Quick 50. The
+      club table confirms Quickly S23/F ran to 1968. The family end year is not
+      a defect.
+  "motorcycle/bultaco/sherpa":
+    verdict: "OVERTURNED. enrichment `defective` -> `correct`. The 43:1 argument rests on evidence that does not belong to this record."
+    why: |
+      The researcher's whole case is "the register is 43 'SHERPA T' rows against
+      1 bare, so the conditional in enrich/bultaco.yml is satisfied". It is not,
+      because those 43 rows are not this id's evidence.
+      From my own nl+nz derivation under make BULTACO:
+        nl 'SHERPA T' 43 · 'SHERPA T 350' 1 · 'SHERPA T350' 1 · 'SHERPAT 350' 1
+        nl 'SHERPA' 1 · 'SHERPA 125' 1 · nz 'SHERPA' 1
+      'SHERPA T' normalizes to its own key (sherpa-t), which is NL-ONLY. The
+      reconciler publishes a single-source id only at >=300 vehicles for
+      motorcycle (reconciler.rb KIND_THRESHOLDS), so sherpa-t does not publish
+      and contributes nothing. Bare 'SHERPA' appears in TWO countries (nl 1,
+      nz 1), which is why `sherpa` publishes at all.
+      The whole make behaves this way and it is checkable: every published
+      Bultaco id is exactly a string present in >=2 countries (lobito gb+nl,
+      metralla nl+nz, brinco fi+nl), while nl-only strings with more vehicles —
+      ALPINA 8, FRONTERA 6+4, MATADOR, PURSANG — publish nothing.
+      So motorcycle/bultaco/sherpa IS TWO ROWS, one Dutch and one New Zealand,
+      each spelling the bare family word. Bultaco never sold a plain "Sherpa":
+      https://cybermotorcycle.com/marques/bultaco/bultaco-models.htm enumerates
+      Sherpa S (1960-67, in 100/125/175/200 and MK2 forms), Sherpa N (1963-65,
+      155/200) and Sherpa T (1964-82) and no unlettered Sherpa. Two bare rows
+      could be any of the three. The union span 1960-1983 is therefore the
+      correct, honest choice for a bare family id — which is exactly what the
+      enrichment note says it is doing.
+    the_name_verdict_survives_but_the_class_and_the_remedy_change: >-
+      name `defective` UPHELD, RECLASSED D7 -> D8 (family-word rollup, the
+      honda/magna · triumph/rocket · yamaha/dragstar class). The researcher's
+      proposed remedy — "the id should be sherpa-t" — IS THE DANGEROUS MOVE:
+      it would relabel Sherpa S and Sherpa N registrations as Ts, and it would
+      import a 1964 start for rows that may be 1960 machines.
+    credit_where_due: >-
+      The researcher is right that enrich/bultaco.yml's conditional caveat is
+      good practice and is what makes the record checkable at all. The habit
+      paid off — it just paid off the other way.
+
+target_6_the_three_instrument_findings:
+  a_normalizer_space_collapse_is_a_catch_all:
+    verdict: "UPHELD in general, OVERTURNED on one of its two examples, and the count is misquoted."
+    proof_from_the_instrument_itself: >-
+      data/name_shapes.yml debt entry `normalizer-space-collapse-display-names`
+      carries owner: s2w, category: code_string, max_sources: 1 — and NO
+      `pattern` and NO `id_list`. scripts/lint_dataset.rb `entry_matches?` falls
+      through to "the make/kind/category/corroboration conditions above are the
+      whole rule", so the entry excuses EVERY s2w-owned single-source
+      code_string record whatever its cause. The researcher's structural claim
+      is provable from the entry's own conditions, not merely plausible.
+    example_1_sa15_upheld: "moped/yamaha/sa15 'SA15' is nl-only (1 source) and matches CODE_STRING (/\\A[A-Z]{2,}[\\s.-]?\\d{2,4}[A-Z0-9-]{0,8}\\z/i). Absorbed. Correct."
+    example_2_aprilia_sb_OVERTURNED: >-
+      moped/aprilia/sb 'SB' has NO DIGITS, so it does not match CODE_STRING —
+      nor numeric_only, make_as_model, embedded_make, spec_token or placeholder.
+      It is not absorbed by that entry; lint_dataset does not flag it at all.
+      That is arguably a worse hole than the one claimed (a 608-vehicle
+      unresolved type code that no detector sees), but it is a different one and
+      the ledger should say so.
+    count_correction: "The entry reads `count: 269` in data/name_shapes.yml at this worktree, not 267. The researcher's '269→267' is not supported by the file."
+    i_would_add_a_second_instance: >-
+      `bare-displacement-2w` (owner s2w, category numeric_only, count 21) has
+      the identical shape — no pattern, no id_list — so it too excuses every
+      s2w numeric_only record, not the 21 the count implies. The catch-all
+      critique generalises.
+  b_corroboration_is_not_nameplate_evidence:
+    verdict: "UPHELD on every limb, and the marque source holds."
+    limbs:
+    - "`corroborated-code-string-records` is in the LEGIT bucket with min_sources 2 / min_countries 2 and category code_string. motorcycle/suzuki/uk110 'UK110' matches CODE_STRING and has 5 sources / 5 countries, so it is excused PERMANENTLY, not tracked as debt."
+    - "Suzuki's own archive, re-fetched: https://www.globalsuzuki.com/motorcycle/smgs/digital-archive/2_bike/scooter_162.php names it 'Address 110' for both the 1998 and 2015 generations and never uses UK110."
+    - "The DVLA Model column adds in-data support the researcher did not use: gb GenModel 'SUZUKI UK 110' resolves to six Model strings, all 'UK 110 N*' year codes (NE, NE L6, NM L8, NM L9, NM M0, NX) — one machine with model-year letters, i.e. a type code, not a nameplate."
+    - "masai/50 [fi,nl] and masai/125 [fi,nl] are both 2 sources / 2 countries and both match numeric_only, so `corroborated-numeric-nameplates` excuses both. UPHELD."
+  c_uk_dft_model_column:
+    verdict: "SUBSTANCE UPHELD. MECHANISM CLAIM IS FALSE — and the falsity makes the fix bigger, not smaller."
+    the_false_part: >-
+      The researcher states, twice, that "the Model column is ALREADY parsed —
+      uk_dft.rb passes row[3] into the Row's tan slot". It does not.
+      pipeline/sources/uk_dft.rb:89 reads `body, make, genmodel = row[0], row[1],
+      row[2]` and accumulates `agg[body][[make, genmodel]] += n`; row[3] is never
+      referenced anywhere in the file, and the Row it builds carries no `tan:`
+      keyword at all. So the Model column is NOT parsed and NOT available
+      downstream. The fix is a source-adapter change plus a reconciler change,
+      not "use a field we already have".
+    the_true_part_and_it_is_worth_more_than_the_researcher_claims: >-
+      Model is dramatically finer than GenModel: my own parse gives 10,973
+      (BodyType, Make, GenModel) groups against 89,139 (…, Model) groups over
+      the mapped kinds. I ran the check the researcher proposed, over all 16
+      gb-claiming records in this batch. Results below in `gb_model_sweep`.
+
+  gb_model_sweep:   # NEW WORK — the highest-yield check in this verification
+    mis_routed_evidence:
+      - "motorcycle/husqvarna/sm510 [gb] — GenModel 'HUSQVARNA SM 510' -> Model 'SM 510 R' ×77, 100%. All UK evidence belongs to the live sibling sm510r. NEW DEFECT."
+      - "motorcycle/yamaha/gts [gb] — GenModel 'YAMAHA GTS' -> Model 'GTS 1000 A' ×19, 100%. All UK evidence belongs to the live sibling gts1000a. (The researcher already calls the id defective; this makes the availability claim wrong too.)"
+      - "motorcycle/harley-davidson/flhr [gb] — GenModel 'HARLEY-DAVIDSON FLHR' pools 16 Model strings, of which 447 of 1,463 rows are FLHRI/FLHRS/FLHRSI — all of which are live ids in their own right. The gb claim is a pool, not a match."
+    id_rollups_the_researcher_called_correct:
+      - "motorcycle/cfmoto/800 — GenModel 'CFMOTO 800' pools '800 NK' 131, '800 NK SPORT 24' 5, '800MT TOURING' 127, '800MT SPORT' 74, '800MT EXPLORE' 68, '800MT-X' 57. All THREE of 800nk, 800mt and 800mt-x are live ids. NEW DEFECT."
+      - "motorcycle/aprilia/rxv — GenModel 'APRILIA RXV' pools 'RXV 4.5' family 53 and 'RXV 5.5' family 18. Two motorcycles; rxv450 is live. NEW DEFECT."
+    strengthens_an_existing_verdict:
+      - "motorcycle/harley-davidson/superlow [gb] — Model is 'SUPERLOW XL 883 L 13' ×172, i.e. the DVLA itself pairs the nameplate with XL883L. The researcher's id: defective is proved in-data, not inferred."
+      - "motorcycle/honda/anc [gb] — Models 'ANC 125 H' 689, 'ANC 125-E' 549, 'ANC 125 K' 439, 'ANC 125 F' 306 = 1,983 (the researcher's exact figure). Every row is an ANC 125."
+      - "motorcycle/piaggio/px200 [gb] — 'PX 200 E' 3,611 + 'PX 200' 26 + 'PX 200 K' 12 = 3,649. Exact."
+    clean:
+      - "kymco/visar-125 ('VISAR 125'), moto-guzzi/breva-1200 ('BREVA 1200'), lexmoto/valiant (both Models are VALIANT 125 XF 125 R — one machine), ducati/m750-dark, aprilia/sx50, royal-alloy/gt125, suzuki/uk110, brixton/bx125 (pools BX 125 / R / X, but no bx125r or bx125x id is live, so no rollup onto live siblings)."
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THE SEVEN CALLS THE RESEARCHER ASKED TO HAVE OVERRULED
+# ═══════════════════════════════════════════════════════════════════════════
+overrule_requests:
+
+  - claim: "motorcycle/husqvarna/sm510 id: defective(D6)"
+    result: 'OVERTURNED -> id: correct'
+    why: "See target_2. Different approval bases (*0100* vs *0482*), SMR510 sharing the R's base, and the gb Model column proving the UK rows ARE the R rather than proving identity. The researcher named this its weakest id call and was right to."
+
+  - claim: "motorcycle/kawasaki/kz1300 id: defective(D6)"
+    result: UPHELD, and I rule rather than defer
+    why: >-
+      The protocol's test is "no other live id denotes the same vehicle". KZ1300
+      and Z1300 are the same machine under US and RoW designations, so the test
+      fails and the verdict is `defective`. My derivation: fi KZ1300 3 + 'KZ 1300'
+      2 + 'KZ 1300-A' 1 + 'KZT 1300' 1 against Z1300 7 + 'Z 1300' 1 + 'Z 1300 A' 1
+      + 'Z 1300-A5' 1; nl 'KZ 1300' 2 + KZ1300 3 against 'Z 1300' 223+10 + Z1300 9;
+      nz KZ1300 2 against Z1300 12. fi's own type-designation cell reads
+      'KZ1300-KZ1300A1/1286'.
+      SAFETY: this fold is low-risk (one displacement, one machine) — unlike
+      dragstar/shadow/intruder — so the policy question should not block it.
+      Direction matters: z1300 holds ~250 nl vehicles to kz1300's 5, and ZG1300/
+      ZN1300 Voyager rows are a DIFFERENT machine and must not be swept in.
+    caveat: "The researcher's only source is motorcycleclassics.com, which I did not re-fetch. If RESULTS.md wants this at marque grade it needs a Kawasaki heritage page."
+
+  - claim: "moped/la-souris/sourini-rs id: defective(D8/D6)"
+    result: 'OVERTURNED -> id: unverifiable(no La Souris source; the fold is a make-level policy call, not a per-record one)'
+    why: >-
+      No marque source is reachable: lasouris.nl 302-redirects cross-host to
+      lasourisscooters.nl, which returns 403. The corpus does not settle it
+      either — nl_rdw carries SOURINI 9,615 · SOURINI R 3,886 · SOURINI R
+      LIMITED 494 · SOURINI RS 3,349 · SOURINI RS LIMITED 320 · SOURINI S 4,043 ·
+      SOURINI RS PILOTI 122 · SOURINI ONE 125. "Limited" is applied to BOTH the R
+      and the RS, which is edition-shaped, but 320 registrations is not a
+      rounding error and nothing shows the two are one product.
+      `id: correct` asserts no other live id denotes the same vehicle; `id:
+      defective` asserts one does. Neither is supportable, so the protocol's
+      third verdict is the honest one.
+      WHAT WOULD SETTLE IT: a La Souris model page, or the RDW type-approval
+      numbers behind the two strings (RDW is queryable). And it must be decided
+      for sourini-r/sourini-r-limited in the same breath.
+
+  - claim: "motorcycle/puch/rla name: defective(D7)"
+    result: 'OVERTURNED -> name: unverifiable(neither cited source is reachable)'
+    why: >-
+      https://www.motorbooks.at/puch-r-rl-rla-125-ersatzteilkatalog returns
+      HTTP 403. https://sites.google.com/site/puchnz/rla-125 302-redirects to
+      accounts.google.com/ServiceLogin — it is not a public URL. With no
+      reachable source the D7 rests on the corpus alone, and the corpus is thin
+      and split: nl '125 RL' 3 · 'RL 125' 2 · '125 RL SCOOTER' 1 · '125 RLPUCH' 1
+      · '125 RLA' 1 · 'RLA' 1; nz 'RLA' 1. The RLA specifically appears bare
+      twice and with the capacity once. That is not enough to call the published
+      string non-marque-true. The researcher flagged this SOFT and it should not
+      be carried as a defect.
+
+  - claim: "motorcycle/mv-agusta/350s name: defective(D7)"
+    result: 'OVERTURNED -> name: unverifiable(only source is a 403ing spec database; majority is not authority)'
+    why: >-
+      https://www.autoevolution.com/moto/mv-agusta/350-s/ returns HTTP 403 to
+      me, so the researcher's sole external source is not re-fetchable — and it
+      is a third-party spec database in any case. What remains is register
+      dominance, which the VITO/MGA rule says does not decide: nl '350 S' 49 vs
+      '350S' 3 (the researcher's 16:1, reproduced exactly) — but the closed form
+      DOES exist, in nl (3) and as nz's ONLY spelling ('350S' n=1). The batch's
+      own standard elsewhere (ajs/16ms, honda/cb360) is that a closed form
+      backed by a source stays; here there is no source either way.
+
+  - claim: "moped/yamaha/bw-s id: defective(D6)"
+    result: UPHELD, and the researcher's SEPARATE open question is now CLOSED in its favour
+    why: >-
+      moped/yamaha/bws50 'BWS50' {nl,nz} rests on nl 'BWS 50' n=1 and nz 'BWS50'
+      n=1. Every moped-kind BW's IS a 50 — ua spells it out, 'BW'S 50' n=4
+      beside 'BW'S' n=4 — so the two ids are one machine and the fold is safe.
+      renames.yml folds "Bw's" and Bws to BW's but cannot reach the
+      capacity-suffixed string, exactly as the researcher says.
+      THE OPEN ITEM: the researcher would not call motorcycle/yamaha/bw-s
+      {gb,lu,nl} and guessed from the lu TAN that it is "probably the BW's 125".
+      The DVLA Model column settles it: GenModel 'YAMAHA BWS' -> Model 'BWS 125',
+      n=433, 100%. The moped/motorcycle BW's pair is LEGITIMATE (50 vs 125).
+      (Unrelated and not in this batch: motorcycle/yamaha/bw 'Bw' {gb,nl} pools
+      Model 'BW 50' 6 and 'BW SPY' 36 — a 50cc machine in the motorcycle kind.
+      That one is a D25 instance.)
+
+  - claim: "motorcycle/kawasaki/sr650 name: defective(D9)"
+    result: UPHELD as defective, CLASS AND STATED GROUND BOTH CORRECTED — plus a new id defect
+    why: >-
+      The researcher's stated ground is "the published string appears in NO
+      source, marque or register, in that order". That is FALSE: nz_nzta writes
+      'SR650' exactly, n=1. What IS true, and stronger, is that the same
+      registers carry Kawasaki's own order 20 times — nl 'KZ 650 SR' 14,
+      'Z 650 SR' 5, plus fi 'Z 650 SR' 1 — beside 'CSR 650' 11, '650 CSR' 3,
+      'KZ650CSR' 3 and the joined cell 'KZ 650 SR CSR 650' 1. So the defect is a
+      TOKEN INVERSION of an attested designation, not a string that exists
+      nowhere. D9 -> D7/inversion.
+      AND: motorcycle/kawasaki/z650sr 'Z650SR' {fi,nl} IS LIVE. The researcher
+      called this record `id: correct`. It is not — see additional_defects.
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THE 15 NAME VERDICTS THAT REST ON CORPUS-INTERNAL PROOF — ruled explicitly
+# ═══════════════════════════════════════════════════════════════════════════
+corpus_internal_name_rulings:
+  my_rule: >-
+    I do NOT demote all fifteen. I split them, on a principle I state so it can
+    be argued with:
+    (1) A claim about what the REGISTERS write is a fact about the corpus, and a
+        corpus derivation settles it. Those stand.
+    (2) CASING of a pure-alpha type code can never be settled by a register
+        (registers uppercase everything), and the project has already
+        adjudicated the whole class globally in data/name_shapes.yml
+        debt:model-column-acronym-casing (count 511) with a stated rule. Those
+        stand PROVIDED the token is attested as a code somewhere in the corpus —
+        which I checked individually.
+    (3) A claim that asserts a specific MARQUE rendering, with no reachable
+        source, is an assumption. Those are demoted to unverifiable.
+  rulings:
+    "moped/yamaha/bw-s (name: correct)": "UPHELD. renames.yml carries a sourced, deliberate decision (MBK platform history) and ua/fi write the apostrophe form. The CPx/tS rule applied correctly; the researcher was right not to flag it."
+    "motorcycle/renault/twizy (name: correct)": "UPHELD. 'Twizy' is Renault's own word and gb GenModel is 'RENAULT TWIZY'. Trivially fine."
+    "motorcycle/bmw/r65t1c (name: defective)": "UPHELD under (1). nl 'R 65 TIC' 86 + 'R65 TIC' 5 against nl 'R 65 T1C' 1 + nz 'R65T1C' 1, in the same two registers. Caveat for the ledger: the target rendering TIC is register-attested, not BMW-attested — no BMW source exists for either string."
+    "motorcycle/kl-service/kxe300 (name: defective)": "UPHELD under (1), and it is airtight: the ONLY spellings anywhere are fi 'KXE 300' n=2 and nl 'KXE 300' n=7. The published 'KXE300' appears in no source. Minor correction to the TAN sub-claim: *03 carries KXE 300 (2) AND one KXE 250 row, so the approvals are not cleanly per-capacity."
+    "motorcycle/honda/sd02 (name: defective)": "UPHELD under (1), strongest in the batch — see target_3."
+    "motorcycle/piaggio/px200 (name: defective)": "UPHELD under (1). gb GenModel 'PIAGGIO PX 200' spaced with Model 'PX 200 E'; nl/nz overwhelmingly spaced. Closed 'PX200' is the normalizer artefact."
+    "motorcycle/vespa/px200 (name: defective)": "UPHELD under (1). Same corpus; nl VESPA 'PX 200 E' 7 · 'PX 200' 1 · 'PX 200 E IRIS' 3 against 'PX200' 2."
+    "motorcycle/husqvarna/sm510 (name: defective)": "UPHELD under (1), PREMISE CORRECTED. The researcher writes 'the published string SM510 appears in no source — that part is clear'. It is not: nl_rdw carries 'SM510' n=2 and 'HUSQVARNA SM510' n=1. The verdict survives on dominance (fi 3/3 spaced, gb 77/77 spaced, nl 17 spaced vs 2 closed) plus the filed normalizer mechanism, but the ledger must not carry the false sentence."
+    "motorcycle/aprilia/rxv (name: defective)": "UPHELD under (2). RXV is attested as a code by the gb Model column ('RXV 4.5', 'RXV 5.5') and by fi 'RXV 450'/'RXV 550'."
+    "motorcycle/sym/adx (name: defective)": "UPHELD under (2). Attested as a code by es 'ADX 300 TCS' 196, 'ADX 125 LC TCS E5+' 133 and gb Model 'ADX 125'."
+    "motorcycle/ktm/rc (name: defective)": "UPHELD under (2). Attested by fi 'KTM RC 125' / 'KTM RC 390', lu 'RC 125', ua 'RC 390', th 'RC 250'."
+    "motorcycle/yamaha/gts (name: defective)": "UPHELD under (2). Attested by gb Model 'GTS 1000 A' and nl 'GTS 1000' 196."
+    "motorcycle/honda/anc (name: defective)": "UPHELD under (2). Attested by gb Model 'ANC 125 F/H/K/-E' and by fi/nl/es 'ANC125'."
+    "motorcycle/cfmoto/800 (name: defective)": "UPHELD, but on the ledger not on the corpus: data/name_shapes.yml debt:bare-displacement-2w names cfmoto/800 explicitly in its `why`. The audit measures the published record and the debt entry says the name is wrong. Fine — just record it as a filed defect, not a finding."
+    "motorcycle/suzuki/intruder-vs800glp (name: defective)": 'OVERTURNED -> unverifiable(no Suzuki source). Under (3). The string IS a register string — fi carries "INTRUDER VS800GLP" n=1 — so it is not a chimera; and the researcher labelled the verdict "D6", which is a duplicate class, i.e. it is restating the id defect as a name defect. Whether Suzuki ever rendered it that way is unsourced. The id verdict stands on its own.'
+
+# ═══════════════════════════════════════════════════════════════════════════
+# AVAILABILITY — 236/236 re-derived independently
+# ═══════════════════════════════════════════════════════════════════════════
+availability:
+  verdict: "The researcher's headline is CORRECT: 236 claims, and my own matcher finds a raw row for every one. 223 matched mechanically; I resolved the other 13 by hand and all 13 resolve."
+  the_13: >-
+    7 are the Piaggio->Vespa move (raw make PIAGGIO, marque word inside the model
+    string: 'VESPA ELETTRICA', 'VESPA PRIMAVERA', 'VESPA PRIMAVERA 125') — the
+    researcher's own account. 2 are uk_dft's make-prefixed GenModel
+    ('HARLEY-DAVIDSON FLHR' 1,463; 'HARLEY-DAVIDSON SUPERLOW' 172). 2 are the
+    CZ/ČZ make alias (nl 'CZ | 150 C' 5 + 'CZ 150 C' 1 + 'CZ 150C' 1; nz '150C' 3).
+    2 more are Vespa/Piaggio at motorcycle kind.
+  exactness_spot_check: >-
+    Where the researcher published counts I reproduced them to the row, e.g.
+    moped/vespa/primavera es 71 / fi 380 / lu 12 / nl 17,792 / nz 334 and
+    primavera-50 es 19 / fi 159 / lu 6 / nl 3,482 / nz 1; sd02 nl 475;
+    px200 gb 3,649; anc gb 1,983; sh50 gb 766; cf50 nl 36/22/9; sherpa nl 43:1.
+    This is careful work.
+  BUT_the_stated_limit_of_the_method_bites_once: >-
+    The researcher says plainly that its matcher "proves the register row
+    exists… it cannot catch a mis-ROUTED row (right string, wrong id)". I ran
+    the check it could not, using the DVLA Model column, and it caught one:
+    motorcycle/husqvarna/sm510 [gb]. See additional_defects.
+  corrected: "235 correct / 1 defective (of 236)."
+
+# ═══════════════════════════════════════════════════════════════════════════
+# DEFECTS AMONG CLAIMS THE RESEARCHER CALLED `correct`
+# ═══════════════════════════════════════════════════════════════════════════
+additional_defects:
+  defects:
+
+  - claim: "motorcycle/husqvarna/sm510 availability gb"
+    researcher: correct
+    my_verdict: 'defective(D19-adjacent — evidence routed to the wrong id)'
+    confidence: high
+    why: >-
+      DVLA GenModel 'HUSQVARNA SM 510' resolves to a single Model value,
+      'SM 510 R', n=77 — 100% of the UK rows. motorcycle/husqvarna/sm510r is a
+      live id and its availability is {fi,nl}: it is missing the gb evidence
+      that this record is claiming. The pipeline routes on GenModel, which is
+      why this is invisible: uk_dft.rb never reads the Model column.
+      This is also the single best argument for the researcher's OBSERVATION
+      about that column — stronger than any of the truncation examples it gave,
+      because here the coarse column does not truncate a name, it attributes
+      evidence to the wrong motorcycle.
+
+  - claim: "motorcycle/cfmoto/800 id"
+    researcher: correct
+    my_verdict: 'defective(D8 — family rollup)'
+    confidence: high
+    why: >-
+      gb is this record's ONLY source, and GenModel 'CFMOTO 800' pools six Model
+      strings covering three separate motorcycles: '800 NK' 131 + '800 NK SPORT
+      24' 5, '800MT TOURING' 127 + '800MT SPORT' 74 + '800MT EXPLORE' 68, and
+      '800MT-X' 57. All three of motorcycle/cfmoto/800nk {es,fi,lu,nl},
+      /800mt {es,fi,lu,nl,nz} and /800mt-x {es,fi,lu,nl,nz} are live. So `800`
+      is not a nameplate-shaped defect with a clean record underneath it — it is
+      462 UK vehicles from three motorcycles pooled at one id.
+      The researcher recorded the NAME as defective (filed debt) and the id as
+      correct. `id: correct` asserts no other live id denotes the same vehicle;
+      three do.
+
+  - claim: "motorcycle/aprilia/rxv id"
+    researcher: correct
+    my_verdict: 'defective(D8 — capacity rollup)'
+    confidence: high
+    why: >-
+      The researcher saw the gb Model 'RXV 4.5' and concluded "this record is
+      the 450". The Model column also carries RXV 5.5: 'RXV 4.5' 21 + '4.5 07' 6
+      + '4.5 08' 12 + '4.5 09' 13 + '4.5 MERRIMAN REPLICA' 1 = 53, against
+      'RXV 5.5' 7 + '5.5 07' 3 + '5.5 08' 7 + '5.5 09' 1 = 18. Two motorcycles.
+      motorcycle/aprilia/rxv450 {fi,ua} is live (no rxv550 id exists; the live
+      sxv550 is the supermoto, a different model). fi independently carries
+      'RXV 450' and 'RXV 550' as separate strings.
+      Same shape the researcher itself called defective for yamaha/xp and
+      yamaha/xsr in batch 1 — a gb GenModel pooling capacities.
+
+  - claim: "motorcycle/kawasaki/sr650 id"
+    researcher: correct
+    my_verdict: 'defective(D6 — token inversion)'
+    confidence: high
+    why: >-
+      motorcycle/kawasaki/z650sr 'Z650SR' {fi,nl} is live. This record's entire
+      evidence is nl 'SR 650' n=1 and nz 'SR650' n=1 — the same machine with the
+      tokens inverted, which is the researcher's own detector (3) shape, in a
+      record it held in its hands and whose name it called wrong for exactly
+      this reason. If the published string is an inversion of Kawasaki's
+      designation, then a live id carries the un-inverted designation, and
+      `id: correct` cannot stand.
+
+  near_misses_i_checked_and_cleared:
+    - "My dup.rb (token subset/permutation within make+kind) flags only four of the `id: correct` records: btc/riva (vs Riva 2, Riva Sport), vespa/elettrica (vs Primavera Elettrica), bmw/f800gs (vs F800GS Adventure), aprilia/tuareg-660 (vs Tuareg 660 Rally). All four are genuinely distinct products and the researcher explicitly cleared each. No manufactured disagreement here."
+    - "moped/honda/express `id: correct` UPHELD, and I checked the obvious risk: there is NO nc50 id in any kind, even though nz carries 'NC50' 33 and gb carries GenModels 'HONDA NC50' 23 / 'NC50B' 59 / 'NC50G' 110 / 'NC50K' 18 — every one is single-source below the 300 threshold. The researcher's reasoning was right."
+    - "motorcycle/brixton/bx125 `id: correct` UPHELD — gb pools BX 125 / BX 125 R / BX 125 X but no bx125r or bx125x id is live, so nothing is split."
+
+  count_corrections_that_are_not_new_defects:
+    - "moped/honda/cf50 — the Chaly cluster is FOUR moped ids, not three: cf50, cf50-chaly, chaly-cf50 AND bare `chaly` {nl,nz} (nl 'CHALY' 20, nz 'CHALY' 87), which the researcher missed. motorcycle/honda/chaly is a fifth, and may be legitimate: nl motorfiets carries 'CF 70 CHALY' and 'CHALY CF70' — a 70cc machine. Verdict unchanged, cluster larger."
+    - "motorcycle/ducati/m750-dark — the researcher lists m750, 750 and m as siblings and misses motorcycle/ducati/monster-750 {fi,nl}, which is the nameplate half of its own argument. Verdict unchanged, cluster larger."
+    - "motorcycle/suzuki/intruder-vs800glp — the researcher lists bare `intruder` {fi,lu,nl,nz} among the six ids for 'the Suzuki VS800 Intruder'. DO NOT. Bare INTRUDER is a family word: the same fi register carries VS700, VS800, VS1400, VL800 Volusia and VL1500 Intruders. Same trap as `shadow` and `dragstar`."
+
+# ═══════════════════════════════════════════════════════════════════════════
+# THE REMAINING DEFECTIVE VERDICTS — re-derived, grouped by outcome
+# ═══════════════════════════════════════════════════════════════════════════
+defective_claims_rederived:
+
+  upheld_with_marque_source_refetched_by_me:
+    - "motorcycle/harley-davidson/flhr (id+name), flht-touring (id+name), flstc-heritage-classic (id+name), xl883c-sportster (id+name), fxrp (name), rh1250s (id+name) — I re-fetched https://www.harley-davidson.com/us/en/content/expert-advice/harley-davidson-model-codes.html and it carries, verbatim and in all-caps: 'FLHR — Road King®', 'FLHT — Electra Glide®', 'FLHTC — Electra Glide® Classic', 'FLSTC — Heritage Softail® Classic', 'XL883 — Sportster® 883', 'RH1250S — Sportster® S', 'FXRP — Dyna Police Pursuit', plus 'FL: A Touring or Softail® model…' (so Touring IS the family) and 'VRSC: V-Rod® and other models powered by the Revolution® engine'. Every H-D citation in the ledger checks out."
+    - "motorcycle/harley-davidson/rh1250s — additionally https://www.harley-davidson.com/us/en/motorcycles/sportster-s.html uses 'Sportster® S' throughout and the string RH1250S appears nowhere on it."
+    - "motorcycle/harley-davidson/street-bob114 (name) — https://www.harley-davidson.com/us/en/motorcycles/street-bob.html renders 'Street Bob®', title case with a space, no all-caps BOB. The two-mechanism explanation (collapse then digit-freeze in the caser) is correct and worth keeping."
+    - "motorcycle/harley-davidson/road-glide-cvo (name) — the researcher's URL 404s for me too. WORKING SUBSTITUTE: https://www.harley-davidson.com/us/en/motorcycles/cvo-road-glide-st.html and the sibling CVO pages; H-D's own titles are 'CVO Road Glide', 'CVO Road Glide ST', 'CVO Road Glide RR'. CVO leads. UPHELD."
+    - "motorcycle/honda/nss350a, /xl750, /cb500x, /mx650 — https://www.honda.co.uk/motorcycles/range.html re-fetched: it lists 'Forza 350' and 'XL750 Transalp'; there is no NSS350/NSS350A, no CB500X (the successor NX500 is listed), and no MX-prefixed model. All four verdicts UPHELD, including the researcher's deliberate refusal to call mx650."
+    - "motorcycle/suzuki/uk110 (id+name) — globalsuzuki.com archive, see target_6b."
+    - "motorcycle/royal-alloy/gt125 (name) — https://royalalloy.co.uk/motorcycles/gt-125/ re-fetched: 'GT 125 AC', and the whole range spaced (GP 125 LC, GP 300, TG 125 AC, TG 125 LC, TG 300 LC). The DVLA GenModel is 'ROYAL ALLOY GT 125' spaced too. UPHELD."
+    - "motorcycle/triumph/bonneville-t100bud-ekins (name) — https://triumph-mediakits.com/en/news-articles/new-2020-bud-ekins-bonneville-t120-and-t100-special-editions.html re-fetched: Triumph writes 'Bonneville T100 Bud Ekins Special Edition', spaced. UPHELD."
+    - "motorcycle/ktm/250exc-tpi (name) — the researcher's URL https://www.ktm.com/ee/enduro/250-exc-tpi returns 404 to me. Substitutes that work: KTM's own current range page https://www.ktm.com/en-gb/models/enduro.html renders every model spaced with all-caps suffixes ('300 EXC', '250 EXC-F', '500 EXC-F 6DAYS'), and ktm.com's own page titles include 'KTM 250 EXC TPI SIX DAYS 2022' (https://www.ktm.com/en-sk/models/enduro/2-stroke/ktm-250-exc-tpi-sixdays2022.html). UPHELD."
+    - "motorcycle/lambretta/gp (name) — https://www.lambretta.com/classics/grand-prix-dl/ re-fetched: 'Grand Prix DL', and 'This model was only known as the GP on the UK and a few other markets, on all others it was known as the DL'; capacities 123/148/198 cc. UPHELD, and the researcher's id: correct (capacity umbrella over gp125/gp150/gp200) is corroborated by those three capacities."
+    - "motorcycle/cz/150c (name, and enrichment: correct) — https://www.4jawa.com/category/703/cz-150-c-1950-1953 re-fetched: 'ČZ 150 C [1950-1953]', spaced. Name UPHELD; enrichment {1950,1953} re-derives exactly."
+    - "moped/vespa/primavera (id) — https://storeusa.vespa.com/primavera.aspx re-fetched: PRIMAVERA 50cc, PRIMAVERA 150cc, PRIMAVERA SPORT 50cc/150cc, PRIMAVERA TECH 50cc/150cc. No unnumbered Primavera exists. UPHELD, and I add the weight the researcher did not: this record is GLOBAL DECILE 1 with 17,792 Dutch rows — by claim weight it is the heaviest id defect in the batch."
+
+  upheld_on_corpus_derivation_i_reproduced:
+    - "moped/honda/cf50 (id) — nl CF50 36 / 'CF 50' 22 / 'CF50 CHALY' 9 / 'CF 50 CHALY' 6 / 'CHALY' 20 / 'CHALY CF50' 1 / 'CHALY CF 50' 2; nz CF50 29 / CHALY 87 / 'CHALY CF50' 4 / 'CF50 CHALY' 2. Cluster is four ids (above)."
+    - "moped/honda/motocompo (id) — the in-cell join is real and richer than quoted: nl 'NCZ 50 MOTOCOMPO' 4, 'NCZ50 MOTOCOMPO' 3, 'MOTOCOMPO NCZ50' 1, 'NCZ 50B MOTOCOMPO' 1, 'HONDA AB12-MOTOCOMPO' 1, 'MOTOCOMPO AB12' 2; nz 'MOTOCOMPO NCZ50' 1."
+    - "moped/honda/sh50 (id, cross-kind) — nl bromfiets 'SH 50' 906 + 'SH50' 299; ua 1; gb Motorcycles GenModel 'HONDA SH50' 766 with Models 'SH50' 513 + 'SH50-H' 253. A 50cc scooter published in both kinds. UPHELD."
+    - "motorcycle/aprilia/sx50 (id+kind) — fi files 'APRILIA SX 50' as L1e (110 vehicles) and 'SX 50' L1e (38); nl bromfiets 'SX 50' 324 + 'APRILIA SX 50' 26; gb files 454 under BodyType Motorcycles. moped/aprilia/sx50 is live. UPHELD."
+    - "motorcycle/renault/twizy (id+kind) — see target_4. UPHELD."
+    - "motorcycle/honda/xl750, /nss350a, /cb500x (id) — sibling sets confirmed live; the Transalp family alone is 11 ids (transalp, transalp-600, transalp-600v, transalp-650, transalp-xl600vr, xl600v, xl600v-transalp, xl650v, xl650v-transalp, xl750, xl750c)."
+    - "motorcycle/piaggio/px200 (id+make+name) and motorcycle/vespa/px200 (id+name) — FOUR live ids across two makes (piaggio/px200, piaggio/px200e, vespa/px200, vespa/px200e). The moves.yml mechanism is exactly as described: the file carries 'Piaggio|Vespa PX200E' → 'Vespa|PX200E' (line 114) and no key for a bare 'PX 200', so uk_dft's 3,649 rows (make column PIAGGIO, model column PX 200) cannot be reached. make D11 UPHELD by the repo's own rule — moves.yml already accepts PX200E is a Vespa."
+    - "motorcycle/harley-davidson/vrsca-v-rod (id) — 23 VRSC* ids confirmed. NAME verdict: I DOWNGRADE the researcher's own confidence note into the record — H-D's code page does not enumerate VRSCA, and its other citation is a custom-parts blog. The id defect stands regardless; the name verdict should read 'defective(D6 — a code+nameplate concatenation)' on the in-corpus ground (es 'VRSCA VROD' 1 beside 'V-ROD' 1), not on the blog."
+    - "motorcycle/yamaha/mt-07 (id) — fi 'MTN690-A (MT-07)' n=117 beside 'MT-07' n=140 is a genuine in-cell join. Seven-country availability all verified."
+    - "motorcycle/yamaha/xv535-virago, /royal-star, /xj650-maxim, /gts (id) — sibling sets confirmed live; gts's gb evidence is 100% 'GTS 1000 A'."
+    - "motorcycle/triumph/t100-tiger, /trophy-tr6r (id) — sibling sets confirmed; the tr6r/tr6r-tiger contradiction is real and both are live."
+    - "motorcycle/honda/gl1500c-f6c, /shadow-1100, /anc (id) — confirmed, with the shadow scoping warning above."
+    - "motorcycle/harley-davidson/superlow (id) — strengthened by the DVLA Model 'SUPERLOW XL 883 L 13'."
+    - "motorcycle/piaggio/liberty-125, motorcycle/vespa/primavera-125 (id) — the ABS fold is settled policy (renames.yml:2400 'Primavera 150 Iget Abs' → 'Primavera 150 Iget', comment: 'ABS is EQUIPMENT and folds into the nameplate'). Verified in file. Both UPHELD. The researcher's D19 warning about unioning evidence is right and important: es carries 'VESPA PRIMAVERA 125 AB' 10 and 'VESPA PRIMAVERA 125ABS' 1 against 555 non-ABS, and the fi evidence sits only on the ABS id."
+    - "motorcycle/brixton/bx125 (name) — the ledger quote is accurate (data/review/brixton.yml:11-21) and the DVLA Model column writes 'BX 125' spaced. UPHELD — but see process_findings: this record is signed off `verdict: canonical` in that ledger, which is a conflict the researcher glossed."
+    - "motorcycle/bmw/r65t1c (id) — nl 'R 65 TIC' 86 + 'R65 TIC' 5 against two T1C rows. UPHELD."
+    - "motorcycle/kl-service/kxe300 (name) — UPHELD, see corpus_internal rulings."
+    - "motorcycle/harley-davidson/xlch-1000 (name) — casing only; id correctly NOT called. UPHELD."
+    - "motorcycle/sym/adx, /ktm/rc, /aprilia/rxv, /yamaha/gts, /honda/anc (name, casing) — UPHELD under rule (2)."
+    - "motorcycle/ducati/m750-dark (id) — UPHELD and strengthened: nl 'M750 MONSTER' 71, 'M 750 MONSTER' 5, 'M750  MONSTER' 1, 'M 750 - MONSTER' 1, fi 'MONSTER M750' 1. Five in-cell joins, not one."
+
+  upheld_but_the_citation_is_dead:
+    - claim: "motorcycle/ducati/m750-dark name: defective(D9)"
+      result: "UPHELD on the corpus, CITATION UNUSABLE"
+      note: >-
+        https://ducati-specs.com/models/ducati-monster-750.html does not resolve
+        at all (DNS ENOTFOUND). The defect survives without it — the corpus
+        proves M750 is the code and MONSTER the nameplate — but the ASSERTED
+        TARGET STRING 'Monster 750 Dark' is not sourced by anything reachable,
+        and ducati.com 403s. The ledger should record the target as unresolved.
+
+  overturned:
+    - "motorcycle/husqvarna/sm510 id -> correct  (target_2)"
+    - "motorcycle/bultaco/sherpa enrichment -> correct  (target_5)"
+    - "moped/la-souris/sourini-rs id -> unverifiable  (overrule_requests)"
+    - "motorcycle/puch/rla name -> unverifiable  (overrule_requests)"
+    - "motorcycle/mv-agusta/350s name -> unverifiable  (overrule_requests)"
+    - "motorcycle/suzuki/intruder-vs800glp name -> unverifiable  (corpus_internal rulings)"
+
+  reclassified_still_defective:
+    - "motorcycle/bultaco/sherpa name: D7 (target sherpa-t) -> D8 (family rollup). The proposed remedy would corrupt data."
+    - "motorcycle/kawasaki/sr650 name: D9 -> D7/inversion; stated ground ('appears in no source') refuted by nz 'SR650' n=1."
+    - "motorcycle/husqvarna/sm510 name: verdict stands, stated premise ('SM510 appears in no source') refuted by nl 'SM510' n=2."
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SPOT-CHECKS OF `correct` AND `unverifiable` (brief requires >=20% each)
+# ═══════════════════════════════════════════════════════════════════════════
+spot_checks:
+  correct_claims: >-
+    Far above 20%. All 236 availability claims re-derived; all 100 kind claims
+    checked against the raw register category behind each record (2 defective,
+    both the researcher's); all 100 make claims structurally re-derived (my
+    matcher requires the raw make to resolve through aliases.yml to the
+    record's make — 236/236 resolved); all 58 `id: correct` claims re-scanned
+    with my own duplicate detector plus the gb Model-column sweep.
+  enrichment_correct:
+    - "moped/dkw/hummel — https://cybermotorcycle.com/marques/dkw/dkw-hummel-115.htm re-fetched: 'Introduced in 1956' and 'Production ceased in 1965'. {1956,1965} re-derives exactly. UPHELD. (Note: that page is specifically the Hummel 115 and does not carry the 101/102/113/116 type numbers the researcher attributes to its corroborant, which I did not fetch.)"
+    - "motorcycle/cz/150c — 4jawa.com gives '[1950-1953]'. UPHELD."
+  unverifiable_claims: >-
+    26 of 54 checked, chosen as every one whose blocking source I might reach by
+    another route plus a random remainder. Outcomes:
+    * CONFIRMED still unverifiable (source genuinely unreachable to me too):
+      aprilia/tuareg-660, aprilia/sx50, vespa/elettrica, piaggio/bravo,
+      piaggio/liberty-125, ducati/multistrada-v4-pikes-peak,
+      royal-enfield/goan-classic-350, indian/scout-bobber-twenty,
+      yamaha/mt-07 (yamaha-motor.eu), yamaha/xt1200ze, yamaha/wr400f,
+      yamaha/xv535-virago, yamaha/royal-star, yamaha/xj650-maxim,
+      hanway/raw50s (DNS), masai/50, masai/125 (DNS), kymco/visar-125,
+      lexmoto/valiant, neco/azzuro-125, moto-guzzi/breva-1200,
+      moto-guzzi/v7-ambassador, honda/cb360, honda/cb500x, suzuki/dr125se,
+      deco/super-ace.
+    * NONE of the 26 should have been a verdict instead. The researcher's
+      restraint here is correct and I am not manufacturing disagreement: where
+      it said "I could not reach a source", it could not, and neither could I.
+  the_two_i_would_have_pushed_harder_on:
+    - "moped/peugeot/fb50qt-6a — the researcher flags that the identical code publishes under BOTH peugeot and qingqi in the same two countries and declines to merge. I agree with the refusal (resemblance is not identity). But the discriminator is in the data it already had: the FI TANs. It records e4*2002/24*0368*08 for the Peugeot. If the Qingqi row carries a different approval holder, they are two type approvals and both ids are right; if the same, it is one vehicle. One lookup, not a fetch. Queue it as a resolvable item rather than a source gap."
+    - "moped/tromox/mino — the researcher notes gb has 34 Mino rows the record does not claim and calls it 'D19-adjacent'. Correct, and the Model column says 'MINO 45', i.e. a 45 km/h machine — a moped filed in the UK's motorcycle body type. That is a D25 instance, not just a missing availability."
+
+# ═══════════════════════════════════════════════════════════════════════════
+# CORRECTED CLAIM TALLY — the researcher's coverage caveat PRESERVED
+# ═══════════════════════════════════════════════════════════════════════════
+corrected_tally:
+  total: 640    # unchanged: 100 id + 100 name + 100 make + 100 kind + 236 availability + 4 enrichment
+  availability: { total: 236, correct: 235, defective: 1,  unverifiable: 0 }
+  id:           { total: 100, correct: 56,  defective: 43, unverifiable: 1 }
+  name:         { total: 100, correct: 9,   defective: 34, unverifiable: 57 }
+  make:         { total: 100, correct: 99,  defective: 1,  unverifiable: 0 }
+  kind:         { total: 100, correct: 98,  defective: 2,  unverifiable: 0 }
+  enrichment:   { total: 4,   correct: 3,   defective: 1,  unverifiable: 0 }
+  conservative_clean_rate: "500 / 640 = 78.1%   (researcher: 502/640 = 78.4%)"
+  HOW_TO_READ_THE_NAME_ROW: >-
+    THE RESEARCHER'S CAVEAT STANDS AND I AM NOT RECOMPUTING OVER 100. After my
+    three demotions the split is:
+      name, with a verdict:   9 correct / 34 defective   (43 claims)
+      name, no verdict:       57 claims, blocked by 403/404/DNS, not by the data
+    The 43 are NOT a random subsample — the researcher spent its fetch budget
+    where a source would settle a suspicion, so their defect rate is
+    upward-biased and MUST NOT be extrapolated to the other 57. That warning was
+    the researcher's and it was the right thing to write.
+  direction_of_my_corrections: >-
+    Unlike batch 1, my corrections do NOT all run one way. Three defects were
+    over-called (sm510 id, sherpa enrichment, sourini-rs id) and three
+    marque-rendering claims were asserted without a reachable source
+    (puch/rla, mv-agusta/350s, intruder-vs800glp name). Against that, four
+    defects were under-called (sm510 gb availability, cfmoto/800 id,
+    aprilia/rxv id, sr650 id). Net: 84 -> 82 defective claims, and the clean
+    rate barely moves. The researcher's aggregate is close to right; its
+    individual reasoning is what needed attacking.
+
+# ═══════════════════════════════════════════════════════════════════════════
+# MY INDEPENDENT VIEW ON D24 AND D25
+# ═══════════════════════════════════════════════════════════════════════════
+my_view_on_the_new_classes:
+
+  D24_code_and_nameplate_co_publication:
+    real: "YES. Unambiguously. I found it independently in every head make I touched."
+    correctly_scoped: >-
+      NO, in two ways that matter for a curation PR.
+      (1) The headline count is not reproducible (target_1). Publish the range
+          or the reproducible 1,755, not 262.
+      (2) THE CLASS IS BEING CONFLATED WITH FAMILY ROLLUPS, and that is the
+          dangerous half. 'FLHR' vs 'FLHR Road King' is one machine at two ids.
+          Bare 'Shadow', bare 'Intruder', bare 'Sherpa', bare 'A65' (batch 1),
+          bare 'Dragstar' (batch 1) are NOT — they are family words spanning
+          several displacements, and every one of them appears in a D24 sibling
+          list in this ledger. Folding a family word into one member relabels
+          the others. That is a data-corruption path, not a de-duplication.
+          The taxonomy entry must SPLIT: D24a = code ⟷ nameplate for ONE machine
+          (fold, with former_ids); D24b = bare family word (needs the variant
+          layer or a removals manifest, never a fold).
+    novel: >-
+      The detector is novel and I confirmed the premise: I ran
+      find_duplicate_spellings and find_casing_contradictions myself against the
+      audited build and both are silent, and NFKD folding provably cannot equate
+      'FLHR' with 'FLHR Road King'. But the SHAPE is not new to this repo —
+      name_shapes.yml's Kreidler K53 entry states the blocker verbatim, and
+      batch 1's FINDING-A proposed the same subset/permutation detector. What
+      is new is the scale in the head makes and detector (1), the in-data join.
+    my_recommendation: >-
+      Adopt detector (1) — the in-cell code⟷nameplate join — NOW. It is the only
+      one of the three that is self-evidencing, and I verified nine of the cells
+      the researcher lists (VARADERO-SD02D/996, M750 MONSTER, XL883C SPORTSTER
+      CUSTOM, MTN690-A (MT-07), XT1200ZE (XT1200ZE Super Tenere),
+      SHADOW-VT1100C2-SC32/1099, KZ 650 SR CSR 650, NCZ 50 MOTOCOMPO,
+      CF50 CHALY) exist exactly as quoted. Hold (2) and (3) behind a
+      family-word exclusion list, and make the worklist emit BOTH the pair and
+      the raw spellings behind each side, so a reviewer sees a 400/650/1100
+      spread before folding.
+
+  D25_source_vocabulary_decides_the_kind:
+    real: "YES, and it is the better-evidenced of the two by a wide margin."
+    correctly_scoped: "YES. Every one of the five numbers reproduces exactly, the 18-item list is identical to mine, and the two mechanisms are documented in the repo's own kind_map headers."
+    novel: >-
+      PARTLY, and the researcher says so honestly. D10 already covers 'wrong
+      kind' and PROPOSAL-kind-boundary.md §Q2 already decides where L6e/L7e go.
+      What is genuinely new and actionable is the pair it identifies:
+      (a) 'Driewielig motorrijtuig: motorcycle' is a SECOND, independent route
+          into the wrong kind and is absent from the proposal's Revised plan —
+          I verified this line by line. Executing the plan as written moves the
+          FI/ES/LU/NZ Twizy to `car` and strands 598 Dutch rows in `motorcycle`,
+          i.e. it makes the split worse before it makes it better.
+      (b) the uk_dft moped merge produces cross-kind DUPLICATE IDS, not merely
+          wrong kinds — 18 of them, enumerated, zero ambiguity. That reframes it
+          from a kind problem into an id-canonical one, which is the researcher's
+          own best insight in this ledger.
+      I would add one item to its change list: the DVLA Model column is the
+      cheap discriminator for mechanism (a). 'SYM MASK' → MASK 50/MASK 125,
+      'YAMAHA BW' → BW 50/BW SPY, 'TROMOX MINO' → MINO 45. Those rows announce
+      their own capacity class and nothing reads them.
+
+  the_two_observations:
+    uk_dft_genmodel_truncation: "REAL and UNDER-sold, but its stated mechanism is FALSE (target_6c). Rewrite it: the Model column is NOT parsed; adding it is a source-adapter change; and its best justification is not truncation but MIS-ATTRIBUTION (husqvarna/sm510)."
+    debt_entry_catch_all: "REAL and provable from lint_dataset.rb's own fall-through, but one of its two examples is wrong (aprilia/sb has no digits and matches no detector at all) and the count is 269 not 267. Add `bare-displacement-2w`, which has the identical shape."
+    corroboration_is_not_nameplate_evidence: "REAL, fully verified, and the strongest of the four observations. Five sources agreeing on 'UK110' against Suzuki's own 'Address 110' is a clean demonstration, and the suggested guard (no exemption when every corroborating string is make+number or a bare code) is well formed."
+
+# ═══════════════════════════════════════════════════════════════════════════
+# PROCESS FINDINGS FOR THE PROGRAMME
+# ═══════════════════════════════════════════════════════════════════════════
+process_findings:
+  citation_re_fetchability: >-
+    LOUD. Batch 1's verification found TWO cited URLs that could not be
+    re-fetched as written. Batch 2 has SIX:
+      ducati-specs.com                      — DNS does not resolve
+      www.motorbooks.at/puch-…              — HTTP 403
+      sites.google.com/site/puchnz/rla-125  — 302 to a Google login; not public
+      www.autoevolution.com/moto/…/350-s/   — HTTP 403
+      harley-davidson.com/…/cvo-road-glide.html — 404 (the researcher warned)
+      www.ktm.com/ee/enduro/250-exc-tpi     — 404 (indexed but dead)
+    Two of them (puch, mv-agusta) were the SOLE support for a defective verdict
+    and both verdicts fall as a result. Suggest the ledger format require a
+    fetched-at date and that verification re-fetch every cited URL, which is
+    what I did.
+  a_citation_that_does_not_contain_its_claim: >-
+    moped/nsu/quickly-t is the second instance in two batches (batch 1:
+    hondanews.eu / NSC50) of a cited page that does not contain the fact it is
+    cited for — and here the page says the OPPOSITE (1953-1968). The fact was
+    still true; the process still failed. Worth an explicit protocol line:
+    quote the sentence you are relying on, in the ledger, at write time.
+  a_defect_signed_off_as_canonical: >-
+    The false-positive sweep (I grepped former_ids.yml, renames.yml,
+    removals.yml, moves.yml, styling.yml, name_shapes.yml and all of
+    data/review/ for every id carrying a defective verdict) is clean except for
+    ONE: motorcycle/brixton/bx125 carries `verdict: canonical` in
+    data/review/brixton.yml while the same entry's note says the marque writes
+    'BX 125' and we write 'BX125'. A ledger cannot record a string as
+    non-canonical and sign it off as canonical. Either the verdict field needs a
+    `canonical-pending-decision` value, or the record is defective and should
+    say so. Every other former_ids hit is a display-form respacing from the 2W
+    spacing release and conflicts with nothing.
+  the_availability_method_needs_one_more_leg: >-
+    The researcher's own stated limit — "it cannot catch a mis-ROUTED row" — is
+    not hypothetical. Adding the DVLA Model column to the verification recipe
+    (not the pipeline; just the check) cost me one script and caught one
+    defective availability claim plus two id rollups in 100 records. Recommend
+    it become standard for every gb-evidenced record in future batches.
+
+# ═══════════════════════════════════════════════════════════════════════════
+positives_i_confirm:
+  - "236/236 availability claims re-derived independently. The evidence layer is sound and the researcher's statement about it is accurate, not optimistic."
+  - "Dozens of published raw counts reproduce to the row from a completely separate flattener. Whatever else, the corpus work in result-b2.yml is honest."
+  - "Every H-D and Honda-UK citation re-fetched clean, and the H-D model-code page is exactly as quoted."
+  - "The researcher's decile attributions are all correct — I checked fourteen and every one matches (sd02 dec 1, xl750 dec 1, nss350a dec 1, ktm/rc dec 1, mt-07 dec 2, 250exc-tpi dec 2, r65t1c/flht-touring/mx650/intruder-vs800glp dec 9, m750-dark/road-glide-cvo/sr650/rla dec 10)."
+  - "Its refusals are as valuable as its calls: honda/mx650 (no fold target), peugeot/fb50qt-6a (no merge on resemblance), moto-guzzi/v7-ambassador, and moped/yamaha/bw-s's name are all correctly left alone, and I would have made the same four calls."
+  - "The Piaggio→Vespa move plus former_ids machinery works; NAMING §7.4's comma-joined-cell rule held on zycar/z2l (I confirmed the 8-code cell did not become a model); the 2W spacing release's aliases are present for dz3-sport (former_ids.yml:412) and tuareg-660 (:224) at the exact lines cited."

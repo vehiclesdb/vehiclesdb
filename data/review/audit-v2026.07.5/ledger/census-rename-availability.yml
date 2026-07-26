@@ -1,0 +1,373 @@
+# Blast radius of "rename-propagated availability" on the 2W half
+# researcher: audit-b4 (read-only; no writes or git in any repo)
+# tag: v2026.07.5 build at build/out/catalog
+#
+# HEADLINE, stated first because it is a partial REFUTATION:
+#   The MECHANISM batch 3 identified is real and I reproduced it exactly.
+#   Their INSTANCE is not a defect: every Nimbus ever built is a 746cc four, so
+#   resolving a bare "NIMBUS" row to "750" narrows nothing and NZ's registration
+#   genuinely is a 750. b3's single availability defect should be WITHDRAWN.
+#   Catalog-wide on the 2W half the class costs 3 fabricated country-claims out
+#   of 17,553 (0.017%), and one of those 3 is already documented in the rename's
+#   own comment. This is a narrow class, not a systemic one.
+
+method:
+  step_1_discriminator:
+    what_i_enumerated: >-
+      Every non-null line in overrides/models/renames.yml (1,872 lines), classified
+      by the INFORMATION RELATION between key and value, comparing
+      norm(s) = upcase + strip all non-alphanumerics:
+        identical_respacing  1359  norm(key) == norm(value) — pure spacing/casing
+        value_drops_info      385  norm(key) ⊃ norm(value) — trim/variant folded UP
+        disjoint               95  neither contains the other
+        value_adds_infix       25  norm(key) ⊂ norm(value), not at the start
+        value_adds_prefix       8  norm(key) is a strict prefix of norm(value)
+      FLAGGED as candidate under-specified keys: the last three buckets, 128 lines.
+      make_as_model lines (norm(key) == norm(make)) anywhere in the file: 4.
+    why_the_string_test_is_not_enough: >-
+      I read all 128 flagged lines by hand and the string relation is a poor proxy.
+      The `disjoint` bucket is dominated by LEGITIMATE folds — Derbi trim names
+      (Black Devil → Senda 50), Polestar/Omoda/Jaecoo trim strings
+      (2 Dual Motor → Polestar 2), Volvo body-variant numbers (144 → 140), Mk
+      numeral normalisations, token reorders (300GT Max → GT-MAX 300, 200LE →
+      LE200) and accent fixes. And most of `value_adds_infix` is the marque word
+      being added (3 → MAZDA3, 5 → Omoda 5), which adds NO model information.
+    the_operative_test: >-
+      A rename can fabricate availability only if it NARROWS THE IDENTITY SET —
+      i.e. the key's set of possible machines is strictly larger than the value's.
+      Adding a family word that every member of the key's set already shares
+      (Rally 307 → Aventura Rally 307) names the machine more fully without
+      narrowing, and the country did register that machine. That distinction —
+      NARROWING vs NAMING — is what separates fabricated from legitimately
+      inherited, and it is the whole finding.
+  step_2_per_country_test:
+    axis_A_mechanical: >-
+      For each claimed country, scan that country's raw rows under the record's
+      make (make aliases resolved first, make-prefix stripped) for rows that
+      RESOLVE to this id — either matching norm(value) directly or matching any
+      rename key in the same make that maps to the same value. Then ask whether
+      any such row NAMES the model: every distinguishing token of the value
+      (alnum runs, letter/digit boundaries split) must appear, with digit tokens
+      matched on a digit boundary so "50" does not match inside "500".
+      Result: named_model | VAGUE_ONLY | NO_RESOLVING_ROW.
+    axis_B_semantic: >-
+      For every VAGUE_ONLY country, decide by SOURCE whether the resolution
+      narrows. This is the step that cannot be automated and it is where b3's
+      instance turns over.
+  corpora: "the same eight locally cached registers as batch 4 (all_raw.txt, 136,104 rows); uk_dft joined on GenModel per uk_dft.rb"
+  scripts: ["scratchpad/blast_b4_avail.rb  # bucket census", "scratchpad/blast_b4_v2.rb  # per-country token test", "scratchpad/blast_b4_v3.rb  # completeness pass over ALL flagged lines"]
+
+funnel:
+  renames_non_null_lines: 1872
+  flagged_under_specified_keys: 128
+  flagged_lines_with_a_live_2W_target: 49
+  distinct_2W_records_touched: 33
+  records_with_at_least_one_VAGUE_ONLY_country: 12
+  VAGUE_ONLY_country_claims_examined: 19
+  # adjudicated below, by source:
+  fabricated: 3
+  legitimately_inherited: 14
+  excluded_no_model_information_added: 2
+
+# ─────────────────────────────────────────────────────────────────────────────
+fabricated:   # the register never named this model AND the resolution narrows
+
+  - id: motorcycle/derbi/senda-125
+    country: gb
+    vehicles: 1728
+    rename: '"Senda" -> "Senda 125"  (renames.yml Derbi block, line ~375)'
+    narrowing: >-
+      "Senda" is a Derbi FAMILY spanning the 50cc mopeds (Senda R / SM / X-Treme /
+      DRD, all published as moped/derbi/senda-50) and the 125cc motorcycles. The
+      value asserts the 125.
+    why_gb_cannot_have_named_it: >-
+      DVLA's GenModel is a family stem and the only Derbi Senda GenModel is
+      "DERBI SENDA" (1,728 licensed+SORN). uk_dft has no moped class at all
+      (overrides/kind_maps/uk_dft.yml: "UK merges mopeds INTO Motorcycles"), so
+      the UK's 50cc Sendas are inside that 1,728 and there is no gb claim on
+      moped/derbi/senda-50 for them to land on instead.
+    status: DOCUMENTED_AND_DELIBERATE
+    the_comment_says_so: >-
+      renames.yml line ~375 reads: "motorcycle-kind bare Senda: FI rows are the
+      125 (TAN e9*92/61*0130*01); UK rows land here too (VEH0120 merges mopeds
+      into Motorcycles by design — kind_maps/uk_dft.yml)". So curation identified
+      this exact propagation and accepted it. Under the audit protocol's
+      deliberate-decision rule this is a decision to disagree with, not an
+      undetected defect — but the gb claim is still substantively wrong, and it is
+      the single largest vehicle count in the class by two orders of magnitude.
+    relation_to_my_batch_4_finding: >-
+      This is the SAME root cause as F3 (uk_dft's moped merge minting cross-kind
+      duplicates), reached from the other direction. F3 found the merge creating a
+      spurious motorcycle-kind RECORD; this finds it creating a spurious
+      motorcycle-kind COUNTRY on a real record. One fix addresses both.
+
+  - id: motorcycle/sherco/50
+    country: es
+    vehicles: 26
+    rename: '"N.a" -> "50"  (renames.yml Sherco block, line ~2163)'
+    narrowing: >-
+      The key is a literal not-available PLACEHOLDER ("N.A" / "N/A"), so its
+      identity set is every Sherco. The value asserts a 50.
+    why_es_cannot_have_named_it: >-
+      es_dgt carries SHERCO "N.A" in TWO categories: *02 (mopeds 50cc, n=297) and
+      *05 (motorcycles by displacement, n=26). The *05 rows are what feed this
+      MOTORCYCLE-kind record, and a *05 Sherco can be a 125/250/300 — Sherco's
+      es-evidenced motorcycle range in this same corpus includes 125 SE, 250 SE,
+      300 SE, 300 SEF.
+    why_this_is_the_sharp_case: >-
+      The rename's own justification is explicitly about mopeds — "RDW registers
+      Sherco's 50cc mopeds as handelsbenaming 'N/A' (~806 rows, all 50cc,
+      e13*168/2013*00339)". That reasoning is sound and I accepted it for the
+      moped record (see legitimately_inherited below). It does NOT reach the 26
+      es motorcycle-class rows, which the same one-line rename also captures.
+      A rename keyed on a placeholder cannot be scoped by kind, so a justification
+      that holds for one kind silently applies to the other.
+
+  - id: moped/elmoto/hr-2
+    country: fi
+    vehicles: 1
+    rename: '"Elmoto" -> "HR-2"  (make-as-model)'
+    narrowing: >-
+      Elmoto markets TWO mopeds, the HR-2 and the HR-4 Loop, so a bare "ELMOTO"
+      row is ambiguous between them.
+    evidence:
+      - "https://www.e-scooter.co/elmoto-hr-4-loop/  # 'The HR-4 Loop is a second generation electric moped by Elmoto'"
+      - "https://www.designboom.com/design/elmoto-hr-2-electric-bike/  # the HR-2"
+      - "raw: fi_traficom 'Elmoto | ELMOTO' n=1 — the only fi row; nl has 'HR-2' n=1 beside 'ELMOTO' n=13"
+    note: >-
+      One vehicle, so the practical impact is nil; it is listed because it is the
+      only UNDOCUMENTED, genuinely-narrowing instance the sweep found besides the
+      Sherco es case. Note the nl side is legitimate (nl does name HR-2).
+
+# ─────────────────────────────────────────────────────────────────────────────
+legitimately_inherited:   # resolution does NOT narrow — the country registered
+                          # the same machine under a vaguer or aliased string
+
+  - id: motorcycle/nimbus/750
+    countries: [nz]
+    vehicles: 6
+    rename: '"Nimbus" -> "750"  (make-as-model)'
+    verdict: NOT_A_DEFECT
+    reasoning: >-
+      THIS IS THE REFUTATION OF BATCH 3'S ONLY AVAILABILITY DEFECT. Nimbus
+      (Fisker & Nielsen, Copenhagen, 1919-1960) built the Model A "Stovepipe",
+      the Model B and the Model C — and ALL of them are 746cc air-cooled inline
+      fours. The A/B use an inlet-over-exhaust head, the C an overhead cam, but
+      the displacement never changed. So "750" does not narrow the identity set
+      at all: whatever the NZ machines are, they are 750s. The rename resolves a
+      make-as-model row to the one thing that is true of every member of the set.
+    evidence:
+      - "https://cars.bonhams.com/auction/18362/lot/62/1923-nimbus-746cc-four-frame-no-183-engine-no-n1217/  # 1923 Nimbus 746cc Four"
+      - "https://cars.bonhams.com/auction/23804/lot/195/1926-nimbus-746cc-model-b-engine-no-t0-1090/  # 1926 Nimbus 746cc Model B"
+      - "https://cars.bonhams.com/auction/24885/lot/434/1939-nimbus-746cc-model-c-frame-no-5106-engine-no-5106/  # 1939 Nimbus 746cc Model C"
+      - "https://thegirderclub.com/2025/03/12/stovepipes-and-bumblebees-the-story-of-the-nimbus/  # 'The first Nimbus motorcycle had a 10bhp, four-cylinder, air-cooled, in-line engine of 746cc capacity'"
+      - "http://www.nimbusclubusa.com/nimbus/  # marque club: three models A/B/C; gives 746cc for the Model C"
+    honest_caveat: >-
+      The marque club's own page states 746cc only for the Model C and gives no
+      figure for A/B. The A/B displacement rests on the Bonhams catalogue
+      descriptions and the specialist history above, not on the club. Wikipedia
+      also asserts "both with a 750 cc four-cylinder engine" but the standing
+      Wikipedia rule means nothing here rests on it — it was a locator only.
+    what_b3_got_right: >-
+      The mechanism, completely. A rename that resolves an under-specified raw
+      string does propagate availability to every country that emitted the vague
+      form, no detector fires, and a make/model-existence availability check
+      cannot see it. That is a real and previously unfiled class. What was missing
+      was the narrowing test.
+
+  - id: moped/sherco/50
+    countries: [es, nl]
+    vehicles: 1106
+    rename: '"N.a" -> "50"'
+    verdict: NOT_A_DEFECT
+    reasoning: >-
+      Same rename line as the fabricated motorcycle case above, opposite verdict,
+      and the difference is the register's own vehicle class. The displacement is
+      DERIVED FROM THE REGISTERS, not asserted: nl_rdw's soort is BROMFIETS
+      (Dutch law: ≤50cc) for 809 of these rows, and es_dgt's category is *02
+      (mopeds 50cc) for 297. The rename's comment additionally cites a single
+      shared type-approval number (e13*168/2013*00339) across the ~806 RDW rows.
+      A row can be an unknown Sherco MODEL and still be a known 50, so the
+      country did register a 50cc Sherco.
+    residual_defect_that_is_NOT_this_class: >-
+      The record's NAME is a bare displacement pooling several real Sherco 50
+      nameplates (moped/sherco/50-sm is live beside it), which is the filed
+      bare-displacement-2w / numeric_only question — and the rename comment says
+      so deliberately ("the '50' umbrella stays for the unresolvable N/A rows").
+      Do not let the availability verdict launder the naming one.
+
+  - id: motorcycle/gas-gas/es-700
+    countries: [gb, nz]
+    vehicles: 224
+    rename: '"Es" -> "ES 700"'
+    verdict: NOT_A_DEFECT
+    reasoning: >-
+      GASGAS has exactly one ES-prefixed model, the ES 700 (launched 2022
+      alongside the SM 700). gasgas.com's model tree carries es-700-2022 and
+      es-700-2024 under /models/travel/ and no other ES machine at any
+      displacement, so a bare "ES" row cannot be anything else.
+    evidence:
+      - "https://www.gasgas.com/en-us/news/get-on-the-gas-with-the-new-gasgas-sm-700-and-es-700-.html  # the ES 700's launch, paired only with the SM 700"
+      - "https://www.gasgas.com/en-us/models/travel/es-700-2024.html"
+      - "https://www.gasgas.com/en-us/models/motorcycles.html  # current model tree: MC / EC / EX / TXT only — no second ES"
+    caveat: "a negative proved from the marque's own model tree rather than exhaustively; if a historic ES ever existed at another displacement this flips."
+    note: >-
+      styling.yml already records that this line carries gb/nz evidence — the
+      480-ES comment says the ES acronym token "orphaned Gas Gas 'Es: ES 700'
+      (gb/nz evidence lost, spotcheck caught it)". So the propagation was known
+      and its loss was treated as a REGRESSION, which is the correct reading if
+      the inheritance is legitimate. It is.
+
+  - id: motorcycle/rieju/aventura-rally-307
+    countries: [es, gb, nl]
+    vehicles: 974
+    rename: '"Rally 307" -> "Aventura Rally 307"'
+    verdict: NOT_A_DEFECT
+    reasoning: >-
+      No register anywhere names "Aventura" — all three countries carry only
+      "RALLY 307" / "RIEJU RALLY 307". But Aventura is the FAMILY word that every
+      Rally 307 shares: Rieju's own model pages file the bike as "Aventura Rally
+      307" (and the hard-enduro sibling as "Aventura Rally 307 R"). Adding it
+      names the machine more fully without excluding any member of the key's set,
+      and the discriminating token 307 is present in every raw.
+    evidence:
+      - "https://rieju.com/us/off-road/121/522/aventura-rally-307  # marque model page"
+      - "https://rieju.com/us/hard-offroad/129/439/aventura-rally-307r  # the R sibling, which the raws do not claim"
+    note: "this is the archetype of the NAMING-not-narrowing case and the reason the string-relation test alone would have produced a false positive here."
+
+  - id: moped/talaria/xxx
+    countries: [es]
+    vehicles: 1
+    rename: '"TL2500" -> "XXX"'
+    verdict: NOT_A_DEFECT
+    reasoning: >-
+      TL2500 is the type code of the machine Talaria sells as the XXX — a 1:1
+      alias, no narrowing. Already sourced inside the project: styling.yml's XXX
+      entry records that "Raw RDW pairs it explicitly: 'TL2500, XXX'
+      (https://talaria.bike/), n=6".
+    evidence: ["overrides/styling.yml stylings: XXX", "raw: es_dgt 'TALARIA | TL2500' n=1"]
+
+  - id: motorcycle/gas-gas/ec
+    countries: [lu]
+    vehicles: 3
+    rename: '"Enducross" -> "EC"  (and "Cg" -> "EC")'
+    verdict: NOT_A_DEFECT
+    reasoning: >-
+      EC literally abbreviates Enducross — styling.yml's own pin reads
+      "EC # Gas Gas EC (Enducross) family — official all-caps (gasgas.com)". Key
+      and value denote the identical set, and the target record is itself
+      family-level ("EC"), so nothing is narrowed.
+    evidence: ["overrides/styling.yml stylings: EC", "raw: lu_snca 'GAS-GAS | ENDUCROSS' n=3"]
+
+  - id: motorcycle/trs/one-300
+    countries: [es, nl]
+    vehicles: 21
+    rename: '"TR1 300" -> "One 300"'
+    verdict: NOT_A_DEFECT_ON_THE_AVAILABILITY_AXIS
+    reasoning: >-
+      The discriminating token (300) is present in every raw; only the family word
+      changes, so the identity set cannot narrow and availability cannot be
+      fabricated. Consistent with the sourced sibling line "Trrs One: One"
+      (trsmotorcycles.com), where TRS bikes are badged TRRS.
+    undecided: >-
+      Whether "TR1" really is the TRRS One and not some other TRS line is
+      UNSOURCED — I could not confirm it. Recording that rather than deciding it.
+      It is an identity question about the record, not a fabricated-availability
+      question, so it does not move the number either way.
+
+  - id: motorcycle/gas-gas/txt
+    countries: [fi, nl]
+    vehicles: 6
+    rename: '"Tg" -> "TXT"'
+    verdict: NOT_A_DEFECT_ON_THE_AVAILABILITY_AXIS
+    undecided: >-
+      I could NOT establish what Gas Gas "TG" is. Both key and value are bare
+      family strings with no displacement or variant, so no narrowing occurs and
+      availability cannot be fabricated by this mechanism — but if TG is a
+      different Gas Gas line entirely then this is a MIS-ATTRIBUTION rather than
+      an inheritance, which is a different (and worse) defect class. Flagged
+      undecided per instruction 5; resolving it needs a Gas Gas source I did not
+      find.
+    evidence: ["raw: fi_traficom 'Gas Gas | TG' n=1; nl_rdw 'GAS GAS | TG' n=5"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+excluded_no_model_information_added:
+
+  - id: moped/unu/scooter
+    countries: [es, nl]
+    vehicles: 298
+    rename: '"Unu" -> "Scooter"  (make-as-model)'
+    why_excluded: >-
+      Neither register named "Scooter" — but "Scooter" carries no model
+      information, so the identity set is unchanged and no availability claim is
+      fabricated. Counting it would inflate the number with a case that is really
+      about the NAME.
+    what_it_actually_is: >-
+      An instance of the descriptor_as_model class I proposed as F5 in batch 4,
+      arriving through a rename rather than straight from a register. It sits
+      beside moped/vespa/scooter, motorcycle/vespa/scooter, moped/honda/moped and
+      harley-davidson/custom|trike. Worth adding to F5's worklist: renames.yml is
+      a second SOURCE of that class, which the detector spec I wrote (match the
+      published name against a closed descriptor vocabulary) already covers,
+      since it reads the published catalog rather than the raws.
+
+# ─────────────────────────────────────────────────────────────────────────────
+rates:
+  against_the_2W_catalog:
+    records: 7083
+    availability_claims: 17553
+    fabricated_claims: 3
+    rate: "3 / 17,553 = 0.017% of 2W availability claims"
+    fabricated_excluding_the_documented_one: "2 / 17,553 = 0.011%"
+    vehicles_affected: "1,755 registrations, of which 1,728 are the single documented Derbi gb claim"
+  against_the_953_claims_the_four_batches_passed:
+    denominator: "236 (b2) + 251 (b1) + 237 (b4) + 229 (b3) = 953"
+    overlap_with_the_affected_records: >-
+      Of the 12 records this class touches, exactly ONE is known to have been
+      sampled: motorcycle/nimbus/750, in batch 3. None of the other 11 appear in
+      batch 4's list, and I cannot see b1/b2's lists to check theirs.
+    corrected_figure: >-
+      b3's single availability defect is REFUTED, so the collective figure moves
+      the OTHER WAY: 953 / 953 correct, not 952 / 953. The class does not undercut
+      the reported availability rate at all — on the sampled evidence it improves
+      it by one claim.
+    honest_reading: >-
+      Do not present 3/17,553 as a correction to the sampled rate. They are
+      different populations: the sampled rate is an estimate with a
+      Clopper-Pearson interval, and 3 is a CENSUS of a specific mechanism across
+      the whole 2W half. State them separately. The right sentence is: "the
+      sampled availability rate is unchanged (and one reported defect is
+      withdrawn); a targeted census of rename-propagated availability found 3
+      fabricated country-claims catalog-wide on the 2W half, 1 of them already
+      documented in curation."
+
+verdict_on_the_class:
+  is_it_real: >-
+    Yes. The mechanism is exactly as batch 3 described and it is invisible to
+    every check we ran, including my own availability sweep — I verified that a
+    row exists for the make/model, which cannot distinguish a row that named the
+    model from a row that was renamed into it.
+  is_it_systemic: >-
+    No. 1,872 rename lines; 128 have an under-specified key by the string test;
+    49 of those have a live 2W target; 12 records have any vague-only country;
+    3 country-claims survive the narrowing test. The bucket census is the reason
+    to be calm about it: 1,359 lines are pure respacing and 385 fold a specific
+    variant UP into a general model, and neither direction can fabricate anything.
+  the_two_shapes_worth_a_taxonomy_entry:
+    - "PLACEHOLDER RESOLUTION — a rename keyed on a not-available string ('N.a', 'N/A', '-', 'Uoplyst') cannot be scoped by kind or category, so a justification that is sound for one register class silently applies to the others. The Sherco line is sound for nl bromfiets and es *02 and wrong for es *05, from ONE line. This is the shape I would file."
+    - "FAMILY-STEM RESOLUTION ACROSS A KIND BOUNDARY — a register whose model column is a family stem (DVLA GenModel) combined with a register that merges mopeds into motorcycles routes a whole country's family fleet onto whichever displacement id curation picked. Already documented for Derbi; the general risk is any make with a 50cc and a 125cc line sharing a family name."
+  detector_spec: >-
+    Reuse the sweep in scratchpad/blast_b4_v2.rb. For every rename line where
+    norm(key) is not information-equal to norm(value) AND the value is not a
+    strict reduction of the key, emit the target id and, per claimed country,
+    whether any resolving raw row contains every distinguishing token of the
+    value. Countries with none are the worklist — 19 lines catalog-wide on the 2W
+    half, which is a human-sized review, not a sweep. Then the NARROWING question
+    is asked once per rename line (14 lines), not once per record.
+    Cheap pre-filter that removes most false positives for free: skip any line
+    whose value differs from its key only by the marque word or by punctuation.
+  what_would_change_my_answer: >-
+    A make where the register's family stem spans two displacements AND both
+    displacement ids are live AND the vague country is not uk_dft would be a
+    fourth instance with no documentation behind it. I looked for that pattern
+    and Derbi/Senda is the only one on the 2W half.
