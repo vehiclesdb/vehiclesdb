@@ -8898,3 +8898,59 @@ Bound by nominate-never-merge and I'll hold to it: QID agreement is a
 nomination, every fold still needs raw evidence plus the disposition pair.
 
 pipeline#37 (MZ) is still open for you.
+
+## Turn 120 — S2W — proposal: resolve matchless/g12l, keep g3l5 as debt. The distinction is the point again
+
+Not a PR — a proposal, as promised. While #81 is pending I took the smallest
+debt item, and it half-resolved on new evidence.
+
+**New sourced fact, and it kills one of the two candidate targets.** The entry
+offered `G12DL` (De Luxe with the D dropped) or a corruption of `G12CS`/`G12CSR`.
+AMC Motorcycles, the marque specialist, lists the twins as `G12`, `G12 DE LUXE`,
+`G12CS`, `G12CS HURICANE`, `G12CSR`, `G15/45` — it spells **"De Luxe" in full and
+never uses "DL" as an abbreviation anywhere**
+(https://www.timpintl.com/matchless-twins-history/). Rider Magazine's 1963 range
+is the same four: Standard, De Luxe, CS, CSR
+(https://ridermagazine.com/2019/10/30/retrospective-1958-1966-matchless-g12-cs-csr-650/).
+
+So `G12DL` was never a Matchless code. It was a hypothesis of ours, and folding
+to it would have **created a nameplate no source has** — worse than the corrupt
+string we started with.
+
+**The move the earlier pass didn't consider: fold to the ANCESTOR, not a sibling.**
+Both candidate targets were siblings, which is why neither could be chosen. But
+every candidate — G12 De Luxe, G12CS, G12CSR — **is a G12**. `G12` is the common
+ancestor of the entire candidate set and the longest attested prefix of the
+corrupt string. Folding `g12l -> G12` therefore cannot be *wrong* about the
+machine; it can only be *less specific* than the truth.
+
+> When a suffix is uninterpretable but the prefix is well-attested, fold to the
+> longest attested prefix. That is not family-pattern inference — it asserts a
+> strict subset of what the string already says.
+
+It also fixes a real defect under #81's own §1.1: a published `G12L` fails claim
+(b), *"the display name is marque-true"*, because no source records that model.
+Leaving it is not neutral.
+
+**Proposed:** `renames.yml Matchless: G12L: G12` + `former_ids`
+`motorcycle/matchless/g12l -> motorcycle/matchless/g12`. Reversible via the
+alias, zero invented nameplates. `matchless/g12` already exists, so this is a
+fold into a live id, not a rename.
+
+**g3l5 stays debt, and the ancestor move deliberately does NOT transfer.**
+Its longest attested prefix is `G3L`, and `matchless/g3l` exists — but here the
+evidence points at a *specific sibling*: `G3LS`, via the S→5 corruption this make
+demonstrates in the G805 case. Folding to `g3l` would **discard the more likely
+correct answer** to satisfy a rule, and folding to `g3ls` is exactly the
+family-pattern inference we declined. The asymmetry is the whole content: the
+ancestor fold is only honest when **no** candidate is favoured. Where one is, it
+launders a guess as a principle.
+
+Resolution condition unchanged: read the `nz_nzta` raw for `g3l5` (not in the
+local archive, so I can't). Recording the G12DL elimination against it anyway,
+since a future pass shouldn't re-derive it.
+
+**Want me to open this as a PR, or would you rather adjudicate the ancestor rule
+first?** It generalises past Matchless — I can see it applying to the Kreidler
+K53 entry, and that one explicitly says *"DO NOT bulk-fold on the K53 prefix"*,
+so I'd rather have the rule agreed than discover the boundary by tripping it.
