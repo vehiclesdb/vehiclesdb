@@ -149,6 +149,31 @@ real candidates**, and they are the same move from opposite ends — (iii) tests
 whether the head already carries the weight, (i) extends it until it does. So
 §1.3.2 is a prerequisite for choosing, not an independent nicety.
 
+**RESOLVED 2026-07-26, same day, by measurement** (S4W; the artifact §1.3.2
+demanded was built first — pipeline #40 — precisely so this choice would be
+read, not asserted). First published measurement, catalog/meta/decile-mass.json:
+
+```
+d1-3 = 82.98% of registration mass     d1-5 = 95.28%
+d1-6 = 99.49%                          d7-10 = 0.515%   none-band = 0.0000%
+```
+
+- **(iii) is measurably dead**: the d1-3 head carries 82.98%, nowhere near
+  99.5%. The original "≥90% of mass / ≥95% of traffic" claims were WRONG —
+  the review was right to refuse them unmeasured.
+- **(i) resolves concretely to: certify through decile 6.** At d1-6,
+  w_tail = 0.51%; with the split budget, r_tail ≤ 5e-6/0.0051 = 9.8e-4
+  ⇒ **n ≈ 3,100** clean tail samples. Certifying to d1-5 does NOT close
+  (w_tail = 4.72% ⇒ n ≈ 28,000 — the option-(ii) trap by another door).
+- Scope consequence, stated plainly for the owner: certification grows from
+  2,648 records (d1-3) to **≈9,340 (d1-6, ~55% of the catalog)** — roughly
+  3.5× the first estimate. That is the honest price of the target at the
+  measured mass distribution; the alternative is a smaller claim, not a
+  cheaper proof. Phasing in §5.1: D1a locks d1-3 (83% of mass) first, D1b
+  extends to d4-6.
+- The "none" band carries 0.0000% mass: those 288 records need SAMPLING
+  coverage (§1.3.3), never certification.
+
 Note also that the composed claim inherits the tail's confidence level: with a
 rule-of-three bound on stratum 2, the published figure is a **95% upper bound**,
 not a point estimate, and should be worded that way in §6.5 and `QUALITY.md`.
@@ -175,9 +200,12 @@ deliverable and not a footnote:
 > cumulative share) as a versioned artifact, regenerated every build.
 > `w_head` and `w_tail` in §1.3.1 are read from it, not asserted.
 
-Until that exists, every number in §1.3.1 is conditional on an unpublished
-measurement, and the honest statement of the program's status is
-"instrumented but not yet demonstrable".
+**A1-bis: DELIVERED** (pipeline #40, merged 2026-07-26): the build emits
+`catalog/meta/decile-mass.json` (schema decile-mass/1) — aggregate shares per
+kind × decile including the none band, manifest-registered, regenerated every
+build. Aggregate SHARES only: raw counts remain private by reconciler policy,
+and shares reveal nothing per-record. The §1.3.1 resolution above reads its
+numbers from the first emission.
 
 ### 1.3.3 288 records have no decile and no stratum
 
@@ -422,9 +450,9 @@ Certification = the full §7 protocol + entity check. Targets:
 
 | stratum | records | target | method |
 |---|---|---|---|
-| deciles 1–3 | 2,644 | **100% certified** | swarm waves, ~150/agent-block; ≈ 6 waves per half |
-| deciles 4–6 | 6,698 | ≥25% + all first-seen + all audit-flagged | sampling + demand |
-| deciles 7–10 | 7,483 | audit sampling (A) + resolver demand (§5.3) | statistical only |
+| deciles 1–3 (D1a) | 2,648 | **100% certified** — locks 82.98% of mass | swarm waves, ~150/agent-block |
+| deciles 4–6 (D1b) | ≈6,690 | **100% certified** — takes the head to 99.49% of mass (the §1.3.1 resolution: the construction does not close shallower) | phased after D1a |
+| deciles 7–10 + none-band | ≈7,490 | audit sampling (A, n≈3,100) + resolver demand (§5.3) | statistical only |
 
 ### 5.2 Recertification triggers (staleness is a defect vector)
 
