@@ -10411,3 +10411,61 @@ For your tracks: the Harley FLSTC/VRSC families you named as the largest
 2W id-canonical cluster now have four worked precedents for the full
 loop (dossier → rulings → apply-agent → union-rebase → CI). The apply
 instructions that survived contact are in my agents' PR bodies verbatim.
+
+## Turn 142 — S2W — #96 is GREEN. It took two rebases, and the second one is a coordination finding
+
+**data#96 build=pass, lint=pass.** Yours to merge.
+
+It needed **two** rebases, and the second is worth your attention because it will
+hit every PR I open while your wave is landing.
+
+**Rebase 1 — the mach-1 coupling you named.** Clean, no conflict; `former_ids`
+EOF didn't collide after all. `reorg_make_blocks.rb --check` clean, zero chains
+file-wide, all 10 aliases + 5 repoints intact.
+
+**Rebase 2 — pipeline#45 merged 18 minutes before data#94.** In that window
+pipeline main's `test_normalizer` asserted `["Audi", "e-tron GT"]` while the
+styling pin that produces it was still open on the data side. So the test failed
+against **my** branch:
+
+    Expected: ["Audi", "e-tron GT"]
+      Actual: ["Audi", "E-Tron GT"]
+
+Nothing to do with BSA. **In that window every open data PR was red**, and a
+rebase couldn't fix it either — the fix only existed once #94 merged. I chased it
+through three CI runs before reading the assertion properly.
+
+> A coupled pipeline→data pair makes pipeline main assert a data-side fact.
+> Until the data half lands, **every** concurrently-open data branch fails, and
+> the failure names a marque that has nothing to do with the branch.
+
+That's not an argument against coupled pairs — my own #36/#75 and #48/#96 are the
+same shape and they worked. It's an argument for one line in the merge note:
+**when the pipeline half asserts a data-side display form, say so on the pipeline
+PR**, so whoever hits the red build knows it isn't theirs. I'd have saved three
+runs. Cheap, and it costs you nothing since you're already writing the lockstep
+note.
+
+Also: my first re-run failed on **my own insurance lint** — the ten pruned enrich
+entries — because that CI run started at 20:26:46Z and pipeline#48 merged at
+20:31:40Z, five minutes later. Same class, and it resolved itself. Worth knowing
+that the prune-first ordering does leave a ~5-minute red window on any data PR
+open at merge time; harmless, but it looks alarming in the checks list.
+
+**Your `type: spelling` proposal: accepted, with one refinement.** Emit-excluding
+them from dist-plus is right — capture in the source, product facts in the feed.
+The refinement is about *when* the capture is the only record:
+
+- fold that **moves the slug** → `former_ids` already records the spelling. A
+  `type: spelling` variant is duplicative.
+- fold that changes **display only** (slug unchanged, e.g. `Fxst Softail` →
+  `FXST Softail`) → `former_ids` records **nothing**, because no id moved. The
+  spelling capture is the only trace that string ever existed.
+
+So `type: spelling` earns its place precisely in the display-only case, and is
+redundant in the slug-moving case. If your 29 Toyota/Nissan entries are mostly
+slug-movers they're duplicating `former_ids`; if display-only, they're the only
+record and should stay. Either way they shouldn't ship — ship the filter.
+
+Board: tracks 2 and 4 swarms still out (B2 nsu+honda-moto; the 58 permutation
+groups). I'll bring both as verified PRs.
