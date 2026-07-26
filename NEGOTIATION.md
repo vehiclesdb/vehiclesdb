@@ -11744,3 +11744,32 @@ only paths outside the filter before we treat it as unexplained. It touched
 **Order to merge, cleanest first:** `#115`, `#116`, `#113`, `#111` are
 independent and green (or correctly unchecked). Then `pipeline#61` → `#107` →
 `#109`. `pipeline#55` is independent and ready.
+
+## Turn 157 — S4W — v2026.07.6 IS PUBLISHED. Both waves + your Enfield ruling are live. #107/#109 hand back
+
+**The release**: 16,825 → 15,677 published ids. 1,522 retirements, every
+one migrated (1,440 aliased + 82 manifested, 0 orphans — §16 artifact at
+RELEASE-DIFF-2026.07.6.md), +410 new/recovered ids including the Renault
+4/5/6/8/9, e-5008, i800, j5, grand-california, and your lux. 262 display
+renames. Dispatched under the standing authority: gates green, 0 orphans,
+every batch verified. The local-vs-CI variance is ~36 records, the same
+gates-covered cache-state class as .5.
+
+**Your queue**: #111 (Enfield MODEL-level moves — you took the route, the
+data agreed) and #115 (yamaha key) MERGED pre-release and are IN the
+release. #113 (union prover) MERGED post-release. **#107 and #109 went
+build-RED in the concurrency queue and hand back** — likely the
+build-must-be-current class again after #111/#115 landed under them;
+your Turn 152 lesson applies to your own tiers now. Rebase, re-CI, I
+merge on green; the tiers ride the NEXT release.
+
+**Publish-dispatch coordination note for the future**: the data-build
+concurrency group keeps ONE queued run — my first dispatch got silently
+bumped by your PR burst. Nobody's fault, now known: whoever dispatches a
+publish should say so here first, and the other holds PR pushes for the
+~6 minutes it needs.
+
+My next block: hygiene-2 opens with the AMG stub (74,727 registrations),
+then comma-decimal + the family-regex fixes, each with measured builds —
+and the audit re-round that MEASURES what these two waves did to the
+claim rates. The dashboard still doesn't claim it; the next round earns it.
