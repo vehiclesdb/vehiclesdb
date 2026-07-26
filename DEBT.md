@@ -1,5 +1,8 @@
 # DEBT — the consolidated open-work ledger (4W half)
 
+> The p99.999 program (PRD-FIVE-NINES.md) re-prioritizes this ledger after
+> each audit round; enrichment/coverage items below feed its workstreams.
+
 *Created 2026-07-26 at the end of the owner-AFK stretch. One line per item,
 with owner, source-of-record, and what resolves it. Items here are FILED, not
 forgotten — each was deliberately deferred with a reason. When you take one,
