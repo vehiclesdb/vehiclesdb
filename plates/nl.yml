@@ -1,0 +1,96 @@
+# plates/nl.yml — Netherlands (PRD-PLATES L0 pilot seed).
+#
+# THE NL MODELLING RULE (EU dossier finding 6, binding): sidecode is a
+# PATTERN identity, not a period — the same pattern reaches each vehicle
+# category on its own date (RDW's official series table). One pattern ×
+# one category-group = one series entry. Age inference is one-sided (a
+# pattern gives the EARLIEST date; series run until exhausted).
+#
+# Dutch plates encode NO geography. Category is encoded in first letters
+# (M motorcycle, D/F moped, V light commercial, B heavy commercial,
+# W trailer, O semi-trailer — rdw.nl cijfers-en-letters page).
+#
+# This seed carries the sidecode-11 family (the current-issue pattern) as
+# the schema shape-prover; the remaining sidecodes 1–14 land with the L0
+# completion pass from https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries
+# (the single most important NL URL — official pattern + start date per
+# category).
+jurisdiction: nl
+authority:
+  name: RDW
+  url: "https://www.rdw.nl/de-kentekenplaat"
+series:
+  - id: nl-sidecode11-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2015 }        # open — series issue until exhausted
+    format:
+      pattern: "LLL-99-L"
+      regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
+      charset: { notes: "no vowels in letter groups (profanity/lookalike exclusion) — https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat; moped series lead with D/F" }
+    design:
+      plate: { w: 210, h: 143, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # pattern XXX-99-X reached mopeds 2015 (official series table)"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # colours + dimensions"
+    notes: sidecode 11 for the MOPED category — the pattern's first rollout (2015).
+  - id: nl-sidecode11-agricultural
+    class: agricultural
+    categories: [truck]            # agricultural vehicles/trailers register here
+    period: { start: 2021 }
+    format:
+      pattern: "LLL-99-L"
+      regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
+      charset: { notes: "no vowels; see moped entry" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # same pattern, agricultural rollout 2021"
+    notes: sidecode 11 for AGRICULTURAL vehicles — same pattern, own 2021 rollout (the pattern-x-category rule).
+  - id: nl-sidecode11-car
+    class: standard
+    categories: [car, van]
+    period: { start: 2024 }
+    format:
+      pattern: "LLL-99-L"
+      regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
+      charset: { notes: "no vowels; V leads light-commercial series — cijfers-en-letters page" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # same pattern, cars 2024"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # yellow ground, black characters, blue EU strip NL; 520x110"
+    notes: sidecode 11 for CARS/light commercial — same pattern, 2024 rollout. Third entry of one pattern; the trio IS the pattern-x-category rule demonstrated.
+  - id: nl-historic-darkblue
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 1978, ended: true }   # the REGIME applies to pre-1978
+                                           # vehicles; issuance continues but the
+                                           # eligible fleet is closed — recorded
+                                           # ended pending an RDW statement on
+                                           # the regime's own issuance window
+    format:
+      pattern: "LL-99-99"
+      regex: '\A[A-Z]{2}-\d{2}-\d{2}\z'
+      charset: { notes: "historic plates reuse the vehicle's original registration in old sidecodes; pattern here is the dominant sidecode-1 shape — refine in the L0 completion pass" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#1D2E5B", finish: painted }   # dark blue, white chars
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/kentekenplaten-voor-oldtimer-aanvragen  # dark-blue historic plates, pre-1978 eligibility rule"
+    notes: oldtimer regime — dark blue, pre-1978 vehicles. Shape/period to be refined against the RDW page in the completion pass; seeded to exercise the historic class and ended semantics.
