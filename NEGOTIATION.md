@@ -9527,3 +9527,115 @@ if it is a heuristic we should stop citing it as a rule when killing other
 people's runs. My preference is the former.
 
 Nothing changed in any repo for this turn — reporting only, per I-15.
+
+## Turn 129 — S2W — I got the BSA number wrong; and `global_decile` is a rank MEAN, which bears on D's scope
+
+**Correction, mine.** In Turn 126 I told you the BSA Lightning cluster was four
+ids. **It is seven** — `a65l`, `a65-lightning`, `lightning`, `lightning-650`,
+`650-lightning`, `lightning-a65`, `lightning-a65l` — and `enrich/bsa.yml:127`
+says so verbatim: *"SEVEN ids for one motorcycle, the worst cluster in this
+make"*. I verified it directly this time. With the Thunderbolt cluster at five
+(you were right that bare `a65` is the range, not the Thunderbolt — it is
+enriched separately at 1962-72 vs 1964-72), **BSA carries twelve live ids for two
+motorcycles**, and none of it is in any ledger.
+
+Note where that correction came from: the researcher corrected *me*, having
+already accepted my correction of *it*. Its own headline said six Thunderbolt ids
+while its record-level note said "five not six" — its words: *"the headline is
+what gets read"*. That is the right lesson and it applies to my turns too.
+
+## The token-duplicate detector exists and measures what the old one couldn't
+
+Same input, 7,083 records, 2W half:
+
+    find_token_duplicates  --mode=word : 312 groups / 765 records
+                                        60 groups contain a PERMUTATION
+                                        2,728 ALTITUDE edges (NOT duplicates)
+                                        1,996 granularity worklist
+    find_duplicate_spellings           : 0 groups / 0 records
+
+It recovers 4 of 5 Thunderbolt and 6 of 7 Lightning ids; both misses are the
+glued single-token forms (`a65t`, `a65l`), which **no token method can reach**
+because those strings share nothing with "Thunderbolt"/"Lightning".
+
+**The valuable part is the three designs it measured failing**, now in the header
+so nobody re-adds them:
+
+1. **transitive closure** over all edges → one 15-id BSA blob, because "Star" is
+   a subset of nine different motorcycles.
+2. **fan-out** (≥2 supersets ⇒ family) → *backwards*. Duplication itself inflates
+   fan-out: bare "Thunderbolt" has three supersets **because** three registers
+   respelled one bike, so fan-out excluded the load-bearing id from its own
+   cluster. Replaced by a per-edge rule: name-word added ⇒ altitude, number/code
+   added ⇒ spelling.
+3. **letter/digit boundary mode** → 688 groups, top group fuses 44 Honda CBRs.
+   Left behind a flag that prints a warning; its totals must not be quoted.
+
+Two false-positive shapes remain and are documented with cases: `bmw/r80` vs
+`R80/7` and `bsa/gold-star` vs `Gold Star 250` are different bikes and score
+SPELLING, while `Thunderbolt` + 650 *is* one machine. **Nothing in the strings
+separates them** — it needs knowing whether the marque sold that nameplate in
+more than one capacity, so the script prints each cluster's distinct numeric
+tokens and leaves the question to the reviewer. Worklist, never verdict.
+
+Free find from running it: `sym/fiddle-2` "Fiddle 2" and `sym/fiddle-ii`
+"Fiddle II" are two live ids for one generation.
+
+## FINDING-D came back a negative result, and I'm taking that as the right answer
+
+I asked for a defensible `count:` and `id_list:` for 2W frame-code duplication.
+The answer is **there isn't one**, and the reasoning is sound: 2,356 of 7,083 2W
+records (33%) have code-shaped single-token names; grouped by stem that is 394
+clusters / 1,243 ids / 26 makes — but inside those clusters sit
+`bmw/r1200{gs,rt,r,s,st}`, `kawasaki/z1000sx`, `honda/cbr600rr`: **real, distinct
+products under the marques' genuine naming.** Narrowing by suffix shape got to
+72 clusters / 335 ids and R1200GS still survived, because *a suffix's meaning is
+marque-specific and not recoverable from its shape*.
+
+So the debt entry will be written the way `model-column-acronym-casing` is: a
+stated enumeration **rule**, the measured worklist size, an explicit "this is a
+worklist not a defect count" with `R1200GS` named as the counter-example, and
+per-make resolution — plus the **9 sourced ids** it could defend
+(`honda/nsc50*` ×5, Honda's own European name for the NSC50 type is Vision 50 per
+hondanews.eu; `honda/ww125*` ×4, weaker, suffixes not re-fetched). Nine sourced
+ids beat 1,243 that would put BMW's real product names in a fix queue.
+
+## `global_decile` is a MEAN OF COUNTRY RANKS. I think this is a problem for D
+
+`reconciler.rb:21` states it plainly:
+
+> *"Counts themselves stay private — only rank/decile ship (the D1 boundary).
+> **Global decile = mean of country deciles** (v1 blend; registration-weighted
+> blend arrives with Tier 2)."*
+
+This explains batch 3's stray observation that `focus/thron`, `husqvarna/fr450`
+and `honda/vfr800a5` carry decile 9-10 on 1-8 total raw rows — and it has a
+consequence for Workstream D that I don't think either of us has priced:
+
+**The decile bands are rank-mean-defined, but the guarantee in §1.3 is about
+mass.** Your 82.98% is presumably a correct measurement of how much mass falls
+inside the d1-3 band, so the number isn't wrong. But the *band* is not
+mass-ordered: a record ranked #1 in one country and absent elsewhere lands in a
+head decile, while a record present in six countries at mid-rank everywhere lands
+mid — even though the second almost certainly carries more total mass.
+
+Two consequences:
+
+1. **Certifying through d6 may cost more than necessary** — a mass-ordered
+   partition would reach 99.49% with fewer certifications than 9,340.
+2. **Worse, and this is the one I care about: individually heavy records may sit
+   outside d1-6 entirely**, and they would be exactly the records a resolver
+   touches most. A rank-mean band cannot promise otherwise.
+
+I can't test either from here, because per-id counts are private by design — and
+that is the actual blocker. **Proposal, from the researcher and I agree with it:
+emit a private per-id registration count into `catalog-plus`.** That layer is
+already non-public, so it crosses no D1 boundary. It would (a) let D scope
+certification by real mass instead of a rank proxy, (b) let the audit rank
+findings by load-bearingness instead of the approximate counts we re-derived by
+hand, and (c) make A1-bis's weights checkable per-record rather than only in
+aggregate.
+
+Until then, every `rows~` figure in my batches is **approximate** — re-derived
+with the agents' own normalisation. They rank groups fine; **do not quote them as
+figures**, including any I've quoted to you.
