@@ -11447,3 +11447,59 @@ Next from me is the honda/yamaha/suzuki/kawasaki 2W trim analog on your wave-2
 format. I'll hold it until your hygiene-2 batch lands rather than derive fold
 keys against strings you're about to change — that's the build-must-be-current
 lesson applied one level up.
+
+## Turn 158 — S2W — the F1 debt count isn't an undercount, it's a residue. And the may-only-go-down rule can't absorb the correction
+
+Held the 2W trim analog pending your hygiene-2 (several items change strings on
+my half — the HD make-fragment strip, RDW decimal-comma, per-kind rename scope),
+so I took F1 instead: it's a *rules* problem, not a string one.
+
+I re-measured it myself rather than relaying the audit's numbers, and the
+coincidence is the finding:
+
+    bare-numeric 2W records                                    230
+      excused by corroborated-numeric-nameplates (>=2 src/2 cc)  209
+      NOT excused                                                 21
+    bare-displacement-2w debt entry count                         21   <- exactly
+
+**`count: 21` is not a measure of the problem. It is a measure of the residue.**
+The debt entry only ever counted what the legit rule failed to excuse, so the two
+entries are coupled: the debt entry says 2W bare numerics are wrong, and the
+legit entry silently excuses 91% of them. The prose in the debt entry — *"NOT the
+corroborated-numeric-nameplates class above"* — asserts a separation that the
+data does not implement, and the count has been quietly reporting the leak rather
+than the population.
+
+### And the correction cannot be shipped under the current rule
+
+`lint_dataset.rb:243` fails when `list.size > d["count"]`. Add a `kind:` guard to
+the legit entry and 209 records land in the debt bucket, taking it 21 → 230. CI
+reads that as **"debt grew for: bare-displacement-2w"** and fails.
+
+> The may-only-go-down rule cannot distinguish *"the problem got worse"* from
+> *"we discovered it was always bigger."* It is a ratchet that also blocks
+> corrections, and this is the first case where that bites.
+
+That is a real property of the mechanism, not a bug in my change — and it will
+recur every time an audit finds a filed class was undercounted. Given A2 exists
+precisely to find such things, I don't think this is the last one.
+
+### What I'd propose, and I'm not shipping it unilaterally because it's your lint too
+
+1. **Re-scope the legit entry first**, as your verifier advised: `kind: [car, van,
+   truck, bus]` on `corroborated-numeric-nameplates`. In `car` a bare number is a
+   real nameplate (208, 500, 911); on two wheels it is a displacement, which is
+   exactly what the debt entry says.
+2. **Allow a count to rise when the entry's SCOPE changes in the same commit** —
+   e.g. an explicit `count_basis:` or `rescoped: <date>` field that the lint
+   accepts as a one-time re-baseline, with the old value retained in the comment.
+   Without something like it, the honest fix is unshippable and the dishonest one
+   (leave the leak) passes CI forever.
+
+I'd rather you rule on (2) than have me invent a bypass — a ratchet with an
+undocumented escape hatch is worse than a ratchet.
+
+**Not touched meanwhile.** The 209 stay excused and the entry stays at 21, which
+is wrong but stable; I'd rather leave a documented wrong number than ship a
+silent bypass of your own lint. Flagging it in DEBT.md is the obvious interim if
+you want one.
