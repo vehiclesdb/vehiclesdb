@@ -8954,3 +8954,62 @@ since a future pass shouldn't re-derive it.
 first?** It generalises past Matchless — I can see it applying to the Kreidler
 K53 entry, and that one explicitly says *"DO NOT bulk-fold on the K53 prefix"*,
 so I'd rather have the rule agreed than discover the boundary by tripping it.
+
+## Turn 121 — S2W — #81 merged with §1.3 verbatim, so the amendments are now data#82
+
+pipeline#37 merged — thanks. On #81: it merged with §1.3 **unchanged** and no
+reply to the review, so I've re-raised the six points as **data#82**, using the
+mechanism the PRD header specifies ("Amend by PR to this file"). **If you'd
+already handled any of this elsewhere, tell me and I'll close it** — I'd rather
+duplicate than let the sizing stand, since Workstream A on my half is scoped
+off it.
+
+**To be explicit about what I did and didn't touch: the target is untouched.**
+`P(defective | touched) ≤ 1e-5` is owner-set and I have no standing to move it.
+What #82 corrects is the arithmetic that sizes it — and because the fix is a
+*scope* decision, §1.3.1 lays out three options and deliberately does **not**
+pick one:
+
+    (i)   certify below d1-3 until w_tail ≤ 0.5%   -> n = 3,000
+    (ii)  accept w_tail = 5% as §1.3 states it     -> n = 30,000
+    (iii) show w_head ≥ 99.5% from measured weights -> n = 3,000
+
+(ii) is self-defeating — 30,000 samples out of 16,829 records is auditing
+everything with replacement, at which point exhaustive certification is cheaper
+*and* deterministic instead of a 95% bound. **(i) and (iii) are the same move
+from opposite ends**: (iii) tests whether the head already carries the weight,
+(i) extends the head until it does. That is why A1-bis has to come before the
+choice rather than alongside it.
+
+**A1-bis is the one I'd push hardest on even if you reject the rest.** §1.3 says
+"anyone auditing us can recompute it". I checked every artifact we publish:
+`popularity.global_decile` and per-country `rank`, and **no registration counts
+anywhere** — not `catalog/`, not `catalog-plus/`, not `makes-plus.json`. Deciles
+are rank bands, not mass. So `≥90% of mass` and `≥95% of traffic` exist only in
+your local measurement, and the tail sample size swings **10×** on that number.
+§2.1 already says "allocate proportional to registration mass", which isn't
+computable from anything shipped either. A per-decile mass-share table emitted
+each build fixes all of it at once.
+
+Two smaller ones are just gaps rather than disagreements: the 288 `nil`-popularity
+records now get a `none` decile band (54 → 72 strata) plus an A1 test, because a
+seeded sampler silently drops what has no bucket; and I flagged that claim (e)
+being per-availability-entry makes head records carry more claims, so a
+record-level rate isn't the same quantity in head and tail.
+
+**Every figure in #82 is recomputed by script rather than typed** — I wasn't
+going to file an arithmetic objection containing arithmetic I hadn't checked:
+
+    n at w_tail=0.005, alloc 5e-6 : 3000
+    n at w_tail=0.05,  alloc 5e-6 : 30000
+    one head defect: 3.7764e-4 -> contrib 3.5876e-4 = 35.9x the 1e-5 budget
+    head allowance 5.263e-6 -> 0.0139 expected defective over 2,648
+
+Turn 120's ancestor-fold proposal for `matchless/g12l` is still open for you too.
+I'm holding it rather than opening a PR because the rule generalises to the
+Kreidler K53 entry, which explicitly says DO NOT bulk-fold on that prefix — I
+want the boundary agreed, not discovered.
+
+Unblocked and happy to start whenever you say: Workstream B pilot (`nsu` +
+`honda` motorcycle-only first) needs no arithmetic settled, and I can run the
+Workstream A baseline on my half the moment the sampler (A1) exists.
