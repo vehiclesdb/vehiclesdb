@@ -1274,3 +1274,79 @@ cross-referenced in the pass log. New defect classes REQUIRE a taxonomy entry +
 detector before scaled fixing (I-15). The one thing that may never be amended
 away is I-5/I-6: the id contract survives every future re-organization, because
 it is the thing consumers — and the business — stand on.
+
+---
+
+## 20. STRETCH ADDENDUM 2026-07-26 — what changed while this document slept
+
+*Everything below is LANDED and verified, not planned. Each item names its PR;
+the PR bodies carry the full dossiers and evidence. Sections above are amended
+in place only where they stated something now false; this section is the delta
+narrative so a future agent can reconcile the two.*
+
+### 20.1 Publication semantics changed: HYSTERESIS (pipeline #32)
+
+§15's gates assumed the publish partition was memoryless (2 sources OR
+count ≥ threshold). That flapped: ids at a threshold edge vanished on normal
+upstream churn (measured: epure at 298/300 after a DfT quarterly; classic cars
+whose last NZ example deregistered), and the no-vanish gate fired on noise —
+which meant it was being skimmed. Now: an id in the PUBLISHED catalog stays
+published while (single-source-published) any source shows ≥ threshold/3, or
+(multi-source-published) ANY residual vehicle — corroboration did the
+anti-garbage work at entry. Excluded from the grace, because curation already
+decided they die: `overrides/models/demotions.yml` entries (corrections that
+strip fabricated evidence — the file is OPTIONAL, loader defaults empty) and
+former_ids ALIAS SOURCES (a residual raw once resurrected mg/m-g-b into its
+own alias). Result: 31 gate failures → 11 true disappearances, all
+dispositioned; fresh builds on any cache state are gate-clean.
+
+### 20.2 The disposition PAIR rule (learned on #67, now binding)
+
+A retirement is only complete as a PAIR: the former_ids ALIAS (where consumers
+go) + the rename/move FOLD (which makes the source id dead in EVERY cache
+state). An alias alone races the cache: CI's pre-drift snapshot still evidences
+the id → "alias names a live id". A fold alone loses consumers. Ship both in
+one commit, and check kind-blindness (the Caddymaxi car-leak needed a
+drop_patterns guard because the cross-kind prune has a ≥100 floor).
+
+### 20.3 The collision program is COMPLETE; the detector suite replaced it
+
+§2's "146 collision groups" is history: 146 → 0 across seven batches
+(#57/#58/#61/#62/#63/#66/#72), every group source-decided — the detector's
+canonical column was wrong in 45/55 then 15/15 and is officially a
+hint-about-pairings, never an answer. Quality work now flows from detectors,
+each with its limits stated in its own header:
+- `find_duplicate_spellings.rb` — collision groups (at zero, reruns catch new upstream forms)
+- `find_casing_contradictions.rb` (#74) — one make, one token, two spellings; MAJORITY IS NOT AUTHORITY (VITO×4 lost to Vito×1; Mga×4 lost to MGA×1); structurally blind to uniformly-wrong makes (#79 closed the known instances under the two-halves rule: cross-make attestation AND marque styling)
+- `find_corporate_strings.rb` (#59) — company names as nameplates (3 cases, 3 different dispositions: move/debt/removal)
+- `find_published_name_defects.rb` — catalog-wide candidates needing adjudication (the citroën ë- pairs are a RECORDED false positive: `data/review/citroen-e-prefix-verdict.md`)
+
+### 20.4 Casing-pipeline changes stale rename keys — the control build is the only complete check
+
+`renames.yml` is keyed on the casing pipeline's OUTPUT. Any styling pin or
+normalizer change (smart_case slash fix, pipeline #36) stales every key
+describing the old output — including keys written by another session after
+your branch was cut (the ZX/`280 Zx` cross-half catch). The reachability test
+is necessary but NOT sufficient (it misses keys whose records have longer raws
+that collapse differently — the Fxe/f case beat two detectors). Binding
+habits: never guess post-change produced forms (hold work back for a real
+build); a pin PR enumerates and rekeys every affected key in the same commit;
+judge by control build, not by test suite alone.
+
+### 20.5 Release protocol notes (§16 amendments in practice)
+
+v2026.07.4 and v2026.07.5 both shipped through §16 with 0 orphans. Learned:
+local RC diffs and the CI publish differ by cache-state (~37 records at .5) —
+the publish run's own gates are the authority; the §16 artifact is kept beside
+NEGOTIATION.md per release. At each release, prune rename keys and enrich
+twins whose producing raws/ids died (the #70/#33 cleanups; the enrich half is
+now caught at PR time by pipeline #34's three-state insurance lint). The
+private `plus-<VERSION>` release ships in the same cycle (first: plus-2026.07.5,
+469 enriched records — DATA-CONTRACT flow now LIVE).
+
+### 20.6 The open-work ledger moved to DEBT.md
+
+Scattered U-items, dossier §UNCERTAINs and PR-body follow-ups are consolidated
+in `DEBT.md` (one line each, owner + source-of-record + resolution). Take an
+item → delete its line in the same PR. §17's phase table should be read
+through it.
