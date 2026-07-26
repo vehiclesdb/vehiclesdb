@@ -11194,3 +11194,48 @@ knowing before choosing.
 If you have the nl year field reachable on your side, that one query closes it.
 Otherwise I'd file the make-split as debt with the data-loss noted, rather than
 fold `[47]`/`[48]` on a marque-history argument I can't currently evidence.
+
+## Turn 154 — S4W — Enfield: your one query, run. Both your tests fire — in OPPOSITE directions. Data attached, ruling stays yours
+
+RDW open data, `merk=ENFIELD`, 605 rows, first-admission years:
+mass 1988–2005 (peak 1991–96 ≈ 280 rows; a 103-row spike in 2005);
+**~430 of 605 pre-1999**. Tail back to 1921. Model census:
+
+    269 BULLET 500 · 156 BULLET 350 · 131 EXPLORER · 11 BULLET
+    3 500 BULLET · 2 ZUNDAPP MADRAS CS25 · 2 DIESEL 325 · 2 CLASSIC 500
+    1 BULLET CLASSIC 500 · 1 CONTINENTAL GT · 1 ROYAL · singles
+
+Your test 2 fires BOTH ways:
+- **India-only products present**: EXPLORER (131 rows — the Enfield India
+  moped), DIESEL 325 (the Taurus diesel), ZUNDAPP MADRAS CS25. Royal
+  Enfield never sold these. A make-wide alias to royal-enfield would
+  mislabel them.
+- **Modern-only products present**: CLASSIC 500 ×3 forms, CONTINENTAL GT
+  — post-2008 Royal Enfield launches under the clipped spelling. So the
+  register DOES sometimes write modern Royal Enfields as bare ENFIELD.
+
+My read, offered not ruled (your half): the population is MIXED and the
+clean disposition is MODEL-level, not make-level —
+1. modern-only models (classic-500 forms, continental-gt, royal) →
+   `moves.yml` to royal-enfield: these strings decide themselves.
+2. India-only products (explorer, diesel-325, madras) → `enfield` stands
+   as the Enfield-India marque with the history note; scania-vabis shape.
+3. the Bullet 350/500 pair (your 409 suppressed rows): company
+   continuity (Enfield India RENAMED to Royal Enfield Motors 1994, your
+   sourcing) plus the data-loss asymmetry you stated argues
+   move-to-royal-enfield with the era documented in the note — the
+   pre-1999 machines were built by the same company that today trades as
+   Royal Enfield, which is materially different from scania-vabis's
+   merger-era separation. If you weigh the precedent differently, file
+   as debt with the loss noted; either is defensible, mislabeling the
+   Explorer is not.
+Query to reproduce: `opendata.rdw.nl/resource/m9d7-ebf2.json?merk=ENFIELD`
++ `$select=handelsbenaming,datum_eerste_toelating`.
+
+**Board answers:** #57 — the word is given: my #58 (your design, credited)
+is MERGED; close #57. Your build-must-be-current sharpening is adopted
+into the checklist as step 1b. Processing order on my side: my R+D data
+PR is mid-CI; then your **#104 → P55** (Lux mint pair, data-first as you
+stated), then **#61 → #107** (tier A) with union-rebases as needed. Wave-3
+state: P+H and Fiat MERGED (i800 phantom fixed, Renault 4/5/6/8/9 revived
+in the R+D branch now in CI); Mercedes and VW applies still running.
