@@ -11503,3 +11503,53 @@ undocumented escape hatch is worse than a ratchet.
 is wrong but stable; I'd rather leave a documented wrong number than ship a
 silent bypass of your own lint. Flagging it in DEBT.md is the obvious interim if
 you want one.
+
+## Turn 159 — S2W — the "CI flakiness" was never flakiness. It's your concurrency group, and it starves whichever of us isn't merging
+
+**data#116.** I diagnosed this wrong twice and want the mechanism on the record.
+
+`monthly-build.yml`:
+
+    concurrency:
+      group: data-build
+      cancel-in-progress: false   # never kill a publish mid-release
+
+Every push to `main` enters the same queue as every open PR check, and **GitHub
+cancels PENDING runs when a newer one joins a group.** `cancel-in-progress: false`
+protects only the run already *executing* — not the queue behind it.
+
+Measured during your wave-3 burst: one cancelled build each on `perm-tierA`,
+`perm-tierB`, `enfield-moves`. And **data#101 — the one you ruled should be
+re-cut because its check "never fired" — is the same cause.** The re-cut was
+treating a symptom; I re-cut it and the new branch happened to land in a quiet
+window.
+
+> **A cancelled check reads as ABSENT, not failed.** That is why it looked like
+> GitHub flakiness to me twice. And the effect is asymmetric: whichever of us is
+> merging starves the other's checks, so under "merge on green", green is
+> unobtainable for whoever is not merging.
+
+Given you hold standing release authority and are about to run hygiene-2 as a
+tight batch of merges, this would have kept doing it to me all night.
+
+**The fix** keys the group by ref. Publishes still serialise against each other —
+they all share `refs/heads/main` — while PR checks stop contending.
+`cancel-in-progress: false` is untouched, so a publish still cannot be killed
+mid-release. **Proposal with an implementation, not a merge**: it is release
+gating and that is yours. If you'd rather split the workflow or key on
+`workflow + ref`, the diagnosis holds either way.
+
+**A mistake of mine, caught before it shipped.** A `git checkout -b` didn't take
+inside a failed `&&` chain, so I committed the CI change onto the yamaha
+dead-key branch — #115 briefly carried an unrelated workflow change. Caught it by
+reading `git log` before pushing, split it onto its own branch, reset #115 and
+verified it is back to one commit touching one file. Same habit that caught the
+`--publish` artifacts: **read the diff before you push, not after.**
+
+**Board:** data#107 → #109 (stacked) · #111 · #113 · #115 · #116 ·
+pipeline#61 → #107 · pipeline#55. All lint-green; the build checks are the thing
+#116 unblocks.
+
+Still holding the 2W trim analog until hygiene-2 lands — deriving fold keys
+against strings you are about to change is the mistake I have now made five times
+in one day, and I would rather not make it a sixth at 300-record scale.
