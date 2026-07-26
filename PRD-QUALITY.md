@@ -277,6 +277,27 @@ line, pre-1931 vintage line). Full spec §14.4; implementation order G23a-d
 there. Store facts, derive labels; capture years at zero marginal cost during
 §7 review batches.
 
+**G26 — THE CAPTURE DOCTRINE** (owner directive, 2026-07-26: "we want ALL
+information we can get on EVERY single model — trims, model by year, years
+of production, metadata like maker website + model website, technical
+specs"). Principle: **nothing the pipeline sees is discarded unrecorded.**
+The folds stay (they are correct for id dedup) but every folded-away
+string is captured. Slices:
+(a) DONE — observed_variants.json: every raw model string whose fold lost
+tokens, per id (45,529 ids measured on first run; ford/focus alone carries
+22: RS, Electric, generation and engine codes). The seed corpus for (b).
+(b) `variants:` storage in overrides/enrich (name + type:
+performance/trim/edition/body + source) → additive `variants` field on
+records → gem/dist exposure. Curated FROM (a), never bulk-imported (a raw
+variant string is evidence of existence, not of the official variant name).
+(c) `links:` in enrich — maker_url (make-level), model_url (id-level),
+sourced — the metadata the owner named; additive emit.
+(d) MODEL-YEAR facts: fueleconomy.gov is per-year-per-trim WITH technical
+specs and is US-government open data — the first legitimate OPEN spec
+source; NRCan and JPJ carry per-year too. Capture paths spec'd per source
+before import (licence rules §13.2 apply as always).
+Open/closed boundary unchanged: depth-grade specs stay PRD-DEPTH; but
+capture-never-discard applies on BOTH sides of it.
 ### 2.3 What must NOT be re-litigated (settled, with evidence)
 
 The kind axis decision (legal categories; quadricycles → car, on the trike
@@ -433,6 +454,13 @@ records:
 | `removed` | record verifiably not a vehicle/nameplate; dropped with alias or CHANGELOG entry | evidence + I-5 compliance |
 | `moved` | evidence relocated (make or kind) with former_ids alias | evidence + no-vanish proof |
 | `stale` | (machine-set) raw fingerprint changed since review | re-review queued |
+
+**COVERAGE IS NOT QUALITY** (S2W, Turn 80 — quoted because it is exactly
+right): *"A documented marque gives you something to be WRONG AGAINST.
+Register-only records cannot be caught being misspelled — there is nothing to
+compare them to. So the makes with the cleanest ledgers are the ones nobody
+can check."* Always quote the register-only count next to the coverage
+number; the two move in opposite directions for the same underlying reason.
 
 **Rules.** A verdict without an evidence citation is invalid (the lint enforces).
 `researcher` ≠ `verifier` always (I-11). A `canonical` verdict on a record that a
@@ -1132,13 +1160,17 @@ collector-market signals — depth-layer material (§14.2, PRD-DEPTH).
 `year_start`/`year_end` + derived `era` on the record (additive, minor schema
 bump); (b) `overrides/enrich/` loader + lint (dup-keys, id-liveness,
 year sanity: 1885 ≤ start ≤ end ≤ build year+1); (c) researcher-prompt
-amendment (capture rule above); (d) backfill sweep DEFUNCT-MARQUE-FIRST across BOTH halves (S2W review:
-416 records under 31 wholly-defunct 2W marques — bsa, norton, puch, jawa,
-ariel, matchless… — are 100% classic BY CONSTRUCTION; one heritage source
-per marque covers every record under it, several with live club archives:
-VMCC, BSA OC, VJMC). Live marques come after, where the revival problem
-makes every record a judgment call; 4W priority there: mercedes-benz,
-volvo, triumph, ford, bmw — measured from the catalogs, not guessed.
+amendment (capture rule above); (d) backfill sweep scoped by **SOURCE
+AVAILABILITY, not trading status** — B-002 settled this empirically
+(Turn 80): huatian, hanway and kove's type codes are multi-source,
+multi-country, TRADING marques that still land at register-only, because a
+working OEM that documents nothing yields no source of record. "Defunct"
+was a proxy; the axis is "does a source of record exist". The 31
+wholly-defunct 2W marques (416 records; VMCC / BSA OC / VJMC archives)
+remain the FIRST tranche because their sources exist and one source covers
+a whole marque — not because they are defunct. 4W first tranche by the
+same rule: mercedes-benz, volvo, triumph, ford, bmw (press libraries
+already on file in this repo).
 
 ---
 
