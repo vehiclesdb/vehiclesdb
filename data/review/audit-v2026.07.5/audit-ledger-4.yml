@@ -1,0 +1,741 @@
+# VehiclesDB five-nines baseline audit — gate A2, slice 4
+# AUDIT ONLY. Nothing in this file was written into any git repo; no fix was applied.
+slice: 4
+researcher: opus-audit-4
+tag: v2026.07.5              # catalog/ + VERSION at /Users/javi/GitHub/.vdb-worktrees/s4w-data (VERSION=2026.07.5, manifest.json version 2026.07.5)
+verifier: null
+status: awaiting_verification
+
+conventions:                  # stated so the verifier can re-derive identically
+  id_scope: >-
+    id-canonical is judged WITHIN the published kind-scoped id space (kind is part of every id).
+    Same-nameplate twins in ANOTHER kind under the same make (car/van/truck/bus) are NOT counted as
+    per-record id defects — they are the owner-decided kind-axis debt (PROPOSAL-kind-boundary.md,
+    DECISION Q1 "derive kind from the EU category" + Q3 "not yet implementable"). The slice-wide
+    count of those twins is reported once in the summary instead.
+  kind_rule: >-
+    kind-correct is judged against the PUBLISHED derivation rule (register legal category:
+    NL Bedrijfsauto N1 -> van, N2/N3 -> truck; FI/ES/LU N1/N1G -> van, N2/N3 -> truck;
+    UK BodyType LGV -> van, HGV -> truck; overrides/kind_maps/*.yml). A marketing-category
+    mismatch (a Suburban or Land Cruiser registered N1) is therefore NOT a kind defect; it is
+    noted per record.
+  availability_test: >-
+    "the country's register really evidences this model" = at least one row in that country's
+    cached register pull, under a make string that resolves to this make, in the kind-appropriate
+    legal category, whose raw model string plausibly folds to this record's name. Verified by
+    per-country extracts (see sources) — every one of the 222 availability claims was checked
+    against a matched row set, not by analogy.
+  name_evidence: >-
+    Marque rendering fetched where reachable (URLs cited per record). Where the marque is defunct
+    or its site did not serve content to curl, and the published form MATCHES the register's own
+    dominant form, the verdict is `correct` with evidence_class register-only (PRD-QUALITY §5.2).
+    Where the published form differs from every observed spelling AND from every reachable marque
+    source, the verdict is defective. Where the marque rendering is genuinely undetermined
+    (site JS-only/404, market renderings conflict), the verdict is unverifiable.
+  sources_used:
+    - "catalog: /Users/javi/GitHub/.vdb-worktrees/s4w-data/catalog/{truck,van}/models.json (+ all six kinds for twin/sibling scans)"
+    - "raw corpus: build/observed_variants.json (token-loss feed), build/observed_model_names.json"
+    - "register extracts built for this audit (scratchpad/s4-{fi,es,uk,lu,th,nl}-raw.txt) from cache/fi_traficom_register.zip, cache/es_dgt_2026{04,05,06}.txt, cache/uk_veh0120_uk.csv, cache/lu_delta_2026{04,05,06}.xml, cache/th_dlt_2568.csv, cache/nl_rdw_{bedrijfsauto_europese_voertuigcategorie,personenauto,bus}.json"
+    - "de_kba_fz10: cache/de_fz10_202606.xlsx (xl/sharedStrings.xml) + overrides/kind_maps/de_kba_fz10.yml by_model"
+    - "curation layer: overrides/models/{renames,former_ids,removals,drop_patterns,moves}.yml, overrides/makes/aliases.yml"
+
+summary:
+  records_audited: 100
+  claims_total: 622           # 100 records x 4 (id/name/make/kind) + 222 availability entries
+  verdicts:                   # counted from the records block below, not asserted
+    correct: 494
+    defective: 109
+    unverifiable: 19
+  claim_clean_rate: "494/622 = 79.4% (conservative: unverifiable counts against)"
+  per_claim_class:
+    id:           { correct: 49,  defective: 47, unverifiable: 4 }
+    name:         { correct: 30,  defective: 56, unverifiable: 14 }
+    make:         { correct: 94,  defective: 5,  unverifiable: 1 }
+    kind:         { correct: 100, defective: 0,  unverifiable: 0 }
+    availability: { correct: 221, defective: 1,  unverifiable: 0 }
+  record_level: "records with all claims correct: 23 of 100"
+  stratum_note: >-
+    This slice is tail-heavy (72 of the 100 records are single- or two-country; global_decile 1-3
+    on 35 of them). The defect mass is entirely in NAME (56/100) and ID (47/100); MAKE is 94%
+    clean and KIND is 100% clean under the published derivation rule. Do NOT extrapolate this
+    rate to the head strata — and note the inverse-coverage effect PRD-QUALITY §5.2 warns about:
+    the records that could not be checked against a marque are the same ones nobody can catch.
+
+  defects_by_class:          # <id>[<claim>]; a verdict naming two classes appears under both
+    D8_wrong_altitude_trim_body_engine (42 claims):
+      - "van/chevrolet/3100-pick-up[name], van/chevrolet/astro-van[name], van/dodge/ram-van-2-8crd-aut-van[name], van/fiat/doblo-standard[name]"
+      - "van/ford/f-150-xlt[id,name], van/gmc/sierra-at4[id,name], van/iveco/daily-35s13v[id,name], van/man/tge-multicab[id,name]"
+      - "van/mercedes-benz/108-d[id,name], van/mercedes-benz/213[id,name], van/mercedes-benz/315[id,name], van/mercedes-benz/516-cdi[name]"
+      - "van/opel/combo-van-y1-7dtl[id,name], van/peugeot/expert-2[id,name], van/peugeot/expert-2-0hdi[id,name], van/peugeot/partner-120-l1-1-6hdif[id,name]"
+      - "van/ram/1500-laramie[id,name], van/renault/kangoo-express-z-e[id], van/vauxhall/astra[name], van/volkswagen/caddy-sdi[id,name]"
+      - "van/volkswagen/crafter-aut[id,name], van/volkswagen/id-buzz-cargo-modified-partition-wall[id,name], van/volkswagen/touran-van[id,name]"
+      - "van/volkswagen/transporter-sn-double-cab[id,name], van/volvo/940-hearse[name]"
+    D7_non_canonical_form (20 claims):
+      - "truck/sisu/cm[name], truck/spierings/sk[name], truck/tadano-faun/atf[name], truck/terberg/dt[name], truck/volvo/fll[name], truck/volvo/fmd[name], truck/wacker-neuson/dw[name]"
+      - "van/citroen/ak[name], van/dodge/w-250[name], van/ford/f-150-xlt[name], van/ford/transit-costum[name] (COSTUM typo), van/hyundai/iload[name] (iLoad)"
+      - "van/kawasaki/kaf[name], van/man/tge-multicab[name] (TGE), van/maxus/e-deliver-9[name] (eDeliver 9), van/mercedes-benz/x[name] (X-Class)"
+      - "van/renault/kangoo-express-z-e[name] (Z.E.), van/saxas-nutzfahrzeuge-werdau/mkd-43-l[name] (MKD), van/ssangyong/actyon-sport[name] (Actyon Sports), van/volkswagen/caddy-sdi[name] (SDI)"
+    D6_duplicate_spelling_same_make_kind (19 claims, all [id]):
+      - "truck/scania/r142 (+142, +r142h), truck/scania/r164 (+r164ga, r164gb, r164gb6x4nz), truck/spierings/sk (+truck/spierings/at)"
+      - "van/chevrolet/3100-pick-up (+3100), van/chevrolet/astro-van (+astro), van/citroen/jumper-oder-relay (+jumper), van/dodge/ram-van-2-8crd-aut-van (+ram-van)"
+      - "van/fiat/doblo-standard (+doblo), van/ford/transit-costum (+transit-custom), van/iveco/35s14-multitel (+35s14), van/mercedes-benz/300-gd (+300-gd-2400-van)"
+      - "van/mercedes-benz/516-cdi (+516), van/mitsubishi/montero (+pajero-montero), van/opel/combo (+combo-van, +combo-cargo, +combo-c-van)"
+      - "van/saxas-nutzfahrzeuge-werdau/mkd-43-l (+mkd-43-l-n, +mkd-43-l-u), van/stx/master-horsebox (+master), van/vauxhall/astra (+astravan)"
+      - "van/volkswagen/kombiwagen (+kombiwagen-23-2400), van/volkswagen/transport (+transporter)"
+    D9_registry_type_code_as_model (16 claims):
+      - "truck/spierings/sk[name], truck/volvo/fll[id,name], truck/volvo/fmd[id,name]"
+      - "van/iveco/35s11v[id,name], van/iveco/35s14-multitel[name], van/iveco/35s18[id,name]"
+      - "van/mercedes-benz/906-ba-35[id,name], van/mercedes-benz/l[id], van/teijo/24[name], van/volkswagen/7j0[id,name]"
+    D11_wrong_make_chassis_make_trap (5 claims):
+      - "van/ford/swift[make], van/iveco/35s14-multitel[make], van/mercedes-benz/westfalia[make], van/renault/theault[id,make]"
+    D3_placeholder_or_fragment_name (3 claims):
+      - "van/mercedes-benz/l[name] (bare series letter spanning L 206…L 608), van/volkswagen/transport[name] (truncated Transporter), van/volkswagen/kombiwagen[name] (body word)"
+    taxonomy_gap_no_D_number (3 claims):
+      - "van/ford/swift[name], van/mercedes-benz/westfalia[name], van/renault/theault[name] — third-party CONVERTER company name published as a nameplate; find_corporate_strings.rb exists (§20.3) but §4 has no class number for it"
+    D13_merge_cell (2 claims):
+      - "van/volkswagen/transporter-caravelle[id,name]"
+    D4_make_as_model (1):   "van/iveco-igloocar/igloocar[name]"
+    D12_make_corporate_string (1): "van/iveco-igloocar/igloocar[make]"
+    D18_alias_names_a_live_id (1): "van/mercedes-benz/vito[id] — see scale_and_new_findings"
+    D10_wrong_kind_evidence (1):   "van/fiat/strada[availability:gb] — the only gb LGV rows are a SORN Strada Abarth MK3 hatchback"
+    new_class_candidate (1): "van/citroen/jumper-oder-relay[name] — CONNECTOR-merged dual-market cell"
+
+  unverifiable:              # 19 claims, verbatim reasons
+    - "truck/scania/p460 [id] — sibling truck/scania/460 is a bare power rating; overlap with the P-cab 460 can be neither confirmed nor excluded from its 2 NL rows"
+    - "truck/scania/p460 [name] — Scania's rendering not captured (scania.com and scania.co.uk served 404/JS-only to curl); register forms uniformly fused"
+    - "truck/scania/r580 [name] — same source gap"
+    - "truck/scania/s530 [name] — same source gap"
+    - "truck/steyr/586 [name] — de.wikipedia 'Steyr 586' does not exist and no marque page is reachable; the verdict would rest on register forms alone"
+    - "truck/volvo/f610 [name] — en.wikipedia Volvo F4/F6/F7 is a 3-sentence stub and does not render F610 (the live F612/F613/F614/F616 family is why this is not defective)"
+    - "van/ameline/master [name] — converter make carrying Renault's nameplate; no Ameline page reached, so `correct` would overstate"
+    - "van/dfsk/ec75 [name] — no DFSK/Seres marque page reached; register forms uniform 'EC75' + catalog family EC31/EC35/C31/C35"
+    - "van/edward-davies/ranger [name] — same shape (Ford's nameplate under the converter make)"
+    - "van/fiat/280 [id] — cannot resolve whether 280 is a Fiat numeric nameplate (238/241/242 family) or the Ducato Type-280 chassis code; van/fiat/ducato is live"
+    - "van/fiat/280 [name] — same reason (en.wikipedia Fiat Ducato never uses 'Type 280')"
+    - "van/ford/fiesta-van [name] — Ford did market a 'Fiesta Van' commercial variant but no marque page was captured; the FI commercial-name column collapses these rows to 'FIESTA'"
+    - "van/goupil/g4l [id] — goupil-ev.com lists G2/G4/G4+/G6; whether G4L is a discontinued model or a register variant of G4 is undetermined"
+    - "van/goupil/g4l [name] — same"
+    - "van/mercedes-benz/300-gd [name] — no reachable Mercedes source for the W460 '300 GD' badge this pass (corpus 'GELÄNDEWAGEN 300GD-460.3-4X4' corroborates the designation)"
+    - "van/saxas-nutzfahrzeuge-werdau/mkd-43-l [make] — the register spellings are corporate forms ('SAXAS NUTZFAHR. WERDAU AG'); whether the marque's short form (SAXAS) should be the make id needs the marque page, which was not reached"
+    - "van/ssangyong/actyon-sport [id] — the nl 'ACTYON SPORTS …' raws (10 units) are the same pickup; whether they land on van/ssangyong/actyon or are dropped cannot be determined from the published artifacts"
+    - "van/toyota/lite-ace [name] — marque renderings conflict by market (en.wikipedia titles it 'LiteAce'; uk_dft 'LITE ACE'/'LITE-ACE'; observed_model_names carries both 'Lite Ace' and 'Lite-Ace')"
+    - "van/volkswagen/caddy-life [name] — VW marketed 'Caddy Life' as the passenger version, but no marque page was captured this pass"
+  register_only_correct:     # NOT unverifiable — defunct/long-tail marque, published form == the register's own form (PRD-QUALITY §5.2)
+    - "van/ldv/cub[name], van/leyland-daf/200[name], van/stx/master-horsebox[name], van/nilsson/v70-ambulance[name], truck/scania/r94[name]"
+  source_gap_queue:          # what would close the unverifiables
+    - "scania.com / scania.co.uk: no server-rendered model text (404 or JS-only). Needed for the P/R/S power-designation rendering (4 claims)."
+    - "tadano.com, wackerneuson.com, spieringskranen.nl, maxusmotors.co.uk, mercedes-benz.co.uk: same class of failure this pass (JS-only, 404, or connection refused to curl)."
+    - "No page exists for: Steyr 586 (de.wikipedia), Kawasaki Mule (en.wikipedia), Ameline, Edward Davies, STX, Teijo, Saxas."
+    - "en.wikipedia Volvo F4/F6/F7 is a stub — the F6 designation table (F609…F616) is uncited anywhere reachable."
+
+  scale_and_new_findings:
+    - id: "GATE MISS — former_ids alias names a LIVE id (23 occurrences catalog-wide at v2026.07.5)"
+      severity: blocking
+      class: D18
+      evidence: >-
+        overrides/models/former_ids.yml HARD RULE 1 ("An old id may appear here ONLY if it no
+        longer exists in the build") is violated by 23 of 2474 aliases. Reproduce: load
+        former_ids.yml, load all six catalog/*/models.json, intersect the alias KEYS with the live
+        ids. In my slice this lands on van/mercedes-benz/vito, whose four declared former ids
+        van/mercedes-benz/639-vito-{109,111,115,120} are all still published (fi+lu+nl, es+nl, nl,
+        nl). Full list of the other 19: car/aston-martin/dbx-707, car/austin-healey/3000-mk-2,
+        car/austin-healey/3000-mk2, car/chrysler/300c-srt-8, car/datsun/280-zx, car/faw/ehs9,
+        car/hyundai/tucson-ix-35, car/hyundai/tucson-ix35, car/hyundai/tucson-ix35-lm,
+        car/infiniti/ex-35, car/kia/cee-d, car/mazda/r-x-7, car/mercury/cougar-xr7,
+        car/volkswagen/vw-1-11, bus/man/lions, bus/man/lion,
+        motorcycle/moto-guzzi/850le-mans-iii, motorcycle/norton/commando-850mk-iii,
+        car/alfa-romeo/romeo-gtv.
+      why_it_matters: >-
+        This is exactly the failure §20.2 (the disposition PAIR rule) says an alias-without-fold
+        produces: consumers are told a LIVE id is an alias of a different record. It is also a
+        detector gap — validate.rb/lint_dataset are supposed to assert this and did not fire on
+        the shipped tag. NOT FIXED HERE (audit finds, never sweeps).
+    - id: "NEW DEFECT CLASS CANDIDATE — connector-merged dual-market cell"
+      severity: taxonomy
+      evidence: >-
+        Raw register strings that carry TWO market nameplates joined by a WORD, not a comma:
+        es_dgt/fi_traficom/nl_rdw all serve "JUMPER ODER RELAY" (nl bedrijfsauto N1 x20,
+        personenauto x26; es 9 units; fi 3 units). Siblings prove it is systemic, not one row:
+        van/citroen/jumper-ou-relay, van/citroen/jumpy-oder-dispatch,
+        van/volkswagen/transporter-caravelle ("TRANSPORTER /CARAVELLE", "TRANSPORTER,CARAVELLE,BUS"),
+        van/volkswagen/transporter-ww-caravelle, van/ford/transit-connect-tourneo-connect.
+      why_D13_does_not_cover_it: >-
+        §4 D13 is "temporal merge cell" with example "GLK, GLC" and detector "comma-cell warn in
+        source". A comma detector cannot see "ODER"/"OU"/"WW."/"/" connectors, and the German/French
+        connector words are type-approval designation artifacts (both market names on one approval),
+        not a temporal KBA merge. Needs its own entry + detector spec (connector wordlist:
+        oder|ou|or|and|/|&|ww.) BEFORE any scaled fixing (invariant I-15).
+    - id: "SCALE — model-name initialisms title-cased by smart_case (11 of 100 records in this slice)"
+      severity: high
+      class: D7
+      evidence: >-
+        Atf, Dt, Dw, Sk, Cm, Fll, Fmd, Kaf, Ak, Sdi (in "Caddy Sdi"), Tge (in "Tge Multicab"),
+        plus Z.e (in "Kangoo Express Z.e") and Iload. In every case the register corpus is
+        uniformly upper-case (ATF 100G-4 / DT183LE / DW30 / SK599-AT5 / CM16M / FLL 42R /
+        FMD13 / KAF1000EKF / AK 350 / CADDY SDI 51 KW / TGE MULTICAB), so the Titlecase display
+        comes from the normalizer, not from any source.
+      relation_to_D23: >-
+        D23 covers acronym MAKE names and its own note says smart_case consults stylings/acronyms
+        "curated for MODEL names" — i.e. model initialisms are supposed to be pinned and these are
+        not. Same mechanism, different surface; scale here (>1 in 10 tail records) suggests a
+        model-acronym pin sweep is worth costing.
+    - id: "SCALE — cross-kind nameplate twins (kind-axis debt already owner-decided)"
+      severity: informational
+      evidence: >-
+        26 of the 100 sampled records have a same-nameplate twin under the same make in another
+        kind (e.g. car+truck+van Suburban / H2 / Land Cruiser / Escort / Strada / Astra / Dyna /
+        Montero / Sierra / Ram 1500 / 207 D / 213 / 315 / Combo / Touran / Kombiwagen / 940).
+        Reported once here, not charged per record, per the conventions block.
+    - id: "OBSERVATION — the bodybuilder-as-make policy is applied inconsistently"
+      severity: medium
+      evidence: >-
+        renames.yml (Iveco Sunrise -> ferqui, Iveco Wing -> indcar, Scania Irizar -> irizar) sets
+        the precedent that the BODY builder is the make. The slice contains it applied
+        (ameline, stx, nilsson, teijo, edward-davies, saxas…, theault as a make) AND not applied
+        (van/renault/theault, van/mercedes-benz/westfalia, van/ford/swift,
+        van/iveco/35s14-multitel), plus one fused-make hybrid (van/iveco-igloocar/igloocar).
+        theault is the sharpest case: the make exists and the chassis-marque duplicate is still
+        published alongside it.
+
+records:
+
+  "truck/scania/p460":
+    verdicts: { id: "unverifiable(sibling truck/scania/460 is a bare power rating; overlap unresolvable)", name: "unverifiable(scania.com/scania.co.uk 404/JS-only to curl; no marque rendering captured)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'SCANIA | P460' es_dgt N3 202604/05/06 (11+9+2 units)", "raw: 'Scania | P460' fi_traficom N3 x7", "raw: 'SCANIA | P460' nl_rdw bedrijfsauto N3 x32", "https://en.wikipedia.org/wiki/Scania_PRT-range  # P-series exists as a cab range; the power-suffix rendering is not shown"]
+    notes: "Register forms are uniformly fused P460 in all three countries. truck/scania/460 {es+nl} holds 2 NL rows whose model string is the bare '460'."
+
+  "truck/scania/r142":
+    verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: truck/scania/142 [142] {fi+nl} and truck/scania/r142h [R142H] {fi+nl} are live — same truck (H = cab code, 142 = engine denotation)", "https://en.wikipedia.org/wiki/Scania_3-series  # marque-era rendering is fused ('Scania R143')", "raw: 'R142 HL', 'R142 H 6X2 46', 'R142HL-46-6X2' fi_traficom N3; 'R142' nl_rdw N3 x4"]
+
+  "truck/scania/r164":
+    verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: truck/scania/r164ga, r164gb, r164gb6x4nz all live {fi+nl} — GA/GB/NZ are chassis/axle codes of the same R164", "raw: 65 distinct R164 forms in observed_variants (R164 GA 4X2 NA 580 …)", "https://en.wikipedia.org/wiki/Scania_3-series  # fused era rendering"]
+
+  "truck/scania/r580":
+    verdicts: { id: correct, name: "unverifiable(no Scania rendering captured — site 404/JS-only)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, lu: correct, nl: correct } }
+    evidence: ["raw: 'SCANIA | R580' es_dgt N3 x7, lu_snca N3 x8, nl_rdw N3 (27 forms incl. 'R-SERIE,R580'), fi_traficom N3 x106", "xrefs.tan e4*2007/46*0046*12 etc. present on the record"]
+
+  "truck/scania/r94":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'R 94 LB 4X2 NB 300' fi_traficom N3 x1; 'R94 DB 4X2 NB230', 'R94 LB4X2NA 300' nl_rdw N3", "https://en.wikipedia.org/wiki/Scania_3-series  # fused R143 rendering for the same era"]
+    notes: "Both spaced (FI) and fused (NL) forms are observed; the fused published form matches the encyclopedia rendering of the sibling designation. Thin evidence (2 units total) but real."
+
+  "truck/scania/s530":
+    verdicts: { id: correct, name: "unverifiable(no Scania rendering captured — site 404/JS-only)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'SCANIA | S530' es_dgt N3 202604 x1; 'S530' fi_traficom N3 x3; 'S530' nl_rdw bedrijfsauto N3 x550", "xrefs.tan e4*2018/858*00100*10"]
+
+  "truck/sisu/cm":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { fi: correct } }
+    evidence: ["raw: 'CM16M K-AKK-8x4/345+140+137' fi_traficom N3G x29 (+117 further CM13M/CM16M forms) — corpus is uniformly upper-case 'CM'", "https://de.wikipedia.org/wiki/Sisu_Auto  # Sisu model list (E12M, DK12M/DK16M…) does not carry a bare CM"]
+    notes: "Casing is the assertable defect. Secondary (not charged): 'CM' is a family prefix — the corpus designations are CM13M/CM16M with engine size, so the record also sits above the marque's own model altitude."
+
+  "truck/sisu/e12m":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct } }
+    evidence: ["https://de.wikipedia.org/wiki/Sisu_Auto  # model list contains 'E12M 2005'", "raw: 234 E12M forms, fi_traficom N3 (E12M K-AKK-8X2/325+140+130 x23 …)"]
+
+  "truck/spierings/sk":
+    verdicts: { id: "defective(D6)", name: "defective(D7+D9)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["catalog: truck/spierings/at [At] {fi+nl} is live — 'At' and 'Sk' are the two halves of one designation ('SK1265-AT6')", "raw: 'SK1265-AT6' nl_rdw N3 x161, 'SK 597-AT4' x143, 'SK599-AT5' x6; 'SK498-AT4' fi_traficom N3 x1; 'SK1265-AT5' es_dgt N3G x1", "https://www.spieringskranen.nl  # not served to curl (no content) — the model-number evidence is the register's own strings"]
+
+  "truck/steyr/586":
+    verdicts: { id: correct, name: "unverifiable(no marque/encyclopedia rendering reachable — de.wikipedia 'Steyr 586' missing)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: '586/4200' fi_traficom N2 x1; '586 AQZ', '586' nl_rdw bedrijfsauto N2", "catalog: sibling truck/steyr/680 {fi+nl} — a coherent Steyr numeric family"]
+
+  "truck/tadano-faun/atf":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'ATF 100G-4' nl_rdw N3 x8, 'ATF130G-5' x12, 'ATF 220G-5 (FA067)' fi_traficom N3G — corpus uniformly 'ATF' upper-case", "https://www.tadano.com/products/all-terrain-cranes/  # served, but model text is JS-rendered (no ATF strings in HTML)"]
+    notes: "Secondary (not charged): ATF is the all-terrain family prefix; the marque's models are ATF <capacity>G-<axles>."
+
+  "truck/terberg/dt":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft HGV 'TERBERG | TERBERG DT183 | DT183LE' Licensed 506 + SORN 95", "https://www.terbergspecialvehicles.com/  # current families rendered YT201/YT203, RT, TT — all upper-case"]
+    notes: "The register's own Model column is DT183LE; the published 'Dt' is both title-cased and truncated to the family letters."
+
+  "truck/toyota/dyna":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Toyota_Dyna  # nameplate 'Dyna'", "raw: 'DYNA BU85L-MDDHTW' fi_traficom N2 x10 (+25 further N2 forms); 'DYNA BU 85 L-MDDHTW 3', 'DYNA' nl_rdw bedrijfsauto N2"]
+    notes: "Cross-kind twins van/toyota/dyna (+dyna-100/-150) and car/toyota/dyna exist; the truck record's own evidence is N2-only, which is the correct side of the N1/N2 split."
+
+  "truck/volta-trucks/zero":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Volta_Trucks  # 'Volta Trucks launched the Volta Zero, an all-electric 16-tonne vehicle'", "raw: uk_dft HGV 'VOLTA TRUCKS ZERO | ZERO 16T EXTENDED RANGE' Licensed 0 + SORN 3; 'VOLTA ZERO' nl_rdw N3 x2"]
+    notes: "gb evidence is SORN-only (3 units) — registered fleet, per uk_dft's Licensed+SORN convention."
+
+  "truck/volvo/f610":
+    verdicts: { id: correct, name: "unverifiable(en.wikipedia Volvo F4/F6/F7 is a stub and does not render F610)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'F610' fi_traficom N2 x9 + 'F610-1-V/3850' N2 x3; 'F610' nl_rdw bedrijfsauto N2 x1", "catalog corroboration: truck/volvo/f612, f613, f614, f616 all live {fi+nl} — a coherent F6-series designation family (NAMING.md §2)"]
+
+  "truck/volvo/fll":
+    verdicts: { id: "defective(D9)", name: "defective(D9+D7)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'FL-FLL42 RD-4X2/4700' fi_traficom N2 x4 — the register string itself names the FL chassis; 'FLL 42' nl_rdw N2 x172; 'FLL 42' es_dgt N2 x3", "catalog: truck/volvo/fl [FL] {es+fi+gb+lu+nl} is the marque nameplate (https://en.wikipedia.org/wiki/Volvo_FL); FLL sits beside a whole cluster of code fragments (Flc, Flh, Fhd, Fmfh)"]
+
+  "truck/volvo/fmd":
+    verdicts: { id: "defective(D9)", name: "defective(D9+D7)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'FMD13-FM84RB-VTA5411-10x4/200+230+137+133' fi_traficom N3 — the string carries the FM chassis code; 'FMD6244A8' es_dgt N3 x1; 'FMD42T' nl_rdw N3 x1", "catalog: truck/volvo/fm [FM] live (https://en.wikipedia.org/wiki/Volvo_FM  'FM stands for Forward control Medium height cab')"]
+    notes: "No exact 'FMD' row exists in any register: every raw is FMD11/FMD13/FMD42T/FMD6244A8. The published name is a stem, and the vehicles are Volvo FMs."
+
+  "truck/wacker-neuson/dw":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft HGV 'WACKER NEUSON | WACKER NEUSON DW | DW30' Licensed 496 + SORN 193, DW20 17+8, DW100 7+14", "https://en.wikipedia.org/wiki/Wacker_Neuson  # marque; product pages 404 to curl"]
+    notes: "The register's Model column carries the real designations (DW15/DW20/DW30/DW100); the published 'Dw' is the title-cased family prefix. Cf. sibling truck/wacker-neuson/dv."
+
+  "van/ameline/master":
+    verdicts: { id: correct, name: "unverifiable(no Ameline marque page reached; the string is Renault's nameplate carried under the converter make)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct } }
+    evidence: ["raw: 'AMELINE | MASTER' es_dgt N1 x8 (202604+202606); 'AMELINE | MASTER' fi_traficom N1 x2", "xrefs.tan e2*2007/46*0051*44 — Renault Master's approval family (the type-approval-holder trap: the approval is Renault's, the register make is the bodybuilder)", "precedent: overrides/models/renames.yml Iveco 'Sunrise: null' / 'Wing: null' + Scania 'Irizar: null' — the bodybuilder IS the make"]
+
+  "van/byd/etp3":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/BYD_M3  # 'also marketed as the BYD ETP3 in Europe'", "raw: 'BYD | ETP3' fi_traficom N1 x62; nl_rdw bedrijfsauto N1 x207", "xrefs.tan e9*KS07/46*6757*01"]
+
+  "van/chevrolet/3100-pick-up":
+    verdicts: { id: "defective(D6)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/chevrolet/3100 [3100] {fi+lu+nl} live, plus van/pick-up-3100 and van/panel-3100 — same Advance-Design ½-ton", "https://en.wikipedia.org/wiki/Chevrolet_Advance_Design  # '3100 on ½ ton, 3600 on ¾ ton, 3800 on 1 ton' — 3100 is the model number; pick-up is the body", "raw: '3100 PICK UP' nl_rdw N1 x51, '3100 PICKUP' x12, '3100 PICK-UP' x11; fi_traficom N1 9 forms"]
+    notes: "former_ids van/chevrolet/3100-pickup is correctly dead (checked against all six catalogs)."
+
+  "van/chevrolet/astro-van":
+    verdicts: { id: "defective(D6)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/chevrolet/astro [Astro] {fi+nl} live (also car/astro, car/astro-van)", "https://en.wikipedia.org/wiki/Chevrolet_Astro  # 'the Astro was marketed in multiple configurations, including passenger van and cargo van' — Astro is the nameplate, van is the configuration", "raw: 'ASTRO VAN' nl_rdw N1 x22, 'ASTROVAN' x1; 'ASTRO VAN STARCRAFT SL-DM15Z/2820' fi_traficom N1 x42"]
+
+  "van/chevrolet/k10":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Chevrolet_C/K  # 'C denoted two-wheel drive, K denoted four-wheel drive' — K10 is the marque designation", "raw: 'K10' nl_rdw N1 x12, 'K10 PICK-UP', 'K10 CHEYENNE SUPER'; 'K10' fi_traficom N1G x1"]
+    notes: "car/chevrolet/k10 is the cross-kind twin (kind-axis debt, counted once in the summary)."
+
+  "van/chevrolet/suburban":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Chevrolet_Suburban  # nameplate", "raw: 'SUBURBAN' nl_rdw bedrijfsauto N1 x55, 'CHEVROLET SUBURBAN' x7; 'Suburban', 'SUBURBAN-FK16C-4X4/3280' fi_traficom N1G/N1"]
+    notes: "Marketing category is SUV, legal category on these rows is N1/N1G (grey-plate commercial conversions) — kind is correct under the published EU-category rule. car/ and truck/ twins exist."
+
+  "van/citroen/ak":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { lu: correct, nl: correct } }
+    evidence: ["raw: 'AK 350' nl_rdw N1 x10, 'AK 250' x4, 'AK-B', '2CV AK 400' — 11 forms, all upper-case; 'AK' lu_snca N1 x2", "https://en.wikipedia.org/wiki/Citro%C3%ABn_H_Van  # H-type derivatives are designated by upper-case type letters (HW…HZ, HP)"]
+    notes: "Sibling van/citroen/ak400 [AK400] is a genuine payload variant, so no duplicate is charged. The defect is the title-cased display of a type designation."
+
+  "van/citroen/jumper-oder-relay":
+    verdicts: { id: "defective(D6)", name: "defective(NEW-CLASS CANDIDATE: connector-merged dual-market cell; D13 covers comma cells only)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'JUMPER ODER RELAY' nl_rdw bedrijfsauto N1 x20 (+personenauto x26), es_dgt N1 x9, fi_traficom N1 x3", "catalog: van/citroen/jumper [Jumper] {es+fi+lu+nl} live; siblings van/citroen/jumper-ou-relay and van/citroen/jumpy-oder-dispatch show the same connector pattern", "https://en.wikipedia.org/wiki/Citro%C3%ABn_Jumpy  # Citroën's market names are Jumper/Relay (UK) — never a compound"]
+
+  "van/daihatsu/midget":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Daihatsu_Midget  # nameplate", "raw: uk_dft LGV 'DAIHATSU MIDGET | MIDGET II CARGO AUTO' 1+3; 'MIDGET II' nl_rdw N1 x3"]
+
+  "van/dfsk/ec75":
+    verdicts: { id: correct, name: "unverifiable(no DFSK/Seres marque page reached; register-only + catalog family)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'DFSK | EC75' es_dgt N1 x7, fi_traficom N1 x2, nl_rdw N1 x1", "catalog family: van/dfsk/ec31, ec35, c31, c32, c35 — coherent DFSK EC/C naming", "https://en.wikipedia.org/wiki/Seres_Auto_(Hubei)  # DFSK brand identity (microvans/commercial), model list not enumerated"]
+
+  "van/dodge/ram-van-2-8crd-aut-van":
+    verdicts: { id: "defective(D6)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/dodge/ram-van [Ram Van] {fi+nl} live", "https://en.wikipedia.org/wiki/Dodge_Ram_Van  # nameplate is Ram Van; 2.8 CRD is the engine and 'Aut.' the transmission", "raw: 'RAM VAN 2.8CRD AUT. VAN' nl_rdw N1 x36; 'RAM VAN 2.8CRD AUT.VAN' fi_traficom N1 x1"]
+
+  "van/dodge/w-250":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Dodge_D_series  # marque renders the series fused ('D100/W100 … redesignated as D150/W150')", "raw: 'W250' nl_rdw N1 x2 + N2 x1, 'DODGE W250' x1, 'W 250' x1; 'W 250-JM23Z-PICKUP-4X4/378' fi_traficom N1", "precedent: renames.yml — 'a short letter prefix glued to digits IS the nameplate for this make … the fused form is canonical'"]
+
+  "van/edward-davies/ranger":
+    verdicts: { id: correct, name: "unverifiable(converter make carrying Ford's nameplate; no Edward Davies page reached)", make: correct, kind: correct,
+                availability: { lu: correct, nl: correct } }
+    evidence: ["raw: 'EDWARD DAVIES | RANGER' lu_snca N1 x6, nl_rdw N1 x5 + 'RANGER MS-RT' x1", "xrefs.tan e5*2007/46*1171*09/10 (Ford Ranger approval family)", "precedent: bodybuilder-as-make (renames.yml Iveco Sunrise/Wing)"]
+
+  "van/fiat/280":
+    verdicts: { id: "unverifiable(cannot resolve whether 280 is a Fiat numeric nameplate or the Ducato Type-280 chassis code; van/fiat/ducato is live)", name: "unverifiable(same)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["raw: '280' nl_rdw bedrijfsauto N1 x1178, '280 MAXI', '280 KAMPEERWAGEN' x23, '280 L' x19, '280MA4', '280EH7' (146 matched N1 rows)", "https://en.wikipedia.org/wiki/Fiat_Ducato  # article never uses 'Type 280' (platform codes given are X250/X290), so the chassis-code reading cannot be confirmed from it", "catalog: car/fiat/280 {es+fi+nl} also live"]
+    notes: "Single-source (nl) and camper-heavy raws point at a Ducato-generation chassis code, but Fiat also names commercial models numerically (238/241/242) — an honest ceiling, not a verdict."
+
+  "van/fiat/doblo-standard":
+    verdicts: { id: "defective(D6)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["catalog: van/fiat/doblo [Doblo] {de+es+fi+gb+lu+nl} live; siblings van/fiat/doblo-primo, van/fiat/scudo-standard show the trim-word pattern", "raw: uk_dft LGV 'FIAT DOBLO STANDARD | DOBLO STANDARD L1' 266+3, 'DOBLO STANDARD L2' 317+7 — 'Standard' is the UK spec level, L1/L2 the body length"]
+
+  "van/fiat/strada":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, gb: "defective(D10)", nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Fiat_Strada  # 'a coupé utility produced … since 1998' — the pickup nameplate", "raw: 'FIAT STRADA 1.7 TD' nl_rdw N1 x10, 'FIAT STRADA 1.2' x8 (15 N1 rows, 131 units); 'Strada' fi_traficom N1 x4", "raw: uk_dft LGV rows are ONLY 'STRADA ABARTH MK3' SORN 1, 'STRADA 70 CL BIANCA' 0, 'STRADA SAN REMO' 0 — i.e. the 1980s hatchback, mis-bodytyped"]
+    notes: "gb availability is charged as a defect: the gb register evidences the Fiat Strada HATCHBACK (uk_dft's documented BodyType misclassification), not the coupé-utility this van record denotes. All 34 other gb Strada rows sit under BodyType=Cars."
+
+  "van/ford/escort":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Ford_Escort_(Europe)  # nameplate; 'the panel van version ending production in 2002'", "raw: 'ESCORT 1.8D-75 VAN' fi_traficom N1 x10 (17 N1 rows); 'ESCORT 75 VAN 1.8D' nl_rdw N1 x25, 'ESCORT 1300 KOERIER' x15; uk_dft LGV 'FORD ESCORT' 216 rows / 9,767 units"]
+
+  "van/ford/f-150-xlt":
+    verdicts: { id: "defective(D8)", name: "defective(D8+D7)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["catalog: van/ford/f-150 [F-150] {es+fi+gb+lu+nl} live; siblings van/ford/f150-xlt-lariat, van/ford/f-250-xlt", "raw: 'F 150 XLT' nl_rdw N1 x18, 'F-150 XLT 4X4'; 'F-150 XLT' fi_traficom N2G x8; 'F150 XLT' es_dgt N1 x1 — XLT is Ford's trim level, and the marque writes it upper-case", "former_ids van/ford/f150-xlt is correctly dead"]
+
+  "van/ford/fiesta-van":
+    verdicts: { id: correct, name: "unverifiable(Ford did market a 'Fiesta Van' commercial variant but no marque page was captured)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'FIESTA VAN 1.3I-JC3/249' fi_traficom N1 x216 (commercial-name column collapses to 'FIESTA'); 'FIESTA VAN 1.6 D' nl_rdw N1 x8, 'FIESTA VAN' x1", "https://en.wikipedia.org/wiki/Ford_Fiesta  # mentions a van body from Mk1 on, without the 'Fiesta Van' badge string"]
+    notes: "No bare van/ford/fiesta exists, so no duplicate is charged."
+
+  "van/ford/swift":
+    verdicts: { id: correct, name: "defective(third-party converter company as nameplate — taxonomy gap, no D-number in §4)", make: "defective(D11)", kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft 'FORD | FORD SWIFT | SWIFT TREKKER 584 AUTO / SWIFT VOYAGER 505 / SWIFT TREKKER X' — Swift Group motorhomes on Ford chassis; LGV 57 rows / 2,898 units + HGV rows", "https://en.wikipedia.org/wiki/Westfalia-Werke  # (analogous converter case) ", "precedent: renames.yml Iveco 'Sunrise: null' -> ferqui/sunrise, 'Wing: null' -> indcar/wing — converter is the marque"]
+    notes: "No `swift` make exists in any kind, so the fix is a curation call (move vs drop), not an audit call. Kind: LGV/HGV rows are motorhomes — correct under the legal-category rule, and the kampeerwagen class is a known kind-noise area."
+
+  "van/ford/transit-costum":
+    verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct, kind: correct,
+                availability: { es: correct, nl: correct } }
+    evidence: ["catalog: van/ford/transit-custom [Transit Custom] {de+es+fi+gb+lu+nl} live — 'Costum' is a register misspelling of the same nameplate", "raw: 'TRANSIT COSTUM' es_dgt N1 x1 (202606); 'TRANSIT COSTUM' nl_rdw bedrijfsauto N1 x2 + 'TRANSIT COSTUM VAN' x1 (+personenauto x1)", "https://en.wikipedia.org/wiki/Ford_Transit_Custom  # marque nameplate is Transit Custom"]
+    notes: "Two registers repeat the same typo, so corroboration does not clear it (the 'majority is not authority' rule). Both matched rows are genuine N1 registrations, hence availability correct."
+
+  "van/freight-rover/sherpa":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Freight_Rover  # 'its sole product was the Sherpa family of light panel vans'", "raw: uk_dft LGV 'FREIGHT ROVER SHERPA' 84 rows / 459 units (SHERPA 200/230/250 CB…)"]
+    notes: "evidence_class register-only for the name is not needed — the marque article renders 'Sherpa'."
+
+  "van/gmc/sierra-at4":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { lu: correct, nl: correct } }
+    evidence: ["https://www.gmc.com/trucks/sierra/1500  # AT4 and AT4X are Sierra 1500 TRIM levels (alongside Denali) — 26 AT4 / 15 AT4X mentions on the model page", "catalog: van/gmc/sierra [Sierra] {fi+nl} and van/gmc/sierra-1500 live", "raw: 'GMC | SIERRA AT4' lu_snca N1G x1, nl_rdw N1 x3"]
+
+  "van/goupil/g4l":
+    verdicts: { id: "unverifiable(overlap with van/goupil/g4 undetermined)", name: "unverifiable(G4L is not in the marque's listed range)", make: correct, kind: correct,
+                availability: { es: correct, nl: correct } }
+    evidence: ["https://www.goupil-ev.com/en/models/  # model menu: 'G2 G4 G4+ G6' — no G4L", "raw: 'GOUPIL | G4L' es_dgt N1 x27, nl_rdw bedrijfsauto N1 x184", "catalog: van/goupil/g4 [G4] {es+fi+nl} live"]
+
+  "van/goupil/g6":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://www.goupil-ev.com/en/models/  # 'G6' is a listed model", "raw: 'GOUPIL | G6' fi_traficom N1 x1, nl_rdw N1 x187", "xrefs.tan e8*KS07/46*0003*00"]
+
+  "van/great-wall/steed":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Great_Wall_Wingle  # 'It was also made available in Italy, with the model name Steed' — Steed is Great Wall's export nameplate", "raw: uk_dft LGV 'GREAT WALL STEED | STEED SE TD 4X4' 398, 'STEED S TD 4X4' 335+171, 'STEED CHROME TD 4X4' 18+12"]
+
+  "van/hummer/h2":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Hummer_H2  # nameplate; 'H2 SUT' pickup variant", "raw: 'H2' nl_rdw bedrijfsauto N1 x16 + 'HUMMER H2' x13 + 'HUMMER H2 SUT' x2; uk_dft LGV 'HUMMER H2' 7 rows / 20 units"]
+    notes: "car/ and truck/ H2 twins exist (kind-axis debt)."
+
+  "van/hyundai/iload":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Hyundai_Starex  # 'marketed as the Hyundai iLoad in both Australia and the United Kingdom' — marque form is iLoad", "raw: uk_dft LGV 'HYUNDAI ILOAD | ILOAD COMFORT CRDI 136 DC' etc., 28 rows"]
+
+  "van/iveco-igloocar/igloocar":
+    verdicts: { id: correct, name: "defective(D4)", make: "defective(D12)", kind: correct,
+                availability: { lu: correct, nl: correct } }
+    evidence: ["raw: make strings are 'IVECO/IGLOOCAR' (nl_rdw N1 x37 + N2 x7) and 'IVECO / IGLOOCAR' (lu_snca N1 x1) — a fused chassis+bodybuilder register string kept as the make id", "raw: the model string is 'IGLOOCAR' — i.e. the make's own second token published as the nameplate", "precedent: renames.yml Iveco 'Sunrise: null' -> ferqui, 'Wing: null' -> indcar (bodybuilder is the make, and it is its own make id)"]
+    notes: "Both defects are the same underlying row shape: the pipeline kept the fused make and then had nothing left for the model. Disposition (make alias igloocar + model = the Daily nameplate) is a curation call."
+
+  "van/iveco/35s11v":
+    verdicts: { id: "defective(D9)", name: "defective(D9)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/iveco/35s11 [35S11] {es+fi+nl} live — 'V' is the body/version letter of the same Daily 35S11", "https://en.wikipedia.org/wiki/Iveco_Daily  # the nameplate is Daily; 35S11 is the GVW/power code", "raw: '35S11V-3.55T-VAN/395' fi_traficom N2/N1; '35S11V' nl_rdw N1 x19, '35S 35S11V EURO 3' x12"]
+
+  "van/iveco/35s14-multitel":
+    verdicts: { id: "defective(D6)", name: "defective(D9)", make: "defective(D11)", kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: nl_rdw make strings are 'IVECO - MULTITEL' (N1 x150+42) and 'IVECO - MULTITEL PAGLIERO' (N1 x7+1) — Multitel Pagliero is the aerial-platform bodybuilder", "catalog: van/iveco/35s14 [35S14] {es+fi+lu+nl} live, plus 35s14-veko/35s14e/35s14g/35s14h/35s14n/35s14v — one chassis code split nine ways", "raw: '35S14 - MULTITEL' es_dgt N1 x3, fi_traficom N1 x1"]
+
+  "van/iveco/35s18":
+    verdicts: { id: "defective(D9)", name: "defective(D9)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, lu: correct, nl: correct } }
+    evidence: ["catalog: van/iveco/35s18v and van/iveco/daily-35s18 live — the same Daily 35S18", "raw: '35S18' es_dgt N1 x69, fi_traficom N1 x87, lu_snca N1 x4, nl_rdw N1 x1754 (+bodybuilder make variants IVECO/AGB-PROJECT, IVECO/BLYSS, IVECO/POLMAR…)", "https://en.wikipedia.org/wiki/Iveco_Daily  # nameplate"]
+    notes: "former_ids truck/iveco/35s18 is correctly dead. The record is real and well-evidenced; the defect is altitude (chassis code above the Daily nameplate)."
+
+  "van/iveco/daily-35s13v":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/iveco/daily [Daily] {de+es+fi+gb+lu+nl} live; siblings daily-35s12/35s12v/35s14/35s14-a8/35s16-a8/35s18 — the payload+version codes are published as separate nameplates", "raw: 'DAILY 35S13V' nl_rdw N1 x6 + 'DAILY 35S13V, 5-TRIN' x1; 'Daily 35S13V' fi_traficom N1/N2", "renames.yml Iveco already folds '35S13' -> '35 S 13' — the same string is handled two different ways"]
+
+  "van/kawasaki/kaf":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft LGV 'KAWASAKI-KL | KAWASAKI KAF | KAF1000EMFNN / KAF1000EKF / KAF1000BMFNN' — 64 LGV rows / 1,145 units, corpus uniformly upper-case", "en.wikipedia has no 'Kawasaki Mule' article to cite (checked: missing), so the Mule-nameplate altitude claim is left as a note, not a verdict"]
+    notes: "Secondary (not charged): KAF#### is Kawasaki's type code for the Mule utility vehicle family."
+
+  "van/ldv/200-series":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft LGV 'LDV | LDV 200 SERIES' 23 rows / 1,701 units (Model column '200 SERIES 2.2T', '200 PILOT DIESEL')", "https://en.wikipedia.org/wiki/LDV_Pilot  # LDV's Sherpa-derived van lineage (marque defunct — evidence_class register-only)", "catalog: sibling van/ldv/400-series uses the same form"]
+    notes: "Same vehicle family as van/freight-rover/sherpa and van/leyland-daf/200 under successive marques-of-sale — not charged as a duplicate."
+
+  "van/ldv/cub":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft LGV 'LDV | LDV CUB | CUB DIESEL' 37+2 units (also Cars/Buses rows — kind takes the LGV side)", "evidence_class: register-only (LDV defunct; published form == the register's own form)"]
+
+  "van/leyland-daf/200":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["raw: uk_dft LGV 'LEYLAND DAF | LEYLAND DAF 200' 18 rows / 313 units", "https://en.wikipedia.org/wiki/Leyland_DAF  # marque (defunct 1993) — evidence_class register-only"]
+    notes: "The register's Model column says '200 SERIES' and the LDV sibling is published as '200 Series'; the pipeline reads GenModel ('LEYLAND DAF 200'), so the published form is faithful to its own source. Flagged as an internal inconsistency, not charged."
+
+  "van/man/tge-multicab":
+    verdicts: { id: "defective(D8)", name: "defective(D7+D8)", make: correct, kind: correct,
+                availability: { es: correct, lu: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Volkswagen_Crafter  # 'A version of the Crafter is also sold by MAN Truck & Bus as the MAN TGE' — upper-case TGE", "catalog: van/man/tge [Tge] {de+es+fi+gb+lu+nl} live; siblings van/volkswagen/crafter-multicab, van/citroen/jumper-multicab show 'Multicab' as a conversion word", "raw: 'TGE MULTICAB' es_dgt N1 x17, lu_snca N1 x1, nl_rdw N1 x1"]
+
+  "van/maxus/e-deliver-9":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Maxus_V90  # 'an all-electric version known as the eDeliver 9' — marque form has no hyphen and a lower-case e", "raw: 'MAXUS eDELIVER 9' fi_traficom N1 x71 and nl_rdw N1 x3; 'MAXUS EDELIVER 9' nl_rdw N1 x502, 'EDELIVER 9' x49", "catalog: siblings van/maxus/edeliver-5 and edeliver-7 use the fused form — the family is split across two conventions"]
+    notes: "former_ids van/maxus/edeliver-9 is correctly dead."
+
+  "van/mercedes-benz/108-d":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: '108D-638064-KASTEN/300' fi_traficom N1 x114 and '638 VITO 108D' nl_rdw N1 x1, '4D VITO 108D-638164/300' fi_traficom M1 — 638 is the Vito W638 chassis: this is the Vito 108 D engine variant", "catalog: van/mercedes-benz/vito live; van/mercedes-benz/108 [108] also live", "https://en.wikipedia.org/wiki/Mercedes-Benz_Vito  # the Vito nameplate; 108 CDI/108 D are output variants"]
+    notes: "former_ids van/mercedes-benz/108d is correctly dead."
+
+  "van/mercedes-benz/207-d":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Mercedes-Benz_TN  # 'The TN/T1 van model series included 207 D, 208, 307 D and 308' — spaced, upper-case D, exactly as published", "raw: '207 D-III' nl_rdw N1 x7, '207 D-VI' x5, '207 D III', '207 .D.' — 36 N1 rows"]
+
+  "van/mercedes-benz/213":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, lu: correct, nl: correct } }
+    evidence: ["raw: 'SPRINTER 213 CDI' fi_traficom N1 x22, '906 KA 30 SPRINTER 213CDI' nl_rdw N1 x242, '902.6 213CDI' x40 — the Sprinter nameplate is present in the register's own strings", "catalog: van/mercedes-benz/sprinter {de+es+fi+gb+lu+nl+th} live; car/213 and car/213-cdi also live", "https://en.wikipedia.org/wiki/Mercedes-Benz_Sprinter  # 213 CDI = GVW/output code within the Sprinter range"]
+
+  "van/mercedes-benz/300-gd":
+    verdicts: { id: "defective(D6)", name: "unverifiable(no reachable Mercedes source for the W460 badge this pass)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/mercedes-benz/300-gd-2400-van [300 GD 2400 Van] {fi+nl} live — the same vehicle with the wheelbase/body tokens", "raw: '3D GELÄNDEWAGEN 300GD-460.3-4X4/2400' fi_traficom N1G/N1 (460.3 = W460 chassis); '300 GD LANG' nl_rdw N1 x21, '300 GD 2400' x3, '300 GD /BM460.322'", "former_ids van/mercedes-benz/300gd is correctly dead"]
+
+  "van/mercedes-benz/315":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, lu: correct, nl: correct } }
+    evidence: ["raw: '906 KA 35 SPRINTER 315CDI' nl_rdw N1 x552, 'SPRINTER 315 CDI' fi_traficom N1 (97 rows), 'SPRINTER 315 CDI' es_dgt N1, '906 KA 35 SPRINTER 315' es_dgt M1", "catalog: van/mercedes-benz/315-cdi and van/mercedes-benz/906-ka-35-sprinter-315cdi are BOTH live alongside this record", "https://en.wikipedia.org/wiki/Mercedes-Benz_Sprinter"]
+
+  "van/mercedes-benz/516-cdi":
+    verdicts: { id: "defective(D6)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { es: correct, nl: correct } }
+    evidence: ["catalog: van/mercedes-benz/516 [516] {fi+nl}, truck/mercedes-benz/516-cdi and truck/mercedes-benz/516 all live", "raw: 'SPRINTER 516 CDI' es_dgt N2 x1, '516CDI' es_dgt N1 x1; '516 CDI' nl_rdw N1 x41, '516 CDI (906.153)' x8, '516CDI-S' x19 — Sprinter 516 CDI", "https://en.wikipedia.org/wiki/Mercedes-Benz_Sprinter"]
+
+  "van/mercedes-benz/906-ba-35":
+    verdicts: { id: "defective(D9)", name: "defective(D9)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'SPRINTER 906BA35' nl_rdw N1 x1, '906BA35' x2, '906.BA35', '906BA35 - STEEL-TRUCK'; 'MERCEDES-BENZ 906 BA35' fi_traficom N1 — 906 is the Sprinter W906 chassis, BA-35 the body/GVW code", "catalog: van/906, van/906-ka-30, van/906-ka-35, truck/906-ba-50, bus/906, car/906 all live — one chassis code, six records", "former_ids van/mercedes-benz/906-ba35 + 906ba35 are correctly dead"]
+
+  "van/mercedes-benz/l":
+    verdicts: { id: "defective(D9)", name: "defective(D3)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw (this id's own folded strings): 'L 206 D', 'L 306 D', 'L 406 DG', 'L 407 D-II', 'L 508 DG', 'L 608 D', 'L 319', 'L 1500' — 120 forms spanning at least seven distinct models collapsed onto one bare letter", "raw: fi_traficom N1 'L407D/3500', 'L407 DG/2950', 'L207', 'L 319'; nl_rdw N1 'L 1500', 'L 206 AR'", "catalog: truck/mercedes-benz/l, car/mercedes-benz/l, bus/mercedes-benz/l all live too; truck/l-407, truck/l-508, truck/l-608 exist as the resolved forms"]
+
+  "van/mercedes-benz/v-class":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, gb: correct, lu: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Mercedes-Benz_Vito  # 'it is known as the Vito Traveliner, V-Class or Viano' — V-Class is the marque's English rendering", "raw: 'V-KLASSE' nl_rdw N1 x5988, lu_snca N1 x2; 'V-Klasse' fi_traficom N1/N1G (76 rows); uk_dft LGV 'MERCEDES V CLASS' 40 rows / 225 units"]
+    notes: "van/viano, van/eqv and car/v-class are market-name/kind siblings of the same vehicle — marque-legitimate names, so no duplicate charged."
+
+  "van/mercedes-benz/vito":
+    verdicts: { id: "defective(D18)", name: correct, make: correct, kind: correct,
+                availability: { de: correct, es: correct, fi: correct, gb: correct, lu: correct, nl: correct, th: correct } }
+    evidence: ["overrides/models/former_ids.yml declares van/mercedes-benz/639-vito-{109,111,115,120} as former ids of this record, but all four are LIVE in catalog/van/models.json (fi+lu+nl, es+nl, nl, nl) — HARD RULE 1 violation, and they denote the same vehicle", "https://en.wikipedia.org/wiki/Mercedes-Benz_Vito  # nameplate 'Vito'", "raw: 'VITO' es_dgt N1 x517 + 'VITO TOURER' M1; fi_traficom N1/N1G 1,529 rows; uk_dft LGV 668 rows; lu_snca N1 x27; nl_rdw N1 '639 VITO 109 CDI' x3679 (184 rows); th_dlt 'VITO 116 CDI VAN EXTRA LO' รถยนต์บรรทุกส่วนบุคคล x1", "de: cache/de_fz10_202606.xlsx xl/sharedStrings.xml contains 'VITO' + overrides/kind_maps/de_kba_fz10.yml 'VITO: van  # 2,194'"]
+    notes: "th availability is a single unit in the van-mapped DLT class (the other 152 TH Vito units sit in the >7-seat passenger class, which maps to car) — thin but real."
+
+  "van/mercedes-benz/westfalia":
+    verdicts: { id: correct, name: "defective(third-party converter company as nameplate — taxonomy gap, no D-number in §4)", make: "defective(D11)", kind: correct,
+                availability: { gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Westfalia-Werke  # 'a manufacturer of automotive camping equipment … best known for Volkswagen Westfalia Campers' — a converter, not a Mercedes nameplate", "raw: uk_dft LGV 'MERCEDES WESTFALIA | WESTFALIA JULES VERNES AUTO' 23+2, 'WESTFALIA JULES VERNES' 16+2; 'WESTFALIA JAMES COOK' nl_rdw N1 x2", "precedent: renames.yml Iveco Sunrise/Wing, Scania Irizar"]
+    notes: "No `westfalia` make exists in any kind. The vehicles are James Cook / Jules Verne campers on Sprinter/Vito bases."
+
+  "van/mercedes-benz/x":
+    verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, gb: correct, lu: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Mercedes-Benz_X-Class  # 'The Mercedes-Benz X-Class (W470)' — the nameplate is X-Class; a bare 'X' appears in no marque source", "raw: 'X-KLASSE' nl_rdw N1 x320, lu_snca N1G x6; 'X-Klasse' fi_traficom N1G (185 rows); 'CLASE X' es_dgt N1G x4; uk_dft LGV 'MERCEDES X CLASS' 14 rows / 3,921 units", "xrefs.tan e9*2007/46*6531*00…08 (W470 approval family)"]
+    notes: "A bare single-letter id is also a magnet: nl_rdw rows like '208 D-X' (x79) and '410 D-XI' (x120) share the token; whichever ids they land on, the display form here should be X-Class."
+
+  "van/mitsubishi/montero":
+    verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+                availability: { fi: correct, gb: correct } }
+    evidence: ["catalog: van/mitsubishi/pajero-montero [Pajero Montero] {fi+nl} live — and the FI raws feeding it are literally 'PAJERO MONTERO' / 'PAJERO/MONTERO' / 'Pajero, Montero'", "https://en.wikipedia.org/wiki/Mitsubishi_Pajero  # 'Mitsubishi marketed the SUV as the Montero in North America, Spain, and Latin America' — Montero is a marque name", "raw: 'PAJERO MONTERO' fi_traficom N1G x3 + N1 x2 (17 OK-category rows); uk_dft LGV 'MITSUBISHI MONTERO | MONTERO LWB AUTO' SORN 1"]
+    notes: "gb rests on a single SORN LGV unit (a Pajero LWB commercial) — thin but a real register row."
+
+  "van/mitsubishi/triton":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { th: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Mitsubishi_Triton  # nameplate (L200 in most export markets, Triton in Thailand)", "raw: th_dlt 'MITSUBISHI | TRITON' in รถยนต์บรรทุกส่วนบุคคล (the van-mapped personal-pickup class) x4,273"]
+
+  "van/nilsson/v70-ambulance":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["https://www.nilsson.se/en/  # Nilsson Special Vehicles builds Volvo-based ambulances/hearses (current range XC90/V90) — converter-as-make", "raw: 'NILSSON V70 AMBULANCE' fi_traficom N1 x1 and nl_rdw bedrijfsauto N1 x1 (+5 personenauto units)", "evidence_class: register-only for the model string (published form == register form minus the make prefix)"]
+    notes: "Thin (1 unit per country) but both rows are in the van-mapped category. Sibling nilsson records (car/hearse-3d, car/volvo-s80-hearse, car/s80, car/volvo-s-80) show the same base-nameplate-plus-body pattern — and their own duplicate pair (s80 vs volvo-s-80) is outside this slice."
+
+  "van/opel/combo":
+    verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+                availability: { de: correct, es: correct, fi: correct, gb: correct, lu: correct, nl: correct } }
+    evidence: ["catalog: van/opel/combo-van {es+fi+lu+nl}, van/opel/combo-cargo {es+fi+lu+nl}, van/opel/combo-c-van, van/opel/combo-van-cng all live and denote the same panel van", "https://en.wikipedia.org/wiki/Opel_Combo  # 'The Opel Combo is a panel van and leisure activity vehicle' — Combo is the nameplate", "raw: 'COMBO' lu_snca N1 x176, 'COMBO EDITION N1 100 C' es_dgt N1 x510, 'Combo' fi_traficom N1 x461, nl_rdw N1 (145 rows), uk_dft LGV 'OPEL COMBO'; de: sharedStrings 'COMBO' + kind_maps 'COMBO: van  # 497'"]
+    notes: "Disposition is a curation call: Opel itself markets 'Combo Cargo' and 'Combo Life' as distinct names, so the fold set is Combo/Combo Van/Combo C-Van/Combo-Van-Cng, not necessarily Cargo/Life."
+
+  "van/opel/combo-van-y1-7dtl":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["raw: 'COMBO-C-VAN Y1.7DTL' nl_rdw bedrijfsauto N1 x439 (+ 'COMBO-C-VAN Y1.7DTH' x131, '…DTL AC' x38) — Y17DTL is the GM engine code, C the generation", "catalog: van/opel/combo, van/opel/combo-van, van/opel/combo-c-van live; siblings combo-van-z13dtj-dpf(-ac) are the same shape"]
+
+  "van/opel/olympia":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Opel_Olympia  # nameplate", "raw: 'OLYMPIA' nl_rdw bedrijfsauto N1 x6, 'OLYMPIA BESTEL' x2, 'OLYMPIA VAN' x1, 'OLYMPIA CAR-A-VAN' x1; uk_dft LGV 'OPEL OLYMPIA | OLYMPIA' 1"]
+    notes: "car/opel/olympia is the cross-kind twin; the van record's rows are the delivery/bestel variants."
+
+  "van/peugeot/expert-2":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: the feeding strings are engine strings truncated at the decimal comma — 'EXPERT 2,0 HDI' nl_rdw N1, 'EXPERT 2, 0 HDI 128 HK L2H2', 'Peugeot Expert 2,0 Hdi' fi_traficom N1", "catalog: van/peugeot/expert [Expert] {de+es+fi+gb+lu+nl} AND van/peugeot/expert-2-0hdi are both live — three ids for one nameplate", "https://en.wikipedia.org/wiki/Citro%C3%ABn_Jumpy  # the Peugeot Expert nameplate (shared platform article)"]
+
+  "van/peugeot/expert-2-0hdi":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'EXPERT 2.0HDI-BYRHXB-FOURGON/282' fi_traficom N1 x55 (commercial name column collapses to 'EXPERT'); 'EXPERT 2.0HDI' nl_rdw N1 x2, 'EXPERT 2,0HDI' x1", "catalog: van/peugeot/expert live; van/peugeot/expert-2 live"]
+
+  "van/peugeot/partner-120-l1-1-6hdif":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["raw: 'PARTNER 120 L1 1.6HDIF 66KW - 2PL' nl_rdw N1 x656 and '… - 3PL' x184 — payload class (120), body length (L1), engine (1.6 HDi), power and seat count", "catalog: van/peugeot/partner [Partner] {es+fi+gb+lu+nl} live; siblings partner-170c-1-6hdi / -1-9d / -2-0hdi are the same shape"]
+
+  "van/ram/1500-laramie":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Ram_pickup  # Laramie is a Ram trim level, 1500 the model line", "catalog: van/ram/1500 [1500] {es+fi+lu+nl} live; siblings 1500-limited/-rebel/-sport/-trx/-rho are the same shape", "raw: '1500 LARAMIE' nl_rdw N1 x11, 'RAM 1500  LARAMIE' x6, 'RAM 1500 LARAMIE 4X4' x3, 'DODGE RAM 1500 LARAMIE' x1"]
+
+  "van/renault/alaskan":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { es: correct, lu: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Nissan_Navara  # the Renault-badged D23 is the Renault Alaskan (nameplate 'Alaskan')", "raw: 'ALASKAN' es_dgt N1G x4, lu_snca N1G x3, nl_rdw bedrijfsauto N1 x19", "xrefs.tan e9*2007/46*6515*00"]
+
+  "van/renault/kangoo-express-z-e":
+    verdicts: { id: "defective(D8)", name: "defective(D7)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Renault_Kangoo  # 'the electric variant, the Renault Kangoo Z.E.' — the marque form is Z.E. (both letters capitalised, trailing stop)", "catalog: van/renault/kangoo and van/renault/kangoo-express are both live — Express is the van body name and Z.E. the powertrain badge", "raw: 'KANGOO EXPRESS Z.E.' nl_rdw N1 x1134, 'KANGOO EXPRESS Z.E' x610, es_dgt N1 x3, fi_traficom N1 x110"]
+
+  "van/renault/theault":
+    verdicts: { id: "defective(D11)", name: "defective(third-party converter company as nameplate — taxonomy gap, no D-number in §4)", make: "defective(D11)", kind: correct,
+                availability: { fi: correct, gb: correct, lu: correct, nl: correct } }
+    evidence: ["catalog: the make `theault` EXISTS in van kind with van/theault/proteo {fi+lu+nl} and van/theault/first-eo {fi+nl} — this record duplicates the bodybuilder under the chassis marque; van/renault/master-theault, van/renault/theault-proteo and truck/renault/theault are live too", "https://www.theault.com/en/  # the company renders itself THEAULT/Theault and builds on the Renault Master (4 'Master' mentions on the page)", "raw: 'THEAULT' nl_rdw N1 x48, 'THEAULT PROTEO' x10; fi_traficom N2 'THEAULT'; uk_dft LGV 'RENAULT THEAULT | THEAULT PROTEO SWITCH' 22; lu_snca N1 x3"]
+
+  "van/saxas-nutzfahrzeuge-werdau/mkd-43-l":
+    verdicts: { id: "defective(D6)", name: "defective(D7)", make: "unverifiable(register spellings are corporate forms; marque short form unconfirmed)", kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["catalog: van/…/mkd-43-l-n [Mkd 43 L N] {es+fi} and van/…/mkd-43-l-u [Mkd 43 L U] {fi+nl} live — the same MKD 43-L with the N/U body-code suffix (plus truck/…/mkd)", "raw: 'MKD 43 - L - U' nl_rdw N1 x35+1, 'MKD 43 - L - N' x7, 'MKD 43-L' x1; fi_traficom N1 'MKD 43 - L - N' x13, 'MKD 43-L' x4 — corpus is uniformly 'MKD'", "raw make spellings: 'SAXAS NUTZFAHR. WERDAU AG', 'SAXAS NUTZFAHR WRDAU GMBH' (nl_rdw), 'Saxas Nutzfahrzeuge Werdau' (fi_traficom)"]
+
+  "van/ssangyong/actyon-sport":
+    verdicts: { id: "unverifiable(the nl 'ACTYON SPORTS …' raws are the same pickup; their published id cannot be determined from the artifacts)", name: "defective(D7)", make: correct, kind: correct,
+                availability: { es: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/SsangYong_Actyon  # 'available either as an SUV (Actyon) or as a pick-up truck (Actyon Sports)' — the marque form is plural", "raw: 'ACTYON SPORT' es_dgt N1 x1 and 'SSANGYONG ACTYON SPORT' nl_rdw N1 x1; separately 'ACTYON SPORTS A200 XDI 4WD' nl_rdw N1 x7 + 'ACTYON SPORTS' x1 + '… 2WD' x1 + '… 4WD AUT.' x1", "catalog: van/ssangyong/actyon [Actyon] {lu+nl} live (the SUV)"]
+
+  "van/stx/master-horsebox":
+    verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["catalog: van/stx/master [Master] {es+fi+nl} live — the same STX-bodied Renault Master (cf. the identical pair van/stx/movano and van/stx/movano-horsebox)", "raw: 'MASTER HORSEBOX' nl_rdw N1 x516 + N2 x1, es_dgt N1 x4, fi_traficom N1/N2 x8 — published form == register form (evidence_class register-only)", "xrefs.tan e7*2007/46*0022*02/13"]
+
+  "van/teijo/24":
+    verdicts: { id: correct, name: "defective(D9)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'AVOLAVA-24-01/2420' fi_traficom N1 x5 (avolava = Finnish flatbed body) and '24 AVOLAVA' nl_rdw N1 x1 — the published '24' is a numeric fragment of the body designation", "raw: bare '24' exists too (fi_traficom N1 x1, nl_rdw N1 x1), which is why availability is correct while the name is not"]
+
+  "van/toyota/land-cruiser":
+    verdicts: { id: correct, name: correct, make: correct, kind: correct,
+                availability: { es: correct, fi: correct, gb: correct, lu: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Toyota_Land_Cruiser  # nameplate (also spelt LandCruiser)", "raw: nl_rdw N1 'TOYOTA LAND CRUISER VAN' x793, 'TOYOTA LAND CRUISER (150 SERIES)' x743 (524 N1 rows); fi_traficom N1G x184+166+157…; uk_dft LGV 99 rows / 3,351 units; es_dgt N1/N1G x5; lu_snca N1/N1G x6", "aliases ランドクルーザー + Landcruiser and former_ids van/toyota/landcruiser (correctly dead)"]
+    notes: "es and lu evidence is thin (5 and 6 units in the van-mapped categories; most of their Land Cruiser volume is M1G = car) but present. Generation ids (90/120/150 series) are marque sub-series, not duplicates."
+
+  "van/toyota/lite-ace":
+    verdicts: { id: correct, name: "unverifiable(marque renderings conflict by market)", make: correct, kind: correct,
+                availability: { fi: correct, gb: correct, nl: correct } }
+    evidence: ["https://en.wikipedia.org/wiki/Toyota_LiteAce  # the article renders it fused, 'LiteAce'", "raw: uk_dft LGV/Cars 'TOYOTA LITE ACE | LITE-ACE / LITEACE'; nl_rdw N1 'LITE ACE 1.5 COMMERCIAL' x14, 'LITE ACE 2.0 COMM. D' x9; fi_traficom N1 'LITEACE KM36LV-JRSW-VAN/2100' x25", "observed_model_names carries both 'Lite Ace' and 'Lite-Ace' for this id"]
+
+  "van/vauxhall/astra":
+    verdicts: { id: "defective(D6)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { gb: correct } }
+    evidence: ["catalog: van/vauxhall/astravan [Astravan] {gb} is live and denotes the same LGV Astra vans", "https://en.wikipedia.org/wiki/Vauxhall_Astra  # 'There was also a van version which was badged as the Bedford Astra Van' … later 'the coupe, convertible and Astravan models continued into 2006' — the van's marque name is Astravan", "raw: uk_dft LGV 'VAUXHALL ASTRA' 288 rows / 28,068 units (plus 2,009 Cars rows under the same GenModel)"]
+
+  "van/volkswagen/7j0":
+    verdicts: { id: "defective(D9)", name: "defective(D9)", make: correct, kind: correct,
+                availability: { es: correct, nl: correct } }
+    evidence: ["raw: '7J0' is the ENTIRE model string in both registers — nl_rdw bedrijfsauto N1 x54 (+personenauto x1), es_dgt N1 x1; no other token accompanies it in any row", "shape: 3-character alphanumeric VW type/parts-family code, matching no VW nameplate (NAMING.md §2.1 treats bare code-shaped strings as suspects)"]
+    notes: "Resolution is blocked: the corpus offers no disambiguating token, so the honest disposition is debt, not a guess at the nameplate."
+
+  "van/volkswagen/caddy-life":
+    verdicts: { id: correct, name: "unverifiable(VW marketed 'Caddy Life' but no marque page captured)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'CADDY LIFE' nl_rdw bedrijfsauto N1 x39 (and personenauto x1697 — the passenger version), 'CADDY,-LIFE' N1 x3; fi_traficom 'CADDY LIFE' N1 x61 + M1 x84, 'CADDY KOMBI LIFE 1.6-2K/268' M1 x119", "https://en.wikipedia.org/wiki/Volkswagen_Caddy  # Caddy generations/derivatives; the 'Life' passenger-version name is not rendered in the article"]
+    notes: "The van record's own evidence is the N1 slice (39 nl + 61 fi units); the mass of Caddy Life registrations is M1, which is why the car-kind twin also exists."
+
+  "van/volkswagen/caddy-sdi":
+    verdicts: { id: "defective(D8)", name: "defective(D7+D8)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: 'CADDY SDI 51 KW BESTEL' nl_rdw N1 x6451, 'CADDY SDI 47 KW' x797; es_dgt N1 'CADDY SDI 51 KW BESTEL'; fi_traficom N1 'CADDY SDI' — SDI is VW's engine badge (upper-case), 'bestel' the Dutch body word", "catalog: van/volkswagen/caddy [Caddy] {de+es+fi+gb+lu+nl} live", "https://en.wikipedia.org/wiki/Volkswagen_Caddy  # nameplate"]
+
+  "van/volkswagen/crafter-aut":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'CRAFTER AUT' nl_rdw N1 x9, 'VW CRAFTER AUT' x1; 'VW CRAFTER AUT' fi_traficom N1 x1 — 'Aut' is the transmission token", "catalog: van/volkswagen/crafter live AND van/volkswagen/vw-crafter-aut live (the same string with the make prefix kept)", "https://en.wikipedia.org/wiki/Volkswagen_Crafter  # nameplate"]
+
+  "van/volkswagen/id-buzz-cargo-modified-partition-wall":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["raw: 'ID. BUZZ CARGO MODIFIED PARTITION WALL' nl_rdw bedrijfsauto N1 x6996 (+personenauto x14) — an RDW body-modification phrase, not a nameplate", "catalog: van/volkswagen/id-buzz-cargo [Id. Buzz Cargo] {fi+lu+nl} live; the identical shape is already known for the Caddy (drop_patterns.yml: 'RDW even has CADDY MODIFIED PARTITION WALL (25,250 rows measured)') and van/volkswagen/caddy-modified-partition-wall is live too", "https://en.wikipedia.org/wiki/Volkswagen_ID._Buzz  # 'a cargo van as the ID. Buzz Cargo'"]
+
+  "van/volkswagen/kombiwagen":
+    verdicts: { id: "defective(D6)", name: "defective(D3)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: 'KOMBIWAGEN 1600-23/2400' fi_traficom N1 x8, 'KOMBIWAGEN 23/2400' N1 x3 (23 = the T2 Transporter type number); 'KOMBIWAGEN' nl_rdw N1 x1, 'KOMBIWAGEN 23/2400' x1", "catalog: van/volkswagen/kombiwagen-23-2400 live (the same string unfolded), van/volkswagen/kombi-2 live, car/volkswagen/kombiwagen live", "https://en.wikipedia.org/wiki/Volkswagen_Transporter  # the vehicle is a Type 2 / Transporter Kombi; 'Kombiwagen' is a body word"]
+
+  "van/volkswagen/touran-van":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["raw: 'TOURAN VAN 1.6 TDI 77 KW' nl_rdw N1 x5, 'TOURAN VAN 1,6 TDI' x3, 'TOURAN VAN TDI 103 KW' … (22 N1 rows) — 'Van' is the RDW N1-conversion marker on the Touran MPV", "catalog: car/volkswagen/touran {de+es+fi+gb+lu+my+nl+nz+ua} live", "https://en.wikipedia.org/wiki/Volkswagen_Touran  # the nameplate is Touran (a compact MPV)"]
+    notes: "kind is correct under the legal-category rule (these really are N1 van conversions), which is exactly why the nameplate should be Touran with a body/kind distinction rather than a 'Touran Van' record."
+
+  "van/volkswagen/transport":
+    verdicts: { id: "defective(D6)", name: "defective(D3)", make: correct, kind: correct,
+                availability: { es: correct, fi: correct, nl: correct } }
+    evidence: ["raw: the id's own rows are truncations — 'TRANSPORT' fi_traficom N1 x2 (one row's mallimerkinta is 'TRANSPORTER 2.5TDI-70X0C-2-Z15-KOMBI/332' with commercial name 'TRANSPORT'), 'TRANSPORT 7JD-AXC2D' / 'TRANSPORT. KASSEVOGN 1,9TDI' / 'TRANSPORT.KASSEVOGN 2,5 TD AUT' nl_rdw N1, 'VOLKSWAGEN TRANSPORT' es_dgt N1", "catalog: van/volkswagen/transporter [Transporter] {de+es+fi+gb+lu+nl} live with 12,670-unit FI rows and 58,728-unit NL rows", "https://en.wikipedia.org/wiki/Volkswagen_Transporter  # nameplate"]
+
+  "van/volkswagen/transporter-caravelle":
+    verdicts: { id: "defective(D13)", name: "defective(D13)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: merge cells — 'TRANSPORTER /CARAVELLE' nl_rdw N1 x1, 'TRANSPORTER.CARAVELLE' x1, 'TRANSPORTER, CARAVELLE' / 'TRANSPORTER,CARAVELLE,BUS' (personenauto); fi_traficom N1 'TRANSPORTER CARAVELLE 2.5TDI-7HC-KOMBI-S/300' x42 (commercial name 'TRANSPORTER')", "catalog: van/volkswagen/transporter, van/volkswagen/caravelle AND van/volkswagen/transporter-ww-caravelle all live", "observed_model_names for this id: ['Transporter /caravelle', 'Transporter Caravelle', 'Transporter.caravelle']"]
+    notes: "Two marque names (panel van + passenger version) in one cell; D13's comma detector sees the ',' variants but not the '/' and '.' ones — see the connector-merge new-class candidate."
+
+  "van/volkswagen/transporter-sn-double-cab":
+    verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+                availability: { nl: correct } }
+    evidence: ["raw: 'TRANSPORTER SN DOUBLE CAB' nl_rdw bedrijfsauto N1 x1356 and '… 75 EDITION' x180 — cab/body spec tokens", "catalog: van/volkswagen/transporter live, plus van/volkswagen/transporter-double-cab and van/volkswagen/transporter-dc — three ids for the double-cab Transporter", "https://en.wikipedia.org/wiki/Volkswagen_Transporter  # 'a gamut of variants including … chassis cab and pickup trucks'"]
+
+  "van/volvo/940-hearse":
+    verdicts: { id: correct, name: "defective(D8)", make: correct, kind: correct,
+                availability: { fi: correct, nl: correct } }
+    evidence: ["raw: '940 HEARSE' fi_traficom N1 x1 with vehicle class 'Ruumisauto (SD)' = hearse body; nl_rdw bedrijfsauto N1 x1 (+personenauto x3)", "https://en.wikipedia.org/wiki/Volvo_900_Series  # the nameplate is 940; hearse is a body type (the catalog has a body_types layer for exactly this)", "catalog: car/volvo/940 and its trim siblings (940 GL/GLE/Polar/Turbo) live"]
+    notes: "Converter-built hearses are elsewhere published under the converter make (nilsson/…-hearse); here the register attributes to VOLVO, so the make verdict follows the register."

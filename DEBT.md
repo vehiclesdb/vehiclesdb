@@ -49,3 +49,17 @@ delete its line in the same PR. S2W's half keeps its own ledger in
 | **G26c Wikidata bulk import** — the next major enrichment program | PRD-QUALITY §14, PRD-PAID §2 | CC0 bulk source; staging + graduation through lint_enrich; conflicts lose to curation. Unbuilt. |
 | G26d fueleconomy.gov per-year-per-trim specs | PRD-PAID §2 | spec'd, unbuilt; feeds catalog-plus |
 | Coverage: 4W enrich sweep beyond the ~30 makes done | pipeline enrich/ (39 files, 506 ids) | continue the swarm pattern (research → verify → land) per marque |
+
+## From the baseline audit (2026-07-26 — see data/review/audit-v2026.07.5/RESULTS.md)
+
+| item | source of record | what resolves it |
+|---|---|---|
+| **Truncation/family stubs** — the largest measured defect generator (setra/s, bmw/z-reihe 7,143 regs, bmw/i, volvo/b, ford/f, scania-vabis/l) | RESULTS §New-1 | detector (single-token id prefixing ≥2 live siblings) + the VARIANT_SUFFIXES/series-collapse normalizer cure above; folds with the disposition pair |
+| tesla/y → model-y retirement (headline; wheelbase-proven) | RESULTS + verify-3 | fold+alias, one PR |
+| Connector-merge detector (oder/ou/slash/space + make axis) | RESULTS §New-2 | extend D13's detector wordlist + make-axis pass |
+| Converter-brand-as-nameplate (D5b) detector | RESULTS §New-3 | one-model-string-under-≥2-chassis-makes scan |
+| TAN hygiene: strip `- (FMVSS)` literals (35 records, fi TAN column) + TAN-overlap caveat in NAMING §2 + a TAN-oracle duplicate detector | RESULTS §New-4 | pipeline fi_traficom fix + NAMING amendment + new detector |
+| Source-forced kind: us_fueleconomy/ca_nrcan hardcode kinds=[:car] with unused class columns | RESULTS §New-5 | pipeline: map the class columns |
+| Typo-split detector (edit-distance-1 in-make siblings) | RESULTS §New-6 | new detector; Spinter/Spriner/Srinter exemplars |
+| Raw-layer fold detector (collisions in raws invisible in published names) | RESULTS §New-7 | detector over observed_variants |
+| NISMO casing family + the 11 title-cased model-name initialisms (Atf/Dt/Sk/…) | verify-2, ledger-4 | per-make passes under the two-halves evidence rule |

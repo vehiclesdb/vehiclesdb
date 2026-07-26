@@ -61,3 +61,17 @@ intervals, per stratum; the usage-weighted aggregate computed against the
 PUBLISHED weights (`catalog/meta/decile-mass.json` at the audited tag — the
 weights are read, never asserted); certified-stratum miss rate reported
 separately (it is the program's own error rate, §5.2).
+
+## v1.1 amendments (from the baseline round's adversarial verification)
+
+1. **Two-route minimum**: `unverifiable` requires TWO distinct failed
+   routes, both named (22/26 baseline unverifiables fell to one more route).
+2. **Pair defects are symmetric, counted once**: the duplicate PAIR is the
+   defect; a `fix_attribution:` line names the record that should retire.
+3. **Verifiers confirm CLASS, not just defectiveness** (44 labels moved in
+   the baseline; remedies differ by class, so labels are load-bearing).
+4. **Evidence hygiene**: every cited id/file/URL in an evidence line must
+   exist — a citation naming a nonexistent artifact voids the line.
+5. **Multi-twin rule**: canonicality checks enumerate ALL live candidate
+   twins in-make before any verdict (the baseline's spot-check misses all
+   compared against exactly one).

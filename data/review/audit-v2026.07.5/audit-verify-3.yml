@@ -1,0 +1,1237 @@
+# Five-nines baseline audit (PRD-FIVE-NINES gate A2) — INDEPENDENT VERIFICATION
+# I-11: researcher ≠ verifier. Every defective verdict below was re-derived from
+# primary sources BEFORE the researcher's evidence line was read.
+slice: 3
+verifier: opus-verify-3
+researcher_reviewed: opus-audit-3
+date: 2026-07-26
+status: COMPLETE
+verdict_on_the_ledger: >-
+  The ledger's headline finding stands and its aggregate number is sound
+  (clean rate 0.8016 → 0.8031 adjusted). But 20 of its 119 defect verdicts are
+  wrong in verdict (7) or in class (13), 7 of its 9 unverifiables were
+  resolvable with one more route, and 4 of 25 sampled `correct` verdicts are
+  misses. Merge the number; re-point the lines. Details in SUMMARY.
+
+evidence_base_built_by_verifier:
+  - "catalog v2026.07.5: /Users/javi/GitHub/.vdb-worktrees/s4w-data/catalog/{car,truck,van,bus,moped,motorcycle}/models.json (all six kinds loaded — sibling and cross-kind sweeps are mine, not copied)"
+  - "raw corpora: build/observed_variants.json, build/observed_model_names.json"
+  - "fi: own single-pass aggregate of cache/fi_traficom_register.zip → (ajoneuvoluokka, merkkiSelvakielinen, kaupallinenNimi|mallimerkinta, count, tyyppihyvaksyntanro): 5,147,216 register rows → 278,147 distinct triples"
+  - "es: own fixed-width read of cache/es_dgt_2026{04,05,06}.txt at [17,30)/[47,22)/[426,3)"
+  - "nl: LIVE SoQL against https://opendata.rdw.nl/resource/m9d7-ebf2.json (queried 2026-07-26), incl. per-row wielbasis/massa fields the researcher did not use"
+  - "ua: own single-pass aggregate of cache/ua_reestr_current.zip → (KIND, BRAND, MODEL, count): 901,963 operation rows → 18,067 distinct triples (the per-vehicle identifier column was never read)"
+  - "es: own aggregate es_agg.tsv → (EU category, MARCA, MODELO, count): 24,802 distinct triples over the three cached months"
+  - "gb: cache/uk_veh0120_uk.csv (BodyType,Make,GenModel,Model,…) — read at the finer Model column, which the pipeline does not use"
+  - "marque fetches (curl -A Mozilla/5.0 / WebFetch): mecalac.com, fordtrucks.com.tr, ford-trucks.eu, scania.com/uk, renault-trucks.co.uk, kaessbohrer.com, daf.com, saxas.biz, buchermunicipal.com, liebherr.com, landrover.com, ramtrucks.com, subaru.com, vw.com, zeekrlife.com, mercedes-benz-trucks.com, pressroom.toyota.com, static.oneweb.mercedes-benz.com (Vario W670 owner's manual), en/de.wikipedia.org where rank 3 was unreachable — every rank stated per claim"
+  - "an automated availability re-derivation of my own (v3/availcheck.rb) over all 245 availability entries, machine-checkable against fi/ua/gb/es"
+  - "METHOD: 119 defective claims + 9 unverifiables + 25 spot-checks were re-derived across five parallel evidence-blind workstreams that were forbidden to open the researcher's ledger; I adjudicated every disagreement myself and overrode four of them (PART 8)."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 1 — THE HEADLINE FINDING, RE-DERIVED HARDEST
+# ═════════════════════════════════════════════════════════════════════════════
+
+"car/tesla/model-y#id":
+  researcher: "defective(D6) — car/tesla/y is a live truncation of the same nameplate"
+  verifier: CONFIRMED
+  verifier_did_not_rely_on: "the researcher's counts; every number below is my own query"
+  evidence:
+    - "catalog: car/tesla/y IS live at the audited tag — {id: tesla/y, name: 'Y', kind: car, body_types: [hatchback], availability: [es/es_dgt registration, nl/nl_rdw registration], popularity.global_decile 8}. No alias/former_id/deprecation marker on it. So the id-canonical test ('no OTHER LIVE id denotes the same vehicle') has a live counterparty to fail against."
+    - "LIVE nl_rdw 2026-07-26, merk=TESLA & handelsbenaming=Y → EXACTLY 2 rows: kenteken GDT64B (DET 2024-06-26, massa 1959, wielbasis 289, M1, Personenauto) and GJX24J (DET 2023-08-25, massa 1884, wielbasis 289, M1)."
+    - "PHYSICAL DISCRIMINATOR (my own test, not in the researcher's ledger): live RDW group-by merk=TESLA on (handelsbenaming, wielbasis) — MODEL Y wb=289 n=55,598; MODEL 3 wb=288 n=65,990; MODEL S wb=296 n=5,469; MODEL X wb=297 n=3,715. Both bare-'Y' rows are wb=289. The wheelbase separates Model Y from every other Tesla in the same register, and it lands on Model Y exactly (2,890 mm). Kerb masses 1,884/1,959 kg sit inside the Model Y RWD/LR band and below Model S/X."
+    - "es_dgt 2026-04..06, own fixed-width read: TESLA|Y|M1 = 1 row (against TESLA|MODEL Y|M1 = 1,586). Tesla's ES M1 line in the same three months is MODEL 3 / MODEL Y / MODEL S / MODEL X only — a bare 'Y' M1 under merk TESLA has no other referent in that marque's line-up."
+    - "So car/tesla/y = 3 vehicles (2 nl + 1 es), and the NL pair is positively identified as Model Y on register-carried dimensions, not by resemblance."
+  could_the_bare_Y_be_something_else:
+    considered: "Tesla Semi (N3), Cybertruck (bare 'Y' unlikely, and Cybertruck is not EU-approved), Roadster, a coachbuilt one-off, or a non-Tesla 'Y' misfiled under merk TESLA."
+    ruled_out_by: "voertuigsoort=Personenauto + europese_voertuigcategorie=M1 kills Semi/Cybertruck; wielbasis 289 ≠ Roadster (RDW Tesla Roadster rows are cabriolet, and the M1 wb clusters at 288/296/297/289 by model). No Tesla product other than Model Y has a 2,890 mm wheelbase."
+    residual_doubt: "none material. The only unfalsifiable residue is that RDW's wielbasis is self-reported per plate; two independent plates agreeing to the cm, plus the ES row, plus Tesla's 4-product M1 line-up, closes it."
+  verdict_note: >-
+    The defect is real and it is on the id axis, but note WHICH record is
+    wrong: the protocol's check is symmetric ("no other live id denotes the
+    same vehicle"), so car/tesla/model-y fails it while being the CORRECT
+    canonical form. A reader of the ledger could mistake this for "Model Y is
+    misnamed". The fix lands on car/tesla/y (fold + alias), not on model-y.
+    I record the claim CONFIRMED, with that framing correction.
+  head_mass_note: "car/tesla/model-y is global_decile 1 with 13 countries — the researcher's 'a head record fails canonicality' framing survives verification."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 2 — THE TWO MARQUE OVERTURNS, RE-FETCHED
+# ═════════════════════════════════════════════════════════════════════════════
+
+"truck/mecalac/revotruck#name":
+  researcher: "correct (published 'Revotruck' is the marque's own rendering)"
+  verifier: CONFIRMED
+  evidence:
+    - "https://mecalac.com/en/products/revotruck/ (HTTP 200, fetched 2026-07-26, curl -A Mozilla/5.0): nav + breadcrumb + og image alt all render 'Revotruck-Series'."
+    - "https://mecalac.com/en/machine/revotruck6.html (HTTP 200): <title>Mecalac Revotruck 6 - Revotruck-Series</title>; 39 occurrences of the exact token 'Revotruck' in body copy, 0 occurrences of 'REVOTRUCK' or 'RevoTruck' outside lowercase URL slugs."
+    - "raw corroboration (not authority on casing): observed variants 'MECALAC REVOTRUCK9', 'REVOTRUCK 6T'; register strings uppercase everything, so they neither support nor contradict."
+  note: >-
+    Worth stating because it is the trap this check exists for: the raw
+    registers only ever shout REVOTRUCK, and the model is sold as
+    'Revotruck 6'/'Revotruck 9'. The published bare 'Revotruck' is the series
+    name at nameplate altitude — right form AND right altitude.
+
+"truck/ford/f-max#name":
+  researcher: "defective(D7) — Ford Trucks writes F-MAX, catalog publishes 'F-Max'"
+  verifier: CONFIRMED
+  evidence:
+    - "https://www.fordtrucks.com.tr/en (HTTP 200, fetched 2026-07-26): 75 occurrences of the exact string 'F-MAX'; zero of 'F-Max'. Menu entries render 'F-MAX', 'F-MAX L', 'F-MAX LL' (href /en/tractor-series/fmax, /fmax-l, /fmax-ll); meta description: 'Turkey's leading heavy truck brand. F-MAX tractor…'."
+    - "https://www.ford-trucks.eu/ → redirects to ford-trucks.pl (HTTP 200): 63 occurrences of 'F-MAX', same rendering on a second Ford Trucks national site."
+    - "catalog: truck/ford/f-max name='F-Max', avail es+lu+nl, tan e9*2007/46*0089*38/*39 (a genuine EU WVTA, so the record itself is sound — only the casing is not the marque's)."
+  make_axis_considered_and_rejected: >-
+    I tested whether this should ALSO carry a D12 (make split) by parity with
+    the researcher's truck/renault/d14 → renault-trucks finding, since the
+    marque here is 'Ford Trucks' (Ford Otosan) and the catalog has a separate
+    renault-trucks make. Rejected: Ford Trucks is a sub-brand of Ford, the
+    vehicles carry the Ford blue oval, and the type approval is issued under
+    e9*…*0089 to Ford Otosan as a Ford. Renault Trucks is a separately-owned
+    marque (Volvo Group). Not a defect; recorded so the asymmetry is on record.
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 3 — THE THREE NEW-CLASS EXEMPLARS
+# ═════════════════════════════════════════════════════════════════════════════
+
+"NEW-3 (source-forced kind) — us_fueleconomy.rb / ca_nrcan.rb hardcode kinds=[:car]":
+  researcher: "both sources declare kinds=[:car] and emit Row(kind: :car) unconditionally; no kind_map exists for either"
+  verifier: CONFIRMED
+  evidence:
+    - "pipeline/sources/us_fueleconomy.rb: `def kinds = %i[car]` and, in rows(_kind), `Row.new(source: key, country: country, kind: :car, …)` — the kind argument is discarded (`_kind`) and :car is a literal."
+    - "pipeline/sources/ca_nrcan.rb: identical shape — `def kinds = %i[car]`, `Row.new(…, kind: :car, …)` with `rows(_kind)`."
+    - "overrides/kind_maps/ contains exactly three files: de_kba_fz10.yml, nl_rdw.yml, uk_dft.yml. There is no us_fueleconomy.yml or ca_nrcan.yml, so no correction layer can reach these rows."
+    - "the unused free class column is real: cache/us_vehicles.csv column 63 is VClass; Suzuki Equator rows read VClass='Small Pickup Trucks 2WD' (make='Suzuki', model='Equator 2WD', baseModel='Equator', MY2009). ca_nrcan's parser reads only Make/Model and never touches the 'Vehicle class' column."
+  consequence_claim_car_suzuki_equator_kind: CONFIRMED (see that record below)
+
+"truck/ford/f-150#xrefs.tan — the '- (FMVSS)' literal (NEW-2 poisoned key)":
+  researcher: "literal string '- (FMVSS)' in xrefs.tan, shared with 33 records across 4 kinds"
+  verifier: "CONFIRMED(with correction to the numbers)"
+  evidence:
+    - "own sweep of all six kind files for the literal '- (FMVSS)' in xrefs.tan: 35 records carry it — 22 car, 10 motorcycle, 3 truck. That is 34 OTHER records besides truck/ford/f-150, across THREE kinds, not 33 across four. Exemplars match the researcher's (audi/tts, bmw/x3, harley-davidson/road-king, zero-motorcycles/sr-f-zf14-4-premium) plus chevrolet/silverado, dodge/ram, jeep/wrangler, toyota/camry, fisker/ocean-one."
+    - "PROVENANCE (the researcher did not name it): the string comes from fi_traficom's `tyyppihyvaksyntanro` column — my FI aggregate carries '- (FMVSS)' as the TAN for 74 distinct (class, make, model) triples, e.g. 'N2G|AMG Hummer|H2', 'M1|Audi|A4 allroad quattro'. It is Traficom's placeholder for a vehicle admitted on US FMVSS rather than an EU WVTA. It is not in the LU, UK or NL caches (0 hits each), so fi_traficom is the sole ingest path."
+    - "so the defect is exactly as characterised: a non-TAN placeholder is being stored in the TAN field, and any TAN-equality duplicate detector would fire across 35 unrelated records in 3 kinds."
+  note: "the correction is arithmetic only; the class and its severity stand."
+
+# (Part 4: NEW-1 converter-brand exemplar, remaining defective claims,
+#  unverifiables, and the 25 correct spot-checks follow — see below.)
+
+"NEW-1 (converter/coachbuilder brand or conversion STYLE as a nameplate) — exemplars re-derived":
+  researcher: "8 defective claims (id+name on truck/fiat/burstner, truck/fiat/swift, truck/peugeot/bailey, car/volkswagen/baja) + a proposed new class"
+  verifier: "CONFIRMED as a real, repeating defect — with a taxonomy caveat and a materially STRONGER evidence base than the ledger carries"
+  evidence:
+    - "gb VEH0120 (own awk over cache/uk_veh0120_uk.csv): Make=FIAT, GenModel='FIAT BURSTNER', Model column = 'BURSTNER ARGOS A 747-2 G' (8+3), 'BURSTNER ARGOS A747-2 AUTO' (8), 'BURSTNER DELFIN T680G HARMONY' (3), 'BURSTNER DELFIN T727G/T736' … — the model column carries Bürstner's own motorhome nameplates, never a Fiat one."
+    - "gb: Make=PEUGEOT, GenModel='PEUGEOT BAILEY', Model='BAILEY APPROACH A-GRAPH 79-4T' (114+10), 'BAILEY APPROACH AUTOGRAPH 68-2', 'BAILEY ADVANCE 76-4' — Bailey of Bristol."
+    - "gb: Make=FIAT, GenModel='FIAT SWIFT', Model='SWIFT KONTIKI 649', 'SWIFT BESSACARR 560 LOUNGE S-A', 'SWIFT BOLERO 724FB S-A' — Swift Group. Note the same GenModel appears under THREE BodyTypes (Cars, Buses and coaches, Heavy goods vehicles), which is itself the kind-noise fingerprint."
+    - "the remedy really is blocked: overrides/makes/drop.yml drops BURSTNER, BÜRSTNER and SWIFT (and ~40 more coachbuilders) as MAKES for kind car, and NIESMANN+BISCHOFF / HYMER / MOBILVETTA for kind truck. So 'move it to its own marque' would resurrect exactly what the drop layer deletes. That is the researcher's central argument and it holds on inspection of the file."
+    - "SCALE — larger than the ledger says: the string 'Burstner' is published as a MODEL under FOUR different chassis makes across three kinds — car/citroen/burstner [es,nl], car/fiat/burstner [fi,nl], car/mercedes-benz/burstner [fi,nl], truck/fiat/burstner [gb], van/fiat/burstner [gb,nl]. 'Swift' likewise: car/fiat/swift, truck/fiat/swift, truck/ford/swift, van/fiat/swift, van/ford/swift. 'Bailey': truck/ford/bailey, truck/peugeot/bailey, van/ford/bailey, van/peugeot/bailey."
+    - "car/volkswagen/baja re-derived at row level: LIVE nl_rdw 2026-07-26, merk=VOLKSWAGEN AND handelsbenaming LIKE '%BAJA%' → 'BAJA' 2 (sedan + Niet geregistreerd), 'KEVER BAJA' 2 (coupe + sedan), 'BAJA BUGG' 1, 'BAJA REPLICA' 1 — all Personenauto M1. 'KEVER' is Dutch for Beetle and RDW's own string says REPLICA: this is the aftermarket Baja Bug conversion STYLE, not a VW nameplate."
+    - "and the nz half of that record is REAL (I checked, because a bogus availability would have been a second defect): cache/nz_passenger-car-van_V.json carries {MAKE: VOLKSWAGEN, MODEL: BAJA, n: 6}."
+  taxonomy_caveat_the_verifier_records: >-
+    The DEFECT is confirmed in every instance. Whether it needs a new class
+    number is thinner than the ledger implies: PRD-QUALITY §4's D5 is
+    "embedded make/BRAND prefix … remedy rename; if cross-make badge → move",
+    which covers the detector (a third-party brand occupying the model column)
+    and even contemplates the move remedy. The researcher's case for newness
+    rests on the REMEDY being blocked (the move target is a dropped make, so
+    the fix is a per-kind drop, not a move) rather than on the detector being
+    different. That is a legitimate basis for a sub-class, and the proposed
+    list-free detector (same model string under ≥2 unrelated chassis makes in
+    one kind) is genuinely new and fires on all four exemplars — but I would
+    file it as D5b, not as a class unrelated to D5. Recorded as dissent, not
+    as an overturn.
+  kind_claims_on_the_three_gb_records: CONFIRMED (D10)
+  kind_evidence:
+    - "kind is a LEGAL axis: PROPOSAL-kind-boundary.md DECISION (2026-07-25) Q1 — 'derive kind from the EU category; treat the register's own vehicle-type word as a hint, never as truth'. GB VEH0120's BodyType is exactly such an administrative word, and overrides/kind_maps/uk_dft.yml maps 'Heavy goods vehicles' → truck mechanically."
+    - "a motor caravan with ≤8 passenger seats is M1 SA at ANY mass — the same document cites Germany's Pkw table legitimately carrying 'motorhomes up to 26 t (SA/Wohnmobil, 71,575 units)'. So Bürstner Argos / Bailey Autograph / Swift Kon-tiki rows are M1, and kind=truck is wrong."
+    - "CONFLICT I am obliged to flag: NAMING.md §3 says the opposite in writing — 'Heavy trucks appear in German passenger-car tables … motorhomes on Actros/Arocs/FH chassis. Drop from car; they are correct in truck.' The 2026-07-25 decision post-dates it and is explicit, so I follow the decision — but the two documents disagree and a fixer will hit that."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 5 — THE UNVERIFIABLE REGISTER, RETRIED (one honest alternative route each)
+# ═════════════════════════════════════════════════════════════════════════════
+
+"truck/scania/metago#id + #name + #make":
+  researcher: "unverifiable(id, name, make) — 'Metago Pro' identity unresolved; metago.eu/.nl do not resolve, WebSearch dead"
+  verifier: "RESOLVED — 3 unverifiables closed; #id and #name become defective(NEW-1/D5-shape), #make becomes correct"
+  alternative_route_taken: >-
+    Instead of hunting a 'Metago' company, I asked the register which MAKES
+    carry the string — a cross-make live RDW group-by. That names the owner
+    immediately.
+  evidence:
+    - "LIVE nl_rdw 2026-07-26, $where=starts_with(handelsbenaming,'METAGO') grouped by merk: KAESSBOHRER 'METAGO PRO' Aanhangwagen O4 n=15 + Middenasaanhangwagen O4 n=6; KASSBOHRER TRANSPORT TECH 'METAGO PRO'/'METAGO-PRO'/'METAGOPRO' O4 n=11+27+15+2+1; KAESSBOHRER TRANSPORT TEC N3 n=17. The PRODUCT is a Kässbohrer Transport Technik car-transporter (O4 trailer/centre-axle trailer)."
+    - "the chassis makes that also carry it are exactly the NEW-1 fingerprint: MERCEDES-BENZ N3 n=58, SCANIA N3 n=16, VOLVO N3 n=10, DAF N3 n=1, and one literal 'SCANIA/KASSBOHRER TRANSPO' N3 n=1 — the tractor of a car-transporter combination, with the bodybuilder's product name in the model column."
+    - "marque corroboration: https://kaessbohrer.com/en (HTTP 200) links its own product page href='https://kaessbohrer.com/en/vehicle/metago-pro'; the target itself 404s (site restructure), so I cite the live link, not a page I could not read."
+    - "es_dgt 2026-04..06, own read: 'MERCEDES BENZ | METAGO PRO | N3' 2 and 'SCANIA | METAGO PRO | N3' 2 — the same shape in a second country."
+    - "the catalog carries THREE of these, not the two the ledger names: truck/mercedes-benz/metago [es,fi,nl], truck/scania/metago [es,lu,nl], truck/volvo/metago [fi,nl] — all named 'Metago'. There is no kaessbohrer/kassbohrer make in any kind."
+  verdicts:
+    id: "defective — 'Metago' is not a Scania nameplate; the id is a bodybuilder product string (same NEW-1/D5 shape as burstner/swift/bailey). Note this is NOT a duplicate-of-a-live-id defect: the three metago records denote three different chassis, so D6 would be wrong."
+    name: "defective — same reason; the marque's own rendering is Kässbohrer's 'METAGO PRO', and it is Kässbohrer's, not Scania's."
+    make: "CORRECT — I overturn the researcher's unverifiable here. The 16 NL rows are N3 Bedrijfsauto registered under merk SCANIA: they ARE Scania tractors. The third party sits in the MODEL column, so the make axis is not the defective one (contrast D11, where the third party is in the make column)."
+
+"truck/renault/d14#name":
+  researcher: "unverifiable(name) — renault-trucks.com/en/trucks/renault-trucks-d returned HTTP 502; register forms split 'D 14' (nl n=2) and 'D14' (nl n=1, es n=1)"
+  verifier: "RESOLVED — the published closed form 'D14' IS the marque's own rendering → the name claim is CORRECT"
+  alternative_route_taken: "the .com host really is 502 (I reproduced it); I went to the marque's NATIONAL sites instead."
+  evidence:
+    - "https://www.renault-trucks.com/en/trucks/renault-trucks-d → HTTP 502 (reproduced 2026-07-26): the researcher's blocker is real."
+    - "https://www.renault-trucks.co.uk/press-release/renault-trucks-d14-little-green-truck-set-to-unlock-tighter-access-for-rubis-in-channel-islands-fuel-operation → HTTP 200, <title>Renault Trucks D14 'little green truck' set to unlock tighter access for Rubis in Channel Islands fuel operation | Renault Trucks UK</title>. Body copy: 'the D14 4x2 rigid has been engineered specifica…', 'D14 and D16 chassis give us that flexibilit…', 'a D14 rigid designed to reach the most restri…'. Rank 3, the marque's own press release."
+    - "counter-evidence I looked for and found: the same site also writes 'Renault Trucks D 19 T X-Load' (spaced) and 'D Wide'. So Renault Trucks uses BOTH forms; the closed 'D14' is attested for exactly this model, which is all the claim needs."
+  note: "this cuts against the researcher's own #make=defective(D12) verdict being wrong — the press release is published BY Renault Trucks, which is evidence FOR the make split. That claim was assigned to my truck-batch verifier."
+
+"truck/scania/p230#name (and p280, p380 — same question)":
+  researcher: "unverifiable(name) — scania.com 404s/JS-renders; both 'P280' and 'P 280 B 4X2' live in nl_rdw"
+  verifier: "PARTIALLY RESOLVED — one rank-3 instance of Scania's own convention found; it favours the SPACED form, so the published closed forms are non-canonical (D7). Recorded with the thinness stated."
+  alternative_route_taken: "the researcher tried scania.com product pages; I tried the national market sites and read the CMS image metadata, which survives JS rendering."
+  evidence:
+    - "reproduced the blocker: scania.com/group/en/home/products-and-services/trucks/our-range.html → 404; scania.co.uk/trucks → 404; scania.nl/trucks → 404. The P-series page (https://www.scania.com/uk/en/home/products/trucks/p-series.html) is HTTP 200 but carries NO power designations in the served HTML (JS)."
+    - "https://www.scania.com/uk/en/home/products/trucks.html HTTP 200: the page's own itemprop='name' image captions read 'P-series', 'R-series', 'G-series', 'S-series', 'Low-entry cab trucks L-series' and — the decisive one — 'Scania R 410 LBG 4x2 Highline, general cargo transport'. Scania's own CMS writes cab-letter SPACE power-figure."
+    - "so 'P 230' / 'P 280' / 'P 380' is the marque form and the catalog's 'P230' / 'P280' / 'P380' is not."
+  honesty_note: >-
+    This rests on ONE scania.com asset caption ('R 410'), for a different cab
+    letter than any of the three records. I could not get a second independent
+    Scania instance (series pages JS-render; the newsroom index served no
+    article text). A reviewer who wants two instances before renaming three
+    live ids is entitled to leave these unverifiable; I record the resolution
+    as DIRECTIONAL and would not sweep on it alone.
+
+"car/volkswagen/caravelle-syncro#name":
+  researcher: "unverifiable(name) — VW's rendering of the drivetrain badge is lowercase 'syncro' in period material; no VW-owned page reachable"
+  verifier: "CONFIRMED UNVERIFIABLE — my independent route failed too"
+  alternative_route_taken: "volkswagen-newsroom.com search (HTTP 200 but JS-rendered: the only 5 'syncro' hits in the served HTML are the query echoed back in hreflang/locale-switcher links); volkswagen-classic.de/en/models → redirects to a newsroom hub with 0 hits; volkswagen-classic-parts.com/en/vehicles/t3 → 404; vwn-presse.de → 200 but a 2.3 KB shell; volkswagen-newsroom.com/en/volkswagen-commercial-vehicles-3701 → 404."
+  evidence:
+    - "no VW-owned page rendering the badge could be read, so the capital-S 'Caravelle Syncro' is neither confirmed nor refuted. Recorded as unverifiable per skipped-beats-assumed; feeds the source-gap queue."
+
+"car/volkswagen/211#id":
+  researcher: "unverifiable(id) — the VW 211-series order code cannot be resolved to a specific live id; en.wikipedia Volkswagen_Type_2 does not list VW's numeric order codes"
+  verifier: "CONFIRMED UNVERIFIABLE for the id axis — but I closed WHAT the vehicle is, which the ledger did not"
+  alternative_route_taken: "row-level live RDW instead of encyclopaedia lookup: I pulled every NL row and read the physical columns."
+  evidence:
+    - "LIVE nl_rdw 2026-07-26, merk=VOLKSWAGEN AND handelsbenaming='211' → 15 rows: 8 Bedrijfsauto N1 'gesloten opbouw', 3 Personenauto M1 MPV, 3 Personenauto M1 stationwagen, 1 Personenauto M1 kampeerwagen."
+    - "the seven Personenauto rows (the ones that put this record in kind=car) are DET 1956-08-23, 1960-06-30, 1963-02-28, 1964-06-30, 1965-10-20, 1966-02-28, 1975-06-30; wielbasis 240/241 cm; massa 950–1,127 kg; 3–9 seats. Wheelbase 2,400 mm + that date span + those masses identify the VW Type 2 Transporter (T1 to 1967, T2 from 1968) beyond reasonable doubt — six of the seven are T1-era."
+    - "WHY IT STILL DOES NOT CLOSE: the catalog has no live Type 2 / Transporter / Beetle-style nameplate id in kind car to name as the canonical target — the family is scattered across car/volkswagen/t2 [lu,my,nl] (2nd generation only, so it covers just the 1975 row), plus combi, micro-bus, kleinbus, kleinbuss, kombiwagen, bestel, bestel-0. Naming any single one as 'the same vehicle' would be the resolve-by-resemblance that NAMING §7.5 forbids."
+  note: "the ledger's separate #name=defective(D9) on this record is independently supported by the above: '211' is a factory order code for the Type 2, not a nameplate."
+
+"ca/us availability claims (flagged by the researcher as a class, not counted as unverifiable)":
+  verifier: "AGREE with the researcher's handling, and I checked the schema label myself"
+  evidence:
+    - "pipeline/sources/us_fueleconomy.rb and ca_nrcan.rb both declare `def evidence = :approval` and emit `count: nil`. The catalog records carry `evidence: approval` accordingly (e.g. car/tesla/model-y ca/us entries). So 'the register evidences this model' is satisfied by certification, and the schema is not overclaiming. Counting these correct rather than unverifiable is defensible BECAUSE the label is honest."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 6 — LEDGER ARITHMETIC (verified independently, not taken on trust)
+# ═════════════════════════════════════════════════════════════════════════════
+ledger_arithmetic_check:
+  slice_records: "100 — all 100 slice ids resolve to a live record in the audited catalog (0 missing)"
+  availability_entries: "245 — my own count over the catalog's availability arrays for those 100 records. Matches the ledger."
+  claims_total: "645 = 100×4 + 245 ✓"
+  verdict_sums: "correct 517 + defective 119 + unverifiable 9 = 645 ✓; per-axis sums: id 40+58+2=100 ✓, name 42+52+6=100 ✓, make 97+2+1=100 ✓, kind 96+4+0=100 ✓, availability 242+3+0=245 ✓"
+  defect_list_vs_summary: "the enumerated defect_list contains exactly 119 defective claims over 73 records, and its per-class tally (D1 10, D5 1, D6 33, D7 13, D8 21, D9 27, D10 4, D11 1, D12 1, NEW-1 8) reproduces summary.defect_classes_seen exactly ✓"
+  note: "the ledger is internally consistent; no bookkeeping defect found."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 7 — NEW-2's OTHER THREE CLAIMS, AND CLAIMS I RE-DERIVED PERSONALLY
+# (these are my own derivations; where a batch verifier disagreed, mine governs
+#  and the disagreement is recorded)
+# ═════════════════════════════════════════════════════════════════════════════
+
+"NEW-2 evidence line 1 — PLATFORM SHARING (tesla model-y vs model-3)":
+  researcher: "model-y shares 11 TANs with model-3; fi shows MODEL Y under *21/*25/*26 and MODEL 3 under *06/*15/*19"
+  verifier: CONFIRMED
+  evidence:
+    - "own set intersection over the catalog: car/tesla/model-y has 25 TANs, car/tesla/model-3 has 25, and |intersection| = 11 exactly — e4*2007/46*1293*{19,21,27,28,30,33,34,37,44,51,52}."
+    - "my FI aggregate attributes the extensions PER MODEL: 'M1|Tesla|Model Y' n=15,271 → e4*2007/46*1293*19; 'M1|Tesla|MODEL Y' n=34 → *19; 'Model Y Long Range Dual Motor' → *21; 'model y' → *25; 'M1|Tesla|Model 3' n=14,236 → *00; 'MODEL 3' n=83 → *06; 'Tesla Model 3' → *02. So the BASE approval e4*2007/46*1293 is shared and the EXTENSIONS are model-specific."
+    - "which sharpens the researcher's point: extension *19 is attributed to Model Y by FI, so model-3 carrying *19 in the catalog is a build-side mis-attribution, and a TAN-equality merge would fold the #1 and #2 selling EVs in Europe into one record."
+
+"NEW-2 evidence line 2 — CROSS-KIND legitimate (land-rover/defender)":
+  verifier: CONFIRMED
+  evidence:
+    - "truck/land-rover/defender tans = ['E5*2007/46*0092*09','e5*2007/46*0092*10']; car/land-rover/defender carries 25 tans including 'e5*2007/46*0092*10' → intersection is exactly e5*2007/46*0092*10. One approval spanning the M1G and N2G Defender; correct data that reads as a duplicate."
+
+"NEW-2 evidence line 3 — CROSS-NAMEPLATE LEAK (skoda enyaq/elroq)":
+  verifier: "CONFIRMED, and WORSE than reported"
+  evidence:
+    - "car/skoda/enyaq-85x tans = *13,*16,*22 (all three also on car/skoda/enyaq — which is what makes its own D8 verdict stand)."
+    - "car/skoda/elroq tans = *17,*18,*19,*20,*21,*22,*23 and car/skoda/enyaq carries *19,*21,*22,*23 — so Enyaq and Elroq share FOUR full TAN strings, not the one the ledger names. Two different nameplates cannot both own e8*2007/46*0416*{19,21,22,23}."
+
+"truck/ford/ranger#availability.nl [superseded — earlier pass, kept for the audit trail; the later entry with the same claim is the verifier's final verdict]":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "LIVE nl_rdw 2026-07-26, merk=FORD, handelsbenaming LIKE '%RANGER%', restricted to the TRUCK categories N2/N3 → 13 distinct strings, and 11 of them are F-series: 'F250 RANGER' 3, 'F250 RANGER XLT' 3, 'F350 RANGER XLT' 3, 'F-250 RANGER XLT' 2, 'F350 RANGER' 2, 'F250 RANGER XL' 1, 'F 250 RANGER XLT' 1, 'F250 SUPERCAB RANGER XLT' 1, 'F350 RANGER LARIAT' 1, 'RANGER F250' 1, 'RANGER F 250' 1, 'RANGER XCT F250' 1. Only 'RANGER XLT' (n=2) is unqualified."
+    - "'Ranger' was Ford's US TRIM name on F-series pickups, which is what these rows are; the actual Ranger pickup sits in NL at N1 (5,143 rows) and M1 (20) — i.e. in the VAN/CAR kinds, not truck."
+    - "and the correct target id is live: truck/ford/f-250 [fi,nl]. So NL's truck-kind rows evidence a different, separately-identified nameplate."
+
+"truck/scania/460#id + #name [superseded — earlier pass, kept for the audit trail; the later entry with the same claim is the verifier's final verdict]":
+  researcher: "defective(D1) on both — parser artifact"
+  verifier: "RECLASSIFIED(D8) on both — the defect is real, the CLASS is wrong"
+  evidence:
+    - "the string is NOT a parser fabrication: bare '460' is register-attested in TWO countries — es_dgt 2026-04..06 'SCANIA | 460 | N3' n=1, and LIVE nl_rdw merk=SCANIA handelsbenaming='460' n=2. NAMING §2.1/§7.1 scope the parser-suspect rule to a bare integer that is SINGLE-SOURCE; this is the two-source case the canon explicitly warns not to treat as a parser artifact."
+    - "row-level resolution (live RDW, both NL plates): row 1 is voertuigsoort Bedrijfsauto, N3, opleggertrekker, GVW 18,600 kg, DET 1997-03-14, and carries type='T 144 LA 4X2 NA 460' — a Scania 4-series 144 with a T cab at 460 hp. Row 2 (DET 2001-01-24, N3, wb 355) carries no type string."
+    - "so a SPECIFIC live id denotes the same vehicle: truck/scania/144 [fi,nl] is live. The published '460' is a bare ENGINE POWER figure severed from its type designation — PRD-QUALITY §4 D8 ('wrong altitude — trim/edition/body/ENGINE published as model'), with a D6-style merge remedy."
+    - "the four cab-series siblings that make '460' ambiguous are all live too: scania/r460 (nl 1,951 / es 423), scania/s460 (nl 1,208), scania/g460 (nl 131), scania/p460 (nl 32 / es 22)."
+  why_it_matters: "D1's remedy is 'fix the parser; records HEAL, never delete'. Chasing a parser bug here would find nothing, because the register really does carry '460'."
+
+"car/triumph/tr2#id [superseded — earlier pass, kept for the audit trail; the later entry with the same claim is the verifier's final verdict]":
+  researcher: "defective(D6)"
+  verifier: "CONFIRMED — and I can name the mechanism the ledger does not"
+  evidence:
+    - "the duplicate id is car/triumph/tr (name 'Tr', nl+nz). Its observed_variants are ['TR CONVERTIBLE','TR II','TR III','TR III A','TR III CABRIOLET','TR- CONVERTIBLE'] — 'TR II' IS a TR2."
+    - "the mechanism is the roman-numeral collapse NAMING §6 mandates for the car kind ('Car-kind roman numerals still collapse — VARIANT_SUFFIXES strips them'): 'TR II' → 'TR'. So car/triumph/tr is a fold artifact that swallows TR2 AND TR3 AND TR3A."
+    - "bonus finding, outside this slice: car/triumph/tr is therefore a THREE-nameplate merge, which is a worse defect than the one being audited."
+
+"car/skoda/octavia-a5#id + #name [superseded — earlier pass, kept for the audit trail; the later entry with the same claim is the verifier's final verdict]":
+  researcher: "defective(D8) on both"
+  verifier: CONFIRMED
+  evidence:
+    - "my UA aggregate (own pass over cache/ua_reestr_current.zip): ЛЕГКОВИЙ|SKODA|OCTAVIA 16,506 operations; OCTAVIA A5 1,965; OCTAVIA TOUR 1,217; OCTAVIA A7 1,097; OCTAVIA COMBI 330; OCTAVIA A8 147; OCTAVIA A5 COMBI 131; OCTAVIA A5 RS 15."
+    - "car/skoda/octavia is live in NINE countries incl. ua — so the nameplate id exists and A5 (Typ 1Z, marketed Octavia II) is a generation code beneath it. Generation-as-model = D8."
+    - "asymmetry noted for the queue, not audited here: UA writes OCTAVIA A8 147 times and no car/skoda/octavia-a8 id exists, while A5 and A7 both do."
+
+"truck/chevrolet/van#name (the slice's only D5)":
+  researcher: "defective(D5) — prefix-strip over-reach, 'Chevy Van' → 'Van'"
+  verifier: CONFIRMED
+  evidence:
+    - "observed_variants for truck/chevrolet/van are exactly ['CHEVROLET CHEVY VAN','CHEVY VAN'] — every raw string carries the nameplate 'CHEVY VAN'; the published 'Van' exists in no source row."
+    - "'Chevy Van' is a real Chevrolet nameplate, so stripping 'CHEVY' as a make alias destroyed the name rather than cleaning it. The catalog proves it knows better elsewhere: car/chevrolet/chevy-van [fi,nl], van/chevrolet/chevy-van [fi,nl], car/chevrolet/chevy-van-20/-30/-g20 are all live with the prefix intact."
+
+"truck/saxas-nutzfahrzeuge-werdau/atego#make + #id":
+  researcher: "make=defective(D11); id=defective(D6)"
+  verifier: "CONFIRMED both — with a mirror-image finding the ledger misses"
+  evidence:
+    - "my FI aggregate carries the row verbatim: 'N2 | Saxas Nutzfahrzeuge Werdau | Atego | 1 | e1*2007/46*1366*10' — the body builder is in the MAKE column and Mercedes-Benz's nameplate is in the model column. Classic D11."
+    - "MIRROR IMAGE, same base approval: truck/mercedes-benz/mkd (name 'Mkd') carries TAN e1*2007/46*1366*06 — the SAME base WVTA e1*2007/46*1366 with the roles swapped, i.e. the chassis marque in the make column and SAXAS's own body designation ('MKD') in the model column. es_dgt confirms MKD is Saxas's: 'SAXAS | MKD 61-M-E | N2' 2, 'MKD 1-M' 1, 'MKD 61 - M - E' 1, 'MKD 61-3-E' 1, 'MKD 71 - M - E' 1. So this one approval produced a D11 on one side and a NEW-1/D5 on the other."
+    - "id duplicate named: truck/mercedes-benz/atego [es,fi,lu,nl] is live and denotes an Atego. D6 stands."
+    - "SCALE the ledger does not state: 'Atego' is published under FIVE makes in the truck kind — mercedes-benz, junge-fahrzeugbau-gmbh, junge-fahrzeugbau, monza, saxas-nutzfahrzeuge-werdau — plus bus/mercedes-benz/atego and car/mercedes-benz/atego. The researcher's own NEW-1 detector proposal (same model string under ≥2 unrelated makes in one kind) fires on it, which is a point in that detector's favour."
+    - "adjacent D12 not flagged by the researcher: the makes `saxas-nutzfahrzeuge-werdau` (3 truck + 3 van records) and `saxas` (truck/saxas/mkd, es+lu) are both live — a corporate-string make near-dupe. Outside this record's four claims, so not scored; queued."
+
+"the DAF cluster (fas / ftg / fancf / v1600dd) — verifier's own marque evidence":
+  note: >-
+    Recorded here because the batch verifier's lines for these records should be
+    read against it, and because the ledger cites only a site-chrome capture.
+  evidence:
+    - "https://www.daf.com/en (HTTP 200, fetched 2026-07-26) — the marque's own range renders 'DAF XB', 'DAF XD', 'DAF XF', 'DAF XG', 'DAF XDC', 'DAF XFC', 'DAF XB E', 'DAF XD E'. The strings FA / FAS / FAN / FT / FTG appear NOWHERE on it. (daf.com/en/trucks/daf-xf and daf.co.uk/…/new-generation-daf-xf both 404 — the researcher's blocker is real; the /en landing page is the reachable substitute.)"
+    - "so FAS/FTG/FAN/FANCF are DAF chassis-and-axle configuration codes, not nameplates — D9 on the NAME axis is right for all of them."
+    - "the id axis then splits, and the researcher split it correctly, which is worth saying: truck/daf/fancf's raws are FANCF75.360U / FANCF85.360T / FANCF85.410T / FANCF85.460T / FANCF85.510T — ALL are CF, so a single live id (truck/daf/cf) denotes them → D6. Whereas truck/daf/fas's raws mix nameplates ('FAS CF 85', 'FAS XF 105', 'FAS XF105', 'FAS 2103 DHTD 352', 'FAS 2600 DK 360') and truck/daf/ftg's likewise ('FTG CF85', 'FTG XF105', 'FTG105.410T') — no single live id covers them, so D9 rather than D6 is the honest call. That asymmetry in the ledger is deliberate and correct."
+    - "systemic scale (mine, for the queue): the make carries TWENTY-FOUR such ids in truck alone — fa, fad, fag, fak, falf, fam, fan, fancf, far, fas, fascf, fat, fatcf, fatxf, fax, ft, ftg, ftgxf, ftm, ftp, ftr, fts, ftt, ftxf — beside the real nameplates cf, lf, xb, xd, xdc, xf, xfc, xg."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 8 — A PROTOCOL AMBIGUITY THAT MOVES FOUR VERDICTS (including the headline)
+# ═════════════════════════════════════════════════════════════════════════════
+id_canonical_reading:
+  the_question: >-
+    Protocol §1 reads "id-canonical — no other live id denotes the same
+    vehicle". When two live ids denote one vehicle, does the claim fail on
+    BOTH records (literal, symmetric) or only on the non-canonical member?
+  literal_symmetric_reading: >-
+    Both fail. This is what the ledger applies, and it is what makes the
+    headline finding work: car/tesla/model-y is the CORRECT form of the name
+    and still fails, because car/tesla/y exists. The protocol's own suggested
+    check — "the duplicate-spellings detector should be silent" — is a
+    property of the PAIR, so it fires on both members. I adopt this reading
+    and score every id claim under it.
+  the_other_reading: >-
+    A parent nameplate is not made non-canonical by its own trim children
+    (D8's remedy is "fold into nameplate", i.e. the defect is ON the child),
+    and the canonical spelling is not made non-canonical by a truncation
+    (D6's remedy is "merge to canonical"). Under this reading four claims in
+    this slice flip to correct: car/triumph/tr2, car/triumph/tr4a,
+    car/volvo/c303, car/volkswagen/id-buzz — and, for consistency,
+    car/tesla/model-y would flip too, taking the slice's headline with it.
+  why_it_matters_here: >-
+    An independent re-derivation I commissioned reached OVERTURNED(correct) on
+    exactly those four by applying the second reading, having found that each
+    of those records already carries `former_ids` (i.e. the catalog itself
+    treats them as the merge TARGET). That is a strong signal — but it cannot
+    be applied to the trims and left unapplied to Tesla. I therefore score all
+    of them defective under the literal reading, and record the alternative
+    tally in the SUMMARY so the ledger can choose ONE and apply it uniformly.
+  verifier_recommendation: >-
+    Keep the literal reading for MEASUREMENT (a duplicate pair is one defect
+    visible from two sides, and the clean-rate must see it), but make every
+    ledger line name WHICH member the fix lands on. Four of this slice's id
+    lines currently point the fixer at the wrong record.
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 9 — CAR-KIND DEFECT CLAIMS (32 claims re-derived independently)
+# ═════════════════════════════════════════════════════════════════════════════
+
+"car/scion/xd#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3 unavailable and said so: scion.com HTTP 200 → redirects to toyota.com (brand retired); pressroom.toyota.com/vehicle/2015-scion-xd/ HTTP 403. Fell back to rank 5: en.wikipedia.org/wiki/Scion_xD renders 'Scion xD' — lowercase x, capital D."
+    - "the record's OWN source writes it: cache/us_vehicles.csv model='xD', baseModel='xD', VClass 'Subcompact Cars', 14 rows. The catalog publishes 'XD'."
+    - "not a schema limit: the sibling car/scion/iq publishes 'iQ' correctly."
+
+"car/skoda/enyaq-85x#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank-1 TAN: all three of enyaq-85x's TANs (e8*2007/46*0416*13, *16, *22) are also carried by car/skoda/enyaq — verified by my own set intersection over the catalog."
+    - "es_dgt 2026-04..06: 'ENYAQ 85' 161, 'ENYAQ 85X' 10, 'ENYAQ 60' 7, 'ENYAQ 50' 1 — 85X is one battery/drive spelling inside the Enyaq block."
+    - "named live parent: car/skoda/enyaq covers all five of enyaq-85x's countries."
+
+"car/skoda/octavia-a5#id + #name":
+  researcher: "defective(D8) on both"
+  verifier: CONFIRMED (independently corroborated by me — see Part 7)
+
+"car/subaru/brz-ts#id + #name":
+  researcher: "id=defective(D8); name=defective(D7)"
+  verifier: CONFIRMED both
+  evidence:
+    - "cache/us_vehicles.csv: model='BRZ tS' baseModel='BRZ' (2 rows) beside model='BRZ' baseModel='BRZ' (26 rows) — the source's own parent field names the nameplate."
+    - "rank 3: https://www.subaru.com/vehicles/brz HTTP 200 renders 'BRZ tS' as a trim inside the BRZ page; zero occurrences of 'Brz'. Catalog publishes 'Brz Ts' — casing destroyed downstream of a source that had it right."
+    - "named live parent: car/subaru/brz (10 countries incl. ca+us)."
+
+"car/suzuki/sc#name":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "uk_veh0120: GenModel='SUZUKI SC' but the finer Model column reads 'SC 100 GX' — the pipeline reads the coarser column."
+    - "nz_passenger-car-van_S.json: SUZUKI 'SC100' 20, 'SC 100' 1, 'SC100CXG' 1, 'SC' 3 — the bare 'SC' is a 3-row truncation of an SC100 population."
+    - "rank 5 en.wikipedia.org/wiki/Suzuki_Cervo: export designation SC100, UK trims CX/CX-G/GX — matches the UK Model string exactly."
+    - "D6 was tested and rejected: no live suzuki/sc100 exists to merge into, so the honest class is D9 (resolve-or-debt), resolution target SC100."
+
+"car/suzuki/sidekick-sport#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "cache/us_vehicles.csv: 'Sidekick Sport 4WD/2WD/RWD' all carry baseModel='Sidekick', beside 12 other Sidekick rows with the same baseModel."
+    - "named live parent: car/suzuki/sidekick [ca,nl,nz,ua,us] covers both of sidekick-sport's countries."
+
+"car/suzuki/wagon#id":
+  researcher: "defective(D6)"
+  verifier: OVERTURNED(unverifiable)
+  evidence:
+    - "the nl evidence is ONE vehicle: LIVE RDW merk=SUZUKI handelsbenaming='WAGON' n=1 (kenteken 01GLL9, 1298 cc, wielbasis 238, massa 885, hatchback, DET 2001-02-06) against 'WAGON R' n=10,737."
+    - "the spec cell refutes the assumed twin: RDW merk=SUZUKI AND cilinderinhoud=1298 AND wielbasis=238 returns BALENO 1.3 n=45, SAMURAI n=21, WAGON n=1, WAGON R n=1 — while the Wagon R population's own modal shape is 1298/236 (n=6,649) and 1328/236 (n=3,412). Wheelbase 238 is not the Wagon R shape."
+    - "so car/suzuki/wagon-r cannot be NAMED as the twin without the resolve-by-resemblance NAMING §7.5 forbids. Routes tried: RDW exact match, RDW spec-cell join, ua aggregate, suzuki.co.uk (JS shell)."
+
+"car/suzuki/wagon#name":
+  researcher: "defective(D6)"
+  verifier: RECLASSIFIED(D3)
+  evidence:
+    - "the D6 detector cannot fire: 'WAGON' and 'WAGON R' do not NFKD-fold to one another and are distinct strings in both registers (nl 1 vs 10,737; ua 5 vs 12)."
+    - "Suzuki markets no nameplate 'Wagon' (suzuki.co.uk HTTP 200, zero 'Wagon' strings — JS shell, so no rank-3 support either way)."
+    - "a bare body word with an unresolved referent is D3's placeholder shape, whose remedy is rename-if-identifiable-else-debt, not merge-to-canonical."
+
+"car/suzuki/wagon#availability.nl + #availability.ua":
+  researcher: "defective(D6) on both"
+  verifier: "OVERTURNED(correct) on both"
+  evidence:
+    - "nl: the register holds a row spelled exactly as this record — LIVE RDW kenteken 01GLL9, Personenauto, M1, DET 2001-02-06."
+    - "ua: my UA aggregate has 'ЛЕГКОВИЙ|SUZUKI|WAGON|5' as a row distinct from 'ЛЕГКОВИЙ|SUZUKI|WAGON R|12' — the register itself keeps them apart."
+    - "protocol R4: a wrong NAME is not an availability defect; availability fails only where the rows plainly denote a DIFFERENT, separately-identified nameplate. Since the twin identification itself did not close (above), that condition is not met."
+  consequence: "this removes 2 of the slice's 3 availability defects."
+
+"car/toyota/camry-wagon#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "cache/us_vehicles.csv: model='Camry Wagon' baseModel='Camry' (VClass 'Midsize-Large Station Wagons' 10 + 'Small Station Wagons' 12); 24 other Camry strings share baseModel='Camry'."
+    - "named live parent: car/toyota/camry (12 countries incl. ca+us)."
+
+"car/triumph/tr2#id":
+  researcher: "defective(D6)"
+  verifier: "CONFIRMED (under the literal reading — see Part 8; my re-deriver reached OVERTURNED(correct) under the other reading)"
+  evidence:
+    - "the live id that denotes this vehicle is car/triumph/tr (name 'Tr', nl+nz): its observed raws are ['TR CONVERTIBLE','TR II','TR III','TR III A','TR III CABRIOLET','TR- CONVERTIBLE'] — 'TR II' IS a TR2."
+    - "mechanism: NAMING §6's car-kind roman-numeral collapse (VARIANT_SUFFIXES) turns 'TR II' into 'TR'."
+    - "counter-evidence that decides WHERE the fix goes: car/triumph/tr2 carries former_ids ['car/triumph/tr-2'] and has already absorbed 'TR 2','TR2 CABRIOLET','TR2 SPORTS','TRIUMPH TR2'; nz has TR2 46 / TR 2 3 / TR2 SPORTS 1, fi has three more — this record is the catalog's own merge target."
+    - "so the defect is real and the LEDGER LINE POINTS AT THE WRONG RECORD: car/triumph/tr is a three-nameplate bucket (TR2+TR3+TR3A) and is where the fix belongs."
+
+"car/triumph/tr4a#id":
+  researcher: "defective(D6)"
+  verifier: "CONFIRMED (literal reading), fix belongs elsewhere"
+  evidence:
+    - "live counterpart: car/triumph/tr4a-irs ('TR4A Irs', fi+nl) — IRS was standard on the TR4A, so it is not a model."
+    - "car/triumph/tr4a already carries former_ids ['car/triumph/tr-4a','car/triumph/tr4-a'] and folded five raws."
+    - "SECOND, UNADJUDICATED DEFECT FOUND: car/triumph/tr4 has folded the raw 'TR4-A' into itself — a TR4A row sitting inside the TR4 record, i.e. a false merge across two different models (D17 shape)."
+
+"car/vauxhall/viva-deluxe#id + #name":
+  researcher: "defective(D8) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "the register writes the trim ladder explicitly: fi_agg 'VIVA HA DE LUXE 2D SEDAN' 1 (HA = the generation, De Luxe = the equipment level), plus '2D VIVA DELUXE 933110/2430' ×3, 'VIVA DELUXE' 2, against 'VIVA' 8 / 'Viva' 5."
+    - "nz: VAUXHALL 'VIVA' 329 vs 'VIVA DELUXE' 9 (also VIVA GT 6, VIVA 1300, VIVA ESTATE)."
+    - "rank 5 en.wikipedia.org/wiki/Vauxhall_Viva: HA launched 'in Standard and Deluxe versions'; HB offered 'base, deluxe and SL trims'."
+    - "named live parent: car/vauxhall/viva [fi,gb,nl,nz] covers both of viva-deluxe's countries."
+
+"car/volkswagen/211#name":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "re-derived from the live register rather than the build, because NAMING §7.1 makes a bare integer a PARSER suspect first: RDW live carries '211' in handelsbenaming across 15 vehicles, and nz carries VOLKSWAGEN '211' n=1 — two-source, so NOT an xlsx index leak. The §7.1 test is applied and cleared."
+    - "what the rows are (my own row-level pull): DET 1955-1979, wielbasis 239-243 cm, cilinderinhoud 1200/1493/1584/1594/1641 — the air-cooled Type 2 Transporter envelope."
+    - "so '211' is a VW factory order/type number, not a nameplate → D9."
+
+"car/volkswagen/bestel-0#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "named live twin: car/volkswagen/bestel ('Bestel', nl+nz) whose raws are 'BESTEL 44 KW','BESTEL 57 KW','BESTEL V.D. 1,0 D 50 KW','BESTEL TDI 75 KW SYNCRO' — the same RDW string family as bestel-0's 'BESTEL 0,8 D 50 KW'."
+    - "LIVE RDW: handelsbenaming='BESTEL' n=56; the 'BESTEL 0,x …' family n≈900. One string family split by a decimal."
+  fixer_warning: "volkswagen/bestel carries [nl,nz] and bestel-0 carries [fi,nl] — a naive merge deletes the Finnish evidence (fi_agg: 'M1|Volkswagen|Bestel 0,8 D 50KW|1'). NAMING §2's availability subset check applies."
+
+"car/volkswagen/bestel-0#name":
+  researcher: "defective(D1)"
+  verifier: CONFIRMED
+  evidence:
+    - "LIVE RDW starts_with(handelsbenaming,'BESTEL 0') → 45 distinct strings, every one of the form 'BESTEL 0,7 D 50 KW' / 'BESTEL 0,8 TDI 65 KW' / 'BESTEL 0,9 D 57 KW SYNCRO'. NOT ONE row is spelled 'BESTEL 0'."
+    - "fi_agg: 'M1|Volkswagen|Bestel 0,8 D 50KW|1' — comma decimal there too."
+    - "the published 'Bestel 0' is the integer part of a payload figure in tonnes, cut at the comma. That is D1's fabricated name, earned by re-parse rather than by shape."
+
+"car/volkswagen/caravelle-syncro#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank-1 TAN: caravelle-syncro = e1*96/79*0067*04; car/volkswagen/caravelle = e1*96/79*0067*05 — same base approval, differing extension. The same base is also on van/volkswagen/caravelle and van/volkswagen/transporter-syncro."
+    - "fi shows Syncro as a drivetrain qualifier ON the Caravelle: '3D CARAVELLE C SYNCRO-9-D-255-299-4X4/2460' 10+4, '3D CARAVELLE GL SYNCRO…' 2, beside '3D CARAVELLE CL-9-DIESEL-255/2460'."
+    - "named live parent: car/volkswagen/caravelle (7 countries incl. fi+nl)."
+
+"car/volkswagen/id-buzz#id":
+  researcher: "defective(D8)"
+  verifier: "CONFIRMED (literal reading) — but the D8 CLASS is wrong for this record"
+  evidence:
+    - "the TAN direction is the opposite of a wrong-altitude record: id-buzz holds e1*2018/858*00164*01 and *04, and it is car/volkswagen/id-buzz-PRO that shares *01/*04. The trims hang off this id."
+    - "it is the broadest record in its family: 9 countries vs 4-6 for each trim; https://www.vw.com/en/models/id-buzz.html HTTP 200 renders 'ID. Buzz' 146× as a model in its own right."
+    - "the live ids that make it non-canonical are its own CHILDREN — id-buzz-pro, id-buzz-pro-kr, id-buzz-pro-lr, id-buzz-gtx-kr, id-buzz-gtx-lr, id-buzz-pure-kr, id-buzz-pro-4motion — every one of which is a trim/battery-size record that D8 says must fold INTO this one."
+    - "so: claim fails (symmetric reading), class is D8-on-the-children, and the ledger line as written would send a fixer to fold the head record into something that does not exist."
+
+"car/volkswagen/id-buzz#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3: https://www.vw.com/en/models/id-buzz.html HTTP 200 (1.07 MB) renders 'ID. Buzz' 146 times and 'ID.Buzz' 5 times; ZERO 'Id. Buzz'. Both marque spellings capitalise ID."
+    - "the catalog gets the unspaced siblings right (ID.3, ID.4, ID.5, ID.6, ID.7) — only the spaced form broke."
+
+"car/volkswagen/van#id":
+  researcher: "defective(D9)"
+  verifier: OVERTURNED(unverifiable)
+  evidence:
+    - "LIVE RDW merk=VOLKSWAGEN handelsbenaming='VAN' returns THREE vehicles that are three different products: VGP50V (N1 gesloten opbouw, DET 2018-12-03, 1968 cc, 2275 kg); AL6867 (M1 kampeerwagen, DET 1970-06-30, 1600 cc, 1350 kg); VRR68B (N1 gesloten opbouw, DET 2005-03-11, 3189 cc, 2327 kg)."
+    - "48 years and three drivetrains: no single live id (vanagon, transporter, bestel) denotes them, so no specific id can be named. nz gives aggregate only (VOLKSWAGEN 'VAN' 7)."
+
+"car/volkswagen/van#name":
+  researcher: "defective(D9)"
+  verifier: RECLASSIFIED(D3)
+  evidence:
+    - "D9's detector is 'code-string shape + single-source' and both halves fail: 'VAN' is an English body word, and it is two-source (nl 3 + nz 7)."
+    - "RDW's classification vocabulary lives in voertuigsoort/inrichting ('Bedrijfsauto'/'gesloten opbouw'), not in handelsbenaming — so this is free text, not a registry code."
+    - "a generic body word over an unresolved referent is D3 (placeholder), remedy rename-or-debt."
+
+"car/volvo/850-wagon#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "cache/us_vehicles.csv: model='850 Wagon' baseModel='850' n=15 beside model='850' baseModel='850' n=15."
+    - "car/volvo/850's own raws already contain '850 AWD Wagon' and '850 T5 Wagon' — the same body word is folded inside the parent."
+
+"car/volvo/c303#id":
+  researcher: "defective(D6)"
+  verifier: "CONFIRMED (literal reading), fix belongs elsewhere"
+  evidence:
+    - "live counterpart: car/volvo/c303-4x4-1-v ('C303-4X4-1-V', fi+nl), whose only raw is 'VOLVO C303-4X4-1-V' — a string car/volvo/c303 has ALREADY folded ('C303 4X4-1-V' is in its variant list)."
+    - "car/volvo/c303 carries former_ids ['car/volvo/c-303'] and folded 12 spellings; C303 is Volvo's actual model name (Laplander C303)."
+    - "the twin also carries an embedded-brand defect (D5: the raw that created it is 'VOLVO C303-4X4-1-V')."
+
+"car/volvo/ec40-twin#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "cache/us_vehicles.csv: model='EC40 Twin' baseModel='EC40' n=2 beside model='EC40' baseModel='EC40' n=2 — Twin is the dual-motor powertrain."
+    - "the same word is already folded on the sibling nameplate: car/volvo/xc40's raws include 'XC40 T5 TWIN ENGINE'."
+
+"car/volvo/p-54405-a#id + #name":
+  researcher: "defective(D9) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "RESOLVED, not guessed (NAMING §7.5): fi writes the SAME code family with and without the PV prefix — 'VOLVO P 54405 A' (M1 n=2) alongside '2D PV 54403 A' and '2D SEDAN PV 54403 A'."
+    - "RDW live merk=VOLVO: 'P 54405 A' 9, 'P54405 A' 41, 'P54405A' 2, 'P 54405A' 1, 'P54405' 2, beside 'P54403 A' 9, 'P54404 A' 66, 'P 54406' 21, 'P 54408' 13 and 'P 544' 41 / 'P544' 35 / 'PV544' 19 — one P544 population with variant digits."
+    - "named live target: car/volvo/pv544 ('PV544', fi+lu+nl+nz) carries both of this record's countries. Checked against the wrong family too: PV444 codes are 444xx (car/volvo/p-44404)."
+
+"car/volvo/xc40-b4#id + car/volvo/xc60-d5#id":
+  researcher: "defective(D8) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "cache/us_vehicles.csv: model='XC40 B4' baseModel='XC40'; the same file carries XC40 T4/T5 AWD/B5 AWD/Recharge all with baseModel='XC40'. B/T/D letters are Volvo powertrain designations."
+    - "the parents already absorb them: car/volvo/xc40 folded 'XC40 T5','XC40 T5 AWD','XC40 AWD BEV'; car/volvo/xc60 folded 40+ engine spellings incl. 'XC60 T5','XC60 T6 AWD','XC60 T8 AWD Recharge'."
+    - "es_dgt for the XC60 case: 'XC60 D5 AWD R' M1G 1 against 'XC60' M1G 1,181 + M1 101."
+    - "systemic, not isolated: car/volvo/xc40-b5 is the identical defect shape one row away."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 10 — MERCEDES-BENZ / RENAULT / SAXAS / SCANIA (26 claims re-derived)
+# The dominant mechanism found here, which the ledger does not name: a
+# ONE-SPACE SPLIT. observed_variants.json shows the SPACED spelling absorbed
+# into the canonical id while the GLUED spelling became a second live id.
+# ═════════════════════════════════════════════════════════════════════════════
+
+"truck/mercedes-benz/1223-l#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "observed_variants: truck/mercedes-benz/1223 has already folded '1223 L', '1223 L-97025/416', '1223 L-97025/476', '1223 L-97025/536' — the spaced form is inside the bare-number id."
+    - "fi_agg: 'N2|Mercedes-Benz|1223 L-97025/416|15' vs 'N2|Mercedes-Benz|1223L-97025/416|3' — same Baumuster 970.25, same 4,160 mm wheelbase, one space apart. Also '1223-97025/416' 1 on the bare id, same Baumuster."
+    - "truck/mercedes-benz/1223-l carries former_ids ['truck/mercedes-benz/1223l'] — the glued spelling is its origin."
+
+"truck/mercedes-benz/1223-l#name":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "the string is register-attested (LIVE RDW handelsbenaming '1223 L' N2 n=3), so this is not D1/D3 — it is an altitude error."
+    - "the register itself parenthesises the letter as a chassis/drive configuration: fi_agg 'ATEGO 1018 (L 4X2)', 'ATEGO, 1224 (L 4X2)'."
+    - "rank 5 en.wikipedia.org/wiki/Mercedes-Benz_Atego renders 'Atego 1222 L', 'Atego 1725 R', 'Atego 1016' — number = type, trailing letter = chassis variant. NAMING §7.2 blesses the bare truck type number; the catalog already publishes truck/mercedes-benz/1223."
+
+"truck/mercedes-benz/290#id":
+  researcher: "defective(D6)"
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "D6 is definitionally unavailable: the 240-record mercedes-benz truck listing contains NO second spelling of '290' (no 290-gd, no gd290)."
+    - "what the record actually holds: observed_variants = ['290 GD', '290 GD 4X4 3120'] only; LIVE RDW '290 GD 4X4 3120' N2 1 and '290GD' N2 3 — the 3,120 mm wheelbase W461 chassis-cab."
+    - "the live nameplate id IS present: truck/mercedes-benz/g [fi,gb,nl] has folded 'G 280 CDI','G 300 CDI','G 350 D','G 500','MERCEDES G CLASS'. 290 GD is an engine/generation designation of the G-Class → D8."
+
+"truck/mercedes-benz/290#name":
+  researcher: "defective(D1)"
+  verifier: CONFIRMED
+  evidence:
+    - "NAMING §7.1 forbids calling a bare integer a parser artifact without re-parsing — so both sources were re-parsed. fi_agg: every MB row starting 290 is '290 GD' (M1G 1, N1G 2, N2G 1), '290GD' (M1G 9, N1G 4), '290 GD TURBODIESEL' 1, '290 Lang Cabriolet A' 1, '290 Pullman' 1 — no bare '290' in ANY N-category."
+    - "LIVE RDW: the only bare '290' under MERCEDES-BENZ is M1, inrichting 'Niet geregistreerd', n=1 — nothing in N2/N3."
+    - "the published truck name '290' therefore appears in no truck-kind source row: the pipeline dropped the 'GD' token. D1 earned rather than assumed."
+
+"truck/mercedes-benz/312d-ka-903462-kasten#id + #name":
+  researcher: "defective(D9) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "the code is RESOLVED by the corpus, per §7.5: truck/mercedes-benz/sprinter has folded 'SPRINTER 312D-KA-903462-KASTEN' — the register itself binds this code to the Sprinter nameplate (live, [es,fi,gb,lu,nl])."
+    - "one-space split as well: truck/mercedes-benz/312 folded '312 D-KA-903462-KASTEN/355'; fi_agg has '312D-KA-903462-KASTEN/355' 182 vs '312 D-KA-903462-KASTEN/355' 1."
+    - "string decomposition confirmed in-corpus: 903462 = Baumuster 903.462 (siblings 903461/903463/903471/903472/903473 all present), KASTEN = body, /355 = 3,550 mm wheelbase. §7.2's bare-number defence does not reach a token chain containing a Baumuster and a German body word."
+
+"truck/mercedes-benz/609-d#id + truck/mercedes-benz/609d-ka#id":
+  researcher: "defective(D6) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "the pipeline's own fold record settles it: truck/mercedes-benz/609 has absorbed '609 D', '609 D-I', '609 DC', '609 D/3700', '609 D/4250', '609 D-KA', '609 D-KA-KASTEN', '609 D-KA-KASTEN/3700', '609 D-KA-KASTEN/4250'."
+    - "fi_agg: '609' 3, '609 D' 5, '609D' 22 (+MUU 10); '609D-KA-KASTEN' N2 15 + MUU 21 vs '609 D-KA-KASTEN' N2 3 + MUU 2. The glued spellings feed the two extra ids."
+    - "all three ids are live and all three are [fi,nl]."
+
+"truck/mercedes-benz/609d-ka#name":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "'-KA' is register/type vocabulary, not a Mercedes suffix: it recurs across unrelated types in fi_agg — 'L 407 D-KA', '508 D-KA-4.6T-KASTEN/3700', '312D-KA-903462-KASTEN/355', '816 DA-KA', '609 D-KA-5.0T-KASTEN'."
+    - "rank 5 de.wikipedia.org/wiki/Mercedes-Benz_T2 renders the marque forms 'L 407 D' / 'L 508 D' — no KA token in marque naming."
+    - "the near-miss class is D8 (body as model), recorded as such rather than as a reclassification, since KA/KASTEN is the register's vocabulary rather than an MB body letter."
+
+"truck/mercedes-benz/816-d#id + truck/mercedes-benz/918-l#id":
+  researcher: "defective(D6) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "816: truck/mercedes-benz/816 folded BOTH '816 D' and '816 D VARIO'; fi_agg '816 D VARIO' 2 vs '816D VARIO' 1 and '816D VARIO/425' 2 — the same Vario 816 D split by one space. (The strongest counter — that MB sold two different 816s, a Vario and an Atego '816-7.49T-97001/422' — fails because mercedes-benz/816 absorbed both families.)"
+    - "918: fi_agg '918 L-97023/422' 7 vs '918L-97023/422' 10 — identical Baumuster 970.23, identical 4,220 mm wheelbase. mercedes-benz/918 also carries 970.23 rows ('918 ATECO 970.23/362', '918 L-97023/362'), so the same approval sits on both sides of the split. LIVE RDW '918 L' N2 n=1."
+
+"truck/mercedes-benz/967pkx2#id + #name":
+  researcher: "defective(D9) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "es_dgt: 'MERCEDES-BENZ | 967PKX2 | N2 | 1' — one Spanish row. LIVE RDW: '967PKX2' N2 n=1 AND 'ATEGO 967.000…' N2 n=1."
+    - "the family is explicitly badged elsewhere: truck/mercedes-benz/atego has folded 'ATEGO 967PKX3' and 'ATEGO 967.000…'. 967 is the Euro-VI Atego Baumuster and PKX2 a type/variant/version suffix."
+    - "named live target: truck/mercedes-benz/atego [es,fi,lu,nl]. §7.2's defence protects '1824'-shaped tonnage+power designations, not a Baumuster plus a version suffix."
+
+"truck/mercedes-benz/l508dg#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "FIVE live ids hold this one product: truck/mercedes-benz/l-508 folded 'L508 DG/35','L508 DG/3500','L508 DG KASTEN','L508 DG-KA-KASTEN'; truck/mercedes-benz/l folded 'L 508 DG','L 508 DG/3500','L 508 DG-KASTEN/3500'; truck/mercedes-benz/508 folded '508 DG'; plus l508d and l508dg."
+    - "fi_agg: 'L 508 DG-KASTEN/3500' N2 4 + MUU 4, 'L508 D(G)/3500' MUU 13 + N2 9, 'L508DG/29', 'L508DG/35'."
+
+"truck/mercedes-benz/l508dg#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3 unreachable and declared: mercedes-benz-trucks.com has no T2 model page, mercedes-benz-publicarchive.com returned no text. Rank 5 used: de.wikipedia.org/wiki/Mercedes-Benz_T2 renders 'L 407 D' ×2 and 'L 508 D'; en.wikipedia renders 'L 608 D' — SPACED in both."
+    - "published 'L508DG' glues all three tokens; the registers predominantly carry the spaced form (fi_agg 'L 508 DG-KASTEN/3500' 8, 'L 508 DG-5.6T-KASTEN/2950' 4, 'L 508 DG/3500' 2)."
+    - "the §7.3 closed-code defence was tested and rejected: §7.3 is the two-wheeler spacing rule (normalizer.rb#two_wheeler_spacing), not an MB truck rule."
+
+"truck/mercedes-benz/la#id":
+  researcher: "defective(D6)"
+  verifier: RECLASSIFIED(D1)
+  evidence:
+    - "the record is a PREFIX FRAGMENT holding at least 12 different type numbers: observed_variants = LA 1113 B, LA 1113/36, LA 1113/42, LA 113 B, LA 1513, LA 311-42, LA 311/42, LA 312/42, LA 312/4200, LA 321, LA 321-4X4/4299-59, LA 323, LA 3500, LA 3500/312.114, LA 710 KR, LA 911 B, LA-322-4X4/4200, LA-4500-4X4/4200 … (26 raws)."
+    - "so no single live id can denote 'the same vehicle' — because 'La' denotes no single vehicle. Live ids exist for its constituents (1113, 311, 312, 911, l-321, l-3500) but each covers a slice."
+    - "no second spelling exists either: the make's other L-prefix ids are l, laf, lak, lf, lk, lkw, lp, ls — all different prefixes. D6 cannot apply; the defect is a parser fragment (D1), matching the name verdict."
+
+"truck/mercedes-benz/la#name":
+  researcher: "defective(D1)"
+  verifier: CONFIRMED
+  evidence:
+    - "fi_agg exact-match for MB model 'LA'/'La' returns ZERO rows; every LA row carries a type number."
+    - "LIVE RDW handelsbenaming='LA' and ='La' under merk=MERCEDES-BENZ return nothing, while `like 'LA %'` returns LA 1113 B (2), LA 1113 B MA (3), LA 1513, LA 311/42, LA 323, LA 3500 (2), LA 911 B …"
+    - "the published 'La' exists in neither source: pipeline-produced."
+
+"truck/renault/d14#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "one-space split: truck/renault/d folded 'D 14' and 'D 14 R250 E6'; truck/renault/d14 folded 'D14 MED P4X2 280 E6'. fi_agg 'N3|Renault|D 14 R250 E6|1' vs 'N3|Renault|D14|2'."
+    - "es_dgt: 'RENAULT | D14 MED P4X2 280 E6 | N3 | 1' beside 'D12 MED P4X2 240 E6' N2 1 and 'D19 WIDE P4X2' N3 1 — MED/WIDE are the D-range sub-families and the number is the tonnage."
+    - "and two live ids exist for the range before the tonnage split is even counted: truck/renault/d [es,fi,lu,nl] and truck/renault-trucks/d [es,gb,nl]."
+
+"truck/renault/d14#make":
+  researcher: "defective(D12)"
+  verifier: CONFIRMED
+  evidence:
+    - "containment signature: make `renault` holds 24 truck records (C, D, D-Wide, D12, D14, D280, K, Kerax, Magnum, Midlum, Premium, T, T460 …) while make `renault-trucks` holds 4 (C, D, Maxity, T) — 4 of 4 renault-trucks nameplates are ALSO live under renault."
+    - "it spans kinds: van/renault-trucks/master and van/renault-trucks/trafic are Renault nameplates."
+    - "the curation layer pins both strings deliberately: overrides/makes/aliases.yml 'RENAULT: Renault' and 'RENAULT TRUCKS: Renault Trucks'; observed_raw_makes.json also carries an unaliased third corporate string 'Renault Trucks Sas' ← ['RENAULT TRUCKS SAS']."
+    - "D11 was tested and rejected: Renault Trucks vehicles are approved TO Renault Trucks SAS (fi_agg shows E2*2007/46*0135 on a Renault D12 row), so 'RENAULT' in the make column is the badge, not an approval holder — remedy is an alias merge, not moves.yml."
+    - "MY OWN CORROBORATION (Part 5): the marque's own press release is published by Renault Trucks UK and titles the vehicle 'Renault Trucks D14'."
+  direction_left_open: "which of the two makes should survive is NOT resolved — deliberately, since record count is not authority (the VITO/MGA rule)."
+
+"truck/saxas-nutzfahrzeuge-werdau/atego#id + #make":
+  researcher: "id=defective(D6); make=defective(D11)"
+  verifier: CONFIRMED both (see also my own derivation in Part 7)
+  evidence:
+    - "id: observed_variants — the Atego record folded exactly ONE raw, 'ATEGO - MKD 61-M-E', while the sibling truck/saxas-nutzfahrzeuge-werdau/mkd folded 'MKD 61 - M - E', 'MKD 61-M-E', 'MKD 61- M - E', 'MKD61- M - E' among 21 raws. es_dgt carries all three spellings side by side: 'SAXAS NUTZFAHRZEUGE WERDAU | ATEGO - MKD 61-M-E | N2 | 1', 'SAXAS NUTZFAHRZEUGE WERDAU | MKD 61-M-E | N2 | 1', 'SAXAS | MKD 61-M-E | N2 | 2'."
+    - "make, rank 3: saxas.biz (fetched 2026-07-26) — 'Seit über 110 Jahren werden im sächsischen Werdau … Fahrzeuge und Fahrzeugaufbauten gefertigt. Seit 2004 erfolgt die Produktion unter dem Namen SAXAS Nutzfahrzeuge Werdau GmbH'. SAXAS builds BODIES; it has no nameplate called Atego."
+    - "the NAMING §1 'bodybuilder wins' row was tested and rejected: it is explicitly scoped to the BUS kind (Scania Irizar), and even on its own terms it would demand the model be 'MKD 61-M-E' — which is the sibling record."
+
+"truck/scania/143m#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "truck/scania/143 has already folded '143 M', '143 MA', '143 MA 4X2', '143 MA 4X2 A', '143 H', '143 420', 'SCANIA 143'; truck/scania/143m folded '143M 450', '143M 500', '143M 2 DR'. fi_agg carries both 'N3|Scania|143|1' and 'N3|Scania|143M|1'."
+
+"truck/scania/143m#name":
+  researcher: "defective(D1)"
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "D1's detector is numeric_only + single-source and '143M' is NEITHER: it is alphanumeric and it is carried by two independent registers (fi_agg 'N3|Scania|143M|1'; nl raws '143M 450','143M 500','143M 2 DR')."
+    - "the real defect is altitude: M is Scania's chassis-height letter, visible alternating with H and E in the corpus — 'R143 M 4X2 AL 65115 E' vs 'R143 H 6X2 ZL 75180 E' vs 'R143 E-6X4' — one level below the type designation 143 that NAMING §7.2 explicitly blesses."
+
+"truck/scania/460#id + #name":
+  researcher: "defective(D1) on both"
+  verifier: "RECLASSIFIED(D8) on both — INDEPENDENTLY REACHED TWICE"
+  evidence:
+    - "I derived this myself (Part 7) and a separate re-derivation reached the identical conclusion from the same decisive artifact: RDW's `type` column on kenteken BFHN57 reads 'T 144 LA 4X2 NA 460' (14,090 cc, 8 cylinders, opleggertrekker, first reg 1997-03-14). That resolves the code per §7.5 and names a live id: truck/scania/144 (and truck/scania/t144), both [fi,nl]."
+    - "D1 is refuted: RDW's own handelsbenaming field literally reads '460' (2 vehicles) and es_dgt carries 'SCANIA | 460 | N3 | 1'. Two registers, no parser fabrication."
+    - "the two '460' rows predate the R/P/G/S-460 era (G460/R460/P460 carry e4*2018/858 approvals; the '460' rows carry no TAN), and RDW renders the resolved forms directly — '144 460' 3, '144L 460', '144G 460', 'R144 460', 'R 144 LA 4X2 NA 460'. The power figure is a SUFFIX on the type."
+
+"truck/scania/p230#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "named live twin: truck/scania/p230db4x2mna ('P230DB4X2MNA', fi+nl), whose raw equals its name, against truck/scania/p230 which folded 'P230 DB4X2MNA', 'P230 DB 4X2 MNA', 'P230 DB4X2MNB', 'P230 DB6X2-4 MNB', 'Scania P230'."
+    - "fi_agg: 'N3|Scania|P 230 DB4X2MNA|1' and 'N3|Scania|P230DB4X2MNA|1'; also 'P 230' 38 vs 'P230' 24 — spaced and glued spellings of one designation."
+    - "the umbrella id truck/scania/p was considered and NOT used, because it holds P 94/P 124/P 380 and so does not denote 'the same vehicle'."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 11 — GMC / ISUZU / IVECO / LIEBHERR / MAN (21 claims re-derived)
+# ═════════════════════════════════════════════════════════════════════════════
+
+"truck/gmc/cckw#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3 unavailable by construction (GMC publishes nothing current for a 1941-45 military truck); rank 5 en.wikipedia.org/wiki/GMC_CCKW writes 'CCKW' all-caps and decodes the acronym — C=1941 design, C=conventional cab, K=all-wheel drive, W=dual rear axles. The catalog publishes 'Cckw'."
+    - "all 37 folded raws are caps ('CCKW 353 VAB', 'CCKW-353-6X6/3570+1140', 'GMC CCKW 352')."
+    - "METHODOLOGICAL POINT worth carrying: FI Traficom is NOT a shouting register — the same column carries 'Isuzu | D-Max', 'Liebherr | A 914 Compact Litronic', 'Liebherr | LH 30 M Litronic'. Its capitals are meaningful evidence, though the binding rule still says registers do not decide casing."
+
+"truck/isuzu/nqr#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3 blocked and enumerated: isuzucv.com/en/nqr + /pdfs/nqr_specs.pdf HTTP 403 (curl and WebFetch), isuzu.com.au TLS failure, isuzutruck.co.uk 404, isuzu.co.jp 404, isuzu.co.za 404 — but the marque's own hosted spec sheet is named nqr_specs.pdf. Rank 5 used: en.wikipedia.org/wiki/Isuzu_Elf — 'sold as the Chevrolet NKR, NPR, or NQR'."
+    - "four-register corroboration of the caps string: gb GenModel 'ISUZU TRUCKS NQR' / Model 'NQR' 11 + 'NQR 70' 9; fi 'NQR 70', 'NQR-NQR70LL-7.5T/336'; ua 'NQR 71P' 75, 'NQR 71R' 35, 'NQR 75P' 3."
+    - "zero vowels, three letters, sitting in Isuzu's NKR/NPR/NQR/NRR export-code series — 'Nqr' has no defensible source."
+
+"truck/iveco/260s#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "named live id: truck/iveco/260 ('260', fi+nl). LIVE RDW 2026-07-26: handelsbenaming '260S/P' n=2 AND '260 S/P' n=1 — one designation, two spellings, and the pipeline sent them to different records (observed_variants: iveco/260 holds '260 S','260 S/P','260 S36Y-PS'; iveco/260s holds '260S/P','260S/PS')."
+    - "fi_agg: '260S' N3 16 vs '260 S' N3 1. This is the documented '280 Se' vs '280SE' shape."
+
+"truck/iveco/260s#name":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "LIVE RDW: handelsbenaming '260S50 STRALIS' n=1 — the register cell carries the type code AND the nameplate."
+    - "every complete attested form has a power element: fi '260S42Y-PS/380', '260S45Y-FP/570+140', '260S48Y-FS-6X2/510+140', '260S45Y/FS', and an explicit enumeration row '260S-Y* 260S(31,33,36,42,45,50,56)Y-6X2'. The published '260S' is that with the power stripped."
+    - "the nameplate is separately live: truck/iveco/stralis [fi,gb,nl]. §7.2 tested: this is not the MB-1824 case, because no complete Iveco designation stops at 260S."
+
+"truck/iveco/40c17d#id":
+  researcher: "defective(D6)"
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "the TAN evidence proves FAMILY identity, not a spelling pair: LIVE RDW shows '40C17/T EURO V HD EEV' and '40C17D/T EURO V HD EEV' both under nl*2001/116*0144*02 (6/3), *03 (22/19), *04 (8/5) — but that same approval index also carries '40C15 EURO 4' 120, '40C18 EURO 4' 30, '40C15V EURO 4' 29, '40C15D EURO 4' 18."
+    - "'D' is a systematic designation element, not a spelling variant: RDW carries 40C15D, 40C15D/T, 40C15DT, 40C18D, 40C18D/T, 40C18DT, 40C18D/P, and the catalog already publishes 40c15d, 50c14d, 50c15d, 65c15d, 65c17d, 65c18d as separate ids."
+    - "rank 3 iveco.com Daily spec sheet (E6-Daily-Van-Spec-Sheet.pdf) heads its tables '35S, 50C & 70C' and 'Specifications 35S VAN' — the product is the Daily and the GVW+series+power codes are variants inside it. truck/iveco/daily is live [es,fi,gb,nl]."
+    - "so the defect is altitude (D8), and a duplicate-spelling remedy would be wrong."
+
+"truck/iveco/40c17d#name + truck/iveco/60c16#id + truck/iveco/60c16#name":
+  researcher: "40c17d#name=D8; 60c16#id=D8; 60c16#name=D8"
+  verifier: CONFIRMED all three
+  evidence:
+    - "40C17D's population is a build variant: LIVE RDW rows are 'opleggertrekker' wb 345-485 and 'open wagen' wb 375/410, gvw 3500, DET 2006-06-02…2012-08-24, sharing approvals with plain 40C17 (n=407)."
+    - "60C16: fi_agg 'N2|Iveco|60C16|1|e3*2007/46*0115*18'; the same approval series under IVECO carries 70C18 (*various), 70C14G (*24), 65C16 (*20) — the Daily 6.5-7.0 t range. RDW power ladder under one series letter: 60C14 1, 60C15 2, 60C16 1, 60C17 3, 60C18 7."
+    - "the typo theory was tested and killed: '16' is a real Daily power rating attested at scale (RDW '40C16' n=551; '65C16' holds its own approval index *20), and 60C16 has its own index *18."
+    - "named live parent for all three: truck/iveco/daily; the nearer sibling truck/iveco/60c15 is live too."
+
+"truck/iveco/80el#id + #name":
+  researcher: "id=defective(D8); name=defective(D9)"
+  verifier: CONFIRMED both
+  evidence:
+    - "the complete maker string exists in the same register: LIVE RDW merk=IVECO handelsbenaming like '%80EL%' → '80EL' n=53, '80EL/75' n=1, and 'ML80EL17' n=1 (ML = Medium Light prefix, 80 = 8 t, 17 = 170 hp). The published '80EL' is that with prefix and power stripped."
+    - "the family label is in the register too: '80E22 EUROCARGO' n=3, '80E(ML80E19/P)' n=1. Technical rows for 80EL: gvw 7,490/7,500/8,000 kg, wb 311-482 cm, DET 2001-07-04…2024-12-16 — a 7.5-8 t rigid, i.e. Eurocargo."
+    - "named live nameplate: truck/iveco/eurocargo [es,fi,gb,nl]. UA corroborates the EL element in a third country ('ВАНТАЖНИЙ|IVECO|120EL|1'), and the catalog already carries 120el, 120elg, 190el."
+
+"truck/liebherr/lg#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3, liebherr.com fetched 2026-07-26 (HTTP 200, 487 KB lattice-boom page): 'LG 1750' ×18, 'LG 1800-1.0' ×4, 'LG 1550' ×2 — always caps, always spaced. Second page (LG 1800-1.0, HTTP 200): 'LG 1800-1.0' ×39, 'LG 1750' ×16. Catalog publishes 'Lg'."
+
+"truck/liebherr/utm#id":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "named live id: truck/liebherr/ltm ('Ltm', es+fi+gb+nl). fi_agg puts both codes in ONE cell repeatedly: 'LTM 1030-2-UTM 625', 'LTM 1040-3-UTM 532-6X4/160+245', 'LTM 1045-UTM431-6X6/2010+3550', 'LTM 1050-1-UTM635-6X6', 'LTM 1055/1 UTM 735', 'LTM 1090-4.1/UTM 743', 'LTM 1130-5.1/UTM 851', 'LTM 1500 UTM 680', 'LTM1200-1-UTM755-10X4'."
+    - "the standalone UTM numbers overlap the paired ones: RDW 'UTM 625' 4, 'UTM 630' 3, 'UTM 532' 3, 'UTM 530' 2 — 532, 625 and 740 each appear BOTH alone and bolted to an LTM designation."
+    - "liebherr.com's mobile-crane line-up is LTM/LTC/LTF/LG/LR/MK — no UTM product page exists."
+
+"truck/liebherr/utm#name":
+  researcher: "defective(D7)"
+  verifier: RECLASSIFIED(D9)
+  evidence:
+    - "D7 needs a marque rendering to differ from, and there is none: both Liebherr crane pages fetched HTTP 200 (487 KB and 413 KB) contain ZERO occurrences of 'UTM'; no en.wikipedia article covers a Liebherr UTM."
+    - "every attested occurrence is a register or dealer string. The ABSENCE of marque material is itself the evidence: UTM NNN is the crane's chassis/undercarriage type number, always resolvable to an LTM designation → D9, not a casing defect."
+
+"truck/man/12#id":
+  researcher: "defective(D6)"
+  verifier: OVERTURNED(unverifiable)
+  evidence:
+    - "no live id can be named. The rows carry no power element: LIVE RDW '12 LL' 16, '12 L' 4, '12L' 3, '12LL' 2, '12 FL/BL-V' 2, '12 F-V' 1, '12 FL/BL' 1; fi '12. 192 FL-FL-B-12,8T', '12. 225 LL /458'. A '12 LL' could be a 12.170, 12.192, 12.224 or 12.225 — RDW carries all four — so it cannot be equated with the only 12-tonne sibling, truck/man/12-170f."
+    - "the era-correct nameplates are ABSENT from the catalog: no man/m90, no man/m2000 (a candidate truck/man/m2000 exists in observed_variants with ['M2000 L 18.285 LAK'] but was never published)."
+    - "no xrefs.tan on man/12, so the rank-1 route is unavailable."
+  consequence: "if the ledger wants this convicted, the prerequisite is publishing the missing MAN nameplates, not re-running the analysis."
+
+"truck/man/12#name":
+  researcher: "defective(D1)"
+  verifier: CONFIRMED
+  evidence:
+    - "the published string exists in NO row of ANY source. LIVE RDW merk=MAN, all 2,586 handelsbenaming groups scanned: '12 L','12 LL','12L','12LL','12 F-V','12 FL/BL','12 FL/BL-V','12-192','12.163','12.170 F','12.170F','12.192','12.192 F','12.220, TGL','12.224','12.232 F','12.250','12.262' — no bare '12'."
+    - "fi_agg exact-match for MAN model=='12': zero rows. ua: '12.163' 3, '12.220' 15, '12.224' 12 — no bare '12'. es_dgt: no MAN '12' row."
+    - "the §7.1 defence (consecutive integers under one make are presumptively REAL) was applied properly — by re-parsing the rows rather than concluding from shape — and it is the re-parse that convicts: the FI strings show the split point (a stray space after '12.')."
+
+"truck/man/18ml#name":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "'ML' is a MAN cab/chassis suffix that FOLLOWS a power figure: es_dgt 'MAN | 12284MLC' (= 12.284 MLC); RDW '18.313 FLLC', '18.232 FL/BL' 11, '18.192 FA' 4, '18 MLL' 5, '18 MLT' 2, '18 M' 6."
+    - "the catalog string is that construction with the power element missing (RDW '18 ML' 14, '18ML' 2; fi 'N3|MAN|18ML|1'), and MAN's actual nameplates for an 18-tonner are live elsewhere: man/l2000, man/tga, man/tgx, man/tgs, man/tgm."
+
+"truck/man/8-150-f#id":
+  researcher: "defective(D8)"
+  verifier: OVERTURNED(unverifiable)
+  evidence:
+    - "the obvious fold target does not fit: truck/man/l2000 is live but its folded strings are 'L2000 8.153 BB/4250' and 'L2000 8 185 LC' — 8.153 and 8.185, not 8.150."
+    - "dating separates them: LIVE RDW puts every MAN 8.150* registration BEFORE the L2000 — '8.150' 1988/1990×2/1993/1997, '8.150 FAE 4X4' 1991, 1992, \"8.150'F\" 1993-08-06 — while RDW's 8.153 rows are 1993-11-16, 1994-05-03, 1996-03-05. The 8.150 sits in the preceding MAN G90 range."
+    - "and there is no man/g90 or man/g record in the catalog (a candidate truck/man/g held only ['G 90'] and was never published), so the correct target does not exist as a live id. NAMING §7.5 forbids resolving by resemblance."
+  honesty_note: "FI also carries '8.150 4X2 BB 7.49/395' and '8.150 BB/425', whose modern-looking BB suffix pulls the other way — the era genuinely does not close."
+
+"truck/man/8-150-f#name":
+  researcher: "defective(D6)"
+  verifier: RECLASSIFIED(D7)
+  evidence:
+    - "D6 is structurally unavailable: it needs two catalog records, and a scan of all 28 MAN truck records returns exactly one name beginning '8.15'."
+    - "the hyphen is a one-row outlier: fi has '8.150 F/425' 1 (space), '8.150 FL' 1, '8.150 BB/425' 2, '8.150 4X2 BB 7.49/395' 2 versus '8.150-F/425' 1; RDW has '8.150', '8.150 FAE 4X4' and \"8.150'F\" (apostrophe). MAN's suffix convention in both registers is a space ('12.170 F', '8.136 FAE', '8.163 LAEC', '18.232 FL/BL')."
+    - "caveat stated by the re-deriver: rank 3 is unavailable (MAN publishes nothing for a G90-era 8.150), so the space form rests on register shape, not marque authority."
+
+"truck/man/h39#id + #name":
+  researcher: "defective(D9) on both"
+  verifier: CONFIRMED both
+  evidence:
+    - "the register cell decodes itself: fi_agg 'N3 | MAN | H39 TGA 41.440 8x4 BB | 1' — type code followed by the actual MAN model. truck/man/tga is live [es,fi,lu,nl]."
+    - "H-numbers live in MAN's TYPE slot, proved by rows where RDW's two fields are transposed: handelsbenaming 'H09' / type '18.313 FLLC'; handelsbenaming 'H 19 FT' / type 'H05' and 'H06'; handelsbenaming '18 FLLC' / type 'H10'; handelsbenaming 'HS 19 F' / type 'H06'."
+    - "the series is dense — H02, H03, H05 (72), H06 (65), H08, H09 (26), H10, H12 … H96 — a numbered type register, not a product line. RDW 'H39' n=14, all N3, gvw 35,000-48,500 kg, DET 2005-01-26…2008-01-31 (the TGA window), bodies betonmixer/kolkenzuiger/asfaltkipper."
+
+"truck/man/hn#name":
+  researcher: "defective(D1)"
+  verifier: CONFIRMED
+  evidence:
+    - "a bare 'HN' exists in no source: LIVE RDW merk=MAN, all 2,586 groups scanned — 'HN 19 F' 1, 'HN 19 FT' 1, 'HN26 FNLC' 1, and no standalone 'HN'. es_dgt 'MAN | HN 19 F | N3 | 1'. fi_agg: no MAN 'HN' row at all."
+    - "the pipeline made sibling candidates the same way: truck/man/h, truck/man/hs ('HS 19 F','HS 26 FNLC'), truck/man/he ('HE 195 FT') — the published name is the leading token of a longer cell."
+    - "the D9-vs-D1 line is drawn empirically, not by analogy: 'H39' IS attested standalone (RDW n=14) so publishing it is a real code as a model (D9); 'HN' is attested only as a prefix, so publishing it is a string the parser produced (D1)."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 12 — AWD / BUCHER / CHEVROLET / DAF / DE SOTO / FORD / FORDSON (26 claims)
+# ═════════════════════════════════════════════════════════════════════════════
+
+"truck/all-wheel-drive/tl#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "gb VEH0120: GenModel 'ALL WHEEL DRIVE TL 8-14' / Model 'TL 8-14' = 15 Licensed + 122 SORN; siblings TL 7-14, TL 9-14, TL 10-14, TL 12-16, TL 13-16, TL 17-18, TL 20-18, TL 21-16, plus 'MT 12-16', 'M 4X4' — the whole make publishes 2-letter caps codes."
+    - "rank 5 (AWD Ltd defunct 1992, no marque site): en.wikipedia.org/wiki/AWD_Trucks renders 'AWD TL', 'Bedford TL', 'AWD TK' — both letters capital in every designation; no 'Tl' form appears. Title-casing an initialism is the D23 error transposed to a model name."
+
+"truck/bucher/citycat#id":
+  researcher: "defective(D6)"
+  verifier: CONFIRMED
+  evidence:
+    - "named live id: truck/bucher/city ('City', fi+lu) — whose ONLY observed raws are ['CITY CAT 5006', 'CITY-CAT'], i.e. 100% CityCat strings and zero rows for any product called 'City'."
+    - "LIVE RDW 2026-07-26 merk like '%BUCHER%', N2: 'CITYCAT 5006' 22, 'CITYCAT VR50' 14, 'CITYCAT 5000' 3, 'CITY CAT 5000' 2 — one register writing the identical model both ways."
+    - "truck/bucher has exactly 2 records, and one of them is made entirely of the other's strings."
+
+"truck/bucher/citycat#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 3: https://www.buchermunicipal.com/ HTTP 200 (2026-07-26) renders 'Introducing the CityCat WR50', 'CityCat V20', 'Bucher CityCat VR50 80 km/h version', 'CityCat VR17a' — camel-case throughout. The 8 'Citycat' hits on the page are IMAGE FILENAMES only (…/Citycat_V20E_Charging_hell_RGB.jpg), never rendered text."
+    - "catalog publishes 'Citycat'. FI's own mixed-case rows already write 'CityCat 5006' / 'CityCat VR50'."
+
+"truck/chevrolet/20-starcraft-3-9t-fg25f#id":
+  researcher: "defective(D6)"
+  verifier: "CONFIRMED (with a stated near-miss: RECLASSIFIED(D8) is equally defensible)"
+  evidence:
+    - "named live id: truck/chevrolet/20-3-9t-fg25f ('20-3.9T-FG25F', fi). fi_agg: 'CHEVY VAN 20-STARCRAFT-3.9T-FG25F/343' n=593 vs 'CHEVY VAN 20-3.9T-FG25F/343' n=154 — identical GM type code FG25F, identical 3.9 t rating, identical /343 wheelbase; the only difference is the converter token STARCRAFT."
+    - "a second live id is the nameplate both are variants of: truck/chevrolet/20 (fi N2 'CHEVY VAN 20' 9 / N1 116)."
+  note: "this is also a NEW-1 instance (Starcraft is a US van converter), which the ledger itself lists under NEW-1's scale evidence."
+
+"truck/chevrolet/20-starcraft-3-9t-fg25f#name":
+  researcher: "defective(D1)"
+  verifier: CONFIRMED
+  evidence:
+    - "ZERO rows in fi or nl write the published string standalone: every source row is 'CHEVY VAN 20-STARCRAFT-3.9T-FG25F/343' (593), '…FG25F' (19), 'Chevy van 20-starcraft-3.9t-fg25f/343' (1)."
+    - "the strip is systematic in the truck kind: truck/chevrolet/20 folds 'CHEVY VAN 20'; /30 folds 'CHEVY VAN 30'; /express folds 'Chevy Van Express'; /g30 folds 'CHEVY VAN G30 VAN'."
+    - "the catalog renders the SAME family correctly in another kind: van/chevrolet/chevy-van-20-starcraft, name 'Chevy Van 20 Starcraft' [fi,nl] — which is what D1's 'records HEAL' remedy would restore."
+
+"truck/chevrolet/cheyenne#id":
+  researcher: "defective(D8)"
+  verifier: CONFIRMED
+  evidence:
+    - "named live ids: truck/chevrolet/c20 (LIVE RDW N2 'C20 CHEYENNE' n=1; fi 'Cheyenne C 20' n=1), truck/chevrolet/k2500 (fi N2G 'K2500 Cheyenne'; nl N2 'K20 CHEYENNE SUPER'), truck/chevrolet/2500 (fi '2500 CHEYENNE PICKUP-3.9T-GC24F/334'), /1500, /3500."
+    - "position test: in 6 of 15 FI Cheyenne strings and 2 of 10 NL N2 rows, CHEYENNE FOLLOWS the series number — trim position."
+  fixer_warning: >-
+    Chevrolet Cheyenne IS a standalone nameplate in Mexico (fi 'Cheyenne LTZ' 3,
+    'Cheyenne High Country' 1 — trims OF Cheyenne; nl bare 'CHEYENNE' 4). The
+    record is not purely a trim, so the remedy must not delete those rows.
+
+"truck/chevrolet/k#id + #name":
+  researcher: "id=defective(D6); name=defective(D9)"
+  verifier: CONFIRMED both
+  evidence:
+    - "named live twins: truck/chevrolet/k2500, /k3500, /k2500hd. LIVE RDW N2: 'K 2500' 6 vs 'K2500' 3; 'K 3500' 2 vs 'K3500' 3; 'K 30' 1 vs 'K30' 1 — the same register writes each truck both ways."
+    - "the split is perfectly clean: every raw in truck/chevrolet/k has a space; every raw in k2500/k3500/k2500hd is closed."
+    - "the project has already ruled this family: overrides/models/renames.yml:255 'K 1500: K1500 # … a short letter prefix glued to digits IS the nameplate for this make … so the fused form is canonical'."
+    - "name: no truck-kind source row is a bare 'K' (fi_agg $3=='K' under Chevrolet → zero; LIVE RDW handelsbenaming='K' merk=CHEVROLET → M1 only, n=2, i.e. the car kind). K is GM's 4WD chassis code (C=2WD)."
+
+"truck/chevrolet/pick-up#id":
+  researcher: "defective(D9)"
+  verifier: RECLASSIFIED(D6)
+  evidence:
+    - "named live twin: truck/chevrolet/pick ('Pick', fi+nl). LIVE RDW N2: 'PICKUP 2500 EXT CABTD 4X4' n=1 (→ pick-up) and 'PICK UP 2500 EXT CABTD4X4' n=1 (→ pick) — the same vehicle description, one space apart."
+    - "the project's own rule states the identity: overrides/models/renames.yml:252 'Pickup: Pick Up # spelling variant … same nameplate, different spacing/casing'; and overrides/models/former_ids.yml:1965 records truck/chevrolet/pickup → truck/chevrolet/pick-up — the rename fired and left the 'Pick' twin behind (a D14 shape)."
+    - "D9 cannot stand: 'pick-up' is an English body phrase, not a registry code."
+
+"truck/chevrolet/pick-up#name":
+  researcher: "defective(D9)"
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "LIVE RDW's own inrichting for these rows is literally 'pick-up truck' / 'open wagen' — the published name is the BODY STYLE."
+    - "the real nameplates are inside the raws: 'PICKUP 2500 EXT CABTD 4X4' (a C/K 2500), 'PICK UP K 2500', 'PICKUP-GC29F/395'."
+    - "D3 was tested and rejected (its detector is a placeholder regex); D8 is 'trim/edition/BODY/engine published as model', remedy fold-into-nameplate."
+
+"truck/chevrolet/van#id":
+  researcher: "defective(D6)"
+  verifier: OVERTURNED(correct)
+  evidence:
+    - "all 38 truck/chevrolet ids enumerated: none is a spelling variant of 'Van'/'Chevy Van', and no truck id contains 'chevy' at all."
+    - "the near candidates are narrower vehicles, not spellings: /20 ['CHEVY VAN 20','VAN 20'], /30 ['CHEVY VAN 30'], /g30 ['CHEVY VAN G30 VAN'], /express ['Chevy Van Express'] — payload sub-series, i.e. D8-direction relatives."
+    - "car/chevrolet/chevy-van and van/chevrolet/chevy-van exist but are a DIFFERENT KIND, and D6 is defined 'same make+kind' (NAMING §3: each kind's files stand alone)."
+  note: "the record's real problem is its name, not a duplicate id."
+
+"truck/chevrolet/van#name":
+  researcher: "defective(D5)"
+  verifier: RECLASSIFIED(D1)
+  evidence:
+    - "D5's detector is a PREFIX TEST on the published name, and the published name is 'Van' — it contains no brand, so D5 cannot fire; its remedy (strip the brand) would make this worse."
+    - "the mass IS the nameplate: fi N2 'CHEVY VAN' 13 + nl N2 'CHEVY VAN' 9 + 'CHEVROLET CHEVY VAN' 1 = 23 registrations, against ~4 bare 'VAN' truck-kind rows."
+    - "mechanism: 'Chevy' is a registered make alias (overrides/makes/search_aliases.yml:15 '\"Chevy\": Chevrolet # universal nickname') and the truck kind strips it systematically. The catalog publishes the correct form in two other kinds (car/ and van/chevrolet/chevy-van, both 'Chevy Van')."
+    - "D1's remedy — fix the strip, record HEALS to 'Chevy Van' — is the available one."
+  verifier_dissent_noted: "my own first read agreed with the researcher's D5 label; the class table decided it, because a class describes the PUBLISHED record, and this record has already been over-stripped."
+
+"truck/daf/fancf#id + #name; truck/daf/fas#id + #name; truck/daf/ftg#id + #name; truck/daf/v1600dd#name":
+  researcher: "fancf id=D6 name=D9; fas id=D9 name=D9; ftg id=D9 name=D9; v1600dd name=D9"
+  verifier: CONFIRMED all seven
+  evidence:
+    - "THE LETTERS WERE RESOLVED FROM THE REGISTER, NOT GUESSED (§7.5): LIVE RDW 2026-07-26 — every DAF handelsbenaming containing 'FT' = 29,853 registrations, 99% inrichting 'opleggertrekker' (tractor); every one containing 'FA' = 10,078 registrations, 0% tractor (gesloten opbouw 41%, gecond. 11%). So F=forward control, A=rigid, T=tractor; the third letter is the axle layout. FTG specifically: 3,784 regs, 3,766 opleggertrekker (100%). FAS: 971 regs, haakarm 47% / afneembare bovenbouw 32% / 0% tractor."
+    - "THE SAME REGISTER WRITES BOTH ORDERS FOR THE SAME TRUCK — which is what mints the bogus ids: 'XF 480 FTG' 1,113 vs 'FTG XF105' 154; 'CF 410 FAS' 116 vs 'FAS CF85' 107; 'XF 480 FAS' 64, 'XF 530 FAS' 60 vs 'FAS XF105' 107; 'CF 410 FAN' vs 'FANCF85.410T'."
+    - "id targets are live: truck/daf/cf, /xf, /xg, /xd, /95. For fancf specifically the live twin is truck/daf/fan (raws 'FAN CF85', 'FAN CF 85', 'FAN CF75') — one space away."
+    - "v1600dd decomposes in the register: LIVE RDW 'V 1600 DD 358' n=7 SPACED beside 'V1600DD358' n=9, plus 'A1600DD425' 13, 'FA1600DF360' 9, 'FT1600DT265' 7, 'B1600DD600' 6 — leading letters = chassis config, 1600 = model, letter pair = engine code, trailing 3 digits = wheelbase in cm. No daf/1600 record exists for the code to resolve into, which is why D9's debt remedy applies rather than D8's fold."
+    - "MY OWN MARQUE CORROBORATION (Part 7): daf.com/en HTTP 200 renders the range as DAF XB/XD/XF/XG/XDC/XFC — FA/FAS/FAN/FT/FTG appear nowhere on the marque's own site."
+
+"truck/de-soto/sc#name":
+  researcher: "defective(D9)"
+  verifier: CONFIRMED
+  evidence:
+    - "the entire world population is 2 vehicles: fi_agg N2 'DE SOTO' / 'SC3-HA6-171/4340-56' n=1; LIVE RDW merk like '%SOTO%' N2 'SC-HA-171' n=1 (huifopbouw). Neither register ever wrote a bare 'SC'."
+    - "the compound decodes as a type designation: 171 in × 25.4 = 4,343 mm, and the FI string appends '/4340' while the make's sibling FI row 'L8-D500-171/4343-58' appends '/4343' — i.e. <type code>-<sub>-<wheelbase in inches>/<wheelbase in mm>-<year>."
+    - "§7.2 was given full weight and a §7.5 resolution was ATTEMPTED and came back empty — which is precisely why D9 (resolve-via-raw-else-debt) is the class rather than acceptance."
+  unclaimed_extra: "'Sc' also carries a D7 casing error the researcher did not claim."
+
+"truck/ford/350#id + #name":
+  researcher: "id=defective(D6); name=defective(D1)"
+  verifier: CONFIRMED both
+  evidence:
+    - "named live id: truck/ford/e-350 — whose OWN observed raws literally contain 'E-350 ECOLINE' and 'E-350 ECONOLINE', i.e. truck/ford/350's two raws with the 'E-' intact. Second live id: truck/ford/econoline ('ECONOLINE 350', 'ECONOLINE E-350')."
+    - "name: no truck-kind source row is a bare '350'. LIVE RDW merk=FORD handelsbenaming exactly '350' → one row, N1 (the VAN kind), n=2. The truck-kind rows are '350 ECONOLINE' (nl N2 2) and '350 ECOLINE' (fi N2 1)."
+    - "the §7.1 two-source defence was tested: both sources carry the SAME two-token string, so this is one string family, not independent corroboration of a bare '350'."
+
+"truck/ford/f250xlt#id + #name":
+  researcher: "id=defective(D6); name=defective(D7)"
+  verifier: CONFIRMED both
+  evidence:
+    - "named live id: truck/ford/f-250 (global_decile 2) — its own raws already include 'F-250 XLT', 'F-250 XLT 4x4', 'F-250 XLT SUPER DUTY'. LIVE RDW writes the same trim four ways: 'F250XLT' N2 2, 'F250 XLT' N2 6, 'F 250 XLT' N2 2."
+    - "the project already ruled the identity: overrides/models/renames.yml:593 'F250: F-250 # spelling variant … same nameplate, different spacing/casing' — f250xlt escaped it only because XLT is glued on."
+    - "truck/ford/f250xlt has NO entry in observed_variants.json at all: the id survives on the glued spelling alone."
+    - "name, rank 5 (ford.com unreachable: curl HTTP 000/exit 92 on ford.com and ford.co.uk, WebFetch timed out on ford.com and media.ford.com): en.wikipedia.org/wiki/Ford_Super_Duty renders 'F-250', 'F-250 XL', '2011 Ford F-250/F-350 Crew Cab Lariat' — hyphenated, trim as a separate token. 'F250XLT' is D7's own example shape (cf. 'RX450H')."
+
+"truck/ford/ranger#availability.nl":
+  researcher: "defective(D6)"
+  verifier: "CONFIRMED — independently derived twice (mine in Part 7, and a deeper re-derivation below)"
+  evidence:
+    - "LIVE RDW 2026-07-26: 141 distinct RANGER rows under merk=FORD; filtered to the truck categories N2/N3 → 18 rows / 22 registrations, and ZERO of them is handelsbenaming = 'RANGER'. Bare 'RANGER' exists only as M1 (20) and N1 (4,013)."
+    - "all 18 N2 rows are F-Series ('F-250 RANGER XLT', 'F250 RANGER', 'F350 RANGER XLT', 'F250 SUPERCAB RANGER XLT', 'RANGER F250', 'RANGER XCT F250', …)."
+    - "THE TWO AMBIGUOUS 'RANGER XLT' N2 ROWS WERE RESOLVED BY IDENTITY FIELDS, NOT ASSUMPTION: wielbasis 338, massa_ledig 1,970/2,010, GVW 3,500 — 3,380 mm is the F-250's wheelbase, corroborated by FI's own type designations 'F 250-F268-HF26M-3.9T-PICKUP-4X4/3380' n=2. No T6/T6.2 Ranger has a 3,380 mm wheelbase (RDW's N1 Ranger population sits at 275-339, the modern car at 320-322)."
+    - "named live target: truck/ford/f-250, whose own raws already include 'F-250 RANGER XLT'. 'Ranger' was an F-Series TRIM badge before it was a nameplate (fi 'F100 RANGER XLT', 'F150 RANGER')."
+
+"truck/fordson/wot#name":
+  researcher: "defective(D7)"
+  verifier: CONFIRMED
+  evidence:
+    - "rank 5 (Fordson ended 1964): en.wikipedia.org/wiki/Fordson_WOT renders 'Fordson WOT' in caps and expands it — War Office Type — with models WOT1, WOT2, WOT3, WOT6, WOT8. An initialism must never be Title-cased (the D23 logic)."
+    - "population is 2 vehicles: LIVE RDW merk like '%FORDSON%' N2 'WOT 6' n=1; fi_agg N2 'Fordson'/'WOT SUSSEX' n=1. FI also carries 'SUSSEX WOT 1/3970+970' and 'WOT1 SUSSEX' under the Ford make."
+  unclaimed_extra: "the record folds two different models (WOT6 and the Sussex 6-wheeler) — a separate, unclaimed altitude defect."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PART 13 — SPOT-CHECK OF 25 `correct` VERDICTS (the certified-stratum miss rate)
+# Deterministic selection: all 82 id/name claims the researcher marked correct,
+# sorted by "<id>#<claim>", every 82/25th taken. 24 re-derived adversarially +
+# truck/mecalac/revotruck#name re-derived by me in Part 2 = 25.
+# ═════════════════════════════════════════════════════════════════════════════
+spot_check:
+  misses_found: 4
+  of_checked: 25
+  miss_rate: 0.16
+  clopper_pearson_95: "[0.045, 0.365]  # 4/25, exact binomial"
+  what_broke_and_how: >-
+    None of the four misses is visible to a name-level duplicate scan. The
+    productive attack was reading observed_variants.json to see WHICH RAW
+    STRINGS each id actually swallowed, then checking the live register for the
+    alternate spelling. Two of the four are hidden by SINGLE-LETTER TRUNCATION
+    BUCKETS — truck/ford/f and truck/scania-vabis/l — which quietly absorb the
+    space-separated spelling of a vehicle that also has its own id. The truck
+    kind is full of these buckets (gmc/c, man/h, man/l, daf/fa, chevrolet/c…)
+    and they are duplicate-hiding machines.
+
+  misses:
+    "truck/ford/f-max#id":
+      researcher: correct
+      verifier: MISS(defective(D6))
+      evidence:
+        - "observed_variants: truck/ford/f ('F', [es,fi,nl]) has folded the raw 'F MAX' — I re-ran this myself and confirm the exact array member."
+        - "es_agg (my own build): 'N3|FORD|F-MAX|32', '(blank cat)|FORD|F-MAX|3', and 'N3|FORD|F MAX|1' — the register spells it both ways and the unhyphenated Spanish row is the one sitting in ford/f."
+        - "LIVE RDW: 'FORD | F-MAX | N3 | 166' (hyphenated only); fi_agg has no F-MAX row — so the 'F MAX' raw can only be the Spanish row."
+        - "both ids are live and both carry es+nl."
+      why_missed: "`grepname all 'f.?max'` returns ONE record — the twin is invisible at name level because truck/ford/f is itself a D1 truncation bucket (F 150 / F 250 / F 350 / F 600 / F MAX all collapsed to 'F')."
+
+    "truck/scania-vabis/l71#id":
+      researcher: correct
+      verifier: MISS(defective(D6))
+      evidence:
+        - "observed_variants: truck/scania-vabis/l ('L', [fi,nl]) contains 'L 71 38 REGENT' — re-verified by me directly."
+        - "LIVE RDW merk='SCANIA-VABIS': 'L71' n=1 AND 'L 71 38 REGENT' n=1 (also 'L7134' 1, 'LS 71 50' 1) — the same model glued and spaced."
+        - "fi_agg 'N2|SCANIA-VABIS|L71|1'; truck/scania-vabis/l71 has NO variants — it was built from the glued rows only."
+        - "the identical split is one model over: truck/scania-vabis/l51 holds 'L51 50 110' while truck/scania-vabis/l holds 'L 51', 'L 51-42HD', 'L 51-46 HD'."
+
+    "truck/man/hn#id":
+      researcher: correct
+      verifier: MISS(defective(D9))
+      evidence:
+        - "LIVE RDW merk='MAN' grouped by (type, handelsbenaming) over the H-codes: H05↔'H 19 FT'; H06↔'H06','H 19 FT','HS 19 F','MAN TGA','MAN'; H25↔'MAN TGA'; H26↔'MAN TGA','TGA'. The register's OWN type column equates MAN's H-series type codes with the MAN TGA."
+        - "detail rows: 'HN 19 F' 19,000 kg first admitted 2003-01-21; 'HN 19 FT' 18,600 kg 2001-02-01; 'HN26 FNLC' 26,000 kg 2001-09-05 — all inside the TGA window (2000-2007). RDW also holds 'H26 FNLC' (2004) and 'HS 26 FNLC' (2005) for the identical 26 t configuration, so H/HN/HS are sub-codes of ONE type family."
+        - "named live target: truck/man/tga [es,fi,lu,nl]. es_dgt corroborates the shape: 'MAN | HN 19 F | N3 | 1', 'MAN | H05 18 FLC | | 1'."
+        - "I independently reproduced the H/HN overlap before this result arrived: LIVE RDW returns 'H 19 FT' 2, 'H 19 F' 1, 'HN 19 F' 1, 'HN 19 FT' 1, 'HN26 FNLC' 1 — the same designations with and without the N."
+      honest_gap_stated: "the two HN rows themselves carry no `type` value; the H06→TGA anchor comes via the sibling rows 'HS 19 F' and 'H 19 FT'. Recorded rather than smoothed over."
+      blast_radius: "the same evidence implicates the live siblings man/h, man/h25, man/h36, man/h39 (H25 and H26 map directly to 'MAN TGA')."
+
+    "car/volvo/ec40-twin#name":
+      researcher: correct
+      verifier: MISS(defective(D8))
+      evidence:
+        - "cache/us_vehicles.csv is the ONLY source printing this string: 'Volvo | EC40 Twin | Small Sport Utility Vehicle 4WD | EC40 | 2025' and '2026' — EPA's own baseModel column says 'EC40'."
+        - "Volvo's own powertrain naming is 'Twin Motor' / 'Twin Motor Performance': the MY2025 Price & Specification PDF on volvocars.com gives Twin Motor 408 hp/300 kW and Twin Motor Performance 441 hp, and Volvo's own build-summary documents are named 'ec40-core-twin-motor-electric-2026-01-31…'. Volvo's support articles are titled 'EC40 Electric motor specifications'. No Volvo page renders the bare string 'EC40 Twin'."
+        - "car/volvo/ec40 ('EC40') is live in 9 countries including us — the same nameplate, same country."
+      caveat: "volvocars.com returned HTTP 403 on five direct fetches, so the evidence is Volvo-hosted document titles, slugs and spec-PDF contents rather than a rendered marque page."
+      blast_radius: "the same shape is live on c40-recharge-twin, ex40-twin, xc40-recharge-twin, ex30-twin-performance."
+
+  confirmed_21:
+    - "car/saturn/aura#id — 16 Saturn records enumerated across all six kinds; one Aura, and 'Aura Hybrid' is folded IN rather than standing as a second id."
+    - "car/saturn/l300#name — EPA's own baseModel is also 'L300'; rank 5 Saturn L-series: 'all L-Series sedan and wagon models were renamed \"L300\"' for 2004. The named trap (live siblings l100-200 and l200) is not a spelling relationship: L100/200 is EPA's own merged 2001-02 cell."
+    - "car/scion/xd#id — 8 Scion records, all kind=car, one xD; xA/xB are separate Scion nameplates."
+    - "car/srt/viper#name — EPA 'SRT | Viper | Viper | 2013/2014'; SRT was the badge for exactly those two model years."
+    - "car/suzuki/equator#name — EPA writes 'Equator 2WD/4WD' but its baseModel is 'Equator', and the qualifiers survive as variants, not sibling ids."
+    - "car/suzuki/sc#id — the code RESOLVES to the SC100 (gb Model column 'SC 100 GX'; nz 'SC100' 20) but there is NO live suzuki/sc100 or suzuki/cervo id to name, so id-canonical holds even though the NAME is defective."
+    - "car/toyota/camry-wagon#name — EXPECTED TO BE A MISS and flipped back: pressroom.toyota.com asset titles read '1992 Toyota Camry Wagon 003', '1995 Toyota Camry Wagon LE 003' (trim AFTER Wagon). The marque writes it; the altitude question rides on the #id claim, which is separately defective."
+    - "car/toyota/cressida#id — no second Cressida in any kind; the Mark II / Cresta relationship is an export-badge nameplate split, which the catalog treats as separate (the escudo/vitara precedent)."
+    - "car/uaz/469#id — 469 and 469B are two UAZ factory indices, kept apart by both registers (RDW '469' M1 5 vs '469B' 2 / '469 B' 3; fi '469' 2 vs '469B' 1) with no cross-contamination of raws."
+    - "car/volvo/480#name — rank 5 (volvocars.com 403): the base designation is '480'; ES/Turbo are variant qualifiers."
+    - "car/zeekr/009#name — rank 3 zeekrlife.com/global prints 'Zeekr 001', 'Zeekr 009', 'Zeekr 009 Grand', 'Zeekr X' in title case."
+    - "truck/citroen/jumper#id — only 2 Citroën truck records; ë-Jumper is the BEV line the catalog keeps separate BY POLICY (car/citroen/c3 and e-c3 both live; PRD §4 D17 lists 'ë-C3'→'c3' as the DEFECT, not the remedy)."
+    - "truck/de-soto/sc#id — 17 De Soto records, exactly one in kind=truck. A likely D9 name defect, but no second id to name."
+    - "truck/gmc/cckw#id — ran the same bucket attack that broke ford/f-max: truck/gmc/c holds only ['C 30','C 35','C 3500 CREW CAB','C 3500 HD'] — no CCKW string leaked in."
+    - "truck/land-rover/defender#name — rank 3 landrover.com/vehicles/defender HTTP 200 (112 KB): 'Defender' 18× in title case; the all-caps hits are styled headings 'DEFENDER 90/110/130'."
+    - "truck/mercedes-benz/2538#id — run as the direct parallel to 816-d: the 816 corpus is saturated with VARIO/ATEGO tokens, the 2538 corpus has NONE (fi '2538', '2538 DNA-6X2/385+136', '2538 K-6X4', '2538-NT-6X2/450+136'; LIVE RDW '2538 6 X4' n=1). The SK/NG-era number IS the whole product name — the case §7.2 blesses."
+    - "truck/mercedes-benz/816-d#name — EXPECTED TO BE A MISS and flipped back by the marque's own document: Mercedes' Vario W670 owner's manual (static.oneweb.mercedes-benz.com, 201 pp) §'Vehicle model designation' pp.187-188 decomposes 8 = GVW in tonnes, 18 = bhp×10, D/DA = engine+drive, KA = equipment, AND prints the designation '(814 DA)' WITH the space. The record's own raws are closed ('816D VARIO/425') and Wikipedia writes 816D closed — the marque still wins."
+    - "truck/mercedes-benz/vario#name — the same manual is titled 'Vario' and writes it in title case in running text."
+    - "truck/ram/2500#name — rank 3 ramtrucks.com HTTP 200 (369 KB): running text 'Ram 2500' ×4, 'Ram 2500 Tradesman', 'Ram 2500 Rebel'; the all-caps 'RAM 2500' ×6 are nav styling; the model URL is /ram-2500.html."
+    - "truck/saxas-nutzfahrzeuge-werdau/atego#name — rank 3 mercedes-benz-trucks.com/en_GB/models/atego-distribution.html HTTP 200 renders 'Atego', never 'ATEGO'. The NAME matches character-for-character even though the MAKE is wrong (that defect is claimed separately and confirmed)."
+    - "truck/mecalac/revotruck#name — re-derived by me (Part 2)."
+
+# ═════════════════════════════════════════════════════════════════════════════
+# SUMMARY
+# ═════════════════════════════════════════════════════════════════════════════
+SUMMARY:
+  scope_completed:
+    defective_claims_reviewed: "119 / 119 (every defective verdict in the ledger, re-derived from primary sources before the researcher's evidence was read)"
+    unverifiable_claims_reviewed: "9 / 9 (one independent alternative route each)"
+    correct_verdicts_spot_checked: "25 (deterministic every-82/25th over the sorted list of all 82 id/name claims marked correct)"
+    availability_claims_machine_re_checked: "107 / 245 (fi 64 + gb 17 + es 17 + ua 9) — my own automated re-derivation against the four artifact-backed registers"
+
+  defects_reviewed:
+    total: 119
+    confirmed: 99
+    overturned_correct: 3
+    overturned_unverifiable: 4
+    reclassified: 13
+    confirmation_rate: 0.832
+
+  overturned_to_correct:
+    - "car/suzuki/wagon#availability.nl — the register holds a row spelled exactly as the record (LIVE RDW kenteken 01GLL9, M1, DET 2001-02-06); protocol R4 says a wrong NAME is not an availability defect."
+    - "car/suzuki/wagon#availability.ua — 'ЛЕГКОВИЙ|SUZUKI|WAGON|5' is a row distinct from 'WAGON R|12' in my UA aggregate."
+    - "truck/chevrolet/van#id — all 38 truck/chevrolet ids enumerated; no same-make+kind spelling twin of 'Chevy Van' exists (the cross-kind car/ and van/chevrolet/chevy-van records are a different kind, and D6 is defined same make+kind)."
+
+  overturned_to_unverifiable:
+    - "car/suzuki/wagon#id — the assumed twin (wagon-r) is REFUTED by specs: the single NL vehicle is 1298 cc / wielbasis 238 / 885 kg, and RDW's 1298+238 cell is dominated by Baleno 1.3 (45 rows) while the Wagon R population is 1298/236 (6,649). §7.5 forbids naming it anyway."
+    - "car/volkswagen/van#id — the three NL rows are three different vehicles spanning 48 years (1970 1.6 camper M1; 2005 3.2 N1; 2018 2.0 N1); no single live id denotes them."
+    - "truck/man/12#id — the rows carry no power element ('12 LL' could be a 12.170/12.192/12.224/12.225, all of which RDW carries), and the era-correct nameplates (M90, M2000) are ABSENT from the catalog."
+    - "truck/man/8-150-f#id — LIVE RDW dates every 8.150 registration (1988-1997) BEFORE the L2000's 8.153 rows (1993-1996); the correct target is the MAN G90 range, and no man/g90 record exists."
+  overturned_to_unverifiable_note: >-
+      Two of these four are blocked by MISSING catalog records, not by weak
+      analysis. If the ledger wants man/12 and man/8-150-f convicted, the
+      prerequisite is publishing the absent MAN nameplates.
+
+  reclassified_13:
+    - "car/suzuki/wagon#name           D6 → D3   (the two strings do not NFKD-fold to one another; a bare body word with an unresolved referent is the placeholder shape)"
+    - "car/volkswagen/van#name         D9 → D3   (D9's detector is code-shape + single-source; 'VAN' is an English word and two-source)"
+    - "truck/chevrolet/pick-up#id      D9 → D6   (named twin truck/chevrolet/pick; the project's own renames.yml:252 states the identity, and former_ids shows the rename left the twin behind — a D14 shape)"
+    - "truck/chevrolet/pick-up#name    D9 → D8   ('Pick Up' is the body style RDW itself records in inrichting, not a registry code)"
+    - "truck/chevrolet/van#name        D5 → D1   (D5's prefix detector cannot fire on a name containing no brand; 'Van' is the RESIDUE of the Chevy make-alias strip)"
+    - "truck/iveco/40c17d#id           D6 → D8   (the shared approval index also covers 40C15/40C18/40C15V, so it proves family identity, not a spelling pair; 'D' recurs across six other live ids)"
+    - "truck/liebherr/utm#name         D7 → D9   (D7 needs a marque rendering to differ from; Liebherr publishes NO 'UTM' material — the absence is itself the evidence for a type code)"
+    - "truck/man/8-150-f#name          D6 → D7   (only one catalog record begins '8.15', so the catalog-side D6 detector cannot fire; the hyphen is a one-row register outlier against MAN's spaced convention)"
+    - "truck/mercedes-benz/290#id      D6 → D8   (no second spelling of '290' exists among 240 MB truck ids; 290 GD is an engine/generation designation of the live truck/mercedes-benz/g)"
+    - "truck/mercedes-benz/la#id       D6 → D1   ('La' is a prefix fragment holding ≥12 different type numbers — it denotes no single vehicle, so D6 is definitionally unavailable)"
+    - "truck/scania/143m#name          D1 → D8   (two independent registers carry '143M' verbatim, so nothing was fabricated; M is Scania's chassis-height letter)"
+    - "truck/scania/460#id             D1 → D8   (RDW's own handelsbenaming reads '460' and es_dgt carries it too; RDW's `type` column resolves it to 'T 144 LA 4X2 NA 460' → live truck/scania/144)"
+    - "truck/scania/460#name           D1 → D8   (same evidence; a bare power figure, not a parser artifact)"
+  reclassification_pattern: >-
+    Eleven of the thirteen are one of two mistakes, both worth a detector note:
+    (a) D1 asserted where the raw corpus actually carries the string — the
+    ledger reached for "parser artifact" five times on strings that two
+    independent registers write verbatim, which is exactly what NAMING §2.1
+    warns against; and (b) D6 asserted where no SECOND SPELLING exists — the
+    record is a fragment or a variant, so the honest classes are D1 or D8.
+    Both mistakes point a fixer at the wrong layer.
+
+  unverifiables_resolved: "7 of 9"
+  unverifiable_outcomes:
+    - "truck/scania/metago#make → CORRECT (overturned): the 16 NL rows are N3 registered under merk SCANIA and ARE Scania tractors; the third party sits in the MODEL column."
+    - "truck/scania/metago#id → defective (NEW-1/D5 shape): METAGO PRO is Kässbohrer Transport Technik's car-transporter — LIVE RDW carries it under merk KAESSBOHRER/KASSBOHRER as O4 trailers, and kaessbohrer.com links its own /en/vehicle/metago-pro page."
+    - "truck/scania/metago#name → defective (same)."
+    - "truck/renault/d14#name → CORRECT (resolved): Renault Trucks UK's own press release (HTTP 200) is titled 'Renault Trucks D14 …' and writes 'D14 4x2 rigid', 'D14 and D16 chassis'."
+    - "truck/scania/p230#name, p280#name, p380#name → defective(D7), DIRECTIONAL: scania.com/uk (HTTP 200) writes 'Scania R 410 LBG 4x2 Highline' — cab letter, SPACE, power figure. Single instance, different cab letter; I would not sweep three live ids on it alone."
+    - "car/volkswagen/caravelle-syncro#name → STILL UNVERIFIABLE: five VW-owned routes tried (newsroom search JS-only, classic.de redirect, classic-parts 404, vwn-presse shell, newsroom CV hub 404)."
+    - "car/volkswagen/211#id → STILL UNVERIFIABLE: I identified WHAT the vehicle is (VW Type 2 Transporter — wielbasis 240/241 cm, DET 1956-1975, 1200-1641 cc) but the catalog has no Type 2 nameplate id in kind car to name; the family is scattered across t2, combi, micro-bus, kleinbus, kombiwagen, bestel."
+
+  corrects_spot_checked: 25
+  misses_found: 4
+  certified_stratum_miss_rate: "0.160  (4/25; 95% Clopper-Pearson [0.045, 0.365])"
+  miss_list:
+    - "truck/ford/f-max#id → defective(D6)  — truck/ford/f has folded the raw 'F MAX'"
+    - "truck/scania-vabis/l71#id → defective(D6) — truck/scania-vabis/l has folded 'L 71 38 REGENT'"
+    - "truck/man/hn#id → defective(D9) — RDW's own `type` column ties the H-code family to 'MAN TGA' (live)"
+    - "car/volvo/ec40-twin#name → defective(D8) — 'EC40 Twin' is EPA's truncation of Volvo's 'Twin Motor'; no Volvo source prints it"
+  miss_rate_caveat: >-
+    NOT extrapolated (I-15: the audit finds, it does not sweep). For scale only:
+    25 of the 82 correct id/name claims were checked, so the measured rate is
+    the program's own error rate on the axes checked, and the remaining 57
+    unchecked correct id/name claims are the obvious place to look next. The
+    single highest-yield method is stated in PART 13 and costs nothing: diff
+    observed_variants.json against the id list to find single-letter truncation
+    buckets that have swallowed another live id's spelling.
+
+  adjusted_per_claim_tallies:
+    basis: "645 claims (100 records × 4 axes + 245 availability entries) — arithmetic independently verified, see PART 6"
+    researcher: { correct: 517, defective: 119, unverifiable: 9, clean_rate: 0.8016 }
+    verifier:   { correct: 518, defective: 121, unverifiable: 6, clean_rate: 0.8031 }
+    derivation: >-
+      correct 517 +3 (defects overturned to correct) +2 (unverifiables resolved
+      as correct) −4 (spot-check misses) = 518.  defective 119 −3 (→correct)
+      −4 (→unverifiable) +5 (unverifiables resolved as defective) +4 (spot-check
+      misses) = 121.  unverifiable 9 −7 (resolved) +4 (defects downgraded) = 6.
+      518+121+6 = 645 ✓
+    by_claim_type_adjusted:
+      id:           { correct: 38, defective: 58, unverifiable: 4 }
+      name:         { correct: 40, defective: 56, unverifiable: 4 }
+      make:         { correct: 98, defective: 2,  unverifiable: 0 }
+      kind:         { correct: 96, defective: 4,  unverifiable: 0 }
+      availability: { correct: 244, defective: 1, unverifiable: 0 }
+    defect_classes_adjusted:
+      D1:    9    # was 10 — three moved out (143m, 460×2), two moved in (chevrolet/van#name, mb/la#id)
+      D3:    2    # NEW to this slice — suzuki/wagon#name, volkswagen/van#name
+      D5:    0    # was 1 — the slice's only D5 reclassified to D1
+      D6:   26    # was 33
+      D7:   16    # was 13 — +3 from the resolved Scania P-series unverifiables
+      D8:   27    # was 21 — the biggest mover; six reclassifications land here
+      D9:   25    # was 27
+      D10:   4
+      D11:   1
+      D12:   1
+      NEW-1: 10   # was 8 — +2 from the resolved metago unverifiables
+      total: 121
+    honest_headline: >-
+      The clean rate barely moves (0.8016 → 0.8031). That is a coincidence of
+      offsetting corrections, not agreement: 20 of 119 defect verdicts were
+      wrong in verdict or in class, and 4 of 25 sampled `correct` verdicts were
+      misses. The ledger's NUMBER is sound; a meaningful fraction of its LINES
+      would send a fixer to the wrong record or the wrong layer.
+
+  headline_finding_verdict:
+    claim: "car/tesla/model-y is not id-canonical because car/tesla/y is live on a bare 'Y'"
+    verdict: CONFIRMED
+    strength: "stronger than the ledger states — the bare-Y rows are positively identified as Model Ys on register-carried dimensions (wielbasis 289 = 2,890 mm, matching MODEL Y's 55,598-row cluster and no other Tesla), not by elimination."
+    framing_correction: "the fix lands on car/tesla/y, not on car/tesla/model-y. See PART 8 — the same ambiguity moves four other id verdicts in this slice."
+
+  the_three_new_classes:
+    NEW-1: "CONFIRMED as a real, repeating defect, with a materially larger blast radius than the ledger states ('Burstner' is a MODEL under four chassis makes across three kinds; 'Atego' under five makes in truck alone) — but I file a taxonomy dissent: the detector is D5's, and the case for a new number rests on the REMEDY being blocked by drop.yml. Propose D5b, not an unrelated class. The proposed list-free detector (same model string under ≥2 unrelated chassis makes in one kind) is genuinely new and fires on every exemplar, including the metago case the ledger left unresolved."
+    NEW-2: "CONFIRMED on all four evidence lines, two of them worse than reported — Enyaq/Elroq share FOUR full TAN strings (e8*2007/46*0416*19/21/22/23), not one; and the '- (FMVSS)' placeholder is on 35 records across THREE kinds (22 car, 10 motorcycle, 3 truck), not 33 across four. I also supply the provenance the ledger lacks: the literal comes from fi_traficom's tyyppihyvaksyntanro column, where 74 distinct (class, make, model) triples carry it as Traficom's placeholder for a US-FMVSS admission."
+    NEW-3: "CONFIRMED verbatim at source level — us_fueleconomy.rb and ca_nrcan.rb both declare `def kinds = %i[car]`, both discard the kind argument (`rows(_kind)`) and emit a literal `kind: :car`, and overrides/kind_maps/ contains only de_kba_fz10.yml, nl_rdw.yml and uk_dft.yml. The unused class column is real (us_vehicles.csv col 63 VClass = 'Small Pickup Trucks 2WD' for the Equator)."
+
+  what_i_could_not_do:
+    - "138 of 245 availability claims were not machine-re-checked (nl 75, us 15, nz 15, ca 13, lu 9, my 5, th 3, de 2, ie 1). The nl ones were checked case-by-case where a record was under review; lu/my/th/de/ie/ca/us were not systematically swept."
+    - "the enrichment sub-check (protocol step 6) was out of scope for this slice and is not covered by this verification."
+    - "two marque-source gaps are real and unfixable from here: Scania (product pages 404/JS-render; one CMS caption is all I could get) and Volvo Cars (HTTP 403 on five direct fetches)."
+    - "I did not re-derive the researcher's 96 correct `kind` verdicts or 97 correct `make` verdicts beyond the ones entangled with reviewed claims."
+
+  verifier_recommendations_to_the_ledger:
+    - "Pick ONE reading of id-canonical (PART 8) and apply it uniformly; then make every id line name WHICH member the fix lands on. Four lines in this slice currently point at the canonical record."
+    - "Stop reaching for D1 before re-parsing: five D1 claims in this slice sit on strings that two registers write verbatim. NAMING §2.1 already says this; the ledger did it anyway on 143M, 460 (×2), and nearly on others."
+    - "Add the single-letter truncation bucket to the detector backlog — truck/ford/f, truck/scania-vabis/l, truck/mercedes-benz/la, truck/man/h, truck/chevrolet/k. They are duplicate-hiding machines and they produced 2 of my 4 spot-check misses."
+    - "Before any D6 merge in this slice, run NAMING §2's availability subset check: volkswagen/bestel [nl,nz] vs bestel-0 [fi,nl] loses fi; the same shape recurs across the Mercedes one-space splits."
+    - "NEW-1 should be filed as D5b with the researcher's list-free detector, and truck/mercedes-benz/mkd added as its mirror-image exemplar (same approval e1*2007/46*1366 as the SAXAS Atego, roles swapped)."
