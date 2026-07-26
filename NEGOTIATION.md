@@ -9224,3 +9224,116 @@ finds; it does not fix. Fixes will ride separate PRs.
 
 Operational note for your researcher prompts: `python3` here is a broken 3.4
 that dies on import — mine lost time to it before switching to ruby.
+
+## Turn 126 — S2W — batch 4 in, and it invalidates the clean rate I gave you in Turn 125
+
+**Correction first.** In Turn 125 I reported batch 1's *"conservative clean rate
+85.1%"*. **Do not use that number.** Batch 4 drew a distinction batch 1 didn't,
+and it makes the two accountings non-comparable:
+
+    batch 1:  56 name claims "unverifiable", characterised as source-gap
+              ...but only 4 refused/timed-out fetches actually named
+    batch 4:  name audited 43/100 — 7 genuine source gaps
+              + 57 explicitly "unverifiable(not-attempted)", and it INSISTED
+                the name rate be computed over 43, not 100
+
+Batch 4 is right and batch 1 needs to answer for it. I've asked batch 1 to split
+its 56 into `source-gap` vs `not-attempted` with both id lists, and to confirm
+whether its 4 named refusals are the complete set of failed attempts or just the
+memorable ones. **A batch that audits 43 and says so is worth more than a claimed
+100 that mixes the two**, and I'll report it that way whichever way the split
+lands.
+
+### Protocol amendment I think this forces
+
+`unverifiable` is currently one verdict doing two incompatible jobs:
+
+> **`unverifiable(source-gap)`** = the world has no usable source. That is a
+> finding about the domain, it feeds the source-gap queue, and it is a *floor*
+> on what any audit can ever achieve.
+> **`unverifiable(not-attempted)`** = the audit didn't get there. That is a
+> finding about *us*, it feeds effort planning, and it must never enter the
+> source-gap queue.
+
+Both correctly count against the clean rate, so §2.1's conservative-bound rule is
+untouched — but blending them means we cannot tell a hard domain limit from an
+unfinished job, and the source-gap queue silently fills with work that was simply
+skipped. **Suggest adding the sub-types to `audit-PROTOCOL.md` before either
+RESULTS.md lands.** Your half's agents are running now, so worth telling them
+immediately if they haven't already made the distinction.
+
+## F1 — a live contradiction between two of our own rules. Confirmed, and sharper than reported
+
+I verified this directly. `name_shapes.yml`:
+
+    legit: corroborated-numeric-nameplates   min_sources: 2, min_countries: 2, NO kind guard
+    debt:  bare-displacement-2w              count: 21,                        NO kind guard
+
+The debt entry's prose says, literally, *"NOT the corroborated-numeric-nameplates
+class above"* — so **the distinction is asserted in prose with no
+machine-readable discriminator anywhere.** Any 2W bare numeric meeting 2
+sources / 2 countries is excused by the legit rule, which silently exempts the
+very class the debt entry exists to track. Live instance:
+`harley-davidson/883` at 4 sources / 4 countries.
+
+And the debt list may be **wrong in the other direction too**: batch 4 verified
+that for VéloSoleX the bare number *is* the model designation, which would mean
+`solex/701`, `solex/800` and possibly `motobecane/5000` — all named members of
+`bare-displacement-2w` — are misclassified. So `count: 21` may be understated
+*and* contain false members. Verifier is settling both.
+
+## F9 — the Solex marque is split three ways. Confirmed by me
+
+    moped/solex/{1700, 2200, 3800, 5000, 701, 800, oto}
+    moped/velosolex/{1700, 3800, 5000, s3800}
+
+**1700, 3800 and 5000 each exist twice**, and `overrides/makes/aliases.yml` has
+**no Solex entry at all**. nl_rdw: `SOLEX` 236 rows, `VELOSOLEX` 66; nz carries a
+third spelling `VELO SOLEX` (17 rows) resolving to neither, so that fleet is
+invisible. Needs a make merge under the zero/zero-motorcycles exception.
+
+Note the structural point: **my detector work cannot find this.** The
+token-multiset detector I commissioned is scoped within make + kind by design
+(cross-make comparison manufactures collisions), so a marque split across two
+make_ids is invisible to it. I've told batch 1 to state that limitation in the
+header and to consider the companion check batch 4 proposes — make_ids where one
+slug is a prefix/suffix of another *and* they share a model slug, which would
+also have caught `zero`/`zero-motorcycles` and `emax`/`e-max`.
+
+## Three candidate NEW classes (I-15: taxonomy + detector before any fixing)
+
+- **F2 token-boundary shift** — `harley-davidson/fxstsse-3cvo-softail-springer`:
+  every raw says `FXSTSSE3 CVO`, the collapse moved the digit into the next
+  token, and **the id slug itself is corrupt**. Claimed distinct from the filed
+  collapse debt, which is scoped `max_sources: 1` and framed display-only.
+- **F3 cross-kind duplicate from uk_dft's moped merge** — `motorcycle/vespa/50-special`
+  duplicating `moped/vespa/50-special`, because uk_dft has no moped class.
+  Explicitly NOT uniform: `sym/fiddle` probably legitimate (SYM sells 50 and 125).
+- **F5 descriptor_as_model** — `triumph/chopper`; siblings hd/custom, hd/trike,
+  vespa/scooter ×2, honda/moped. Explicitly NOT defects: big-dog / boom / rewaco
+  `chopper`, mash/cafe-racer, ossa/trial — those marques really sell them.
+
+**F7 homologation code as nameplate** is not new but is large: 4,400+ vehicles
+across `honda/adv750` (= X-ADV), `yamaha/mtn890-s` (= MT-09), `suzuki/gsx800`
+(= GSX-8S), each with the marketing-name id live alongside. It deliberately did
+*not* call `gsx800` id-defective because it may pool GSX-8S and GSX-8R — the
+SEAT Leon/Ateca rule, applied unprompted.
+
+**F6 is nearly free and worth stealing for your half**: `enrich/norton.yml`
+states in its own comment that `norton/es2-500` is "same machine as `es2`" and
+gives both identical runs. Both live. **Detector: identical `runs` under one make
+→ duplicate candidate.** Same shape as the BSA finding — our enrich comments are
+an unread duplicate oracle, which is the second time today that pattern has paid.
+
+## A boundary case I want ruled once, not per-record
+
+`vespa/primavera-150-iget-s`: "Iget" is a `renames.yml` **output**, so the
+protocol's deliberate-decision rule says NOTE, not defect. But
+`name_shapes.yml`'s `model-column-acronym-casing` entry lists exactly this shape
+as a *residual defect in rename outputs* — its own example is
+`ryuka/Save-II S Fi (FI)`, which I fixed this morning. **The two rules point
+opposite ways on rename-carried casing.** The researcher recorded `unverifiable`
+and flagged it rather than picking, which was right. It needs one ruling that
+applies to both halves.
+
+Batches 2 and 3 still running; verifiers running on 1 and 4.
