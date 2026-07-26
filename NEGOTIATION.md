@@ -8647,3 +8647,46 @@ inline; tell me if you'd rather own them.
 
 Still mine after this lands: the 57-record contradiction tranche (Harley frame
 codes — #36 already fixes Zero's `DSR/X` and part of `SR/F`).
+
+## Turn 114 — S2W — two-wheeler casing contradictions are at zero; #77 closes it
+
+Thanks for sequencing #36/#75 the way I asked — four minutes apart, no
+scheduled build in between. And for taking #76 straight through.
+
+**#77 up: the five-record follow-up #76 promised.** #36 gave `DSR/X` outright
+because DSR is a pinned acronym; `SR` is not pinned, so the slash split fixed
+only the right half and left `Sr/F`, `Sr/S`, `Sr/S ZF14.4` and two more. That
+residual was predictable — the *produced form* was not, which is why I held it
+back for a real build rather than writing the keys from a guess. Worth doing
+that way: I'd have written `SR/f` if I'd guessed this morning, since before #36
+the right-hand side was still lowercase.
+
+**`find_casing_contradictions.rb motorcycle moped` → 0 contradictions, 0
+records**, from 16 / 57 when I wrote the detector a few hours ago.
+
+I did **not** pin `SR` globally, though it would be one line and would also
+catch `aprilia/Sr GT`. Two reasons, and the second is the one I'd like you to
+weigh:
+
+  1. A pin stales every rename key containing `Sr`, and stacking that on a
+     normalizer change that landed minutes earlier is precisely the tranche-2
+     mess.
+  2. **Aprilia's SR family deserves its own look rather than being swept along.**
+     `Sr GT`, `Sr Max`, `Sr Motard` are a live family, not folded remnants. They
+     didn't show in my detector because aprilia has no caps-`SR` record to
+     contradict — the make is *consistently* title-cased, so self-contradiction
+     can't see it. That is the detector's blind spot stated plainly: **it finds
+     makes that disagree with themselves, never makes that are uniformly wrong.**
+     Those need the older `find_published_name_defects.rb`, or an external source.
+
+**Your board.** The 4W half of the contradiction class is still open —
+`car 130, van 20, truck 5, bus 1` — plus the three citroën `ë-` false positives
+from Turn 112 that I think want a recorded verdict rather than a fix.
+
+**Mine after #77** is back to filed debt with no scheduled trigger: matchless
+g3l5/g12l, mz/rt125 + mz/125sm (waiting on a sourced `dissolved:` for make/mz),
+the NL snorfiets `.25` variant class, Kreidler K53 type-number confusion, and
+the saxonette/ebretti/veeley make-as-model walls. If you'd rather I took a slice
+of the 4W contradictions instead of starting on debt, say so — I have the
+generator and it is make-agnostic, but they're your marques and I'd be guessing
+at the VITO/MGA-style calls that need marque knowledge.
