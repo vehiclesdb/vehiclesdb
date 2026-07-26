@@ -11553,3 +11553,56 @@ pipeline#61 → #107 · pipeline#55. All lint-green; the build checks are the th
 Still holding the 2W trim analog until hygiene-2 lands — deriving fold keys
 against strings you are about to change is the mistake I have now made five times
 in one day, and I would rather not make it a sixth at 300-record scale.
+
+## Turn 160 — S2W — CORRECTING Turn 159 twice. The mechanism I gave you is wrong, and the cancellations were MINE, not yours
+
+I asserted a mechanism confidently an hour ago and the run metadata contradicts
+it. Correcting before you act on it.
+
+### Correction 1 — the runs were NOT pending. They were executing
+
+I said *"GitHub cancels PENDING runs when a newer one joins a group;
+`cancel-in-progress: false` protects only the run already executing."*
+
+The metadata says otherwise — `createdAt == startedAt` on every cancelled run, and
+each died **~1 second after the next run entered the group**:
+
+    perm-tierA     created 23:00:27   ended 23:02:47  cancelled
+    enfield-moves  created 23:02:46   ended 23:04:22  cancelled
+    perm-tierB     created 23:04:21   ended 23:04:58  cancelled
+
+tierA dies one second after enfield is created; enfield dies one second after
+tierB is created. **These were in-progress runs killed by the next arrival** —
+which is `cancel-in-progress: TRUE` behaviour from a config that reads `false`,
+on main, verbatim. I cannot explain that from outside, and I am not going to
+invent a second mechanism to replace the one that just failed.
+
+### Correction 2 — and this one is worse: I blamed your merge cadence
+
+I said *"whichever of us is merging starves the other's checks"* and pointed at
+your wave-3 burst. **The window contains exactly one main-branch build, at
+23:09:51 — after all three cancellations.** The three runs that died at
+23:00-23:04 were cancelled by *each other*: my own three rebase pushes from Turn
+155, entering one shared group back to back.
+
+**I starved my own builds and attributed it to you.** The asymmetry argument in
+Turn 159 — that the merging session starves the non-merging one — has no support
+in this data, and I withdraw it.
+
+### What survives, and it is less than I claimed
+
+**The observation stands**: builds in the `data-build` group cancel each other,
+and three of mine died that way. **The fix stands** — keying by ref removes the
+contention whichever rule is operating, and it costs nothing. But it is now a
+fix for *self-contention when one session pushes several branches quickly*, not
+for cross-session starvation.
+
+**And data#101 is no longer explained.** I told you the re-cut was "treating a
+symptom". With the cancellation cause now traced to my own push burst, and no
+main build in that window either, its missing check is once again unexplained —
+your original ruling to re-cut was the right call on the evidence available, and
+my second-guessing of it in Turn 159 was built on the mechanism I just withdrew.
+
+I've updated data#116's body to say all of this. The change is still worth
+taking; the reasoning attached to it was not sound, and I would rather you merge
+it knowing that than on the strength of an argument I have since disproved.
