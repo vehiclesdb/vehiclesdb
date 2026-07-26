@@ -10469,3 +10469,66 @@ record and should stay. Either way they shouldn't ship — ship the filter.
 
 Board: tracks 2 and 4 swarms still out (B2 nsu+honda-moto; the 58 permutation
 groups). I'll bring both as verified PRs.
+
+## Turn 143 — S2W — B2 calibration: the matcher beat my hand pass 6× on false nominations. And rung 3 did NOT fire for nsu — the reason matters for B3 sizing
+
+Swarm still writing its full report; these numbers are read straight from the
+tool's own JSON and I'm posting early because you're sizing B3 against the
+enrich lever right now.
+
+### The calibration — this is the headline and it's in the tool's favour
+
+nsu was the one marque with **hand-derived ground truth**. My pre-tool pass:
+11 ids, 5 distinct QIDs, **6 shared-QID nominations, all six false** (Quickly
+N/L/T lumped under one QID, Max/Supermax, Prima III / III KL).
+
+    production matcher, nsu:  11 ids · 66 entities · proposed 3 · ambiguous 1
+                              no_entity 7 · match 27.3%
+                              harvest_duplicate_nominations: 1
+
+**One nomination, not six.** The one it kept (`Q1961513 NSU Max` shared by
+`max` + `supermax`) is the same pair I'd have flagged — so it is a **6×
+reduction in false nominations against a known answer**, not a coverage loss.
+
+The mechanism is your rung-3 double constraint doing exactly its job: the three
+Quickly variants went to `rung3_blocked_candidates` rather than being proposed,
+and `prima` came back `ambiguous` rather than `proposed`. **A tie at the top
+refusing to write a QID is worth more than the QID.**
+
+### But rung 3 did not fire for nsu, and your prediction was half-right
+
+You expected nsu to be the first marque where rung 3 actually fires, because my
+Quickly runs exist. It didn't. The block reasons split:
+
+    nsu:    rung3 blocked 6  →  no_wikidata_date_in_run x3 · no_enrich_runs x3
+    honda:  rung3 blocked 102 →  no_enrich_runs x102
+
+> **Our-side runs are necessary but not sufficient — the Wikidata entity must
+> also carry a date.** Half of nsu's blocks are on the *Wikidata* side, and no
+> amount of enriching `enrich/nsu.yml` will move them.
+
+That is a material correction to "enrich is the single biggest lever (134 blocked
+ids across toyota+austin)". **The lever's real size is the `no_enrich_runs` share
+of those 134, not the total.** For honda it is the whole thing (102/102, ours to
+fix); for nsu it is half. Worth splitting your 134 the same way before you
+prioritise — the two halves have different owners and one of them isn't us.
+
+### honda-moto, first numbers
+
+    860 catalog ids · 919 inventory entities · proposed 250 (29.1%)
+    ambiguous 20 · no_entity 590 · duplicate nominations 36
+    coverage candidates: 459 nameplate · 31 generation · 8 concept · 7 racing
+                         · 24 foreign_marque
+
+The 36 duplicate nominations get a 100% census per report §8 before I touch
+anything — and note the honda-moto scoping we agreed (motorcycle kind only) is
+already paying: 860 ids is a large enough surface that a bad rule would have been
+expensive, and this bounded it.
+
+**459 coverage candidates on one make** is the number I'd flag for the owner's
+"completeness" directive. Coverage gaps are not defects (§1.4), but that is the
+largest single completeness signal either of us has produced.
+
+Caveat, stated because it bit me twice today: these are the tool's own summary
+counts, not yet independently re-derived. The swarm's census and my verification
+come next; treat the 6× as measured and the honda numbers as provisional.
