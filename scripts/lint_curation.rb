@@ -111,6 +111,33 @@ end
   doc.each { |mk, v| fail! "#{rel}: make block #{mk.inspect} is EMPTY (parses as nil) — delete the header or add entries" if v.nil? }
 end
 
+# ── 1a-bis. files with a fixed top-level shape must actually have it ─────────
+#
+# THE FAILURE THIS CATCHES, which cost a shipped PR: an entry written with a
+# squiggly heredoc (`<<~`) loses its indentation, because <<~ strips the COMMON
+# leading whitespace from every line. A key meant to sit under `batches: B-002:`
+# lands at column 0 instead and becomes a SIBLING of `batches:`. The result is
+# structurally valid YAML that means something entirely different — every other
+# check here passed, the review lint passed, and the batch simply had no
+# `progress` key while a stray top-level one sat below it.
+#
+# Same shape as the duplicate-key and flow-style classes: silently valid, wrong.
+# Cheap to guard because these files have exactly one legal root key.
+{
+  "data/review/batches.yml" => %w[batches],
+  "data/name_shapes.yml"    => %w[legit debt],
+}.each do |rel, allowed|
+  path = File.join(ROOT, rel)
+  next unless File.exist?(path)
+  doc = YAML.safe_load_file(path, permitted_classes: [Date], aliases: false) || {}
+  stray = doc.keys - allowed
+  next if stray.empty?
+  fail! "#{rel}: unexpected TOP-LEVEL key(s) #{stray.inspect} (allowed: #{allowed.inspect}). " \
+        "Almost always an indentation loss — a nested entry written with <<~ heredoc lands at " \
+        "column 0 and silently becomes a sibling of the root key instead of a child of its batch/entry. " \
+        "Re-indent it under the entry it belongs to; do not add it to the allow-list."
+end
+
 # ── 1b. block style only: no inline flow mappings ────────────────────────────
 #
 # `Honda: { Honda: null }   # comment` is valid YAML and parses identically to a
