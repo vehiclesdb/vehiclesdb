@@ -9872,3 +9872,118 @@ raw evidence decides.**
 Open: data#84 (matchless g12l) is still awaiting your verify+merge. The rulings I
 asked for in Turns 125-131 are still open — the `unverifiable` sub-typing is the
 one that blocks a comparable aggregate across our halves.
+
+## Turn 133 — all four verifiers in. Two more corrections to me, and the round is not reproducible at its own tag
+
+### Corrections to things I told you
+
+**1. Turn 129's popularity finding was based on an inverted scale. Strike the
+mechanism; keep the conclusion.** `reconciler.rb` sorts **descending**, so
+decile 1 is the TOP band and decile 10 the bottom. I checked empirically:
+decile 1 holds `bajaj/boxer-bm150x`; decile 10 holds `bimota/db5`. So batch 3's
+"decile 9-10 on 1-8 rows" is *correct* behaviour, not over-ranking. My "thin
+records may be systematically over-ranked" was wrong as stated.
+
+The real effect is the opposite and was measured over all 7,083 2W records:
+
+    1-country records at decile 1: 30.2%     7-country: 0% at d1, 0% at d10,
+    multi-country bands:  0.5-3.8%                      44.6% inside d4-7
+
+Mean-of-ranks **variance-collapses broad records to the middle** and **inflates
+thin single-country ones** (a single-source record must clear KIND_THRESHOLD to
+publish at all, so "global decile 1" for a Thailand-only record means "top 10% in
+Thailand"). So the d1-3 band is enriched in locally-big/globally-small records
+and **structurally excludes the broad multi-country records that carry the most
+claims** — which is worse for certification scope than what I originally said,
+for a different reason. Recommendation stands and is now grounded: **do not band
+the certification scope on `global_decile`.** If a rank blend must stay for v1,
+weight each country's decile by that country's model population rather than
+taking an unweighted mean.
+
+**2. Turn 127's "262 pairs" should not be published — I passed on a number that
+does not reproduce.** verify-b2 implemented batch 2's own detector spec verbatim
+and swept every reading of its ambiguities: **207 / 246 / 292 / 323** pairs, over
+27-32 make-kinds. None yields 262, and none reproduces its per-make tally. Its
+*companion* figure of 1,755 reproduces exactly, which is what makes 262 stand out
+rather than excuse it. The class is real; the size is unknown.
+
+**3. Turn 127's bultaco/sherpa finding is overturned.** The 43 `SHERPA T` rows
+are nl-only and below the single-source threshold, so they publish no id at all;
+`sherpa` rests on two bare rows (nl 1 + nz 1). Bultaco never sold a plain
+"Sherpa", so the union span is the right choice for a bare id — and the proposed
+rename to `sherpa-t` would relabel S and N registrations. **Published state is
+correct.**
+
+### The round is not reproducible at its own tag — this blocks RESULTS.md
+
+    audit tag                     v2026.07.5
+    build every batch measured    2026.07.6, built 15:16:02Z
+    sample's stated population    7,073
+    current main build            7,083
+    rebuild at v2026.07.5         7,087   ← and 4 gate FAILs
+
+**Three population figures, none matching.** Rebuilding the tag with current
+pipeline fails the gate, because v2026.07.5 data against a post-#36 pipeline is
+exactly the coupled-change breakage we shipped #36/#75 to fix — so the audited
+state cannot be reconstructed with today's code at all.
+
+Materially this is confined: id churn since the tag is ~1 record, so
+id/make/kind/availability are essentially unaffected. But **~100 display names
+were fixed between the tag and the build** (#73/#74/#76/#77/#79 + pipeline#36),
+so every `name-marque-true` verdict was taken against post-fix names. That biases
+the name rate **optimistically**, on a claim already only 43% covered.
+
+I'd rather record this in RESULTS.md as a stated limitation than pretend the
+number is clean. Going forward the sampler should pin the **build** it measures,
+not only the release tag — the two are not the same thing and this round proves
+it.
+
+### Corrected rates: every batch moved down, and 22 defects were missed
+
+    b1  85.1% → 84.0%   36/41 upheld, 5 overturned, +5 new defects
+    b2  78.4% → 78.1%   78/84 upheld, 6 overturned, +4 new
+    b3  81.7% → 80.8%   41/42 upheld, 1 overturned, +7 new
+    b4  87.8% → 87.3%   37/39 upheld, 2 overturned, +6 new
+
+**22 additional defects were found among claims the researchers called
+`correct`, and all 22 are id-canonical.** verify-b1 diagnosed the cause and wrote
+the fix; verify-b3 then found the fix was not adopted and said so: *"if the
+under-call is systematic the published id-defect rate is low by roughly a
+third."* Three of four batches under-called in the same direction — b2 is the
+exception, and its corrections run both ways.
+
+**Availability survives every independent re-derivation**: 251/251, 236/236,
+229/229, 237/237, four verifiers, four separate flattener implementations, group
+counts agreeing to the row (fi 5,147,216 in two independent counts). That layer
+is genuinely sound.
+
+### Two cross-batch contradictions — the ledger cannot merge as-is
+
+- `honda/nt650v-deauville`: batch 3 called it correct on a **factually false**
+  ground ("nt650v alone is not live" — it is live in six countries), while
+  verify-b1 adjudicated the same pair as its strongest id call (shared TAN).
+- `harley-davidson/flhtcui-ultra-classic`: batch 4 called correct; verify-b1
+  upgraded the same cluster from WEAK to STRONG.
+
+### My NSU fix, corrected before I made it
+
+verify-b2 upheld the substance and **overturned the citation**: nsu24.de does
+*not* say 1959-63 — it publishes "Baujahre: 1953 bis 1968", the very span the
+enrichment carries. The fact is nonetheless true, from christian-koerkel.de
+("von 1959 – 1963, 38.605 Stück") and the NSU-Quickly-Club's own variant PDF. So
+the premise "no source separates the variant runs" is false, and the fix is:
+
+    quickly-t  1959-1963      quickly-n  1953-1963
+    quickly-l  1957-1961      quickly    1953-1968  (KEEPS it — S23/F ran to 1968)
+
+Had I acted on the finding as filed I'd have cited a page that contradicts me.
+
+### Protocol amendments this round earns
+
+1. **Quote the relied-on sentence at write time.** Two batches in a row cited a
+   page that does not contain the claim (b1: hondanews/NSC50; b2: nsu24.de).
+2. **Cited URLs must be re-fetchable.** Six failed as written in b2 alone, and
+   two were the sole support for defective verdicts — both verdicts fell.
+3. `data/review/brixton.yml` records `verdict: canonical` while its own note says
+   the marque writes "BX 125" and we publish "BX125". **A ledger cannot sign off
+   as canonical a string it documents as non-canonical.**
