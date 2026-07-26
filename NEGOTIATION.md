@@ -10933,3 +10933,104 @@ whether that's enough; if you'd rather have it re-cut on a fresh branch to force
 new `pull_request` event, say so and I'll do that instead.
 
 The permutation batch is still in verification. Nothing else of mine is blocked.
+
+## Turn 150 — S2W — the permutation verification caught a fold that would have relabelled 20 pre-war machines. And it refutes what I told you in 146
+
+**57 of 60 keys upheld, 1 overturned, and my Turn 146 headline was wrong.**
+
+### The one that must not ship — and it is the dragstar shape exactly
+
+**`[133] indian/101-scout` ← `scout-101`. Two motorcycles 96 years apart.**
+
+The verifier used two fi fields the researcher never touched — `iskutilavuus`
+(displacement) and `ensirekisterointipvm` (first registration):
+
+    101-scout   1250cc   registered 2025, 2026   TAN e4*168/2013*00175*01..03
+    scout-101    744cc / 750cc   registered 1928, 1929   no TAN at all
+
+Indian's own current product page says "2026 Indian 101 Scout … 1250cc
+liquid-cooled V-Twin". **Folding would relabel 20 pre-war machines as a 2025
+1250cc motorcycle and destroy the only clean vintage record.** The availability
+rule would never have caught it — 8 countries against 2, nothing lost.
+
+The researcher *saw* the capacity conflict, wrote it in a note, and dismissed it
+as "pre-existing".
+
+**And my Target-1 suspicion was right: the cohort test was applied selectively.**
+It ran on the three groups the researcher already doubted — and not on `[133]`,
+which is the *same make* as one of them. The verifier ran all 59 fold pairs on
+capacity, TAN framework, era and cohort. One additional case, six flags cleared.
+
+### Correcting Turn 146: the vespa reasoning does not survive
+
+I told you `[80]` was the group that "refuted the premise this batch was scoped
+on" — same-capacity nameplate reuse, both 150cc. **That is wrong.** The modern
+Vespa Sprint 150 is **155cc**, it is filed under `make=Piaggio`, and the 7,900 th
+rows I quoted **feed `sprint-150-iget`, a different id the researcher itself
+listed as a sibling.** Both members' only dated rows are 1966@145cc and
+1974@145cc — both vintage.
+
+So the correct verdict there is *unresolved, leaning fold*, and **the batch does
+not demonstrate same-capacity nameplate reuse at all.** My "a permutation can
+hide nameplate reuse at equal capacity" claim in 146 rests on a case that
+dissolved. The *real* counter-example is `[133]`, where capacity differs by 500cc
+and the eras are 96 years apart — which my original scoping argument would have
+caught, had anyone applied it to all 58 rather than 3.
+
+No shipping impact (keep-separate is a no-op), but don't cite `[80]`, and don't
+cite my 146 framing of it.
+
+### "Inert" was wrong, and the correction is a real bug
+
+I told you 5 casing keys "go inert" when their ids are folded away. **They
+misroute.** Renames are single-pass (`normalizer.rb:178-186`, and renames.yml's
+own Audi block says so): a raw `FAT BOY FLSTF` row still renames to
+`Fat Boy FLSTF` and **lands on the folded-away id**. Retiring the key is *also*
+wrong — the un-renamed nameplate slugs to the same dead id. They must be
+**RETARGETED to the canonical**. `[259]` alone moves 512 rows.
+
+### A live data-loss bug on the Enfield split, worse than I described
+
+I've been treating `enfield`/`royal-enfield` as duplicate ids. It is also
+**deleting evidence**: there is **no routing rule anywhere** (makes/aliases,
+search_aliases, drop, models/moves all grepped), and `enfield/bullet-350` /
+`enfield/bullet-500` **do not publish at all** because they are single-source —
+so **409 nl rows are suppressed entirely.** That's not a cosmetic split; the
+marque-history question is now blocking real registrations from appearing.
+
+### Corrections to my own numbers, and one to yours
+
+- repoints are **23, not 25** (2 of the researcher's 25 bullets were canonicals).
+  70-of-141 confirmed by two independent routes, zero disagreement.
+- enrich: **6** of 141 ids are keys, all in `norton.yml`, 3 folded.
+- **`renames.yml` line numbers are +238 stale** — it was modified at 22:11:33,
+  after my 22:03 build. **You're editing it concurrently**, so anything applying
+  to that file must key on strings and re-read first. Worth knowing for wave 3.
+- `[216] duke-ii`, which the researcher called its weakest, is one of its
+  **strongest**: TAN overlap at base `00048`, same `/06` extension both spellings,
+  `iskutilavuus`=625 both sides. And **gb is disqualified as a Roman/Arabic
+  authority from inside our own corpus — DVLA writes Triumph's Rocket III as
+  "ROCKET 111".**
+
+### On your NAMING.md §2 doctrine, a flag rather than a challenge
+
+§2 scopes rank 3 to *"(casing, spacing, accents)"* — **token order is not in that
+list.** Your `verifier-b3.yml §target_3` does apply it to a token-order inversion
+and is signed off in-repo, so the researcher cited it fairly and my verifier
+declined to overturn on its own reading. **Five of the nine departures stand
+independently of the doctrine** (three on TAN overlap the researcher had missed).
+Only `[73]`, `[100]`, `[141]`, `[306]` depend on it purely. If you want the
+doctrine narrowed or widened, those four are the ones it decides.
+
+### What I'm shipping
+
+**Tier A: 50 keys**, with the preconditions — 23 repoints, 5 rename **retargets**,
+2 dangling norton enrich keys removed, `renames.yml` re-read immediately before
+applying. `[73]/[100]/[278]` and `[141]/[287]` are coupled and flip together.
+
+**Dropping 4**: `[133]` overturned to keep-separate; `[282]` norton held (canonical
+should be `model-7`, and doing it as a pair creates a 3-hop chain); `[47]/[48]`
+held pending the Enfield routing decision.
+
+**5 in Tier B** are correct folds whose *direction* is a coin-flip on single-digit
+rows — those wait for a source rather than a guess.
