@@ -436,6 +436,11 @@ Gilera:
 GMC:
   Pickup: Pick-Up                             # spelling variant of "Pick-Up" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+Govecs:
+  GO!S1.2: GO! S1.2                         # THE REGISTER IS RIGHT AND THE PIPELINE IS WRONG here: every nl_rdw raw is correctly formed ("GO! S1.2", "GO! S2.4", "GO! S3.4", "GO! T1.2", "GO! T2.4"). smart_case then title-cases the "GO!" token because it is pure-alpha and unlisted, and the published set ends up internally inconsistent. Manufacturer form: https://www.govecs.com/
+  Go! S2.4: GO! S2.4                        # same make, same series, published with a DIFFERENT mangling ("Go!" vs "GO!") — the inconsistency inside one make is what makes this findable
+  Go! T2.4: GO! T2.4                        # T-series sibling of the above
+
 Harley-Davidson:
   # H-D CONVENTION DOSSIER (§11.2). Two rules, both from Harley's own pages,
   # and rows routinely need both at once ("FLSTF Fat Boy"):
@@ -991,6 +996,9 @@ Lincoln:
   Towncar: Town Car                           # spelling variant of "Town Car" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Lincoln: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
+Livewire:
+  S2DEL Mar: S2 Del Mar                     # LiveWire's own model page writes "S2 Del Mar" (https://www.livewire.com/s2-del-mar-electric-motorcycle) and the nl_rdw raw is correctly spaced "S2 DEL MAR" — the glued form arrives from another source and won the canonical pick. Sibling records S2 Alpinista / S2 Mulholland already carry the spaced form, so this one was the odd record out inside its own series.
+
 Luqi:
   Luqi: null                              # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
@@ -1403,6 +1411,11 @@ Moto Guzzi:
 Mtl:
   "Mtl-Eb-023":                EB-023               # embedded make prefix — strip_make_prefix needs [\s,]+ after the prefix, so a hyphenated or fused badge survives (the IVA pilot's diagnosis)
 
+Mutt:
+  Drk-01: DRK-01                            # Mutt's own model page: https://muttmotorcycles.com/pages/drk-01 — raw is "DRK-01" in every row
+  Fsr: FSR                                  # Mutt FSR, sold in 125cc and 250cc: https://muttmotorcycles.com/ — raw "FSR"
+  GT-Sr: GT-SR                              # Mutt GT-SR: https://muttmotorcycles.com/products/gt-sr-matt-black-silver-125cc-motorcycle — raw "GT-SR". Note the first segment survived (GT is in `acronyms`) and the second did not, which is why the defect reads as a typo rather than a casing rule
+
 Nash:
   Nash: null                                  # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
@@ -1687,6 +1700,9 @@ Sherco:
 Silence:
   S02LS: S02             # "S02 LS" = the L1e speed variant; kind=moped already encodes the class — RDW writes both strings for the same scooter (681 S02LS vs 104 S02 bromfiets rows; Silence's manual says "S02 LS")
   S01LS: S01             # L1e (45 km/h, 4 kW) version of the S01 — same nameplate, kind captures the class; intentionally CREATES the moped-kind S01 beside the L3e motorcycle record
+
+Simson:
+  Awo: AWO                                  # AWO = Awtowelo, the Soviet-era trade name under which Simson (Suhl) built the 425; never a word. Variants AWO 425 S (Sport) and 425 T (Touren). https://en.wikipedia.org/wiki/Simson_(company) — NOTE the register also holds "AW0 425" with a DIGIT ZERO for the letter O, which is registry noise and correctly stayed below threshold
 
 Smart:
   "1": "#1"                              # smart official model names carry the hash: de.smart.com/de/models renders "smart #1". KBA strips both the marque token and the symbol. NB the block key is the catalog display name "Smart"; the marque is officially lowercase "smart" (de.smart.com) but changing the display name is a makes/aliases.yml identity pin and a separate change.
