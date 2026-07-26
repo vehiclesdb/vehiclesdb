@@ -577,6 +577,13 @@ Coopop:
 Cupra:
   Tavascan V1 EV: Tavascan          # V1 = UK entry trim (V1/V2/VZ1/VZ2 lineup) + EV fuel marker in the uk_dft string; adds gb to the nameplate
   Terramar Amrica Cp Ed: Terramar   # truncated uk_dft string for the "Terramar America's Cup Edition" launch edition; editions fold
+  # ── make-in-model residue (2026-07-26, wave-3 dossier §6.4): the make column
+  # already says CUPRA and the model column redundantly names the OTHER marque.
+  # A move to SEAT would contradict the make column and hand Cupra volume to
+  # SEAT (the exact hazard moves.yml's own comment names for bare KBA LEON
+  # rows) — so these are RENAMES inside the Cupra block, not moves. ──
+  Seat Leon: Leon    # car/cupra/seat-leon (es_dgt `CUPRA | SEAT LEON SP` n=1, lu_snca n=2) — replay-verified: classify("CUPRA","SEAT LEON") produces "Seat Leon"; former_ids carries the fold — https://www.cupra.com/en/cars
+  Seat Ateca: Ateca  # candidate car/cupra/seat-ateca (lu_snca `CUPRA | SEAT ATECA`, n=2) — same class, written now so it never publishes — https://www.cupra.com/en/cars
 
 Dacia:
   # ── trim-fold batch (2026-07-26, wave 3 apply; dossier-trims-renault-dacia
@@ -3232,7 +3239,7 @@ SEAT:
   Leon Sc: Leon            # SC = 3-door "Sports Coupé" body of the Leon III — TANs e9*2007/46*0094*05/25 sit inside seat/leon's own approval family
   Leon Sportourer: Leon    # ST/Sportstourer estate body — TANs e9*2007/46*0094*37/38, same family; seat.es sells "León Sportstourer"
   Leon X-Perience: Leon    # AWD crossover trim of the Leon ST — TAN e9*2007/46*0094*12, same family
-  Leon 1: Leon             # registry generation marker (Leon Mk1) — TAN e9*98/14*0026*20 = the 0026 family seat/leon already carries
+  Leon 1: Leon             # NOT a generation marker (comment corrected 2026-07-26, dossier §6.3): `LEON 1,6 TDI` (nl_rdw/es_dgt COMMA decimal) escapes junk?'s /\b\d\.\d\b/ litre rule and truncates to "Leon 1" — replay-verified against pipeline origin/main. TAN e9*98/14*0026*20 confirms the same approval family, so the fold stands; only the WHY was inverted. Siblings from the same generator: Leon 2, Ibiza 1, Leon Cupra 2 (candidate queue) — https://en.wikipedia.org/wiki/SEAT_Leon
   Altea Freetrack: Altea   # crossover trim of the Altea XL — TAN e9*2001/116*0050*33 is a revision of seat/altea's approval
   Altea 4 Freetrack: Altea # 4WD Freetrack spelling — its TAN e9*2001/116*0050*18 is literally also present on seat/altea
   127 Sport: "127"         # sport sub-badge folds; rename intentionally CREATES the missing 127 nameplate (Cee D precedent; SEAT 127 1972-82, 1.24M units). NB: no factory SEAT "127 Sport" trim documented — string is likely Fiat 127 Sport badge-bleed (https://en.wikipedia.org/wiki/SEAT_127)
@@ -3261,6 +3268,23 @@ SEAT:
   "472": null              # KBA type-code
   "473": null              # KBA type-code
   "474": null              # KBA type-code
+  # ── PRE-EMPTIVE trim keys (2026-07-26, wave-3 dossier §6.2): SEAT publishes
+  # ZERO trim ids today, but the candidate queue holds 60+ sub-threshold SEAT
+  # trim rows (all single-source nl_rdw) — the same disease as VW, held under
+  # the two-source floor. These keys are inert-until-publish insurance: they
+  # touch no published id and cost nothing while sub-threshold; the moment a
+  # second register corroborates, they fold instead of publishing a trim id.
+  # (QASHQAI+2 precedent: a documented not-yet-firing key is not a defect.) ──
+  Leon Xperience: Leon     # UNHYPHENATED sibling of the shipped "Leon X-Perience" key — ua_mvs writes `LEON XPERIENCE`, which produces a DIFFERENT key, so the shipped line never fires on it (candidate car/seat/leon-xperience, ua n=3) — https://www.seat.com
+  Leon Fr: Leon            # FR is SEAT's sport trim ladder (FR/Cupra), not a nameplate — https://www.seat.com
+  Leon Cupra R: Leon       # pre-2018 Cupra R = SEAT performance trim; same policy as the shipped "Leon Cupra: Leon" — https://en.wikipedia.org/wiki/Cupra_(marque)
+  Marbella Special: Marbella  # Special is a Marbella trim (nl_rdw `MARBELLA SPECIAL`) — https://en.wikipedia.org/wiki/SEAT_Marbella
+  Marbella L: Marbella     # L is a Marbella trim letter — https://en.wikipedia.org/wiki/SEAT_Marbella
+  Marbella Fun: Marbella   # Fun was a Marbella special edition — https://en.wikipedia.org/wiki/SEAT_Marbella
+  Ibiza L: Ibiza           # L is an Ibiza trim letter — https://en.wikipedia.org/wiki/SEAT_Ibiza
+  Ibiza Special: Ibiza     # Special is an Ibiza trim — https://en.wikipedia.org/wiki/SEAT_Ibiza
+  Cordoba-Vario: Cordoba   # Vario is the Cordoba's estate BODY (nl_rdw `CORDOBA-VARIO`, n=192 — the largest sub-threshold SEAT population) — https://en.wikipedia.org/wiki/SEAT_Cordoba
+  Taracco: Tarraco         # MISSPELLING of Tarraco (nl_rdw n=1) — https://en.wikipedia.org/wiki/SEAT_Tarraco
 
 Segway:
   "N.a": null    # 6,725 placeholder registrations (3,601 "N/A" + 2,563 "N.A." + 561 "N.A") sitting beside REAL models E110S (2,673), E110SE (2,272), E150S (994) — dropping the placeholder keeps every genuine Segway-Ninebot record
@@ -3683,7 +3707,7 @@ Volkswagen:
   Vw: null                                    # NOT A NAMEPLATE: make abbreviation left after VARIANT_SUFFIXES ate the body word — all 38 raws are "VW KOMBI/CABRIOLET/VARIANT/T5/SP-2"; zero model information remains, same class as the Volkswagen/Volkswagen-Vw/Kombi nulls. Kind-blind: retires car+van. Manifest: removals.yml
   "V.w": null                                 # punctuated shape of the same residue — sole raw "V.W. CABRIOLET" (nl_rdw n=2)
   "V W": null                                 # third produced shape (nz spacing) — flap insurance
-  "Vw 1/11": VW1/11                           # slash shape of the raw the existing "Vw 1-11" key already folds ("VW 1/11 - LIMOUSINE DE LUXO", nl_rdw); VW Type 1 model 1/11 = Beetle saloon. Keep the "Vw 1-11" line — replay proves it LIVE, not inert
+  "Vw 1/11": Beetle                           # REPOINTED 2026-07-26 (wave-3): was VW1/11, now a fold source (VW Type 1 model 1/11 = Beetle saloon; slash shape of the raw "VW 1/11 - LIMOUSINE DE LUXO", nl_rdw). Keep the "Vw 1-11" sibling — replay proves BOTH keys live — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   Caddymaxi: Caddy                  # drift-adoption fold: DfT files these rows under CADDY now; kind-blind — the car-kind residual is minority-kind and cross-kind dominance prunes it
   Buggy: null            # kit-car/beach-buggy registrations on Beetle base
   Volkswagen-Vw: null    # fi/nl rows whose model column literally reads "VOLKSWAGEN-VW" — the make twice, zero model information. Unlike make-as-model keeps (van/uaz/uaz), there is no single-model marque hypothesis to preserve; removal manifest: removals.yml
@@ -3692,25 +3716,395 @@ Volkswagen:
   Kombi: null            # van kind
   Passat CC: Passat      # CC marketed as Passat CC then standalone; folded (dropdown UX)
   Touareg R: Touareg     # R is a trim
-  "1300S": "1300 S"                           # spelling variant of "1300 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "1302LS": "1302 LS"                         # spelling variant of "1302 LS" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "1302S": "1302 S"                           # spelling variant of "1302 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "1303LS": "1303 LS"                         # spelling variant of "1303 LS" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "1303S": "1303 S"                           # spelling variant of "1303 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Deluxe: De Luxe                             # spelling variant of "De Luxe" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Lt 35D: Lt 35 D                             # spelling variant of "Lt 35 D" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Microbus: Micro Bus                         # spelling variant of "Micro Bus" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Tiguan 4MOTION: Tiguan 4 Motion             # spelling variant of "Tiguan 4 Motion" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Pickup: Pick-Up                             # spelling variant of "Pick-Up" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Transporter Doublecab: Transporter Double Cab # spelling variant of "Transporter Double Cab" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  "1300S": Beetle                             # REPOINTED 2026-07-26 (wave-3 VW trim folds): was "1300 S", which now folds to Beetle — renames apply ONCE, so a value that is itself a fold source would strand these raws one level short (Gas Gas Cg-EC300 precedent). Beetle engine designation — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1302LS": Beetle                            # REPOINTED 2026-07-26 (wave-3): was "1302 LS", now a fold source. Beetle 1302 LS trim — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1302S": Beetle                             # REPOINTED 2026-07-26 (wave-3): was "1302 S", now a fold source. Beetle 1302 S engine grade — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1303LS": Beetle                            # REPOINTED 2026-07-26 (wave-3): was "1303 LS", now a fold source. Beetle 1303 LS trim — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1303S": Beetle                             # REPOINTED 2026-07-26 (wave-3): was "1303 S", now a fold source. Beetle 1303 S engine grade — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Deluxe: Beetle                              # REPOINTED 2026-07-26 (wave-3): was "De Luxe", now a fold source. Beetle De Luxe/Export trim — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Lt 35D: Lt                                  # REPOINTED 2026-07-26 (wave-3): was "Lt 35 D" — GVW class 3.5 t + diesel marker (see the Lt 28 line) — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Microbus: Caravelle                         # REPOINTED 2026-07-26 (wave-3): was "Micro Bus", now a fold source — the Microbus is the passenger T-series body, catalogued as Caravelle ("Known officially (depending on body type) as the Transporter, Kombi or Microbus") — https://en.wikipedia.org/wiki/Volkswagen_Type_2
+  Tiguan 4MOTION: Tiguan                      # REPOINTED 2026-07-26 (wave-3): was "Tiguan 4 Motion", now a fold source. 4MOTION is the AWD system; EPA "Tiguan 4motion" baseModel Tiguan — https://www.fueleconomy.gov/feg/download.shtml
+  Pickup: Transporter                         # REPOINTED 2026-07-26 (wave-3): was "Pick-Up", now a fold source — the pickup (Pritsche) body of the Transporter (GATE-1 resolution 1, dossier §3.0) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Doublecab: Transporter          # REPOINTED 2026-07-26 (wave-3): was "Transporter Double Cab", now a fold source (double-cab body of the Transporter) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
   Volkswagen: null                            # registry rows where the make was written into the model column (car+truck+van kinds) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   K 70: K70                                   # spelling variant of "K70" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  Lt 28D: LT28D                               # spelling variant of "LT28D" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  Lt 35: LT35                                 # spelling variant of "LT35" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  Vw 1-11: VW1/11                             # spelling variant of "VW1/11" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  Vw 1300: VW1300                             # spelling variant of "VW1300" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  Lt 28: LT28                                 # spelling variant of "LT28" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  Lt 46A: LT46A                               # spelling variant of "LT46A" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  Lt 28D: Lt                                  # REPOINTED 2026-07-26 (wave-3): was LT28D — GVW class 2.8 t + diesel marker, not a nameplate (see the Lt 28 line) — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 35: Lt                                   # REPOINTED 2026-07-26 (wave-3): was LT35 — GVW class 3.5 t (see the Lt 28 line) — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Vw 1-11: Beetle                             # REPOINTED 2026-07-26 (wave-3): was VW1/11, now a fold source. Hyphen shape of the same nl_rdw raw; sibling of "Vw 1/11" above — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Vw 1300: Beetle                             # REPOINTED 2026-07-26 (wave-3): was VW1300, now a fold source (make abbreviation + Beetle engine designation) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Lt 28: Lt                                   # REPOINTED 2026-07-26 (wave-3): was LT28. The A3/C1/C10 letter-prefix reading is WRONG for the LT specifically — the number is a GVW class, not part of the nameplate ("The LT came in three gross vehicle weights, from 2.8 to 3.5 tons (LT 28, LT 31, LT 35)"; nl raw "LT 28,32,35" lists three classes on ONE row). The Ford Transit 100–350 shape. A3/C1/C10 still holds for K70/VW1300 — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 46A: Lt                                  # REPOINTED 2026-07-26 (wave-3): was LT46A — GVW class 4.6 t variant A (see the Lt 28 line) — https://en.wikipedia.org/wiki/Volkswagen_LT
+  # ── trim-fold dossier batch (2026-07-26, wave 3 VW+SEAT; S4W researched and
+  # applied; dossier: pipeline repo aux/research/trims-2026-07/dossier-trims-vw-seat.md).
+  # 272 folds via 259 keys: trims / engine designations / VW factory type numbers /
+  # T-series generation letters / GVW payload classes / cargo-body words / market
+  # badges / misspellings / comma-decimal normalizer artifacts fold into their
+  # nameplates; evidence per line (us_fueleconomy baseModel col 66, DVLA VEH0120
+  # Model column, marque pages, Wikipedia as locator). Renames are KIND-BLIND:
+  # 13 keys tagged KIND-BLIND serve two kinds and are written ONCE.
+  # GATE 1 (dossier §3.0) resolved as (1) ACCEPT THE MINT — with the measured
+  # amendment from the first verification build: the minted car/bus transporter
+  # records FORM and are then displaced by cross_kind_prune's dominance rule
+  # (van/volkswagen/transporter dominates; the prune drops the minority-kind
+  # record whole — the car/nissan/pick-up precedent), so the 12 aliases land
+  # CROSS-KIND on van/volkswagen/transporter with per-id accepted_loss (my, nz
+  # pairs the van record does not carry). The curated car-kind
+  # \bTRANSPORTER\b drop pattern is UNTOUCHED (it never fires on these raws) and was
+  # deliberately NOT extended to the raw shapes — drop_patterns fire on the raw
+  # BEFORE renames (normalizer.rb:114), so extending them would kill these very folds.
+  # GATE 2: no "1200" key — blast-radius-2 with DISAGREEING kind targets (car=Beetle,
+  # van=Transporter payload class, both DVLA-proven); both ids stay until uk_dft
+  # reads the Model column (dossier §5.3). "1100"/"1500"/"1600" pool nameplates
+  # INSIDE one id and are likewise untouched (§4.3). ──
+  # car/volkswagen/beetle:
+  "10/11C": Beetle  # RDW composite of the Beetle Export type number 11C; both raw shapes (`10/11C`, `10 / 11C`) resolve here. NOTE: a car-kind drop pattern `\A10-11\s?C\z` already exists for the HYPHENATED shape and never fires on this one — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "11": Beetle  # VW factory type number for the Beetle saloon ("Type 11 … standard limousine"); raws include `11 CABRIOLET`, `11-A` — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1110": Beetle  # Beetle Typ 11x saloon series number; nz raw `1110 SEDAN` — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "112": Beetle  # Beetle Typ 11x saloon series number (RDW/NZTA write the bare factory code) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "113": Beetle  # Beetle 1300 De Luxe type number — the nl raw is literally `113, VW DE LUXE SEDAN`, and `1200 LIMOUSINE 113` folds here too — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "114": Beetle  # Beetle Typ 11x saloon series number (RHD sibling of 113) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "118": Beetle  # Beetle Typ 11x saloon series number (sunroof sibling) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "11C": Beetle  # Beetle Export saloon type number — the fi raw is literally `11C Limousine Export` — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1200 2D": Beetle  # body/door count on a Beetle 1200 (`1200 2D SEDAN`) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1200 Kupla": Beetle  # 'Kupla' is Finnish for Beetle — fi_traficom writes the market nickname into the model column — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1200 Lim 113": Beetle  # `1200 LIM 113` = 1200 Limousine, factory type 113 — body + type code on the Beetle — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1200 Lim 117": Beetle  # `1200 LIM 117` = 1200 Limousine, factory type 117 (sunroof) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1202": Beetle  # Beetle Typ 12xx series number; raws `1202 CABRIOLET`, `1202 SEDAN` — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1300": Beetle  # VW's own Beetle engine designation — "Volkswagen implemented designations for the Beetle in the 1960s, including 1200, 1300, 1500, 1600, 1302, and 1303"; raws are `1300 LIMOUSINE 113/117`, `1300 CABRIOLET`, `1300 SEDAN` — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1300 S": Beetle  # Beetle engine designation; the existing `"1300S": "1300 S"` line already normalises the fused spelling into this key — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1300L": Beetle  # "The long-serving 1200 was renamed the '1200L' in 1976" — L is a Beetle trim letter, not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1302": Beetle  # Beetle 1302 (MacPherson-strut 'Super Beetle') — a VW engine/chassis designation of the Type 1, not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1302 LS": Beetle  # Beetle 1302 LS trim; DVLA Model column groups `1303 LS`/`1303 S`/`1303` under one GenModel — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  "1302 S": Beetle  # "Volkswagen produced the more powerful 1302S alongside the 1302" — an engine grade of the Beetle — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1303": Beetle  # Beetle 1303 (Aug-1972 Super Beetle) — same designation family — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1303 LS": Beetle  # Beetle 1303 LS trim; DVLA Model column groups `1303 LS`/`1303 S`/`1303` under one GenModel — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  "1303 S": Beetle  # Beetle 1303S engine grade; DVLA carries Model `1303 S` under GenModel `VOLKSWAGEN 1303` — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  "1303 S 135031": Beetle  # Beetle 1303 S plus an RDW chassis/type serial — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "1303L": Beetle  # L is a Beetle trim letter (1200L/1300L/1303L), not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Automatic: Beetle  # VW's semi-automatic ('Automatic Stickshift') Beetle option — a transmission, not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Beatle: Beetle  # MISSPELLING of Beetle (nl_rdw n=3, nz_nzta n=13) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Beetle Dune: Beetle  # EPA: model "Beetle Dune" / "Beetle Dune Convertible" baseModel **Beetle** — https://www.fueleconomy.gov/feg/download.shtml
+  Beettle: Beetle  # MISSPELLING of Beetle (nl n=1, nz n=2) — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Bug: Beetle  # 'Bug' is the US nickname for the Beetle — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Cabriolet 1302: Beetle  # Beetle 1302 in cabriolet body — body + engine designation — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Cabriolet 1303: Beetle  # Beetle 1303 in cabriolet body — body + engine designation — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Classica: Beetle  # Beetle 'Classic'/'Classica' special edition — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  De Luxe: Beetle  # Beetle De Luxe/Export trim; nl raw `VOLKSWAGEN DE LUXE SEDAN`. The existing `Deluxe: De Luxe` line already normalises the fused spelling into this key — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Kaefer: Beetle  # 'Käfer' (ASCII-folded) is German for Beetle — "der Käfer" — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Käfer: Beetle  # German name of the Beetle — "der Käfer"; lu_snca writes the umlaut, ua_mvs the folded form — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Newbeetle: Beetle  # EPA/DOE `vehicles.csv`: model "New Beetle" baseModel **Beetle** (61 rows) and "New Beetle Convertible" baseModel **Beetle** — https://www.fueleconomy.gov/feg/download.shtml
+  Special: Beetle  # Beetle 'Special'/'Special Bug' trim; bare in es_dgt and nz_nzta — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Super Beetle: Beetle  # "In English-speaking countries, the name 'Super Beetle' — alongside '1600' — was included" — the 1302/1303 marketing name — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Typ 1: Beetle  # "Type 1" is the Beetle's official factory designation; nl raw `TYP 1 LIMOUSINE 1200` — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Typ 11: Beetle  # German spelling of the Beetle saloon type number — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Type I: Beetle  # Roman-numeral spelling of Type 1 = Beetle — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "VW1/11": Beetle  # VW Type 1 model 1/11 = Beetle saloon; the existing `Vw 1-11:`/`Vw 1/11:` lines point at this key and must be REPOINTED — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  VW1300: Beetle  # fused make+designation shape; the existing `Vw 1300: VW1300` line points at this key and must be REPOINTED — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Vw 1200: Beetle  # make abbreviation glued to the Beetle 1200 designation — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Vw Beetle: Beetle  # make abbreviation glued to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  # van/volkswagen/transporter:
+  "1000": Transporter  # DVLA Model column resolves GenModel `VOLKSWAGEN 1000` to `1000 TD SWB` / `1000 SWB` / `1000 TDI LWB` / `1000 D LWB` — a Transporter payload class + wheelbase, exactly the Ford `Transit 100/350` shape — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  "7J0": Transporter  # 7J0 is the VW type-approval/platform code for the T5/T6 Transporter — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  "800": Transporter  # DVLA Model column resolves GenModel `VOLKSWAGEN 800` to `800 SPECIAL TD SWB` — Transporter payload class 800 kg — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  Abt E-Transporter: Transporter  # ABT is a converter; the vehicle is an e-Transporter — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Bestel 0: Transporter  # RDW `BESTEL 0,7/0,8/0,9 …` = payload tonnes; the COMMA decimal escapes the litre junk rule and truncates to a bare integer (see §5, generator 1). KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Bestel 1: Transporter  # same comma-decimal artifact at 1,x tonnes — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Business Van: Transporter  # fleet trim of the Transporter — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Delivery Van: Transporter  # body word only — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Doppelkabine: Transporter  # German for double cab — a Transporter body — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Etransporter T32 Commerce: Transporter  # e-Transporter T32 Commerce is the battery-electric T6.1 Transporter trim, not a Crafter — SEE §UNCERTAIN — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kastenwagen: Transporter  # German for panel van — the Transporter's cargo body. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kastenwagen Lr: Transporter  # panel van, long/raised roof — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kombi 2: Transporter  # comma-decimal artifact of `KOMBI 2,x` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kombiwagen: Transporter  # the Kombi is the window-van body of the Transporter ("Known officially (depending on body type) as the Transporter, Kombi or Microbus"). KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  "Kombiwagen 23/2400": Transporter  # Kombi body + factory type 23 (Kombi) and wheelbase code — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Pick-Up: Transporter  # the pickup (Pritsche) body of the Transporter — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Pick-Up 1: Transporter  # comma-decimal artifact of `PICK-UP 1,x` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Syncro: Transporter  # Syncro is VW's 4WD system; DVLA Model column resolves GenModel `VOLKSWAGEN SYNCRO` to `SYNCRO TRANSPORTER D`, `SYNCRO TRANSPORTER`, `SYNCRO CARAVELLE GL`. KIND-BLIND: serves car+van — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  T1: Transporter  # "As part of the T platform, the first three generations are retroactively named T1, T2 and T3" — a GENERATION of the Transporter; es raw `T1 KOMBI` — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T4: Transporter  # Transporter generation; raws `T4 TDI BESTEL 75KW`, `T4 TDI 75 KW SYNCRO`. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T5 Business Van: Transporter  # generation + fleet trim — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T5 Transporter: Transporter  # generation marker prefixed to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Tranporter: Transporter  # MISSPELLING of Transporter (es+fi+nl) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transport: Transporter  # TRUNCATION of Transporter (nl n=227, es, fi) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter 1: Transporter  # comma-decimal artifact of `TRANSPORTER 1,x` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter 2: Transporter  # comma-decimal artifact of `TRANSPORTER 2,x` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter 75 Edition: Transporter  # '75 Edition' anniversary edition (2025) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Bestel: Transporter  # nameplate + Dutch body word — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Bestel 0: Transporter  # nameplate + body word + comma-decimal artifact (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Bestel 1: Transporter  # nameplate + body word + comma-decimal artifact (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Bestel D: Transporter  # nameplate + body word + diesel marker — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Caravelle: Transporter  # Caravelle is the passenger version of the same generation — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Dc: Transporter  # Doppelkabine (double cab) body — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Double Cab: Transporter  # double-cab body. SETTLED-LINE REPOINT: `Transporter Doublecab: Transporter Double Cab` points at this key — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Pick-Up: Transporter  # pickup (Pritsche) body — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Sn Double Cab: Transporter  # RDW composite: body code + double cab — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Transporter Syncro: Transporter  # Syncro 4WD drivetrain — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  "Transporter Ww. Caravelle": Transporter  # RDW composite string — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Trasporter: Transporter  # MISSPELLING of Transporter (fi+nl) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Vw Pick-Up Dh 2: Transporter  # make abbreviation + pickup body + comma-decimal artifact — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Vw Pickup Eh 2: Transporter  # make abbreviation + pickup body + comma-decimal artifact — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Vw Skap 2: Transporter  # fi 'skåp' = box van, plus a comma-decimal artifact (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  # van/volkswagen/caddy:
+  Abt E-Caddy: Caddy  # ABT is a converter; the vehicle is a Caddy — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy 1: Caddy  # comma-decimal artifact of `CADDY 1,x` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy 75 Edition: Caddy  # '75 Edition' anniversary edition — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Cargo 2501: Caddy  # Cargo + wheelbase/GVW code — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Cargo 2510: Caddy  # Cargo + wheelbase/GVW code — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Diesel: Caddy  # fuel marker only — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Kasten: Caddy  # Kasten = panel-van body — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Life: Caddy  # Life is the passenger (M1) Caddy trim — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Max: Caddy  # Maxi is the long-wheelbase Caddy; the VARIANT_SUFFIXES list already carries MAXI, and the shipped `Caddymaxi: Caddy` key is measured DEAD (pack §B) — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Modified Partition Wall: Caddy  # RDW body-conversion note, not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Pick Up: Caddy  # pickup body of the Caddy — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Sdi: Caddy  # SDI is the naturally-aspirated direct-injection diesel — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Caddy Van 1: Caddy  # body word + comma-decimal artifact (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Touran Van: Caddy  # the Touran-based Caddy Life panel conversion filed under the wrong nameplate; RDW n=1. LOW CONFIDENCE — see §UNCERTAIN — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  Vw Caddy: Caddy  # make abbreviation glued to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Caddy
+  # car/volkswagen/karmann-ghia:
+  "1200 Karmann Ghia": Karmann Ghia  # engine designation prefixed to the nameplate (`1200 KARMANN-GHIA COUPE 14/2400`) — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  "1300 Karmann Ghia": Karmann Ghia  # engine designation prefixed to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  "1500-Karmann Ghia": Karmann Ghia  # the 1500 Karmann Ghia is the Type 34 — "the 1500 Karmann Ghia, or Type 34" — a body of the same nameplate on the Type 3 floorpan — https://en.wikipedia.org/wiki/Volkswagen_Type_3
+  "1600 Karmann Ghia": Karmann Ghia  # engine designation prefixed to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Ghia: Karmann Ghia  # bare coachbuilder half of Karmann Ghia (`GHIA CABRIOLET`); the only VW nameplate carrying the token. Make-scoped, so Ford's Ghia trim is untouched — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karman: Karmann Ghia  # MISSPELLING (single-n) of Karmann — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karman Ghia: Karmann Ghia  # MISSPELLING (single-n) of Karmann Ghia — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karmann: Karmann Ghia  # bare coachbuilder name; Karmann Ghia is the only VW-badged nameplate bearing it (the Beetle cabriolet was badged 1302/1303 Cabriolet, never 'Karmann'). RESIDUAL RISK recorded in §UNCERTAIN — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karmann Chia: Karmann Ghia  # MISSPELLING of Karmann Ghia (`KARMANN-CHIA COUPE-AUTOMATIC-14/2400`) — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karmann Ghia 14: Karmann Ghia  # Typ 14 is the Karmann Ghia's factory type number — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karmann Ghia 1600: Karmann Ghia  # engine designation on the Type 14 Karmann Ghia — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Karmann Ghia Tc: Karmann Ghia  # Karmann Ghia TC = the Brazilian Type 145 body; a market body variant of the same nameplate — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Kharman Ghia: Karmann Ghia  # MISSPELLING of Karmann Ghia — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  Kharmann Ghia: Karmann Ghia  # MISSPELLING of Karmann Ghia — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
+  # car/volkswagen/passat:
+  Passat 1: Passat  # comma-decimal artifact of `PASSAT 1,9 TDi Variant` (generator 1) — https://www.fueleconomy.gov/feg/download.shtml
+  Passat 2: Passat  # comma-decimal artifact of `PASSAT 2,0 TDI VARIANT` (generator 1) — https://www.fueleconomy.gov/feg/download.shtml
+  Passat 4MOTION: Passat  # EPA: model "Passat 4motion" baseModel **Passat** (18 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  Passat CC Sport: Passat  # SETTLED-LINE EXTENSION: `Passat CC: Passat` already ships; renames are exact-match so the `Sport` suffix needs its own key pointing the same way — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Diesel: Passat  # fuel marker on a ca_nrcan row (`PASSAT DIESEL 40KW`); EPA folds every Passat trim row to baseModel **Passat** — https://www.fueleconomy.gov/feg/download.shtml
+  Passat GLS: Passat  # GLS is a Passat trim letter-set; EPA folds every Passat trim row to baseModel **Passat** — https://www.fueleconomy.gov/feg/download.shtml
+  Passat GT: Passat  # GT is a Passat trim (`PASSAT GT VARIANT 100 KW`); bare GT is NOT in VARIANT_SUFFIXES (only GTI/GTD/GTE/GTS are) — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Glx: Passat  # GLX is a Passat trim; EPA folds every Passat trim row to baseModel **Passat** — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Se: Passat  # SE trim; EPA folds the equivalent "Jetta SE/SEL" rows to the nameplate — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Syncro: Passat  # EPA: "Passat Syncro" baseModel **Passat** — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Wagon: Passat  # EPA: model "Passat Wagon" baseModel **Passat** (64 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Wagon 4MOTION: Passat  # EPA: "Passat Wagon 4motion" baseModel **Passat** — https://www.fueleconomy.gov/feg/download.shtml
+  Passat Wagon Syncro: Passat  # EPA: "Passat Wagon Syncro" baseModel **Passat** — https://www.fueleconomy.gov/feg/download.shtml
+  Vw Passat: Passat  # make abbreviation glued to the nameplate — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/caravelle:
+  Caravelle 2: Caravelle  # comma-decimal artifact of `CARAVELLE 2,5 …` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Caravelle Syncro: Caravelle  # Caravelle with the Syncro 4WD system — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kleinbus: Caravelle  # German for minibus — the passenger Transporter — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kleinbuss: Caravelle  # MISSPELLING of Kleinbus — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Kleinbuss 1600-22: Caravelle  # Kleinbus plus engine + factory type 22 (Microbus) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Micro Bus: Caravelle  # "Known officially (depending on body type) as the Transporter, Kombi or Microbus" — the passenger body, which the catalog carries as Caravelle. KIND-BLIND: serves car+bus. The existing `Microbus: Micro Bus` line points at this key and must be REPOINTED — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Multi Van: Caravelle  # spaced spelling of Multivan, the passenger T-series. KIND-BLIND: serves car+van. SEE §5: the settled `Multivan: null` line kills the BARE form in every kind — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Multivan Starline: Caravelle  # MISSPELLING of Startline (a Multivan trim) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Multivan Startline: Caravelle  # Startline is the entry trim of the Multivan. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Multivan Syncro: Caravelle  # Multivan with the Syncro 4WD system — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Multivan-T6: Caravelle  # Multivan, T6 generation — trim + generation, no new nameplate — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Vw Caravelle 2: Caravelle  # make abbreviation + the same comma-decimal artifact — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Vw-Campingwagen: Caravelle  # 'Campingwagen' is a body/conversion word on the passenger T-series — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  # car/volkswagen/tiguan:
+  Tguan: Tiguan  # MISSPELLING of Tiguan (es+nl) — https://en.wikipedia.org/wiki/Volkswagen_Tiguan
+  Tiguan 2: Tiguan  # comma-decimal artifact of `TIGUAN 2,0 TSI 4MOTION` (generator 1) — https://www.fueleconomy.gov/feg/download.shtml
+  "Tiguan 2.0T": Tiguan  # DOT-decimal sibling: `2.0T` has no word boundary after the `0`, so `\b\d\.\d\b` misses it too (generator 1, leak 2) — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan 4 Motion: Tiguan  # EPA: "Tiguan 4motion" baseModel **Tiguan** (18 rows). SETTLED-LINE REPOINT: `Tiguan 4MOTION: Tiguan 4 Motion` points at this key — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan Limited: Tiguan  # EPA: "Tiguan Limited" / "Tiguan Limited 4motion" baseModel **Tiguan** — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan S: Tiguan  # EPA: "Tiguan S" baseModel **Tiguan** (4 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan Se: Tiguan  # SE trim; EPA folds every Tiguan trim row to baseModel **Tiguan** — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan Se 4MOTION: Tiguan  # SE trim + 4MOTION drivetrain; EPA baseModel **Tiguan** — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan Sel: Tiguan  # SEL trim; EPA: "Tiguan SEL 4Motion" baseModel **Tiguan** — https://www.fueleconomy.gov/feg/download.shtml
+  Tiguan Sel 4MOTION: Tiguan  # EPA: "Tiguan SEL 4Motion" baseModel **Tiguan** — https://www.fueleconomy.gov/feg/download.shtml
+  Tiquan: Tiguan  # MISSPELLING of Tiguan (fi+nl) — https://en.wikipedia.org/wiki/Volkswagen_Tiguan
+  # car/volkswagen/transporter:
+  Bestel: Transporter  # 'bestel(auto)' is Dutch for delivery van — the RDW body word on a Transporter (`BESTEL TDI 75 KW SYNCRO`) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T2: Transporter  # Transporter generation, not a nameplate (same quote); raws `T2 KOMBI`, `T2-B` — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T2 Camper: Transporter  # T2 generation in camper body — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T5: Transporter  # Transporter generation. KIND-BLIND: serves car+bus — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  T6: Transporter  # Transporter generation — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Type 2: Transporter  # "the first three generations were named Type 2, indicating their relative position to the Type 1, or Beetle"; raw `TYPE 2 KOMBI` — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  # car/volkswagen/jetta:
+  Gli: Jetta  # EPA: model "Jetta GLI", "Jetta GLI 16v", "Jetta GLI/Wolfsburg Edition" all baseModel **Jetta**. (EPA also carries a standalone `GLI => GLI` row for the 1980s badge; the Jetta-prefixed lines are the decisive ones and vw.com presents 'Jetta GLI' as a Jetta card) — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Cl: Jetta  # CL is a Jetta trim (`JETTA CL 51KW AUT U9`); EPA folds every Jetta trim row to baseModel **Jetta** — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Diesel: Jetta  # fuel marker only; EPA baseModel **Jetta** — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta GL: Jetta  # GL is a Jetta trim; EPA folds every Jetta trim row to baseModel **Jetta** — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta GL Diesel: Jetta  # GL trim + fuel marker; EPA baseModel **Jetta** — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Gli: Jetta  # EPA: "Jetta GLI" baseModel **Jetta** — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Glx: Jetta  # EPA: "Jetta GLX" baseModel **Jetta** (6 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Se: Jetta  # EPA: "Jetta SE/SEL" and "Jetta Sport/SE/SEL" baseModel **Jetta** — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Sportwagen: Jetta  # EPA: "Jetta SportWagen" baseModel **Jetta** (28 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  Jetta Wagon: Jetta  # EPA: "Jetta Wagon" baseModel **Jetta** (30 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  # van/volkswagen/crafter:
+  Crafter 30: Crafter  # 3.0 t GVW class — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Crafter 35: Crafter  # 3.5 t GVW class — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Crafter 35 Bestel L2 H2: Crafter  # GVW class 35 + Dutch body word + wheelbase/roof codes L2 H2 — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Crafter 4MOTION: Crafter  # 4MOTION is VW’s AWD system, not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Crafter Aut: Crafter  # 'Aut' = automatic transmission — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Crafter Multicab: Crafter  # Multicab is a cab/body configuration — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  "Crafter/z": Crafter  # RDW slash composite. KEY BOTH CASINGS: the shipped catalog name is `Crafter/z` but the current normalizer produces `Crafter/Z` (split_slashes) — replay-verified — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Grafter: Crafter  # MISSPELLING of Crafter (es+fi) — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Vw Crafter: Crafter  # make abbreviation glued to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  Vw Crafter Aut: Crafter  # make abbreviation + automatic transmission — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  # car/volkswagen/golf:
+  Colf: Golf  # MISSPELLING of Golf (`Colf Cabriolet`, `COLF CABRIO`) — https://en.wikipedia.org/wiki/Volkswagen_Golf
+  GTI: Golf  # EPA groups every GTI row under baseModel **Golf/GTI**; the VW family rule already folds `GOLF GTI` → Golf — https://www.fueleconomy.gov/feg/download.shtml
+  GTI 16V: Golf  # EPA: "GTI 16v" baseModel **Golf/GTI** — https://www.fueleconomy.gov/feg/download.shtml
+  GTI VR6: Golf  # EPA: "GTI VR6" baseModel **Golf/GTI** — https://www.fueleconomy.gov/feg/download.shtml
+  R32: Golf  # the Mk4/Mk5 Golf R32; the VW family rule already folds `GOLF R32` → Golf. NOTE: EPA gives `R32 => R32` its own baseModel, but that row is self-referential (no other model points into it) and the altitude rule reads R32 as the Golf's performance badge — https://www.fueleconomy.gov/feg/download.shtml
+  Vw Golf: Golf  # make abbreviation glued to the nameplate — https://www.fueleconomy.gov/feg/download.shtml
+  Vw Golf GLS: Golf  # make abbreviation + the GLS trim — https://www.fueleconomy.gov/feg/download.shtml
+  Vw Golf R32: Golf  # make abbreviation + the Golf R32 performance badge — https://www.fueleconomy.gov/feg/download.shtml
+  # van/volkswagen/lt:
+  LT28: Lt  # GVW class 2.8 t. SETTLED-LINE REPOINT: `Lt 28: LT28` currently canonicalises the fused form as a nameplate. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_LT
+  LT35: Lt  # GVW class 3.5 t. SETTLED-LINE REPOINT: `Lt 35: LT35`. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_LT
+  LT46A: Lt  # GVW class 4.6 t variant A. SETTLED-LINE REPOINT: `Lt 46A: LT46A` — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 31: Lt  # GVW class 3.1 t. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 32: Lt  # GVW class 3.2 t; the nl raw `LT 28,32,35` lists three classes on ONE row — proof they are classes, not nameplates — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 40: Lt  # GVW class 4.0 t. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 46: Lt  # GVW class 4.6 t — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Vw Lt 35: Lt  # make abbreviation + GVW class — https://en.wikipedia.org/wiki/Volkswagen_LT
+  # car/volkswagen/id-buzz:
+  "Id. Buzz Gtx Kr": Id. Buzz  # GTX is VW’s ID performance trim; KR/LR = kurzer/langer Radstand (short/long wheelbase). EPA: "ID. Buzz 4motion" baseModel **ID. Buzz** — https://www.fueleconomy.gov/feg/download.shtml
+  "Id. Buzz Gtx Lr": Id. Buzz  # GTX trim, long wheelbase. EPA baseModel **ID. Buzz** — https://www.fueleconomy.gov/feg/download.shtml
+  "Id. Buzz Pro": Id. Buzz  # Pro is the ID. Buzz battery/trim grade; EPA: "ID. Buzz 4motion" baseModel **ID. Buzz**. KEY BOTH CASINGS — `Id. Buzz Pro` and `Id.buzz Pro` are both produced (replay-verified) — https://www.fueleconomy.gov/feg/download.shtml
+  "Id. Buzz Pro 4MOTION": Id. Buzz  # Pro trim + 4MOTION; EPA: "ID. Buzz 4motion" baseModel **ID. Buzz** — https://www.fueleconomy.gov/feg/download.shtml
+  "Id. Buzz Pro Kr": Id. Buzz  # Pro trim, short wheelbase; EPA baseModel **ID. Buzz** — https://www.fueleconomy.gov/feg/download.shtml
+  "Id. Buzz Pro Lr": Id. Buzz  # Pro trim, long wheelbase; EPA baseModel **ID. Buzz** — https://www.fueleconomy.gov/feg/download.shtml
+  "Id. Buzz Pure Kr": Id. Buzz  # Pure is the entry battery grade, short wheelbase; EPA baseModel **ID. Buzz** — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/lt:
+  LT28D: Lt  # GVW class 2.8 t + diesel. SETTLED-LINE REPOINT: `Lt 28D: LT28D` — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 26: Lt  # "The LT came in three gross vehicle weights, from 2.8 to 3.5 tons (LT 28, LT 31, LT 35)" — the number is a GVW class, not a nameplate — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Lt 35 D: Lt  # GVW class 3.5 t + D (diesel). The existing `Lt 35D: Lt 35 D` line points at this key and must be REPOINTED — https://en.wikipedia.org/wiki/Volkswagen_LT
+  # car/volkswagen/polo:
+  Cross Polo: Polo  # CrossPolo is the raised-suspension Polo body — https://en.wikipedia.org/wiki/Volkswagen_Polo
+  Polo 1: Polo  # comma-decimal artifact of `POLO 1,x` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Polo
+  Polo Cl: Polo  # CL is a Polo trim (`POLO CL 40 KW U9`) — https://en.wikipedia.org/wiki/Volkswagen_Polo
+  Polo Cross: Polo  # CrossPolo raised-suspension body — https://en.wikipedia.org/wiki/Volkswagen_Polo
+  Polo G40: Polo  # G40 is the supercharged Polo engine — https://en.wikipedia.org/wiki/Volkswagen_Polo
+  Polo L: Polo  # L is a Polo trim letter — https://en.wikipedia.org/wiki/Volkswagen_Polo
+  # car/volkswagen/181:
+  Kubel: "181"  # "Kurierwagen (West Germany)"; the 181 is colloquially the 'Kübel'. RESIDUAL RISK (the WWII Type 82 Kübelwagen shares the nickname) recorded in §UNCERTAIN — https://en.wikipedia.org/wiki/Volkswagen_Type_181
+  Safari: "181"  # "Safari (Mexico and South America)" — a market name of the Type 181 — https://en.wikipedia.org/wiki/Volkswagen_Type_181
+  Thing: "181"  # "Thing (United States and Canada, 1973-1974)" — a market name of the Type 181 — https://en.wikipedia.org/wiki/Volkswagen_Type_181
+  Vw 181: "181"  # make abbreviation glued to the type number — https://en.wikipedia.org/wiki/Volkswagen_Type_181
+  # car/volkswagen/type-3:
+  "1600 Tl": Type 3  # Type 3 1600 TL — engine + body designation — https://en.wikipedia.org/wiki/Volkswagen_Type_3
+  Notchback: Type 3  # "two-door notchback" is the Type 3 saloon body — https://en.wikipedia.org/wiki/Volkswagen_Type_3
+  Tl: Type 3  # "The Fastback, or TL version" of the Type 3; nz raws `TL FASTBACK`, `TL SEDAN`, DVLA Model `TL FASTBACK` — https://en.wikipedia.org/wiki/Volkswagen_Type_3
+  Variant 1600 L: Type 3  # Type 3 Variant (estate) 1600 L; DVLA Model column carries `1600L VARIANT`, `1600 A VARIANT` — https://en.wikipedia.org/wiki/Volkswagen_Type_3
+  # van/volkswagen/id-buzz-cargo:
+  "Id. Buzz Cargo Modified Partition Wall": Id. Buzz Cargo  # RDW body-conversion note appended to the Cargo body — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Cargo Pro": Id. Buzz Cargo  # Cargo Pro trim; EPA baseModel **ID. Buzz**. Note the DOT-attached casing: the raw `ID.BUZZ …` produces `Id.buzz …` while `ID. BUZZ …` produces `Id. Buzz …` — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Cargo Pro 4MOTION": Id. Buzz Cargo  # Cargo Pro + 4MOTION; note the DOT-attached casing produced by `ID.BUZZ …` raws — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Cargo Pure": Id. Buzz Cargo  # Cargo Pure battery grade; DOT-attached casing — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/atlas:
+  Atlas 4MOTION: Atlas  # EPA: "Atlas 4motion" baseModel **Atlas** (10 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  Atlas 4MOTION Peak Edition: Atlas  # EPA: "Atlas 4motion Peak Edition" baseModel **Atlas** — https://www.fueleconomy.gov/feg/download.shtml
+  Atlas Se 4MOTION: Atlas  # EPA: "Atlas SE 4motion" baseModel **Atlas** — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/california:
+  California Beach: California  # Beach is the entry California camper trim (no fixed kitchen) — https://en.wikipedia.org/wiki/Volkswagen_California
+  California Exclusive: California  # Exclusive is a California camper trim — https://en.wikipedia.org/wiki/Volkswagen_California
+  California Generation: California  # Generation is a California camper trim — https://en.wikipedia.org/wiki/Volkswagen_California
+  # car/volkswagen/corrado:
+  Corrado G60: Corrado  # G60 is the supercharged engine of the Corrado — https://en.wikipedia.org/wiki/Volkswagen_Corrado
+  Corrado SLC: Corrado  # EPA: "Corrado SLC" baseModel **Corrado** — https://www.fueleconomy.gov/feg/download.shtml
+  Corrado VR6: Corrado  # VR6 is an engine — https://en.wikipedia.org/wiki/Volkswagen_Corrado
+  # car/volkswagen/scirocco:
+  Scirocco 16V: Scirocco  # EPA: "Scirocco 16v" baseModel **Scirocco** — https://www.fueleconomy.gov/feg/download.shtml
+  Scirocco GT: Scirocco  # GT is a trim; `\bGT\b` is NOT in VARIANT_SUFFIXES (only GTI/GTD/GTE/GTS are) — https://www.fueleconomy.gov/feg/download.shtml
+  Vw Scirocco: Scirocco  # make abbreviation glued to the nameplate — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/touareg:
+  Touareg Ehybrid: Touareg  # EPA: "Touareg Hybrid" baseModel **Touareg** — https://www.fueleconomy.gov/feg/download.shtml
+  Touareg V6: Touareg  # V6 is an engine, not a nameplate — https://www.fueleconomy.gov/feg/download.shtml
+  Toureg: Touareg  # MISSPELLING of Touareg (fi n=3, nl n=1) — https://en.wikipedia.org/wiki/Volkswagen_Touareg
+  # van/volkswagen/amarok:
+  Amarok Dc Lang: Amarok  # DoubleCab + 'lang' (long) — cab/wheelbase configuration — https://en.wikipedia.org/wiki/Volkswagen_Amarok
+  Amarok Dc Xxl: Amarok  # DoubleCab XXL body — https://en.wikipedia.org/wiki/Volkswagen_Amarok
+  Amarok Pluscab: Amarok  # PlusCab (extended cab) body — https://en.wikipedia.org/wiki/Volkswagen_Amarok
+  # van/volkswagen/caravelle:
+  Multivan Dc: Caravelle  # Multivan Doppelkabine (double cab) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  # car/volkswagen/cc:
+  CC 4MOTION: CC  # EPA: "CC 4motion" baseModel **CC** (9 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  CC Sport: CC  # Sport is a CC trim; EPA folds CC trim rows to baseModel **CC** — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/arteon:
+  Arteon 4MOTION: Arteon  # EPA: "Arteon 4motion" baseModel **Arteon** (6 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/atlas-cross-sport:
+  Atlas Cross Sport 4MOTION: Atlas Cross Sport  # EPA: "Atlas Cross Sport 4motion" baseModel **Atlas** — but vw.com carries "Atlas Cross Sport" as its own model card, so this folds to the Cross Sport, NOT to Atlas (see §KEEP) — https://www.vw.com/en/models.html
+  # car/volkswagen/bora:
+  E Bora: Bora  # e-Bora is the Chinese battery-electric Bora (FAW-VW), a powertrain variant of the same nameplate — https://en.wikipedia.org/wiki/Volkswagen_Bora
+  # car/volkswagen/eurovan:
+  Eurovan Camper: Eurovan  # EPA: model "Eurovan Camper" baseModel **Eurovan** — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/fox:
+  Urban: Fox  # DVLA Model column resolves GenModel `VOLKSWAGEN URBAN` to `URBAN FOX 55` and `URBAN FOX 75` — the UK-market VW Fox. 11,768 gb vehicles, decile 3: the single largest fold in this dossier — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  # car/volkswagen/iltis:
+  Vw-Iltis: Iltis  # make abbreviation glued to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Iltis
+  # car/volkswagen/lupo:
+  Lupo 1: Lupo  # comma-decimal artifact of `Lupo 1,4` / `LUPO 1,2 TDI` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Lupo
+  # car/volkswagen/taos:
+  Taos 4MOTION: Taos  # EPA: "Taos 4motion" baseModel **Taos** (5 rows) — https://www.fueleconomy.gov/feg/download.shtml
+  # car/volkswagen/tayron:
+  Tayron Elegance Etsi S: Tayron  # Elegance is a trim and eTSI a mild-hybrid engine; the uk_dft string is `TAYRON ELEGANCE ETSI S-A` — https://en.wikipedia.org/wiki/Volkswagen_Tayron
+  # car/volkswagen/touran:
+  Cross Touran: Touran  # CrossTouran is the raised-suspension Touran body — https://en.wikipedia.org/wiki/Volkswagen_Touran
+  # car/volkswagen/up:
+  Up 1: Up  # comma-decimal artifact of `UP 1,0` (generator 1) — https://en.wikipedia.org/wiki/Volkswagen_Up
+  # car/volkswagen/vento:
+  Vento VR6: Vento  # VR6 is an engine — https://en.wikipedia.org/wiki/Volkswagen_Jetta
+  # truck/volkswagen/grand-california:
+  Grand: Grand California  # truck-kind `series_collapse` keeps only the first token of `VOLKSWAGEN GRAND CALIFORNIA` (DVLA Model `GRAND CALIFORNIA TDI AUTO`). NO-PARENT-IN-KIND: mints truck/volkswagen/grand-california — https://en.wikipedia.org/wiki/Volkswagen_California
+  # van/volkswagen/taro:
+  "Taro 2.4D": Taro  # 2.4 D is the engine of the VW Taro (the badge-engineered Hilux) — https://en.wikipedia.org/wiki/Volkswagen_Taro
+  # Crafter/z casing sibling (checklist item 7):
+  "Crafter/Z": Crafter  # split_slashes casing sibling of the shipped "Crafter/z" catalog name — KEY BOTH CASINGS (the S400 Hev/S400 HEV precedent): the current normalizer produces the capital-Z form, the catalog still carries the lowercase one; the reachability test tolerates the dead twin because a live sibling maps to the same target — https://en.wikipedia.org/wiki/Volkswagen_Crafter
+  # ── §3.2 NULLS: no nameplate information survives on these ids; each has a
+  # population-carrying removals.yml manifest line (B+A precedent). ──
+  Baja: null                 # a Baja Bug is an owner MODIFICATION of a Beetle floorpan, not a VW product — same class as the shipped `Buggy: null` ("kit-car/beach-buggy registrations on Beetle base"). SETTLED-LINE EXTENSION, not a reversal — https://en.wikipedia.org/wiki/Baja_Bug
+  Beach Buggy: null          # kit cars on a Beetle floorpan; `junk?` already kills a bare "BUGGY" via /\A(Buggy|…)\b/ but "BEACH BUGGY" does not start with the token, so the shipped `Buggy: null` never fires on it (nz n=55) — https://en.wikipedia.org/wiki/Dune_buggy
+  Dune-Buggy: null           # same class, hyphenated shape — https://en.wikipedia.org/wiki/Dune_buggy
+  Business: null             # a fleet trim WORD with no nameplate; the nl raw is literally `BUSINESS,CALIFORNIA,MUL-T` — three nameplates in one string, so no single alias is honest — https://www.volkswagen-nutzfahrzeuge.de/de/modelle.html
+  Camper: null               # body class only (`CAMPER`, `CAMPER V.D. 1.0 D 57 KW`); every VW camper base (T-series, Crafter, Caddy) is possible — https://www.volkswagen-nutzfahrzeuge.de/de/modelle.html
+  Combi: null                # Dutch body word; SETTLED-LINE CONSISTENCY with the shipped `Kombi: null` ("van kind"). NB: both nulls are kind-blind over-reaches — dossier §5.4 — https://en.wikipedia.org/wiki/Volkswagen_Type_2
+  Non-Car Derived Van: null  # a DVLA taxation-class descriptor, not a model (GenModel `VOLKSWAGEN NON-CAR DERIVED VAN`, Model identical, 2026-Q1 count 0) — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  Motor: null                # truncation of the DVLA body descriptor `MOTOR CARAVAN` (8,090 gb LGV). It is a body class, not a nameplate; the base vehicle is unrecoverable from the row — https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files
+  Va: null                   # two-letter residue, 2 rows, zero model information — same class as the shipped `V W: null`
+  Van: null                  # body word only (nl n=1, nz n=7); no VW nameplate is "Van"
+  D: null                    # engine-only residue: raws are `D 96 KW DC`, `D 37 KW` — the nameplate token was never in the column
+  # ── §5.2 EVIDENCE RESCUE: junk?'s /\ANew\b/ placeholder rule drops every
+  # VW model string beginning with "New"; renames are consulted BEFORE junk?
+  # (the 2026-07-25 ORDER FIX), so these four keys both rescue and fold the rows.
+  # Only New Beetle has a surviving id to alias; the other three are pure recovery. ──
+  New Beetle: Beetle   # EPA "New Beetle" baseModel Beetle (61 rows); junk?'s \ANew\b rule drops these ca_nrcan/es_dgt rows today — https://www.fueleconomy.gov/feg/download.shtml
+  New Golf: Golf       # EPA "New Golf" baseModel Golf/GTI — same rescue — https://www.fueleconomy.gov/feg/download.shtml
+  New GTI: Golf        # EPA "New GTI" baseModel Golf/GTI — same rescue — https://www.fueleconomy.gov/feg/download.shtml
+  New Jetta: Jetta     # EPA "New Jetta" baseModel Jetta — same rescue — https://www.fueleconomy.gov/feg/download.shtml
+  # ── verification-build siblings (2026-07-26, first offline build against this
+  # change; checklist items 7–8 anticipated exactly this class) ──
+  "1303-S": Beetle  # HYPHEN-cased sibling measured LIVE after the spaced "1303 S" key folded its rows: nl/nz raws `1303-S` produce the hyphen display (digit-bearing token, case_token skips it) and republished the id. Same Beetle 1303 S engine grade — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  "Id.buzz Pro": Id. Buzz  # DOT-attached casing sibling: `ID.BUZZ PRO` raws (es/lu/nl) produce Id.buzz while `ID. BUZZ PRO` produces Id. Buzz; the first verification build kept the id alive on the dot form — checklist item 8's add-the-sibling rule (S400 Hev/S400 HEV precedent) — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Pro Kr": Id. Buzz  # DOT-casing sibling, measured live (es/lu/nl) — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Pro Lr": Id. Buzz  # DOT-casing sibling, measured live (es/lu/nl) — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Pro 4MOTION": Id. Buzz  # DOT-casing sibling of the spaced key above; belt-and-braces — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Pure Kr": Id. Buzz  # DOT-casing sibling — the dot form sits in the candidate queue today (nl) and would republish on corroboration — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Gtx Kr": Id. Buzz  # DOT-casing sibling — https://www.fueleconomy.gov/feg/download.shtml
+  "Id.buzz Gtx Lr": Id. Buzz  # DOT-casing sibling — lu candidate `Id.buzz Gtx Lr` exists today — https://www.fueleconomy.gov/feg/download.shtml
+  "Id Buzz Pro": Id. Buzz  # THIRD casing, measured live in the second verification build: dotless raws `ID BUZZ PRO` (lu_snca, ua_mvs) produce the no-dot spaced form — the family arrives as ID. BUZZ / ID.BUZZ / ID BUZZ and every produced form needs its key — https://www.fueleconomy.gov/feg/download.shtml
+  "Id Buzz Pro Kr": Id. Buzz  # dotless sibling (lu candidate n=2). Keyed now because former_ids already retires id-buzz-pro-kr — a later republish of the dotless form would collide with the alias (liveness gate) — https://www.fueleconomy.gov/feg/download.shtml
+  "Id Buzz Pro Lr": Id. Buzz  # dotless sibling (nl candidate n=34) — same alias-collision insurance — https://www.fueleconomy.gov/feg/download.shtml
+  # ── truck/bus-kind fused LT GVW classes (measured in the verification build:
+  # the series-collapse stub fix, already on pipeline main, un-pools truck/bus
+  # LT ids the dossier corpus never contained — same GVW-class family as the
+  # LT28/LT35/LT46A repoints above, fused display forms, kind-blind) ──
+  "LT32": Lt  # GVW class 3.2 t, fused truck/bus display of the spaced `Lt 32` key above — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT35D": Lt  # GVW class 3.5 t + diesel, fused — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT40": Lt  # GVW class 4.0 t, fused sibling of `Lt 40` — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT40D": Lt  # GVW class 4.0 t + diesel — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT45": Lt  # GVW class 4.5 t ("In 1983 the LT40 and LT45 were added") — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT45D": Lt  # GVW class 4.5 t + diesel — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT46": Lt  # GVW class 4.6 t, fused sibling of `Lt 46` — https://en.wikipedia.org/wiki/Volkswagen_LT
+  "LT55D": Lt  # GVW class 5.5 t + diesel (first-gen LT range topped out at LT55) — https://en.wikipedia.org/wiki/Volkswagen_LT
+  Dune Buggy: null  # SPACED sibling of the Dune-Buggy null above, measured live in the verification build (nz raws `DUNE BUGGY`); same kit-car class — https://en.wikipedia.org/wiki/Dune_buggy
 
 Volvo:
   240 Polar U9: null     # single-trim registration noise

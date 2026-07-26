@@ -11,7 +11,7 @@
 car:
   - '\bSPRINTER\b'    # Mercedes van
   - '\bTRANSIT\b'     # Ford van family (incl. TOURNEO CONNECT etc. below)
-  - '\bTRANSPORTER\b' # VW T-series van
+  - '\bTRANSPORTER\b' # VW T-series van. NB 2026-07-26: car/volkswagen/transporter now EXISTS deliberately — it is the wave-3 fold target for T1–T6/KASTENWAGEN/BESTEL/KOMBIWAGEN/SYNCRO raws, which never contain TRANSPORTER and so never trip this drop (dossier-trims-vw-seat.md §3.0, GATE-1 resolution 1). Do NOT extend this drop to those raw shapes: drop_patterns fire on the RAW before renames (normalizer.rb:114), so the extension would kill the folds and orphan the minted id.
   - '\bCRAFTER\b'     # VW van
   - '\bCADDY\b'       # VW van — RDW even has "CADDY MODIFIED PARTITION WALL" (25,250 rows measured)
   - '\bCADDYMAXI\b'   # fused UK-DfT genmodel of the same van; without this the kind-blind Caddymaxi->Caddy fold mints car/volkswagen/caddy in pre-drift cache states (the cross-kind prune has a >=100 guard these few rows sit under) — caught by the pinned Caddy spotcheck on #67
