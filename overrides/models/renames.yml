@@ -1366,6 +1366,50 @@ Hyundai:
   H1: H-1                                     # spelling variant of "H-1" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Scoupe: S-Coupe                             # spelling variant of "S-Coupe" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Santafe: Santa FE                           # spelling variant of "Santa FE" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  # ── wave-3 trim-fold batch (2026-07-26, dossier-trims-peugeot-hyundai): 28
+  # Hyundai ids fold + 2 corrections. The ca/us cluster is settled by the
+  # regulator's own baseModel column (us_fueleconomy cache/us_vehicles.csv col
+  # 66, https://www.fueleconomy.gov/feg/download.shtml) cross-read against
+  # NRCan — the Ford precedent. All 31 lines are ADDITIONS: none of the
+  # settled Tucson/ix35, Inster, Kona Advance, Atos-Prime, H1, Scoupe,
+  # Santafe lines above is touched or reversed. "Santa FE" keeps its settled
+  # FE acronym casing — the fold values are keyed to the live canonical. ──
+  "Elantra Blue":            Elantra     # "Elantra Blue" baseModel Elantra; Blue is the eco trim
+  "Elantra GT":              Elantra     # "Elantra GT" baseModel Elantra (the 5-door hatch trim)
+  "Elantra N":               Elantra     # "Elantra N" baseModel Elantra; N is Hyundai's performance TRIM (https://www.hyundai.com/worldwide/en/hyundai-n)
+  "Elantra Touring":         Elantra     # "Elantra Touring" baseModel Elantra, VClass "Small Station Wagons"
+  "Elantra Wagon":           Elantra     # "Elantra Wagon" baseModel Elantra, same VClass
+  "Genesis R-Spec":          Genesis     # "Genesis R-Spec" baseModel Genesis (as are Genesis AWD / RWD / Coupe)
+  "Genesis R Spec":          Genesis     # the unhyphenated form us_fueleconomy also ships
+  "Santa FE Sport":          Santa FE    # "Santa Fe Sport 4WD"/"AWD" baseModel Santa Fe
+  "Santa FE Sport Ultimate": Santa FE    # "Santa Fe Sport Ultimate AWD" baseModel Santa Fe; Ultimate is the top trim
+  "Santa FE Ultimate":       Santa FE    # "Santa Fe Ultimate 4WD"/"AWD" baseModel Santa Fe
+  "Sonata Se":               Sonata      # "Sonata SE" baseModel Sonata
+  "Sonata Sport/Limited":    Sonata      # NRCan writes the slashed pair; "Sonata Sport Limited" baseModel Sonata
+  "Sonata Sport Limited":    Sonata      # the us_fueleconomy spelling of the same row
+  "Veloster N":              Veloster    # "Veloster N" baseModel Veloster
+  "Veloster Turbo":          Veloster    # engine/trim badge; sibling of Veloster N, same ladder
+  "Kona N":                  Kona        # "Kona N" baseModel Kona (as are Kona AWD / Electric / FWD)
+  "XG300":                   XG          # "XG300" baseModel XG; the displacement is the trim
+  "XG350":                   XG          # "XG350" baseModel XG; carries ca+us ONTO car/hyundai/xg, which has neither
+  "Tucson Fuel Cell":        Tucson      # "Tucson Fuel Cell" baseModel Tucson; a powertrain, not a nameplate (contrast: Nexo IS its own baseModel and is KEPT)
+  # — UK DfT genmodel drift: the settled "Inster 01 EV"/"Kona Advance HEV S"
+  # class, unhandled Bayon/Tucson siblings (the Bayon has no family rule, so
+  # its trims became models). Grade names are Hyundai UK's own (hyundai.co.uk). —
+  "Bayon Advance":  Bayon    # drift-adoption fold; raw "HYUNDAI BAYON ADVANCE" (1,589)
+  "Bayon Premium":  Bayon    # same class; raw "HYUNDAI BAYON PREMIUM" (3,339)
+  "Bayon Ultimate": Bayon    # same class; raw "HYUNDAI BAYON ULTIMATE" (2,163)
+  "Tucson Advance": Tucson   # same class; raw "HYUNDAI TUCSON ADVANCE PHEV AUTO" (6,678)
+  # — remaining folds —
+  "Atos Prime":     Atos       # COMPLETES the settled "Atos-Prime": Atos fold — the spaced form (15 regs) was left behind. Same facelift trim, same nameplate.
+  "Kona Kauai":     Kona       # dual-market label in one cell; the register writes "KONA, KAUAI" ×1,500+ (already folded by the comma split) and "KONA KAUAI" ×29 (not). The Karl/Viva precedent.
+  "Pony GLS":       Pony       # GLS is Hyundai's standard trim code (raws "PONY GLS"; "SCOUPE GTI U9" shows the same ladder on the S-Coupe)
+  "Staria Premium": Staria     # Premium is a trim level of the Staria (raws "STARIA PREMIUM" lu+nl)
+  "Ionic":          Ioniq      # registry misspelling of Ioniq (fi 1 + nl 1); NOT a product
+  "Galopper":       Galloper   # registry misspelling of Galloper (fi 1 + nl 7); the double-P/single-L transposition
+  # — corrections, not folds (dossier §5) —
+  "i80": "i800"    # the family rule's /^I\s?(\d0)/ truncates "I800" to "i80"; Hyundai sells the i800 (the H-1/iLoad people carrier, hyundai.co.uk), never an i80 — 7,793 registrations were published under a fabricated nameplate. Stopgap for the pipeline regex fix (filed); retire with a comment when that lands (the QASHQAI+2 dead-key precedent).
+  "I45": i45       # the i-series is lowercase-i by settled convention (i10/i20/i30/i40, ix20/ix35/ix55); the family rule's /(\d0)/ misses I45 so the casing never applies. Display-only: slug unchanged, no id moves.
 
 I-Coco:
   Lt-018:                    LT018                # closed type code
@@ -2613,40 +2657,151 @@ Panther:
   Panther: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Peugeot:
-  # ── casing-contradiction batch: the trim-code ladder finished (205 GR /
-  # 305 SR / 307 SW were fixed earlier, nine siblings weren't). ──
-  104 Sr: 104 SR                    # trim codes all-caps ("SR, SRD, SR Injection") — https://en.wikipedia.org/wiki/Peugeot_309 ; matches 305 Sr: 305 SR
-  207 Sw: 207 SW                    # SW = estate suffix; raw "207 SW GTI"
-  308 Sw: 308 SW                    # matches the block's 307 Sw: 307 SW
-  308 Sw Style: 308 SW Style        # raws "308 SW STYLE BLUEHDI 1", "308 SW STYLE HYBRID 14"
-  309 Gr: 309 GR                    # "XR, GR: 1580cc XU5" verbatim — Peugeot 309 article
-  309 Sr: 309 SR                    # "SR, SRD, SR Injection" verbatim, same article
-  405 Gr: 405 GR                    # same house trim ladder; matches 205 GR / 505 GR
-  505 Gr Family: 505 GR Family      # same; "Family" is the Familiale estate body word, stays title-case
-  508 Sw: 508 SW                    # same estate suffix
+  # ── wave-3 trim-fold batch (2026-07-26, dossier-trims-peugeot-hyundai): 92
+  # Peugeot ids fold onto 26 nameplates — trim badges, engine/displacement
+  # suffixes, body designations, Sevel chassis type codes, GVW/payload strings,
+  # registry truncations, one misspelling. 0 country pairs lost (union-checked);
+  # 205/305/104/j5 GAIN countries. 28 lines are EDITs of the settled casing/
+  # collision batches: the uppercase-trim-code and lowercase-injection-i
+  # rulings are NOT reversed — each survives verbatim as a variants: name in
+  # pipeline enrich/peugeot.yml (the HY 78 precedent). QUOTE EVERY NUMERAL on
+  # BOTH sides of the colon: an unquoted VALUE (205) parses as Integer and
+  # Support.slugify(Integer) crashes the build; an unquoted KEY (280) parses
+  # as Integer and renames.key?("280") never matches — silently inert. ──
+  # — 205: the GL/GR/GT/SR/XE ladder + cabriolet trims + the Rallye —
+  "205 Cj":                "205"   # CJ = the 1.1 cabriolet trim (raws "205 CJ CABRIOLET 1.1 U9" ×88)
+  "205 Cj/Roland Garros":  "205"   # CJ + the Roland Garros special edition (raw "205 CJ/ROLAND GARROS")
+  "205 Cti":               "205"   # CTI = injected cabriolet trim (raw "205 CTI CABRIOLET 1.9 U9" ×174)
+  "205 Cti 1":             "205"   # CTI + a truncated displacement (raws "205 CTI 1,6", "205 CTI 1,9")
+  "205 GL":                "205"   # base trim of the 205 ladder (GL/GR/GT); the GL token is acronym-pinned so the key keeps its caps
+  "205 Gr":                "205"   # EDIT (was 205 GR) — trim code; the uppercase ruling moves to enrich as the variant name
+  "205GR":                 "205"   # EDIT (was 205 GR) — fused registry variant of the same trim
+  "205 GT":                "205"   # trim code
+  "205 Rallye":            "205"   # Rallye is the stripped 1.3/1.9 homologation TRIM of the 205, not a nameplate — https://en.wikipedia.org/wiki/Peugeot_205
+  "205 Xe":                "205"   # XE trim (raw "205 XE" ×48)
+  # — 307 / 308: displacement + CC/SW bodies + XT/GT/Style trims —
+  "307 1.6I":       "307"   # litre displacement is a spec, NAMING.md §6 (raw "307 1.6I ST.CAR")
+  "307 2.0I":       "307"   # same (raw "307 2.0I CABRIO")
+  "307 CC":         "307"   # CC = coupé-cabriolet BODY of the 307
+  "307CC":          "307"   # EDIT (was 307 CC) — fused registry form of the same body
+  "307 Sw":         "307"   # EDIT (was 307 SW) — SW = the estate BODY (peugeot.com archive); the caps ruling moves to enrich
+  "307SW":          "307"   # EDIT (was 307 SW) — fused registry form
+  "307 Xt 1":       "307"   # XT trim + truncated displacement (raws "307 XT 1,6 5D TI", "307 XT 1,6 KOMBI")
+  "308 1.2I Stt":   "308"   # 1.2 PureTech + Stop&Start = engine spec
+  "308 1.6I":       "308"   # displacement
+  "308 CC":         "308"   # coupé-cabriolet body
+  "308 GT":         "308"   # GT trim (raw "PEUGEOT 308 GT PHEV AUTO" — DfT genmodel drift)
+  "308 Sw":         "308"   # EDIT (was 308 SW) — estate body
+  "308 Sw Style":   "308"   # EDIT (was 308 SW Style) — estate body + Style trim; ES 22-char truncations "308 SW STYLE BLUEHDI 1"
+  # — 208 / 2008 / 3008 / 5008 / E-5008: the LIVE-registry trim generator
+  # (ES DGT 22-char MODELO_ITV truncation, es_dgt.rb:18 + UK DfT trim-flavored
+  # genmodels). Trim strips; the e- PRODUCT survives per the settled
+  # data/review/citroen-e-prefix-verdict.md — E-5008 Allure folds to the MINTED
+  # E-5008, never to 5008. —
+  "208 5P Allure":            "208"      # "5P" = 5-portes (door count) + Allure trim; ES raw "208 5P ALLURE HYBRID 1"
+  "208 5P Allure Turbo 10":   "208"      # same, + the 100 hp turbo, truncated mid-number
+  "208 5P Style":             "208"      # same, Style trim
+  "208 Allure":               "208"      # GB raw "PEUGEOT 208 ALLURE MHEV AUTO" — DfT trim-flavored genmodel
+  "208 GT Premium Auto":      "208"      # GB raw "PEUGEOT 208 GT PREMIUM AUTO"; GT+Premium are trim, Auto is the gearbox
+  "2008 Allure":              "2008"     # ES raws "2008 ALLURE HYBRID 145" ×2,932 / "…HYBRID 110" / "…BLUEHDI 13"
+  "2008 Allure Turbo 100":    "2008"     # ES raw "2008 ALLURE TURBO 100" ×1,528
+  "3008 Allure":              "3008"     # ES raws "3008 ALLURE HYBRID 145" ×1,220 / "…PLUG-IN HY" / "…BLUEHDI 13"
+  "3008 GT":                  "3008"     # ES "3008 GT HYBRID 145 E-D" + GB "PEUGEOT 3008 GT PHEV AUTO"
+  "5008 GT":                  "5008"     # ES "5008 GT HYBRID 145 EDC" / "5008 GT PLUG-IN HYBRID"
+  "E-5008 Allure":            "E-5008"   # trim strips, the e- product survives (citroen-e-prefix-verdict.md); MINTS car/peugeot/e-5008 (gb 5,289 — publishes)
+  # — 405 / 504 / 505 / 604 / 605: the rear-drive-era GR/SR/TI/SL ladder,
+  # Mi16/V6 engine badges, Familiale body. 13 EDITs — every settled spelling
+  # ruling of the 2026-07-26 collision batch relocates to enrich, none reversed. —
+  "405 Gr":         "405"   # EDIT (was 405 GR)    — trim code
+  "405 MI16":       "405"   # EDIT (was 405 Mi16)  — 16-valve engine badge, not a nameplate
+  "405 Mi 16":      "405"   # EDIT (was 405 Mi16)  — spaced registry form
+  "405 Mi-16":      "405"   # EDIT (was 405 Mi16)  — hyphenated registry form
+  "405 Srdt":       "405"   # SRD + Turbo: the diesel trim ladder (GLD/GRD/SRD — https://en.wikipedia.org/wiki/Peugeot_309)
+  "405 Sri":        "405"   # EDIT (was 405 SRi)   — injection trim badge
+  "405SRI":         "405"   # EDIT (was 405 SRi)   — fused registry form
+  "504 GL":         "504"   # trim code (the spaced form cases correctly via the GL acronym pin)
+  "504GL":          "504"   # EDIT (was 504 GL)    — fused registry form
+  "504 Ti":         "504"   # EDIT (was 504 TI)    — injection trim badge
+  "504TI":          "504"   # EDIT (was 504 TI)    — fused registry form
+  "504D":           "504"   # D = the diesel 504 (NL first reg 1972 — era-checked)
+  "505 Gr":         "505"   # EDIT (was 505 GR)    — trim code
+  "505GR":          "505"   # EDIT (was 505 GR)    — fused registry form
+  "505 Gr Family":  "505"   # EDIT (was 505 GR Family) — GR trim + the Familiale 8-seat estate BODY (en.wikipedia Peugeot_505)
+  "505 V6":         "505"   # engine badge (the PRV V6)
+  "505V6":          "505"   # EDIT (was 505 V6)    — fused registry form
+  "604 D Turbo":    "604"   # turbodiesel engine designation
+  "604 SL":         "604"   # trim code
+  "604 Sti":        "604"   # injection trim badge
+  "605 Sld":        "605"   # SL + D (diesel) trim
+  # — 309 / 305 / 301 / 104 / 106 / 107: the GLD/GRD/SRD diesel-era ladder
+  # ("the 1905 cc … GLD, GRD, followed by the SRD" — en.wikipedia Peugeot_309) —
+  "309 GL Profil": "309"   # GL trim + "Profil" equipment pack (raws "309 XL PROFIL 1.4 U9", "309 GL PROFIL")
+  "309 Gr":        "309"   # EDIT (was 309 GR) — "XR, GR: 1580cc XU5" verbatim, Peugeot 309 article
+  "309 Sr":        "309"   # EDIT (was 309 SR) — "SR, SRD, SR Injection" verbatim, same article
+  "305 Grd":       "305"   # GR + D: the diesel trim (raw "305 GRD ESTATE")
+  "305 Sr":        "305"   # EDIT (was 305 SR) — trim code
+  "305SR":         "305"   # EDIT (was 305 SR) — fused registry form
+  "301 D":         "301"   # D = diesel (raws "301 D COUPE", "301 D CABRIO" — the 1930s 301; NL first regs 1935-37, era-checked against the nameplate)
+  "104 Sr":        "104"   # EDIT (was 104 SR) — trim code; matches the 305/309 ladder
+  "106 Xr":        "106"   # XR trim
+  "107 1.0I":      "107"   # litre displacement is a spec (NAMING.md §6)
+  # — factory type codes (203A/203C/403B/403U5/404C — the Citroën HY 78 class)
+  # + 206/207/508 bodies. Era-checked via RDW first regs: 203 A 1950-55,
+  # 403B 1960-63, 404C 1963-68 — all inside their nameplate's run. —
+  "203 A":     "203"   # 203A = the 1948-55 series letter (raw "203A CABRIOLET" shows it is a series, not a badge)
+  "203C":      "203"   # 203C = the 1955-60 series letter (raws "203-C SEDAN", "203C5 FAMIALE")
+  "403-B5":    "403"   # B5 body/series code (raw "403-B5 KOMBI/2900-61")
+  "403 B5":    "403"   # spaced form of the same code
+  "403B":      "403"   # B series code (sibling raws 403-B, 403-B7, 403/B7)
+  "403U5":     "403"   # U5 = the utility/fourgonnette series of the 403
+  "404C":      "404"   # C = the coupé series letter (raw "404C CABRIOLET")
+  "206 1.4I":  "206"   # litre displacement
+  "206+ 1.4I": "206"   # same, on the "206+" facelift string
+  "206 CC":    "206"   # coupé-cabriolet BODY
+  "206CC":     "206"   # EDIT (was 206 CC) — fused registry form
+  "206 Xr":    "206"   # XR trim
+  "207 Sw":    "207"   # EDIT (was 207 SW) — estate body; raw "207 SW GTI"
+  "508 Rxh":   "508"   # RXH = the raised HYbrid4 estate BODY of the 508
+  "508 Sw":    "508"   # EDIT (was 508 SW) — estate body
+  # — Sevel type codes. The register writes "290/J5", "280 L J5", "280L (J5)",
+  # "J5/280 G52" — the type code and the nameplate in ONE cell (NL-RDW, 200+
+  # rows). Type 280 = J5 1981-90, Type 290 = J5 1990-94 (RDW first regs
+  # 1984-99, era-checked). Nearly every row is a KAMPEERAUTO (camper)
+  # conversion registered in the CAR kind; the van-kind "290" MINTS
+  # van/peugeot/j5 (nl 654 > threshold 300). https://en.wikipedia.org/wiki/Fiat_Ducato
+  # THE THREE QUOTED NUMERAL KEYS ARE LOAD-BEARING: unquoted they parse as
+  # Integer and never match. —
+  "280":                     "J5"   # Sevel Type 280 = the J5 (car 8 + van 17 registrations)
+  "280L":                    "J5"   # Type 280, L body (car 37 + van 204)
+  "290":                     "J5"   # Sevel Type 290 = the J5 (car 43 + van 401) — MINTS van/peugeot/j5
+  "290 G 52/8 Kampeerauto":  "J5"   # Type 290 + G52 body code + Dutch "kampeerauto" (motorhome)
+  # — van: Boxer GVW series / Expert / Partner payload+trim strings / Rifter.
+  # The settled "Boxer 35 Professional": Boxer line (kept verbatim below) is
+  # the precedent the 335/435 siblings complete (the Ford Transit 100-350
+  # GVW-class shape). —
   "Boxer 35 Professional": Boxer    # drift-adoption fold: GVW-series trim string of the Boxer
-  # ── collision batch (2026-07-26): 9 groups, one dossier — trim codes
-  # uppercase-spaced; injection-era badges keep Peugeot's lowercase i;
-  # engine badges closed. Two detector proposals overridden (Mi16, V6). ──
-  205 Gr: 205 GR                            # trim codes badge UPPERCASE (GR = Grand Routier; period brochures)
-  205GR: 205 GR                             # fused registry variant
-  305 Sr: 305 SR                            # same uppercase trim-code convention
-  305SR: 305 SR                             # fused registry variant
-  307 Sw: 307 SW                            # SW is the official estate designation ("307 SW", peugeot.com archive)
-  307SW: 307 SW                             # fused registry variant
-  405 Mi 16: 405 Mi16                       # the badge is CLOSED with the lowercase injection i: "Mi16" — the 16v flagship; detector proposed "MI 16", wrong on both counts
-  405 Mi-16: 405 Mi16                       # hyphenated observed form (observed_model_names.json)
-  405 MI16: 405 Mi16                        # all-caps registry variant of the same badge
-  405 Sri: 405 SRi                          # Peugeot injection badges keep the lowercase i (SRi, GRi — as on the 205 GTi)
-  405SRI: 405 SRi                           # fused registry variant
-  504GL: 504 GL                             # fused variant; the spaced form cases correctly via the GL acronym token
-  504 Ti: 504 TI                            # period 504 trim badge is uppercase TI (brochures; the injected 504)
-  504TI: 504 TI                             # fused registry variant
-  505 Gr: 505 GR                            # uppercase trim code, as 205/305
-  505GR: 505 GR                             # fused registry variant
-  505V6: 505 V6                             # V6 is an engine badge, CLOSED — the spaced "V 6" the detector proposed appears nowhere
-  "206CC": "206 CC"                           # spelling variant of "206 CC" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "307CC": "307 CC"                           # spelling variant of "307 CC" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  "Boxer 335":      "Boxer"   # 335 = 3.5 t GVW series (Boxer 330/335/435 …), the class the settled "Boxer 35 Professional" line already folds
+  "Boxer 435":      "Boxer"   # 4.35 t GVW series
+  "Boxer Multicab": "Boxer"   # Multicab is the CREW-CAB body; the Citroën "Jumper Multicab: Jumper" precedent (raw "BOXER, MULTICAB" already folds via the comma split)
+  "Boxer Van":      "Boxer"   # "Van" is the panel-van BODY; the Citroën "Berlingo Van: Berlingo" precedent (raw "BOXER VAN, 2.0 HDI 163 HK L2H2")
+  "Boxter":         "Boxer"   # registry misspelling of Boxer (es+nl); NOT the Porsche Boxster, which is a different make
+  "Expert 2":                       "Expert"   # displacement fragment (raws "EXPERT 2,0 HDI"); the Citroën "Jumper 2: Jumper" precedent
+  "Expert 2.0HDI":                  "Expert"   # engine spec suffix
+  "Expert 227 L1H1 1.6HDI 16V-90":  "Expert"   # 227 = Sevel type code, L1H1 = length/height class, then engine+valves+kW (NL-RDW, 494 registrations)
+  "Expert Asphalt":                 "Expert"   # "Asphalt" is a UK trim level (raw "PEUGEOT EXPERT ASPHALT")
+  "Expert Furgón M Diesel":         "Expert"   # ES "furgón" (panel van) + size M + fuel; EXACT twin of the settled Citroën "Jumpy Furgón M Diesel: Jumpy"
+  "Expert Professional":            "Expert"   # UK trim; same class as the settled "Boxer 35 Professional": Boxer (7,139 GB registrations)
+  "Expert Traveller":               "Expert"   # Traveller is the PASSENGER version of the Expert; folds WITHIN its kind — renaming to Traveller would cross kinds (the Jumpy Spacetourer ruling, Citroën dossier §3.9/U6)
+  "Partner 1":                      "Partner"   # truncated displacement (raws "PARTNER 1,6 HDI", "PARTNER 1,6 VTI", "PARTNER 1,6I")
+  "Partner 120 L1 1.6HDIF":         "Partner"   # 120 = payload class, L1 = short body, HDIF = particulate-filter engine
+  "Partner 170C 1.6HDI":            "Partner"   # 170C = 1,700 kg payload class + engine (raw "PARTNER 170C 1.6HDI - 55KW")
+  "Partner 170C 1.9D":              "Partner"   # same class, 1.9 diesel (1,573 NL registrations)
+  "Partner 170C 2.0HDI":            "Partner"   # same class, 2.0 HDi
+  "Partner Furgón M Die":           "Partner"   # ES "furgón" + size M + fuel, truncated at 22 chars (raw "PARTNER - FURGÓN M DIE"); twin of the Citroën "Berlingo Talla M Blueh" fold
+  "Partner Prfssionl + Stndard EV": "Partner"   # UK DfT genmodel with the vowels stripped to fit its field: "Professional + Standard EV" (7,503 GB registrations)
+  "Rifter Active Business": "Rifter"   # ES fleet trim level (raw "RIFTER ACTIVE BUSINESS", 1,482 registrations)
+  "404 Pick-Up":            "404"      # pickup BODY of the 404
+  "404 Pick Up":            "404"      # unhyphenated registry form of the same body
   Peugeot: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   DJANGO125: Django 125                   # registry form with the space collapsed; Peugeot writes "Django 125" (https://www.peugeot-motocycles.com/)
   "BUXI45KM/H": Buxi                      # "45 km/h" is the L1e speed class, which kind=moped already encodes — it is not part of the nameplate (NAMING.md §6). Rename CREATES the Buxi nameplate.
