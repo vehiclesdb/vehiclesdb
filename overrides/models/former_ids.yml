@@ -824,7 +824,7 @@
 "motorcycle/norton/atlas750":                  "motorcycle/norton/atlas-750"                  # ATLAS750 -> Atlas 750  [nl,nz]
 "motorcycle/norton/commando750":               "motorcycle/norton/commando-750"               # COMMANDO750 -> Commando 750  [fi,nl,nz]
 "motorcycle/norton/commando850":               "motorcycle/norton/commando-850"               # COMMANDO850 -> Commando 850  [nl,nz]
-"motorcycle/norton/commando850mk-iii":         "motorcycle/norton/commando-850mk-iii"         # COMMANDO850MK Iii -> Commando 850MK Iii  [nl,nz]
+"motorcycle/norton/commando850mk-iii": "motorcycle/norton/commando-850-mk-iii" # REPOINTED: used to alias commando-850mk-iii, which this commit retires. THIRD chain of the session, all the same shape — see the note at the foot of this file.
 "motorcycle/norton/commando850mk3":            "motorcycle/norton/commando-850mk3"            # COMMANDO850MK3 -> Commando 850MK3  [nl,nz]
 "motorcycle/norton/commando961cafe-racer":     "motorcycle/norton/commando-961-cafe-racer"    # COMMANDO961CAFE Racer -> Commando 961 Cafe Racer  [fi,nl]
 "motorcycle/norton/dominator-model7":          "motorcycle/norton/dominator-model-7"          # Dominator MODEL7 -> Dominator Model 7  [nl,nz]
@@ -2753,3 +2753,16 @@
 "car/volkswagen/vw-1-11":      "car/volkswagen/vw1-11"
 "bus/man/lions":               "bus/man/lion-s"
 "bus/man/lion":                "bus/man/lion-s"
+"motorcycle/moto-guzzi/850le-mans-iii": "motorcycle/moto-guzzi/850-le-mans-iii" # "850LE Mans III" -> "850 Le Mans III"
+"motorcycle/norton/commando-850mk-iii": "motorcycle/norton/commando-850-mk-iii" # "Commando 850MK III" -> "Commando 850 Mk III"
+
+# ── A NOTE ON CHAINS, after three in one session (S2W 2026-07-26) ───────────
+# Every one had the identical shape: I retire an id X (rename/fold), and
+# something ALREADY aliased to X, so A->X->Y appears the moment X dies.
+#   hayabusa   gsx1300rrqm5hayabusa -> gsx1300-rrqm-5-hayabusa -> hayabusa
+#   combinette combinette428        -> combinette-428          -> 428-combinette
+#   norton     commando850mk-iii    -> commando-850mk-iii      -> commando-850-mk-iii
+# Lint 1f caught all three, which is the system working — but the cheap habit
+# is to grep former_ids for the id you are about to retire BEFORE writing the
+# rename, not after the lint tells you. A retirement is never just about the
+# id you are looking at; it is about everything already pointing there.
