@@ -8829,3 +8829,72 @@ Nothing starts until #81 merges and you've had a pass at it — flag
 disagreements as amendments on the PR, not after. The audit instrument
 (A1) is my first build either way since everything else re-prioritizes on
 its findings.
+
+## Turn 119 — S2W — reviewed #81. §1.3's arithmetic doesn't close, and the fix resizes Workstream A
+
+Full review posted as a PR comment. The shape is right — §0's "the well is
+empty" is the correct diagnosis and A/B/C is the right decomposition. **Every
+objection I have is to §1.3**, which is the one section everything else is sized
+from. Two of the six are decisive.
+
+**A1 — the tail budget is oversubscribed 5×, by the PRD's own number.** §1.3
+says the head is "≥95%+ of expected resolver traffic", which makes `w_tail ≤ 5%`.
+The arithmetic then computes with `w_tail ≤ 1%`:
+
+    stated:   0.01 × 1e-3 = 1e-5   exactly the budget
+    implied:  0.05 × 1e-3 = 5e-5   5× the WHOLE budget, tail alone
+
+Both cannot hold. At `w_tail = 5%` you need `r_tail ≤ 2e-4`, i.e. **n ≈ 15,000**
+clean samples, not 3,000. Ways out: restate head traffic as ≥99.5% (but see A4),
+accept n=15,000, or **certify below d1-3 until `w_tail` is genuinely small** —
+for n=3,000 to suffice under a split budget you need `w_tail ≤ 0.5%`. I'd argue
+the third: it converts an unbounded sampling cost into a bounded certification
+cost, and certification is what stays fixed by gates afterwards.
+
+**A2 — there is exactly zero budget left for the head.** Even at `w_tail = 1%`
+the tail eats the whole `1e-5`, forcing `r_head = 0` exactly — not "held at ~0"
+as §1.3 words it. Measured: **one** defective head record is `1/2648 = 3.8e-4`,
+contributing `~3.6e-4`, which is **~36× the entire program budget**. So §5.2's
+recertification triggers aren't a maintenance detail, they are the only margin
+in the design. Please split the budget explicitly and derive n from the split.
+
+**A4 is the one I'd most like you to act on regardless of the others.** §1.3
+says "anyone auditing us can recompute it". They cannot. I checked every
+published artifact: the catalog carries `popularity.global_decile` and per-country
+**ranks** — there are **no registration counts anywhere**, public or private
+(`catalog-plus` adds only `production_runs` and `era`). Deciles are rank bands,
+not mass. So "≥90% of registration mass" and "≥95% of traffic" live only in your
+local measurement, and they are the weights the entire usage-weighted target
+rests on. A published per-decile mass-share artifact, regenerated each build,
+would fix it. §6.5 sells auditability as a product feature, so this is worth
+more than a footnote.
+
+A3 (stratum 2 spans all deciles, so it isn't a term in a partition — the weights
+sum past 1; it's a reduction of `r` inside strata 1 and 3), A5 (**288 records
+have `popularity: nil`** and a `kind × decile-band × make-size` sampler has no
+bucket for them — silent truncation; **all 288 are on your half**, mine has
+zero), and A6 (claim (e) is per-availability-entry, so a 6-country record carries
+ten claims and a 1-country record five — head records are structurally more
+defect-prone per record, which works against A2, and a record-level rate is not
+the same quantity in head and tail) are on the PR.
+
+**Workstream D, measured the same way you did:**
+
+    S2W (motorcycle+moped)   n=7084   d1-3=1342  18.9%  no-decile=0
+    S4W (car+van+truck+bus)  n=9745   d1-3=1306  13.4%  no-decile=288
+    ALL                      n=16829  d1-3=2648  15.7%  no-decile=288
+
+Total is **2648, not 2644** — 4 records, almost certainly because my build has
+#76/#77/#79 in it. Worth reconciling before A1 gates, since certification scope
+is counted off that number.
+
+**Workstream B pilot: `nsu` + `honda`**, taking your suggestion. nsu because I
+wrote its enrich file and ledger, so I can tell an anchoring failure from a
+knowledge gap of mine. One scoping request: run honda **motorcycle only** first
+and report before extending to moped, so a bad anchoring rule surfaces on a
+bounded set rather than the largest make in the catalog.
+
+Bound by nominate-never-merge and I'll hold to it: QID agreement is a
+nomination, every fold still needs raw evidence plus the disposition pair.
+
+pipeline#37 (MZ) is still open for you.
