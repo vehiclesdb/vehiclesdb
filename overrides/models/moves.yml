@@ -224,3 +224,21 @@
 "Toyota|Scion Xb":     "Scion|xB"        # car/toyota/scion-xb (fi,nl)
 "Toyota|Xa":           "Scion|xA"        # car/toyota/xa (nl,ua) — bare "Xa" is the Scion xA
 "Toyota|Lexus NX300H": "Lexus|NX"        # car/toyota/lexus-nx300h (es,fi) — Lexus marque + NX nameplate; 300h is the hybrid engine grade
+
+# ── Renault Trucks vans → Renault (RD trim-fold dossier §4.1, 2026-07-26) ────
+# Renault Trucks (Volvo Group) is a REAL distinct marque and KEEPS its heavy
+# ranges — but it is also the UK distribution channel for Renault's LCVs, and
+# the marque's own site sells them as such (renault-trucks.co.uk/product/
+# renault-trucks-master-red-edition, /l/renault-trucks-trafic-ultimate,
+# /product/renault-trucks-e-tech-master-electric). The RENAULT TRUCKS MASTER /
+# TRAFIC rows are the SAME vehicles as the Renault-make ones, filed under the
+# distributor's entity name; both targets exist and the availability union is
+# unchanged (pure dedup: master es,gb,nl / trafic gb are subsets). moves.yml is
+# kind-blind: these keys also fire in truck (truck/renault/master exists and is
+# the correct target — benign, desirable) and would route the sub-threshold
+# bus/renault-trucks/master candidate to bus/renault/master, which exists.
+# The HEAVY-range boundary (truck c/d/t, maxity) is deliberately NOT decided
+# here — it is one policy decision spanning four companion pairs
+# (renault-trucks, scania-vabis, leyland-daf, mitsubishi-fuso); see PR worklist.
+"Renault Trucks|Master": "Renault|Master"   # van: a Renault nameplate on a Renault type approval, distributed by Renault Trucks UK
+"Renault Trucks|Trafic": "Renault|Trafic"   # same (renault-trucks.co.uk/l/renault-trucks-trafic-ultimate)

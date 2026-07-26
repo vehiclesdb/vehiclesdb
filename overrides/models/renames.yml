@@ -578,6 +578,15 @@ Cupra:
   Tavascan V1 EV: Tavascan          # V1 = UK entry trim (V1/V2/VZ1/VZ2 lineup) + EV fuel marker in the uk_dft string; adds gb to the nameplate
   Terramar Amrica Cp Ed: Terramar   # truncated uk_dft string for the "Terramar America's Cup Edition" launch edition; editions fold
 
+Dacia:
+  # ── trim-fold batch (2026-07-26, wave 3 apply; dossier-trims-renault-dacia
+  # .md §2.8): FIRST Dacia block in this file. The heading must equal the
+  # resolved display name — exactly "Dacia", which is what makes/aliases.yml
+  # ("DACIA: Dacia") produces (the E-Max lesson in the reachability test). ──
+  Bigster Expression HEV Auto: Bigster # THREE specs in one cell: "Expression" trim + "HEV" powertrain + "Auto" transmission (uk_dft genmodel) — https://www.dacia.co.uk/hybrid-and-electric-range/bigster-suv.html
+  Duster Extreme: Duster    # "Extreme" is a Dacia TRIM LEVEL (Essential/Expression/Journey/Extreme ladder) — https://www.dacia.co.uk/hybrid-and-electric-range/duster-suv.html
+  Logan Mcv: Logan          # MCV = "Multi Convivial Vehicle", the ESTATE BODY of the Logan; car/dacia/logan already carries body_types [hatchback, wagon] — https://en.wikipedia.org/wiki/Dacia_Logan
+
 Daihatsu:
   Hijet: Hi-Jet                               # spelling variant of "Hi-Jet" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
@@ -2965,36 +2974,189 @@ Ram:
   Ram: null                                   # registry rows where the make was written into the model column (truck kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
 Renault:
-  R 16 Tl: R 16 TL                  # version ladder L/TL/TS/TX all-caps — https://en.wikipedia.org/wiki/Renault_16 ; matches 12 Tl: 12 TL
-  R4 Tl: R4 TL                      # same ladder on the R4; R-prefix is the catalog's Renault house form
-  # ── collision batch (2026-07-26): trim codes uppercase-spaced; the 4CV is
-  # CLOSED (it IS the name, a different car from the R4); the R prefix is
-  # shorthand and folds into the numeric designation. ──
-  12 Tl: 12 TL                              # trim codes badge uppercase-spaced (Renault 12 TL, period brochures; renaultclassic heritage)
-  12TL: 12 TL                               # fused registry variant
-  16 Ts: 16 TS                              # same trim-code convention (Renault 16 TS)
-  16TS: 16 TS                               # fused registry variant
-  4 Cv: 4CV                                 # the 1947-1961 4CV is officially CLOSED — it IS the model name, not a 4 + CV trim (renault.com heritage); a DIFFERENT car from the R4. Detector proposed "4 CV", wrong
+  # ── trim-fold batch (2026-07-26, wave 3 apply; evidence per line in the
+  # pipeline repo's aux/research/trims-2026-07/dossier-trims-renault-dacia.md):
+  # 101 Renault records fold across six kinds (renames are kind-blind; the
+  # dossier's six-kind blast drill found ZERO keys hitting a live id in more
+  # than one kind — the one intended cross-kind reach is "4"/"5" into van,
+  # where es_dgt files "RENAULT 4 E-TECH ELECT" N1 rows, the R4 Société van).
+  # THE R-PREFIX SELF-CONTRADICTION this block carried ("R4 Gtl: 4 GTL" — the
+  # designation is the NUMBER — vs "R 12: R12" — the fused form is canonical)
+  # is decided in THIS commit, in ONE commit, for the NUMERAL: R 12's identity
+  # claim stands (R 12 and R12 are one car; repointed below, not reversed) and
+  # the R4 Gtl rationale wins the direction, because the marque's own current
+  # copy badges the cars with the bare number and the catalog already
+  # publishes 10/11/12/14/16/17/18/19/20/21/25/30 as bare numerals.
+  # Every numeral key AND value is QUOTED — unquoted they parse as Integer,
+  # renames.key?("4") never matches, and the line is silently inert (the
+  # Citroën "375" failure). All pairs round-trip YAML.safe_load as Strings. ──
+  #
+  # ── THE RESCUE (5 lines). junk? deletes a bare single-digit nameplate
+  # (name !~ /[A-Za-z]/ && name !~ /\A\d{2,4}\+?\z/). An explicit rename entry
+  # is an AUTHOR'S STATEMENT and beats the heuristic (normalizer.rb ORDER FIX
+  # 2026-07-25) — the same rescue Mazda "3"/"6"/"2", Polestar "2"/"3"/"4",
+  # DS "3"/"4"/"7"/"8" already carry, in identity form here because Renault's
+  # canonical IS the bare numeral. Measured cost of NOT having these: nl_rdw
+  # 7,927 rows on the 5-family + 2,050 on the 4-family, es_dgt 1,063 rows of
+  # "RENAULT 5 E-TECH ELECT" + 182 of "RENAULT 4 E-TECH ELECT" in three
+  # months — all junk-dropped today, on the current European Car of the Year. ──
+  "4": "4"                  # the nameplate IS the numeral — renault.co.uk/electric-vehicles/r4-e-tech-electric.html renders "Renault 4 E-Tech electric" throughout (x69); the house form for Renault numerals is bare (the catalog already publishes 10-30 that way)
+  "5": "5"                  # same — renault.co.uk/electric-vehicles/r5-e-tech-electric.html renders "Renault 5 E-Tech 100% electric" (x100 on page); 2025 European Car of the Year
+  "6": "6"                  # Renault 6 (1968-1980) — https://en.wikipedia.org/wiki/Renault_6 . NB likely stays sub-threshold (nl 16 rows, single source) and lands in candidates; the line is correct either way
+  "8": "8"                  # Renault 8 (1962-1973), the R8/R8 Gordini — https://en.wikipedia.org/wiki/Renault_8
+  "9": "9"                  # Renault 9, European Car of the Year 1982 — https://en.wikipedia.org/wiki/Renault_9
+  # ── the numeral line: R-prefix shorthand and the TL/TS/TX/GTL/GTS/GTX/TXi/
+  # RX trim ladder fold into the numeral designation ──
+  R4: "4"                   # R-prefix is registry shorthand; the badge is "Renault 4" — nl_rdw raws "R 4", "R4", "R4:", "R 4 Limousine Luxe"
+  "R4:": "4"                # trailing-colon register form (nl_rdw "R4:") — its own produced string; caught by the post-#42 multi-form drill (n=1 today, keyed so the folded id cannot re-mint on corroboration)
+  "R4: 4X4": "4"            # same trailing-colon form + 4x4 drivetrain spec (multi-form drill)
+  R4-Tl: "4"                # hyphenated register form of the R4 TL (multi-form drill)
+  R4L: "4"                  # "4L" is the French colloquial name (quatrelle) for the R4 L (Luxe) — a trim, not a nameplate
+  4 L: "4"                  # spaced form of the same L (Luxe) trim
+  4 Iconic: "4"             # Iconic is a Renault TRIM LEVEL (evolution/techno/iconic ladder) on the 2025 Renault 4 E-Tech — raw "RENAULT 4 ICONIC E-TECH EV"
+  R4 Tl: "4"                # EDIT (was → "R4 TL"): TL trim of the Renault 4 — the same altitude fix one level up; the old value is a display this batch retires, and a new line keyed on it would be silently inert (renames never chain)
+  4 Gtl: "4"                # EDIT (was → "4 GTL"): GTL trim of the Renault 4 — its most famous badge, and still a trim
+  R5: "5"                   # as R4 — nl_rdw raws "R 5", "R5", "R 5 GTE"
+  5TL: "5"                  # TL trim, fused register form
+  5 Gtl: "5"                # EDIT (was → "5 GTL"): GTL trim of the Renault 5
+  5 Gtx: "5"                # GTX trim
+  5 GT Turbo: "5"           # GT Turbo = the hot-hatch trim of the front-engined Supercinq (NOT the mid-engined 5 Turbo, which KEEPS as its own id — a structurally different car, the F-150 Lightning precedent) — https://en.wikipedia.org/wiki/Renault_5
+  R5 GT Turbo: "5"          # R-prefix spelling of the same trim
+  R5 Alpine Turbo: "5"      # Alpine/Gordini Turbo trim of the Supercinq — https://en.wikipedia.org/wiki/Renault_5
+  5 Iconic: "5"             # Iconic trim level on the 2024 Renault 5 E-Tech — raw "RENAULT 5 ICONIC E-TECH EV"
+  5 Techno: "5"             # Techno trim level, same ladder — raw "RENAULT 5 TECHNO E-TECH EV"
+  R8: "8"                   # R-prefix shorthand for the Renault 8
+  R08: "8"                  # zero-padded register rendering of R8 (nl_rdw n=4)
+  R 1135 Gordini: "8"       # R1135 is Renault's TYPE number for the R8 Gordini; a type code is not a nameplate — https://en.wikipedia.org/wiki/Renault_8
+  R9: "9"                   # R-prefix shorthand for the Renault 9
+  R10: "10"                 # R-prefix shorthand for the Renault 10
+  R11: "11"                 # R-prefix shorthand for the Renault 11
+  R12: "12"                 # R-prefix shorthand for the Renault 12
+  12 Tl: "12"               # EDIT (was → "12 TL"): TL trim of the Renault 12
+  R14: "14"                 # R-prefix shorthand for the Renault 14
+  R16: "16"                 # R-prefix shorthand for the Renault 16
+  R16TX: "16"               # TX trim, fused register form
+  16 Ts: "16"               # EDIT (was → "16 TS"): TS trim of the Renault 16
+  R 16 Tl: "16"             # EDIT (was → "R 16 TL"): R-prefix + TL trim of the Renault 16
+  17TS: "17"                # TS trim of the Renault 17; nl_rdw raws "17TS COUPE", "17TS CABRIOLET"
+  R18: "18"                 # R-prefix shorthand for the Renault 18
+  18GTS: "18"               # GTS trim; EPA col-66 (us_fueleconomy baseModel) gives "18i/Wagon/Sportwagon" for every 18 body/trim string — one line settles the whole 18 body/trim question
+  R19: "19"                 # R-prefix shorthand for the Renault 19
+  19 Gtx: "19"              # GTX trim
+  20TS: "20"                # TS trim of the Renault 20
+  R21: "21"                 # R-prefix shorthand for the Renault 21
+  21 Nevada: "21"           # Nevada is the ESTATE BODY name of the 21 (UK: Savanna) — a body, not a nameplate — https://en.wikipedia.org/wiki/Renault_21
+  21 RX: "21"               # RX trim
+  21 Turbo: "21"            # Turbo engine variant of the 21 saloon
+  21 Turbo Quadra: "21"     # Turbo + Quadra = the 4WD drivetrain option on the same car
+  R25: "25"                 # R-prefix shorthand for the Renault 25
+  25 Gtx: "25"              # GTX trim
+  25 Txi: "25"              # TXi trim (fuel-injected TX)
+  25 V6 Turbo: "25"         # V6 Turbo engine variant
+  30TX: "30"                # TX trim of the Renault 30
+  # ── Master: GVW classes, powertrain badges and body converters fold onto
+  # the nameplate (the Transit GVW precedent) ──
+  Master 2: Master          # NOT a generation: the RDW comma rule (model.split(",").first) truncates "MASTER 2,3 DCI"/"MASTER 2,5 DCI" at the DECIMAL COMMA — the "2" is engine displacement; every feeding string is "MASTER 2,<n> DCI …" (pipeline defect filed, dossier §6.4)
+  Master F3500: Master      # F3500 = 3,500 kg GVW chassis code — a payload designation, not a nameplate (Transit GVW precedent) — https://en.wikipedia.org/wiki/Renault_Master
+  Master T 35: Master       # T35 = the 3.5-tonne GVW class; French/Nordic registers write "T35"/"T 35"/"T29" for Master and Trafic alike — https://en.wikipedia.org/wiki/Renault_Master
+  Master Ze: Master         # Z.E. = Zéro Émission, Renault's electric powertrain badge — a powertrain marker (Fluence Z.e folds the same way below)
+  E-Tech Master: Master     # E-Tech is Renault's electrification BADGE, applied across the whole group (renault-trucks.co.uk sells "Renault Trucks E-Tech Master"); prefix position is why collapse_variant's E-TECH suffix rule misses it (pipeline defect filed, dossier §6.3)
+  Master Horsebox: Master   # "Horsebox" is a body conversion, not a nameplate (uk_dft/lu strings)
+  Master Jpm: Master        # JPM Concept, French bodybuilder on Master chassis — a converter, not a Renault nameplate
+  Master Theault: Master    # Théault, French horsebox builder on Master chassis — same class
+  Master Be-Combi Lvc: Master # "BE-Combi" = the BE-driving-licence combi conversion, "LVC" the converter code — body conversion strings
+  Filovan Master: Master    # Filovan, Italian/Spanish converter — the row is a converted Master
+  Fd Master: Master         # "FD" is a register chassis/body code prefix, not a nameplate; nl_rdw carries "FD / MASTER", "Fd Master" and "RENAULT FD MASTER" for the same vehicle
+  Fd / Master: Master       # the spaced-slash rendering produces "Fd / Master" — a distinct key (the Arkana spaced-slash seam; multi-form drill)
+  # ── Renault Trucks ranges: the LETTER is the range, the NUMBER is engine
+  # power in hp (C/K/T/AE) or GVW class in tonnes (D). renault-trucks.co.uk
+  # publishes six diesel product pages (-c, -d, -d-wide, -k, -t, -t-high) and
+  # none is numeric; the marque's press copy writes "Renault Trucks C-430" as
+  # a spec after the range name. T High and D Wide KEEP — own product pages.
+  # The retired #89 stubs r/s are NOT re-created: r365/s140/s150/s180 KEEP
+  # (no bare R or S range was ever marketed — dossier U2). ──
+  C380: C       # C-range, 380 hp — a power rating, not a nameplate — https://www.renault-trucks.co.uk/product/renault-trucks-c
+  C430: C       # C-range, 430 hp; the marque writes it "Renault Trucks C-430" (press release, 2026)
+  C440: C       # C-range, 440 hp
+  C520: C       # C-range, 520 hp; raw "C 520 8x4" carries the axle config in the same cell
+  D12: D        # D-range, 12 t GVW class — a payload designation (Transit GVW precedent); raw "D 12 LOW 4X2 R 240 E6" shows GVW and power as separate specs
+  D13: D        # D-range, 13 t GVW class
+  D14: D        # D-range, 14 t GVW class
+  D16: D        # D-range, 16 t GVW class
+  K480: K       # K-range (construction), 480 hp — raw "K 480 10X8"
+  T380: T       # T-range (long haul), 380 hp — https://www.renault-trucks.co.uk/product/renault-trucks-t
+  T460: T       # T-range, 460 hp
+  T480: T       # T-range, 480 hp
+  AE385: Ae     # AE range (the pre-1993 Magnum), 385 hp — raws "AE 385 19 T", "AE 385 TI-11AZA1/635"; the fused sibling spellings ("AE385TI-19") already land on Ae. NOT a truck-path fixpoint (the spaced/fused seam, dossier §6.2) but a fixpoint on the car/van path — which is what the reachability test measures — and corpus-attested as the produced string on real truck rows; corpus beats test
+  AE420: Ae     # AE range, 420 hp — raws "AE 420 TI", "AE 420 TI-18T"; same seam note as AE385
+  # ── Kangoo: market/body names on one nameplate ──
+  Kangoo Express: Kangoo    # "Express" is the panel-van BODY name of the Kangoo, NOT the separate Renault Express nameplate (which keeps its own id — the 1985-2000 and 2021- Express); nl_rdw carries "Kangoo Express", "KANGOO EXPRESS MAXI", "Kangoo-Express" for the same vehicle
+  Kangoo-Express: Kangoo    # the hyphenated rendering produces its own string (multi-form drill; n=1 today, keyed against re-mint)
+  Kangoo Express Z.e: Kangoo # same body + Z.E. electric powertrain badge
+  Kangoo Rapid: Kangoo      # "Rapid" is the GERMAN market name for the Kangoo panel van — a market synonym on one nameplate
+  Kangoo Van: Kangoo        # "Van" is the body configuration; raws "KANGOO VAN E-TECH ELECTRIC" etc.
+  Fc Kangoo: Kangoo         # "FC" is a register chassis/body code prefix (cf. "Fd Master"), not a nameplate
+  Kango: Kangoo             # register misspelling, one letter short (nl_rdw n=2 car + n=1 van)
+  # ── Megane · Scenic · Arkana ──
+  Arkana/Megane Conquest: Arkana # ONE registry cell carrying BOTH market names of one car (the Karl / Viva precedent); es/lu/nl type-approval strings
+  Arkana/megane Conquest: Arkana # split_slashes twin: smart_case lower-cases the token after the slash, so BOTH forms must be keyed (the S400 Hev / S400 HEV precedent)
+  Arkana Megane Conquest: Arkana # the SPACE-separated third rendering (es_dgt/lu_snca/nl_rdw; TAN e6*2018/858*00003*11 — the same approval). The dossier attested this raw among the six but keyed only the two fused-slash forms; the id-contract liveness gate caught the still-alive id in the apply build
+  Arkana / Megane Conquest: Arkana # the SPACED-SLASH fourth rendering (nl_rdw "ARKANA / MEGANE CONQUEST", n=13) — produced form replay-verified "Arkana / Megane Conquest": with spaces around the slash the tokens title-case normally, so the fused-form key never matches. Second liveness-gate catch on the same member; all four produced forms of the dual-label cell are now keyed
+  Megane Conquest: Arkana   # the Arkana's launch name in Türkiye/CEE; the dual-label rows above prove the identity
+  Megane Break: Megane      # "Break" is French for ESTATE — a body word, not a nameplate (the settled "Megane Scenic: Scenic" line is the same class)
+  Megane Sport: Megane      # NOT a sports trim: the raw is "MEGANE SPORT TOURER" (the estate) and collapse_variant strips " TOURER…" but has no "SPORT TOURER" phrase (pipeline rule gap filed, dossier §6.5)
+  Meganescenic: Scenic      # fused register form of "Mégane Scénic", the first-generation Scenic's full badge; matches the settled "Megane Scenic: Scenic"
+  # ── Clio · Captur · Symbol (generation suffixes II/III/IV are ALREADY
+  # absorbed by the VARIANT_SUFFIXES roman-numeral rule; this is what the
+  # suffix rules cannot see) ──
+  Clio Societe: Clio        # "Société" is the FRENCH UTILITY/VAT-van body designation (2 seats, blanked rear) — a body/tax class, not a nameplate
+  Clio Sport: Clio          # "Clio Sport" is the Renault Sport trim (Clio RS); the corpus's "CLIO RS"/"CLIO RS 200EDC" already collapse to Clio via the RS rule
+  Clio Symbol: Symbol       # the Clio-based SALOON, badged "Clio Symbol" in Türkiye and "Symbol"/"Thalia" elsewhere — folds onto the saloon nameplate the catalog already publishes (Thalia↔Symbol deliberately NOT touched — dossier U7, the Pajero/Montero market-name class)
+  Capture: Captur           # register misspelling of Captur, with an -E; raws "CAPTURE", "CAPTURE E-TECH PLUG-IN", "Capture E-Tech plug-in hybrid"
+  # ── Trafic ──
+  Traffic: Trafic           # register misspelling with a doubled F; raws "RENAULT TRAFFIC", "TRAFFIC, 1.6 DCI 125 T29 L2H1" sit beside correctly-spelled TRAFIC rows carrying the same T29 GVW class
+  Trafic Dubbele Cabine: Trafic # Dutch for "double cab" — a body configuration (nl_rdw)
+  Trafic Fourgon: Trafic    # French for "panel van" — a body configuration (fi_traficom)
+  # ── the remaining single-cluster folds ──
+  Grand Espace: Espace      # "Grand" = the long-wheelbase body of the Espace; matches the settled "Grand Scenic: Scenic" line in this same block
+  Grand Modus: Modus        # "Grand" = the long-wheelbase Modus — https://en.wikipedia.org/wiki/Renault_Modus
+  Caravelle 1100: Caravelle # 1100 = engine displacement in cc; raw "CARAVELLE 1100 COUPE-R1133/2270" carries body + type code in the same cell
+  R 1133 Caravelle: Caravelle # R1133 is Renault's TYPE number for the Caravelle — a type code is not a nameplate
+  Dauphine Gordini: Dauphine # Gordini = the tuned performance version of the Dauphine — https://en.wikipedia.org/wiki/Renault_Dauphine
+  Dauphine R1090: Dauphine  # R1090 is the Dauphine's own type number
+  Floride S: Floride        # "S" = the 956 cc version of the Floride — https://en.wikipedia.org/wiki/Renault_Floride
+  Fuego Gtx: Fuego          # GTX trim of the Fuego; EPA col-66 gives baseModel "Fuego" for every Fuego row
+  Fuego Turbo: Fuego        # Turbo engine variant of the Fuego
+  Fluence Z.e: Fluence      # Z.E. = Zéro Émission, the electric powertrain badge (same class as Master Ze)
+  Wind Roadster: Wind       # the Renault Wind IS a roadster — "Roadster" is the body word restated — https://en.wikipedia.org/wiki/Renault_Wind
+  Rodeo 6: Rodeo            # the 4/6 in "Rodéo 4"/"Rodéo 6" names the DONOR platform (R4 / R6), not a separate nameplate; corpus carries "RENAULT 6 RODEO" and "RODEO 6" for the same Teilhol-built car (LOWER CONFIDENCE — dossier U8; dropping this one line costs nothing else in the batch)
+  Mascott 150.35: Mascott   # 150 hp / 3.5 t — power + GVW, the Mascott's standard designation grammar ("MASCOTT 110-5.5T", "MASCOTT 130-5T" all already land on Mascott)
+  Mascott 150-35: Mascott   # hyphenated rendering of the same designation (multi-form drill)
+  Twizy 45: Twizy           # moped kind: "45" = the 45 km/h L6e speed-limited version; kind=moped already encodes the class (the Silence S01LS/S02LS precedent)
+  # ── REPOINTED lines: their VALUE was a display name this batch retires;
+  # left pointing at a dead display they would re-mint the folded id ──
+  12TL: "12"                # REPOINT (was "12 TL"): fused registry variant of the TL trim
+  16TS: "16"                # REPOINT (was "16 TS"): fused registry variant of the TS trim
+  4GTL: "4"                 # REPOINT (was "4 GTL"): fused registry variant of the GTL trim
+  R4 Gtl: "4"               # REPOINT (was "4 GTL"): the settled line whose rationale — "the R prefix is shorthand — the model designation is the NUMBER" — this batch extends to the whole numeral line
+  R 4 Gtl: "4"              # REPOINT (was "4 GTL"): spaced R-prefix variant
+  R4/GTL: "4"               # REPOINT (was "4 GTL"): slashed observed form (observed_model_names.json)
+  5GTL: "5"                 # REPOINT (was "5 GTL"): fused registry variant
+  R5 Gtl: "5"               # REPOINT (was "5 GTL"): R-prefix variant
+  R5GTL: "5"                # REPOINT (was "5 GTL"): fused R-prefix variant
+  R 5 GTL: "5"              # REPOINT (was "5 GTL"): spaced R-prefix variant (flap insurance)
+  Master T35: Master        # REPOINT (was "Master T 35"): fused GVW-class form; the "Master T 35" display retires with the Master T 35 fold above
+  R 12: "12"                # REPOINT (was "R12"): the identity claim stands — R 12 and R12 are the SAME car — but the canonical is the numeral, per the block-header decision; the old "fused form is canonical" rationale is superseded in this commit
+  R 19: "19"                # REPOINT (was "R19"): as R 12
+  R 4: "4"                  # REPOINT (was "R4"): as R 12
+  R 5: "5"                  # REPOINT (was "R5"): as R 12
+  # ── untouched settled lines ──
+  4 Cv: 4CV                                 # the 1947-1961 4CV is officially CLOSED — it IS the model name, not a 4 + CV trim (renault.com heritage); a DIFFERENT car from the R4. Detector proposed "4 CV", wrong. NB the numeral rescue "4" does NOT reach it — 4 Cv / 4-CV are separately keyed
   4-CV: 4CV                                 # hyphenated registry variant of the same closed name
-  4 Gtl: 4 GTL                              # trim code on the Renault 4; uppercase-spaced
-  4GTL: 4 GTL                               # fused registry variant
-  5 Gtl: 5 GTL                              # trim code on the Renault 5
-  5GTL: 5 GTL                               # fused registry variant
-  R4 Gtl: 4 GTL                             # the R prefix is shorthand — the model designation is the NUMBER (Renault 4 GTL); folds the duplicate id family
-  R 4 Gtl: 4 GTL                            # spaced R-prefix variant, same fold
-  R4/GTL: 4 GTL                             # slashed observed form (observed_model_names.json)
-  R5 Gtl: 5 GTL                             # same R-prefix fold for the 5
-  R5GTL: 5 GTL                              # fused R-prefix variant
-  R 5 GTL: 5 GTL                            # spaced R-prefix variant (flap insurance)
   Megane Scenic: Scenic  # first-gen Scenic was badged Megane Scenic
   Grand Scenic: Scenic   # LWB variant
   Velsatis: Vel Satis                         # spelling variant of "Vel Satis" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Master T35: Master T 35                     # spelling variant of "Master T 35" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Renault: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
-  R 12: R12                                   # spelling variant of "R12" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  R 19: R19                                   # spelling variant of "R19" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  R 4: R4                                     # spelling variant of "R4" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
-  R 5: R5                                     # spelling variant of "R5" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
 Rewaco:
   Rewaco: null                            # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
