@@ -1,0 +1,33 @@
+# VERIFICATION LEDGER — E Ride Pro (batch B-002, the ceiling batch)
+#
+# Reviewed against build/packs/e-ride-pro.md. Verdicts per PRD-QUALITY §5.2.
+# Batch design (floor vs ceiling) and full progress: data/review/batches.yml B-002.
+make: e-ride-pro
+researcher: s2w-opus5
+verifier: null
+status: awaiting_verification
+reviewed_at: 2026-07-26
+raw_fingerprint: sha256:01e0a6e57718bc571f577126e3fed7d3894ecb63aa662c772175b7fa8cc65c6d
+records:
+  - id: moped/e-ride-pro/sr
+    verdict: fixed
+    note: >-
+      display "Sr" -> "SR". E Ride Pro sells two lines, the SR and the SS 3.0; SR is a line
+      designator and never a word.
+    evidence: https://www.eridepros.com/pro-ss-3-0
+  - id: moped/e-ride-pro/ss
+    verdict: fixed
+    note: >-
+      display "Ss" -> "SS". Same line designator. DELIBERATELY NOT MERGED into ss3-0 — the
+      marque's current bike is the "SS 3.0" and a bare SS may be an earlier one; merging on a
+      shared prefix would be inventing a generation. The marque also spaces it ("SS 3.0")
+      against our "SS3.0", recorded with this batch's other spacing questions.
+    evidence: https://www.eridepros.com/pro-ss-3-0
+  - id: moped/e-ride-pro/ss3-0
+    verdict: canonical
+    note: >-
+      E Ride Pro is a real electric dirt-bike marque with its own published lineup (SR and SS
+      3.0, 72V/50Ah, sold through a dealer network). NOTE the make DISPLAY is "E Ride Pro"
+      with no hyphen although the id is `e-ride-pro` — renames key on the display name, and
+      writing the hyphenated form produced an inert block that the curation lint caught.
+    evidence: https://www.eridepros.com/pro-ss-3-0
