@@ -63,33 +63,176 @@ observed defects needs n ≈ 3/r clean samples. For r = 1e-5 that is
 The achievable construction is a **weighted sum of three different kinds of
 guarantee**:
 
+The construction is a **weighted sum over a two-stratum PARTITION**, with
+detector coverage acting as a multiplier inside each stratum rather than as a
+stratum of its own:
+
 ```
-weighted_defect_rate ≤ Σ_i  w_i · r_i        over three strata:
+weighted_defect_rate ≤ w_head · r_head  +  w_tail · r_tail       (w_head + w_tail = 1)
 
-STRATUM 1 — the certified head (deciles 1–3: 2,644 records, ~15.7% of
-  records, ≥90% of registration mass, ≥95%+ of expected resolver traffic):
+STRATUM 1 — the certified head (deciles 1–3: 2,648 records, 15.7% of
+  records, ≥90% of registration mass — see §1.3.2 on publishing that weight):
   EXHAUSTIVELY verified, record by record, under the ledger protocol.
-  r_head is not a sample estimate — it is a deterministic audit result,
-  held at ~0 by the regression gates (Workstream C). Residual risk =
-  regression between certifications, bounded by gate coverage + the
-  recertification triggers (§5.2).
+  r_head is not a sample estimate — it is a deterministic audit result.
+  Residual risk = regression between certifications, bounded by gate
+  coverage + the recertification triggers (§5.2).
 
-STRATUM 2 — detector-enumerable classes, ALL deciles: every defect class
-  with a detector (collisions, contradictions, corporate strings, name
-  defects, gates 1–7, hysteresis exclusions) is checked over the WHOLE
-  catalog at every build. For these classes r = 0 is deterministic at
-  build time, not statistical.
+STRATUM 2 — the residual tail (deciles 4–10 plus the no-decile records of
+  §1.3.3): sampled. n clean stratified samples ⇒ r_tail ≤ 3/n at 95%
+  (rule of three).
 
-STRATUM 3 — the residual tail (deciles 4–10, non-enumerable classes):
-  sampled. n = 3,000 clean stratified samples ⇒ r_tail ≤ 1e-3 at 95%
-  (rule of three). With tail traffic weight w_tail ≤ 1%:
-  contribution ≤ 0.01 × 1e-3 = 1e-5.
+DETECTOR COVERAGE is NOT a stratum. Every defect class with a detector
+  (collisions, contradictions, corporate strings, name defects, gates 1–7,
+  hysteresis exclusions) is checked over the WHOLE catalog at every build,
+  so for those classes r = 0 deterministically in BOTH strata. It reduces
+  r_head and r_tail; it carries no weight of its own. Treating it as a
+  third stratum makes the weights sum past 1, since it spans all deciles.
 ```
 
 Head certified + enumerable classes at deterministic zero + tail bounded and
 down-weighted ⇒ **usage-weighted p99.999 is an achievable, falsifiable,
-maintainable claim.** Anyone auditing us can recompute it. That arithmetic —
-published, with the audit data — is itself a product feature (§6.5).
+maintainable claim** — but only at the sizes derived in §1.3.1, which are larger
+than a first pass suggests.
+
+### 1.3.1 Sizing: the budget must be SPLIT, and the tail weight decides n
+
+Two corrections to the first version of this section, both arithmetic. **Neither
+changes the target in §1.2** — the target is owner-set. They change what it costs
+to demonstrate it, and that is a scope decision for the owner and S4W, not
+something this amendment picks.
+
+**(a) The tail weight was internally inconsistent, and the sizing is 5× off.**
+Stratum 1 was described as *"≥95%+ of expected resolver traffic"*, which makes
+`w_tail ≤ 5%`. The sizing then used `w_tail ≤ 1%`:
+
+```
+as written:   0.01 × 1e-3 = 1e-5     exactly the whole budget
+as implied:   0.05 × 1e-3 = 5e-5     5× the whole budget, from the tail alone
+```
+
+Both cannot hold. `n = 3,000` bounds `r_tail ≤ 1e-3`, and at `w_tail = 5%` that
+contributes `5e-5`.
+
+**(b) The budget left ZERO for the head.** Even at `w_tail = 1%` the tail
+consumed the entire `1e-5`, forcing `r_head = 0` exactly rather than *"held at
+~0"*. The measured consequence is stark: **one** defective head record is
+`1/2648 = 3.8e-4`, contributing `≈3.6e-4` — **~36× the entire program budget**.
+A design in which a single record breaks the claim by 36× has no margin, and
+§5.2's recertification triggers are then not a maintenance detail but the only
+margin that exists.
+
+So the budget is split explicitly. Taking an even split as the default:
+
+```
+head allowance:  w_head · r_head ≤ 5e-6     ⇒ at w_head=0.95, r_head ≤ 5.3e-6
+                                             ⇒ over 2,648 records: ≤0.014 expected
+                                             defective. Still effectively "zero
+                                             defects permitted" — but now STATED,
+                                             and now with a nonzero allowance the
+                                             gates are measured against.
+tail allowance:  w_tail · r_tail ≤ 5e-6     ⇒ r_tail ≤ 5e-6 / w_tail
+                                             ⇒ n ≥ 3 / r_tail = 3·w_tail / 5e-6
+```
+
+Which gives three honest options. **This is the decision to make:**
+
+| resolution | requires | tail sample n |
+|---|---|---|
+| **(i)** certify deeper than d1–3 until `w_tail ≤ 0.5%` | more certification | **3,000** |
+| **(ii)** accept `w_tail = 5%` as stated | nothing new | **30,000** (1.8× the catalog) |
+| **(iii)** show `w_head ≥ 99.5%` from measured weights | §1.3.2 artifact first | **3,000** |
+
+Option (ii) is self-defeating: sampling 30,000 of 16,829 records means auditing
+everything with replacement, at which point exhaustive certification is cheaper
+and yields a deterministic result instead of a 95% bound. **(i) and (iii) are the
+real candidates**, and they are the same move from opposite ends — (iii) tests
+whether the head already carries the weight, (i) extends it until it does. So
+§1.3.2 is a prerequisite for choosing, not an independent nicety.
+
+**RESOLVED 2026-07-26, same day, by measurement** (S4W; the artifact §1.3.2
+demanded was built first — pipeline #40 — precisely so this choice would be
+read, not asserted). First published measurement, catalog/meta/decile-mass.json:
+
+```
+d1-3 = 82.98% of registration mass     d1-5 = 95.28%
+d1-6 = 99.49%                          d7-10 = 0.515%   none-band = 0.0000%
+```
+
+- **(iii) is measurably dead**: the d1-3 head carries 82.98%, nowhere near
+  99.5%. The original "≥90% of mass / ≥95% of traffic" claims were WRONG —
+  the review was right to refuse them unmeasured.
+- **(i) resolves concretely to: certify through decile 6.** At d1-6,
+  w_tail = 0.51%; with the split budget, r_tail ≤ 5e-6/0.0051 = 9.8e-4
+  ⇒ **n ≈ 3,100** clean tail samples. Certifying to d1-5 does NOT close
+  (w_tail = 4.72% ⇒ n ≈ 28,000 — the option-(ii) trap by another door).
+- Scope consequence, stated plainly for the owner: certification grows from
+  2,648 records (d1-3) to **≈9,340 (d1-6, ~55% of the catalog)** — roughly
+  3.5× the first estimate. That is the honest price of the target at the
+  measured mass distribution; the alternative is a smaller claim, not a
+  cheaper proof. Phasing in §5.1: D1a locks d1-3 (83% of mass) first, D1b
+  extends to d4-6.
+- The "none" band carries 0.0000% mass: those 288 records need SAMPLING
+  coverage (§1.3.3), never certification.
+
+Note also that the composed claim inherits the tail's confidence level: with a
+rule-of-three bound on stratum 2, the published figure is a **95% upper bound**,
+not a point estimate, and should be worded that way in §6.5 and `QUALITY.md`.
+
+### 1.3.2 The weights must be PUBLISHED or the auditability claim is false
+
+This section claims *"anyone auditing us can recompute it."* As of the merge of
+this PRD they cannot, and the gap is load-bearing rather than cosmetic.
+
+Checked across every published artifact: the catalog carries
+`popularity.global_decile` and per-country **`rank`** values. There are **no
+registration counts anywhere** — not in `catalog/`, not in `catalog-plus/`
+(which adds only `production_runs` and `era`), not in `makes-plus.json`.
+**Deciles are rank bands, not mass.** So `≥90% of registration mass` and
+`≥95% of traffic` — the weights the entire usage-weighted target rests on —
+exist only in a local measurement that ships nowhere.
+
+Since §6.5 sells the recomputable arithmetic as a product feature, and since
+§1.3.1 shows the sample size swings 10× on `w_tail`, this is a required
+deliverable and not a footnote:
+
+> **A1-bis (new acceptance gate):** the build emits a per-decile
+> mass-share table (records, summed registration mass, share of total, and
+> cumulative share) as a versioned artifact, regenerated every build.
+> `w_head` and `w_tail` in §1.3.1 are read from it, not asserted.
+
+**A1-bis: DELIVERED** (pipeline #40, merged 2026-07-26): the build emits
+`catalog/meta/decile-mass.json` (schema decile-mass/1) — aggregate shares per
+kind × decile including the none band, manifest-registered, regenerated every
+build. Aggregate SHARES only: raw counts remain private by reconciler policy,
+and shares reveal nothing per-record. The §1.3.1 resolution above reads its
+numbers from the first emission.
+
+### 1.3.3 288 records have no decile and no stratum
+
+`popularity` is `nil` on **288 published records**. The §2.1 stratification is
+`kind × decile-band × make-size`, which has no bucket for them — a seeded
+sampler would exclude them silently, which is exactly the silent-truncation
+class this program exists to eliminate.
+
+They are folded into stratum 2 above and need an explicit `decile-band = none`
+value in §2.1, with the usual rule that a stratum which cannot be sampled is
+reported rather than dropped. Scope note, measured: **all 288 are on the S4W
+half** (car/van/truck/bus); the S2W half (motorcycle/moped) has zero.
+
+### 1.3.4 A record-level rate is not the same quantity in both strata
+
+§1.1 counts a record defective if any identity claim fails, and claim (e) is
+**per availability entry**. A record present in six countries therefore carries
+ten claims; a single-country record carries five. Head records have
+systematically more countries than tail records, so **head records carry more
+claims and are structurally more defect-prone per record** — which works directly
+against §1.3.1(b)'s requirement that `r_head` be ~0.
+
+Two consequences worth stating rather than discovering: the head allowance in
+§1.3.1 is tighter than it looks, and a record-level rate measured in the tail
+cannot be compared like-for-like with one measured in the head. Either normalise
+to per-claim rates in §2.2's outputs, or report claim-count distribution per
+stratum alongside the rate so the bias is visible.
 
 ### 1.4 What we will NOT claim
 
@@ -107,11 +250,18 @@ first; run it quarterly forever.*
 ### 2.1 Design
 
 - **Population**: all published records at a pinned release tag.
-- **Stratification**: kind × decile-band (1–3 / 4–6 / 7–10) × make-size
-  band (≥100 records / 10–99 / <10). 54 strata; allocate by Neyman-ish
-  compromise: minimum 8 per non-empty stratum, remainder proportional to
-  registration mass. **Baseline round: n = 400 per ownership half** (S4W:
-  car/van/truck/bus; S2W: motorcycle/moped).
+- **Stratification**: kind × decile-band (1–3 / 4–6 / 7–10 / **none**) ×
+  make-size band (≥100 records / 10–99 / <10). 72 strata; allocate by
+  Neyman-ish compromise: minimum 8 per non-empty stratum, remainder
+  proportional to registration mass. **Baseline round: n = 400 per ownership
+  half** (S4W: car/van/truck/bus; S2W: motorcycle/moped).
+  The `none` band exists because `popularity` is `nil` on 288 published
+  records (§1.3.3) — without it a seeded sampler drops them with no report,
+  which is the silent-truncation class this program exists to remove. All 288
+  are on the S4W half. A stratum that cannot be sampled is REPORTED as such,
+  never omitted.
+  Note that "remainder proportional to registration mass" is not computable
+  from any published artifact today; it depends on the A1-bis table (§1.3.2).
 - **Sampling**: seeded PRNG (seed = release tag string) so the sample is
   reproducible and cannot be cherry-picked. `scripts/audit_sample.rb`
   (to build — §9 gate A1) emits the sample manifest.
@@ -135,7 +285,14 @@ first; run it quarterly forever.*
 
 ### 2.3 Acceptance
 
-- A1: sampler script merged, seeded, stratification unit-tested.
+- A1: sampler script merged, seeded, stratification unit-tested — including a
+  test that the `none` decile band is populated and reported (§1.3.3).
+- **A1-bis: the per-decile mass-share artifact ships** (§1.3.2) — records,
+  summed registration mass, share, cumulative share; regenerated every build.
+  `w_head`/`w_tail` are READ from it. This gates the choice between the three
+  sizing resolutions in §1.3.1, so it precedes A2 rather than following it:
+  the tail sample size swings 10× on the number it produces, and allocation
+  within A1 is already specified proportional to mass.
 - A2: baseline round complete both halves; results published; every found
   defect either fixed (with its class detector) or filed in DEBT.md.
 - A3: quarterly cadence entered into the release protocol (§16 of
@@ -293,9 +450,9 @@ Certification = the full §7 protocol + entity check. Targets:
 
 | stratum | records | target | method |
 |---|---|---|---|
-| deciles 1–3 | 2,644 | **100% certified** | swarm waves, ~150/agent-block; ≈ 6 waves per half |
-| deciles 4–6 | 6,698 | ≥25% + all first-seen + all audit-flagged | sampling + demand |
-| deciles 7–10 | 7,483 | audit sampling (A) + resolver demand (§5.3) | statistical only |
+| deciles 1–3 (D1a) | 2,648 | **100% certified** — locks 82.98% of mass | swarm waves, ~150/agent-block |
+| deciles 4–6 (D1b) | ≈6,690 | **100% certified** — takes the head to 99.49% of mass (the §1.3.1 resolution: the construction does not close shallower) | phased after D1a |
+| deciles 7–10 + none-band | ≈7,490 | audit sampling (A, n≈3,100) + resolver demand (§5.3) | statistical only |
 
 ### 5.2 Recertification triggers (staleness is a defect vector)
 
