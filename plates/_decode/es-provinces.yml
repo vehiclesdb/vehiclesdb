@@ -1,0 +1,116 @@
+# plates/_decode/es-provinces.yml — Spanish province contraseñas.
+#
+# THE SOURCE FINDING: this table is PRIMARY, not Wikipedia. The EU research
+# dossier recorded that "Wikipedia supplies the full code table" for the
+# pre-2000 Spanish provincial system. It is in fact enacted law: Reglamento
+# General de Vehículos (RD 2822/1998) ANEXO XVIII, section
+# "II. Contraseñas de las placas — A. Siglas de provincias", which lists all
+# 52 codes. Every row below is that table, verbatim, in its own order
+# (alphabetical by province name as the BOE prints it).
+#
+# Referenced by: es-provincial (plates/es.yml) via region_encoding.
+#
+# PERIOD DISCIPLINE (PRD-PLATES §2.4 — "province codes changed over time"):
+# these codes are the set in force in the CONSOLIDATED Anexo XVIII, and they
+# use the CURRENT official province names (Illes Balears, Girona, Lleida,
+# Ourense, A Coruña). Historic contraseñas that predate the RGV and appear on
+# older plates — PM for Baleares, GE for Gerona, OR for Orense, and the
+# pre-1982 forms — are NOT in this primary and are NOT invented here; they are
+# a recorded gap for gate L1/L4. A decode of a physical plate older than the
+# RGV must therefore be treated as unresolved rather than mapped through this
+# table.
+jurisdiction: es
+topic: provinces
+authority:
+  name: Reglamento General de Vehículos (RD 2822/1998), Anexo XVIII II.A
+  url: "https://www.boe.es/buscar/act.php?id=BOE-A-1999-1826"
+sources:
+  - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII, II. Contraseñas de las placas, A. Siglas de provincias — all 52 rows"
+  - "https://www.boe.es/buscar/doc.php?id=BOE-A-1999-1826  # original enacted text (in force 26-07-1999), same section"
+period: { start: 1999 }
+period_evidence: instrument-in-force
+period_note: >-
+  The contraseñas long predate RD 2822/1998; 1999 is the date of the instrument
+  that ENACTS the list read here, not the date the codes came into use. Codes
+  remain decodable indefinitely because provincial plates stay valid: RD
+  2822/1998 disposición transitoria preserves them, and the Orden of 15-09-2000
+  only stopped ISSUING them (in force 17-09-2000).
+
+# Ambiguity notes a parse API must carry:
+#   * CC decodes to CÁCERES here AND is the consular series prefix
+#     (Anexo XVIII I.B.a).3). Disambiguate on group structure, not prefix:
+#     provincial = 4 digits + 1-2 letters; consular = two digit groups.
+#   * C (A Coruña) vs CA (Cádiz) vs CC (Cáceres) vs CE (Ceuta) vs CO (Córdoba)
+#     vs CR (Ciudad Real) vs CS (Castellón) vs CU (Cuenca): the code is
+#     MAXIMAL-MUNCH — always take the longest matching code before the digits.
+#   * S (Cantabria) vs SA / SE / SG / SO / SS: same rule.
+#   * L (Lleida) vs LE / LO / LU: same rule.
+#   * O (Asturias) vs OU (Ourense): same rule.
+#   * Z (Zaragoza) vs ZA (Zamora): same rule.
+#   * Ceuta (CE) and Melilla (ML) are autonomous cities, not provinces; the
+#     BOE table lists them under the same heading.
+maximal_munch: true
+
+codes:
+  - { code: VI,  name: "Álava" }
+  - { code: AB,  name: "Albacete" }
+  - { code: A,   name: "Alicante" }
+  - { code: AL,  name: "Almería" }
+  - { code: O,   name: "Asturias" }
+  - { code: AV,  name: "Ávila" }
+  - { code: BA,  name: "Badajoz" }
+  - { code: B,   name: "Barcelona" }
+  - { code: BU,  name: "Burgos" }
+  - { code: CC,  name: "Cáceres" }
+  - { code: CA,  name: "Cádiz" }
+  - { code: S,   name: "Cantabria" }
+  - { code: CS,  name: "Castellón" }
+  - { code: CR,  name: "Ciudad Real" }
+  - { code: CO,  name: "Córdoba" }
+  - { code: C,   name: "A Coruña" }
+  - { code: CU,  name: "Cuenca" }
+  - { code: GI,  name: "Girona" }
+  - { code: GR,  name: "Granada" }
+  - { code: GU,  name: "Guadalajara" }
+  - { code: SS,  name: "Guipúzcoa" }
+  - { code: H,   name: "Huelva" }
+  - { code: HU,  name: "Huesca" }
+  - { code: IB,  name: "Illes Balears" }
+  - { code: J,   name: "Jaén" }
+  - { code: LE,  name: "León" }
+  - { code: L,   name: "Lleida" }
+  - { code: LU,  name: "Lugo" }
+  - { code: M,   name: "Madrid" }
+  - { code: MA,  name: "Málaga" }
+  - { code: MU,  name: "Murcia" }
+  - { code: NA,  name: "Navarra" }
+  - { code: OU,  name: "Ourense" }
+  - { code: P,   name: "Palencia" }
+  - { code: GC,  name: "Las Palmas" }
+  - { code: PO,  name: "Pontevedra" }
+  - { code: LO,  name: "La Rioja" }
+  - { code: SA,  name: "Salamanca" }
+  - { code: TF,  name: "Santa Cruz de Tenerife" }
+  - { code: SG,  name: "Segovia" }
+  - { code: SE,  name: "Sevilla" }
+  - { code: SO,  name: "Soria" }
+  - { code: T,   name: "Tarragona" }
+  - { code: TE,  name: "Teruel" }
+  - { code: TO,  name: "Toledo" }
+  - { code: V,   name: "Valencia" }
+  - { code: VA,  name: "Valladolid" }
+  - { code: BI,  name: "Vizcaya" }
+  - { code: ZA,  name: "Zamora" }
+  - { code: Z,   name: "Zaragoza" }
+  - { code: CE,  name: "Ceuta",   kind: autonomous-city }
+  - { code: ML,  name: "Melilla", kind: autonomous-city }
+
+# State and NATO contraseñas from the SAME Anexo XVIII section (II.B) are
+# modelled as series in plates/es.yml (es-military-1999, es-nato-fae-1999,
+# es-government-1999, es-police-1999) rather than as decode rows, because they
+# are issuance series in their own right and not a geographic decode.
+state_codes_see_also:
+  - "plates/es.yml#es-military-1999   # ET Ejército de Tierra, FN Armada, EA Ejército del Aire"
+  - "plates/es.yml#es-government-1999 # MF Fomento, MMA Medio Ambiente, PME Parque Móvil del Estado"
+  - "plates/es.yml#es-police-1999     # CNP Cuerpo Nacional de Policía, PGC Guardia Civil"
+  - "plates/es.yml#es-nato-fae-1999   # FAE NATO international military headquarters in Spain"

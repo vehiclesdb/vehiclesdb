@@ -1,0 +1,672 @@
+# plates/de.yml — Germany (PRD-PLATES gate L0 pilot).
+#
+# EVERY format, colour and class claim here comes from the consolidated
+# Fahrzeug-Zulassungsverordnung (FZV) of 20 July 2023, BGBl. 2023 I Nr. 199,
+# Textnachweis ab 1.9.2023, replacing FZV 2011 (V v. 3.2.2011 I 139), last
+# amended by Art. 5 G v. 12.5.2026 (BGBl. 2026 I Nr. 142) — the Vollzitat as
+# printed on gesetze-im-internet's own PDF front matter.
+#
+# THE THREE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE DISTRICT CODES ARE NOT IN THE FZV. § 9 Abs. 3 FZV, verbatim: "Die
+#    Unterscheidungszeichen der Verwaltungsbezirke werden auf Antrag der Länder
+#    vom Bundesministerium für Verkehr festgelegt oder aufgehoben. ... Die
+#    Festlegung und Aufhebung der Unterscheidungszeichen ist vom
+#    Bundesministerium für Verkehr unverzüglich im Bundesanzeiger zu
+#    veröffentlichen." So the ~400-code district list is a BUNDESANZEIGER
+#    publication. It is therefore NOT authored here as 700 rows of guesswork:
+#    region_encoding points at a future _decode file and this file cites the
+#    MECHANISM. Anlage 2 FZV — which IS in the regulation — is inlined instead,
+#    because it is small, closed and primary.
+#    § 9 Abs. 3 also states the two rules a decode table must carry: a Land may
+#    apply for MORE THAN ONE code per district, and "Ein Kennzeichen, dessen
+#    Unterscheidungszeichen aufgehoben ist, darf bis zur Außerbetriebsetzung
+#    des betroffenen Fahrzeuges weitergeführt werden" — withdrawn codes stay on
+#    the road, so decode rows need period discipline, never deletion.
+#
+# 2. ANLAGE 1 IS THE SERIAL GRAMMAR, AND IT IS COMPLETE. Five shapes, verbatim,
+#    plus the letter rule: "Mit Ausnahme der Umlaute Ä, Ö und Ü können alle
+#    übrigen Buchstaben des Alphabets ... zugeteilt werden."
+#      a) A 1 – A 999    bis  Z 1 – Z 999
+#      b) AA 1 – AA 99   bis  ZZ 1 – ZZ 99
+#      c) AA 100 – AA 999 bis ZZ 100 – ZZ 999
+#      d) A 1000 – A 9999 bis Z 1000 – Z 9999
+#      e) AA 1000 – AA 9999 bis ZZ 1000 – ZZ 9999
+#    Union: 1–2 letters + 1–4 digits, with NO LEADING ZEROS (every block starts
+#    at 1, 100 or 1000). Combined with Anlage 4 Abschnitt 1 Nr. 4 — "Mehr als
+#    acht Stellen (Buchstaben des Unterscheidungszeichens sowie Buchstaben und
+#    Ziffern der Erkennungsnummer) auf einem Kennzeichen sind unzulässig" — the
+#    total is capped at eight positions, which the standard series' regex
+#    enforces with a negative lookahead (the only illegal combination the
+#    quantifiers alone would admit is 3 letters + 2 letters + 4 digits = 9).
+#
+# 3. PERIOD CLAIMS ARE INSTRUMENT-DATED, AND SAY SO. The German
+#    Unterscheidungszeichen + Erkennungsnummer system, and the Euro-Feld
+#    design, both predate the FZV 2023 by decades. NO PRIMARY for either origin
+#    date was secured in this pass (see the L0 report's gap list), so every
+#    entry carries `period_evidence: instrument-in-force` and a note saying in
+#    terms that the year is the date of the instrument that STATES the rule, not
+#    the date the series began. The two exceptions are dated from their own
+#    enabling statute: the E-Kennzeichen (Elektromobilitätsgesetz of
+#    5 June 2015) and the moped insurance-plate colour cycle (anchored on the
+#    Verkehrsjahr the FZV names).
+#
+# REGEX POLICY: as in plates/nl.yml, `format.regex` is the lint-round-trippable
+# regex and `format.regex_strict` (proposed schema addition) carries the
+# tighter, sourced form — here, the no-leading-zeros rule from Anlage 1, which
+# cannot go in `regex` because the lint generates "0" for a pattern "9".
+jurisdiction: de
+authority:
+  name: Fahrzeug-Zulassungsverordnung (FZV) — Bundesministerium für Digitales und Verkehr
+  url: "https://www.gesetze-im-internet.de/fzv_2023/"
+binding: vehicle
+instrument:
+  citation: "Fahrzeug-Zulassungsverordnung vom 20. Juli 2023 (BGBl. 2023 I Nr. 199, S. 2), zuletzt geändert durch Artikel 5 des Gesetzes vom 12. Mai 2026 (BGBl. 2026 I Nr. 142)"
+  # NOTE: quoted deliberately. scripts/lint_plates.rb calls
+  # YAML.safe_load_file(..., permitted_classes: []), so a BARE YAML date
+  # (2023-07-20) raises Psych::DisallowedClass and takes the whole lint run
+  # down with a backtrace rather than a LINT FAIL line. Every date-shaped
+  # value in the plates dataset must be a quoted string or an integer.
+  ausfertigungsdatum: "2023-07-20"
+  textnachweis_ab: "2023-09-01"
+  replaces: "FZV 2011 (V 9232-14 v. 3.2.2011 I 139)"
+  source: "https://www.gesetze-im-internet.de/fzv_2023/FZV.pdf  # front matter: Ausfertigungsdatum, Vollzitat, Stand, 'Ersetzt V 9232-14 v. 3.2.2011 I 139 (FZV 2011)', 'Textnachweis ab: 1.9.2023'"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once.
+# ---------------------------------------------------------------------------
+common:
+  colours:
+    standard: "§ 12 Abs. 1 FZV, verbatim: 'Das Unterscheidungszeichen und die Erkennungsnummern sind mit schwarzer Schrift auf weißem schwarz gerandetem Grund auf ein Kennzeichenschild aufzubringen.' — black script on a white, black-bordered ground. This is the COLOUR SPEC; Anlage 4's drawings carry no separate RGB/RAL values for general plates."
+    source: "https://www.gesetze-im-internet.de/fzv_2023/__12.html  # § 12 Abs. 1 (colours), Abs. 2 (reflective, DIN 74069 Oct 2022 Abschnitte 1-8, DIN test mark + register number), Abs. 5 (front and rear required; rear only for trailers, motorcycles and class L5e)"
+  dimensions:
+    single_line: { w: 520, h: 110, unit: mm, note: "Größtmaß" }
+    two_line: { w: 340, h: 200, unit: mm, note: "Größtmaß; 280 mm on two- and three-wheeled motor vehicles" }
+    motorcycle: { w_min: 180, w_max: 220, h: 200, unit: mm }
+    reduced_two_line: { w: 255, h: 130, unit: mm, note: "Leichtkrafträder and § 12 Abs. 6 Nr. 1 vehicles only" }
+    source: "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 1 Nr. 1 a)-d), Fundstelle BGBl. 2023 I Nr. 199, S. 71-91"
+  font:
+    name: FE-Schrift (fälschungserschwerende Schrift)
+    statutory_basis: "Anlage 4 Abschnitt 1 Nr. 2.1: 'Die Beschriftung muss den Schriftmustern \"Schrift für Kfz-Kennzeichen\" entsprechen.' The Schriftmuster are obtainable from the Bundesanstalt für Straßen- und Verkehrswesen, Postfach 10 01 50, 51401 Bergisch Gladbach."
+    sizes: { mittelschrift: 75, engschrift: 75, verkleinerte_mittelschrift: 49, unit: mm, note: "verkleinerte Mittelschrift only for reduced two-line and motorcycle plates" }
+    alternate: "DIN 1451-2:1986-02 (Verkehrsschrift) for Bundeswehr plates and Versicherungskennzeichen"
+    licence: >-
+      NO LICENSABLE FONT IS MANDATED. The legal object is a statutory
+      Schriftmuster (a drawing), exactly as the EU dossier found for the UK and
+      Spain. Per PRD-PLATES §6 the render layer derives glyphs from the
+      statutory drawing, never from a third-party FE-Schrift TTF whose own
+      licence is unstated. Germany is additionally the affirmatively favourable
+      case (PD-VzKat / §5(1) UrhG: designs published inside statutory
+      instruments are public domain).
+    source: "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 1 Nr. 2.1-2.3.2"
+  euro_band:
+    side: left
+    content: eu-stars+D
+    geometry: "Anlage 4 Abschnitt 1 Nr. 3: 'Der Durchmesser des Sternenkranzes entspricht dem Sechsfachen des Durchmessers des einzelnen Sterns.' A light edge of at most 2.0 mm is permitted between the Euro-Feld and the black border. 'Die Ausführung des Erkennungsbuchstabens \"D\" erfolgt nach der Verordnung (EG) Nr. 2411/98 vom 3. November 1998.'"
+    note: >-
+      This is the ONE hard piece of Euroband geometry secured anywhere in the L0
+      pass: a ratio (star-circle diameter = 6x single-star diameter), given as
+      text in German law. Reg. 2411/98's own annex is a bitmap and Spain's
+      Cuadro 5 is a drawing, so DE Anlage 4 Nr. 3 is the citable source for the
+      star wreath's proportions.
+    source: "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 1 Nr. 3"
+  anlage1_grammar:
+    shapes:
+      - "a) A 1 – A 999 bis Z 1 – Z 999"
+      - "b) AA 1 – AA 99 bis ZZ 1 – ZZ 99"
+      - "c) AA 100 – AA 999 bis ZZ 100 – ZZ 999"
+      - "d) A 1000 – A 9999 bis Z 1000 – Z 9999"
+      - "e) AA 1000 – AA 9999 bis ZZ 1000 – ZZ 9999"
+    letters_excluded: ["Ä", "Ö", "Ü"]
+    no_leading_zeros: true
+    max_positions: 8
+    source: "https://www.gesetze-im-internet.de/fzv_2023/anlage_1.html  # Anlage 1 (zu § 9 Absatz 1 Satz 4), Fundstelle BGBl. 2023 I Nr. 199, S. 67 — the five shapes and the umlaut exclusion, verbatim"
+
+# Anlage 2 FZV — the SMALL, CLOSED, primary code table (contrast the district
+# list, which is not in the FZV at all). Inlined per PRD-PLATES §2.4's
+# "inline table (small) or a reference (large)" rule.
+region_encoding_tables:
+  anlage2_federal_and_diplomatic:
+    source: "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 (zu § 9 Absatz 1 Satz 6), Fundstelle BGBl. 2023 I Nr. 199, S. 68-69"
+    bund:
+      BD: "Dienstfahrzeuge des Bundestages, Bundesrates, Bundespräsidialamtes, der Bundesregierung, Bundesministerien, Bundesfinanzverwaltung, des Bundesverfassungsgerichts und Bundeskriminalamtes"
+      BG: "Bundespolizei — noch gültig, wird nicht mehr zugeteilt (still valid, no longer assigned)"
+      BP: "Dienstfahrzeuge der Bundespolizei"
+      BW: "Bundes-Wasserstraßen- und Schifffahrtsverwaltung"
+      THW: "Bundesanstalt Technisches Hilfswerk"
+      Y: "Dienstfahrzeuge der Bundeswehr (Zentrale Militärkraftfahrtstelle, Mönchengladbach/Rheindahlen)"
+      X: "internationale militärische Hauptquartiere nach dem Nordatlantikvertrag mit Standort in Deutschland"
+    laender:
+      B: "Berlin — Senat und Abgeordnetenhaus"
+      BBL: "Brandenburg — Landesregierung, Landtag und Polizei"
+      BWL: "Baden-Württemberg — Landesregierung, Landtag und Polizei"
+      BYL: "Bayern — Landesregierung und Landtag"
+      HB: "Freie Hansestadt Bremen — Senat und Bürgerschaft"
+      HEL: "Hessen — Landesregierung und Landtag"
+      HH: "Freie und Hansestadt Hamburg — Senat und Bürgerschaft"
+      LSA: "Sachsen-Anhalt — Landesregierung, Landtag und Polizei"
+      LSN: "Sachsen — Landesregierung und Landtag"
+      MVL: "Mecklenburg-Vorpommern — Landesregierung (einschließlich Landespolizei) und Landtag"
+      NL: "Niedersachsen — Landesregierung und Landtag"
+      NRW: "Nordrhein-Westfalen — Landesregierung, Landtag und Polizei"
+      RPL: "Rheinland-Pfalz — Landesregierung, Landtag und Polizei"
+      SAL: "Saarland — Landesregierung, Landtag und Polizei"
+      SH: "Schleswig-Holstein — Landesregierung, Landtag und Polizei"
+      THL: "Thüringen — Landesregierung und Landtag"
+    diplomatic:
+      "0": "Diplomatische Vertretungen oder internationale Organisationen, abhängig vom Status der bevorrechtigten Person (Zulassungsbehörde Berlin/Bonn)"
+      B: "same, Berlin"
+      BN: "same, Bonn"
+      consular: "Berufskonsularische Vertretungen carry the UNTERSCHEIDUNGSZEICHEN OF THE DISTRICT WHERE THE CONSULATE SITS — i.e. an ordinary district code, which is why consular vehicles are not separable by prefix"
+    bundestag_president: { "1-1": "Dienstkraftwagen des Präsidenten des Deutschen Bundestages (Zulassungsbehörde Berlin)" }
+    note: >-
+      COLLISION WORTH FLAGGING: "B" is simultaneously a district code (Berlin),
+      a Land code (Berlin Senat/Abgeordnetenhaus) and a diplomatic code. "NL" is
+      the Niedersachsen Land code and also the Dutch international
+      distinguishing sign. Neither is resolvable from the prefix alone.
+
+series:
+
+  # =========================================================================
+  # THE STANDARD SERIES.
+  # =========================================================================
+  - id: de-standard
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-LL 9999"
+      regex: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?\d{1,4}\z'
+      regex_strict: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})\z'
+      charset:
+        letters_excluded: ["Ä", "Ö", "Ü"]
+        notes: >-
+          Anlage 1 Nr. 1: every letter of the alphabet except the umlauts Ä, Ö and Ü
+          may be assigned in the Erkennungsnummer, singly or as a pair. The FZV
+          imposes no further letter exclusion on the Erkennungsnummer, but § 9 Abs. 1
+          Satz 3 forbids combinations that "gegen die guten Sitten verstoßen" — a
+          discretionary rule, not an enumerable exclusion list, and the reason no
+          profanity blacklist is authored here.
+      progression: >-
+        Anlage 1 Nr. 2 allocates the Erkennungsnummer in five blocks: a) 1 letter +
+        1-999, b) 2 letters + 1-99, c) 2 letters + 100-999, d) 1 letter + 1000-9999,
+        e) 2 letters + 1000-9999. Every block starts at 1, 100 or 1000, so NO LEADING
+        ZEROS are ever issued — regex_strict enforces this; `regex` cannot, because
+        the lint's pattern generator emits "0" for a "9" placeholder.
+      max_positions: 8
+      max_positions_note: >-
+        Anlage 4 Abschnitt 1 Nr. 4: at most eight positions counting the
+        Unterscheidungszeichen's letters plus the Erkennungsnummer's letters and
+        digits. The negative lookahead in both regexes excludes the single
+        over-length shape the quantifiers would otherwise admit (3 + 2 + 4 = 9).
+      separator_note: >-
+        The gap between Unterscheidungszeichen and Erkennungsnummer is physically
+        occupied by the two Plaketten (Stempelplakette + HU badge), not by a printed
+        separator. The hyphen and space in the pattern are the conventional textual
+        rendering; both regexes accept the space as optional.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm, note: "zweizeilig; 280 mm wide on two- and three-wheeled motor vehicles" }
+        - { w_min: 180, w_max: 220, h: 200, unit: mm, note: "Kraftradkennzeichen" }
+        - { w: 255, h: 130, unit: mm, note: "verkleinertes zweizeiliges Kennzeichen — Leichtkrafträder and § 12 Abs. 6 Nr. 1 vehicles only, or by exception where a compliant rear plate cannot be fitted" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec, spec_note: "§ 12 Abs. 1 FZV: weißer Grund; retroreflection per DIN 74069 Oct 2022 (§ 12 Abs. 2)" }
+      foreground: "#000000"
+      border: { color: "#000000", note: "Anlage 4 permits black, GREEN or RED borders depending on plate type" }
+      band: { side: left, color: "#003399", content: eu-stars+D, hex_basis: observed, note: "the FZV states the star-wreath ratio and cross-references Reg. 2411/98 for the 'D', but gives no RGB/RAL for the blue field" }
+      emblem: { present: true, rendered: placeholder, note: "the Stempelplakette carries the FARBIGES WAPPEN DES LANDES (§ 12 Abs. 3) — a coat of arms per Land. PRD-PLATES §3 placeholder rule applies: 16 Land arms, none licence-cleared." }
+      seal: { name: Stempelplakette, diameter_mm: null, content: "coloured Land arms, Land name, registration authority name, unique Druckstücknummer, and a CONCEALED security code that can only be revealed irreversibly; self-destroying on removal", source_note: "§ 12 Abs. 3 FZV + Anlage 5" }
+      rear_differs: false
+      display: "front and rear on motor vehicles; rear only on trailers, motorcycles and class L5e vehicles; front only on single-axle tractors (§ 12 Abs. 5 FZV)"
+    region_encoding: "plates/_decode/de-districts.yml"
+    region_encoding_mechanism: >-
+      The Unterscheidungszeichen is 1-3 letters identifying the Verwaltungsbezirk of
+      registration (§ 9 Abs. 1 Nr. 1). The list is set by the BMDV on application by
+      the Länder and published in the BUNDESANZEIGER (§ 9 Abs. 3) — NOT in the FZV
+      and NOT by the KBA. A district may hold more than one code, applied for when
+      "ohne dieses ein Verbrauch der verfügbaren Kennzeichenkombinationen unmittelbar
+      bevorsteht". A withdrawn code may be carried until the vehicle is
+      deregistered, so decode rows close by period and are never deleted. The split
+      point between prefix and Erkennungsnummer is UNAMBIGUOUS because Anlage 1 fixes
+      the Erkennungsnummer to 1-2 letters + 1-4 digits.
+    variants:
+      - class: standard
+        note: >-
+          WECHSELKENNZEICHEN (interchangeable plate, § 9 Abs. 2 FZV + Anlage 4
+          Abschnitt 2a). Two vehicles of the same class (M1, L or O1) held by one
+          keeper share a common plate part plus a per-vehicle part; the common part
+          carries a "W" (20 mm high, 25 mm wide) above the Stempelplakette, and the
+          per-vehicle part is the LAST DIGIT of the Erkennungsnummer. Same eight-
+          position cap across both parts, excluding the "W". Cannot be combined with
+          Saison-, rote, Kurzzeit- or Ausfuhrkennzeichen. Recorded as a variant, not
+          a series, because the serial grammar is Anlage 1's — but note that a parse
+          API sees a SPLIT STRING, which the single-`pattern` schema cannot express.
+        sources:
+          - "https://www.gesetze-im-internet.de/fzv_2023/__9.html  # § 9 Abs. 2: eligibility (classes M1/L/O1, same keeper, same plate size), the common/vehicle-specific split, the one-at-a-time rule"
+          - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 2a: the 'W' marking 20 x 25 mm, self-destroying security foil on the vehicle-specific part"
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__9.html  # § 9 Abs. 1: Kennzeichen = Unterscheidungszeichen (1-3 letters for the Verwaltungsbezirk) + vehicle-specific Erkennungsnummer allocated per Anlage 1; Abs. 3: BMDV/Bundesanzeiger"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_1.html  # Anlage 1: the five Erkennungsnummer shapes and the umlaut exclusion, verbatim"
+      - "https://www.gesetze-im-internet.de/fzv_2023/__12.html  # § 12 Abs. 1: black on white, black-bordered; Abs. 2: reflective + DIN 74069; Abs. 5: front/rear rules"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 1: dimensions, FE-Schrift, Euro-Feld, the eight-position cap; Abschnitt 2: the general plates"
+    notes: >-
+      THE GERMAN STANDARD SERIES — the strongest region signal in the L0 pilot and
+      the only one of the four pilot jurisdictions whose plate names its place of
+      registration. PERIOD CAVEAT, stated plainly: 2023 is the date of the FZV that
+      STATES this format, not the date the system began. The
+      Unterscheidungszeichen + Erkennungsnummer system and the Euro-Feld design both
+      long predate it (FZV 2011 before, StVZO before that); no primary for either
+      origin date was secured, and inventing one was declined. No age is encoded on a
+      German plate at all — unlike the UK, a German plate string carries region but
+      never date.
+
+  # =========================================================================
+  # HISTORIC — H suffix.
+  # =========================================================================
+  - id: de-historic-h
+    class: historic
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-LL 999H"
+      regex: '\A[A-Z]{1,3}-[A-Z]{1,2} ?\d{1,4}H\z'
+      regex_strict: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{3,4}H\z)[A-Z]{1,3}-[A-Z]{1,2} ?(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})H\z'
+      suffix: H
+      max_positions: 7
+      max_positions_note: >-
+        Anlage 4 Abschnitt 4 Nr. 4 caps a SINGLE-LINE Oldtimerkennzeichen at seven
+        positions EXCLUDING the H (and the Erkennungsnummer at five positions on a
+        340 mm two-line plate, four on a 280 mm two-line or motorcycle plate) — one
+        position tighter than the standard series, because the H itself consumes room.
+        regex_strict's lookahead removes the shapes that exceed seven.
+      charset: { notes: "Anlage 1 grammar unchanged; § 10 Abs. 1 adds the H" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+D }
+      note: "'Der Kennbuchstabe \"H\" ist der Erkennungsnummer ohne Leerzeichen in gleicher Schriftart anzufügen' — no space, same typeface (Anlage 4 Abschnitt 4 Nr. 4)"
+    region_encoding: "plates/_decode/de-districts.yml"
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__10.html  # § 10 Abs. 1: on application, a vehicle with a § 23 StVZO Gutachten is ASSIGNED an Oldtimerkennzeichen; it consists of Unterscheidungszeichen + Erkennungsnummer per § 9 Abs. 1 plus 'den Kennbuchstaben \"H\" als amtlichen Zusatz hinter der Erkennungsnummer'"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 4: the H suffix's typographic rule and the seven/five/four-position caps"
+    notes: >-
+      H-KENNZEICHEN. Note § 10 Abs. 1's discretion, which a claims model should
+      record: the authority "kann im Einzelfall" count periods before first placing
+      on the market during which the vehicle operated off public roads towards the
+      minimum age in § 2 Satz 1 Nr. 22 FZV. The 30-year threshold itself lives in
+      that definition and in § 23 StVZO, neither of which was fetched in this pass —
+      the threshold is therefore a recorded gap, and the widely-repeated "30 years"
+      is NOT asserted here as sourced. An H plate may also be a Saisonkennzeichen
+      (Anlage 4 Abschnitt 4 Nr. 4 last sentence) or a Wechselkennzeichen.
+
+  # =========================================================================
+  # ELECTRIC — E suffix. The one German series with a properly dated start.
+  # =========================================================================
+  - id: de-electric-e
+    class: electric
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2015 }
+    period_evidence: enabling-statute
+    format:
+      pattern: "LL-LL 999E"
+      regex: '\A[A-Z]{1,3}-[A-Z]{1,2} ?\d{1,4}E\z'
+      regex_strict: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{3,4}E\z)[A-Z]{1,3}-[A-Z]{1,2} ?(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})E\z'
+      suffix: E
+      max_positions: 7
+      max_positions_note: "Anlage 4 Abschnitt 5a Nr. 1 executes E-Kennzeichen 'entsprechend Abschnitt 4' (the Oldtimer rules), so the seven-position single-line cap carries over; Nr. 6 gives the tighter two-line caps (six positions on a single-line Saison variant, five on a 340 mm two-line, four on 280 mm/motorcycle/reduced)."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+D }
+      note: "'Der Kennbuchstabe \"E\" ist der Erkennungsnummer ohne Leerzeichen in gleicher Schriftart anzufügen' (Anlage 4 Abschnitt 5a Nr. 6)"
+      foreign_vehicle_badge:
+        shape: circular
+        diameter_mm: 80
+        colour: "RAL 5017"
+        note: >-
+          For an electric vehicle admitted to traffic under ANOTHER state's rules, the
+          marking is a BADGE per Anlage 3 affixed visibly at the rear, not a plate
+          suffix; the issuing office writes the vehicle's registration into the
+          badge's window in lightfast script. Anlage 3 giving a hard RAL value is
+          unusual — most EU plate law specifies drawings, not colour codes.
+        source: "https://www.gesetze-im-internet.de/fzv_2023/anlage_3.html  # Anlage 3 (zu § 11 Absatz 4): Plakettenmuster, 80 mm diameter, RAL 5017"
+    region_encoding: "plates/_decode/de-districts.yml"
+    sources:
+      - "https://www.gesetze-im-internet.de/emog/EmoG.pdf  # Elektromobilitätsgesetz, Ausfertigungsdatum 05.06.2015 (BGBl. I S. 898) — the enabling statute § 11 FZV keys off; note § 8 Abs. 2: the Act EXPIRES at the end of 31.12.2026"
+      - "https://www.gesetze-im-internet.de/fzv_2023/__11.html  # § 11 Abs. 1-2: an E-Kennzeichen is the § 9 Abs. 1 plate (optionally also a green or seasonal one) with 'den Kennbuchstaben \"E\" als amtlichen Zusatz hinter der Erkennungsnummer'; Abs. 4: the Anlage 3 badge route for foreign vehicles; Abs. 5: foreign E-markings are recognised as equivalent"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 5a: E-Kennzeichen executed per Abschnitt 4, plus the Saison variants and position caps"
+    notes: >-
+      E-KENNZEICHEN. period.start 2015 is a REAL start, not an instrument date: the
+      Elektromobilitätsgesetz of 5 June 2015 created the eligibility § 11 FZV
+      implements, so 2015 is the earliest possible issuance year. TIME BOMB WORTH
+      RECORDING NOW: EmoG § 8 Abs. 2 provides that the Act ceases to be in force at
+      the end of 31 December 2026 — inside the current audit horizon. Unless it is
+      extended, this series' `period.end` becomes 2026 and the quarterly audit should
+      re-check it. Also note § 79 Abs. 9 FZV carries a non-application footnote
+      against § 11 which was not resolved in this pass (recorded gap).
+
+  # =========================================================================
+  # SEASONAL.
+  # =========================================================================
+  - id: de-seasonal
+    class: seasonal
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-LL 999"
+      regex: '\A[A-Z]{1,3}-[A-Z]{1,2} ?\d{1,4}\z'
+      regex_strict: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{3,4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})\z'
+      max_positions: 7
+      max_positions_note: "Anlage 4 Abschnitt 5 Nr. 4: seven positions on a single-line plate, five in the Erkennungsnummer on two-line/motorcycle/reduced plates"
+      fields_note: >-
+        THE OPERATING PERIOD IS A FIELD, NOT PART OF THE SERIAL. Anlage 4 Abschnitt 5
+        Nr. 4: in the Betriebszeitraum field, "die Zahl über dem Bindestrich" is the
+        start month and "die Zahl unter dem Bindestrich" the end month, set in
+        DIN 1451-2:1986-02. A single `pattern` string cannot carry a stacked
+        two-number field — this is the same schema pressure PRD-PLATES §2.2 records
+        for Japan, arriving in Germany.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+D }
+      extra_field: { position: right, content: "start month over end month, separated by a hyphen", typeface: "DIN 1451-2:1986-02" }
+    validity:
+      min_months: 2
+      max_months: 11
+      note: >-
+        "Der Betriebszeitraum ist auf volle Monate zu bemessen. Der Betriebszeitraum
+        muss mindestens zwei Monate und darf höchstens elf Monate umfassen"
+        (§ 10 Abs. 3). Outside the period the vehicle may neither be operated NOR
+        PARKED on public roads. Trips to deregister, and return trips after the seal
+        is removed, count as unstamped plates under § 12 Abs. 4.
+    region_encoding: "plates/_decode/de-districts.yml"
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__10.html  # § 10 Abs. 3: Saisonkennzeichen on application; Betriebszeitraum as an amtlicher Zusatz behind the Erkennungsnummer; full months, 2-11 months; green plates may also be seasonal; the operate-and-park prohibition"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 5: the four seasonal plate forms and the month-field rule"
+    notes: >-
+      SAISONKENNZEICHEN. Its own series rather than a variant because the DESIGN
+      differs (an added operating-period field) while the serial grammar does not —
+      the PRD-PLATES §2.3 test resolves cleanly. It composes with other classes:
+      green plates (§ 10 Abs. 2), Oldtimerkennzeichen and E-Kennzeichen can all be
+      issued AS seasonal plates, which means class is genuinely multi-valued here and
+      the single-`class` schema cannot express the combination.
+
+  # =========================================================================
+  # GREEN — TAX-EXEMPT. Green lettering on white, and the class vocabulary has
+  # no home for it.
+  # =========================================================================
+  - id: de-green-taxexempt
+    class: agricultural
+    categories: [tractor, machine, trailer, truck]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-LL 9999"
+      regex: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?\d{1,4}\z'
+      regex_strict: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#008000"
+      foreground_note: "§ 10 Abs. 2 FZV, verbatim: 'ein Kennzeichen mit grüner Beschriftung auf weißem Grund (grünes Kennzeichen)'. The statute names the colour GREEN without an RAL or RGB value, so the hex is observed within a named colour."
+      border: { color: "#008000", note: "Anlage 4 Abschnitt 1 Nr. 2.1 contemplates black, GREEN or red borders; the green plate takes the green one" }
+      band: { side: left, color: "#003399", content: eu-stars+D }
+    region_encoding: "plates/_decode/de-districts.yml"
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__10.html  # § 10 Abs. 2: green lettering on white for vehicles whose keeper is exempt from motor-vehicle tax, with the seven-item exclusion list, plus the trailer special rule under § 10 KraftStG"
+    notes: >-
+      GRÜNES KENNZEICHEN. CLASS CAVEAT, and it is a real one: the legal criterion is
+      not agriculture at all — it is that "der Halter von der Kraftfahrzeugsteuer
+      befreit ist". _meta/classes.yml has no tax-exempt class, so `agricultural` is
+      recorded as the closest fit and the dominant population, but the statute's own
+      exclusion list shows how much wider the category is: authority vehicles,
+      diplomatic and consular staff vehicles, buses and 8-9-seat cars mainly in
+      scheduled service and their trailers, Leichtkrafträder and Kleinkrafträder,
+      vehicles of severely disabled persons under § 3a KraftStG, particularly
+      low-emission vehicles, and any vehicle on a Wechselkennzeichen are all EXCLUDED
+      from the green plate. Flagged as a vocabulary gap in the L0 report.
+
+  # =========================================================================
+  # DEALER — rote Kennzeichen, digits-only beginning 06.
+  # =========================================================================
+  - id: de-dealer-red
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-06999"
+      regex: '\A[A-Z]{1,3}-06\d{1,4}\z'
+      charset: { notes: "the Erkennungsnummer is DIGITS ONLY and begins with 06 — no letters at all, so Anlage 1's letter blocks do not apply" }
+      max_positions_note: "the eight-position cap of Anlage 4 Abschnitt 1 Nr. 4 still applies, so a three-letter district code limits the digit tail; the regex quantifies width and the cap is recorded here rather than encoded, because the interaction is not stated in a single provision"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#FF0000"
+      foreground_note: "§ 41 Abs. 1 Nr. 2 FZV, verbatim: 'ein Kennzeichen mit roter Beschriftung auf weißem rot gerandetem Grund (rotes Kennzeichen)'. Colour named, not numbered."
+      border: { color: "#FF0000" }
+      band: { side: left, color: "#003399", content: eu-stars+D }
+      note: "Anlage 4 Abschnitt 7: executed as the general plates but in red script with a red border; the § 29 StVZO roadworthiness badge is NOT applied"
+    binding: business
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__41.html  # § 41: Prüfungs-, Probe- und Überführungsfahrten; Abs. 1 the red-on-white colour rule; Abs. 2 assignment to trustworthy manufacturers, parts makers, workshops, dealers and trailer makers (plus THW, Bundespolizei, BKA, Länder police, Bundeswehr, customs) for REPEATED use on DIFFERENT vehicles, and 'einer nur aus Ziffern bestehenden und mit \"06\" beginnenden Erkennungsnummer'; Abs. 3 the per-trip Fahrzeugscheinheft log, kept one year"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 7: red script and red border; Anlage 13 is the Fahrzeugscheinheft"
+    notes: >-
+      ROTE KENNZEICHEN — the German dealer/trade plate, and the cleanest "06"
+      identification in the dataset. BINDING NOTE: like Swiss plates but for a
+      different reason, this plate does NOT bind to a vehicle — it binds to a
+      BUSINESS and moves between vehicles, which is why `binding: business` is set on
+      the series and why a vehicle-keyed consumer must not join on it. § 41 Abs. 3
+      requires a written per-trip record (plate, date, start and end, driver and
+      address, vehicle class, make, VIN and route), retained for a year — the
+      compensating audit trail for an untethered plate.
+
+  - id: de-oldtimer-red
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-07999"
+      regex: '\A[A-Z]{1,3}-07\d{1,4}\z'
+      charset: { notes: "digits only, beginning 07" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#FF0000"
+      border: { color: "#FF0000" }
+      band: { side: left, color: "#003399", content: eu-stars+D }
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__43.html  # § 43: trips to and from Oldtimer events need neither Betriebserlaubnis nor Zulassung if the vehicle carries a rotes Oldtimerkennzeichen; Abs. 2 applies § 41 Abs. 2-6 and requires 'einer nur aus Ziffern bestehenden und mit den Ziffern \"07\" beginnenden Erkennungsnummer', with the Anlage 15 Fahrzeugscheinheft"
+    notes: >-
+      ROTES OLDTIMERKENNZEICHEN — the 07 series. Distinguished from the 06 dealer
+      plate by two digits and by one crucial restriction: § 43 Abs. 2 provides that
+      this plate "nur an dem Fahrzeug verwendet werden darf, für das es ausgegeben
+      wurde", so unlike the 06 plate it is NOT freely transferable between vehicles.
+      CLASS CAVEAT: recorded as `dealer` because it shares § 41's machinery, but it
+      is functionally a historic-vehicle event plate; a class vocabulary with a
+      `historic` and a `dealer` value cannot express "both".
+
+  # =========================================================================
+  # SHORT-TERM AND EXPORT — the two date-bearing German plates.
+  # =========================================================================
+  - id: de-shortterm
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-03999"
+      regex: '\A[A-Z]{1,3}-0[34]\d{1,4}\z'
+      charset: { notes: "digits only, beginning '03' OR '04' — the pattern shows 03 as a representative literal and the regex carries both" }
+      fields_note: "the plate additionally bears an EXPIRY DATE as a stacked three-number field (day over month over year), which a single pattern string cannot express"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+D }
+      extra_field:
+        position: right
+        content: "day over month over year of expiry"
+        background: { color: "#FFFF00" }
+        foreground: "#000000"
+        note: "Anlage 4 Abschnitt 6 Nr. 4: 'Die Farbe dieses Feldes ist gelb mit schwarzer Beschriftung'; digits in DIN 1451-2:1986-02"
+      seal: { diameter_mm: 35, background: "blue per DIN 6171 (blau – Euro-Feld)", note: "Anlage 4 Abschnitt 6 Nr. 4: a 35 mm Stempelplakette with the authority's Dienststempel on a BLUE ground, positioned between prefix and Erkennungsnummer (single-line) or top-left beside the prefix (two-line); the § 29 StVZO badge is not applied" }
+    validity: { days: 5, note: "§ 42 Abs. 4: the expiry date is set 'bis zum Ablauf des fünften auf die Zuteilung folgenden Tages'; after it the vehicle may not be operated on public roads" }
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__42.html  # § 42 Abs. 1: conditions (type-approved or individually approved, valid HU/SP, insurance); Abs. 4: 'einer nur aus Ziffern bestehenden und mit \"03\" oder \"04\" beginnenden Erkennungsnummer' plus the five-day expiry date; Abs. 3: need not be firmly affixed"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 6: the three Kurzzeitkennzeichen forms, the yellow/black date field, the 35 mm blue seal"
+    notes: >-
+      KURZZEITKENNZEICHEN — five days, a yellow expiry field, and a blue seal
+      instead of the usual Land-arms Stempelplakette. Unlike the 06 dealer plate it
+      is tied to ONE vehicle (§ 42 Abs. 3 Nr. 2) and, unlike an ordinary plate, it
+      need not be firmly attached.
+
+  - id: de-export
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "LL-9999L"
+      regex: '\A[A-Z]{1,3}-\d{1,4}[A-Z]\z'
+      regex_strict: '\A[A-Z]{1,3}-(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})[A-Z]\z'
+      charset:
+        notes: >-
+          § 45 Abs. 2 FZV, verbatim: "Die Erkennungsnummer hat zu bestehen aus einer
+          ein- bis vierstelligen Zahl und einem nachfolgenden Buchstaben." Digits
+          FIRST, letter LAST — the inverse of every other German series, and the
+          single most useful structural tell for an export plate.
+      fields_note: "plus a stacked three-number expiry field (day over month over year)"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: none }
+      band_note: >-
+        NO EURO-FIELD. Anlage 4 Abschnitt 8 Nr. 3 expressly disapplies the Euro-Feld
+        provision (Abschnitt 1 Nr. 3), the verkleinerte Mittelschrift and the § 29
+        StVZO badge for Ausfuhrkennzeichen. The only German road plate without the EU
+        band — which makes sense: the vehicle is leaving the Union's registration.
+      extra_field:
+        position: right
+        content: "day over month over year on which the registration's validity ends in the FZV's territory"
+        background: { color: "#FF0000", finish: non-retroreflective }
+        foreground: "#000000"
+        note: "Anlage 4 Abschnitt 8 Nr. 3: 'Der rote Untergrund darf nicht retroreflektierend sein' — the one field in German plate law required NOT to retroreflect"
+      seal: { diameter_mm: 35, background: "RAL 2002 red", note: "Anlage 4 Abschnitt 8 Nr. 3: Stempelplakette with the authority's Dienstsiegel on a red ground, RAL 2002" }
+    validity: { max_months: 12, note: "§ 45 Abs. 1 Nr. 2: the registration is limited to the duration of the proven third-party insurance, 'längstens auf ein Jahr'" }
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/__45.html  # § 45: Fahrten zur dauerhaften Verbringung eines Fahrzeuges in das Ausland; Abs. 1 the insurance/HU conditions and the one-year cap; Abs. 2 'einer ein- bis vierstelligen Zahl und einem nachfolgenden Buchstaben' plus the expiry-date field"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 8: no Euro-Feld, the non-retroreflective red date field, the RAL 2002 seal"
+    notes: >-
+      AUSFUHRKENNZEICHEN. Three things make it unique in Germany: the digits-then-
+      letter Erkennungsnummer, the absence of the Euro-band, and a field the law
+      requires NOT to be retroreflective. § 45 Abs. 1 also carries a nice
+      period-logic constraint for a claims model: the plate may only be issued if
+      the next roadworthiness inspection date falls AFTER the registration's expiry
+      date, otherwise the inspection must be done first.
+
+  # =========================================================================
+  # ANLAGE 2 SERIES — federal, Land, diplomatic, military. § 9 Abs. 1 Satz 7:
+  # "Die Erkennungsnummern dieser Fahrzeuge dürfen nur aus höchstens
+  # sechsstelligen Zahlen bestehen" — digits only, at most six.
+  # =========================================================================
+  - id: de-federal-government
+    class: government
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "BD-999999"
+      regex: '\A(?:BD|BG|BP|BW|THW|BBL|BWL|BYL|HEL|LSA|LSN|MVL|NRW|RPL|SAL|THL|HB|HH|NL|B)-\d{1,6}\z'
+      charset: { notes: "§ 9 Abs. 1 Satz 7: the Erkennungsnummern of Anlage 2 vehicles 'dürfen nur aus höchstens sechsstelligen Zahlen bestehen' — digits only, maximum six" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+D }
+    region_encoding: inline
+    region_encoding_note: "decode via region_encoding_tables.anlage2_federal_and_diplomatic (bund + laender) at the top of this file — a closed, primary, 23-row table, unlike the district list"
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 Nr. 1 (Bund: BD, BG, BP, BW, THW, Y, X with their registering authorities) and Nr. 2 (the 16 Land codes and which organs they cover)"
+      - "https://www.gesetze-im-internet.de/fzv_2023/__9.html  # § 9 Abs. 1 Satz 6-7: which bodies may receive Anlage 2 plates, and the digits-only, max-six-digit Erkennungsnummer rule"
+    notes: >-
+      FEDERAL AND LAND OFFICIAL SERIES. Two facts a decode table must carry, both
+      verbatim from Anlage 2: BG (Bundespolizei) is "noch gültig, wird nicht mehr
+      zugeteilt" — still valid, no longer assigned, exactly the ended-but-on-the-road
+      case PRD-PLATES's `ended: true` semantics exist for at the series level and
+      that decode rows need at the row level. And the CONSULAR case has no code of
+      its own: career consular posts carry "das Unterscheidungszeichen des
+      Verwaltungsbezirkes am Sitz des Konsulats", i.e. an ordinary district prefix,
+      so German consular vehicles are NOT identifiable from the plate string. Also
+      here: 1-1 for the Bundestag President's official car (Anlage 2 Nr. 4), the only
+      German plate whose prefix is a digit.
+
+  - id: de-diplomatic
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "0-999999"
+      regex: '\A(?:0|B|BN)-\d{1,6}\z'
+      charset: { notes: "digits only, max six (§ 9 Abs. 1 Satz 7); the prefix is 0, B or BN depending on the body and the privileged person's status" }
+      progression: "Anlage 2 Nr. 3 states only that the prefix depends on the body and the status of the privileged person; the mission-number allocation inside the Erkennungsnummer is NOT in the FZV — see notes"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+D }
+    region_encoding: inline
+    region_encoding_note: "prefix decode in region_encoding_tables.anlage2_federal_and_diplomatic.diplomatic; the mission-number sub-decode is NOT authored (PRD-PLATES puts diplomatic decode tables at L4)"
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 Nr. 3: '0, B oder BN — Diplomatische Vertretungen oder internationale Organisationen und in Abhängigkeit vom Status der bevorrechtigten Person', registered at Berlin or Bonn"
+      - "https://www.gesetze-im-internet.de/fzv_2023/__9.html  # § 9 Abs. 1 Satz 6-7"
+    notes: >-
+      GERMAN DIPLOMATIC SERIES. Unlike Spain — where CD/OI/CC/TA each get their own
+      background colour — Germany keeps the ordinary black-on-white design and
+      signals status only through the prefix, so a German diplomatic plate is
+      visually a normal plate. The mission-identifying number group inside the
+      Erkennungsnummer is a Foreign Office allocation and is not published in the
+      FZV; it is a recorded gap, deliberately not guessed.
+
+  - id: de-military-bundeswehr
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "Y-999999"
+      regex: '\A(?:Y|X)-\d{1,6}\z'
+      charset: { notes: "digits only, max six; Y = Bundeswehr, X = NATO international military headquarters based in Germany" }
+      group_note: "Anlage 4 Abschnitt 3 Nr. 5: on single-line 'andere Kraftfahrzeuge und Anhänger' plates the LAST THREE DIGITS are separated from the preceding digits by a group gap three times the normal spacing — a real grouping rule inside a digits-only serial"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: painted, hex_basis: spec, spec_note: "Anlage 4 Abschnitt 3 Nr. 5: 'Die Farbtöne des Untergrundes, des Randes und der Beschriftung sind dem Farbregister RAL 840 HR zu entnehmen, und zwar für schwarz RAL 9005 und weiß RAL 9001.' A rare hard RAL pair in EU plate law." }
+      foreground: "#000000"
+      foreground_spec: "RAL 9005"
+      background_spec: "RAL 9001"
+      band: { side: none }
+      band_note: "no Euro-Feld on Bundeswehr plates; § 12 Abs. 2 also exempts them from the DIN 74069 reflectivity requirement and the DIN test mark, as it does plates on NATO headquarters vehicles"
+      font: { name: "DIN 1451-2:1986-02 (Verkehrsschrift)", note: "Anlage 4 Abschnitt 1 Nr. 2.3: Bundeswehr plates and Versicherungskennzeichen use DIN 1451-2, NOT the FE-Schrift; bold Engschrift where the length does not suffice" }
+      federal_colours: { black: "RAL 9005", red: "RAL 3002", gold: "RAL 1006", note: "Anlage 4 Abschnitt 3 Nr. 5 gives the Bundesfarben where they are used" }
+      digit_one_rule: "Anlage 4 Abschnitt 3 Nr. 5: where the digit '1' is used, or a line holds fewer digits than the model, the gaps between that line's digits enlarge uniformly — a layout rule the render layer must honour"
+    region_encoding: none
+    sources:
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 Nr. 1: 'Y Dienstfahrzeuge der Bundeswehr (Zentrale Militärkraftfahrtstelle – ZMK, Hardter Straße 9, 41179 Mönchengladbach/Rheindahlen)' and 'X Dienstfahrzeuge der auf Grund des Nordatlantikvertrages errichteten internationalen militärischen Hauptquartiere'"
+      - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 3: Bundeswehr plate forms (Leichtkrafträder/Kleinkrafträder, other Krafträder, other vehicles single- and two-line) plus RAL 9005/9001, the Bundesfarben, the digit-1 spacing rule and the last-three-digits group gap"
+      - "https://www.gesetze-im-internet.de/fzv_2023/__12.html  # § 12 Abs. 2 last sentence: Bundeswehr and NATO-HQ plates are exempt from DIN 74069 and the DIN test mark"
+    notes: >-
+      BUNDESWEHR (Y) AND NATO HEADQUARTERS (X). Its own series and not a variant of
+      the federal one: the FONT differs (DIN 1451-2 instead of FE-Schrift), the
+      Euro-band is absent, the reflectivity standard is disapplied and the colours
+      are given as RAL codes rather than named. Y is famously a single letter serving
+      the entire armed forces, which is why it looks like a district code and is not
+      one.

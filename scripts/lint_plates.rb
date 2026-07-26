@@ -55,6 +55,12 @@ files.sort.each do |abs|
   rescue Psych::SyntaxError => e
     fail! "#{rel}: does not parse — #{e.message}"
     next
+  rescue Psych::DisallowedClass => e
+    # One bare YAML date anywhere used to raise out of the whole run and
+    # blind the gate for every other file (L0-completion finding). Years are
+    # Integers; anything date-like must be quoted.
+    fail! "#{rel}: disallowed YAML type (#{e.message}) — quote date-like scalars; periods use integer years"
+    next
   end
   juris = doc["jurisdiction"].to_s
   fail! "#{rel}: jurisdiction missing" if juris.empty?
