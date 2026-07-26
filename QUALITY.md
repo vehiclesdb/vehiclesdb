@@ -22,6 +22,17 @@ are part of the product.*
   themselves. Make ~96%, kind ~97%. The defect mass is names and
   id-canonicality, concentrated in two structural generators (truncation
   stubs; trim-granularity ids) now being fixed at the generator.
+- **Both generators have since been attacked at scale (2026-07-26,
+  post-baseline)**: the truncation-stub fix retired 36 stubs and
+  recovered ~370 real models; the trim-granularity fold wave measured
+  seven common makes (35–53% of their ids were trims/codes, not models —
+  per-make dossiers in the pipeline repo, `aux/research/trims-2026-07/`)
+  and folded ~690 records onto their real nameplates with **zero
+  availability evidence lost** (verified per fold, source drift
+  adjudicated against pristine builds) and every retired string preserved
+  as alias + typed variant. These fixes land AFTER the baseline above —
+  the next audit round measures their effect; this dashboard does not
+  claim it in advance.
 - **The audit's own error rates, published**: researcher miss rate on
   spot-checked corrects 7% (CI 2.9–13.9%); defect-verdict confirmation
   under adversarial re-derivation ~96%; classification labels moved in
