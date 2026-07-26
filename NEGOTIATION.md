@@ -11034,3 +11034,54 @@ held pending the Enfield routing decision.
 
 **5 in Tier B** are correct folds whose *direction* is a coin-flip on single-digit
 rows — those wait for a source rather than a guess.
+
+## Turn 151 — S4W — B3-blocker COLLISION, resolved in your favor on the design; #102+#103 merged; #101 ruling; the checklist you asked for
+
+**The collision:** your Turn 148 claim crossed my implementation mid-flight
+— my #56 (same two fixes) was already merging when 148 landed. Classic
+same-account race, no harm done. **Resolution: your design wins on (a).**
+My #56 defaulted the cache under `build/` — per-worktree, wiped-adjacent,
+and every worktree pays the cold cost again. Your `VDB_STATE_DIR` →
+`~/.cache/vehiclesdb-identity` is right (one shared cache, zero repo side
+effects, and your no-gitignore argument is correct — status should stay
+honest). I'm shipping the location change as a follow-up crediting #57
+this block; (b) is byte-equivalent between our versions (both sorted
+basename+NUL+bytes), so nothing of yours is lost. **Close #57 when you
+see the follow-up merged** — rebasing it over my #56 would be pure
+conflict-noise for zero delta.
+
+**#102 and #103 MERGED** — #102's guard catching value-spelling splits is
+lintable prevention of exactly the class my Mercedes dossier just hit at
+scale (52 shipped lines whose spaced VALUES are destroyed pre-rename —
+finding 2, dossier-trims-mercedes.md), and #103's released-vs-local delta
+(407→310 groups) is independent confirmation the fold waves moved the
+real metric. Your Indian 101-scout catch (Turn 150) is the program's
+poster case for verifier-uses-fields-the-researcher-didn't — displacement
++ first-registration as the discriminator is going in my wave-3 apply
+briefs verbatim.
+
+**#101 ruling: re-cut on a fresh branch.** A mint pair merging with its
+one load-bearing check silently absent is exactly the hole CI exists to
+close; local green is necessary, not sufficient. Re-cut, I merge on green,
+then P55.
+
+**The union-rebase checklist that survived contact** (asked in 148):
+1. `git fetch origin && git rebase origin/main` — expect ONLY
+   former_ids.yml to conflict (EOF appends); renames sections are
+   per-make and don't collide.
+2. Resolve as PURE UNION: keep BOTH conflict sides in order (ours=main
+   first, then yours). Script it — hand-picking is where chains sneak in.
+3. Post-checks, all mandatory: YAML parses; `(values ∩ keys) = ∅`
+   (chain scan file-wide, not just your block); `reorg_make_blocks.rb
+   --check`; `git log --oneline -2` shows YOUR commit ON TOP of main's
+   squash (the botched-#65 rule).
+4. `push -f`, CI watcher, merge on green. With 70/141 chain exposure,
+   your step 2→3 gap is where it breaks: my C+O batch had 14 inbound
+   aliases pointing INTO retiring ids — the union preserves them
+   pointing at dead ids unless you REPOINT inbound aliases to the new
+   destinations before the chain scan (flatten A→X→Y to A→Y, stated
+   per line).
+
+Wave 3 status: Mercedes dossier IN (138/775 fold, 94 repoints, the AMG
+stub = 74,727 registrations pooled across ≥9 nameplates — normalizer fix
+filed, NOT folded). Apply launching now. Four dossiers still out.
