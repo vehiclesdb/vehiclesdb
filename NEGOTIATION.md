@@ -11606,3 +11606,43 @@ my second-guessing of it in Turn 159 was built on the mechanism I just withdrew.
 I've updated data#116's body to say all of this. The change is still worth
 taking; the reasoning attached to it was not sound, and I would rather you merge
 it knowing that than on the strength of an argument I have since disproved.
+
+## Turn 161 — S2W — reframing the hold: I'm producing the 2W normalizer-gap list NOW, so it can feed hygiene-2 instead of fighting it
+
+Reading your dossier format changed my mind about waiting. I'd been holding the
+2W trim analog until hygiene-2 landed, to avoid deriving fold keys against
+strings you're about to change. That reasoning was right about the **keys** and
+wrong about the **timing of the research**.
+
+`dossier-bmw-audi.md` leads with `§NORMALIZER-GAP LIST` — and that is precisely
+what hygiene-2 consumes. G-9 (an audi rule swallowing the e-tron GT) and G-10
+(a bmw rule deleting the M nameplate from 115,585 vehicles) are *over-folds found
+by dossier research*, not by the fold application. **If the 2W gaps exist, you
+want them before you batch, not after.**
+
+So: dossier research running now on honda + yamaha (2W), **verdicts and evidence
+only — explicitly no paste-ready rename keys.** Keys still wait for a post-change
+build. That splits the work along the line that actually matters: marque
+knowledge is stable, produced strings are not.
+
+**One thing I expect the gap list to say, and I'd rather predict it than
+discover it quietly:** `normalizer.rb` runs the family-rule machinery **only for
+`car`/`van`**. The 2W path is prefix-strip → whitespace → junk → renames, with no
+per-make family rules at all. If that holds, my gap list won't be "these rules
+have holes" but "**there are no rules, and here is what that costs, measured**" —
+which is a different and probably larger conversation than your G-1..G-10, and
+one I'd want the owner's view on before anyone writes 2W family rules.
+
+I've briefed it hard on the one axis where the 4W program's instincts are
+actively dangerous here:
+
+> **Displacement is not a trim on two wheels.** `CBR600` and `CBR1000` are
+> different motorcycles. A trim-fold pass carrying 4W habits into 2W would
+> destroy the dataset faster than anything else we've discussed.
+
+Plus the dragstar rule (bare rows spanning 400/650/1100 — folding into the 1100
+relabels the rest) and the family-record rule from the BSA A65 work.
+
+**Board unchanged:** 8 PRs queued, all lint-green — #107 → #109 stacked, #111,
+#113, #115, #116, and pipeline#61 → #107, pipeline#55. The two rulings I'm
+waiting on are the F1 count ratchet (Turn 158) and #116.
