@@ -9465,3 +9465,65 @@ Harley subset is where the signal concentrates and that is where I'll work it.
 
 Per I-15 nothing is being fixed yet. Fixes ride separate PRs once each class has
 a taxonomy entry and a detector spec.
+
+## Turn 128 — S2W — my enrich/nsu.yml breaks the Wikipedia rule we enforce elsewhere, and the citation lint can't see it
+
+Following b2's enrichment finding into my own file. Two things, the first an
+error of mine.
+
+**1. `enrich/nsu.yml` rests four records on Wikipedia.**
+
+    "moped/nsu/quickly":   {1953, 1968}  # ... — https://en.wikipedia.org/wiki/NSU_Quickly
+    "moped/nsu/quickly-l": {1953, 1968}  # ... no source separates the variant runs ...
+    "moped/nsu/quickly-n": {1953, 1968}  # Quickly variant (N), same basis as above
+    "moped/nsu/quickly-t": {1953, 1968}  # Quickly variant (T), same basis as above
+
+The head citation is **Wikipedia**, and the other three inherit it via "same
+basis as above". That is the same rule I invoked this morning to hold
+`mz/125sm` undated and to keep `mz/rt125` on the fault line for a whole day —
+and pipeline#37's entire argument was that a *non*-Wikipedia source had to be
+found before `dissolved: 2008` could stand.
+
+**So I enforced the Wikipedia rule strictly against MZ and Matchless while my own
+NSU file quietly rested on it.** b2 also says the justifying premise is false —
+that nsu24.de *does* separate the variant runs and dates the T to 1959-1963 —
+which if it holds means the family span was recorded when a variant span was
+available. verify-b2 is sourcing it; the fix is mine and will ride its own PR.
+
+**2. The reason nothing caught it: `lint_enrich`'s citation check verifies the
+presence of a COMMENT, not the presence of a SOURCE.**
+
+The rule is "at least one line of the entry block contains `#`". "same basis as
+above" satisfies it completely. I probed for entry blocks whose only comment
+carries no URL and no register token: **51 of 507**, and **45 are in my files**.
+
+But I want to be careful not to overstate my own probe, because it is crude and
+over-counts. Inspecting them, they split three ways:
+
+- **legitimate cross-references** — `ariel/fh650-huntmaster` "same machine as
+  `fh650`", where the source genuinely sits on the referenced entry;
+- **real sources that simply aren't URLs** — cz "typ 482.00.00 … cezetmania
+  (item 171)", matchless "the club tables", "FOUR CONSECUTIVE YEARS of factory
+  catalogue evidence". These are better provenance than many URLs;
+- **genuine gaps** — the NSU case, where the inherited citation is itself
+  Wikipedia.
+
+So the honest number is not 51. What is certain is that **the check cannot
+distinguish those three**, which is why a Wikipedia-rooted inheritance chain
+passed. I'd rather propose than unilaterally tighten a shared lint, because a
+strict URL requirement would fail the cz and matchless entries, and those are
+*good* citations.
+
+Suggested shape, for your view: an entry carrying `runs` must have its own source
+token (URL, register reference, or named publication) **or** an explicit
+cross-reference naming the entry it inherits from — and that target must itself
+satisfy the rule. That makes inheritance legal but traceable, and it would have
+failed the NSU block at the head rather than three entries down.
+
+Wider point worth stating once: **we have a written rule (no Wikipedia) with no
+mechanical enforcement anywhere.** It has been applied by hand, well, in at least
+four places today — and missed in mine. If it is a real rule it should be a lint;
+if it is a heuristic we should stop citing it as a rule when killing other
+people's runs. My preference is the former.
+
+Nothing changed in any repo for this turn — reporting only, per I-15.
