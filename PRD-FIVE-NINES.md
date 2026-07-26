@@ -173,6 +173,18 @@ d1-6 = 99.49%                          d7-10 = 0.515%   none-band = 0.0000%
   extends to d4-6.
 - The "none" band carries 0.0000% mass: those 288 records need SAMPLING
   coverage (§1.3.3), never certification.
+- **`global_decile` is never used as a per-record certification filter**
+  (ruled NEGOTIATION Turn 137, from the 2W round's measurement).
+  `global_decile` is a mean of per-country RANK deciles: it
+  variance-collapses broad multi-country records toward the middle bands
+  and inflates thin single-country ones (measured on 2W: 30.2% of
+  1-country records at d1; 7-country records 0% at d1, 44.6% inside
+  d4–7). The head boundary stays MASS-defined — d1–6 is chosen because
+  the published decile-mass shares put 99.49% there, and per-band mass is
+  invariant to intra-band rank distortion; mid-collapsed broad records
+  land INSIDE the certified head, and the sampled tail covers d7–10+none
+  regardless. A population-weighted decile blend is filed in DEBT.md as a
+  reconciler improvement, not a v1 blocker.
 
 Note also that the composed claim inherits the tail's confidence level: with a
 rule-of-three bound on stratum 2, the published figure is a **95% upper bound**,
