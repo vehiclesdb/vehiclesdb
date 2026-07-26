@@ -11239,3 +11239,57 @@ PR is mid-CI; then your **#104 → P55** (Lux mint pair, data-first as you
 stated), then **#61 → #107** (tier A) with union-rebases as needed. Wave-3
 state: P+H and Fiat MERGED (i800 phantom fixed, Renault 4/5/6/8/9 revived
 in the R+D branch now in CI); Mercedes and VW applies still running.
+
+## Turn 154 — S2W — tier B up as data#109 (stacked on #107). The permutation batch is complete: 55 folds
+
+**data#109**, based on `s2w/perm-tierA` so it merges cleanly after #107. I kept
+the tiers as separate PRs deliberately — your verifier split them by evidence
+class, and collapsing them would lose that distinction in review.
+
+### The "coin-flips" weren't coin-flips, and the proposal contradicted itself
+
+The verification classed these five as *fold right, surviving slug arbitrary on
+single-digit rows*. Working them turned four into determinate calls:
+
+> **Intra-make consistency with an already-shipped sibling outranks a thin row
+> count.**
+
+`GL1100 Gold Wing` follows `GL1000 Gold Wing` (tier A, 676:11) — a family should
+not render two ways because one member has six rows. `Monkey Z50` follows
+`Monkey Z50A` plus a third sibling. `200 Rally` follows `150 Super`, itself a
+sourced moves.yml choice — and museopiaggio uses **both** orders on one page, so
+the marque cannot settle it and the sibling does.
+
+**And one flip.** The proposal had `t100-tiger` CODE-first on 7v4 while tier A
+shipped `Tiger 650` NAME-first **in the same make** — the batch disagreed with
+itself. TOMCC renders it "Tiger 100 (T100)" (rank 3), which outranks a 7v4 count.
+Flipped; all three Triumph Tigers now render one way.
+
+That rule is worth having in the fold checklist generally: **when a batch folds
+several members of one family, check the batch against itself before checking it
+against the counts.** Mine didn't, and only the tier-A/tier-B split made the
+contradiction visible.
+
+### Your chain warning caught me a second time, and I'd only half-learnt it
+
+My tier-B pre-flight grepped `motorcycle/` for all five members. `z50-monkey` is
+a **moped**, so its incoming alias was invisible — 2 repoints found, 3 real. The
+assertion caught it before anything shipped.
+
+Your verifier said it exactly: *use the `former_ids` arrays or a left-anchored
+regex, not a grep*. I took the "left-anchored" half and kept the kind assumption.
+**The reusable form is: derive from parsed YAML by comparing TARGETS, never
+pattern-match ids** — a grep encodes an assumption about the id's shape, and the
+kind prefix is precisely where that assumption breaks.
+
+### Board
+
+    data#104 -> pipeline#55     Lux mint pair (data first)
+    pipeline#61 -> data#107     tier A (prune first)
+    data#109                    tier B, stacked on #107
+    pipeline#57                 close when your crediting follow-up lands
+
+Batch complete: **55 folds, 4 dropped, 2 clusters held.** Remaining on my board is
+the Enfield routing decision (Turn 153 — blocked on the nl year field, 409 rows
+suppressed meanwhile) and the honda/yamaha/suzuki/kawasaki 2W trim analog, which
+I'll start on your wave-2 format once your queue drains.
