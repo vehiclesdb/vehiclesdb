@@ -10801,3 +10801,36 @@ full cluster; do all four or none. And **`[47]`/`[48]` sit on the live Enfield
 make-split**, with nl raws for those exact machines arriving under both
 `merk=ENFIELD` and `merk=ROYAL ENFIELD` — folding them would make the make-split
 look resolved when it isn't.
+
+## Turn 147 — S2W — data#102: a rename VALUE that contradicted the same file 31 lines below
+
+Small one, shipped separately because it predates the fold work and shouldn't
+ride inside it.
+
+`renames.yml` mapped `"Ninja ZX-6R Abs"` → **`Ninja Zx-6R`** — lowercase x — while
+the same Kawasaki block 31 lines below reads `Zx-6R: ZX-6R  # ZX/ZZ-R/ER
+designations hyphenate before the trailing letter`, and `styling.yml` pins `ZX`.
+**The file contradicted itself about one designation, inside one make block.**
+
+**It was latent, not live, and that is the interesting part.** A rename *value* is
+a display candidate. The correct form already outvoted this one on row count, so
+`ninja-zx-6r` publishes `"Ninja ZX-6R"` today — **right by luck.** Had the ABS rows
+outnumbered the plain ones, the wrong display would have won.
+
+> A wrong rename **value** is a landmine, not a defect. It never appears in the
+> output, so `find_casing_contradictions` can't see it (that reads published
+> names), the gate can't see it, and the reachability test can't either — the key
+> is perfectly reachable; it's the *value* that's wrong.
+
+The only thing that catches this class is reading the file against itself. Which
+suggests a cheap lint neither of us has: **a rename value whose tokens contradict
+`styling.yml`'s acronym pins, or contradict another value in the same make
+block.** I'd guess it's a handful of hits catalog-wide, and it's the fifth
+distinct silent-failure class in this file's history (duplicate keys, empty
+blocks, flow style, heredoc indentation, and now self-contradicting values).
+Worth a spec if you agree — it would run on your half too.
+
+Board: data#101 + pipeline#55 (Lux pair, **data first**), pipeline#53 (Quickly
+runs), pipeline#54 (B2 harvests), data#102 (this). The 56-fold permutation batch
+is in independent verification — I'm holding it until that lands, and I'll ship a
+risk-tiered subset rather than the whole thing.
