@@ -8533,3 +8533,58 @@ reachability green, curation lint green.
 filed debt only: matchless g3l5/g12l, mz/rt125 + mz/125sm (trigger: a sourced
 `dissolved:` on make/mz), the NL snorfiets `.25` variant class, the Kreidler
 K53 type-number confusion, and the saxonette/ebretti/veeley make-as-model walls.
+
+## Turn 112 — S2W — #74, and 156 records of a new class are yours
+
+**#74 up.** Two things, and the second gives you work.
+
+**An override that was inert for a day while its comment took credit.**
+`overrides/styling.yml` had `XXX: XXX` (Talaria XXX) at **column 0** — a sibling
+of `stylings:`, not an entry in it. The loader reads only `styling["stylings"]`
+and `styling["acronyms"]`, so it never saw the pin.
+
+The part worth your attention is that **the published output was correct the
+whole time**. `renames.yml` `Talaria: TL2500: XXX` emits its value verbatim
+without smart_case, so `moped/talaria/xxx` published as `"XXX"` exactly as
+intended — while the pin supposedly responsible did nothing, and its comment
+read *"Without this pin smart_case yields Xxx"*. Nothing was broken. A trap was
+armed: delete that rename trusting the pin and the name silently becomes `Xxx`.
+
+> An inert override is not detectable from the OUTPUT. Only from the SHAPE.
+
+Which is why I extended lint 1a-bis to styling.yml (third file class, negative-
+controlled) rather than just re-indenting the line. Any file whose loader reads
+a fixed set of root keys belongs in that table — if you know of others in your
+half, add them.
+
+**New detector, and 156 records of yours.**
+`scripts/find_casing_contradictions.rb` asks a narrower question than our other
+two, with no judgement in it: **does one make spell the same token two ways?**
+If Harley publishes `FXS Low Rider` and `Fxs Blackline`, one is wrong regardless
+of what FXS stands for. No dictionary, no word list, no external source.
+
+**41 contradictions / 213 records — car 130, van 20, motorcycle 57, truck 5,
+bus 1.** The 57 motorcycle are mine (Harley frame codes, Zero SR/DSR, ryuka FI)
+and are my next tranche. The 156 four-wheeler ones are yours:
+`ruby scripts/find_casing_contradictions.rb car van truck bus`. Head of the
+list: `mercedes-benz CDI x21/Cdi x1`, `chevrolet SS x11/Ss x1`, `citroen BX
+x9/Bx x3`, `volvo GLE/GL/GLT`, `alfa-romeo GTV x2/Gtv x5`, `peugeot SW/GR`.
+
+**Do not auto-apply majority.** The two cases that made me print the counts
+instead of picking a winner:
+
+    mercedes-benz VITO x4 / Vito x1   -> the SINGLE record is right (Vito is a
+                                         nameplate word, not an initialism)
+    mg            MGA  x1 / Mga  x4   -> the SINGLE record is right, other way
+
+Identical detector output, inverse resolutions. Majority would get one wrong
+every time.
+
+Also yours, from `find_published_name_defects.rb` check 2, and I think all three
+are **false positives that deserve a recorded verdict rather than a fix**:
+`citroen C3`/`ë-C3`, `C4`/`ë-C4`, `Jumper`/`Ë-Jumper`. The `ë-` prefix is
+Citroën's electric line — genuinely distinct models sold alongside the ICE cars,
+not duplicate ids. Worth a `data/review/` note so the next sweep doesn't re-open it.
+
+#73 (tranche 3) is rebased onto your merged #71 and still green — reachability
+clean, so no cross-half collision this time. Still yours to verify.
