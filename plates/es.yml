@@ -1,0 +1,692 @@
+# plates/es.yml — Spain (PRD-PLATES gate L0 pilot).
+#
+# EVERY format, colour and letter-exclusion claim in this file comes from
+# Real Decreto 2822/1998 (Reglamento General de Vehículos) ANEXO XVIII, read
+# in BOTH texts, because they differ and the difference IS the era boundary:
+#
+#   * ORIGINAL text, BOE-A-1999-1826, in force 26-07-1999 — its Anexo XVIII
+#     I.A.a) still describes the PROVINCIAL ordinary-car system
+#     (province contraseña + 4 digits + 1-2 letters), while I.A.b)-d) and all
+#     of I.B/I.C already use the modern "prefix letter + 4 digits + 3 letters"
+#     shape. RD 2822/1998's own preamble states the novelty: "la supresión de
+#     las siglas de la provincia en todas las placas de matrícula, a excepción
+#     de las ordinarias de los vehículos automóviles".
+#   * ORDEN de 15 de septiembre de 2000, BOE-A-2000-16805, IN FORCE
+#     17-09-2000 — replaces I.A.a) wholesale with the 4-digits + 3-letters
+#     national series AND adds the blue EU band (Cuadro 5). Its stated reason:
+#     "El sistema actual de numeración ... está próximo a agotarse en las
+#     provincias de Madrid y Barcelona".
+#   * CONSOLIDATED text (BOE-A-1999-1826-consolidado) — current wording,
+#     including the modern additions (decorative geometric designs permitted;
+#     ISO/IEC 30116:2016 OCR quality).
+#
+# This settles the "Spanish 2000 cutover" that PRD-PLATES §5.3 flags as a
+# folklore-prone boundary: the instrument is dated, published and its entry
+# into force is stated by BOE itself as 17-09-2000. No averaging required.
+#
+# COLOUR POLICY: Anexo XVIII Cuadro 3 specifies, per colour, a FOUR-CORNER
+# CIE chromaticity box plus a MINIMUM luminance factor. That constrains a
+# GAMUT, not a value — so no single hex is a sourced claim. Each design below
+# therefore carries `hex_basis: observed` for the rendered hex, plus
+# `color_spec` with the cited Cuadro 3 box, plus `hex_cie_centroid` (the box
+# centroid converted to sRGB at maximum in-gamut luminance) so the render
+# layer can choose a spec-anchored value instead of the conventional one.
+jurisdiction: es
+authority:
+  name: Dirección General de Tráfico (DGT) — Reglamento General de Vehículos, RD 2822/1998, Anexo XVIII
+  url: "https://www.boe.es/buscar/act.php?id=BOE-A-1999-1826"
+binding: vehicle
+
+charset_defaults:
+  letters: [B, C, D, F, G, H, J, K, L, M, N, P, R, S, T, V, W, X, Y, Z]
+  excluded_letters: [A, E, I, O, U, "Ñ", Q]
+  excluded_digraphs: [CH, LL]
+  excluded_letters_note: >-
+    Anexo XVIII, verbatim: "tres letras, empezando por las letras BBB y
+    terminando por las letras ZZZ, suprimiéndose las cinco vocales, y las letras
+    Ñ y Q" — with the reasons given in the text itself: the vowels "se evitan
+    palabras malsonantes o acrósticos especialmente significados"; Ñ and Q "por
+    ser fácil su confusión con la letra N y el número 0, respectivamente"; and
+    CH and LL "por incompatibilidad con el diseño de la placa de matrícula que no
+    admitiría la consignación de cuatro caracteres en el último grupo". That
+    leaves exactly 20 letters. Note the sequence starts at BBB, NOT AAA.
+  source: "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.A: the BBB->ZZZ rule and every exclusion, verbatim"
+
+color_spec_table:                # cited once; referenced by each design below
+  source: "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII Cuadro 3, 'Coordenadas cromáticas' + luminance factors"
+  blanco:   { cie_x: [0.355, 0.305, 0.285, 0.335], cie_y: [0.355, 0.305, 0.325, 0.375], luminance_factor_min: 0.35 }
+  rojo:     { cie_x: [0.690, 0.595, 0.569, 0.655], cie_y: [0.310, 0.315, 0.341, 0.345], luminance_factor_min: 0.05 }
+  verde:    { cie_x: [0.007, 0.248, 0.177, 0.026], cie_y: [0.703, 0.409, 0.362, 0.399], luminance_factor_min: 0.04 }
+  azul:     { cie_x: [0.078, 0.150, 0.210, 0.137], cie_y: [0.171, 0.220, 0.160, 0.038], luminance_factor_min: 0.01 }
+  amarillo: { cie_x: [0.545, 0.487, 0.427, 0.465], cie_y: [0.454, 0.423, 0.483, 0.534], luminance_factor_min: 0.27 }
+
+display_rules:                   # Anexo XVIII III, verbatim-sourced
+  two_plates: "automóviles except motorcycles and three-wheelers: one front (vertical axis on the median longitudinal plane; exceptionally left or right if construction forbids) and one rear"
+  one_plate_rear_only: "ciclomotores, motocicletas, vehículos de tres ruedas, cuatriciclos ligeros y pesados — one rear plate only; light and heavy quadricycles MAY additionally carry a front plate of the same characteristics"
+  trailers: "remolques/semirremolques over 750 kg carry their own plate at the rear plus, on the right, a second plate bearing the TOWING vehicle's registration; lighter ones carry only a repeat of the towing vehicle's registration"
+  source: "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII III. Número y ubicación de las placas"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT NATIONAL SERIES — 4 digits + 3 letters, EU band.
+  # =========================================================================
+  - id: es-national-2000
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2000 }        # Orden de 15-09-2000, in force 17-09-2000
+    period_evidence: instrument-in-force
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{4} [A-Z]{3}\z'
+      regex_strict: '\A\d{4} [BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+      charset:
+        letters: [B, C, D, F, G, H, J, K, L, M, N, P, R, S, T, V, W, X, Y, Z]
+        notes: "see charset_defaults; digits run 0000-9999; the letter group runs BBB to ZZZ"
+      progression: >-
+        Digits cycle 0000-9999 within a fixed letter triple, then the letter triple
+        advances one step in the 20-letter alphabet. Nationally sequential and
+        MONOTONIC from BBB, which makes the letter triple an approximate-age signal
+        and the ONLY decodable dimension of a post-2000 Spanish plate — there is no
+        geography whatsoever in this series.
+      separator_note: >-
+        Anexo XVIII prescribes "dos grupos de caracteres" and gives the inter-group
+        spacing in mm (Cuadro 1: 41 mm on the ordinaria larga) but prescribes no
+        separator GLYPH. The space in the pattern is the printed gap.
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, reflective_surface: { w: 330, h: 210 }, note: "ordinaria alta (two-line)" }
+        - { w: 340, h: 110, unit: mm, reflective_surface: { w: 330, h: 100 }, note: "ordinaria larga delantera — the small FRONT plate, for M1 vehicles whose mounting cannot take the long plate, and for three-wheelers and quadricycles" }
+        - { w: 220, h: 160, unit: mm, reflective_surface: { w: 210, h: 150 }, note: "motocicletas ordinaria" }
+        - { w: 132, h: 96, unit: mm, reflective_surface: { w: 122, h: 86 }, note: "motocicletas corta — trial and enduro two-wheelers only" }
+      characters: { w: 45, h: 77, stroke: 10, gap: 14, group_gap: 41, unit: mm, note: "ordinaria larga; the 340x110 front plate uses 30 x 60 with a 6 mm stroke; motorcycle plates 30 x 60 / 6 mm; motocicletas corta 13 x 30 / 3.5 mm" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#FFFEF3", spec: blanco }
+      foreground: "#000000"
+      foreground_note: "caracteres estampados EN RELIEVE, pintados en color negro MATE — the statute specifies embossed characters and a matte finish, which the render layer should record even if it cannot depict it"
+      band: { side: left, color: "#003399", content: eu-stars+E, hex_basis: observed, spec: azul }
+      band_note: >-
+        "sobre una banda azul dispuesta verticalmente, el símbolo de la bandera
+        europea, que constará de 12 estrellas de color amarillo, y la sigla
+        distintiva de España representada por la letra E de color blanco, de
+        acuerdo con el cuadro 5". CUADRO 5 IS TITLED "DIMENSIONES Y COLORES DEL
+        DISTINTIVO COMUNITARIO (Dimensiones en mm.)" but renders as a DRAWING in
+        the BOE consolidated PDF — the millimetres are not text-extractable.
+        Corrects the EU dossier's expectation that ES Anexo XVIII Cuadro 5 supplies
+        Euroband geometry as text.
+      decoration_allowed: >-
+        Consolidated text only: "se permite la inclusión de diseños geométricos sin
+        significado reconocible, siempre que no afecten a las condiciones de
+        retrorreflexión y legibilidad", subject to ISO/IEC 30116:2016 OCR quality
+        testing. A modern addition absent from the 1999 original.
+      emblem: { present: false }
+      rear_differs: false
+      plate_construction: { border: "reborde plano sin cubrir ni pintar, 5 mm wide around the whole contour, embossed 0.8 +/-0.1 mm", corner_radius: { inner: 6, outer: 10, unit: mm }, character_relief: "0.9 mm +0.3/-0.2 above the ground", manipulator_number: "stamped in a 35 x 5 mm rectangle inside the left-hand bead" }
+    region_encoding: none
+    variants:
+      - class: taxi
+        design:
+          rear_differs: true
+          rear: { background: { color: "#003399", finish: retroreflective, hex_basis: observed, spec: azul }, foreground: "#FFFFFF" }
+          front: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec: blanco }, foreground: "#000000" }
+        note: >-
+          THE REAR PLATE ONLY is blue with white matte characters, for taxis and for
+          hire-with-driver vehicles of up to nine seats. The front plate stays
+          white/black. Same serial, same period, so a sub-entry per PRD-PLATES §2.3
+          — but note this is a genuine front/rear ASYMMETRY, not a colour-only
+          swap, and secondary sources routinely get it wrong by colouring both.
+        sources:
+          - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.A.a) and Cuadro 1 note (7): 'salvo las placas de matrícula TRASERAS de los vehículos destinados al servicio de taxi y de alquiler con conductor de hasta nueve plazas'"
+      - class: motorcycle
+        design: { plate: { w: 220, h: 160, unit: mm } }
+        note: "Motorcycles carry the SAME national serial on a 220 x 160 plate (122 x 86 reflective on the 132 x 96 trial/enduro plate). Size-only variant, hence a sub-entry; recorded with a class so class-keyed queries can still reach it."
+        sources:
+          - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII Cuadro 1: Motocicletas ordinaria 220x160 / 210x150; Motocicletas corta 132x96"
+    sources:
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-2000-16805  # Orden de 15-09-2000: replaces Anexo XVIII I.A.a) with '4 cifras + 3 letras' and adds the EU band; BOE's own Análisis block states 'Fecha de entrada en vigor: 17/09/2000'"
+      - "https://www.boe.es/eli/es/o/2000/09/15/(1)  # canonical ELI for that Orden"
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.A.a) current wording: white retroreflective ground, black matte embossed characters, 4 digits 0000-9999 + 3 letters BBB->ZZZ minus vowels/Ñ/Q; Cuadro 1 dimensions; Cuadro 3 colour boxes"
+      - "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:31998R2411  # Reg. 2411/98 Art. 3 — the mutual-recognition rule the Orden's preamble invokes by name"
+    notes: >-
+      THE CURRENT SPANISH SERIES. Purely sequential and non-geographic: the 2000
+      reform deliberately removed the province code. Anexo XVIII adds the
+      reciprocal-recognition clause in terms: a Spanish car whose plate shows the EU
+      flag and the E sign "no será necesario que lleven en su parte posterior el
+      signo distintivo de la nacionalidad española previsto en la señal V-7".
+      DIMENSION CORRECTION worth recording: the statute says 520 x 110 mm, not the
+      500 x 110 that circulates in secondary sources.
+
+  # =========================================================================
+  # THE PRE-2000 PROVINCIAL SERIES.
+  # =========================================================================
+  - id: es-provincial
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1999, end: 2000 }
+    period_evidence: instrument-window
+    format:
+      pattern: "LL-9999-LL"
+      regex: '\A[A-Z]{1,2}-\d{4}-[A-Z]{1,2}\z'
+      regex_strict: '\A(?:AB|AL|AV|BA|BI|BU|CA|CC|CE|CO|CR|CS|CU|GC|GI|GR|GU|HU|IB|LE|LO|LU|MA|ML|MU|NA|OU|PO|SA|SE|SG|SO|SS|TE|TF|TO|VA|VI|ZA|A|B|C|H|J|L|M|O|P|S|T|V|Z)-\d{4}-[A-Z]{1,2}\z'
+      charset:
+        notes: >-
+          Anexo XVIII I.A.a) as ORIGINALLY enacted, verbatim: "tres grupos de
+          caracteres, constituidos por la contraseña de la provincia donde se
+          matricula el vehículo; un número de cuatro cifras, que irá desde el 0000 al
+          9999, y una o dos letras de una serie, que comienza por la letra A y
+          termina por las letras ZZ, sin emplearse aquellas letras del alfabeto que
+          puedan dar lugar a confusión." Note the trailing letter group here starts at
+          A (not BBB) and is ONE OR TWO letters, and that the excluded letters are
+          NOT enumerated in this text — hence regex_strict keeps [A-Z]{1,2} for that
+          group and constrains only the province contraseña, which IS enumerated
+          (Anexo XVIII II.A, 52 codes).
+      separator_note: "Anexo XVIII prescribes three groups and their mm spacing (Cuadro 1 rows 'ordinaria ... con siglas de provincia'), not a separator glyph; the hyphen is the conventional printed rendering."
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "ordinaria alta con siglas de provincia" }
+        - { w: 340, h: 110, unit: mm, note: "ordinaria larga delantera con siglas de provincia" }
+        - { w: 220, h: 160, unit: mm, note: "motocicletas ordinaria con siglas de provincia" }
+      characters: { w: 45, h: 77, stroke: 10, gap: 8, group_gap: 27, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec: blanco }
+      foreground: "#000000"
+      band: { side: none }
+      note: >-
+        No EU band: the band arrived with the Orden of 15-09-2000. Owners of
+        pre-2000 vehicles MAY voluntarily re-plate to the banded design while
+        KEEPING their provincial registration (Disposición transitoria primera), and
+        MUST adopt the new dimensions if they replace plates after loss, theft or
+        deterioration (Disposición transitoria segunda) — which is why the
+        consolidated Cuadro 1 still carries four "con siglas de provincia" rows
+        today, footnoted "Placas de matrícula con arreglo a lo establecido en las
+        disposiciones transitorias de la Orden de 15 de septiembre de 2000".
+    region_encoding: "plates/_decode/es-provinces.yml"
+    sources:
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1999-1826  # ORIGINAL RD 2822/1998 text, Anexo XVIII I.A.a): province contraseña + 4 digits + 1-2 letters (A..ZZ); BOE Análisis block: 'Fecha de entrada en vigor: 26/07/1999'"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-2000-16805  # the Orden that replaced it, in force 17-09-2000, plus both disposiciones transitorias (voluntary re-plating; mandatory new dimensions on replacement)"
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.A: the 52 province contraseñas; Cuadro 1 'con siglas de provincia' rows"
+    notes: >-
+      THE PROVINCIAL SYSTEM — Spain's only region-decodable series. PERIOD CAVEAT,
+      stated plainly: start/end here record the INSTRUMENT WINDOW in which this
+      format was the enacted ordinary-car format (RD 2822/1998 in force 26-07-1999;
+      superseded for new registrations 17-09-2000), NOT the life of the system. The
+      province + 4 digits + 1-2 letters shape is much older — commonly given as
+      1971 — but no primary for that start was secured in this pass, so it is a
+      recorded gap rather than an invented date, and the id is deliberately
+      `es-provincial` and not `es-provincial-1971`. Plates already issued remain
+      valid indefinitely and are re-issued on request; RGV Art. 27.2 lets an owner
+      swap a provincial plate for a national one on a change of province.
+
+  # =========================================================================
+  # ORDINARY SPECIAL SERIES — prefix letter + 4 digits + 3 letters, all from
+  # RD 2822/1998 itself (in force 26-07-1999), all still current.
+  # =========================================================================
+  - id: es-special-vehicles-1999
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "E9999LLL"
+      regex: '\AE\d{4}[A-Z]{3}\z'
+      regex_strict: '\AE\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+      charset: { notes: "letter E prefix; 4 digits 0000-9999; 3 letters BBB->ZZZ minus vowels/Ñ/Q/CH/LL" }
+    design:
+      plate: { w: 340, h: 110, unit: mm, reflective_surface: { w: 330, h: 100 } }
+      plate_variants:
+        - { w: 280, h: 200, unit: mm, reflective_surface: { w: 270, h: 190 }, note: "vehículos especiales alta" }
+      characters: { w: 30, h: 60, stroke: 6, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec: blanco }
+      foreground: "#CE1126"
+      foreground_note: "RED matte embossed characters on white — 'Los caracteres estampados en relieve irán pintados en color rojo mate'. hex_basis observed; Cuadro 3 'rojo' gamut applies (CIE centroid #FF111A)."
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.A.b) vehículos especiales: white ground, red matte characters, letter E + 4 digits + 3 letters; Cuadro 1: 340x110 larga / 280x200 alta, characters 30x60/6"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1999-1826  # original text, same wording minus the CH/LL inciso; in force 26-07-1999"
+    notes: >-
+      VEHÍCULOS ESPECIALES (agricultural and works/services machinery). The only
+      Spanish series with RED characters on white, and notably NOT 520 mm wide — the
+      long form is 340 x 110. CLASS CAVEAT: _meta/classes.yml has no "special
+      vehicle"/"works machinery" class; `agricultural` is the closest fit and covers
+      the dominant population (maquinaria agrícola), but the statutory category is
+      broader ("de obras y servicios"). Flagged as a vocabulary gap.
+
+  - id: es-trailer-1999
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "R9999LLL"
+      regex: '\AR\d{4}[A-Z]{3}\z'
+      regex_strict: '\AR\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, reflective_surface: { w: 330, h: 210 }, note: "remolques alta" }
+      characters: { w: 45, h: 77, stroke: 10, gap: 12, group_gap: 30, unit: mm }
+      background: { color: "#CE1126", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#FF111A", spec: rojo }
+      foreground: "#000000"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.A.c): 'El fondo de las placas será retrorreflectante, de color rojo. Los caracteres estampados en relieve irán pintados en color negro mate'; letter R + number + 3 letters; Cuadro 1 dimensions"
+    notes: >-
+      REMOLQUES Y SEMIRREMOLQUES — a RED plate with black characters, the inverse of
+      the special-vehicle plate. Trailers over 750 kg carry this plus a second
+      plate on the right bearing the towing vehicle's registration (Anexo XVIII
+      III.4). Trailers and semi-trailers share one series here because Anexo XVIII
+      treats them in one subparagraph with one prefix letter — contrast the
+      Netherlands, where W and O split them.
+
+  - id: es-moped-1999
+    class: moped
+    categories: [moped, quadricycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "C9999LLL"
+      regex: '\AC\d{4}[A-Z]{3}\z'
+      regex_strict: '\AC\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+      layout: >-
+        THREE ROWS as originally enacted: row 1 = letter C plus the thousands digit
+        of the 0000-9999 number; row 2 = the remaining three digits; row 3 = the
+        three letters. The consolidated text describes it as "tres grupos"; the
+        three-row layout survives in the 100 x 168 "ciclomotores alta" plate.
+    design:
+      plate: { w: 100, h: 168, unit: mm, reflective_surface: { w: 90, h: 158 }, note: "ciclomotores alta (portrait, three rows)" }
+      plate_variants:
+        - { w: 140, h: 120, unit: mm, reflective_surface: { w: 130, h: 110 }, note: "ciclomotores larga" }
+        - { w: 210, h: 85, unit: mm, reflective_surface: { w: 200, h: 75 }, note: "cuatriciclos ligeros — also used for three-wheeled ciclomotores" }
+        - { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 }, note: "cuatriciclos ligeros larga" }
+      characters: { w: 13, h: 30, stroke: 3.5, unit: mm, tolerance: "+/- 3 mm between characters" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#FFC000", spec: amarillo }
+      foreground: "#000000"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.A.d) ciclomotores: yellow retroreflective ground, black matte characters, letter C + 4 digits + 3 letters; Cuadro 1 ciclomotores/cuatriciclos rows"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1999-1826  # original text: the explicit THREE-ROW layout for ciclomotores"
+    notes: >-
+      CICLOMOTORES Y CICLOS DE MOTOR — yellow ground, black characters. RGV
+      transitional provision required mopeds bought before the RGV and registered
+      only with municipalities to be brought onto the national register within six
+      months of entry into force. Light quadricycles and three-wheeled mopeds share
+      this yellow design (Cuadro 1 note 6), which is why `quadricycle` appears in
+      categories — a kinds-vocabulary extension the schema takes without change.
+
+  - id: es-historic-1999
+    class: historic
+    categories: [car, van, truck, bus, motorcycle, moped]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "H9999LLL"
+      regex: '\AH\d{4}[A-Z]{3}\z'
+      regex_strict: '\AH\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "vehículo histórico alta" }
+        - { w: 220, h: 160, unit: mm, note: "vehículo histórico motocicletas" }
+        - { w: 100, h: 168, unit: mm, note: "vehículo histórico ciclomotores" }
+      characters: { w: 45, h: 77, stroke: 10, gap: 10, group_gap: 35, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec: blanco }
+      foreground: "#000000"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.B.c) vehículo histórico: white ground, black matte characters, letter H + 4 digits + 3 letters; Cuadro 1 four histórico rows"
+    notes: >-
+      VEHÍCULO HISTÓRICO. Visually near-identical to the ordinary series (white/black)
+      and distinguished by the H prefix rather than by colour — the opposite design
+      choice to the Netherlands, whose oldtimer plate is dark blue but keeps its
+      original serial. Spain has a dedicated historic SERIAL SERIES; the Netherlands
+      has a dedicated historic DESIGN. The age threshold sits in the historic-vehicle
+      regulation (RD 1247/1995), which was not fetched in this pass — recorded gap.
+
+  - id: es-tourist-1999
+    class: temporary
+    categories: [car, van, motorcycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "T9999LLL"
+      regex: '\AT\d{4}[A-Z]{3}\z'
+      regex_strict: '\AT\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "turística alta" }
+      characters: { w: 45, h: 77, stroke: 10, gap: 10, group_gap: [20, 30], unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec: blanco }
+      foreground: "#000000"
+      band:
+        side: right
+        color: "#CE1126"
+        hex_basis: observed
+        spec: rojo
+        content: expiry-month-roman-over-year-arabic
+        note: >-
+          "La banda vertical en donde se consignan el mes y el año en que caducan,
+          expresándose el primero en caracteres romanos y el segundo en caracteres de
+          tipo árabe, será retrorreflectante de color rojo. Los caracteres que en
+          ella se consignan serán adhesivos de color blanco mate" — 15 x 8 x 2 mm
+          adhesive characters, band width 30 mm (Cuadro 3).
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.B.b) matrícula turística: white ground, black matte characters, letter T + 4 digits + 3 letters, RED expiry band with white adhesive characters; Cuadro 3: band 30 mm, characters 15x8x2 mm"
+    notes: >-
+      MATRÍCULA TURÍSTICA — a tax-privileged temporary registration with the expiry
+      month in ROMAN numerals and the year in Arabic on a red vertical band. The
+      only Spanish plate that carries its own expiry date on its face, and the only
+      one whose band sits on the right. CLASS CAVEAT: recorded as `temporary`; the
+      statutory category is its own ("matrícula especial") and is neither ordinary
+      nor a circulation permit.
+
+  - id: es-temporary-private-1999
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, semitrailer]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "P9999LLL"
+      regex: '\AP\d{4}[A-Z]{3}\z'
+      regex_strict: '\AP\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+      layout: "Motor vehicles and trailers: three groups on one line. CICLOMOTORES: three ROWS — row 1 = letter P plus the thousands digit, row 2 = the remaining three digits, row 3 = the three letters."
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 280, h: 200, unit: mm, reflective_surface: { w: 270, h: 190 }, note: "temporal particular alta" }
+        - { w: 100, h: 168, unit: mm, reflective_surface: { w: 90, h: 158 }, note: "temporal particular ciclomotores" }
+      characters: { w: 30, h: 60, stroke: 6, gap: 16, unit: mm }
+      background: { color: "#007A33", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#00FFB3", spec: verde }
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.C.a) permisos temporales para particulares: 'El fondo de las placas será retrorreflectante, de color verde. Los caracteres estampados en relieve irán pintados en color blanco mate'; letter P; the three-row ciclomotor layout"
+    notes: >-
+      TEMPORARY PERMIT FOR PRIVATE INDIVIDUALS — GREEN ground, white characters,
+      prefix P. Spain colour-codes temporary permits by HOLDER TYPE: green for
+      individuals (this entry), red for companies (es-temporary-company-*). Note the
+      Cuadro 3 green box is wide and its minimum luminance factor is only 0.04, so
+      the rendered hex is a conventional choice, not a spec value — the centroid
+      conversion lands at a much lighter #00FFB3.
+
+  - id: es-temporary-company-unregistered-1999
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, semitrailer]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "S9999LLL"
+      regex: '\AS\d{4}[A-Z]{3}\z'
+      regex_strict: '\AS\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+      layout: "one line for motor vehicles and trailers; three rows for ciclomotores (letter S + thousands digit / three digits / three letters)"
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 280, h: 200, unit: mm, note: "temporal empresas alta" }
+        - { w: 100, h: 168, unit: mm, note: "temporal empresas ciclomotores" }
+      characters: { w: 30, h: 60, stroke: 6, gap: 16, group_gap: 57.5, unit: mm }
+      background: { color: "#CE1126", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#FF111A", spec: rojo }
+      foreground: "#FFFFFF"
+      band:
+        side: right
+        color: "#FFFFFF"
+        hex_basis: observed
+        spec: blanco
+        content: expiry-month-roman-over-year-arabic
+        note: "WHITE band with RED matte adhesive characters — the inverse of the tourist plate's red band with white characters. Band width 30 mm (20 mm on the ciclomotor plate)."
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.C.b): red ground, white matte characters, 'la letra S, para los vehículos no matriculados'; white expiry band with red adhesive characters; Cuadro 3 band widths 30/20 mm"
+    notes: >-
+      TEMPORARY PERMIT FOR COMPANIES, UNREGISTERED VEHICLES — prefix S. This is
+      Spain's functional dealer/trade plate. Its own series and not a variant of the
+      V plate below, because the statute assigns a DIFFERENT PREFIX LETTER, which is
+      a format difference (PRD-PLATES §2.3). CLASS CAVEAT: recorded as `dealer`
+      because it is bound to a business rather than a vehicle; the statutory name is
+      "permiso temporal para empresas".
+
+  - id: es-temporary-company-registered-1999
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, semitrailer]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "V9999LLL"
+      regex: '\AV\d{4}[A-Z]{3}\z'
+      regex_strict: '\AV\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      plate_variants:
+        - { w: 280, h: 200, unit: mm }
+        - { w: 100, h: 168, unit: mm }
+      characters: { w: 30, h: 60, stroke: 6, gap: 16, group_gap: 57.5, unit: mm }
+      background: { color: "#CE1126", finish: retroreflective, hex_basis: observed, spec: rojo }
+      foreground: "#FFFFFF"
+      band: { side: right, color: "#FFFFFF", hex_basis: observed, spec: blanco, content: expiry-month-roman-over-year-arabic }
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.C.b): '...o la letra V, para los matriculados' — same red design, different prefix"
+    notes: >-
+      TEMPORARY PERMIT FOR COMPANIES, ALREADY-REGISTERED VEHICLES — prefix V.
+      Identical design to the S series; the prefix letter is the only difference and
+      it encodes whether the vehicle already holds a registration. A parse API must
+      keep them apart, which is why they are two series with distinct notes rather
+      than one entry with an alternation.
+
+  # =========================================================================
+  # DIPLOMATIC AND OFFICIAL SERIES. Anexo XVIII specifies the LETTERS and the
+  # GROUP STRUCTURE ("dos grupos de guarismos") but NOT the digit widths and
+  # NOT the separator glyph — so every regex here uses unbounded \d+ and a
+  # permissive separator, deliberately making no width claim.
+  # =========================================================================
+  - id: es-diplomatic-cd-1999
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "CD-999-999"
+      regex: '\ACD[- ]\d+[- ]\d+\z'
+      pattern_note: >-
+        The three-digit groups in the pattern are REPRESENTATIVE ONLY. Anexo XVIII
+        says "las letras CD, seguidas por dos grupos de guarismos" and fixes neither
+        width; the regex is intentionally unbounded so it makes no width claim.
+      progression: >-
+        Group 1 is an invariable per-mission prefix, assigned in the alphabetical
+        order of the Foreign Ministry's most recent official diplomatic list, with
+        prefix "-1-" reserved for the Decanato del Cuerpo Diplomático; missions that
+        later accredit permanent ambassadors are appended by seniority. Group 2 is a
+        serial within the mission, proposed by the mission itself.
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      characters: { w: 45, h: 77, stroke: 10, gap: 14, group_gap: [80, 48], unit: mm }
+      background: { color: "#CE1126", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#FF111A", spec: rojo }
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: "mission prefix — decode table not authored (see notes)"
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.B.a).1: Cuerpo diplomático — red retroreflective ground, white matte embossed characters, letters CD + two digit groups, prefix assignment rule and the '-1-' Decanato reservation; Cuadro 1 dimensions"
+    notes: >-
+      CUERPO DIPLOMÁTICO — red ground, white characters. The mission-prefix DECODE
+      TABLE is not authored: Anexo XVIII states the ASSIGNMENT RULE (alphabetical
+      order of the Foreign Ministry's official diplomatic list) but not the resulting
+      codes, and that list was not fetched in this pass. PRD-PLATES puts diplomatic
+      decode tables at gate L4; this entry carries the mechanism so the table can be
+      hung off it later without an id change.
+
+  - id: es-international-oi-1999
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "OI-999-999"
+      regex: '\AOI[- ]\d+[- ]\d+\z'
+      pattern_note: "digit-group widths are representative only; Anexo XVIII fixes neither"
+      progression: "group 1 is an invariable per-organisation prefix, assigned by seniority in a series running consecutively after the one reserved for diplomatic missions; group 2 is a serial within the organisation"
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      characters: { w: 45, h: 77, stroke: 10, gap: 14, group_gap: [80, 48], unit: mm }
+      background: { color: "#003399", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#0083FF", spec: azul }
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: "organisation prefix — decode table not authored"
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.B.a).2: organizaciones internacionales — blue retroreflective ground, white matte characters, letters OI + two digit groups"
+    notes: >-
+      ORGANIZACIONES INTERNACIONALES — blue ground, white characters. CLASS CAVEAT:
+      recorded as `diplomatic` because _meta/classes.yml has no
+      international-organisation class; the statutory category is its own and its
+      prefix series is explicitly separate from (though consecutive with) the
+      diplomatic one. Flagged as a vocabulary gap.
+
+  - id: es-consular-cc-1999
+    class: consular
+    categories: [car, van, motorcycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "CC-999-999"
+      regex: '\ACC[- ]\d+[- ]\d+\z'
+      pattern_note: "digit-group widths are representative only"
+      progression: "group 1 is the prefix of the diplomatic mission the consular office depends on; where there is no such dependency a prefix is assigned to the state itself. Group 2 follows the diplomatic rule, or the head of the consular office's proposal where the office is not attached to an accredited mission."
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      characters: { w: 45, h: 77, stroke: 10, gap: 14, group_gap: [80, 48], unit: mm }
+      background: { color: "#007A33", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#00FFB3", spec: verde }
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: "mission prefix — decode table not authored"
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.B.a).3: oficinas consulares — green retroreflective ground, white matte characters, letters CC + two digit groups; prefix inherited from the parent diplomatic mission"
+    notes: >-
+      OFICINAS CONSULARES — green ground, white characters. COLLISION WORTH FLAGGING
+      for the parse API: "CC" is also the province contraseña for CÁCERES in Anexo
+      XVIII II.A, so the string "CC-1234-AB" is a valid provincial car plate while
+      "CC-12-345" is consular. Disambiguation is by group structure (4 digits + 1-2
+      letters vs two digit groups), not by prefix.
+
+  - id: es-diplomatic-staff-ta-1999
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "TA-999-999"
+      regex: '\ATA[- ]\d+[- ]\d+\z'
+      pattern_note: "digit-group widths are representative only"
+      progression: "group 1 identifies the diplomatic mission, international organisation or consular office; group 2 is a serial among that body's technical-administrative staff, on its proposal"
+    design:
+      plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
+      characters: { w: 45, h: 77, stroke: 10, gap: 14, group_gap: [80, 48], unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed, hex_cie_centroid: "#FFC000", spec: amarillo }
+      foreground: "#000000"
+      band: { side: none }
+    region_encoding: "body prefix — decode table not authored"
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII I.B.a).4: personal técnico-administrativo — yellow retroreflective ground, black matte characters, letters TA + two digit groups"
+    notes: >-
+      PERSONAL TÉCNICO-ADMINISTRATIVO of missions, international organisations and
+      consular offices — yellow ground, black characters. RGV transitional provision
+      three preserved existing matrícula turística permits held by this staff until
+      their validity expired, which is the documented bridge from the pre-1999
+      arrangement.
+
+  - id: es-military-1999
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "ET-999999"
+      regex: '\A(?:ET|FN|EA)[- ]\d+(?:-VE)?\z'
+      pattern_note: "digit width is representative only — Anexo XVIII II.B lists the contraseñas but states no numbering grammar"
+      charset: { contraseñas: { ET: "Ejército de Tierra", FN: "Armada", EA: "Ejército del Aire" }, suffix: "special vehicles append '-VE' after a hyphen" }
+    design:
+      band: { side: none }
+      note: >-
+        Anexo XVIII II.B lists the contraseñas ONLY — it prescribes no colours and no
+        dimensions for state plates, and section I (Colores e inscripciones) does not
+        cover them. Colours are therefore deliberately ABSENT here rather than
+        guessed; recorded gap.
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.B: 'ET, FN y EA: Para vehículos pertenecientes al Ministerio de Defensa, correspondientes, respectivamente al Ejército de Tierra, Armada y Ejército del Aire' and the '-VE' rule for vehículos especiales"
+    notes: >-
+      MINISTRY OF DEFENCE fleets — Army (ET), Navy (FN), Air Force (EA). One series
+      because Anexo XVIII II.B treats the three contraseñas in a single provision
+      with a single numbering rule; the branch is decodable from the contraseña.
+      Colours and dimensions are NOT in Anexo XVIII for state plates and are not
+      invented here.
+
+  - id: es-nato-fae-1999
+    class: military
+    categories: [car, van, truck, bus]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "FAE-999999"
+      regex: '\AFAE[- ]\d+(?:-VE)?\z'
+      pattern_note: "digit width representative only"
+    design:
+      band: { side: none }
+      note: "no colour or dimension specified in Anexo XVIII II.B — recorded gap"
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.B: 'FAE: Para los vehículos al servicio de los Cuarteles Generales Militares Internacionales de la OTAN matriculados en España'"
+    notes: >-
+      NATO INTERNATIONAL MILITARY HEADQUARTERS registered in Spain. The Spanish
+      counterpart of Germany's "X" Unterscheidungszeichen (FZV Anlage 2), and worth
+      pairing with it when the encyclopedia covers NATO-status vehicles.
+
+  - id: es-government-1999
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "PME-999999"
+      regex: '\A(?:PME|MF|MMA)[- ]\d+(?:-VE)?\z'
+      pattern_note: "digit width representative only"
+      charset: { contraseñas: { PME: "Parque Móvil del Estado", MF: "Parque del Ministerio de Fomento", MMA: "Parque del Ministerio de Medio Ambiente" } }
+    design:
+      band: { side: none }
+      note: "no colour or dimension specified in Anexo XVIII II.B — recorded gap"
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.B: MF, MMA and PME contraseñas"
+    notes: >-
+      CENTRAL GOVERNMENT FLEETS. PERIOD-ROT WARNING for the decode discipline
+      PRD-PLATES §9 calls out: MF (Ministerio de Fomento) and MMA (Ministerio de
+      Medio Ambiente) name ministries that have since been reorganised and renamed,
+      yet the consolidated Anexo XVIII still lists them. The codes are current law;
+      the ministry names behind them are not current fact. Recorded as-enacted.
+
+  - id: es-police-1999
+    class: police
+    categories: [car, van, truck, motorcycle]
+    period: { start: 1999 }
+    period_evidence: instrument-in-force
+    format:
+      pattern: "CNP-999999"
+      regex: '\A(?:CNP|PGC)[- ]\d+(?:-VE)?\z'
+      pattern_note: "digit width representative only"
+      charset: { contraseñas: { CNP: "Cuerpo Nacional de Policía", PGC: "Cuerpo de la Guardia Civil" } }
+    design:
+      band: { side: none }
+      note: "no colour or dimension specified in Anexo XVIII II.B — recorded gap"
+    region_encoding: none
+    sources:
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.B: CNP and PGC, both under the Dirección General de la Policía y de la Guardia Civil"
+    notes: >-
+      NATIONAL POLICE (CNP) and GUARDIA CIVIL (PGC). Note that RGV Art. 27.5 lets
+      an autonomous community's police force use plates "con una contraseña y
+      numeración propias" within that community, in addition to ordinary
+      registration — so autonomous-community police codes exist OUTSIDE Anexo XVIII
+      and are a recorded gap for L1 (Ertzaintza, Mossos d'Esquadra, Policía Foral).

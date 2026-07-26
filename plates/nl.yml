@@ -1,96 +1,972 @@
-# plates/nl.yml — Netherlands (PRD-PLATES L0 pilot seed).
+# plates/nl.yml — Netherlands (PRD-PLATES gate L0 pilot, COMPLETION PASS).
 #
-# THE NL MODELLING RULE (EU dossier finding 6, binding): sidecode is a
+# Supersedes the 4-entry L0 seed. Entry ids from the seed are preserved
+# verbatim (nl-sidecode11-moped, nl-sidecode11-agricultural,
+# nl-sidecode11-car, nl-historic-darkblue) per the id contract
+# (PRD-QUALITY I-5/I-6); their DATA is corrected where the RDW pages
+# contradicted the seed — corrections are called out in each `notes`.
+#
+# THE NL MODELLING RULE (EU dossier finding 6, binding): a sidecode is a
 # PATTERN identity, not a period — the same pattern reaches each vehicle
 # category on its own date (RDW's official series table). One pattern ×
 # one category-group = one series entry. Age inference is one-sided (a
-# pattern gives the EARLIEST date; series run until exhausted).
+# pattern gives the EARLIEST date; series run until exhausted). RDW says
+# so in its own words on the series page: "Bij een nieuwe kentekenserie
+# krijgen niet direct alle voertuigcategorieën deze combinatie. Eerst maken
+# we de huidige serie 'vol', wat soms lang duurt."
 #
-# Dutch plates encode NO geography. Category is encoded in first letters
-# (M motorcycle, D/F moped, V light commercial, B heavy commercial,
-# W trailer, O semi-trailer — rdw.nl cijfers-en-letters page).
+# Dutch plates encode NO geography. Category IS encoded, in the first letter
+# of the registration (RDW cijfers-en-letters page):
+#   M motorcycle · D/F moped · E special moped · V light commercial ·
+#   B heavy commercial · W trailer · O semi-trailer · GV border traffic ·
+#   T agricultural tractor/mobile machine/MMBS ·
+#   L agricultural trailer & interchangeable towed equipment ·
+#   passenger cars: G H J K L N P R S T X Z (L and T dropped from sidecode 11).
 #
-# This seed carries the sidecode-11 family (the current-issue pattern) as
-# the schema shape-prover; the remaining sidecodes 1–14 land with the L0
-# completion pass from https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries
-# (the single most important NL URL — official pattern + start date per
-# category).
+# REGEX POLICY IN THIS FILE (schema stressor, see the L0 report):
+#   `format.regex` is the LINT-ROUND-TRIPPABLE regex — the lint generates
+#   serials from `format.pattern` (L -> any A-Z, 9 -> any 0-9) and requires
+#   the regex to accept every one of them, so the regex can never be
+#   narrower than the pattern's own alphabet.
+#   `format.regex_strict` (NOT yet lint-validated — proposed amendment) is
+#   the regex the AUTHORITY actually supports: no vowels since sidecode 4,
+#   no C, no Q, and the category first-letter sets above. Consumers doing
+#   validation should prefer regex_strict; consumers doing recall should use
+#   regex. Where a single first letter is mandated and that letter is not
+#   "L" or "9", it is written as a literal in the pattern and regex needs no
+#   strict twin.
 jurisdiction: nl
 authority:
-  name: RDW
+  name: RDW (Dienst Wegverkeer)
   url: "https://www.rdw.nl/de-kentekenplaat"
+binding: vehicle          # NL plates bind to the VEHICLE (contrast CH: owner)
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide charset facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+charset_defaults:
+  letters: [B, D, F, G, H, J, K, L, M, N, P, R, S, T, V, W, X, Y, Z]
+  excluded_letters: [A, E, I, O, U, C, Q]
+  excluded_letters_note: >-
+    "Sinds kentekencombinatie 4 gebruiken we geen klinkers meer in het kenteken
+    (met uitzondering van het kenteken voor opleggers). De letter C en Q
+    gebruiken we ook niet omdat deze letters teveel op een nul lijken."
+    Semi-trailer (oplegger) registrations are the stated exception and DO use
+    the vowel O.
+  excluded_combinations: [GVD, KKK, NSB, PKK, PSV, TBS, SS, SD, PVV, SGP, VVD, FVD, BBB]
+  source: "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # no vowels since combination 4 (opleggers excepted); no C/Q; the 13 forbidden letter combinations"
+
 series:
-  - id: nl-sidecode11-moped
-    class: moped
-    categories: [moped]
-    period: { start: 2015 }        # open — series issue until exhausted
+
+  # =========================================================================
+  # PASSENGER CARS — RDW table "Auto's". class standard, categories [car].
+  # First letter from {G H J K L N P R S T X Z}; L and T withdrawn from
+  # sidecode 11 onward.
+  # =========================================================================
+  - id: nl-sidecode6-car
+    class: standard
+    categories: [car]
+    period: { start: 2000 }        # 20-01-2000; open — series run until exhausted
+    format:
+      pattern: "99-LL-LL"
+      regex: '\A\d{2}-[A-Z]{2}-[A-Z]{2}\z'
+      regex_strict: '\A\d{2}-[GHJKLNPRSTXZ][BDFGHJKLMNPRSTVWXYZ]-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+      charset:
+        first_letter: [G, H, J, K, L, N, P, R, S, T, X, Z]
+        notes: "no vowels, no C/Q — see charset_defaults"
+      progression: "letter groups advance; RDW does not publish the intra-series allocation order"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm, note: "rechthoekig (two-line) model 27.2" }
+        - { w: 310, h: 110, unit: mm, note: "'Amerikaans model' 18.2 — only where the vehicle record carries code 55 'kentekenplaat model 18.2 toegestaan'" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000", note: "zwart kader voor de leesbaarheid" }
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: none
+    variants:
+      - class: taxi
+        design: { background: { color: "#7CB9E8", finish: retroreflective, hex_basis: observed }, foreground: "#000000", plate: { w: 520, h: 110, unit: mm } }
+        note: >-
+          Light-blue taxi plates carry the vehicle's OWN registration — colour-only
+          variant of this series, so a sub-entry per PRD-PLATES §2.3, not a series.
+          Models 27.30 (long), 27.31 (rectangular), 18.2 (American, light blue).
+        sources:
+          - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # taxikentekenplaat lichtblauw met zwarte letters en cijfers; 520x110 / 340x210 / 310x110"
+          - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/kentekenplaat-voor-auto-motorfiets-trike-of-quad  # taxi models 27.30 / 27.31 / 18.2"
+      - class: trailer
+        design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000" }
+        note: >-
+          Trailers and appendages (bike racks) up to 750 kg have NO registration of
+          their own — they repeat the towing vehicle's registration on a WHITE plate.
+          Colour-only variant, hence a sub-entry.
+        sources:
+          - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # witte kentekenplaat, aanhangwagens <751 kg, zelfde kenteken als het trekkende voertuig"
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Auto's: serie 6, combinatie 99-XX-XX, ingangsdatum 20-01-2000"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # personenauto first letters G H J K L N P R S T X Z"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # gele plaat, zwart kader, blauw EU-vlak met NL; 520x110 of 340x210"
+    notes: >-
+      Sidecode 6 for PASSENGER CARS, from 20-01-2000. The first NL series to be
+      issued under the EU-band yellow design. Parallel with sidecodes 7-11: RDW
+      exhausts a series before switching, so all six car series remain live stock.
+
+  - id: nl-sidecode7-car
+    class: standard
+    categories: [car]
+    period: { start: 2008 }        # 19-05-2008
+    format:
+      pattern: "99-LLL-9"
+      regex: '\A\d{2}-[A-Z]{3}-\d\z'
+      regex_strict: '\A\d{2}-[GHJKLNPRSTXZ][BDFGHJKLMNPRSTVWXYZ]{2}-\d\z'
+      charset: { first_letter: [G, H, J, K, L, N, P, R, S, T, X, Z], notes: "no vowels, no C/Q" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Auto's: serie 7, combinatie 99-XXX-9, ingangsdatum 19-05-2008"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # colours + dimensions"
+    notes: >-
+      Sidecode 7 for PASSENGER CARS, from 19-05-2008. Same pattern reached HEAVY
+      commercial vehicles four years later (20-07-2012) — the pattern-x-category
+      rule; see nl-sidecode7-heavycommercial.
+
+  - id: nl-sidecode8-car
+    class: standard
+    categories: [car]
+    period: { start: 2013 }        # 05-03-2013
+    format:
+      pattern: "9-LLL-99"
+      regex: '\A\d-[A-Z]{3}-\d{2}\z'
+      regex_strict: '\A\d-[GHJKLNPRSTXZ][BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}\z'
+      charset: { first_letter: [G, H, J, K, L, N, P, R, S, T, X, Z], notes: "no vowels, no C/Q" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Auto's: serie 8, combinatie 9-XXX-99, ingangsdatum 05-03-2013"
+    notes: >-
+      Sidecode 8 for PASSENGER CARS, from 05-03-2013. The same pattern had already
+      been running for LIGHT commercial vehicles since 26-02-2009 — a four-year
+      lead, and the clearest single counter-example to "sidecode = era".
+
+  - id: nl-sidecode9-car
+    class: standard
+    categories: [car]
+    period: { start: 2015 }        # 30-03-2015
+    format:
+      pattern: "LL-999-L"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]\z'
+      regex_strict: '\A[GHJKLNPRSTXZ][BDFGHJKLMNPRSTVWXYZ]-\d{3}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset: { first_letter: [G, H, J, K, L, N, P, R, S, T, X, Z], notes: "no vowels, no C/Q" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Auto's: serie 9, combinatie XX-999-X, ingangsdatum 30-03-2015"
+    notes: >-
+      Sidecode 9 for PASSENGER CARS, from 30-03-2015. Mopeds got this pattern in
+      2006 and light commercials in 2012 — cars are the LAST category to reach it.
+
+  - id: nl-sidecode10-car
+    class: standard
+    categories: [car]
+    period: { start: 2019 }        # 19-08-2019
+    format:
+      pattern: "L-999-LL"
+      regex: '\A[A-Z]-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A[GHJKLNPRSTXZ]-\d{3}-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+      charset: { first_letter: [G, H, J, K, L, N, P, R, S, T, X, Z], notes: "no vowels, no C/Q" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Auto's: serie 10, combinatie X-999-XX, ingangsdatum 19-08-2019"
+    notes: >-
+      Sidecode 10 for PASSENGER CARS, from 19-08-2019. Note the single-letter first
+      group: the category first-letter rule still applies to it.
+
+  - id: nl-sidecode11-car          # seed id — PRESERVED
+    class: standard
+    categories: [car]              # CORRECTED from the seed's [car, van]: RDW's
+                                   # "Auto's" table is passenger cars only; light
+                                   # commercials reached sidecode 11 on 13-06-2019
+                                   # (see nl-sidecode11-lightcommercial).
+    period: { start: 2024 }        # 04-06-2024
     format:
       pattern: "LLL-99-L"
       regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
-      charset: { notes: "no vowels in letter groups (profanity/lookalike exclusion) — https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat; moped series lead with D/F" }
+      regex_strict: '\A[GHJKNPRSXZ][BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset:
+        first_letter: [G, H, J, K, N, P, R, S, X, Z]
+        notes: >-
+          "Vanaf kentekenserie 11 worden de medeklinkers L en T niet langer gebruikt
+          als eerste letter voor personenauto's" — L and T are withdrawn for CARS
+          from sidecode 11, which is why this series' first-letter set is 10 letters
+          where sidecodes 6-10 have 12.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Auto's: serie 11, combinatie XXX-99-X, ingangsdatum 04-06-2024"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # L and T withdrawn as car first letters from serie 11"
+    notes: >-
+      Sidecode 11 for PASSENGER CARS, from 04-06-2024 — the current car issue.
+      The same pattern reached mopeds in 2015 and agricultural trailers in 2021;
+      the trio is the pattern-x-category rule demonstrated. Seed correction: the
+      seed listed categories [car, van] and no first-letter narrowing.
+
+  # =========================================================================
+  # LIGHT COMMERCIAL — RDW "Bedrijfsauto's licht" (<= 3500 kg). First letter V.
+  # V is not a pattern metacharacter, so the literal goes in the pattern and
+  # the regex is exact without a strict twin.
+  # =========================================================================
+  - id: nl-sidecode8-lightcommercial
+    class: standard
+    categories: [van]
+    period: { start: 2009 }        # 26-02-2009
+    format:
+      pattern: "9-VLL-99"
+      regex: '\A\d-V[A-Z]{2}-\d{2}\z'
+      regex_strict: '\A\d-V[BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}\z'
+      charset: { first_letter: [V], notes: "light commercial registrations always begin with V" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Lichte bedrijfsauto's: serie 8, combinatie 9-XXX-99, ingangsdatum 26-02-2009"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Lichte bedrijfsauto's (tot 3500 kg): eerste letter V"
+    notes: >-
+      Sidecode 8 for LIGHT COMMERCIAL vehicles, from 26-02-2009 — four years ahead
+      of the same pattern's car rollout. Campers registered as light commercial
+      also carry V.
+
+  - id: nl-sidecode9-lightcommercial
+    class: standard
+    categories: [van]
+    period: { start: 2012 }        # 12-12-2012
+    format:
+      pattern: "VL-999-L"
+      regex: '\AV[A-Z]-\d{3}-[A-Z]\z'
+      regex_strict: '\AV[BDFGHJKLMNPRSTVWXYZ]-\d{3}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset: { first_letter: [V] }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Lichte bedrijfsauto's: serie 9, combinatie XX-999-X, ingangsdatum 12-12-2012"
+    notes: Sidecode 9 for LIGHT COMMERCIAL vehicles, from 12-12-2012.
+
+  - id: nl-sidecode10-lightcommercial
+    class: standard
+    categories: [van]
+    period: { start: 2016 }        # 14-10-2016
+    format:
+      pattern: "V-999-LL"
+      regex: '\AV-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\AV-\d{3}-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+      charset: { first_letter: [V] }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Lichte bedrijfsauto's: serie 10, combinatie X-999-XX, ingangsdatum 14-10-2016"
+    notes: Sidecode 10 for LIGHT COMMERCIAL vehicles, from 14-10-2016.
+
+  - id: nl-sidecode11-lightcommercial
+    class: standard
+    categories: [van]
+    period: { start: 2019 }        # 13-06-2019
+    format:
+      pattern: "VLL-99-L"
+      regex: '\AV[A-Z]{2}-\d{2}-[A-Z]\z'
+      regex_strict: '\AV[BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset: { first_letter: [V] }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Lichte bedrijfsauto's: serie 11, combinatie XXX-99-X, ingangsdatum 13-06-2019"
+    notes: >-
+      Sidecode 11 for LIGHT COMMERCIAL vehicles, from 13-06-2019 — FIVE YEARS
+      before the same pattern reached cars (04-06-2024). The single most useful
+      NL age-inference fact: a XXX-99-X plate starting with V can be 2019+, while
+      the same pattern on a car cannot predate June 2024.
+
+  - id: nl-sidecode12-lightcommercial
+    class: standard
+    categories: [van]
+    period: { start: 2024 }        # 08-01-2024
+    format:
+      pattern: "V-99-LLL"
+      regex: '\AV-\d{2}-[A-Z]{3}\z'
+      regex_strict: '\AV-\d{2}-[BDFGHJKLMNPRSTVWXYZ]{3}\z'
+      charset: { first_letter: [V] }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Lichte bedrijfsauto's: serie 12, combinatie X-99-XXX, ingangsdatum 08-01-2024"
+    notes: >-
+      Sidecode 12 for LIGHT COMMERCIAL vehicles, from 08-01-2024 — light
+      commercials are the ONLY road category on sidecode 12 besides special mopeds
+      (2025) and agricultural tractors (2021). Cars have never reached it.
+
+  # =========================================================================
+  # HEAVY COMMERCIAL — RDW "Bedrijfsauto's zwaar" (> 3500 kg). First letter B.
+  # =========================================================================
+  - id: nl-sidecode5-heavycommercial
+    class: standard
+    categories: [truck, bus]
+    period: { start: 1994 }        # 03-01-1994 — the oldest date RDW publishes
+                                   # for a still-listed series other than the
+                                   # 1951 GV block.
+    format:
+      pattern: "BL-LL-99"
+      regex: '\AB[A-Z]-[A-Z]{2}-\d{2}\z'
+      regex_strict: '\AB[BDFGHJKLMNPRSTVWXYZ]-[BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}\z'
+      charset: { first_letter: [B], notes: "heavy commercial registrations always begin with B" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+      band_note: >-
+        The EU band is a property of the CURRENT plate, not of the 1994 series:
+        plates made today for a 1994-series registration carry it. RDW does not
+        publish the date the band became mandatory in NL — recorded gap.
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Zware bedrijfsauto's: serie 5, combinatie XX-XX-99, ingangsdatum 03-01-1994"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Zware bedrijfsauto's (boven 3500 kg): eerste letter B"
+    notes: >-
+      Sidecode 5 for HEAVY COMMERCIAL vehicles, from 03-01-1994. This is the ONLY
+      sidecode-5 rollout RDW publishes — the pattern's car-era dates are not on
+      any RDW page (recorded gap).
+
+  - id: nl-sidecode7-heavycommercial
+    class: standard
+    categories: [truck, bus]
+    period: { start: 2012 }        # 20-07-2012
+    format:
+      pattern: "99-BLL-9"
+      regex: '\A\d{2}-B[A-Z]{2}-\d\z'
+      regex_strict: '\A\d{2}-B[BDFGHJKLMNPRSTVWXYZ]{2}-\d\z'
+      charset: { first_letter: [B] }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Zware bedrijfsauto's: serie 7, combinatie 99-XXX-9, ingangsdatum 20-07-2012"
+    notes: >-
+      Sidecode 7 for HEAVY COMMERCIAL vehicles, from 20-07-2012 — four years after
+      the car rollout of the same pattern. Heavy commercials skipped sidecode 6.
+
+  # =========================================================================
+  # MOTORCYCLES — RDW "Motoren". First letter M.
+  # =========================================================================
+  - id: nl-sidecode6-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2011 }        # 19-08-2011
+    format:
+      pattern: "99-ML-LL"
+      regex: '\A\d{2}-M[A-Z]-[A-Z]{2}\z'
+      regex_strict: '\A\d{2}-M[BDFGHJKLMNPRSTVWXYZ]-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+      charset: { first_letter: [M], notes: "motorcycle registrations always begin with M" }
     design:
       plate: { w: 210, h: 143, unit: mm }
-      background: { color: "#F9B700", finish: retroreflective }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+      rear_differs: false
+      note: "one plate, rear only (motorcycle model 27.10)"
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Motoren: serie 6, combinatie 99-XX-XX, ingangsdatum 19-08-2011"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Motoren: eerste letter M"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # motorkentekenplaat 210x143 mm"
+    notes: >-
+      Sidecode 6 for MOTORCYCLES, from 19-08-2011 — eleven years after the same
+      pattern reached cars (20-01-2000). This is the ONLY motorcycle rollout on
+      RDW's table: motorcycles registered before 2011 carry earlier sidecodes
+      whose motorcycle dates RDW does not publish (recorded gap). The
+      210x143 mm plate also serves three-wheelers, agricultural vehicles, MMBS,
+      mobile machines and agricultural trailers.
+
+  # =========================================================================
+  # MOPEDS — RDW "Brom- en snorfietsen". First letters D and F.
+  # Two options, so the pattern keeps its generic L and regex carries [DF].
+  # =========================================================================
+  - id: nl-sidecode7-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2005 }        # 01-09-2005
+    format:
+      pattern: "99-LLL-9"
+      regex: '\A\d{2}-[A-Z]{3}-\d\z'
+      regex_strict: '\A\d{2}-[DF][BDFGHJKLMNPRSTVWXYZ]{2}-\d\z'
+      charset: { first_letter: [D, F], notes: "moped registrations begin with D or F" }
+    design:
+      plate: { w: 145, h: 125, unit: mm }
+      plate_variants:
+        - { w: 100, h: 175, unit: mm, note: "staand (portrait) model 30.1" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    variants:
+      - class: moped
+        design: { background: { color: "#7CB9E8", finish: retroreflective, hex_basis: observed }, foreground: "#000000" }
+        note: >-
+          SNORFIETS (25 km/h max) carries the same registration on a LIGHT BLUE
+          plate — models 30.3 (portrait) / 30.4 (landscape). Yellow is the
+          45 km/h bromfiets and the speed-pedelec. Colour-only variant, so a
+          sub-entry, but note this loses the light-blue/yellow distinction to
+          class-keyed queries (see the L0 report's schema stressors).
+        sources:
+          - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/kentekenplaat-voor-snor-of-bromfiets  # 45 km/h = geel model 30.1/30.2; 25 km/h snorfiets = lichtblauw model 30.3/30.4"
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Brom- en snorfietsen: serie 7, combinatie 99-XXX-9, ingangsdatum 01-09-2005"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Brom- en snorfietsen: eerste letters D en F"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # bromfietsplaat 145x125 liggend of 100x175 staand"
+    notes: >-
+      Sidecode 7 for MOPEDS, from 01-09-2005 — the NL moped registration
+      obligation's first series, and three years ahead of the car rollout of the
+      same pattern.
+
+  - id: nl-sidecode9-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2006 }        # 11-08-2006
+    format:
+      pattern: "LL-999-L"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]\z'
+      regex_strict: '\A[DF][BDFGHJKLMNPRSTVWXYZ]-\d{3}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset: { first_letter: [D, F] }
+    design:
+      plate: { w: 145, h: 125, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
       foreground: "#000000"
       band: { side: left, color: "#003399", content: eu-stars+NL }
     region_encoding: none
     sources:
-      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # pattern XXX-99-X reached mopeds 2015 (official series table)"
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Brom- en snorfietsen: serie 9, combinatie XX-999-X, ingangsdatum 11-08-2006"
+    notes: >-
+      Sidecode 9 for MOPEDS, from 11-08-2006 — NINE YEARS before cars reached the
+      same pattern (30-03-2015). Mopeds skipped sidecode 8 entirely.
+
+  - id: nl-sidecode10-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2008 }        # 11-12-2008
+    format:
+      pattern: "L-999-LL"
+      regex: '\A[A-Z]-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A[DF]-\d{3}-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+      charset: { first_letter: [D, F] }
+    design:
+      plate: { w: 145, h: 125, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Brom- en snorfietsen: serie 10, combinatie X-999-XX, ingangsdatum 11-12-2008"
+    notes: Sidecode 10 for MOPEDS, from 11-12-2008 — eleven years ahead of the car rollout.
+
+  - id: nl-sidecode11-moped         # seed id — PRESERVED
+    class: moped
+    categories: [moped]
+    period: { start: 2015 }        # 16-01-2015 (seed said 2015 — confirmed)
+    format:
+      pattern: "LLL-99-L"
+      regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
+      regex_strict: '\A[DF][BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset: { first_letter: [D, F] }
+    design:
+      plate: { w: 145, h: 125, unit: mm }
+      plate_variants:
+        - { w: 100, h: 175, unit: mm, note: "staand model" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Brom- en snorfietsen: serie 11, combinatie XXX-99-X, ingangsdatum 16-01-2015"
       - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # colours + dimensions"
-    notes: sidecode 11 for the MOPED category — the pattern's first rollout (2015).
-  - id: nl-sidecode11-agricultural
+    notes: >-
+      Sidecode 11 for MOPEDS, from 16-01-2015 — the pattern's FIRST rollout of all,
+      nine years before cars. Seed correction: the seed gave 520x110 as an implied
+      default and the D/F rule only in prose; dimensions here are the moped models.
+
+  - id: nl-sidecode12-specialmoped
+    class: moped
+    categories: [moped]
+    period: { start: 2025 }        # 01-07-2025
+    format:
+      pattern: "E-99-LLL"
+      regex: '\AE-\d{2}-[A-Z]{3}\z'
+      regex_strict: '\AE-\d{2}-[BDFGHJKLMNPRSTVWXYZ]{3}\z'
+      charset: { first_letter: [E], notes: "bijzondere bromfietsen begin with E — the one place a VOWEL is issued outside the oplegger exception" }
+    design:
+      plate: { w: 100, h: 120, unit: mm }
+      background: { color: "#7CB9E8", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+      note: "model 31.1; mounted at the rear, but front-mounted on Ninebot Urban, Ninebot type E, Trikke and Paukool S1"
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Bijzondere bromfietsen: serie 12, combinatie X-99-XXX, ingangsdatum 01-07-2025"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Bijzondere bromfietsen: eerste letter E"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # bijzondere bromfiets 100x120 mm; lichtblauw for 25 km/h"
+      - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/kentekenplaat-voor-snor-of-bromfiets  # bijzondere bromfiets = lichtblauw, model 31.1"
+    notes: >-
+      Sidecode 12 for BIJZONDERE BROMFIETSEN (special mopeds — e-scooters and
+      similar light electric vehicles), from 01-07-2025. The newest NL series and
+      the smallest NL plate. Distinct from the 45 km/h bromfiets and the 25 km/h
+      snorfiets, both of which carry ordinary moped registrations.
+
+  # =========================================================================
+  # TRAILERS AND SEMI-TRAILERS — RDW "Aanhangwagens" / "Opleggers", both
+  # sidecode 4 from 01-10-1988, but different first letters (W vs O), which is
+  # exactly why they are two entries and not one.
+  # =========================================================================
+  - id: nl-sidecode4-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 1988 }        # 01-10-1988
+    format:
+      pattern: "WL-99-LL"
+      regex: '\AW[A-Z]-\d{2}-[A-Z]{2}\z'
+      regex_strict: '\AW[BDFGHJKLMNPRSTVWXYZ]-\d{2}-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+      charset: { first_letter: [W], notes: "trailer registrations always begin with W" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+      note: "yellow plate + own registration only ABOVE 750 kg maximum permitted mass; at or below 750 kg the trailer repeats the towing vehicle's registration on a white plate"
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Aanhangwagens: serie 4, combinatie XX-99-XX, ingangsdatum 01-10-1988"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Aanhangwagens: eerste letter W"
+      - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/kentekenplaat-voor-aanhangwagen-of-caravan  # 'Het kenteken van een aanhangwagen begint altijd met de letter W'; >750 kg = eigen kenteken"
+    notes: >-
+      Sidecode 4 for TRAILERS AND CARAVANS over 750 kg, from 01-10-1988 — the
+      oldest continuously-issuing NL series on RDW's table, still not exhausted
+      after 38 years.
+
+  - id: nl-sidecode4-semitrailer
+    class: trailer
+    categories: [semitrailer]
+    period: { start: 1988 }        # 01-10-1988
+    format:
+      pattern: "OL-99-LL"
+      regex: '\AO[A-Z]-\d{2}-[A-Z]{2}\z'
+      regex_strict: '\AO[ABDEFGHIJKLMNOPRSTUVWXYZ]-\d{2}-[ABDEFGHIJKLMNOPRSTUVWXYZ]{2}\z'
+      charset:
+        first_letter: [O]
+        notes: >-
+          Semi-trailer registrations always begin with O — and the no-vowels rule
+          is expressly disapplied for opleggers ("met uitzondering van het kenteken
+          voor opleggers"), so this is the one NL series whose regex_strict keeps
+          the vowels. C and Q remain excluded (nought-lookalikes).
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Opleggers: serie 4, combinatie XX-99-XX, ingangsdatum 01-10-1988"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Opleggers: eerste letter O; no-vowels rule excepted for opleggers"
+    notes: >-
+      Sidecode 4 for SEMI-TRAILERS, from 01-10-1988 — same pattern and same date as
+      trailers but a different letter space, which is why RDW publishes them as two
+      tables and why they are two series here.
+
+  # =========================================================================
+  # AGRICULTURAL / MOBILE MACHINERY. First letter T for tractors, mobile
+  # machines and MMBS; L for agricultural trailers and interchangeable towed
+  # equipment. "L" collides with the pattern DSL's letter placeholder, so the
+  # L-prefix survives only in charset + regex_strict (schema stressor).
+  # =========================================================================
+  - id: nl-sidecode12-agritractor
     class: agricultural
-    categories: [truck]            # agricultural vehicles/trailers register here
-    period: { start: 2021 }
+    categories: [tractor, machine]
+    period: { start: 2021 }        # 01-12-2021
     format:
-      pattern: "LLL-99-L"
-      regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
-      charset: { notes: "no vowels; see moped entry" }
+      pattern: "T-99-LLL"
+      regex: '\AT-\d{2}-[A-Z]{3}\z'
+      regex_strict: '\AT-\d{2}-[BDFGHJKLMNPRSTVWXYZ]{3}\z'
+      charset: { first_letter: [T], notes: "agricultural/forestry tractors, mobile machines and MMBS all begin with T" }
     design:
       plate: { w: 520, h: 110, unit: mm }
-      background: { color: "#F9B700", finish: retroreflective }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 143, unit: mm, note: "motorcycle-size model permitted for agricultural vehicles" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
       foreground: "#000000"
       band: { side: left, color: "#003399", content: eu-stars+NL }
     region_encoding: none
     sources:
-      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # same pattern, agricultural rollout 2021"
-    notes: sidecode 11 for AGRICULTURAL vehicles — same pattern, own 2021 rollout (the pattern-x-category rule).
-  - id: nl-sidecode11-car
-    class: standard
-    categories: [car, van]
-    period: { start: 2024 }
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Land- en bosbouwtrekkers (trekkend): serie 12, combinatie X-99-XXX, ingangsdatum 01-12-2021"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Land-/bosbouwtrekkers, mobiele machines, MMBS'en: eerste letter T"
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # 520x110 / 340x210 / 210x143 for (land)bouwvoertuigen, MMBS, mobiele machines"
+    notes: >-
+      Sidecode 12 for AGRICULTURAL AND FORESTRY TRACTORS, mobile machines and MMBS,
+      from 01-12-2021 — the NL agricultural registration obligation. Sidecode 12
+      reached tractors before it reached light commercials (2024) or special
+      mopeds (2025).
+
+  - id: nl-sidecode11-agricultural  # seed id — PRESERVED
+    class: agricultural
+    categories: [trailer]          # CORRECTED from the seed's [truck]: this is the
+                                   # agricultural TRAILER / interchangeable towed
+                                   # equipment series (RDW's own table heading).
+    period: { start: 2021 }        # 01-01-2021 (seed said 2021 — confirmed)
     format:
       pattern: "LLL-99-L"
       regex: '\A[A-Z]{3}-\d{2}-[A-Z]\z'
-      charset: { notes: "no vowels; V leads light-commercial series — cijfers-en-letters page" }
+      regex_strict: '\AL[BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}-[BDFGHJKLMNPRSTVWXYZ]\z'
+      charset:
+        first_letter: [L]
+        notes: >-
+          "Het kenteken van een aanhangwagen of verwisselbaar getrokken
+          uitrustingsstuk van een land- of bosbouwtrekker, MMBS of mobiele machine
+          begint altijd met de letter 'L'." The literal L CANNOT be written into
+          format.pattern because L is the pattern DSL's letter placeholder — it
+          survives only here and in regex_strict. See the L0 report.
     design:
       plate: { w: 520, h: 110, unit: mm }
-      background: { color: "#F9B700", finish: retroreflective }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 143, unit: mm, note: "model 27.10 permitted for agricultural trailers" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
       foreground: "#000000"
       band: { side: left, color: "#003399", content: eu-stars+NL }
     region_encoding: none
     sources:
-      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # same pattern, cars 2024"
-      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # yellow ground, black characters, blue EU strip NL; 520x110"
-    notes: sidecode 11 for CARS/light commercial — same pattern, 2024 rollout. Third entry of one pattern; the trio IS the pattern-x-category rule demonstrated.
-  - id: nl-historic-darkblue
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Land- en bosbouwaanhangwagens en verwisselbare getrokken uitrustingsstukken: serie 11, combinatie XXX-99-X, ingangsdatum 01-01-2021"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # Land-/bosbouwaanhangwagens: eerste letter L"
+      - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/kentekenplaat-voor-aanhangwagen-of-caravan  # 'begint altijd met de letter L'"
+    notes: >-
+      Sidecode 11 for AGRICULTURAL TRAILERS and interchangeable towed equipment,
+      from 01-01-2021. Seed correction: the seed carried categories [truck] and
+      called this "agricultural vehicles/trailers"; RDW's table separates the
+      TOWING agricultural vehicles (sidecode 12, first letter T, 01-12-2021) from
+      the TOWED ones (this entry, first letter L, 01-01-2021).
+
+  # =========================================================================
+  # GRENSVERKEER (GV). The only place RDW dates sidecodes 1, 2 and 3, and the
+  # only NL series whose LETTER GROUP IS A LITERAL: "GV - altijd in combinatie
+  # met 4 cijfers" (cijfers-en-letters). All five GV patterns carry exactly
+  # four digits and the pair GV, which is self-consistent with the shapes.
+  # =========================================================================
+  - id: nl-gv-sidecode1
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 1951 }
+    format:
+      pattern: "GV-99-99"
+      regex: '\AGV-\d{2}-\d{2}\z'
+      charset: { fixed_letters: "GV", notes: "the letter pair is literally GV" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Grensverkeer (GV-serie): 1951, afwisselend series 1, 2 en 3; serie 1 = XX-99-99"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # 'Grensverkeer: GV - altijd in combinatie met 4 cijfers'"
+    notes: >-
+      GV series on SIDECODE 1 (XX-99-99), from 1951 — RDW's series page states the
+      national kenteken began in 1951 and that the GV series ran series 1, 2 and 3
+      alternately ("Afwisselend 1, 2 en 3"). CLASS CAVEAT: RDW publishes the GV
+      table under its "Landbouwvoertuigen, mobiele machines en MMBS'en" heading, so
+      the class is recorded as agricultural on that placement; RDW's plate pages do
+      not define the grensverkeer series' scope. Flagged for L1 verification.
+
+  - id: nl-gv-sidecode2
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 1951 }
+    format:
+      pattern: "99-99-GV"
+      regex: '\A\d{2}-\d{2}-GV\z'
+      charset: { fixed_letters: "GV" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Grensverkeer: serie 2 = 99-99-XX, from 1951"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # GV always with 4 digits"
+    notes: >-
+      GV series on SIDECODE 2 (99-99-XX), from 1951. One of the three alternating
+      1951 shapes; separate entry because a series is one PATTERN, and the parse
+      API must be able to score each shape independently.
+
+  - id: nl-gv-sidecode3
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 1951 }
+    format:
+      pattern: "99-GV-99"
+      regex: '\A\d{2}-GV-\d{2}\z'
+      charset: { fixed_letters: "GV" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Grensverkeer: serie 3 = 99-XX-99, from 1951"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # GV always with 4 digits"
+    notes: >-
+      GV series on SIDECODE 3 (99-XX-99), from 1951. Third of the three alternating
+      1951 shapes.
+
+  - id: nl-gv-sidecode13
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 2016 }        # 23-05-2016
+    format:
+      pattern: "9-GV-999"
+      regex: '\A\d-GV-\d{3}\z'
+      charset: { fixed_letters: "GV" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Grensverkeer: serie 13, combinatie 9-XX-999, ingangsdatum 23-05-2016"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # GV always with 4 digits"
+    notes: >-
+      GV series on SIDECODE 13, from 23-05-2016. Sidecode 13 exists ONLY for the GV
+      series — no other NL category has ever been issued this pattern, which makes
+      a 9-GV-999 plate a one-shot identification.
+
+  - id: nl-gv-sidecode14
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 2019 }        # 13-06-2019
+    format:
+      pattern: "999-GV-9"
+      regex: '\A\d{3}-GV-\d\z'
+      charset: { fixed_letters: "GV" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+NL }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # Grensverkeer: serie 14, combinatie 999-XX-9, ingangsdatum 13-06-2019"
+      - "https://www.rdw.nl/de-kentekenplaat/cijfers-en-letters-op-de-kentekenplaat  # GV always with 4 digits"
+    notes: >-
+      GV series on SIDECODE 14, from 13-06-2019 — the highest sidecode RDW
+      publishes, and like sidecode 13 exclusive to the GV series.
+
+  # =========================================================================
+  # HISTORIC (donkerblauw). A DESIGN REGIME laid over pre-existing sidecode
+  # 1/2/3 registrations, not a serial series of its own: RDW requires the
+  # registration to consist of "2 groepen van 2 cijfers en 1 groep van 2
+  # letters", which is exactly sidecodes 1, 2 and 3. Hence three entries plus
+  # one for the agricultural exemption.
+  # =========================================================================
+  - id: nl-historic-darkblue        # seed id — PRESERVED
     class: historic
-    categories: [car, van, truck, bus]
-    period: { start: 1978, ended: true }   # the REGIME applies to pre-1978
-                                           # vehicles; issuance continues but the
-                                           # eligible fleet is closed — recorded
-                                           # ended pending an RDW statement on
-                                           # the regime's own issuance window
+    categories: [car, van, motorcycle]
+    period: { start: 1978 }
+    period_evidence: eligibility-cutoff   # NOT an issuance-start claim; see notes
     format:
       pattern: "LL-99-99"
       regex: '\A[A-Z]{2}-\d{2}-\d{2}\z'
-      charset: { notes: "historic plates reuse the vehicle's original registration in old sidecodes; pattern here is the dominant sidecode-1 shape — refine in the L0 completion pass" }
+      regex_strict: '\A[BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}-\d{2}\z'
+      charset: { notes: "sidecode-1 shape; the historic regime accepts only registrations of 2+2 digits and 2 letters" }
     design:
-      plate: { w: 520, h: 110, unit: mm }
-      background: { color: "#1D2E5B", finish: painted }   # dark blue, white chars
+      plate: { w: 445, h: 105, unit: mm }
+      plate_variants:
+        - { w: 275, h: 195, unit: mm, note: "rechthoekig" }
+        - { w: 200, h: 145, unit: mm, note: "motorcycle, 200 mm maximum" }
+        - { w: 310, h: 110, unit: mm, note: "American model 18.2 in dark blue" }
+      background: { color: "#1D2E5B", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      note: "models 1.1 to 18.1; no duplicaatcode and no lamineercode, and not registered in GAIK"
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # donkerblauwe plaat, DET before 1-1-1978, kenteken = 2 groepen van 2 cijfers en 1 groep van 2 letters; 445x105 / 275x195 / 200x145 / 310x110"
+      - "https://www.rdw.nl/de-kentekenplaat/kentekenplaten-voor-oldtimer-aanvragen  # eligibility (auto, bedrijfsauto, kampeerauto, motor, landbouwvoertuig, mobiele machine, aanhangwagen >=751 kg); mopeds excluded; EUR 50 to swap to a historisch kenteken"
+      - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/donkerblauwe-kentekenplaten-historisch  # models 1.1 t/m 18.1; no duplicaatcode/lamineercode; not registered in GAIK"
+    notes: >-
+      Oldtimer regime on a SIDECODE-1 registration (XX-99-99). SEED CORRECTIONS,
+      both material: (1) the seed set `ended: true`; RDW still issues these today
+      (the oldtimer page takes applications and prices the swap at EUR 50), so the
+      series is OPEN. (2) The seed's pattern was flagged "refine in the L0
+      completion pass" — refined here: RDW's eligibility text pins the accepted
+      shapes to exactly sidecodes 1, 2 and 3, so the regime is modelled as three
+      format entries plus the agricultural exemption. period.start 1978 records the
+      ELIGIBILITY CUTOFF ("datum eerste toelating" before 1 January 1978), not an
+      issuance start — the date the dark-blue regime itself began is on no RDW page
+      and is a recorded gap.
+
+  - id: nl-historic-darkblue-sidecode2
+    class: historic
+    categories: [car, van, motorcycle]
+    period: { start: 1978 }
+    period_evidence: eligibility-cutoff
+    format:
+      pattern: "99-99-LL"
+      regex: '\A\d{2}-\d{2}-[A-Z]{2}\z'
+      regex_strict: '\A\d{2}-\d{2}-[BDFGHJKLMNPRSTVWXYZ]{2}\z'
+    design:
+      plate: { w: 445, h: 105, unit: mm }
+      background: { color: "#1D2E5B", finish: painted, hex_basis: observed }
       foreground: "#FFFFFF"
       band: { side: none }
     region_encoding: none
     sources:
-      - "https://www.rdw.nl/de-kentekenplaat/kentekenplaten-voor-oldtimer-aanvragen  # dark-blue historic plates, pre-1978 eligibility rule"
-    notes: oldtimer regime — dark blue, pre-1978 vehicles. Shape/period to be refined against the RDW page in the completion pass; seeded to exercise the historic class and ended semantics.
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # the 2+2 digits / 2 letters rule admits the sidecode-2 shape 99-99-XX"
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # sidecode 2 = 99-99-XX"
+    notes: >-
+      Oldtimer regime on a SIDECODE-2 registration (99-99-XX). Second of the three
+      shapes RDW's "2 groepen van 2 cijfers en 1 groep van 2 letters" rule admits.
+
+  - id: nl-historic-darkblue-sidecode3
+    class: historic
+    categories: [car, van, motorcycle]
+    period: { start: 1978 }
+    period_evidence: eligibility-cutoff
+    format:
+      pattern: "99-LL-99"
+      regex: '\A\d{2}-[A-Z]{2}-\d{2}\z'
+      regex_strict: '\A\d{2}-[BDFGHJKLMNPRSTVWXYZ]{2}-\d{2}\z'
+    design:
+      plate: { w: 445, h: 105, unit: mm }
+      background: { color: "#1D2E5B", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # the 2+2 digits / 2 letters rule admits the sidecode-3 shape 99-XX-99"
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # sidecode 3 = 99-XX-99"
+    notes: >-
+      Oldtimer regime on a SIDECODE-3 registration (99-XX-99). Third of the three
+      admitted shapes. A vehicle whose registration has another shape must first
+      swap to a "historisch kenteken" before blue plates can be made.
+
+  - id: nl-historic-darkblue-agricultural
+    class: historic
+    categories: [tractor, machine, trailer]
+    period: { start: 1978 }
+    period_evidence: eligibility-cutoff
+    format:
+      pattern: "LLL-99-L"
+      regex: '\A(?:[A-Z]{2}-\d{2}-\d{2}|\d{2}-\d{2}-[A-Z]{2}|\d{2}-[A-Z]{2}-\d{2}|[A-Z]{2}-\d{2}-[A-Z]{2}|[A-Z]{2}-[A-Z]{2}-\d{2}|\d{2}-[A-Z]{2}-[A-Z]{2}|\d{2}-[A-Z]{3}-\d|\d-[A-Z]{3}-\d{2}|[A-Z]{2}-\d{3}-[A-Z]|[A-Z]-\d{3}-[A-Z]{2}|[A-Z]{3}-\d{2}-[A-Z]|[A-Z]-\d{2}-[A-Z]{3}|\d-[A-Z]{2}-\d{3}|\d{3}-[A-Z]{2}-\d)\z'
+      pattern_note: >-
+        The pattern shown is ONE representative shape (sidecode 11). This series has
+        no format of its own: RDW expressly exempts agricultural vehicles, mobile
+        machines and >=751 kg trailers from the 2+2+2 rule ("Bij een landbouwvoertuig
+        hoeft het kenteken niet 'historisch' te zijn"), so ANY current NL sidecode may
+        appear on a dark-blue plate here. The regex is therefore the union of all
+        fourteen RDW-published sidecode shapes.
+    design:
+      plate: { w: 445, h: 105, unit: mm }
+      background: { color: "#1D2E5B", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/kentekenplaten-voor-oldtimer-aanvragen  # agricultural vehicles, mobile machines and trailers >=751 kg need only pre-1978 first admission"
+      - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/donkerblauwe-kentekenplaten-historisch  # 'Bij een landbouwvoertuig hoeft het kenteken niet historisch te zijn'"
+      - "https://www.rdw.nl/de-kentekenplaat/overzicht-van-kentekenseries  # the fourteen sidecode shapes the union regex is built from"
+    notes: >-
+      Oldtimer regime for AGRICULTURAL vehicles, mobile machines, MMBS and trailers
+      of 751 kg or more, which RDW exempts from the 2+2+2 registration-shape rule.
+      The only NL entry whose regex is a union rather than a single shape.
+
+  # =========================================================================
+  # EXPORT. RDW: the export plate REUSES the vehicle's existing registration,
+  # so its regex is the union of all NL shapes, exactly like the agricultural
+  # historic entry above, and for the same sourced reason.
+  # =========================================================================
+  - id: nl-export
+    class: export
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, semitrailer, tractor, machine]
+    period: { start: 1951 }
+    period_evidence: earliest-underlying-series   # the regime's own start is unsourced
+    format:
+      pattern: "LLL-99-L"
+      regex: '\A(?:[A-Z]{2}-\d{2}-\d{2}|\d{2}-\d{2}-[A-Z]{2}|\d{2}-[A-Z]{2}-\d{2}|[A-Z]{2}-\d{2}-[A-Z]{2}|[A-Z]{2}-[A-Z]{2}-\d{2}|\d{2}-[A-Z]{2}-[A-Z]{2}|\d{2}-[A-Z]{3}-\d|\d-[A-Z]{3}-\d{2}|[A-Z]{2}-\d{3}-[A-Z]|[A-Z]-\d{3}-[A-Z]{2}|[A-Z]{3}-\d{2}-[A-Z]|[A-Z]-\d{2}-[A-Z]{3}|\d-[A-Z]{2}-\d{3}|\d{3}-[A-Z]{2}-\d)\z'
+      pattern_note: "representative shape only; the regex is the union of all fourteen RDW sidecode shapes because the export plate carries the vehicle's existing registration"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 143, unit: mm, note: "motorcycle" }
+        - { w: 100, h: 175, unit: mm, note: "moped, portrait" }
+        - { w: 145, h: 125, unit: mm, note: "moped, landscape" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      note: "models 27.24 (long) / 27.25 (rectangular) / 27.26 (motorcycle) / 30.13 / 30.14; owners may make these plates themselves; no duplicaatcode, no lamineercode, not registered in GAIK"
+    validity: { days: 14, note: "valid 14 days, and never longer than the vehicle's APK (roadworthiness) certificate" }
+    region_encoding: none
+    sources:
+      - "https://www.rdw.nl/de-kentekenplaat/soorten-kentekenplaten  # uitvoerkentekenplaat: wit met zwarte cijfers en letters; 'U mag hiervoor het bestaande kenteken van het voertuig gebruiken'; 14 dagen geldig, niet langer dan de APK"
+      - "https://www.rdw.nl/zakelijke-partners/erkende-bedrijven/kentekenplaatfabrikanten/extra-eisen-per-kleur-en-model/witte-kentekenplaten-tijdelijk  # export models 27.24/27.25/27.26/30.13/30.14; checked against papieren kentekenbewijs deel II voor uitvoer"
+    notes: >-
+      EXPORT plates (uitvoerkentekenplaat). White with black characters, carrying
+      the vehicle's OWN existing registration, valid 14 days. period.start records
+      the earliest date any reusable NL registration was issued (1951), not the
+      date the export regime began — that date is on no RDW page and is a recorded
+      gap. Distinct from the TRANSIT (transito) plate, which issues a NEW number to
+      a vehicle that never held a Dutch registration; the transit number's grammar
+      is not published by RDW and is therefore NOT modelled here (see the L0 report).
