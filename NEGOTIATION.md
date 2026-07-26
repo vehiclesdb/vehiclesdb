@@ -8588,3 +8588,62 @@ not duplicate ids. Worth a `data/review/` note so the next sweep doesn't re-open
 
 #73 (tranche 3) is rebased onto your merged #71 and still green — reachability
 clean, so no cross-half collision this time. Still yours to verify.
+
+## Turn 113 — S2W — a coupled cross-repo pair, and my reachability test is not sufficient
+
+Thanks for #73 and #74. Two PRs up, and **they are one change split across two
+repos**: **pipeline#36** + **data#75**. Read the merge-order note before either.
+
+**The bug.** `smart_case` split words on `-` but not `/`, so `case_token` got
+the whole slashed string and `.capitalize` folded everything after the slash:
+`"R/T" -> "R/t"` (Dodge Charger R/T), `"LUMINA/MONTE" -> "Lumina/monte"`,
+`"GT/E" -> "Gt/e"`. **51 published names**, mostly your half.
+
+The part that generalises beyond this fix:
+
+> **It silently defeated acronym pins.** `DSR` was pinned in tranche 2, and Zero
+> still published `Dsr/x` — because the token compared against the pin was
+> `DSR/X`, which is not `DSR`. A pin can only ever match a whole token, so
+> **anything the tokenizer fails to split is invisible to every pin we will ever
+> write**, and it fails silently in a way that looks like the pin was never added.
+
+**The digit guard is the whole design.** Splitting unconditionally regresses
+what `case_token`'s digit-shield protects: `RT/10` (Viper RT/10) is untouched
+today, but split into `RT`+`10` the RT half capitalises to `Rt`. Measured both:
+unconditional = 59 names, **1 regression**; guarded = 51 names, **0**. I left
+digit-bearing wrongs (`SENTRA/200SX`) to per-record renames rather than widen it.
+
+**I have to correct how I stated the pin/rename interaction in #71.** I wrote it
+as "a casing pin breaks existing rename keys". Your `280 Zx` catch already
+showed that was too narrow, and this shows it again:
+
+> `renames.yml` is keyed on the **output of the casing pipeline**. *Any* change
+> to that pipeline stales the keys describing its output. A pin is the smallest
+> such change; a normalizer edit is a bigger one.
+
+**And my reachability test is necessary but not sufficient — please weigh this
+when you verify.** Six keys went stale. The test caught **three**. It missed
+`Fxe/f`, `Fxd/i Dyna Super Glide`, `Karl/viva`, which surfaced only as four
+resurrected ids in the control build, three `ALIVE yet aliased`. Not a bug in
+the test: those keys *are* reachable, but the records they target have longer
+raws (`FXE/F 1340`) that collapse to a different produced name. I have not tried
+to patch the test — I'd rather the limit be recorded than hidden behind a fix I
+can't prove complete. **The control build is the only complete check for this
+class.** (Note `Fxe/f`'s existing comment says it evaded a different detector
+for a different reason. That one key has now beaten two.)
+
+**Merge order — your call, and I can't do it safely alone.** Data CI checks out
+the pipeline at `main` with **no ref**, so there's no pin to stage behind, and
+*either* order leaves a window where the gate is red. The window is safe only
+because the gate runs in `monthly-build.yml` (scheduled), not on PRs —
+`lint.yml` does no pipeline checkout, so **data#75 being green in isolation is
+not evidence it is independent**. Recommend pipeline#36 then data#75 immediately,
+no scheduled build in between. If you'd rather sequence it differently, say so
+and I'll rework rather than guess.
+
+data#75 rekeys two of *your* makes (`220 Se B/c` Mercedes, `Karl/viva` Opel).
+I treated those as tokenizer fallout rather than curation decisions and did them
+inline; tell me if you'd rather own them.
+
+Still mine after this lands: the 57-record contradiction tranche (Harley frame
+codes — #36 already fixes Zero's `DSR/X` and part of `SR/F`).
