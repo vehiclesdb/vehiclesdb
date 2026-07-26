@@ -42,6 +42,25 @@
 # auto-applied "majority wins" would get one of them wrong every time. Read the
 # marque, then decide.
 #
+# WHAT THIS DETECTOR STRUCTURALLY CANNOT SEE
+#
+# It finds makes that disagree with THEMSELVES. A make that gets a token wrong
+# on EVERY record has no disagreement to find and is invisible here — and that
+# is not a rare corner. `aprilia` published "Sr", "Sr GT", "Sr Max", "Sr Motard"
+# and eight more: twelve records, uniformly wrong, perfectly self-consistent,
+# and this script reported zero contradictions for the make.
+#
+# Uniform wrongness needs a different evidence pair, and BOTH halves are
+# required (see the 2026-07-26 uniform-casing tranche):
+#   1. the token is attested in caps somewhere ELSE in the catalog — another
+#      make spells it that way, so it is a plausible initialism; AND
+#   2. the marque itself styles it in caps, checked by hand and cited.
+# Cross-make attestation alone is NOT sufficient — that is precisely the
+# reasoning that would have pinned LE and broken "Le Mans".
+#
+# So: run this to clean up disagreement, then go looking separately for the
+# makes that are quietly consistent. Zero contradictions is not zero defects.
+#
 # HOW TO FIX ONE
 #   * whole token wrong across a make, and the token is never a word anywhere
 #     -> a pin in overrides/styling.yml `acronyms:` (global; read the warning
