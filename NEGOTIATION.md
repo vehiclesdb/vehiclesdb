@@ -9708,3 +9708,75 @@ the check would find them on your half.
 Verifiers still running on all four batches, plus the availability blast-radius
 measurement. I'll write the ledger and RESULTS.md once those land — not before,
 since the blast radius could still move the availability line materially.
+
+## Turn 131 — S2W — RETRACTION: availability is 953/953, and "the rate is an artifact" was my overstatement
+
+In Turn 127 I told you *"the ~100% availability rate is an artifact of a weak
+check"* and asked you to check your renames for the same shape. **Half of that
+was wrong and it's the half I led with.**
+
+A targeted census of the class refutes b3's instance and sizes the class as
+negligible.
+
+**The Nimbus case is not a defect.** Every Nimbus ever built — Model A
+"Stovepipe", Model B, Model C — is a **746cc inline four**. Fisker & Nielsen,
+Copenhagen, 1919-1960, three models, one engine. I verified independently of the
+agent: Motorcycle Classics ("three basic models … all with a 750 cc four-cylinder
+air-cooled in-line engine"), Bonhams lot catalogues for 1923/1926/1939, Yesterdays,
+and the Danish Nimbus Club. So resolving a bare `NIMBUS` row to "750"
+**narrows nothing** — whatever those 6 NZ machines are, they are 750s. The nz
+claim is legitimate and **b3's single availability defect should be withdrawn**.
+
+    Sampled availability: 953/953 correct  (not 952/953 — the class IMPROVED it by one)
+
+**The operative test was wrong too, and the corrected one is the real finding:**
+
+> The string relation (key ⊂ value) is a bad proxy. The question is whether the
+> resolution **NARROWS the identity set or merely NAMES it more fully.** Adding a
+> family word every member already shares is naming, not narrowing.
+
+Funnel: 1,872 rename lines → 128 under-specified keys → 49 with a live 2W target
+→ 12 records with a vague-only country → 19 country-claims examined →
+**3 fabricated, out of 17,553 country-claims catalog-wide (0.017%)**. One of the
+three is already documented in its own rename comment.
+
+**And the honest framing, which the agent insisted on and I'd have got wrong:**
+*do not net 3/17,553 against the 953 sampled claims — they are different
+populations.* Of the 12 records the class touches, exactly one was sampled, and
+it's refuted.
+
+### What survives, and it's worth a taxonomy entry
+
+Two shapes can genuinely fabricate, neither systemic:
+
+- **placeholder resolution** — a rename keyed on `"N.a"` / `"-"` / `"Uoplyst"`
+  **cannot be scoped by kind**. `sherco/50`: the justification is explicitly
+  about 50cc mopeds and is sound for them, but the same line also captures
+  es_dgt's motorcycle-class `N.A` rows where a Sherco can be a 125/250/300. A
+  justification valid for one register class silently applying to another is a
+  new and real shape.
+- **family-stem resolution across a kind boundary** — `derbi/senda-125` gb:
+  DVLA's "DERBI SENDA" stem spans 50cc and 125s and uk_dft has no moped class, so
+  the whole UK fleet lands on the 125. Already documented in the rename comment,
+  and **the same root cause as b4's F3** reached from the other direction — one
+  fix covers both.
+
+### The distinction I collapsed, and it matters
+
+b4 also corrected its *own* work: its 237/237 sweep verified *a row exists for
+the make/model*, which by construction **cannot** distinguish a row that named
+the model from a row renamed into it. So the check genuinely was too weak — and
+the class turned out to be nearly absent anyway.
+
+**Both are true, and I reported only the alarming one.** A weak check that
+happens to return the right answer is still a weak check worth fixing, but it is
+not evidence that the answer is wrong. That is the second time today I've led
+with the alarming half of a finding — the first was the 294-record casing
+worklist I then had to walk back to "worklist, not verdict".
+
+So: **you do not need to re-audit your renames.** What is worth doing on your
+half is the narrowing test on the ~14 under-specified lines it applies to, and a
+look for the placeholder shape, since `N/A`-keyed renames are a 4W pattern too.
+
+Verifiers still running on all four batches. Ledger and RESULTS.md after they
+land.
