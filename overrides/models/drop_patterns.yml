@@ -9,7 +9,7 @@
 # via kind_maps instead. Dropping here ≠ dropping from the dataset.
 
 car:
-  - '\bSPRINTER\b'    # Mercedes van
+  - '\bSPRINTER'      # Mercedes van. No trailing \b: fi_traficom writes FUSED grades ("SPRINTER313 CDI" — R→3 is no word boundary, so the bounded form missed 5 M1 raw shapes, measured wave 3); prefix-bounded is still safe, no nameplate contains the word
   - '\bTRANSIT\b'     # Ford van family (incl. TOURNEO CONNECT etc. below)
   - '\bTRANSPORTER\b' # VW T-series van. NB 2026-07-26: car/volkswagen/transporter now EXISTS deliberately — it is the wave-3 fold target for T1–T6/KASTENWAGEN/BESTEL/KOMBIWAGEN/SYNCRO raws, which never contain TRANSPORTER and so never trip this drop (dossier-trims-vw-seat.md §3.0, GATE-1 resolution 1). Do NOT extend this drop to those raw shapes: drop_patterns fire on the RAW before renames (normalizer.rb:114), so the extension would kill the folds and orphan the minted id.
   - '\bCRAFTER\b'     # VW van
@@ -57,6 +57,18 @@ car:
   - '\bTOWNSTAR\b'    # Nissan van (Kangoo twin) — van/nissan/townstar is canonical
   - '\bINTERSTAR\b'   # Nissan van (Master twin) — van/nissan/interstar is canonical
   - '\bDELIVER\s?7\b' # Maxus Deliver 7 van — van/maxus/deliver-7 is canonical
+  # --- Mercedes W901-W906 SPRINTER chassis-code registrations in passenger-car
+  # classes (grijs-kenteken / KAMPEERAUTO campers; fi+nl+ua, 325 rows measured).
+  # The raws spell the CHASSIS CODE ("906 AC 30", "902.6 KA", bare "906"), so the
+  # \bSPRINTER\b pattern above never sees them, and the wave-3 trim-fold renames
+  # ("906": Sprinter etc.) would otherwise mint car/mercedes-benz/sprinter against
+  # the pinned spotcheck "Sprinter is kind=van/truck; must not leak into cars" —
+  # the exact CADDYMAXI mechanism (#67) two entries up. Kind van carries this
+  # volume natively. (Mercedes trim dossier wave 3, §3.0 C resolved per spotcheck.)
+  - '\A90[1-6][\s.-]+\d*\s*(KA|AC|BA|OK)\b'  # chassis + body-code forms: "906 AC 30", "906 KA 35", "902 KA"
+  - '\A90[1-6][.-]\d' # dotted/hyphened chassis sub-codes: "903.6 308CDI", "902.6 KA", "905.6", "904.6 413CDI" (nl personenauto carries the whole W90x zoo, n=1 each — measured)
+  - '\A906\z'         # bare W906. NOTE make-blind: would also hit a bare Porsche "906" raw (none in any corpus to date). Bare "903"/"904" are deliberately NOT dropped — porsche/904 is a live id fed by the bare raw; stray Mercedes car-class "903"/"904" rows are single-source n~1 and cannot pass the 2-source/threshold entry rule
+  - '\b(SPINTER|SPRINER|SRINTER)\b'  # Sprinter MISSPELLINGS in passenger-car classes (fi M1 "SPINTER" x15, "SPINTER 310CDI PROSTYLE TREND", "SRINTER 316CDI-3.5T-906633/367" — measured); the van/truck-kind misspelling rows fold to van/truck sprinter via renames, untouched by this car-kind drop
 
 van: []
 motorcycle: []
