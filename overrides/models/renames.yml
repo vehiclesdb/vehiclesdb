@@ -2115,15 +2115,88 @@ Nissan:
   "350Z": "350 Z"                             # spelling variant of "350 Z" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "370Z": "370 Z"                             # spelling variant of "370 Z" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Gtr: GT-R                                   # spelling variant of "GT-R" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Skyline 350GT: Skyline 350 GT               # spelling variant of "Skyline 350 GT" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  Skyline 350GT: Skyline                      # REPOINTED 2026-07-26 (was "Skyline 350 GT", which now folds to Skyline — trim-fold dossier step 2)
   Xtrail: X-Trail                             # spelling variant of "X-Trail" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Pickup: Pick Up                             # spelling variant of "Pick Up" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Nissan: null                                # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
-  Z 33: Z33                                   # spelling variant of "Z33" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  Z 33: "350 Z"                               # REPOINTED 2026-07-26 (was "Z33", which now folds to 350 Z — trim-fold dossier step 2; keyed to today's canonical spaced display, see the lane-A note)
   D 22: D22                                   # spelling variant of "D22" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Np 300: NP300                               # spelling variant of "NP300" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Nv 200: NV200                               # spelling variant of "NV200" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Nv 400: NV400                               # spelling variant of "NV400" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  # ── trim-fold dossier batch (2026-07-26, wave 2 Toyota+Nissan; Opus 5
+  # granularity researcher, S4W applied): trims / engine designations /
+  # chassis-series codes / cab+body configs / market badges / misspellings
+  # fold into their nameplates; evidence per line (us_fueleconomy baseModel,
+  # marque pages, Wikipedia as locator). Renames are KIND-BLIND: the lines
+  # tagged [KIND-BLIND] serve a car id AND a van id and are written ONCE.
+  # Six keys are deliberately doubled in pre-/post-split_slashes casing
+  # (the S400 Hev/S400 HEV precedent). "Cruiser": "Land Cruiser" was
+  # SKIPPED by owner ruling (§3.0 option 3 — blast radius 2, car/toyota/
+  # cruiser unresolved); truck/toyota/cruiser stays live pending the
+  # series_collapse LAND-strip pipeline fix. ──
+  "300 ZX Twin Turbo": "300ZX"  # engine designation of the Z32 300ZX — https://en.wikipedia.org/wiki/Nissan_300ZX  [POST-split_slashes form — key BOTH; the shipped catalog name predates the 2026-07-26 normalizer change]
+  "300 Zx Twin Turbo": "300ZX"  # engine designation of the Z32 300ZX — https://en.wikipedia.org/wiki/Nissan_300ZX
+  "300ZX 2X2": "300ZX"  # the 2+2 is the long-wheelbase body; us_fueleconomy model "300ZX 2x2" baseModel "300ZX" — https://www.fueleconomy.gov/feg/download.shtml
+  "300ZX Turbo": "300ZX"  # engine designation — https://en.wikipedia.org/wiki/Nissan_300ZX
+  "350Z Roadster": "350 Z"  # us_fueleconomy: model "350z Roadster" baseModel "350z" — https://www.fueleconomy.gov/feg/download.shtml
+  "370Z Roadster": "370 Z"  # us_fueleconomy: model "370Z Roadster" baseModel "370Z" — https://www.fueleconomy.gov/feg/download.shtml
+  "Altima S": "Altima"  # Altima equipment grade (S/SR/SL/SV/Platinum) — https://www.fueleconomy.gov/feg/download.shtml
+  "Altima Sr": "Altima"  # us_fueleconomy: model "Altima SR" baseModel "Altima" — https://www.fueleconomy.gov/feg/download.shtml
+  "Altima Sr/Platinum": "Altima"  # us_fueleconomy: model "Altima SR/Platinum" baseModel "Altima" — https://www.fueleconomy.gov/feg/download.shtml  [POST-split_slashes form — key BOTH; the shipped catalog name predates the 2026-07-26 normalizer change]
+  "Altima Sr/platinum": "Altima"  # us_fueleconomy: model "Altima SR/Platinum" baseModel "Altima" — https://www.fueleconomy.gov/feg/download.shtml
+  "Ariya Engage": "Ariya"  # us_fueleconomy: every "ARIYA ENGAGE …" model has baseModel "ARIYA" — https://www.fueleconomy.gov/feg/download.shtml
+  "Ariya Evolve": "Ariya"  # us_fueleconomy: every "ARIYA EVOLVE …" model has baseModel "ARIYA" — https://www.fueleconomy.gov/feg/download.shtml
+  "C22": "Vanette"  # C22 is the Vanette chassis code (1985-1994) — https://en.wikipedia.org/wiki/Nissan_Vanette
+  "Cabstar 35.11": "Cabstar"  # GVW.power designation (3.5 t / 110 PS) — a configuration code, not a nameplate — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Cabstar 35.12": "Cabstar"  # GVW.power designation — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Cabstar 35.13": "Cabstar"  # GVW.power designation — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Cabstar 35.13 2": "Cabstar"  # same designation, split by a trailing token — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Cabstar TL3513": "Cabstar"  # cab code + GVW.power designation — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Cabstar.e": "Cabstar"  # "Cabstar E" is the 1992-2006 Cabstar series letter, not a separate nameplate — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Frontier V6": "Frontier"  # us_fueleconomy: models "Frontier V6 2WD/4WD" baseModel "Frontier" — https://www.fueleconomy.gov/feg/download.shtml
+  "GT-R Nismo": "GT-R"  # NISMO is a GT-R grade on Nissan's own GT-R page, not a separate model — https://www.nissanusa.com/vehicles.html
+  "Juke Nismo": "Juke"  # us_fueleconomy: models "Juke Nismo RS"/"Juke Nismo RS AWD" baseModel "Juke" — https://www.fueleconomy.gov/feg/download.shtml
+  "Kicks Play": "Kicks"  # "In August 2024, the Kicks in Mexico and Canada continued to be sold alongside the new model as the Kicks Play" — a run-out badge for the P15; us_fueleconomy "Kicks Play" baseModel "Kicks" — https://en.wikipedia.org/wiki/Nissan_Kicks
+  "King Cab": "Pick-Up"  # King Cab is Nissan's extended-CAB configuration of the Pick Up/Navara — https://en.wikipedia.org/wiki/Nissan_Navara
+  "King Cab 2.5DI": "Pick-Up"  # cab configuration + displacement — NAMING.md §6
+  "Leaf 24KWH": "Leaf"  # battery capacity is a per-trim option, never a nameplate — the in-block "Leaf 30 Kwh / Leaf 40KWH / Leaf 62KWH: Leaf" precedent; us_fueleconomy "Leaf (24 kW-hr battery pack)" baseModel "Leaf" — https://www.fueleconomy.gov/feg/download.shtml
+  "Leaf 40 Kwh": "Leaf"  # SPACED sibling of the already-folded "Leaf 40KWH" key — same class, key never written — https://www.fueleconomy.gov/feg/download.shtml
+  "Leaf S Plus": "Leaf"  # S PLUS is the 62 kWh US grade; us_fueleconomy folds every Leaf grade to baseModel "Leaf" — https://www.fueleconomy.gov/feg/download.shtml
+  "Leaf Sv": "Leaf"  # us_fueleconomy: model "LEAF SV" baseModel "LEAF" — https://www.fueleconomy.gov/feg/download.shtml
+  "Leaf Sv Plus": "Leaf"  # us_fueleconomy: "Leaf SV/SL (62 kW-hr battery pack)" baseModel "Leaf" — https://www.fueleconomy.gov/feg/download.shtml
+  "Maxima Qx": "Maxima"  # QX was the European suffix on the A32/A33 Maxima — the car is the Maxima — https://en.wikipedia.org/wiki/Nissan_Maxima
+  "Murano SL": "Murano"  # SL is a Murano equipment grade; us_fueleconomy carries only drivetrain splits under baseModel "Murano" — https://www.fueleconomy.gov/feg/download.shtml
+  "NP300 Pickup": "NP300"  # body/kind suffix on the NP300 — NAMING.md §1
+  "NT400 Cabstar": "NT400"  # Nissan's own full name for the NT400 is "NT400 Cabstar"; the corpus already carries van/nissan/nt400 with more sources — https://en.wikipedia.org/wiki/Nissan_Cabstar
+  "Navara 2": "Navara"  # bare displacement row (fi/nl) — NAMING.md §6
+  "Pathfinder Armada": "Armada"  # "The switch to the Armada name occurred in September 2004 for the 2005 model year, where it received new badges without 'Pathfinder'" — the MY2004 launch badge of the Armada — https://en.wikipedia.org/wiki/Nissan_Armada
+  "Patrol Gr 2.8DT Htp Van": "Patrol"  # displacement + body + kind suffix — NAMING.md §6
+  "Patrol K160": "Patrol"  # K160 is a Patrol chassis code (160 series) — https://en.wikipedia.org/wiki/Nissan_Patrol
+  "Primastar 2": "Primastar"  # bare displacement row (fi/nl) — NAMING.md §6
+  "Qashqai + 2": "Qashqai"  # second observed display form of the 7-seat +2 (observed_model_names.json: "Qashqai + 2") — same fold as "Qashqai +2"
+  "Qashqai +2": "Qashqai"  # 7-seat long body; the shipped "QASHQAI+2: Qashqai" rename is a DOCUMENTED DEAD KEY (NEGOTIATION.md Turn 24: published "Qashqai +2", key "QASHQAI+2") — this rekeys it — https://en.wikipedia.org/wiki/Nissan_Qashqai
+  "Qashqai 2": "Qashqai"  # third observed display form of the 7-seat +2 (observed_model_names.json: "Qashqai 2") — same fold as "Qashqai +2"
+  "Qashqai N-Tec": "Qashqai"  # n-tec is a Qashqai equipment grade — https://www.nissan.co.uk/vehicles/new-vehicles.html
+  "Rogue SL": "Rogue"  # us_fueleconomy: models "Rogue AWD SL/Platinum", "Rogue FWD SL/Platinum" baseModel "Rogue" — https://www.fueleconomy.gov/feg/download.shtml
+  "Rogue Sport Sv": "Rogue Sport"  # grade of the Rogue Sport, which KEEPS model status (its own us_fueleconomy baseModel "Rogue Sport") — https://www.fueleconomy.gov/feg/download.shtml
+  "SENTRA/200SX": "Sentra"  # us_fueleconomy's COMBINED listing label ("Sentra/200SX", baseModel "Sentra/200SX") — a certification-file artifact, not a badge; car/nissan/200sx keeps its own id — https://www.fueleconomy.gov/feg/download.shtml
+  "Sentra Nismo": "Sentra"  # us_fueleconomy: model "Sentra Nismo" baseModel "Sentra" — https://www.fueleconomy.gov/feg/download.shtml
+  "Sentra SL/Sr": "Sentra"  # us_fueleconomy: model "Sentra SL/SR" baseModel "Sentra" — https://www.fueleconomy.gov/feg/download.shtml  [POST-split_slashes form — key BOTH; the shipped catalog name predates the 2026-07-26 normalizer change]
+  "Sentra Sl/sr": "Sentra"  # us_fueleconomy: model "Sentra SL/SR" baseModel "Sentra" — https://www.fueleconomy.gov/feg/download.shtml
+  "Sentra Sr": "Sentra"  # us_fueleconomy: model "Sentra SR" baseModel "Sentra" — https://www.fueleconomy.gov/feg/download.shtml
+  "Skyline 350 GT": "Skyline"  # 350GT is the VQ35 engine grade of the V35/V36 Skyline — https://en.wikipedia.org/wiki/Nissan_Skyline
+  "Skyline 370 GT": "Skyline"  # 370GT is the VQ37 engine grade of the V36 Skyline — https://en.wikipedia.org/wiki/Nissan_Skyline
+  "Skyline GT": "Skyline"  # GT is a Skyline equipment grade — https://en.wikipedia.org/wiki/Nissan_Skyline
+  "Skyline GT-S": "Skyline"  # GT-S is a Skyline grade (below GT-R) — https://en.wikipedia.org/wiki/Nissan_Skyline
+  "Skyline GT-T": "Skyline"  # GT-T is the RB25DET turbo grade of the R34 Skyline — https://en.wikipedia.org/wiki/Nissan_Skyline
+  "Skyline R33": "Skyline"  # R33 is a Skyline generation/chassis code — https://en.wikipedia.org/wiki/Nissan_Skyline
+  "Vanette Cargo": "Vanette"  # Cargo is the panel-van body of the Vanette — https://en.wikipedia.org/wiki/Nissan_Vanette
+  "X-Trial": "X-Trail"  # MISSPELLING of X-Trail (nl_rdw/th_dlt) — joins the existing "Xtrail: X-Trail" spelling-fold line
+  "Xterra V6": "Xterra"  # us_fueleconomy: models "Xterra V6 2WD/4WD" baseModel "Xterra" — https://www.fueleconomy.gov/feg/download.shtml
+  "Z Nismo": "Z"  # us_fueleconomy: model "Z NISMO" baseModel "Z" — https://www.fueleconomy.gov/feg/download.shtml
+  "Z33": "350 Z"  # Z33 is the 350Z chassis code — https://en.wikipedia.org/wiki/Nissan_350Z
+  "Z350": "350 Z"  # TOKEN INVERSION of 350Z in fi/nl free text — https://en.wikipedia.org/wiki/Nissan_350Z
 
 Norton:
   Norton: null                            # motorcycle nl|nz
@@ -2549,11 +2622,11 @@ Toyota:
   "4RUNNER": "4-Runner"                       # spelling variant of "4-Runner" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Ch-R: C-HR                                  # spelling variant of "C-HR" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Chr: C-HR                                   # spelling variant of "C-HR" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Celica GT4: Celica GT-4                     # spelling variant of "Celica GT-4" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  Celica GT4: Celica                          # REPOINTED 2026-07-26 (was "Celica GT-4", which now folds to Celica — trim-fold dossier step 2; a rename applies ONCE, so the old value would strand these rows)
   Funcargo: Fun Cargo                         # spelling variant of "Fun Cargo" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "Hi Ace": Hiace                             # Toyota writes the model as one word; "Hi Ace" is a registry split (https://www.toyota-europe.com/)
   Landcruiser: Land Cruiser                   # spelling variant of "Land Cruiser" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Land Cruiser 150SERIES: Land Cruiser 150 Series # spelling variant of "Land Cruiser 150 Series" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  Land Cruiser 150SERIES: Land Cruiser        # REPOINTED 2026-07-26 (was "Land Cruiser 150 Series", which now folds to Land Cruiser — trim-fold dossier step 2)
   Liteace: Lite Ace                           # spelling variant of "Lite Ace" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Markx: Mark X                               # spelling variant of "Mark X" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Mrs: Mr-S                                   # spelling variant of "Mr-S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -2562,6 +2635,143 @@ Toyota:
   Gr 86: GR86                                 # spelling variant of "GR86" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   GT 86: GT86                                 # spelling variant of "GT86" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Mr 2: MR2                                   # spelling variant of "MR2" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  # ── trim-fold dossier batch (2026-07-26, wave 2 Toyota+Nissan; Opus 5
+  # granularity researcher, S4W applied): trims / engine designations /
+  # chassis-series codes / cab+body configs / market badges / misspellings
+  # fold into their nameplates; evidence per line (us_fueleconomy baseModel,
+  # marque pages, Wikipedia as locator). Renames are KIND-BLIND: the lines
+  # tagged [KIND-BLIND] serve a car id AND a van id and are written ONCE.
+  # Six keys are deliberately doubled in pre-/post-split_slashes casing
+  # (the S400 Hev/S400 HEV precedent). "Cruiser": "Land Cruiser" was
+  # SKIPPED by owner ruling (§3.0 option 3 — blast radius 2, car/toyota/
+  # cruiser unresolved); truck/toyota/cruiser stays live pending the
+  # series_collapse LAND-strip pipeline fix. ──
+  "AE86": "Corolla"  # AE86 is the Corolla Levin/Sprinter Trueno CHASSIS CODE; the corpus writes it inside Corolla rows ("COROLLA COUPE AE86 GTI", "Corolla Coupe GT AE86" — both already on car/toyota/corolla) — https://en.wikipedia.org/wiki/Toyota_Corolla_(E80)
+  "Altezza Gita": "Altezza"  # the Gita is the Altezza's WAGON body (JDM), not a nameplate — https://en.wikipedia.org/wiki/Toyota_Altezza ("Altezza Gita" = the five-door wagon)
+  "Altezza RS200": "Altezza"  # RS200 is the 3S-GE 2.0 grade of the Altezza — https://en.wikipedia.org/wiki/Toyota_Altezza (grades AS200/RS200/AS300)
+  "Aristo 3.0V": "Aristo"  # engine grade of the Aristo (2JZ-GE 3.0); car-kind displacement is a spec, NAMING.md §6 — https://en.wikipedia.org/wiki/Toyota_Aristo
+  "Aristo V300": "Aristo"  # V300 is the twin-turbo Aristo grade — https://en.wikipedia.org/wiki/Toyota_Aristo
+  "Avalon Xle": "Avalon"  # us_fueleconomy vehicles.csv: model "Avalon XLE" baseModel "Avalon" — https://www.fueleconomy.gov/feg/download.shtml
+  "Aygo Cross": "Aygo"  # x-cross is an Aygo equipment grade (x-cite / x-clusiv / x-cross / x-play) — https://www.toyota.co.uk/new-cars (Aygo X is the SEPARATE current nameplate and is kept)
+  "BJ40": "Land Cruiser"  # bare J40 chassis code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_(J40)
+  "Bb Opendeck": "Bb"  # Open Deck is the bB's open-bed body — https://en.wikipedia.org/wiki/Toyota_bB
+  "Bu": "Dyna"  # "BU 15 L-H", "BU 92" are Dyna chassis codes; the same codes already sit inside truck/toyota/dyna rows ("DYNA BU75L-MDDTW", "DYNA BU92L-MDDHTW") — https://en.wikipedia.org/wiki/Toyota_Dyna
+  "Caldina GT-Four": "Caldina"  # GT-Four is Toyota's AWD-turbo grade badge, not a nameplate (same badge folded on Celica) — https://en.wikipedia.org/wiki/Toyota_Caldina
+  "Caldina GT-T": "Caldina"  # GT-T is the front-drive turbo grade of the Caldina — https://en.wikipedia.org/wiki/Toyota_Caldina
+  "Camry 2": "Camry"  # bare displacement ("CAMRY 2,4 AUTOMATIC", nl_rdw/fi_traficom); car-kind displacement is a spec — NAMING.md §6
+  "Camry Le": "Camry"  # us_fueleconomy: "Camry LE/SE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Le/Se": "Camry"  # us_fueleconomy: model "Camry LE/SE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml  [POST-split_slashes form — key BOTH; the shipped catalog name predates the 2026-07-26 normalizer change]
+  "Camry Le/se": "Camry"  # us_fueleconomy: model "Camry LE/SE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Se": "Camry"  # us_fueleconomy: "Camry AWD LE/SE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Trd": "Camry"  # us_fueleconomy: model "Camry TRD" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Wagon": "Camry"  # us_fueleconomy: model "Camry Wagon" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Xle": "Camry"  # us_fueleconomy: "Camry XLE/XSE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Xle/Xse": "Camry"  # us_fueleconomy: model "Camry XLE/XSE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml  [POST-split_slashes form — key BOTH; the shipped catalog name predates the 2026-07-26 normalizer change]
+  "Camry Xle/xse": "Camry"  # us_fueleconomy: model "Camry XLE/XSE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Camry Xse": "Camry"  # us_fueleconomy: model "Camry XSE" baseModel "Camry" — https://www.fueleconomy.gov/feg/download.shtml
+  "Carina 1600": "Carina"  # displacement, not a nameplate (car kind) — NAMING.md §6; corpus "CARINA 1600 ST" (nl_rdw)
+  "Carina Dx": "Carina"  # DX = De Luxe equipment grade; corpus "CARINA DX COUPE", "CARINA II 1.6 DX" all sit on car/toyota/carina — NAMING.md §6
+  "Celica 1": "Celica"  # bare displacement ("CELICA 1,8 GSI", fi/nl) — NAMING.md §6
+  "Celica 1600": "Celica"  # displacement — NAMING.md §6; corpus "CELICA 1600 COUPE ST"
+  "Celica 2": "Celica"  # bare displacement ("CELICA 2,0 GTI") — NAMING.md §6
+  "Celica GT": "Celica"  # GT is a Celica equipment/engine grade — https://en.wikipedia.org/wiki/Toyota_Celica
+  "Celica GT-4": "Celica"  # GT-Four (GT4) = the AWD turbo homologation grade of the Celica — https://en.wikipedia.org/wiki/Toyota_Celica_GT-Four
+  "Celica GT-Four": "Celica"  # same badge, spaced form — https://en.wikipedia.org/wiki/Toyota_Celica_GT-Four
+  "Celica Hard Top": "Celica"  # body style of the Celica — https://en.wikipedia.org/wiki/Toyota_Celica
+  "Celica Liftback": "Celica"  # body style of the Celica (the A20/A40 Liftback) — https://en.wikipedia.org/wiki/Toyota_Celica
+  "Celica Lt": "Celica"  # LT is the base Celica grade (LT/ST/GT ladder) — https://en.wikipedia.org/wiki/Toyota_Celica
+  "Celica Supra": "Celica"  # "Starting in mid-1986, the A70 Supra became a separate model from the Celica" — the A40/A60 were Celica variants; us_fueleconomy "Celica Supra" baseModel "Celica" — https://en.wikipedia.org/wiki/Toyota_Supra
+  "Corolla 1": "Corolla"  # bare displacement ("COROLLA 1,6 DX") — NAMING.md §6
+  "Corolla 1200": "Corolla"  # displacement ("COROLLA 1200 COUPE") — NAMING.md §6
+  "Corolla 1600 GT": "Corolla"  # displacement + GT grade ("COROLLA 1600 GTI") — NAMING.md §6
+  "Corolla Altis": "Corolla"  # "In Taiwan and Southeast Asia, the 'Prestige' model saloon is sold as the Corolla Altis" — a market badge for the Corolla saloon — https://en.wikipedia.org/wiki/Toyota_Corolla_(E210)
+  "Corolla Compressor": "Corolla"  # supercharged engine variant of the Corolla — NAMING.md §6 (car-kind engine specs collapse)
+  "Corolla Fx": "Corolla"  # us_fueleconomy: "Corolla FX" and "Corolla Hatchback FX" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml
+  "Corolla GT": "Corolla"  # GT grade ("COROLLA GT COUPE"); us_fueleconomy has no separate GT baseModel — https://en.wikipedia.org/wiki/Toyota_Corolla_(E80)
+  "Corolla Gr": "Gr Corolla"  # TOKEN-ORDER duplicate, not a trim fold: Toyota writes "GR Corolla" (toyota.com all-vehicles data-series=grcorolla, data-display-name="GR Corolla") — https://www.toyota.com/all-vehicles/
+  "Corolla Im": "Corolla"  # us_fueleconomy: model "Corolla iM" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml
+  "Corolla Le Eco": "Corolla"  # us_fueleconomy: model "Corolla LE Eco" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml
+  "Corolla Matrix": "Matrix"  # the Canadian badge of the Matrix; ca_nrcan rows "Corolla Matrix AWD" — https://en.wikipedia.org/wiki/Toyota_Matrix
+  "Corolla Sport": "Corolla"  # us_fueleconomy: model "Corolla Sport" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml (the id's evidence is nl+us; the JDM E210 "Corolla Sport" hatch is a homonym, see UNCERTAIN)
+  "Corolla Wagon": "Corolla"  # us_fueleconomy: model "Corolla Wagon" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml
+  "Corolla Xle": "Corolla"  # us_fueleconomy: model "Corolla XLE" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml
+  "Corolla Xse": "Corolla"  # us_fueleconomy: model "Corolla XSE" baseModel "Corolla" — https://www.fueleconomy.gov/feg/download.shtml
+  "Corona Mark": "Mark"  # "Corona Mark II" is the 1968-1984 name of the nameplate the corpus already carries as car/toyota/mark (raws "MARK II ...") — https://en.wikipedia.org/wiki/Toyota_Mark_II
+  "Corona Mk": "Mark"  # same nameplate, "MK" spelling ("CORONA MK II", nl_rdw) — https://en.wikipedia.org/wiki/Toyota_Mark_II
+  "Crown Athlete": "Crown"  # Athlete is a Crown equipment grade (Royal / Athlete / Majesta line-up) — https://en.wikipedia.org/wiki/Toyota_Crown
+  "Crown Royal": "Crown"  # Royal Saloon is a Crown equipment grade — https://en.wikipedia.org/wiki/Toyota_Crown
+  "Dyna 100": "Dyna"  # 100/150 are Dyna PAYLOAD series, not nameplates — https://en.wikipedia.org/wiki/Toyota_Dyna
+  "Dyna 150": "Dyna"  # same payload-series class — https://en.wikipedia.org/wiki/Toyota_Dyna
+  "FJ40": "Land Cruiser"  # bare J40 chassis code (F-series petrol) — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_(J40)
+  "Fielder": "Corolla Fielder"  # bare "Fielder" is the Corolla Fielder; Toyota never sold a "Fielder" without the Corolla prefix — https://en.wikipedia.org/wiki/Toyota_Corolla_(E120)
+  "Hi": "Hiace"  # NORMALIZER ARTIFACT: bus-kind series_collapse turns "HI ACE"/"HI - ACE" into "Hi"; raws on bus/toyota/hi are exactly those two strings — the vehicle is the HiAce
+  "Hiace -Van": "Hiace"  # body/config suffix ("HIACE -VAN"), which the van kind already encodes — NAMING.md §1
+  "Hiace 2": "Hiace"  # bare displacement rows ("HIACE 2,4D EMOTION", "HIACE 2,7 COMBI") — NAMING.md §6
+  "Hiace 2.4TD": "Hiace"  # displacement + turbo-diesel — NAMING.md §6
+  "Hiace Van": "Hiace"  # POST-pipeline#42 series_collapse form of the same "HIACE -VAN" rows (the dossier's replay predates #42; "Hiace -Van" above is kept as its dead twin, the S400 Hev/HEV precedent) — body/kind suffix the van kind already encodes, NAMING.md §1
+  "Higlander": "Highlander"  # MISSPELLING of Highlander in fi_traficom/nl_rdw free text — not a nameplate; joins the "4RUNNER"/"Chr" spelling-fold class already in the Toyota block
+  "Hilux 2": "Hilux"  # POST-pipeline#42 series_collapse form of the same "HILUX-2" rows (the dossier's replay predates #42; "Hilux-2" below is kept as its dead twin, the S400 Hev/HEV precedent) — bare displacement row, NAMING.md §6
+  "Hilux 2.4TD": "Hilux"  # displacement + turbo-diesel — NAMING.md §6
+  "Hilux 4 Wd": "Hilux"  # drivetrain suffix; VARIANT_SUFFIXES already strips "4WD" when it is spaced differently — NAMING.md §6
+  "Hilux Double-Cab": "Hilux"  # cab configuration — https://en.wikipedia.org/wiki/Toyota_Hilux
+  "Hilux Revo": "Hilux"  # Revo is Toyota Thailand's market name for the eighth-generation Hilux (the Vigo/Vigo Champ/Revo series of Thai badges) — https://en.wikipedia.org/wiki/Toyota_Hilux  [KIND-BLIND: this ONE line also covers van/toyota/hilux — write it once]
+  "Hilux-2": "Hilux"  # bare displacement row — NAMING.md §6
+  "Hilux-4X4": "Hilux"  # drivetrain suffix — NAMING.md §6
+  "KZJ90": "Land Cruiser"  # KZJ90 is a J90 Prado chassis code (1KZ-TE diesel) — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_Prado
+  "Land Cruiser 100": "Land Cruiser"  # J100 is a Land Cruiser Station Wagon GENERATION, not a nameplate — the Land Rover "Discovery 1-5 = generations" rule in normalizer.rb#land_rover — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser  [KIND-BLIND: this ONE line also covers van/toyota/land-cruiser — write it once]
+  "Land Cruiser 120": "Land Cruiser"  # J120 = Land Cruiser Prado generation code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser  [KIND-BLIND: this ONE line also covers van/toyota/land-cruiser — write it once]
+  "Land Cruiser 120 Series": "Land Cruiser"  # series code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser 120SERIES": "Land Cruiser"  # fused registry spelling of the same series code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser 150": "Land Cruiser"  # J150 = Land Cruiser Prado generation code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser  [KIND-BLIND: this ONE line also covers van/toyota/land-cruiser — write it once]
+  "Land Cruiser 150 Serie": "Land Cruiser"  # same series code, singular "Serie" spelling (es_dgt/nl_rdw) — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser 150 Series": "Land Cruiser"  # same series code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser  [KIND-BLIND: this ONE line also covers van/toyota/land-cruiser — write it once]
+  "Land Cruiser 200": "Land Cruiser"  # J200 = Station Wagon generation — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser (NB in NL/BE/UK this generation is badged "Land Cruiser V8", which stays a SEPARATE id per the settled parallel-nameplate line)
+  "Land Cruiser 300": "Land Cruiser"  # J300 = Station Wagon generation — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser 300 Gr Sport": "Land Cruiser"  # series code + GR Sport equipment grade — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser 90": "Land Cruiser"  # J90 = Land Cruiser Prado generation code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser  [KIND-BLIND: this ONE line also covers van/toyota/land-cruiser — write it once]
+  "Land Cruiser 90 Series": "Land Cruiser"  # series code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser BJ40": "Land Cruiser"  # BJ40 is a J40 chassis code (B-series diesel) — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_(J40)  [KIND-BLIND: this ONE line also covers van/toyota/land-cruiser — write it once]
+  "Land Cruiser BJ45": "Land Cruiser"  # J40-family long-wheelbase chassis code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_(J40)
+  "Land Cruiser First Edition D A": "Land Cruiser"  # launch-edition trim (uk_dft) — https://www.toyota.co.uk/new-cars
+  "Land Cruiser HJ61": "Land Cruiser"  # HJ61 is a J60 chassis code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_(J60)
+  "Land Cruiser Hardtop": "Land Cruiser"  # body style — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser LX Turbo": "Land Cruiser"  # LX equipment grade + forced induction — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser Prado 150": "Land Cruiser Prado"  # Prado generation code — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_Prado
+  "Land Cruiser Prado Gx": "Land Cruiser Prado"  # GX is a Prado equipment grade — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_Prado
+  "Land Cruiser Van": "Land Cruiser"  # body/kind suffix, which the van kind already encodes — NAMING.md §1
+  "Land Cruiser Vx": "Land Cruiser"  # VX is a Land Cruiser equipment grade (GX/VX/ZX) — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser
+  "Land Cruiser-BJ75LP-Mrw-Pick Up-4X4/2980": "Land Cruiser"  # full RDW type string (chassis + body + drivetrain + payload) — one vehicle configuration, not a nameplate
+  "Land Cuiser": "Land Cruiser"  # MISSPELLING of Land Cruiser (es_dgt/fi_traficom) — joins the existing Landcruiser/Landcruicer spelling-fold class
+  "MR": "MR2"  # registry truncation of MR2 — the corpus rows are literally "TOYOTA MR,MR2" and "MR II" (nl_rdw), i.e. the same car — https://en.wikipedia.org/wiki/Toyota_MR2
+  "Mark 2": "Mark"  # digit spelling of Mark II; the roman-numeral collapse already puts "MARK II" on car/toyota/mark — https://en.wikipedia.org/wiki/Toyota_Mark_II
+  "Mark X 250G": "Mark X"  # 250G is the 2.5 V6 grade of the Mark X — https://en.wikipedia.org/wiki/Toyota_Mark_X
+  "Matrix Xr": "Matrix"  # XR is a Matrix equipment grade (Base/XR/XRS) — https://en.wikipedia.org/wiki/Toyota_Matrix
+  "Mirai Limited": "Mirai"  # us_fueleconomy: model "Mirai Limited" baseModel "Mirai" — https://www.fueleconomy.gov/feg/download.shtml
+  "Mirai Xle": "Mirai"  # us_fueleconomy: model "Mirai XLE" baseModel "Mirai" — https://www.fueleconomy.gov/feg/download.shtml
+  "Prado": "Land Cruiser Prado"  # bare "Prado" is the Land Cruiser Prado; Toyota never sold a "Prado" without the Land Cruiser prefix — https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_Prado
+  "Prius Eco": "Prius"  # us_fueleconomy: model "Prius Eco" baseModel "Prius" — https://www.fueleconomy.gov/feg/download.shtml
+  "Prius Phv": "Prius"  # PHV is Toyota's JP/EU name for the plug-in Prius; the in-block "Prius Plug-In: Prius" rename is the precedent — https://en.wikipedia.org/wiki/Toyota_Prius_Plug-in_Hybrid
+  "Prius Prime Se": "Prius Prime"  # us_fueleconomy: model "Prius Prime SE" baseModel "Prius Prime" — https://www.fueleconomy.gov/feg/download.shtml
+  "Prius Prime Xse": "Prius Prime"  # us_fueleconomy: "Prius Plug-in Hybrid XSE (Prime XSE)" baseModel "Prius Prime" — https://www.fueleconomy.gov/feg/download.shtml
+  "Proace City 2510": "Proace City"  # payload/GVW figure appended to Proace City by fi_traficom — not a nameplate; Toyota UK sells Proace / Proace City / Proace Max — https://www.toyota.co.uk/new-cars
+  "RAV4 EV": "RAV4"  # us_fueleconomy: model "RAV4 EV" baseModel "RAV4" — https://www.fueleconomy.gov/feg/download.shtml
+  "RAV4 Le/Xle": "RAV4"  # us_fueleconomy: model "RAV4 LE/XLE" baseModel "RAV4" — https://www.fueleconomy.gov/feg/download.shtml  [POST-split_slashes form — key BOTH; the shipped catalog name predates the 2026-07-26 normalizer change]
+  "RAV4 Le/xle": "RAV4"  # us_fueleconomy: model "RAV4 LE/XLE" baseModel "RAV4" — https://www.fueleconomy.gov/feg/download.shtml
+  "RAV4 Limited": "RAV4"  # us_fueleconomy: model "RAV4 Limited AWD" baseModel "RAV4" — https://www.fueleconomy.gov/feg/download.shtml
+  "RAV4 Soft Top": "RAV4"  # us_fueleconomy: model "RAV4 Soft Top 2WD/4WD" baseModel "RAV4" — https://www.fueleconomy.gov/feg/download.shtml
+  "Rav": "RAV4"  # registry truncation of RAV4 ("TOYOTA RAV", fi/nl) — joins the settled "Rav 4: RAV4" fused-acronym line
+  "Sienna Le": "Sienna"  # LE is a Sienna equipment grade; us_fueleconomy carries only drivetrain splits under baseModel "Sienna" — https://www.fueleconomy.gov/feg/download.shtml
+  "Sienna Xle": "Sienna"  # XLE is a Sienna equipment grade — https://www.fueleconomy.gov/feg/download.shtml
+  "Solara": "Camry Solara"  # bare "Solara" is the Camry Solara — us_fueleconomy carries "Camry Solara" and "Camry Solara Convertible" and never a bare Solara — https://www.fueleconomy.gov/feg/download.shtml
+  "Starlet 1": "Starlet"  # bare displacement ("STARLET 1,3 DL") — NAMING.md §6
+  "Starlet DL": "Starlet"  # DL = De Luxe grade (styling.yml already pins DL as an acronym for exactly this class) — https://en.wikipedia.org/wiki/Toyota_Starlet
+  "Starlet GT Turbo": "Starlet"  # GT turbo grade of the EP82 Starlet — https://en.wikipedia.org/wiki/Toyota_Starlet
+  "Supra 3": "Supra"  # bare displacement ("SUPRA 3,0I TWIN TURBO") — NAMING.md §6
+  "Supra 3.0I Turbo": "Supra"  # displacement + forced induction — NAMING.md §6
+  "Supra A90FE": "Supra"  # A90 is the fifth-generation Supra chassis code — https://en.wikipedia.org/wiki/Toyota_Supra
+  "Supra Twin Turbo": "Supra"  # engine designation of the A80 Supra — NAMING.md §6
+  "Yaris Grmn": "Yaris"  # Yaris GRMN was a 400-unit limited edition of the XP130 Yaris, not a nameplate — https://en.wikipedia.org/wiki/Toyota_Yaris
+  "Yaris Ia": "Yaris"  # us_fueleconomy: model "Yaris iA" baseModel "Yaris" — https://www.fueleconomy.gov/feg/download.shtml
 
 Trabant:
   "601S": "601 S"                             # spelling variant of "601 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
