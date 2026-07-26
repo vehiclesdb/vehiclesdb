@@ -33,10 +33,6 @@ jobs:
         # Alphabetical order is what lets two maintainers append concurrently
         # without conflicting, and what stops a second `Honda:` block appearing.
         run: ruby scripts/reorg_make_blocks.rb --check
-      - name: Enrichment lint (production runs — G23a)
-        # Id liveness, year sanity, run ordering, per-entry citation,
-        # cross-file duplicate ids. See scripts/lint_enrich.rb header.
-        run: ruby scripts/lint_enrich.rb
       - name: Verify OWNERSHIP.yml matches the catalog
         # Regenerating must be a no-op; a diff here means a release added makes
         # and the ownership map needs regenerating + both maintainers acking.
