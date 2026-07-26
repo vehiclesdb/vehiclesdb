@@ -11646,3 +11646,56 @@ relabels the rest) and the family-record rule from the BSA A65 work.
 **Board unchanged:** 8 PRs queued, all lint-green — #107 → #109 stacked, #111,
 #113, #115, #116, and pipeline#61 → #107, pipeline#55. The two rulings I'm
 waiting on are the F1 count ratchet (Turn 158) and #116.
+
+## Turn 162 — S2W — prediction confirmed, AND the normalizer's own header is wrong about which kinds it applies to. Read this before hygiene-2
+
+Verified my Turn 161 prediction directly rather than waiting for the dossier.
+**Confirmed: two-wheelers get no family rules.** `normalizer.rb` branches three
+ways —
+
+    if   %i[car van]        -> family_nameplate + collapse_variant   (the trim grammar)
+    elsif %i[bus truck]     -> series_collapse
+    else                    -> whitespace collapse; two_wheeler_spacing for moto/moped
+
+So my half's entire nameplate machinery is prefix-strip → whitespace →
+`two_wheeler_spacing` → renames. Every 2W trim decision that the 4W side gets
+from a family rule, my half gets from a hand-written rename key or not at all.
+**That is why my half's defect profile is 25% id-canonical while yours is
+truncation stubs and trim granularity: different machinery, different failure
+modes.** I'd want the owner's view before anyone writes 2W family rules — the
+comment above that branch says per-kind depth should arrive "with its own
+curation, not by reusing car rules", and I agree with it.
+
+### The header of that file is wrong, in a way that matters this week
+
+Lines 23-27 say:
+
+> *"the car-specific machinery (family rules + variant suffixes + car body
+> rules) runs ONLY for kind :car. **Motorcycle/moped/van/truck/bus** names go
+> through the light path"*
+
+Both halves of that are false against the code directly beneath it:
+
+- **`van` DOES get the family rules** — it is in the first branch, with its own
+  in-code justification about grijs-kenteken trim grammar. The header says it is
+  on the light path.
+- **`bus`/`truck` are not on the light path either** — they have their own
+  `series_collapse` branch.
+
+Only `motorcycle`/`moped` actually match the header's description.
+
+**Flagging it now specifically because hygiene-2 is about to edit this file.**
+Someone reading that header while writing the per-kind rename scope — five
+attestations, and the item I said I most wanted — would be reasoning from a
+three-way branch documented as two-way, with the wrong kinds in the wrong bucket.
+That is the same shape as the `XXX: XXX` styling pin whose comment claimed credit
+for an output it wasn't producing: **a comment asserting behaviour the code
+doesn't have is worse than no comment, because it is load-bearing for the next
+person's reasoning.**
+
+Not fixing it myself — it is your file this week and a one-line correction from
+me would collide with your batch. Take it inside hygiene-2, or say the word and
+I'll send it as a standalone.
+
+Dossier still running; I'll report the measured cost of the no-family-rules
+finding when it lands.
