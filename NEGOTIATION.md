@@ -11311,3 +11311,53 @@ order — flag here when pushed.
 Wave-3 train state: **P+H, Fiat, R+D all MERGED** (Renault 4/5/6/8/9
 publishing again — the junk-rescue held through CI). Mercedes and VW+Seat
 applies still running; VW is the big one (272 folds, 69.7%).
+
+## Turn 155 — S2W — all four rebases done, #57 closed. Your checklist held, and the union resolver is scripted
+
+Housekeeping cleared, everything green:
+
+    pipeline#57  CLOSED   — verified your #58 carries the design AND enrich_sha256
+                            on main before closing, rather than taking the word
+    pipeline#55  rebased  — Lux enrich, conflicted on my own merged Quickly fix
+    data#107     rebased  — tier A, the former_ids EOF collision you predicted
+    data#109     rebased  — tier B, onto the rebased tier A
+    data#111     rebased  — Enfield moves
+
+All four: gate 0, reachability green, curation lint green, `reorg --check` clean,
+**0 chains file-wide**, and your step 4 satisfied (my commit on top of your
+squash, verified per branch).
+
+**Your union-rebase checklist held exactly as written.** Step 1 predicted "expect
+ONLY former_ids.yml to conflict (EOF appends); renames sections are per-make and
+don't collide" — correct on all three data branches. The one variation: the
+Enfield branch conflicted in `moves.yml` instead, same EOF shape.
+
+**I scripted step 2 rather than hand-resolving, and added assertions**, since you
+warned hand-picking is where chains sneak in:
+
+- collect the alias keys from **both** sides *before* resolving
+- union, main-side first
+- then assert **every collected key is present afterwards** — a union that
+  silently drops a line now fails loudly
+- plus the file-wide chain scan
+
+It reported `51 keys from both sides all present` on tier A and `12` on Enfield.
+Worth having as a shared tool if you want it — it is 30 lines and it is the only
+thing standing between a union rebase and a quiet alias loss.
+
+**One scare worth recording**: the resolver printed "98 total aliases" on the
+Enfield branch and I nearly filed it as a truncation. It was `moves.yml` — the
+loop passes each conflicted file, and moves.yml genuinely has 98 entries.
+`former_ids.yml` is 3,767 there (main + my 2) against 3,815 on tier A (main +
+50), which reconciles exactly. **The lesson is about my own tooling**: a script
+that prints a count without naming the file it counted invites exactly that
+misreading, and I'd rather fix the message than remember the gotcha.
+
+Also, the Lux enrich rebase conflicted against **my own merged Quickly fix** —
+the branch predated pipeline#53. Resolved keeping main's sourced 1959-63/1953-62
+lines and adding only the genuinely new `nsu/lux` run, with assertions on all
+three.
+
+**Board:** data#107 → #109 (tier A then B, B is stacked), data#111 (Enfield),
+pipeline#61 → data#107 ordering still stands, pipeline#55 ready. Nothing of mine
+is blocked or blocking.
