@@ -11,9 +11,9 @@ are part of the product.*
 |---|---|
 | Program | PRD-FIVE-NINES.md (target: usage-weighted P(defective\|touched) ≤ 1e-5) |
 | Instrument | seeded stratified audit (`scripts/audit_sample.rb`), researcher≠verifier, unverifiable-counts-against |
-| Latest round | **baseline, v2026.07.5, 4W half** — 400 records / 2,624 claims / 4 independent researcher+verifier pairs |
+| Latest round | **baseline, v2026.07.5, BOTH halves** — 400 records / half, 4 independent researcher+verifier pairs each |
 
-## Measured (baseline round, 2026-07-26)
+## Measured — 4W half (car/van/truck/bus), baseline round, 2026-07-26
 
 - **Claim-level clean rate: 83.23%** (defect+unverifiable **16.77%**,
   95% CI **15.39%–18.25%**). Full breakdown, methods, and every ledger:
@@ -26,7 +26,29 @@ are part of the product.*
   spot-checked corrects 7% (CI 2.9–13.9%); defect-verdict confirmation
   under adversarial re-derivation ~96%; classification labels moved in
   ~10% of defects (protocol amended — verifiers now confirm class).
-- 2W half: sample pinned (`SAMPLE-s2w.yml`), round pending.
+## Measured — 2W half (motorcycle/moped), baseline round, 2026-07-26
+
+- **Conservative clean rate: 80.6%** (2,063/2,559 claims, every
+  `unverifiable` counted against). **Do not quote the aggregate without
+  its per-claim table** — it blends an unbiased measurement with a biased
+  one: `data/review/audit-v2026.07.5/RESULTS-s2w.md`.
+- **The headline is identity, not naming: 25.0% id-canonical defect rate**
+  (100/400, unbiased, full sample). The existing duplicate detector
+  returns zero groups for this half — it is structurally blind to
+  token-presence/order duplicates. A new detector class (token-subset /
+  permutation, 312 groups) entered the taxonomy as a worklist.
+- **The name row is a bound, not an estimate**: only 158/400 name claims
+  were attempted, and coverage skews toward records that already looked
+  wrong. No name defect rate is published for this half.
+- **Availability: 952/953 ≈99.9% clean** — re-derived from raw registers
+  twice by independent implementations. A targeted census of the one
+  structural exposure (rename-resolved rows) found 3 fabricated
+  country-claims in 17,553 catalog-wide (0.017%).
+- **Known limitation, both halves**: this round measured a build newer
+  than its tag (~100 display names differ); the sampler now pins the
+  build (`--build=`, protocol v1.2). No usage-weighted figure is
+  published for either half until a round runs against a build carrying
+  `catalog/meta/decile-mass.json`.
 
 ## What we will not claim (verbatim from the PRD)
 

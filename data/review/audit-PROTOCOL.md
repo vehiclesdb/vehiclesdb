@@ -85,3 +85,28 @@ separately (it is the program's own error rate, §5.2).
 7. **Superseded passes use distinct keys** in verify files (the 4W round's
    corrected-in-place entries tripped the duplicate-key lint — YAML
    last-wins silently discards audit history).
+
+## v1.3 amendments (ruled NEGOTIATION Turn 137, from the 2W round's five proposals + one ledger case)
+
+8. **`unverifiable` sub-types, mandatorily**: `unverifiable/source-gap`
+   (two named failed routes, per rule 1 — a fact about the domain) or
+   `unverifiable/not-attempted` (a fact about the round's effort). Both
+   count against the conservative bound exactly as before — the aggregate
+   is unchanged — but RESULTS must print the split per claim type, and the
+   source-gap queue admits only `source-gap` rows. (The 2W round's name
+   row: 171 audited, 229 not-attempted, one number without this rule.)
+9. **Quote the relied-on sentence at write time.** An evidence line citing
+   a page carries the sentence it relies on, verbatim. Two batches in one
+   round cited pages that do not contain the claim.
+10. **Cited URLs must re-fetch at verification time.** A verdict whose
+    sole support fails to fetch demotes to `not-attempted` — it is not
+    evidence. (Six URLs failed as written in one batch; two were sole
+    support for defect verdicts and both verdicts fell.)
+11. **Filed debt does not excuse a published claim.** A DEBT.md entry
+    changes nothing for a consumer. Report the known-debt/novel split
+    against the same denominator; never exclude filed-debt records.
+12. **Verdict-note consistency**: a ledger may not record `canonical`
+    (or `correct`) while its own note documents contrary evidence — e.g.
+    a note stating the marque writes "BX 125" under a `canonical` verdict
+    for "BX125" voids the verdict. Lint spec in DEBT.md (grep-able:
+    verdict field vs note field contradiction classes).
