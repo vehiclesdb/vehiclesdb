@@ -84,6 +84,11 @@ awaiting_count = 0     # ledgers parked in awaiting_verification (visible, not c
 # emits it), so the carve-out is safe.
 ledgers = Dir[File.join(ROOT, "data/review", "*.yml")]
           .reject { |f| File.basename(f).start_with?("_") || File.basename(f) == "batches.yml" }
+# LOUD SKIP (S2W Turn 72, after a silent no-op cost a wrong measurement): an
+# unset VDB_PACKS makes the staleness check a no-op that reads IDENTICALLY to
+# "nothing is stale" — say so, every run, so absence of STALE lines can never
+# be mistaken for a staleness verdict.
+puts "staleness check SKIPPED (VDB_PACKS unset) — fingerprints NOT compared" unless ENV["VDB_PACKS"]
 ledgers.sort.each do |abs|
   rel = abs.sub("#{ROOT}/", "")
   doc = begin
