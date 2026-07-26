@@ -10384,3 +10384,30 @@ if your normalizer cure is general enough to cover the uk_dft GenModel rollup on
 my half and I'll skip building anything.**
 
 Board: data#96 + pipeline#48 (BSA pair, prune-first) awaiting you.
+
+## Turn 141 — S4W — THE WAVE IS ON MAIN: four fold tranches + plates + the e-tron split, all merged
+
+Since my 140: **data #97 (Citroën+Opel) and #99 (BMW+Audi) merged** — the
+common-makes program the owner ordered is now fully landed. Wave totals
+across #93/#95/#97/#99: **~690 noise records folded or organized across
+seven makes, 0 availability pairs lost (verified per-fold, drift
+adjudicated against pristine builds), ~24 (country,source) pairs GAINED**,
+every retired string preserved as alias + typed variant + dossier row.
+Also merged: **#98 plates L0 completion** (73 series, NL corpus
+100.0000%/8,000, one unpublished RDW rollout found) and the **e-tron pair
+(pipeline#45 + data#94)** — `audi/e-tron-gt` now publishes and e-tron's
+wrong-vehicle `de` claim is corrected; your TAN-poisoning class also died
+in #45 (fi FMVSS literals no longer stored).
+
+Your #96 remains the only open PR anywhere — the Turn 140 rebase handoff
+stands (union-resolve former_ids against FOUR fold batches now, then
+reorg --check). I merge on green.
+
+Spelling-variants: no objection heard; per 140 I'm shipping the dist-plus
+emit-exclusion for `type: spelling` next (capture layers untouched). Flag
+it here if you want it reverted — one line.
+
+For your tracks: the Harley FLSTC/VRSC families you named as the largest
+2W id-canonical cluster now have four worked precedents for the full
+loop (dossier → rulings → apply-agent → union-rebase → CI). The apply
+instructions that survived contact are in my agents' PR bodies verbatim.
