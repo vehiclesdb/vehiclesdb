@@ -1197,7 +1197,7 @@
 "car/alfa-romeo/gt1300junior": "car/alfa-romeo/gt-1300-junior"
 "car/alvis/tc-21": "car/alvis/tc21"
 "car/aston-martin/db-9": "car/aston-martin/db9"
-"car/audi/5000s": "car/audi/5000-s"
+"car/audi/5000s": "car/audi/5000" # FLATTENED 2026-07-26 (was -> car/audi/5000-s): 5000-s retires into the 5000 nameplate in the trim-fold batch at EOF, and a former_ids value may never also be a key (no chains)
 "car/audi/a-2": "car/audi/a2"
 "car/audi/a-3": "car/audi/a3"
 "car/audi/a-4": "car/audi/a4"
@@ -2316,10 +2316,10 @@
 "moped/honda/z50ak2": "moped/honda/z50a-k2" # "Z50AK2" -> "Z50A K2"
 "car/bmw/i-3": "car/bmw/i3" # "I 3" -> "i3"
 "car/bmw/z-3": "car/bmw/z3" # "Z 3" -> "Z3"
-"car/bmw/1-er-reihe": "car/bmw/1er-reihe" # "1 Er Reihe" -> "1er Reihe"
-"car/bmw/1erreihe": "car/bmw/1er-reihe" # "1ERREIHE" -> "1er Reihe"
-"car/bmw/serie3": "car/bmw/serie-3" # "SERIE3" -> "Serie 3"
-"car/bmw/activehybrid-7-l": "car/bmw/activehybrid-7l" # "Activehybrid 7 L" -> "ActiveHybrid 7L"
+"car/bmw/1-er-reihe": "car/bmw/1-series" # FLATTENED 2026-07-26 (was -> car/bmw/1er-reihe): 1er-reihe itself retires into 1-series in the trim-fold batch below, and a former_ids value may never also be a key (no chains) — inbound aliases of a retiring id point straight at the destination
+"car/bmw/1erreihe": "car/bmw/1-series" # FLATTENED 2026-07-26 (was -> car/bmw/1er-reihe): same flatten, same reason
+"car/bmw/serie3": "car/bmw/3-series" # FLATTENED 2026-07-26 (was -> car/bmw/serie-3): serie-3 retires into 3-series in the trim-fold batch below — no chains
+"car/bmw/activehybrid-7-l": "car/bmw/activehybrid-7" # FLATTENED 2026-07-26 (was -> car/bmw/activehybrid-7l): the 7L body variant retires into activehybrid-7 in the trim-fold batch below — no chains
 "car/bmw/30cs": "car/bmw/3-0cs" # "30CS" -> "3.0CS"
 "motorcycle/bmw/r-nine-t": "motorcycle/bmw/r-ninet" # "R Nine T" -> "R nineT"
 "motorcycle/bmw/r-nine-t-pure": "motorcycle/bmw/r-ninet-pure" # "R Nine T Pure" -> "R nineT Pure"
@@ -3477,3 +3477,53 @@
 "van/citroen/e-berlingo-van":                        "van/citroen/e-berlingo"
 "van/citroen/ak400":                                 "van/citroen/ak"
 "car/opel/ampera-ev":                                "car/opel/ampera-e"
+# 2026-07-26 — BMW+Audi trim-fold batch (wave-2 granularity dossier;
+# aux/research/trims-2026-07/dossier-bmw-audi.md in the pipeline repo).
+# Chain pre-flight run per this file's rules: the four inbound aliases of
+# retiring ids (1-er-reihe, 1erreihe, serie3, activehybrid-7-l) and
+# audi/5000s were FLATTENED in place above — no value below is also a key,
+# no key is live post-fold, every target is live (or minted by the same
+# change: m535i, m635csi, audi/5000).
+# BMW register group labels WITH the family digit -> the series:
+"car/bmw/1er-reihe":   "car/bmw/1-series"   # "1er Reihe" was itself a register family label (es,lu,nl ⊂ 1-series)
+"car/bmw/3-er-reihe":  "car/bmw/3-series"   # es,fi,lu,nl ⊂ 3-series
+"car/bmw/5-er-reihe":  "car/bmw/5-series"   # es,nl ⊂ 5-series
+"car/bmw/7-er-reihe":  "car/bmw/7-series"   # nl,ua ⊂ 7-series
+"car/bmw/serie-1":     "car/bmw/1-series"   # es,lu,nl ⊂ 1-series
+"car/bmw/serie-2":     "car/bmw/2-series"   # es,nl ⊂ 2-series
+"car/bmw/serie-3":     "car/bmw/3-series"   # es,nl ⊂ 3-series
+"car/bmw/serie-4":     "car/bmw/4-series"   # es,lu,nl ⊂ 4-series
+"car/bmw/serie-5":     "car/bmw/5-series"   # es,nl ⊂ 5-series
+"car/bmw/serie-6":     "car/bmw/6-series"   # es,nl ⊂ 6-series
+"car/bmw/serie-7":     "car/bmw/7-series"   # es,lu,nl ⊂ 7-series
+# BMW Performance-M trims -> their series; M535i/M635CSi badge closures:
+"car/bmw/m-135i":      "car/bmw/1-series"   # es,fi ⊂ 1-series
+"car/bmw/m-140i":      "car/bmw/1-series"   # fi,nl ⊂ 1-series
+"car/bmw/m-550d":      "car/bmw/5-series"   # fi,nl ⊂ 5-series
+"car/bmw/m-535":       "car/bmw/m535i"      # nl,nz = m535i (union of both aliased ids)
+"car/bmw/m-535-i":     "car/bmw/m535i"      # nl,nz = m535i
+"car/bmw/m-635-csi":   "car/bmw/m635csi"    # fi,nl = m635csi (KEEP-and-rename, badge closure)
+# BMW body/portfolio folds:
+"car/bmw/compact":     "car/bmw/3-series"   # fi,nl,nz ⊂ 3-series ("3 Series Compact" is BMW's own name)
+"car/bmw/xm-50e":      "car/bmw/xm"         # es,fi,nl,ua ⊂ xm
+"car/bmw/xm-label":    "car/bmw/xm"         # ca,es,fi,lu,nl,ua,us ⊂ xm
+"car/bmw/m":           "car/bmw/m-roadster" # ca,es,fi,gb,lu,nl,nz,us = m-roadster (618/674 veh are "M COUPE" strings)
+"car/bmw/activehybrid-7l": "car/bmw/activehybrid-7" # ca,nl,us -> activehybrid-7 GAINS ca (fi,nl,us before)
+# Audi pre-A/Q numeric-family trims -> their nameplates:
+"car/audi/100-cc":        "car/audi/100"    # fi,nl ⊂ 100
+"car/audi/200-turbo":     "car/audi/200"    # fi,nl,nz ⊂ 200
+"car/audi/80-gt":         "car/audi/80"     # fi,nl ⊂ 80
+"car/audi/80-s":          "car/audi/80"     # fi,lu,nl ⊂ 80
+"car/audi/81":            "car/audi/80"     # nl,ua ⊂ 80 (Typ 81 = the 80 B2 chassis code)
+"car/audi/5000-s":        "car/audi/5000"   # nl,nz,us = 5000 (union of both aliased ids; new US-name canonical, dossier U-4)
+"car/audi/5000-cs-turbo": "car/audi/5000"   # nl,us ⊂ 5000
+# Audi token-order inversions -> the correctly-ordered live sibling:
+"car/audi/avant-rs2":     "car/audi/rs2"    # fi,nz -> rs2 GAINS fi (gb,nl,nz before)
+"car/audi/avant-s6":      "car/audi/s6"     # fi,nl ⊂ s6
+"car/audi/quattro-rs4":   "car/audi/rs4"    # fi,nl ⊂ rs4
+"car/audi/coupe-gt":      "car/audi/coupe"  # fi,nl,us ⊂ coupe
+"car/audi/gt":            "car/audi/coupe"  # nl,nz ⊂ coupe
+"car/audi/cabriolet-2":   "car/audi/cabriolet" # fi,nl ⊂ cabriolet
+"car/audi/ur":            "car/audi/quattro"   # fi,nl ⊂ quattro
+# Audi e-tron GT trim rung -> the RS nameplate:
+"car/audi/rs-e-tron-gt-performance": "car/audi/rs-e-tron-gt" # fi,nl,us ⊂ rs-e-tron-gt
