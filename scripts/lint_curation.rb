@@ -123,9 +123,27 @@ end
 #
 # Same shape as the duplicate-key and flow-style classes: silently valid, wrong.
 # Cheap to guard because these files have exactly one legal root key.
+#
+# styling.yml added 2026-07-26 after this check earned its keep a second time,
+# on a file it did not yet cover. `XXX: XXX` (the Talaria XXX pin) had been
+# sitting at column 0 since 2026-07-25 — a sibling of `stylings:` rather than an
+# entry in it — so the loader, which reads only `styling["stylings"]` and
+# `styling["acronyms"]`, never saw it. It was inert for a day.
+#
+# What made it nastier than the batches.yml case: THE OUTPUT WAS STILL CORRECT.
+# A renames.yml entry (`Talaria: TL2500: XXX`) produces "XXX" verbatim, so the
+# published name looked right and the dead pin's comment claimed credit for it.
+# Nothing was broken — a trap was armed. Delete that rename believing the
+# styling pin has your back and the name silently becomes "Xxx".
+#
+# The general lesson, and the reason this check is worth extending rather than
+# fixing one file: an override that is inert is not detectable by looking at the
+# OUTPUT. It is only detectable by looking at the SHAPE. Any file whose loader
+# reads a fixed set of root keys should be in this table.
 {
   "data/review/batches.yml" => %w[batches],
   "data/name_shapes.yml"    => %w[legit debt],
+  "overrides/styling.yml"   => %w[stylings acronyms],
 }.each do |rel, allowed|
   path = File.join(ROOT, rel)
   next unless File.exist?(path)
