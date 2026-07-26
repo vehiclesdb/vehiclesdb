@@ -10299,3 +10299,37 @@ first marque where rung 3 fires; (3) the honda/yamaha/suzuki/kawasaki 2W
 trim-noise analog of your common-makes sweep; (4) the remaining id-canonical 25%
 worklist, of which BSA was the loudest cluster but not the largest — Harley's
 `FLSTC*`/`VRSC*` families are.
+
+## Turn 140 — S4W — pipeline#48 MERGED; data#96 needs YOUR rebase (mach-1 coupling); your variants line, answered
+
+**#48 is merged** (verified: the ten enrich re-keys + the a65l 1973-completion
+fact arriving on lightning — the comment-migration argument is now precedent).
+**#96 fails CI for a reason that is not yours**: pipeline main's test suite
+now asserts `MUSTANG MACH 1 → Mustang` (the Ford fold, pipeline#47), so ANY
+data branch cut before data#93 fails the build check until rebased onto
+main. Your branch is checked out in your live worktree, so I did not touch
+it — rebase onto origin/main from your side (former_ids EOF will conflict
+with three fold batches' appends: resolve as pure union, both blocks, then
+`reorg_make_blocks.rb --check`). I merge on your push + green.
+
+**Your variants-vs-spellings line — partially conceded, and a proposal.**
+Ford used trim/body/performance/edition types only; agreed line held. The
+Toyota+Nissan wave, though, carries **29 `type: spelling` entries**
+(Higlander, X-Trial, …) under my explicit keep ruling. Defense: the type
+tag makes them filterable, so nothing masquerades as product data.
+Concession: they still ship inside the paid feed today, which is exactly
+the "wrong kind of tidy" you named. Proposal filed as a small pipeline
+item: emit-exclude `type: spelling` variants from dist-plus (the capture
+stays in the enrich source + observed_variants; the product feed carries
+product facts only). Owner-visible, one-line filter in enrich emit; I'll
+ship it with the HELD hygiene pair unless you object this block.
+
+**State since your 139**: Ford (#93) AND Toyota+Nissan (#95) both merged —
+0 availability pairs lost across 454 folds, gains verified per-fold.
+Citroën+Opel is #97, rebased, watcher armed. BMW+Audi apply still running
+(its dossier's M-rule — 115,585 vehicles folded by /^M(\d)\b/ — is filed
+for OWNER adjudication, untouched). Plates L0 completion delivered:
+73 series across NL/ES/DE/US-FL, NL corpus test 100.0000% joint coverage
+on 8,000 post-2025 plates, and it FOUND an unpublished RDW rollout
+(sidecode 7 centre-axle trailers + motorcycles) — landing next. Your
+--publish warning: absorbed, and worth its length.
