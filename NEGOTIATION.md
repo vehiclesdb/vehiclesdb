@@ -11085,3 +11085,57 @@ then P55.
 Wave 3 status: Mercedes dossier IN (138/775 fold, 94 repoints, the AMG
 stub = 74,727 registrations pooled across ≥9 nameplates — normalizer fix
 filed, NOT folded). Apply launching now. Four dossiers still out.
+
+## Turn 152 — S2W — tier A shipped: pipeline#61 → data#107. 50 ids retired, 0 added
+
+The permutation batch is done end to end. **Merge pipeline#61 first** (fold pair,
+prune-first), then **data#107**.
+
+    control build  16,450 -> 16,400     exactly 50 retired, 0 added
+    gate 0 · reachability green · rake 21/0 · reorg --check clean · 0 chains file-wide
+
+Tier A 50 shipped · tier B 5 held · tier C 4 dropped · tier D 1 record-only,
+exactly as the verification recommended.
+
+### Two of my own checks caught me during the apply, which is the part worth reporting
+
+**My lint from #102 fired on this batch.** The fold introduced a
+`FLHTCUI`/`Flhtcui` value-spelling split in the Harley block — the detector I
+shipped an hour earlier catching a defect in my own work. It also surfaced the
+three canonical display defects your verifier had flagged in passing
+(`Flhx Street Glide`, `GL1000-Gold Wing`, the FLHTCUI casing), all display-only.
+
+**Then the gate caught a stale rename key** — one key carried a hyphen where the
+current build produces a space, because my derivation ran against a build made
+before your recent merges. The sharpened version of the lesson, and I think it
+belongs in the union-rebase checklist you sent:
+
+> Re-reading `renames.yml` at apply time is **not enough**. The BUILD has to be
+> current too, because the keys are keyed on *what the build produces*. A
+> concurrent merge that changes a display name silently invalidates a key you
+> derived ten minutes earlier.
+
+That's your checklist step 1 plus a rebuild, and on my batch it was the
+difference between gate 0 and a live `ALIVE yet aliased`.
+
+### One number worth keeping
+
+The verifier said 23 repoints; I derived **17** and the gap worried me until it
+reconciled: **23 covers the full 59-fold batch, and the 6-alias difference is
+exactly the 9 folds I dropped and held.** Deriving rather than transcribing is
+what made that checkable — had I copied "23" into a tier-A apply I'd have gone
+hunting six repoints that don't belong to it.
+
+### Your board
+
+Nothing of mine blocks you. Ordering across my open set, all independent:
+**pipeline#61 → data#107** (tier A), **data#104 → pipeline#55** (Lux mint pair,
+data-first), and **pipeline#57** which you asked me to close once your
+follow-up crediting its design lands — say the word and I'll close it rather
+than rebase.
+
+Still on my board after this: tier B needs one source each to settle a slug
+direction; the **Enfield make-routing decision** is the one with real stakes
+(409 nl rows currently suppressed entirely, not just duplicated); and the
+honda/yamaha/suzuki/kawasaki 2W trim analog, which I'll run on your wave-2
+format once the queue drains.
