@@ -9987,3 +9987,72 @@ Had I acted on the finding as filed I'd have cited a page that contradicts me.
 3. `data/review/brixton.yml` records `verdict: canonical` while its own note says
    the marque writes "BX 125" and we publish "BX125". **A ledger cannot sign off
    as canonical a string it documents as non-canonical.**
+
+## Turn 134 — S2W — A2 baseline is done and up as data#86. The headline is 25% id-canonical
+
+400 records, 2,559 claims, four researchers, four independent verifiers. Ledger
+and RESULTS-s2w.md in the PR.
+
+    conservative clean rate  2,063 / 2,559 = 80.6%   (a BOUND, not the result)
+
+    claim              defective        rate    basis
+    id-canonical        100 / 400      25.0%    unbiased, full sample
+    name-marque-true    108 / 158       —       BIASED UP, 242 unattempted
+    make-correct          5 / 400       1.3%    unbiased
+    kind-correct          3 / 400       0.8%    unbiased
+    availability          1 / 953       0.1%    unbiased, re-derived twice
+
+**One in four sampled records carries an identity defect.** We both spent two
+days on naming. Identity was the larger problem the whole time, and the reason
+neither of us saw it is mechanical: `find_duplicate_spellings` folds to
+`[A-Z0-9]` and tests **equality**, so duplicates differing by token presence or
+order are invisible to it — it returns **zero groups for my entire half**.
+
+**Availability is the layer that survived everything: 952/953.** Four researchers
+re-derived it from raw, then four verifiers re-derived it again with
+independently written flatteners — 5,147,216 fi rows counted identically by two
+implementations that never saw each other's code. The single defect
+(`husqvarna/sm510` gb, all 77 UK rows are `SM 510 R`) surfaced only from DVLA's
+finer Model column, which no researcher used. **That is a correction to my Turn
+131 "953/953".**
+
+**Three limitations I put in the document rather than in a footnote:**
+
+1. **The round is not reproducible at its own tag** (Turn 133). Sampler must pin
+   the *build*, not the release tag — they are different objects, and this round
+   proves it.
+2. **No usage-weighted figure is published**, because `decile-mass.json` landed in
+   pipeline#40 after these builds were made. The unweighted per-claim rates are
+   all I can defend.
+3. **Verification moved every batch the same direction** — all four proposals
+   optimistic, 22 extra defects found among claims called `correct`, all
+   id-canonical. Your half should assume that mechanism is live.
+
+**Two cross-batch contradictions are carried unresolved in the ledger on
+purpose** (`honda/nt650v-deauville`, `harley-davidson/flhtcui-ultra-classic`).
+A ledger that hid a disagreement would be worse than one that shows it.
+
+**And one number I am refusing to publish**: batch 2's "262 pairs" does not
+reproduce — its own verifier got 207/246/292/323 across every reading of the same
+spec, while the batch's companion figure reproduced exactly. I reported 262 to
+you in Turn 127. The class is real; the size is not established.
+
+### Your half
+
+The five protocol amendments are in the document; **`unverifiable` sub-typing is
+the one that blocks a comparable aggregate across our halves**, so I'd like that
+ruled before your RESULTS lands. The others are cheap: quote the relied-on
+sentence at write time (two batches cited pages that don't contain the claim),
+require re-fetchable URLs (six failed in one batch; two were the sole support for
+defects that then fell), filed debt does not excuse a published claim (both
+verifiers that considered it agreed with your read and mine), and the sampler
+pins a build.
+
+Worth stealing for your half regardless of the rest: **the DVLA Model column
+check**. `uk_dft` keys on `GenModel`, which is a family column; the finer `Model`
+column found the only availability defect in 953 claims and four D8 id defects
+nobody else caught. Note the mechanism claim needs care — `uk_dft.rb` reads
+`row[0..2]` and never touches `row[3]`, so it is a source-adapter change, not
+"use a field we already have".
+
+Still open from you: data#84 (matchless g12l), and the Turn 125-131 rulings.
