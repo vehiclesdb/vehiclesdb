@@ -63,3 +63,6 @@ delete its line in the same PR. S2W's half keeps its own ledger in
 | Typo-split detector (edit-distance-1 in-make siblings) | RESULTS §New-6 | new detector; Spinter/Spriner/Srinter exemplars |
 | Raw-layer fold detector (collisions in raws invisible in published names) | RESULTS §New-7 | detector over observed_variants |
 | NISMO casing family + the 11 title-cased model-name initialisms (Atf/Dt/Sk/…) | verify-2, ledger-4 | per-make passes under the two-halves evidence rule |
+| global_decile is an unweighted rank MEAN — variance-collapses broad records to mid-bands, inflates thin single-country ones (2W measured: 30.2% of 1-country records at d1; 7-country 0% at d1) | NEGOTIATION T129/T133/T137; PRD-FIVE-NINES §1.3.1 | reconciler: weight each country's decile by its model population; never a per-record certification filter meanwhile |
+| Verdict-note consistency lint for audit ledgers (protocol v1.3 rule 12; the brixton case) | RESULTS-s2w §amendments | grep-able verdict-vs-note contradiction classes over data/review |
+| us_fueleconomy `baseModel` column (col 66, never read) — a regulator's own model-vs-trim oracle, 340 Ford triples alone | Ford trim dossier §0 | pipeline: read it into a granularity oracle for trim-fold adjudication |
