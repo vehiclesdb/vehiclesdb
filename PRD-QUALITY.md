@@ -1146,12 +1146,18 @@ Honda/BMW/Ducati heritage pages) → marque registries/clubs (volvoclub.org.uk
 already precedent-cited in-repo) → period regulator documents. Wikipedia
 locates, never sources (CC-BY-SA — invariant).
 
-**Zero-marginal-cost capture**: the §7 review protocol ALREADY has researchers
-inside manufacturer/heritage pages verifying nameplates. Amend the researcher
-prompt: when the source in hand states production years, record
-`year_start`/`year_end` + citation in the batch notes (ledger `note:` or a
-sidecar proposal file) — capture is mandatory when the evidence is already
-open, dedicated year-research swarms come later for the remainder.
+**FULL capture (G26b, owner directive)**: the §7 researcher is already ON
+the page — capture EVERYTHING it states, structurally, into the PRIVATE
+repo (vehiclesdb-pipeline `enrich/<make>.yml`): production `runs:`,
+`links:` (model_url/maker page), `variants:` (the model lines the page
+lists), and make-level facts (`make/<id>`: founded/dissolved/country/
+parent/website). Verdicts and evidence citations stay in the PUBLIC
+ledger; the captured facts are the paid layer's inventory. Prose-only
+capture (facts established in comments and discarded) is the failure mode
+this rule exists to kill — it burned real research in the KMZ/Saxonette/
+B-002 passes. Wikipedia remains locator-only in BOTH layers (CC-BY-SA);
+Wikidata (CC0) is the sanctioned bulk-structured source (G26c, pipeline
+program); manufacturer pages are fact sources with per-entry citations.
 
 **Not in the open layer**: valuations, survival counts, auction data,
 collector-market signals — depth-layer material (§14.2, PRD-DEPTH).
