@@ -156,6 +156,61 @@ end
         "Re-indent it under the entry it belongs to; do not add it to the allow-list."
 end
 
+# ── 1a-ter. a make block may not spell one token two ways in its VALUES ──────
+#
+# THE CLASS, and it is the fifth distinct silent failure this file has produced
+# (after duplicate keys, empty blocks, flow style and heredoc indentation):
+# a rename VALUE that contradicts another value in the same make block.
+#
+# Measured instance, fixed in the same commit as this check: Kawasaki carried
+#   "Ninja ZX-6R Abs": Ninja Zx-6R     <- lowercase x
+#   Zx-6R:             ZX-6R           <- 31 lines below, asserting the caps form
+# and styling.yml pins ZX. One make block, one designation, two spellings.
+#
+# WHY NOTHING ELSE CATCHES IT. A rename value is only a display CANDIDATE — the
+# reconciler picks among candidates by row count. The correct form outvoted this
+# one, so the published name was right BY LUCK; had the ABS rows been the
+# majority, the wrong display would have shipped. So:
+#   * find_casing_contradictions.rb reads PUBLISHED names — sees nothing
+#   * the id-contract gate reads ids — sees nothing
+#   * test_override_key_reachability reads KEYS — the key is perfectly
+#     reachable; it is the VALUE that is wrong
+# A wrong value is a landmine, not a defect, and only reading the file against
+# itself finds it.
+#
+# WHAT I DELIBERATELY DID NOT LINT, because I measured it and it does not hold:
+# the sibling idea — "a value whose token contradicts a styling.yml acronym pin"
+# — produces 4 hits catalog-wide and ALL FOUR ARE FALSE POSITIVES: Mercedes
+# "170 Sb" / "220 Sb", where the lowercase series letter is the marque's own
+# convention (cf. 220 SEb) while SB is pinned for aprilia/ariel. That is the
+# LE/Le-Mans collision again — a global pin cannot know a marque's lowercase
+# convention — so it is a worklist at best and is not implemented here.
+#
+# Tokens INCLUDE digit-bearing forms. My first pass excluded them and therefore
+# missed the very defect that motivated the check ("Zx-6R" has a digit).
+renames_path = File.join(ROOT, "overrides/models/renames.yml")
+if File.exist?(renames_path)
+  (YAML.safe_load_file(renames_path, permitted_classes: [], aliases: false) || {}).each do |mk, entries|
+    next unless entries.is_a?(Hash)
+    forms = {}
+    entries.each_value do |v|
+      next unless v.is_a?(String)
+      v.split(%r{[\s/]+}).each do |tok|
+        next unless tok.match?(/\A[A-Za-z][A-Za-z0-9-]{1,8}\z/)
+        (forms[tok.upcase] ||= Set.new) << tok
+      end
+    end
+    forms.each do |upper, spellings|
+      next if spellings.size < 2
+      fail! "overrides/models/renames.yml: make block #{mk.inspect} spells #{upper.inspect} " \
+            "#{spellings.size} different ways in its VALUES — #{spellings.to_a.sort.inspect}. " \
+            "One of them is wrong, and because a rename value is only a display CANDIDATE the " \
+            "published name may still look correct (whichever spelling has more rows wins). " \
+            "Pick the marque's own rendering and use it in every value in this block."
+    end
+  end
+end
+
 # ── 1b. block style only: no inline flow mappings ────────────────────────────
 #
 # `Honda: { Honda: null }   # comment` is valid YAML and parses identically to a
