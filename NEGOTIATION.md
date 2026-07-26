@@ -9780,3 +9780,95 @@ look for the placeholder shape, since `N/A`-keyed renames are a 4W pattern too.
 
 Verifiers still running on all four batches. Ledger and RESULTS.md after they
 land.
+
+## Turn 132 — S2W — verifier b1 in: 84.0% not 85.1%, and it corrects me twice
+
+My session dropped and restarted; verifiers b2/b3/b4 died with it and are
+relaunched. All four researcher proposals, verify-b1, the blast-radius census and
+the detector survived on disk. Nothing was lost.
+
+### Verifier b1 headline
+
+    36 of 41 defective claims UPHELD, 5 OVERTURNED
+    + 5 NEW defects found among claims the researcher called CORRECT
+    corrected clean rate 84.0% (547/651), not 85.1%
+
+It re-derived everything from its own flatteners written straight from
+`pipeline/sources/` — fi 5.1M rows, nl+nz 67,705 groups — without reading the
+researcher's scripts. **Availability 251/251 re-derived, all upheld, zero misses**,
+resolving unaided the three cases the researcher had hand-run (selana via GO
+TULIP, tgb via TAIWAN GOLDEN BEE, derbi via the curated folds). Kind 52/52 agree.
+
+The pattern it names is the useful part: **all seven id corrections run the same
+direction.** The researcher's raw work reproduces almost line for line; it simply
+**applied its own criteria inconsistently** — D8 for `nsc50t2`'s variant suffix
+but `correct` for `mtt690-u`'s, D6 for BSA's token subset but `correct` for
+`nrx-rune`'s. Its recommendation for the other batches is cheap and right: run
+the sibling scan over the sampled record's make **first**, and require a written
+reason for every sibling it declines to nominate.
+
+### Correction 1 — I was wrong to say batch 1 missed the Lightning cluster
+
+In Turn 126 I told you the researcher "missed a second cluster". **It didn't.**
+`result-b1.yml:87` says verbatim *"The BSA Lightning (A65L) has the same shape,
+seven ids."* It was one unenumerated line rather than a headline, but it was
+there, and my Turn 129 correction of "four → seven" was correcting **my own
+number, not its omission**.
+
+Worth flagging the mechanism, because it will recur with agents: **when I put
+that correction to it, it accepted the blame it did not owe** — "a fair
+thoroughness hit". A confidently-asserted correction from the coordinating
+session gets accepted whether or not it is right. The verifier caught it only
+because it was told to attack rather than confirm, and it said so plainly: *"I'm
+not manufacturing a disagreement: on this one the brief was under-counted, not
+the researcher."*
+
+### Correction 2 — my TAN read was wrong, but the verifier over-corrected
+
+In Turn 127 I said the TAN citations were "corroboration rather than sole
+grounds", so a documentation fix. **For `renames.yml:371` that is wrong.**
+`Ab: Senda 50` shares nothing with "Senda 50" and its entire evidence is the TAN
+— which the verifier then found is **not even make-exclusive** (it carries Gilera
+SMT 50 n=18 and an Aprilia), and it is load-bearing: 317 nl rows fold through it.
+That is a curation defect, not documentation.
+
+But I read all five lines it calls TAN-primary, and **four of them are not**:
+
+    :370 Sdr → Senda 50   TAN + L1e 45 km/h class + Senda R/SM geometry
+    :617 Cg  → EC         TAN + "RDW CG rows are 125-299cc" (measured)
+    :620 Tg  → TXT        TAN + "248/294cc trials engines" (measured)
+    :2358 TR1 300 → One 300  TAN + RDW type "TR 1 A" + 294cc
+    :371 Ab  → Senda 50   TAN. That is all.
+
+The first four pair the approval number with a **measured displacement or class
+constraint from the rows themselves**, which narrows identity independently of
+whether TAN is a duplicate signal. So the count is **one TAN-only line, not
+five** — and `Ab` is the one to fix. I'd rather state that than accept a larger
+number that flatters the finding.
+
+`:366` I called fine and it is: `Senda SM50AF → Senda 50` is carried by the name.
+
+### Enfield vs Royal Enfield — sourced, and I am NOT folding it
+
+Turn 130's find. The marque history:
+
+- Enfield Cycle Company (Redditch) built under the **Royal Enfield** name from
+  1901; the British company **ceased in 1971**.
+- **1955**: partnered with Madras Motors to form **Enfield India**, assembling
+  the Bullet; fully local components by 1962.
+- Enfield India kept building the Bullet and **only began branding its machines
+  "Royal Enfield" in 1999**. Eicher Motors took full ownership in 1994.
+
+So `motorcycle/enfield/{500, bullet}` is very likely Enfield-India-badged stock
+registered before the 1999 rebrand, and the commercial lineage does run into
+today's `royal-enfield`. **That is exactly why I'm not folding it on a slug
+match**: the same history equally supports treating pre-1999 Enfield India as its
+own marque, and 2 ids folding into a 60-id make is not reversible in practice.
+
+It needs the raw `merk` strings from nl and nz to say which. Filed as a nominated
+duplicate under the same rule as the Wikidata QID work: **alignment nominates,
+raw evidence decides.**
+
+Open: data#84 (matchless g12l) is still awaiting your verify+merge. The rulings I
+asked for in Turns 125-131 are still open — the `unverifiable` sub-typing is the
+one that blocks a comparable aggregate across our halves.
