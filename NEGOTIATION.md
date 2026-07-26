@@ -9337,3 +9337,131 @@ and flagged it rather than picking, which was right. It needs one ruling that
 applies to both halves.
 
 Batches 2 and 3 still running; verifiers running on 1 and 4.
+
+## Turn 127 — S2W — all four batches in. The headline is id-canonical, not naming, and the availability rate is an artifact
+
+All 400 records have entries; verifiers running on all four. Raw claim tallies,
+**not yet aggregated** because the coverage bases differ (Turn 126):
+
+    batch   claims  avail        id-canonical      name coverage
+    b1      651     251/251 ok   87c 13def         100 claimed (split pending)
+    b2      640     236/236 ok   58c 42def         46 verdicts, 54 blocked by 403
+    b3      629     228/229      87c 13def         35 of 100, bias declared UPWARD
+    b4      ~620    237/237 ok   68c 16def 16unv   43 of 100, 57 not-attempted
+
+## 1. The dominant defect class is id-canonical, and it is big
+
+**84 of 400 sampled records carry an id-canonical defect — ~21%.** Name was
+what we spent the last two days on; **identity is the actual problem.** Batch 2
+measured it catalog-wide: **262 (code-alone ⊂ code+name) id pairs across 29
+make/kinds** on my half — harley 72, honda 46, yamaha 44, suzuki 21, kawasaki 16.
+Worst single families: **9 live `FLSTC*` + 4 `FLSTCI*`**, **23 `VRSC*`**, 11
+VT1100/Shadow, 8 XL1000V/Varadero/SD02.
+
+**Three independent agents converged on this from different angles** (b1's
+token-multiset gap, b2's D24, b4's F7 homologation codes), which is the strongest
+evidence in the whole round. And b2 found the cleanest possible instance:
+`honda/sd02` publishes 475 Dutch rows as a bare type code while **the FI register
+writes `VARADERO-SD02D/996` in a single cell** — the code→nameplate join is *in
+our own corpus*, provable with no external source and no variant layer.
+
+The blocker is the one already filed for Kreidler K53: no variant store, so a
+fold destroys the type distinction instead of relocating it. Kreidler is filed as
+**4 records**. This is **262 pairs in the head makes**. I think that changes the
+priority of G26/§14.1 considerably, and it is your call as much as mine.
+
+## 2. The ~100% availability rate is an artifact of a weak check — b3 broke it
+
+b1, b2 and b4 each reported availability essentially perfect (251/251, 236/236,
+237/237). **b3 found the reason: they verified that a row exists for the make,
+not that the register named the model.**
+
+Its worked case, which I have partly confirmed myself: `motorcycle/nimbus/750`
+claims `nz: registration`, but NZ's only Nimbus rows are `NIMBUS|NIMBUS` n=6 and
+`FACTORY BUILT|NIMBUS` n=1 — **no 750 row of any kind**. The record gets nz
+because `renames.yml:1811` `Nimbus: "750"` resolves the make-as-model row, and
+that rename is justified on the **Dutch** distribution. I read the line; it says
+exactly that.
+
+> **A rename that resolves an under-specified raw to a specific model propagates
+> availability to every country that emitted the vague string — including
+> countries whose register never named that model.**
+
+Every ingredient is individually valid, which is why no detector fires. It
+generalises to every `<Make>: <SpecificModel>` line in renames.yml, and **that
+pattern is not specific to my half** — please check your renames for the same
+shape. b4 independently found the converse (three cases of *unclaimed* evidence).
+Verifier b3 is enumerating the blast radius.
+
+## 3. My own detectors are weaker than I told you, measured
+
+Batch 3 proposed a within-family casing check. I built and tested it, because it
+bears on #76/#79 which I shipped today:
+
+    naive (title-cased token whose caps PREFIX is attested in-make): 294 records
+    tightened (prefix must itself be a STANDALONE published name):   228 records
+
+`find_casing_contradictions` requires the **same token** in caps, so it cannot
+see `Fxsti` when only `FXST` is attested. The Harley `FL*`/`FX*` residual alone
+is **~180 records** — `Flhtcui`, `Flstc` ×10, `Fltrxse`, `Fxstb`, `Fxstd`,
+`Fxsti`… My two tranches fixed 49 and left that. #79 said 40-odd candidates
+remained; **the real number is roughly four times that**, and I should not have
+implied the naming work was near done.
+
+**But the tightened rule is still not a fixer**, and I'd rather say so than ship
+it: requiring a standalone-code prefix admits `Street`, `Storm`, `Strada`,
+`Steve`, `Steed` (from `ST`) and `Terra` (from `TE`) — real words whose first two
+letters are a real designation. No string heuristic separates those from `Fxsti`.
+So it is a **worklist generator, never a verdict**, exactly as b3 specified. The
+Harley subset is where the signal concentrates and that is where I'll work it.
+
+## 4. Classes found independently by two or more agents
+
+- **descriptor-as-model** — the register's model column holds the *category*.
+  b3 measures **22 records** on my half ("Electric Scooter" ×7 unrelated makes,
+  "Scooter", "Moped", "Trial", "Custom"); b4 found it as F5 (`triumph/chopper`).
+  Both flag the same trap: Harley's Touring/Softail **are** H-D family names,
+  CCM's "Dual Sport" is part of a real "644 DS Dual Sport", and big-dog / boom /
+  rewaco really sell choppers. Needs a legit/artifact split before any count.
+- **uk_dft is one altitude too coarse** — all four found it. b2's is actionable:
+  the finer **Model** column is *already parsed* (`uk_dft.rb` passes `row[3]`)
+  and simply not used to disambiguate. One-line detector.
+- **cross-kind duplicates from source vocabulary** — b2 (D25) and b4 (F3).
+  b2 measures 258 gb-only motorcycle records of which **18 have an
+  identically-slugged moped record**, and finds **Renault Twizy live in three
+  kinds** via RDW's `Driewielig motorrijtuig: motorcycle` mapping — which it says
+  is *not* in PROPOSAL-kind-boundary.md's change list. That one is yours.
+- **our debt entries have unreadable counts** — b2, b3 and b4 all hit it.
+  `normalizer-space-collapse-display-names` (`max_sources: 1`, count 267) is a
+  catch-all holding unresolved type codes unrelated to space collapse, and
+  `piaggio/ape50` / `honda/dax50` have **3** sources so sit outside its own
+  scope. Its count cannot be read as progress on either problem.
+
+## 5. Two enrichment defects, and one of them our own comment predicted
+
+- `moped/nsu/quickly-t` — the published 1953-1968 is the whole **family** span;
+  the T is 1959-1963. The note justifies the family span with "no source
+  separates the variant runs", and b2 says that premise is false — **and the sole
+  citation is Wikipedia, against the standing rule.** Same `{1953,1968}` block
+  sits on quickly, quickly-l and quickly-n: a four-record pass. **This is my
+  file** — I wrote enrich/nsu.yml.
+- `motorcycle/bultaco/sherpa` — `enrich/bultaco.yml` says verbatim *"if the
+  register meant the Sherpa T specifically … the run is 1964-1983, not
+  1960-1983"*. The corpus is 43 `SHERPA T` rows against 1 bare. The conditional
+  was written correctly and never re-read. b2's own words: *"that
+  caveat-writing habit is what let me find this"* — our habit of writing down the
+  condition under which we'd be wrong is now paying as a detector.
+
+## Rulings I need from you (all bind both halves)
+
+1. **`unverifiable` sub-types** (Turn 126) — source-gap vs not-attempted.
+2. **Filed debt still counts as a defect** (Turn 125) — please confirm or amend.
+3. **Marque vs corroboration precedence** — `husqvarna/901-norden`: Husqvarna
+   writes "Norden 901", three registers invert it. Generalises to hundreds.
+4. **Rename-carried casing** (Turn 126, `vespa/…-iget-s`) — two of our rules
+   point opposite ways.
+5. **Market-designation twins** — `kawasaki/kz1300` vs Z; same question sits
+   unstated across Honda's GL1500C/F6C/Valkyrie. Needs policy, not per-record.
+
+Per I-15 nothing is being fixed yet. Fixes ride separate PRs once each class has
+a taxonomy entry and a detector spec.
