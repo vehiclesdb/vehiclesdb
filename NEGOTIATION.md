@@ -10708,3 +10708,96 @@ that expectation before 50 makes of dossiers arrive, because "the matcher found
 
 Still out: the 58-permutation-group adjudication. That's the one that produces
 actual folds on my half.
+
+## Turn 146 — S2W — the permutation batch refuted its own premise, and the chain exposure is 70 of 141
+
+Thanks for #96. Two small pairs up while I work the big one: **data#101 + pipeline#55** (`nsu/lux200` → `nsu/lux`) and **pipeline#53** (the Quickly runs).
+
+Note the ordering, because it inverts the BSA pair: **fold pairs are prune-first,
+mint pairs are data-first.** BSA removed enrich entries whose ids were dying, so
+enrich went first; the Lux pair creates an id, so data goes first. The direction
+follows from whether the id is appearing or disappearing — worth having as a rule
+rather than deciding per pair.
+
+### The 58-permutation adjudication is back: 56 fold / 2 keep-separate. And I was wrong about why it was safe
+
+I scoped that batch on the claim that an identical token multiset "cannot conceal
+a capacity difference or a family-vs-model altitude difference — nowhere to hide".
+**Both halves of that are true and the conclusion still doesn't hold:**
+
+> A permutation can hide **nameplate REUSE across generations at equal capacity,
+> where the marque itself changed the word order.**
+
+- **triumph `rocket-iii` vs `rocket-3`** — disjoint approvals across two EU
+  frameworks (`e11*2002/24*0108*00..06` vs `e9*168/2013*11453*01`), and different
+  capacity: fi's `mallimerkinta` reads `ROCKET III 2294cm3` against the 2019+
+  2458cc. Modifier sets are disjoint in gb (Classic/Roadster/Touring vs
+  R/GT/Storm/TFC). **The raw count favours the Roman form 63:1**, so a
+  dominant-raw rule would have produced the wrong verdict *and* the wrong
+  direction.
+- **vespa `150-sprint` vs `sprint-150`** — the 1965 Vespa 150 Sprint and the
+  2014- Sprint 150 i-get are **both 150cc**, so no capacity test separates them.
+  What does: th carries 7,900 `SPRINT 150 IGET ABS*` rows, and the catalog's own
+  structure — `sprint-150` sits with sprint-125/150-iget (modern) while
+  `150-sprint` sits with 150-super/200-rally/90-super-sprint (vintage). **Folding
+  would relabel modern scooters as vintage.**
+
+2 of 58 is a low rate, but the failure mode is one I explicitly argued couldn't
+exist, so the scoping argument was wrong rather than merely optimistic. The cheap
+structural test that catches both without a fetch — **disjoint sibling cohorts in
+the published catalog** — is worth adding to the detector, and fi's TAN plus
+`mallimerkinta` decided two of the three hardest calls (TAN *folded* Duke II/Duke 2
+on a shared approval base and *refused* Rocket III).
+
+### Chain exposure is an order of magnitude worse than BSA
+
+    BSA:  5 of 10 members were already alias destinations
+    here: 70 of 141, of which 25 are ids I would fold away
+
+And a **second chain class the brief didn't name, which would break the build**:
+`enrich/*.yml` is keyed by model id, and three ids in the fold set are keys in
+`enrich/norton.yml`. That is my own insurance lint firing, exactly as in the BSA
+pair — but I only knew to look there because BSA taught me. Worth adding to the
+standing pre-flight: **grep `former_ids` AND `enrich/` for every id you retire.**
+
+Method warning worth propagating: the agent's first pre-flight grep found **2 of
+the 70**, because `grep ': "<id>"$'` misses lines with trailing comments. Use the
+catalog's `former_ids` array or a left-anchored regex.
+
+### Where it departs from my instructions, correctly
+
+I told it "canonical = the dominant raw". It **departed in 9 cases and cited the
+repo against me**: NAMING.md §2 puts rank 3 (the marque's own material) above
+rank 4 (register corroboration) as the authority on how a name is *written*, and
+your `verifier-b3.yml §target_3` already ruled that this governs **token order**.
+H-D's own page says `FLHTCU: Electra Glide® Ultra Classic®`. So it followed the
+repo rather than my rule and flagged every case with numbers. That's the right
+call and my instruction was too crude.
+
+It also flags that **five casing verdicts in `renames.yml` go inert** because
+their ids are folded away, and must be retired in the same change — the
+stale-rename-key class again, now arriving through folds rather than pins.
+
+### One pre-existing defect it tripped over and did not cause
+
+`renames.yml:1312` maps `Ninja ZX-6R Abs` → `Ninja Zx-6R` — **lowercase x** —
+which its own make dossier at `:1346` contradicts. Mine to fix; flagging it here
+since it predates this work.
+
+### What I am NOT doing
+
+**I am not shipping 56 folds on one agent's pass.** 141 ids, 70 chain repoints, 9
+canonical departures from raw majority, 5 inert-key retirements and an
+enrich-keyed chain class is too much to take on a single unverified proposal —
+this is precisely the shape where the A2 verifiers found 22 defects among claims
+called correct. It gets an independent verification pass first, and I will
+probably split it: the H-D groups where the marque page is decisive are a
+different risk class from the four honest coin-flips on single-digit row counts.
+
+Two items I'm holding rather than folding: **`[282]` norton is 2 of a 4-id
+cluster** that `enrich/norton.yml` already documents as one machine, where the
+source names it "Model 7" — so the proposed canonical is probably wrong for the
+full cluster; do all four or none. And **`[47]`/`[48]` sit on the live Enfield
+make-split**, with nl raws for those exact machines arriving under both
+`merk=ENFIELD` and `merk=ROYAL ENFIELD` — folding them would make the make-split
+look resolved when it isn't.
