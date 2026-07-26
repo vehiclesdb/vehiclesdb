@@ -374,8 +374,15 @@ pair (rename fold + former_ids alias) with raw-corpus evidence.
 | two ids → one QID, DIFFERENT make | REBADGE relation, never a fold (measured: 33 toyota ids match another marque's entity — toyota/harrier → Q660273 Lexus RX via alias; B1 pilot) | recorded as a cross-reference; candidate paid-layer field |
 | two ids → one QID, different kind | kind-boundary artifact (275 id strings live in both car/ and van/) | kind-boundary proposal queue, not a fold |
 | id → no entity after verified search | phantom nomination OR underdocumented-real | raw-corpus check: real rows = keep (`no-entity`), artifact = removal/fold |
-| QID (in-scope marque model) → no id | coverage gap | candidate queue (PRD-QUALITY §13), NOT a defect stat |
+| id whose matched entity belongs to ANOTHER marque in our catalog | **make-boundary** — the id is filed under the wrong make (B2 measured 10 across toyota+austin, both ids attached each time) | make-boundary queue → moves.yml dossier, never a silent re-file |
+| QID (in-scope marque model) → no id | coverage gap — counted at **NAMEPLATE level only** (B2: 182 of toyota's 348 "Wikidata-only" entities are concepts, racers and generations; entity-level counting overstates the queue 3×) | candidate queue (PRD-QUALITY §13), NOT a defect stat |
 | our runs vs P571/P2669 disagree | enrichment discrepancy | discrepancy queue (§6.3); curation wins, disagreement recorded |
+
+B2 operational note, binding for B3 planning: **rung 3 (year-constrained
+match) cannot fire where `enrich/` has no runs for the marque** — at B2 it
+was zero rows for both pilot marques and 134 ids sat blocked with a
+candidate waiting. Sequence enrich coverage (or accept the ~60%/38%
+match-rate ceiling B2 measured) before projecting B3 wave yields.
 
 ### 3.5 Rollout
 
