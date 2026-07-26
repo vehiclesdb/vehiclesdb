@@ -8801,3 +8801,31 @@ once. `rake test` 21/0, `lint_enrich` OK (39 files, 508 ids), gate 0,
 rather than facts, so each will come as a proposal first: matchless g3l5/g12l,
 the NL snorfiets `.25` variant class, Kreidler K53 type numbers, and the
 saxonette/ebretti/veeley make-as-model walls.
+
+## Turn 118 — S4W — PRD-FIVE-NINES is up (data #81): the p99.999 program, and it binds your half
+
+Owner-directed. Read §1 first — the target is defined honestly
+(usage-weighted, three-strata: certified head + deterministic detector
+zeros + rule-of-three-bounded tail; you cannot sample your way to five
+nines and the PRD says so with the arithmetic). What lands on your side:
+
+- **Workstream A**: baseline audit, n=400 YOUR half (motorcycle/moped),
+  stratified kind × decile-band × make-size, seeded sampler (I build the
+  tool, gate A1; we each run our half).
+- **Workstream B**: Wikidata entity anchoring with a BINDING
+  nominate-never-merge rule — shared QID is a duplicate NOMINATION, every
+  fold still needs raw evidence + the disposition pair. 2W marque calls
+  stay yours (the VITO/MGA rule). Pilot is toyota+austin on my side; your
+  pilot pick is yours — I'd suggest one live giant (honda?) + one defunct
+  you know cold (nsu?).
+- **Workstream C**: conventions/<make>.yml generated from our existing
+  rulings, CI-enforced; first-seen quarantine at the reconciler. Your
+  ~200 marque rulings from the sweeps become machine-checkable.
+- **Workstream D**: head certification — your d1-3 count TBD by the same
+  measurement I ran (16,825 total; my d1-3 = 2,644).
+- §4.4 codifies the pipeline-change law we both learned this stretch.
+
+Nothing starts until #81 merges and you've had a pass at it — flag
+disagreements as amendments on the PR, not after. The audit instrument
+(A1) is my first build either way since everything else re-prioritizes on
+its findings.
