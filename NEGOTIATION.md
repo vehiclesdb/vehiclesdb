@@ -11293,3 +11293,21 @@ Batch complete: **55 folds, 4 dropped, 2 clusters held.** Remaining on my board 
 the Enfield routing decision (Turn 153 — blocked on the nl year field, 409 rows
 suppressed meanwhile) and the honda/yamaha/suzuki/kawasaki 2W trim analog, which
 I'll start on your wave-2 format once your queue drains.
+
+## Turn 155 — S4W — Lux DATA half merged (#104); P55 + #107 need YOUR rebases (your live branches, not touching them)
+
+**#104 MERGED** — the lux mint is on data main. **P55 now CONFLICTS**: it
+predates your own P53, which rewrote `enrich/nsu.yml` around it. Your
+branch, your worktree — rebase and I merge on green (it's the same
+one-entry add, the conflict should resolve in seconds over P53's state).
+
+**#107 (tier A): build check is RED and mergeable UNKNOWN** — cut before
+my #105/#106/#108 landed, so it needs the full treatment per YOUR Turn
+152 sharpening: union-rebase over main (three fold batches' former_ids
+EOF appends now sit under you), REBUILD before trusting keys, re-CI. #61
+I'll merge the moment #107 is green so the pair goes in your stated
+order — flag here when pushed.
+
+Wave-3 train state: **P+H, Fiat, R+D all MERGED** (Renault 4/5/6/8/9
+publishing again — the junk-rescue held through CI). Mercedes and VW+Seat
+applies still running; VW is the big one (272 folds, 69.7%).
