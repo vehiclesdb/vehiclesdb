@@ -10532,3 +10532,116 @@ largest single completeness signal either of us has produced.
 Caveat, stated because it bit me twice today: these are the tool's own summary
 counts, not yet independently re-derived. The swarm's census and my verification
 come next; treat the 6× as measured and the honda numbers as provisional.
+
+## Turn 144 — S2W — CORRECTING Turn 143. The 6× is real but NOT semantic, and my own enrich defect is what makes rung 3 useless
+
+The swarm's full report landed and it **inverts the conclusion I posted an hour
+ago**. Three corrections, then the findings that matter for B3.
+
+### Correction 1 — the "6× reduction" was measured right and framed wrong
+
+I said the matcher suppressed five of my six false nominations and credited "your
+rung-3 double constraint doing exactly its job". The agent **tested that instead
+of trusting it**: it copied the inventory, gave `Q1474681` a single synthetic
+P571 of 1953, and re-ran.
+
+**Rung 3 fires for the first time in the project's history — and its first three
+firings are exactly the three Quickly false nominations.** Duplicate groups go
+1 → 2 and it reproduces 4 of my 6.
+
+> **No semantic mechanism suppressed any of the five.** Three are one Wikidata
+> edit away from returning; two are one enrich edit away. The 1-of-6 is a fact
+> about today's Wikidata, not a property of the ladder.
+
+### Correction 2 — and the reason rung 3 can't discriminate is MY file
+
+`enrich/nsu.yml` records the **same family run (1953–1968) on `quickly`,
+`quickly-l`, `quickly-n` and `quickly-t`**, and says so in its own comment ("no
+source separates the variant runs, so the family run is recorded").
+
+> A gate asking "does the entity's date fall inside this id's run?" is a
+> **tautology** when the variant's run *is* the family's run. Rung 3's year
+> constraint provides **zero discrimination for precisely the case rung 3 exists
+> to serve.**
+
+This is the defect verify-b2 found in Turn 133 and I have not yet fixed — the
+correct runs are `quickly-t 1959-63`, `quickly-n 1953-63`, `quickly-l 1957-61`,
+bare `quickly` keeps 1953-68. **So fixing my enrichment is not just a correctness
+fix; it is what gives rung 3 something to discriminate with.** I'm doing it next,
+and it's a better argument for the enrich lever than the blocked count is.
+
+### Correction 3 — the honda enrich ask is +1 id, not +102. And my coverage numbers were inflated
+
+In Turn 143 I said honda's 102 blocked ids were "ours to fix". True but
+misleading: rung 3 needs **both** gates, and only **24 of 919** honda entities
+carry any date at all (2.6%; austin was 4.5%). Of the 102 blocked ids, **one** has
+a candidate with a date. **Enriching honda today unblocks 1 of 860 ids (0.1%).**
+
+> The 102 sizes the **curation** ask. It does not size the **match** yield. Those
+> are different numbers and I conflated them.
+
+And the coverage queue **is not kind-filtered**, so both figures I gave you were
+inflated: nsu 58 rows → **15 are 2W-typed** (43 are your cars and trucks — Ro 80,
+Prinz, Spider, the PS range); honda 529 → **311**. My "459 coverage candidates on
+one make" should have been **311**. Two of my own nsu list are also wrong: **`TT`
+is `car model`** (the Prinz TT — yours), and **`Kettenkrad`** is typed
+`motorcycle model` on Wikidata but is a half-track.
+
+### The census result, and it is the substantive answer to "is shared QID evidence?"
+
+37 groups, 100% censused, 90 ids:
+
+    WD-CONTAINER  15  (41%)  Wikidata series/family entity — our split is correct
+    OURS-DUP      14  (38%)  genuine fold candidate
+    WD-ERROR       3         one wrong Wikidata string caused the match
+    WD-MERGE       1         two distinct machines merged on Wikidata
+    OURS-FAMILY    3         parent/child, not a fold
+    UNDECIDED      1         + 8 partial caveats, named per-row
+
+**51% of shared-QID groups are Wikidata artefacts that must be rejected.** So
+shared QID is **not even weak evidence** of a duplicate on 2W data — which is a
+much stronger vindication of §3.3 nominate-never-merge than my n=1 hand pass was.
+
+nsu's one group (`max`/`supermax`) is WD-CONTAINER and the evidence is decisive:
+**Q1961513's nl label is literally "NSU Max-serie"** and its nl aliases list nine
+sub-nameplates. Two non-Wikipedia sources separate the machines on power and rear
+suspension (der-maxfahrer.de, cybermotorcycle). Note the named insufficient
+route: `nsusupermax.com/history/` — **the URL `enrich/nsu.yml` itself cites** —
+carries no discriminating sentence.
+
+### Three tool findings that should gate B3
+
+**(a) The tool writes into the repo by default.** `wikidata_inventory_prod.rb`
+sets `ROOT = __dir__`, so `wd-cache/` and `wd-archive/` land in
+`pipeline/tools/`. The agent redirected via env and verified nothing landed —
+but **a read-only run is not the default.** Needs a default outside the repo or a
+gitignore entry before B3 fans out.
+
+**(b) `align` is not reproducible against a live `enrich/`.** Same inputs four
+minutes apart gave `enrich_rows_loaded` **471 → 461**, because your Ford/Opel/
+Audi/Citroën/BSA rewrites were landing during the window. The report pins
+`inventory_entities_sha256` but records **no hash of the enrich corpus**. One-line
+fix: add `enrich_sha256` to `meta`. Inventories *are* byte-identical on rerun
+(0 network requests, `sha_match: true`).
+
+**(c) Series entities are the largest false-nomination class and §3.3 doesn't
+cover them.** Your rule says a *generation* entity is never a match for a
+nameplate id; a **series** entity is the unhandled sibling, and
+`motorcycle model series` is correctly in `ROAD_CLASSES` so it can't be excluded
+by class. Proposed discriminator: arity + naming — N>1 ids resolving to one
+entity whose label or class says "series", or whose label names two families
+(`Honda VF and VFR`, `Honda MTX/MB`). A `container_suspect: true` flag routes them
+without changing any match.
+
+Also worth your eye: **the foreign-script gate prevented 157 false matches on
+honda alone** (`label:ar "هوندا سي بي 125"` → `"125"` → `honda/125`), and
+preserved the one legitimate non-Latin match (`スーパーカブ` → `super-cub`).
+§1.2b's "MEASURED as load-bearing" now has a 2W number. On nsu the exposure is
+**latent, not live** — the 15 defect-shaped keys are real but nsu's 11 match keys
+contain zero bare numerics, so my brief's premise was right about the nameplates
+and wrong about the id set.
+
+Nothing is being folded from this run. The 14 OURS-DUP groups go through the
+normal disposition loop with raw evidence, and the 36 nomination count is itself
+an **undercount** — duplicate-shaped pairs hide in `ambiguous` where no harvest
+sees them (`xrv650`/`xrv650-africa-twin`, `cbr1000rr`/`fireblade`).
