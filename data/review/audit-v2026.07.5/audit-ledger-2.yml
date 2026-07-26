@@ -1,0 +1,1649 @@
+# VehiclesDB five-nines baseline audit — gate A2 researcher ledger
+#
+# AUDIT ONLY. Nothing in this file was written into any git repo, and no defect
+# named here was fixed. Every finding is a claim-level verdict with the evidence
+# that produced it. Per PRD-QUALITY invariant I-15 and the audit protocol,
+# new-class findings are FLAGGED with evidence and a detector sketch, never
+# swept.
+#
+# Researcher != verifier (I-11): every verdict below must be re-derived by an
+# independent verifier before this ledger merges.
+
+slice: 2
+researcher: opus-audit-2
+tag: v2026.07.5
+audited_artifact: /Users/javi/GitHub/.vdb-worktrees/s4w-data/catalog/car/models.json (VERSION 2026.07.5, manifest generated_at 2026-07-26T05:28:12Z, file mtime 2026-07-26 06:29:09)
+audited_at: 2026-07-26
+
+sources_reached:
+  nl_rdw: "cache/nl_rdw_personenauto.json + _inrichting.json (91,910 merk|model rows), AND live https://opendata.rdw.nl/resource/m9d7-ebf2.json (CC0) for FAW, GAZ, MCC, MERKUR spot-confirmations"
+  nz_nzta: "cache/nz_passenger-car-van_*.json (17,128 MAKE|MODEL rows) — NOTE this dataset pools cars and vans, so it cannot adjudicate a car-vs-van kind question on its own"
+  fi_traficom: "cache/fi_traficom_register.zip -> TieliikenneAvoinData_31_03_2026.csv, 2,557,593 rows streamed; fields 1/26/27/30 (ajoneuvoluokka, merkkiSelvakielinen, mallimerkinta, kaupallinenNimi)"
+  es_dgt: "cache/es_dgt_202604/05/06.txt, fixed-width (make = cols 18-47, model = cols 48-69); 22,212 distinct make|model pairs. NOTE this is a monthly REGISTRATION FLOW, not a stock register — historic models appear only when re-registered or imported, and several classics in this slice do appear"
+  lu_snca: "cache/lu_delta_202604/05/06.xml (LIBMRQ/TYPCOM), 6,533 distinct pairs"
+  ua_mvs: "cache/ua_reestr_current.zip -> reestrtz02.07.2026.csv (BRAND/MODEL/KIND), 18,234 distinct triples. NOTE the make column is CYRILLIC for post-Soviet marques"
+  uk_dft: "cache/uk_veh0120_uk.csv, 98,704 distinct BodyType|Make|GenModel|Model rows — the BodyType column is what makes GB usable for kind adjudication"
+  ie_cso: "cache/ie_tem20.csv (325 distinct 'Make and Model' strings)"
+  my_jpj: "cache/my_cars_2025.csv + my_cars_2026.csv (748 distinct maker|model|type)"
+  de_kba_fz10: "cache/de_fz10_202606.xlsx -> xl/sharedStrings.xml, reconstructed as 400 Marke|Modellreihe pairs by walking the '<MAKE> ZUSAMMEN' block structure"
+  us_fueleconomy: "cache/us_vehicles.csv, 26,221 distinct make|model|year|VClass rows (VClass is what makes US usable for kind adjudication)"
+  ca_nrcan: "cache/ca_*fuel-consumption-ratings*.csv + BEV/PHEV files, 20,009 distinct Make|Model|Year rows"
+
+method:
+  - "Every one of the 301 availability claims was checked against its own named source, by building a per-source make|model index and classifying each match as EXACT (folded model string equals the catalog name), PREFIX (catalog name is a prefix, i.e. the source adds a drive/body/wheel qualifier) or token-subset."
+  - "id-canonical was checked three ways: (a) all 3,102 sibling records under this slice's 50 makes were pulled and compared by fold key, by first token and by containment; (b) cross-make candidates were pulled explicitly (abarth, daewoo, smart, hongqi, ssangyong, suzuki, mitsubishi); (c) the catalog's own published xrefs.tan approval numbers were compared between candidate pairs — this decided four cases on its own and cleared one."
+  - "kind was checked against the source's own class word where the source has one: uk_dft BodyType, us_fueleconomy VClass, nl_rdw inrichting, ua_mvs KIND, fi_traficom ajoneuvoluokka."
+  - "name was checked against a marque source per record, fetched not assumed. Wikipedia article text and, where reachable, the manufacturer's own site (ford.com only via web.archive.org; EPA's fueleconomy.gov API used to prove which strings are certification artifacts rather than nameplates)."
+  - "The override layer (renames/former_ids/moves/removals/drop/styling) was read for every finding so that already-known defects are reported as known rather than as new."
+SUMMARY:
+  records_audited: 100
+  claims_total: 701          # 100 x (id, name, make, kind) + 301 availability entries
+  verdicts:
+    correct: 619
+    defective: 80
+    unverifiable: 2
+  clean_rate: "88.30%  (619/701; unverifiable counted AGAINST, per protocol)"
+
+  per_claim_type:
+    id:           { total: 100, correct: 59,  defective: 40, unverifiable: 1 }
+    name:         { total: 100, correct: 71,  defective: 29, unverifiable: 0 }
+    make:         { total: 100, correct: 94,  defective: 6,  unverifiable: 0 }
+    kind:         { total: 100, correct: 95,  defective: 5,  unverifiable: 0 }
+    availability: { total: 301, correct: 300, defective: 0,  unverifiable: 1 }
+
+  defects_by_taxonomy_class:   # a defect naming two classes is counted under its first
+    D6  (duplicate spelling, same make+kind):        21
+    D8  (wrong altitude — trim/body/engine as model): 18
+    D7  (non-canonical form — casing/spacing/accent): 16
+    D11 (wrong make — approval holder):                6
+    D10 (wrong kind):                                  5
+    D9  (registry/homologation code as model):         5
+    D5  (embedded make/brand prefix):                  3
+    "cross-make duplicate (no single class fits — see FLAG 1)": 3
+    D13 (temporal/merge cell):                         2
+    D4  (make-as-model):                               1
+
+  headline: >-
+    Availability is the strongest dimension in this slice: 300 of 301
+    country-level claims verified against the named source, with one honest
+    unverifiable and ZERO defects. Every failure is a NAMING or IDENTITY
+    failure. 40 of 100 records share their vehicle with another live id, and
+    that single number carries most of the loss: drop the id dimension and the
+    remaining 601 claims are 93.2% clean (560/601). The id failures are not
+    random — 16 of them are duplicate pairs that the duplicate-spellings detector
+    cannot see BY CONSTRUCTION (FLAG 1), 4 more are cross-make pairs outside its
+    per-make scope, and only ONE was a pair the existing detector should already
+    have caught.
+
+  defect_list:
+    # id-canonical (40)
+    - "car/faw/e-hs9              id   D6 + cross-make   — car/faw/ehs9 AND car/hongqi/e-hs9 are the same car (shared TAN family e13*2018/858*00350)"
+    - "car/faw/ehs9               id   D6                — fold-equal to car/faw/e-hs9; already queued in renames+former_ids"
+    - "car/fiat/500-abarth        id   cross-make        — car/abarth/500 is the same 312-series car"
+    - "car/fiat/eura-mobil-sport  id   D6/D8             — car/fiat/eura-mobil is the same coachbuilder string"
+    - "car/fiat/fiorino-qubo      id   D6                — car/fiat/qubo shares the EXACT TAN extension e3*2001/116*0271*09"
+    - "car/fiat/nuova-500         id   D6                — car/fiat/500-nuova, same words transposed"
+    - "car/fisker/ocean-extreme-one id D13/D6            — a slash-merged two-trim cell; car/fisker/ocean and /ocean-one live"
+    - "car/ford/18                id   D6                — car/ford/model-18"
+    - "car/ford/a-roadster        id   D6/D8             — car/ford/model-a (+ a/a-model/roadster)"
+    - "car/ford/bronco-black-diamond id D8               — trim series; car/ford/bronco live"
+    - "car/ford/e150-van-ffv      id   D8                — car/ford/e150 and /e150-van live"
+    - "car/ford/explorer-tremor   id   D8                — trim; car/ford/explorer live"
+    - "car/ford/galaxie-500-sunliner id D6               — car/ford/galaxie-sunliner"
+    - "car/ford/model-t           id   D6                — car/ford/t (fi row 'T model ... 2896cm3' is the Model T engine)"
+    - "car/ford/mustang-hardtop   id   D8                — body style; car/ford/mustang live"
+    - "car/genesis/gv60-performance id D8                — grade; car/genesis/gv60 live"
+    - "car/geo/tracker-van        id   D6/D8             — car/geo/tracker holds EPA's 'Tracker Convertible' rows"
+    - "car/gm-daewoo/matiz        id   cross-make        — car/daewoo/matiz; identical fi type code 0M11CD/234 under both makes"
+    - "car/hyundai/elantra-wagon  id   D8                — wagon body; car/hyundai/elantra live"
+    - "car/hyundai/pony-gls       id   D8                — trim; car/hyundai/pony live"
+    - "car/hyundai/tucson-ix35    id   D6                — car/hyundai/ix35 shares THREE exact TAN extensions; queued"
+    - "car/jaguar/f-pace-30t      id   D8                — output designation; car/jaguar/f-pace live"
+    - "car/jaguar/f-type-p450     id   D8                — powertrain designation; car/jaguar/f-type live"
+    - "car/jaguar/xj42            id   D6/D9             — collects 'XJ 4.2' displacement strings already held by xj6/xj8"
+    - "car/kia/niro-fe            id   D8                — trim grade; car/kia/niro live"
+    - "car/kia/sedona-sx          id   D8                — trim grade; car/kia/sedona live"
+    - "car/lancia/delta-hf-integrale id D6               — car/lancia/delta-hf-intergrale (a TYPO published as a record) + delta-integrale"
+    - "car/mazda/cx-70-sc         id   D8                — PHEV trim; car/mazda/cx-70 live"
+    - "car/mcc/smart              id   cross-make        — car/smart/{fortwo,city,coupe,cabrio,mcc}; shared approval family e1*98/14*0080"
+    - "car/mg/b-gt                id   D6                — car/mg/mgb-gt is the same MGB GT"
+    - "car/morris/1000-traveller  id   D6                — car/morris/minor-1000-traveller"
+    - "car/morris/mini-cooper     id   D6                — car/morris/cooper"
+    - "car/nissan/maxima-qx       id   D6                — car/nissan/maxima; shared approval family e1*98/14*0136"
+    - "car/nissan/xterra-v6       id   D8                — engine; car/nissan/xterra live"
+    - "car/nissan/z-nismo         id   D8                — grade; car/nissan/z live"
+    - "car/oldsmobile/cutlass-cruiser-wagon id D6/D8     — car/oldsmobile/cutlass-cruiser"
+    - "car/peugeot/604-sl         id   D8                — launch trim; car/peugeot/604 live"
+    - "car/plymouth/valiant-scamp id   D6                — car/plymouth/scamp (disambiguated by engine size, 5190 vs 5211 cc)"
+    - "car/renault/scenic         id   D6                — car/renault/meganescenic is the fused gen-I twin"
+    - "car/saab/9000-turbo        id   D8                — engine designation; car/saab/9000 live"
+    # name-marque-true (29)
+    - "car/dodge/wc52             name D7   — marque/US-Army designation is 'WC-52'"
+    - "car/faw/ehs9               name D7   — Hongqi renders it 'E-HS9'"
+    - "car/faw/hongqi-ehs7        name D5   — marque token 'Hongqi' embedded in the model string (the EHS7 part is CORRECT unhyphenated)"
+    - "car/fiat/eura-mobil-sport  name D5   — 'Eura Mobil' is a motorhome coachbuilder brand, not a Fiat nameplate"
+    - "car/fiat/fiorino-qubo      name D6   — two distinct Fiat nameplates concatenated by the register"
+    - "car/fiat/nuova-500-giardiniera name D7 — Fiat's designation is '500 Giardiniera'; 'Nuova' belongs to the saloon"
+    - "car/fisker/ocean-extreme-one name D13+D7 — merged cell, and 'One' lower-cased"
+    - "car/ford/18                name D7   — Ford's designation is 'Model 18'"
+    - "car/ford/a-roadster        name D8   — 'roadster' is one of the Model A's body styles"
+    - "car/ford/e150-van-ffv      name D9/D7 — EPA certification string; Ford's own name is 'E-150', and FFV is all-caps"
+    - "car/ford/mustang-hardtop   name D8   — 'Hardtop' is a GENERIC Ford body label, not a nameplate or trim"
+    - "car/gaz/2401               name D7   — the marque hyphenates: 'GAZ-24-01'"
+    - "car/geo/tracker-van        name D9   — 'Van' is EPA's class word; Geo called the body a hardtop"
+    - "car/hyundai/tucson-ix35    name D7   — Hyundai's official casing is lowercase 'ix35' (styling.yml says so too)"
+    - "car/jaguar/f-pace-30t      name D7   — Jaguar and BOTH sources render it lowercase '30t'"
+    - "car/jaguar/mark-8          name D7   — Jaguar's designation is Roman: 'Mark VIII'"
+    - "car/jaguar/xj42            name D9   — not a Jaguar nameplate; XJ41/XJ42 were cancelled project codes, and the rows are '4.2' displacements"
+    - "car/kia/sedona-sx          name D7   — both sources render 'SX'"
+    - "car/lamborghini/aventador-countach name D9/D5 — the marque's name is 'Countach LPI 800-4'"
+    - "car/lamborghini/aventador-sian-roadster name D5/D7 — the marque's name is 'Sián Roadster' (acute accent, no Aventador)"
+    - "car/lancia/delta-hf-integrale name D7 — Lancia writes 'Delta HF integrale': HF UP, integrale DOWN — both tokens wrong"
+    - "car/maxus/mifa-9           name D7   — the maker's own site renders 'MIFA 9'"
+    - "car/mazda/cx-70-sc         name D7   — Mazda and both sources render 'SC'"
+    - "car/mcc/smart              name D4/D5 — 'Smart' is the MARQUE sitting in the model column"
+    - "car/mg/b-gt                name D7   — MG's rendering is 'MGB GT'"
+    - "car/morris/1000-traveller  name D7   — Morris's name is 'Minor 1000 Traveller'"
+    - "car/nissan/maxima-qx       name D7   — Nissan Europe renders 'Maxima QX'"
+    - "car/nissan/z-nismo         name D7   — Nissan renders 'Z NISMO'"
+    - "car/oldsmobile/cutlass-cruiser-wagon name D9 — the Cutlass Cruiser IS the wagon; 'Wagon' is redundant"
+    # make-correct (6)
+    - "car/faw/e-hs9              make D11  — the marque is Hongqi; fi_traficom itself files a row under merk=Hongqi"
+    - "car/faw/ehs9               make D11  — same"
+    - "car/faw/hongqi-ehs7        make D11  — same; the hongqi make already exists as a move target"
+    - "car/fiat/500-abarth        make D11  — Abarth for the EU rows (Fiat IS correct for ca/us — remedy is a split, not a merge)"
+    - "car/gm-daewoo/matiz        make D11/D12 — 'GM Daewoo' is the corporate entity; the marque is Daewoo"
+    - "car/mcc/smart              make D11  — MCC is the manufacturing JV; Smart is the marque"
+    # kind-correct (5)
+    - "car/fiat/eura-mobil-sport  kind D10  — BOTH NL rows are inrichting=kampeerwagen, the project's own camper test"
+    - "car/ford/e150-van-ffv      kind D10  — EPA class 'Vans, Cargo Type'"
+    - "car/hummer/h3t             kind D10  — EPA class 'Standard Pickup Trucks 4WD'"
+    - "car/ldv/v80                kind D10  — GB BodyType is 10 LGV / 6 bus / 1 car, and van+bus records already exist"
+    - "car/ram/1500-classic       kind D10  — EPA class 'Standard Pickup Trucks'; truck/ram/1500 already exists"
+
+  unverifiable_list:
+    - "car/mg/magna  availability.nz  — the only NZ evidence is a single row 'MG | MAGNA' n=1, in a register whose MAGNA population is overwhelmingly Mitsubishi (a genuinely unrelated nameplate, en.wikipedia MG_Magna vs Mitsubishi_Magna). A mis-keyed make cannot be excluded from register data alone, and this record has only two sources at n=1 each."
+    - "car/honda/grace  id  — the Grace is the JDM name of the City sedan (en.wikipedia Honda_Grace redirects to Honda City: 'The City is offered and sold as Honda Grace in Japan starting from December 2014'), so car/honda/city may denote the same vehicle. But car/honda/city spans several City generations across five countries, NZTA carries both 'GRACE' (n=1888) and 'CITY' (n=983) with no model-year field, and neither record has an approval number — so unlike car/nissan/maxima-qx (settled by a shared approval family) this overlap cannot be settled from the sources reached. A separate JDM-badge record is also defensible curation (the kgm/ssangyong precedent). Needs a disposition, not a guess."
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # FLAGS — found, not fixed, not extrapolated (invariant I-15)
+  # ══════════════════════════════════════════════════════════════════════════
+
+  FLAG_1_detector_blind_spot_token_difference_duplicates:
+    severity: "highest-value finding in this slice — it explains 21 of the 40 id defects"
+    status: "NOT a new taxonomy class. It is a COVERAGE GAP in D6's detector, which the taxonomy attributes to find_duplicate_spellings.rb."
+    the_gap: >-
+      scripts/find_duplicate_spellings.rb defines a collision in its own header
+      as "two or more records under one make+kind whose names are identical once
+      case and punctuation are removed". That definition is blind, by
+      construction, to three duplicate shapes that are common in this data:
+      (a) pairs differing by a WHOLE TOKEN, (b) pairs differing by token ORDER,
+      (c) pairs differing by a TYPO. It is also per-make, so cross-make pairs
+      are out of scope entirely.
+    measured_in_this_slice_of_100:
+      within_make_token_difference: 14
+      within_make_word_order: 1
+      within_make_typo: 1
+      within_make_fold_equal_ie_ALREADY_DETECTABLE: 1
+      cross_make: 4
+    instances_token_difference:
+      - "car/mg/b-gt 'B GT'  vs  car/mg/mgb-gt 'Mgb GT'      (fold BGT vs MGBGT)"
+      - "car/morris/1000-traveller  vs  car/morris/minor-1000-traveller"
+      - "car/morris/mini-cooper  vs  car/morris/cooper"
+      - "car/ford/18 '18'  vs  car/ford/model-18 'Model 18'"
+      - "car/ford/model-t 'Model T'  vs  car/ford/t 'T'"
+      - "car/ford/a-roadster  vs  car/ford/model-a"
+      - "car/ford/galaxie-500-sunliner  vs  car/ford/galaxie-sunliner"
+      - "car/fiat/fiorino-qubo  vs  car/fiat/qubo"
+      - "car/oldsmobile/cutlass-cruiser-wagon  vs  car/oldsmobile/cutlass-cruiser"
+      - "car/plymouth/valiant-scamp  vs  car/plymouth/scamp"
+      - "car/nissan/maxima-qx  vs  car/nissan/maxima"
+      - "car/geo/tracker-van  vs  car/geo/tracker"
+      - "car/renault/scenic  vs  car/renault/meganescenic  (fused form)"
+      - "car/hyundai/tucson-ix35  vs  car/hyundai/ix35   [ALREADY QUEUED in the override layer]"
+    possible_further_instance_left_open:
+      - "car/honda/grace  vs  car/honda/city — the same market-name shape (Grace is the JDM City sedan), recorded UNVERIFIABLE above because no approval number or model year exists on either side to prove the generational overlap. A token-difference detector would not find this one either, since the two names share no token at all; market-name aliases need the marque dossier, not a string heuristic."
+    instances_word_order:
+      - "car/fiat/nuova-500 'Nuova 500'  vs  car/fiat/500-nuova '500 Nuova'"
+    instances_typo:
+      - "car/lancia/delta-hf-integrale  vs  car/lancia/delta-hf-intergrale ('Intergrale' — a transposition published as its own record)"
+    instances_cross_make:
+      - "car/faw/e-hs9  vs  car/hongqi/e-hs9"
+      - "car/fiat/500-abarth  vs  car/abarth/500"
+      - "car/gm-daewoo/matiz  vs  car/daewoo/matiz"
+      - "car/mcc/smart  vs  car/smart/{fortwo,city,coupe,cabrio,mcc}"
+    proof_that_the_curation_layer_knows_and_still_publishes_both: >-
+      overrides/models/renames.yml, MG block, contains a rename group folding
+      "B G T"/"B.gt"/"B. GT"/"Bgt" into "B GT" with the comment
+      'Bgt: B GT  # register shorthand for the MGB GT', and a few lines away a
+      second group folding "Mgb GT" into "MGB GT". So the project has written
+      down, in the same file, that these are the same car — and still ships two
+      canonical records, because nothing compares the two groups.
+    detector_sketch_proposed_not_built:
+      - "Within make+kind: build a key from the folded name MINUS (i) the make's own tokens and their fusions, and (ii) a small family-word list (Model, Minor, Mini, Nuova...). Compare records on the SORTED token multiset of that key. That catches (a) and (b) in one pass."
+      - "Add an edit-distance-1 comparison on the existing fold key to catch (c) — 'DELTAHFINTERGRALE' vs 'DELTAHFINTEGRALE' is a single transposition."
+      - "Report as CANDIDATES with volumes, exactly as the current script does; the 10.4 skew test then decides the canonical. Note the skew test is INCONCLUSIVE for car/ford/18 (5:2 in NL, 3:3 in NZ), so the marque must decide there."
+    expected_false_positives_to_design_against:
+      - "car/eagle/summit vs car/eagle/summit-wagon — genuinely different vehicles (Mirage vs RVR/Expo LRV). A token-difference detector WILL propose this pair; the disposition is 'not a duplicate'."
+      - "car/kgm/actyon vs car/ssangyong/actyon — same nameplate, different generations across a corporate rename. Cleared here by approval framework (2001/116 vs 2018/858)."
+
+  FLAG_2_xrefs_tan_is_an_unused_duplicate_oracle:
+    severity: "high — it is free, already published, and it discriminates in BOTH directions"
+    finding: >-
+      Four of this slice's duplicate findings were settled by an exact or
+      same-family type-approval number that the catalog ALREADY PUBLISHES in
+      xrefs.tan, with no name heuristic involved at all. The same field also
+      CLEARED a suspected duplicate. Nothing in the detector suite uses it.
+    positives:
+      - "car/fiat/fiorino-qubo e3*2001/116*0271*09  ==  car/fiat/qubo e3*2001/116*0271*09   (exact extension match)"
+      - "car/nissan/maxima-qx e1*98/14*0136*00  vs  car/nissan/maxima e1*98/14*0136*03      (same family)"
+      - "car/gm-daewoo/matiz e4*2001/116*0028*18  vs  car/daewoo/matiz e4*2001/116*0028*15  (same family, cross-make)"
+      - "car/faw/e-hs9 e13*2018/858*00350*00  vs  car/hongqi/e-hs9 e13*2018/858*00350*01    (same family, cross-make)"
+      - "car/hyundai/tucson-ix35 shares THREE exact extensions with car/hyundai/ix35: e11*2007/46*0104*00, e11*2007/46*0192*02, e11*2007/46*0192*03"
+      - "car/mcc/smart's evidence sits in family e1*98/14*0080, shared by car/smart/fortwo (*04,*15,*18,*19,*20,*23), car/smart/city (*07) and car/smart/mcc (*12,*13)"
+    negative_control:
+      - "car/kgm/actyon e6*2018/858*00325*05-09  vs  car/ssangyong/actyon e4*2001/116*0115*00 — DIFFERENT frameworks, correctly NOT a duplicate. An oracle that only ever said 'merge' would be useless; this one says 'don't'."
+    caveat: "TAN coverage is partial (many classic records carry no xrefs at all), so this is a high-precision, low-recall oracle — a complement to name heuristics, not a replacement."
+
+  FLAG_3_uniformly_wrong_casing_is_invisible_to_the_casing_detector:
+    severity: "medium — accounts for 6 of the 16 D7 name defects here"
+    the_gap: >-
+      scripts/find_casing_contradictions.rb states its own question precisely:
+      "does one make spell the same token both ways?" That is a
+      self-contradiction test, so it cannot see a token that a make spells
+      WRONGLY BUT CONSISTENTLY. The catalog-wide alternative
+      (find_published_name_defects.rb) asks "is this token in caps somewhere?",
+      whose output is candidates needing judgement.
+    measured_catalog_wide_16825_published_names:
+      - "HF  — published by exactly one make (lancia) and ONLY as 'Hf'. No make anywhere publishes 'HF'."
+      - "QX  — only nissan, only as 'Qx'."
+      - "MIFA — only maxus, only as 'Mifa'."
+      - "NISMO — only nissan, only as 'Nismo'."
+      - "SX  — published as 'Sx' by datsun, fiat, kia, suzuki, wk-bikes; by NO make as 'SX'."
+      - "SC  — 'Sc' by alvis, bentley, de-soto, jaguar, kawasaki, mazda, porsche, rover, saturn, suzuki; 'SC' only by edwards and lexus (different records), so the mazda CX-70 SC case is not reachable per-make either."
+    note: "This is exactly why the audit fetches the marque instead of asking the catalog. Every one of these was decided from a marque or source rendering, not from internal consistency."
+
+  FLAG_4_release_freshness_the_tagged_catalog_is_older_than_the_tagged_overrides:
+    severity: "medium, and it distorts audit results — it is why an auditor finds defects the maintainers have already fixed"
+    finding: >-
+      At tag v2026.07.5, 23 ids are published in catalog/ AND simultaneously
+      listed as keys in overrides/models/former_ids.yml, i.e. the override layer
+      declares them retired while the shipped catalog still publishes them.
+      Measured by intersecting all 2,474 former_ids keys with all 16,825
+      published ids across the six kinds.
+    checked_and_found_NOT_broken:
+      - "The gate is correctly designed: validate.rb#alias_liveness_failures fails when an alias key is live IN THE BUILD UNDER VALIDATION ('an alias may never name a live id'), so a fresh build catches this. The stale artifact is what escapes it."
+      - "The shipped data is internally consistent: the successors (car/faw/e-hs9, car/hyundai/ix35, car/alfa-romeo/gtv, car/kia/ceed, car/aston-martin/dbx707) carry NO former_ids array in the published catalog, although 622 other car records do. So consumers holding the tag do not see a live-id/alias contradiction — they simply hold a catalog one curation cycle behind."
+    the_actual_gap: "Nothing asserts that the catalog shipped under a tag was BUILT FROM the overrides shipped under that same tag. catalog/car/models.json is stamped 2026-07-26 06:29 while former_ids.yml is 08:12 and renames.yml 15:32."
+    the_23:
+      - "bus/man/lion, bus/man/lions -> bus/man/lion-s"
+      - "car/alfa-romeo/romeo-gtv -> car/alfa-romeo/gtv"
+      - "car/aston-martin/dbx-707 -> car/aston-martin/dbx707"
+      - "car/austin-healey/3000-mk-2, /3000-mk2 -> car/austin-healey/3000-mkii"
+      - "car/chrysler/300c-srt-8 -> car/chrysler/300c-srt8"
+      - "car/datsun/280-zx -> car/datsun/280zx"
+      - "car/faw/ehs9 -> car/faw/e-hs9                                  [IN THIS SLICE]"
+      - "car/hyundai/tucson-ix-35, /tucson-ix35, /tucson-ix35-lm -> car/hyundai/ix35   [tucson-ix35 IS IN THIS SLICE]"
+      - "car/infiniti/ex-35 -> car/infiniti/ex35"
+      - "car/kia/cee-d -> car/kia/ceed"
+      - "car/mazda/r-x-7 -> car/mazda/rx-7"
+      - "car/mercury/cougar-xr7 -> car/mercury/cougar-xr-7"
+      - "car/volkswagen/vw-1-11 -> car/volkswagen/vw1-11"
+      - "motorcycle/moto-guzzi/850le-mans-iii -> motorcycle/moto-guzzi/850-le-mans-iii"
+      - "motorcycle/norton/commando-850mk-iii -> motorcycle/norton/commando-850-mk-iii"
+      - "van/mercedes-benz/639-vito-109, -111, -115, -120 -> van/mercedes-benz/vito"
+    why_it_matters_for_this_programme: >-
+      2 of my 40 id defects are already fixed in curation and merely unbuilt.
+      If RESULTS.md aggregates researcher findings without separating
+      queued-not-shipped from genuinely-open, the measured defect rate will lag
+      the real one by however long the build lag is. Recommend the ledger schema
+      carry a queued_not_shipped boolean, and that the release protocol assert
+      former_ids.keys INTERSECT published_ids == 0 against the tagged dist/
+      artifact rather than against a local build.
+    two_of_the_23_predate_the_2026-07-26_curation_session: "car/alfa-romeo/romeo-gtv and the four van/mercedes-benz/639-vito-* entries are not from the 2026-07-26 singleton-tail batch, so this is not a one-session artifact."
+
+  FLAG_5_camper_leakage_that_names_only_the_coachbuilder:
+    severity: "medium; one instance in this slice, with a measured upper bound"
+    finding: >-
+      car/fiat/eura-mobil-sport is a motorhome published as a car. Both its NL
+      rows carry inrichting=kampeerwagen — the deterministic test NAMING.md 3
+      names for exactly this class, and D10's own example is "campers in car".
+      It evades BOTH existing mechanisms: overrides/makes/drop.yml already drops
+      "EURA MOBIL" but only as a MAKE, and overrides/models/drop_patterns.yml
+      drops base-van nameplates (DUCATO, BOXER, SPRINTER, TRANSIT...) but this
+      model string names only the coachbuilder, so it contains no van nameplate
+      to match.
+    bounded_measurement: >-
+      210 published car-kind records have NL evidence that is 100%
+      inrichting=kampeerwagen (computed over all 24,544 kampeerwagen merk|model
+      rows). CAVEAT, stated so nobody treats this as a fix list: that set
+      contains legitimate cars whose NL rows happen to be camper conversions
+      (volkswagen 'Id. Buzz' is in it at n=104), so 210 is an UPPER BOUND
+      requiring per-record review, not a sweep target.
+    the_unambiguous_sub_shape: "a motorhome brand in the model column under a chassis make — fiat|Dethleffs (55), fiat|Hymer (44), fiat|Adriatik (43), fiat|Burstner (30), fiat|Eura Mobil (28), fiat|Rapido (27), fiat|Trigano FI1 (27), plus the audited fiat/eura-mobil-sport (2)."
+
+  FLAG_6_source_handling_hazards_found_while_auditing:
+    - "ua_mvs writes the MAKE COLUMN IN CYRILLIC for post-Soviet marques. car/gaz/2401's Ukrainian evidence is real ('ГАЗ | 2401 | ЛЕГКОВИЙ' n=3) but a Latin-only make probe returns zero rows for GAZ — and would for VAZ/UAZ/ZAZ/Moskvich too. Any make-matching code touching ua_mvs needs the Cyrillic forms."
+    - "nl_rdw's merk field is NOT uniformly upper-case and the SoQL API is case-sensitive: merk=MERKUR returns [] while merk=Merkur returns the rows. A case-sensitive live probe can silently report a make as absent."
+    - "es_dgt is a monthly REGISTRATION FLOW, not a stock register. Classic-car es claims therefore rest on 2026-Q2 re-registrations/imports. They do check out in this slice (e.g. 'FORD | MUSTANG HARDTOP' is present), but the semantics differ from nl_rdw/nz_nzta and an es absence is much weaker evidence than an nl absence."
+    - "nz_nzta's dataset is 'passenger-car-van' — car and van are NOT separable in it, so it can never adjudicate a car-vs-van kind question. This matters for car/ldv/v80, where NZ is one of only two sources."
+
+  FLAG_7_make_display_casing_D23_observed_but_not_a_record_level_claim:
+    note: "These are make-level defects (remedy: makes/aliases.yml identity pin) surfaced incidentally while auditing records in this slice. Recorded so they are not lost, but they are NOT counted in the claim totals above, which are record-level."
+    observed:
+      - "nio  — ships as 'Nio'; the brand is stylised NIO (https://en.wikipedia.org/wiki/Nio_Inc. — 'stylized as NIO'). Same shape as the already-fixed Ktm/Bsa/Ldv cases."
+      - "mcc  — ships as 'Mcc'; MCC = Micro Compact Car AG."
+      - "gm-daewoo — ships as 'Gm Daewoo'; if the make survives at all it is 'GM Daewoo', but per this audit it should not survive (D12 merge into daewoo)."
+
+  cross_kind_naming_inconsistency_noted:
+    - "car/dodge/wc52 ships as 'WC52' while van/dodge/wc-52 ships as 'Wc-52' for the same vehicle series. Whatever the right rendering is, the catalog currently disagrees with itself across kinds — and 'Wc-52' is additionally a D23-shaped casing defect."
+
+  notes_for_the_verifier:
+    - "Every availability verdict is reproducible from the per-source indexes rebuilt in the scratchpad; the per-claim matched row is recorded in the evidence list for each record."
+    - "Two verdicts deliberately go AGAINST the majority/obvious reading and should get the closest re-derivation: car/kgm/actyon (id correct despite an identically-named ssangyong sibling — decided on approval framework) and car/faw/hongqi-ehs7 (name's EHS7 is correct UNHYPHENATED while car/faw/ehs9's EHS9 is wrong — Hongqi hyphenates its older E-* range and not the 2023+ Tiangong range, so a blanket hyphen fix would break one while fixing the other)."
+    - "One prior hypothesis of mine was REVERSED by the marque source and is flagged in-record: car/mazda/cx-70-sc's 'SC' is a genuine Mazda PHEV trim (mazdausa.com lists 'PHEV SC' and 'PHEV SC Plus'), not the EPA artifact I expected. Any rule written to strip SC as register noise would be wrong."
+    - "car/rover/110 is recorded correct but carries a contamination note: 'ROVER 110' is also the Land Rover Defender 110 wheelbase designation and the NZ row '110 DLS SW TURBO' does not look like a P4 saloon."
+    - "One claim STARTED unverifiable and was resolved by refusing to settle for the encyclopedia: car/hyundai/elantra-wagon's name. en.wikipedia says the second-generation Elantra wagon was marketed as 'Avante Touring'/'Lantra Sportswagon' with no US wagon at all, which contradicted EPA's five model years of 'Elantra Wagon'. Hyundai Motor America's own 1999 site, via the Wayback Machine, settles it — the lineup keywords include 'elantra wagon, Elantra wagon'. Recorded as correct with the residual casing caveat, because a keywords list is weak evidence for capitalisation."
+    - "Fetch-access notes for whoever re-derives this: ford.com, nissanusa.com, hyundai.news, kiamedia.com and lancia.com are unreachable or JS-gated; web.archive.org works via curl but not WebFetch; genesis.com, nio.com, nissan.co.jp, mazdausa.com, jaguarusa.com, maxus.de and renault.co.uk ARE reachable (mazdausa/maxus need curl --compressed, or they return an empty-looking 200)."
+# ── records 1-25 ───────────────────────────────────────────────────────────
+"car/dodge/wc52":
+  verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "https://en.wikipedia.org/wiki/Dodge_WC_series  # 21 occurrences of the hyphenated WC-52; the only unhyphenated WC52 in the page source is an HTML anchor id, not a designation. Primary designation: 'The G-502, WC-51 & WC-52: Truck, Cargo, 3/4-ton, 4x4, Weapons Carrier (T-214)'. WC is a Dodge factory model code, not an acronym"
+    - "raw: 'DODGE | WC 52' n=58, 'WC52' n=19, 'WC-52' n=1, 'W.C. 52' n=4 nl_rdw (live opendata.rdw.nl merk=DODGE)"
+    - "raw: 'DODGE | WC52' n=1 nz_nzta passenger-car-van"
+    - "raw: nl_rdw inrichting for these rows = cabriolet (34+13), terreinvoertuig (6), stationwagen, sedan, MPV — no kampeerwagen"
+  notes: >-
+    name: the hyphenated form is both the marque/US-Army designation and the
+    majority raw spelling; the catalog's own van-kind twin spells it
+    "Wc-52" (van/dodge/wc-52), so the two kinds contradict each other and one
+    of the two is wrong regardless. kind: the vehicle is a 3/4-ton military
+    truck, but both claimed registers file it in their passenger-car datasets
+    and NL's inrichting is overwhelmingly cabriolet, so car is
+    register-faithful; van/dodge/wc-52 and truck/dodge/wc already carry the
+    other kinds (legitimate cross-kind per PRD-QUALITY 10.1). id: sibling
+    car/dodge/wc ("Wc") is an under-specified truncation of the same series —
+    a defect on THAT record, not this one.
+
+"car/eagle/summit":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Eagle | Summit | 1989-1996 | Compact/Subcompact Cars' us_fueleconomy (8 exact rows)"
+    - "raw: 'Eagle | Summit | 1995' ca_nrcan (2 exact rows)"
+    - "https://en.wikipedia.org/wiki/Eagle_Summit  # 'The Summit was a badge engineered version of the Mitsubishi Mirage'; the Wagon 'was a completely different vehicle ... a rebadged Mitsubishi RVR, thus not related to the Mirage-based Summits'"
+  notes: "id: the Summit Wagon is a different vehicle (Mitsubishi Expo LRV vs Mirage), so car/eagle/summit-wagon is not a duplicate."
+
+"car/eagle/summit-wagon":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Eagle | Summit Wagon | 1992-1996 | Midsize-Large Station Wagons' us_fueleconomy (5 exact rows)"
+    - "raw: 'Eagle | Summit Wagon | 1995,1996' ca_nrcan"
+    - "https://en.wikipedia.org/wiki/Eagle_Summit  # 'The somewhat related Eagle Summit Wagon (a compact MPV) was marketed from 1992 through 1996 and was based on the Mitsubishi RVR'"
+    - "https://en.wikipedia.org/wiki/Mitsubishi_RVR  # US market name 'Mitsubishi Expo LRV'; the aka list includes 'Eagle Summit Wagon'"
+
+"car/eagle/vision":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Eagle | Vision | 1993-1997 | Large Cars' us_fueleconomy (5 exact rows)"
+    - "raw: 'Eagle | Vision | 1995' ca_nrcan"
+    - "https://en.wikipedia.org/wiki/Eagle_Vision  # 'The Eagle Vision is a full-sized, front-wheel drive four-door sports sedan produced from 1992 until 1997'"
+
+"car/excalibur/phaeton":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'EXCALIBUR | PHAETON' n=6 + 'EXCALIBUR PHAETON' n=1 + 'PHAETON K6' n=17 nl_rdw"
+    - "raw: 'EXCALIBUR | PHAETON' n=6 nz_nzta"
+    - "raw: nl_rdw inrichting=cabriolet for the PHAETON rows (matches body_types convertible)"
+    - "https://en.wikipedia.org/wiki/Excalibur_(automobile)  # 'a roadster ... was introduced, as well as the four-seater Phaeton model'; captions read 'Series II Phaeton (1972)', 'Series III Phaeton', 'Series IV Phaeton (1982)'"
+
+"car/faw/e-hs9":
+  verdicts: { id: "defective(D6 + cross-make duplicate)", name: correct,
+              make: "defective(D11)", kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "https://en.wikipedia.org/wiki/Hongqi_E-HS9  # 'Hongqi E-HS9', hyphenated; marque is Hongqi, FAW Group is the parent"
+    - "raw: 'FAW | E-HS9' n=133 and 'FAW | EHS9' n=14 nl_rdw (live opendata.rdw.nl merk=FAW, 2026-07-26)"
+    - "raw: 'M1 | FAW | E-HS9 Farmari (AC) 5ov A' n=11 AND 'M1 | Hongqi | E-HS9 Farmari (AC) 5ov A' n=1 fi_traficom"
+    - "catalog: car/faw/ehs9 (live, fi+nl) and car/hongqi/e-hs9 (live, fi+ua) denote the same vehicle; TAN e13*2018/858*00350*00 here vs *01 on car/hongqi/e-hs9 = one approval family"
+  notes: >-
+    id: three live ids for one vehicle. car/faw/ehs9 is NFKD-fold-equal
+    (EHS9 == E-HS9 after fold) so find_duplicate_spellings should have fired;
+    former_ids.yml already maps car/faw/ehs9 -> car/faw/e-hs9, so the fold is
+    queued but not shipped in this tag. car/hongqi/e-hs9 is the cross-make
+    third copy and is NOT queued. make: fi_traficom itself files one row under
+    merk=Hongqi and renames.yml's FAW block explicitly defers this
+    ("Hongqi-vs-FAW make attribution filed as a moves.yml question, not
+    handled here"), i.e. a known-open D11.
+
+"car/faw/ehs9":
+  verdicts: { id: "defective(D6)", name: "defective(D7)",
+              make: "defective(D11)", kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "https://en.wikipedia.org/wiki/Hongqi_E-HS9  # 'The Hongqi E-HS9 (Chinese: 红旗E-HS9) is a battery electric full-size luxury crossover SUV' — hyphenated"
+    - "raw: 'FAW | EHS9' n=14 nl_rdw (live) vs 'FAW | E-HS9' n=133 — 9.5x skew, collapse-correct per PRD-QUALITY 10.4"
+    - "raw: 'M1 | FAW | EHS9 Farmari (AC) 5ov' n=1, 'EHS9 Farmari (AC) 4ov A' n=1 fi_traficom"
+    - "overrides: renames.yml FAW: 'EHS9: E-HS9'; former_ids.yml '\"car/faw/ehs9\": \"car/faw/e-hs9\"'"
+  notes: >-
+    QUEUED, NOT SHIPPED — stated precisely because the distinction changes the
+    remediation, not the verdict. The duplicate is real and live in the audited
+    tag. The curation layer already carries the paired fold
+    (renames.yml FAW: EHS9 -> E-HS9) and the migration alias
+    (former_ids.yml car/faw/ehs9 -> car/faw/e-hs9), both authored AFTER the
+    tagged build (catalog/car/models.json 2026-07-26 06:29; former_ids.yml
+    08:12), so it will fold at the next build. Checked and found NOT broken:
+    the published successor car/faw/e-hs9 carries no former_ids array, so the
+    shipped artifact is internally consistent — there is no live-id/alias
+    contradiction in the data consumers hold, and validate.rb's
+    alias_liveness_failures compares against the build under validation, so the
+    gate is correctly designed and will pass. See the RELEASE-FRESHNESS flag in
+    the summary for the catalog-wide measurement of this staleness.
+
+"car/faw/hongqi-ehs7":
+  verdicts: { id: correct, name: "defective(D5)", make: "defective(D11)",
+              kind: correct, availability: { lu: correct, nl: correct } }
+  evidence:
+    - "raw: 'FAW | HONGQI EHS7' n=13 + 'HONGQI EHS7 111 KWH 4WD' n=1 nl_rdw (live opendata.rdw.nl merk=FAW)"
+    - "raw: 'FAW | HONGQI EHS7' lu_snca (lu_delta_2026*.xml LIBMRQ/TYPCOM)"
+    - "https://en.wikipedia.org/wiki/Hongqi_Tiangong_08  # 'The Hongqi Tiangong 08 (Chinese: 红旗天工08) or Hongqi EHS7' — EHS7 with NO hyphen is the marque's own rendering, so the numeric part of this record's name is RIGHT"
+    - "https://en.wikipedia.org/wiki/Hongqi_(marque)  # the lineup mixes conventions on purpose: 'Tiangong 08/EHS7', 'Tiangong 06/EHS5', 'EH7' alongside 'E-HS9' and 'E-QM5' — the older E-* generation is hyphenated, the 2023+ Tiangong generation is not"
+    - "https://en.wikipedia.org/wiki/Hongqi_HS7  # the petrol/PHEV HS7 is a DIFFERENT mid-size SUV; no 'E-HS7' exists, so this is not a mis-hyphenation of that"
+  notes: >-
+    A useful negative result: "EHS7" is NOT a mis-hyphenation. Hongqi
+    deliberately hyphenates its older E-* range (E-HS9, E-QM5) and does NOT
+    hyphenate the 2023+ Tiangong range (EHS7, EHS5, EH7), so a blanket
+    "insert the hyphen" fix would BREAK this record while fixing car/faw/ehs9 —
+    the weird-can-be-right rule, measured. The only name defect here is the
+    embedded marque token 'Hongqi' (D5), the shape moves.yml exists to fix.
+    make: the marque is Hongqi and the catalog already has a hongqi make
+    (car/hongqi/e-hs9), so the move target exists.
+
+"car/fiat/500-abarth":
+  verdicts: { id: "defective(cross-make duplicate)", name: correct,
+              make: "defective(D11)", kind: correct,
+              availability: { ca: correct, es: correct, fi: correct, lu: correct,
+                              nl: correct, ua: correct, us: correct } }
+  evidence:
+    - "raw: 'FIAT | 500 ABARTH' n=1373 nl_rdw — but merk=ABARTH 'handelsbenaming 500' n=190 exists in the same register"
+    - "raw: 'FIAT | 500 ABARTH' and 'FIAT | ABARTH 500' both present in es_dgt 2026-04/05/06 and lu_snca"
+    - "raw: 'Fiat | 500 Abarth | 2013-2019 | Minicompact Cars' us_fueleconomy (8 rows); 'FIAT | 500 Abarth | 2012,2013,2018' ca_nrcan"
+    - "raw: '500 ABARTH Viistopera (AB) 2ov 1368cm3' n=73 fi_traficom; 'FIAT | 500 ABARTH' n=6 ua_mvs"
+    - "catalog: car/abarth/500 live with es,gb,lu,nl,nz,ua"
+    - "https://en.wikipedia.org/wiki/Abarth  # the lineup table renders the pair as 'Abarth 500 / Fiat 500 Abarth (NA)' — (NA) = North America, i.e. one car, two marques by market"
+    - "https://en.wikipedia.org/wiki/Abarth_595  # the European line: 'In 2012 the Abarth range was enlarged with the addition of the 135-160-180 PS Abarth 595'"
+  notes: >-
+    id: car/abarth/500 and this record denote the same 312-series car. make:
+    genuinely mixed — in North America (ca/us) Fiat WAS the marque of sale, so
+    those rows are correctly Fiat; in es/fi/lu/nl/ua the marque is Abarth and
+    the register is filing the type-approval holder (Fiat Group Automobiles).
+    The remedy is therefore a split-and-partial-move, not a plain merge —
+    flagged for curation, deliberately not resolved here. No moves.yml entry
+    exists for Fiat->Abarth today.
+
+"car/fiat/eura-mobil-sport":
+  verdicts: { id: "defective(D6/D8)", name: "defective(D5)", make: correct,
+              kind: "defective(D10)",
+              availability: { es: correct, nl: correct } }
+  evidence:
+    - "raw: 'FIAT | EURA MOBIL SPORT' n=2 nl_rdw, and BOTH rows carry inrichting=kampeerwagen (nl_rdw_personenauto_inrichting)"
+    - "raw: 'FIAT | EURA MOBIL SPORT' es_dgt 2026-04/05/06"
+    - "NAMING.md 3: 'Deterministic test: RDW inrichting=kampeerwagen' is the project's own camper test; PRD-QUALITY D10 lists 'campers in car' as the class"
+    - "overrides/makes/drop.yml line 73: '- EURA MOBIL  # Eura Mobil (DE, Ducato-based motorhomes)' — the make is already dropped from the car kind"
+    - "catalog: car/fiat/eura-mobil ('Eura Mobil', fi+nl) live — same coachbuilder, 28 NL rows, all kampeerwagen"
+    - "https://de.wikipedia.org/wiki/Eura_Mobil  # Eura Mobil is a Reisemobil manufacturer whose 'vehicles at the Sprendlingen location are mainly built on Mercedes and Fiat bases'; 'Ehemalige Modelle von Eura Mobil sind ... die Alkoven-Modelle Sport, Profila A, Activa Style und Terrestra A' — 'Sport' is a EURA MOBIL model, not a Fiat one"
+    - "https://www.euramobil.de/reisemobile/  # the maker's current 11 lines (Activa One, Contura, Eura Mobil Van, Integra, Integra Line, ... Xtura) contain no 'Sport' — a retired Eura Mobil line, consistent with the 2 NL registrations"
+    - "https://en.wikipedia.org/wiki/Fiat_Ducato  # 'The Ducato is the most common motorhome base used in Europe; with around two-thirds of motorhomes using the Ducato base' — why this shape recurs under merk=FIAT"
+  notes: >-
+    A motorhome published as a car. The project already drops EURA MOBIL as a
+    MAKE from the car kind and drops base-van model patterns (DUCATO, BOXER,
+    SPRINTER ...) via drop_patterns.yml — but this row names ONLY the
+    coachbuilder in the model column under merk=FIAT, so it evades both
+    mechanisms. make left correct because Fiat is the chassis maker and the
+    register's make; the honest remedy is the D10 kind-scoped drop, not a move.
+    See the DETECTOR-GAP flag in the summary for the measured size of this shape.
+
+"car/fiat/fiorino-qubo":
+  verdicts: { id: "defective(D6)", name: "defective(D6)", make: correct,
+              kind: correct,
+              availability: { es: correct, fi: correct, nl: correct, ua: correct } }
+  evidence:
+    - "raw: 'FIAT | FIORINO QUBO' n=616 nl_rdw; inrichting = MPV 594 / stationwagen 10 / wheelchair-accessible 12 (no kampeerwagen) — car kind is right"
+    - "raw: 'FIAT | FIORINO QUBO' + 'FIAT FIORINO QUBO' es_dgt; 'FIORINO QUBO Monikayttoajoneuvo (AF)' n=1+1 fi_traficom; 'FIAT | FIORINO QUBO' n=10 ua_mvs"
+    - "catalog: car/fiat/qubo (de,es,fi,gb,lu,nl,ua) shares the EXACT TAN extension e3*2001/116*0271*09 with this record; car/fiat/fiorino shares family 0271"
+    - "https://en.wikipedia.org/wiki/Fiat_Fiorino  # 'Fiat also retails its passenger model as the Fiat Qubo, with the Fiorino name designating the commercial models' — two nameplates, and 'Fiat Fiorino Qubo' appears only as an infobox also-called variant"
+  notes: >-
+    The shared approval extension *09 is direct proof that fiorino-qubo and
+    qubo are one vehicle. "Fiorino Qubo" is a register concatenation of two
+    distinct Fiat nameplates (cargo Fiorino / passenger Qubo) on the 225
+    platform; the fold cannot see it because QUBO != FIORINOQUBO.
+
+"car/fiat/nuova-500":
+  verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'FIAT | NUOVA 500' n=897 nl_rdw; 'FIAT | 500 NUOVA' n=7 same register"
+    - "raw: 'FIAT | NUOVA 500' n=1 nz_nzta; 'Nuova 500 Berlina Sedan (AA) 2ov 499cm3' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Fiat_500  # 'Launched as the Nuova (new) 500 in July 1957, as a successor to the 500 Topolino' — 'Nuova 500' is Fiat's own launch name"
+    - "catalog: car/fiat/500-nuova ('500 Nuova', fi+nl+nz) live — the same 1957 Nuova 500 with the two words transposed"
+  notes: >-
+    Word-order duplicate: fold('Nuova 500')='NUOVA500' vs
+    fold('500 Nuova')='500NUOVA', so NFKD-fold equality (D6's detector) is
+    structurally blind to it. 897:7 volume skew makes 'Nuova 500' the correct
+    canonical per the 10.4 skew test.
+
+"car/fiat/nuova-500-giardiniera":
+  verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+              availability: { lu: correct, nl: correct } }
+  evidence:
+    - "raw: 'FIAT | NUOVA 500 GIARDINIERA' n=2 + 'FIAT NUOVA 500 GIARDINIERA' n=1 nl_rdw"
+    - "raw: 'FIAT | NUOVA 500 GIARDINIERA' lu_snca"
+    - "https://en.wikipedia.org/wiki/Fiat_500  # 'Launched as the Nuova (new) 500 in July 1957' AND separately 'the 500 Giardiniera (500 K on some markets) [estate] version of the Fiat 500' — Fiat attaches 'Nuova' to the 500, never to the Giardiniera"
+  notes: >-
+    id: no car/fiat/giardiniera or car/fiat/500-giardiniera exists, so no
+    duplicate; only 'NUOVA 500 D GIARDINIERA' n=1 and
+    '120 NUOVA 500 GIARDINIERA' n=2 remain unfolded nearby. name: the marque's
+    designation is '500 Giardiniera' — the 'Nuova' prefix is carried by the
+    saloon, not the estate, so the published name compounds two Fiat names.
+
+"car/fisker/ocean-extreme-one":
+  verdicts: { id: "defective(D13/D6)", name: "defective(D13 + D7)", make: correct,
+              kind: correct, availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Fisker | Ocean Extreme/One | 2023' ca_nrcan — a slash-merged two-trim cell"
+    - "raw: 'Fisker | Ocean Extreme One | 2023 | Standard Sport Utility Vehicle 4WD' us_fueleconomy"
+    - "raw: ca_nrcan also carries separate 'Ocean Extreme (20\" Wheels)', 'Ocean Ultra', 'Ocean Sport' rows for 2024"
+    - "catalog: car/fisker/ocean ('Ocean') and car/fisker/ocean-one ('Ocean One') both live"
+    - "https://en.wikipedia.org/wiki/Fisker_Ocean  # the trim table headers are verbatim 'One', 'Extreme', 'Ultra', 'Sport' — four trims of one nameplate, and the correct rendering of the launch edition is 'One', capitalised"
+    - "https://en.wikipedia.org/wiki/Fisker_Inc.  # 'a special edition version of the Ocean, called the Ocean One ... 5,000 units sold' — a limited launch edition, i.e. a different product from the Extreme trim"
+  notes: >-
+    The source cell merges two different products (the Extreme trim and the
+    'Ocean One' launch edition) — PRD-QUALITY D13, whose remedy is a
+    source-level COMMA_MERGED-style map, here needed for a slash. On top of
+    that the published display lower-cases the second half ("Extreme/one"),
+    which no marque rendering supports.
+
+"car/ford/18":
+  verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct,
+              kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'M1 | Ford | 18 Avoauto (AE) 2ov 3600cm3' n=1 fi_traficom — 3.6 L = the 1932 flathead V-8, so the row is a genuine Model 18"
+    - "raw: 'FORD | 18' n=5 AND 'FORD | MODEL 18' n=2 nl_rdw; 'FORD | 18' n=3 AND 'FORD | MODEL 18' n=3 nz_nzta"
+    - "catalog: car/ford/model-18 ('Model 18', nl+nz) live"
+    - "https://en.wikipedia.org/wiki/1932_Ford  # 'the Model B, the Model 18, and the Model 40 ... The Model 18 was the first Ford fitted with the flathead V-8' — bare '18' is never Ford's designation"
+  notes: >-
+    Same vehicle under two live ids in one make+kind, invisible to the fold
+    (18 vs MODEL18). Note the skew test is INCONCLUSIVE here (5:2 in NL, 3:3
+    in NZ), so the canonical must be chosen from the marque, not the counts.
+
+"car/ford/a-roadster":
+  verdicts: { id: "defective(D6/D8)", name: "defective(D8)", make: correct,
+              kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'FORD | A ROADSTER' n=21, 'A  ROADSTER' n=2, 'A-ROADSTER' n=2, 'A. ROADSTER' n=2 nl_rdw"
+    - "raw: 'FORD | A ROADSTER' n=3 nz_nzta; 'M1 | Ford | A ROADSTER' n=2 fi_traficom"
+    - "catalog: car/ford/model-a ('Model A', fi+lu+nl+nz), car/ford/a ('A'), car/ford/a-model ('A-Model'), car/ford/roadster ('Roadster') all live"
+    - "https://en.wikipedia.org/wiki/Ford_Model_A_(1927-1931)  # 'The Model A came in a wide variety of styles including coupes ..., roadster coupes (standard and deluxe), convertible cabriolet ... phaetons ..., Tudor sedans' — roadster is lower-case and one of many BODY STYLES; the nameplate is 'Model A'"
+  notes: >-
+    'Roadster' is a Model A body style, and the Model A family is already
+    scattered across at least six live ids (a, a-ford, a-fordor, a-model,
+    a-phaeton, a-sport, a-town, a-tudor, model-a, model-a-fordor,
+    model-a-tudor, roadster). The make-prefix strip has also dropped the word
+    'Model' that Ford's own designation carries.
+
+"car/ford/bronco-black-diamond":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Ford | Bronco Black Diamond 4WD | 2021-2024' ca_nrcan (4 rows) and us_fueleconomy (4 rows, Small Sport Utility Vehicle 4WD)"
+    - "catalog: car/ford/bronco live with ca,es,fi,nl,nz,ua,us; six further Bronco trim ids live (badlands, outer-banks, raptor, sasquatch, wildtrak, xlt)"
+    - "https://web.archive.org/web/20260525103819/https://www.ford.com/suvs/bronco/models/  # Ford's own wording 'Ford Bronco(R) Black Diamond(R) model with optional equipment' — a registered SERIES inside the Bronco line, alongside Big Bend / Outer Banks / Badlands / Raptor / Heritage Edition"
+  notes: "name is Ford's own trim string and correctly cased; the defect is altitude — a trim series published as a model (D8), with the nameplate record already present."
+
+"car/ford/e150-van-ffv":
+  verdicts: { id: "defective(D8)", name: "defective(D9/D7)", make: correct,
+              kind: "defective(D10)",
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Ford | E150 Van FFV | 2011-2014 | Vans, Cargo Type' us_fueleconomy (4 rows); same 4 model-years ca_nrcan"
+    - "catalog: car/ford/e150 ('E150'), car/ford/e150-van ('E150 Van'), car/ford/e150-club-wagon, car/ford/e150-wagon-ffv all live in the car kind"
+    - "https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=2011&make=Ford  # EPA is the literal source of the string and returns '<text>E150 Van FFV</text>' — caps FFV, and 'Van' is EPA's own class word"
+    - "https://en.wikipedia.org/wiki/Ford_E-Series  # Ford's own designation is hyphenated: 'the Econoline would be renamed to the E-Series ... This included the E-150, E-250, and E-350'"
+    - "https://en.wikipedia.org/wiki/Flexible-fuel_vehicle  # 'A flexible-fuel vehicle (FFV)' — the initialism is all-caps"
+  notes: >-
+    Three defects on one record. name: the source and Ford render the
+    flex-fuel badge 'FFV' in caps, the catalog ships 'Ffv'. id: FFV is a
+    powertrain descriptor and 'Van' a body descriptor, both below nameplate
+    altitude. kind: the source's own class is 'Vans, Cargo Type' — a full-size
+    cargo van published as a car, and there is no van-kind ford/e150 to hold
+    the evidence, so the D10 remedy must route rather than drop.
+
+"car/ford/explorer-tremor":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Ford | Explorer Tremor AWD | 2026' ca_nrcan and us_fueleconomy (Standard Sport Utility Vehicle 4WD)"
+    - "catalog: car/ford/explorer live with 11 countries; 12 further Explorer trim/drive ids live"
+    - "https://web.archive.org/web/20260724191936/https://www.ford.com/suvs/explorer/  # Ford's own structured data names the 2026 trim 'Ford Explorer(R) Tremor(R)' — a registered trim inside the Explorer line"
+
+"car/ford/flex":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, fi: correct, nl: correct, ua: correct, us: correct } }
+  evidence:
+    - "raw: 'Ford | Flex | 2009-2019' ca_nrcan (11 exact rows); 'Ford | Flex FWD/AWD' us_fueleconomy (22 rows)"
+    - "raw: 'FORD | FLEX' n=24 + 'FORD FLEX' n=3 nl_rdw; 'Flex Monikayttoajoneuvo (AF) 5ov 3500cm3 A' fi_traficom; 'FORD | FLEX' n=50 ua_mvs"
+    - "https://en.wikipedia.org/wiki/Ford_Flex  # 'The Ford Flex is a full-size crossover SUV manufactured and marketed by Ford over a single generation for the 2009-2019 model years'"
+  notes: "us claim rests on PREFIX rows only ('Flex FWD'/'Flex AWD') because EPA never certifies a bare 'Flex'; the nameplate is unambiguous and ca_nrcan carries the bare form."
+
+"car/ford/galaxie-500-sunliner":
+  verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'FORD | GALAXIE 500 SUNLINER' n=1 nl_rdw"
+    - "raw: 'M1 | Ford | Galaxy 500  2ov 5440cm3 A' with kaupallinenNimi 'Galaxie 500 Sunliner' fi_traficom"
+    - "catalog: car/ford/galaxie-sunliner ('Galaxie Sunliner', fi+nl), car/ford/galaxie-500 ('Galaxie 500', fi+nl), car/ford/sunliner ('Sunliner', nl+nz), car/ford/galaxie ('Galaxie') all live"
+    - "https://en.wikipedia.org/wiki/Ford_Galaxie  # 1962: 'New top-line Galaxie 500 (two-door sedan and hardtop, four-door sedan and hardtop, and Sunliner convertible) models' — Sunliner is the convertible BODY script carried on the Galaxie 500 series"
+    - "https://en.wikipedia.org/wiki/Ford_Sunliner  # lists '1960-1964 Ford Galaxie Sunliner' and no 'Galaxie 500 Sunliner' entry — the documented form is the one car/ford/galaxie-sunliner already publishes"
+  notes: >-
+    name: every token is Ford's own and in Ford's own order (series + body
+    script), so the rendering itself is not wrong; but the DOCUMENTED form is
+    "Galaxie Sunliner", which car/ford/galaxie-sunliner already publishes, and
+    Ford retired its body monikers for generic labels in 1963. The
+    Galaxie/Sunliner family is split across five live ids for one nameplate plus
+    one body style.
+
+"car/ford/galaxy":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { es: correct, fi: correct, gb: correct, nl: correct,
+                              nz: correct, ua: correct } }
+  evidence:
+    - "raw: 'FORD | GALAXY' n=4020 nl_rdw; n=47 nz_nzta; n=208 ua_mvs; 'FORD | GALAXY' es_dgt"
+    - "raw: 'GALAXY Monikayttoajoneuvo (AF) 4ov 1997cm3 A' n=362 fi_traficom"
+    - "raw: uk_dft GenModel 'FORD GALAXY' = 165 model rows, BodyType split 106 Cars / 29 Other / 24 Light goods / 6 Buses — car kind is the plurality and correct"
+    - "https://en.wikipedia.org/wiki/Ford_Galaxy  # 'The Ford Galaxy is a seven-seater car produced by Ford of Europe from June 1995 to April 2023'; the hatnote distinguishes it from the Galaxie"
+  notes: "Distinct from the 1960s Galaxie despite NL rows like 'GALAXY 500'/'GALAXY SKYLINER', which the build routes to car/ford/galaxy-500."
+
+"car/ford/model-t":
+  verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'FORD | MODEL T' n=245, 'MODEL ''T''' n=6, 'MODELT' n=2, 'MODEL-T' n=1 nz_nzta; 'FORD | MODEL T' n=27 nl_rdw"
+    - "raw: 'M1 | Ford | Model T Avoauto (AE) 2ov 2896cm3' fi_traficom"
+    - "catalog: car/ford/t ('T', fi+nl+nz) live and denotes the same car — its raw set is 'FORD T | Ford T | T CABRIOLET | T COUPE | T TOURER | T, FORDOR SEDAN | T. COUPE' (observed_variants.json), and fi carries 'T model Avoauto (AE) 4ov 2896cm3' — 2896cc is the Model T engine"
+    - "catalog: car/ford/model ('Model', fi+nl+nz) is a bare truncation of the same family"
+    - "https://en.wikipedia.org/wiki/Ford_Model_T  # 'The Ford Model T is an automobile that was produced by the Ford Motor Company from October 1, 1908, to May 26, 1927'"
+  notes: "name is correct and canonical; the id defect is that car/ford/t (and the truncated car/ford/model) hold Model T evidence under separate ids."
+
+"car/ford/mustang-hardtop":
+  verdicts: { id: "defective(D8)", name: "defective(D8)", make: correct, kind: correct,
+              availability: { es: correct, fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'FORD | MUSTANG HARDTOP' n=21 + 'MUSTANG-HARDTOP' n=1 nl_rdw; 'FORD | MUSTANG HARDTOP' es_dgt"
+    - "raw: 'MUSTANG HARDTOP Sedan (AA) 2ov 4730cm3 A' fi_traficom"
+    - "catalog: car/ford/mustang live with 13 countries; car/ford/mustang-hardtop-grande also live"
+    - "https://en.wikipedia.org/wiki/Ford_Mustang_(first_generation)  # body styles listed as '2-door hardtop, 2-door fastback, 2-door convertible'; first-generation TRIM names were GT, Grande and Mach 1 — never 'Hardtop'"
+    - "https://en.wikipedia.org/wiki/Ford_Galaxie  # Ford's body-label practice: the Club/Town/Victoria monikers 'were retired in 1963, replaced by generic labels, 2-door, 4-door, and Hardtop'"
+  notes: >-
+    Unlike Bronco Black Diamond or Explorer Tremor (registered Ford series
+    names), 'Hardtop' is a GENERIC body label Ford applied across its range, so
+    it is not a marque nameplate rendering at all — hence name is defective as
+    well as the altitude/duplicate problem on id.
+
+"car/ford/sierra":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, gb: correct, lu: correct, nl: correct,
+                              nz: correct, ua: correct } }
+  evidence:
+    - "raw: 'FORD | SIERRA' n=60 + 'FORD SIERRA' n=27 nl_rdw; n=170 nz_nzta; n=352 ua_mvs"
+    - "raw: uk_dft GenModel 'FORD SIERRA' 110 model rows, 92 of them BodyType=Cars"
+    - "raw: 'FORD | SIERRA' and 'FORD (D) | SIERRA' lu_snca; '4D SIERRA 2.0 CLS-DOHC-BFG/260' n=44 fi_traficom"
+    - "https://en.wikipedia.org/wiki/Ford_Sierra  # 'The Ford Sierra is a mid-size/large family car manufactured and marketed by Ford of Europe from 1982-1993'"
+  notes: "lu_snca emits the make as 'FORD (D)' on some rows — a make near-dupe string (D12 shape) on the source side, not a defect in this record."
+# ── records 26-60 ──────────────────────────────────────────────────────────
+"car/gac/gs3":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { my: correct } }
+  evidence:
+    - "raw: 'GAC | GS3 | jip' AND 'GAC Motor | GS3 | jip' my_jpj (my_cars_2025/2026.csv)"
+    - "https://en.wikipedia.org/wiki/GAC_GS3  # 'The Trumpchi GS3 or GAC GS3 is a subcompact crossover SUV produced by GAC Group under the GAC Motor brand globally and the Trumpchi brand in China'"
+    - "https://en.wikipedia.org/wiki/GAC_Motor  # 'GAC Motor Co., Ltd. ... sometimes simply as GAC' — the short form the catalog uses is the accepted export-market one"
+  notes: >-
+    single-source record. my_jpj emits the make as both 'GAC' and 'GAC Motor'
+    (a D12 shape on the source side, already folded to one make here). 'jip' is
+    JPJ's SUV class. Note the Chinese-market badge is Trumpchi, so a future
+    China source would introduce a third spelling of this car.
+
+"car/gaz/2401":
+  verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+              availability: { nl: correct, ua: correct } }
+  evidence:
+    - "raw: 'GAZ | GAZ 2401' n=1 nl_rdw (live opendata.rdw.nl merk=GAZ returns handelsbenaming 'GAZ 2401')"
+    - "raw: 'ГАЗ | 2401 | ЛЕГКОВИЙ' n=3 ua_reestr_current.zip (reestrtz02.07.2026.csv) — the UA register writes the make in Cyrillic, which is why a Latin-'GAZ' scan finds nothing"
+    - "raw: ua also distinguishes 'ГАЗ|24' n=198, 'ГАЗ|2410' n=158, 'ГАЗ|31029', so 2401 is a register-distinguished variant, not noise"
+    - "https://en.wikipedia.org/wiki/GAZ-24  # 'GAZ-24-01 taxi was introduced' (1971), alongside GAZ-24-02/-03/-04/-10 — the marque hyphenates as GAZ-24-XX throughout and no concatenated 'GAZ-2401' form appears"
+  notes: >-
+    name: a genuine GAZ variant published in the register's concatenated form;
+    the marque's rendering is 'GAZ-24-01'. ua verified only after switching the
+    make probe to Cyrillic — worth a source note in the pipeline, since a
+    Latin-only make match silently loses all GAZ/VAZ/UAZ Ukrainian evidence.
+
+"car/genesis/electrified-g80":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Genesis | Electrified G80 | 2023-2026 | Midsize Cars' us_fueleconomy (4 rows); 'Genesis | Electrified G80 | 2023-2025' ca_nrcan"
+    - "overrides/models/moves.yml Genesis block: 'FZ 6.1 HSN 8252 rows read ... G80, GENESIS G80,GENESIS' — confirms Genesis is the marque and Hyundai only the HSN holder"
+    - "https://www.genesis.com/us/en/models.html  # the marque's own model page: 'Electrified G80 AWD (Model #S14E2AEZ)', 'Electrified G80 Charging Plan'"
+    - "https://en.wikipedia.org/wiki/Genesis_G80  # 'The Electrified G80 is the battery electric version of the G80'; overview lists 'Genesis Electrified G80 (EV)' as its own designation"
+  notes: >-
+    A weird-looking name that is right: 'Electrified' reads like a descriptor
+    but is Genesis's own nameplate word (the same family as Electrified GV70),
+    so this is the tS/XR4i/bZ4X case and must not be folded into car/genesis/g80.
+
+"car/genesis/electrified-gv70":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Genesis | Electrified GV70 | 2024,2025 | Small Sport Utility Vehicle 4WD' us_fueleconomy; 'Genesis | Electrified GV70 | 2023-2026' ca_nrcan"
+    - "raw: 2026 US rows are 'Electrified GV70 AWD (19/20 inch Wheels)' — wheel-size suffixes, correctly not published as separate models"
+    - "https://www.genesis.com/us/en/models.html  # the marque's own model page carries 'Genesis Electrified GV70 Prestige AWD'"
+    - "https://en.wikipedia.org/wiki/Genesis_GV70  # 'The Electrified GV70 (or the eGV70) is the battery electric version of the GV70'; note it shares model code JK1 with the ICE GV70"
+    - "overrides/models/moves.yml: '\"Hyundai|GV70\": \"Genesis|GV70\"  # covers the ICE GV70; the EV is catalogued as \"Electrified GV70\"' — the project has already adjudicated this split"
+
+"car/genesis/g80":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, de: correct, gb: correct, my: correct,
+                              nl: correct, nz: correct, us: correct } }
+  evidence:
+    - "raw: 'GENESIS | G80' n=9 nl_rdw, n=8 nz_nzta; 'Genesis | G80 | motokar' my_jpj"
+    - "raw: uk_dft 14 rows, all BodyType=Cars, Make=GENESIS GenModel='GENESIS G80'"
+    - "raw: de_kba_fz10 202606 sharedStrings — 'G80' appears inside the HYUNDAI block (between BAYON and G90), i.e. KBA Marke=HYUNDAI"
+    - "overrides/models/moves.yml: '\"Hyundai|G80\": \"Genesis|G80\"  # 5 DE' — the KBA HSN-8252 attribution is already handled"
+    - "https://en.wikipedia.org/wiki/Genesis_G80  # 'The Genesis G80 is an executive sedan'"
+  notes: >-
+    de availability is correct but indirect: KBA FZ 10.1 has no GENESIS Marke
+    row at all, so the German evidence arrives under Marke=HYUNDAI and is
+    routed by moves.yml. Recording it as correct rather than unverifiable
+    because the routing rule is documented with the FZ 6.1 HSN receipt.
+
+"car/genesis/gv60-performance":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Genesis | GV60 PERFORMANCE | 2023,2024' us_fueleconomy; 'Genesis | GV60 Performance AWD | 2023-2026' ca_nrcan"
+    - "catalog: car/genesis/gv60 ('GV60') live with de,gb,nl,nz,us"
+    - "https://www.genesis.com/us/en/genesis-gv60.html  # Genesis's own grade strings: 'GV60 Standard RWD', 'GV60 Standard AWD', 'GV60 Advanced AWD', 'GV60 Performance AWD' — Performance sits in a Standard/Advanced/Performance ladder"
+  notes: "name is Genesis's own grade string, correctly cased; the defect is altitude — a grade published as a model while car/genesis/gv60 holds the nameplate."
+
+"car/geo/tracker-van":
+  verdicts: { id: "defective(D6/D8)", name: "defective(D9)", make: correct,
+              kind: correct, availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Geo | Tracker Van 2WD/4WD/4x4 | 1992-1997 | Special Purpose Vehicles' us_fueleconomy (7 rows); 'Geo | Tracker Van 4X4 | 1997' ca_nrcan"
+    - "catalog: car/geo/tracker ('Tracker', ca+nl+us) live, and its raw set is 'Tracker 4WD | Tracker Convertible | Tracker Convertible 2WD/4WD/4X4' (observed_variants.json)"
+    - "https://www.fueleconomy.gov/ws/rest/vehicle/menu/model?year=1993&make=Geo  # EPA is the literal source: it returns '<text>Tracker Van 4WD</text>', and the 1997 menu returns 'Tracker Van 2WD', 'Tracker Van 4x4' ALONGSIDE 'Tracker Convertible 2WD/4x4' — EPA's own class words stapled onto the model field"
+    - "https://en.wikipedia.org/wiki/Geo_Tracker  # (redirects to Chevrolet Tracker) 'The Geo Tracker was a mini SUV introduced in late 1988 as a 1989 model'; the enclosed body is 'The two-door hardtop models' — Geo called it a hardtop, never a Van"
+  notes: >-
+    EPA certifies the two Tracker bodies as 'Tracker Convertible' and 'Tracker
+    Van'; the second is a certification/class string, not a Geo nameplate — the
+    same vehicle line as car/geo/tracker. kind stays correct: it is a small
+    SUV, which this catalog places in car.
+
+"car/gm-daewoo/matiz":
+  verdicts: { id: "defective(cross-make duplicate)", name: correct,
+              make: "defective(D11/D12)", kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "https://en.wikipedia.org/wiki/GM_Korea  # 'GM Daewoo Auto & Technology' is the corporate entity; the consumer-facing marque on the cars was Daewoo, later rebadged Chevrolet"
+    - "raw: 'GM DAEWOO | MATIZ' n=7 nl_rdw vs 'DAEWOO | MATIZ' n=492 and 'DAEWOO | DAEWOO MATIZ' n=729 in the same register — 174x skew"
+    - "raw: 'M1 | GM Daewoo | 4D MATIZ HATCHBACK 1.0-0M11CD/234' n=48 AND 'M1 | Daewoo | 4D MATIZ HATCHBACK 1.0-0M11CD/234' n=16 fi_traficom — the SAME type code under two makes"
+    - "catalog: car/daewoo/matiz live (fi,gb,lu,nl,nz,ua); TAN e4*2001/116*0028*18 here vs *15 there = one approval family"
+  notes: >-
+    Textbook D12: a corporate string standing in for a marque. The identical
+    fi_traficom type code (0M11CD/234) under both makes is the strongest single
+    piece of evidence. Secondary D23: the make display name ships as
+    'Gm Daewoo' (should be 'GM Daewoo' if the make survives at all).
+
+"car/holden/torana":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nz: correct } }
+  evidence:
+    - "raw: 'HOLDEN | TORANA' n=1008 nz_nzta passenger-car-van"
+    - "https://en.wikipedia.org/wiki/Holden_Torana  # 'The Holden Torana is a mid-size car that was manufactured by Holden from 1967 to 1980'"
+  notes: "single-source record published on the count threshold (car single-source bar is 1000; n=1008 clears it by 8) — worth a threshold tripwire."
+
+"car/honda/cr-z":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, es: correct, fi: correct, gb: correct,
+                              lu: correct, nl: correct, nz: correct, ua: correct, us: correct } }
+  evidence:
+    - "raw: 'HONDA | CR-Z' n=574 nl_rdw, n=1945 nz_nzta, n=19 ua_mvs; 'HONDA | CR-Z' es_dgt and lu_snca"
+    - "raw: 'CR-Z Viistopera (AB) 2ov 1497cm3' n=109 fi_traficom; 'Honda | CR-Z | 2011-2016 | Two Seaters' us_fueleconomy (6 rows); ca_nrcan 2011-2016"
+    - "raw: uk_dft GenModel 'HONDA CR-Z', BodyType Cars"
+    - "https://en.wikipedia.org/wiki/Honda_CR-Z  # 'The Honda CR-Z is a sport compact hybrid electric vehicle manufactured by Honda' — a plain hyphen, all caps"
+  notes: "the hyphenated all-caps rendering is the marque's and is what every register emits; car/honda/cr ('Cr') is a separate truncation defect on that record."
+
+"car/honda/grace":
+  verdicts: { id: "unverifiable(the Grace is the JDM name of the City sedan, so car/honda/city may denote the same vehicle; but car/honda/city spans several City generations across five countries and neither register carries a year or approval number, so the overlap cannot be settled from the sources reached)", name: correct, make: correct, kind: correct,
+              availability: { nz: correct } }
+  evidence:
+    - "raw: 'HONDA | GRACE' n=1888 nz_nzta passenger-car-van"
+    - "raw: the SAME register also carries 'HONDA | CITY' n=983, feeding the live car/honda/city (my,nl,nz,th,ua) — two badges, one register, no year field to separate them"
+    - "https://en.wikipedia.org/wiki/Honda_Grace  # redirects to Honda City: 'The City is offered and sold as Honda Grace in Japan starting from December 2014' — a JDM market name for the GM6 City sedan, 2014-2020"
+  notes: >-
+    Recorded UNVERIFIABLE rather than either stretched verdict, and flagged for
+    the verifier. It is the same market-name shape as car/nissan/maxima-qx (which
+    I DID call defective) and car/hyundai/tucson-ix35 — but there the catalog's
+    own xrefs.tan proved one approval family, and here there are no approval
+    numbers on either record and NZTA carries no model year. A separate JDM-badge
+    record is also defensible curation (the kgm/ssangyong precedent), so this
+    needs a disposition, not a guess. single-source otherwise, clearing the
+    1,000-row car threshold at n=1888.
+
+"car/hudson/hornet":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'HUDSON | HORNET' n=8 nl_rdw, n=7 nz_nzta"
+    - "raw: 'Hornet Sedan (AA) 4ov 5050cm3 A' + 'HUDSON HORNET  4ov 5000cm3 A' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Hudson_Hornet  # 'The Hudson Hornet is a full-size car manufactured by Hudson Motor Car Company of Detroit, Michigan, from 1951 through 1954 model years' — the 5.0 L six matches the fi rows"
+
+"car/hummer/h3t":
+  verdicts: { id: correct, name: correct, make: correct, kind: "defective(D10)",
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Hummer | H3T 4WD | 2009,2010 | Standard Pickup Trucks 4WD' us_fueleconomy — the source's own class is a pickup truck"
+    - "raw: 'Hummer | H3T 4WD | 2010', 'H3T 4X4 | 2009' ca_nrcan"
+    - "catalog: car/hummer/h3 (the SUV) and van/hummer/h3 live; no truck-kind hummer exists"
+    - "https://en.wikipedia.org/wiki/Hummer_H3  # 'The Hummer H3T is a mid-size pickup truck that was available during the 2009 and 2010 model years' — a distinct model, not a trim of the H3"
+    - "https://www.fueleconomy.gov/feg/Find.do?action=sbs&id=29360  # EPA's own page for '2010 Hummer H3T 4WD' gives size class 'Standard Pickup Trucks 4WD'"
+  notes: >-
+    id correct — the H3T is a distinct Hummer model, not a trim of the H3.
+    kind: a pickup in the car kind. Recorded as D10 because the only two
+    sources both class it as a pickup truck, but note this sits inside the open
+    kind-boundary question (PROPOSAL-kind-boundary.md), and there is no
+    truck/hummer to route to, so the D10 remedy here is a route-not-drop.
+
+"car/hyundai/bayon":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { de: correct, es: correct, fi: correct, gb: correct,
+                              ie: correct, lu: correct, nl: correct } }
+  evidence:
+    - "raw: 'HYUNDAI | BAYON' n=4730 nl_rdw; 'HYUNDAI | BAYON' es_dgt, lu_snca; 'Hyundai Bayon' ie_tem20 (ie_cso)"
+    - "raw: 'BAYON Farmari (AC) 5ov 998cm3 A' n=800 fi_traficom; de_kba_fz10 202606 HYUNDAI block contains 'BAYON'"
+    - "raw: uk_dft 6 rows GenModel 'HYUNDAI BAYON', all BodyType=Cars"
+    - "https://en.wikipedia.org/wiki/Hyundai_Bayon  # 'The Hyundai Bayon is a five-door subcompact crossover SUV produced by the South Korean manufacturer Hyundai'"
+  notes: "car/hyundai/bayon-advance/-premium/-ultimate are live GB trim ids — a D8 cluster on those records, not on this one."
+
+"car/hyundai/elantra-wagon":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Hyundai | Elantra Wagon | 1996-2000 | Small Station Wagons' us_fueleconomy (5 rows); ca_nrcan 1997-2000"
+    - "catalog: car/hyundai/elantra live (ca,es,fi,gb,nl,ua,us), plus elantra-gt/-n/-touring/-blue"
+    - "raw: EPA lists BOTH 'Hyundai | Elantra' (Compact Cars) and 'Hyundai | Elantra Wagon' (Small Station Wagons) for every model year 1996-2000 — i.e. the Wagon string is EPA making a BODY distinction it needed, the same shape as its 'Tracker Van'"
+    - "https://en.wikipedia.org/wiki/Hyundai_Elantra  # the second generation's wagon is named 'Avante Touring' (South Korea) and 'Lantra Sportswagon' (Australia); the US 'Elantra Touring' is a LATER, different car (the i30 wagon, 2007+)"
+    - "https://en.wikipedia.org/wiki/Hyundai_Lantra  # the encyclopedia names the 2nd-gen wagon 'Avante Touring' (KR) / 'Lantra Sportswagon' (AU) and gives no North-American wagon name"
+    - "https://web.archive.org/web/19990420185743/http://www.hyundaiusa.com/  # RESOLVED HERE: Hyundai Motor America's OWN 1999 site lists its lineup keywords as 'Accent, elantra, Elantra, sonata, Sonata, elantra wagon, Elantra wagon, tiburon, Tiburon' — Hyundai USA did market an Elantra wagon"
+  notes: >-
+    This one started as unverifiable and was RESOLVED by going to the marque's
+    own archived site rather than settling for the encyclopedia, which says the
+    second-generation wagon was marketed as 'Avante Touring' (KR) and 'Lantra
+    Sportswagon' (AU) and names no US wagon at all. Hyundai Motor America's 1999
+    page proves the US name. Two residual caveats recorded rather than hidden:
+    (a) the marque source is a keywords list, so it is weak on CASING — it
+    writes both 'elantra wagon' and 'Elantra wagon', while EPA writes 'Elantra
+    Wagon'; (b) EPA separately lists a plain 'Elantra' for the same five model
+    years, so 'Wagon' is doing body-distinction work either way. id stays
+    defective: a body variant of the Elantra, with car/hyundai/elantra live.
+
+"car/hyundai/pony-gls":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'HYUNDAI | PONY GLS' n=1 nl_rdw and n=1 nz_nzta"
+    - "catalog: car/hyundai/pony ('Pony') live with fi,gb,nz,ua"
+    - "https://en.wikipedia.org/wiki/Hyundai_Pony  # trim ladders quoted verbatim: '1400: GLS/GL (UK: TL, GL, TLS, GLS)' and '1200: LE/L/GLX/GLS/GL/Standard' — GLS is a trim across generations"
+  notes: >-
+    GLS is Hyundai's trim ladder (GL/GLS), so this is a trim published as a
+    model with the nameplate present. Both sources carry exactly one row each,
+    so this record exists on the 2-source floor with n=2 total — thin even
+    before the altitude problem.
+
+"car/hyundai/tucson-ix35":
+  verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { es: correct, fi: correct, lu: correct, nl: correct } }
+  evidence:
+    - "raw: 'HYUNDAI | TUCSON,IX35' n=57, 'TUCSON,ix35' n=25, 'TUCSON IX35' n=9 nl_rdw; 'TUCSON IX35' + 'TUCSON, IX35' + 'TUCSON / IX35' es_dgt; six comma/slash/stop variants in lu_snca"
+    - "raw: 'TUCSON ix35 Monikayttoajoneuvo (AF) 5ov 1598cm3 A' fi_traficom — fi_traficom itself writes ix35 in LOWERCASE"
+    - "catalog: car/hyundai/ix35 ('ix35', 7 countries) shares three EXACT TAN extensions with this record: e11*2007/46*0104*00, e11*2007/46*0192*02, e11*2007/46*0192*03"
+    - "catalog: car/hyundai/tucson-ix-35 ('Tucson Ix 35', es+ua) and car/hyundai/tucson-ix35-lm ('Tucson IX35 Lm', es+fi+nl) also live — four ids for one vehicle"
+    - "overrides: renames.yml Hyundai block 'Tucson IX35: ix35  # compound register string, not a nameplate'; former_ids.yml maps tucson-ix35, tucson-ix-35 and tucson-ix35-lm to car/hyundai/ix35"
+    - "overrides/styling.yml line 97-98: 'DELIBERATELY NOT ADDED: IX. Jaguar Mark IX wants caps but Hyundai ix35 is officially LOWERCASE'"
+    - "https://en.wikipedia.org/wiki/Hyundai_Tucson  # infobox 'aka = Hyundai ix35 (2009-2015)' and, for the LM generation, 'aka = Hyundai ix35 / Hyundai Tucson ix'; body text 'The second-generation model was marketed as the Hyundai ix35 in several markets ... before reverting to Tucson'. ix35 and Tucson are ALTERNATIVE MARKET NAMES for one car, and the only combined form Hyundai used was Korea's 'Tucson ix' — never 'Tucson ix35'"
+  notes: >-
+    Same queued-not-shipped shape as car/faw/ehs9 and three-fold: this record
+    plus car/hyundai/tucson-ix-35 and car/hyundai/tucson-ix35-lm are all
+    declared former_ids of car/hyundai/ix35 in the tag's override layer while
+    all three are still published in the tag's catalog. The published
+    car/hyundai/ix35 carries no former_ids array, so the shipped data is
+    self-consistent and the fold is simply one build behind. The name verdict
+    stands on the project's own terms: styling.yml records that the official
+    casing is lowercase 'ix35', and fi_traficom writes it that way.
+
+"car/imperial/custom":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'IMPERIAL | CUSTOM' n=2 nl_rdw (+ 'CUSTOM SOUTHAMPTON' n=1)"
+    - "raw: 'M1 | Imperial | CUSTOM Sedan (AA) 4ov 6770cm3 A' n=1 fi_traficom — 6.8 L, consistent with a 1950s-60s Imperial V8"
+    - "https://en.wikipedia.org/wiki/Imperial_(automobile)  # standalone marque confirmed: 'the Imperial, beginning in 1955, would no longer be registered as a Chrysler; but as a separate make'; and 'The previously unnamed standard Imperial model gained the Imperial Custom name this year' (1959)"
+  notes: >-
+    3 registrations total across two sources; make=Imperial is right because
+    Imperial was a standalone Chrysler marque 1955-75. Word order checked and
+    NOT to be reordered: every source renders it 'Imperial Custom', including
+    the 1932 and 1953 Chrysler-era usages; no source renders 'Custom Imperial'.
+
+"car/jaguar/f-pace-30t":
+  verdicts: { id: "defective(D8)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Jaguar | F-PACE 30t | 2020' ca_nrcan and 'Jaguar | F-Pace 30t | 2020 | Small Sport Utility Vehicle 4WD' us_fueleconomy — BOTH sources render the suffix lowercase '30t'"
+    - "catalog: car/jaguar/f-pace live (10 countries); f-pace-25t, f-pace-p340, f-pace-p400, f-pace-s, f-pace-svr also live"
+    - "https://en.wikipedia.org/wiki/Jaguar_F-Pace  # the engine table rows read '30t AWD', '25t/P250 AWD', '20d AWD' — lowercase t, and one of a family of output designations (25t/35t/20d/25d/30d), not a nameplate"
+  notes: "name: the shipped '30T' contradicts both of its own sources, which agree on '30t'. id: an engine/output designation at nameplate altitude."
+
+"car/jaguar/f-type-p450":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Jaguar | F-TYPE P450 Coupe/Convertible [AWD] | 2022-2024' ca_nrcan (12 rows); 'Jaguar | F-Type P450 AWD R-Dynamic Coupe/Convertible' us_fueleconomy (12 rows)"
+    - "catalog: car/jaguar/f-type live (10 countries); f-type-r, f-type-s, f-type-svr, f-type-v8-s also live"
+    - "https://www.jaguarusa.com/all-models/f-type/index.html  # Jaguar's own site: 'with F-TYPE 75 and R75, F-TYPE P450 R-Dynamic comes as RWD' — P450 is a powertrain designation (5.0 supercharged V8, 450 PS) in a P300/P380/P575 family"
+  notes: "P450 is Jaguar's power designation, published as a model while the nameplate record exists (D8)."
+
+"car/jaguar/mark-8":
+  verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'JAGUAR | MARK 8' n=1 nl_rdw (+ 'MARK 8 B' n=1); 'JAGUAR | MARK 8' n=2 nz_nzta"
+    - "https://en.wikipedia.org/wiki/Jaguar_Mark_VIII  # 'The Jaguar Mark VIII is a luxury four-door automobile introduced by the Jaguar company of Coventry at the 1956 London Motor Show' — Roman numerals, 1956-58"
+    - "overrides/styling.yml line 97: 'Jaguar Mark IX wants caps' — the project already treats Jaguar Mark designations as Roman-numeral"
+    - "catalog: the jaguar make carries mark, mark-1, mark-2, mark-7, mark-10, mark-11, mark-i, mark-ix, mark-x, mk, mk-7-m, mk-i, mk-ix, mk-x, mk1, mk2, mk4, mk5, mk7, mk9, mk10, mk11, mkii — 23 live ids for the Mark/Mk series"
+  notes: >-
+    id: correct only in the narrow sense that no other live id spells this
+    particular car. The surrounding Mark/Mk cluster is a large unresolved D6
+    field (mark-7/mk7, mark-i/mk-i/mk1, mark-ix/mk-ix/mk9, mark-x/mk-x/mk10 are
+    each two or three ids for one car), and car/jaguar/mark-11 is almost
+    certainly a mis-read Mark II — flagged, not swept.
+
+"car/jaguar/xj42":
+  verdicts: { id: "defective(D6/D9)", name: "defective(D9)", make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: nl_rdw 'JAGUAR | JAGUAR XJ42' n=3 and 'JAGUAR | XJ 4.2' n=2; nz_nzta 'XJ4.2' n=11, 'XJ 4.2' n=5, 'XJ42' n=1, 'XJ4 2' n=1 — the record is dominated by DISPLACEMENT spellings, not by a type code"
+    - "raw: neighbouring nz rows 'XJ4.2C' n=2 / 'XJ42C' n=2 / 'XJ 4.2 AUTO' / 'XJ4.2 SLE' / 'XJ4.2S3' confirm '4.2' is being read as the engine"
+    - "catalog: car/jaguar/xj6 ('XJ6', raw set includes 'XJ 6', 'XJ6 SPORTS 4.0') and car/jaguar/xj8 ('XJ8') live; the 4.2-litre XJ is one of those two"
+    - "https://en.wikipedia.org/wiki/Jaguar_XK_(X100)  # 'XJ41 (coupe) and XJ42 (convertible)' — XJ42 is a PROJECT code"
+    - "https://en.wikipedia.org/wiki/Jaguar_F-Type  # 'The first F-type project at Jaguar was the XJ41/XJ42, begun in 1980 ... The project was canned in March 1990' — nothing was ever badged XJ42, and en.wikipedia has no XJ42 article (the title is a redlink)"
+    - "https://en.wikipedia.org/wiki/Jaguar_XJ40  # 'Model code: XJ40' for the car SOLD as XJ6/Sovereign — confirms the XJnn series are internal codes, not badges"
+  notes: >-
+    'XJ42' is not a Jaguar production nameplate — XJ40 is the internal code of
+    the 1986 XJ6 and XJ41/XJ42 were cancelled project codes. What this record
+    actually collects is 'XJ 4.2' with the decimal point folded out, i.e. an
+    engine-displacement string promoted to a type code. Because '4.2' spans the
+    XJ6 4.2 and the XJ8 4.2, the record is also under-specified, which is why
+    the id verdict is a duplicate AND a code-as-model finding.
+# ── records 48-82 ──────────────────────────────────────────────────────────
+"car/jeep/cherokee":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, es: correct, fi: correct, gb: correct,
+                              lu: correct, my: correct, nl: correct, nz: correct,
+                              ua: correct, us: correct } }
+  evidence:
+    - "raw: 'JEEP | CHEROKEE' n=1990 nl_rdw, n=2891 nz_nzta, n=2546 ua_mvs; 'JEEP | CHEROKEE' es_dgt, lu_snca; 'Jeep | Cherokee | jip' my_jpj"
+    - "raw: '5D CHEROKEE WAGON 2.4-LN81-4X4/265' n=125 fi_traficom; 'Jeep | Cherokee | 1996-2022' ca_nrcan (14 exact rows)"
+    - "raw: uk_dft GenModel 'JEEP CHEROKEE' 90 rows, 62 BodyType=Cars"
+    - "raw: us_fueleconomy carries only drive-qualified rows ('Cherokee 2WD/4WD', 74 PREFIX rows) — no bare 'Cherokee', which is EPA's convention"
+    - "https://en.wikipedia.org/wiki/Jeep_Cherokee  # 'The Jeep Cherokee is a line of sport utility vehicles (SUV) manufactured and marketed by Jeep over six generations' (1974-2012, 2014-2023, 2026-) — a nameplate, and the Grand Cherokee is correctly a separate line"
+  notes: "id: car/jeep/g-cherokee ('G. Cherokee', gb+nl) is a truncated Grand Cherokee — a defect on that record. The Grand Cherokee family is correctly separate."
+
+"car/kgm/actyon":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { de: correct, lu: correct, nl: correct } }
+  evidence:
+    - "raw: 'KGM | ACTYON' de_kba_fz10 202606 (sharedStrings KGM block: ACTYON, KORANDO, REXTON, TIVOLI, TORRES)"
+    - "raw: 'KG Mobility | ACTYON' lu_snca; 'KG MOBILITY | KG MOBILITY ACTYON' n=15 nl_rdw"
+    - "catalog: car/ssangyong/actyon carries TAN e4*2001/116*0115*00 (2001/116 framework = pre-2009 approval, the C100 Actyon 2005-11); THIS record carries e6*2018/858*00325*05/*06/*08/*09 (2018/858 framework = the 2024 KGM Actyon)"
+    - "https://en.wikipedia.org/wiki/KGM_Actyon  # 'The KGM Actyon is a mid-size crossover SUV produced by KG Mobility since 2024'"
+    - "https://en.wikipedia.org/wiki/SsangYong_Actyon  # the hatnote 'For the 2024 vehicle produced by KG Mobility, see KGM Actyon' and 'In 2024, SsangYong under the new name KG Mobility reused the Actyon nameplate for the KGM Actyon, an SUV based on the KGM Torres' — two vehicles, one nameplate, confirmed independently of the approval evidence"
+  notes: >-
+    A deliberate NOT-a-duplicate call. car/ssangyong/actyon and car/kgm/actyon
+    share a nameplate across a corporate rename but the approval frameworks
+    place them a generation apart, so two records are right. NOTE the sibling
+    pairs kgm/korando+ssangyong/korando, kgm/rexton+ssangyong/rexton,
+    kgm/tivoli+ssangyong/tivoli, kgm/torres+ssangyong/torres are the OPPOSITE
+    case (nameplates that simply continued through the rename) and look like a
+    four-record D12 field — flagged, outside this slice.
+
+"car/kia/niro-fe":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Kia | Niro FE | 2018-2026 | Small Station Wagons / Small Sport Utility Vehicle 2WD' us_fueleconomy (10 exact rows); same 10 model-years ca_nrcan"
+    - "catalog: car/kia/niro live with 12 countries; niro-ev, niro-ex, niro-touring also live"
+    - "https://en.wikipedia.org/wiki/Kia_Niro  # the first-generation specification table lists the trim ladder verbatim as 'FE, LX, EX, Touring' — FE is a Kia trim grade, correctly cased in the catalog"
+    - "https://www.fueleconomy.gov/feg/bymake/Kia2017.shtml  # EPA lists 'Niro', 'Niro FE' and 'Niro Touring' as separate entries — the classic register-artifact shape that mints trim records"
+  notes: >-
+    name correct (FE is Kia's own trim code, and both sources render it in
+    caps); what FE abbreviates is not stated by any source I reached, which does
+    not affect the rendering. id defective: a trim grade published as a model
+    with the nameplate record live in 12 countries — and note car/kia/niro-ex
+    and /niro-touring are two more rungs of the SAME ladder published as models.
+
+"car/kia/picanto":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { de: correct, es: correct, fi: correct, gb: correct,
+                              ie: correct, lu: correct, nl: correct, nz: correct, ua: correct } }
+  evidence:
+    - "raw: 'KIA | PICANTO' n=168573 nl_rdw, n=3394 nz_nzta, n=306 ua_mvs; 'KIA | PICANTO' es_dgt, lu_snca; 'Kia Picanto' ie_cso; de_kba_fz10 KIA block contains 'PICANTO'"
+    - "raw: 'Picanto Monikayttoajoneuvo (AF) 5ov 998cm3' n=1513 fi_traficom"
+    - "raw: uk_dft GenModel 'KIA PICANTO' 78 rows, 77 BodyType=Cars"
+    - "https://en.wikipedia.org/wiki/Kia_Picanto  # 'The Kia Picanto is a city car that has been produced by the South Korean car manufacturer, Kia, since 2003'"
+  notes: "car/kia/picanto-morning / -sa / -gpl are live comma-cell residues ('PICANTO, MORNING' = the Korean Morning name) — a D13 field on those records."
+
+"car/kia/sedona-sx":
+  verdicts: { id: "defective(D8)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Kia | Sedona SX | 2015-2018 | Minivan - 2WD' us_fueleconomy (4 rows); 'Kia | Sedona SX | 2015-2018' ca_nrcan — BOTH sources render 'SX' in caps"
+    - "catalog: car/kia/sedona live (ca,fi,gb,nl,nz,ua,us); car/kia/sedona-sxl ('Sedona Sxl') live with the same mis-casing"
+    - "https://en.wikipedia.org/wiki/Kia_Carnival  # 'In 2015, Kia expanded the trim levels to L, LX, EX, SX and Limited' — SX is a trim, rendered in caps"
+    - "https://www.fueleconomy.gov/feg/bymake/Kia2016.shtml  # EPA lists 'Sedona', 'Sedona SX', 'Sedona SXL', all caps"
+  notes: "name: shipped 'Sx' contradicts both sources. id: SX is a Kia trim grade with the nameplate record present."
+
+"car/kia/soul-ev":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, fi: correct, ua: correct } }
+  evidence:
+    - "raw: 'Kia | Soul EV | 2015-2019' ca_nrcan (5 exact rows, plus battery-size variants 'Soul EV (120/180 Ah)')"
+    - "raw: 'Soul EV Viistopera (AB) 5ov' fi_traficom; 'KIA | SOUL EV' n=48 ua_mvs"
+    - "catalog: car/kia/soul live separately (10 countries)"
+    - "https://en.wikipedia.org/wiki/Kia_Soul_EV  # 'The Kia Soul EV, also known as Kia e-Soul, is a battery electric subcompact crossover SUV manufactured by Kia' — its own nameplate, not a trim of the Soul"
+  notes: >-
+    Kept as correct rather than D8: the Soul EV was marketed as its own
+    nameplate, and the EV token is pinned as an acronym in styling.yml for
+    exactly the Kia EV family. Note for a future pass, not a defect here: Europe
+    badged the same car 'e-Soul' and EPA rendered it 'Soul Electric', so two
+    more spellings of this vehicle exist in the wild.
+
+"car/lada/111":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'LADA-VAZ | LADA 111' n=3 nl_rdw"
+    - "raw: 'M1 | Lada | 111   4ov 1596cm3' n=1 fi_traficom"
+    - "https://en.wikipedia.org/wiki/Lada_110  # 'The Lada 111 or VAZ-2111 is AvtoVAZ's front wheel drive car with a station wagon bodystyle' — 'Lada 111' is the marque's own rendering"
+  notes: >-
+    nl emits the make as 'LADA-VAZ' (a corporate/marque compound, D12 shape on
+    the source side) but the record is under the lada make, which is right.
+    Siblings car/lada/1117 and /1119 are Kalina type codes, a different family,
+    so no duplicate.
+
+"car/lamborghini/aventador-countach":
+  verdicts: { id: correct, name: "defective(D9/D5)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Lamborghini | Aventador Countach | 2022 | Two Seaters' us_fueleconomy and ca_nrcan — a single 2022 model year"
+    - "catalog: car/lamborghini/countach live (gb,nl,nz,us) — the 1974-90 car, a DIFFERENT vehicle, so this record is not a duplicate"
+    - "catalog: car/lamborghini/aventador live; EPA groups the LPI 800-4 under the Aventador platform for certification"
+    - "https://en.wikipedia.org/wiki/Lamborghini_Countach_LPI_800-4  # 'The Lamborghini Countach LPI 800-4 is a limited-production mid-engine hybrid-electric sports car'; the hatnote separates it from 'the original 1974-1990 model' — the marque's name carries no 'Aventador'"
+  notes: >-
+    id correct (nothing else denotes the 2022 car) but the published name is an
+    EPA certification concatenation: the marque's name carries no 'Aventador'
+    prefix. This is the same shape as aventador-sian-roadster below.
+
+"car/lamborghini/aventador-s-roadster":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Lamborghini | Aventador S Roadster | 2018 | Two Seaters' us_fueleconomy and ca_nrcan"
+    - "catalog: car/lamborghini/aventador, /aventador-s, /aventador-roadster all live"
+    - "https://en.wikipedia.org/wiki/Lamborghini_Aventador  # section heading 'Aventador S Roadster (2017-2021)' — a genuine Lamborghini model name, unlike the Sian/Countach derivatives which the same article files separately under 'Limited production derivatives'"
+  notes: "one of the few Aventador-prefixed EPA strings that IS the marque's own name — the contrast with aventador-countach and aventador-sian-roadster is what makes those two defects rather than a blanket rule."
+
+"car/lamborghini/aventador-sian-roadster":
+  verdicts: { id: correct, name: "defective(D5/D7)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Lamborghini | Aventador Sian Roadster | 2020,2021 | Two Seaters' us_fueleconomy and ca_nrcan"
+    - "catalog: car/lamborghini/aventador-sian ('Aventador Sian', ca+us) live for the coupe; no car/lamborghini/sian exists"
+    - "https://en.wikipedia.org/wiki/Lamborghini_Sián  # 'The Lamborghini Sian FKP 37 is a limited production mid-engine hybrid sports car'; 'In July 2020, Lamborghini unveiled the convertible roadster version of the Sian FKP 37 simply called the Sian Roadster' — with the acute accent throughout and no Aventador prefix"
+  notes: "'Aventador' is EPA's platform prefix and the marque's name carries an acute accent on the a (Sián Roadster); the catalog already honours accents elsewhere (styling.yml pins ë-C3/ë-C4)."
+
+"car/lancia/delta-hf-integrale":
+  verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'LANCIA | DELTA HF INTEGRALE' n=124 nl_rdw (+ 'LANCIA DELTA HF INTEGRALE' n=2, 'DELTA HF INTEGRALE 16V' n=85, 'DELTA HF INTEGRALE E2' n=36, 'DELTA HF INTEGRALE U9' n=13)"
+    - "raw: 'DELTA HF INTEGRALE Viistopera (AB) 4ov 1995cm3' n=2 fi_traficom; also 'Delta HF Integrale Evo', 'Delta HF Integrale 8v' with HF in caps"
+    - "catalog: car/lancia/delta-hf-intergrale ('Delta Hf Intergrale', fi+nl) — a MISSPELLING ('Intergrale') published as its own record; car/lancia/delta-integrale ('Delta Integrale', nl+nz) and car/lancia/delta-hf ('Delta Hf', fi+nl+nz) also live"
+    - "https://en.wikipedia.org/wiki/Lancia_Delta  # section headings are 'Delta HF integrale \"8V\"', 'Delta HF integrale 16v', 'Delta HF integrale \"Evoluzione\"' and the prose reads 'the Lancia Delta HF integrale' — HF UPPERCASE and integrale LOWERCASE, so BOTH tokens of the shipped 'Delta Hf Integrale' are wrong"
+  notes: >-
+    name: two errors in one string. HF is an initialism and every raw row in
+    both sources capitalises it, while Lancia renders the second word
+    LOWERCASE ("integrale") — so 'Delta Hf Integrale' matches neither the
+    sources nor the marque, and is pure title-caser output. id: four live ids
+    for the Delta HF integrale, one of them a transposition typo
+    ("Intergrale") — the typo is fold-distinct, so D6's detector cannot see it
+    either.
+
+"car/lancia/ypsilon":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { es: correct, fi: correct, lu: correct, nl: correct, ua: correct } }
+  evidence:
+    - "raw: 'LANCIA | YPSILON' n=2261 + 'LANCIA YPSILON' n=1796 nl_rdw; 'LANCIA | YPSILON' es_dgt, lu_snca; n=25 ua_mvs"
+    - "raw: '2D YPSILON HATCHBACK 95 1.4-843AXC1B06/239' n=7 fi_traficom"
+    - "https://en.wikipedia.org/wiki/Lancia_Ypsilon  # 'The Lancia Ypsilon is a supermini car manufactured and marketed by Lancia, currently in its fourth generation'"
+
+"car/ldv/v80":
+  verdicts: { id: correct, name: correct, make: correct, kind: "defective(D10)",
+              availability: { gb: correct, nz: correct } }
+  evidence:
+    - "raw: uk_dft GenModel 'LDV V80' = 21 model rows; BodyType split is 10 Light goods vehicles / 6 Buses and coaches / 3 Other vehicles / 1 Heavy goods vehicles / 1 Cars"
+    - "raw: 'LDV | V80' n=25 nz_nzta — but the NZTA dataset is 'passenger-car-van', i.e. car and van are not separable in it"
+    - "catalog: van/ldv/v80 (gb,nl) and bus/ldv/v80 (gb,nz) already exist for the same nameplate"
+    - "https://en.wikipedia.org/wiki/Maxus_V80  # 'The Maxus V80 is exported to English speaking countries under the LDV brand'; bodies are van, 'Minibus (passenger van) version providing 10, 12, 15 or 17 seats' and chassis cab — no car body exists"
+    - "https://en.wikipedia.org/wiki/LDV_V80  # redirects to LDV Maxus: 'The LDV Maxus is a light commercial van model'"
+  notes: >-
+    The car-kind record rests on exactly one GB 'Cars' row plus an NZ dataset
+    that cannot distinguish car from van. The V80 is a light commercial
+    van/minibus and both other kinds already hold it, so this is registry
+    kind-noise of the same vehicle — the caddymaxi class named in D10 and in
+    former_ids.yml's own comment.
+
+"car/lloyd/arabella":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'LLOYD | ARABELLA' n=2 nl_rdw"
+    - "raw: 'M1 | Lloyd | Arabella Sedan (AA) 2ov 897cm3' n=1 fi_traficom — 897 cc matches the Arabella"
+    - "https://en.wikipedia.org/wiki/Lloyd_Arabella  # 'The Lloyd Arabella was a passenger car produced by the Borgward Group in West Germany between 1959 and 1961'"
+  notes: "the same car was marketed as the BORGWARD Arabella from 1961-63, so a borgward/arabella record would be a legitimate second marque pair rather than a duplicate — noted so a future dedupe pass does not collapse them."
+
+"car/lucid/air-sapphire":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Lucid | Air Sapphire AWD | 2024-2026 | Large Cars' us_fueleconomy (3 rows); 'Lucid | Air Sapphire AWD | 2024,2025' ca_nrcan"
+    - "catalog: car/lucid/air, /air-pure, /air-touring, /air-dream-p live"
+    - "https://en.wikipedia.org/wiki/Lucid_Air  # quotes Lucid's own release title: 'Lucid Announces Final Production Specifications for the Lucid Air Sapphire'"
+  notes: "both sources carry only the AWD-suffixed form; the drive suffix is correctly stripped. Lucid's own press rendering is 'Lucid Air Sapphire', so 'Air Sapphire' under make lucid is exact."
+
+"car/maserati/430":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, gb: correct, nl: correct, nz: correct, us: correct } }
+  evidence:
+    - "raw: 'MASERATI | 430' n=8 nl_rdw (+ '430 U9' n=19, '430 4V E2' n=3), n=4 nz_nzta"
+    - "raw: uk_dft 'Cars | MASERATI | MASERATI 430 | 430' and '430 AUTO'"
+    - "raw: '4D SEDAN 430-332B28A-AUTOMATIC/2600' fi_traficom; 'Maserati | 430 | 1989-1991 | Subcompact Cars' us_fueleconomy"
+    - "https://en.wikipedia.org/wiki/Maserati_Biturbo  # 'In 1986, Maserati launched the high-performance version of the Biturbo saloon called the 430' — a genuine Biturbo-family nameplate"
+  notes: "bare numerals are legitimate in the car kind only when they are the marque's designation; NAMING.md 7.2 — here five independent registers plus the marque history agree on '430'."
+
+"car/maxus/mifa-9":
+  verdicts: { id: correct, name: "defective(D7)", make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'MAXUS | MAXUS MIFA 9' n=2 + 'MAXUS | MIFA 9' n=1 nl_rdw — the register writes MIFA in caps"
+    - "raw: 'M1 | Maxus | MAXUS MIFA 9 Monikayttoajoneuvo (AF) 5ov' n=5 fi_traficom — also caps"
+    - "https://www.maxus.de/de  # the maker's own embedded model records read '\"label\":\"MIFA 9\"' with model codes 'MIFA9' — all-caps MIFA is the marque's rendering"
+  notes: >-
+    MIFA is an acronym; the maker's own site and both registers capitalise it,
+    and the shipped 'Mifa 9' is title-caser output. NOTE for whoever fixes it:
+    en.wikipedia files this car as 'Maxus G90' and mixes 'Mifa 9'/'MIFA 9', so
+    Wikipedia is NOT the casing authority here — maxus.de is.
+
+"car/mazda/cx-70-sc":
+  verdicts: { id: "defective(D8)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Mazda | CX-70 SC 4WD | 2026 | Standard Sport Utility Vehicle 4WD' us_fueleconomy; 'Mazda | CX-70 SC PHEV 4WD | 2026' ca_nrcan — both render 'SC' in caps"
+    - "catalog: car/mazda/cx-70 ('CX-70', ca+nl+ua+us) live"
+    - "https://www.mazdausa.com/vehicles/cx-70-phev  # Mazda's OWN trim selector lists 'PHEV SC' and 'PHEV SC Plus', with copy '2026 Mazda CX-70 PHEV SC Polymetal Gray' — SC is a real Mazda trim, NOT a certification artifact"
+    - "https://www.fueleconomy.gov/ws/rest/vehicle/50266  # the EPA record behind the string: model 'CX-70 SC 4WD', atvType 'Plug-in Hybrid', phevBlended true — it resolves to the PHEV SC trim (2025 used 'CX-70 4WD PHEV' instead)"
+    - "https://www.mazdausa.com/vehicles/cx-70  # the ICE trims are '3.3 Turbo Preferred/Premium/Premium Plus', '3.3 Turbo S Premium/Premium Plus' — the nameplate is 'CX-70'"
+  notes: >-
+    HYPOTHESIS REVERSED, recorded because it matters for the fix: I expected 'SC'
+    to be an EPA certification artifact and it is not — it is a genuine Mazda
+    PHEV trim name, sourced from mazdausa.com. So the D9 (code-as-model) reading
+    is WRONG here and any rule written to strip 'SC' as register noise would be
+    wrong too. What remains is exactly two defects: the casing ('Sc' contradicts
+    Mazda and both sources, which write 'SC') and the altitude (a trim published
+    as a model while car/mazda/cx-70 holds the nameplate).
+
+"car/mcc/smart":
+  verdicts: { id: "defective(cross-make duplicate)", name: "defective(D4/D5)",
+              make: "defective(D11)", kind: correct,
+              availability: { gb: correct, nz: correct } }
+  evidence:
+    - "raw: uk_dft Make='MCC' GenModel='MCC SMART' 35 rows, 29 of them BodyType=Cars, Model strings 'SMART PASSION AUTO (LHD)', 'SMART CROSSBLADE AUTO', 'SMART PASSION CDI SEMI-AUTO' — the marque sits in the model column"
+    - "raw: 'MCC | SMART COUPE' n=44, 'MCC | SMART K' n=32, 'MCC | SMART CABRIO' n=3, 'MCC | SMART FORTWO' n=1 nz_nzta — no bare 'SMART' row exists in either source"
+    - "catalog: car/smart/fortwo, /city, /coupe, /cabrio and car/smart/mcc (raw form 'Smart MCC') all live; smart/fortwo, smart/city and smart/mcc share the approval family e1*98/14*0080 (*04/*15/*18/*19/*20/*23 vs *07 vs *12/*13)"
+    - "NAMING.md: 'builder in the make column, marque in the model column — the marque wins; needs a cross-make move'"
+    - "https://en.wikipedia.org/wiki/Smart_(marque)  # Smart is 'a Swiss born-German automotive marque established in 1994'; MCC was 'a joint venture between SMH ... and Daimler-Benz', a wholly owned Daimler subsidiary from 1998. The actual first model names: 'The original being the City Coupe that would be renamed the ForTwo'"
+  notes: >-
+    The mirror image of car/smart/mcc: one register puts the builder (MCC =
+    Micro Compact Car AG) in the make column and the marque in the model
+    column, the other does the reverse, and the catalog published both. The
+    shared 98/14*0080 approval family is direct proof that all of these are the
+    W450 fortwo/City-Coupe. availability recorded correct because both registers
+    genuinely evidence these vehicles; the defect is entirely in
+    id/name/make. Secondary D23: the make display ships as 'Mcc' (should be
+    'MCC' if the make survives at all).
+
+"car/mercedes-benz/280-te":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'MERCEDES-BENZ | 280 TE' n=91 (+ '280TE' n=2) nl_rdw; '280 TE' n=4 + '280TE' n=4 nz_nzta"
+    - "raw: '280 TE Farmari (AC) 5ov 2799cm3 A' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Mercedes-Benz_W123  # technical-data row '280 TE | 123.093 | 5/78-8/78'; 'T for Tourismus und Transport (estate/station wagon)'"
+  notes: "genuine W123 estate designation with the space before the suffix; the spaced form is dominant 91:2 in NL, so the canonical is right."
+
+"car/mercedes-benz/300-gd":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'MERCEDES-BENZ | 300 GD' n=187 + '300GD' n=80 nl_rdw; '300 GD' n=1 nz_nzta"
+    - "raw: '3D GELANDEWAGEN 300GD-460.3-4X4/2400' n=7 with kaupallinenNimi '300 GD' fi_traficom"
+    - "catalog: van/mercedes-benz/300-gd also live — the W460 was homologated M1 and N1, so this cross-kind pair is legitimate (PRD-QUALITY 10.1)"
+    - "https://en.wikipedia.org/wiki/Mercedes-Benz_G-Class  # engine table '300 GD | 1979-1991 | I5 (OM 617.931, OM 617.932)', present in W460 and continuing into W461; D denotes diesel"
+
+"car/mercedes-benz/300-te":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct, us: correct } }
+  evidence:
+    - "raw: 'MERCEDES-BENZ | 300 TE' n=71 + '300TE' n=4 nl_rdw; '300TE' n=22 + '300 TE' n=5 nz_nzta"
+    - "raw: 'Mercedes-Benz | 300TE | 1988-1993 | Midsize-Large Station Wagons' us_fueleconomy (6 rows)"
+    - "raw: '5D KOMBI 300TE-AUTOMATIC-124090/280' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Mercedes-Benz_W124  # specification row '124.090 | 300 TE | 3.0 L M103.983 I6 | 11.1985-10.1992' (the estate is the S124); note one prose list in the same article compresses it to '300TE' without the space, but the spec tables and Mercedes' convention use the space"
+  notes: "NL prefers the spaced form (71:4) while NZ and the US prefer the fused one — a case-pair/spacing skew that disagrees BY SOURCE; the spaced form is the marque's."
+
+"car/merkur/scorpio":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, us: correct } }
+  evidence:
+    - "raw: live opendata.rdw.nl merk=Merkur -> [{'merk':'Merkur','handelsbenaming':'SCORPIO','count_kenteken':'1'},{'...':'XR4TI','count_kenteken':'2'}] (queried 2026-07-26)"
+    - "raw: 'Merkur | Scorpio | 1988,1989 | Midsize Cars' us_fueleconomy"
+    - "raw: nl_rdw inrichting for the row = sedan (matches body_types)"
+    - "https://en.wikipedia.org/wiki/Merkur_Scorpio  # 'The Merkur Scorpio is a mid-size luxury car produced by Ford of Europe and sold in North America as the flagship of the Ford Motor Company's new Merkur brand'"
+  notes: >-
+    nl rests on a single registration. Note the RDW make string is mixed-case
+    'Merkur' where almost every other RDW merk is upper-case, so a
+    case-sensitive make probe against the live API misses it entirely — a
+    source-handling hazard, not a record defect.
+
+"car/mg/b-gt":
+  verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'MG | B GT' n=211, 'B-GT' n=12, 'B G T' n=3, 'B.GT' n=3, 'MG B-GT' n=1 nl_rdw; 'BGT' n=440, 'B GT' n=98, 'B-GT' n=3 nz_nzta; 'B GT Coupe (AD) 2ov 1798cm3' fi_traficom"
+    - "catalog: car/mg/mgb-gt ('Mgb GT', fi+lu+nl+nz) live with raw set 'MG MGB GT | MGB GT COUPE | MGB-GT COUPE'; car/mg/mgb ('MGB') also live"
+    - "overrides/renames.yml MG block: 'Bgt: B GT   # register shorthand for the MGB GT' — the project's own comment identifies these as the same car"
+    - "overrides/styling.yml line 60: 'MGB: MGB  # same closed-token rule (en.wikipedia MG_MGB)'"
+    - "https://en.wikipedia.org/wiki/MG_MGB  # 'later variants include the MGB GT three-door 2+2 coupe (1965-1980)'; 'The fixed-roof MGB GT was introduced in October 1965' and 'Relatively few components differed' from the roadster — same vehicle family, and the marque's rendering is 'MGB GT'"
+  notes: >-
+    The clearest instance of the detector gap flagged in the summary:
+    fold('B GT')='BGT' and fold('Mgb GT')='MGBGT' are unequal, so
+    find_duplicate_spellings is structurally silent, and the curation layer
+    maintains BOTH as canonicals (a rename block folding B G T/B.gt/Bgt into
+    'B GT' sits a few lines from one folding Mgb GT into 'MGB GT'). The marque's
+    rendering is 'MGB GT' and the project already pins MGB as a closed token.
+
+"car/mg/magna":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: "unverifiable(single register row under make MG; NZ carries a large Mitsubishi Magna fleet, so a mis-keyed make cannot be excluded from register data alone)" } }
+  evidence:
+    - "raw: 'MG | MG MAGNA' n=1 nl_rdw — the row names the marque explicitly, so the attribution is safe"
+    - "raw: 'MG | MAGNA' n=1 nz_nzta — one row, no marque token, in a register where MAGNA is overwhelmingly a Mitsubishi nameplate"
+    - "https://en.wikipedia.org/wiki/MG_Magna  # 'The MG F-type (also known as the MG Magna) is a six-cylinder-engined car that was produced by MG from October 1931 to 1932', with the L-type Magna 1933-34 — a genuine MG nameplate"
+    - "https://en.wikipedia.org/wiki/Mitsubishi_Magna  # 'produced over three generations between 1985 and 2005 by Mitsubishi Motors Australia Limited' — an unrelated nameplate sharing the word, which is exactly why the single NZ row cannot be attributed"
+  notes: >-
+    Recorded honestly as unverifiable rather than stretched: the record's second
+    source is a single ambiguous row, and with only two sources at n=1 each the
+    whole record hangs on it.
+
+"car/morris/1000-traveller":
+  verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'MORRIS | 1000 TRAVELLER' n=14 nl_rdw, n=3 nz_nzta"
+    - "catalog: car/morris/minor-1000-traveller ('Minor 1000 Traveller', nl+nz) live — the same car; car/morris/minor ('Minor') folds 'MINOR ESTATE TRAVELER' and 'MINOR SALOON 1000'; car/morris/1000 ('1000') also live"
+    - "https://en.wikipedia.org/wiki/Morris_Minor  # image caption 'Morris Minor 1000 Traveller'; series heading 'Minor 1000'; 'An estate version of the Morris Minor was introduced in 1952, known as the Morris Traveller' — 'Minor' is load-bearing and '1000 Traveller' alone is not a Morris name"
+  notes: >-
+    Another token-difference duplicate invisible to the fold (1000TRAVELLER vs
+    MINOR1000TRAVELLER). Morris's designation carries the 'Minor' that the
+    make-prefix logic had no reason to keep. Secondary altitude point: the
+    Traveller is the ESTATE BODY of the Minor 1000, so even the correctly-named
+    car/morris/minor-1000-traveller sits below nameplate altitude.
+
+"car/morris/mini-cooper":
+  verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'MORRIS | MINI COOPER' n=12 nl_rdw, n=30 nz_nzta (+ 'MINI COOPER S' n=9/n=11 on the separate car/morris/mini-cooper-s record)"
+    - "catalog: car/morris/cooper ('Cooper', nl+nz) live — a Morris 'Cooper' is the Mini Cooper, so the two ids denote one car; car/morris/mini also live"
+    - "https://en.wikipedia.org/wiki/Mini  # 'The Austin Mini Cooper and Morris Mini Cooper debuted in September 1961' — UNHYPHENATED, which is what the catalog ships"
+  notes: >-
+    name correct, and deliberately so: I went looking for a hyphenated period
+    rendering ('Morris Mini-Cooper') and could not substantiate one from any
+    marque-controlled source, so it is not asserted. The only 'Mini-Cooper'
+    occurrence found was an en.wikipedia redirect note, which is an editorial
+    artifact, not marque evidence.
+
+"car/nash/ambassador":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'NASH | AMBASSADOR' n=2 nl_rdw, n=8 nz_nzta"
+    - "https://en.wikipedia.org/wiki/Nash_Ambassador  # 'The Nash Ambassador is a full-size automobile produced by Nash Motors from 1927 until 1957'"
+  notes: "car/nash/ambassador-six and -super are live sub-series ids (D8 shape on those records)."
+
+"car/nash/metropolitan":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'NASH | METROPOLITAN' n=10 (+ 'METRO POLITAN' n=1, 'NASH METROPOLITAN' n=1) nl_rdw; n=28 nz_nzta"
+    - "raw: 'Metropolitan Coupe (AD) 2ov 1489cm3' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Nash_Metropolitan  # 'The Nash Metropolitan is an American automobile marketed from 1953 until 1962, manufactured in England'"
+
+"car/nio/et7":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'NIO | ET7' n=295 nl_rdw"
+    - "raw: 'M1 | NIO | ET7 Sedan (AA) 4ov' n=2 + '4ov A' n=1 fi_traficom"
+    - "https://www.nio.com/  # the marque's own site: title 'NIO - Home', 'NIO Brand and Products', 'NIO House', and the model asset 'ET7.svg' alt='ET7' linking to /et7"
+    - "https://en.wikipedia.org/wiki/Nio_Inc.  # 'Nio Inc. (... stylized as NIO)' — note Wikipedia TITLES it 'Nio ET7', but the manufacturer's own site is unambiguously all-caps"
+  notes: >-
+    Record-level claims all correct. MAKE-LEVEL flag (not a defect of this
+    record): the make display name ships as 'Nio' while the brand is stylised
+    NIO in all capitals — PRD-QUALITY D23, whose remedy is a
+    makes/aliases.yml identity pin. Same shape as the already-fixed Ktm/Bsa/Ldv
+    cases.
+
+"car/nissan/axxess":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Nissan | Axxess | 1990-1992 | Special Purpose Vehicle 2WD / Special Purpose Vehicles' us_fueleconomy (3 exact rows, + 3 'Axxess AWD')"
+    - "raw: 'Nissan | Axxess | 1995' ca_nrcan"
+    - "https://en.wikipedia.org/wiki/Nissan_Axxess  # redirects to Nissan Prairie; 'Axxess' (double X) is the North-American name of the second-generation model"
+
+"car/nissan/maxima-qx":
+  verdicts: { id: "defective(D6)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: '4D MAXIMA QX SEDAN 3.0 AUTOMATIC-CCUA33/275' n=483 fi_traficom (15 exact rows, all caps QX)"
+    - "raw: 'NISSAN | NISSAN MAXIMA QX' n=116 + 'MAXIMA QX' n=1 nl_rdw"
+    - "catalog: car/nissan/maxima ('Maxima', 8 countries) carries TAN e1*98/14*0136*03 while this record carries e1*98/14*0136*00 — one approval family, i.e. the same A32/A33 car under its European name"
+    - "https://en.wikipedia.org/wiki/Nissan_Maxima  # A32 infobox 'aka = ... Nissan Maxima QX (EU) | Nissan QX (UK)'; body 'This generation was also sold as the Maxima QX in Europe'; A33 infobox 'aka = Nissan Cefiro (A33B) / Nissan Maxima QX (Europe)' — caps QX, generations A32 (1994-99) and A33 (1999-2003)"
+  notes: >-
+    name: QX is an initialism and both sources capitalise it; 'Qx' is
+    title-caser output. id: the shared 98/14*0136 approval family is the proof
+    — 'Maxima QX' was the European market name of the car car/nissan/maxima
+    already publishes.
+
+"car/nissan/micra":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, de: correct, es: correct, fi: correct,
+                              gb: correct, ie: correct, lu: correct, nl: correct,
+                              nz: correct, ua: correct } }
+  evidence:
+    - "raw: 'NISSAN | NISSAN MICRA' n=46501 + 'MICRA' n=200 nl_rdw; n=3007 nz_nzta; n=822 ua_mvs; 'NISSAN MICRA' es_dgt, lu_snca; 'Nissan Micra' ie_cso; de_kba_fz10 NISSAN block contains 'MICRA'"
+    - "raw: 'NISSAN MICRA Monikayttoajoneuvo (AF) 4ov 1198cm3' n=3598 fi_traficom; 'Nissan | Micra | 2015-2019' ca_nrcan"
+    - "raw: uk_dft GenModel 'NISSAN MICRA' 225 rows, 201 BodyType=Cars"
+    - "https://en.wikipedia.org/wiki/Nissan_Micra  # 'The Nissan Micra, also known as the Nissan March, is a supermini car'"
+
+"car/nissan/xterra-v6":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Nissan | Xterra V6 | 2000' ca_nrcan (+ 'Xterra V6 4X4' 2000-2004); 'Nissan | Xterra V6 2WD/4WD | 2000-2004 | Sport Utility Vehicle' us_fueleconomy (10 rows)"
+    - "catalog: car/nissan/xterra ('Xterra', ca+fi+nl+nz+ua+us) live"
+    - "https://en.wikipedia.org/wiki/Nissan_Xterra  # 'The base XE featured a 143 hp KA24DE I4' with an optional '170-horsepower 3.3 L VG33E SOHC V6 engine' — trims were XE/SE/SE S/C, so V6 is the engine and never a nameplate"
+    - "https://www.fueleconomy.gov/feg/bymake/Nissan2001.shtml  # EPA carries 'Xterra 2WD', 'Xterra V6 2WD', 'Xterra V6 4WD' side by side — the engine is being used to split certification entries"
+  notes: "V6 is an engine descriptor; NAMING.md treats engine size as a car-kind spec that gets collapsed (the 'Leaf 40KWH -> Leaf' precedent). kind correct — EPA classes it SUV."
+
+"car/nissan/z-nismo":
+  verdicts: { id: "defective(D8)", name: "defective(D7)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Nissan | Z NISMO | 2024,2025 | Two Seaters' us_fueleconomy — caps NISMO; ca_nrcan has 'Z NISMO' 2024,2025 and 'Z Nismo' 2026 (the source itself is inconsistent, majority caps)"
+    - "catalog: car/nissan/z ('Z', ca+nl+nz+ua+us) live"
+    - "https://www.nissan.co.jp/Z/  # Nissan's own Japanese site: alt text 'FAIRLADY Z NISMO', pricing line 'フェアレディZ NISMO', and a GRADE-RANKING table row 'NISMO' — all-caps, and listed as a grade alongside the other Z grades"
+  notes: >-
+    NISMO is Nissan Motorsport's initialism and the dominant source rendering is
+    all-caps (4 of 6 rows). Recorded as D7 on name and D8 on id (a grade of the
+    Z with the nameplate record present) — the CVO/GSX precedent in
+    styling.yml's acronym list is the same shape.
+# ── records 83-100 ─────────────────────────────────────────────────────────
+"car/oldsmobile/cutlass-cruiser-wagon":
+  verdicts: { id: "defective(D6/D8)", name: "defective(D9)", make: correct, kind: correct,
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Oldsmobile | Cutlass Cruiser Wagon | 1984,1985 | Midsize (-Large) Station Wagons' us_fueleconomy; 'Oldsmobile | Cutlass Cruiser Wagon | 1995' ca_nrcan"
+    - "catalog: car/oldsmobile/cutlass-cruiser ('Cutlass Cruiser', fi+nl+us) live"
+    - "https://en.wikipedia.org/wiki/Oldsmobile_Cutlass  # 'a flat-top station wagon called the Cutlass Cruiser'; the sub-series are 'Cutlass Cruiser and Cutlass Cruiser Brougham station wagons' — Oldsmobile's suffixes are Brougham/LS, never 'Wagon'"
+  notes: >-
+    The Cutlass Cruiser IS Oldsmobile's station wagon, so the trailing 'Wagon'
+    is a redundant EPA class word, and the un-suffixed nameplate record already
+    exists with the same US source. Ten further Cutlass ids are live
+    (cutlas, cutlass, cutlass-4-4-2, brougham, calais, ciera, s,
+    salon-brougham, supreme, supreme-brougham) — a wider D6/D8 field.
+
+"car/opel/manta-400":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, lu: correct, nl: correct } }
+  evidence:
+    - "raw: 'OPEL | MANTA 400' n=4 nl_rdw; 'OPEL | MANTA 400' lu_snca"
+    - "raw: 'M1 | Opel | Manta 400 Sedan (AA) 2ov 2393cm3' n=1 fi_traficom — 2.4 L matches the Group B homologation car"
+    - "https://en.wikipedia.org/wiki/Opel_Manta  # 'The Manta 400 was produced in a total of 245 specimens following the homologation regulations by FISA' — a Group B homologation model, not a trim"
+  notes: "the 400 is a homologation model in its own right, not a trim, so id stays correct alongside car/opel/manta."
+
+"car/opel/olympia":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { fi: correct, gb: correct, nl: correct } }
+  evidence:
+    - "raw: 'OPEL | OLYMPIA' n=190 (+ 'OPEL OLYMPIA' n=1) nl_rdw"
+    - "raw: uk_dft 'Cars | OPEL | OPEL OLYMPIA | OLYMPIA' and 'Light goods vehicles | ... | OLYMPIA'"
+    - "raw: 'Olympia Sedan (AA) 2ov 1477cm3' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Opel_Olympia  # 'The Opel Olympia is a compact car by German automaker Opel ... from 1935 to 1940, and after World War II continued from 1947 to 1953'"
+  notes: "distinct from the Olympia Rekord, which the catalog holds separately (olympia-record, olympia-rekord, olympia-rekord-1700, olympia-rekord-r3, rekord-olympia — themselves a D6 field)."
+
+"car/panther/lima":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'PANTHER | LIMA' n=3 nl_rdw (+ 'LIMA MK1', 'LIMA SERIE II', 'LIMA 2300 SPORTSCAR'), n=3 nz_nzta"
+    - "raw: nl_rdw inrichting=cabriolet, matching body_types convertible"
+    - "https://en.wikipedia.org/wiki/Panther_Lima  # 'The Panther Lima is a retro-styled roadster built in the 1970s built by Panther Westwinds'"
+
+"car/perodua/myvi":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { gb: correct, my: correct } }
+  evidence:
+    - "raw: uk_dft GenModel 'PERODUA MYVI' — 'Cars | MYVI EZI AUTO', 'Cars | MYVI SXI', 'Light goods vehicles | MYVI EZI AUTO'"
+    - "raw: 'Perodua | Myvi | motokar' my_jpj"
+    - "https://en.wikipedia.org/wiki/Perodua_Myvi  # 'The Perodua Myvi is a subcompact car/supermini (B-segment) produced by the Malaysian manufacturer Perodua since 2005'"
+
+"car/peugeot/107":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { es: correct, fi: correct, gb: correct, lu: correct,
+                              nl: correct, nz: correct, ua: correct } }
+  evidence:
+    - "raw: 'PEUGEOT | PEUGEOT 107' n=102197 + '107' n=205 nl_rdw; n=7 nz_nzta; n=232 ua_mvs; 'PEUGEOT | 107' es_dgt and lu_snca"
+    - "raw: 'PEUGEOT 107 Viistopera (AB) 4ov 998cm3' n=273 fi_traficom"
+    - "raw: uk_dft GenModel 'PEUGEOT 107' 24 rows, 21 BodyType=Cars"
+    - "https://en.wikipedia.org/wiki/Peugeot_107  # 'The Peugeot 107 is a city car produced by French automaker Peugeot, launched in June 2005, and produced until 2014'"
+  notes: "car/peugeot/107-1-0i ('107 1.0I', es+nl) is a live engine-string sibling — D8/D9 on that record."
+
+"car/peugeot/604-sl":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'PEUGEOT | 604 SL' n=1 + '604SL' n=1 nl_rdw (+ '604 SL A37', '604 SL AUTOMATIQUE'); 'PEUGEOT | 604 SL' n=1 nz_nzta"
+    - "catalog: car/peugeot/604 ('604', fi+gb+nl+nz+us) live; car/peugeot/604-sti and /604-d-turbo also live"
+    - "https://en.wikipedia.org/wiki/Peugeot_604  # 'It was originally available in a single specification, as the 604 SL' — SL is the launch trim, with TI/STi/GTi/D Turbo/Grand Comfort as siblings; the nameplate is 604"
+  notes: "SL is a 604 trim level; the nameplate record exists in five countries. Total evidence here is 2 registrations."
+
+"car/peugeot/bipper":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { es: correct, gb: correct, lu: correct, nl: correct, ua: correct } }
+  evidence:
+    - "raw: 'PEUGEOT | PEUGEOT BIPPER' n=641 + 'BIPPER' n=1 nl_rdw; 'PEUGEOT | BIPPER' es_dgt and lu_snca"
+    - "raw: 'PEUGEOT | BIPPER | ЛЕГКОВИЙ' n=65 AND '| ВАНТАЖНИЙ' n=42 ua_mvs — the UA register itself splits it between passenger and goods"
+    - "raw: uk_dft GenModel 'PEUGEOT BIPPER' 23 rows, 11 BodyType=Cars vs 10 Light goods — and the Cars rows are 'BIPPER TEPEE ...' (the M1 passenger version)"
+    - "catalog: van/peugeot/bipper live for the N1 side"
+    - "https://en.wikipedia.org/wiki/Fiat_Fiorino  # 'Citroen Nemo and Peugeot Bipper share the same architecture and bodywork under a joint venture arrangement' — the Bipper is the Peugeot-marque 225-platform vehicle, so make and name are the marque's own"
+  notes: >-
+    kind kept correct, unlike car/ldv/v80: the Bipper Tepee is a genuine M1
+    passenger variant, the GB plurality is Cars, and the van kind holds the
+    commercial half — a legitimate cross-kind pair rather than leakage.
+
+"car/plymouth/laser":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, ua: correct, us: correct } }
+  evidence:
+    - "raw: 'PLYMOUTH | LASER' n=1 nl_rdw (+ 'LASER U9' n=2, 'LASER RS TWIN CAM 16 VALVE' n=1); 'PLYMOUTH | LASER' n=1 ua_mvs"
+    - "raw: 'Plymouth | Laser | 1990-1994 | Subcompact Cars' us_fueleconomy (5 rows)"
+    - "https://en.wikipedia.org/wiki/Plymouth_Laser  # 'The Plymouth Laser is a two-door 2+2 sports coupe sold by Plymouth from 1989 until 1994'"
+
+"car/plymouth/neon":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { ca: correct, ua: correct, us: correct } }
+  evidence:
+    - "raw: 'Plymouth | Neon | 1995-2000 | Compact Cars' us_fueleconomy (7 rows); 'Plymouth | Neon | 1995-1998' + 'Neon #' ca_nrcan"
+    - "raw: 'PLYMOUTH | NEON' n=7 ua_mvs"
+    - "https://en.wikipedia.org/wiki/Plymouth_Neon  # 'In the United States and Canada, it was sold as either a Dodge or a Plymouth' — the Plymouth badge ran 1995-2001, matching the source years"
+
+"car/plymouth/valiant-scamp":
+  verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+              availability: { fi: correct, nl: correct } }
+  evidence:
+    - "raw: 'PLYMOUTH | VALIANT SCAMP' n=11 nl_rdw (+ 'VALIANT SCAMP OF VALIANT BROUGHAM' n=2)"
+    - "raw: 'M1 | Plymouth | Valiant Scamp  2ov 5211cm3 A' n=1 fi_traficom"
+    - "catalog: car/plymouth/scamp ('Scamp', fi+nl+nz, raw 'PLYMOUTH SCAMP') and car/plymouth/valiant ('Valiant', fi+nl+nz) both live"
+    - "https://en.wikipedia.org/wiki/Plymouth_Valiant  # 'Beginning in 1971, a badge-engineered version of the 111 in wheelbase Dodge Dart Swinger called the Valiant Scamp was offered'"
+    - "raw: DISAMBIGUATED BY ENGINE SIZE. en.wikipedia.org/wiki/Plymouth_Scamp lists TWO unrelated Scamps (the 1971-76 A-body coupe and a 1983 Horizon-based coupe utility), so a bare 'Scamp' id is ambiguous in principle. Measured: fi_traficom's car/plymouth/scamp row is 'SCAMP Coupe (AD) 2ov 5190cm3 A' and its car/plymouth/valiant-scamp row is 'Valiant Scamp 2ov 5211cm3 A' — both the 318 V8 A-body, and the 1983 car was a 1.7/2.2 four. The two ids therefore do denote one vehicle."
+  notes: >-
+    name: 'Valiant Scamp' is the marque's own 1971 badge, so the rendering is
+    correct. id: the same A-body car is also published as car/plymouth/scamp —
+    a token-difference duplicate invisible to the fold. The ambiguity that a
+    bare 'Scamp' could be the 1983 coupe utility was resolved from the register
+    itself (5190 cc), not assumed away.
+
+"car/ram/1500-classic":
+  verdicts: { id: correct, name: correct, make: correct, kind: "defective(D10)",
+              availability: { ca: correct, us: correct } }
+  evidence:
+    - "raw: 'Ram | 1500 Classic 2WD/4WD | 2020-2024 | Standard Pickup Trucks' us_fueleconomy (12 rows) — the source's own class is a pickup truck"
+    - "raw: 'Ram | 1500 Classic | 2019-2024' ca_nrcan (6 exact rows, + FFV/4X4 variants)"
+    - "catalog: truck/ram/1500 (fi,nl) and van/ram/1500 (es,fi,lu,nl) already exist, alongside car/ram/1500"
+    - "https://en.wikipedia.org/wiki/Ram_Pickup  # the 4th-generation infobox 'also called' reads 'Ram 1500 Classic (2019-2024)' — Ram's own name for the previous-generation truck sold alongside the DT"
+    - "https://www.fueleconomy.gov/feg/Find.do?action=sbs&id=47606  # EPA's page for '2024 Ram 1500 Classic 2WD' gives size class 'Standard Pickup Trucks 2WD'"
+  notes: >-
+    id and name correct — '1500 Classic' is Ram's own name for the DS-generation
+    truck sold alongside the DT. kind: a full-size pickup in the car kind, with
+    a truck-kind sibling already present to route to. Same open-boundary caveat
+    as car/hummer/h3t.
+
+"car/renault/4-gtl":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { es: correct, fi: correct, lu: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'RENAULT | 4 GTL' n=627 + '4GTL' n=153 + 'RENAULT 4 GTL' n=3 nl_rdw; '4GTL' n=1 nz_nzta"
+    - "raw: 'RENAULT | RENAULT 4 GTL' es_dgt; 'RENAULT | RENAULT R4 GTL' lu_snca; 'R 4 GTL Farmari (AC) 5ov 1108cm3' fi_traficom"
+    - "https://en.wikipedia.org/wiki/Renault_4  # 'In 1978, the R4 GTL arrived. It had the 1108 cc engine from the Renault 6 TL' — 1108 cc matches the fi row exactly, and GTL is a VERSION of the Renault 4"
+  notes: >-
+    Latent D8: GTL is a Renault 4 version designation, but NO bare car/renault/4
+    record exists, so folding would have to mint one — and 'GTL' is how five
+    registers name these cars. Recorded correct with the altitude noted rather
+    than called a defect, since there is no duplicate id and the string is the
+    marque's own version name.
+
+"car/renault/scenic":
+  verdicts: { id: "defective(D6)", name: correct, make: correct, kind: correct,
+              availability: { de: correct, es: correct, fi: correct, gb: correct,
+                              ie: correct, lu: correct, nl: correct, nz: correct, ua: correct } }
+  evidence:
+    - "raw: 'RENAULT | SCENIC' n=12353 nl_rdw; n=106 nz_nzta; n=1306 ua_mvs; 'RENAULT | SCENIC' es_dgt and lu_snca; 'Renault Scenic' ie_cso; de_kba_fz10 RENAULT block contains 'SCENIC'"
+    - "raw: 'SCENIC Viistopera (AB) 4ov 1461cm3 A' n=119 fi_traficom; uk_dft GenModel 'RENAULT SCENIC' 241 rows, 221 BodyType=Cars"
+    - "raw: this record's own observed variants include 'MEGANE SCENIC', 'MEGANE SCENIC II', 'GRAND SCENIC', 'SCENIC E-TECH ELECTRIC' — four generations plus the Megane-prefixed first generation"
+    - "catalog: car/renault/meganescenic ('Meganescenic', es+nl) live — a fused-form id for the same nameplate's first generation"
+    - "https://www.renault.co.uk/  # the marque's CURRENT rendering carries no accent: page markup reads 'SCENIC E-TECH ELECTRIC', 'Scenic E-Tech 100% electric', 'SCENIC', slug scenic-e-tech-100-electric"
+    - "https://en.wikipedia.org/wiki/Renault_Scénic  # the HISTORIC rendering was accented, deliberately: 'Renault decided to add an acute accent to the production model name (Megane Scenic), in order to assert its European identity'; gen I launched as the 'Megane Scenic' in November 1996"
+  notes: >-
+    name recorded correct because the shipped ASCII display is exactly the
+    marque's current rendering (renault.co.uk, verified). But the finding under
+    it is a SCOPE problem, not a casing one: Renault badged generations I-IV
+    'Scenic' WITH an acute accent and the 2024 E-Tech car WITHOUT it, and this
+    single record spans both (its own raw set runs from 'MEGANE SCENIC' to
+    'SCENIC E-TECH ELECTRIC'). No single display string can be marque-true for
+    the whole span, so the honest remedy is a split, which is an id decision.
+    id is already defective for car/renault/meganescenic, the fused gen-I twin.
+
+"car/riley/1300":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'RILEY | 1300' n=1 nl_rdw; 'RILEY | 1300' n=2 nz_nzta (+ '1300KESTRALL' n=1 — a mis-spelled Kestrel)"
+    - "https://en.wikipedia.org/wiki/Riley_1300  # redirects to BMC ADO16; produced 1968-69, 'initially marketed as the Riley Kestrel before the Kestrel name was dropped in October 1968'"
+  notes: >-
+    3 registrations total. The neighbouring '1300KESTRALL' row is the register
+    remembering the pre-October-1968 'Riley Kestrel 1300' name for the same car;
+    'Riley 1300' is the correct post-1968 marque rendering, so the record is
+    right and the Kestrell row is an unfolded variant of it.
+
+"car/rover/110":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'ROVER | 110' n=16 nl_rdw (+ '110 SALOON' n=1, 'ROVER 110 ROADSTER' n=1); n=39 nz_nzta (+ '110 MARK 1', '110 DLS SW TURBO')"
+    - "https://en.wikipedia.org/wiki/Rover_P4  # 'The final members of the series were the 95 and 110' (1962-64) — 'Rover 110' is a genuine P4 designation"
+    - "https://en.wikipedia.org/wiki/Rover_P5  # cross-checked: the P5 is only ever 'Rover 3 Litre'/'3.5 Litre'/'3-1/2 Litre', so a P5 attribution would be a platform error"
+  notes: >-
+    name correct (P4 110, 1962-64). NOTE a contamination risk the audit should
+    record rather than resolve: 'ROVER 110' is also the Land Rover Defender 110
+    wheelbase designation, and the nz row '110 DLS SW TURBO' does not look like
+    a P4 saloon. The record is evidenced, but the two sources may be pooling P4
+    110s with Defender 110s, which body_types=sedan would then be wrong for.
+
+"car/rover/2300":
+  verdicts: { id: correct, name: correct, make: correct, kind: correct,
+              availability: { nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'ROVER | 2300' n=2 nl_rdw (+ '2300S' n=11, '2300 S' n=4); 'ROVER | 2300' n=1 nz_nzta (+ '2300 AUTO', '2300S', '2300 S')"
+    - "catalog: car/rover/2300-s ('2300 S', nl+nz) live for the S trim"
+    - "https://en.wikipedia.org/wiki/Rover_SD1  # 'The models produced ... were usually named according to their engine size', list includes verbatim 'Rover 2300', 'Rover 2300 S', 'Rover 2300 SE', 'Rover 2300 Vanden Plas'"
+  notes: "the bare 2300 has 3 registrations while its own S trim record has 17 — the trim record is the volume, which is a D8 inversion worth a curation look. Note Rover named SD1s by engine size, so bare '2300' is a legitimate marque designation here, unlike a bare number in most makes (NAMING.md 7.2)."
+
+"car/saab/9000-turbo":
+  verdicts: { id: "defective(D8)", name: correct, make: correct, kind: correct,
+              availability: { ca: correct, fi: correct, nl: correct, nz: correct } }
+  evidence:
+    - "raw: 'SAAB | 9000 TURBO' n=4 nl_rdw (+ '9000 TURBO 16V' n=4, '9000 TURBO 16 2.3 U9' n=1, '9000TURBO1' n=1); n=3 nz_nzta"
+    - "raw: 'Saab | 9000 Turbo | 1997,1998' ca_nrcan; '5D COMBI SEDAN 9000 TURBO-LM/2670' fi_traficom"
+    - "catalog: car/saab/9000 ('9000', 8 countries) live; car/saab/9000-turbo-16v, /9000-aero, /9000-cd, /9000-cde, /9000-cs, /9000-cse also live"
+    - "https://en.wikipedia.org/wiki/Saab_9000  # the factory designation was longer: 'This original model called Saab 9000 Turbo 16 was a five-door hatchback', with 'Saab 9000 Turbo 16 S' and 'Turbo 16 SP' siblings; the formal trim letters are CC/CD/CS/Aero and Turbo is the engine designation appended to them"
+  notes: >-
+    Turbo is a 9000 engine/variant designation and the nameplate record carries
+    eight countries; the 9000 family is currently split across eight live ids,
+    of which Aero/CD/CS/CSE are genuine Saab model designations and 'Turbo' /
+    'Turbo 16V' are powertrain descriptors.

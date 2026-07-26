@@ -1,0 +1,1160 @@
+# VehiclesDB five-nines baseline audit — gate A2 — INDEPENDENT VERIFIER LEDGER
+slice: 1
+verifier: opus-verify-1
+researcher: opus-audit-1
+tag: v2026.07.5
+date: 2026-07-26
+protocol: data/review/audit-PROTOCOL.md
+status: COMPLETE — 95/95 defective claims re-derived, 15/15 unverifiables retried, 25 records spot-checked.
+
+METHOD:
+  independence:
+    - "Every defective claim was re-derived from the catalog, the raw corpora and the cached registers BEFORE that record's evidence line in the researcher's ledger was read. I read their evidence only afterwards, to compare — and in five places that comparison changed MY verdict, which is recorded below with the correction shown, not silently."
+  sources_i_read_myself:
+    - "catalog/{bus,car}/models.json + makes.json at v2026.07.5 (s4w-data worktree, clean at d9b2cb7)"
+    - "build/observed_variants.json (raw register strings per id) and build/observed_model_names.json"
+    - "cache/us_vehicles.csv — make|model|baseModel|VClass|year. baseModel is the objective altitude signal the researcher bound themselves to; I used it as an independent check ON them"
+    - "cache/uk_veh0120_uk.csv — BodyType|Make|GenModel|Model, read directly to test the uk_dft grouping-key claims"
+    - "cache/nl_rdw_bus.json and nl_rdw_personenauto.json — merk/handelsbenaming/n rows, grepped verbatim"
+    - "PRD-QUALITY.md §4 taxonomy D1–D23; overrides/models/moves.yml header (the marque-of-sale / approval-holder rules)"
+    - "marque + encyclopedia fetches: en.wikipedia.org, scania.com, ahorn-camp.de, dyparro.com, nationalmotormuseum.org.uk, truck1.eu, ayats.es (via search index)"
+  rules_binding_me:
+    - "fetch-never-assume — where no source was reachable I record unverifiable; I never resolve by analogy"
+    - "majority-is-not-authority — register counts inform, marque sources decide"
+    - "skipped-beats-assumed — nothing below is confirmed on the strength of the researcher having said it"
+    - "I fixed nothing and wrote nothing into any git repo."
+  five_places_i_corrected_myself:
+    - "bus/mercedes-benz/300#id — I first overturned to unverifiable; their uk_dft evidence was better than mine and I verified it independently. Reverted to CONFIRMED."
+    - "car/chery/jaecoo-j8#id — I first overturned because no twin exists inside car/chery; they cited a twin in the separate `jaecoo` MAKE, which I verified is live. Reverted to CONFIRMED."
+    - "car/dodge/wc51#id — I first overturned to correct; they cited car/dodge/wc, which I verified is live. Reverted to CONFIRMED."
+    - "car/austin/nash#id — my evidence was thin (truncated sibling listing); theirs named two live twins, both verified. Evidence upgraded, verdict unchanged."
+    - "car/bmw/alpina-b6#id — I overturned, then read their evidence, then checked it: their cited twin DOES NOT EXIST. Overturn stands and is strengthened."
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PART 1 — ALL 95 DEFECTIVE CLAIMS, RE-DERIVED
+# ══════════════════════════════════════════════════════════════════════════════
+
+"bus/altas-auto/sprinter#id":
+  researcher: defective(D12)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog: bus/altas/sprinter and bus/altas-auto/sprinter are BOTH live in kind=bus"
+    - "observed_variants: overlapping raw set — 'SPRINTER ALTAS', 'Sprinter ALTAS', 'Sprinter Altas' appear under BOTH ids"
+    - "catalog xrefs: altas-auto/sprinter tan=[e9*2007/46*6386*15, e9*2007/46*6386*16]; altas/sprinter tan=[…, e9*2007/46*6386*16] — a SHARED type-approval number. Two ids on one TAN is dispositive."
+    - "makes.json: 'altas' (bus; fi,nl) and 'altas-auto' (bus; es,fi,nl) — 'altas' is a strict token-prefix of 'altas-auto', which is D12's containment scan"
+    - "class is right, not merely defensible: the duplication is ACROSS make ids, and D12's remedy is 'make alias merge, with model-overlap evidence' — exactly this"
+
+"bus/altas/sprinter#id":
+  researcher: defective(D12)
+  verifier: CONFIRMED
+  evidence: ["the other half of the same D12 pair; same shared-TAN and overlapping-raw evidence"]
+
+"bus/altas-auto/sprinter#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Sprinter' is Mercedes-Benz's nameplate; bus/mercedes-benz/sprinter is live in the same kind with 180+ raw spellings"
+    - "raw 'SPRINTER ALTAS' — the converter's token is the SUFFIX; the register is naming a Mercedes chassis bodied by Altas, and the display name kept the donor nameplate"
+    - "Altas's OWN product names are in the corpus and were discarded: bus/altas-auto/novus 'ALTAS NOVUS', bus/altas/multiline 'MULTILINE L', bus/altas-auto/tge 'TGE ALTAS Intercity', and under this very make-pair 'Sprinter Tourline L' / 'Sprinter Businessline L' / 'Sprinter Multiline L'"
+    - "systematic: six bus makes each own a model called 'Sprinter' (acbus, altas, altas-auto, esref-karoser, mengerler, sprintcar); none of them builds a vehicle called Sprinter"
+    - "class boundary noted: D5's detector is a PREFIX test and the brand token here was stripped rather than left in place. D5's own remedy line ('if cross-make badge → move') is the pathway that fits. Not overturned; flagged in JUDGMENT_RULES."
+
+"bus/altas/sprinter#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence: ["as above; this side additionally absorbs 'Sprinter Tourline L', 'SPRINTER TOURLINE L', 'Sprinter Businessline L', 'Sprinter Multiline L' — the builder's real product names, present in the raw, discarded in favour of the donor nameplate"]
+
+"bus/esref-karoser/sprinter#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Sprinter', make esref-karoser (Turkish bodybuilder), avail es/fi/nl/ua"
+    - "observed_variants has NO entry for this id ⇒ the raw string is the bare word 'Sprinter': the register put the donor chassis nameplate in the model column with no builder product name at all"
+    - "id=correct is right: no second esref-karoser model and no make near-dupe (makes.json checked for containment on 'esref' and 'karoser')"
+
+"bus/mengerler/sprinter#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence: ["name 'Sprinter' under make 'Mengerler' (Turkey, Mercedes-Benz distributor/bodybuilder), avail es/nl; observed_variants empty ⇒ bare 'Sprinter'; same class as Altas/Esref"]
+
+"bus/sprintcar/sprinter#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "raw = ['MB SPRINTER', 'MB Sprinter'] — the raw literally carries the donor marque token 'MB' as a PREFIX, so D5's prefix detector fires on the string exactly as written"
+    - "the cleanest D5 of the six-converter family"
+
+"bus/isuzu/f#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'F'; the only raw is 'F SERIES' (nz_nzta, single source)"
+    - "sibling bus/isuzu/series name='Series' raw ['N SERIES','N SERIES 100P'] — the SAME truncation artifact on the N-series, proving the pipeline splits '<letter> SERIES' into a letter stub and a 'Series' stub"
+    - "no marque renders a bus range as the bare letter 'F'"
+    - "D9's detector ('code-string shape + single-source') fires on both halves. D7 (form of 'F-Series') is the reasonable alternative — flagged, not flipped."
+
+"bus/mazda/e#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D9)
+  evidence:
+    - "bus/mazda/e (name 'E', raw ['E 2200','MAZDA E SERIES']) and bus/mazda/e2000 (name 'E2000') are both live"
+    - "the E2000 IS an E-series member, so the stub pools a vehicle e2000 already denotes ⇒ id-canonical genuinely fails; the DEFECT verdict stands"
+    - "but D6 is 'duplicate SPELLING' (detector find_duplicate_spellings, example '280 Se' vs '280SE'). No NFKD/whitespace fold makes 'E' equal 'E2000' — the D6 detector cannot fire. The artifact is a family stub from 'MAZDA E SERIES', which is D9 and is what the researcher themselves booked for this record's NAME."
+
+"bus/mazda/e#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["'E' derived from 'MAZDA E SERIES' / 'E 2200'; Mazda's renderings are E2000 / E2200 / E-Series. Bare letter, code-shaped ⇒ D9"]
+
+"bus/mercedes-benz/300#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "MY FIRST VERDICT WAS WRONG AND I AM RECORDING THE CORRECTION. Working from the catalog alone I could name no live twin (the near neighbours are '303' and '0303', different digits) and I overturned to unverifiable. Their evidence pointed at the underlying uk_dft file, so I went there myself."
+    - "cache/uk_veh0120_uk.csv, verbatim rows: 'Buses and coaches,MERCEDES,MERCEDES 300,308D,…' / '…,308D LWB,…' / '…,310 VAN,…' / '…,311 CDI LWB TRAVELINER,…' / '…,311 CDI MWB TRAVELINER,…' / '…,312D LWB,…' / '…,307D VAN,…'"
+    - "bus/mercedes-benz/308-d, /310, /311, /312-d are ALL live. 'MERCEDES 300' is a DfT GenModel grouping key whose bus rows are already denoted by four live sibling ids ⇒ id-canonical fails on named twins. D6 CONFIRMED."
+    - "I also verified their contamination note independently: the same GenModel carries '300 CE AUTO', '300 TE 4MATIC (4WD)', '300 GEL AUTO' under BodyType='Buses and coaches' — W124 coupé/estate and G-wagen passenger cars filed as buses. That is a real uk_dft source defect and their kind=correct call is generous to the record."
+
+"bus/mercedes-benz/300#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["'300' is a DfT grouping key, not a Mercedes bus nameplate; the coach families are O 302/303/305/404/405/530, all separately live as bus/mercedes-benz/o. Code-shaped + single-source ⇒ D9"]
+
+"bus/mercedes-benz/311#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "raw ['311 CDI','311 CDI-9036-3.88T-KASTEN HOCH/403','311 CDI-9036-3.88T/403','311 D']"
+    - "bus/mercedes-benz/sprinter is live and its raw set contains 'SPRINTER 311 CDI' and 'SPRINTER 311CDI-3.5T-906635/433' — the same vehicles under the nameplate. id-canonical fails; defect stands."
+    - "but 311 is a tonnage/engine designation of a live bare nameplate — the researcher's OWN D8 rule verbatim ('the suffix is a trim / engine / drivetrain / body qualifier AND a bare-nameplate sibling is live'). They applied D8 at car/bentley/flying-spur-v8 and car/chevrolet/cruze-eco and D6 here. D6 cannot fire: no fold makes '311' equal 'Sprinter'."
+
+"bus/mercedes-benz/316#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "raw includes '316 CDI SPRINTER TRANSFER 34 BASIC' and '316 CDISPRINTER TRANSFER 34 BASIC' — the raw itself names the nameplate AND the product line; bus/mercedes-benz/sprinter and /transfer are both live"
+    - "same reasoning as #311 — a tonnage/engine designation of a live bare nameplate ⇒ D8, not D6"
+
+"bus/mercedes-benz/518#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "raw includes '518 CDI SPRINTER', '518 SPRINTER MIX-LINE', '518 SPRINTER RADIUS R', 'MB 518 CDI TREND SITCAR/435'; bus/mercedes-benz/sprinter's raw contains 'SPRINTER 518 CDI', 'SPRINTER 518CDI', 'SPRINTER 518 CDI-906657'"
+    - "id-canonical fails; class is D8 (engine/tonnage variant of a live nameplate)"
+
+"bus/mercedes-benz/818#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "bus/mercedes-benz/818 raw ['818 SUNRIDER'] and /818-d raw ['818D Vario Rosero'] are both live; bus/mercedes-benz/vario is live with raw 'VARIO 818 D','VARIO O818 D','Vario O818D Rosero'"
+    - "three live ids for the Vario 818 D. Defect stands and is severe."
+    - "class: 818 vs 818 D IS a D6-shaped spelling pair, but the load-bearing duplication is against the live NAMEPLATE id `vario`, which is D8. Recorded as D8; a D6 reading of the 818/818-d pair alone is also defensible."
+
+"bus/mercedes-benz/412-d#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "THREE live ids for one T1 412 D: '412' (raw '412 D','412 D-904463/403','412 D-KA'), '412-d' (raw '412D/402.5/185 SPRINTER'), '412d-ka-904463-kasten' (raw '412D-KA-904463-KASTEN/403')"
+    - "'412 D-KA' vs '412D-KA-…' is a literal spelling duplicate after whitespace/hyphen folding — textbook D6"
+
+"bus/mercedes-benz/311#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["'311' is a Mercedes tonnage/engine code, never a standalone nameplate; the marque form is 'Sprinter 311 CDI'"]
+
+"bus/mercedes-benz/316#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["as #311; raw '316 CDI SPRINTER TRANSFER 34 BASIC' shows the marque form is 'Sprinter Transfer 34'"]
+
+"bus/mercedes-benz/518#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["as #311; raw '518 CDI SPRINTER' / '518 SPRINTER RADIUS R' shows the marque form is 'Sprinter 518 CDI'"]
+
+"bus/mercedes-benz/818#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["'818' rests on raw '818 SUNRIDER'; the marque form is 'Vario 818 D' (bus/mercedes-benz/vario raw 'VARIO 818 D'). Bare tonnage code ⇒ D9"]
+
+"bus/mercedes-benz/e#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence:
+    - "raw = ['MB E 12 UE','MB E 15 RHD','MB E 15 UE','MB E 16 RHD','MB E 16/2 RHD','MB E 17 RHD','MB E 17 UE','MB E 19 UE'] — every string is 'MB E <length> <steering code>', a fleet/type designation"
+    - "the single letter 'E' is the residue after stripping the make token 'MB'; no Mercedes source renders a coach as 'E'"
+
+"bus/mercedes-benz/transfer#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "bus/mercedes-benz/transfer raw ['TRANSFER 35','TRANSFER 45','TRANSFER 45 LL','TRANSFER 55','transfer 45']; /sprinter raw contains 'SPRINTER TRANSFER 34/35/45/55'; /316 raw contains '316 CDI SPRINTER TRANSFER 34 BASIC'; /515 raw contains '515 Transfer 45'"
+    - "four live ids denote the Sprinter Transfer ⇒ id-canonical fails"
+    - "class: 'Transfer' is a body/product-line qualifier on the live nameplate 'Sprinter' ⇒ D8. D6 cannot fire."
+
+"bus/mercedes-benz/transfer#name":
+  researcher: defective(D9)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "'Transfer' is not a registry or homologation CODE — it is a real Mercedes-Benz product-line word ('Sprinter Transfer 45'). D9's 'code-string shape' detector does not fire on an English word."
+    - "the defect is a sub-nameplate qualifier published at model altitude ⇒ D8. Claim stays defective."
+
+"bus/mercedes-benz/oh#name":
+  researcher: defective(D7)
+  verifier: RECLASSIFIED(D9)
+  evidence:
+    - "name 'Oh'; raw ['OH 1627 L-LAK/520','OH 1628 L-C/480','OH 1628L/610','OH 1634L','OH1625L-LAK']"
+    - "'OH' is Mercedes-Benz do Brasil's chassis-family code, always carried with a number (OH 1628 L). 'Oh' title-cases a two-letter code, so D7 does fire — but fixing the casing leaves a bare family code as a model name, which is D9's definition, and the researcher used D9 for the structurally identical bus/mercedes-benz/e."
+    - "reclassified for consistency with the slice's own treatment of family-code stubs; defective either way"
+
+"bus/neoplan/316#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name '316'; raw ['316 SHD-TRANSLINER','N 316','N 316 SHD TRANSLINER/580','N 316 UE'] — three of four raw strings carry the 'N' prefix"
+    - "siblings bus/neoplan/{116,216,2216} have the identical shape (raw 'N 116','N 216','N 2216 SHD TOURLINER') — the whole numeric family lost its 'N'"
+    - "Neoplan's designation is 'N 316 SHD Transliner' ⇒ '316' is a non-canonical rendering ⇒ D7"
+
+"bus/nissan/patrol#kind":
+  researcher: defective(D10)
+  verifier: CONFIRMED
+  evidence:
+    - "bus/nissan/patrol: name 'Patrol', raw ['NISSAN PATROL'], avail gb + nz"
+    - "the Nissan Patrol is a 4x4 station wagon / SUV with no M2/M3 bus variant; the make's other bus siblings (Civilian, Urvan, Caravan, NV) are genuine minibuses — Patrol is the outlier"
+    - "D10 confirmed; remedy is a kind_map route, never a drop"
+
+"bus/scania/bf#name":
+  researcher: defective(D7)
+  verifier: RECLASSIFIED(D9)
+  evidence:
+    - "name 'Bf'; raw ['BF 110','BF-5659-AK','BF111 59/5890','BF111-59A/5890','BF11159A/5890','BF111S-59AS/5890','BF86S59/5880','Scania BF11159A']"
+    - "'BF' is a Scania chassis type code, always numbered. Title-casing to 'Bf' is a D7 wart, but the substantive defect is a bare type-code prefix standing in as a model — D9 — and the slice books the identical shape (bus/isuzu/f, bus/mazda/e, bus/mercedes-benz/e) as D9"
+    - "researcher booked bus/scania/bf as D7 and bus/isuzu/f as D9: same shape, two classes"
+
+"bus/setra/s#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "bus/setra/s pools 96 distinct raw strings from 'S 120 A' to 'S 531 DT' across five countries and carries 24 distinct type approvals in xrefs"
+    - "bus/setra/s417 (raw 'S417 GTHD','S417 UL') and bus/setra/s431dt are separately live"
+    - "s's own raw set contains 'S 417 GT-HD','S 417 HDH','S 417 UL','S 417 UL/2 BUSINESS','S 431 DT','S 431DT' — the SAME vehicles s417 and s431dt denote, differing only by the space between letter and digits"
+    - "D6 exactly. The single strongest id defect in the slice."
+
+"bus/setra/s#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["the bare series letter 'S' as a display name, pooling 96 distinct model strings; Setra's forms are 'S 415 HDH', 'S 517 HD' ⇒ D9"]
+
+"bus/setra/s417#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence: ["the other half of the pair: 'S417 GTHD' (id s417) vs 'S 417 GT-HD' (id s) — identical after whitespace/hyphen fold, same make+kind"]
+
+"bus/setra/s417#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'S417'; every register spelling outside this id writes it spaced — 'S 417 GT-HD','S 417 HDH','S 417 UL','SETRA S 411 HD','SETRA S 415 HDH','SETRA S 416 GT-HD'"
+    - "Setra's convention is 'S 417 HDH' ⇒ 'S417' is non-canonical ⇒ D7, established on corpus evidence alone"
+
+"bus/king-long/xmq#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Xmq'; observed_variants EMPTY; avail es/nz/ua; the make's only model"
+    - "'XMQ' is King Long's model-code prefix (XMQ6127, XMQ6900) — an acronym; 'Xmq' is a title-cased acronym, which no source renders"
+    - "D7 confirmed. A D9 reading (bare code prefix at model altitude) is equally available — flagged."
+
+"bus/temsa/md#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Md'; raw ['MD 7','MD 9','MD 9C','MD C9','MD7 PLUS','TEMSA MD9'] — every raw string upper-cases it"
+    - "sibling bus/temsa/hd carries the identical defect ('Hd' vs raw 'TEMSA HD12 AUTO'), so this is systematic acronym title-casing, not a one-off"
+    - "D7 confirmed; D9 is the alternative reading (bare family code pooling MD7/MD9/MD9C)"
+
+"bus/van-hool/tx#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "bus/van-hool/tx raw includes 'TX-17 ACRON','TX17 ACRON','TX17 ASTRON','TX 18 ACRON','TX15 ACRON'; bus/van-hool/t17 is live with raw ['T17 ACRON','T17 ASTRON']; /acron, /astron, /t, /t915 are live too"
+    - "'TX17 ACRON' and 'T17 ACRON' denote one coach family, and bus/van-hool/acron ('VAN HOOL ACRON AUTO') denotes it a third time under the body name ⇒ D6"
+
+"bus/van-hool/tx#name":
+  researcher: defective(D9)
+  verifier: RECLASSIFIED(D7)
+  evidence:
+    - "the name 'TX' is correctly upper-cased and TX IS Van Hool's own range prefix ('TX16 Astron', 'TX17 Acron', 'TX21 Altano')"
+    - "so it is not a registry/homologation code (D9's definition) — it is a genuine marque range designator with the model number stripped. Closest fit is D7 ('does not match the marque's rendering, which always carries the number'); D8 is the reasonable alternative. Claim stays defective."
+
+"bus/volvo/8900#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "bus/volvo/8900 (raw '8900 B6SC','8900 B7RLE','8900 B8R','8900 LE','8900 R','8900 RLE') and bus/volvo/8900rle (raw 'VOLVO 8900RLE','Volvo 8900rle') are both live"
+    - "'8900 RLE' vs '8900RLE' is a pure whitespace-only duplicate — the canonical D6 shape and the exact case the taxonomy's '280 Se' vs '280SE' example describes"
+
+"bus/volvo/9700h#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "bus/volvo/9700h (raw '9700H B13R','Volvo 9700H'), /9700hd ('Volvo 9700HD') and /9700 (raw contains '9700 H','9700 H 4X2','9700 HD','9700 HD 6X2') are all live"
+    - "'9700 H' vs '9700H' and '9700 HD' vs '9700HD' are whitespace-only ⇒ D6"
+
+"bus/volvo/b#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "raw ['B 10 B 4X2 60 N','B 10 M','B 10 M-70','B 10 M-A','B 12 M','B 12M','B 12M 9700S','B 58','B 58-60-S1/6000','B 5860','B 6 F','B 619','B 75508']"
+    - "each has a live unspaced twin: /b10b, /b10m, /b12m, /b58-60, /b6 (raw 'B6 FA'), /b6fa. 'B 10 M' vs 'B10M', 'B 12M' vs 'B12M', 'B 58-60-S1/6000' vs 'B58-60/6000', 'B 6 F' vs 'B6 FA' ⇒ D6, high severity across 21 live chassis ids"
+
+"bus/volvo/b#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["bare chassis-series letter 'B' pooling 13 distinct chassis strings; Volvo's renderings are B10M, B12B, B7RLE ⇒ D9"]
+
+"bus/volvo/b6#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence: ["bus/volvo/b6 (raw 'B6 2','B6 FA') and bus/volvo/b6fa are both live; 'B6 FA' vs 'B6FA' is whitespace-only ⇒ D6"]
+
+"bus/wrightbus/gb#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Gb'; the ONLY raw is 'WRIGHTBUS GB KITE' (uk_dft, single source)"
+    - "the make token was stripped AND the product word 'KITE' was dropped, leaving a two-letter code title-cased to 'Gb'"
+    - "siblings /gemini, /streetdeck, /streetlite, /nb keep their product words — 'Gb' is the outlier"
+    - "defective on both casing and truncation. D7 confirmed; D9 is the alternative."
+
+"bus/zhongtong/lck#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Lck'; observed_variants EMPTY; nz only"
+    - "'LCK' is Zhongtong's chassis/VIN model-code prefix (LCK6127H, LCK6100); no source renders it 'Lck'"
+    - "title-cased acronym ⇒ D7, the model-name analogue of D23"
+
+"bus/zhongtong/zhongtong#id":
+  researcher: defective(D4)
+  verifier: CONFIRMED
+  evidence:
+    - "the model slug EQUALS its own make id; name 'Zhongtong' equals make name 'Zhongtong'; raw ['ZHONGTONG BUS']"
+    - "D4's detector is literally name==make. It fires."
+    - "the make has only two models (lck, zhongtong) and 'ZHONGTONG BUS' is a make-level string, so this id denotes the same population as any other Zhongtong record"
+
+"bus/zhongtong/zhongtong#name":
+  researcher: defective(D4)
+  verifier: CONFIRMED
+  evidence: ["name == make name; D4 detector fires directly"]
+
+# ── CAR ────────────────────────────────────────────────────────────────────────
+
+"car/ahorn/van-620#kind":
+  researcher: defective(D10)
+  verifier: CONFIRMED
+  evidence:
+    - "the make's ONLY model; name 'Van 620'; avail lu + nl; tan e13*2007/46*1291*12"
+    - "MARQUE SOURCE: https://ahorn-camp.de/…/campervans/modelle-2023/van-620/ — Ahorn Camp's own site lists 'VAN 620' under 'Campervans / Reisemobile und Kastenwagen'. Independent test reports (promobil.de 'Campingbus-Test: Ahorn Camp Van 620', autobild.de 'Wohnmobil-Test: Ahorn Van 620') describe a campervan on a Renault Master chassis with kitchen, shower and toilet."
+    - "D10's example set names 'campers in car' and the 'kampeerwagen test' explicitly; the model NAME itself contains the word 'Van'"
+    - "D10 confirmed; remedy is a kind_map route, never a drop"
+
+"car/aion/ut-420-standard#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "car/aion/ut (raw 'AION UT') and car/aion/ut-420-standard (raw 'AION UT 420 STANDARD') are both live"
+    - "'420 Standard' is a range-and-trim designation on the nameplate 'UT'; the bare-nameplate sibling is live ⇒ the researcher's own D8 rule"
+    - "D6 cannot fire. Siblings car/aion/v ('AION V') vs /v-602-luxury ('AION V 602 LUXURY') show the same th_dlt trim-in-model artifact."
+
+"car/aion/ut-420-standard#name":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence: ["a range+trim qualifier at model altitude with car/aion/ut live ⇒ D8 exactly as booked"]
+
+"car/aion/hyptec-ht-620-premium#name":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Hyptec Ht 620 Premium'; single source th_dlt"
+    - "'620 Premium' is a range/trim designation on the nameplate 'HT' ⇒ D8; the acronym 'Ht' is a further D7-shaped wart"
+    - "corroborated by paultan.org's launch coverage, which renders the product 'GAC Aion Hyptec HT' with '83.3 kWh, 620 km' as SPECIFICATIONS, not as part of the name"
+
+"car/alpina/bmw-alpina-d5-biturbo-touring#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "make='alpina'; name 'Bmw Alpina D5 Biturbo Touring' repeats BOTH the parent marque token and its own make name before the model designation — D5's prefix test fires twice, and D4 (name==make) fires on the 'Alpina' token"
+    - "the same make holds bare, well-formed siblings car/alpina/b3, /b7, /b3-touring, proving the prefix is not the catalog's convention"
+    - "ten of the make's fifteen models carry the same 'Bmw Alpina …' prefix — systematic"
+
+"car/audi/avant-rs2#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "car/audi/avant-rs2 name 'Avant RS2', raw ['AVANT RS2 QUATTRO /260']; car/audi/rs2 is SEPARATELY live with raw ['AUDI RS2','RS2 AVANT','RS2 AVANT 6 SPEED']"
+    - "Audi's designation is 'RS 2 Avant' — the body word FOLLOWS the model designation; 'Avant RS2' is a register word-order inversion"
+    - "corroborated inside the corpus: the sibling id's raw 'RS2 AVANT' has the correct order, and car/audi/avant-s6 shows the same inversion on a second record"
+    - "SEE MISSED_DEFECTS: the researcher scored this record's ID claim correct, but car/audi/rs2 is live and denotes the same car"
+
+"car/austin/nash#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "raw ['AUSTIN NASH'], avail gb + nz"
+    - "VERIFIED TWINS (my first pass could not name them; I checked the catalog directly after reading their evidence): car/austin/metropolitan is LIVE (name 'Metropolitan', nl/nz) and car/nash/metropolitan is LIVE (name 'Metropolitan', fi/nl/nz, raw 'NASH METROPOLITAN','METROPOLITAN CONVERTIBLE','METROPOLITAN IV')"
+    - "the Austin-built Nash Metropolitan therefore has THREE live ids. D6 confirmed on named twins."
+
+"car/austin/nash#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence: ["display name 'Nash' under make 'Austin' — a different marque's name as Austin's model name; raw 'AUSTIN NASH' is make token + foreign marque token, with the actual nameplate (Metropolitan) absent. D5 cross-make badge."]
+
+"car/bentley/flying-spur-v8#id":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence:
+    - "car/bentley/flying-spur is live; so are flying-spur-v8, -w12, -s, -speed, -azure, -mulliner, -mulliner-w12"
+    - "'V8' is an ENGINE qualifier on a live bare nameplate — the researcher's own D8 rule applied correctly"
+    - "corroborated in the same make: continental-gt-v8 and continental-gt-v8-s alongside continental-gt"
+    - "this is the benchmark entry against which their other altitude calls should be judged"
+
+"car/bmw/activehybrid-7#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog name 'Activehybrid 7'; BMW's rendering is 'ActiveHybrid 7'"
+    - "INTERNAL PROOF: sibling car/bmw/activehybrid-7l is stored in this very catalog as 'ActiveHybrid 7L' — correctly cased — while -3, -5, -7 and -x6 are title-cased. One make, two conventions."
+    - "REGISTER PROOF: cache/us_vehicles.csv rows read make=BMW, model='ActiveHybrid 7' / 'ActiveHybrid 7L' / 'ActiveHybrid 5' / 'ActiveHybrid 3' — the source carries the camel-case form the catalog lost"
+
+"car/bmw/alpina-b6#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Alpina B6' under make 'bmw' — another marque's brand token embedded in the model name; D5's prefix test fires"
+    - "car/bmw also holds alpina, alpina-b3, alpina-b5, alpina-b7, alpina-b8-gran, alpina-roadster-s, alpina-xb7 — seven more of the same shape"
+
+"car/bmw/alpina-b6#make":
+  researcher: defective(D11)
+  verifier: CONFIRMED
+  evidence:
+    - "a live car/alpina make exists with 15 models, so the catalog already recognises ALPINA as a marque — and this record sits under bmw anyway"
+    - "ALPINA Burkard Bovensiepen GmbH is a type-approval-holding manufacturer in its own right, which is D11's test"
+    - "REGISTER CONTEXT (does not overturn): us_vehicles.csv files it as make='BMW', model='Alpina B6 xDrive Gran Coupe', baseModel='6 Series' — the marque-of-sale trap moves.yml warns about. Per 'majority is not authority' the register's make column does not settle the marque."
+
+"car/bmw/alpina-b6#id":
+  researcher: defective(D6)
+  verifier: OVERTURNED(unverifiable)
+  evidence:
+    - "THE RESEARCHER'S CITED EVIDENCE IS FACTUALLY FALSE. Their line reads: 'catalog: car/alpina/b6 is live with raw ALPINA B6'. It is not live."
+    - "I enumerated alpina's model ids straight from catalog/car/models.json: b3-touring, b3, b7-biturbo-allrad, b7, bmw-alpina-b3-3, bmw-alpina-b3-biturbo, bmw-alpina-b3-gt, bmw-alpina-b3-touring, bmw-alpina-b5-touring, bmw-alpina-d3-biturbo-touring-allrad, bmw-alpina-d3-biturbo, bmw-alpina-d3, bmw-alpina-d5-biturbo-touring, bmw-alpina-roadster-s, bmw-alpina-xd3-biturbo. FIFTEEN ids, no b6."
+    - "a grep for every id containing 'b6' across the whole car catalog returns: aston-martin/db6, bmw/alpina-b6, fiat/b644, fiat/b654, volvo/s90-b6, volvo/xc60-b6, volvo/xc90-b6. The only ALPINA B6 in the catalog is the record under audit."
+    - "no second live id denoting this vehicle can be named ⇒ D6 is not demonstrated. The make defect (D11) is real and separately booked; the id may well become non-canonical once the D11 move happens, but that is a consequence of the fix, not present evidence."
+    - "OVERTURNED to unverifiable — which still counts AGAINST the clean rate, so this does not flatter the slice."
+
+"car/bmw/ci#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Ci'; raw ['BMW CI','CI CABRIO'] (gb + nl)"
+    - "'Ci' is BMW's coupé/injection body-and-engine SUFFIX (318Ci, 320Ci, 325Ci, 330Ci, 645Ci, 840Ci) — never a standalone model. car/bmw/3-series' raw set contains '318 CI COUPE','320 CI CONVERTIBLE','325 CI CABRIO','330 CI COUPE'; car/bmw/6-series' contains '645 CI CABRIO','650 CI CABRIO'; car/bmw/8-series' contains '840 CI AUTO','850 CI E2'"
+    - "a bare trim/body suffix as a model ⇒ D9 fires (2-char code). D8 is the reasonable alternative."
+
+"car/bmw/i#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/bmw/i (name 'I', raw ['BMW i'], fi + nz, tan e1*2007/46*1213*03) is live alongside /i3, /i4, /i5, /i7, /i8, /ix, /ix1, /ix2, /ix3"
+    - "car/bmw/i3's raw set contains 'I 3' and 'i 3' — the SPACED spelling. A one-letter 'i' id and a spaced 'I 3' sibling string is the whitespace-fold duplicate D6 describes."
+
+"car/bmw/i#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["'I' is BMW's sub-brand letter (BMW i), not a model; every real model is i3/i4/i5/i7/i8/iX ⇒ bare brand letter at model altitude"]
+
+"car/bmw/m-635-csi#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog name 'M 635 Csi'; the only raw is 'BMW M 635 CSI'. BMW's rendering is 'M635CSi' — unspaced, camel 'CSi'. The catalog form has both wrong spacing and wrong suffix casing."
+    - "corroborated in the corpus: car/bmw/6-series raw contains 'BMW M635 CSI', 'M635 CS I', '635 CSi A' — the unspaced marque form is present in the registers"
+
+"car/bmw/mini#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/bmw holds mini, mini-cooper, mini-one AND one ('One', raw 'ONE CABRIO'), cooper, cooper-s, clubman-cooper, john-cooper-works — while a separate `mini` MAKE exists covering the same countries"
+    - "the same vehicles are denoted by car/bmw/mini* ids and by the mini make's ids ⇒ id-canonical fails"
+    - "class note: the cross-MAKE half is D12/D11 territory, but mini vs mini-cooper vs cooper INSIDE one make is a genuine same-make duplicate set, so D6 does fire"
+
+"car/bmw/mini#name":
+  researcher: defective(D4)
+  verifier: CONFIRMED
+  evidence:
+    - "'Mini' is a MARQUE (MINI, a BMW Group brand) published as a BMW model name; the catalog's own `mini` make (19 models) proves it is a make-level string in this dataset"
+    - "D4's literal detector is name==make and the make here is 'BMW', so the strict detector does not fire — but this is the make-as-model shape D4 exists for, with the make being a different one. D5 (cross-make badge) is the boundary alternative. Flagged, not flipped."
+
+"car/bmw/mini#make":
+  researcher: defective(D11)
+  verifier: CONFIRMED
+  evidence: ["MINI is a marque of the BMW Group with its own type approvals and its own live make in this catalog; filing MINI vehicles under make=bmw is the D11 shape (register put the group / approval holder in the make column)"]
+
+"car/bmw/z-reihe#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/bmw/z-reihe (name 'Z-Reihe', es + nl, observed_variants EMPTY) is live alongside /z1, /z3, /z4, /z8 — and /m-z-reihe (raw 'M Z REIHE, M ROADSTER-') too"
+    - "'Z-Reihe' is German for 'Z series' — a GROUP LABEL that necessarily denotes the same vehicles as z1/z3/z4/z8 ⇒ id-canonical fails"
+
+"car/bmw/z-reihe#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence: ["'Z-Reihe' is a register grouping key in German, not a BMW model name in any language of sale ⇒ D9"]
+
+"car/cadillac/elr#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog name 'Elr'; the only raw is 'CADILLAC ELR HYBRID'"
+    - "REGISTER PROOF: us_vehicles.csv carries make=Cadillac, model='ELR' (2014, 2015, 2016) and 'ELR Sport' (2016), baseModel='ELR' — upper case in the source"
+    - "title-cased acronym ⇒ D7. Siblings /cts ('Cts') and /sts ('Sts') carry the same wart — systematic."
+
+"car/chery/jaecoo-j8#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Jaecoo J8' under make 'chery'; JAECOO is a separate marque and the brand token is embedded in the model name ⇒ D5"
+    - "siblings jaecoo-j5, jaecoo-j7, omoda-5, omoda-9, jetour-x70, icaur-03, icaur-v23 show FIVE Chery-group brands carried as model-name prefixes"
+    - "PRD-QUALITY §4's D5 example is literally 'JAECOO5 EV'"
+
+"car/chery/jaecoo-j8#make":
+  researcher: defective(D11)
+  verifier: CONFIRMED
+  evidence: ["JAECOO is retailed as its own marque and is a live make in this catalog; my_jpj files it under the parent Chery — the D11 shape moves.yml documents for Cupra-under-SEAT and Genesis-under-Hyundai"]
+
+"car/chery/jaecoo-j8#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "MY FIRST VERDICT WAS WRONG AND I AM RECORDING THE CORRECTION. I enumerated the 16 models under car/chery, found no J8 twin there, and overturned to unverifiable. I had looked in the wrong namespace."
+    - "VERIFIED: car/jaecoo/jaecoo-8 is LIVE — name 'Jaecoo 8', avail es/lu/nl. The `jaecoo` make holds jaecoo-5, jaecoo-6, jaecoo-7, jaecoo-8."
+    - "the J8 and the '8' are the same vehicle under two market naming conventions, so Malaysian evidence is split off from European evidence for one car ⇒ id-canonical fails. D6 CONFIRMED."
+
+"car/chevrolet/astro#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/chevrolet/astro (raw 'ASTRO AWD','Astro AWD (cargo)','Astro AWD (passenger)','CHEVROLET ASTRO') and /astro-van (raw 'ASTRO VAN 4WD','Astro Van AWD','CHEVROLET ASTRO VAN','CHEVROLET ASTRO VAN 4WD') are both live; /astro-starcraft is a third"
+    - "us_vehicles.csv gives baseModel='Astro Cargo' / 'Astro Passenger' for these rows — the source distinguishes cargo from passenger, NOT 'Astro' from 'Astro Van', so 'Astro Van' is a duplicate spelling of one nameplate ⇒ D6"
+
+"car/chevrolet/aveo-ls#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "car/chevrolet/aveo (raw 'AVEO,1.2 4D','CHEVROLET AVEO'), /aveo-5 and /aveo-ls (raw EMPTY) are all live; /kalos (the Aveo's European name) is live too"
+    - "'LS' is a Chevrolet trim (LS/LT/LTZ) and the bare nameplate is live ⇒ the researcher's own D8 rule verbatim. D6 cannot fire."
+
+"car/chevrolet/aveo-ls#name":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence: ["a trim level at model altitude with car/chevrolet/aveo live ⇒ D8 exactly as booked"]
+
+"car/chevrolet/cruze-eco#id":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence:
+    - "OBJECTIVE TIEBREAK, verified myself: us_vehicles.csv reads model='Cruze Eco', baseModel='Cruze' for MY2011–2015 (also 'Cruze Limited'→'Cruze', 'Cruze Premier'→'Cruze', 'Cruze Hatchback'→'Cruze')"
+    - "car/chevrolet/cruze is live; cruze-eco, cruze-limited, cruze-limited-eco, cruze-lt, cruze-premier are five live trim siblings ⇒ D8"
+    - "this entry is the internal benchmark showing the researcher DID know the D8 rule, which is why the D6-labelled aveo-ls / ut-420-standard / denza-d9-fwd entries are reclassifications rather than overturns"
+
+"car/chevrolet/lumina-monte-carlo#id":
+  researcher: defective(D13)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog name is literally 'Lumina/monte Carlo' — a slash-joined two-nameplate cell"
+    - "us_vehicles.csv confirms the artifact at source: model='Lumina/Monte Carlo', baseModel='Lumina/Monte Carlo', alongside separate model='Lumina', baseModel='Lumina' rows"
+    - "car/chevrolet/lumina, /monte-carlo (raw 'CHEVROLET MONTE CARLO') and /monte-carlo-ss are all separately live; the Lumina and Monte Carlo are distinct nameplates (the Lumina coupé was renamed Monte Carlo for 1995)"
+    - "D13 is 'temporal merge cell' with remedy 'source-level COMMA_MERGED map'; a slash-merged cell is the same artifact with a different separator"
+
+"car/chevrolet/lumina-monte-carlo#name":
+  researcher: defective(D13)
+  verifier: CONFIRMED
+  evidence: ["'Lumina/monte Carlo' is not any marque's rendering of anything — a merged source cell plus a casing wart ('monte')"]
+
+"car/chevrolet/sonic-5#id":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence:
+    - "OBJECTIVE TIEBREAK, verified myself: us_vehicles.csv reads model='Sonic 5', baseModel='Sonic' and model='Sonic 5 RS', baseModel='Sonic'"
+    - "car/chevrolet/sonic, /sonic-5, /sonic-lt are all live ⇒ D8 by the declared rule"
+
+"car/chrysler/gs#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED (contested)
+  evidence:
+    - "car/chrysler/gs: name 'GS', observed_variants EMPTY, fi + nl. nl_rdw rows verified verbatim: {'merk':'CHRYSLER','handelsbenaming':'GS','n':'1'}, 'GS TURBO 2' n=1, 'GS TURBO 2 K6' n=3, 'GS TURBO 2 U9' n=8 (K6/U9 are RDW internal suffixes seen across many makes)"
+    - "the make's 89 siblings are nameplates (300, Concorde, Neon, Voyager, Le Baron); a bare two-letter code is the outlier ⇒ D9"
+    - "CONTESTED, and I record it honestly: while resolving the ID claim I found third-party sources (car.info 'Chrysler Daytona Shelby/GS Turbo II 1987–1991'; chrysler-club.net 'Chrysler Laser / Daytona / GS') indicating the European marque-of-sale name really did use 'GS'. Under the CPx/tS/XR4i rule ('weird can be right') a period Chrysler Europe brochure could flip this to correct. The preponderance is still that the nameplate is Daytona and GS is the trim, so I confirm — but a curator should not treat this as settled."
+
+"car/citroen/11bl#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/citroen holds 11, 11-bl-sport, 11-legere, 11b, 11bl, 11c, 15, 15-six, 15cv AND traction — ten live ids for the Traction Avant range"
+    - "car/citroen/11's raw is ['11 BERLINE','11 BERLINE LEGERE','11 CABRIOLET','11-B'] and /traction's raw contains 'TRACTION AVANT 11 BL','TRACTION AVANT 11 B','TRACTION AVANT 11 SIE BL'"
+    - "'11 BL', '11-Legere' (= 11 BL, Berline Légère) and '11bl' are three live ids for ONE car; '11b' vs '11-B' is a second whitespace/hyphen duplicate ⇒ D6"
+
+"car/citroen/c#name":
+  researcher: defective(D9)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'C', raw ['C 5 HP'], nl + nz"
+    - "the bare letter pools the 1922 Type C (5 HP) with anything else registered as a bare C, while /c1…/c8 are all live with raw sets containing the spaced spellings 'C 1' and 'C 2'"
+    - "Citroën's forms are 'Type C', '5 HP', 'C3' — never a bare 'C' ⇒ D9"
+
+"car/citroen/gsa-special#id":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence:
+    - "car/citroen/gsa (raw 'CITROEN GSA') is live, as are gsa-break, gsa-club, gsa-pallas, gsa-special, plus the whole GS set (gs, gs-1220, gs-break, gs-club, gs-pallas, gs-special, gs1220-club)"
+    - "'Spécial' is a Citroën trim level (Spécial / Club / Pallas / X) ⇒ trim at model altitude with the bare nameplate live = D8"
+
+"car/citroen/gsa-special#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Gsa Special' — two form errors: 'Gsa' title-cases the acronym GSA, and 'Special' drops the acute in Citroën's 'Spécial'"
+    - "INTERNAL PROOF: the sibling car/citroen/gs-special is stored as 'GS Special' with the acronym upper-cased, while every gsa-* sibling is 'Gsa …'. One make, two conventions."
+
+"car/citroen/mehari#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog name 'Mehari', but observed_model_names for this id records BOTH 'Mehari' AND 'Méhari' — the accented form is present in the corpus and was dropped"
+    - "Citroën's rendering is 'Méhari'; the taxonomy's D7 example set lists accents explicitly. Established on corpus evidence alone."
+
+"car/cupra/seat-leon#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/cupra/leon (raw 'CUPRA LEON','CUPRA LEON SP','CUPRA LEON E-HYBRID…') and car/cupra/seat-leon (raw 'SEAT LEON SP','SEAT LEON  SP') are BOTH live under make cupra"
+    - "'CUPRA LEON SP' and 'SEAT LEON SP' are one car written by two registers with different marque tokens; strip the marque token and both fold to 'Leon SP' ⇒ D6"
+
+"car/cupra/seat-leon#name":
+  researcher: defective(D5)
+  verifier: CONFIRMED
+  evidence:
+    - "name 'Seat Leon' under make 'cupra' — a foreign marque token prefixed to the nameplate; D5's prefix test fires literally"
+    - "moves.yml's header documents this exact register behaviour ('NL/NZ registries emit \"SEAT\" + \"CUPRA LEON\"/\"CUPRA ATECA\"') and states the remedy is a routing rule, with the marque token never surviving into the name"
+
+"car/daimler/mkii#name":
+  researcher: defective(D7)
+  verifier: CONFIRMED
+  evidence:
+    - "catalog name 'Mkii' — the Roman numeral II collapsed to lower-case 'ii'; the only raw is 'MKII SALOON'"
+    - "sibling car/daimler/mk2 (name 'MK2') is separately live — one make, two renderings of one designation"
+    - "no marque renders it 'Mkii'. DEBT.md's 'U7 variant-strip Roman collapse' is the known structural cause."
+
+"car/datsun/180b-wagon#id":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence:
+    - "car/datsun/180b (raw '180B COUPE S') is live and /180b-wagon (raw EMPTY) is its sibling; /bluebird and /bluebird-1200 are live too"
+    - "'Wagon' is a BODY qualifier on a live bare nameplate ⇒ D8"
+    - "the same make repeats the pattern: 120y-wagon vs 120-y, 1600-de-luxe vs 1600, 260z-2-2 vs 260-z"
+
+"car/de-soto/soto#id":
+  researcher: defective(D4)
+  verifier: CONFIRMED
+  evidence:
+    - "make id 'de-soto' (name 'De Soto'); model slug 'soto', name 'Soto', raw ['DE SOTO'] — the raw string IS the bare make name, and the model name is what survived make-prefix stripping of a two-token make"
+    - "the make's other 15 models are real nameplates (Adventurer, Airflow, Firedome, Fireflite, Firesweep, Diplomat, Powerflite) — 'Soto' is the outlier, and /powerflite's raw 'DESOTO POWERFLITE' shows the same make written unspaced"
+    - "their detector-gap diagnosis (renames.yml carries 'De Soto: Desoto: null' but prefix-stripping produces 'SOTO', so the null key never matches) is correct and is the most valuable structural finding in the ledger"
+
+"car/de-soto/soto#name":
+  researcher: defective(D4)
+  verifier: CONFIRMED
+  evidence: ["name 'Soto' is a token-suffix of its own make name 'De Soto'; D4's name==make detector fires once the two-token make is accounted for"]
+
+"car/denza/d9-fwd#id":
+  researcher: defective(D6)
+  verifier: RECLASSIFIED(D8)
+  evidence:
+    - "car/denza holds exactly three models: b8, d9 (raw 'DENZA D9 AWD') and d9-fwd (raw 'DENZA D9 FWD')"
+    - "'FWD'/'AWD' are DRIVETRAIN qualifiers of one nameplate — the researcher's own D8 rule names drivetrain explicitly, and the bare-nameplate sibling is live"
+    - "the asymmetry makes it unambiguous: the AWD variant was folded INTO car/denza/d9 while the FWD variant got its own id. D6 cannot fire."
+
+"car/denza/d9-fwd#name":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence: ["'D9 Fwd' publishes a drivetrain qualifier at model altitude (and title-cases the acronym FWD) while car/denza/d9 already absorbs 'DENZA D9 AWD' ⇒ D8 as booked"]
+
+"car/dodge/polara-880#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "car/dodge holds polara (raw 'DODGE POLARA','POLARA ESTATE','Polara Convertible'), polara-500 (raw 'POLARA 500 CONVERTIBLE'), polara-880 (raw EMPTY), custom-880 and custom"
+    - "the Dodge 880 / Custom 880 was a SEPARATE 1962–65 nameplate from the Polara, so 'Polara 880' collides with TWO live siblings ⇒ id-canonical fails"
+    - "class: the merge shape is closer to D13 than D6, and the researcher flagged that reading for the verifier themselves. With observed_variants EMPTY I cannot show the source cell, so I do not reclassify on speculation."
+
+"car/dodge/polara-880#name":
+  researcher: defective(D8)
+  verifier: CONFIRMED
+  evidence: ["Dodge sold the Polara, the Polara 500 and the (Custom) 880 as distinct lines; 'Polara 880' is not a Dodge rendering. D8 vs D13 flagged in JUDGMENT_RULES."]
+
+"car/dodge/wc51#id":
+  researcher: defective(D6)
+  verifier: CONFIRMED
+  evidence:
+    - "MY FIRST VERDICT WAS WRONG AND I AM RECORDING THE CORRECTION. I checked wc51 against wc52/wc56/wc57 — which ARE legitimately distinct vehicles (WC51 = ¾-ton weapons carrier without winch, WC52 = with winch, WC56 = command reconnaissance car) — and overturned to correct. I overlooked the stub."
+    - "VERIFIED: car/dodge/wc is LIVE — name 'Wc', avail nl + nz, observed_variants EMPTY (i.e. the raw string is the bare 'WC'). A bare-prefix stub that pools the whole WC series therefore denotes, among others, the WC51 ⇒ id-canonical fails as the protocol words it. D6 CONFIRMED."
+    - "METHODOLOGICAL NOTE worth carrying into the fix queue: the defective record here is car/dodge/wc, not car/dodge/wc51. wc51 is the CANONICAL id and is being penalised for the existence of a truncated neighbour. Booking the claim against the sampled record is correct per §2's wording, but a curator reading the ledger could easily 'fix' the wrong id."
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PART 2 — ALL 15 UNVERIFIABLE CLAIMS, ONE ALTERNATIVE ROUTE EACH
+# ══════════════════════════════════════════════════════════════════════════════
+
+"bus/ayats/bravo#name":
+  researcher: "unverifiable(no Ayats source reachable — ayats.com refused the connection)"
+  verifier: RESOLVED → correct
+  route_tried: "the researcher tried ayats.com. I tried the encyclopedia and the marque's ACTUAL domain, which is ayats.es, not ayats.com."
+  evidence:
+    - "https://en.wikipedia.org/wiki/Ayats_Bravo — a dedicated article: 'The Ayats Bravo is a range of coaches manufactured by Ayats… There are four variants, the Bravo 1, Bravo 2, Bravo 3, and Bravo City'"
+    - "https://ayats.es/en/ayats-en — Carrocerías Ayats SA's own live site (the .com the researcher tried is not the marque's domain)"
+    - "the register string 'BRAVO I R CITY' maps onto 'Bravo 1' + 'City'; the display name 'Bravo' is the marque's own range name ⇒ rule (a) satisfied"
+    - "FINDING FOR THE SOURCE-GAP QUEUE: this unverifiable was caused by a wrong domain guess, not by an unreachable marque. Worth a note in the queue so the same miss is not repeated."
+
+"bus/higer/a30#id":
+  researcher: "unverifiable(whether the A30 is the same coach as the Scania Touring HD could not be resolved)"
+  verifier: RESOLVED → correct
+  route_tried: "the researcher tried en.wikipedia.org/wiki/Scania_Touring (404) and higer.com. I went to the cached nl_rdw bus file and read the rows verbatim."
+  evidence:
+    - "cache/nl_rdw_bus.json, verbatim: {'merk':'HIGER','handelsbenaming':'A80T 6X2: SCANIA TOURING HD','n':'1'}; {'merk':'HIGER','handelsbenaming':'SCANIA HIGER A30','n':'50'}; {'merk':'HIGER','handelsbenaming':'SCANIA TOURING HB','n':'1'}; {'merk':'HIGER','handelsbenaming':'SCANIA TOURING HD','n':'99'}"
+    - "the register BINDS the Touring to the A80T body in its own row text. The A30 is therefore a different Higer body from the one bus/higer/touring denotes."
+    - "no other live id denotes the A30: bus/higer has exactly two models (a30, touring), and no scania/a30 exists (I enumerated bus/scania's 30 models)"
+    - "id-canonical is CORRECT."
+
+"bus/higer/a30#name":
+  researcher: "unverifiable(single-register attestation only; no Higer or Scania source reachable)"
+  verifier: RESOLVED → correct
+  route_tried: "the researcher tried higer.com. I searched scania.com, which is the co-marque and was reachable."
+  evidence:
+    - "MARQUE SOURCE: scania.com hosts a spec sheet 'SCA0363SchoolBusesSpecSheet_HigerA30_SAU2016-7-A30_4x2_WEB.pdf' — Scania's own document names the product 'Higer A30'"
+    - "corroborated by a manufacturer user manual indexed as 'Scania Higer A30 User Manual'"
+    - "'A30' is the marque's own rendering ⇒ rule (a) satisfied, name is CORRECT"
+
+"bus/iveco/dyparro#name":
+  researcher: "unverifiable(no source reachable identifies 'Dyparro')"
+  verifier: RESOLVED → correct
+  route_tried: "the researcher searched en.wikipedia and marque catalogues. I searched for the string itself and found the builder's own site."
+  evidence:
+    - "BUILDER SOURCE: https://dyparro.com/Iveco-chassis-offer/ — page titled 'DYPETY - DYPARRO 90T'. The builder is DYPETY and DYPARRO is its product range."
+    - "corroborated by dealer listings that carry both tokens: truckscout24.com 'Iveco Dypety Dyparro 90T ( Rapido, 818 )', autoline 'IVECO Dypety Dyparro 90T'"
+    - "the display name 'Dyparro' is the builder's own product name ⇒ name is CORRECT (minor altitude note: the full designation is 'Dyparro 90T' and the raw carries the 90T, so a D8-shaped reading exists, but the range name itself is marque-true)"
+
+"bus/iveco/dyparro#make":
+  researcher: "unverifiable(nl_rdw files 4 of 5 rows under merk 'IVECO - DYPETY'… moves.yml routes bodied minicoaches to the BUILDER's make, which would apply here if the builder could be identified)"
+  verifier: RESOLVED → defective(D11)
+  route_tried: "same route — the builder the researcher could not identify is named on its own website."
+  evidence:
+    - "cache/nl_rdw_bus.json, verbatim: {'merk':'IVECO','handelsbenaming':'DYPARRO 90T','n':'1'} and {'merk':'IVECO - DYPETY','handelsbenaming':'DYPARRO 90T','n':'4'} — 4 of 5 nl rows name the builder"
+    - "the builder is DYPETY (dyparro.com, 'DYPETY - DYPARRO 90T'); the vehicle is a DYPETY Dyparro body on an Iveco 70C17 chassis"
+    - "the researcher's OWN stated condition is now met: moves.yml's Iveco block routes bodied minicoaches to the builder ('Sunrise: null # Ferqui Sunrise … canonical is ferqui/sunrise', 'Wing: null # Indcar Wing'). By the project's established convention this record belongs to a dypety make, not to iveco."
+    - "D11 (wrong make; remedy is a moves.yml route) — the condition the researcher set for converting this to a defect is satisfied."
+
+"bus/volvo/8707#id":
+  researcher: "unverifiable(cannot determine whether '8707' is a distinct product from bus/volvo/8700)"
+  verifier: RESOLVED → defective(D8)
+  route_tried: "the researcher looked for a Volvo source enumerating 8707. I looked for a source that EQUATES the two designations."
+  evidence:
+    - "https://www.truck1.eu/buses/suburban-buses/volvo-8707-rle-8700-b7r-le-a2541356.html — listing title, verbatim: 'Volvo 8707 RLE // 8700 B7R LE'. One vehicle, both designations, written as equivalents."
+    - "https://en.wikipedia.org/wiki/Volvo_8700 — 'The 8700LE was available on B7RLE and B12BLE'. So an 8700 on a B7RLE chassis is exactly what '8707 RLE' describes; the '07' encodes the B7R."
+    - "the catalog's own sibling bus/volvo/8908rle ('8908RLE 6x2') is the same encoding one family up: 8900 body + B8R chassis"
+    - "bus/volvo/8700 is live with raw '8700 RLE' ⇒ another live id denotes the same vehicle. Class D8: a chassis qualifier fused into the number, published at model altitude with the bare nameplate live."
+    - "EVIDENCE TIER, stated honestly: the equating source is a used-bus dealer listing plus an encyclopedia, not a Volvo document. Strong enough to resolve, not strong enough to call airtight."
+
+"bus/volvo/8707#name":
+  researcher: "unverifiable(no Volvo source reachable attests '8707')"
+  verifier: RESOLVED → defective(D9)
+  route_tried: "en.wikipedia.org/wiki/Volvo_8700 (the researcher went to the Volvo_8900 page)"
+  evidence:
+    - "https://en.wikipedia.org/wiki/Volvo_8700 enumerates the range exhaustively: 'Volvo 8700 (medium floor)', 'Volvo 8700LE (low-entry)', 'Volvo 8700LEA (articulated low-entry)'. Fetched and checked specifically: the page does not contain the string '8707' anywhere."
+    - "a display name absent from the marque's own enumerated range, arising from a register composite of body number + chassis number ⇒ D9 (registry/type code as model)"
+
+"car/aion/hyptec-ht-620-premium#make":
+  researcher: "unverifiable(GAC markets Hyptec as its own brand line but no reachable source settles whether it is a marque separate from Aion)"
+  verifier: RESOLVED → correct
+  route_tried: "en.wikipedia.org/wiki/Hyptec plus trade press (marklines.com, gasgoo, paultan.org)"
+  evidence:
+    - "https://en.wikipedia.org/wiki/Hyptec — HYPTEC is GAC Aion's luxury SUB-BRAND, rebranded from 'Hyper' in August 2024"
+    - "in December 2025 GAC Group merged the Hyptec and Aion business units into a single unified business unit"
+    - "the market rendering of the product is 'GAC Aion Hyptec HT' (paultan.org, marklines.com 'GAC Aion's HYPTEC HT electric SUV officially launched in Thailand'), i.e. Aion is the marque and Hyptec the line"
+    - "th_dlt filing the row under maker 'AION' therefore matches the marque of sale ⇒ make is CORRECT. This resolves in the researcher's favour."
+
+"car/austin/clifton#id":
+  researcher: "unverifiable(cannot establish whether 'Clifton' denotes a model, a coachbuilt body, or something else, so overlap is undecidable)"
+  verifier: RESOLVED → defective(D6)
+  route_tried: "the researcher went to Wikipedia for the body list. I went to the catalog's own sibling set — the referent question is answered by a record the catalog already holds."
+  evidence:
+    - "car/austin/clifton (name 'Clifton', raw ['CLIFTON TOURER']) is live — AND car/austin/12-4-clifton is LIVE with name '12/4 Clifton' and raw ['12/4 CLIFTON TOURER']"
+    - "the two raw strings are the same string with and without the type prefix. That is a duplicate spelling in the strictest sense."
+    - "the make repeats it twice more: car/austin/ascot (raw 'ASCOT SALOON'), /12-4-ascot (name '12 / 4 Ascot', raw '12-4 ASCOT SALOON') and /ascot-12-4 (name 'Ascot 12/4') — THREE live ids for one body style, one of them carrying stray spaces"
+    - "id-canonical fails on a named live twin ⇒ defective(D6)"
+
+"car/austin/clifton#name":
+  researcher: "unverifiable(en.wikipedia.org/wiki/Austin_12/4 lists the produced bodies as Harley, Ascot, tourer, Eton, Open Road, cabriolet and estate — 'Clifton' does not appear)"
+  verifier: RESOLVED → correct
+  route_tried: "I re-fetched the researcher's page and reproduced their negative result exactly (Harley, Ascot, Eton, Open Road only — no Clifton). Then I went to a different source class: a museum collection record."
+  evidence:
+    - "https://nationalmotormuseum.org.uk/collections/vehicles/austin-twelve-clifton/ — the vehicle record is TITLED 'Austin Twelve Clifton' and reads: 'Available with a variety of saloon and tourer bodies, including the Clifton five-seater tourer seen here'"
+    - "corroborated by iconicauctioneers.com ('1930 Austin Heavy Twelve-Four Clifton Open Road Tourer') and by the catalog's own car/austin/12-4-clifton"
+    - "'Clifton' is Austin's own word for this product ⇒ the display name is marque-true. Name is CORRECT."
+    - "ALTERNATIVE READING, flagged not applied: because the museum frames Clifton as a BODY on the Austin Twelve — and car/austin/12 is live — a D8 altitude reading is available. I book one defect on this record (the id twin), not two."
+
+"car/bmw/ci#id":
+  researcher: "unverifiable(the underlying rows are bare trim-suffix strings that cannot be resolved to a model series, so whether another live id already denotes them is undecidable)"
+  verifier: RESOLVED → defective(D8)
+  route_tried: "closed-world enumeration of the candidate parents inside car/bmw — the referent need not be pinned to a single series if EVERY candidate parent is live."
+  evidence:
+    - "BMW's 'Ci' suffix was used on exactly three ranges: the 3 Series (318Ci…330Ci), the 6 Series (645Ci, 650Ci) and the 8 Series (840Ci, 850Ci)"
+    - "all three parents are LIVE and I verified each carries the Ci strings in its own raw set: car/bmw/3-series contains '318 CI COUPE','320 CI CONVERTIBLE','325 CI CABRIO','330 CI COUPE'; car/bmw/6-series contains '645 CI CABRIO','650 CI CABRIO'; car/bmw/8-series contains '840 CI AUT. E2','840 CI AUTO','850 CI A COUPE','850 CI E2'"
+    - "whichever range the 'CI CABRIO' / 'BMW CI' rows belong to, a live id already denotes them ⇒ id-canonical fails under every reading. This is enumeration, not analogy: the candidate set is closed and each member was checked."
+    - "class D8: a body/engine suffix at model altitude with live bare nameplates"
+
+"car/chevrolet/universal#availability.nz":
+  researcher: "unverifiable(the only nz row reachable is 'CHEVROLET | A D UNIVERSAL' n=1, which does not fold to 'Universal' under any documented rule)"
+  verifier: UPHELD — remains unverifiable
+  route_tried: "observed_variants for the id, plus a sibling scan of all 285 car/chevrolet models for a Series-AD-shaped neighbour"
+  evidence:
+    - "observed_variants has NO entry for car/chevrolet/universal at all, so the catalog carries no raw spelling for this id in either country — I cannot reproduce the nz row from the corpus side either"
+    - "the make holds /independence, /national, /confederate (other Chevrolet series names) but no 'series-ad' id that could absorb an 'A D UNIVERSAL' row"
+    - "I found no route the researcher had not already taken. Their unverifiable stands and correctly counts against the clean rate."
+
+"car/chrysler/gs#id":
+  researcher: "unverifiable(the rows are bare trim strings on a 1980s Chrysler G-body; I could not establish which nameplate they denote, so overlap with a live Chrysler id is undecidable)"
+  verifier: RESOLVED → correct
+  route_tried: "targeted search on the exact register string 'GS Turbo II' rather than on the bare 'GS'"
+  evidence:
+    - "car.info lists the vehicle as 'Chrysler Daytona Shelby/GS Turbo II 177ps, (1987 - 1991)'; automobile-catalog carries '1988 Chrysler GTS Shelby 2.2L Turbo Intercooler … for Europe export'; chrysler-club.net groups the family as 'Chrysler Laser / Daytona / GS'. The referent is the European-market Chrysler version of the Dodge Daytona Shelby Z — the blocker the researcher stated is removed."
+    - "with the referent established I checked for a live twin: car/chrysler has 89 models including /laser and /le-baron but NO /daytona. No live car/chrysler id denotes this vehicle."
+    - "car/dodge/daytona is live, but that is the SAME car under its US marque of sale, which the project's own marque-of-sale convention (moves.yml header) treats as a legitimately separate record"
+    - "id-canonical is CORRECT."
+
+"car/citroen/c#id":
+  researcher: "unverifiable(the record rests on bare-letter rows plus one 'C 5 HP'; Type C, C4, C6 and the modern C-series all fold to the same key, so which vehicle the id denotes — and therefore whether a sibling duplicates it — is undecidable)"
+  verifier: RESOLVED → defective(D6)
+  route_tried: "same closed-world enumeration: every candidate referent has a live sibling, so the overlap question resolves without pinning the referent."
+  evidence:
+    - "the id's only raw string is 'C 5 HP' — the Citroën Type C / 5 CV — and car/citroen/5-cv is LIVE (name '5 Cv', nl + nz). That alone is a named twin for the record's only attested raw string."
+    - "for the bare-'C' rows the enumeration closes too: car/citroen/{c1,c2,c3,c4,c5,c6,c8} are all live, and c1's raw contains 'C 1' while c2's contains 'C 2' — the spaced spellings that a bare 'C' key would collide with"
+    - "under every candidate reading a live sibling denotes the vehicle ⇒ id-canonical fails. D6."
+
+"car/daimler/mkii#id":
+  researcher: "unverifiable(the id pools 'MKII SALOON' with 'MK II DINGO' so it is not clear the id denotes ONE vehicle; DEBT.md files the Daimler/Jaguar Mk split family as open work)"
+  verifier: RESOLVED → defective(D6)
+  route_tried: "closed-world enumeration over the two referents the researcher himself named."
+  evidence:
+    - "if the id denotes the Mk II saloon: car/daimler/mk2 is LIVE (name 'MK2', nl + nz). 'Mkii' and 'MK2' are two renderings of 'Mark II' — a D6 spelling pair under NFKD + Roman-numeral folding."
+    - "if the id pools the Dingo Mk II scout car: car/daimler/dingo is LIVE. (car/daimler/century-mk2 and /ferret are live as well.)"
+    - "both of the researcher's own candidate referents already have a live id ⇒ id-canonical fails either way. D6."
+    - "caveat recorded: car/daimler/mk2's observed_variants is empty, so its referent rests on the name string alone. The verdict does not depend on that leg, because the Dingo leg closes the enumeration independently."
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PART 3 — SPOT-CHECK OF `correct` VERDICTS
+# ══════════════════════════════════════════════════════════════════════════════
+# Sampling (deterministic and reproducible): select every record whose ledger
+# verdicts carry BOTH id:correct AND name:correct → 33 records; sort by id; take
+# index floor(i*33/25) for i in 0..24 → 25 records; re-derive the id and name
+# claim of each → 50 claims. Script: vfy/parse2.rb in the scratchpad.
+
+spot_check_sample: [bus/beulas/glory, bus/fiat/ducato, bus/hyundai/h-1, bus/isuzu/journey,
+  bus/ldv/maxus, bus/mercedes-benz/atego, bus/mitsubishi-fuso/rosa, bus/otokar/vectio,
+  bus/scania/interlink, bus/toyota/coaster, bus/volvo/9500, bus/volvo/b12ble, bus/yutong/u12,
+  car/ahorn/van-620, car/audi/a8, car/bristol/401, car/bugatti/divo, car/bugatti/mistral,
+  car/buick/rainier, car/cadillac/fleetwood-sixty-special, car/chevrolet/malibu-limited,
+  car/chevrolet/orlando, car/cupra/born, car/daimler/consort, car/daimler/super-v8]
+
+"car/cadillac/fleetwood-sixty-special#id":
+  researcher: correct
+  verifier: MISS — should be defective(D6)
+  evidence:
+    - "FOUR live ids in car/cadillac denote the Cadillac Sixty Special, all verified live: fleetwood-sixty-special ('Fleetwood Sixty Special'), fleetwood-60-special ('Fleetwood 60 Special', fi/nl, raw 'FLEETWOOD 60 SPECIAL SEDAN','FLEETWOOD 60 SPECIAL SEDAN 1958','Fleetwood 60 Special Sedan'), fleetwood-60s ('Fleetwood 60S') and sixty-special ('Sixty Special', fi/nl)"
+    - "'Fleetwood Sixty Special' vs 'Fleetwood 60 Special' is a word/digit spelling pair of ONE nameplate, same make+kind, and both carry fi+nl availability — the same two registers, so this is not two markets naming one car differently"
+    - "the researcher's note reads 'id judged correct: the Sixty Special is a distinct Cadillac series, not a trim of the Fleetwood'. That answers a different question — they compared only against car/cadillac/fleetwood and never enumerated the other three."
+    - "the make repeats the pattern: fleetwood-brougham vs fleetwood-broughan (a typo twin), fleetwood-75 vs fleetwood-seventy-five, sixty-two vs series-62 vs 62-series vs 62"
+    - "GENUINE MISS: a defective id claim scored correct."
+
+"car/cadillac/fleetwood-sixty-special#name":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["'Fleetwood Sixty Special' is a real Cadillac model name and the fi raw 'Fleetwood Sixty Special Sedan (AA) 4ov 6390cm3 A' and nl raw 'FLEETWOOD SIXTY SPECIAL' both carry it. Name is correct; only the id claim fails."]
+
+"car/chevrolet/malibu-limited#id":
+  researcher: correct
+  verifier: CONTESTED — flagged, not flipped
+  evidence:
+    - "car/chevrolet/malibu is live, as are malibu-classic, malibu-limited, malibu-maxx and a bare /classic"
+    - "OBJECTIVE TIEBREAK, checked myself: us_vehicles.csv reads model='Malibu Limited', baseModel='Malibu' (alongside 'Malibu Hybrid'→'Malibu', 'Malibu eAssist'→'Malibu', 'Malibu Maxx'→'Malibu'). By the researcher's OWN declared tiebreak this flips to defective(D8)."
+    - "against that: 'Malibu Limited' was GM's official model-year designation for the 2016 carry-over eighth-generation car sold alongside the all-new ninth-generation Malibu — a distinct catalogued product, which is the 'distinct product' side of their stated rule"
+    - "the researcher anticipated this exact dissent in their own note ('a verifier reading EPA's baseModel strictly could dissent'), which is good practice and is why I flag rather than flip"
+    - "NOT counted in the miss rate."
+
+"car/daimler/super-v8#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence:
+    - "I checked the tempting neighbours: car/daimler/super-8 ('Super 8', raw 'DAIMLER SUPER 8') and /super-eight ('Super Eight') are a D6 pair WITH EACH OTHER, but they denote the X350-era Daimler Super Eight — a different car from the X308-era Super V8 this id carries (raw 'DAIMLER SUPER V8')"
+    - "car/daimler/super-v8 has no twin. Correct as scored. (The super-8/super-eight pair is a defect in records outside this slice.)"
+
+"car/bristol/401#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["raw ['BRISTOL 401']; siblings 400,402,403,405,406,407,408,409,410,411 each carry exactly one raw string of the same shape — a cleanly enumerated numeric range with no spelling twins"]
+
+"car/audi/a8#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["80+ raw variants across 13 countries; the only near-neighbour is car/audi/s8, a genuinely distinct model. The spaced spellings 'A 8','A 8 QUATTRO','A 8 LIMOUSINE' are absorbed INTO a8 rather than forming a twin — the correct outcome and the exact opposite of the volvo/b and setra/s failures."]
+
+"bus/volvo/9500#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["raw ['Volvo 9500'] — one spelling. The neighbours 8900/8900rle and 9700/9700h/9700hd are defective pairs among themselves (booked elsewhere in this slice) but neither collides with 9500."]
+
+"bus/volvo/b12ble#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["raw ['B12BLE 4X2 8700LE','B12BLE 4x2','B12BLE 6x2','B12BLE FWS-IL 6X2','B12BLE/730']; b12, b12b, b12m are distinct Volvo chassis. No 'B12 BLE' whitespace twin exists as its own id."]
+
+"bus/scania/interlink#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["11 spellings of one product all absorbed into ONE id ('SCANIA INTERLINK','Scania Interlink, 3-axle','INTERLINK 3-AXLE','SCANIA INTERLINK, 3AXEL'…). No twin. The folding behaving correctly."]
+
+"bus/otokar/vectio#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["raw ['VECTIO 290 T','VECTIO 290T','VECTIO 310T','VECTIO G 250 U','VECTIO U LE'] all under one id — note '290 T' vs '290T' folded together correctly here, the same fold that FAILED for setra/s417"]
+
+"bus/mitsubishi-fuso/rosa#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["five trim strings ('ROSA CUSTOM','ROSA CUSTOM AUTO','ROSA CUSTOM AWD','ROSA SCHOOL AUTO','ROSA SCHOOL EURO 6') correctly folded into one nameplate id; sibling canter is a different product"]
+
+"bus/mercedes-benz/atego#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["raw ['ATEGO 1022L','ATEGO 1217','ATEGO 1218L','ATEGO 1530 TOURING GT'] folded into one nameplate; no 'atego-<number>' twin exists. Notably this is the SAME make whose 300/311/316/412-d/518/818 numeric ids failed — the failure is confined to code-stub ids, not to the make."]
+
+"bus/isuzu/journey#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence: ["raw ['JOURNEY DELUXE','JOURNEY LR312','JOURNEY LR312J','JOURNEY P-MR112D'] under one id; sibling turquoise is a different Isuzu product"]
+
+"bus/fiat/ducato#id":
+  researcher: correct
+  verifier: CONFIRMED
+  evidence:
+    - "14 spellings ('DUCATO 18','DUCATO MAXI','FIAT DUCATO 35','DUCATO MINIBUS'…) all folded into ONE bus-kind id; no ducato twin under bus/fiat"
+    - "the cross-KIND twins (van/fiat/ducato, truck/fiat/ducato) are excluded by the researcher's declared rule and by D10's 'NEVER lose the other kind's evidence'. I applied the identical rule."
+
+"bus/ldv/maxus#id":       {researcher: correct, verifier: CONFIRMED, evidence: ["raw ['LDV MAXUS'], the make's only model, no twin"]}
+"bus/beulas/glory#id":    {researcher: correct, verifier: CONFIRMED, evidence: ["bus/beulas has exactly two models (glory, jewel), both real Beulas coaches, no twin"]}
+"bus/hyundai/h-1#id":     {researcher: correct, verifier: CONFIRMED, evidence: ["the make's ONLY bus model; observed_variants empty; no twin possible"]}
+"bus/toyota/coaster#id":  {researcher: correct, verifier: CONFIRMED, evidence: ["bus/toyota holds coaster and hiace — two distinct Toyota products"]}
+"bus/yutong/u12#id":      {researcher: correct, verifier: CONFIRMED, evidence: ["bus/yutong holds u11dd, u12, u13l, u15, u18 — a correctly enumerated U-series with NO bare-'u' stub, plus ic and zk. Contrast bus/setra/s, where the bare series letter did get an id."]}
+"car/chevrolet/orlando#id": {researcher: correct, verifier: CONFIRMED, evidence: ["raw ['CHEVROLET ORLANDO'] across 8 countries, one spelling, no twin among 285 siblings"]}
+"car/cupra/born#id":      {researcher: correct, verifier: CONFIRMED, evidence: ["14 power/battery strings ('BORN 150 KW 58/62 KWH','BORN 240 KW 79/84 KWH','CUPRA BORN'…) ALL folded into one nameplate id — the direct contrast with car/cupra/seat-leon, where the marque-token spelling got its own id"]}
+"car/daimler/consort#id": {researcher: correct, verifier: CONFIRMED, evidence: ["raw ['CONSORT SALOON']; siblings db18 and light-15 are the related but distinct DB18 / Light Fifteen"]}
+"car/bugatti/divo#id":    {researcher: correct, verifier: CONFIRMED, evidence: ["us_vehicles.csv: make=Bugatti, model='Divo', baseModel='Divo' — the register's own altitude signal says Divo IS the base model, not a Chiron trim"]}
+"car/bugatti/mistral#id": {researcher: correct, verifier: CONFIRMED, evidence: ["us_vehicles.csv: model='Mistral', baseModel='Mistral' — base model per the register; no twin"]}
+"car/buick/rainier#id":   {researcher: correct, verifier: CONFIRMED, evidence: ["us_vehicles.csv: model='Rainier AWD'/'Rainier 2WD', baseModel='Rainier'. The drivetrain token was correctly stripped rather than promoted to an id — the opposite of the denza/d9-fwd failure."]}
+"car/ahorn/van-620#id":   {researcher: correct, verifier: CONFIRMED, evidence: ["the make's only model; no twin possible. (Its KIND claim is separately and correctly booked defective — see PART 1.)"]}
+
+spot_check_name_claims:
+  method: "all 25 name claims re-derived; the 21 not itemised above resolved to CONFIRMED on marque-name evidence with no dissent worth an entry"
+  confirmed_on_marque_or_register_evidence:
+    - "car/ahorn/van-620 'Van 620' — ahorn-camp.de's own model page renders 'VAN 620'"
+    - "car/bugatti/divo 'Divo', car/bugatti/mistral 'Mistral', car/buick/rainier 'Rainier' — us_vehicles.csv model/baseModel columns carry the exact forms"
+    - "bus/scania/interlink 'Interlink', bus/otokar/vectio 'Vectio', bus/mitsubishi-fuso/rosa 'Rosa', bus/isuzu/journey 'Journey', bus/toyota/coaster 'Coaster', bus/ldv/maxus 'Maxus', bus/beulas/glory 'Glory', bus/mercedes-benz/atego 'Atego', bus/fiat/ducato 'Ducato', bus/hyundai/h-1 'H-1', bus/yutong/u12 'U12', bus/volvo/9500 '9500', bus/volvo/b12ble 'B12BLE' — each is the marque's own product name, and each appears verbatim in the id's own raw set (or, for h-1/u12/coaster/glory, is the bare canonical form with no competing spelling in the corpus)"
+    - "car/audi/a8 'A8', car/bristol/401 '401', car/chevrolet/orlando 'Orlando', car/cupra/born 'Born', car/daimler/consort 'Consort', car/daimler/super-v8 'Super V8', car/cadillac/fleetwood-sixty-special 'Fleetwood Sixty Special'"
+  misses_found: 0
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PART 4 — THE RESEARCHER'S SELF-DECLARED JUDGMENT RULES, AUDITED
+# ══════════════════════════════════════════════════════════════════════════════
+
+JUDGMENT_RULES:
+  - rule: "D8-on-id when the suffix is a trim / engine / drivetrain / body qualifier AND a bare-nameplate sibling is live"
+    applied_consistently: NO
+    finding: >-
+      The rule is sound and explicitly declared, but it was applied to some records
+      and D6 used for structurally identical ones. D8 was used at
+      car/bentley/flying-spur-v8, car/chevrolet/cruze-eco, car/chevrolet/sonic-5,
+      car/datsun/180b-wagon, car/citroen/gsa-special. D6 was used for the same shape
+      at car/chevrolet/aveo-ls (trim), car/aion/ut-420-standard (trim),
+      car/denza/d9-fwd (drivetrain) and bus/mercedes-benz/{311,316,518,818,transfer}
+      (engine / tonnage / body). I reclassified those eight to D8.
+      No claim-level verdict changes — only the class mix. That still matters,
+      because §4's remedy column differs per class: D6's remedy is "merge to
+      canonical", D8's is "fold into nameplate, record as a variant". Executing a
+      D8 as a D6 merge would DESTROY the trim / engine / drivetrain distinction
+      (Aveo LS, Cruze Eco, D9 FWD, Sprinter 311/316/518). This is the single most
+      consequential finding of the verification pass, and it is a CLASSIFICATION
+      finding, not a rate finding.
+    would_flip_under_alternative_reading: "no verdict flips; only classes"
+  - rule: "us_fueleconomy baseModel as the objective altitude tiebreak 'where available'"
+    applied_consistently: NO
+    finding: >-
+      I checked the column myself. It gives baseModel='7 Series' for BMW
+      ActiveHybrid 7, '6 Series' for the Alpina B6, and 'Malibu' for the Malibu
+      Limited. The researcher scored car/bmw/activehybrid-7#id and
+      car/chevrolet/malibu-limited#id as CORRECT and car/bmw/alpina-b6#id as D6 —
+      i.e. the declared tiebreak was available in all three cases and consulted in
+      none of them, and in two of the three it points the other way. Neither
+      reading is unreasonable (ActiveHybrid 7 and Malibu Limited were both
+      marketed as models), and to their credit the malibu-limited note anticipates
+      the dissent in writing. FLAGGED, NOT FLIPPED — I leave all three as scored.
+  - rule: "name-marque-true = correct only with (a) a marque/encyclopedia URL showing the exact form, or (b) ≥2 INDEPENDENT registers emitting the exact display form; single-register attestation with no reachable marque source = unverifiable"
+    applied_consistently: MOSTLY-YES
+    finding: >-
+      A strict, well-chosen rule, and the reason the slice carries 15
+      unverifiables rather than a flattering zero. I tested it against the
+      single-source records and found it honoured in the conservative direction
+      (bus/isuzu/f nz-only, bus/wrightbus/gb gb-only, bus/zhongtong/lck nz-only
+      were all scored defective, not correct). Two asymmetries: (i) the same
+      evidentiary strictness is NOT applied to the ID claim — several D6 id
+      verdicts assert a duplicate without naming the colliding live id, which is
+      what my alpina-b6 overturn corrects; (ii) the rule made them stop at the
+      first unreachable source. Seven of the 15 unverifiables fell to ONE
+      alternative route each: a different domain (ayats.es not ayats.com), a
+      co-marque's site (scania.com for the Higer A30), the builder's own site
+      (dyparro.com), a museum record (Austin Clifton), a different Wikipedia page
+      (Volvo_8700 not Volvo_8900), a cached register file already on disk (Higer),
+      or an enumeration over the catalog itself (Austin Clifton, Citroën C,
+      Daimler Mk II, BMW Ci). The rule is right; the search was one step short.
+  - rule: "cross-KIND twins are NOT id-canonicality failures (D10 requires keeping the other kind's evidence)"
+    applied_consistently: YES
+    finding: >-
+      Correct, principled, and consistent with D10's remedy column. I applied the
+      identical rule and it changed no verdict of mine. bus/fiat/ducato's
+      id=correct is right.
+  - rule: "one root cause breaking several claims is scored per-claim"
+    applied_consistently: YES-BUT
+    finding: >-
+      Right in principle — that is what claim-level rates are for — and applied
+      evenly across car/bmw/mini, car/chery/jaecoo-j8 and the altas pair. The BUT:
+      where the id claim's only support IS the make claim's evidence, scoring id
+      defective too is not per-claim scoring, it is double-counting. car/bmw/alpina-b6
+      is exactly that case, and there the supporting id evidence turned out not to
+      exist at all.
+  - rule: "availability = correct where the register really has rows, even if the record's KIND is wrong (defect booked once, against kind)"
+    applied_consistently: YES
+    finding: >-
+      Sound and matches §5's wording. Applied consistently at bus/nissan/patrol and
+      car/ahorn/van-620. No change. Their bus/mercedes-benz/300 note goes further
+      and flags that the gb rows include passenger cars — a uk_dft body-type
+      contamination I verified verbatim, and a good catch that belongs in the
+      source-gap queue rather than in this record's verdicts.
+
+MISSED_DEFECTS_FOUND_BY_VERIFIER:
+  - id: "car/cadillac/fleetwood-sixty-special#id"
+    class: D6
+    how_found: "the 25-record deterministic spot-check"
+    detail: "four live ids for the Cadillac Sixty Special; the researcher compared only against car/cadillac/fleetwood. COUNTED in the miss rate."
+  - id: "car/audi/avant-rs2#id"
+    class: D6
+    how_found: "incidentally, while re-deriving that record's NAME claim"
+    detail: "car/audi/rs2 is live (gb/nl/nz) with raw 'AUDI RS2','RS2 AVANT','RS2 AVANT 6 SPEED' — the same car as car/audi/avant-rs2 (raw 'AVANT RS2 QUATTRO /260'). The researcher scored the id correct. NOT counted in the miss rate, because the sample was drawn deterministically and this record falls outside it — but it is the second confirmed correct-scored duplicate, and it says the true miss rate is not a one-off."
+  - id: "car/daimler/super-8 / car/daimler/super-eight"
+    class: D6
+    how_found: "while clearing car/daimler/super-v8 in the spot-check"
+    detail: "'Super 8' (raw 'DAIMLER SUPER 8') and 'Super Eight' are a digit/word twin for one car. NOT counted — both records are outside slice 1. Reported so the pair is not lost."
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SUMMARY
+# ══════════════════════════════════════════════════════════════════════════════
+
+SUMMARY:
+  defects_reviewed: 95           # every claim in the researcher's defect_list
+  defects_confirmed: 81
+  defects_reclassified: 13
+  defects_overturned_to_correct: 0
+  defects_overturned_to_unverifiable: 1   # car/bmw/alpina-b6#id — cited twin does not exist
+  reclassification_detail:
+    D6_to_D8: [bus/mercedes-benz/311#id, bus/mercedes-benz/316#id, bus/mercedes-benz/518#id,
+               bus/mercedes-benz/818#id, bus/mercedes-benz/transfer#id, car/aion/ut-420-standard#id,
+               car/chevrolet/aveo-ls#id, car/denza/d9-fwd#id]
+    D6_to_D9: [bus/mazda/e#id]
+    D9_to_D8: [bus/mercedes-benz/transfer#name]
+    D7_to_D9: [bus/mercedes-benz/oh#name, bus/scania/bf#name]
+    D9_to_D7: [bus/van-hool/tx#name]
+
+  unverifiables_reviewed: 15
+  unverifiables_resolved: 14
+  unverifiables_upheld: 1        # car/chevrolet/universal#availability.nz
+  resolved_to_defective: 7
+    # car/austin/clifton#id D6 · bus/volvo/8707#id D8 · bus/volvo/8707#name D9
+    # · bus/iveco/dyparro#make D11 · car/bmw/ci#id D8 · car/citroen/c#id D6
+    # · car/daimler/mkii#id D6
+  resolved_to_correct: 7
+    # bus/ayats/bravo#name · bus/higer/a30#id · bus/higer/a30#name
+    # · bus/iveco/dyparro#name · car/aion/hyptec-ht-620-premium#make
+    # · car/austin/clifton#name · car/chrysler/gs#id
+
+  corrects_spot_checked: "25 records / 50 claims (id + name each), deterministically sampled"
+  misses_found: 1                # car/cadillac/fleetwood-sixty-special#id
+  contested_not_scored_as_miss: 1  # car/chevrolet/malibu-limited#id
+  spot_check_miss_rate: "1/50 claims = 2.0%  (1/25 records = 4.0%)"
+
+  adjusted_per_claim_tallies_for_the_slice:
+    researcher: {correct: 546, defective: 95, unverifiable: 15, total: 656}
+    verifier_deltas:
+      - "−1 defective, +1 unverifiable   car/bmw/alpina-b6#id overturned"
+      - "−7 unverifiable, +7 defective   seven unverifiables resolved to defects"
+      - "−7 unverifiable, +7 correct     seven unverifiables resolved to correct"
+      - "−1 correct, +1 defective        the spot-check miss"
+    verifier_adjusted: {correct: 552, defective: 102, unverifiable: 2, total: 656}
+    clean_rate_conservative: "552/656 = 84.1%  (researcher reported 546/656 = 83.2%)"
+    why_it_moved_up: >-
+      Not because the data is better than they said — the defect count went UP,
+      from 95 to 102. It moved because 14 of the 15 unverifiables were resolvable
+      with one more fetch each, and unverifiables count against the clean rate.
+      The conservative bound was being paid on evidence that existed and had not
+      been found.
+    caveat: >-
+      84.1% is an UPPER bound and should be read as one. The spot-check found a
+      defective id scored correct in a 25-record sample, and a second (car/audi/
+      avant-rs2#id) turned up incidentally outside it. Both are the same shape —
+      a live duplicate the researcher did not enumerate — which is the failure
+      mode their method is structurally weakest against, since the id check has
+      no evidentiary rule as strict as the one they wrote for names.
+    class_histogram:
+      researcher: {D6: 29, D9: 17, D7: 15, D5: 10, D8: 10, D4: 5, D11: 3, D10: 2, D12: 2, D13: 2}
+      verifier:   {D6: 23, D8: 21, D9: 19, D7: 14, D5: 10, D4: 5, D11: 4, D10: 2, D12: 2, D13: 2}
+      note: "verifier column includes the 7 defects promoted from unverifiable and the 1 spot-check miss (102 total)"
+
+  verdict_on_the_ledger: >-
+    Substantially sound and unusually well evidenced. Raw strings are quoted with
+    counts, single-register attestation is refused, the unverifiable bucket is used
+    honestly rather than as a dumping ground, and two of the borderline calls
+    (car/chevrolet/malibu-limited, car/dodge/polara-880) are flagged FOR the
+    verifier in the ledger itself — which is exactly the behaviour I-11 is meant
+    to produce. Four weaknesses, in descending order of consequence:
+    (1) D6 is used as a catch-all for any id-canonicality failure, including eight
+    altitude failures whose §4 remedy is different and destructive if mis-executed;
+    (2) three id verdicts assert a duplicate without naming the colliding live id,
+    and in one of those the named twin does not exist in the catalog at all
+    (car/alpina/b6);
+    (3) at least two genuine duplicate families were scored clean (Cadillac
+    Fleetwood Sixty Special, Audi RS2/Avant RS2), both the same shape;
+    (4) the unverifiable bucket was closed one search step early — 14 of 15 fell
+    to a single alternative route, several of them to a file already on disk.
+    None of this moves the headline rate materially. All four are worth acting on
+    before the ledger merges, and (1) and (2) should be fixed in the ledger itself
+    rather than downstream.
+
+PROCESS_NOTES:
+  - "Three evidence-gathering subagents were dispatched for marque renderings and had not reported when the verification closed. Every verdict above stands on evidence I gathered and cite directly — corpus, cached register files, or a URL I fetched myself. Nothing here is pending on those agents."
+  - "I re-fetched one of the researcher's own negative results (en.wikipedia.org/wiki/Austin_12/4) and reproduced it exactly before going to a different source class. Their negative was honest."
+  - "Five of my own first-pass verdicts were wrong and were corrected after reading their evidence and checking it independently. All five corrections are recorded in place rather than quietly amended, because a verifier who only ever finds the other side's errors is not verifying."
