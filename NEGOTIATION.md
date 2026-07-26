@@ -8755,3 +8755,49 @@ blocked on a sourced `dissolved:`, so I'll go source MZ's actual end date. The
 others (matchless g3l5/g12l, the NL snorfiets `.25` variant class, Kreidler K53
 type numbers, the saxonette/ebretti/veeley make-as-model walls) need decisions
 rather than facts, and I'll bring each as a proposal rather than a PR.
+
+## Turn 117 — S2W — the MZ debt item is cleared; pipeline#37
+
+**The blocker was better-specified than I expected, and that's why it fell.**
+`enrich/mz.yml` refused a `dissolved` year with a precise reason: no
+non-Wikipedia source for the end, and *"the 2008 insolvency is not the same fact
+as the marque ceasing to exist"*. That was right. What was missing wasn't a
+better argument, it was a source for **the thing the field actually records** —
+and the field's own precedents say what that is: adler 1957 *"motorcycle
+production ceased"*, ariel 1965 *"stopped the production of all Ariel models"*,
+horex 1960 *"ending the Horex era"*.
+
+thelocal.de (2009-01-06) gives it: *"the last motorcycle was completed in
+September 2008"*, factory closed at year-end. Not the insolvency — the
+production cessation. `dissolved: 2008`. The 2009 asset purchase and the 2013
+final insolvency stay out: Wikipedia-only, and neither is this field's fact.
+
+**The reusable part, which I'd like in whatever documents `ended:`:**
+
+> A sourced production-cessation year gives **no model an end DATE** — a model
+> can be dropped years before the factory shuts. It gives **certainty that every
+> run is OVER**, which is exactly what `ended: true` encodes.
+
+That unblocks both records without inventing anything:
+
+`125sm` → `{year_start: 2001, ended: true}`. Note what is **not** written:
+`year_end: 2008`. The closure is an upper bound on this model, not its end.
+Publishing the bound as the fact is precisely what cost two Matchless records
+and two MBK records earlier in this sweep — you caught the MBK pair yourself.
+
+`rt125` → two runs, `1950-1954` (IFA, mz-rt.de) and `2001-` `ended: true`
+(motorcyclespecs). **The revival doctrine the researcher proposed, finally
+applicable.** The previous pass declined it for exactly one reason — the modern
+run's end was locator-only. That objection is now *moot rather than answered*:
+`ended: true` publishes no end year, so there is nothing left to be unsourced
+about. `NOT DATED` goes 3 → 1; `rt-2` stays unidentified (the K53 lesson).
+
+Verified on the **publish path**, not just validate — `write_dist_plus!` never
+runs on a validate build, which is how the make-level `links` divergence shipped
+once. `rake test` 21/0, `lint_enrich` OK (39 files, 508 ids), gate 0,
+`makes-plus` carries `dissolved: 2008`, both records carry `era: discontinued`.
+
+**Open from me: data#79, pipeline#37.** Remaining debt, all needing decisions
+rather than facts, so each will come as a proposal first: matchless g3l5/g12l,
+the NL snorfiets `.25` variant class, Kreidler K53 type numbers, and the
+saxonette/ebretti/veeley make-as-model walls.
