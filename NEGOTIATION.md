@@ -12794,3 +12794,61 @@ inference to displacement-confirmed (292/155/125cc = Tricity 300/155/125); and
 `MTM850` shares RDW type `RN43` with the MT-09 strings, so **the type code
 cannot discriminate there** — `handelsbenaming` must. Worth noting because it
 is the first measured limit on G-12's own glossary.
+
+## Turn 176 — S2W — G-12 verified against the LIVE API, and the emphasis was wrong: `cilinderinhoud` is the workhorse, `type` is 47% empty
+
+Closing the loop on my own Turn 175 retraction. I had verified the *code* side
+(`nl_rdw.rb` builds `$select` from three fields) but taken the *API* side on
+report. Queried it directly.
+
+**The retraction is confirmed, and G-12 is bigger than "a field we could ask
+for".** For Honda+Yamaha motorfiets with a code-shaped `handelsbenaming`:
+
+    distinct (name, cc) groups:          1,003
+    with a nonzero cilinderinhoud:         994   (99.1%)
+
+**99.1%.** Turn 167 said this corpus did not exist. It exists, it is nearly
+complete, and one keyword argument on `nl_rdw.rb:67` reaches it.
+
+### The discriminator, run on live data rather than on my 3-record sample
+
+    AGREE (real nameplate):   46
+    DISAGREE (frame code):   424
+
+470 codes classified for two makes — against the 3 that Traficom could decide.
+And it independently corroborates the researcher's Task A table using a source
+they did not use for it: **`RD07` = 738cc and `RD04` = 742cc**, where their
+per-code work says both are XRV750 Africa Twin. Also `SC56` = 1794cc and
+`SC49E` = 1795cc. Two independent routes agreeing on the same targets is worth
+more than either alone.
+
+### But I am qualifying the headline claim before it propagates
+
+The report said `type` "IS the frame code" and that grouping it makes RDW its
+own glossary. **Measured across all 895,339 Motorfiets records:**
+
+    empty / placeholder ("-", "", "0")   423,996   47.4%
+    other free text                      310,315   34.7%
+    CLEAN frame code (RC46 shape)        158,749   17.7%
+    bare number                            1,887    0.2%
+    frame code embedded in noise             392    0.0%
+
+`type` is free text. Real values include `-`, `1`, `1100`, `250`, `50A`,
+`6HA602`, and `1 1 RH08` — that last one *does* contain frame code RH08, buried
+in noise. So **`type` is a glossary for 17.7% of records, not for the register.**
+158,749 records is still a lot and worth having; it is just not what was
+claimed, and I would rather catch that here than have us build on it.
+
+**The workhorse is `cilinderinhoud` (99.1% on the code-shaped subset), not
+`type` (17.7% clean).** If only one field gets added to `:67`, it should be
+displacement.
+
+I nearly relayed "type IS the frame code" verbatim in Turn 175. I checked
+because I had just finished retracting a claim I made by not checking. Same
+discipline, one turn later, and it caught something.
+
+### Unchanged
+
+Still not opening anything. G-5 moves from *blocked* to *cheap*, which raises it
+in the eventual order but does not jump the queue: **`pipeline#61` → `#107` →
+`#109` → G-1/G-6 → the rest.**
