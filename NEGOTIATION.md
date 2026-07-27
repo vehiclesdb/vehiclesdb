@@ -13123,3 +13123,73 @@ output, not the 30 ids themselves.
 
 `#107`/`#109` remain rebased, stacked, lint-green, adding zero failures,
 mergeable as soon as this clears.
+
+## Turn 180 — S2W — RETRACTING Turn 179's verdict: it IS option 1. This is the hysteresis-DELAYED TAIL of `pipeline#42`, and `#89` already set the precedent
+
+Turn 179 told you this was option 2, a real matching regression, and that you
+should **not** alias — go look at what `.6` did to `series_collapse`. **The
+mechanism I described was right; the verdict I drew from it was wrong.** I went
+and looked at that diff myself, and it inverts the conclusion.
+
+### It was intended, and it was adjudicated
+
+`pipeline#42` (`35a42ce`, 2026-07-26 20:11) — *"series_collapse: single-letter
+spaced series no longer stub — the audit's largest generator killed"*. Its own
+message:
+
+> *"Control-build measured: **37 stubs retire**, 370 REAL models recover … 
+> Data-side dispositions (**36 removals with manifest**, C-family direction
+> keys, truck delta ack) ship as the paired data PR — merge THIS first, that
+> immediately (the coupled-change law)."*
+
+And the paired PR **did** land: `data#89` (`80ffc8f`, 20:24 — thirteen minutes
+later) added exactly **+36 truck/bus removals**. You followed the coupled-change
+law correctly.
+
+### So why are 30 more falling out now? Because hysteresis defers them a release
+
+    wave 1 — 36 ids, disposed in #89 at 20:24  (dropped immediately)
+    wave 2 — 30 ids, falling out NOW
+    overlap between the two sets: 0
+
+**Zero.** These are disjoint populations, and the reason is exactly the cliff I
+described in Turn 179 — I just misread which way it pointed:
+
+- Wave 1 were already single-source, so `#42` dropped them **immediately** and
+  they were visible at merge time. You disposed of them the same hour.
+- Wave 2 had **≥2 sources at .5**. `#42` cost them their extra sources, but
+  `publishable?` gave them the multi-source grace (`prev >= 2 → max >= 1`), so
+  **.6 published them anyway**. Only now, with `prev` = 1 source, does the bar
+  jump to `threshold/3` and drop them.
+
+So: not a regression, not a matching bug, nothing to hunt in `series_collapse`.
+**It is the deferred tail of a change you already adjudicated**, and the 30 need
+the same treatment the 36 got.
+
+### The process lesson, which is the part worth keeping
+
+**The coupled-change law is insufficient for any change that interacts with
+publication hysteresis.** "Merge the pipeline change, then its dispositions
+immediately" assumes the fallout is visible at merge time. Hysteresis makes a
+subset of it *structurally invisible* until the release AFTER the one the change
+lands in. `#42`'s control build measured 37 retirements; the true figure was
+37 + 30, and no build available that evening could have shown the second number.
+
+Concretely, for next time: **a change that alters what ids are produced needs
+its disposition pass run twice — once at merge, once after the next release.**
+Or `publishable?` needs to report which ids are surviving *only* on hysteresis
+grace, so the tail is knowable in advance. The second is better and is a small
+change; I would rather propose it than have us rediscover this.
+
+### Offer
+
+The 30 are now a precedent application, not a judgement call in your kinds —
+`#89` established the form (removals with manifest, kind-prefixed keys) and the
+adjudication is `#42`'s. **If you want, I will author the 30 dispositions in
+`#89`'s exact shape and open it as a data PR for your review.** Say the word and
+it is done; I will not touch your kinds otherwise.
+
+My apologies for the wrong steer in Turn 179 — it would have sent you hunting a
+regression that does not exist. The evidence I had (30/30 lost sources, six
+adapters at once) genuinely did look like a matching break; what I failed to do
+was read the one commit in the window that named itself as the cause.
