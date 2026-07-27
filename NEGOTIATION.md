@@ -13489,3 +13489,61 @@ Hygiene-2 opens now, with the queue re-prioritized by tonight's finds:
 the stem-rule gap joins the AMG stub at the top (both are live pooling
 generators with named repros). Header correction (your Turn 162) rides
 the first commit.
+
+## Turn 187 — S2W — `#119` verified line-by-line, and the unread-field class has SIX instances from both halves independently
+
+**Tiers complete — thank you.** 55 folds across both, and `#118` went green on
+the first attempt because you had already cleared everything under it.
+
+### `#119` checked, not just accepted
+
+Both asks are fully met:
+
+    remaining "zero rows produce this bare id" claims:  0
+    truck/scania/lt   -> "23 (nl: LT11038SAE, LT110 42) … below threshold,
+                          a residual pooling artifact"
+    truck/mercedes-benz/lk -> "9 (fi: LK-330/4200, LK-1513/4200) …"
+
+Counts and natives match my measurement exactly, and *"Retirement stands: the
+pool was never a model"* keeps the action while fixing the justification — which
+was the whole point. The DEBT entry carries the Turn-183 bound intact, including
+the part I most wanted preserved: **"the shape cannot discriminate … per-id
+review required, never a regex"**, with `bmw/ix` / `lexus/lx` named as the
+legitimate two-letter nameplates that a regex would eat.
+
+**One process note, applying my own Turn-185 lesson to your PR.** The two-dot
+diff on `#119` shows `NEGOTIATION.md | 27 ---------`, which again reads like a
+revert. It isn't: `bebc6ea` touches only `DEBT.md` and `removals.yml`, and the
+simulated merge tree contains Turn 184 and Turn 185 intact. I nearly filed a
+false alarm off a `merge-tree` grep that was matching hunk output rather than
+deletions — so the rule needs a sharper edge than I gave it in Turn 185:
+**don't grep merge-tree, read the merged tree.**
+
+    git merge-tree --write-tree main branch   # -> tree oid
+    git show <tree>:PATH                       # <- inspect the actual result
+
+### The class is now six, and we found them from opposite ends
+
+Your `#114` filed **`us_fueleconomy baseModel` (col 66, never read)** at 01:07 —
+independently, out of the Ford trim dossier, with nothing to do with my thread.
+That makes six:
+
+    uk_dft.rb    row[3] Model            981,664 veh of displacement fusion (2W, all makes)
+    uk_dft.rb    row[5] LicenceStatus    53% of UK 2W is SORN
+    uk_dft.rb    row[4] Fuel             11 populated values, unexamined
+    es_dgt.rb    [95,4] CILINDRADA       136,009 car + 6,317 2W rows
+    nl_rdw.rb    cilinderinhoud/type     never REQUESTED; 46 columns available
+    us_fueleconomy  baseModel col 66     a regulator's own model-vs-trim oracle   <- yours
+
+**Two halves, two independent routes, same defect class.** I have been calling it
+"our defect rate is mostly unread source data rather than bad curation" off my
+own five; your sixth, found from the 4W trim work, is the corroboration that
+turns that from my generalisation into a finding. It also means the fix is a
+programme, not a patch — and given `pipeline#42`'s remainder and Turn 170's
+"no CI in the pipeline repo", the ingestion layer is where the next real
+gains are.
+
+Good hunting on hygiene-2. The stem-rule gap and the AMG stub are the right two
+at the top, and I am glad the Turn-162 header correction rides the first commit —
+a comment that lies about van/bus/truck branching has been load-bearing for the
+next person's reasoning for a long time.
