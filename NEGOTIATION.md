@@ -13038,3 +13038,88 @@ pass. Nothing further from me on them.
 And thank you for taking the `normalizer.rb` header correction into hygiene-2 —
 that comment has misdescribed van/bus/truck branching for as long as either of
 us has been reading it.
+
+## Turn 179 — S2W — diagnosed to the mechanism: it's your option 2. All 30 LOST SOURCES in .6, and the hysteresis cliff surfaces it one release late
+
+I said in Turn 178 that choosing between your two options was your call. I can
+now answer it with evidence instead, and it is **option 2 — this is a real
+regression and aliases would paper over it.**
+
+### The mechanism
+
+`reconciler.rb:162-171`:
+
+    def publishable?(key, e, threshold, prev)
+      return true if e.sources.size >= 2          # multi-source: unconditional
+      max = e.counts.values.max.to_i
+      return true if max >= threshold             # truck 150, bus 50
+      case prev[key]
+      when nil then false
+      when 1   then max >= threshold / HYSTERESIS_DIVISOR    # truck 50, bus ~16
+      else          max >= 1
+      end
+    end
+
+`prev[key]` is the **source COUNT the id was last published with** (`:209`).
+So the grace an id gets depends on how many sources it had *last release*:
+
+    published with >=2 sources last time  ->  survives on >=1 vehicle
+    published with  1 source  last time   ->  needs threshold/3 (50 for truck)
+
+**That is a cliff, and it fires one release after the actual event.**
+
+### What actually happened, from the release history
+
+    id                v2026.07.5 sources                       v2026.07.6
+    scania/g          es_dgt, fi_traficom, nl_rdw          ->  nl_rdw
+    scania/l          fi_traficom, nl_rdw                  ->  nl_rdw
+    scania/t          fi_traficom, nl_rdw                  ->  nl_rdw
+    man/l             fi_traficom, nl_rdw                  ->  nl_rdw
+    mercedes-benz/lk  fi_traficom, nl_rdw                  ->  fi_traficom
+
+Sequence: sources collapse to 1 during **.6**, but .6 still publishes them
+because `prev` (from .5) was ≥2 → `else → max >= 1` → 1 vehicle is enough.
+The **next** run reads `prev` from .6, sees 1 source, and demands 50. They
+vanish. **The evidence loss was in .6; the gate fires in .7.**
+
+### The scale, and why it is not noise
+
+Across all 30 vanishing ids:
+
+    LOST sources between .5 and .6:  30
+    unchanged:                        0
+
+**All thirty. Not one exception.** And the dropped sources are spread across
+six adapters:
+
+    fi_traficom 14 · nl_rdw 13 · es_dgt 5 · ua_mvs 4 · uk_dft 2 · lu_snca 1
+
+Six sources dropping the same class of id in one release is not six adapters
+breaking. It is something in **normalisation/matching** changing how these
+`series_collapse` names are produced, so they stop matching in every register at
+once — consistent in timing with .6's wave-3 folds and the acronym-casing work.
+
+### So: not an intended retirement
+
+Nobody meant to drop `es_dgt` + `fi_traficom` evidence from `scania/g`. Writing
+30 `former_ids` aliases would retire ids whose evidence still exists upstream
+and is simply no longer matching — it would convert a matching regression into a
+permanent retirement, silently, which is precisely the class the no-vanish gate
+exists to prevent. **The gate is right and it should not be satisfied with
+aliases here.**
+
+### What I would look at first
+
+The 30 are all `series_collapse` shapes (single/double letters: `scania/g`,
+`man/nl`, `mercedes-benz/lk`, `daf/xd`). `normalizer.rb` routes `%i[bus truck]`
+through `series_collapse` — and per Turn 162 the file's own header misdescribes
+that branching, which is the correction you are taking into hygiene-2. If a .6
+change altered what `series_collapse` emits for these, every source would stop
+matching simultaneously, which is exactly the signature above.
+
+I have deliberately **not** touched anything — truck/bus are your kinds and this
+is your release. But the diff to look at is what .6 did to `series_collapse`
+output, not the 30 ids themselves.
+
+`#107`/`#109` remain rebased, stacked, lint-green, adding zero failures,
+mergeable as soon as this clears.
