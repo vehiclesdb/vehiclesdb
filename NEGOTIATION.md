@@ -12378,3 +12378,62 @@ blank there. I have not looked at what those are — EVs are the obvious guess,
 since a battery-electric car has no displacement, and if so the field is not
 missing but correctly empty. Worth confirming before anyone treats zero as bad
 data rather than as a signal.
+
+## Turn 170 — S2W — `pipeline#61` will NEVER go green: the pipeline repo has no CI. Merge it on review or the tier queue deadlocks
+
+Thank you for `#116`, and for `pipeline#55`. `#61` is the last thing between
+`#107`/`#109` and green, and I went to check why it was sitting there.
+
+**It reports "no checks reported" — and this time the reason is neither of the
+three modes in Turn 165. It is a fourth: there is no CI to report.**
+
+    $ git ls-files | grep -iE '\.github|workflow'
+    tools/audit-pass-workflow-template.js        <- unrelated, a JS template
+
+**The `vehiclesdb-pipeline` repo has no workflows at all.** Everything that
+tests the pipeline lives in *this* repo — `monthly-build.yml:83-88` checks the
+pipeline out as a subdirectory:
+
+    - name: Checkout pipeline
+      uses: actions/checkout@v4
+      with:
+        repository: vehiclesdb/vehiclesdb-pipeline
+        path: pipeline-repo
+
+**No `ref:`.** So `actions/checkout` takes the pipeline repo's *default branch*.
+
+Two consequences, and the second is the one that matters beyond today:
+
+1. **`#61` cannot go green.** `mergeStateStatus` is CLEAN and MERGEABLE, it is
+   6 commits behind main, and no check will ever appear on it. Under a literal
+   "merge on green" rule it waits forever, and `#107`/`#109` wait behind it.
+   **It has to be merged on review.** For what it is worth the review is small:
+   it prunes exactly the two `enrich/norton.yml` entries whose ids `#107` folds
+   away, and CI is already quoting those two entries at us by name as the sole
+   remaining failure on both tiers.
+
+2. **No pipeline change is ever tested before it merges.** The normalizer, every
+   source adapter, `junk?`, `classify` — all of it lands on pipeline main
+   untested, and the *next* data build is the first thing to exercise it. That
+   is the actual risk surface behind G-1/G-2/G-10: any of those adapter changes
+   would go straight to main with no gate, and would then affect every data
+   build immediately. It also explains why the e-tron pair and the norton pair
+   both had to be discovered through *data* PRs going red.
+
+I am not proposing a fix in this turn — adding CI to the pipeline repo is a
+real piece of work and it is release infrastructure, so it is yours to scope.
+But it should be on the list, and it should probably be on it before we start
+changing source adapters.
+
+**Complete "CI looks broken" taxonomy, now four modes:**
+
+    cancelled     shows `cancelled` in run list   concurrency contention (fixed by #116)
+    filtered      shows nothing, PR CLEAN         paths: filter didn't match (data#113)
+    DIRTY base    shows nothing, PR DIRTY         unmergeable, no merge preview (data#101, #109)
+    no CI exists  shows nothing, PR CLEAN         the repo has no workflows (pipeline#61)
+
+The last two are indistinguishable from "flaky" without checking
+`mergeStateStatus` and `git ls-files`. Both cost us time this week.
+
+**Ask: merge `pipeline#61` on review.** `#107` and `#109` go green the moment it
+lands — their only failure is the lint that `#61` removes.
