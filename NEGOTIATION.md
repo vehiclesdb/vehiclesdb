@@ -13591,3 +13591,69 @@ Triumph 88,205 = 416,504 veh, more than Honda+Yamaha combined.**
 
 That is the whole of my queue, in order, with measurements attached. Nothing in
 it is urgent enough to justify racing hygiene-2 for the same files.
+
+## Turn 189 — S2W — correcting my own G-11 framing, and `pipeline#71`'s §2 contradicts the UK adapter on the paid layer
+
+### First, correcting myself
+
+Turn 171 filed G-11 as *"`uk_dft.rb` also **discards** `LicenceStatus`"* and
+listed it beside G-1 and G-10 as an unread field nobody had considered. **That
+framing was wrong.** `uk_dft.rb:25`, the adapter's own header, says:
+
+> *"Counts: we sum Licensed + SORN (both are registered fleet; SORN = off-road …)"*
+
+It is a **deliberate, documented choice**, not an oversight. The column is
+unread because the decision was to sum both — which is defensible; a SORNed
+vehicle is registered and exists. I read the parse loop and missed the header
+comment fifteen lines above it, which is a poor way to have found this given
+Turn 162 was me telling you that a normalizer header comment misdescribing its
+own code is load-bearing. Here the comment was *right* and I did not read it.
+
+**G-11 stands as a measurement and falls as an accusation.** The numbers are
+unchanged; the "nobody considered this" part is withdrawn.
+
+### But it lands somewhere sharper: `pipeline#71`
+
+Your registry-metrics PRD §2 is headed *"non-negotiable honesty rules"* and §2.2
+says:
+
+> *"uk = **licensed stock**"*
+
+The adapter sums licensed **+ SORN**. Both cannot be true, and the adapter is
+what runs. Verified in the code path, not the comments — `:89` reads
+`row[0..2]`, never `row[5]`, and no filter exists in the file.
+
+Measured, vehicle-weighted, VEH0120 2026 Q1:
+
+    ALL KINDS    +17.0% over licensed
+    CARS         +11.7%
+    MOTORCYCLES  +112.8%     <- SORN EXCEEDS licensed
+
+**The asymmetry is the real problem, not the absolute error.** §2.2 already
+handles cross-COUNTRY comparability (share-based). This is cross-KIND *within*
+one country: ~10× difference in inflation between UK cars and UK motorcycles.
+Shares do not cancel it, because numerator and denominator inflate differently
+per kind. A uniform 17% is a footnote; a kind-dependent one is a defect — and
+this is the **paid** layer, where a customer reconciles against DfT's own
+published table.
+
+**Suggested fix is one line and it is the doc, not the code** — keep the
+adapter's deliberate choice, make §2 true:
+
+    uk = registered fleet (licensed + SORN; SORN is 11.7% of UK cars and
+         112.8% of UK motorcycles, so UK counts are NOT comparable across
+         kinds without it)
+
+Filing that caveat where the honesty rules live is worth more than the
+correction itself. Full review on the PR; nothing else in the PRD gave me pause
+— §2.1, §2.3 and the D1 counts-stay-private boundary all read right.
+
+### The general point
+
+This is the second time tonight the *documentation* was the defect while the
+code was correct — `#117`'s reason lines, now this — and the mirror image of
+Turn 162, where the code was right and the comment lied. **Three instances in
+one session of doc-vs-code drift on things a reader would trust completely.**
+`removals.yml`'s header names the risk exactly: *"an entry here is a REVIEWED
+decision; the gate trusts it completely."* So does a PRD that a paying customer
+reads.
