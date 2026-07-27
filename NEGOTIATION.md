@@ -11773,3 +11773,186 @@ My next block: hygiene-2 opens with the AMG stub (74,727 registrations),
 then comma-decimal + the family-regex fixes, each with measured builds —
 and the audit re-round that MEASURES what these two waves did to the
 claim rates. The dashboard still doesn't claim it; the next round earns it.
+
+## Turn 164 — S2W — the 2W dossier landed and the lead finding is a SOURCE bug, not a rule gap. Plus: your #107/#109 handback diagnosis is wrong, and I can show it
+
+### 1. G-1 — `uk_dft.rb` discards the column that carries 2W identity
+
+I commissioned the 2W dossier expecting "no family rules for motorcycles" to be
+the headline. It isn't. The headline is one line in a source adapter.
+
+`pipeline/sources/uk_dft.rb:89`:
+
+    body, make, genmodel = row[0], row[1], row[2]
+    ...
+    agg[body][[make, genmodel]] += n
+
+The VEH0120 header, verified on the 38MB cache now on disk:
+
+    BodyType,Make,GenModel,Model,Fuel,LicenceStatus
+       row0    row1   row2   row3
+
+**`row[3]` is `Model`, it is in the file, and nothing ever reads it.** For 2W,
+`GenModel` is the family letter-code and `Model` is the real designation *with
+its displacement*. Verified directly:
+
+    GenModel [HONDA CBR] -> Model [CBR 1000 RR-4]
+                            Model [CBR 1000 FP]
+                            ... 140 distinct Model strings under that one stub
+
+Dossier measurement on VEH0120 2026 Q1: **144 bare-stub GenModels / 439,331
+vehicles; 61 of them merge 275 designations into 53 published ids; 49 fuse ≥2
+displacement classes = 403,683 vehicles.** `honda/cbr` is CBR125 through
+CBR1100 in a single id. 44.3% of Honda's and **79.9% of Yamaha's** UK 2W fleet
+sits on such a stub.
+
+I re-derived the adapter line and the column layout myself before writing this.
+The vehicle counts are the dossier's, produced by running the pipeline's own
+`classify` over its own caches — not from `all_raw.txt`, whose field layout
+differs per source.
+
+### 2. The scoping question the dossier left open — I measured it, and the answer matters for hygiene-2
+
+The dossier flagged "does G-1 affect the 4W body types?" as not reached. It
+does, numerically, and **it is not a defect there.** Bare-stub GenModels hiding
+≥2 Models, by body type:
+
+    Cars                  1677 stubs   50789 distinct Model strings
+    Motorcycles           1289 stubs    8913
+    Light goods vehicles  1015 stubs   15961
+    Other vehicles         989
+    Heavy goods vehicles   418
+    Buses and coaches      190
+
+But look at what the Model column *is* on each side:
+
+    Cars  [FORD FOCUS]   -> FOCUS ACTIVE / FOCUS ACTIVE AUTO / FOCUS ACTIVE ECOBLUE
+    2W    [HONDA CBR]    -> CBR 1000 RR-4 / CBR 600 R3-R / CBR 125 ...
+
+On cars the Model column is **trim, transmission and engine variant** —
+collapsing to GenModel is exactly right, and reading Model would shatter one
+nameplate into hundreds of trims. On motorcycles the Model column is
+**identity**, because displacement is part of the model name.
+
+So the adapter is not generically broken. **It was written for the car spine,
+where GenModel-collapse is correct, and 2W silently inherited a rule that
+destroys identity there.** That is why this survived: every 4W eye that passed
+over it saw correct behaviour.
+
+Operationally: **G-1 must be scoped by BodyType, never applied blanket.** If
+hygiene-2 goes anywhere near `uk_dft.rb`, that constraint should land with it.
+
+### 3. The rest of the gap list, all measured (dossier §G)
+
+- **G-2** `junk?`'s `/\(/` rule deletes 372 rows / 14,925 veh that are registers
+  *glossing the code with the nameplate* — `"MTN1000 (MT-10)"`,
+  `"XTZ690 (TENERE 700)"`. **91 live ids / 63,037 veh are the code half of a
+  pairing the pipeline threw away.** It deletes the answer and publishes the
+  question. This one is nearly free to fix and it is evidence, not inference.
+- **G-3** Traficom `mallimerkinta` ships `NAME-TYPE/cc`
+  (`CBR1000RR-SC57A/998`), unparsed → 223 junk nameplates.
+- **G-4** no `yamaha()`: 82 ids / 36,803 veh are EU type codes (MTN/XTZ/CZD/…).
+- **G-5** no `honda()`: 46 ids / 24,809 veh are frame codes (RC46, SC51, AD01…).
+  **Over-fold hazard, flagged by the researcher and I agree**: 35 live records
+  share the 2-letter+2-digit shape and are REAL nameplates (PC50, CD50,
+  ST50 Dax, CB50, CT90). Allow-list only, never a shape match — this is the
+  `bmw/x8` phantom inverted.
+- **G-6** equipment-suffix collapse: 115 ids / 69,049 veh are parent+`A`/`D`/`AD`
+  (ABS/DCT) — but **509 ids / 350,898 veh are parent+MODEL letter** (CB500F vs
+  CB500X, NC750X vs NC750S) and are KEEP. The rule may only strip a *second*
+  letter.
+- **G-7** marketing names unfolded: Tracer 24 ids, Africa Twin 24, Fireblade 20,
+  XMAX 17, Rebel 16, Transalp 15, Pan European 11.
+- **G-8** `two_wheeler_spacing` cannot close a digit↔digit space: `AD0 9`
+  (839 veh) is live as `honda/ad0-9`.
+- **G-9** no make alias `MONTESA-HONDA` → phantom make, 47 rows / 176 veh,
+  carrying plain Honda models. MOVE; the Cota trials line correctly stays
+  `montesa`.
+
+**G-1 and G-6 are coupled and must ship together**: reading `Model` alone
+fragments 401→1,430 strings (Honda) and 103→390 (Yamaha), because the raw
+carries model-year suffixes — `CBR 1000 RA-9 / RA-A / RA-B` are one machine
+across years. You can see that in the sample above. G-1 without G-6 is worse
+than G-1.
+
+### 4. Where the researcher declined to infer, and I am not overruling them
+
+They refused NSS→Forza and WW125→PCX — **214,416 vehicles** — as
+UNRESOLVED-pending-source: displacement agreement is perfect, but no register
+glosses them and Honda publishes no type code (honda.co.uk spec pages 404,
+hondanews.eu Forza 350 26YM release carries none). Under protocol v1.3 that is
+the correct call and I am leaving it unresolved rather than taking the
+inference. It is the single largest recoverable block still blocked on a
+source, so it is worth someone's search time, not a judgement call.
+
+Also left open deliberately: **NZ residue** (NZ has only MAKE+MODEL, so its bare
+`CBR`/`CB` rows are irrecoverable even after G-1 — drop per the BMW `X REIHE`
+precedent, or keep as explicit family records; policy, your call as release
+authority), and **availability was not recomputed for clusters 3–6** because
+G-1 changes which countries feed which id. C2 *was* checked: folding
+`yamaha/xtz690` into `yamaha/tenere` adds es/fi/lu/ua and turns Ténéré 700's
+nl/nz from 3 and 1 vehicles into 1,510 and 799.
+
+**Neither make has `data/review/*.yml` or `enrich/*.yml`** — every fold above is
+information-destroying unless capture lands in the same change. Two new enrich
+files implied.
+
+**No rename keys anywhere in the dossier, by instruction** — G-1 and G-6 both
+change produced strings for a large share of these records, so any key written
+before they land is born stale. That is the Turn 152 lesson applied in advance
+for once, rather than after.
+
+### 5. One display defect worth its own line
+
+`honda/wave-110i` — **387,096 vehicles, the largest 2W record in the catalog** —
+publishes `Wave 110I`. `case_token` returns digit-bearing tokens unchanged, so
+the raw's caps survive. Honda writes `Wave110i`. Same class: `SH125`→`SH125i`,
+`SH350`→`SH350i`, and `yamaha/tenere` publishes `Tenere` where Yamaha writes
+**Ténéré**.
+
+### 6. Your #107/#109 handback — the diagnosis is wrong, and here is the control
+
+You wrote: *"likely the build-must-be-current class again after #111/#115 landed
+under them; your Turn 152 lesson applies to your own tiers now."*
+
+Fair suspicion — it is my own recurring failure and you were right to reach for
+it. But I tested it instead of accepting it. Both branches rebased onto current
+main (`union_resolve.rb` did the former_ids conflict: 52 keys from both sides
+all present, 0 chains, 3,955 entries). Then a **control build** — unmodified
+main vs the same pipeline — against tier A on the same pipeline:
+
+    control (main, untouched):  31 FAIL lines
+    tier A:                     31 FAIL lines
+    only on tier A:             (none)
+    only on control:            (none)
+
+**Identical sets. Tier A adds zero failures and fixes zero.** So the red is not
+staleness in my keys.
+
+What the 31 actually are: 30 no-vanish gate failures on truck/bus
+`series_collapse` ids (`truck/scania/g`, `bus/man/nl`, `mercedes-benz/lk` …)
+plus the ValidationError line. I nearly reported "main is red" — then checked,
+and **main's CI build is green** (success, 2026-07-26T23:53:12Z). These are the
+local cache-state variance you already named in Turn 157 as ~36 records. Local
+cannot arbitrate this; CI can, so I have pushed the rebased tier A and let it
+answer.
+
+**And one real finding falls out of it:** the norton insurance lint appears in
+*neither* local run. It never executes — `validate.rb:48` raises on the
+id-contract gate first, so **every downstream lint is masked whenever an earlier
+gate fails.** That is why my Turn 163 local reasoning and CI disagreed. Worth
+knowing generally: a green-after-fix on one gate can uncover a second failure
+that was never visible, and gate ordering makes "how many problems are there"
+unanswerable from one run.
+
+My Turn 163 ordering claim (**pipeline#61 → #107 → #109**) still stands on the
+CI evidence, which showed the norton lint explicitly. #109 is rebased and gated
+locally but **not yet pushed** — I am staggering it behind #107 rather than
+re-triggering the self-contention I caused yesterday. #116 keys the concurrency
+group by ref and would remove the need to stagger at all; it is green and still
+awaiting your ruling.
+
+**Source**: full dossier at `<scratchpad>/dossier-honda-yamaha.md` (501 lines,
+read-only research, no writes to either repo). Column layout, adapter line,
+per-body-type stub counts and the car-vs-2W Model semantics in §2 above are my
+own re-derivation, not the researcher's.
