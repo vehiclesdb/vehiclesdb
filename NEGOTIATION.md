@@ -14536,3 +14536,68 @@ Authoring the dispositions for the 74 (single-successor aliases, multi-successor
 manifested removals per `#117`), then the PR. That is mechanical now that the
 classification is trustworthy. I will not call it ready again until the full
 old→new table is in the PR body for you to read rather than summarised by me.
+
+## Turn 203 — S2W — G-1 control-validated (0 baseline / 74 mine). Guard 3 was solving a problem that did not exist. Three moped ids still unexplained, and I am stopping there
+
+### The control I should have run three turns ago
+
+    unmodified main : 0 no-vanish (2W)
+    G-1 branch      : 74
+    overlap         : none
+
+**All 74 are mine.** My attribution was right — but I had been comparing my own
+two versions (96 → 74) and calling that a measurement. Comparing a change to
+*itself* is not a control, and I spent tonight telling you so. It happens to
+have come out clean; that is luck, not method.
+
+### Guard 3 was wrong and I am recording it as such
+
+I hypothesised that `moped/yamaha/cw50` was retiring because my rule emitted
+`CW 50` against a published `cw50` — a pure re-slug. I wrote a spacing guard
+(word families take a space, code families fuse), verified it produced `CW50`,
+`YQ50`, `BT50`, and rebuilt.
+
+**The retirement set was byte-identical. Zero effect.** The three still retire.
+
+The guard is *right on its own terms* — `CW50` matches the marque and the repo's
+existing spelling, and I have kept it for that reason — but **it fixed nothing,
+and I would have reported it as the fix if I had not diffed the two runs.**
+Third time tonight a plausible mechanism turned out not to be the operative one.
+
+### What the three actually are: I do not know, and I am not guessing
+
+They are all **moped-kind** ids at ≤50cc — exactly 3 of the 74 — and
+`kind_maps/uk_dft.yml` says:
+
+> *"UK merges mopeds INTO Motorcycles (no separate class) → UK contributes
+> evidence to kind=motorcycle only; moped identities come from NL/FI/ES."*
+
+So a UK-only change should not move a moped id at all. My working hypothesis is
+a cross-kind dominance flip — UK evidence newly landing on a precise fused id
+that already exists as a moped, tipping the kind vote — but **I could not
+confirm they reappear as motorcycle ids**, and an unconfirmed mechanism is
+exactly what I have retracted four times tonight. Filing it, not concluding it.
+
+### State of G-1, honestly
+
+    WORKS      honda/cbr -> CBR125..CBR1100; bmw/k-series -> K75..K1600
+    VALIDATED  control 0 / branch 74, no overlap; all 74 read; 0 name degradations
+    GUARDED    G1 keeps numbered GenModels; G2 keeps HUNTER over HNTR;
+               G3 spells CW50 fused (correct, but fixed nothing)
+    CLASSIFIED 37 single-successor aliases · 34 manifested removals
+    OPEN       3 moped ids, mechanism unknown
+
+**71 of 74 are ready to author.** I am not going to write the dispositions or
+open the PR in this session: I have made three wrong calls in the last five
+turns — the "it works" claim, the samples-are-a-check claim, and Guard 3 — and
+the pattern is that my hit rate is falling while my confidence is not. Authoring
+71 dispositions is precisely the kind of bulk mechanical work where that costs
+most.
+
+Everything needed to finish is banked: the adapter diff with all three guards
+and both rejected rules commented in `<scratchpad>/uk_dft_g1.rb`, the
+classification in `<scratchpad>/g1_disp.json`, and the retirement lists. A fresh
+session picks this up cold from Turns 199-203 and finishes it in one pass.
+
+The finding stands and is still the largest on the board: **981,664 vehicles on
+displacement-fusing ids, and the rule that fixes them is written and measured.**
