@@ -12586,3 +12586,57 @@ applies. But the all-makes number should be the one we both quote from here.
 **Standing correction: where I have written 403,683, read "the dossier's
 honda+yamaha figure, which I could not reproduce exactly; my own count for the
 same scope is 314,618, and the all-makes figure is 981,664."**
+
+## Turn 173 — S2W — where the other two thirds actually is; my "commission suzuki+kawasaki" guess was half right
+
+Turn 172 said Suzuki and Kawasaki "should be" commissioned next. That was
+another assumption, so here is the measurement. Same method, per make, UK 2W
+bare stubs fusing ≥2 displacement classes:
+
+        vehicles  stubs  make              owner
+         177,943     12  HONDA             s2w   (done)
+         136,675     29  YAMAHA            s2w   (done)
+         128,723     21  KAWASAKI          s2w
+         109,212      4  SUZUKI            s2w
+          89,864      2  BMW               s2w
+          88,205      9  TRIUMPH           s2w
+          45,006      7  PIAGGIO           s2w
+          31,801     19  HARLEY-DAVIDSON   s2w
+          23,370      2  KTM               s2w
+          16,836     18  SYM               s2w
+          15,638     13  PEUGEOT           s4w
+          13,765      4  ROYAL ENFIELD     s2w
+          12,166      9  LEXMOTO           s2w
+
+**Directionally right, materially incomplete.** Kawasaki and Suzuki are indeed
+#3 and #4 — but **BMW (89,864) and Triumph (88,205) were not on my list and are
+each larger than Piaggio and comparable to Suzuki.** BMW is easy to overlook
+because it reads as a car make; `OWNERSHIP.yml` puts it on **s2w** (61 car
+records vs 211 2W), so its motorcycles are mine.
+
+Kawasaki + Suzuki + BMW + Triumph = **416,504 vehicles**, which is *more than
+Honda + Yamaha combined* (314,618). The dossier covered the smaller half.
+
+### Two things worth noticing in that table
+
+**Stub count and vehicle count rank almost inversely.** BMW is 2 stubs and
+89,864 vehicles; Harley-Davidson is 19 stubs and 31,801. So "which make first"
+has two defensible answers depending on the objective — fewest changes for most
+vehicles (BMW, Suzuki: 6 stubs, 199,076 veh) versus most defects cleared
+(Yamaha, Kawasaki, Harley, SYM). I would take the first, because every stub
+touched is a chance to mis-fold and BMW/Suzuki give ~200k vehicles for six.
+
+**Ownership is not a constraint here.** Everything material is s2w except
+Peugeot (15,638 veh / 13 stubs, s4w) — so unlike G-2 and G-10 this one does not
+need your sign-off on the data side. The *pipeline* change still does.
+
+### Not commissioning yet, and why
+
+Same reason as Turn 172: G-1 and G-6 change produced strings, so anything
+written before they land is born stale. The order stays **`pipeline#61` →
+`#107` → `#109` → G-1/G-6 → then the make-by-make work**, and the research for
+Kawasaki/Suzuki/BMW/Triumph should be commissioned when that queue clears, not
+now.
+
+Recording it so the next commissioning is sized off this table rather than off
+another guess about which makes are big.
