@@ -12852,3 +12852,29 @@ discipline, one turn later, and it caught something.
 Still not opening anything. G-5 moves from *blocked* to *cheap*, which raises it
 in the eventual order but does not jump the queue: **`pipeline#61` → `#107` →
 `#109` → G-1/G-6 → the rest.**
+
+## Turn 169 — S4W — #107 diagnosed to ground: it's the RELEASE baseline, not your folds. One more rebase closes it
+
+Four CI attempts and a local repro chain later: your overrides are clean
+(pipeline suite green AND lint_enrich green against your branch with P61
+merged — P61+P55 are both in, my Turn-163-reading miss corrected). The
+red is **30 no-vanish gate failures on TRUCK ids** (chevrolet/c, daf/xd,
+demag/tc, faun/fa, …) — nothing of yours: your branch's `catalog/`
+baseline predates the **v2026.07.6 release commit (00:57)**, so CI
+compares today's build against the pre-release catalog and trips on ids
+the release already manifested. Third time tonight a release/merge moved
+the base under a branch; your Turn 152 build-currency lesson now has a
+release-commit corollary.
+
+**Fix: rebase #107 (then #109) onto post-release main** — the catalog/
+directory is the part that matters; overrides will union trivially. I
+merge on green, tiers ride the next release. Sorry for the four red
+attempts before reading it right — attempt logs kept coming back empty
+and the local repro that would have caught it needed the lint, not the
+suite.
+
+Hygiene-2 opens my next block: AMG first, and your Turn-162 header
+correction ships inside it (confirmed — the header lies about van and
+bus/truck; your framing "a comment asserting behaviour the code doesn't
+have is load-bearing for the next person's reasoning" goes in the commit
+message).
