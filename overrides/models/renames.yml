@@ -1819,6 +1819,19 @@ Land Rover:
   "88 Wb": "88 W B"                           # spelling variant of "88 W B" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Rangerover: Range Rover                     # spelling variant of "Range Rover" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Landrover: null                             # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+  # ── REGISTER-LANGUAGE CONVENTION (issue #123, adjudicated in the issue
+  # thread): where a make carries both the continental "Serie N" spelling and
+  # the English "N Series" spelling for the same designation, the ENGLISH
+  # marketing form wins — it is what the normalizer's own family rule already
+  # emits ("#{$1} Series", normalizer.rb#bmw) and what every published sibling
+  # of this record uses (series-i, series-i-88, series-1/2/3, 88-series).
+  # Every losing id becomes a former_ids alias (#111 posture; former_ids.yml
+  # carries car/land-rover/serie-i-80). Keys replay-verified byte-exact against
+  # pipeline origin/main with recording proxies at the `renames&.key?` site;
+  # blast radius is car-only (this make also lives in bus/truck/van and neither
+  # key is probed there). ──
+  "Serie I 80": Series I 80                   # raw "SERIE I 80 4X4/2235" fi_traficom 1 — the 80-inch Series I (the 1948 original, https://en.wikipedia.org/wiki/Land_Rover_series); continental spelling of a designation this make already publishes in English
+  "Serie I-80": Series I 80                   # raw "SERIE I-80" nl_rdw 1 — hyphenated spelling of the SAME designation and the SAME slug (serie-i-80), so it must move WITH the key above or the record stays alive on this display form (the BMW "3 C"/"3. C" gotcha)
 
 Leike:
   Leike: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
@@ -2572,6 +2585,10 @@ Morgan:
 Morris:
   MINI1000: "Mini 1000"      # fused register shape of the Morris Mini 1000 (en.wikipedia Mini); matches morris/mini-850, austin/mini-1000. NOTE morris/mini-mk-2 left dangling (dossier U6)
   Coopers: Cooper S                           # spelling variant of "Cooper S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+  # ── REGISTER-LANGUAGE CONVENTION (issue #123): English marketing form wins;
+  # the losing id becomes a former_ids alias. Blast radius is car-only (Morris
+  # also lives in van; the key is not probed there). ──
+  "Oxford Serie": Oxford Series               # raw "OXFORD SERIE II/2460" fi_traficom 1, "OXFORD SERIE" nz_nzta 1 — continental spelling of the Morris Oxford Series (https://en.wikipedia.org/wiki/Morris_Oxford). The English twin is ALREADY in the candidate queue at nl 13 ("OXFORD SERIES II/III/VI", nl_rdw), so this is a FOLD, not a rename: fi+nz join nl and the published record gains a country. Sibling published records eight-series / eight-series-i / minor-series / 8-series-e already carry the English form
 
 Moto Guzzi:
   Moto-Guzzi: null                        # motorcycle es|nl — hyphenated by the caser from raw "MOTO-GUZZI"
@@ -3326,6 +3343,29 @@ Scania:
 # ES-brand audit (2026-07-12, multi-agent find→verify pass). NOTE these blocks
 # are make-scoped but kind-blind — kind hazards are tripwired in spotchecks.yml.
   Scania: null                                # registry rows where the make was written into the model column (bus+truck kinds) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+  # ── REGISTER-LANGUAGE CONVENTION (issue #123): the Swedish "N-Serien" and the
+  # English "N Series" are the same Scania range label reaching two ids in one
+  # make. English wins per the issue adjudication; the losing ids become
+  # former_ids aliases (former_ids.yml carries truck/scania/g-serien and
+  # truck/scania/r-serien). Keys replay-verified byte-exact against pipeline
+  # origin/main with recording proxies; blast radius is truck-only (Scania also
+  # lives in bus and none of these keys is probed there).
+  #
+  # HONEST LIMIT, stated because the comment would otherwise overclaim: these
+  # rows are register RANGE labels, not nameplates at this catalog's Scania
+  # altitude — the trailing-model spellings ("R-SERIEN, R500", "G-SERIEN, G 480")
+  # name a model the label does not, and g450/g480/r500/r520/r530/r580/r650 are
+  # all separately published. That is the BMW "SERIE X, X3" shape, whose verdict
+  # was `null`. This change deliberately does NOT re-adjudicate that: #123 is a
+  # slug-convention issue and its ruling is that losing ids keep resolving, not
+  # that records are deleted. These four keys fix ONLY the register-language
+  # split; the altitude question (should Scania range labels be nameplates at
+  # all, given P/G/R/S ranges vs the published power-variant ids?) is filed as a
+  # follow-up in the PR body and must be decided on its own evidence. ──
+  "G-Serien": G Series                        # raw "G-SERIEN, G 480" es_dgt 1; "G-SERIEN ,G450" nl_rdw 1; "G-SERIEN,G450(LB8X2*6HNA)" nl_rdw 1 — Swedish definite-plural form of Scania's G-series (https://www.scania.com/group/en/home/products-and-services/trucks.html). The English twin is already in the candidate queue (fi_traficom "G-series G490 LB8X4 4HNB"), so this is a FOLD
+  "G-Series": G Series                        # raw "G-series G490 LB8X4 4HNB" fi_traficom 1 — SAME slug (g-series) as the key above; pinned so the merged record has ONE display form instead of flapping between "G Series" and "G-Series" by row count (the one-id-many-names class, build/observed_model_names.json)
+  "R-Serien": R Series                        # raw "R-SERIEN" nl 1 + 11 trailing-model spellings ("R-SERIEN, R500/R520/R530/R580/R650/560", "R-SERIEN R500", "R-SERIEN, R 580 (B8X4*4NB)", "R-SERIEN, R 650" nl_rdw; "R-SERIEN 420", "R-SERIEN R52O LB8XFHNA" es_dgt) — same class as G-Serien. English twin already in the candidate queue (uk_dft "SCANIA R SERIES EV")
+  "R Serien": R Series                        # raw "R SERIEN" nl_rdw 2 — SPACED spelling of the key above and the SAME slug (r-serien); without it the old id survives on this display form
 
 Sea:
   M 200: M200                                 # spelling variant of "M200" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -3450,6 +3490,10 @@ Studebaker:
 
 Sunbeam:
   Sunbeam: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+  # ── REGISTER-LANGUAGE CONVENTION (issue #123): English marketing form wins;
+  # the losing id becomes a former_ids alias. Blast radius is car-only (Sunbeam
+  # also lives in motorcycle; the key is not probed there). ──
+  "Alpine Serie": Alpine Series               # raw "ALPINE SERIE V" nl 16, "ALPINE SERIE III" nl 5, "ALPINE SERIE IV" nl 2, "ALPINE SERIE II" nl 1, "ALPINE SERIE V CABRIOLET" nl 1, "ALPINE SERIE" nz 1 — the Rootes Alpine ran Series I-V (https://en.wikipedia.org/wiki/Sunbeam_Alpine); the Roman numeral is stripped by collapse_variant, leaving two ids for one nameplate. car/sunbeam/alpine-series is ALREADY PUBLISHED (fi, nl) from the English raws, so this is a pure FOLD onto a live twin
 
 Super Soco:
   Cpx: CPx                                  # THE CORRECT FORM IS NOT ALL-CAPS: VMoto Soco writes CPx/CUx with a LOWERCASE x (https://en.vmotosoco.com/cpx-en/). Wikipedia writes CPX and is wrong. A bulk "type codes are uppercase" rule would have produced "CPX" confidently — this is why the acronym worklist is stylings-first and per-token
@@ -4229,6 +4273,17 @@ Volkswagen:
   Dune Buggy: null  # SPACED sibling of the Dune-Buggy null above, measured live in the verification build (nz raws `DUNE BUGGY`); same kit-car class — https://en.wikipedia.org/wiki/Dune_buggy
 
 Volvo:
+  # ── REGISTER-LANGUAGE CONVENTION (issue #123): "FH Serien"/"FM Serien"
+  # (Swedish) and "FH Series"/"FM Series" (uk_dft GenModel) are the same range
+  # label reaching two ids in one make — truck/volvo/fm-serien and
+  # truck/volvo/fm-series were BOTH published side by side, which is the exact
+  # defect #123 reports. English wins; former_ids.yml carries the losers. Keys
+  # replay-verified byte-exact against pipeline origin/main with recording
+  # proxies; blast radius is truck-only (Volvo also lives in bus/car/van and
+  # neither key is probed there). The same altitude caveat recorded in the
+  # Scania block above applies here and is filed with it. ──
+  "FH Serien": FH Series                      # raw "FH SERIEN FH 16 750" es_dgt 1; "FH SERIEN, FH-420" nl_rdw 1; "FH- SERIEN FH 460" nl_rdw 1 — English twin already in the candidate queue (uk_dft "VOLVO FH SERIES", gb 35), so this FOLDS and publishes es+nl+gb
+  "FM Serien": FM Series                      # raw "FM SERIEN FM 450" es_dgt 1, "FM SERIEN FM500" es_dgt 1, "FM SERIEN, FM370" nl_rdw 1 — truck/volvo/fm-series is ALREADY PUBLISHED (gb, uk_dft "VOLVO FM SERIES" 166): the two conventions are live in the catalog simultaneously today. Pure FOLD onto the live twin
   240 Polar U9: null     # single-trim registration noise
   "123GT": "123 GT"                           # spelling variant of "123 GT" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "164E": "164 E"                             # spelling variant of "164 E" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
