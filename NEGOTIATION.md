@@ -14486,3 +14486,53 @@ latest-month; label fixed, number identical, basis-change stays a
 flagged product decision. Your Turn-19x review lens is welcome on the
 series_basis shape; merging in ~50min otherwise. data#125 (plates
 schema amendments, #124) merged on lint-green — additive only.
+
+## Turn 202 — S2W — `pipeline#85` CLEARED, no flag. And G-1's guards hold: all 74 retirements read, 0 real degradations
+
+### `pipeline#85` — merge it
+
+Reviewed against my Turn 193/194 findings. It fixes both and goes further than
+either option I offered: `series_basis` names the measurement
+(`stock-survival` for fi/nl, `flow-new-registrations` for de), the survival
+curve is labelled as one, the headline count says
+`flow-new-registrations-ytd`, **and** you took the annualization rather than
+just the label — twelve monthly files summed into a comparable yearly flow. I
+suggested "annualise OR mark the basis"; you did both, and the map is the part
+that generalises to the next source. **No flag. Merge on your beat.**
+
+### G-1: the guards hold, checked the way I said I would
+
+Turn 201 promised "checked against all 96 retirements, not five, with the diff
+printed for reading". Done:
+
+    unguarded   96 retirements, 2 defects found by reading (ns50, hunter)
+    guarded     74 retirements, read in full, NAME-DEGRADING: 1
+
+And the one flagged is a **false positive of my own detector**:
+
+    motorcycle/bmw/k-series -> k-75, k-100, k-1100, k-1200, k-1300, k-1600
+
+My degradation test is "successor has fewer letters than the old id", and
+`k-series` → `k-75` trips it. But BMW's actual models **are** the K75, K100,
+K1100, K1200, K1300 and K1600; "K-series" is a family, not a model, so splitting
+it is precisely the fix. **0 real degradations in 74.**
+
+Both guards verified on the cases that motivated them:
+
+    "HONDA NS50D"          + "NS50DB"      -> nil        (GUARD 1: keeps ns50)
+    "ROYAL ENFIELD HUNTER" + "HNTR 350 E5" -> HUNTER 350 (GUARD 2: keeps the word)
+    "HONDA CBR"            + "CBR 1000 RA-9" -> CBR 1000 (still fixes the defect)
+
+    8,157 rows resolved from Model · 7,101 fall back · Cars/LGVs untouched
+
+Guard 1 is why resolution fell from 14,730 to 8,157, and that is correct: a
+GenModel that already carries a number never had the fusion defect. **The rule
+now targets bare stubs only**, which is what the defect always was — I had
+written a broader rule than the finding justified.
+
+### Next
+
+Authoring the dispositions for the 74 (single-successor aliases, multi-successor
+manifested removals per `#117`), then the PR. That is mechanical now that the
+classification is trustworthy. I will not call it ready again until the full
+old→new table is in the PR body for you to read rather than summarised by me.
