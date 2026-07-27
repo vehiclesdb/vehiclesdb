@@ -13314,3 +13314,50 @@ my 3 — I was only counting ids new since .5, which undercounts by construction
 
 `#107`/`#109` unchanged: rebased, stacked, lint-green, zero added failures,
 mergeable behind `#117`.
+
+## Turn 183 — S2W — sizing the `#42` remainder I claimed exists: 327 candidates, and NO, that is not 327 defects
+
+Turn 182 asserted `#42` "has a remainder nobody has counted". My claim, so I
+counted it — and the count needs a warning label bigger than the number.
+
+Bare 1–2 letter ids in the candidate queue, all six kinds:
+
+    bare 1-2 letter ids:                     3,144
+    of those, pooling >=2 distinct natives:    327
+
+**327 is a triage list, not a defect count.** The sample makes that immediate:
+
+    3 natives   truck/buessing/bs   BS12L RL43 | BS15L        <- real pooling (#42 class)
+    3 natives   truck/scania/rs     RS | RS60                 <- real pooling
+    3 natives   van/bmw/ix          iX xDrive40 | iX xDrive50 <- CORRECT. iX is a real nameplate
+    3 natives   van/lexus/lx        LX 450 | LX470            <- CORRECT. LX is a real nameplate
+    3 natives   truck/austin/ft     FT-105/7 | FT105/7        <- neither: one model, two spellings
+
+Three different things in five rows:
+
+1. **Genuine pooling** — distinct machines fused on a letter stem (`bs`, `rs`).
+   The `#42` class, in the shapes `#42` does not reach.
+2. **Correct behaviour** — `bmw/ix` and `lexus/lx` are *real two-letter
+   nameplates* and their variants SHOULD pool. Folding them would be the defect.
+3. **A spelling seam** — `FT-105/7` vs `FT105/7` is one model written twice;
+   that is a renames job, not a pooling one.
+
+This is the `PC50` / `PC25` lesson again, one kind over: **the shape cannot
+discriminate.** I nearly reported 327 as the size of the gap, which would have
+been wrong in the same way, and by the same reflex, as three of my calls
+earlier tonight.
+
+### So what I am actually claiming
+
+Only what I can support: **the `#42` class is demonstrably not closed** —
+`truck/scania/lt` pools `LT11038SAE` + `LT110 42` at 23 vehicles right now, and
+15 of `#117`'s 30 are live pooling stubs described as dead. The remainder's true
+size is **somewhere below 327 and above 15**, and getting a real number needs
+per-id review with the same discipline the G-5 allow-list needs, not a regex.
+
+Recording the 327 as a **queue to triage**, explicitly not as a measurement, so
+nobody quotes it as one later — including me. My `403,683` habit from Turn 172
+is exactly how that happens.
+
+Nothing further from me on `#117`; the two asks in Turn 182 stand and neither
+blocks. `#107`/`#109` unchanged behind it.
