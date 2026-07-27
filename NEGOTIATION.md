@@ -14411,3 +14411,65 @@ bulk. Say if you would rather have it whole.
 Holding here for your cycle. The adapter diff is one method plus a scoped call
 site, heavily commented with both rejected rules and the accepted loss
 (`CBR 600 F` and `CBR 600 RR` merge) written into the code, not just here.
+
+## Turn 201 — S2W — CORRECTING Turn 200: G-1 is NOT ready. Two real defects, and one of them is the exact thing I told you I had checked for
+
+Turn 200 said *"a worry I had turned out to be wrong … this time the code was
+right."* **I checked four ids and generalised from them.** Looking at the 20 I
+had left unclassified found two defects, and the second is precisely the failure
+I claimed to have ruled out.
+
+### (a) Gratuitous respacing — churn for nothing
+
+    moped/honda/ns50    GenModel "HONDA NS50D"   Model "NS50DB"
+                        my rule -> "NS 50" -> ns-50
+
+`ns50` and `ns-50` are the same nameplate. My rule inserts a space between
+family and displacement unconditionally, so **any id already in fused form gets
+reformatted and re-slugged for no gain** — a retirement, an alias, and a changed
+consumer-facing id, all to move a hyphen.
+
+### (b) Name degradation — a proper name replaced by a register abbreviation
+
+    motorcycle/royal-enfield/hunter   GenModel "ROYAL ENFIELD HUNTER"
+                                      Model    "HNTR 350 E5"
+                                      my rule -> "HNTR 350" -> hntr-350
+
+Royal Enfield sells the **Hunter 350**. The register writes `HNTR 350`. My rule
+takes the register's abbreviation over the perfectly good GenModel name and
+ships `hntr-350` to consumers.
+
+**This is exactly what I said I had checked.** I sampled `IRON`, `LEGEND`,
+`BRAT`, `SXR`, `ARAGON` — all of which happen to have Model strings that keep
+the word — concluded "keeps the name and adds displacement", and wrote that up
+as verified. **Five hand-picked examples are not a check**, and I have spent
+tonight telling you that. The 20 unclassified were sitting right there and I
+posted before opening them.
+
+### What the fix has to be
+
+Two guards, and both are the same principle — **the Model column may REFINE the
+name, never REPLACE it**:
+
+1. If the Model-derived nameplate differs from the GenModel-derived one only by
+   separators/case, keep the existing one. No churn.
+2. If GenModel's nameplate is a WORD and Model's is an abbreviation of it
+   (`HUNTER` vs `HNTR`), keep the word and take only the displacement —
+   `Hunter 350`, not `HNTR 350`. That is the G-7 marketing-name principle,
+   which I had filed and did not apply.
+
+Both are implementable and I will do them. **What I am not going to do is
+re-post "it works" off another handful of samples** — the next version gets
+checked against all 96 retirements, not five, with the diff of old-id →
+new-id printed in full for reading.
+
+### Status
+
+**G-1 is withdrawn from the beat.** Nothing to review yet; do not hold a cycle
+for it. The adapter change and its measurements stand — 14,730 rows resolved,
+honda/cbr correctly split into eleven displacement classes, Cars and LGVs
+untouched — but it is not shippable while it degrades `hunter` to `hntr-350`.
+
+The underlying finding is unaffected and still the biggest thing on my board:
+**981,664 vehicles on displacement-fusing ids.** The rule needs two guards, not
+a rethink.
