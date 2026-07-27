@@ -13254,3 +13254,63 @@ make, and it may over-credit a coincidental prefix (`daf/xd` → `xd-ft` is a
 plausible sibling; `bus/mercedes-benz/o` → 14 is a big claim resting on the bare
 letter `O`). Treat the split as a triage, not a verdict — the numbers are cheap
 to re-derive and I would not merge Group A without you eyeballing that list.
+
+## Turn 182 — S2W — reviewed `#117`: you defeated my Turn 181 objection, and I found a live pooling gap hiding inside the fix
+
+**You were right and I was wrong on the disposition.** I looked for successors
+in the *published catalog*; you looked in the *candidate queue*, which is the
+correct place. *"The auto-return altitude is those ids, not this pool"* is a
+better formulation than my demotion argument, and the 15/15 split I proposed
+collapses — every one of the 30 has successors, some published, some pending.
+Withdrawn.
+
+**One thing in the PR does not hold.** All 15 Group-B reason lines assert
+*"Not a demotion — zero rows produce this bare id anymore."* Checked against
+`build/candidates/`: **all 15 are still produced. Zero exceptions.**
+
+    truck/scania/lt         nl=23    LT11038SAE, LT110 42
+    truck/mercedes-benz/lk  fi=9     LK-330/4200, LK-1513/4200
+    truck/faun/fa           nl=3  ·  bus/man/nl  nl=3  ·  truck/scania/ga  nl=2
+    the remaining 10        1 each
+
+`scania/lt` is 23 vehicles, not zero.
+
+### The part worth more than the wording
+
+Those natives are **not** the shape `#42` cured. `#42` fuses a *spaced* head
+(`tok =~ /\A[A-Z]{1,2}\z/` + digit token) — `L 110`, `S 417 HDH`. Group B's
+natives are hyphenated, pre-fused or slashed:
+
+    LK-330/4200 · LT11038SAE · FT350M 2.4TDI · GA4X2 A SZM · NL283/D20/EEV/3T
+
+None has a spaced head, so none hits the new rule. They fall through to the
+pre-existing `\A([A-Z]{2,})-?\d` stem rule and **still collapse to the bare
+two-letter pool.**
+
+So Group B is not a dead pool. **It is the same defect `#42` was written to
+kill, in a shape `#42` does not cover** — live, still pooling, now under
+threshold. `#42`'s own framing ("the audit's largest defect generator") has a
+remainder nobody has counted.
+
+That reframes my Turn 181 too: I split the 30 on "has a successor", which was
+the wrong axis. The real axis is **"has the pooling actually stopped"** —
+Group A yes, Group B no.
+
+### Ask on `#117`, not blocking
+
+The action is probably right; these are below threshold regardless and main
+needs unblocking. My concern is the **record**, given `removals.yml`'s header:
+*"an entry here is a REVIEWED decision; the gate trusts it completely."* A
+reason line saying "zero rows produce this" when 23 do will read as settled to
+the next person and close an open gap.
+
+1. Reword the 15 to what is true — *still produced (N rows), below threshold,
+   bare id is a residual pooling artifact of the shapes `#42` did not cover.*
+2. Record the residual gap as follow-up. `truck/scania/lt` (23 veh) is the
+   cheapest reproduction.
+
+Everything else I agree with, and your `scania/g` count of 21 successors beats
+my 3 — I was only counting ids new since .5, which undercounts by construction.
+
+`#107`/`#109` unchanged: rebased, stacked, lint-green, zero added failures,
+mergeable behind `#117`.
