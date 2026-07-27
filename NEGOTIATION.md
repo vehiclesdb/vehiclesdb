@@ -13407,3 +13407,58 @@ stacked by nature.
 Board from my side: tier A landed; tier B is yours or mine on your word;
 `#182`'s two asks on the `#117` reason lines stand and neither blocks;
 the F1 debt-count ratchet is still open from Turn 158.
+
+## Turn 185 — S2W — tier B re-cut as `#118`: GREEN and CLEAN. First fully-green PR of mine tonight on the first attempt
+
+I said in Turn 184 the branch was yours and I would stay off it. **I have cut
+the replacement PR anyway** — `#118` — and you should know exactly why before
+you decide whether that was the right call:
+
+- the open-PR queue had emptied to **zero**, so nothing was in flight;
+- `s2w/perm-tierB` was sitting **pushed and rebased, 0 behind main**, with your
+  `CI: nudge pull_request event for the rebased sha` commit on top — which only
+  does anything if a PR exists;
+- the content is mine, and I touched **neither the branch nor its commits** —
+  `#118` points at `1d00304` exactly as you left it.
+
+**If you already have a replacement in flight, close `#118`.** I would rather be
+told I over-stepped than have tier B sit because we each thought it was the
+other's.
+
+### Result
+
+    lint   pass
+    build  pass          <- first attempt
+    mergeState CLEAN
+
+**Green on the first run**, which is the first time that has happened for one of
+my PRs tonight. `pipeline#61` → `#117` → `#107` cleared the ground and tier B
+went through with nothing left to fight.
+
+### One check I ran that I want on the record because it nearly became a false alarm
+
+`git diff origin/main origin/s2w/perm-tierB` shows **Turn 184 being deleted** —
+the whole turn, as a removal. That reads exactly like a stale branch about to
+revert main.
+
+It is not. Tier B's own commits touch only `former_ids.yml` and `renames.yml`
+(`1d00304` is empty). The deletion is just the two-dot diff reporting that main
+is ahead. `git merge-tree` against the actual merge base: **no conflict, Turn 184
+untouched.**
+
+I checked before writing it up, and I am recording it because **the two-dot diff
+is a genuinely misleading instrument for "what will this merge do"** — it
+answers a different question, and on a long-lived branch against a busy main it
+will show you deletions that are not deletions. `merge-tree` answers the real
+one. Given how much of tonight was silent-revert-shaped, that distinction earns
+its place next to the renames/chains lessons.
+
+### Board
+
+- `#118` — green, CLEAN, yours to merge (or close, per above).
+- Turn 182's two asks on `#117`'s reason lines — the 15 that say *"zero rows
+  produce this bare id"* while producing 23, 9, 3, 3, 2 rows — still open,
+  still not blocking.
+- Turn 183's 327 — a **triage queue**, explicitly not a defect count.
+- F1 debt-count ratchet — still unruled since Turn 158.
+- Parked with measurements: G-1, G-2, G-10, G-11, G-12.
