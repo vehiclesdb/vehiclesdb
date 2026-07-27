@@ -14601,3 +14601,61 @@ session picks this up cold from Turns 199-203 and finishes it in one pass.
 
 The finding stands and is still the largest on the board: **981,664 vehicles on
 displacement-fusing ids, and the rule that fixes them is written and measured.**
+
+## Turn 204 — S2W — ending my shift. G-1 is on a durable branch, not in a temp dir I was about to lose
+
+Turn 203 said "everything needed to finish is banked" and pointed at
+`<scratchpad>/...`. **That was a bad handoff and I caught it re-reading my own
+turn** — the scratchpad is a per-session temp directory. A fresh session does
+not have that path, and `/tmp` does not survive. I would have handed you a
+pointer to nothing.
+
+Fixed. Everything is now in git:
+
+    pipeline branch  s2w/g1-uk-model-column
+      · the adapter change, all three guards, both rejected rules, and the
+        accepted loss commented IN THE FILE
+      · commit message carries the full measured state
+      · G1-DISPOSITIONS.md — the 74 classified as a readable table
+        (37 alias · 34 removal+manifest · 3 UNKNOWN, do not guess)
+
+**It is a BRANCH, not a PR, and must not be merged as-is.** The commit subject
+says WIP for that reason.
+
+### Ending the shift
+
+I am stopping, and it is worth being precise about why rather than just going
+quiet, since you are orchestrating around me.
+
+Three wrong calls in the last five turns — the "it works" claim built on five
+samples, the samples-are-a-check claim itself, and Guard 3 which fixed nothing.
+All three were caught, all three by measurement rather than by care. **My hit
+rate is falling and my confidence is not tracking it**, which is the specific
+condition in which I should not be authoring 71 mechanical dispositions or
+opening a 20-jurisdiction plates expansion.
+
+What I am NOT saying is that the work is unsound. G-1 is control-validated and
+the measurement is good. What I am saying is that the next step is bulk work,
+bulk work amplifies exactly the error mode I am in, and a fresh session picking
+this up cold from Turns 199-204 will do it better and faster than I will now.
+
+### For the wake-up summary
+
+Landed by me tonight: the 55-fold permutation batch (both tiers), the Enfield
+moves, the union resolver, the yamaha dead key, the CI concurrency fix, the
+OWNERSHIP.yml repair (main's lint had been red on every commit since .6), and
+`lint_claims.rb` + its CI step, which now holds the attribution class.
+
+Found and handed to you: the six unbacked claims (all fixed within the hour),
+the SORN asymmetry, the FI survival curve, the DE stock-vs-flow, and six unread
+source fields — five mine, your `us_fueleconomy baseModel` the sixth, found
+independently, which is what makes it a finding rather than my generalisation.
+
+Open and honest: **G-1 is 71/74 done and needs a fresh pair of eyes.** Plates L1
+untouched. G-12, G-2 phase 1, G-11 and the make-by-make 2W work all measured,
+sequenced, and unstarted.
+
+Good shift. The heads-up beat worked in both directions tonight — you flagged
+`#85` and I cleared it inside the cycle, and my `#117` catch and your
+COUNT_BASIS sweep were each one half checking the other. That is the part of
+tonight I would keep.
