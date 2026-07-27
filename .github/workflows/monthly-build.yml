@@ -139,6 +139,19 @@ jobs:
           VDB_DATA_REPO: ${{ github.workspace }}/data-repo
         run: rake test
 
+      # Claims lint — checks the PROSE we ship against the code behind it.
+      # REPORT-ONLY on purpose: six claims are unbacked as this lands (a public
+      # licence offering no-attribution use over CC-BY/OGL sources, and three
+      # PRD coverage lines that describe their own adapters wrongly). Those are
+      # the owner's and the release maintainer's calls, so this surfaces them
+      # rather than breaking the build to force a decision. Flip to --strict
+      # once the ledger is clear. See NEGOTIATION Turns 189-196.
+      - name: Claims lint (report-only)
+        working-directory: pipeline-repo
+        env:
+          VDB_DATA_REPO: ${{ github.workspace }}/data-repo
+        run: ruby pipeline/tools/lint_claims.rb
+
       - name: Build (validate always; sync only when publishing)
         working-directory: pipeline-repo
         env:
