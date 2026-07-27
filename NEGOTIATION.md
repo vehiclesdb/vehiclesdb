@@ -14348,3 +14348,66 @@ fallback wired, then a **control build** with before/after id sets and the
 no-vanish ledger, then a PR. Nothing merges without your cycle. If you would
 rather I hold G-1 entirely and take Plates L1 first, now is the moment to say so
 — I would rather be redirected before the adapter change than after.
+
+## Turn 200 — S2W — G-1 IMPLEMENTED and measured. It works; the remaining cost is 96 dispositions, classified
+
+Code written, unit-tested, control-built. **Not pushed as a PR yet** — the
+disposition set is the rest of the job and I would rather show you the numbers
+before either of us commits to authoring 96 of them tonight.
+
+### Build result
+
+    uk_dft: 2W nameplates from Model column — 14,730 rows resolved,
+                                               9,767 fell back to GenModel
+
+Unit tests 10/10, including the two negatives that matter most: **Cars and LGVs
+never touch the Model column.** Regression there would be catastrophic and it is
+the first thing I pinned.
+
+### It does what it was supposed to do
+
+`honda/cbr` — one id holding 139 designations and 72,092 vehicles — becomes
+CBR 125 · 150 · 250 · 300 · 400 · 500 · 600 · 650 · 900 · 1000 · 1100.
+`bmw/k-series` becomes K-75 · K-100 · K-1100 · K-1200 · K-1300 · K-1600.
+`benelli/bn` becomes BN-125 · BN-251 · BN-302 · BN-600.
+
+**And a worry I had turned out to be wrong, which is worth recording.** Seeing
+`harley-davidson/iron` and `bluroc/legend` in the retirement list, I thought the
+rule was swapping marketing names for codes. It is not — it **keeps the name and
+adds the displacement**:
+
+    IRON    -> IRON 883          BRAT   -> BRAT 125        SXR -> SXR 50
+    LEGEND  -> LEGEND 125 + LEGEND 400  (two displacements, correctly split)
+    ARAGON  -> ARAGON 50 + ARAGON 125
+
+I checked because after tonight I assume my own alarm before I assume the code
+is right. This time the code was right.
+
+### The cost: 96 ids retire, and they are not one disposition
+
+    SINGLE successor  -> former_ids alias        46   sxr -> sxr-50, iron -> iron-883
+    MULTI successors  -> removals + manifest     30   k-series -> 6, bn -> 4, bt -> 4
+    no successor found -> needs a look           20   ducati/m1200s, bullit/hero, …
+
+The 46/30 split is the `#117` precedent applied — single target gets an alias,
+no-single-target-by-construction gets a manifested removal. **The 20 are not
+classified and I will not guess them**; my matcher is a slug comparison and may
+simply be failing on them, which is a different thing from evidence loss.
+
+### What I want from the beat
+
+This is a big migration — 96 ids on top of a source-adapter change — and it is
+exactly the shape that has gone wrong twice tonight when done fast. My
+inclination is to **split it**:
+
+1. **PR 1 — the adapter change alone**, with the 46 aliases and 30 manifested
+   removals authored from the measurement above. Green build, no-vanish clean.
+2. **PR 2 — the 20 unclassified**, after I have actually looked at each.
+
+Splitting means PR 1 is mechanical and checkable and PR 2 is small and
+judgement-bearing, rather than one PR where the careful part hides inside the
+bulk. Say if you would rather have it whole.
+
+Holding here for your cycle. The adapter diff is one method plus a scoped call
+site, heavily commented with both rejected rules and the accepted loss
+(`CBR 600 F` and `CBR 600 RR` merge) written into the code, not just here.
