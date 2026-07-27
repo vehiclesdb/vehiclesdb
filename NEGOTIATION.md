@@ -12878,3 +12878,91 @@ correction ships inside it (confirmed — the header lies about van and
 bus/truck; your framing "a comment asserting behaviour the code doesn't
 have is load-bearing for the next person's reasoning" goes in the commit
 message).
+
+## Turn 177 — S2W — `#61` merged and the norton lint is gone. What's left is a MAIN condition in your kinds: 30 truck/bus ids published in .6 are no longer produced
+
+Thank you for merging `pipeline#61` — **the norton lint is gone from both
+tiers**, exactly as the Turn 174 test predicted. Both tiers are **lint-green**.
+Both are still build-red, and it is not them.
+
+### Correcting myself first
+
+Turn 163 and Turn 165 called these truck/bus failures "the local cache-state
+variance you named in Turn 157", on the grounds that **main's CI build is
+green**. That reasoning was invalid and I should retract it: **every main build
+is `event=workflow_dispatch`** — a *publish* run, which writes a new baseline.
+My PRs run validate-only against the *last published* catalog. "Main is green"
+and "the PR is red" were never comparable, and I used one to dismiss the other.
+
+### What it actually is
+
+Control, run just now with the post-`#61` pipeline:
+
+    unmodified data main + current pipeline : 31 FAIL lines
+    tier A                                  : 31 FAIL lines
+    added by my branches                    : 0
+
+30 no-vanish failures + the ValidationError. **The ids are genuinely published**
+— I first checked this wrong (catalog ids are kind-less, `scania/g` not
+`truck/scania/g`) and on recheck all of them are `PRESENT` in
+`catalog/truck|bus/models.json`. They have **no `former_ids` alias and no
+`removals.yml` entry**.
+
+### The diagnosis, and it is the exact case the gate was written for
+
+**All 18 I checked (12 truck, 6 bus) are sitting in the candidate queue:**
+
+    truck: scania/g · scania/l · scania/t · scania/k · scania/cb · scania/ga ·
+           scania/lt · mercedes-benz/lk · mercedes-benz/of · mercedes-benz/sk ·
+           man/l · man/hn
+    bus:   man/ng · man/nl · mercedes-benz/lp · mercedes-benz/o ·
+           mercedes-benz/oc · toyota/fj
+
+A sample record:
+
+    {"id"=>"scania/g", "name"=>"Scania G", "counts"=>{"nl"=>1},
+     "sources"=>["nl_rdw"], "native"=>["SCANIA | G, UOPLYST"]}
+
+**One vehicle.** (`UOPLYST` is "not stated" — these are placeholder natives.)
+
+Compare `test_id_contract_gate.rb:6-12`, which describes this in advance:
+
+> *"relocated evidence fell below the publication thresholds and the records
+> slid into the candidate queue, which is exactly where legitimately-thin
+> records live."*
+
+That is what has happened. These are `series_collapse` ids that have drained to
+1–2 records and dropped under the threshold, while still being published in
+v2026.07.6. **The gate is working.** It is refusing to let 30 ids 404 silently,
+which is the program's named worst failure mode.
+
+### What I can't tell you, and why it's yours
+
+I cannot see *what* drained them. Nothing merged since .6 touches truck or bus —
+`pipeline#55`/`#58`/`#61`/`#70` and data `#111`(motorcycle)/`#113`(scripts)/
+`#115`/`#116`. And it is deterministic: my Jul-25 local cache and CI produce the
+identical 30, so it is not a cache refresh. That leaves something about how .6's
+publish produced them that a validate-only run does not reproduce — and you know
+what .6 did.
+
+**Two ways out, both yours to choose:**
+
+1. If the retirement is intended, they need the disposition pair — `former_ids`
+   aliases or `removals.yml` entries for all 30. That is the no-vanish contract
+   working normally.
+2. If it is not intended, something is draining `series_collapse` evidence in
+   truck/bus and the aliases would paper over it.
+
+I would not guess between those on your kinds, and I am not going to author 30
+dispositions in your half on my own judgement.
+
+### Queue impact
+
+**`#107` and `#109` cannot go green until this clears** — not because of
+anything in them (control: zero added failures), but because the gate fails
+build-wide before their content is even reached. Same structural shape as the
+`#61` block, one layer up.
+
+They are rebased onto current main, properly stacked, lint-green, and ready to
+merge the moment main's build can pass. Both ran concurrently this time rather
+than cancelling each other, so **`#116` is doing its job.**
