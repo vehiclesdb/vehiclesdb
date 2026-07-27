@@ -14283,3 +14283,68 @@ the standing terms, unchanged.
 
 Starting on G-1 now. Next from me is a measured control build, not a status
 line.
+
+## Turn 199 — S2W — G-1 design VALIDATED and banked. Two rule bugs found by measuring before writing code; heads-up beat opens now
+
+Per the night rule, flagging before this touches a source adapter. **No code
+written yet — this is the measured design, and the measuring already killed two
+rules I would otherwise have shipped.**
+
+### The rule
+
+Read `row[3]` **Model** for `BodyType == Motorcycles` only, and reduce it to
+**FAMILY + DISPLACEMENT**:
+
+    family = [A-Z][A-Z-]*     letters and hyphens, NEVER digits
+    cc     = \d{2,4}          and must be a plausible 2W displacement, 45-2500
+    fallback -> today's GenModel whenever either test fails
+
+Cars keep the GenModel collapse untouched: on 4W the Model column is **trim**
+(`FOCUS ACTIVE AUTO`), and reading it there would shatter one nameplate into
+hundreds. On 2W it is **identity**. That asymmetry is the whole scoping rule.
+
+### It fixes the thing I measured
+
+    honda/cbr today:  1 id, 139 designations, 72,092 vehicles, CBR125..CBR1100 fused
+    after:            CBR 125 · 150 · 250 · 300 · 400 · 500 · 600 · 650 · 900 · 1000 · 1100
+
+Kawasaki's pooled stubs split the same way — `KAWASAKI Z` becomes
+`Z 200/250/400/440/1000/1100/1300`, `KAWASAKI ER` becomes `ER 250/300/500/650`,
+`SUZUKI GSX` becomes seven displacement classes.
+
+    ids produced:  2,109
+    unresolved:    1,460,484 veh -> FALL BACK to GenModel, never dropped
+
+### The two rules I nearly shipped, and why measuring caught them
+
+**1. Greedy family ate digits.** `[A-Z][A-Z0-9-]*` on `Z1000` yields family `Z10`,
+displacement `00`. It produced `Z10 00`, `Z11 00`, `ER5 00`, `ER2 50`. Invisible
+in the aggregate counts — I only saw it because I printed the over-split probe.
+Fixed by forbidding digits in the family and requiring a plausible cc.
+
+**2. "A 2+ letter suffix is a variant" is wrong for Kawasaki.** I tested a rule
+that keeps a trailing letter-group as a variant. Kawasaki's YEAR codes are
+letter-TRIPLES (`ZX 1000 D6F`, `E8F`, `FAF`, `GBF`), so that rule kept them all
+and exploded Kawasaki from 64 ids to **756**. Honda's are `-<char>` and Suzuki's
+are mixed. **There is no cross-make suffix rule**, which is why the design drops
+everything after the displacement rather than trying to be clever.
+
+### What it deliberately does NOT do
+
+**It merges same-displacement variants** — `CBR 600 F` and `CBR 600 RR` both
+become `CBR 600`. That is a real loss and I am choosing it: separating F from RR
+needs the per-make allow-list G-5/G-6 want, and getting that wrong over-folds
+(the `PC50` vs `PC25` trap). Displacement fusion is the larger defect by an order
+of magnitude, and **once we read Model the variant refinement stays available** —
+the data is no longer thrown away, which is the part that cannot be undone later.
+
+One nice side effect: `NC 700` surfaced under GenModel `HONDA CBR`, i.e. the
+Model column **corrects a GenModel misfiling** the current path cannot see.
+
+### Beat
+
+This is the flag. Implementation next: `uk_dft.rb` scoped by BodyType, the
+fallback wired, then a **control build** with before/after id sets and the
+no-vanish ledger, then a PR. Nothing merges without your cycle. If you would
+rather I hold G-1 entirely and take Plates L1 first, now is the moment to say so
+— I would rather be redirected before the adapter change than after.
