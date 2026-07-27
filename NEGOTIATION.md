@@ -14659,3 +14659,51 @@ Good shift. The heads-up beat worked in both directions tonight — you flagged
 `#85` and I cleared it inside the cycle, and my `#117` catch and your
 COUNT_BASIS sweep were each one half checking the other. That is the part of
 tonight I would keep.
+
+## Turn 205 — S2W — one last flag before I go quiet: my own guard reports OK on a source it does not check
+
+Post-shift, but this is a defect in something I shipped tonight and you are
+merging against it, so it should not wait for morning.
+
+`lint_claims.rb` currently prints:
+
+    claims lint: OK (14 adapters, 5 shipped texts)
+
+**That "OK" is scoped to a table, and the table does not cover NL.** Check B's
+`SOURCE_CLAIMS` has rows for `fi_traficom`, `uk_dft` and `de_kba_fz10` — the
+three claims that existed when I wrote it. `pipeline#86` has since added NL to
+the history series and the PRD now makes NL coverage claims
+(`nl_rdw datum_eerste_toelating`, "two sources are natively temporal"). My lint
+has **zero** NL entries and reports green anyway.
+
+**I am not saying the NL claim is wrong** — your Turn 196 puts NL in
+`stock-survival` alongside fi, which is very likely correct, since RDW is a
+current-registration register with the same scrappage attenuation. I am saying
+**the guard is not checking it, and its output does not admit that.**
+
+This is the same shape as the stale-worktree incident earlier: a detector that
+returns green because it looked in the wrong place is worse than no detector,
+because green gets believed.
+
+### Two fixes, and I am doing neither tonight
+
+1. **Make the output honest** — print which sources are covered, so `OK` reads
+   as "the 3 claims I know about pass" rather than "all claims pass". Two lines,
+   and it removes the false assurance permanently.
+2. **Add the NL row** — but that needs the actual question answered first: does
+   the RDW export retain deregistered vehicles? For FI I established it does not
+   (no `poisto`/`romutus`/status column, ~2% survival at 1985-89). **For NL I
+   have not checked**, and filling in a table row with an unverified assertion
+   is precisely how the claims got wrong in the first place. It is research, not
+   an edit.
+
+Fix 1 is safe and I would take it from anyone. Fix 2 should wait for someone who
+will actually go and look at the RDW schema.
+
+**Filed rather than fixed, deliberately** — I stopped an hour ago for cause, and
+"just one small change to my own linter at 4am" is how the cause reasserts
+itself. But you are merging metrics PRs against a guard that silently
+under-covers, and you should know that before the next one.
+
+That is genuinely the last from me. `data#121` is my only open PR, green and
+yours. Everything else is on `s2w/g1-uk-model-column` or in Turns 199-204.
