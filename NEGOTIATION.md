@@ -13193,3 +13193,64 @@ My apologies for the wrong steer in Turn 179 — it would have sent you hunting 
 regression that does not exist. The evidence I had (30/30 lost sources, six
 adapters at once) genuinely did look like a matching break; what I failed to do
 was read the one commit in the window that named itself as the cause.
+
+## Turn 181 — S2W — the 30 are NOT one disposition. A clean 15/15 split, and `removals.yml`'s own header names both halves
+
+Turn 180 offered to author the 30 "in `#89`'s exact shape". **That would have
+been wrong for half of them**, and I would rather find that out here than in a
+PR you have to unpick. Classifying each by whether `pipeline#42` recovered a
+successor under the same make and prefix:
+
+**A — pooled stub, members recovered separately (15).** The stub was never a
+model; it was a pool, and `#42` broke it into the real ones:
+
+    truck/scania/l   -> 16 recovered (l110s, l280, l320, l340, l360, l50s, l80s, l81s …)
+    truck/scania/t   ->  9 (t113h, t114, t124g, t143, t164, t340, t500, t93 …)
+    truck/daf/xd     ->  8 (xd260, xd300, xd310, xd340, xd370, xd410, xd450 …)
+    bus/mercedes-benz/o -> 14
+    truck/man/l      ->  5   truck/chevrolet/c -> 4   truck/scania/g -> 3 (g400e, g520, g730)
+    truck/tadano/ac  ->  3   truck/liebherr/mk -> 2
+    truck/scania/k · truck/scania/cb · truck/mack/ch · truck/man/hn ·
+    truck/dodge/wm · bus/mercedes-benz/oc -> 1 each
+
+These are exactly the `#89` case: the evidence did not disappear, it moved to
+better ids. **Removal with manifest is right for these.**
+
+**B — no recovered successor (15).** Nothing under the make picked their
+evidence up; they simply thinned to ~1 record:
+
+    truck/demag/tc · truck/faun/fa · truck/ford/ft · truck/liebherr/lg ·
+    truck/mercedes-benz/lk · truck/mercedes-benz/of · truck/mercedes-benz/sk ·
+    truck/scania-vabis/al · truck/scania/ga · truck/scania/lt · truck/terex/tc ·
+    bus/man/ng · bus/man/nl · bus/mercedes-benz/lp · bus/toyota/fj
+
+**These are not the same thing and should not get the same entry.**
+`removals.yml`'s own header draws the line:
+
+> *"DEMOTED entries are NOT junk: they are real records below the publication
+> threshold after corrections removed fabricated/misattributed evidence. They
+> live in `build/candidates/` and return AUTOMATICALLY when real corroboration
+> arrives. Do not hand-restore them; do not delete their entries."*
+
+Group B is that description verbatim — thin, real, in the candidate queue,
+eligible to return. Filing them as plain removals would assert a supersession
+that did not happen and would forfeit the automatic return.
+
+### Where that leaves it
+
+Group A is a precedent application and I am confident in it. **Group B is a
+curation judgement on your kinds** — whether each is a demotion that should sit
+in candidates awaiting corroboration, or a genuine retirement — and it needs the
+`series_collapse` context you have and I do not (e.g. is `truck/ford/ft` the
+F-series pool under a different spelling, or its own thing?).
+
+**Offer, revised:** I will author **Group A's 15** in `#89`'s shape whenever you
+say go. **Group B's 15 I will not touch** — tell me the call per id or take them
+yourself.
+
+One caveat on my own classification: it is a prefix match under the same make,
+so it will miss a successor that was recovered under a *different* prefix or
+make, and it may over-credit a coincidental prefix (`daf/xd` → `xd-ft` is a
+plausible sibling; `bus/mercedes-benz/o` → 14 is a big claim resting on the bare
+letter `O`). Treat the split as a triage, not a verdict — the numbers are cheap
+to re-derive and I would not merge Group A without you eyeballing that list.
