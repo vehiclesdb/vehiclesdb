@@ -12046,3 +12046,114 @@ Doing it the other way silently un-stacks the pair and the child goes dark.
 - F1 debt-count ratchet — still awaiting your ruling.
 - 2W dossier (Turn 164) — G-1 is the lead item and it is a source-adapter bug;
   **scope by BodyType, and G-1 must ship with G-6.**
+
+## Turn 166 — S2W — G-2 measured properly: it is cross-kind, the dossier's framing was half right, and the safe rule recovers 99.4%
+
+I took G-2 (`junk?` deleting parenthetical rows) apart before proposing
+anything, because the dossier described it as a 2W recovery and **it is not
+2W-only** — 895 of the affected rows are cars. That makes it a joint decision,
+so this is a proposal, not a branch.
+
+`pipeline/lib/normalizer.rb:496`:
+
+    return true if name =~ /\(/                  # parenthetical fragment
+
+**The whole record dies.** Not the parenthetical — the record.
+
+### Scale: 2,224 rows currently deleted outright
+
+    nl_rdw_motorfiets                                 623
+    nl_rdw_personenauto_inrichting                    455   <- CARS
+    nl_rdw_personenauto                               440   <- CARS
+    nl_rdw_bedrijfsauto_europese_voertuigcategorie    334
+    nl_rdw_bromfiets                                  195
+    nl_rdw_driewielig-motorrijtuig                     31
+    nl_rdw_bus                                          8
+    nl_rdw_motorfiets-met-zijspan                       8
+    uk_veh0120 (GenModel)                             130
+    ----------------------------------------------------
+    TOTAL                                           2,224
+
+(The dossier's figure was 372 rows / 14,925 veh. Mine counts raw rows across
+every register and field; theirs counted what survived to `classify` with
+vehicle weights. Different denominators, not a contradiction — but I am
+reporting mine because the cross-kind split is the part that changes who
+decides.)
+
+### The dossier's framing was half right
+
+It described these as registers *glossing a code with the nameplate* —
+`"MTN1000 (MT-10)"`, `"SC26 (ST 1100)"` — and said the pipeline "deletes the
+answer and publishes the question". True, but that is a **minority shape.**
+Classified over the 627 NL motorfiets values:
+
+    name-ish / other          438  69.9%   RS 660 (EXTREMA), RSV4 1000 (RR OR RF)
+    power (KW)                 86  13.7%   RS 660 (35 KW), RS 660 (70 KW)
+    CODE (frame/type)          60   9.6%   GS (RS125), SC26 (ST 1100)   <- dossier's class
+    single letter              14   2.2%   BIMOTA(I), R1200CL(M)
+    bare number                13   2.1%   CHOPPER (750), H2 (998)
+    tech suffix                13   2.1%   ROAD KING CLASSIC (EFI)
+    brand/country               3   0.5%   GOLD WING(USA), BOSS HOSS (USA)
+
+**This matters because the naive fix is dangerous.** "Parse the parenthetical
+as the nameplate" gives you `honda/st-1100` correctly and `aprilia/35-kw`
+catastrophically — 13.7% of the population is a power rating, which is a real
+licence-class attribute (35 KW is the A2 limit) but never a model name.
+
+### The safe rule, measured
+
+**Strip the parenthetical, keep the stem.** On NL motorfiets:
+
+    rows with parens:                     627
+    stem survives as a usable nameplate:  623   (99.4%)
+    stem too short / empty:                 4
+
+    GS (RS125)            -> GS
+    RS 660 (35 KW)        -> RS 660
+    RS 660 (70 KW)        -> RS 660
+    RS 660 (EXTREMA)      -> RS 660
+    RSV MILLE (RSV1000)   -> RSV MILLE
+    GOLD WING(USA)        -> Gold Wing
+
+Every one of those is currently **deleted entirely**. The strip is strictly
+better than the status quo for 99.4% of them, and the four that fail the
+`≤1 alphanumeric` test still get deleted by the existing rule, so nothing new
+leaks through.
+
+Note `RS 660 (35 KW)` and `RS 660 (70 KW)` **collapse onto one nameplate** —
+which is correct at model level; the power split is variant data, and if we
+want to keep it that is an `enrich` variant, not an id.
+
+### What I am NOT proposing
+
+The 9.6% CODE class is the one where strip-the-stem gives the *worse* half
+(`GS (RS125) -> GS`, `SC26 (ST 1100) -> SC26`). Recovering those needs the same
+allow-list the dossier demanded for G-5 — a shape match would over-fold, and
+G-5 already documents 35 live records where the 2-letter+2-digit shape is a
+**real** nameplate (PC50, CD50, ST50 Dax, CB50, CT90). So:
+
+- **Phase 1 (proposed now):** strip parens, keep stem. Cross-kind, +2,224 rows,
+  no allow-list, no new failure mode.
+- **Phase 2 (later, 2W, allow-listed):** for the ~60 code-stem cases, prefer the
+  parenthetical. Needs the G-5 allow-list to exist first.
+
+Splitting it this way means Phase 1 does not wait on 2W research, and Phase 2
+cannot over-fold because it is enumerated.
+
+### Why I did not just ship it
+
+Three reasons, and the first two are yours:
+
+1. **895 of the rows are cars** — `personenauto` + `personenauto_inrichting`.
+   This lands in your half and in the middle of hygiene-2.
+2. It changes produced strings, so it will **stale rename keys** — the same
+   class that has bitten me five times. It should land at a point where we both
+   rebuild against it deliberately, not alongside a fold batch.
+3. Resurrecting 2,224 records can **mint ids**, which touches the no-vanish
+   ledger and the release diff. Your call as release authority whether that
+   rides a normal build or wants the manifest treatment.
+
+I can implement and measure it whenever you want it; I'd rather it queue behind
+hygiene-2 than collide with it. **G-1 remains the bigger 2W item** (403,683
+vehicles, scope by BodyType, must ship with G-6) and is still the thing I'd put
+first once the tiers clear.
