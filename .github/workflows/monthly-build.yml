@@ -42,7 +42,25 @@ on:
       - ".github/workflows/monthly-build.yml"
 
 concurrency:
-  group: data-build
+  # KEYED BY REF, not global. With a single `data-build` group, every push to
+  # main enters the same queue as every open PR check — and GitHub cancels
+  # PENDING runs when a newer one joins a group. `cancel-in-progress: false`
+  # protects only the run already executing, not the queue behind it.
+  #
+  # MEASURED 2026-07-26 during the wave-3 merge burst: three open PR builds
+  # were CANCELLED — not failed — while main-builds from the other session's
+  # merges kept entering the group. An earlier PR (data#101) showed "no checks"
+  # at all for the same reason and had to be re-cut on a fresh branch.
+  #
+  # The effect is asymmetric and silent: whichever maintainer is merging
+  # starves the other's checks, and "merge on green" becomes unobtainable for
+  # the one who is not merging. A cancelled check reads as absent, not failed,
+  # so it looks like flakiness rather than contention.
+  #
+  # Keying by ref keeps publishes serialised against each other — they all
+  # share refs/heads/main — while letting PR checks run. That is the original
+  # intent; it was only accidentally coupled to PR traffic.
+  group: data-build-${{ github.ref }}
   cancel-in-progress: false # never kill a publish mid-release
 
 permissions:
