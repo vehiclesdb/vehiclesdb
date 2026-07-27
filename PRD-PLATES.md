@@ -93,12 +93,25 @@ series:
                                  # historic series will need it constantly).
                                  # Overlap legal iff distinct notes (parallel
                                  # series are REAL: old stock issues on).
+    matching: strict             # strict | recall-only — NORMATIVE, §2.7.
+                                 # Whether a regex hit is a validity claim or
+                                 # only a shape hit. Consumers READ this; they
+                                 # do not infer it from `regex_strict` being
+                                 # absent (that inference is wrong — most
+                                 # series without a strict twin are strict).
     format:
       pattern: "9-LLL-99"        # human pattern: 9=digit L=letter, literal
-                                 # separators as printed
+                                 # separators as printed, drawn only from the
+                                 # separator character set (§2.6)
       regex: "\\A\\d{1}-[A-Z]{3}-\\d{2}\\z"   # anchored; MUST pass the lint
                                  # round-trip (regex generates→pattern
                                  # matches) and the sample tests (§5.2)
+      regex_strict: "…"          # OPTIONAL tighter twin: the authority's own
+                                 # alphabet, which the round-trip forbids
+                                 # `regex` from carrying (§2.7 tier order)
+      regex_statutory: "…"       # OPTIONAL looser twin: the outer legal bound
+                                 # where the statute is wider than what is
+                                 # issued (§2.7 tier order)
       charset: { excluded: [...] }  # letters the authority never issues
                                  # (profanity/lookalike exclusions) — cited
       progression: note          # how serials advance, when known (fills
@@ -171,6 +184,117 @@ state (L2 indexes the programs with official links + counts; individual
 specialty DESIGNS are L4); plate FONTS as font files (we record name +
 licensing status; embedding decisions per §6).
 
+### 2.6 The separator character set (NORMATIVE — `_meta/separators.yml`)
+
+*Amendment, 2026-07-27, from the vehicles gem 0.6.0 implementation (#124).*
+
+A consumer with a separator-forgiving validation tier canonicalizes
+`1234XYZ`, `1234 xyz` and `1234-XYZ` to one serial, and derives
+separator-free twins of our regexes to match against. **That derivation is
+sound only if the dataset commits to which characters are ever separators.**
+It does, here, once, normatively — machine-readable in
+`plates/_meta/separators.yml`, enforced by `lint_plates.rb`, which hardcodes
+nothing and reads that file:
+
+| set | members | rule |
+|---|---|---|
+| **serial alphabet** | `A–Z` `0–9` | the only characters a SERIAL is ever made of, dataset-wide. Uppercase; consumers upcase input before matching |
+| **emitted separators** | `-` (U+002D), ` ` (U+0020) | the only characters the dataset itself ever writes as a separator, in `pattern`, `regex`, `regex_strict`, `regex_statutory`. Any other literal is a lint failure |
+| **forgiving set** | the emitted pair + every Unicode dash (U+2010–U+2015, U+2212), the Unicode spaces (U+00A0, U+2007, U+202F, tab), `·` `•` `.` `_` `/` | what a lenient consumer MAY delete from input, and from a regex to derive its separator-free twin |
+
+Three consequences, and they are the point:
+
+1. **The forgiving set is disjoint from the serial alphabet**, so deleting
+   every forgiving character is information-preserving *by construction* —
+   it can never destroy a serial. The gem's lenient tier is therefore
+   provably sound, not sound-by-luck.
+2. **Every regex in the dataset is written in PRINTED form** — separators
+   included, exactly as the plate shows them and as `pattern` spells them.
+   The canonical (separator-free) form is DERIVED by deleting emitted
+   separators together with their quantifiers; the dataset never ships the
+   canonical form as if it were the printed one. (This rule found a defect
+   on eight `us-fl` `regex_statutory` values, fixed in the same PR.)
+3. **A jurisdiction that prints a glyph *inside* a serial is a schema
+   amendment, not a data entry.** If one lands, it goes to
+   `_meta/separators.yml`'s `never_separator` list with its source, and
+   every consumer learns about it from one place.
+
+### 2.7 `matching:` — strict vs recall-only (NORMATIVE, required per series)
+
+*Amendment, 2026-07-27, from the same implementation (#124).*
+
+Some series' regexes are deliberately **broader than any grammar the
+authority issues**. `nl-export` and `nl-historic-darkblue-agricultural` are
+the L0 cases: an export plate carries the vehicle's *existing* registration,
+so its regex is the union of all fourteen sidecode shapes. A match against a
+union like that says only "this string has a shape the Netherlands has
+issued" — it is emphatically not the claim that the string is a valid export
+registration, and it will happily accept vowel serials the standard series
+reject.
+
+Consumers must be able to see that difference **without inferring it**. The
+absent-`regex_strict` inference is wrong: of the 31 L0 series with no strict
+twin, 29 are strict — their `regex` already *is* the sourced grammar, because
+the mandated letters are literals in the pattern (`GV-99-99`, `Y-999999`,
+`CD-999-999`). So every series carries, as a top-level key beside `class:`:
+
+```yaml
+matching: strict        # or: recall-only
+```
+
+- **`strict`** — `format.regex` lies at or inside the series' own issuing
+  grammar. A match is a well-formedness claim for THIS series. A tighter
+  `regex_strict` may narrow it further; it never widens it.
+- **`recall-only`** — `format.regex` is deliberately wider than the series'
+  own issuing grammar (a union, a catch-all). A match is a shape hit and
+  nothing more. `regex_strict` on a `recall-only` series is a contradiction
+  and a lint failure.
+
+The test is one question: *is this regex wider than what the authority
+issues?* Narrower is still `strict` — `us-fl-standard`'s `regex` is the
+current three-letter/three-numeral arrangement while the statute permits any
+seven alphanumerics, and a match there is a real claim; the outer bound lives
+in `regex_statutory`.
+
+**The regex tier order**, which `matching:` presupposes and the lint checks
+by sampling:
+
+```
+regex_strict   ⊆   regex   ⊆   regex_statutory
+(authority         (round-trippable    (the outer legal bound,
+ alphabet)          against `pattern`)  where the statute is wider)
+```
+
+Only `regex` is required, and only `regex` is round-tripped against
+`pattern` — which is precisely why it cannot carry charset restrictions
+(no vowels, no leading zeros) and why `regex_strict` exists.
+
+Backward compatibility: a consumer reading a dataset older than this
+amendment sees no `matching:` key and MUST default to `strict`, which is the
+safe reading for 71 of the 73 L0 series. In this repo the key is required.
+
+### 2.8 Separator-only character classes are sanctioned
+
+*Amendment, 2026-07-27 (#124, third finding).*
+
+`es-consular-cc-1999` spells its separator as a class — `\ACC[- ]\d+[- ]\d+\z`
+— rather than as a literal. It is not a one-off: **eight** Spanish
+state/diplomatic series do, and the reason is sourced. Anexo XVIII prescribes
+"dos grupos de guarismos" and their millimetre spacing but **no separator
+glyph**, so `[- ]` is the honest encoding of a real gap in the authority's
+own text. Normalizing it to a bare `-` would narrow the regex and lose that
+fact, so the class form is **sanctioned**, under one rule the lint enforces:
+
+> A character class that contains any separator character must contain
+> **only** separator characters, and must not be negated.
+
+Never `[-A-Z]`, never `[^-]`. The rule is what makes a separator position
+mechanically detectable: a consumer deriving a separator-free twin deletes
+every emitted-separator literal and every separator-only class (with its
+quantifier) and can never accidentally delete part of a serial alphabet.
+`pattern` always shows the **canonical printed** separator (`CC-999-999`);
+the regex may accept any subset of the separator set at that position.
+
 ## 3. Rendering — our own SVGs, spec-driven, licensing-clean
 
 A pipeline tool (`pipeline/tools/render_plate.rb`, gate L1) renders every
@@ -239,7 +363,15 @@ national plates — end ≤ current+1); overlap-legal-iff-distinct-notes;
 regex COMPILES, is anchored, and round-trips the human pattern (generate
 100 serials from the pattern → all must match the regex, and vice-versa
 fuzzing); every series carries ≥1 source line; class ∈ vocabulary; hex
-colors well-formed; jurisdiction files match ISO codes.
+colors well-formed; jurisdiction files match ISO codes. Since the #124
+amendments it also enforces §2.6–§2.8: every literal character in a pattern
+or a regex is in the serial alphabet or the emitted separator set read from
+`_meta/separators.yml`; every character class is separator-only or
+serial-only, never mixed, never negated; `matching:` is present and in
+`{strict, recall-only}`, with `recall-only` forbidding `regex_strict`; and
+`regex_strict` / `regex_statutory` compile, are anchored, accept at least one
+pattern-generated serial, and respect the tier order (every sampled serial
+matching `regex_strict` must match `regex`).
 `test_plates_corpora.rb` (pipeline): where a validation corpus exists
 (nl kenteken), the CURRENT series' regexes must jointly match ≥99.9% of
 real current plates — a regression net no competitor has.

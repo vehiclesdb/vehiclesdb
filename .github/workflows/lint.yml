@@ -42,5 +42,12 @@ jobs:
             echo "::error::OWNERSHIP.yml is stale — run scripts/gen_ownership.rb and commit"
             exit 1
           }
+      - name: Lint the plates dataset (schema, periods, regex round-trip, separator contract)
+        # PRD-PLATES §5.2, gate L0. Also enforces the #124 amendments: the
+        # normative separator character set (_meta/separators.yml), the
+        # required `matching: strict|recall-only` key, and the regex tier
+        # order. Wired here because an unenforced contract is a suggestion.
+        run: ruby scripts/lint_plates.rb
+
       - name: Dataset name-shape report (non-blocking until debt is zero)
         run: ruby scripts/lint_dataset.rb --report
