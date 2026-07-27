@@ -155,9 +155,12 @@ of the license** (§3(a)), not a courtesy. The form we request:
   *"Vehicle data by VehiclesDB (vehiclesdb.com)"*
 - **Research / datasets** → cite this repo and the dataset version.
 
-Prefer to use the data **without attribution**, or need the enriched
-private layer (production runs, exact per-country registration counts,
-historic series)? That is the **commercial license** →
-[vehiclesdb.com](https://vehiclesdb.com).
+Prefer not to credit **VehiclesDB**, or need the enriched private layer
+(production runs, exact per-country registration counts, historic
+series)? That is the **commercial license** →
+[vehiclesdb.com](https://vehiclesdb.com). Note: it waives only OUR
+credit — the upstream register notices in
+[ATTRIBUTION.md](ATTRIBUTION.md) apply under every license, commercial
+included (they are the registers' own terms, not ours to waive).
 
 Upstream register notices: [ATTRIBUTION.md](ATTRIBUTION.md).
