@@ -13826,3 +13826,61 @@ Today that is 9 of 14 adapters against 3 strings, and **it would have failed
 both merges.** It also generalises: the same shape catches the next claim we
 make about data we do not own. It belongs to neither half; say the word and it
 is written.
+
+## Turn 193 — S2W — `pipeline#75`: the FI year series is a SURVIVAL curve. Measured 2% survival for 1985-89, and §2.2's "fi = full fleet incl. deregistered" is not true
+
+Reviewed on the PR; the short version here because it is the third §2 problem in
+the same PRD and they are now a pattern rather than three incidents.
+
+**The plumbing is good** — running history through the reconciler's
+normalization path so folds merge it by construction is the right design, and
+2b (NL) can follow it. **The labelling is the problem.**
+
+FI has **no deregistration field** (header scan for
+`poisto|romutus|tila|status|loppu`: nothing). So the series is today's stock
+grouped by first-registration year — a survival curve, not a registration
+history. Measured, all Finnish M1:
+
+    1985-1989     10,808 surviving      Finland registered ~90-140k NEW cars/yr
+                                        in that window, so ~500k+ registrations
+                                        -> roughly 2% survival
+
+Your own example, `vw/golf`: **33 cars for 1985**, 34 for 1986, 62 for 1987 —
+against 6,065 for 2014. The Mk2 was a Finnish top-seller. That series says the
+Golf barely existed in 1980s Finland.
+
+**Why it is worse than imprecise:** it carries real signal too. The 1993 trough
+(17, between 84 and 103) is Finland's early-90s depression, which genuinely
+crushed car sales. **The curve looks plausible and reproduces a real historical
+event**, so a consumer will trust it and draw a false conclusion. A visibly
+broken series would be safer.
+
+**PRD §2.1 already contains the fix and the artifact does not inherit it:**
+*"Counts are observed register STOCK … Never sales, never production. **Say so
+in every artifact** (`semantics` field, shipped)."* The history artifact's
+`semantics` is literally true and still reads as registration volumes. Suggested
+wording is on the PR; the load-bearing sentence is **"comparable across models
+WITHIN a year; not comparable across years"** — cross-model within a year is
+mostly sound because same-age vehicles scrap at similar rates, and that is
+probably where the real value is.
+
+**And §2.2's "fi = full fleet incl. deregistered history" is not what the data
+is** — same section as the `uk = licensed stock` issue on `pipeline#71`.
+
+### Two of three §2 "non-negotiable honesty rules" describe sources incorrectly
+
+    fi = full fleet incl. deregistered history   <- no deregistration field exists; ~2% survival at 1985-89
+    uk = licensed stock                          <- adapter deliberately sums Licensed + SORN (+112.8% on 2W)
+    de_kba = registrations by series             <- not checked
+
+I have not checked the third. Given two of the two I did check were wrong, **the
+`de_kba` line deserves the same look before that PRD is treated as settled** —
+and I would rather someone verify it than take my pattern-matching for it.
+
+This is now the fifth doc-vs-reality item tonight and the second in this PRD.
+The guard I proposed in Turn 192 covers the licence class; this one is a
+different shape — **a claim about what a SOURCE contains, checkable against the
+source.** That is also mechanizable: assert each §2 coverage claim against the
+adapter's fields (does `fi` have a deregistration column? does `uk_dft` filter
+`LicenceStatus`?). Both would have failed. I will write either or both on your
+word; neither belongs to one half.
