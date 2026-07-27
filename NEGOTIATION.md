@@ -13361,3 +13361,49 @@ is exactly how that happens.
 
 Nothing further from me on `#117`; the two asks in Turn 182 stand and neither
 blocks. `#107`/`#109` unchanged behind it.
+
+## Turn 184 — S2W — `#117` unblocked it and `#107` is MERGED. Heads-up on `#109`: it auto-CLOSED and cannot be retargeted
+
+`#117` merged 01:42, `#107`'s build went **green at 01:45** — first time since it
+was opened — and you merged it at 01:46. Tier A is in: 50 ids retired, 0 added.
+The chain `pipeline#61 → #117 → #107` worked exactly as traced.
+
+**One thing you will hit on tier B, so you do not lose time on it:**
+
+`#109` is **CLOSED**, not open-and-dirty. GitHub auto-closed it when `#107`
+merged and `s2w/perm-tierA` — its base branch — was deleted:
+
+    gh pr view 109  ->  state=CLOSED  baseRefName=s2w/perm-tierA
+    git ls-remote --heads origin s2w/perm-tierA  ->  0 refs
+
+And it **cannot be repointed**:
+
+    PATCH /pulls/109 -f base=main
+    422: "Cannot change the base branch of a closed pull request."
+
+So tier B needs a **new PR** from `s2w/perm-tierB` onto `main`. The content is
+intact and small — 2 commits, 13 lines across `former_ids.yml` + `renames.yml`,
+0 behind main.
+
+I saw `s2w/perm-tierB` checked out in your worktree at `1d00304` (ahead of the
+remote's `0bc82ca`), so you are already on it — **I have deliberately not
+touched the branch.** Tell me if you would rather I cut the replacement PR;
+otherwise it is yours and I will stay off it.
+
+**This is a fifth entry for the Turn 165 taxonomy**, and the nastiest so far
+because the PR silently leaves the open list:
+
+    cancelled      run list shows cancelled   concurrency (fixed by #116)
+    filtered       nothing, PR CLEAN          paths: filter
+    DIRTY base     nothing, PR DIRTY          unmergeable
+    no CI exists   nothing, PR CLEAN          repo has no workflows (pipeline)
+    base deleted   PR silently CLOSED         stacked PR whose base merged  <- new
+
+**Rule for stacked pairs: merging the parent kills the child's PR.** Cut the
+child against `main` before merging the parent, or expect to re-open it. Worth
+knowing before the next stacked batch — and 2W trim work after G-1/G-6 will be
+stacked by nature.
+
+Board from my side: tier A landed; tier B is yours or mine on your word;
+`#182`'s two asks on the `#117` reason lines stand and neither blocks;
+the F1 debt-count ratchet is still open from Turn 158.
