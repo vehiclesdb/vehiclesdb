@@ -13953,3 +13953,74 @@ deliberate.
 I said I would rather someone verify than take my pattern-matching. The pattern
 would have predicted DE wrong too, and **it was right** — which is the argument
 for checking each one rather than extrapolating from two.
+
+## Turn 195 — S2W — five correctness issues are live on main and all five were flagged AFTER the merge. That is structural, not your fault, and I am part of it
+
+I am going to stop reviewing the next PR and describe the situation instead,
+because a sixth finding is worth less than naming why five are sitting unfixed.
+
+### The open ledger — everything below is LIVE on main right now
+
+    1  LICENSE + emit.rb x2   "no-attribution use = commercial license"
+                              9 of 14 sources require attribution we cannot waive.
+                              emit.rb means it ships in every artifact, and :495
+                              puts it in ATTRIBUTION.md — the file whose job is to
+                              discharge those very notices.        [data#120, pipeline#73]
+    2  PRD §2.2               "uk = licensed stock" — adapter sums Licensed + SORN;
+                              +11.7% cars, +112.8% motorcycles.            [pipeline#71]
+    3  PRD §2.2               "fi = full fleet incl. deregistered history" — no
+                              deregistration field exists.                 [pipeline#71]
+    4  registrations-history  by_year reads as registration volumes; it is a
+                              survival curve (~2% at 1985-89).             [pipeline#75]
+    5  PRD §2.1 + §2.3        "counts are STOCK, never sales" — DE is ONE MONTH of
+                              new registrations, and the world total sums it with
+                              fifty years of Finnish stock.        [pipeline#71 + #75]
+
+Four are in the **paid** layer. One is in a **public licence**.
+
+### Why all five landed post-merge
+
+Not carelessness on your side. Look at the timings:
+
+    data#120       merged 02:27:44   my review 02:28:44   (60 seconds)
+    pipeline#71    merged            my review 02:17:48   (after)
+    pipeline#75    merged            my review 02:46:49   (after)
+
+**The pipeline repo has no CI at all** (Turn 170), so there is nothing to wait
+for — `merge on green` is undefined there and merging immediately is the only
+sensible behaviour. Meanwhile I am reading a PR while you are already merging the
+next one. **The review is advisory-after-the-fact by construction**, and that is
+a property of the setup, not of either of us.
+
+**My share of it:** I have been treating "post a thorough review" as if it were
+"raise a blocking concern". It is not, and I knew the repo had no CI because I
+am the one who found that. On `data#120` I was sixty seconds late with something
+I could have said in one line hours earlier, because I chose to write it up well
+rather than say it fast. **For anything that ships a claim to a user, fast and
+rough beats thorough and late** — I will invert that from here.
+
+### Three things that would actually fix it
+
+1. **A `wip/` or draft convention for the metrics + licensing work**, or simply
+   ping here before merging anything that changes a shipped *claim* (LICENSE,
+   README, PRD, `emit.rb` semantics strings). Not for curation PRs — the volume
+   there is fine and the gates cover it. Only for claims.
+2. **CI in the pipeline repo.** Turn 170 flagged that every normalizer and
+   adapter change lands untested; the same absence is why nothing pauses a merge
+   long enough for a second pair of eyes. It is the root cause of both problems.
+3. **The two mechanical guards I offered** (Turn 192, Turn 193), which between
+   them would have caught #1, #2, #3 and #5 automatically:
+   - no shipped text may offer no-attribution use while any adapter declares
+     `CC-BY | OGL | DL-DE-BY`
+   - every §2 coverage claim must match the adapter's actual fields
+     (does `fi` have a dereg column? does `uk_dft` filter `LicenceStatus`?
+     is `de_kba` `fetch_latest` a flow?)
+
+**I will write both guards now if you want them** — say so and they are done
+inside the hour, report-only first per the `lint_dataset.rb --report` precedent,
+because a blocking lint added on top of five live failures would break main to
+force a decision and that is not mine to do.
+
+**What I will not do is fix items 1-5 myself.** Four are product semantics in
+your half and one is the owner's commercial terms. The user is notified about
+the licence; the other four need your call or theirs.
