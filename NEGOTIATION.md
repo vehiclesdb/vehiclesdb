@@ -12247,3 +12247,99 @@ doing first** (403,683 vehicles, scope by BodyType, ships with G-6).
 Board otherwise unchanged: `#107`/`#109` lint-green and build-red on the norton
 lint alone, waiting on `pipeline#61`; `#116` and the F1 ratchet awaiting your
 rulings; `pipeline#55`/`#61` CLEAN and yours to merge.
+
+## Turn 168 — S2W — G-10: `es_dgt.rb` doesn't read CILINDRADA either. Second unused source field, and this one is displacement
+
+Chasing the corpus wall from Turn 167 turned up another instance of the **G-1
+class — a field sitting in a cached file that no adapter reads.** This one is
+displacement, which for two-wheelers is the identity attribute.
+
+### The finding
+
+`pipeline/sources/es_dgt.rb:34-36` slices exactly three fields:
+
+    MARCA  = [17, 30]
+    MODELO = [47, 22]
+    EUCAT  = [426, 3]
+
+The fixed-width record is 715 chars. **CILINDRADA is at `[95, 4]`** and is
+never sliced.
+
+### Validated, and I got the offset wrong the first time
+
+My first read used `[96, 4]` and looked convincing — until `R1250GS` came back
+as **254cc**. That is not a bad field, it is **a right-aligned 4-wide field
+losing its leading digit**: three-digit displacements survived the wrong slice
+and four-digit ones silently truncated. Corrected to `[95, 4]`:
+
+    model      n     [95,4]   published spec   agrees
+    CB125F     72    124      125              YES
+    YZFR1       3    998      998              YES
+    GSXR750     2    746      749              YES
+    Z650       71    649      649              YES
+    R1250GS     8    1254     1254             YES
+    CB500XA    49    471      471              YES
+
+Six for six. Two of those are load-bearing rather than decorative:
+
+- **`CB500XA -> 471`.** The CB500X really is 471cc, not 500. If the field were
+  echoing the model digits it would say 500. It doesn't.
+- **`R1250GS -> 1254`.** Four digits, exact — the case my wrong offset broke.
+
+Worth stating plainly because it is the same lesson as the whole `renames.yml`
+saga: **a field that validates on the easy cases can still be sliced wrong.**
+The three-digit records agreed under a wrong offset. Only a four-digit value
+exposed it, and I only had one in the sample by luck.
+
+### Coverage
+
+    ES DGT 2026-06, EU L-category (2W/3W) rows:  6,327
+    carrying a usable displacement:              6,317   (99.8%)
+    by category: L3E=5911  L1=257  L3=118  L1E=9  L5E=8  L7E=6
+
+That is **one month of new registrations**, not a fleet snapshot — we cache
+202604/05/06 — so the absolute number is modest and should not be quoted as a
+corpus size. The significance is different: **this is only the second register
+in our whole corpus with a per-record displacement, after Traficom.** Every
+other source has none. NL, which holds the frame codes, is
+`["merk","handelsbenaming","n"]`.
+
+### What it does and does not unblock
+
+**Does not solve G-5.** I ran the Turn 167 classifier over ES: exactly one
+shape-matching honda code with n≥2, `PX50 -> 49cc -> NAMEPLATE`, correctly
+classified. The 2-letter+2-digit frame codes are overwhelmingly an **NL**
+phenomenon (NL registers by type-approval code), and ES does not carry them.
+The wall in Turn 167 stands, and I am not claiming otherwise.
+
+**Does matter for three other things:**
+
+1. **Cohort tests.** Displacement is what caught `indian/101-scout` ← `scout-101`
+   (96 years and 500cc apart). Right now that test can only be run where
+   Traficom has coverage. This roughly doubles the registers that can run it.
+2. **G-1's premise is independently checkable.** The claim that 49 UK ids
+   "fuse ≥2 displacement classes" is currently derived from designation
+   strings. With a real cc field on the same models from another country, that
+   fusion can be *measured* rather than inferred from names.
+3. **Variant capture.** The G-2 `RS 660 (35 KW)` / `(70 KW)` collapse is correct
+   at model level precisely because power/displacement is variant data — and we
+   have nowhere to put it today. A displacement signal is the start of having
+   somewhere.
+
+### Not shipped, and a scoping note
+
+Same reasoning as G-2: adding a field to a source adapter changes what
+`classify` sees, which can change produced strings and therefore stale rename
+keys. It also spans kinds — the same `[95,4]` field exists on the car records,
+and I have **not** checked whether the offset holds for non-L categories.
+**Do not assume it does**; fixed-width layouts often reuse regions per record
+type, and I would want the same six-case validation on cars before anyone
+slices it there.
+
+I can implement and measure it whenever. Priority unchanged: **G-1 first**
+(403,683 vehicles, scope by BodyType, ships with G-6), then G-2 phase 1, then
+this. Recording it now so it is not rediscovered.
+
+Board unchanged: `#107`/`#109` lint-green, build-red on the norton lint alone,
+waiting on `pipeline#61`; `#116` and the F1 ratchet awaiting your rulings;
+`pipeline#55`/`#61` CLEAN and yours to merge.
