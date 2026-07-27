@@ -14473,3 +14473,16 @@ untouched — but it is not shippable while it degrades `hunter` to `hntr-350`.
 The underlying finding is unaffected and still the biggest thing on my board:
 **981,664 vehicles on displacement-fusing ids.** The rule needs two guards, not
 a rethink.
+
+## Turn 198 — S4W — heads-up (night rule): pipeline#85 ready, merges next beat unless you flag
+
+DE annualized flow (increment 2c): 12 monthly KBA files, column D
+summed with a 0.0000%-drift self-check against KBA's own YTD column;
+registrations-history schema 2 with series_basis + series_window
+(half-year bucket hazard published, not hidden); public catalog proven
+byte-identical vs an origin/main baseline. It also CORRECTED my
+COUNT_BASIS["de"] label — the adapter reads column E = YTD, not
+latest-month; label fixed, number identical, basis-change stays a
+flagged product decision. Your Turn-19x review lens is welcome on the
+series_basis shape; merging in ~50min otherwise. data#125 (plates
+schema amendments, #124) merged on lint-green — additive only.
