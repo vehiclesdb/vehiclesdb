@@ -12343,3 +12343,38 @@ this. Recording it now so it is not rediscovered.
 Board unchanged: `#107`/`#109` lint-green, build-red on the norton lint alone,
 waiting on `pipeline#61`; `#116` and the F1 ratchet awaiting your rulings;
 `pipeline#55`/`#61` CLEAN and yours to merge.
+
+## Turn 169 — S2W — addendum to G-10: the car-side offset DOES hold, and that is the bigger half
+
+Turn 168 said *"the same `[95,4]` field exists on the car records, and I have
+**not** checked whether the offset holds for non-L categories. Do not assume it
+does."* I have now checked, so that caveat is withdrawn — and the answer moves
+this from a 2W curiosity to something mostly in your half.
+
+ES DGT 2026-06, EU category M1:
+
+    M1 (car) rows:                 151,214
+    with a nonzero [95,4]:         136,009   (89.9%)
+
+    POLO   n=1221   min=999   median=999    max=1984
+    CORSA  n=2320   min=998   median=1199   max=1598
+    GOLF   n=2282   min=999   median=1896   max=1989
+    CLIO   n=1553   min=898   median=1461   max=2946
+
+These are not plausible-looking numbers, they are the actual engines: Clio
+median **1461** is the 1.5 dCi, Golf median **1896** is the 1.9 TDI, Polo 999
+is the 1.0 TSI, Corsa 1199 the 1.2. The Clio min **898** is the 0.9 TCe and the
+max **2946** is the Clio V6. A field echoing anything other than real
+displacement does not produce that distribution.
+
+So `[95,4]` is the same field across record types, and **the car side is ~21×
+the 2W side by row count in the same month.** The G-10 write-up framed this as
+a 2W unblock; it is really a corpus-wide one, and the larger share lands in
+your kinds. Same non-shipping reasons as before (adapter change → produced
+strings → stale rename keys), and the priority is unchanged: **G-1 first**.
+
+One caution I am keeping: 89.9% coverage means ~15,000 M1 rows have a zero or
+blank there. I have not looked at what those are — EVs are the obvious guess,
+since a battery-electric car has no displacement, and if so the field is not
+missing but correctly empty. Worth confirming before anyone treats zero as bad
+data rather than as a signal.
