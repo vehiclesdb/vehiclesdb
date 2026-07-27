@@ -12683,3 +12683,114 @@ whatever you want done after `#61`.
 
 Outstanding from you: `#61` (merge on review), and the F1 debt-count ratchet
 ruling from Turn 158.
+
+## Turn 175 — S2W — RETRACTION: the Turn 167 "corpus wall" was my own query, not the register. Plus 214,416 veh released on marque documents
+
+### 1. Retracting the wall
+
+Turn 167 said, and Turn 168 repeated:
+
+> *"NL RDW HAS the frame codes in bulk, but its motorfiets records are literally
+> `["merk","handelsbenaming","n"]` — no displacement at all."*
+
+I built a "named failed route" on that and concluded *"the method is proven,
+the corpus is the blocker."* **The corpus was never the blocker. Our query was.**
+
+`nl_rdw.rb:92-99`:
+
+    def fetch_group(soort, extra_field: nil)
+      fields = ["merk", "handelsbenaming", extra_field].compact
+      query = { "$select" => (fields + ["count(*) as n"]).join(","), ... }
+
+The cache has three keys **because we asked Socrata for three columns.** The
+live dataset `m9d7-ebf2` has 46, including `cilinderinhoud` and — decisively —
+`type`, the manufacturer's type designation, which *is* the frame code.
+Grouping `type × handelsbenaming` makes RDW its own glossary.
+
+Worse, `extra_field:` **already exists and is already used twice** —
+`:77` passes `inrichting` for cars, `:57` passes `europese_voertuigcategorie`
+for commercial vehicles. Line **`:67` is the 2W path and passes nothing.**
+
+So this is exactly the G-1 class — a field we could have had and never asked
+for — and **I walked straight past it while cataloguing that very class.** I
+inspected the caches, confirmed the shape, and reported an artifact of our own
+`$select` as a property of the Dutch vehicle register. The lesson generalises
+and I want it written down: **when a source "lacks" a field, check the request
+before blaming the register.** Every conclusion I drew from that wall in Turns
+167 and 168 should be read as withdrawn.
+
+### 2. Numbering fix
+
+The researcher labelled this **G-11**; I had already used **G-11** for
+`LicenceStatus` in Turn 171. Mine was published first, so: **`LicenceStatus`
+stays G-11, and the RDW under-selection becomes G-12.** Nothing else changes.
+
+### 3. Task B — SETTLED on marque documents, and I verified it myself
+
+They resolved what they had correctly refused to infer. Honda's own owner's
+manuals print both vocabularies on the cover. **I re-fetched the Forza PDF and
+read page 1 rather than take it on report** — the cover reads, exactly:
+
+    FORZA 250/350 (NSS250A/350A)
+
+  https://motos.honda.es/wp-content/uploads/manuales/2023-NSS250-Y-NSS350-35K1BF100_WEB.pdf
+
+The PCX cover (`PCX125 (WW125/A)`,
+motos.honda.es/wp-content/uploads/manuales/WW125A_OM_35K1YC20_spa_WEB.pdf)
+I have **not** independently opened — reported, not verified by me.
+
+That releases **214,416 vehicles** (Forza 41,563 + PCX 172,853) plus
+`honda/nsc`/`nsc50*` (Vision, 16,711+). Turn 164 recorded this as the single
+largest block still waiting on a source; it is now sourced.
+
+**The negative finding is the better part.** RDW's EU type-approval register
+`x5v3-sewk` records Honda's *own declared* trade name as `NSS350A`/`WW125A`;
+`like '%FORZA%'` returns only Chinese scooters, and `GOLD WING`/`TRANSALP`
+return **zero rows**. Honda declares only the code in EU homologation, so **no
+register anywhere could ever have glossed this.** That retroactively vindicates
+the original refusal to infer — the evidence was never going to come from a
+register, and five named failed routes are listed before the one that worked.
+
+### 4. Task A, and my discriminator measured
+
+78 of 167 code-shaped ids now carry a stated target with displacement and years;
+6 open. 48 Honda (RC46→VFR800 781cc, SC26→ST1100 1084cc, SC47→GL1800 Gold Wing
+1832cc, RD07/RD04→XRV750 Africa Twin, …), 30 Yamaha (RN04/09/12→YZF-R1,
+RP04/08/11→FJR1300, VP05→XVS1100 DragStar, …). One of the six open ones,
+`ESS025`, has `cilinderinhoud` = 0 — **electric**, which per Turn 171's Tesla
+control is a signal rather than a gap.
+
+**My displacement discriminator, measured against the control I never ran:**
+
+    of 128 published honda/yamaha ids matching ^[A-Z]{2}\s?\d{2}$ :
+      47 AGREE    (7,643 veh)  -> real nameplates — the over-fold hazard, enumerated
+      79 DISAGREE (48,363 veh) -> frame codes
+       2 untestable
+    control: 58 of 1,155 non-code names called DISAGREE = 5.0% false positive
+
+The 5% failures fall in three nameable families: Yamaha's MT-nn marque index
+(MT-07 = 689cc), Honda's cubic-inch names (V45 Magna = 748cc), and digit-run
+misreads on concatenated suffixes (GLR1251WH). **Their conclusion — use it to
+build the allow-list, then have a human read it, do not wire it in live — is
+right and I accept it.** A 5% false-positive rate is fine for generating
+candidates and unacceptable as a live fold rule; that is the `bmw/x8` lesson.
+
+### 5. Consequences for the queue
+
+None immediately, and I am not opening anything. G-12 makes G-5 *cheap* rather
+than blocked, and it strengthens the Turn 173 case for doing the make-by-make
+work after G-1/G-6 — but every one of these still changes produced strings, so
+the order stands: **`pipeline#61` → `#107` → `#109` → G-1/G-6 → the rest.**
+
+Banked for whoever picks this up: `hondamotopub.com/om/HMEE/<CODE-or-NAME>/<year>/…pdf`
+resolves Honda's whole code↔name vocabulary and should settle the eight
+remaining UK C1 stubs (`glr` 7,427 · `anf` 2,105 · `anc` 1,983 · `fes` 1,873 ·
+`scv` 1,813 · `pes` 1,721 · `ses` 1,664 · `fjs` 1,279 = **~19,865 veh, route
+proven, covers not fetched** — the portal is JS-driven). Yamaha's analogue at
+yamaha-motor.eu is untried.
+
+Two dossier corrections it forces: `MWD300`/`MWS150`/`MWS125` upgrade from
+inference to displacement-confirmed (292/155/125cc = Tricity 300/155/125); and
+`MTM850` shares RDW type `RN43` with the MT-09 strings, so **the type code
+cannot discriminate there** — `handelsbenaming` must. Worth noting because it
+is the first measured limit on G-12's own glossary.
