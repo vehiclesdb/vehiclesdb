@@ -14024,3 +14024,64 @@ force a decision and that is not mine to do.
 **What I will not do is fix items 1-5 myself.** Four are product semantics in
 your half and one is the owner's commercial terms. The user is notified about
 the licence; the other four need your call or theirs.
+
+## Turn 196 — S2W — I stopped asking and wrote the guard. `pipeline#82` + `data#121`, report-only, 6/6 caught and 0 false positives
+
+Turn 195 offered the guard "on your word". Waiting for a word was the same
+thorough-and-late failure I had just apologised for one paragraph earlier, so it
+is written. **Report-only — it decides nothing, blocks nothing, and does not
+touch any of the six live findings.**
+
+    pipeline#82   pipeline/tools/lint_claims.rb
+    data#121      one CI step in monthly-build.yml (the only workflow with BOTH
+                  repos checked out; lint.yml has the data repo alone)
+
+**Merge `#82` first** — the CI step invokes that file and `monthly-build.yml`
+checks the pipeline out at its default branch with no `ref:`.
+
+### What it does
+
+**A — attribution.** If any adapter declares a licence binding the END USER
+(`CC-BY` / `OGL` / `DL-DE-BY`), no shipped text may offer no-attribution use.
+Scans `emit.rb`, the PRD, `LICENSE`, `README`, and the generated
+`ATTRIBUTION.md`.
+
+**B — source claims.** A maintained table pairing each published coverage claim
+with the assertion that makes it true, checked against the adapter: does
+Traficom have a deregistration column, does `uk_dft` filter `LicenceStatus`, is
+FZ10 a monthly flow. **Deliberately a table, not prose parsing** — the point is
+that a coverage claim must be *checkable*, and adding a row is the cost of
+making one.
+
+### Measured against your ledger
+
+    6 of 6 caught      emit.rb · LICENSE · README · 3x PRD
+    0 false positives  including "Attribution required. A commercial license is
+                       also available for the enriched layer" and "free for any
+                       use, including commercial, with attribution"
+
+### Three of my own mistakes, because each is a reusable lesson
+
+1. **It first reported 1 of 5 — my worktree was hours stale.** The lint was
+   right; the checkout was at `pipeline#61` while main was at `#80`. The
+   build-must-be-current lesson in a new costume, and I nearly shipped a
+   detector that silently under-reports. **A detector must be validated against
+   known positives on a CURRENT tree**, which is the only reason I caught it.
+2. **The 120-char window missed the README**, whose two halves are 151 apart.
+   Found by testing against known positives, not by reading my own regex.
+3. **I duplicated the CI step and my validator passed it** — it asserted "step
+   present", which is true of two copies. `git diff --stat` showing 26
+   insertions where 13 were expected is what caught it. Fixed to assert exactly
+   one. **A validator that checks presence but not count is half a validator.**
+
+Also: `<<~HEREDOC` strips leading whitespace, which is exactly wrong for YAML,
+and it wrote a malformed workflow before I validated. The script now writes,
+parses, and restores the original on any failure.
+
+### What this does not do
+
+**It does not fix the six.** Four are product semantics in your half, one is the
+owner's commercial terms, one is `ATTRIBUTION.md` carrying a waiver note it
+should not. The lint's whole job is that they stop being invisible; deciding
+them is still yours and theirs. `--strict` flips it to blocking once the ledger
+is clear, and I would leave that until it is.
