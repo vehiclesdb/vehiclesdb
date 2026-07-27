@@ -12437,3 +12437,86 @@ The last two are indistinguishable from "flaky" without checking
 
 **Ask: merge `pipeline#61` on review.** `#107` and `#109` go green the moment it
 lands — their only failure is the lint that `#61` removes.
+
+## Turn 171 — S2W — G-11: `uk_dft.rb` also discards `LicenceStatus`, and for motorcycles SORN EXCEEDS licensed
+
+Closing the Turn 169 open question turned up a third unused column in the same
+adapter, and this one is not a nicety.
+
+**First, the Turn 169 question is answered.** The ~15,000 ES car rows with a
+zero at `[95,4]` are **electric**, so the field is correctly empty, not missing:
+
+    TESLA          2,903 rows   100.0% zero      (make sells only BEVs)
+    EV models        364 rows   100.0% zero      (Model 3/Y, ID.3/4, Zoe, Leaf)
+    BYD            4,877 rows    40.5% zero      (sells BOTH BEV and PHEV)
+    other        143,070 rows     7.0% zero
+
+BYD's *partial* split is the control: a PHEV has a real engine displacement, so
+a make selling both should land in between, and it does. **`cc == 0` is a
+propulsion signal, not a gap.**
+
+### G-11: the UK adapter reads 3 of 6 leading columns
+
+`uk_dft.rb:66` writes the header out in its own comment —
+
+    count_idx = 6 # Header: BodyType,Make,GenModel,Model,Fuel,LicenceStatus,<newest Q>,…
+
+— and `:89` then reads `row[0], row[1], row[2]`. So **`Model` (G-1), `Fuel`, and
+`LicenceStatus` are all named in the source and all unread.** Both are fully
+populated:
+
+    Fuel           Petrol 96,485 · Diesel 93,814 · Battery electric 5,629 ·
+                   Hybrid petrol 4,064 · PHEV petrol 1,922 · Gas 12,597 ·
+                   fuel cell 63 · range-extended 48 · other 341   (11 values)
+    LicenceStatus  Licensed 117,700 rows · SORN 98,125 rows
+
+**SORN = Statutory Off Road Notification** — the keeper has formally declared
+the vehicle off-road. Weighted by the actual 2026 Q1 vehicle counts, not rows:
+
+                     Licensed        SORN     SORN share
+    all kinds      42,448,481   7,198,812        14.5%
+    cars           34,627,414   4,067,024        10.5%
+    MOTORCYCLES     1,368,370   1,543,980        53.0%
+
+**For motorcycles, SORN exceeds licensed.** Our published UK 2W counts are the
+sum of both, so they are ~2.1× the in-use fleet.
+
+### Why this is more than a definitional quibble
+
+`agg[body][[make, genmodel]] += n` sums across both statuses, so **the pipeline
+cannot currently make the choice** — the distinction is discarded before
+anything downstream could use it.
+
+Whether SORN *should* be included is genuinely a definition question, and I am
+not asserting the current numbers are wrong:
+
+- For **availability** ("does this model exist in the UK") a SORN bike plainly
+  exists, and including it is defensible.
+- For anything **usage-weighted** — the p99.999 work, `global_decile` — a
+  vehicle its owner has declared off the road is not in use, and including it
+  is hard to defend.
+
+What makes it more than semantics is the **asymmetry**: 10.5% on cars versus
+53.0% on motorcycles. Any cross-kind comparison silently favours 2W by ~5×
+on this axis alone. A uniform 14.5% inflation would be a rounding concern; a
+kind-dependent one distorts rankings between kinds.
+
+### Status
+
+**Not shipped, and lower priority than G-1.** Reading `LicenceStatus` is cheap,
+but *deciding what to do with it* is a semantics call that touches the
+usage-weighted work, so it is yours as much as mine. The cheap first step is to
+read the column and keep both figures, so the choice can be made downstream
+instead of being erased at ingest.
+
+Running tally of unused fields already on disk, all in adapters we own:
+
+    G-1   uk_dft.rb   row[3] Model           403,683 veh of displacement fusion
+    G-10  es_dgt.rb   [95,4] CILINDRADA      136,009 car rows + 6,317 2W rows
+    G-11  uk_dft.rb   row[5] LicenceStatus   53% of UK 2W is SORN
+          uk_dft.rb   row[4] Fuel            11 populated values, unexamined
+
+Four fields, three adapters' worth of information sitting in files we already
+download and parse. That is the pattern worth naming: **our defect rate is not
+mostly bad curation, it is unread source data** — and per Turn 170, none of
+those adapters has any CI at all.
