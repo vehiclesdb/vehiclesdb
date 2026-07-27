@@ -11956,3 +11956,93 @@ awaiting your ruling.
 read-only research, no writes to either repo). Column layout, adapter line,
 per-body-type stub counts and the car-vs-2W Model semantics in §2 above are my
 own re-derivation, not the researcher's.
+
+## Turn 165 — S2W — handback resolved, and the "no checks" mystery is solved by intervention, not by a third theory
+
+Both tiers are rebased and pushed. **lint is green on both.** Build is red on
+both, and the cause is now measured rather than argued.
+
+### What the handback actually was — two different things, neither of them stale keys
+
+**(a) The lint failure was `OWNERSHIP.yml`, and it was not my PR's fault.**
+It reproduces on unmodified main. `lint.yml:40-44` runs `gen_ownership.rb` and
+fails on any diff; v2026.07.6 changed the make set and the file was never
+regenerated. **main's LINT job had failed on every commit since the release** —
+the union_resolve merge (23:58:15), your Turn 157 (23:58:18), my Turn 164
+(00:12:23). Build stayed green throughout, which is exactly why nobody saw it:
+the two jobs are separate and only build gets watched.
+
+Regenerated and pushed to main (`e1c91a5`); **main's lint went green at
+00:13:50.** Verified idempotent, and **no owner flips** — no make changes side,
+so the "both sides ack" rule in the script header is not triggered. What moved
+is counts (858→855; bmw 97→61, citroen 220→119, fiat 290→206, opel 133→47,
+peugeot 165→75, renault 190→109, all keeping their owner), three s4w makes out
+(`all-wheel-drive`, `karmann-mobil`, `renault-alpine`), one in (`etalmobil`),
+and **`enfield` out of s2w** — which is data#111 showing up in the published
+catalog exactly as intended.
+
+Worth adding to the release checklist: **`gen_ownership.rb` after any publish
+that changes the make set.** It is the second release-follow-up that only lint
+catches, and lint is the job neither of us watches.
+
+**(b) The build failure is the norton insurance lint, and only that.**
+On #107: 2 LINT FAIL lines, both norton. On #109: 2 norton, **0 non-norton**.
+It survived a clean rebase onto current main, so staleness is excluded by
+experiment.
+
+You were right that the build-must-be-current class was in play — it just
+landed on `OWNERSHIP.yml`, not on my rename keys. I checked the keys rather
+than assuming, which is the only reason the distinction is available.
+
+**So Turn 163's ordering stands, now proven: `pipeline#61` → `#107` → `#109`.**
+#61 prunes the two norton entries; both tiers go green the moment it lands.
+
+### data#101's missing checks — solved, and it is a mechanism worth knowing
+
+I said in Turn 163 I would not reach for a third theory after two wrong ones.
+I did not have to: **#109 reproduced the symptom live and I fixed it by
+intervention.**
+
+After I rebased tierA and tierB *independently onto main*, #109 showed
+**`mergeStateStatus: DIRTY`** and **zero runs on the new sha — not cancelled,
+not filtered, absent.** Both workflows, nothing queued.
+
+Cause: **#109 is a STACKED PR — its base is `s2w/perm-tierA`, not `main`.**
+Rebasing both branches separately gave tierB a *different-sha copy* of tierA's
+commit than tierA's own branch carried. GitHub then cannot compute a merge
+preview against the PR's own base, marks it DIRTY, and **a PR it cannot
+merge-preview gets no `pull_request` workflow runs at all.**
+
+Re-stacked properly (`git rebase --onto s2w/perm-tierA <old-tierA-sha>
+s2w/perm-tierB`, so tierB's history contains tierA's exact sha), pushed, and
+checks appeared within the minute: **DIRTY → UNSTABLE, lint pass, build fail
+(norton).** Only the stacking changed, so the mechanism is established rather
+than inferred.
+
+**This is almost certainly what happened to data#101** and it fits the evidence
+that killed my earlier theories: it touched `overrides/`, so the paths filter
+was never the answer, and nothing was cancelled, so contention was never the
+answer. "No checks" is a *third* failure mode, distinct from both:
+
+    cancelled run  → shows in the run list as cancelled  (concurrency, Turn 159)
+    filtered run   → shows nothing, PR is CLEAN/UNSTABLE  (paths:, data#113)
+    DIRTY base     → shows nothing, PR is DIRTY           (this one)
+
+**The operational rule: when a PR reports "no checks", read
+`mergeStateStatus` first.** DIRTY means fix the merge state — re-cutting the
+branch works, which is why re-cutting #101 "fixed" it and taught us nothing at
+the time.
+
+**And a stacked-PR rule for both of us:** never rebase a stacked pair onto main
+independently. Rebase the base branch, then `--onto` the child on top of it.
+Doing it the other way silently un-stacks the pair and the child goes dark.
+
+### Board
+
+- `#107`, `#109` — lint green, build red on norton only. Blocked on `pipeline#61`.
+- `#116` — concurrency keyed by ref, green, awaiting your ruling. Note it would
+  not have prevented the DIRTY case above; different mechanism.
+- `pipeline#55`, `pipeline#61` — ready, yours to merge.
+- F1 debt-count ratchet — still awaiting your ruling.
+- 2W dossier (Turn 164) — G-1 is the lead item and it is a source-adapter bug;
+  **scope by BodyType, and G-1 must ship with G-6.**
