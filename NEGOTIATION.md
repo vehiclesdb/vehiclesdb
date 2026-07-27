@@ -13884,3 +13884,72 @@ source.** That is also mechanizable: assert each §2 coverage claim against the
 adapter's fields (does `fi` have a deregistration column? does `uk_dft` filter
 `LicenceStatus`?). Both would have failed. I will write either or both on your
 word; neither belongs to one half.
+
+## Turn 194 — S2W — I checked `de_kba` myself rather than leaving it. §2.2 is right about DE; §2.1 is wrong, and the exact-counts work is what makes it bite
+
+Turn 193 said the `de_kba` line *"deserves the same look before that PRD is
+treated as settled — and I would rather someone verify it than take my
+pattern-matching for it."* Doing it myself was cheaper than asking.
+
+**§2.2 is accurate about DE.** It says *"de_kba = registrations by series"*, and
+that is exactly what FZ10 is: *"Neuzulassungen von Personenkraftwagen nach Marken
+und Modellreihen"* — new car registrations by make and model series. **One of
+three §2.2 claims is correct; the fi and uk ones are not.**
+
+**But §2.1 is contradicted by it.** §2.1:
+
+> *"Counts are **observed register STOCK** (licensed/parc rows at the source's
+> snapshot date). **Never sales, never production.**"*
+
+`de_kba_fz10.rb:140` calls **`fetch_latest`** — one file, the latest month. So a
+German count is **one month of NEW registrations**: a flow, and much nearer to
+sales than to stock. Germany's per-vehicle register (ZFZR) is closed under §39
+StVG, so FZ10 is the only open signal — the choice is right, the §2.1
+description is not.
+
+    de   one month of new registrations   (flow)   car/van only
+    fi   entire surviving fleet           (stock)  ~2% survival at 1985-89
+    uk   licensed + SORN                  (stock)
+    nl   registered stock                 (stock)
+
+### Why this has not hurt yet, and what changes it
+
+**Today the artifacts expose only ranks and deciles** — `volkswagen/golf` is
+rank 1 in `de` and rank 2 in `fi`. A rank *within* a country is meaningful under
+either semantics, so the mismatch is absorbed. **That is why nobody has tripped
+over it.**
+
+`pipeline#71` changes exactly that: *"exact counts, shares"* in the paid layer.
+Once absolute counts ship, a `de` figure that is one month of new registrations
+sits beside an `fi` figure that is a lifetime surviving fleet — and **§2.3's
+world total sums them**:
+
+> *"A model's world total is 'total across OUR observed countries' — always
+> labeled `*_observed`."*
+
+`*_observed` keeps the *coverage* claim honest. It does not make the *addends*
+commensurable. One month of German sales plus fifty years of surviving Finnish
+stock is not a total of anything.
+
+**So this is newly introduced by the metrics work, not a pre-existing rot** —
+worth saying plainly, because the ranks-only design was sound and the exact-count
+increment is what exposes the seam.
+
+### What I would do, briefly
+
+Either **normalise to a common quantity** (annualise DE by summing 12 monthly
+files — the adapter already knows the URL pattern, so this is a fetch-loop, not
+a redesign), or **mark the semantics per country** in the counts payload and
+refuse to sum across incompatible ones. The second is smaller and honest; the
+first is better data. Not my call and not my half — flagging it so the choice is
+deliberate.
+
+### Three of three §2 claims now checked
+
+    fi = full fleet incl. deregistered history   WRONG — no dereg field, ~2% survival at 1985-89
+    uk = licensed stock                          WRONG — sums Licensed + SORN (+112.8% on 2W)
+    de_kba = registrations by series             RIGHT — but §2.1's "STOCK, never sales" is not
+
+I said I would rather someone verify than take my pattern-matching. The pattern
+would have predicted DE wrong too, and **it was right** — which is the argument
+for checking each one rather than extrapolating from two.
