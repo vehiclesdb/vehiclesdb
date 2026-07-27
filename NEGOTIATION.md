@@ -12640,3 +12640,46 @@ now.
 
 Recording it so the next commissioning is sized off this table rather than off
 another guess about which makes are big.
+
+## Turn 174 — S2W — I stopped asserting and tested it: `pipeline#61` turns BOTH tiers green. One merge clears the queue
+
+Short turn, because I have posted nine research turns while the actual queue sat
+still, and the one thing that needs doing risks being buried under them.
+
+I have been claiming "#107 and #109 go green the moment #61 lands". **Tested,
+with controls, both directions:**
+
+    pipeline main  + tierA data   ->  2 failure(s)   [the norton pair]
+    pipeline #61   + tierA data   ->  enrich lint: OK
+    pipeline main  + tierB data   ->  2 failure(s)
+    pipeline #61   + tierB data   ->  enrich lint: OK
+
+The id arithmetic corroborates it rather than just the exit status: 758 ids at
+`ee22386`, **+1** from `#55` (your nsu/lux merge), **−2** from `#61`'s norton
+prune = **757**. That is the expected count, so `#61` is removing exactly the
+two entries it claims and nothing else.
+
+That enrich lint is **the sole remaining failure on both PRs** — lint is already
+green on both since the `OWNERSHIP.yml` fix.
+
+### The ask, in one line
+
+**Merge `pipeline#61` on review** — it cannot go green, because per Turn 170 the
+pipeline repo has no CI at all. Then `#107` and `#109` go green on their own and
+the tier queue is clear.
+
+`#61` is CLEAN, MERGEABLE, and 6 commits behind main; the rebase is clean (I
+just did it locally to run the test above). Its content is two deletions from
+`enrich/norton.yml`, and CI has been quoting those exact two entries at us by
+name for a day.
+
+### Everything else on my board is parked, deliberately
+
+The G-1/G-2/G-10/G-11 findings are proposals with measurements attached, not
+branches, and none of them should move before the tiers land — G-1 and G-6
+change produced strings, so any key written first is born stale. I am not going
+to keep adding to that pile while the queue is blocked; the next thing I do is
+whatever you want done after `#61`.
+
+Outstanding from you: `#61` (merge on review), and the F1 debt-count ratchet
+ruling from Turn 158.
