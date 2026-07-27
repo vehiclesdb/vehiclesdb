@@ -4397,3 +4397,24 @@
 "van/mercedes-benz/x": "van/mercedes-benz/x-class" # family-rule gap: X is missing from the mercedes() letter list, so "MERCEDES X CLASS"/"X-KLASSE" (gb+nl) minted a bare-letter id (MB trim dossier, wave 3)
 "car/mercedes-benz/g": "car/mercedes-benz/g-class" # registry truncation to a bare letter; nz writes both "G" and "G-CLASS" (MB trim dossier, wave 3)
 "van/mercedes-benz/g": "car/mercedes-benz/g-class" # FLATTENED through the shipped van/mercedes-benz/g-class -> car/mercedes-benz/g-class ledger line: the van-side rows cross-kind prune into the car nameplate (fi,nl both present there) (MB trim dossier, wave 3)
+
+# ── issue #123: BMW model slugs mix two naming conventions (serie-N vs N-series).
+# Adjudicated in the issue thread: the ENGLISH marketing convention wins (it is
+# what the normalizer's own family rule already emits, normalizer.rb#bmw
+# "#{$1} Series"), and every losing id becomes a migration alias so stored
+# consumer ids keep resolving — the #111 posture. BMW's own serie-N ids were
+# already aliased in the 2026-07-26 trim-fold wave; these seven are the rest of
+# the PUBLISHED population, found by a full-catalog scan of all 6 kinds and
+# 15,677 records for serie-/serien-/series- shapes (see the PR for the table).
+# FILE-WIDE CHAIN SCAN, run before appending: former_ids.yml holds 3,960 entries
+# and ZERO unflattened chains (no value is also a key); for each of the seven
+# lines below the inbound set is EMPTY (nothing already aliases the retiring id,
+# so there is nothing to flatten), the target is not itself a retired key, and
+# the retiring id is not already present. Stated per line below.
+"car/land-rover/serie-i-80": "car/land-rover/series-i-80" # RENAME (no live twin): continental spelling of the 80-inch Series I; siblings series-i / series-i-88 already English. inbound 0 — nothing chains through this id
+"car/morris/oxford-serie": "car/morris/oxford-series" # FOLD: the English twin was in the candidate queue at nl 13; fi+nz join it. inbound 0 — nothing chains through this id
+"car/sunbeam/alpine-serie": "car/sunbeam/alpine-series" # FOLD onto a LIVE published twin (car/sunbeam/alpine-series, fi+nl); nl+nz join it. inbound 0 — nothing chains through this id
+"truck/scania/g-serien": "truck/scania/g-series" # FOLD: Swedish definite-plural range label; English twin was in the candidate queue at fi 1. inbound 0 — nothing chains through this id
+"truck/scania/r-serien": "truck/scania/r-series" # FOLD: same class; English twin was in the candidate queue at gb 1. inbound 0 — nothing chains through this id
+"truck/volvo/fh-serien": "truck/volvo/fh-series" # FOLD: English twin was in the candidate queue at gb 35. inbound 0 — nothing chains through this id
+"truck/volvo/fm-serien": "truck/volvo/fm-series" # FOLD onto a LIVE published twin (truck/volvo/fm-series, gb) — the two conventions were published side by side, the exact defect #123 reports. inbound 0 — nothing chains through this id

@@ -296,6 +296,42 @@ approval number and capacity that accompany the code (PR #1 did this for
 Derbi/Gas Gas/TRS via live RDW queries), or leave them alone. A code mapped by
 resemblance is a fabrication with a comment attached.
 
+### 7.6 Register LANGUAGE never decides the canonical form — English does `[S4W]`
+
+Registers write the same range label in their own language: `SERIE 3` (es_dgt),
+`3ER REIHE` (nl_rdw's Dutch-German), `R-SERIEN` (Swedish definite plural),
+`ALPINE SERIE` vs `ALPINE SERIES`. Which spelling a nameplate landed on is an
+artifact of **which register evidenced it first**, so a make ends up carrying two
+conventions at once — issue #123 measured exactly that on BMW, and a full-catalog
+sweep found it on five more makes.
+
+**The English marketing form wins, always.** Not by taste: it is what the
+pipeline's own family rules already emit (`normalizer.rb#bmw` returns
+`"#{$1} Series"`), so any other choice makes the overrides layer fight the code.
+Canonical shape is `<designation> Series` — spaced, capital S.
+
+Three rules that make the fix survive:
+
+1. **Every losing id becomes a `former_ids.yml` alias.** Stored consumer ids must
+   keep resolving (SCHEMA.md §Versioning; the #111 posture). A drop is a
+   different adjudication and needs its own evidence.
+2. **Key every spelling that reaches the SAME SLUG, in one change.** `R-Serien`
+   and `R Serien` both slugify to `r-serien`; `Serie I 80` and `Serie I-80` both
+   to `serie-i-80`. One key alone retires nothing — the record simply republishes
+   under the other display form. Same gotcha as BMW's `3 C` / `3. C`.
+3. **Pin the target's variant spellings too.** If the corpus also produces
+   `G-Series` for the slug you are folding onto, add it as a key pointing at the
+   canonical `G Series`, or the published display flaps between the two by row
+   count (`build/observed_model_names.json` is the detector).
+
+**What this rule does NOT settle:** whether a range label belongs in the catalog
+at all. `SERIE X, X3` and `R-SERIEN, R500` both name a model the label does not,
+and the published siblings (`x1`…`x7`, `r450`…`r730`) already carry that
+altitude. BMW's letter-only labels were therefore `null`ed with a removals.yml
+ledger line while its digit labels folded to real nameplates. Language and
+altitude are two questions; answer them separately or you will delete evidence
+while thinking you fixed a slug.
+
 ---
 
 ## 8. Placeholders and embedded brands `[S2W]`
