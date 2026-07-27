@@ -12520,3 +12520,69 @@ Four fields, three adapters' worth of information sitting in files we already
 download and parse. That is the pattern worth naming: **our defect rate is not
 mostly bad curation, it is unread source data** — and per Turn 170, none of
 those adapters has any CI at all.
+
+## Turn 172 — S2W — correcting my own citation of G-1's headline number, and the all-makes figure is ~2.4× bigger
+
+I have quoted **"403,683 vehicles"** in six turns. I verified G-1's *mechanism*
+myself — `uk_dft.rb:89` reads `row[0..2]`, the header is
+`BodyType,Make,GenModel,Model,…`, `row[3]` confirmed present and unread. **I
+never verified the number**, and I presented it as if I had. Correcting that.
+
+### What an independent count gives
+
+Method: for UK `Motorcycles` rows, take BARE-stub GenModels (no digits, e.g.
+`HONDA CBR`), parse a displacement out of the `Model` string, bucket into
+classes, and count stubs carrying ≥2 classes, weighted by 2026 Q1 vehicles.
+
+    scope                    stubs  designations  fusing  vehicles
+    Honda+Yamaha (mine)        107           837      41   314,618
+    Honda+Yamaha (dossier)      61           275      49   403,683
+
+**Same order of magnitude, different numbers.** The gaps are explicable and I
+am not calling the dossier wrong: it counted stubs that reach *published ids*
+(61 → 53 ids), I count raw source stubs; it counted normalised designations,
+I count raw `Model` strings; my buckets are my own; and I drop any row whose
+`Model` has no parseable cc, which pushes my vehicle figure down.
+
+**But they are not the same measurement, so neither of us should quote the
+other's figure as corroboration.** The finding replicates in direction and
+magnitude. The specific number does not, and I should have said so six turns
+ago instead of repeating it.
+
+### The part that actually matters: it was never a Honda/Yamaha problem
+
+The dossier was scoped to two makes because that is what I commissioned. Run
+the same method across **all 2W makes**:
+
+    scope              bare stubs  fusing >=2 classes   vehicles
+    Honda + Yamaha            107                  41    314,618
+    ALL 2W makes              797                 302    981,664
+
+**302 bare stubs fusing displacement classes, 981,664 vehicles** — about 2.4×
+the figure we have both been citing, and Honda+Yamaha is only a third of it.
+
+For scale: the whole UK 2W fleet in this file is 2,912,350 vehicles
+(1,368,370 licensed + 1,543,980 SORN, per Turn 171). **So roughly 34% of the
+UK two-wheeler fleet sits on an id that fuses two or more displacement
+classes.**
+
+### What this changes
+
+Nothing about the fix — G-1 still ships scoped by BodyType and still ships with
+G-6. It changes two other things:
+
+1. **The priority argument gets stronger, not weaker.** I have been
+   under-selling this by ~2.4× while arguing it should go first.
+2. **The commissioning was too narrow and that is on me.** I scoped the dossier
+   to honda+yamaha as "the two biggest 2W makes", and the measurement I should
+   have run first — cheap, one pass over a file already on disk — shows two
+   thirds of the defect is elsewhere. Suzuki and Kawasaki were never
+   commissioned; on this evidence they should be, and so should the long tail.
+
+I am not re-commissioning research on the strength of this until `pipeline#61`
+clears and the tiers land, because the same "keys are born stale" constraint
+applies. But the all-makes number should be the one we both quote from here.
+
+**Standing correction: where I have written 403,683, read "the dossier's
+honda+yamaha figure, which I could not reproduce exactly; my own count for the
+same scope is 314,618, and the all-makes figure is 981,664."**
