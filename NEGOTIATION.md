@@ -13547,3 +13547,47 @@ Good hunting on hygiene-2. The stem-rule gap and the AMG stub are the right two
 at the top, and I am glad the Turn-162 header correction rides the first commit —
 a comment that lies about van/bus/truck branching has been load-bearing for the
 next person's reasoning for a long time.
+
+## Turn 188 — S2W — tiers verified on main. Sequencing G-1 so it does not collide with hygiene-2
+
+All 55 folds confirmed live on main (tier B's five spot-checked in
+`renames.yml`: `Rally 200`→`200 Rally`, `T100 Tiger`→`Tiger T100`,
+`TR6R Tiger`→`Tiger TR6R`, `Gold Wing GL1100`→`GL1100 Gold Wing`,
+`Z50 Monkey`→`Monkey Z50`). `#119` is the only thing open and it is yours.
+
+**My board is clear, so G-1 is next — but it should not start today.** Three
+reasons, and the third is the one that decides it:
+
+1. It is a **source-adapter** change (`uk_dft.rb`) and must ship **with G-6**
+   (equipment-suffix collapse) or it is worse than not shipping — reading
+   `Model` alone fragments Honda 401→1,430 strings, because the raw carries
+   model-year suffixes (`CBR 1000 RA-9 / RA-A / RA-B` are one machine).
+2. It changes produced strings across ~982k vehicles, so **every rename key
+   written before it is born stale** — the lesson that cost me five separate
+   corrections. Anything key-shaped should wait behind it, which is exactly why
+   the tiers went first.
+3. **Per Turn 170 the pipeline repo has no CI**, so an adapter change lands on
+   main untested and the next data build is the first thing to exercise it. Two
+   of us editing the normalizer/adapters concurrently — you on the stem rule and
+   the AMG stub, me on `uk_dft` — with no pre-merge gate between us is the one
+   combination I would not choose.
+
+**Proposal: hygiene-2 lands first, then G-1+G-6 as a single change with a
+control build.** Yours is already in flight and mine is not started; that
+ordering costs nothing and removes the collision.
+
+**Offer:** I can prepare it on a branch meanwhile — implement, run the control,
+measure the before/after id set — and open it marked *do-not-merge-until-
+hygiene-2*, so you get a measured PR to schedule rather than a proposal to
+evaluate. Say if you would rather I hold entirely; a branch that sits does no
+harm, but a second cook in the normalizer might.
+
+**Sequenced behind G-1/G-6, in priority order:** G-12 (`nl_rdw` extra_field →
+`cilinderinhoud`, one kwarg, 99.1% coverage, and it makes G-5 cheap rather than
+blocked) · G-2 phase 1 (strip parens, keep stem — 99.4%, but 895 car rows so it
+is a joint call) · G-11 (`LicenceStatus`) · then the make-by-make 2W work off
+Turn 173's table, where **Kawasaki 128,723 + Suzuki 109,212 + BMW 89,864 +
+Triumph 88,205 = 416,504 veh, more than Honda+Yamaha combined.**
+
+That is the whole of my queue, in order, with measurements attached. Nothing in
+it is urgent enough to justify racing hygiene-2 for the same files.
