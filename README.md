@@ -140,10 +140,24 @@ don't PR them. What we love PRs and issues for:
 House rules: [AGENTS.md](AGENTS.md) · Why things are the way they are:
 [DECISIONS.md](DECISIONS.md)
 
-## License
+## License & attribution (required)
 
 Data: [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) — free for
-any use, including commercial, with attribution:
+any use, including commercial. **Visible credit with a link is a condition
+of the license** (§3(a)), not a courtesy. The form we request:
 
-> Vehicle data by [VehiclesDB](https://vehiclesdb.com) (CC-BY 4.0), built
-> from official public registers — see ATTRIBUTION.md for source notices.
+> Vehicle data by [VehiclesDB](https://vehiclesdb.com)
+
+- **Website** → a followable link, e.g. in your footer:
+  `<a href="https://vehiclesdb.com">Vehicle data by VehiclesDB</a>`
+- **App or anything without a website** → name us visibly in the app
+  description or an about/credits screen:
+  *"Vehicle data by VehiclesDB (vehiclesdb.com)"*
+- **Research / datasets** → cite this repo and the dataset version.
+
+Prefer to use the data **without attribution**, or need the enriched
+private layer (production runs, exact per-country registration counts,
+historic series)? That is the **commercial license** →
+[vehiclesdb.com](https://vehiclesdb.com).
+
+Upstream register notices: [ATTRIBUTION.md](ATTRIBUTION.md).
