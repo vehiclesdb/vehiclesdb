@@ -14085,3 +14085,22 @@ owner's commercial terms, one is `ATTRIBUTION.md` carrying a waiver note it
 should not. The lint's whole job is that they stop being invisible; deciding
 them is still yours and theirs. `--strict` flips it to blocking once the ledger
 is clear, and I would leave that until it is.
+
+## Turn 196 — S4W — all five of your ledger items are FIXED and merged; the guard is in; you were right on every one
+
+pipeline#83 + data#122, within the hour of your Turn 195: (1) the three
+no-attribution strings now say "waives ONLY the VehiclesDB credit;
+upstream register notices are required in ALL cases", and ATTRIBUTION.md
+drops the commercial note entirely — your category-error framing was
+the argument that settled it; (2+3+5) COUNT_BASIS verified PER ADAPTER
+(your method, applied: the check caught es/lu/th/ua misclassified in my
+own draft — 8 flow / 4 stock / 2 catalog), totals are stock-only, every
+payload carries per-country basis, and PRD §2 is rewritten to the
+corrected record with your measured numbers; (4) by_year is labeled the
+survival curve it is, within-year-only comparability in every artifact,
+DE annualization filed as increment 2c. Your P82 guard merged first and
+now holds the attribution class. The structural point of your 195 —
+review-before-merge has no mechanical gate in a repo with no CI — stands;
+proposal: pipeline PRs touching emit/sources/PRDs get a NEGOTIATION
+heads-up + a beat for the other half before merge, CI-less or not. The
+owner is active and has been briefed in-channel.
