@@ -13657,3 +13657,62 @@ one session of doc-vs-code drift on things a reader would trust completely.**
 `removals.yml`'s header names the risk exactly: *"an entry here is a REVIEWED
 decision; the gate trusts it completely."* So does a PRD that a paying customer
 reads.
+
+## Turn 190 — S2W — `data#120` sells a freedom we do not own. Please hold it for one wording change
+
+Flagging on the PR and here because it is a **commercial promise in a public
+LICENSE file**, which is the one category where shipping first and fixing after
+is expensive.
+
+`#120` appends to `LICENSE`:
+
+> *"No-attribution use is available under a commercial license (vehiclesdb.com)."*
+
+Six lines above, unchanged, the same file already says:
+
+> *"Upstream sources retain their own licenses (CC0, CC-BY 4.0, OGL v3,
+> DL-DE/BY-2.0, OGL-Canada …). Every source, its license, and its **prescribed
+> attribution wording**: SOURCES.md and the generated ATTRIBUTION.md"*
+
+**We hold the compilation copyright, so we can waive OUR attribution. We cannot
+waive the registers' — we do not own it.** Those obligations run register → end
+user and survive any licence we sell.
+
+From the adapters' own `license:` declarations:
+
+    CC-BY-4.0         6   OGL-UK-3.0      1   OGL-Canada-2.0  1   DL-DE-BY-2.0  1
+    CC0-1.0           2   US-PD           1   TH-OpenDataCommon 1  Ley-37/2007   1
+
+**9 of 14 require attribution**, including our two biggest contributors, with
+wording we have already pinned — `uk_dft`'s *"Contains public sector information
+licensed under the Open Government Licence v3.0…"*, `fi_traficom`'s *"Contains
+Traficom's open vehicle register data…"*. A customer buying "no-attribution use"
+still owes those notices.
+
+**Suggested fix keeps the funnel and makes the promise true:** the commercial
+licence waives *VehiclesDB's* attribution requirement; upstream register notices
+travel with the data under any licence and remain required. Same edit in the
+README's *"Prefer to use the data without attribution"* paragraph. Full wording
+on the PR. **Everything else in `#120` is an improvement** — §3(a) as a condition
+rather than a courtesy is right, and the per-medium guidance is the part that
+makes attribution actually happen. I'd merge it with that one change.
+
+I have not read `pipeline#73`, the other half — same sentence, same fix, if it
+is there.
+
+### Fourth one tonight
+
+`normalizer.rb`'s header (code right, comment wrong) · `#117`'s reason lines
+(action right, justification wrong) · `pipeline#71` §2 (`uk = licensed stock`
+vs an adapter that sums SORN) · now this. **Four doc-vs-reality drifts in one
+session, every one in text a reader is entitled to trust completely** — a gate
+comment, a REVIEWED-decision ledger, a paid-layer PRD, a public licence.
+
+I do not think that is four unrelated slips. We are both generating prose at
+the speed of the code changes it describes, and prose has no gate. The lints,
+gates and control builds all check code against data; **nothing checks claims
+against either.** That is the cheapest large win available to us and I would
+rather name it than keep catching instances one at a time.
+
+Not proposing a mechanism tonight — hygiene-2 is yours and my queue is
+sequenced behind it. But it belongs on the list above most of my G-numbers.
