@@ -1,0 +1,102 @@
+# plates/_meta/separators.yml — THE NORMATIVE SEPARATOR CHARACTER SET.
+#
+# PRD-PLATES §2.6 declares this contract in prose; this file is its
+# machine-readable form, and `scripts/lint_plates.rb` enforces the dataset
+# against THIS file (single source of truth — the lint hardcodes nothing).
+#
+# WHY IT EXISTS (issue #124, from the vehicles gem 0.6.0 implementation):
+# a consumer with a separator-forgiving tier canonicalizes user input by
+# deleting punctuation, and derives separator-free twins of our regexes to
+# match against. That derivation is only sound if the dataset commits, once
+# and normatively, to which characters are EVER separators and which are
+# serial-significant. Without the commitment, deleting a character might
+# destroy a serial. With it, deletion is information-preserving by
+# construction, and every consumer forgives exactly the same punctuation.
+#
+# Grow this file by PR with a rationale — never ad hoc in data files.
+schema_version: 1
+
+# ---------------------------------------------------------------------------
+# 1. The serial alphabet. Every character a SERIAL is made of, dataset-wide.
+#    Disjoint from `forgiving` below: that disjointness is the whole contract.
+# ---------------------------------------------------------------------------
+serial_alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+serial_alphabet_note: >-
+  Uppercase A-Z and 0-9 and nothing else. No plate serial in this dataset
+  contains punctuation, and none ever will: a jurisdiction that prints a
+  glyph inside the serial (rather than between groups) is a schema amendment,
+  not a data entry. Serials are RECORDED uppercase; consumers upcase input
+  before matching, since every regex in the dataset is written in uppercase.
+case: upper
+
+# ---------------------------------------------------------------------------
+# 2. EMITTED — the only characters this dataset itself ever writes as a
+#    separator, in `format.pattern`, `format.regex`, `format.regex_strict`
+#    and `format.regex_statutory`. The lint rejects any other literal.
+# ---------------------------------------------------------------------------
+emitted:
+  - char: "-"
+    codepoint: "U+002D"
+    name: HYPHEN-MINUS
+    note: >-
+      The group separator as printed on NL (2-2-2 sidecodes), DE
+      (Unterscheidungszeichen - Erkennungsnummer) and ES state/diplomatic
+      plates. In NL it is a physical feature of the plate, not typography.
+  - char: " "
+    codepoint: "U+0020"
+    name: SPACE
+    note: >-
+      The printed GAP where the authority prescribes group spacing in
+      millimetres but no separator glyph: ES ordinary (Anexo XVIII Cuadro 1,
+      41 mm inter-group), DE between Erkennungsnummer groups, US-FL.
+
+# ---------------------------------------------------------------------------
+# 3. FORGIVING — the characters a lenient consumer MAY delete from user input
+#    (and from a regex, to derive its separator-free twin) before matching.
+#    A superset of `emitted`: humans, OCR and copy-paste substitute these
+#    freely. None of them is ever serial-significant (§1), so deleting them
+#    cannot destroy a serial — that is the guarantee this list exists to make.
+#    Deleting them from a regex means deleting the literal or the
+#    separator-only class AND its quantifier (`[- ]`, ` ?` -> nothing).
+# ---------------------------------------------------------------------------
+forgiving:
+  - { char: " ",  codepoint: "U+0020", name: SPACE }
+  - { char: "\t", codepoint: "U+0009", name: "CHARACTER TABULATION" }
+  - { char: " ", codepoint: "U+00A0", name: "NO-BREAK SPACE" }
+  - { char: " ", codepoint: "U+2007", name: "FIGURE SPACE" }
+  - { char: " ", codepoint: "U+202F", name: "NARROW NO-BREAK SPACE" }
+  - { char: "-",  codepoint: "U+002D", name: HYPHEN-MINUS }
+  - { char: "‐", codepoint: "U+2010", name: HYPHEN }
+  - { char: "‑", codepoint: "U+2011", name: "NON-BREAKING HYPHEN" }
+  - { char: "‒", codepoint: "U+2012", name: "FIGURE DASH" }
+  - { char: "–", codepoint: "U+2013", name: "EN DASH" }
+  - { char: "—", codepoint: "U+2014", name: "EM DASH" }
+  - { char: "―", codepoint: "U+2015", name: "HORIZONTAL BAR" }
+  - { char: "−", codepoint: "U+2212", name: "MINUS SIGN" }
+  - { char: "·", codepoint: "U+00B7", name: "MIDDLE DOT" }
+  - { char: "•", codepoint: "U+2022", name: BULLET }
+  - { char: ".",  codepoint: "U+002E", name: "FULL STOP" }
+  - { char: "_",  codepoint: "U+005F", name: "LOW LINE" }
+  - { char: "/",  codepoint: "U+002F", name: SOLIDUS }
+forgiving_note: >-
+  The vehicles gem 0.6.0 strips [\s\-–—·.] — a subset of this list. Widening
+  it to the full list is safe by construction (nothing here is ever
+  serial-significant) and covers the Unicode dashes an OCR or a word
+  processor produces. SOLIDUS and LOW LINE are here because keyboards and
+  URL slugs produce them, not because any plate prints them.
+
+# ---------------------------------------------------------------------------
+# 4. NOT separators — glyphs that look like punctuation but are NOT, so no
+#    consumer may strip them. Recorded so the list above stays honest as
+#    coverage grows past the L0 pilot.
+# ---------------------------------------------------------------------------
+never_separator_note: >-
+  Nothing in the L0 pilot (NL, ES, DE, US-FL). Known candidates for later
+  gates, each of which is a SYMBOL inside the plate's identity rather than a
+  gap between serial groups, and none of which may be deleted: the coats of
+  arms / seals that sit between groups on several German and Austrian plates
+  (a design element, carried in `design.emblem`, never in the serial); the
+  hyphen INSIDE the ES military "-VE" suffix, which is a literal part of a
+  sourced token rather than a group boundary — it is spelled as an emitted
+  hyphen today and a separator-stripping consumer collapses "ET-1234-VE" to
+  "ET1234VE", which is correct and still unambiguous.

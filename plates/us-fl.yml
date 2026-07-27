@@ -16,6 +16,14 @@
 # carry: which standard VARIANTS are currently offered, and how many specialty
 # programs exist.
 #
+# REGEX FORM (PRD-PLATES §2.6, issue #124): every regex in this file is written
+# in PRINTED form — the separator is spelled where the plate shows it. That is
+# why `regex_statutory` reads '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z' and not
+# '\A[A-Z0-9]{1,7}\z': the statutory claim is § 320.06(3)(a)'s SEVEN
+# ALPHANUMERIC CHARACTERS, unchanged, but the earlier spelling silently also
+# claimed the plate is printed without a gap, so it rejected "ABC 123" —
+# every real Florida plate. The cap is the claim; the gap is not.
+#
 # WHAT IS DELIBERATELY NOT HERE (PRD-PLATES §2.5): the individual specialty
 # DESIGNS. L2 indexes the programs with official links and counts; individual
 # designs are L4. `us-fl-specialty-index` is that index entry and nothing more.
@@ -110,10 +118,11 @@ series:
     categories: [car, van, truck, bus, motorcycle, moped, trailer]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
       charset:
         notes: >-
           § 320.06(1)(a): the department assigns 'a registration license number
@@ -217,10 +226,11 @@ series:
     categories: [car, van, truck, motorcycle]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
       charset: { notes: "specialty plates carry ORDINARY serials on an alternative design — the § 320.06(3)(a) seven-character cap and alphabet apply unchanged" }
     design:
       plate: { w: 12, h: 6, unit: in }
@@ -269,10 +279,11 @@ series:
     categories: [car, van, truck, motorcycle]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLLLLLL"
       regex: '\A[A-Z]{1,7}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
       charset: { notes: "owner-chosen inside the § 320.06(3)(a) frame: bold letters and numerals or numerals, at most seven characters. Availability is checked through FLHSMV's Personalized License Plate Inquiry before order." }
     design:
       plate: { w: 12, h: 6, unit: in }
@@ -302,6 +313,7 @@ series:
     categories: [car]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "999"
       regex: '\A\d+\z'
@@ -342,6 +354,7 @@ series:
     categories: [car, truck, bus]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "999"
       regex: '\A\d+\z'
@@ -382,10 +395,11 @@ series:
     categories: [truck, bus]
     period: { start: 2024 }
     period_evidence: statutory-date
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
     design:
       plate: { w: 12, h: 6, unit: in }
       background: { finish: retroreflective }
@@ -414,10 +428,11 @@ series:
     categories: [truck, trailer]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
     design:
       plate: { w: 12, h: 6, unit: in }
       background: { finish: retroreflective }
@@ -439,10 +454,11 @@ series:
     categories: [car, van, truck, bus, motorcycle, trailer]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
     design:
       plate: { w: 12, h: 6, unit: in }
       background: { finish: retroreflective }
@@ -470,10 +486,11 @@ series:
     categories: [car, van, truck, bus, motorcycle]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
     design:
       plate: { w: 12, h: 6, unit: in }
       background: { finish: retroreflective }
@@ -497,10 +514,11 @@ series:
     categories: [truck]
     period: { start: 2025 }
     period_evidence: instrument-in-force-upper-bound
+    matching: strict
     format:
       pattern: "LLL 999"
       regex: '\A[A-Z]{3} ?\d{3}\z'
-      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
     design:
       plate: { w: 12, h: 6, unit: in }
       background: { finish: retroreflective }

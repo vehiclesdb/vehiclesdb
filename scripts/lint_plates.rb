@@ -13,15 +13,145 @@
 #     serials must not (the fuzz side)
 #   * every series carries >= 1 source line; colors well-formed hex
 #
+# The #124 amendments (PRD-PLATES §2.6-§2.8), from the vehicles gem 0.6.0:
+#   * SEPARATOR CONTRACT (§2.6): patterns and regexes may spell only the
+#     serial alphabet and the EMITTED separators declared in
+#     plates/_meta/separators.yml. Nothing is hardcoded here — that file is
+#     the single source of truth, so widening the contract is a data PR.
+#   * matching: strict|recall-only (§2.7) required per series, plus the regex
+#     tier order regex_strict <= regex <= regex_statutory, sampled.
+#   * SEPARATOR-ONLY CLASSES (§2.8): a character class containing a separator
+#     must contain only separators and must not be negated — the rule that
+#     makes a separator position mechanically detectable by a consumer
+#     deriving separator-free twins.
+#
 # Usage: ruby scripts/lint_plates.rb    (repo root relative)
 
 require "yaml"
+require "set"
 
 ROOT = File.expand_path("..", __dir__)
 CLASSES = YAML.safe_load_file(File.join(ROOT, "plates", "_meta", "classes.yml")).keys.map(&:to_s).freeze rescue abort("classes.yml missing/unparsable")
 NOW = Time.now.year
 FAILURES = []
 def fail!(m) = FAILURES << m
+
+# --- the separator contract, read from data (PRD-PLATES §2.6) --------------
+SEP = begin
+  YAML.safe_load_file(File.join(ROOT, "plates", "_meta", "separators.yml"))
+rescue StandardError => e
+  abort("plates/_meta/separators.yml missing/unparsable — #{e.message}")
+end
+SERIAL_ALPHABET = SEP.fetch("serial_alphabet").chars.to_set rescue abort("separators.yml: serial_alphabet required")
+EMITTED = SEP.fetch("emitted").map { |h| h.fetch("char") }.to_set
+FORGIVING = SEP.fetch("forgiving").map { |h| h.fetch("char") }.to_set
+abort("separators.yml: emitted must be a subset of forgiving") unless EMITTED.subset?(FORGIVING)
+abort("separators.yml: forgiving overlaps the serial alphabet — the contract is broken at its root") if FORGIVING.intersect?(SERIAL_ALPHABET)
+PATTERN_TOKENS = %w[9 L].to_set          # the human-pattern DSL (9=digit, L=letter)
+MATCHING_VALUES = %w[strict recall-only].freeze
+
+# Expand a character-class body into its members. Handles ranges (A-Z),
+# a leading negation, and backslash escapes. The dataset's dialect has no
+# nested classes and no POSIX brackets.
+def class_members(body)
+  neg = body.start_with?("^")
+  b = neg ? body[1..].to_s : body
+  members = []
+  k = 0
+  while k < b.length
+    if b[k] == "\\"
+      members << "\\#{b[k + 1]}"            # \d and friends, kept marked
+      k += 2
+    elsif b[k + 1] == "-" && b[k + 2] && b[k + 2] != "]"
+      (b[k]..b[k + 2]).each { |x| members << x }
+      k += 3
+    else
+      members << b[k]
+      k += 1
+    end
+  end
+  [neg, members]
+end
+
+# Walk a regex source in the restricted dialect the dataset uses and return
+# the LITERAL characters and the CHARACTER CLASSES it spells. Metacharacters,
+# escapes (\A \z \d ...), groups ((?: (?! (?= (?<= (?<!), alternation and
+# quantifiers contribute nothing — only what a human could read off a plate.
+def regex_atoms(src)
+  literals = []
+  classes  = []
+  i = 0
+  while i < src.length
+    c = src[i]
+    case c
+    when "\\"
+      nxt = src[i + 1]
+      literals << nxt unless nxt.nil? || nxt =~ /[AzZdDwWsSbBGhHkpRXK]/
+      i += 2
+    when "["
+      j = i + 1
+      j += 1 if src[j] == "^"
+      j += 1 if src[j] == "]"                       # ']' first is a literal member
+      j += 1 while j < src.length && src[j] != "]"
+      classes << src[(i + 1)...j]
+      i = j + 1
+    when "("
+      m = src[i..].match(/\A\(\?(?::|!|=|<=|<!|<[A-Za-z_]\w*>)/)
+      i += m ? m[0].length : 1
+    when ")", "|", "?", "*", "+", "^", "$"
+      i += 1
+    when "{"
+      j = src.index("}", i)
+      if j && src[(i + 1)...j] =~ /\A\d+(?:,\d*)?\z/
+        i = j + 1
+      else
+        literals << c
+        i += 1
+      end
+    when "."
+      literals << c                                  # '.' unescaped: wildcard,
+      i += 1                                         # not sanctioned here
+    else
+      literals << c
+      i += 1
+    end
+  end
+  [literals, classes]
+end
+
+# §2.6 + §2.8 — one regex, checked against the separator contract.
+def check_separator_contract(rel, id, key, src)
+  literals, classes = regex_atoms(src)
+  literals.uniq.each do |ch|
+    next if SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
+    hint = if FORGIVING.include?(ch)
+             "it is in the FORGIVING set but not the EMITTED set — the dataset writes only #{EMITTED.to_a.map(&:inspect).join(' and ')}"
+           else
+             "not in the serial alphabet and not an emitted separator"
+           end
+    fail! "#{rel}: #{id} #{key} spells literal #{ch.inspect} (U+%04X) — #{hint} (PRD-PLATES §2.6)" % ch.ord
+  end
+  classes.each do |body|
+    neg, members = class_members(body)
+    seps = members.select { |m| FORGIVING.include?(m) }
+    if seps.any?
+      fail! "#{rel}: #{id} #{key} class [#{body}] is NEGATED and contains a separator — a separator position must be positively spelled (PRD-PLATES §2.8)" if neg
+      strays = members - seps
+      unless strays.empty?
+        fail! "#{rel}: #{id} #{key} class [#{body}] MIXES separators #{seps.inspect} with #{strays.inspect} — a class containing a separator must contain only separators, or a consumer deriving separator-free twins cannot detect the position (PRD-PLATES §2.8)"
+      end
+      seps.each do |s|
+        next if EMITTED.include?(s)
+        fail! "#{rel}: #{id} #{key} class [#{body}] spells non-emitted separator #{s.inspect} — forgiveness is the consumer's job, not the dataset's (PRD-PLATES §2.6)"
+      end
+    else
+      members.each do |m|
+        next if m.start_with?("\\") || SERIAL_ALPHABET.include?(m)
+        fail! "#{rel}: #{id} #{key} class [#{body}] member #{m.inspect} is outside the serial alphabet (PRD-PLATES §2.6)"
+      end
+    end
+  end
+end
 
 # Generate serials from a human pattern: 9=digit, L=letter, else literal.
 def serials_from(pattern, n = 50)
@@ -47,6 +177,8 @@ files = Dir[File.join(ROOT, "plates", "*.yml")] + Dir[File.join(ROOT, "plates", 
 files = files.reject { |f| f.include?("/_meta/") || f.include?("/_decode/") }
 seen_series = {}
 series_count = 0
+matching_tally = Hash.new(0)
+twin_tally = Hash.new(0)
 
 files.sort.each do |abs|
   rel = abs.sub("#{ROOT}/", "")
@@ -89,16 +221,36 @@ files.sort.each do |abs|
     fail! "#{rel}: #{id} period.ended must be true or absent" unless p["ended"].nil? || p["ended"] == true
     fail! "#{rel}: #{id} period has both end and ended" if en && p["ended"]
 
+    # matching: strict | recall-only (PRD-PLATES §2.7) — a FIRST-CLASS field,
+    # because "no regex_strict" does NOT mean "not strict": 29 of the 31 L0
+    # series without a strict twin carry the sourced grammar in `regex`.
+    matching = s["matching"].to_s
+    matching_tally[matching.empty? ? "(missing)" : matching] += 1
+    if matching.empty?
+      fail! "#{rel}: #{id} matching: required — strict|recall-only (PRD-PLATES §2.7); consumers must not have to infer it"
+    elsif !MATCHING_VALUES.include?(matching)
+      fail! "#{rel}: #{id} matching #{s['matching'].inspect} not in #{MATCHING_VALUES.inspect} (PRD-PLATES §2.7)"
+    end
+
     # format: pattern + anchored regex + round trip
     fmt = s["format"] || {}
     pattern, regex_s = fmt["pattern"].to_s, fmt["regex"].to_s
     fail! "#{rel}: #{id} format.pattern required" if pattern.empty?
+
+    # §2.6 — the human pattern spells DSL tokens, serial characters and
+    # emitted separators, and nothing else.
+    pattern.chars.uniq.each do |ch|
+      next if PATTERN_TOKENS.include?(ch) || SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
+      fail! "#{rel}: #{id} format.pattern spells #{ch.inspect} (U+%04X) — patterns carry 9/L, serial characters and emitted separators only (PRD-PLATES §2.6)" % ch.ord
+    end
+
     if regex_s.empty?
       fail! "#{rel}: #{id} format.regex required"
     else
       begin
         re = Regexp.new(regex_s)
         fail! "#{rel}: #{id} regex not anchored (\\A...\\z)" unless regex_s.start_with?('\A') && regex_s.end_with?('\z')
+        check_separator_contract(rel, id, "format.regex", regex_s)
         unless pattern.empty?
           srand(id.sum) # deterministic per series
           serials_from(pattern).each do |ser|
@@ -109,6 +261,59 @@ files.sort.each do |abs|
         end
       rescue RegexpError => e
         fail! "#{rel}: #{id} regex does not compile — #{e.message}"
+      end
+    end
+
+    # The regex TIERS (PRD-PLATES §2.7): regex_strict <= regex <= regex_statutory.
+    # Only `regex` is round-tripped against `pattern` — which is exactly why it
+    # cannot carry charset restrictions and why the twins exist. The twins are
+    # compiled, anchored, separator-checked, and sampled against `pattern`:
+    # a twin that accepts NOTHING the pattern generates is written against a
+    # different form of the serial than the pattern is (this is how eight
+    # us-fl `regex_statutory` values were caught writing the separator-free
+    # form while `regex` wrote the printed one).
+    strict_re = nil
+    %w[regex_strict regex_statutory].each do |key|
+      src = fmt[key].to_s
+      next if src.empty?
+      twin_tally[key] += 1
+      begin
+        r = Regexp.new(src)
+        fail! "#{rel}: #{id} #{key} not anchored (\\A...\\z)" unless src.start_with?('\A') && src.end_with?('\z')
+        check_separator_contract(rel, id, "format.#{key}", src)
+        strict_re = r if key == "regex_strict"
+        next if pattern.empty?
+        srand(id.sum + key.sum)
+        sample = serials_from(pattern, 2000)
+        hits = sample.select { |ser| r.match?(ser) }
+        if hits.empty?
+          fail! "#{rel}: #{id} #{key} matches NONE of 2000 serials generated from format.pattern #{pattern.inspect} — a twin must describe the same printed form as the pattern (PRD-PLATES §2.6 rule 2)"
+        elsif key == "regex_strict" && !regex_s.empty?
+          loose = (Regexp.new(regex_s) rescue nil)
+          if loose
+            stray = hits.find { |ser| !loose.match?(ser) }
+            fail! "#{rel}: #{id} regex_strict is NOT contained in regex — #{stray.inspect} matches the strict twin but not the loose one (PRD-PLATES §2.7 tier order)" if stray
+          end
+        end
+      rescue RegexpError => e
+        fail! "#{rel}: #{id} #{key} does not compile — #{e.message}"
+      end
+    end
+    if matching == "recall-only" && strict_re
+      fail! "#{rel}: #{id} matching: recall-only carries a regex_strict — a deliberately over-broad regex cannot also be the authority's own grammar (PRD-PLATES §2.7)"
+    end
+
+    # §2.6 — variant patterns are held to the same alphabet.
+    (s["variants"] || []).each_with_index do |v, vi|
+      vpat = v.dig("format", "pattern").to_s
+      next if vpat.empty?
+      vpat.chars.uniq.each do |ch|
+        next if PATTERN_TOKENS.include?(ch) || SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
+        fail! "#{rel}: #{id} variant[#{vi}] pattern spells #{ch.inspect} (U+%04X) — see PRD-PLATES §2.6" % ch.ord
+      end
+      %w[regex regex_strict regex_statutory].each do |key|
+        vsrc = v.dig("format", key).to_s
+        check_separator_contract(rel, id, "variant[#{vi}].#{key}", vsrc) unless vsrc.empty?
       end
     end
 
@@ -141,6 +346,9 @@ files.sort.each do |abs|
 end
 
 puts "plates lint: #{files.size} files, #{series_count} series"
+puts "plates lint: matching #{matching_tally.sort.map { |k, v| "#{k}=#{v}" }.join(' ')}" \
+     " | twins #{twin_tally.sort.map { |k, v| "#{k}=#{v}" }.join(' ')}" \
+     " | separators emitted #{EMITTED.to_a.map(&:inspect).join(',')} forgiving #{FORGIVING.size}"
 if FAILURES.any?
   FAILURES.each { |f| puts "LINT FAIL: #{f}" }
   puts "#{FAILURES.size} failure(s)."
