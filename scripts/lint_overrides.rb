@@ -109,7 +109,12 @@ end
 
 # --- 5: spotchecks ------------------------------------------------------------
 if (spot = load_yaml("spotchecks.yml"))
-  known = %w[id make kind exists body_types_include availability_includes global_decile_max skip_if_kind_absent reason]
+  # CLOSED vocabulary on purpose — a typo'd assertion key would otherwise be a
+  # silently inert spotcheck row. It must be kept in step with validate.rb's
+  # gate_spotchecks (pipeline repo); a word added here that the gate does not
+  # read is a row that asserts nothing.
+  known = %w[id make kind exists body_types_include availability_includes availability_excludes
+             global_decile_max skip_if_kind_absent reason]
   (spot["checks"] || []).each_with_index do |c, i|
     fail! "spotchecks.yml row #{i + 1}: missing `reason` (the panel is reviewable or it is nothing)" unless c["reason"]
     fail! "spotchecks.yml row #{i + 1}: needs `id` or `make`" unless c["id"] || c["make"]
