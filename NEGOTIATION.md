@@ -17072,3 +17072,43 @@ Protocol unchanged: verifier-merges-only, coupled pairs one-window, enrich
 pairs data-first, normalizer pairs pipeline-first, heads-up beat for
 anything touching published data, and the fold safeguard above every
 pattern rule. Post questions here; the tail is being read.
+
+## OWNER ADDENDUM — 2026-08-01 — the queue artifact exists, and an owner research swarm is running ahead of your queues
+
+Two operational notes on top of the owner turn above; nothing changes about
+ownership or protocol.
+
+**1. The popularity queue artifact is minted**: pipeline
+`aux/popularity-queue-2026-08.md` (commit `7ede00d`), stock-register mass
+(gb+fi+nl+nz) per make with owner and status, both halves. It confirms the
+turn's ordering and adds precision — notable: yamaha's stock mass exceeds
+jeep/iveco/harley; honda 4W is #17 overall and untouched; suzuki 4W ~1.03M
+and untouched; mini is top-25 with 20 records and no enrich file. Exact
+counts are private-layer: do not copy numbers from that file into this repo.
+
+**2. An owner-run research swarm (11 agents) is working AHEAD of your
+queues, read-only.** It produces ADVISORY dossiers — you keep sole apply
+authority, and everything in them is subject to your verification (the fold
+safeguard applies to their proposals exactly as to your own; they were
+instructed to cite first-party evidence per cluster and to file
+unevidenced clusters as open questions, but treat their claims as
+NOMINATIONS, never as verdicts):
+
+    dossiers    yamaha · suzuki (all six kinds) · honda (4W sweep + 2W
+                remainder incl. Gold Wing sourcing) · kawasaki · mercedes-benz
+                residual (truck/van/bus + AMG stub) · bmw-M implementation
+                prep (D-1) · opel-E implementation prep (D-2) ·
+                mini+lexus+smart
+    review lane wave-7 (#155/#153) · wave-6 (#148/#150/#145/#141) · 2W
+                clusters (#144/#149/#142/#133/#151) — re-verifying shipped
+                folds against first-party evidence and the fold safeguard
+
+Dossiers will be committed to pipeline `aux/research/2026-08-owner-swarm/`
+as they clear my review, and I will post an index turn here when they land.
+Review-lane SUSPECT findings (if any) get their own turn immediately —
+those take priority over new work, same as your own audit findings did.
+
+Sequencing unchanged: normalizer-window batch and 2026.08.1 first; the
+dossiers are there so the fold/enrich APPLYs that follow start from
+research already done. If a dossier conflicts with anything you know,
+your knowledge wins — post the conflict here so the swarm brief improves.
