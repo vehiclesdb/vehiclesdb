@@ -20640,3 +20640,143 @@ pipeline half against unmodified data `main`, build the control from the
 branch's own base commit, and ship any minted id's enrich entry HELD. Those are
 the three things that cost me a wrong conclusion or a red main today; cheaper to
 write them into a brief than to have each delegate rediscover them.
+
+## OWNER — S2W WORK ORDER: five parallel-safe blocks, zero collision with S4W's items 5+7. Pick up top-down.
+
+S4W is in `normalizer.rb`/`sources/fi_traficom.rb` (items 5+7). None of
+the following touches those files — full parallelism, no coordination
+overhead beyond the usual:
+
+1. **The 16 stub manifests** (`removals.yml`, ~16 lines) — every
+   successor is live post-#181, the xp/xsr/mt idiom applies, #173's
+   ledger header is the template. **This greens main.** Do it first;
+   it is under an hour.
+2. **Suzuki §A apply** (`suzuki-all-kinds.md` §A) — your make block,
+   append-only region, dossier keys pre-verified against the caser.
+   Include the §C-1 GSF/GS follow-through check against a post-#181
+   build.
+3. **Kawasaki apply** (`kawasaki.md`) — A-1 + Ninja clusters with the
+   §C-6 retargets same-commit (the chain trap S4W hit on DAF is the
+   same class your dossier §C-6 pre-listed — flatten both sides), B-0
+   ships the D-5 make entry.
+4. **Honda 2W remainder** (`honda.md` §A-2W) — Gold Wing per-
+   displacement, Valkyrie separate, F6B guarded — plus the
+   **giorno decision** (D-10 routing, dossier-grade note) and
+   **like-ii** if it did not ride #181.
+5. **Yamaha §B enrich** if #181 shipped §A alone — the binding rule
+   says every §A lands with its §B; if it is owed, it is owed to the
+   release window (decile-1..3 runs are drafted in the dossier).
+
+Also still open from the ops ledger, fill-in sized: the
+`s2w/g23-swarm-wave1` branch triage (complete unmerged work feeding
+the classics program) and the 2W junk_drops marque judgments
+(Piaggio `1`, Kymco New Like class).
+
+## S4W — batch item 7 done (`data#182` DATA-FIRST + `pipeline#130`). It reframes the AMG item honestly — and I checked its reframing and found it half wrong, in our favour
+
+### The fix
+
+`AMG_SUBBRAND` strip in `mercedes()`, conditional: when the remainder classifies
+to nothing the original is re-tried, so `AMG ONE` / `AMG PURESPEED` stay put
+instead of minting. **Zero ids minted, zero retired.** Registration accounting
+balances exactly: **−16,690 off the stubs = +16,690 onto 20 live nameplates**,
+and not one non-Mercedes id changes by a single registration.
+
+`car/mercedes-benz/amg-gt` comes out unchanged — the control case I asked for,
+proving the strip did not over-reach. Fused forms (`AMG GLE63 S Coupe`) needed
+no new code; they already hit the rule's `^([A-Z]+)\d` branch.
+
+**MERGE ORDER IS INVERTED — `data#182` FIRST, then `pipeline#130`.** Pipeline
+alone goes red (`id-contract gate (liveness): van/mercedes-benz/g-class is ALIVE
+yet aliased`); data alone fires nothing. That is the third distinct ordering
+this session, so it is stated rather than assumed. pipeline#130 is CLEAN with
+27 new golden assertions that fail on the unpatched normalizer; data#182's lint
+passes and its build will show the same 16 yamaha stubs as everything else.
+
+### The honest reframing, which is the real deliverable
+
+The dossier said 361 of 367 raws have a live home. True — **but by
+REGISTRATION MASS that is 22%.** The fix re-homes **16,605** registrations, not
+the 74,727 the item was filed under. Raws, ids and registrations are three
+different denominators and the filing quoted the flattering one. That is the
+same class as the registrations-are-not-ids correction from earlier tonight.
+
+### Where I checked and got a different answer
+
+The delegate attributed the remaining 77% to **one `uk_dft` GenModel row,
+`MERCEDES AMG CLASS`, 57,573 gb registrations**, and called it *"a range
+aggregate spanning every AMG nameplate that no parser can decompose"*.
+
+**It decomposes.** I read the raw file. The row is:
+
+    Cars,MERCEDES,MERCEDES AMG CLASS,AMG EQE 53 4M+ NGT ED HYPRSCRN,...
+                  └─ GenModel ─┘     └────── Model column ──────┘
+
+There are **198 distinct Model values** under that one GenModel, and they name
+real nameplates in exactly the shape item 7 now handles — `AMG A 35 4MATIC
+AUTO`, `AMG GLC …` ×21, `AMG C …` ×20, `AMG GLE …` ×16, `AMG SL …` ×11.
+
+So this is not an undecodable aggregate. **It is `uk_dft` batch item 11 — the
+4W Model-column detector — and item 7 has just built its decoder.** G-1 taught
+uk_dft to read that column for two-wheelers; item 11 is the same move for cars,
+and these 198 strings are what it would feed to the AMG rule.
+
+Two consequences worth carrying:
+
+1. **Item 11's value is now quantified on one make**: ~57.5k gb registrations
+   of Mercedes AMG alone, currently on a decile-2 stub. It is scheduled LAST in
+   my batch and that still seems right — it is the largest blast radius — but
+   it is no longer an abstract "detector" item.
+2. **Items 7 and 11 compose**: the AMG strip is the decoder for the strings the
+   detector would expose. Item 11 should be measured with item 7 already
+   landed, or its rescue will look smaller than it is.
+
+I have not verified the 57,573 figure myself — that is the delegate's
+measurement; what I verified is that the aggregate is decomposable and how.
+
+### Its own reported mistake, worth the space
+
+Its reflex fix for a residue was "accept any bare letter-run" — which would have
+minted `car/mercedes-benz/class` for those 57,573 registrations. The corpus
+caught it: the row above the one it was fixing was `MERCEDES AMG CLASS`. A
+plausible one-line generalisation, one row away from a 57k-registration garbage
+nameplate.
+
+---
+
+## Turn 239 — S2W — §B enrich for the fold's minted ids: 4 authored (HELD), **3 deliberately NOT written** because I could not source them. The yamaha block is complete.
+
+**`pipeline#132`** carries commented-out enrich for `tmax-530`, `tmax-560`,
+`tricity-125`, `tricity-300`. HELD by construction, not by choice: a **minted**
+id is neither live in the committed catalog nor a pending-publish alias target —
+the fold's `former_ids` point the other way, INTO it — so `lint_enrich` cannot
+accept live blocks under any merge order. Third use of the wave-7 convention
+this week; the flip-back is filed in DEBT, not left to memory.
+
+**Three of the seven have NO entry, and I want that visible rather than quiet.**
+`rayzr` (**decile 3**), `d-elight` (d5), `xmax-250` (d6). The dossier's evidence
+for them is a TYPE-CODE mapping — `LCG125`, `LTS125-C`, `YP250RA` — which
+establishes the FOLD but says nothing about production years. I tried
+`yamaha-motor.co.in` (empty body), two other product URLs (404), and the global
+lineup page (no per-model detail). **An enrich entry needs a citation on the
+line, so I wrote none rather than invent one.** `rayzr` at decile 3 is a real
+gap under the binding rule, so the DEBT row names the specific sources to try
+next: Yamaha India for RayZR 125, Yamaha JP/TW for D'elight, and the Yamaha EU
+owner's-manual CDN for the XMAX 250 — the same CDN that supplied every other run
+in that file.
+
+**TMAX generations verified** against the generation table (530 from 2012, 560
+replacing it from 2020); Tricity from Yamaha's own launch releases. Every run
+carries its URL on the line.
+
+**The yamaha block is now complete as scoped:** §C-1, §C-2/§C-3 hyphen shape,
+the 16 stub manifests, §A's 98 folds, and §B for everything I could source.
+**Still open by design:** §C-3's SPACE shape (24,411 gb vehicles on
+`yamaha/yzf`, guarded by a spotcheck so nobody widens the rule without its
+disposition), §C-6 styling, and the three unsourced enrich entries.
+
+**Merge chain, unchanged:** `pipeline#126` → `data#175` → `data#181`
+(+`pipeline#132` alongside). Main is green from `data#175`.
+
+**Next unless redirected:** suzuki (§A orthogonal to G-1, fence lifted for
+dispositions only), then kawasaki, then honda.
