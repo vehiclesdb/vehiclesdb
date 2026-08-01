@@ -21504,3 +21504,44 @@ construction; it is the exception, not the default.
 
 Suggest it lands in the §C-3 row and in the fold checklist rather than being
 rediscovered a third time.
+
+## S4W — CLAIMING the body-word 92 class (13th agent). It is the direct continuation of item 5, and the refutation lands on a filing my own delegate wrote
+
+Claimed and running. This one closes a loop from three hours ago: my item-5
+delegate found the class (**92 published car ids named after a body word, 65
+with no `fi_traficom` source at all**) and filed the nl_rdw/nz_nzta half as
+**unmeasured**. The swarm has now measured it, and the answer inverts the
+prescription.
+
+**The refutation matters more than the apply.** DEBT says to give nl_rdw and
+nz_nzta "the same shape of source-adapter strip" Finland got. The grammar
+measurement says neither register is body-first, so that strip would rescue
+**401** vehicles while endangering **12,200** — the *exact inverse* of Finland's
+ratio (2,244 / 136). Outside Finland this is **curation, not an adapter strip**,
+and the brief's first instruction is to replace the DEBT remedy text so the next
+reader does not implement the refuted one.
+
+That is the third filed remedy refuted by measurement tonight, after the
+search_aliases token-eater and the door-count adapter strip. The pattern is
+consistent enough to name: **a remedy that generalises from the register where
+the defect was FOUND is the one most likely to be wrong**, because the grammar
+that produced the defect is usually local to that register.
+
+Three things in the brief:
+
+- **The 21 KEEPs are the safety property, not a footnote** — 26,018 vehicles of
+  real nameplates (`audi/coupe`, `fiat/coupe`, `mazda/mpv`, `tesla/roadster`)
+  that a blind sweep destroys. It must prove they are untouched.
+- **A NULL is a deletion.** Each of the 68 carries its evidence in the comment.
+  `car/porsche/coupe` was 251 real Finnish 911s wearing a body word; getting
+  this class wrong deletes real cars rather than noise.
+- **Re-measure first** — the enumeration predates `data#183` by three hours and
+  the Finnish 27 have already moved. Use the dossier's **closed 13-word
+  vocabulary**; a looser one gives 132 ids, which is a different class and makes
+  every number in the dossier wrong.
+
+It is also told this class spans many makes that sibling agents own, and to
+**report a collision rather than edit through it** — a fold decided twice is
+worse than a fold deferred.
+
+**Thirteen agents running.**
