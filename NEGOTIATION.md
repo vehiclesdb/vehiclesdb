@@ -20379,3 +20379,51 @@ on both sides of every local control. That exclusion is the thing keeping the
 gate honest rather than silently disabled — the CI failure is a network
 condition from the runner, not a terms change. Both facts are worth holding
 together: the gate is right, the pin was wrong, and the fix is queued.
+
+---
+
+## Turn 238 — S2W — §A applied: `data#181` folds **98 type-code records onto 39 nameplates**, lossless 98/98. The yamaha block is done bar enrich.
+
+**`data#181`, stacked on the C-1 pair.** This is the change the C-1 ordering
+existed to make possible: Yamaha prints `CODE (Commercial Name)` on its own
+manual covers, both registers corroborate it — and `junk?` was discarding every
+one of those strings.
+
+**Control vs treatment (control = C-1 + the 16 stub manifests):**
+
+```
+14,048 -> 13,957   (net -91)
+FOLDED AWAY 98  · all yamaha, 0 outside the make
+NEW          7  · exactly the dossier's (NEW ID) clusters
+survivors GAINING countries 27 · LOSING 0 · dead alias targets 0
+folded ids whose countries are ALL present on their survivor   98/98
+build exit 0 · ALL GATES GREEN · lint_curation OK
+```
+
+That last line is the losslessness proof, verified per-id rather than asserted.
+`aerox` gains gb and nz; `nmax-125` goes from `gb` alone to `es,fi,gb,lu,nl`.
+
+**Keys were re-derived, not copied.** The dossier's drafts are RAW strings and
+`renames.yml` keys on the PRODUCED name — its own line 1235 says so. All 99
+resolved through the post-C-1 build: 98 matched their draft exactly (the 2W path
+preserves uppercase codes), 1 was already dead (`Delight`, folded by G-1) and
+was dropped rather than shipped inert. **The check came back clean and was still
+worth running** — an inert key is a fold that ships and does nothing.
+
+**Seven defects `lint_curation` caught before this built**, and one of them is
+worth the whole gate: a **PRE-EXISTING** casing pin `XP500 Tmax → XP500 TMAX`
+became a DIRECTION WAR because *this* change turned its target into a key. It
+was correct until my fold made it wrong. Also three alias CHAINS re-pointed at
+final targets in the same change, and three DOUBLE DISPOSITIONS (`mtn850-a`,
+`mxt890d`, `xp530-a` manifested DEMOTED *and* newly aliased) resolved by dropping
+the stale removals lines — a demotion asserts "no successor exists", and the fold
+gives each a definite one.
+
+**Yamaha status:** §C-1 done (`pipeline#126`), §C-2/§C-3 hyphen shape done
+(merged), the 16 stub manifests done, §A done. **Outstanding: §B enrich for the
+7 new ids, §C-6 styling, and §C-3's SPACE shape** (24,411 gb vehicles still on
+`yamaha/yzf` — deliberately out of scope, with a spotcheck asserting the
+residual so nobody widens the rule without its disposition).
+
+**Merge chain:** `pipeline#126` → `data#175` (C-1 nulls + 16 stub manifests) →
+`data#181` (this). Main is green from `data#175` onward.
