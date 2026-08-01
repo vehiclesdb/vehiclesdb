@@ -21638,3 +21638,79 @@ lexus sweep, New Beetle family, XJ re-cut) — verification proceeding
 in order. The machine's tempo is the story: research pre-done,
 verification continuous, every failure classified, every rule
 mechanism-backed.
+
+## S4W — LR fold done (`data#193`); housekeeping returns ZERO closures and finds `PROGRESS.md` is INVERTED; I corrected my own wrong comment on issue #66; and a shared-scratchpad collision is corrupting measurements across the swarm
+
+### The one that needed acting on immediately: shared-scratchpad collisions
+
+Two delegates independently reported their scratch artifacts being **silently
+clobbered mid-measurement** by siblings writing generic filenames into the
+shared scratchpad root — one lost its `control.log` to another agent's build
+and its `iddiff.rb` to a differently-formatted sibling copy; the other lost a
+probe script. Both caught it only by noticing a stray path and an odd output
+format, and both redid the work under private namespaces.
+
+**A clobbered control is indistinguishable from a real result.** With fifteen
+agents running and four contaminated comparisons already caught tonight, this
+is the highest-probability way a wrong number reaches a PR. I broadcast to all
+fourteen running delegates: namespace every scratch artifact, and **re-check
+any number already taken from a scratchpad file**. Worktrees are unaffected —
+this is only the shared scratch directory.
+
+### `data#193` — Land Rover power-codes, and the class proven rather than asserted
+
+Nine ids, all candidates, folding onto the **live** `range-rover` /
+`range-rover-sport` — not a minted `new-range-rover`. The argument I liked:
+this catalog already rules that generations are not nameplates *for this make*
+(`normalizer.rb:750`, "Discovery 1-5 = generations, not nameplates"), which is
+the exact inverse of the `xf105` call — DAF lists XF105 as its own line item,
+Land Rover lists no "New Range Rover". Union `LOST=[]` ×9, chain audit clean,
+all nine keys proved firing by a recording proxy, zero inert.
+
+**Bonus that makes the case:** a counterfactual build with the *already-shipped*
+P400 keys deleted **mints two published duplicates**, because two sources
+short-circuit `publishable?` past the zero counts. The remaining nine are one
+corroborating row away from that. The fold is not tidiness, it is a live
+duplicate one register-refresh away.
+
+My brief's membership guess was also wrong in detail — no `P440 LWB` exists,
+and there is a bare `New Range Rover LWB` I did not list. Count right, contents
+not.
+
+### Housekeeping: zero issues closed, and that is the right answer
+
+**Nothing in #64–#69 met the evidence bar for fully-shipped.** It refused to
+close anything, which is what I asked for — an issue closed on a guess is worse
+than one left open. Three findings worth surfacing:
+
+- **#69 has a LIVE casualty the body missed.** It was deferred partly because
+  "nothing publishes today" — but `truck/toyota/cruiser` (fi+nl, decile 6) is
+  live *beside* `truck/toyota/land-cruiser`. Something does publish.
+- **#68's stated diagnosis is refuted** — with renames suppressed the produced
+  string is byte-exact, so it is not a display-vs-produced mismatch; it is a
+  strict subset of #66 part 1.
+- **#64's blocker is void**: it said the normalizer was frozen. Seven
+  normalizer changes shipped in the last day.
+
+### `PROGRESS.md` is not stale, it is INVERTED — and it was load-bearing for onboarding
+
+Its "Repo roles (do not confuse)" table says `vehiclesdb` is "the factory" and
+`vehiclesdb-data` is the data repo. **`vehiclesdb-data` does not exist**, and
+`vehiclesdb` IS the data repo. The file contradicts itself — its own Done log
+records the rename that invalidated its header — while `AGENTS.md` ordered
+agents to read it **4th** and `aux/README.md` called it **canonical**.
+
+So every fresh session onboarded with the two clones swapped. That is not a
+documentation nit; it is the single most confusing thing a new agent could be
+handed, and it has been sitting in the read-me-first list. Recommendation is
+DELETE (`pipeline#135`), with its one genuinely unique line moved to
+`AGENTS.md`.
+
+### And I corrected my own comment on issue #66
+
+I wrote "uk_dft now reads VEH0120's Model column" without qualification. It is
+**motorcycle-only** — `uk_dft.rb:212` returns early unless `body == TW_BODY`.
+Every example I cited was a motorcycle so the evidence was consistent, but the
+sentence reads as "all kinds" and a reader would take it that way. Corrected on
+the issue, with the note that #66's own headline case is a *car* row fixed by
+curation, not the adapter.
