@@ -39,6 +39,147 @@ Alfa Romeo:
   Gtv-6: GTV6                      # second observed display form (observed_model_names.json) — flap insurance
   GT1300JUNIOR: GT 1300 Junior                # spelling variant of "GT 1300 Junior" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+  # ── wave-5 RESCUE, part 2 (2026-08-01). data#141 rescued the "4C" above.
+  # The SAME junk? rule — the platform-code test /\A\d[A-Z]\b/, written for
+  # "8D Audi A4" — eats Alfa Romeo's ENTIRE cylinder-count naming family, and
+  # Alfa is the make where that convention lives: 8C, 6C and (on the adjacent
+  # letterless rule) the "Alfa 6". Measured on a per-row replay of classify:
+  # 8C = 58 vehicles, 6C = 40, Alfa 6 = 35. Renames are consulted BEFORE junk?
+  # (normalizer.rb ORDER FIX 2026-07-25), so these identity/fold entries are
+  # the documented rescue class and the fixed-point targets are the class
+  # lint_curation.rb:400 exempts by name. The pipeline cure is a SEPARATE,
+  # later change (wave-5 dossier §E.1); these lines stay correct after it.
+  # BLAST RADIUS (renames are kind-blind): the only non-car Alfa ids are
+  # moped/ry50qt-3, motorcycle/bambino-250 and 16 van ids (156/159/gtv/spider/
+  # mito/stelvio/f12/a12/ar-51…). No key below matches any of them EXCEPT
+  # "156 Crosswagon", which also reaches van/alfa-romeo/156-crosswagon — an
+  # INTENDED same-direction fold (a van Crosswagon should become a van 156).
+  # NOTE the van "F12" is the real 1967-83 Alfa Romeo F12 van — never key F12
+  # in THIS block (the "F 12: F12" line is under `Ferrari:`). ──
+
+  "4C Spider": "4C"              # the roadster body of the same car (2015-2020) — https://en.wikipedia.org/wiki/Alfa_Romeo_4C
+  "Romeo 4C Spider": "4C"        # nl_rdw files these under raw make "ALFA", so strip_make_prefix eats only "ALFA " and leaves "ROMEO …" — the same shape as this block's committed "Romeo Gtv: GTV"
+
+  "8C": "8C"                     # IDENTITY RESCUE; "8C" = eight cylinders ("cilindro"), Alfa's own designation — https://en.wikipedia.org/wiki/Alfa_Romeo_8C_Competizione
+  "8C Competizione": "8C"        # the 2007-09 coupé, 500 built — https://en.wikipedia.org/wiki/Alfa_Romeo_8C_Competizione
+  "8C Competizione S": "8C"      # uk/nl "8C COMPETIZIONE S-A" — S-A is DVLA's semi-automatic marker, not part of the name
+  "8C Spider": "8C"              # the 2008-10 roadster, 329 built — https://en.wikipedia.org/wiki/Alfa_Romeo_8C_Competizione
+  "8CCOMPETIZIONE": "8C"         # nl_rdw fused spelling
+  "8C 2300": "8C 2300"           # IDENTITY RESCUE — the 1931-34 racing/road 8C 2300; NOT the same car as the 2007 8C and deliberately not merged into it
+  "8C 2300 Spider": "8C 2300"    # body of the same pre-war car
+  "8C-2300 Spyder Lungo Le Mans": "8C 2300"   # ditto, nl_rdw's long-wheelbase Le Mans description
+  "8C 2600 Muletto": "8C 2600"   # the 8C 2600 development mule
+  "8C 2900A Botticella": "8C 2900A"           # the 1936 8C 2900A
+  "8C 2900B Lungo": "8C 2900B"                # the 1937-39 8C 2900B, long chassis
+  "8C 2900B Spider Aerodinamico Sperimentale": "8C 2900B"  # ditto, one-off body
+  "8C Monza": "8C Monza"         # IDENTITY RESCUE — the 8C 2300 "Monza" GP car
+
+  "6C": "6C"                     # IDENTITY RESCUE
+  "6C Series 7": "6C"            # nl_rdw series descriptor
+  "6C 1500 Ss": "6C 1500"        # 6C 1500 Super Sport (1928-29)
+  "6C 1750 GS": "6C 1750"        # Gran Sport, the 1929-33 6C 1750
+  "6C 1750 GS Testa Fissa": "6C 1750"       # Gran Sport with the fixed-head engine — an engine spec of the same 1929-33 car
+  "6C 1750 GT": "6C 1750"                   # Gran Turismo, the touring bodystyle of the 6C 1750
+  "6C 1750 GT Zagato Spider": "6C 1750"       # coachbuilder in the model column (Zagato) — a body, never a nameplate
+  "6C 1750 Gran Sport": "6C 1750"           # GS spelled out — the supercharged version, a trim of the same car
+  "6C 1750 Gran Turismo Compressore": "6C 1750" # GT + "compressore" (supercharged) — bodystyle + engine, both trims
+  "6C 1750 Spider": "6C 1750"               # body
+  "6C 1750 Super Sport": "6C 1750"          # the SS version, a trim of the same car
+  "6C 2300B Turismo Berlina": "6C 2300B"      # the 1934-39 6C 2300B
+  "6C 2500": "6C 2500"           # IDENTITY RESCUE — the 1938-52 6C 2500
+  "6C 2500 S": "6C 2500"                    # Sport, abbreviated by nl_rdw — a trim
+  "6C 2500 Ss": "6C 2500"        # both cases occur; key BOTH (the R-Serien lesson, NAMING §7.6 rule 2)
+  "6C 2500 Ss Touring": "6C 2500"             # Touring = the coachbuilder
+  "6C 2500 Sport": "6C 2500"                # trim
+  "6C 2500 Sport Boneschi": "6C 2500"         # Boneschi = coachbuilder
+  "6C 2500 Sport Freccia D'oro": "6C 2500"    # "Freccia d'Oro" = the 1947 body/trim name
+  "6C 2500 Sport Pinin Farina": "6C 2500"     # Pinin Farina = coachbuilder
+  "6C 2500 Super Sport": "6C 2500"          # the SS, a trim
+  "6C 2500 Super Sport Touring": "6C 2500"  # trim + coachbuilder (Touring)
+  "6C 2500S": "6C 2500"                     # fused Sport suffix
+  "6C 2500SS": "6C 2500"                    # fused Super Sport suffix
+  "6C-2.500 Ss": "6C 2500"       # nl_rdw thousands-separator dot
+  "6C-2500 Ss": "6C 2500"                   # nl_rdw hyphenated the family number
+  "6C2500S": "6C 2500"           # fully fused — this one is NOT dropped today, it publishes as the nonsense id alfa-romeo/6c2500s
+  "6 C 1500": "6C 1500"          # SPACED survivors: "6 C 1500" escapes junk? (the \A\d[A-Z] rule needs the letter adjacent) and lives at alfa-romeo/6-c-1500 — the same car at a third id
+  "6 C 2500": "6C 2500"          # ditto
+  "6 C 2500 S": "6C 2500"        # ditto
+  "6 C 2500 Ss": "6C 2500"       # ditto
+
+  "6": "Alfa 6"                  # the car is badged "Alfa 6"; a bare "6" is not self-identifying (NAMING §1, the Polestar "2": Polestar 2 precedent). 8 gb + 2 nz vehicles deleted today — https://en.wikipedia.org/wiki/Alfa_Romeo_6
+  "6 2.5": "Alfa 6"              # nl_rdw writes the displacement; 2.5 = the Busso V6
+  "6 2.5 119A": "Alfa 6"         # + the 119A type number
+  "6 2.5 Automatic": "Alfa 6"    # + gearbox
+  "6 2.5 Td": "Alfa 6"           # the 2.5 turbodiesel version
+  "6 Quadr. Injection": "Alfa 6" # "ALFA 6 QUADR. INJECTION" — Quadrifoglio + fuel injection, both trims
+
+  # ── ERA FIREWALL, binding on every line below: alfa-romeo/giulia is the 2016
+  # saloon (12 countries incl. ie/us/ca/de) and alfa-romeo/giulietta is the 2010
+  # hatch. The 1962-78 "Giulia Super/Ti/1600/Sprint/SS/GT Junior" and the
+  # 1954-65 "Giulietta Sprint/Spider/Ti/Sprint Speciale" are DIFFERENT CARS and
+  # are NOT folded into them. Nothing below keys any of those strings, and a
+  # future "consistency" tidy must not add one. THIS IS WHY ALFA'S ALTITUDE
+  # DIFFERS FROM MASERATI'S IN THE SAME PR: Alfa folds MODERN trims and HOLDS
+  # the classic suffixes, because the modern nameplate and the classic suffixed
+  # car are not the same vehicle. ──
+
+  "Giulia Quadrifoglio": Giulia    # Quadrifoglio is Alfa's performance TRIM of the 2016 Giulia, not a separate nameplate (292 vehicles, ca/es/fi/lu/nl) — https://www.alfaromeo.com
+  "Stelvio Quadrifoglio": Stelvio  # ditto for the SUV (219 vehicles) — https://www.alfaromeo.com
+  "Junior Elettrica": Junior       # "Elettrica" is the powertrain of the 2024 Junior, sold beside "Junior Ibrida"; kind is not the axis and powertrain is a trim (Leaf 40KWH precedent, NAMING §6)
+  "156 Berlina": "156"             # "Berlina" is Italian for saloon — the BODY of the base 156; 496 vehicles (fi+nl) on a body-word id
+  "156 Sport Wagon": "156"         # REPAIRS A PIPELINE-MADE SPLIT: "156 SPORTWAGON" (404 vehicles) is already folded to "156" by VARIANT_SUFFIXES while the SPACED "156 SPORT WAGON" (272) is not — same estate, two ids, decided by a space
+  "156 Sport-Wagon": "156"         # the HYPHENATED nl_rdw spelling (x3). Found by the landing-slug grouping check, not by the replay: "156 SPORT WAGON" and "156 SPORT-WAGON" land on the SAME slug, so keying only the spaced form would leave car/alfa-romeo/156-sport-wagon alive on 3 residual vehicles WHILE its former_ids alias claimed it retired
+  "156 Sportwagen": "156"          # nl_rdw Dutch-German spelling of the same
+  "156 Crosswagon": "156"          # the raised estate body of the 156 (2004-07)
+  "156 Sw": "156"                  # abbreviation of the same body
+  "33 Giardinetta": "33"           # "Giardinetta" is Alfa's estate body word for the 33
+  "75 Twin Spark": "75"            # Twin Spark is the twin-ignition ENGINE, a trim of the 75
+
+  "Berlina 1750": 1750 Berlina     # 11 nl + 1 nz; Alfa's car is the 1750 Berlina (1968-71) — https://en.wikipedia.org/wiki/Alfa_Romeo_1750_Berlina
+  "Berlina 2000": 2000 Berlina     # 3 nz + 2 nl; joins the PUBLISHED alfa-romeo/2000-berlina — one car at two ids today
+  "1750 GT Veloce": 1750 GTV       # "GT Veloce" spelled out is the same badge this block already canonicalises as GTV — https://en.wikipedia.org/wiki/Alfa_Romeo_105/115_Series_Coup%C3%A9s
+  "2000 GT Veloce": 2000 GTV       # ditto
+
+  "ALFA147": "147"                 # lu_snca "ALFA147" x24 + nl x1; strip_make_prefix needs a separator and finds none
+  "ALFA155": "155"                 # ditto
+  "ALFA166": "166"                 # ditto
+  "Sud": Alfasud                   # nz_nzta/nl_rdw "SUD"/"ALFA SUD" (17 vehicles); the car is the Alfasud — https://en.wikipedia.org/wiki/Alfa_Romeo_Alfasud
+
+  "Spyder": Spider                 # 97 vehicles (nl 80, nz 17) on a misspelling; the Duetto-descended car is the Alfa Romeo Spider throughout — https://en.wikipedia.org/wiki/Alfa_Romeo_Spider
+  "Gulia": Giulia                  # nl+nz transposition x2 — SAFE because both bare "GULIA" rows are modern-register rows with no era marker; the classic Giulias are all suffixed and untouched
+  "Guilietta": Giulietta           # nl+nz transposition x6, same reasoning
+  "Guilia Super": Giulia Super     # nl+nz transposition x5 — target is the CLASSIC Giulia Super record, NOT alfa-romeo/giulia (era firewall)
+  "Giulietta 1": Giulietta         # nl_rdw comma-decimal truncation ("GIULIETTA 1,4 M-AIR" -> "Giulietta 1"); MultiAir is the engine
+  "Spider 2": Spider               # same comma-decimal truncation ("SPIDER 2,0")
+  "1300-Spiderr": 1300 Spider      # nl_rdw doubled r
+  "1300 GT Jnr": GT 1300 Junior    # nz_nzta abbreviation; value is this block's committed canonical
+  "1300 GT Juni": GT 1300 Junior   # nz_nzta field truncation
+  "1300GT Jnr": GT 1300 Junior     # nz_nzta fused + abbreviated
+
+  # ── PLATFORM (tipo) CODES AND MAKE WORDS — dropped WITH their measured
+  # population. "105"/"115"/"116"/"119" are Alfa's Tipo platform numbers, not
+  # nameplates; "Romeo"/"Alfa" are the make word left in the model column.
+  # car/alfa-romeo/romeo, /alfa and /giulietta-spider-10103 are PUBLISHED
+  # records; their removals.yml ledger lines carry the same reasoning. The
+  # 10103 case is the shape to watch: a REAL nameplate with the tipo number
+  # appended, whose nameplate half (Giulietta Spider) is already a live record,
+  # so nothing is lost by dropping the concatenation. ──
+  "Romeo": null                         # 21 vehicles (nl,nz) — PUBLISHED RECORD → car/alfa-romeo/romeo
+  "Alfa": null                          # 2 vehicles (nl,nz) — PUBLISHED RECORD → car/alfa-romeo/alfa
+  "105": null                           # 1 vehicle (nz) → car/alfa-romeo/105
+  "115": null                           # 23 vehicles (nl) → car/alfa-romeo/115
+  "115A1": null                         # 3 vehicles (nl) → car/alfa-romeo/115a1
+  "115 A 1": null                       # 1 vehicle (nl) → car/alfa-romeo/115-a-1
+  "115 A 2": null                       # 1 vehicle (nl) → car/alfa-romeo/115-a-2
+  "115 A2": null                        # 1 vehicle (nl) → car/alfa-romeo/115-a2
+  "116": null                           # 2 vehicles (nl) → car/alfa-romeo/116
+  "116 Aa": null                        # 1 vehicle (nl) → car/alfa-romeo/116-aa
+  "119 A3": null                        # 1 vehicle (nl) → car/alfa-romeo/119-a3
+  "1590": null                          # 1 vehicle (nl) → car/alfa-romeo/1590
+  "15SL": null                          # 1 vehicle (nz) → car/alfa-romeo/15sl
+  "157": null                           # 1 vehicle (fi) → car/alfa-romeo/157
+  "Giulietta Spider 10103": null        # 3 vehicles (fi,nl) — PUBLISHED RECORD → car/alfa-romeo/giulietta-spider-10103
+
 Alvis:
   Tc 21: TC21                                 # spelling variant of "TC21" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
@@ -1367,6 +1508,118 @@ Ferrari:
   Testarossa: Testa Rossa                     # spelling variant of "Testa Rossa" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   F 355: F355                                 # spelling variant of "F355" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   F 430: F430                                 # spelling variant of "F430" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+
+  # ── wave-5 Italian pass (2026-08-01). ALTITUDE-NEUTRAL BY CONSTRUCTION: the
+  # 308/458/488 "bare number vs number+badge" question is measured in the wave-5
+  # dossier §E.2 and deliberately NOT reopened here — the #62/§4a adjudication
+  # stands (SKIPPED-BEATS-ASSUMED: a settled adjudication is FLAGGED, never
+  # reversed). Nothing below moves a record between the `<number>` and the
+  # `<number> <badge>` altitude; every line is a spelling, spacing, casing,
+  # typo, gearbox-trim or candidate-reunion fix that is correct under EITHER.
+  # WHY FERRARI DIFFERS FROM MASERATI IN THIS SAME PR: Maserati sells a car
+  # called "Ghibli" and sells it as "Ghibli Trofeo", so the trim folds; Ferrari
+  # has never sold a car called "308", yet six registers write only the bare
+  # number and VARIANT_SUFFIXES drags the spaced GTS cars down to it, so BOTH
+  # altitudes are load-bearing today and neither is reachable from curation
+  # alone. Blast-radius drill (renames are kind-blind): the only non-car
+  # Ferrari id is motorcycle/ferrari/125 (nl, 1 vehicle) and no key below
+  # matches "125". Every key replay-verified byte-exact against classify on
+  # pipeline origin/main; 0 dead keys over the 3,123-triple corpus. ──
+
+  "GTC4": GTC4Lusso            # uk_dft writes the family short form for the whole model line ("FERRARI GTC4" x334, gb) and Ferrari made exactly ONE GTC4 — the GTC4Lusso, 2016-2020; no other product has ever carried the designation — https://en.wikipedia.org/wiki/Ferrari_GTC4Lusso
+  "GTC4LUSSOT": GTC4Lusso T    # register-fused spelling, both cases ("GTC4LUSSOT" x8 + "GTC4LussoT" x1, nl_rdw — both upcase to this one key); joins the T variant its spaced siblings already reach — https://en.wikipedia.org/wiki/Ferrari_GTC4Lusso
+
+  "F 12": F12                  # 86 nl_rdw vehicles stranded on car/ferrari/f-12; identical shape to the committed "F 355: F355" — https://en.wikipedia.org/wiki/Ferrari_F12berlinetta
+  "F 50": F50                  # ditto — https://en.wikipedia.org/wiki/Ferrari_F50
+  "F 40": F40                  # ditto (us_fueleconomy "F 40") — https://en.wikipedia.org/wiki/Ferrari_F40
+  "F 512 M": F512M             # ditto; 3 nl vehicles onto the published f512m — https://en.wikipedia.org/wiki/Ferrari_Testarossa
+  "F 355 Berlinetta": F355 Berlinetta   # completes "F 355: F355" for the body-suffixed sibling: 14 nl vehicles sit on car/ferrari/f355-berlinetta while the published record is car/ferrari/f-355-berlinetta — one car, two ids, differing only by the space the committed line already removes
+  "F355BERLINETTA": F355 Berlinetta     # nz_nzta fused spelling of the same car
+  "F 355 Spider": F355 Spider  # same completion for the Spider
+
+  "Californiat": California T  # nl_rdw dropped the space ("CALIFORNIAT" x6); California T is Ferrari's own name for the turbo car — https://en.wikipedia.org/wiki/Ferrari_California
+  "849": 849 Testarossa        # nz_nzta truncation ("849" x1); Ferrari's 2025 car is the 849 Testarossa and no other 849 exists — https://en.wikipedia.org/wiki/List_of_Ferrari_road_cars
+  "Purosangre": Purosangue     # es_dgt letter transposition ("FERRARI PUROSANGRE" x1)
+  "Ferari 412": "412"          # nl_rdw single-r misspelling of the make inside the model column
+  "Testarosso": Testa Rossa    # nl_rdw vowel typo x2 — value is this block's ALREADY-COMMITTED canonical, not a new direction (the marque writes "Testarossa"; that contradiction is FLAGGED in the dossier §E.5, not reversed here)
+  "Testaros": Testa Rossa      # nl_rdw truncation x1 — ditto
+  "12 Cilindri": 12CILINDRI    # lu_snca spaced the closed nameplate ("FERRARI 12 CILINDRI" x3); Ferrari writes it closed — https://en.wikipedia.org/wiki/Ferrari_12Cilindri
+  "12CILINDRI Spi": 12CILINDRI Spider   # es_dgt field truncation ("FERRARI 12CILINDRI SPI" x3)
+
+  "360 Modena F1": 360 Modena          # F1 = Ferrari's electrohydraulic paddle gearbox, offered on the same car — https://en.wikipedia.org/wiki/Ferrari_360
+  "360 Spider F1": 360 Spider          # ditto
+  "575M Maranello F1": 575 M Maranello # ditto; value is this block's committed spelling
+  "575M Maranello Man": 575 M Maranello # "MAN" = manual gearbox (nz_nzta), the other half of the same pair
+  "599 Gtb Fiorano F1": 599 GTB Fiorano # ditto; value is the committed "599 GTB Fiorano"
+  "F 430 Spider F1": F 430 Spider      # ditto; value is this block's committed (spaced) F 430 Spider
+
+  "430 Scuderia": F430 Scuderia   # the car is the F430 Scuderia; "430 SCUDERIA" is the register dropping the F, exactly as it drops it from "F430" -> "430" — https://en.wikipedia.org/wiki/Ferrari_F430
+  "430 Spider": F 430 Spider      # same F-drop, onto this block's committed spelling
+  "Enzo": Enzo Ferrari            # Ferrari's own name for the car is "Enzo Ferrari"; ca_nrcan/nl_rdw write both — https://en.wikipedia.org/wiki/Ferrari_Enzo
+  "Challange Stradale": 360 Challenge Stradale  # nl_rdw misspelling
+  "Challenge Stradale": 360 Challenge Stradale  # nl_rdw truncation; Ferrari built exactly one Challenge Stradale, on the 360 — https://en.wikipedia.org/wiki/Ferrari_360
+  "360 Cs": 360 Challenge Stradale              # nl_rdw initialism of the same car
+
+  "Dino 208 GT 4": Dino 208GT4    # 3 nl vehicles; joins the published fi+nl record (the id the catalog already publishes is kept — the SPACED form would mint a third)
+  "Dino 208 GT4": Dino 208GT4     # 2 nl vehicles, ditto
+  "Dino 308 GT 4": Dino 308 GT4   # 29 nl vehicles stranded on car/ferrari/dino-308-gt-4 — the single largest Dino recovery
+  "Dino 308GT4": Dino 308 GT4     # nz_nzta fused spelling
+  "Dino 246GT": Dino 246 GT       # nz_nzta fused spelling
+  "DINO246GT": Dino 246 GT        # nl_rdw fully-fused spelling
+
+  "512 Bb": "512 BB"        # BB = Berlinetta Boxer, a caps initialism; smart_case has no BB acronym token — https://en.wikipedia.org/wiki/Ferrari_Berlinetta_Boxer
+  "512 Bbi": "512 BBi"      # the injected BB: caps initialism + lowercase i for iniezione, the rule this block already applied to "308 GTSi"
+  "512 Tr": "512 TR"        # TR = Testa Rossa — https://en.wikipedia.org/wiki/Ferrari_Testarossa
+  "599 Gto": "599 GTO"      # GTO = Gran Turismo Omologato — https://en.wikipedia.org/wiki/Ferrari_599_GTB_Fiorano
+  "Mondial Qv": "Mondial QV" # QV = quattrovalvole (four-valve), Ferrari's own badge — https://en.wikipedia.org/wiki/Ferrari_Mondial
+  "Ff": FF                  # the nameplate is two capitals (Ferrari Four) — https://en.wikipedia.org/wiki/Ferrari_FF
+  "Laferrari": LaFerrari    # Ferrari's orthography is one closed word with an internal capital F — https://en.wikipedia.org/wiki/LaFerrari
+  "SF90 Xx Stradale": "SF90 XX Stradale"  # XX is Ferrari's track-programme suffix, always caps — https://en.wikipedia.org/wiki/Ferrari_SF90_Stradale
+  "SF90 Xx Spider": "SF90 XX Spider"      # ditto
+
+  # ── FACTORY TIPO / APPROVAL CODES — dropped WITH their measured population.
+  # These are Ferrari's internal *tipo* numbers and nl_rdw/fi_traficom approval
+  # fragments in the model column. Each maps to exactly one nameplate IN
+  # PRINCIPLE, and mapping them would recover ~120 vehicles onto real records —
+  # but Ferrari Classiche's tipo register is the authority and ferrari.com
+  # serves an empty body to every fetch (third dossier to record it). NAMING
+  # §7.5 is binding: "a code mapped by resemblance is a fabrication with a
+  # comment attached". So they are dropped, not guessed, and the population is
+  # on the line so a future pass with a real tipo table can restore them.
+  # car/ferrari/f131 is a PUBLISHED RECORD — a tipo code that shipped as a
+  # nameplate; its removals.yml ledger line carries the same reasoning. ──
+  "F 133": null                         # 56 vehicles (nl) → car/ferrari/f-133
+  "F 131 Abm": null                     # 21 vehicles (nl) → car/ferrari/f-131-abm
+  "F131": null                          # 3 vehicles (fi,nl) — PUBLISHED RECORD → car/ferrari/f131
+  "F133": null                          # 3 vehicles (nl) → car/ferrari/f133
+  "F 129": null                         # 2 vehicles (nl) → car/ferrari/f-129
+  "F 129 Ab": null                      # 1 vehicle (nl) → car/ferrari/f-129-ab
+  "F 129 As": null                      # 3 vehicles (nl) → car/ferrari/f-129-as
+  "F129AS": null                        # 3 vehicles (nl) → car/ferrari/f129as
+  "F129 As": null                       # 2 vehicles (nl) → car/ferrari/f129-as
+  "F 119 Ab": null                      # 1 vehicle (nl) → car/ferrari/f-119-ab
+  "F 119 As": null                      # 2 vehicles (nl) → car/ferrari/f-119-as
+  "F119 Ab": null                       # 1 vehicle (nl) → car/ferrari/f119-ab
+  "F 120 A": null                       # 1 vehicle (nl) → car/ferrari/f-120-a
+  "F 110": null                         # 1 vehicle (nl) → car/ferrari/f-110
+  "F110": null                          # 1 vehicle (nl) → car/ferrari/f110
+  "F110 Ab": null                       # 1 vehicle (nl) → car/ferrari/f110-ab
+  "F110 Ab/D": null                     # 2 vehicles (nl) → car/ferrari/f110-ab-d
+  "F110HB": null                        # 1 vehicle (nl) → car/ferrari/f110hb
+  "F116": null                          # 1 vehicle (nl) → car/ferrari/f116
+  "F116 CLA": null                      # 2 vehicles (nl) → car/ferrari/f116-cla
+  "F116CL": null                        # 1 vehicle (nl) → car/ferrari/f116cl
+  "F 106": null                         # 1 vehicle (nl) → car/ferrari/f-106
+  "F106": null                          # 1 vehicle (nl) → car/ferrari/f106
+  "F108": null                          # 2 vehicles (nl) → car/ferrari/f108
+  "F101 Cl": null                       # 1 vehicle (nl) → car/ferrari/f101-cl
+  "F102BBI": null                       # 1 vehicle (nl) → car/ferrari/f102bbi
+  "F142": null                          # 1 vehicle (fi) → car/ferrari/f142
+  "F141": null                          # 0 vehicles (us) → car/ferrari/f141
+  "F167 Aba": null                      # 0 vehicles (us) → car/ferrari/f167-aba
+  "F175 Aha": null                      # 0 vehicles (us) → car/ferrari/f175-aha
+  "MFE1905GZ017": null                  # 1 vehicle (nl) → car/ferrari/mfe1905gz017
+  "Ferrari": null                       # 2 vehicles (nl) → car/ferrari/ferrari
 
 Fiat:
   FIAT500: "500"                              # es_dgt/nl_rdw glue artifact — make fused onto the nameplate; merges into the corroborated 500 id. Value QUOTED: a bare 500 parses as Integer and crashes slugify (lint_curation catches this, but don't rely on it)
@@ -3003,20 +3256,300 @@ Maserati:
   # merge started (same committed Granturismo -> Gran Turismo direction; a
   # half-fixed family flaps between spellings across releases) + the 3200GT
   # precedent mirror. Six mints, six aliases. ──
-  "Granturismo Modena": "Gran Turismo Modena"           # MA-2 sibling — https://en.wikipedia.org/wiki/Maserati_GranTurismo
-  "Granturismo Trofeo": "Gran Turismo Trofeo"           # ditto — https://en.wikipedia.org/wiki/Maserati_GranTurismo
-  "Granturismo S": "Gran Turismo S"                     # ditto (M145 generation) — https://en.wikipedia.org/wiki/Maserati_GranTurismo
-  "Granturismo S Automatic": "Gran Turismo S Automatic" # ditto — https://en.wikipedia.org/wiki/Maserati_GranTurismo
-  "Granturismo Sport": "Gran Turismo Sport"             # ditto — https://en.wikipedia.org/wiki/Maserati_GranTurismo
+  "Granturismo Modena": Gran Turismo                    # REPOINT (wave-5, 2026-08-01): direction unchanged, target moves onto the folded nameplate — Modena is an equipment level, not a model
+  "Granturismo Trofeo": Gran Turismo                    # REPOINT (wave-5): Trofeo is the performance trim
+  "Granturismo S": Gran Turismo                         # REPOINT (wave-5): S is the higher-output engine
+  "Granturismo S Automatic": Gran Turismo               # REPOINT (wave-5): engine + gearbox, both trims
+  "Granturismo Sport": Gran Turismo                     # REPOINT (wave-5): Sport is the equipment level
   "3500GT": "3500 GT"           # exact mirror of the committed "3200GT": "3200 GT"; the 3500 GT (1957-64) is a spaced nameplate; does NOT touch the separate bare maserati/3500 (dossier §5.2) — https://en.wikipedia.org/wiki/Maserati_3500_GT
   # ── swarm-dossier batch: Q4 = Maserati's AWD system, one token; S is the
   # engine trim. "S Q 4" is the fold key leaking, attested nowhere. ──
-  "Ghibli SQ4": "Ghibli S Q4"                   # register glued the trim tokens; pure merge onto the correctly-spelled id — https://en.wikipedia.org/wiki/Maserati_Ghibli_(M157)
-  "Granturismo Folgore": "Gran Turismo Folgore" # follows the block's committed Granturismo -> Gran Turismo direction; Folgore is the range-wide EV suffix; rescues th/us evidence from the duplicate — https://en.wikipedia.org/wiki/Maserati_GranTurismo
-  "Quattroporte SQ4": "Quattroporte S Q4"       # same S + Q4 split as the Ghibli; M156 spec table lists "Quattroporte S Q4" — https://en.wikipedia.org/wiki/Maserati_Quattroporte
+  "Ghibli SQ4": Ghibli                          # REPOINT (wave-5) of the committed "Ghibli SQ4": "Ghibli S Q4". The DIRECTION is unchanged and that ruling stands — SQ4 and S Q4 are one car — only the TARGET moves onto the nameplate — https://en.wikipedia.org/wiki/Maserati_Ghibli_(M157)
+  "Granturismo Folgore": Gran Turismo           # REPOINT (wave-5): Folgore is Maserati's range-wide EV POWERTRAIN suffix, sold beside the Nettuno V6 — a trim, not a nameplate — https://en.wikipedia.org/wiki/Maserati_GranTurismo
+  "Quattroporte SQ4": Quattroporte              # REPOINT (wave-5) of the committed "Quattroporte SQ4": "Quattroporte S Q4" — same S + Q4 reading, target moves to the nameplate — https://en.wikipedia.org/wiki/Maserati_Quattroporte
   "3200GT": "3200 GT"                         # spelling variant of "3200 GT" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Biturbo: Bi Turbo                           # spelling variant of "Bi Turbo" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Granturismo: Gran Turismo                   # spelling variant of "Gran Turismo" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+
+  # ── wave-5 Italian pass (2026-08-01): the trim fold Maserati never got.
+  # THE VOLUME-MAKE DEFAULT, APPLIED UNCHANGED. Maserati sells cars called
+  # Ghibli, Levante, Quattroporte, Grecale, GranTurismo, GranCabrio, Coupé and
+  # Spyder, and sells them in named equipment levels (GT / Modena / Trofeo / S
+  # / GranLusso / GranSport / Folgore / Diesel). Those are trims — the same
+  # shape the Mercedes (#112) and Ford wave-2 folds settled — and
+  # us_fueleconomy's baseModel oracle independently agrees wherever it reaches
+  # (Ghibli GT|S|SQ4|Modena|Trofeo -> Ghibli, Levante S|GTS|Trofeo -> Levante,
+  # Quattroporte S|SQ4|GT|Modena|Trofeo -> Quattroporte, Spider Cambiocorsa/
+  # Spider GT -> Spyder). Registration data cannot support trim-level accuracy
+  # (NAMING §6) and every folded string survives as a typed variant in
+  # pipeline enrich/maserati.yml (ORGANIZE-NEVER-DELETE).
+  #
+  # WHY MASERATI FOLDS WHERE FERRARI AND ALFA DO NOT, in this same PR:
+  #  * FERRARI has never sold a car called "308", and VARIANT_SUFFIXES decides
+  #    its altitude by a SPACE, so neither end-state is reachable from
+  #    curation — both altitudes are held and cleaned inside (dossier §E.2).
+  #  * ALFA folds MODERN trims but HOLDS the 105/115 classics, because
+  #    "Giulia Super" (1965) is not a trim of "Giulia" (2016) — different cars,
+  #    same name, 50 years apart.
+  #  * MASERATI has neither problem: "Ghibli Trofeo" IS a Ghibli.
+  #
+  # TEN LINES ARE `# REPOINT`s of already-merged lines (Ghibli SQ4,
+  # Quattroporte SQ4 and eight in the GranTurismo family). Their DIRECTION is
+  # unchanged — SQ4 and S Q4 are one car, that ruling stands — only their
+  # TARGET moves onto the folded nameplate. They REPLACE the committed lines
+  # (appending instead would trip lint_curation.rb:414, DIRECTION WAR).
+  #
+  # BLAST RADIUS (renames are kind-blind, measured over all six kinds): the
+  # Ghibli and Khamsin keys also reach van/maserati/ghibli, van/maserati/
+  # khamsin and motorcycle/maserati/ghibli (uk_dft, 0 vehicles each — mis-kinded
+  # car rows); "Levante Diesel" also reaches van/maserati/levante-diesel (fi,
+  # 1 vehicle), an INTENDED same-direction fold. No key reaches
+  # moped/maserati/50t2s, moped/maserati/sport or motorcycle/maserati/125-l-t2
+  # — the real 1950s-60s Maserati two-wheelers. NONE of these non-car ids is
+  # published in either the control or the treatment build, so no cross-kind
+  # dominance prune changes. ──
+
+  "Ghibli Diesel": Ghibli        # the 3.0 V6 diesel engine option (166 vehicles, es/fi/lu/nl) — https://www.maserati.com
+  "Ghibli GT": Ghibli            # entry equipment level, raw is "GHIBLI GT HYBRID"
+  "Ghibli Granlusso": Ghibli     # GranLusso = the luxury equipment pack
+  "Ghibli Diesel Granlusso": Ghibli   # both at once
+  "Ghibli Modena": Ghibli        # mid equipment level
+  "Ghibli Modena S Q4": Ghibli   # level + engine + drivetrain
+  "Ghibli S": Ghibli             # the higher-output V6
+  "Ghibli S Q4": Ghibli          # S engine + Q4 all-wheel drive
+  "Ghibli Trofeo": Ghibli        # the V8 range-topper
+  "Ghibli Cup": Ghibli           # the 1996 Ghibli Cup, a limited edition of the AM336 Ghibli
+  "Ghibli Ss": Ghibli            # the 1970 Ghibli SS (4.9) — a version of the AM115 Ghibli
+  "Ghibli Sport Spider": Ghibli  # nl_rdw body description of the AM115 Spyder
+  "Ghibli E2": Ghibli            # nl_rdw emission-class tail, not a name (the U9/E2 class is 262 ids / 1,316 strings catalog-wide — a PIPELINE rule, reported not papered over; this one instance is folded because it blocks a nameplate)
+  "Ghibli 2": Ghibli             # comma-decimal truncation of "GHIBLI 2,0"
+  "Ghibli 4": Ghibli             # ditto, "GHIBLI 4,7 COUPE"
+  "Ghiblis": Ghibli              # nl_rdw fused "GHIBLIS"
+  "Ghiblis.s": Ghibli            # nl_rdw "GHIBLIS.S."
+  "Chibli": Ghibli               # nl_rdw C-for-G typo
+  "GH1BL1": Ghibli               # nl_rdw digit-for-letter corruption
+
+  "Levante Diesel": Levante      # engine option (102 vehicles); ALSO folds van/maserati/levante-diesel — intended
+  "Levante Diesel Granlusso": Levante       # engine + equipment pack, both trims
+  "Levante Diesel Gransport": Levante       # engine + equipment pack, both trims
+  "Levante Gransport": Levante   # GranSport = the sporting equipment pack
+  "Levante GT": Levante                     # entry equipment level
+  "Levante Modena": Levante                 # mid equipment level
+  "Levante Modena S": Levante               # equipment level + the higher-output engine
+  "Levante Modena V8": Levante   # engine, us/ca only
+  "Levante S": Levante                      # the higher-output V6
+  "Levante SQ4": Levante         # drivetrain
+  "Levante Trofeo": Levante                 # the V8 range-topper trim
+
+  "Quattroporte Diesel": Quattroporte            # the 3.0 V6 diesel engine option — an engine, not a nameplate
+  "Quattroporte GT": Quattroporte           # equipment level
+  "Quattroporte GT S": Quattroporte         # equipment level + engine
+  "Quattroporte Modena": Quattroporte       # equipment level
+  "Quattroporte Modena Q4": Quattroporte    # equipment level + Q4 all-wheel drive
+  "Quattroporte S": Quattroporte            # the higher-output engine
+  "Quattroporte S Q4": Quattroporte         # engine + drivetrain, two independent trim tokens
+  "Quattroporte Sport": Quattroporte        # equipment level
+  "Quattroporte Sport GT": Quattroporte     # equipment level
+  "Quattroporte Sport GT S": Quattroporte   # 56 vehicles, nl
+  "Quattroporte Trofeo": Quattroporte       # the V8 range-topper trim
+  "Quattroporte Evoluzione": Quattroporte   # the 1998 QP IV Evoluzione facelift
+  "Quattroporte 3": Quattroporte     # generation numeral — car-kind generation collapse (NAMING §6)
+  "Quattroporte 4000": Quattroporte  # displacement (QP II/III 4.1) — a spec in the car kind
+  "Quattroporte 4200": Quattroporte         # displacement of the QP V 4.2 — a spec, not a name
+  "Quattroporte 4900": Quattroporte  # 36 vehicles, nl — the QP III 4.9
+  "Quattroporte I 4200": Quattroporte       # generation numeral + displacement
+  "Qattroporte": Quattroporte        # nl_rdw typo
+  "Quatroporte": Quattroporte        # nl_rdw typo (single t)
+  "Quatroporte S": Quattroporte             # the single-t typo carrying the S trim
+  "Quattro Porte": Quattroporte      # nl_rdw spaced (the Italian is one word: "quattroporte" = four-door)
+  "Quattro-Porte": Quattroporte      # nl_rdw HYPHENATED (x1). Found by the landing-slug grouping check: it lands on the same slug as the spaced form, so keying only "Quattro Porte" would leave the fragment id alive
+  "Quattro Porte V6": Quattroporte          # spaced typo + engine
+  "Quattro Porto": Quattroporte      # nl_rdw vowel typo
+  "Quattroport": Quattroporte        # nl_rdw truncation
+  "Quattroporter": Quattroporte      # nl_rdw trailing r
+  "Maseratie": Quattroporte          # nl_rdw "MASERATIE QUATTROPORTE GTS" — make word glued, model is a Quattroporte
+
+  "Grecale Folgore": Grecale     # Folgore is Maserati's EV powertrain suffix across the whole range
+  "Grecale GT": Grecale                     # entry equipment level
+  "Grecale Modena": Grecale                 # mid equipment level
+  "Grecale Modena V6": Grecale              # equipment level + engine
+  "Grecale Trofeo": Grecale                 # the V6 Nettuno range-topper trim
+
+  "Gran Turismo C": Gran Turismo            # nl_rdw "GRAN TURISMO C" — the GranTurismo Convertible
+  "Gran Turismo S": Gran Turismo            # the spaced form the repointed "Granturismo S" line used to produce
+  "Gran Turismo Folgore": Gran Turismo      # ditto for Folgore
+  "Granturismo Mc": Gran Turismo            # MC = the Maserati Corse pack
+  "Granturismo Mc Series": Gran Turismo     # the MC Race Series pack
+  "Granturismo Mc Stradale": Gran Turismo   # 18 vehicles, nl
+  "Granturismo S Aut": Gran Turismo         # nl_rdw abbreviation of "S Automatic" — engine + gearbox
+  "Granturismo Conv. Sport": Gran Turismo   # Convertible + Sport — body + equipment level
+  "Granturismo Sport Conv": Gran Turismo    # the same two tokens, other order
+  "Grandturismo": Gran Turismo              # nl_rdw inserted d
+  "Grandturismo Sport": Gran Turismo        # the inserted-d typo carrying the Sport trim
+  "Grantourismo": Gran Turismo              # nl_rdw French-ised spelling
+  "Grantuirismo S": Gran Turismo            # nl_rdw transposition
+  "Maseratigranturismos": Gran Turismo      # nl_rdw fully glued
+  "Grancabrio Folgore": Grancabrio          # Folgore is the range-wide EV powertrain suffix
+  "Grancabrio Sport": Grancabrio            # equipment level
+  "Grancabrio Trofeo": Grancabrio           # the range-topper trim
+  "Grancabrio Mc": Grancabrio               # the Maserati Corse pack
+  "Grancabrio Mc Stradale": Grancabrio      # the road-legal MC pack
+  "Grancabrio S-Sport Mc": Grancabrio       # nl_rdw concatenation of three trim tokens
+  "Gran": Grancabrio                        # PIPELINE-MANUFACTURED STUB: VARIANT_SUFFIXES strips " CABRIO…" off nl_rdw's "GRAN CABRIO", leaving the nameplate "Gran" (car/maserati/gran, 4 vehicles). Replay-verified: classify("MASERATI","GRAN CABRIO") -> "Gran". This line papers over ONE instance; the class ("a stripped suffix leaves a fragment that is not a name") is reported to the pipeline owner, not fixed here
+
+  "Coupe Cambiocorsa": Coupe     # Cambiocorsa = the paddle gearbox, one of the Coupé's two trims — https://en.wikipedia.org/wiki/Maserati_Coup%C3%A9
+  "Coupe Cambiocors": Coupe      # nl_rdw truncation
+  "Coupe GT": Coupe              # the manual-gearbox trim, the other half of the pair
+  "Coupe GT V8 Gran Sport": Coupe           # nl_rdw stacked the gearbox trim, the engine and the pack onto the M138 Coupé
+  "Spyder Cambiocorsa": Spyder   # same two trims on the convertible
+  "Spyder GT": Spyder                       # the manual-gearbox trim of the M138 convertible
+  "Spyder GT Cambiocorsa": Spyder           # nl_rdw wrote both gearbox trims on one row
+  "Spyder GT-Cambiocorsa": Spyder           # hyphenated variant of the same row
+  "Spyder 90TH Anniversary": Spyder                     # 2004 limited edition
+  "Spyder Cambiocorsa / 90 Th Anniversary": Spyder # gearbox trim + the 2004 limited edition
+  "Spyder Grandsport": Spyder               # the GranSport pack on the Spyder, nl_rdw inserted-d spelling
+  "Spider Cambiocorsa": Spyder   # RESOLVES half of the 2026-07-26 dossier §5.3 UNCERTAINTY on raw evidence: Cambiocorsa/GT are M138 trims, so these "Spider" rows are the M138 SPYDER misspelled — and us_fueleconomy's baseModel independently agrees. The BARE "Spider" rows are NOT touched: they split both ways in the raws (SPIDER BITURBO / SPIDER U9 = the 1984-94 Biturbo Spyder) and the oracle has no bare-Spider row for Maserati at all
+  "Spider GT": Spyder            # ditto
+  "Spider Cambioc": Spyder       # ditto, nl_rdw truncation
+  "Cambiocorsa Spyder": Spyder   # the one CAMBIOCORSA row whose car IS recoverable — the gearbox name plus the body. Its bare siblings ("CAMBIO CORSA", "CAMBIOCORSA") are dropped below, because nothing in those raws says which model they are (§E.3.4)
+  "Spijder GT": Spyder           # nl_rdw Dutch-ised spelling
+  "Gransport Spyder": Gransport  # the GranSport convertible (16 vehicles) — GranSport is its own 2004-07 nameplate, not a Coupé trim
+  "Gransport Spider": Gransport             # the Spider misspelling of the GranSport convertible
+  "Gransport Mc Victory": Gransport   # the 2006 MC Victory limited run
+  "Gransport V8 S": Gransport               # engine + trim on the GranSport
+  "Grandsport Spyder": Gransport      # nl_rdw inserted d
+
+  "3200": 3200 GT                # uk_dft writes "MASERATI 3200" for all 540 gb vehicles; Maserati built exactly one 3200 — the 3200 GT (1998-2002) — https://en.wikipedia.org/wiki/Maserati_3200_GT
+  "3200GT Automatica": 3200 GT   # the automatic (3200 GTA)
+  "3500": 3500 GT                # RESOLVES the 2026-07-26 dossier §5.2 UNCERTAINTY with raw evidence: every row feeding maserati/3500 is a 3500 GT — "3500 GTI" x9+1, "3500 GTI SEBRING" x4, "3500 GTI S", "3500 GTI SUPER LEGGERA", "3500 ST", plus 3 bare. GTI = the injected 3500 GT — https://en.wikipedia.org/wiki/Maserati_3500_GT
+  "3500 GT Super Leggera": 3500 GT    # "Superleggera" is Touring's body construction, not a model
+  "3500 GT Touring": 3500 GT          # Touring = the coachbuilder
+  "3500 GT Touring Spider": 3500 GT         # coachbuilder + body
+  "3500 GT Spyder": 3500 GT                 # body (Vignale built it)
+  "3500 G.t. I": 3500 GT              # nl_rdw dotted "3500 G.T. I."
+  "3500 G.t.i. S": 3500 GT                  # nl_rdw dotted GTI + Sport
+  "3500 GTI3": 3500 GT                      # nl_rdw digit tail on the injected GTI
+  "3500 Gtis": 3500 GT                      # GTI + Sport, fused
+  "3500 Series I 3500 Gt.i": 3500 GT        # nl_rdw wrote the series and the model twice
+  "Autovettura 3500 GT": 3500 GT      # "autovettura" = Italian for "motor car"
+  "3500 GT Sebring": Sebring          # the Sebring (1962-69) is its own nameplate, derived from the 3500 GT
+  "3500 Gt.i Sebring": Sebring              # dotted GTI spelling of the Sebring
+  "3500 Sebring": Sebring                   # the Sebring named by its parent family number
+  "3500 G.t.i.sebring": Sebring             # fully dotted and fused spelling of the same
+  "Sebring 3500 Gtis": Sebring              # the same tokens in the other order
+  "3500 GT Mistral": Mistral          # ditto for the Mistral (1963-70)
+  "222E": "222"                  # the Biturbo 222 E (injected); joins the published 222 and brings nz+us with it
+  "Merak Ss": Merak              # SS = the higher-output 3.0 Merak, a version of the same car — https://en.wikipedia.org/wiki/Maserati_Merak
+  "Merak 2000": Merak            # the 2.0 tax-special
+  "Mistral 4000": Mistral        # displacement, a spec in the car kind
+  "Mistral Spider": Mistral      # body
+  "Mistral 3500 Spider": Mistral            # parent family number + body
+  "Bora 4700": Bora              # displacement
+  "Bora 4900": Bora                         # displacement of the 4.9 Bora — a spec in the car kind
+  "Khamsin Am 120": Khamsin      # AM120 is the factory tipo number
+  "4700 Mexico": Mexico          # displacement precedes the name in nl_rdw; the car is the Mexico (1966-73)
+  "Mexico 42": Mexico                       # truncated 4200 displacement
+  "Mexico 4200 GT 2+2": Mexico              # displacement + badge + seating layout, all specs
+  "Indy 4200": Indy              # displacement
+  "Indy 4700": Indy                         # displacement
+  "Indy 4900": Indy                         # displacement
+  "4700 Indy America": Indy                 # displacement + the US market name of the same car
+  "MC20 Cielo": MC20             # Cielo is the retractable-roof body of the MC20 — https://en.wikipedia.org/wiki/Maserati_MC20
+  "MC20 Spyder": MC20            # us/ca name for the same car
+  "Mc 12": MC12                  # nl_rdw spaced the closed nameplate
+  "Mc Pura": MCPura              # Maserati's 2025 MC20 successor is written MCPura — https://www.maserati.com
+  "Mc Pura Cielo": MCPura                   # Cielo is the retractable-roof body
+  "Mcpura": MCPura
+  "Mcpura Spyder": MCPura                   # us/ca name for the same open body
+
+  # ── RDW / APPROVAL TYPE CODES — dropped WITH their measured population.
+  # The "331B204"-shaped strings are nl_rdw variant codes for the Biturbo
+  # family (AM33x tipo + body/engine suffix); AM107/AM115/AM120/AM122 and M138
+  # are the factory tipo numbers (Quattroporte I, Ghibli, Khamsin, Merak,
+  # Coupé/Spyder). Each maps to exactly one nameplate IN PRINCIPLE, and
+  # mapping them would recover ~95 vehicles — but Maserati's heritage pages
+  # are the authority and maserati.com returns HTTP 403 to every fetch.
+  # NAMING §7.5: resolve them or leave them alone; a code mapped by
+  # resemblance is a fabrication with a comment attached. So they are dropped
+  # with their populations on the line.
+  # car/maserati/cambio-corsa is a PUBLISHED RECORD that is a GEARBOX:
+  # "Cambiocorsa" is Maserati's paddle-shift transmission and the model is
+  # missing entirely from those 5 rows. Its sibling "CAMBIOCORSA SPYDER" IS
+  # recoverable and is NOT dropped — it is folded to Spyder above.
+  # DELIBERATELY NOT HERE: car/maserati/4200 and the bare car/maserati/spider
+  # — both are §E refusals with the two failed routes recorded. ──
+  "Am 107": null                        # 1 vehicle (nl) → car/maserati/am-107
+  "Am 115": null                        # 1 vehicle (nl) → car/maserati/am-115
+  "AM115": null                         # 1 vehicle (nl) → car/maserati/am115
+  "Am 120": null                        # 1 vehicle (nl) → car/maserati/am-120
+  "Am 122": null                        # 1 vehicle (fi) → car/maserati/am-122
+  "Am 470": null                        # 1 vehicle (nl) → car/maserati/am-470
+  "AM490": null                         # 1 vehicle (nl) → car/maserati/am490
+  "AM573": null                         # 1 vehicle (nl) → car/maserati/am573
+  "AM107": null                         # 1 vehicle (nl) → car/maserati/am107
+  "M 138 Ab": null                      # 1 vehicle (nl) → car/maserati/m-138-ab
+  "M 138 Ad": null                      # 1 vehicle (nl) → car/maserati/m-138-ad
+  "M138": null                          # 1 vehicle (nl) → car/maserati/m138
+  "M138 Ab": null                       # 1 vehicle (nl) → car/maserati/m138-ab
+  "Maserati": null                      # 2 vehicles (nl) → car/maserati/maserati
+  "Car": null                           # 1 vehicle (nz) → car/maserati/car
+  "Spa": null                           # 1 vehicle (nl) → car/maserati/spa
+  "Q": null                             # 0 vehicles (us) → car/maserati/q
+  "2.24V": null                         # 2 vehicles (nl) → car/maserati/2-24v
+  "4.24V": null                         # 2 vehicles (nl) → car/maserati/4-24v
+  "O 24V": null                         # 1 vehicle (nl) → car/maserati/o-24v
+  "Cambio Corsa": null                  # 5 vehicles (nl,nz) — PUBLISHED RECORD → car/maserati/cambio-corsa
+  "Cambiocorsa": null                   # 4 vehicles (nl) → car/maserati/cambiocorsa
+  "331 B 204": null                     # 3 vehicles (nl) → car/maserati/331-b-204
+  "331 B 204K": null                    # 1 vehicle (nl) → car/maserati/331-b-204k
+  "331 B0 Si": null                     # 1 vehicle (nl) → car/maserati/331-b0-si
+  "331 B0L": null                       # 1 vehicle (nl) → car/maserati/331-b0l
+  "331 B0S": null                       # 1 vehicle (nl) → car/maserati/331-b0s
+  "331 B204": null                      # 2 vehicles (nl) → car/maserati/331-b204
+  "331 B204R": null                     # 1 vehicle (nl) → car/maserati/331-b204r
+  "3310BO Si": null                     # 1 vehicle (nl) → car/maserati/3310bo-si
+  "331B 204": null                      # 3 vehicles (nl) → car/maserati/331b-204
+  "331B0": null                         # 1 vehicle (nl) → car/maserati/331b0
+  "331B00": null                        # 3 vehicles (nl) → car/maserati/331b00
+  "331B01": null                        # 1 vehicle (nl) → car/maserati/331b01
+  "331B0L": null                        # 2 vehicles (nl) → car/maserati/331b0l
+  "331B0SI": null                       # 1 vehicle (nl) → car/maserati/331b0si
+  "331B204": null                       # 5 vehicles (nl) → car/maserati/331b204
+  "331B204K": null                      # 1 vehicle (nl) → car/maserati/331b204k
+  "331B204R": null                      # 1 vehicle (nl) → car/maserati/331b204r
+  "331B28R": null                       # 1 vehicle (nl) → car/maserati/331b28r
+  "332 B 204": null                     # 2 vehicles (nl) → car/maserati/332-b-204
+  "332 B 204 B": null                   # 2 vehicles (nl) → car/maserati/332-b-204-b
+  "332 B20": null                       # 1 vehicle (nl) → car/maserati/332-b20
+  "332 B20 Si": null                    # 2 vehicles (nl) → car/maserati/332-b20-si
+  "332 B20S Si": null                   # 1 vehicle (nl) → car/maserati/332-b20s-si
+  "332 B20T": null                      # 1 vehicle (nl) → car/maserati/332-b20t
+  "332B201": null                       # 1 vehicle (nl) → car/maserati/332b201
+  "332B204B": null                      # 2 vehicles (nl) → car/maserati/332b204b
+  "332B204K": null                      # 1 vehicle (nl) → car/maserati/332b204k
+  "332B205I": null                      # 1 vehicle (nl) → car/maserati/332b205i
+  "332B20S": null                       # 1 vehicle (nl) → car/maserati/332b20s
+  "332B20SI": null                      # 4 vehicles (nl) → car/maserati/332b20si
+  "333 B0S 12": null                    # 1 vehicle (nl) → car/maserati/333-b0s-12
+  "333B001": null                       # 1 vehicle (nl) → car/maserati/333b001
+  "333B0512": null                      # 1 vehicle (nl) → car/maserati/333b0512
+  "333B0SI2": null                      # 2 vehicles (nl) → car/maserati/333b0si2
+  "336 B 204 P": null                   # 3 vehicles (nl) → car/maserati/336-b-204-p
+  "336 B 204P": null                    # 1 vehicle (nl) → car/maserati/336-b-204p
+  "336B2": null                         # 1 vehicle (nl) → car/maserati/336b2
+  "336B204P": null                      # 7 vehicles (nl) → car/maserati/336b204p
+  "336B28A": null                       # 1 vehicle (nl) → car/maserati/336b28a
+  "337 B00": null                       # 1 vehicle (nl) → car/maserati/337-b00
+  "337B00": null                        # 2 vehicles (nl) → car/maserati/337b00
+  "337B32": null                        # 1 vehicle (nl) → car/maserati/337b32
+  "339 B 28": null                      # 1 vehicle (nl) → car/maserati/339-b-28
+  "339B32": null                        # 1 vehicle (nl) → car/maserati/339b32
+  "S.p.a. 336B 204P": null              # 1 vehicle (nl) → car/maserati/s-p-a-336b-204p
+  "Spa 331B204R": null                  # 1 vehicle (nl) → car/maserati/spa-331b204r
+  "Spa 337B00": null                    # 1 vehicle (nl) → car/maserati/spa-337b00
+  "Srl 332B204": null                   # 1 vehicle (nl) → car/maserati/srl-332b204
+  "Srl 332B204B": null                  # 1 vehicle (nl) → car/maserati/srl-332b204b
+  "ZAM331B00": null                     # 1 vehicle (nl) → car/maserati/zam331b00
 
 Matchless:
   G3/LS:                     G3LS                 # Matchless type code, closed (G3L Lightweight + S spring frame). DEFUNCT marque — badge evidence, no manufacturer left to ask
