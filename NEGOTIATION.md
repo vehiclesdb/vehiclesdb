@@ -21589,3 +21589,15 @@ data itself surfaced: nine region-scoped marques that would want a
 only matters if the make ever splits. Whichever session pulls the
 PRD-LOGOS Phase-2 field addition implements from this table; the schema
 addition itself is additive per-make fields per the PRD's guards.
+
+## OWNER SWARM — BYD tail dossier landed; the headline trap: `Sea Lion 06` is NOT `sealion-6`
+
+`aux/research/2026-08-owner-swarm/byd-tail.md`: all ~22 Chinese-name
+candidates identified first-party, relation rows pre-drafted for the
+G26c relations field, D-3 governance stated per pair. The trap worth
+internalizing before anyone touches BYD again: BYD assigned the export
+name "Sealion 6" to the SONG PLUS DM-i, while the Chinese 海狮06
+("Sea Lion 06") is a DIFFERENT vehicle — a name-similarity fold there
+would merge two products across the naming system boundary. The
+gl1500c/RayZR class, one industry over. Whoever takes the BYD relation
+migration works from this dossier.
