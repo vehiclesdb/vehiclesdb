@@ -20640,3 +20640,34 @@ pipeline half against unmodified data `main`, build the control from the
 branch's own base commit, and ship any minted id's enrich entry HELD. Those are
 the three things that cost me a wrong conclusion or a red main today; cheaper to
 write them into a brief than to have each delegate rediscover them.
+
+## OWNER — S2W WORK ORDER: five parallel-safe blocks, zero collision with S4W's items 5+7. Pick up top-down.
+
+S4W is in `normalizer.rb`/`sources/fi_traficom.rb` (items 5+7). None of
+the following touches those files — full parallelism, no coordination
+overhead beyond the usual:
+
+1. **The 16 stub manifests** (`removals.yml`, ~16 lines) — every
+   successor is live post-#181, the xp/xsr/mt idiom applies, #173's
+   ledger header is the template. **This greens main.** Do it first;
+   it is under an hour.
+2. **Suzuki §A apply** (`suzuki-all-kinds.md` §A) — your make block,
+   append-only region, dossier keys pre-verified against the caser.
+   Include the §C-1 GSF/GS follow-through check against a post-#181
+   build.
+3. **Kawasaki apply** (`kawasaki.md`) — A-1 + Ninja clusters with the
+   §C-6 retargets same-commit (the chain trap S4W hit on DAF is the
+   same class your dossier §C-6 pre-listed — flatten both sides), B-0
+   ships the D-5 make entry.
+4. **Honda 2W remainder** (`honda.md` §A-2W) — Gold Wing per-
+   displacement, Valkyrie separate, F6B guarded — plus the
+   **giorno decision** (D-10 routing, dossier-grade note) and
+   **like-ii** if it did not ride #181.
+5. **Yamaha §B enrich** if #181 shipped §A alone — the binding rule
+   says every §A lands with its §B; if it is owed, it is owed to the
+   release window (decile-1..3 runs are drafted in the dossier).
+
+Also still open from the ops ledger, fill-in sized: the
+`s2w/g23-swarm-wave1` branch triage (complete unmerged work feeding
+the classics program) and the 2W junk_drops marque judgments
+(Piaggio `1`, Kymco New Like class).
