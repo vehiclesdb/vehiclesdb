@@ -572,23 +572,158 @@ Buell:
 
 Buick:
   Lesabre: Le Sabre                           # spelling variant of "Le Sabre" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Lesabre Custom: Le Sabre Custom             # spelling variant of "Le Sabre Custom" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Sportwagon: Sport Wagon                     # spelling variant of "Sport Wagon" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Wildcat: Wild Cat                           # spelling variant of "Wild Cat" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "120L": "120 L"                             # spelling variant of "120 L" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Buick: null                                 # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
-  GS 350: GS350                               # spelling variant of "GS350" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  # NB `"120L": "120 L"` was DELETED here on 2026-08-01: neither the key nor the target "120 L" is
+  # produced by any raw row (measured over 1,310 buick raws, all six kinds, pipeline origin/main).
+  # The only genuinely dead key found by sweeping all 23 keys in the Cadillac/Chrysler/Buick blocks —
+  # every other one FIRES. Reachability counted in ROWS, never vehicles (american wave-6 dossier §A.5.1).
+  #
+  # NOT folded: `Encore Gx` — a separate marketed product. us_fueleconomy bases every "Encore GX" row
+  # at `Encore` and is NOT followed: its own year ranges certify the two CONCURRENTLY (Encore 2013-2022
+  # vs Encore GX 2020-2026), so one baseModel is covering two vehicles sold side by side, and
+  # https://www.buick.com lists `Encore GX` as a current model and does not list `Encore` at all.
+
+  # LeSabre (1959-2005) trims — https://en.wikipedia.org/wiki/Buick_LeSabre
+  Le Sabre 400: Le Sabre                      # "400" was a LeSabre trim/engine designation (fi/nl) — a spec, not a nameplate
+  Le Sabre Custom: Le Sabre                   # Custom is a LeSabre trim level; us_fueleconomy bases every LeSabre row at LeSabre — https://www.fueleconomy.gov/feg/download.shtml
+  Lesabre Custom: Le Sabre                    # REPOINT (was → "Le Sabre Custom"): unspaced registry spelling of the same trim; the settled "same car" statement survives one altitude up
+  Le Sabre Limited: Le Sabre                  # Limited is a LeSabre trim level — https://en.wikipedia.org/wiki/Buick_LeSabre
+
+  # Electra (1959-1990). "225" is the car's OVERALL LENGTH IN INCHES, used as the senior
+  #     Electra's designation — https://en.wikipedia.org/wiki/Buick_Electra
+  Electra 225: Electra                        # length-derived series designation ("a nod to the car's overall length of over 225 in"), not a separate nameplate
+  Electra 225 Custom: Electra                 # the 225 designation + the Custom trim
+  Electra Custom 225: Electra                 # the same two tokens inverted by the register
+  Electra Limited: Electra                    # Limited is an Electra trim level — https://en.wikipedia.org/wiki/Buick_Electra
+  Electra Park Avenue: Electra                # Park Avenue began as the Electra's top TRIM (1975-1990); the separate 1991-2005 `Park Avenue` record SURVIVES — us_fueleconomy carries both "Electra/Park Avenue" (to 1990) and "Park Avenue" (1991+) as bases
+  Electra/Park Avenue: Electra                # us_fueleconomy's own slash-joined string for the same 1984-90 car — SAME SLUG as the line above, so both must be keyed or the record republishes
+
+  # Century — https://en.wikipedia.org/wiki/Buick_Century
+  Century Caballero: Century                  # the 1957-58 Century Caballero was the four-door hardtop WAGON body
+  Century Wagon: Century                      # the station-wagon body of the Century. us_fueleconomy REFUTES (own baseModel "Century Wagon") while folding "Roadmaster Wagon" and "Skyhawk Wagon" into their parents — followed the majority; reversible in one line
+
+  # Skylark — https://en.wikipedia.org/wiki/Buick_Skylark
+  Skylark 350: Skylark                        # 350 = the 350 cu in engine; in the car kind engine size is a spec, not part of the nameplate (NAMING §6)
+  Skylark Custom: Skylark                     # Custom is a Skylark trim level
+  Skylark GS: Skylark                         # "a Gran Sport option became available in mid-1965" ON THE SKYLARK — an option package, not the standalone 1968-72 GS; the raw leads with SKYLARK
+
+  # GS / Gran Sport (the standalone 1968-72 model) — https://en.wikipedia.org/wiki/Buick_Gran_Sport
+  GS 400: GS                                  # 400 = the 400 cu in engine
+  GS 455 Stage 1: GS                          # 455 cu in + the Stage 1 performance package
+  GS350: GS                                   # 350 cu in
+  GS 350: GS                                  # REPOINT (was → "GS350"): the spaced spelling of the same engine variant; the settled "same car" statement survives one altitude up
+  Gran Sport: GS                              # what "GS" abbreviates — https://en.wikipedia.org/wiki/Buick_Gran_Sport
+  California GS: GS                           # the California GS was a regional appearance package (fi/nl)
+
+  # Riviera (1963-1999), the personal-luxury car — https://en.wikipedia.org/wiki/Buick_Riviera
+  Rivera: Riviera                             # registry misspelling (nl/nz)
+  Riviera 2: Riviera                          # door count, not a model: raws "Riviera 2-dr Sport Coupe", "RIVIERA 2 DOOR HARDTOP BOATTAIL"
+  Riviera GS: Riviera                         # Gran Sport was a Riviera option package
+
+  # Special (Series 40) and Super (Series 50). NB "Riviera" was ALSO Buick's 1949-58 HARDTOP-COUPE
+  #     BODY NAME on the Special/Super/Roadmaster — "The name Riviera … first entered the Buick line in
+  #     1949, as the designation for the new two-door pillarless hardtop" — a completely different thing
+  #     from the 1963 Riviera model, which is why the two lines below fold HERE and not to Riviera.
+  Special 40: Special                         # Series 40 IS the Special — https://en.wikipedia.org/wiki/Buick_Special
+  Special Series 40: Special                  # the same designation written out
+  Series 40 Special: Special                  # the same two tokens inverted by the register
+  Special Riviera: Special                    # the Special with the Riviera hardtop-coupe BODY — https://en.wikipedia.org/wiki/Buick_Riviera
+  Super 8: Super                              # the straight-eight engine on the Super — https://en.wikipedia.org/wiki/Buick_Super
+  Super Dynaflow: Super                       # Dynaflow is Buick's TRANSMISSION ("an optional automatic transmission") — https://en.wikipedia.org/wiki/Buick_Super
+  Super Eight: Super                          # the same engine, spelled out
+  Super Series 50: Super                      # Series 50 IS the Super
+  Super Riviera: Super                        # the Super with the Riviera hardtop-coupe BODY — https://en.wikipedia.org/wiki/Buick_Riviera
+  Eight Super: Super                          # the same two tokens inverted by the register
+
+  # Roadmaster / Regal / LaCrosse / Wildcat
+  Roadmaster 72: Roadmaster                   # Model 72 was the Roadmaster's four-door body code — https://en.wikipedia.org/wiki/Buick_Roadmaster
+  Roadmaster Wagon: Roadmaster                # us_fueleconomy bases "Roadmaster Wagon" at Roadmaster — https://www.fueleconomy.gov/feg/download.shtml
+  Regal Eassist: Regal                        # us_fueleconomy bases "Regal eAssist" at Regal — eAssist is GM's belt-alternator-starter mild-hybrid SYSTEM, not a model
+  Regal Ltd: Regal                            # Limited is a Regal trim level
+  Regal Tourx: Regal                          # us_fueleconomy bases "Regal TourX AWD" at Regal — TourX is the wagon body
+  Lacrosse Eassist: Lacrosse                  # us_fueleconomy bases "LaCrosse eAssist" at LaCrosse — https://www.fueleconomy.gov/feg/download.shtml
+  Wildcat Custom: Wild Cat                    # Custom is a Wildcat trim level. NB the fold target keeps the SETTLED spelling `Wild Cat`; Buick's own spelling is "Wildcat" and that DIRECTION question is FILED, not reversed here (reversing is a 4-country repoint)
 
 Bultaco:
   Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
 
 Cadillac:
-  Coupe Deville: Coupe De Ville               # spelling variant of "Coupe De Ville" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Deville: De Ville                           # spelling variant of "De Ville" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Eldorado: El Dorado                         # spelling variant of "El Dorado" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Lasalle: La Salle                           # spelling variant of "La Salle" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  Sedan Deville: Sedan De Ville               # spelling variant of "Sedan De Ville" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Cadillac: null                              # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+
+  # Series 62 (1940-42, 1946-64) — the series NUMBER, in five registry spellings.
+  #     "The Series 62 (née 6200) designation was dropped after 1964" — https://en.wikipedia.org/wiki/Cadillac_Series_62
+  "62": Series 62                             # bare series number; raws "62", "62 CONVERTIBLE", "62 SEDAN DE VILLE" (fi/nl/nz) — https://en.wikipedia.org/wiki/Cadillac_Series_62
+  62 Series: Series 62                        # token order inverted; raw "62 SERIES" ×8 — SAME SLUG as the key below, so BOTH must be keyed
+  62-Series: Series 62                        # hyphenated form of the same string, lands on the same slug (`62-series`)
+  Sixty-Two: Series 62                        # the series number spelled out; raws "SIXTY-TWO COUPE", "SIXTY-TWO SEDAN 6-WINDOW" (fi/nl)
+  Sixty Two: Series 62                        # unhyphenated spelling of the same, SAME SLUG
+  Series 6200: Series 62                      # Cadillac's own internal designation for the 1959-64 Series 62 — "née 6200" — https://en.wikipedia.org/wiki/Cadillac_Series_62
+  Type 61: Series 61                          # raw "TYPE 61 COUPE DE VILLE" (nl) dates this to the 1949-51 Series 61, not the 1922 Type 61 — Coupe de Ville is a 1949+ Cadillac name (https://en.wikipedia.org/wiki/Cadillac_de_Ville_series). An INFERENCE from the raw; moves 2 vehicles and no countries
+
+  # De Ville (1958-2005). Coupe/Sedan de Ville are BODY STYLES: "The Cadillac Series 62 Coupe de
+  #     Ville was introduced late in the 1949 model year"; they "were moved to their own separate
+  #     series in 1959" — https://en.wikipedia.org/wiki/Cadillac_de_Ville_series
+  Coupe De Ville: De Ville                    # two-door body style of the de Ville — https://en.wikipedia.org/wiki/Cadillac_de_Ville_series
+  Sedan De Ville: De Ville                    # four-door body style of the de Ville — https://en.wikipedia.org/wiki/Cadillac_de_Ville_series
+  Coupe Deville: De Ville                     # REPOINT (was → "Coupe De Ville"): unspaced registry spelling of the same body style; the settled "same car" statement survives, one altitude higher
+  Sedan Deville: De Ville                     # REPOINT (was → "Sedan De Ville"): unspaced registry spelling of the same body style
+  De Ville 62: De Ville                       # the de Ville on the Series 62 chassis; raws "DE VILLE 62", "DE VILLE 62 CONVERTIBLE" (fi/nl) — a series number, not a nameplate
+  De Ville Fleetwood: De Ville                # Fleetwood was Cadillac's coachwork house, not a separate product here; raw "DE VILLE FLEETWOOD" (es/nl)
+  Deville Concours: De Ville                  # Concours was a DeVille trim level (1994-99); raw "DEVILLE CONCOURS" (fi/nl). us_fueleconomy REFUTES (own baseModel "DeVille/Concourse") — that string is a slash-joined certification grouping, not a product name
+  Deville Dts: De Ville                       # DTS = DeVille Touring Sedan, a DeVille TRIM until 2005: "For 2006, the DeVille nameplate was retired, when the model line was carried forward … as the Cadillac DTS" — https://en.wikipedia.org/wiki/Cadillac_de_Ville_series ; the 2006-11 `Dts` record stays separate
+  Armored Deville: De Ville                   # an armouring conversion of the DeVille, not a Cadillac product line. us_fueleconomy REFUTES (own baseModel); zero registrations either way, so the fold is evidence-neutral
+
+  # Eldorado (1952-2002) — https://en.wikipedia.org/wiki/Cadillac_Eldorado
+  Eldorado Biarritz: El Dorado                # Biarritz = the Eldorado convertible/cabriolet trim ("Biarritz returned as an up level trim package for the Eldorado for 1976 until 1991"); raws "ELDORADO BIARRITZ" (fi/nl/nz)
+  Eldorado Biarriz: El Dorado                 # registry misspelling of Biarritz, same car
+  Eldorado Seville: El Dorado                 # the 1956-60 Eldorado Seville was the Eldorado's HARDTOP COUPE body (the convertible was the Biarritz) — unrelated to the 1975-2004 Seville; raw "ELDORADO SEVILLE COUPE"
+  Eldorado Touring: El Dorado                 # Eldorado Touring Coupe = the ETC trim; raw "ELDORADO TOURING COUPE-EL1-9/274" (fi) carries the Finnish type code too
+  Fleetwood Eldorado: El Dorado               # 1965-78 the Eldorado was marketed inside the Fleetwood series; the product is the Eldorado — raws "FLEETWOOD ELDORADO CONVERTIBLE"
+
+  # Fleetwood family — https://en.wikipedia.org/wiki/Cadillac_Fleetwood
+  Fleetwood Broughan: Fleetwood Brougham      # registry misspelling of Brougham (nl/nz); the Fleetwood Brougham record SURVIVES — us_fueleconomy gives it its own baseModel
+  Fleetwood Seventy Five: Fleetwood 75        # the Series 75 limousine, series number spelled out (fi/nl)
+  Fleetwood Seventy-Five: Fleetwood 75        # hyphenated spelling of the same string — SAME SLUG, so both must be keyed
+  Fleetwood 60 Special: Sixty Special         # Series 60 Special; Cadillac's own name is "Sixty Special" (1938-1993) — https://en.wikipedia.org/wiki/Cadillac_Sixty_Special
+  Fleetwood 60S: Sixty Special                # "60S" = Sixty Special, glued registry form
+  Fleetwood Sixty Special: Sixty Special      # the Fleetwood prefix is the coachwork house; the product is the Sixty Special
+
+  # Seville (1975-2004): SLS and STS are its two trim levels — https://en.wikipedia.org/wiki/Cadillac_Seville
+  Seville Sls: Seville                        # SLS = Seville Luxury Sedan, a trim
+  Seville Sts: Seville                        # STS = Seville Touring Sedan, a trim. The separate 2005-11 `Sts` record is a DIFFERENT car and SURVIVES (own us_fueleconomy baseModel)
+
+  # V-Series and drivetrain suffixes. us_fueleconomy bases "CT4 V"→CT4, "CT5 V"→CT5,
+  #     "Escalade V AWD"→Escalade and "CTS V"→CTS, but SELF-CONTRADICTS on the hyphenated forms.
+  Cts 4: Cts                                  # "CTS4" is Cadillac's AWD designation, not a model — us_fueleconomy bases every "CTS AWD" row at CTS
+  Cts-V: Cts                                  # V-Series performance trim; us_fueleconomy files "CTS-V" under BOTH CTS (9 rows) and CTS-V (1) — folded on the majority plus the uncontradicted CT4 V / CT5 V / Escalade V treatment
+  Ats-V: Ats                                  # V-Series performance trim; us_fueleconomy files "ATS-V" under BOTH ATS (2 rows) and ATS-V (6) — the opposite majority; the weakest of the three V-Series folds, taken on the same rule
+  Sts-V: Sts                                  # V-Series performance trim. us_fueleconomy REFUTES cleanly here (STS-V has its own baseModel, 4 rows, no contradiction) — folded on the marque's own V-Series-is-a-trim usage; reversible in one line
+
+  # GM order / Finnish type codes prefixed to the nameplate
+  6EB26 Srx: Srx                              # GM body/order code prefixed to the nameplate; raw "6EB26 SRX" ×72 (fi/nl) — the code is not part of any Cadillac name
+  6RB26 Srx: Srx                              # same shape, second code (raw "6RB26 SRX" ×34)
+  6YV67 Xlr: Xlr                              # same shape on the XLR
+  K10706-Escalade: Escalade                   # same shape on the Escalade; raw "K10706-ESCALADE" (fi/nl)
+  K10706 Escalade: Escalade                   # the spaced spelling of the same code, raw "K10706 - ESCALADE" — SAME SLUG, both must be keyed
+
+  # Escalade wheelbase/body variants. us_fueleconomy bases "Escalade ESV 2WD/4WD/AWD",
+  #     "Escalade Ext AWD", "Escalade Hybrid" and "Escalade V AWD" ALL at Escalade —
+  #     https://www.fueleconomy.gov/feg/download.shtml
+  Escalade Esv: Escalade                      # ESV = the long-wheelbase body; us_fueleconomy baseModel Escalade
+  Escalade Esv Sport: Escalade                # the ESV body + the Sport trim
+  Escalade Ext: Escalade                      # EXT = the 2002-13 pickup body; us_fueleconomy baseModel Escalade. FIRES IN car AND van — intended, both are EXT records. A pickup body folded into an SUV is arguable and is flagged, not hidden
+  # NOT folded: `Escalade Iq` — a distinct BEV product with its own Wikipedia article, listed as its
+  # own model on https://www.cadillac.com (ESCALADE IQ / ESCALADE IQL alongside ESCALADE / ESCALADE ESV)
+
+  # Coachbuilt bodies and one typo
+  Dts Hearse: Dts                             # a funeral-coach body on the DTS chassis; us_fueleconomy bases "XT5 Hearse AWD" at XT5 — https://www.fueleconomy.gov/feg/download.shtml
+  Xts Hearse: Xts                             # same, on the XTS. us_fueleconomy REFUTES here specifically (own baseModel "XTS Hearse", 7 rows) while folding the XT5 hearse — the two treatments cannot both be right; followed the XT5 precedent
+  Limosine: Limousine                         # registry misspelling of Limousine (nl/nz). NB the target is itself a bare body word and is deliberately KEPT, not nulled: us_fueleconomy gives `Limousine` its own baseModel across 16 rows (MY1984-2011) — Cadillac's professional-car chassis were a separately-certified product line
 
 Cagiva:
   "125 Mito":                                "Mito 125"                     # PERMUTATION FOLD (verified batch, tier A): AGAINST THE RAW TOTAL (359 vs 224), because the 359 is one register contradicting itself while the manufacturer's own type designation and three other registers agree on Mito-first.
@@ -889,13 +1024,59 @@ Chrysler:
   300C Srt-8: 300C SRT8                       # the badge is the unhyphenated SRT8 (https://en.wikipedia.org/wiki/Chrysler_300, first-gen LX 2005-2010); nl_rdw "300C SRT8" n=42 vs "300C SRT-8" n=4
   300C-Srt-8: 300C SRT8                       # fully hyphenated register shape, same car ("CHRYSLER 300C-SRT-8")
   "300C/SRT-8": 300C SRT8                     # slash shape, same car — third produced form. NB the existing "300C": "300 C" line contradicts the source cited above; filed as debt, not repointed here (9-country id)
-  Town&country LX: Town & Country       # fueleconomy.gov spells it without spaces + trim; official name has them
-  Town&country Touring: Town & Country  # same, Touring trim
+  Town&country LX: Town & Country       # fueleconomy.gov spells it without spaces + trim; official name has them. KEPT — it FIRES (1 row); deleting it would re-mint a record
+  Town&country Touring: Town & Country  # same, Touring trim. KEPT — NOT a dead key: it FIRES on 4 vehicles (nl_rdw ×3, fi_traficom ×1), measured with the pipeline's own key? probe. DEBT.md's "dead key" line was a FALSE DIAGNOSIS, corrected 2026-08-01 (data#147): the slug stayed alive through the UNKEYED sibling `Town & Country Touring` (15 veh), which is now keyed below
   "300C": "300 C"                             # spelling variant of "300 C" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   "300M": "300 M"                             # spelling variant of "300 M" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
-  "300S": "300 S"                             # spelling variant of "300 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Lebaron: Le Baron                           # spelling variant of "Le Baron" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Chrysler: null                              # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+
+  # The modern 300 (LX/LD, 2005-2023). `300 C`, `300 M`, `300 H`, `300L`, `C300` and `300C SRT8`
+  #     are DIFFERENT CARS and all SURVIVE. us_fueleconomy's baseModel is REFUTED here and NOT
+  #     followed: it bases `300 M` (MY1999-2004) and `300C AWD` (MY2005-06) at `300`, which would
+  #     merge the 1999 LH-platform FWD 300M, the LX 300C and the LX/LD 300 — three different cars —
+  #     while promoting `300 SRT8` to its own baseModel two rows away. https://en.wikipedia.org/wiki/Chrysler_300
+  #     NOT folded either: `300C SRT8` and its three settled keys (`300C Srt-8`, `300C-Srt-8`,
+  #     `300C/SRT-8`) — all three FIRE, and `300C/SRT-8` is reachable through exactly ONE
+  #     us_fueleconomy row carrying count 0. A fold there would repoint settled curation on an
+  #     oracle that contradicts itself two rows away. Reachability is counted in ROWS, never vehicles.
+  300 S: "300"                                # 300S is a trim level of the modern 300 (2012+); raws "300 S" (fi/nl/ua)
+  "300S": "300"                               # REPOINT (was → "300 S"): the same trim, unspaced registry form; the settled statement survives one altitude up
+  300 Touring: "300"                          # Touring is a 300 trim level; raws "300 TOURING" (nl/ua)
+  300 Hurst: "300"                            # the 1970 Chrysler 300 Hurst was a limited appearance/performance package on the 300 — https://en.wikipedia.org/wiki/Chrysler_300 ; raw "300 HURST" (fi/nl)
+  Three Hundred: "300"                        # the designation spelled out; raws "THREE HUNDRED", "THREE HUNDRED COUPE" (fi/nl)
+
+  # Town & Country. The marque writes it with the ampersand. SEVEN produced display spellings
+  #     land on the one slug and ALL of them are keyed or display-pinned below — keying only the
+  #     obvious one would have let the record republish under another form and the retirement would
+  #     have silently failed. https://en.wikipedia.org/wiki/Chrysler_Town_%26_Country
+  Town And Country: Town & Country            # the ampersand spelled out — the EPA's own spelling ("Town and Country" baseModel, https://www.fueleconomy.gov/feg/download.shtml). THIS FOLD CARRIES `us` ONTO THE SURVIVOR, which is a North American minivan that carries no US availability today
+  Town & Country Touring: Town & Country      # Touring is a T&C trim level; raws "TOWN & COUNTRY TOURING" (nl_rdw 11 + fi_traficom 4 = 15 vehicles). THIS is the unkeyed sibling that kept `car/chrysler/town-country-touring` alive and made the existing `Town&country Touring` key look dead
+  Town Country Touring: Town & Country        # ampersand dropped by the register; SAME SLUG as the line above
+  Town&country-Touring: Town & Country        # ampersand glued + hyphen; SAME SLUG again — raw "TOWN&COUNTRY-TOURING" (nl)
+  Town Country: Town & Country                # DISPLAY PIN: 47 vehicles publish this form on the survivor's own slug (nl 23, ua 18, fi 4) — without the pin the display flaps by row count (NAMING §7.6 rule 3)
+  Town&country: Town & Country                # DISPLAY PIN: 46 vehicles (nl 22, fi 22, lu 1, nz 1)
+  Town+country: Town & Country                # DISPLAY PIN: 5 vehicles (nl) — the register wrote "+" for "&"
+  Town-Country: Town & Country                # DISPLAY PIN: 3 vehicles (fi/nl)
+  Town &country: Town & Country               # DISPLAY PIN: 2 vehicles (fi/nl)
+  Town& Country: Town & Country               # DISPLAY PIN: 2 vehicles (fi/nl)
+
+  # Trims and bodies of live nameplates
+  Crossfire Roadster: Crossfire               # us_fueleconomy bases "Crossfire Coupe" AND "Crossfire Roadster" at Crossfire — the body split is not a product split — https://www.fueleconomy.gov/feg/download.shtml
+  Crossfire SRT6: Crossfire                   # SRT-6 is the supercharged trim of the Crossfire
+  Sebring LX: Sebring                         # LX is a Sebring trim; us_fueleconomy bases "Sebring 4 Door"/"Convertible"/"AWD" at Sebring
+  Pacifica Limited: Pacifica                  # Limited is a Pacifica trim; us_fueleconomy bases every Pacifica row (2WD/AWD/FWD/Hybrid) at Pacifica
+  Pacifica Touring L: Pacifica                # Touring-L is a Pacifica trim
+  Pacifica Touring-L: Pacifica                # hyphenated spelling — SAME SLUG, both must be keyed
+  Newport Custom: Newport                     # Custom was a Newport trim level — https://en.wikipedia.org/wiki/Chrysler_Newport
+  Newport Royal: Newport                      # Royal was a Newport trim level (1970s)
+  Windsor Deluxe: Windsor                     # De Luxe was a Windsor trim level — https://en.wikipedia.org/wiki/Chrysler_Windsor
+  Windsor Nassau: Windsor                     # Nassau was the Windsor's two-door hardtop BODY name
+  Royal Eight: Royal                          # the straight-eight engine variant of the Chrysler Royal — an engine, not a nameplate — https://en.wikipedia.org/wiki/Chrysler_Royal
+  Imperial Crown: Imperial                    # Crown was the Imperial's senior trim level (by 1967 "the Imperial Division, offering three ranges (Custom, Crown, and LeBaron)") — https://en.wikipedia.org/wiki/Chrysler_Imperial
+  Crown Imperial: Imperial                    # the same designation with the tokens inverted (the limousine)
+  Imperial Le Baron: Imperial                 # LeBaron was the Imperial's TOP TRIM (and a coachbuilder name), NOT the separate 1977-95 Chrysler LeBaron — the `Le Baron` record SURVIVES
+  Charger R/T: Charger                        # R/T is the performance trim of the Australian Chrysler Valiant Charger; raws "CHARGER R/T" (nl/nz) beside "CHARGER XL" — https://en.wikipedia.org/wiki/Chrysler_Valiant_Charger
 
 Citroën:
   # ── casing-contradiction batch: the BX family finished (BX 16/19 TRS were
