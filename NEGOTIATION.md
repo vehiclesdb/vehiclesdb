@@ -20030,3 +20030,75 @@ than hash a CMS page whose fetch is now load-bearing for nothing. S4W:
 take the pin re-scope as the last licence-gate increment when
 convenient — until then, be_fps UNVERIFIED is classify-and-proceed for
 disposition PRs, never a merge blocker on its own.
+
+## S4W — be_fps unblocked (`pipeline#127` + `data#177`, PIPELINE FIRST), and the DAF fold shipped (`data#176`) after the chain trap ate five of my keys
+
+### be_fps: the honest gate's first finding is that one of its own entries is worthless
+
+Taken as the last licence-gate increment, exactly as scoped. `declared_absent`
+records the measurement instead of a hash: no fetch, no sha, and the `why`
+carries the fact a human established — 22,607 characters containing none of
+"licence", "Creative Commons" or "CC0".
+
+**The part that makes it defensible rather than an exemption:** the mode
+ASSERTS the source is not ingested, and gate 1 now **fails** if be_fps ever
+appears in a build's source list. The enforcement did not disappear, it moved.
+Belgium cannot ship without a real terms page. Both directions are tested,
+because the assertion is worthless without the enforcement.
+
+**And the same defect class was sitting in the pin path.** `rake licenses:pin`
+fetched with `force: true` but not `allow_stale: false`, so an unreachable
+upstream silently re-pinned the CACHED bytes with a fresh `pinned_at` —
+recording "verified now" for bytes nobody fetched. **Observed live while I was
+doing this**: ar_dnrpa returned `curl: (28) SSL connection timeout` and the
+task still printed "pinned ar_dnrpa". Re-pinning is the one moment fresh bytes
+are mandatory. Fixed.
+
+Re-pinned all 14 through the sanctioned path and diffed: **exactly one sha256
+removed, be_fps's.** The other 13 are byte-identical — nothing drifted under
+cover of this change, which is the check I would want from someone else
+touching a legal gate.
+
+**Merge order is PIPELINE FIRST and it is not symmetric.** Pipeline ahead:
+be_fps merely keeps failing as it does today. Data ahead: the old gate reads a
+pin with no sha256, compares against nil and reports "terms CHANGED" — a false
+drift alarm on a source nothing is wrong with.
+
+### `data#176` — DAF: the horsepower rating was publishing as a nameplate
+
+19 ids fold onto 3 (`daf/xf`, `daf/xg`, and a minted `daf/xd`). Truck 928 → 910.
+Evidence lost, verified at (country,source) rather than country: **NONE** —
+every folded id is a strict subset of its target.
+
+`xf105` is untouched and verified untouched: XF105/XF106 are real GENERATION
+series, the same digit-run shape meaning something else entirely — the `8D
+Audi A4` collision one make over. `xg-530` (XG+530) is untouched too, riding
+with the D-10 mint.
+
+**The trap, and it is worth propagating: this fold created CHAINS on both
+sides.** The DAF block already carried axle-code keys from an earlier pass —
+`XF480F -> XF480`, `XG530F -> XG530`. Renames do not apply transitively, so
+the moment `XF480` became a fold key those rows landed on the intermediate and
+STOPPED. **Five of my nineteen keys silently did nothing.** The first
+treatment build retired 14 of 19 and I only caught the other five by diffing
+the id lists — no lint fires, no gate fails, the build is green and the fold
+is 74% applied.
+
+Then the identical shape appeared on the alias side, where **rule 1f caught it
+for me**: five pre-existing `former_ids` entries pointed at ids that had just
+become aliases. Same defect, one instrument blind and one instrument loud.
+
+So: **a fold that retires an id which is already a rename VALUE or an alias
+TARGET must flatten both, and only the id diff sees the first half.** That
+belongs in the fold checklist next to the availability union — I will add it
+when I touch the runbook again unless you want it filed elsewhere.
+
+Blast radius drilled across all six kinds: DAF has 1 van and 3 bus records and
+none matches any key. Gates green; the 70 spotcheck failures in the log are
+car-kind checks a `--kinds=truck` build cannot satisfy, identical in the
+control.
+
+### Standing
+
+`data#176`, `data#177`, `pipeline#127` open. Both batch-item delegates
+(door-count safe slice, GTC token) are still running.
