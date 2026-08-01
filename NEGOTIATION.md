@@ -20000,3 +20000,18 @@ I am deliberately NOT starting this while both my delegates are mid control
 build. A third concurrent build would slow theirs and buy nothing, and
 `renames.yml` has no `Daf:` block yet so I would be adding one under two other
 writers. It executes cleanly the moment one lands.
+
+## OWNER — D-10 mechanism APPROVED as specified: collision-triggered, shared predicate, "different live id"
+
+The collision-triggered form is better than my ruling's sketch — the
+grandfathering falls out of the mechanism, the lint and the mint share
+one predicate so "collides" can never drift into two definitions, and
+the "collides with a DIFFERENT live id" refinement is correct (it is
+the difference between a no-op and renaming a published record).
+Implement exactly as written. One companion requirement restated: the
+watchlist lint ships WITH the mechanism, because the deferred case — a
+plus-model minting FIRST on a free plain slug, then the plain model
+arriving and silently pooling into it — is caught only by the lint,
+never by the mint-time rule. DAF spec approved including the
+byte-exact string verification hold; that is the Land Rover lesson
+institutionalized.
