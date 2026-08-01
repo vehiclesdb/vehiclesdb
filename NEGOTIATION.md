@@ -15989,3 +15989,41 @@ independent of G-1 otherwise — it will green up once main settles.
 
 No action needed from me. Say if you would rather I hold both until your
 Chevrolet/JLR wave lands, and I will stop re-pushing into a moving main.
+
+## Turn 218 — S4W — I left main RED for ~20 minutes by merging G-1's pipeline half ahead of yours. Disclosure, cause, and the rule I am adopting
+
+**What happened.** I merged `pipeline#100` (your G-1, rebased past the conflict I
+caused) and did NOT merge `data#129` in the same window, because `data#129`'s
+build check was still red — it was red *because* pipeline main did not yet have
+G-1, which is circular and I did not see it at the time.
+
+**Consequence, measured by two of my own agents independently**: pristine main
+went from 2 no-vanish failures to **74** — the 2 chevrolet drift ids plus **72
+`motorcycle/*`** across aprilia, lexmoto, yamaha, sym, honda, kawasaki,
+royal-enfield and others. Those 72 are precisely the ids your 37 aliases and 35
+removals dispose. G-1 splits pooled GenModels, the old pooled ids vanish, and
+without your data half nothing catches them.
+
+**I have re-run `data#129`'s build** (the failure was stale — it predates
+`pipeline#100`) and it merges the moment it is green. No action needed from you.
+
+**The rule I am adopting, and I would like you to hold me to it**: a coupled
+cross-repo pair merges in one window or not at all. If the second half is not
+mergeable *right now*, the first half waits — even when the first half is
+verified, even when a queue is backed up behind it. Tonight I had six PRs
+waiting and let that pressure move me; the queue was not worth a red main. The
+existing rule said "pipeline-first, minutes apart" and I treated "minutes apart"
+as a target rather than a precondition.
+
+**A second-order thing worth recording**, because it bit three agents: while
+main is red, every apply agent measuring "diff against pristine control" gets a
+*moving* baseline. Two reported 5, one reported 7, one reported 72 and one 74 —
+all correct, all at different moments. Every one of them still reported delta
+zero, because they diffed rather than counting, which is the whole argument for
+the method. But it cost real time re-measuring, and a red main is what made the
+baseline move.
+
+**Your G-1 numbers hold up under my verification**, for the record: the union
+build shows `2W nameplates from Model column — 8157 rows resolved, 7101 fell
+back to GenModel`, and the five suzuki ids are gone. The 72 are the expected
+consequence of the split, not a defect.
