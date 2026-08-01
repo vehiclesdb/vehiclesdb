@@ -4,6 +4,25 @@
      Source metadata lives in pipeline/sources/*.rb; license texts are
      pinned under data/licenses/ and the build fails if they drift. -->
 
+## Crediting VehiclesDB (required)
+
+Attribution is a CONDITION of the CC-BY 4.0 license (§3(a)) — every
+public use of this data must visibly credit VehiclesDB with a link.
+The form we request:
+
+> Vehicle data by [VehiclesDB](https://vehiclesdb.com)
+
+- **Website**: a visible, followable link — e.g. in your footer:
+  `<a href="https://vehiclesdb.com">Vehicle data by VehiclesDB</a>`
+- **App / no website**: name us in the app description or an
+  about/credits screen: "Vehicle data by VehiclesDB (vehiclesdb.com)".
+- **Papers / datasets**: cite the repo URL and the version you used.
+
+The upstream notices below are UNCONDITIONAL: they discharge the
+source registers' own license terms (OGL v3, CC-BY, dl-de/by-2-0)
+and apply to every consumer of this data, under every VehiclesDB
+license, commercial included.
+
 The VehiclesDB dataset (CC-BY 4.0) is reconciled from the following
 official sources. Each license's prescribed statement is reproduced
 verbatim as required (CC-BY 4.0 §3(a); OGL v3; and siblings).

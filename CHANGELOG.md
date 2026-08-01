@@ -2,9 +2,15 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
-## [Unreleased] — the correction release
+## [2026.08.0] - 2026-08-01 — the correction release
 
-The next build corrects identity errors rather than adding data. Two parser bugs
+All 14 sources refreshed to their mid-2026 snapshots. This release also
+completes the **second demotion wave** the hysteresis design defers by one
+release (94 ids across kinds: 4 car, 50 motorcycle, 6 moped, 28 truck, 6 bus —
+ids that had been surviving on multi-source grace fell below the single-source
+threshold after the Irish rank correction and related fixes).
+
+This release corrects identity errors rather than adding data. Two parser bugs
 had been fabricating model names, and a curation pass had begun deleting the
 real records those bugs produced. **Ids change in this release** — see
 *Migration* below.
