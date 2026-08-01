@@ -18404,3 +18404,105 @@ bothers me: it checks `fi`/`uk`/`de` and reports `OK (14 adapters, 5 shipped
 texts)`, wording that reads like 14 adapters were checked when 11 have no
 claim row at all. A lint that overstates its coverage is worse than one that
 admits a gap, and I wrote it.
+
+---
+
+## Turn 231 — S2W — `lint_claims` coverage closed (pipeline#119), and §C-1 MEASURED: the dossier's advisory shape is SAFE, but only once you stop counting registrations. 441 new ids, 11 publish, 9 are real nameplates.
+
+**pipeline#119 — the `lint_claims` coverage item.** Two parts. First, the tool
+**overstated its own coverage**: it printed `OK (14 adapters, 5 shipped texts)`,
+which reads as "14 adapters checked" when three were. That is the same
+doc-vs-code drift this tool exists to catch, one level up, and worse because a
+green lint is trusted. It now prints `4/14 adapters have claim rows (7 rows) …
+NO claim row: ar_dnrpa, ca_nrcan, es_dgt, ie_cso, lu_snca, my_jpj, nz_nzta,
+th_dlt, ua_mvs, us_fueleconomy` — the gap is stated on every run and is a
+work-list.
+
+Second, three new rows: **nl closed** (the `not_accumulating` declaration, and
+the "natively temporal" claim against the two adapters still requesting their
+date columns), plus one guarding **uk_dft's newest-quarter read** — `count_idx`
+still 6 AND the cached header's column 6 still a quarter label, because DfT
+rotates assets every release and a column reorder upstream is a wrong number
+that still validates every gate. That row exists because I made exactly that
+mistake by hand last night.
+
+**All three negative-tested, and the test paid for itself immediately:** the uk
+row did NOT fire at first. Its claim regex used literal spaces and **the PRD
+wraps that sentence mid-phrase**, so it never matched the prose — a lint row
+that cannot fail, which is strictly worse than no row. Same hazard the file
+already documents for `NO_ATTRIBUTION_OFFER`; it is now a named repeat class in
+that file.
+
+---
+
+## §C-1 — measured, per the dossier's own instruction, and the answer flipped twice
+
+**The dossier asks to "measure the distribution before choosing a side."** Done,
+on the NL raws (car + all three 2W tables): **1,796 distinct parenthetical
+strings, 51,175 registrations.** Shape distribution:
+
+```
+CODE (NAME with space)  19,345   "JT-50 (SILVER FOX)", "FRH (FORMULA 50)"
+CODE-ish (CODE-ish)     13,162   "DXL-50 (TORNADO)", "ROLLER (NHW-M)"
+other                   10,678   "ATV-50R S (SPORTY)"
+NAME (POWER)             4,703   "KTM 1190 ADVENTURE R (110 KW)"
+paren-only (head empty)  2,360   "(NT 650 V)", "(ZX750 PP)"
+NAME (noise <=2ch)         927   "TUAREG RALLY (FL)"
+```
+
+**First answer — the advisory shape looked unshippable.** Strip the paren and
+re-run on the remainder: 27,893 registrations land on live records but
+**19,485 mint new nameplates, 16,420 of them mopeds** — because for the dominant
+shape the head IS the code and the name is inside. That reads exactly like the
+junk?-door-count disaster (18,872 minting type-code ids).
+
+**Second answer — a side-choosing rule did NOT fix it.** I built one (prefer the
+parenthetical when the head is code-shaped and the inner reads like a name, drop
+power/capacity/noise inners, use inner when the head is empty). Result: live
+30,251 / mint **19,888 — slightly WORSE**. The samples say why: `ATV-50R S
+(SPORTY)` and `ATV-50R U (UTILITY)` put a TRIM in the brackets, not a name.
+**The parenthetical is genuinely heterogeneous; no side-picking rule wins.**
+
+**Third answer, and the correct one: I was using the wrong denominator.**
+Registrations are not ids. An id only reaches the catalog if it clears
+publication, and these NL rows are SINGLE-SOURCE, so they need the full kind
+threshold. Re-measured that way, the advisory shape produces:
+
+```
+30,076 registrations rescued onto EXISTING records
+   441 new ids created — of which ELEVEN clear their threshold and publish
+       moped      116 ids ->  8 publish   motorcycle 194 ids -> 3 publish
+       car        131 ids ->  0 publish
+```
+
+**And nine of the eleven are real nameplates**, not type codes: `solex/solex-oto`
+(7,628) · `sparta/spartamet` (1,813) · `peugeot/rapido` (1,554) · `tomos/a35`
+(1,169) · `tomos/revival-ts` (822) · `honda/wallaroo` (480) ·
+`ktm/990-supermoto-t` (551). **The only two type codes are `yamaha/mtn850d` and
+`yamaha/mtt850`** — MT-09 SP and Tracer 900 — and both are already inside the
+yamaha §A fold scope. The other 430 new ids stay in `build/candidates/` until a
+second register corroborates them, which is the system working as designed.
+
+**So the dossier's simple shape IS shippable, and my two earlier alarms were
+both denominator errors.** That is three denominator mistakes in one night
+(2014 column, registrations-not-ids, twice). The habit that caught all three is
+the same one: **derive it a second way and diff.** I would rather record that
+than the individual numbers.
+
+**What I have NOT done, deliberately.** I have not shipped C-1. It is a
+normalizer change that alters PRODUCED strings catalog-wide, the dossier
+explicitly calls it "owner's call, this is advisory", I have **five PRs open and
+unreviewed**, and the ordering question from Turn 227 is still unanswered.
+Stacking a catalog-wide string change on top of an open sequencing question is
+precisely how the folds end up keyed twice — the thing the dossier warns about
+on its first page. The measurement is the deliverable; the ruling is yours.
+
+**Ready on request, in either order:** (a) ship C-1 as the simple shape with the
+two Yamaha type codes keyed in the same change, then the §A folds against
+settled raws; or (b) folds first and I re-key afterwards. **(a) is what the
+evidence supports.**
+
+**Board.** BMW pair MERGED. Open and green: pipeline#116+data#165 (G-1
+residual), pipeline#117+data#166 (lint_enrich seam + flip-back debt, now also
+carrying a one-line VEH0120 arithmetic fix), pipeline#118 (CI), pipeline#119
+(lint_claims).
