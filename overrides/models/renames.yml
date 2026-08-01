@@ -3037,6 +3037,111 @@ Jeep:
   New Compass: Compass                        # same vehicle as car/jeep/compass (live, ca_nrcan+us_fueleconomy among 11 countries) — https://www.jeep.com/compass.html
   New Wrangler: Wrangler                      # same vehicle as car/jeep/wrangler (live, ca_nrcan+us_fueleconomy among 11 countries) — https://www.jeep.com/wrangler.html
   New Wrangler Unlimited: Wrangler Unlimited  # same vehicle as car/jeep/wrangler-unlimited (live, ca_nrcan+us_fueleconomy) — the 4-door Wrangler body, https://www.jeep.com/wrangler.html
+  # ── wave-7 CLEAN batch (2026-08-01). Adjudicated primarily on us_fueleconomy's
+  # `baseModel` column (col 66, which the pipeline does not read — the standing
+  # DEBT.md item). For JEEP that field is WELL-BEHAVED: it is a regulator's own
+  # statement of which string is the model, internally consistent 1984-2026, and
+  # it settles the whole Wrangler/Cherokee/Grand Cherokee/Wagoneer trim ladder in
+  # one pass. https://www.fueleconomy.gov/feg/download.shtml
+  # `Cherokee` and `Grand Cherokee` are DIFFERENT VEHICLES and both survive; so do
+  # `Wagoneer` and `Grand Wagoneer`. Every key below was observed as a `probed_key`
+  # on a real registry row in a full-corpus replay — none is hand-derived.
+  # NOT IN THIS BATCH: `Cherokee Sport: Cherokee`. It folds cleanly in the car kind,
+  # but renames are KIND-BLIND and the same key would take the live
+  # van/jeep/cherokee-sport (fi+nl, 2 v) onto van/jeep/cherokee — which
+  # Reconciler.cross_kind_prune! deletes at 99.993% car dominance (car 27,434 v
+  # van 2). Withheld pending per-kind rename scope (DEBT.md hygiene-2 queue). ──
+  # — Cherokee (NOT Grand Cherokee — different vehicles, both survive) —
+  Cherokee Chief:      Cherokee   # "Chief" is the SJ Cherokee's appearance package — https://en.wikipedia.org/wiki/Jeep_Cherokee_(SJ)
+  Cherokee Limited:    Cherokee   # Limited trim
+  Cherokee Trailhawk:  Cherokee   # EPA "Cherokee Trailhawk 4WD" → baseModel `Cherokee`
+  # — Grand Cherokee: 12 fold keys + 1 DISPLAY PIN —
+  "Grand-Cherokee":            Grand Cherokee  # DISPLAY PIN, not a fold (NAMING §7.6 rule 3): lu_snca writes the hyphenated form and it lands on the SAME SLUG as the spaced form, so the published display flaps by row count between builds
+  "G-Cherokee":                Grand Cherokee  # uk_dft's abbreviation (gb)
+  "G. Cherokee":               Grand Cherokee  # nl_rdw's dotted abbreviation — SAME SLUG as G-Cherokee, so both are required
+  "Gr. Cherokee":              Grand Cherokee  # nl_rdw's other abbreviation
+  "Gr Cherokee":               Grand Cherokee  # unpunctuated twin
+  "Gr.cherokee":               Grand Cherokee  # unspaced twin
+  Grand Cherokee 4XE:        Grand Cherokee  # EPA "Grand Cherokee 4xe" → baseModel `Grand Cherokee`; 4xe is the plug-in POWERTRAIN
+  Grand Cherokee Crd:        Grand Cherokee  # CRD = Common Rail Diesel, an engine
+  Grand Cherokee L:          Grand Cherokee  # EPA "Grand Cherokee L 2WD/4WD" → baseModel `Grand Cherokee`; L is the long-wheelbase three-row BODY
+  Grand Cherokee Laredo:     Grand Cherokee  # Laredo trim
+  Grand Cherokee Limited:    Grand Cherokee  # Limited trim
+  Grand Cherokee Overland:   Grand Cherokee  # Overland trim
+  Grand Cherokee Srt:        Grand Cherokee  # EPA "Grand Cherokee SRT 4WD" → baseModel `Grand Cherokee`
+  Grand Cherokee SRT8:       Grand Cherokee  # EPA "Grand Cherokee SRT8 4WD" → baseModel `Grand Cherokee`
+  "Grand-Cherokee SRT8":       Grand Cherokee  # lu_snca's hyphenated twin — SAME SLUG, both required
+  Grand Cherokee Summit:     Grand Cherokee  # Summit trim
+  Grand Cherokee Trackhawk:  Grand Cherokee  # EPA "Grand Cherokee Trackhawk 4WD" → baseModel `Grand Cherokee`
+  Grand Cherokee Wk:         Grand Cherokee  # EPA "Grand Cherokee WK 4WD" → baseModel `Grand Cherokee`; WK is the PLATFORM code
+  # — Wagoneer / Grand Wagoneer (two nameplates, both survive) —
+  Wagoneer L:         Wagoneer        # EPA "Wagoneer L 2WD/4WD" → baseModel `Wagoneer`; L is the long body
+  Wagoneer Limited:   Wagoneer        # EPA "Wagoneer Limited 4WD" → baseModel `Wagoneer`
+  Grand Wagoneer L:   Grand Wagoneer  # EPA "Grand Wagoneer L 4WD" → baseModel `Grand Wagoneer`
+  Grand:              Grand Wagoneer  # TRUNCATION STUB: fi_traficom's raw "Grand Wagoneer" produces the bare token `Grand` in the truck kind — the DEBT.md "truncation/family stubs" class caught in the act
+  # — Liberty / Compass / Patriot / Renegade —
+  Liberty Limited:    Liberty   # Limited trim
+  Liberty Sport:      Liberty   # Sport trim
+  Compass Limited:    Compass   # Limited trim
+  Compass Sport:      Compass   # Sport trim
+  Patriot Latitude:   Patriot   # Latitude trim
+  Patriot Sport:      Patriot   # Sport trim
+  Renegade Trailhawk: Renegade  # EPA "Renegade Trailhawk 4WD" → baseModel `Renegade`
+  # — Wrangler: the largest cluster. Platform codes (YJ/TJ/JK/JL), trim badges and
+  # displacements. `Wrangler Unlimited` SURVIVES as its own id on the settled
+  # 2026-08-01 line `New Wrangler Unlimited: Wrangler Unlimited`; the EPA disagrees
+  # (it resolves "Wrangler Unlimited 4WD" to baseModel `Wrangler`) and this batch
+  # FLAGS that divergence rather than reversing a settled line. —
+  "Wrangler 4":            Wrangler   # truncated comma-decimal 4.0 (nl "WRANGLER 4,0") and door count (th "WRANGLER 4 DOOR 2.0 RUBICON")
+  Wrangler 4.0L Sport:   Wrangler   # displacement + trim
+  Wrangler Sport 4.0L:   Wrangler   # the same two tokens reversed (ar+nl) — both keyed
+  Wrangler 4XE:          Wrangler   # EPA "Wrangler 4dr 4xe" → baseModel `Wrangler`; the plug-in powertrain
+  Wrangler Jk:           Wrangler   # JK = the 2007-18 PLATFORM code
+  Wrangler Yj:           Wrangler   # YJ = the 1986-95 platform code
+  Yj Wrangler:           Wrangler   # the same two tokens reversed
+  "Yj.wrangler":           Wrangler   # unspaced twin
+  Wrangler Tj:           Wrangler   # TJ = the 1996-2006 platform code
+  "Wrangler/Tj":           Wrangler   # the EPA's slash form of the same — SAME SLUG as the line above, both required
+  Tj:                    Wrangler   # the bare platform code (nl_rdw "TJ", ca_nrcan "TJ 4X4")
+  Yj:                    Wrangler   # the bare platform code (nl_rdw "YJ", "YJ CABRIOLET")
+  Wrangler Laredo:       Wrangler   # Laredo trim
+  Wrangler Renegade:     Wrangler   # the Renegade PACKAGE of the Wrangler — NOT the separate `Renegade` nameplate (raws are "WRANGLER RENEGADE")
+  Wrangler Rubicon:      Wrangler   # EPA "Wrangler Rubicon 4dr 4WD" → baseModel `Wrangler`
+  Wrangler Rubicon 392:  Wrangler   # Rubicon trim + the 392 cu-in engine
+  Wrangler Sahara:       Wrangler   # Sahara trim
+  Wrangler Se:           Wrangler   # SE trim
+  Wrangler Sport:        Wrangler   # Sport trim
+  Wrangler X:            Wrangler   # X trim
+  Wrangler U:            Wrangler   # a one-letter registry truncation (es+nl, raw "WRANGLER U"); folded to the NAMEPLATE, not to Wrangler Unlimited — the same corpus shows nl_rdw using a bare "U9" body code on other Wrangler rows, so "U" is at least as likely a truncated body code as a truncated "Unlimited"
+  # — Wrangler Unlimited (the 4-door body, kept as its own id by the settled line) —
+  Wrangler Jk Unlimited:      Wrangler Unlimited  # platform code + the Unlimited body
+  Wrangler Jl Unlimited:      Wrangler Unlimited  # platform code + the Unlimited body
+  Wrangler Unlim:             Wrangler Unlimited  # lu_snca/nl_rdw truncation "WRANGLER UNLIM."
+  Wrangler Unlimited Sahara:  Wrangler Unlimited  # Unlimited + Sahara trim
+  # — CJ family: extends the settled jeep.com hyphenation to every spelling —
+  Cj 7 Laredo:     CJ-7   # Laredo trim on the CJ-7; the settled `Cj 7: CJ-7` already fixed the bare form — https://www.jeep.com/history/1970s.html
+  Cj 7 Renegade:   CJ-7   # the Renegade package on the CJ-7
+  "Cj-7 Renegade":   CJ-7   # hyphenated twin — SAME SLUG, all three required
+  "CJ.7 Renegade":   CJ-7   # dotted twin
+  Kaiser Cj 5:     CJ-5   # Kaiser-Jeep, the CORPORATE owner 1953-70, not a nameplate — https://en.wikipedia.org/wiki/Jeep
+  "Kaiser Cj-5":     CJ-5   # hyphenated twin
+  "C.J.5":           CJ-5   # dotted spelling
+  "C J 5":           CJ-5   # spaced spelling
+  "CJ/5":            CJ-5   # slashed spelling
+  "Cj 8":            CJ8    # the published form is the fused CJ8; consolidating onto the PUBLISHED form rather than re-keying a settled id — https://www.jeep.com/history/1980s.html
+  "Cj-8":            CJ8    # hyphenated twin
+  "Cj 3B":           CJ-3B  # MINTS the CJ-3B at the settled jeep.com hyphenation — https://www.jeep.com/history/1950s.html
+  "Cj-3B":           CJ-3B  # already-hyphenated twin, keyed so the slug does not flap
+  "Cj 6":            CJ-6   # MINTS the CJ-6 (the long-wheelbase CJ-5) at the same hyphenation — https://www.jeep.com/history/1950s.html
+  "Cj-6":            CJ-6   # hyphenated twin
+  # — military and heritage —
+  Willys Overland:  Willys   # Willys-Overland is the COMPANY that built the Jeep, not a model (raws "WILLYS - OVERLAND", "WILLYS OVERLAND") — https://en.wikipedia.org/wiki/Willys_MB
+  "Willy's":          Willys   # apostrophised misspelling
+  Willy S:          Willys   # the caser's split of the same
+  "Md M38A1":         M38A1    # "MD" is the nl_rdw prefix on the M38A1 military Jeep — https://en.wikipedia.org/wiki/Willys_M38A1
+  "Md-M38A1":         M38A1    # hyphenated twin
+  # — Recon: MINTS the nameplate —
+  Recon Moab:  Recon   # EPA "Recon MOAB 4WD" → baseModel `Recon`; Moab is the launch EDITION. MINTS car/jeep/recon (ca_nrcan + us_fueleconomy, 2 sources ⇒ publishes; both are zero-count approval catalogues) — https://www.jeep.com/recon.html
 
 Joint:
   E 33: E33                                   # spelling variant of "E33" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -4972,7 +5077,11 @@ Opel:
   Grandland X: Grandland                    # Opel dropped the X at the 2021 facelift (opel.de/fahrzeuge/grandland) — one nameplate
   Mokka X: Mokka                            # Mokka X (2016-2019) is the same nameplate as the 2020+ Mokka; the X was dropped
   Insignia Grand Sport: Insignia            # Grand Sport is the liftback BODY of Insignia B (Sports Tourer is the estate) — bodies fold
-  Astra Twin Top: Astra  # coupé-cabrio variant
+  # RETIRED 2026-08-01 (wave-7): `Astra Twin Top: Astra` was DEAD — a full-corpus
+  # replay probes it on ZERO rows, while `Astra Twintop: Astra` (below) fires on
+  # 2 rows (es_dgt + fi_traficom). The spaced spelling is not a string the
+  # pipeline ever produces, so the line was silently inert. Removing it changes
+  # no behaviour and stops the next reader treating it as live coverage.
   Astra-CC: Astra                           # registry contraction of the Astra convertible/coupe body — folds into the nameplate
   Astra-Caravan: Astra   # estate variant
   Opel: null                                  # registry rows where the make was written into the model column (car+van kinds) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
@@ -4998,7 +5107,7 @@ Opel:
   Astra Notchback: Astra   # "Notchback" is the saloon BODY (FI/NL registries) — https://en.wikipedia.org/wiki/Opel_Astra
   Astra-Sedan: Astra       # NL/FI "ASTRA-G-SEDAN"/"ASTRA-F-SEDAN"; saloon BODY (2,054 FI registrations)
   Astra Sport: Astra       # raws are "ASTRA SPORT TOURER": the estate. VARIANT_SUFFIXES matches "SPORTS TOURER" (plural) so the singular escapes — https://en.wikipedia.org/wiki/Opel_Astra
-  Astra Twintop: Astra     # the retractable-hardtop BODY; the settled "Astra Twin Top: Astra" above is the SPACED spelling of this exact string
+  Astra Twintop: Astra     # the retractable-hardtop BODY. THE ONLY spelling of it the pipeline produces (2 rows, es+fi) — the spaced "Astra Twin Top" key that used to sit above was probed by zero rows and was retired in wave-7
   Ascona B: Ascona         # spaced generation letter B (1975-81) — https://en.wikipedia.org/wiki/Opel_Ascona
   Ascona 400: Ascona       # Group B rally homologation VERSION of the Ascona B; "the more successful of the two" (vs Manta 400) — https://en.wikipedia.org/wiki/Opel_Manta
   # Kadett: en.wikipedia — generations A-E; Coupé is a body style across
@@ -5947,6 +6056,88 @@ Smc:
 Studebaker:
   Studebaker: null                            # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
+Subaru:
+  # ── wave-7 CLEAN batch (2026-08-01). NEW BLOCK: Subaru had NO rename block at
+  # all — 85 published records, zero curation lines — which is also why
+  # gen_review_pack.rb's recorder is structurally blind to this make (it wraps
+  # only makes that already have a block; report_junk_drops.rb's ProbeRenames,
+  # which always returns a block, is what made these rows observable).
+  # Oracle for the model-vs-version calls: us_fueleconomy's `baseModel` column
+  # (col 66, unread by the pipeline). For SUBARU that field is MIXED and partly
+  # self-contradicting — it emits both `Legacy/Outback` and a standalone `Legacy`
+  # in overlapping model years — so it is used only where it is unambiguous and
+  # is NOT used to adjudicate Legacy vs Outback.
+  # https://www.fueleconomy.gov/feg/download.shtml
+  # TWO SETTLED POSTURES FOLLOWED, NOT RE-LITIGATED:
+  #  * Market-name pairs are REBADGE relations, never folds (the wave-5 Mazda
+  #    rule). `Xv` ↔ `Crosstrek` and `Legacy` ↔ `Liberty` keep separate ids; what
+  #    folds is the TRANSITIONAL badge `XV Crosstrek`, which the EPA's own
+  #    baseModel resolves to `Crosstrek`. car/subaru/e-outback likewise stays
+  #    SEPARATE — it is the European name of the Trailseeker BEV, a real distinct
+  #    product, NOT an e-prefixed artefact of car/subaru/outback.
+  #  * `Wrx` and `Wrx Sti` are the marque-level line (2014→); `Impreza WRX` is the
+  #    1992-2014 Impreza VERSION. The EPA splits at exactly that year, so the
+  #    `Impreza …` spellings fold into Impreza and `Wrx Sti` folds into `Wrx`.
+  # NOT IN THIS BATCH: a rescue key for the junk?-killed `Subaru "1.8"` (136 v).
+  # That string is probed in the MOTORCYCLE kind too and renames are kind-blind,
+  # so the key would mint motorcycle/subaru/1800 for a vehicle class Subaru has
+  # never built. Filed for the per-kind rename scope (DEBT.md hygiene-2). ──
+  # — Forester: one nameplate, 1997→, whose trims/engines took eight ids —
+  Forester 2.5X:       Forester   # 2.5 engine + X trim
+  Forester 2.5XT:      Forester   # 2.5 turbo (XT) engine
+  Forester Xt:         Forester   # XT = the turbo engine badge
+  Forester Sti:        Forester   # STI = Subaru Tecnica International's performance version
+  Forester Sport:      Forester   # EPA pools "Forester Sport/Touring AWD" onto baseModel `Forester`
+  Forester Pzev:       Forester   # PZEV = a California emissions CERTIFICATION, not a model
+  Forester Wilderness: Forester   # EPA "Forester Wilderness AWD" → baseModel `Forester`
+  Forrester:           Forester   # SPELLING — doubled-R misspelling (fi+nl)
+  # — Impreza: trims, door counts, comma-decimal displacements, and the pre-2014
+  # WRX versions. `Wrx`/`Wrx Sti` remain SEPARATE ids — see the header. —
+  "Impreza 2":                Impreza   # truncated comma-decimal displacement (raws "IMPREZA 2,0 GT TURBO AWD", "IMPREZA 2,5T WRX S")
+  Impreza 2.0GT:            Impreza   # displacement + GT trim
+  "Impreza 4":                Impreza   # DOOR COUNT — raws "Impreza 4-Door AWD" (ca_nrcan) / "Impreza 4-Door" (us_fueleconomy)
+  "Impreza 5":                Impreza   # door count — "Impreza 5-Door"
+  Impreza GT Turbo:         Impreza   # engine + trim
+  Impreza R Sport:          Impreza   # R and Sport are trims
+  Impreza Sti:              Impreza   # STI version
+  "Impreza Turbo 2000":       Impreza   # engine badge
+  Impreza Wagon:            Impreza   # the estate BODY; EPA baseModel `Impreza/Outback Sport`
+  Impreza Wrx:              Impreza   # the WRX VERSION of the 1992-2014 Impreza; the post-2014 standalone WRX keeps car/subaru/wrx
+  Impreza Wrx Sti:          Impreza   # same, STI version
+  "Impreza Wrx-Sti":          Impreza   # hyphenated spelling — SAME SLUG as the line above, so BOTH are required
+  "Impreza Wrx-Sti Type Uk":  Impreza   # + the UK-market type designation
+  Impreza Wrx Turbo:        Impreza   # same
+  Outback Sport:            Impreza   # NOT AN OUTBACK: "Outback Sport" is the US name of the Impreza wagon — EPA baseModel `Impreza/Outback Sport` — https://en.wikipedia.org/wiki/Subaru_Impreza
+  "Outback-Sport":            Impreza   # hyphenated spelling of the same, SAME SLUG — both required
+  # — Legacy —
+  "Legacy 2":       Legacy   # truncated comma-decimal displacement
+  Legacy 3.0R:    Legacy   # 3.0 engine + R trim
+  Legacy B4:      Legacy   # B4 is the JDM saloon designation of the Legacy — https://en.wikipedia.org/wiki/Subaru_Legacy
+  Legacy B4 Rsk:  Legacy   # B4 + the RSK turbo trim
+  Legacy GT:      Legacy   # GT is the turbo trim
+  Legacy Wagon:   Legacy   # the estate BODY
+  # — Outback (incl. the launch badge "Legacy Outback") —
+  Legacy Outback:    Outback   # the Outback launched AS the "Legacy Outback" and dropped the prefix; ua+fi+nl raws are literally "LEGACY OUTBACK" — https://en.wikipedia.org/wiki/Subaru_Outback
+  "Legacy/Outback":    Outback   # the EPA/NRCan SLASH label for the same car, SAME SLUG as the line above — keyed together or the slug republishes. All such rows are ZERO-count approval rows (ca_nrcan, us_fueleconomy) and ca+us are already on both Legacy and Outback, so this moves presence, not counts
+  Outback 2.5I:      Outback   # displacement + injection
+  Outback 3.0R:      Outback   # displacement + R trim
+  Outback 3.6R:      Outback   # displacement + R trim
+  Outback Pzev:      Outback   # emissions certification
+  Outback Touring:   Outback   # Touring trim
+  Outback Wagon:     Outback   # the estate BODY (the Outback has no other body)
+  Outback Wilderness: Outback  # EPA "Outback Wilderness AWD" → baseModel `Outback`
+  # — Crosstrek (the export name of the XV; `Xv` stays a SEPARATE id) —
+  Xv Crosstrek:            Crosstrek  # the transitional 2012-17 badge; EPA "XV Crosstrek AWD" → baseModel `Crosstrek`
+  Crosstrek Wilderness:    Crosstrek  # EPA "Crosstrek Wilderness AWD" → baseModel `Crosstrek`
+  C-Trek Toring Ebxr Sym:  Crosstrek  # uk_dft's abbreviated GenModel "SUBARU C-TREK TORING EBXR SYM AWD CVT" = Crosstrek Touring e-Boxer Symmetrical AWD CVT. This is the ONLY gb evidence Crosstrek has, so the fold is a strict AVAILABILITY GAIN — https://en.wikipedia.org/wiki/Subaru_Crosstrek
+  # — the rest —
+  B9 Tribeca: Tribeca   # EPA "B9 Tribeca AWD" → baseModel `Tribeca`; Subaru dropped the B9 prefix at the 2007 facelift
+  Brz Ts:     Brz       # EPA "BRZ tS" → baseModel `BRZ`; tS = Tecnica Sports, a trim
+  Justy G3X:  Justy     # G3X is the 2003-07 Justy generation designation (a rebadged Suzuki Ignis) — https://en.wikipedia.org/wiki/Subaru_Justy
+  Wrx Sti:    Wrx       # EPA "WRX STI Type RA" → baseModel `WRX`; STI is Subaru Tecnica International's performance version of the WRX, discontinued 2021
+  Subaru: null          # registry row where the make was written into the MODEL column (nl_rdw "SUBARU | SUBARU") — not a nameplate. The settled class: `Opel: null`, `Jeep: null`. Nothing published is retired — car/subaru/subaru has never met the publish predicate, so no removals.yml entry is owed
+  Libero E12: E12       # RESOLVED, not guessed (NAMING §7.5): the enlarged export Sambar "was also called the Subaru E10 and Subaru E12 respectively in some places, the names referring to the size of the engines" and carried Libero/Sumo/Domingo/Columbuss/Combi badges by market. `E12` is the majority register spelling here (fi+nl) and `LIBERO E12` the compound — a badge PREFIX on the same nameplate, the Kia "Picanto Morning → Picanto" shape — https://en.wikipedia.org/wiki/Subaru_Libero
+
 Sunbeam:
   Sunbeam: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   # ── REGISTER-LANGUAGE CONVENTION (issue #123): English marketing form wins;
@@ -6295,6 +6486,66 @@ Valiant:
 
 Vauxhall:
   Vx 220: VX220                               # spelling variant of "VX220" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  # ── wave-7 CLEAN batch (2026-08-01). Vauxhall is the OPEL TWIN, and the
+  # discipline here is to MIRROR the settled `Opel:` block rather than invent a
+  # second altitude for the same car: Opel is deep-cleaned (135 rename keys) and
+  # Vauxhall had ONE key. Every line below has an Opel counterpart named in its
+  # comment. Vauxhall stays a SEPARATE MAKE (makes/aliases.yml, PRD-2 §19.1) —
+  # this is a rebadge relation, never a cross-make fold.
+  # THE ONE MIRROR THAT CANNOT BE APPLIED, stated so a reader comparing the
+  # Astravan and Corsavan lines does not think it was missed: `Corsavan → Corsa`
+  # is IRREDUCIBLE. The fold would mint van/vauxhall/corsa, and
+  # Reconciler.cross_kind_prune! then deletes it at 99.84% car dominance
+  # (car 1,023,717 v van 1,631), destroying van/vauxhall/corsavan's 1,628 gb
+  # vehicles. van/vauxhall/corsa is ALREADY in today's pruned set, so this is
+  # measurement, not prediction. Astravan is safe only because Astra's car
+  # dominance stays under the line (96.63% → 95.83%). ──
+  # — Victor: generation marketing names, displacements and the trim ladder —
+  "Victor 101":        Victor    # the FC generation's marketing name — Vauxhall sold it as the "Victor 101" because there were "101 improvements over the FB"; a GENERATION, not a nameplate. Mirrors the settled `Astra F: Astra` / `Kadett B: Kadett` — https://en.wikipedia.org/wiki/Vauxhall_Victor
+  "Victor 101 Super":  Victor    # same generation name + the Super trim
+  "Victor 1600":       Victor    # engine displacement; car-kind spec, NAMING.md §6. Mirrors the settled `Vectra 2000: Vectra` — https://en.wikipedia.org/wiki/Vauxhall_Victor
+  "Victor 2000":       Victor    # displacement
+  "Victor 2300 SL":    Victor    # displacement + SL trim
+  "Victor SL 2000":    Victor    # the same two tokens in the other order (fi+nz) — BOTH spellings keyed, or the slug republishes under the other one
+  "Victor 3300":       Victor    # displacement (the 3.3 six)
+  Victor Super:      Victor    # "Super, De Luxe and later Standard variants were offered across series" — a trim — https://en.wikipedia.org/wiki/Vauxhall_Victor
+  Victor De Luxe:    Victor    # the same trim ladder
+  Fbd:               Victor    # FACTORY TYPE CODE, resolved from the corpus itself, not by resemblance (NAMING §7.5): fi_traficom writes "VICTOR FBD, 4D SEDAN" and "4D VICTOR 62-FBD/2540-62" — FBD is the Victor FB's type code
+  # — Viva —
+  Viva Deluxe:  Viva   # trim; fi_traficom's own "VIVA HA DE LUXE 2D SEDAN" pairs the trim with the nameplate
+  Viva De Luxe: Viva   # spaced spelling of the same trim — both keyed
+  "Viva 12":      Viva   # nl_rdw "VIVA 12" — the 1.2 displacement
+  "Viva 1800":    Viva   # displacement
+  Viva GT:      Viva   # the Viva GT performance trim
+  Had:          Viva   # TYPE CODE resolved from the corpus: fi_traficom "2D VIVA 90-HAD-21/2320" — HA-D is the Viva HA De-luxe
+  # — Cavalier / Chevette / Firenza / Magnum / Carlton / Cresta —
+  Cavalier GL:       Cavalier    # GL trim. Mirrors the settled `Vectra GL: Vectra` and `Omega GL: Omega`
+  Cavalier L:        Cavalier    # L trim
+  "Cavalier 1600 L":   Cavalier    # displacement + trim
+  "Cavalier 2000 GL":  Cavalier    # displacement + trim
+  Chevette GL:       Chevette    # GL trim — same class as Cavalier GL
+  Chevette L:        Chevette    # L trim
+  Chevette Est:      Chevette    # "Est" = the estate BODY. Mirrors the settled `Astra-Caravan: Astra`
+  Chevette Hb:       Chevette    # hatchback BODY
+  "Chevette H/B":      Chevette    # slashed spelling of the same body
+  Firenza SL:        Firenza     # SL trim
+  "Firenza 1600SL-Coupe 935371/2460": Firenza  # fi_traficom type string: displacement + trim + body + approval number
+  "Magnum 1800":       Magnum      # displacement. Mirrors the settled `Manta 200: Manta`
+  "Magnum 2300":       Magnum      # displacement
+  "Carlton 2000":      Carlton     # displacement
+  Cresta De Luxe:    Cresta      # trim
+  # — Velox: the pre-1957 factory series codes, resolved from the corpus —
+  Velox Lip:  Velox   # LIP is the 1948-51 Velox series ("The classic four-door saloon…"); the Wyvern's twin code is LIX — https://en.wikipedia.org/wiki/Vauxhall_Velox
+  Velox Pb:   Velox   # PB = the final 1962-65 Velox series — same source
+  Eip:        Velox   # EIP = the 1951-57 Velox series; nz_nzta writes BOTH "EIP" and "VELOX E.I.P." — the corpus resolves its own code
+  # — VX220: Vauxhall's badge of the Opel Speedster —
+  VX220 Turbo: VX220  # engine variant. EXACT MIRROR of the settled `Speedster Turbo: Speedster` — the VX220 IS the Opel Speedster, GB-badged and Lotus-built — https://en.wikipedia.org/wiki/Opel_Speedster
+  "Vx 4/90":     VX4/90 # MINTS car/vauxhall/vx4-90: "The VX Four Ninety designation originally came from its engineering designation — Vauxhall eXperimental four-cylinder engine of 90 in3 capacity" — a real Victor-derived model, currently split across three slugs — https://en.wikipedia.org/wiki/Vauxhall_Victor
+  "Vx 4.90":     VX4/90 # dotted registry spelling of the same designation — keyed together or the slug flaps
+  # — Frontera / Astra —
+  Frontera Design EV: Frontera  # "Design" is the GB trim level and EV the powertrain; the 2024 Frontera is the SAME nameplate revived (two runs, recorded in enrich) — https://www.vauxhall.co.uk/cars/frontera.html
+  "Astra-Caravan":      Astra     # THE IDENTICAL nl_rdw raw "ASTRA-G-CARAVAN" that the settled `Opel: Astra-Caravan: Astra` already folds. The estate BODY.
+  Astravan:           Astra     # the GB name for the Astra panel-van derivative. enrich/opel.yml ALREADY records "Astravan" as a `body` variant of car/opel/astra — this line makes the two marques agree. CROSS-KIND CHECKED: vauxhall/astra car 643,535 v · van 22,424→27,978 ⇒ car dominance 96.63%→95.83%, still under the 97% prune line, so the van copy SURVIVES (contrast Corsavan, in this block's header)
 
 Velocette:
   L.e.:                      LE                   # the Velocette LE (Little Engine). DEFUNCT marque — badge evidence
