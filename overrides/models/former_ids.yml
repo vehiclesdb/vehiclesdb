@@ -4454,3 +4454,134 @@
 "truck/scania/r-serien": "truck/scania/r-series" # FOLD: same class; English twin was in the candidate queue at gb 1. inbound 0 — nothing chains through this id
 "truck/volvo/fh-serien": "truck/volvo/fh-series" # FOLD: English twin was in the candidate queue at gb 35. inbound 0 — nothing chains through this id
 "truck/volvo/fm-serien": "truck/volvo/fm-series" # FOLD onto a LIVE published twin (truck/volvo/fm-series, gb) — the two conventions were published side by side, the exact defect #123 reports. inbound 0 — nothing chains through this id
+
+# ── Scania + DAF wave-4 heavy-vehicle clean, 2026-08-01 — 105 folds; ZERO
+# (id, country) pairs lost and six strict availability GAINS. This slice is an
+# AXLE-CONFIGURATION problem, not a trim problem: registers file trucks and buses
+# under chassis/axle codes, so every child below is <nameplate> + a documented
+# configuration code and every survivor is the nameplate the marque itself
+# publishes (renames.yml carries the per-line evidence and the DAF axle sheet).
+#
+# CHAIN PRE-FLIGHT, run before writing (scdaf-preflight.rb): 0 of these 105 ids
+# is already a former_ids key or a removals.yml entry; 0 of the survivors is
+# itself an alias key; INBOUND is 0 for every line — nothing in the existing
+# 3,967 aliases points at any id retired here, so no chain is created in either
+# direction. No self-refs. Rule 1g holds: the 105 ids below and the 17 in
+# removals.yml are disjoint sets.
+#
+# Only PUBLISHED children are aliased. Thirteen further fold keys (bus/daf/fa45,
+# bus+van/daf/fa-lf, bus/leyland-daf/fa45+fa50+fa65, truck/leyland-daf/fa60,
+# fa65, ft55, ft60, ft80, fa1700, fa1900) are sub-threshold today and get no
+# alias — propose_former_ids.rb rule 1: "a long-standing rename whose old id
+# never shipped needs no alias". Their keys are still written, so the defect
+# never surfaces.
+#
+# The two largest movements are UK evidence arriving on a record that does not
+# have it today: "DAF Fa LF" carries 12,529 vehicles and gb onto truck/daf/lf,
+# and "Fa CF"+"Ft CF" carry 2,815 and gb onto truck/daf/cf. ──
+"truck/daf/fa-cf":                         "truck/daf/cf"                         # FOLD onto a LIVE survivor, which GAINS gb (es+fi+lu+nl -> es+fi+gb+lu+nl); Fa CF => CF, 1562 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ft-cf":                         "truck/daf/cf"                         # FOLD onto a LIVE survivor, which GAINS gb (es+fi+lu+nl -> es+fi+gb+lu+nl); Ft CF => CF, 1253 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fancf":                         "truck/daf/cf"                         # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+nl); Fancf => CF, 19 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fascf":                         "truck/daf/cf85"                       # FOLD onto a LIVE survivor, which GAINS es (fi+nl -> es+fi+nl); Fascf => CF85, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fatcf":                         "truck/daf/cf85"                       # FOLD onto a LIVE survivor, which GAINS es (fi+nl -> es+fi+nl); Fatcf => CF85, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa-lf":                         "truck/daf/lf"                         # FOLD onto a LIVE survivor, which GAINS gb (es+fi+lu+nl -> es+fi+gb+lu+nl); Fa LF => LF, 12529 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/falf":                          "truck/daf/lf"                         # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); Falf => LF, 96 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ft-xf":                         "truck/daf/xf"                         # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+fi+nl); Ft XF => XF, 422 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ftxf":                          "truck/daf/xf"                         # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); Ftxf => XF, 96 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fatxf":                         "truck/daf/xf"                         # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); Fatxf => XF, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ftgxf":                         "truck/daf/xf105"                      # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); Ftgxf => XF105, 11 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xf-ft":                         "truck/daf/xf"                         # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+nl); XF Ft => XF, 44 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xg-530ft":                      "truck/daf/xg-530"                     # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); XG+530FT => XG+530, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xg530f":                        "truck/daf/xg530"                      # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+fi+nl); XG530F => XG530, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xf460f":                        "truck/daf/xf460"                      # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's es+nl); XF460F => XF460, 6 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xf480f":                        "truck/daf/xf480"                      # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+fi+nl); XF480F => XF480, 16 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xf510f":                        "truck/daf/xf510"                      # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); XF510F => XF510, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/xf530f":                        "truck/daf/xf530"                      # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+fi+nl); XF530F => XF530, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/lf260f":                        "truck/daf/lf260"                      # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); LF260F => LF260, 8 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa45":                          "truck/daf/45"                         # FOLD onto a MINTED survivor (fi+gb+nl); FA45 => 45, 1911 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa55":                          "truck/daf/55"                         # FOLD onto a LIVE survivor, which GAINS es+fi (gb+nl -> es+fi+gb+nl); FA55 => 55, 317 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ad85":                          "truck/daf/85"                         # FOLD onto a MINTED survivor (fi+nl); AD85 => 85, 12 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ae75":                          "truck/daf/75"                         # FOLD onto a MINTED survivor (fi+nl); AE75 => 75, 92 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa1600":                        "truck/daf/1600"                       # FOLD onto a MINTED survivor (fi+nl); FA1600 => 1600, 39 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa1700":                        "truck/daf/1700"                       # FOLD onto a MINTED survivor (fi+nl); FA1700 => 1700, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa2300":                        "truck/daf/2300"                       # FOLD onto a MINTED survivor (fi+nl); FA2300 => 2300, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/fa2500":                        "truck/daf/2500"                       # FOLD onto a MINTED survivor (fi+gb); FA2500 => 2500, 7 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ft95":                          "truck/daf/95"                         # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); FT95 => 95, 10 vehicles. inbound 0 — nothing chains through this id
+"truck/daf/ft95x":                         "truck/daf/95xf"                       # FOLD onto a MINTED survivor (gb+nl); FT95X => 95XF, 360 vehicles. inbound 0 — nothing chains through this id
+"truck/leyland-daf/fa45":                  "truck/leyland-daf/45"                 # FOLD onto a MINTED survivor (gb); FA45 => 45, 6878 vehicles. inbound 0 — nothing chains through this id
+"truck/leyland-daf/fa50":                  "truck/leyland-daf/50"                 # FOLD onto a MINTED survivor (gb); FA50 => 50, 259 vehicles. inbound 0 — nothing chains through this id
+"truck/leyland-daf/fa55":                  "truck/leyland-daf/55"                 # FOLD onto a MINTED survivor (gb); FA55 => 55, 518 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r500a":                      "truck/scania/r500"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R500A => R500, 300 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r560a":                      "truck/scania/r560"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R560A => R560, 27 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r380a":                      "truck/scania/r380"                    # FOLD onto a LIVE survivor, which GAINS es (fi+nl -> es+fi+nl); R380A => R380, 26 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p360a":                      "truck/scania/p360"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); P360A => P360, 33 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p230b":                      "truck/scania/p230"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's es+nl); P230B => P230, 177 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p270b":                      "truck/scania/p270"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); P270B => P270, 20 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p380b":                      "truck/scania/p380"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); P380B => P380, 30 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p420b":                      "truck/scania/p420"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's es+nl); P420B => P420, 16 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420b":                      "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420B => R420, 25 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r620b":                      "truck/scania/r620"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); R620B => R620, 16 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r500la":                     "truck/scania/r500"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R500LA => R500, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r500lb":                     "truck/scania/r500"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R500LB => R500, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r560l":                      "truck/scania/r560"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R560L => R560, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r560la":                     "truck/scania/r560"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R560LA => R560, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r480lb":                     "truck/scania/r480"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); R480LB => R480, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420l":                      "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420L => R420, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r144l":                      "truck/scania/r144"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R144L => R144, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r124gb":                     "truck/scania/r124"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); R124GB => R124, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r164ga":                     "truck/scania/r164"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R164GA => R164, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r164gb":                     "truck/scania/r164"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R164GB => R164, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420la4x2mna":               "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420LA4X2MNA => R420, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420la6x2":                  "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420LA6X2 => R420, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420lb6x2":                  "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420LB6X2 => R420, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420lb6x2hnb":               "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420LB6X2HNB => R420, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420lb6x2mlb":               "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420LB6X2MLB => R420, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r420lb6x2mnb":               "truck/scania/r420"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R420LB6X2MNB => R420, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r440la4x2mna":               "truck/scania/r440"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); R440LA4X2MNA => R440, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r500la4x2mna":               "truck/scania/r500"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R500LA4X2MNA => R500, 13 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r500la6x2hna":               "truck/scania/r500"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R500LA6X2HNA => R500, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r500lb6x2mna":               "truck/scania/r500"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R500LB6X2MNA => R500, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r560la6x4hnb":               "truck/scania/r560"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R560LA6X4HNB => R560, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r620la8x4":                  "truck/scania/r620"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); R620LA8X4 => R620, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r730la8x4":                  "truck/scania/r730"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's fi+nl); R730LA8X4 => R730, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r360lb4x2hna":               "truck/scania/r360"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R360LB4X2HNA => R360, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r400la4x2meb":               "truck/scania/r400"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R400LA4X2MEB => R400, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r164gb6x4nz":                "truck/scania/r164"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R164GB6X4NZ => R164, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p114cb4x4":                  "truck/scania/p114"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P114CB4X4 => P114, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p114gb8x2":                  "truck/scania/p114"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P114GB8X2 => P114, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p230db4x2mna":               "truck/scania/p230"                    # FOLD onto a LIVE survivor (es+fi+nl, already covers the child's fi+nl); P230DB4X2MNA => P230, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p360cb6x4msz":               "truck/scania/p360"                    # FOLD onto a LIVE survivor (es+fi+lu+nl, already covers the child's es+nl); P360CB6X4MSZ => P360, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p94d":                       "truck/scania/p94"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P94D => P94, 23 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p94db":                      "truck/scania/p94"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P94DB => P94, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p94db4x2":                   "truck/scania/p94"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P94DB4X2 => P94, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r143h":                      "truck/scania/r143"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R143H => R143, 19 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r143hl":                     "truck/scania/r143"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R143HL => R143, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r143h-6x2":                  "truck/scania/r143"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R143H-6X2 => R143, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r143m":                      "truck/scania/r143"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R143M => R143, 45 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r113m":                      "truck/scania/r113"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R113M => R113, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r142h":                      "truck/scania/r142"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R142H => R142, 6 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r93m":                       "truck/scania/r93"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R93M => R93, 7 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t113h":                      "truck/scania/t113"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); T113H => T113, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t113hl":                     "truck/scania/t113"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); T113HL => T113, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t124g":                      "truck/scania/t124"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); T124G => T124, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t143h":                      "truck/scania/t143"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); T143H => T143, 12 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t93m":                       "truck/scania/t93"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); T93M => T93, 7 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p112h":                      "truck/scania/p112"                    # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P112H => P112, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p93h":                       "truck/scania/p93"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P93H => P93, 6 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p93m":                       "truck/scania/p93"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); P93M => P93, 51 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/143m":                       "truck/scania/143"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); 143M => 143, 25 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/124g":                       "truck/scania/124"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); 124G => 124, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/124l":                       "truck/scania/124"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); 124L => 124, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/94d":                        "truck/scania/94"                      # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); 94D => 94, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/l50s":                       "truck/scania/l50"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); L50S => L50, 7 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/l50s48":                     "truck/scania/l50"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); L50S48 => L50, 4 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/l81s":                       "truck/scania/l81"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); L81S => L81, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/l85s":                       "truck/scania/l85"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); L85S => L85, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/lb111s":                     "truck/scania/lb111"                   # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); LB111S => LB111, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/r16l-6x2":                   "truck/scania/r16"                     # FOLD onto a LIVE survivor (fi+nl, already covers the child's fi+nl); R16L-6X2 => R16, 6 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/82m":                        "truck/scania/82"                      # FOLD onto a MINTED survivor (fi+nl); 82M => 82, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t82m":                       "truck/scania/t82"                     # FOLD onto a MINTED survivor (fi+nl); T82M => T82, 3 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/t92h":                       "truck/scania/t92"                     # FOLD onto a MINTED survivor (fi+nl); T92H => T92, 2 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/p92m":                       "truck/scania/p92"                     # FOLD onto a MINTED survivor (fi+nl); P92M => P92, 5 vehicles. inbound 0 — nothing chains through this id
+"truck/scania/sba":                        "truck/scania/sba111"                  # FOLD onto a MINTED survivor (fi+nl); Sba => SBA111, 4 vehicles. inbound 0 — nothing chains through this id
+"bus/scania/tdx":                          "bus/van-hool/tdx"                     # moves.yml Scania|Tdx -> Van Hool|Tdx (dossier §A-S6): the TDX27 Astromega is Van Hool's coach; target is LIVE at fi+gb+nl+ua, a strict superset of the source's nl+ua. Cross-make by the shipped moves precedent (car/toyota/scion-tc -> car/scion/tc). inbound 0 — nothing chains through this id
