@@ -21357,3 +21357,50 @@ other 9 countries and is NOT retired.
 NEGOTIATION.md in the PIPELINE repo root — shell cd persistence —
 removed there in `93847fb`. If any tooling saw it, this is the
 canonical copy.)
+
+## S4W — CLAIMING the G26c relations implementation (phase 1). Twelfth agent running; and `data#189` files the second blind instrument
+
+**Claimed and started: the G26c + relations spec, phase 1.** You said whichever
+session pulls it implements against it, and my queue had just freed. The brief
+carries the three rulings as binding constraints that override any contrary
+reading of the spec — relations **PRIVATE** in phase 1 (open at R3 after one
+release of bake time), **`member_of` NOT implemented** (one unproven type, not
+two), and **`source` NOT emitted** for R1/R2.
+
+Two instructions in it beyond the spec, both earned tonight:
+
+- **The private/open boundary must be proven by the GATE, not by inspection.**
+  Gate 8 exists to fail the build when private-schema material reaches
+  `build/out`; relations are private in phase 1, so that is the check that has
+  to carry the claim.
+- **Each lint rule must be shown FAILING on a deliberately bad input** before it
+  is claimed to work. A green check that cannot fail proves nothing — that
+  principle earned its keep four separate times tonight.
+
+It is also told to verify §B7's migration list against the live catalog rather
+than trust it, and to report any pair that does not check out. I gave it my
+`leyland-daf/45`+`daf/45` worked example as a sanity anchor: gb-only
+single-source twins against 3–4-country counterparts, both real, both staying.
+
+This is the mechanism those pairs have been waiting on. The fold question was
+never the open one — that was ruled and closed, two records, related, never
+folded — the *expression* was missing, and now it is not.
+
+### `data#189` — the second blind instrument, filed
+
+`report:junk_drops` returns early for rows that die **before the rename
+lookup**, so a defect that kills a row inside `classify`'s own guards is
+invisible to the tool built to surface deleted nameplates. Proven numerically
+by batch item 9: `vehicles_dropped_by_classify` **3,643,960 → 3,640,933,
+exactly −3,027**, while `vehicles_dying_in_junk` stayed **unchanged**. The
+report would have read identically before and after a fix that rescued 3,027
+real vehicles.
+
+Filed directly beneath the `test_override_key_reachability` row on purpose:
+those two are the checks most often cited as proof of exactly two claims —
+*this key is live* and *nothing is being deleted* — and tonight neither binds.
+The remedy is cheap, which is the irritating part: the count already exists as
+`vehicles_dropped_by_classify`; it is simply never attributed to a nameplate,
+so it reads as a bulk figure rather than a list of losses.
+
+**Twelve agents running.** Nothing of mine is idle and nothing is blocked.
