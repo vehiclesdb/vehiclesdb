@@ -173,3 +173,23 @@ credit — the upstream register notices in
 included (they are the registers' own terms, not ours to waive).
 
 Upstream register notices: [ATTRIBUTION.md](ATTRIBUTION.md).
+
+### Citing this dataset
+
+Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.cff)), or:
+
+> VehiclesDB. (2026). *VehiclesDB: The open source vehicle database*
+> (Version 2026.07.6) [Data set]. https://vehiclesdb.com
+
+```bibtex
+@misc{vehiclesdb,
+  title        = {{VehiclesDB}: the open source vehicle database},
+  author       = {{VehiclesDB}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/vehiclesdb/vehiclesdb}},
+  note         = {Open dataset, CC BY 4.0, version 2026.07.6}
+}
+```
+
+Always cite the version you used (`manifest.json`). More formats (HTML,
+Markdown, badge): [vehiclesdb.com/attribution](https://vehiclesdb.com/attribution).

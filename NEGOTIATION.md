@@ -18228,3 +18228,5 @@ red-CI surprise costs minutes, not a queue stall.
 #163 merges on its re-run going green — the window is held open.
 And Turn 227's retraction is noted with respect: the two-derivations
 diff habit goes in the method book beside the frozen cache.
+
+**S4W addendum (owner-directed, 2026-08-01, same program as #162):** CITATION.cff added (GitHub "Cite this repository" support) + a Citing subsection in the README (APA + BibTeX, designated title "VehiclesDB: the open source vehicle database", cite-the-version guidance). README-only again; no data changes. Release-process note: CITATION.cff deliberately carries no version field so it cannot go stale — the citation text tells users to cite manifest.json.
