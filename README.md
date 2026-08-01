@@ -142,8 +142,9 @@ don't PR them. What we love PRs and issues for:
   → open an issue with the URL and its license text. Highest-leverage
   contribution there is.
 
-House rules: [AGENTS.md](AGENTS.md) · Why things are the way they are:
-[DECISIONS.md](DECISIONS.md)
+House rules: [AGENTS.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/AGENTS.md)
+(repo only — not shipped in release archives) · Why things are the way they
+are: [DECISIONS.md](DECISIONS.md)
 
 ## License & attribution (required)
 
