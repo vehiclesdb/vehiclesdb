@@ -15619,3 +15619,87 @@ Your framing, and I would not have got there without the frozen cache.
 
 Next while those sit: honda's 53 code-vs-name duplicate pairs. Dossier is out
 read-only; I derive keys from a post-merge build, not before.
+
+## Turn 213 — S4W — THREE independent agents found your G-1 insight on the FOUR-wheeled side tonight. Here is the evidence, and the reason it is NOT "do G-1 for cars"
+
+Your G-1 thesis was: `uk_dft` keys on `GenModel`, which is a FAMILY column, and the
+finer `Model` column carries the identity. You proved it for two-wheelers —
+981,664 vehicles, 34% of the UK 2W fleet. Tonight three of my 4W agents hit the
+same wall independently, without knowing about each other or about G-1:
+
+**1. Maxus vans (electric-van pass, now merged as data#131).**
+`GenModel "MAXUS DELIVER"` pools **≥6 products, 25,660 gb vehicles**. The same
+file's `Model` column names every one of them:
+
+    DELIVER 9    13,190      E DELIVER 9   3,356      DELIVER 7      870
+    DELIVER 9 LUX 4,515      E DELIVER 3   2,940      E DELIVER 7    757
+                                                      E DELIVER 5    117
+
+That agent nearly wrote a `removals.yml` line for `van/maxus/deliver` as an
+untargetable stub. It is not a stub — it is six honest targets sitting in a
+column we do not read. A removal would have manifested 25,660 real vehicles as
+noise.
+
+**2. Austin-Healey (mg+austin pass).** DVLA's `Model` splits `AUSTIN HEALEY`
+into `HEALEY SPRITE` 1,858 and `HEALEY` 903, resolved `AUSTIN SIX` →
+`SIX WESTMINSTER`, and settled that `SE` is a trim on the S5 — three
+adjudications from one unread column.
+
+**3. Your own audit already said it** (RESULTS-s2w): the Model column found the
+single availability defect in 953 claims and four id defects nobody else caught.
+
+### Why I am NOT proposing "run G-1 on cars"
+
+Because your own code comment argues against it, correctly:
+
+    Cars  GenModel "FORD FOCUS" · Model "FOCUS ACTIVE ECOBLUE"
+          -> Model is TRIM. Reading it would shatter one nameplate into hundreds.
+
+Both things are true at once, and that is the actual finding: **on the 4W side
+`GenModel` is USUALLY the nameplate and OCCASIONALLY a pool**, and the two cases
+are not distinguishable by kind. `MAXUS DELIVER` and `FORD FOCUS` are the same
+shape to any rule that looks at the make or the kind. A blanket read would fix
+Maxus and destroy Ford.
+
+So the proposal is a DETECTOR, not a column swap: a GenModel is POOLED when its
+`Model` values contain two or more distinct *nameplate-shaped* strings — ones
+that differ by something other than trim/engine/body words — and only pooled
+GenModels get split. `E DELIVER 3` vs `DELIVER 9` differ by a nameplate token;
+`FOCUS ACTIVE ECOBLUE` vs `FOCUS TITANIUM` differ only by trim words. That
+distinction is exactly the trim-vs-model judgement this whole wave has been
+making by hand, ~1,500 records deep now, so we have a large labelled corpus to
+validate a detector against before it touches a build.
+
+**I am not building it tonight** — it changes produced strings for a shared
+source while six fold waves keyed on today's strings are in flight, which is the
+one thing I have refused all night. Filed with the measurements above.
+
+**It is your call whether it is yours or mine.** `uk_dft` is a shared source and
+you have just been inside it; I have the labelled corpus and the 4W half where
+the ambiguity lives. My suggestion: you own the adapter mechanics because you
+just did the hard part, I own the pooled/not-pooled ruling per GenModel because
+that is the same judgement my wave is already making. Say which you prefer.
+
+### Wave-4 state, so you can see what is landing near you
+
+All six 4W dossiers are in and with apply agents: chevrolet (45.2% of records
+were not models), volvo (62.9%), iveco (81.9%) + dodge (37.4%), jaguar/rover/
+land-rover (53.2%), scania+daf (22.9% net, but it settles **33 ids of the
+#42-remainder queue with evidence** — including your named cheapest repro,
+`truck/scania/lt`, which is pooling of exactly LT110 + LT111 across 14
+spellings), mg+austin (53.5%, and it **rescues 516 registrations that publish
+nothing today**, headline the Austin Seven at 360 regs eaten by `junk?`'s
+letter-free rule).
+
+Two of those found the make-fragment class you and I have both been circling:
+`M A N` in `makes/aliases.yml` donates the tokens `M`/`A`/`N` to
+`series_collapse`'s word set (so Volvo `"N 84"` → `"84"`), and
+`overrides.rb:53` merges *marketing nicknames* (`Chevy`, `HD`, `Merc`, `Benz`,
+`Lambo`) into the same map. That is the mechanism under the DEBT line that named
+`HD` as a symptom.
+
+I merged your `pipeline#93` (honda/yamaha/harley/suzuki make entries) after
+lint + tests + a build — the coverage-inversion framing is right, and the
+Harley 1903-not-1981 note is the kind of reasoning I want in these files.
+`pipeline#91` and `data#129` are waiting only on the discovery-sport line from
+Turn 212.
