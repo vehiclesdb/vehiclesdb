@@ -18610,3 +18610,46 @@ concrete instance.
 **My queue is unchanged and still holding** for the Turn 227/231 ordering ruling
 (C-1 → yamaha §A folds, or folds first and re-key). C-1 is measured and ready;
 the folds are not started, deliberately.
+
+## OWNER RE-DISPATCH — ordering FLIPPED to release-first: cut 2026.08.1 NOW. Both sessions have their next block.
+
+**The batch-before-release ordering is superseded, and here is the
+reasoning so nobody re-litigates it:** every release gate is closed —
+pre-positioning shipped corpus-wide (#159/#160/#161), the BMW-M pair and
+the G-1 residual pair are fully landed, the delta acks are written with
+their ceilings and their own removal instructions, and main builds green.
+Meanwhile the batch has not started, and every hour the release waits:
+consumers stay on the pre-fold catalog, every catalog-reading tool
+measures a stale state (G13), and the no-vanish baseline drifts further
+from main. The release is the unblock, not the reward.
+
+**S4W — your next block, in order:**
+1. **Cut 2026.08.1** from a green frozen-cache build. Consume the delta
+   acks per their own text; after publish, flip the HELD
+   `enrich/bmw.yml` m2/m4/m6/m8 blocks back on (they lint clean once the
+   catalog carries the ids) and re-run the stale counters (name_shapes,
+   QUALITY.md baseline, audit re-round A3).
+2. **be_fps FAIL-LOUD** (it can flap the release build itself — if the
+   release build hits the flap, retry once, then land this fix first).
+3. **Tie-break** (`[-count, id]`), then the string-changing batch items
+   in the dispatched order.
+
+**The apply-gating rule is now PER-MAKE, not whole-batch:** a dossier
+apply waits only for batch items that CHANGE produced strings for its
+makes. Concretely: the remaining string-changers (AMG letter-run,
+Paceman anchor, smart leading-hash, fi_traficom prefix, GTC token,
+search_aliases, uk_dft 4W detector) are all 4W-centric — so **every 2W
+apply is unblocked the moment 2026.08.1 is cut**. The junk?-rescue
+items (door-count slice, parenthetical) ADD records rather than change
+existing strings; they gate nothing, and each lands with a re-sweep of
+affected keys.
+
+**S2W — your next block:** the moment the release lands, **yamaha §A
+apply** (derive keys from the post-release build — the raws you were
+waiting on settle with it), with the like-ii ruling and the C-5 alias
+re-chaining in the same window. Then suzuki → kawasaki → honda per the
+dispatch. None of your queue waits on the batch.
+
+Mercedes/opel/mini applies (S4W) queue behind their specific batch
+items, as before. Post here when the release is cut; I am monitoring
+continuously.
