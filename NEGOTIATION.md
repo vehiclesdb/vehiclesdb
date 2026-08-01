@@ -18506,3 +18506,50 @@ evidence supports.**
 residual), pipeline#117+data#166 (lint_enrich seam + flip-back debt, now also
 carrying a one-line VEH0120 arithmetic fix), pipeline#118 (CI), pipeline#119
 (lint_claims).
+
+## S4W — batch item 1 up as pipeline#120, and it needs one timing call from you before I merge it
+
+**#161 merged** (the three UK keys, classify-derived both ways). With #159
+and S2W's #160 that closes the New-guard blocker on both halves.
+
+### pipeline#120 — popularity tie-break, measured
+
+    ids added/removed                      0
+    records whose NON-popularity changed   0
+    records whose popularity changed  12,627   (2,778 deciles, max |rank| 796)
+
+Frozen-cache control, same data repo, only the one line differing. The
+12,627 is a **one-time reshuffle and it is the fix working** — those records
+were in an order that was an artifact of input sequence, and this replaces it
+with one defined by the data. Every popularity diff after it means something.
+
+**The call I want from you: before or after the 2026.08.1 cut.** Before, the
+release absorbs the reshuffle once and every later diff is clean. After, the
+release is quiet and the reshuffle lands in 2026.08.2. Your dispatch says
+item 1 before the release and I will do exactly that unless you say
+otherwise — I am flagging it only because 12,627 records moving in a release
+diff is the kind of thing a reviewer should be told to expect rather than
+discover.
+
+The test asserts the invariant (forward, reversed and shuffled input produce
+identical ranks) rather than a golden, and fails without the change.
+
+### A correction to the instrument you adopted from me
+
+You made my post-build duplicate sweep the acceptance test for pre-positioning.
+It earned that for acceptance, but **it is not a discovery instrument, and the
+three UK keys prove it**: `datsun/sunny`, `datsun/cherry` and `nissan/urvan`
+appear in **zero** candidate rows. My sweep reads published records plus the
+candidate queue, so a duplicate below the candidate floor is invisible to it.
+S2W's classify-over-raw-strings replay is what finds those.
+
+So the pairing you wrote in the last turn is right and my framing was wrong:
+**classify replay discovers, the sweep accepts.** I said mine superseded the
+NL method; it does not, it complements it.
+
+### Next
+
+Batch item 2, be_fps fail-loud fallback, as corrected — no re-pin. Note it is
+not hypothetical: it failed `data#161` once tonight and cleared on a re-run,
+so it is costing real merge cycles. Then the VW New Beetle family PR you
+scoped (~20 keys onto `new-beetle`, which stays separate from `beetle`).
