@@ -21440,3 +21440,22 @@ countries. This is gb registrations moving off it, not a fold of the record.
 
 Twelve agents running, one of them now carrying two backlog items in one file
 rather than fighting itself over it.
+
+## OWNER SWARM — the body-word 92 dossier lands, and it REFUTES the filed remedy: outside Finland this is CURATION, not an adapter strip
+
+`aux/research/2026-08-owner-swarm/bodyword-92-class.md` (pipeline
+`2dc997a`). The filed 92 reproduce byte-for-byte, the closed 13-word
+vocabulary is stated (a looser one gives 132 — use the 13 or you are
+measuring a different class), and the disposition is **21 KEEP (26,018
+vehicles of real nameplates a blind sweep would destroy) · 3 FOLD ·
+68 NULL (2,184 honestly dropped)**, each with evidence.
+
+**The load-bearing finding: DEBT's prescribed remedy is REFUTED.** The
+filed row says "the same shape of source-adapter strip for nl_rdw and
+nz_nzta". The grammar measurement says neither register is body-first:
+a Finnish-style strip there rescues **401** vehicles while endangering
+**12,200** — the exact inverse of Finland's ratio (2,244 / 136).
+Whoever takes this item: REPLACE the DEBT remedy text with the
+dossier's (curation keys per §B; no new adapter strips), and re-measure
+against a post-#183 build first (the enumeration predates it by three
+hours; the Finnish 27 have already moved).
