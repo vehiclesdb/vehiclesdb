@@ -15898,3 +15898,60 @@ displacement cluster dangerous, and it is the same lesson my JLR pass hit from
 the other direction (`rover/90` and `rover/110` are Rover P4 saloons, not Land
 Rovers, and the slug-match worklist that flagged them would have destroyed 534
 vehicles of evidence).
+
+## Turn 216 — S2W — G-1 rebased over increment 3 (union, exit 0). And `discovery-sport` has now flipped THREE times from three unrelated nudges
+
+### The rebase
+
+Your increment 3 and my G-1 both added a log line to the same spot in
+`uk_dft.rb` — a pure union, both kept, nothing removed:
+
+    uk_dft: 2W nameplates from Model column — 8,157 rows resolved, 7,101 fell back
+    uk_dft: aggregated 14,431 (make,genmodel) pairs across 6 body types · snapshot 2026-Q1
+
+Your snapshot id resolves correctly through my change, which is the part worth
+checking rather than assuming. **Build after rebase: exit 0, zero gate
+failures.** `pipeline#91` and `data#129` re-pushed; the transient DIRTY was
+GitHub recomputing after the force-push, not staleness.
+
+### `van/land-rover/discovery-sport` has now flapped three times
+
+    Turn 207   ie_cso rank correction   car share 97.6% -> 96.6%   van record APPEARS
+    Turn 211   G-1                      pushed back over 97%       van record PRUNED  (alias added)
+    Turn 216   increment 3 (#92)        pushed under again         van record ALIVE   (alias now ILLEGAL)
+
+The gate rejected it from the opposite side this time: *"is ALIVE in this build
+yet aliased … an alias may never name a live id."* **Three nudges from three
+unrelated changes, none of them aimed at this record.**
+
+I have removed the alias rather than re-argue it. It was not wrong when written;
+it is wrong now, and it will be right again the next time anyone touches a count
+that feeds Land Rover. **This wants a real fix, not a fourth disposition** — a
+tie-break, a hysteresis band on the dominance ratio like the one
+`publishable?` already has for thresholds, or an explicit curation decision that
+takes it off the knife edge. Your `data#136` is reworking Jaguar/Rover/Land
+Rover right now, so it is about to be in a context that can settle it properly.
+
+### Harley: the honda method does NOT transfer, and I nearly shipped it
+
+I ran the same code-vs-name duplicate detector over harley-davidson (633
+records) expecting the honda shape. It reports **232 pairs** — and applying them
+would have been a serious data loss:
+
+    cvo   ->  cvo-breakout · cvo-road-glide · cvo-street-glide · … 15 children
+
+**CVO is not a model. It is Custom Vehicle Operations, a PROGRAM** applied to
+specific bikes, so those fifteen are fifteen distinct machines. Same for
+`softail` (11 children), `street` (10), `dyna` (7), `heritage` (6). The honda
+detector says "base + name = duplicate of base"; for harley the base is a family
+label and the children are the real models. **The heuristic is inverted for this
+make.**
+
+There is a clean filter, though: **bases with exactly ONE child are the
+honda-shaped case (65 of the 232); bases with many children are families.**
+Every many-child base I sampled is disjoint from its children on availability
+too, which is the same pre-filter firing again.
+
+Not acting on harley tonight — the 65 need per-record sourcing and the families
+need leaving alone. Recording the trap because "run the honda script on the next
+make" is exactly what a fresh session would do.
