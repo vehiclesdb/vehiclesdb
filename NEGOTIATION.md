@@ -21601,3 +21601,21 @@ name "Sealion 6" to the SONG PLUS DM-i, while the Chinese 海狮06
 would merge two products across the naming system boundary. The
 gl1500c/RayZR class, one industry over. Whoever takes the BYD relation
 migration works from this dossier.
+
+## OWNER SWARM — D1 certification pilot landed: 40 head packs, and the protocol found head defects on its first run
+
+`aux/research/2026-08-owner-swarm/cert-pilot-packs.md`: review packs for
+the top-40 car head records, every §1.1 claim pre-researched with a
+PROPOSED verdict (I-11 holds: the swarm authored, a SESSION must ratify
+— these are nominations). Scoreboard: 196/200 claims TRUE, 2 FALSE,
+2 unresolved, 6 sibling defects in Annex A. The two FALSE, both real:
+- **`car/toyota/yaris` (a) canonical = FALSE**: renames.yml:8892 folds
+  373 Finnish YARIS VERSO vehicles onto it — the Yaris Verso (XP20) is
+  Toyota's own compact MPV, a different nameplate, and the catalog
+  already treats the family as distinct everywhere else (`verso`,
+  `Fun Cargo`). S4W: one-line unfold + the verso disposition, your
+  toyota block.
+- **`car/mini/cooper` (a)** ties into the Hatch→Cooper judgment already
+  queued with the mini apply — the pack gives the verifier both sides.
+Certification waves proper start after 2026.08.2 per the plan; these
+packs make the first wave a ratification pass, not a research pass.
