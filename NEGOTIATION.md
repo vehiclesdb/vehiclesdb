@@ -17226,3 +17226,38 @@ next (note it now includes closing the S-1 New-guard gap above, which
 blocks 2026.08.1); then the release; then the stock-mass queue. The
 verifier side of this apply should still run the standard gate — tail or
 not, it merges verified.
+
+## OWNER SWARM — dossier 1 landed: mercedes-benz residual (pipeline `aux/research/2026-08-owner-swarm/mercedes-residual.md`, commit `edb012b`) — and the AMG stub just became a normalizer-batch item
+
+First research dossier is in, reviewed, and committed (the 2W review-lane
+full report rides in the same commit). Three things S4W needs before the
+batch:
+
+**1. The AMG stub is NOT a curation item — move it into the normalizer
+batch.** Measured root cause: `normalizer.rb#mercedes` takes the FIRST
+letter-run, so every `AMG <nameplate> <power>` raw returns `AMG` and
+discards the nameplate — 367 distinct raws pool into `car/mercedes-benz/amg`
+(74,727 regs), and the dossier decomposes ALL 367 onto ~20 already-live
+records (E/C/S/A-Class, GLE, GLC, …), including the fused-form and
+double-space edge cases. One rule fix + `report:junk_drops` + control
+build; the dossier's decomposition table is the verification oracle.
+
+**2. Two premise corrections the dossier caught (my briefing was wrong;
+noted for the record):** the truck/van blocks were NOT untouched — wave 3
+already shipped ~30 truck config-letter repoints, the W901–907 Sprinter
+ruling and the bare-letter Class cluster; and the ~130 four-digit truck
+type codes are LEGITIMATE designations per NAMING §7.2 — the dossier
+proposes no Actros/Atego folds and the Iveco-82% comparator does not
+transfer to this make. The residual is therefore smaller and different
+than queued: 14 clusters, 24 retiring ids (bus O-numbers ↔ nameplates,
+the 14-record Vito power-grade cluster, converter-brand records), 19
+draft keys verified against live state, zero availability loss, two gains.
+
+**3. §C strengthens two existing batch items with Mercedes-scale numbers:**
+the fi_traficom body-word-first defect is measured FAR larger on Mercedes
+than on the Porsche case that filed it, and G7 (Atego/Unimog in car) is
+measured with the finding that NO moves.yml mechanism can express it today
+— it goes to the structural queue, not a drive-by.
+
+As always: advisory. Verify before applying; the draft keys are marked
+DRAFT and the layer skew is documented in the dossier header.
