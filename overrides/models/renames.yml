@@ -5,6 +5,18 @@ Aixam:
   Aixam: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Alfa Romeo:
+  # ── fi_traficom body-first prefix, the residue folds (pipeline PR
+  # "fi_traficom: strip the register's body-word prefix"). Finland writes a
+  # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
+  # so the adapter now removes the leading body word and the nameplate reaches
+  # the normalizer. For a handful of rows the remainder is a TRIM or a TYPE
+  # CODE rather than a bare nameplate, and each published a NEW id off one or
+  # two Finnish vehicles — measured on a control-vs-treatment build 2026-08-01,
+  # and not by volume: they cross `publishable?`'s `sources.size >= 2` arm
+  # because nl_rdw/nz_nzta already carry the same fragment for the same 1960s
+  # cars. SAFETY: every value below is the name of a record that is ALREADY
+  # PUBLISHED, so this batch can mint neither a new id nor a new spelling. ──
+  "1750 GT": 1750 GTV                              # 1 veh/1 rows (fi, fi_traficom) -> live alfa-romeo/1750-gtv; raw "COUPE 1750 GT" — the 105-series 1750 coupé is the 1750 GT Veloce (Alfa Romeo Classiche, 105/115 GT Veloce)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -719,6 +731,18 @@ Austin:
   A 50: A50                                   # spelling variant of "A50" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
 Austin-Healey:
+  # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
+  # + control-vs-treatment build). When the adapter removes the leading body
+  # word the remainder is sometimes GLUED to Traficom's type code with a
+  # hyphen — "COUPE 944-94/2400" → "944-94" — which has no letters and is not
+  # 2-4 digits, so `junk?` deletes it. Those rows publish TODAY under the fake
+  # nameplate `Coupe`; without these keys the strip would delete them instead
+  # of re-homing them, which is the outcome DEBT.md explicitly refuses. Renames
+  # run before junk? (normalizer.rb ORDER FIX), so a key on the produced string
+  # rescues it. SAFETY: every value is the name of an ALREADY PUBLISHED record
+  # (verified byte-exact against catalog/car/models.json), so no id and no
+  # spelling is minted. ──
+  "100-6-3000": 100-6                              # 1 veh/1 rows (fi, fi_traficom) -> live austin-healey/100-6; raw "ROADSTER 100-6-3000"
   # ── Same Mk conditional the Austin block settled: the register EMITS Roman
   # (nl_rdw AUSTIN-HEALEY 3000: "MK II" 9 + "MKII" 2 + "MARK II" 5 vs arabic 5),
   # so fused Roman wins and no styling pin is used (stylings run before renames).
@@ -5639,6 +5663,37 @@ Mazda:
   Coupe:      null                   # bare body word; the single RDW row is a 1,300 cc coupe first registered 1992 (a 323 coupe), and the NZ half carries no further token
 
 Mercedes-Benz:
+  # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
+  # + control-vs-treatment build). When the adapter removes the leading body
+  # word the remainder is sometimes GLUED to Traficom's type code with a
+  # hyphen — "COUPE 944-94/2400" → "944-94" — which has no letters and is not
+  # 2-4 digits, so `junk?` deletes it. Those rows publish TODAY under the fake
+  # nameplate `Coupe`; without these keys the strip would delete them instead
+  # of re-homing them, which is the outcome DEBT.md explicitly refuses. Renames
+  # run before junk? (normalizer.rb ORDER FIX), so a key on the produced string
+  # rescues it. SAFETY: every value is the name of an ALREADY PUBLISHED record
+  # (verified byte-exact against catalog/car/models.json), so no id and no
+  # spelling is minted. ──
+  "280 Se-9-3.5": 280 SE                           # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/280-se; raw "COUPE 280 SE-9-3.5/2750" (W111 280 SE 3.5 coupé)
+  "280SE-9-3.5": 280 SE                            # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/280-se; raw "COUPE 280SE-9-3.5/2750" (same car, glued spelling)
+  "280 Se 3.5": 280 SE                             # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/280-se; raw "COUPE 280 SE 3.5"
+  "190E 2.3": 190 E                                # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/190-e; raw "SEDAN 190E 2.3"
+  # ── fi_traficom body-first prefix, the residue folds (pipeline PR
+  # "fi_traficom: strip the register's body-word prefix"). Finland writes a
+  # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
+  # so the adapter now removes the leading body word and the nameplate reaches
+  # the normalizer. For a handful of rows the remainder is a TRIM or a TYPE
+  # CODE rather than a bare nameplate, and each published a NEW id off one or
+  # two Finnish vehicles — measured on a control-vs-treatment build 2026-08-01,
+  # and not by volume: they cross `publishable?`'s `sources.size >= 2` arm
+  # because nl_rdw/nz_nzta already carry the same fragment for the same 1960s
+  # cars. SAFETY: every value below is the name of a record that is ALREADY
+  # PUBLISHED, so this batch can mint neither a new id nor a new spelling. ──
+  "220 B": "220"                                   # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/220; raw "CABRIOLET 220 B" (the W111 "220 b" Heckflosse)
+  "280 SL-8": 280 SL                               # 10 veh/2 rows (fi, fi_traficom) -> live mercedes-benz/280-sl; raws "COUPE 280 SL-8/2400", "COUPE 280 SL-8" — the "-8" is Traficom's type-code separator, not a badge
+  "280SL-8": 280 SL                                # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/280-sl; raw "COUPE 280SL-8/2400" (same car, glued spelling)
+  "380 SL-Automatic": 380 SL                       # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/380-sl; raw "ROADSTER 380 SL-AUTOMATIC" (transmission, not a model)
+  "500 SL Auto": 500 SL                            # 1 veh/1 rows (fi, fi_traficom) -> live mercedes-benz/500-sl; raw "ROADSTER 500 SL AUTO" (transmission, not a model)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -6947,6 +7002,19 @@ Panther:
   Panther: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Peugeot:
+  # ── fi_traficom body-first prefix, the residue folds (pipeline PR
+  # "fi_traficom: strip the register's body-word prefix"). Finland writes a
+  # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
+  # so the adapter now removes the leading body word and the nameplate reaches
+  # the normalizer. For a handful of rows the remainder is a TRIM or a TYPE
+  # CODE rather than a bare nameplate, and each published a NEW id off one or
+  # two Finnish vehicles — measured on a control-vs-treatment build 2026-08-01,
+  # and not by volume: they cross `publishable?`'s `sources.size >= 2` arm
+  # because nl_rdw/nz_nzta already carry the same fragment for the same 1960s
+  # cars. SAFETY: every value below is the name of a record that is ALREADY
+  # PUBLISHED, so this batch can mint neither a new id nor a new spelling. ──
+  "304-B01": "304"                                 # 1 veh/1 rows (fi, fi_traficom) -> live peugeot/304; raw "CABRIOLET 304-B01/2310" (B01 is the French type-approval code)
+  "504 B02": "504"                                 # 1 veh/1 rows (fi, fi_traficom) -> live peugeot/504; raw "CABRIOLET 504 B02/2550" (B02 is the French type-approval code)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -7500,6 +7568,34 @@ Pontiac:
   Wave 5:                           Wave                    # trim/engine/body designation of the Wave — 0v 2r ca,us/ca_nrcan,us_fueleconomy
 
 Porsche:
+  # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
+  # + control-vs-treatment build). When the adapter removes the leading body
+  # word the remainder is sometimes GLUED to Traficom's type code with a
+  # hyphen — "COUPE 944-94/2400" → "944-94" — which has no letters and is not
+  # 2-4 digits, so `junk?` deletes it. Those rows publish TODAY under the fake
+  # nameplate `Coupe`; without these keys the strip would delete them instead
+  # of re-homing them, which is the outcome DEBT.md explicitly refuses. Renames
+  # run before junk? (normalizer.rb ORDER FIX), so a key on the produced string
+  # rescues it. SAFETY: every value is the name of an ALREADY PUBLISHED record
+  # (verified byte-exact against catalog/car/models.json), so no id and no
+  # spelling is minted. ──
+  "944-94": "944"                                  # 20 veh/2 rows (fi, fi_traficom) -> live porsche/944; raws "COUPE 944-94/2400", "COUPE 944-94" — 94 is Traficom's type code, not a badge
+  "924-92": "924"                                  # 5 veh/1 rows (fi, fi_traficom) -> live porsche/924; raw "COUPE 924-92/2400"
+  "928-91": "928"                                  # 1 veh/1 rows (fi, fi_traficom) -> live porsche/928; raw "COUPE 928-91"
+  "928-92": "928"                                  # 1 veh/1 rows (fi, fi_traficom) -> live porsche/928; raw "COUPE 928-92"
+  "9285-92": "928"                                 # 1 veh/1 rows (fi, fi_traficom) -> live porsche/928; raw "COUPE 9285-92/2500" — the register's spelling of 928 S with the type code glued on
+  # ── fi_traficom body-first prefix, the residue folds (pipeline PR
+  # "fi_traficom: strip the register's body-word prefix"). Finland writes a
+  # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
+  # so the adapter now removes the leading body word and the nameplate reaches
+  # the normalizer. For a handful of rows the remainder is a TRIM or a TYPE
+  # CODE rather than a bare nameplate, and each published a NEW id off one or
+  # two Finnish vehicles — measured on a control-vs-treatment build 2026-08-01,
+  # and not by volume: they cross `publishable?`'s `sources.size >= 2` arm
+  # because nl_rdw/nz_nzta already carry the same fragment for the same 1960s
+  # cars. SAFETY: every value below is the name of a record that is ALREADY
+  # PUBLISHED, so this batch can mint neither a new id nor a new spelling. ──
+  "911-S": "911"                                   # 1 veh/1 rows (fi, fi_traficom) -> live porsche/911; raw "COUPE 911-S/2270" — same ruling as the generation codes above: for Porsche the NUMBER is the nameplate, S is the trim
   # ── GENERATION CODES ARE NOT NAMEPLATES (wave 7, 2026-08-01). Porsche's own
   # press kit enumerates "Third/Fourth/Fifth/Sixth/Seventh/Eighth generation
   # Porsche 911 (964)/(993)/(996)/(997)/(991)/(992)" —
@@ -7977,6 +8073,18 @@ Ryuka:
   "Classic Fi":                                "Classic FI"                               # resolves an intra-make casing contradiction: FI attested x1 in-make (ryuka/classic-fi)
 
 Saab:
+  # ── fi_traficom body-first prefix, the residue folds (pipeline PR
+  # "fi_traficom: strip the register's body-word prefix"). Finland writes a
+  # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
+  # so the adapter now removes the leading body word and the nameplate reaches
+  # the normalizer. For a handful of rows the remainder is a TRIM or a TYPE
+  # CODE rather than a bare nameplate, and each published a NEW id off one or
+  # two Finnish vehicles — measured on a control-vs-treatment build 2026-08-01,
+  # and not by volume: they cross `publishable?`'s `sources.size >= 2` arm
+  # because nl_rdw/nz_nzta already carry the same fragment for the same 1960s
+  # cars. SAFETY: every value below is the name of a record that is ALREADY
+  # PUBLISHED, so this batch can mint neither a new id nor a new spelling. ──
+  "900 Turbo S": "900"                             # 1 veh/1 rows (fi, fi_traficom) -> live saab/900; raw "CABRIOLET 900 TURBO S" (trim, not a model line)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
