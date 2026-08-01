@@ -304,6 +304,17 @@ if File.exist?(moves_path)
     next unless renames[t_make]&.key?(t_model)
     canon = renames[t_make][t_model]
     next if canon.nil? # a null target is check 1d's problem, not this one
+    # A CONVERGED IDENTITY TARGET is not a non-canonical target. The sibling
+    # DIRECTION-WAR check below already carries this exemption and for the same
+    # reason: `"100-6": 100-6` is an IDENTITY rename, the junk?-override rescue
+    # class (normalizer ORDER FIX 2026-07-25 — an explicit rename entry beats
+    # the letter-free junk heuristic, which would otherwise delete every
+    # Austin-Healey 100-6). A fixed point cannot produce the divergence this
+    # rule hunts: the moved row arrives carrying "100-6" un-renormalized and the
+    # destination make's own rows renormalize to "100-6" too, so both land on
+    # ONE record. Without this exemption a sanctioned rescue and a sanctioned
+    # move are mutually exclusive. (wave-4 MG+Austin, 2026-08-01.)
+    next if canon.to_s == t_model
     fail! "overrides/models/moves.yml: #{from.inspect} targets #{to.inspect}, but #{t_make.inspect} " \
           "renames #{t_model.inspect} -> #{canon.inspect}. Renames run BEFORE moves, so the move target " \
           "is NOT re-normalized and this publishes a non-canonical record beside the canonical one. " \

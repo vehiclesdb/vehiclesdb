@@ -935,3 +935,31 @@
 "car/volvo/estate": "bare body word; measured population 3 registrations across [nl, nz] in the wave-4 corpus replay (origin/main classify, 2026-08-01). Never a nameplate at any altitude, so no alias target is honest."
 "bus/volvo/matalalattiainen": "Finnish for 'low-floor'; the whole raw is a body description ('Matalalattiainen yksikerroksinen (CE) 3ov 7146cm3'); measured population 77 registrations across [fi] in the wave-4 corpus replay (origin/main classify, 2026-08-01). Never a nameplate at any altitude, so no alias target is honest."
 "truck/volvo/vvn": "3-letter registry stub, no resolvable nameplate; measured population 2 registrations across [fi, nl] in the wave-4 corpus replay (origin/main classify, 2026-08-01). Never a nameplate at any altitude, so no alias target is honest."
+
+# ── wave-4 MG + AUSTIN: strings with NO honest survivor (2026-08-01) ─────────
+# Every line carries its MEASURED population (registrations from the 2026-08-01
+# replay, countries from the control catalog) — nothing here is a silent drop,
+# and every folded string that DOES have a survivor is in former_ids.yml
+# instead. NOTE the one big body-word record this pass deliberately does NOT
+# null: car/mg/roadster (1,561 registrations, fi+gb+nl+nz). Nulling it would
+# delete real registrations with no honest target, the same reason Ford's bare
+# body-style records were kept; it is held as declared debt in
+# data/name_shapes.yml instead.
+"car/mg/roadstar": "body-class misspelling, not a nameplate: the registrar's spelling of 'Roadster' (nl+nz, 6 registrations). MG has never sold a model called Roadstar or Roadster; there is no nameplate here to fold onto, and unlike car/mg/roadster this record is 6 vehicles rather than 1,561. NAMING §7.6 (the BMW letter-only range-label precedent)."
+"car/mg/sports": "body class, not a nameplate: nz_nzta writes the bare body word 'SPORTS' 29 times (nl+nz, 34 registrations). No MG model is called Sports. NAMING §7.6."
+"car/mg/saloon": "body class, not a nameplate (nl+nz, 4 registrations). NAMING §7.6."
+"car/mg/coupe": "body class, not a nameplate (nl+nz, 6 registrations). NAMING §7.6."
+"car/mg/convertible": "body class, not a nameplate (nl+nz, 5 registrations). NAMING §7.6."
+"car/mg/mk": "U7 ROMAN-NUMERAL TRUNCATION ARTIFACT (nl+nz, 5 registrations). The raws are 'MK II', 'MK III', 'MK II 1.6 A': normalizer.rb VARIANT_SUFFIXES[5] (/ (II|III|IV|VI{0,3})\\b.*/) strips the spaced Roman numeral BEFORE the rename lookup, so no nameplate token remains and no rename key can ever see the numeral. Curation cannot fix it — DEBT.md 'U7 variant-strip Roman collapse'. If U7 is repaired these rows resolve themselves onto real MG nameplates."
+"car/mg/rover": "company name in the model column, not a model (fi+nl, 4 registrations): 'MG ROVER' is the MG Rover Group 2000-2005 — https://en.wikipedia.org/wiki/MG_Rover_Group . No nameplate is asserted, so no alias target is honest."
+"car/mg/mg1": "INTERIM, and a NORMALIZER defect rather than a curation verdict (nl+nz, 8 registrations). normalizer.rb#mg's second branch `return \"MG#{$1}\" if m =~ /\\A(\\d)\\b/` matches at a decimal point, so 'MGF 1.8i' (nl 2), 'MG Metro 1.3 GS' (nz 2) and three litre-only strings all become a fabricated 'MG1'. MG has never built an MG1. Reported as a pipeline finding; this entry is superseded the moment that branch is scoped, and the destroyed rows then land on MGF/Metro."
+"car/mg/mg2": "INTERIM, same normalizer defect (fi+nl+nz, 9 registrations): '2.0'/'2.0I'/'2.0 SL'/'2.0 TURBO' (nz 6), a 2-door cabriolet body code '2 D CABRIOLET-GHN3/2310' (fi — GHN3 is the MGB body code) and two RDW '2 AXLE- RIGID BODY' strings all become a fabricated 'MG2'. MG has never built an MG2. Reported as a pipeline finding, not patched here."
+"car/austin/saloon": "body class, not a nameplate (nl+nz, 16 registrations). NAMING §7.6."
+"car/austin/sedan": "body class, not a nameplate: nz_nzta writes 'SEDAN' 9 times (nl+nz, 10 registrations). NAMING §7.6."
+"car/austin/sports": "body class, not a nameplate (nl+nz, 13 registrations). NAMING §7.6."
+"car/austin/tourer": "body class, not a nameplate (nl 'TOURER' 2, nz 'TOURER' 22 and 'TOURER 7HP' 1 — nl+nz, 25 registrations). NAMING §7.6."
+"car/austin/roadster": "body class, not a nameplate (nl+nz, 5 registrations). NAMING §7.6."
+"car/austin/pick-up": "body class, not a nameplate (nl+nz, 5 registrations). The key also fires in the van kind on nl_rdw 'PICK UP' (n=1, sub-threshold, so it publishes nothing there). NAMING §7.6."
+"car/austin/morris": "the SIBLING MARQUE's name in the model column with no nameplate attached (nl 1, nz 1). Austin and Morris were both BMC marques and the registrar wrote the wrong one; nothing here says WHICH Morris, so no alias target is honest."
+"car/austin/rover": "company name in the model column, not a model (fi+nz+ua, 3 registrations): 'AUSTIN ROVER' is the Austin Rover Group 1982-1988 — https://en.wikipedia.org/wiki/Austin_Rover_Group ."
+"car/austin/mk": "U7 ROMAN-NUMERAL TRUNCATION ARTIFACT **with mixed content** (nl+nz, 17 registrations). Same VARIANT_SUFFIXES[5] strip as car/mg/mk, but here the swallowed raws span two marques and two cars: 'MK III 3000' and 'MK II HEALEY 3000' are Austin-Healeys, 'MK III 1300' is an Austin 1300 Mk III, 'MK III 3 LITER' is an Austin 3-Litre. No single honest survivor exists, which is why this one is nulled where the Austin-Healey block's own `Mk` key could be folded. DEBT.md 'U7 variant-strip Roman collapse'."
