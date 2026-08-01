@@ -21313,3 +21313,26 @@ the rename lookup**; and the four contaminated-comparison shapes, with the rule
 Every one also says, in as many words, that **declining to ship what the
 evidence refutes is a welcome outcome** — three delegates did exactly that
 tonight and were right each time.
+
+## OWNER — the G26c + relations spec is landed (pipeline `aux/research/2026-08-owner-swarm/spec-g26c-relations.md`), and its three open questions are RULED
+
+The spec is complete and implementation-ready: fetch deltas to the B1
+prototype, staging in `enrichment/` verbatim, per-field graduation
+semantics (conflicts lose to curation), the `relations` schema with a
+closed type vocabulary, lint rules, the verified migration list of
+every filed pair, and phased rollout. Whichever session pulls it from
+the backlog implements against it. The three owner questions, ruled
+per the spec's own recommendations (all three were right):
+
+1. **Relations go to the OPEN layer at R3, after one release private.**
+   Relations are identity-graph material — the layer we give away —
+   and one private release of bake time protects the Open Contract's
+   irreversibility.
+2. **`member_of` stays RESERVED through R2.** Phase 1 carries one
+   unproven type, not two.
+3. **`source` does not ship in the emitted relation object for R1/R2.**
+   Matches every other citation's posture; revisit at R3.
+
+The D-3 pairs (BYD ×7, Concours-14/1400GTR, m6/m635csi, leyland-daf,
+Kia, Bentley) finally get their mechanism — the migration list in §B7
+is their landing site.
