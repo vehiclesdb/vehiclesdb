@@ -1342,7 +1342,7 @@
 "car/jaguar/mki": "car/jaguar/mk-i"
 "car/jaguar/ss-100": "car/jaguar/ss100"
 "car/jaguar/xj-12": "car/jaguar/xj12"
-"car/jaguar/xj-12-l": "car/jaguar/xj12l"
+"car/jaguar/xj-12-l": "car/jaguar/xj12" # FLATTENED (was -> car/jaguar/xj12l): the wave-4 JLR fold retires xj12l as a long-wheelbase BODY variant of the XJ12, so this alias would have chained into a dead id
 "car/jaguar/xj-40": "car/jaguar/xj40"
 "car/jaguar/xj-8": "car/jaguar/xj8"
 "car/jaguar/xj-s-he": "car/jaguar/xj-s"
@@ -1352,7 +1352,7 @@
 "car/jaguar/xj-sovereign": "car/jaguar/xj-s"
 "car/jaguar/xj-sport": "car/jaguar/xj-s"
 "car/jaguar/xj-supercharged": "car/jaguar/xj-s"
-"car/jaguar/xj6-l": "car/jaguar/xj6l"
+"car/jaguar/xj6-l": "car/jaguar/xj6" # FLATTENED (was -> car/jaguar/xj6l): same fold, same reason
 "car/jaguar/xjrs": "car/jaguar/xjr-s"
 "car/jaguar/xjs": "car/jaguar/xj-s"
 "car/jaguar/xjs-auto": "car/jaguar/xj-s"
@@ -1363,7 +1363,7 @@
 "car/jaguar/xk-120": "car/jaguar/xk120"
 "car/jaguar/xk-140": "car/jaguar/xk140"
 "car/jaguar/xk-150": "car/jaguar/xk150"
-"car/jaguar/xk-150-s": "car/jaguar/xk150s"
+"car/jaguar/xk-150-s": "car/jaguar/xk150" # FLATTENED (was -> car/jaguar/xk150s): S is the triple-carburettor engine grade and xk150s folds into xk150
 "car/jaguar/xk-8": "car/jaguar/xk8"
 "car/jaguar/xkrs": "car/jaguar/xkr-s"
 "car/kia/ev-3": "car/kia/ev3"
@@ -1373,9 +1373,9 @@
 "car/kia/xceed": "car/kia/x-ceed"
 "car/lada/1200s": "car/lada/1200-s"
 "car/lancia/montecarlo": "car/lancia/monte-carlo"
-"car/land-rover/109-hardtop": "car/land-rover/109-hard-top"
-"car/land-rover/88-hardtop": "car/land-rover/88-hard-top"
-"car/land-rover/88-wb": "car/land-rover/88-w-b"
+"car/land-rover/109-hardtop": "car/land-rover/109" # FLATTENED (was -> car/land-rover/109-hard-top): Hard Top is a BODY and the id folds into the 109
+"car/land-rover/88-hardtop": "car/land-rover/88" # FLATTENED (was -> car/land-rover/88-hard-top): same fold, same reason
+"car/land-rover/88-wb": "car/land-rover/88" # FLATTENED (was -> car/land-rover/88-w-b): WB is the wheel base the number already names
 "car/land-rover/rangerover": "car/land-rover/range-rover"
 "car/lexus/ct-200": "car/lexus/ct"
 "car/lexus/ct-200-h": "car/lexus/ct"
@@ -1746,12 +1746,19 @@
 "car/renault/velsatis": "car/renault/vel-satis"
 "car/riley/rma": "car/riley/r-m-a"
 "car/rolls-royce/silvershadow": "car/rolls-royce/silver-shadow"
-"car/rover/2300s": "car/rover/2300-s"
-"car/rover/2600s": "car/rover/2600-s"
-"car/rover/3500-vanden-plas": "car/rover/3500-van-den-plas"
-"car/rover/3500s": "car/rover/3500-s"
-"car/rover/landrover": "car/rover/land-rover"
-"car/rover/rangerover": "car/rover/range-rover"
+"car/rover/2300s": "car/rover/2300" # FLATTENED (was -> car/rover/2300-s): S is an SD1 trim grade and the id folds into 2300
+"car/rover/2600s": "car/rover/2600" # FLATTENED (was -> car/rover/2600-s): same fold, same reason
+"car/rover/3500-vanden-plas": "car/rover/3500" # FLATTENED (was -> car/rover/3500-van-den-plas): Vanden Plas is a TRIM and the id folds into 3500
+"car/rover/3500s": "car/rover/3500" # FLATTENED (was -> car/rover/3500-s): same fold, same reason
+# "car/rover/landrover": "car/rover/land-rover"  — RETIRED as an alias by the
+# wave-4 JLR batch, and re-disposed as a REMOVAL (see overrides/models/removals.yml).
+# Its target car/rover/land-rover is a marque-in-the-model-column row that names
+# no Land Rover MODEL, so this pass drops it with no successor — which left this
+# alias pointing into a 404 and failed the id-contract liveness gate. An alias
+# whose target has died is strictly worse than a documented removal, so the
+# reasoning moves to removals.yml rather than being deleted (the rule-1g remedy,
+# applied in the other direction). lint_curation rule 1g forbids carrying both.
+"car/rover/rangerover": "car/land-rover/range-rover" # FLATTENED (was -> car/rover/range-rover): the Range Rover is a Land Rover and moves out of the Rover make in this change, so this alias must follow it ACROSS the make or a consumer holding the old fused spelling lands on a retired id
 "car/rover/vanden-plas": "car/rover/van-den-plas"
 "car/saab/9-4x": "car/saab/9-4-x"
 "car/saab/9-7x": "car/saab/9-7-x"
@@ -2039,7 +2046,7 @@
 "van/isuzu/nlr85exxxb": "van/isuzu/n-series"
 "van/iveco/35s": "van/iveco/35-s"
 "van/iveco/35s13": "van/iveco/35-s-13"
-"van/land-rover/90-defender": "car/land-rover/90-defender"
+"van/land-rover/90-defender": "car/land-rover/90" # FLATTENED (was -> car/land-rover/90-defender): the wave-4 fold retires 90-defender onto the 90 nameplate; this is the one cross-KIND inbound alias in the set
 "van/maxus/edeliver-9": "van/maxus/e-deliver-9"
 "van/mazda/bt-50": "van/mazda/bt50"
 "van/mercedes-benz/108d": "van/mercedes-benz/108-d"
@@ -4781,3 +4788,170 @@
 "van/chevrolet/van-20": "van/chevrolet/chevy-van" # (fi+nl) the Chevy Van 20 with the make nickname dropped by the register (raws "VAN 20"/"CHEVROLET VAN 20")
 "car/chevrolet/chevy-van-g20-sportvan": "car/chevrolet/sportvan" # (fi+nl) the SPORTVAN is the passenger configuration and is a live Chevrolet nameplate — https://en.wikipedia.org/wiki/Chevrolet_Van ; the G20 is the payload class
 "car/chevrolet/g20-sportvan": "car/chevrolet/sportvan" # (ca+nl) same: payload class on the Sportvan. CARRIES ca INTO the survivor
+# ── wave-4 JLR fold batch (Jaguar · Rover · Land Rover), dossier §A ──────────
+# 151 folds, 24 drops, 10 cross-make moves, 4 minted ids. Chain pre-flight run
+# before this block was written: 12 inbound aliases pointed at ids this pass
+# retires and were FLATTENED in place above (each says so on its line); no
+# target here is itself an alias; no self-references; no id appears in both
+# this file and removals.yml (lint_curation rule 1g).
+"car/jaguar/xe-series": "car/jaguar/xe" # FOLD onto car/jaguar/xe: uk_dft VEH0120 genmodel "JAGUAR XE SERIES" x43,700 — a DVLA range label, not a nameplate; Jaguar sells one XE (https://www.jaguar.co.uk/jaguar-range/xe/index.html). ADDS gb to jaguar/xe, which has no UK evidence today
+"car/jaguar/xf-series": "car/jaguar/xf" # FOLD onto car/jaguar/xf: uk_dft "JAGUAR XF SERIES" x94,120 — same class; ADDS gb to jaguar/xf (https://www.jaguar.co.uk/jaguar-range/xf/index.html)
+"car/jaguar/xk-series": "car/jaguar/xk" # FOLD onto car/jaguar/xk: uk_dft "JAGUAR XK SERIES" x28,729 car + x5 van — same class; ADDS gb to jaguar/xk (https://en.wikipedia.org/wiki/Jaguar_XK_(X150)). FIRES IN car AND van — the twin van/jaguar/xk-series is a candidate row, same fold, intended
+"car/jaguar/e": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: raws "E COUPE"/"E CABRIOLET"/"E SPORTS-COUPE"/"JAGUAR E" (lu,nl,nz x34) — the bare launch badge of the E-type, 1961-75 (https://www.jaguarheritage.com/vehicles/e-type/)
+"car/jaguar/xke": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: XK-E is the US-market name of the same car (ar,fi,nl,nz x12) — https://en.wikipedia.org/wiki/Jaguar_E-Type
+"car/jaguar/xke-e-type": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: same string, hyphenated register spelling — SAME SLUG as the line above, so both keys are required or the id republishes under the other display form (the BMW "3 C"/"3. C" gotcha)
+"car/jaguar/xke-v12": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: hyphenated spelling of the same, SAME SLUG (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/2-2-e-type": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: 2+2 is the long-wheelbase COUPE BODY of the Series 1/2, not a model — https://en.wikipedia.org/wiki/Jaguar_E-Type
+"car/jaguar/e-type-2-2": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: the register wrote the plus as a hyphen; same 2+2 body (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/e-type-roadster": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: hyphenated spelling, SAME SLUG (https://www.jaguarheritage.com/vehicles/e-type/)
+"car/jaguar/e-type-series": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: bare "Series" residue of a Series 1/2/3 string (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/e-type-series-2": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: Series 2 is a GENERATION (1968-71), not a nameplate — https://en.wikipedia.org/wiki/Jaguar_E-Type
+"car/jaguar/e-type-series-2-4": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: generation + a truncated 4.2-litre displacement (the comma-decimal generator, DEBT hygiene-2) — https://en.wikipedia.org/wiki/Jaguar_E-Type
+"car/jaguar/e-type-series-3-roadster": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: unhyphenated spelling, SAME SLUG (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/e-type-series-3-v12": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: generation + engine (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/e-type-v12": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: hyphenated spelling, SAME SLUG (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/e-type-v12-roadster": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: unhyphenated spelling, SAME SLUG (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/e-v12-roadster": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: bare-E badge + engine + body (https://en.wikipedia.org/wiki/Jaguar_E-Type)
+"car/jaguar/series-three-e-type-v12": "car/jaguar/e-type" # FOLD onto car/jaguar/e-type: generation spelled in words (an fi_traficom habit) + engine — https://en.wikipedia.org/wiki/Jaguar_E-Type
+"car/jaguar/xk-120-roadster": "car/jaguar/xk120" # FOLD onto car/jaguar/xk120: OTS/Roadster is the open two-seater BODY of the XK120 (1948-54) — https://www.jaguarheritage.com/vehicles/xk120/
+"car/jaguar/xk-120-se": "car/jaguar/xk120" # FOLD onto car/jaguar/xk120: SE = the Special Equipment engine/equipment grade, not a model (https://www.jaguarheritage.com/vehicles/xk120/)
+"car/jaguar/xk-140-fhc": "car/jaguar/xk140" # FOLD onto car/jaguar/xk140: FHC = fixed-head coupe BODY of the XK140 (1954-57) — https://en.wikipedia.org/wiki/Jaguar_XK140
+"car/jaguar/xk-140-fixed-head": "car/jaguar/xk140" # FOLD onto car/jaguar/xk140: the same body, spelled out (https://en.wikipedia.org/wiki/Jaguar_XK140)
+"car/jaguar/xk-140-ots": "car/jaguar/xk140" # FOLD onto car/jaguar/xk140: OTS = open two-seater BODY (https://en.wikipedia.org/wiki/Jaguar_XK140)
+"car/jaguar/xk140-dhc": "car/jaguar/xk140" # FOLD onto car/jaguar/xk140: DHC = drophead coupe BODY (https://en.wikipedia.org/wiki/Jaguar_XK140)
+"car/jaguar/xk-150-drop-head": "car/jaguar/xk150" # FOLD onto car/jaguar/xk150: unhyphenated spelling — SAME SLUG (xk-150-drop-head), so both keys are required (https://en.wikipedia.org/wiki/Jaguar_XK150)
+"car/jaguar/xk-150-roadster": "car/jaguar/xk150" # FOLD onto car/jaguar/xk150: Roadster BODY of the XK150 (1957-61) — https://en.wikipedia.org/wiki/Jaguar_XK150
+"car/jaguar/xk150s": "car/jaguar/xk150" # FOLD onto car/jaguar/xk150: S = the triple-carburettor engine grade (XK150 S), an equipment grade of the XK150 — https://en.wikipedia.org/wiki/Jaguar_XK150
+"car/jaguar/xk120c": "car/jaguar/c-type" # FOLD onto car/jaguar/c-type: XK120C IS the C-type — the factory designation of the 1951-53 Le Mans car — https://www.jaguarheritage.com/vehicles/c-type/
+"car/jaguar/xj-executive": "car/jaguar/xj" # FOLD onto car/jaguar/xj: Executive is an XJ TRIM LEVEL (fi,nl x188) — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xjl": "car/jaguar/xj" # FOLD onto car/jaguar/xj: XJL = the long-wheelbase XJ BODY; the EPA/DOE baseModel column maps "XJL"/"XJL AWD" to XJ (cache/us_vehicles.csv col 66) — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xjl-supercharged": "car/jaguar/xj" # FOLD onto car/jaguar/xj: LWB body + supercharged engine badge; EPA baseModel "XJL FFV" to XJ (cache/us_vehicles.csv col 66)
+"car/jaguar/xj-220": "car/jaguar/xj220" # FOLD onto car/jaguar/xj220: SPELLING: Jaguar writes the supercar fused, XJ220 (1992-94, 275 built) — https://www.jaguarheritage.com/vehicles/xj220/ . This key MINTS the correct nameplate (the Cee D precedent)
+"car/jaguar/xj12-auto": "car/jaguar/xj12" # FOLD onto car/jaguar/xj12: automatic transmission is not a model (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/xj12-he": "car/jaguar/xj12" # FOLD onto car/jaguar/xj12: HE = "High Efficiency" (May-head) V12, an ENGINE spec from 1981 — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xj12c": "car/jaguar/xj12" # FOLD onto car/jaguar/xj12: the two-door COUPE body of the Series 2 (1975-77) — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xj12l": "car/jaguar/xj12" # FOLD onto car/jaguar/xj12: L = long-wheelbase BODY; EPA baseModel folds the same shape (XJ6L to XJ, cache/us_vehicles.csv col 66)
+"car/jaguar/xj6-2": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: truncated displacement: raws "XJ6 - 2,7 TD" / "XJ6/2" — the COMMA-decimal generator (DEBT hygiene-2), not a variant (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/xj6-4": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: truncated displacement: raws "XJ6 4,2 SERIES 2" x22, "XJ6 4,2 SERIES 2 AUTOMATIC" x21 — same generator (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/xj6-auto": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: automatic transmission is not a model (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/xj6-series": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: bare "Series" residue of a Series 1/2/3 string (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/xj6-series-1": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: Series 1 is a GENERATION (1968-73) — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xj6-sovereign": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: Sovereign is the TOP TRIM of the XJ6 from 1983 — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xj6c": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: the two-door COUPE body of the Series 2 (1975-77) — https://en.wikipedia.org/wiki/Jaguar_XJ
+"car/jaguar/xj6l": "car/jaguar/xj6" # FOLD onto car/jaguar/xj6: L = long-wheelbase BODY; EPA baseModel "XJ6L" to XJ (cache/us_vehicles.csv col 66)
+"car/jaguar/xj8-executive": "car/jaguar/xj8" # FOLD onto car/jaguar/xj8: Executive TRIM (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/xj8l": "car/jaguar/xj8" # FOLD onto car/jaguar/xj8: long-wheelbase BODY; EPA baseModel "XJ8L"/"XJ8l" to XJ (cache/us_vehicles.csv col 66)
+"car/jaguar/xj-sc": "car/jaguar/xj-s" # FOLD onto car/jaguar/xj-s: the SPACED twin of the settled "Xj-Sc": XJ-S line above. Raws nl_rdw "JAGUAR XJ SC"/"XJ SC" and nz_nzta "XJ SC" reach the SAME SLUG (xj-sc) and kept the record alive under the display "Xj Sc" — which is what propose_former_ids reported as a dead key. It is NOT dead: "Xj-Sc" fires on fi/nl/us rows and gen_review_pack reports no dead override keys for this make (dossier §E-3). XJ-SC is the 1983-88 targa/cabriolet BODY of the XJ-S (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
+"car/jaguar/sovereign-auto": "car/jaguar/sovereign" # FOLD onto car/jaguar/sovereign: automatic transmission is not a model (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/sovereign-he": "car/jaguar/sovereign" # FOLD onto car/jaguar/sovereign: HE = High Efficiency V12 ENGINE spec (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/sovereign-v12": "car/jaguar/sovereign" # FOLD onto car/jaguar/sovereign: engine badge, not a model (https://en.wikipedia.org/wiki/Jaguar_XJ)
+"car/jaguar/s-type-4": "car/jaguar/s-type" # FOLD onto car/jaguar/s-type: truncated displacement from raw "S-TYPE 4,2 V8" (the comma-decimal generator) — https://en.wikipedia.org/wiki/Jaguar_S-Type
+"car/jaguar/s-type-executive": "car/jaguar/s-type" # FOLD onto car/jaguar/s-type: Executive TRIM (https://en.wikipedia.org/wiki/Jaguar_S-Type)
+"car/jaguar/s-type-r": "car/jaguar/s-type" # FOLD onto car/jaguar/s-type: the EPA/DOE baseModel column says "S-Type R" to "S-type" (cache/us_vehicles.csv col 66); R is the supercharged performance TRIM, 2002-08 (https://en.wikipedia.org/wiki/Jaguar_S-Type)
+"car/jaguar/x-type-2": "car/jaguar/x-type" # FOLD onto car/jaguar/x-type: truncated displacement from raws "X-TYPE 2,0 D I4 EXECUTIVE"/"X-TYPE 2,5 V6" — https://en.wikipedia.org/wiki/Jaguar_X-Type
+"car/jaguar/x-type-sport-brake": "car/jaguar/x-type" # FOLD onto car/jaguar/x-type: Sport Brake = the ESTATE BODY; EPA baseModel "X-Type Sport Brake" to "X-Type" (cache/us_vehicles.csv col 66)
+"car/jaguar/xf-s": "car/jaguar/xf" # FOLD onto car/jaguar/xf: hyphenated register spelling — SAME SLUG (xf-s), so both keys are required (https://en.wikipedia.org/wiki/Jaguar_XF)
+"car/jaguar/xf-30t": "car/jaguar/xf" # FOLD onto car/jaguar/xf: 30t = a POWER/engine badge; EPA baseModel "XF 30t" to "XF" (cache/us_vehicles.csv col 66)
+"car/jaguar/xf-p250": "car/jaguar/xf" # FOLD onto car/jaguar/xf: P250 = a power badge (250 PS); EPA baseModel to "XF" (cache/us_vehicles.csv col 66)
+"car/jaguar/xf-p300": "car/jaguar/xf" # FOLD onto car/jaguar/xf: P300 power badge; EPA baseModel to "XF" (cache/us_vehicles.csv col 66)
+"car/jaguar/xf-supercharged": "car/jaguar/xf" # FOLD onto car/jaguar/xf: engine badge; EPA baseModel "XF Supercharged" to "XF" (cache/us_vehicles.csv col 66)
+"car/jaguar/xf-sportbrake": "car/jaguar/xf" # FOLD onto car/jaguar/xf: Sportbrake = the ESTATE BODY; EPA baseModel "XF Sportbrake AWD" to "XF" (cache/us_vehicles.csv col 66). FIRES IN car AND van — the twin van/jaguar/xf-sportbrake is a candidate row, same fold, intended
+"car/jaguar/xe-25t": "car/jaguar/xe" # FOLD onto car/jaguar/xe: 25t = a POWER/engine badge (https://en.wikipedia.org/wiki/Jaguar_XE)
+"car/jaguar/xe-p250": "car/jaguar/xe" # FOLD onto car/jaguar/xe: P250 power badge; EPA baseModel "XE P250"/"XE P250 AWD" to "XE" (cache/us_vehicles.csv col 66)
+"car/jaguar/xe-p300": "car/jaguar/xe" # FOLD onto car/jaguar/xe: P300 power badge; EPA baseModel to "XE" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-pace-25t": "car/jaguar/f-pace" # FOLD onto car/jaguar/f-pace: 25t power badge (https://en.wikipedia.org/wiki/Jaguar_F-Pace)
+"car/jaguar/f-pace-30t": "car/jaguar/f-pace" # FOLD onto car/jaguar/f-pace: EPA baseModel "F-Pace 30t" to "F-Pace" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-pace-p340": "car/jaguar/f-pace" # FOLD onto car/jaguar/f-pace: EPA baseModel "F-Pace P340 MHEV" to "F-Pace" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-pace-p400": "car/jaguar/f-pace" # FOLD onto car/jaguar/f-pace: EPA baseModel "F-Pace P400 MHEV" to "F-Pace" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-pace-s": "car/jaguar/f-pace" # FOLD onto car/jaguar/f-pace: S equipment grade (https://en.wikipedia.org/wiki/Jaguar_F-Pace)
+"car/jaguar/f-pace-svr": "car/jaguar/f-pace" # FOLD onto car/jaguar/f-pace: EPA baseModel "F-Pace SVR" to "F-Pace" (cache/us_vehicles.csv col 66); SVR is the SV performance TRIM
+"car/jaguar/f-type-p450": "car/jaguar/f-type" # FOLD onto car/jaguar/f-type: EPA baseModel "F-Type P450 ..." to "F-Type" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-type-r": "car/jaguar/f-type" # FOLD onto car/jaguar/f-type: EPA baseModel "F-Type R ..." to "F-Type" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-type-s": "car/jaguar/f-type" # FOLD onto car/jaguar/f-type: EPA baseModel "F-Type S ..." to "F-Type" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-type-svr": "car/jaguar/f-type" # FOLD onto car/jaguar/f-type: EPA baseModel "F-Type SVR ..." to "F-Type" (cache/us_vehicles.csv col 66)
+"car/jaguar/f-type-v8-s": "car/jaguar/f-type" # FOLD onto car/jaguar/f-type: EPA baseModel "F-Type V8 S Convertible" to "F-Type" (cache/us_vehicles.csv col 66)
+"car/jaguar/e-pace-p250": "car/jaguar/e-pace" # FOLD onto car/jaguar/e-pace: EPA baseModel "E-Pace P250" to "E-Pace" (cache/us_vehicles.csv col 66)
+"car/jaguar/e-pace-p300": "car/jaguar/e-pace" # FOLD onto car/jaguar/e-pace: EPA baseModel "E-Pace P300" to "E-Pace" (cache/us_vehicles.csv col 66)
+"car/jaguar/i-pace-ev400": "car/jaguar/i-pace" # FOLD onto car/jaguar/i-pace: EV400 is a POWER designation, not a model; EPA baseModel "I-Pace EV400" to "I-Pace" (cache/us_vehicles.csv col 66), and NAMING's own "Leaf 40KWH to Leaf" precedent
+"car/jaguar/range-rover-evoque": "car/land-rover/range-rover-evoque" # MOVE Jaguar -> Land Rover (4 vehicles: es 1, nl 3). normalizer.rb#split_compound_make already routes raw make JAGUAR LAND ROVER by nameplate; these rows arrive under a bare JAGUAR make string, so the split never sees them
+"van/jaguar/defender": "van/land-rover/defender" # MOVE Jaguar -> Land Rover (3 vehicles, es+nl, van kind). Same shared-registrant defect as the Evoque row above
+"car/rover/100-series": "car/rover/100" # FOLD onto car/rover/100: uk_dft VEH0120 genmodel "ROVER 100 SERIES" x4,218 — a DVLA range label, not a nameplate; Rover sold the "Rover 100" (1994-98) — https://en.wikipedia.org/wiki/Rover_100 . ADDS gb to rover/100. FIRES IN car AND van (van/rover/100-series, same fold, intended)
+"car/rover/200-series": "car/rover/200" # FOLD onto car/rover/200: "ROVER 200 SERIES" x9,588 uk_dft + nl/fi — range label; the car is the Rover 200 (1984-2005) — https://en.wikipedia.org/wiki/Rover_200 . ADDS fi+gb to rover/200. FIRES IN car AND van (van/rover/200-series, same fold, intended)
+"car/rover/400-series": "car/rover/400" # FOLD onto car/rover/400: "ROVER 400 SERIES" x4,246 — range label; the car is the Rover 400 (1990-99) — https://en.wikipedia.org/wiki/Rover_400 . ADDS fi+gb to rover/400
+"car/rover/600-series": "car/rover/600" # FOLD onto car/rover/600: "ROVER 600 SERIES" x2,135 — range label; the car is the Rover 600 (1993-99) — https://en.wikipedia.org/wiki/Rover_600 . ADDS gb+nl to rover/600
+"car/rover/800-series": "car/rover/800" # FOLD onto car/rover/800: "ROVER 800 SERIES" x1,603 — range label; the car is the Rover 800 (1986-99) — https://en.wikipedia.org/wiki/Rover_800 . MINTS rover/800 (the Cee D precedent); the 820/825/827 engine-variant records already publish beneath it. FIRES IN car AND van (van/rover/800-series, same fold, intended)
+"car/rover/2000-series": "car/rover/2000" # FOLD onto car/rover/2000: "ROVER 2000 SERIES" x2,152 — range label for the P6 2000 (1963-77) — https://en.wikipedia.org/wiki/Rover_P6 . ADDS gb to rover/2000. FIRES IN car AND van; the bus-kind row series-collapses to "2000" and is NOT probed with this key
+"car/rover/10-hp": "car/rover/10" # FOLD onto car/rover/10: HP is the RAC horsepower TAX RATING, not part of the name; Rover sold the "Rover Ten" — https://en.wikipedia.org/wiki/Rover_10
+"car/rover/12hp": "car/rover/12" # FOLD onto car/rover/12: the same rating suffix on the Rover Twelve — https://en.wikipedia.org/wiki/Rover_12
+"car/rover/p4-75": "car/rover/75" # FOLD onto car/rover/75: hyphenated register spelling — SAME SLUG (p4-75), so both keys are required (https://en.wikipedia.org/wiki/Rover_P4)
+"car/rover/2000-sc": "car/rover/2000" # FOLD onto car/rover/2000: SC = the single-carburettor ENGINE spec of the P6 2000 — https://en.wikipedia.org/wiki/Rover_P6
+"car/rover/2000-tc": "car/rover/2000" # FOLD onto car/rover/2000: TC = the twin-carburettor ENGINE spec of the P6 2000 — https://en.wikipedia.org/wiki/Rover_P6
+"car/rover/tc-2000": "car/rover/2000" # FOLD onto car/rover/2000: spaced spelling — SAME SLUG (tc-2000), so both keys are required (https://en.wikipedia.org/wiki/Rover_P6)
+"car/rover/2200-tc": "car/rover/2200" # FOLD onto car/rover/2200: TC engine spec; MINTS rover/2200 — the P6 2200 (1973-77) is its own model, a 2.2-litre that replaced the 2000 — https://en.wikipedia.org/wiki/Rover_P6
+"car/rover/2300-s": "car/rover/2300" # FOLD onto car/rover/2300: S = a trim/engine grade of the SD1 2300 — https://en.wikipedia.org/wiki/Rover_SD1
+"car/rover/2600-s": "car/rover/2600" # FOLD onto car/rover/2600: S grade of the SD1 2600 — https://en.wikipedia.org/wiki/Rover_SD1
+"car/rover/2600-automatic": "car/rover/2600" # FOLD onto car/rover/2600: transmission is not a model (https://en.wikipedia.org/wiki/Rover_SD1)
+"car/rover/2600-van-den-plas": "car/rover/2600" # FOLD onto car/rover/2600: Vanden Plas = the luxury TRIM (a British Leyland coachbuilder name used as a trim level) — https://en.wikipedia.org/wiki/Rover_SD1
+"car/rover/2600se": "car/rover/2600" # FOLD onto car/rover/2600: SE equipment grade (https://en.wikipedia.org/wiki/Rover_SD1)
+"car/rover/3500-auto": "car/rover/3500" # FOLD onto car/rover/3500: transmission is not a model (https://en.wikipedia.org/wiki/Rover_SD1)
+"car/rover/3500-s": "car/rover/3500" # FOLD onto car/rover/3500: S grade of the P6B/SD1 3500 — https://en.wikipedia.org/wiki/Rover_P6
+"car/rover/3500-sdi": "car/rover/3500" # FOLD onto car/rover/3500: engine/injection badge (https://en.wikipedia.org/wiki/Rover_SD1)
+"car/rover/3500-van-den-plas": "car/rover/3500" # FOLD onto car/rover/3500: Vanden Plas TRIM (https://en.wikipedia.org/wiki/Rover_SD1)
+"car/rover/3500-vitesse": "car/rover/3500" # FOLD onto car/rover/3500: Vitesse = the SD1 performance TRIM — https://en.wikipedia.org/wiki/Rover_SD1
+"car/rover/214-i": "car/rover/214" # FOLD onto car/rover/214: i = fuel injection, an engine spec (https://en.wikipedia.org/wiki/Rover_200)
+"car/rover/216-sli": "car/rover/216" # FOLD onto car/rover/216: SLi equipment grade (https://en.wikipedia.org/wiki/Rover_200)
+"car/rover/220-turbo": "car/rover/220" # FOLD onto car/rover/220: a forced-induction ENGINE badge (https://en.wikipedia.org/wiki/Rover_200)
+"car/rover/416-si": "car/rover/416" # FOLD onto car/rover/416: Si equipment grade (https://en.wikipedia.org/wiki/Rover_400)
+"car/rover/416-sli": "car/rover/416" # FOLD onto car/rover/416: SLi equipment grade (https://en.wikipedia.org/wiki/Rover_400)
+"car/rover/420-d": "car/rover/420" # FOLD onto car/rover/420: D = diesel ENGINE (https://en.wikipedia.org/wiki/Rover_400)
+"car/rover/620-si": "car/rover/620" # FOLD onto car/rover/620: Si equipment grade — ADDS fi to rover/620 (https://en.wikipedia.org/wiki/Rover_600)
+"car/rover/825i": "car/rover/825" # FOLD onto car/rover/825: i = fuel injection (https://en.wikipedia.org/wiki/Rover_800)
+"car/rover/827-sterling": "car/rover/827" # FOLD onto car/rover/827: Sterling = the top TRIM of the 800 (and the US marque name); car/rover/sterling stays live for rows that carry ONLY that word — https://en.wikipedia.org/wiki/Rover_800
+"car/rover/mini-cooper-1-3i": "car/rover/mini-cooper" # FOLD onto car/rover/mini-cooper: 1.3i is the displacement + injection ENGINE spec, not a model — https://en.wikipedia.org/wiki/Mini
+"car/rover/range-rover": "car/land-rover/range-rover" # MOVE Rover -> Land Rover. The Range Rover is a Land Rover product: British Leyland created Land Rover Limited in 1978 (https://en.wikipedia.org/wiki/Rover_Company) and landrover.co.uk lists RANGE ROVER as one of its three families while Rover lists nothing. 8,427 car vehicles, incl. the DVLA's own genmodel ROVER RANGE ROVER x7,227. The make changes, so no rename could do this — moves.yml carries it and this alias keeps the old id resolvable
+"van/rover/range-rover": "car/land-rover/range-rover" # MOVE Rover -> Land Rover, van kind (gb,nl), and a CROSS-KIND alias by measurement. The dossier expected this to mint van/land-rover/range-rover; the build says otherwise and the build wins. Reconciler.cross_kind_prune! (reconciler.rb:105-130) drops a kind's copy of an id when one kind holds >=97% of its total count: before the move, rover/range-rover was car 8,427 / van 659 (92.7%, under the bar, so the van record lived); after it, every Range Rover row consolidates onto land-rover/range-rover at car ~149,000 vs van ~1,200 (>99%), so the van twin is pruned as mis-kinded. That is the pruner working — the Range Rover IS a car — so the alias names the car record, exactly like the shipped van/land-rover/90-defender -> car/land-rover/90-defender line. No evidence is lost: the van rows' gb+nl counts are carried on the car record, which already publishes both countries
+"car/rover/range": "car/land-rover/range-rover" # MOVE after a pre-move rename: nz_nzta truncates the genmodel to RANGE (x59) and the same register carries the full RANGE ROVER x146, so `Range: Range Rover` normalises it first and moves.yml then re-attaches it to Land Rover
+"car/rover/ranger-rover": "car/land-rover/range-rover" # MOVE after a pre-move TYPO fix: RANGER ROVER (nl x2) / RANGER/ROVER (nz x1) against RANGE ROVER x1,130 in the same two registers — 2,809:1, and the same typo appears independently under make LAND ROVER. Renamed to Range Rover, then moved
+"van/rover/defender": "van/land-rover/defender" # MOVE Rover -> Land Rover (fi 2, nl 4). The Defender name dates from the 1991 model year, thirteen years after Land Rover Limited was created — it was never a Rover-marque product (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/rover/mgf": "car/mg/mgf" # MOVE Rover -> MG (489 vehicles: fi 2, lu 1, nl 27, nz 459). The MGF is an MG (1995-2002); MG was a Rover Group marque 1986-2000, which is why the registers file it under ROVER. Target car/mg/mgf is live (fi,gb,lu,nl,nz)
+"car/rover/mg-zt": "car/mg/zt" # MOVE Rover -> MG (2 vehicles, fi+nl). The MG ZT is an MG (2001-05); target car/mg/zt is live (gb,nl) and GAINS fi from this move
+"car/land-rover/86-wb": "car/land-rover/86" # FOLD onto car/land-rover/86: WB = wheel base — the register spelling out what the number already says (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-hard-top": "car/land-rover/88" # FOLD onto car/land-rover/88: Hard Top is a Land Rover BODY, built on every wheelbase (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-ht": "car/land-rover/88" # FOLD onto car/land-rover/88: HT = hard top, abbreviated by the register (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-pick-up": "car/land-rover/88" # FOLD onto car/land-rover/88: hyphenated spelling — SAME SLUG (88-pick-up), so both keys are required. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"van/land-rover/88-pick-up": "van/land-rover/88" # FOLD onto van/land-rover/88: hyphenated spelling — SAME SLUG (88-pick-up), so both keys are required. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-series": "car/land-rover/88" # FOLD onto car/land-rover/88: bare "Series" residue of a Series II/III string. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-series-2a": "car/land-rover/88" # FOLD onto car/land-rover/88: Series 2A is a GENERATION (1961-71), not a nameplate. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-series-3": "car/land-rover/88" # FOLD onto car/land-rover/88: Series III generation (1971-85). FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-series-iia": "car/land-rover/88" # FOLD onto car/land-rover/88: the Roman spelling of Series 2A — a DIFFERENT slug from the line above, so both are needed. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-station": "car/land-rover/88" # FOLD onto car/land-rover/88: Station Wagon BODY, truncated by the register (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-sw": "car/land-rover/88" # FOLD onto car/land-rover/88: SW = station wagon (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-truck": "car/land-rover/88" # FOLD onto car/land-rover/88: Truck Cab BODY (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-truck-cab": "car/land-rover/88" # FOLD onto car/land-rover/88: Truck Cab BODY, written out. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/88-w-b": "car/land-rover/88" # FOLD onto car/land-rover/88: WB = wheel base, spaced (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/series-i-88": "car/land-rover/88" # FOLD onto car/land-rover/88: generation + wheelbase; the wheelbase is the nameplate (https://en.wikipedia.org/wiki/Land_Rover_series)
+"van/land-rover/series-88": "van/land-rover/88" # FOLD onto van/land-rover/88: the same with the generation word dropped — van kind only, and it ADDS fi to van/land-rover/88 (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/lr88": "car/land-rover/88" # FOLD onto car/land-rover/88: LR = LandRover, a registry abbreviation prefix (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/90-county": "car/land-rover/90" # FOLD onto car/land-rover/90: County is the Land Rover station-wagon TRIM, from 1982 (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/land-rover/90-defender": "car/land-rover/90" # FOLD onto car/land-rover/90: raws "90 DEFENDER TDI" (nl+nz). Folded to the NUMBER, not to Defender: the number is what the row leads with, land-rover/90 is a live four-country nameplate with 2,202 car registrations, and the DVLA keeps LAND ROVER 90 and LAND ROVER DEFENDER as separate genmodels over the same years — https://en.wikipedia.org/wiki/Land_Rover_Defender . The deeper 90/110/130-into-Defender question is HELD for the owner (dossier §E-6). FIRES IN car AND van
+"car/land-rover/lr90": "car/land-rover/90" # FOLD onto car/land-rover/90: LR abbreviation prefix. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/land-rover/ninety": "car/land-rover/90" # FOLD onto car/land-rover/90: "in 1984 the 'Land Rover Ninety' was added" — the launch name of the same vehicle, spelled as a word — https://en.wikipedia.org/wiki/Land_Rover_Defender
+"car/land-rover/109-hard-top": "car/land-rover/109" # FOLD onto car/land-rover/109: Hard Top BODY. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/109-lwb": "car/land-rover/109" # FOLD onto car/land-rover/109: LWB = long wheel base, i.e. the 109 itself. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/109-pick-up": "car/land-rover/109" # FOLD onto car/land-rover/109: the RDW slash spelling — SAME SLUG again; all three keys are required or the id republishes under whichever form has the most rows (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/109-v8": "car/land-rover/109" # FOLD onto car/land-rover/109: the 3.5 V8 ENGINE (Stage 1 V8, 1979-85, 109in only). FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/lr-109": "car/land-rover/109" # FOLD onto car/land-rover/109: LR abbreviation prefix — ADDS fi to car/land-rover/109. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/series-3-109": "car/land-rover/109" # FOLD onto car/land-rover/109: generation + wheelbase. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
+"car/land-rover/110-4c": "car/land-rover/110" # FOLD onto car/land-rover/110: 4C = four-cylinder ENGINE (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/land-rover/110-defender": "car/land-rover/110" # FOLD onto car/land-rover/110: raws "110 DEFENDER TDI"/"110 DEFENDER ESTATE"/"110 DEFENDER 4X4" (nl+nz). Folded to the NUMBER for the same reason as "90 Defender" above — land-rover/110 carries 3,549 car registrations and the DVLA keeps both genmodels — https://en.wikipedia.org/wiki/Land_Rover_Defender . FIRES IN car AND van
+"car/land-rover/110-hardtop": "car/land-rover/110" # FOLD onto car/land-rover/110: Hard Top BODY. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/land-rover/110-v8": "car/land-rover/110" # FOLD onto car/land-rover/110: V8 ENGINE (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/land-rover/one-ten": "car/land-rover/110" # FOLD onto car/land-rover/110: hyphenated spelling — SAME SLUG (one-ten) (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"van/land-rover/ld-defender": "van/land-rover/defender" # FOLD onto van/land-rover/defender: LD is a Traficom/RDW body-code prefix; the nameplate is Defender (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+"car/land-rover/evoque": "car/land-rover/range-rover-evoque" # FOLD onto car/land-rover/range-rover-evoque: bare badge; Land Rover's own model name is "Range Rover Evoque" — https://www.landrover.co.uk/vehicles/index.html . lu,nl,nz,us are a strict subset of the survivor's 14 countries
+"car/land-rover/velar": "car/land-rover/range-rover-velar" # FOLD onto car/land-rover/range-rover-velar: bare badge; the model name is "Range Rover Velar" — https://www.landrover.co.uk/vehicles/index.html
+"car/land-rover/sport": "car/land-rover/range-rover-sport" # FOLD onto car/land-rover/range-rover-sport: raws "LAND ROVER SPORT" (fi 1, nl 2). TWO referents are possible — Range Rover Sport (186,186 vehicles) and Discovery Sport (7,332) — and the measured prior is 25:1; stated as a prior, not a certainty (https://www.landrover.co.uk/vehicles/index.html)
+"car/land-rover/vogue": "car/land-rover/range-rover" # FOLD onto car/land-rover/range-rover: Vogue is the Range Rover's flagship TRIM, not a model — the same corpus produces 30+ "RANGE ROVER VOGUE ..." strings that already resolve to range-rover (https://en.wikipedia.org/wiki/Range_Rover)
+"car/land-rover/rangerover-vogue": "car/land-rover/range-rover" # FOLD onto car/land-rover/range-rover: fused make-spelling + the Vogue trim (https://en.wikipedia.org/wiki/Range_Rover)
+"car/land-rover/ranger-rover": "car/land-rover/range-rover" # FOLD onto car/land-rover/range-rover: , attested under BOTH makes: car/land-rover/ranger-rover (es 1, fi 1) sits beside car/land-rover/range-rover (140,744). Here the correct target already exists in-make, so a rename is the whole fix — https://www.landrover.co.uk/vehicles/index.html
+"car/land-rover/ranger-rover-sport": "car/land-rover/range-rover-sport" # FOLD onto car/land-rover/range-rover-sport: the same typo on the Sport (es, nl, 4 vehicles) beside range-rover-sport (186,186) — https://www.landrover.co.uk/vehicles/index.html
