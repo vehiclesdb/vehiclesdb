@@ -19587,3 +19587,70 @@ Coordination note for the next same-window pair: when two PRs dispose
 ids of the SAME make in one window, grep each other's diffs for shared
 ids before merge — rule 1g will catch it after, but pre-merge is
 cheaper.
+
+## S4W — the G13 pass proposed folding 2 DAF ids; the family is actually 20, and it contains a LIVE SPLIT RECORD
+
+Rule 1g doing its job inside the hour is the best possible advertisement for
+writing the lint before you need it. Nothing needed from me on the resolution —
+alias-beats-manifest is what the rule's own text prescribes, and `data#128`'s
+worked examples are the precedent.
+
+While my two delegates hold `renames.yml` and the normalizer, I chased the
+loose end in `data#171`: the G13 pass proposed `daf/xf410` and `daf/xg430` as
+folds, and flagged that it had first queued them as legit before catching
+itself. It was right to correct, and it under-counted the family by an order of
+magnitude.
+
+### The measurement
+
+DAF's power figure is being published as a nameplate across THREE model lines:
+
+    XD   xd260 xd300 xd310 xd340 xd370 xd410 xd450          (7)
+    XF   xf410 xf430 xf440 xf450 xf460 xf480 xf510 xf530    (8)
+    XG   xg430 xg450 xg480 xg530  + xg-530                  (5)
+
+**20 ids**, most publishing in 3-4 countries, all of them a nameplate plus a
+horsepower rating.
+
+Evidence that the three-digit suffix is power and not a designation:
+- DAF's own used-truck listings title a unit `DAF XF 430 FT 4X2` while carrying
+  a separate `Power (HP): 430` field — the number appears twice, once as spec.
+- Wikipedia's DAF XF gallery captions use the form **`DAF XF 105.460`** —
+  `<series>.<power>`, which only parses if 105 is the series and 460 is not.
+- Same article treats **XF105 and XF106 as generational SERIES designations**
+  ("The XF105 in 2007, the XF106 in 2018 and the NGD XF in 2022"), listing them
+  alongside award years rather than power specs.
+
+So `daf/xf105` is a REAL series id and must **not** fold — it sits in the
+middle of that id list and is the trap in this family. Same shape as the
+Audi `8D`/door-count collision: the same digit run means two different things
+depending on what produced it.
+
+### The live defect
+
+**`daf/xg-530` (es,fi,nl) and `daf/xg530` (es,fi,lu,nl) are the same truck,
+published as two records right now.** A hyphen. Whatever happens to the fold,
+that split is a duplicate in the shipped catalog today.
+
+### Two things I could not settle
+
+- **`daf/xdc` and `daf/xfc`** (both live, 2-3 countries). Plausibly "XD/XF
+  Construction", plausibly a truncation of something else. **Unverified** — I
+  will not fold or keep them on a guess.
+- **`daf/xd` does not exist as a record.** So folding the seven `xd###` ids
+  MINTS the XD nameplate rather than folding onto a live one. That is the
+  correct outcome — the XD is DAF's current distribution line — but it is a
+  mint, not a fold, and it therefore needs the minted-id treatment (its enrich
+  entry cannot ship in the same cycle) rather than being waved through with the
+  XF/XG work.
+
+### Handling
+
+Not applying it now, deliberately: both delegates are in `renames.yml` and the
+normalizer, and a third writer in the same file during their control builds is
+how you get a measurement nobody can trust. Queued behind them as a proper
+DAF-family pass with the availability-union check per fold, not as an
+opportunistic edit.
+
+Flagging it now because `data#171` merged with only 2 of the 20 named, and the
+next person to read that entry would reasonably think the family was handled.
