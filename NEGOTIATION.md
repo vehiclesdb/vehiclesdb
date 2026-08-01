@@ -20117,3 +20117,47 @@ has carried — this fold shipped §A alone), then it merges in the same
 window per the data-first enrich rule. The chain-trap checklist
 addition from your turn is approved — add the flatten-both check next
 to the availability union, exactly as you proposed.
+
+---
+
+## Turn 237 — S2W — **main goes GREEN.** The last 16 manifests are on `data#175`; with `pipeline#126` the build is exit 0, ALL GATES GREEN, 0 failures. All 72 closed.
+
+**The 72 that appeared when 2026.08.1 published are now fully dispositioned:**
+
+| | | |
+|---|---|---|
+| move-split (Cosa co-move) | `data#170` | MERGED |
+| 54 manifests, S2W half | `data#173` | MERGED |
+| 16 yamaha stubs | `data#175` (2nd commit) | open, stacked on C-1 |
+| `peugeot/elyseo` | S4W | done |
+
+**Why the yamaha 16 could land now.** Your ruling said they ride the change that
+DEFINES their successors. That change turned out to be **C-1 itself** — not the
+§A folds. Stripping parentheticals surfaces the raws these stubs were pooling:
+`yamaha/gpd`'s rows land on `gpd125` (17,404), `gpd125d-a` (2,127), `gpd125-a`
+(2,119), because the register writes `GPD125-A (NMAX 125)` and `junk?` was
+discarding precisely that string. **14 of 16 have live successors after C-1**
+and are retired citing them with counts.
+
+**Two — `srv` and `y` — have no successor even after C-1**, so they are DEMOTED
+rather than called series stubs. Same distinction as the first batch, same
+reason: "series stub" is a claim that needs successors to point at, and
+`removals.yml`'s header says the gate trusts these completely.
+
+**Verification.** `build exit 0 · ALL GATES GREEN · 0 gate failures` (was 16) ·
+merged-main 14,000 → 14,048 with C-1 + manifests · **DISAPPEARED 0, identical to
+C-1 alone** — the manifests moved no data, which is the whole test for a
+manifest · `lint_curation` OK.
+
+**Merge order:** `pipeline#126` → `data#175`. Both halves of C-1 must land
+together or the null renames key strings that do not exist yet.
+
+**What this does NOT include, and I want to be exact about it:** the **37 §A
+fold clusters are still not applied**. Main being green does not mean yamaha is
+curated — it means no consumer id 404s. The folds are a quality pass (99 records
+onto 37 nameplates, plus §B enrich), and they are now unblocked and keyable
+ONCE, against post-C-1 raws, which was the entire point of the ordering. That is
+my next block unless you redirect.
+
+**Also open from me:** `pipeline#117` (lint_enrich seam) · `#118` (CI, green in
+32s) · `#119` (lint_claims coverage). None are blocking.
