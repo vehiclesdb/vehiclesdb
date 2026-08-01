@@ -20015,3 +20015,415 @@ arriving and silently pooling into it — is caught only by the lint,
 never by the mint-time rule. DAF spec approved including the
 byte-exact string verification hold; that is the Land Rover lesson
 institutionalized.
+
+## OWNER — data#175 merged (classified: 16 held stubs + be_fps UNVERIFIED). One operational consequence of the honest gate.
+
+The new fail-loud state fired on this build: data.gov.be is unreachable
+from the runner and the stale cache was honestly refused — the gate now
+says "no evidence either way" instead of lying. Correct behavior, and
+it has an operational consequence: **every build reds on be_fps until
+the runner can fetch data.gov.be**, which has been flaky all day. The
+durable fix is already filed in DEBT and it is not a retry loop: the
+page CONTAINS NO LICENCE TEXT AT ALL, so the pin should record that
+fact ("no licence text at this URL, terms asserted elsewhere") rather
+than hash a CMS page whose fetch is now load-bearing for nothing. S4W:
+take the pin re-scope as the last licence-gate increment when
+convenient — until then, be_fps UNVERIFIED is classify-and-proceed for
+disposition PRs, never a merge blocker on its own.
+
+## S4W — be_fps unblocked (`pipeline#127` + `data#177`, PIPELINE FIRST), and the DAF fold shipped (`data#176`) after the chain trap ate five of my keys
+
+### be_fps: the honest gate's first finding is that one of its own entries is worthless
+
+Taken as the last licence-gate increment, exactly as scoped. `declared_absent`
+records the measurement instead of a hash: no fetch, no sha, and the `why`
+carries the fact a human established — 22,607 characters containing none of
+"licence", "Creative Commons" or "CC0".
+
+**The part that makes it defensible rather than an exemption:** the mode
+ASSERTS the source is not ingested, and gate 1 now **fails** if be_fps ever
+appears in a build's source list. The enforcement did not disappear, it moved.
+Belgium cannot ship without a real terms page. Both directions are tested,
+because the assertion is worthless without the enforcement.
+
+**And the same defect class was sitting in the pin path.** `rake licenses:pin`
+fetched with `force: true` but not `allow_stale: false`, so an unreachable
+upstream silently re-pinned the CACHED bytes with a fresh `pinned_at` —
+recording "verified now" for bytes nobody fetched. **Observed live while I was
+doing this**: ar_dnrpa returned `curl: (28) SSL connection timeout` and the
+task still printed "pinned ar_dnrpa". Re-pinning is the one moment fresh bytes
+are mandatory. Fixed.
+
+Re-pinned all 14 through the sanctioned path and diffed: **exactly one sha256
+removed, be_fps's.** The other 13 are byte-identical — nothing drifted under
+cover of this change, which is the check I would want from someone else
+touching a legal gate.
+
+**Merge order is PIPELINE FIRST and it is not symmetric.** Pipeline ahead:
+be_fps merely keeps failing as it does today. Data ahead: the old gate reads a
+pin with no sha256, compares against nil and reports "terms CHANGED" — a false
+drift alarm on a source nothing is wrong with.
+
+### `data#176` — DAF: the horsepower rating was publishing as a nameplate
+
+19 ids fold onto 3 (`daf/xf`, `daf/xg`, and a minted `daf/xd`). Truck 928 → 910.
+Evidence lost, verified at (country,source) rather than country: **NONE** —
+every folded id is a strict subset of its target.
+
+`xf105` is untouched and verified untouched: XF105/XF106 are real GENERATION
+series, the same digit-run shape meaning something else entirely — the `8D
+Audi A4` collision one make over. `xg-530` (XG+530) is untouched too, riding
+with the D-10 mint.
+
+**The trap, and it is worth propagating: this fold created CHAINS on both
+sides.** The DAF block already carried axle-code keys from an earlier pass —
+`XF480F -> XF480`, `XG530F -> XG530`. Renames do not apply transitively, so
+the moment `XF480` became a fold key those rows landed on the intermediate and
+STOPPED. **Five of my nineteen keys silently did nothing.** The first
+treatment build retired 14 of 19 and I only caught the other five by diffing
+the id lists — no lint fires, no gate fails, the build is green and the fold
+is 74% applied.
+
+Then the identical shape appeared on the alias side, where **rule 1f caught it
+for me**: five pre-existing `former_ids` entries pointed at ids that had just
+become aliases. Same defect, one instrument blind and one instrument loud.
+
+So: **a fold that retires an id which is already a rename VALUE or an alias
+TARGET must flatten both, and only the id diff sees the first half.** That
+belongs in the fold checklist next to the availability union — I will add it
+when I touch the runbook again unless you want it filed elsewhere.
+
+Blast radius drilled across all six kinds: DAF has 1 van and 3 bus records and
+none matches any key. Gates green; the 70 spotcheck failures in the log are
+car-kind checks a `--kinds=truck` build cannot satisfy, identical in the
+control.
+
+### Standing
+
+`data#176`, `data#177`, `pipeline#127` open. Both batch-item delegates
+(door-count safe slice, GTC token) are still running.
+
+## OWNER — data#176 BLOCKED on a real finding: the fold ships without its enrich half, and 14 ids would take their facts with them
+
+pipeline#127 is merged (declared_absent + the pin-path fix — the
+re-pin diff showing exactly one sha removed is the right receipt);
+data#177 merges on green. **data#176 does NOT merge yet**: the enrich
+insurance lint fails 14 times — the DAF fold retires ids whose
+`enrich/daf.yml` entries carry runs that DIFFER from the fold targets'
+(`xf530` → `xf` is the exemplar). That is the lint's exact design case:
+whichever id loses the fold takes its facts with it. S4W: reconcile the
+14 onto `xf`/`xg`/`xd` in the enrich pair (the §A+§B pairing every wave
+has carried — this fold shipped §A alone), then it merges in the same
+window per the data-first enrich rule. The chain-trap checklist
+addition from your turn is approved — add the flatten-both check next
+to the availability union, exactly as you proposed.
+
+---
+
+## Turn 237 — S2W — **main goes GREEN.** The last 16 manifests are on `data#175`; with `pipeline#126` the build is exit 0, ALL GATES GREEN, 0 failures. All 72 closed.
+
+**The 72 that appeared when 2026.08.1 published are now fully dispositioned:**
+
+| | | |
+|---|---|---|
+| move-split (Cosa co-move) | `data#170` | MERGED |
+| 54 manifests, S2W half | `data#173` | MERGED |
+| 16 yamaha stubs | `data#175` (2nd commit) | open, stacked on C-1 |
+| `peugeot/elyseo` | S4W | done |
+
+**Why the yamaha 16 could land now.** Your ruling said they ride the change that
+DEFINES their successors. That change turned out to be **C-1 itself** — not the
+§A folds. Stripping parentheticals surfaces the raws these stubs were pooling:
+`yamaha/gpd`'s rows land on `gpd125` (17,404), `gpd125d-a` (2,127), `gpd125-a`
+(2,119), because the register writes `GPD125-A (NMAX 125)` and `junk?` was
+discarding precisely that string. **14 of 16 have live successors after C-1**
+and are retired citing them with counts.
+
+**Two — `srv` and `y` — have no successor even after C-1**, so they are DEMOTED
+rather than called series stubs. Same distinction as the first batch, same
+reason: "series stub" is a claim that needs successors to point at, and
+`removals.yml`'s header says the gate trusts these completely.
+
+**Verification.** `build exit 0 · ALL GATES GREEN · 0 gate failures` (was 16) ·
+merged-main 14,000 → 14,048 with C-1 + manifests · **DISAPPEARED 0, identical to
+C-1 alone** — the manifests moved no data, which is the whole test for a
+manifest · `lint_curation` OK.
+
+**Merge order:** `pipeline#126` → `data#175`. Both halves of C-1 must land
+together or the null renames key strings that do not exist yet.
+
+**What this does NOT include, and I want to be exact about it:** the **37 §A
+fold clusters are still not applied**. Main being green does not mean yamaha is
+curated — it means no consumer id 404s. The folds are a quality pass (99 records
+onto 37 nameplates, plus §B enrich), and they are now unblocked and keyable
+ONCE, against post-C-1 raws, which was the entire point of the ordering. That is
+my next block unless you redirect.
+
+**Also open from me:** `pipeline#117` (lint_enrich seam) · `#118` (CI, green in
+32s) · `#119` (lint_claims coverage). None are blocking.
+
+## S4W — data#176 unblocked (`pipeline#129`, DATA FIRST), XB added after I found I had missed it, and batch item 3 is up as `data#179`
+
+### You were right to block #176, and the lint was better than a block
+
+`lint_enrich` did not just say "no" — it sorted 19 entries into three cases,
+which turned a judgment call into a mechanical fix. `pipeline#129`:
+
+- **PRUNE (4+5)**: xg430/450/480/530 and the XB five carried runs IDENTICAL to
+  their parent. Duplicate insurance; the twin has the facts.
+- **MINT (7)**: the xd ids all carried the same `year_start: 2022` and aliased
+  to a `truck/daf/xd` that did not exist — those facts would have died at the
+  next release. Consolidated into a new parent entry carrying that run verbatim.
+- **RECONCILE (3)**: xf460/480/530 carried 2017- windows against a parent
+  spanning 1997-. Those windows are when each POWER RATING was offered — an
+  engine spec, not a nameplate fact — and the parent strictly contains them.
+  Pruned with the reasoning stated.
+
+Deliberately not carried forward: the per-rating `MX-13 355 kW/483 hp` figures.
+Moving them onto the nameplate would contradict the fold that removed them.
+
+### I had missed the XB family, and fixed it rather than shipping it half-done
+
+I grepped `daf/x[fgd]` and XB starts with the one letter that excludes. Five
+more ids, same defect, same evidence, against a live `daf/xb`. Shipping
+XD/XF/XG folded and XB not, in one make, for no stated reason, is worse than
+either doing both or neither.
+
+### And I contaminated my own control, again
+
+The first control was built from the primary repo before main advanced, so the
+diff showed **two Scania ids appearing** — from someone else's merged work, not
+mine. Rebuilt a true control in a clean worktree at my branch's own base
+commit. A DAF-only change cannot mint a Scania record, which is what made it
+obvious; the tie-break measurement had the same shape and I did not catch it as
+fast.
+
+    TRUE control 930 -> 907 truck ids;  24 removed, 1 added (daf/xd minted)
+    evidence lost on every target: NONE
+    daf/xb GAINS fi:fi_traficom — a child's evidence moving UP, not lost
+    non-DAF ids changed: ZERO
+
+### Batch item 3 — `data#179`, and it is data-only
+
+The door-count safe slice is done and it is **not** a coupled pair: **1,011
+keys / 11,169 vehicles**, 62 make blocks, folding onto 397 already-published
+records, with **zero new nameplates, zero disappeared, zero name changes**.
+
+**The mechanism hypothesis I refused to assert turned out right, and it was
+established by probe rather than by reading my own comment**: renames are
+consulted before `junk?`, the lookup receives exactly `["Volkswagen", "5D
+Passat"]`, and injecting the rename turns a baseline `nil` into
+`["Volkswagen","Passat"]`. So the fix is make-scoped renames on the produced
+string and **no pipeline change at all**. The fi_traficom adapter strip was
+rejected on measurement: it strips unconditionally, so it rescues the
+type-approval garbage too, and conditioning it on "the result is real" would
+make the build depend on its own prior output.
+
+**It could not reproduce the briefed 579 / 19,002 and said so instead of
+forcing the number** — more pairs, fewer vehicles. The arithmetic it gives is
+convincing: *all* Mercedes door-shaped keys total 1,671 vehicles, yet the brief
+quotes C-Class 1,997 + E-Class 1,674 from that class alone, so the earlier
+simulation was counting resulting-record totals or including the bare
+body-code class. I would rather have the discrepancy named than matched.
+
+**The best part is a mistake it caught with the control build**: its first
+safety check verified the target was live only in the key's DOMINANT kind — but
+a rename key is make-scoped and **kind-blind**, so `"5D Grand"` fired on van
+rows too and minted `van/dodge/grand-caravan`. Its first correction
+over-shot (requiring liveness in every firing kind discarded 3,729 vehicles
+including `5D Passat`), and it measured its way to the real answer:
+`cross_kind_prune!` already removes those minority entries, with identical
+prune sets on both sides, and the actual gap is the prune's `grand < 100`
+guard. It dropped 2 keys / 10 vehicles instead of 3,729.
+
+All four verifications done: frozen-cache control (both sides exit 1 on the
+same pre-existing 16 yamaha stubs), zero new nameplates, `junk_drops`
+25,492→24,481 pairs and 330,700→319,531 vehicles matching the rescue set to the
+vehicle, and 1,011/1,011 keys firing with zero dead.
+
+One judgment it flagged rather than made: 529 keys rescue a single vehicle and
+~320 embed full type-approval strings. They all fire today but are pinned to
+exact registry text and go dead if fi_traficom reformats. It kept them, called
+a volume floor defensible, and left the call to us. I would keep them too —
+a dead key is visible to the sweep, a missing rescue is not.
+
+### Open from me
+
+`data#176`+`pipeline#129` (DAF, data first) · `data#179` (door-count, alone) ·
+`data#177`+`pipeline#127` (be_fps, PIPELINE first) · `pipeline#125` (runbook v2).
+The GTC delegate is still running.
+
+## S4W — addendum: the DAF pair is CIRCULAR. Both halves are red alone and green only together, and I can split it into three green steps if you prefer
+
+Verified rather than predicted, on both CI runs:
+
+- **`data#176` red**: `lint_enrich` sees `enrich/daf.yml` naming the 19 ids the
+  fold retires. Fixed only by `pipeline#129`.
+- **`pipeline#129` red**: `LINT FAIL: truck/daf/xd is not live in the catalog
+  being measured (and is not a pending-publish alias target)`. It becomes a
+  legal target only when `data#176`'s `former_ids` alias exists.
+
+So this is the circular coupled pair, not a defect in either half. **DATA
+FIRST**, then pipeline immediately — the window where main is red is the gap
+between the two merges, and I would rather flag that than have you discover it.
+
+**If you would rather never merge a red PR, it splits into three green steps**
+and I will re-cut it that way on request:
+
+1. pipeline: PRUNE the 19 entries only (no `truck/daf/xd` mint) — green alone.
+2. `data#176`: the fold — green, because enrich no longer names dead ids.
+3. pipeline: add the `truck/daf/xd` entry — green, because the alias now exists.
+
+The cost is a small interim: between (1) and (3) the seven XD children's
+`year_start: 2022` is absent from the private feed. The ids are still live
+until a release publishes the fold, so nothing consumer-visible changes, and
+the fact is restored before that release. Your call — the two-merge window is
+faster, the three-step is green throughout.
+
+## S4W — batch item 4 done (`pipeline#128` + `data#178`, PIPELINE FIRST — the opposite order to the DAF pair). It corrected my filing twice and found an instrument going blind
+
+The Bentley Continental GTC gets its record: **479 vehicles**, ca+es+fi+lu+nl+th+ua+us, minted. `bentley/continental` keeps **gb at 17,080, unchanged**.
+
+### Two corrections to what I filed, both mine
+
+- **479 vehicles across 17 spellings, not "≈460 across twelve".**
+- **The country list I filed was wrong, and wrong in an instructive way.** I
+  wrote `ca/de/es/lu/nl/th/ua`. **`de` has ZERO GTC rows** and `fi` (9) was
+  missing. That list was `car/bentley/continental`'s *availability* — the
+  record's countries, not the GTC rows' countries. I read the wrong denominator
+  off the right record, which is the same error shape as the registrations-are-
+  not-ids one S2W corrected earlier tonight.
+
+Everything else in the filing reproduced byte-exactly, including the probed key
+`Continental` and the 17,080 gb figure.
+
+### The token stays, and that was measured rather than assumed
+
+Deleting `GTC` outright re-homes **6,743 vehicles onto ~29 new ids**, headed by
+`car/opel/astra-gtc` at **6,210**. The Astra GTC genuinely depends on it. So the
+fix is a make-keyed **non-truncating** pin in `collapse_variant`, with `make`
+threaded from `classify` (only two callers repo-wide).
+
+The alternatives lost on evidence, not taste: **position-aware is undecidable**
+(`ASTRA GTC` and `CONTINENTAL GTC` occupy the identical position); an Opel
+per-make rule strands 60 vehicles of correctly-collapsing Vauxhall/Chrysler/
+Alfa/Reliant/Renault rows; a `bentley()` family rule **cannot work at all**
+because `classify` re-runs `collapse_variant` over the family rule's output;
+and a truncating pin was rejected for destroying the trim tail before renames —
+the same unrescuable class as the bug itself.
+
+### The six-kind drill found the documentation lying
+
+`VARIANT_SUFFIXES` is commented **"CAR ONLY"**. It is not. `classify` gates on
+`%i[car van]` (`normalizer.rb:171`), so it has been running for vans since vans
+were added. I verified this myself rather than take it on report. The PR fixes
+the comment. Raw GTC rows: car 116, van 0, motorcycle 1, moped 3, truck 0,
+bus 0 — so nothing is affected today, but a van-kind reader has been working
+from a false statement about which kinds get trim collapse.
+
+### The finding worth more than the fix: `test_override_key_reachability` is going blind for car keys
+
+It assumed a data-first merge would turn that test red, **checked instead of
+asserting, and found it does not** — the test accepts a key if ANY kind
+reproduces it, and the motorcycle/moped light path reproduces
+`Continental GTC Speed` verbatim (Bentley has no motorcycles).
+
+**So any car rename key that survives the two-wheeler light path unchanged is
+auto-"reachable".** That drains much of the test's power for car keys — and it
+compounds the blind spot I already filed (it measures with renames DISABLED,
+which inverts the ORDER FIX for rescue keys). Two independent holes in the one
+instrument we lean on to prove a key is not inert. That is now the second time
+this week a key-liveness question was settled by a build diff rather than by
+that test. Filing it as its own item rather than burying it here.
+
+### Merge order — note it is the REVERSE of the DAF pair
+
+**`pipeline#128` FIRST**, then `data#178`, no release between. Data-first is
+inert (the keys are unreachable until the pin exists); pipeline-alone publishes
+12 fragmented `continental-gtc-*` ids that the data half then folds, needing
+`removals.yml` entries that are otherwise unnecessary. `enrich/bentley.yml`'s
+`continental-gtc` block ships HELD, to flip in the release window.
+
+Control vs treatment: 1 id appeared, 0 disappeared, **zero vehicles lost**
+(73,237,754 classified both sides), 3,071 other changes all popularity-only
+with 3 records crossing a decile on a one-rank move. Both sides fail on the
+identical pre-existing yamaha stubs and nothing else.
+
+**Owed:** `DEBT.md:49` still carries my ≈460 and the `de` error. It was left
+alone deliberately as a contended file; I am correcting it now in its own PR.
+
+## S4W — `data#177` is the completing half of a pair you already half-merged, and it unblocks EVERY data PR's build
+
+Short and operational.
+
+`pipeline#127` merged at 19:58. Its data half `data#177` has not, so main now has
+a gate that understands `declared_absent` and a `pins.json` that still asks it
+to fetch data.gov.be. **Every data PR's `build` check therefore carries a
+`license gate: be_fps UNVERIFIED` failure on top of the yamaha stubs** — 17
+gate failures where 16 are expected. Confirmed on `data#178`'s run; it is not
+attributable to that PR or any other.
+
+That is the honest gate working exactly as designed and it is costing a
+false-looking red on everyone's PRs until the pair completes. `data#177` is the
+whole fix: the pin stops asking for a page that has no licence text, so there
+is nothing to fetch and nothing to fail.
+
+Its `lint` passes; its `build` was still running at the time of writing. I have
+NOT merged it myself — you have been merging and the ordering is yours to
+sequence — but it is the highest-leverage thing in my open set right now, and
+it is the second half of a pair rather than a new change.
+
+**Why it did not show locally:** the cache freeze excludes `license_*.txt` by
+instruction, so the licence gate stayed live against the pinned text and passed
+on both sides of every local control. That exclusion is the thing keeping the
+gate honest rather than silently disabled — the CI failure is a network
+condition from the runner, not a terms change. Both facts are worth holding
+together: the gate is right, the pin was wrong, and the fix is queued.
+
+---
+
+## Turn 238 — S2W — §A applied: `data#181` folds **98 type-code records onto 39 nameplates**, lossless 98/98. The yamaha block is done bar enrich.
+
+**`data#181`, stacked on the C-1 pair.** This is the change the C-1 ordering
+existed to make possible: Yamaha prints `CODE (Commercial Name)` on its own
+manual covers, both registers corroborate it — and `junk?` was discarding every
+one of those strings.
+
+**Control vs treatment (control = C-1 + the 16 stub manifests):**
+
+```
+14,048 -> 13,957   (net -91)
+FOLDED AWAY 98  · all yamaha, 0 outside the make
+NEW          7  · exactly the dossier's (NEW ID) clusters
+survivors GAINING countries 27 · LOSING 0 · dead alias targets 0
+folded ids whose countries are ALL present on their survivor   98/98
+build exit 0 · ALL GATES GREEN · lint_curation OK
+```
+
+That last line is the losslessness proof, verified per-id rather than asserted.
+`aerox` gains gb and nz; `nmax-125` goes from `gb` alone to `es,fi,gb,lu,nl`.
+
+**Keys were re-derived, not copied.** The dossier's drafts are RAW strings and
+`renames.yml` keys on the PRODUCED name — its own line 1235 says so. All 99
+resolved through the post-C-1 build: 98 matched their draft exactly (the 2W path
+preserves uppercase codes), 1 was already dead (`Delight`, folded by G-1) and
+was dropped rather than shipped inert. **The check came back clean and was still
+worth running** — an inert key is a fold that ships and does nothing.
+
+**Seven defects `lint_curation` caught before this built**, and one of them is
+worth the whole gate: a **PRE-EXISTING** casing pin `XP500 Tmax → XP500 TMAX`
+became a DIRECTION WAR because *this* change turned its target into a key. It
+was correct until my fold made it wrong. Also three alias CHAINS re-pointed at
+final targets in the same change, and three DOUBLE DISPOSITIONS (`mtn850-a`,
+`mxt890d`, `xp530-a` manifested DEMOTED *and* newly aliased) resolved by dropping
+the stale removals lines — a demotion asserts "no successor exists", and the fold
+gives each a definite one.
+
+**Yamaha status:** §C-1 done (`pipeline#126`), §C-2/§C-3 hyphen shape done
+(merged), the 16 stub manifests done, §A done. **Outstanding: §B enrich for the
+7 new ids, §C-6 styling, and §C-3's SPACE shape** (24,411 gb vehicles still on
+`yamaha/yzf` — deliberately out of scope, with a spotcheck asserting the
+residual so nobody widens the rule without its disposition).
+
+**Merge chain:** `pipeline#126` → `data#175` (C-1 nulls + 16 stub manifests) →
+`data#181` (this). Main is green from `data#175` onward.
