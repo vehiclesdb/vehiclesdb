@@ -20854,3 +20854,63 @@ both halves, correct inverted order.
 that 57,573-registration GenModel "no parser can decompose", and it decomposes
 into 198 Model values via the column batch item 11 is built to read. Mechanical
 follow-through on the finding I posted last turn; no new claim in it.
+
+## S4W — item 5 reported. It REFUSED half my brief and the control build proves it was right; and the body-word class is 3× bigger than filed, spanning registers I never suspected
+
+### It declined what I asked for, with a measurement
+
+My brief told it to handle **both** the digit-free (`COUPE 944`) and
+digit-prefixed (`2DSEDAN 96-V4`) shapes. **It built the second one and then
+refused to ship it**, because its control build refuted it: that shape mints
+**118 new published ids**, 105 of them type-approval strings — three separate
+ids for one Trabant P601, two colliding with existing `former_ids` aliases.
+
+The mechanism is the part worth keeping. They do not publish through the
+single-source volume floor, which is where anyone would look — they publish
+through `publishable?`'s **`sources.size >= 2`** arm, because nl_rdw and
+nz_nzta carry the same chassis strings. **Its own first simulation checked only
+the volume floor and reported "0 minted ids over threshold". Only the build
+caught it.**
+
+And the shape already has a zero-minting remedy that shipped tonight —
+`data#179`'s door-count renames. So my brief asked for work that was both
+redundant and dangerous, and it was declined on evidence rather than executed.
+That is the behaviour I want; recording it as such.
+
+### The filing's numbers, and where they moved
+
+    Saab+Porsche+Bentley lost to the class:  filed 760  ->  measured 584
+    Finnish vehicles inside car/porsche/coupe: filed 251 -> measured 251 (exact)
+
+The Saab figure moved because **`data#179` had already rescued ~188 of them** —
+which is exactly why the brief said re-measure against current main rather than
+trust the filed number. That instruction earned its keep.
+
+### The class is much bigger than filed, and it is NOT a Finnish problem
+
+**92 published car ids are named after a body word, and 65 of them have no
+`fi_traficom` source at all** — nl_rdw 84, nz_nzta 82, fi 27, uk 14, us 12,
+ua 10. So `car/porsche/coupe` **survives this fix** (fi rank 445 → 2,489; nl and
+nz still carry it), and the filing's framing — a Porsche/Saab/Bentley problem in
+the Finnish adapter — was the visible corner of a cross-register class. ~15 of
+the 92 are real (`audi/coupe`, `fiat/coupe`, `mazda/mpv`, `smart/roadster`).
+Whether nl_rdw and nz_nzta share the body-first grammar is **unmeasured** and
+now filed.
+
+### One honest cost, stated rather than buried
+
+`report:junk_drops` moves +10, fully attributed — but inside it, **27 Finnish
+vehicles go from publishing under a fake nameplate to being dropped**. My brief
+said `car/porsche/coupe` must not be deleted, and its 251 fi vehicles do reach
+real records; these 27 are the remainder, judged unresolvable type codes **by
+inspection, not against an external source**. They are noise that was visible
+only because it wore a plausible name. I accept the trade — a dropped row is
+countable, a fake nameplate is not — but it is a real 27 and it should not read
+as zero.
+
+### Order
+
+`pipeline#131` is merged; **`data#183` is the open half and it is CLEAN**. Its
+recommendation was data-first (that half is +0/−0 standalone, pipeline-first
+leaves 10 unfolded ids for the window). Pipeline-first was taken, which is the
+house rule and safe — the window just stays open until `#183` lands.
