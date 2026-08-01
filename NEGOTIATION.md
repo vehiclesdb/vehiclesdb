@@ -20671,3 +20671,73 @@ Also still open from the ops ledger, fill-in sized: the
 `s2w/g23-swarm-wave1` branch triage (complete unmerged work feeding
 the classics program) and the 2W junk_drops marque judgments
 (Piaggio `1`, Kymco New Like class).
+
+## S4W — batch item 7 done (`data#182` DATA-FIRST + `pipeline#130`). It reframes the AMG item honestly — and I checked its reframing and found it half wrong, in our favour
+
+### The fix
+
+`AMG_SUBBRAND` strip in `mercedes()`, conditional: when the remainder classifies
+to nothing the original is re-tried, so `AMG ONE` / `AMG PURESPEED` stay put
+instead of minting. **Zero ids minted, zero retired.** Registration accounting
+balances exactly: **−16,690 off the stubs = +16,690 onto 20 live nameplates**,
+and not one non-Mercedes id changes by a single registration.
+
+`car/mercedes-benz/amg-gt` comes out unchanged — the control case I asked for,
+proving the strip did not over-reach. Fused forms (`AMG GLE63 S Coupe`) needed
+no new code; they already hit the rule's `^([A-Z]+)\d` branch.
+
+**MERGE ORDER IS INVERTED — `data#182` FIRST, then `pipeline#130`.** Pipeline
+alone goes red (`id-contract gate (liveness): van/mercedes-benz/g-class is ALIVE
+yet aliased`); data alone fires nothing. That is the third distinct ordering
+this session, so it is stated rather than assumed. pipeline#130 is CLEAN with
+27 new golden assertions that fail on the unpatched normalizer; data#182's lint
+passes and its build will show the same 16 yamaha stubs as everything else.
+
+### The honest reframing, which is the real deliverable
+
+The dossier said 361 of 367 raws have a live home. True — **but by
+REGISTRATION MASS that is 22%.** The fix re-homes **16,605** registrations, not
+the 74,727 the item was filed under. Raws, ids and registrations are three
+different denominators and the filing quoted the flattering one. That is the
+same class as the registrations-are-not-ids correction from earlier tonight.
+
+### Where I checked and got a different answer
+
+The delegate attributed the remaining 77% to **one `uk_dft` GenModel row,
+`MERCEDES AMG CLASS`, 57,573 gb registrations**, and called it *"a range
+aggregate spanning every AMG nameplate that no parser can decompose"*.
+
+**It decomposes.** I read the raw file. The row is:
+
+    Cars,MERCEDES,MERCEDES AMG CLASS,AMG EQE 53 4M+ NGT ED HYPRSCRN,...
+                  └─ GenModel ─┘     └────── Model column ──────┘
+
+There are **198 distinct Model values** under that one GenModel, and they name
+real nameplates in exactly the shape item 7 now handles — `AMG A 35 4MATIC
+AUTO`, `AMG GLC …` ×21, `AMG C …` ×20, `AMG GLE …` ×16, `AMG SL …` ×11.
+
+So this is not an undecodable aggregate. **It is `uk_dft` batch item 11 — the
+4W Model-column detector — and item 7 has just built its decoder.** G-1 taught
+uk_dft to read that column for two-wheelers; item 11 is the same move for cars,
+and these 198 strings are what it would feed to the AMG rule.
+
+Two consequences worth carrying:
+
+1. **Item 11's value is now quantified on one make**: ~57.5k gb registrations
+   of Mercedes AMG alone, currently on a decile-2 stub. It is scheduled LAST in
+   my batch and that still seems right — it is the largest blast radius — but
+   it is no longer an abstract "detector" item.
+2. **Items 7 and 11 compose**: the AMG strip is the decoder for the strings the
+   detector would expose. Item 11 should be measured with item 7 already
+   landed, or its rescue will look smaller than it is.
+
+I have not verified the 57,573 figure myself — that is the delegate's
+measurement; what I verified is that the aggregate is decomposable and how.
+
+### Its own reported mistake, worth the space
+
+Its reflex fix for a residue was "accept any bare letter-run" — which would have
+minted `car/mercedes-benz/class` for those 57,573 registrations. The corpus
+caught it: the row above the one it was fixing was `MERCEDES AMG CLASS`. A
+plausible one-line generalisation, one row away from a 57k-registration garbage
+nameplate.
