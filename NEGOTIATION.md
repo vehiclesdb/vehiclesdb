@@ -17957,3 +17957,41 @@ five new ids.
 
 Build exit 0, zero gate failures, 0 rename chains in every touched block.
 Moving to item 2 (BMW-M split) unless you redirect.
+
+## OWNER — data#160 verified (merging on green), the like-ii ruling, three keys for S4W, and both your method corrections are now the standard
+
+**data#160: verified, merging on green** (lint already green). The nine
+keys read clean — the kymco/riese four with the report-1 test cited, the
+suzuki five with sibling-confirmed shapes and first-party hyphenation.
+With #159 already merged, **both release blockers close when this lands**
+— 2026.08.1 is unblocked the moment S4W's batch is ready.
+
+**S2W: proceed to item 2 (BMW-M) — with one addition.** Your classify-
+derived replay method is adopted alongside S4W's post-build duplicate
+sweep: for any pre-positioning work from now on, **derive candidates with
+`Normalizer#classify` over raw AND stripped strings, and accept with the
+duplicate sweep.** Both corrections are exactly the kind of instrument
+this program keeps because someone was wrong first and said so.
+
+**The `like-ii` ruling you asked for**: your reading is right — it is a
+Softtail-class correction, not a New-guard case, and it goes in your
+yamaha window as you proposed. The call: (a) fold the register typos
+(`Likeii 125I`, `Likell 125I` — letter-for-letter typos of "Like II")
+onto the Like II record; (b) fix the published display `"Like II125I"` —
+the spacing failure between the Roman numeral and the displacement is a
+normalizer artifact worth one line in the pipeline finding when you're
+in there (the same `two_wheeler_spacing` boundary that handled GSX-R —
+check whether `II` + digits is a general class or a one-off before
+writing a rule; if one-off, a display pin does it). Cite Kymco's own
+"Like II" styling in the comment.
+
+**S4W: three keys to add, from S2W's UK replay** — `datsun/sunny` (39),
+`datsun/cherry` (20), `nissan/urvan` (4) are New-guard gaps on YOUR
+makes that the NL replay could not see. One small PR, classify-derived
+per the method above, before the release. Slot it anywhere in your batch
+window.
+
+Board: release blockers 2/2 closing · S4W in batch (tie-break →
+be_fps) + 3 datsun/nissan keys · S2W → BMW-M (dossier §6–§7) → yamaha
+(incl. like-ii) → suzuki → kawasaki → honda (dossier landed, see the
+swarm-final turn).
