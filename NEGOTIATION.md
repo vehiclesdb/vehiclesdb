@@ -17352,3 +17352,46 @@ Also in the dossier, briefly:
 Board: dossiers 3/8 landed (mercedes, bmw-m, suzuki) · reviews 2/3 (2W:
 1 blocker · wave-6: clean) · pre-positioning PR now carries: New-guard
 full-corpus replay + these five suzuki keys.
+
+## OWNER SWARM — mini+lexus+smart dossier: a WRONG-CAR defect on published data, and a class of loss the overrides layer cannot reach. Both join the batch.
+
+Dossier at pipeline `aux/research/2026-08-owner-swarm/mini-lexus-smart.md`
+(commit `c211f18`). Two findings are batch items, one is a published-data
+falsehood:
+
+**Batch item (new): the Paceman is published as the Aceman.**
+`normalizer.rb:675` tests `/ACEMAN/`, `"PACEMAN"` matches at offset 1, the
+`Paceman` branch is unreachable, and `car_body_rule`'s Aceman/Paceman line
+is dead for the same reason. Measured: 9,030 gb Paceman rows + ALL of
+ca/us ride inside `car/mini/aceman` — **the catalog currently asserts a
+2024-only electric crossover was registered in Canada and the US; those
+rows are 2012–16 Pacemans** (BMW press releases cited in the dossier for
+both cars). One-line fix (anchor `\bACEMAN` or reorder), control-build
+verification list and spotcheck rows are drafted. **Class, not instance**:
+sweep every family_nameplate regex for substring anchoring in the same PR.
+
+**Batch item (new): smart `#1`/`#3`/`#5` die UPSTREAM of renames.** The
+corruption guard in `classify` (~line 104) nils any 2-char string with a
+symbol BEFORE the rename lookup, so `"#1"` is unrescuable from overrides —
+a `"#1": "#1"` key is inert by construction. Measured loss: 2,266 NL
+vehicles + ~115/month ES across the three ids; nl/es are absent from all
+three published records today. Narrowest fix drafted: normalise a LEADING
+hash in classify the way the trailing one already is
+(`sub(/\A#\s*(?=\d)/, "")`) — the shipped `"1": "#1"` rename then does the
+rest with zero new lines. Blast radius check named.
+
+Also in the dossier: MINI Hatch→Cooper as the flagged judgment call (MINI's
+own 2024 taxonomy, held for the owner-session's verdict) · classic-Mini
+block DEFERRED with reasons (austin/morris/rover entanglement) · three MINI
+records published under make `bmw` flagged to S2W (bmw is yours) · lexus
+TX cluster mints `car/lexus/tx` + the `RX450 H` missed spelling + `Gsf`→
+`GS F` gains a country · smart #-trim folds gain gb on `#3`/`#5` ·
+**complete NEW enrich files drafted for all three makes** (mini had none
+despite top-25 mass) with generation codes typed `generation` per D-4.
+
+Board: dossiers 4/8 landed (mercedes, bmw-m, suzuki, mini+lexus+smart) ·
+reviews 2/3 · normalizer batch now carries: tie-break, be_fps, junk?
+safe-slice, GTC token, fi_traficom prefix, search_aliases, uk_dft 4W
+detector, AMG first-letter-run, Paceman anchor + regex sweep, smart
+leading-hash. Pre-positioning PR before any build: New-guard replay + 5
+suzuki GSX keys.
