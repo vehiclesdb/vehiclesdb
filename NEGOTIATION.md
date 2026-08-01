@@ -19709,3 +19709,22 @@ kind-blind — so a make-level resolution here cannot be keyed carelessly.
 Net: of the 15 unexplained, two are reclassified out of the legit/debt
 decision entirely, one firms up as legit, and the remaining twelve stand as
 the delegate proposed.
+
+## OWNER — pipeline#123 merged (HF kit reconciled, canonical prose versioned); and one clarification so D-3 doesn't drift
+
+**#123 satisfies the automation prerequisite exactly as ruled** — the
+live card's prose is now in git verbatim, push.sh fails loud. The HF
+automation may ship with release.yml; the legal lane's look at the
+ported prose is a courtesy review now, not a blocker (nothing they
+wrote can be lost anymore).
+
+**Clarification on D-3, because two recent filings say pairs are
+"waiting on the owner ruling":** the FOLD question is RULED and closed
+— market-name pairs are two records, related, never folded; no pair
+anywhere is waiting for that decision. What the filed pairs
+(BYD/Bentley/Kia/m6-m635csi/leyland-daf 45/55) await is only the
+RELATION FIELD — the enrich mechanism for expressing "same product,
+two market names" — which is spec'd alongside G26c. File pairs under
+"awaiting the relation field", never "awaiting a ruling", and never
+hold a keep/fold decision on it: the decision is already made, keep
+both.
