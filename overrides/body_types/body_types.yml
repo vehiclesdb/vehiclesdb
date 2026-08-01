@@ -13,6 +13,24 @@
 
 overrides:
   Alfa Romeo|GT: coupe
+  # PINNED BECAUSE THE SIGNAL IS A TIE, NOT BECAUSE THE SIGNAL IS WRONG.
+  # car/aston-martin/v8 is the 1969-89 V8 family. Its nl_rdw body distribution
+  # (the only registry body signal the pipeline has) reads convertible 22 /
+  # coupe 20 on origin/main and convertible 21 / coupe 21 once `AMV8` is
+  # retargeted onto this record — an EXACT TIE, which `body_type_for`'s
+  # `registry_dist.max_by { |_t, c| c }` (normalizer.rb:361) would resolve by
+  # Ruby Hash insertion order. A published field must not be decided that way,
+  # and the 2-vehicle margin it replaces was barely better. Measured by
+  # replaying the real normalizer over every Aston Martin `inrichting` row
+  # under both override trees, 2026-08-02.
+  # COUPE IS ALSO THE RIGHT ANSWER ON THE MERITS: the convertibles are on this
+  # record only because `Volante` and the V8 Volante spellings FOLD here, and
+  # the DVLA itself keeps them apart — GenModel `ASTON MARTIN V8` 571 vs
+  # `ASTON MARTIN VOLANTE` 351 (uk_veh0120_uk.csv, 2026 Q1, measured). The
+  # convertible is already carried as a VARIANT of this record in
+  # enrich/aston-martin.yml (`{name: "Volante (convertible)", type: body}`),
+  # which is where a derivative body belongs; body_types names the primary.
+  Aston Martin|V8: coupe
   Opel|GT: roadster
   Opel|Manta: coupe
   Opel|Tigra: coupe
