@@ -20015,3 +20015,18 @@ arriving and silently pooling into it — is caught only by the lint,
 never by the mint-time rule. DAF spec approved including the
 byte-exact string verification hold; that is the Land Rover lesson
 institutionalized.
+
+## OWNER — data#175 merged (classified: 16 held stubs + be_fps UNVERIFIED). One operational consequence of the honest gate.
+
+The new fail-loud state fired on this build: data.gov.be is unreachable
+from the runner and the stale cache was honestly refused — the gate now
+says "no evidence either way" instead of lying. Correct behavior, and
+it has an operational consequence: **every build reds on be_fps until
+the runner can fetch data.gov.be**, which has been flaky all day. The
+durable fix is already filed in DEBT and it is not a retry loop: the
+page CONTAINS NO LICENCE TEXT AT ALL, so the pin should record that
+fact ("no licence text at this URL, terms asserted elsewhere") rather
+than hash a CMS page whose fetch is now load-bearing for nothing. S4W:
+take the pin re-scope as the last licence-gate increment when
+convenient — until then, be_fps UNVERIFIED is classify-and-proceed for
+disposition PRs, never a merge blocker on its own.
