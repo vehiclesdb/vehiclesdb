@@ -19840,3 +19840,55 @@ whatever is decided is a four-kind change, and renames are kind-blind.
 I will fold XF and XG (unblocked, straightforward) and hold XG+ and the XD mint
 behind this decision. Filing to DEBT with the DAF pass rather than as a
 standalone PR, since two delegates are mid-flight in the same files.
+
+---
+
+## Turn 236 — S2W — §C-1 shipped (`pipeline#126` + `data#175`): 51,175 discarded NL registrations rescued, **0 disappeared, 0 new gate failures**. The §A folds can now be keyed once, against settled raws.
+
+**Taken C-1 first as proposed in Turn 235.** `junk?` was discarding every model
+string containing a bracket — **51,175 NL registrations across 1,796 strings**,
+Yamaha alone 10,726 — and the discarded string is usually a RESOLUTION TABLE
+(`MTN690-A (MT-07)`), which is the evidence §A is built on.
+
+**Control vs treatment, merged main, frozen cache, all six kinds:**
+
+```
+14,000 -> 14,048  ·  DISAPPEARED 0 (no dispositions owed)  ·  NEW 48
+gate failures 16 on BOTH sides — adds none, fixes none
+lint_curation OK · 12 suites green
+```
+
+**My first two answers were wrong, and both in the same way.** Strip-and-keep-head
+looked fatal (19,485 registrations "minting new nameplates"); the side-choosing
+rule the distribution suggests measured **worse** (19,888), because
+`ATV-50R S (SPORTY)` puts a TRIM in the brackets. Both used the wrong
+denominator. **Registrations are not ids**: 30,076 registrations land on records
+that already exist, and of 441 new ids only ELEVEN publish — nine of them real
+nameplates. That is the third denominator error tonight and the third time a
+second derivation caught it.
+
+**The control build then found a defect in my own rule.** The empty-head
+fallback minted **country codes as nameplates** — registers write
+`JAGUAR (GB)`, `PEUGEOT (F)`, `YAMAHA (J)`, and `strip_make_prefix` has already
+eaten the make by then, so the bracket becomes the id. `car/jaguar/gb [fi,nl]`
+and `car/peugeot/f [nl,ua]` both reached the catalog before I guarded it on
+"carries a digit or exceeds three characters". Two residual junk ids
+(`Citroën "Saloon"`, `Dodge "Chrysler"`) are curation rather than rule and sit
+in `data#175` — with NO removals lines, because neither ever published and
+`removals.yml` is for ids that die.
+
+**10 of the 48 new ids are Yamaha** — seven type codes, `nmax-125`, and the
+`x-city`/`xcity` spelling pair — every one of them inside the §A cluster scope
+**by design**: C-1 surfaces them, §A folds them, in that order. The other 38 are
+real nameplates the rule had been discarding (`mitsubishi/galloper`,
+`nissan/s-cargo`, `suzuki/gladius`, five Harley Softail/Touring lines,
+`scania/p113m` …).
+
+**Next: the §A apply itself** — 37 clusters plus the 16 stub manifests, in ONE
+window, keyed against post-C-1 raws exactly as ruled. That is also the last
+thing between main and green: the 16 remaining gate failures are precisely those
+yamaha stubs.
+
+**Board.** Merged tonight: BMW pair, G-1 residual pair, Cosa co-move, hysteresis
+second pass (54 manifests), VEH0120 arithmetic. Open: `pipeline#117 #118 #119
+#126`, `data#175`.
