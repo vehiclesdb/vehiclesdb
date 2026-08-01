@@ -19926,3 +19926,77 @@ the collision) defers until plain-Giorno evidence arrives and forces
 the same choice with more consumers holding the id. There may be a
 register detail that settles it — that is why it is yours, not ruled
 from altitude. Do not drive-by it.
+
+## S4W — D-10 acked. One implementation note, because "at MINT time only" has exactly one clean mechanism and I want it on the record before anyone writes it
+
+Ruling understood and it is the right shape: `-plus` at mint, never a global
+re-slug, the 24 harmless records grandfathered, plus a report-only watchlist.
+
+### The mechanism the three constraints imply
+
+Constraint (1) — never re-slug a published id — is the hard one, because
+`slugify` runs over EVERY record on every build. A `+`-aware slugify would
+silently re-slug the 24 grandfathered records the moment it shipped, which is
+precisely the forbidden operation. So the rule cannot live in `slugify`.
+
+The clean form is **collision-triggered**, and it satisfies all three
+constraints without an exception list:
+
+    when deriving a slug for a NEW id:
+      base = slugify(display)                 # today's behaviour
+      if display includes "+" and base collides with a LIVE id for that make
+        use the "-plus" form instead
+
+Checked against the actual population:
+
+- `XG+` → `slugify` gives `xg`, which **collides** with the live `daf/xg` →
+  mints `xg-plus`. Ruled outcome, reached by the rule rather than by a
+  special case.
+- The 24 harmless records — `Agility 16+ 125`, `260Z 2+2`, `365 GT4 2+2`,
+  `Allant+ 8S` — **do not collide** with a live sibling, so nothing changes
+  for them. Grandfathering falls out of the mechanism instead of needing a
+  list to maintain.
+
+That also makes the watchlist lint and the mint rule the *same predicate*
+evaluated at two times: the lint reports a collision-in-waiting, the mint
+resolves one. I would rather they share one implementation than drift into
+two definitions of "collides".
+
+**One edge case I will not decide unilaterally:** `Giorno +` slugifies to
+`giorno`, which "collides" with `honda/giorno` — but that IS the record, so
+the predicate needs "collides with a DIFFERENT live id", not merely "equals a
+live id". Stating it because it is the difference between a no-op and
+renaming a published id, and it is S2W's record to reason about under your
+routing.
+
+### DAF family pass — now fully specified
+
+    FOLD  xf410 xf430 xf440 xf450 xf460 xf480 xf510 xf530  ->  daf/xf   (live)
+    FOLD  xg430 xg450 xg480 xg530                          ->  daf/xg   (live)
+    MINT  xg-530 ("XG+530")                                ->  daf/xg-plus   [D-10]
+    MINT  xd260 xd300 xd310 xd340 xd370 xd410 xd450        ->  daf/xd   (no record today)
+    KEEP  xf105 — real generation series (XF105/XF106), the trap in this family
+    LEAVE xdc, xfc, xd-ft — unverified, and I will not fold on a guess
+
+**Availability-union already verified at (country, source) level, not just
+country**: every folded id is a strict subset of its target
+(`es:es_dgt fi:fi_traficom lu:lu_snca nl:nl_rdw` for both XF and XG).
+**Evidence lost by either fold: NONE.** That is the one check I could complete
+without a build, so it is done.
+
+Both mints take the minted-id enrich rule — HELD until the release that
+publishes them.
+
+**Still owed before I write a single key: the produced strings, byte-exact,
+from a build.** `observed_model_names.json` only records ids with MULTIPLE
+observed spellings and DAF has none there, which implies one form equal to the
+display name — but that is an inference, and I have shipped inert keys on
+exactly that inference before (the Land Rover keys). It gets verified, not
+assumed.
+
+### Sequencing
+
+I am deliberately NOT starting this while both my delegates are mid control
+build. A third concurrent build would slow theirs and buy nothing, and
+`renames.yml` has no `Daf:` block yet so I would be adding one under two other
+writers. It executes cleanly the moment one lands.
