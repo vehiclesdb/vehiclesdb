@@ -17670,3 +17670,87 @@ caught pre-build, 5 suspects total of which 1 warranted a presumptive
 unfold (WRX STI) and the rest are one-line corrections. The curation
 quality across both sessions is exceptional; every landmine deliberately
 held was verified held.
+
+## OWNER DISPATCH — both sessions idle, both queues loaded. Start here.
+
+Everything below is prepared: 7 dossiers + 4 audit reports sit in pipeline
+`aux/research/2026-08-owner-swarm/`, every adjudication is ratified, and
+the research half of your work is DONE — your job from here is
+verify-and-apply. Standard protocol throughout: verifier-merges-only
+(cross-session), coupled pairs one-window, enrich pairs data-first,
+normalizer pairs pipeline-first, frozen-cache control builds, fold
+safeguard above every rule.
+
+### S2W — start immediately, in this order
+
+1. **PRE-POSITIONING (gates every build, do it first).** Run the
+   New-guard replay over the FULL corpus (NL is done — the 2W review
+   report has the method and the 13 known pairs; extend fi+uk), post the
+   make-split here, land YOUR lines (kymco, riese-und-müller, `like-ii`
+   per the same ruling) plus the **five suzuki GSX-R/GSX-S keys**
+   (`suzuki-all-kinds.md` §C-1, strings verified against the caser). S4W
+   lands their lines in the same window.
+2. **BMW-M split (D-1, ratified).** `bmw-m-split.md` §6–§7 is the whole
+   apply: scoped normalizer edit, disposition pair, spotchecks, the two
+   DEBT trades (real M1, m6/m635csi — record, don't resolve). It is a
+   normalizer change: do it inside the open window. S4W verifies.
+3. **Yamaha apply** (`yamaha.md`). Constraints that are not optional:
+   re-derive every count against a post-batch control build; C-5 alias
+   re-chaining lands in the SAME change; `yamaha/r` is the RayZR (C-4);
+   new-id enrich halves in-window.
+4. **Suzuki apply** (`suzuki-all-kinds.md`) — §A is orthogonal to G-1 by
+   construction; do not touch gsx/gsf/gs/gsr/drz.
+5. **Kawasaki apply** (`kawasaki.md`) — A-1 + Ninja clusters with the
+   §C-6 retargets in the same commit; B-0 ships the D-5 make entry;
+   A-21 stays unfolded per the D-3 ruling.
+6. When blocked on review turnaround: **pipeline CI** (authorized, ~1h,
+   `rake test` + lints on PR/push) and the **lint_claims coverage fix**.
+7. Honda waits for its dossier (the last swarm agent is still writing;
+   if it has not landed by the time you reach step 5, post here and take
+   harley's flhtcu remainder instead).
+
+### S4W — start immediately, in parallel (no file overlap with S2W's #1–2)
+
+1. **Your half of the pre-positioning lines** (renault/ford/kia/dfsk/
+   rolls-royce + whatever the full-corpus replay adds), same window as
+   S2W's half.
+2. **The normalizer batch**, one PR per item, frozen-cache control build
+   + `report:junk_drops` + dead-key sweep each, in this order:
+   tie-break (`[-count, id]`) → be_fps FAIL-LOUD fallback (per your #158
+   correction — no re-pin) → junk? door-count SAFE SLICE (579 pairs) →
+   `GTC` token (make/position-aware) → fi_traficom body-word prefix
+   strip → search_aliases derivation fix → **AMG first-letter-run**
+   (`mercedes-residual.md` §A.0 — its 367-raw decomposition is your
+   verification oracle) → **Paceman anchor + family-regex substring
+   sweep** (`mini-lexus-smart.md` §C.1) → **smart leading-hash**
+   (§C.2) → **parenthetical strip-and-emit** (`yamaha.md` §C-1 —
+   includes the resolution-table artifact) → uk_dft 4W Model-column
+   detector LAST (biggest blast radius; re-verify the six BMW M ids
+   against the dossier table after it lands). VEH0120 45-quarter
+   backfill rides behind the batch.
+3. **Cut 2026.08.1** the moment batch + pre-positioning are green.
+   Then: stale-counter re-runs (name_shapes, QUALITY.md baseline, audit
+   re-round A3).
+4. **Apply queue, dossier-driven**: mercedes residual
+   (`mercedes-residual.md`, 19 draft keys verified) → opel-electric
+   (`opel-electric-split.md`, naming RULED `<Nameplate> Electric`,
+   Ampera-e exception; enrich same PR; HYDROGEN lookahead) → wave-7/8
+   follow-ups in one small PR (**WRX STI presumptive UNFOLD** per the
+   ruling, Bentayga re-cite + Supersports same-test, Libero comment,
+   AMV8→V8 retarget, Vintage V8) → **XJ re-cut** (D-6, branch intact) →
+   mini (`mini-lexus-smart.md` — Hatch→Cooper is YOUR judgment call to
+   make, dossier gives both sides) → verify S2W's PRs per protocol.
+5. Housekeeping when blocked: PROGRESS.md refresh-or-delete, close
+   pipeline #65 + #66's shipped half, flip DEBT's market-name line to
+   "RULED — D-3".
+
+### Binding on every apply above
+
+Every §B lands with its §A (enrich pairs data-first): decile-1..3
+records get model-level runs + typed variants, `generation` type per
+D-4. After 2026.08.1: G26c spec (S4W), official_domain/wikidata_qid
+field spec, note-hygiene lint rule, and the first D1 certification wave
+fold into the regular cadence — details in the owner turn §4.
+
+Post your first turn when you pick up; I am reading the tail and
+verifying continuously.
