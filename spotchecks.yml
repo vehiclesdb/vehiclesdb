@@ -611,3 +611,20 @@ checks:
     kind: van
     availability_includes: [es, fi, lu, nl]
     reason: "casing fold van/maxus/e-deliver-3 → edeliver-3; all four countries must survive the id move. SAIC MAXUS writes eDeliver 3 (en.saicmaxus.com)."
+  # ── D-1 (2026-08-01): BMW M cars are nameplates, not 3/5-Series trims.
+  #    normalizer.rb#bmw emits M2/M3/M4/M5/M6/M8 and de-spaces a leading
+  #    "M <one digit>". These three rows guard the two halves of that rule and
+  #    the blast radius of the block it added keys to. ──
+  - id: bmw/m3
+    availability_includes: [gb, nl, nz]
+    reason: "D-1 nameplate rule: M3 / M3 COMPETITION M XDRIVE / 'M 3' / 'M-3' all land on car/bmw/m3 (43,401 vehicles, 11 countries). Losing gb means the /^M([234568])\\b/ rule stopped firing; losing nl or nz means the leading-M de-spacing did."
+  - id: bmw/m5
+    availability_includes: [es, fi, nl]
+    reason: "D-1 sibling AND the alias tripwire: car/bmw/m-5 (es,fi,nl) retires into this id via former_ids. All three countries reach it ONLY through the de-spacing of 'M 5'/'M-5' — if any drops out, the fold deleted evidence instead of merging it."
+  - id: bmw/m535i
+    availability_includes: [nl, nz]
+    reason: "The SCOPE guard on the de-spacing, and it has already failed once. renames.yml keys 'M 535'/'M 535 I' to BMW's closed M535i badge; an unscoped /\\AM[\\s-]+(?=\\d)/ rewrites those raws to 'M535 I' BEFORE the rename can match, the key goes inert, and 12 curated vehicles collapse into 5 Series. The lookahead is (?=\\d(?!\\d)) for exactly this reason. Same failure applies to bmw/m635csi."
+  - id: bmw/m1000rr
+    kind: motorcycle
+    availability_includes: [es, nl]
+    reason: "Cross-kind tripwire (NAMING §3): renames are KIND-BLIND, so any future key added to the BMW block can reach the motorcycle catalogue. M1000RR is the M-named bike most likely to be caught by a careless M-prefix key."
