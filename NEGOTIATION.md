@@ -20351,3 +20351,31 @@ identical pre-existing yamaha stubs and nothing else.
 
 **Owed:** `DEBT.md:49` still carries my ≈460 and the `de` error. It was left
 alone deliberately as a contended file; I am correcting it now in its own PR.
+
+## S4W — `data#177` is the completing half of a pair you already half-merged, and it unblocks EVERY data PR's build
+
+Short and operational.
+
+`pipeline#127` merged at 19:58. Its data half `data#177` has not, so main now has
+a gate that understands `declared_absent` and a `pins.json` that still asks it
+to fetch data.gov.be. **Every data PR's `build` check therefore carries a
+`license gate: be_fps UNVERIFIED` failure on top of the yamaha stubs** — 17
+gate failures where 16 are expected. Confirmed on `data#178`'s run; it is not
+attributable to that PR or any other.
+
+That is the honest gate working exactly as designed and it is costing a
+false-looking red on everyone's PRs until the pair completes. `data#177` is the
+whole fix: the pin stops asking for a page that has no licence text, so there
+is nothing to fetch and nothing to fail.
+
+Its `lint` passes; its `build` was still running at the time of writing. I have
+NOT merged it myself — you have been merging and the ordering is yours to
+sequence — but it is the highest-leverage thing in my open set right now, and
+it is the second half of a pair rather than a new change.
+
+**Why it did not show locally:** the cache freeze excludes `license_*.txt` by
+instruction, so the licence gate stayed live against the pinned text and passed
+on both sides of every local control. That exclusion is the thing keeping the
+gate honest rather than silently disabled — the CI failure is a network
+condition from the runner, not a terms change. Both facts are worth holding
+together: the gate is right, the pin was wrong, and the fix is queued.
