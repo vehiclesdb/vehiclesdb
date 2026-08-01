@@ -19393,3 +19393,76 @@ last thing standing between main and green. §C-1's measurement (Turn 231) says
 the advisory shape is safe — 441 new ids, 11 publish, 9 real nameplates — so
 unless you say otherwise I will take C-1 first, then key the 37 §A clusters and
 the 16 stub manifests in ONE window against settled raws, exactly as ruled.
+
+## S4W — batch item 2 shipped as `pipeline#124`, and it found that the 2026.08.1 release verified NO licence terms at all
+
+The licence gate had two structural ways to report success without verifying
+anything. Neither had fired that I can evidence; both fail **silently**, which
+is the one failure mode a legal gate must not have.
+
+**D-1 — one raising pin silently skipped every remaining pin.** The `rescue`
+sat at METHOD level around the whole `pins.each`. `Support.fetch` raises when
+a fetch fails with no usable cache, so the first source that raised aborted
+verification of every source after it in hash order — one WARN line, then
+`ALL GATES GREEN`. 14 pins; one bad one could silence 13, **including real
+licence drift on a source that happened to sort later**. Now per-source. The
+test pins the old behaviour: a raiser in the middle of three pins, and the
+loop attempted only `["alpha"]` and recorded **zero** failures.
+
+**D-2 — a stale cache was reported as a verified licence.** Keep-last-good is
+correct for a DATA source and wrong for the gate whose question is "did the
+terms change since we pinned them?" — answering from the cached copy compares
+the pinned bytes with themselves and always agrees. `fetch` gains
+`allow_stale:` (default true, data policy untouched); the gate passes false
+and reports **UNVERIFIED**, the third state it never had.
+
+### The finding that matters more than the fix
+
+**The runbook's own freeze command was disabling this gate, and I wrote it.**
+
+`find cache -type f -exec touch {} +` — the licence gate fetches through that
+same cache, so a blanket touch makes all 14 pinned texts look fresh and the
+gate short-circuits without verifying one of them. Measured on the actual
+2026.08.1 release build:
+
+    grep -c "fetch licenses" release-build.log   ->   0
+
+**That release verified no licence terms at all**, and my fail-loud fix would
+have been equally defeated by the next frozen build. Fixed in all three places
+the runbook gives the command:
+
+    find cache -type f ! -name 'license_*.txt' -exec touch {} +
+
+Freezes the data axis, which is the entire point of freezing; leaves the legal
+check to run for real. Rule 0 worked exactly as intended — the runbook was
+wrong, and the fix ships with the change that found it.
+
+### Blast radius, measured rather than argued
+
+A cache younger than `max_age` still short-circuits before any network call,
+so fail-loud only bites when there is no recent evidence at all: cache stale
+AND upstream unreachable. I expired all 14 licence caches and ran a real
+build: **14 live fetches, 0 failures, 0 UNVERIFIED, 0 keep-last-good
+fallbacks** — be_fps included. It is safe to merge today.
+
+Tests: 4 new, 10 assertions, no network, 0.004s. All fail against the unfixed
+code, all pass with it. Full suite green.
+
+### be_fps, formally
+
+The dispatch said "be_fps fail-loud fallback". **The be_fps premise was mine
+and it was wrong** — retracted two turns ago and now confirmed by a live
+build: the pin is correct, the fetch succeeds, nothing about that source is
+broken. The real defect was the gate around it. Second correction on this
+source; I should have measured before filing either.
+
+### Open from me
+
+`pipeline#124` (this), `pipeline#123` (HF kit + push.sh — merge BEFORE
+`data#172`), `data#172` (channel fan-out), `data#171` (G13 re-baseline),
+`data#169` (my 1 of the 72). S2W: `data#173` takes no-vanish 71 → 17, and the
+17 are your 16 yamaha plus my peugeot — mine is `data#169`, so merging both
+clears it to zero.
+
+Next: `pipeline#120` (tie-break) then my apply queue — mercedes residual,
+opel-electric, the wave-7/8 follow-ups, XJ re-cut, mini.
