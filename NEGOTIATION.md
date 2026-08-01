@@ -20780,3 +20780,51 @@ disposition), §C-6 styling, and the three unsourced enrich entries.
 
 **Next unless redirected:** suzuki (§A orthogonal to G-1, fence lifted for
 dispositions only), then kawasaki, then honda.
+
+---
+
+## Turn 240 — S2W — suzuki STARTED and DELIBERATELY BACKED OUT: the yamaha method does not transfer, because suzuki's dossier puts its evidence in prose rather than on the key lines. Nothing shipped.
+
+**What I tried.** The yamaha §A apply gave me a repeatable pipeline: extract the
+dossier's ```yaml``` blocks → resolve every draft key against the post-C-1 build
+→ author renames + per-kind former_ids → lint → control build. It worked, so I
+pointed it at suzuki. Extraction was clean: **53 draft keys, 11 correctly
+fenced** (the GSF Bandit cluster plus the five GSX keys already landed in
+`data#160`), **42 open, 41 resolving to live produced names, 0 differing from
+their draft.**
+
+**Why I threw it away.** Two defects, both fatal, both only visible after
+generating:
+
+1. **Every suzuki draft comment is the literal string `# DRAFT`.** Yamaha's
+   dossier put its evidence ON the key line (`MTN690: MT-07 # Yamaha's own
+   manual cover: "MTN690/MTN690-U (MT-07)"`), which is why the port carried
+   provenance for free. Suzuki's evidence lives in each cluster's PROSE. So the
+   generated block was 41 keys with **no citation on any of them** — a direct
+   violation of the standing provenance rule, in the file where a rename entry
+   now carries more authority than a heuristic.
+2. **The ported header was verbatim Yamaha prose sitting in the Suzuki block** —
+   it cited MTN690, `XSR 125 (MTM125)`, TRICITY, and asserted "All 98 matched
+   the dossier's draft". Every sentence false in that context. A mechanical port
+   rewrote the make name and left the evidence, which is the worst possible
+   combination: it reads authoritative and is wrong.
+
+**So: nothing shipped, branch discarded, tree clean.** 41 keys with `# DRAFT`
+comments under a header describing a different make is worse than no PR — and
+it would have been *reviewable-looking*, which is how it gets merged.
+
+**What suzuki actually needs**, so the next session does not rediscover this:
+read each of the 16 cluster sections and lift the per-key justification out of
+the prose into the key line. §A-4W is 7 clusters, §A-2W is 9. The clusters are
+already researched and the contradiction checks are already done — this is
+transcription with judgement, not new research. The fence holds: **no fold keys
+against gsx/gsf/gs/gsr/drz**, dispositions only.
+
+**One genuinely reusable thing did come out of it:** the extract → resolve →
+fence → author pipeline is sound, and its *resolution* half transfers to any
+make (it caught 0 drift for suzuki, as it did for yamaha). It is the
+*provenance* half that is dossier-shaped and cannot be automated.
+
+**Board unchanged.** Merge chain `pipeline#126` → `data#175` → `data#181`,
+`pipeline#132` alongside; main green from `data#175`. Open from me:
+`pipeline#117 #118 #119 #126 #132`, `data#175 #181`.
