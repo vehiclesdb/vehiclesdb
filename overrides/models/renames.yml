@@ -1030,6 +1030,16 @@ Chrysler:
   "300M": "300 M"                             # spelling variant of "300 M" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Lebaron: Le Baron                           # spelling variant of "Le Baron" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Chrysler: null                              # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+  # ── "New <nameplate>" batch (2026-08-01, per-row replay of classify). junk?'s
+  # placeholder rule was anchored `\ANew\b` and deleted every nameplate whose
+  # first word is "New" (9,841 vehicles / 149 keys measured; pipeline PR moves
+  # it to `\ANew\z`). Most of what comes back is real — Chrysler's New Yorker
+  # is 241 vehicles across 7 countries and 7 sources — but a few keys are the
+  # SAME car as a record that is already live, and those are folded here so the
+  # rescue cannot mint a duplicate. Test applied per line: the make already has
+  # a live record whose name is this key minus the "New " prefix, seen by the
+  # SAME registers in the SAME countries. ──
+  New Port: Newport                           # Chrysler spells it as ONE WORD (Newport, 1961-81) and car/chrysler/newport is already live off the same two registers (fi_traficom + nl_rdw); "NEW PORT" is a spacing corruption of it, 8 vehicles — https://en.wikipedia.org/wiki/Chrysler_Newport
 
   # The modern 300 (LX/LD, 2005-2023). `300 C`, `300 M`, `300 H`, `300L`, `C300` and `300C SRT8`
   #     are DIFFERENT CARS and all SURVIVE. us_fueleconomy's baseModel is REFUTED here and NOT
@@ -3009,6 +3019,17 @@ Jeep:
   Jeep: null                                  # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   Cj 5: CJ-5                                # REPOINT (was → CJ5). Jeep's own brand history hyphenates: CJ-5 x81/x128, zero fused (https://www.jeep.com/history/1950s.html, /1970s.html) — the F-150 resolution shape, marque beats the fused-prefix heuristic
   Cj 7: CJ-7                                # REPOINT (was → CJ7). "In 1976, the Jeep Brand introduced the CJ-7" — CJ-7 x67, zero fused (https://www.jeep.com/history/1970s.html)
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header for
+  # the measurement. All three keys come ONLY from the two North American
+  # approval catalogues (ca_nrcan + us_fueleconomy), which prefix the
+  # redesigned generation to keep it apart from the outgoing one they list in
+  # the same year; both catalogues also carry the un-prefixed name, and the
+  # un-prefixed record is live with ca+us availability. Registration evidence
+  # is zero on these rows (approval catalogues carry no counts), so the fold
+  # moves presence, not counts. ──
+  New Compass: Compass                        # same vehicle as car/jeep/compass (live, ca_nrcan+us_fueleconomy among 11 countries) — https://www.jeep.com/compass.html
+  New Wrangler: Wrangler                      # same vehicle as car/jeep/wrangler (live, ca_nrcan+us_fueleconomy among 11 countries) — https://www.jeep.com/wrangler.html
+  New Wrangler Unlimited: Wrangler Unlimited  # same vehicle as car/jeep/wrangler-unlimited (live, ca_nrcan+us_fueleconomy) — the 4-door Wrangler body, https://www.jeep.com/wrangler.html
 
 Joint:
   E 33: E33                                   # spelling variant of "E33" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -3302,6 +3323,8 @@ Kia:
   K2700 Pick-Up Alu:         K2700   # pickup body + aluminium bed (nl)
   K2700 Driezijdige Kipper:  K2700   # Dutch for "three-way tipper" — a body conversion (nl)
   PV5CC:                     PV5     # CC = the PV5's Cargo/Chassis body code (nl) — https://www.kia.com/uk/new-cars/
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header. ──
+  New Sportage: Sportage                      # es_dgt + nl_rdw write both forms for the same SUV; car/kia/sportage is live off those same two registers (12 countries total) — https://www.kia.com/uk/new-cars/sportage/
 
 Kreidler:
   RS: Florett RS                               # bare "RS" is the Florett RS — the register writes it as RS, KREIDLER RS, FLORETT RS and KREIDLER FLORETT RS for the same machine (~125,000 built 1967-81). Folding it here matches what I already asserted in the G23 runs, where both ids carry identical years.
@@ -3314,6 +3337,22 @@ KTM:
   E-XC:                      EXC                  # KTM's enduro line, closed. NOTE the fold already merges 'E-XC' here and Freeride E-XC is a DIFFERENT electric model — if that ever publishes separately this needs revisiting, not extending
   Exc:                       EXC                  # KTM's enduro line, closed. NOTE the fold already merges 'E-XC' here and Freeride E-XC is a DIFFERENT electric model — if that ever publishes separately this needs revisiting, not extending
   "Duke 2":                                  "Duke II"                      # PERMUTATION FOLD (verified batch, tier A): AGAINST THE RAW TOTAL (276 Arabic vs 91 Roman), on a rank-4 register-corroboration argument plus the manufacturer's own filed type designation.
+
+Kymco:
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header for
+  # the measurement and the test. Kymco's European price lists badge the
+  # facelifted generation "New <name>" (New Like, New People S, New Sento), and
+  # the registers copy that verbatim: NL/FI/GB hold BOTH forms for the same
+  # scooter, and moped/kymco/like, /people-s and /sento are already live off
+  # exactly those registers. A generation marker is not a nameplate — the same
+  # ruling the pipeline already applies to "Golf VII" → Golf and to Land Rover
+  # "Discovery 1-5" (normalizer.rb land_rover: "generations, not nameplates").
+  # These are the three largest keys in the whole "New" rescue, so folding them
+  # is what keeps 5,755 vehicles of evidence ON the existing records instead of
+  # forking three near-duplicate ids. ──
+  New Like: Like                              # 2,981 vehicles (fi+gb+nl) — same scooter as moped/kymco/like (live: fi_traficom, nl_rdw, nz_nzta) — https://www.kymco.eu/scooters/
+  New People S: People S                      # 1,836 vehicles (nl) — same scooter as moped/kymco/people-s (live: fi_traficom, nl_rdw) — https://www.kymco.eu/scooters/
+  New Sento: Sento                            # 938 vehicles (nl) — same scooter as moped/kymco/sento (live: nl_rdw, the same register that writes both forms) — https://www.kymco.eu/scooters/
 
 Lada:
   "1200S": "1200 S"                           # spelling variant of "1200 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -3401,6 +3440,14 @@ Land Rover:
   Jeep:          null   # the generic Dutch/NZ word for a 4x4 written into the model column (fi x1, nl x18, nz x3; +3 van). NOT the Chrysler marque: the raws are "JEEP"/"JEEP 4X4" under make LAND ROVER and the sibling raw "86 JEEP CABRIOLET" resolves to land-rover/86. Kind-blind risk is nil — this key can only fire under Land Rover. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover_series)
   Rover:         null   # INTERIM — superseded by the make-fragment normalizer fix (DEBT hygiene-2 "make-fragment strips LAND/MICRO/HD"). TWO causes, one string: (a) raws "LAND ROVER"/"LAND ROVER, SERIES III" under make LAND ROVER, where strip_make_prefix takes raw_make.split.first = "LAND" and leaves "ROVER" (normalizer.rb:316-323) — 30 of 39 vehicles; (b) bare "ROVER" in the model column (lu x1, nl x5, nz x2). The same class as the shipped `Landrover: null` line above. FIRES IN car AND van (https://en.wikipedia.org/wiki/Land_Rover)
   Fc: FC   # Forward Control — raws "FC6-109-4X4" (fi) and "FC-110" (nl), the 1962-72 forward-control Land Rovers; the caser Title-cases the initialism and this pins it. Blast radius 1 (truck kind only — the only kind that produces "Fc" for this make) — https://en.wikipedia.org/wiki/Land_Rover_series
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header.
+  # Both keys are ca_nrcan + us_fueleconomy only (zero registration counts), and
+  # both name the SAME vehicle as car/land-rover/range-rover, which is live in
+  # 14 countries including ca+us. P400 is the powertrain badge (3.0 Ingenium
+  # I6), not a nameplate — the family rule already folds "RANGE ROVER P400 LWB"
+  # → Range Rover; it just cannot see through the leading "New". ──
+  New Range Rover P400: Range Rover           # https://www.landrover.co.uk/range-rover/index.html — P400 is the engine badge; the same catalogues also list the un-prefixed "Range Rover"
+  New Range Rover P400 Lwb: Range Rover       # LWB is the long-wheelbase body of the same nameplate (the shipped "One Ten"/"110" precedent above: wheelbase ≠ nameplate)
 
 Leike:
   Leike: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
@@ -3969,6 +4016,10 @@ Maserati:
   "Srl 332B204": null                   # 1 vehicle (nl) → car/maserati/srl-332b204
   "Srl 332B204B": null                  # 1 vehicle (nl) → car/maserati/srl-332b204b
   "ZAM331B00": null                     # 1 vehicle (nl) → car/maserati/zam331b00
+
+Mash:
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header. ──
+  New Seventy: Seventy                        # 36 vehicles (gb+lu+nl) — the Euro-updated Seventy; motorcycle/mash/seventy is live off uk_dft + nl_rdw, the same two registers that also write "NEW SEVENTY" — https://www.mashmotors.com/
 
 Matchless:
   G3/LS:                     G3LS                 # Matchless type code, closed (G3L Lightweight + S spring frame). DEFUNCT marque — badge evidence, no manufacturer left to ask
@@ -5208,6 +5259,8 @@ Piaggio:
   Vespa Et-2 45KM/H: Vespa ET2                # same record, hyphenated variant of the registry string [reason re-attached: the union merge lifted this line out of a block whose comment sat above it]
   "MP3 500LT Abs":                   MP3 500LT                  # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   "MP3 500LT Sport Abs":             MP3 500LT Sport            # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header. ──
+  New Skipper: Skipper                        # 516 vehicles (gb) — the facelifted Skipper; motorcycle/piaggio/skipper is live off uk_dft + nl_rdw + nz_nzta, and uk_dft writes BOTH forms. Generation marker, not a nameplate (same ruling as the Kymco block) — https://en.wikipedia.org/wiki/Piaggio_Skipper
 
 Plymouth:
   Roadrunner: Road Runner                     # spelling variant of "Road Runner" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -5932,6 +5985,9 @@ Suzuki:
   GSX1300 Rrqm 5 Hayabusa: Hayabusa           # FOLD half. A mangled uk_dft genmodel of the Hayabusa; folded to the live nameplate. BOTH former_ids arms point at hayabusa — the pre-existing gsx1300rrqm5hayabusa alias was repointed in the same commit rather than left to chain through this now-dead id.
   "Intruder VL1500":                         "VL1500 Intruder"              # PERMUTATION FOLD (verified batch, tier A): Code-first 72 vs name-first 11 (6.5:1), and the manufacturer's own type designation is code-first.
   "Lets II":                                 "Lets 2"                       # PERMUTATION FOLD (verified batch, tier A): Arabic 30 vs Roman 17 (1.8:1), and the registers write the LATER generations of this same family in Arabic.
+  # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header. ──
+  New SX4: SX4                                # 299 vehicles (fi+nl+ua) — the 2010 facelift, sold as "New SX4" in Europe; car/suzuki/sx4 is live off those same three registers (10 countries). Closed alphanumeric, per this block's own SX4 convention above — https://www.globalsuzuki.com/automobile/lineup/
+  New SX4 S-Cross: SX4 S-Cross                # 196 vehicles (nl) — same prefix on the S-Cross body; car/suzuki/sx4-s-cross is live. Folded in the same pass so the two SX4 keys cannot fork differently
 
 SWM:
   Sixdays: Six Days                      # SWM Six Days — two words (the ISDE reference), from the tail batch
