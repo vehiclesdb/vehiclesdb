@@ -18815,3 +18815,62 @@ or correctly placed, and six new head nameplates minted.
 
 Congratulations to both sessions — this release carries today's whole
 program. Monitoring continues.
+
+## OWNER DIRECTIVE (from Javi, verbatim in substance) — S4W: write THE RELEASE RUNBOOK now, while the scar tissue is fresh. And the release channels are to become 100% automated.
+
+**S4W, your next block before be_fps/tie-break: author
+`vehiclesdb-pipeline/RELEASE-RUNBOOK.md`** — an extremely detailed,
+extremely thorough guide to publishing a release, written to be read
+COLD by an agent who has never done it, such that they can cut a release
+without a single problem. You cut 2026.08.0 and 2026.08.1 within 16
+hours and made (and caught) the stale-checkout error today — nobody will
+ever have better material than you have right now. House standard
+applies: assume nothing, include the mistakes and their instruments, not
+just the happy path.
+
+Required coverage (extend wherever your experience says the map is
+incomplete):
+1. **Pre-flight**: pull BOTH repos immediately before the build (today's
+   lesson, verbatim); frozen-cache vs fresh-fetch and WHEN each is
+   correct (intra-month correctness release vs monthly data update);
+   zero open coupled pairs (one-window rule); no pipeline-failure issue
+   open; gate_acks state read BEFORE building.
+2. **Build & validate**: exact commands; the eight gates and how to read
+   each failure — including the false-signal catalogue (es-env negative-
+   test FAIL lines in passing runs, the be_fps fallback class, coupling
+   reds, stale merge refs on rerun vs update-branch).
+3. **Publish mechanics**: build:publish sync semantics (never commits),
+   VERSION auto-increment rules, CHANGELOG + release-diff + manifest +
+   ATTRIBUTION regeneration, commit/tag/GitHub-release order, the
+   "data actually changed" condition, interplay with the scheduled
+   monthly workflow (how not to collide with the cron).
+4. **Post-release runbook**: delta-ack consumption WITH the verification
+   method you used today (rebuild with acks deleted, gate 4 green);
+   HELD-enrich flip-back; stale-counter re-runs (name_shapes, QUALITY
+   baseline, audit re-round); the hysteresis inheritance derivation
+   (how you produced the 72-item list) and its handoff to the owning
+   session; consumed-key pruning.
+5. **Release channels — NEW FACTS FROM THE OWNER, then your audit**:
+   **Zenodo is now ENABLED, auto via GitHub webhook** — the release
+   creation mints the DOI. Document: verifying the hook fired, keeping
+   `.zenodo.json` current, what a failed mint looks like. AND the owner
+   directs: **HuggingFace dataset releases + private data repo releases
+   must become FULLY 100% AUTOMATED and version-coordinated with every
+   release** — same version everywhere, honoring DATA-CONTRACT's
+   version-lock rule (a plus-release only pairs with its matching
+   public VERSION). Audit the current state of each channel (which
+   steps are manual today), automate them (release-tag-triggered
+   workflows), and the runbook documents the whole coordinated fan-out
+   plus how to verify each channel landed.
+6. **Edge cases**: red main mid-release, a gate failing between sync and
+   tag, rollback posture (ids are append-only — there is no un-release;
+   a bad release is a fix-forward patch, spell out that procedure),
+   intra-month re-releases, what "green" means when upstream sources
+   are drifting live (the frozen-cache reasoning from Turn 212).
+7. **Validation by use**: 2026.08.2 gets cut by following this document
+   VERBATIM — any deviation you're forced to make is a runbook bug and
+   the fix lands in the same PR as the release. If the automation in §5
+   lands first, the runbook documents the automated path as primary and
+   the manual path as the fallback it becomes.
+
+S2W: nothing here blocks your yamaha apply — proceed in parallel.
