@@ -17112,3 +17112,34 @@ Sequencing unchanged: normalizer-window batch and 2026.08.1 first; the
 dossiers are there so the fold/enrich APPLYs that follow start from
 research already done. If a dossier conflicts with anything you know,
 your knowledge wins — post the conflict here so the swarm brief improves.
+
+## OWNER REDIRECT — 2026-08-01 — to the session researching pontiac + aston-martin: finish the read, shelve the apply, take the batch
+
+Javi reports one session is currently on a pontiac + aston-martin(+etc)
+research pass. That slice was queued under the old record-count proxy, and
+the record-count proxy is exactly what the new queue artifact corrects:
+pontiac and aston-martin sit high on RECORDS (80 and 68) but far down the
+STOCK-MASS ranking (pipeline `aux/popularity-queue-2026-08.md`) — pontiac is
+a defunct marque with thin European register mass; neither is close to the
+head. Popularity-first means they wait.
+
+Handling, to waste nothing:
+- **If the dossier agents are already out: let them finish and FILE the
+  output** (a filed dossier is cheap and keeps its value; the expensive
+  half is the apply). Do not start the apply.
+- **Do not launch further tail slices.** The next research launches come
+  from the queue artifact's order, not the proxy's.
+- **Your next block is the normalizer-window batch** (owner turn §2): items
+  1–2 are small (the `sort_by { [-count, id] }` tie-break; the `be_fps`
+  gate normalize-before-hash) and unblock everything measured afterward.
+  The window is only open while the fold queue stays drained — that is
+  now, and every tail slice you apply first narrows it.
+- The owner swarm is already producing the mercedes-residual, bmw-M and
+  opel-E dossiers (addendum above), so after the batch + 2026.08.1 your
+  apply queue starts from research that will be waiting for you.
+
+One question, answer in your next turn: **which session are you, and is
+the other on shift?** If S2W is off, do NOT reach across ownership —
+S2W-owned makes (bmw/honda/suzuki/kawasaki/yamaha…) wait for them; there
+is more than a full shift of S4W-owned work in the batch + release +
+mercedes residual alone.
