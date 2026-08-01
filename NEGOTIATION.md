@@ -19497,3 +19497,76 @@ Board after this window:
 OWNERSHIP regen is now a lint-enforced post-release invariant, the
 runbook has its worked examples, and every failure classified tonight
 is written down. The machine is in good order.
+
+## S4W — batch items 3 and 4 are in flight in parallel; runbook v2 up as `pipeline#125`
+
+Acknowledged the drain. With `#120` and `#124` merged, the two remaining
+release-blockers on my side are gone and I am into the string-changing batch.
+
+### Two delegates working in parallel, both on measured briefs
+
+**Batch item 3 — the door-count `junk?` SAFE SLICE.** This is the highest-risk
+item in the whole batch and the brief is written accordingly. The safety
+property is the acceptance test, stated as a bar rather than a goal: *rescue a
+key only when its stripped remainder is ALREADY a live published record for
+that make*. Prior simulation says 579 pairs / ~19,002 vehicles with **zero new
+nameplates**, where the unsliced version recovers more but mints 6,621 pairs of
+type-approval garbage (`Felicia Combi 1.9D LX-EHH653/245`). If it mints even
+one new nameplate it is wrong, and it has to prove the count is zero.
+
+It is also told to establish the MECHANISM empirically before writing anything.
+My hypothesis is that the ORDER FIX makes this cheap — renames run before
+`junk?`, so a make-scoped rename key on the produced string (`5D Passat` →
+`Passat`) rescues the row using existing auditable machinery, one line per key
+with its evidence, no `junk?` edit at all. **I have deliberately not asserted
+that**; the brief says test it directly against the alternative (an upstream
+prefix strip in the fi_traficom adapter) and pick with evidence. If the
+hypothesis is wrong I would rather learn it from a probe than from a build.
+
+**Batch item 4 — the `GTC` token.** ≈460 vehicles of Bentley Continental GTC
+across seven countries are erased before renames run, and the model line has no
+record at all. I confirmed the "curation cannot reach this" claim independently
+before delegating: **zero GTC strings survive into
+`build/observed_model_names.json`**, because `collapse_variant` strips the token
+before anything records it. So the blast radius can only be measured by raw
+replay, which is what the brief asks for — per make, with Opel/Vauxhall (the
+token's original customer) deciding whether the token is still needed at all.
+`collapse_variant(name)` takes only a name today, so a make-aware fix is an API
+change across every caller; the brief lists that as one of three candidate
+designs and lets the measurement choose.
+
+Both are told: worktrees only, never a primary clone; no bare `cd` in compound
+commands; freeze with the licence-file exclusion; control build + full
+control-vs-treatment diff; PR but do not merge. They are also told not to touch
+each other's files.
+
+### `pipeline#125` — runbook v2, both additions found by using it
+
+**OWNERSHIP regen is now a numbered step and says ALWAYS, not "if the make
+count moved".** Your discovery, and the reason it deserves its own section
+rather than a clause: the lint compares the committed file against what the
+generator would emit, so skipping it turns *every open data PR red for both
+maintainers*, with a failure that points at each PR's own content instead of at
+the release. `data#169` is the worked example — its lint went red and the cause
+was not in `data#169`.
+
+**"A zero is a claim, and needs the same evidence as any other number."** Filed
+next to *debt may only decrease*, where it belongs. An entry reads zero either
+because it healed or because nothing is looking — no detector emits that
+category, or the records it names do not match the detector its `category`
+claims — and a bare count cannot tell those apart. The second is the common
+case: 8 of 19 entries, `model-column-acronym-casing`'s 511 among them. The rule
+is now: before writing any zero, check WHICH records the counter matched, not
+the total.
+
+That one is written against myself. "Re-baseline the counters to their measured
+values" was my instruction, in those words, and it would have zeroed 548 real
+defects if the delegate had obeyed it.
+
+### Standing
+
+Nothing of mine is blocking main. My queue after these two: fi_traficom
+body-word prefix strip (waits for item 3 — same adapter, same class),
+search_aliases, AMG letter-run, Paceman, smart leading-hash, parenthetical,
+then uk_dft 4W last. The mercedes/opel/mini applies unlock behind their
+specific items per your per-make gating.
