@@ -828,3 +828,42 @@
 "motorcycle/yamasaki/ym": "series stub retired by G-1 (uk_dft now reads the Model column, so UK 2W rows carry their displacement): the pooled rows now land on their real designations — 2 published successor(s) (ym125, ym50). No single alias target exists by construction. See NEGOTIATION Turns 199-210."
 "motorcycle/zontes/zt": "series stub retired by G-1 (uk_dft now reads the Model column, so UK 2W rows carry their displacement): the pooled rows now land on their real designations — 5 published successor(s) (zt125, zt310, zt350, zt368, zt703). No single alias target exists by construction. See NEGOTIATION Turns 199-210."
 "motorcycle/zontes/mantis": "series stub retired by G-1 (uk_dft now reads the Model column): the pooled rows land on zontes/mantis-125, which does NOT itself reach the publication threshold — so an alias would migrate consumers into a 404 and the liveness gate correctly refused it. Manifested instead: the evidence exists in build/candidates and the id returns automatically if it clears. See NEGOTIATION Turns 199-211."
+
+# ── Scania + DAF wave-4 heavy-vehicle clean, 2026-08-01 — 17 published ids
+# dropped, 1,469 vehicles, every population and country set MEASURED on a
+# full-corpus sweep through the pipeline's own classify (12,167 raw rows, all
+# six kinds) and re-measured against a control build of pristine main.
+#
+# These are NOT threshold demotions and they do NOT return automatically: each
+# one is a string that names no product — a body word, a range label, a make
+# fragment, or a bare axle code with no model token anywhere in the row. Ten
+# further null keys ship in renames.yml for ids that are sub-threshold today
+# (387 more vehicles, chiefly Leyland DAF's FAD/FAS/FTG stubs at 113/93/138 gb);
+# they get no entry here because they were never published.
+#
+# An 18th was drafted and WITHDRAWN after the control build measured it:
+# truck/scania-vabis/vabis survives its null at fi:1 because the make has two
+# display names over one slug and a renames key reaches only the nl_rdw half.
+# The reasoning is on the renames.yml block; it returns with the alias pin.
+#
+# AVAILABILITY, audited at MAKE level for every line and stated per entry: no
+# country goes dark for any of the four makes — verified against the treatment
+# build, not just asserted. Rule 1g holds: none of these 17 ids appears in
+# former_ids.yml.
+"truck/scania/metago": "Kässbohrer metago®pro is a CAR-TRANSPORTER SUPERSTRUCTURE fitted to chassis of all leading truck makers, not a Scania nameplate (https://www.kaessbohrer.at/en/products/car-carriers/metago-pro/trailer). Measured 2026-08-01: 25 vehicles (nl 16, lu 7, es 2) over one raw, \"METAGO PRO\" — and one of those rows is literally make \"SCANIA/KASSBOHRER TRANSPO\" model \"METAGO PRO\". Same class as the existing scania/irizar drop. es/lu/nl are each retained by dozens of live Scania truck records (p360, p380, r420, r500, r560, r730 all carry lu)."
+"truck/scania/prt": "PRT is Scania's OWN NAME FOR THE P/R/T RANGE (https://en.wikipedia.org/wiki/Scania_PRT-range) — a label naming three cab series at once, so no single survivor is honest. Measured 2026-08-01: 112 vehicles (nl 106, es 4, fi 2) over 5 raws — \"SCANIA PRT\" x86, \"PRT\" x23, plus \"SCANIA PRT R400 LA4X2MNA\" and \"SCANIA PRT R 500\", whose models (r400, r500) are separately published. The BMW letter-range-label shape, NAMING §7.6, whose verdict was null. es/fi/nl all retained at make level."
+"truck/scania/vabis": "MAKE FRAGMENT left in the model column by the pipeline, not a nameplate: strip_make_prefix removes \"SCANIA\" from \"SCANIA VABIS L 110S 42\" and series_collapse then keeps only \"VABIS\". Measured 2026-08-01: 18 vehicles (nl 16, fi 2) over 17 raws, every one a Scania-Vabis L/LS/LB carrying its own type number — i.e. these rows belong to make scania-vabis, not to a Scania model. Exactly the shape of the existing scania/scania drop. fi/nl retained by every live Scania truck record; the upstream fix is filed in the PR body."
+"truck/scania/r4x": "Cab letter plus WHEEL FORMULA, no model designation: the only raw is \"R 4X2\". Measured 2026-08-01: 3 vehicles (nl 2, fi 1). fi/nl retained by dozens of live Scania truck records."
+"truck/scania/r6x": "Cab letter plus wheel formula, no model designation in any of its 4 raws — \"R 6X2\" x29, \"R 6X4\" x11, \"R  6X2\" x2, \"R 6X2/4\" x1. Measured 2026-08-01: 43 vehicles (fi 42, nl 1). fi/nl retained at make level."
+"truck/scania/r6x2": "Unspaced spelling of the same cab-letter+wheel-formula string (\"R6X2\" x4, \"R6X2/4\" x1). Measured 2026-08-01: 5 vehicles (fi 3, nl 2). fi/nl retained at make level."
+"truck/scania/r8x4": "Cab letter plus wheel formula (\"R8X4\", \"R8X4/4\"). Measured 2026-08-01: 3 vehicles (nl 2, fi 1). fi/nl retained at make level."
+"truck/scania/p6x": "Cab letter plus wheel formula (\"P 6X2\" x6, \"P 6X4\" x4, \"P 6X6\" x2, \"P 6X2/4\" x1). Measured 2026-08-01: 13 vehicles (fi 12, nl 1). fi/nl retained at make level."
+"truck/scania/p6x2": "Unspaced spelling of the same (\"P6X2/4\" x2). Measured 2026-08-01: 2 vehicles (fi 1, nl 1). fi/nl retained at make level."
+"truck/scania/b6x2": "Chassis-type letter (B = rigid) plus wheel formula, no model designation; one raw, \"B6X2\". Measured 2026-08-01: 11 vehicles (nl 10, fi 1). fi/nl retained at make level."
+"truck/scania/cb6x": "Construction-rigid code plus wheel formula plus height/suspension tail (\"CB 6X4 HHZ\", \"CB 6X6 HHH\") — Scania's own spec sheets use CB verbatim as a chassis code (https://www.focusontransport.co.za/wp-content/uploads/2019/01/Scania-specs.pdf), never as a nameplate. Measured 2026-08-01: 2 vehicles (fi 1, nl 1). fi/nl retained at make level."
+"truck/scania/ph": "P cab + H(igh) chassis + wheel formula (\"PH4X4\", \"PH6X6ZL75180K\", \"PH6X6 ZL 75180 K\"). Not a nameplate. Measured 2026-08-01: 3 vehicles (nl 2, fi 1). fi/nl retained at make level."
+"truck/scania/pm": "P cab + M(edium) chassis + wheel formula, 10 raw spellings (\"PM4X2\" x18, \"PM4X2A\" x4, \"PM4X2AZ\" x2, \"PM4X2ZL 5092-1\", …). Not a nameplate. Measured 2026-08-01: 31 vehicles (nl 30, fi 1). fi/nl retained at make level. This id is one of the 33 entries settled out of the open #42 bare-1-2-letter triage queue: verdict NOT-A-NAMEPLATE, decided on its natives rather than its shape."
+"truck/daf/oprij": "Dutch registry BODY WORD, not a nameplate: an \"oprijwagen\" is a car transporter / drive-on recovery body, and RDW writes it in the model column AHEAD of the real series. Measured 2026-08-01: 167 vehicles (nl), 54 raws — \"OPRIJ LF 16-77\" x39, \"OPRIJ LF 16-68\" x10, \"OPRIJ XB 16-68\" x8, \"OPRIJ XD 29-85\" x7, \"OPRIJ CF 29-85\" x5. It pools FOUR DAF series onto one id, so no single survivor is honest — NAMING §8.1 mixed-block drop, not a fold. nl is NOT lost at make level: truck/daf/lf, /xb, /xd* and /cf all carry nl. NOTE the same word also produces truck/scania/oprij (39 vehicles, sub-threshold); the rule-first cure is a kind-scoped drop_pattern and is filed in the PR body rather than shipped here, because a make-blind pattern has a wider blast radius than this change replay-verified."
+"truck/leyland-daf/fa": "Bare AXLE CODE with no model token anywhere in the row: the single raw is \"LEYLAND DAF FA\" and FA is DAF's 4x2 rigid axle configuration (https://www.daf.com/-/media/files/document-library/infosheets/ngd/axles/axle-configuration-model-overview-hq-en-def.pdf). Measured 2026-08-01: 382 vehicles (gb), 1 raw spelling. It could be a 45, 50, 55, 60, 65 or 80 and nothing in the row says which, so NAMING §8.1 (unidentifiable → drop) applies and no pipeline change can recover it — unlike DAF's own FA stubs, whose raws DO carry the series and which are therefore deliberately kept. gb is retained at make level by truck/leyland-daf/45 (6,878 vehicles), /50, /55, /60, /65, /80 and the 200/400 vans."
+"truck/leyland-daf/ft": "Same class, tractor side: the single raw is \"LEYLAND DAF FT\", FT being DAF's 4x2 tractor axle configuration. Measured 2026-08-01: 500 vehicles (gb) — 499 truck plus 1 van, the van row sub-threshold. No model token in any row. gb retained at make level by truck/leyland-daf/45 and the 200/400 vans."
+"truck/leyland-daf/fat": "Same class, 6x4 rigid: raws \"LEYLAND DAF FAT\" x136, \"FAT 80\" x13 and \"FAT 70\" x1. Measured 2026-08-01: 150 vehicles (gb). MIXED as well as bare — two different models appear under it — so no single survivor is honest even for the 14 rows that do carry a number. gb retained at make level by truck/leyland-daf/45 and the 200/400 vans."

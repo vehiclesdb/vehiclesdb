@@ -600,6 +600,70 @@ Dacia:
   Duster Extreme: Duster    # "Extreme" is a Dacia TRIM LEVEL (Essential/Expression/Journey/Extreme ladder) — https://www.dacia.co.uk/hybrid-and-electric-range/duster-suv.html
   Logan Mcv: Logan          # MCV = "Multi Convivial Vehicle", the ESTATE BODY of the Logan; car/dacia/logan already carries body_types [hatchback, wagon] — https://en.wikipedia.org/wiki/Dacia_Logan
 
+DAF:
+  # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §A-D1/§A-D2/
+  # §A-D4). FIRST DAF block in this file. The heading must equal the resolved
+  # display name — exactly "DAF", which is what makes/aliases.yml produces
+  # ("DAF: DAF" and "DAF TRUCKS: DAF") and what catalog/{truck,bus,van}/
+  # makes.json carries. Every key below was replay-verified byte-exact against
+  # pipeline origin/main with a recording proxy over a FULL-CORPUS sweep
+  # (12,167 raw rows, all six kinds): all REACHED, 0 dead, 0 unintended kinds.
+  #
+  # THE CONFIG-CODE RULE these lines apply, stated once so no line has to argue
+  # it: an id <HEAD><CONFIG> folds to <HEAD> iff (a) HEAD is a designation the
+  # marque itself publishes and (b) CONFIG is a documented chassis/axle/
+  # wheelbase code. It never folds across HEADs and never folds a HEAD to a
+  # shorter HEAD. The target is the most specific string TRUE OF EVERY raw row
+  # under the key — which is why "Ftgxf" → XF105 (all six raws carry 105) but
+  # "Ftxf" → XF (three raws carry 95, so 105 would be a fabrication for those).
+  #
+  # DAF publishes both halves of the evidence on facing pages of one document,
+  # its NEW GENERATION Model Overview + Axle Configurations sheet: the models
+  # (XB 170…310, XD 230…450, XF 480, XG 430…530, XG+ 430…530) and, opposite,
+  # "Rigid chassis: FA FAR FAS FAG FAN FAT FAK FAQ FAC FAX / Tractor chassis:
+  # FT FTP FTR FTS FTG FTN FTT FTM" —
+  # https://www.daf.com/-/media/files/document-library/infosheets/ngd/axles/axle-configuration-model-overview-hq-en-def.pdf
+  #
+  # NOT DONE HERE, deliberately: xg-530 and xg530 are NOT folded into each
+  # other in either direction. DAF's own overview gives XG and XG+ separate
+  # columns at identical power ratings, so they are two products; series_collapse
+  # already strips the trailing "+" and has merged 2,254 vehicles of XG+ evidence
+  # into XG ids, and folding would cement that scramble. See the PR body. ──
+  Fa CF:      CF        # "FA" is DAF's 4x2 RIGID axle configuration, not a nameplate; raws are FA CF 65/75/85 — DAF's own axle sheet lists FA/FAR/FAS/FAG/FAN/FAT/FAK/FAQ/FAC/FAX under "Rigid chassis" — https://www.daf.com/-/media/files/document-library/infosheets/ngd/axles/axle-configuration-model-overview-hq-en-def.pdf
+  Ft CF:      CF        # "FT" is DAF's 4x2 TRACTOR axle configuration; raws FT CF / FT CF 75 / FT CF 85 / FT CF ELECTRIC — same DAF sheet, "Tractor chassis"
+  Fancf:      CF        # FAN (6x2 rigid, steered trailing axle) + CF fused by the register; FANCF75.360U and FANCF85.410T are BOTH present, so 85 would be false for the 75 rows — folds to the series — same DAF sheet
+  Fascf:      CF85      # FAS (6x2 rigid, non-steered trailing axle) + CF85; all 3 raws carry 85 (FASCF85, FASCF85.410T) — same DAF sheet
+  Fatcf:      CF85      # FAT (6x4 rigid double drive) + CF85; all 4 raws carry 85 — same DAF sheet
+  Fa LF:      LF        # FA (4x2 rigid) + LF; 12,514 of 12,529 vehicles are uk_dft "DAF TRUCKS FA LF" with NO model number and the NL raws carry both LF 45 and LF 55, so the series is the only truth common to every row. Fires in THREE kinds (truck 12,514 + bus 8 + van 7) — all intended — same DAF sheet
+  Falf:       LF        # fused FALF45*/FALF55* (FALF45220G12 x44, FALF55250G18 …) — BOTH 45 and 55 present, so LF45 would be a fabrication for the 55 rows; the trailing G/E + digits is the gearbox code — same DAF sheet
+  Ft XF:      XF        # FT (4x2 tractor) + XF; raws FT XF, FT XF 105, FT XF 95, FT XF LOW DECK — 95 and 105 both present, so the series is the common truth — same DAF sheet
+  Ftxf:       XF        # fused FTXF105*/FTXF95/FTXF — 95 is present, so XF105 would be false for those rows — same DAF sheet
+  Fatxf:      XF        # FAT (6x4 rigid) + XF; raws FATXF, FATXF105.410, FATXF105.510T — bare FATXF present, so the series is the common truth — same DAF sheet
+  Ftgxf:      XF105     # FTG (6x2 tractor, mid-lift steering axle) + XF105; ALL SIX raws carry 105 (FTGXF105, FTGXF105.460T, FTGXF105.510T) so the generation is safe here — same DAF sheet
+  XF Ft:      XF        # raw is literally "XF FT ELECTRIC" x44 — the XF Electric on a 4x2 tractor chassis; FT is the configuration — https://www.daf.global/en-us/trucks/daf-xf-xg-xgplus-electric
+  XG+530FT:   XG+530    # FT (4x2 tractor) glued to the model; XG+ 530 IS a DAF model (its own column in DAF's model overview, MX-13 390 kW/530 hp) so the fold stops at XG+530 and deliberately does NOT cross to XG530 — same DAF sheet
+  XG530F:     XG530     # trailing "F" is the first letter of the axle code the register wrote unspaced (XG 530FTN / XG 530FAW) which series_collapse fuses as a one-letter suffix (normalizer.rb one-letter-third-token rule) — not a nameplate
+  XF460F:     XF460     # same one-letter axle-code fusion (XF 460FT…)
+  XF480F:     XF480     # same
+  XF510F:     XF510     # same
+  XF530F:     XF530     # same
+  LF260F:     LF260     # same (LF 260FA…)
+  # ── §A-D2: DAF's pre-1997 ranges exist in the corpus only INSIDE axle codes.
+  # Only truck/daf/55 (3 vehicles) and /95 (12) are published today; these folds
+  # recover the rest. ──
+  FA45:    "45"      # DAF 45 on a 4x2 rigid chassis; 1,889 of 1,911 vehicles are uk_dft "DAF TRUCKS FA 45", the rest nl/fi "FA 45.130" / "FA 45.180 E10" (the .nnn is the horsepower). Fires in truck+bus (uk_dft files the same chassis under two body types) — MINTS truck/daf/45 — https://en.wikipedia.org/wiki/DAF_45
+  FA55:    "55"      # DAF 55, same shape ("DAF TRUCKS FA 55" x314 gb, "FA 55.160" nl, "FA 55.220" es); target truck/daf/55 is already LIVE and gains es+fi
+  AD85:    "85"      # DAF 85 on an AD (8x4 rigid) chassis — raws "AD 85 XC/WC/MC" plus fi "AD 85 360"; MINTS truck/daf/85 — https://en.wikipedia.org/wiki/DAF_85
+  AE75:    "75"      # DAF 75 — raws "AE 75 PC" x67, "AE 75 RC" x22, bare "AE 75"; MINTS truck/daf/75 — https://en.wikipedia.org/wiki/DAF_75
+  FA1600:  "1600"    # DAF 1600 (F-series) — raws "FA 1600 DF 360", "FA 1600 DT 485"; DF/DT are engine codes and the trailing 3 digits the hp; MINTS truck/daf/1600 — https://en.wikipedia.org/wiki/DAF_Trucks
+  FA1700:  "1700"    # DAF 1700 — "FA 1700", "FA 1700 DNTD 505", fi "FA 1700 DNT445/4450"; MINTS truck/daf/1700 — https://en.wikipedia.org/wiki/DAF_Trucks
+  FA2300:  "2300"    # DAF 2300 — "FA 2300 DHU 400/445 CI"; MINTS truck/daf/2300 — https://en.wikipedia.org/wiki/DAF_Trucks
+  FA2500:  "2500"    # DAF 2500 — uk_dft "DAF FA 2500" x6, fi "FA 2500 DHS 540L"; MINTS truck/daf/2500 — https://en.wikipedia.org/wiki/DAF_Trucks
+  FT95:    "95"      # DAF 95 on a 4x2 tractor chassis ("FT 95", "FT 95.430", "FT 95.400"); target truck/daf/95 is already LIVE. CAUTION: two raws are "FT 95 XF 480"/"FT 95XF" — this key catches only the SPACED-with-dot form; the 95XF cluster is FT95X below
+  FT95X:   "95XF"    # the DAF 95XF (1997-2002); 353 of 360 vehicles are uk_dft "DAF TRUCKS FT 95XF" — the trailing X is the truncated XF badge, not a chassis code. MINTS truck/daf/95xf; Wikipedia records the badge as "DAF 95XF (1997-2002)" — https://en.wikipedia.org/wiki/DAF_XF
+  # ── §A-D4 ──
+  Oprij:   null      # Dutch registry BODY WORD, not a nameplate: an "oprijwagen" is a car transporter / drive-on recovery body and RDW writes it in the model column ahead of the real series ("OPRIJ LF 16-77" x39, "OPRIJ XB 16-68" x8, "OPRIJ XD 29-85" x7, "OPRIJ CF 29-85" x5). Pools FOUR DAF series across 54 raws, so no single honest survivor exists — NAMING §8.1 mixed-block drop. nl is retained at make level by truck/daf/lf, /xb, /xd and /cf
+
 Daihatsu:
   Hijet: Hi-Jet                               # spelling variant of "Hi-Jet" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
@@ -2003,6 +2067,65 @@ Lexus:
   UX300E: UX                              # engine/powertrain variant of the UX line — the nameplate is the line, not the engine (lexus.co.uk/car-models)
   UX300H: UX                              # engine/powertrain variant of the UX line — the nameplate is the line, not the engine (lexus.co.uk/car-models)
 
+Leyland Daf:
+  # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §A-L1/§A-L2).
+  # FIRST Leyland Daf block in this file. The heading must equal the resolved
+  # display name — exactly "Leyland Daf", which is smart_case("LEYLAND DAF")
+  # and what catalog/{truck,bus,van}/makes.json carries; there is no
+  # makes/aliases.yml entry and none is needed.
+  #
+  # leyland-daf IS A REAL HISTORICAL MARQUE, not a typo for DAF: "a commercial
+  # vehicle manufacturing company based in Leyland, United Kingdom, and a
+  # subsidiary of DAF NV", February 1987 - February 1993
+  # (https://en.wikipedia.org/wiki/Leyland_DAF). It shares the slugs fa/fat/ft
+  # with daf because both use DAF's axle vocabulary. Nothing here folds across
+  # the make boundary and none of these keys is written in the DAF block.
+  #
+  # AND THIS IS WHY THE TWO MAKES GET OPPOSITE DISPOSITIONS FOR THE SAME-LOOKING
+  # STRING. Under DAF the raw is "FA LF45"/"FA CF85" — the series is PRESENT and
+  # only the pipeline loses it, so those stubs are a deliberate keep for an
+  # upstream fix. Under Leyland Daf uk_dft's raw is literally "LEYLAND DAF FA"
+  # with NO model token anywhere in the row, so nothing is recoverable by any
+  # pipeline change and NAMING §8.1 (mixed or unidentifiable → drop) is the
+  # whole answer. Measured, not assumed: 12 of the 13 bare-axle stubs have
+  # exactly one raw spelling.
+  #
+  # Every key replay-verified byte-exact against pipeline origin/main over the
+  # full corpus: REACHED, 0 dead. FA45/FA50 fire in truck AND bus — intended,
+  # uk_dft files one chassis under two body types. ──
+  FA45:    "45"     # "LEYLAND DAF FA 45" x6,868 gb (truck) + x10 (bus) — FA is DAF's 4x2 RIGID axle code (https://www.daf.com/-/media/files/document-library/infosheets/ngd/axles/axle-configuration-model-overview-hq-en-def.pdf); the Leyland DAF 45 (1987-1993) is the nameplate (https://en.wikipedia.org/wiki/Leyland_DAF). MINTS truck+bus/leyland-daf/45 — the largest single fold in this slice by vehicle count
+  FA50:    "50"     # "LEYLAND DAF FA 50" x256 truck + x3 bus — Leyland DAF 50 (1987-1993), same two sources
+  FA55:    "55"     # "LEYLAND DAF FA 55" x518 — the FOLD claim (FA = axle code) rests on DAF's own axle sheet and is independent of the nameplate question; the resulting /55 rests on ONE register in ONE country, flagged in the PR body — https://en.wikipedia.org/wiki/Leyland_DAF
+  FA60:    "60"     # "LEYLAND DAF FA 60" x55 — Leyland DAF 60 (1987-1993), same source
+  FA65:    "65"     # "LEYLAND DAF FA 65" — truck x3 plus a bus row; register-attested, same one-register flag as FA55
+  FT55:    "55"     # FT = DAF's 4x2 TRACTOR axle code; "LEYLAND DAF FT 55" x12 — same nameplate as FA55, so this fold MERGES the rigid and tractor spellings onto one id, which is the point
+  FT60:    "60"     # same shape x2
+  FT80:    "80"     # "LEYLAND DAF FT 80" x3 — Leyland DAF 80 (1987-1993) — https://en.wikipedia.org/wiki/Leyland_DAF
+  FA1700:  "1700"   # "LEYLAND DAF FA 1700 DNT" x2 — the DAF 1700 F-series carried over into the Leyland DAF badge; DNT is the engine code
+  FA1900:  "1900"   # "LEYLAND DAF FA 1900 DNS" x9 — DAF 1900, same shape
+  # ── §A-L2: bare axle codes carrying no model token at all. Only fa/fat/ft are
+  # published today; the other nine keys pre-empt sub-threshold candidates so the
+  # defect never surfaces. gb is retained at make level by leyland-daf/45 (6,868),
+  # /50, /55 and the 200/400 vans — the make does not go dark. ──
+  Fa:    null   # raw is "LEYLAND DAF FA" — DAF's 4x2 rigid AXLE CODE with no model token in the row (1 raw spelling, 382 gb vehicles). Could be a 45/50/55/60/65/80; unidentifiable → drop, NAMING §8.1
+  Ft:    null   # "LEYLAND DAF FT" — 4x2 tractor axle code, 499 truck + 1 van vehicles; same argument
+  Fat:   null   # "LEYLAND DAF FAT" x136 plus "FAT 80" x13 and "FAT 70" x1 — mixed, so no single survivor is honest
+  Fad:   null   # "LEYLAND DAF FAD" x111 plus "FAD 80" x2 truck and x1 bus — same
+  Fas:   null   # "LEYLAND DAF FAS" x93 — bare axle code, no model token
+  Fan:   null   # "LEYLAND DAF FAN" x6 — same
+  Far:   null   # "LEYLAND DAF FAR" x4 — same
+  Ftg:   null   # "LEYLAND DAF FTG" x136 plus "FTG 80" x2 — mixed, no single survivor
+  Fts:   null   # "LEYLAND DAF FTS" x2 — same
+  FTR:   null   # "LEYLAND DAF FTR" x3 — same (the produced nameplate is all-caps here, not title case; keyed as produced)
+  Ftt:   null   # "LEYLAND DAF FTT" x13 — same
+  Fav:   null   # "LEYLAND DAF FAV12" x11 — FAV is not in DAF's published axle table, so the code itself is unresolved AND there is no model token; drop on both counts
+
+  # ── NOT touched, deliberately: van/bus/truck leyland-daf/200 and /400 are the
+  # REAL Leyland DAF 200 Series and 400 Series vans (1989-1993), correctly named
+  # and present in three kinds because DfT's body-type split puts one van in all
+  # three; "200" and "400" are also produced under this make in all three kinds,
+  # so any key on them would fire everywhere. truck/leyland-daf/roadrunner is the
+  # Leyland Roadrunner and is correct. ──
 Ligier:
   "Ixo Dci":                     IXO                    # dCi is Renault's diesel ENGINE badge, not part of the nameplate — folds like any engine variant
   "Xtoo R Dci":                  Xtoo R                 # dCi is Renault's diesel ENGINE badge, not part of the nameplate — folds like any engine variant
@@ -3366,6 +3489,177 @@ Scania:
   "G-Series": G Series                        # raw "G-series G490 LB8X4 4HNB" fi_traficom 1 — SAME slug (g-series) as the key above; pinned so the merged record has ONE display form instead of flapping between "G Series" and "G-Series" by row count (the one-id-many-names class, build/observed_model_names.json)
   "R-Serien": R Series                        # raw "R-SERIEN" nl 1 + 11 trailing-model spellings ("R-SERIEN, R500/R520/R530/R580/R650/560", "R-SERIEN R500", "R-SERIEN, R 580 (B8X4*4NB)", "R-SERIEN, R 650" nl_rdw; "R-SERIEN 420", "R-SERIEN R52O LB8XFHNA" es_dgt) — same class as G-Serien. English twin already in the candidate queue (uk_dft "SCANIA R SERIES EV")
   "R Serien": R Series                        # raw "R SERIEN" nl_rdw 2 — SPACED spelling of the key above and the SAME slug (r-serien); without it the old id survives on this display form
+  # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §A-S1…§A-S5).
+  # None of the 87 keys below collides with the six above, and the deferred
+  # altitude question in the comment above is NOT re-adjudicated here: every
+  # fold target keeps its power figure or its displacement, so this change is
+  # orthogonal to "should R450 be R?" whichever way that is decided.
+  #
+  # THE DESIGNATION GRAMMAR, cited once. Scania writes a chassis as
+  # <cab><power> <adaptation><type><wheel formula><height><suspension> — e.g.
+  # "R 450 A6x2NB". The letter after the power figure is the CHASSIS TYPE
+  # (A = tractor, B = rigid/load-carrying) and the letter before it the
+  # ADAPTATION (L = long-haulage, D = distribution, C = construction, G in the
+  # 4-series). Scania's own spec sheets use the codes verbatim ("G 460 CA6x4MSZ",
+  # "LA4x2", "DB4x2", "CB6x4") —
+  # https://www.focusontransport.co.za/wp-content/uploads/2019/01/Scania-specs.pdf
+  # with model-level corroboration at
+  # https://www.lectura-specs.com/en/model/transportation/trucks-rigid-chassis-scania/p-360-cb6x4-11725824
+  # For the 2/3/4-series the number IS the engine: "the engine sizes are 9, 11,
+  # 12, 14 and 16 litres … shown in the model name with a number constructed by
+  # the cylinder volume in litres followed by the generation of truck", and "the
+  # letter, following the number describes the chassis type … (L, D, C and G in
+  # 4-series vs M, H and E on the 3 series)"
+  # (https://en.wikipedia.org/wiki/Scania_4-series); for the 2-series, "letter
+  # suffixes M, H, or E, relate to frame/suspension ratings — 'medium', 'heavy',
+  # or 'extra-heavy' duty" (https://en.wikipedia.org/wiki/Scania_2-series).
+  #
+  # WHY THESE IDS EXIST AT ALL is a pipeline defect, not a registry one:
+  # series_collapse fuses a single-letter third token onto series+digits (a rule
+  # written for Volvo B10M vs B10B), and RDW writes Scania as "R 500 A 4X2", so
+  # every power rating splits into up to three ids. Ten are published and folded
+  # here; 18 MORE sit in the candidate queue with 719 further vehicles (r440a 98,
+  # s420 87, p280b 79, p360b 73, r420a 65, r500b 64, …). Curating the ten is
+  # correct and insufficient — the rule fix is filed in the PR body.
+  #
+  # All 73 fold keys and 14 null keys replay-verified byte-exact against pipeline
+  # origin/main over the full corpus (all six kinds): REACHED, 0 dead, 0 firing
+  # in a kind they were not written for. ──
+  R500A:  R500     # chassis-type letter A = TRACTOR, fused from RDW "R 500 A 4X2" (x175) and "R 500 A 6X2/4" (x108) — not a nameplate — https://www.focusontransport.co.za/wp-content/uploads/2019/01/Scania-specs.pdf
+  R560A:  R560     # same: "R 560 A 6X2/4", "R 560 A 4X2", fi "R 560A6X2NB"
+  R380A:  R380     # same: "R 380 A 4X2" x23 — carries es onto truck/scania/r380 (fi+nl → es+fi+nl)
+  P360A:  P360     # same: "P 360 A 4X2" x29, fi "P 360 A 6X2/4MNA"
+  P230B:  P230     # chassis-type letter B = RIGID (load-carrying), fused from "P 230 B 4X2" x165
+  P270B:  P270     # same: "P 270 B 4X2" x18
+  P380B:  P380     # same: "P 380 B" with EIGHT different wheel formulae (6X2/8X4/4X2/8X2-4/6X2-4/6X4/6X6) on one id
+  P420B:  P420     # same: "P 420 B 6X2" etc.
+  R420B:  R420     # same: "R 420 B 6X2" x16
+  R620B:  R620     # same: "R 620 B 6X2" x8
+  # ── §A-S2: the same grammar captured WHOLE because the register wrote it fused.
+  # "R420LB6X2MNB" = R cab, 420 hp, Long-haulage B rigid, 6x2, Medium height,
+  # Normal, suspension B. Every target is a live cab+power id. ──
+  R420LA4X2MNA:  R420    # full chassis string: LA = long-haulage TRACTOR, 4x2, MNA = height/suspension — https://www.focusontransport.co.za/wp-content/uploads/2019/01/Scania-specs.pdf
+  R420LA6X2:     R420    # same grammar, wheel formula only
+  R420LB6X2:     R420    # LB = long-haulage RIGID
+  R420LB6X2HNB:  R420    # same plus chassis height/suspension tail
+  R420LB6X2MLB:  R420    # same
+  R420LB6X2MNB:  R420    # same
+  R440LA4X2MNA:  R440    # same grammar
+  R500LA:        R500    # truncated chassis string — the register stopped after the adaptation+type letters
+  R500LA4X2MNA:  R500    # full string
+  R500LA6X2HNA:  R500    # full string
+  R500LB:        R500    # truncated
+  R500LB6X2MNA:  R500    # full string
+  R560L:         R560    # truncated to the adaptation letter alone (L = long-haulage)
+  R560LA:        R560    # truncated
+  R560LA6X4HNB:  R560    # full string
+  R480LB:        R480    # truncated
+  R620LA8X4:     R620    # full string
+  R730LA8X4:     R730    # full string
+  R360LB4X2HNA:  R360    # full string
+  R400LA4X2MEB:  R400    # full string (E = extra-low chassis height)
+  R420L:         R420    # adaptation letter alone
+  P114CB4X4:     P114    # CB = CONSTRUCTION rigid, 4x4 — the 4-series P114 (11-litre, 4th generation) — https://en.wikipedia.org/wiki/Scania_4-series
+  P114GB8X2:     P114    # GB rigid, 8x2 — same truck
+  P230DB4X2MNA:  P230    # DB = DISTRIBUTION rigid, 4x2
+  P360CB6X4MSZ:  P360    # CB = construction rigid, 6x4
+  R124GB:        R124    # 4-series R124 + GB chassis — https://en.wikipedia.org/wiki/Scania_4-series
+  R164GA:        R164    # 4-series R164 + GA (tractor)
+  R164GB:        R164    # 4-series R164 + GB (rigid)
+  R164GB6X4NZ:   R164    # same plus wheel formula and suspension
+  R144L:         R144    # 4-series chassis-type letter L (long distance) — https://en.wikipedia.org/wiki/Scania_4-series
+  R16L-6X2:      R16     # fi_traficom writes the R-series with its ENGINE LITRES ("R 16 L-6X2"); this is the UNSPACED spelling of the same string that already produces truck/scania/r16 — a spelling seam, not a new model. Deliberately does NOT touch truck/scania/r16 itself, which is part of the deferred altitude question
+  # ── §A-S3: 2/3/4-series chassis letters. "R143M" is the R143 on a medium-duty
+  # frame; "143" is 14 litres, 3rd generation. ──
+  R143H:      R143    # 3-series chassis-type letter H = heavy-duty frame — https://en.wikipedia.org/wiki/Scania_2-series
+  R143HL:     R143    # the register wrote "R143H(L)" = "H or L"; the parenthesis strip fuses the alternative into the name — same truck
+  R143H-6X2:  R143    # H frame plus 6x2 wheel formula
+  R143M:      R143    # M = medium-duty frame; 45 vehicles incl. "143M 450" and "143M 500" (the trailing 3 digits are horsepower)
+  R113M:      R113    # same rule, 11-litre 3-series
+  R142H:      R142    # 2-series, 14.2-litre, H frame
+  R93M:       R93     # 3-series, 9-litre, M frame
+  T113H:      T113    # T = bonneted cab (https://en.wikipedia.org/wiki/Scania_2-series), 11-litre 3-series, H frame
+  T113HL:     T113    # "T113H(L)" parenthesis alternative
+  T143H:      T143    # 14-litre 3-series, H frame
+  T93M:       T93     # 9-litre 3-series, M frame
+  T124G:      T124    # 4-series chassis-type letter G
+  P112H:      P112    # 2-series, 11-litre, H frame
+  P93H:       P93     # 3-series, 9-litre, H frame
+  P93M:       P93     # 3-series, 9-litre, M frame — 51 vehicles
+  P94D:       P94     # 4-series chassis-type letter D = distribution
+  P94DB:      P94     # D adaptation plus B rigid
+  P94DB4X2:   P94     # same plus wheel formula
+  "143M":     "143"   # cab-less 3-series spelling carrying the M frame letter; target truck/scania/143 is LIVE and already carries the same raws un-suffixed
+  "124G":     "124"   # cab-less 4-series plus G chassis letter; target LIVE
+  "124L":     "124"   # cab-less 4-series plus L (long-distance) chassis letter; target LIVE
+  "94D":      "94"    # cab-less 4-series plus D chassis letter; target LIVE
+  "82M":      "82"    # 2-series 7.8-litre plus M frame ("the 2-series 'T' was available with either a 7.8, 11.0, or 14.2-litre engine. These were denoted 82, 112, or 142" — https://en.wikipedia.org/wiki/Scania_2-series); MINTS truck/scania/82 with fi+nl
+  T82M:       T82     # T cab, 7.8-litre 2-series, M frame; MINTS truck/scania/t82 with fi+nl — same source
+  T92H:       T92     # T cab, 8.5-litre 2-series ("a 92-series with 8.5-litre engines was added in 1984"), H frame; MINTS truck/scania/t92 with fi+nl — same source
+  P92M:       P92     # P cab, 8.5-litre 2-series, M frame; the candidate queue ALREADY holds truck/scania/p92 at 23 fi vehicles from "P 92 M(L)/4600", so this makes an existing sub-threshold record publishable rather than inventing one
+  # ── §A-S4: 1968 L-range. L = bonneted (normal control), LB = forward control
+  # ("B" for Bulldog, Scania-Vabis' own word for forward-control vehicles), and
+  # the TRAILING S<nn> is the WHEELBASE in decimetres — the raws restate it in
+  # millimetres after the slash every time ("L 110 S 42/4200", "L80S54/5400",
+  # "LB81S38/3800") —
+  # https://archive.commercialmotor.com/article/19th-july-1968/41/scania-vabis-110-arrives-in-britain
+  # NOT folded, deliberately: L110S, L80S, L80S54, LS110S, LS111S, LS140S,
+  # LS141S and LB141S are correct by the same evidence but would MINT eight new
+  # ids for 22 vehicles — churn the owner should choose, not inherit. ──
+  L50S:    L50      # trailing S<nn> is the wheelbase, restated in mm after the slash ("L50 S 42/4200", "L 50S48"); target truck/scania/l50 is LIVE
+  L50S48:  L50      # same, 4,800 mm ("L50S48/4800")
+  L81S:    L81      # same ("L 81 S 50 165", "L 81 S 54"); target LIVE
+  L85S:    L85      # same ("L 85 S 46/4600", "L 85 S 54/5400"); target LIVE
+  LB111S:  LB111    # LB = forward control (Bulldog); trailing S is the wheelbase code; target LIVE
+  Sba:     SBA111   # SBA = Scania's bonneted all-wheel-drive military chassis; all four raws are "SBA 111" / "SBA111A 134" — a TRUNCATION, not a pool. MINTS truck/scania/sba111 with fi+nl — https://en.wikipedia.org/wiki/Scania_L-series
+  # ── §A-S5: strings that name no product. NAMING §8.1 (mixed/unidentifiable →
+  # drop) and the BMW letter-label precedent (NAMING §7.6). Every one is
+  # availability-audited at make level in removals.yml: es, fi, lu and nl are
+  # each carried by dozens of surviving Scania truck records, so nothing goes
+  # dark. ──
+  Metago:  null   # "METAGO PRO" x25 — metago®pro is a Kässbohrer CAR-TRANSPORTER SUPERSTRUCTURE fitted to chassis of all leading truck makers, not a Scania nameplate (https://www.kaessbohrer.at/en/products/car-carriers/metago-pro/trailer); one raw is literally make "SCANIA/KASSBOHRER TRANSPO" model "METAGO PRO". Same class as the Irizar key above
+  Prt:     null   # "SCANIA PRT" x82 + "PRT" x21 + "SCANIA PRT R400 LA4X2MNA" + "SCANIA PRT R 500" — PRT is Scania's own name for the P/R/T RANGE (https://en.wikipedia.org/wiki/Scania_PRT-range), i.e. a label naming three cab series at once; the two raws that carry a model carry R400/R500, both separately published. The BMW "SERIE X, X3" shape, whose verdict was null
+  Vabis:   null   # make fragment left in the model column: strip_make_prefix removes "SCANIA" from "SCANIA VABIS L 110S 42" and series_collapse then keeps only "VABIS". 18 vehicles over 17 raws, every one a Scania-Vabis L/LS/LB with its own type number. Exactly the shape of the Scania: null key above; the real cure is upstream and these rows belong to make scania-vabis
+  Higer:   null   # "Scania | Higer" (fi, 2) — Higer is the Chinese bodybuilder and bus/higer/a30 and /touring already exist as Higer records; mirrors the Irizar key exactly. Does NOT touch bus/scania/touring: the Scania Touring is a Higer-built coach that SCANIA sells under its own brand, so both records are correct
+  R4X:     null   # raws "R 4X2" only — cab letter plus wheel formula, no model designation
+  R6X:     null   # raws "R 6X2" x28 and "R 6X4" x11 — 43 vehicles, no model designation in any of 5 raws
+  R6X2:    null   # unspaced spelling of the same
+  R8X4:    null   # same shape
+  P6X:     null   # raws "P 6X2" x6, "P 6X4" x4, "P 6X6" x2
+  P6X2:    null   # unspaced spelling
+  B6X2:    null   # bare wheel formula with a chassis-type letter
+  CB6X:    null   # "CB 6X4 HHZ", "CB 6X6 HHH" — construction rigid plus wheel formula plus height/suspension
+  Ph:      null   # "PH4X4", "PH6X6ZL75180K" — P cab + H(igh) chassis + wheel formula
+  Pm:      null   # "PM4X2" x17 and 10 further spellings — P cab + M(edium) chassis + wheel formula
+
+Scania-Vabis:
+  # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §E-1, the
+  # #42-remainder settlement). FIRST Scania-Vabis block in this file.
+  #
+  # READ THIS BEFORE ADDING A KEY HERE. fi_traficom writes the make "Scania
+  # Vabis" (space) and nl_rdw writes "SCANIA-VABIS" (hyphen). BOTH slugify to
+  # scania-vabis, so they are ONE published record set with TWO display names —
+  # measured 2026-08-01: 85 vehicles under "Scania-Vabis", 59 under "Scania
+  # Vabis". renames.yml is keyed by DISPLAY NAME, and only "Scania-Vabis" is a
+  # legal block heading (a "Scania Vabis:" block is a near-miss the curation lint
+  # fails, correctly). So a key written here reaches the nl_rdw half ONLY. The
+  # cure is a makes/aliases.yml pin, which must land in its own change first —
+  # it is filed in the PR body, and until it does, do not write a key here whose
+  # correctness depends on catching the fi half.
+  #
+  # The one key below does not: it is probed for exactly one nl_rdw row.
+  #
+  # WITHDRAWN, and this is the measured record of what the seam costs rather
+  # than a guess about it. `Vabis: null` was drafted for truck/scania-vabis/vabis
+  # (the make name left in the model column — "VABIS L 7642/140", "VABIS L 7650
+  # 160"). It was written, BUILT against a control, and reverted: the key reaches
+  # only the 2 nl_rdw vehicles, the record's third vehicle is an fi_traficom row
+  # whose display name is "Scania Vabis", and the id therefore SURVIVED at fi:1
+  # having lost nl — a junk record that keeps publishing AND loses evidence,
+  # which is worse than either outcome the null was meant to produce. It waits
+  # for the makes/aliases.yml pin, after which one key drops all three rows.
+  # Do not re-add it before then. ──
+  Lt:  LT110   # #42-remainder settlement: truck/scania-vabis/lt is a pure TRUNCATION, not a pool — its single raw is "LT110 42.240" (nl_rdw, 1 vehicle), one model, one spelling. LT is the normal-control tandem-drive layout of the Scania-Vabis 110. Contrast truck/scania/lt, which the queue names as its cheapest repro and which IS real pooling (LT110 AND LT111 across 14 spellings) and is already retired in removals.yml — https://en.wikipedia.org/wiki/Scania-Vabis_L75
 
 Sea:
   M 200: M200                                 # spelling variant of "M200" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
