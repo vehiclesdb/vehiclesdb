@@ -16671,3 +16671,70 @@ records, and the only cluster left with double-digit mass outside Harley.
                            enrich_sha256 already solves this pattern elsewhere
 
 Every one of those is where the evidence ran out, not where the night did.
+
+## Turn 223 — S2W — my code-vs-word rule is WRONG TOO, and I caught it one step before folding four distinct Vulcans together
+
+Turn 222 closed with a discriminator I called 12-for-12. I went to apply it to
+the one remaining double-digit cluster — kawasaki's Vulcan bases — and **it would
+have destroyed four motorcycles.**
+
+    vn1700          VN1700
+    vn1700-classic          VN1700 Classic
+    vn1700-classic-tourer   VN1700 Classic Tourer
+    vn1700-voyager          VN1700 Voyager
+    vn1700-voyager-custom   VN1700 Voyager Custom
+
+`vn1700` contains digits, so v3 calls it a CODE and folds the cluster. But the
+Vulcan 1700 **Classic**, **Classic Tourer**, **Voyager** and **Voyager Custom**
+are four different motorcycles. Same for `vn1500-drifter` and
+`vn1600-mean-streak` — the Drifter and the Mean Streak are models, not spellings.
+
+**Sixteen pre-existing aliases prove someone already curated this correctly** —
+`vn1700classic-abs` → `vn1700-classic`, `vn1700-voyager-abs` → `vn1700-voyager`,
+and so on. The ABS variants were folded into each distinct model, which is
+exactly right and exactly what my sweep would have undone.
+
+### The rule I actually had wrong, and the one that survives
+
+The base being a code or a word was never the real test. Look at what the
+CHILDREN are:
+
+    HARLEY flstc   heritage · heritage-classic · heritage-softail ·
+                   heritage-softail-cl · heritage-softail-classic ·
+                   softail-classic
+                   -> PERMUTATIONS AND TRUNCATIONS OF ONE NAME
+                      ("Heritage Softail Classic") -> duplicate cluster, FOLD
+
+    KAWASAKI vn1700  classic · classic-tourer · voyager · voyager-custom
+                   -> A SET OF DISTINCT NAMES -> product family, DO NOT FOLD
+
+    HARLEY cvo     breakout · road-glide · street-glide · pan-america …
+                   -> distinct names -> family, do not fold (already knew)
+
+**The test is whether the children are rearrangements of a single name or a set
+of different names.** That subsumes every case either of us has argued: it gets
+`flstc` right (fold), `vn1700` right (do not), `cvo` right (do not), and it does
+not care whether the base looks like a code.
+
+    v1  child count        refuted by the dossier
+    v2  vowel count        called `sprint` and `trophy` codes
+    v3  digit-or-no-vowel  would have folded four Vulcans
+    v4  are the children permutations of ONE name, or DIFFERENT names?
+
+### What I am doing about it
+
+**Nothing to kawasaki.** No fold, no PR. The 15 records I flagged in Turn 222 as
+"the last cluster with double-digit mass" are **not a cluster at all** — that
+line is withdrawn.
+
+The six Harley folds already shipped are unaffected: every one of them was
+children-of-one-name, which I verified per cluster from Harley's own naming
+before writing, not from the base's shape. `data#149` (flht, flhtk) is the same.
+But they were right for a reason I had only half-articulated, and if anyone had
+run v3 as a sweep it would have done real damage.
+
+**This is the third time tonight a rule of mine looked clean and was not**, and
+all three were caught the same way: by reading the actual records instead of
+trusting the abstraction. The dossier caught v1, a test table caught v2, and
+five minutes of looking at Vulcans caught v3. I would rather hand over v4 with
+that history attached than a clean-looking rule with none.
