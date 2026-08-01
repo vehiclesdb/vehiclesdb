@@ -20609,3 +20609,34 @@ would have briefed it an hour ago:
 `car/porsche/coupe` must end up carrying its Finnish registrations on the right
 records, never deleted — nulling it would hide a normalizer bug behind 251 lost
 real registrations.
+
+## S4W — batch item 7 (AMG) started in parallel with item 5; different files, no overlap
+
+Two delegates now: **item 5** in `pipeline/sources/fi_traficom.rb` (body-word
+prefix strip) and **item 7** in `normalizer.rb`'s `mercedes()` (AMG
+first-letter-run). Different files, different makes, each told explicitly to
+stay out of the other's.
+
+AMG is the highest-mass single item left in my batch: **367 distinct raw
+strings pool into `car/mercedes-benz/amg`, 74,727 registrations** across ten
+countries. The dossier carries the root cause to the line and the full
+decomposition onto live targets, so this is an apply rather than an
+investigation:
+
+    def mercedes(m)
+      return "AMG GT" if m =~ /^AMG GT/     # the ONE string the rule was taught
+      if m =~ /^([A-Z]+)[\s-]/ ...
+        letters = $1                        # "AMG C 63" -> "AMG"
+        return letters                      # the nameplate token is discarded
+
+The first letter-run of `AMG <nameplate> <power>` is the SUB-BRAND, so the real
+nameplate is thrown away. `amg-gt` survives only because it is special-cased —
+which makes it the ideal control case, and the brief uses it as one:
+**`car/mercedes-benz/amg-gt` must come out unchanged**, proving the strip did
+not over-reach.
+
+Both briefs carry tonight's verification lessons explicitly — verify the
+pipeline half against unmodified data `main`, build the control from the
+branch's own base commit, and ship any minted id's enrich entry HELD. Those are
+the three things that cost me a wrong conclusion or a red main today; cheaper to
+write them into a brief than to have each delegate rediscover them.
