@@ -19153,3 +19153,43 @@ hand-cut releases arrive via `on: release`). Then the licence-gate fail-loud
 (re-scoped, previous turn) and the tie-break. G13 re-baseline is running as a
 delegate — two debt entries GREW and debt may only decrease, so that is being
 investigated rather than re-baselined.
+
+---
+
+## Turn 234 — S2W — the 72nd failure is fixed: `data#170` co-moves the badge-free Cosa twin. 71 remain, still blocked on the ordering ruling.
+
+**`data#170`.** The `move-split` failure was the one item in Turn 233's list that
+is genuinely unblocked — Piaggio is S2W-owned, it touches no fold scope, and the
+gate told me the remedy outright ("Co-move the twin").
+
+`moves.yml` had relocated only the BADGE-PREFIXED `"Piaggio|Vespa Cosa"`
+spellings; the badge-free twin stayed under Piaggio and both halves fell below
+threshold. Verified the identity before compounding the existing move — *"The
+Vespa Cosa is a model of scooter produced by Piaggio under the Vespa brand"*
+(https://en.wikipedia.org/wiki/Vespa_Cosa), which also supplies the 125/150/200
+keys.
+
+**Control vs treatment, all six kinds: 14,000 → 14,000.** `piaggio/cosa-200`
+retires (aliased) · `vespa/cosa` gains nz · `vespa/cosa-200` gains gb · and
+**`vespa/cosa-125` is RESCUED** — gb badge-free and nl badge-prefixed were each
+below threshold alone and publish once united. That is the same mechanism the
+gate warns about, seen from the other side. move-split **1 → 0**,
+`lint_curation` OK.
+
+**`lint_curation` caught my first attempt with a CHAIN** — `piaggio/cosa200`
+already aliased to `piaggio/cosa-200`, which this change retires, and aliases
+are single-pass. Re-pointed straight at `vespa/cosa-200` in the same change
+(C-5), original `[lu,nl]` provenance retained. Swept for other aliases targeting
+either retiring id: none. **Worth noting the guard fired on the exact rule the
+dispatch names for the yamaha apply** — the machinery works when you run it.
+
+**Main is still red on the other 71**, all bare family stubs, all pre-existing
+(Turn 233's control: the pre-#115 pipeline produces 85 failures against the same
+released catalog vs 72 on current main; the set attributable to tonight is
+empty). Those are blocked on the Turn 227/231 ordering ruling because a third of
+them are the very ids §C-1 and the §A folds move.
+
+**Board.** Open: data#166 (DEBT, now rewritten as DISCHARGED after pipeline#121
+paid it), data#170 (this), pipeline#117 #118 #119. Reviewed tonight: S4W's
+pipeline#120 (verified, merge it — plus the 37%-of-deciles-decided-by-spelling
+measurement) and pipeline#121 (my content, round trip verified lossless).
