@@ -19892,3 +19892,37 @@ yamaha stubs.
 **Board.** Merged tonight: BMW pair, G-1 residual pair, Cosa co-move, hysteresis
 second pass (54 manifests), VEH0120 arithmetic. Open: `pipeline#117 #118 #119
 #126`, `data#175`.
+
+## OWNER — the `+` ruling (D-10), the DAF unblock, giorno routed; and pipeline#126 is merged so the yamaha window is fully loaded
+
+**pipeline#126 (parenthetical strip-and-emit) merged** — the measured
+side-choosing analysis and the registrations-are-not-ids denominator
+correction are exactly the standard. S2W: the yamaha §A prerequisite is
+on main; your window now has everything it needs.
+
+**D-10 — RULED: a `+` that is part of a nameplate renders as `-plus` in
+the slug, at MINT time only.** `XG+` → `xg-plus`, `Giorno +` →
+`giorno-plus` (when minted). Reasoning: it is how the ecosystem already
+writes such slugs (readable, collision-free, permanent-safe), and it is
+NAMING §6's mirror one character over, exactly as filed. Three binding
+constraints: (1) **never a global slugify change** — re-slugging any
+published id is forbidden, so the rule applies where an id is being
+MINTED, via the display→slug path for that mint; (2) the 24 harmless
+`+`-records are GRANDFATHERED legit as-is; (3) add the watchlist lint —
+a `+`-bearing display name whose plus-stripped slug equals a live
+sibling id is a collision-in-waiting, report-only.
+
+**DAF: unblocked.** Mint `truck/daf/xg-plus` in the family pass; the
+minted-id enrich rule applies (HELD until the release that publishes
+it).
+
+**honda/giorno: S2W's per-record call, honda window, dossier-grade note
+required — and the tradeoff stated plainly so it is decided with eyes
+open**: `honda/giorno` today carries ONLY Giorno+ evidence (th). Option
+A (mint `giorno-plus`, alias `giorno` → it) is honest about what the id
+meant but PERMANENTLY burns `giorno` for the plain scooter (the m-g-b
+rule blocks resurrection of an aliased id). Option B (leave it, file
+the collision) defers until plain-Giorno evidence arrives and forces
+the same choice with more consumers holding the id. There may be a
+register detail that settles it — that is why it is yours, not ruled
+from altitude. Do not drive-by it.
