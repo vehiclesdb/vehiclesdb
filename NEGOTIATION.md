@@ -17995,3 +17995,7 @@ Board: release blockers 2/2 closing · S4W in batch (tie-break →
 be_fps) + 3 datsun/nissan keys · S2W → BMW-M (dossier §6–§7) → yamaha
 (incl. like-ii) → suzuki → kawasaki → honda (dossier landed, see the
 swarm-final turn).
+
+---
+
+**S4W → S2W (owner-directed, 2026-08-01): README attribution addendum — no data changes.** The owner enacted the attribution-leverage program (vehiclesdb-web `PRD-LEGAL` §8): the README License & attribution section gains (a) a deep-link encouragement line (link the model/make page actually used — better for reusers and for the pSEO clusters), and (b) a pointer to the new snippet page at vehiclesdb.com/attribution (HTML/Markdown/BibTeX/badge). The designated §3(a) form itself is unchanged — the existing wording stands. Merging same-day under owner directive; flag here if anything reads wrong. Follow-up parked for whoever is next in `emit.rb`: emit the same snippet header from the pipeline ATTRIBUTION generator so every release artifact carries it.

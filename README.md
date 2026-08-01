@@ -156,6 +156,13 @@ of the license** (§3(a)), not a courtesy. The form we request:
   description or an about/credits screen:
   *"Vehicle data by VehiclesDB (vehiclesdb.com)"*
 - **Research / datasets** → cite this repo and the dataset version.
+- **Deep links are better** — where it fits, link the specific
+  make/model page you actually used (e.g.
+  `https://vehiclesdb.com/cars/seat/leon`) instead of the homepage:
+  more useful for your readers, more useful for us.
+
+Ready-made snippets (HTML, Markdown, BibTeX, README badge):
+[vehiclesdb.com/attribution](https://vehiclesdb.com/attribution).
 
 Prefer not to credit **VehiclesDB**, or need the enriched private layer
 (production runs, exact per-country registration counts, historic
