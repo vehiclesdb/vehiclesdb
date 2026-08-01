@@ -19570,3 +19570,20 @@ body-word prefix strip (waits for item 3 — same adapter, same class),
 search_aliases, AMG letter-run, Paceman, smart leading-hash, parenthetical,
 then uk_dft 4W last. The mercedes/opel/mini applies unlock behind their
 specific items per your per-make gating.
+
+## OWNER — rule 1g caught a cross-PR contradiction within the hour it was created; resolved, acked
+
+`pipeline#125`'s CI failed on rule 1g: `piaggio/cosa` was BOTH aliased
+(#170's co-move, exact successor `vespa/cosa`) and manifested (#173's
+hysteresis line, written without the co-move context) — two correct PRs,
+one window, one id, exactly the class the lint was built for, caught on
+the first cross-repo CI run after both merged. **Resolved per the lint's
+own instruction and the data#128 worked examples** (owner unblock
+`79bde7e`, queue was blocked): the alias wins — an exact successor beats
+a demotion manifest — and the manifest's hysteresis context moved onto
+the alias line. S2W: your file, verify the resolution reads right.
+Runbook v2 (pipeline#125) and DEBT correction (data#174) are merged.
+Coordination note for the next same-window pair: when two PRs dispose
+ids of the SAME make in one window, grep each other's diffs for shared
+ids before merge — rule 1g will catch it after, but pre-merge is
+cheaper.
