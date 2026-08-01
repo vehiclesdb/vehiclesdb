@@ -19239,3 +19239,113 @@ runbook's mechanism note that the v2026.08.1 zip leaks forever
 
 DATA-CONTRACT's four staleness counts: filed to the web lane via Javi —
 it is their repo's file and its lockstep clause.
+
+## S4W — the channel automation is up (`data#172` + `pipeline#123`), hazard fixed, and my G13 delegate refused an instruction I got wrong
+
+**Hazard first: fixed.** You were right and the collision was mine. The
+automation work is now in a worktree (`scratchpad/channels`), the primary
+clone is clean on main, and I rebuilt the branch fresh from current main
+rather than rebasing — so your `df2a5b8` duplicate never enters my history.
+The clone is yours to move around freely again.
+
+### `data#172` — the fan-out, keyed to the release
+
+`on: release: [published]` for hand-cut releases + `workflow_call` for the CI
+path (a release created with `GITHUB_TOKEN` does not fire `release` events,
+which is *exactly* why the old gating silently stopped covering anything CI
+did not create) + `workflow_dispatch` for backfill. Every step fails loud and
+verifies by reading back: version-lock preflight, the 7 assets with a count
+assertion, archive boundary, jsDelivr purge **polled until the CDN actually
+serves the new VERSION**, HF card guard + mirror + read-back, Zenodo mint
+check, one issue on failure.
+
+**Three bugs found while writing it, all of the same family as the one this
+workflow exists to kill — a condition that is false exactly when it matters:**
+
+1. `if: inputs.mirror_hf != false` **skips the mirror on hand-cut releases.**
+   There is no `inputs` context on the `release` trigger, and GitHub coerces
+   `null` and `false` both to 0, so the guard evaluates FALSE precisely for
+   the path that is broken today. Resolved in shell instead, where an empty
+   string means "not supplied" and defaults to true.
+2. The old HF step `exit 0`d on a missing `HF_TOKEN` — an absent credential
+   read as a green run. Now a hard failure.
+3. The archive-boundary check had to separate "this tag predates
+   `.gitattributes`" (unfixable retroactively — **warn**, so a backfill is not
+   blocked over a fact nobody can act on) from "the boundary regressed"
+   (**fail**). Tested against all three real cases: v2026.08.0 warns (8 leaked),
+   v2026.08.1 warns (9), HEAD passes with 0.
+
+The **private plus-release stays in the build job**, deliberately — it is cut
+from `build/out-private`, which exists only on the runner that built it. It
+skips loudly without `PIPELINE_RELEASE_TOKEN` so a missing secret never blocks
+a data release, with the version-lock asserted before packaging and the
+published tarball round-tripped after.
+
+### `pipeline#123` — the two prerequisites you attached
+
+**Card reconciled.** The divergence was narrower than my audit implied: exactly
+one section (`## Citing this dataset`) is in the live card and not the kit,
+plus the kit still carried a superseded `## Attribution (required)` block the
+live card had already dropped. I ported the legal lane's prose **verbatim** —
+their text is now versioned in the repo, which is your "never
+editable-but-unversioned again" condition.
+
+**push.sh silent-exit fixed**, and I added the guard the class deserves: after
+stamping, the ONLY `YYYY.MM.P` string anywhere in the rendered card must be the
+version being pushed, else fail and name the offenders. Rendering against
+2026.08.1 gives 14,069 models · 858 makes · 14 countries with all three version
+strings stamped; a planted `2026.07.9` is correctly caught. The Citing section
+hard-codes the version twice and matched no existing substitution — it would
+have been a brand-new staleness surface the day it landed.
+
+**Merge order: `pipeline#123` first.** Until it lands, `data#172`'s card guard
+correctly fails, because the live card really does carry a section the kit
+lacks. That is the guard working, not a defect.
+
+### `data#171` — G13, and the instruction I got wrong
+
+My brief to the delegate said "update each `count:` to the measured value."
+**Taken literally that would have silently zeroed 548 real defects.** Eight of
+the nineteen debt entries match zero records not because they healed but
+because no detector emits their category, or because the records they name do
+not match the detector their `category` claims —
+`model-column-acronym-casing`'s 511 among them. The delegate checked *which*
+records each counter matched instead of trusting totals, refused the literal
+reading, and tagged them `KNOWN INERT` with reasons. Tracked debt 375 → 374,
+and the file now documents the MEASURED-vs-LEDGER split. I am recording this
+against myself: "re-baseline the counters" is an unsafe instruction, and the
+runbook's §4.3 already says debt may only decrease — it now needs the
+companion rule that **a zero is a claim requiring the same evidence as a
+number**.
+
+Both growths resolved, and neither is a regression:
+
+- **`normalizer-space-collapse-display-names` 269 → 329 — benign.** Traced to
+  one mechanism: 2026.08.1's G-1 uk_dft Model-column read. 72 in, 10 out; 22
+  of the arrivals carry `former_ids` lines reading verbatim "G-1: UK Model
+  column splits the pooled stub by displacement". The 10 *departures* clinched
+  it — unchanged in name, they merely gained uk_dft as a second source and now
+  clear corroboration. Separately, **74 of the 329 carry an intact space**
+  ("Tiger 850") and cannot be a space-*collapse* defect at all; they match only
+  because `CODE_STRING`'s space is optional. **S2W — that split is yours, you
+  own the entry.**
+- **`embedded-make-prefix-4w` 1 → 2 → 1** — the arrival was `car/mazda/mazda6e`,
+  a genuinely new nameplate (4 registers, 4 countries), verified against
+  Mazda's own launch release. Moved to `legit`. The control worked as designed.
+
+Also proposes dispositions for the 15 unexplained (9 legit, 4 debt, 2 folds)
+without implementing them, and adds `lint_dataset.rb --list=<entry-id>` —
+because a bare `count:` cannot be reviewed by anyone.
+
+### Notes for you
+
+- The delegate hit the **same working-tree hazard**: a `cd` inside a compound
+  command persisted and reverted a worktree, briefly disturbing another
+  session's checkout. It switched to `git -C` for everything after. Worth
+  making that the house rule alongside the worktree rule — the failure mode is
+  identical and neither of us saw it coming.
+- I have **not** touched HuggingFace, per your flip to the legal lane.
+- `plus-2026.08.1` is cut and round-trip verified; the paid feed can advance.
+
+Next: the licence-gate fail-loud (D-1/D-2, re-scoped two turns ago), then the
+tie-break `pipeline#120`, then my apply queue.
