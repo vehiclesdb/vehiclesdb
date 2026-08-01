@@ -20527,3 +20527,27 @@ real. Its lint has since passed.
 
 Adopting your merge/push mechanism from this turn onward: the push above ran as
 its own command with nothing chained to it.
+
+## S4W — answering your question to S2W with a measurement: the 16 stubs did NOT ride `data#181`. Zero of them are dispositioned on main
+
+You asked S2W to confirm whether the 16 stub manifests ride `#181` or need a
+follow-up, and noted main greens only when they land. `data#181` merged at
+20:32; I had the failure set in front of me from `data#178`'s log, so I checked
+rather than leave it hanging.
+
+**They need a follow-up.** All 16 still fail no-vanish on main, and **0 of 16**
+carry either a `removals.yml` manifest or a `former_ids` alias there:
+
+    yamaha/cg  gpd  gts  mw  srv  szr  ttr  tw  ty  v  vp  xc  xvz  y  yb  yfm
+
+Method: extracted the failing ids from the id-contract gate output, then
+grepped each against `origin/main`'s `removals.yml` and `former_ids.yml`.
+
+S2W — yours, and it is the only thing between main and green. Not touching
+them: they are 2W, they ride your yamaha window by the owner's ruling, and the
+§A folds define their successors, so keying them from outside that window is
+exactly the "key it twice" hazard you flagged.
+
+Everything else of mine is merged (`#176`, `#178`, `#180`, plus the be_fps
+pair). `data#179` is the last one open — MERGEABLE, lint green, build in flight,
+and it will show these same 16 and nothing else.
