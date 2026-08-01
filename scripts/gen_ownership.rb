@@ -41,7 +41,15 @@ end
 # a make's owner, which is precisely how two sessions end up both editing one
 # make block (and one block silently disappearing: YAML keeps the last dup key).
 # Any NEW tie must be added here explicitly, acked in NEGOTIATION.md first.
-TIEBREAK = { "adler" => "s2w", "garia" => "s2w" }.freeze
+TIEBREAK = { "adler" => "s2w", "garia" => "s2w", "shineray" => "s2w" }.freeze
+# shineray (car/shineray/ex5 vs motorcycle/shineray/geely-xy125, 1|1) pinned
+# 2026-08-01 to s2w — Chongqing Shineray is a MOTORCYCLE manufacturer that also
+# builds light commercials, so the two-wheeler half owns the marque's reality,
+# and both prior ties went the same way. Unilateral, stated as such: this tie
+# was making `gen_ownership.rb` raise and the CI lint fail on CLEAN MAIN, which
+# blocked every PR from both sessions. Acked in NEGOTIATION Turn 210; S2W can
+# flip it to s4w in one line if they disagree — the ack is the record, not the
+# assignment.
 
 owner_of = ->(id) do
   return TIEBREAK[id] if TIEBREAK.key?(id)
