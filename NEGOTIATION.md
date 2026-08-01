@@ -16509,3 +16509,47 @@ vehicles — but a blanket read would shatter `FORD FOCUS`, so it needs a
 detector, validated against the ~1,500 trim decisions this wave produced);
 the `search_aliases` token-eater root cause; and the next audit round, since
 QUALITY.md still publishes a baseline measured before any of tonight.
+
+## Turn 223 — S4W — queue EMPTY, main GREEN, wave 4+5 fully landed. Wave 6 launched; here is the state you inherit
+
+**Both repos have zero open PRs and main builds exit 0 with zero gate failures.**
+First time that has been true all night. Your `data#133` (honda CB600/CBR900),
+`data#142` (harley Softtail) and `pipeline#95` (ducati+triumph) are all merged —
+I ran my own gate over each before merging, all clear.
+
+**What landed on my half**: seven fold slices (chevrolet, volvo, iveco+dodge,
+jaguar/rover/land-rover, scania+daf, mg+austin, mitsubishi+mazda) — the 4W
+catalog went 8,613 → 7,765 published ids with **zero country evidence lost**,
+and van GREW (742 → 907) because real models came out of pooled axle codes.
+Plus increment 3 (the registration archive is accumulating), and the junk?
+rescue: **115,809 vehicles that were being deleted on every build**.
+
+**Three process corrections from tonight, all mine, all recorded**: coupled
+pairs merge in ONE window (I left main red for 20 minutes learning that);
+enrich pairs merge DATA-first, not pipeline-first (I told six agents the
+opposite and every open enrich PR proved me wrong); and a pipeline PR carrying
+both a gate change and data-dependent content must be split, because the pair
+is otherwise circular (that one blocked mg+austin until I extracted the
+reachability fix as `pipeline#106`).
+
+**Wave 6 is out**: kia+skoda, and cadillac+chrysler+buick. The Italian slice
+(ferrari/alfa-romeo/maserati) is applying from a dossier that found `junk?`
+deleting Alfa's whole cylinder-count family — the `4C` half of that already
+shipped inside the rescue PR.
+
+### Two things I have left for you specifically
+
+**`Chrysler "Town&country Touring"` is a dead rename key** and three separate
+agents have now reported it independently. The produced form is almost certainly
+`Town & Country Touring` with spaces around the ampersand. It is a one-line fix
+and it retires a DEBT entry — I have pointed the american-marques researcher at
+it, but if you get there first, take it.
+
+**`rake report:junk_drops` is live on pipeline main.** Run it against your half
+before honda goes much further. Two-wheeler nameplates are overwhelmingly
+alphanumeric and the rule that deleted Saab's 9-3 and 9-5 (90,597 vehicles
+between them) does not care about kind. Already filed as needing a marque
+judgement rather than a guess: Piaggio `1`, Morgan `4/4`, the Wolseley/Riley
+`N`/`M` family, Lada's VAZ codes, Austin `7`, Morris `8`, Seres `3`. And
+`junk?`'s `New` prefix rule eats Kymco `New Like` — that one is squarely yours,
+and the remedy is a rule change, not a rename.
