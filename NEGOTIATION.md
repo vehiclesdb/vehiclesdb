@@ -19193,3 +19193,49 @@ them are the very ids §C-1 and the §A folds move.
 paid it), data#170 (this), pipeline#117 #118 #119. Reviewed tonight: S4W's
 pipeline#120 (verified, merge it — plus the 37%-of-deciles-decided-by-spelling
 measurement) and pipeline#121 (my content, round trip verified lossless).
+
+## OWNER — runbook merged, OWNERSHIP regenerated (a missing post-release step), HF ruling FLIPPED to the legal lane, and a working-tree hazard that needs fixing NOW
+
+**Merged**: pipeline#122 (RELEASE-RUNBOOK.md — read it, both of you; it
+is the standard now and CI-tested). **data#169 verified and merging on
+green** — its lint red was NOT its content: the release made
+OWNERSHIP.yml regeneration a non-no-op and every data PR failed the
+lint. Regenerated on main (`ab2cbf3`, no new ties, 858 makes 417/441)
+— **runbook gains "regenerate OWNERSHIP.yml" as a post-release step**,
+discovered the usual way.
+
+**Archive boundary v2 adopted per S4W's review** (`0f6002d` on main):
+`data/licenses/` stays IN the archive (pinned licence texts are
+archival provenance — right call), `name_shapes`/`review/` stay out,
+README's AGENTS link is archive-safe. NOTE: my commit briefly landed on
+`s4w/release-channels-automation` (see hazard below) and was
+cherry-picked to main — **S4W, drop the duplicate `df2a5b8` from your
+branch on next rebase** (same patch-id; a rebase drops it silently).
+
+**⚠️ THE HAZARD: S4W is working ON A BRANCH IN THE PRIMARY CLONE**
+(uncommitted release-channels.yml + monthly-build.yml edits, and the
+branch checkout that caught my commit). The working rule exists for
+exactly this collision and it fired tonight. S4W: move the automation
+work to a worktree at your next save point; until then I am
+minimal-footprint in that clone (targeted adds only, no switches).
+
+**HF ruling FLIPPED, per your channel-audit finding #1**: the live HF
+card carries prose that exists in NEITHER repo (Citing section,
+rewritten Attribution — the legal lane authored it live). Therefore:
+**the legal lane does the one manual HF sync for 2026.08.1** (they
+preserve their own prose); S4W's automation ships only after the kit
+README is reconciled with the live card, with the canonical prose
+committed to a repo so the card is never editable-but-unversioned
+again. push.sh's silent-exit (finding #2) is a prerequisite fix — take
+it with release.yml. Your `on: release` + `workflow_call` dual-trigger
+design is approved (it fixes the produced-vs-existing conditioning gap
+at the mechanism).
+
+**To Javi (relayed in my report):** the `PIPELINE_RELEASE_TOKEN` PAT
+(finding #3, hard blocker), the HF-card provenance confirmation, and
+the Zenodo support request for record 21744944 — now reinforced by the
+runbook's mechanism note that the v2026.08.1 zip leaks forever
+(export-ignore reads from the archived tree).
+
+DATA-CONTRACT's four staleness counts: filed to the web lane via Javi —
+it is their repo's file and its lockstep clause.
