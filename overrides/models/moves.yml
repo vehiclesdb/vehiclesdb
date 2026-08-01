@@ -277,3 +277,71 @@
 # deliberately not moved: neither `lahti` nor `vest` exists as a make, so a line
 # here would MINT one, which a cleanup pass should not do unilaterally. ──
 "Scania|Tdx": "Van Hool|Tdx"   # bus/scania/tdx (nl+ua): raws "SCANIA TDX27 ASTROMEGA" (nl) and "TDX-27 ASTROMEGA" (ua). The TDX27 Astromega is VAN HOOL's double-deck coach (https://www.vanhool.com/en/vehicles/coaches/tdx-range/tdx27-astromega) — Scania supplies the driveline, Van Hool builds the bus. Target bus/van-hool/tdx is ALREADY LIVE (fi+gb+nl+ua) so both of the source's countries are already covered there and no evidence goes dark; ua is additionally retained under scania by bus/scania/k124, /k400, /k450, /l94 and /omni
+# ── Land Rover models registered under make ROVER (wave-4 JLR batch) ─────────
+# The Land Rover began in 1948 as a Rover Company product and the Range Rover
+# launched in 1970 under British Leyland; "In 1978, British Leyland created a
+# new subsidiary known as Land Rover Limited which encompassed much of the
+# original assets of the Rover Company"
+# (https://en.wikipedia.org/wiki/Rover_Company), and the Range Rover has been a
+# Land Rover product for 48 of its 56 years
+# (https://en.wikipedia.org/wiki/Range_Rover). National registers still derive
+# `make` from the type-approval holder, which for these vehicles was Rover
+# Group — the same mechanism that files every German Cupra under SEAT.
+# Land Rover's own current range lists RANGE ROVER / DISCOVERY / DEFENDER
+# (https://www.landrover.co.uk/vehicles/index.html); Rover lists nothing.
+# Each target already exists on the Land Rover side, so these are pure
+# re-attachments — no id is created and no country is lost.
+#
+# ★ NOT MOVED, DELIBERATELY: `car/rover/90` and `car/rover/110`. A slug-shape
+# check flagged them as Land Rover wheelbases; the raws refute it —
+# "ROVER | 90 SEDAN", "ROVER | ROVER 90 SALOON LHD", "ROVER | 110 SALOON",
+# plus 392 uk_dft "ROVER 90" rows sitting alongside the published P4 range
+# (rover/60, /75, /80, /95, /100). They are Rover P4 saloons (1953-59 and
+# 1962-64, https://en.wikipedia.org/wiki/Rover_P4), and the DVLA files 392
+# ROVER 90 cars under make ROVER while filing 2,082 LAND ROVER 90 cars and
+# 13,306 LAND ROVER 90 vans separately in the same table. Moving them would
+# have destroyed 534 vehicles of Rover evidence and left the P4 range with two
+# holes in it.
+#
+# ★ ALSO NOT MOVED, AND FOR THE SAME REASON: `car/rover/109` (2 vehicles,
+# nl 1 + nz 1, both raws a bare "109"). It is tempting — 109in is the Land
+# Rover long-wheelbase (1956-85, https://en.wikipedia.org/wiki/Land_Rover_series)
+# and the Rover P4 range was 60/75/80/90/95/100/105/110, which contains no 109
+# (https://en.wikipedia.org/wiki/Rover_P4). But that argument is ABSENCE of
+# evidence: "no Rover 109 appears in a closed list, therefore it is a Land
+# Rover". Every other move in this block rests on POSITIVE row evidence —
+# ROVER | ROVER RANGE ROVER x7,227, two genmodels under two makes in one DVLA
+# table, landrover.co.uk listing the nameplate. The 90/110 verdict two
+# paragraphs up is what a slug-shaped inference costs when it is wrong: it
+# would have destroyed 534 vehicles of P4 evidence. `109` is the same shape of
+# argument with a smaller number attached, and the number is not what makes it
+# wrong. HELD until someone finds a "ROVER 109" row that names a body, or
+# proves none exists. Failed routes, both tried: (1) raw re-parse — both raws
+# are literally "109", nothing left to recover; (2) body word — neither row
+# carries one, so the SEDAN/SALOON vs STATION WAGON discriminator that settled
+# 90 and 110 is unavailable here. Confidence in the Land Rover reading would
+# be MEDIUM at best, and skipped beats assumed.
+#
+# ORDERING: `Range` and `Ranger Rover` are renamed to `Range Rover` under the
+# `Rover:` block in the SAME change (moves.yml rule 1 — keys are POST-rename),
+# and rule 2 (a null rename beats a move) is satisfied: no model named here is
+# nulled in this change.
+"Rover|Range Rover": "Land Rover|Range Rover"   # 8,427 car + 659 van + 6 truck. uk_dft genmodel "ROVER RANGE ROVER" x7,227 car / x508 van; nl_rdw "RANGE ROVER" x984; nz_nzta x146. Target car/land-rover/range-rover carries 14 countries / 140,744 vehicles, so this is a re-attachment onto a far larger record (https://en.wikipedia.org/wiki/Range_Rover)
+"Rover|Defender": "Land Rover|Defender"         # van 6 (fi 2, nl 4) + car 5 (nl, candidate). The Defender name dates from the 1991 model year, thirteen years after Land Rover Limited was created — it was NEVER a Rover-marque product (https://en.wikipedia.org/wiki/Land_Rover_Defender). FIRES IN car AND van
+"Rover|Discovery": "Land Rover|Discovery"       # 1 vehicle (nz, candidate) — raw "DISCOVERY TDI 5 DOOR". The Discovery launched in 1989 under Land Rover Limited (https://en.wikipedia.org/wiki/Land_Rover_Discovery)
+# ── Jaguar rows that are Land Rovers (the shared JAGUAR LAND ROVER registrant)
+# normalizer.rb#split_compound_make already routes raw make "JAGUAR LAND ROVER"
+# by nameplate (normalizer.rb:67-79) and the corpus confirms it works; these two
+# rows arrive under a BARE "JAGUAR" make string instead, so the split never
+# sees them.
+"Jaguar|Range Rover Evoque": "Land Rover|Range Rover Evoque"  # 4 vehicles (es 1, nl 3). Target car/land-rover/range-rover-evoque carries 14 countries / 252,900 vehicles (https://www.landrover.co.uk/vehicles/index.html)
+"Jaguar|Defender": "Land Rover|Defender"                      # 3 vehicles (es, nl), van kind. Target van/land-rover/defender carries es,fi,gb,lu,nl / 126,728 vehicles (https://en.wikipedia.org/wiki/Land_Rover_Defender)
+# ── MG models registered under make ROVER ────────────────────────────────────
+# MG was a Rover Group marque 1986-2000 and an MG Rover marque 2000-2005, so the
+# registers file MG-badged cars under ROVER. Both targets already exist.
+# NB the Rover MINI is deliberately NOT in this class: the Mini was badged and
+# sold as a "Rover Mini" 1988-2000 and the DVLA genmodel is literally
+# ROVER | ROVER MINI (29,832 registrations), so it stays under Rover
+# (https://en.wikipedia.org/wiki/Mini).
+"Rover|Mgf": "MG|Mgf"                            # 489 vehicles (fi 2, lu 1, nl 27, nz 459). The MGF is an MG (1995-2002, https://en.wikipedia.org/wiki/MG_F); target car/mg/mgf carries fi,gb,lu,nl,nz
+"Rover|MG Zt": "MG|Zt"                           # 2 vehicles (fi 1, nl 1). The MG ZT is an MG (2001-05, https://en.wikipedia.org/wiki/MG_ZT); target car/mg/zt carries gb,nl and GAINS fi
