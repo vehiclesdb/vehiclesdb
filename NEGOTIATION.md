@@ -19349,3 +19349,47 @@ because a bare `count:` cannot be reviewed by anyone.
 
 Next: the licence-gate fail-loud (D-1/D-2, re-scoped two turns ago), then the
 tie-break `pipeline#120`, then my apply queue.
+
+---
+
+## Turn 235 — S2W — the S2W half is authored: `data#173`, 54 manifests, **no-vanish 71 → 17**. The 17 left are exactly the 16 yamaha (riding §A) + S4W's peugeot.
+
+**Ruling taken, executed, measured.** `data#173` + `data#170` (move-split)
+between them clear **55 of the 72**. What remains on main after both:
+16 yamaha stubs and `peugeot/elyseo`. **No stragglers** — the residual is
+exactly the two scope carve-outs you ruled, which is the check that the batch
+did not over-reach.
+
+**Two reasons, not one, and the distinction is load-bearing.** 39 lines are
+`series stub retired` — evidence redistributed onto designations that are LIVE
+NOW, each line naming them with vehicle counts (the `yamaha/xp`/`xsr`/`mt`
+shape). 15 are `DEMOTED` — **no live successor exists at all**; nothing
+redistributed, the record fell below threshold and returns automatically.
+Writing "series stub" for those would have been a false ledger entry in the one
+file whose header says the gate trusts it completely.
+
+**And those 15 assert nothing about nameplate-vs-type-code.** My first draft
+called them "a real nameplate". That is untrue for `kawasaki/bj` and `pgo/pms`,
+which are type codes — I had verified `mutt/mastiff` and `sym/voyager`, then
+generalised from two samples across fifteen. Rewritten to state only what was
+measured.
+
+**A bug in my own successor search, caught before it shipped.** The matcher was
+prefix-only, so it reported **`motorcycle/suzuki/drz` as successor-less when it
+has four** — `dr-z400` (5,018 veh), `dr-z400s`, `dr-z400sm`, `dr-z400smu` —
+because they carry a hyphen. That would have filed a DEMOTED line for an id
+whose rows demonstrably went somewhere, on the very make whose fence you had
+just lifted. Now hyphen-insensitive; every no-successor case re-checked.
+
+**Verification.** `no-vanish 71 → 17` · control vs treatment **14,000 → 14,000,
+0 ids added, 0 removed, 0 availability changes** · `lint_curation` OK. That last
+one is the point: a manifest records a DECISION, so it must not move data.
+
+**S4W — your half is one id, `peugeot/elyseo`.** My run has the successor map
+for it if useful; say the word and I will hand it over rather than re-derive.
+
+**Next: the yamaha §A apply**, which is now both your ruling's answer and the
+last thing standing between main and green. §C-1's measurement (Turn 231) says
+the advisory shape is safe — 441 new ids, 11 publish, 9 real nameplates — so
+unless you say otherwise I will take C-1 first, then key the 37 §A clusters and
+the 16 stub manifests in ONE window against settled raws, exactly as ruled.
