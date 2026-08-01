@@ -19020,3 +19020,136 @@ per-release (webhook automatic); HF sync becomes dataset-side once
 automated and the manual lane retires. Add the ASSETS-ATTACH step and
 the archive-boundary verification to the runbook's publish section —
 both now have a worked example.
+
+## S4W — RUNBOOK shipped (pipeline#122). And the release was INCOMPLETE in four channels — three now repaired, one is Javi's call
+
+### The thing that mattered most tonight: `plus-2026.08.1` did not exist
+
+The paid product was pinned at 2026.08.0 and **could not advance** —
+`bin/data-update 2026.08.1` aborts on a missing release. Worse, the matching
+private build was sitting in `build/out-private` (2,118 enriched records, up
+from 469 at plus-2026.07.5) and `build/` is gitignored while the next build's
+`write_dist_plus!` opens with `rm -rf`. **It was one build away from being
+unrecoverable** — and not recoverable by rebuilding either, because a rebuild
+is not byte-identical (~37-record variance from cache state alone), so a later
+tarball would pair a differently-populated catalog-plus with the `dist/` it
+claims to match. That is exactly the incoherence the version-lock exists to
+prevent.
+
+**Cut and verified**: `plus-2026.08.1`, version-lock asserted before
+packaging (MANIFEST-PLUS == public VERSION == 2026.08.1), then **round-tripped
+— downloaded the published asset back, untarred, re-read the manifest**.
+`v2026.07.6` also has no plus pair; that one is historical and I left it.
+
+### The release I cut was silently incomplete, and it is a systemic gap
+
+Four post-release channels are guarded in `monthly-build.yml` by
+`if: github.event_name == 'schedule' || (workflow_dispatch && inputs.publish)`.
+They are conditioned on **how the release was produced**, not on **a release
+existing** — so a hand-cut release satisfies none of them:
+
+| channel | state | now |
+|---|---|---|
+| release **assets** | v2026.08.1 had **ZERO**; v2026.08.0 (CI-cut) has 7 | **repaired** — 7 attached |
+| jsDelivr purge | never ran; `@latest` was serving 2026.08.0 | **repaired** — CDN now returns 2026.08.1 |
+| private `plus-` | never existed | **repaired** — see above |
+| HuggingFace | still on 2026.08.0 | **NOT done by me — see below** |
+
+I have deliberately **not** pushed HF, so the legal lane and I do not both do
+it. Say the word and I take it, or the legal lane does; it must happen once.
+
+### RELEASE-RUNBOOK.md — `pipeline#122`
+
+1,010 lines, written to be read cold by someone who has never cut a release.
+Every required section plus the false-signal catalogue. What is in it that
+could only have been written today:
+
+- **Pull BOTH repos** — with the verbatim failure: the pipeline one commit
+  behind cost three G-1 spotchecks and would have shipped 27,971 UK vehicles
+  losing `gb`.
+- **Never pipe the build into `tail`** — the shell reports `tail`'s status, so
+  I was told "exit code 0" for a build that had aborted with three gate
+  failures.
+- **The assets-attach step** with v2026.08.1 as the worked example of what
+  happens without it.
+- **The archive-boundary check** you asked for, verbatim, with the before/after
+  I measured: `git archive v2026.08.1 | tar t | grep -cE '^(NEGOTIATION|DEBT|
+  AGENTS|PRD-|PROPOSAL-|CORRECTION-PASS|OVERNIGHT)'` → **9** at the tag,
+  **0** at HEAD. Note for the record: `export-ignore` is read from the
+  `.gitattributes` *inside the archived tree*, so v2026.08.1's zip will leak
+  forever — only tags cut after `3c071a7` are clean. That is mechanism, not
+  opinion, and it supports your consequence #2.
+- **The hysteresis-inheritance derivation** as a repeatable procedure, with
+  the arithmetic that proves it is inheritance and not damage.
+- **The plus-release worked example** including the round-trip verification.
+- **Fix-forward posture**: there is no un-release. Ids are append-only, the
+  DOI is permanent, the CDN and HF have it. Spelled out as procedure.
+
+Your export-ignore list: I reviewed it and would draw **one** line
+differently. `data/` is excluded wholesale, which takes `data/licenses/` with
+it — the pinned upstream licence *texts*. For a CC-BY dataset archived under a
+permanent DOI, those are exactly the provenance an archivist would want, and
+pinning them was the whole point. `data/name_shapes.yml` (an internal debt
+ledger) should stay out. Suggest `data/*` out, `data/licenses/` back in.
+Second, smaller: the archived README links to `AGENTS.md`, which is now
+export-ignored — a dangling link inside the archive.
+
+### My half of the 72 is exactly ONE id — `data#169`
+
+Split by OWNERSHIP.yml make-owner: **70 s2w, 1 s4w**. Peugeot arbitrates to
+this side (77 4W | 61 2W). `motorcycle/peugeot/elyseo`, **manifested, not
+aliased**, and the corpus is why rather than my judgment: the candidate queue
+carries the Elyseo at three displacements — `elyseo-100` (uk_dft, 165 gb),
+`elyseo-125` (LIVE, gb+nl), `elyseo-150` (uk_dft, 39 gb). The bare string's 25
+nl vehicles cannot be assigned to any one of them, so aliasing to the 125
+would be the `Vespa 50` over-merge. No availability lost — elyseo-125 already
+publishes nl. S2W, the other 70 are yours and the list is in my previous turn.
+
+### Three findings that BLOCK the automation, from the channel audits
+
+**1. Automating the HF push today would REGRESS the public dataset card.**
+`push.sh` copies the kit's README over the live card unconditionally. The live
+card carries a "Citing this dataset" section and a rewritten Attribution block
+that **exist nowhere in either repo** — someone edited them on huggingface.co.
+First automated run destroys both. The kit must be reconciled with the live
+card *before* automation is switched on, and the canonical source for that
+prose has to come from whoever wrote it (legal lane?).
+
+**2. `push.sh` can exit silently before uploading.** Line 22 is
+`[ -f "$DATA_REPO/dist/vehicles.parquet" ] && cp ...` under `set -euo
+pipefail`: if parquet is missing, the AND-list returns 1 and the script exits
+**before the upload**, printing nothing. With CI's `|| echo "::warning::"`
+that is a green build and an un-mirrored release. Fixing this is a
+prerequisite, not a nicety.
+
+**3. The plus-release automation needs a token only Javi can mint.**
+`PIPELINE_REPO_TOKEN` is Contents: **Read**; `github.token` is scoped to the
+data repo. Creating a release on the pipeline repo needs a fine-grained PAT
+with Contents: **Write** on `vehiclesdb/vehiclesdb-pipeline` — suggest a
+separate `PIPELINE_RELEASE_TOKEN` so a read-only checkout token can never
+publish. **Owner action, hard blocker.** Also: the CI publish path currently
+*destroys* `build/out-private` on the runner (only `build/out` is kept), so
+the plus release must be cut from the same job, not a later rebuild.
+
+Two more for the record: **`.zenodo.json` must NOT gain a `version` field** —
+Zenodo derives it from the tag, and hardcoding pins every future release to
+one label (proven here: the file has none and the record correctly reads
+v2026.08.1). And **v2026.08.0 never minted a DOI** — the webhook was created
+~16h after it, and Zenodo does not retro-archive; the archive legitimately
+starts at 2026.08.1.
+
+Also filed: `DATA-CONTRACT.md` is stale on four counts (documents schema
+`catalog-plus/1`, we emit `/2`; lists 2 artifact families, we ship 6; describes
+separate assets, we ship one tarball; `registrations-store/` is undocumented
+and has never shipped before tonight). Its own header says "keep this file in
+lockstep with the pipeline's emit layer" — that lockstep has lapsed.
+
+### Next
+
+The release-channel automation (`release.yml`, triggered on the release event
+so it stops mattering who cut it — note a release created with `GITHUB_TOKEN`
+does *not* fire `release` events, so CI must call it via `workflow_call` while
+hand-cut releases arrive via `on: release`). Then the licence-gate fail-loud
+(re-scoped, previous turn) and the tie-break. G13 re-baseline is running as a
+delegate — two debt entries GREW and debt may only decrease, so that is being
+investigated rather than re-baselined.
