@@ -20161,3 +20161,94 @@ my next block unless you redirect.
 
 **Also open from me:** `pipeline#117` (lint_enrich seam) · `#118` (CI, green in
 32s) · `#119` (lint_claims coverage). None are blocking.
+
+## S4W — data#176 unblocked (`pipeline#129`, DATA FIRST), XB added after I found I had missed it, and batch item 3 is up as `data#179`
+
+### You were right to block #176, and the lint was better than a block
+
+`lint_enrich` did not just say "no" — it sorted 19 entries into three cases,
+which turned a judgment call into a mechanical fix. `pipeline#129`:
+
+- **PRUNE (4+5)**: xg430/450/480/530 and the XB five carried runs IDENTICAL to
+  their parent. Duplicate insurance; the twin has the facts.
+- **MINT (7)**: the xd ids all carried the same `year_start: 2022` and aliased
+  to a `truck/daf/xd` that did not exist — those facts would have died at the
+  next release. Consolidated into a new parent entry carrying that run verbatim.
+- **RECONCILE (3)**: xf460/480/530 carried 2017- windows against a parent
+  spanning 1997-. Those windows are when each POWER RATING was offered — an
+  engine spec, not a nameplate fact — and the parent strictly contains them.
+  Pruned with the reasoning stated.
+
+Deliberately not carried forward: the per-rating `MX-13 355 kW/483 hp` figures.
+Moving them onto the nameplate would contradict the fold that removed them.
+
+### I had missed the XB family, and fixed it rather than shipping it half-done
+
+I grepped `daf/x[fgd]` and XB starts with the one letter that excludes. Five
+more ids, same defect, same evidence, against a live `daf/xb`. Shipping
+XD/XF/XG folded and XB not, in one make, for no stated reason, is worse than
+either doing both or neither.
+
+### And I contaminated my own control, again
+
+The first control was built from the primary repo before main advanced, so the
+diff showed **two Scania ids appearing** — from someone else's merged work, not
+mine. Rebuilt a true control in a clean worktree at my branch's own base
+commit. A DAF-only change cannot mint a Scania record, which is what made it
+obvious; the tie-break measurement had the same shape and I did not catch it as
+fast.
+
+    TRUE control 930 -> 907 truck ids;  24 removed, 1 added (daf/xd minted)
+    evidence lost on every target: NONE
+    daf/xb GAINS fi:fi_traficom — a child's evidence moving UP, not lost
+    non-DAF ids changed: ZERO
+
+### Batch item 3 — `data#179`, and it is data-only
+
+The door-count safe slice is done and it is **not** a coupled pair: **1,011
+keys / 11,169 vehicles**, 62 make blocks, folding onto 397 already-published
+records, with **zero new nameplates, zero disappeared, zero name changes**.
+
+**The mechanism hypothesis I refused to assert turned out right, and it was
+established by probe rather than by reading my own comment**: renames are
+consulted before `junk?`, the lookup receives exactly `["Volkswagen", "5D
+Passat"]`, and injecting the rename turns a baseline `nil` into
+`["Volkswagen","Passat"]`. So the fix is make-scoped renames on the produced
+string and **no pipeline change at all**. The fi_traficom adapter strip was
+rejected on measurement: it strips unconditionally, so it rescues the
+type-approval garbage too, and conditioning it on "the result is real" would
+make the build depend on its own prior output.
+
+**It could not reproduce the briefed 579 / 19,002 and said so instead of
+forcing the number** — more pairs, fewer vehicles. The arithmetic it gives is
+convincing: *all* Mercedes door-shaped keys total 1,671 vehicles, yet the brief
+quotes C-Class 1,997 + E-Class 1,674 from that class alone, so the earlier
+simulation was counting resulting-record totals or including the bare
+body-code class. I would rather have the discrepancy named than matched.
+
+**The best part is a mistake it caught with the control build**: its first
+safety check verified the target was live only in the key's DOMINANT kind — but
+a rename key is make-scoped and **kind-blind**, so `"5D Grand"` fired on van
+rows too and minted `van/dodge/grand-caravan`. Its first correction
+over-shot (requiring liveness in every firing kind discarded 3,729 vehicles
+including `5D Passat`), and it measured its way to the real answer:
+`cross_kind_prune!` already removes those minority entries, with identical
+prune sets on both sides, and the actual gap is the prune's `grand < 100`
+guard. It dropped 2 keys / 10 vehicles instead of 3,729.
+
+All four verifications done: frozen-cache control (both sides exit 1 on the
+same pre-existing 16 yamaha stubs), zero new nameplates, `junk_drops`
+25,492→24,481 pairs and 330,700→319,531 vehicles matching the rescue set to the
+vehicle, and 1,011/1,011 keys firing with zero dead.
+
+One judgment it flagged rather than made: 529 keys rescue a single vehicle and
+~320 embed full type-approval strings. They all fire today but are pinned to
+exact registry text and go dead if fi_traficom reformats. It kept them, called
+a volume floor defensible, and left the call to us. I would keep them too —
+a dead key is visible to the sweep, a missing rescue is not.
+
+### Open from me
+
+`data#176`+`pipeline#129` (DAF, data first) · `data#179` (door-count, alone) ·
+`data#177`+`pipeline#127` (be_fps, PIPELINE first) · `pipeline#125` (runbook v2).
+The GTC delegate is still running.
