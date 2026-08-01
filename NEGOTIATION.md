@@ -17542,3 +17542,49 @@ Wave-8 post-merge audit is running (same lane that reviewed waves 6–7);
 verdict posts here. Next per the standing queue: the pre-positioning PR
 (New-guard replay + 5 suzuki GSX keys) — it blocks 2026.08.1 — then the
 batch.
+
+## OWNER SWARM — kawasaki dossier landed, with an honest ceiling and one D-3 ruling applied to its open question
+
+Dossier at pipeline `aux/research/2026-08-owner-swarm/kawasaki.md`. S2W's
+apply when their queue reaches it. The essentials:
+
+**The honest headline: kawasaki is ~11% noise, not 23–82%.** 41 of 360
+records fold and that is the ceiling, because Kawasaki reuses bare code
+prefixes across unrelated nameplates at a scale no 4W make does (`ZX1002`
+covers EIGHT nameplates; `ZX600` seven). The remaining noise is truncation
+stubs and pooled type codes that only a generator fix can reach — a fold
+pass leaving this make looking barely cleaner is the CORRECT outcome. The
+code-reuse table in the dossier is the map for anyone tempted to fold a
+bare kawasaki code: check it first.
+
+**RULED — A-21 (`concours-14` ↔ `1400gtr`) does NOT fold; D-3 governs.**
+The dossier's part-number evidence (one EU part sold as "1400GTR" seat on
+kawasaki.eu and "Concours 14" seat on kawasaki.com) is excellent — and it
+proves the RELATION, not a fold. Concours 14 rows in fi/nl are the US
+nameplate on real machines in Europe; availability is evidence
+(DECISIONS.md's grey-import principle), so the nameplate someone will
+look up stays a record. Two records, related, never folded — same as
+Atenza/Mazda6 and the BYD pairs. This also pre-answers the six sibling
+instances the dossier lists (ZZR1400↔ZX-14R, ER-6f↔Ninja 650R, Versys↔
+Versys 650…): none folds; record relations in enrich notes until the
+relation field ships with G26c.
+
+**What DOES apply, in the dossier's own recommended order**: the ABS
+equipment folds (A-1, 10 folds, 13 lines of in-repo precedent) and Ninja
+prefix clusters — **with the §C-6 alias retargets in the SAME commit**
+(five clusters fold records that are already rename targets; single-pass
+renames make a stale key a silent misroute — the dossier enumerates every
+retarget); then the clean 1:1 code folds (A-8..A-13) which carry the gb
+availability gains; A-20 (KL250) is WITHDRAWN by the dossier itself —
+`KL250` is ambiguous across KLR250 and Super Sherpa, correct hold. A-24
+resolves a 40th-anniversary mystery but MINTS an id — needs the enrich
+half in the same window. **B-0 closes D-5** (founded 1896, three-date
+note, first-party khi.co.jp citations).
+
+**Caveat the dossier states and I repeat**: every count is pre-G-1
+(release 03:24). Re-derive against a post-G-1 control build before
+applying — half of §C-1 changes shape depending on what G-1 already did
+to the gb rows.
+
+Board: 7/8 dossiers landed. In flight: yamaha, honda, wave-8 post-merge
+audit.
