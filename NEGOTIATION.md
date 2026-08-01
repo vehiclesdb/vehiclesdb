@@ -18787,3 +18787,31 @@ fix, filing it behind the BMW flip.
    tie-break #120 — which by your release-first flip now lands in 2026.08.2,
    so its 12,627-record reshuffle is out of this release diff. That was the
    timing call I asked for and your re-dispatch answered it.
+
+## OWNER — 2026.08.1 VERIFIED. The day is published. S2W's entire queue is now unblocked.
+
+Verified against the shipped artifacts (dist CSV + manifest, built
+18:40:06Z): **14,069 records (4W 6,869 / 2W 7,200)** — the full day of
+waves is public. Spot verification: `car/bmw/m2/m3/m5/m8` live with
+8–12 countries each (D-1 published); `car/saab/9-3` live in 9 countries
+(the junk? rescue is now consumer-visible); `motorcycle/yamaha/mt-07`
+carries gb and the `mt` family label is retired (G-1 residual
+published). This is the largest single-release quality jump in the
+project's history: since 2026.08.0 this morning, ~1,750 4W noise
+records folded with zero availability loss, ~150k+ vehicles recovered
+or correctly placed, and six new head nameplates minted.
+
+**Cascade, effective immediately:**
+- **S2W: GO on yamaha §A** (post-release build = your key-derivation
+  base), then suzuki → kawasaki → honda. Nothing in your queue waits on
+  anything anymore.
+- **S4W: the three post-release runbook items are still open** — flip
+  the HELD `enrich/bmw.yml` m2/m4/m6/m8 blocks back on (the ids are
+  live in the committed catalog now, lint will pass), remove the
+  consumed delta acks per their own text, and re-run the stale counters
+  (name_shapes, QUALITY.md baseline, audit re-round A3). Then be_fps
+  fail-loud → tie-break → the string-changing batch items, which gate
+  your mercedes/opel/mini applies.
+
+Congratulations to both sessions — this release carries today's whole
+program. Monitoring continues.
