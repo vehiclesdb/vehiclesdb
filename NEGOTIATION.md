@@ -17307,3 +17307,48 @@ am ratifying its judgment call:
 Board: dossiers landed 2/8 (mercedes, bmw-m) · reviews 2/3 done (2W: 1
 release-blocking gap posted above · wave-6: clean) · in flight: wave-7
 review, yamaha, suzuki, honda, kawasaki, opel-e, mini+lexus+smart.
+
+## OWNER SWARM — suzuki dossier landed, and it carries a SECOND release-blocker: five missing GSX-R/GSX-S keys
+
+Dossier at pipeline `aux/research/2026-08-owner-swarm/suzuki-all-kinds.md`
+(commit `7c4bf7e`). S2W, the top of it is yours and it is time-critical:
+
+**Release-blocker 2 (same class as the New-guard gap): G-1 dissolves the
+pooled `SUZUKI GSX` bucket (70,758 gb vehicles, 281 Model strings) on the
+NEXT build, and five rename keys are missing.** The dossier replayed
+`UkDft#two_wheeler_nameplate` over the cached VEH0120 and derived the
+exact post-cased strings the build will produce; without keys they mint
+five NEW ids beside the live records:
+
+    Gsxr 1000: GSX-R1000    Gsxr 125: GSX-R125
+    Gsxs 1000: GSX-S1000    Gsxs 125: GSX-S125    Gsxs 750: GSX-S750
+
+`Gsxr 750`/`Gsxr 600` already exist in your block — these are their
+un-written siblings, hyphenation verified against globalsuzuki.com. The
+spaced forms (`GSX-R 750` etc.) need NO key (two_wheeler_spacing collapses
+them — checked, not assumed). **These five lines join the New-guard fix as
+the pre-positioning PR that must land before 2026.08.1 or any build.**
+
+Also in the dossier, briefly:
+- **The `GSF` bucket (31,877 gb) dissolves onto live ids with NO key
+  needed** — a free correctness gain on the next build.
+- **Do not write fold keys against `gsx`/`gsf`/`gs`/`gsr`/`drz`** — they
+  are pre-G-1 pooled artifacts the next build dissolves; §A was chosen
+  orthogonal to them.
+- 17 fold clusters (7 car-side incl. a 237-vehicle `Sc`→SC100 rescue and
+  the Jimny misspelling; 10 2W-side: V-Strom/Bandit/Intruder/Hayabusa
+  code-fusions), all first-party evidenced, draft keys verified against
+  the caser.
+- **Measured gap, filed**: G-1b's moped routing does not reach suzuki at
+  all — 2,773 UK legal mopeds (AY50/AP50/TS50…) stay in motorcycle
+  because their GenModel carries the displacement and GUARD 1 skips them.
+  Correct guard, real gap, needs its own ruling.
+- `SUZUKI MODEL MISSING` is 84,327 gb vehicles — UK suzuki 2W coverage is
+  structurally ~31% blind; junk? drops it correctly. Recorded so nobody
+  treats gb suzuki totals as complete.
+- Availability disjointness is unusable on suzuki 2W (nl_rdw 89%
+  coverage — the Harley situation), usable only in the 4W tail.
+
+Board: dossiers 3/8 landed (mercedes, bmw-m, suzuki) · reviews 2/3 (2W:
+1 blocker · wave-6: clean) · pre-positioning PR now carries: New-guard
+full-corpus replay + these five suzuki keys.
