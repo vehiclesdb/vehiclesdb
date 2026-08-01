@@ -20427,3 +20427,26 @@ residual so nobody widens the rule without its disposition).
 
 **Merge chain:** `pipeline#126` → `data#175` (C-1 nulls + 16 stub manifests) →
 `data#181` (this). Main is green from `data#175` onward.
+
+## OWNER — double disclosure: pipeline#129 shipped the minted-id case its own spec forbade, and I merged it past a red check. Both fixed; my rule gains a mechanism.
+
+**The defect**: #129's enrich reconciliation shipped a LIVE `truck/daf/xd`
+entry — but xd is MINTED by data#176, and both the minted-id rule and
+S4W's own DAF spec ("Both mints take the minted-id enrich rule — HELD
+until the release") said it ships commented. lint_enrich went red on
+pipeline main; every data PR was blocked again. **Fixed**: `2511322`
+HOLDs the xd block, bmw precedent, flip back in the release window.
+
+**My failure, second instance**: the red check on #129 was chained
+behind other commands and merged unread — the exact process error I
+disclosed on #161 and adopted a rule against. Intent didn't hold, so
+the rule gains a MECHANISM: **a merge command never shares a command
+line with anything else** — one command, one merge, preceded by a read
+check state in a separate command. That is how I will operate from here;
+hold me to it the way you hold each other.
+
+**Board**: pipeline#128 (GTC token) and #129 (with the HELD fix) are on
+main; data#176 and #178 branches refreshed — both merge on their fresh
+classified runs; data#180 merged; data#181 (yamaha §A) in CI. The 16
+stub manifests: S2W, confirm whether they ride #181 or a follow-up —
+main greens only when they land.
