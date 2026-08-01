@@ -19728,3 +19728,63 @@ two market names" — which is spec'd alongside G26c. File pairs under
 "awaiting the relation field", never "awaiting a ruling", and never
 hold a keep/fold decision on it: the decision is already made, keep
 both.
+
+## S4W — CORRECTION: `daf/xg-530` is not a duplicate, it is the XG+. My "live split record" claim was wrong, and the fold family has a slug collision in it
+
+Two turns ago I reported `daf/xg-530` and `daf/xg530` as "the same truck
+published as two records right now". **That is wrong and I am retracting it
+before anyone acts on it.**
+
+`daf/xg-530`'s display name is **`XG+530`**. The hyphen in the slug is a
+slugified `+`, not a typo — and **XG+ is a distinct DAF model**, not a spelling
+of XG. Wikipedia's DAF Trucks current-range list carries them as separate line
+items: *"XF series" · "XG series" · "XG+ series" · "XD series" · "XB series"*.
+The XG+ is the tall-cab flagship.
+
+So the two records are correct as records. I read a slug and inferred a defect
+without checking the display name it came from — the same mistake shape as
+keying `"Rover New Range Rover"` off a display name I had split wrongly, which
+is twice now that I have trusted a derived string over the record it derives
+from.
+
+### What this does to the fold family
+
+The 20 power-suffix ids still stand as a fold family — the three-digit suffix
+is horsepower (DAF prints `XF 430` in a listing title and `Power (HP): 430` as
+a separate field; the caption form `DAF XF 105.460` only parses as
+series-dot-power). But the targets are now four nameplates, not three, and one
+of them has a problem:
+
+    XD   xd260 xd300 xd310 xd340 xd370 xd410 xd450   ->  XD   (record does NOT exist — a MINT)
+    XF   xf410 … xf530                                ->  XF   (live)
+    XG   xg430 xg450 xg480 xg530                      ->  XG   (live)
+    XG+  xg-530                                       ->  XG+  (record does NOT exist — a MINT)
+
+    KEEP xf105 — a real generation series (XF105/XF106), not a power figure.
+    UNVERIFIED: xdc, xfc, xd-ft ("XD Ft" — FT is a chassis config, not a model)
+
+**The problem: `XG+` and `XG` appear to collide on slug.** `XG+530` produced
+the slug `xg-530`, so `+` maps to `-`; a bare `XG+` would then produce `xg-`,
+and trailing-punctuation stripping would take it to **`xg`** — the id the XG
+already holds. If that is right, minting the XG+ nameplate is blocked on a
+NAMING decision about how a `+` model is slugged, and I am not improvising one.
+Stated as a prediction to verify against the real slugifier, not as a finding.
+
+So the DAF pass is: a straightforward fold for XF and XG, a mint for XD, and a
+naming question for XG+. It is one make, and it needs three different postures.
+
+### And the D-3 clarification lands on my leyland-daf filing
+
+Thank you — I had it filed as "awaiting the ruling", which is exactly the drift
+you are heading off. Corrected: `leyland-daf/45`+`daf/45` and
+`leyland-daf/55`+`daf/55` are **two records each, related, kept — decision
+already made** — and what they await is only the relation field alongside G26c.
+
+That also settles their G13 disposition, which was the reason I went looking:
+both are **legit**, not debt. The delegate proposed `leyland-daf/55` as
+"debt — failed verification" because Wikipedia's Leyland DAF roster has no 55;
+the roster is right and the inference was wrong, because the 55 is DAF-badged
+after the 1993 receivership. It is a real nameplate either way.
+
+`leyland-daf/50` stays legit on its own terms — no `daf/50` exists, so it has
+no twin and no relation to express.
