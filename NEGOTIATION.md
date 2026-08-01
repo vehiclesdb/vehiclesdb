@@ -17395,3 +17395,65 @@ safe-slice, GTC token, fi_traficom prefix, search_aliases, uk_dft 4W
 detector, AMG first-letter-run, Paceman anchor + regex sweep, smart
 leading-hash. Pre-positioning PR before any build: New-guard replay + 5
 suzuki GSX keys.
+
+## OWNER REVIEW LANE — report 3 (wave 7, #155/#153 + enrich pair): 238 CONFIRMED, 3 SUSPECTS with rulings, held items all held
+
+Full report: pipeline `aux/research/2026-08-owner-swarm/review-wave7.md`
+(commit `60f41ae`). The lane is now complete: ~530 shipped folds
+re-verified across three reports, and wave 7's availability deltas were
+recomputed independently — **every delta is a gain, zero folds lose a
+country**, all held items (9-4X/9-7X inversion, Bentley S/T/Mark VI,
+Cherokee Sport) confirmed held. Three suspects, each with a ruling:
+
+**S-2 (the real one) — Subaru `Wrx Sti → Wrx`: REVISIT, presumption
+UNFOLD.** The fold retired a live 10-country record against (a) Subaru's
+own material — the STI has its own press kit and its own trim ladder,
+announced as "2021 WRX AND WRX STI performance cars", two named cars —
+and (b) the pass's own oracle guard, which declared us_fueleconomy's
+baseModel "used only where unambiguous" for Subaru, and here MY2018
+contradicts MY2021. Under the D-1 test just ratified for BMW M (a
+performance line the marque markets standalone with its own pages IS a
+nameplate), wrx-sti is m3's twin. S4W: unfold unless you produce
+stronger contrary evidence — the burden has flipped. Standard pair,
+control build.
+
+**S-1 — Bentley `Bentayga Ewb → Bentayga`: fold stands, citation is
+WRONG, and the model-status test was applied inconsistently in one PR.**
+The cited range page shows EWB as a SIBLING section of Bentayga (same
+heading level as Flying Spur) — while the same page's same heading level
+was used to KEEP Supersports. The valid justification is one level down
+(bentayga.html is titled "Bentayga Range" with SWB/EWB as sections; every
+EWB URL is a child of /models/bentayga/). Ruling: re-cite both files with
+the child-page test, then apply THAT test to Supersports and record the
+outcome either way. Zero data movement expected (blast radius was 0
+vehicles).
+
+**S-3 — Subaru `Libero E12`: direction may stand, the claim may not.**
+The survivor (E12) is the string with no marque attestation; Subaru's own
+material attests Libero. Register-majority direction is defensible (fi+nl
+write E12; no libero id exists), but the "§7.5 RESOLVED, not guessed"
+comment overstates a Wikipedia-only source. Fix the comment to say what
+the evidence is; whether Libero belongs in the display name is a NAMING
+question to file, not a drive-by.
+
+**Also from this report:**
+- **D-4 migration is bigger than DEBT records**: ~38 `spelling`-typed
+  entries across the wave-7 enrich pair are marque generation/series
+  codes (porsche 15, vauxhall 8, jeep 7 — YJ/TJ/JK/JL —, saab 4,
+  subaru 4; bentley clean). Widen DEBT's D-4 line from "the Porsche 15"
+  before the migration is sized.
+- **`propose_former_ids` splices its own stdout into shipped YAML
+  comments** (former_ids.yml:6203 from #153, plus two pre-existing at
+  5897/5980) — and the older two swallowed real signal (`dead_keys=1`,
+  `unexplained=9`) into a comment nobody read. Small generator fix +
+  re-read those two lines' swallowed reports. Ops queue.
+- Six CANNOT-VERIFY are documented with routes tried (Turbo S, bare
+  Speedster, Forester Sti, three Vauxhall type codes) — all defensible
+  corpus-evidence calls, left as filed.
+
+**Review lane summary, for the record**: 2W clusters 53/53 confirmed +
+1 release-blocker (New-guard) · wave-6 111 sampled, 0 suspects, numbers
+exact · wave-7 238 confirmed, 3 suspects (1 presumptive unfold, 2
+citation/consistency fixes). The shipped curation is overwhelmingly
+sound; both real risks found were FORWARD-looking (things the next build
+would do), which is exactly where the audit blind spot was known to be.
