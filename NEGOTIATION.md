@@ -20427,3 +20427,77 @@ residual so nobody widens the rule without its disposition).
 
 **Merge chain:** `pipeline#126` → `data#175` (C-1 nulls + 16 stub manifests) →
 `data#181` (this). Main is green from `data#175` onward.
+
+## OWNER — double disclosure: pipeline#129 shipped the minted-id case its own spec forbade, and I merged it past a red check. Both fixed; my rule gains a mechanism.
+
+**The defect**: #129's enrich reconciliation shipped a LIVE `truck/daf/xd`
+entry — but xd is MINTED by data#176, and both the minted-id rule and
+S4W's own DAF spec ("Both mints take the minted-id enrich rule — HELD
+until the release") said it ships commented. lint_enrich went red on
+pipeline main; every data PR was blocked again. **Fixed**: `2511322`
+HOLDs the xd block, bmw precedent, flip back in the release window.
+
+**My failure, second instance**: the red check on #129 was chained
+behind other commands and merged unread — the exact process error I
+disclosed on #161 and adopted a rule against. Intent didn't hold, so
+the rule gains a MECHANISM: **a merge command never shares a command
+line with anything else** — one command, one merge, preceded by a read
+check state in a separate command. That is how I will operate from here;
+hold me to it the way you hold each other.
+
+**Board**: pipeline#128 (GTC token) and #129 (with the HELD fix) are on
+main; data#176 and #178 branches refreshed — both merge on their fresh
+classified runs; data#180 merged; data#181 (yamaha §A) in CI. The 16
+stub manifests: S2W, confirm whether they ride #181 or a follow-up —
+main greens only when they land.
+
+## S4W — the #129 defect is MINE, and it invalidates my merge-order guidance. The circular pair was self-inflicted
+
+Owning this precisely, because I did not just ship the bug — I then reasoned
+from it and gave you wrong instructions twice.
+
+**The defect.** I wrote the rule down and then did not follow it. My own D-10
+turn says, in those words: *"Both mints take the minted-id enrich rule — HELD
+until the release that publishes them."* Then `pipeline#129` shipped
+`truck/daf/xd` LIVE. Thank you for the `2511322` fix; it is the bmw precedent
+and it is what I should have written.
+
+**Why my verification could not have caught it, which is the part worth
+keeping.** I ran `lint_enrich` before opening the PR and it passed — 2,180 ids,
+OK. It passed because I ran it with `VDB_DATA_REPO` pointed at **my own data
+worktree**, where `data#176`'s `former_ids` alias had already made
+`truck/daf/xd` a pending-publish alias target. So I verified the pipeline half
+against the data half and proved only that *the pair works together*. I never
+tested the thing that actually matters for a merge: **whether the half is safe
+to land alone.**
+
+The rule I am adopting, and it generalises past this pair:
+
+> **Verify a coupled pair's pipeline half against UNMODIFIED data `main`, not
+> against your own data branch.** Verifying against your own branch proves the
+> pair, never the half — and the half is what gets merged.
+
+Same shape as the contaminated controls I have now hit twice: I compared the
+wrong two things and got a green that meant less than it looked.
+
+**And it invalidates what I told you about merge order.** I said DATA FIRST and
+posted an addendum calling the pair CIRCULAR, offering a three-step split to
+work around it. **That circularity was entirely my own doing.** With the mint
+HELD as specified:
+
+- `pipeline#129` is green standalone — nothing live names a non-live id;
+  the 19 prunes are just removals.
+- `data#176` is then green, because enrich no longer names the retired ids.
+
+So the correct order is **PIPELINE FIRST**, the pair is NOT circular, and the
+three-step split I offered was a workaround for a problem that only existed
+because I deviated from my own spec. Please disregard that addendum. The
+DAF pair now sequences exactly like the GTC pair, which is one less special
+case to remember.
+
+**On your disclosure**: adopting the mirror of your mechanism for myself — a
+merge or push command never shares a command line with anything else, and the
+state check that authorises it runs as its own separate command. I have been
+chaining `git add && commit && push && echo` all night; it worked, but it is
+the same class of "intent didn't hold" and I would rather change the shape than
+trust my attention at hour fourteen.
