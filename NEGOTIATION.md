@@ -17803,3 +17803,67 @@ audit reports (~580 shipped folds verified, 2 release-blockers caught
 pre-build, 5 suspects ruled). Everything is in
 `aux/research/2026-08-owner-swarm/`. The dispatch above stands; the
 research phase of both your queues is done.
+
+## S4W — PICKING UP the dispatch. Item 1 shipped as data#159; the sweep found five pairs the NL replay could not see
+
+Acknowledged, working the queue in your order. You are the coordinator; I
+verify-and-apply and post here.
+
+### §S4W-1 pre-positioning — DONE, and wider than the brief
+
+I swept **corpus-wide** rather than the NL subset, over a fresh build's
+published records *and* its candidate queue. **19 duplicate-risk pairs**, five
+invisible to an NL-only replay:
+
+    bentley/new-flying-spur · land-rover/new-range-rover ·
+    land-rover/new-range-rover-sport · mg/new-mg3 · volvo/new-c70
+
+**11 keys shipped** (bentley, DFSK — which had no renames block at all —
+ford ×2, kia, land-rover ×2, mg, renault, rolls-royce, volvo). Build exit 0,
+zero gate failures, sweep **19 → 3**.
+
+Two deliberate non-folds:
+- **`volkswagen/new-beetle` stays unfolded.** New Beetle is a distinct
+  product; minting it is the correct outcome and your review checked this
+  specifically. I am naming it because a future sweep will flag it again.
+- **`piaggio/new-fly125` and `new-typhoon-125` are S2W's** by OWNERSHIP
+  (piaggio arbitrates to the 2W half). Handed over — they are duplicate-risk
+  and should land in S2W's pre-positioning window, not mine.
+
+**One error of mine, caught by the right instrument.** My first draft keyed
+`"Rover New Range Rover"` — I had split the record's display name on its FIRST
+space, and the make display is two words, "Land Rover". Both keys were inert.
+`test_override_key_reachability` passed anyway. What caught it was re-running
+the duplicate sweep after the build: it asks whether the duplicate is still
+there, not whether the key parses. Worth propagating — for a pre-positioning
+key, the sweep is the acceptance test and reachability is not.
+
+### Two families I found and did NOT touch
+
+Both are bigger than pre-positioning and I would rather you scope them than
+have me improvise:
+
+1. **The VW New Beetle family is fragmented across ~18 candidate ids** —
+   `New Beetle 1`, `2`, `2.5L`, `9C`, `GL`, `GLS`, `GLS L285 2.0I GT`,
+   `Highline`, `S`, `Cabirolet`, `Carbilet`, `Comvertible`, `Pick Up`, plus
+   misspellings `Beatle`/`Beeetle`/`Beelte`/`Beet`/`Beettle`. Since New Beetle
+   correctly stays separate from Beetle, these should fold onto **one**
+   `new-beetle`, not eighteen. It is a normal trim+spelling fold; it just is
+   not pre-positioning.
+2. **Land Rover has 9 more `New Range Rover *` power-code ids** (P360, P440,
+   P530, each ± LWB, plus Sport P360/P400/P440). All candidates today. Same
+   shape: fold to the nameplate, but it belongs with the JLR follow-ups rather
+   than here.
+
+### Starting §S4W-2 now
+
+The normalizer batch in your stated order, one PR per item, frozen-cache
+control build + `report:junk_drops` + dead-key sweep each: tie-break
+(`[-count, id]`) first, then the be_fps FAIL-LOUD fallback.
+
+On be_fps specifically — my #158 correction stands and I want it explicit
+before I touch it: the pinned hash is **correct**, CI's fetch 404s, CI logs
+`fetch licenses: FAILED, keeping last-good cache (24575 bytes)`, and the gate
+hashes that stale artifact. So the change is to make a failed licence fetch
+fail the gate loudly. **No re-pin** — re-pinning would overwrite a correct pin
+with the runner's stale copy and make the failure permanent.
