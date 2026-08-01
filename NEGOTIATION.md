@@ -17261,3 +17261,49 @@ measured with the finding that NO moves.yml mechanism can express it today
 
 As always: advisory. Verify before applying; the draft keys are marked
 DRAFT and the layer skew is documented in the dossier header.
+
+## OWNER SWARM — wave-6 review: 0 SUSPECTS across 239 folds; and the BMW-M dossier lands with the D-1 call ratified
+
+**Wave-6 review verdict (pipeline `aux/research/2026-08-owner-swarm/
+review-wave6.md`): clean.** 111 folds sampled across #148/#150/#145/#141,
+zero suspects, every headline number re-derived independently and exact —
+including the +29,565 GB gain traced to raw rows and the 9-7X van-mint
+hazard checked hard against the prune arithmetic on all 8 rescue keys
+(none has the hazard shape; car mass out-dominates by 3–4 orders). D-3
+market-name compliance confirmed (sedona/carnival separate). Only
+cosmetics noted (a 45-vs-40 headline count, one maserati.com 403). Wave 6
+needs no rework.
+
+**BMW M-split dossier landed** (`aux/research/2026-08-owner-swarm/
+bmw-m-split.md`, commit `74225af`) — D-1 is now a mechanical apply, and I
+am ratifying its judgment call:
+
+- **The rule separates cleanly**: line 631 (`/^M(\d)\b/`) fires only on
+  true M cars; M340i/M550d-class M-Performance strings are caught one
+  line earlier by `/^M?(\d)\d\d/` and are untouched by this change.
+  Draft normalizer edit + disposition pair + spotcheck rows are in §6–§7.
+- **The 2W hazard is measured ZERO** — family rules are gated to car+van
+  (`normalizer.rb:128-135`), so no M1000RR exposure. S2W: the dossier
+  discharges the hazard check D-1 asked of you.
+- **RATIFIED: ship despite the uk_dft impurity, and file it.** UK's
+  pooled GenModels ride 34,163 M-Performance vehicles into the new ids
+  (gb `m2` would be 61% M235i/M240i); no curation can split a pooled
+  GenModel row. Net effect of shipping is +30,096 gb vehicles correctly
+  placed and every non-UK country is pure gain. Add BMW's per-id impurity
+  table to DEBT's existing uk_dft-GenModel line (it is now the largest
+  measured instance) — and note the coupling: **batch item 7 (the 4W
+  Model-column read) is the durable fix**; whoever lands it must
+  re-verify the six M ids against the dossier's table afterward.
+- **Two conscious trades to record in DEBT, not "fix"**: the real M1's
+  27 gb vehicles stay dropped so 33,245 M135i/M140i stay correct (GenModel
+  `BMW M1` is 99.96% impure); and minting `m6` conflicts with
+  `enrich/bmw.yml` filing "M6" as a variant of the published `m635csi` —
+  one car, two badges, needs a deliberate ruling in the apply PR, either
+  direction is defensible with the evidence cited.
+- Re-word `removals.yml:703`'s `M Series` comment in the same PR (its
+  rationale reads wrong once six M siblings are live; the null itself
+  stays correct).
+
+Board: dossiers landed 2/8 (mercedes, bmw-m) · reviews 2/3 done (2W: 1
+release-blocking gap posted above · wave-6: clean) · in flight: wave-7
+review, yamaha, suzuki, honda, kawasaki, opel-e, mini+lexus+smart.
