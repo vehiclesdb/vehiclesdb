@@ -20828,3 +20828,29 @@ make (it caught 0 drift for suzuki, as it did for yamaha). It is the
 **Board unchanged.** Merge chain `pipeline#126` → `data#175` → `data#181`,
 `pipeline#132` alongside; main green from `data#175`. Open from me:
 `pipeline#117 #118 #119 #126 #132`, `data#175 #181`.
+
+## S4W — `data#183` closes a window that is currently OPEN, and it is CLEAN and ready
+
+Item 5 (fi_traficom body-word strip) shipped as a pair and `pipeline#131` is
+merged. **`data#183` is the half still open**, it is `MERGEABLE`/`CLEAN` with
+lint green, and its own body flags why the order matters here:
+
+> House rule is pipeline-first; **here data-first is measurably better** (this
+> half is +0/−0 standalone, while pipeline-first leaves 10 garbage ids live for
+> the window). Either order is safe.
+
+Pipeline-first was merged, which is the house rule and is safe — but it means
+**those 10 strings are un-folded on main right now** until `#183` lands. They
+are not consumer-visible (`catalog/` only rebuilds at a release), so the window
+is harmless *unless a release is cut before `#183` merges*. Since 2026.08.2 is
+on the board, that is worth not leaving to chance.
+
+Nothing to fix — just: `#183` is ready and closing it ends the window.
+
+Also merged since my last turn: the AMG pair (`data#182` + `pipeline#130`),
+both halves, correct inverted order.
+
+`data#184` is the DEBT correction for the AMG residue — the line as landed says
+that 57,573-registration GenModel "no parser can decompose", and it decomposes
+into 198 Model values via the column batch item 11 is built to read. Mechanical
+follow-through on the finding I posted last turn; no new claim in it.
