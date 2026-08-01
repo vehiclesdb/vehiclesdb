@@ -4182,10 +4182,44 @@ Jaguar:
   Xj-S V12: XJ-S                          # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
   Xj-Sc: XJ-S                             # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
   Xj-Sc V12: XJ-S                         # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
-  Xj Series: XJ-S                         # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
-  Xj Sovereign: XJ-S                      # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
-  Xj Sport: XJ-S                          # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
-  Xj Supercharged: XJ-S                   # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
+  # ── XJ re-cut (D-6). The adjudication asked for data#138's inversion to be
+  # re-cut, re-measured, and "shipped or refiled with a reason". Re-measured: the
+  # THREE small keys below are shipped; `Xj Series` is REFILED, because the
+  # re-measurement refuted the premise the inversion rested on.
+  #
+  # `Xj Series` is produced by exactly one row of mass — uk_dft's GenModel
+  # `JAGUAR XJ SERIES`, 42,896 car + 11 van (plus nl_rdw "XJ SERIES III
+  # AUTOMATIC" x1). data#138 read that genmodel as "the XJ saloon range". It is
+  # not. Replayed against the fourth column of the file the adapter does not read
+  # (cache/uk_veh0120_uk.csv, `Model`; 2026 Q1 = index 6 per DEBT row 98), its 146
+  # distinct Model strings / 17 distinct leading tokens decompose 42,909/42,909 —
+  # 100%, nothing unresolved — onto EIGHT published Jaguar nameplates:
+  #   XJ 16,643 (38.8%, incl. XJL 1,539 + XJ50/XJ50L 274) · XJ6 8,563 (20.0%) ·
+  #   XJ-S 8,527 (19.9%, incl. XJ-SC 148) · XJ8 5,030 (11.7%) · XJR 3,447 (8.0%,
+  #   incl. XJR-3.6/-4.0/-4.0A 156) · XJ12 382 · XJR-S 267 · XJ220 50.
+  #
+  # So NEITHER pointing is right, and the errors are the same shape: today's
+  # `-> XJ-S` misfiles 34,382 vehicles (80.1%) of seven other nameplates onto the
+  # coupé; `-> Xj` would misfile 26,266 (61.2%) of seven other nameplates onto the
+  # saloon AND would publish `car/jaguar/xj-s` with NO gb while this very file
+  # holds 8,527 UK-licensed XJ-S — a contradicting published record that the fold
+  # itself would create. Two independent registers corroborate that XJ and XJ-S
+  # are not one nameplate: EPA/DOE baseModel separates XJ / XJS / XJRS
+  # (cache/us_vehicles.csv, col `baseModel`), and nl/nz/fi spell them apart.
+  #
+  # This is DEBT row 56 exactly — a pooled uk_dft GenModel — and DEBT row 56's
+  # own ruling applies unchanged: "CURATION CANNOT DO IT". A renames key is 1:1
+  # on the produced string, so it can only ever move seven nameplates onto an
+  # eighth. The fix is batch item 11 (the uk_dft 4W Model-column reader, the move
+  # G-1 already made for two-wheelers); this bucket is one of its largest
+  # instances and is worth gb on SEVEN Jaguar ids that publish without it today
+  # (xj, xj6, xj8, xj12, xjr, xjr-s, xj220). Left pointed where it is until then —
+  # NOT because that is right, but because moving it is not more right and the
+  # owner, not this branch, should choose which false negative to carry.
+  Xj Series: XJ-S                         # REFILED, see the block above: pooled GenModel, 8 published nameplates in one bucket, unsplittable from overrides/ (cache/uk_veh0120_uk.csv `Model`; DEBT row 56)
+  Xj Sovereign: Xj                        # REPOINT (was -> XJ-S). Sovereign was the XJ saloon's top trim from 1983 and was never an XJ-S trim; the catalog already ships `XJ6 Sovereign: XJ6` on that same reading (fi_traficom x5, nl_rdw x1) — https://en.wikipedia.org/wiki/Jaguar_XJ
+  Xj Sport: Xj                            # REPOINT (was -> XJ-S). EPA/DOE baseModel maps "XJ Sport" -> "XJ" (cache/us_vehicles.csv, `baseModel`, 2 rows), and the DVLA writes "XJ SPORT V8 AUTO" x996 inside the XJ SERIES bucket (ca_nrcan, fi x3, lu x1, nl x4 over two spellings, us_fueleconomy)
+  Xj Supercharged: Xj                     # REPOINT (was -> XJ-S). The supercharged car is the X350/X358 XJ Supercharged and the XJR; no XJ-S ever left the factory supercharged, and the TWR XJR-S was a normally-aspirated 6.0 V12 (ca_nrcan, nl_rdw x1) — https://en.wikipedia.org/wiki/Jaguar_XJ_(X350)
   Xjs: XJ-S                               # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
   Xjs Auto: XJ-S                          # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
   Xjs He Auto: XJ-S                       # XJ-S is the launch name (1975); the hyphen was dropped from the badge only at the 1991 facelift, and Jaguar heritage still writes XJ-S. Engine/trim suffixes (HE, V12, Auto) and the XJ-SC cabriolet body fold into the nameplate (https://www.jaguarheritage.com/jaguar-world-may-2018-jaguar-convertible-at-30/)
