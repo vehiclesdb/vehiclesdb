@@ -18230,3 +18230,70 @@ And Turn 227's retraction is noted with respect: the two-derivations
 diff habit goes in the method book beside the frozen cache.
 
 **S4W addendum (owner-directed, 2026-08-01, same program as #162):** CITATION.cff added (GitHub "Cite this repository" support) + a Citing subsection in the README (APA + BibTeX, designated title "VehiclesDB: the open source vehicle database", cite-the-version guidance). README-only again; no data changes. Release-process note: CITATION.cff deliberately carries no version field so it cannot go stale — the citation text tells users to cite manifest.json.
+
+---
+
+## Turn 228 — S2W — the G-1 residual is fixed for the hyphen shape: pipeline#116 + data#165. 79,843 pooled UK vehicles measured, 37,216 rescued, `yamaha/mt` retired the way G-1 retired `yamaha/xp`.
+
+**Shipped.** `pipeline#116` (uk_dft designation rescue) + `data#165`
+(removals, spotchecks, styling). Control vs treatment, origin/main both repos,
+frozen cache, all six kinds: **14,065 → 14,067 · DISAPPEARED 1 (manifested) ·
+GAINED gb 6 · NEW 3 · LOSSES 0.**
+
+**What it is.** G-1 assumed a Model string's digits are a DISPLACEMENT. Yamaha
+writes an INDEX — `MT-07` where Honda writes `CBR1000` — so `TW_NAMEPLATE`
+reads family `MT-` + capacity **7**, fails `TW_CC_RANGE`, and drops the row on
+the bare GenModel stub. Same single-id-holding-a-range defect G-1 was built to
+remove, one make over. **My code, my bug.**
+
+`motorcycle/yamaha/mt` was **gb-only, decile 1, 27,971 vehicles** — a pure DfT
+family label. Its five real successors (`mt-09` 11,474 · `mt-07` 9,194 ·
+`mt-10` 5,038 · `mt-03` 1,775 · `mt-01` 490) **already published from other
+countries without gb**. So this is not a record disappearing; it is gb evidence
+arriving on the right six records. Retired via `removals.yml` with a manifest,
+in the same idiom and directly below `yamaha/xp` and `yamaha/xsr` — which G-1
+itself retired for exactly this reason.
+
+**Scope held deliberately.** Only the HYPHEN shape. The SPACE shape (§C-3 —
+`YZF R125`, `TRACER 9 GT`, `XJ 6 N`) is untouched, leaving 24,411 on
+`yamaha/yzf` plus `fz`/`tracer`/`xj`/`x`. **A spotcheck now asserts that
+residual still exists**, so whoever widens the rule cannot silently skip its
+disposition.
+
+**Two bugs in my own work, both caught by CROSS-DERIVATION, not by review.**
+
+1. **The rescue was unreachable for half its targets.** `m = model.match(...)
+   or return count_fallback` exits before the rescue whenever `TW_NAMEPLATE`
+   cannot parse the string *at all* — precisely the `YZF-R1` class. Caught
+   because the implementation disagreed with the simulation that justified it:
+   **8,633 vehicles in the sim, 0 in the build.** Non-match and out-of-range now
+   share one path, and the two spotchecks are split across the two branches on
+   purpose (`mt-07` guards out-of-range, `yzf-r1` guards non-match).
+2. **The column bug from Turn 227**, which is where this started.
+
+**The reusable habit, and I want it in the method notes:** *derive every
+important number twice, by different routes, and diff.* Not "check it" — the
+first version of each of these numbers was checked and looked fine. It was the
+second, structurally different derivation that exposed both. Adapter-level
+replay vs hand-rolled CSV replay for the column bug; simulation vs build for the
+unreachable branch. Cheap, and it caught two errors in one evening that no gate
+and no reviewer would have.
+
+**New ids minted, all verified before shipping** rather than after:
+`mutt/rs-13` (gb+nl) and `neco/nc-n01` (gb+lu) carry **independent
+two-register attestation**; `beta/rev-3` is a real trials bike DfT writes as
+GenModel `BETA REV` + Model `REV-3`. `neco/nc-n01` ships with a `styling.yml`
+pin so it publishes as `NC-N01` and not the caser's `Nc-N01` — spelled right at
+birth rather than corrected in a later wave.
+
+**Board position.** BMW-M (pipeline#115 + data#163) awaiting verification;
+G-1 residual (pipeline#116 + data#165) awaiting verification. **Both are
+coupled pairs where the pipeline half must merge first** — #165's build will
+fail until #116 lands, by construction, and I have said so on the PR so nobody
+reads it as a defect.
+
+**Still open, still want the ruling from Turn 227:** the §A yamaha folds are
+keyed on raws that §C-1 (parenthetical `junk?`, 10,726 NL + 2,388 UK) will move
+again. I have not started them. Sequence I recommend: **#116 merges → C-1 →
+then the 37 clusters.** If you would rather I start the folds now and re-key
+afterwards, say so and I will.
