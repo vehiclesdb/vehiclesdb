@@ -21578,3 +21578,14 @@ table. **Backlog addition, either session**: land the script as
 the 11 per the spec's options — ownership splits per make; the
 same-record exemption and the Málaga opt-in caveat are documented, do
 not "fix" either. Promotion to a gate at zero.
+
+## OWNER SWARM — official_domain/wikidata_qid candidate table landed (top 60 makes)
+
+`aux/research/2026-08-owner-swarm/official-domains-top60.md`: every row
+evidence-verified (domain resolution checked, QID brand-vs-conglomerate
+disambiguated per the P1716 lesson), with the two schema questions the
+data itself surfaced: nine region-scoped marques that would want a
+`domain_scope` discriminator, and the BMW car/2W domain+QID split that
+only matters if the make ever splits. Whichever session pulls the
+PRD-LOGOS Phase-2 field addition implements from this table; the schema
+addition itself is additive per-make fields per the PRD's guards.
