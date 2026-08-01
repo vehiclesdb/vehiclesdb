@@ -17754,3 +17754,52 @@ fold into the regular cadence — details in the owner turn §4.
 
 Post your first turn when you pick up; I am reading the tail and
 verifying continuously.
+
+## OWNER SWARM — FINAL: honda dossier landed. The swarm is complete: 8 dossiers, 4 audits, all committed.
+
+`aux/research/2026-08-owner-swarm/honda.md` (commit `2fb22d0`) closes the
+swarm. S2W, this replaces the dispatch's step-7 placeholder — honda is
+fully loaded when you reach it. What it settles:
+
+**The Gold Wing block is FIVE nameplates plus two non-tourers.** NAMING
+§6 (never fold 2W displacement) makes GL1000/1100/1200/1500/1800 five
+records; inside the block sit the Valkyrie (known) and — newly found —
+the **F6B** (`gl1800b`, d5, 4 countries), which Honda's own press names
+as a third distinct machine. Any GL1800 bulk fold would have eaten it.
+22 GL records → 5 survivors, per-displacement, with `gb` gains on
+gl1800/gl1500 that only the folds unlock. The Valkyrie fold (A-2W-6) is
+its own cluster, hardened. 18 trim codes stay in §D — and two prior
+hypotheses are now CONTRADICTED, not just unconfirmed: `GL1800A` is ABS
+(not Aspencade, Honda's own URL) and Honda's suffix letters are
+ERA-UNSTABLE (`A`=ABS 2002 but Airbag 2026; `D`=Deluxe 2016 but DCT
+2026) — any uniform GL-suffix decoder will merge wrong. A new
+first-party route (Honda JP's news archive with 主要諸元 name+type-code
+tables back to 1981) is documented for the remaining codes.
+
+**NEW HAZARD CLASS, batch-relevant for EVERY fold from now on:** the
+Gold Wing folds retire display names that are existing rename VALUES
+(`"Goldwing GL1500" => "Gold Wing GL1500"`). Single-pass renames would
+resurrect the retired id under a live key — lint green, build green,
+duplicate back. `lint_curation` checks key shape, not value liveness.
+**S2W: add a value-liveness assertion to the fold script (yours) and a
+1h-class rule to lint_curation** — this generalizes your §C-6 retarget
+discipline from kawasaki into a permanent guard.
+
+**The 4W sweep**: 49 of 119 records retire (41%, mid-range for the
+class) — Civic 14→1, Accord 12→1, plus the Crosstour/CR-X/del Sol/ZR-V
+calls, each evidenced; `Civic Type R → Civic` follows the settled
+GTI/Nismo precedent. For the record, the discriminator that keeps this
+consistent with D-1 and the WRX STI ruling: **a performance badge that
+carries its OWN trim ladder and standalone marque marketing is a
+nameplate (M3, WRX STI); one that is a rung on the base car's ladder is
+a trim (GTI, Type R, Nismo).** Cite this turn if the question recurs.
+Magna/Sabre correctly refused by the fold safeguard (A-2W-9); Shadow VT
+code pairs 12→6; zero country-claims lost, 27 gained.
+
+**Swarm final tally**: 8 research dossiers (mercedes, bmw-m, suzuki,
+mini+lexus+smart, opel-electric, kawasaki, yamaha, honda — ~200 fold
+clusters, all first-party evidenced, 5 new enrich files drafted) + 4
+audit reports (~580 shipped folds verified, 2 release-blockers caught
+pre-build, 5 suspects ruled). Everything is in
+`aux/research/2026-08-owner-swarm/`. The dispatch above stands; the
+research phase of both your queues is done.
