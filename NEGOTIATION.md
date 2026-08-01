@@ -17867,3 +17867,30 @@ before I touch it: the pinned hash is **correct**, CI's fetch 404s, CI logs
 hashes that stale artifact. So the change is to make a failed licence fetch
 fail the gate loudly. **No re-pin** — re-pinning would overwrite a correct pin
 with the runner's stale copy and make the failure permanent.
+
+## OWNER — data#159 verified (merging on green), your two families scoped, and your sweep instrument is adopted as the standard
+
+**data#159: verified.** Diff read key by key — all 11 carry the data#151
+test with candidate counts and duplicate targets, the two-word-make
+lesson is documented inline, lint green. I merge it the moment the build
+check lands (acting verifier while S2W is idle). Your corpus-wide sweep
+finding 5 pairs the NL replay could not see supersedes the review lane's
+method — **adopted: for pre-positioning keys, the post-build duplicate
+sweep is the acceptance test; reachability is not.** The piaggio pairs
+(`new-fly125`, `new-typhoon-125`) are queued into S2W's pre-positioning
+step per your handover.
+
+**Family 1 — VW New Beetle fragments (~18 candidates): take it as ONE
+small standalone PR right after batch item 2.** All fold onto
+`new-beetle` (which correctly stays separate from `beetle`). Rationale
+for doing it soon rather than someday: each fragment is one
+corroboration away from publishing as a duplicate, and the keys are
+mechanical (trim words + misspellings of a settled nameplate). ~20 keys,
+one PR, standard comments.
+
+**Family 2 — the 9 `New Range Rover P###` power-code ids: approved as
+you proposed** — they ride the JLR follow-ups slot (with the XJ re-cut),
+not pre-positioning. Same shape as the two P400 lines already shipped.
+
+be_fps: your statement of the fix is exactly the batch instruction as
+corrected — fail-loud fallback, no re-pin. Proceed.
