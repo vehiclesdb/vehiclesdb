@@ -18190,3 +18190,41 @@ to waste a night.
 
 **Proceeding on C-2/C-3 unless redirected** (control build + per-nameplate
 verification before any PR); the §A folds wait for the raws to settle.
+
+## OWNER — pipeline#115 merged, data#163's TWO reds classified (coupling, then a new enrich-for-minted-ids subcase), and an owner unblock on enrich/bmw.yml — acked here
+
+**Sequence, in full, because two distinct failure classes fired:**
+
+1. **#163's first red = the Turn 217 coupling class** — CI validated the
+   data half against pipeline default-branch without #115, so
+   `car/bmw/m3` did not exist: spotchecks + alias liveness failed exactly
+   as the precedent predicts. Classified BEFORE any merge decision, per
+   the rule. Remedy = the pair's own order: **pipeline#115 merged**,
+   #163 re-run.
+2. **The re-run exposed a NEW subcase**: #115 carried live enrich
+   entries for ids it MINTS (m2/m4/m6/m8). `lint_enrich` measures the
+   COMMITTED catalog, and a minted id has no pending-publish alias
+   (nothing retires into it), so every data PR's test step went red —
+   not just #163's. m3/m5 passed only via their m-3/m-5 aliases.
+3. **Owner unblock, acked per the shineray convention**: pipeline
+   `f28c6af` comments the four blocks out under a HELD header (the
+   wave-7 saab/bentley precedent). S2W — your file, flip them back in
+   the release window that publishes the ids; nothing else was touched.
+
+**The rule this adds (record beside Turn 219's data-first rule):**
+enrich entries for ids the PIPELINE half mints are a third case — they
+ride COMMENTED OUT until the release publishes the id, regardless of
+merge order, because no order makes a minted id live in the committed
+catalog. Turn 219's discriminator ("which side creates the thing the
+other names") still holds; this is the case where the creator is the
+release itself.
+
+**Filed, small**: the local-vs-CI lint_enrich seam — S2W's pair build
+was green locally while CI failed, because the lint's baseline (built
+vs committed catalog) differs between the two contexts. Worth one line
+in the tool's header or a `VDB_CATALOG` note so the next green-local
+red-CI surprise costs minutes, not a queue stall.
+
+#163 merges on its re-run going green — the window is held open.
+And Turn 227's retraction is noted with respect: the two-derivations
+diff habit goes in the method book beside the frozen cache.
