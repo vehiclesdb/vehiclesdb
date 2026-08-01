@@ -1737,7 +1737,7 @@
 "car/pontiac/starchief": "car/pontiac/star-chief"
 "car/pontiac/tempest-lemans": "car/pontiac/tempest-le-mans"
 "car/pontiac/transam": "car/pontiac/trans-am"
-"car/porsche/924s": "car/porsche/924-s"
+"car/porsche/924s": "car/porsche/924"   # REPOINTED 2026-08-01 (wave 7): was -> car/porsche/924-s, which the trim fold retires. Leaving it would CHAIN into a dead id and fail the id-contract liveness gate — reproduced on a real build
 "car/ram/1500-trx": "van/ram/1500-trx"
 "car/renault/r-12": "car/renault/12" # [flattened 2026-07-26: r-12 -> r12 -> 12; the R-prefix shorthand folds into the numeral in the RD trim batch]
 "car/renault/r-19": "car/renault/19" # [flattened 2026-07-26: r-19 -> r19 -> 19; same]
@@ -1762,10 +1762,10 @@
 "car/rover/vanden-plas": "car/rover/van-den-plas"
 "car/saab/9-4x": "car/saab/9-4-x"
 "car/saab/9-7x": "car/saab/9-7-x"
-"car/saab/900i": "car/saab/900-i"
-"car/saab/900s": "car/saab/900-s"
+"car/saab/900i": "car/saab/900"        # REPOINTED 2026-08-01 (wave 7): was -> car/saab/900-i, which the trim fold retires; a chain into a dead id fails the id-contract liveness gate
+"car/saab/900s": "car/saab/900"        # REPOINTED 2026-08-01 (wave 7): was -> car/saab/900-s, same reason
 "car/saab/94x": "car/saab/9-4-x"
-"car/saab/95-aero": "car/saab/9-5-aero"
+"car/saab/95-aero": "car/saab/9-5"     # REPOINTED 2026-08-01 (wave 7): was -> car/saab/9-5-aero, which the trim fold retires; the statement ("a trimmed 95 is a 9-5") is preserved one altitude higher
 "car/seat/127-sport": "car/seat/127"
 "car/seat/altea-4-freetrack": "car/seat/altea"
 "car/seat/altea-freetrack": "car/seat/altea"
@@ -2687,10 +2687,10 @@
 "car/jaguar/xj-6": "car/jaguar/xj6"
 "car/morgan/plus8": "car/morgan/plus-8"
 "car/morris/mini1000": "car/morris/mini-1000"
-"car/saab/900i-16v": "car/saab/900-i-16v"
-"car/saab/900se": "car/saab/900-se"
-"car/saab/900-t16": "car/saab/900-t-16"
-"car/saab/96v4": "car/saab/96-v4"
+"car/saab/900i-16v": "car/saab/900"    # REPOINTED 2026-08-01 (wave 7): was -> car/saab/900-i-16v, which the trim fold retires; a chain into a dead id fails the id-contract liveness gate
+"car/saab/900se": "car/saab/900"       # REPOINTED 2026-08-01 (wave 7): was -> car/saab/900-se, same reason
+"car/saab/900-t16": "car/saab/900"     # REPOINTED 2026-08-01 (wave 7): was -> car/saab/900-t-16, same reason
+"car/saab/96v4": "car/saab/96"         # REPOINTED 2026-08-01 (wave 7): was -> car/saab/96-v4, same reason
 # ---------------------------------------------------------------------------
 # 2026-07-26 — swarm-dossier batch: american tail (chevrolet Option A/jeep/
 # willys/skoda/smart/vinfast/ford/mercedes-benz; 17 groups → 0). CJ direction
@@ -6222,3 +6222,191 @@
 "car/vauxhall/viva-deluxe":           "car/vauxhall/viva"                    # renames.yml Vauxhall: Viva Deluxe -> Viva  [fi,gb,nl,nz]
 "car/vauxhall/vx220-turbo":           "car/vauxhall/vx220"                   # renames.yml Vauxhall: VX220 Turbo -> VX220  [es,fi,gb,nl,nz]
 "van/vauxhall/astravan":              "van/vauxhall/astra"                   # renames.yml Vauxhall: Astravan -> Astra  [gb]
+# ---------------------------------------------------------------------------
+# 2026-08-01 — wave-7 MARQUE CLEAN pass: Saab + Porsche + Bentley (138 ids).
+#
+# Three folds with three different pieces of evidence, all of them the marque's
+# own:
+#
+#   SAAB (64).  data#141 minted car/saab/9-3 and car/saab/9-5 hours before this
+#     pass: junk? had been deleting both on every build since the catalog
+#     existed, because a bare "9-3" has no letters and the hyphen disqualifies
+#     it from the "2-4 digits" escape. The 26 "9-3 <trim>" / "9-5 <trim>"
+#     records that published all along off the SAME registers are therefore not
+#     siblings of the nameplates — they ARE the nameplates, wearing a trim word
+#     that smuggled a letter past the heuristic. Saab's own trim ladder
+#     (Linear / Vector / Arc / Aero) is the evidence:
+#     https://en.wikipedia.org/wiki/Saab_9-3 . The 900/9000/9x families follow
+#     the same rule: body letters (CS/CD/CSE/CDE), equipment levels (S/SE/GL)
+#     and engine badges (V4/T16/Turbo/i) are not models.
+#
+#   PORSCHE (41).  GENERATION CODES ARE NOT NAMEPLATES. Porsche's own press kit
+#     enumerates "Third/Fourth/Fifth/Sixth/Seventh/Eighth generation Porsche 911
+#     (964)/(993)/(996)/(997)/(991)/(992)" —
+#     https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911.html —
+#     and 964 is "known internally as the type 964". 986/987 are the Boxster's
+#     type numbers and 356 A/B/C are four series of one "model line 356"
+#     (Porsche's own phrase). The same axis as Skoda's Octavia A5/A7.
+#
+#   BENTLEY (33).  Bentley's range page lists the products and the Continental
+#     GT page groups the rest under "The Continental GT Range ... available in
+#     a choice of five stunning models" —
+#     https://www.bentleymotors.com/en/models/continental-gt.html . Bentley's
+#     own press wording names the boundary: "a benchmark model identified by
+#     its NAMEPLATE, an Azure variant ..., and a Speed model ...".
+#
+# Measured on a real build against pipeline origin/main (validate: ALL GATES
+# GREEN): 0 (country,source) pairs lost on any of the 138; 9 country GAINS on
+# 9 survivors; cross_kind_prune! output byte-identical to the control build in
+# all six kinds; 0 ids removed under any other make, in any kind.
+#
+# HELD, deliberately, and stated in the PR body: the 9-4X/9-7X marque spelling
+# (closing it mints van/saab/9-7x for a full-size SUV at grand=31, BELOW
+# cross_kind_prune!'s grand>=100 floor, so the safety net cannot clean it up)
+# and the Bentley Mark VI cluster (DEBT's filed U7 Roman-numeral class).
+# ---------------------------------------------------------------------------
+
+# saab — 64 ids
+"car/saab/9-2x-wagon":          "car/saab/9-2x"   # renames.yml Saab: 9-2X Wagon -> 9-2X  [ca,us]
+"car/saab/9-3-1-8t":            "car/saab/9-3"    # renames.yml Saab: 9-3 1.8T -> 9-3  [fi,nl]
+"car/saab/9-3-aero":            "car/saab/9-3"    # renames.yml Saab: 9-3 Aero -> 9-3  [ca,es,fi,nl,nz,us]
+"car/saab/9-3-aero-sportsedan": "car/saab/9-3"    # renames.yml Saab: 9-3 Aero Sportsedan -> 9-3  [fi,nl]
+"car/saab/9-3-arc":             "car/saab/9-3"    # renames.yml Saab: 9-3 Arc -> 9-3  [ca,nl,nz]
+"car/saab/9-3-linear":          "car/saab/9-3"    # renames.yml Saab: 9-3 Linear -> 9-3  [fi,nz]
+"car/saab/9-3-linear-sportcom": "car/saab/9-3"    # renames.yml Saab: 9-3 Linear Sportcom -> 9-3  [fi,nl]
+"car/saab/9-3-linearplus-spor": "car/saab/9-3"    # renames.yml Saab: 9-3 Linearplus Spor -> 9-3  [fi,nl]
+"car/saab/9-3-se":              "car/saab/9-3"    # renames.yml Saab: 9-3 Se -> 9-3  [ca,fi,nl]
+"car/saab/9-3-sport":           "car/saab/9-3"    # renames.yml Saab: 9-3 Sport -> 9-3  [ca,fi,nl,us]
+"car/saab/9-3-sportcombi":      "car/saab/9-3"    # renames.yml Saab: 9-3 Sportcombi -> 9-3  [ca,nl,us]
+"car/saab/9-3-sportsedan":      "car/saab/9-3"    # renames.yml Saab: 9-3 Sportsedan -> 9-3  [fi,nl]
+"car/saab/9-3-turbo":           "car/saab/9-3"    # renames.yml Saab: 9-3 Turbo -> 9-3  [ca,nz]
+"car/saab/9-3-turbo-x":         "car/saab/9-3"    # renames.yml Saab: 9-3 Turbo X -> 9-3  [fi,nl]
+"car/saab/9-3-vector":          "car/saab/9-3"    # renames.yml Saab: 9-3 Vector -> 9-3  [fi,nl,nz]
+"car/saab/9-3-viggen":          "car/saab/9-3"    # renames.yml Saab: 9-3 Viggen -> 9-3  [nl,us]
+"car/saab/9-3x":                "car/saab/9-3"    # renames.yml Saab: 9-3X -> 9-3  [fi,nl]
+"car/saab/9-3x-2-0t-xwd":       "car/saab/9-3"    # renames.yml Saab: 9-3X 2.0T Xwd -> 9-3  [fi,nl]
+"car/saab/9-4x-premium":        "car/saab/9-4-x"  # renames.yml Saab: 9-4X Premium -> 9-4 X  [fi,nl]
+"car/saab/9-5-2-3ts":           "car/saab/9-5"    # renames.yml Saab: 9-5 2.3TS -> 9-5  [fi,nl]
+"car/saab/9-5-aero":            "car/saab/9-5"    # renames.yml Saab: 9-5 Aero -> 9-5  [fi,nl,nz]
+"car/saab/9-5-aero-2":          "car/saab/9-5"    # renames.yml Saab: 9-5 Aero 2 -> 9-5  [fi,nl]
+"car/saab/9-5-linear":          "car/saab/9-5"    # renames.yml Saab: 9-5 Linear -> 9-5  [fi,nl,nz]
+"car/saab/9-5-linear-sportcom": "car/saab/9-5"    # renames.yml Saab: 9-5 Linear Sportcom -> 9-5  [fi,nl]
+"car/saab/9-5-s":               "car/saab/9-5"    # renames.yml Saab: 9-5 S -> 9-5  [fi,nl]
+"car/saab/9-5-se":              "car/saab/9-5"    # renames.yml Saab: 9-5 Se -> 9-5  [fi,nl]
+"car/saab/9-5-se-4d-2-0t":      "car/saab/9-5"    # renames.yml Saab: 9-5 Se 4D 2.0T -> 9-5  [fi,nl]
+"car/saab/9-5-sportcombi":      "car/saab/9-5"    # renames.yml Saab: 9-5 Sportcombi -> 9-5  [nl,us]
+"car/saab/9-5-vector":          "car/saab/9-5"    # renames.yml Saab: 9-5 Vector -> 9-5  [fi,nl,nz]
+"car/saab/9-5-wagon":           "car/saab/9-5"    # renames.yml Saab: 9-5 Wagon -> 9-5  [ca,us]
+"car/saab/900-c":               "car/saab/900"    # renames.yml Saab: 900 C -> 900  [fi,nl]
+"car/saab/900-i":               "car/saab/900"    # renames.yml Saab: 900 I -> 900  [fi,nl,nz]
+"car/saab/900-i-16v":           "car/saab/900"    # renames.yml Saab: 900 I 16V -> 900  [nl,nz]
+"car/saab/900-s":               "car/saab/900"    # renames.yml Saab: 900 S -> 900  [ca,fi,nl,nz,us]
+"car/saab/900-s-turbo":         "car/saab/900"    # renames.yml Saab: 900 S Turbo -> 900  [ca,nl]
+"car/saab/900-se":              "car/saab/900"    # renames.yml Saab: 900 Se -> 900  [ca,fi,nl,nz,us]
+"car/saab/900-se-turbo":        "car/saab/900"    # renames.yml Saab: 900 Se Turbo -> 900  [ca,nl]
+"car/saab/900-t-16":            "car/saab/900"    # renames.yml Saab: 900 T 16 -> 900  [es,fi,nl]
+"car/saab/900-t-16-s":          "car/saab/900"    # renames.yml Saab: 900 T 16 S -> 900  [fi,nl]
+"car/saab/900-ts":              "car/saab/900"    # renames.yml Saab: 900 Ts -> 900  [nl,nz]
+"car/saab/900-turbo":           "car/saab/900"    # renames.yml Saab: 900 Turbo -> 900  [ca,fi,nl,nz]
+"car/saab/900t":                "car/saab/900"    # renames.yml Saab: 900T -> 900  [nl,nz]
+"car/saab/9000-aero":           "car/saab/9000"   # renames.yml Saab: 9000 Aero -> 9000  [fi,nl,nz]
+"car/saab/9000-cd":             "car/saab/9000"   # renames.yml Saab: 9000 Cd -> 9000  [fi,nl,nz]
+"car/saab/9000-cde":            "car/saab/9000"   # renames.yml Saab: 9000 Cde -> 9000  [ca,nl]
+"car/saab/9000-cs":             "car/saab/9000"   # renames.yml Saab: 9000 Cs -> 9000  [fi,lu,nl,nz]
+"car/saab/9000-cse":            "car/saab/9000"   # renames.yml Saab: 9000 Cse -> 9000  [ca,fi,nl,nz]
+"car/saab/9000-turbo":          "car/saab/9000"   # renames.yml Saab: 9000 Turbo -> 9000  [ca,fi,nl,nz]
+"car/saab/9000-turbo-16v":      "car/saab/9000"   # renames.yml Saab: 9000 Turbo 16V -> 9000  [fi,nl]
+"car/saab/92-b":                "car/saab/92"     # renames.yml Saab: 92 B -> 92  [fi,nl]
+"car/saab/92-de-luxe":          "car/saab/92"     # renames.yml Saab: 92 De Luxe -> 92  [fi,nl]
+"car/saab/95-v4":               "car/saab/95"     # renames.yml Saab: 95 V4 -> 95  [fi,nl]
+"car/saab/96-gl":               "car/saab/96"     # renames.yml Saab: 96 GL -> 96  [es,fi,nl]
+"car/saab/96-v4":               "car/saab/96"     # renames.yml Saab: 96 V4 -> 96  [fi,nl,nz]
+"car/saab/96l":                 "car/saab/96"     # renames.yml Saab: 96L -> 96  [fi,nz]
+"car/saab/99-ems":              "car/saab/99"     # renames.yml Saab: 99 Ems -> 99  [fi,nl]
+"car/saab/99-turbo":            "car/saab/99"     # renames.yml Saab: 99 Turbo -> 99  [fi,nl]
+"car/saab/99gl":                "car/saab/99"     # renames.yml Saab: 99GL -> 99  [fi,nl]
+"car/saab/99l":                 "car/saab/99"     # renames.yml Saab: 99L -> 99  [nl,nz]
+"car/saab/97-sonett":           "car/saab/sonett" # renames.yml Saab: 97 Sonett -> Sonett  [fi,nl]
+"car/saab/sonet":               "car/saab/sonett" # renames.yml Saab: Sonet -> Sonett  [fi,nl]
+"car/saab/sonett-3":            "car/saab/sonett" # renames.yml Saab: Sonett 3 -> Sonett  [fi,nl,nz]
+"car/saab/sonett-v4":           "car/saab/sonett" # renames.yml Saab: Sonett V4 -> Sonett  [fi,nz]
+"car/saab/sonnett":             "car/saab/sonett" # renames.yml Saab: Sonnett -> Sonett  [es,nl]
+
+# porsche — 41 ids
+"car/porsche/1500":          "car/porsche/356"     # renames.yml Porsche: 1500 -> 356  [nl,nz]
+"car/porsche/1600":          "car/porsche/356"     # renames.yml Porsche: 1600 -> 356  [nl,nz]
+"car/porsche/356a":          "car/porsche/356"     # renames.yml Porsche: 356A -> 356  [nl,nz]
+"car/porsche/356b":          "car/porsche/356"     # renames.yml Porsche: 356B -> 356  [fi,nl,nz]
+"car/porsche/356b-1600":     "car/porsche/356"     # renames.yml Porsche: 356B/1600 -> 356  [fi,nl]
+"car/porsche/356c":          "car/porsche/356"     # renames.yml Porsche: 356C -> 356  [nl,nz]
+"car/porsche/356sc":         "car/porsche/356"     # renames.yml Porsche: 356SC -> 356  [nl,nz]
+"car/porsche/365a":          "car/porsche/356"     # renames.yml Porsche: 365A -> 356  [nl,nz]
+"car/porsche/speedster":     "car/porsche/356"     # renames.yml Porsche: Speedster -> 356  [nl,nz]
+"car/porsche/super":         "car/porsche/356"     # renames.yml Porsche: Super -> 356  [nl,nz]
+"car/porsche/911carrera":    "car/porsche/911"     # renames.yml Porsche: 911CARRERA -> 911  [lu,nl,nz]
+"car/porsche/911carrera4":   "car/porsche/911"     # renames.yml Porsche: 911CARRERA4 -> 911  [lu,nl]
+"car/porsche/911e":          "car/porsche/911"     # renames.yml Porsche: 911E -> 911  [fi,nl,nz]
+"car/porsche/911gt3":        "car/porsche/911"     # renames.yml Porsche: 911GT3 -> 911  [es,nl]
+"car/porsche/911s":          "car/porsche/911"     # renames.yml Porsche: 911S -> 911  [es,fi,nl,nz]
+"car/porsche/911sc":         "car/porsche/911"     # renames.yml Porsche: 911SC -> 911  [fi,lu,nl,nz]
+"car/porsche/911t":          "car/porsche/911"     # renames.yml Porsche: 911T -> 911  [es,fi,lu,nl,nz]
+"car/porsche/930":           "car/porsche/911"     # renames.yml Porsche: 930 -> 911  [fi,nl,nz]
+"car/porsche/964":           "car/porsche/911"     # renames.yml Porsche: 964 -> 911  [es,fi,nl,nz]
+"car/porsche/991":           "car/porsche/911"     # renames.yml Porsche: 991 -> 911  [es,nl]
+"car/porsche/993":           "car/porsche/911"     # renames.yml Porsche: 993 -> 911  [es,nl,nz]
+"car/porsche/996":           "car/porsche/911"     # renames.yml Porsche: 996 -> 911  [ar,fi,nl,nz,ua]
+"car/porsche/997":           "car/porsche/911"     # renames.yml Porsche: 997 -> 911  [nl,nz,ua]
+"car/porsche/carrera":       "car/porsche/911"     # renames.yml Porsche: Carrera -> 911  [ar,ca,es,fi,gb,lu,nl,nz,ua,us]
+"car/porsche/carrera-targa": "car/porsche/911"     # renames.yml Porsche: Carrera/Targa -> 911  [nl,nz]
+"car/porsche/gt3":           "car/porsche/911"     # renames.yml Porsche: GT3 -> 911  [nl,nz]
+"car/porsche/sc":            "car/porsche/911"     # renames.yml Porsche: Sc -> 911  [nl,nz]
+"car/porsche/targa":         "car/porsche/911"     # renames.yml Porsche: Targa -> 911  [ca,fi,nl,nz,us]
+"car/porsche/turbo":         "car/porsche/911"     # renames.yml Porsche: Turbo -> 911  [nl,nz,us]
+"car/porsche/924-s":         "car/porsche/924"     # renames.yml Porsche: 924-S -> 924  [nl,nz]
+"car/porsche/924t":          "car/porsche/924"     # renames.yml Porsche: 924T -> 924  [nl,nz]
+"car/porsche/928s":          "car/porsche/928"     # renames.yml Porsche: 928S -> 928  [nl,nz]
+"car/porsche/928s4":         "car/porsche/928"     # renames.yml Porsche: 928S4 -> 928  [es,fi,nl,nz]
+"car/porsche/944s":          "car/porsche/944"     # renames.yml Porsche: 944S -> 944  [nl,nz]
+"car/porsche/944s2":         "car/porsche/944"     # renames.yml Porsche: 944S2 -> 944  [nl,nz]
+"car/porsche/944turbo":      "car/porsche/944"     # renames.yml Porsche: 944TURBO -> 944  [nl,nz]
+"car/porsche/986":           "car/porsche/boxster" # renames.yml Porsche: 986 -> Boxster  [es,fi,nl,nz]
+"car/porsche/987":           "car/porsche/boxster" # renames.yml Porsche: 987 -> Boxster  [fi,nl]
+"car/porsche/boxter":        "car/porsche/boxster" # renames.yml Porsche: Boxter -> Boxster  [es,fi,nl]
+"car/porsche/boxters":       "car/porsche/boxster" # renames.yml Porsche: Boxters -> Boxster  [es,nl]
+"car/porsche/cayanne":       "car/porsche/cayenne" # renames.yml Porsche: Cayanne -> Cayenne  [es,fi,nl]
+
+# bentley — 33 ids
+"car/bentley/arnage-lwb":                    "car/bentley/arnage"                  # renames.yml Bentley: Arnage Lwb -> Arnage  [ca,nl,us]
+"car/bentley/arnage-rl":                     "car/bentley/arnage"                  # renames.yml Bentley: Arnage Rl -> Arnage  [ca,nl,us]
+"car/bentley/bentayga-azure":                "car/bentley/bentayga"                # renames.yml Bentley: Bentayga Azure -> Bentayga  [es,nl,th]
+"car/bentley/bentayga-ewb":                  "car/bentley/bentayga"                # renames.yml Bentley: Bentayga Ewb -> Bentayga  [ca,us]
+"car/bentley/bentayga-s":                    "car/bentley/bentayga"                # renames.yml Bentley: Bentayga S -> Bentayga  [fi,nl,th]
+"car/bentley/bentayga-s-v8":                 "car/bentley/bentayga"                # renames.yml Bentley: Bentayga S V8 -> Bentayga  [lu,nl]
+"car/bentley/bentayga-speed":                "car/bentley/bentayga"                # renames.yml Bentley: Bentayga Speed -> Bentayga  [ca,es,lu,nl,us]
+"car/bentley/bentayga-v8":                   "car/bentley/bentayga"                # renames.yml Bentley: Bentayga V8 -> Bentayga  [es,lu,nl]
+"car/bentley/bentayga-w12":                  "car/bentley/bentayga"                # renames.yml Bentley: Bentayga W12 -> Bentayga  [lu,nl]
+"car/bentley/brooklands-lwb":                "car/bentley/brooklands"              # renames.yml Bentley: Brooklands Lwb -> Brooklands  [ca,nl]
+"car/bentley/brooklands-r":                  "car/bentley/brooklands"              # renames.yml Bentley: Brooklands R -> Brooklands  [ca,nl,us]
+"car/bentley/continental-flying-spur-speed": "car/bentley/continental-flying-spur" # renames.yml Bentley: Continental Flying Spur Speed -> Continental Flying Spur  [fi,nl]
+"car/bentley/continental-gt-azure":          "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT Azure -> Continental GT  [es,lu,nl]
+"car/bentley/continental-gt-azure-v8":       "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT Azure V8 -> Continental GT  [nl,th]
+"car/bentley/continental-gt-mulliner":       "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT Mulliner -> Continental GT  [fi,nl]
+"car/bentley/continental-gt-s":              "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT S -> Continental GT  [es,lu,nl]
+"car/bentley/continental-gt-s-v8":           "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT S V8 -> Continental GT  [nl,th]
+"car/bentley/continental-gt-speed":          "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT Speed -> Continental GT  [ca,es,fi,lu,nl,us]
+"car/bentley/continental-gt-v8":             "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT V8 -> Continental GT  [es,lu,nl,th,us]
+"car/bentley/continental-gt-v8-s":           "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT V8 S -> Continental GT  [es,fi,nl]
+"car/bentley/continental-gt3-r":             "car/bentley/continental-gt"          # renames.yml Bentley: Continental GT3-R -> Continental GT  [ca,nl,us]
+"car/bentley/eight-u9":                      "car/bentley/eight"                   # renames.yml Bentley: Eight U9 -> Eight  [fi,nl]
+"car/bentley/flying-spur-azure":             "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur Azure -> Flying Spur  [fi,nl,th]
+"car/bentley/flying-spur-mulliner":          "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur Mulliner -> Flying Spur  [es,fi,nl,th]
+"car/bentley/flying-spur-mulliner-w12":      "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur Mulliner W12 -> Flying Spur  [fi,nl]
+"car/bentley/flying-spur-s":                 "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur S -> Flying Spur  [fi,nl]
+"car/bentley/flying-spur-speed":             "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur Speed -> Flying Spur  [ca,es,fi,nl,us]
+"car/bentley/flying-spur-v8":                "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur V8 -> Flying Spur  [fi,nl]
+"car/bentley/flying-spur-w12":               "car/bentley/flying-spur"             # renames.yml Bentley: Flying Spur W12 -> Flying Spur  [es,fi,nl]
+"car/bentley/mulsanne-ewb":                  "car/bentley/mulsanne"                # renames.yml Bentley: Mulsanne Ewb -> Mulsanne  [ca,us]
+"car/bentley/r":                             "car/bentley/r-type"                  # renames.yml Bentley: R -> R Type  [nl,nz]
+"car/bentley/turbo-rl":                      "car/bentley/turbo-r"                 # renames.yml Bentley: Turbo Rl -> Turbo R  [ca,nl]
+"car/bentley/turbo-rt":                      "car/bentley/turbo-r"                 # renames.yml Bentley: Turbo Rt -> Turbo R  [ca,nl,us]
+
