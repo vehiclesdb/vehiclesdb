@@ -5,6 +5,13 @@ Aixam:
   Aixam: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Alfa Romeo:
+  # ── junk?-rescue (2026-08-01, per-row replay of classify). junk?'s
+  # platform-code rule /\A\d[A-Z]\b/ — written for "8D Audi A4" — also matches
+  # a real nameplate that happens to be digit+letter, and deleted every 4C row
+  # in the corpus: 447 vehicles across ca+es+gb+lu+nl+nz+us, 7 sources, no
+  # published record anywhere in the catalog. IDENTITY form: Alfa's canonical
+  # IS "4C" (the block's house form for alphanumeric badges). ──
+  "4C": "4C"                        # https://en.wikipedia.org/wiki/Alfa_Romeo_4C — Maserati-built mid-engine sports car marketed by Alfa Romeo 2013-2020 (coupé 2013-19, Spider 2015-20); raws "ALFA ROMEO 4C" (316), "4C" (131), "4C Coupe"
   # ── casing-contradiction batch (2026-07-26): finish the GTV family the
   # 1750/2000 GTV caps fixes started — the detector reads the seam of
   # half-fixed families. ──
@@ -1231,6 +1238,17 @@ DS:
   No 8: DS N°8                            # registry rendering of N°8
   "3": DS 3                               # "Crossback" was dropped at the 2022-09-26 facelift, marketed as "New DS 3" (https://en.wikipedia.org/wiki/DS_3). The marque word is part of the name and bare "3" is not self-identifying (NAMING.md §1). NB not the fused "DS3": DS writes its models spaced.
   "7": DS 7                               # still the on-sale car; the DS N°7 successor was unveiled 2026-03 and goes on sale 2026-10, so expect KBA to merge this row later
+  # THE SAME OMISSION AS MAZDA "5", found by the same per-row replay
+  # (2026-08-01). The ORDER FIX comment in normalizer.rb names DS "3"/"4"/"7"/"8"
+  # and those four are curated above — but the register also writes the bare
+  # numeral for the 5 and the 9, and those two were never added. Both TARGETS
+  # ALREADY PUBLISH (car/ds/ds-5 on gb+lu+nl, car/ds/ds-9 on fi+gb+lu, off the
+  # fused "DS5"/"DS9" forms keyed below), so this is starving a live record,
+  # not minting one. Measured: "5" = 302 vehicles across es+fi+nl, "9" = 132
+  # across fi+nl. Raws are literally "DS 5" and "DS 9" — the marque token is
+  # stripped by the make-prefix rule, leaving a bare digit for junk? to eat.
+  "5": DS 5                               # https://en.wikipedia.org/wiki/DS_5 — the spaced marque form this block uses throughout; matches the fused DS5 key below and the published car/ds/ds-5
+  "9": DS 9                               # https://en.wikipedia.org/wiki/DS_9 — same; matches the fused DS9 key below and the published car/ds/ds-9
   DS3: DS 3                               # registry form with the marque fused; official spelling is spaced
   DS7: DS 7                               # fused registry form; official spelling is spaced
   DS5: DS 5                               # fused registry form
@@ -3040,6 +3058,8 @@ Mazda:
   "6": MAZDA6                             # same stripping. NB the 2026 car is the electric Mazda6e, but this KBA row also carries the discontinued ICE Mazda6, so it stays on the historic nameplate rather than attributing ICE volume to an EV.
   "2": MAZDA2                             # same stripping (https://www.mazda.de/modelle/)
   "323F": "323"                               # REPOINT (was → "323 F"), NOT a reversal: the settled statement "323F and 323 F are the same car" survives and now lands one altitude higher, on the nameplate, because "323 F" is itself folded by this pass. us_fueleconomy baseModel `323 Wagon` → `323`; the F suffix is the five-door fastback BODY of the same 323 — https://www.fueleconomy.gov/feg/download.shtml · corpus: 1643 vehicles on raws "323F", "MAZDA 323F", "MAZDA 323F,SPORTY"
+  "5": MAZDA5                             # THE MISSING FOURTH SIBLING. Same stripping as 2/3/6 above; those three were rescued by the junk?-ordering fix (normalizer.rb ORDER FIX 2026-07-25) and "5" was missed. Measured cost of the omission on a per-row replay of origin/main classify (2026-08-01): junk?'s letterless test drops 17,158 vehicles across es+fi+gb+lu+my+nl+nz+ua+us / 9 sources, while car/mazda/mazda5 publishes on the 3 countries (ca,fi,lu) whose registers happen to write the fused "MAZDA5". The nameplate is the Premacy's export name, "Mazda5" (2004-2018) — https://en.wikipedia.org/wiki/Mazda_Premacy
+  "6E": MAZDA6e                           # the electric Mazda6e, killed by junk?'s platform-code rule (/\A\d[A-Z]\b/, written for "8D Audi A4"). MINTS car/mazda/mazda6e carrying 1,369 measured vehicles across nl+es+fi+lu. Deliberately NOT pooled onto MAZDA6: the "6" line above already made that call ("it stays on the historic nameplate rather than attributing ICE volume to an EV") and this line completes it rather than reversing it. Lowercase-e suffix follows the block's settled CX-6e — https://www.mazda.de/modelle/
   CX3: CX-3                                   # spelling variant of "CX-3" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   CX30: CX-30                                 # spelling variant of "CX-30" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   CX5: CX-5                                   # spelling variant of "CX-5" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -4551,6 +4571,23 @@ Ryuka:
   "Classic Fi":                                "Classic FI"                               # resolves an intra-make casing contradiction: FI attested x1 in-make (ryuka/classic-fi)
 
 Saab:
+  # ── THE RESCUE (2 lines), 2026-08-01. The 2026-07-26 note below says the
+  # 9-3/9-5 boundary was "checked, untouched — no key here can reach them".
+  # That was true and it was the wrong conclusion to stop at: nothing could
+  # reach them because junk? was DELETING them before any key was consulted.
+  # `name !~ /[A-Za-z]/ && name !~ /\A\d{2,4}\+?\z/` — "9-3" has no letters and
+  # the hyphen disqualifies it from "2-4 digits", so Saab's two best-known
+  # nameplates died on their shape. Measured on a per-row replay of classify
+  # (2026-08-01): 9-3 = 70,404 vehicles / 9 countries / 9 sources, 9-5 = 20,193
+  # / 8 / 8 — thrown away, while the catalog published 15 "9-3 <trim>" and 11
+  # "9-5 <trim>" records off the SAME registers. The trims survived only
+  # because a trim word supplies the letter the bare nameplate lacks; that is
+  # the whole difference, and it is an artefact of the heuristic, not a fact
+  # about Saab. IDENTITY form (the Renault "4"/"5"/"8"/"9" precedent in this
+  # file): Saab's canonical IS the bare numeral pair, unlike Mazda's
+  # "3": MAZDA3 where the canonical embeds the marque word. ──
+  "9-3": "9-3"               # https://en.wikipedia.org/wiki/Saab_9-3 — one nameplate 1998-2014; raws "SAAB 9-3" (62,220), "9-3" (8,099), "9-3 CABRIOLET", "Saab 9-3"
+  "9-5": "9-5"               # https://en.wikipedia.org/wiki/Saab_9-5 — one nameplate 1997-2012; raws "SAAB 9-5" (15,443), "9-5" (4,712), "9-5 ESTATE", "Saab 9-5"
   # ── swarm-dossier batch (2026-07-26): 93/95 vs 9-3/9-5 boundary checked,
   # untouched — no key here can reach them. ──
   "900I 16V": "900 I 16V"    # 900i 16-valve, same nameplate; follows this block's own "900I": "900 I" (en.wikipedia Saab_900)
@@ -6239,6 +6276,17 @@ Yamaha:
   "Xj":                                  "XJ"                                   # uniformly-wrong casing (invisible to the contradiction detector): Yamaha XJ6, XJR1300 — the XJ line is always caps (yamaha/xj)
   "Virago XV535":                            "XV535 Virago"                 # PERMUTATION FOLD (verified batch, tier A): XV-first 17 vs Virago-first 3.
   "Virago XV750":                            "XV750 Virago"                 # PERMUTATION FOLD (verified batch, tier A): XV-first 493 vs Virago-first 2.
+
+Zeekr:
+  # ── NEW BLOCK, junk?-rescue (2026-08-01, per-row replay of classify). Same
+  # platform-code rule as Alfa Romeo "4C" (/\A\d[A-Z]\b/, written for "8D Audi
+  # A4"), and here it produces a self-refuting result: the rule needs a WORD
+  # BOUNDARY after the letter, so Zeekr's "7GT" publishes (car/zeekr/7gt) while
+  # its sibling "7X" — same marque, same naming grammar, one letter shorter —
+  # is deleted. 5,804 vehicles across de+es+my+nl+nz+th+ua, 7 sources, no
+  # record anywhere. IDENTITY form: the catalog already publishes this make's
+  # alphanumeric badges bare (001, 009, 7GT, X). ──
+  "7X": "7X"                # https://en.wikipedia.org/wiki/Zeekr_7X — battery-electric mid-size crossover SUV, in production since 2024-09-17; raws "7X" (5,453), "ZEEKR 7X" (344), "7X 100KW 4WD"
 
 Zero Motorcycles:
   # Residue of a SINGULAR/PLURAL mismatch between the two columns, not a naming
