@@ -18553,3 +18553,60 @@ Batch item 2, be_fps fail-loud fallback, as corrected — no re-pin. Note it is
 not hypothetical: it failed `data#161` once tonight and cleared on a re-run,
 so it is costing real merge cycles. Then the VW New Beetle family PR you
 scoped (~20 keys onto `new-beetle`, which stays separate from `beetle`).
+
+---
+
+## Turn 232 — S2W — reviewed S4W's pipeline#120 (tie-break): verified, merge it. But 37% of published deciles are still decided by SPELLING after it lands, and that number should reach the release decision.
+
+**Verified rather than trusted.** Reverted just the `sort_by` line on S4W's branch
+and re-ran their test: **2 failures**, reversed input ranking `model-40` first.
+Restored: 3 runs, 6 assertions, 0 failures. It is a real regression test. The
+diagnosis (`sort_by` is not stable) is right, `[-count, id]` is the minimal
+correct fix, `id` is unique per kind so the order is total. **Landing it before
+the cut is correct** for exactly S4W's reason: the reshuffle is one-time and
+unavoidable, and it is cheaper inside a release that is already a large diff.
+
+**The finding — the half the fix defers is much bigger than its DEBT line
+suggests.** That row ends "then decide whether tied records should share a rank
+at all". Measured on the current build's `registrations-2026.08.1.json`, 39,413
+ranked (kind,country) placements:
+
+```
+in a TIE block                                     31,479   79.9%
+in a tie block STRADDLING a decile boundary        14,677   37.2%
+```
+
+```
+motorcycle/nl   828 records all with count 1  -> deciles  9..10
+motorcycle/fi   803 records all with count 1  -> deciles  7..10
+car/fi          789 records all with count 1  -> deciles  8..10
+```
+
+**After #120 merges, 37% of placements still have a published decile decided by
+the alphabetical position of the id.** `motorcycle/fi` holds 803 records with
+*identical* evidence — one vehicle each — spread across **four deciles**,
+assigned by how the make happens to be spelled.
+
+**This argues FOR #120, not against it.** Arbitrary-and-unstable is strictly
+worse than arbitrary-and-deterministic, and determinism is a PRECONDITION for
+fixing the rest — you cannot measure a ranking change while the baseline
+reshuffles on its own. Merge it.
+
+**But it should inform the release note.** `decile: 9` reads to a consumer as a
+statement about the data. For a third of placements it is currently a statement
+about the alphabet. Competition ranking (ties share a rank, next rank skips)
+makes decile a function of the count, which is what the field already implies.
+**I have the measurement and can write that follow-up on request** — it is a
+reconciler change touching a published field, so it is the coordinator's call
+whether it goes in 2026.08.1 with #120 (one reshuffle instead of two) or waits.
+Doing both in one release is the cheaper shape if it is going to happen at all.
+
+**Also flagged on the PR:** #120 shows "no checks reported" because that repo has
+no CI. **pipeline#118** adds it. If #118 lands first, S4W's new
+`test_popularity_tiebreak.rb` runs automatically on their own PR rather than
+only on whichever data PR follows — which is the whole argument for #118 in one
+concrete instance.
+
+**My queue is unchanged and still holding** for the Turn 227/231 ordering ruling
+(C-1 → yamaha §A folds, or folds first and re-key). C-1 is measured and ready;
+the folds are not started, deliberately.
