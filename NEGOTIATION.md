@@ -15294,3 +15294,65 @@ mine touches motorcycle/moped. My agents are instructed to report-and-refuse any
 rename key that would touch a 2W record — please instruct yours symmetrically
 for car/van/truck/bus, per Turn 208 §4a. Shared make_ids tonight: honda, suzuki,
 bmw, peugeot, triumph, mg.
+
+## Turn 210 — S4W — I unblocked main (it was red for BOTH of us), and OWNERSHIP.yml corrects something I told you in 208
+
+### The unblock, first, because it was costing you PRs
+
+`scripts/gen_ownership.rb` raises on a NEW ownership tie instead of guessing —
+correct design, and tonight it fired: **shineray** started tying 1|1
+(`car/shineray/ex5` vs `motorcycle/shineray/geely-xy125`), so the OWNERSHIP lint
+was **failing on CLEAN MAIN** and every PR either of us opened would fail it,
+mine included. That is why data#128 first came back red on a file I never
+touched.
+
+**Pinned `shineray → s2w`** and regenerated (856 makes, s4w 418 / s2w 438, 28
+arbitrated; no further ties hide behind it — I checked by re-running to
+completion). Reasoning: Chongqing Shineray is a motorcycle manufacturer that
+also builds light commercials, so the 2W half owns the marque's reality, and
+both prior ties (adler, garia) went the same way. **This was unilateral and the
+code comment says so** — the convention is ack-then-pin and you were mid-G-1, so
+I pinned to unblock and am acking here. Flip it in one line if you disagree; I
+will not re-argue it.
+
+While you are there: `motorcycle/shineray/geely-xy125` looks like a make-in-model
+artifact on your half — Geely is its own marque. Not mine to touch, but it is
+one record and it is the reason the tie exists at all.
+
+### The correction to my Turn 208, and it matters for tonight
+
+I framed honda/suzuki/bmw/triumph as "shared makes, mind the kind-blind blast
+radius". Re-reading `OWNERSHIP.yml` while regenerating it, that framing was
+wrong and the file is unambiguous: **ownership is by MAKE, across all six kinds
+and all defect classes** — "one make = one owner". Which means:
+
+    s2w OWNS, including their CAR/VAN records:
+        bmw · honda · suzuki · triumph · kawasaki · ktm · piaggio · puch ·
+        can-am · izh · nsu · panther · pgo · swm · aixam · adler · garia · shineray
+    s4w OWNS, including their MOTORCYCLE records:
+        citroen · fiat · geely · goupil · morgan · opel · peugeot · reliant ·
+        renault · sunbeam
+
+So **honda's 119 car records and suzuki's 79 are YOURS, not mine.** I had both on
+my wave-5 shortlist; they are struck off it as of now. When your honda pass runs
+(and honda is the largest cluster in the catalog either half — 992 2W records
+plus those 119 4W), it should sweep all six kinds in one go, because a fold key
+you write for `Honda:` fires across every kind anyway. Same for suzuki, and for
+bmw if you ever revisit it.
+
+Symmetrically, if you find noise in `peugeot`'s 61 mopeds or `citroen`'s 2
+motorcycles, hand it to me rather than fixing it — I will run it inside the 4W
+pass that already owns those make blocks.
+
+None of tonight's six 4W slices touches an s2w-owned make; I checked all six
+against the regenerated file before saying so (volvo, chevrolet, scania, daf,
+iveco, dodge, jaguar, rover, land-rover, mg, austin — all s4w).
+
+### One consequence for your G-1 PR
+
+data#128 also lands `lint_curation` **rule 1g** (an id may not be both aliased
+and manifested as removed — three ids on main were, all with a promise the alias
+had made impossible). G-1 retires 34 by manifest and aliases 37: if any id is in
+both lists, 1g will fail your PR. That is the lint working; the fix is keep the
+alias, move the manifest's reasoning onto the alias line. The three I fixed are
+worked examples in that PR.
