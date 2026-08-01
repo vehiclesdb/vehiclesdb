@@ -16738,3 +16738,60 @@ all three were caught the same way: by reading the actual records instead of
 trusting the abstraction. The dossier caught v1, a test table caught v2, and
 five minutes of looking at Vulcans caught v3. I would rather hand over v4 with
 that history attached than a clean-looking rule with none.
+
+## Turn 224 — S2W — I audited my own SHIPPED folds and found one wrong. The rule was never the safeguard
+
+After withdrawing v3 in Turn 223 I did the thing I should have done before
+shipping anything: ran the surviving rule back over the six clusters already
+merged or open, and asked whether every child's words fall inside the FULL
+name's vocabulary.
+
+    flstc   Heritage Softail Classic     all children inside      OK
+    fxdc    Dyna Super Glide Custom      all inside               OK
+    flhtk   Electra Glide Ultra Limited  all inside               OK
+    flstsb  Cross Bones                  OUTSIDE: Softail, X-Bones
+    vrscdx  Night Rod Special            OUTSIDE: Sp., Anv
+    flht    Electra Glide                OUTSIDE: Classic, Touring   <- REAL
+
+Two of the three flags are fine on inspection — FLSTSB **is** a Softail and
+"X-Bones" is Harley's own short form; "Sp." abbreviates Special and "Anv"
+Anniversary. Truncations and abbreviations of one name.
+
+**`flht` was real.** FLHT is the Electra Glide **STANDARD**; FLHTC is the
+Electra Glide **CLASSIC** and has its own published records (`flhtc`,
+`flhtc-electra-glide-classic`, `flhtci`, …). So "FLHT Classic" is a register
+rendering of the CLASSIC, and my open `data#149` folded it into the Standard —
+merging two models. Pulled it and "FLHT Touring" (a family label, not a model);
+`data#149` re-pushed, build exit 0.
+
+### The thing worth keeping
+
+Every rule I wrote tonight was refuted:
+
+    v1 child count        the dossier refuted it
+    v2 vowel count        called `sprint` and `trophy` codes
+    v3 digit-or-no-vowel  would have folded four distinct Vulcans
+    v4 vocabulary subset  flagged 3, of which only 1 was real
+
+**v4 is the best of them and it still has a 2-in-3 false-positive rate.** What
+actually caught the FLHT error was not the rule — it was that a **published
+FLHTC record existed** to contradict the fold. Same for the Vulcans (sixteen
+pre-existing aliases proving someone had already curated them as distinct) and
+for `gl1500c` (Honda listing the Valkyrie under `street/cruiser/`).
+
+So the rule is a filter for **where to look**, never a licence to fold. The
+safeguard is: *before folding A into B, look for a published record that says A
+is its own model.* That check has now caught three would-be model merges and has
+no false positives, because it is evidence rather than pattern.
+
+I would put that in DECISIONS.md above any of the four rules, and I am happy to
+write it if you would rather stay on wave 6.
+
+### State
+
+    merged   G-1 both halves · 6 enrich make entries (3,210 records) ·
+             honda CB600+CBR900 · Softtail typo · 4 harley code clusters
+    open     data#149 harley FLHT/FLHTK — CORRECTED, exit 0
+    filed    kawasaki founded · gold wing cluster · 6 unsourced honda pairs ·
+             flhtcu (trike + 3 repoints + the flhtc boundary) · flht-classic
+             vs FLHTC · FLSTC block casing · discovery-sport · es-env provenance
