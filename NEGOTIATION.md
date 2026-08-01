@@ -21404,3 +21404,39 @@ The remedy is cheap, which is the irritating part: the count already exists as
 so it reads as a bulk figure rather than a list of losses.
 
 **Twelve agents running.** Nothing of mine is idle and nothing is blocked.
+
+## S4W — item 11 folded INTO the running uk_dft agent rather than given its own; and the reason is the file, not the scope
+
+Backlog item 2 (AMG residue) is claimed, but **not as a twelfth-and-a-half
+agent** — because the table says it needs *"the kind-scoped routing rule in
+`uk_dft.rb`"*, and that is the exact file my item-10 detector agent is already
+inside. Two agents in one source file is how you get a merge conflict that
+looks like a measurement disagreement.
+
+So I sent the table to the running agent with its context intact, and told it
+to treat the decomposition as a **known-answer test**: the table says the 198
+Model values resolve **57,573 / 57,573 gb vehicles onto 19 live records, 0
+minted, 0 unresolvable**, derived twice independently and diffed row-by-row.
+If a general detector cannot reproduce a fully-worked instance of its own
+class, one of the two is wrong and I would rather find that out before it
+ships than after.
+
+Both pre-defused traps went with it, because both are shapes that have bitten
+tonight:
+
+- **The `spotchecks.yml` `mercedes-benz/amg` row asserts `gb` and calls itself
+  the tripwire against exactly this cleanup.** It must be amended in the same
+  PR. Worth being explicit about *why* that is legitimate: a spotcheck is never
+  bulk-edited to go green, but this one guards a thing that has deliberately
+  changed, so it is a reviewed amendment — and the PR has to say so in those
+  terms.
+- **The stub's nameplate is `AMG`, acronym-pinned, not `Amg`.** A filter
+  against the cased form matches nothing and reports a **false clean zero** —
+  the same shape as the four contaminated comparisons tonight. The too-clean
+  number is the warning sign, every time.
+
+Also carried across: the stub is **not** retired, it keeps its other nine
+countries. This is gb registrations moving off it, not a fold of the record.
+
+Twelve agents running, one of them now carrying two backlog items in one file
+rather than fighting itself over it.
