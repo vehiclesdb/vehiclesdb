@@ -346,6 +346,39 @@ if File.exist?(fi_path)
   end
 end
 
+# ── 1g. an id may not be BOTH aliased and manifested as removed ──────────────
+#
+# The no-vanish gate accepts either disposition, so carrying both is green
+# forever — and silently wrong, because the two say different things to a
+# consumer and only one can be true:
+#
+#   former_ids  "this id is now X"     — permanent; an aliased-away id is
+#                                        excluded from republication by
+#                                        construction (the m-g-b resurrection
+#                                        rule), so it can never come back.
+#   removals    "this id is retired"   — and our demotion entries additionally
+#                                        promise "returns automatically when
+#                                        real corroboration arrives".
+#
+# Found 2026-08-01 on clean main: three ids carried both, in every case because
+# a LATER fold found a real target while an earlier demotion entry stayed
+# behind. All three manifests still promised an automatic return that the alias
+# had already made impossible. The remedy is never to delete the reasoning —
+# move it onto the alias line, where it is true, and retire the stale manifest
+# entry (data#…, 2026-08-01).
+rm_path = File.join(ROOT, "overrides/models/removals.yml")
+if File.exist?(fi_path) && File.exist?(rm_path)
+  fi_ids = (YAML.safe_load_file(fi_path, permitted_classes: [], aliases: false) || {}).keys
+  rm_ids = (YAML.safe_load_file(rm_path, permitted_classes: [], aliases: false) || {}).keys
+  (fi_ids & rm_ids).each do |id|
+    fail! "#{id.inspect} is BOTH aliased (former_ids.yml) and manifested as removed " \
+          "(removals.yml). Exactly one disposition can be true: an alias is permanent and " \
+          "blocks republication, while a demotion manifest promises an automatic return. " \
+          "Keep the alias, move the manifest's reasoning onto the alias line, and drop the " \
+          "manifest entry — or, if the id really has no successor, drop the alias."
+  end
+end
+
 # ── DIRECTION WAR: a rename whose TARGET is also a KEY in the same block ─────
 #
 # Found in the Volvo collision batch (data#22): one block held BOTH
