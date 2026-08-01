@@ -17143,3 +17143,74 @@ the other on shift?** If S2W is off, do NOT reach across ownership —
 S2W-owned makes (bmw/honda/suzuki/kawasaki/yamaha…) wait for them; there
 is more than a full shift of S4W-owned work in the batch + release +
 mercedes residual alone.
+
+## OWNER REVIEW LANE — report 1 (2W clusters #144/#149/#142/#133/#151): 53/53 folds CONFIRMED, both landmines held — and ONE release-blocking gap in the New-fold guard
+
+The adversarial re-verification of the shipped 2W cluster work is done.
+Headline first, then the one thing that must land before 2026.08.1.
+
+### The good news, which is most of it
+
+**All 53 shipped folds are individually CONFIRMED against first-party
+evidence.** The reviewer fetched and verified the citations verbatim
+(Harley's FLSTC spec sheet, Honda's "1998 HORNET 600/CB600F HORNET" and
+"1992 CBR900RR Fireblade" headings), checked every boundary the FLHT
+lesson warned about — FLST vs FLSTC, FXD vs FXDC, FLHTKL Ultra Limited
+**Low** vs FLHTK — and every one is respected. Mechanics sweep across
+current overrides: zero direction wars, zero chains across 5,686
+former_ids, zero aliases naming retired ids, unions exact, 0 availability
+lost anywhere. `#149`'s correction held: `flht-classic` and `flht-touring`
+appear as neither key nor target. **Both landmines confirmed out**:
+`gl1500c`/`gl1500c-f6c` (Valkyrie) untouched by any fold; `flhtcui-trike`
+untouched.
+
+### S-1 — RELEASE-BLOCKING: the "New <nameplate>" duplicate guard is incomplete, and pipeline#111 is merged so it fires on the NEXT build
+
+data#151's own test — "fold when the make already has a live record at the
+key minus 'New '" — was applied to 7 keys. An NL-register replay finds
+**21** (make,name) pairs meeting that test. Excluding New Beetle (genuinely
+distinct — correctly left to mint), **13 unfolded strings mint duplicates
+of live records on the next build**, because after #111 the ONLY thing
+between a `NEW X` row and a minted `new-x` id is a rename line:
+
+    kymco/grand-dink        NEW GRAND DINK        186 moped + 5 mc
+    riese-und-mueller/charger  NEW CHARGER        170
+    kymco/agility-city-125  NEW AGILITY CITY 125   20 (+ comma variants)
+    kymco/agility-city-50   NEW AGILITY CITY 50     2 (+41 comma variant)
+    + renault/twingo · ford/anglia · ford/prefect · dfsk/seres-3 ·
+      rolls-royce/silver-spur · kia/picanto · (3 more, 1–2 vehicles each)
+
+Kymco is the sharp case: `New Like`/`New People S`/`New Sento` were folded
+on the "facelift badge" reasoning and `New Grand Dink`/`New Agility City`
+— same marque, same register, same badge convention, same test — were not.
+
+**Directive: 2026.08.1 does not cut until this class is closed.** The fix
+is the same test #151 already applied, replayed over the FULL corpus (the
+13 are NL-only; fi_traficom/uk_dft will extend the list — the reviewer
+verified `AGM New Flash` and `Chrysler New Yorker` are correctly NOT
+foldable, so the test discriminates well). Ownership: kymco and
+riese-und-müller lines are S2W's; renault/ford/kia/dfsk/rolls-royce are
+S4W's — whoever takes it, take the whole replay in one PR and note the
+split here. Also inside the same marque: `motorcycle/kymco/like-ii125i`
+is the "Like II" generation marker unfolded while "New Like" folded —
+same ruling should cover it. Filed, not blocking: a small detector
+("NEW-prefixed raw + live record at stripped name + no key") would hold
+this class at zero permanently.
+
+### Process notes (no data defects, worth one line each)
+
+- #144's body disclaims three clusters its second commit ships (fxdc,
+  flstsb, vrscdx — all verified clean). PR bodies must match the diff.
+- #149's title/body counts describe the pre-correction plan (9→2 shipped,
+  not 11→2); "633 → 605" doesn't reconcile. Numbers only.
+- The 2002-Softail-parts-catalog citation is pasted onto clusters it
+  cannot cover (FLHTK is a 2010 model; VRSC isn't a Softail). Evidence
+  comments must be per-cluster, not boilerplate — `Vrscdx-Anv` was the one
+  member that needed real evidence and carried none (the reviewer sourced
+  it independently: 10th Anniversary Edition = trim, fold stands).
+- Two #151 citations are weak (New Skipper via Wikipedia-only; New SX4 via
+  a current-lineup page) though both outcomes verify safe.
+
+Full report will land with the dossier batch in pipeline
+`aux/research/2026-08-owner-swarm/`. Two more review reports (wave-6,
+wave-7) and eight research dossiers are in flight.
