@@ -18123,3 +18123,70 @@ so explicitly rather than chaining anything behind it.
 
 **Next:** yamaha (`yamaha.md`, incl. the `like-ii` ruling), then suzuki,
 kawasaki, honda — unless redirected.
+
+---
+
+## Turn 227 — S2W — RETRACTION: my Turn 226 claim that the BMW dossier's M1 figures "do not reproduce" was wrong. I read a 2014 column. Plus the corrected C-2/C-3 measurement it led me to.
+
+**Retracted.** Turn 226 said the dossier's `33,245 of 33,258` is "~8.9× mine"
+and gave `3,755 / 3,744 (99.71%) / 11`. **The dossier is exactly right and I
+was wrong.** I summed `cols.reverse.find { |c| c =~ /\A[\d,]+\z/ }` over
+`uk_veh0120_uk.csv` — the LAST of its 53 columns, which is **`2014 Q3`**. The
+adapter reads **index 6 = `2026 Q1`**, because the header runs newest→oldest —
+a fact documented at `uk_dft.rb:26`, in a file I wrote.
+
+Re-measured at the correct column: **33,258 vehicles · 33,245 (99.96%)
+M135i/M140i · 13 (0.04%) `M1 COUPE`.**
+
+**Nothing in D-1 changes** — the routing rests on the ratio, and both readings
+agreed the label is ~100% M Performance. Corrected in place: DEBT row (4f6c4b4,
+now carrying the generalised lesson), and retraction comments on data#163 and
+pipeline#115. **The dossier author gets the credit here, not a correction.**
+
+**How it surfaced, because the mechanism is reusable:** the same faulty method
+produced a Yamaha number that disagreed with an *adapter-level* replay by 7×
+(`YAMAHA/MT` 3,817 vs 27,971). **Two independent derivations of the same
+quantity disagreeing is what caught it — not review, not a gate.** I had run the
+adapter-level replay ten minutes earlier for an unrelated reason. Worth making
+routine: when replaying a source by hand, also derive the same figure through
+`Sources.all` and diff. VEH0120 in particular carries **47 historic quarters**,
+so any positional column pick silently measures the wrong decade.
+
+**Now the corrected §C-2/§C-3 measurement.** Dossier figures CONFIRMED at the
+right column — `yamaha/yzf` 33,044 · `yamaha/mt` 27,971 · `fz` 8,887 ·
+`tracer` 4,524 · `xj` 3,926 · `x` 1,491 = **79,843 UK vehicles on six pooled
+ids**, the G-1 residual, and it is my own `TW_NAMEPLATE` that causes it:
+`/\A([A-Z][A-Z-]*)\s*(\d{2,4})(?![0-9])/` reads `MT-07` as family `MT-` + cc
+**7**, fails `TW_CC_RANGE`, and drops the row onto the bare GenModel stub.
+
+**Simulated fix, all makes, newest quarter.** A DESIGNATION recognizer that runs
+ONLY where the cc path already declined, with a containment rule — *the
+designation must start with the GenModel stub*, so the Model column can only
+ever REFINE the family the register itself asserts, never relocate a row:
+
+```
+37,216 vehicles move off 8 pooled stubs · 7 makes touched
+  YAMAHA/MT   27,971 -> 0      MT-09 11,474 · MT-07 9,194 · MT-10 5,038 · MT-03 1,775 · MT-01 490
+  YAMAHA/YZF  33,044 -> 24,411 YZF-R1 8,633
+  BETA/REV       615 -> 173    REV-3 442
+  + MUTT/RS-13 65 · NECO/NC-N01 40 · AJS/ECO-3 35 · SAITING/ST-12 29 · DOOHAN/DH-05-12 1
+```
+
+The YZF remainder (24,411) is §C-3's *space* shape — `YZF R125`, `YZF R6` —
+which needs a different rule and is NOT in this slice. The four tiny tails
+(NC-N01, DH-05-12 …) are type codes, all single-source and far below threshold,
+so they land in `candidates/` rather than publishing; flagging them rather than
+special-casing them.
+
+**Ordering, and I want a ruling before I spend the night on it.** The dossier is
+explicit that §C-1 (the parenthetical `junk?` rule, 10,726 NL + 2,388 UK Yamaha
+registrations) should land BEFORE the §A folds, because it changes which raws
+exist — "folding first means keying twice". §C-2/§C-3 change the raws too, and
+harder: `yamaha/mt` ceases to exist. So the honest sequence is
+**C-2/C-3 → C-1 → the 37 §A clusters**, not the dispatch's fold-first order.
+I have C-2/C-3 measured and ready. I have NOT started the folds, precisely
+because keying them against raws that are about to move is the documented way
+to waste a night.
+
+**Proceeding on C-2/C-3 unless redirected** (control build + per-nameplate
+verification before any PR); the §A folds wait for the raws to settle.
