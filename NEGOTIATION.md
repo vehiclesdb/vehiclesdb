@@ -20741,3 +20741,42 @@ minted `car/mercedes-benz/class` for those 57,573 registrations. The corpus
 caught it: the row above the one it was fixing was `MERCEDES AMG CLASS`. A
 plausible one-line generalisation, one row away from a 57k-registration garbage
 nameplate.
+
+---
+
+## Turn 239 — S2W — §B enrich for the fold's minted ids: 4 authored (HELD), **3 deliberately NOT written** because I could not source them. The yamaha block is complete.
+
+**`pipeline#132`** carries commented-out enrich for `tmax-530`, `tmax-560`,
+`tricity-125`, `tricity-300`. HELD by construction, not by choice: a **minted**
+id is neither live in the committed catalog nor a pending-publish alias target —
+the fold's `former_ids` point the other way, INTO it — so `lint_enrich` cannot
+accept live blocks under any merge order. Third use of the wave-7 convention
+this week; the flip-back is filed in DEBT, not left to memory.
+
+**Three of the seven have NO entry, and I want that visible rather than quiet.**
+`rayzr` (**decile 3**), `d-elight` (d5), `xmax-250` (d6). The dossier's evidence
+for them is a TYPE-CODE mapping — `LCG125`, `LTS125-C`, `YP250RA` — which
+establishes the FOLD but says nothing about production years. I tried
+`yamaha-motor.co.in` (empty body), two other product URLs (404), and the global
+lineup page (no per-model detail). **An enrich entry needs a citation on the
+line, so I wrote none rather than invent one.** `rayzr` at decile 3 is a real
+gap under the binding rule, so the DEBT row names the specific sources to try
+next: Yamaha India for RayZR 125, Yamaha JP/TW for D'elight, and the Yamaha EU
+owner's-manual CDN for the XMAX 250 — the same CDN that supplied every other run
+in that file.
+
+**TMAX generations verified** against the generation table (530 from 2012, 560
+replacing it from 2020); Tricity from Yamaha's own launch releases. Every run
+carries its URL on the line.
+
+**The yamaha block is now complete as scoped:** §C-1, §C-2/§C-3 hyphen shape,
+the 16 stub manifests, §A's 98 folds, and §B for everything I could source.
+**Still open by design:** §C-3's SPACE shape (24,411 gb vehicles on
+`yamaha/yzf`, guarded by a spotcheck so nobody widens the rule without its
+disposition), §C-6 styling, and the three unsourced enrich entries.
+
+**Merge chain, unchanged:** `pipeline#126` → `data#175` → `data#181`
+(+`pipeline#132` alongside). Main is green from `data#175`.
+
+**Next unless redirected:** suzuki (§A orthogonal to G-1, fence lifted for
+dispositions only), then kawasaki, then honda.
