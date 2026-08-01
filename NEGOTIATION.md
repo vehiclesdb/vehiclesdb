@@ -20948,3 +20948,74 @@ data PR or reported.
 
 Also told, in as many words, that **declining to ship something the evidence
 refutes is a welcome outcome** — item 5 did exactly that tonight and was right.
+
+## S4W — item 6 is REFUTED BY ITS OWN CONTROL BUILD. `data#185` files the finding; the pipeline branch exists and deliberately has NO PR
+
+The best outcome available here was "do not ship this", and that is what came
+back. It implemented the one-line fix exactly as the DEBT row prescribed, built
+it, measured it, and refused.
+
+### Why the prescribed fix is wrong
+
+**91% of what it changes is the strip doing its job.** Of 2,087 affected
+vehicles (203 rows, **100% truck+bus — car/van/motorcycle/moped are exactly
+zero**), 1,898 are cases where the nickname lands *inside* the nameplate:
+registers write it as a **make prefix in the model column** — `MB SPRINTER`,
+`CHEVY VAN 20-STARCRAFT-3.9T-FG25F/343`. That is the dealer/JV double-branding
+case the rule exists for. Only 189 vehicles are the genuine-designation harm
+the row was filed about, and that figure is an upper bound.
+
+**The unfixable part:** `bus/mercedes-benz/e15`, `e16`, `e17` and `e19` pool
+into a single id named `Mb`, because after the fix all four produce the
+**identical string**. No rename can split them and no paired data PR can make
+it whole. Net: 14 ids retire, 12 mint, 15 new gate failures — for one genuine
+win (`bus/daf/200` → `bus/daf/mb200`, a real DAF chassis).
+
+### Two corrections to the filing, one of which I verified myself
+
+1. **The measured symptom no longer reproduces.** The row's evidence is both
+   decile-1 Chevrolet truck records being Finnish type codes. I checked the
+   committed catalog: **`truck/chevrolet/chevy-van` is LIVE**, named "Chevy
+   Van", and `chevrolet/20-starcraft-3-9t-fg25f` is **absent**. Curation already
+   fixed it.
+2. **Four of the eleven words the row names are untouchable by its own remedy** —
+   `Alfa`, `Benz`, `Harley`, `VW` are ALSO `aliases.yml` ingest keys, so
+   deriving the word set from ingest aliases only does not remove them.
+
+### The dead-curation audit found the DAF trap in a new place
+
+Two `renames.yml` keys go inert — `"20-Starcraft-3.9T-FG25F"` (613 veh) and
+`"20-3.9T-FG25F"` (154 veh). I confirmed them at `renames.yml:1898-1899`, and
+they are labelled **INTERIM**: they exist *as the workaround for this very
+defect*. So the fix would silently disable the mitigation while making the
+underlying pooling worse.
+
+**`rake test` stays fully green, `test_override_key_reachability` included** —
+because it is kind-blind and the car path never calls `series_collapse`. That
+is the **third** independent confirmation tonight of that test's blindness,
+after the Land Rover keys and the DAF chain. The DEBT row I filed for it is
+earning its place faster than I expected.
+
+### Its own mistake is the one I keep making
+
+Its first dead-curation probe pointed at the **fixed** worktree for both sides,
+so both had the treatment word set — and it reported a confident, false
+**"0 keys lost"**. It caught it only because zero contradicted the id diff, then
+re-ran from a pristine worktree. That is the contaminated-control class for the
+third time tonight (my tie-break measurement, my DAF control, now this). The
+pattern is always the same: the control and the treatment differ in more, or
+fewer, things than you believe.
+
+### The judgment I want to highlight
+
+It pushed the pipeline branch but **deliberately opened no PR**, reasoning that
+merging it costs 14 published ids and *an open PR invites merging*. Filing the
+work where it can be found without leaving a loaded gun on the table is exactly
+right, and I would not have thought to ask for it.
+
+`data#185` is CLEAN and carries the DEBT correction. **The disposition I
+recommend: keep the two INTERIM keys, retitle the row from "one-line fix" to
+what it actually needs** — a rule that does not strip a make word when the next
+token is digit-initial, which the delegate reasoned from 105 diff groups but
+did **not** measure across all 324 ingest words. That measurement is the real
+next step, not the fix as filed.
