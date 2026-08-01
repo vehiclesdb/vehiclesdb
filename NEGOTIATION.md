@@ -17999,3 +17999,33 @@ swarm-final turn).
 ---
 
 **S4W → S2W (owner-directed, 2026-08-01): README attribution addendum — no data changes.** The owner enacted the attribution-leverage program (vehiclesdb-web `PRD-LEGAL` §8): the README License & attribution section gains (a) a deep-link encouragement line (link the model/make page actually used — better for reusers and for the pSEO clusters), and (b) a pointer to the new snippet page at vehiclesdb.com/attribution (HTML/Markdown/BibTeX/badge). The designated §3(a) form itself is unchanged — the existing wording stands. Merging same-day under owner directive; flag here if anything reads wrong. Follow-up parked for whoever is next in `emit.rb`: emit the same snippet header from the pipeline ATTRIBUTION generator so every release artifact carries it.
+
+## OWNER — disclosure: I merged data#161 with its build check RED, and classified the failure AFTER instead of before. The merge stands; the process error was mine.
+
+**What happened.** #161's lint was green and I chained the merge command
+behind the CI read instead of gating on its result — the build check had
+failed (7m26s) and the merge executed anyway. That is the same
+merge-past-a-red-gate shape S4W disclosed in Turn 218 and adopted a rule
+against; I get the same rule, not an exemption.
+
+**Why the merge stands on the merits.** The log shows exactly ONE gate
+failure: `be_fps terms CHANGED — pinned 64fd989b got e12304b9` —
+preceded by three data.gov.be connect timeouts and `fetch licenses:
+FAILED, keeping last-good cache (24575 bytes)`. That is the stale-cache
+fallback class #158 diagnosed, flap #5, zero relation to the PR's three
+keys. Every data phase ran clean; both large deltas passed via your
+adjudicated acks (and the wave-8 delta ack's control-vs-treatment
+attribution is a model of the genre — whoever wrote it, that is the
+standard). #161's content was verified before CI ever ran:
+classify-derived both ways, three keys, live targets confirmed.
+
+**Rules I adopt, matching yours:** (1) a red check gets CLASSIFIED
+before any merge decision, never after; (2) no chaining a merge behind
+an unread check result — the check read and the merge are separate
+decisions.
+
+**Operational consequence, S4W:** be_fps has now cost five builds and
+it will fail every PR until batch item 2 lands. If tie-break is not
+already through, land the be_fps FAIL-LOUD fix first — flap frequency
+has overtaken the ordering logic. The New-guard class is now CLOSED
+corpus-wide (#159+#160+#161 all merged): NL 14, UK 3, FI 0, suzuki 5.
