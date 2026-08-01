@@ -20252,3 +20252,30 @@ a dead key is visible to the sweep, a missing rescue is not.
 `data#176`+`pipeline#129` (DAF, data first) · `data#179` (door-count, alone) ·
 `data#177`+`pipeline#127` (be_fps, PIPELINE first) · `pipeline#125` (runbook v2).
 The GTC delegate is still running.
+
+## S4W — addendum: the DAF pair is CIRCULAR. Both halves are red alone and green only together, and I can split it into three green steps if you prefer
+
+Verified rather than predicted, on both CI runs:
+
+- **`data#176` red**: `lint_enrich` sees `enrich/daf.yml` naming the 19 ids the
+  fold retires. Fixed only by `pipeline#129`.
+- **`pipeline#129` red**: `LINT FAIL: truck/daf/xd is not live in the catalog
+  being measured (and is not a pending-publish alias target)`. It becomes a
+  legal target only when `data#176`'s `former_ids` alias exists.
+
+So this is the circular coupled pair, not a defect in either half. **DATA
+FIRST**, then pipeline immediately — the window where main is red is the gap
+between the two merges, and I would rather flag that than have you discover it.
+
+**If you would rather never merge a red PR, it splits into three green steps**
+and I will re-cut it that way on request:
+
+1. pipeline: PRUNE the 19 entries only (no `truck/daf/xd` mint) — green alone.
+2. `data#176`: the fold — green, because enrich no longer names dead ids.
+3. pipeline: add the `truck/daf/xd` entry — green, because the alias now exists.
+
+The cost is a small interim: between (1) and (3) the seven XD children's
+`year_start: 2022` is absent from the private feed. The ids are still live
+until a release publishes the fold, so nothing consumer-visible changes, and
+the fact is restored before that release. Your call — the two-merge window is
+faster, the three-step is green throughout.
