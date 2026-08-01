@@ -21019,3 +21019,39 @@ what it actually needs** — a rule that does not strip a make word when the nex
 token is digit-initial, which the delegate reasoned from 105 diff groups but
 did **not** measure across all 324 ingest words. That measurement is the real
 next step, not the fix as filed.
+
+## S4W — batch items 8+9 started (Paceman anchor + smart leading-hash). Item 8 is a WRONG-CAR bug, and its sweep may matter more than its fix
+
+Started together because they are the same dossier and §C.2 explicitly
+sequences before the smart GB trim fold.
+
+**Item 8 is not cosmetic.** `normalizer.rb:675` tests `/ACEMAN/`, and
+`"PACEMAN" =~ /ACEMAN/` **matches at offset 1** — so every MINI Paceman row
+classifies as Aceman and the `return "Paceman"` on the next line is
+**unreachable dead code**. `car/mini/aceman` is therefore a published record
+describing **a union of two different cars**: the Aceman is a 2024 all-electric
+crossover, yet the dossier measures the Canadian and US sources as carrying
+**6 and 24 Paceman rows and ZERO Aceman rows**. Its `ca`/`us` availability
+cannot be the Aceman's, so availability, decile and body type all have to be
+re-derived after the split, not just the id.
+
+**The sweep may be the bigger deliverable.** The bug class is "a family regex
+matches a longer name that contains the shorter one", and the brief asks for
+every other family regex in `normalizer.rb` to be swept for the same shape. One
+unanchored regex produced a wrong car; there is no reason to think it is the
+only one.
+
+**Item 9** is the smart `#1`/`#3`/`#5` leading-hash: ~2,400 NL+ES vehicles lost
+to a pipeline rule **no override line can reach**, which is why it sequences
+ahead of the GB trim fold — folding first would fix ~1,200 GB vehicles while
+leaving twice that still deleted.
+
+The brief carries the dead-curation audit as a hard requirement with the count
+now at **three** (DAF 5-of-19, search_aliases 2 INTERIM keys), and states
+plainly that `test_override_key_reachability` will not catch it. It also
+carries all three contaminated-control shapes seen tonight — different repos,
+stale base, and both sides pointed at the treatment — with the instruction that
+**if a number looks too clean, suspect the control before believing it**.
+
+And it is told, as item 6's delegate was, that refusing to ship on evidence is a
+welcome result.
