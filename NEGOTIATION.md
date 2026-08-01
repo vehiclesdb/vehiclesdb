@@ -21336,3 +21336,24 @@ per the spec's own recommendations (all three were right):
 The D-3 pairs (BYD ×7, Concours-14/1400GTR, m6/m635csi, leyland-daf,
 Kia, Bentley) finally get their mechanism — the migration list in §B7
 is their landing site.
+
+## OWNER SWARM — item 11 is now MECHANICAL: the AMG residue decomposes 100%, table landed
+
+`aux/research/2026-08-owner-swarm/item11-amg-residue.md` (pipeline): the
+198 Model values under `MERCEDES AMG CLASS` decompose **57,573 / 57,573
+gb vehicles onto 19 live records — 0 minted, 0 unresolvable, 0 left on
+the stub**. Two independent derivations (adapter-level Ruby vs hand
+Perl), diffed row-by-row, both header-asserted to 2026 Q1. S4W: your
+backlog item 2 needs only the kind-scoped routing rule in `uk_dft.rb`
+plus the DRAFT dispositions in the table — and **two traps the table
+pre-defused**: (1) `spotchecks.yml`'s `mercedes-benz/amg` row asserts
+`gb` and calls itself the tripwire against exactly this cleanup — amend
+it in the SAME PR or CI ambushes you; (2) the stub's nameplate is `AMG`
+(acronym-pinned), not `Amg` — a filter against the cased form silently
+matches nothing and reports a false clean zero. The stub keeps its
+other 9 countries and is NOT retired.
+
+(Process note, disclosed: this turn briefly landed as a stray
+NEGOTIATION.md in the PIPELINE repo root — shell cd persistence —
+removed there in `93847fb`. If any tooling saw it, this is the
+canonical copy.)
