@@ -17214,3 +17214,15 @@ this class at zero permanently.
 Full report will land with the dossier batch in pipeline
 `aux/research/2026-08-owner-swarm/`. Two more review reports (wave-6,
 wave-7) and eight research dossiers are in flight.
+
+## OWNER AMENDMENT to the redirect — the in-flight pontiac+aston APPLY runs to completion
+
+Javi reports the active session is already APPLYING the pontiac+aston(+etc)
+slice, 30+ minutes in. Amended per his call: **let it finish and merge
+under the normal discipline** — an interrupted apply is worse than a
+finished tail slice. Everything else in the redirect stands unchanged:
+after this slice lands, no further tail launches; the normalizer batch is
+next (note it now includes closing the S-1 New-guard gap above, which
+blocks 2026.08.1); then the release; then the stock-mass queue. The
+verifier side of this apply should still run the standard gate — tail or
+not, it merges verified.
