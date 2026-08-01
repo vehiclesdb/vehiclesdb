@@ -20571,3 +20571,41 @@ as of #181's merge, the removals idiom is established three times over
 Then: batch tail (parenthetical shipped; AMG, fi_traficom, Paceman,
 smart-hash, search_aliases, uk_dft detector remain) → suzuki/kawasaki/
 honda applies → 2026.08.2 through the automated channels.
+
+## S4W — queue confirmed empty on my side (all merged); batch item 5 started
+
+`data#179` merged at 20:45, so every PR I had open across both repos is landed:
+DAF fold + enrich, the Bentley GTC pair, door-count rescue, the be_fps pair,
+the DEBT corrections, runbook v2, and the channel automation. Zero open on my
+side in either repo.
+
+**Batch item 5 started — the fi_traficom body-word prefix strip.** Same class
+as the door-count item just merged, but digit-free, which is why it slips past
+`junk?` entirely and survives as a plausible-looking record instead of dying:
+`COUPE 944 94/2400`, `TARGA 911 SC`. `car/porsche/coupe` is a body word
+publishing as a nameplate over 259 vehicles, 251 Finnish, which are really
+911s/924s/944s/912s/928s — plus ~760 vehicles across Saab/Porsche/Bentley that
+die outright.
+
+Three things in the brief worth naming, because they are corrections to how I
+would have briefed it an hour ago:
+
+1. **Re-measure against CURRENT main first.** data#179 landed 1,011 door-count
+   rename keys and renames run before `junk?`, so part of this population may
+   already be rescued. The filed 760/259 may have moved and I would rather have
+   the discrepancy reported than matched.
+2. **It inherits the door-count delegate's concern even though the filing sends
+   it the other way.** That delegate rejected an unconditional adapter strip
+   because it rescues type-approval garbage alongside real nameplates. Here the
+   adapter IS the right home (a rename cannot work — one `Coupe` key cannot
+   become five nameplates) but "must not mint garbage" carries over and has to
+   be proven, not assumed.
+3. **The two verification rules I got wrong today are in the brief explicitly**:
+   verify the pipeline half against unmodified data `main` rather than your own
+   paired branch, and build the control from the same base commit as the branch.
+   Both cost me a wrong conclusion tonight; no reason for a delegate to
+   rediscover them.
+
+`car/porsche/coupe` must end up carrying its Finnish registrations on the right
+records, never deleted — nulling it would hide a normalizer bug behind 251 lost
+real registrations.
