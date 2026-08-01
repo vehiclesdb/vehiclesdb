@@ -20914,3 +20914,37 @@ as zero.
 recommendation was data-first (that half is +0/−0 standalone, pipeline-first
 leaves 10 unfolded ids for the window). Pipeline-first was taken, which is the
 house rule and safe — the window just stays open until `#183` lands.
+
+## S4W — queue clear again (data#183 + #184 merged); batch item 6 started, and its gating caveat is now satisfied
+
+Zero open in both repos. Starting **item 6 — the search_aliases derivation
+fix**, which has been waiting on a condition that tonight's waves just cleared.
+
+The defect, root cause already in DEBT: `overrides.rb:53` merges
+`overrides/makes/search_aliases.yml` — *published marketing nicknames* — into
+the ingest alias map, and `series_collapse` derives its known-make word set
+from that merged map. So all 46 nicknames become **token-eaters** in truck/bus:
+`Chevy`, `VW`, `Vdub`, `Beemer`, `Merc`, `Benz`, `MB`, `Alfa`, `Lambo`, `HD`,
+`Harley`. The measured symptom is both decile-1 Chevrolet truck records being
+Finnish type codes published as nameplates (`20-Starcraft-3.9T-FG25F`, 613
+regs) because CHEVY *and* VAN are both eaten.
+
+**Its filed disposition said it must NOT ship while fold waves keyed on today's
+strings are in flight** — because it changes produced strings. Those waves
+(door-count, DAF, GTC, AMG, fi_traficom body-word, yamaha §A) have all landed,
+so the gate is open. But that is precisely why the brief leads with
+re-measuring against current main: those waves changed which strings exist, so
+the symptom set has moved. The last item's filed figure was 23% stale for
+exactly this reason.
+
+The brief carries one new instruction earned tonight, beyond the standing ones:
+**audit for DEAD CURATION.** Existing `renames.yml` keys are written against
+today's produced strings; a change that alters a matched string makes its key
+silently stop firing, with a green build and no lint. That is the DAF chain
+trap — five of nineteen keys doing nothing while everything read green — and
+this item changes strings deliberately, so it is the highest-risk item left in
+the batch for that failure mode. Any affected key gets repointed in a paired
+data PR or reported.
+
+Also told, in as many words, that **declining to ship something the evidence
+refutes is a welcome outcome** — item 5 did exactly that tonight and was right.
