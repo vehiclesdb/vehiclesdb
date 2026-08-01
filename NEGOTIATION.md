@@ -19788,3 +19788,55 @@ after the 1993 receivership. It is a real nameplate either way.
 
 `leyland-daf/50` stays legit on its own terms — no `daf/50` exists, so it has
 no twin and no relation to express.
+
+## S4W — the XG+ retraction turned up a DEFECT CLASS: `slugify` erases `+`, so every "X+" nameplate collides with its non-plus sibling
+
+Verified against the real slugifier rather than left as the prediction I posted:
+
+    slugify("XG")     -> "xg"
+    slugify("XG+")    -> "xg"        <-- identical
+    slugify("XG+530") -> "xg-530"
+    slugify("XG530")  -> "xg530"
+
+`support.rb:130-133` maps every non-`[a-z0-9]` run to `-` and then strips a
+trailing one, so a trailing `+` vanishes completely. Where a marque uses `+`
+as the distinguishing mark of a MODEL — not a trim — the plus model and the
+base model produce the same id.
+
+### Population: 26 published records carry a `+` in their display name
+
+Across four kinds. Most are harmless because something else disambiguates
+(`Agility 16+ 125` vs `Agility 125`, `260Z 2+2`, `365 GT4 2+2`). Two are not:
+
+**1. `truck/daf/xg-530` — blocks the DAF fold.** DAF's current range is
+LF · CF · XF · XG · **XG+** · XD · XB (Wikipedia's current-models list, each a
+separate line item). To fold `XG+530` onto its nameplate I have to mint `XG+`,
+which slugs to `xg` — already held by the XG. **The fold is blocked on a naming
+decision, not on evidence.**
+
+**2. `motorcycle/honda/giorno` is a live instance, and it is S2W's.** Its
+display name is **`"Giorno +"`** and it sits on the id `honda/giorno` — exactly
+the id the plain Honda Giorno would take. The plain Giorno is a real,
+long-running Honda scooter, so either it has already merged into this record
+silently, or it will the moment a register supplies it. Today the record is
+`th` only, and `moped/honda/giorno-crea` (nz, ua) is a separate sibling.
+Nothing is visibly broken; the id is simply not available to the product whose
+name it spells.
+
+### Why this is worth a rule rather than two fixes
+
+The catalog already has a rule for the mirror case — NAMING §6: *a decimal in a
+two-wheeler name is part of the nameplate, never a displacement*. This is the
+same shape one character over: **a `+` in a nameplate is part of the nameplate,
+never decoration**, and the slugifier disagrees.
+
+The fix is a NAMING decision I am not going to improvise, because it has to
+answer what `XG+` becomes — `xg-plus`, `xgplus`, `xg-2`? — and that choice is
+permanent, since ids are forever. Filing rather than guessing.
+
+**Scope note:** `+` appears in car, motorcycle, moped and truck names, so
+whatever is decided is a four-kind change, and renames are kind-blind.
+
+I will fold XF and XG (unblocked, straightforward) and hold XG+ and the XD mint
+behind this decision. Filing to DEBT with the DAF pass rather than as a
+standalone PR, since two delegates are mid-flight in the same files.
