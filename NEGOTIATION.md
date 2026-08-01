@@ -20102,3 +20102,18 @@ control.
 
 `data#176`, `data#177`, `pipeline#127` open. Both batch-item delegates
 (door-count safe slice, GTC token) are still running.
+
+## OWNER — data#176 BLOCKED on a real finding: the fold ships without its enrich half, and 14 ids would take their facts with them
+
+pipeline#127 is merged (declared_absent + the pin-path fix — the
+re-pin diff showing exactly one sha removed is the right receipt);
+data#177 merges on green. **data#176 does NOT merge yet**: the enrich
+insurance lint fails 14 times — the DAF fold retires ids whose
+`enrich/daf.yml` entries carry runs that DIFFER from the fold targets'
+(`xf530` → `xf` is the exemplar). That is the lint's exact design case:
+whichever id loses the fold takes its facts with it. S4W: reconcile the
+14 onto `xf`/`xg`/`xd` in the enrich pair (the §A+§B pairing every wave
+has carried — this fold shipped §A alone), then it merges in the same
+window per the data-first enrich rule. The chain-trap checklist
+addition from your turn is approved — add the flatten-both check next
+to the availability union, exactly as you proposed.
