@@ -71,6 +71,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90 # FI (190MB) + UA (36MB) + full parses fit comfortably
+    outputs:
+      # Consumed by the `channels` job below. Empty on a validate-only run,
+      # which is how that job knows to skip.
+      released_tag: ${{ steps.release.outputs.released_tag }}
     steps:
       - name: Checkout data repo (this repo)
         uses: actions/checkout@v4
@@ -179,6 +183,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Commit, tag and release (publish runs)
+        id: release
         if: (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish)
         working-directory: data-repo
         env:
@@ -205,32 +210,59 @@ jobs:
           gh release create "v${VERSION}" --title "VehiclesDB ${VERSION}" \
             --notes "Automated data release: ${MODELS} models. Sources, licenses and provenance: manifest.json + ATTRIBUTION.md; changes: CHANGELOG.md." \
             dist/vehicles.json dist/vehicles.csv dist/vehicles.min.json dist/catalog.sqlite ${PARQUET} manifest.json ATTRIBUTION.md
+          # Hand the tag to the `channels` job. Only set when a release really
+          # happened — the no-data-changes path above exits 0 without one.
+          echo "released_tag=v${VERSION}" >> "$GITHUB_OUTPUT"
 
-      # Mirror the release to the HuggingFace dataset (parquet-native card).
-      # NON-FATAL by design: the HF_TOKEN is an OAuth token that can expire —
-      # a dead mirror must never block a data release. If this step starts
-      # failing, mint a fine-grained WRITE token at hf.co/settings/tokens
-      # (scope: vehiclesdb datasets) and `gh secret set HF_TOKEN`.
-      - name: Mirror release to HuggingFace
-        if: success() && ((github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish))
+      # ── The PRIVATE plus-<VERSION> release. It MUST be cut here, in the job
+      # that ran the build: `build/out-private` exists only on this runner and
+      # is wiped by the next build. It cannot be reconstructed from a tag —
+      # a rebuild is not byte-identical (~37-record variance from cache state
+      # alone), and a mismatched catalog-plus/dist pair is exactly the
+      # incoherence the DATA-CONTRACT version-lock exists to prevent.
+      #
+      # Skips cleanly (loudly) without a write-scoped token, so the release
+      # itself is never blocked on a missing secret. PIPELINE_REPO_TOKEN is
+      # Contents:READ and cannot create a release; this needs its own
+      # Contents:WRITE PAT on vehiclesdb/vehiclesdb-pipeline.
+      - name: Cut the private plus-<VERSION> release
+        if: success() && steps.release.outputs.released_tag != ''
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          GH_TOKEN: ${{ secrets.PIPELINE_RELEASE_TOKEN }}
+          VERSION: ${{ steps.release.outputs.released_tag }}
         run: |
-          if [ -z "$HF_TOKEN" ]; then echo "no HF_TOKEN — skipping mirror"; exit 0; fi
-          pip install -q "huggingface_hub[cli]" 2>/dev/null || pipx install huggingface_hub 2>/dev/null || true
-          VDB_DATA_REPO="$PWD/data-repo" bash pipeline-repo/huggingface/push.sh || echo "::warning::HF mirror failed (release itself is fine) — check/replace HF_TOKEN"
+          set -euo pipefail
+          V="${VERSION#v}"
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::warning::PIPELINE_RELEASE_TOKEN not set — plus-${V} NOT cut. The paid feed will be stranded on the previous version until it is cut by hand (RELEASE-RUNBOOK.md §5.5). Mint a fine-grained PAT with Contents:Write on vehiclesdb/vehiclesdb-pipeline."
+            exit 0
+          fi
+          OUT=pipeline-repo/build/out-private
+          [ -d "$OUT" ] || { echo "::error::$OUT missing — the build did not emit the private layer"; exit 1; }
+          PLUS=$(ruby -rjson -e 'puts JSON.parse(File.read(ARGV[0]))["version"]' "$OUT/MANIFEST-PLUS.json")
+          [ "$PLUS" = "$V" ] || { echo "::error::version-lock: MANIFEST-PLUS=$PLUS but release=$V"; exit 1; }
+          [ -n "$(ls -A "$OUT/catalog-plus")" ] || { echo "::error::catalog-plus is empty"; exit 1; }
+          [ -f "$OUT/registrations-${V}.json" ] || { echo "::error::missing registrations-${V}.json"; exit 1; }
+          tar czf "/tmp/catalog-plus-${V}.tar.gz" -C pipeline-repo/build out-private
+          gh release create "plus-${V}" -R vehiclesdb/vehiclesdb-pipeline \
+            --title "catalog-plus ${V} (private — vehiclesdb-web feed)" \
+            --notes "Private enriched layer for public release v${V}. Version-locked: MANIFEST-PLUS.json version == public VERSION == ${V}. Cut from the same build that produced v${V}. Ingest: bin/data-update ${V}" \
+            "/tmp/catalog-plus-${V}.tar.gz"
+          # Round-trip the PUBLISHED artifact, not the local copy.
+          T=$(mktemp -d)
+          gh release download "plus-${V}" -R vehiclesdb/vehiclesdb-pipeline -D "$T" --clobber
+          tar xzf "$T"/*.tar.gz -C "$T"
+          RT=$(ruby -rjson -e 'puts JSON.parse(File.read(ARGV[0]))["version"]' "$T/out-private/MANIFEST-PLUS.json")
+          [ "$RT" = "$V" ] || { echo "::error::round-trip says $RT, expected $V"; exit 1; }
+          echo "plus-${V} published and verified"
 
-      # jsDelivr caches @latest aggressively; purging right after the release
-      # makes the new data reach CDN consumers (incl. the gem's refresh) in
-      # minutes instead of up to a week. Purge failures are non-fatal — the
-      # cache expires on its own.
-      - name: Purge jsDelivr @latest
-        if: success() && ((github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish))
-        run: |
-          for f in manifest.json dist/vehicles.json dist/vehicles.min.json dist/vehicles.csv dist/catalog.sqlite dist/vehicles.parquet; do
-            curl -fsS "https://purge.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/${f}" > /dev/null || true
-          done
-          echo "jsDelivr purge requested."
+      # The HuggingFace mirror and the jsDelivr purge USED TO LIVE HERE, gated
+      # on this workflow's own event. That made them invisible to any release
+      # not cut by this workflow — and v2026.08.0 and v2026.08.1 were both cut
+      # by hand, so neither ran, and v2026.08.1 also shipped with zero release
+      # assets. They now live in release-channels.yml, keyed to the RELEASE
+      # rather than to who produced it, and are invoked by the `channels` job
+      # below. One implementation, two entry points, no drift.
 
       # A failed scheduled build must page a human. One issue, updated — never
       # a new issue per failure night (the OpenASN pattern, verbatim).
@@ -254,3 +286,20 @@ jobs:
           else
             gh issue create --title "$title" --body "$body" --label pipeline-failure
           fi
+
+  # ── The release channel fan-out. Calling the reusable workflow rather than
+  # duplicating its steps means the CI path and the hand-cut path run the SAME
+  # code. It cannot be reached by `on: release` from here: a release created
+  # with the default GITHUB_TOKEN does not fire `release` events (GitHub's
+  # workflow-loop prevention), which is precisely why the mirror silently
+  # stopped covering releases this workflow did not create.
+  #
+  # `released_tag` is empty unless a release actually happened, so validate-only
+  # runs and no-data-change runs skip this entirely.
+  channels:
+    needs: build
+    if: needs.build.outputs.released_tag != ''
+    uses: ./.github/workflows/release-channels.yml
+    with:
+      tag: ${{ needs.build.outputs.released_tag }}
+    secrets: inherit

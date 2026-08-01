@@ -1,0 +1,316 @@
+name: Release channels
+
+# THE FAN-OUT, KEYED TO THE RELEASE — NOT TO WHO CREATED IT.
+#
+# A release goes to six places and only the git tag is automatic. Before this
+# workflow, the other channels lived inside monthly-build.yml guarded by
+# `if: github.event_name == 'schedule' || (workflow_dispatch && inputs.publish)`
+# — conditioned on HOW the release was produced rather than on a release
+# EXISTING. Consequence, measured on v2026.08.1 (hand-cut, 2026-08-01): the
+# release shipped with ZERO assets while the CI-cut v2026.08.0 has seven,
+# jsDelivr kept serving the previous version, and the HuggingFace mirror never
+# ran. Nothing was broken; the release was just quietly incomplete.
+#
+# TRIGGER DESIGN — read this before changing it:
+#   * `release: [published]` covers HAND-CUT releases. It does NOT fire for
+#     releases created with the default GITHUB_TOKEN (GitHub's workflow-loop
+#     prevention), which is exactly how monthly-build.yml creates them.
+#   * `workflow_call` is therefore how the CI path reaches this, invoked as a
+#     dependent job in the same run.
+#   * `workflow_dispatch` is for backfilling a release that predates this.
+# Each path fires exactly once. Every step is idempotent anyway, so a double
+# run is harmless.
+#
+# NOT HERE, deliberately: the private `plus-<VERSION>` release. It is cut from
+# `build/out-private`, which exists only on the machine that ran the build and
+# is wiped by the next one. It cannot be reconstructed from a tag — a rebuild
+# is not byte-identical (~37-record variance from cache state alone), and a
+# mismatched catalog-plus/dist pair is the precise incoherence the
+# DATA-CONTRACT version-lock exists to prevent. It belongs in the build job.
+# See RELEASE-RUNBOOK.md §5.5 for the manual procedure.
+
+on:
+  release:
+    types: [published]
+  workflow_call:
+    inputs:
+      tag:
+        description: "Release tag to fan out, e.g. v2026.08.1"
+        required: true
+        type: string
+      mirror_hf:
+        description: "Push the HuggingFace mirror"
+        required: false
+        default: true
+        type: boolean
+    secrets:
+      HF_TOKEN:
+        required: false
+      PIPELINE_REPO_TOKEN:
+        required: false
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to fan out, e.g. v2026.08.1"
+        required: true
+        type: string
+      mirror_hf:
+        description: "Push the HuggingFace mirror"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write # upload release assets
+  issues: write # page a human on failure
+
+concurrency:
+  # Serialised per tag; never cancel a fan-out midway through.
+  group: release-channels-${{ inputs.tag || github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  fan-out:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve the tag and options
+        id: v
+        env:
+          TAG_IN: ${{ inputs.tag || github.event.release.tag_name }}
+          # Resolved in shell, NOT in an `if:` expression. On the `release`
+          # trigger there is no `inputs` context, and GitHub coerces both null
+          # and false to 0 — so `if: inputs.mirror_hf != false` evaluates
+          # FALSE for a hand-cut release and silently skips the mirror, which
+          # is the exact class of bug this workflow exists to remove. An empty
+          # string here means "not supplied", which defaults to true.
+          MIRROR_IN: ${{ inputs.mirror_hf }}
+        run: |
+          set -euo pipefail
+          TAG="$TAG_IN"
+          [ -n "$TAG" ] || { echo "::error::no tag resolved"; exit 1; }
+          case "$TAG" in
+            v[0-9][0-9][0-9][0-9].[0-9][0-9].*) ;;
+            *) echo "::error::tag '$TAG' is not vYYYY.MM.P"; exit 1 ;;
+          esac
+          MIRROR="${MIRROR_IN:-true}"
+          echo "tag=$TAG"            >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}"    >> "$GITHUB_OUTPUT"
+          echo "mirror_hf=$MIRROR"   >> "$GITHUB_OUTPUT"
+          echo "Fanning out $TAG (HuggingFace mirror: $MIRROR)"
+
+      # Check out AT THE TAG. dist/ and catalog/ are committed, so the bytes
+      # here are exactly the bytes that were released — no rebuild, nothing to
+      # drift. Full history + tags so `git archive <tag>` works in the
+      # boundary check below.
+      - name: Checkout the released tree
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.v.outputs.tag }}
+          fetch-depth: 0
+
+      # ── GATE: everything downstream assumes these agree. If they don't, the
+      # release itself is malformed and mirroring it would propagate the fault.
+      - name: Version-lock preflight
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -euo pipefail
+          FILE_V="$(cat VERSION)"
+          MANIFEST_V="$(ruby -rjson -e 'puts JSON.parse(File.read("manifest.json"))["version"]')"
+          echo "tag=$VERSION  VERSION=$FILE_V  manifest=$MANIFEST_V"
+          [ "$FILE_V"     = "$VERSION" ] || { echo "::error::VERSION file ($FILE_V) != tag ($VERSION)"; exit 1; }
+          [ "$MANIFEST_V" = "$VERSION" ] || { echo "::error::manifest.json ($MANIFEST_V) != tag ($VERSION)"; exit 1; }
+          for f in dist/vehicles.json dist/vehicles.min.json dist/vehicles.csv \
+                   dist/catalog.sqlite dist/vehicles.parquet manifest.json ATTRIBUTION.md; do
+            [ -s "$f" ] || { echo "::error::missing or empty: $f"; exit 1; }
+          done
+          echo "version-lock OK"
+
+      # ── CHANNEL: release assets. --clobber makes this idempotent, so it also
+      # repairs a release that was cut without them.
+      - name: Attach release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" \
+            dist/vehicles.json dist/vehicles.min.json dist/vehicles.csv \
+            dist/catalog.sqlite dist/vehicles.parquet \
+            manifest.json ATTRIBUTION.md --clobber
+          COUNT=$(gh release view "$TAG" --json assets --jq '.assets | length')
+          echo "assets attached: $COUNT"
+          [ "$COUNT" -ge 7 ] || { echo "::error::expected >=7 assets, got $COUNT"; exit 1; }
+
+      # ── GATE: the archive boundary. GitHub builds release source zips with
+      # git-archive semantics and Zenodo mints a permanent DOI over that zip,
+      # so an internal doc that leaks here is public and citable forever.
+      # `export-ignore` is read from the .gitattributes INSIDE the archived
+      # tree, which is why this is checked per tag rather than assumed.
+      - name: Verify the archive boundary
+        env:
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          set -euo pipefail
+          LEAKED=$(git archive "$TAG" | tar t \
+            | grep -E '^(NEGOTIATION|DEBT|AGENTS|PRD-|PROPOSAL-|CORRECTION-PASS|OVERNIGHT)' || true)
+          if [ -z "$LEAKED" ]; then
+            echo "archive boundary holds — no internal documents in $TAG"
+            exit 0
+          fi
+          # `export-ignore` is read from the .gitattributes in the ARCHIVED
+          # tree, so a tag cut before that file existed leaks by construction
+          # and cannot be repaired retroactively — only superseded. Failing the
+          # fan-out for one of those would block legitimate backfill (asset
+          # repair, a re-mirror) over a fact nobody can act on. Distinguish the
+          # two cases: no .gitattributes at the tag = historical, warn; present
+          # and still leaking = a real regression, fail.
+          if git cat-file -e "${TAG}:.gitattributes" 2>/dev/null; then
+            echo "::error::internal documents are in the release archive (and therefore in the DOI record) DESPITE .gitattributes — the boundary regressed:"
+            echo "$LEAKED"
+            echo "Add the missing export-ignore line(s) and cut a patch release; this tag's archive cannot be fixed in place."
+            exit 1
+          fi
+          echo "::warning::$TAG predates the archive boundary (.gitattributes) and its source zip leaks internal documents. This is unfixable retroactively — the DOI record for it is permanent. Not failing the fan-out. Leaked:"
+          echo "$LEAKED"
+
+      # ── CHANNEL: jsDelivr. @latest is cached up to a week, so without this
+      # consumers keep getting the previous release.
+      - name: Purge jsDelivr @latest and verify propagation
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -euo pipefail
+          for f in manifest.json dist/vehicles.json dist/vehicles.min.json \
+                   dist/vehicles.csv dist/catalog.sqlite dist/vehicles.parquet; do
+            curl -fsS "https://purge.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/${f}" >/dev/null \
+              && echo "purged $f" || echo "::warning::purge request failed for $f"
+          done
+          # Propagation is eventually-consistent; poll rather than assume.
+          for i in 1 2 3 4 5 6; do
+            GOT=$(curl -fsS "https://cdn.jsdelivr.net/gh/vehiclesdb/vehiclesdb@latest/VERSION" 2>/dev/null || echo "")
+            [ "$GOT" = "$VERSION" ] && { echo "CDN serving $VERSION"; exit 0; }
+            echo "CDN still on '${GOT:-?}' (attempt $i) — waiting"
+            sleep 20
+          done
+          echo "::warning::jsDelivr had not propagated $VERSION after ~2min. The cache expires on its own; re-run this workflow to re-purge."
+
+      # ── HuggingFace. The card kit lives in the private pipeline repo.
+      - name: Checkout the pipeline (HuggingFace card kit)
+        if: steps.v.outputs.mirror_hf == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: vehiclesdb/vehiclesdb-pipeline
+          token: ${{ secrets.PIPELINE_REPO_TOKEN }}
+          path: pipeline-repo
+
+      # ── GATE: never let an automated push DELETE prose from the live card.
+      # push.sh copies the kit's README over the live card unconditionally. The
+      # live card has been edited on huggingface.co at least once (a "Citing
+      # this dataset" section and a rewritten Attribution block exist there and
+      # in neither repo), so an unguarded push would silently destroy it.
+      # This compares section headings and fails with the list rather than
+      # regressing a public dataset card. The card is GENERATED: fix the kit,
+      # never the website.
+      - name: Guard the HuggingFace card against regression
+        if: steps.v.outputs.mirror_hf == 'true'
+        run: |
+          set -euo pipefail
+          LIVE=$(mktemp)
+          if ! curl -fsS "https://huggingface.co/datasets/vehiclesdb/vehiclesdb/raw/main/README.md" -o "$LIVE"; then
+            echo "::warning::could not fetch the live card; skipping the regression guard"
+            exit 0
+          fi
+          MISSING=""
+          while IFS= read -r h; do
+            grep -Fqx "$h" pipeline-repo/huggingface/README.md || MISSING="${MISSING}\n  ${h}"
+          done < <(grep '^## ' "$LIVE" || true)
+          if [ -n "$MISSING" ]; then
+            echo "::error::the live HuggingFace card has sections the kit does not, and pushing would DELETE them:"
+            printf "%b\n" "$MISSING"
+            echo "Reconcile pipeline-repo/huggingface/README.md with the live card first (RELEASE-RUNBOOK.md §5.3)."
+            exit 1
+          fi
+          echo "card guard OK — the kit is a superset of the live card"
+
+      - name: Mirror to HuggingFace
+        if: steps.v.outputs.mirror_hf == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -euo pipefail
+          # Fail loudly on a missing credential. The previous implementation
+          # `exit 0`d here, which turned an absent token into a green run.
+          [ -n "${HF_TOKEN:-}" ] || { echo "::error::HF_TOKEN is not set — cannot mirror"; exit 1; }
+          # The `hf` binary that push.sh invokes only exists from 0.34; older
+          # wheels ship `huggingface-cli` and would fail late.
+          pip install -q "huggingface_hub[cli]>=0.34"
+          VDB_DATA_REPO="$PWD" bash pipeline-repo/huggingface/push.sh
+
+      # Read back from the dataset itself — the only proof it landed. Note the
+      # JSON is served raw (only *.parquet and catalog.sqlite are LFS there).
+      - name: Verify the HuggingFace mirror
+        if: steps.v.outputs.mirror_hf == 'true'
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          set -euo pipefail
+          GOT=$(curl -fsS "https://huggingface.co/datasets/vehiclesdb/vehiclesdb/raw/main/manifest.json" \
+            | ruby -rjson -e 'puts JSON.parse($stdin.read)["version"]')
+          echo "HuggingFace manifest version: $GOT"
+          [ "$GOT" = "$VERSION" ] || { echo "::error::HF mirror says $GOT, expected $VERSION"; exit 1; }
+          curl -fsS "https://huggingface.co/api/datasets/vehiclesdb/vehiclesdb" \
+            | ruby -rjson -e 'f=JSON.parse($stdin.read)["siblings"].map { |s| s["rfilename"] }
+                need=%w[README.md manifest.json vehicles.csv vehicles.json catalog.sqlite]
+                miss=need-f; abort("::error::HF is missing #{miss.join(", ")}") unless miss.empty?
+                puts "HF carries: #{(need & f).join(", ")}"'
+
+      # ── Zenodo needs no action: the webhook mints the DOI on release publish.
+      # It is verified rather than performed. Do NOT read the webhook's own
+      # status — GitHub fires three deliveries per publish and only `published`
+      # mints; `released` returns 409 ("already received") and lands LAST, so a
+      # perfectly successful mint shows red in the Webhooks UI.
+      - name: Verify the Zenodo DOI minted
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          set -euo pipefail
+          for i in 1 2 3 4 5; do
+            if curl -fsS "https://zenodo.org/api/records?q=conceptrecid:21744943&all_versions=true" \
+              | ruby -rjson -e 'j=JSON.parse($stdin.read)
+                  vs=j["hits"]["hits"].map { |h| h["metadata"]["version"] }
+                  puts "Zenodo versions: #{vs.join(", ")}"
+                  exit(vs.include?(ENV["TAG"]) ? 0 : 1)'; then
+              echo "DOI minted for $TAG"; exit 0
+            fi
+            echo "not indexed yet (attempt $i) — waiting"
+            sleep 30
+          done
+          echo "::warning::Zenodo has not indexed $TAG yet. Minting is asynchronous; if it is still absent in an hour, re-deliver ONLY the 'published' webhook delivery (RELEASE-RUNBOOK.md §5.1)."
+
+      # One issue, updated — never a new issue per failure night.
+      - name: Open/update release-channel-failure issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          set -euo pipefail
+          title="Release channel fan-out failed"
+          body="The release channel fan-out failed for \`${TAG}\`: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          The release itself is already public — this is the fan-out. Likely causes:
+          - **Version-lock preflight**: VERSION / manifest.json / tag disagree — the release is malformed.
+          - **Archive boundary**: an internal document is in the release zip, and therefore in the Zenodo DOI record. Add its \`export-ignore\` line and cut a patch release.
+          - **HF card guard**: the live dataset card has sections the kit lacks; pushing would delete them. Reconcile \`huggingface/README.md\` first.
+          - **HF_TOKEN**: expired OAuth token — mint a fine-grained WRITE token at hf.co/settings/tokens and \`gh secret set HF_TOKEN\`.
+
+          Procedure: RELEASE-RUNBOOK.md §5 (pipeline repo)."
+          existing=$(gh issue list --search "\"$title\" in:title state:open" --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
