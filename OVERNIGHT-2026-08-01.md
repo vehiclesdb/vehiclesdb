@@ -3,10 +3,10 @@
 ## The headline
 
 **You were right about the noise, and it was worse than you thought.** Across
-nine makes measured tonight, between 23% and 82% of records were not models —
-they were trims, axle codes, payload classes, body words, engine markers and
-misspellings. All of it is now folded onto real nameplates with **zero country
-evidence lost**, verified per fold.
+twenty-plus makes measured, between 23% and 82% of records were not models —
+they were trims, axle codes, payload classes, body words, engine markers,
+generation codes and misspellings. All of it is folded onto real nameplates
+with **zero country evidence lost**, verified per fold.
 
 **And the bigger finding was the opposite problem: 115,809 vehicles were being
 DELETED on every build**, before they ever reached a record.
@@ -15,15 +15,22 @@ DELETED on every build**, before they ever reached a record.
 
 | slice | records | noise folded |
 |---|---|---|
+| Saab + Porsche + Bentley | 210 → 73 | **67%** (saab alone 77%) |
 | Iveco + Dodge | 430 → 170 | **82%** / 37% |
 | Volvo | 428 → 157 | **63%** |
 | MG + Austin | 281 → 131 | **53%** |
 | Jaguar / Rover / Land Rover | 348 → 168 | **53%** |
+| Vauxhall + Subaru + Jeep | 233 → 126 | **47%** |
 | Chevrolet | 393 → 219 | **45%** |
+| Ferrari / Alfa / Maserati | 304 → 233 | 23% (Ferrari held at both altitudes) |
+| Kia + Škoda | 151 → 96 | 40% each |
+| Cadillac + Chrysler + Buick | 270 → 173 | 36% |
 | Mitsubishi + Mazda | 211 → 149 | 35% |
-| Scania + DAF | 420 → 313 | 23% net (+28 real models minted) |
+| Scania + DAF | 420 → 313 | 23% net, +28 real models recovered |
 
-4W catalog: **8,613 → 7,765 published ids**, and van *grew* (742 → 907) because
+4W catalog: **8,613 → 6,946 published ids** (car 5,026 · van 616 · truck 914 ·
+bus 390), and van/truck grew in places because real models were freed from
+pooled axle codes before the later waves trimmed them again.
 real models were recovered out of pooled axle codes.
 
 ## The three things worth your attention
