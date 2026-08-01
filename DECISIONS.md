@@ -111,6 +111,24 @@ evidence type and source id. It does NOT assert the maker officially sold the
 model there (NZ's JDM grey imports are the canonical counterexample, and
 they're a feature: those models exist on real roads).
 
+**Removing a country from a published record is a CORRECTION, not a loss —
+and it has to be shown to be one.** `car/mini/aceman` shipped `ca` and `us`
+until 2026-08. It should not have: a normalizer rule tested `/ACEMAN/` without
+a word anchor, `"PACEMAN"` matches that at offset 1, and so every MINI Paceman
+row — a 2012-2016 model, discontinued eight years before the Aceman existed —
+was filed as an Aceman. The Canadian and US sources hold 16 and 24 Paceman
+rows and **zero** Aceman rows, and the two cars' EU type-approval numbers
+disagree on the framework directive itself (`e1*2007/46*0563*03` for the
+Paceman, `e1*2018/858*00382*…` for the Aceman), so the North American evidence
+was never the Aceman's to hold. It did not vanish: it **moved** to
+`car/mini/paceman`, which the same change creates.
+
+The rule this sets: an availability removal ships only when the evidence is
+shown to belong somewhere else (or to nothing), and it ships with a
+`spotchecks.yml` row asserting the absence — `availability_excludes` exists
+for exactly this, because an `_includes` row cannot state "and it must never
+come back."
+
 ## Licensing & brand
 
 **Data CC-BY 4.0, forever.** The skeleton (ids, names, structure, body
