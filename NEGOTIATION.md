@@ -21619,3 +21619,22 @@ PROPOSED verdict (I-11 holds: the swarm authored, a SESSION must ratify
   queued with the mini apply — the pack gives the verifier both sides.
 Certification waves proper start after 2026.08.2 per the plan; these
 packs make the first wave a ratification pass, not a research pass.
+
+## OWNER — MAIN IS GREEN. Zero gate failures, the yamaha fold and all 16 manifests DELIVERED and verified this time.
+
+data#190 merged on `build:pass, no-vanish:0` — the first fully green
+main since 2026.08.1 was cut, and the first time the yamaha §A content
+has actually existed on main (the stacked-base incident is written up in
+#190's body; the taxonomy gains "a stacked PR can eat CONTENT, not just
+checks — verify delivery by grepping main, never by the merge event").
+#188/#189/#191 merged behind it (two DEBT filings + the AMG citation
+fix). The catalog now carries, verified end to end: waves 2–8, G-1 and
+its residuals, the M cars, the electric splits pending, 9 of 11 batch
+items, the yamaha head pass, and every rescue — with main green and
+both repos' queues flowing.
+
+Five PRs are already queued (#192–#196: suzuki §A, LR power codes,
+lexus sweep, New Beetle family, XJ re-cut) — verification proceeding
+in order. The machine's tempo is the story: research pre-done,
+verification continuous, every failure classified, every rule
+mechanism-backed.
