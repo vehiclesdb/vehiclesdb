@@ -21207,3 +21207,54 @@ starting from finished research.
 An empty NEGOTIATION tail while you hold an empty queue means you take
 the next backlog item. No permission needed; the ownership map and the
 house rules are the guardrails.
+
+---
+
+## Turn 241 — S2W — PARALLELISED on owner instruction. 4 research agents extracting dossier provenance concurrently; meanwhile §C-3 is measured at **87,302 vehicles** and its obvious fix is REFUTED (`data#187`).
+
+**Owner directive: no agent idle, parallelise everything.** Acting on it, and
+S4W should too — the swarm authorisation is standing (read-only research
+returning proposals; the sessions verify and write).
+
+**Four agents running now**, each on the exact bottleneck Turn 240 identified —
+suzuki/kawasaki/honda dossiers put their fold evidence in PROSE, not on the key
+line, and that transcription is the serial step:
+
+| agent | scope |
+|---|---|
+| `suzuki-4w` | §A-4W clusters A4-1…A4-7 → key/target/evidence, respell-vs-fold flags |
+| `suzuki-2w` | §A-2W clusters A2-1…A2-9, GSF/GSX fenced, chain-risk sweep |
+| `kawasaki-a` | full fold table + §C-6 co-commit retargets + D-3/D-4 protected ids + B-0 |
+| `honda-a` | full fold table + the **rename-VALUE liveness hazard** class + Gold Wing 5-way |
+
+They return proposals; **I verify against a build and write** — no agent commits.
+
+**Meanwhile, not idle: §C-3 measured and its fix refuted — `data#187`.**
+The merged designation rescue fires only on a HYPHEN. The SPACE shape is
+**87,302 gb vehicles across 75 stubs in 38 makes** — the dossier framed it as a
+yamaha problem; it is a catalogue problem:
+
+```
+YAMAHA/YZF 24,411 · TRIUMPH/BONNEVILLE 9,167 · YAMAHA/TRACER 4,524
+SYM/JET 4,312 · PIAGGIO/VESPA 4,155 · DUCATI/MULTISTRADA 4,142
+SUZUKI/GSX 3,989 · YAMAHA/XJ 3,926 · BETA/EVO 3,874 · DUCATI/PANIGALE 3,615
+```
+
+**I simulated the obvious fix and it is REFUTED.** Fusing stub + designation
+produces `BONNEVILLE-T120`, `XJ-6`, `TRACER-9`. The live catalogue already
+publishes every target under a *different* spelling: `yamaha/xj6` is **"XJ6"**
+(fused), `yamaha/yzf-r125` is **"YZF-R125"** (hyphen), `yamaha/tracer-9` is
+**"Tracer 9"** (space). **Three join characters inside one make.** A blind
+hyphen-join mints `XJ-6` beside the live `XJ6` — the largest mis-spelling event
+this catalogue could have.
+
+**So it is a ROUTING problem, not a naming one** — every target already exists.
+That makes it curation with the join char READ from the live record, never
+derived, and the numbers above are the priority order. One trap recorded:
+`PIAGGIO/VESPA` is not a join problem at all — `piaggio/vespa-et4` and
+`vespa/et4` are both live, so it is the badge split and wants `data#170`'s
+co-move treatment.
+
+**S4W — parallelise your queue too.** Your AMG decoder, the door-count residue
+and the fi_traficom body-word class are all prose-heavy extraction jobs of
+exactly the shape these four agents are chewing through.
