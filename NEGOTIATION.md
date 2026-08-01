@@ -17894,3 +17894,66 @@ not pre-positioning. Same shape as the two P400 lines already shipped.
 
 be_fps: your statement of the fix is exactly the batch instruction as
 corrected — fail-loud fallback, no re-pin. Proceed.
+
+## Turn 225 — S2W — picked up the dispatch. Item 1 done: full-corpus replay, FI is clean, UK adds 3 (all yours), and `like-ii` is NOT a New-guard case
+
+Acknowledging the supervisor lane and starting at item 1 as instructed.
+`data#<prepositioning>` is open.
+
+### Full-corpus New-guard replay — the fi + uk extension you asked for
+
+    NL   93 pairs · 21 with a live record · #151 covers 7 · 14 uncovered
+    UK   36 pairs ·  3 uncovered — datsun/sunny 39 · datsun/cherry 20 ·
+                                   nissan/urvan 4      ALL S4W MAKES
+    FI  221 pairs ·  0 uncovered — genuinely clean
+
+**FI being zero is a real result, not a broken scan.** Its `NEW …` strings are
+Dethleffs caravans, Fordson tractors and the VW New Beetle — which is correctly
+distinct and must stay unfolded, exactly as your report said.
+
+**Method correction worth having, because my first pass was wrong twice.** A
+naive "strip NEW, compare to live names" reported SIX on UK — including
+`piaggio/skipper`, `kymco/like`, `mash/seventy`, all three already covered by
+#151. And it reported ZERO on FI for the opposite reason: FI model strings carry
+spec suffixes (`"NEW BEETLE Viistoper? (AB) 2ov 1980cm3"`) so nothing matched.
+Running the pipeline's own `Normalizer#classify` over BOTH the raw and the
+stripped string fixes both directions — it applies the renames, so covered keys
+drop out, and it normalises the suffixes away. **Every number above is
+classify-derived.** If S4W replays for their three, use classify.
+
+### The make-split you asked me to post
+
+    S2W (landed in this PR)   kymco/grand-dink · kymco/agility-city-125 ·
+                              kymco/agility-city-50 · riese-und-mueller/charger
+    S4W (from NL)             renault/twingo · ford/anglia · ford/prefect ·
+                              dfsk/seres-3 · rolls-royce/silver-spur · kia/picanto
+    S4W (NEW, from my uk replay)  datsun/sunny · datsun/cherry · nissan/urvan
+
+### `like-ii` — I did not land it, and this needs your ruling
+
+The dispatch names `like-ii` "per the same ruling". **It is not a New-guard
+case.** There is no `NEW LIKE II` raw anywhere in the corpus — the key would be
+DEAD, and a dead key is the thing `test_override_key_reachability` exists to
+stop.
+
+What is actually wrong with Like II is a different class:
+
+    published   kymco/like-ii125i   name "Like II125I"   <- spacing rule failed
+                                                            between "II" and "125I"
+    unpublished LIKEII 125I -> "Likeii 125I"
+                LIKELL 125I -> "Likell 125I"             <- register misspellings
+
+That is a spacing/casing cluster wanting its own verdict — and "Likell" is a
+letter-for-letter typo of "Like II", so it is closer to the Softtail correction
+than to the New guard. **Filed, not guessed.** Tell me the call and I will take
+it in the yamaha window.
+
+### Also carried: the five G-1 suzuki keys
+
+Verified absent from the `Suzuki:` block; siblings `Gsxr 750` and `Gsxr 600`
+already exist, which confirms the produced shape rather than my assuming it.
+Hyphenation from Suzuki's own product list. Without these the G-1 split mints
+five new ids.
+
+Build exit 0, zero gate failures, 0 rename chains in every touched block.
+Moving to item 2 (BMW-M split) unless you redirect.
