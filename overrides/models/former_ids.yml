@@ -2087,7 +2087,20 @@
 "van/mercedes-benz/906-ba35": "van/mercedes-benz/sprinter" # repointed 2026-07-26: 906-ba-35 retired into sprinter (Mercedes trim-fold dossier, wave 3)
 "van/mercedes-benz/906ba35": "van/mercedes-benz/sprinter" # repointed 2026-07-26: 906-ba-35 retired into sprinter (Mercedes trim-fold dossier, wave 3)
 "van/mercedes-benz/906ok30": "van/mercedes-benz/sprinter" # repointed 2026-07-26: 906-ok-30 retired into sprinter (Mercedes trim-fold dossier, wave 3)
-"van/mercedes-benz/g-class": "car/mercedes-benz/g-class"
+# REMOVED 2026-08-01 (paired with the pipeline AMG sub-brand fix):
+#   "van/mercedes-benz/g-class": "car/mercedes-benz/g-class"
+# That alias existed because Reconciler.cross_kind_prune! (reconciler.rb:105) deleted the
+# van-kind G-Class — the car record held >=97% of the registrations, i.e. the pipeline's own
+# verdict was "this IS the car, misfiled by body type". The AMG fix moves 92 van
+# registrations off the (unpublished) `van/mercedes-benz/amg` stub onto the van G-Class
+# ("AMG G 63", "AMG G 63 4X42", "AMG G 63 SUV" — fi|gb|lu|nl), and dominance now reads
+# 11,866 / (11,866 + 399) = 96.75%, BELOW the 97% bar, so the van record survives the prune
+# and PUBLISHES. Measured: control vs treatment build, both from pipeline 2511322 against
+# this repo's main. An alias may never name a live id (validate.rb:441) and the id is no
+# longer retired, so the ledger line goes; consumers holding it resolve to a real record
+# again, and since it was NOT in catalog/van/models.json the no-vanish gate never engaged.
+# NOTE THE MARGIN — 0.25pp. If a later build pushes car dominance back over 97% the van
+# record prunes again and will then need this alias back PLUS a removals.yml manifest.
 "van/mitsubishi/l-200": "van/mitsubishi/l200"
 "van/nissan/d-22": "van/nissan/d22"
 "van/nissan/np-300": "van/nissan/np300"
@@ -4349,7 +4362,12 @@
 # aux/research/trims-2026-07/dossier-mercedes.md in the pipeline repo. The car/g +
 # van/g folds are appended AFTER this batch (verified in their own build): the van-side
 # rows cross-kind prune into the car nameplate, so the retired van/mercedes-benz/g-class
-# ledger line above stays honest. ──
+# ledger line above stays honest.
+# SUPERSEDED 2026-08-01: that premise no longer holds. The AMG sub-brand fix moved 92 van
+# registrations onto the van G-Class and it now clears the cross-kind prune (96.75% car
+# dominance vs the 97% bar), so the van/mercedes-benz/g-class ledger line has been removed
+# — see the note in the van block above. van/mercedes-benz/g still points at the CAR
+# record on purpose (same note). ──
 "bus/mercedes-benz/412d-ka-904463-kasten": "bus/mercedes-benz/sprinter" # W90x chassis code / type string / misspelling; Sprinter generations are one nameplate (MB trim dossier, wave 3)
 "bus/mercedes-benz/818-d": "bus/mercedes-benz/818" # cab/chassis config letter; series_collapse already folds the spaced form (MB trim dossier, wave 3)
 "bus/mercedes-benz/906": "bus/mercedes-benz/sprinter" # W90x chassis code / type string / misspelling; Sprinter generations are one nameplate (MB trim dossier, wave 3)
@@ -4497,7 +4515,7 @@
 "van/mercedes-benz/v": "van/mercedes-benz/v-class" # registry truncation to a bare letter; register writes both "V" and the V-Class form (MB trim dossier, wave 3)
 "van/mercedes-benz/x": "van/mercedes-benz/x-class" # family-rule gap: X is missing from the mercedes() letter list, so "MERCEDES X CLASS"/"X-KLASSE" (gb+nl) minted a bare-letter id (MB trim dossier, wave 3)
 "car/mercedes-benz/g": "car/mercedes-benz/g-class" # registry truncation to a bare letter; nz writes both "G" and "G-CLASS" (MB trim dossier, wave 3)
-"van/mercedes-benz/g": "car/mercedes-benz/g-class" # FLATTENED through the shipped van/mercedes-benz/g-class -> car/mercedes-benz/g-class ledger line: the van-side rows cross-kind prune into the car nameplate (fi,nl both present there) (MB trim dossier, wave 3)
+"van/mercedes-benz/g": "car/mercedes-benz/g-class" # was FLATTENED through the van/mercedes-benz/g-class -> car/mercedes-benz/g-class ledger line, which the AMG sub-brand fix retires (see the note in the van block above — the van G-Class now clears the cross-kind prune at 96.75%). DELIBERATELY LEFT POINTING AT THE CAR RECORD: the van record clears the prune by 0.25pp and could flap back, and an alias whose target dies fails validate.rb:447; car/mercedes-benz/g-class is unconditionally live and carries fi,nl. (MB trim dossier, wave 3)
 
 # ── issue #123: BMW model slugs mix two naming conventions (serie-N vs N-series).
 # Adjudicated in the issue thread: the ENGLISH marketing convention wins (it is
