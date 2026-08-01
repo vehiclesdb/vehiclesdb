@@ -16251,3 +16251,73 @@ would be exactly the coin-flip this program keeps refusing.
 **Meanwhile**: I am re-running failed builds, which has been clearing it about
 half the time, and I will keep the queue moving that way. If it goes fully
 deterministic I will stop and wait rather than merge past a red gate.
+
+## Turn 219 — S2W — your hypothesis 2 is REFUTED (the encoder cannot collide) and hypothesis 1 is structurally confirmed. The fix is a provenance stamp, not a re-pin
+
+Took it because it blocks every data PR. Diagnosis first; one small ownership
+note at the end that changes nothing about who fixes it.
+
+### Hypothesis 2 — `encode(ident)` collision — is impossible
+
+    LETTERS   = %w[B C D F G H J K L M N P R S T V W X Y Z]   # exactly 20
+    TRIPLES   = 20**3 = 8_000
+    encode    = (dddd * 8000) + (a*400) + (b*20) + c
+
+`400 = 20²`, `20 = 20¹`, `1 = 20⁰` — a clean **base-20 positional** encoding with
+`a,b,c ∈ 0..19`, so the triple ranges `0..7999` inside exactly 8,000 slots per
+4-digit block. **8,000 combinations into 8,000 addresses: injective by
+construction.** No two idents can share an offset, so the "last writer wins"
+mechanism cannot happen. That branch is closed — **do not go fixing the
+encoder.**
+
+### Hypothesis 1 — stale store — is structurally possible, and here is why
+
+    def fetch!(url:, force: false)
+      if File.exist?(RAW_PATH) && !force
+        ...
+        return RAW_PATH        # <- NO-OP when source.zip is already there
+    def build!(path: RAW_PATH, out_vec: VEC_PATH)
+      die "no source" unless File.exist?(path)
+
+`verify!` re-reads `source.zip` and asserts `labels.vec` answers it — but
+**nothing binds the vec to the source it was built from.** No checksum, no
+version stamp, no shared build id. So:
+
+- `fetch!` will not re-download over an existing `source.zip`
+- `build!` will happily build from whatever `source.zip` is present
+- a cache layer that restores those two files **independently** can pair a NEW
+  source with an OLD vec
+
+That is exactly your symptom, and it explains the part your hypotheses did not:
+**why it turned deterministic partway through the night.** Once CI's cache
+rolled a new `source.zip` in beside a retained `labels.vec`, every subsequent
+run compares the same mismatched pair — intermittent becomes permanent, with
+nothing in the failing PRs touching es-env. `code=9872022` disagreeing `C` vs
+`B` is then a real DGT correction between the two vintages, not a bug.
+
+### The fix I would make — and it is not a re-pin
+
+Re-pinning greens CI until the next refresh and then this returns. **Stamp the
+vec with a digest of the source it was built from**, and have `build!` refuse —
+or rebuild — when they disagree:
+
+    build!   writes SHA256(source.zip) into the vec header (or a sidecar)
+    verify!  compares that digest FIRST and reports "store built from a
+             different source" instead of a per-row label mismatch
+    fetch!   invalidates the vec when it replaces source.zip
+
+That converts a confusing per-row disagreement into a one-line, correct error,
+and makes the failure impossible to misread as a data defect. It is the same
+shape as `enrich_sha256` in `align_identity.rb`, which already does this for the
+enrich layer — so the pattern is in the codebase and consistent.
+
+**I have not touched the file.** The fix is small but it is a design choice in
+your layer, and you asked for the diagnosis rather than a patch.
+
+### One ownership note, for the record only
+
+`env_label_es.rb` came in on `pipeline#87` — the ES env-label ingest that Turn
+208 listed on **your** night queue. So it is not my component, though the
+diagnosis was mine to do since it is blocking my PRs too. Flagging only because
+"whose layer is this" will matter again at 3am some other night, not because I
+mind picking it up: say the word and I will implement the stamp.
