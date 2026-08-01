@@ -21055,3 +21055,111 @@ stale base, and both sides pointed at the treatment — with the instruction tha
 
 And it is told, as item 6's delegate was, that refusing to ship on evidence is a
 welcome result.
+
+## S4W — items 8+9 done (`pipeline#133` → `#134` → `data#186`). The wrong car is split, the regex class is CLOSED, and `report:junk_drops` turns out to be blind to the class it exists to find
+
+### The Paceman split, and the availability closes to the country
+
+`"PACEMAN" =~ /ACEMAN/` returns `1`; confirmed by replay before touching
+anything — `classify("MINI","PACEMAN") -> ["Mini","Aceman"]`. Fixed by **both**
+reordering Paceman first **and** `\b`-anchoring both arms, so neither a future
+reorder nor a future `-ACEMAN` nameplate can reintroduce it.
+
+    aceman   ar ca es fi gb lu my nl nz th ua us  ->  ar es fi gb lu my nl nz th ua
+    paceman  (absent)                             ->  ca fi gb nl nz ua us   [NEW]
+
+**Nothing invented, nothing lost:** the Paceman raw-string country union is
+exactly the new `paceman` availability, the true-Aceman union is exactly the
+new `aceman`, and the two countries `aceman` loses — `{ca, us}` — are precisely
+the Paceman-only ones. Five shared countries correctly stay on both.
+
+**Corroboration nobody asked for, and it is the good kind:** the EU type
+approvals split cleanly along the same line. `e1*2007/46*…` moves to `paceman`,
+the `e1*2018/858*…` family stays with `aceman` — two different regulatory
+framework directives. **The registers themselves say these are different cars.**
+
+Two dossier corrections: its `+es` prediction for paceman is **refuted** (ES has
+1 Paceman row against 614 Aceman, so `es` stays on aceman alone), and its CA
+count is an undercount — **16** Paceman rows, not 6.
+
+### The family-regex sweep — a bounded answer, which is the valuable kind
+
+It instrumented `family_nameplate` and replayed the whole corpus: **151,552
+distinct (make, string) pairs**, 38,546 reaching a family rule, with two
+detectors (mid-word match, and rule-shadowing where an earlier arm beats a later
+longer one).
+
+**`mini()` is the only family rule in the file with unanchored regexes** —
+bmw/vw/hyundai/mercedes/audi/mg/land_rover/tesla all anchor, porsche takes the
+first token. **Exactly one real instance corpus-wide**: `/ACEMAN/` over
+`/PACEMAN/`. Everything else of that syntactic shape is correct — mini's other
+unanchored arms are rescuing register typos (`CLUBMANCOOPERS`,
+`COUNTRYMANCOOPERSEALL4`), and **anchoring `COOPER` measurably drops 29 nl+fi
+vehicles**, so it deliberately did not, and pinned that scope decision in a test.
+
+So the class is closed, not just the instance. I asked for the sweep because one
+unanchored regex produced a wrong car; the answer is that it was the only one.
+
+**Adjacent, and I verified it myself**: `hyundai()`'s `/^I\s?(\d0)/` captures
+two chars, so `I800` → `i80` — **7,967 gb+nz vehicles under a fabricated
+nameplate**. It is already curated by `renames.yml:3814 "i80": "i800"`, whose
+own comment calls itself a stopgap to retire when the regex is fixed, and
+`hyundai/i800` is live in gb+nz. **That key is the dead-curation trap armed and
+waiting**: whoever fixes that regex silently kills it. Fourth instance of the
+class tonight.
+
+### The instrument finding
+
+smart's `#1`/`#3`/`#5` die in `classify`'s guard **before the rename lookup**, so
+the ORDER FIX cannot reach them — 3,027 vehicles across six registers, larger
+than the dossier's NL+ES-only estimate. Fixed by mirroring the existing
+trailing-`#` rule; zero new override lines, zero new ids.
+
+The accounting proves the mechanism: `vehicles_dying_in_junk` **unchanged** at
+264,880, while `vehicles_dropped_by_classify` falls **3,643,960 → 3,640,933 =
+−3,027 exactly**. And the corollary is the finding —
+**`report_junk_drops.rb` returns early for rows that died before the rename
+lookup, so this entire class was invisible to the tool built to find it.**
+That belongs next to the reachability-test row in DEBT: two of our three
+key instruments have now been shown blind to a real class in one night.
+
+### The dead-curation audit, done the way I wanted and then better
+
+Zero — **with a positive control**, because zero is the too-clean number that
+bit two delegates tonight. 7,504 of 7,611 rename keys reproduce identically on
+both sides. Then it re-ran **wide**, recording every produced string rather than
+only key matches: **185,287 → 185,288 distinct (make, produced-string) pairs,
+zero disappear, exactly one appears — `Mini / "Paceman"`.** That is the proof
+the probe is sensitive *and* the complete answer.
+
+It also checked determinism first: two control builds from the same commit are
+byte-identical across all six kinds, so the whole diff is attributable.
+
+### Merge order, with evidence — `#133` → `#134` → `data#186`
+
+`#133` and `#134` are order-independent of each other (per-half builds confirm
+disjoint id diffs). **`data#186` must go LAST**: its CI shows 23 failures = the
+16 pre-existing yamaha + **7 from exactly the five spotcheck rows it adds**,
+because the data build checks out the pipeline at its *default branch*. Merging
+it first turns main red.
+
+A second, independent reason surfaced in that same run: `mini/aceman` did **not**
+fail despite still carrying `ca`/`us`, because pipeline main's `validate.rb` has
+never heard of `availability_excludes` — **the row was silently inert.** #133
+adds that gate feature; it exists because this change *removes* availability
+from a published record and `availability_includes` cannot say "and it must
+never come back."
+
+### Its two mistakes, both worth the space
+
+**A false "7,504 keys lost" it nearly reported.** Its first probe instrumented
+an `Overrides` instance that `Normalizer.new` never uses, then compared a
+finished control against a stale treatment JSON from that broken run. Caught
+only because the number was absurd — *in the audit that exists to catch exactly
+this*. Fourth contaminated comparison tonight.
+
+**A quote in shipped code that its cited page does not contain.** It lifted a
+line from the dossier into a code comment, fetched the BMW release, found it
+says something else, and **amended and disclosed it on the PR rather than fixing
+it quietly**. Then re-fetched the other release and confirmed those claims
+verbatim. That is the standard.
