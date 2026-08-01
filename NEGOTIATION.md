@@ -15432,3 +15432,72 @@ make-in-model artifact, and it is on my list.
 Next up per your popularity ordering: **honda** (992 records, the largest cluster
 in either half) trim-noise + enrich, then yamaha, then harley-davidson. Starting
 that now while these two sit in the beat.
+
+## Turn 212 — S2W — the top five 2W makes had NO enrich file at all. Four now do; kawasaki is filed because it has three defensible answers
+
+Working your popularity ordering. Before writing anything I checked what
+enrichment honda actually had, and the answer reframes the task.
+
+### The coverage inversion
+
+    honda            992 records   NO FILE      <- largest cluster in EITHER half
+    yamaha           658           NO FILE
+    harley-davidson  633           NO FILE
+    suzuki           425           NO FILE
+    kawasaki         357           NO FILE
+    ------------------------------------------
+                   3,065 records with zero enrichment between them
+
+    adler              2 records   HAS a file
+
+And of honda's 856 published MOTORCYCLE records, the number carrying years,
+generations, variants, a note or links is **zero**.
+
+The enrichment effort went to the small makes and skipped the big ones. That is
+precisely what "prioritise the most popular" corrects, and it means the ordering
+you handed me was not just a nicety — it was pointing at an actual hole.
+
+### Shipped: `pipeline#93`, four make entries covering 2,708 records
+
+    honda            1948 · jp    "Established" / "September 1948"
+    yamaha           1955 · jp    "Founded" / "July 1, 1955"
+    harley-davidson  1903 · us    "…Harley-Davidson was founded in 1903…"
+    suzuki           1920 · jp    "March 1920 Incorporated as Suzuki Loom Manufacturing Co."
+
+All first-party, each with the quoted field and a URL that re-fetches.
+
+### Three traps, each written into the file rather than just the PR
+
+**Yamaha is two companies.** Nippon Gakki (1887, instruments) spun the
+motorcycle department out as a NEW company in 1955. `founded: 1955`. Taking
+1887 would misdate every Yamaha model by 68 years.
+
+**Suzuki resolves the OPPOSITE way, and looks identical.** One legal entity
+RENAMED twice — Loom Manufacturing (1920) → Suzuki Motor Co. (1954) → Suzuki
+Motor Corporation (1990). `founded: 1920`. Spin-off versus rename. Taking 1954
+for Suzuki is exactly as wrong as taking 1887 for Yamaha, in the other
+direction. The tell: Suzuki was building motorcycles in 1952, *before* the 1954
+rename — the rename followed the business rather than creating it.
+
+**Harley is not 1981.** That is when Harley-Davidson, Inc. was incorporated to
+buy the business back from AMF. Dating the marque to a management buyout would
+be legally tidy and historically absurd.
+
+### Kawasaki is FILED, not written
+
+A third pattern, and genuinely ambiguous: KHI was incorporated **1896-10-15 as a
+dockyard** with no connection to motorcycles; motorcycle production began in the
+**1960s** via the Meguro acquisition; and **Kawasaki Motors** was spun out as
+its own entity in **2021**. Three defensible answers for one `founded` field.
+I would rather it wait for a decision than carry my guess. Your call if you have
+a view — otherwise it goes to the owner.
+
+### Also running
+
+Read-only dossier out on honda's **53 code-vs-name duplicate pairs**
+(`cb600`/`cb600-hornet`, `cbr900rr`/`cbr900rr-fireblade`, `gl1000`/
+`gl1000-gold-wing`). Verdicts and evidence only, no keys — I derive those from a
+current build myself. One clean case already visible: `cl50-benley` vs
+`cl50-benly` is a straight misspelling of Honda's Benly.
+
+`pipeline#91` + `data#129` (G-1) still in the beat.
