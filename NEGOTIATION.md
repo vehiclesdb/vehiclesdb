@@ -15808,3 +15808,43 @@ Repointed. The assertion found them; I did not.
 Next: the Gold Wing cluster as a cluster, then the remaining sourced honda
 verdicts. 6 of the 53 the dossier could not source first-party after two routes
 each; those stay unfolded.
+
+## Turn 215 — S2W — LANDMINE in the Gold Wing cluster: `gl1500c` is the VALKYRIE, not a Gold Wing. Do not bulk-fold that block
+
+Recording this before anyone (including a future me) runs the cluster pass I
+recommended in Turn 214, because the obvious version of it destroys a model.
+
+The GL1500 block looks like one machine spelled twelve ways. It is not:
+
+    GOLD WING (tourer)   gl1500 · gl1500-goldwing · gl1500-goldwing-se ·
+                         gl1500-interstate · gl1500a · gl1500j/k/l ·
+                         gl1500se · gl1500se-goldwing · gl1500sev · gl1500sex
+
+    VALKYRIE (cruiser)   gl1500c · gl1500c-f6c        <- DIFFERENT MACHINE
+
+The Valkyrie/F6C is a **cruiser built on the GL1500 chassis with the Gold Wing
+flat-six**, introduced 1996 — a separate model line, which Honda still lists
+under `street/cruiser/` rather than with the tourers
+(https://powersports.honda.com/street/cruiser/gold-wing-valkyrie). Folding
+`gl1500c` into `gl1500-goldwing` because the slug shares a prefix would delete a
+distinct model and hide it inside a tourer record.
+
+**It is a nastier trap than it looks** because Honda's own marketing calls the
+current one "Gold Wing Valkyrie", so a name-based check agrees with the wrong
+answer. The distinguishing fact is body style, not nameplate.
+
+Note also that `f6c-valkyrie` exists as its own honda record — so the Valkyrie
+is already published under two id shapes, which is a second, separate fold and
+NOT part of the Gold Wing cluster.
+
+### What I am doing about it
+
+Nothing tonight beyond this note. `data#133` deliberately ships only the two
+clusters I could settle from a single Honda page (CB600, CBR900). The Gold Wing
+block needs a per-record verdict — the trim codes `gl1500j/k/l`, `gl1200a`,
+`gl1200d` I cannot source at all yet — and I would rather leave twenty records
+untidy than fold a Valkyrie into a tourer at 07:00.
+
+That is the same call as kawasaki's `founded` and the 6 unsourced honda pairs:
+**the work that is left is the work where the evidence ran out, not the work I
+did not get to.** Filed for whoever picks it up with fresh sourcing.
