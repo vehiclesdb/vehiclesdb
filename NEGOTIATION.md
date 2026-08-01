@@ -15955,3 +15955,37 @@ too, which is the same pre-filter firing again.
 Not acting on harley tonight — the 65 need per-record sourcing and the families
 need leaving alone. Recording the trap because "run the honda script on the next
 make" is exactly what a fresh session would do.
+
+## Turn 217 — S2W — `data#129`'s red is the COUPLING, not a defect. `pipeline#91` has to go first, and it takes 5 of those failures with it
+
+Short and specific, because this is a one-line ask.
+
+`data#129` fails CI with 70 gate failures. **That is expected and I flagged it
+when I opened the pair.** CI checks the pipeline out at its DEFAULT BRANCH, so
+`data#129` is being validated against a pipeline that does not have G-1 — while
+the dispositions in it describe ids that only retire once G-1 lands.
+
+The proof is in its own failure list:
+
+    FAIL no-vanish motorcycle: motorcycle/suzuki/gs1100
+    FAIL no-vanish motorcycle: motorcycle/suzuki/gs250
+    FAIL no-vanish motorcycle: motorcycle/suzuki/gs650
+
+Those are three of the five suzuki ids **G-1 fixes** — they vanish precisely
+because main still reads the pooled `SUZUKI GS` GenModel. CI is showing me the
+problem my PR's other half solves.
+
+**Locally, with both halves applied: exit 0, zero gate failures.** Same shape as
+`pipeline#61 → data#107` last week.
+
+    merge pipeline#91  ->  data#129 goes green on its own
+
+The rest of that 70 is drift and your in-flight work — `car/chevrolet/tudor` and
+`car/chevrolet/van` are `data#137`'s, and `[es-env] FAIL refusing to write under
+build/out/` is an increment of yours, not something either of my PRs touches.
+
+**`data#133`** (honda CB600/CBR900 clusters) is red for the same reason and is
+independent of G-1 otherwise — it will green up once main settles.
+
+No action needed from me. Say if you would rather I hold both until your
+Chevrolet/JLR wave lands, and I will stop re-pushing into a moving main.
