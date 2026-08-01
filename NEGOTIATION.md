@@ -18297,3 +18297,58 @@ keyed on raws that §C-1 (parenthetical `junk?`, 10,726 NL + 2,388 UK) will move
 again. I have not started them. Sequence I recommend: **#116 merges → C-1 →
 then the 37 clusters.** If you would rather I start the folds now and re-key
 afterwards, say so and I will.
+
+---
+
+## Turn 229 — S2W — both owner follow-ups delivered (pipeline#117 + data#166); #165 rebased past the BMW merge; and I chained a push behind an unread rebase — no damage, rule adopted.
+
+**Owner's two items from the turn after 227, both done.**
+
+1. **The local-vs-CI `lint_enrich` seam → pipeline#117.** It was my
+   surprise, so it is my header note. Two things recorded where the
+   liveness rule is stated: (a) `CATALOG_DIR` defaults to the COMMITTED,
+   last-RELEASED catalog, not the build you just made — so green-local /
+   red-CI is not a contradiction, and `VDB_CATALOG` retargets it;
+   (b) the minted-id case in full, since **no merge order fixes it** —
+   the release is what makes a minted id live. Documentation only.
+2. **"Your file, flip them back" → data#166.** Filed as a DEBT row rather
+   than held in memory. The four HELD blocks (`m2`/`m4`/`m6`/`m8`) are
+   preserved in-file, so the risk is not loss but FORGETTING — and it is
+   a quiet one: **those ids publish with 8–12 countries each**, so
+   2026.08.1 would ship them looking complete while carrying no runs, no
+   era and no variants. One action, one window.
+
+**Your unblock was the right call and the precedent is the useful part.**
+I would have reached for "add a former_ids alias so it counts as pending",
+which would have been a *fabricated* retirement — inventing a dead id to
+satisfy a lint. Commenting out is honest about what is true: the fact
+exists, the id does not yet.
+
+**data#165 rebased onto the merged main.** The conflict was the one this
+pair always produces — `spotchecks.yml` is append-only and both changes
+append. Both blocks kept (5 BMW rows + 6 yamaha rows, 148 total), and the
+combined state rebuilt clean: **build exit 0, ALL GATES GREEN,
+`lint_enrich` OK, `lint_curation` OK (109 files)**. #165's earlier red is
+fully explained by the same enrich-for-minted-ids subcase you classified —
+it was measuring a data branch that predated #163's `former_ids`.
+
+**My own process error, disclosed.** I ran `git rebase origin/main` and
+chained `git push --force-with-lease` behind it in one command. The rebase
+stopped on the conflict above, so the push fired against a mid-rebase
+state. **No damage — the remote ref never moved** (verified with
+`ls-remote` before touching anything). But this is the same shape as
+merging past an unread check: *a command that acts on the result of a
+command whose result I did not read.* Same rule, extended: **never chain a
+push behind a rebase or merge — the outcome is a separate decision.**
+
+**Board.** BMW pair COMPLETE (pipeline#115 + data#163 merged). G-1 residual
+pair open and green locally (pipeline#116 + data#165, both rebased).
+Follow-ups open (pipeline#117 + data#166).
+
+**Still holding for the Turn 227/228 ruling** on the yamaha §A folds vs
+§C-1 ordering. Not idle meanwhile: taking the dispatch's blocked-on-review
+item — **pipeline CI**. It is authorized, and tonight made the case for it
+better than I could have: pipeline#115, #116 and #117 all report "no
+checks reported" because that repo has none, so `rake test` and the lints
+only ever run against a DATA PR. The BMW enrich problem was a pipeline
+defect that could only surface on someone else's PR.
