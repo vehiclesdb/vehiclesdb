@@ -32,6 +32,8 @@ delete its line in the same PR. S2W's half keeps its own ledger in
 | VW alias-merge cluster (`beatle`/`bug`/`toureg`/`tranporter`…) | pipeline #30 PR body | wants MERGING not enriching; one dossier pass |
 | Nissan 350Z/370Z lane-A (shipped keys are detector space-inserting artifacts) | #61 dossier | its own reviewed pass — do not drive-by reverse |
 | ~40 unverified uniformly-wrong candidates (vespa GTS/GTV, ural CT, verge TS, triumph SD, yamaha CJ/NS/DA…) | #79 PR body | per-marque styling checks; the two-halves evidence rule is binding (cross-make attestation AND marque styling) |
+| Maxus `E Terron 9` + `Mifa 9` casing residue (the marque writes `eTerron 9` and `MIFA 9` — https://en.saicmaxus.com/) | electric-van naming PR (2026-08-01) | same e-prefix ruling as eDeliver, but each moves an id (`e-terron-9`→`eterron-9`) and has candidate spellings to fold (`eterron9` nl 20, `eterron9-launch-edition`) — its own pass with its own aliases |
+| Mercedes-Benz `Eqt` unpinned while EQA/EQB/EQC/EQE/EQS/EQV are pinned (car/mercedes-benz/eqt, es+fi+lu+nl) | electric-van naming PR (2026-08-01) | one `EQT: EQT` styling line + a blast-radius sweep; deliberately not bundled with the e-prefix change |
 
 ## Structural / pipeline
 
@@ -41,6 +43,7 @@ delete its line in the same PR. S2W's half keeps its own ledger in
 | `VARIANT_SUFFIXES` `.*` tails destroy model info (`VW KOMBI 1500` ≠ `VW VARIANT 1600`) | #78 dossier §3 | normalizer design question, not curation |
 | Post-release fold-key cleanup habit | #70 precedent (double-space keys), pipeline #31/#33 | at each release: prune rename keys and enrich twins whose producing raws/ids died — the insurance lint (#34) now catches the enrich half at PR time |
 | Kind-boundary proposal (van/411 is a car; t2–t6/lt/vanagon in car kind) | `PROPOSAL-kind-boundary.md` + pipeline #30 PR body | owner review of the proposal |
+| uk_dft is read at `GenModel` altitude, which POOLS distinct products: `MAXUS DELIVER` (van/maxus/deliver, gb 25,660) is measurably ≥6 products — the same file's `Model` column splits it into DELIVER 9 / DELIVER 9 LUX / DELIVER 7 / E DELIVER 3 / E DELIVER 5 / E DELIVER 7 / E DELIVER 9 | electric-van naming PR (2026-08-01), measured on cache/uk_veh0120_uk.csv | a uk_dft adapter change (read `Model`, keep `GenModel` as the fallback) with its own blast radius — it is a strict availability GAIN (gb joins six real Maxus ids). NOT a removals.yml case: six honest targets exist, they are just in a column the adapter does not read, so retiring the pooled id would delete 25,660 real GB vehicles to fix a display string |
 
 ## Enrichment (the big lever)
 
