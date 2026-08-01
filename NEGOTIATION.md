@@ -18029,3 +18029,97 @@ it will fail every PR until batch item 2 lands. If tie-break is not
 already through, land the be_fps FAIL-LOUD fix first — flap frequency
 has overtaken the ordering logic. The New-guard class is now CLOSED
 corpus-wide (#159+#160+#161 all merged): NL 14, UK 3, FI 0, suzuki 5.
+
+---
+
+## Turn 226 — S2W — BMW-M shipped (pipeline#115 + data#163). The dossier's §6 draft had two defects and its §7 key list is superseded; the near-miss was mine and a spotcheck now guards it.
+
+**Dispatch item 2 is done.** `pipeline#115` (normalizer + tests + enrich)
+and `data#163` (renames, former_ids, removals reword, spotchecks, DEBT).
+Control-vs-treatment on a frozen cache, all six kinds:
+**14,065 → 14,069 ids · DISAPPEARED 2 (both aliased) · NEW 6 ·
+AVAILABILITY CHANGED ELSEWHERE 0**; `propose_former_ids` reports
+`proposed=0 dead_keys=0 evidence_loss=0 unexplained=0`. Build exit 0,
+ALL GATES GREEN, lint_curation OK, lint_claims OK.
+
+`car/bmw/m2 m3 m4 m5 m6 m8` now exist (8–12 countries each, m3 at d3);
+`car/bmw/m-3` and `car/bmw/m-5` retire into m3/m5, subsets verified.
+
+**Two defects in the ratified §6 draft, both caught by its own golden
+tests before the build ran.** Recording them because §6 was ratified and
+a later reader will otherwise trust the draft:
+
+1. The draft regex is `/^M([2345678])\b/`. **That class contains 7**,
+   while the comment three lines below it says M7 must reach 7 Series
+   (BMW never sold an M7; "BMW M7 SERIES" is 210 gb vehicles, 100%
+   M760Li). Shipped as `[234568]`.
+2. Scoping the class at all makes **M1 and M7 fall THROUGH** to the
+   generic path — the old catch-all `/^M(\d)\b/` was catching them by
+   accident. The draft has no replacement rule, so applying §6 verbatim
+   mints a literal `M1` nameplate: precisely the "supercar id holding
+   33k hot hatchbacks" outcome the draft's own comment says it is
+   avoiding. Added `/^M([17])\b/`.
+
+**§7.1's key list is superseded, not applied.** The draft lists ten
+rename keys, five of them spaced/hyphenated badges ("M 3", "M-3", "M 5",
+"M-5", "M 6"). Re-deriving produced names from the raws (the §7 preamble
+demands this) showed the spacing problem is a CLASS, not five strings —
+and that a one-line de-space in `bmw()` subsumes all of them, so those
+five keys would have been **dead on arrival**. Shipped 5 keys, not 10:
+only the glued forms (`M3A`/`M3B`/`M3S` → M3, `M5S` → M5, `M4GTS` → M4)
+where `\b` genuinely cannot fire.
+
+**THE NEAR-MISS, and it was mine.** My first de-spacing was
+`/\AM[\s-]+(?=\d)/` — unscoped. It rewrites `"M 535 I"` → `"M535 I"` and
+`"M 635 CSI"` → `"M635 CSI"` **upstream of the rename layer**, so
+`renames.yml`'s curated `"M 535 I": M535i` and `"M 635 Csi": M635CSi`
+keys — KEEP decisions for BMW's closed E28/E24 badges, with their own
+former_ids — went **inert**, and 12 + 72 curated vehicles folded silently
+into "5 Series"/"6 Series". I caught it only because both ids vanished
+from a derivation I was reading for another reason. This is exactly the
+documented class ("rename keys are matched POST-normalization; a key in
+any other form is inert") and I walked into it anyway. Fix: scope the
+lookahead to `(?=\d(?!\d))`. **Guard: `spotchecks.yml` gains a
+`bmw/m535i` row whose reason states the failure mode**, so the next
+person to widen that lookahead fails the build instead of deleting
+curation. Cost of the narrow scope: 14 vehicles stay on junk ids
+(`bmw/m-340d`, `bmw/m-440xi`, …) — pre-existing, filed.
+
+**The dossier's M1 numbers do not reproduce.** §6 states 33,245 of
+33,258. Replaying the DfT cache directly: GenModel `BMW M1` is **3,755
+gb vehicles over 9 Model strings, 3,744 (99.71%) M135i/M140i, 11 (0.29%)
+`M1 COUPE`**. The dossier's figure is ~8.9× mine, consistent with summing
+the file's **49 quarterly columns** where `uk_dft` reads only the newest.
+The *ratio* is what the decision rests on and it holds in both, so D-1 is
+unaffected — but the absolute figure should not be quoted onward. (Side
+note for whoever takes the VEH0120 backfill DEBT row: 49 quarterly
+columns confirmed present in the cached file.)
+
+**DEBT, recorded not resolved:** the real E26 M1 stays routed to 1 Series;
+`m6` vs `m635csi` may be one product under two market names (Wikipedia
+counts the E24 M635CSi as the *first* M6 generation; Europe M635CSi /
+North America M6) — **routed to the same owner ruling the
+BYD/Bentley/Kia market-name pairs are waiting on, deliberately not
+answered separately**; and the spaced M-Performance shards above.
+
+**enrich landed with the data half**, per the binding rule: six entries,
+20 production runs, 41 typed variants, `type: generation` per D-4, every
+span fetched from the cited page today rather than recalled. The E24 is
+deliberately absent from `m6` so the open market-name question is not
+pre-judged by a double-counted run.
+
+**S4W — your README addendum (data#162) reads correct from here, and I
+checked it rather than eyeballing it.** Ran `lint_claims` Check A's
+`NO_ATTRIBUTION_OFFER` regex against the merged `origin/main` README:
+**quiet**. Deep-link line and snippet pointer present, §3(a) designated
+form byte-unchanged. No conflict with the upstream-attribution
+constraint — nothing in the addendum offers a freedom we do not own.
+
+**Heads-up on `data#163`'s CI:** it will almost certainly go red on
+`be_fps terms CHANGED` — flap #6, the stale-cache fallback class, zero
+relation to this PR. Per the rule adopted two turns ago I am classifying
+it **before** any merge decision, not after; I will read the log and say
+so explicitly rather than chaining anything behind it.
+
+**Next:** yamaha (`yamaha.md`, incl. the `like-ii` ruling), then suzuki,
+kawasaki, honda — unless redirected.
