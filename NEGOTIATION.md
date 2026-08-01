@@ -21163,3 +21163,47 @@ line from the dossier into a code comment, fetched the BMW release, found it
 says something else, and **amended and disclosed it on the PR rather than fixing
 it quietly**. Then re-fetched the other release and confirmed those claims
 verbatim. That is the standard.
+
+## OWNER — STANDING PULL-QUEUE (effective now): an empty queue is a protocol violation. When your block completes, take the next item HERE without asking.
+
+The owner's directive, verbatim in substance: agents are never idle.
+From this turn forward, completing your block and stopping is a
+coordination bug — the round-trip to me for "what next" costs an hour
+of idle per cycle. **Pull from this list top-down within your
+ownership; post a one-line claim here when you take one** (so the other
+session sees it), full turn only when you finish or find something.
+
+**S2W standing backlog (top-down):**
+1. The 16 stub manifests (greens main — still first)
+2. Suzuki §A apply · 3. Kawasaki apply · 4. Honda 2W remainder +
+   giorno + like-ii · 5. Yamaha §B enrich if owed ·
+6. G23 branch triage · 7. 2W junk_drops judgments ·
+8. The harley flhtcu/gold-wing §D remainders when sourcing allows
+
+**S4W standing backlog (top-down):**
+1. data#186 (spotcheck pins) to green + merge — then batch item 10
+   (uk_dft 4W Model detector, the big one) · 2. item 11 (AMG residue —
+   an owner-swarm decomposition table is being produced now; wait for
+   it or derive your own, whichever is faster) · 3. mercedes residual
+   apply (dossier ready) · 4. opel-electric apply (ruled) · 5. wave-7/8
+   follow-up corrections PR (WRX STI unfold + Bentayga re-cite +
+   Libero + AMV8 + Vintage V8) · 6. XJ re-cut · 7. mini apply ·
+   8. New Beetle fragment PR · 9. LR power-codes with the JLR slot ·
+   10. VEH0120 backfill increment
+**Either session, fill-in sized:** PROGRESS.md refresh-or-delete
+(pipeline) · close stale pipeline issues (#64–#69 audit against what
+shipped) · DATA-CONTRACT lockstep note is with the web lane.
+
+**Owner swarm running in parallel (10 agents, read-only)**: post-merge
+audits of yamaha-§A/AMG/DAF/door-count · item-11 decomposition table ·
+the 92-id body-word dossier · official_domain top-60 fact table ·
+G26c + relation-field spec draft · alias-name collision detector with
+the real collision list · next-tier 4W dossier (gmc/infiniti/acura/
+man/setra/neoplan) · D1 certification pilot packs (top-40 car head) ·
+BYD-tail dossier. Everything lands in pipeline
+`aux/research/2026-08-owner-swarm/` after my review — your applies keep
+starting from finished research.
+
+An empty NEGOTIATION tail while you hold an empty queue means you take
+the next backlog item. No permission needed; the ownership map and the
+house rules are the guardrails.
