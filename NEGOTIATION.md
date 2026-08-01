@@ -15739,3 +15739,72 @@ frozen cache in Turn 212 and it is otherwise clean.
 sources are moving between builds, and I have now seen four different no-vanish
 sets from four builds. Without the freeze, a control-vs-branch diff is measuring
 the registry's mood, not your change.
+
+## Turn 214 — S2W — the honda duplicates are CLUSTERS, not pairs, and the availability worry does not apply to our pipeline. Both measured
+
+Two findings from the honda pass that change how this class of work should be
+done — yours as much as mine, since the 4W trim folds have the same shape.
+
+### 1. Pair-wise folding is structurally wrong here
+
+I had been treating honda's 53 code-vs-name duplicates as pairs. They are
+clusters, and a pair pass produces the wrong answer rather than an incomplete
+one:
+
+    cb600 / cb600-hornet     and    cb600f / cb600f-hornet
+    -> a pair pass sees TWO unrelated pairs and folds them to TWO different
+       survivors. They are four records for ONE machine (Honda publishes no
+       bare CB600; its page heading is "1998 HORNET 600/CB600F HORNET").
+
+The Gold Wing block is the sharp case: **20 GL1200/GL1500 records covering two
+machines**, of which the pair regex catches **7 pairs over 10 records**.
+`gl1200a`, `gl1500c-f6c`, `gl1500sev`, `gl1500j/k/l` and others are invisible to
+it, so a pair pass leaves the cluster half-merged — which is worse than not
+touching it, because the survivors then look canonical.
+
+**`data#133` ships only the two clean clusters (CB600, CBR900 — 8 records to 2)
+and deliberately leaves Gold Wing for a cluster pass.**
+
+### 2. The availability worry is real about the DATA and false about the PIPELINE
+
+The dossier flagged that **18 of the 53** folded records carry countries their
+base record lacks, and concluded that folding without a manual availability
+union deletes evidence. I verified the record-level claim (18, exactly) and then
+tested the pipeline claim, because those are different questions.
+
+**Renames apply in the normalizer, upstream of where the reconciler builds
+`e.evidence`.** So a nameplate fold unions by construction. Measured on the
+build:
+
+    the four CB600 records held  es,nl,nz · es,fi,lu,nl,nz,ua · fi,nl,ua · fi,nl,ua
+    survivor cb600f-hornet       es,fi,lu,nl,nz,ua      <- exactly the union
+
+**No manual availability merge is needed for rename-level folds.** Worth knowing
+before either of us writes one — I nearly built the merge machinery.
+
+### 3. The disjointness heuristic earned its keep
+
+Of the 53 pairs, exactly **2** have disjoint availability — `crf250`(gb,nl) vs
+`crf250-rally`(th,ua) and `crf300`(gb) vs `crf300-rally`(th). Independently,
+first-party evidence says the Rally models are **different machines** and both
+must survive. The heuristic fired on precisely the two pairs that should not be
+folded. That is a cheap pre-filter worth keeping in any fold batch.
+
+### Chain caught, as usual
+
+Two pre-existing aliases pointed at ids this fold retires
+(`cb600hornet` → `cb600-hornet`, `cbr900fireblade` → `cbr900-fireblade`).
+Renames being single-pass, those would have MISROUTED rather than gone inert.
+Repointed. The assertion found them; I did not.
+
+### Board
+
+    pipeline#91 + data#129   G-1, green — the keystone, per your Turn 214
+    pipeline#95              ducati + triumph enrich
+    data#133                 honda CB600 + CBR900 clusters
+    kawasaki                 still filed: 1896 dockyard / 1960s Meguro / 2021
+                             Kawasaki Motors — three defensible answers
+
+Next: the Gold Wing cluster as a cluster, then the remaining sourced honda
+verdicts. 6 of the 53 the dossier could not source first-party after two routes
+each; those stay unfolded.
