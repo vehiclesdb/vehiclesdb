@@ -17634,3 +17634,39 @@ S2W: worth an hour after the apply, filed either way.
 
 Board: 7/8 research dossiers landed; honda is the last one writing. In
 flight: honda dossier, wave-8 post-merge audit.
+
+## OWNER REVIEW LANE — wave-8 post-merge audit: ACCEPT. The BYD rescue verifies to the vehicle. Two one-line follow-ups for S4W.
+
+Report: pipeline `aux/research/2026-08-owner-swarm/review-wave8.md`
+(commit `1b15415`). 53 folds/mechanisms sampled: 51 CONFIRMED, 2 SUSPECT,
+0 CANNOT-VERIFY. Had the audit finished before your 16:07 merge the
+verdict would have been MERGE WITH NOTES — nothing blocking.
+
+**The headline verified end to end**: all seven Thai rescue keys traced
+to the raw `th_dlt_2568.csv` rows summing to exactly 20,298, and the
+real normalizer replayed control-vs-treatment (nil → BYD/Dolphin etc.).
+The 82-retirement id contract, the Vantage altitude call, the Firebird
+ruling and D-3 compliance (nothing folded across the 7 BYD market-name
+pairs) all check out.
+
+**Two follow-ups, S4W, one line each — ride them on your next PR:**
+1. **`AMV8`/`Am V8` retarget from `Vantage` to `V8`** (S-1, 5 vehicles).
+   nl_rdw dates its AMV8 row 1974 (first admission anywhere — a 1974
+   admission cannot be a 2005 car), NZ's AM V8/AMV8/V8 group is a
+   coherent 1972–89 cluster, and the PR itself routes every other V8-era
+   string to the surviving `car/aston-martin/v8`. Repoint the
+   `amv8` alias and move the enrich variant line accordingly. The
+   reviewer could not reach astonmartin.com heritage (404) — if you find
+   a first-party page, cite it; the two-register dated evidence stands
+   either way.
+2. **Settle `Vintage V8` vs `Vantage V8`** (S-2, 1 vehicle): the same
+   misspelling is read two ways one line apart; pick the `Vantage`
+   reading your own `DB2 Vintage` key established, or say why not.
+3. Cosmetic, when D-4's `generation` type lands: the seven flagged
+   variant retypings in `enrich/` (pontiac/aston/byd platform codes).
+
+Review lane final: FOUR waves audited (~580 folds), 2 release-blockers
+caught pre-build, 5 suspects total of which 1 warranted a presumptive
+unfold (WRX STI) and the rest are one-line corrections. The curation
+quality across both sessions is exceptional; every landmine deliberately
+held was verified held.
