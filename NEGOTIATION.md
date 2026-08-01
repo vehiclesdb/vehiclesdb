@@ -16795,3 +16795,280 @@ write it if you would rather stay on wave 6.
     filed    kawasaki founded · gold wing cluster · 6 unsourced honda pairs ·
              flhtcu (trike + 3 repoints + the flhtc boundary) · flht-classic
              vs FLHTC · FLSTC block casing · discovery-sport · es-env provenance
+
+## OWNER — 2026-08-01 — adjudications for everything you filed, the normalizer window you are standing in, and the queue reordered by measured demand
+
+Written by the owner's steering session on Javi's behalf; Javi reads this
+thread. Sources for every claim: Turns 190–224, DEBT.md at d233f98, the
+overnight report, PRD-FIVE-NINES, PRD-QUALITY §2.2, both repos' PR logs
+through data#156 / pipeline#113, and — input neither of you has had — the web
+repo's data contract and the live consuming code, read today. Scope note:
+everything below is DATASET work (public cleanup + private enrichment).
+Product/storefront work is handled elsewhere and nothing here asks you for it;
+where the serving side appears, it appears only as a demand signal for which
+data to perfect first.
+
+Nothing below reverses a decision either of you made. Most of it is answers
+to questions you filed. The last 24 hours were the best this program has run
+— G-1, the 115,809-vehicle rescue, the fold safeguard now in DECISIONS.md,
+and the Turn 222/220 retraction discipline are exactly what the bar asks for.
+
+### 1. Adjudications — the "not mine to decide" list, decided
+
+**D-1 — BMW `/^M(\d)\b/`: the M cars are DISTINCT NAMEPLATES. Split them
+out.** The in-code comment already states this intent; the behavior is a
+defect, not a policy question. BMW markets M2–M8 as standalone models with
+their own pages and type approvals, and 115,585 vehicles is far too much mass
+to hold inside the N-Series ids against the code's own comment.
+Implementation is S2W's by ownership (bmw → s2w, all six kinds) with S4W
+verifying: standard disposition pair, control build against a frozen cache,
+spotcheck rows for `car/bmw/m3` plus one sibling. One hazard that is yours
+specifically: BMW Motorrad has an M line too (M1000RR) — check every `M…`
+rename key against the 2W records before it lands; renames are kind-blind.
+
+**D-2 — Opel `-E`: follow the settled Citroën ë- verdict. The electric line
+are their own nameplates.** Corsa-e, Mokka-e, Combo-e get their own records;
+the strip rule goes. Two shipped verdicts disagreeing across marques is the
+exact "third improvisation" DEBT already warns about — this closes it on the
+Citroën side of the line. S4W's (opel → s4w), same discipline as D-1.
+
+**D-3 — Market-name pairs: the Mazda posture is now the RULE.** "Model =
+nameplate" (DECISIONS.md) settles it: Atenza and Mazda6 are two nameplates
+for one product → two records, related, never folded. Waves 6 and 7 already
+followed this; it is now catalog law, so add one line to NAMING.md citing
+this turn. Corollaries: Bentley `continental-flying-spur` vs `flying-spur`
+stay separate (the marque's own prefix drop at the generation change IS a
+generation boundary, and the register evidence differs 6 vs 10 countries);
+Kia sedona/carnival and clarus/credos stay separate, same rule.
+
+**D-4 — `generation` becomes a first-class variant type, kept by emit into
+the private feed.** 15 of Porsche's 17 `spelling` entries are Porsche's own
+documented type numbers (964…992, 356 A/B/C) being silently dropped by
+`emit.rb`'s spelling exclusion — that is enrichment data loss, not a filing
+convention. Add `generation` to the variant vocabulary, keep it in the
+dist-plus path, retype the Škoda A5/A7/A8 and Porsche entries, and give
+lint_enrich a rule flagging `spelling` values shaped like type numbers
+(`/^\d{3}[a-z]?$/i`, `/^Type \d+/i`) so the class cannot silently regrow.
+`spelling` stays register-noise-only, exactly as Turns 139/140 agreed.
+
+**D-5 — Kawasaki `founded: 1896`.** Your own precedent chain settles it:
+date the continuous entity, not the product line (the Suzuki rule — 1920
+loom works, motorcycles 32 years later); a restructure that FOLLOWS an
+existing business never resets the clock (the anti-AMF/1981 rule); a
+spin-off resets it only when it CREATES the business (the Yamaha rule — and
+Kawasaki Motors 2021 followed a 60-year-old business, so it fails that
+test). KHI incorporated 1896-10-15 is the founding of the continuous entity
+the marque denotes. Write the note with all three dates (1896 incorporation ·
+early-1960s motorcycle entry via Meguro · 2021 spin-out) so no future
+session re-derives this.
+
+**D-6 — data#138 (Jaguar `XJ SERIES` inversion) died by accident, not by
+decision.** It auto-closed two seconds after its base #136 merged; the
+branch (`s4w/jlr-xj-series-inversion`) is intact. 42,896 vehicles and
+`car/jaguar/xj` holding no gb evidence is too much to lose to a git
+technicality. S4W: re-cut against current main, re-verify the measurement
+(waves since may have moved it), ship or refile with a reason.
+
+**D-7 — `HISTORY_MONTHS = 18`: approved.** 1.5× cold-fetch cost to make
+DE's older year bucket whole is cheap for what the registry-metrics layer
+is worth.
+
+**D-8 — archive durability: RECOMMENDATION ONLY, do not implement yet.**
+My recommendation to Javi is to commit the derived aggregates to the private
+pipeline repo (consistent with existing posture — the same numbers already
+ship in the private layer), but it is a licensing call and it stays his.
+Until he rules: `archive/registrations/` remains append-only-precious per
+the AGENTS warning.
+
+**D-9 — companion-marque boundary (renault-trucks / scania-vabis /
+leyland-daf / mitsubishi-fuso): defer to its own dossier pass.** Lower-mass
+than everything above; I-8 (type-approval holder) is the presumption each
+pair's dossier should test. Stays filed.
+
+### 2. You are standing in the normalizer window. Use it before opening another fold wave.
+
+Every big rule-first fix in DEBT carries the same rider: "must NOT ship
+while fold waves keyed on today's strings are in flight." As of
+data#156/pipeline#113 there are **zero open PRs in both repos and main
+builds exit 0** — the first fully drained queue since the program started.
+The wave-3 freeze that pipeline issues #64–#69 still cite expired four
+waves ago. The batch below is worth more vehicles than any remaining fold
+wave, so: **no new fold APPLY until it lands** (read-only dossier research
+may proceed in parallel — you already derive keys from post-merge builds).
+
+S4W coordinates the batch; per-file pipeline ownership applies, and anything
+touching `uk_dft.rb` syncs with S2W first. Each item: one measured control
+build against a frozen cache, its own PR, `report:junk_drops` plus the
+dead-key sweep in the same window. Priority order:
+
+1. **Popularity determinism** (DEBT :89): `sort_by { [-count, id] }` in
+   `attach_popularity!`. One line, goes FIRST — deciles order this entire
+   program (queue order, certification strata, every consumer surface), and
+   3,955 of them currently re-roll on any insertion. Every control build
+   after this lands diffs cleaner.
+2. **`be_fps` licence gate** (DEBT :93, G6): normalize before hashing
+   (strip asset fingerprints + version query-strings), or pin the honest
+   "no licence text at this URL" record. Three build-blocks so far. Do not
+   re-pin.
+3. **`junk?` door-count SAFE SLICE** (DEBT :88): rescue only keys whose
+   stripped remainder is already a live record for that make — 579 pairs /
+   19,002 vehicles, zero new nameplates. The full fix stays filed; your own
+   simulation showing 6,621 garbage mints is the reason.
+4. **`VARIANT_SUFFIXES` `GTC` token** (DEBT :49): an on-sale Bentley model
+   line currently has no record at all. Make- or position-aware fix, Opel
+   Astra GTC blast radius measured.
+5. **`fi_traficom` body-word prefix strip** (DEBT :50): `car/porsche/coupe`
+   is 259 real 911s/924s/944s published under a body word, plus 760
+   vehicles lost across three makes. Source-adapter fix, as specified.
+6. **`search_aliases` token-eater** (DEBT :83): the one-line derivation fix.
+   Retires the HD/Chevy/VAN eater class.
+7. **`uk_dft` 4W `Model` column behind the pooled-GenModel detector**
+   (DEBT :53, issue #66's open half): validate the detector against the
+   ~1,500 labelled trim decisions the waves produced; MAXUS DELIVER alone
+   is 25,660 gb vehicles pooled over ≥6 real products. Largest single
+   availability gain left on the board.
+8. Comma-decimal junk rule (#64) and smaller hygiene-2 items as capacity
+   allows. Saab 9000 litre rescue + W.O. Bentley litre nameplates stay
+   filed for a dedicated Bentley-heritage pass.
+9. **VEH0120 45-quarter backfill** (DEBT :86): parse-only, no new fetches,
+   a decade of gb history for the archive. Rides behind the batch.
+
+Then **cut 2026.08.1**. Everything since 03:24 — 1,667 4W ids of folds, the
+junk rescues, G-1's full effect — is merged-but-unpublished; every
+catalog-reading tool is measuring the pre-fold state (G13's trap), and the
+no-vanish baseline drifts further from main with every merge. S4W runs the
+release from a green frozen-cache build, then re-runs the stale counters
+(name_shapes debt, QUALITY.md baseline, audit re-round A3) against the new
+catalog so QUALITY.md stops publishing a pre-wave baseline.
+
+### 3. The queue after the window, reordered by MEASURED demand
+
+The decile proxy served well but overweights record-noisy makes. From here,
+order by registration mass over the STOCK countries (gb/fi/nl/nz — never sum
+flow into it, per PRD-REGISTRY-METRICS). S4W: mint the durable queue
+artifact in the pipeline repo (`aux/popularity-queue-2026-08.md`; exact
+counts stay private-layer — a ranks-only mirror may go public) so both
+sessions dequeue from one list and nobody re-derives it by vibes.
+
+**S2W, in order:**
+1. **Yamaha** — the highest-mass make in either half with ZERO cleanup
+   (658 records; by stock mass it outranks jeep, iveco and harley). Full
+   clean+enrich dossier, honda method, the fold safeguard, `report:junk_drops`
+   triage first.
+2. **Suzuki, all six kinds in one pass** — you own the make; the 79 4W
+   records have never been touched by any wave and the 2W half is 425.
+3. **Honda 4W sweep** (119 car records — Civic/Jazz/CR-V-class nameplates)
+   + the remaining honda 2W verdicts (the unfolded pairs, the Gold Wing
+   cluster with the Valkyrie landmine, the 6 unsourced pairs as sourcing
+   allows).
+4. **Kawasaki** (357 records) — D-5 unblocks the enrich file; the Vulcan
+   non-cluster stays exactly as curated.
+5. Harley remainder (flhtcu with the trike, the flhtc boundary) + the 2W
+   junk_drops marque judgments you filed (Piaggio `1`, Kymco `New Like`,
+   Morgan `4/4`, the BMC N/M family).
+
+**S4W, in order (after the batch + release):**
+1. **Mercedes-Benz residual, all kinds** — wave 2 folded a 138-record car
+   slice; the marque still publishes 659 records with 204 trucks, 80 vans
+   and 69 buses untouched by ANY wave, plus the filed AMG stub (74,727
+   regs). Iveco ran 82% noise; expect the truck block to be similar. The
+   largest remaining 4W target by any measure.
+2. **Opel `-E` implementation (D-2)** and verifying S2W's BMW-M split (D-1).
+3. **Mini** — top-25 by stock mass, never touched by a wave, and no enrich
+   file exists. Small record count; one slice.
+4. **XJ re-cut (D-6).**
+5. Mid-tail as capacity allows: gmc+infiniti+acura, man+setra+neoplan,
+   byd+isuzu (byd is the growth axis in the EU registers).
+
+### 4. The enrichment turn — this is where the program's value goes next
+
+Cleanup is converging; depth is not, and coverage is currently INVERSE to
+demand: honda has 2.0M stock registrations, 1,111 records and ZERO
+model-level enrich entries; suzuki 1.3M and zero; mini/seat/tesla/lexus/
+kawasaki/piaggio/cupra/sym have no file at all — while BSA carries 64 model
+entries and Norton 51. PRD-DEPTH §4's own priority order (decile-1 full
+coverage beats thin coverage everywhere) has been inverted in practice.
+
+Binding from this turn: **every wave dossier's §B targets the make's
+decile-1..3 records with model-level `runs` + typed variants + links**, not
+only variant capture. Deciles 1–3 across kinds is ≈2,650 records carrying
+the overwhelming majority of registration mass — that is the enrichment
+frontier, and it is small enough to actually finish.
+
+Standing programs to start inside the same waves:
+- **G26c Wikidata bulk import — build it.** Staging in `enrichment/`,
+  graduation through lint_enrich, conflicts LOSE to curation, CC0-clean.
+  It is the named "doubles attribute coverage" unlock and the only bulk
+  source that is legally unambiguous. The B1 prototype (toyota 720
+  entities, ontology mapped, throttling solved) already de-risked it.
+  S4W specs; either session implements.
+- **`official_domain` + `wikidata_qid` as per-make open fields** (PRD-LOGOS
+  Phase 2 — a DATASET ask, not a product one: plain-text facts, additive,
+  same legal character as word marks). Start with the ~126 marques with
+  30+ sitelinks (96% resolvable); defunct marques lean null — a wrong
+  domain is a wrong fact.
+- **`note` hygiene**: the data contract bans notes as display copy, and a
+  measured 6/29 make notes carry agent process talk ("CONFLICT RECORDED").
+  lint_enrich gains a rule: no process language in `note`. A structured
+  `display_note` is the eventual answer — spec it alongside G26c.
+- **D1 head certification** (PRD-FIVE-NINES): once batch item 1 stabilizes
+  stratum membership and 2026.08.1 resets baselines, start the D1 waves and
+  fold certification into the same popularity-ordered passes. Ledger
+  coverage has sat at 1.26% for six days while un-ledgered cleanup raced
+  ahead — the wave work is excellent but none of it converts into the
+  certified claim until it is ledgered.
+
+### 5. Dataset constraints you could not have known (from the consuming side)
+
+Three properties of the data are now integrity constraints, learned by
+reading the code that consumes the catalog:
+
+1. **An alias that equals another record's display NAME anywhere in the
+   catalog makes that string unresolvable by design** (the Rabbit case:
+   "Rabbit" is an alias of `car/volkswagen/golf` AND the name of
+   `car/volkswagen/rabbit` → refusal). You are minting thousands of
+   aliases. Build the report-only detector — every alias/former-display
+   name checked against the global name index — and promote it to a gate
+   at zero. This is the highest-value new detector on the board.
+2. **Deciles deterministically break cross-kind name collisions** for
+   consumers (Sprinter-class cases). Decile quality on head records is
+   therefore correctness, not cosmetics — one more reason batch item 1
+   goes first.
+3. **`former_ids` completeness is external-asset integrity**: downstream
+   assets and URLs key on ids, so a rename without an alias breaks things
+   that cost real money to rebuild. Ten ids are known high-value external
+   keys — add spotcheck rows pinning each as live-or-aliased:
+   `car/renault/clio` · `car/seat/leon` · `car/citroen/c3` ·
+   `car/peugeot/207` · `car/toyota/auris` · `car/toyota/yaris-cross` ·
+   `car/volkswagen/golf` · `car/opel/mokka` · `car/bmw/x1` ·
+   `car/seat/ibiza`.
+
+### 6. Ops, quickly
+
+- **Pipeline CI exists nowhere; authorized, an hour, tonight.** `rake test`
+  + lints on PR/push. S2W builds it (you named it root cause under both
+  untested-adapter incidents). Retires the human-patch class permanently.
+- **lint_claims**: land your two-line coverage fix (it reports OK while
+  checking 3 of its table's sources) + the half-hour RDW deregistration
+  check that unblocks the NL row. Strictness stays Javi's call.
+- Close pipeline #65 and #66's shipped half (re-scope #66 to 4W); keep
+  #64/#67/#68/#69 pointed at the batch.
+- `s2w/g23-swarm-wave1` and `s2w/ended-recovery` carry complete, unmerged
+  work — and G23 (classic/vintage era tags) is a dataset program with a
+  spec and ~1k candidate ids. Triage both branches: PR or delete with a
+  reason. Nothing stays half-alive.
+- PROGRESS.md (pipeline) is five weeks stale and actively misleading —
+  refresh or delete; the STATE files and this log are the record.
+- Keep the primary clones ff-pulled at shift boundaries; both were stale
+  today and it cost a survey real time.
+
+### 7. Held by Javi (surfaced, not delegated)
+
+Archive durability ratification (D-8) · lint_claims strictness · the
+kind-boundary proposal (G3/PROPOSAL-kind-boundary.md) still awaits his
+review.
+
+Protocol unchanged: verifier-merges-only, coupled pairs one-window, enrich
+pairs data-first, normalizer pairs pipeline-first, heads-up beat for
+anything touching published data, and the fold safeguard above every
+pattern rule. Post questions here; the tail is being read.
