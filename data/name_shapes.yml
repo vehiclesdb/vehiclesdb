@@ -20,6 +20,26 @@
 #
 # Conditions available per entry: make, kind, category, pattern (regex, case-
 # insensitive), id_list, min_sources, min_countries.
+#
+# ── MEASURED counts vs LEDGER counts (G13, 2026-08-01) ────────────────────────
+# `count:` means two different things in this file and the difference is not
+# cosmetic. A count is MEASURED when the linter can actually see the records:
+# the entry's `category` is one the detectors emit (placeholder, table_artifact,
+# make_as_model, embedded_make, numeric_only, spec_token, code_string) AND the
+# records it names really classify that way. Everything else is a LEDGER line —
+# a real, counted defect that this linter cannot currently observe, either
+# because no detector emits its category (body_word, make_casing, model_casing,
+# variant_as_model) or because the named records do not match the detector its
+# `category` claims.
+#
+# A ledger line always measures 0, so a blanket "re-baseline to what the linter
+# reports" would silently zero 548 acknowledged defects. Do not do that. Every
+# such entry below is tagged KNOWN INERT with the reason; re-baseline the
+# MEASURED entries only, and fix an inert entry by writing its detector (or
+# correcting its `category`), not by editing its number.
+#
+# `ruby scripts/lint_dataset.rb --list=<entry-id>` prints the records behind any
+# entry, which is the only way to tell the two cases apart without guessing.
 
 legit:
   # ── corroboration: the dataset's own publish rule, reused as a shape rule ──
@@ -113,13 +133,28 @@ legit:
   - id: mazda-fused-official-names
     category: embedded_make
     make: mazda
-    pattern: '\AMAZDA[2356]\z'
+    pattern: '\AMAZDA(?:[2356]|6e)\z'
     why: >-
       Since 2002 Mazda's official nameplates ARE the fused form — "Mazda2",
       "Mazda3", "Mazda5", "Mazda6" (https://www.mazda.com/en/about/profile/library/,
       and every national Mazda site: https://www.mazdausa.com/vehicles/mazda3-sedan).
       13 sources corroborate. All-caps display styling is a display-form
       question, not a shape defect.
+      "6e" ADDED 2026-08-01 (G13), AND THE COMMENT ABOVE IS WHY THIS ENTRY
+      EARNED ITS KEEP. The exact-list pattern did exactly what it promised: a
+      new fused Mazda nameplate appeared in release 2026.08.1 and surfaced as a
+      debt suspect (embedded-make-prefix-4w grew 1 -> 2) instead of being
+      silently excused by a wildcard. car/mazda/mazda6e is real and it is
+      Mazda's own spelling — Mazda Motor Europe's launch release of 2025-01-10
+      is titled "Mazda Introduce the All-NEW 'Mazda6e' Battery EV in Europe" and
+      describes it as "the European version of the Mazda EZ-6"
+      (https://newsroom.mazda.com/en/publicity/release/2025/202501/250110b.html).
+      The record corroborates at 4 registers in 4 countries (es_dgt,
+      fi_traficom, lu_snca, nl_rdw). CAVEAT, recorded rather than smoothed over:
+      Mazda is not perfectly self-consistent — some later corporate copy renders
+      it "MAZDA 6e" with a space. The dedicated launch release is fused, which
+      is why the fused form is the one allowlisted; if the spaced form ever
+      publishes it will surface as its own suspect, correctly.
   - id: polestar-numbered-official-names
     category: embedded_make
     make: polestar
@@ -212,38 +247,70 @@ legit:
       tracked under make-as-model-2w below — that separation is what G9 asked
       for, and it is the whole point: the class was never homogeneous.
 debt:
-  # ── the German shared-string leak (fix is merged in the pipeline, awaiting a
-  #    build; see vehiclesdb/vehiclesdb-pipeline#1) ────────────────────────────
+  # ── the German shared-string leak — HEALED; the counter now measures a
+  #    DIFFERENT defect (re-baselined 171 -> 4, G13, 2026-08-01) ──────────────
   - id: de-kba-shared-string-leak
     category: numeric_only
     kind: car
     max_sources: 1
     pattern: '\A\d{2,3}\z'
-    count: 171
+    count: 4
     why: >-
-      XlsxLite's cell regex let an empty cell swallow the next cell's <v>, so
-      KBA FZ10 published shared-string INDICES as model names — audi/91 is the
-      A5, volkswagen/552 is the Golf. Fixed in the pipeline (cell-bounded scan +
-      fail-loud audit gates); these records heal on the next build, they must
-      NOT be deleted. Two separate cleanup proposals nearly deleted Germany's
-      top sellers on the opposite assumption.
+      THE LEAK IS GONE AND THE OLD PROSE WAS STALE. XlsxLite's cell regex let an
+      empty cell swallow the next cell's <v>, so KBA FZ10 published shared-string
+      INDICES as model names — audi/91 was the A5, volkswagen/552 the Golf. The
+      entry said "these records heal on the next build". That build has long
+      since happened: `audi/91` and `volkswagen/552` are absent from every
+      release tag that carries catalog/ (checked v2026.07.5, v2026.07.6,
+      v2026.08.0, v2026.08.1), so 171 had been stale for at least four releases
+      and this re-baseline is overdue, not new. The historical warning still
+      stands and is why the entry is kept rather than deleted: two separate
+      cleanup proposals nearly deleted Germany's top sellers on the assumption
+      that a bare number is junk.
+      WHAT THE 4 SURVIVORS ACTUALLY ARE — measured with `--list`, and only ONE of
+      them is even German:
+        * car/nissan/300, /350, /370 — uk_dft, gb-only. These are DVLA GenModel
+          stubs for the 300ZX / 350Z / 370Z, and the properly-named siblings are
+          published beside them from 4-8 other registers (nissan/300zx,
+          nissan/350-z, nissan/370-z). That is the G-1 pooled-stub class, not a
+          shared-string index — same shape the uk_dft Model-column work is
+          un-pooling elsewhere, and the natural fix is a fold onto the sibling
+          once the gb rows can be split.
+        * car/volvo/60 — de_kba_fz10, de-only, and the ONLY de_kba_fz10-only
+          numeric car record left in the catalog. UNVERIFIED whether this is the
+          last survivor of the leak or a truncation of S60/V60/XC60 (all three
+          publish, and XC60 already carries de_kba_fz10 among its sources).
+      SO THE ENTRY IS NOW MIS-NAMED for 3 of its 4 records. It is left in place
+      rather than renamed because the pattern is what does the work and renaming
+      an id breaks the counter's history; the disposition question is a fold,
+      and belongs in a PR that can measure the gb rows.
 
   - id: de-kba-table-artifact
     category: table_artifact
     id_list: ["zeekr/neuzulassungen-insgesamt"]
-    count: 1
+    count: 0
     why: >-
-      KBA's grand-total row ("Neuzulassungen insgesamt") parsed as a Zeekr
-      model, and held rank 1 in Germany. The pipeline fix skips total rows;
-      heals on the next build.
+      RESOLVED. KBA's grand-total row ("Neuzulassungen insgesamt") parsed as a
+      Zeekr model, and held rank 1 in Germany. The pipeline fix skips total rows.
+      The record is absent from the published catalog at both v2026.08.0 and
+      v2026.08.1, so the heal landed at or before v2026.08.0 and the count is
+      re-baselined 1 -> 0 (G13, 2026-08-01). Kept at zero rather than deleted:
+      the entry is now a REGRESSION TEST — if a total row is ever parsed as a
+      model again this counter goes to 1 and the debt-growth check fails, which
+      is exactly the alarm nobody had in July.
 
   # ── genuine curation backlog, 4W half (S4W) ───────────────────────────────
   - id: make-as-model-4w
     owner: s4w
     category: make_as_model
-    count: 6
+    count: 5
     why: >-
-      Was 51, then 2, then 5, now 6. Dropped 49 registry rows where the make was written
+      RE-BASELINED 6 -> 5 (G13, 2026-08-01): car/skoda/skoda left the bucket,
+      dropped with a measured removals.yml ledger line (overrides/models/
+      removals.yml:1014 — 2 vehicles / 2 rows / 2 countries, es_dgt "SKODA" and
+      nl_rdw "SKODA", dropped rather than renamed because Škoda has 30 live
+      nameplates and the row names none of them). The other five are unchanged.
+      Was 51, then 2, then 5, then 6, now 5. Dropped 49 registry rows where the make was written
       into the model column ("Audi Audi", "Toyota Toyota"); merged hummer/hummer
       into H1, because the civilian AM General Hummer really was sold under that
       name from 1992 until the H1 rename in 1999. NOTE corroboration does NOT
@@ -265,11 +332,31 @@ debt:
   - id: spec-token-4w
     owner: s4w
     category: spec_token
-    count: 53
+    count: 8
     why: >-
-      Powertrain/drivetrain tokens left in nameplates ("S400 Hev",
-      "Explorer 2WD", "Bigster Expression Hev"). Folds into the nameplate per
-      the trim policy; being fixed make-by-make.
+      RE-BASELINED 53 -> 8 (G13, 2026-08-01). The make-by-make fold this entry
+      described has largely happened, so the old prose ("being fixed
+      make-by-make") now describes a finished job and its examples are records
+      that no longer exist. Measured 17 at v2026.08.0 and 8 at v2026.08.1; the
+      nine that left in the release folded onto the nameplate with a former_ids
+      line each — suburban-2wd->suburban, rover/2600-automatic->2600,
+      volvo/760-gle-automatic->760, volvo/850-automatic->850,
+      volvo/c303-4x4-1-v->c303, maserati/gran-turismo-s-automatic->gran-turismo,
+      and mitsubishi's xforce-hev / xpander-hev / xpander-cross-hev onto their
+      unsuffixed nameplates.
+      WHAT REMAINS IS NOT THE SAME CLASS, which is why this is a rewrite and not
+      just a number. The easy shape — a real nameplate with a trim/drivetrain
+      token stuck on the end — is done. The residue is records where the spec
+      token is ALL there is, so there is no nameplate to fold onto:
+        * car/chevrolet/4x4, car/lada/4x4, car/lada/4x4-urban, car/subaru/4wd —
+          the drivetrain word IS the model column. Lada is the awkward one: the
+          Lada 4x4 (ex-Niva) genuinely IS marketed as "4x4", so this may be a
+          `legit` record wearing a defect's shape, and it is 4-source/4-country.
+          Needs a marque call, not a fold.
+        * car/acura/mdx-2wd, bus/mercedes-benz/616-cdi, car/mg/mgs9-phev,
+          car/ebro/s700-hev — these four are still the foldable shape and are
+          the actual remaining worklist.
+      Folds into the nameplate per the trim policy.
 
   - id: embedded-make-prefix-4w
     owner: s4w
@@ -289,6 +376,14 @@ debt:
       palfinger/palfinger-p200txe-l-f24p-e6 — a crane-body type code
       (PALFINGER_P200TXE-L_F24P_E6, fi/nl) that needs the coachbuilder
       treatment, not a rename.
+      GREW 1 -> 2 IN RELEASE 2026.08.1 AND IS BACK AT 1 (G13, 2026-08-01). The
+      arrival was car/mazda/mazda6e, a brand-new id absent from v2026.08.0 —
+      Mazda's European battery-EV sedan, sourced to Mazda's own launch release
+      and moved to legit:mazda-fused-official-names above rather than counted
+      here. This is the entry working as designed rather than a regression: the
+      allowlist is an exact list, so a genuinely new marque-in-the-name
+      nameplate has to be researched before it is excused. Count returns to 1
+      and palfinger is still the only real member.
 
   - id: bare-body-word-nameplates-4w
     owner: s4w
@@ -324,13 +419,66 @@ debt:
     owner: s2w
     category: code_string
     max_sources: 1
-    count: 269
+    count: 329
     why: >-
-      normalizer.rb:153 collapses spaces at letter/digit boundaries for
-      motorcycles/mopeds to keep "AGILITY 50"/"AGILITY50" on one id — correct as
-      a JOIN KEY, but the collapsed key is also used as the DISPLAY name, so
-      "BANDIT 1200" publishes as BANDIT1200. Remedy is an identity/display split
-      restoring the dominant spaced raw form, not override lines.
+      THE ORIGINAL DEFECT, unchanged: normalizer.rb collapses spaces at
+      letter/digit boundaries for motorcycles/mopeds to keep "AGILITY 50" and
+      "AGILITY50" on one id — correct as a JOIN KEY, but the collapsed key is
+      also used as the DISPLAY name, so "BANDIT 1200" publishes as BANDIT1200.
+      Remedy is an identity/display split restoring the dominant spaced raw
+      form, not override lines.
+      RE-BASELINED UPWARD 269 -> 329 (G13, 2026-08-01), WHICH PRD-QUALITY.md
+      §1.1 SAYS DEBT MAY NOT DO. Recorded here in full rather than quietly
+      raised. Precedent for an investigated upward move exists in this file
+      (make-as-model-4w "was 51, then 2, then 5"; embedded-make-prefix-4w "was
+      22 declared / 24 measured"), and the investigation is:
+      NOT A REGRESSION. Zero of the added records is a name that got worse. The
+      whole delta comes from ONE upstream change — release 2026.08.1's G-1
+      uk_dft Model-column read, which un-pools DVLA family GenModel stubs into
+      displacement-qualified nameplates (CHANGELOG 2026.08.1 "UK two-wheeler
+      designations un-pooled", pipeline #129/#165). Measured against
+      `git show v2026.08.0:catalog/*/models.json`: 267 -> 329, being 72 IN and
+      10 OUT, and every single one of the 72 is a uk_dft-only two-wheeler that
+      did not exist at v2026.08.0. Provenance of the 72:
+        * 22 are the 1:1 successor of a retired stub, each with its own
+          former_ids line reading "G-1: UK Model column splits the pooled stub
+          by displacement; single successor" — motorcycle/lexmoto/arizona ->
+          arizona-125, /arrow -> arrow-125, /cl -> cl125, /gladiator ->
+          gladiator-125, sinnis/hoodlum -> hoodlum-125, yamaha/mws -> mws125,
+          bluroc/legend -> legend-125, herald/brat -> brat-125, and 14 more.
+        * 13 came from a stub that split MORE than one way, so it got no single
+          alias (honda/anf -> anf126, lexmoto/diablo -> diablo-125 + diablo-50,
+          longjia/lj -> lj125 + lj50, zontes/zt -> zt125, baotian/bt -> bt125…).
+        * 32 are new siblings beside a stub that still exists (honda/cbr ->
+          cbr125/cbr500/cbr650, kawasaki/sc -> sc125/sc300, triumph/tiger ->
+          tiger-660/tiger-850, ktm/freeride -> freeride-250/freeride-350…) —
+          the un-pooling is partial, which is exactly what pipeline #116's
+          "NOT in this PR, deliberately: the SPACE shape" reserves.
+        * 5 are uk_dft moped records, a kind uk_dft did not populate at all
+          before this release (uk_dft moped records: 0 -> 78; motorcycle:
+          1,523 -> 1,874).
+      The 10 that LEFT prove the same mechanism running the other way: every one
+      of them (suzuki/gs1100, gs250, gs550, gs650, gs850, gsx250, gsx1250,
+      yamaha/trx850, honda/nsc50, yamaha/xf50) is unchanged in name and simply
+      GAINED uk_dft as a second source in a second country, so it now clears
+      `corroborated-code-string-records` in legit instead of landing here.
+      Verdict: BENIGN — pre-existing gb registrations becoming visible to the
+      detector at a finer id, not a new defect.
+      BUT THIS COUNTER IS OVER-BROAD AND S2W SHOULD SPLIT IT. CODE_STRING is
+      /\A[A-Z]{2,}[\s.-]?\d{2,4}[A-Z0-9-]{0,8}\z/ and the space in it is
+      OPTIONAL, so it matches names whose space is intact — which cannot be
+      instances of a space-COLLAPSE defect, by inspection of the published name
+      itself. Measured: 74 of the 329 carry a space (was 40 of 267), including
+      motorcycle/lexmoto/arizona-125 "Arizona 125", motorcycle/triumph/tiger-850
+      "Tiger 850", motorcycle/ktm/freeride-250 "Freeride 250",
+      motorcycle/mutt/akita-125 "Akita 125". Those are correct nameplates that
+      land here only because they are single-source and this entry is the
+      catch-all for single-source code_string. So the honest decomposition is
+      255 collapsed (down from 227 — still up, same G-1 cause) plus 74
+      mis-filed. NOT SPLIT IN THIS PR: the entry is owner s2w, and moving 74
+      records into `legit` is precisely the "relabel junk as legitimate" move
+      this file's header warns about — it needs the owner's per-record call, not
+      a passing agent's regex. Filed as the concrete first case.
   # ── G9: the research-blocked half (S2W, 2026-07-25) ────────────────────────
   - id: make-as-model-2w
     owner: s2w
@@ -402,6 +550,10 @@ debt:
       agricultural-machinery maker, so a Vespa-named moped filed under it is
       probably a registry mis-attribution rather than a casing question. The
       make is cased; the record identity is not settled.
+      KNOWN INERT (G13, 2026-08-01): category `make_casing` is not a category
+      any detector in lint_dataset.rb emits, so this entry matches 0 records and
+      the 23 is a LEDGER figure, not a measurement. Do not "re-baseline" it to
+      zero — fix it by writing a make-casing detector.
   # ── B-001 (Tranche C) findings, S2W 2026-07-26 ─────────────────────────────
   - id: saxonette-is-a-product-not-a-marque
     owner: s2w
@@ -425,6 +577,13 @@ debt:
       moped/hercules/saxonette is the Hercules Saxonette, properly formed.
       Resolvable by type-approval number, or by a period Dutch dealer source
       naming the importer. Not by picking the likelier of two builders.
+      KNOWN INERT (G13, 2026-08-01): this entry declares `category:
+      make_as_model`, but the record's NAME is "529", so the detector classifies
+      moped/saxonette/529 as `numeric_only` and it is already counted in
+      bare-displacement-2w's 21. This entry therefore matches 0 records and its
+      1 is a duplicate ledger line, not a second defect. Fix by correcting the
+      category — but note that would then double-count against
+      bare-displacement-2w unless that entry's id_list excludes it.
   - id: tym-identity-unresolved
     owner: s2w
     category: make_casing
@@ -448,6 +607,10 @@ debt:
       This is the third time this pass that a claim of mine was plausible,
       well-sourced-looking and wrong in a detail nobody checks because it is not
       the conclusion.
+      KNOWN INERT (G13, 2026-08-01): category `make_casing` has no detector, so
+      this matches 0 records; the 2 is a ledger figure. Both records
+      (motorcycle/tym/sxl, moped/tym/vespa-alpha) are still published and fire
+      no detector at all.
 
   - id: icaur-sub-brand-under-chery
     owner: s4w
@@ -488,12 +651,15 @@ debt:
     owner: s2w
     category: spec_token
     id_list: [triumph/tiger-800xc-abs]
-    count: 1
+    count: 0
     why: >-
-      The fix (ABS fold rename + alias) is MERGED but the record is still in
-      the published catalog this lint measures — the pending-publish window,
-      same class lint_review already tolerates via alias-target liveness.
-      Empties at the next release; if it survives one, something is wrong.
+      RESOLVED, AND THE ENTRY'S OWN TEST PASSED. The fix (ABS fold rename +
+      alias) was MERGED with the record still published — the pending-publish
+      window — and this entry said "Empties at the next release; if it survives
+      one, something is wrong". It did not survive: motorcycle/triumph/
+      tiger-800xc-abs is absent from the published catalog at both v2026.08.0
+      and v2026.08.1. Re-baselined 1 -> 0 (G13, 2026-08-01) and kept at zero as
+      the regression test its own wording specifies.
   # ── B-001 (Tranche C) cross-make findings, S2W 2026-07-26 ───────────────────
   - id: model-column-acronym-casing
     owner: s2w
@@ -540,6 +706,12 @@ debt:
       ryuka/Save-II S Fi (FI), suzuki/Lets II (Suzuki writes "Let's"). These
       need per-record renames plus former_ids where the slug moves, and are the
       next tranche.
+      KNOWN INERT (G13, 2026-08-01): category `model_casing` has no detector in
+      lint_dataset.rb, so this entry matches 0 records and 511 — by far the
+      largest number in this file — is a WORKLIST figure measured by
+      scripts/find_published_name_defects.rb, not by the debt counter. It is the
+      single biggest reason a blanket "set every count to what --report shows"
+      would be wrong.
   - id: nl-snorfiets-25-suffix
     owner: s2w
     category: variant_as_model
@@ -562,6 +734,9 @@ debt:
       Same convention explains the ".S" and "E3" suffixes in the same registers
       (fosti RETRO / RETRO.S), which are NOT speed classes — do not generalise
       the dot.
+      KNOWN INERT (G13, 2026-08-01): category `variant_as_model` has no
+      detector, so this matches 0 records; the 5 is a ledger figure. All five
+      ids are still published and fire no detector.
   - id: kreidler-k53-type-numbers
     owner: s2w
     category: code_string
@@ -595,6 +770,13 @@ debt:
       DO NOT bulk-fold on the K53 prefix in the meantime. The prefix is shared
       by genuinely different types, which is the mistake this entry opens by
       admitting.
+      KNOWN INERT (G13, 2026-08-01): the category is `code_string`, which IS a
+      live detector, but none of the four published names matches CODE_STRING
+      (/\A[A-Z]{2,}[\s.-]?\d{2,4}[A-Z0-9-]{0,8}\z/) — "Florett K53/1NL" and
+      "Florett K53 / 21NL" carry a slash and a second word, and "K53-311" /
+      "K53/402" open with ONE letter where the pattern needs two. So this entry
+      matches 0 records and the 4 is a ledger figure. All four ids are still
+      published; the debt is real and unobserved.
   - id: matchless-undetermined-manglings
     owner: s2w
     category: code_string
@@ -651,3 +833,7 @@ debt:
       cybermotorcycle tables this marque is documented from demonstrably
       contain this class of damage ("GBLS" for G3LS, "G8OCS" for G80CS,
       "G180" for G80), so corrupt strings here are expected, not surprising.
+      KNOWN INERT (G13, 2026-08-01): same shape as kreidler above — the category
+      is the live `code_string`, but "G3L5" opens with a single letter where
+      CODE_STRING needs two, so the entry matches 0 records and the 1 is a
+      ledger figure. motorcycle/matchless/g3l5 is still published.
