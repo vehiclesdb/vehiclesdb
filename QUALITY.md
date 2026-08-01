@@ -22,26 +22,34 @@ are part of the product.*
   themselves. Make ~96%, kind ~97%. The defect mass is names and
   id-canonicality, concentrated in two structural generators (truncation
   stubs; trim-granularity ids) now being fixed at the generator.
-- **Both generators have since been attacked at scale (2026-07-26,
-  post-baseline)**: the truncation-stub fix retired 36 stubs and
-  recovered ~370 real models; the trim-granularity fold wave measured
-  seven common makes (35–53% of their ids were trims/codes, not models —
-  per-make dossiers in the pipeline repo, `aux/research/trims-2026-07/`)
-  and folded ~690 records onto their real nameplates with **zero
-  availability evidence lost** (verified per fold, source drift
-  adjudicated against pristine builds) and every retired string preserved
-  as alias + typed variant. These fixes land AFTER the baseline above —
-  the next audit round measures their effect; this dashboard does not
-  claim it in advance.
+- **Both generators have since been attacked at scale (2026-07-26 → 08-01,
+  post-baseline)**: the truncation-stub fix retired 36 stubs and recovered
+  ~370 real models; the trim-granularity fold programme then measured
+  twenty-plus makes (23%–82% of their ids were trims, codes or body words
+  rather than models — per-make dossiers in the pipeline repo under
+  `aux/research/`) and folded them onto their real nameplates with **zero
+  availability evidence lost**, verified per fold. The 4W catalog went
+  8,613 → 6,946 published ids.
+- **A third generator was found that no detector could see: DELETION.**
+  `junk?` was discarding real nameplates before they ever reached a record —
+  a bare numeral cannot be a model, and a platform-code rule fires after the
+  make token is stripped. Measured by a per-row replay logging nil returns:
+  **125,650 vehicles recovered** so far (Saab 9-3 alone was 70,404 across 9
+  countries, while its own trim records published normally). A dropped row
+  leaves no record, so every catalog-side check is structurally blind to it;
+  `rake report:junk_drops` now stands watch. The largest known remaining
+  instance (a door-count prefix, ~26,700 recoverable vehicles) is filed
+  UNFIXED in DEBT because the same rule shape is a real platform code.
+- These land AFTER the baseline above — the next audit round measures their
+  effect; this dashboard does not claim it in advance.
 - **Wave 3 (2026-07-27, post-baseline)**: nine more makes measured and
   organized (Seat/Renault/Peugeot/VW/Dacia/Hyundai/Mercedes-Benz/Fiat/
   Tesla — 14–70% of ids per make were not models). ~719 records folded
   with zero unauthored evidence loss, and the reverse defect class fixed
   at scale: real nameplates the pipeline was DELETING or mislabeling
   (Renault 4/5/6/8/9, VW New Beetle, the 11,768-registration urban→Fox
-  re-landing, the 7,793-registration i80 phantom). Sixteen popular makes
-  now measured across the two waves; per-make dossiers in the pipeline
-  repo. Effect on the claim-level rates: measured by the NEXT round, not
+  re-landing, the 7,793-registration i80 phantom). Per-make dossiers in the pipeline repo. (Superseded as a COUNT by the
+  line above: the programme ran to twenty-plus makes across waves 4-7.) Effect on the claim-level rates: measured by the NEXT round, not
   asserted here.
 - **The audit's own error rates, published**: researcher miss rate on
   spot-checked corrects 7% (CI 2.9–13.9%); defect-verdict confirmation
