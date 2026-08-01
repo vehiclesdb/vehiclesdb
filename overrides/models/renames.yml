@@ -5118,6 +5118,62 @@ Lexus:
   UX250H: UX                              # engine/powertrain variant of the UX line — the nameplate is the line, not the engine (lexus.co.uk/car-models)
   UX300E: UX                              # engine/powertrain variant of the UX line — the nameplate is the line, not the engine (lexus.co.uk/car-models)
   UX300H: UX                              # engine/powertrain variant of the UX line — the nameplate is the line, not the engine (lexus.co.uk/car-models)
+  # ── LEXUS MISSED-SPELLING SWEEP + the TX nameplate (2026-08-02, S4W; owner
+  # dossier aux/research/2026-08-owner-swarm/mini-lexus-smart.md §A.2 L1-L4 and
+  # §C.4). Two classes only:
+  #   (a) NAMING §7.6 rule 2 — a spelling of a line that is ALREADY published
+  #       and that the 165-key powertrain fold above missed. Every value below
+  #       is a live record's own name, so this batch can mint no new spelling.
+  #   (b) ONE new nameplate, TX, whose three powertrain grades post-date that
+  #       fold. It mints car/lexus/tx; car/lexus/tx-350 and car/lexus/tx-500h
+  #       retire into it via former_ids.yml.
+  # KEYS ARE THE PRODUCED STRINGS, MEASURED, NOT GUESSED. classify() was
+  # replayed for every raw below (pipeline 6101c2c, frozen cache); five of the
+  # dossier's draft keys were written in the wrong case and WOULD HAVE BEEN
+  # INERT — the corrected forms are here. The difference is overrides/styling.yml
+  # `acronyms:`, which pins IS/GS/LS/LC/RX/NX/UX/LX/RZ/LBX/HS to caps but has no
+  # token for ES/RC/CT/SC/GX/LM/TX, so "Rc 200" and "Es 500E" are title-case
+  # while "RX 200" and "IS350 Sport" are not.
+  # Rename VALUES are used verbatim (normalizer.rb `nameplate = repl`), which is
+  # why writing the target as `TX`/`GS F`/`LFA`/`LM` fixes the published casing
+  # in the same line — the Rc F: RC F precedent above. §C.4 explicitly rules out
+  # an acronyms: token for these (NAMING §9 sweep; the Volvo "480 ES" comment
+  # records a token un-folding this very make's ES family).
+  # KIND-BLIND, checked: the only non-car Lexus strings in the corpus are
+  # van/lexus/{gx,is,lx,lx450d} (nl 8+2+1, gb 0) — none of them is a key below,
+  # so the van blast radius of this batch is zero (measured on the control
+  # build, all six kinds). ──
+  #
+  # (b) TX — one nameplate, three powertrain grades, per Lexus's own launch
+  # release: "Lexus has ushered in a new era of luxury with the global reveal of
+  # the first-ever TX, a vehicle made specifically for the North American
+  # market" … "The 2024 TX will be offered in four grades: Standard, Premium,
+  # Luxury and F SPORT Performance" — https://pressroom.lexus.com/a-new-era-of-three-row-luxury-the-first-ever-lexus-tx/ (fetched 2026-08-02)
+  Tx 350: TX                              # published car/lexus/tx-350 (ca:ca_nrcan ua:ua_mvs us:us_fueleconomy) — the 2.4L turbo grade, not a model; raw "TX 350 AWD" (ca_nrcan/us_fueleconomy)
+  Tx 500H: TX                             # published car/lexus/tx-500h (ca:ca_nrcan ua:ua_mvs us:us_fueleconomy) — the turbo-hybrid grade; raw "TX 500h AWD"
+  Tx 550H Plus: TX                        # candidate lexus/tx-550h-plus (us:us_fueleconomy) — the 3.5L V6 plug-in grade; raw "TX 550h Plus AWD" (us_fueleconomy)
+  TX350 Executive: TX                     # candidate lexus/tx350-executive (ua=1, ua_mvs) — raw "TX350 EXECUTIVE"; a fourth TX spelling the dossier did not list, folded here so no TX row is left outside the new record. "Executive" is a re-export-market trim label; the vehicle is a TX 350
+  #
+  # (a) missed spellings of already-published lines
+  RX450 H: RX                             # published car/lexus/rx450-h (es:es_dgt nl:nl_rdw) — the block already keys "RX 450 H", "RX 450H", "RX450H" and "RX450HL" but NOT this spacing; raws "LEXUS RX450 H" (nl_rdw n=1, es_dgt 2026-06 n=1). Union unchanged: car/lexus/rx already holds es:es_dgt + nl:nl_rdw
+  Gsf: GS F                               # candidate lexus/gsf (gb=65, uk_dft). THE REGISTER CORROBORATES ITSELF INSIDE ONE ROW: uk_veh0120_uk.csv writes GenModel "LEXUS GSF" with Model "GS F AUTO" on the same statutory line, i.e. the source spells the model "GS F" while pooling it under a spaceless GenModel. (The dossier said this sits "beside LEXUS GS F"; it does not — `grep -c 'LEXUS GS F'` on that file is 0. GSF is GB's ONLY spelling, which makes this a spelling fold, not a merge of two GB families.) Mirror of the shipped `Isf: IS F`; F is a grade marker, not a nameplate — "The F in RC F denotes our high-performance, sports models" — https://mag.lexus.co.uk/lexus-model-names/ (fetched 2026-08-02). ADDS gb:uk_dft to car/lexus/gs-f
+  RX 500: RX                              # candidate lexus/rx-500 (gb=634, uk_dft) — "RX 500H" is keyed above, the bare truncated form is not; GB writes the GenModel without the h
+  RX500: RX                               # candidate lexus/rx500 (nl=1, nl_rdw, raw "RX500") — the un-spaced twin of the line above; "RX500H" is already keyed
+  Rc 200: RC                              # candidate lexus/rc-200 (gb=97, uk_dft) — "Rc 200T" is keyed above; GB truncates the T
+  RX 200: RX                              # candidate lexus/rx-200 (gb=56, uk_dft) — "RX 200T"/"RX200T" are keyed above; bare form is not
+  LBX Vibrant: LBX                        # candidate lexus/lbx-vibrant (gb=137, uk_dft) — "Vibrant Edition" is a TRIM of the LBX, not a model — https://media.lexus.co.uk/lexus-lbx-offers-more-choice-and-style-with-new-vibrant-edition/
+  RX 450H Plus: RX                        # candidate lexus/rx-450h-plus (us:us_fueleconomy, raw "RX 450h Plus AWD") — 450h+ is the plug-in hybrid grade of the RX line; "RX 450H L"/"RX450HL" are already keyed
+  NX 450H Plus: NX                        # candidate lexus/nx-450h-plus (us:us_fueleconomy, raw "NX 450h Plus AWD") — same grade shape on the NX; "NX 450H"/"NX450H" are already keyed
+  Es 500E: ES                             # candidate lexus/es-500e (us:us_fueleconomy, raws "ES 500e AWD (19 inch Wheels)"/"(21 inch Wheels)") — "ES500E" is keyed above, the spaced form is not
+  IS 300H F Sport: IS                     # candidate lexus/is-300h-f-sport (fi=1, fi_traficom, raw "LEXUS IS 300h F Sport") — F SPORT is a trim; "Es 350 F Sport"/"GS 350 F Sport" are already keyed the same way. NB the dossier attributed this string to NL/GB; the corpus puts it in fi_traficom
+  IS350 Sport: IS                         # candidate lexus/is350-sport (nl=1, nl_rdw, raw "LEXUS IS350 SPORT") — same class; "IS350" is keyed above
+  #
+  # (c) §C.4 CASING — two published records whose display name is wrong today,
+  # both because they have no rename key and so fall through to smart_case.
+  # Whole-string pins, blast radius 1 each, slug unchanged (slugify("LFA") ==
+  # slugify("Lfa") == "lfa"). NOT styling.yml entries, per §C.4.
+  Lfa: LFA                                # published car/lexus/lfa displays "Lfa" (dist/vehicles.csv v2026.08.0) — measured classify("LEXUS","LFA") -> ["Lexus","Lfa"]. Register attestation, not just marque styling: uk_veh0120_uk.csv writes GenModel "LEXUS LFA" with Model "LFA F S-A" — both halves caps. Every other Lexus record in the catalog is all-caps
+  Lm: LM                                  # published car/lexus/lm displays "Lm" (dist/vehicles.csv v2026.08.0) — build/observed_model_names.json flags car/lexus/lm as flapping ["LM","Lm"], i.e. the published name is decided by SOURCE ITERATION ORDER (reconciler.rb:246 keeps the first spelling to arrive). The keyed raws ("LM350H", "LM500H", "Lm 350H") already emit LM; bare "LEXUS LM" does not. This pin makes it deterministic. The dossier §C.4 states LM "is already fixed" — the released catalog refutes that
 
 Leyland Daf:
   # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §A-L1/§A-L2).
