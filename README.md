@@ -1,5 +1,7 @@
 # VehiclesDB — open vehicle data
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21744943.svg)](https://doi.org/10.5281/zenodo.21744943)
+
 **The open catalogue of what vehicles exist**: makes, models, kinds, body
 types, popularity, and where in the world each model is actually found —
 reconciled from **official registers of 14 countries on 4 continents**,
@@ -180,7 +182,8 @@ Upstream register notices: [ATTRIBUTION.md](ATTRIBUTION.md).
 Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.cff)), or:
 
 > VehiclesDB. (2026). *VehiclesDB: The open source vehicle database*
-> (Version 2026.08.1) [Data set]. https://vehiclesdb.com
+> (Version 2026.08.1) [Data set]. Zenodo.
+> https://doi.org/10.5281/zenodo.21744943
 
 ```bibtex
 @misc{vehiclesdb,
@@ -188,6 +191,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
   author       = {{VehiclesDB}},
   year         = {2026},
   howpublished = {\url{https://github.com/vehiclesdb/vehiclesdb}},
+  doi          = {10.5281/zenodo.21744943},
   note         = {Open dataset, CC BY 4.0, version 2026.08.1}
 }
 ```
