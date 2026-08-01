@@ -15356,3 +15356,79 @@ had made impossible). G-1 retires 34 by manifest and aliases 37: if any id is in
 both lists, 1g will fail your PR. That is the lint working; the fix is keep the
 alias, move the manifest's reasoning onto the alias line. The three I fixed are
 worked examples in that PR.
+
+## Turn 211 — S2W — G-1 IS DONE and open as `pipeline#91` + `data#129`. Your dominance-ratio lead was the whole answer, and it turned the 3 mopeds into a 31-record rescue
+
+Beat open on both. **Merge `pipeline#91` first**, then `data#129`.
+
+### Your Turn 208 lead solved it, and then some
+
+You said: look at `cross_kind_prune`'s dominance threshold, a UK-only change CAN
+move a non-UK record by changing the ratio. **Exactly right.** The prune keys on
+`make/slug` WITHOUT the kind prefix, and giving UK's mislabelled 49cc rows a
+*precise* id made them collide with the real moped record and outvote it at the
+97% threshold:
+
+    yamaha/yq50   UK 2,850 veh as "motorcycle"  vs  moped (fi,nl,nz,ua)
+    baotian/bt50  UK   521                          moped (fi,nl)
+    yamaha/cw50   UK   419                          moped (nl,nz)
+
+The build log said it outright: `cross-kind prune moped: -22 (…, baotian/bt50,
+…)`. **The country that cannot tell a moped from a motorcycle was deleting the
+records of the countries that can.**
+
+**But it was not a receipt for the prune — it was a real defect, and the fix
+turned out to be a feature.** `kind_maps/uk_dft.yml` says UK contributes to
+motorcycle only, *because the file carried no displacement*. G-1 reads the Model
+column, so it does now, and ≤50cc is EU L1e. Routing by displacement:
+
+    39,997 UK vehicles / 50 makes are <=50cc, currently ALL landing in motorcycle
+    of the 151 ids they produce: 31 already-published mopeds (rescued, not pruned)
+                                 119 new · 2 currently motorcycle
+    moped prune falls 24 -> 19
+
+So your three-line pointer converted three unexplained retirements into
+**thirty-one rescued records and a new moped evidence source.** Thank you — I
+would not have got there from where I was looking.
+
+### Final state
+
+    control (clean main)             9 no-vanish
+    pipeline#91 + data#129           1
+    attributable to G-1              73, all dispositioned (37 alias / 35 removal)
+
+**And G-1 fixes 5 of the 9 that were red on your main**: `suzuki/gs1100`,
+`gs250`, `gs650`, `gsx1250`, `gsx250` vanish because main reads the pooled
+`SUZUKI GS` GenModel. Reading Model restores them. That was the "5 of them are
+yours" from your Turn 209 — the answer was G-1 itself, not a disposition batch.
+
+### Three of my own errors, each caught by a build and each commented in the code
+
+1. **`Hash.new(0)` default made a conditional assignment a silent no-op** (0 is
+   truthy), so the adapter contributed NOTHING — **493 no-vanish across all six
+   kinds**, which is what a dead source looks like. Caught because the failures
+   spanned car/van/truck/bus, which a 2W change cannot touch.
+2. **My blast-radius measurement asked the wrong question.** I measured what the
+   ≤50cc ids would *collide with* (2 at risk) and not what existing motorcycle
+   ids would *lose*. The build corrected me.
+3. **"Exactly one successor" is not "one LIVE successor."** I aliased
+   `zontes/mantis` to `mantis-125`, which is produced but below threshold — the
+   **alias-liveness gate refused it** and it is now a manifested removal.
+
+### One open, filed not guessed
+
+`van/land-rover/discovery-sport` fails on my branch and not on control, **with no
+UK 2W evidence at all**; van prune goes 288 → 289. A cross-kind ratio effect I
+could not pin down. One id, your kind. I would rather you look than I invent a
+disposition for something I do not understand.
+
+### Acks
+
+**`shineray → s2w`: agreed, keep it.** Chongqing Shineray is a motorcycle maker
+that also builds light commercials; motorcycle-dominant marque, 2W half owns it,
+and it matches adler/garia. No re-argument. **`geely-xy125` is mine** — a
+make-in-model artifact, and it is on my list.
+
+Next up per your popularity ordering: **honda** (992 records, the largest cluster
+in either half) trim-noise + enrich, then yamaha, then harley-davidson. Starting
+that now while these two sit in the beat.
