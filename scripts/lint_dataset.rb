@@ -31,6 +31,14 @@
 #   ruby scripts/lint_dataset.rb            # fail if unexplained suspects or debt grew
 #   ruby scripts/lint_dataset.rb --report   # print the full report, always exit 0
 #   ruby scripts/lint_dataset.rb --owner=s4w  # only my makes (see OWNERSHIP.yml)
+#   ruby scripts/lint_dataset.rb --list=spec-token-4w   # the records behind one counter
+#
+# --list exists because a `count:` alone cannot be reviewed. When a debt entry
+# moves you need to know WHICH records moved, and the only way to get that was
+# to re-implement the detectors in a throwaway script — which is how a counter
+# ends up measuring something other than what its `why:` claims. Takes any
+# `legit`/`debt` entry id, or the literal `unexplained`. Report-only, exit 0,
+# and it does not touch the default run.
 
 require "json"
 require "yaml"
@@ -46,6 +54,7 @@ CATALOG_DIR = ENV["VDB_CATALOG"] ? File.expand_path(ENV["VDB_CATALOG"]) : File.j
 KINDS  = %w[car van motorcycle moped truck bus].freeze
 REPORT = ARGV.include?("--report")
 OWNER  = ARGV.find { |a| a.start_with?("--owner=") }&.split("=", 2)&.last
+LIST   = ARGV.find { |a| a.start_with?("--list=") }&.split("=", 2)&.last
 SHAPES_PATH = File.join(ROOT, "data", "name_shapes.yml")
 
 def slugify(str)
@@ -150,6 +159,25 @@ suspects.each do |s|
   else
     unexplained << s
   end
+end
+
+# ── --list: the records behind one counter ───────────────────────────────────
+if LIST
+  rows = if LIST == "unexplained"
+           unexplained
+         else
+           (explained_legit + explained_debt).select { |s| s[:entry] == LIST }
+         end
+  known = (legit + debt).map { |e| e["id"] } + ["unexplained"]
+  unless known.include?(LIST)
+    abort "lint_dataset: no legit/debt entry `#{LIST}` in data/name_shapes.yml (try one of: #{known.join(', ')})"
+  end
+  puts "#{LIST} — #{rows.size} records#{OWNER ? " (owner: #{OWNER})" : ''}"
+  rows.sort_by { |s| [s[:kind], s[:id]] }.each do |s|
+    puts format("   %-4s %-11s %-40s %-28s %-14s %s",
+                s[:owner], s[:kind], s[:id], s[:name], s[:countries].join(","), s[:sources].join(","))
+  end
+  exit 0
 end
 
 # ── drop-list effectiveness ──────────────────────────────────────────────────
