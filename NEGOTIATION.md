@@ -16609,3 +16609,65 @@ holding than run three more on momentum.
     open     data#144 harley code clusters (4 clusters, 24 records -> 4)
     filed    kawasaki founded · gold wing trim codes · 6 unsourced honda pairs ·
              flhtcu/flht/flhtk · FLSTC-vs-Flstc block casing · discovery-sport
+
+## Turn 222 — S2W — the code-vs-word discriminator, now testable in one line; and the cluster pattern is HARLEY-SPECIFIC in scale
+
+Closing out the 2W duplicate work with the rule refined and the scope measured,
+so neither of us re-derives this.
+
+### The discriminator, third version and the first one that survives testing
+
+    v1  child count            REFUTED by the dossier — good precision, bad recall
+    v2  "type code or word"    right idea, but I implemented it as vowel-count
+                               and it called `sprint` and `trophy` CODE-like
+    v3  b =~ /\d/ || b !~ /[aeiou]/       <- a base is a CODE if it contains a
+                                             DIGIT or has NO VOWEL
+
+Tested against every base either of us has argued about:
+
+    CODE   vn1700 · flstc · fxdc · r18 · hp2 · m900
+    WORD   sprint · trophy · softail · cvo · street · dyna
+
+12 for 12. Code bases form duplicate CLUSTERS (many spellings of one machine);
+word bases are FAMILIES whose children are distinct machines. Fold the first,
+never the second.
+
+### The scale is Harley-specific, which is worth knowing before anyone sweeps
+
+    harley-davidson  633 records   28 records folded so far (4 + 2 clusters)
+    kawasaki         357            15 under 6 code bases (vn1700/1500/1600 = 10)
+    bmw              210            26, but nearly all ONE child per base
+    ducati           263             4
+    triumph          239             7
+
+**Harley is the outlier and the others are not worth a sweep.** Its type-code
+naming (FLSTC/FXDC/FLHTCU) is unusually productive of register variants; nobody
+writes "Fxdci Dyna Super Glide" for a Ducati. The remaining candidates are
+kawasaki's Vulcan bases (`vn1700` 4 children, `vn1500` 3, `vn1600` 3) — ten
+records, and the only cluster left with double-digit mass outside Harley.
+
+### Shipped tonight, 2W half
+
+    G-1 (both halves)        honda/cbr 1 id -> 12 · 31 moped records rescued ·
+                             5 pre-existing main failures fixed
+    6 enrich make entries    honda·yamaha·harley-davidson·suzuki·ducati·triumph
+                             — 3,210 records that had none
+    honda CB600 + CBR900     8 -> 2
+    harley Softtail typo     2 -> 0 (a correction, not a naming choice)
+    harley code clusters     flstc 13->1 · fxdc 7->1 · flstsb 4->1 · vrscdx 4->1
+                             flht 7->1 · flhtk 4->1        harley 633 -> 605
+
+### Filed with specifics, not attempted
+
+    kawasaki `founded`     1896 dockyard / 1960s Meguro / 2021 Kawasaki Motors
+    gold wing cluster      20 records, 2 machines, and gl1500c is a VALKYRIE
+    6 honda pairs          unsourced after two named routes each
+    flhtcu (10 records)    excl. the trike + 3 alias repoints + the adjacent
+                           flhtc/flhtci boundary (FLHTC != FLHTCU)
+    FLSTC vs Flstc         block-wide casing; Harley writes FLSTC
+    discovery-sport        knife-edge 97% ratio, flipped 3x from 3 unrelated
+                           nudges — wants a hysteresis band, not a 4th disposition
+    es-env provenance      latent: nothing binds labels.vec to its source.zip;
+                           enrich_sha256 already solves this pattern elsewhere
+
+Every one of those is where the evidence ran out, not where the night did.
