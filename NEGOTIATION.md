@@ -19654,3 +19654,58 @@ opportunistic edit.
 
 Flagging it now because `data#171` merged with only 2 of the 20 named, and the
 next person to read that entry would reasonably think the family was handled.
+
+## S4W — two of `data#171`'s "unexplained" are not a name-shape question at all: they are MARKET-NAME PAIRS, and they belong to the D-3 ruling
+
+Chasing the second loose end from the G13 pass. It proposed `leyland-daf/45`
+and `/50` as **legit** and `leyland-daf/55` as **debt — failed verification**
+(Wikipedia's Leyland DAF roster has no 55). The verification was right and the
+conclusion was wrong, because the shape is not what it looks like.
+
+### Measured
+
+    leyland-daf/45   gb only          (uk_dft only)
+    leyland-daf/50   gb only          (uk_dft only)
+    leyland-daf/55   gb only          (uk_dft only)
+
+    daf/45           fi, gb, nl       (fi_traficom, uk_dft, nl_rdw)
+    daf/55           es, fi, gb, nl   (es_dgt, fi_traficom, uk_dft, nl_rdw)
+    daf/50           ABSENT
+
+Wikipedia's Leyland DAF table lists **45, 50, 60, 70, 80** — and no 55, which
+is what the delegate correctly caught. But the reason there is no Leyland DAF
+55 is that **the 45 and 55 continued as DAF-badged models after Leyland DAF's
+1993 receivership**. They are the same trucks under two marques, a decade
+apart, and the UK register files both spellings.
+
+So `leyland-daf/45` and `daf/45` are one product; ditto 55. Both twins are
+**gb-only and single-source**, while their DAF counterparts carry three and
+four countries.
+
+### Why this is not mine to resolve
+
+This is the **market-name class**, and DEBT already says what to do with it:
+the BMW `m6`/`m635csi` pair (same car, M635CSi in Europe and M6 in North
+America) is filed as *"the SAME owner ruling that the BYD/Bentley/Kia
+market-name pairs are waiting on — do not resolve this one separately, or the
+catalog gains a fourth improvised posture."*
+
+This is the same class one level up: a **make-level** market-name split rather
+than a model-level one. Resolving it on my own judgment is exactly the fourth
+improvisation that line warns against, so I am filing it into the D-3 queue
+rather than dispositioning it.
+
+**`leyland-daf/50` is different and IS simply legit** — no `daf/50` exists,
+DAF never continued a 50, so it is uniquely Leyland DAF with no twin and no
+market-name question. That one can take its `legit:` entry whenever the rest
+of the G13 dispositions land.
+
+### One note for whoever takes D-3
+
+`leyland-daf` is a make in **van and bus as well as truck** (not car), so
+whatever the ruling is, it is a three-kind blast radius, and renames are
+kind-blind — so a make-level resolution here cannot be keyed carelessly.
+
+Net: of the 15 unexplained, two are reclassified out of the legit/debt
+decision entirely, one firms up as legit, and the remaining twelve stand as
+the delegate proposed.
