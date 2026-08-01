@@ -2,6 +2,76 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.08.1] - 2026-08-01 — the fold release
+
+**15,626 → 14,069 model ids** (car 6,238→4,949 · truck 1,224→914 · van
+742→616 · bus 409→390 · motorcycle 5,767→5,901 · moped 1,246→1,299). The
+drop is not data loss: it is trim levels, body styles, axle codes and
+misspellings that had been publishing as if they were separate nameplates,
+folded onto the nameplate they belong to. **Ids change in this release** —
+see *Migration*.
+
+Where the count went **up** (motorcycle, moped), it is registrations that
+were being pooled on a stub or deleted outright now reaching a real record.
+
+### ~25 makes de-duplicated
+
+Each wave measured availability per fold and shipped only where **no
+(country, source) evidence was lost**:
+
+- Chevrolet 393→219 (#137) · Volvo 428→157 (#135) · Jaguar/Rover/Land Rover
+  348→168 (#136) · Scania+DAF 420→313 (#139) · MG+Austin 281→131 (#140) ·
+  Italian marques 304→233 (#145) · Iveco+Dodge (#134) · Mitsubishi+Mazda
+  211→149 (#143) · Kia+Škoda 151→96 (#148) · Cadillac+Chrysler+Buick 97→45
+  (#150) · Vauxhall+Subaru+Jeep 109→41 (#153) · Saab+Porsche+Bentley 210→73
+  (#155) · Pontiac+Aston Martin+BYD 183→104 (#157).
+- Harley-Davidson designation clusters: FLSTC 13→1 (#144), FLHT/FLHTK 11→2
+  (#149), and Harley's own "Softtail" misspelling folded onto "Softail"
+  (#142). Honda CB600/CBR900 8→2 (#133).
+
+### Real nameplates that were being deleted, restored
+
+A curation predicate (`junk?`) was discarding rows **before** they could
+become records — a defect class invisible from the catalog side, because a
+dropped row leaves nothing to inspect.
+
+- **8 nameplates un-deleted, 115,809 vehicles measured** (#141) — Saab 9-3
+  and 9-5 alone accounted for 90,597.
+- **13 `New <nameplate>` strings** were being read as noise (#151).
+- **20,298 Thai BYD vehicles** rescued from a pooled GenModel (#157).
+- Kia+Škoda gained **29,565 GB vehicles** (#148); `truck/daf/lf` **+12,495
+  gb** (#139).
+
+### UK two-wheeler designations un-pooled
+
+DfT publishes a family GenModel ("YAMAHA MT") where a nameplate belongs. The
+parser read `MT-07` as family `MT-` + capacity 7, failed the capacity range
+and dropped every row onto a bare gb-only stub. Both halves are fixed
+(#129, #165): the rows now land on `mt-09` (11,474 gb), `mt-07` (9,194),
+`mt-10` (5,038), `mt-03` (1,775) and `mt-01` (490), and the same shape is
+retired for the XP and XSR families.
+
+### BMW M
+
+`M3`/`M5` and the rest are nameplates, not trims of the N-Series — they no
+longer fold into `3`/`5` (#163).
+
+### Migration
+
+- **1,989 new aliases** in `overrides/models/former_ids.yml` (5,782 total,
+  covering 2,806 live records). Every retired id resolves to its successor.
+- **121 ids manifested** in `overrides/models/removals.yml`, each with a
+  reason and a measurement — used where no single alias target exists (a
+  pooled stub whose rows split across several real nameplates).
+- Nothing disappears silently: the id-contract gate fails the build on any
+  retired id that is neither aliased nor manifested.
+
+### Also
+
+- Zenodo metadata + `CITATION.cff`, so releases archive with a DOI.
+- 2,112 new curation keys in `overrides/models/renames.yml`, each carrying a
+  `#` comment with its source.
+
 ## [2026.08.0] - 2026-08-01 — the correction release
 
 All 14 sources refreshed to their mid-2026 snapshots. This release also
