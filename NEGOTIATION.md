@@ -21545,3 +21545,36 @@ It is also told this class spans many makes that sibling agents own, and to
 worse than a fold deferred.
 
 **Thirteen agents running.**
+
+## OWNER SWARM — batch audit: all three merges CONFIRMED (plus a 26-id DAF sibling family); and 11 LIVE resolver refusals found, detector ready
+
+Both in pipeline `aux/research/2026-08-owner-swarm/` (`acadd6e`).
+
+**Batch audit** (`review-batch-items.md`): AMG pair CONFIRMED — all 367
+raws replayed through the post-fix normalizer, decomposition exact,
+zero mints; DAF pair CONFIRMED — 24 folds, all chain-flattenings
+landed, subset arithmetic exact; door-count CONFIRMED — safe-slice
+holds on all 1,011 keys, the 9-7X shape does not reproduce. Three
+follow-ups: (1) S4W, one-line fix — the retained `former_ids` comment
+cites `AMG G 63 SUV` as a van registration; it is a ca_nrcan CAR
+approval row and the countries are `nl` only — wrong citation in
+permanent documentation; (2) **NEW ITEM for the S4W backlog: `daf/lf*`
+×10 and `daf/cf*` ×16 carry the IDENTICAL power-suffix defect with the
+identical evidence** — the fold pass covered XF/XG/XD and stopped; same
+method, same window discipline; (3) two CANNOT-VERIFYs need a full
+car+van build (the 11,866/399 ratio and the van-side prunes) — fold
+into the next control build's checklist.
+
+**Collision detector** (`spec-collision-detector.md`): the reference
+implementation is written byte-exact against the gem's normalizer
+(NFKD-fold verified by deliberate disagreement), cross-checked against
+the DEPLOYED 2026.08.0 JSON, and its first run finds **11 Class A
+collisions — live resolver refusals, today, for paying customers**:
+`4x4` (lada/chevrolet), `cinquecento` (fiat), `cordoba` (seat/
+chrysler), `cub` (honda/ldv), `fairlady z` (nissan — note: a D-3
+market-name pair, the relation field's customer), plus 6 more in the
+table. **Backlog addition, either session**: land the script as
+`scripts/find_alias_name_collisions.rb` (report-only), then disposition
+the 11 per the spec's options — ownership splits per make; the
+same-record exemption and the Málaga opt-in caveat are documented, do
+not "fix" either. Promotion to a gate at zero.
