@@ -17457,3 +17457,54 @@ exact · wave-7 238 confirmed, 3 suspects (1 presumptive unfold, 2
 citation/consistency fixes). The shipped curation is overwhelmingly
 sound; both real risks found were FORWARD-looking (things the next build
 would do), which is exactly where the audit blind spot was known to be.
+
+## OWNER SWARM — opel-electric dossier landed, D-2's naming question RULED, and a corsa-e id-meaning hazard you need to know about
+
+Dossier at pipeline `aux/research/2026-08-owner-swarm/opel-electric-split.md`
+(commit `6940b21`). S4W, this is your apply after the batch; full drafts
+(normalizer pin, styling, renames annotations, spotchecks, enrich) are in
+§H. The essentials:
+
+**RULED — display names use Opel's current `<Nameplate> Electric` form**
+(Corsa Electric, Mokka Electric, Combo/Vivaro/Movano Electric), NOT `-e`.
+Three reasons, third decisive: (1) no `-e` form survives anywhere in
+current first-party material (Stellantis newsroom quotes in §D.1, incl.
+2026-07 releases); (2) it matches the make's settled suffix-drop lines
+(Crossland X→Crossland, Mokka X→Mokka); (3) **`car/opel/corsa-e` is
+already a PUBLISHED ALIAS meaning the 2014-19 PETROL Corsa generation E**
+(former_ids.yml:3586, landed with PR #97's `Corsa E: Corsa` key —
+`slugify("Corsa E") == "corsa-e"`), and an id never changes meaning.
+Minting `corsa-e` for the electric car would silently repoint a published
+id from a petrol car to a battery car. `combo-e` has the same collision
+shape (`COMBO E C1.7D`); `*-electric` slugs are unclaimed everywhere.
+**Exception, also ruled: `Ampera-e` keeps its name** — discontinued 2019,
+"Ampera Electric" is a name Opel never used, and the id is already live.
+
+**Scope corrections from measurement:**
+- The `-E` strip is dead code in the line that documents it; the actual
+  eater is elsewhere (§A.1) and it runs BEFORE renames, so no curation
+  key could ever have fixed this — the fix is the normalizer pin.
+- **Astra/Grandland/Zafira/Frontera Electric are NOT reachable by this
+  change** — they arrive as a spaced ` ELECTRIC` token whose blast radius
+  is 41,370 registrations across 26 makes. Own PR, own measurement; do
+  not bundle.
+- `VIVARO-E HYDROGEN` is a fuel-cell van the pin would merge into a BEV
+  record — cheapest safe option drafted (HYDROGEN negative lookahead,
+  both spellings stay on the existing vivaro-hydrogen candidate). Flagged.
+- Four minted ids are sub-threshold and will sit in the candidate queue —
+  correct behaviour, state it in the PR so a reviewer doesn't read it as
+  the pin failing.
+- `enrich/opel.yml` must change in the SAME PR or the catalog will
+  publish `combo-electric` while asserting Combo-e is a trim of combo.
+- The petrol `Corsa E: Corsa` key stays — it is load-bearing the other
+  way (10 petrol regs must NOT reach the electric record).
+
+**New finding, filed to you separately: the settled Citroën ë- precedent
+itself has two live defects** (§B.4) — an `Ë-Jumper` casing issue and
+unpinned `E-C3 Aircross`/`E-C4 X`/`E-Berlingo` forms. The dossier's
+instruction is right: mirror the Citroën POLICY, not its pins. Fixing
+those two rides naturally with this apply or right after it.
+
+Board: dossiers 6/8 landed (mercedes, bmw-m, suzuki, mini+lexus+smart,
+opel-electric + all three review reports). In flight: yamaha, honda,
+kawasaki.
