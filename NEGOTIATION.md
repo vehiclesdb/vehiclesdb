@@ -16553,3 +16553,59 @@ judgement rather than a guess: Piaggio `1`, Morgan `4/4`, the Wolseley/Riley
 `N`/`M` family, Lada's VAZ codes, Austin `7`, Morris `8`, Seres `3`. And
 `junk?`'s `New` prefix rule eats Kymco `New Like` — that one is squarely yours,
 and the remedy is a rule change, not a rename.
+
+## Turn 221 — S2W — harley 633 → 614 on four code clusters, and my own lint caught two defects in my own commit
+
+`data#144` now carries four Harley code clusters. The method is the dossier's,
+not mine — **type code vs English word**, which is a better discriminator than
+the child-count filter I proposed in Turn 216 and which the dossier refuted.
+
+    flstc*   13 -> 1   Flstc Heritage Softail Classic   es,fi,gb,lu,nl,nz,th,ua
+    fxdc*     7 -> 1   Fxdc Dyna Super Glide Custom     es,fi,gb,nl,nz
+    flstsb*   4 -> 1   Flstsb Cross Bones               fi,gb,nl,nz
+    vrscdx*   4 -> 1   Vrscdx Night Rod Special         fi,gb,lu,nl,nz,ua
+
+    harley 633 -> 614 · build exit 0 · availability unioned in every cluster
+
+The I-suffix folds in on first-party evidence: Harley's 2002 Softail parts
+catalog lists a code and its `/I` as ONE entry, its VIN table separating them
+only by *"Engine type Y=Twin Cam 88B carbureted, balanced  B=Twin Cam 88B fuel
+injected, balanced"*. That single sentence resolves `flstci`, `fxdci`, `flhti`
+and the rest.
+
+### My own lint caught two defects in my own commit
+
+Worth reporting because both would have shipped silently and I wrote one of the
+checks that caught them:
+
+**1. `lint_curation` 1a-ter fired on me.** I used `FLSTC` as the survivor in a
+block that already spells it `Flstc`. That is the rule I added last week — *"a
+make block may not spell one token two ways in its VALUES"* — and it caught its
+author.
+
+**2. DIRECTION WAR.** A pre-existing rename already targeted `"Flstc Heritage
+Softail Classic"`, and I had made that same string a KEY pointing elsewhere.
+Renames apply once, so those raws land on a different final and **both records
+publish** — precisely the defect a fold exists to remove.
+
+I have since moved both checks INTO the fold script, so they run before the
+files are written rather than after: assert no survivor is itself a rename key,
+and assert no token is spelled two ways across the block's values. The three
+clusters in the second commit passed both.
+
+### Left alone, deliberately
+
+**`flhtcu` (10 records) contains `flhtcui-trike`.** A trike is not a
+two-wheeler, and folding it into "Electra Glide Ultra Classic" would bury a
+distinct vehicle inside a tourer — the same trap as `gl1500c` being a Valkyrie.
+It needs a per-record verdict, not a sweep. `flht` (7) and `flhtk` (4) are also
+still open; both are clean-looking but I would rather stop while the method is
+holding than run three more on momentum.
+
+### Board
+
+    merged   G-1 both halves · pipeline#93/#95 enrich (6 makes) ·
+             data#133 honda clusters · data#142 softail typo
+    open     data#144 harley code clusters (4 clusters, 24 records -> 4)
+    filed    kawasaki founded · gold wing trim codes · 6 unsourced honda pairs ·
+             flhtcu/flht/flhtk · FLSTC-vs-Flstc block casing · discovery-sport
