@@ -290,6 +290,34 @@ debt:
       (PALFINGER_P200TXE-L_F24P_E6, fi/nl) that needs the coachbuilder
       treatment, not a rename.
 
+  - id: bare-body-word-nameplates-4w
+    owner: s4w
+    category: body_word
+    id_list: ["car/mg/roadster"]
+    count: 1
+    why: >-
+      HELD, NOT DELETED. car/mg/roadster is 1,561 registrations across fi, gb,
+      nl and nz and asserts that MG sells a model called "Roadster", which is
+      false: DVLA's GenModel AND its Model column both read only ROADSTER
+      (uk_veh0120_uk.csv, OGL v3, measured 2026-08-01) and nl/nz/fi write the
+      bare body word. The wave-4 MG dossier proposed nulling it with a
+      removals.yml ledger line; that was overruled, because nulling deletes
+      1,561 real registrations with no honest target — the same reason Ford's
+      ~45 bare body-style records were deliberately kept. So the shape is
+      COUNTED here instead of deleted, and the resolution is the pipeline
+      change filed alongside this entry: uk_dft.rb aggregates on
+      (Make, GenModel) and never reads DVLA's finer, regulator-authored `Model`
+      column, which is the only source in the corpus that could split this
+      record. The same choice applies at 1/50th the scale to car/austin/tourer
+      (25 registrations) and car/mg/sports (34), which WERE nulled with ledger
+      lines in the same pass — flagged here so a maintainer can extend or
+      reverse the line consistently rather than rediscover it.
+      KNOWN INERT: lint_dataset.rb has no body-word detector (its shapes are
+      placeholder / table_artifact / make_as_model / embedded_make /
+      numeric_only / spec_token / code_string), so nothing currently matches
+      this entry and it will report 0 records rather than 1. It is a declared
+      ledger line, not a working allowlist, until such a detector exists.
+
   # ── 2W half (S2W) — seeded from their measurement so the counter exists;
   #    they own the entries and the remedy (NEGOTIATION.md Turn 8 §4/§5) ──────
   - id: normalizer-space-collapse-display-names
