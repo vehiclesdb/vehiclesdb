@@ -10,6 +10,12 @@
 #   exists: false           — asserts ABSENCE
 #   body_types_include      — list that must be ⊆ model.body_types
 #   availability_includes   — country codes that must be present
+#   availability_excludes   — country codes that must NOT be present. For
+#                             CORRECTIONS that removed availability: an
+#                             `_includes` row cannot say "and it must never
+#                             come back", so a silent regression restores the
+#                             wrong claim with a green build. Use sparingly and
+#                             only where the absence is the finding.
 #   global_decile_max       — popularity.global_decile must be ≤ this
 #   skip_if_kind_absent     — row only runs when that kind is in the build
 #   reason                  — why this row exists (shown on failure)
@@ -40,6 +46,25 @@ checks:
     reason: "…and Mach-E is a SEPARATE nameplate (PRD-2 §19.2 decision)"
   - id: hyundai/ioniq-5
     reason: "IONIQ5 → Ioniq 5 family rule; separate from hyundai/ioniq"
+  # THE WRONG-CAR TRIPWIRE. `normalizer.rb#mini` tested `/ACEMAN/` unanchored
+  # and `"PACEMAN" =~ /ACEMAN/` matches at offset 1, so every MINI Paceman row
+  # published as a MINI Aceman and `car/mini/paceman` did not exist. These two
+  # rows are one assertion in two halves: the 2012-2016 Sports Activity Coupé
+  # is its OWN record and carries the North American evidence, and the 2024
+  # all-electric crossover does NOT — the CA and US sources hold 16 and 24
+  # Paceman rows and ZERO Aceman rows, and BMW put the Paceman on sale in the
+  # US on 16 March 2013 while the Aceman's own launch release names no market.
+  # If the anchor ever regresses, the first row fails on a missing id and the
+  # second on the restored ca/us claim.
+  - id: mini/paceman
+    body_types_include: [suv]
+    availability_includes: [ca, gb, nl, nz, us]
+    reason: "MINI Paceman is its own nameplate — /ACEMAN/ matched PACEMAN at offset 1 and pooled it into car/mini/aceman (9,390 vehicles, 10 raw strings)"
+  - id: mini/aceman
+    body_types_include: [suv]
+    availability_includes: [gb, nl]
+    availability_excludes: [ca, us]
+    reason: "The 2024 all-electric Aceman must NOT carry North America — those rows were Pacemans; this is the removal half of the split and it needs to stay removed"
   - id: toyota/corolla
     body_types_include: [hatchback]
     availability_includes: [gb]
@@ -53,6 +78,22 @@ checks:
   - id: tesla/model-y
     body_types_include: [suv]
     reason: "Tesla family body rule"
+  # smart's whole current lineup. The `#` is part of the marque's own model
+  # names (smart.com renders "smart #1"), and until pipeline#<B> a corruption
+  # guard inside classify — upstream of the rename lookup, so unrescuable from
+  # this repo — deleted every register row that wrote the hash literally: 3,027
+  # vehicles across es|fi|lu|nl|nz|ua. Germany got in only because KBA strips
+  # the symbol itself. `nl` and `es` are the two independent registers that
+  # write it, so they are the load-bearing halves of the assertion.
+  - id: smart/1
+    availability_includes: [de, es, nl]
+    reason: "smart #1: the leading-hash strip in classify is what carries the NL/ES registers; de alone means the guard came back"
+  - id: smart/3
+    availability_includes: [de, es, nl]
+    reason: "smart #3: as above"
+  - id: smart/5
+    availability_includes: [de, es, nl]
+    reason: "smart #5: as above"
 
   # --- make-level tripwires ---------------------------------------------------
   - make: vauxhall
@@ -425,6 +466,9 @@ checks:
   - id: mercedes-benz/gle
     availability_includes: [de]
     reason: "same temporal-merge class: 'ML-KLASSE, GLE' was landing on the ML (renamed GLE in April 2015)"
+  - id: mercedes-benz/amg
+    availability_includes: [gb, nz]
+    reason: "AMG is a SUB-BRAND and mercedes() used to publish it as a nameplate (first letter run of 'AMG C 63'); 367 raws / 74,570 registrations pooled here until the 2026-08-01 strip sent 16,605 of them to twenty live nameplates. The stub is DELIBERATELY RETAINED, not nulled: what is left is real evidence with no honest target — uk_dft's GenModel aggregate 'MERCEDES AMG CLASS' (gb 57,573, a range label spanning every AMG model, which the file's Model column would split) and the bare 'AMG' rows from nz_nzta/nl_rdw (nz 373). Nulling it would delete 58k registrations to hide a source-altitude problem, the same posture car/porsche/coupe is held under. This row is the tripwire against that cleanup."
   # --- cross-make moves: registers file sub-brands under the type-approval holder
   - id: cupra/formentor
     availability_includes: [de, es, fi, nl]
