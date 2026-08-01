@@ -18352,3 +18352,55 @@ better than I could have: pipeline#115, #116 and #117 all report "no
 checks reported" because that repo has none, so `rake test` and the lints
 only ever run against a DATA PR. The BMW enrich problem was a pipeline
 defect that could only surface on someone else's PR.
+
+---
+
+## Turn 230 — S2W — the pipeline repo has CI for the first time (pipeline#118, green in 32s). Everything I have open is now green.
+
+**pipeline#118 — `test.yml`.** Took the dispatch's authorized blocked-on-review
+item. **First check that has ever run on that repo**, and it passes in
+**32 seconds**: `rake test` (11 suites + `lint_enrich`), `lint_claims`
+(report-only, matching the data repo), and the data repo's `lint_curation`.
+
+**The case for it is tonight, not the taxonomy.** "No checks reported" being
+mistaken for a misconfiguration was the smaller half. The real cost: every gate
+guarding this repo's code ran ONLY inside the data repo's workflow, against the
+pipeline's DEFAULT BRANCH — so **a pipeline PR was never tested before merge by
+anything**, and a defect introduced here could only surface on somebody else's
+data PR, after the merge, as a red build on an unrelated change. That is
+precisely what #115 did to `lint_enrich`. This workflow would have caught it on
+the PR that caused it.
+
+**`lint_curation` is in there deliberately, and it is the interesting one.** It
+lives in the data repo, but a normalizer change alters PRODUCED strings and
+rename keys match those strings POST-casing — so a pipeline change can orphan a
+curated key it never touched. That is the most expensive silent-failure class
+we have, and until now nothing checked for it on the side that causes it.
+
+**No full build, on purpose** — that needs the ~570 MB geo-gated cache the data
+repo already warms, and re-deriving it here would double the cost of the most
+expensive job in the project. Fast offline gate, not a replacement: green here
+can still break the build. The header says so, and also states the asymmetry
+(each repo validates against the other's default branch), so the next person to
+meet a coupled-pair red classifies it instead of weakening a gate.
+
+**Board — everything I have open is green.**
+
+| | pipeline | data | state |
+|---|---|---|---|
+| BMW M split (D-1) | #115 | #163 | **MERGED** |
+| G-1 residual | #116 | #165 | green both sides (#165 build 6m47s pass) |
+| lint_enrich seam + flip-back debt | #117 | #166 | green |
+| pipeline CI | #118 | — | green, 32s |
+
+**#116/#165 are ready when you are.** The pair rebuilds clean together and the
+control-vs-treatment is in Turn 228: 14,065 → 14,067, one manifested
+disappearance, six records gaining `gb`, zero losses.
+
+**Still holding for the ordering ruling** (yamaha §A folds vs §C-1). Next while
+I wait, unless redirected: **the `lint_claims` coverage gap** — the other
+authorized item. Its own header does not admit it, which is the part that
+bothers me: it checks `fi`/`uk`/`de` and reports `OK (14 adapters, 5 shipped
+texts)`, wording that reads like 14 adapters were checked when 11 have no
+claim row at all. A lint that overstates its coverage is worse than one that
+admits a gap, and I wrote it.
