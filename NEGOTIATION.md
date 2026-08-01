@@ -20030,3 +20030,134 @@ than hash a CMS page whose fetch is now load-bearing for nothing. S4W:
 take the pin re-scope as the last licence-gate increment when
 convenient — until then, be_fps UNVERIFIED is classify-and-proceed for
 disposition PRs, never a merge blocker on its own.
+
+## S4W — be_fps unblocked (`pipeline#127` + `data#177`, PIPELINE FIRST), and the DAF fold shipped (`data#176`) after the chain trap ate five of my keys
+
+### be_fps: the honest gate's first finding is that one of its own entries is worthless
+
+Taken as the last licence-gate increment, exactly as scoped. `declared_absent`
+records the measurement instead of a hash: no fetch, no sha, and the `why`
+carries the fact a human established — 22,607 characters containing none of
+"licence", "Creative Commons" or "CC0".
+
+**The part that makes it defensible rather than an exemption:** the mode
+ASSERTS the source is not ingested, and gate 1 now **fails** if be_fps ever
+appears in a build's source list. The enforcement did not disappear, it moved.
+Belgium cannot ship without a real terms page. Both directions are tested,
+because the assertion is worthless without the enforcement.
+
+**And the same defect class was sitting in the pin path.** `rake licenses:pin`
+fetched with `force: true` but not `allow_stale: false`, so an unreachable
+upstream silently re-pinned the CACHED bytes with a fresh `pinned_at` —
+recording "verified now" for bytes nobody fetched. **Observed live while I was
+doing this**: ar_dnrpa returned `curl: (28) SSL connection timeout` and the
+task still printed "pinned ar_dnrpa". Re-pinning is the one moment fresh bytes
+are mandatory. Fixed.
+
+Re-pinned all 14 through the sanctioned path and diffed: **exactly one sha256
+removed, be_fps's.** The other 13 are byte-identical — nothing drifted under
+cover of this change, which is the check I would want from someone else
+touching a legal gate.
+
+**Merge order is PIPELINE FIRST and it is not symmetric.** Pipeline ahead:
+be_fps merely keeps failing as it does today. Data ahead: the old gate reads a
+pin with no sha256, compares against nil and reports "terms CHANGED" — a false
+drift alarm on a source nothing is wrong with.
+
+### `data#176` — DAF: the horsepower rating was publishing as a nameplate
+
+19 ids fold onto 3 (`daf/xf`, `daf/xg`, and a minted `daf/xd`). Truck 928 → 910.
+Evidence lost, verified at (country,source) rather than country: **NONE** —
+every folded id is a strict subset of its target.
+
+`xf105` is untouched and verified untouched: XF105/XF106 are real GENERATION
+series, the same digit-run shape meaning something else entirely — the `8D
+Audi A4` collision one make over. `xg-530` (XG+530) is untouched too, riding
+with the D-10 mint.
+
+**The trap, and it is worth propagating: this fold created CHAINS on both
+sides.** The DAF block already carried axle-code keys from an earlier pass —
+`XF480F -> XF480`, `XG530F -> XG530`. Renames do not apply transitively, so
+the moment `XF480` became a fold key those rows landed on the intermediate and
+STOPPED. **Five of my nineteen keys silently did nothing.** The first
+treatment build retired 14 of 19 and I only caught the other five by diffing
+the id lists — no lint fires, no gate fails, the build is green and the fold
+is 74% applied.
+
+Then the identical shape appeared on the alias side, where **rule 1f caught it
+for me**: five pre-existing `former_ids` entries pointed at ids that had just
+become aliases. Same defect, one instrument blind and one instrument loud.
+
+So: **a fold that retires an id which is already a rename VALUE or an alias
+TARGET must flatten both, and only the id diff sees the first half.** That
+belongs in the fold checklist next to the availability union — I will add it
+when I touch the runbook again unless you want it filed elsewhere.
+
+Blast radius drilled across all six kinds: DAF has 1 van and 3 bus records and
+none matches any key. Gates green; the 70 spotcheck failures in the log are
+car-kind checks a `--kinds=truck` build cannot satisfy, identical in the
+control.
+
+### Standing
+
+`data#176`, `data#177`, `pipeline#127` open. Both batch-item delegates
+(door-count safe slice, GTC token) are still running.
+
+## OWNER — data#176 BLOCKED on a real finding: the fold ships without its enrich half, and 14 ids would take their facts with them
+
+pipeline#127 is merged (declared_absent + the pin-path fix — the
+re-pin diff showing exactly one sha removed is the right receipt);
+data#177 merges on green. **data#176 does NOT merge yet**: the enrich
+insurance lint fails 14 times — the DAF fold retires ids whose
+`enrich/daf.yml` entries carry runs that DIFFER from the fold targets'
+(`xf530` → `xf` is the exemplar). That is the lint's exact design case:
+whichever id loses the fold takes its facts with it. S4W: reconcile the
+14 onto `xf`/`xg`/`xd` in the enrich pair (the §A+§B pairing every wave
+has carried — this fold shipped §A alone), then it merges in the same
+window per the data-first enrich rule. The chain-trap checklist
+addition from your turn is approved — add the flatten-both check next
+to the availability union, exactly as you proposed.
+
+---
+
+## Turn 237 — S2W — **main goes GREEN.** The last 16 manifests are on `data#175`; with `pipeline#126` the build is exit 0, ALL GATES GREEN, 0 failures. All 72 closed.
+
+**The 72 that appeared when 2026.08.1 published are now fully dispositioned:**
+
+| | | |
+|---|---|---|
+| move-split (Cosa co-move) | `data#170` | MERGED |
+| 54 manifests, S2W half | `data#173` | MERGED |
+| 16 yamaha stubs | `data#175` (2nd commit) | open, stacked on C-1 |
+| `peugeot/elyseo` | S4W | done |
+
+**Why the yamaha 16 could land now.** Your ruling said they ride the change that
+DEFINES their successors. That change turned out to be **C-1 itself** — not the
+§A folds. Stripping parentheticals surfaces the raws these stubs were pooling:
+`yamaha/gpd`'s rows land on `gpd125` (17,404), `gpd125d-a` (2,127), `gpd125-a`
+(2,119), because the register writes `GPD125-A (NMAX 125)` and `junk?` was
+discarding precisely that string. **14 of 16 have live successors after C-1**
+and are retired citing them with counts.
+
+**Two — `srv` and `y` — have no successor even after C-1**, so they are DEMOTED
+rather than called series stubs. Same distinction as the first batch, same
+reason: "series stub" is a claim that needs successors to point at, and
+`removals.yml`'s header says the gate trusts these completely.
+
+**Verification.** `build exit 0 · ALL GATES GREEN · 0 gate failures` (was 16) ·
+merged-main 14,000 → 14,048 with C-1 + manifests · **DISAPPEARED 0, identical to
+C-1 alone** — the manifests moved no data, which is the whole test for a
+manifest · `lint_curation` OK.
+
+**Merge order:** `pipeline#126` → `data#175`. Both halves of C-1 must land
+together or the null renames key strings that do not exist yet.
+
+**What this does NOT include, and I want to be exact about it:** the **37 §A
+fold clusters are still not applied**. Main being green does not mean yamaha is
+curated — it means no consumer id 404s. The folds are a quality pass (99 records
+onto 37 nameplates, plus §B enrich), and they are now unblocked and keyable
+ONCE, against post-C-1 raws, which was the entire point of the ordering. That is
+my next block unless you redirect.
+
+**Also open from me:** `pipeline#117` (lint_enrich seam) · `#118` (CI, green in
+32s) · `#119` (lint_claims coverage). None are blocking.
