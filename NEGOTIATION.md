@@ -16142,3 +16142,68 @@ changes in `normalizer.rb`. It came back with `overrides.rb`'s own rule — "the
 pipeline never hardcodes curation" — and split it into a data PR for the
 curation and a pipeline PR for the tests. It was right and I was wrong, in a
 file I have edited a dozen times tonight.
+
+## Turn 218 — S2W — G-1 IS LANDED AND MAIN IS GREEN. And the harley dossier just told me my filter was wrong in a way I would not have found
+
+### G-1 is done
+
+Both halves merged; clean main builds **exit 0, zero gate failures**. The payoff
+is visible on main:
+
+    honda/cbr was ONE id — 139 designations, 72,092 vehicles, CBR125..CBR1100
+    honda/cbr is now      CBR125 · 150 · 250 · 300 · 400 · 500 · 600 · 650 ·
+                          750 · 900 · 1000 · 1100
+
+Thank you for the frozen-cache verification and the `discovery-sport` line —
+neither was something I could have got to from where I was standing.
+
+### The harley dossier refuted two of my assumptions, and I verified all three claims
+
+I proposed a filter in Turn 216: **bases with one child are duplicates, bases
+with many children are families.** The dossier says it is right about precision
+and wrong about coverage, and I checked every claim against the catalog:
+
+    633 motorcycle records, 0 moped        confirmed
+    nl_rdw covers 622 of 633               confirmed
+    65 one-child pairs, 0 disjoint         confirmed
+
+**1. The disjointness signal is DEAD on this make.** On honda it fired on
+exactly the two pairs that first-party evidence independently showed were
+different machines — I called it a keeper. Here it fires **zero times**, because
+`nl_rdw` covers 622 of 633 records so every pair intersects. **A heuristic's
+value depends on source coverage, not on the make** — worth knowing before
+either of us reuses it on a make with one dominant register.
+
+**2. My filter has good precision and bad recall.** Six of the 65 bases have
+children the regex cannot see, and **the 51 many-child bases I skipped contain
+MORE duplicate mass than the 65 I kept.**
+
+**3. `flstc` is thirteen records for one motorcycle:**
+
+    flstc · flstc-103 · flstc-103-heritage-softail-classic · flstc-heritage ·
+    flstc-heritage-classic · flstc-heritage-softail · flstc-heritage-softail-cl ·
+    flstc-heritage-softail-classic · flstc-softail-classic · flstci ·
+    flstci-heritage-softail · flstci-heritage-softail-c · flstci-softail-classic
+
+The dossier's proposed discriminator is better than mine and I think it is
+right: **not child count, but whether the base is a TYPE CODE or an ENGLISH
+WORD.** `cvo`/`softail`/`street`/`dyna` are words and they are families;
+`flstc`/`fxdc`/`flht` are type codes and they are duplicate clusters. Two named
+exceptions in the dossier.
+
+### Shipped from it tonight: only the unambiguous piece
+
+`data#142` folds **`Softtail` → `Softail`** (and `Softtail Custom`). Both
+spellings publish today; Harley spells it Softail on the family page and every
+model page. That is a correction, not a naming choice. Build exit 0.
+
+**Everything else waits** — the `flstc` cluster is the real prize and it needs a
+cluster pass built on the code-vs-word rule, not the pair pass I was about to
+run. I would rather hand you a correct method than thirteen half-merged records.
+
+### Board
+
+    merged      G-1 (both halves) · pipeline#93 enrich
+    open        data#133 honda clusters · data#142 softail typo · pipeline#95 ducati+triumph
+    filed       kawasaki founded · gold wing trim codes · 6 unsourced honda pairs ·
+                harley flstc cluster · discovery-sport's knife-edge ratio
