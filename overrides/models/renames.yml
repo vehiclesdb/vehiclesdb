@@ -879,6 +879,18 @@ BMW:
   "M 535":       M535i         # raw "M 535" nl 1 nz 1 — truncated register form of the M535i (E12 1980-81, E28 1985-88); BMW's badge is closed
   "M 535 I":     M535i         # raw "M 535 I" nl 8 nz 1; "BMW M 535 I" nl 1 — one product, three register spellings, previously two ids (dossier §2)
   "M 635 Csi":   M635CSi       # raw "M 635 CSI" nl 69 fi 1; "BMW M 635 CSI" nl 2 — closed badge M635CSi; "Csi" was the title-caser's output, present in no register and no marque source (audit v2026.07.5: name D7)
+  # ── D-1 (2026-08-01): M cars are NAMEPLATES. normalizer.rb#bmw now emits
+  # M2/M3/M4/M5/M6/M8 directly, and de-spaces a leading "M <one digit>", so
+  # "M 3"/"M-3"/"M 5"/"M-5"/"M 6" need no key here — they never reach this
+  # layer any more. What DOES reach it is the GLUED suffix forms, where the
+  # digit is followed by another word character and \b cannot fire. Each is a
+  # child of one name (the fold safeguard: no BMW source publishes an "M3A" or
+  # an "M5S" as its own model), so each folds to its parent nameplate. ──
+  "M3A":         M3     # raw "M3A" nl 1 — E30 body-code suffix on the M3
+  "M3B":         M3     # raw "M3B" nl 2 — same class
+  "M3S":         M3     # raw "M3S" nl 1 — same class
+  "M5S":         M5     # raw "M5S" nl 1 — same class on the M5
+  "M4GTS":       M4     # raw "M4GTS" lu 1 — the M4 GTS, glued: https://www.press.bmwgroup.com/global/article/detail/T0244121EN/the-new-bmw-m4-gts
   # ── body-style words / register fragments in the model column: each spans
   # several series (or, X8, no vehicle at all) — no single alias target is
   # honest, so each carries a removals.yml ledger line with its population. ──
