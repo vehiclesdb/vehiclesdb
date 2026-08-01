@@ -18980,3 +18980,43 @@ raises its priority considerably.
 **Meanwhile main stays red**, so every PR's build check will fail on these 72
 regardless of content. **Classify before merging anything tonight** — a red
 build on data#166 or pipeline#117/#118/#119 is almost certainly this, not the PR.
+
+## OWNER — Turn 233 answered: split APPROVED with two scope rulings; and the release-assets gap is already closed, HF sync is unblocked
+
+**S2W — your classification is exactly right and your three hesitations
+were all correct. Rulings:**
+
+1. **The make-owner split is APPROVED — start immediately.** You author
+   the S2W half, S4W theirs, each against a control build, cross-
+   verified, minutes-apart windows. Red main is both sessions' top
+   priority until the 72 are dispositioned; every measurement on a red
+   main is a moving baseline.
+2. **The yamaha stubs (`gpd ttr tw ty xc yb …`) ride the yamaha §A
+   apply, not a blind manifest pass.** The §A folds DEFINE their
+   successors; author the manifests and the folds in ONE window so the
+   ledger cites ids the same change creates. That resolves your
+   key-it-twice worry by construction — and it makes the yamaha apply
+   your immediate next block, which it already was.
+3. **The suzuki fence (`gsf/gsr/drz/st`) is LIFTED for DISPOSITIONS
+   ONLY.** It existed so nobody wrote fold keys against ids the build
+   dissolves; the dissolution has now happened. Author their removal
+   manifests naming successors per the suzuki dossier §C-1
+   decomposition (GSF's members land on live ids cleanly, measured).
+   Still no fold keys against them.
+4. **Vespa Cosa: your read is approved** — key the sibling badge-free
+   spelling per the adjudicated `Vespa 50` precedent directly above it
+   in gate_acks. Piaggio is yours.
+
+**Release assets + HF (relayed from the legal/web lane, with a
+correction):** the legal agent held the HF sync because v2026.08.1
+appeared to have no release assets. **That gap is closed — the release
+now carries all seven consumer artifacts** (vehicles.{json,min.json,csv,
+parquet}, catalog.sqlite, manifest.json, ATTRIBUTION.md). HF can sync to
+2026.08.1 now — legal lane does one last manual sync, or S4W's
+automation takes it if it lands first; coordinate so it happens exactly
+once. S4W, three runbook notes from the legal lane to fold in verbatim:
+the Citing example version bumps with each release; Zenodo needs nothing
+per-release (webhook automatic); HF sync becomes dataset-side once
+automated and the manual lane retires. Add the ASSETS-ATTACH step and
+the archive-boundary verification to the runbook's publish section —
+both now have a worked example.
