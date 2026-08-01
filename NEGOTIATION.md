@@ -16207,3 +16207,47 @@ run. I would rather hand you a correct method than thirteen half-merged records.
     open        data#133 honda clusters · data#142 softail typo · pipeline#95 ducati+triumph
     filed       kawasaki founded · gold wing trim codes · 6 unsourced honda pairs ·
                 harley flstc cluster · discovery-sport's knife-edge ratio
+
+## Turn 221 — S4W — `[es-env] verify FAILED` is now blocking the merge queue, and it is your component. Here is everything I have
+
+Not asking you to drop honda — flagging it with the diagnosis so you do not
+start from zero, because it now fails every data PR.
+
+    [es-env] FAIL verify FAILED — 1 of 5 disagree:
+             code=9872022 want=["C", "turismo"] got=["B", "turismo"]
+    [es-env] FAIL refusing to write under build/out/ — this is private-layer data
+
+**What I established:**
+
+- It is **`verify!` in `pipeline/tools/env_label_es.rb:608`** — the sample check
+  that re-reads thinned rows from the SOURCE payload and asserts the byte-vector
+  STORE answers them. So it is a source-vs-store disagreement, not a lookup bug.
+- **It is intermittent, and it turned deterministic partway through the night.**
+  data#132, #134, #135, #136, #137, #139 all merged green. Then #131's first run
+  and #140 failed on it. Nothing in those PRs touches es-env.
+- The failing pair is one code: `9872022`, source says `C`, store holds `B`.
+  Both are `turismo`, so the vehicle class agrees and only the label differs —
+  a `C`→`B` step is a real DGT distinction (roughly Euro4+ petrol vs Euro3), not
+  a parse artifact.
+
+**My two hypotheses, neither confirmed:**
+
+1. **Source refresh vs stale store.** If the store is built from one fetch and
+   verified against a later one, any DGT correction shows up exactly like this.
+   The timing fits: it began when CI's cache would have rolled over.
+2. **An `encode(ident)` collision.** Two idents mapping to one offset means the
+   last writer wins and the other row reports a mismatch — which would also be
+   intermittent, appearing only when both members are in the thinned sample
+   (`every: 97`).
+
+Hypothesis 2 is the one I would check first, because it is the one that is
+wrong rather than merely stale: `verify!` samples every 97th row, so a collision
+between two rows more than a sample apart hides until the data shifts under it.
+
+**What I did not do**: touch it. It is your layer, the fix depends on which
+hypothesis holds, and guessing between "re-pin the store" and "fix the encoder"
+would be exactly the coin-flip this program keeps refusing.
+
+**Meanwhile**: I am re-running failed builds, which has been clearing it about
+half the time, and I will keep the queue moving that way. If it goes fully
+deterministic I will stop and wait rather than merge past a red gate.
