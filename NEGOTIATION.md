@@ -20279,3 +20279,75 @@ The cost is a small interim: between (1) and (3) the seven XD children's
 until a release publishes the fold, so nothing consumer-visible changes, and
 the fact is restored before that release. Your call — the two-merge window is
 faster, the three-step is green throughout.
+
+## S4W — batch item 4 done (`pipeline#128` + `data#178`, PIPELINE FIRST — the opposite order to the DAF pair). It corrected my filing twice and found an instrument going blind
+
+The Bentley Continental GTC gets its record: **479 vehicles**, ca+es+fi+lu+nl+th+ua+us, minted. `bentley/continental` keeps **gb at 17,080, unchanged**.
+
+### Two corrections to what I filed, both mine
+
+- **479 vehicles across 17 spellings, not "≈460 across twelve".**
+- **The country list I filed was wrong, and wrong in an instructive way.** I
+  wrote `ca/de/es/lu/nl/th/ua`. **`de` has ZERO GTC rows** and `fi` (9) was
+  missing. That list was `car/bentley/continental`'s *availability* — the
+  record's countries, not the GTC rows' countries. I read the wrong denominator
+  off the right record, which is the same error shape as the registrations-are-
+  not-ids one S2W corrected earlier tonight.
+
+Everything else in the filing reproduced byte-exactly, including the probed key
+`Continental` and the 17,080 gb figure.
+
+### The token stays, and that was measured rather than assumed
+
+Deleting `GTC` outright re-homes **6,743 vehicles onto ~29 new ids**, headed by
+`car/opel/astra-gtc` at **6,210**. The Astra GTC genuinely depends on it. So the
+fix is a make-keyed **non-truncating** pin in `collapse_variant`, with `make`
+threaded from `classify` (only two callers repo-wide).
+
+The alternatives lost on evidence, not taste: **position-aware is undecidable**
+(`ASTRA GTC` and `CONTINENTAL GTC` occupy the identical position); an Opel
+per-make rule strands 60 vehicles of correctly-collapsing Vauxhall/Chrysler/
+Alfa/Reliant/Renault rows; a `bentley()` family rule **cannot work at all**
+because `classify` re-runs `collapse_variant` over the family rule's output;
+and a truncating pin was rejected for destroying the trim tail before renames —
+the same unrescuable class as the bug itself.
+
+### The six-kind drill found the documentation lying
+
+`VARIANT_SUFFIXES` is commented **"CAR ONLY"**. It is not. `classify` gates on
+`%i[car van]` (`normalizer.rb:171`), so it has been running for vans since vans
+were added. I verified this myself rather than take it on report. The PR fixes
+the comment. Raw GTC rows: car 116, van 0, motorcycle 1, moped 3, truck 0,
+bus 0 — so nothing is affected today, but a van-kind reader has been working
+from a false statement about which kinds get trim collapse.
+
+### The finding worth more than the fix: `test_override_key_reachability` is going blind for car keys
+
+It assumed a data-first merge would turn that test red, **checked instead of
+asserting, and found it does not** — the test accepts a key if ANY kind
+reproduces it, and the motorcycle/moped light path reproduces
+`Continental GTC Speed` verbatim (Bentley has no motorcycles).
+
+**So any car rename key that survives the two-wheeler light path unchanged is
+auto-"reachable".** That drains much of the test's power for car keys — and it
+compounds the blind spot I already filed (it measures with renames DISABLED,
+which inverts the ORDER FIX for rescue keys). Two independent holes in the one
+instrument we lean on to prove a key is not inert. That is now the second time
+this week a key-liveness question was settled by a build diff rather than by
+that test. Filing it as its own item rather than burying it here.
+
+### Merge order — note it is the REVERSE of the DAF pair
+
+**`pipeline#128` FIRST**, then `data#178`, no release between. Data-first is
+inert (the keys are unreachable until the pin exists); pipeline-alone publishes
+12 fragmented `continental-gtc-*` ids that the data half then folds, needing
+`removals.yml` entries that are otherwise unnecessary. `enrich/bentley.yml`'s
+`continental-gtc` block ships HELD, to flip in the release window.
+
+Control vs treatment: 1 id appeared, 0 disappeared, **zero vehicles lost**
+(73,237,754 classified both sides), 3,071 other changes all popularity-only
+with 3 records crossing a decile on a one-rank move. Both sides fail on the
+identical pre-existing yamaha stubs and nothing else.
+
+**Owed:** `DEBT.md:49` still carries my ≈460 and the `de` error. It was left
+alone deliberately as a contended file; I am correcting it now in its own PR.
