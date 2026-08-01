@@ -981,3 +981,29 @@
 # a FOLD, not a resurrection.
 "car/mitsubishi/cto": "three-letter registry stub with no resolvable nameplate; RDW's one row (https://opendata.rdw.nl/resource/m9d7-ebf2.json?merk=MITSUBISHI&handelsbenaming=CTO, 2026-08-01) is a 1,997 cc sedan of 1,545 kg first registered 2004 — a spec shared by the Lancer, Galant and Space Wagon of that year, so no alias target is honest. Measured population 2 registrations across [nl, nz] (nl_rdw, nz_nzta) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
 "car/mazda/coupe": "bare body word, not a nameplate at any altitude; RDW's one row (https://opendata.rdw.nl/resource/m9d7-ebf2.json?merk=MAZDA&handelsbenaming=COUPE, 2026-08-01) is a 1,300 cc coupe first registered 1992 — a 323 coupe — and the NZ half of the record carries no further token, so no single alias target is honest. Measured population 240 registrations across [nl, nz] (nl_rdw, nz_nzta) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
+
+# ── wave-5 ITALIAN pass (FERRARI · ALFA ROMEO · MASERATI), 2026-08-01.
+# FIVE PUBLISHED RECORDS with NO honest successor. Every other id this pass
+# retires has one and is aliased in former_ids.yml; these five are factory type
+# codes, the make word left in the model column, or a GEARBOX — none of them a
+# nameplate at any altitude, so an alias would tell a consumer that a live
+# nameplate used to be called this, which is false.
+#
+# The 115 further type-code ids this pass drops (Ferrari F1xx/F1xx-xx tipo
+# numbers, Alfa Tipo 105/115/116/119 platform numbers, Maserati AM1xx/M138 and
+# the nl_rdw 33xB2xx Biturbo variant codes) are CANDIDATES, never published, so
+# they need no ledger line here; their measured populations are on their null
+# lines in renames.yml. Full inventory: 120 ids, 293 vehicles, nl/fi/nz/us.
+#
+# NOT RESOLVED BY RESEMBLANCE, and that is the point. Each tipo code maps to
+# exactly one nameplate IN PRINCIPLE and mapping them would recover ~215
+# vehicles onto real records — but Ferrari Classiche's tipo register serves an
+# empty body to every fetch and maserati.com/…/heritage returns HTTP 403, so
+# there is no source. NAMING §7.5: "a code mapped by resemblance is a
+# fabrication with a comment attached". The populations are recorded so a
+# future pass holding a real tipo table can restore them.
+"car/ferrari/f131": "Ferrari factory TIPO number that shipped as a nameplate, not a model designation a buyer ever saw. F131 is an internal type code in the same family as the F133/F129/F119/F110/F116 codes nl_rdw writes into the model column; it maps to exactly one car in principle, but Ferrari Classiche's tipo register is the authority and every ferrari.com URL returned an empty body on 2026-08-01 (/en-EN/auto/past-models, /corporate, /museums), so resolving it would be resemblance, not evidence (NAMING §7.5). No alias target is honest. Measured population 3 registrations across [fi, nl] (fi_traficom, nl_rdw) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
+"car/alfa-romeo/romeo": "the MAKE WORD left in the model column, not a nameplate. Raw rows are literally 'ROMEO' and 'ALFA ROMEO' under make ALFA ROMEO; strip_make_prefix removes only the first token when the raw make is the fragment 'ALFA', leaving 'Romeo' behind. There is no Alfa Romeo model called Romeo, and the rows span every era, so no alias target is honest — the committed 'Romeo Gtv: GTV' line already rescues the one subset that carries a nameplate. Measured population 21 registrations across [nl, nz] (nl_rdw, nz_nzta) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
+"car/alfa-romeo/alfa": "the MAKE WORD left in the model column, same mechanism as car/alfa-romeo/romeo above. No Alfa Romeo model is called 'Alfa'. Measured population 2 registrations across [nl, nz] (nl_rdw, nz_nzta) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
+"car/alfa-romeo/giulietta-spider-10103": "a real nameplate with the factory TIPO number concatenated onto it — 10103 is the Tipo designation of the 750/101-series Giulietta Spider, not part of any badge. NOTHING IS LOST: the nameplate half is already the live published record car/alfa-romeo/giulietta-spider, so the evidence has a home; only the tipo-suffixed duplicate id goes. Not aliased, because the concatenation was never a designation a consumer could have been shown. Measured population 3 registrations across [fi, nl] (fi_traficom, nl_rdw) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
+"car/maserati/cambio-corsa": "a GEARBOX published as a model. 'Cambiocorsa' is Maserati's electrohydraulic paddle-shift transmission, offered on the M138 Coupé and Spyder beside the manual 'GT' trim; these rows carry the transmission and no model at all. Two routes were tried and both failed: the sibling row 'CAMBIOCORSA SPYDER' names its car and IS folded to Spyder in renames.yml, but the bare rows carry no body or model token, and RDW's open handelsbenaming aggregate has no approval number on them to join against. Folding them to Coupe or Spyder would be a coin flip on 5 vehicles. Measured population 5 registrations across [nl, nz] (nl_rdw, nz_nzta) in the wave-5 corpus replay (origin/main classify, 2026-08-01)."
