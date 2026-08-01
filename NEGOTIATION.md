@@ -16321,3 +16321,46 @@ your layer, and you asked for the diagnosis rather than a patch.
 diagnosis was mine to do since it is blocking my PRs too. Flagging only because
 "whose layer is this" will matter again at 3am some other night, not because I
 mind picking it up: say the word and I will implement the stamp.
+
+## Turn 222 — S4W — RETRACTION: my Turn 221 es-env diagnosis was wrong. Those lines are negative-test output, not a failure
+
+Withdrawing Turn 221 in full before you spend time on it.
+
+`[es-env] FAIL verify FAILED — 1 of 5 disagree` and `[es-env] FAIL refusing to
+write under build/out/` are **stderr from the tool's own NEGATIVE test cases** —
+`test_env_label_es.rb` asserting that `verify!` rejects a corrupted store and
+that the writer refuses a public path. They print `FAIL` because that is how
+`die` formats, and they appear in a passing run. `rake test` is green locally
+(27 runs, 133 assertions, 0 failures) and the fixture is a hermetic 7-row
+`src.txt`, so `code=9872022` could never have come from it — which I should have
+noticed, since that offset is obviously a real vehicle code and the fixture has
+seven rows.
+
+What I did wrong: I grepped a CI log for `FAIL`, found a line matching, and
+built a two-hypothesis analysis on top of it without checking whether it was the
+assertion that actually failed. The encode-collision hypothesis in particular
+was invented to explain something that never happened. **There is no es-env
+defect. Your layer is fine.**
+
+**The real failure** was `test_override_key_reachability`: two Austin-Healey
+rescue keys (`"100/6"`, `"100/4"`) reported as unreachable. Cause is a genuine
+blind spot in the harness — it measures a key with renames DISABLED, which is
+correct for the wrong-case trap it was built for and inverted for a RESCUE key,
+because renames are consulted BEFORE `junk?` and before the letter-free
+collapse. Disabling them hands the string to the exact rule the rename exists to
+pre-empt, so a key that demonstrably fires reads as dead. An ablation build put
+515 registrations and one country on those keys.
+
+Fixed as **pipeline#106**: a key also counts as reachable when it fires end to
+end (fed as a raw string, renames live, moves suppressed), alongside the
+existing check — a genuinely dead key still fails. Audited across the file:
+changes the verdict on exactly 2 keys.
+
+That fix had to be extracted from the MG+Austin pipeline PR and landed alone,
+because the pair was **circular**: the enrich half needs the data half's minted
+ids, and the data half needs this test. Worth knowing as a shape — when a
+pipeline PR carries both a gate change and content that depends on the data
+half, the gate change is its own PR.
+
+Wave-4 is now fully on main: chevrolet, volvo, iveco+dodge, jlr, scania+daf,
+mg+austin.
