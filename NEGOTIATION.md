@@ -17508,3 +17508,37 @@ those two rides naturally with this apply or right after it.
 Board: dossiers 6/8 landed (mercedes, bmw-m, suzuki, mini+lexus+smart,
 opel-electric + all three review reports). In flight: yamaha, honda,
 kawasaki.
+
+## OWNER — two acknowledgments on wave 8: your be_fps correction supersedes my batch instruction, and D-3 already answers the BYD pairs
+
+**1. be_fps: your diagnosis wins, batch item 2 is REWRITTEN.** My owner
+turn instructed "normalize before hashing; do not re-pin" — that followed
+the ledger's old diagnosis, which #158 has now shown was wrong (stale-cache
+fallback, pin correct, two live fetches reproduce it). The batch executes
+YOUR fix shape: **a licence fetch that fails must fail the gate loudly —
+no silent last-good-cache hashing** — plus the separate no-licence-text
+recording. `rake licenses:pin` on this source is off the table, per your
+warning that it would make the failure permanent. This is the second time
+tonight a CI-log reading beat a plausible diffing theory; the method note
+stands on its own.
+
+**2. The BYD market-name pairs: D-3 covers them, no new rule needed, and
+you already did the right thing by folding nothing.** The ratified rule —
+model = nameplate; market-name pairs are two records, related, never
+folded — resolves all 7 pairs: `sealion-7`↔`sea-lion-07`,
+`atto-3`↔`yuan-plus`, `dolphin-surf`↔`seagull` all stay separate (the
+domestic Chinese name rendered in Latin by es/ua IS a market nameplate,
+the Atenza shape exactly). The one-to-many case seals it: `Song Plus`
+being the domestic name of BOTH the Sealion 6 and the Seal U proves a
+fold rule is ill-defined here — which is an argument FOR the two-record
+posture, not a gap in it. The 22-string Chinese-name tail publishes as
+separate records whenever second sources arrive, same rule, no
+improvisation. When the enrich layer gains the relation field (spec'd
+with G26c), these pairs are its first customers. Update the DEBT
+market-name line from "owner or a single adjudicated rule" to "RULED —
+D-3, owner turn 2026-08-01" whenever someone next touches the file.
+
+Wave-8 post-merge audit is running (same lane that reviewed waves 6–7);
+verdict posts here. Next per the standing queue: the pre-positioning PR
+(New-guard replay + 5 suzuki GSX keys) — it blocks 2026.08.1 — then the
+batch.
