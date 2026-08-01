@@ -18913,3 +18913,70 @@ Consequences:
 3. Everything in the leaked zip was already public on GitHub — no
    secret escaped. This is a professionalism/permanence boundary, not
    a disclosure incident. Stated so nobody over-rotates.
+
+---
+
+## Turn 233 — S2W — ⚠️ **main is RED after 2026.08.1: 72 gate failures.** Cause classified against a control: NOT tonight's merges — it is the hysteresis second pass, and nobody ran it. Tonight's work removed 13 of them.
+
+**Status: `ruby pipeline/run.rb` on origin/main + origin/main exits 1 with 72
+gate failures** — 71 `id-contract (no-vanish)` on motorcycle, plus 1
+`move-split`. Found by running the post-release check the moment 2026.08.1
+landed, because publication hysteresis **defers a change's fallout by one full
+release** and the standing rule is to run the disposition pass TWICE — once at
+merge, once after the release that consumes it. The second pass had not been run.
+
+**Attribution, measured — this is the part that matters.** I built the pipeline
+from **`2fb22d0`, the commit BEFORE #115 and #116 merged**, against the SAME
+released catalog:
+
+```
+                          gate failures     no-vanish ids
+  pre-tonight (2fb22d0)        85                72
+  current main                 72                71
+  vanishing ONLY on current main:  NONE  (empty set)
+```
+
+**Zero failures are attributable to tonight's merges.** They in fact removed 13,
+including `motorcycle/beta/rev-3` — the designation rescue mints it, so it stops
+vanishing. The 71 are pre-existing and were invisible until the release rebuilt
+`catalog/`, exactly as the hysteresis rule predicts.
+
+**What they are:** bare family stubs, one class, across 20 makes —
+`honda/cg cl fjs nss nt ntv sh` · `kawasaki/bj br el kdx kh klv klz kmx kr kx sc
+zg zl` · `yamaha/cg gpd gts mw srv szr ttr tw ty v vp xc xvz y yb yfm` ·
+`suzuki/drz gsf gsr st` · `mutt/×7` · `pgo/×5` · `keeway/×3` · plus
+aprilia/cagiva/gas-gas/generic/harley/husqvarna/mv-agusta/peugeot/piaggio/rieju/scomadi/smc/sym
+singletons. `propose_former_ids`: **69 unexplained, 0 evidence_loss, 0
+dead_keys** — no automatic successor, because these are pooled stubs whose
+evidence redistributed onto real designations. Same shape as `yamaha/xp`,
+`yamaha/xsr` and `yamaha/mt`: **no single alias target exists by construction**,
+so each wants a `removals.yml` manifest line naming its successors.
+
+**The 72nd is a different and more interesting failure:** `move-split` on
+`Piaggio|Vespa Cosa` — the move relocated the badge-prefixed spelling while the
+badge-free twin `piaggio/cosa` stayed put. That is the documented cross-make
+move hazard (registers disagree about whether the sub-brand badge appears in the
+model column at all), which cost 17 nameplates on 2026-07-25. It needs the
+sibling spelling keyed, not a manifest line.
+
+**I have not started authoring the 71.** Three reasons, and I would rather ask
+than guess: (1) they overlap the yamaha §A fold scope this queue is already
+holding on — `yamaha/gpd`, `ttr`, `tw`, `ty`, `xc`, `yb` are stubs whose
+successors the §A clusters define, so authoring them blind now is the
+key-it-twice failure again, one layer up; (2) `suzuki/drz gsf gsr` are
+explicitly ring-fenced by the dispatch ("do not touch gsx/gsf/gs/gsr/drz");
+(3) 71 manifest lines each naming successors is exactly the volume where
+improvising at speed produces a wrong ledger entry that the gate then trusts
+completely.
+
+**What I propose, and I can start immediately on a word:** take them in the
+make-owner split we already use — I author the **S2W half** (honda, kawasaki,
+yamaha, suzuki, piaggio, aprilia…) against a control build, S4W takes theirs —
+and do it as ONE pass keyed on post-§C-1 raws if C-1 is going in, since a third
+of these stubs are the very ids C-1 and the §A folds move. **That makes the
+ordering ruling from Turns 227/231 the blocker for un-redding main**, which
+raises its priority considerably.
+
+**Meanwhile main stays red**, so every PR's build check will fail on these 72
+regardless of content. **Classify before merging anything tonight** — a red
+build on data#166 or pipeline#117/#118/#119 is almost certainly this, not the PR.
