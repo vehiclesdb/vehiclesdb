@@ -21773,3 +21773,67 @@ in), `data#192` (suzuki, 30 folds, 12 chain repoints, 3 direction wars),
 **Board note for the owner:** `data#190` is the one that matters — main is
 currently red on 16 no-vanish failures purely because that content never reached
 it.
+
+## S4W — MAIN IS GREEN acked and broadcast to the swarm. And the XJ re-cut (`data#196`) refutes the premise of the PR it was resurrecting
+
+### First, the baseline change, because it silently invalidates every in-flight brief
+
+Every one of my delegates was briefed that **16 yamaha `no-vanish` failures are
+the expected pre-existing set**. That is now wrong: I verified all 16 are
+dispositioned on `origin/main` (0 an hour ago, 16 now), and the expected set is
+**ZERO**.
+
+I broadcast to the running agents, because the change cuts both ways: their
+verification gets *strictly stronger* — "zero failures on both sides" is a clean
+claim in a way "the same 16 as control" never was — but **an agent that still
+sees 16 now has a stale base**, and its "identical to control" is a comparison
+against a world that no longer exists. Anything measured on the old base is not
+invalid, it just has to say which base it was on.
+
+### `data#196` — D-6 found, and `data#138`'s premise is false
+
+D-6 asked to re-cut a PR that died to a git technicality. It did — and then
+refuted the thing it was resurrecting.
+
+`data#138` repointed four keys on the premise that DVLA's genmodel
+`JAGUAR XJ SERIES` "is the XJ saloon range, not the XJ-S coupé". **Replayed at
+the Model column, that genmodel decomposes 42,909 / 42,909 — 100% — onto EIGHT
+published Jaguar nameplates**: Xj 16,643 · XJ6 8,563 · **XJ-S 8,527** · XJ8
+5,030 · XJR 3,447 · XJ12 382 · XJR-S 267 · XJ220 50. Seven of the eight publish
+with **no gb** today.
+
+So it is a pooled GenModel — **DEBT row 56 exactly**, and larger in nameplate
+count than either instance already recorded there. Corroborated independently
+against EPA `baseModel`, which separates XJ / XJS / XJRS.
+
+**Both candidate rename targets are wrong.** Today's `→ XJ-S` misfiles 80.1%;
+`data#138`'s `→ Xj` misfiles 61.2% **and would publish `car/jaguar/xj-s` with no
+gb against 8,527 measured UK XJ-S** — the fold safeguard's contradicting record,
+created by the fold itself. That is our own doctrine catching our own proposal.
+Refiled rather than shipped.
+
+**Three keys did ship** — the ones the evidence settles — plus a gap `data#138`
+left: it repointed the rename keys but **not** the three matching `former_ids`
+aliases, so a pinned consumer would have been redirected to a **live** id that
+no longer holds their car. **The no-vanish gate cannot see that**, because both
+endpoints are live. Worth adding to the fold checklist: repointing a rename
+without repointing its alias is invisible to every gate we have.
+
+The bucket is handed to my item-10/11 agent as a **second known-answer test**,
+harder than the AMG one because it exercises the new reader against the
+*existing* rename layer — and it carries **five mint traps** the AMG table does
+not (`XJ50`, `XJR-4.0A`, `XJR-3.6`, `XJ50L`, `XJR-4.0`, ~430 vehicles that would
+mint spurious ids on this make alone).
+
+### Two disclosures from it worth repeating
+
+It **ran the freeze `touch` against the primary pipeline cache** before
+switching to a private clone — the sanctioned, idempotent operation, but on a
+resource fourteen delegates share. And its first decomposition was **wrong and
+had reached a draft**: a resolver that normalised away punctuation
+false-matched `XJ 4.2 C AUTO` to `XJ42`. It caught it on the implausible hit and
+a non-zero unresolved bucket, rewrote to strict first-token matching, got 100%,
+and corrected both the comment and the PR body.
+
+It also re-derived every number inline after my scratchpad-clobbering warning,
+trusting no cached script. That is the right response to that warning.
