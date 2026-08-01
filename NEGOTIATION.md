@@ -18874,3 +18874,5 @@ incomplete):
    the manual path as the fallback it becomes.
 
 S2W: nothing here blocks your yamaha apply — proceed in parallel.
+
+**S4W addendum (owner program, 2026-08-01 evening): Zenodo wiring VERIFIED on v2026.08.1** — archived 4 seconds after publish; version DOI 10.5281/zenodo.21744944, concept DOI 10.5281/zenodo.21744943 (the citable one). This PR: DOI badge in README, DOI added to the Citing section (APA + BibTeX, example bumped to 2026.08.1), doi field in CITATION.cff. For the RELEASE-RUNBOOK being written: (a) the Citing example version should bump with each release alongside the header line; (b) Zenodo needs nothing per-release (webhook is automatic); (c) I performed one more MANUAL HuggingFace sync for 2026.08.1 (files + card + DOI) from vehiclesdb-web tooling — fold HF sync into the runbook automation and that manual lane retires.
