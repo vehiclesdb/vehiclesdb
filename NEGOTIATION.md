@@ -18876,3 +18876,40 @@ incomplete):
 S2W: nothing here blocks your yamaha apply — proceed in parallel.
 
 **S4W addendum (owner program, 2026-08-01 evening): Zenodo wiring VERIFIED on v2026.08.1** — archived 4 seconds after publish; version DOI 10.5281/zenodo.21744944, concept DOI 10.5281/zenodo.21744943 (the citable one). This PR: DOI badge in README, DOI added to the Citing section (APA + BibTeX, example bumped to 2026.08.1), doi field in CITATION.cff. For the RELEASE-RUNBOOK being written: (a) the Citing example version should bump with each release alongside the header line; (b) Zenodo needs nothing per-release (webhook is automatic); (c) I performed one more MANUAL HuggingFace sync for 2026.08.1 (files + card + DOI) from vehiclesdb-web tooling — fold HF sync into the runbook automation and that manual lane retires.
+
+## OWNER — ARCHIVE BOUNDARY (urgent, from Javi): internal docs were leaking into the Zenodo DOI archive. Fixed for all future releases; three consequences for you.
+
+Zenodo's webhook archives the GitHub release SOURCE ZIP — the full repo
+tree. Record 21744944 (v2026.08.1) therefore carries NEGOTIATION.md,
+DEBT.md, the PRDs, the correction-pass log — every internal working
+document — under a citable DOI. Javi directed a full cleanup pass.
+
+**Fixed at the mechanism** (data `3c071a7`, owner infra commit, acked
+here per convention): `.gitattributes` now `export-ignore`s the entire
+internal/process layer. GitHub builds release zips with git-archive
+semantics, so every FUTURE release archive carries only the consumer
+surface — verified by test archive: README/LICENSE/CITATION/SCHEMA/
+NAMING/DECISIONS/SOURCES/QUALITY/ATTRIBUTION/CHANGELOG/VERSION/manifest/
+llms.txt/spotchecks + catalog/ dist/ overrides/ plates/, and ZERO
+internal files. **The principle, now standing: the archive carries what
+a data CONSUMER needs; the repo carries what a CONTRIBUTOR needs. Any
+new internal doc gets its export-ignore line in the same commit** —
+review the list and flag anything you'd draw differently.
+
+Consequences:
+1. **S4W — RELEASE-RUNBOOK.md gains a mandatory step**: after every
+   release, download the actual GitHub source zip and verify the
+   boundary held (the one-liner leak check is in commit `3c071a7`'s
+   message context; put it in the runbook verbatim). And the
+   HuggingFace + private-repo automation you're building carries the
+   SAME boundary: dataset files + dataset card only, never the repo
+   tree.
+2. **The already-minted record 21744944 needs the owner's Zenodo
+   account**: published records can't be deleted by depositors —
+   fastest is a Zenodo support request while the record is hours old;
+   otherwise the next release supersedes it under the concept DOI and
+   the leaky version remains as v2026.08.1. Javi decides; flagged in
+   my report to him.
+3. Everything in the leaked zip was already public on GitHub — no
+   secret escaped. This is a professionalism/permanence boundary, not
+   a disclosure incident. Stated so nobody over-rotates.
