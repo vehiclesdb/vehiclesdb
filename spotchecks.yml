@@ -628,3 +628,24 @@ checks:
     kind: motorcycle
     availability_includes: [es, nl]
     reason: "Cross-kind tripwire (NAMING §3): renames are KIND-BLIND, so any future key added to the BMW block can reach the motorcycle catalogue. M1000RR is the M-named bike most likely to be caught by a careless M-prefix key."
+  # ── G-1 RESIDUAL (2026-08-01): uk_dft gains a DESIGNATION rescue, so a Model
+  #    string whose digits are an INDEX rather than a capacity ("MT-07",
+  #    "YZF-R1") no longer falls back to the bare GenModel stub. These rows
+  #    assert that gb evidence ARRIVED on the real nameplates — the whole point
+  #    of the change — and they are the tripwire if the rescue regresses. ──
+  - id: yamaha/mt-07
+    kind: motorcycle
+    availability_includes: [gb, nl, nz]
+    reason: "G-1 residual: 9,194 gb vehicles reach MT-07 only through the designation rescue. Before it, TW_NAMEPLATE read 'MT-07' as family 'MT-' + capacity 7, failed TW_CC_RANGE and pooled them on the gb-only stub motorcycle/yamaha/mt (removed, manifested). Losing gb here means the rescue stopped firing and 27,971 UK vehicles went back to one decile-1 stub."
+  - id: yamaha/mt-09
+    kind: motorcycle
+    availability_includes: [gb, nl, nz]
+    reason: "Largest single beneficiary at 11,474 gb vehicles. Same rescue, same failure mode as mt-07."
+  - id: yamaha/yzf-r1
+    kind: motorcycle
+    availability_includes: [gb, nl, nz]
+    reason: "The OTHER half of the rescue and a distinct code path: 'YZF-R1' does not match TW_NAMEPLATE AT ALL (family 'YZF-R' then a SINGLE digit, and the pattern needs \\d{2,4}), so it took the early `or return count_fallback` exit. 8,633 gb vehicles. If mt-07 keeps gb but this row loses it, the non-match branch stopped sharing the rescue path — which is exactly the bug this change shipped with and fixed."
+  - id: yamaha/yzf
+    kind: motorcycle
+    availability_includes: [gb, nl]
+    reason: "The stub that SURVIVES, deliberately. 24,411 gb vehicles remain on it because 'YZF R125'/'YZF R6' write the index after a SPACE, which the designation rule does not cover (dossier C-3, filed). This row exists so the residual is visible: if it ever hits zero, someone widened the rule and owes yamaha/yzf a disposition."
