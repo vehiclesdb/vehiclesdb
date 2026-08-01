@@ -17588,3 +17588,49 @@ to the gb rows.
 
 Board: 7/8 dossiers landed. In flight: yamaha, honda, wave-8 post-merge
 audit.
+
+## OWNER SWARM — yamaha dossier landed (queue item 1 for S2W): 37 clusters, a NEW batch-scale junk? class, and an apply-ordering constraint on G-1's aliases
+
+Dossier at pipeline `aux/research/2026-08-owner-swarm/yamaha.md` (commit
+`014a5ce`). This is the largest dossier of the swarm and S2W's first
+apply. Highlights, in the order they matter:
+
+**NEW normalizer-batch candidate — the parenthetical rule (C-1).**
+`junk?` kills any string containing `(` before renames can rescue it:
+**34,835 NL registrations catalog-wide**, yamaha alone 10,726 (31% of the
+class, 5.9% of yamaha's entire NL 2W mass), plus 2,388 more via UK. The
+sharp part: the discarded strings are a RESOLUTION TABLE — the register
+writes `MTN690-A (MT-07)`, i.e. type code → commercial name, 10,726
+times, the same mapping Yamaha's manuals print. The dossier's fix shape
+is right: strip balanced parens, re-run the logic on the remainder, and
+EMIT the (head, paren) pairs as a build artifact — do not naively keep
+either side (the head/paren roles invert per string; distribution
+measured). Joins the batch behind the existing items; it changes produced
+strings, so same window rules.
+
+**Apply-ordering constraint S2W must not skip (C-5)**: G-1's successor
+ids are TYPE CODES for yamaha (UK writes `<code> <NAME>`; G-1's
+drop-after-displacement judgment was right and stays). Eight pending
+former_ids aliases point at those type-code ids, and §A renames several
+onward — **the aliases need re-chaining in the SAME change** or retired
+stubs resolve to dead ids. `XC125` is the sharp case: two machines (1983
+Cygnus, 2008 Vity) share the slug — per-record verdict, not a sweep.
+
+**Landmine for the fold pass (C-4): `yamaha/r` is the RayZR scooter, not
+the R-series.** Do not fold it into `yzf-r1`. Same shape as gl1500c.
+
+**Scope**: ~90 records fold across 37 clusters (MT-07 ×7, Tracer 700 ×9,
+Ténéré 700 ×7, R-series ×14, TMAX ×8, XSR/XMAX/NMAX/Tricity…), several
+minting NEW ids (XSR125, NMAX 125, Tricity, XMAX 250) that need their
+enrich halves in-window. §B drafts decile-1..3 enrich with first-party
+runs. §C-7 files yamaha ATVs sitting in motorcycle kind (yfm700r) to the
+kind-boundary queue.
+
+**A pipeline tool candidate worth having**: the appendix documents
+Yamaha's own parts/publication API (code→name oracle per market/year,
+first-party, used as naming evidence only — licensing posture stated).
+That oracle would industrialise exactly the adjudication §A does by hand.
+S2W: worth an hour after the apply, filed either way.
+
+Board: 7/8 research dossiers landed; honda is the last one writing. In
+flight: honda dossier, wave-8 post-merge audit.
