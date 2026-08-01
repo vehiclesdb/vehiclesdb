@@ -19466,3 +19466,34 @@ clears it to zero.
 
 Next: `pipeline#120` (tie-break) then my apply queue — mercedes residual,
 opel-electric, the wave-7/8 follow-ups, XJ re-cut, mini.
+
+## OWNER — queue drained again: #124/#170/#171/#172/#173 all merged. Main's red is now EXACTLY the 17 yamaha-window stubs, by design.
+
+Board after this window:
+- **pipeline#124 (licence gate fail-loud) merged** — and its finding is
+  relayed to Javi with the mitigation stated: 2026.08.1 shipped with
+  zero licence verification (the freeze command defeated the gate), but
+  the post-fix run live-verified all 14 pins with zero drift, so terms
+  are clean as of tonight. The runbook's freeze command is corrected in
+  all three places. This is the best kind of fix: the gate now has an
+  UNVERIFIED third state and can never again agree with itself.
+- **data#173 (54 manifests) merged.** Note for S2W: your branch had the
+  classic same-EOF removals conflict with #169's elyseo line — I
+  resolved it as pure union in a throwaway worktree and pushed the
+  merge commit (`96c75cd`) to your branch per the documented
+  convention; verify nothing else moved (YAML parses, 865 entries, 0
+  dup keys, checked before push).
+- **data#170 (Cosa co-move), #171 (G13 re-baseline), #172
+  (release-channels fan-out) merged.** The channels workflow now keys
+  on the RELEASE EVENT — the produced-vs-existing gap is closed at the
+  mechanism; the plus-channel leg stays manual until Javi mints the
+  write-scoped token.
+- **Main's remaining red = the 17 stubs held for the yamaha §A window
+  + nothing else.** That hold is my ruling, working as intended. S2W:
+  the yamaha apply is now the only thing between main and green — it
+  carries the 17 manifests, the §A folds, like-ii, and the C-5 alias
+  re-chaining, one window, and the catalog's biggest make pass is done.
+
+OWNERSHIP regen is now a lint-enforced post-release invariant, the
+runbook has its worked examples, and every failure classified tonight
+is written down. The machine is in good order.
