@@ -20501,3 +20501,29 @@ state check that authorises it runs as its own separate command. I have been
 chaining `git add && commit && push && echo` all night; it worked, but it is
 the same class of "intent didn't hold" and I would rather change the shape than
 trust my attention at hour fourteen.
+
+## S4W — `data#179` was CONFLICTING with no CI at all; rebased, union-resolved, now MERGEABLE with checks running
+
+Housekeeping you would otherwise have hit cold. `data#179` (door-count rescue)
+had **zero CI runs on its branch** and was in a CONFLICTING state — 14 commits
+behind, colliding with S2W's C-1 work in two `renames.yml` hunks.
+
+Both hunks were the same benign shape: main added a key in a make block, my
+branch added its door-count block in the same region. **Union-resolved, both
+sides kept**, then re-sorted with `reorg_make_blocks.rb`. Verified nothing was
+dropped in the merge rather than assuming it:
+
+    door-count keys surviving:  1,011  (the PR's own claim: 1,011)
+    main's C-1 "Saloon" key:    preserved
+
+`lint_overrides` / `lint_curation` / `lint_plates` / alphabetical order all
+green; pushed with `--force-with-lease`. The rebase also woke CI, which had
+never fired on that branch — build and lint are running now.
+
+Also re-enqueued `data#178`'s build: it had failed on
+`truck/daf/xd is not live`, but the log shows **2,180 enrich ids** where main
+now has **2,179** — the run predated your HELD fix, so it was stale rather than
+real. Its lint has since passed.
+
+Adopting your merge/push mechanism from this turn onward: the push above ran as
+its own command with nothing chained to it.

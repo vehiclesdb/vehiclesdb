@@ -792,6 +792,27 @@ Bentley:
   "Continental GT Azure": "Continental GT"     # Azure specification; 6 veh, es+lu+nl
   "Continental GT Azure V8": "Continental GT"  # Azure + engine; 9 veh, nl+th
   "Continental GT3-R": "Continental GT"        # the 99-car road homologation of the GT3 racer — a limited edition of the GT; 3 veh, ca+nl+us
+  # ── CONTINENTAL GTC — the SAME ladder, for the model line the range page
+  # lists BESIDE the GT. These keys were unreachable until pipeline#<GTC PR>
+  # made the `GTC` variant token make-aware: VARIANT_SUFFIXES[0] used to strip
+  # " GTC…" for every make, so all 13 spellings arrived here as the eleven
+  # characters "Continental" and 479 vehicles pooled into the uk_dft range
+  # label car/bentley/continental. Counts are a whole-corpus per-row replay
+  # (378,281 rows) of that pipeline branch; the GTC keys fold to the nameplate
+  # for exactly the reason the GT keys above do — Speed/S/Azure/Mulliner and
+  # the engine words are SPECIFICATIONS. https://www.bentleymotors.com/en/models.html ──
+  "Continental GTC Speed": "Continental GTC"          # Speed specification (source above); 94 veh, ca+es+fi+lu+nl+us
+  "Continental GTC V8": "Continental GTC"             # engine; 81 veh, es+fi+nl+th
+  "Continental GTC Mulliner": "Continental GTC"       # Mulliner specification; 17 veh, nl
+  "Continental GTC S V8": "Continental GTC"           # S specification + engine; 14 veh, nl
+  "Continental GTC S": "Continental GTC"              # S specification; 13 veh, es+nl
+  "Continental GTC Azure V8": "Continental GTC"       # Azure specification + engine; 9 veh, nl
+  "Continental GTC Azure": "Continental GTC"          # Azure specification; 6 veh, nl
+  "Continental GTC Mulliner V8": "Continental GTC"    # Mulliner + engine; 5 veh, nl
+  "Continental GTC Mullin": "Continental GTC"         # es_dgt truncates its model field — "CONTINENTAL GTC MULLIN" is a cut-off Mulliner, not a product; 3 veh, es
+  "Continental GTC Speed Edition 12": "Continental GTC"  # the 2023 "Speed Edition 12" run-out series — a Speed with a badge; 3 veh, nl — https://www.bentleymotors.com/en/models.html
+  "Continental GTC 6.0 W12": "Continental GTC"        # engine, written as displacement + layout. WITHOUT this key the row DIES: junk?'s litre rule (/\b\d\.\d\b/) kills "6.0" and renames are the only thing that runs before it; 1 veh, nl
+  "Continental GTC Auto": "Continental GTC"           # gearbox, not a nameplate; 1 veh, nl
   # ── Bentayga: the range page nests Bentayga Extended Wheelbase and Bentayga
   # under ONE Bentayga heading, with Speed/Azure/Mulliner under each — a
   # wheelbase is not a nameplate. https://www.bentleymotors.com/en/models.html ──
@@ -2233,11 +2254,11 @@ DAF:
   Ftgxf:      XF105     # FTG (6x2 tractor, mid-lift steering axle) + XF105; ALL SIX raws carry 105 (FTGXF105, FTGXF105.460T, FTGXF105.510T) so the generation is safe here — same DAF sheet
   XF Ft:      XF        # raw is literally "XF FT ELECTRIC" x44 — the XF Electric on a 4x2 tractor chassis; FT is the configuration — https://www.daf.global/en-us/trucks/daf-xf-xg-xgplus-electric
   XG+530FT:   XG+530    # FT (4x2 tractor) glued to the model; XG+ 530 IS a DAF model (its own column in DAF's model overview, MX-13 390 kW/530 hp) so the fold stops at XG+530 and deliberately does NOT cross to XG530 — same DAF sheet
-  XG530F:     XG530     # trailing "F" is the first letter of the axle code the register wrote unspaced (XG 530FTN / XG 530FAW) which series_collapse fuses as a one-letter suffix (normalizer.rb one-letter-third-token rule) — not a nameplate
-  XF460F:     XF460     # same one-letter axle-code fusion (XF 460FT…)
-  XF480F:     XF480     # same
-  XF510F:     XF510     # same
-  XF530F:     XF530     # same
+  XG530F:     XG     # trailing "F" is the first letter of the axle code the register wrote unspaced (XG 530FTN / XG 530FAW) which series_collapse fuses as a one-letter suffix (normalizer.rb one-letter-third-token rule) — not a nameplate
+  XF460F:     XF     # same one-letter axle-code fusion (XF 460FT…)
+  XF480F:     XF     # same
+  XF510F:     XF     # same
+  XF530F:     XF     # same
   LF260F:     LF260     # same (LF 260FA…)
   # ── §A-D2: DAF's pre-1997 ranges exist in the corpus only INSIDE axle codes.
   # Only truck/daf/55 (3 vehicles) and /95 (12) are published today; these folds
@@ -2254,6 +2275,46 @@ DAF:
   FT95X:   "95XF"    # the DAF 95XF (1997-2002); 353 of 360 vehicles are uk_dft "DAF TRUCKS FT 95XF" — the trailing X is the truncated XF badge, not a chassis code. MINTS truck/daf/95xf; Wikipedia records the badge as "DAF 95XF (1997-2002)" — https://en.wikipedia.org/wiki/DAF_XF
   # ── §A-D4 ──
   Oprij:   null      # Dutch registry BODY WORD, not a nameplate: an "oprijwagen" is a car transporter / drive-on recovery body and RDW writes it in the model column ahead of the real series ("OPRIJ LF 16-77" x39, "OPRIJ XB 16-68" x8, "OPRIJ XD 29-85" x7, "OPRIJ CF 29-85" x5). Pools FOUR DAF series across 54 raws, so no single honest survivor exists — NAMING §8.1 mixed-block drop. nl is retained at make level by truck/daf/lf, /xb, /xd and /cf
+
+  # ── §X-1 the POWER SUFFIX (2026-08-01): DAF writes the horsepower rating after the
+  # series badge, and the register files the whole thing as the model. Evidence it is
+  # power and not a designation: DAF's own used-truck listings title a unit "DAF XF 430
+  # FT 4X2" while carrying a separate "Power (HP): 430" field, and the historic caption
+  # form is "DAF XF 105.460" — <series>.<power>, which only parses if 105 is the series
+  # and 460 is not. Wikipedia's current range lists the series as separate line items:
+  # "XF series" / "XG series" / "XG+ series" / "XD series" / "XB series" —
+  # https://en.wikipedia.org/wiki/DAF_Trucks
+  # AVAILABILITY UNION verified at (country,source) level, not just country: every id
+  # below is a strict SUBSET of its target (es:es_dgt fi:fi_traficom lu:lu_snca
+  # nl:nl_rdw for both XF and XG). Evidence lost by these folds: NONE.
+  # NOT folded, deliberately: XF105 is a real generation series (XF105/XF106 — the
+  # trap in this family, a digit run that is a designation rather than a rating);
+  # XG+530 needs the D-10 `-plus` mint (XG+ slugs to "xg", colliding with the live XG)
+  # and lands with that mechanism; XDC / XFC / "XD Ft" are UNVERIFIED and left alone.
+  XB210:   XB        # power rating, not a designation — target truck/daf/xb is LIVE. fi,nl
+  XB230:   XB        # as XB210. es,fi,nl
+  XB260:   XB        # as XB210. es,nl
+  XB290:   XB        # as XB210. es,fi,nl
+  XB310:   XB        # as XB210. es,nl
+  XD260:   XD        # power rating, not a designation — folds onto the XD series. MINTS truck/daf/xd (no record today; DAF's current distribution line). fi,nl
+  XD300:   XD        # as XD260. fi,nl
+  XD310:   XD        # as XD260. lu,nl
+  XD340:   XD        # as XD260. fi,nl
+  XD370:   XD        # as XD260. es,fi,nl
+  XD410:   XD        # as XD260. es,fi,nl
+  XD450:   XD        # as XD260. es,fi,nl
+  XF410:   XF        # power rating, not a designation — target truck/daf/xf is LIVE (es,fi,lu,nl). nl
+  XF430:   XF        # as XF410. fi,lu,nl
+  XF440:   XF        # as XF410. es,fi,lu,nl
+  XF450:   XF        # as XF410. es,fi,lu,nl
+  XF460:   XF        # as XF410. es,fi,nl
+  XF480:   XF        # as XF410. es,fi,lu,nl
+  XF510:   XF        # as XF410. es,fi,nl
+  XF530:   XF        # as XF410. es,fi,lu,nl
+  XG430:   XG        # power rating, not a designation — target truck/daf/xg is LIVE (es,fi,lu,nl). nl
+  XG450:   XG        # as XG430. fi,nl
+  XG480:   XG        # as XG430. es,fi,lu,nl
+  XG530:   XG        # as XG430. es,fi,lu,nl
 
 Daihatsu:
   Hijet: Hi-Jet                               # spelling variant of "Hi-Jet" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
