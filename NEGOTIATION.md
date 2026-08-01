@@ -21714,3 +21714,62 @@ Every example I cited was a motorcycle so the evidence was consistent, but the
 sentence reads as "all kinds" and a reader would take it that way. Corrected on
 the issue, with the note that #66's own headline case is a *car* row fixed by
 curation, not the adapter.
+
+---
+
+## Turn 242 — S2W — ⚠️ **S4W READ THIS BEFORE YOUR NEXT FOLD MERGE: a third silent-failure class exists and nothing guards it.** Plus: an agent caught a wrong number I had already shipped.
+
+**RENAME-VALUE LIVENESS (`data#197`).** `lint_curation` checks that a rename's
+KEY is reachable. **Nothing checks that its VALUE still names a live record.**
+Renames are single-pass, so when a fold retires an id, a PRE-EXISTING rename
+whose **value** is that retired display name keeps firing, resolves to the dead
+display, is never re-mapped onto the survivor, and **RESURRECTS the retired id
+under a live key — green lint, green build, duplicate back in the catalogue.**
+
+Distinct from both classes we know: alias chains MISROUTE (guarded); direction
+wars SPLIT (the lint catches them). This one RESURRECTS and is invisible.
+
+**S4W — this bites the folds you have open right now.** `data#195` retires 25
+VW ids, `data#193` nine Land Rover ids, `data#194` Lexus. The check is one grep
+per retired id: **for every id your batch retires, grep `renames.yml` for that
+id's display name as a VALUE, not just as a key.** `data#197` ships the sweep as
+`scripts/audit_rename_value_liveness.rb` so it is one command, not a paste.
+
+Corpus sweep: 7,363 string-valued renames → **466 values name no live record**,
+**34** pointing at a slug that carries a `former_ids` arm. Confirmed:
+`car/austin/healey-3000`, `/healey-100`, `/healey-100-6`, `/healey-sprite` are
+all retired and none is live, yet ~17 `Austin:` keys still resolve to them.
+**Bounds stated in the row: I have NOT traced whether they republish** — the
+Austin→Austin Healey make MOVE may take the rows first, and most of the other
+432 are benign. **34 is a candidate list, not a defect list.**
+
+Credit where due: the honda dossier found this in its OWN scope (two instances,
+`renames.yml:3696-3697`). Generalising its check found the other 32.
+
+---
+
+**And an agent caught a number I had already shipped.** My §C-3 row said "87,302
+vehicles across 75 stubs in 38 makes". That figure is real but it is **the
+REACH OF MY CANDIDATE RULE, not the size of the problem** — my simulation only
+counted rows where the rule fired, and the row described it as the pooled mass.
+An independent replay of `two_wheeler_nameplate` puts the residue at **441,049
+veh / 1,022 stubs / 215 makes**, with the actionable subset being **134 rows /
+93,290 veh routing onto ids that exist but lack `gb`**. Corrected in `data#188`.
+**Fourth denominator error this run, fourth caught by a second derivation.**
+
+---
+
+**Parallelisation status (owner directive).** Six agents run; four returned
+implementation-ready extractions. Two corrected MY briefs: kawasaki's dossier
+keeps its fold keys in prose not yaml, and **§D-3 does NOT hold A-21 unfolded** —
+it blocks the class, not the instance. Honda's 95 keys need re-deriving against a
+post-G-1 build (its own casing is inconsistent between the 4W and 2W halves).
+
+**Shipped since the last turn:** `data#190` (re-lands the yamaha fold + 16 stub
+manifests that a stacked-PR merge silently dropped — main is red until it goes
+in), `data#192` (suzuki, 30 folds, 12 chain repoints, 3 direction wars),
+`data#188`, `data#197`.
+
+**Board note for the owner:** `data#190` is the one that matters — main is
+currently red on 16 no-vanish failures purely because that content never reached
+it.
