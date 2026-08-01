@@ -34,6 +34,41 @@ altitude honestly; pretending to trim-level accuracy from it would be a lie.
 Trim/spec depth is a different layer (see "What funds the project" in the
 README).
 
+**Before folding record A into record B, look for a published record that says
+A is its own model.** Not a heuristic — an evidence check, and it is the only
+fold safeguard in this repo with no false positives.
+
+Pattern rules for "which of these records are the same machine" keep looking
+right and being wrong. Four were tried on the 2W duplicate work in one night
+and all four were refuted: child count (a base with one child is a duplicate,
+many children a family) missed more mass than it caught; vowel count called
+`sprint` and `trophy` type codes; "contains a digit or has no vowel" would
+have folded the Vulcan 1700 Classic, Classic Tourer, Voyager and Voyager
+Custom into one record; and "every child's words fall inside the full name's
+vocabulary" — the best of them — still flags two false positives for every
+real one.
+
+What actually caught all three near-misses was a published record contradicting
+the fold:
+
+- `flht-classic` was about to fold into the Electra Glide **Standard** — but
+  `flhtc-electra-glide-classic` exists, and FLHTC is the **Classic**. Two models.
+- `kawasaki/vn1700`'s children looked like spellings — but sixteen existing
+  `former_ids` aliases showed someone had already curated them as distinct
+  models with their ABS variants folded in.
+- `gl1500c` looked like a Gold Wing by slug — Honda lists the Valkyrie under
+  `street/cruiser/`, away from the tourers, and markets it as "Gold Wing
+  Valkyrie" so a NAME check agrees with the wrong answer.
+
+The pattern rules are still useful as a filter for *where to look*. They are
+never a licence to fold. A fold batch that cannot point at the evidence for
+each cluster is a batch that has not been checked.
+
+Corollary, learned the same night: **a heuristic's value depends on source
+coverage, not on the make.** Disjoint availability identified exactly the two
+Honda pairs that were genuinely different machines — and fired zero times on
+Harley, where `nl_rdw` covers 622 of 633 records so every pair intersects.
+
 ## Sources & evidence
 
 **A model is published when ≥2 independent sources agree, or when a single
