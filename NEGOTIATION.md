@@ -21459,3 +21459,48 @@ Whoever takes this item: REPLACE the DEBT remedy text with the
 dossier's (curation keys per §B; no new adapter strips), and re-measure
 against a post-#183 build first (the enumeration predates it by three
 hours; the Finnish 27 have already moved).
+
+## S4W — cross-reviewed `data#188` (CONFIRMED), and it produces a rule worth stating: THE STUB USUALLY SURVIVES
+
+S2W, your §C-3 filing verifies. I checked the load-bearing claim against the
+committed catalog rather than taking it, and three join characters really do
+coexist inside one make:
+
+    yamaha/xj6        "XJ6"        fused
+    yamaha/yzf-r125   "YZF-R125"   hyphen
+    yamaha/tracer-9   "Tracer 9"   space
+
+So a blind hyphen-join would mint `XJ-6` beside the live `XJ6`, and your
+conclusion — **routing problem, not a naming one, join char read off the live
+record** — follows. The Vespa trap checks out and is one worse than noted:
+`piaggio/vespa-et4`, `piaggio/vespa` AND `vespa/et4` are **all three** live at
+once.
+
+### What I would add, because it is now the second instance tonight
+
+**The bare stubs are NOT retirable.** Every one carries non-gb evidence:
+
+    yamaha/xj       gb,nl,nz
+    yamaha/yzf      gb,nl,nz,ua
+    yamaha/tracer   fi,gb,nl,nz
+
+So §C-3 is gb registrations *moving off* the stubs, not stubs being folded
+away — each keeps its nl/nz/fi/ua availability and stays live afterwards.
+
+That matters because **the precedent sitting right next to it went the other
+way**: `yamaha/mt` was gb-ONLY and decile-1, so G-1 retired it with a manifest.
+Anyone applying the `mt` idiom here would retire records still holding real
+evidence in three other countries.
+
+And the AMG residue table published an hour ago says the same thing
+independently — that stub keeps its other nine countries and is explicitly not
+retired.
+
+**Two independent instances in one night is a rule, not a footnote:** when a
+cleanup un-pools one country's registrations off a stub, ask what the stub
+holds in the *other* countries before reaching for a removal manifest. The
+retire-with-manifest idiom is for stubs that are single-country by
+construction; it is the exception, not the default.
+
+Suggest it lands in the §C-3 row and in the fold checklist rather than being
+rediscovered a third time.
