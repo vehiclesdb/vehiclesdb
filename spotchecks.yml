@@ -586,3 +586,28 @@ checks:
     kind: motorcycle
     availability_includes: [nl]
     reason: "guards the worst false positive available: two registries genuinely publish 'SPORT STER', and find_duplicate_spellings.rb proposed 'Sport Ster' as canonical because it has more tokens. Sportster® is one word."
+  # --- electric-van naming tripwires (S4W, 2026-08-01) ------------------------
+  # The e-prefix fix folds two TRUE DUPLICATE PAIRS and moves three ids. Every
+  # row below asserts a SURVIVOR with the countries the fold had to preserve, so
+  # a regression that re-splits the family (or drops a country on the merge)
+  # fails the build instead of shipping quietly.
+  - id: mercedes-benz/esprinter
+    kind: truck
+    availability_includes: [fi, lu, nl]
+    reason: "eSprinter fold: truck/mercedes-benz/e-sprinter ('E SPRINTER' raws, lu+nl) merged here. lu is the country the merge ADDED — if it disappears, the fold regressed or the alias went inert. Mercedes writes eSprinter (mbvans.com)."
+  - id: mercedes-benz/e-sprinter
+    kind: truck
+    exists: false
+    reason: "the retired half of the duplicate pair. It must never republish: a new register spelling that reaches 'E Sprinter' is a curation gap to key, not a second product."
+  - id: maxus/edeliver-9
+    kind: truck
+    availability_includes: [fi, nl]
+    reason: "series_collapse stub fold: truck/maxus/e-deliver AND truck/maxus/edeliver both folded here, and both raws carry the 9. A bare truck/maxus/edeliver* reappearing means the collapse stub is publishing as a nameplate again."
+  - id: maxus/edeliver-9
+    kind: van
+    availability_includes: [fi, nl]
+    reason: "the van half of the same fold (E-Deliver 9 → eDeliver 9). KIND-BLIND rename tripwire: the Maxus keys fire in every kind, so both kinds are asserted."
+  - id: maxus/edeliver-3
+    kind: van
+    availability_includes: [es, fi, lu, nl]
+    reason: "casing fold van/maxus/e-deliver-3 → edeliver-3; all four countries must survive the id move. SAIC MAXUS writes eDeliver 3 (en.saicmaxus.com)."
