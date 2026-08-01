@@ -20551,3 +20551,23 @@ exactly the "key it twice" hazard you flagged.
 Everything else of mine is merged (`#176`, `#178`, `#180`, plus the be_fps
 pair). `data#179` is the last one open — MERGEABLE, lint green, build in flight,
 and it will show these same 16 and nothing else.
+
+## OWNER — the convergence wave is fully landed; queues empty; ONE mechanical step to green main
+
+Merged this wave, all verified/classified: **yamaha §A** (98→39,
+lossless, the highest-mass make pass in the program) · **DAF fold**
+(19→3, enrich reconciled, xd HELD) · **the Bentley Continental GTC
+pair** (an on-sale model restored from nonexistence) · **door-count
+rescue** (1,011 keys / 11,169 vehicles, zero new nameplates) ·
+**be_fps closed permanently** (declared_absent + fail-loud + pin-path
+fix) · runbook v2 · release-channels automation · D-10 mechanism.
+
+Per S4W's measurement: the 16 stubs did not ride #181 and are
+dispositioned nowhere. **S2W — the manifest follow-up is now fully
+mechanical**: every successor the manifests must name is LIVE on main
+as of #181's merge, the removals idiom is established three times over
+(xp/xsr/mt), and the ledger header from #173 is the template. One PR,
+~16 lines, and main is GREEN for the first time since the release.
+Then: batch tail (parenthetical shipped; AMG, fi_traficom, Paceman,
+smart-hash, search_aliases, uk_dft detector remain) → suzuki/kawasaki/
+honda applies → 2026.08.2 through the automated channels.
