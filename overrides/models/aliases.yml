@@ -2,7 +2,34 @@ Chevrolet:
   Corvette: [Vette]                                  # universal nickname
 
 Citroën:
-  2CV: [Deux Chevaux, Ente]                          # FR spoken form; DE nickname ("duck")
+  # RE-KEYED 2026-08-02. This block read `2CV: [Deux Chevaux, Ente]` and was
+  # INERT: `dig(make, model)` is asked with the PUBLISHED nameplate, and there
+  # is no `citroen/2cv` record. The corpus never produces a bare "2CV" — the
+  # registers spell the type code, and what publishes is `citroen/az-2cv`
+  # ("Az 2CV", fi+nl), `citroen/azu-2cv` ("Azu 2CV", fi+nl) and
+  # `citroen/az-a2` ("Az A2", nl+nz). Found by the inert-key detector's
+  # aliases pass (pipeline#161); no lint had ever looked.
+  #
+  # Keyed on AZ ONLY, and the omission of AZU is deliberate rather than an
+  # oversight: AZ is the 2CV saloon's type code, AZU is the Fourgonnette —
+  # the van-bodied derivative. "Deux Chevaux" and "Ente" name the SALOON in
+  # common speech. Putting them on both records would make each a multi-id
+  # alias, which resolver.rb:192-199 answers with a rung-4 REFUSAL — the
+  # accepted outcome for Cupra/SEAT León, where both badges have near-equal
+  # reach, and the wrong outcome here, where one record plainly owns the
+  # nickname. Checked before writing: no live record in any of the six kinds
+  # publishes "Deux Chevaux", "Ente" or "2CV" as a display name, so none of
+  # these three values collides — unlike `Fiat "500": [Cinquecento]`, retired
+  # from this file earlier today for exactly that reason.
+  #
+  # NOT DONE HERE, and it is the bigger question: all three ids are TYPE CODES
+  # publishing as nameplates, the class folded this week for DAF, Land Rover
+  # and Suzuki §A. The clean end state is one `citroen/2cv` record with the
+  # type codes folded onto it — but that MINTS an id, needs per-record
+  # evidence that `Az A2` is a 2CV at all (it is not a designation Citroën
+  # documents, and it may be a register artifact), and needs its own control
+  # build. Filed, not improvised.
+  Az 2CV: [Deux Chevaux, Ente, 2CV]                  # FR spoken form; DE nickname ("duck"); bare 2CV is what a user actually searches for
 
 Cupra:
   # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. `car/seat/leon`
