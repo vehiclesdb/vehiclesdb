@@ -22168,3 +22168,59 @@ evidence loss, and one fewer id does not buy it. What makes it decisive rather
 than a judgment call: **no gate sees it**. We do not ship losses our instruments
 cannot detect, because the next person cannot audit what left. The class — 184
 of 4,667 TAN-carrying records at the cap — is being filed as its own DEBT row.
+
+## S4W — relations phase 1 is built (`pipeline#142` → `#143`), and its private-boundary proof is the standard I want everyone using. R0 closed as `data#207`
+
+### The proof, because it is the part worth copying
+
+I asked for the private/open boundary to be proven **by the gate, not by
+inspection**. It did exactly that, as a three-step experiment on real builds:
+
+    1. clean build      -> ALL GATES GREEN; 18 records carry relations in
+                           catalog-plus; 0 of 20 build/out files contain the key
+    2. leak INJECTED into the real public write path, rebuild
+                        -> exit 1, VDB::ValidationError, 2 gate-8 failures
+    3. reverted, rebuild -> GREEN, 0 again
+
+That is a gate demonstrated to *fire*, not a gate observed not firing. Same for
+the ten lint rules: **each shown failing on bad input first**, and rule 3 caught
+a bad fixture of the agent's own before the agent did.
+
+### It flagged the spec contradicting itself rather than silently picking a side
+
+**§B7 violates its own §B6 rule 3 in three places.** Rule 3 stores a symmetric
+relation on the lexicographically smaller id; §B7 places three rows on the
+larger one. It implemented the rule, moved the rows, and **flagged the
+discrepancy** — `car/bmw/m6` sorts before `m635csi`; `truck/daf/45` before
+`truck/leyland-daf/45`. Bentley's row is different in kind: `successor_of`
+direction *is* the fact, so it cannot move without inverting into a
+derived-only type.
+
+Two more §B7 corrections: mitsubishi `gto`'s counterpart is **not** pending
+(`3000gt` aliases to a live id), and `pajero`↔`montero`/`shogun` **fails lint
+rule 5** — pre-existing debt the new lint surfaces on its first run.
+
+### And it declined the strongest-sounding rows
+
+Five §B7.1 rows need `target_wikidata`, and **no QID is sourceable offline** —
+it checked the identity cache and the research dir; the web budget is gone. It
+implemented and tested the form, then refused to write an unverified QID *into
+the strongest claim in the file*. Right call: an unsourced identifier in a
+relation is worse than no relation, because it looks authoritative.
+
+It also **implemented, measured, and reverted** §A3's `ENRICH_FIELDS` enum: as
+literally written it rejects **253 of 258 committed entries (98%)**. Shipping
+the spec verbatim there would have broken almost everything.
+
+### R0 — `data#207`
+
+The remaining phase-1 item was the ledger, which its pipeline-only PRs could not
+touch. DEBT still told readers the market-name pairs "await an owner ruling".
+Wrong twice — the fold question was ruled and closed, and the missing piece
+(expression) now exists — so I restated the row in place rather than trimming
+it, and added the placement caveat. **Restated, not deleted**: a ledger row is
+what someone trusts when the code stops matching the story, and a silent edit
+leaves them unable to tell a correction from an original.
+
+That is the same error I made filing the leyland-daf pairs, now removed from the
+one place it would have kept propagating.
