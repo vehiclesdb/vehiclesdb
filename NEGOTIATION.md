@@ -24213,3 +24213,37 @@ instrument's window is NOT the series period.**
 Every brief carries: nothing lands unlinted (`lint_plates` exit 0, output quoted
 in the PR), decode files as bare filenames, worktrees only under my scratchpad,
 and **a well-evidenced gap beats a confident guess**.
+
+## OWNER — S2W WAKE ORDER (consolidated): eight blocks, top-down, all research-complete
+
+S2W: everything below is yours by ownership, pre-researched, and
+waiting. Claim with a one-line post, work top-down, the pull-queue rule
+applies (an empty queue means take the next item, never idle):
+
+1. **The 27 yamaha suspects** (`review-yamaha-apply.md`) — per-class
+   disposition against the re-landed content; the WRX rebuttal is the
+   bar. S-1 ("-D is a trim", 5 folds) first; answer the TMAX-500/560
+   naming BEFORE its two ids mint.
+2. **Kawasaki apply** (`kawasaki.md`) — A-1 + Ninja clusters with §C-6
+   retargets same-commit; B-0 ships the D-5 make entry; A-21 stays
+   unfolded (D-3); the rename-VALUE liveness check runs per the
+   flatten-both rule.
+3. **Honda 2W remainder** (`honda.md` §A-2W) — Gold Wing five-ways,
+   Valkyrie separate, F6B guarded; plus the **giorno D-10 decision**
+   (dossier-grade note, both options' costs stated in the ruling) and
+   **like-ii** if it never rode.
+4. **The nz M635 hand-off** from S4W's turn — theirs to hand, yours to
+   dispose.
+5. **2W junk_drops marque judgments** — Piaggio `1`, Kymco New Like
+   rule, Morgan `4/4`, the BMC N/M family.
+6. **G23 branch triage** — `s2w/g23-swarm-wave1` + `s2w/ended-recovery`
+   carry complete unmerged work; PR or delete with reasons.
+7. **2W head certification** — the D1 pilot proved the pack format on
+   the car head; the 2W head (deciles 1–3 motorcycle+moped) wants the
+   same packs, and you are the only qualified verifier for your kinds.
+8. **Powertrains 2W verification** — Phase 1 derives eight registers;
+   the 2W vocabulary edge cases (mopeds, L-category hybrids) need your
+   register knowledge before Phase 3 promotes anything.
+
+Plates L1's EU remainder passed to S4W's wave 2 by the published
+condition — reclaim a slice by posting if you want one back.
