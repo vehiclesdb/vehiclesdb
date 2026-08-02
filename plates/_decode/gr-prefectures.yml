@@ -1,0 +1,1408 @@
+# plates/_decode/gr-prefectures.yml — the Greek two-letter area code table.
+#
+# WHAT THIS TABLE IS. On an ordinary Greek plate the serial is three letters, a
+# hyphen and four digits (ΥΑ οικ. 4700/330/2004 art. 1 para. 2). The FIRST TWO
+# of those three letters identify the issuing Directorate of Transport, and the
+# third letter is the sub-series inside it. This file decodes that two-letter
+# prefix.
+#
+# PROVENANCE — READ THIS BEFORE TRUSTING A ROW. The rows below are
+# `secondary-wikipedia`. They are NOT from the statutory annex, and the file
+# says so at every row via `evidence:` on the table rather than by dressing a
+# secondary as an instrument.
+#
+# THE PRIMARY EXISTS AND IS NAMED; IT WAS NOT REACHABLE IN THIS PASS. The
+# allocation is a STATUTORY ANNEX (παράρτημα) to ΥΑ 19800/1982 «Πινακίδες
+# αριθμού κυκλοφορίας αυτοκινήτων οχημάτων και ρυμουλκουμένων» (ΦΕΚ Β' 455 of
+# 1-7-1982), and it is LIVE — amended by ministerial decision as Directorates
+# exhaust their combinations. Two such amendments were located and confirm both
+# the annex's existence and its subject matter:
+#   * ΥΑ 282069/2023, ΦΕΚ Β' 5645 of 25-9-2023 — retitled "Τροποποίηση της υπ'
+#     αρ. 19800/1982 απόφασης"; reallocates three-letter combinations to named
+#     Directorates (Central Athens, Piraeus, Elefsina and others).
+#   * ΥΑ 178239/2024, ΦΕΚ Β' 5096 of 9-9-2024 — same form, same subject,
+#     motorcycle combinations.
+# ΥΑ οικ. 4700/330/2004 art. 1 para. 5 is the provision that KEEPS the annex
+# alive across the 2004 redesign, verbatim: "Η κατανομή των γραμμάτων για τις
+# διάφορες κατηγορίες των αυτοκινήτων, μοτοσικλετών και ρυμουλκούμενων,
+# παραμένει ως έχει." ("The allocation of the letters for the various
+# categories of cars, motorcycles and trailers remains as it is.")
+#
+# WHAT WAS TRIED, so the next pass does not repeat it:
+#   * e-nomothesia.gr carries the consolidated 19800/1982, but behind a
+#     subscriber paywall. Its own page says so: "Στο αρχικό κείμενο διατάξεων
+#     έχουν επέλθει Νομοθετικές μεταβολές που δεν εμφανίζονται στους επισκέπτες
+#     αλλά μόνο στους Συνδρομητές" ("legislative changes ... are not shown to
+#     visitors, only to Subscribers"). The AMENDMENT pages are free; the base
+#     text is not.
+#   * The Wayback Machine copy of that same page was fetched and carries the
+#     identical paywall notice — so this is not a transient block and no
+#     archived free copy exists at that URL.
+#   * et.gr's ΦΕΚ download endpoints (/api/DownloadFeksApi/, /api/DownloadFek/,
+#     the idocs-nph viewer) answered 301 or 404 for every constructed fek_pdf
+#     id, and search.et.gr is a JavaScript application that returns no
+#     server-rendered results to a plain fetch.
+#   * Two web search engines were exhausted or CAPTCHA-gated during the pass.
+# THE NEXT STEP THAT WOULD WORK: drive et.gr's search UI in a real browser and
+# download ΦΕΚ Β' 455/1982 (the annex itself) and ΦΕΚ Β' 5096/2024 (a recent
+# amendment, likely a cleaner scan) as PDFs. That would upgrade this whole file
+# from `secondary-wikipedia` to `instrument-in-force`, and it is the single
+# highest-value follow-up in the Greek slice.
+#
+# SCRIPT DISCIPLINE — the reason this file has two code columns.
+#   * `printed` is what the plate actually shows: GREEK capitals, e.g. ΡΚ =
+#     U+03A1 U+039A.
+#   * `code` is what this dataset matches on: LATIN capitals, e.g. PK =
+#     U+0050 U+004B, because plates/_meta/separators.yml fixes the dataset's
+#     serial alphabet as Latin A-Z and 0-9.
+# The mapping is by IDENTICAL PRINTED GLYPH, never by phonetics. Greek Ρ (Rho)
+# becomes Latin P, not R; Η (Eta) becomes H, not E; Υ (Upsilon) becomes Y, not
+# U; Χ (Chi) becomes X, not C. Rhodes is ΡΚ on the plate and PK in this file.
+# A phonetic transliteration would silently produce a decode table that never
+# matches a real plate, and the error is invisible on screen because the glyphs
+# are identical. Every row below was produced by a mechanical glyph map applied
+# to the source bytes, not by retyping.
+#
+# A SOURCE DEFECT, RECORDED RATHER THAN SMOOTHED: four rows (AY, BZ, EK and one
+# of the two NX rows) are spelled in LATIN capitals in the source article while
+# the other 191 are spelled in Greek. The normaliser accepted both and produced
+# the same `code`; `printed` reproduces the source's own script for those four,
+# so the inconsistency stays visible instead of being tidied away.
+#
+# MAXIMAL-MUNCH / UNIQUENESS CAVEAT — the table is NOT a function of the prefix
+# alone. `NX` appears TWICE with different meanings: a Thessaloniki motorcycle
+# allocation, and a nationwide "prefecture goods transport" truck allocation.
+# A parse API must therefore key on (prefix, vehicle category), never on the
+# prefix by itself, or it will report Thessaloniki for a national haulage
+# plate. This is the Greek analogue of the two-table trap recorded in
+# plates/_decode/it-provinces.yml.
+#
+# PERIOD DISCIPLINE (PRD-PLATES §2.4). 34 of the 195 rows are combinations that
+# are ALLOCATED BUT NOT YET IN ISSUE (`status: allocated-not-yet-issued`). They
+# are kept, not dropped, because they are the forward half of the allocation —
+# but a consumer must not report them as observed geography, and a validator
+# must not treat a match on one as evidence the plate exists. Rows are closed
+# by status, never deleted.
+#
+# WHAT THIS TABLE DOES NOT COVER: the third letter's sub-allocation (the `note`
+# column records the fragments the source gives — omitted triples, colour
+# variants for tax-free and state cars — but there is no complete third-letter
+# table here), and the pre-2004 two-letter series (gr-provincial-1972), whose
+# codes are NOT assumed to match these.
+jurisdiction: gr
+topic: prefectures
+evidence: secondary-wikipedia
+authority:
+  name: "Υπουργείο Υποδομών και Μεταφορών — the allocation annex (παράρτημα) to ΥΑ 19800/1982 (ΦΕΚ Β' 455/1-7-1982), as amended; NOT the source of the rows below"
+  url: "https://www.yme.gov.gr/"
+sources:
+  - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Greece  # EVERY ROW BELOW: code, area, seat, vehicle category and in-issue/not-yet-issued status. Revision 1367180219 of 2026-08-01T14:31:31Z, fetched as wikitext via action=raw on 2026-08-02 and transformed by a mechanical Greek-to-Latin glyph map. secondary-wikipedia"
+  - "https://www.e-nomothesia.gr/kat-aytokinita/pinakides-kuklophorias/ya-282069-2023.html  # ΥΑ 282069/2023 (ΦΕΚ Β' 5645/25-9-2023), 'Τροποποίηση της υπ' αρ. 19800/1982 απόφασης' — evidence that the allocation annex EXISTS, is statutory and is amended by ministerial decision. Accessed 2026-08-02"
+  - "https://www.e-nomothesia.gr/kat-aytokinita/pinakides-kuklophorias/ya-178239-2024.html  # ΥΑ 178239/2024 (ΦΕΚ Β' 5096/9-9-2024), same form — the motorcycle combinations. Accessed 2026-08-02"
+  - "https://www.dsanet.gr/Epikairothta/Nomothesia/yaoik4700-330_04.htm  # ΥΑ οικ. 4700/330/2004 art. 1 para. 5: the allocation 'παραμένει ως έχει' — the provision that carries the 1982 annex forward. Accessed 2026-08-02"
+period: { start: 2004 }
+period_evidence: secondary-wikipedia
+period_note: >-
+  2004 is the year the CURRENT three-letter series these codes belong to took
+  effect (ΥΑ οικ. 4700/330/2004, in force 1-5-2004). The two-letter prefixes
+  themselves are older — they descend from the allocation annex of ΥΑ
+  19800/1982 and many were in use throughout the 1982-2004 series — but no
+  per-code start date was sourced for any row, so no row carries its own
+  period. Dating individual codes requires the annex and its amendment chain.
+
+# code:       the two-letter prefix in LATIN capitals — what a regex matches
+# printed:    the same prefix in GREEK capitals — what the plate shows
+# area:       the prefecture / nationwide function the prefix denotes
+# seat:       the Directorate's seat, where the source distinguishes it
+# categories: the vehicle categories the prefix is allocated to (the NX
+#             collision is why this field is load-bearing, not decorative)
+# status:     in-issue | allocated-not-yet-issued
+# note:       third-letter and colour fragments as the source gives them
+codes:
+  - code: AA
+    printed: ΑΑ
+    area: Achaia
+    seat: Patras
+    categories:
+    - car
+    status: in-issue
+  - code: AB
+    printed: ΑΒ
+    area: Kavala
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: AE
+    printed: ΑΕ
+    area: Lasithi
+    seat: Agios Nikolaos
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: AH
+    printed: ΑΗ
+    area: Xanthi
+    categories:
+    - car
+    status: in-issue
+    note: ΑΗΗ, AHI, AHO omitted.
+  - code: AI
+    printed: ΑΙ
+    area: Aitoloakarnania
+    seat: Agrinio
+    categories:
+    - car
+    status: in-issue
+    note: ΑΙΙ omitted.
+  - code: AK
+    printed: ΑΚ
+    area: Laconia
+    seat: Sparti
+    categories:
+    - car
+    status: in-issue
+  - code: AM
+    printed: ΑΜ
+    area: Phokida
+    seat: Amfissa
+    categories:
+    - car
+    status: in-issue
+    note: "[Ο, Ρ, Τ, Υ, Χ] (red letters) for tax-free cars."
+  - code: AN
+    printed: ΑΝ
+    area: Lasithi
+    seat: Agios Nikolaos
+    categories:
+    - car
+    status: in-issue
+  - code: AO
+    printed: ΑΟ
+    area: Achaia
+    seat: Patras
+    categories:
+    - motorcycle
+    status: in-issue
+    note: Also used in Mount Athos (AO–NNN–NN).
+  - code: AP
+    printed: ΑΡ
+    area: Argolis (Argolida)
+    seat: Nafplio
+    categories:
+    - car
+    status: in-issue
+  - code: AT
+    printed: ΑΤ
+    area: Arta
+    categories:
+    - car
+    status: in-issue
+  - code: AX
+    printed: ΑΧ
+    area: Achaia
+    seat: Patras
+    categories:
+    - car
+    status: in-issue
+  - code: AY
+    printed: AY
+    area: Achaia
+    seat: Patras
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: AZ
+    printed: ΑΖ
+    area: Achaia
+    seat: Patras
+    categories:
+    - car
+    status: in-issue
+  - code: BA
+    printed: ΒΑ
+    area: Magnesia
+    seat: Volos
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: BB
+    printed: ΒΒ
+    area: Magnesia
+    seat: Volos
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: BE
+    printed: ΒΕ
+    area: Piraeus
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: BH
+    printed: ΒΗ
+    area: Piraeus
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: BI
+    printed: ΒΙ
+    area: Boeotia (Viotia)
+    seat: Livadeia
+    categories:
+    - car
+    status: in-issue
+  - code: BK
+    printed: ΒΚ
+    area: East Attica
+    seat: Pallini
+    categories:
+    - car
+    status: in-issue
+  - code: BM
+    printed: ΒΜ
+    area: East Attica
+    seat: Pallini
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: BN
+    printed: ΒΝ
+    area: West Attica
+    seat: Elefsina
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: BO
+    printed: ΒΟ
+    area: Magnesia
+    seat: Volos
+    categories:
+    - car
+    status: in-issue
+    note: ΒΟΡ plates also issued in Pella Prefecture previously.
+  - code: BP
+    printed: ΒΡ
+    area: West Attica
+    seat: Elefsina
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: BT
+    printed: ΒΤ
+    area: Magnesia
+    seat: Volos
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: BX
+    printed: ΒΧ
+    area: Piraeus
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: BY
+    printed: ΒΥ
+    area: Boeotia (Viotia)
+    seat: Livadeia
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: BZ
+    printed: BZ
+    area: Piraeus
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: EA
+    printed: ΕΑ
+    area: Dodecanese
+    seat: Kos island
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: EB
+    printed: ΕΒ
+    area: Evros
+    seat: Alexandroupoli
+    categories:
+    - car
+    status: in-issue
+    note: ΕΒΒ is omitted.
+  - code: EE
+    printed: ΕΕ
+    area: Pella
+    seat: Edessa
+    categories:
+    - car
+    status: in-issue
+    note: "[E, I] (red letters) for tax-free cars."
+  - code: EH
+    printed: ΕΗ
+    area: Euboea (Evia)
+    seat: Chalkida
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: EI
+    printed: ΕΙ
+    area: Euboea (Evia)
+    seat: Chalkida
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: EK
+    printed: EK
+    area: National Transport
+    categories:
+    - truck
+    status: in-issue
+    note: "[Α, Β, Ε] (yellow) for trucks used for national goods transport."
+  - code: EM
+    printed: ΕΜ
+    area: Cyclades
+    seat: Ermoupoli
+    categories:
+    - car
+    status: in-issue
+  - code: EP
+    printed: ΕΡ
+    area: Serres
+    categories:
+    - car
+    status: in-issue
+  - code: ET
+    printed: ΕΤ
+    area: Corfu (Kerkyra)
+    seat: Corfu
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: EX
+    printed: ΕΧ
+    area: Kilkis
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: EY
+    printed: ΕΥ
+    area: Lefkada
+    categories:
+    - car
+    status: in-issue
+    note: "[Υ] for tax-free cars of offshore companies; ΕΥΑ also issued in Rhodes previously."
+  - code: EZ
+    printed: ΕΖ
+    area: Cyclades
+    seat: Ermoupoli
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: HA
+    printed: ΗΑ
+    area: Ilia
+    seat: Pyrgos
+    categories:
+    - car
+    status: in-issue
+    note: HAA is omitted
+  - code: HB
+    printed: ΗΒ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: HE
+    printed: ΗΕ
+    area: Ilia
+    seat: Pyrgos
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: HH
+    printed: ΗΗ
+    area: Heraklion
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: HI
+    printed: ΗΙ
+    area: Heraklion
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: HK
+    printed: ΗΚ
+    area: Heraklion
+    categories:
+    - car
+    status: in-issue
+    note: ΗΚΗ and ΗΚΖ issued in Chania previously.
+  - code: HM
+    printed: ΗΜ
+    area: Imathia
+    seat: Veria
+    categories:
+    - car
+    status: in-issue
+  - code: HN
+    printed: ΗΝ
+    area: Thesprotia
+    seat: Igoumenitsa
+    categories:
+    - car
+    status: in-issue
+  - code: HO
+    printed: ΗΟ
+    area: Xanthi
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: HP
+    printed: ΗΡ
+    area: Heraklion
+    categories:
+    - car
+    status: in-issue
+  - code: HT
+    printed: ΗΤ
+    area: Xanthi
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: HX
+    printed: ΗΧ
+    area: Imathia
+    seat: Veria
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: HY
+    printed: ΗΥ
+    area: Phthiotis (Fthiotida)
+    seat: Lamia
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: HZ
+    printed: ΗΖ
+    area: Heraklion
+    categories:
+    - car
+    status: in-issue
+  - code: IA
+    printed: ΙΑ
+    area: International Transport
+    categories:
+    - truck
+    status: in-issue
+    note: "[Α, Β, Ε] (yellow) for trucks used for international transport."
+  - code: IB
+    printed: ΙΒ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IE
+    printed: ΙΕ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IH
+    printed: ΙΗ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+    note: IHA issued in Euboea previously.
+  - code: II
+    printed: ΙΙ
+    area: Ioannina
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: IK
+    printed: ΙΚ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IM
+    printed: ΙΜ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IN
+    printed: ΙΝ
+    area: Ioannina
+    categories:
+    - car
+    status: in-issue
+  - code: IO
+    printed: ΙΟ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IP
+    printed: ΙΡ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+    note: Used for cars and motorcycles.
+  - code: IT
+    printed: ΙΤ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IX
+    printed: ΙΧ
+    area: Serres
+    categories:
+    - car
+    status: in-issue
+  - code: IY
+    printed: ΙΥ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: IZ
+    printed: ΙΖ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: KA
+    printed: ΚΑ
+    area: Karditsa
+    categories:
+    - car
+    status: in-issue
+    note: ΚΑΑ is omitted.
+  - code: KB
+    printed: ΚΒ
+    area: Kavala
+    categories:
+    - car
+    status: in-issue
+    note: ΚΒΒ is omitted.
+  - code: KE
+    printed: ΚΕ
+    area: Kefalonia and Ithaca
+    seat: Argostoli
+    categories:
+    - car
+    status: in-issue
+    note: KEE is omitted.
+  - code: KH
+    printed: ΚΗ
+    area: Evrytania
+    seat: Karpenisi
+    categories:
+    - car
+    status: in-issue
+    note: "[Ι, Ο, Υ] (orange letters) for state cars."
+  - code: KI
+    printed: ΚΙ
+    area: Kilkis
+    categories:
+    - car
+    status: in-issue
+  - code: KK
+    printed: ΚΚ
+    area: Rhodope
+    seat: Komotini
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: KM
+    printed: ΚΜ
+    area: Messinia
+    seat: Kalamata
+    categories:
+    - car
+    status: in-issue
+  - code: KN
+    printed: ΚΝ
+    area: Pieria
+    seat: Katerini
+    categories:
+    - car
+    status: in-issue
+    note: ΚΝΖ is omitted.
+  - code: KO
+    printed: ΚΟ
+    area: Rhodope (Rodopi)
+    seat: Komotini
+    categories:
+    - car
+    status: in-issue
+    note: ΚΟΗ, ΚΟΚ issued in Thessaloniki, ΚΟΗ also issued in Agrinio, ΚΟΡ in Heraklio
+      (motorcycles) previously.
+  - code: KP
+    printed: ΚΡ
+    area: Corinthia
+    seat: Corinth
+    categories:
+    - car
+    status: in-issue
+  - code: KT
+    printed: ΚΤ
+    area: Kastoria
+    categories:
+    - car
+    status: in-issue
+    note: "[Ι, Ο, Τ] (red letters) for tax-free cars; [Υ] (orange letters) for state cars."
+  - code: KX
+    printed: ΚΧ
+    area: Dodecanese
+    seat: Kos island
+    categories:
+    - car
+    status: in-issue
+    note: "[O, Υ, X] (red letters) for tax-free cars; ΚΧΑ issued in Rhodes previously."
+  - code: KY
+    printed: ΚΥ
+    area: Corfu (Kerkyra)
+    seat: Corfu
+    categories:
+    - car
+    status: in-issue
+  - code: KZ
+    printed: ΚΖ
+    area: Kozani
+    categories:
+    - car
+    status: in-issue
+    note: ΚΖΖ is omitted.
+  - code: MA
+    printed: ΜΑ
+    area: Chalkidiki
+    seat: Polygyros
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: MB
+    printed: ΜΒ
+    area: Samos
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: ME
+    printed: ΜΕ
+    area: Aitoloakarnania
+    seat: Messolongi
+    categories:
+    - car
+    status: in-issue
+  - code: MH
+    printed: ΜΗ
+    area: Lesvos
+    seat: Myrina (Limnos)
+    categories:
+    - car
+    status: in-issue
+    note: "[Ι, Ο, Υ] (red letters) for tax-free cars."
+  - code: MI
+    printed: ΜΙ
+    area: Phthiotis (Fthiotida)
+    seat: Lamia
+    categories:
+    - car
+    status: in-issue
+    note: MII is omitted
+  - code: MK
+    printed: ΜΚ
+    area: Karditsa
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: MM
+    printed: ΜΜ
+    area: Pella
+    seat: Edessa
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: MN
+    printed: ΜΝ
+    area: Kozani
+    categories:
+    - car
+    status: in-issue
+  - code: MO
+    printed: ΜΟ
+    area: Samos
+    categories:
+    - car
+    status: in-issue
+    note: "[Ι, Ο, Υ] (red letters) for tax-free cars; some MO plates issued in Rhodes
+      previously."
+  - code: MP
+    printed: ΜΡ
+    area: Laconia
+    seat: Sparti
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: MT
+    printed: ΜΤ
+    area: Lesbos
+    seat: Mytilini
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: MX
+    printed: ΜΧ
+    area: Evros
+    seat: Alexandroupoli
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: MY
+    printed: ΜΥ
+    area: Lesbos (Lesvos)
+    seat: Mytilini
+    categories:
+    - car
+    status: in-issue
+    note: ΜΥΖ issued in Rhodes previously.
+  - code: MZ
+    printed: ΜΖ
+    area: Messinia
+    seat: Kalamata
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: NA
+    printed: ΝΑ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NB
+    printed: ΝΒ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NE
+    printed: ΝΕ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NH
+    printed: ΝΗ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NI
+    printed: ΝΙ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NK
+    printed: ΝΚ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NM
+    printed: ΝΜ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: NN
+    printed: ΝΝ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: 'NO'
+    printed: ΝΟ
+    area: Thessaloniki
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: NP
+    printed: ΝΡ
+    area: Thessaloniki
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: NT
+    printed: ΝΤ
+    area: Thessaloniki
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: NX
+    printed: NX
+    area: Thessaloniki
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: NX
+    printed: ΝΧ
+    area: Prefecture Transport
+    categories:
+    - truck
+    status: in-issue
+    note: "[Α, Υ] (yellow letters) for trucks for transport of goods in a prefecture."
+  - code: NY
+    printed: ΝΥ
+    area: Thessaloniki
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: NZ
+    printed: ΝΖ
+    area: Thessaloniki
+    categories:
+    - car
+    status: in-issue
+  - code: OA
+    printed: ΟΑ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OB
+    printed: ΟΒ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OE
+    printed: ΟΕ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OH
+    printed: ΟΗ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OI
+    printed: ΟΙ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OK
+    printed: ΟΚ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OM
+    printed: ΟΜ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: 'ON'
+    printed: ΟΝ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OO
+    printed: ΟΟ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OP
+    printed: ΟΡ
+    area: Evros
+    seat: Orestiada area
+    categories:
+    - car
+    status: in-issue
+  - code: OT
+    printed: ΟΤ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: OX
+    printed: ΟΧ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: OY
+    printed: ΟΥ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: OZ
+    printed: ΟΖ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: PA
+    printed: ΡΑ
+    area: Florina
+    categories:
+    - car
+    status: in-issue
+    note: "[Ι, Ο, Υ] (red letters) for tax-free cars; ΡΑΑ is omitted."
+  - code: PB
+    printed: ΡΒ
+    area: Corinthia
+    seat: Corinth
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: PE
+    printed: ΡΕ
+    area: Rethymno
+    categories:
+    - car
+    status: in-issue
+  - code: PH
+    printed: ΡΗ
+    area: Rethymno
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: PI
+    printed: ΡΙ
+    area: Larissa
+    categories:
+    - car
+    status: in-issue
+  - code: PK
+    printed: ΡΚ
+    area: Dodecanese
+    seat: Rodos (Rhodes)
+    categories:
+    - car
+    status: in-issue
+  - code: PM
+    printed: ΡΜ
+    area: Drama
+    categories:
+    - car
+    status: in-issue
+    note: ΡΜΖ is omitted.
+  - code: PN
+    printed: ΡΝ
+    area: Grevena
+    categories:
+    - car
+    status: in-issue
+    note: "[Ι, Μ, Ν, Ο, Ρ] (red letters) for trucks."
+  - code: PO
+    printed: ΡΟ
+    area: Dodecanese
+    seat: Rhodes (Rodos)
+    categories:
+    - car
+    status: in-issue
+  - code: PP
+    printed: ΡΡ
+    area: Larissa
+    categories:
+    - car
+    status: in-issue
+  - code: PT
+    printed: ΡΤ
+    area: Larissa
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: PX
+    printed: ΡΧ
+    area: Dodecanese
+    seat: Rodos (Rhodes)
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: PY
+    printed: ΡΥ
+    area: Dodecanese
+    seat: Rodos (Rhodes)
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: PZ
+    printed: ΡΖ
+    area: Preveza
+    categories:
+    - car
+    status: in-issue
+    note: ΡΖΒ, PZZ and PZI are omitted for cars.
+  - code: TA
+    printed: ΤΑ
+    area: Taxis
+    categories:
+    - taxi
+    status: in-issue
+    note: "[Α, Β, Ε, Ζ, Η] (yellow plates)."
+  - code: TB
+    printed: ΤΒ
+    area: Corfu (Kerkyra)
+    seat: Corfu
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: TE
+    printed: ΤΕ
+    area: Corfu (Kerkyra)
+    seat: Corfu
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TH
+    printed: ΤΗ
+    area: Aitoloakarnania
+    seat: Agrinio
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TI
+    printed: ΤΙ
+    area: Pieria
+    seat: Katerini
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TK
+    printed: ΤΚ
+    area: Trikala
+    categories:
+    - car
+    status: in-issue
+  - code: TM
+    printed: ΤΜ
+    area: Argolis (Argolida)
+    seat: Nafplio
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: TN
+    printed: ΤΝ
+    area: Trikala
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TO
+    printed: ΤΟ
+    area: Drama
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TP
+    printed: ΤΡ
+    area: Arcadia
+    seat: Tripoli
+    categories:
+    - car
+    status: in-issue
+  - code: TT
+    printed: ΤΤ
+    area: Rhodope
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TX
+    printed: ΤΧ
+    area: Preveza
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: TY
+    printed: ΤΥ
+    area: Chania
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: TZ
+    printed: ΤΖ
+    area: Piraeus
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XA
+    printed: ΧΑ
+    area: Euboea (Evia)
+    seat: Chalkida
+    categories:
+    - car
+    status: in-issue
+  - code: XB
+    printed: ΧΒ
+    area: Chania
+    categories:
+    - car
+    - motorcycle
+    status: in-issue
+    note: Used for both motorcycles and cars.
+  - code: XE
+    printed: ΧΕ
+    area: Athens
+    categories:
+    - car
+    - motorcycle
+    status: in-issue
+    note: Used for both motorcycles and cars.
+  - code: XH
+    printed: ΧΗ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XI
+    printed: ΧΙ
+    area: Chios
+    categories:
+    - car
+    status: in-issue
+  - code: XK
+    printed: ΧΚ
+    area: Chalkidiki
+    seat: Polygyros
+    categories:
+    - car
+    status: in-issue
+  - code: XM
+    printed: ΧΜ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: XN
+    printed: ΧΝ
+    area: Chania
+    categories:
+    - car
+    status: in-issue
+  - code: XO
+    printed: ΧΟ
+    area: Chios
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XP
+    printed: ΧΡ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XT
+    printed: ΧΤ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XX
+    printed: ΧΧ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XY
+    printed: ΧΥ
+    area: Athens
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: XZ
+    printed: ΧΖ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: YA
+    printed: ΥΑ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: YB
+    printed: ΥΒ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: YE
+    printed: ΥΕ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: YH
+    printed: ΥΗ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+    note: YHA issued in Euboea previously.
+  - code: YI
+    printed: ΥΙ
+    area: Piraeus
+    categories:
+    - car
+    status: in-issue
+  - code: YK
+    printed: ΥΚ
+    area: Piraeus
+    categories:
+    - car
+    status: in-issue
+  - code: YM
+    printed: ΥΜ
+    area: Piraeus
+    categories:
+    - car
+    status: in-issue
+  - code: YN
+    printed: ΥΝ
+    area: Piraeus
+    categories:
+    - car
+    status: in-issue
+  - code: YO
+    printed: ΥΟ
+    area: West Attica
+    seat: Elefsina
+    categories:
+    - car
+    status: in-issue
+  - code: YP
+    printed: ΥΡ
+    area: West Attica
+    seat: Elefsina
+    categories:
+    - car
+    status: in-issue
+  - code: YT
+    printed: ΥΤ
+    area: West Attica
+    seat: Elefsina
+    categories:
+    - car
+    status: in-issue
+  - code: YX
+    printed: ΥΧ
+    area: East Attica
+    seat: Pallini
+    categories:
+    - car
+    status: in-issue
+  - code: YY
+    printed: ΥΥ
+    area: East Attica
+    seat: Pallini
+    categories:
+    - car
+    status: in-issue
+  - code: YZ
+    printed: ΥΖ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: ZA
+    printed: ΖΑ
+    area: Zakynthos
+    categories:
+    - car
+    status: in-issue
+  - code: ZB
+    printed: ΖΒ
+    area: Zakynthos
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: ZE
+    printed: ΖΕ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: ZH
+    printed: ΖΗ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: ZI
+    printed: ΖΙ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: ZK
+    printed: ΖΚ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: ZM
+    printed: ΖΜ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+  - code: ZN
+    printed: ΖΝ
+    area: Piraeus
+    categories:
+    - car
+    status: in-issue
+  - code: ZO
+    printed: ΖΟ
+    area: Athens
+    categories:
+    - car
+    status: allocated-not-yet-issued
+  - code: ZP
+    printed: ΖΡ
+    area: Piraeus
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: ZT
+    printed: ΖΤ
+    area: West Attica
+    seat: Elefsina
+    categories:
+    - motorcycle
+    status: in-issue
+  - code: ZX
+    printed: ΖΧ
+    area: East Attica
+    seat: Pallini
+    categories:
+    - car
+    status: in-issue
+  - code: ZY
+    printed: ΖΥ
+    area: East Attica
+    seat: Pallini
+    categories:
+    - car
+    status: in-issue
+  - code: ZZ
+    printed: ΖΖ
+    area: Athens
+    categories:
+    - car
+    status: in-issue
+    note: ZZP issued in Pyraeus previously.
