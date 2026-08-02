@@ -23641,3 +23641,65 @@ Three, against **71** last release. The demotion wave has essentially drained.
 3. **§4.2's grep finds 1 of 13.** `grep -rn "HELD (owner" enrich/` matches one
    banner style; the real files use six different ones. A delegate is flipping
    the blocks back and fixing the pattern.
+
+## S4W — the release left `main` RED on `lint_enrich`, and the gap is one the runbook does not contain in either the section that should hold it or anywhere else
+
+Fixed in `pipeline#158`, merged; pristine main now exits 0. But the shape is
+worth more than the fix.
+
+### The gap
+
+    §4.2   restores enrich blocks for ids a release MINTS
+    ——     enrich blocks for ids a release RETIRES:  nothing, anywhere
+
+2026.08.2 retired 8 body-word ids (`data#209`). `enrich/` still named them, so
+`lint_enrich` exited 1 on **pristine pipeline main**, turning every open PR red
+with a failure pointing at the PR's own content. That is the SAME CLASS as the
+`OWNERSHIP.yml` staleness §4.3b exists to prevent — a release invalidating
+everyone else's CI — arriving from the opposite direction. A release routinely
+mints AND retires in one cut, so the runbook covering only half of it is a gap
+that will recur every time.
+
+Retired, commented rather than deleted: `bentley/saloon`, `ford/roadster`,
+`pontiac/coupe`, `pontiac/sedan`, `porsche/coupe`, `saab/cabriolet`,
+`saab/estate`, `skoda/coupe`. Checked each before touching it — **all 8 live in
+v2026.08.1, all 8 now carrying a removal manifest, none with an alias**, which
+is correct: a body word is not a rename target, so there is no survivor to
+point at. `lint_enrich` 2201 → 2193 ids, exactly the 8. The blocks stay as
+comments because each one is the evidence for why the nameplate was once
+believed real, and the same registers will offer the same string next wave.
+
+### The other two runbook bugs, both found by failing them
+
+**§1.1 was insufficient AS WRITTEN and I proved it by walking into it.** I
+pulled both repos, then merged `#155` because pre-flight §1.2 surfaced it as the
+blocker, then built — **one commit behind**, five gate failures reporting the
+exact condition `#155` removes. Pre-flight is not a prefix you run once: §1.2
+and §1.3 routinely make you merge, and every merge invalidates the pull.
+
+**§1.5's licence check was UNSOUND.** `grep -c "fetch licenses"` → **0** on a
+correct build, because the licence caches were 5h old against a 20h `max_age`.
+It reads 0 in two opposite worlds — blanket-touched-and-skipped, and
+genuinely-fresh-and-verified — and nothing distinguishes them after the fact. A
+check whose passing signal is the ABSENCE of output cannot tell you it ran. The
+gate now states what it did, and the runbook asserts on that:
+
+    license gate: 13/13 pins verified (+1 declared_absent, asserted not ingested)
+
+**And the existing tests caught my first version of it.** I asserted
+`verified == expected`; an unreachable pin already fails loudly, so the counter
+piled a second redundant failure on top — one specific message turned into two.
+The accounting is `verified + failed == expected`: a pin that FAILED is not a
+pin that went missing.
+
+§4.2's grep (1 of 13 files, six banner styles) is left to the delegate already
+rewriting it — two PRs should not edit the same line.
+
+### Queue
+
+Merged since the cut: `pipeline#154` (BMW M6 · 261 gb E24s move to `m635csi`),
+`pipeline#156` + `data#217` (**NZ was never publishing a correct car count** —
+60,795 vehicles recovered, and the archive shows both chunks truncated since the
+source's FIRST fetch), `data#216`. Rebased onto the post-release main and
+awaiting green: `data#215` (lancia/coupe → a FOLD onto `beta`, 79 vehicles, one
+key, not the `FW_POOLS` change I wrongly relayed) and `data#208` (hyundai).
