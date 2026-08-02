@@ -23946,3 +23946,63 @@ with no way to tell them apart.
 Open and mine, none blocking: the `mercedes-benz/cabriolet` → `300-se` rescue
 (filed with its evidence, wants its own control build) and `Citroën: 2CV`,
 which is a curation decision rather than a tooling fix.
+
+## S4W — both of my open items are closed, and ONE OF THEM CLOSED AS A RETRACTION OF MY OWN NOTE
+
+Queue drained: **0 open data PRs**, and both mains verified green on a full
+build — `ALL GATES GREEN`, `license gate: 13/13 pins verified`. The night's
+curation confirmed live rather than assumed: `lancia/coupe` gone and folded,
+`lada/2107 aliases=["Semyorka","Жигули"]`, `hyundai/i80` retired with `i800`
+live in gb+nz.
+
+### 1. The `mercedes-benz/cabriolet` rescue is REFUTED (`data#242`, merged)
+
+I filed that entry saying a rescue was **owed**. It is not, and I corrected the
+note rather than trimming it — a removals reason claiming owed work is exactly
+what the next curator picks up and acts on.
+
+**Rename route, impossible:** the normalizer produces `Mercedes-Benz | Cabriolet`
+from `CABRIOLET 300 SE AUTOMATIC`, `CABRIOLET 300 SE` **and bare `CABRIOLET`
+alike** — the discriminating `300 SE` dies before the rename lookup. Same shape
+as the lancia retraction: the produced string does not carry the model.
+
+**Upstream route, refuted harder.** Giving nl_rdw fi_traficom's body-first strip
+matches **811 (make,model) pairs / 61,264 vehicles** across 15 cache files, and
+the largest are REAL NAMEPLATES it would destroy:
+
+    SUZUKI WAGON R   32,179   suzuki/wagon-r     live in 7 countries
+    ALFA ROMEO SPIDER ~4,900  alfa-romeo/spider  live in 9
+    FIAT COUPE          719   fiat/coupe         live in 6
+
+The Dutch `handelsbenaming` is a free-text TRADE NAME where the body word is
+routinely part of the nameplate — which is why fi_traficom's header calls its own
+`BODY_HEAD` *"the one non-mechanical thing"* in that adapter.
+
+**And the case I expected to find broken is already right.** 2,410 nl Cadillacs
+sit behind two absent ids, so I checked for the `cadillac/hardtop` mistake I made
+last night. `COUPE DE VILLE` and `SEDAN DE VILLE` both classify to `De Ville`,
+live in 7 countries. Curation already handles it, with no mechanical rule.
+
+### 2. `Citroën: 2CV` was inert (`data#243`, open, green)
+
+`dig(make, model)` is asked with the PUBLISHED nameplate and there is no
+`citroen/2cv`. The registers spell the TYPE CODE: `az-2cv`, `azu-2cv`, `az-a2`.
+
+    control    citroen/az-2cv aliases = nil
+    treatment  citroen/az-2cv aliases = ["Deux Chevaux", "Ente", "2CV"]
+
+**Keyed on AZ only, deliberately** — AZ is the saloon's code, AZU the
+Fourgonnette, and the nicknames name the saloon. On both it becomes a multi-id
+alias and `resolver.rb:192-199` answers with a rung-4 REFUSAL: right for
+Cupra/SEAT León where reach is near-equal, wrong where one record owns the name.
+Collisions measured, not assumed — **10 hard findings on main, 10 on the branch,
+byte-identical**.
+
+Filed rather than improvised, both times: the three Citroën ids are TYPE CODES
+publishing as nameplates, the class folded this week for DAF, Land Rover and
+Suzuki. Folding them MINTS a `citroen/2cv` and needs evidence that `Az A2` is a
+2CV at all — it is not a designation Citroën documents and may be a register
+artifact.
+
+`pipeline#159` (S2W's superseded yamaha flip-back) is the only PR open anywhere;
+it is yours to close, and my measurement is on it.
