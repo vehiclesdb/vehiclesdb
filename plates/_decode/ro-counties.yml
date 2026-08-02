@@ -1,0 +1,213 @@
+# plates/_decode/ro-counties.yml — Romania's registration-mark territorial codes.
+#
+# PROVENANCE, STATED FIRST AND WITHOUT DECORATION. Unlike
+# plates/_decode/it-provinces.yml and plates/_decode/at-districts.yml, whose rows
+# are enacted law read off Normattiva and RIS, THE 41 COUNTY ROWS BELOW ARE
+# `secondary-wikipedia`. The statutory annex exists and is named in `authority`;
+# it was NOT reachable in this pass, and every URL tried and every failure mode
+# is recorded in `primary_attempts` below so the next pass starts from a map.
+# Every row carries `evidence_tier: secondary-wikipedia` inline. No row in this
+# file claims `instrument-in-force`, and a reviewer who fingerprints this table
+# against Wikipedia SHOULD find a match — that is the declared provenance, not a
+# defect.
+#
+# THREE STRUCTURAL FACTS THIS FILE EXISTS TO CARRY
+#
+# 1. BUCHAREST IS NOT A COUNTY ROW, AND THAT IS WHY IT IS NOT IN THE COUNTY
+#    TABLE. Romania's territorial code is a ONE-letter code for the capital and a
+#    TWO-letter code for each of the 41 counties, and the two take DIFFERENT
+#    SERIAL FORMATS: a county plate carries two digits between the code and the
+#    three letters, Bucharest carries three. That is a real format fork inside
+#    one jurisdiction, it is modelled as separate SERIES in plates/ro.yml, and
+#    this file keeps `municipality` structurally apart from `counties` so a
+#    decoder cannot silently treat "B" as though it were a 42nd county row. The
+#    ordering and the split below are this dataset's, chosen to make the fork
+#    visible; they are not any source's arrangement.
+#
+# 2. THERE IS NO MAXIMAL-MUNCH PROBLEM, AND THAT IS WORTH SAYING OUT LOUD.
+#    Spain's pre-2000 province codes are one, two or three letters and a decoder
+#    must try longest-first (see plates/_decode/es-provinces.yml). Romania looks
+#    like it should have the same trouble — "B" is Bucharest while "BC", "BH",
+#    "BN", "BR", "BT", "BV" and "BZ" are all counties — but it does not, because
+#    the DIGIT BLOCK ALWAYS FOLLOWS THE CODE. In "B12ABC" the character after B
+#    is a digit, so the code is one letter; in "BC12ABC" it is a letter, so the
+#    code is two. The rule is mechanical and total, and it survives separator
+#    stripping (PRD-PLATES §2.6), which is exactly when a decoder needs it most.
+#
+# 3. THESE ARE NOT THE PRE-1992 CODES. The communist-era system used a different
+#    territorial letter set built on the administrative regions of the day — the
+#    much-repeated example is that the Craiova area ran under "OL" for Oltenia —
+#    and it also placed the letters in the MIDDLE of the mark rather than at the
+#    front. This table decodes the 1992-and-later mark only. Applying it to a
+#    pre-1992 Romanian plate will produce confident nonsense; ro-communist-1966
+#    in plates/ro.yml carries no reference to this file for that reason.
+jurisdiction: ro
+topic: counties
+authority:
+  name: "Regulamentul de aplicare a Ordonanţei de urgenţă a Guvernului nr. 195/2002 privind circulaţia pe drumurile publice, aprobat prin H.G. nr. 1.391 din 4 octombrie 2006 — the instrument whose annex carries the official list of indicative"
+  url: "https://legislatie.just.ro/Public/DetaliiDocument/79058"
+  note: >-
+    Named as the CARRIER of the official list, not as the source of the rows
+    below. Art. 23 of the Regulament composes the mark from "indicativul
+    judeţului sau al municipiului Bucureşti" plus an order number plus three
+    letters, and the indicative themselves are set out in the instrument's annex.
+    That annex was not retrieved — see `primary_attempts`.
+
+evidence:
+  tier: secondary-wikipedia
+  source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # the 41 county code-to-name pairs and the Bucharest code, re-expressed in this schema's own shape and ordering. Accessed 2026-08-02"
+  what_is_secondary: "every code, every county name, and the count of 41 + 1"
+  what_is_not_secondary: >-
+    The COMPOSITION RULE — that the mark begins with the indicative of the county
+    or of the municipality of Bucharest — is the Regulament's own words and is
+    cited as such in plates/ro.yml. What is secondary here is the CONTENTS of the
+    list, not the fact that the law keeps one.
+
+primary_attempts:
+  - url: "https://legislatie.just.ro/Public/DetaliiDocument/79058"
+    result: "socket hang up, four separate attempts across the pass"
+  - url: "https://legislatie.just.ro/Public/DetaliiDocumentAfis/79058"
+    result: "socket hang up"
+  - url: "https://www.dsclex.ro/legislatie/2006/octombrie/hg1391_2006.htm"
+    result: "connection reset"
+  - url: "https://r.jina.ai/https://legislatie.just.ro/Public/DetaliiDocument/79058"
+    result: "HTTP 422 (also tried percent-encoded: HTTP 422)"
+  - url: "https://web.archive.org/web/2024/https://legislatie.just.ro/Public/DetaliiDocument/79058"
+    result: "fetch tool refuses web.archive.org"
+  - url: "https://www.legex.ro/Hotararea-1391-2006-76973.aspx"
+    result: "HOST IS REACHABLE — but that document id resolves to Ordinul 2374/2006 (civil aviation), not to HG 1391/2006. legex.ro is a live route for the next pass IF the correct document id is found; the id was not."
+primary_attempts_note: >-
+  Search-engine assistance was unavailable for the second half of this pass: the
+  WebSearch budget was exhausted, DuckDuckGo's HTML endpoint moved to a CAPTCHA,
+  Mojeek returned 403 and SearXNG returned a browser check. The correct legex.ro
+  document id is therefore the single cheapest next step for whoever picks this
+  up.
+
+period: { start: 1992 }
+period_evidence: secondary-wikipedia
+period_note: >-
+  The code set below belongs to the system introduced in 1992. Two period
+  cautions a decoder must carry. (1) LOWER BOUND: these codes do not decode
+  pre-1992 marks at all (header fact 3). (2) STABILITY: Romania's county
+  boundaries have not been re-cut since 1968, so unlike the Italian province
+  sigle (four withdrawn in 2017) and the German district codes (reinstated in
+  waves), this table has no known withdrawn rows and no known period-closed rows.
+  That is an ABSENCE OF EVIDENCE of churn rather than sourced evidence of
+  stability, and it is recorded as the former.
+
+iso_3166_2_correspondence:
+  status: UNVERIFIED
+  claim_not_made: >-
+    The 41 two-letter codes below LOOK like the subdivision codes of ISO
+    3166-2:RO with the "RO-" prefix removed, and if that correspondence held it
+    would give this table a second, non-Wikipedia, structured route. THIS FILE
+    DOES NOT RELY ON IT AND DOES NOT ASSERT IT. The ISO register was not fetched
+    in this pass, so the correspondence is an unchecked hypothesis, and an
+    unchecked hypothesis dressed as corroboration would be worse than no
+    corroboration at all — two sources that were never actually compared are one
+    source with a false witness. Recorded here as the FIRST task for a verifier:
+    fetch the ISO 3166-2:RO register, diff it against these rows, and either
+    upgrade the tier or record where they diverge.
+
+# ---------------------------------------------------------------------------
+# THE CAPITAL — one letter, three digits, its own series in plates/ro.yml.
+# ---------------------------------------------------------------------------
+municipality:
+  code: B
+  name: "București"
+  name_en: Bucharest
+  type: "municipiu (the capital, which is not a județ)"
+  serial_digits: 3
+  serial_digits_history:
+    - { digits: 2, note: "the original 1992 form, B 99 LLL — see ro-bucharest-1992 / ro-bucharest-2007" }
+    - { digits: 3, note: "adopted when the two-digit space was exhausted — see ro-bucharest-2010" }
+  evidence_tier: secondary-wikipedia
+  note: >-
+    THE FORMAT FORK. Every other territorial code in Romania takes two digits;
+    Bucharest takes three. The reason is capacity, not law: art. 23 of the
+    Regulament prescribes "numărul de ordine, format din cifre arabe" and fixes
+    NO number of digits at all, so the capital was able to lengthen its order
+    number without any amendment. That is why plates/ro.yml carries a
+    `regex_statutory` wider than its `regex` for the standard series — the
+    statute is genuinely wider than what is issued, and Bucharest is the proof.
+
+# ---------------------------------------------------------------------------
+# THE 41 COUNTIES — ordered by CODE, this dataset's ordering. Two letters each,
+# two digits in the serial, without exception.
+# ---------------------------------------------------------------------------
+counties_note: "every row: { code, name (Romanian, with diacritics), evidence_tier }. serial_digits is 2 for all 41 and is stated once here rather than repeated per row."
+counties_serial_digits: 2
+counties:
+  - { code: AB, name: "Alba",              evidence_tier: secondary-wikipedia }
+  - { code: AG, name: "Argeș",             evidence_tier: secondary-wikipedia }
+  - { code: AR, name: "Arad",              evidence_tier: secondary-wikipedia }
+  - { code: BC, name: "Bacău",             evidence_tier: secondary-wikipedia }
+  - { code: BH, name: "Bihor",             evidence_tier: secondary-wikipedia }
+  - { code: BN, name: "Bistrița-Năsăud",   evidence_tier: secondary-wikipedia }
+  - { code: BR, name: "Brăila",            evidence_tier: secondary-wikipedia }
+  - { code: BT, name: "Botoșani",          evidence_tier: secondary-wikipedia }
+  - { code: BV, name: "Brașov",            evidence_tier: secondary-wikipedia }
+  - { code: BZ, name: "Buzău",             evidence_tier: secondary-wikipedia }
+  - { code: CJ, name: "Cluj",              evidence_tier: secondary-wikipedia }
+  - { code: CL, name: "Călărași",          evidence_tier: secondary-wikipedia }
+  - { code: CS, name: "Caraș-Severin",     evidence_tier: secondary-wikipedia }
+  - { code: CT, name: "Constanța",         evidence_tier: secondary-wikipedia }
+  - { code: CV, name: "Covasna",           evidence_tier: secondary-wikipedia }
+  - { code: DB, name: "Dâmbovița",         evidence_tier: secondary-wikipedia }
+  - { code: DJ, name: "Dolj",              evidence_tier: secondary-wikipedia }
+  - { code: GJ, name: "Gorj",              evidence_tier: secondary-wikipedia }
+  - { code: GL, name: "Galați",            evidence_tier: secondary-wikipedia }
+  - { code: GR, name: "Giurgiu",           evidence_tier: secondary-wikipedia }
+  - { code: HD, name: "Hunedoara",         evidence_tier: secondary-wikipedia }
+  - { code: HR, name: "Harghita",          evidence_tier: secondary-wikipedia }
+  - { code: IF, name: "Ilfov",             evidence_tier: secondary-wikipedia }
+  - { code: IL, name: "Ialomița",          evidence_tier: secondary-wikipedia }
+  - { code: IS, name: "Iași",              evidence_tier: secondary-wikipedia }
+  - { code: MH, name: "Mehedinți",         evidence_tier: secondary-wikipedia }
+  - { code: MM, name: "Maramureș",         evidence_tier: secondary-wikipedia }
+  - { code: MS, name: "Mureș",             evidence_tier: secondary-wikipedia }
+  - { code: NT, name: "Neamț",             evidence_tier: secondary-wikipedia }
+  - { code: OT, name: "Olt",               evidence_tier: secondary-wikipedia }
+  - { code: PH, name: "Prahova",           evidence_tier: secondary-wikipedia }
+  - { code: SB, name: "Sibiu",             evidence_tier: secondary-wikipedia }
+  - { code: SJ, name: "Sălaj",             evidence_tier: secondary-wikipedia }
+  - { code: SM, name: "Satu Mare",         evidence_tier: secondary-wikipedia }
+  - { code: SV, name: "Suceava",           evidence_tier: secondary-wikipedia }
+  - { code: TL, name: "Tulcea",            evidence_tier: secondary-wikipedia }
+  - { code: TM, name: "Timiș",             evidence_tier: secondary-wikipedia }
+  - { code: TR, name: "Teleorman",         evidence_tier: secondary-wikipedia }
+  - { code: VL, name: "Vâlcea",            evidence_tier: secondary-wikipedia }
+  - { code: VN, name: "Vrancea",           evidence_tier: secondary-wikipedia }
+  - { code: VS, name: "Vaslui",            evidence_tier: secondary-wikipedia }
+
+# ---------------------------------------------------------------------------
+# Decoder cautions.
+# ---------------------------------------------------------------------------
+decoder_cautions:
+  - id: place-of-registration-not-residence
+    text: >-
+      The Romanian indicative denotes where the vehicle is REGISTERED. It is
+      therefore semantically unlike the Italian right-hand sticker (the holder's
+      province of RESIDENCE, and legally not part of the plate at all) and unlike
+      the French SIV département band (owner-CHOSEN, decoding to nothing). A
+      Romanian indicative is real geography. It is still not a claim about where
+      the vehicle IS, only about where it was put on the register.
+  - id: ilfov-is-not-bucharest
+    text: >-
+      IF (Ilfov) is the county that SURROUNDS Bucharest and is a separate
+      indicative with the ordinary two-digit format. A decoder that folds IF into
+      B, or renders IF as "Bucharest area", is wrong on both the code and the
+      format.
+  - id: no-code-is-a-word
+    text: >-
+      Unlike Italy, whose Rome sigla is the literal word "Roma" and forces a
+      special case into every parser, every Romanian code here is exactly one or
+      two letters. There is no four-letter exception and no mixed-case row.
+  - id: three-letter-group-is-not-a-code
+    text: >-
+      The THREE letters at the end of a Romanian mark are a serial group, not a
+      territorial code, even when they spell a plausible abbreviation. Certain
+      combinations are reported to be reserved for institutions (POL, DEP, SNT,
+      SRI, GUV); those are reservations inside the serial space and are recorded
+      in plates/ro.yml, not here, because they decode to an INSTITUTION and not
+      to a place.

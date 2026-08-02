@@ -1,0 +1,785 @@
+# plates/ro.yml — Romania (PRD-PLATES gate L1, wave 2).
+#
+# WHAT IS PRIMARY HERE AND WHAT IS NOT.
+#
+# The Romanian instrument chain is fully IDENTIFIED — every instrument below is
+# named with its number, its date and its Monitorul Oficial reference — and it
+# was almost entirely UNREACHABLE from this pass's network position.
+# legislatie.just.ro answered four separate requests with a socket hang-up, its
+# print view did the same, the text-extraction proxy returned 422, the fetch tool
+# refuses web.archive.org, and by the second half of the pass every search engine
+# available had either exhausted its budget or moved to a CAPTCHA. The one
+# fragment of instrument text that WAS obtained is art. 23 of the Regulament, and
+# it is quoted verbatim below with its retrieval route stated honestly rather
+# than laundered.
+#
+# EVERYTHING ELSE IS `secondary-wikipedia`, TAGGED PER FACT, WITH THE ARTICLE
+# URL. One `grep -n secondary-wikipedia plates/ro.yml` enumerates the whole
+# Wikipedia-derived surface of this file. A reviewer fingerprinting
+# plates/_decode/ro-counties.yml against Wikipedia should find a match: that is
+# the declared provenance of that table, recorded in the table itself.
+#
+# THE FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. BUCHAREST'S THREE DIGITS ARE A REAL FORMAT FORK, NOT AN ERROR. A Romanian
+#    county plate reads `CJ 12 ABC` — two-letter code, TWO digits, three letters.
+#    A Bucharest plate reads `B 123 ABC` — one-letter code, THREE digits, three
+#    letters. Both are current, both are ordinary standard-issue plates, and they
+#    are DIFFERENT SERIAL SPACES. This file models them as separate series
+#    (ro-standard-* and ro-bucharest-*) with separate regexes, because a single
+#    regex covering both would accept `CJ 123 ABC`, which Romania does not issue.
+#
+# 2. THE STATUTE IS WIDER THAN WHAT IS ISSUED, AND BUCHAREST IS THE PROOF. Art.
+#    23 of the Regulament prescribes "numărul de ordine, format din cifre arabe"
+#    and fixes NO NUMBER OF DIGITS. That is why Bucharest could lengthen its
+#    order number from two digits to three without any amendment, and it is why
+#    every standard series here carries a `regex_statutory` (PRD-PLATES §2.7)
+#    that is genuinely wider than its `regex`: the issued grammar is two digits
+#    for counties and three for the capital, but the LEGAL bound is any number of
+#    Arabic numerals. Romania is the cleanest example of that tier in the dataset
+#    so far — us-fl's statutory tier is a charset bound; Romania's is a LENGTH
+#    bound the capital has already used.
+#
+# 3. THE 2006 INSTRUMENTS DID NOT START THE 1992 SERIES. H.G. nr. 1.391/2006 and
+#    Ordinul M.A.I. nr. 1.501/2006 are the instruments IN FORCE; the format they
+#    describe has run since 1992, fourteen years before either was made. This
+#    file therefore dates the standard series to 1992 (secondary) and cites the
+#    2006 instruments for the RULE, never for the PERIOD. Doing the opposite —
+#    shipping an instrument's own window as the series period — is the documented
+#    Spanish failure (a 1999-2000 decree window shipped for a format that ran
+#    three decades) and it is the single easiest way to get a plates file wrong.
+#
+# 4. THE PHYSICAL SPEC IS IN TWO ROMANIAN STANDARDS, AND THEY ARE PAYWALLED.
+#    SR 13078:1996 ("Vehicule rutiere. Plăci de înmatriculare retroreflectorizante
+#    pentru autovehicule şi remorci") and SR 13140:1996 (the content and structure
+#    of provisional and running-test numbers) are the Romanian analogue of BS AU
+#    145e and DIN 74069 — building to them is fine, their text is not
+#    redistributable, and in this pass neither was purchased or read. They are
+#    the reason every colour and every millimetre below is `secondary-wikipedia`
+#    with `hex_basis: observed`. This is the same posture PRD-PLATES §4 records
+#    for SAE J686: NAMED, UNPINNED, never quoted.
+#
+# 5. ROMANIA'S EU BAND HAS A HARD DATE AND A SOFT ONE. Accession was 1 January
+#    2007, which is a treaty date and not in doubt. That the twelve-star band
+#    REPLACED the Romanian tricolour band on plates on or about that date is
+#    reported by a secondary and is tagged as such. The design change is modelled
+#    as a series boundary (PRD-PLATES §2.3, the same cut plates/it.yml makes at
+#    1999), so each of the two territorial formats appears twice: once with the
+#    national band and once with the EU band.
+jurisdiction: ro
+authority:
+  name: Direcţia Regim Permise de Conducere şi Înmatriculare a Vehiculelor (D.R.P.C.I.V.), Ministerul Afacerilor Interne — under O.U.G. nr. 195/2002 and its Regulament
+  url: "https://legislatie.just.ro/Public/DetaliiDocument/79058"
+binding: vehicle
+binding_note: >-
+  VEHICLE-bound. Art. 23 of the Regulament attributes the number at
+  înmatriculare, to the vehicle: "La înmatriculare, fiecărui autovehicul şi
+  fiecărei remorci li se atribuie câte un număr de înmatriculare". ONE THING THIS
+  FILE DOES NOT ESTABLISH, and a marketplace consumer will want it: whether a
+  Romanian mark is REASSIGNED when a vehicle moves to another county. Because the
+  territorial code is inside the mark, a county change cannot leave the mark
+  intact, so re-plating must happen on some trigger — but WHICH trigger, and
+  whether an intra-county sale also re-plates, is in the înmatriculare procedure
+  (Ordinul M.A.I. nr. 1.501/2006), which was not retrieved. Recorded as a gap
+  rather than inferred: the inference is tempting and this file declines it.
+instrument:
+  enabling_act:
+    citation: "Ordonanţa de urgenţă a Guvernului nr. 195 din 12 decembrie 2002 privind circulaţia pe drumurile publice"
+    monitorul_oficial: "M. Of. nr. 958 din 28 decembrie 2002"
+    approved_by: "Legea nr. 49 din 8 martie 2006, M. Of. nr. 246 din 20 martie 2006"
+    republished: "M. Of. nr. 670 din 3 august 2006"
+    relevant_article: "art. 19 — înmatricularea şi înregistrarea vehiculelor"
+  implementing_regulation:
+    citation: "Regulamentul de aplicare a Ordonanţei de urgenţă a Guvernului nr. 195/2002 privind circulaţia pe drumurile publice, aprobat prin Hotărârea Guvernului nr. 1.391 din 4 octombrie 2006"
+    relevant_article: "art. 23 — the composition of the registration number"
+    verbatim: >-
+      "La înmatriculare, fiecărui autovehicul şi fiecărei remorci li se atribuie
+      câte un număr de înmatriculare compus din indicativul judeţului sau al
+      municipiului Bucureşti, numărul de ordine, format din cifre arabe, şi o
+      combinaţie de trei litere cu caractere latine majuscule."
+    retrieval_caveat: >-
+      READ THIS BEFORE RELYING ON THE QUOTE. The sentence above is the
+      instrument's own text, but it was NOT read off legislatie.just.ro: four
+      direct requests to that host, plus its print view, plus a text-extraction
+      proxy, all failed (every URL and failure mode is listed in
+      plates/_decode/ro-counties.yml `primary_attempts`). It was recovered from a
+      search index's rendering of the legislatie.just.ro page. That is one
+      remove from the primary. It is cited here as instrument text because it is
+      instrument text, and the remove is stated so a verifier re-derives it from
+      the source rather than from this file.
+    source: "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament, art. 23 — the composition rule. See retrieval_caveat."
+  registration_procedure:
+    citation: "Ordinul ministrului administraţiei şi internelor nr. 1.501 din 13 noiembrie 2006 privind procedura înmatriculării, înregistrării, radierii şi eliberarea autorizaţiei de circulaţie provizorie sau pentru probe a vehiculelor"
+    monitorul_oficial: "M. Of. nr. 941 din 21 noiembrie 2006"
+    note: >-
+      The instrument that governs the PROVISIONAL and the RUNNING-TEST (probe)
+      plate — both are named in its own title, which is why those two series
+      below carry `instrument-in-force` for their rule even though this pass could
+      not read the Ordin's text. Not retrieved.
+  physical_standards:
+    - { citation: "SR 13078:1996 — Vehicule rutiere. Plăci de înmatriculare retroreflectorizante pentru autovehicule şi remorci", status: "NAMED, UNPINNED (ASRO, paywalled). Never quoted here." }
+    - { citation: "SR 13140:1996 — the content and structure of provisional and running-test registration numbers", status: "NAMED, UNPINNED (ASRO, paywalled). Never quoted here." }
+  historic_instruments:
+    - { citation: "Legea nr. 121/1947 asupra poliţiei circulaţiei pe drumurile publice", monitorul_oficial: "M. Of., Partea I, nr. 90 din 21 aprilie 1947", status: "locator only — not retrieved" }
+    - { citation: "Regulament de aplicare a Legii privitoare la circulaţia automobilelor", monitorul_oficial: "M. Of. nr. 117 din 28 august 1921", status: "locator only — not retrieved" }
+  source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: the instrument NUMBERS, dates and Monitorul Oficial references in this block were taken from the article's reference apparatus and used as LOCATORS. The instruments themselves are cited individually above. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  mark_composition:
+    verbatim: "art. 23 al Regulamentului: 'un număr de înmatriculare compus din indicativul judeţului sau al municipiului Bucureşti, numărul de ordine, format din cifre arabe, şi o combinaţie de trei litere cu caractere latine majuscule.'"
+    three_elements:
+      - "indicativul judeţului sau al municipiului Bucureşti — the territorial code: ONE letter for the capital, TWO for each county (plates/_decode/ro-counties.yml)"
+      - "numărul de ordine, format din cifre arabe — an order number in Arabic numerals, WITH NO DIGIT COUNT PRESCRIBED (see header fact 2)"
+      - "o combinaţie de trei litere cu caractere latine majuscule — three uppercase Latin letters"
+    note: >-
+      Three elements, and only the FIRST and the THIRD are bounded by the text.
+      The unbounded middle is the whole reason this file ships a
+      `regex_statutory` wider than its `regex`, and the reason Bucharest's fork
+      required no amendment.
+  alphabet:
+    evidence_tier: secondary-wikipedia
+    letters_excluded_reported: [Q]
+    positional_rules_reported:
+      - "the three-letter group is reported never to BEGIN with I or O (confusable with 1 and 0)"
+      - "III and OOO are reported not to be issued"
+    reserved_combinations_reported: [POL, DEP, SNT, SRI, GUV]
+    reserved_note: >-
+      Reported as reserved for institutions — POL for police, DEP for the Chamber
+      of Deputies, SNT for the Senate, SRI for the intelligence service, GUV for
+      the Government. These are reservations INSIDE the ordinary serial space, so
+      they are recorded here rather than authored as series: a reserved
+      combination changes who holds the plate, not the format or the design, and
+      PRD-PLATES §2.3 makes that a note and not a series.
+    not_encoded_because: >-
+      The three restrictions above do not compose into a single sourced alphabet
+      (Q excluded everywhere? only in the letter group? is the leading-I/O rule
+      about the first letter of the triple or of the whole mark?), and the
+      Regulament's own text prescribes only "trei litere cu caractere latine
+      majuscule". No `regex_strict` in this file encodes any of them; the strict
+      twins carry the COUNTY CODE SET only.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # letter Q never used; combinations beginning I or O prohibited; III and OOO not allowed; POL/DEP/SNT/SRI/GUV reserved. Accessed 2026-08-02"
+  design_defaults:
+    evidence_tier: secondary-wikipedia
+    plate_sizes:
+      - { type: A, w: 520, h: 110, unit: mm, note: "the standard one-row plate; mandatory at the front" }
+      - { type: B, w: 340, h: 200, unit: mm, note: "two-row rear plate" }
+      - { type: C, w: 240, h: 130, unit: mm, note: "motorcycles only" }
+    colours: "black characters on a white retroreflective ground for the standard series"
+    spec_note: >-
+      The binding spec is SR 13078:1996, which is paywalled and unread (header
+      fact 4). Every hex below is therefore `hex_basis: observed` — an observed
+      rendering of a named colour — and NOT a spec claim. Contrast plates/de.yml,
+      whose RAL values come out of FZV Anlage 3/4, and plates/at.yml, whose CIE
+      chromaticity quadrangles come out of KDV Anlage 5e.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # the three plate sizes and the standard colours. Accessed 2026-08-02"
+  band_history:
+    evidence_tier: secondary-wikipedia
+    shape_note: "expressed as an ordered list below rather than as a map, because the two entries are periods and not keys"
+    periods:
+      - { from: 1992, to: 2007, content: "Romanian national flag band at the left" }
+      - { from: 2007, content: "EU band — twelve stars over the RO country code" }
+    accession_note: >-
+      Romania acceded to the European Union on 1 January 2007, which is a treaty
+      date and is not in doubt. That the band CHANGED on or about that date is
+      the secondary's claim, and it is what the series boundary rests on. No
+      Romanian instrument prescribing the band's geometry was reached.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # Romanian flag band 1992-2006, EU band with twelve stars and the RO code from 2007. Accessed 2026-08-02"
+  security_upgrade_2024:
+    evidence_tier: secondary-wikipedia
+    status: "REPORTED, NOT MODELLED AS A SERIES"
+    reported: >-
+      A new generation of Romanian plates is reported from September 2024,
+      carrying a unique personal identification code, a scannable barcode and
+      phosphorescent holograms of the Romanian coat of arms running the length of
+      the plate. The SERIAL is not reported to change.
+    why_not_a_series: >-
+      A design change of that size WOULD be a series boundary under PRD-PLATES
+      §2.3, and the honest reason it is not authored as one is that the entire
+      evidence for it is a single secondary summary with a month and no
+      instrument. Authoring `ro-standard-2024` on that basis would put a
+      confidently-dated series into the dataset on the weakest evidence in this
+      file. It is recorded here instead, and named as the FIRST target for the
+      Romanian verifier: find the instrument, and re-cut ro-standard-2007 at its
+      commencement date. The series-id contract (PRD-QUALITY I-5/I-6) makes that
+      re-cut cheap — a new id plus an alias — which is precisely why waiting is
+      the cheap option and guessing is not.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # the September 2024 security-feature generation. Accessed 2026-08-02"
+
+region_encoding_tables:
+  reference: "plates/_decode/ro-counties.yml"
+  bare_filename: "ro-counties.yml"
+  reference_note: >-
+    The path form above is the convention every other reference in this dataset
+    uses (all 77 decode-file path references across plates/*.yml spell
+    `plates/_decode/<file>.yml`), so it is what this file spells; the bare
+    filename is carried alongside for a consumer that resolves by name.
+  note: >-
+    ONE table, TWO structurally different kinds of row, and the file keeps them
+    apart on purpose: `municipality` (B — one letter, THREE digits in the serial)
+    and `counties` (41 rows — two letters, TWO digits). The split is the format
+    fork of header fact 1, made visible in the decode file so a decoder cannot
+    treat the capital as a 42nd county.
+
+verifier_targets:
+  - "The instrument behind the September 2024 security-feature generation. If it exists and is dated, ro-standard-2007 must be re-cut at its commencement."
+  - "The statutory annex of county indicative — the whole of plates/_decode/ro-counties.yml is waiting on it. The cheapest known route is the correct legex.ro document id; legex.ro is reachable, its id for HG 1391/2006 is not known."
+  - "The ISO 3166-2:RO register, diffed against the 41 county rows. Recorded in the decode file as an UNVERIFIED hypothesis, deliberately not relied on."
+  - "The year Bucharest's three-digit order number began. The only source reached says 'around 2010' and this file's period.start for ro-bucharest-2010 is that soft number — the weakest date in the file."
+  - "SR 13078:1996, for every colour and dimension here."
+
+series:
+
+  # =========================================================================
+  # THE CURRENT COUNTY SERIES — CJ 12 ABC.
+  # =========================================================================
+  - id: ro-standard-2007
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2007 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      2007 is the EU band's arrival, not the serial's. THE SERIAL GRAMMAR HAS RUN
+      UNCHANGED SINCE 1992 (see ro-standard-1992) and the 2006 instruments that
+      state it are later still — see header fact 3. A consumer wanting "when did
+      Romania's current registration mark begin" should read 1992; this series
+      answers "when did the plate that carries it start looking like this".
+    matching: strict
+    format:
+      pattern: "LL 99 LLL"
+      regex: '\A[A-Z]{2} ?\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\A(?:AB|AG|AR|BC|BH|BN|BR|BT|BV|BZ|CJ|CL|CS|CT|CV|DB|DJ|GJ|GL|GR|HD|HR|IF|IL|IS|MH|MM|MS|NT|OT|PH|SB|SJ|SM|SV|TL|TM|TR|VL|VN|VS) ?\d{2} ?[A-Z]{3}\z'
+      regex_statutory: '\A[A-Z]{1,2} ?\d+ ?[A-Z]{3}\z'
+      tier_note: >-
+        THE THREE TIERS, AND WHAT EACH ONE CLAIMS. `regex_strict` is the CLOSED
+        COUNTY CODE SET — 41 alternatives, the contents of
+        plates/_decode/ro-counties.yml, which is `secondary-wikipedia` and is
+        tagged as such there and here. `regex` is the round-trippable printed
+        form with any two letters. `regex_statutory` is art. 23's own bound: a
+        territorial code, ANY number of Arabic numerals, three uppercase Latin
+        letters — and it is the tier that accepts a Bucharest plate too, which is
+        correct, because the statute does not distinguish them.
+      charset:
+        evidence_tier: secondary-wikipedia
+        notes: "see common.alphabet — the reported letter restrictions are recorded there and deliberately not encoded."
+      separator_note: >-
+        Both printed gaps are written as optional emitted SPACEs (PRD-PLATES
+        §2.6). No separator GLYPH is prescribed by art. 23, which names three
+        element groups and no punctuation between them.
+      progression: >-
+        Not established. Whether the letter triple or the order number advances
+        first, and whether allocation is sequential or pooled, was not sourced —
+        so a Romanian plate cannot be dated from its serial by anything in this
+        file. Recorded gap.
+    design:
+      plate: { w: 520, h: 110, unit: mm, note: "type A, mandatory at the front" }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm, note: "type B, two-row rear plate" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed, stars_color: "#FFCC00" }
+      rear_differs: false
+      rear_differs_note: "Same serial front and rear; only the physical TYPE may differ (a type-B two-row plate at the rear where the housing requires it), which is a housing choice and not a front/rear asymmetry of the UK kind."
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    region_encoding_mechanism: >-
+      THE TERRITORIAL CODE IS THE FIRST ELEMENT OF THE MARK ITSELF, by art. 23,
+      and it denotes the county of REGISTRATION. Romania is therefore unlike
+      Italy (where the province survives only on a removable sticker denoting the
+      holder's residence) and unlike France (where the SIV département band is
+      owner-chosen and decodes to nothing). A Romanian county claim from a
+      Romanian serial is a real claim — subject only to the decode table's own
+      tier, which is secondary.
+    sources:
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament art. 23 — FORMAT, the three elements of the mark, verbatim. See instrument.implementing_regulation.retrieval_caveat"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: the EU band from 2007 (PERIOD START), the two-digit county order number (FORMAT), colours and the 520x110 / 340x200 sizes (DESIGN). Accessed 2026-08-02"
+      - "plates/_decode/ro-counties.yml  # the 41 county codes that populate regex_strict — itself secondary-wikipedia, declared there"
+    notes: >-
+      THE CURRENT ROMANIAN COUNTY PLATE. Two-letter county code, two digits,
+      three letters, black on white, EU band. This is the series a parse API will
+      hit most often and it is the one place in the file where all three regex
+      tiers earn their keep at once: the strict twin knows the 41 codes, the
+      middle one knows the printed shape, and the statutory one knows that art.
+      23 never fixed a digit count. Distinct from ro-standard-1992 in DESIGN
+      only — the serial ran continuously across the 2007 boundary and plates
+      issued before it were not recalled, so both designs are on the road today.
+
+  - id: ro-standard-1992
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 1992, end: 2007 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      THE DATE THAT MATTERS IN THIS FILE, AND IT IS SECONDARY. 1992 is when
+      Romania replaced the communist-era mark with the county-code format that is
+      still in use. No instrument introducing it was reached — the instruments
+      this file HAS are from 2002 and 2006 and merely state the rule (header fact
+      3). The secondary adds two transition facts recorded in `notes`. END is the
+      EU band's arrival, a design change, not a format change.
+    matching: strict
+    format:
+      pattern: "LL 99 LLL"
+      regex: '\A[A-Z]{2} ?\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\A(?:AB|AG|AR|BC|BH|BN|BR|BT|BV|BZ|CJ|CL|CS|CT|CV|DB|DJ|GJ|GL|GR|HD|HR|IF|IL|IS|MH|MM|MS|NT|OT|PH|SB|SJ|SM|SV|TL|TM|TR|VL|VN|VS) ?\d{2} ?[A-Z]{3}\z'
+      regex_statutory: '\A[A-Z]{1,2} ?\d+ ?[A-Z]{3}\z'
+      charset:
+        evidence_tier: secondary-wikipedia
+        notes: "identical to ro-standard-2007; the 2007 change touched only the band."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, content: "Romanian national flag", hex_basis: observed, colors: ["#002B7F", "#FCD116", "#CE1126"], note: "the tricolour band that preceded the EU band; the three hexes are observed renderings of the national colours and are NOT a spec claim" }
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: the 1992 introduction of retroreflective plates in the CC 12 ABC format; official vehicles first; most vehicles kept old plates until the end of May 1993; old plates valid until 2000; the Romanian flag band 1992-2006. PERIOD + DESIGN. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament art. 23 — the same composition rule, stated fourteen years later. FORMAT"
+    notes: >-
+      THE POST-COMMUNIST REFORM PLATE, WITH ITS TRANSITION RECORDED RATHER THAN
+      SMOOTHED. Two facts the secondary supplies and this file keeps: the 1992
+      rollout went to OFFICIAL vehicles first, with most of the fleet keeping old
+      plates until the end of May 1993; and communist-era plates remained VALID
+      until 2000. So the honest picture is a series that legally begins in 1992,
+      covers the fleet through 1993, and runs in parallel with its predecessor for
+      eight years — which is why ro-communist-1966 below carries an end of 1992
+      for ISSUANCE and says in its own notes that validity ran to 2000. Distinct
+      from ro-standard-2007 in the band only.
+
+  # =========================================================================
+  # THE CAPITAL — THE FORMAT FORK. B 123 ABC, three digits, not two.
+  # =========================================================================
+  - id: ro-bucharest-2010
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2010 }
+    period_evidence: corroboration-only
+    period_note: >-
+      THE WEAKEST DATE IN THIS FILE, AND IT IS FLAGGED AS SUCH. The only source
+      reached says the three-digit order number was adopted "starting around
+      2010" because the two-digit space ran out. That is an approximation in the
+      source and it is recorded as an approximation here: `corroboration-only`,
+      not `secondary-dated`, because the source does not actually give a date.
+      Treat 2010 as a low-confidence boundary; the true first issue is a named
+      verifier target. It is a CAPACITY event, so there may be no instrument to
+      find at all — which is itself the finding (header fact 2: no amendment was
+      needed).
+    matching: strict
+    format:
+      pattern: "B 999 LLL"
+      regex: '\AB ?\d{3} ?[A-Z]{3}\z'
+      regex_statutory: '\A[A-Z]{1,2} ?\d+ ?[A-Z]{3}\z'
+      charset:
+        evidence_tier: secondary-wikipedia
+        notes: "see common.alphabet. The leading B is a LITERAL — the indicative of the municipality of Bucharest — and is spelled as one in the pattern, not as an L token."
+      capacity_note: >-
+        Two digits times the letter triple gave Bucharest on the order of 1.4
+        million marks; the third digit multiplies that by ten. The county
+        two-digit form is nowhere near exhaustion, which is why the fork exists
+        in the capital and only in the capital.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed, stars_color: "#FFCC00" }
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    region_encoding_mechanism: >-
+      The single letter B is the indicative of the municipality of Bucharest and
+      is carried in the decode file's `municipality` block, deliberately apart
+      from the 41 county rows. THERE IS NO MAXIMAL-MUNCH AMBIGUITY with the
+      seven B-initial county codes: the character after the territorial code is
+      always a DIGIT for the capital and always a LETTER for a county, so
+      "B123ABC" and "BC12ABC" separate mechanically even after separator
+      stripping.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: Bucharest expanded to a three-digit order number around 2010 owing to capacity. FORMAT + PERIOD. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament art. 23 — 'indicativul judeţului SAU AL MUNICIPIULUI BUCUREŞTI' and an order number of unspecified length: the statutory room the fork used. FORMAT"
+    notes: >-
+      THE CURRENT BUCHAREST PLATE, AND THE FILE'S HEADLINE STRUCTURAL FACT. One
+      letter, THREE digits, three letters — a different serial space from every
+      county plate in the country, current at the same time, on the same design.
+      It is modelled as its own series rather than as a variant because a variant
+      shares the parent's regex and this one cannot: a single regex admitting both
+      `CJ 12 ABC` and `B 123 ABC` would also admit `CJ 123 ABC`, which is not
+      issued. The fork needed no amendment because art. 23 never fixed a digit
+      count, and that absence is the fact that makes `regex_statutory` real here
+      rather than decorative.
+
+  - id: ro-bucharest-2007
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2007, end: 2010 }
+    period_evidence: corroboration-only
+    period_note: "START is the EU band; END is the same soft 'around 2010' boundary as ro-bucharest-2010 and inherits its low confidence."
+    matching: strict
+    format:
+      pattern: "B 99 LLL"
+      regex: '\AB ?\d{2} ?[A-Z]{3}\z'
+      regex_statutory: '\A[A-Z]{1,2} ?\d+ ?[A-Z]{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed, stars_color: "#FFCC00" }
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: the Bucharest two-digit form, and its replacement by the three-digit form around 2010. FORMAT + PERIOD. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament art. 23. FORMAT"
+    notes: >-
+      THE TWO-DIGIT BUCHAREST PLATE WITH THE EU BAND — the short-lived middle
+      state, and the one that most often confuses a naive parser, because it has
+      the capital's one-letter code AND the counties' two-digit order number.
+      Still very much on the road: nothing was recalled when the third digit
+      arrived, so a current Bucharest vehicle may carry either length.
+
+  - id: ro-bucharest-1992
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 1992, end: 2007 }
+    period_evidence: secondary-wikipedia
+    period_note: "The capital's form of the 1992 reform mark; ends at the band change, as ro-standard-1992 does."
+    matching: strict
+    format:
+      pattern: "B 99 LLL"
+      regex: '\AB ?\d{2} ?[A-Z]{3}\z'
+      regex_statutory: '\A[A-Z]{1,2} ?\d+ ?[A-Z]{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, content: "Romanian national flag", hex_basis: observed, colors: ["#002B7F", "#FCD116", "#CE1126"] }
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: the 1992 format and the national-flag band that preceded EU accession. FORMAT + PERIOD + DESIGN. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament art. 23. FORMAT"
+    notes: >-
+      THE ORIGINAL BUCHAREST PLATE of the 1992 system, with the tricolour band.
+      Recorded separately from ro-standard-1992 for the same reason its
+      successors are recorded separately from theirs: the capital's mark has one
+      fewer letter and, later, one more digit, and folding it into the county
+      series would make the county regex wrong.
+
+  # =========================================================================
+  # MOTORCYCLES — same serial, a plate a third of the size.
+  # =========================================================================
+  - id: ro-motorcycle-2007
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2007 }
+    period_evidence: corroboration-only
+    period_note: >-
+      The type-C plate size is sourced; its own start date is not. 2007 is
+      inherited from the EU-band design this series is described in, not from a
+      sourced first issue for motorcycles. Marked `corroboration-only` to say
+      exactly that.
+    matching: strict
+    format:
+      pattern: "LL 99 LLL"
+      regex: '\A[A-Z]{2} ?\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\A(?:AB|AG|AR|BC|BH|BN|BR|BT|BV|BZ|CJ|CL|CS|CT|CV|DB|DJ|GJ|GL|GR|HD|HR|IF|IL|IS|MH|MM|MS|NT|OT|PH|SB|SJ|SM|SV|TL|TM|TR|VL|VN|VS) ?\d{2} ?[A-Z]{3}\z'
+      regex_statutory: '\A[A-Z]{1,2} ?\d+ ?[A-Z]{3}\z'
+      note: "The SERIAL is the ordinary county mark; only the plate differs. A Bucharest motorcycle carries the capital's one-letter form on the same small plate — not modelled separately, and recorded here as a gap rather than duplicated on a guess."
+    design:
+      plate: { w: 240, h: 130, unit: mm, note: "type C, motorcycles only — two rows" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed }
+      display: "rear only"
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: type C, 240 x 130 mm, motorcycles only. DESIGN. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # H.G. nr. 1.391/2006, Regulament art. 23. FORMAT"
+    notes: >-
+      THE MOTORCYCLE PLATE — the ordinary county mark on a 240 x 130 mm two-row
+      plate. Its own series rather than a variant because the dimensions differ
+      (PRD-PLATES §2.3), and `corroboration-only` because the size is sourced
+      while the date is inherited. Romania does not appear to give motorcycles a
+      distinct serial grammar, which is worth stating as a negative: unlike Italy,
+      whose motorcycle plate had five digits where the car had three-plus-two,
+      a Romanian motorcycle mark is indistinguishable from a car mark as a string.
+
+  # =========================================================================
+  # THE PRE-1992 SYSTEM.
+  # =========================================================================
+  - id: ro-communist-1966
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1966, end: 1992 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      Both boundaries are secondary and neither is instrument-dated. The 1966
+      start is the reported adoption of the numeric-type-prefix arrangement; the
+      1992 end is the reform. ISSUANCE ended in 1992; VALIDITY did not — see
+      notes.
+    matching: recall-only
+    format:
+      pattern: "99-LL-9999"
+      regex: '\A\d{1,2}-?[A-Z]{1,2}-?\d{1,5}\z'
+      pattern_note: >-
+        RECALL-ONLY, and for three compounding reasons: the leading numeric group
+        is a TYPE code of one or two digits, the territorial letters are a
+        different and unsourced code set from the modern one, and the trailing
+        sequence length is reported only as "a numerical sequence". The regex is
+        a shape bound over all of that; a match is never a validity claim.
+      type_prefix:
+        evidence_tier: secondary-wikipedia
+        note: >-
+          THE LEADING DIGITS ENCODED THE VEHICLE KIND, which is the genuinely
+          interesting structural difference from the modern mark — Romania used
+          to put the vehicle CLASS in the registration and now puts only the
+          place. Reported ranges: 1-19 automobiles, 21-30 freight vehicles,
+          31-40 buses, 41-45 road tractors, 46-50 motorcycles.
+      status_marks:
+        evidence_tier: secondary-wikipedia
+        note: >-
+          Recorded because it is the kind of thing a plate encyclopedia exists
+          for and because it is emphatically NOT modellable: high officials in
+          the 1970s and 1980s are reported to have carried 1-B marks with three
+          digits, sometimes with the middle digit equal to the sum of the outer
+          two. That is a social convention inside a serial space, not a grammar,
+          and no regex here encodes it.
+    design:
+      background: { color: "#FFFFFF", finish: painted, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    region_encoding_note: >-
+      THE LETTERS ARE TERRITORIAL BUT plates/_decode/ro-counties.yml DOES NOT
+      DECODE THEM. The pre-1992 letter set was built on the administrative
+      regions of the day rather than on today's counties — the repeated example
+      is the Craiova area running as "OL" for Oltenia — and no primary or
+      secondary listing that set was obtained. `region_encoding: none` is
+      therefore a REFUSAL rather than a claim of no geography: there is geography
+      in the mark and this dataset cannot decode it, which is the safer of the
+      two errors for a parse API to inherit.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: the 1966-1992 aa-BB-ccccc arrangement, the vehicle-type digit ranges, the regional letter codes and their derivation, and the status-mark convention. FORMAT + PERIOD. Accessed 2026-08-02"
+    notes: >-
+      THE COMMUNIST-ERA MARK. Vehicle-type digits, regional letters, sequence —
+      the reverse emphasis of the modern mark, which drops the type entirely and
+      leads with the place. The transition is the part worth carrying: issuance
+      stopped with the 1992 reform, but these plates remained VALID UNTIL 2000,
+      so Romanian traffic ran both systems side by side for eight years and a
+      photograph from the 1990s proves nothing about a vehicle's registration
+      date. Recorded as a period overlap with distinct notes, per PRD-PLATES
+      §2.2, rather than as a clean cut.
+
+  # =========================================================================
+  # PROVISIONAL AND RUNNING-TEST — the two plates named in the Ordin's own title.
+  # =========================================================================
+  - id: ro-provisional-2006
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2006 }
+    period_evidence: instrument-in-force
+    period_note: >-
+      2006 IS THE INSTRUMENT, NOT THE FIRST ISSUE, and the distinction is the
+      whole point of this field. Ordinul M.A.I. nr. 1.501 din 13 noiembrie 2006
+      governs "eliberarea autorizaţiei de circulaţie provizorie" — the rule is
+      in force from then. Provisional plates certainly existed before 2006 (SR
+      13140:1996 is a 1996 standard for exactly these numbers), so the TRUE start
+      of this series is earlier and unestablished. `instrument-in-force` means
+      here what it means in plates/de.yml and plates/at.yml: the year of the
+      instrument that STATES the rule.
+    matching: recall-only
+    format:
+      pattern: "LL 0999"
+      regex: '\A[A-Z]{1,2} ?0\d{2,5}\z'
+      pattern_note: >-
+        RECALL-ONLY. The reported grammar is a territorial code followed by three
+        to six digits of which the first is always 0 and the second is always
+        non-zero. The leading zero is the one hard character and it is spelled as
+        a LITERAL in the pattern; the second-digit rule is NOT encoded, because a
+        regex that encoded it would be narrower than the pattern can generate and
+        the length range already makes this a union. A match is a shape hit.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#CE1126"
+      colour_note: "RED characters on white — the visual tell of a Romanian provisional plate. The hex is an observed rendering; SR 13078:1996 is unread."
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    validity:
+      evidence_tier: secondary-wikipedia
+      rule: "maximum 30 days, re-issuable to a cumulative 90 days"
+    region_encoding: "plates/_decode/ro-counties.yml"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: red characters, county code plus three to six digits with a leading zero, 30-day validity re-issuable to 90. FORMAT + COLOUR + VALIDITY. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # the Regulament's parent package; the Ordin M.A.I. nr. 1.501/2006 (M. Of. nr. 941 din 21 noiembrie 2006) is the instrument named in instrument.registration_procedure and is the PERIOD basis"
+    notes: >-
+      THE RED PROVISIONAL PLATE. Romania runs a genuinely separate LONG-TERM
+      temporary plate as well — reported as black-charactered, with a number that
+      never begins with zero and a red validity strip on the right giving year
+      and month, used for foreign residents and leased vehicles. That second
+      plate is NOT authored here: it shares neither this one's colour nor its
+      leading-zero rule, and no date was sourced for it. It is listed in
+      `unmodelled_series`. Splitting them on colour would have been easy and
+      wrong without a date for the second.
+
+  - id: ro-probe-2006
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2006 }
+    period_evidence: instrument-in-force
+    period_note: "As ro-provisional-2006: the Ordin of 2006 names 'autorizaţia de circulaţie ... pentru probe' in its own title. The instrument's year, not a first issue."
+    matching: recall-only
+    format:
+      pattern: "LL 999"
+      regex: '\A[A-Z]{1,2} ?\d{3}\z'
+      pattern_note: >-
+        RECALL-ONLY. Three digits reported to begin at 101, which is a starting
+        POINT and not a grammar — this file does not encode "at least 101"
+        because it cannot source an upper bound or a wrap rule. The word PROBE is
+        reported to be inscribed on the plate; it is carried in `design`, not in
+        the serial, on the same principle that keeps the Italian marchio out of
+        an Italian serial.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#CE1126"
+      inscription: "PROBE"
+      inscription_note: "a word printed on the plate, not a serial element; a consumer must not concatenate it into the mark"
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    region_encoding: "plates/_decode/ro-counties.yml"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: county code plus three digits from 101, with the PROBE inscription, on the same red-on-white scheme as the provisional plate. FORMAT + DESIGN. Accessed 2026-08-02"
+      - "https://legislatie.just.ro/Public/DetaliiDocument/79058  # the Regulament package; Ordinul M.A.I. nr. 1.501/2006 is the instrument that names the probe authorisation. PERIOD"
+    notes: >-
+      THE RUNNING-TEST (PROBE) PLATE — Romania's trade plate, bound to a business
+      rather than to a vehicle, which is why it takes class `dealer` and why its
+      categories are the full vehicle range: the plate travels between vehicles,
+      not with one. It shares the provisional plate's red-on-white scheme, so
+      colour alone does not separate them for an OCR consumer; the PROBE
+      inscription and the digit count do.
+
+  # =========================================================================
+  # DIPLOMATIC AND CONSULAR — described by the secondary, dated by inheritance.
+  # =========================================================================
+  - id: ro-diplomatic-1992
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1992 }
+    period_evidence: corroboration-only
+    period_note: >-
+      NO DATE WAS SOURCED FOR THIS SERIES. 1992 is inherited from the reform that
+      produced the modern Romanian plate system and is a LOWER-BOUND PLACEHOLDER,
+      not a first-issue claim — `corroboration-only` marks precisely that. A
+      diplomatic plate regime certainly predates 1992; this file does not claim
+      to know when the CD six-digit form began.
+    matching: strict
+    format:
+      pattern: "CD 999-999"
+      regex: '\ACD ?\d{3}-?\d{3}\z'
+      progression:
+        evidence_tier: secondary-wikipedia
+        note: >-
+          A TWO-PART NUMERIC DECODE: the first three digits are a country code
+          identifying the sending state and the last three a rank or sequence
+          within the mission, with 101 reported for an ambassador or head of
+          mission. The country-code table is NOT authored — PRD-PLATES puts
+          diplomatic decode tables at gate L4, and plates/fi.yml made the same
+          call for the Finnish mission table. Note that this is a MISSION decode,
+          not a geographic one, and it does not touch ro-counties.yml.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003399"
+      colour_note: "BLUE characters on white. Observed rendering; SR 13078:1996 unread."
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: CD plus six digits in blue, three-digit country code and three-digit rank code, 101 for the head of mission. FORMAT + COLOUR. Accessed 2026-08-02"
+    notes: >-
+      THE DIPLOMATIC CORPS PLATE. Authored despite an unsourced start date
+      because PRD-PLATES gate L1 names diplomatic among the core classes, and
+      because the FORMAT and the DECODE MECHANISM are described well enough to be
+      useful; the date is the part this file admits it does not have, in the
+      period_note rather than in a footnote. A companion series TC — reported for
+      consular transport including NATO officers — is described in
+      `unmodelled_series` because its scope, as reported, overlaps this one and
+      ro-consular-1992 in a way no source consulted resolves.
+
+  - id: ro-consular-1992
+    class: consular
+    categories: [car, van]
+    period: { start: 1992 }
+    period_evidence: corroboration-only
+    period_note: "As ro-diplomatic-1992 — 1992 is inherited from the system reform and is a placeholder, not a sourced first issue."
+    matching: strict
+    format:
+      pattern: "CO 999-999"
+      regex: '\ACO ?\d{3}-?\d{3}\z'
+      progression:
+        evidence_tier: secondary-wikipedia
+        note: "the same two-part numeric decode as the CD series — country code then rank; table not authored (gate L4)."
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003399"
+      band: { side: left, color: "#003399", content: eu-stars+RO, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # secondary-wikipedia: CO for consulates, blue characters, same six-digit structure as CD. FORMAT + COLOUR. Accessed 2026-08-02"
+    notes: >-
+      THE CONSULATE PLATE — a separate series from ro-diplomatic-1992 because the
+      class vocabulary distinguishes consular from diplomatic and because the
+      prefix differs, which is a format difference. Everything else about it,
+      including its date, is as weakly evidenced as its diplomatic sibling and is
+      flagged the same way.
+
+# ---------------------------------------------------------------------------
+# Described but NOT modelled.
+# ---------------------------------------------------------------------------
+unmodelled_series:
+  evidence_tier: secondary-wikipedia
+  source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Romania  # every row below. Accessed 2026-08-02"
+  reason_not_modelled: "each lacks a defensible date, a determinate format, or both. PRD-PLATES §5.3 prefers the recorded gap."
+  rows:
+    - token: "long-term temporary plate"
+      note: >-
+        Reported as black-charactered (not red), with an order number that never
+        begins with zero and a red validity strip at the right giving year and
+        month; used for foreign residents and leased vehicles. A genuinely
+        distinct series from ro-provisional-2006 — different colour, different
+        leading-digit rule, different validity mechanism — and undated. Modelling
+        it on a guessed start would have made the strongest-looking of this
+        file's weak entries.
+    - token: "green-lettered plate"
+      note: >-
+        Reported for zero-emission vehicles: green characters on white, otherwise
+        the standard format. NO DATE AT ALL WAS SOURCED — not a year, not a
+        month. Since the series would be indistinguishable from ro-standard-2007
+        as a STRING (the colour is the whole difference), authoring it without a
+        date would add a recall-only duplicate of an existing regex and one
+        invented year. Recorded instead. Class `electric` is available in
+        _meta/classes.yml the moment a date is.
+    - token: "TC"
+      note: "reported for consular transport, including NATO officers and consulates — a scope that overlaps both CD and CO as reported, with no source consulted resolving the boundary."
+    - token: "A + 3 to 7 digits"
+      note: >-
+        Military (Armată), reported to start at 100, with historic branch
+        prefixes U (Uscat, ground), A (Aer, air), M (Marină, navy) and I
+        (Înzestrare, logistics), and with the EU band absent from older plates.
+        Undated at both ends. Romania's military registration is also likely to
+        sit outside the civil instruments entirely, as Italy's expressly does
+        (art. 138 of the Codice della Strada, see plates/it.yml) — a structural
+        reason to leave it to a pass that can reach the defence instrument.
+    - token: "MAI"
+      note: "Ministry of Internal Affairs — gendarmerie, police, emergency services and some ambulances. Prefix reported, format and dates not."
+    - token: "yellow local-administration plate"
+      note: >-
+        Reported for public utilities, tractors, agricultural machinery, scooters
+        and golf carts, valid only inside the issuing locality, on a yellow
+        ground — and, in the source's own words, of NON-STANDARDISED format
+        varying by issuing authority. That is a species PRD-PLATES §2.2 cannot
+        represent as one series and should not: a format that varies by locality
+        is a table of formats, not a format. Recorded as the shape of the problem
+        for whoever attempts it.
+    - token: "September 2024 security generation"
+      note: "see common.security_upgrade_2024 — the reason it is not a series is given there in full."

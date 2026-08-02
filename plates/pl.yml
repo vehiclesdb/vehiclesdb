@@ -1,0 +1,1296 @@
+# plates/pl.yml — Poland (PRD-PLATES gate L1, wave 2).
+#
+# EVERY format, colour, dimension and class claim here is read from a Polish
+# primary instrument fetched in this pass through the Sejm's ELI API
+# (api.sejm.gov.pl/eli), which serves the same Dziennik Ustaw PDFs as ISAP
+# without ISAP's bot wall. The instruments, in force order:
+#   * Ustawa z dnia 20 czerwca 1997 r. – Prawo o ruchu drogowym, tekst jednolity
+#     Dz. U. 2024 poz. 1251 — art. 73 (registration, number retention), art. 75a
+#     (plate manufacture), art. 76 (the four delegations).
+#   * Rozporządzenie Ministra Infrastruktury z dnia 8 listopada 2024 r.
+#     w sprawie rejestracji i oznaczania pojazdów, wymagań dla tablic
+#     rejestracyjnych oraz wzorów innych dokumentów związanych z rejestracją
+#     pojazdów (Dz. U. 2024 poz. 1709), in force 2024-11-30 — §§ 25-33 and
+#     załączniki 12 (the plate SPEC) and 13 (the CODE table); as amended by
+#     Dz. U. 2025 poz. 939 and Dz. U. 2026 poz. 891.
+#   * The predecessors that DATE the system changes: Dz. U. 1993 nr 37 poz. 164,
+#     Dz. U. 1998 nr 57 poz. 365, Dz. U. 1999 nr 59 poz. 632, Dz. U. 2002 nr 133
+#     poz. 1123, Dz. U. 2006 nr 70 poz. 489, Dz. U. 2019 poz. 1272,
+#     Dz. U. 2017 poz. 2355, Dz. U. 2022 poz. 1847.
+#   * The three SIDE regimes, each under its own delegation: professional
+#     registration (Dz. U. 2019 poz. 546, consolidated Dz. U. 2023 poz. 2616),
+#     armed forces (art. 76 ust. 2 → Dz. U. 2023 poz. 1776) and the security
+#     services (art. 76 ust. 4 → Dz. U. 2025 poz. 1326).
+#
+# THE SIX STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE OPERATIVE INSTRUMENT IS THE 2024 ONE, NOT THE 2022 ONE. Almost every
+#    secondary description of Polish plates still cites Dz. U. 2022 poz. 1847.
+#    The Sejm ELI register records that instrument "uznany za uchylony" with
+#    repealDate 2024-11-30, replaced by Dz. U. 2024 poz. 1709. The difference is
+#    not cosmetic: the 2024 annex adds real powiat codes (bydgoski BC, kielecki
+#    KC/KM/KP, ostródzki OT/OX, Poznań X, Konin N, Kalisz A), extends the
+#    tymczasowe/indywidualne column to the second voivodeship letter, and adds a
+#    new plate — red on YELLOW for cars built for sporting competition
+#    (§ 27 ust. 9 pkt 2). This file is built on the 2024 text throughout.
+#
+# 2. THE POWIAT CODE LIST IS INSIDE THE REGULATION, so it is authored in full,
+#    from the instrument, in plates/_decode/pl-powiats.yml — 380 rows, 689
+#    distinct prefixes, no secondary source anywhere in it. § 31 ust. 2,
+#    verbatim: "Wyróżniki województw i powiatów dla tablic rejestracyjnych są
+#    określone w załączniku nr 13 do rozporządzenia."
+#
+# 3. THE REFORM DATE IS 1 MAY 2000, AND IT IS NOT THE DATE OF ITS INSTRUMENT.
+#    The rozporządzenie that created the voivodeship-first system is dated
+#    19 June 1999 and § 49 commences it "z dniem 1 lipca 1999 r." — but the SAME
+#    sentence excepts the plate provisions: "z wyjątkiem § 16, § 18 ust. 3-8,
+#    § 19, § 21 ust. 2, 4 i 5, § 22-24, § 29 i 30, które wchodzą w życie z dniem
+#    1 maja 2000 r." § 21 ust. 2 is the serial grammar and § 24 the wyróżniki
+#    annex, so the system began on 1 MAY 2000. § 41 and § 39 ust. 2 close the
+#    other end: pre-reform stock could be issued "jednak nie dłużej niż do dnia
+#    30 kwietnia 2000 r." This file therefore carries 2000, not the 1999 of the
+#    instrument's own date and not the 2001 that circulates in secondary
+#    descriptions. It is the Spanish 1999-2000 trap in Polish dress.
+#
+# 4. THE GREEN PLATE IS 2020, NOT 2022. Rozporządzenie Ministra Infrastruktury
+#    z dnia 8 lipca 2019 r. (Dz. U. 2019 poz. 1272) inserted "barwy czarnej na
+#    zielonym tle, w przypadku tablicy rejestracyjnej wydawanej dla pojazdu
+#    elektrycznego albo pojazdu napędzanego wodorem" and § 9 commences it
+#    "z dniem 1 stycznia 2020 r.", with § 6 letting authorities ORDER the new
+#    plates from 15 December 2019. The 2022 and 2024 instruments only re-enact
+#    it. Recorded here as 2020 with the 2019 instrument cited.
+#
+# 5. THE BLUE BAND WAS THE POLISH FLAG BEFORE IT WAS THE EU STARS, and the swap
+#    is dated to the day. Dz. U. 2002 nr 133 poz. 1123 § 19 ust. 1: "Każda
+#    tablica posiada dodatkowo na niebieskim tle symbol barw Rzeczypospolitej
+#    Polskiej i litery «PL» barwy białej." Dz. U. 2006 nr 70 poz. 489 replaced
+#    that with the twelve-star EU symbol and § 6 commences it "z dniem 2 maja
+#    2006 r." — two years AFTER accession, which is the sort of gap a
+#    guessed date gets wrong. § 2 of the same instrument keeps the flag-band
+#    plates lawful indefinitely, so the two designs are genuinely parallel.
+#
+# 6. H AND U ARE THE TWO LETTERS THAT ARE NEVER A VOIVODEDSHIP. § 30 ust. 1 gives
+#    a 25-letter alphabet (A-Z without Q); 23 of those letters appear in column 4
+#    of załącznik nr 13. The two that never do are H and U, and both are spoken
+#    for elsewhere: H is the base of the six service prefixes and U is the armed
+#    forces' wyróżnik. A leading H or U is therefore a positive signal that the
+#    plate is not a civil registration — see plates/_decode/pl-powiats.yml.
+#
+# REGEX POLICY, as in plates/at.yml and plates/de.yml: `format.regex` is the
+# lint-round-trippable regex spelling § 30 ust. 2's enumerated layouts;
+# `format.regex_strict` carries the two sourced tightenings the round-trip
+# forbids — the § 30 ust. 1 exclusion of Q from the whole alphabet, and the
+# § 31 ust. 1 exclusion of B, D, I, O and Z from the VEHICLE wyróżnik only
+# (never from the prefix, where DB, DDZ, CIN and CB are all real codes).
+# There is no leading-zero rule to carry: the statutory ranges are "od 00001"
+# and "od 0001", so 0 is significant in every position but the all-zero serial.
+jurisdiction: pl
+authority:
+  name: Ministerstwo Infrastruktury — Prawo o ruchu drogowym (Dz. U. 2024 poz. 1251) i rozporządzenie w sprawie rejestracji i oznaczania pojazdów (Dz. U. 2024 poz. 1709)
+  url: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709"
+binding: vehicle
+binding_note: >-
+  art. 73 ust. 1d Prawa o ruchu drogowym: "Numer rejestracyjny na tablicach
+  (tablicy) rejestracyjnych stanowią litery i cyfry (cyfra). Numer ten składa
+  się odpowiednio z wyróżnika województwa lub powiatu i wyróżnika pojazdu albo
+  wyróżnika indywidualnego pojazdu" — and § 27 ust. 1 of the rozporządzenie:
+  "Każdemu pojazdowi przypisuje się jeden numer rejestracyjny." The number binds
+  to the VEHICLE, so vehicle-keyed consumers may join on it. The one nuance a
+  consumer must know is art. 73 ust. 1a, which since 2022 lets a BUYER keep the
+  number: "Składający wniosek o rejestrację pojazdu może wnioskować
+  o zachowanie dotychczasowego numeru rejestracyjnego, w tym tablic (tablicy)
+  rejestracyjnych, jeżeli pojazd był już zarejestrowany na terytorium
+  Rzeczypospolitej Polskiej" — the plate stays on the same vehicle across a
+  change of keeper, it never moves to a different vehicle. There is no Polish
+  analogue of the British or Swiss owner-binding.
+instrument:
+  citation: "Rozporządzenie Ministra Infrastruktury z dnia 8 listopada 2024 r. w sprawie rejestracji i oznaczania pojazdów, wymagań dla tablic rejestracyjnych oraz wzorów innych dokumentów związanych z rejestracją pojazdów (Dz. U. 2024 poz. 1709), zmienione Dz. U. 2025 poz. 939 i Dz. U. 2026 poz. 891"
+  enabling_statute: "Ustawa z dnia 20 czerwca 1997 r. – Prawo o ruchu drogowym, art. 76 ust. 1 pkt 1 lit. a, c i d (tekst jednolity Dz. U. 2024 poz. 1251)"
+  data_wydania: "2024-11-08"
+  wejscie_w_zycie: "2024-11-30"
+  wejscie_w_zycie_source: "§ 51, verbatim: 'Rozporządzenie wchodzi w życie po upływie 7 dni od dnia ogłoszenia.' The ELI register fixes the resulting date at 2024-11-30."
+  eli: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709"
+  source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # the whole instrument, 102 pages, read in this pass. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  plate_types:
+    statute: >-
+      § 25 of the rozporządzenie closes the type vocabulary at FIVE, verbatim:
+      "Do oznaczania pojazdów stosuje się następujące wzory tablic
+      rejestracyjnych: 1) zwyczajne – do oznaczania wszystkich pojazdów,
+      z zastrzeżeniem pkt 2-5; 2) indywidualne – do oznaczania pojazdów
+      samochodowych; 3) zabytkowe – do oznaczania pojazdów zabytkowych;
+      4) tymczasowe – do oznaczania pojazdów czasowo zarejestrowanych;
+      5) dyplomatyczne – do oznaczania pojazdów należących do przedstawicielstw
+      dyplomatycznych, urzędów konsularnych i misji specjalnych państw obcych
+      oraz organizacji międzynarodowych, a także ich personelu." Every other
+      Polish plate — professional, military, service — exists under a DIFFERENT
+      delegation in art. 76 and a different instrument, which is why those
+      series cite different sources here.
+    sizes: >-
+      § 26 ust. 1 cuts the same plates a second way, by size: samochodowe
+      (jednorzędowe / dwurzędowe, and jednorzędowe zmniejszone for vehicles whose
+      mounting recess is undersized), motocyklowe (always two-row; also used for
+      agricultural tractors and for L6e/L7e quadricycles) and motorowerowe
+      (always two-row). A tractor may take a car plate where it has the recess
+      for one (ust. 2).
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # §§ 25-26. Accessed 2026-08-02"
+  dimensions:
+    samochodowa_jednorzedowa: { w: 520, h: 114, unit: mm }
+    samochodowa_dwurzedowa: { w: 305, h: 214, unit: mm }
+    samochodowa_jednorzedowa_zmniejszona: { w: 305, h: 114, unit: mm }
+    motocyklowa: { w: 190, h: 150, unit: mm }
+    motorowerowa: { w: 140, h: 114, unit: mm }
+    corner_radius: { r: 10, unit: mm, tolerance: "-0.5 to +1.5 mm" }
+    border_inset: { d: 7, unit: mm, note: "the embossed frame (ramka obrzeża) sits 7 mm in from the plate edge on every size" }
+    tolerance: "±1 mm on length and width (pkt 2.2); total plate thickness 1.4-3.0 mm (pkt 2.8); 1 mm aluminium strip (pkt 2.1)"
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # załącznik nr 12, Rysunek 1 'Wymiary i kształty tablic rejestracyjnych' (printed page 53) — read from the drawing, which carries the millimetre dimensions as leader-line callouts. Accessed 2026-08-02"
+    note: >-
+      520 x 114 mm, NOT the 520 x 110 mm that circulates everywhere and that
+      Germany, the Netherlands and Spain actually use. The Polish single-line
+      plate is 4 mm taller than its neighbours', and the figure is a statutory
+      dimension on Rysunek 1, not an observation. The two-row car plate is
+      305 x 214 mm, which is also not the 340 x 200 mm of the German pattern.
+  colorimetry:
+    basis: >-
+      Poland specifies COLOUR AS A CIE CHROMATICITY QUADRANGLE plus a luminance
+      factor, not as RGB or RAL. Załącznik nr 12 pkt 2.20, verbatim: "Barwa
+      biała, żółta, niebieska i zielona powierzchni odblaskowych oraz biała
+      i czarna powierzchni znaków, przy oświetleniu wzorcowym źródłem światła
+      D65 pod kątem 45º do normalnej do powierzchni i obserwacji wzdłuż normalnej
+      (geometria 45/0), powinny mieścić się w polach barwowych normalnego układu
+      trójchromatycznego CIE, określonych dla danej barwy przez punkty narożne
+      o współrzędnych trójchromatycznych podanych w tablicy 2 i odpowiadać
+      podanemu w tablicy 2 współczynnikowi luminancji." Every hex in this file
+      is therefore `hex_basis: observed`; the quadrangle is the spec and is
+      reproduced here so a renderer can do better than a guess.
+    biala:     { x: [0.355, 0.305, 0.285, 0.335], y: [0.355, 0.305, 0.325, 0.375], beta: 0.35 }
+    czerwona:  { x: [0.690, 0.595, 0.569, 0.655], y: [0.310, 0.315, 0.341, 0.345], beta: 0.05 }
+    niebieska: { x: [0.078, 0.150, 0.210, 0.137], y: [0.171, 0.220, 0.160, 0.038], beta: 0.01 }
+    zolta:     { x: [0.481, 0.444, 0.494, 0.545], y: [0.518, 0.476, 0.426, 0.454], beta: 0.27 }
+    czarna:    { x: [0.385, 0.300, 0.260, 0.345], y: [0.355, 0.270, 0.310, 0.395], beta: "<= 0.03" }
+    niebieska_pole_ue: { x: [0.176, 0.176, 0.140, 0.140], y: [0.140, 0.104, 0.104, 0.140], beta: 0.01, note: "a SECOND and much narrower blue, applying only to the field under the EU symbol and the PL letters — the plate's own blue (tablica dyplomatyczna) is the wider quadrangle above" }
+    zielona:   { x: [0.250, 0.250, 0.325, 0.325], y: [0.355, 0.500, 0.565, 0.400], beta: "0.20 <= beta <= 0.40" }
+    retroreflection: "Tablica 1 gives the minimum and maximum coefficient of retroreflection per colour and per observation/illumination angle pair — white min 50 / max 250, yellow 30/175, green 23/100, blue 3/15 cd/lx/m2 at 20' and 5°. Green and yellow are measured for DAYLIGHT only."
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # załącznik nr 12 pkt 2.18-2.21, Tablica 1 (retroreflection), Tablica 2 (daylight colour), Tablica 3 (night colour). Accessed 2026-08-02"
+  font:
+    name: null
+    statutory_basis: >-
+      NO TYPEFACE IS NAMED ANYWHERE, and the legal object is a DRAWING, exactly
+      as the EU dossier found for the UK, Germany, Spain and Austria. Załącznik
+      nr 12 pkt 2.11, in full: "Litery i cyfry na tablicach powinny być wykonane
+      zgodnie z wymiarami podanymi na rysunku 7." Rysunek 7 is a full
+      dimensioned outline drawing of all 25 letters and the 10 digits, with
+      construction radii labelled a/b/c/d per glyph. The drawn alphabet is
+      A B C D E F G H I J K L M N O P R S T U V W X Y Z — Q is absent from the
+      drawing as well as from § 30 ust. 1.
+    geometry_gap: >-
+      RECORDED GAP, and it is the one place Poland is WEAKER than Austria for a
+      renderer: the per-glyph millimetre widths live only in the drawing's
+      leader lines, not in any table, so this pass records the drawing as the
+      source without extracting numeric widths. What IS extractable in text:
+      pkt 2.10's tolerances (character height and width ±1.0 mm; spread within
+      one plate 0.8 mm on car plates and 0.5 mm elsewhere; inter-character
+      spacing ±1.5 mm; squareness 0.5 mm per 50 mm of character height) and
+      pkt 2.12's rule that layout follows Rysunki 9-25, with the substitute
+      rectangles of Rysunek 27 used for the digit 1 and the letters I, J, L and T.
+    licence: >-
+      PRD-PLATES §6 applies unchanged: the render layer derives glyphs from the
+      statutory drawing, never from a third-party TTF. Whether Poland has a
+      German-style §5 UrhG public-domain rule for designs published inside
+      statutory instruments was NOT researched in this pass — recorded gap, and
+      one more reason to derive rather than embed.
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # załącznik nr 12 pkt 2.10-2.13 and Rysunek 7 (printed page 57), Rysunek 27 (substitute rectangles). Accessed 2026-08-02"
+  euro_band:
+    side: left
+    content: eu-stars+PL
+    statute: >-
+      § 28 ust. 1, verbatim: "W skrajnej lewej części tablicy rejestracyjnej
+      umieszcza się dodatkowo na niebieskim tle symbol Unii Europejskiej
+      składający się z 12 pięcioramiennych gwiazdek barwy żółtej ułożonych na
+      obwodzie okręgu oraz znak z literami «PL» barwy białej. Wymóg ten nie
+      dotyczy tablic (tablicy) rejestracyjnych dyplomatycznych."
+    geometry: >-
+      Unlike Austria, Poland DOES publish band geometry in text. Załącznik nr 12
+      pkt 2.5: the PL letters are 20 mm high (tolerance +1 mm) with a 4 mm stroke
+      (+0.5 mm); the blue field must run into the adjoining frame so that no
+      white or yellow strip is left between the blue and the black or red border;
+      height tolerance ±2 mm on two-row plates, width tolerance ±2 mm on all.
+      Rysunek 8 tabulates the field per plate size (a/b/c/d/e/f/g in mm):
+      samochodowa jednorzędowa 30/40/-/20/6.5/24/35, samochodowa dwurzędowa
+      30/40/100/20/6.5/17/35, motocyklowa 26/35/70/17.5/4/8/21, motorowerowa
+      22.5/30/55/15/1.5/5/15.
+    note: >-
+      The band is a property of the PLATE, not of the class: it is on ordinary,
+      individual, historic, temporary and professional plates and off only the
+      diplomatic one. Poland does NOT cross-reference Reg. (EC) 2411/98 the way
+      FZV Anlage 4 does — the geometry above is purely national.
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 28 ust. 1; załącznik nr 12 pkt 2.5 and Rysunek 8. Accessed 2026-08-02"
+  eagle:
+    statute: >-
+      § 28 ust. 4 pkt 1: every plate carries a laser-etched OUTLINE of the eagle
+      of the Polish coat of arms ("grafikę obrysu wizerunku orła, o którym mowa
+      w ustawie z dnia 31 stycznia 1980 r. o godle, barwach i hymnie
+      Rzeczypospolitej Polskiej oraz o pieczęciach państwowych"), 15 mm high with
+      a 0.25 mm line, centred above the legalisation-sticker slot and 17 mm from
+      the top edge on car plates, 15 mm on motorcycle plates. § 28 ust. 6 takes
+      it OFF moped plates and temporary plates.
+    rendered: placeholder
+    render_note: >-
+      PRD-PLATES §3 placeholder rule applies. The eagle is a state emblem under
+      the 1980 ustawa o godle and its licensing posture was not researched here;
+      the render layer draws a neutral placeholder in the slot.
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 28 ust. 4 pkt 1 and ust. 6; załącznik nr 12 pkt 2.6 lit. b. Accessed 2026-08-02"
+  separator:
+    emitted: " "
+    statute: >-
+      THE REGULATION PRESCRIBES NO SEPARATOR GLYPH AT ALL — and it says what
+      occupies the position instead. Załącznik nr 12 pkt 2.6 lit. a places the
+      laser-marked slot for the legalisation sticker (18 x 30 mm, corner radius
+      3 mm, 0.25 mm line) "w poziomie – symetrycznie między ostatnim znakiem
+      wyróżnika województwa lub powiatu a pierwszym znakiem wyróżnika pojazdu",
+      42 mm down from the top edge on car plates. The gap a reader sees between
+      the prefix and the serial is therefore a STICKER WELL, exactly as the gap
+      on an Austrian plate is a coat of arms. Every `pattern` in this file
+      prints a SPACE there and every regex spells the position ` ?`, because the
+      law prescribes a physical gap and no glyph, and a written Polish plate is
+      as often set solid as spaced.
+    source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # załącznik nr 12 pkt 2.6 lit. a; § 28 ust. 2-3, ust. 5 (no slot marking on temporary plates). Accessed 2026-08-02"
+  serial_grammar:
+    alphabet_source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 30 ust. 1 and § 31 ust. 1. Accessed 2026-08-02"
+    alphabet: >-
+      § 30 ust. 1, verbatim: "Numery rejestracyjne są tworzone ze zbioru
+      następujących 25 liter: A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, R,
+      S, T, U, V, W, X, Y i Z oraz cyfr od 0 do 9." Q is the only Latin letter
+      excluded, and it is excluded dataset-wide, prefix included.
+    letters_excluded_everywhere: ["Q"]
+    letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"]
+    vehicle_exclusion_note: >-
+      § 31 ust. 1: "Wyróżnik pojazdu, z zastrzeżeniem § 32 ust. 2, określa organ
+      rejestrujący, posługując się zestawem cyfr i liter stanowiących pojemność
+      rejestracyjną, z wyłączeniem liter B, D, I, O i Z." The five letters are
+      the digit look-alikes and they are excluded FROM THE VEHICLE WYRÓŻNIK
+      ONLY. They remain lawful in the PREFIX, where DB (Wałbrzych), DDZ
+      (dzierżoniowski), CIN (inowrocławski), CB (Bydgoszcz) and ZSZ
+      (szczecinecki) are all real codes — a distinction every existing
+      description of Polish plates blurs and `regex_strict` here does not.
+      The "z zastrzeżeniem § 32 ust. 2" carve-out is real too: an INDIVIDUAL
+      wyróżnik is chosen by the owner, so the five letters are available there.
+    no_leading_zero_rule: false
+    no_leading_zero_note: >-
+      There is NO leading-zero rule in Polish law, unlike Austria's. The
+      statutory ranges are written "od 00001 do 99999", "od 0001 do 9999",
+      "od 001 do 999", "od 01 do 99" and "od 1 do 9" — so a zero is significant
+      in every position except that the all-zero serial is excluded, and
+      "DW 00123" is a well-formed Wrocław plate.
+    layouts_source: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 30 ust. 2 pkt 1-7, the complete enumeration of every layout for every plate type, split by whether the powiat wyróżnik is one letter or two. Accessed 2026-08-02"
+    exhaustion_order: >-
+      § 30 ust. 2 lists the layouts "tworzony kolejno w układzie" — IN ORDER OF
+      EXHAUSTION. A layout is only reached when the previous one is used up, so
+      the list is an era-inference signal for a parse API: within one powiat, a
+      plain five-digit serial is older than a four-digit-plus-letter one, which
+      is older than three-digits-plus-two-letters. The regulation publishes the
+      ORDER but no dates, so the inference is ordinal, never calendar.
+  offensive_serials:
+    statute: "§ 32 ust. 3: an individual wyróżnik 'powinien być wyrazem, skrótem lub określeniem, które nie zawierają w swoim znaczeniu w języku polskim albo obcym treści obraźliwych lub niezgodnych z zasadami współżycia społecznego.'"
+    modelled: false
+    modelled_note: >-
+      NOT encoded as a charset exclusion, deliberately, and for the same reason
+      Austria's § 26 Abs. 8 list is not: it is a refusal standard applied at
+      assignment, it binds only INDIVIDUAL plates, and unlike Austria's the
+      Polish text enumerates nothing at all — it is a general clause, so there
+      is no list to encode even if encoding one were right.
+  absent_classes:
+    export: "No export series. § 25 closes the type list at five and none of them is an export plate; the TEMPORARY plate does that job, and has since at least 1993 — Dz. U. 1993 nr 37 poz. 164 § 13 ust. 3 gave tablice tymczasowe the express purpose of 'umożliwienia wyjazdu lub wywozu tych pojazdów za granicę'."
+    taxi: "No taxi series found in §§ 25-32 or załączniki 12-13."
+    seasonal: "No seasonal series — no Polish analogue of the German Saisonkennzeichen was found."
+    agricultural: "No agricultural series. § 26 ust. 1 pkt 2 puts agricultural tractors on the MOTORCYCLE plate, and ust. 2 lets them take a car plate where the mounting recess suits — so they are covered by pl-motorcycle and pl-standard rather than by a series of their own."
+    trailer: "No trailer series. § 26 ust. 1 pkt 1 lit. a puts trailers on ordinary car plates; załącznik nr 12 pkt 2.4 makes the trailer plate a SINGLE plate rather than a set, which is a manufacturing fact, not a format one."
+    dealer: "Superseded rather than absent — see pl-professional. The pre-2019 answer was the tablica tymczasowa badawcza."
+    research_badawcza: >-
+      ABOLISHED, and dated. Dz. U. 2002 nr 133 poz. 1123 § 18 ust. 7 and § 21
+      ust. 2 pkt 6 defined a "tablica tymczasowa badawcza" — red on white,
+      letter + digit voivodeship, two digits, then the FIXED letter B marking the
+      plate's purpose — for vehicles run under homologation and R&D testing.
+      No such type survives in § 25 of the 2024 instrument; the professional
+      registration regime of 2019 replaced it. Recorded as a class this
+      jurisdiction once had and no longer issues; the plates themselves are not
+      modelled as a series because the pass did not establish their withdrawal
+      date, which is a recorded gap.
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — black on white, EU field since 2 May 2006.
+  # =========================================================================
+  - id: pl-standard
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2006 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{5}|\d{4}[A-Z]|\d{3}[A-Z]{2}|\d[A-Z]\d{3}|\d[A-Z]{2}\d{2})|[A-Z]{3} ?(?:[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]\d{2}|\d{2}[A-Z]\d|\d[A-Z]{2}\d|[A-Z]{2}\d{2}|\d{5}|\d{4}[A-Z]|\d{3}[A-Z]{2}))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{5}|\d{4}[ACEFGHJKLMNPRSTUVWXY]|\d{3}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d{2})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]\d{2}|\d{2}[ACEFGHJKLMNPRSTUVWXY]\d|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]{2}\d{2}|\d{5}|\d{4}[ACEFGHJKLMNPRSTUVWXY]|\d{3}[ACEFGHJKLMNPRSTUVWXY]{2}))\z'
+      charset:
+        letters_excluded: ["Q"]
+        letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"]
+        notes: >-
+          Two DIFFERENT exclusions, and conflating them is the standard error.
+          § 30 ust. 1 excludes Q from the whole 25-letter alphabet, prefix
+          included. § 31 ust. 1 excludes B, D, I, O and Z from the VEHICLE
+          wyróżnik only — they stay lawful in the prefix, where DB, DDZ, CIN,
+          CB and ZSZ are real codes in załącznik nr 13. Hence [A-PR-Z] on the
+          prefix and [ACEFGHJKLMNPRSTUVWXY] on the serial in regex_strict.
+      progression: >-
+        § 30 ust. 2 pkt 1. For a powiat whose wyróżnik is ONE letter (prefix two
+        characters) the vehicle wyróżnik is five characters, in this exhaustion
+        order: five digits 00001-99999; four digits 0001-9999 and a letter;
+        three digits 001-999 and two letters; a digit 1-9, a letter and three
+        digits 001-999; a digit 1-9, two letters and two digits 01-99. For a
+        powiat whose wyróżnik is TWO letters (prefix three characters) it is
+        four or five: a letter and three digits; two digits and two letters; a
+        digit, a letter and two digits; two digits, a letter and a digit; a
+        digit, two letters and a digit; two letters and two digits; then five
+        digits; four digits and a letter; three digits and two letters. The list
+        is ordered "tworzony kolejno" — each layout is reached only when the
+        previous is exhausted, which makes the layout an ORDINAL age signal
+        within a powiat. The regulation publishes no dates against it.
+      prefix_split_note: >-
+        The two-or-three-letter prefix is NOT self-delimiting, but for this
+        series it is deterministic: every five-character layout begins with a
+        DIGIT, so a letter in the third position means a three-character prefix
+        and a digit there means a two-character one. See
+        plates/_decode/plates/_decode/pl-powiats.yml, prefix_split.
+      separator_note: >-
+        The printed gap between prefix and serial is the LEGALISATION-STICKER
+        WELL, not a glyph: załącznik nr 12 pkt 2.6 lit. a puts the 18 x 30 mm
+        laser-marked slot "symetrycznie między ostatnim znakiem wyróżnika
+        województwa lub powiatu a pierwszym znakiem wyróżnika pojazdu". The law
+        prescribes no separator character at all, so `pattern` prints a space
+        and the regex spells the position ` ?`.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 305, h: 214, unit: mm, note: "samochodowa dwurzędowa — the two-row rear plate, used where the mounting recess requires it (§ 33 ust. 5)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 27 ust. 2 pkt 1 names the colour as 'barwy czarnej na białym tle'; załącznik nr 12 Tablica 2 bounds white to the CIE quadrangle in common.colorimetry.biala with a luminance factor of 0.35" }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed, note: "the EU field's blue has its OWN and much narrower quadrangle (common.colorimetry.niebieska_pole_ue), distinct from the blue of the diplomatic plate" }
+      emblem: { present: true, rendered: placeholder, position: "laser-etched above the legalisation-sticker slot, 17 mm from the top edge", content: "outline of the eagle of the Polish coat of arms, 15 mm high, 0.25 mm line (§ 28 ust. 4 pkt 1)" }
+      rear_differs: false
+      display: "front and rear (§ 33 ust. 1); front is always the single-row plate (ust. 4); trailers, agricultural tractors, motorcycles and mopeds carry a rear plate only"
+      extra: "a keeper may additionally obtain a legalised DUPLICATE plate bearing the same number, to be fixed to a bicycle carrier that covers the rear plate (art. 73 ust. 1b of the ustawa; § 26 ust. 5) — a genuinely unusual provision and a trap for any consumer that assumes one plate number means at most two physical plates"
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    region_encoding_mechanism: >-
+      § 30 ust. 2 pkt 1: the first letter is the voivodeship, the second — or
+      second and third — the powiat, and § 31 ust. 2 puts the whole table inside
+      the instrument as załącznik nr 13. Unlike Germany's, the list needs no
+      Bundesanzeiger hunt, so the decode file carries all 380 rows and all 689
+      prefixes from the primary.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 27 ust. 2 (black on white), § 28 (EU field, eagle), § 30 ust. 1-2 pkt 1 (alphabet and every layout), § 31 (vehicle-wyróżnik exclusions, the annex, the second-letter rule), § 33 (mounting); załącznik nr 12 Rysunek 1 (520 x 114 mm) and Tablica 2 (colour). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2006/489/text/O/D20060489.pdf  # Dz. U. 2006 nr 70 poz. 489: the amendment that replaced the Polish-flag band with the twelve-star EU symbol, and § 6, verbatim: 'Rozporządzenie wchodzi w życie z dniem 2 maja 2006 r.' — the period.start of this series. § 2 keeps the older plates valid, § 3 makes the swap voluntary and number-preserving. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1251/text/O/D20241251.pdf  # Prawo o ruchu drogowym art. 73 ust. 1, 1a, 1b, 1d and art. 76 ust. 1 — the enabling frame and the number-retention rule. Accessed 2026-08-02"
+    notes: >-
+      THE POLISH STANDARD SERIES. period.start 2006 is a REAL commencement and
+      not an instrument date: the EU field became mandatory on 2 May 2006 under
+      Dz. U. 2006 nr 70 poz. 489 § 6 — TWO YEARS AFTER accession, which is
+      exactly the kind of gap a plausible guess closes wrongly. The FORMAT is
+      six years older than the design: the voivodeship+powiat frame dates from
+      1 May 2000 (see pl-standard-preeu), which is why this entry and its
+      predecessor share a grammar and differ in the blue field. Both remain on
+      the road: § 2 of the 2006 amendment preserved existing plates and § 3 made
+      the swap optional and number-preserving, so flag-band plates are lawful
+      indefinitely and the two series are genuinely parallel. GRAMMAR CAVEAT,
+      stated rather than hidden: the layout list has been WIDENED inside this
+      series' period — Dz. U. 2017 poz. 2355 § 57 pkt 2 commenced six further
+      layouts on 1 July 2018, and this pass did not diff every amendment between
+      2006 and 2024, so the regex is the CURRENT union applied across the whole
+      period and is wider than what was issued in its early years. A recorded
+      gap, and the reason a per-year format claim here would be false precision.
+
+  # =========================================================================
+  # ONE SERIES BACK — the same numbers under a POLISH FLAG band, 2000-2006.
+  # =========================================================================
+  - id: pl-standard-preeu
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2000, end: 2006 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{5}|\d{4}[A-Z]|\d{3}[A-Z]{2})|[A-Z]{3} ?(?:\d{4}|\d{3}[A-Z]|[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]\d{2}|\d{2}[A-Z]\d|\d[A-Z]{2}\d))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{5}|\d{4}[A-PR-Z]|\d{3}[A-PR-Z]{2})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:\d{4}|\d{3}[A-PR-Z]|[A-PR-Z]\d{3}|\d{2}[A-PR-Z]{2}|\d[A-PR-Z]\d{2}|\d{2}[A-PR-Z]\d|\d[A-PR-Z]{2}\d))\z'
+      charset:
+        letters_excluded: ["Q"]
+        notes: >-
+          regex_strict here carries ONLY the Q exclusion, because the B/D/I/O/Z
+          rule is younger than the series' start: it first appears as § 22
+          ust. 1 of Dz. U. 2002 nr 133 poz. 1123, in force 21 September 2002,
+          and the 1999 instrument that opened this series has no equivalent.
+          Applying today's exclusion backwards over 2000-2002 would be a claim
+          this pass cannot make.
+      grammar_widening: >-
+        THE GRAMMAR CHANGED INSIDE THIS SERIES, on a sourced date. Under
+        Dz. U. 1999 nr 59 poz. 632 § 21 ust. 2 pkt 1 (1 May 2000) a one-letter
+        powiat had five digits, then four digits and a letter, then three digits
+        and two letters; a two-letter powiat had four digits, then three digits
+        and a letter — five layouts in all. Dz. U. 2002 nr 133 poz. 1123 § 21
+        ust. 2 pkt 1 (21 September 2002) DROPPED the two bare-digit layouts for
+        two-letter powiats and added five mixed ones. The regex above is the
+        UNION of both, which is the series' own issuing grammar over its whole
+        period; `matching: strict` is therefore still correct, but a consumer
+        dating a specific plate must know that the mixed layouts cannot predate
+        21 September 2002.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: "polish-flag+PL", hex_basis: observed }
+      band_note: >-
+        THE DIFFERENCE THAT MAKES THIS A SERIES. Dz. U. 2002 nr 133 poz. 1123
+        § 19 ust. 1, verbatim: "Każda tablica posiada dodatkowo na niebieskim tle
+        symbol barw Rzeczypospolitej Polskiej i litery «PL» barwy białej. Wymóg
+        ten nie dotyczy tablic (tablicy) dyplomatycznych." Its 1998 predecessor
+        put it more plainly still (Dz. U. 1998 nr 57 poz. 365 § 18): "Każda
+        tablica na niebieskim tle ma dodatkowo symbol flagi polskiej barwy
+        biało-czerwonej i litery «PL» barwy białej." So the band existed before
+        accession and carried the NATIONAL flag, not the EU stars, until 2 May
+        2006 — a design fact that is routinely lost.
+      emblem: { present: false, note: "the laser-etched eagle outline is a later addition; it is required by § 28 ust. 4 pkt 1 of the current instrument and was introduced by Dz. U. 2019 poz. 1272, whose § 9 gave the trade twelve further months for existing stock" }
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    region_encoding_note: >-
+      Decodable through the same table, with a caution: plates/_decode/pl-powiats.yml holds the
+      codes in force in 2026, and the annex has been amended repeatedly since
+      2000. Codes added later (for example the second voivodeship letters, and
+      the extra powiat codes issued as pools ran out) cannot appear on a plate
+      from this period, and codes withdrawn since are absent from the table.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632: § 21 ust. 2 pkt 1 (the 2000 grammar), § 24 (the wyróżniki annex), § 39 (the pre-reform code tables and the stock rule), § 41 ('Do dnia 30 kwietnia 2000 r. organ rejestrujący wydaje tablice rejestracyjne spełniające warunki określone w § 39'), § 49 (commencement of §§ 21-24 on 1 May 2000). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2002/1123/text/O/D20021123.pdf  # Dz. U. 2002 nr 133 poz. 1123: § 18 ust. 3 (black on white), § 19 ust. 1 (the Polish-flag band), § 21 ust. 2 pkt 1 (the widened grammar), § 22 ust. 1 (the first appearance of the B/D/I/O/Z exclusion). In force 21 September 2002. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2006/489/text/O/D20060489.pdf  # Dz. U. 2006 nr 70 poz. 489 § 6: the EU field from 2 May 2006 — this series' period.end. Accessed 2026-08-02"
+    notes: >-
+      THE FLAG-BAND PLATE, 1 May 2000 to 2 May 2006 — a design change at the end
+      and a system change at the beginning, both instrument-dated. period.start
+      is the commencement carved out of Dz. U. 1999 nr 59 poz. 632 § 49 for the
+      plate provisions ("§ 22-24, § 29 i 30, które wchodzą w życie z dniem
+      1 maja 2000 r."), NOT the 1 July 1999 on which the rest of that instrument
+      commenced and NOT the 2001 that secondary descriptions repeat. period.end
+      is Dz. U. 2006 nr 70 poz. 489 § 6. Distinct from pl-standard by the band
+      alone, and from pl-standard-pre2000 by the entire coding system.
+
+  # =========================================================================
+  # TWO SERIES BACK — the pre-reform system, 49 voivodeships, ends 2000-04-30.
+  # =========================================================================
+  - id: pl-standard-pre2000
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 1993, end: 2000 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?(?:\d{4}|\d{3}[A-Z])\z'
+      regex_strict: '\A[A-PR-Z]{3} ?(?:\d{4}|\d{3}[A-PR-Z])\z'
+      charset:
+        letters_excluded: ["Q"]
+        notes: "Dz. U. 1993 nr 37 poz. 164 § 19 and Dz. U. 1998 nr 57 poz. 365 § 20 ust. 1 both give the same 25-letter set (A-Z without Q); neither carries the B/D/I/O/Z rule, which is a 2002 invention."
+      progression: >-
+        Dz. U. 1998 nr 57 poz. 365 § 20 ust. 2 pkt 1, verbatim: "na tablicach
+        zwyczajnych dwie pierwsze litery stanowią wyróżnik województwa, trzecia
+        litera i cztery cyfry w przedziale od 0001 do 9999 lub trzecia litera
+        i trzy cyfry w przedziale od 001 do 999 oraz litera stanowią wyróżnik
+        pojazdu." The 1993 instrument says the same in § 18 ust. 1. So the
+        pre-reform plate is TWO letters of voivodeship and a THREE-character
+        prefix in total — structurally the inverse of the post-2000 plate, where
+        one letter is the voivodeship and the prefix is two or three characters.
+    design:
+      plate: { w: null, h: null, unit: mm }
+      dimensions_note: "no dimensions were secured for this series: Dz. U. 1993 nr 37 poz. 164 § 16 ust. 1 delegates them entirely — 'Tablice rejestracyjne powinny odpowiadać wymaganiom określonym w obowiązującej normie' — and Dz. U. 1999 nr 59 poz. 632 § 39 ust. 5 names that norm as PN 5-73200, which was not fetched in this pass. Recorded gap."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_evidence: >-
+        WHITE IS SOURCED ONLY FROM 1998 ONWARD. Dz. U. 1998 nr 57 poz. 365 § 17
+        ust. 3 is the earliest instrument read here that states a colour: "Na
+        tablicy zwyczajnej wytłoczony jest numer rejestracyjny składający się
+        z wyróżnika województwa i wyróżnika pojazdu barwy czarnej na białym
+        tle." The 1993 instrument states none at all, delegating to the norm, so
+        the transition from the black plate that preceded it IS NOT DATED HERE.
+        The widely repeated claim that Poland went from black to white in a
+        particular year is not asserted; it is a recorded gap whose answer lives
+        in PN 5-73200 and its predecessors.
+      band: { side: left, color: "#003399", content: "polish-flag+PL", hex_basis: observed, note: "sourced for 1998 onward only, from § 18 of Dz. U. 1998 nr 57 poz. 365; whether the 1993-1998 plate carried the band was not established" }
+      emblem: { present: false }
+    region_encoding: none
+    region_encoding_note: >-
+      NOT decodable through plates/_decode/pl-powiats.yml, and a parse API must
+      not route a pre-2000 string through it. This series encodes the OLD
+      49-voivodeship system in the first TWO letters, a scheme with no
+      relationship to the one-letter voivodeship codes of załącznik nr 13. The
+      code lists exist and are pinned in `sources` — Dz. U. 1993 nr 37 poz. 164
+      § 20, and the two transitional tables in Dz. U. 1999 nr 59 poz. 632 § 39
+      ust. 1 and ust. 2 — but they are NOT shipped as a decode table here,
+      deliberately: both are scanned typescript whose OCR is visibly unreliable
+      (the 1999 tables render "WS" as "W5" and "KA" as "K~"), and a code table
+      transcribed from a bad scan is worse than an honest gap. A dedicated pass
+      with page images is the fix, and this is a recorded L4 target.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/1993/164/text/O/D19930164.pdf  # Dz. U. 1993 nr 37 poz. 164 (rozporządzenie MTiGM z 14 kwietnia 1993 r. w sprawie rejestracji, ewidencji i oznaczania pojazdów): § 13 (the four plate types), § 16 ust. 1 (dimensions delegated to the norm), § 18 ust. 1 (the two-letter voivodeship grammar), § 19 (the 25-letter alphabet), § 20 (the voivodeship code table). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1998/365/text/O/D19980365.pdf  # Dz. U. 1998 nr 57 poz. 365: § 17 (colours for all five plate types), § 18 (the Polish-flag band), § 20 ust. 2 (the grammar), § 21 (the 49-voivodeship code table). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632 § 39 ust. 2, the transitional stock rule that ENDS this series: plates bearing the pre-reform voivodeship codes could be issued from stock 'aż do wyczerpania się tych zapasów, jednak nie dłużej niż do dnia 30 kwietnia 2000 r.'; § 41 says the same from the other side; § 42 keeps them valid on the road indefinitely. Accessed 2026-08-02"
+    notes: >-
+      THE PRE-REFORM PLATE. period.end 2000 is SOURCED AT THE DAY, from the
+      complement of the reform: Dz. U. 1999 nr 59 poz. 632 § 41 and § 39 ust. 2
+      allow issue of the old codes only "do dnia 30 kwietnia 2000 r.", so
+      30 April 2000 is the last lawful ASSIGNMENT. HOW LONG THEY REMAIN VALID ON
+      THE ROAD IS NOT A GAP — § 42 answers it in terms ("Tablice (tablica)
+      rejestracyjne wydane na podstawie dotychczasowych przepisów ... zachowują
+      swoją ważność") and art. 73 ust. 1a of the current ustawa still lets a
+      buyer keep a conforming plate, so pre-2000 plates are lawful indefinitely
+      and are re-issued to new keepers to this day. period.start 1993 is
+      INSTRUMENT-IN-FORCE and says so: the format is certainly older than the
+      1993 rozporządzenie, whose own § 29 preserves plates issued under earlier
+      rules, but the earlier instrument was not fetched in this pass.
+
+  # =========================================================================
+  # MOTORCYCLES — and, unusually, agricultural tractors and L6e/L7e quads.
+  # =========================================================================
+  - id: pl-motorcycle
+    class: motorcycle
+    categories: [motorcycle, tractor, quadricycle]
+    period: { start: 2006 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 9999"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{4}|\d{3}[A-Z]|\d{2}[A-Z]\d|\d[A-Z]\d{2}|[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]{2}\d|[A-Z]{2}\d{2})|[A-Z]{3} ?(?:[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]\d{2}|\d{2}[A-Z]\d|\d[A-Z]{2}\d|[A-Z]{2}\d{2}|[A-Z]\d{2}[A-Z]|[A-Z]\d[A-Z]{2}))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{4}|\d{3}[ACEFGHJKLMNPRSTUVWXY]|\d{2}[ACEFGHJKLMNPRSTUVWXY]\d|\d[ACEFGHJKLMNPRSTUVWXY]\d{2}|[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]{2}\d{2})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]\d{2}|\d{2}[ACEFGHJKLMNPRSTUVWXY]\d|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]{2}\d{2}|[ACEFGHJKLMNPRSTUVWXY]\d{2}[ACEFGHJKLMNPRSTUVWXY]|[ACEFGHJKLMNPRSTUVWXY]\d[ACEFGHJKLMNPRSTUVWXY]{2}))\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"], notes: "§ 30 ust. 1 and § 31 ust. 1, as pl-standard" }
+      progression: >-
+        § 30 ust. 2 pkt 3. The vehicle wyróżnik is ALWAYS four characters
+        whatever the prefix length, which is the structural difference from the
+        car series and the reason the prefix boundary here is resolved by total
+        length rather than by the third character.
+      prefix_split_caveat: >-
+        THE CAR RULE DOES NOT APPLY. § 30 ust. 2 pkt 3 lit. a gives one-letter
+        powiats the layouts "litera i trzy cyfry" and "dwie litery i dwie
+        cyfry", which BEGIN WITH A LETTER, so a letter in the third position no
+        longer proves a three-character prefix. Six of those eight layouts —
+        the third to eighth tirets — were added by Dz. U. 2017 poz. 2355 and
+        commenced on 1 July 2018 by its § 57 pkt 2, so the ambiguity is itself
+        younger than the series.
+      grammar_widening_note: >-
+        As pl-standard: the regex is the CURRENT union applied across the whole
+        period, and is wider than what was issued before 1 July 2018. Recorded
+        gap rather than a per-year claim.
+    design:
+      plate: { w: 190, h: 150, unit: mm, note: "always two-row (§ 26 ust. 1 pkt 2)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed, note: "the EU field on a motorcycle plate is 26 x 35 mm per Rysunek 8, against 30 x 40 mm on a car plate" }
+      emblem: { present: true, rendered: placeholder, content: "eagle outline, 15 mm from the top edge on this size" }
+      rear_differs: false
+      display: "rear only for motorcycles, mopeds, trailers and agricultural tractors (§ 33 ust. 1); L2e, L5e, L6e and L7e vehicles also carry one at the front where they have the recess (ust. 2); a tractor may carry it at the front where its construction requires (ust. 3)"
+      manufacture: "single plate, not a set (załącznik nr 12 pkt 2.4) — except that three-wheelers of class L5e and L2e and quadricycles of L7e/L6e may be given a pair"
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    variants:
+      - class: motorcycle
+        format: { pattern: "LL 9999" }
+        note: >-
+          THE MOTORCYCLE-TRAILER RULE, which has no analogue in the neighbouring
+          jurisdictions and which a vehicle-keyed consumer will misread. § 33
+          ust. 6: "Z tyłu przyczepy motocyklowej umieszcza się tablicę
+          rejestracyjną motocyklową przeniesioną z motocykla, który ciągnie
+          przyczepę." The motorcycle's own plate is PHYSICALLY MOVED to the
+          trailer while towing — so one number lawfully appears on two different
+          vehicles at different moments, and never on both at once.
+        sources:
+          - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 33 ust. 6. Accessed 2026-08-02"
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 26 ust. 1 pkt 2 (motorcycle plates also carry agricultural tractors and L6e/L7e), § 27 ust. 2, § 30 ust. 2 pkt 3, § 33; załącznik nr 12 Rysunek 1 (190 x 150 mm) and Rysunek 8. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2017/2355/text/O/D20172355.pdf  # Dz. U. 2017 poz. 2355 § 57 pkt 2: § 31 ust. 2 pkt 3 lit. a tiret trzecie-ósme — the six added motorcycle layouts — enter into force 1 July 2018. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2006/489/text/O/D20060489.pdf  # § 6: the EU field from 2 May 2006, which is this series' period.start for the same reason as pl-standard. Accessed 2026-08-02"
+    notes: >-
+      MOTORCYCLE PLATES, and the class carries more than motorcycles: § 26
+      ust. 1 pkt 2 puts agricultural tractors and the "samochodowy inny" L6e and
+      L7e quadricycles on the same 190 x 150 mm two-row plate, so a Polish
+      tractor wears a motorcycle plate unless it happens to have a car-plate
+      recess (ust. 2). period.start 2006 is the EU-field commencement, as for
+      pl-standard; the format frame is again older.
+
+  # =========================================================================
+  # MOPEDS — the smallest plate, and the one with no eagle.
+  # =========================================================================
+  - id: pl-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2006 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 9999"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{4}|\d{3}[A-Z]|\d{2}[A-Z]\d|\d[A-Z]\d{2}|[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]{2}\d|[A-Z]{2}\d{2})|[A-Z]{3} ?(?:[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]\d{2}|\d{2}[A-Z]\d|\d[A-Z]{2}\d|[A-Z]{2}\d{2}|[A-Z]\d{2}[A-Z]|[A-Z]\d[A-Z]{2}))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{4}|\d{3}[ACEFGHJKLMNPRSTUVWXY]|\d{2}[ACEFGHJKLMNPRSTUVWXY]\d|\d[ACEFGHJKLMNPRSTUVWXY]\d{2}|[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]{2}\d{2})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]\d{2}|\d{2}[ACEFGHJKLMNPRSTUVWXY]\d|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]{2}\d{2}|[ACEFGHJKLMNPRSTUVWXY]\d{2}[ACEFGHJKLMNPRSTUVWXY]|[ACEFGHJKLMNPRSTUVWXY]\d[ACEFGHJKLMNPRSTUVWXY]{2}))\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+      note: "§ 30 ust. 2 pkt 3 governs 'tablice rejestracyjne zwyczajne motocyklowe i motorowerowe' together, so the grammar is identical to pl-motorcycle and the series exists because the PLATE differs."
+    design:
+      plate: { w: 140, h: 114, unit: mm, note: "always two-row; the smallest Polish plate, and almost square" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed, note: "22.5 x 30 mm on this size (Rysunek 8) — the EU field shrinks with the plate but is never dropped" }
+      emblem: { present: false, note: "§ 28 ust. 6 expressly disapplies the eagle to moped plates and to temporary plates — the only two civil plates without it" }
+      display: "rear only (§ 33 ust. 1)"
+      manufacture: "single plate (załącznik nr 12 pkt 2.4)"
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 26 ust. 1 pkt 3, § 27 ust. 5, § 28 ust. 6, § 30 ust. 2 pkt 3; załącznik nr 12 Rysunek 1 (140 x 114 mm) and Rysunek 8. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2006/489/text/O/D20060489.pdf  # § 6, the EU field from 2 May 2006. Accessed 2026-08-02"
+    notes: >-
+      MOPED PLATES. Poland REGISTERS mopeds — there is no German-style
+      Versicherungskennzeichen and no annual colour cycle; a moped gets an
+      ordinary registration number from the same powiat pool as a car. The plate
+      is the jurisdiction's smallest at 140 x 114 mm and, with the temporary
+      plate, one of only two civil Polish plates that carry no eagle.
+
+  # =========================================================================
+  # THE REDUCED CAR PLATE — 305 x 114 mm, voivodeship letter ONLY.
+  # =========================================================================
+  - id: pl-standard-reduced
+    class: standard
+    categories: [car, van]
+    period: { start: 2018 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "L 999"
+      regex: '\A[A-Z] ?(?:\d{3}|\d{2}[A-Z]|\d[A-Z]\d|[A-Z]\d{2}|\d[A-Z]{2}|[A-Z]{2}\d|[A-Z]\d[A-Z])\z'
+      regex_strict: '\A[ABCDEFGIJKLMNOPRSTVWXYZ] ?(?:\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]|\d[ACEFGHJKLMNPRSTUVWXY]\d|[ACEFGHJKLMNPRSTUVWXY]\d{2}|\d[ACEFGHJKLMNPRSTUVWXY]{2}|[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]\d[ACEFGHJKLMNPRSTUVWXY])\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+      progression: >-
+        § 30 ust. 2 pkt 2, and it is the ONE Polish civil plate with NO POWIAT
+        CODE AT ALL: "dla powiatów z wyróżnikiem jednoliterowym i dwuliterowym
+        pierwsza litera stanowi wyróżnik województwa, następne cyfry lub cyfry
+        i litera, lub litery stanowią wyróżnik pojazdu" — one voivodeship letter
+        and three characters, in the exhaustion order 999, 99L, 9L9, L99, 9LL,
+        LL9, L9L. The powiat is unrecoverable from the string, by design, because
+        there is no room for it.
+    design:
+      plate: { w: 305, h: 114, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    region_encoding_note: >-
+      DELIBERATELY none, and this is the fact that makes the series worth
+      separating: the reduced plate carries only the VOIVODESHIP letter, so a
+      parse API can resolve it to one of sixteen voivodeships (or, where the
+      voivodeship has two letters, to one voivodeship exactly) and can never
+      resolve it to a powiat. Routing it through plates/_decode/pl-powiats.yml would invent a
+      district. The voivodeship letters themselves are in that file's
+      `voivodeships` block.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 26 ust. 1 pkt 1 lit. b, § 27 ust. 3, § 30 ust. 2 pkt 2 and ust. 3; załącznik nr 12 Rysunek 1 (305 x 114 mm). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2017/2355/text/O/D20172355.pdf  # Dz. U. 2017 poz. 2355 introduced the type (§ 27 ust. 1 pkt 1 lit. b, § 31 ust. 2 pkt 2) and § 57 pkt 2 commenced exactly those provisions 'z dniem 1 lipca 2018 r.' — the period.start here, and NOT the instrument's own 1 January 2018 general commencement. Accessed 2026-08-02"
+    notes: >-
+      THE REDUCED SINGLE-ROW PLATE, for vehicles whose mounting recess is too
+      small for a 520 mm plate — the American-import case above all. period.start
+      2018 is a genuine commencement carved out of Dz. U. 2017 poz. 2355 § 57
+      pkt 2, four provisions of which were held back to 1 July 2018 while the
+      rest of the instrument began on 1 January. Excluded from the type by
+      § 26 ust. 1 pkt 1 lit. b: motorcycles, agricultural tractors, slow vehicles
+      in tourist road-trains, and "samochodowy inny". § 30 ust. 3 pairs it with
+      the reduced TEMPORARY plate: an authority may issue both bearing the same
+      number.
+
+  # =========================================================================
+  # THE GREEN PLATE — electric and hydrogen, from 1 January 2020.
+  # =========================================================================
+  - id: pl-electric
+    class: electric
+    categories: [car, van, truck, bus, motorcycle, moped]
+    period: { start: 2020 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{5}|\d{4}[A-Z]|\d{3}[A-Z]{2}|\d[A-Z]\d{3}|\d[A-Z]{2}\d{2})|[A-Z]{3} ?(?:[A-Z]\d{3}|\d{2}[A-Z]{2}|\d[A-Z]\d{2}|\d{2}[A-Z]\d|\d[A-Z]{2}\d|[A-Z]{2}\d{2}|\d{5}|\d{4}[A-Z]|\d{3}[A-Z]{2}))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{5}|\d{4}[ACEFGHJKLMNPRSTUVWXY]|\d{3}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d{2})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:[ACEFGHJKLMNPRSTUVWXY]\d{3}|\d{2}[ACEFGHJKLMNPRSTUVWXY]{2}|\d[ACEFGHJKLMNPRSTUVWXY]\d{2}|\d{2}[ACEFGHJKLMNPRSTUVWXY]\d|\d[ACEFGHJKLMNPRSTUVWXY]{2}\d|[ACEFGHJKLMNPRSTUVWXY]{2}\d{2}|\d{5}|\d{4}[ACEFGHJKLMNPRSTUVWXY]|\d{3}[ACEFGHJKLMNPRSTUVWXY]{2}))\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+      grammar_note: >-
+        THE GREEN PLATE HAS NO GRAMMAR OF ITS OWN. § 27 ust. 2-5 make green a
+        COLOUR CONDITION on the ordinary car, reduced, individual and moped
+        plates, not a separate numbering system, so the regex above is
+        pl-standard's. A green plate on a moped follows pl-moped's grammar and a
+        green individual plate follows pl-individual's; this series exists
+        because the design and the period differ, not the format.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 305, h: 214, unit: mm, note: "samochodowa dwurzędowa" }
+        - { w: 305, h: 114, unit: mm, note: "jednorzędowa zmniejszona" }
+        - { w: 140, h: 114, unit: mm, note: "motorowerowa — for a moped with an electric motor (§ 27 ust. 5 pkt 2)" }
+      background: { color: "#B5D99C", finish: retroreflective, hex_basis: observed, spec_note: "§ 27 ust. 2 pkt 2 names the colour only as 'zielonym tle'; załącznik nr 12 Tablica 2 bounds it to the CIE quadrangle in common.colorimetry.zielona, which is the WIDEST gamut in the Polish table — its luminance factor is a RANGE (0.20 to 0.40) where every other colour has a single bound, so the statutory green is deliberately a band of pale yellow-greens rather than one colour. The hex is one plausible point inside it and is marked observed." }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "absent on the moped variant, per § 28 ust. 6" }
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2019/1272/text/O/D20191272.pdf  # Dz. U. 2019 poz. 1272 (rozporządzenie MI z 8 lipca 2019 r.): inserts 'barwy czarnej na zielonym tle, w przypadku tablicy rejestracyjnej wydawanej dla pojazdu elektrycznego albo pojazdu napędzanego wodorem' into § 28 of the 2017 instrument and adds § 28 ust. 5a for electric mopeds; § 9, verbatim: 'Rozporządzenie wchodzi w życie z dniem 1 stycznia 2020 r.'; § 6 lets registering authorities ORDER green plates 'począwszy od dnia 15 grudnia 2019 r.'; §§ 4-5 give existing EV keepers a right to swap. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 27 ust. 2 pkt 2, ust. 3 pkt 2, ust. 4 pkt 2, ust. 5 pkt 2 — the current re-enactment across all four plate types; załącznik nr 12 pkt 2.1 and 2.14 (green added to the permitted retroreflective colours), Tablica 1 and Tablica 2. Accessed 2026-08-02"
+    notes: >-
+      THE GREEN PLATE, and its date is 1 JANUARY 2020 — not 2022, which is what
+      a reader gets by taking the current instrument's date for the rule's date.
+      The enabling amendment is Dz. U. 2019 poz. 1272, whose § 9 commences it on
+      1 January 2020; the 2022 and 2024 instruments merely re-enact it. Scope is
+      defined by cross-reference rather than in terms: a "pojazd elektryczny" is
+      one within art. 2 pkt 12 and a "pojazd napędzany wodorem" one within art. 2
+      pkt 15 of the ustawa o elektromobilności i paliwach alternatywnych, so a
+      plug-in hybrid does NOT qualify. The plate is optional in practice for
+      vehicles registered before 2020: §§ 4-5 of the 2019 instrument give the
+      keeper a right to swap, never a duty, so green and white plates on
+      identical electric cars are both correct.
+
+  # =========================================================================
+  # HISTORIC VEHICLES — black on yellow, with a car pictogram.
+  # =========================================================================
+  - id: pl-historic
+    class: historic
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2000 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 99L"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{2}[A-Z]|\d{3})|[A-Z]{3} ?(?:\d[A-Z]|\d{2}|[A-Z]\d))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{2}[ACEFGHJKLMNPRSTUVWXY]|\d{3})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:\d[ACEFGHJKLMNPRSTUVWXY]|\d{2}|[ACEFGHJKLMNPRSTUVWXY]\d))\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+      progression: >-
+        § 30 ust. 2 pkt 5 — the SHORTEST civil serials in the system. A one-letter
+        powiat gets two digits and a letter, then three digits; a two-letter
+        powiat gets a digit and a letter, then two digits, then a letter and a
+        digit. A historic plate is therefore five characters in total where an
+        ordinary one is seven or eight, which is the quickest way to recognise
+        one after the colour.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 305, h: 214, unit: mm, note: "zabytkowa dwurzędowa" }
+        - { w: 190, h: 150, unit: mm, note: "motocyklowa zabytkowa" }
+        - { w: 305, h: 114, unit: mm, note: "zabytkowa jednorzędowa zmniejszona — takes the pl-standard-reduced grammar of § 30 ust. 2 pkt 2, not the grammar above, and carries the car pictogram as a LASER GRAPHIC rather than an embossed symbol" }
+      background: { color: "#F5D800", finish: retroreflective, hex_basis: observed, spec_note: "§ 27 ust. 6 names 'żółtym tle'; the CIE quadrangle is common.colorimetry.zolta with a luminance factor of 0.27" }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      symbol: { present: true, rendered: placeholder, content: "the pojazd zabytkowy pictogram — a stylised veteran car, embossed in black on the full-size plate (§ 27 ust. 6, 'oraz symbol pojazdu zabytkowego barwy czarnej'), and laser-etched to a 25 mm width on the reduced plate (załącznik nr 12 pkt 2.7, Rysunek 3)" }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 25 pkt 3, § 27 ust. 6-7, § 30 ust. 2 pkt 5; załącznik nr 12 pkt 2.7 and Rysunki 3, 17-19. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632 § 18 ust. 5 (black on yellow with the pictogram) and § 21 ust. 2 pkt 5 (the short grammar), commenced with the rest of the plate provisions on 1 May 2000 by § 49. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1998/365/text/O/D19980365.pdf  # Dz. U. 1998 nr 57 poz. 365 § 17 ust. 5 and § 20 ust. 2 pkt 3 — the yellow historic plate ALREADY existed before the 2000 reform, under the old two-letter voivodeship coding. Accessed 2026-08-02"
+    notes: >-
+      THE YELLOW CLASSIC PLATE. period.start 2000 is the commencement of the
+      voivodeship+powiat coding this series' grammar depends on, not the birth
+      of the class: Dz. U. 1998 nr 57 poz. 365 § 17 ust. 5 already prescribed
+      "barwy czarnej na żółtym tle" with the pictogram in 1998, under the
+      pre-reform two-letter codes, and that earlier form is NOT modelled as a
+      separate series here — a recorded gap, and a small one, because the
+      eligible population was tiny. Eligibility is not in this instrument: it
+      runs through the entry of the vehicle in the wojewódzka ewidencja zabytków
+      or the acquisition of a rzeczoznawca's certificate, which is a heritage
+      question rather than a plate question and is out of scope for this file.
+
+  - id: pl-historic-moped
+    class: historic
+    categories: [moped]
+    period: { start: 2023 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 99L"
+      regex: '\A(?:[A-Z]{2} ?(?:\d{2}[A-Z]|\d{3})|[A-Z]{3} ?(?:\d[A-Z]|\d{2}|[A-Z]\d))\z'
+      regex_strict: '\A(?:[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z] ?(?:\d{2}[ACEFGHJKLMNPRSTUVWXY]|\d{3})|[ABCDEFGIJKLMNOPRSTVWXYZ][A-PR-Z]{2} ?(?:\d[ACEFGHJKLMNPRSTUVWXY]|\d{2}|[ACEFGHJKLMNPRSTUVWXY]\d))\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+    design:
+      plate: { w: 140, h: 114, unit: mm }
+      background: { color: "#F5D800", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      symbol: { present: true, rendered: placeholder, content: "a laser-etched veteran-vehicle graphic scaled to 30 mm wide (załącznik nr 12 pkt 2.7, Rysunek 4), positioned 93 mm from the left edge and 17.5 mm from the bottom" }
+      emblem: { present: false }
+      layout_note: >-
+        A LAYOUT STRESSOR worth recording. Załącznik nr 12 pkt 2.6 lit. a places
+        the legalisation slot on this plate DIFFERENTLY depending on the serial:
+        with a three-letter prefix it sits 14 mm from the left edge and 17.5 mm
+        from the bottom, with a two-letter prefix 105 mm from the left and
+        66.5 mm from the bottom. The sticker moves to a different ROW of the
+        two-row plate according to how long the prefix is — the same pressure
+        PRD-PLATES §2.2 records for Japan, and a `format.fields` case if the
+        render bundle ever needs it.
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 27 ust. 8, § 28 ust. 4 pkt 5, § 30 ust. 2 pkt 5; załącznik nr 12 pkt 2.6 lit. a and pkt 2.7, Rysunek 4, Rysunek 20. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2022/1847/text/O/D20221847.pdf  # Dz. U. 2022 poz. 1847 § 53 pkt 1: '§ 27 ust. 8, § 28 ust. 4 pkt 5 oraz § 30 ust. 2 pkt 5 w zakresie tablic rejestracyjnych motorowerowych zabytkowych, które wchodzą w życie z dniem 1 maja 2023 r.'; § 49 ust. 1 opens the swap right from the same date and ust. 2 governs the 4 September 2022 - 30 April 2023 interregnum. Accessed 2026-08-02"
+    notes: >-
+      THE HISTORIC MOPED PLATE — a class Poland did not have until 1 MAY 2023,
+      and a clean example of the instrument-date rule: the provisions live in the
+      2022 instrument (which itself commenced on 4 September 2022) but § 53 pkt 1
+      held these three back to 1 May 2023, and § 49 ust. 2 says what happened in
+      between — a historic moped could take either an ordinary moped plate or a
+      historic MOTORCYCLE plate. From 1 May 2023 § 49 ust. 1 lets the keeper
+      swap: a historic motorcycle plate is exchanged keeping the number, an
+      ordinary moped plate is exchanged for a NEW number. Modelled as its own
+      series rather than a variant of pl-historic because the period and the
+      plate both differ.
+
+  # =========================================================================
+  # INDIVIDUAL (PERSONALISED) PLATES — and the one place the exclusions lift.
+  # =========================================================================
+  - id: pl-individual
+    class: personalized
+    categories: [car, van, truck, bus]
+    period: { start: 2000 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "L9 LLLLL"
+      regex: '\A[A-Z]\d ?(?:[A-Z]{3,5}|[A-Z]{2,4}\d|[A-Z]{1,3}\d{2})\z'
+      regex_strict: '\A[ABCDEFGIJKLMNOPRSTVWXYZ]\d ?(?:[A-PR-Z]{3,5}|[A-PR-Z]{2,4}\d|[A-PR-Z]{1,3}\d{2})\z'
+      charset:
+        letters_excluded: ["Q"]
+        notes: >-
+          THE EXCLUSION LIFTS HERE, and only here. § 31 ust. 1 subjects the
+          vehicle wyróżnik to the B/D/I/O/Z rule "z zastrzeżeniem § 32 ust. 2",
+          and § 32 ust. 2 hands the individual wyróżnik to the owner. So B, D, I,
+          O and Z are all available on an individual plate and regex_strict
+          carries only the dataset-wide Q exclusion. A validator that applies the
+          five-letter rule here rejects lawful plates.
+      progression: >-
+        § 30 ust. 2 pkt 4, verbatim: "litera i cyfra stanowią wyróżnik
+        województwa, zaś kolejne litery w liczbie od 3 do 5 stanowią wyróżnik
+        indywidualny pojazdu, w którym nie więcej niż dwie ostatnie litery można
+        zastąpić cyframi." The digits may only replace the LAST one or two
+        characters, so the regex is a three-way alternation rather than a mixed
+        class: letters only, letters then one digit, letters then two digits. A
+        digit followed by a letter inside the personal part is not lawful.
+      prefix_note: >-
+        The prefix here is LETTER + DIGIT, not letter + letters: individual
+        plates use column 6 of załącznik nr 13 (W0-W9, A0-A9 for mazowieckie,
+        and so on), the same pool as temporary plates, NOT the column-4 letters
+        used by ordinary plates. There is no powiat component at all — § 32
+        ust. 1 makes uniqueness a VOIVODESHIP-level test, checked against the
+        art. 73a ust. 1 pkt 1 register.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 305, h: 214, unit: mm, note: "dwurzędowa" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      green_variant: "§ 27 ust. 4 pkt 2 gives an electric or hydrogen vehicle a GREEN individual plate — the two optional regimes compose"
+    region_encoding: none
+    region_encoding_note: >-
+      Voivodeship only, and only through the letter+digit codes in
+      plates/_decode/pl-powiats.yml's `voivodeships` block. There is no powiat information on an
+      individual plate and a parse API must not invent any.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 25 pkt 2, § 27 ust. 4, § 30 ust. 2 pkt 4, § 31 ust. 1 (the carve-out), § 32 (uniqueness, owner's choice, the decency clause). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2025/939/text/O/D20250939.pdf  # Dz. U. 2025 poz. 939 § 1 pkt 2 and pkt 3: the second-letter overflow rule of § 31 ust. 3 is disapplied to individual plates, and § 32 ust. 2 is rewritten so that the owner 'może wskazać literę wyróżnika województwa, z którą będzie tworzony numer rejestracyjny pojazdu' — in force 2025-07-30. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632 § 21 ust. 2 pkt 4 and § 22-23, commenced 1 May 2000 by § 49. Accessed 2026-08-02"
+    notes: >-
+      INDIVIDUAL PLATES — "tablice indywidualne", the Polish personalised regime,
+      restricted by § 25 pkt 2 to POJAZDY SAMOCHODOWE, so no motorcycle, moped or
+      trailer may carry one. Two facts a consumer will otherwise get wrong: the
+      five look-alike letters are LAWFUL here and nowhere else, and since
+      30 July 2025 the buyer in a two-letter voivodeship may CHOOSE which letter
+      their plate is built from (Dz. U. 2025 poz. 939 § 1 pkt 3) — the only
+      exception to the § 31 ust. 3 rule that the second letter is an overflow
+      pool. period.start 2000 is the plate provisions' commencement under
+      Dz. U. 1999 nr 59 poz. 632 § 49; individual plates existed before that
+      (Dz. U. 1998 nr 57 poz. 365 § 20 ust. 2 pkt 2 gives the same letter+digit
+      frame with 3 to 5 letters) and the pre-reform form is a recorded gap.
+
+  # =========================================================================
+  # TEMPORARY PLATES — red on white, and the plate Poland uses for export.
+  # =========================================================================
+  - id: pl-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2000 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "L9 9999"
+      regex: '\A[A-Z]\d ?(?:\d{4}|\d{3}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGIJKLMNOPRSTVWXYZ]\d ?(?:\d{4}|\d{3}[ACEFGHJKLMNPRSTUVWXY])\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+      progression: >-
+        § 30 ust. 2 pkt 6, verbatim: "litera i cyfra stanowią wyróżnik
+        województwa, zaś cztery cyfry w przedziale od 0001 do 9999 stanowią
+        wyróżnik pojazdu, który po wyczerpaniu wskazanej pojemności tworzy się
+        w układzie trzy cyfry w przedziale od 001 do 999 i litera." Six
+        characters, letter+digit prefix from column 6 of załącznik nr 13, no
+        powiat component.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 305, h: 214, unit: mm, note: "dwurzędowa" }
+        - { w: 190, h: 150, unit: mm, note: "motocyklowa tymczasowa" }
+        - { w: 140, h: 114, unit: mm, note: "motorowerowa tymczasowa" }
+        - { w: 305, h: 114, unit: mm, note: "tymczasowa jednorzędowa zmniejszona — added by the 2024 instrument (§ 30 ust. 2 pkt 2 and ust. 3 pkt 1); the 2022 text had no reduced temporary plate" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#CC0000"
+      foreground_spec: "§ 27 ust. 9 pkt 1: 'barwy czerwonej na białym tle'. The CIE quadrangle for czerwona is in common.colorimetry.czerwona, luminance factor 0.05 — a dark, saturated red, not a signal red."
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: false, note: "§ 28 ust. 6 disapplies the eagle to temporary plates; ust. 5 also disapplies the laser-marked legalisation-slot outline, so a temporary plate is the plainest Polish plate" }
+    region_encoding: none
+    region_encoding_note: "voivodeship only, via the letter+digit codes in plates/_decode/plates/_decode/pl-powiats.yml's `voivodeships` block; no powiat component exists on a temporary plate."
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 25 pkt 4, § 27 ust. 9 pkt 1, § 28 ust. 5-6, § 30 ust. 2 pkt 6 and ust. 3; załącznik nr 12 Rysunki 21-24. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632 § 18 ust. 6 and § 21 ust. 2 pkt 6, commenced 1 May 2000 by § 49. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1993/164/text/O/D19930164.pdf  # Dz. U. 1993 nr 37 poz. 164 § 13 ust. 3: the temporary plate's statutory purposes already included 'umożliwienia wyjazdu lub wywozu tych pojazdów za granicę' — which is why Poland has no export series. Accessed 2026-08-02"
+    notes: >-
+      THE TEMPORARY PLATE, and THE REASON POLAND HAS NO EXPORT PLATE: taking a
+      vehicle permanently out of the country is one of the temporary plate's own
+      statutory purposes and has been since 1993. The 2024 instrument added a
+      REDUCED temporary plate (305 x 114 mm) that the 2022 text lacked, pairable
+      under § 30 ust. 3 with a reduced ordinary plate bearing the same number.
+      Validity is not in this instrument: it runs from art. 74 of the ustawa, and
+      the old fourteen-day cap of the 1993 rules no longer applies.
+
+  - id: pl-temporary-sport
+    class: temporary
+    categories: [car]
+    period: { start: 2024 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "L9 9999"
+      regex: '\A[A-Z]\d ?(?:\d{4}|\d{3}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGIJKLMNOPRSTVWXYZ]\d ?(?:\d{4}|\d{3}[ACEFGHJKLMNPRSTUVWXY])\z'
+      charset: { letters_excluded: ["Q"], letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"] }
+      note: "§ 30 ust. 2 pkt 6 governs all temporary plates alike; only the background colour distinguishes this one."
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      background: { color: "#F5D800", finish: retroreflective, hex_basis: observed, spec_note: "common.colorimetry.zolta — the same statutory yellow as the historic plate" }
+      foreground: "#CC0000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 27 ust. 9, verbatim: 'Na tablicy rejestracyjnej tymczasowej jest wytłoczony numer rejestracyjny składający się z wyróżnika województwa oraz wyróżnika pojazdu: 1) barwy czerwonej na białym tle albo 2) barwy czerwonej na żółtym tle w przypadku tablicy rejestracyjnej wydawanej dla samochodu osobowego przeznaczonego do zawodów sportowych.' § 51 commences the instrument on 2024-11-30. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2022/1847/text/O/D20221847.pdf  # Dz. U. 2022 poz. 1847 § 27 ust. 9, which knows only 'barwy czerwonej na białym tle' — the pair of texts either side of 2024-11-30 IS the period evidence. Accessed 2026-08-02"
+    notes: >-
+      RED ON YELLOW, FOR COMPETITION CARS — a plate that did not exist before
+      30 November 2024 and that no secondary description of Polish plates yet
+      records, because they are all still written against the 2022 instrument.
+      The evidence is a diff: § 27 ust. 9 of Dz. U. 2022 poz. 1847 gives one
+      colour, § 27 ust. 9 of Dz. U. 2024 poz. 1709 gives two, and the second is
+      "w przypadku tablicy rejestracyjnej wydawanej dla samochodu osobowego
+      przeznaczonego do zawodów sportowych". Distinct from pl-temporary by the
+      background alone; the number grammar is identical, so a string cannot be
+      assigned between the two without knowing the colour.
+
+  # =========================================================================
+  # DIPLOMATIC — white on blue, six digits, and NO EU field.
+  # =========================================================================
+  - id: pl-diplomatic
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2000 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "L 999999"
+      regex: '\A[A-Z] ?\d{6}\z'
+      regex_strict: '\A[ABCDEFGIJKLMNOPRSTVWXYZ] ?\d{6}\z'
+      progression: >-
+        § 30 ust. 2 pkt 7, verbatim and complete: "na tablicach rejestracyjnych
+        dyplomatycznych – pierwsza litera stanowi wyróżnik województwa, zaś sześć
+        cyfr w przedziale od 000001 do 999999 stanowi wyróżnik pojazdu." One
+        letter and six digits, and NOTHING ELSE — the instrument publishes no
+        country-code or entitlement-class structure inside those six digits.
+      decode_gap: >-
+        A RECORDED GAP, and an important one for the Geoguessr audience: Polish
+        diplomatic serials are widely described as encoding the sending state in
+        their leading digits, and that structure is NOT in this regulation. It
+        would have to come from a Ministry of Foreign Affairs allocation list
+        that this pass did not locate. The dataset therefore claims one letter
+        and six digits and no more; a decode table for the digit blocks is an L4
+        target, and until one lands with a primary behind it a parse API must
+        return "diplomatic, voivodeship known, mission unknown".
+      voivodeship_note: >-
+        The letter is the ordinary column-4 wyróżnik województwa, not the
+        column-6 letter+digit code — so a diplomatic plate begins with the same
+        letter as an ordinary one from the same voivodeship, and in practice
+        almost always with W.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 305, h: 214, unit: mm, note: "dyplomatyczna dwurzędowa" }
+        - { w: 190, h: 150, unit: mm, note: "dyplomatyczna motocyklowa" }
+        - { w: 140, h: 114, unit: mm, note: "dyplomatyczna motorowerowa" }
+      background: { color: "#003399", finish: retroreflective, hex_basis: observed, spec_note: "§ 27 ust. 10: 'barwy białej na niebieskim tle'. The quadrangle is common.colorimetry.niebieska — the WIDE blue, deliberately not the narrow EU-field blue" }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      band_note: >-
+        THE ONLY POLISH PLATE WITH NO EU FIELD, and the instrument says so twice:
+        § 28 ust. 1 ("Wymóg ten nie dotyczy tablic (tablicy) rejestracyjnych
+        dyplomatycznych") and załącznik nr 12 pkt 2.5 and pkt 2.14 lit. e. On a
+        blue plate the blue band would be invisible, which is presumably the
+        reason, but the instrument gives none.
+      emblem: { present: true, rendered: placeholder }
+      geometry: "załącznik nr 12 Rysunek 26 tabulates the diplomatic plate's own layout dimensions per size (a/b/c/d/e in mm): dwurzędowa 48/55/20/36/17, motocyklowa 24/42/14/18/20, motorowerowa 19/40/10/23/17.5"
+    region_encoding: "plates/_decode/pl-powiats.yml"
+    region_encoding_note: "voivodeship letter only — column 4 of the annex, the same letters ordinary plates use; there is no powiat component."
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # § 25 pkt 5, § 27 ust. 10, § 28 ust. 1, § 30 ust. 2 pkt 7; załącznik nr 12 pkt 2.5, pkt 2.14 lit. e, Rysunki 25-26. Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632 § 21 ust. 2 pkt 8 — the same one-letter + six-digit frame, commenced 1 May 2000 by § 49. Its predecessor Dz. U. 1998 nr 57 poz. 365 § 20 ust. 2 pkt 5 used TWO letters and five digits, so the frame did change at the reform. Accessed 2026-08-02"
+    notes: >-
+      THE DIPLOMATIC PLATE, for missions, consular posts, special missions,
+      international organisations and their staff (§ 25 pkt 5). period.start 2000
+      is a real format change and not merely the reform date: the pre-reform
+      diplomatic plate under Dz. U. 1998 nr 57 poz. 365 § 20 ust. 2 pkt 5 was TWO
+      letters and five digits (four on motorcycles) and used the Warsaw
+      voivodeship code, so 1 May 2000 changed the diplomatic grammar as well as
+      the ordinary one.
+
+  # =========================================================================
+  # PROFESSIONAL REGISTRATION — the Polish dealer/trade plate, since 2019.
+  # =========================================================================
+  - id: pl-professional
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2019 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "L99 99P99"
+      regex: '\A[A-Z]\d{2} ?\d{2}P(?:\d{2}|\d[A-Z])\z'
+      regex_strict: '\A[ABCDEFGIJKLMNOPRSTVWXYZ]\d{2} ?\d{2}P(?:\d{2}|\d[ACEFGHJKLMNPRSTUVWXY])\z'
+      charset:
+        letters_excluded: ["Q"]
+        letters_excluded_vehicle_wyroznik: ["B", "D", "I", "O", "Z"]
+        notes: "§ 14 ust. 1 of the professional-registration rozporządzenie repeats the 25-letter alphabet; § 14 ust. 2 pkt 2 excludes B, D, I, O and Z from the single trailing letter of the second layout."
+      progression: >-
+        § 14 ust. 2, verbatim: "pierwsza litera stanowi wyróżnik województwa,
+        dwie cyfry w przedziale od 01 do 99 stanowią wyróżnik powiatu,
+        następnych pięć znaków stanowi wyróżnik przydzielony dla pojazdów
+        w decyzji o profesjonalnej rejestracji pojazdów, tworzony kolejno:
+        1) z dwóch cyfr w przedziale od 00 do 99, litery P i dwóch cyfr
+        w przedziale od 01 do 99; 2) po wyczerpaniu kombinacji tych cyfr –
+        z dwóch cyfr w przedziale od 00 do 99, litery P, cyfry w przedziale od 0
+        do 9 i litery, z wyłączeniem liter B, D, I, O i Z."
+      fixed_letter_note: >-
+        The letter P in the SIXTH position is fixed and is the class marker:
+        § 12 ust. 2 calls it "stałą literę P, będącą literowym wyróżnikiem
+        tablicy przeznaczonej do profesjonalnej rejestracji pojazdów". It is the
+        only positional literal in the whole Polish system.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      plate_variants:
+        - { w: 190, h: 150, unit: mm, note: "profesjonalna motocyklowa" }
+        - { w: 140, h: 114, unit: mm, note: "profesjonalna motorowerowa" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#00A64F"
+      foreground_spec: "§ 12 ust. 2: 'profesjonalny numer rejestracyjny barwy zielonej na białym tle'. GREEN CHARACTERS ON WHITE — the inverse of the electric plate's black on green, and a distinction a colour-only classifier will get backwards. The green is measured for daylight only, on 100 cm2 samples."
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed, note: "§ 13 ust. 1 imports the EU field by reference to the registration rozporządzenie" }
+      emblem: { present: false, note: "not established in this pass; § 13 ust. 3 forbids markings other than those in ust. 1-2 and § 14, and no eagle requirement was found. Recorded gap." }
+    region_encoding: none
+    region_encoding_note: >-
+      DO NOT ROUTE THROUGH plates/_decode/pl-powiats.yml. The professional plate's powiat
+      wyróżnik is TWO DIGITS, not letters, and its table is załącznik nr 8 to the
+      professional-registration rozporządzenie — a different annex under a
+      different delegation. That numeric table was NOT extracted in this pass and
+      is a recorded gap; the voivodeship LETTER is the same column-4 letter as on
+      an ordinary plate and can be decoded from plates/_decode/pl-powiats.yml's `voivodeships`.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2023/2616/text/O/D20232616.pdf  # the consolidated text (obwieszczenie MI z 15 listopada 2023 r.) of rozporządzenie MI z 12 marca 2019 r. w sprawie profesjonalnej rejestracji pojazdów, stosowanych oznaczeń oraz opłat: § 12 ust. 2 (green on white, the fixed P), § 13 (EU field, legalisation mark, closed list of markings), § 14 (alphabet, the two layouts, the annex-8 delegation). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2019/546  # the Sejm ELI entry for Dz. U. 2019 poz. 546, the original instrument: entryIntoForce 2019-07-11 — this series' period.start. Accessed 2026-08-02"
+    notes: >-
+      PROFESSIONAL REGISTRATION — Poland's dealer/trade plate, and a genuinely
+      young class: it did not exist before 11 July 2019. It is issued to a
+      BUSINESS by decision of the starosta (so `binding` differs from the
+      jurisdiction default) and covers manufacturers, distributors and research
+      units moving or testing unregistered vehicles. It replaced the "tablica
+      tymczasowa badawcza" of the 2002 regime, which is recorded in
+      common.absent_classes.research_badawcza.
+
+  # =========================================================================
+  # THE ARMED FORCES — U, under art. 76 ust. 2, a different minister.
+  # =========================================================================
+  - id: pl-military
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "UL 99999"
+      regex: '\AU[A-Z] ?(?:\d{5}|\d{4}T?)\z'
+      regex_strict: '\AU[A-NPR-TV-Z] ?(?:\d{5}|\d{4}T?)\z'
+      charset:
+        letters_excluded: ["O", "Q", "U"]
+        notes: >-
+          A DIFFERENT exclusion set from the civil one, and it is enumerated
+          rather than described. § 6 ust. 3 pkt 2 lit. a lists the permitted
+          second letters in full: "A, B, C, D, E, F, G, H, I, J, K, L, M, N, P,
+          R, S, T, V, W, X, Y, Z" — twenty-three letters, dropping O and U as
+          well as the dataset-wide Q. B, D, I and Z ARE permitted here, unlike on
+          a civil vehicle wyróżnik.
+      progression: >-
+        § 6 ust. 3: "wyróżnika Sił Zbrojnych, którym jest wielka litera U
+        umieszczana jako pierwsza" plus a vehicle wyróżnik of one letter and
+        then, by plate type, a five-digit number 00001-99999 for car plates and
+        for numbers painted directly on the vehicle, a four-digit number
+        0001-9999 for motorcycle plates, or a four-digit number followed by the
+        FIXED LETTER T for a tracked vehicle.
+      tracked_note: "the trailing T is the only class marker in the Polish system besides the professional plate's P, and it means gąsienicowy — tracked."
+    design:
+      plate: { w: null, h: null, unit: mm }
+      dimensions_note: >-
+        RECORDED GAP. art. 76 ust. 2 of the ustawa delegates the military plate's
+        wzór to the Minister of National Defence, but the current MON
+        rozporządzenie carries only three annexes — a registration application, a
+        military dowód rejestracyjny, and the pattern for numbers PAINTED
+        DIRECTLY on a vehicle — and none of them is a plate drawing. No
+        dimensions were secured.
+      background: { color: "#FFFFFF", finish: null, hex_basis: observed }
+      foreground: "#000000"
+      colour_evidence: >-
+        Sourced only obliquely. § 17 ust. 4 prescribes, for tracked and armoured
+        vehicles that carry no plate, "numer rejestracyjny barwy czarnej na
+        białym tle oraz symbol przynależności narodowej" applied by stencil or
+        decal; § 17 ust. 2 allows white or black for mobilisation numbers,
+        whichever contrasts with the vehicle. Black on white for the PLATE itself
+        is an inference from those provisions and is flagged as one.
+      band: { side: none, note: "not established; no EU-field requirement was found in the MON instrument. Recorded gap." }
+      emblem: { present: false }
+    region_encoding: none
+    region_encoding_note: >-
+      U is not a voivodeship letter — it is one of the two letters (with H) that
+      never appear in column 4 of załącznik nr 13, which is exactly what makes
+      the prefix unambiguous. Note § 6 ust. 1-2 however: unmarked vehicles of the
+      Żandarmeria Wojskowa, the special forces, the cyberspace-defence troops and
+      certain protected-installation units may be registered under an ORDINARY
+      voivodeship+powiat number instead, deliberately indistinguishable from a
+      civil plate. A parse API cannot detect those and its confidence model
+      should know they exist.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2023/1776/text/O/D20231776.pdf  # rozporządzenie MON z 30 sierpnia 2023 r. w sprawie rejestracji pojazdów Sił Zbrojnych RP oraz pojazdów należących do obcych sił zbrojnych: § 6 (the U frame and the three vehicle-wyróżnik shapes), § 6 ust. 1-2 (the ordinary-number exception), § 17 (numbers applied directly), § 20 ('Rozporządzenie wchodzi w życie z dniem 4 września 2023 r.'). Accessed 2026-08-02"
+      - "https://api.sejm.gov.pl/eli/acts/DU/2024/1251/text/O/D20241251.pdf  # Prawo o ruchu drogowym art. 76 ust. 2, the delegation to the Minister of National Defence. Accessed 2026-08-02"
+    notes: >-
+      MILITARY PLATES. period.start 2023 is INSTRUMENT-IN-FORCE and means what it
+      means elsewhere in this dataset — the date of the instrument that STATES
+      the rule (§ 20 of Dz. U. 2023 poz. 1776, 4 September 2023), not the date
+      the U system began, which is certainly older: the chain of MON instruments
+      runs back through Dz. U. 2012 poz. 623, Dz. U. 2005 nr 84 poz. 723 and
+      Dz. U. 1999 nr 84 poz. 937 and was not read in this pass. A recorded gap,
+      and one worth closing because the U frame is very likely materially older
+      than 2023.
+
+  # =========================================================================
+  # THE SERVICES — H, under art. 76 ust. 4, a third minister.
+  # =========================================================================
+  - id: pl-police
+    class: police
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2025 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "HPL L999"
+      regex: '\AHP[A-Z] ?(?:[A-Z]\d{3}|\d{2}[A-Z]{2})\z'
+      regex_strict: '\AHP[A-PR-Z] ?(?:[A-PR-Z]\d{3}|\d{2}[A-PR-Z]{2})\z'
+      charset:
+        letters_excluded: ["Q"]
+        notes: >-
+          Only Q. § 5 ust. 2 pkt 1 and ust. 4 both draw on "zbiór następujących
+          25 liter" without the civil B/D/I/O/Z exclusion, which § 31 ust. 1 of
+          the transport rozporządzenie confines to plates issued under THAT
+          instrument. Applying the civil exclusion here would reject lawful
+          service plates.
+      progression: >-
+        § 5 ust. 2 pkt 1: the service wyróżnik, then ONE letter from the
+        25-letter set, then the vehicle wyróżnik, which by ust. 4 is either a
+        letter and three digits 001-999 or two digits 01-99 and two letters.
+        Seven characters in total.
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      design_basis: >-
+        Taken from the transport rozporządzenie by cross-reference, not stated in
+        the MSWiA one: § 5 ust. 1 says "Wzory tablic rejestracyjnych, które
+        zawierają wyróżniki służb, oraz wzory umieszczanych na nich symboli są
+        określone w przepisach wydanych na podstawie art. 76 ust. 1 pkt 1 lit. a
+        ustawy" — that is Dz. U. 2024 poz. 1709. This pass did not locate a
+        service-plate wzór inside that instrument's załącznik nr 12, whose
+        drawings cover the five § 25 types only, so the colours and dimensions
+        above are an INFERENCE from the ordinary plate. Recorded gap.
+    region_encoding: none
+    region_encoding_note: >-
+      H is not a voivodeship letter — see plates/_decode/plates/_decode/pl-powiats.yml,
+      prefix_split.letters_never_a_voivodeship. But note § 5 ust. 2 pkt 2 and
+      § 6: a service may equally register a vehicle under an ORDINARY
+      voivodeship+powiat number, and must do so for vehicles that are NOT
+      liveried ("Tablic rejestracyjnych, które zawierają wyróżnik województwa
+      i powiatu, nie stosuje się do oznakowanych pojazdów służb"). So an H plate
+      implies a marked service vehicle, while an unmarked one wears a civil plate
+      that no parse can distinguish.
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2025/1326/text/O/D20251326.pdf  # rozporządzenie MSWiA z 30 września 2025 r. w sprawie rejestracji pojazdów Służby Ochrony Państwa, Policji, ABW, AW, CBA, Straży Granicznej i KAS wykorzystywanych przez Służbę Celno-Skarbową: § 5 ust. 2-4 (the number structure and the six service wyróżniki), § 6 (marked vehicles only), § 14 (in force the day after publication). Accessed 2026-08-02"
+    notes: >-
+      POLICE PLATES — the HP prefix. period.start 2025 is INSTRUMENT-IN-FORCE:
+      Dz. U. 2025 poz. 1326 is merely the latest in a chain running back through
+      Dz. U. 2023 poz. 1778, Dz. U. 2019 poz. 560, Dz. U. 2017 poz. 447,
+      Dz. U. 2011 nr 195 poz. 1160 and further, none of which was read here, so
+      2025 is the date of the instrument that STATES the rule and NOT the date
+      the HP prefix began. A recorded gap.
+
+  - id: pl-government-services
+    class: government
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2025 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "HBL L999"
+      regex: '\AH[ABCKW][A-Z] ?(?:[A-Z]\d{3}|\d{2}[A-Z]{2})\z'
+      regex_strict: '\AH[ABCKW][A-PR-Z] ?(?:[A-PR-Z]\d{3}|\d{2}[A-PR-Z]{2})\z'
+      charset: { letters_excluded: ["Q"] }
+      service_prefixes:
+        HB: "Służba Ochrony Państwa (state protection service)"
+        HK: "Agencja Bezpieczeństwa Wewnętrznego i Agencja Wywiadu (internal security and foreign intelligence — ONE prefix for two agencies)"
+        HA: "Centralne Biuro Antykorupcyjne (anti-corruption bureau)"
+        HW: "Straż Graniczna (border guard)"
+        HC: "Służba Celno-Skarbowa (customs and fiscal service)"
+      progression: "§ 5 ust. 2 pkt 1 and ust. 4, identical to pl-police; only the two-letter service wyróżnik differs."
+    design:
+      plate: { w: 520, h: 114, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+PL, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      design_basis: "as pl-police — inferred from the ordinary plate by the § 5 ust. 1 cross-reference; recorded gap."
+    region_encoding: none
+    sources:
+      - "https://api.sejm.gov.pl/eli/acts/DU/2025/1326/text/O/D20251326.pdf  # § 5 ust. 3, verbatim: 'Jako wyróżniki służb określa się litery: 1) HB – dla Służby Ochrony Państwa; 2) HP – dla Policji; 3) HK – dla Agencji Bezpieczeństwa Wewnętrznego i Agencji Wywiadu; 4) HA – dla Centralnego Biura Antykorupcyjnego; 5) HW – dla Straży Granicznej; 6) HC – dla Służby Celno-Skarbowej.' Accessed 2026-08-02"
+    notes: >-
+      THE FIVE NON-POLICE SERVICE PREFIXES, held as one series because they share
+      a format, a design and a period and differ only in which agency the second
+      letter names — the § 2.3 test for a class flag rather than a series. `pattern`
+      prints HB because a pattern is one canonical string; the regex carries all
+      five. The one substantive oddity is HK, which the instrument assigns to TWO
+      agencies at once (ABW and AW), so that prefix does not resolve to a single
+      body. period.start 2025 is INSTRUMENT-IN-FORCE, with the same caveat as
+      pl-police: the H system is older than this instrument and its origin is a
+      recorded gap.

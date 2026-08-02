@@ -1,0 +1,567 @@
+# plates/_decode/pl-powiats.yml — the Polish voivodeship + powiat plate codes.
+#
+# THE SOURCE FINDING, and it is the Anlage-5d case rather than the German one:
+# THE POLISH CODE LIST IS INSIDE THE REGULATION. § 31 ust. 2 of the current
+# rozporządzenie, verbatim: "Wyróżniki województw i powiatów dla tablic
+# rejestracyjnych są określone w załączniku nr 13 do rozporządzenia." Załącznik
+# nr 13 is a closed, primary, 380-row table printed inside the instrument, so
+# every row below is authored from the instrument itself — no enthusiast list,
+# no encyclopedia table, no guesswork.
+#
+# WHICH INSTRUMENT, AND WHY IT IS NOT THE ONE MOST SOURCES CITE. The table is
+# consolidated here from three primaries, in force order:
+#   * BASE — rozporządzenie Ministra Infrastruktury z dnia 8 listopada 2024 r.
+#     w sprawie rejestracji i oznaczania pojazdów, wymagań dla tablic
+#     rejestracyjnych oraz wzorów innych dokumentów związanych z rejestracją
+#     pojazdów (Dz. U. 2024 poz. 1709), załącznik nr 13; in force 2024-11-30.
+#   * Dz. U. 2025 poz. 939 § 1 pkt 4 — three column-5 additions; 2025-07-30.
+#   * Dz. U. 2026 poz. 891 § 1 pkt 9 — three column-5 additions; 2026-07-04.
+# The widely-cited Dz. U. 2022 poz. 1847 is NOT the operative instrument: the
+# Sejm ELI register records it "uznany za uchylony" with repealDate 2024-11-30.
+# Its own annex was fetched and read in this pass as a control (its pages are
+# images, not text, in the ISAP PDF) and it differs from the 2024 table in real
+# rows — bydgoski gained BC, kielecki gained KC/KM/KP, ostródzki gained OT/OX,
+# Poznań gained X, Konin gained N, Kalisz gained A, and the tymczasowe column
+# gained the second-letter ranges (V0-V9, J0-J9, A0-A9, Y0-Y9, X0-X9, I0-I9,
+# M0-M9). Building on the repealed text would have shipped six-plus wrong rows.
+#
+# HOW THE PREFIX SPLITS, WHICH IS THE PARSE-CRITICAL FACT (see prefix_split).
+#
+# Referenced by: plates/pl.yml (pl-standard, pl-standard-preeu, pl-motorcycle,
+# pl-moped, pl-electric, pl-historic, pl-historic-moped, pl-professional) via
+# region_encoding.
+jurisdiction: pl
+topic: powiats
+authority:
+  name: "Rozporządzenie Ministra Infrastruktury z dnia 8 listopada 2024 r. w sprawie rejestracji i oznaczania pojazdów, wymagań dla tablic rejestracyjnych oraz wzorów innych dokumentów związanych z rejestracją pojazdów, załącznik nr 13 (do § 31 ust. 2)"
+  url: "https://api.sejm.gov.pl/eli/acts/DU/2024/1709"
+sources:
+  - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709/text/O/D20241709.pdf  # Dz. U. 2024 poz. 1709, załącznik nr 13 'WYRÓŻNIKI WOJEWÓDZTW I POWIATÓW DLA TABLIC REJESTRACYJNYCH', printed pages 79-88 — all 380 rows, all 16 voivodeship blocks, columns 4 (wyróżnik województwa), 5 (wyróżnik powiatu) and 6 (tymczasowe + indywidualne). § 31 ust. 2 is the delegation, § 31 ust. 3-5 the second-letter, merger and split rules. Accessed 2026-08-02"
+  - "https://api.sejm.gov.pl/eli/acts/DU/2025/939/text/O/D20250939.pdf  # Dz. U. 2025 poz. 939 § 1 pkt 4: 'w załączniku nr 13 do rozporządzenia w tabeli ... w kolumnie 5: a) w lp. 1 w wierszu dotyczącym powiatu wrocławskiego po literach WR dodaje się przecinek i litery WW, b) w lp. 3 ... powiatu lubelskiego po literach UB ... VB, c) w lp. 8 ... powiatu nyskiego po literach NY ... NX'; § 2 in force 14 days after publication (2025-07-15) = 2025-07-30. Accessed 2026-08-02"
+  - "https://api.sejm.gov.pl/eli/acts/DU/2026/891/text/O/D20260891.pdf  # Dz. U. 2026 poz. 891 § 1 pkt 9: column-5 additions for chełmiński (CE, CM), tarnogórski (TR, TN) and olsztyński (OZ, OP); in force 2026-07-04. Accessed 2026-08-02"
+  - "https://api.sejm.gov.pl/eli/acts/DU/2024/1709  # the Sejm ELI register entry: status 'obowiązujący', entryIntoForce 2024-11-30, and the two amending acts above. This is also the record that shows Dz. U. 2022 poz. 1847 repealed on 2024-11-30. Accessed 2026-08-02"
+  - "https://api.sejm.gov.pl/eli/acts/DU/1999/632/text/O/D19990632.pdf  # Dz. U. 1999 nr 59 poz. 632 § 24 ('Ustala się dla tablic rejestracyjnych wyróżniki województw oraz wyróżniki powiatów, określone w załączniku nr 5') and § 49, which commences § 22-24 on 1 May 2000 — the date the voivodeship+powiat code system began. Accessed 2026-08-02"
+period: { start: 2000 }
+period_evidence: enacted-commencement
+period_note: >-
+  2000 is the commencement of the CODE SYSTEM these rows belong to, not of the
+  individual rows. § 49 of Dz. U. 1999 nr 59 poz. 632 reads, verbatim:
+  "Rozporządzenie wchodzi w życie z dniem 1 lipca 1999 r., z wyjątkiem § 16,
+  § 18 ust. 3-8, § 19, § 21 ust. 2, 4 i 5, § 22-24, § 29 i 30, które wchodzą
+  w życie z dniem 1 maja 2000 r." — § 24 is the wyróżniki annex and § 21 ust. 2
+  the serial grammar, so the voivodeship-first system began on 1 MAY 2000. Its
+  complement is in § 41 of the same instrument ("Do dnia 30 kwietnia 2000 r.
+  organ rejestrujący wydaje tablice rejestracyjne spełniające warunki określone
+  w § 39") and in § 39 ust. 2, which let stock bearing the pre-reform voivodeship
+  codes be issued "jednak nie dłużej niż do dnia 30 kwietnia 2000 r." Individual
+  rows are younger than 2000 — karkonoski replaced jeleniogórski, and the
+  multi-code rows below accumulated as pools ran out — and PER-ROW PERIODS ARE A
+  RECORDED GAP: the annex prints no dates and this pass did not diff every
+  amendment between 2000 and 2024.
+consolidated_as_of: "2026-08-02"
+
+# ---------------------------------------------------------------------------
+# THE PREFIX SPLIT — the single most parse-critical fact in this file, and it
+# is DERIVED FROM THE GRAMMAR, not from folklore.
+# ---------------------------------------------------------------------------
+prefix_split:
+  rule: >-
+    A Polish registration number begins with a wyróżnik województwa of ONE
+    letter followed by a wyróżnik powiatu of ONE OR TWO letters, so the prefix
+    is two or three characters and is NOT self-delimiting. For the ordinary
+    CAR series the boundary is nevertheless deterministic, and the reason is in
+    § 30 ust. 2 pkt 1 of the rozporządzenie: every one of the five vehicle
+    wyróżnik layouts available to a one-letter powiat (99999, 9999L, 999LL,
+    9L999, 9LL99) BEGINS WITH A DIGIT. Therefore, on a car plate, if the THIRD
+    character is a letter the prefix is three characters; if it is a digit the
+    prefix is two. Take the longest matching prefix from `codes` below and this
+    rule will agree with it.
+  worked_example: >-
+    Podlaskie is the case that looks dangerous and is not. Białystok is B + I,
+    so its prefix is the two-character "BI"; białostocki is B + IA and B + IB, so
+    its prefixes are the three-character "BIA" and "BIB". The string "BIA12345"
+    could in principle be BI + "A12345" or BIA + "12345". It is not ambiguous:
+    "A12345" is six characters and every one-letter-powiat car layout is five, so
+    only BIA + "12345" parses, and the third-character rule reaches the same
+    answer without counting. This pass checked the property MECHANICALLY across
+    all 689 prefixes and all five one-letter-powiat car layouts — zero
+    ambiguities.
+  motorcycle_caveat: >-
+    THE RULE DOES NOT HOLD FOR MOTORCYCLE AND MOPED PLATES. § 30 ust. 2 pkt 3
+    lit. a gives one-letter powiats the layouts "litera i trzy cyfry" and "dwie
+    litery i dwie cyfry", which DO begin with a letter. There the boundary is
+    resolved by LENGTH instead: a motorcycle vehicle wyróżnik is always four
+    characters, so a six-character string has a two-character prefix and a
+    seven-character string a three-character one. A consumer that does not know
+    the plate SIZE must carry both readings.
+  letters_never_a_voivodeship:
+    letters: ["H", "U"]
+    note: >-
+      The 25-letter alphabet of § 30 ust. 1 is A-Z without Q. Twenty-three of
+      those letters appear in column 4 of the annex as a wyróżnik województwa;
+      exactly TWO never do — H and U — and that is not a coincidence. H is the
+      reserved base of the six service prefixes (HB, HP, HK, HA, HW, HC:
+      § 5 ust. 3 rozporządzenia MSWiA, Dz. U. 2025 poz. 1326) and U is the
+      armed-forces wyróżnik (§ 6 ust. 3 pkt 1 rozporządzenia MON, Dz. U. 2023
+      poz. 1776, "wyróżnika Sił Zbrojnych, którym jest wielka litera U
+      umieszczana jako pierwsza"). A leading H or U therefore means the plate is
+      NOT a civil registration and must not be routed through this table.
+  second_letter_rule: >-
+    § 31 ust. 3: where the annex gives a voivodeship TWO letters, "numery
+    rejestracyjne z wykorzystaniem drugiej litery są tworzone po wyczerpaniu się
+    możliwości utworzenia numerów rejestracyjnych ... z wykorzystaniem pierwszej
+    litery" — the second letter is an overflow pool, not a parallel one, so the
+    V/J/A/Y/X/I/M prefixes are rarer on the road than their D/K/W/R/G/S/P twins
+    even though both are equally lawful. Dz. U. 2025 poz. 939 § 1 pkt 3 added
+    the one exception: the buyer of an INDIVIDUAL plate may choose which of the
+    two voivodeship letters their number is built from.
+  merger_and_split_rule: >-
+    § 31 ust. 4-5: when powiats MERGE, "na tablicach rejestracyjnych stosuje się
+    dotychczasowe wyróżniki tych powiatów" — both old codes stay in service; when
+    a powiat is SPLIT, the successor authorities keep using the existing code
+    until new ones are set, having agreed how to divide the unused pool. Codes
+    therefore outlive the units that earned them, and a code withdrawn from the
+    annex still sits on the road because a Polish plate is only exchanged on
+    re-registration (art. 73 ust. 1a Prawa o ruchu drogowym expressly lets the
+    buyer KEEP it). WITHDRAWN CODES ARE NOT IN THIS TABLE AND ARE A RECORDED GAP:
+    a prefix absent here must be treated as unresolved, never as invalid.
+
+# ---------------------------------------------------------------------------
+# The 16 voivodeships: column 4 (wyróżnik województwa, used on tablice
+# zwyczajne, zabytkowe and dyplomatyczne) and column 6 (the letter+digit
+# wyróżnik used on tablice tymczasowe and indywidualne).
+# ---------------------------------------------------------------------------
+voivodeships:
+  - { lp: 1,  name: dolnośląskie,        letters: ["D", "V"], temporary_individual: "D0-D9, V0-V9" }
+  - { lp: 2,  name: kujawsko-pomorskie,  letters: ["C"],    temporary_individual: "C0-C9" }
+  - { lp: 3,  name: lubelskie,           letters: ["L"],    temporary_individual: "L0-L9" }
+  - { lp: 4,  name: lubuskie,            letters: ["F"],    temporary_individual: "F0-F9" }
+  - { lp: 5,  name: łódzkie,             letters: ["E"],    temporary_individual: "E0-E9" }
+  - { lp: 6,  name: małopolskie,         letters: ["K", "J"], temporary_individual: "K0-K9, J0-J9" }
+  - { lp: 7,  name: mazowieckie,         letters: ["W", "A"], temporary_individual: "W0-W9, A0-A9" }
+  - { lp: 8,  name: opolskie,            letters: ["O"],    temporary_individual: "O0-O9" }
+  - { lp: 9,  name: podkarpackie,        letters: ["R", "Y"], temporary_individual: "R0-R9, Y0-Y9" }
+  - { lp: 10, name: podlaskie,           letters: ["B"],    temporary_individual: "B0-B9" }
+  - { lp: 11, name: pomorskie,           letters: ["G", "X"], temporary_individual: "G0-G9, X0-X9" }
+  - { lp: 12, name: śląskie,             letters: ["S", "I"], temporary_individual: "S0-S9, I0-I9" }
+  - { lp: 13, name: świętokrzyskie,      letters: ["T"],    temporary_individual: "T0-T9" }
+  - { lp: 14, name: warmińsko-mazurskie, letters: ["N"],    temporary_individual: "N0-N9" }
+  - { lp: 15, name: wielkopolskie,       letters: ["P", "M"], temporary_individual: "P0-P9, M0-M9" }
+  - { lp: 16, name: zachodniopomorskie,  letters: ["Z"],    temporary_individual: "Z0-Z9" }
+
+counts:
+  rows: 380
+  one_letter_powiat_codes: 92
+  two_letter_powiat_codes: 345
+  rows_with_more_than_one_code: 31
+  distinct_prefixes: 689
+counts_note: >-
+  380 rows = Poland's 314 powiats plus its 66 miasta na prawach powiatu, which
+  is the complete set; the annex has no residual or "other" row. `prefixes` on
+  each row is DERIVED, not quoted: it is the cross product of the voivodeship
+  letters with that row's powiat codes, recorded because a parse API needs the
+  concrete strings and the annex prints only the two columns. All 689 are
+  distinct — checked mechanically — so a prefix never decodes to two powiats.
+
+# ---------------------------------------------------------------------------
+# ZAŁĄCZNIK NR 13 — the 380 rows, in the annex's own order (by voivodeship Lp.,
+# then as the annex prints them: miasta na prawach powiatu first, then powiats).
+# `powiat_codes` is column 5 verbatim; `prefixes` is derived (see counts_note).
+# ---------------------------------------------------------------------------
+codes:
+  # 1. DOLNOŚLĄSKIE — wyróżnik województwa D, V | tymczasowe + indywidualne D0-D9, V0-V9
+  - { powiat: Jelenia Góra, voivodeship: dolnośląskie, powiat_codes: ["J"], prefixes: ["DJ", "VJ"], powiat_code_length: 1 }
+  - { powiat: Legnica, voivodeship: dolnośląskie, powiat_codes: ["L"], prefixes: ["DL", "VL"], powiat_code_length: 1 }
+  - { powiat: Wałbrzych, voivodeship: dolnośląskie, powiat_codes: ["B"], prefixes: ["DB", "VB"], powiat_code_length: 1 }
+  - { powiat: Wrocław, voivodeship: dolnośląskie, powiat_codes: ["W", "X"], prefixes: ["DW", "DX", "VW", "VX"], powiat_code_length: 1 }
+  - { powiat: bolesławiecki, voivodeship: dolnośląskie, powiat_codes: ["BL"], prefixes: ["DBL", "VBL"], powiat_code_length: 2 }
+  - { powiat: dzierżoniowski, voivodeship: dolnośląskie, powiat_codes: ["DZ"], prefixes: ["DDZ", "VDZ"], powiat_code_length: 2 }
+  - { powiat: głogowski, voivodeship: dolnośląskie, powiat_codes: ["GL"], prefixes: ["DGL", "VGL"], powiat_code_length: 2 }
+  - { powiat: górowski, voivodeship: dolnośląskie, powiat_codes: ["GR"], prefixes: ["DGR", "VGR"], powiat_code_length: 2 }
+  - { powiat: jaworski, voivodeship: dolnośląskie, powiat_codes: ["JA"], prefixes: ["DJA", "VJA"], powiat_code_length: 2 }
+  - { powiat: karkonoski, voivodeship: dolnośląskie, powiat_codes: ["JE"], prefixes: ["DJE", "VJE"], powiat_code_length: 2 }
+  - { powiat: kamiennogórski, voivodeship: dolnośląskie, powiat_codes: ["KA"], prefixes: ["DKA", "VKA"], powiat_code_length: 2 }
+  - { powiat: kłodzki, voivodeship: dolnośląskie, powiat_codes: ["KL"], prefixes: ["DKL", "VKL"], powiat_code_length: 2 }
+  - { powiat: legnicki, voivodeship: dolnośląskie, powiat_codes: ["LE"], prefixes: ["DLE", "VLE"], powiat_code_length: 2 }
+  - { powiat: lubański, voivodeship: dolnośląskie, powiat_codes: ["LB"], prefixes: ["DLB", "VLB"], powiat_code_length: 2 }
+  - { powiat: lubiński, voivodeship: dolnośląskie, powiat_codes: ["LU"], prefixes: ["DLU", "VLU"], powiat_code_length: 2 }
+  - { powiat: lwówecki, voivodeship: dolnośląskie, powiat_codes: ["LW"], prefixes: ["DLW", "VLW"], powiat_code_length: 2 }
+  - { powiat: milicki, voivodeship: dolnośląskie, powiat_codes: ["MI"], prefixes: ["DMI", "VMI"], powiat_code_length: 2 }
+  - { powiat: oleśnicki, voivodeship: dolnośląskie, powiat_codes: ["OL"], prefixes: ["DOL", "VOL"], powiat_code_length: 2 }
+  - { powiat: oławski, voivodeship: dolnośląskie, powiat_codes: ["OA"], prefixes: ["DOA", "VOA"], powiat_code_length: 2 }
+  - { powiat: polkowicki, voivodeship: dolnośląskie, powiat_codes: ["PL"], prefixes: ["DPL", "VPL"], powiat_code_length: 2 }
+  - { powiat: strzeliński, voivodeship: dolnośląskie, powiat_codes: ["ST"], prefixes: ["DST", "VST"], powiat_code_length: 2 }
+  - { powiat: średzki, voivodeship: dolnośląskie, powiat_codes: ["SR"], prefixes: ["DSR", "VSR"], powiat_code_length: 2 }
+  - { powiat: świdnicki, voivodeship: dolnośląskie, powiat_codes: ["SW"], prefixes: ["DSW", "VSW"], powiat_code_length: 2 }
+  - { powiat: trzebnicki, voivodeship: dolnośląskie, powiat_codes: ["TR"], prefixes: ["DTR", "VTR"], powiat_code_length: 2 }
+  - { powiat: wałbrzyski, voivodeship: dolnośląskie, powiat_codes: ["BA"], prefixes: ["DBA", "VBA"], powiat_code_length: 2 }
+  - { powiat: wołowski, voivodeship: dolnośląskie, powiat_codes: ["WL"], prefixes: ["DWL", "VWL"], powiat_code_length: 2 }
+  - { powiat: wrocławski, voivodeship: dolnośląskie, powiat_codes: ["WR", "WW"], prefixes: ["DWR", "DWW", "VWR", "VWW"], powiat_code_length: 2, amended: "Dz.U. 2025 poz. 939 § 1 pkt 4 lit. a (in force 2025-07-30)" }
+  - { powiat: ząbkowicki, voivodeship: dolnośląskie, powiat_codes: ["ZA"], prefixes: ["DZA", "VZA"], powiat_code_length: 2 }
+  - { powiat: zgorzelecki, voivodeship: dolnośląskie, powiat_codes: ["ZG"], prefixes: ["DZG", "VZG"], powiat_code_length: 2 }
+  - { powiat: złotoryjski, voivodeship: dolnośląskie, powiat_codes: ["ZL"], prefixes: ["DZL", "VZL"], powiat_code_length: 2 }
+  # 2. KUJAWSKO-POMORSKIE — wyróżnik województwa C | tymczasowe + indywidualne C0-C9
+  - { powiat: Bydgoszcz, voivodeship: kujawsko-pomorskie, powiat_codes: ["B"], prefixes: ["CB"], powiat_code_length: 1 }
+  - { powiat: Grudziądz, voivodeship: kujawsko-pomorskie, powiat_codes: ["G"], prefixes: ["CG"], powiat_code_length: 1 }
+  - { powiat: Toruń, voivodeship: kujawsko-pomorskie, powiat_codes: ["T"], prefixes: ["CT"], powiat_code_length: 1 }
+  - { powiat: Włocławek, voivodeship: kujawsko-pomorskie, powiat_codes: ["W"], prefixes: ["CW"], powiat_code_length: 1 }
+  - { powiat: aleksandrowski, voivodeship: kujawsko-pomorskie, powiat_codes: ["AL"], prefixes: ["CAL"], powiat_code_length: 2 }
+  - { powiat: brodnicki, voivodeship: kujawsko-pomorskie, powiat_codes: ["BR"], prefixes: ["CBR"], powiat_code_length: 2 }
+  - { powiat: bydgoski, voivodeship: kujawsko-pomorskie, powiat_codes: ["BY", "BC"], prefixes: ["CBC", "CBY"], powiat_code_length: 2 }
+  - { powiat: chełmiński, voivodeship: kujawsko-pomorskie, powiat_codes: ["CH", "CE", "CM"], prefixes: ["CCE", "CCH", "CCM"], powiat_code_length: 2, amended: "Dz.U. 2026 poz. 891 § 1 pkt 9 lit. a (in force 2026-07-04)" }
+  - { powiat: golubsko-dobrzyński, voivodeship: kujawsko-pomorskie, powiat_codes: ["GD"], prefixes: ["CGD"], powiat_code_length: 2 }
+  - { powiat: grudziądzki, voivodeship: kujawsko-pomorskie, powiat_codes: ["GR"], prefixes: ["CGR"], powiat_code_length: 2 }
+  - { powiat: inowrocławski, voivodeship: kujawsko-pomorskie, powiat_codes: ["IN"], prefixes: ["CIN"], powiat_code_length: 2 }
+  - { powiat: lipnowski, voivodeship: kujawsko-pomorskie, powiat_codes: ["LI"], prefixes: ["CLI"], powiat_code_length: 2 }
+  - { powiat: mogileński, voivodeship: kujawsko-pomorskie, powiat_codes: ["MG"], prefixes: ["CMG"], powiat_code_length: 2 }
+  - { powiat: nakielski, voivodeship: kujawsko-pomorskie, powiat_codes: ["NA"], prefixes: ["CNA"], powiat_code_length: 2 }
+  - { powiat: radziejowski, voivodeship: kujawsko-pomorskie, powiat_codes: ["RA"], prefixes: ["CRA"], powiat_code_length: 2 }
+  - { powiat: rypiński, voivodeship: kujawsko-pomorskie, powiat_codes: ["RY"], prefixes: ["CRY"], powiat_code_length: 2 }
+  - { powiat: sępoleński, voivodeship: kujawsko-pomorskie, powiat_codes: ["SE"], prefixes: ["CSE"], powiat_code_length: 2 }
+  - { powiat: świecki, voivodeship: kujawsko-pomorskie, powiat_codes: ["SW"], prefixes: ["CSW"], powiat_code_length: 2 }
+  - { powiat: toruński, voivodeship: kujawsko-pomorskie, powiat_codes: ["TR"], prefixes: ["CTR"], powiat_code_length: 2 }
+  - { powiat: tucholski, voivodeship: kujawsko-pomorskie, powiat_codes: ["TU"], prefixes: ["CTU"], powiat_code_length: 2 }
+  - { powiat: wąbrzeski, voivodeship: kujawsko-pomorskie, powiat_codes: ["WA"], prefixes: ["CWA"], powiat_code_length: 2 }
+  - { powiat: włocławski, voivodeship: kujawsko-pomorskie, powiat_codes: ["WL"], prefixes: ["CWL"], powiat_code_length: 2 }
+  - { powiat: żniński, voivodeship: kujawsko-pomorskie, powiat_codes: ["ZN"], prefixes: ["CZN"], powiat_code_length: 2 }
+  # 3. LUBELSKIE — wyróżnik województwa L | tymczasowe + indywidualne L0-L9
+  - { powiat: Biała Podlaska, voivodeship: lubelskie, powiat_codes: ["B"], prefixes: ["LB"], powiat_code_length: 1 }
+  - { powiat: Chełm, voivodeship: lubelskie, powiat_codes: ["C"], prefixes: ["LC"], powiat_code_length: 1 }
+  - { powiat: Lublin, voivodeship: lubelskie, powiat_codes: ["U"], prefixes: ["LU"], powiat_code_length: 1 }
+  - { powiat: Zamość, voivodeship: lubelskie, powiat_codes: ["Z"], prefixes: ["LZ"], powiat_code_length: 1 }
+  - { powiat: bialski, voivodeship: lubelskie, powiat_codes: ["BI"], prefixes: ["LBI"], powiat_code_length: 2 }
+  - { powiat: biłgorajski, voivodeship: lubelskie, powiat_codes: ["BL"], prefixes: ["LBL"], powiat_code_length: 2 }
+  - { powiat: chełmski, voivodeship: lubelskie, powiat_codes: ["CH"], prefixes: ["LCH"], powiat_code_length: 2 }
+  - { powiat: hrubieszowski, voivodeship: lubelskie, powiat_codes: ["HR"], prefixes: ["LHR"], powiat_code_length: 2 }
+  - { powiat: janowski, voivodeship: lubelskie, powiat_codes: ["JA"], prefixes: ["LJA"], powiat_code_length: 2 }
+  - { powiat: krasnostawski, voivodeship: lubelskie, powiat_codes: ["KS"], prefixes: ["LKS"], powiat_code_length: 2 }
+  - { powiat: kraśnicki, voivodeship: lubelskie, powiat_codes: ["KR"], prefixes: ["LKR"], powiat_code_length: 2 }
+  - { powiat: lubartowski, voivodeship: lubelskie, powiat_codes: ["LB"], prefixes: ["LLB"], powiat_code_length: 2 }
+  - { powiat: lubelski, voivodeship: lubelskie, powiat_codes: ["UB", "VB"], prefixes: ["LUB", "LVB"], powiat_code_length: 2, amended: "Dz.U. 2025 poz. 939 § 1 pkt 4 lit. b (in force 2025-07-30)" }
+  - { powiat: łęczyński, voivodeship: lubelskie, powiat_codes: ["LE"], prefixes: ["LLE"], powiat_code_length: 2 }
+  - { powiat: łukowski, voivodeship: lubelskie, powiat_codes: ["LU"], prefixes: ["LLU"], powiat_code_length: 2 }
+  - { powiat: opolski, voivodeship: lubelskie, powiat_codes: ["OP"], prefixes: ["LOP"], powiat_code_length: 2 }
+  - { powiat: parczewski, voivodeship: lubelskie, powiat_codes: ["PA"], prefixes: ["LPA"], powiat_code_length: 2 }
+  - { powiat: puławski, voivodeship: lubelskie, powiat_codes: ["PU"], prefixes: ["LPU"], powiat_code_length: 2 }
+  - { powiat: radzyński, voivodeship: lubelskie, powiat_codes: ["RA"], prefixes: ["LRA"], powiat_code_length: 2 }
+  - { powiat: rycki, voivodeship: lubelskie, powiat_codes: ["RY"], prefixes: ["LRY"], powiat_code_length: 2 }
+  - { powiat: świdnicki, voivodeship: lubelskie, powiat_codes: ["SW"], prefixes: ["LSW"], powiat_code_length: 2 }
+  - { powiat: tomaszowski, voivodeship: lubelskie, powiat_codes: ["TM"], prefixes: ["LTM"], powiat_code_length: 2 }
+  - { powiat: włodawski, voivodeship: lubelskie, powiat_codes: ["WL"], prefixes: ["LWL"], powiat_code_length: 2 }
+  - { powiat: zamojski, voivodeship: lubelskie, powiat_codes: ["ZA"], prefixes: ["LZA"], powiat_code_length: 2 }
+  # 4. LUBUSKIE — wyróżnik województwa F | tymczasowe + indywidualne F0-F9
+  - { powiat: Gorzów Wielkopolski, voivodeship: lubuskie, powiat_codes: ["G"], prefixes: ["FG"], powiat_code_length: 1 }
+  - { powiat: Zielona Góra, voivodeship: lubuskie, powiat_codes: ["Z"], prefixes: ["FZ"], powiat_code_length: 1 }
+  - { powiat: gorzowski, voivodeship: lubuskie, powiat_codes: ["GW"], prefixes: ["FGW"], powiat_code_length: 2 }
+  - { powiat: krośnieński, voivodeship: lubuskie, powiat_codes: ["KR"], prefixes: ["FKR"], powiat_code_length: 2 }
+  - { powiat: międzyrzecki, voivodeship: lubuskie, powiat_codes: ["MI"], prefixes: ["FMI"], powiat_code_length: 2 }
+  - { powiat: nowosolski, voivodeship: lubuskie, powiat_codes: ["NW"], prefixes: ["FNW"], powiat_code_length: 2 }
+  - { powiat: słubicki, voivodeship: lubuskie, powiat_codes: ["SL"], prefixes: ["FSL"], powiat_code_length: 2 }
+  - { powiat: strzelecko-drezdenecki, voivodeship: lubuskie, powiat_codes: ["SD"], prefixes: ["FSD"], powiat_code_length: 2 }
+  - { powiat: sulęciński, voivodeship: lubuskie, powiat_codes: ["SU"], prefixes: ["FSU"], powiat_code_length: 2 }
+  - { powiat: świebodziński, voivodeship: lubuskie, powiat_codes: ["SW"], prefixes: ["FSW"], powiat_code_length: 2 }
+  - { powiat: wschowski, voivodeship: lubuskie, powiat_codes: ["WS"], prefixes: ["FWS"], powiat_code_length: 2 }
+  - { powiat: zielonogórski, voivodeship: lubuskie, powiat_codes: ["ZI"], prefixes: ["FZI"], powiat_code_length: 2 }
+  - { powiat: żagański, voivodeship: lubuskie, powiat_codes: ["ZG"], prefixes: ["FZG"], powiat_code_length: 2 }
+  - { powiat: żarski, voivodeship: lubuskie, powiat_codes: ["ZA"], prefixes: ["FZA"], powiat_code_length: 2 }
+  # 5. ŁÓDZKIE — wyróżnik województwa E | tymczasowe + indywidualne E0-E9
+  - { powiat: Łódź, voivodeship: łódzkie, powiat_codes: ["L", "D"], prefixes: ["ED", "EL"], powiat_code_length: 1 }
+  - { powiat: Piotrków Trybunalski, voivodeship: łódzkie, powiat_codes: ["P"], prefixes: ["EP"], powiat_code_length: 1 }
+  - { powiat: Skierniewice, voivodeship: łódzkie, powiat_codes: ["S"], prefixes: ["ES"], powiat_code_length: 1 }
+  - { powiat: brzeziński, voivodeship: łódzkie, powiat_codes: ["BR"], prefixes: ["EBR"], powiat_code_length: 2 }
+  - { powiat: bełchatowski, voivodeship: łódzkie, powiat_codes: ["BE"], prefixes: ["EBE"], powiat_code_length: 2 }
+  - { powiat: kutnowski, voivodeship: łódzkie, powiat_codes: ["KU"], prefixes: ["EKU"], powiat_code_length: 2 }
+  - { powiat: łaski, voivodeship: łódzkie, powiat_codes: ["LA"], prefixes: ["ELA"], powiat_code_length: 2 }
+  - { powiat: łęczycki, voivodeship: łódzkie, powiat_codes: ["LE"], prefixes: ["ELE"], powiat_code_length: 2 }
+  - { powiat: łowicki, voivodeship: łódzkie, powiat_codes: ["LC"], prefixes: ["ELC"], powiat_code_length: 2 }
+  - { powiat: łódzki wschodni, voivodeship: łódzkie, powiat_codes: ["LW"], prefixes: ["ELW"], powiat_code_length: 2 }
+  - { powiat: opoczyński, voivodeship: łódzkie, powiat_codes: ["OP"], prefixes: ["EOP"], powiat_code_length: 2 }
+  - { powiat: pabianicki, voivodeship: łódzkie, powiat_codes: ["PA"], prefixes: ["EPA"], powiat_code_length: 2 }
+  - { powiat: pajęczański, voivodeship: łódzkie, powiat_codes: ["PJ"], prefixes: ["EPJ"], powiat_code_length: 2 }
+  - { powiat: piotrkowski, voivodeship: łódzkie, powiat_codes: ["PI"], prefixes: ["EPI"], powiat_code_length: 2 }
+  - { powiat: poddębicki, voivodeship: łódzkie, powiat_codes: ["PD"], prefixes: ["EPD"], powiat_code_length: 2 }
+  - { powiat: radomszczański, voivodeship: łódzkie, powiat_codes: ["RA"], prefixes: ["ERA"], powiat_code_length: 2 }
+  - { powiat: rawski, voivodeship: łódzkie, powiat_codes: ["RW"], prefixes: ["ERW"], powiat_code_length: 2 }
+  - { powiat: sieradzki, voivodeship: łódzkie, powiat_codes: ["SI"], prefixes: ["ESI"], powiat_code_length: 2 }
+  - { powiat: skierniewicki, voivodeship: łódzkie, powiat_codes: ["SK"], prefixes: ["ESK"], powiat_code_length: 2 }
+  - { powiat: tomaszowski, voivodeship: łódzkie, powiat_codes: ["TM"], prefixes: ["ETM"], powiat_code_length: 2 }
+  - { powiat: wieluński, voivodeship: łódzkie, powiat_codes: ["WI"], prefixes: ["EWI"], powiat_code_length: 2 }
+  - { powiat: wieruszowski, voivodeship: łódzkie, powiat_codes: ["WE"], prefixes: ["EWE"], powiat_code_length: 2 }
+  - { powiat: zduńskowolski, voivodeship: łódzkie, powiat_codes: ["ZD"], prefixes: ["EZD"], powiat_code_length: 2 }
+  - { powiat: zgierski, voivodeship: łódzkie, powiat_codes: ["ZG"], prefixes: ["EZG"], powiat_code_length: 2 }
+  # 6. MAŁOPOLSKIE — wyróżnik województwa K, J | tymczasowe + indywidualne K0-K9, J0-J9
+  - { powiat: Kraków, voivodeship: małopolskie, powiat_codes: ["R", "K"], prefixes: ["JK", "JR", "KK", "KR"], powiat_code_length: 1 }
+  - { powiat: Nowy Sącz, voivodeship: małopolskie, powiat_codes: ["N"], prefixes: ["JN", "KN"], powiat_code_length: 1 }
+  - { powiat: Tarnów, voivodeship: małopolskie, powiat_codes: ["T"], prefixes: ["JT", "KT"], powiat_code_length: 1 }
+  - { powiat: bocheński, voivodeship: małopolskie, powiat_codes: ["BC", "BA"], prefixes: ["JBA", "JBC", "KBA", "KBC"], powiat_code_length: 2 }
+  - { powiat: brzeski, voivodeship: małopolskie, powiat_codes: ["BR"], prefixes: ["JBR", "KBR"], powiat_code_length: 2 }
+  - { powiat: chrzanowski, voivodeship: małopolskie, powiat_codes: ["CH"], prefixes: ["JCH", "KCH"], powiat_code_length: 2 }
+  - { powiat: dąbrowski, voivodeship: małopolskie, powiat_codes: ["DA"], prefixes: ["JDA", "KDA"], powiat_code_length: 2 }
+  - { powiat: gorlicki, voivodeship: małopolskie, powiat_codes: ["GR"], prefixes: ["JGR", "KGR"], powiat_code_length: 2 }
+  - { powiat: krakowski, voivodeship: małopolskie, powiat_codes: ["RA", "RK"], prefixes: ["JRA", "JRK", "KRA", "KRK"], powiat_code_length: 2 }
+  - { powiat: limanowski, voivodeship: małopolskie, powiat_codes: ["LI"], prefixes: ["JLI", "KLI"], powiat_code_length: 2 }
+  - { powiat: miechowski, voivodeship: małopolskie, powiat_codes: ["MI"], prefixes: ["JMI", "KMI"], powiat_code_length: 2 }
+  - { powiat: myślenicki, voivodeship: małopolskie, powiat_codes: ["MY"], prefixes: ["JMY", "KMY"], powiat_code_length: 2 }
+  - { powiat: nowosądecki, voivodeship: małopolskie, powiat_codes: ["NS"], prefixes: ["JNS", "KNS"], powiat_code_length: 2 }
+  - { powiat: nowotarski, voivodeship: małopolskie, powiat_codes: ["NT"], prefixes: ["JNT", "KNT"], powiat_code_length: 2 }
+  - { powiat: olkuski, voivodeship: małopolskie, powiat_codes: ["OL"], prefixes: ["JOL", "KOL"], powiat_code_length: 2 }
+  - { powiat: oświęcimski, voivodeship: małopolskie, powiat_codes: ["OS"], prefixes: ["JOS", "KOS"], powiat_code_length: 2 }
+  - { powiat: proszowicki, voivodeship: małopolskie, powiat_codes: ["PR"], prefixes: ["JPR", "KPR"], powiat_code_length: 2 }
+  - { powiat: suski, voivodeship: małopolskie, powiat_codes: ["SU"], prefixes: ["JSU", "KSU"], powiat_code_length: 2 }
+  - { powiat: tarnowski, voivodeship: małopolskie, powiat_codes: ["TA"], prefixes: ["JTA", "KTA"], powiat_code_length: 2 }
+  - { powiat: tatrzański, voivodeship: małopolskie, powiat_codes: ["TT"], prefixes: ["JTT", "KTT"], powiat_code_length: 2 }
+  - { powiat: wadowicki, voivodeship: małopolskie, powiat_codes: ["WA"], prefixes: ["JWA", "KWA"], powiat_code_length: 2 }
+  - { powiat: wielicki, voivodeship: małopolskie, powiat_codes: ["WI"], prefixes: ["JWI", "KWI"], powiat_code_length: 2 }
+  # 7. MAZOWIECKIE — wyróżnik województwa W, A | tymczasowe + indywidualne W0-W9, A0-A9
+  - { powiat: Ostrołęka, voivodeship: mazowieckie, powiat_codes: ["O"], prefixes: ["AO", "WO"], powiat_code_length: 1 }
+  - { powiat: Płock, voivodeship: mazowieckie, powiat_codes: ["P"], prefixes: ["AP", "WP"], powiat_code_length: 1 }
+  - { powiat: Radom, voivodeship: mazowieckie, powiat_codes: ["R"], prefixes: ["AR", "WR"], powiat_code_length: 1 }
+  - { powiat: Siedlce, voivodeship: mazowieckie, powiat_codes: ["S"], prefixes: ["AS", "WS"], powiat_code_length: 1 }
+  - { powiat: białobrzeski, voivodeship: mazowieckie, powiat_codes: ["BR"], prefixes: ["ABR", "WBR"], powiat_code_length: 2 }
+  - { powiat: ciechanowski, voivodeship: mazowieckie, powiat_codes: ["CI"], prefixes: ["ACI", "WCI"], powiat_code_length: 2 }
+  - { powiat: garwoliński, voivodeship: mazowieckie, powiat_codes: ["G"], prefixes: ["AG", "WG"], powiat_code_length: 1 }
+  - { powiat: gostyniński, voivodeship: mazowieckie, powiat_codes: ["GS"], prefixes: ["AGS", "WGS"], powiat_code_length: 2 }
+  - { powiat: grodziski, voivodeship: mazowieckie, powiat_codes: ["GM"], prefixes: ["AGM", "WGM"], powiat_code_length: 2 }
+  - { powiat: grójecki, voivodeship: mazowieckie, powiat_codes: ["GR"], prefixes: ["AGR", "WGR"], powiat_code_length: 2 }
+  - { powiat: kozienicki, voivodeship: mazowieckie, powiat_codes: ["KZ"], prefixes: ["AKZ", "WKZ"], powiat_code_length: 2 }
+  - { powiat: legionowski, voivodeship: mazowieckie, powiat_codes: ["L"], prefixes: ["AL", "WL"], powiat_code_length: 1 }
+  - { powiat: lipski, voivodeship: mazowieckie, powiat_codes: ["LI"], prefixes: ["ALI", "WLI"], powiat_code_length: 2 }
+  - { powiat: łosicki, voivodeship: mazowieckie, powiat_codes: ["LS"], prefixes: ["ALS", "WLS"], powiat_code_length: 2 }
+  - { powiat: makowski, voivodeship: mazowieckie, powiat_codes: ["MA"], prefixes: ["AMA", "WMA"], powiat_code_length: 2 }
+  - { powiat: miński, voivodeship: mazowieckie, powiat_codes: ["M"], prefixes: ["AM", "WM"], powiat_code_length: 1 }
+  - { powiat: mławski, voivodeship: mazowieckie, powiat_codes: ["ML"], prefixes: ["AML", "WML"], powiat_code_length: 2 }
+  - { powiat: nowodworski, voivodeship: mazowieckie, powiat_codes: ["ND"], prefixes: ["AND", "WND"], powiat_code_length: 2 }
+  - { powiat: ostrołęcki, voivodeship: mazowieckie, powiat_codes: ["OS"], prefixes: ["AOS", "WOS"], powiat_code_length: 2 }
+  - { powiat: ostrowski, voivodeship: mazowieckie, powiat_codes: ["OR"], prefixes: ["AOR", "WOR"], powiat_code_length: 2 }
+  - { powiat: otwocki, voivodeship: mazowieckie, powiat_codes: ["OT"], prefixes: ["AOT", "WOT"], powiat_code_length: 2 }
+  - { powiat: piaseczyński, voivodeship: mazowieckie, powiat_codes: ["PI", "PA", "PW", "PX"], prefixes: ["APA", "API", "APW", "APX", "WPA", "WPI", "WPW", "WPX"], powiat_code_length: 2 }
+  - { powiat: płocki, voivodeship: mazowieckie, powiat_codes: ["PL"], prefixes: ["APL", "WPL"], powiat_code_length: 2 }
+  - { powiat: płoński, voivodeship: mazowieckie, powiat_codes: ["PN"], prefixes: ["APN", "WPN"], powiat_code_length: 2 }
+  - { powiat: pruszkowski, voivodeship: mazowieckie, powiat_codes: ["PR", "PP", "PS"], prefixes: ["APP", "APR", "APS", "WPP", "WPR", "WPS"], powiat_code_length: 2 }
+  - { powiat: przasnyski, voivodeship: mazowieckie, powiat_codes: ["PZ"], prefixes: ["APZ", "WPZ"], powiat_code_length: 2 }
+  - { powiat: przysuski, voivodeship: mazowieckie, powiat_codes: ["PY"], prefixes: ["APY", "WPY"], powiat_code_length: 2 }
+  - { powiat: pułtuski, voivodeship: mazowieckie, powiat_codes: ["PU"], prefixes: ["APU", "WPU"], powiat_code_length: 2 }
+  - { powiat: radomski, voivodeship: mazowieckie, powiat_codes: ["RA"], prefixes: ["ARA", "WRA"], powiat_code_length: 2 }
+  - { powiat: siedlecki, voivodeship: mazowieckie, powiat_codes: ["SI"], prefixes: ["ASI", "WSI"], powiat_code_length: 2 }
+  - { powiat: sierpecki, voivodeship: mazowieckie, powiat_codes: ["SE"], prefixes: ["ASE", "WSE"], powiat_code_length: 2 }
+  - { powiat: sochaczewski, voivodeship: mazowieckie, powiat_codes: ["SC"], prefixes: ["ASC", "WSC"], powiat_code_length: 2 }
+  - { powiat: sokołowski, voivodeship: mazowieckie, powiat_codes: ["SK"], prefixes: ["ASK", "WSK"], powiat_code_length: 2 }
+  - { powiat: szydłowiecki, voivodeship: mazowieckie, powiat_codes: ["SZ"], prefixes: ["ASZ", "WSZ"], powiat_code_length: 2 }
+  - { powiat: m.st. Warszawa, voivodeship: mazowieckie, powiat_codes: ["A", "B", "D", "E", "F", "H", "I", "J", "K", "N", "T", "U", "W", "X", "Y"], prefixes: ["AA", "AB", "AD", "AE", "AF", "AH", "AI", "AJ", "AK", "AN", "AT", "AU", "AW", "AX", "AY", "WA", "WB", "WD", "WE", "WF", "WH", "WI", "WJ", "WK", "WN", "WT", "WU", "WW", "WX", "WY"], powiat_code_length: 1 }
+  - { powiat: warszawski zachodni, voivodeship: mazowieckie, powiat_codes: ["Z"], prefixes: ["AZ", "WZ"], powiat_code_length: 1 }
+  - { powiat: węgrowski, voivodeship: mazowieckie, powiat_codes: ["WE"], prefixes: ["AWE", "WWE"], powiat_code_length: 2 }
+  - { powiat: wołomiński, voivodeship: mazowieckie, powiat_codes: ["WL", "V"], prefixes: ["AV", "AWL", "WV", "WWL"], powiat_code_length: 1/2 }
+  - { powiat: wyszkowski, voivodeship: mazowieckie, powiat_codes: ["WY"], prefixes: ["AWY", "WWY"], powiat_code_length: 2 }
+  - { powiat: zwoleński, voivodeship: mazowieckie, powiat_codes: ["ZW"], prefixes: ["AZW", "WZW"], powiat_code_length: 2 }
+  - { powiat: żuromiński, voivodeship: mazowieckie, powiat_codes: ["ZU"], prefixes: ["AZU", "WZU"], powiat_code_length: 2 }
+  - { powiat: żyrardowski, voivodeship: mazowieckie, powiat_codes: ["ZY"], prefixes: ["AZY", "WZY"], powiat_code_length: 2 }
+  # 8. OPOLSKIE — wyróżnik województwa O | tymczasowe + indywidualne O0-O9
+  - { powiat: Opole, voivodeship: opolskie, powiat_codes: ["P"], prefixes: ["OP"], powiat_code_length: 1 }
+  - { powiat: brzeski, voivodeship: opolskie, powiat_codes: ["B"], prefixes: ["OB"], powiat_code_length: 1 }
+  - { powiat: głubczycki, voivodeship: opolskie, powiat_codes: ["GL"], prefixes: ["OGL"], powiat_code_length: 2 }
+  - { powiat: kędzierzyńsko-kozielski, voivodeship: opolskie, powiat_codes: ["K"], prefixes: ["OK"], powiat_code_length: 1 }
+  - { powiat: kluczborski, voivodeship: opolskie, powiat_codes: ["KL"], prefixes: ["OKL"], powiat_code_length: 2 }
+  - { powiat: krapkowicki, voivodeship: opolskie, powiat_codes: ["KR"], prefixes: ["OKR"], powiat_code_length: 2 }
+  - { powiat: namysłowski, voivodeship: opolskie, powiat_codes: ["NA"], prefixes: ["ONA"], powiat_code_length: 2 }
+  - { powiat: nyski, voivodeship: opolskie, powiat_codes: ["NY", "NX"], prefixes: ["ONX", "ONY"], powiat_code_length: 2, amended: "Dz.U. 2025 poz. 939 § 1 pkt 4 lit. c (in force 2025-07-30)" }
+  - { powiat: oleski, voivodeship: opolskie, powiat_codes: ["OL"], prefixes: ["OOL"], powiat_code_length: 2 }
+  - { powiat: opolski, voivodeship: opolskie, powiat_codes: ["PO"], prefixes: ["OPO"], powiat_code_length: 2 }
+  - { powiat: prudnicki, voivodeship: opolskie, powiat_codes: ["PR"], prefixes: ["OPR"], powiat_code_length: 2 }
+  - { powiat: strzelecki, voivodeship: opolskie, powiat_codes: ["ST"], prefixes: ["OST"], powiat_code_length: 2 }
+  # 9. PODKARPACKIE — wyróżnik województwa R, Y | tymczasowe + indywidualne R0-R9, Y0-Y9
+  - { powiat: Krosno, voivodeship: podkarpackie, powiat_codes: ["K"], prefixes: ["RK", "YK"], powiat_code_length: 1 }
+  - { powiat: Przemyśl, voivodeship: podkarpackie, powiat_codes: ["P"], prefixes: ["RP", "YP"], powiat_code_length: 1 }
+  - { powiat: Rzeszów, voivodeship: podkarpackie, powiat_codes: ["Z"], prefixes: ["RZ", "YZ"], powiat_code_length: 1 }
+  - { powiat: Tarnobrzeg, voivodeship: podkarpackie, powiat_codes: ["T"], prefixes: ["RT", "YT"], powiat_code_length: 1 }
+  - { powiat: bieszczadzki, voivodeship: podkarpackie, powiat_codes: ["BI"], prefixes: ["RBI", "YBI"], powiat_code_length: 2 }
+  - { powiat: brzozowski, voivodeship: podkarpackie, powiat_codes: ["BR"], prefixes: ["RBR", "YBR"], powiat_code_length: 2 }
+  - { powiat: dębicki, voivodeship: podkarpackie, powiat_codes: ["DE"], prefixes: ["RDE", "YDE"], powiat_code_length: 2 }
+  - { powiat: jarosławski, voivodeship: podkarpackie, powiat_codes: ["JA"], prefixes: ["RJA", "YJA"], powiat_code_length: 2 }
+  - { powiat: jasielski, voivodeship: podkarpackie, powiat_codes: ["JS"], prefixes: ["RJS", "YJS"], powiat_code_length: 2 }
+  - { powiat: kolbuszowski, voivodeship: podkarpackie, powiat_codes: ["KL"], prefixes: ["RKL", "YKL"], powiat_code_length: 2 }
+  - { powiat: krośnieński, voivodeship: podkarpackie, powiat_codes: ["KR"], prefixes: ["RKR", "YKR"], powiat_code_length: 2 }
+  - { powiat: leski, voivodeship: podkarpackie, powiat_codes: ["LS"], prefixes: ["RLS", "YLS"], powiat_code_length: 2 }
+  - { powiat: leżajski, voivodeship: podkarpackie, powiat_codes: ["LE"], prefixes: ["RLE", "YLE"], powiat_code_length: 2 }
+  - { powiat: lubaczowski, voivodeship: podkarpackie, powiat_codes: ["LU"], prefixes: ["RLU", "YLU"], powiat_code_length: 2 }
+  - { powiat: łańcucki, voivodeship: podkarpackie, powiat_codes: ["LA"], prefixes: ["RLA", "YLA"], powiat_code_length: 2 }
+  - { powiat: mielecki, voivodeship: podkarpackie, powiat_codes: ["MI"], prefixes: ["RMI", "YMI"], powiat_code_length: 2 }
+  - { powiat: niżański, voivodeship: podkarpackie, powiat_codes: ["NI"], prefixes: ["RNI", "YNI"], powiat_code_length: 2 }
+  - { powiat: przemyski, voivodeship: podkarpackie, powiat_codes: ["PR"], prefixes: ["RPR", "YPR"], powiat_code_length: 2 }
+  - { powiat: przeworski, voivodeship: podkarpackie, powiat_codes: ["PZ"], prefixes: ["RPZ", "YPZ"], powiat_code_length: 2 }
+  - { powiat: ropczycko-sędziszowski, voivodeship: podkarpackie, powiat_codes: ["RS"], prefixes: ["RRS", "YRS"], powiat_code_length: 2 }
+  - { powiat: rzeszowski, voivodeship: podkarpackie, powiat_codes: ["ZE", "ZZ", "ZR"], prefixes: ["RZE", "RZR", "RZZ", "YZE", "YZR", "YZZ"], powiat_code_length: 2 }
+  - { powiat: sanocki, voivodeship: podkarpackie, powiat_codes: ["SA"], prefixes: ["RSA", "YSA"], powiat_code_length: 2 }
+  - { powiat: stalowowolski, voivodeship: podkarpackie, powiat_codes: ["ST"], prefixes: ["RST", "YST"], powiat_code_length: 2 }
+  - { powiat: strzyżowski, voivodeship: podkarpackie, powiat_codes: ["SR"], prefixes: ["RSR", "YSR"], powiat_code_length: 2 }
+  - { powiat: tarnobrzeski, voivodeship: podkarpackie, powiat_codes: ["TA"], prefixes: ["RTA", "YTA"], powiat_code_length: 2 }
+  # 10. PODLASKIE — wyróżnik województwa B | tymczasowe + indywidualne B0-B9
+  - { powiat: Białystok, voivodeship: podlaskie, powiat_codes: ["I"], prefixes: ["BI"], powiat_code_length: 1 }
+  - { powiat: Łomża, voivodeship: podlaskie, powiat_codes: ["L"], prefixes: ["BL"], powiat_code_length: 1 }
+  - { powiat: Suwałki, voivodeship: podlaskie, powiat_codes: ["S"], prefixes: ["BS"], powiat_code_length: 1 }
+  - { powiat: augustowski, voivodeship: podlaskie, powiat_codes: ["AU"], prefixes: ["BAU"], powiat_code_length: 2 }
+  - { powiat: białostocki, voivodeship: podlaskie, powiat_codes: ["IA", "IB"], prefixes: ["BIA", "BIB"], powiat_code_length: 2 }
+  - { powiat: bielski, voivodeship: podlaskie, powiat_codes: ["BI"], prefixes: ["BBI"], powiat_code_length: 2 }
+  - { powiat: grajewski, voivodeship: podlaskie, powiat_codes: ["GR"], prefixes: ["BGR"], powiat_code_length: 2 }
+  - { powiat: hajnowski, voivodeship: podlaskie, powiat_codes: ["HA"], prefixes: ["BHA"], powiat_code_length: 2 }
+  - { powiat: kolneński, voivodeship: podlaskie, powiat_codes: ["KL"], prefixes: ["BKL"], powiat_code_length: 2 }
+  - { powiat: łomżyński, voivodeship: podlaskie, powiat_codes: ["LM"], prefixes: ["BLM"], powiat_code_length: 2 }
+  - { powiat: moniecki, voivodeship: podlaskie, powiat_codes: ["MN"], prefixes: ["BMN"], powiat_code_length: 2 }
+  - { powiat: sejneński, voivodeship: podlaskie, powiat_codes: ["SE"], prefixes: ["BSE"], powiat_code_length: 2 }
+  - { powiat: siemiatycki, voivodeship: podlaskie, powiat_codes: ["SI"], prefixes: ["BSI"], powiat_code_length: 2 }
+  - { powiat: sokólski, voivodeship: podlaskie, powiat_codes: ["SK"], prefixes: ["BSK"], powiat_code_length: 2 }
+  - { powiat: suwalski, voivodeship: podlaskie, powiat_codes: ["SU"], prefixes: ["BSU"], powiat_code_length: 2 }
+  - { powiat: wysokomazowiecki, voivodeship: podlaskie, powiat_codes: ["WM"], prefixes: ["BWM"], powiat_code_length: 2 }
+  - { powiat: zambrowski, voivodeship: podlaskie, powiat_codes: ["ZA"], prefixes: ["BZA"], powiat_code_length: 2 }
+  # 11. POMORSKIE — wyróżnik województwa G, X | tymczasowe + indywidualne G0-G9, X0-X9
+  - { powiat: Gdańsk, voivodeship: pomorskie, powiat_codes: ["D"], prefixes: ["GD", "XD"], powiat_code_length: 1 }
+  - { powiat: Gdynia, voivodeship: pomorskie, powiat_codes: ["A"], prefixes: ["GA", "XA"], powiat_code_length: 1 }
+  - { powiat: Słupsk, voivodeship: pomorskie, powiat_codes: ["S"], prefixes: ["GS", "XS"], powiat_code_length: 1 }
+  - { powiat: Sopot, voivodeship: pomorskie, powiat_codes: ["SP"], prefixes: ["GSP", "XSP"], powiat_code_length: 2 }
+  - { powiat: bytowski, voivodeship: pomorskie, powiat_codes: ["BY"], prefixes: ["GBY", "XBY"], powiat_code_length: 2 }
+  - { powiat: chojnicki, voivodeship: pomorskie, powiat_codes: ["CH"], prefixes: ["GCH", "XCH"], powiat_code_length: 2 }
+  - { powiat: człuchowski, voivodeship: pomorskie, powiat_codes: ["CZ"], prefixes: ["GCZ", "XCZ"], powiat_code_length: 2 }
+  - { powiat: gdański, voivodeship: pomorskie, powiat_codes: ["DA"], prefixes: ["GDA", "XDA"], powiat_code_length: 2 }
+  - { powiat: kartuski, voivodeship: pomorskie, powiat_codes: ["KA", "KY", "KZ"], prefixes: ["GKA", "GKY", "GKZ", "XKA", "XKY", "XKZ"], powiat_code_length: 2 }
+  - { powiat: kościerski, voivodeship: pomorskie, powiat_codes: ["KS"], prefixes: ["GKS", "XKS"], powiat_code_length: 2 }
+  - { powiat: kwidzyński, voivodeship: pomorskie, powiat_codes: ["KW"], prefixes: ["GKW", "XKW"], powiat_code_length: 2 }
+  - { powiat: lęborski, voivodeship: pomorskie, powiat_codes: ["LE"], prefixes: ["GLE", "XLE"], powiat_code_length: 2 }
+  - { powiat: malborski, voivodeship: pomorskie, powiat_codes: ["MB"], prefixes: ["GMB", "XMB"], powiat_code_length: 2 }
+  - { powiat: nowodworski, voivodeship: pomorskie, powiat_codes: ["ND"], prefixes: ["GND", "XND"], powiat_code_length: 2 }
+  - { powiat: pucki, voivodeship: pomorskie, powiat_codes: ["PU"], prefixes: ["GPU", "XPU"], powiat_code_length: 2 }
+  - { powiat: słupski, voivodeship: pomorskie, powiat_codes: ["SL"], prefixes: ["GSL", "XSL"], powiat_code_length: 2 }
+  - { powiat: starogardzki, voivodeship: pomorskie, powiat_codes: ["ST"], prefixes: ["GST", "XST"], powiat_code_length: 2 }
+  - { powiat: sztumski, voivodeship: pomorskie, powiat_codes: ["SZ"], prefixes: ["GSZ", "XSZ"], powiat_code_length: 2 }
+  - { powiat: tczewski, voivodeship: pomorskie, powiat_codes: ["TC"], prefixes: ["GTC", "XTC"], powiat_code_length: 2 }
+  - { powiat: wejherowski, voivodeship: pomorskie, powiat_codes: ["WE", "WO"], prefixes: ["GWE", "GWO", "XWE", "XWO"], powiat_code_length: 2 }
+  # 12. ŚLĄSKIE — wyróżnik województwa S, I | tymczasowe + indywidualne S0-S9, I0-I9
+  - { powiat: Bielsko-Biała, voivodeship: śląskie, powiat_codes: ["B"], prefixes: ["IB", "SB"], powiat_code_length: 1 }
+  - { powiat: Bytom, voivodeship: śląskie, powiat_codes: ["Y"], prefixes: ["IY", "SY"], powiat_code_length: 1 }
+  - { powiat: Chorzów, voivodeship: śląskie, powiat_codes: ["H"], prefixes: ["IH", "SH"], powiat_code_length: 1 }
+  - { powiat: Częstochowa, voivodeship: śląskie, powiat_codes: ["C"], prefixes: ["IC", "SC"], powiat_code_length: 1 }
+  - { powiat: Dąbrowa Górnicza, voivodeship: śląskie, powiat_codes: ["D"], prefixes: ["ID", "SD"], powiat_code_length: 1 }
+  - { powiat: Gliwice, voivodeship: śląskie, powiat_codes: ["G"], prefixes: ["IG", "SG"], powiat_code_length: 1 }
+  - { powiat: Jastrzębie-Zdrój, voivodeship: śląskie, powiat_codes: ["JZ"], prefixes: ["IJZ", "SJZ"], powiat_code_length: 2 }
+  - { powiat: Jaworzno, voivodeship: śląskie, powiat_codes: ["J"], prefixes: ["IJ", "SJ"], powiat_code_length: 1 }
+  - { powiat: Katowice, voivodeship: śląskie, powiat_codes: ["K"], prefixes: ["IK", "SK"], powiat_code_length: 1 }
+  - { powiat: Mysłowice, voivodeship: śląskie, powiat_codes: ["M"], prefixes: ["IM", "SM"], powiat_code_length: 1 }
+  - { powiat: Piekary Śląskie, voivodeship: śląskie, powiat_codes: ["PI"], prefixes: ["IPI", "SPI"], powiat_code_length: 2 }
+  - { powiat: Ruda Śląska, voivodeship: śląskie, powiat_codes: ["RS", "L"], prefixes: ["IL", "IRS", "SL", "SRS"], powiat_code_length: 1/2 }
+  - { powiat: Rybnik, voivodeship: śląskie, powiat_codes: ["R"], prefixes: ["IR", "SR"], powiat_code_length: 1 }
+  - { powiat: Siemianowice Śląskie, voivodeship: śląskie, powiat_codes: ["I"], prefixes: ["II", "SI"], powiat_code_length: 1 }
+  - { powiat: Sosnowiec, voivodeship: śląskie, powiat_codes: ["O"], prefixes: ["IO", "SO"], powiat_code_length: 1 }
+  - { powiat: Świętochłowice, voivodeship: śląskie, powiat_codes: ["W"], prefixes: ["IW", "SW"], powiat_code_length: 1 }
+  - { powiat: Tychy, voivodeship: śląskie, powiat_codes: ["T"], prefixes: ["IT", "ST"], powiat_code_length: 1 }
+  - { powiat: Zabrze, voivodeship: śląskie, powiat_codes: ["Z"], prefixes: ["IZ", "SZ"], powiat_code_length: 1 }
+  - { powiat: Żory, voivodeship: śląskie, powiat_codes: ["ZO"], prefixes: ["IZO", "SZO"], powiat_code_length: 2 }
+  - { powiat: będziński, voivodeship: śląskie, powiat_codes: ["BE", "E", "BN"], prefixes: ["IBE", "IBN", "IE", "SBE", "SBN", "SE"], powiat_code_length: 1/2 }
+  - { powiat: bielski, voivodeship: śląskie, powiat_codes: ["BI"], prefixes: ["IBI", "SBI"], powiat_code_length: 2 }
+  - { powiat: cieszyński, voivodeship: śląskie, powiat_codes: ["CI", "CN"], prefixes: ["ICI", "ICN", "SCI", "SCN"], powiat_code_length: 2 }
+  - { powiat: częstochowski, voivodeship: śląskie, powiat_codes: ["CZ"], prefixes: ["ICZ", "SCZ"], powiat_code_length: 2 }
+  - { powiat: gliwicki, voivodeship: śląskie, powiat_codes: ["GL"], prefixes: ["IGL", "SGL"], powiat_code_length: 2 }
+  - { powiat: kłobucki, voivodeship: śląskie, powiat_codes: ["KL"], prefixes: ["IKL", "SKL"], powiat_code_length: 2 }
+  - { powiat: lubliniecki, voivodeship: śląskie, powiat_codes: ["LU"], prefixes: ["ILU", "SLU"], powiat_code_length: 2 }
+  - { powiat: mikołowski, voivodeship: śląskie, powiat_codes: ["MI"], prefixes: ["IMI", "SMI"], powiat_code_length: 2 }
+  - { powiat: myszkowski, voivodeship: śląskie, powiat_codes: ["MY"], prefixes: ["IMY", "SMY"], powiat_code_length: 2 }
+  - { powiat: pszczyński, voivodeship: śląskie, powiat_codes: ["PS"], prefixes: ["IPS", "SPS"], powiat_code_length: 2 }
+  - { powiat: raciborski, voivodeship: śląskie, powiat_codes: ["RC"], prefixes: ["IRC", "SRC"], powiat_code_length: 2 }
+  - { powiat: rybnicki, voivodeship: śląskie, powiat_codes: ["RB"], prefixes: ["IRB", "SRB"], powiat_code_length: 2 }
+  - { powiat: tarnogórski, voivodeship: śląskie, powiat_codes: ["TA", "TR", "TN"], prefixes: ["ITA", "ITN", "ITR", "STA", "STN", "STR"], powiat_code_length: 2, amended: "Dz.U. 2026 poz. 891 § 1 pkt 9 lit. b (in force 2026-07-04)" }
+  - { powiat: bieruńsko-lędziński, voivodeship: śląskie, powiat_codes: ["BL"], prefixes: ["IBL", "SBL"], powiat_code_length: 2 }
+  - { powiat: wodzisławski, voivodeship: śląskie, powiat_codes: ["WD", "WZ"], prefixes: ["IWD", "IWZ", "SWD", "SWZ"], powiat_code_length: 2 }
+  - { powiat: zawierciański, voivodeship: śląskie, powiat_codes: ["ZA"], prefixes: ["IZA", "SZA"], powiat_code_length: 2 }
+  - { powiat: żywiecki, voivodeship: śląskie, powiat_codes: ["ZY"], prefixes: ["IZY", "SZY"], powiat_code_length: 2 }
+  # 13. ŚWIĘTOKRZYSKIE — wyróżnik województwa T | tymczasowe + indywidualne T0-T9
+  - { powiat: Kielce, voivodeship: świętokrzyskie, powiat_codes: ["K"], prefixes: ["TK"], powiat_code_length: 1 }
+  - { powiat: buski, voivodeship: świętokrzyskie, powiat_codes: ["BU"], prefixes: ["TBU"], powiat_code_length: 2 }
+  - { powiat: jędrzejowski, voivodeship: świętokrzyskie, powiat_codes: ["JE"], prefixes: ["TJE"], powiat_code_length: 2 }
+  - { powiat: kazimierski, voivodeship: świętokrzyskie, powiat_codes: ["KA"], prefixes: ["TKA"], powiat_code_length: 2 }
+  - { powiat: kielecki, voivodeship: świętokrzyskie, powiat_codes: ["KI", "KC", "KM", "KP"], prefixes: ["TKC", "TKI", "TKM", "TKP"], powiat_code_length: 2 }
+  - { powiat: konecki, voivodeship: świętokrzyskie, powiat_codes: ["KN"], prefixes: ["TKN"], powiat_code_length: 2 }
+  - { powiat: opatowski, voivodeship: świętokrzyskie, powiat_codes: ["OP"], prefixes: ["TOP"], powiat_code_length: 2 }
+  - { powiat: ostrowiecki, voivodeship: świętokrzyskie, powiat_codes: ["OS"], prefixes: ["TOS"], powiat_code_length: 2 }
+  - { powiat: pińczowski, voivodeship: świętokrzyskie, powiat_codes: ["PI"], prefixes: ["TPI"], powiat_code_length: 2 }
+  - { powiat: sandomierski, voivodeship: świętokrzyskie, powiat_codes: ["SA"], prefixes: ["TSA"], powiat_code_length: 2 }
+  - { powiat: skarżyski, voivodeship: świętokrzyskie, powiat_codes: ["SK"], prefixes: ["TSK"], powiat_code_length: 2 }
+  - { powiat: starachowicki, voivodeship: świętokrzyskie, powiat_codes: ["ST"], prefixes: ["TST"], powiat_code_length: 2 }
+  - { powiat: staszowski, voivodeship: świętokrzyskie, powiat_codes: ["SZ"], prefixes: ["TSZ"], powiat_code_length: 2 }
+  - { powiat: włoszczowski, voivodeship: świętokrzyskie, powiat_codes: ["LW"], prefixes: ["TLW"], powiat_code_length: 2 }
+  # 14. WARMIŃSKO-MAZURSKIE — wyróżnik województwa N | tymczasowe + indywidualne N0-N9
+  - { powiat: Elbląg, voivodeship: warmińsko-mazurskie, powiat_codes: ["E"], prefixes: ["NE"], powiat_code_length: 1 }
+  - { powiat: Olsztyn, voivodeship: warmińsko-mazurskie, powiat_codes: ["O"], prefixes: ["NO"], powiat_code_length: 1 }
+  - { powiat: bartoszycki, voivodeship: warmińsko-mazurskie, powiat_codes: ["BA"], prefixes: ["NBA"], powiat_code_length: 2 }
+  - { powiat: braniewski, voivodeship: warmińsko-mazurskie, powiat_codes: ["BR"], prefixes: ["NBR"], powiat_code_length: 2 }
+  - { powiat: działdowski, voivodeship: warmińsko-mazurskie, powiat_codes: ["DZ"], prefixes: ["NDZ"], powiat_code_length: 2 }
+  - { powiat: elbląski, voivodeship: warmińsko-mazurskie, powiat_codes: ["EB"], prefixes: ["NEB"], powiat_code_length: 2 }
+  - { powiat: ełcki, voivodeship: warmińsko-mazurskie, powiat_codes: ["EL"], prefixes: ["NEL"], powiat_code_length: 2 }
+  - { powiat: giżycki, voivodeship: warmińsko-mazurskie, powiat_codes: ["GI"], prefixes: ["NGI"], powiat_code_length: 2 }
+  - { powiat: iławski, voivodeship: warmińsko-mazurskie, powiat_codes: ["IL"], prefixes: ["NIL"], powiat_code_length: 2 }
+  - { powiat: kętrzyński, voivodeship: warmińsko-mazurskie, powiat_codes: ["KE"], prefixes: ["NKE"], powiat_code_length: 2 }
+  - { powiat: lidzbarski, voivodeship: warmińsko-mazurskie, powiat_codes: ["LI"], prefixes: ["NLI"], powiat_code_length: 2 }
+  - { powiat: mrągowski, voivodeship: warmińsko-mazurskie, powiat_codes: ["MR"], prefixes: ["NMR"], powiat_code_length: 2 }
+  - { powiat: nidzicki, voivodeship: warmińsko-mazurskie, powiat_codes: ["NI"], prefixes: ["NNI"], powiat_code_length: 2 }
+  - { powiat: nowomiejski, voivodeship: warmińsko-mazurskie, powiat_codes: ["NM"], prefixes: ["NNM"], powiat_code_length: 2 }
+  - { powiat: olecki, voivodeship: warmińsko-mazurskie, powiat_codes: ["OE"], prefixes: ["NOE"], powiat_code_length: 2 }
+  - { powiat: gołdapski, voivodeship: warmińsko-mazurskie, powiat_codes: ["GO"], prefixes: ["NGO"], powiat_code_length: 2 }
+  - { powiat: olsztyński, voivodeship: warmińsko-mazurskie, powiat_codes: ["OL", "OZ", "OP"], prefixes: ["NOL", "NOP", "NOZ"], powiat_code_length: 2, amended: "Dz.U. 2026 poz. 891 § 1 pkt 9 lit. c (in force 2026-07-04)" }
+  - { powiat: ostródzki, voivodeship: warmińsko-mazurskie, powiat_codes: ["OS", "OT", "OX"], prefixes: ["NOS", "NOT", "NOX"], powiat_code_length: 2 }
+  - { powiat: piski, voivodeship: warmińsko-mazurskie, powiat_codes: ["PI"], prefixes: ["NPI"], powiat_code_length: 2 }
+  - { powiat: szczycieński, voivodeship: warmińsko-mazurskie, powiat_codes: ["SZ"], prefixes: ["NSZ"], powiat_code_length: 2 }
+  - { powiat: węgorzewski, voivodeship: warmińsko-mazurskie, powiat_codes: ["WE"], prefixes: ["NWE"], powiat_code_length: 2 }
+  # 15. WIELKOPOLSKIE — wyróżnik województwa P, M | tymczasowe + indywidualne P0-P9, M0-M9
+  - { powiat: Kalisz, voivodeship: wielkopolskie, powiat_codes: ["K", "A"], prefixes: ["MA", "MK", "PA", "PK"], powiat_code_length: 1 }
+  - { powiat: Konin, voivodeship: wielkopolskie, powiat_codes: ["KO", "N"], prefixes: ["MKO", "MN", "PKO", "PN"], powiat_code_length: 1/2 }
+  - { powiat: Leszno, voivodeship: wielkopolskie, powiat_codes: ["L"], prefixes: ["ML", "PL"], powiat_code_length: 1 }
+  - { powiat: Poznań, voivodeship: wielkopolskie, powiat_codes: ["O", "Y", "X"], prefixes: ["MO", "MX", "MY", "PO", "PX", "PY"], powiat_code_length: 1 }
+  - { powiat: chodzieski, voivodeship: wielkopolskie, powiat_codes: ["CH"], prefixes: ["MCH", "PCH"], powiat_code_length: 2 }
+  - { powiat: czarnkowsko-trzcianecki, voivodeship: wielkopolskie, powiat_codes: ["CT"], prefixes: ["MCT", "PCT"], powiat_code_length: 2 }
+  - { powiat: gnieźnieński, voivodeship: wielkopolskie, powiat_codes: ["GN"], prefixes: ["MGN", "PGN"], powiat_code_length: 2 }
+  - { powiat: gostyński, voivodeship: wielkopolskie, powiat_codes: ["GS"], prefixes: ["MGS", "PGS"], powiat_code_length: 2 }
+  - { powiat: grodziski, voivodeship: wielkopolskie, powiat_codes: ["GO"], prefixes: ["MGO", "PGO"], powiat_code_length: 2 }
+  - { powiat: jarociński, voivodeship: wielkopolskie, powiat_codes: ["JA"], prefixes: ["MJA", "PJA"], powiat_code_length: 2 }
+  - { powiat: kaliski, voivodeship: wielkopolskie, powiat_codes: ["KA"], prefixes: ["MKA", "PKA"], powiat_code_length: 2 }
+  - { powiat: kępiński, voivodeship: wielkopolskie, powiat_codes: ["KE"], prefixes: ["MKE", "PKE"], powiat_code_length: 2 }
+  - { powiat: kolski, voivodeship: wielkopolskie, powiat_codes: ["KL"], prefixes: ["MKL", "PKL"], powiat_code_length: 2 }
+  - { powiat: koniński, voivodeship: wielkopolskie, powiat_codes: ["KN"], prefixes: ["MKN", "PKN"], powiat_code_length: 2 }
+  - { powiat: kościański, voivodeship: wielkopolskie, powiat_codes: ["KS"], prefixes: ["MKS", "PKS"], powiat_code_length: 2 }
+  - { powiat: krotoszyński, voivodeship: wielkopolskie, powiat_codes: ["KR"], prefixes: ["MKR", "PKR"], powiat_code_length: 2 }
+  - { powiat: leszczyński, voivodeship: wielkopolskie, powiat_codes: ["LE"], prefixes: ["MLE", "PLE"], powiat_code_length: 2 }
+  - { powiat: międzychodzki, voivodeship: wielkopolskie, powiat_codes: ["MI"], prefixes: ["MMI", "PMI"], powiat_code_length: 2 }
+  - { powiat: nowotomyski, voivodeship: wielkopolskie, powiat_codes: ["NT"], prefixes: ["MNT", "PNT"], powiat_code_length: 2 }
+  - { powiat: obornicki, voivodeship: wielkopolskie, powiat_codes: ["OB"], prefixes: ["MOB", "POB"], powiat_code_length: 2 }
+  - { powiat: ostrowski, voivodeship: wielkopolskie, powiat_codes: ["OS"], prefixes: ["MOS", "POS"], powiat_code_length: 2 }
+  - { powiat: ostrzeszowski, voivodeship: wielkopolskie, powiat_codes: ["OT"], prefixes: ["MOT", "POT"], powiat_code_length: 2 }
+  - { powiat: pilski, voivodeship: wielkopolskie, powiat_codes: ["P"], prefixes: ["MP", "PP"], powiat_code_length: 1 }
+  - { powiat: pleszewski, voivodeship: wielkopolskie, powiat_codes: ["PL"], prefixes: ["MPL", "PPL"], powiat_code_length: 2 }
+  - { powiat: poznański, voivodeship: wielkopolskie, powiat_codes: ["OZ", "Z"], prefixes: ["MOZ", "MZ", "POZ", "PZ"], powiat_code_length: 1/2 }
+  - { powiat: rawicki, voivodeship: wielkopolskie, powiat_codes: ["RA"], prefixes: ["MRA", "PRA"], powiat_code_length: 2 }
+  - { powiat: słupecki, voivodeship: wielkopolskie, powiat_codes: ["SL"], prefixes: ["MSL", "PSL"], powiat_code_length: 2 }
+  - { powiat: szamotulski, voivodeship: wielkopolskie, powiat_codes: ["SZ"], prefixes: ["MSZ", "PSZ"], powiat_code_length: 2 }
+  - { powiat: średzki, voivodeship: wielkopolskie, powiat_codes: ["SR"], prefixes: ["MSR", "PSR"], powiat_code_length: 2 }
+  - { powiat: śremski, voivodeship: wielkopolskie, powiat_codes: ["SE"], prefixes: ["MSE", "PSE"], powiat_code_length: 2 }
+  - { powiat: turecki, voivodeship: wielkopolskie, powiat_codes: ["TU"], prefixes: ["MTU", "PTU"], powiat_code_length: 2 }
+  - { powiat: wągrowiecki, voivodeship: wielkopolskie, powiat_codes: ["WA"], prefixes: ["MWA", "PWA"], powiat_code_length: 2 }
+  - { powiat: wolsztyński, voivodeship: wielkopolskie, powiat_codes: ["WL"], prefixes: ["MWL", "PWL"], powiat_code_length: 2 }
+  - { powiat: wrzesiński, voivodeship: wielkopolskie, powiat_codes: ["WR"], prefixes: ["MWR", "PWR"], powiat_code_length: 2 }
+  - { powiat: złotowski, voivodeship: wielkopolskie, powiat_codes: ["ZL"], prefixes: ["MZL", "PZL"], powiat_code_length: 2 }
+  # 16. ZACHODNIOPOMORSKIE — wyróżnik województwa Z | tymczasowe + indywidualne Z0-Z9
+  - { powiat: Koszalin, voivodeship: zachodniopomorskie, powiat_codes: ["K"], prefixes: ["ZK"], powiat_code_length: 1 }
+  - { powiat: Szczecin, voivodeship: zachodniopomorskie, powiat_codes: ["S", "Z"], prefixes: ["ZS", "ZZ"], powiat_code_length: 1 }
+  - { powiat: Świnoujście, voivodeship: zachodniopomorskie, powiat_codes: ["SW"], prefixes: ["ZSW"], powiat_code_length: 2 }
+  - { powiat: białogardzki, voivodeship: zachodniopomorskie, powiat_codes: ["BI"], prefixes: ["ZBI"], powiat_code_length: 2 }
+  - { powiat: choszczeński, voivodeship: zachodniopomorskie, powiat_codes: ["CH"], prefixes: ["ZCH"], powiat_code_length: 2 }
+  - { powiat: drawski, voivodeship: zachodniopomorskie, powiat_codes: ["DR"], prefixes: ["ZDR"], powiat_code_length: 2 }
+  - { powiat: goleniowski, voivodeship: zachodniopomorskie, powiat_codes: ["GL"], prefixes: ["ZGL"], powiat_code_length: 2 }
+  - { powiat: gryficki, voivodeship: zachodniopomorskie, powiat_codes: ["GY"], prefixes: ["ZGY"], powiat_code_length: 2 }
+  - { powiat: gryfiński, voivodeship: zachodniopomorskie, powiat_codes: ["GR"], prefixes: ["ZGR"], powiat_code_length: 2 }
+  - { powiat: kamieński, voivodeship: zachodniopomorskie, powiat_codes: ["KA"], prefixes: ["ZKA"], powiat_code_length: 2 }
+  - { powiat: kołobrzeski, voivodeship: zachodniopomorskie, powiat_codes: ["KL"], prefixes: ["ZKL"], powiat_code_length: 2 }
+  - { powiat: koszaliński, voivodeship: zachodniopomorskie, powiat_codes: ["KO"], prefixes: ["ZKO"], powiat_code_length: 2 }
+  - { powiat: łobeski, voivodeship: zachodniopomorskie, powiat_codes: ["LO"], prefixes: ["ZLO"], powiat_code_length: 2 }
+  - { powiat: myśliborski, voivodeship: zachodniopomorskie, powiat_codes: ["MY"], prefixes: ["ZMY"], powiat_code_length: 2 }
+  - { powiat: policki, voivodeship: zachodniopomorskie, powiat_codes: ["PL"], prefixes: ["ZPL"], powiat_code_length: 2 }
+  - { powiat: pyrzycki, voivodeship: zachodniopomorskie, powiat_codes: ["PY"], prefixes: ["ZPY"], powiat_code_length: 2 }
+  - { powiat: sławieński, voivodeship: zachodniopomorskie, powiat_codes: ["SL"], prefixes: ["ZSL"], powiat_code_length: 2 }
+  - { powiat: stargardzki, voivodeship: zachodniopomorskie, powiat_codes: ["ST"], prefixes: ["ZST"], powiat_code_length: 2 }
+  - { powiat: szczecinecki, voivodeship: zachodniopomorskie, powiat_codes: ["SZ"], prefixes: ["ZSZ"], powiat_code_length: 2 }
+  - { powiat: świdwiński, voivodeship: zachodniopomorskie, powiat_codes: ["SD"], prefixes: ["ZSD"], powiat_code_length: 2 }
+  - { powiat: wałecki, voivodeship: zachodniopomorskie, powiat_codes: ["WA"], prefixes: ["ZWA"], powiat_code_length: 2 }

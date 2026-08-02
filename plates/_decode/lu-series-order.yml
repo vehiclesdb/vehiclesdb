@@ -1,0 +1,638 @@
+# plates/_decode/lu-series-order.yml — the Luxembourg "serie courante" ISSUANCE
+# ORDER, verbatim from the statutory annex.
+#
+# NOT a geographic decode. Luxembourg encodes no geography whatsoever in a
+# plate. What this table decodes is TIME: the two-letter prefix advances
+# through a fixed, published order, so the prefix of a Luxembourg plate is an
+# approximate-age signal and the only inferable dimension of the serial - the
+# same role the letter triple plays on a post-2000 Spanish plate.
+#
+# THE SOURCE IS PRIMARY AND THE TRANSCRIPTION IS PROVABLY COMPLETE. The table
+# is the Annexe, paragraphe 3, of the reglement grand-ducal du 17 juin 2003
+# (Memorial A n. 87 of 25-06-2003, p. 1632), printed as a 15-column grid whose
+# reading rule the annex states in terms: "L'ordre sequentiel dans lequel les
+# combinaisons de lettres se suivent repond au tableau ci-apres, evoluant de
+# haut en bas et de gauche a droite" - i.e. COLUMN-MAJOR, top to bottom then
+# left to right. The rows below are that grid re-serialised in that order.
+#
+# The completeness check is arithmetic, and it closes exactly:
+#   26 x 26                                   = 676 pairs
+#   less every pair containing I or O         = 676 - 100 = 576   (annex 2.b)
+#   less AA CD HJ KK KZ PD SA SS WC ZZ        = 576 -  10 = 566   (annex 2.a)
+#   rows in this file                                    = 566
+# and no row is a duplicate, none contains I or O, and none is an excluded
+# pair. A miscopied or dropped cell could not satisfy all four at once.
+#
+# THE DIGIT BLOCK IS PART OF THE ORDER, and it is why a bare prefix does not
+# date a plate on its own. Each prefix takes ONE thousand-block per pass:
+# "BA 4000 - BA 4999, CA 5000 - CA 5999, DA 6000 - DA 6999, etc." - so the
+# thousands digit advances with the prefix and wraps 4->9, and the whole table
+# is walked again at the next pass. 566 prefixes x 1000 = 566,000 numbers per
+# pass; 4000-9999 gives six passes, i.e. 3,396,000 current-series numbers.
+#
+# Referenced by: lu-standard-2003 (plates/lu.yml) via region_encoding.
+jurisdiction: lu
+topic: series-order
+authority:
+  name: "Reglement grand-ducal du 17 juin 2003 relatif a l'identification des vehicules routiers, a leurs plaques d'immatriculation et aux modalites d'attribution de leurs numeros d'immatriculation - Annexe"
+  url: "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf"
+sources:
+  - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # Memorial A n. 87, 25-06-2003, p. 1632: Annexe, paragraphes 1-3 - the six-position composition, the AA/CD/HJ/KK/KZ/PD/SA/SS/WC/ZZ and I/O exclusions, the 15-column order grid and its column-major reading rule. Accessed 2026-08-02"
+  - "https://data.legilux.public.lu/eli/etat/leg/rgd/2006/10/18/n1/jo/fr/pdf  # Memorial A n. 190, 06-11-2006, art. 19: replaces the annex's numeric-allocation paragraphs - 0001-0099 mopeds/light quadricycles, 0100-3999 personalised, 4000-9999 the current series - while LEAVING the paragraphe 3 order grid untouched. In force 18-12-2006. Accessed 2026-08-02"
+period: { start: 2003 }
+period_evidence: instrument-in-force
+period_note: >-
+  2003 is the in-force date of the instrument that ENACTS this order
+  (art. 20: "entre en vigueur le 1er juillet 2003"), not the date any
+  particular prefix was reached. Prefix-to-year mapping is NOT in this file
+  and is not derivable from it: it depends on registration volume, and the
+  first-issue date of each prefix is administrative allocation that Legilux
+  does not publish. A consumer may use `seq` for ORDERING two plates, never
+  for dating one.
+maximal_munch: false
+reading_rule: column-major
+excluded_pairs: [AA, CD, HJ, KK, KZ, PD, SA, SS, WC, ZZ]
+excluded_letters: [I, O]
+excluded_note: >-
+  Annexe paragraphe 2, verbatim: "les series qui impliquent une des
+  combinaisons de lettres AA, CD, HJ, KK, KZ, PD, SA, SS, WC et ZZ" and
+  "les series qui impliquent les lettres I ou O". The instrument gives no
+  reason for either list; AA, CD, P and ZZ are separately reserved as special
+  series by art. 7, which accounts for three of the ten but not for HJ, KK,
+  KZ, PD, SA, SS or WC - recorded as unexplained rather than rationalised.
+digit_block:
+  range: [4000, 9999]
+  per_prefix_span: 1000
+  note: >-
+    Annex as amended 2006: 0001-0099 are reserved to cyclomoteurs and light
+    quadricycles (and the leading two digits are NOT printed on those plates),
+    0100-3999 are available as personalised numbers, and 4000-9999 are the
+    current series. Within the current series each prefix takes one
+    thousand-block per pass in the order below.
+codes:
+  - { seq: 1  , pair: BA }
+  - { seq: 2  , pair: CA }
+  - { seq: 3  , pair: DA }
+  - { seq: 4  , pair: EA }
+  - { seq: 5  , pair: FB }
+  - { seq: 6  , pair: GB }
+  - { seq: 7  , pair: HB }
+  - { seq: 8  , pair: JB }
+  - { seq: 9  , pair: KB }
+  - { seq: 10 , pair: LC }
+  - { seq: 11 , pair: MC }
+  - { seq: 12 , pair: NC }
+  - { seq: 13 , pair: PC }
+  - { seq: 14 , pair: QC }
+  - { seq: 15 , pair: RD }
+  - { seq: 16 , pair: SD }
+  - { seq: 17 , pair: TD }
+  - { seq: 18 , pair: UD }
+  - { seq: 19 , pair: VD }
+  - { seq: 20 , pair: WE }
+  - { seq: 21 , pair: XE }
+  - { seq: 22 , pair: YE }
+  - { seq: 23 , pair: ZE }
+  - { seq: 24 , pair: ZF }
+  - { seq: 25 , pair: YF }
+  - { seq: 26 , pair: XF }
+  - { seq: 27 , pair: WF }
+  - { seq: 28 , pair: VG }
+  - { seq: 29 , pair: UG }
+  - { seq: 30 , pair: TG }
+  - { seq: 31 , pair: SG }
+  - { seq: 32 , pair: RG }
+  - { seq: 33 , pair: QH }
+  - { seq: 34 , pair: PH }
+  - { seq: 35 , pair: NH }
+  - { seq: 36 , pair: MH }
+  - { seq: 37 , pair: LH }
+  - { seq: 38 , pair: KJ }
+  - { seq: 39 , pair: JJ }
+  - { seq: 40 , pair: GJ }
+  - { seq: 41 , pair: FJ }
+  - { seq: 42 , pair: EK }
+  - { seq: 43 , pair: DK }
+  - { seq: 44 , pair: CK }
+  - { seq: 45 , pair: BK }
+  - { seq: 46 , pair: AK }
+  - { seq: 47 , pair: AL }
+  - { seq: 48 , pair: BL }
+  - { seq: 49 , pair: CL }
+  - { seq: 50 , pair: DL }
+  - { seq: 51 , pair: EL }
+  - { seq: 52 , pair: FM }
+  - { seq: 53 , pair: GM }
+  - { seq: 54 , pair: HM }
+  - { seq: 55 , pair: JM }
+  - { seq: 56 , pair: KM }
+  - { seq: 57 , pair: LN }
+  - { seq: 58 , pair: MN }
+  - { seq: 59 , pair: NN }
+  - { seq: 60 , pair: PN }
+  - { seq: 61 , pair: QN }
+  - { seq: 62 , pair: RP }
+  - { seq: 63 , pair: SP }
+  - { seq: 64 , pair: TP }
+  - { seq: 65 , pair: UP }
+  - { seq: 66 , pair: VP }
+  - { seq: 67 , pair: WQ }
+  - { seq: 68 , pair: XQ }
+  - { seq: 69 , pair: YQ }
+  - { seq: 70 , pair: ZQ }
+  - { seq: 71 , pair: ZR }
+  - { seq: 72 , pair: YR }
+  - { seq: 73 , pair: XR }
+  - { seq: 74 , pair: WR }
+  - { seq: 75 , pair: VS }
+  - { seq: 76 , pair: US }
+  - { seq: 77 , pair: TS }
+  - { seq: 78 , pair: RS }
+  - { seq: 79 , pair: QT }
+  - { seq: 80 , pair: PT }
+  - { seq: 81 , pair: NT }
+  - { seq: 82 , pair: MT }
+  - { seq: 83 , pair: LT }
+  - { seq: 84 , pair: KU }
+  - { seq: 85 , pair: JU }
+  - { seq: 86 , pair: HU }
+  - { seq: 87 , pair: GU }
+  - { seq: 88 , pair: FU }
+  - { seq: 89 , pair: EV }
+  - { seq: 90 , pair: DV }
+  - { seq: 91 , pair: CV }
+  - { seq: 92 , pair: BV }
+  - { seq: 93 , pair: AV }
+  - { seq: 94 , pair: AW }
+  - { seq: 95 , pair: BW }
+  - { seq: 96 , pair: CW }
+  - { seq: 97 , pair: DW }
+  - { seq: 98 , pair: EW }
+  - { seq: 99 , pair: FX }
+  - { seq: 100, pair: GX }
+  - { seq: 101, pair: HX }
+  - { seq: 102, pair: JX }
+  - { seq: 103, pair: KX }
+  - { seq: 104, pair: LY }
+  - { seq: 105, pair: MY }
+  - { seq: 106, pair: NY }
+  - { seq: 107, pair: PY }
+  - { seq: 108, pair: QY }
+  - { seq: 109, pair: RZ }
+  - { seq: 110, pair: SZ }
+  - { seq: 111, pair: TZ }
+  - { seq: 112, pair: UZ }
+  - { seq: 113, pair: VZ }
+  - { seq: 114, pair: WZ }
+  - { seq: 115, pair: XZ }
+  - { seq: 116, pair: YZ }
+  - { seq: 117, pair: ZY }
+  - { seq: 118, pair: YY }
+  - { seq: 119, pair: XY }
+  - { seq: 120, pair: WY }
+  - { seq: 121, pair: VX }
+  - { seq: 122, pair: UX }
+  - { seq: 123, pair: TX }
+  - { seq: 124, pair: SX }
+  - { seq: 125, pair: RX }
+  - { seq: 126, pair: QW }
+  - { seq: 127, pair: PW }
+  - { seq: 128, pair: NW }
+  - { seq: 129, pair: MW }
+  - { seq: 130, pair: LW }
+  - { seq: 131, pair: KV }
+  - { seq: 132, pair: JV }
+  - { seq: 133, pair: HV }
+  - { seq: 134, pair: GV }
+  - { seq: 135, pair: FV }
+  - { seq: 136, pair: EU }
+  - { seq: 137, pair: DU }
+  - { seq: 138, pair: CU }
+  - { seq: 139, pair: BU }
+  - { seq: 140, pair: AU }
+  - { seq: 141, pair: AT }
+  - { seq: 142, pair: BT }
+  - { seq: 143, pair: CT }
+  - { seq: 144, pair: DT }
+  - { seq: 145, pair: ET }
+  - { seq: 146, pair: FS }
+  - { seq: 147, pair: GS }
+  - { seq: 148, pair: HS }
+  - { seq: 149, pair: JS }
+  - { seq: 150, pair: KS }
+  - { seq: 151, pair: LR }
+  - { seq: 152, pair: MR }
+  - { seq: 153, pair: NR }
+  - { seq: 154, pair: PR }
+  - { seq: 155, pair: QR }
+  - { seq: 156, pair: RQ }
+  - { seq: 157, pair: SQ }
+  - { seq: 158, pair: TQ }
+  - { seq: 159, pair: UQ }
+  - { seq: 160, pair: VQ }
+  - { seq: 161, pair: WP }
+  - { seq: 162, pair: XP }
+  - { seq: 163, pair: YP }
+  - { seq: 164, pair: ZP }
+  - { seq: 165, pair: ZN }
+  - { seq: 166, pair: YN }
+  - { seq: 167, pair: XN }
+  - { seq: 168, pair: WN }
+  - { seq: 169, pair: VM }
+  - { seq: 170, pair: UM }
+  - { seq: 171, pair: TM }
+  - { seq: 172, pair: SM }
+  - { seq: 173, pair: RM }
+  - { seq: 174, pair: QL }
+  - { seq: 175, pair: PL }
+  - { seq: 176, pair: NL }
+  - { seq: 177, pair: ML }
+  - { seq: 178, pair: LL }
+  - { seq: 179, pair: JK }
+  - { seq: 180, pair: HK }
+  - { seq: 181, pair: GK }
+  - { seq: 182, pair: FK }
+  - { seq: 183, pair: EJ }
+  - { seq: 184, pair: DJ }
+  - { seq: 185, pair: CJ }
+  - { seq: 186, pair: BJ }
+  - { seq: 187, pair: AJ }
+  - { seq: 188, pair: AH }
+  - { seq: 189, pair: BH }
+  - { seq: 190, pair: CH }
+  - { seq: 191, pair: DH }
+  - { seq: 192, pair: EH }
+  - { seq: 193, pair: FG }
+  - { seq: 194, pair: GG }
+  - { seq: 195, pair: HG }
+  - { seq: 196, pair: JG }
+  - { seq: 197, pair: KG }
+  - { seq: 198, pair: LF }
+  - { seq: 199, pair: MF }
+  - { seq: 200, pair: NF }
+  - { seq: 201, pair: PF }
+  - { seq: 202, pair: QF }
+  - { seq: 203, pair: RE }
+  - { seq: 204, pair: SE }
+  - { seq: 205, pair: TE }
+  - { seq: 206, pair: UE }
+  - { seq: 207, pair: VE }
+  - { seq: 208, pair: WD }
+  - { seq: 209, pair: XD }
+  - { seq: 210, pair: YD }
+  - { seq: 211, pair: ZD }
+  - { seq: 212, pair: ZC }
+  - { seq: 213, pair: YC }
+  - { seq: 214, pair: XC }
+  - { seq: 215, pair: VB }
+  - { seq: 216, pair: UB }
+  - { seq: 217, pair: TB }
+  - { seq: 218, pair: SB }
+  - { seq: 219, pair: RB }
+  - { seq: 220, pair: QA }
+  - { seq: 221, pair: PA }
+  - { seq: 222, pair: NA }
+  - { seq: 223, pair: MA }
+  - { seq: 224, pair: LA }
+  - { seq: 225, pair: KA }
+  - { seq: 226, pair: JA }
+  - { seq: 227, pair: HA }
+  - { seq: 228, pair: GA }
+  - { seq: 229, pair: FA }
+  - { seq: 230, pair: EB }
+  - { seq: 231, pair: DB }
+  - { seq: 232, pair: CB }
+  - { seq: 233, pair: BB }
+  - { seq: 234, pair: AB }
+  - { seq: 235, pair: AC }
+  - { seq: 236, pair: BC }
+  - { seq: 237, pair: CC }
+  - { seq: 238, pair: DC }
+  - { seq: 239, pair: EC }
+  - { seq: 240, pair: FD }
+  - { seq: 241, pair: GD }
+  - { seq: 242, pair: HD }
+  - { seq: 243, pair: JD }
+  - { seq: 244, pair: KD }
+  - { seq: 245, pair: LE }
+  - { seq: 246, pair: ME }
+  - { seq: 247, pair: NE }
+  - { seq: 248, pair: PE }
+  - { seq: 249, pair: QE }
+  - { seq: 250, pair: RF }
+  - { seq: 251, pair: SF }
+  - { seq: 252, pair: TF }
+  - { seq: 253, pair: UF }
+  - { seq: 254, pair: VF }
+  - { seq: 255, pair: WG }
+  - { seq: 256, pair: XG }
+  - { seq: 257, pair: YG }
+  - { seq: 258, pair: ZG }
+  - { seq: 259, pair: ZH }
+  - { seq: 260, pair: YH }
+  - { seq: 261, pair: XH }
+  - { seq: 262, pair: WH }
+  - { seq: 263, pair: VJ }
+  - { seq: 264, pair: UJ }
+  - { seq: 265, pair: TJ }
+  - { seq: 266, pair: SJ }
+  - { seq: 267, pair: RJ }
+  - { seq: 268, pair: QK }
+  - { seq: 269, pair: PK }
+  - { seq: 270, pair: NK }
+  - { seq: 271, pair: MK }
+  - { seq: 272, pair: LK }
+  - { seq: 273, pair: KL }
+  - { seq: 274, pair: JL }
+  - { seq: 275, pair: HL }
+  - { seq: 276, pair: GL }
+  - { seq: 277, pair: FL }
+  - { seq: 278, pair: EM }
+  - { seq: 279, pair: DM }
+  - { seq: 280, pair: CM }
+  - { seq: 281, pair: BM }
+  - { seq: 282, pair: AM }
+  - { seq: 283, pair: AN }
+  - { seq: 284, pair: BN }
+  - { seq: 285, pair: CN }
+  - { seq: 286, pair: DN }
+  - { seq: 287, pair: EN }
+  - { seq: 288, pair: FP }
+  - { seq: 289, pair: GP }
+  - { seq: 290, pair: HP }
+  - { seq: 291, pair: JP }
+  - { seq: 292, pair: KP }
+  - { seq: 293, pair: LQ }
+  - { seq: 294, pair: MQ }
+  - { seq: 295, pair: NQ }
+  - { seq: 296, pair: PQ }
+  - { seq: 297, pair: QQ }
+  - { seq: 298, pair: RR }
+  - { seq: 299, pair: SR }
+  - { seq: 300, pair: TR }
+  - { seq: 301, pair: UR }
+  - { seq: 302, pair: VR }
+  - { seq: 303, pair: WS }
+  - { seq: 304, pair: XS }
+  - { seq: 305, pair: YS }
+  - { seq: 306, pair: ZS }
+  - { seq: 307, pair: ZT }
+  - { seq: 308, pair: YT }
+  - { seq: 309, pair: XT }
+  - { seq: 310, pair: WT }
+  - { seq: 311, pair: VU }
+  - { seq: 312, pair: UU }
+  - { seq: 313, pair: TU }
+  - { seq: 314, pair: SU }
+  - { seq: 315, pair: RU }
+  - { seq: 316, pair: QV }
+  - { seq: 317, pair: PV }
+  - { seq: 318, pair: NV }
+  - { seq: 319, pair: MV }
+  - { seq: 320, pair: LV }
+  - { seq: 321, pair: KW }
+  - { seq: 322, pair: JW }
+  - { seq: 323, pair: HW }
+  - { seq: 324, pair: GW }
+  - { seq: 325, pair: FW }
+  - { seq: 326, pair: EX }
+  - { seq: 327, pair: DX }
+  - { seq: 328, pair: CX }
+  - { seq: 329, pair: BX }
+  - { seq: 330, pair: AX }
+  - { seq: 331, pair: AY }
+  - { seq: 332, pair: BY }
+  - { seq: 333, pair: CY }
+  - { seq: 334, pair: DY }
+  - { seq: 335, pair: EY }
+  - { seq: 336, pair: FZ }
+  - { seq: 337, pair: GZ }
+  - { seq: 338, pair: HZ }
+  - { seq: 339, pair: JZ }
+  - { seq: 340, pair: LZ }
+  - { seq: 341, pair: MZ }
+  - { seq: 342, pair: NZ }
+  - { seq: 343, pair: PZ }
+  - { seq: 344, pair: QZ }
+  - { seq: 345, pair: RY }
+  - { seq: 346, pair: SY }
+  - { seq: 347, pair: TY }
+  - { seq: 348, pair: UY }
+  - { seq: 349, pair: VY }
+  - { seq: 350, pair: WX }
+  - { seq: 351, pair: XX }
+  - { seq: 352, pair: YX }
+  - { seq: 353, pair: ZX }
+  - { seq: 354, pair: ZW }
+  - { seq: 355, pair: YW }
+  - { seq: 356, pair: XW }
+  - { seq: 357, pair: WW }
+  - { seq: 358, pair: VV }
+  - { seq: 359, pair: UV }
+  - { seq: 360, pair: TV }
+  - { seq: 361, pair: SV }
+  - { seq: 362, pair: RV }
+  - { seq: 363, pair: QU }
+  - { seq: 364, pair: PU }
+  - { seq: 365, pair: NU }
+  - { seq: 366, pair: MU }
+  - { seq: 367, pair: LU }
+  - { seq: 368, pair: KT }
+  - { seq: 369, pair: JT }
+  - { seq: 370, pair: HT }
+  - { seq: 371, pair: GT }
+  - { seq: 372, pair: FT }
+  - { seq: 373, pair: ES }
+  - { seq: 374, pair: DS }
+  - { seq: 375, pair: CS }
+  - { seq: 376, pair: BS }
+  - { seq: 377, pair: AS }
+  - { seq: 378, pair: AR }
+  - { seq: 379, pair: BR }
+  - { seq: 380, pair: CR }
+  - { seq: 381, pair: DR }
+  - { seq: 382, pair: ER }
+  - { seq: 383, pair: FQ }
+  - { seq: 384, pair: GQ }
+  - { seq: 385, pair: HQ }
+  - { seq: 386, pair: JQ }
+  - { seq: 387, pair: KQ }
+  - { seq: 388, pair: LP }
+  - { seq: 389, pair: MP }
+  - { seq: 390, pair: NP }
+  - { seq: 391, pair: PP }
+  - { seq: 392, pair: QP }
+  - { seq: 393, pair: RN }
+  - { seq: 394, pair: SN }
+  - { seq: 395, pair: TN }
+  - { seq: 396, pair: UN }
+  - { seq: 397, pair: VN }
+  - { seq: 398, pair: WM }
+  - { seq: 399, pair: XM }
+  - { seq: 400, pair: YM }
+  - { seq: 401, pair: ZM }
+  - { seq: 402, pair: ZL }
+  - { seq: 403, pair: YL }
+  - { seq: 404, pair: XL }
+  - { seq: 405, pair: WL }
+  - { seq: 406, pair: VK }
+  - { seq: 407, pair: UK }
+  - { seq: 408, pair: TK }
+  - { seq: 409, pair: SK }
+  - { seq: 410, pair: RK }
+  - { seq: 411, pair: QJ }
+  - { seq: 412, pair: PJ }
+  - { seq: 413, pair: NJ }
+  - { seq: 414, pair: MJ }
+  - { seq: 415, pair: LJ }
+  - { seq: 416, pair: KH }
+  - { seq: 417, pair: JH }
+  - { seq: 418, pair: HH }
+  - { seq: 419, pair: GH }
+  - { seq: 420, pair: FH }
+  - { seq: 421, pair: EG }
+  - { seq: 422, pair: DG }
+  - { seq: 423, pair: CG }
+  - { seq: 424, pair: BG }
+  - { seq: 425, pair: AG }
+  - { seq: 426, pair: AF }
+  - { seq: 427, pair: BF }
+  - { seq: 428, pair: CF }
+  - { seq: 429, pair: DF }
+  - { seq: 430, pair: EF }
+  - { seq: 431, pair: FE }
+  - { seq: 432, pair: GE }
+  - { seq: 433, pair: HE }
+  - { seq: 434, pair: JE }
+  - { seq: 435, pair: KE }
+  - { seq: 436, pair: LD }
+  - { seq: 437, pair: MD }
+  - { seq: 438, pair: ND }
+  - { seq: 439, pair: QD }
+  - { seq: 440, pair: RC }
+  - { seq: 441, pair: SC }
+  - { seq: 442, pair: TC }
+  - { seq: 443, pair: UC }
+  - { seq: 444, pair: VC }
+  - { seq: 445, pair: WB }
+  - { seq: 446, pair: XB }
+  - { seq: 447, pair: YB }
+  - { seq: 448, pair: ZB }
+  - { seq: 449, pair: ZA }
+  - { seq: 450, pair: YA }
+  - { seq: 451, pair: XA }
+  - { seq: 452, pair: WA }
+  - { seq: 453, pair: VA }
+  - { seq: 454, pair: UA }
+  - { seq: 455, pair: TA }
+  - { seq: 456, pair: RA }
+  - { seq: 457, pair: QB }
+  - { seq: 458, pair: PB }
+  - { seq: 459, pair: NB }
+  - { seq: 460, pair: MB }
+  - { seq: 461, pair: LB }
+  - { seq: 462, pair: KC }
+  - { seq: 463, pair: JC }
+  - { seq: 464, pair: HC }
+  - { seq: 465, pair: GC }
+  - { seq: 466, pair: FC }
+  - { seq: 467, pair: ED }
+  - { seq: 468, pair: DD }
+  - { seq: 469, pair: BD }
+  - { seq: 470, pair: AD }
+  - { seq: 471, pair: AE }
+  - { seq: 472, pair: BE }
+  - { seq: 473, pair: CE }
+  - { seq: 474, pair: DE }
+  - { seq: 475, pair: EE }
+  - { seq: 476, pair: FF }
+  - { seq: 477, pair: GF }
+  - { seq: 478, pair: HF }
+  - { seq: 479, pair: JF }
+  - { seq: 480, pair: KF }
+  - { seq: 481, pair: LG }
+  - { seq: 482, pair: MG }
+  - { seq: 483, pair: NG }
+  - { seq: 484, pair: PG }
+  - { seq: 485, pair: QG }
+  - { seq: 486, pair: RH }
+  - { seq: 487, pair: SH }
+  - { seq: 488, pair: TH }
+  - { seq: 489, pair: UH }
+  - { seq: 490, pair: VH }
+  - { seq: 491, pair: WJ }
+  - { seq: 492, pair: XJ }
+  - { seq: 493, pair: YJ }
+  - { seq: 494, pair: ZJ }
+  - { seq: 495, pair: ZK }
+  - { seq: 496, pair: YK }
+  - { seq: 497, pair: XK }
+  - { seq: 498, pair: WK }
+  - { seq: 499, pair: VL }
+  - { seq: 500, pair: UL }
+  - { seq: 501, pair: TL }
+  - { seq: 502, pair: SL }
+  - { seq: 503, pair: RL }
+  - { seq: 504, pair: QM }
+  - { seq: 505, pair: PM }
+  - { seq: 506, pair: NM }
+  - { seq: 507, pair: MM }
+  - { seq: 508, pair: LM }
+  - { seq: 509, pair: KN }
+  - { seq: 510, pair: JN }
+  - { seq: 511, pair: HN }
+  - { seq: 512, pair: GN }
+  - { seq: 513, pair: FN }
+  - { seq: 514, pair: EP }
+  - { seq: 515, pair: DP }
+  - { seq: 516, pair: CP }
+  - { seq: 517, pair: BP }
+  - { seq: 518, pair: AP }
+  - { seq: 519, pair: AQ }
+  - { seq: 520, pair: BQ }
+  - { seq: 521, pair: CQ }
+  - { seq: 522, pair: DQ }
+  - { seq: 523, pair: EQ }
+  - { seq: 524, pair: FR }
+  - { seq: 525, pair: GR }
+  - { seq: 526, pair: HR }
+  - { seq: 527, pair: JR }
+  - { seq: 528, pair: KR }
+  - { seq: 529, pair: LS }
+  - { seq: 530, pair: MS }
+  - { seq: 531, pair: NS }
+  - { seq: 532, pair: PS }
+  - { seq: 533, pair: QS }
+  - { seq: 534, pair: RT }
+  - { seq: 535, pair: ST }
+  - { seq: 536, pair: TT }
+  - { seq: 537, pair: UT }
+  - { seq: 538, pair: VT }
+  - { seq: 539, pair: WU }
+  - { seq: 540, pair: XU }
+  - { seq: 541, pair: YU }
+  - { seq: 542, pair: ZU }
+  - { seq: 543, pair: ZV }
+  - { seq: 544, pair: YV }
+  - { seq: 545, pair: XV }
+  - { seq: 546, pair: WV }
+  - { seq: 547, pair: VW }
+  - { seq: 548, pair: UW }
+  - { seq: 549, pair: TW }
+  - { seq: 550, pair: SW }
+  - { seq: 551, pair: RW }
+  - { seq: 552, pair: QX }
+  - { seq: 553, pair: PX }
+  - { seq: 554, pair: NX }
+  - { seq: 555, pair: MX }
+  - { seq: 556, pair: LX }
+  - { seq: 557, pair: KY }
+  - { seq: 558, pair: JY }
+  - { seq: 559, pair: HY }
+  - { seq: 560, pair: GY }
+  - { seq: 561, pair: FY }
+  - { seq: 562, pair: EZ }
+  - { seq: 563, pair: DZ }
+  - { seq: 564, pair: CZ }
+  - { seq: 565, pair: BZ }
+  - { seq: 566, pair: AZ }
