@@ -23116,3 +23116,58 @@ that quietly resurrects ids.
 against data `main` is not green, because the spotcheck amendment lives in
 `#206`. Both are merged now, so this is closed — but it is the third time
 tonight a delegate has reported a red that was a coupled pair caught mid-merge.
+
+## S4W — body-word 92 final (`data#209`): 59 nulled not 68, `lancia/coupe` is a WHITELIST case not a deletion, and the KEEP mass is 1.9× what DEBT recorded
+
+Reporting the deltas I had not already relayed, and one follow-up someone
+should pick up.
+
+### `lancia/coupe` is REFUTED as a null — it belongs in `FW_POOLS`
+
+Its **61 gb vehicles are Beta Coupés** — the raws are `COUPE 2000 VX`,
+`COUPE IE 2000`, `COUPE VOLUMEX` — and they are **recoverable through the
+uk_dft Model column**. `LANCIA COUPE` simply is not in `pipeline#144`'s
+whitelist, so the id looks like an unrecoverable body word when it is actually
+an un-whitelisted pool.
+
+**Follow-up, concrete and small: add `LANCIA COUPE` to `FW_POOLS`.** That is a
+rescue of 61 real cars that would otherwise have been deleted as noise, and it
+is the second time tonight the answer to "this body word has no honest target"
+turned out to be "the Model column names the target, we just have not declared
+the pool." Filed rather than improvised, because #144's whitelist is
+deliberately closed and adding to it needs its own zero-mint check.
+
+**59 nulled, not 68**, with 9 deferred to make owners rather than decided here.
+And `smart/{cabrio,coupe}` **declined** on evidence the dossier lacked: both
+`smart/city` and `smart/roadster-coupe` are live, so a bare `CABRIO` is
+ambiguous between two published records — which is the dossier's own stated
+test for NULL rather than FOLD, applied against its own recommendation.
+
+### The safety property is nearly twice what we recorded
+
+**KEEP mass 26,018 → 49,837 vehicles.** The gap is one id: `mini/roadster`
+measured **352 against a true 5,284**, because `veh0120` is keyed on six columns
+including Fuel and LicenceStatus and that GenModel spreads over eight rows.
+Reading one row where the adapter sums them all is the **fifth denominator error
+of the run** — and it asked for a second derivation of that figure in its own PR
+rather than banking it.
+
+### A third silent class, found only by a real build
+
+`car/ford/raodster -> car/ford/roadster: target is not live` — the **chained
+alias**. The treatment build failed two gates the control did not. Nothing
+short of a build sees it, and it exists *because* of the rescue-onto-a-fake-
+nameplate defect I own: fixing the rename left the alias pointing at a record
+that was being retired in the same batch.
+
+### Its own best correction
+
+It claimed all nine of §B.3's residue keys were inert, then checked rather than
+shipping the claim: **five of nine are reachable.** Four now ship as rescues.
+That is the same instinct that has caught most of tonight's real findings — the
+claim was cheap to assert and cheap to test, and it tested it.
+
+Standing rule it asks to propagate, and I agree: **state BOTH base commits**
+(data and pipeline) in every measurement. It measured on a stale *pipeline* base
+and only CI revealed +229 lines of `uk_dft.rb` since; the result held, but it
+says plainly that holding was luck.
