@@ -153,16 +153,110 @@ def check_separator_contract(rel, id, key, src)
   end
 end
 
-# Generate serials from a human pattern: 9=digit, L=letter, else literal.
+# ── THE PATTERN ESCAPE (owner ruling 2026-08-02, §2.6 decision 1) ───────────
+#
+# `9` and `L` are the DSL's own tokens, so a plate that PRINTS one of them had
+# no way to say so. Five wave-2 delegates hit this independently and none of
+# them faked around it: `FL 99999` generated `FQ 96884`, `POLIZIA 999` generated
+# `POIIZIA 692`, and `EL` read as "E followed by any letter". Each correctly
+# downgraded its series to `recall-only` rather than ship a regex that lies.
+#
+# `\9` and `\L` now mean the literal characters. A backslash escapes whatever
+# follows it, so `\\` is a literal backslash if a plate ever needs one.
+#
+# PROVABLY INERT ON EVERYTHING ALREADY SHIPPED: measured before writing this,
+# **0 of 945 patterns in the corpus contain a backslash**. The escape cannot
+# change the behaviour of any existing pattern, because no existing pattern can
+# enter the new branch. That is the owner's acceptance invariant — flip series
+# from recall-only to matching WITHOUT changing any currently-matching series —
+# established by construction rather than by hoping the replay catches it.
+#
+# Tokenise once, here, so the generator and both validators agree by sharing a
+# function instead of by three copies of the same `case`.
+#
+#   returns [[:digit], [:letter], [:literal, ch], ...]
+def pattern_tokens(pattern)
+  out = []
+  chars = pattern.chars
+  i = 0
+  while i < chars.length
+    c = chars[i]
+    if c == "\\"
+      nxt = chars[i + 1]
+      # A trailing lone backslash is a curation error, not a literal backslash:
+      # it almost certainly means the author's escape lost its target.
+      return [[:dangling_escape]] if nxt.nil?
+      out << [:literal, nxt]
+      i += 2
+    elsif c == "9" then out << [:digit];  i += 1
+    elsif c == "L" then out << [:letter]; i += 1
+    else out << [:literal, c]; i += 1
+    end
+  end
+  out
+end
+
+# Generate serials from a human pattern: 9=digit, L=letter, \x=literal x.
 def serials_from(pattern, n = 50)
+  toks = pattern_tokens(pattern)
   Array.new(n) do
-    pattern.chars.map do |c|
-      case c
-      when "9" then rand(0..9).to_s
-      when "L" then ("A".."Z").to_a.sample
-      else c
+    toks.map do |kind, ch|
+      case kind
+      when :digit  then rand(0..9).to_s
+      when :letter then ("A".."Z").to_a.sample
+      else ch
       end
     end.join
+  end
+end
+
+# ── THE ESCAPE'S OWN GUARD, RUN UNCONDITIONALLY ─────────────────────────────
+#
+# Zero patterns in the corpus use the escape today, so nothing else exercises
+# it: it would rot silently and be discovered by the next delegate who trusts
+# it. This repo has no test harness for the data side — the lint scripts ARE
+# the tests — so the guard lives here and runs on every invocation rather than
+# behind a `--self-test` flag somebody has to remember to wire into CI.
+#
+# It costs microseconds. It cannot be skipped. That is the whole design.
+def self_check_pattern_tokens!
+  cases = [
+    ["9-LLL-99",     [[:digit], [:literal, "-"], [:letter], [:letter], [:letter], [:literal, "-"], [:digit], [:digit]],
+     "the ordinary case must be untouched by the escape"],
+    ["F\\L 99",      [[:literal, "F"], [:literal, "L"], [:literal, " "], [:digit], [:digit]],
+     "\\L is a literal L, not the letter token"],
+    ["9\\9",         [[:digit], [:literal, "9"]],
+     "\\9 is a literal 9, not the digit token"],
+    ["\\\\",         [[:literal, "\\"]],
+     "\\\\ is a literal backslash"],
+    ["ABC\\",        [[:dangling_escape]],
+     "a trailing lone backslash is an error, not a literal backslash"],
+  ]
+  cases.each do |pattern, want, why|
+    got = pattern_tokens(pattern)
+    next if got == want
+    abort "lint_plates: PATTERN TOKENISER SELF-CHECK FAILED — #{why}\n" \
+          "  pattern #{pattern.inspect}\n  want #{want.inspect}\n  got  #{got.inspect}"
+  end
+end
+self_check_pattern_tokens!
+
+# The §2.6 alphabet check, shared by the series pattern and every variant
+# pattern so the two cannot drift. Written against the TOKENISER, not against
+# raw characters: a `\` is grammar and never needs to be in the alphabet, while
+# the character it escapes is held to exactly the same rule as an unescaped one.
+def check_pattern_alphabet(rel, id, where, pattern)
+  toks = pattern_tokens(pattern)
+  if toks == [[:dangling_escape]]
+    fail! "#{rel}: #{id} #{where} ends in a lone backslash — an escape with nothing to escape. " \
+          "Write `\\\\` if the plate genuinely prints a backslash (PRD-PLATES §2.6)"
+    return
+  end
+  toks.each do |kind, ch|
+    next unless kind == :literal
+    next if SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
+    fail! "#{rel}: #{id} #{where} spells #{ch.inspect} (U+%04X) — patterns carry 9/L, escaped literals, " \
+          "serial characters and emitted separators only (PRD-PLATES §2.6)" % ch.ord
   end
 end
 
@@ -270,11 +364,10 @@ files.sort.each do |abs|
     fail! "#{rel}: #{id} format.pattern required" if pattern.empty?
 
     # §2.6 — the human pattern spells DSL tokens, serial characters and
-    # emitted separators, and nothing else.
-    pattern.chars.uniq.each do |ch|
-      next if PATTERN_TOKENS.include?(ch) || SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
-      fail! "#{rel}: #{id} format.pattern spells #{ch.inspect} (U+%04X) — patterns carry 9/L, serial characters and emitted separators only (PRD-PLATES §2.6)" % ch.ord
-    end
+    # emitted separators, and nothing else. Escaped literals (`\9`, `\L`) are
+    # checked against the same alphabet as everything else: the escape buys the
+    # ability to SAY "9", not permission to spell characters a plate cannot show.
+    check_pattern_alphabet(rel, id, "format.pattern", pattern)
 
     if regex_s.empty?
       fail! "#{rel}: #{id} format.regex required"
@@ -339,10 +432,7 @@ files.sort.each do |abs|
     (s["variants"] || []).each_with_index do |v, vi|
       vpat = v.dig("format", "pattern").to_s
       next if vpat.empty?
-      vpat.chars.uniq.each do |ch|
-        next if PATTERN_TOKENS.include?(ch) || SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
-        fail! "#{rel}: #{id} variant[#{vi}] pattern spells #{ch.inspect} (U+%04X) — see PRD-PLATES §2.6" % ch.ord
-      end
+      check_pattern_alphabet(rel, id, "variant[#{vi}] pattern", vpat)
       %w[regex regex_strict regex_statutory].each do |key|
         vsrc = v.dig("format", key).to_s
         check_separator_contract(rel, id, "variant[#{vi}].#{key}", vsrc) unless vsrc.empty?
