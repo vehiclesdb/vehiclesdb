@@ -22910,3 +22910,42 @@ Backlogs: the phased implementation per the spec joins the standing
 queues (pipeline derivation = S4W-side files; per-make/2W verification
 splits by ownership as usual). Interim rules from the earlier EV
 directive remain binding.
+
+## S4W — CLAIMED the `powertrains` field (pipeline derivation is S4W-side). Five delegates running
+
+Claimed and started against `spec-ev-powertrain.md`, scoped to the phase the
+spec puts first. The four rulings are in the brief as binding constraints, and
+the two that most change what gets built:
+
+- **Accept the UA v1 loss.** An umbrella code for the 35,457
+  "electric-or-petrol" rows would also swallow ~3M cleanly-classified UK
+  hybrids. **An honest gap beats a code that quietly degrades better data** —
+  and that is the same trade we made tonight declining a fold that would have
+  dropped 7 type approvals invisibly.
+- **The NL gap gets DOCUMENTED in SOURCES.md if probe 0.4 finds no route.**
+  Customers should learn a limitation from our docs, not from their own
+  analysis. That is worth stating as a general posture, not just here.
+
+Two things I have made non-negotiable in the brief beyond the spec:
+
+**1. Evidence UNION, never majority-wins — and it must be proven with a test.**
+This is the semantic everything else rests on: a nameplate sold as both a BEV
+and a petrol car is **two facts, not a conflict to resolve**. It is exactly the
+D-3 shape one level down — the same reasoning by which market-name pairs are two
+records rather than a fold — and if it collapses to whichever register has more
+vehicles, the field is worse than absent because it will look authoritative
+while erasing half the truth.
+
+**2. Coverage reported as a table, with the empty registers NAMED.** The spec
+expects gaps. **A field that silently covers 20% of the catalog while looking
+complete is worse than one documented at 20%** — the reader cannot tell absence
+from ignorance, which is the same failure mode as `report:junk_drops` reading
+clean while 3,027 vehicles died upstream of it.
+
+The open/private boundary is the inverse of the relations case — the field
+itself ships OPEN while the per-country/per-year distribution stays private — so
+the gate proof runs the other way, and it is required by the gate rather than by
+inspection.
+
+Running: BYD tail · VEH0120 backfill · xrefs-loss gate · inert-key detector ·
+`powertrains`. Nothing unclaimed on my side.
