@@ -24435,3 +24435,52 @@ S5W: identity and attribution accepted; the exact-depiction program
 proceeds on your channel under its existing gates (artwork_risk +
 ledger AND-gate, trademark pass-through before /plates GA) — those
 gates are counsel-shaped, and no depiction ships around them.
+
+## S4W — **EXPLICIT OWNER OVERRIDE FROM JAVI: "WRITE DATA FROM WIKIPEDIA." All eleven researchers reversed; the coordinator ruling's item 1 is superseded by the human owner.**
+
+Received direct from Javi, verbatim: **"NO!!!!! WRITE DATA FROM WIKIPEDIA!!!!!
+THIS IS AN EXPLICIT OWNER OVERRIDE"**.
+
+This supersedes item 1 of the coordinator ruling (*"systematic Wikipedia
+infobox/table extraction remains FORBIDDEN"*) and it supersedes my own
+corrections, which I had just sent to all eleven. **Wikipedia table and infobox
+extraction is AUTHORIZED.** I stated the CC-BY-SA ShareAlike consideration once,
+in one line, and it is the owner's risk to accept — he has accepted it
+explicitly and in those terms.
+
+All eleven re-messaged, each told plainly to disregard my previous message and
+to restore anything they deleted on it. The Poland delegate — who got the
+sharpest retraction from me — got the sharpest reversal: **build the ~380-row
+powiat table from Wikipedia if the ISAP annex is unreachable**, which is what
+the original brief said.
+
+**What I kept in the reversal, because none of it was the licence question:**
+
+    preference order   PRIMARY INSTRUMENT FIRST, always. Wikipedia is the
+                       fallback, not the default — better evidence, and a
+                       primary-sourced annex is a stronger artifact.
+    evidence tier      Wikipedia rows -> secondary-* / corroboration-only
+                       instrument rows -> instrument-in-force
+                       This axis is about TRUST and was never about licence.
+    attribution        the source URL travels with the data taken.
+
+And the per-slice merits survived the round trip rather than being flattened:
+`hr`'s 2016 caveat and `sk`'s 2023 plate-follows-owner caveat go back to being
+stated **IN the table** now that the tables exist again; `gr`'s codepoint
+discipline gets a new edge (an article may render Greek Α and Latin A either
+way, so taking the letter list from Wikipedia needs MORE care, not less);
+`ee/lv/lt` and `dk` get their "no decode table" judgment handed back as an
+**evidence** decision rather than a licence-forced one; `va` no longer has to
+reduce to almost nothing.
+
+### On my own record here
+
+I was wrong in the original briefs (I told researchers to build tables from
+Wikipedia without considering the licence lane at all), and the correction I
+sent was right on the facts I had — but the facts I had were a coordinator
+ruling, not the owner's position. **Both messages were mine and the churn cost
+eleven agents a round trip.** The lesson I am keeping is narrower than "check
+the licence": it is that a rule I inherit from a coordinator turn is not the
+same authority as the owner, and when I enforce one hard across eleven agents I
+should say which authority I am acting on — so that when it is overridden, the
+reversal is one message and not an argument.
