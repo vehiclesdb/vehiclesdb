@@ -24752,3 +24752,64 @@ row deletes with the implementing PR per convention.
 The -D precedent (#248) is acknowledged as the template for the
 remaining 25 suspects — measured unwind where the audit was right,
 escalation where naming is genuinely open. Exactly the standard.
+
+## S4W — **Ireland is the first wave-2 dossier (`data#250`), and it corrected the modern Irish plate from 1993 to 1991.** Plus a vocabulary error of mine, caught by the delegate
+
+### `data#250` — ie, lint green on the first run
+
+    plates lint: 68 files, 613 series
+    matching recall-only=151 strict=462 | twins regex_statutory=57 regex_strict=168
+    plates lint: OK
+
+**29 statutory instruments read in full** on irishstatutebook.ie, plus 16 more
+read and *excluded* with the negatives recorded so nobody re-chases them. Six of
+seven series are instrument-dated. The 30-row county table is primary twice
+over. **Wikipedia was used as a locator only — no table taken, so the
+override/restore churn cost this slice nothing.** Exactly two facts are
+secondary, and both ship as declared gaps rather than as data.
+
+### The find: the modern Irish plate is **1991, not 1993**
+
+S.I. 287/1990 introduced the EU flag, IRL, the placename, the black border AND
+the hyphen — **while the county councils still ran the register.** The 1993
+Revenue takeover changed the registering AUTHORITY and not one character of the
+plate. Cutting a series at 1993 would have recorded an administrative transfer
+as a design change. That is the instrument-date rule biting in a new direction:
+not an instrument's window mistaken for a series, but **an administrative event
+mistaken for a design event.**
+
+Four more, each dated to its own instrument: the 1987 reform commences 1 Jan
+1987 (sealed Dec 1986); **1987–1990 is its own series** (no band, no placename,
+**space** separator — the hyphen arrives only in 1991); and **the two-digit
+series has no end** — S.I. 542/2012 *confined* Reg. 9(1) to vehicles first used
+on or before 31 Dec 2012 rather than repealing it, and the digit keys on
+first-use, so 11- marks still issue in 2026. Commonly published as 1987–2012.
+
+Two folklore claims refuted against the primary record: *"G, S and V were
+skipped for Scotland"* (the 1958 Schedule is full of GYI/SYI/VYI) and *"131
+avoids unlucky 13"* (not in the instrument; recorded as commentary).
+
+### My error, and it went to all eleven
+
+The delegate used `instrument-dated-both-ends` and flagged that it was not among
+the eight `period_evidence` values my brief called "the EXISTING vocabulary".
+
+It was right to. **I built that list with `sort | uniq -c | head -8`** — the
+eight most FREQUENT values, which I then presented as the whole set. The corpus
+carries **50 distinct values**, and `lint_plates` does not constrain the field
+at all: it is an OPEN, descriptive vocabulary. My truncation turned it into a
+false closed list in every brief.
+
+The failure mode is quiet and would not have shown up in review: a delegate
+forcing `corroboration-only` onto a row that had a better descriptor, and the
+dossier reading as weaker evidence than it is. **Worst for the microstates
+slice**, whose sources are precisely the non-statutory ones my eight omitted —
+`agency-stated-date`, `authority-statement`,
+`photographic-in-use-upper-bound` are all real, already-shipped ways of saying
+"well evidenced, just not by a statute".
+
+All ten remaining delegates corrected, each pointed at the values likely to
+matter in its own slice. **Ireland needs no rework** — it used the accurate
+value and told me.
+
+`pipeline#166` (the `enrich/` evidence tier) is open and green alongside this.
