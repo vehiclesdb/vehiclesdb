@@ -23385,3 +23385,63 @@ Merged: `pipeline#150`, `#151`, `#152`. Rebased onto main and re-running:
 left alone — its delegate is still live in that worktree. `#147` (gate 7d) is
 green but has a live instance on main and is deliberately NOT merged until the
 17 lost type approvals are resolved; a delegate is on it.
+
+## S4W — powertrains Phase 1 is IN (`pipeline#153` + `data#212`), and it found a live NZ defect: **New Zealand counts are silently truncating in published data TODAY**
+
+Owner: the delegate read your ruled spec before writing a line, so nothing had
+to be reconciled. Verified point by point — open field with the distribution
+private, 9-code vocabulary (unknown code **raises**), **union never
+majority-wins**, no schema bump, UA loss accepted (35,485 rows declined and
+counted, no umbrella code), `curation` not introduced, PRD-DEPTH untouched, NL
+gap documented in SOURCES.md. Nothing public ships; that is Phase 1 by
+definition.
+
+    coverage 8,984 / 13,869 records (64.8%), ceiling 67.6%
+    8 registers wired · lu/my/us 100% · fi 99.8% · ua 99.4% · ca 97.7% · de 89.9%
+    control vs treatment: every public artifact BYTE-IDENTICAL, id diff empty in
+    all six kinds, 0 cache bytes changed (214 files sha256'd both sides)
+
+Gate 8 proved by injecting a leak into the real `public_model` path: **12
+failures across 6 kinds via both detection paths, exit 1**, then clean on
+revert.
+
+### THE LIVE DEFECT — and it is in published data, not an instrument
+
+`nz_nzta` chunks by make-initial to dodge the ArcGIS ~2,000-record cap. **The
+mitigation is insufficient and nothing verifies it.** Measured on current main:
+
+    cache/nz_passenger-car-van_C.json   features = 2000   exceededTransferLimit: true
+    cache/nz_passenger-car-van_M.json   features = 2000   exceededTransferLimit: true
+    cache/nz_passenger-car-van_A.json   features = 1119   (no flag)
+    146 NZ chunk files · 2 truncated · both sitting EXACTLY at the cap
+
+Makes starting with C and M overflow a single letter-chunk, so an unknown
+quantity of NZ registrations is dropped on every build — and **nothing in the
+pipeline reads `exceededTransferLimit`**, so it has never once been reported.
+The adapter's own comment (`nz_nzta.rb:13`) shows the cap was KNOWN; what was
+missing is the check that the workaround still holds. `nz` is load-bearing
+evidence in spotchecks (`mercedes-benz/amg` is retained on it), so this can move
+id liveness. Delegate assigned; the primary deliverable is the loud failure,
+not the recovery — a fix that restores C and M without a detector leaves the
+next overflowing register just as silent.
+
+### Two things I corrected rather than shipped
+
+**`#149`'s UA mapping was stated as settled in two record notes.** The
+`make/byd` note frames `ЕЛЕКТРО АБО БЕНЗИН -> phev` correctly, as an OFFER to
+the spec's Phase-4 question; but the `sea-lion-07` and `tang` notes then wrote
+"`phev` for this make" as fact, which your ruling 1 declines for v1. Prose only,
+nothing derives from it — softened both, lint exit 0.
+
+**And the `mercedes-benz/amg missing gb` alarm has now burned THREE delegates.**
+It is not a live failure; it is any data base predating `e83411f` (`#206`).
+Current main requires `[nz]` only. Broadcasting it here so the fourth does not
+spend a build on it.
+
+### Flagged, not actioned
+
+FI's `ice-petrol` includes petrol-hybrids — **16.6% of FI code-`01` rows carry
+`sahkohybridi = true`** (a Prius is `01`). The spec assigns `ice-petrol` and the
+delegate implemented it as specified, but the spec's stated justification ("zero
+on Tesla") does not establish the claim. Your call, and it wants the Traficom
+koodisto fetch (probe 0.2) that was not done.
