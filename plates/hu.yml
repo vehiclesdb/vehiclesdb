@@ -1,0 +1,959 @@
+# plates/hu.yml — Hungary (PRD-PLATES gate L1, wave 2).
+#
+# WHAT IS PRIMARY HERE AND WHAT IS NOT — read this before trusting any line.
+#
+# TWO instruments were reached in their own official databases and are cited as
+# primaries:
+#
+#   * 326/2011. (XII. 28.) Korm. rendelet a közúti közlekedési igazgatási
+#     feladatokról, a közúti közlekedési okmányok kiadásáról és visszavonásáról
+#     — the decree that governs Hungarian registration plates today. Read on the
+#     Nemzeti Jogszabálytár (njt.jog.gov.hu) and on net.jogtar.hu, 2026-08-02.
+#   * 303/2021. (VI. 1.) Korm. rendelet a közúti közlekedési igazgatási
+#     feladatokról, a közúti közlekedési okmányok kiadásáról és visszavonásáról
+#     szóló 326/2011. (XII. 28.) Korm. rendelet módosításáról — THE 2022 FORMAT
+#     CHANGE, and its commencement sentence is quoted verbatim below.
+#
+# EVERYTHING ELSE IN THIS FILE IS SECONDARY, AND IT IS TAGGED, PER FACT, WITH
+# `evidence_tier: secondary-wikipedia` AND THE ARTICLE URL. That tagging is
+# deliberate and exhaustive: one `grep -n secondary-wikipedia plates/hu.yml`
+# enumerates every fact in this file that rests on Wikipedia, so the whole
+# Wikipedia-derived surface can be re-decided in one pass if the programme ever
+# revisits the directive. An untagged Wikipedia-derived fact would be the defect;
+# there is intended to be none. The facts are re-expressed in this schema's own
+# shape and ordering — nothing here mirrors an article's table layout.
+#
+# THE FOUR STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE 2022 CHANGE IS DATED TO THE DAY, BY THE INSTRUMENT ITSELF, AND THE
+#    INSTRUMENT IS NOT THE SERIES DATE. 303/2021. (VI. 1.) Korm. rendelet was
+#    made and published on 1 June 2021. Its own commencement provision reads,
+#    verbatim: "Ez a rendelet 2022. július 1-jén lép hatályba." So the
+#    instrument's date is 2021 and the SERIES date is 2022-07-01, thirteen
+#    months later. This file records 2022, not 2021 — which is exactly the trap
+#    plates/es.yml fell into once (a 1999-2000 decree window shipped as the
+#    period for a format that ran three decades) and the reason PRD-PLATES §5.3
+#    puts era boundaries at the top of the audit. The thirteen-month gap is not
+#    incidental: it is the lead time the plate manufacturer and the county
+#    government offices were given.
+#
+# 2. HUNGARY DOES NOT ENCODE REGION, AND THERE IS THEREFORE NO hu-* DECODE
+#    TABLE. This is a POSITIVE FINDING, not a gap, and it is the same shape as
+#    the Finnish outcome in plates/fi.yml. Neither the 1990 three-letter series
+#    nor the 2022 four-letter series carries a geographic element; letter blocks
+#    are allocated nationally and sequentially by use-class (taxi, trailer,
+#    commercial), never by county. A 2012 proposal to add a geographic marker
+#    was abandoned. Consequently every series below carries
+#    `region_encoding: none`, no plates/_decode/hu-*.yml file is authored, and a
+#    parse API must NEVER return a Hungarian county from a Hungarian serial. The
+#    pre-1958 systems DID encode region (a single letter for the district — B
+#    for the Budapest area, D for Debrecen) and are described in
+#    `historic_regional_systems` below, but they are not modelled as series and
+#    no decode table is authored for them either, because no primary listing the
+#    district letters was reached.
+#
+# 3. THE SPEC — COLOURS, DIMENSIONS, THE PLATE-TYPE TABLE — LIVES IN THE
+#    MELLÉKLETEK OF 326/2011, AND THE MELLÉKLETEK WERE NOT TEXT-EXTRACTABLE IN
+#    THIS PASS. The decree's operative sections were read (§ 42, § 53 "A
+#    rendszámtábla és a regisztrációs matrica", §§ 58-59 the individually chosen
+#    and individually produced plate, §§ 60-62 the special plate, §§ 63 and 63/A
+#    the temporary plate) and they DELEGATE the detail to numbered mellékletek.
+#    Both njt.jog.gov.hu and net.jogtar.hu render the decree's body but truncate
+#    before the annexes at the sizes this pass could retrieve, and the Magyar
+#    Közlöny PDF archive at kozlonyok.hu answers with a certificate that does not
+#    cover its own hostname. That is a RECORDED DEAD END, listed in
+#    `dead_ends` below with every URL tried, and it is why every colour and every
+#    millimetre in this file is `secondary-wikipedia` and every hex is
+#    `hex_basis: observed`. Nothing here is dressed as a spec claim.
+#
+# 4. THE VOWEL/CONSONANT RULE IS REAL, DISTINCTIVE, AND DELIBERATELY NOT
+#    ENCODED AS A REGEX. The 2022 series' first letter pair must be two vowels
+#    or two consonants, and the Hungarian digraphs CS, GY, TY, LY, NY, SZ, ZS
+#    are barred. To turn that into a `regex_strict` this file would have to
+#    decide which Latin letters count as vowels for the purpose (is Y a vowel
+#    here? is I issued at all, given that I, O and Q are avoided elsewhere in
+#    the system?), and the source states the rule without stating the letter
+#    sets. Inventing them would be precisely the confident guess PRD-PLATES
+#    forbids, so the rule is recorded verbatim in `format.charset` and NO
+#    `regex_strict` is shipped for the standard series. The gap is named in
+#    `verifier_targets`.
+jurisdiction: hu
+authority:
+  name: Belügyminisztérium — közúti közlekedési igazgatási hatóság (326/2011. (XII. 28.) Korm. rendelet)
+  url: "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22"
+binding: vehicle
+binding_note: >-
+  VEHICLE-bound. § 42 (7) of 326/2011. (XII. 28.) Korm. rendelet, verbatim: "A
+  jármű forgalomba helyezése nyilvántartásba vétellel, a forgalmi engedély, a
+  rendszámtábla ... kiadásával valósul meg" — the plate is issued as part of
+  putting THE VEHICLE into service, so vehicle-keyed consumers may join on it.
+  Note the one qualification the same decree creates: §§ 58-59 govern the
+  "egyénileg kiválasztott" (individually chosen) and "egyedileg előállított"
+  (individually produced) plate, which is a right of the applicant rather than
+  of the vehicle; whether that right survives a change of vehicle was NOT
+  established in this pass and is a recorded gap.
+instrument:
+  citation: "326/2011. (XII. 28.) Korm. rendelet a közúti közlekedési igazgatási feladatokról, a közúti közlekedési okmányok kiadásáról és visszavonásáról"
+  kihirdetve: "2011-12-28"
+  structure_read: >-
+    § 42 (forgalomba helyezés), § 53 (A rendszámtábla és a regisztrációs
+    matrica), §§ 58-59 (az egyénileg kiválasztott és az egyedileg előállított
+    rendszámtábla), §§ 60-62 (A különleges rendszámtábla), § 63 and § 63/A (Az
+    ideiglenes rendszámtábla), plus § 1/C which names the Központi Kormányablak
+    as exclusively competent for the "I" betűjelű ideiglenes rendszámtábla.
+    Every one of these sections delegates its detail to a melléklet.
+  amendment_that_changed_the_format:
+    citation: "303/2021. (VI. 1.) Korm. rendelet a közúti közlekedési igazgatási feladatokról, a közúti közlekedési okmányok kiadásáról és visszavonásáról szóló 326/2011. (XII. 28.) Korm. rendelet módosításáról"
+    kihirdetve: "2021-06-01"
+    hatalyba_lepes: "2022-07-01"
+    verbatim: "Ez a rendelet 2022. július 1-jén lép hatályba."
+    note: >-
+      THE INSTRUMENT-DATE RULE IN ONE LINE. Made 2021-06-01, in force
+      2022-07-01. The series date is the second one. Any dataset that shipped
+      "2021" for the four-letter Hungarian plate took the instrument's own date
+      for the series period and is wrong by thirteen months.
+    source: "https://njt.jog.gov.hu/jogszabaly/2021-303-20-22  # 303/2021. (VI. 1.) Korm. rendelet — title and commencement provision read on the Nemzeti Jogszabálytár, accessed 2026-08-02"
+  source: "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # 326/2011. (XII. 28.) Korm. rendelet, consolidated text on the Nemzeti Jogszabálytár, accessed 2026-08-02; corroborated against https://net.jogtar.hu/jogszabaly?docid=a1100326.kor"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  region_encoding:
+    finding: none
+    evidence_tier: secondary-wikipedia
+    statement: >-
+      NO HUNGARIAN SERIES IN THIS FILE ENCODES GEOGRAPHY, AND NO hu-* DECODE
+      TABLE IS AUTHORED. Letter blocks in both the 1990 and the 2022 systems are
+      allocated nationally by use-class, not by county; a proposal to introduce
+      a geographic marker was raised in 2012 and abandoned. This mirrors the
+      Finnish outcome (plates/fi.yml) and is a sourced NEGATIVE: "no decode
+      table" is the correct deliverable for Hungary, not a missing one.
+    consumer_rule: >-
+      A parse API must not return a Hungarian county, city or region from a
+      Hungarian serial of any post-1958 series. There is no information there to
+      return.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # the current system has no geographic linkage; the 2012 geographic-marker proposal was discarded. Accessed 2026-08-02"
+  historic_regional_systems:
+    evidence_tier: secondary-wikipedia
+    finding: >-
+      Region WAS encoded before 1958, and is recorded here as context rather than
+      as data. From 1910 a district letter preceded the number (B for the
+      Budapest area, D for Debrecen, and so on across fifteen districts), with
+      the year of issue added from 1922; two-letter/three-number and
+      one-letter/four-number arrangements followed through the 1930s and 1940s.
+      NO PRIMARY listing the district letters was reached in this pass, so
+      neither a series nor a decode table is authored for the pre-1958 world.
+      The instruments NAMED by the secondary as governing those systems, offered
+      here as locators for a later pass and not as citations for any claim, are
+      57.000/1910. számú belügyminisztériumi rendelet and 5397/1920. számú
+      ME-rendelet.
+    source: "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # pre-1958 formats and the two decrees named as their basis. Accessed 2026-08-02"
+  alphabet:
+    evidence_tier: secondary-wikipedia
+    letters_avoided: [I, O, Q]
+    statement: >-
+      The letter O is not issued (confusable with the digit 0), and I, O and Q
+      are avoided in the standard series. The secondary states the avoidance
+      without stating the positions it binds, and states separately that I, O and
+      Q may not be the FINAL character of a standard serial — two rules that do
+      not obviously compose. Neither is written into any regex in this file.
+    vowel_consonant_rule_2022:
+      verbatim: "Az első két betű vagy két magánhangzó vagy két mássalhangzó kell legyen, de a CS, GY, TY, LY, NY, SZ, ZS betűkombinációk nem használhatók."
+      translation: >-
+        The first two letters must be either two vowels or two consonants, and
+        the digraph combinations CS, GY, TY, LY, NY, SZ and ZS may not be used.
+      not_encoded_because: >-
+        The source gives the RULE but not the LETTER SETS. Encoding it would
+        require this file to decide, unsourced, which Latin letters count as
+        vowels for the purpose and whether I is issued at all. See header fact 4.
+    source: "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # the vowel/consonant and digraph rule, verbatim. Accessed 2026-08-02"
+  design_defaults:
+    evidence_tier: secondary-wikipedia
+    plate_mm: { w: 520, h: 110 }
+    colours_note: >-
+      Hungary's statutory colour and dimension specification lives in the
+      mellékletek of 326/2011, which this pass could not retrieve (see
+      `dead_ends`). Every colour in this file is therefore an OBSERVED rendering
+      of a NAMED colour reported by a secondary — never a spec claim, never a
+      cited chromaticity gamut. Contrast plates/at.yml, whose CIE quadrangles
+      come out of KDV Anlage 5e, and plates/es.yml, whose gamut constraint is in
+      Anexo XVIII. Hungary has neither in this file, and says so.
+    standard_colours: "black characters on a white retroreflective ground, front and rear"
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # 520 x 110 mm; black on white. Accessed 2026-08-02"
+  euro_band:
+    side: left
+    content: eu-stars+H
+    evidence_tier: secondary-wikipedia
+    from: "2004-05-01"
+    note: >-
+      The EU band arrived with accession. The secondary dates the first
+      EU-format Hungarian plate to 1 May 2004 and names its serial as JDA-001 —
+      a first-issue claim, tagged `secondary-first-issue` on the series, not an
+      instrument claim. No Hungarian instrument prescribing the band's geometry
+      was reached; the only hard Euroband geometry secured anywhere in this
+      programme remains German (FZV Anlage 4).
+    source: "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # EU-format plates from 2004-05-01, first serial JDA-001. Accessed 2026-08-02"
+  coat_of_arms_2022:
+    evidence_tier: secondary-wikipedia
+    present: true
+    note: >-
+      The 2022 plate added the Hungarian coat of arms, and the secondary places
+      it in the gap between the two letter pairs. If that placement is right,
+      Hungary joins Italy (the marchio ufficiale) and Austria (the Landeswappen)
+      in the class of jurisdictions whose printed "separator" is in fact an
+      EMBLEM occupying the gap — see PRD-PLATES §2.6 and the never_separator
+      note in _meta/separators.yml. The dataset accordingly writes that gap as
+      the emitted SPACE and carries the emblem in `design.emblem`; no glyph is
+      ever inside a Hungarian serial. THE PLACEMENT ITSELF IS SECONDARY and is a
+      named verifier target — if the arms in fact sit at the plate edge, the
+      pattern is unaffected but `design.emblem.position` is wrong.
+    licensing: >-
+      The coat of arms of Hungary is a state symbol whose use is regulated
+      independently of copyright. PRD-PLATES §3 placeholder rule applies:
+      renders carry `emblem: {present: true, rendered: placeholder}`.
+    source: "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # the coat of arms was added with the 2022 format. Accessed 2026-08-02"
+  personalisation:
+    statutory_basis: >-
+      PRIMARY. §§ 58-59 of 326/2011. (XII. 28.) Korm. rendelet govern "az
+      egyénileg kiválasztott és az egyedileg előállított rendszámtábla" — the
+      individually CHOSEN plate (a serial picked out of the ordinary grammar)
+      and the individually PRODUCED plate (a serial made to order). Two distinct
+      products, both inside the official frame, hence PRD-PLATES §2.3 sub-entry
+      treatment rather than a series of their own. The fee, the eligibility and
+      the grammar each product must obey are in the mellékletek and were not
+      retrieved.
+    source: "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # §§ 58-59 headings and scope, Nemzeti Jogszabálytár, accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# Dead ends — recorded so the next pass does not repeat them (PRD-PLATES §5.3).
+# ---------------------------------------------------------------------------
+dead_ends:
+  - what: "The mellékletek (annexes) of 326/2011 — the plate-type table, colours, dimensions and the serial grammar."
+    tried:
+      - "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # renders the body; the retrieval truncated inside Chapter IV, before any melléklet"
+      - "https://net.jogtar.hu/jogszabaly?docid=a1100326.kor  # same document, same truncation; §§ 1/C and 42(7) were readable and are quoted above"
+      - "https://njt.hu/jogszabaly/2011-326-20-22  # socket hang up"
+      - "https://net.jogtar.hu/jogszabaly?docid=a2100303.kor  # HTTP 404"
+    outcome: "NOT RETRIEVED. Every colour, dimension and plate-type row below is secondary-wikipedia in consequence."
+  - what: "The Magyar Közlöny issue of 2021-06-01 carrying 303/2021. (VI. 1.) Korm. rendelet in full, which would contain the new melléklet text."
+    tried:
+      - "https://www.kozlonyok.hu/nkonline/MKPDF/hiteles/MK21102.pdf  # TLS failure: the certificate presented covers *.mhk.hu and does not include kozlonyok.hu"
+      - "https://kozlonyok.hu/nkonline/MKPDF/hiteles/MK21102.pdf  # same certificate failure"
+      - "https://www.mhk.hu/nkonline/MKPDF/hiteles/MK21102.pdf  # socket closed"
+    outcome: "NOT RETRIEVED. The commencement sentence was obtained from the Nemzeti Jogszabálytár instead, which is sufficient for the date but not for the annex text."
+  - what: "The 1990 instrument that started the ABC-123 series, and 1/1958. BM. és KPM. együttes rendelet."
+    tried: ["the two consolidated-law databases above carry only law still in force; neither pre-2011 instrument was located"]
+    outcome: "NOT RETRIEVED. The 1958 decree is cited below as a NAMED LOCATOR only (`secondary-locator-unverified`); no 1990 instrument is named at all, and the 1990 series is dated by a reported first issue."
+
+verifier_targets:
+  - "The mellékletek of 326/2011 — every colour, dimension and plate-type row in this file is waiting on them."
+  - "Which Latin letters the vowel/consonant rule treats as vowels, and whether I is issued in the 2022 series at all (header fact 4)."
+  - "The position of the coat of arms on the 2022 plate (between the letter pairs, or at the edge)."
+  - "Whether ABC-123 plates continued to be issued from stock after 2022-07-01; this file assumes a clean cutover and says so in hu-standard-2004."
+  - "The instrument that started the 1990 ABC-123 series. None was located."
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — four letters, three digits, from 2022-07-01.
+  # =========================================================================
+  - id: hu-standard-2022
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2022 }
+    period_evidence: enacted-commencement
+    period_commencement: "2022-07-01"
+    period_commencement_verbatim: "Ez a rendelet 2022. július 1-jén lép hatályba."
+    matching: strict
+    format:
+      pattern: "LL LL-999"
+      regex: '\A[A-Z]{2} ?[A-Z]{2}-?\d{3}\z'
+      charset:
+        evidence_tier: secondary-wikipedia
+        rule_verbatim: "Az első két betű vagy két magánhangzó vagy két mássalhangzó kell legyen, de a CS, GY, TY, LY, NY, SZ, ZS betűkombinációk nem használhatók."
+        letters_avoided: [I, O, Q]
+        notes: >-
+          NOT ENCODED AS A REGEX, DELIBERATELY. The rule above is the sourced
+          text; the letter sets it presupposes (which letters are vowels; whether
+          I is issued) are not sourced, so no `regex_strict` is shipped. See the
+          file header, fact 4. A consumer that needs the tightening must wait for
+          the melléklet.
+      separator_note: >-
+        The gap between the two letter pairs is reported to be occupied by the
+        Hungarian coat of arms, not by a separator glyph; the hyphen before the
+        digits is printed. Both are written per PRD-PLATES §2.6: the emblem gap
+        as an optional emitted SPACE, the printed hyphen as an optional emitted
+        HYPHEN-MINUS. `pattern` shows the canonical printed form.
+      progression: >-
+        Not established. No block-allocation order for the four-letter space was
+        sourced, so a 2022-series Hungarian plate cannot be dated from its serial
+        by anything in this file. Recorded gap.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed, stars_color: "#FFCC00" }
+      emblem: { present: true, rendered: placeholder, position: "between the two letter pairs", position_evidence: secondary-wikipedia, note: "the Hungarian coat of arms, added with the 2022 format" }
+      rear_differs: false
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    region_encoding_mechanism: >-
+      NONE. See common.region_encoding — Hungary encodes no geography and this
+      dataset ships no hu-* decode table.
+    variants:
+      - class: personalized
+        format: { pattern: "LL LL-999", regex: '\A[A-Z]{2} ?[A-Z]{2}-?\d{3}\z' }
+        note: >-
+          EGYÉNILEG KIVÁLASZTOTT / EGYEDILEG ELŐÁLLÍTOTT RENDSZÁMTÁBLA — §§ 58-59
+          of 326/2011 create two distinct personalisation products: a plate whose
+          serial the applicant CHOOSES out of the ordinary grammar, and a plate
+          individually PRODUCED to order. A sub-entry rather than a series
+          (PRD-PLATES §2.3) because neither is reported to change the format or
+          the design. Which of the two may depart from the ordinary grammar, and
+          how far, is in the mellékletek and is a recorded gap.
+        sources:
+          - "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # §§ 58-59, 'Az egyénileg kiválasztott és az egyedileg előállított rendszámtábla' — section scope read on the Nemzeti Jogszabálytár, accessed 2026-08-02"
+    sources:
+      - "https://njt.jog.gov.hu/jogszabaly/2021-303-20-22  # 303/2021. (VI. 1.) Korm. rendelet — the amending instrument and its commencement, 'Ez a rendelet 2022. július 1-jén lép hatályba.' PERIOD CLAIM"
+      - "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # 326/2011. (XII. 28.) Korm. rendelet as amended — the governing decree; § 53 'A rendszámtábla és a regisztrációs matrica'; §§ 58-59 personalisation"
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: FORMAT (AA AA-999, two letter pairs then three digits), the vowel/consonant and digraph rule verbatim, the coat of arms. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: COLOURS (black on white) and DIMENSIONS (520 x 110 mm); no geographic encoding. Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT HUNGARIAN PLATE, AND THE FILE'S ONE HARD DATE. In force from 1
+      July 2022 by the express commencement provision of 303/2021. (VI. 1.) Korm.
+      rendelet, which is itself dated 1 June 2021 — thirteen months earlier. The
+      period recorded here is the commencement, never the instrument's own date.
+      The seventh character was added because the six-character space was running
+      out, not because anything geographic was introduced: the 2022 plate is as
+      regionally silent as the 1990 one. Format, colours and dimensions are
+      secondary-wikipedia and are tagged as such per claim in `sources`; only the
+      DATE and the personalisation sections are primary.
+
+  # =========================================================================
+  # ONE SERIES BACK — three letters, three digits, with the EU band.
+  # =========================================================================
+  - id: hu-standard-2004
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2004, end: 2022 }
+    period_evidence: secondary-first-issue
+    period_end_evidence: enacted-commencement
+    period_note: >-
+      START is a reported FIRST ISSUE, not an instrument: the secondary dates the
+      first EU-format Hungarian plate to 1 May 2004 — accession day — and names
+      its serial JDA-001. END is instrument-dated: issuance of the six-character
+      format stopped when 303/2021's commencement took effect on 2022-07-01.
+      Whether county government offices issued ABC-123 plates from remaining
+      stock after that day was NOT established and is a named verifier target;
+      if they did, this series' end moves and the two standard series overlap in
+      fact as well as at the boundary year.
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{3}-?\d{3}\z'
+      charset:
+        evidence_tier: secondary-wikipedia
+        letters_avoided: [I, O, Q]
+        notes: >-
+          O is reported never to be issued (confusable with 0), and I, O and Q
+          are reported not to occur as the final character. Not encoded, for the
+          same reason as the 2022 series: the rules as reported do not compose
+          into a single sourced alphabet.
+        blocks_reserved:
+          - { block: "EAA-EDZ", use: taxi, evidence_tier: secondary-wikipedia }
+          - { block: "FIA-FZZ", use: "commercial goods vehicles", evidence_tier: secondary-wikipedia }
+          - { block: "X**", use: "trailers, until the block was exhausted in 2014", evidence_tier: secondary-wikipedia }
+          - { block: "W**", use: "trailers, from 2014 until 2022", evidence_tier: secondary-wikipedia }
+      progression: >-
+        Sequential by letter block, nationally, with blocks reserved by USE and
+        never by place (see `blocks_reserved`). The first EU-band plate is
+        reported as JDA-001, which is the only anchor this file has for dating a
+        1990-system serial, and it is a single reported point rather than a
+        published allocation table.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed, stars_color: "#FFCC00" }
+      emblem: { present: false }
+      rear_differs: false
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: EU-format plates from 2004-05-01, first serial JDA-001; the ABC-123 format. PERIOD START. Accessed 2026-08-02"
+      - "https://njt.jog.gov.hu/jogszabaly/2021-303-20-22  # 303/2021. (VI. 1.) Korm. rendelet, in force 2022-07-01 — PERIOD END, primary"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: the reserved letter blocks (taxi EAA-EDZ, commercial FIA-FZZ, trailers X then W) and the colours. Accessed 2026-08-02"
+    notes: >-
+      THE EU-BAND SIX-CHARACTER PLATE — the format most Hungarian vehicles on the
+      road still carry. Distinct from hu-standard-1990 only in DESIGN (the band);
+      the serial grammar is character-for-character the same and the letter
+      sequence ran continuously across the 2004 boundary, so a JDA-001-or-later
+      serial implies the band while an earlier one does not. Distinct from
+      hu-standard-2022 in FORMAT. Existing plates were not recalled at either
+      boundary: both older designs remain valid on the road, which is why this
+      file models three overlapping-at-the-edges standard series rather than one.
+
+  - id: hu-standard-1990
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1990, end: 2004 }
+    period_evidence: secondary-first-issue
+    period_note: >-
+      START: the secondary reports issuance beginning in August 1990 with AAB-001
+      as the first plate. No instrument introducing the series was located — a
+      recorded gap, and the reason this is `secondary-first-issue` rather than
+      `enacted-commencement`. END is the EU band's arrival on 2004-05-01, which is
+      a design change and not a format change.
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{3}-?\d{3}\z'
+      charset:
+        evidence_tier: secondary-wikipedia
+        letters_avoided: [I, O, Q]
+        notes: "as hu-standard-2004 — the same grammar and the same reported letter avoidances; the 2004 change touched only the design."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      band_note: "No EU band before 2004-05-01; the left field carried no blue zone."
+      emblem: { present: false }
+      rear_differs: false
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia, verbatim: 'A sorozat kibocsátása 1990 augusztusában kezdődött meg, hivatalosan az első ilyen rendszám az AAB-001-es volt.' PERIOD START + FORMAT. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: the 1990-2022 three-letter/three-number system and its colours. Accessed 2026-08-02"
+    notes: >-
+      THE POST-COMMUNIST REFORM PLATE. Hungary changed system as the old order
+      ended: the two-letter/four-digit plate of 1958 gave way in August 1990 to
+      ABC-123, and the change dropped the commercial/private colour inversion
+      that had been the visual signature of the previous system. This entry
+      exists as its own series rather than as a design note on hu-standard-2004
+      because the EU band is a design difference of exactly the kind PRD-PLATES
+      §2.3 makes a series boundary — the same cut plates/it.yml makes at 1999.
+
+  # =========================================================================
+  # THE PRE-1990 SYSTEM — the real "one system back".
+  # =========================================================================
+  - id: hu-standard-1958
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1958, end: 1990 }
+    period_evidence: secondary-locator-unverified
+    period_note: >-
+      The secondary dates the six-character two-letter/four-digit plate to autumn
+      1958 and NAMES its legal basis as "1/1958. BM. és KPM. együttes rendelet" —
+      a joint decree of the Interior and Transport ministries. That instrument was
+      NOT retrieved (the Hungarian consolidated-law databases carry only law in
+      force), so the decree is recorded as a LOCATOR for a later pass and the
+      period claim rests on the secondary alone. Hence
+      `secondary-locator-unverified` and not `enacted-commencement`.
+    matching: recall-only
+    format:
+      pattern: "LL 99-99"
+      regex: '\A[A-Z]{2} ?\d{2}-?\d{2}\z'
+      pattern_note: >-
+        RECALL-ONLY, and the reason is the SEPARATORS rather than the characters.
+        The character shape — two letters then four digits — is consistently
+        reported, but the printed grouping is rendered in the enthusiast web with
+        a middle dot ("AB·12·34"), which is not a character this dataset emits
+        (_meta/separators.yml: emitted separators are HYPHEN-MINUS and SPACE
+        only, and the middle dot is in the FORGIVING set, so a lenient consumer
+        deletes it and reaches the same serial either way). Because this file
+        cannot say from a primary whether the plate printed one gap or two, or
+        which glyph occupied them, the regex accepts a range of arrangements and
+        a match is a shape hit, never a validity claim.
+      charset:
+        evidence_tier: secondary-wikipedia
+        notes: "No alphabet restriction was sourced for this era. Recorded gap."
+    design:
+      background: { color: "#FFFFFF", finish: painted, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false }
+      inversion:
+        evidence_tier: secondary-wikipedia
+        rule: >-
+          THE COLOUR CARRIED THE OWNERSHIP CLASS, and this is the one genuinely
+          distinctive design fact of the period: private vehicles ran black
+          characters on white, while commercial/state vehicles ran the inverse —
+          WHITE CHARACTERS ON BLACK. Same format, opposite colours, and the
+          inversion disappeared with the 1990 reform. Modelled here as a
+          documented colour inversion on one series rather than as two series,
+          because format and period are identical (PRD-PLATES §2.3).
+        inverse_background: "#000000"
+        inverse_foreground: "#FFFFFF"
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    region_encoding_note: >-
+      The two letters of this series are NOT a district code. Region encoding in
+      Hungary ended with the pre-1958 systems (see common.historic_regional_
+      systems); no source consulted attributes geography to the 1958 letter pair,
+      and none is asserted.
+    sources:
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia, verbatim: '1958 őszén vezették be a hatkarakteres rendszámokat, amelyek két betűből és négy számból álltak'; names 1/1958. BM. és KPM. együttes rendelet as the basis. PERIOD + FORMAT. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: black on white for private vehicles, white on black for commercial ones, 1958-1990. COLOURS. Accessed 2026-08-02"
+    notes: >-
+      THE SOCIALIST-ERA PLATE. Two letters and four digits from autumn 1958 until
+      the August 1990 reform, with the private/commercial colour inversion
+      described above. This is the layer either side of which Hungary changed
+      political system, and it is the file's weakest-evidenced standard series:
+      the instrument is named but unread, and the printed separator is unknown.
+      Both facts are recorded rather than smoothed over, and the series is
+      `recall-only` in consequence.
+
+  # =========================================================================
+  # TAXI — the yellow plate, before and after the format change.
+  # =========================================================================
+  - id: hu-taxi-2022
+    class: taxi
+    categories: [car]
+    period: { start: 2022 }
+    period_evidence: enacted-commencement
+    period_commencement: "2022-07-01"
+    matching: strict
+    format:
+      pattern: "TX LL-999"
+      regex: '\ATX ?[A-Z]{2}-?\d{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: TX AA-999 on yellow for hired transport under the 2022 system. FORMAT + COLOUR. Accessed 2026-08-02"
+      - "https://njt.jog.gov.hu/jogszabaly/2021-303-20-22  # 303/2021. (VI. 1.) Korm. rendelet, in force 2022-07-01 — the date the 2022 system began. PERIOD"
+    notes: >-
+      THE 2022 TAXI PLATE. Hungary moved taxis from a reserved letter BLOCK
+      inside the ordinary series to a dedicated TX prefix when the format changed
+      — a structural simplification: under the 1990 system a taxi was identified
+      by where its serial fell in the national sequence, and under the 2022
+      system it is identified by two literal characters. The yellow ground
+      survived the change.
+
+  - id: hu-taxi-1990
+    class: taxi
+    categories: [car]
+    period: { start: 1990, end: 2022 }
+    period_evidence: corroboration-only
+    period_note: >-
+      The EAA-EDZ block is reported without a first-issue date. The start recorded
+      here is the start of the SYSTEM the block sits inside (August 1990), not a
+      sourced first issue for taxis, and the end is the 2022-07-01 commencement.
+      `corroboration-only` marks exactly that: the block is corroborated, its own
+      dates are not.
+    matching: strict
+    format:
+      pattern: "ELL-999"
+      regex: '\AE[A-Z]{2}-?\d{3}\z'
+      regex_strict: '\AE[A-D][A-Z]-?\d{3}\z'
+      charset:
+        evidence_tier: secondary-wikipedia
+        notes: >-
+          The sourced fact is the BLOCK, EAA to EDZ — first letter E, second
+          letter A to D. `regex` carries the round-trippable form (E plus two
+          letters), `regex_strict` carries the sourced block bound. The tier
+          order regex_strict subset regex holds by construction.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed, note: "from 2004-05-01 only; earlier taxi plates of this block carried no band" }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: taxis allocated the EAA-EDZ block on yellow. FORMAT + COLOUR + BLOCK. Accessed 2026-08-02"
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: the 1990 system's dates, which bound this series. Accessed 2026-08-02"
+    notes: >-
+      THE BLOCK-ALLOCATED TAXI PLATE. Under the 1990 system a Hungarian taxi
+      carried an ordinary six-character serial drawn from a reserved range, on a
+      yellow ground — so the FORMAT is the standard one and only the block and
+      the colour distinguish it. It is a series rather than a sub-entry because
+      the design differs (PRD-PLATES §2.3). Its dates are the system's, not its
+      own; see period_note.
+
+  # =========================================================================
+  # ELECTRIC — the green plate, spanning the format change.
+  # =========================================================================
+  - id: hu-electric-2015
+    class: electric
+    categories: [car, van, truck, bus]
+    period: { start: 2015, end: 2022 }
+    period_evidence: secondary-dated
+    period_note: "The secondary dates the green plate to October 2015; the end is the 2022-07-01 format change, after which the same class continues on the four-letter grammar (hu-electric-2022)."
+    matching: recall-only
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{3}-?\d{3}\z'
+      pattern_note: >-
+        RECALL-ONLY. The green plate is reported as a COLOUR treatment of the
+        ordinary six-character serial, with no reserved letter block sourced, so
+        this regex is the whole 1990-system serial space and a match says only
+        "this has the shape of a 1990-system Hungarian plate" — never "this is a
+        green plate". A parse API must take the colour from the image, not from
+        the string.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#B5E3B5", finish: retroreflective, hex_basis: observed, note: "reported as a pale green ground; no spec value was reached, so the hex is an observed rendering of a named colour" }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: green plates for electric and plug-in hybrid vehicles since October 2015. PERIOD START. Accessed 2026-08-02"
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: the pale-green 'eco' plate. COLOUR. Accessed 2026-08-02"
+    notes: >-
+      HUNGARY'S GREEN PLATE, FIRST GENERATION. Introduced in October 2015 for
+      pure-electric and plug-in hybrid vehicles, as a coloured ground on the
+      ordinary serial rather than as a distinct serial space. Hungary is
+      therefore unlike China (a distinct format for NEVs) and like Austria
+      (green LETTERING on the ordinary plate, KFG § 49 Abs. 4 Z 5) in kind,
+      though the Austrian rule is instrument-sourced and this one is not.
+
+  - id: hu-electric-2022
+    class: electric
+    categories: [car, van, truck, bus]
+    period: { start: 2022 }
+    period_evidence: enacted-commencement
+    period_commencement: "2022-07-01"
+    matching: recall-only
+    format:
+      pattern: "LL LL-999"
+      regex: '\A[A-Z]{2} ?[A-Z]{2}-?\d{3}\z'
+      pattern_note: "recall-only for the same reason as hu-electric-2015: the green ground carries no reserved block that this pass could source, so the regex is the whole 2022 serial space."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#B5E3B5", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: the eco plate on the 2022 four-letter grammar, pale green. FORMAT + COLOUR. Accessed 2026-08-02"
+      - "https://njt.jog.gov.hu/jogszabaly/2021-303-20-22  # 303/2021. (VI. 1.) Korm. rendelet, in force 2022-07-01. PERIOD"
+    notes: >-
+      THE GREEN PLATE AFTER THE FORMAT CHANGE — the same environmental class on
+      the seven-character grammar. Modelled as its own series rather than as a
+      period extension because the FORMAT differs from hu-electric-2015, which is
+      the PRD-PLATES §2.3 boundary; the two are otherwise the same programme and
+      that continuity is the reason both carry the same class.
+
+  # =========================================================================
+  # DIPLOMATIC — the one Hungarian series with a decode that is NOT geographic.
+  # =========================================================================
+  - id: hu-diplomatic-2017
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2017 }
+    period_evidence: secondary-dated
+    period_note: >-
+      The secondary dates the DT and CK series' expiry to 2017 and describes the
+      CD six-digit series as the current one, which places the CD series' start at
+      that changeover. No instrument was reached. The 2022 format change did NOT
+      touch this series as far as any source consulted says — the diplomatic plate
+      is numeric and was never part of the letter-space exhaustion that drove the
+      2022 reform.
+    matching: strict
+    format:
+      pattern: "CD 999-999"
+      regex: '\ACD ?\d{3}-?\d{3}\z'
+      progression:
+        evidence_tier: secondary-wikipedia
+        note: >-
+          THE FIRST THREE DIGITS ARE A COUNTRY CODE and the last three are a rank
+          or sequence within the mission — a genuine decode, but a MISSION decode
+          rather than a geographic one, so it does not disturb this file's
+          no-decode-table finding. Two reported points: 001 is the Holy See and
+          020 the United States. The full mission-to-code mapping was NOT sourced
+          and is NOT authored here; PRD-PLATES puts diplomatic decode tables at
+          gate L4, and plates/fi.yml made the same call for the Finnish table.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#4A90D9", finish: retroreflective, hex_basis: observed, note: "reported as a light blue ground; no spec value reached" }
+      foreground: "#FFFFFF"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: CD plus six digits on light blue, first three digits a country code (001 Holy See, 020 United States); DT and CK expired 2017. FORMAT + COLOUR + PERIOD. Accessed 2026-08-02"
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: CD 999-999 on blue. Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT DIPLOMATIC PLATE. Six digits behind a CD prefix, on a light blue
+      ground, with the leading triple naming the sending state. Note what this
+      series is NOT: it is not evidence that Hungary encodes region. The only
+      Hungarian decode of any kind in this file is a decode of FOREIGN MISSIONS,
+      and even that is described rather than tabulated, because the mapping was
+      not sourced.
+
+  - id: hu-diplomatic-1990
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1990, end: 2017 }
+    period_evidence: secondary-dated
+    period_note: "The secondary gives this series as 1990-2017, expiring when the CD six-digit series took over."
+    matching: strict
+    format:
+      pattern: "DT-9999"
+      regex: '\ADT-?\d{4}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#003087", finish: retroreflective, hex_basis: observed, note: "reported as a dark blue ground" }
+      foreground: "#FFFFFF"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed, note: "from 2004-05-01 only" }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: DT plus four digits on dark blue, 1990-2017, for personnel holding immunity. FORMAT + COLOUR + PERIOD. Accessed 2026-08-02"
+    notes: >-
+      THE DT SERIES — dark blue, four digits, issued to immunity-holding
+      personnel from the 1990 reform until 2017. A companion series in the same
+      era, CK on red-over-white for non-Hungarian embassy STAFF without immunity,
+      is described in `unmodelled_series` below rather than authored, because its
+      format was reported without a period this file could bound at both ends.
+
+  # =========================================================================
+  # TRAILERS — the block that ran out, and its replacement.
+  # =========================================================================
+  - id: hu-trailer-1990
+    class: trailer
+    categories: [trailer]
+    period: { start: 1990, end: 2014 }
+    period_evidence: corroboration-only
+    period_note: >-
+      END is the better-sourced boundary: the X block is reported EXHAUSTED in
+      2014, which is a capacity event rather than a legal one and is dated only
+      to the year. START is the 1990 system's start, not a sourced first issue
+      for trailers.
+    matching: strict
+    format:
+      pattern: "XLL-999"
+      regex: '\AX[A-Z]{2}-?\d{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed, note: "from 2004-05-01 only" }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: trailers used the X series until it was exhausted in 2014. FORMAT + PERIOD END. Accessed 2026-08-02"
+    notes: >-
+      THE X TRAILER BLOCK. A worked example of why letter-block allocation is a
+      capacity system and not a taxonomy: the block did not change because the
+      law changed, it changed because it filled up, and the date this file can
+      give is therefore a year and not a day. Note the collision hazard for a
+      parse API — the secondary also reports an unrelated X-prefixed series for
+      RENTAL vehicles discontinued in July 2004, with a different shape (X plus
+      one letter plus four digits); see `unmodelled_series`.
+
+  - id: hu-trailer-2014
+    class: trailer
+    categories: [trailer]
+    period: { start: 2014, end: 2022 }
+    period_evidence: corroboration-only
+    period_note: "START is the reported exhaustion of the X block in 2014; END is the 2022-07-01 format change. Neither boundary is instrument-sourced."
+    matching: strict
+    format:
+      pattern: "WLL-999"
+      regex: '\AW[A-Z]{2}-?\d{3}\z'
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: the W series carried trailers from 2014 until 2022. FORMAT + PERIOD. Accessed 2026-08-02"
+    notes: >-
+      THE W TRAILER BLOCK — the X block's successor, and the shortest-lived
+      Hungarian block in this file: eight years, ended not by exhaustion but by
+      the 2022 reform. WHAT REPLACED IT AFTER 2022-07-01 WAS NOT ESTABLISHED and
+      is a recorded gap; this file does not guess a post-2022 trailer prefix.
+
+  # =========================================================================
+  # HISTORIC AND TEMPORARY.
+  # =========================================================================
+  - id: hu-historic-2022
+    class: historic
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2022 }
+    period_evidence: enacted-commencement
+    period_commencement: "2022-07-01"
+    period_note: >-
+      The OT (old-timer) plate itself PREDATES 2022 — the secondary describes an
+      earlier OT-plus-four-digit form without giving it a start date, which is
+      why only the post-2022 form is authored here and the earlier one is
+      recorded in `unmodelled_series`. Dating a series to a system change it
+      survived would be the instrument-date error in another dress.
+    matching: strict
+    format:
+      pattern: "OT LL-999"
+      regex: '\AOT ?[A-Z]{2}-?\d{3}\z'
+    eligibility:
+      evidence_tier: secondary-wikipedia
+      rule: "vehicle at least 30 years old and in original specification"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+H, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://hu.wikipedia.org/wiki/Magyarorsz%C3%A1gi_forgalmi_rendsz%C3%A1mok  # secondary-wikipedia: OT AA-999 under the 2022 system. FORMAT. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: OT for vehicles at least 30 years old in original specification. ELIGIBILITY. Accessed 2026-08-02"
+      - "https://njt.jog.gov.hu/jogszabaly/2021-303-20-22  # 303/2021. (VI. 1.) Korm. rendelet, in force 2022-07-01. PERIOD"
+    notes: >-
+      THE OLD-TIMER PLATE on the 2022 grammar. Hungary's historic regime is a
+      PLATE regime, unlike Italy's, which has none at all (plates/it.yml
+      no_historic_series) and routes veteran vehicles through the temporary
+      series instead. The thirty-year threshold is the same order as the German
+      H-Kennzeichen's.
+
+  - id: hu-temporary-2022
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2022 }
+    period_evidence: enacted-commencement
+    period_commencement: "2022-07-01"
+    matching: recall-only
+    format:
+      pattern: "I 99LL"
+      regex: '\AI ?\d{2} ?[A-Z]{2}\z'
+      pattern_note: >-
+        RECALL-ONLY AND HONESTLY UNCERTAIN. That an "I" betűjelű ideiglenes
+        rendszámtábla EXISTS is PRIMARY — § 1/C of 326/2011 names the Központi
+        Kormányablak as exclusively competent to issue it. Its SERIAL SHAPE is
+        not: the secondary renders it "I 99AA DD", where the trailing pair is
+        believed to be a validity marker rather than part of the serial, and this
+        file could not confirm that from the mellékletek. The regex covers the
+        serial part only and a match is a shape hit. This is a named verifier
+        target.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # PRIMARY: § 1/C, the Központi Kormányablak's exclusive competence for the 'I' betűjelű ideiglenes rendszámtábla; §§ 63 and 63/A, 'Az ideiglenes rendszámtábla'. EXISTENCE + LETTER"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: the general 'I' plate consolidated the former SP, M and Y categories from July 2022. SCOPE. Accessed 2026-08-02"
+    notes: >-
+      THE CONSOLIDATED TEMPORARY PLATE. The 2022 reform did more than lengthen
+      the serial: it collapsed several single-purpose categories — motorsport
+      (SP), agricultural (M) and slow-vehicle (Y) — into one "I" plate. This is
+      the only special series in the file whose EXISTENCE is primary-sourced
+      while its FORMAT is not, and the entry is written to make that asymmetry
+      visible rather than to hide it behind a confident regex.
+
+  - id: hu-temporary-1990
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1990, end: 2022 }
+    period_evidence: corroboration-only
+    period_note: >-
+      START is the 1990 system's start rather than a sourced first issue; END is
+      the 2022-07-01 commencement, after which the "I" plate consolidated these
+      categories. The individual letters' own dates were not sourced.
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z] ?\d{5}\z'
+      pattern_note: >-
+        RECALL-ONLY: a UNION over four distinct purposes that shared one shape —
+        one letter and five digits. The letters and their meanings, as reported:
+        E for a plate valid up to 180 days; P for trial running; Z for export,
+        valid 30 days; V for customs. A match tells a consumer the string has the
+        shape of a pre-2022 Hungarian temporary plate and nothing more — it
+        cannot say which of the four, and it will also match unrelated
+        single-letter series of the same shape.
+      letters:
+        evidence_tier: secondary-wikipedia
+        E: "temporary, maximum 180 days"
+        P: "trial running"
+        Z: "export, 30 days"
+        V: "customs"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: E, P, Z and V temporary plates, one letter plus five numbers, with their validity rules. FORMAT + SCOPE. Accessed 2026-08-02"
+      - "https://njt.jog.gov.hu/jogszabaly/2011-326-20-22  # PRIMARY: §§ 63 and 63/A, 'Az ideiglenes rendszámtábla' — the temporary-plate sections of the governing decree"
+    notes: >-
+      THE FOUR-LETTER TEMPORARY FAMILY of the 1990 system. Note the EXPORT letter
+      Z in particular: Hungary, unlike Austria (plates/at.yml records that Austria
+      has no export series at all and uses the green Überstellungskennzeichen
+      instead), does issue a dedicated export plate, and it is one of the four
+      here. Because all four share a shape, they are one recall-only series with
+      a documented letter key rather than four series with identical regexes.
+
+  # =========================================================================
+  # MOPEDS.
+  # =========================================================================
+  - id: hu-moped-2014
+    class: moped
+    categories: [moped]
+    period: { start: 2014 }
+    period_evidence: secondary-dated
+    period_note: "The secondary dates the moped plate requirement to 2014. Whether the 2022 reform changed its shape was not established — a recorded gap, and the reason the series is left open rather than closed at 2022."
+    matching: recall-only
+    format:
+      pattern: "S LLL-99"
+      regex: '\AS ?[A-Z]{3}-?\d{2}\z'
+      pattern_note: >-
+        RECALL-ONLY BECAUSE THE ARRANGEMENT IS INFERRED. The sourced fact is the
+        CHARACTER INVENTORY — an S prefix, three letters, two digits — not the
+        printed grouping. This file's pattern is its best reading of that
+        inventory and the regex accepts a range of separator arrangements around
+        it, so a match is a shape hit. Named as a verifier target.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      evidence_tier: secondary-wikipedia
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # secondary-wikipedia: moped plates since 2014, S plus three letters plus two numbers. PERIOD + CHARACTER INVENTORY. Accessed 2026-08-02"
+    notes: >-
+      HUNGARY'S MOPED PLATE, mandatory from 2014 — late by European standards
+      (the Netherlands and Germany have run moped plates for decades) and worth
+      recording as such. The entry is deliberately `recall-only`: the file knows
+      what characters are on the plate and does not know how they are grouped,
+      and saying so is more useful to a consumer than a confident regex would be.
+
+# ---------------------------------------------------------------------------
+# Described but NOT modelled — every one of these is a real reported series
+# that this pass could not bound well enough to author. Listed so the next pass
+# starts from a map rather than from nothing (the plates/it.yml
+# `unsourced_series` shape).
+# ---------------------------------------------------------------------------
+unmodelled_series:
+  evidence_tier: secondary-wikipedia
+  source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hungary  # every row below. Accessed 2026-08-02"
+  reason_not_modelled: >-
+    Each lacks at least one of: a start date this file could defend, a format
+    whose grouping is known, or a colour. PRD-PLATES §5.3 prefers the recorded
+    gap to the averaged guess, and a well-evidenced gap is a deliverable.
+  rows:
+    - { token: "H + letter + 4 digits", use: military, note: "the letter is reported to denote vehicle kind (A cars, B buses, N motorcycles, T trucks); a tricolour design is reported. Reported to have become HA under the 2022 system. No date at either end." }
+    - { token: "R + letter + 4 digits", use: police, note: "RB reported as the common form; RR 00-49 law enforcement and RR 50-99 customs. Reported to have become RA under the 2022 system. No date at either end." }
+    - { token: "MA + 4 digits", use: ambulance, note: "reported introduced 2006; no format grouping and no colour sourced, and `ambulance` is not in _meta/classes.yml — it would land as `government`, which is a judgement this file declines to make unsourced." }
+    - { token: "BA", use: "prison service", note: "2022-system prefix; nothing else sourced." }
+    - { token: "NA", use: "national tax and customs administration", note: "2022-system prefix; nothing else sourced." }
+    - { token: "CK + 4 digits", use: "non-immunity embassy staff", note: "red on white, reported expired 2017; no start date sourced." }
+    - { token: "C + letter + 4 digits", use: "foreign residents", note: "reported last issued April 2009; no start date sourced." }
+    - { token: "X + letter + 4 digits", use: "rental vehicles", note: "reported discontinued July 2004. COLLIDES IN PREFIX with the X trailer block (hu-trailer-1990) but not in shape — a parse hazard worth recording." }
+    - { token: "SP + 2 digits + 2 digits", use: motorsport, note: "restricted use; replaced by the general I plate in July 2022. No start date sourced." }
+    - { token: "M + 6 digits", use: agricultural, note: "green on white, three-year validity; replaced by the general I plate in July 2022. No start date sourced." }
+    - { token: "Y + 3 letters + 3 digits", use: "slow vehicles", note: "red on white; moved onto the normal series in July 2022. No start date sourced." }
+    - { token: "OT + 4 digits", use: "old-timer, pre-2022 form", note: "the predecessor of hu-historic-2022; no start date sourced, which is why only the post-2022 form is authored." }
+    - { token: "grey repeater plate", use: "bicycle-rack repeater", note: "reported from April 2017. A REPEATER plate has no class in _meta/classes.yml; adding one is a vocabulary PR (PRD-PLATES §2.3), not a data-file decision." }
