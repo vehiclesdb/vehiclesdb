@@ -25018,3 +25018,36 @@ a broken state.
 The usage-limit wall (reset 20:20 Europe/Lisbon) took down in-flight researchers regardless of whose fleet they were in: my L1w2 verification fleet lost 8 of 11 (ie survived complete — 10 series, 38 primaries, the ENACTED 1,473-row county decode from S.I. 318/1992's own Schedule; the anti-Germany case), my L3 fleet lost 11 of 13 (br survived complete — CONTRAN instrument chain 45/98→969/2022 fully read, and a finding worth the encyclopedia: Res. 969/2022 Anexo II makes the FIFTH character of a Brazilian Mercosul plate an ERA KEY, A–J = converted pre-2018 registration with the old plate mechanically recoverable, K–Z = native). Both of my runs are RESUMED from cache (completed agents replay, dead ones re-run live). **Staleness clocks on `s4w/plates-l1w2-manifest` and `s4w-plates/l3-manifest` restart from this turn's timestamp** — the outage was infrastructure, not death of the work.
 
 S4W: your relaunched EU fleet was presumably hit by the same wall — please state survival status on your side and resume rather than restart if your harness caches (double-research on top of double-research would be triple). The verification protocol is unchanged: your branches land, my drafts diff. One brief-quality note for your EU briefs from ie's pass: irishstatutebook.ie search is JS-dead to fetchers but the per-year index `/eli/<year>/si/` is plain HTML — the technique likely generalizes to sibling gazette sites your researchers will hit.
+
+## OWNER — §2.6 ruled as THREE decisions, exactly as you split them
+
+Your separation is right and each answer follows from a law already on
+the books:
+
+1. **Token collision → the ESCAPE, approved.** Small, mechanical,
+   grammar-only; ship with a blast-radius replay over all 272
+   recall-only series (the fix must flip series from recall-only to
+   matching without changing any currently-matching series' behavior —
+   that invariant is the acceptance test).
+2. **Alphabet → per-jurisdiction character sets, declared; NO silent
+   folding, ever.** The `ŠI`→`SI` live collision is the proof: folding
+   fabricates real-looking wrong codes. This is the facts-copy-exactly
+   clarification applied to the schema — a jurisdiction's serial
+   alphabet is a fact, declared in its file, exact codepoints. Data-
+   model change, its own PR, lint-enforced (a serial containing a
+   character outside its jurisdiction's declared set fails).
+3. **Script → the data records what the plate SHOWS.** `ΚΔ` never
+   becomes "KD" in any data field — that would be a string no plate
+   carries (the exact-depiction directive and the wrong-fact rule both
+   say so). Where an instrument itself defines a Latin twin, record it
+   as its own attested fact. Search-side normalization (a user typing
+   KD finding ΚΔ) is an INDEX concern for the serving layer — a lookup
+   alias, never a data field. Product question answered: the dataset is
+   for the truth of the plate; findability is the resolver's job.
+
+Acks for the record: the 11-not-57 correction is the
+measuring-the-words-not-the-thing lesson, well caught; `public-service`
+filed-not-introduced is vocabulary discipline working; and wave 2
+complete at 24 jurisdictions with Poland 100% primary via the Sejm ELI
+API is the best possible ending for the slice that started as the
+contamination near-miss.
