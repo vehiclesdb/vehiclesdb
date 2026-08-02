@@ -30,6 +30,42 @@ Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
 `data/licenses/` (pinned texts).
 
+## Which sources can say what a vehicle RUNS ON
+
+Not all of them, and the gaps are not evenly spread. Ten of the fourteen carry
+a propulsion column at model granularity; four cannot, and one of those four is
+the largest source in the catalog. The per-source detail is in the gotchas
+below; this is the summary a consumer should read before drawing a conclusion
+about coverage.
+
+| id | propulsion column | what it can produce |
+|---|---|---|
+| `de_kba_fz10` | FZ 10.1's four propulsion blocks | diesel · hybrid · plug-in hybrid · BEV — **never petrol** (no petrol column exists; petrol is a residual fused with LPG/CNG) |
+| `es_dgt` | electrification flag | BEV · PHEV · HEV · FCEV — **never an ICE code** (blank means petrol *or* diesel *or* LPG/CNG) |
+| `fi_traficom` | `kayttovoima` | petrol · diesel · BEV (other codes await Traficom's separately-published code list) |
+| `lu_snca` | `CODCRB` | the full vocabulary, incl. bifuel pairs — the cleanest of any source |
+| `my_jpj` | `fuel` | petrol · diesel · BEV · hybrid |
+| `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
+| `us_fueleconomy` | `atvType` | the full vocabulary, as **approval** evidence (certified configurations, not vehicles) |
+| `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
+| `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
+| `nz_nzta` | `MOTIVE_POWER` (present, **not yet read**) | blocked — see the gotcha below |
+| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` | none | nothing, permanently or for now |
+
+**The Netherlands can never contribute, and that is worth stating plainly**
+because `nl_rdw` is the largest single source in the catalog. Probed
+2026-08-02 against the live API: the registered-vehicles dataset (`m9d7-ebf2`)
+carries make and model but no fuel value — its `api_gekentekende_voertuigen_brandstof`
+column is a constant link, identical on every row. RDW's fuel data lives in a
+sibling dataset (`8ys7-d773`) whose entire column list is
+`kenteken, brandstof_volgnummer, brandstof_omschrijving, emissiecode_omschrijving,
+uitlaatemissieniveau` — **no make, no model**, joinable only on the licence-plate
+key. That key is a forbidden field under our own GDPR boundary (naming it in an
+adapter fails a build gate outright), and a catalog search of the RDW open-data
+domain found no third dataset carrying make, model and fuel together. So this
+is a **permanent limitation under our own rules**, not a to-do: any Dutch
+propulsion coverage would require RDW to publish a combined view.
+
 ## Per-source gotchas (measured, not hypothetical)
 
 - **nl_rdw** — the register carries 11,403 raw make strings; only reconciled
@@ -40,6 +76,17 @@ attribution wording: see `ATTRIBUTION.md` (generated per release) and
   pinning it. ~22 malformed CSV lines per file are skipped loudly.
   Motorcycles and mopeds arrive merged ("Motorcycles") — mapped to
   `motorcycle` with the merge documented.
+  **Fuel: the column is on disk and is deliberately NOT read.** VEH0120 is a
+  six-key cross-tab whose `Fuel` column sits at *trim* altitude while the
+  adapter aggregates at `GenModel`, and that gap makes reading it produce
+  WRONG data rather than missing data — the bucket's whole fuel mix would be
+  attributed to whichever nameplate the bucket is named after. The measured
+  case: `BYD SEAL DESIGN EV` is 50,601 GB vehicles spanning three nameplates
+  and splitting 23,678 battery-electric against 26,923 plug-in hybrid; and
+  `VAUXHALL ASTRA` covers 764 distinct `Model` strings across 8 fuel types,
+  fuel-cell included. A count threshold cannot catch a 50,601-vehicle false
+  positive. The `Model`-column split has landed as a reviewed **whitelist**,
+  not a general rule, so the hazard stands for every GenModel not on it.
 - **es_dgt** — fixed-width layout (MARCA at byte 17, MODELO at 47, EU
   category at 426); files appear with ~1 month lag so the build walks up to
   3 months back. Legacy Spanish "star codes" (`*02`–`*17`) predate EU
@@ -65,6 +112,19 @@ attribution wording: see `ATTRIBUTION.md` (generated per release) and
   vans, trucks and utes with no split column (mapping it would misclassify
   two kinds to fill one). NZ's JDM grey imports add models no EU/US register
   has — that's a feature, and exactly what `availability` evidence records.
+  **Motive power: the field EXISTS but is not read yet.** Probed 2026-08-02 —
+  layer 0 carries `MOTIVE_POWER` and `ALTERNATIVE_MOTIVE_POWER`, and the
+  vocabulary is clean and fully mappable (`PETROL` 3,185,874 · `DIESEL`
+  1,232,248 · `PETROL HYBRID` 414,314 · `ELECTRIC` 105,234 · `PLUGIN PETROL
+  HYBRID` 48,791 · `DIESEL HYBRID` 14,549 · `PETROL ELECTRIC HYBRID` 11,174 ·
+  `LPG` 3,529 · `ELECTRIC [PETROL EXTENDED]` 839 · `CNG` 141 · fuel-cell
+  variants · 881,713 null). The blocker is the paging cap above, not the data:
+  two cached responses (`nz_passenger-car-van_C` and `_M`) already sit at
+  exactly 2,000 features with `exceededTransferLimit: true`, i.e. **the
+  existing make/model query is already silently truncating at those letters**,
+  and adding a third group field would multiply the group rows and make that
+  much worse without the adapter noticing. Detecting `exceededTransferLimit`
+  comes first.
 - **my_jpj** — clean per-model CSVs; Malaysian market adds Perodua/Proton
   models absent everywhere else.
 - **th_dlt** — years are Buddhist Era (2568 = 2025). The portals reject
@@ -76,7 +136,13 @@ attribution wording: see `ATTRIBUTION.md` (generated per release) and
   so the pipeline dedupes on the vehicle identifier in-stream and then
   discards it (the identifier never leaves the parser; CI lints for that).
   Freight (`ВАНТАЖНИЙ`) is skipped — it merges vans and heavy trucks with no
-  category column to split them honestly.
+  category column to split them honestly. The same honesty rule applies to
+  35,485 propulsion rows: the register's "X **or** electric" values
+  (`ЕЛЕКТРО АБО БЕНЗИН` and siblings) mean *electrified, plug unknown* — they
+  could be a full hybrid or a plug-in and the register does not say — so they
+  produce no propulsion evidence at all. Calling them all "hybrid" would put
+  the same token on them as on the 3.01M cleanly-classified British hybrids,
+  which is worse than an honest gap.
 - **ar_dnrpa** — resource files resolved via CKAN; model strings are messy
   uppercase (`descripcion` concatenations), so AR contributes mostly
   corroboration and LatAm-only nameplates rather than primary spellings.
