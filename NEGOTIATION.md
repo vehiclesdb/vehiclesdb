@@ -23703,3 +23703,58 @@ Merged since the cut: `pipeline#154` (BMW M6 · 261 gb E24s move to `m635csi`),
 source's FIRST fetch), `data#216`. Rebased onto the post-release main and
 awaiting green: `data#215` (lancia/coupe → a FOLD onto `beta`, 79 vehicles, one
 key, not the `FW_POOLS` change I wrongly relayed) and `data#208` (hyundai).
+
+## S4W — post-release §4.5 done, and §4.5 IS ITSELF DANGEROUS AS WRITTEN. Post-release main verified green in both repos
+
+### §4.5 run, with the instrument built for it
+
+`find_inert_override_keys.rb` (`pipeline#151`) against the released catalog,
+379,368 raw rows replayed across 14 sources:
+
+    FIRES     7911
+    SHADOWED  0
+    DEAD      112        (was 110 before the release)
+    TOTAL     8023 keys  — 1.40% inert (was 1.38%)
+
+**Nothing to prune on my side.** The release added 77 keys net and 2 dead ones.
+The single actionable finding is unchanged and is S2W's:
+`Kawasaki: "Zz R1100" -> "ZZ-R1100"` — the pipeline produces `"ZZ R1100"`, so
+that fold has still never happened. Rekey, do not delete.
+
+### The runbook problem, flagged not patched
+
+§4.5 says, verbatim: *"remove what no longer fires."* **Following that literally
+would delete 23 deliberate casing twins and Land Rover's power-code guard keys**
+— keys that are dead BY DESIGN, held against a register re-adopting a spelling.
+The detector's own report says so on every line (*"tolerated dead weight, leave
+it"*), which is exactly why it shipped REPORT-ONLY rather than as a gate.
+
+I am **not** editing the runbook for this. `pipeline#158` already changed §1.1
+and §1.5, and a delegate is rewriting §4.2 — three PRs on one file is how a
+document gets a merge conflict instead of a correction. Owner: §4.5 wants
+"triage what no longer fires; a dead key can be deliberate", and it should land
+with the §4.2 rewrite since both are about the same post-release sweep.
+
+### Verified green after everything
+
+    pipeline main  rake test EXIT 0 · lint_enrich EXIT 0 (88 files, 2193 ids)
+                   es-env verify 5/5 in-series rows round-tripped
+    data main      release commit 5d75216 + OWNERSHIP regen, both pushed
+
+`data#215`/`#208` had failed on `[es-env] verify FAILED — 1 of 5 disagree` and
+`refusing to write under build/out/` — **identical on both PRs, therefore
+neither PR's fault.** Reproduced against current main: green. Those runs
+started 02:21, racing the `#155`/`#156`/`#158` merges. Re-run; builds in flight.
+
+### Channels, all six accounted for
+
+    1 tag + release      ✅ v2026.08.2
+    2 release assets     ✅ 7 (the leg v2026.08.1 silently skipped)
+    3 Zenodo DOI         ✅ minted AND verified by the fan-out
+    4 jsDelivr           ✅ 6 files purged, "CDN serving 2026.08.2"
+    5 HuggingFace        ✅ mirrored AND verified
+    6 private plus       ⏸ manual, pending Javi's token — as you specified
+
+The `⚠️ CI only` marks on channels 2, 4 and 5 in §5's table are now stale: the
+fan-out fires on the RELEASE EVENT, so a hand-cut release gets them too. That
+was the entire point of `data#172`, and this release is the proof it works.
