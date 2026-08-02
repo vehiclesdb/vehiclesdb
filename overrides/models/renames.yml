@@ -6486,6 +6486,65 @@ Mercedes-Benz:
   "300 SL 24V": 300 SL-24   # SPELLING of the already-curated valve-count form: raws "300SL 24V", "300 SL 24V" (nl+nz). The block's own convention hyphenates the valve count ("300 CE-24") — https://mercedes-benz-publicarchive.com/marsClassic/
   Ateco: Atego              # truck/mercedes-benz/ateco, raws "Ateco" x6, "ATECO" x4, "ATECO 818" x3, "ATECO 1224Lnr/4760", "Ateco 818" — the numbers are Atego type designations, so this is a one-letter misspelling of the series, not a product — https://en.wikipedia.org/wiki/Mercedes-Benz_Atego
   Arcos: Arocs              # truck/mercedes-benz/arcos, raws "ARCOS" x5, "ARCOS 4642" x4, "ARCOS 4942 M" x3, "ARCOS 4745K" — 46xx/49xx/47xx are Arocs construction-range type numbers; a transposed-letter misspelling — https://en.wikipedia.org/wiki/Mercedes-Benz_Arocs
+  # ── BUS: the O-number ↔ nameplate boundary (residual dossier §A.1), applied
+  # 2026-08-02 on a frozen-cache control-vs-treatment build from the same base
+  # commit. Mercedes states the rule AND dates it:
+  #   "The Mercedes-Benz Tourismo celebrated its premiere in 1994 under the name
+  #    O 350 Tourismo. … until that time, short designations such as O 303 or
+  #    O 404 were the norm."
+  #   https://www.mercedes-benz-bus.com/int/en/news-and-stories/mercedes-benz-tourismo-the-classic-coach-turns-30.html
+  # PRE-1994 the O-number IS the nameplate (o303, o404, o405 keep theirs — see
+  # the 0303/303 keys below, which MERGE INTO O303 rather than away from it);
+  # FROM 1994 the NAME is the nameplate and the O-number is the type code.
+  #
+  # THE BOUNDARY IS CORROBORATED BY THE REGISTER'S OWN CLOCK, not just by the
+  # marque. nl_rdw first-registration years (date_extract_y(datum_eerste_
+  # toelating_dt), measured 2026-08-02 over the frozen cache): O 530 2004-2011,
+  # O 530 G 2000-2010, O 530 LE 2006-2012, O 550 2000-2006, O 580 2003,
+  # O 350 2005-2006, O 510 2005 — every folding id is post-1994. O 303
+  # 1977-1988, O 305 1976-1982, O 405 1988-1997 — every id that KEEPS its
+  # number is pre-1994. Not one row crosses the line.
+  #
+  # KEY FORM: the produced string is the FUSED "O530", never "O 530" —
+  # series_collapse (bus/truck only) fuses a 1-2-letter head with its digits and
+  # one single-letter suffix (normalizer.rb#series_collapse), which is why the
+  # published display reads O530G. A spaced key would be inert.
+  #
+  # KIND-BLINDNESS, swept over the whole corpus (replay of classify, all six
+  # kinds): these keys reach BUS and TRUCK only. The truck kind holds the same
+  # coaches misfiled by nl_rdw — raws "O 530" x1 (2014), "O 550" x1 (2001),
+  # "0303" x1 (1982) + "0303/10R" x1 (1976) — so they fold to the same
+  # survivors there, all four sub-threshold. The CAR/VAN kinds are NOT reached:
+  # mercedes() returns the bare letter "O" for those rows, which is why they
+  # pool on car/mercedes-benz/o (dossier §C.1, rule-level, filed not fixed).
+  # Other makes are untouched — renames are make-scoped, and bus/setra "O530G"
+  # (nl x1) is the reason that matters here. ──
+  O530: Citaro     # bus/mercedes-benz/o530 (es|nl|ua) → citaro (es|fi|lu|nl|ua): the register says so in BOTH directions — o530 holds raw "O 530 CITARO" and citaro holds "CITARO O530 G". Marque: Citaro/K/G/LE/hybrid are variants of ONE model — https://www.mercedes-benz-bus.com/int/en/models/citaro.html . Union es|fi|lu|nl|ua, survivor already carries all 5 (country,source) pairs
+  O530G: Citaro    # bus/mercedes-benz/o530g (nl|ua) → citaro; raw "O 530G CITARO" (ua) names it outright; "O 530 G" nl x128 is the 18.13 m articulated Citaro G — https://www.mercedes-benz-bus.com/int/en/models/citaro.html
+  O530L: Citaro    # bus/mercedes-benz/o530l (nl|ua) → citaro; raws "O530L", "O 530 L" (nl), "O 530L" (ua) — L is the 3-axle length variant of the same model line, same page as above
+  O350: Tourismo   # bus/mercedes-benz/o350 (fi|nl|ua) → tourismo (fi|gb|nl|ua); raw "O 350-15R TOURISMO/625" (fi); Mercedes: "premiere in 1994 under the name O 350 Tourismo" — link in the header. Survivor already carries fi|nl|ua
+  O580: Travego    # bus/mercedes-benz/o580 (nl|ua) → travego (fi|nl|ua); raw "O 580-15RH TRAVEGO" (ua) names it outright; archive title "Mercedes-Benz Travego O 580" — https://mercedes-benz-publicarchive.com/marsClassic/ (oid=196153)
+  O550: Integro    # bus/mercedes-benz/o550 (fi|nl) → integro (fi|lu|nl); raws "O 550 INTEGRO" (nl), "Mercedes-Benz O 550" (fi); archive title "Mercedes-Benz Integro O 550" — https://mercedes-benz-publicarchive.com/marsClassic/ (oid=55520)
+  O510: Tourino    # bus/mercedes-benz/o510 (fi|nl) → tourino (fi|ua) — survivor GAINS nl:nl_rdw. Three independent register spellings name the coach: "O 510 TOURINO", "O 510 Tourino", "O 510 TOURINO-444203/468" (fi), plus bare "O 510" (nl, first reg 2005 = Tourino's 2004-2013 run). MARQUE CONFIRMATION NOT OBTAINED (mercedes-benz-bus.com is JS-rendered, marsClassic 403s, fetches attempted 2026-08-02) — this line rests on register evidence only, and is the lowest-confidence key in the block
+  "0303": O303     # bus/mercedes-benz/0303 (nz|ua) → o303 (fi|nl), survivor GAINS nz:nz_nzta + ua:ua_mvs. DIGIT-ZERO-FOR-LETTER-O: raw "BENZ 0303" (nz) is the same designation with a zero, and "0303/3 MAJESTIC" + "0303 DENNING" (nz) are Denning Majestic coaches on the O 303 chassis. Mercedes' whole bus type-number series in this corpus is O-prefixed (O 302/303/305/307/309/321/345/350/404/405/408/450/510/513/515/516/518/530/550/560/580/814/815/817) — there is no bare-number Mercedes bus line for these rows to belong to
+  "303": O303      # bus/mercedes-benz/303 (nz|ua) → o303. ADJUDICABLE NOW, unlike when the dossier filed it in §D.2: the dossier's oracle (build/observed_variants.json) only records raws whose fold DISCARDED tokens, so a bare "303" was structurally invisible to it and read as "0 raws". A whole-corpus replay shows the raw IS literally "303" — nz_nzta x1 + ua_mvs x1 — sitting inside the same two registers' 0303 cluster (ua also writes "0303" x4 and "303D"). Same make, same kind, same two (country,source) pairs as 0303, which the "BENZ 0303" raw proves is the O 303
+  Transfer: Sprinter # bus/mercedes-benz/transfer (fi|nl|nz) → bus/mercedes-benz/sprinter (es|fi|gb|lu|nl|nz|ua). THE REGISTER ITSELF WRITES THE FULL NAME: nl_rdw holds "SPRINTER TRANSFER 34" (2018), "SPRINTER TRANSFER 35" (2020), "SPRINTER TRANSFER 45" (2014, 2019), "SPRINTER TRANSFER 55" (2016, 2017), "316 CDI SPRINTER TRANSFER 34 B" and "O 516 CDI SPRINTER TRANSFER 45" — all of which already classify to Sprinter — while the bare "TRANSFER 35/45/45 LL/55" rows are the same product with the nameplate dropped. Marque: the minibus range runs "from the 5.9-metre-long Sprinter Transfer 23 to the 7.7-metre Sprinter Transfer 55" — https://www.mercedes-benz-bus.com/en_DE/models/minibuses.html . KIND-BLIND ×4 but verified inert elsewhere: no other Mercedes record in any kind produces "Transfer" (bus/tremonia-mobility/transfer is a DIFFERENT MAKE and renames are make-scoped). Survivor already carries fi|nl|nz
+  # ── CAR: `Marco` is the Mercedes-Benz MARCO POLO, truncated by the same
+  # mercedes() first-letter-run defect the AMG fix (pipeline#130) addressed —
+  # "MARCO POLO" → letters "MARCO" → not a class letter → returns "MARCO".
+  # Unlike AMG this one IS curable by curation, because ALL of it wants ONE
+  # target: a whole-corpus replay finds 1,044 registrations behind this string
+  # and EVERY raw is Marco Polo — "MARCO POLO" (es 893, lu 5, nl 6+), "Marco
+  # Polo" (fi 61, nl 70), "MERCEDES-BENZ MARCO POLO" (nl 2), "MARCO POLO 250 D"
+  # (nl 1), "Marco Polo V-Klasse" (fi 1). Zero contrary raws in any kind.
+  # KIND-BLIND ×2 (car+van); van/mercedes-benz/marco cross-kind-prunes into the
+  # car record today (11 of 1,044 regs) and will do the same after the fold.
+  # MINTS car/mercedes-benz/marco-polo and retires car/mercedes-benz/marco via
+  # former_ids. MARQUE PAGE NOT RETRIEVED (mercedes-benz.co.uk timed out,
+  # mercedes-benz.com 403, mbvans.com/en/marco-polo 404, all 2026-08-02) — the
+  # two-word name is corroborated register-side by two registers writing it in
+  # full and by the fi raw that appends the platform ("Marco Polo V-Klasse"). ──
+  Marco: Marco Polo # car/mercedes-benz/marco (es|fi|lu|nl) → car/mercedes-benz/marco-polo, same four (country,source) pairs; every one of the id's 16 raw rows reads MARCO POLO. NOT to be confused with car/mercedes-benz/112's raw "112 CDI M POLO" — an abbreviated Marco Polo ACTIVITY on a Vito chassis, which correctly stays with the Vito-band record
 
 Mercury:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
