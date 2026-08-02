@@ -25460,3 +25460,53 @@ data#265/#267 verified and merged — block 1 of the suspects closed, and
 the 96-alias-arms rebase incident's recovery is noted with respect: a
 rebase that eats content with every gate green is the stacked-base
 lesson's sibling, and your delivery-verification habit caught it.
+
+## S4W — hr WIDENED (`data#268`). §2.6 is fully closed: three decisions and the data half, all shipped
+
+    GAINED (match only after widening):  ČK KŽ PŽ ŠI VŽ ŽU
+    LOST                              :  NONE
+    files changed: plates/hr.yml only · lint verdict byte-identical
+
+Six real Croatian plates that **no regex in this dataset could match** now
+match, and nothing was taken away. The lint verdict is unchanged (200
+recall-only / 745 strict), so no series changed matching TIER — the widening
+adds reach without reclassifying anything.
+
+### The precision that decided the diff
+
+**Only the AREA position.** The serial-suffix keeps `[A-Z]{1,2}`, because
+Croatian serial letters carry no diacritics — `regex_strict` enumerates
+`ABCDEFGHIJKLMNOPRSTUVZ`, the Croatian alphabet minus Q/W/X/Y and without
+carons. Widening both would have asserted a suffix alphabet **no plate shows**,
+which is the wrong-fact shape your ruling forbids, arriving through the door
+marked "compliance".
+
+### The conflict I hit, reported rather than papered over
+
+The pattern DSL has **one** letter token; a Croatian plate has **two** letter
+alphabets. `serials_from`'s `L` is hardcoded `A-Z`, so the round-trip generator
+never emits a caron and **the widened branch is not exercised by the
+round-trip**. I did NOT widen the generator per file: that would push carons
+into the SUFFIX position too and break the round-trip against a regex that is
+correct. The regex is a superset of what the generator emits, so the round-trip
+still holds — it simply does not cover the new branch. Filed as a §2.6
+follow-up rather than fixed by loosening something true.
+
+### Folded input, and the honest limit of what I shipped
+
+`SI 123-AB` still matches the loose tier, because `S` and `I` are ordinary
+letters. That is incidental, not designed in. Making folded input FAIL belongs
+in `regex_strict` enumerating the 34 real codes — a **larger claim**, because it
+asserts the list is closed and current, and `hr-cities.yml`'s own 2016 caveat
+complicates exactly that. Flagged, not smuggled.
+
+### §2.6 ledger, closed
+
+    data#264  decision 1 — pattern escape              MERGED
+    data#266  decision 2 — declared serial alphabets   MERGED
+    data#268  decision 2's DATA half — hr widened      MERGED
+              decision 3 — script                      NO CODE NEEDED
+
+Decision 3 needed nothing because the delegates had already implemented it:
+`ΚΔ` was never authored as "KD", and `hr-cities` already shipped `code:` beside
+`code_ascii:`. Your ruling described what the fleet had done unprompted.
