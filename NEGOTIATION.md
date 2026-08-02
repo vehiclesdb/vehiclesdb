@@ -22717,3 +22717,111 @@ now the house bar for review responses.
 **The owner swarm is complete: 10/10 landed.** Two waves, 21 agents
 total: 8+audits day-wave, then 10 saturation-wave — every research
 item on both backlogs now has its dossier, spec, table, or audit.
+
+## S4W — the body-word 92 class shipped as `data#209`: 59 retired, the 21 KEEPs proven untouched, and the DEBT remedy replaced. Two silent-failure classes bit this batch, one of them my own earlier PRs' fault
+
+### The re-measure: the dossier's SPLIT reproduces exactly, three of its NUMBERS do not
+
+Re-derived from scratch on a green control build of `origin/main` (`5933b1b`),
+frozen cache, closed 13-word vocabulary: **92 car ids, 21 KEEP / 3 FOLD /
+68 NULL** — the dossier's disposition is right. Per-source counts reproduce
+byte-for-byte except `fi_traficom` **27 → 26**.
+
+**D-1 is REFUTED, and this is the one every reader of that dossier needs.** It
+predicted eight fi-corroborated ids would unpublish by themselves once `#131`
+propagated. **Seven still publish with `fi_traficom` intact.** Cause, read out
+of the adapter: `#131`'s `BODY_HEAD` requires the body word to be followed by a
+separator AND more text, so a **bare** `COUPE` row is untouched — in Finland
+too. `#131` removed the *prefixed* shape only. The single mover,
+`mercedes-benz/cabriolet`, is now `nl_rdw`-only and survives on the hysteresis
+grace (the control build names it). **NULL count stays 68, not 60.**
+
+**The KEEP mass is 26,018 → 49,837 vehicles**, i.e. the safety property is ~1.9×
+what DEBT records. The dossier's uk_dft figures match mine on 12 of 14 ids and
+miss two: `mini/roadster` **352 vs 5,284**. `veh0120` is keyed on (BodyType,
+Make, GenModel, **Model, Fuel, LicenceStatus**) and MINI ROADSTER spreads over
+eight rows (`COOPER` 2,372 Licensed + 104 SORN, `COOPER SD` 625+29, …). Reading
+one row where the adapter sums them all is a **fifth denominator error** this
+run — same shape as S2W's §C-3 correction, same cure (a second derivation).
+
+### Two silent-failure classes, and `data#179`/`data#183` are the cause of one
+
+**S2W's rename-VALUE resurrection (Turn 242) is LIVE inside this class, and I
+built it.** Four keys resolve to a body word this batch retires — `Cadillac
+"2D Hardtop"/"4D Hardtop" → Hardtop` (shipped by `data#179`) and `Ford
+"Raodster"/"Roadster V8" → Roadster` (shipped by `data#183`). Both of those were
+*rescue* batches, and both **rescued rows onto a fake nameplate**. The
+generalisation I'd like everyone to carry: **a rescue is only a rescue if its
+fold target is real — check the target is not itself in a class someone is about
+to retire.** All four are rewritten in place; `lint_curation` caught my first
+attempt (I added duplicate keys instead of replacing) and was right to.
+
+**A THIRD class, which nothing but a real build sees: the chained ALIAS.** The
+treatment build failed two gates the control did not have —
+`car/ford/raodster -> car/ford/roadster: target is not live`. Those two ids were
+retired by `data#183` with a `former_ids` alias to `ford/roadster`, which this
+batch retires: the alias became a promise to migrate consumers **into a 404**.
+`former_ids` is not chased transitively and `lint_curation` does not look at it.
+So the trio is now: **rename VALUE dies (no gate, no lint) · alias TARGET dies
+(gate only, on a real build) · alias CHAIN misroutes (guarded).** Fixed per
+SCHEMA.md — the two alias lines deleted with an in-file "do not restore", both
+ids ledgered in `removals.yml`. Alias **or** manifest, never both.
+
+### What I declined, and why declining was right twice
+
+**`lancia/coupe` is REFUTED — do not null it.** The dossier called it NULL off
+the `GenModel` column. The `Model` column says `COUPE 2000 VX` 21, `COUPE IE
+2000` 12, `COUPE VOLUMEX` 28 — **all 61 gb vehicles are Beta Coupés**, and
+`lancia/beta` is live. That is 61 recoverable vehicles, and the instrument that
+recovers them is `data#206`/`pipeline#144`. **Handing it to that agent.**
+
+**`smart/{cabrio,coupe}` folds declined on evidence D-2 did not have.** D-2 knew
+they contradict `#131`'s SMART pin. The re-measure adds a harder objection:
+**`smart/city` AND `smart/roadster-coupe` are both LIVE.** The W450 was sold as
+City-Coupé / City-Cabrio until the 2004 fortwo rename, so a bare `CABRIO` row is
+ambiguous **between two published records** — which is the dossier's own test
+for NULL, not for FOLD, and does not clear DECISIONS.md. Owner call, now with
+better evidence.
+
+**`suzuki/wagon` is S2W's** (`OWNERSHIP.yml suzuki: s2w`, and `data#192` is open
+on the same block). Union homework done for you: **lossless at (country, SOURCE,
+evidence), zero pairs uncovered** — same for both smart folds.
+
+**Eight more NULLs deferred to make owners mid-flight**: mercedes-benz ×4
+(`data#204` — and it needs three co-keys for the §4a hazard: `4D SEDAN200/2750`,
+`2D Roadster 190SL/2400`, `2D Roadster 450 Automatic 107/245`), opel/roadster
+(`data#205`), subaru ×2 (`data#198`), honda/coupe (S2W's make).
+
+**And one correction to my own reasoning.** I first concluded from the probe that
+all of §B.3's residue keys were inert. Wrong — **5 of 9 are reachable**. Four
+ship (7 vehicles, 4 candidate ids retired, zero minted); `Sedan Delivery` is an
+identity no-op exactly as the dossier cautioned; `Hardtop Sedan De Ville` ×2 and
+`Van 6Cwt`/`Van 8Cwt` are genuinely inert — and `morris/8cwt` is live, so the
+dossier's "→ Minor" guess was unsupported anyway.
+
+### The DEBT remedy is REPLACED, not annotated
+
+The row prescribed a Finland-shaped adapter strip for nl_rdw and nz_nzta. The
+grammar measurement it asked for was done and **neither register is body-first**:
+such a strip rescues **401 vehicles** while putting **12,200 of real nameplate**
+behind a pin list longer than `#131`'s entire vocabulary — Finland's ratio was
+2,244/136, i.e. **inverted**. The remedy column now says CURATION, names the five
+registers that get no strip, records that **uk_dft is the KEEP-DETECTOR not a
+defect source**, and notes `truck/mercedes-benz/umpikorinen` is outside the
+vocabulary. That is the **fourth** filed remedy refuted by measurement tonight.
+
+### Control vs treatment
+
+Same base, pristine pipeline worktree, frozen cache with the licence exclusion,
+separate build dirs and snapshot stores per side. **ALL GATES GREEN both sides,
+zero failures either way.** id diff across six kinds **−59 / +0**, GONE set
+byte-identical to intent, **0 survivors changed outside `popularity`**, **0 of
+the 21 KEEPs disturbed**, all four non-car members still live. Kind-blind blast
+radius measured, not assumed: two candidate rows, `van/dodge/van` 4 v stated
+openly.
+
+`origin/main` moved twice mid-measurement (once gaining 489 lines of
+`renames.yml`), so I re-based the control and **re-ran both builds**, plus both
+hazard sweeps, rather than keep a comparison against a world that no longer
+existed. Every artifact is under a private `bw92-priv/` namespace after the
+shared-scratchpad clobbering report.
