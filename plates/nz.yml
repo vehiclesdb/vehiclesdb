@@ -1,0 +1,1699 @@
+# plates/nz.yml — New Zealand (PRD-PLATES gate L3).
+#
+# EVERY format, colour and class claim in this file is read off one of two
+# instruments on legislation.govt.nz, or off a NZ Transport Agency Waka Kotahi
+# authority page. Both instruments were fetched 2026-08-02 (see
+# `instrument.access_note` — legislation.govt.nz and nzta.govt.nz both sit
+# behind bot protection and the exact retrieval route is recorded rather than
+# hidden). Wikipedia was used as the mandatory FINDING AID and for four dated
+# claims that no primary supports; every one of those carries
+# `period_evidence: secondary-wikipedia` at point of use and is named again in
+# `research_notes.wikipedia_dependent_claims`. No table, list or sentence was
+# copied from it.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# THE ONE FACT THAT SHAPES THIS ENTIRE FILE
+# ─────────────────────────────────────────────────────────────────────────────
+# SINCE 1 MAY 2011, NEW ZEALAND LAW HAS NOT PRESCRIBED THE ARRANGEMENT OF
+# CHARACTERS ON A NUMBER PLATE. It prescribes a LENGTH CAP and nothing else.
+# Regulation 33(1) of the Land Transport (Motor Vehicle Registration and
+# Licensing) Regulations 2011, verbatim and complete:
+#
+#   "The unique identifier for an ordinary plate must be a combination of
+#    letters or numbers, or of both, and the combination must not exceed,—
+#    (a) in the case of plates for motorcycles, mopeds, and trailers, 5
+#        letters, numbers, or letters and numbers, in total:
+#    (b) in any other case, 6 letters, numbers, or letters and numbers, in
+#        total."
+#
+# That is the WHOLE of the current statutory grammar. "AAA104" and "4ZZZ99"
+# and "Q7" are equally lawful ordinary identifiers under it. Which shapes the
+# Registrar actually issues, and in what order, is an ADMINISTRATIVE allocation
+# published nowhere in law — the German § 9 FZV / British INF104 pattern
+# arriving in New Zealand by a third route, and the reason `regex_statutory`
+# on the current series is a six-character catch-all while `regex` is the
+# arrangement in issue.
+#
+# THE PREDECESSOR INSTRUMENT DID PRESCRIBE THE ARRANGEMENTS, EXHAUSTIVELY, AND
+# IT IS THE BEST FORMAT SOURCE NEW ZEALAND HAS EVER HAD. Transport (Vehicle
+# Registration and Licensing) Notice 1995 (SR 1995/136) cl 2(3), in force
+# 1 July 1995 and revoked by reg 97(c) of the 2011 Regulations on 1 May 2011,
+# listed every permitted shape by vehicle group, verbatim:
+#
+#   (a) "in the case of plates for motorcycles, mopeds, and tractors,—
+#        (i) a series of numerals from 1 to 99999 (both numbers inclusive); or
+#        (ii) a series of numerals from 1 to 999 (both numbers inclusive)
+#             followed by any combination of 2 or 3 letters; or
+#        (iii) a series of numerals from 1 to 99 (both numbers inclusive) above
+#              any combination of 3 letters; or
+#        (iv) a letter, followed by a numeral from 1 to 9 (both numbers
+#             inclusive), followed by any combination of 3 letters; or
+#        (v) a letter, followed by a numeral from 1 to 9 (both numbers
+#            inclusive), above any combination of 3 letters:
+#   (b) in the case of plates for trailers,—
+#        (i) a series of numerals from 1 to 99999 (both numbers inclusive); or
+#        (ii) a series of numerals from 1 to 9999 (both numbers inclusive)
+#             preceded or followed by a letter; or
+#        (iii) a series of numerals from 1 to 999 (both numbers inclusive)
+#              followed by any combination of 2 or 3 letters; or
+#        (iv) a series of numerals from 1 to 999 (both numbers inclusive)
+#             preceded and followed by a letter:
+#   (c) in the case of plates for any motor vehicle not referred to in
+#       paragraph (a) or paragraph (b),—
+#        (i) any combination of 2 letters, followed by any of the numbers from
+#            1 to 9999 (inclusive), or
+#        (ii) any combination of 3 letters, followed by any of the numbers
+#             from 1 to 999 (inclusive)."
+#
+# AND ITS AMENDMENT NOTES DATE EVERY MODERN NEW ZEALAND FORMAT TO THE DAY —
+# which is why this file's `regex_strict` values are not guesses:
+#   * cl 2(3)(c)  SUBSTITUTED 22 July 1999 by the Transport (Vehicle
+#     Registration and Licensing) Amendment Notice 1999 (SR 1999/204) — the
+#     three-letter car format becomes lawful. Issuance begins April 2001.
+#   * cl 2(3)(b)(iv) ADDED 18 July 2002 by SR 2002/188 — the LnnnL trailer
+#     format ("preceded and followed by a letter").
+#   * cl 2(3)(a)(iv)-(v) ADDED 22 January 2007 by the Transport (Vehicle
+#     Registration and Licensing) Amendment Notice 2006 (SR 2006/388) — the
+#     LnLLL motorcycle format, in one line or stacked over two.
+#   * cl 7A INSERTED 22 July 1999 by SR 1999/204 — the combined trade plate
+#     and licence: "X" preceded or followed by 4 numerals, with the year.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# FOUR MORE STRUCTURAL FACTS
+# ─────────────────────────────────────────────────────────────────────────────
+# 1. NO PLATE DIMENSION, NO FONT AND NO CHARACTER METRIC APPEARS ANYWHERE IN
+#    NEW ZEALAND PLATE LAW. Both instruments were searched for "millimetre",
+#    "size", "height", "width", "font" and "typeface": the only hit in either
+#    is Schedule 4's "Crown of any size" for the Governor-General's plate.
+#    `design.plate` is therefore ABSENT from every series here and its absence
+#    is a sourced finding, exactly as in plates/gb.yml. The 360 x 124 mm figure
+#    every enthusiast source repeats is recorded once, as secondary, in
+#    `common.plate_dimensions` — never as a series-level dimension claim.
+#
+# 2. NEW ZEALAND PLATES ENCODE NO GEOGRAPHY AND NO DATE. Every series here
+#    carries `region_encoding: none`. The single sequence runs nationally; the
+#    only era signal is the position of a serial inside that sequence, which
+#    the Registrar does not publish as a table. No `_decode` file is authored
+#    for New Zealand and that is deliberate — an unsourced decode is worse than
+#    none. The ONE closed, primary, small decode table New Zealand does have is
+#    Schedule 4's official-vehicle marks, and it is inlined below at
+#    `common.official_marks` per the brief's small-list rule.
+#
+# 3. SPACING IS NOT PART OF A NEW ZEALAND IDENTIFIER, AND THE REGULATION SAYS
+#    SO WITH A WORKED EXAMPLE. Regulation 32 ("Unique identifier to be
+#    unique"), verbatim: "The unique identifier for a registration plate must
+#    not be assigned (in the same or a different format) to more than 1 motor
+#    vehicle at any given time." Its Example gives "A1ABC" as the assigned
+#    identifier and then states that "A1 ABC" cannot therefore be assigned to
+#    another motor vehicle. The identical example, with the identical strings,
+#    appears in SR 1995/136 cl 2(5) (added 22 January 2007). NEW ZEALAND
+#    THEREFORE PRINTS NO SEPARATOR GLYPH AND TREATS INTERNAL SPACING AS
+#    NON-IDENTITY-BEARING: every `pattern` and every regex in this file is
+#    written contiguously, with no emitted separator at all, and a consumer's
+#    separator-forgiving tier (PRD-PLATES § 2.6) is what absorbs a plate that
+#    happens to be set with a gap.
+#
+# 4. THE BLACK PLATE OF 1964 IS NOT HISTORY — IT IS A CURRENT LAWFUL FORM.
+#    Reg 33(4) offers the aluminium-on-black plate and the black-on-white
+#    retroreflective plate as alternatives (a) and (b) of the SAME subclause,
+#    with no cut-off date, and reg 62 gives the registered person an OPTION to
+#    swap: "If a registered person wishes to replace the motor vehicle's
+#    existing registration plates (being plates specified in regulation
+#    33(4)(a)) with reflectorised registration plates, the person may apply to
+#    the Registrar for the issue of reflectorised plates." A 1970s New Zealand
+#    car may still wear its silver-on-black plates lawfully today. That is why
+#    nz-standard-1964 is authored as its own series rather than dropped as
+#    pre-history.
+#
+# REGEX POLICY (identical to plates/gb.yml and plates/nl.yml): `format.regex`
+# is the LINT-ROUND-TRIPPABLE regex — the lint generates serials from
+# `format.pattern` (L -> any A-Z, 9 -> any 0-9) and requires the regex to
+# accept all of them, so `regex` can never be narrower than the pattern's
+# alphabet. `format.regex_strict` carries the tighter sourced grammar, which
+# here is almost always SR 1995/136 cl 2(3)'s "from 1 to N" numeral ranges
+# (a New Zealand serial block never starts at zero and never prints 0000).
+# `format.regex_statutory` carries the outer bound of the CURRENT law — reg
+# 33(1)'s bare six- or five-character cap — which is far wider than anything
+# issued and is the reason `matching: strict` is still correct on the standard
+# series (PRD-PLATES § 2.7: narrower than the statute is still strict).
+jurisdiction: nz
+authority:
+  name: NZ Transport Agency Waka Kotahi (the Registrar of Motor Vehicles under Part 17 of the Land Transport Act 1998)
+  url: "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates"
+binding: vehicle
+binding_note: >-
+  NZTA, verbatim: "When you register a vehicle, we assign it number plates so
+  we can identify it. Plates stay with a vehicle for the length of its life,
+  unless you need to replace them. Vehicles keep the same plates, even if the
+  vehicle is sold." THE EXCEPTION IS THE PERSONALISED PLATE, AND IT BINDS TO A
+  PERSON, NOT A VEHICLE: reg 3 defines an "exclusive right to personalised
+  plates" as "the exclusive right to 1 or more letters or numbers, or a
+  combination of both, allocated under section 259 of the Act for use on
+  personalised plates", and reg 43 lets the holder sell that right, move the
+  plates to another vehicle, or dispose of both. NZTA states the consequence
+  plainly: "When you buy a personalised plate, you're buying the exclusive
+  right to that set of characters. You can transfer personalised plates from
+  vehicle to vehicle, and from person to person." A vehicle-keyed consumer must
+  therefore treat a New Zealand personalised identifier as a WEAK vehicle key.
+
+instrument:
+  citation: "Land Transport (Motor Vehicle Registration and Licensing) Regulations 2011 (SR 2011/79), made under section 269 of the Land Transport Act 1998"
+  made: "2011-03-28"
+  made_note: "Made in Council at Wellington by Anand Satyanand, Governor-General, on the advice and with the consent of the Executive Council"
+  in_force: "2011-05-01"
+  in_force_quote: "Regulation 2, verbatim: 'These regulations come into force on 1 May 2011.'"
+  confirmed: "Confirmed on 18 October 2011 by section 9 of the Subordinate Legislation (Confirmation and Validation) Act 2011 (2011 No 96)"
+  version_read: "as at 23 February 2022"
+  revokes:
+    - "Land Transport (Motor Vehicle Register Authorised Access) Regulations 2010 (SR 2010/87)"
+    - "Transport (Vehicle Registration and Licensing) Regulations 1994 (SR 1994/244)"
+    - "Transport (Vehicle Registration and Licensing) Notice 1995 (SR 1995/136)"
+    - "Transport (Change of Ownership) Regulations 1995 (SR 1995/198)"
+    - "Transport (Fees for Details of Register) Regulations 1989 (SR 1989/138)"
+  amendments_noted_in_text:
+    - "SR 2012/227 (1 October 2012 — definitions of logging truck, logging trailer, mobile machinery, vintage motor vehicle)"
+    - "LI 2014/378 reg 4 and reg 8 (1 January 2016 — reg 36 REPLACED and Schedule 3 diagram 1 inserted: the heavy-RUC trade plate and the move from 4 to 5 numerals)"
+    - "LI 2021/248 reg 125 (28 October 2021 — reg 39(5), secondary-legislation status of display directions)"
+  predecessor:
+    citation: "Transport (Vehicle Registration and Licensing) Notice 1995 (SR 1995/136)"
+    in_force: "1995-07-01"
+    revoked: "2011-05-01"
+    role: "the last New Zealand instrument that prescribed the ARRANGEMENT of characters on a plate; cl 2(3) is quoted in full in this file's header and is the source of every `regex_strict` here"
+    amendments:
+      - "SR 1999/204 cl 2 (22 July 1999) — cl 2(3)(c) substituted: the three-letter car format"
+      - "SR 1999/204 cl 3(1)-(2) (22 July 1999) — cl 7A inserted (combined trade plate and licence), cll 4 and 7 revoked"
+      - "SR 2002/188 cl 3 (18 July 2002) — cl 2(3)(b)(iii) amended and (b)(iv) added: the LnnnL trailer format"
+      - "SR 2006/388 cl 4(1)-(2) (22 January 2007) — cl 2(3)(a)(iii) amended, (a)(iv) and (a)(v) added, cl 2(5) added: the LnLLL motorcycle format and the spacing example"
+  enabling_act: "Land Transport Act 1998, Part 17 (registration and licensing of motor vehicles); s 259 (personalised plates), s 260 (sale or disposal of the exclusive right), s 262 (trade plates), s 264 (replacement plates), s 269 (regulation-making power)"
+  licence: >-
+    legislation.govt.nz, verbatim: "Under section 27 of the Copyright Act 1994,
+    there is no copyright in New Zealand legislation, including in legislation
+    published by the PCO on this website ... All legislation ... may be
+    reproduced in any format or media, free of charge, without requiring
+    specific permission." Everything else on that site is Crown copyright
+    "licensed under a Creative Commons Attribution license (CC-BY)". New
+    Zealand is therefore the cleanest licence posture in this dataset: the
+    instruments are uncopyrightable and the surrounding material is CC-BY.
+  access_note: >-
+    RECORDED BECAUSE A VERIFIER WILL HIT IT. www.legislation.govt.nz sits
+    behind an AWS WAF JavaScript challenge and www.nzta.govt.nz behind
+    Imperva/Incapsula; both return 202/403 to a plain fetch. The SR 2011/79 and
+    SR 1995/136 texts quoted here were read from the Internet Archive's
+    captures of the canonical pages (2022-07-07 and 2019-06-24 respectively),
+    and the SR number was resolved from legislation.govt.nz's own
+    administering-agency index rendered through a headless-browser proxy. The
+    URLs cited in every `sources` line are the CANONICAL live ones. THE
+    CONSEQUENCE, STATED PLAINLY: the version of SR 2011/79 read here is "as at
+    23 February 2022", and the index shows three later amending instruments
+    that were NOT read — LI 2023/213, LI 2024/128 and LI 2024/211 (Land
+    Transport (Motor Vehicle Registration and Licensing) Amendment Regulations
+    2023, 2024 and (No 2) 2024). Nothing in this file may be treated as current
+    to 2026 until those three are checked against regs 32-42. This is the
+    single highest-value verifier task for New Zealand.
+  sources:
+    - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # SR 2011/79 in full: reg 2 commencement, reg 3 interpretation, regs 24-27 trade plates, regs 28-31 supplementary plates, regs 32-38 form of plates, regs 39-42 display, reg 62 reflectorised replacement, reg 97 revocations, Schedules 3 and 4"
+    - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # SR 1995/136 cll 1-7A: the last prescribed arrangements, the official-vehicle table, the display rule and the combined trade plate, with the 1999 / 2002 / 2007 amendment notes that date each format"
+    - "https://www.legislation.govt.nz/copyright/  # 'Under section 27 of the Copyright Act 1994, there is no copyright in New Zealand legislation'; all other content CC-BY"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  identifier:
+    definition: >-
+      Reg 3, verbatim: "unique identifier means— (a) a combination of letters or
+      numbers, or of both; or (b) a letter, number, symbol, or distinguishing
+      mark". Limb (b) is not decoration: it is what makes the Governor-General's
+      plate — a crown and no characters at all — a lawful registration plate
+      (Schedule 4 item 1). New Zealand is the only jurisdiction in this dataset
+      whose statute contemplates a plate with NO alphanumeric content.
+    uniqueness_rule: >-
+      Reg 32, verbatim: "The unique identifier for a registration plate must not
+      be assigned (in the same or a different format) to more than 1 motor
+      vehicle at any given time." The words "in the same or a different format"
+      plus the worked A1ABC / A1 ABC example are the whole of New Zealand's
+      separator law; see the header, finding 3.
+    length_caps:
+      motorcycle_moped_trailer: 5
+      other: 6
+      quote: "reg 33(1)(a)-(b) for ordinary plates; reg 34(2)(a)-(b) repeats the identical caps for personalised plates"
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 3, 32, 33(1), 34(2)"
+  colours:
+    ordinary: >-
+      Reg 33(4), verbatim: "The unique identifier on an ordinary plate must be—
+      (a) embossed, and coloured aluminium on a black background; or (b)
+      embossed, and coloured black against a reflective background consisting of
+      white retro-reflective sheeting; or (c) in any other form and colour that
+      may be determined by the Registrar." Note that (a) and (b) are live
+      ALTERNATIVES with no date attached to either, and (c) is an open
+      delegation to the Registrar with no publication requirement.
+    personalised: >-
+      Reg 34(4), verbatim: "The unique identifier on a personalised plate must
+      be— (a) coloured black or red or blue against a reflective background
+      consisting of white retro-reflective sheeting; or (b) in any other form
+      and colour that may be determined by the Registrar." The black-background
+      personalised plate NZTA describes today ("white or silver on a black
+      background") is issued under limb (b), not limb (a) — a Registrar
+      determination, not a prescribed colour.
+    trade: >-
+      Reg 36(1), verbatim opening: "A trade plate must be made with a yellow
+      retro-reflective background, bearing, embossed in black,—".
+    supplementary: >-
+      Reg 35(3), verbatim: "The unique identifier on a supplementary plate must
+      be— (a) coloured black against a reflective background consisting of white
+      retro-reflective sheeting; or (b) in any other form and colour that may be
+      determined by the Registrar."
+    hex_basis_note: >-
+      NEW ZEALAND PRESCRIBES NO COLORIMETRY. There is no CIE box, no chromaticity
+      table, no named ink and no standards reference anywhere in either
+      instrument — the words "aluminium", "black", "white retro-reflective
+      sheeting", "yellow retro-reflective", "red" and "blue" are the entire
+      colour law. Every hex in this file is consequently `hex_basis: observed`
+      inside a statutorily named colour, the same posture plates/gb.yml takes
+      for "yellow" and plates/de.yml for "grünes Kennzeichen".
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 33(4), 34(4), 35(3), 36(1)"
+  materials:
+    rule: >-
+      Reg 33(5): "The base material of an ordinary plate must be aluminium or
+      any other material that may be determined by the Registrar." Reg 33(6):
+      "Despite subclause (5), an ordinary plate to be fixed to the front of a
+      motor vehicle may be in the form of an adhesive label." Regs 34(5)-(6),
+      35(4) and 36(3) repeat the aluminium rule for personalised, supplementary
+      and trade plates.
+    adhesive_status: >-
+      THE LAW PERMITS AN ADHESIVE FRONT PLATE AND THE AGENCY DOES NOT ISSUE ONE.
+      NZTA, verbatim: "We don't issue adhesive (stick-on) plates because there
+      are no suitable products currently available." Reg 46(2) nonetheless still
+      contemplates them: "In the case of a registration plate in the form of an
+      adhesive label, a sufficient portion of the plate must be surrendered to
+      satisfy the Registrar that it is (or is part of) the relevant plate." A
+      live gap between statute and practice, recorded rather than resolved.
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 33(5)-(6), 34(5)-(6), 35(4), 36(3), 46(2)"
+  display_rules:
+    rule: >-
+      Reg 39(2), verbatim: "In the case of a motorcycle, moped, tractor, or
+      trailer, 1 plate must be securely affixed in an upright position on the
+      rear of the motorcycle, moped, tractor, or trailer and displayed so that
+      the unique identifier on the plate is easily visible at all times from the
+      rear". Reg 39(3): every other kind of motor vehicle carries one plate on
+      the front and one on the rear. Reg 40: "Personalised plates must be
+      displayed in the same manner as ordinary plates." Reg 42: trade plates go
+      on the rear and, at the Registrar's discretion, also on the front.
+    front_rear_identical: >-
+      NEW ZEALAND HAS NO FRONT/REAR ASYMMETRY. Neither instrument distinguishes
+      the two plates in colour, size or content — reg 39(3) simply requires one
+      of each — so `rear_differs: false` is a POSITIVE finding on every
+      two-plate series here, not a default. Contrast plates/gb.yml, where the
+      asymmetry is prescribed.
+    predecessor: "SR 1995/136 cl 6(a)-(b) said the same thing in 1995, in the same two limbs, so the rule is at least thirty years old"
+    supplementary_plates: >-
+      Reg 29: the Registrar may issue a supplementary plate "if satisfied that an
+      ordinary plate or personalised plate on the motor vehicle will be obscured
+      by an object being carried temporarily on the motor vehicle" — the bike-rack
+      case. Reg 35(1)-(2): it bears the SAME unique identifier plus "an additional
+      letter, number, word, or symbol or ... some other distinguishing feature to
+      identify it as a supplementary plate". NZTA: "You can only attach a
+      supplementary plate to a vehicle if it has the same characters as the number
+      plate issued to the vehicle."
+    offence: >-
+      NZTA, verbatim: "Only plates that we issue are legal. This means you can't
+      make your own plate. You could be fined up to $5000 if you display either:
+      a non-approved plate on your vehicle [or] something that could be mistaken
+      for a plate on your vehicle."
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 29, 35, 39-42"
+    source_secondary: "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Displaying number plates' and 'Number plate offences'"
+  charset:
+    excluded_letters_note: >-
+      NEW ZEALAND PUBLISHES ITS LETTER EXCLUSIONS ON AN AGENCY PAGE AND IN NO
+      INSTRUMENT. NZTA's "What you won't find on plates", verbatim: "combinations
+      that could be offensive or cause confusion" / "the letter 'V' – it was
+      excluded (after the FV series) because it is difficult to distinguish from
+      the letter U" / "the letters I and O – these are not used in some cases as
+      they are hard to distinguish from numbers one and zero."
+    why_no_strict_charset_twin: >-
+      "NOT USED IN SOME CASES" IS NOT A RULE, AND THIS FILE DECLINES TO INVENT
+      ONE. The V exclusion is stated flatly and is dated to the FV series (1971
+      per the same page's series history); the I and O exclusion is expressly
+      partial, and the enthusiast web's account of it — that I, O and X survive
+      only in the AAI, AAO and AAX blocks of the three-letter series — is
+      unsourced. No `regex_strict` in this file therefore narrows the LETTER
+      alphabet; the strict twins narrow only the NUMERAL ranges, which SR
+      1995/136 cl 2(3) states exactly ("from 1 to 999", "from 1 to 9999").
+    offensive_combinations: >-
+      Reg 34(3), verbatim: "The Registrar must not allocate a combination, or a
+      single letter or number, if— (a) it may be required for allocation to a
+      person, government, or organisation in accordance with regulation 37; or
+      (b) it has already been allocated to or is held on behalf of another
+      person; or (c) the Registrar considers it is likely to cause offence or
+      confusion; or (d) it is to be used on a trade plate." Limb (a) is the
+      reason the DC, DCC, CC, CCC, FC, FCC and CR spaces are carved out of the
+      ordinary and personalised spaces by law rather than by convention.
+    ordinary_exclusivity: >-
+      Reg 33(2): "A combination must not be used for an ordinary plate if the
+      combination appears or is to appear on— (a) a personalised plate; or (b) a
+      trade plate." The three spaces are mutually exclusive.
+    slashed_zero: >-
+      NZTA: "in the early 1990s, the European style zero (with a stroke through
+      it) was introduced to stop the confusion that arose between 0 (the number)
+      and O (the letter) on personalised plates." A GLYPH change, not a charset
+      change: the character is still the digit zero and no regex is affected.
+    source: "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # 'What you won't find on plates'; the V-after-FV exclusion; the slashed zero"
+    source_instrument: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 33(2), 34(3)"
+  precedence:
+    note: >-
+      MEASURED, NOT THEORISED — this block exists because the drafted regexes were
+      run against real New Zealand strings and the collisions were counted. New
+      Zealand's mark spaces overlap heavily and the LAW, not the regex, is what
+      separates them. Three rules, each with its instrument:
+    rules:
+      - "OFFICIAL BEATS ORDINARY. 'DC1', 'CC7' and 'CR1' all match the two-letter standard shape as well as their own official mark. Reg 34(3)(a) forbids the Registrar from allocating a combination that 'may be required for allocation to a person, government, or organisation in accordance with regulation 37', so the DC/DCC/CC/CCC/FC/FCC/CR spaces are reserved OUT of the ordinary and personalised spaces by law. A parser should rank the official series first on an exact prefix match."
+      - "TRADE IS DISJOINT FROM BOTH. Reg 33(2): a combination 'must not be used for an ordinary plate if the combination appears or is to appear on— (a) a personalised plate; or (b) a trade plate'; reg 34(3)(d) says the same from the personalised side. The letter X carries the whole separation, which is also why NZTA withholds X (and D) from trailer plates."
+      - "PERSONALISED SUBSUMES EVERYTHING AND MEANS NOTHING ON ITS OWN. nz-personalised-1988 matches every string any other New Zealand series matches, by construction, which is precisely what `matching: recall-only` exists to tell a consumer. It should never outrank a strict series on a shape it shares."
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 33(2), 34(3)(a) and (d), 37"
+  security_feature:
+    fern: >-
+      NZTA, verbatim: "All plates have a silver fern security feature. This is
+      unique to New Zealand – other countries have their own image. You can see
+      it if you turn the plate to a 15–30-degree angle. This helps to identify if
+      a plate is authentic or fake." A RETROREFLECTIVE-SHEETING WATERMARK, not
+      printed artwork: it is visible only off-axis, it carries no information,
+      and a renderer must not draw it as a graphic element (PRD-PLATES § 3).
+    manufacture: >-
+      Plates are manufactured under contract, not by the agency. NZTA routes
+      duplicate orders to LicenSys ("0800 REMAKE") and personalised sales to
+      KiwiPlates. Neither company's specifications were located in a public
+      document in this pass, which is where the missing dimensions and font
+      almost certainly live.
+    source: "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Plate security'; 'Ordering duplicate plates ... contact LicenSys'; 'You can buy personalised plates through KiwiPlates'"
+  plate_dimensions:
+    status: not-prescribed
+    note: >-
+      NO DIMENSION IS PRESCRIBED (header finding 1) AND NONE IS ASSERTED AS DATA.
+      The commonly repeated car-plate size is 360 x 124 mm. It is recorded here
+      once, at jurisdiction level, as `secondary-wikipedia`, and appears in no
+      `design.plate` block anywhere in this file. A verifier who obtains the
+      LicenSys or NZTA plate specification should add dimensions per series and
+      delete this note.
+    reported_car_plate: { w: 360, h: 124, unit: mm, evidence: secondary-wikipedia }
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Zealand  # infobox size field, accessed 2026-08-02 — SECONDARY, and the only figure located in this pass"
+  decorative_marks:
+    rule: >-
+      Reg 38, verbatim: "(1) In addition to a unique identifier, a registration
+      plate may also display subsidiary characters, messages, symbols, or slogans
+      if the characters, messages, symbols, or slogans— (a) are approved by the
+      Registrar; and (b) do not obscure the unique identifier assigned for the
+      plate. (2) Subsidiary characters, messages, symbols, or slogans approved
+      under subclause (1) may be of any colour."
+    consequence: >-
+      A NEW ZEALAND PLATE MAY CARRY ARBITRARY APPROVED TEXT THAT IS NOT PART OF
+      THE IDENTIFIER. A parse API must strip it and cannot enumerate it: there is
+      no published register of approved subsidiary marks. This is also the legal
+      home of the slogan plates sold by KiwiPlates. Recorded as a mechanism, not
+      modelled — inventing a regex for it was declined.
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 38"
+  official_marks:
+    note: >-
+      Schedule 4 to SR 2011/79 ("Form of plates for official motor vehicles",
+      r 37) is a SMALL, CLOSED, PRIMARY table and is inlined here rather than
+      given a _decode file. Reg 37(2), verbatim: "The registration plates for any
+      such motor vehicle are to be distinguished solely by the symbol or, as the
+      case may be, the letters and numbers specified (for the person, government
+      or organisation in question) in the second column of that table." Reg 37(1)
+      makes it apply "in place of regulation 33(1)" — SO THE SIX-CHARACTER CAP
+      DOES NOT BIND AN OFFICIAL PLATE, which is why the regexes for these series
+      quantify the numeral run open-endedly.
+    rows:
+      - office: "Governor-General"
+        mark: "Crown of any size"
+        modelled_as: "not a series — no alphanumeric identifier exists to match"
+      - office: "New Zealand Government Ministers of the Crown"
+        mark: '"CR" followed by a series of numbers from 1 onwards'
+        modelled_as: nz-government-cr
+      - office: "Governments of foreign and Commonwealth countries with established diplomatic missions in New Zealand; any person entitled in New Zealand to full diplomatic immunities and privileges under the Diplomatic Privileges and Immunities Act 1968; organisations in respect of which immunities or privileges have been conferred under s 9(2)(a) of that Act; any person entitled under s 9(2)(b)"
+        mark: 'For a motor vehicle other than a motorcycle, moped, or trailer, "DC" followed by a series of numbers from 1 onwards; for a motorcycle, moped, or trailer, "DCC" preceded by a series of numbers from 1 onwards'
+        modelled_as: "nz-diplomatic-dc / nz-diplomatic-dcc"
+      - office: "Governments of foreign and Commonwealth countries with missions of consular or equivalent status established in New Zealand; any person entitled in New Zealand to full consular immunities and privileges under the Consular Privileges and Immunities Act 1971"
+        mark: 'For a motor vehicle other than a motorcycle, moped, or trailer, "CC" followed by a series of numbers from 1 onwards; for a motorcycle, moped, or trailer, "CCC" preceded by a series of numbers from 1 onwards'
+        modelled_as: "nz-consular-cc / nz-consular-ccc"
+      - office: "Any other person entitled in New Zealand to any immunities or privileges (other than those accorded to honorary representatives) under the Diplomatic Privileges and Immunities Act 1968"
+        mark: 'For a motor vehicle other than a motorcycle, moped, or trailer, "FC" followed by a series of numbers from 1 onwards; for a motorcycle, moped, or trailer, "FCC" preceded by a series of numbers from 1 onwards'
+        modelled_as: "nz-diplomatic-fc / nz-diplomatic-fcc"
+    predecessor_table: >-
+      SR 1995/136 cl 5 carried the SAME four foreign/vice-regal rows in the same
+      words from 1 July 1995 — which is why the diplomatic series below start in
+      1995 on `instrument-in-force` and not in 2011. THE ONE ROW THAT IS NEW IS
+      "CR": the 1995 table has no Ministers-of-the-Crown row at all, so the CR
+      series is dated to the 2011 Regulations on `enabling-instrument` even
+      though CR marks are attested on New Zealand ministerial cars long before
+      2011 (see nz-government-cr notes).
+    agency_disagreement: >-
+      RECORDED, NOT AVERAGED (PRD-PLATES § 5.3). NZTA's own history page groups
+      the marks wrongly: "Diplomatic plates – for vehicles owned by embassies,
+      consulates and high commissions (DC, DCC, FC and FCC plates) and
+      ministerial vehicles (CC, CCC, CR and CROWN plates)." Schedule 4 assigns CC
+      and CCC to CONSULAR missions, not to ministers. THE INSTRUMENT IS THE
+      AUTHORITY (PRD-PLATES § 5.3: "MAJORITY IS NOT AUTHORITY; the authority is
+      the authority"), so this file follows Schedule 4 and records the agency
+      page's error here.
+    source: "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 37 and Schedule 4, all five rows verbatim"
+    source_predecessor: "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 and its table, four rows, in force 1 July 1995"
+
+# ---------------------------------------------------------------------------
+# Classes New Zealand HAS but this file deliberately does not model as series,
+# each with the primary that proves the class exists and the reason no
+# `format` is authored. Inventing a regex for any of these was declined.
+# ---------------------------------------------------------------------------
+classes_not_modelled:
+  governor_general:
+    exists: true
+    mechanism: >-
+      Schedule 4 item 1: the Governor-General's plate is "Crown of any size" and
+      reg 37(2) says the plate is "distinguished solely by the symbol". THERE IS
+      NO SERIAL. Reg 3's definition of "unique identifier" reaches it through
+      limb (b) — "a letter, number, symbol, or distinguishing mark" — so the
+      crown IS the identifier in law. A regex cannot express this and none is
+      authored; a renderer must place the emblem and no characters.
+    emblem_risk: "the New Zealand crown device is a vice-regal insignia; PRD-PLATES § 3's neutral-placeholder rule applies and no artwork is claimed clean"
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # Schedule 4 item 1; reg 3 'unique identifier' limb (b); reg 37(2) 'distinguished solely by the symbol'"
+  supplementary:
+    exists: true
+    mechanism: >-
+      Regs 28-30 and 35. A supplementary plate has NO IDENTIFIER OF ITS OWN: reg
+      35(1) requires it to "bear the same unique identifier as the plate of which
+      it is a match", and reg 35(2) adds "an additional letter, number, word, or
+      symbol or ... some other distinguishing feature to identify it as a
+      supplementary plate". The distinguishing feature is NOT specified anywhere
+      in the instrument, so its shape is unknowable from law, and a series whose
+      regex would be the union of every other series' regex plus an unknown extra
+      character earns nothing. Recorded as a mechanism; a verifier who obtains an
+      image or a NZTA specification can author it.
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 28-30, 35, 41"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'You can only attach a supplementary plate to a vehicle if it has the same characters as the number plate issued to the vehicle.'"
+  overseas_visitor:
+    exists: true
+    is_nz_issued: false
+    mechanism: >-
+      NZTA lists "Overseas visitor registration plates" as one of its six plate
+      types, and they are NOT NEW ZEALAND PLATES: "So long as the vehicle
+      displays plates from its home country, visitors' cars can drive on New
+      Zealand roads without paying registration and licensing fees ... This
+      exemption is allowed for 18 months or until the vehicle is sold or if the
+      visitor becomes a permanent resident in New Zealand." Nothing is issued, so
+      nothing is modelled; recorded because a consumer reading NZTA's own list
+      will otherwise expect a sixth series.
+    sources:
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # 'Overseas visitor registration plates'"
+  historic:
+    exists: false
+    mechanism: >-
+      NEW ZEALAND HAS NO HISTORIC OR VINTAGE PLATE SERIES. Reg 3 does define both
+      classes — "veteran motor vehicle means a motor vehicle that was manufactured
+      before 1 January 1919" and "vintage motor vehicle means a motor vehicle that
+      (a) was manufactured on or after 1 January 1919; and (b) is at least 40 years
+      old on the date that it is registered, reregistered, or licensed" — but the
+      definitions are used ONLY in Schedule 2 Part 1 item 6, which exempts them
+      from the continuous-licensing requirement. No plate consequence attaches.
+      What an old New Zealand car wears instead is its ORIGINAL silver-on-black
+      plate, lawfully, under reg 33(4)(a) — see nz-standard-1964.
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 3 definitions of veteran and vintage motor vehicle; Schedule 2 Part 1 item 6"
+  temporary:
+    exists: false
+    mechanism: >-
+      NO TEMPORARY OR TRANSIT PLATE. The New Zealand answer to moving an
+      unregistered vehicle is the TRADE PLATE, which is modelled below: reg 26(1)
+      lets its holder "operate a motor vehicle even though the motor vehicle— (a)
+      is not registered or licensed under Part 17 of the Act: (b) does not have
+      affixed to it registration plates or a current licence." That is a
+      business-bound permit, not a temporary registration, and it is classed
+      `dealer` accordingly.
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 26(1)-(2)"
+  export:
+    exists: false
+    mechanism: >-
+      NO EXPORT PLATE. Part 17 of the Act and Part 2 of the Regulations deal with
+      a departing vehicle by CANCELLING its registration and taking the plates
+      back: reg 45(2) requires the registered person to send in "the registration
+      plates and the current licence for the motor vehicle", and reg 46 requires
+      surrender of the plates on cancellation. Nothing is issued in their place.
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # regs 45-46"
+  military:
+    exists: unresearched
+    mechanism: >-
+      No provision for New Zealand Defence Force vehicles was located in either
+      instrument, and Schedule 4 does not mention them. Whether NZDF vehicles
+      carry ordinary plates or a service series is UNKNOWN from the sources read
+      in this pass and is recorded as a gap rather than guessed.
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — three letters, three numbers. April 2001.
+  # =========================================================================
+  - id: nz-standard-2001
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2001 }
+    period_evidence: agency-stated-date
+    matching: strict
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z]{3}\d{1,3}\z'
+      regex_strict: '\A[A-Z]{3}[1-9]\d{0,2}\z'
+      regex_statutory: '\A[A-Z0-9]{1,6}\z'
+      structure:
+        - "characters 1-3: three letters, advancing as the sequence is consumed"
+        - "characters 4-6: the numeral block, 1 to 999"
+      tier_note: >-
+        THE THREE TIERS ARE THREE DIFFERENT INSTRUMENTS AND THAT IS WHY THEY
+        DIFFER SO WIDELY. `regex_strict` is SR 1995/136 cl 2(3)(c)(ii) as
+        substituted on 22 July 1999 — "any combination of 3 letters, followed by
+        any of the numbers from 1 to 999 (inclusive)" — which excludes a zero
+        block and any leading zero. `regex` relaxes only what the lint's
+        pattern round-trip forces. `regex_statutory` is the CURRENT law, reg
+        33(1)(b), which prescribes nothing but a six-character cap: under it
+        "4ZZ99Z" is a perfectly lawful ordinary identifier that this series
+        would never issue. A match on `regex` is a real claim about THIS series
+        (PRD-PLATES § 2.7, the us-fl case), which is why `matching` is `strict`.
+      progression: >-
+        NZTA, verbatim: "The new series of three letters and three numbers – from
+        AAA104 ongoing to ZZZ999 – offers about 17.6 million possible
+        combinations." The agency publishes no allocation calendar, so a serial
+        gives an approximate era and nothing better. Two published landmarks
+        anchor the low end: the series opens at AAA104 in April 2001 because
+        AAA100-AAA103 were sold as personalised plates first.
+      variable_length_note: >-
+        THE NUMERAL BLOCK IS NOT ALWAYS THREE DIGITS. NZTA's own range statement
+        ("AAA104 ongoing to ZZZ999") reads as three, but the same page's
+        description of the predecessor series ("AA1–AA9999 to ZZ1–ZZ9999") shows
+        the New Zealand convention is to restart each letter block at 1 rather
+        than at 100. `\d{1,3}` is therefore the honest quantifier and the
+        one-digit and two-digit cases are accepted. Flagged for the verifier:
+        if NZTA confirms the three-letter series never issues below 100, tighten
+        `regex_strict` to `[1-9]\d{2}` and say so in the PR.
+    design:
+      plate_note: "no prescribed plate dimensions anywhere in New Zealand law — see common.plate_dimensions and the header, finding 1"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "reg 33(4)(b): 'embossed, and coloured black against a reflective background consisting of white retro-reflective sheeting'" }
+      foreground: "#000000"
+      rear_differs: false
+      rear_differs_note: "POSITIVE FINDING, not a default: reg 39(3) requires one plate front and one rear and distinguishes them in no respect whatsoever"
+      emboss: "reg 33(4)(b): the characters are EMBOSSED — New Zealand law requires relief, not print"
+      material: { base: aluminium, basis: "reg 33(5)" }
+      band: { side: none, note: "no band, no country identifier, no flag and no EU-style strip appears on a New Zealand plate; nothing in either instrument provides for one" }
+      emblem: { present: false, rendered: none, note: "the silver fern is a security watermark in the sheeting (common.security_feature), not a printed emblem" }
+      font: { name: "not prescribed", mandatory: false, note: "no font, typeface or character metric is prescribed in either instrument — the strongest sourced negative in this file after the missing dimensions" }
+    region_encoding: none
+    region_encoding_note: >-
+      A New Zealand plate encodes NOTHING but its position in a national
+      sequence — no region, no district, no date, no vehicle class. The one
+      historical exception is not a decode: NZTA records that the 1964 rollout
+      was distributed geographically, and that later blocks were occasionally
+      steered to a region, but no allocation table was ever published and none
+      is authored here.
+    sources:
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # milestone 2001, verbatim: 'In April, the last registration in the two letter series is issued in Wellington. The first of the three-letter series available starts at AAA104. AAA100 to 103 are purchased for personalised plates.'; and 'The new series of three letters and three numbers – from AAA104 ongoing to ZZZ999 – offers about 17.6 million possible combinations.'"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 2(3)(c)(ii) 'any combination of 3 letters, followed by any of the numbers from 1 to 999 (inclusive)', substituted on 22 July 1999 by cl 2 of the Transport (Vehicle Registration and Licensing) Amendment Notice 1999 (SR 1999/204) — the enabling instrument, two years before first issue"
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 33(1)(b) six-character cap; reg 33(4)(b) black on white retro-reflective; reg 33(5) aluminium; reg 39(3) front and rear"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Ordinary plates are made from aluminium, with black embossed characters on a white retro-reflective background.'"
+    notes: >-
+      THE CURRENT NEW ZEALAND PLATE. period.start 2001 is the year of FIRST
+      ISSUE, stated by the agency to the month ("In April"), and it is
+      deliberately NOT the year of the enabling instrument: SR 1999/204 made the
+      three-letter shape lawful on 22 July 1999, twenty-one months before the
+      Registrar had exhausted the two-letter sequence and needed it. Recording
+      1999 would have been the classic instrument-date error this programme
+      exists to avoid, so `period_evidence` is `agency-stated-date` and the 1999
+      instrument is carried in `sources` and in `format.tier_note` where it
+      belongs — as the strict twin's authority. ONE INTERNAL DISAGREEMENT IN THE
+      AGENCY'S OWN PAGE, recorded rather than resolved: its milestone table says
+      the last two-letter registration was issued in April 2001, while its plate
+      description says "The last plate in the series was issued in March 2001".
+      Both are on one page; neither is footnoted; the year is unaffected.
+
+  # =========================================================================
+  # THE PREVIOUS STANDARD FORMAT, REFLECTORISED — November 1986 to 2001.
+  # =========================================================================
+  - id: nz-standard-1986
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1986, end: 2001 }
+    period_evidence: agency-stated-date
+    matching: strict
+    format:
+      pattern: "LL9999"
+      regex: '\A[A-Z]{2}\d{1,4}\z'
+      regex_strict: '\A[A-Z]{2}[1-9]\d{0,3}\z'
+      structure:
+        - "characters 1-2: two letters, advancing as the sequence is consumed"
+        - "characters 3-6: the numeral block, 1 to 9999"
+      no_statutory_twin_note: >-
+        DELIBERATELY ABSENT, unlike nz-standard-2001. The six-character catch-all
+        of reg 33(1)(b) is the CURRENT outer bound and it did not exist while this
+        series was being issued (1986-2001); the bound that did was SR 1995/136
+        cl 2(3)(c)(i), which is what `regex_strict` already carries. Writing the
+        2011 cap here would have back-dated a statute onto a closed series.
+      charset:
+        notes: >-
+          NZTA states the numeral range twice and both times without a leading
+          zero: "The series went from AA1–AA9999 to ZZ1–ZZ9999, offering 6.7
+          million possible combinations." That is why `regex_strict` forbids a
+          leading zero and why `regex` must not — the lint generates "AB0123"
+          from the pattern.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "reg 33(4)(b) today; SR 1995/136 cl 2(2)(b) in the same words from 1 July 1995" }
+      foreground: "#000000"
+      rear_differs: false
+      emboss: "embossed characters, as for the current series"
+      material: { base: aluminium }
+      band: { side: none }
+      font: { name: "not prescribed", mandatory: false }
+    region_encoding: none
+    sources:
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # milestone 1986, verbatim: 'In November, reflectorised plates (black characters on white plates) were introduced.'; and 'The last plate in the series was issued in March 2001.'"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 2(3)(c)(i) 'any combination of 2 letters, followed by any of the numbers from 1 to 9999 (inclusive)'; cl 2(2)(a)-(b) the two permitted colourways"
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 33(1)(b), 33(4)(b) — the form survives the 2011 recodification unchanged"
+    notes: >-
+      THE REFLECTORISED TWO-LETTER PLATE — same mark space as nz-standard-1964,
+      opposite colours. Cut as its own series and not as a design variant
+      because BOTH the period and the design differ, which is exactly the
+      PRD-PLATES § 2.3 test, and because the two colourways are not successive
+      states of one specification: reg 33(4) still offers them as live
+      alternatives (a) and (b) with no cut-off, so a consumer needs to be able
+      to say "black-on-white, two letters, so issued between November 1986 and
+      March 2001" and have that be a claim about a series rather than about a
+      paint job. The letter sequence did not restart in 1986: NZTA's first
+      reflectorised plate was MX100, continuing the same run that began at AA100
+      in 1964.
+
+  # =========================================================================
+  # THE ORIGINAL PERMANENT PLATE — silver on black, 1964. STILL LAWFUL.
+  # =========================================================================
+  - id: nz-standard-1964
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1964, end: 1986 }
+    period_evidence: agency-stated-date
+    matching: strict
+    format:
+      pattern: "LL9999"
+      regex: '\A[A-Z]{2}\d{1,4}\z'
+      regex_strict: '\A[A-Z]{2}[1-9]\d{0,3}\z'
+      structure:
+        - "characters 1-2: two letters"
+        - "characters 3-6: the numeral block, 1 to 9999"
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#000000", finish: painted, hex_basis: observed, spec_note: "reg 33(4)(a), verbatim: 'embossed, and coloured aluminium on a black background'. NOTE WHAT IS MISSING: limb (a) says nothing about retroreflection, which limb (b) requires in terms — so the black plate is recorded as `painted` and the omission is a sourced one." }
+      foreground: "#C0C0C0"
+      foreground_note: >-
+        The statute's colour word is "aluminium", not "silver" and not a number:
+        the characters are the bare embossed metal of the plate itself. The hex
+        is an observed approximation of unfinished aluminium and is marked as
+        such.
+      rear_differs: false
+      emboss: "reg 33(4)(a): embossed"
+      material: { base: aluminium, basis: "reg 33(5); NZTA: 'Permanent aluminium plates – intended to last a vehicle's useful life – are introduced.'" }
+      band: { side: none }
+      font: { name: "not prescribed", mandatory: false }
+    validity:
+      still_lawful: true
+      rule: >-
+        Reg 33(4)(a) has no end date and reg 62 makes replacement OPTIONAL, not
+        compulsory: "If a registered person wishes to replace the motor vehicle's
+        existing registration plates (being plates specified in regulation
+        33(4)(a)) with reflectorised registration plates, the person may apply to
+        the Registrar for the issue of reflectorised plates." NZTA adds the
+        one-way rule for damage: "If your vehicle had the older style black
+        plates with silver characters, they will be duplicated with a white
+        retro-reflective background and black characters." So the population can
+        shrink but never grow.
+    region_encoding: none
+    sources:
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # milestone 1964, verbatim: 'Permanent aluminium plates – intended to last a vehicle's useful life – are introduced. These were issued by the New Zealand Post Office. Starting at AA100 to ZZ9989, the plates feature silver characters on a black plate. Plates ZZ9990 to ZZ9999 are bought for personalised plates.'; and 'Theses plates were issued with two letters and up to four numbers to private cars on 1 July 1964 and commercial vehicles in 1965.'"
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 33(4)(a) the aluminium-on-black form, still current; reg 62 the optional swap"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'If your vehicle had the older style black plates with silver characters, they will be duplicated with a white retro-reflective background and black characters.'"
+    notes: >-
+      NEW ZEALAND'S FIRST PERMANENT PLATE, AND THE ONLY SERIES IN THIS FILE THAT
+      IS SIMULTANEOUSLY CLOSED AND CURRENT. Issuance ran from 1 July 1964 (private
+      cars; commercial vehicles from 1965) to November 1986, but the FORM is
+      alternative (a) of the live reg 33(4) and a plate issued in 1972 is as
+      lawful today as one issued last week. period.end 1986 therefore records the
+      end of ISSUANCE, not the end of validity, and `validity.still_lawful`
+      carries the distinction so a consumer cannot read the end date as a
+      compliance claim. Two details worth a verifier's eye: the plates were
+      issued by the NEW ZEALAND POST OFFICE, not by a transport agency, which is
+      why no transport instrument of the period governs their appearance; and the
+      sequence was never allowed to run out — NZTA records it as "AA100 to ZZ9989"
+      because ZZ9990-ZZ9999 had already been sold as personalised plates.
+
+  # =========================================================================
+  # MOTORCYCLES, MOPEDS AND TRACTORS — the five-character single plate.
+  # Current shape: letter, digit, three letters. Enabled 22 January 2007.
+  # =========================================================================
+  - id: nz-motorcycle-2007
+    class: motorcycle
+    categories: [motorcycle, moped, tractor, atv]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L9LLL"
+      regex: '\A[A-Z]\d[A-Z]{3}\z'
+      regex_strict: '\A[A-Z][1-9][A-Z]{3}\z'
+      regex_statutory: '\A[A-Z0-9]{1,5}\z'
+      structure:
+        - "character 1: a letter"
+        - "character 2: a numeral, 1 to 9"
+        - "characters 3-5: any combination of 3 letters"
+      charset:
+        notes: >-
+          SR 1995/136 cl 2(3)(a)(iv), verbatim and complete: "a letter, followed
+          by a numeral from 1 to 9 (both numbers inclusive), followed by any
+          combination of 3 letters". The numeral is expressly 1 to 9, so ZERO IS
+          EXCLUDED — that is the whole of `regex_strict`'s tightening, and it is
+          quoted law rather than inference.
+      layout_note: >-
+        ONE LINE OR TWO, AND BOTH WERE PRESCRIBED. cl 2(3)(a)(v), added by the
+        same 2007 instrument, gives the stacked twin: "a letter, followed by a
+        numeral from 1 to 9 (both numbers inclusive), ABOVE any combination of 3
+        letters". The identifier is identical; only the arrangement on the plate
+        differs, which is why this is one series and not two. NZTA confirms the
+        physical consequence: "Plates for motorcycles, mopeds, all-terrain
+        vehicles (ATVs) and tractors can be square or rectangular. We issue one
+        plate for these vehicles."
+    design:
+      plate_note: "no prescribed plate dimensions; NZTA states only that the plate 'can be square or rectangular'"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "reg 33(4)(b)" }
+      foreground: "#000000"
+      rear_differs: false
+      rear_differs_note: "false BECAUSE there is only one plate: reg 39(2) requires a single plate on the REAR of a motorcycle, moped, tractor or trailer"
+      material: { base: aluminium }
+      band: { side: none }
+      font: { name: "not prescribed", mandatory: false }
+      display: "rear only (reg 39(2))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 2(3)(a)(iv) and (v), each 'added, on 22 January 2007, by clause 4(1) of the Transport (Vehicle Registration and Licensing) Amendment Notice 2006 (SR 2006/388)'"
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 33(1)(a) five-character cap for motorcycles, mopeds and trailers; reg 39(2) one plate, rear"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Plates for motorcycles, mopeds, all-terrain vehicles (ATVs) and tractors can be square or rectangular. We issue one plate for these vehicles.'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Zealand  # SECONDARY, and used only for the FIRST-ISSUE year 2009, which is not asserted as period.start — see notes; accessed 2026-08-02"
+    notes: >-
+      THE CURRENT MOTORCYCLE PLATE, AND THE CLEANEST ENABLING-INSTRUMENT DATE IN
+      THIS FILE. period.start 2007 is the day SR 2006/388 added paragraphs (iv)
+      and (v) to the 1995 Notice — 22 January 2007 — and it is asserted as the
+      start because the instrument CREATED the shape rather than describing an
+      existing one: paragraph (iv) did not exist before that date, so no plate of
+      this shape could lawfully have been issued earlier. Wikipedia dates first
+      issue to 2009 and reports that the predecessor run had reached the ZUU block
+      by July 2009; that is a secondary claim with no citation behind it, so it is
+      recorded here and NOT used to move the start. A verifier who finds an NZTA
+      statement of the changeover should record both dates and, if the agency
+      confirms 2009, keep 2007 as the enabling date with a first-issue note rather
+      than overwrite it. CATEGORY NOTE, because the two instruments disagree with
+      each other: the 1995 grammar's group (a) is "motorcycles, mopeds, and
+      TRACTORS", while the 2011 five-character cap's group (a) is "motorcycles,
+      mopeds, and TRAILERS" — tractors dropped out of the cap and trailers moved
+      in, even though reg 39(2) still gives tractors a single rear plate.
+      `categories` follows NZTA's operational list, which includes tractors and
+      ATVs, and the divergence is flagged.
+
+  # =========================================================================
+  # MOTORCYCLES — the previous shape: numerals then three letters. 1988.
+  # =========================================================================
+  - id: nz-motorcycle-1988
+    class: motorcycle
+    categories: [motorcycle, moped, tractor]
+    period: { start: 1988, end: 2009 }
+    period_evidence: agency-stated-date
+    matching: strict
+    format:
+      pattern: "99LLL"
+      regex: '\A\d{1,3}[A-Z]{2,3}\z'
+      regex_strict: '\A[1-9]\d{0,2}[A-Z]{3}\z'
+      structure:
+        - "characters 1-2 (up to 3 in law): the numeral block, 1 to 999"
+        - "final characters: two or three letters"
+      no_statutory_twin_note: >-
+        DELIBERATELY ABSENT, AND THE REASON IS A TIER VIOLATION AVOIDED. The
+        obvious candidate is reg 33(1)(a)'s five-character cap — but the fullest
+        shape this series' own grammar allows, three numerals plus three letters,
+        is SIX characters, so the 2011 cap does not contain this series' regex and
+        writing it as `regex_statutory` would have inverted the PRD-PLATES § 2.7
+        tier order. The cap post-dates the series' issuance window in any case.
+        The correct outer bound is SR 1995/136 cl 2(3)(a)(ii) itself, which
+        `regex` already carries.
+      charset:
+        notes: >-
+          SR 1995/136 cl 2(3)(a)(ii), verbatim: "a series of numerals from 1 to
+          999 (both numbers inclusive) followed by any combination of 2 or 3
+          letters". `regex` carries the two-letter tail the law permits;
+          `regex_strict` restricts to the three-letter tail that NZTA's published
+          ranges actually describe ("starting at 1RLH", "1AAA–99AAA ongoing to
+          1ZZZ to 99ZZZ") AND forbids the leading zero the law excludes.
+      layout_note: >-
+        cl 2(3)(a)(iii) gives the stacked twin here too — "a series of numerals
+        from 1 to 99 (both numbers inclusive) above any combination of 3 letters"
+        — capped at two digits rather than three, which is a real difference: a
+        three-digit serial in this series could not be stacked.
+      progression: >-
+        NZTA, verbatim: "One or two letters and three or four numbers for
+        motorcycles, mopeds and tractors (starting at 1RLH) The current series is
+        1AAA–99AAA ongoing to 1ZZZ to 99ZZZ." THE SENTENCE IS SELF-CONTRADICTORY
+        AND THE EXAMPLES DECIDE IT: "1RLH" and "1AAA–99AAA" are one or two
+        NUMERALS followed by three LETTERS, which is what cl 2(3)(a)(ii) says and
+        what this series carries. The prose has the two halves transposed. The
+        numeral advances before the letters do.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "rear only (reg 39(2); SR 1995/136 cl 6(b) in the same words)"
+    region_encoding: none
+    sources:
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # 'Single plates – for motorcycles, trailers, tractors, caravans. These plates were divided into two series in 1988'; the 1RLH start and the 1AAA–99AAA range"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 2(3)(a)(ii) and (iii): numerals 1 to 999 followed by 2 or 3 letters, and the stacked 1-to-99 variant"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Zealand  # SECONDARY: the ZUU-block-by-July-2009 report behind period.end; accessed 2026-08-02"
+    notes: >-
+      THE PREVIOUS MOTORCYCLE PLATE. period.start 1988 is the agency's own
+      milestone for the split of the single-plate space into a motorcycle stream
+      and a trailer stream ("These plates were divided into two series in 1988").
+      PERIOD.END IS THE WEAK END AND IS SAID SO HERE: 2009 rests on a secondary
+      report that the numeral-first run had reached the ZUU block by July 2009,
+      and on nothing else; the law never withdrew cl 2(3)(a)(ii), and after 1 May
+      2011 the law stopped prescribing arrangements altogether, so no instrument
+      closes this series. The overlap with nz-motorcycle-2007 from 2007 to 2009 is
+      REAL and legal, not a modelling artefact — both shapes were prescribed
+      simultaneously and the Registrar exhausts stock before switching.
+
+  # =========================================================================
+  # TRAILERS AND CARAVANS — letter, three numerals, letter. 18 July 2002.
+  # The only trailer format with an instrument behind it.
+  # =========================================================================
+  - id: nz-trailer-2002
+    class: trailer
+    categories: [trailer, caravan]
+    period: { start: 2002, end: 2014 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L999L"
+      regex: '\A[A-Z]\d{1,3}[A-Z]\z'
+      regex_strict: '\A[A-Z][1-9]\d{0,2}[A-Z]\z'
+      regex_statutory: '\A[A-Z0-9]{1,5}\z'
+      structure:
+        - "character 1: a letter"
+        - "characters 2-4: the numeral block, 1 to 999"
+        - "character 5: a letter"
+      charset:
+        notes: >-
+          SR 1995/136 cl 2(3)(b)(iv), verbatim: "a series of numerals from 1 to
+          999 (both numbers inclusive) preceded and followed by a letter" — added
+          on 18 July 2002 by cl 3 of the Transport (Vehicle Registration and
+          Licensing) Amendment Notice 2002 (SR 2002/188). Numerals from 1, so no
+          leading zero in `regex_strict`.
+        excluded_letters: [D, X]
+        excluded_letters_note: >-
+          NZTA, verbatim, on the trailer stream: "One to four numbers and one
+          letter for trailers, excluding D and X, which are used for trade
+          plates." D and X are therefore carved out of the trailer LETTER
+          positions by allocation policy. The exclusion is NOT encoded in any
+          regex here, because the agency states it of the older one-letter
+          trailer shape and this file could not confirm that it survived into
+          the LnnnL shape; a verifier who confirms it should add
+          `[ABCEFGHIJKLMNOPQRSTUVWYZ]` to `regex_strict` and cite the
+          confirmation.
+    design:
+      plate_note: "NZTA: 'Trailer and caravan plates are the same size as the plates used on cars.' A comparison, not a dimension — and there is no dimension to compare to (header finding 1)."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "one plate, rear (reg 39(2)); NZTA: 'We issue one plate for these vehicles.'"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 2(3)(b)(iv), 'added, on 18 July 2002, by clause 3 of the Transport (Vehicle Registration and Licensing) Amendment Notice 2002 (SR 2002/188)'"
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # 'One to four numbers and one letter for trailers, excluding D and X, which are used for trade plates. The current series is A111A to Z999Z.'"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Trailer and caravan plates are the same size as the plates used on cars. We issue one plate for these vehicles.'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Zealand  # SECONDARY: the 2014 successor date behind period.end; accessed 2026-08-02"
+    notes: >-
+      THE INSTRUMENT-DATED TRAILER FORMAT, and the centre of the one live source
+      conflict in New Zealand plates. The START is firm: 18 July 2002, the day
+      SR 2002/188 added the "preceded and followed by a letter" shape, and NZTA's
+      own history page describes exactly this range as current ("The current
+      series is A111A to Z999Z"). THE END IS NOT FIRM. period.end 2014 rests on a
+      secondary account that a numeral-first trailer shape replaced it that year,
+      against an agency page that still calls A111A-Z999Z current — and the agency
+      page is visibly stale elsewhere (it also calls the pre-2007 motorcycle range
+      current). Both readings are recorded and neither is averaged (PRD-PLATES
+      § 5.3). A verifier with access to a current NZTA trailer-series statement
+      settles this in one step; until then, treat the end date as the softest
+      claim in this file.
+
+  # =========================================================================
+  # TRAILERS — the reported current shape. SECONDARY ONLY, and labelled.
+  # =========================================================================
+  - id: nz-trailer-2024
+    class: trailer
+    categories: [trailer, caravan]
+    period: { start: 2024 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "9LL99"
+      regex: '\A\d[A-Z]{2}\d{2}\z'
+      regex_statutory: '\A[A-Z0-9]{1,5}\z'
+      structure:
+        - "character 1: a numeral"
+        - "characters 2-3: two letters"
+        - "characters 4-5: two numerals"
+      charset:
+        notes: >-
+          NO STRICT TWIN IS AUTHORED AND THAT IS THE POINT: there is no
+          instrument behind this shape. Since 1 May 2011 reg 33(1)(a) prescribes
+          nothing but a five-character cap for a trailer plate, so the ONLY legal
+          statement available is `regex_statutory`, and the arrangement itself is
+          a secondary report of an administrative allocation.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "reg 33(4)(b) — the colour IS instrument-sourced even though the arrangement is not" }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "one plate, rear (reg 39(2))"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Zealand  # SECONDARY, and the ONLY source for this arrangement and its 2024 start; accessed 2026-08-02. Extracted as a FACT under PRD-PLATES § 4's Wikipedia row and tagged `secondary-wikipedia` at point of use; the article's own section carries an 'unsourced section' banner"
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 33(1)(a) the five-character cap, 33(4)(b) the colours, 39(2) the single rear plate — everything about this series EXCEPT its arrangement"
+    notes: >-
+      THE REPORTED CURRENT TRAILER SHAPE, CARRIED ON A SECONDARY AND FLAGGED IN
+      EVERY FIELD THAT MATTERS. It is authored rather than dropped because
+      jurisdiction-completeness (PRD-PLATES § 5.1) asks for the CURRENT series of
+      every core class, and because a tagged secondary claim is recoverable in one
+      pass while a silent omission is not. Everything here except the arrangement
+      and the year is instrument-sourced. The same secondary reports two
+      intermediate shapes between nz-trailer-2002 and this one — a numeral-letter-
+      three-numeral form from 2014 and a two-numeral-letter-two-numeral form from
+      2019 — and one more, two numerals then a letter then one numeral, from 2021;
+      they are NOT authored here because they are neither current nor
+      instrument-evidenced, and authoring three more unsourced series would have
+      bought recall at the cost of the file's honesty. Their shapes are recorded
+      in `research_notes.trailer_progression_not_modelled` so a verifier can lift
+      them in whole if the agency ever publishes the series table.
+
+  # =========================================================================
+  # PERSONALISED PLATES — 1988. RECALL-ONLY by construction.
+  # =========================================================================
+  - id: nz-personalised-1988
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, caravan, tractor]
+    period: { start: 1988 }
+    period_evidence: agency-stated-date
+    matching: recall-only
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9]{1,6}\z'
+      structure:
+        - "1 to 6 characters, letters or numerals or both, chosen by the purchaser and approved by the Registrar"
+      charset:
+        notes: >-
+          Reg 34(1)-(2), verbatim: "The unique identifier for a personalised plate
+          is the combination of letters or numbers, or of both, or the single
+          letter or number, allocated for use on that plate. The Registrar must
+          not allocate a combination comprising,— (a) in the case of a motorcycle,
+          moped, or trailer, more than 5 letters, numbers, or letters and numbers,
+          in total: (b) in any other case, more than 6 ..." Note limb (1)'s
+          express "single letter or number": A ONE-CHARACTER NEW ZEALAND PLATE IS
+          LAWFUL, which is why the quantifier starts at 1 and not at 2.
+        five_character_note: >-
+          A personalised plate on a motorcycle, moped or trailer is capped at
+          FIVE, not six (reg 34(2)(a)). The regex here carries the six-character
+          bound because the series spans every category; a consumer that knows the
+          vehicle class should apply the five-character cap itself.
+      why_recall_only: >-
+        THIS REGEX IS A CATCH-ALL AND SAYING SO IS THE ENTIRE VALUE OF THE FIELD.
+        `[A-Z0-9]{1,6}` is reg 34(2)'s cap and nothing narrower exists to state:
+        it necessarily contains every ordinary, trade and official identifier in
+        New Zealand, so a match means "this string is a shape New Zealand could
+        have issued" and never "this is a personalised plate". PRD-PLATES § 2.7's
+        recall-only definition — "a union, a catch-all ... a shape hit and nothing
+        more" — describes it exactly. `regex_strict` is forbidden here and none is
+        wanted: the Registrar's refusal grounds (reg 34(3): already allocated,
+        reserved under reg 37, "likely to cause offence or confusion") are not
+        expressible as a grammar.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "reg 34(4)(a): 'coloured black or red or blue against a reflective background consisting of white retro-reflective sheeting'" }
+      foreground: "#000000"
+      foreground_alternatives: ["black", "red", "blue"]
+      foreground_note: "THREE character colours are prescribed for the white plate and the statute names them without numbering them; the hex is the first-named alternative, marked observed"
+      rear_differs: false
+      material: { base: aluminium, basis: "reg 34(5)" }
+      band: { side: none }
+      display: "reg 40: 'Personalised plates must be displayed in the same manner as ordinary plates.'"
+    variants:
+      - style: "black plate"
+        class: personalized
+        design:
+          background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+          foreground: "#FFFFFF"
+          foreground_alternatives: ["white", "silver"]
+        note: >-
+          NOT PRESCRIBED — DETERMINED. Reg 34(4)(b) lets the Registrar approve
+          "any other form and colour", and the black personalised plate is
+          issued under that limb rather than under the prescribed limb (a).
+          NZTA states the palette in its own words: personalised plate
+          characters "can be: white or silver on a black background; black, red
+          or blue on a white background." A colour-only variant of the same
+          format and the same series, hence a sub-entry (PRD-PLATES § 2.3) and
+          not a series of its own. Its 2022 launch is a secondary claim and is
+          NOT carried as a period.
+        evidence: secondary-wikipedia
+        evidence_note: "the 2022 launch year comes from the article and its news citations; the colours themselves come from NZTA and from reg 34(4)(b)"
+        sources:
+          - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Personalised plates are also made of aluminium, but the characters can be: white or silver on a black background; black, red or blue on a white background.'"
+          - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 34(4)(b), the Registrar-determination limb this style is issued under"
+    region_encoding: none
+    binding: owner
+    binding_note: "the exclusive right is allocated to a PERSON under s 259 of the Act and transfers between vehicles and between people (reg 43) — the one New Zealand series that does not bind to a vehicle"
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 34 in full (identifier, caps, refusal grounds, colours, material); reg 40 display; reg 43 transfer; reg 3 'exclusive right to personalised plates'"
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # milestone 1988, verbatim: 'Personalised plates are introduced, providing a source of income for road safety research and projects.'; 'introduced in 1988, these plates can have up to six numbers or letters'"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Personalised plates can have up to 6 characters ... include captions, messages or slogans'; the white-or-silver-on-black and black-red-or-blue-on-white palettes; 'When you buy a personalised plate, you're buying the exclusive right to that set of characters.'"
+    notes: >-
+      THE PERSONALISED PLATE — introduced in 1988 on the agency's own milestone,
+      and the reason New Zealand needs `matching: recall-only` more than any
+      jurisdiction in this dataset except the Dutch export plate. There is no
+      grammar to be strict about: the law caps the length and forbids offence, and
+      everything else is the purchaser's choice. Note the 1986 anomaly the agency
+      records without explaining: the combination CROWN was issued in 1986, two
+      years before the scheme existed, and it belongs to the Governor-General's
+      register entry rather than to a plate that is displayed — recorded in the
+      dossier as trivia, not modelled. The 1964-era ZZ9990-ZZ9999 block was
+      likewise sold ahead of the scheme, which is why the two-letter series is
+      recorded as ending at ZZ9989.
+
+  # =========================================================================
+  # TRADE PLATES — yellow, business-bound, and dated to the year. 2016 form.
+  # =========================================================================
+  - id: nz-trade-2016
+    class: dealer
+    categories: [car, van, truck, motorcycle, moped, trailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "X99999"
+      regex: '\A(?:X\d{1,5}|\d{1,5}X)\z'
+      regex_statutory: '\A(?:X\d{1,5}|\d{1,5}X)\z'
+      structure:
+        - "the letter X, preceding or following not more than 5 numerals"
+        - "SEPARATELY, and not part of the identifier: the last 2 digits of the calendar year for which the plate is issued, set vertically to the right"
+      charset:
+        fixed_letters: "X"
+        notes: >-
+          Reg 36(1)(b), verbatim: "in the case of other vehicles,— (i) not more
+          than 5 numbers preceded or followed by the letter 'X'; and (ii) the last
+          2 digits of the calendar year for which it is issued, arranged
+          vertically to the right of the letter and numbers." The regex IS that
+          grammar, so `regex_statutory` is written identically to `regex` rather
+          than omitted: on a trade plate the statute is not wider than what is
+          issued, which is the exact opposite of the ordinary series and is worth
+          a consumer being able to see.
+      year_field_note: >-
+        THE YEAR IS ON THE PLATE AND IS NOT IN THE SERIAL. It is set vertically,
+        to the right, in two digits, and it is what makes a New Zealand trade
+        plate self-expiring. Reg 27, verbatim: "(1) A trade plate comes into force
+        on the later of— (a) the first day of January of the year for which it is
+        issued; or (b) the day the trade plate was issued. (2) A trade plate
+        expires on 31 December of the year for which it is issued." A parse API
+        must not concatenate the year into the identifier, and a renderer must
+        place it as a separate vertical field.
+    design:
+      plate_note: "reg 36(2)(b): the plate is 'in the form of ... diagram 2 in Schedule 3'. The DIAGRAM is the specification and it is a drawing, not a dimensioned table — no measurement is stated anywhere in it or around it."
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed, spec_note: "reg 36(1): 'A trade plate must be made with a yellow retro-reflective background, bearing, embossed in black'. The statute names 'yellow' and gives no coordinates." }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium, basis: "reg 36(3)" }
+      band: { side: none }
+      display: "reg 42: rear, and at the Registrar's discretion also front. NZTA: 'Motorcycle, moped, tractor, trailer or trade plates must be fixed to the rear of the vehicle.'"
+    validity:
+      expires: "31 December of the year shown"
+      rule: "reg 27(1)-(2), quoted in format.year_field_note"
+    binding: business
+    binding_note: >-
+      A trade plate belongs to a PERSON OR BUSINESS and travels between vehicles:
+      reg 26(1) lets its holder operate a motor vehicle that "is not registered or
+      licensed" and "does not have affixed to it registration plates or a current
+      licence", subject to reg 26(2)'s conditions. NZTA's eligibility list: motor
+      vehicle traders, manufacturers, assemblers, distributors, importers, car
+      wreckers with a second-hand trader licence, government departments,
+      deliverers of unregistered vehicles, repairers, and transport-museum owners
+      or managers.
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 36(1)(b), 36(2)(b), 36(3); reg 27 duration; reg 26 use; reg 42 display; Schedule 3 diagram 2. Regulation 36 was 'replaced, on 1 January 2016, by regulation 4 of the Land Transport (Motor Vehicle Registration and Licensing) Amendment Regulations 2014 (LI 2014/378)'"
+      - "https://www.nzta.govt.nz/vehicles/motor-vehicle-traders/trade-plates  # who may hold trade plates; the standard (3500 kg or less) and heavy categories; 'Land Transport (Trade Plates) Notice 2011'"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Trade plates are made from aluminium with black embossed characters on a yellow background. They show the last 2 digits of the year the plate was bought. We issue one plate.'"
+    notes: >-
+      THE NEW ZEALAND TRADE PLATE IN ITS CURRENT FORM, dated to the day by an
+      amendment: reg 36 was REPLACED on 1 January 2016 by LI 2014/378 reg 4, and
+      the replacement did two things — it widened the numeral run from four to
+      five, and it split off a separate heavy-RUC form (nz-trade-heavy-2016).
+      Everything written about New Zealand trade plates on the enthusiast web
+      describes the pre-2016 four-numeral shape, which is nz-trade-1999 below;
+      the four-numeral description is not wrong, it is out of date, and the
+      difference is exactly one instrument. NOTE FOR THE VERIFIER: NZTA's trade-
+      plate page also names a Land Transport (Trade Plates) Notice 2011 governing
+      ELIGIBILITY. That notice was not fetched in this pass and is recorded as a
+      gap; nothing in this series depends on it, because the FORM is in reg 36.
+
+  - id: nz-trade-heavy-2016
+    class: dealer
+    categories: [truck, bus, trailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "X9999"
+      regex: '\A(?:X\d{1,4}|\d{1,4}X)\z'
+      structure:
+        - "the letter X, preceding or following not more than 4 numerals"
+        - "SEPARATELY: the letters HV above the last 2 digits of the calendar year, set vertically to the right"
+      charset:
+        fixed_letters: "X"
+        notes: >-
+          Reg 36(1)(a), verbatim: "in the case of a heavy RUC vehicle (within the
+          meaning of the Road User Charges Act 2012),— (i) not more than 4 numbers
+          preceded or followed by the letter 'X'; and (ii) the letters 'HV' above
+          the last 2 digits of the calendar year for which it is issued, arranged
+          vertically to the right of the numbers and the letter".
+      hv_field_note: >-
+        "HV" IS NOT PART OF THE IDENTIFIER. It sits in the vertical right-hand
+        field with the year, above it, and its presence is what tells a reader the
+        plate may be used on a vehicle over 3500 kg. Modelling it inside the
+        serial would produce a string no New Zealand plate reads as one unit.
+    design:
+      plate_note: "reg 36(2)(a): 'diagram 1 in Schedule 3', inserted on 1 January 2016 by reg 8 of LI 2014/378. A drawing, undimensioned."
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed, spec_note: "reg 36(1), the same yellow retro-reflective background as the light trade plate" }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium, basis: "reg 36(3)" }
+      band: { side: none }
+      display: "reg 42"
+    validity:
+      expires: "31 December of the year shown"
+      rule: "reg 27(1)-(2)"
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 36(1)(a) and 36(2)(a); Schedule 3 diagram 1 'inserted, on 1 January 2016, by regulation 8 of the Land Transport (Motor Vehicle Registration and Licensing) Amendment Regulations 2014 (LI 2014/378)'"
+      - "https://www.nzta.govt.nz/vehicles/motor-vehicle-traders/trade-plates  # 'Heavy trade plate: Must be used for heavy vehicles (vehicles with a gross vehicle mass over 3500kg). May also be used for a light vehicle.'"
+    notes: >-
+      THE HEAVY TRADE PLATE — a distinct series and not a variant, because the
+      numeral run is FOUR rather than five and the vertical field carries an extra
+      token, so both the format and the design differ (PRD-PLATES § 2.3). It came
+      into existence with the Road User Charges regime's vocabulary: reg 36(1)(a)
+      defines its scope by reference to a "heavy RUC vehicle (within the meaning
+      of the Road User Charges Act 2012)", and NZTA translates that into the 3500
+      kg line. The asymmetry is worth carrying: a heavy plate may lawfully be used
+      on a light vehicle, a light plate may not be used on a heavy one.
+
+  - id: nz-trade-1999
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 1999, end: 2016 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "X9999"
+      regex: '\A(?:X\d{4}|\d{4}X)\z'
+      structure:
+        - "the letter X, preceded or followed by exactly 4 numerals"
+        - "SEPARATELY: the last 2 digits of the year of issue, set vertically to the right"
+      charset:
+        fixed_letters: "X"
+        notes: >-
+          SR 1995/136 cl 7A(b), verbatim: the combined trade plate and licence
+          "must be made as an aluminium plate with a yellow retro-reflective
+          background, bearing, embossed in black,— (i) the letter 'X', preceded or
+          followed by 4 numerals; and (ii) the last 2 digits of the year of its
+          issue, arranged vertically to the right of the letter and numerals".
+          EXACTLY four, not "not more than four" — the 2016 replacement is what
+          introduced the "not more than" wording, and the difference is the reason
+          this series' regex is fixed-width where nz-trade-2016's is not.
+    design:
+      plate_note: "SR 1995/136 cl 7A(a): 'in the form of Diagram No 4 of Schedule 1' — a drawing, undimensioned"
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium, basis: "cl 7A(b)" }
+      band: { side: none }
+    validity:
+      expires: "31 December of the year shown"
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 7A, 'inserted, on 22 July 1999, by clause 3(1) of the Transport (Vehicle Registration and Licensing) Amendment Notice 1999 (SR 1999/204)'; cll 4 and 7 revoked by cl 3(2) of the same instrument"
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 36 as replaced on 1 January 2016 by LI 2014/378 reg 4 — the instrument that ends this series"
+      - "https://www.nzta.govt.nz/roads-and-rail/research-and-data/fascinating-facts/number-plates  # 'In 1986 black characters on yellow plates were introduced, showing the last two digits of the year the plate was purchased. The current series 1X–9999X and X1– X9999 replace the D series.'"
+    notes: >-
+      THE FOUR-NUMERAL TRADE PLATE — the one series in this file whose BOTH ends
+      are instrument dates, hence `instrument-dated-both-ends`: created 22 July
+      1999 by SR 1999/204 cl 3(1), superseded 1 January 2016 when LI 2014/378
+      replaced reg 36 with the five-numeral form. Two facts sit around it and are
+      recorded rather than folded in. FIRST, the yellow trade plate is older than
+      this series: NZTA dates yellow-with-year to 1986, and cl 7A of 1999 is what
+      merged the trade PLATE with the trade LICENCE into one object ("serves also
+      as the trade plate for the motor vehicle in respect of which it is issued")
+      — the pre-1999 form was not located and is a gap. SECOND, NZTA records that
+      the X series "replace the 'D' series", so New Zealand trade plates once ran
+      on a D letter; that older series is unmodelled and unresearched, and it is
+      also why D and X are the two letters withheld from trailer plates.
+
+  # =========================================================================
+  # OFFICIAL MOTOR VEHICLES — Schedule 4. Six modellable marks, one symbol.
+  # =========================================================================
+  - id: nz-diplomatic-dc
+    class: diplomatic
+    categories: [car, van, truck, bus]
+    period: { start: 1995 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "DC999"
+      regex: '\ADC\d+\z'
+      regex_strict: '\ADC[1-9]\d*\z'
+      structure:
+        - 'the letters DC'
+        - "a series of numbers from 1 onwards, of unstated length"
+      charset:
+        fixed_letters: "DC"
+        notes: >-
+          Schedule 4 row 3, verbatim: "For a motor vehicle other than a
+          motorcycle, moped, or trailer, 'DC' followed by a series of numbers
+          from 1 onwards". THE LENGTH IS GENUINELY UNBOUNDED IN LAW — reg 37(1)
+          applies Schedule 4 "in place of regulation 33(1)", so the six-character
+          cap does not reach an official plate — which is why the quantifier is
+          `+` rather than a fixed width. "from 1 onwards" is what `regex_strict`
+          encodes: no zero, no leading zero.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "reg 37 prescribes only the MARK; the plate itself falls back on reg 33(4), and the reflectorised white form is what NZTA describes for official vehicles today. Flagged: no instrument says so in terms." }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "front and rear (reg 39(3)) — a DC plate is by definition on a vehicle that is not a motorcycle, moped or trailer"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 37(1)-(2) and Schedule 4 row 3, covering diplomatic missions, persons with full diplomatic immunities under the Diplomatic Privileges and Immunities Act 1968, and organisations and persons under s 9(2)(a)-(b) of that Act"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 and its table row 2, the same mark in the same words, in force 1 July 1995"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'Official motor vehicles are embassy, consulate and high commission vehicles, and New Zealand Government crown vehicles. They have plates with a symbol of a crown or special characters, for example, CR (crown).'"
+    notes: >-
+      THE DIPLOMATIC MARK. period.start 1995 is `instrument-in-force`, not a
+      creation date: SR 1995/136 cl 5 is the earliest instrument located that
+      states this mark, and it plainly consolidates an older practice — the 2011
+      Schedule 4 reproduces it word for word sixteen years later. The scope is
+      wider than "embassies": Schedule 4 row 3 reaches four distinct groups,
+      including international organisations granted immunities under s 9(2)(a) of
+      the Diplomatic Privileges and Immunities Act 1968, so a DC plate is not
+      proof of an embassy.
+
+  - id: nz-diplomatic-dcc
+    class: diplomatic
+    categories: [motorcycle, moped, trailer]
+    period: { start: 1995 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999DCC"
+      regex: '\A\d+DCC\z'
+      regex_strict: '\A[1-9]\d*DCC\z'
+      charset:
+        fixed_letters: "DCC"
+        notes: >-
+          Schedule 4 row 3, second limb, verbatim: "for a motorcycle, moped, or
+          trailer, 'DCC' PRECEDED by a series of numbers from 1 onwards". The
+          reversal is deliberate in the instrument and is the whole reason this is
+          a separate series: a parse API must score "12DCC" and "DC12"
+          independently, exactly as plates/gb.yml scores the two Northern Irish
+          arrangements separately.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "one plate, rear (reg 39(2))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # Schedule 4 row 3, second limb"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 table row 2, second limb, from 1 July 1995"
+    notes: >-
+      THE DIPLOMATIC MOTORCYCLE AND TRAILER MARK — numerals FIRST, then DCC. New
+      Zealand builds its three-letter official marks by adding a letter to the
+      two-letter form and flipping the order, and it does so consistently across
+      all three families (DC/DCC, CC/CCC, FC/FCC). That consistency is the single
+      most useful thing about Schedule 4 for a parser, and it is stated in the
+      instrument rather than inferred.
+
+  - id: nz-consular-cc
+    class: consular
+    categories: [car, van, truck, bus]
+    period: { start: 1995 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CC999"
+      regex: '\ACC\d+\z'
+      regex_strict: '\ACC[1-9]\d*\z'
+      charset:
+        fixed_letters: "CC"
+        notes: >-
+          Schedule 4 row 4, verbatim: "For a motor vehicle other than a
+          motorcycle, moped, or trailer, 'CC' followed by a series of numbers from
+          1 onwards". Scope: governments with consular or equivalent missions, and
+          any person entitled to full consular immunities and privileges under the
+          Consular Privileges and Immunities Act 1971.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "front and rear (reg 39(3))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 37 and Schedule 4 row 4"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 table row 3, from 1 July 1995"
+    notes: >-
+      THE CONSULAR MARK, and the one New Zealand mark the agency's own history
+      page gets wrong — it files CC and CCC under "ministerial vehicles", which
+      Schedule 4 flatly contradicts (see common.official_marks.agency_disagreement).
+      This file follows the instrument. `class: consular` rather than `diplomatic`
+      because _meta/classes.yml distinguishes them and New Zealand's statute does
+      too, in separate rows keyed to separate Acts.
+
+  - id: nz-consular-ccc
+    class: consular
+    categories: [motorcycle, moped, trailer]
+    period: { start: 1995 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999CCC"
+      regex: '\A\d+CCC\z'
+      regex_strict: '\A[1-9]\d*CCC\z'
+      charset:
+        fixed_letters: "CCC"
+        notes: "Schedule 4 row 4, second limb: 'for a motorcycle, moped, or trailer, \"CCC\" preceded by a series of numbers from 1 onwards'"
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "one plate, rear (reg 39(2))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # Schedule 4 row 4, second limb"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 table row 3, second limb"
+    notes: >-
+      THE CONSULAR MOTORCYCLE AND TRAILER MARK. Authored for completeness of the
+      Schedule 4 table rather than because consular motorcycles are common: the
+      table is closed and primary, and a parse API that knows five of its six
+      alphanumeric marks will mis-score the sixth.
+
+  - id: nz-diplomatic-fc
+    class: diplomatic
+    categories: [car, van, truck, bus]
+    period: { start: 1995 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "FC999"
+      regex: '\AFC\d+\z'
+      regex_strict: '\AFC[1-9]\d*\z'
+      charset:
+        fixed_letters: "FC"
+        notes: >-
+          Schedule 4 row 5, verbatim: "For a motor vehicle other than a
+          motorcycle, moped, or trailer, 'FC' followed by a series of numbers from
+          1 onwards", for "Any other person entitled in New Zealand to any
+          immunities or privileges (other than those accorded to honorary
+          representatives) under the Diplomatic Privileges and Immunities Act
+          1968". THE PARENTHESIS IS THE POINT: honorary consuls and honorary
+          representatives are expressly OUTSIDE the official-plate scheme and take
+          ordinary plates.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "front and rear (reg 39(3))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 37 and Schedule 4 row 5"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 table row 4, from 1 July 1995"
+    notes: >-
+      THE RESIDUAL IMMUNITIES MARK — Schedule 4's catch-all row, for people with
+      some immunity under the 1968 Act who are not covered by the diplomatic or
+      consular rows. Because it is residual, an FC plate carries LESS information
+      than a DC or CC plate does: it says only that the holder has some privilege,
+      not which mission or which country. A parse API should not report it as
+      "diplomatic corps".
+
+  - id: nz-diplomatic-fcc
+    class: diplomatic
+    categories: [motorcycle, moped, trailer]
+    period: { start: 1995 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999FCC"
+      regex: '\A\d+FCC\z'
+      regex_strict: '\A[1-9]\d*FCC\z'
+      charset:
+        fixed_letters: "FCC"
+        notes: "Schedule 4 row 5, second limb: 'for a motorcycle, moped, or trailer, \"FCC\" preceded by a series of numbers from 1 onwards'"
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "one plate, rear (reg 39(2))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # Schedule 4 row 5, second limb"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5 table row 4, second limb"
+    notes: >-
+      THE RESIDUAL IMMUNITIES MOTORCYCLE AND TRAILER MARK, completing Schedule 4's
+      six alphanumeric marks. The seventh row of the table has no serial at all
+      and is recorded in classes_not_modelled.governor_general.
+
+  - id: nz-government-cr
+    class: government
+    categories: [car, van, bus]
+    period: { start: 2011 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "CR999"
+      regex: '\ACR\d+\z'
+      regex_strict: '\ACR[1-9]\d*\z'
+      charset:
+        fixed_letters: "CR"
+        notes: >-
+          Schedule 4 row 2, verbatim and complete: "New Zealand Government
+          Ministers of the Crown | 'CR' followed by a series of numbers from 1
+          onwards". No other constraint exists: no length, no reserved blocks, no
+          allocation rule.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: false
+      material: { base: aluminium }
+      band: { side: none }
+      display: "front and rear (reg 39(3))"
+    region_encoding: none
+    sources:
+      - "https://www.legislation.govt.nz/regulation/public/2011/0079/latest/whole.html  # reg 37 and Schedule 4 row 2 — the row that did not exist before 1 May 2011"
+      - "https://www.legislation.govt.nz/regulation/public/1995/0136/latest/whole.html  # cl 5's table, which has FOUR rows and no Ministers-of-the-Crown row at all — the negative that dates this series"
+      - "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # 'They have plates with a symbol of a crown or special characters, for example, CR (crown).'"
+    notes: >-
+      THE MINISTERIAL MARK, AND THE ONE NEW ZEALAND SERIES DATED BY AN ABSENCE.
+      period.start 2011 is `enabling-instrument` because Schedule 4 row 2 is NEW:
+      the 1995 Notice's table was fetched and read in full and contains no
+      ministerial row, so 1 May 2011 is the first date on which "CR" had any
+      statutory basis at all. THE PRACTICE IS OLDER THAN THE LAW and this file
+      says so rather than pretending the dates agree: CR-marked ministerial cars,
+      and CR1 on the Prime Minister's car, are reported in New Zealand news
+      coverage well before 2011. What governed them then was not located in this
+      pass — most likely an administrative allocation under the general power,
+      which is the same shape as the pre-2011 arrangement rules. Recorded as a
+      verifier target. `class: government` rather than `police` or `military`
+      because Schedule 4 keys the row to ministerial office, not to a fleet.
+
+# ---------------------------------------------------------------------------
+# Research notes, gaps and verifier targets. Everything this file KNOWS it does
+# not know, in one place, so the next pass starts where this one stopped.
+# ---------------------------------------------------------------------------
+research_notes:
+  wikipedia_dependent_claims:
+    rule: >-
+      PRD-PLATES § 4's Wikipedia row authorises fact extraction on four
+      conditions, the first of which is that every Wikipedia-derived fact is
+      tagged. Here is the complete enumeration for New Zealand, so that a future
+      decision to revisit the override can find every one of them in a single
+      pass. FOUR claims, no more:
+    claims:
+      - claim: "the current trailer arrangement is numeral-letter-letter-numeral-numeral and it began in 2024"
+        used_at: "nz-trailer-2024 period + format"
+        tag: secondary-wikipedia
+      - claim: "the LnnnL trailer arrangement stopped being issued around 2014"
+        used_at: "nz-trailer-2002 period.end"
+        tag: secondary-wikipedia
+      - claim: "the numeral-first motorcycle run had reached the ZUU block by July 2009, which is this file's period.end for it"
+        used_at: "nz-motorcycle-1988 period.end"
+        tag: secondary-wikipedia
+      - claim: "the car plate measures 360 x 124 mm"
+        used_at: "common.plate_dimensions only — deliberately NOT in any series design block"
+        tag: secondary-wikipedia
+    not_used_from_wikipedia: >-
+      Explicitly NOT taken, although the article states them: the claim that I, O
+      and X survive in the three-letter series only in the AAI, AAO and AAX
+      blocks; the list of banned three-letter combinations; the 1961 plate
+      distribution table; the year-by-year series-start table (the article marks
+      that section "unsourced"); and the CR1 / CROWN anecdotes, which appear in
+      this file's prose as reported context and nowhere as data.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Zealand  # accessed 2026-08-02; used as the mandatory finding aid, and its citation list was mined first — it cites the Land Transport Act 1998 and NZTA pages, and NOT the regulations, which had to be found through legislation.govt.nz's own agency index"
+  trailer_progression_not_modelled:
+    note: >-
+      The same secondary reports a four-step trailer progression after the
+      instrument-dated LnnnL form. Recorded here in this file's own words and
+      NOT authored as series (see nz-trailer-2024 notes for the reasoning), so
+      that a verifier who obtains an NZTA series statement can lift them whole:
+      a numeral, a letter, then three numerals, reported from 2014; two numerals,
+      a letter, then two numerals, reported from 2019; three numerals, a letter,
+      then one numeral, reported from 2021.
+    older_forms: >-
+      SR 1995/136 cl 2(3)(b) also permitted, and New Zealand also issued, a bare
+      numeral run of 1 to 99999; a numeral run of 1 to 9999 preceded or followed
+      by a single letter; and a numeral run of 1 to 999 followed by two or three
+      letters. Those are instrument-sourced shapes with no dates of their own and
+      belong to L4 historical depth.
+  folklore_flags:
+    - "MARCH VERSUS APRIL 2001. NZTA's own page says both, on one screen: the milestone table dates the last two-letter registration to April 2001, the plate-type description to March 2001. The three-letter start year is unaffected and both statements are recorded."
+    - "THE 1964 STARTING SERIAL. The agency says the permanent series started at AA100; the widely repeated enthusiast figure is AA1, and the agency's own range statement for the same series ('AA1–AA9999 to ZZ1–ZZ9999') is consistent with AA1 rather than AA100. This file asserts neither as a serial claim: only the YEAR is used."
+    - "'SIX TYPES OF REGISTRATION PLATE'. NZTA lists six, one of which (overseas visitor plates) is not a New Zealand plate at all and another of which (diplomatic) is mis-grouped against Schedule 4. The count is agency shorthand, not a taxonomy, and this file does not reproduce it."
+    - "THE CC/CR MIX-UP. NZTA's history page files CC and CCC under ministerial vehicles. Schedule 4 assigns them to consular missions. The instrument governs; the error is recorded at common.official_marks.agency_disagreement because it is repeated downstream across the enthusiast web."
+    - "'TWO LETTERS AND UP TO FOUR NUMBERS' VERSUS 'ONE OR TWO LETTERS AND THREE OR FOUR NUMBERS'. NZTA's motorcycle sentence has its halves transposed against its own examples (1RLH, 1AAA-99AAA) and against SR 1995/136 cl 2(3)(a)(ii). The examples and the instrument agree with each other; the prose does not; this file follows the examples and the instrument."
+  corpus_synergy:
+    note: >-
+      NEW ZEALAND IS A VEHICLESDB REGISTRY SOURCE, AND THAT MAKES IT A CORPUS
+      CANDIDATE. NZTA publishes Motor Vehicle Register extracts and a
+      registrations dashboard as open data; where a licensed extract carries
+      plate strings, the PRD-PLATES § 5.2 corpus test applies exactly as it does
+      to the Dutch kenteken set — the CURRENT series' regexes should jointly
+      match ≥ 99.9% of current New Zealand plates. The joint expression to test
+      is nz-standard-2001 ∪ nz-standard-1986 ∪ nz-standard-1964 for cars,
+      nz-motorcycle-2007 ∪ nz-motorcycle-1988 for the single-plate stream, and
+      the trailer series for trailers; the diplomatic and trade spaces are
+      carved out of the ordinary space by regs 33(2) and 34(3)(a) and should
+      appear only as their own marks. A corpus run would settle, at once and
+      empirically, the trailer-progression question this file has to leave open,
+      and would confirm or refute the I/O/X and V letter exclusions that no
+      instrument states.
+    source: "https://www.nzta.govt.nz/vehicles/licensing-rego/number-plates  # the register and open-data entry points are linked from NZTA's vehicles section"
+
+gaps:
+  - id: nz-gap-current-regulation-version
+    severity: high
+    note: >-
+      THE HIGHEST-VALUE VERIFIER TASK. The SR 2011/79 text read here is the
+      version as at 23 February 2022. legislation.govt.nz's own index lists three
+      later amending instruments that were NOT read: LI 2023/213, LI 2024/128 and
+      LI 2024/211. Regs 32-42 must be re-read in a post-2024 consolidation before
+      any claim in this file is treated as current. Nothing here depends on a
+      2023-2026 amendment being absent; everything here depends on the 2022 text
+      still being accurate.
+  - id: nz-gap-dimensions-and-font
+    severity: medium
+    note: >-
+      No plate dimension, font, character height, stroke width or spacing exists
+      in New Zealand plate law (header finding 1). The specification almost
+      certainly lives in the manufacturing contract held by LicenSys, and in
+      Schedule 3's trade-plate diagrams, which are drawings this pass could not
+      render from the archived HTML. A verifier who obtains either should add
+      `design.plate` and `design.characters` per series and delete
+      common.plate_dimensions.
+  - id: nz-gap-trailer-series-current
+    severity: high
+    note: >-
+      The single live source conflict: NZTA's history page still describes the
+      2002 LnnnL range as current, while a secondary reports three further
+      arrangements since 2014. Both are carried; neither is averaged. An NZTA
+      statement of the current trailer series settles nz-trailer-2002's end date
+      and nz-trailer-2024's existence in one step.
+  - id: nz-gap-letter-exclusions
+    severity: medium
+    note: >-
+      NZTA states that V is excluded after the FV series and that I and O are
+      "not used in some cases". No instrument states any letter exclusion, and
+      "in some cases" is not a rule, so no `regex_strict` in this file narrows
+      the letter alphabet. A published exclusion list — or a corpus run against
+      the Motor Vehicle Register — would let every standard-series strict twin be
+      tightened at once.
+  - id: nz-gap-trade-plates-notice-2011
+    severity: low
+    note: >-
+      NZTA's trade-plate page cites a Land Transport (Trade Plates) Notice 2011
+      for ELIGIBILITY. It was not fetched. The plate FORM is in reg 36 and does
+      not depend on it, but the notice may carry conditions worth recording.
+  - id: nz-gap-supplementary-plate-mark
+    severity: low
+    note: >-
+      Reg 35(2) requires a supplementary plate to bear "an additional letter,
+      number, word, or symbol or ... some other distinguishing feature" and never
+      says which. Until an image or specification is obtained, the class is
+      recorded as a mechanism and no series is authored.
+  - id: nz-gap-pre-2011-cr-basis
+    severity: low
+    note: >-
+      CR ministerial marks are reported long before Schedule 4 created the row on
+      1 May 2011, and the pre-2011 legal basis was not located. Either an older
+      instrument exists, or the marks were an administrative allocation — which
+      would be entirely consistent with how New Zealand handles arrangements
+      generally.
+  - id: nz-gap-military
+    severity: low
+    note: >-
+      No New Zealand Defence Force plate provision was found in either
+      instrument, and Schedule 4 does not mention the NZDF. Whether service
+      vehicles carry ordinary plates or a separate series is unknown.
+  - id: nz-gap-pre-1999-trade-plate
+    severity: low
+    note: >-
+      NZTA dates yellow-with-year trade plates to 1986 and records that the X
+      series replaced a "D" series. The pre-1999 form and the D series were not
+      located; SR 1995/136 cll 4 and 7 (the original trade-plate clauses) were
+      revoked on 22 July 1999 and their text is not in the consolidated version
+      read here. L4 work.
