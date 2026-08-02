@@ -1,0 +1,1271 @@
+# plates/fi.yml — Finland (PRD-PLATES gate L1, EU/EEA slice). DRAFT for
+# verification: researched by an Opus L1 researcher, never applied directly.
+#
+# THE FINNISH SOURCE CHAIN, AND WHY IT IS UNUSUALLY CLEAN
+#
+# Finland splits plate law across exactly three instruments, and all three are
+# free, textual and fetchable — no scanned bitmaps, no paywalled standard:
+#
+#   1. AJONEUVOLAKI 82/2021 (the Vehicles Act) — the frame. § 99 (currently in
+#      force, three momentit): "Ensirekisteröitävää ajoneuvoa varten annetaan
+#      rekisterikilvet, joissa on ajoneuvon yksilöivä rekisteritunnus. …
+#      Rekisteritunnuksen ja rekisterikilpien on oltava selkeästi erottuvia."
+#      Momentti 2 delegates the CONTENT of the mark and the COLOUR of the plate
+#      to a Government decree; momentti 3 delegates the DIMENSIONS and other
+#      technical properties to Traficom. Every format claim below therefore
+#      comes from the decree, and every millimetre from the Traficom määräys.
+#   2. VALTIONEUVOSTON ASETUS AJONEUVOISTA 162/2021 (25.2.2021, in force
+#      1.3.2021) § 16 — "Rekisteritunnuksen sisältö ja rekisterikilpien väri".
+#      EIGHT numbered items, quoted verbatim in the series entries below. This
+#      is the single most citable provision in the file: it fixes the letter/
+#      digit arrangement AND the background colour for every Finnish plate
+#      class in one paragraph. It repealed A 893/2007, which repealed
+#      A 1598/1995 — both fetched, both quoted where they carry a period claim.
+#   3. TRAFICOM MÄÄRÄYS "Rekisterikilpien ja siirtomerkkien mitat ja muut
+#      tekniset ominaisuudet", TRAFICOM/65798/03.04.03.00/2024, given 9.12.2024,
+#      in force 16.12.2024 — every dimension, the reflective-film standard, the
+#      1-1.5 mm embossing, the 3 mm border line, and Liitteet 1-8, which are the
+#      statutory TYPEFACE DRAWINGS.
+#
+# FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE FINNISH MARK ENCODES NOTHING. § 17 of A 162/2021, verbatim:
+#    "Ajoneuvolle annettava 16 §:n mukainen rekisteritunnus määräytyy
+#    sattumanvaraisesti." The mark is allocated AT RANDOM. Its 1995 predecessor
+#    said the same thing (A 1598/1995 § 36 a). So `region_encoding: none` on
+#    every series is a SOURCED claim, not an absence of evidence — no geography,
+#    no era, no district. The widely-repeated story that pre-1989 Finnish letter
+#    groups decoded to a lääni is recorded in the dossier as UNSOURCED.
+#
+# 2. THE L-CLASS MARK RUNS BACKWARDS, AND THE FLIP IS DATED TO THE DAY.
+#    A car mark is letters-then-digits (ABC-123); an L-class (motorcycle, moped,
+#    quadricycle) mark is digits-then-letters (123-ABC). That inversion is the
+#    single most useful structural tell on a Finnish plate. It is NOT ancient:
+#    A 1598/1995 § 36 put cars, L-class vehicles and trailers on the SAME
+#    letters-first shape, and A 893/2007 — in force 1 June 2008 — inverted the
+#    L-class one, with the transitional saving "Ennen tämän asetuksen
+#    voimaantuloa ajoneuvoa varten annetut tai kilpivalmistajalta tilatut
+#    L-luokan ajoneuvojen rekisterikilvissä olevat rekisteritunnukset saavat
+#    olla tämän asetuksen voimaan tullessa voimassa olleiden säännösten
+#    mukaisia." Hence `fi-lclass-lettersfirst`, this file's one-series-back
+#    entry, with a hard `period: {start: 1996, end: 2008}`.
+#
+# 3. THE FIN EURO-BAND HAS A REAL START DATE: 1 MAY 2001. Valtioneuvoston
+#    asetus 764/2000 (24.8.2000) inserted into A 1598/1995 the § 37 that reads
+#    "Edellä 36 §:n 1 momentin a kohdassa tarkoitetussa auton, moottoripyörän ja
+#    perävaunun sekä vientirekisteröitävän ajoneuvon rekisterikilvessä on …
+#    neuvoston asetuksen (EY) N:o 2411/98 liitteessä olevan määrittelyn mukainen
+#    kansallisuustunnus siten, että … tunnusmerkki on FIN", and its
+#    voimaantulosäännös reads "Tämä asetus tulee voimaan 1 päivänä toukokuuta
+#    2001." So the banded and unbanded plates are two series with two dates, and
+#    the unbanded one never closed — § 16(1)(1) still says "jollei jäljempänä
+#    toisin säädetä" and the Traficom määräys still specifies three unbanded car
+#    plate sizes.
+#
+# 4. TAXI PLATES ARE ENACTED BUT NOT YET IN FORCE. Laki 614/2026
+#    (26.6.2026) rewrites ajoneuvolaki §§ 99 and 101 to create "taksikilvet" —
+#    plates "muista rekisterikilvistä erottuvat" — and its own voimaantulo reads
+#    "Tämä laki tulee voimaan 1 päivänä tammikuuta 2027", with a further
+#    transitional giving existing licence-holders until 30.6.2027. NO SERIES IS
+#    AUTHORED FOR IT: the amending Act creates the class but publishes no format
+#    and no colour, and the implementing decree/määräys had not appeared when
+#    this pass ran. It is a dated, sourced FORTHCOMING item, recorded here and
+#    in the dossier so the quarterly audit picks it up.
+#
+# 5. THE STATUTORY TYPEFACE DRAWING CONTAINS Å, Ä AND Ö. Liite 1 to the 2024
+#    Traficom määräys ("Rekisteritunnuksen kirjasintyyppi, kirjaimet 72 mm") is
+#    a vector drawing of 29 letters: A-Z followed by Å, Ä and Ö — plus a
+#    side-by-side "Vanha"/"Uusi" pair for Y, the 2024 redesign that separates Y
+#    from V. Every regex in this file is written over A-Z, which is therefore
+#    possibly NARROWER than the authority's own repertoire. This is a genuine
+#    §2.6 stressor (the dataset's serial alphabet is A-Z 0-9) and is flagged in
+#    the dossier rather than silently assumed away.
+#
+# REGEX POLICY (as in plates/de.yml and plates/nl.yml). `format.regex` is the
+# lint-round-trippable form. `format.regex_strict` carries the ONE charset rule
+# Finland publishes and the round-trip forbids `regex` from expressing:
+# Traficom's own words on the erityiskilpi page, "Nolla ei voi olla numero-osan
+# alussa eikä ainoana numerona" — no leading zero and no bare zero — encoded as
+# `[1-9]\d{0,n}`, exactly the German Anlage-1 trick. The standard car series'
+# strict twin additionally excludes the two-letter combination CD, which the
+# same page reserves: "CD-kirjainyhdistelmä on vain diplomaattiajoneuvoille."
+#
+# SEPARATORS. A 162/2021 does not name a separator glyph; the Traficom määräys
+# does, and calls it the "väliviiva" — § 2(3) defines rekisteritunnus as
+# "rekisterikilvessä tai siirtomerkissä olevia kirjain- ja numerosarjaa sekä
+# niiden välissä mahdollisesti olevaa väliviivaa", and §§ 3.1-3.9 say per plate
+# type whether the hyphen is required ("tulee olla väliviiva") or forbidden
+# ("ei saa olla väliviivaa" — the two-row plates, where the groups sit on
+# separate lines instead). Patterns here always spell the canonical single-row
+# printed form with the hyphen (PRD-PLATES §2.6 rule 2); each design block
+# records which sizes print two rows and therefore no hyphen at all. The rule is
+# old: A 1598/1995 § 36(5) already said "Rekisterikilvessä olevat numerot
+# erotetaan rekisterikilvessä olevista kirjaimista väliviivalla."
+#
+# ÅLAND (AX) IS NOT IN THIS FILE, DELIBERATELY. See `out_of_scope` below.
+jurisdiction: fi
+authority:
+  name: Liikenne- ja viestintävirasto Traficom (Finnish Transport and Communications Agency)
+  url: "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/rekisterikilvet"
+binding: vehicle          # ajoneuvolaki 82/2021 § 99(1): the plates carry the
+                          # "ajoneuvon yksilöivä rekisteritunnus" — the mark is
+                          # the VEHICLE's, not the owner's (contrast CH).
+instrument:
+  act:
+    citation: "Ajoneuvolaki 82/2021"
+    in_force_from: "2021-03-01"
+    source: "https://www.finlex.fi/fi/lainsaadanto/2021/82  # § 99 Rekisterikilvet ja rekisteritunnus (mom. 2 delegates mark content + plate colour to a Government decree; mom. 3 delegates dimensions and other technical properties to Traficom); § 100 fixing; § 101 use; § 105 kansallisuustunnus/FIN; § 109-111 vientirekisteröinti; § 116 koenumerotodistus; § 118 siirtolupa"
+  decree:
+    citation: "Valtioneuvoston asetus ajoneuvoista 162/2021"
+    given: "2021-02-25"
+    in_force_from: "2021-03-01"
+    replaces: "Valtioneuvoston asetus ajoneuvojen rekisteröinnistä 893/2007 (itself in force 1.6.2008, replacing A 1598/1995, in force 1.1.1996)"
+    source: "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # Suomen säädöskokoelma PDF of 162/2021 — §§ 14-20 read verbatim from this file, not from a consolidation"
+  regulation:
+    citation: "Liikenne- ja viestintäviraston määräys: Rekisterikilpien ja siirtomerkkien mitat ja muut tekniset ominaisuudet, TRAFICOM/65798/03.04.03.00/2024"
+    given: "2024-12-09"
+    in_force_from: "2024-12-16"
+    replaces: "TRAFICOM/498866/03.04.03.00/2020, given 29.3.2021"
+    source: "https://www.finlex.fi/fi/viranomaiset/maarayskokoelmat/traficom-tieliikenne/2024/51087  # regulation landing page; main text PDF at /api/media/authority-regulation/536142/mainPdf/main.pdf, Liitteet 1-8 under /api/media/authority-regulation/536142/media/"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  mark_definition: >-
+    Traficom määräys § 2(3), verbatim: "rekisteritunnuksella rekisterikilvessä
+    tai siirtomerkissä olevia kirjain- ja numerosarjaa sekä niiden välissä
+    mahdollisesti olevaa väliviivaa" — the registration MARK is the letter
+    series plus the number series plus the hyphen between them where one is
+    printed. On two-row plates the määräys forbids the hyphen outright, so the
+    same mark is printed with a hyphen on a single-row plate and without one on
+    a two-row plate. A separator-forgiving consumer collapses both to the same
+    canonical serial, which is exactly what PRD-PLATES §2.6 guarantees.
+  allocation:
+    rule: "A 162/2021 § 17(1), verbatim: 'Ajoneuvolle annettava 16 §:n mukainen rekisteritunnus määräytyy sattumanvaraisesti. Liikenne- ja viestintävirasto voi kuitenkin pyynnöstä antaa ajoneuvokohtaisen, hakemuksessa yksilöidyn rekisteritunnuksen (erityistunnus).'"
+    consequence: "RANDOM allocation. No region, no era, no vehicle-class letter is derivable from a Finnish mark — only the letters/digits ARRANGEMENT and the plate colour carry information. § 17(3) adds that a vehicle whose plates are lost or stolen gets a NEW mark, so a Finnish mark is not even stable across the vehicle's life."
+    source: "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 17 Rekisteritunnuksen määräytyminen"
+  charset:
+    letters_drawn_in_annex: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, "Å", "Ä", "Ö"]
+    letters_note: >-
+      Liite 1 to the 2024 Traficom määräys draws 29 letters — the Latin A-Z plus
+      Å, Ä and Ö — and a "Vanha" (old) / "Uusi" (new) pair for Y. NO Finnish
+      instrument enumerates which of the 29 may appear in an issued mark, and no
+      authority page publishes an exclusion list. The regexes here are written
+      over A-Z; whether Å/Ä/Ö are ever issued (they are permitted on Åland's own
+      personalised plates, a different jurisdiction) is a RECORDED GAP.
+    no_leading_zero: true
+    no_leading_zero_note: >-
+      Traficom, erityiskilpi page, verbatim: "Nolla ei voi olla numero-osan
+      alussa eikä ainoana numerona." Zero may neither begin the number group nor
+      be the whole of it. This is the rule `regex_strict` carries and `regex`
+      cannot, because the lint's pattern generator emits "0" for a "9".
+    reserved_combinations: [CD]
+    reserved_note: 'Traficom, erityiskilpi page: "CD-kirjainyhdistelmä on vain diplomaattiajoneuvoille."'
+    restricted_letters: [W, Q]
+    restricted_note: >-
+      Traficom, erityiskilpi page: "Kirjainten W ja Q käytössä on rajoituksia
+      mopojen ja moottorikelkkojen rekisteritunnuksissa." The page states that
+      restrictions EXIST for W and Q on moped and snowmobile marks but does not
+      state what they are, so nothing is encoded — recorded gap.
+    group_sizes:
+      car: "2-3 letters + a number of at most 3 digits (A 162/2021 § 16(1)(1); Traficom erityiskilpi page: 'Auton rekisterikilvessä tulee olla 2-3 kirjainta ja enintään kolminumeroinen luku')"
+      lclass: "a number of at most 3 digits + 2-3 letters (A 162/2021 § 16(1)(2)); an ERITYISTUNNUS for an L-class vehicle may be either way round — Traficom: 'Moottoripyörän ja mopon erityiskilvessä tulee olla joko 2 tai 3 kirjainta ja enintään kolminumeroinen luku, tai toisinpäin'"
+      yellow: "a number of at most 3 digits + at most 3 letters (A 162/2021 § 16(1)(3)); no MINIMUM letter count is stated"
+    source: "https://www.traficom.fi/fi/autoilijat/hae-ajoneuvolle-erityiskilpea  # group sizes per vehicle class, the CD reservation, the leading-zero prohibition, the W/Q restriction, and the black-plate eligibility rules"
+  dimensions_table_source: "https://www.finlex.fi/api/media/authority-regulation/536142/media/Liite%208%20Suomessa%20annettavien%20rekisterikilpien%20ja%20siirtomerkkien%20mitat.pdf  # Liite 8: every plate type x plate size x character height/width x stroke width x hyphen size, in one table"
+  materials:
+    blank: "1 mm (± 0,05 mm) aluminium (Traficom määräys § 4.1.1)"
+    film: "reflective film to ISO 7591-1982 on white, yellow and blue plates; a black plate MAY NOT carry reflective film (§ 4.1.2)"
+    embossing: "mark and border line embossed 1-1,5 mm proud, hot-stamped in a non-reflective opaque colour (§ 4.1.3)"
+    border: "3 mm (± 0,5 mm) wide, running 5 mm (± 1 mm) from the plate edge, in the character colour, embossed to the same height as the mark (§ 4.1.3)"
+    tolerance: "± 1 mm on plate dimensions unless otherwise specified (§ 3)"
+    source: "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # § 4.1.1-4.1.3"
+  colours:
+    rule: >-
+      Traficom määräys § 4.4, verbatim: "Rekisteritunnuksen ja rekisterikilven
+      reunaviivan värin tulee olla valko- ja keltapohjaisessa rekisterikilvessä
+      musta. … Rekisteritunnuksen ja rekisterikilven reunaviivan värin tulee olla
+      mustapohjaisessa rekisterikilvessä ja sinipohjaisessa diplomaattikilvessä
+      valkoinen."
+    hex_basis_note: >-
+      NO Finnish instrument gives an RGB, RAL or Pantone value for any plate
+      colour — the law names colours (valkoinen, keltainen, sininen, musta,
+      punainen) and nothing more. Every hex in this file is therefore
+      `hex_basis: observed`, and the yellow and diplomatic-blue values were
+      sampled from Traficom's OWN plate photographs on the
+      "Suomessa käytettävät rekisterikilvet" page (a photograph, so
+      illumination-affected — treat as indicative, not as a spec).
+    sampled:
+      yellow_ground: "#F3A513"
+      diplomatic_blue_ground: "#225296"
+      euroband_blue_photographed: "#1A3A78"
+    source: "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # the authority's own gallery of every plate type in use, with sizes in the caption; page last updated 15.4.2026"
+  euro_band:
+    side: left
+    content: eu-stars+FIN
+    definition: >-
+      Traficom määräys § 2(1)-(2), verbatim: "FIN-kansallisuustunnuksella …
+      neuvoston asetuksessa (EY) N:o 2411/98 tarkoitettua tunnusmerkkiä, joka
+      Suomessa on FIN"; "kansallisuustunnusmerkillä rekisterikilvessä olevaa
+      merkkiä, jossa on sinisellä heijastavalla pohjalla kaksitoista
+      heijastavaa keltaista tähteä ja heijastava valkoinen kansallisuustunnus".
+      Twelve reflective yellow stars and a reflective white country code on a
+      blue reflective ground — a textual definition of the band's CONTENT, which
+      Reg. 2411/98's own bitmap annex does not supply (EU dossier finding 1).
+    geometry: "band 100 mm x 45 mm on the 118 x 442 car/trailer/export plate (Traficom määräys § 3.1.1; Liite 8's table says 102 x 45 for the same plate — a 2 mm internal discrepancy in the same instrument, recorded, not averaged); 85 mm x 45 mm on the 200 x 256 two-row plate and on the 200 x 165 motorcycle plate; FIN letters 20 mm high (§ 4.3)"
+    started: 2001
+    started_source: "https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2000/764  # Valtioneuvoston asetus 764/2000 of 24.8.2000 inserted the Reg. 2411/98 FIN sign into A 1598/1995 § 37; voimaantulosäännös: 'Tämä asetus tulee voimaan 1 päivänä toukokuuta 2001', with the saving that plates issued earlier stay valid and may be exchanged on application"
+  oval_sign:
+    note: >-
+      SEPARATE FROM THE BAND, and still required outside the EU. Ajoneuvolaki
+      § 105(3) and A 162/2021 § 18: the Geneva-1949/Vienna-1968 oval must show
+      black FIN on a white oval, horizontal axis >= 175 mm, vertical >= 115 mm,
+      letters >= 80 mm high, stroke >= 10 mm, and "Kansallisuustunnukseen ei saa
+      liittää lippua eikä muuta merkkiä" — no flag, no other device may be added.
+      Traficom's plate page states the practical rule: "Jos ajoneuvossasi on
+      EU-rekisterikilvet, et tarvitse erillistä kansallisuustunnusta (FIN)
+      ajaessasi EU-alueella. EU:n ulkopuolella kansallisuustunnus on pakollinen."
+    source: "https://www.finlex.fi/fi/lainsaadanto/2021/82  # ajoneuvolaki § 105"
+  font:
+    name: "no name — a statutory DRAWING"
+    statutory_basis: >-
+      Traficom määräys § 4.2: "Rekisterikilven rekisteritunnuksen on oltava
+      liitteiden 1-5 kirjasintyyppien mukaisia." Liitteet 1-5 are dimensioned
+      vector drawings of the letters and numerals at 72 mm, 70 mm, 56 mm and
+      35 mm; Liite 6 is the export plate's date numerals. Exactly the UK/DE/ES
+      pattern the EU dossier found (PRD-PLATES §6): the legal object is a
+      drawing, not a licensable typeface, so the render layer derives glyphs
+      from the drawing.
+    annexes:
+      - "Liite 1: Rekisteritunnuksen kirjasintyyppi, kirjaimet 72 mm — 29 glyphs (A-Z + Å Ä Ö) plus the Vanha/Uusi Y pair"
+      - "Liite 2: numerot 72 mm"
+      - "Liite 3: kirjaimet ja numerot 70 mm"
+      - "Liite 4: kirjaimet ja numerot 56 mm"
+      - "Liite 5: kirjaimet ja numerot 35 mm"
+      - "Liite 6: vientirekisteröidyn ajoneuvon voimassaoloaikaa ilmaisevien numeroiden kirjasintyyppi"
+      - "Liite 7: siirtomerkin kirjasintyyppi"
+    exception_flagged: >-
+      THE ONE EXCEPTION, AND IT MATTERS TO PRD-PLATES §6. The SIIRTOMERKKI
+      (transfer mark) is the one Finnish registration marking whose typeface is
+      NOT a drawing: Traficom määräys §§ 5.1 and 5.2 say, verbatim, "Siirtomerkin
+      kirjasintyyppi on Arial Narrow, bold/lihavoitu. Kirjasintyypin koko on
+      218p" (170p on the motorcycle/moped mark). That is a NAMED, LICENSABLE,
+      third-party typeface mandated by a national instrument — a
+      counter-example to the dossier's "no surveyed country mandates a
+      licensable font" finding, narrow (it is a plastic adhesive mark, not a
+      rekisterikilpi) but real. Flagged for the fonts section, not resolved here.
+    y_redesign: >-
+      The 2024 määräys reshaped Y to separate it from V. Traficom's own
+      announcement: the change "koskee uusia kilpiä, mutta jo käytössä olevat
+      kilvet säilyvät sellaisinaan" — new plates only, existing plates unchanged.
+      A render layer therefore needs BOTH Y glyphs, keyed on the plate's
+      manufacture date, which is not a field this schema carries.
+    y_redesign_source: "https://www.traficom.fi/fi/uutiset/rekisterikilpiin-uudistuksia-traktorimonkijoille-uusi-kilpityyppi-ja-parannuksia-luettavuuteen  # 16.12.2024: the new 220 x 152 mm tractor-ATV plate type and the Y/V legibility change; carries the määräys number and its 16.12.2024 entry into force"
+    source: "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # § 4.2, §§ 5.1-5.2, LIITTEET list"
+
+# ---------------------------------------------------------------------------
+# Recorded but deliberately NOT authored as series. Each is sourced; each is a
+# gap the human pass and the quarterly audit should carry forward.
+# ---------------------------------------------------------------------------
+out_of_scope:
+  aland:
+    status: "SEPARATE JURISDICTION — belongs in a future plates/ax.yml, not here."
+    mechanism: >-
+      The Åland Islands run their own vehicle register and issue their own
+      plates through their own authority. Traficom says so in terms on its own
+      plate page: "Puolustusvoimien ajoneuvoilla sekä Ahvenanmaalle
+      rekisteröidyillä ajoneuvoilla on omat kilpensä." Finnish law treats an
+      Åland registration as a FOREIGN-equivalent registration: ajoneuvolaki
+      § 112(3) requires a liikennekäytöstä poisto notification when a vehicle is
+      registered "Sotilasajoneuvorekisteriin, ulkomaille tai Ahvenanmaan
+      maakuntaan", and A 162/2021's foreign-vehicle chapter repeatedly reads
+      "rekisteröintivaltion tai Ahvenanmaan maakunnan rekisterikilpi". The
+      competent authority is Fordonsmyndigheten (an agency under Ålands
+      landskapsregering), which runs the register and issues personalised marks
+      on its own rules (2-7 characters for cars, 2-6 for motorcycles, "Alla
+      bokstäver i svenska alfabetet är tillåtet", 15-year permit, EUR 727).
+    distinguishing_sign: >-
+      Åland's international distinguishing sign changed from FIN to AX with
+      effect from 13 September 2025, per the depositary notification recorded on
+      the UN Treaty Collection status page for the 1968 Vienna Convention. This
+      is the same measured fact the EU/international dossier pinned (alongside
+      GB -> UK, 28.9.2021).
+    not_authored_because: "This pass's jurisdiction is fi. Åland is ISO 3166-1 alpha-2 AX and needs its own file with its own authority, its own ÅFS instruments and its own format research; nothing about it is asserted here beyond the mechanism."
+    sources:
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/rekisterikilvet  # 'Puolustusvoimien ajoneuvoilla sekä Ahvenanmaalle rekisteröidyillä ajoneuvoilla on omat kilpensä'"
+      - "https://www.fma.ax/fordon/personlig-registreringsskylt  # Fordonsmyndigheten's own rules for Åland personalised marks: character counts, the full Swedish alphabet, the 15-year permit"
+      - "https://www.regeringen.ax/understallda-myndigheter/fordonsmyndigheten  # Fordonsmyndigheten is a free-standing authority under the Åland Government, responsible for the vehicle register"
+      - "https://treaties.un.org/pages/ViewDetailsIII.aspx?src=TREATY&mtdsg_no=XI-B-19&chapter=11&clang=_en  # depositary record: FIN -> AX for the Åland Islands, effective 13.9.2025"
+  taxi_plates_2027:
+    status: "ENACTED, IN FORCE 1.1.2027, NO FORMAT PUBLISHED — no series authored."
+    detail: >-
+      Laki ajoneuvolain muuttamisesta 614/2026 (Helsingissä 26.6.2026) inserts
+      into ajoneuvolaki § 99 a new momentti: "Ajoneuvolle, jota käytetään
+      taksiliikenteessä, annetaan muista rekisterikilvistä erottuvat
+      rekisterikilvet (taksikilvet) …", and into § 101 the duty "Jos ajoneuvoa
+      käytetään taksiliikenteessä, ajoneuvossa on käytettävä taksikilpiä."
+      Voimaantulo: "Tämä laki tulee voimaan 1 päivänä tammikuuta 2027", with
+      § 195(7) from 1.2.2027 and the new § 153 a (checking taxi-plate conditions
+      at inspection) from 1.7.2027, and a transitional giving existing taxi
+      licence-holders until 30 June 2027 to fit them. The Act says only that the
+      plates must be DISTINGUISHABLE from other plates; the format and colour
+      belong to the § 99 delegations and had not been issued when this pass ran.
+    sources:
+      - "https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2026/614  # Laki 614/2026: which sections it amends, the taxi-plate wording, and all four entry-into-force dates"
+      - "https://www.finlex.fi/fi/lainsaadanto/2021/82  # Finlex marks the amended §§ 99 and 101 as 'tulee voimaan 1.1.2027' and prints the currently-in-force wording as 'Aiempi sanamuoto'"
+  tullikilpi:
+    status: "SOURCED CONTENT, UNSOURCED ARRANGEMENT — no series authored."
+    detail: >-
+      A 162/2021 § 16(1)(8), verbatim: "tullikilvessä on yksi kirjain,
+      järjestysnumero ja kirjaimet FIN punaisella värillä valkoisella,
+      heijastavalla pohjalla." One letter, a serial number and the letters FIN,
+      in red on a white reflective ground. The identical sentence appears in
+      A 1598/1995 § 36(3), so the class is at least thirty years old. But
+      NOTHING states the printed ORDER or the digit count, the Traficom
+      dimensions määräys does not cover the customs plate at all, and Traficom's
+      plate gallery does not illustrate it. A pattern would be a guess, so none
+      is written.
+    source: "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(8)"
+  president:
+    status: "NO SERIAL — cannot be a series under this schema."
+    detail: 'A 162/2021 § 16(1)(5), verbatim: "tasavallan presidentin virka-autossa voi rekisterikilpien asemesta olla Suomen vaakuna" — the President''s official car may carry the coat of arms of Finland INSTEAD OF plates. The identical rule is in A 1598/1995 § 36(1)(d). A plate with no mark has no pattern and no regex; recorded here.'
+    source: "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(5)"
+  military:
+    status: "OUT OF TRAFICOM'S HANDS — not researched to a primary in this pass."
+    detail: >-
+      Finnish Defence Forces vehicles sit in a separate register
+      (sotilasajoneuvorekisteri) that ajoneuvolaki § 112(3) treats like a foreign
+      register, and Traficom states plainly that "Puolustusvoimien ajoneuvoilla
+      … on omat kilpensä". The instrument that fixes the military mark's format
+      was not located in this pass; no series is authored and no format is
+      guessed.
+    source: "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/rekisterikilvet"
+
+series:
+
+  # =========================================================================
+  # THE STANDARD CAR SERIES — three plates, one format, three designs.
+  # A 162/2021 § 16(1)(1), verbatim: "auton ja perävaunun rekisterikilvessä on
+  # kaksi tai kolme mustaa kirjainta ja musta, enintään kolminumeroinen luku
+  # valkoisella, heijastavalla pohjalla sekä, jollei jäljempänä toisin säädetä,
+  # kansallisuustunnus".
+  # =========================================================================
+  - id: fi-standard-eu
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2001 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{2,3}-\d{1,3}\z'
+      regex_strict: '\A(?!CD-\d)[A-Z]{2,3}-[1-9]\d{0,2}\z'
+      charset:
+        letters: "2 or 3, from the Liite 1 repertoire (A-Z assumed; see common.charset)"
+        digits: "1 to 3, no leading zero, never a bare 0"
+        excluded_combinations: [CD]
+        notes: >-
+          Two sourced narrowings that `regex` cannot carry: the leading-zero
+          prohibition ("Nolla ei voi olla numero-osan alussa eikä ainoana
+          numerona") and the CD reservation ("CD-kirjainyhdistelmä on vain
+          diplomaattiajoneuvoille"), both from Traficom's erityiskilpi page. The
+          CD lookahead only bites on the two-letter shape, which is the only one
+          that could collide with fi-diplomatic-cd.
+      progression: >-
+        None to record: A 162/2021 § 17(1) allocates the mark AT RANDOM
+        ("määräytyy sattumanvaraisesti"), so no era or block inference is
+        possible from a Finnish mark, and a lost-plate replacement gets an
+        entirely new mark (§ 17(3)).
+      separator_note: >-
+        Traficom määräys § 3.1.1: on the 118 x 442 plate "Kirjainten ja
+        numeroiden välissä tulee olla väliviiva" — a hyphen is REQUIRED. On the
+        200 x 256 two-row plate the same section says letters go on the top row,
+        digits on the bottom, and "Kirjainten ja numeroiden välissä ei saa olla
+        väliviivaa" — a hyphen is FORBIDDEN. Same mark, two printed forms.
+    design:
+      plate: { w: 442, h: 118, unit: mm }
+      plate_variants:
+        - { w: 256, h: 200, unit: mm, note: "two-row: letters above, digits below, NO hyphen; band 85 x 45 mm top-left" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "the decree says 'valkoisella, heijastavalla pohjalla'; no RGB/RAL anywhere in Finnish law" }
+      foreground: "#000000"
+      border: { color: "#000000", note: "3 mm wide, 5 mm from the edge, embossed to the mark's height (Traficom määräys § 4.1.3)" }
+      band: { side: left, color: "#003399", content: eu-stars+FIN, hex_basis: observed, note: "12 reflective yellow stars + reflective white FIN on a blue reflective ground (määräys § 2(2)); 100 x 45 mm per § 3.1.1, 102 x 45 mm per Liite 8 — the instrument disagrees with itself by 2 mm" }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+      emblem: { present: false }
+      seal: { present: false, note: "Finland applies no inspection or registration sticker to the plate — there is no Finnish equivalent of the German Stempelplakette" }
+      rear_differs: false
+      display: "two plates on a car, front and rear (A 162/2021 § 14(2); ajoneuvolaki § 100(2)); mounted upright or tilted at most 30 degrees outward at the bottom, wholly unobscured (A 162/2021 § 15)"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(1) — 2 or 3 black letters and a black number of at most 3 digits on a white reflective ground, plus the nationality sign; § 14(2) two plates for a car; § 15 mounting; § 17 random allocation"
+      - "https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2000/764  # A 764/2000: the FIN Euro-band inserted into A 1598/1995 § 37, in force 1.5.2001 — the date this series starts"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # Traficom määräys §§ 2, 3.1.1, 4.1-4.4: band definition, 118 x 442 and 200 x 256, hyphen required/forbidden, 72 mm characters, 11 mm stroke, aluminium, ISO 7591-1982 film, embossing, border"
+      - "https://www.traficom.fi/fi/autoilijat/hae-ajoneuvolle-erityiskilpea  # 2-3 letters + at most 3 digits; no leading zero; CD reserved for diplomatic vehicles"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Auton matala EU-kilpi (118x442 mm)' and 'Auton korkea EU-kilpi (200x256 mm)' in the authority's own gallery"
+    notes: >-
+      THE CURRENT FINNISH PLATE. period.start 2001 is a REAL start, not an
+      instrument date: A 764/2000 created the FIN Euro-band with effect from
+      1 May 2001, and Traficom now issues these at first registration by default
+      ("Ensirekisteröinnin yhteydessä ajoneuvo saa katsastustoimipaikalta
+      EU-rekisterikilvet, joiden rekisteritunnus määräytyy sattumanvaraisesti").
+      The FORMAT is older than the band — A 1598/1995 § 36 already read "kaksi
+      tai kolme kirjainta ja enintään kolminumeroisen luvun käsittävä tunnus" —
+      which is why the unbanded twin (fi-standard-white) carries an earlier
+      start and is a separate series rather than a variant.
+
+  - id: fi-standard-white
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{2,3}-\d{1,3}\z'
+      regex_strict: '\A(?!CD-\d)[A-Z]{2,3}-[1-9]\d{0,2}\z'
+      charset: { notes: "identical to fi-standard-eu — the band is a design difference, not a format difference" }
+      separator_note: "hyphen required on all three sizes (Traficom määräys § 3.1.2: 'Kirjainten ja numeroiden välissä tulee olla väliviiva')"
+    design:
+      plate: { w: 397, h: 118, unit: mm }
+      plate_variants:
+        - { w: 338, h: 118, unit: mm }
+        - { w: 300, h: 112, unit: mm, note: "the small plate: 56 mm characters, 8 mm stroke, 10 x 10,5 mm hyphen; cannot be made with mounting holes (määräys § 4.1.1)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, note: "56 mm / 34 mm / 8 mm on the 112 x 300 plate" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(1): the nationality sign applies 'jollei jäljempänä toisin säädetä', so an unbanded white plate remains a lawful issue"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(a) — 'auton, L-luokan ajoneuvon sekä perävaunun rekisterikilvessä on kaksi tai kolme kirjainta ja enintään kolminumeroisen luvun käsittävä tunnus mustin merkein valkealla, heijastavalla pohjalla'; § 70: 'Tämä asetus tulee voimaan 1 päivänä tammikuuta 1996'"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # Traficom määräys § 3.1.2: three sizes for a car plate without the nationality mark — 118 x 397, 118 x 338, 112 x 300"
+      - "https://www.traficom.fi/fi/autoilijat/hae-ajoneuvolle-erityiskilpea  # who may have the small 112 x 300 plate: a vehicle that already has one, or one an inspector has confirmed cannot take a long plate"
+    notes: >-
+      THE UNBANDED WHITE PLATE — still issued, and the reason a Finnish plate
+      without a blue band is not automatically old. period.start 1996 is
+      instrument-dated, not an origin claim: A 1598/1995 (in force 1.1.1996) is
+      the EARLIEST instrument pinned in this pass that states this exact
+      letters-then-digits shape on a white reflective ground. Finland's
+      white-plate era is universally said to begin in 1972, and two primaries
+      bear on that year without stating it — A 162/2021 § 16(2) allows black
+      plates for an imported vehicle "otettu käyttöön ennen vuotta 1972", and
+      Traficom's erityiskilpi page allows them for a Finnish car or trailer "joka
+      on otettu käyttöön vuonna 1972 tai aiemmin" and a Finnish motorcycle "joka
+      on otettu käyttöön vuonna 1973 tai aiemmin". Those are ELIGIBILITY CUTOFFS
+      for the black plate, not the start date of this format, and the 1972/1973
+      instrument itself is a recorded gap. Overlaps fi-standard-eu because both
+      are genuinely on issue in parallel.
+
+  - id: fi-standard-black
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{2,3}-\d{1,3}\z'
+      regex_strict: '\A(?!CD-\d)[A-Z]{2,3}-[1-9]\d{0,2}\z'
+      charset: { notes: "the § 16(1)(1) format unchanged — only the colours invert" }
+    design:
+      plate: { w: 338, h: 118, unit: mm }
+      plate_variants:
+        - { w: 397, h: 118, unit: mm }
+      background: { color: "#000000", finish: non-retroreflective, hex_basis: observed, spec_note: "Traficom määräys § 4.1.2: 'Mustapohjaisessa rekisterikilvessä ei saa käyttää heijastavaa kalvoa' — a black plate MAY NOT be reflective, the only Finnish plate barred from retroreflection" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", note: "määräys § 4.4: white mark and white border on a black plate" }
+      band: { side: none, note: "§ 16(2) issues these 'ilman kansallisuustunnusta' — expressly without the nationality sign" }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(2), verbatim: 'Ajoneuvoa varten voidaan hakemuksesta antaa rekisterikilvet, joissa 1 momentin 1 tai 2 kohdassa tarkoitettu rekisteritunnus on valkoinen mustalla pohjalla ilman kansallisuustunnusta, jos ajoneuvossa on aikaisemmin ollut tällaiset kilvet tai jos ulkomailta tuotu ajoneuvo on otettu käyttöön ennen vuotta 1972'"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(f) carries the same rule with the same 1972 cutoff — the regime is at least as old as 1996"
+      - "https://www.traficom.fi/fi/autoilijat/hae-ajoneuvolle-erityiskilpea  # the four eligibility routes, including 'Suomessa käyttöönotetulle autolle tai perävaunulle, joka on otettu käyttöön vuonna 1972 tai aiemmin' and 'Suomessa käyttöönotetulle moottoripyörälle, joka on otettu käyttöön vuonna 1973 tai aiemmin'"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys §§ 3.1.2, 4.1.2, 4.4: black car plates are 118 x 338 or 118 x 397, non-reflective, white mark and border"
+    notes: >-
+      THE RETRO BLACK PLATE — and the trap it sets. It looks like a pre-1972
+      Finnish plate and it is not one: a black plate issued today carries the
+      MODERN § 16(1)(1) mark (2-3 letters, then up to 3 digits), because § 16(2)
+      says in terms that it is "1 momentin 1 tai 2 kohdassa tarkoitettu
+      rekisteritunnus" printed white on black. Nothing about the SERIAL is
+      historic; only the colours are. CLASS CAVEAT: `historic` is the closest
+      value in _meta/classes.yml, but the legal test is not age — it is that the
+      vehicle already had such plates, OR was imported and first taken into use
+      before 1972, OR is a museum vehicle. The genuine pre-1972 Finnish plate,
+      with its own (unpinned) format, is a recorded gap and is NOT this entry.
+
+  - id: fi-museum-car-m
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "MLL-999"
+      regex: '\AM[A-Z]{1,2}-\d{1,3}\z'
+      regex_strict: '\AM[A-Z]{1,2}-[1-9]\d{0,2}\z'
+      charset:
+        first_letter: [M]
+        notes: >-
+          Traficom, museum-vehicle registration page, verbatim: "Museoajoneuvon
+          tunnus alkaa M-kirjaimella." The M is the museum SERIES marker inside
+          an otherwise ordinary 2-3 letter group — Traficom's own gallery
+          illustrates "MA-126" on the 118 x 338 museum car plate. The decree
+          itself does not mention the M; the authority page is the only primary
+          for it, and it is recorded as such.
+    design:
+      plate: { w: 338, h: 118, unit: mm }
+      plate_variants:
+        - { w: 397, h: 118, unit: mm }
+      background: { color: "#000000", finish: non-retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+    eligibility:
+      minimum_age_years: 30
+      rule: >-
+        Traficom: "Museoajoneuvolla tarkoitetaan ajoneuvoa, jonka valmistusvuoden
+        päättymisestä on kulunut vähintään 30 vuotta ja se on säilytetty
+        alkuperäistä vastaavassa kunnossa tai entisöity asianmukaisesti." The
+        opinion on museum-vehicle eligibility is given by a national registered
+        museum-vehicle organisation (SAHK ry, FHRA ry, Classic Data,
+        Autohistoriallinen Seura ry), not by Traficom. Note the same page's
+        counter-intuitive fact: "ajoneuvolaki ei aseta rajoituksia
+        museoajoneuvojen käyttöajalle" — Finnish law places NO seasonal or
+        mileage limit on a museum vehicle; any limit comes from the insurer.
+    region_encoding: none
+    sources:
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/museoajoneuvon-rekisterointi  # the 30-year definition, the accrediting organisations, 'Museoajoneuvolle voidaan myöntää museoajoneuvosarjaan kuuluva mustapohjainen museoauton tai museomoottoripyörän rekisterikilpi. Museoajoneuvon tunnus alkaa M-kirjaimella', and the fact that a museum vehicle may instead run ordinary white or EU plates"
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(3): a museum vehicle may be given plates with the § 16(1)(1)/(2) mark 'valkoinen mustalla pohjalla ilman kansallisuustunnusta'"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Museoauton kilpi M-alkuinen (118x338 mm)', illustrated with MA-126"
+    notes: >-
+      THE MUSEUM SERIES PROPER — the one Finnish mark with a fixed first letter,
+      and therefore the only Finnish plate string that identifies its own class.
+      Distinguished from fi-standard-black, which is the same black design
+      WITHOUT the M constraint and is open to non-museum vehicles. A museum
+      vehicle may decline the black plate entirely and run ordinary white or EU
+      plates; the M mark travels with the museum registration, not with the
+      colour. period.start is instrument-dated on A 1598/1995, whose § 36(1)(b)
+      already provided black museum plates; the M-prefix rule itself is sourced
+      only to Traficom's current page and its own start date is a recorded gap.
+
+  # =========================================================================
+  # TRAILERS. Same § 16(1)(1) sentence as cars ("auton ja perävaunun"), same
+  # serial space, but the Traficom määräys gives trailers a DIFFERENT set of
+  # sizes — which is why they are their own series and not a category on the
+  # car entries.
+  # =========================================================================
+  - id: fi-trailer-eu
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2001 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{2,3}-\d{1,3}\z'
+      regex_strict: '\A(?!CD-\d)[A-Z]{2,3}-[1-9]\d{0,2}\z'
+      charset: { notes: "the same § 16(1)(1) grammar and the same random pool as cars — a Finnish mark does NOT say whether it is on a car or a trailer" }
+    design:
+      plate: { w: 442, h: 118, unit: mm }
+      plate_variants:
+        - { w: 256, h: 200, unit: mm, note: "two-row, no hyphen, band 85 x 45 mm top-left" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+FIN, hex_basis: observed }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+      display: "one plate, at the rear (A 162/2021 § 14(2): two plates only for a car and a snowmobile; ajoneuvolaki § 100(2))"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(1) covers 'auton ja perävaunun' in one sentence; § 14(2) one plate for a trailer"
+      - "https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2000/764  # A 764/2000 extended the FIN band to trailers with effect from 1.5.2001"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.2.1: trailer plate with the nationality mark is 118 x 442 or 200 x 256"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Perävaunun EU-kilpi (118x442 mm)' and 'Perävaunun korkea EU-kilpi (200x256 mm)', illustrated with DNZ 106 and WAW-100"
+    notes: >-
+      THE TRAILER EU PLATE. Modelled separately from fi-standard-eu because the
+      Traficom määräys gives the two different size menus — a trailer has no
+      118 x 338 and no 112 x 300 option — and because consumers key on
+      `class: trailer`. The mark itself is indistinguishable from a car's: same
+      grammar, same random pool, one plate instead of two.
+
+  - id: fi-trailer-plain
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{2,3}-\d{1,3}\z'
+      regex_strict: '\A(?!CD-\d)[A-Z]{2,3}-[1-9]\d{0,2}\z'
+      charset: { notes: "as fi-trailer-eu" }
+      separator_note: "hyphen required (määräys § 3.2.2)"
+    design:
+      plate: { w: 397, h: 118, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+    variants:
+      - class: trailer
+        design: { background: { color: "#000000", finish: non-retroreflective, hex_basis: observed }, foreground: "#FFFFFF", plate: { w: 397, h: 118, unit: mm } }
+        note: >-
+          BLACK TRAILER PLATE, and a live contradiction between two Traficom
+          documents. The 2024 määräys § 3.2.2 still says "Ilman
+          kansallisuustunnusmerkkiä olevan perävaunun rekisterikilven pohjaväri
+          voi olla heijastava valkoinen tai heijastamaton musta", yet Traficom's
+          own gallery labels the illustration "Perävaunun mustapohjainen kilpi
+          -ei enää myönnetä" (no longer issued). Recorded as a colour-only
+          variant with the disagreement stated, per PRD-PLATES §5.3: the
+          disagreement is not averaged away.
+        sources:
+          - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.2.2 permits white OR black"
+          - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # gallery image filename 'Perävaunun mustapohjainen kilpi -ei enää myönnetä 118x397 mm'"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.2.2: one size only, 118 x 397, hyphen required, white or black ground"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(a) — trailers on the same letters-then-digits mark since at least 1.1.1996"
+    notes: >-
+      THE UNBANDED TRAILER PLATE. One size only (118 x 397), against three for a
+      car — the sharpest design difference in the Finnish system between two
+      plates that carry identical marks. Overlaps fi-trailer-eu because both are
+      genuinely issuable; carries the black-ground variant and its recorded
+      contradiction.
+
+  # =========================================================================
+  # L-CLASS. A 162/2021 § 16(1)(2), verbatim: "L-luokan ajoneuvon
+  # rekisterikilvessä on musta, enintään kolminumeroinen luku ja kaksi tai kolme
+  # mustaa kirjainta valkoisella, heijastavalla pohjalla; L3e-, L4e-, L5e- ja
+  # L7e-luokan ajoneuvon rekisterikilvessä on myös kansallisuustunnus, jollei
+  # jäljempänä toisin säädetä". DIGITS FIRST — the inverse of the car mark — and
+  # the band only for the bigger L classes, never for mopeds.
+  # =========================================================================
+  - id: fi-motorcycle-eu
+    class: motorcycle
+    categories: [motorcycle, quadricycle]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999-LLL"
+      regex: '\A\d{1,3}-[A-Z]{2,3}\z'
+      regex_strict: '\A[1-9]\d{0,2}-[A-Z]{2,3}\z'
+      charset:
+        digits: "1 to 3, no leading zero, never a bare 0"
+        letters: "2 or 3"
+        notes: >-
+          The CD reservation does not need excluding here: CD would have to be
+          the LETTER group, which on an L-class mark comes last, and no
+          diplomatic plate has that shape.
+      separator_note: >-
+        The 200 x 165 plate is TWO-ROW and the määräys § 3.3.1 forbids the
+        hyphen outright ("Kirjainten ja numeroiden välissä ei saa olla
+        väliviivaa"); Traficom's own gallery accordingly shows "10 TRF". The
+        pattern spells the canonical single-row form with the hyphen per
+        PRD-PLATES §2.6 rule 2; a separator-forgiving consumer canonicalises
+        both printings to the same serial.
+    design:
+      plate: { w: 165, h: 200, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+FIN, hex_basis: observed, note: "85 x 45 mm, top-left corner (määräys § 3.3.1)" }
+      characters: { height_mm: 70, width_max_mm: 40, stroke_mm: 9 }
+      layout: "two rows, no hyphen"
+      display: "one plate, at the rear (A 162/2021 § 14(2))"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(2): digits then 2-3 letters on white reflective; the nationality sign for L3e, L4e, L5e and L7e"
+      - "https://www.finlex.fi/fi/lainsaadanto/2007/893  # A 893/2007, in force 1.6.2008, is the instrument that inverted the L-class mark; its transitional saves marks issued or ordered before that date"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.3.1: 200 x 165, two rows, no hyphen, band 85 x 45 top-left; § 4.3: 70 mm characters, 40 mm max width, 9 mm stroke"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Moottoripyörän ja nelipyörän EU-kilpi (200x165 mm)', illustrated with 10 TRF"
+    notes: >-
+      THE CURRENT MOTORCYCLE / TRICYCLE / QUADRICYCLE PLATE. period.start 2008 is
+      real, not an instrument date: A 893/2007 entered into force on 1 June 2008
+      and inverted the L-class mark from letters-first to digits-first, saving
+      earlier marks expressly. So a Finnish plate reading 123-ABC on a
+      motorcycle cannot predate June 2008, while ABC-123 on a motorcycle cannot
+      POST-date it except as an erityistunnus (Traficom permits an L-class
+      special mark "toisinpäin"). That asymmetry is the single most useful
+      Finnish age-inference fact and the reason fi-lclass-lettersfirst exists.
+
+  - id: fi-motorcycle-noband
+    class: motorcycle
+    categories: [motorcycle, quadricycle]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999-LLL"
+      regex: '\A\d{1,3}-[A-Z]{2,3}\z'
+      regex_strict: '\A[1-9]\d{0,2}-[A-Z]{2,3}\z'
+      charset: { notes: "identical grammar to fi-motorcycle-eu" }
+      separator_note: "no hyphen on the 200 x 165 two-row plate; hyphen REQUIRED on the 118 x 280 low plate (määräys § 3.3.2)"
+    design:
+      plate: { w: 165, h: 200, unit: mm }
+      plate_variants:
+        - { w: 280, h: 118, unit: mm, note: "the low single-row plate — museum and other black-ground motorcycle plates; hyphen required; 70 mm characters, 8 mm stroke, 9 x 10 mm hyphen; cannot be made with mounting holes" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      characters: { height_mm: 70, width_max_mm: 40, stroke_mm: 9 }
+    variants:
+      - class: motorcycle
+        design: { background: { color: "#000000", finish: non-retroreflective, hex_basis: observed }, foreground: "#FFFFFF", plate: { w: 165, h: 200, unit: mm } }
+        note: >-
+          BLACK-GROUND MOTORCYCLE PLATE, permitted by määräys § 3.3.2 in both the
+          200 x 165 and 118 x 280 shapes, non-reflective per § 4.1.2, white mark
+          and border per § 4.4. Colour-only variant of this series, so a
+          sub-entry per PRD-PLATES §2.3. Traficom's gallery illustrates both
+          ("Moottoripyörän mustapohjainen kilpi 200x165 mm" with 98-BBM, and
+          "Moottoripyörän mustapohjainen matala kilpi 118x280 mm").
+        sources:
+          - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.3.2"
+          - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(2): the nationality sign applies 'jollei jäljempänä toisin säädetä', so an unbanded L-class plate is lawful"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.3.2: 200 x 165 white or black, and the 118 x 280 low plate with a required hyphen"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Moottoripyörän valkopohjainen kilpi (200x165 mm)' and the two black variants"
+    notes: >-
+      THE UNBANDED MOTORCYCLE PLATE. Same mark, same 2008 inversion, no blue
+      band — and, uniquely in the Finnish system, the design offers a SECOND
+      GEOMETRY: the 118 x 280 low single-row plate, which is where the hyphen
+      reappears on an L-class mark. That plate is also the museum motorcycle's
+      shape (see fi-museum-motorcycle-m).
+
+  - id: fi-lclass-lettersfirst
+    class: motorcycle
+    categories: [motorcycle, moped, quadricycle]
+    period: { start: 1996, end: 2008 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{2,3}-\d{1,3}\z'
+      regex_strict: '\A[A-Z]{2,3}-[1-9]\d{0,2}\z'
+      charset:
+        notes: >-
+          The pre-2008 L-class mark was the SAME shape as a car's, because
+          A 1598/1995 § 36(1)(a) governed cars, L-class vehicles and trailers in
+          one clause: "auton, L-luokan ajoneuvon sekä perävaunun
+          rekisterikilvessä on kaksi tai kolme kirjainta ja enintään
+          kolminumeroisen luvun käsittävä tunnus mustin merkein valkealla,
+          heijastavalla pohjalla".
+    design:
+      plate: { w: 165, h: 200, unit: mm }
+      plate_variants:
+        - { w: 280, h: 118, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+FIN, hex_basis: observed, note: "only from 1.5.2001, and only on motorcycles — A 764/2000's § 37 named 'auton, moottoripyörän ja perävaunun'; a 1996-2001 L-class plate has no band at all" }
+      characters: { height_mm: 70, width_max_mm: 40, stroke_mm: 9 }
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(a): cars, L-class vehicles and trailers share the letters-then-digits mark; § 70: in force 1.1.1996"
+      - "https://www.finlex.fi/fi/lainsaadanto/2007/893  # A 893/2007 § 25(1)(2) (Rekisteritunnuksen sisältö ja rekisterikilpien väri) inverts the L-class mark to digits-then-letters; § 58 Voimaantulo: 'Tämä asetus tulee voimaan 1 päivänä kesäkuuta 2008'; Siirtymäsäännökset: 'Ennen tämän asetuksen voimaantuloa ajoneuvoa varten annetut tai kilpivalmistajalta tilatut L-luokan ajoneuvojen rekisterikilvissä olevat rekisteritunnukset saavat olla tämän asetuksen voimaan tullessa voimassa olleiden säännösten mukaisia'"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # the gallery still illustrates letters-first motorcycle plates (KM-560, AK 202, BX 971) beside the digits-first ones"
+    notes: >-
+      ONE SERIES BACK, AND THE ONLY CLOSED FINNISH SERIES IN THIS FILE. Both
+      ends are instrument-dated: 1996 is A 1598/1995's entry into force (the
+      earliest instrument pinned in this pass carrying this rule — the shape is
+      older, and its origin is a recorded gap), and 2008 is A 893/2007's, which
+      inverted it. period.end 2008 closes ISSUANCE only: these marks stay on the
+      road indefinitely, A 893/2007's transitional expressly let already-ordered
+      plates be made to the old rules, and Traficom still permits a letters-first
+      L-class ERITYISTUNNUS today ("joko 2 tai 3 kirjainta ja enintään
+      kolminumeroinen luku, tai toisinpäin"), which is why a letters-first
+      motorcycle plate is not by itself proof of a pre-2008 registration.
+
+  - id: fi-museum-motorcycle-m
+    class: historic
+    categories: [motorcycle, quadricycle]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "MLL-999"
+      regex: '\AM[A-Z]{1,2}-\d{1,3}\z'
+      regex_strict: '\AM[A-Z]{1,2}-[1-9]\d{0,2}\z'
+      charset:
+        first_letter: [M]
+        notes: >-
+          A 162/2021 § 16(3) second sentence, verbatim: "Lisäksi L-luokan
+          museoajoneuvoa varten voidaan antaa rekisteritunnus, jossa on kaksi tai
+          kolme valkoista kirjainta ja enintään kolminumeroinen, valkoinen luku
+          mustalla pohjalla." A museum L-class vehicle may take the LETTERS-FIRST
+          arrangement that ordinary L-class vehicles lost in 2008 — the decree
+          creates a live exception to its own § 16(1)(2). Traficom's museum page
+          supplies the M: "Museoajoneuvon tunnus alkaa M-kirjaimella"; its
+          gallery illustrates "MR-100".
+    design:
+      plate: { w: 280, h: 118, unit: mm }
+      plate_variants:
+        - { w: 165, h: 200, unit: mm }
+      background: { color: "#000000", finish: non-retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      characters: { height_mm: 70, width_max_mm: 40, stroke_mm: 8, hyphen: { h: 9, w: 10 }, note: "määräys § 4.3 gives the museum motorcycle plate its own 8 mm stroke — one millimetre thinner than the ordinary motorcycle plate's 9 mm" }
+      layout: "single row with a required hyphen on the 118 x 280 plate (määräys § 3.3.2)"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(3): black museum plates, and the L-class museum exception permitting 2-3 letters then a number of at most 3 digits"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/museoajoneuvon-rekisterointi  # 'Museoajoneuvon tunnus alkaa M-kirjaimella'"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys §§ 3.3.2 and 4.3: 118 x 280 or 200 x 165, hyphen required, 70 mm characters at 8 mm stroke"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Museomoottoripyörän kilpi M-alkuinen (118x280 mm)', illustrated with MR-100"
+    notes: >-
+      THE MUSEUM MOTORCYCLE SERIES — and the neatest thing in Finnish plate law:
+      § 16(3) lets a museum L-class vehicle keep the pre-2008 letters-first
+      arrangement, so the historic regime preserves not just a colour scheme but
+      a SERIAL GRAMMAR that ordinary issuance abandoned. Combined with the M
+      marker, a Finnish museum motorcycle plate is the only Finnish string that
+      declares both its class and its regime. Distinct from
+      fi-museum-car-m (different plate geometry, different stroke width) and from
+      fi-lclass-lettersfirst (that series is closed; this one is open).
+
+  # =========================================================================
+  # MOPEDS AND LIGHT QUADRICYCLES. Same § 16(1)(2) grammar as motorcycles, but
+  # L1e/L6e are NOT in the list that gets the nationality sign, so a Finnish
+  # moped plate never carries the blue band.
+  # =========================================================================
+  - id: fi-moped
+    class: moped
+    categories: [moped, quadricycle]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999-LLL"
+      regex: '\A\d{1,3}-[A-Z]{2,3}\z'
+      regex_strict: '\A[1-9]\d{0,2}-[A-Z]{2,3}\z'
+      charset:
+        restricted_letters: [W, Q]
+        notes: >-
+          Traficom: "Kirjainten W ja Q käytössä on rajoituksia mopojen ja
+          moottorikelkkojen rekisteritunnuksissa." The restriction is asserted
+          but not specified anywhere the authority publishes, so NOTHING is
+          encoded — regex_strict carries only the leading-zero rule. Recorded
+          gap; do not infer an exclusion from this note.
+      separator_note: "the 110 x 124 plate is two-row and the hyphen is forbidden (määräys § 3.4)"
+    design:
+      plate: { w: 124, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none, note: "§ 16(1)(2) grants the nationality sign only to L3e, L4e, L5e and L7e — mopeds (L1e) and light quadricycles (L6e) are excluded by omission" }
+      characters: { height_mm: 35, width_max_mm: 24, stroke_mm: 5, note: "määräys § 4.3's own body text says 'Mopon ja moottorikelkan rekisterikilven rekisteritunnuksen kirjainten ja numeroiden korkeuden tulee olla 35 mm ja leveyden korkeintaan 24 mm. Kirjainten ja numeroiden viivaleveyden tulee olla 5 mm', while Liite 8's table gives 70 mm at 9 mm for the same plate — a flat contradiction inside one instrument. 35 mm is recorded because two 70 mm rows cannot fit a 110 mm plate; the disagreement is recorded, not averaged (PRD-PLATES §5.3)" }
+      layout: "two rows, no hyphen"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(2): all L-class vehicles take the digits-then-letters mark; only L3e/L4e/L5e/L7e get the nationality sign"
+      - "https://www.finlex.fi/fi/lainsaadanto/2007/893  # A 893/2007, in force 1.6.2008, inverted the L-class mark — mopeds included"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.4: 110 mm x 124 mm, two rows, no hyphen; § 4.1.1: always made with mounting holes; § 4.3 and Liite 8 for the contradicting character heights"
+      - "https://www.traficom.fi/fi/autoilijat/hae-ajoneuvolle-erityiskilpea  # the W/Q restriction on moped and snowmobile marks"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Mopon ja kevyen nelipyörän kilpi (110x124 mm)'"
+    notes: >-
+      THE MOPED PLATE — the smallest Finnish plate and the only white one that
+      never carries the blue band, because § 16(1)(2) grants the sign to a closed
+      list of L classes that excludes L1e and L6e. Shares the 110 x 124 geometry
+      exactly with the snowmobile plate, which is yellow; on a Finnish
+      110 x 124 plate the GROUND COLOUR is the only thing distinguishing a moped
+      from a snowmobile, since the mark grammar is the same digits-then-letters
+      shape. Carries the file's one internal-contradiction flag on character
+      height.
+
+  # =========================================================================
+  # THE YELLOW PLATES. A 162/2021 § 16(1)(3), verbatim: "moottorikelkan, raskaan
+  # moottorikelkan, traktorin ja moottorityökoneen rekisterikilvessä on musta,
+  # enintään kolminumeroinen luku ja enintään kolme mustaa kirjainta
+  # keltaisella, heijastavalla pohjalla". Note "ENINTÄÄN kolme kirjainta" — at
+  # most three, with NO stated minimum, unlike the car and L-class rules.
+  # =========================================================================
+  - id: fi-snowmobile
+    class: agricultural
+    categories: [snowmobile]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999-LLL"
+      regex: '\A\d{1,3}-[A-Z]{1,3}\z'
+      regex_strict: '\A[1-9]\d{0,2}-[A-Z]{1,3}\z'
+      charset:
+        restricted_letters: [W, Q]
+        notes: >-
+          "enintään kolme mustaa kirjainta" — AT MOST three letters, with no
+          minimum stated anywhere, which is why the regex quantifier is {1,3}
+          and not {2,3} as on the car and L-class series. Traficom's gallery
+          illustrates a two-letter snowmobile mark (199-AA). The W/Q restriction
+          named for snowmobiles is unspecified and therefore unencoded.
+      separator_note: "two-row plate; hyphen forbidden (määräys § 3.5)"
+    design:
+      plate: { w: 124, h: 110, unit: mm }
+      background: { color: "#F3A513", finish: retroreflective, hex_basis: observed, spec_note: "the decree says only 'keltaisella, heijastavalla pohjalla'; this hex is sampled from Traficom's own plate photograph and is indicative, not a spec value" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      characters: { height_mm: 35, stroke_mm: 5, note: "määräys § 4.3 body text: 'Mopon ja moottorikelkan rekisterikilven rekisteritunnuksen kirjainten ja numeroiden korkeuden tulee olla 35 mm ja leveyden korkeintaan 24 mm. Kirjainten ja numeroiden viivaleveyden tulee olla 5 mm.' Liite 8's table contradicts this with 70 mm / 9 mm — recorded, not averaged" }
+      layout: "two rows, no hyphen"
+      display: "TWO plates, one on each side — A 162/2021 § 14(2) gives a snowmobile two plates (the only non-car vehicle that gets two), and ajoneuvolaki § 100(2) puts them 'moottorikelkassa ja raskaassa moottorikelkassa molemmille sivuille'"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(3) yellow ground, digits then at most 3 letters; § 14(2) two plates for a snowmobile"
+      - "https://www.finlex.fi/fi/lainsaadanto/2021/82  # ajoneuvolaki § 100(2): snowmobile plates go on BOTH SIDES, not front and rear"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(e): the same yellow rule for snowmobiles, tractors and motorised work machines since 1.1.1996"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.5: 110 x 124, two rows, no hyphen"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Moottorikelkan kilpi (110x123 mm)' — the gallery says 123 mm where the regulation says 124 mm; the regulation governs"
+    notes: >-
+      THE SNOWMOBILE PLATE — the most Finnish entry in the dataset, and the only
+      plate in this file mounted on the vehicle's SIDES rather than its ends.
+      CLASS CAVEAT, stated plainly: `agricultural` is the least-wrong value in
+      _meta/classes.yml, chosen because the decree puts snowmobiles in the same
+      clause as tractors and motorised work machines and gives them the same
+      yellow ground; a snowmobile is of course not agricultural, and the
+      vocabulary has no home for an off-road/over-snow class. Flagged as a
+      vocabulary gap. Geometrically identical to the moped plate, so ground
+      colour is the whole distinction.
+
+  - id: fi-tractor
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999-LLL"
+      regex: '\A\d{1,3}-[A-Z]{1,3}\z'
+      regex_strict: '\A[1-9]\d{0,2}-[A-Z]{1,3}\z'
+      charset: { notes: "at most three letters, no stated minimum — Traficom's gallery illustrates both 561-ZN and a three-letter mark" }
+      separator_note: >-
+        Hyphen REQUIRED on the two single-row sizes (määräys § 3.6) and
+        FORBIDDEN on the 152 x 220 two-row plate. § 3.6 also makes the size a
+        function of the mark's LENGTH: 118 x 338 "silloin, kun
+        rekisteritunnuksessa on alle 6 merkkiä", 118 x 397 for six characters —
+        the only place in Finnish plate law where the mark's length picks the
+        plate.
+    design:
+      plate: { w: 338, h: 118, unit: mm, note: "used when the mark has fewer than 6 characters" }
+      plate_variants:
+        - { w: 397, h: 118, unit: mm, note: "6 characters" }
+        - { w: 220, h: 152, unit: mm, note: "the traktorimönkijä (tractor-ATV) plate ADDED by the 2024 määräys: at most 6 characters, two rows, no hyphen, 56 mm characters at 8 mm stroke; cannot be made with mounting holes. Introduced because the existing tractor plate could not be fitted to all tractor-ATVs in the way Reg. (EU) 2015/208 Annex XIX requires" }
+      background: { color: "#F3A513", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 }, note: "56 / 34 / 8 mm with a 10 x 10,5 mm hyphen on the 152 x 220 plate" }
+      display: "one plate, front OR rear (ajoneuvolaki § 100(2): 'traktorissa ja moottorityökoneessa eteen tai taakse')"
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(3)"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(e), same rule, in force 1.1.1996"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.6: 118 x 338 (<6 characters), 118 x 397 (6 characters), 152 x 220 (two rows, <=6 characters); § 4.3 character sizes"
+      - "https://www.traficom.fi/fi/uutiset/rekisterikilpiin-uudistuksia-traktorimonkijoille-uusi-kilpityyppi-ja-parannuksia-luettavuuteen  # 16.12.2024: the 220 x 152 mm tractor-ATV plate and its EU-regulation rationale, plus the Y-glyph change"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Traktorin kilpi (220 mm x 152 mm)' and the two low tractor plates"
+    notes: >-
+      THE YELLOW TRACTOR AND WORK-MACHINE PLATE. Same § 16(1)(3) mark as the
+      snowmobile, three geometries instead of one, and the only Finnish rule that
+      makes plate SIZE depend on the mark's character count. The 152 x 220
+      tractor-ATV plate is the newest thing in Finnish plate law — added by the
+      määräys of 9.12.2024, in force 16.12.2024 — and is recorded as a plate
+      variant rather than a series because the mark grammar is unchanged.
+      `agricultural` is the right class here, unlike on the snowmobile entry it
+      shares a decree clause with.
+
+  # =========================================================================
+  # DIPLOMATIC. A 162/2021 § 16(1)(4) — the only Finnish plates with a coloured
+  # ground other than yellow, and the only ones whose serial is allocated by a
+  # ministry rather than at random by Traficom.
+  # =========================================================================
+  - id: fi-diplomatic-cd
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CD-9999"
+      regex: '\ACD-\d{1,4}\z'
+      charset:
+        fixed_letters: "CD"
+        notes: >-
+          The letters are literally CD and the number is "ulkoministeriön
+          määräämä enintään nelinumeroinen" — set by the Ministry for Foreign
+          Affairs, at most four digits. `regex` therefore IS the sourced
+          grammar and needs no strict twin: no leading-zero rule is published
+          for a ministry-allocated diplomatic number, and inventing one was
+          declined.
+      progression: "allocated by the Ministry for Foreign Affairs, not by Traficom's random pool; Traficom issues the plates only on the Ministry's 'kilpisuositus' (plate recommendation). The mission-to-number mapping is not published and is NOT authored here (PRD-PLATES puts diplomatic decode tables at L4)."
+    design:
+      plate: { w: 397, h: 118, unit: mm }
+      plate_variants:
+        - { w: 300, h: 112, unit: mm, note: "56 mm characters, 8 mm stroke; cannot be made with mounting holes" }
+        - { w: 165, h: 200, unit: mm, note: "motorcycle; 70 mm characters, 9 mm stroke, no hyphen" }
+      background: { color: "#225296", finish: retroreflective, hex_basis: observed, spec_note: "the decree says only 'sinisellä, heijastavalla pohjalla'; hex sampled from Traficom's own photograph of a CD plate" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", note: "määräys § 4.4: white mark and border on the blue diplomatic plate" }
+      band: { side: none }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(4), first limb: 'ulkovallan diplomaattisen edustuston ja lähetetyn konsulin viraston sekä muun vastaavassa asemassa olevan edustuston virka-auton sekä diplomaattisen edustajan, lähetetyn konsulin ja heihin rinnastettavan henkilön ajoneuvon rekisterikilvessä on kirjaimet CD ja ulkoministeriön määräämä enintään nelinumeroinen valkoinen luku sinisellä, heijastavalla pohjalla'"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(c) carries the same CD rule (then 'ulkoasiainministeriön'), in force 1.1.1996"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.7: 118 x 397 or 112 x 300 for a car, 200 x 165 for a motorcycle, and 'Diplomaattikilpiä voidaan antaa myös muihin ajoneuvoihin kuin autoon ja moottoripyörään'"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/hae-ajoneuvolle-diplomaattirekisterointia  # diplomatic registration is granted only on a Ministry for Foreign Affairs 'kilpisuositus'; Traficom posts the plates to a Finnish address"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Diplomaattikilpi (118x397 mm)', illustrated with CD-1124"
+    notes: >-
+      THE CD PLATE. Blue ground, white raised characters, no Euro-band, and a
+      serial the Ministry for Foreign Affairs allocates — the one Finnish mark
+      outside § 17's random pool. Its two-letter CD group is exactly why
+      fi-standard-eu's `regex_strict` carries a `(?!CD-\d)` lookahead: a
+      two-letter ordinary mark would otherwise be able to collide with it.
+      Distinct from fi-diplomatic-c, which is the same design with a different
+      letter and a longer number for a wider class of vehicle.
+
+  - id: fi-diplomatic-c
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "C-99999"
+      regex: '\AC-\d{1,5}\z'
+      charset:
+        fixed_letters: "C"
+        notes: "one letter C and a Ministry-allocated number of at most FIVE digits — one digit longer than the CD series, which is the only thing separating the two grammars"
+    design:
+      plate: { w: 397, h: 118, unit: mm }
+      plate_variants:
+        - { w: 300, h: 112, unit: mm }
+        - { w: 165, h: 200, unit: mm, note: "motorcycle" }
+      background: { color: "#225296", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(4), second limb: 'edustustojen ja niiden henkilökuntaan kuuluvien henkilöiden muun tulli- ja verovapaan ajoneuvon rekisterikilvessä on kirjain C ja ulkoministeriön määräämä enintään viisinumeroinen valkoinen luku sinisellä, heijastavalla pohjalla'"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(1)(c), second limb, same rule since 1.1.1996"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Diplomaattikilpi (118x397 mm)', illustrated with C-11012"
+    notes: >-
+      THE C PLATE — the wider tax- and duty-free category: OTHER vehicles of
+      missions and of their staff, as against the CD plate's official cars and
+      accredited diplomats. CLASS CAVEAT: recorded as `diplomatic` rather than
+      `consular` because the C category is defined by customs/tax exemption, not
+      by consular status — consular office cars in fact take the CD plate under
+      the first limb of the same paragraph. Overlaps fi-diplomatic-cd in period
+      and categories by design: the two are parallel issuance, and a blue Finnish
+      plate is one or the other.
+
+  # =========================================================================
+  # EXPORT. A 162/2021 § 16(1)(6), and the only Finnish plate with a second
+  # colour field.
+  # =========================================================================
+  - id: fi-export
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2001 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-9999"
+      regex: '\A[A-Z]-\d{1,4}\z'
+      charset:
+        notes: >-
+          ONE letter and a number of at most four digits — the only Finnish mark
+          with a single-letter group, and the shape that makes an export plate
+          identifiable from the string alone. No leading-zero rule is published
+          for export marks, so no strict twin is written.
+      fields_note: >-
+        The plate additionally bears a two-number EXPIRY FIELD (month over year)
+        which a single pattern string cannot express — the same schema pressure
+        PRD-PLATES §2.2 records for Japan and de.yml records for the German
+        Kurzzeit- and Ausfuhrkennzeichen.
+    design:
+      plate: { w: 442, h: 118, unit: mm }
+      plate_variants:
+        - { w: 256, h: 200, unit: mm, note: "second plate may be two-row: letter above, digits below, no hyphen; date field 200 x 53 mm" }
+        - { w: 165, h: 200, unit: mm, note: "motorcycle; two rows, no hyphen; date field 200 x 53 mm" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+FIN, hex_basis: observed, note: "100 x 45 mm on the 118 x 442 plate, 85 x 45 mm on the two-row and motorcycle plates" }
+      extra_field:
+        position: right
+        content: "month over year on which the right to use the plate ends"
+        background: { color: "#CC0000", finish: retroreflective, hex_basis: observed, spec_note: "the decree says only 'punaisella, heijastavalla pohjalla'" }
+        foreground: "#FFFFFF"
+        size: { w: 53, h: 118, unit: mm, note: "118 x 53 mm on the long plate; 200 x 53 mm on the two-row and motorcycle plates" }
+        typeface: "Liite 6 to the Traficom määräys — the export date numerals have their OWN statutory drawing, separate from the mark's"
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+    validity:
+      max_months: 12
+      note: >-
+        Ajoneuvolaki § 111(1): "Vientirekisteröinti on voimassa vuoden
+        rekisteröintikuukauden lopusta. Hakijan pyynnöstä voimassaoloaika voidaan
+        määrätä lyhyemmäksi. … Vientirekisteröinnin voimassaoloaikaa ei voida
+        pidentää." One year from the END of the registration month, shortenable
+        on request, never extendable. § 111(4) limits use in Finland before
+        export to the delivery-to-export-point run or an emigrating owner's trip.
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(6): 'vientirekisteröidyn ajoneuvon rekisterikilvessä on kansallisuustunnus, yksi musta kirjain ja enintään nelinumeroinen musta luku valkoisella, heijastavalla pohjalla ja oikeassa reunassa punaisella, heijastavalla pohjalla valkoinen vuosiluku ja kuukausi, jonka aikana rekisteröinti päättyy'; § 19: 'Vientikilpiin sovelletaan, mitä 14-17 §:ssä säädetään rekisterikilvistä'"
+      - "https://www.finlex.fi/fi/lainsaadanto/2021/82  # ajoneuvolaki §§ 109-111: vientirekisteröinti, its application and its one-year, non-extendable validity"
+      - "https://www.finlex.fi/fi/lainsaadanto/saadoskokoelma/2000/764  # A 764/2000 § 37(1) named 'vientirekisteröitävän ajoneuvon rekisterikilpi' among those that carry the FIN sign, in force 1.5.2001"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.8: 118 x 442 and 200 x 256 for a car, 200 x 165 for a motorcycle; the 53 mm red date field with the month on the upper row and the year on the lower; § 4.2 second paragraph: the date numerals follow Liite 6"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/hae-ajoneuvolle-vientirekisterointia  # who may apply, the 12-month validity from the end of the registration month, and the warning that the destination country may allow a shorter period"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Auton vientikilpi (118x442 mm)' illustrated with A-5544, and 'Moottoripyörän vientikilpi (200x165 mm)' whose red field reads 11 over 15"
+    notes: >-
+      THE VIENTIKILPI. Three things make it unique in Finland: the single-letter
+      group (every other Finnish mark has two or three letters, or none), the red
+      expiry field, and the fact that it KEEPS the Euro-band — the opposite of
+      Germany's Ausfuhrkennzeichen, which loses it. period.start 2001 is the
+      band's date; the letter-plus-four-digits format itself is older (A 1598/1995
+      § 36(2) states it), so a pre-2001 Finnish export plate had this mark and no
+      band. AMBIGUITY WORTH RECORDING for a parse API: `\AC-\d{1,4}\z` matches
+      both this series and fi-diplomatic-c, so a string like C-1234 is
+      genuinely two-way ambiguous on the mark alone and resolves only on colour.
+
+  # =========================================================================
+  # TRADE / TEST PLATES.
+  # =========================================================================
+  - id: fi-koenumero
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 1996 }
+    period_evidence: instrument-in-force
+    binding: business
+    # RECALL-ONLY (PRD-PLATES §2.7): two primaries disagree on the ORDER of the
+    # letter and the number, so the regex is the UNION of both orders and is by
+    # construction wider than whatever the authority actually issues. A match is
+    # a shape hit, never the claim that the string is a valid koenumero.
+    matching: recall-only
+    format:
+      pattern: "L-999"
+      regex: '\A(?:[A-Z]-\d{1,3}|\d{1,3}-[A-Z])\z'
+      order_disagreement: >-
+        A 162/2021 § 16(1)(7) reads "koenumerokilvessä on kirjaimet KOE, yksi
+        musta kirjain ja enintään kolminumeroinen musta luku keltaisella,
+        heijastavalla pohjalla" — letter BEFORE number, in the same word order
+        the export clause uses for the unambiguous A-5544 shape. But Traficom's
+        own plate gallery captions its koenumerokilpi illustration
+        "KOE 100-H" — number BEFORE letter. PRD-PLATES §5.3 forbids averaging a
+        disagreement, so the regex admits both orders and `matching` is
+        `recall-only` until a verifier settles it. The pattern shows the
+        decree's order because the statute outranks an image caption.
+      charset:
+        notes: "one letter and a number of at most three digits; the KOE legend is NOT part of the mark (see design.legend)"
+    design:
+      plate: { w: 338, h: 118, unit: mm }
+      background: { color: "#F3A513", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      legend:
+        text: KOE
+        position: "left edge, the three letters stacked vertically"
+        size: { h: 22, w: 13, unit: mm }
+        note: >-
+          Traficom määräys § 3.9: "Koenumerokilvessä tulee olla kirjaimet KOE
+          kilven vasemmassa reunassa pystysuunnassa allekkain. Kirjainten KOE
+          tulee olla 22 mm korkeat ja 13 mm leveät." At 22 mm against the mark's
+          72 mm, KOE is a plate LEGEND, not a serial group — which is why it is
+          modelled here and not in the pattern.
+      characters: { height_mm: 72, width_max_letters_mm: 49, width_max_digits_mm: 48, stroke_mm: 11, hyphen: { h: 12.5, w: 13.5 } }
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 16(1)(7)"
+      - "https://www.finlex.fi/fi/lainsaadanto/1995/1598  # A 1598/1995 § 36(4): 'Koenumerokilvessä on sana KOE, yksi kirjain ja enintään kolminumeroinen luku mustin merkein keltaisella, heijastavalla pohjalla' — same rule, same word order, since 1.1.1996"
+      - "https://www.finlex.fi/fi/lainsaadanto/2021/82  # ajoneuvolaki § 116 koenumerotodistus ja koenumerokilvet; § 116 applies §§ 99-101 to test plates except § 100(1)"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys § 3.9: 118 x 338, vertical KOE 22 x 13 mm at the left edge, hyphen required between the letter and the digits"
+      - "https://www.traficom.fi/fi/autoilijat/hae-ajoneuvolle-koenumerotodistusta  # who may hold one (a company), the three permitted uses, and that the vehicle's own plates must be removed or covered while test plates are in use"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Koenumerokilpi (118x338 mm)', captioned KOE 100-H — the source of the order disagreement"
+    notes: >-
+      KOENUMEROKILPI — the Finnish trade plate, and this file's one
+      `recall-only` series. BINDING NOTE: like the German rote Kennzeichen it
+      binds to a BUSINESS, not a vehicle: the koenumerotodistus is granted to a
+      company, may be used only by the holder or its representative, and only for
+      research/development testing, a short sales test-drive or demonstration, or
+      a move directly connected with manufacture, sale, fitting-out, repair or
+      inspection. Traficom's instruction is explicit that the vehicle's own
+      plates come off or get covered while the test plates are on. The
+      letter/number ORDER is the single open question in this file and is flagged
+      for the verifier.
+
+  # =========================================================================
+  # SIIRTOMERKKI — the transfer mark. Not a rekisterikilpi at all: a
+  # polypropylene adhesive marking issued with a siirtolupa (transfer permit).
+  # =========================================================================
+  - id: fi-siirtomerkki
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL-9999"
+      regex: '\A[A-Z]{1,2}-\d{1,4}\z'
+      charset:
+        notes: >-
+          A 162/2021 § 20, verbatim and complete: "Siirtomerkissä on yksi tai
+          kaksi punaista kirjainta ja punainen, enintään nelinumeroinen luku
+          valkoisella pohjalla." One or two RED letters and a red number of at
+          most four digits on a white ground. Traficom's gallery illustrates
+          EG-1074 (car/trailer) and MF 6221 (motorcycle/moped), both
+          letters-first, agreeing with the decree's word order.
+      separator_note: "hyphen required on the 100 x 290 car/trailer/tractor mark, forbidden on the 120 x 120 two-row motorcycle/moped mark (määräys §§ 5.1-5.2)"
+    design:
+      plate: { w: 290, h: 100, unit: mm }
+      plate_variants:
+        - { w: 120, h: 120, unit: mm, note: "motorcycle and moped; two rows, no hyphen; characters at least 38 mm high and 25 mm wide; single-sided adhesive" }
+      background: { color: "#FFFFFF", finish: non-retroreflective, hex_basis: observed, spec_note: "määräys § 5.1: 'Siirtomerkki valmistetaan heijastamattomalle valkoiselle pohjalle, eikä siinä ole kansallisuustunnusmerkkiä' — non-reflective, and expressly no Euro-band" }
+      foreground: "#CC0000"
+      band: { side: none }
+      material: "recyclable polypropylene with a double-sided adhesive face (single-sided on the motorcycle/moped mark) — not aluminium, not embossed (määräys §§ 5.1-5.2)"
+      font:
+        name: "Arial Narrow Bold"
+        size_pt: 218
+        note: >-
+          THE ONE NAMED TYPEFACE IN FINNISH REGISTRATION LAW, and a
+          counter-example to PRD-PLATES §6's survey finding. Määräys § 5.1:
+          "Siirtomerkin kirjasintyyppi on Arial Narrow, bold/lihavoitu.
+          Kirjasintyypin koko on 218p." § 5.2 gives 170p for the
+          motorcycle/moped mark. Arial Narrow is a licensable Monotype
+          typeface; the render layer must not embed it, and the §6 fallback
+          rule applies.
+      characters: { height_min_mm: 50, height_max_mm: 70, width_min_mm: 27, width_max_mm: 43, note: "at least 38 mm high and 25 mm wide on the 120 x 120 mark" }
+      display: "on a car, front and rear in the plate positions OR on the rear window and the top right of the windscreen (viewed from behind); never on painted bumpers, painted metal or over a window's heating elements (Traficom siirtolupa page)"
+    validity:
+      note: >-
+        A siirtolupa is vehicle-specific and granted for a stated purpose:
+        taking an unregistered or off-road vehicle to inspection or a workshop,
+        moving an imported vehicle from the point of import, and similar.
+        Traficom requires the permit to start within a week of application and
+        requires the marks to be REMOVED AND DESTROYED when it expires.
+    region_encoding: none
+    sources:
+      - "https://www.finlex.fi/api/media/statute/694140/mainPdf/main.pdf  # A 162/2021 § 20 Siirtomerkkien sisältö ja väri"
+      - "https://www.finlex.fi/fi/lainsaadanto/2021/82  # ajoneuvolaki § 118: siirtolupa, and § 118(5) delegating the transfer mark's dimensions and technical properties to Traficom"
+      - "https://www.finlex.fi/api/media/authority-regulation/536142/mainPdf/main.pdf  # määräys §§ 5.1-5.2: 100 x 290 and 120 x 120, Arial Narrow bold at 218p / 170p, polypropylene, adhesive, character sizes"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/hae-ajoneuvolle-siirtolupaa  # the conditions, the week-ahead start rule, where the marks go on the vehicle, and the duty to remove and destroy them"
+      - "https://www.traficom.fi/fi/autoilijat/ajoneuvon-rekisterointi/suomessa-kaytettavat-rekisterikilvet  # 'Auton ja perävaunun siirtomerkki (100 x 292mm)' — the gallery says 292 mm where the regulation says 290 mm; the regulation governs"
+    notes: >-
+      SIIRTOMERKKI — Finland's temporary marking, and the only entry in this
+      file that is not a metal plate: a red-on-white adhesive polypropylene
+      sticker with no Euro-band, no embossing and no reflective film.
+      period.start 2021 is the date of the instrument that states the rule
+      (A 162/2021, in force 1.3.2021), not the date the regime began; A 893/2007
+      and A 1598/1995 carried transfer markings too, under different names and a
+      different permit scheme, and pinning the origin was out of scope. TWO
+      DISCREPANCIES RECORDED, both between the regulation and Traficom's own web
+      gallery: 290 vs 292 mm, and (on the snowmobile plate) 124 vs 123 mm. The
+      regulation is the authority.
