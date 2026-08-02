@@ -46,6 +46,23 @@ checks:
     reason: "…and Mach-E is a SEPARATE nameplate (PRD-2 §19.2 decision)"
   - id: hyundai/ioniq-5
     reason: "IONIQ5 → Ioniq 5 family rule; separate from hyundai/ioniq"
+  # THE TRUNCATION TRIPWIRE. `normalizer.rb#hyundai` captured a fixed two
+  # characters (`/^I\s?(\d0)/`), so raw "I800" became "i80" — a nameplate
+  # Hyundai has never sold (it sells the i800, the H-1/iLoad people carrier).
+  # 7,967 vehicles (uk_dft gb 7,963 car+van, nz_nzta nz 4) published under the
+  # fabricated name, and the only thing putting them right was a stopgap rename
+  # that has now been retired with the regex fix. These two rows are one
+  # assertion in two halves and they fail on EITHER half regressing: the
+  # nameplate must exist in both its markets, and the truncation must not come
+  # back. `exists: false` is the load-bearing one — an `_includes` row cannot
+  # say "and the wrong name must never return", which is exactly how this
+  # defect stayed invisible for as long as it did.
+  - id: hyundai/i800
+    availability_includes: [gb, nz]
+    reason: "i-rule must take the WHOLE digit run: raw 'I800' → i800, not the truncated i80 (uk_dft gb + nz_nzta nz)"
+  - id: hyundai/i80
+    exists: false
+    reason: "Hyundai has never sold an i80 — it is the truncation artefact of the old /^I\\s?(\\d0)/ capture; car/hyundai/i80 is retired via former_ids.yml and must never republish"
   # THE WRONG-CAR TRIPWIRE. `normalizer.rb#mini` tested `/ACEMAN/` unanchored
   # and `"PACEMAN" =~ /ACEMAN/` matches at offset 1, so every MINI Paceman row
   # published as a MINI Aceman and `car/mini/paceman` did not exist. These two

@@ -4285,8 +4285,34 @@ Hyundai:
   "Ionic":          Ioniq      # registry misspelling of Ioniq (fi 1 + nl 1); NOT a product
   "Galopper":       Galloper   # registry misspelling of Galloper (fi 1 + nl 7); the double-P/single-L transposition
   # — corrections, not folds (dossier §5) —
-  "i80": "i800"    # the family rule's /^I\s?(\d0)/ truncates "I800" to "i80"; Hyundai sells the i800 (the H-1/iLoad people carrier, hyundai.co.uk), never an i80 — 7,793 registrations were published under a fabricated nameplate. Stopgap for the pipeline regex fix (filed); retire with a comment when that lands (the QASHQAI+2 dead-key precedent).
-  "I45": i45       # the i-series is lowercase-i by settled convention (i10/i20/i30/i40, ix20/ix35/ix55); the family rule's /(\d0)/ misses I45 so the casing never applies. Display-only: slug unchanged, no id moves.
+  # RETIRED 2026-08-02: `"i80": "i800"` — the stopgap this line's own comment
+  # asked to retire ("Stopgap for the pipeline regex fix (filed); retire with a
+  # comment when that lands"). The regex landed: pipeline normalizer.rb#hyundai
+  # now reads /^I\s?(\d+0)(?!\d)/ and returns "i800" for raw "I800" directly,
+  # so nothing downstream ever produces the nameplate "i80" again and the key
+  # was corpus-INERT. Measured on a whole-corpus replay (2026-08-02, all six
+  # kinds, frozen cache, pipeline 6101c2c vs the regex commit): "i80" was
+  # probed by exactly ONE raw string, "I800" — car 7,793 (uk_dft gb 7,789 +
+  # nz_nzta nz 4) and van 174 (uk_dft gb), 7,967 vehicles across both kinds —
+  # and ZERO corpus rows in ANY kind spell "I80". The line's 7,793 figure was
+  # the car kind only; the van kind carried 174 more.
+  #
+  # WHY REMOVE RATHER THAN KEEP AS A DOCUMENTED DEAD KEY: the reachability test
+  # cannot see this one. It replays the KEY as a raw string, and "I80" still
+  # produces "i80" under the fixed regex, so the key would report green forever
+  # while doing nothing — the Astra Twin Top disposition (wave-7, above in this
+  # file) is the right precedent, not QASHQAI+2, because that one had a live
+  # SIBLING key and this one has none.
+  #
+  # THE PUBLISHED ID IS NOT AT RISK: car/hyundai/i80 retired into
+  # overrides/models/former_ids.yml:3839 ("car/hyundai/i80": "car/hyundai/i800"),
+  # which is a separate file this change does not touch. No removals.yml entry
+  # exists for it and none is wanted — alias OR manifest, never both.
+  #
+  # COUPLED: merge the pipeline regex FIRST. Removing this key against an
+  # unpatched pipeline republishes the fabricated nameplate on 7,967 vehicles
+  # (measured, see the PR body).
+  "I45": i45       # the i-series is lowercase-i by settled convention (i10/i20/i30/i40, ix20/ix35/ix55); the family rule's /(\d0)/ misses I45 so the casing never applies. Display-only: slug unchanged, no id moves. STILL LIVE after the 2026-08-02 regex fix: /^I\s?(\d+0)(?!\d)/ requires the digit run to END IN 0, so "I45" still falls through to this key (verified by whole-corpus replay — car/hyundai/i45, nz_nzta, 1,462 vehicles, unchanged).
 
 I-Coco:
   Lt-018:                    LT018                # closed type code
