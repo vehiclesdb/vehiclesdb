@@ -1,0 +1,763 @@
+# plates/us-ak.yml — Alaska (PRD-PLATES gate L2, group: pacific).
+#
+# THE SOURCING PROBLEM IN THIS FILE, STATED FIRST BECAUSE IT SHAPES EVERY
+# PERIOD CLAIM BELOW. Alaska's statutes are served by the Legislature's BASIS
+# system (akleg.gov), which is a frameset over a Folio database: the document
+# frames resolve, but the section jump does not, and a fetch of AS 28.10.161
+# returns Title 1 from the top instead. Every direct route was tried and
+# recorded: akleg.gov/basis/statutes.asp (JS shell), the folioproxy frame URLs
+# (returns the corpus from the beginning), law.justia.com (403),
+# codes.findlaw.com (403), lawserver.com (JS gate), touchngo.com live (a single
+# 24,714-byte landing page for every path). What DID work is the Internet
+# Archive's capture of the Touch N' Go Alaska Legal Resource Center, a
+# long-standing third-party reproduction of an edict of government — and its
+# own banner says the text is "current through December, 2007."
+#
+# SO: every AS quotation below is a 2007-VINTAGE TEXT, marked as such on every
+# citation, and where the live DMV contradicts it the DMV wins and the conflict
+# is recorded rather than smoothed. There is one such conflict and it is
+# material — see display_rules.conflict. A verifier with human browser access
+# to akleg.gov should re-read AS 28.10.161, 28.10.171 and 28.10.181 and either
+# confirm or replace the affected claims. This is the weakest-sourced file in
+# the pacific group and it says so in terms rather than reading as if it were
+# not.
+#
+# WHAT IS NEVERTHELESS SOLID HERE: the DMV's own live plate catalogue (fetched
+# via the Archive; dmv.alaska.gov 403s automated requests directly) enumerates
+# every plate Alaska currently issues, which gives a specialty index built from
+# the issuing agency rather than from a count; AS 28.10.181 gives sourced
+# grammar for the personalized cap, the historic series and the amateur-radio
+# plate; and AS 28.10.161(b) gives the one properly dated series boundary in
+# the file.
+jurisdiction: us-ak
+authority:
+  name: Alaska Department of Administration, Division of Motor Vehicles (DMV)
+  url: "https://dmv.alaska.gov/vehicle-services/license-plates/"
+binding: vehicle
+statute_edition: >-
+  Alaska Statutes Title 28 chapter 10, read 2026-08 from the Internet Archive
+  capture of the Touch N' Go Alaska Legal Resource Center reproduction, whose
+  own note states "This version of the Alaska Statutes is current through
+  December, 2007." Live agency practice read 2026-08 from the Archive capture
+  of dmv.alaska.gov (2025-09-14 snapshot for the plate catalogue).
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4/§7.1.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: asserted
+  basis: >-
+    ALASKA ASSERTS COPYRIGHT ON ITS OWN PAGES. Every page of alaska.gov and of
+    dmv.alaska.gov — including the licence-plate catalogue this file cites as
+    its agency source, and the sample-plate page that offers Alaska's plate
+    designs as collector items — carries the footer "COPYRIGHT (c) STATE OF
+    ALASKA . DEPARTMENT OF ADMINISTRATION". No Commons {{PD-AKGov}} tag exists
+    (checked: the template page returns 404), and Alaska does not appear in the
+    Commons list of US states with public-domain tags. That places Alaska with
+    Arizona rather than with Florida or California: not merely "not
+    established", but affirmatively asserted on the issuing agency's own
+    artwork pages. Treat every Alaska plate GRAPHIC as protected until a
+    contrary instrument is found.
+  countervailing: >-
+    The FORMAT, CLASS, GEOMETRY and PERIOD facts in this file come from the
+    ALASKA STATUTES, which are an EDICT OF GOVERNMENT and public domain at
+    every level regardless of the website footer (PRD-PLATES §4). The
+    assertion bites on the artwork — the Kodiak bear, the state flag, the
+    fireweed-and-Denali art plate — not on the facts.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies without exception in Alaska,
+    and to more of the plate than usual: the STATE FLAG (the Big Dipper and
+    Polaris) is screened into the centre of the standard base and is therefore
+    not an emblem in a corner but the plate's central graphic. Render
+    `emblem: {present: true, rendered: placeholder}` and do not approximate the
+    flag. The ART PLATES are the sharpest case in the whole US wave: the
+    "Celebrating the Arts" designs are the copyrighted work of NAMED INDIVIDUAL
+    ARTISTS chosen by public vote (reported: Anita Laulainen for the 2018
+    northern-lights design, Sabrina Kessakorn for the 2024 fireweed design), so
+    the exposure there is a private author's copyright layered on top of the
+    state's assertion. Never render them.
+  seal_regime: >-
+    UNRESEARCHED for Alaska (recorded gap). Hawaii's HRS § 5-6 shows the regime
+    is real and criminal where it exists; no Alaska equivalent was searched
+    for in this pass. The placeholder rule covers it either way.
+  photograph_caution: >-
+    No Alaska plate photograph was licence-checked in this pass (recorded gap).
+    The standing rule holds: a Commons tag on a plate photograph is the
+    PHOTOGRAPHER's licence on the PHOTOGRAPH and never a licence on the
+    design; our renders are generated from statute and never derived from a
+    photograph, so no obligation attaches.
+  sources:
+    - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # the DMV plate catalogue, footer 'COPYRIGHT (c) STATE OF ALASKA . DEPARTMENT OF ADMINISTRATION'"
+    - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/sample-license-plates/  # the DMV sells SAMPLE plates of the Grizzly Bear and Last Frontier designs to collectors at $10 each, marked 'SAMPLE' — the state commercialising its own plate artwork, on a page carrying the same copyright footer"
+    - "https://commons.wikimedia.org/w/index.php?title=Template:PD-AKGov&action=raw  # returns 404 — there is NO Alaska public-domain tag on Commons. A negative result, recorded as one."
+
+# ---------------------------------------------------------------------------
+# The US standards chain, recorded per state.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA writes recommendations in the declarative present; read them as RECOMMENDED PRACTICE, not requirement."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is paywalled and UNPINNED; no J686 dimension is quoted anywhere in this dataset. Alaska's 12 x 6 in is LOCATOR-GRADE here — no Alaska instrument stating a plate dimension was located (recorded gap), which is a real hole given that AS 28.10.161(c) forbids adopting a plate that does not 'substantially embody the specifications of this section' and the section states no dimension at all."
+    retroreflectivity: "AAMVA §3.3: legible in daylight and at night from at least 75 feet; ASTM D4956-19 and ISO 7591:1982 clause 3. Alaska legislates reflectorization but not a standard: AS 28.10.161(a) requires 'fully reflectorized' plates, with no material specification."
+    replacement_cycle: "AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. NO ALASKA REPLACEMENT CYCLE WAS LOCATED. AS 28.10.161(a) says the plates 'must remain with the vehicle as long as the vehicle is subject to registration under this chapter' — the opposite instinct to a rolling replacement."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" is UNCITED in its Wikipedia source
+    (a `citation needed` since 2017, copied verbatim across articles) and is
+    NOT relied on here. The Alaska article repeats it and adds a magazine
+    citation — Christopher Garrish, "Reconsidering the Standard Plate Size",
+    Plates vol. 62 no. 5 (ALPCA, October 2016) — which is the first non-
+    circular source for the 1956 story seen anywhere in this programme. It was
+    NOT obtained. Recorded as the lead to chase if the 1956 claim is ever to be
+    promoted from folklore.
+
+# ---------------------------------------------------------------------------
+# Display rules. THE STATUTE AND THE AGENCY DISAGREE, and the disagreement is
+# recorded rather than averaged (PRD-PLATES §5.3).
+# ---------------------------------------------------------------------------
+display_rules:
+  agency_current: "Alaska DMV, its own words, 2026: 'ONE PLATE: Alaska statute AS 28.10.171 requires you to display one license plate on the back of all passenger vehicles, motorcycles, motorhomes, trucks, vans, trailers, and APV's. For Commercial vehicles that weigh over 10,001 pounds the plate is required to be displayed on the front of the vehicle. A month and year tab must be displayed on the plate.'"
+  statute_2007: "AS 28.10.171(a) as reproduced from the December 2007 text: 'When two registration plates are issued for a vehicle, they shall be attached to the vehicle for which issued, one in front and the other in the rear. When one registration plate is issued, it shall be attached to the rear of the vehicle for which issued.' AS 28.10.161(a) as of the same date: the department issues 'one fully reflectorized registration plate for a trailer or a motorcycle and two fully reflectorized registration plates for every other vehicle'."
+  conflict: >-
+    THESE CANNOT BOTH BE CURRENT. The 2007 statute has the department issuing
+    TWO plates to a passenger vehicle; the 2026 DMV says ONE plate, on the
+    rear, for passenger vehicles, motorcycles, motorhomes, trucks, vans,
+    trailers and all-purpose vehicles, with commercial vehicles over 10,001 lb
+    displaying on the FRONT. The DMV is describing current law and the
+    reproduction is fifteen years stale, so AS 28.10.161 and/or AS 28.10.171
+    were amended after 2007 and the amendment was not obtained. THE AGENCY
+    STATEMENT GOVERNS THIS FILE. Secondary sources put Alaska's move to
+    rear-only for standard passenger vehicles at 11 AUGUST 2022, but the
+    Wikipedia citation for that date is a Facebook post carrying a
+    user-generated-source flag, which is not evidence and is recorded here only
+    so the next researcher does not re-derive it. Finding the amending session
+    law is the highest-value follow-up in this file.
+  mounting: "AS 28.10.171(b) (2007 text): every plate 'shall be securely fastened to the vehicle to which it is assigned, with the upper edge of the plate horizontal, at a height of not less than 12 inches from the ground measuring from the bottom of the plate, and maintained in a location and condition so as to be clearly legible.' The commissioner may prescribe another method of installation by regulation where necessary to ensure legibility."
+  validation: "AS 28.10.161(b)(4) (2007 text): the registration year or expiration date may be on the plate itself or on a sticker or tab, but 'only one sticker or tab device may be issued for each pair of plates, and the sticker or tab device must be affixed to the rear plate.' The DMV states the same rule for two-plate vehicles today."
+  sources:
+    - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # Alaska DMV, current: one plate on the rear for passenger vehicles, motorcycles, motorhomes, trucks, vans, trailers and APVs; front display for commercial vehicles over 10,001 lb; month-and-year tab"
+    - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section171.htm  # AS 28.10.171 (reproduction, current through December 2007): front-and-rear when two are issued, rear when one, the 12-inch minimum height and horizontal-upper-edge rule"
+    - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section161.htm  # AS 28.10.161 (same reproduction and vintage): one plate for a trailer or motorcycle and two for every other vehicle; the plates remain with the vehicle; the one-sticker-per-pair rule on the rear plate"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — the gold "Last Frontier" base, which the DMV
+  # itself calls "Standard Gold".
+  # =========================================================================
+  - id: us-ak-standard-gold
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      charset:
+        excluded: [I, O, Q]
+        excluded_basis: "LOCATOR-GRADE. No Alaska instrument stating a letter exclusion was located; AS 28.10.161 states none. Reported by the collector literature for the ABC 123 format since its 1976 introduction, cited through Wikipedia."
+        notes: >-
+          NO STATUTORY CHARACTER CAP EXISTS. AS 28.10.161(b) (2007 text)
+          requires only that a passenger plate display 'the registration
+          number assigned to the vehicle for which it is issued', 'the name of
+          this state, which may be abbreviated', and the registration year or
+          expiration date. Nothing about length, alphabet or arrangement. The
+          three-letter/three-numeral arrangement encoded here is OBSERVED and
+          locator-corroborated, not sourced — a recorded gap, and one that
+          matters more in Alaska than elsewhere because AS 28.10.161(c) makes
+          the section itself the constraint on any new design: 'The department
+          may not adopt a new or altered passenger vehicle registration plate
+          unless it substantially embodies the specifications of this section.'
+      progression: "The letter group advances and the numeral group cycles; reported serial ranges for the current base run through the K series (locator-grade, collector sites)."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_note: "LOCATOR-GRADE. No Alaska instrument stating plate dimensions was located; 12 x 6 in is the North American convention and is recorded as observed."
+      background: { color: "#F2C94C", finish: retroreflective, hex_basis: observed }
+      foreground: "#1F3A93"
+      colour_note: >-
+        NEITHER VALUE IS IN ANY INSTRUMENT LOCATED. AS 28.10.161(a) requires
+        'fully reflectorized' plates and says nothing about hue; the
+        statehood-design mandate in (b)(1) speaks of 'a design and color' but
+        names neither. Both hexes are APPROXIMATIONS of the golden-yellow
+        ground and blue characters as depicted on DMV pages, and both should be
+        treated as unverified.
+      legend_top: "ALASKA"
+      legend_bottom: "THE LAST FRONTIER"
+      legend_note: "The state-name requirement IS statutory — AS 28.10.161(b)(3), 'the name of this state, which may be abbreviated'. The slogan is not; no instrument requiring 'THE LAST FRONTIER' was located."
+      emblem: { present: true, rendered: placeholder, description: "the Alaska state flag — the Big Dipper and Polaris — screened in the centre of the plate; not rendered (see artwork_risk)" }
+      band: { side: none }
+      rear_differs: false
+      manufacture: "LOCATOR-GRADE: Irwin-Hodson Company, Portland, Oregon. Recorded because plate manufacture is a recurring question and because an out-of-state commercial manufacturer is a different posture from Florida's or California's prison industries."
+    region_encoding: none
+    region_encoding_note: "Alaska encodes no geography in the plate string and prints no borough or city legend. Reported letter-series reservations are functional, not geographic (an 'H' series reported reserved for Disabled plates, a 'J' series for the Grizzly Bear base, 'D' series for Disabled Veteran on the 1981 base) — locator-grade, and worth noting because a naive decoder could mistake a functional block for a regional one."
+    sources:
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # the DMV's own catalogue names this design 'Standard Gold', issued at no charge with registration, $5 replacement, $30 if personalized"
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section161.htm  # AS 28.10.161 (reproduction, current through December 2007): (b)(2)-(4) the registration number, the state name 'which may be abbreviated', the year or expiration and the sticker rule; (c) the department may not adopt a new or altered passenger plate unless it substantially embodies the section"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alaska  # LOCATOR ONLY (PRD-PLATES §4): the ABC 123 format adopted in 1976, the Last Frontier base's reported continuous issuance since 1 January 2010, the I/O/Q exclusion, the reported serial ranges and the Irwin-Hodson manufacture. None asserted as sourced."
+    notes: >-
+      ALASKA'S CURRENT STANDARD SERIES. PERIOD CAVEAT, AND IT IS A LARGE ONE:
+      `start: 2026` is the year of the instruments read and is an UPPER BOUND,
+      following the us-fl-standard convention. The true start is much earlier —
+      secondary sources put the gold Last Frontier base at July 2005 with
+      continuous issuance since 1 JANUARY 2010, after the statehood
+      commemorative base below was retired — but no agency or statutory
+      instrument stating any of those dates was obtained, and a collector-site
+      era table is exactly what this programme refuses to launder into a
+      sourced year. THE SUPERSEDED STATUTE IS THE EVIDENCE THAT SOMETHING
+      HAPPENED IN 2010: AS 28.10.161(b)(1) as of December 2007 REQUIRED every
+      passenger plate issued after 1 January 2008 to bear the statehood-50
+      design, and Alaska demonstrably does not issue that design now, so the
+      paragraph must have been amended or repealed. Finding that session law
+      would date this series properly and is the second-highest-value follow-up
+      in the file.
+
+  # =========================================================================
+  # ONE SERIES BACK — the statehood commemorative, and the ONLY series in the
+  # pacific group whose START IS WRITTEN INTO THE STATUTE AS A CALENDAR DATE.
+  # =========================================================================
+  - id: us-ak-statehood-50
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2008, ended: true, year_end_min: 2009 }
+    period_evidence: statutory-date
+    matching: strict
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      charset:
+        notes: "The format did not change at either boundary — Alaska has run ABC 123 since 1976 (locator-grade) across every base since. Only the base design changed. The pattern here omits the printed gap because secondary sources record this base's serial as set without one; the regex accepts both forms so the difference cannot cause a false negative."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "Reported as a graphic base — yellow sky, gradient orange sunburst, white mountains fading to blue — with dark blue embossed characters. LOCATOR-GRADE; no instrument states a value. No hex is recorded rather than invented."
+      legend_top: "ALASKA"
+      legend_bottom: "CELEBRATING STATEHOOD 1959-2009"
+      legend_note: "LOCATOR-GRADE legend text. What IS statutory is the requirement that produced it — see design_mandate."
+      design_mandate: >-
+        AS 28.10.161(b), verbatim from the December 2007 reproduction: "Every
+        passenger vehicle registration plate issued by the department after
+        January 1, 2008, except as specifically provided in AS 28.10.181, shall
+        have displayed upon it (1) a design and color commemorating the 50th
+        anniversary of Alaska's statehood and admittance into the United
+        States; in determining the design and color of the registration plate,
+        the commissioner shall consult with the Alaska Statehood Celebration
+        Commission". A LEGISLATURE MANDATING A COMMEMORATIVE BASE BY DATE, and
+        delegating the design to a named commission.
+      emblem: { present: true, rendered: placeholder, description: "the 'Alaska 50' logo incorporating the state flag, reported screened at left; not rendered" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section161.htm  # AS 28.10.161(b) (reproduction, current through December 2007): the post-1-January-2008 statehood-50 design mandate and the Alaska Statehood Celebration Commission consultation duty"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alaska  # LOCATOR ONLY: the base's reported issuance window of 1 January 2008 to 31 December 2009, its graphic description, the 'CELEBRATING STATEHOOD 1959-2009' legend and the reported serial range"
+    notes: >-
+      THE STATEHOOD COMMEMORATIVE BASE — ONE SERIES BACK, AND THE BEST-DATED
+      START IN THIS FILE. `period_evidence: statutory-date` is earned on the
+      START only: AS 28.10.161(b) says in terms that plates issued AFTER
+      1 JANUARY 2008 shall bear the statehood-50 design, so 2008 is a claim
+      about law rather than about a collector's observation. THE END IS NOT
+      SOURCED, which is why this entry uses `ended: true` with
+      `year_end_min: 2009` rather than a hard `end:` — the schema's
+      known-over-undated shape (PRD-PLATES §2.2), earning its keep exactly as
+      predicted. The series is known to be over, because Alaska visibly issues
+      the gold Last Frontier base today; 2009 is the floor because the
+      commemoration was of a 2009 anniversary and the reported end is
+      31 December 2009. A SECOND ORDER OF EVIDENCE SITS INSIDE THIS ENTRY: the
+      very existence of a superseded statutory mandate proves the statute was
+      amended after 2007, which is what licenses the display_rules.conflict
+      note above to treat the whole 2007 reproduction as provisional.
+
+  # =========================================================================
+  # THE PARALLEL STANDARD BASE — Alaska issues TWO no-cost standard designs.
+  # =========================================================================
+  - id: us-ak-grizzly
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      charset:
+        notes: "Same ABC 123 arrangement as the gold base. Reported issued from a reserved letter block (the 'J' series, then 'M'), which if true means the base is READABLE FROM THE SERIAL — a genuinely useful parse signal. LOCATOR-GRADE and not asserted."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "Reported as a graphic base: a standing brown Kodiak bear centred against a light blue sky, orange sunset and white mountains, with a red embossed serial and 'ALASKA' screened in dark blue at the top. LOCATOR-GRADE; no hex recorded."
+      legend_top: "ALASKA"
+      legend_bottom: null
+      legend_note: "No slogan. Reported to be based on the 1976-81 Kodiak bear base."
+      emblem: { present: true, rendered: placeholder, description: "the Kodiak bear graphic; not rendered (see artwork_risk)" }
+      rear_differs: false
+    fee: "Alaska DMV: $0 initial, $5 for replacement, $30 if personalized, $0 renewal — the same fee line as the Standard Gold plate, which is why it is modelled as a standard series and not as a specialty programme."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # the DMV lists 'Grizzly Bear' under 'Standard or Personalized License Plates' at $0 initial price, alongside 'Standard Gold'"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/sample-license-plates/  # the DMV's collector-sample page offers exactly two designs, 'Grizzly Bear' and 'Last Frontier' — the agency's own signal that these two are the state's standard pair"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alaska  # LOCATOR ONLY: introduced 7 May 2015; based on the 1976-81 bear base; awarded ALPCA Plate of the Year 2015; reported J and M serial blocks"
+    notes: >-
+      ALASKA RUNS TWO STANDARD BASES AT ONCE, AT THE SAME PRICE, AND THAT IS
+      THE MODELLING POINT. PRD-PLATES §2.2 says overlapping series are legal
+      where the notes distinguish them because parallel issuance is real; the
+      Grizzly Bear plate is the cleanest US example found — not old stock
+      running on, but a deliberate second no-cost standard design offered
+      concurrently with the gold base and treated by the DMV as its equal.
+      A consumer asking "what does a current Alaska plate look like?" has two
+      correct answers, and any renderer or classifier that assumes one standard
+      design per US state is wrong here. Its own series because the design
+      differs (§2.3); `start: 2026` is an upper bound on the same footing as
+      the gold base, with the reported May 2015 introduction recorded but not
+      claimed.
+
+  # =========================================================================
+  # PERSONALIZED — statutory, capped at six, with a published no-space rule.
+  # =========================================================================
+  - id: us-ak-personalized
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9]{1,6}\z'
+      charset:
+        notes: >-
+          AS 28.10.181(c), verbatim from the December 2007 reproduction:
+          "Special request plates. Upon application by the owner of a motor
+          vehicle, the department shall design and issue registration plates
+          containing a series of not more than six letters or numbers or
+          combination of letters and numbers as requested by the owner. The
+          department may, in its discretion, disapprove the issuance of
+          registration plates under this subsection when the requested symbols
+          are a duplication of an existing registration or when the symbols are
+          considered unacceptable by the department." SIX CHARACTERS is the
+          statutory cap and is what the regex encodes.
+        no_space_rule: >-
+          The DMV catalogue carries a footnote against the personalized options:
+          "*personalized plate does not have a space in the middle". THAT IS A
+          PRINTED-FORM FACT AND IT IS WHY THIS SERIES' REGEX HAS NO OPTIONAL
+          SEPARATOR while the standard series' does. An authority stating that
+          the sequential plate's printed gap disappears on the vanity plate is
+          precisely the kind of detail PRD-PLATES §2.6 exists to capture, and
+          precisely the kind a separator-forgiving consumer would otherwise
+          have to guess at.
+      refusal_rule: "The DMV cites 2 AAC 92.120: 'DMV will not issue personalized plates that display symbols in a combination that is demeaning towards a group of people, or that is otherwise a vulgar, violent, or criminal reference or term'. It also operates a RECALL: 'DMV will immediately investigate the license plate and if necessary, recall the license plate.' THE REGULATION'S OWN TEXT WAS NOT FETCHED (recorded gap — the Alaska Administrative Code shares the akleg BASIS access problem); the DMV's paraphrase is what is cited."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      note: "Available on the Standard Gold, Grizzly Bear and Celebrating the Arts bases, and on several cause and organisation plates, per the DMV catalogue; the design is that of the chosen base."
+    fee: "$30 personalization fee on most bases ($33 on Celebrating the Arts, $50 on several cause plates), per the DMV catalogue. Fees for cause plates are set by AS 28.10.421 (cited by the DMV; the section's text was not fetched)."
+    named_personalized_designs: ["Mountain", "Caribou", "In God We Trust", "Celebrating the Arts", "Honoring Fallen Police Officers"]
+    named_personalized_note: "The DMV lists five designs that are ONLY available personalized — they have no sequential series at all. That is an unusual category and is recorded because a plate with no sequential form cannot be matched by a sequential regex, and a parse API told only about Alaska's ABC 123 would silently reject every one of them."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(c) (reproduction, current through December 2007): special request plates, 'not more than six letters or numbers or combination', and the departmental disapproval discretion"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # the DMV: the no-space-in-the-middle rule, the 2 AAC 92.120 refusal standard and the recall procedure, the $30/$33/$50 personalization fees, and the five personalized-only designs"
+    notes: >-
+      ALASKA'S VANITY PLATE IS STATUTORILY A "SPECIAL REQUEST PLATE" and its
+      six-character cap is one of the few things in this file the statute
+      states outright. Two details make the entry worth more than its regex.
+      First, the DMV's no-space footnote is a rare authority statement about
+      PRINTED FORM rather than about content, and it means the vanity plate and
+      the sequential plate of the same state have different separator
+      behaviour. Second, Alaska maintains five designs that exist ONLY in
+      personalized form, which breaks the usual assumption that a personalized
+      plate is a variant of some sequential series.
+
+  # =========================================================================
+  # HISTORIC — a permanent numbered series, plus a year-of-manufacture route,
+  # both inside one statutory subsection.
+  # =========================================================================
+  - id: us-ak-historic-vehicle
+    class: historic
+    categories: [car]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999"
+      regex: '\A\d+\z'
+      charset:
+        notes: >-
+          AS 28.10.181(b), verbatim from the December 2007 reproduction: the
+          department shall "(1) issue two permanent registration plates of
+          distinctive design and color bearing no date; vehicles qualifying for
+          registration under this paragraph shall be issued registration plates
+          numbered in a separate numerical series beginning with 'Historic
+          Vehicle No. 1'". A separate numerical series with a stated origin and
+          NO STATED WIDTH — hence the unbounded quantifier, which makes no
+          width claim.
+      progression: "strictly sequential from 1"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "AS 28.10.181(b)(1) requires plates 'of distinctive design and color BEARING NO DATE'. The statute specifies distinctness and dateleness — properties, not values — the same drafting move Florida and California make. No colour is recorded."
+      legend: "Historic Vehicle"
+      dateless_rule: "The 'bearing no date' requirement is the interesting half: Alaska legislates the ABSENCE of a validation date on this plate, which makes it the one Alaska series a date-based era heuristic cannot touch."
+    eligibility: "AS 28.10.181(b): the department registers a historic vehicle 'when satisfied that the vehicle meets the requirements for historic vehicle registration under REGULATIONS ADOPTED BY THE COMMISSIONER' — the threshold is delegated to regulation, not stated in statute. The DMV catalogue states the operative rule: 'For vehicles 30 or more years in age and driven for historical exhibitions', $10. A ROLLING threshold, which silently grows every year and must be re-audited."
+    validity: "permanent; 'Registration plates issued under this subsection remain with the vehicle as long as the vehicle is registered under this subsection' (AS 28.10.181(b))."
+    fee: "$10 initial, $0 renewal (Alaska DMV catalogue)."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(b)(1) (reproduction, current through December 2007): two permanent plates, distinctive design and colour, bearing no date, 'Historic Vehicle No. 1' separate numerical series, plates remain with the vehicle"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # Alaska DMV: Historic Vehicle plate, $10, 'For vehicles 30 or more years in age and driven for historical exhibitions'"
+    notes: >-
+      HISTORIC VEHICLE. Alaska's version of the series Florida, California and
+      Hawaii all legislate — a separate permanent numerical run — but with two
+      distinguishing choices. It numbers from "Historic Vehicle No. 1" rather
+      than "Horseless Carriage No. 1"; and it delegates the age threshold to
+      the commissioner's regulations instead of fixing it in statute, so the
+      30-year rule the DMV publishes is agency practice rather than law. Since
+      30 years is a ROLLING threshold, this is a series whose eligible fleet
+      changes annually without any instrument being amended — the exact case
+      the quarterly audit has to re-derive rather than trust.
+
+  - id: us-ak-year-of-manufacture
+    class: historic
+    categories: [car, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: >-
+          A YOM plate carries whatever serial Alaska issued in the matching
+          year, so the regex is necessarily the union of Alaska's historic
+          arrangements and a match is a shape hit only. Alaska has run at least
+          five arrangements since 1921 (locator-grade: 123, 1234, 12345, and
+          ABC 123 from 1976), and no agency table of acceptable per-era series
+          exists of the kind California publishes in VIRPM Appendix 1E
+          (recorded gap, and a direct contrast worth carrying).
+      statutory_basis: >-
+        AS 28.10.181(b)(2), verbatim: the department shall "allow the vehicle
+        to use registration plates of this state supplied by the vehicle owner
+        that correspond to the year the vehicle was manufactured if the vehicle
+        was manufactured 30 or more years before the year of application."
+        Note the elegance: Alaska puts its year-of-manufacture route INSIDE the
+        historic-vehicle subsection as an alternative to the permanent plate,
+        where California gives it a section of its own (VC § 5004.1) and
+        Florida has no equivalent at all.
+    design:
+      background: { finish: unknown }
+      design_note: "The design is that of the original year, supplied by the owner. Alaska states no restoration or authentication rules in statute (contrast California's VIRPM 21.260, which does) — recorded gap."
+    eligibility: "vehicle manufactured 30 or more years before the year of application — a ROLLING threshold, stated in statute this time rather than delegated."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(b)(2): owner-supplied plates of this state corresponding to the year of manufacture, for vehicles 30 or more years old"
+    notes: >-
+      YEAR OF MANUFACTURE, ALASKA STYLE — the same edge case as California's
+      but reached by a different drafting route, and worth its own entry
+      because the two are not interchangeable: California requires DMV
+      authentication, publishes acceptable per-era series and grants full
+      operating privileges; Alaska states none of that and instead ties the
+      option to historic-vehicle registration, which the DMV describes as
+      limited to historical exhibition. `matching: recall-only` for the same
+      reason as California's: the regex is a union of eras, so a hit means
+      "this string has a shape Alaska has issued", never "this is a valid
+      registration".
+
+  # =========================================================================
+  # CORE CLASSES the state separately serializes.
+  # =========================================================================
+  - id: us-ak-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: "NO ARRANGEMENT IS PUBLISHED. AS 28.10.161(a) singles motorcycles out only to issue them ONE plate rather than two, and states nothing about serial or size. The DMV catalogue mentions motorcycles only in fee lines. Reported to share the ABC 123 arrangement on a reduced-size plate (locator-grade, and not even clearly reported). The regex is deliberately over-broad and the series is `recall-only` accordingly — a recorded gap rather than a guess."
+    design:
+      plate: { unit: in }
+      plate_dimension_note: "Not stated in any Alaska instrument located and not obtained. No measurement is recorded rather than guessed."
+      background: { finish: retroreflective }
+    display: "one plate, on the rear (AS 28.10.161(a) for issuance; the DMV's current statement of AS 28.10.171 names motorcycles expressly in the one-plate-on-the-back list)."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section161.htm  # AS 28.10.161(a): one fully reflectorized plate for a trailer or a motorcycle"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # Alaska DMV: motorcycles are in the one-plate-on-the-back list"
+    notes: >-
+      MOTORCYCLE. Its own series because the ISSUANCE RULE differs by statute —
+      one plate rather than two — even though nothing else about it could be
+      sourced. Recorded deliberately as a thin, honest entry rather than
+      omitted: a jurisdiction-completeness detector should see that Alaska
+      serialises motorcycles separately and that the dataset does not yet know
+      how, which is more useful than silence.
+
+  - id: us-ak-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: "NO ARRANGEMENT IS PUBLISHED. As with motorcycles, AS 28.10.161(a) singles trailers out only for the one-plate rule. Recorded gap; `recall-only`."
+    design:
+      background: { finish: retroreflective }
+    display: "one plate, on the rear (AS 28.10.161(a); the DMV names trailers in the one-plate list)."
+    permanent_registration: "The DMV operates a 'Permanent registration for trailers and older vehicles' route; its terms were not fetched (recorded gap). A permanent registration is a period fact — it means a trailer plate can outlive several validation regimes."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section161.htm  # AS 28.10.161(a): one plate for a trailer"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # Alaska DMV: trailers in the one-plate list"
+    notes: >-
+      TRAILER. Included for the same reason as the motorcycle entry — the
+      one-plate issuance rule is statutory and separates the class — and with
+      the same honest thinness. The permanent-registration route is flagged
+      because a permanently registered trailer is the kind of vehicle that
+      still carries a base two generations old, which matters to any era
+      inference built on Alaska plates.
+
+  - id: us-ak-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: "NO ARRANGEMENT IS PUBLISHED. AS 28.10.181(j) creates the plate and regulates its USE in detail while saying nothing about its face. Recorded gap; `recall-only`."
+    design:
+      background: { finish: retroreflective }
+    binding: business
+    permitted_use: >-
+      AS 28.10.181(j), from the December 2007 reproduction: a state-registered
+      and bonded vehicle dealer may apply for dealer plates, usable "only on
+      dealer-owned vehicles during the routine and normal course of the
+      dealer's business, EXCLUDING SERVICE VEHICLES, or for transporting an
+      unregistered vehicle from a port of entry to the dealer's facilities or
+      from one dealer to another or, in the case of a house trailer, from the
+      retail facility to a trailer space." A vehicle running on dealer plates
+      "must be affixed with TWO plates issued under this subsection" — which is
+      notable given that Alaska now issues one plate to ordinary passenger
+      vehicles: the dealer plate may be the state's remaining two-plate case.
+      After a sale the buyer may use the dealer plates for NOT MORE THAN FIVE
+      DAYS. The department may seize plates it believes are being used to
+      defeat the chapter.
+    plate_follows: "AS 28.10.181(a): plates issued under § 181 'remain with the person or organization to whom they are issued when vehicle ownership is transferred', except for the historic, farm and amateur-radio plates in (b), (h) and (i). Alaska legislates the plate-with-owner rule at the head of the section rather than plate by plate."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(j) dealer plates: eligibility, the permitted-use list, the service-vehicle exclusion, the two-plate display rule, the five-day post-sale window and the seizure power; (a) the plate-with-owner default and its (b)/(h)/(i) exceptions"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/  # the DMV's dealer pages, which front the dealer-plate application (form 'dealer-license-plate-application')"
+    notes: >-
+      DEALER PLATES. `binding: business` for the same reason as Florida's and
+      California's: the plate follows the firm, not the vehicle — and Alaska
+      states that as a section-wide default in AS 28.10.181(a) rather than
+      repeating it per plate type, which is cleaner drafting than either. The
+      two-plate display requirement is the fact worth carrying: if Alaska now
+      issues one plate to passenger vehicles, then a two-plate vehicle on an
+      Alaska road is a strong signal of dealer or commercial status.
+
+  - id: us-ak-government
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: "AS 28.10.181(e) requires only that 'Registration plates issued under this subsection must be of a DISTINCTIVE DESIGN AND NUMBERING SYSTEM' — the statute mandates that the numbering differ without saying how, which is the most that can be said. `recall-only`; recorded gap."
+    design:
+      background: { finish: retroreflective }
+      colour_note: "Distinctiveness is required, no value is stated. None recorded."
+    validity: >-
+      AS 28.10.181(e): a certificate and plate issued to the state, a
+      municipality or a charitable organization "is in effect until the vehicle
+      ... is no longer owned and operated by" that body "or until the
+      department, in its discretion, declares its expiration." An OPEN-ENDED
+      registration with a discretionary end — a period shape that no
+      year-based model captures, and worth recording as such.
+    scope: "AS 28.10.181(e) covers the State, municipalities AND 'charitable organizations of the state', defined as a nonprofit association, corporation, society or other entity organised, incorporated or headquartered in the state for educational, cultural, scientific or other charitable purposes. Each such body must keep a current list of its registered vehicles in registration-number order and provide it to the department on request."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(e): state, municipal and charitable-organization plates; the distinctive design and numbering requirement; the open-ended validity and discretionary expiration; the vehicle-listing duty. Also (f), elected state officials, whose plates are numbered or designed to indicate the office and may remain only during the term"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/charitable-exemption-for-license-plates/  # the DMV's charitable-exemption route, the live counterpart of AS 28.10.181(e)"
+    notes: >-
+      GOVERNMENT AND CHARITABLE FLEET PLATES. Alaska folds charities in with
+      the State and its municipalities, which is unusual and which means a
+      "government" classification on an Alaska plate is not a reliable
+      inference about who owns the vehicle. The elected-official plate in
+      AS 28.10.181(f) is recorded in the same citation rather than given its
+      own entry: it is numbered or designed to show the office and may remain
+      on the vehicle ONLY during the official's term, which makes it the one
+      Alaska plate whose validity is tied to an election result.
+
+  - id: us-ak-farm
+    class: agricultural
+    categories: [truck, van]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: "AS 28.10.181(h) permits a vehicle registered under it to 'be issued registration plates of a DISTINCTIVE DESIGN OR SYSTEM OF NUMBERING' — permissive, not mandatory, and unspecified either way. `recall-only`; recorded gap."
+    design:
+      background: { finish: retroreflective }
+    eligibility: >-
+      AS 28.10.181(h): a vehicle not exceeding 20,000 lb unladen total gross
+      weight, owned by a person deriving their primary livelihood from a ranch,
+      farm or dairy where they reside full-time, and used exclusively to
+      transport that person's own ranch/farm/dairy or greenhouse/nursery
+      products — "including vegetables, plants, grass seed, sod, or tree
+      seedlings" — to and from market, or supplies, commodities or equipment
+      for use on the holding.
+    fee: "$68 initial, $0 renewal (Alaska DMV catalogue, 'Farm Vehicle')."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(h): the 20,000 lb ceiling, the primary-livelihood and full-time-residence tests, the exclusive-use rule and the enumerated products"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # Alaska DMV: 'Farm Vehicle', $68, 'For vehicles used to transport products or supplies for farms'"
+    notes: >-
+      FARM VEHICLE. Included because agricultural is a controlled class and
+      because AS 28.10.181(h) is unusually specific about eligibility while
+      being unusually vague about the plate — the statute enumerates grass seed
+      and tree seedlings but will not commit to a numbering system. The
+      permissive "may be issued" is worth flagging: the statute does not
+      guarantee the plate is visually distinctive at all.
+
+  - id: us-ak-amateur-radio
+    class: specialty
+    categories: [car, van, truck]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LL9LLL"
+      regex: '\A[A-Z]{1,2}\d[A-Z]{1,3}\z'
+      charset:
+        notes: >-
+          THE SERIAL IS NOT A SERIES AT ALL — IT IS AN FCC CALL SIGN.
+          AS 28.10.181(i), verbatim: a licensed amateur operator who shows an
+          unexpired FCC amateur licence of any renewable class and that the
+          vehicle carries a transmitter and receiver of the applicable type
+          "may receive for the vehicle distinctive registration plates instead
+          of regular registration plates. THE NUMBER ON THE PLATES MUST BE THE
+          RADIO CALL SIGN OF THE OWNER." One vehicle may be registered per
+          radio licence held. The regex encodes the general US amateur call
+          sign shape (one or two prefix letters, a numeral, one to three suffix
+          letters); THE FCC RULE ITSELF (47 CFR part 97) WAS NOT FETCHED in
+          this pass, so the shape is not sourced to the authority that actually
+          governs it and the series is `recall-only` for that reason. Alaska
+          call signs conventionally carry AL/KL/NL/WL prefixes, which would
+          narrow it further; also unsourced here.
+    design:
+      background: { finish: retroreflective }
+      note: "'distinctive registration plates' — distinctness required, no value stated."
+    fee: "$0 initial, $0 renewal (Alaska DMV catalogue, 'Amateur Radio (Call Sign)')."
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181(i): the FCC licence and equipment proof, one vehicle per radio licence, distinctive plates, and 'The number on the plates must be the radio call sign of the owner'"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # Alaska DMV: 'Amateur Radio (Call Sign)', $0, 'For Amateur Radio Operators with FCC License'"
+    notes: >-
+      THE AMATEUR RADIO PLATE EARNS ITS OWN ENTRY BECAUSE ITS SERIAL COMES FROM
+      OUTSIDE THE STATE ENTIRELY. Alaska legislates that the plate number MUST
+      BE an identifier issued by a federal regulator to a person — not to the
+      vehicle, not by the DMV, and not from any Alaska series. That is a third
+      kind of plate string in this dataset, alongside department-assigned
+      serials and owner-chosen configurations, and it is the cleanest example
+      of why `matching: recall-only` exists: a match here says the string looks
+      like an amateur call sign, and the only authority that could confirm it
+      is the FCC. It also makes an amateur plate the one US plate whose holder
+      is publicly identifiable from a federal database — a privacy note worth
+      recording even though the dataset carries formats and never plates.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5. Alaska is small enough
+  # that the DMV's own catalogue IS the register, so this index is ENUMERATED
+  # from the agency rather than counted from a secondary source.
+  # =========================================================================
+  - id: us-ak-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      charset: { notes: "Specialty plates carry ordinary sequential serials on an alternative design, or a personalized configuration of up to six characters under AS 28.10.181(c). Reported letter blocks are reserved per base (locator-grade)." }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      note: "One design per authorised programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here. NOTE THE ARTIST-COPYRIGHT LAYER on the Celebrating the Arts designs — see artwork_risk.emblem_rule."
+    program_index:
+      count_official: null
+      count_official_note: >-
+        ALASKA PUBLISHES NO TOTAL, but unlike California it publishes a
+        COMPLETE CATALOGUE in one table, so the index below is ENUMERATED from
+        the issuing agency rather than estimated. Counting the DMV's own rows
+        as of the 2025-09-14 capture: 3 standard/near-standard designs
+        (Standard Gold, Grizzly Bear, Celebrating the Arts), 5 personalized-only
+        designs, 7 cause plates, 3 disability plates, 4 university plates,
+        1 National Guard plate, 7 military unit designators (a generic Unit
+        Designator plus Air Force, Army, Coast Guard, Marines, Navy, Space
+        Force), 6 veteran/dependant/survivor plates, 5 fraternal-organisation
+        plates and 6 special-issue plates — 47 distinct named plates in all.
+        THE FIGURE IS OURS, DERIVED BY COUNTING THE AGENCY'S TABLE, and is
+        labelled as such rather than presented as an official count.
+      count_enumerated: 47
+      enumerated_causes: ["Alaska Children's Trust", "Blood Bank of Alaska", "Breast Cancer Awareness", "Choose Life", "National Rifle Association", "Pro-Family Pro-Choice", "Support Our Troops"]
+      enumerated_universities: ["UAA", "UAF", "UAS", "Prince William Sound Community College"]
+      enumerated_military: ["Alaska National Guard", "Unit Designator", "Air Force", "Army", "Coast Guard", "Marines", "Navy", "Space Force", "Former Prisoner of War", "Gold Star Family", "Laos Vet", "Pearl Harbor Survivor", "Purple Heart", "Veteran Commemorative"]
+      enumerated_fraternal: ["International Association of Fire Fighters (IAFF)", "Freemason", "Knights of Columbus", "Lions Club", "Pioneers of Alaska"]
+      enumerated_special_issue: ["Amateur Radio (Call Sign)", "Custom Collector", "Farm Vehicle", "Firefighter/EMS", "Historic Vehicle", "Iditarod Finisher"]
+      fee_authority: "AS 28.10.421: 'Fees for these plates are set in Alaska Statute 28.10.421 and vary by plate and cause' (Alaska DMV). The section's text was not fetched (recorded gap) — but a legislature setting each specialty fee by statute rather than by regulation is itself a structural fact, and it means Alaska's specialty catalogue can be reconstructed from the statute book, which no other state in this group allows."
+      notable_program: >-
+        THE IDITAROD FINISHER PLATE IS THE MOST UNUSUAL SERIAL RULE FOUND IN
+        THE PACIFIC GROUP. The DMV: it "Requires finisher number from the
+        Iditarod Trail Committee. One set of plates may have their finisher
+        number (Ex. IDT999) and subsequent Iditarod plates may be
+        personalized." So the serial is an identifier issued by a PRIVATE
+        SPORTING BODY, with a fixed IDT prefix — a fourth species of plate
+        string, after department-assigned, owner-chosen and federally-assigned.
+      no_free_transfer_plates: ["Disabled Veteran", "Disability - standard", "Gold Star Family", "Prisoner of War", "Pearl Harbor Survivor"]
+      no_free_transfer_note: "The DMV lists these five as carrying no transfer fee; standard-issue plates are stated to be NON-TRANSFERABLE at all ('Standard issue plates are non transferable'), while special plates move with the person under AS 28.10.181(a). A transferability rule is a period-adjacent fact: a non-transferable plate dies with the registration, a transferable one can outlive several vehicles."
+      official_list_url: "https://dmv.alaska.gov/vehicle-services/license-plates/"
+      registration_counts_url: null
+      registration_counts_note: >-
+        NO PER-PLATE ISSUANCE-VOLUME REPORT WAS FOUND, but Alaska publishes
+        something no other state in this group does: annual REGISTERED VEHICLES
+        BY CLASS and BY BOUNDARY reports (PDF, at least 2019-2024) plus
+        motor-vehicle class-code statistics running back to 1998. Those are
+        vehicle-class counts rather than plate-design counts, so they do not
+        replace Florida's monthly active-specialty-plate report — but they are
+        real official structured data from the issuing agency and are recorded
+        here as the nearest Alaskan equivalent and as a capture target.
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/license-plates/  # the Alaska DMV's complete plate catalogue: every named plate, its initial and renewal fee, its eligibility proof, the Iditarod finisher-number rule, the non-transferability of standard plates and the five no-fee-transfer plates"
+      - "https://web.archive.org/web/2023id_/http://www.touchngo.com/lglcntr/akstats/Statutes/Title28/Chapter10/Section181.htm  # AS 28.10.181: the statutory basis for the whole special-plate regime, including (a) the plate-with-owner default, (d) the disabled and disabled-veteran plate DESIGN requirements (the international symbol of accessibility, and for veterans 'the Alaska and United States flags and red, white, and blue colors' — a rare statutory colour specification), and (l) the Pearl Harbor, POW, Medal of Honor and next-of-kin plates"
+      - "https://web.archive.org/web/2025id_/https://dmv.alaska.gov/vehicle-services/sample-license-plates/  # the DMV sample-plate page ($10 collector samples marked SAMPLE)"
+    notes: >-
+      THE ALASKA SPECIALTY INDEX, AND IT IS THE ONE INDEX IN THIS WAVE THAT
+      COULD BE ENUMERATED RATHER THAN ESTIMATED — 47 distinct named plates,
+      counted off the issuing agency's own single table. That is a direct
+      consequence of scale: Florida has "over 100" and publishes a 27-page
+      brochure, California publishes three category lists and no total, and
+      Alaska publishes everything on one page. Two findings worth carrying
+      beyond this file. First, AS 28.10.181(d) specifies COLOURS IN STATUTE for
+      the disabled-veteran plate ('the Alaska and United States flags and red,
+      white, and blue colors'), which is the second statutory colour
+      specification found in the pacific group after California's Legacy
+      statute — the pattern is that legislatures specify colour when the plate
+      is about identity, and delegate it when the plate is about
+      administration. Second, Alaska sets every specialty FEE by statute
+      (AS 28.10.421), so its specialty catalogue is reconstructible from the
+      statute book alone; fetching that section is the cheapest high-value
+      follow-up in this file.

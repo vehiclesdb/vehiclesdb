@@ -1,0 +1,457 @@
+# plates/us-al.yml — Alabama (PRD-PLATES gate L2, group southeast-b).
+#
+# WHAT MAKES ALABAMA WORTH READING FIRST IN THIS GROUP: it is the only state in
+# the group whose issuing agency publishes an actual DESIGN SPECIFICATION —
+# "State of Alabama License Plate Design Specifications", 4 pp, dated April 8,
+# 2021, served from revenue.alabama.gov. That document is the single richest
+# per-state renderable-geometry source found in this pass: plate sizes for
+# passenger AND motorcycle, the safe design rectangle, the header typeface and
+# point size, minimum character height, the SEVEN-character cap on standard
+# plates and the SIX-character cap on distinctive plates, the mandated black
+# character colour, and a statutory legend ("Heart of Dixie") that every plate
+# must carry. Almost none of that is inferable from a photograph, and no
+# competitor dataset has any of it.
+#
+# SOURCING RULE APPLIED HERE, AND ITS LIMIT: PRD-PLATES §4 prefers the statute
+# over the brochure. Alabama's Code (Title 32, Chapter 6) is served only through
+# ALISON, a JavaScript application that returns no extractable text, and every
+# third-party mirror tried (Justia, FindLaw, Casetext, LawServer) answers 403 or
+# 410 to a plain fetch. So the top of the source hierarchy in this file is the
+# DEPARTMENT's own published specification and its own plate catalogue — both
+# primary agency documents — with the Alabama Department of Archives and History
+# supplying the county-code table. The statutory layer is a RECORDED GAP, named
+# in each series' notes rather than papered over.
+#
+# REGEX FORM (PRD-PLATES §2.6): every regex here is written in PRINTED form. The
+# optional space before the weight-class letter is spelled ` ?` because Alabama
+# prints the county code as a visually separate group on most plates and the
+# department's spec is silent on grouping; the cap, not the gap, is the claim.
+jurisdiction: us-al
+authority:
+  name: Alabama Department of Revenue, Motor Vehicle Division (ALDOR MVD)
+  url: "https://www.revenue.alabama.gov/division/motor-vehicle/"
+binding: vehicle
+statute_edition: >-
+  NOT OBTAINED. The Code of Alabama is published through ALISON
+  (alison.legislature.state.al.us), which serves a JavaScript shell with no
+  extractable statutory text, and every mirror attempted returned 403/410. The
+  Alabama Administrative Code host (admincode.legislature.state.al.us) is the
+  same shape. Every legal claim in this file is therefore sourced to a
+  DEPARTMENTAL instrument, and the statutory chapter is a named gap.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    NO DETERMINATION EITHER WAY WAS FOUND, and this is recorded as unresearched
+    rather than guessed. Alabama does not appear in the per-state posture table
+    of the pinned US/world dossier (which covers FL, CA, NC, NJ, MA, GA as
+    favourable and NY, AZ, WA, PA as adverse), and no Commons {{PD-ALGov}} tag
+    was located. Under the dossier's core rule — 17 U.S.C. §105 does not reach
+    the states, so the DEFAULT for a US state plate design is copyrighted unless
+    that state says otherwise — Alabama must be treated as default-copyrighted
+    until researched. The one adjacent data point actually fetched cuts the
+    other way from a clearance: ALDOR's own design specification instructs
+    sponsors that "If the logo or design includes copyright protected elements,
+    written permission to have the design appear on an Alabama license plate
+    must be provided to the Department" — evidence that the department actively
+    polices THIRD-PARTY copyright in plate artwork, and no evidence at all about
+    the state's posture toward its own.
+  edict_carve_out: >-
+    Independent of the above: the design specification is an agency instrument,
+    and Alabama's plate FACTS (sizes, character caps, colours-as-values, legends)
+    are facts, which are uncopyrightable at every level. Nothing in this file
+    reproduces artwork.
+  emblem_rule: >-
+    PRD-PLATES §3 placeholder default applies without exception here, and applies
+    harder than it does in Florida because the posture is unknown rather than
+    favourable. The sunrise-beach graphic and the HEART OF DIXIE heart device
+    render as `emblem: {present: true, rendered: placeholder}`. State-seal misuse
+    statutes are a separate regime from copyright and are unresearched for
+    Alabama.
+  sources:
+    - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # ALDOR requires sponsors to furnish written permission for copyright-protected elements — the department's own copyright-awareness, and the only Alabama IP evidence obtained"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY, via the pinned dossier: the source that establishes the default-copyrighted rule for states and lists the exceptions — Alabama is not among them"
+
+# ---------------------------------------------------------------------------
+# The US standards chain, plus the Alabama-specific wrinkle that makes this
+# state's record unusual: Alabama delegates reflectivity to a DIFFERENT SAE
+# standard than AAMVA delegates dimensions to.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA writes recommendations in the declarative present and has no enforcement power."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends plate dimensions and bolt holes to SAE J686. J686's own text is PAYWALLED and was NOT obtained; nothing in this file quotes it. Alabama's own 6x12 in figure comes from ALDOR's specification, not from J686."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges."
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name in the top centre between the bolt holes, jurisdiction characters 0.75-1.0 in."
+    stacked_characters: "AAMVA: stacked characters are part of the official plate number; no more than two may be stacked. Relevant to Alabama's non-passenger types, which stack a weight code beneath the class letter."
+    replacement_cycle: "AAMVA §1.1 recommends a rolling or full replacement cycle not to exceed 7 to 10 years. NO Alabama replacement cycle was obtained (recorded gap) — contrast Florida, which legislated 10 years."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  alabama_divergence: >-
+    A GENUINELY INTERESTING FINDING, and the reason this block is not boilerplate.
+    ALDOR's specification does NOT route reflectivity through AAMVA. It states, in
+    the department's own words, that plates "shall be manufactured in such a manner
+    as to meet the minimum federal performance standards as set out in Table I of
+    the Society of Automotive Engineers Standard J594e, 'Reflex Reflectors,' of
+    Federal Standard 108." So the US standards chain is not one chain: AAMVA points
+    at SAE J686 for GEOMETRY, and Alabama points at SAE J594e via FMVSS 108 for
+    REFLECTIVITY. Recorded because the sentence above is ALABAMA's text — quoting
+    the state's own delegation is not quoting SAE, and no SAE text appears anywhere
+    in this dataset (the standing rule).
+  digital_manufacture: >-
+    "The State of Alabama began utilizing digital license plate manufacturing
+    technology in September 2006." A dated, agency-sourced manufacturing boundary,
+    which is why Alabama plates since 2006 carry SCREENED rather than embossed
+    serials and why full-colour graphic bases are possible at all.
+  folklore_caution: >-
+    The "1956 AMA/AAMVA/NSC standardization agreement" that supposedly fixed the
+    6x12 inch plate is repeated in the lead of every state article read for this
+    group. THE STATUS OF THAT CLAIM HAS CHANGED SINCE THE PINNED DOSSIER and the
+    change is worth recording precisely: the dossier found it flagged `citation
+    needed` since 2017; the articles now attach a single citation — Garrish,
+    Christopher, "Reconsidering the Standard Plate Size", *Plates* (Automobile
+    License Plate Collectors Association), vol. 62 no. 5, October 2016. That is a
+    hobbyist membership magazine, it was not obtainable, and its title on its face
+    suggests it REVISES rather than confirms the received account. Status
+    downgraded from "uncited" to "cited to an unobtainable enthusiast periodical
+    whose title implies it disputes the claim" — still not a sourced fact, and
+    Alabama's 6x12 in figure is instead cited to ALDOR's own specification.
+  sources:
+    - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # the J594e/FMVSS 108 reflectivity delegation, the September 2006 digital-manufacture date, and the 6x12 in / 4x7 in sizes"
+
+display_rules:
+  status: NOT OBTAINED
+  note: >-
+    Alabama's plate-display statute was not obtained, for the ALISON reason given
+    at the head of this file. The Wikipedia US aggregate places Alabama among the
+    rear-only states, but that table is a LOCATOR and its own references are
+    per-state statutes; none was fetched for Alabama. No display claim is made
+    here. This is the single largest gap in the Alabama record and is the first
+    thing a verifier with statute access should close.
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD-ISSUE BASE.
+  # =========================================================================
+  - id: us-al-standard-2022
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, motorhome]
+    period: { start: 2022 }
+    period_evidence: locator-dated-agency-corroborated
+    matching: strict
+    format:
+      pattern: "9L9999L"
+      regex: '\A(?:\d ?[A-Z][A-Z0-9]{5}|\d{2} ?[A-Z][A-Z0-9]{4})\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset:
+        notes: >-
+          THE SOURCED CONSTRAINT IS A LENGTH CAP, NOT AN ALPHABET. ALDOR's design
+          specification, verbatim: "A maximum of seven (7) alphanumeric characters
+          may be displayed on standard license plates. A maximum of six (6)
+          alphanumeric spaces may be displayed on distinctive license plates."
+          That seven-character cap is what `regex_statutory` encodes. NO letter
+          exclusion is stated anywhere in the specification.
+        excluded_reported: ["I", "O", "Q"]
+        excluded_evidence: >-
+          REPORTED, NOT SOURCED. The I/O/Q exclusion is a Wikipedia LOCATOR claim
+          and no departmental instrument confirming it was found, so it is NOT
+          encoded as a `regex_strict`. Recorded here so a future pass can close it
+          with one citation rather than rediscover it. (Contrast Kentucky in this
+          same group, where the exclusion IS agency-stated and therefore IS encoded.)
+      progression: >-
+        Reported by the same locator: "The last 4-5 characters can be numbers or
+        letters. Each progresses 0 to 9, then A to Y, from right to left." An
+        odometer-style mixed-radix progression rather than a letter-block scheme —
+        which, if true, is why Alabama shows eight different-looking arrangements
+        inside ONE series rather than eight series. Not asserted as sourced.
+      pattern_note: >-
+        `regex` encodes the SOURCED SHAPE: a county code of one or two digits
+        (Alabama Department of Archives and History), followed by a class letter,
+        padded to exactly seven alphanumeric characters (ALDOR specification). It
+        is deliberately wider than the eight arrangements a locator reports
+        (1A2345B, 1A23BCD, 1A23B4C, 10A123B, 10A12B3, 10A1B23, 10A1BC2, 10A2BCD,
+        10ABCDE) because that list is not agency-sourced, and deliberately
+        narrower than the seven-character cap in `regex_statutory` because the
+        county prefix IS agency-sourced. `matching: strict` under the PRD-PLATES
+        §2.7 test: this is a real well-formedness claim for an Alabama passenger
+        plate, not a shape hit.
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4 }
+      plate_variants:
+        - { for: motorcycle, w: 7, h: 4, unit: in, source_note: "ALDOR spec: 'Motorcycle license plates are 4\" X 7\"'. Recorded as a size variant rather than a series because ALDOR's own catalogue places motorcycles INSIDE the Standard Passenger category; no separate motorcycle serial grammar was obtained (recorded gap)." }
+      design_rectangle: { w: 11.44, h: 5.44, unit: in, note: "ALDOR spec: 'Designs for use in the United States must fit into a 5.44 X 11.44\" rectangle, with radius corners sized to match the debossing rim in the blanking press. The resulting .28\" margin is needed to ensure acceptable finished license plates.' This is a RENDERABLE constraint and no competitor carries it." }
+      bolt_holes: { diameter: 0.3125, unit: in, source_note: "ALDOR spec, stated in the context of bottom-legend placement" }
+      serial_area: { w: 8.75, h: 2.875, unit: in, note: "ALDOR spec: the serial area 'should be free of graphics'" }
+      character_min_height: { value: 2.75, unit: in, note: "ALDOR spec: 'no smaller than two and three-fourths inches in height' — TIGHTER than AAMVA §2.2's 2.5 in recommendation. Alabama exceeds the voluntary standard." }
+      character_spacing: "at least equal to the stroke width (ALDOR spec)"
+      foreground: "#000000"
+      foreground_basis: >-
+        SOURCED, and unusually so. ALDOR spec: "All license plate numbers will be
+        printed in black to ensure a minimum contrast ratio of 4-to-1 between
+        different background colors and the alphanumeric characters to ensure that
+        the background is four (4) times brighter than the alphanumeric characters."
+        A stated hue AND a stated photometric ratio — this is the best-sourced
+        foreground colour anywhere in the dataset so far, better even than Florida,
+        whose statute names no colour at all.
+      background: { finish: retroreflective, hex_basis: unsourced }
+      background_note: >-
+        NO HEX IS RECORDED. The current base is a full-colour sunrise-beach graphic,
+        so no single background value is meaningful, and ALDOR's "White is the
+        optimum background color ... and is required for quantity class 1 (generic)
+        license plate designs" applies to GENERIC distinctive plates, not to this
+        full-design standard base. Recording a hex here would be inventing one.
+      colour_process: "four process colours (CMYK), no spot/PMS colours, 3M reflective sheeting, ~55 LPI line screen, printable palette capped near 32,768 colours at 300x300 dpi (ALDOR spec)"
+      legend_top: "ALABAMA"
+      legend_top_typography: "capitalised, placed between the bolt holes, 80 point, URW BaskerTwid or similar (ALDOR spec explicitly offers 'Ex. Times New Roman' as the substitute) — a named typeface with a named fallback, which is rare and which §6's font-licensing rule can act on directly"
+      legend_bottom_reported: "www.alabama.travel"
+      heart_of_dixie_rule: >-
+        ALDOR spec, verbatim: "Every license plate shall display a conventionalized
+        representation of a heart and the words 'Heart of Dixie'. Sponsoring
+        organizations may request that the 'Heart of Dixie' language not be
+        reflected on the license plate." A MANDATORY legend with a sponsor-level
+        opt-out — structurally the same modelling wrinkle as Florida's
+        county-name legend with a county-commission opt-out, and the second
+        instance in the dataset of a legend that belongs to the requester rather
+        than to the series.
+      emblem: { present: true, rendered: placeholder, description: "sunrise beach graphic plus the Heart of Dixie heart device at lower right — described from a locator, NOT from a departmental drawing" }
+      rear_differs: false
+    region_encoding:
+      mechanism: "leading one or two digits of the serial = county of issuance"
+      table: >-
+        Codes 1, 2 and 3 were assigned in 1941 to Jefferson, Mobile and Montgomery
+        (the three most populous counties of the time) and codes 4 through 67 to the
+        remaining counties in ALPHABETICAL order; code 70 denotes replacement plates.
+        68 code rows were counted in the Archives table.
+      decode_trap: >-
+        THE TRAP A PARSE API MUST NOT FALL INTO: the codes were frozen in 1941 and
+        were never renumbered. Montgomery is still code 3 although it is now the
+        seventh most populous county, and Madison — now second — carries 47. The
+        code is a 1941 population ranking, not a current one, and any consumer that
+        infers size or importance from a low Alabama county code will be wrong.
+      status: "mechanism + rationale recorded; the full 67-row decode table is L4 scope and belongs in plates/_decode/us-al-county.yml when it lands"
+      source: "https://web.archive.org/web/20090430071153/http://www.archives.alabama.gov/auto-tags.html"
+    sources:
+      - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # ALDOR 'License Plate Design Specifications', April 8 2021: 6x12 in passenger / 4x7 in motorcycle; the 5.44x11.44 in design rectangle and .28 in margin; 0.3125 in bolt holes; the 2.875x8.75 in graphics-free serial area; 2.75 in minimum character height; the ALABAMA header at 80 pt in URW BaskerTwid; the SEVEN-character standard cap and SIX-character distinctive cap; black characters at a 4:1 contrast ratio; the mandatory Heart of Dixie legend and its sponsor opt-out; 3M sheeting and the CMYK-only rule; the J594e/FMVSS 108 reflectivity delegation; September 2006 digital manufacture"
+      - "https://web.archive.org/web/20090430071153/http://www.archives.alabama.gov/auto-tags.html  # Alabama Department of Archives and History, 'Alabama Automobile Tags Numerical by County': 'Alabama license plates first featured county codes in 1941. As of 2008, these codes continued to be used on passenger and some non-passenger types.' Full code-to-county table, 68 rows, including 1 Jefferson / 2 Mobile / 3 Montgomery and 70 Replacement. Live URL is dead; this is the Wayback capture"
+      - "https://www.revenue.alabama.gov/license-plates/  # ALDOR's own plate catalogue: the Standard Passenger entry, its eligibility ('Private passenger automobiles, motorcycles, pickup trucks (not exceeding 12,000 pounds), motor homes of any weight'), and its code-section hooks 40-12-242 and 40-12-273"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alabama  # LOCATOR ONLY (PRD-PLATES §4): the January 3, 2022 base start, the sunrise-beach/www.alabama.travel design description, the eight serial arrangements, the right-to-left 0-9-then-A-Y progression, and the I/O/Q exclusion. None is asserted as sourced here"
+    notes: >-
+      ALABAMA STANDARD ISSUE, CURRENT BASE. THE ID IS DATED BUT THE DATE IS THE
+      WEAKEST CLAIM IN THE ENTRY, and that inversion is deliberate rather than
+      careless: the DESIGN facts here are agency-sourced to an unusual depth while
+      the PERIOD rests on a locator reporting January 3, 2022, with the same locator
+      conceding that "some appeared as early as October 2021". No ALDOR memo, press
+      release or catalogue entry announcing the 2022 base was located — ALDOR's memo
+      series does announce new plates with exact effective dates, but the three
+      memos reachable in this pass all concern DISTINCTIVE plates (Mental Health
+      Matters, April 1 2026; Protect Wildlife, July 1 2026; Alabama Is Aviation,
+      August 1 2026), not standard bases. A verifier should look for the equivalent
+      2021 memo; the id is dated on the assumption it will be found, and if the true
+      start proves to be 2021 the id becomes a former-id alias under the
+      PRD-QUALITY I-5/I-6 contract rather than being edited in place.
+      WHY ONE SERIES AND NOT EIGHT: Alabama's eight reported arrangements are all
+      seven characters, all county-prefixed, and all on one physical base. They are
+      the surface of a single right-to-left mixed-radix counter, not eight issuance
+      systems, so they are one series with one regex — the opposite call from
+      Tennessee in this same group, where the two standard options genuinely differ
+      in arrangement and are therefore two series.
+
+  # =========================================================================
+  # ONE SERIES BACK — the L2 requirement.
+  # =========================================================================
+  - id: us-al-standard-2014
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, motorhome]
+    period: { start: 2014, end: 2022 }
+    period_evidence: locator-dated
+    matching: strict
+    format:
+      pattern: "9L9999L"
+      regex: '\A(?:\d ?[A-Z][A-Z0-9]{5}|\d{2} ?[A-Z][A-Z0-9]{4})\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "same seven-character departmental cap and same county prefix as the successor base — the 2022 change was a GRAPHIC change, not a format change" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      foreground: "#000000"
+      background: { finish: retroreflective, hex_basis: unsourced }
+      graphic_reported: "black screened serial over a lake-and-forest graphic"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "county code in the leading one or two digits, unchanged — see us-al-standard-2022"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alabama  # LOCATOR ONLY: 'January 2, 2014 - January 2, 2022', lake-and-forest graphic, and the note that the letter-number-letter arrangement appeared in Madison and Shelby counties after 47ZZ999 and 58ZZ999 respectively were exhausted"
+      - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # the design specification is dated April 8, 2021 and therefore governs the tail of THIS base as well as its successor — the same seven-character cap applies"
+    notes: >-
+      THE PREVIOUS ALABAMA BASE (lake and forest), 2014 to 2022. Recorded because
+      L2 asks for one series back, and worth recording for one substantive reason
+      beyond completeness: the county-exhaustion note. When Madison County ran out
+      of 47ZZ999 and Shelby out of 58ZZ999, Alabama did not issue a new county code
+      — it changed the ARRANGEMENT of the remaining characters within the same
+      county code. That is direct evidence for the one-series reading of the
+      current base's eight arrangements, and it is also the mechanism by which a
+      fixed 1941 county-code space survives population growth. Both period bounds
+      are locator-grade; the design specification bounds the format but says
+      nothing about dates.
+
+  # =========================================================================
+  # DEALER — separately serialized, and notably NOT county-coded.
+  # =========================================================================
+  - id: us-al-dealer
+    class: dealer
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d{5}\z'
+      charset: { notes: "purely numeric and five wide as reported; the ALDOR seven-character cap bounds it but does not describe it" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      legend_bottom: "Dealer"
+      heart_of_dixie_rule: "the mandatory Heart of Dixie device applies to 'every license plate' per the ALDOR specification, dealer plates included"
+    binding: business
+    validity: "annual"
+    region_encoding: none
+    sources:
+      - "https://www.revenue.alabama.gov/license-plates/  # ALDOR's catalogue carries 'Dealer & Manufacturer' as one of its fourteen plate categories, establishing that Alabama serializes dealer plates separately"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alabama  # LOCATOR ONLY: the five-digit numeric serial and the 'Dealer' legend, for Dealer - Passenger and both Dealer Transit types; first-issue date recorded as Unknown even by the locator"
+      - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # the Heart of Dixie requirement that reaches 'every license plate'"
+    notes: >-
+      ALABAMA DEALER PLATES. `binding: business` for the standing reason — the plate
+      follows the dealership, not a vehicle. Two things are worth carrying forward.
+      First, the dealer serial is NOT county-coded, which makes it the clean
+      counter-example inside Alabama to the "leading digits are a county" rule and a
+      trap for any decoder that applies the county table indiscriminately. Second,
+      the period is an upper bound from the design specification's date and nothing
+      better: even the locator records the first-issue date as unknown. The five-digit
+      width is locator-grade and is flagged as such rather than dressed up.
+
+  # =========================================================================
+  # MOTORCYCLE — a genuine size series, and the reason it is separate here.
+  # =========================================================================
+  - id: us-al-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2014 }
+    period_evidence: locator-dated
+    matching: strict
+    format:
+      pattern: "999999M"
+      regex: '\A\d{6}M\z'
+      charset: { notes: "six numerals followed by a LITERAL M; the trailing M is a class marker inside the serial, not a separator and not a decorative device" }
+    design:
+      plate: { w: 7, h: 4, unit: in, source_note: "ALDOR spec: 'Motorcycle license plates are 4\" X 7\"'" }
+      foreground: "#000000"
+      background: { finish: retroreflective, hex_basis: unsourced }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # the 4x7 in motorcycle plate size, and the instruction that the logo maximum is 'adjusted accordingly for motorcycle plate'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alabama  # LOCATOR ONLY: the 123456M arrangement and a January 2014 first issue for the design shown"
+    notes: >-
+      ALABAMA MOTORCYCLE PLATES. Its own series because the DESIGN differs — 4x7 in
+      against 12x6 in — which is exactly the PRD-PLATES §2.3 test, and because the
+      serial is not county-coded. Note the tension the dataset now records honestly
+      in two places: ALDOR's catalogue puts motorcycles inside the Standard Passenger
+      CATEGORY for fee and eligibility purposes, while the physical plate is a
+      different size with a different serial. Both facts are true; the standard series
+      carries the size as a variant and cross-refers here, and this entry carries the
+      distinct serial. The M suffix is the only sourced-adjacent discriminator, and it
+      is locator-grade.
+
+  # =========================================================================
+  # DISTINCTIVE (SPECIALTY) — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # Count and official links only; no individual designs.
+  # =========================================================================
+  - id: us-al-distinctive-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9]{1,6}\z'
+      charset:
+        notes: >-
+          The SIX-character cap is agency-sourced and is the whole of what this
+          index claims: ALDOR, verbatim, "A maximum of six (6) alphanumeric spaces
+          may be displayed on distinctive license plates" — one character fewer than
+          a standard plate, because the design must reserve room for the sponsoring
+          organisation's artwork.
+      pattern_note: >-
+        `matching: recall-only` and it is the right call rather than a hedge. This
+        one entry stands for 398 catalogued plates whose individual arrangements are
+        not modelled at this gate (PRD-PLATES §2.5), so a match here says only
+        "this string could be an Alabama distinctive plate serial" and is emphatically
+        not a validity claim for any particular program. Per §2.7 a recall-only series
+        carries no `regex_strict`, and none is given.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_variants: [{ for: motorcycle, w: 7, h: 4, unit: in }]
+      background: { finish: retroreflective }
+      generic_class_rule: >-
+        ALDOR distinguishes QUANTITY CLASS 1 (generic) from QUANTITY CLASS 2 (full
+        design) and specifies them differently: white background is REQUIRED for
+        class 1; the class 1 logo sits on the LEFT and may not exceed 3.22 x 2.3 in
+        on a passenger plate "to allow space for up to six (6) alphanumeric license
+        plate characters"; the class 1 Heart of Dixie device goes in the lower right
+        corner, while a class 2 design may place it anywhere. Design elements must
+        clear the serial by at least 0.25 in.
+      emblem: { present: true, rendered: placeholder }
+      note: "one design per authorised program; the designs themselves are L4 scope and none is described here"
+    program_index:
+      count_official: 398
+      count_official_basis: >-
+        Counted from ALDOR's own catalogue, which states its own total: "Showing 50
+        of 398 Plates". This is a HARDER number than most states publish — Florida
+        says "over 100", Kentucky says "over 150", Tennessee's arts commission says
+        "over 200"; Alabama publishes an exact figure because the catalogue is
+        database-backed.
+      count_caveat: >-
+        398 is the count of CATALOGUE ENTRIES across all fourteen categories, not the
+        count of specialty PROGRAMS. The catalogue separately lists passenger,
+        motorcycle, personalized-passenger and personalized-motorcycle rows for the
+        same organisation, so the program count is materially lower than 398 and was
+        not derived. Recorded as what it is rather than divided by a guess.
+      categories_official: ["Collegiate", "Dealer & Manufacturer", "Disability Access Parking", "Distinctive", "Generic Distinctive", "Generic Race", "Government Plates", "Military", "Motorcycle", "Original Vintage Plates", "Passenger", "Standard", "Temporary Tags", "Truck"]
+      official_list_url: "https://www.revenue.alabama.gov/license-plates/"
+      design_spec_url: "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf"
+      sponsor_application_url: "https://mydmv.revenue.alabama.gov/TAP/?link=SponsoringOrg"
+      churn_evidence: >-
+        ALDOR publishes a numbered MEMO series to plate-issuing officials announcing
+        each new plate with an exact availability date. Three were fetched in this
+        pass: Mental Health Matters, available for issuance beginning April 1, 2026;
+        Protect Wildlife, beginning July 1, 2026; Alabama Is Aviation (MVD Memo
+        2026-004), beginning August 1, 2026. That is roughly one new plate a quarter
+        from ONE year's memos, which is the churn rate the index has to live with.
+      precommitment_mechanism: >-
+        A structural fact no other state in this group has: Alabama orders initial
+        stock against a PRE-COMMITMENT REPORT of county-level demand before a
+        distinctive plate is manufactured, and issues personalized copies on demand
+        through ALVIN. So an Alabama distinctive plate has a measurable demand
+        signal attached to it at birth, and the pre-commitment portal is public.
+      precommitment_url: "https://mydmv.revenue.alabama.gov/TAP/?link=PrecomPlt"
+    region_encoding: none
+    sources:
+      - "https://www.revenue.alabama.gov/license-plates/  # ALDOR's own plate catalogue: 'Showing 50 of 398 Plates' and the fourteen-category taxonomy"
+      - "https://www.revenue.alabama.gov/wp-content/uploads/2022/02/License-Plate-Design-Specifications-040821.pdf  # the six-character distinctive cap, the quantity class 1 vs class 2 rules, the 3.22x2.3 in logo maximum, the white-background requirement for class 1, the 0.25 in clearance rule"
+      - "https://www.revenue.alabama.gov/memo-new-license-plate-mvd-memo-2026-004/  # MVD Memo 2026-004: 'Alabama Is Aviation, will be available for issuance beginning August 1, 2026'; the pre-commitment report and ALVIN ordering mechanism"
+      - "https://www.revenue.alabama.gov/memo-new-license-plate-memo-2026-001/  # Memo 2026-001: Mental Health Matters, beginning April 1, 2026"
+      - "https://www.revenue.alabama.gov/memo-new-license-plate/  # Protect Wildlife, beginning July 1, 2026"
+    notes: >-
+      THE ALABAMA DISTINCTIVE-PLATE INDEX — one entry standing for the whole program,
+      which is what PRD-PLATES §2.5 asks for at this gate. Two things worth carrying
+      forward. First, Alabama is the best-instrumented specialty program found in this
+      group: an exact published count, a fourteen-category taxonomy, a dated memo
+      series for new issues, and a public pre-commitment portal. Second, the SIX
+      versus SEVEN character split is the most consequential single fact here for a
+      parse API — an Alabama serial of seven characters cannot be a distinctive plate,
+      and that is a sourced discriminator, not a heuristic. It is also why the
+      distinctive index is recall-only while the standard series is strict: the cap
+      tells you what a distinctive serial cannot be, never what it is.

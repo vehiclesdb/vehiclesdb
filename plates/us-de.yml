@@ -1,0 +1,551 @@
+# plates/us-de.yml — Delaware (PRD-PLATES gate L2, mid-Atlantic group).
+#
+# DELAWARE IS THE SCHEMA STRESS TEST THE US/WORLD DOSSIER NAMED IN ADVANCE.
+# The dossier flagged it as one of two rows that "break the fixed-width
+# alphanumeric on a 6x12 rectangle assumption", because its serial is a BARE
+# NUMBER of VARIABLE LENGTH with no leading zeros — 4 through 999999, one to six
+# digits, nothing else. Every regex here quantifies rather than fixes width, and
+# the no-leading-zeros rule lives in `regex_strict` exactly as PRD-PLATES §2.7
+# says a charset restriction must.
+#
+# DELAWARE ALSO HAS THE OLDEST DESIGN STILL IN USE IN THE UNITED STATES. The
+# gold-on-blue scheme dates to 1959 by the dossier's own reckoning and the plate
+# has not changed colour since. That makes Delaware the one state in this group
+# where "one series back" is a manufacturing change (flat to beveled), not a
+# redesign — and it makes the dataset's `period` semantics do real work, because
+# a Delaware plate's DESIGN cannot date it at all.
+#
+# WHAT IS SOURCED HERE AND WHAT IS NOT. Delaware's statute is unusually
+# generous: 21 Del. C. § 2121 states the ONE-PLATE rule, the plate's required
+# content, the vanity character caps AND — uniquely in this group — actual
+# COLOUR VALUES in law, gold on blue, inverted to blue on gold for the officials
+# and judges of § 2123. What the statute expressly declines to fix is everything
+# else: "Number plates shall be of such design, size, material and color as the
+# Department may determine." So Delaware legislates two colour schemes and then
+# hands the whole design back to the Department in the same section.
+#
+# period_evidence / format_evidence vocabularies as in us-ny.yml.
+jurisdiction: us-de
+authority:
+  name: Delaware Division of Motor Vehicles (DelDOT DMV)
+  url: "https://www.dmv.de.gov/"
+binding: vehicle
+statute_edition: "Delaware Code Title 21 (Motor Vehicles), Chapter 21, Subchapter II (Plates), as served by delcode.delaware.gov and read 2026-08-02."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    NOTHING WAS FOUND, AND THAT IS THE FINDING. The US/world dossier already
+    recorded Delaware as a gap — 'Texas, Delaware: NOT ESTABLISHED. Neither
+    appears in the fetched source. Treat as default (copyrighted)' — and this
+    pass did not close it. Delaware has no entry at all in the Wikipedia survey
+    of subnational copyright status, there is no {{PD-DEGov}} template on
+    Wikimedia Commons, and the only Delaware-wide statement located is a bare
+    copyright notice in the delaware.gov portal footer ('(c)MMXVIII
+    Delaware.gov' / '(c)MMXVI Delaware.gov' depending on the page), which is an
+    assertion of rights with no scope, no grant and no reuse terms attached.
+  posture_default: >-
+    THE DEFAULT APPLIES: 17 U.S.C. § 105 puts only FEDERAL works in the public
+    domain and does not reach the states, so a Delaware state work is
+    COPYRIGHTED UNLESS DELAWARE SAYS OTHERWISE, and Delaware has not been found
+    to say otherwise. Treat as adverse in practice while recording the posture
+    honestly as UNRESEARCHED rather than as a positive finding of adversity —
+    the two are different claims and only one of them is evidenced.
+  what_to_chase: >-
+    Delaware's Government Information Center (gic@delaware.gov) is named on the
+    portal's own privacy page as the body that builds and maintains state web
+    content, and that page directs reuse questions to it. That is the single
+    address a verifier should write to. The Delaware Freedom of Information Act
+    (Title 29, Chapter 100 of the Delaware Code) is referenced on the same page
+    and is the statutory hook worth reading for a records-access-versus-copyright
+    answer of the kind Florida and New Jersey have.
+  emblem_rule: >-
+    RENDER PLACEHOLDER. Delaware's standard plate is the least graphical in the
+    group — a legend, a border and a number, no emblem at all — so the
+    placeholder rule costs almost nothing here. The specialty backgrounds
+    (ducks, lighthouses, horses) are the artwork surface and are L4 scope
+    regardless.
+  photograph_caution: >-
+    Standard §4 reading. One official DMV specialty-plate thumbnail was READ in
+    this pass to confirm the all-numeric serial form; it is not copied into the
+    dataset and no render derives from it.
+  sources:
+    - "https://delaware.gov/help/disclaimer.shtml  # the Delaware portal's own page: a bare '(c) Delaware.gov' notice, the Government Information Center as content owner, a pointer to the Delaware FOIA (Title 29 Ch. 100), and NO reuse grant"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY: Delaware has NO ENTRY in this survey - checked, not assumed"
+
+# ---------------------------------------------------------------------------
+# The US standards chain. Voluntary; J686 never quoted.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686 (paywalled, NOT obtained). Delaware states no dimension: § 2121 says only that plates 'shall be of such design, size, material and color as the Department may determine'. No sourced dimension is carried here."
+    legibility_comparison: "AAMVA §3.3 recommends legibility 'from distances of at least 75 feet' in daylight AND at night. Delaware legislates a DAYLIGHT-ONLY 100-foot rule that is both longer and narrower than AAMVA's: plates 'shall be of sufficient size to be plainly readable at a distance of 100 feet during daylight'. Two different standards, neither derived from the other, and the state's is law while AAMVA's is advice."
+    replacement_cycle: "AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. DELAWARE IS THE STRONGEST COUNTEREXAMPLE IN THE COUNTRY: its design has run since 1959 and its serial space has never been reset, which is only possible because Delaware does not replace plates on a cycle at all. No replacement provision was located in Subchapter II."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' is UNCITED in its Wikipedia source and is recorded as COMMONLY REPEATED, UNSOURCED. Delaware states no dimension of its own to put in its place."
+
+# ---------------------------------------------------------------------------
+# Display rules. Delaware is a ONE-PLATE, REAR-ONLY state and says so in law.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "ONE plate, REAR. 21 Del. C. § 2126: 'The number plate assigned to a motor vehicle shall at all times be attached to the rear of the motor vehicle.' § 2121 correspondingly has the Department furnish ONE number plate per vehicle. Delaware is the cleanest one-plate statement in this group — contrast Pennsylvania, whose rear-only practice could not be pinned to any instrument."
+  plate_content: "§ 2121: 'Each number plate shall have displayed thereon the registration number assigned to the vehicle, the name of this State' together with expiration information."
+  design_delegation: "§ 2121: 'Number plates shall be of such design, size, material and color as the Department may determine.' The legislature fixes the CONTENT and then delegates the FORM — with the two colour exceptions below, which it does not delegate."
+  mounting: "§ 2126: securely fastened 'at a height not less than 12 inches from the ground, measuring from the bottom of such plate ... in a place and position to be clearly visible'."
+  legibility: "'Each number plate and identifying letters and numerals thereon ... shall be of sufficient size to be plainly readable at a distance of 100 feet during daylight.' SOURCING CAVEAT: the extraction of Subchapter II did not preserve which section carries this sentence (§ 2121 or § 2126); a verifier should pin the subsection before it is quoted with a section number."
+  obstruction: "§ 2126: 'No number plate, or any portion thereof, shall be covered with any tinted material, nor shall any other material be placed on or around a number plate which would conceal and/or obscure any information.'"
+  penalty: "§ 2126: fines from $25 to $200 depending on the offence."
+  ownership: "§ 2125 is titled 'Ownership of plates' — Delaware legislates the plate's ownership as a distinct question from the vehicle's, which is the statutory root of the state's famous low-number transfer market. The section text was not extracted (recorded gap), but its existence is the pointer a verifier needs."
+  sources:
+    - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. Ch. 21 Subchapter II: § 2121 one plate, plate content, the design/size/material/colour delegation, the vanity colour and character rules; § 2125 ownership of plates; § 2126 rear attachment, 12-inch height, the tinted-material prohibition and the $25-$200 penalties; the 100-foot daylight legibility rule"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD-ISSUE SERIES.
+  # =========================================================================
+  - id: us-de-standard-beveled
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2008 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: statutory
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{1,6}\z'
+      regex_strict: '\A[1-9]\d{0,5}\z'
+      charset:
+        excluded: []
+        notes: >-
+          DELAWARE'S SERIAL IS A NUMBER, NOT A CODE. There are no letters in an
+          ordinary Delaware passenger serial at all, the width is genuinely
+          VARIABLE from one digit to six, and the reported rule is that there are
+          NO LEADING ZEROS — a one-digit plate is '4', not '000004'. The no-
+          leading-zeros rule is what `regex_strict` carries; `regex` cannot,
+          because PRD-PLATES §2.7 requires `regex` to round-trip against
+          `pattern` and a pattern of six 9s generates leading zeros freely.
+          Reported issued range: 4 to 999999, with 1, 2 and 3 reserved for the
+          Governor, the Lieutenant Governor and the Secretary of State
+          respectively.
+      pattern_note: >-
+        `pattern` shows the SIX-DIGIT form because that is the modal printed
+        plate and a pattern must be a concrete printed shape; the regex is what
+        carries the variability. A consumer must read the regex, not the pattern,
+        for width. This is the shape PRD-PLATES §2.2 anticipated when it said
+        Delaware's variable-width serials mean 'regexes quantify rather than fix
+        width'.
+      progression: "strictly sequential ascending; the space has NEVER been reset, which is why Delaware serials are an unusually good age proxy — a low number is an old registration or an expensive one."
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      colour_note: >-
+        DELAWARE IS THE ONLY STATE IN THIS GROUP WITH A COLOUR SCHEME IN
+        STATUTE. § 2121 prescribes 'Gold letters on a blue background' — for the
+        vanity plates in terms, and the ordinary plate carries the same scheme
+        by long practice. The HEX VALUES are still `observed`, because the
+        statute names colours, not values: 'gold' and 'blue' are the claim, and
+        the exact navy and old-gold recorded here are read off official DMV
+        imagery. Naming a colour in law and specifying it are different acts and
+        the dataset should not blur them.
+      border: { present: true, color: "#C8A951", note: "gold border, observed" }
+      legend_top: "THE FIRST STATE"
+      legend_bottom: "Delaware"
+      graphic: { present: false, rendered: none, description: "the standard Delaware plate carries NO graphic at all - legend, border, number. It is the most minimal standard plate in the mid-Atlantic group and arguably in the country." }
+      emblem: { present: false }
+      band: { side: none }
+      rear_differs: false
+      manufacture: "BEVELED EDGES distinguish this base from the flat plates before it (locator). The design is otherwise unchanged."
+      dimension_note: "NO SOURCED DIMENSION - § 2121 delegates size to the Department and no departmental specification was obtained."
+    replacement_cycle:
+      years: null
+      note: "NO REPLACEMENT PROVISION LOCATED in Subchapter II. Delaware's design has run continuously since 1959 by the dossier's reckoning, which is only possible without a replacement cycle. This is the pole opposite Florida's statutory 10 years."
+    secondary_market:
+      note: >-
+        DELAWARE IS THE ONLY US JURISDICTION WITH A SUBSTANTIAL SECONDARY MARKET
+        IN THE NUMBER ITSELF, and the statutory root is § 2125 ('Ownership of
+        plates'). The dossier records sale prices of $185,000 for #9 (1994),
+        $675,000 for #6 (2008) and roughly $70,000 for a three-digit plate
+        (2023). Recorded because it is the clearest real-world demonstration
+        that in some jurisdictions the registration mark is PROPERTY separable
+        from the vehicle — a `binding` question the schema already models for
+        Switzerland's owner-bound plates.
+      evidence: "locator-grade via the US/world dossier; no Delaware primary for any sale price was sought"
+    region_encoding: none
+    sources:
+      - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. § 2121: one plate per vehicle, 'the registration number assigned to the vehicle, the name of this State', 'Number plates shall be of such design, size, material and color as the Department may determine', 'Gold letters on a blue background'; § 2125 ownership of plates; § 2126 rear display"
+      - "https://www.dmv.de.gov/VehicleServices/tags/index.shtml  # DelDOT DMV's own plate index - the agency-page-in-force evidence that this scheme is current"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY (PRD-PLATES §4): the 2008 beveled-edge revision, the 4-999999 range, the 1/2/3 reservations for Governor / Lieutenant Governor / Secretary of State, the no-leading-zeros rule and the low-number market"
+    notes: >-
+      DELAWARE STANDARD ISSUE — VARIABLE-WIDTH NUMERIC, THE SCHEMA'S NAMED
+      STRESS TEST. `start: 2008` is locator-grade and marks a MANUFACTURING
+      change (flat to beveled), not a design change: the colours, the legend and
+      the serial space all run continuously across it. That has a consequence
+      worth stating plainly for consumers — A DELAWARE PLATE'S DESIGN CARRIES NO
+      DATE INFORMATION AT ALL. Every other state in this group can be roughly
+      dated from its base; Delaware can only be dated from its NUMBER, and only
+      by someone holding the issuance history. This is also why the two Delaware
+      series overlap in 2008 with distinct notes: nothing was recalled, so 1969
+      plates and 2008 plates are both current registrations today.
+
+  # =========================================================================
+  # ONE SERIES BACK — a manufacturing change, not a redesign.
+  # =========================================================================
+  - id: us-de-standard-flat
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1969, end: 2008 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: statutory
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{1,6}\z'
+      regex_strict: '\A[1-9]\d{0,5}\z'
+      charset: { notes: "identical to the current base - the same continuous numeric space, no leading zeros. The 1969 boundary is a manufacturing and issue-run boundary only." }
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      legend_top: "THE FIRST STATE"
+      legend_bottom: "Delaware"
+      graphic: { present: false, rendered: none }
+      emblem: { present: false }
+      band: { side: none }
+      manufacture: "FLAT (no beveled edge) - the only reported difference from the current base."
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: 1969 base, flat, 'Screened gold serial on reflective dark blue plate with gold border', 'THE FIRST STATE' centred at top - identical description to the current base but for the bevel"
+    notes: >-
+      DELAWARE, FLAT (1969-2008). Recorded as its own series because
+      PRD-PLATES §2.3 makes DESIGN difference a series test and the physical
+      construction differs — but recorded with the honest caveat that this is
+      the THINNEST series boundary in the mid-Atlantic group. Format, colours,
+      legends and serial space are all identical across it. A consumer that
+      cannot distinguish a beveled Delaware plate from a flat one will get the
+      right answer to every format question and the wrong answer only to
+      'which series', which is the correct failure mode for a boundary this
+      subtle. Both remain valid: Delaware recalls nothing.
+
+  # =========================================================================
+  # CORE DISTINCT CLASSES — Delaware serialises each in its own space, and the
+  # marker letters are the whole grammar.
+  # =========================================================================
+  - id: us-de-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2008 }
+    period_evidence: instrument-in-force-upper-bound
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d{1,5}\z'
+      regex_strict: '\A[1-9]\d{0,4}\z'
+      charset: { notes: "reported five-digit numeric motorcycle serial in its own space, with 'M/C' printed at the bottom left rather than encoded in the serial. No leading zeros, on the same reasoning as the passenger series." }
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      legend_top: "THE FIRST STATE"
+      legend_bottom: "M/C"
+      legend_rule: "the CLASS MARKER IS A LEGEND, NOT A SERIAL CHARACTER - 'M/C' sits at the bottom left of the plate. A parser reading only the serial cannot tell a Delaware motorcycle plate from a low-numbered passenger plate; it must read the legend. That is a genuine ambiguity in the Delaware system and is stated rather than hidden."
+      emblem: { present: false }
+      dimension_note: "NO SOURCED DIMENSION."
+    vanity_note: "§ 2121(i) caps a MOTORCYCLE vanity plate at five characters against seven for a passenger vanity plate, and charges the same $40 annually - statutory confirmation that Delaware treats the motorcycle series as its own space."
+    region_encoding: none
+    sources:
+      - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. § 2121(i): motorcycle vanity plates 'not to exceed 5 in number', $40 annually"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: five-digit numeric motorcycle serial with M/C at bottom left"
+    notes: >-
+      MOTORCYCLE. THE AMBIGUITY IS THE POINT: because Delaware's motorcycle
+      serial is all-numeric in a parallel space, the string '12345' is a
+      well-formed serial in BOTH the passenger and the motorcycle series and no
+      amount of regex resolves it. A parse API must return both candidates for
+      Delaware numerics, which is exactly the multi-parse behaviour PRD-PLATES
+      §6's prior-art survey admired in @randock's formatter.
+
+  - id: us-de-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2008 }
+    period_evidence: instrument-in-force-upper-bound
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "T999999"
+      regex: '\AT\d{1,6}\z'
+      charset: { notes: "reported trailer serial: a literal T prefix on the numeric space. Unlike the motorcycle series, the trailer class IS encoded in the serial, which makes trailer plates unambiguous where motorcycle plates are not." }
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      legend_top: "THE FIRST STATE"
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: trailer T123456"
+    notes: "TRAILER. Locator-grade format on a statutory class. The T prefix makes this the one Delaware class a parser can identify from the string alone."
+
+  - id: us-de-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2008 }
+    period_evidence: statutory-authority-undated
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    binding: business
+    format:
+      pattern: "D99999"
+      regex: '\AD\d{1,5}\z'
+      charset: { notes: "reported dealer serial: a literal D prefix on the numeric space." }
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      legend_top: "THE FIRST STATE"
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. § 2124: 'Number plates for manufacturers, dealers, and transporters' - the statutory class, which distinguishes THREE trade categories where most states distinguish one or two"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: dealer D12345"
+    notes: >-
+      DEALER. `binding: business`. § 2124's heading names MANUFACTURERS, DEALERS
+      AND TRANSPORTERS as three trade categories in one section — the same
+      three-way split Florida draws between Dealer and Manufacturer legends,
+      plus a transporter category Florida lacks. Whether Delaware serialises
+      them apart was not established (recorded gap); only the dealer form was
+      reported.
+
+  - id: us-de-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2021 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "XA999999"
+      regex: '\AX[ABCDPQ]\d{6}\z'
+      charset:
+        notes: >-
+          Reported temporary-plate form: a literal X, a series letter, and six
+          numerals. The series letters reported in use are A, B, C, D, P and Q
+          'as of June 19, 2021', which the locator gives as a dated observation.
+          The regex enumerates exactly those six letters rather than allowing any
+          letter, so it is narrow by any letter subsequently opened — the safe
+          direction. Delaware's temporary plates are reported to have EVOLVED
+          from an all-numeric form to this XA/XB/... scheme, i.e. the X prefix is
+          itself a generation marker.
+    design:
+      background: { finish: unknown }
+      legend_top: "THE FIRST STATE"
+      emblem: { present: false }
+      note: "no design source obtained for the temporary plate stock (recorded gap)."
+    validity: "not sourced. §§ 2129, 2130 and 2131 of Title 21 govern issuance by the Department, issuance by dealers and repair technicians, and 'Effect and duration of temporary registration plates' respectively — § 2131 is the section a verifier should pull for the validity period."
+    region_encoding: none
+    sources:
+      - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. §§ 2129, 2130, 2131: issuance of temporary registration plates, issuance by dealers and repair technicians, and the effect and duration of temporary plates - THREE statutory sections on temporary plates, the most detailed treatment in this group"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: XA123456 form and the XA/XB/XC/XD/XP/XQ series letters as of 19 June 2021"
+    notes: >-
+      TEMPORARY. Delaware devotes three statutory sections to temporary plates
+      where most states devote one clause, including a section specifically for
+      issuance by REPAIR TECHNICIANS — a category no other state in this group
+      names. The class and its structure are statutory; the serial form is
+      locator-grade; § 2131 (duration) is the named gap.
+
+  - id: us-de-state-owned
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2008 }
+    period_evidence: instrument-in-force-upper-bound
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    binding: business
+    format:
+      pattern: "S9999"
+      regex: '\AS\d{1,4}\z'
+      charset: { notes: "reported state-owned vehicle serial: a literal S prefix on the numeric space." }
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      legend_top: "THE FIRST STATE"
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: state-owned S1234"
+    notes: >-
+      STATE-OWNED FLEET. Distinct from the OFFICIALS series below, which is a
+      different statutory animal: this plate goes on a vehicle the State owns,
+      whereas § 2123 plates go to a PERSON holding an office and carry inverted
+      colours. Two government-class series with different bases, different
+      colours and different purposes.
+
+  - id: us-de-officials
+    class: government
+    categories: [car, van, truck]
+    period: { start: 2008 }
+    period_evidence: statutory-authority-undated
+    format_evidence: secondary-locator-unverified
+    matching: recall-only
+    format:
+      pattern: "999"
+      regex: '\A\d{1,5}\z'
+      charset:
+        notes: >-
+          NO FORMAT SOURCE WAS OBTAINED FOR § 2123 PLATES. What IS known is that
+          the three lowest numbers in the whole Delaware space — 1, 2 and 3 —
+          are reported reserved for the Governor, the Lieutenant Governor and
+          the Secretary of State, so the officials' plates draw from the same
+          numeric alphabet. `matching: recall-only` because this regex is a
+          deliberately wide numeric catch-all rather than a sourced grammar: a
+          match says only 'this is a Delaware-shaped number'.
+    design:
+      background: { color: "#C8A951", finish: retroreflective, hex_basis: observed }
+      foreground: "#00305E"
+      colour_note: >-
+        THE COLOURS ARE INVERTED, AND THAT IS IN STATUTE. § 2121 prescribes 'Gold
+        letters on a blue background, EXCEPT for license plates provided for in
+        § 2123', which take 'blue letters on a gold background'. § 2123 is
+        'Number plates for state/federal officers and judges'. So Delaware
+        legislates a colour INVERSION as the mark of high office — the only
+        statutory colour distinction found anywhere in the mid-Atlantic group,
+        and a rare case of a US legislature specifying a design VALUE rather
+        than delegating it.
+      legend_top: "THE FIRST STATE"
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. § 2121: 'Gold letters on a blue background, except for license plates provided for in § 2123 ... blue letters on a gold background'; § 2123 'Number plates for state/federal officers and judges'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware  # LOCATOR ONLY: numbers 1, 2 and 3 reserved for the Governor, Lieutenant Governor and Secretary of State"
+    notes: >-
+      OFFICERS AND JUDGES (§ 2123). Carried as `recall-only` because the COLOUR
+      claim is statutory and valuable while the FORMAT claim does not exist —
+      and the schema has no way to record a series with a sourced design and no
+      sourced grammar except by making the grammar honestly wide. That is
+      precisely what §2.7's recall-only tier is for, and this is its third use
+      in the mid-Atlantic group after New York's vintage plates and
+      Pennsylvania's motorcycles.
+
+  # =========================================================================
+  # VANITY — Delaware puts the character cap and the colours in the STATUTE.
+  # =========================================================================
+  - id: us-de-vanity
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2008 }
+    period_evidence: statutory-authority-undated
+    format_evidence: statutory
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: >-
+          21 Del. C. § 2121(h): a vanity plate's characters are 'not to exceed 7
+          in number', at a fee of '$40 annually for each plate in addition to the
+          regular registration fee'. § 2121(i) caps a motorcycle vanity plate at
+          five. THE CAP IS IN THE STATUTE, not on an agency page — Delaware is
+          one of only two jurisdictions in this group where that is true (New
+          York's eight-character cap in VTL § 404 is the other), and the
+          strongest of the two because § 2121 also fixes the colours in the same
+          section.
+    fee: "$40 annually per plate, in addition to the regular registration fee, for both passenger and motorcycle vanity plates (21 Del. C. § 2121(h), (i))"
+    design:
+      background: { color: "#00305E", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8A951"
+      colour_note: "§ 2121: 'Gold letters on a blue background' - stated for vanity plates in terms."
+      legend_top: "THE FIRST STATE"
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://delcode.delaware.gov/title21/c021/sc02/index.html  # 21 Del. C. § 2121(h) seven-character vanity cap, 'Gold letters on a blue background', $40 annual fee; § 2121(i) five-character motorcycle vanity cap, $40 annual fee; § 2121 also covers SPECIAL AMATEUR RADIO plates in the same section"
+    notes: >-
+      VANITY. The section heading is 'Number and registration plates; special
+      amateur radio and vanity plates', which bundles AMATEUR RADIO CALL-SIGN
+      plates into the same provision — a class this file does not model because
+      no format source was obtained, but which is worth recording as present:
+      an amateur radio plate's serial is an FCC-issued call sign, i.e. a serial
+      Delaware does not assign at all. That is a genuinely unusual binding and
+      belongs in a later gate.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-de-specialty-index
+    class: specialty
+    categories: [car, truck]
+    period: { start: 2008 }
+    period_evidence: agency-page-in-force
+    format_evidence: official-agency-text
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{1,6}\z'
+      regex_strict: '\A[1-9]\d{0,5}\z'
+      charset: { notes: "specialty plates carry the ORDINARY Delaware numeric serial on an alternative background - confirmed by reading DelDOT DMV's own specialty thumbnails, which show a six-digit numeric sample. The numeric space and the no-leading-zeros rule are unchanged." }
+    design:
+      background: { finish: retroreflective }
+      note: "one background or organisational design per approved programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+      eligibility_note: "DelDOT DMV: 'Special plates are restricted to passenger vehicles or trucks with a 3/4-ton or less manufacturers gross vehicle weight rating.' A WEIGHT CEILING ON SPECIALTY ELIGIBILITY - the only weight-keyed plate rule in this group, and the reason this series' categories are [car, truck] and not the full list."
+    program_index:
+      count_official: 149
+      count_official_method: >-
+        ENUMERATED FROM THE AGENCY'S OWN COMPLETE LIST. DelDOT DMV publishes
+        'Delaware License Plates - All Special Tags', alphabetised A-Z; 149
+        distinct plate images were counted on it on 2026-08-02. The agency
+        states no number itself, so this is OUR COUNT OF THE AGENCY'S OWN LIST
+        and is labelled as such — not an agency claim, and not a locator's.
+      count_caveat: "the count is of DISTINCT IMAGE ENTRIES on the all-tags page and will drift as the page changes; snapshot the date with the number. Military and college plates have their own sub-lists which are included in the all-tags page."
+      official_all_tags_url: "https://www.dmv.de.gov/VehicleServices/tags/index.shtml?dc=tags_all"
+      official_military_url: "https://www.dmv.de.gov/VehicleServices/tags/index.shtml?dc=tags_military"
+      official_college_url: "https://www.dmv.de.gov/VehicleServices/tags/index.shtml?dc=tags_college"
+      index_url: "https://www.dmv.de.gov/VehicleServices/tags/index.shtml"
+      creation_threshold: >-
+        DelDOT DMV, in its own words: 'The law requires a minimum of 200
+        applications from a specific organization before the Division may approve
+        the issuance of the plate. There is an exemption for university or high
+        school alumni associations who only need 25 applications. Exemptions have
+        also been written into the law for a number of other organizations, that
+        have been authorized a plate with less than 200 applications.' THE
+        HIGHEST CREATION THRESHOLD IN THIS GROUP by a factor of eight — compare
+        Maryland's 25 owners per class under Md. Transp. § 13-619.
+      black_tag_programme: >-
+        DELAWARE RUNS A HISTORIC BLACK PORCELAIN TAG PROGRAMME THROUGH AN OUTSIDE
+        VENDOR, linked from the DMV's own plate index at dhptags.com. It is
+        recorded here because a vendored plate programme is the same structural
+        arrangement the dossier found in Texas (specialty vendored to
+        MyPlates.com) and it changes who holds the authoritative list. NOT
+        researched further in this pass; the programme's serial rules and its
+        relationship to the ordinary numeric space are a recorded gap.
+      churn_note: "no discontinuation rule was located in Subchapter II; recorded gap."
+    region_encoding: none
+    sources:
+      - "https://www.dmv.de.gov/VehicleServices/tags/index.shtml  # DelDOT DMV: the specialty overview, the 3/4-ton weight ceiling, the 200-application creation threshold and the 25-application alumni exemption, the $50 Keep Delaware Beautiful price, and the link to the Delaware Black Tag Program"
+      - "https://www.dmv.de.gov/VehicleServices/tags/index.shtml?dc=tags_all  # 'Delaware License Plates - All Special Tags', the agency's own complete alphabetical list - the source of the 149 count"
+    notes: >-
+      THE SPECIALTY PROGRAM INDEX. Delaware is the BEST specialty case in the
+      mid-Atlantic group: unlike Pennsylvania (search box, unenumerable) and New
+      Jersey (five tracks, no total), DelDOT DMV publishes one complete
+      alphabetical list of every special tag it offers, so an honest count is
+      available by enumeration. It also publishes the statutory creation
+      threshold in plain words, which is the fact that actually predicts how a
+      state's programme grows: at 200 applications Delaware's bar is eight times
+      Maryland's, and its 149 designs against Maryland's unknown and New York's
+      206 is the shape that bar produces.
+
+# ---------------------------------------------------------------------------
+# GAPS.
+# ---------------------------------------------------------------------------
+gaps:
+  - "ARTWORK POSTURE UNRESEARCHED — no Delaware copyright statement, no case, no Commons tag. The default (copyrighted) applies. Write to the Government Information Center; read Title 29 Ch. 100 (Delaware FOIA)."
+  - "The 100-foot daylight legibility sentence could not be attributed to a specific section (§ 2121 or § 2126) from the subchapter extraction."
+  - "§ 2125 (Ownership of plates) text not extracted — it is the statutory root of the low-number market and should be pulled."
+  - "§ 2131 (Effect and duration of temporary registration plates) not extracted — the temporary validity period is unsourced."
+  - "NO SOURCED PLATE DIMENSION — § 2121 delegates size to the Department and no departmental specification was found."
+  - "Colour VALUES are observed; the statute names 'gold' and 'blue' without specifying them."
+  - "Whether manufacturers, dealers and transporters (§ 2124) are serialised apart was not established."
+  - "The Delaware Black Tag Program (dhptags.com) is unresearched — a vendored programme with unknown serial rules."
+  - "Amateur radio call-sign plates (§ 2121) are not modelled: the serial is FCC-issued, not state-issued, which is a binding the schema has not yet met."

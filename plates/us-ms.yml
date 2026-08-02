@@ -1,0 +1,432 @@
+# plates/us-ms.yml — Mississippi (PRD-PLATES gate L2, group southeast-b).
+#
+# WHY MISSISSIPPI IS THE MOST PERIOD-DISCIPLINED STATE IN THIS GROUP, and maybe
+# in the dataset: Mississippi does not have a redesign HABIT, it has a redesign
+# STATUTE, and its revenue department labels each base with the years it covers.
+# Miss. Code Ann. § 27-19-31(1) authorises a five-year tag, and the Department of
+# Revenue's own plate page calls the current issue the "2024-2029 Series" in
+# terms. Everywhere else in this dataset a period boundary has to be assembled
+# from press releases and collector tables; here the issuing agency states the
+# window itself. That is a genuinely rare artefact and it is the spine of this
+# file.
+#
+# SOURCING RULE APPLIED HERE, AND ITS LIMIT: PRD-PLATES §4 prefers the statute
+# over the agency page. The Mississippi Code of 1972 is published exclusively
+# through a LexisNexis portal that serves a JavaScript shell, and Justia,
+# FindLaw and Casetext all refuse a plain fetch (403/410). But Mississippi's DOR
+# QUOTES § 27-19-31(1) verbatim on its own plate page, so the operative statutory
+# sentence in this file is a real statutory quotation carried by the agency
+# charged with executing it — second-best, honestly labelled, and far better than
+# a paraphrase. The rest of Chapter 27-19 is a recorded gap.
+jurisdiction: us-ms
+authority:
+  name: Mississippi Department of Revenue, Motor Vehicle Services (Vehicle Licensing Division)
+  url: "https://www.dor.ms.gov/motor-vehicle/available-license-plates"
+binding: vehicle
+statute_edition: >-
+  NOT DIRECTLY OBTAINED. The Mississippi Code of 1972, Annotated is served through
+  a LexisNexis portal (lexisnexis.com/hottopics/mscode) that returns a JavaScript
+  redirect shell; law.justia.com and codes.findlaw.com return 403 and casetext.com
+  returns 410. § 27-19-31(1) appears in this file as VERBATIM TEXT QUOTED BY THE
+  MISSISSIPPI DEPARTMENT OF REVENUE on its own Available License Plates page, which
+  is the agency that administers it. Public.Resource.Org carries scanned/XML
+  Mississippi Code editions from 2010 and 2013 that were NOT used, because a
+  thirteen-year-old edition is worse evidence for a current five-year cycle than
+  the administering agency's own current quotation.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: asserted-weak
+  basis: >-
+    Mississippi is not in the pinned dossier's per-state table in either column,
+    so it starts from the dossier's default rule — 17 U.S.C. §105 does not reach
+    the states, therefore a state plate design is copyrighted unless the state
+    says otherwise — and no Mississippi exception was found. No Commons
+    {{PD-MSGov}} tag was located. What WAS found, and is recorded because it is
+    the only direct evidence either way: every page of the Mississippi Department
+    of Revenue site, including the plate pages this file cites, carries the notice
+    "© Copyright 2026 - State of Mississippi". That is an affirmative copyright
+    assertion by the State over the material the plate designs are published in.
+    It is deliberately graded ASSERTED-WEAK rather than adverse: a site-wide
+    footer is a claim over the website compilation, not a considered assertion
+    over the plate design itself, and it is a much thinner artefact than Arizona's
+    express statement that its works "are not in the public domain". But it points
+    one way, and this dataset does not round a copyright notice down to nothing.
+  authorship_complication: >-
+    A wrinkle no other state in this group has, and one a clearance would have to
+    resolve rather than assume away: the current standard base was, per a
+    contemporaneous news report, "Created by Leah Eaton of Starkville,
+    Mississippi" — a named private individual, not an anonymous agency draughtsman.
+    Whatever the State's posture toward its own works, an individually authored
+    design raises the separate question of what was assigned and on what terms.
+    Unresearched, and flagged rather than waved through.
+  emblem_rule: >-
+    PRD-PLATES §3 placeholder default applies. Two emblems are in scope and they
+    are different problems. The MAGNOLIA BLOSSOM on the current base renders as
+    `emblem: {present: true, rendered: placeholder}`. The STATE SEAL on the
+    2019-2023 base is worse: state seals carry protection INDEPENDENT of copyright
+    under seal-misuse statutes, that regime is unresearched for Mississippi, and
+    the Mississippi seal specifically was the subject of controversy and litigation
+    after "In God We Trust" was added to it in 2014. It renders as a placeholder
+    and should stay one.
+  sources:
+    - "https://www.dor.ms.gov/motor-vehicle/available-license-plates  # '© Copyright 2026 - State of Mississippi' site-wide footer, on the very page that publishes the plate designs"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY, via the pinned dossier: the default-copyrighted rule for states and the list of exceptions, which does not include Mississippi"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption; recommendations in the declarative present, no enforcement power."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is PAYWALLED and was NOT obtained. No J686 dimension is quoted anywhere in this dataset. Mississippi's 12x6 in figure below is locator-grade, not J686-derived."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in."
+    stacked_characters: >-
+      AAMVA: "If stacked characters are used, they are part of the official license
+      plate number. No more than two characters are to be stacked." THIS RULE EARNS
+      ITS KEEP IN MISSISSIPPI. The motorcycle plate prints a stacked M-over-C class
+      marker ahead of the serial, and the disabled plate a stacked D-over-B. Under
+      AAMVA those stacked pairs are SERIAL, not decoration — so a normaliser that
+      discards them is destroying part of the plate number, and `us-ms-motorcycle`
+      below encodes the pair as serial characters accordingly.
+    replacement_cycle: "AAMVA §1.1 recommends a cycle not to exceed 7 to 10 years. MISSISSIPPI LEGISLATED FIVE — shorter than the entire AAMVA range, and the shortest standard-issue cycle in this group by half. See § 27-19-31(1) under us-ms-standard-2024."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The Mississippi article, like every state article read for this group, opens
+    with the "1956 agreement" that supposedly standardised the 6x12 inch plate,
+    and adds that Mississippi complied "22 years beforehand, in 1934". The claim
+    now carries exactly one citation — Garrish, Christopher, "Reconsidering the
+    Standard Plate Size", *Plates* (Automobile License Plate Collectors
+    Association), vol. 62 no. 5, October 2016 — a members' magazine that was not
+    obtainable and whose title suggests it revises rather than confirms the story.
+    Recorded as still-unsourced. Mississippi's 12x6 in figure in this file is
+    locator-grade and is labelled as such; no state instrument stating it was found.
+
+display_rules:
+  default_reported: "ONE plate, rear only"
+  evidence: >-
+    LOCATOR-GRADE, and recorded as an unclosed claim rather than a fact: the
+    Mississippi article states the state "only requires rear plates" and switched
+    to rear-only in 1925. No Mississippi statute or administrative rule on plate
+    display was obtained, for the LexisNexis reason at the head of this file.
+  sources:
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Mississippi  # LOCATOR ONLY: rear-only since 1925"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD BASE — and the best-labelled period in the dataset.
+  # =========================================================================
+  - id: us-ms-standard-2024
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2024 }
+    period_evidence: agency-labelled-series
+    period_scheduled_end: 2029
+    period_scheduled_end_note: >-
+      THE AGENCY LABELS ITS OWN SUNSET AND WE DO NOT WRITE IT INTO `period.end`.
+      The Mississippi Department of Revenue titles the current issue the
+      "2024-2029 Series" on its Available License Plates page, so 2029 is an
+      ANNOUNCED, agency-stated scheduled end — genuinely different in kind from a
+      guess. It is carried here rather than in `period.end` for two reasons: the
+      lint's period rails cap `end` at the current year plus one (correctly — an
+      `end` in the dataset means the series stopped issuing, and this one has not),
+      and a scheduled end is a plan, which states revise. When 2029 arrives and the
+      succeeding base lands, `end: 2029` moves into `period` and this key retires.
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      charset:
+        notes: >-
+          No alphabet restriction was obtained from any Mississippi instrument. The
+          three-letter/three-numeral arrangement is locator-grade, corroborated by
+          the DOR's own plate image filename ("2024 Standard Passenger Plate"), and
+          no `regex_strict` is offered because no exclusion is sourced.
+      separator_note: >-
+        A SEPARATOR THAT IS NOT A CHARACTER, and the reason this entry is worth
+        reading twice. On the 2024 base the gap between the letter group and the
+        numeral group is occupied by a screened MAGNOLIA BLOSSOM on a blue circle —
+        the emblem IS the separator. Under plates/_meta/separators.yml §4 that
+        device is a design element carried in `design.emblem` and is NEVER part of
+        the serial and never strippable-as-punctuation, because it is not
+        punctuation. The regex therefore spells the position as an optional
+        SPACE — the honest printed form of a gap the authority fills with artwork —
+        exactly as Spain's Anexo XVIII gap is spelled. Tennessee in this same group
+        does the same thing with a flag emblem; two states, one modelling rule.
+      pattern_note: >-
+        `matching: strict`: this regex lies inside what Mississippi issues, and a
+        match is a real well-formedness claim for a current Mississippi passenger
+        plate. No `regex_statutory` twin is given because, unlike Florida, no
+        Mississippi instrument stating an outer character cap was obtained — the
+        five-year cycle is legislated, the serial width is not, as far as this pass
+        could establish.
+    design:
+      plate: { w: 12, h: 6, unit: in, hex_basis_note: "size is locator-grade; no Mississippi instrument stating it was obtained" }
+      material: "aluminium (locator)"
+      manufacturer_reported: "Waldale Manufacturing Limited, Amherst, Nova Scotia — a NON-US, non-prison manufacturer, which is unusual for a US state and is recorded because it bears on font and sheeting questions if the render layer ever needs them. Locator-grade."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#00205B"
+      colour_note: >-
+        Both hexes are `observed` approximations of the described "embossed dark blue
+        serial on white plate" and are NOT sourced to any Mississippi instrument. No
+        colour specification for Mississippi plates was located. Treat as unverified.
+      relief: "EMBOSSED serial — Mississippi still embosses where Alabama has screened since 2006 and Kentucky flat-prints since 2020. A real manufacturing difference with render consequences."
+      legend_top: "MISSISSIPPI"
+      legend_bottom: "<county name>"
+      legend_rule: >-
+        The county name is EMBOSSED at the bottom centre — printed into the plate,
+        not applied as a sticker. That is the opposite implementation from Tennessee
+        and Kentucky in this same group, which both put the county on a removable
+        sticker, and it is why a Mississippi plate cannot change county without
+        being replaced. Locator-grade description; the DOR page confirms the design
+        but not the wording.
+      emblem: { present: true, rendered: placeholder, description: "magnolia blossom against a blue circle, occupying the serial gap — see format.separator_note" }
+      rear_differs: false
+    replacement_cycle:
+      years: 5
+      statutory_text: >-
+        § 27-19-31(1), quoted verbatim by the Mississippi Department of Revenue on
+        its own plate page: "The Department of Revenue is authorized and directed to
+        establish and maintain a vehicle registration renewal system whereby the
+        license tag attached upon a motor vehicle or trailer may be issued for five
+        (5) years with the approval of the License Tag Commission, except for motor
+        vehicles registered in excess of ten thousand (10,000) pounds gross vehicle
+        weight, and motor vehicles in a fleet registered, apportioned vehicles,
+        rental and commercial trailers and buses, which shall be issued for a period
+        of time determined by the Department of Revenue."
+      note: >-
+        FIVE YEARS IS SHORTER THAN AAMVA'S ENTIRE RECOMMENDED RANGE, which runs 7 to
+        10. Florida legislated the top of the range at 10; Mississippi legislated
+        below the bottom of it. Note also the third actor in that sentence — a
+        LICENSE TAG COMMISSION whose approval the cycle requires. Mississippi is the
+        only state in this group where plate issuance is a two-body decision, and
+        the Commission's own instruments were not obtained (recorded gap).
+      exclusions: "vehicles over 10,000 lb GVW, fleet-registered vehicles, apportioned vehicles, rental and commercial trailers, and buses are all outside the five-year rule and run on periods the Department sets"
+    region_encoding:
+      mechanism: "county name printed as a LEGEND, plus serial issuance in LETTER BLOCKS allocated per county"
+      note: >-
+        Mississippi encodes county TWICE and only one of the two is in the string.
+        The legend is printed text and decodes nothing. But serials are, in the
+        locator's words, "Issued in blocks by county" — so the leading letters DO
+        carry county information, via an allocation table rather than a positional
+        code. That makes Mississippi decodable in principle and undecodable in
+        practice at this gate: the block table exists, it is period-dependent (the
+        locator carries six different allocation eras from 1976 forward), and it is
+        self-flagged INCOMPLETE at its source. Not modelled. It belongs in
+        plates/_decode/us-ms-county-blocks.yml at L4, with per-era periods, and a
+        parse API must NOT guess a Mississippi county from a serial prefix until it
+        exists.
+    sources:
+      - "https://www.dor.ms.gov/motor-vehicle/available-license-plates  # Mississippi DOR: the '2024-2029 Series' label on the Standard Passenger Vehicle License Plate; the verbatim quotation of Miss. Code Ann. § 27-19-31(1) and its five-year tag, License Tag Commission approval and exclusion list; the '2024 Standard Passenger Plate' design image"
+      - "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf  # AAMVA Ed.3 §1.1, the 7-to-10-year range Mississippi's legislated five years sits below"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Mississippi  # LOCATOR ONLY (PRD-PLATES §4): January 2024 start, the ABC 123 arrangement, the magnolia-on-blue-circle separator, embossed dark blue on white, 12x6 in aluminium, Waldale manufacture, county-name legend embossed at bottom, block-by-county issuance, and the designer attribution. None asserted as sourced"
+    notes: >-
+      MISSISSIPPI STANDARD ISSUE, 2024-2029 SERIES. THE PERIOD IS THE STRONGEST
+      CLAIM IN THIS ENTRY, which inverts the usual shape of a US plate record and is
+      the reason Mississippi is worth having early: the issuing agency names the
+      window on its own page, and the statute behind the window is quoted by that
+      same agency. Compare Alabama in this group, where the design is superbly
+      sourced and the date is a collector's note.
+      WHAT IS DELIBERATELY NOT CLAIMED: a serial-width cap (none found), a colour
+      specification (none found), a display rule (none found), and a county decode
+      (the block table is real but incomplete and period-dependent). Four honest
+      gaps beat one invented fact.
+
+  # =========================================================================
+  # THE BLACKOUT OPTION — a parallel standard base, and a genuinely unusual one.
+  # =========================================================================
+  - id: us-ms-blackout-2024
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2024 }
+    period_evidence: agency-labelled-series
+    period_scheduled_end: 2029
+    matching: strict
+    format:
+      pattern: "999LLL"
+      regex: '\A\d{3} ?[A-Z]{3}\z'
+      charset: { notes: "no alphabet restriction obtained; arrangement is locator-grade" }
+      pattern_note: >-
+        THE ARRANGEMENT IS REVERSED FROM THE STANDARD BASE — numerals first, letters
+        second — which means a Mississippi serial's SHAPE alone distinguishes a
+        blackout plate from a standard one. That is a free discriminator for a parse
+        API and it is why this is its own series rather than a colour variant: under
+        PRD-PLATES §2.3 a variant becomes its own series if format OR design OR
+        period differs, and here both format and design differ.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      colour_note: "described by the DOR only as the 'Blackout' plate and by a locator as 'Black tag with white letters'; both hexes are observed approximations, neither is sourced to a specification"
+      legend_bottom: "<county name>"
+      emblem: { present: true, rendered: placeholder }
+    fee: "$5 additional (locator-grade; the DOR's own fee schedule was not extracted)"
+    region_encoding: "county name as legend; block allocation as for us-ms-standard-2024"
+    sources:
+      - "https://www.dor.ms.gov/motor-vehicle/available-license-plates  # Mississippi DOR lists the 'Blackout Passenger Vehicle License Plate' as a '2024-2029 Series' plate alongside the standard passenger plate, with its own design image ('2024 Blackout Passenger Plate')"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Mississippi  # LOCATOR ONLY: introduced July 2022, black with white letters, 123ABC arrangement, $5 fee"
+    notes: >-
+      THE BLACKOUT PLATE. Modelled as a STANDARD-class series, not a specialty one,
+      because the Department of Revenue presents it on the same page and under the
+      same 2024-2029 series label as the standard passenger plate — it is a second
+      standard base, not a cause plate. Note the period disagreement the record keeps
+      rather than resolves: a locator dates the blackout option's introduction to July
+      2022, while the DOR labels the plate now in issue as 2024-2029. Both can be
+      true — an option introduced in 2022 on the previous base and re-cut onto the
+      2024 base — and PRD-PLATES §5.3 forbids averaging them. The 2024 start is taken
+      because it is the agency's own label for the plate the agency is issuing; the
+      2022 introduction is recorded here and nowhere else.
+
+  # =========================================================================
+  # ONE SERIES BACK — the state-seal base, and the one with a lawsuit attached.
+  # =========================================================================
+  - id: us-ms-standard-2019
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2019, end: 2024 }
+    period_evidence: locator-dated-agency-consistent
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      charset: { notes: "four numerals rather than three — the serial space was widened for this base and narrowed again in 2024, which is itself evidence that Mississippi re-cuts the arrangement at each five-year reissue rather than continuing a counter" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective, hex_basis: unsourced }
+      colour_note: "described as an embossed dark blue serial on a gold gradient; no hex is recorded because a gradient has no single background value and none is sourced"
+      legend_top: "MISSISSIPPI"
+      legend_bottom: "<county name>"
+      emblem: { present: true, rendered: placeholder, description: "the SEAL OF MISSISSIPPI, screened slightly left of centre — see artwork_risk.emblem_rule; a state seal is the most protected object that can appear on a plate and this one is contested" }
+      rear_differs: false
+    region_encoding: "county name as legend; block allocation, as for the successor base"
+    sources:
+      - "https://www.dor.ms.gov/motor-vehicle/available-license-plates  # the DOR's current-series label of 2024-2029 is what closes this series at 2024"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Mississippi  # LOCATOR ONLY: 'January 2019 - December 2023', state seal on gold gradient, ABC 1234 arrangement, and the note recording controversy and litigation over 'In God We Trust' (added to the seal in 2014 and to the state flag in 2021)"
+    notes: >-
+      THE STATE-SEAL BASE, 2019 to 2024 — the predecessor the L2 scope asks for, and
+      the entry that carries the group's sharpest IP caution. Its central device was
+      the state seal, which is protected by a regime entirely separate from copyright,
+      and which was itself the subject of controversy and litigation after "In God We
+      Trust" was added to it in 2014. A render of this series must use the placeholder
+      and a future clearance must treat the seal question as its own question.
+      PERIOD NOTE: the locator ends this base in December 2023 and the DOR's own label
+      begins the successor in 2024. Those agree at the boundary, which is why the
+      period is recorded as 2019-2024 with `end` populated rather than left open —
+      the rare case in this group where a locator date and an agency label corroborate
+      each other instead of conflicting.
+
+  # =========================================================================
+  # MOTORCYCLE — the stacked-character case, and why AAMVA §2.x matters here.
+  # =========================================================================
+  - id: us-ms-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2024 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "MC 99999"
+      regex: '\AMC ?(?:\d{5}|[A-Z]\d{4})\z'
+      charset:
+        notes: >-
+          The leading MC is a STACKED PAIR on the physical plate — M above C, in a
+          reduced type size, ahead of the serial proper. Under AAMVA Edition 3 a
+          stacked pair "are part of the official license plate number", so MC is
+          recorded as serial characters and not as a legend. Two arrangements are
+          reported behind the pair: five numerals, and a letter followed by four
+          numerals. Both are carried in the regex.
+      stacked_characters_note: >-
+        THIS IS THE FIRST SERIES IN THE DATASET WHERE THE STACKED-CHARACTER RULE
+        CHANGES THE ANSWER. A normaliser that treats MC as decoration turns
+        "MC 12345" into "12345" and silently collides the motorcycle space with the
+        numeric spaces of half a dozen other Mississippi plate types. AAMVA is
+        explicit that it may not, and the decision belongs in the parse layer, which
+        is why it is stated here rather than assumed. Mississippi's disabled plate
+        stacks D-over-B the same way.
+    design:
+      plate: { w: 7, h: 4, unit: in, hex_basis_note: "reduced motorcycle size is the North American convention and is NOT sourced for Mississippi — recorded gap" }
+      background: { finish: retroreflective, hex_basis: unsourced }
+      note: "described only as 'Similar to current passenger base'"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.dor.ms.gov/motor-vehicle/available-license-plates  # the DOR's plate catalogue establishes that Mississippi serializes non-passenger types separately"
+      - "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf  # AAMVA Ed.3: stacked characters are part of the official plate number, at most two stacked — the rule that makes MC serial rather than decoration"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Mississippi  # LOCATOR ONLY: the M/C stacked prefix and both reported arrangements, M/C 12345 and M/C A1234"
+    notes: >-
+      MISSISSIPPI MOTORCYCLE PLATES. Its own series on the §2.3 design test (reduced
+      size) and its own serial space. The plate size is the weakest claim in the entry
+      and is flagged: 7x4 in is the regional convention and no Mississippi instrument
+      stating it was obtained, unlike Alabama, whose department publishes the figure.
+      The entry earns its place for the stacked-character finding rather than for its
+      dimensions.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-ms-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2024 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset: { notes: "no Mississippi character cap was obtained. The bound here is a conservative seven, consistent with the region, and is NOT sourced — which is precisely why this series is recall-only" }
+      pattern_note: >-
+        `matching: recall-only` (§2.7): one entry stands for every Mississippi
+        specialty program, whose individual arrangements are out of scope at this
+        gate (§2.5), and whose width bound is not even sourced. A match is a shape
+        hit and nothing more. No `regex_strict`, per §2.7.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      note: "one design per authorised program; individual designs are L4 scope and none is described here"
+    program_index:
+      count_official: null
+      count_note: >-
+        NO OFFICIAL COUNT WAS OBTAINED, and the record says so rather than borrowing
+        one. The Department of Revenue's Specialty License Plates page and its Special
+        Tag Fee Distribution page are both search-widget applications that render no
+        list in fetched HTML, so neither a count nor a program list could be
+        extracted. This is the cleanest unfinished item in the Mississippi record and
+        is closable by one browser-rendered fetch.
+      official_list_url: "https://www.dor.ms.gov/motor-vehicle/available-license-plates/specialty-license-plates"
+      fee_distribution_url: "https://www.dor.ms.gov/motor-vehicle/available-license-plates/special-tag-fee-distribution"
+      nascar_program_url: "https://www.dor.ms.gov/motor-vehicle/mvs-available-tags/nascar-license-plates"
+      nascar_note: >-
+        Mississippi runs a NASCAR-driver plate line as a NAMED category on its own DOR
+        menu, trademark symbol and all. It is recorded because it is a structural
+        oddity worth one line: a state licensing a commercial sports property into its
+        own plate catalogue is a different animal from a cause or collegiate plate,
+        and it is a live example of the third-party-copyright question Alabama's design
+        specification polices explicitly.
+      issuance_volume_evidence: >-
+        Mississippi has published specialty issuance VOLUMES, which almost no state
+        does. For fiscal year 2014 a locator reports 2,749,315 plates issued by
+        counties, of which 683,550 were specialty — including 165,849 Antique, 100,698
+        disabled, 78,714 personalized, 18,367 Mississippi State University and 15,596
+        University of Mississippi — with $5,113,035 paid out to sponsoring
+        organisations. Twelve years stale and locator-grade, so it is recorded as a
+        POINTER to the reporting practice rather than as data: if the DOR still
+        produces that report, it is the Mississippi equivalent of Florida's monthly
+        active-plate portal and should be captured on a schedule before it is lost.
+    region_encoding: none
+    sources:
+      - "https://www.dor.ms.gov/motor-vehicle/available-license-plates/specialty-license-plates  # the official specialty index — a search application, no list extractable without a rendering browser"
+      - "https://www.dor.ms.gov/motor-vehicle/available-license-plates/special-tag-fee-distribution  # the official fee-distribution index, same shape"
+      - "https://www.dor.ms.gov/motor-vehicle/mvs-available-tags/nascar-license-plates  # the NASCAR driver plate line as its own DOR category"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Mississippi  # LOCATOR ONLY: the FY2014 issuance volumes and payout figure, and the July 2022 fee levels ($33 most specialty, $53 collegiate)"
+    notes: >-
+      THE MISSISSIPPI SPECIALTY INDEX — one entry standing for the program, per §2.5.
+      It is the thinnest index in this group and the file says so plainly: no count, no
+      program list, no sourced width. What it does carry that is worth keeping is the
+      pointer to Mississippi's issuance-volume reporting. Florida's monthly
+      active-plate report was called the most valuable structured artefact in the whole
+      US pass precisely because issuing agencies publish volumes that nobody archives;
+      Mississippi appears to have published the same kind of thing, and the only
+      evidence obtained for it is twelve years old. Finding the current report is a
+      higher-value follow-up than counting the programs.

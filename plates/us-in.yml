@@ -1,0 +1,324 @@
+# plates/us-in.yml — Indiana (PRD-PLATES gate L2, group midwest-a).
+#
+# WHAT INDIANA IS FOR IN THIS DATASET: the cleanest DELEGATION case in the US
+# so far, and the direct analogue of Germany's §9 FZV trap. Indiana's
+# legislature does not describe its plates at all. IC 9-18.1-4-3 says, in
+# terms, that the BUREAU 'shall adopt rules under IC 4-22-2 regarding the size,
+# character, display, mounting, securing, content, issuance, replacement, and
+# life cycle of license plates' — so the entire design and format layer lives in
+# the Indiana Administrative Code, one level below the statute, and a researcher
+# who reads only the statute will correctly conclude that Indiana law specifies
+# nothing and incorrectly conclude that nothing is specified. The IAC rules
+# themselves were NOT obtained in this pass (recorded gap, and the single
+# highest-value follow-up for this state).
+#
+# WHAT INDIANA ALSO IS: the one state in this group with a class-encoding
+# convention a parse API can actually use. Indiana prefixes the serial with a
+# CLASS TOKEN — M for motorcycle, TR for trailer, TK for truck, TC for semi
+# tractor, SP for permanent semi-trailer — rather than distinguishing classes by
+# design alone. That makes Indiana serials self-describing in a way Ohio's and
+# Michigan's are not.
+#
+# FETCH-PROVENANCE NOTE: iga.in.gov (the official Indiana Code host) served only
+# a JavaScript shell to this environment, and www.in.gov/bmv served 404s and
+# timeouts on every plate sub-path tried. Statutory text below was read from
+# codes.findlaw.com, a third-party REPRODUCTION of the same edict; the canonical
+# iga.in.gov citation is carried alongside every FindLaw URL and was NOT fetched.
+#
+# NOT HERE, DELIBERATELY (PRD-PLATES §2.5 + L2 scope): individual specialty
+# DESIGNS (L4); Indiana's truck (TK), semi-tractor (TC) and permanent
+# semi-trailer (SP) series, which are outside the L2 core-class list and are
+# recorded only as evidence of the class-token convention; and DEALER,
+# TEMPORARY and GOVERNMENT series, for which no format was obtained from any
+# source (recorded gaps — see the dossier).
+jurisdiction: us-in
+authority:
+  name: Indiana Bureau of Motor Vehicles (Indiana BMV)
+  url: "https://www.in.gov/bmv/"
+binding: vehicle
+statute_edition: "Indiana Code Title 9 (Motor Vehicles), Articles 18.1 and 18.5, as reproduced by codes.findlaw.com and read 2026-08-02. FindLaw's own banner warns it 'may not reflect the most recent version of the law'; the currency of this text is therefore UNVERIFIED."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched-default-adverse
+  basis: >-
+    Indiana is the one state in this group that APPEARS in the subnational
+    copyright survey — and reading it carefully makes Indiana WORSE, not better,
+    than a first glance suggests. IC 5-14-3-3 bars a public agency from entering
+    a contract that 'require[s] the public to obtain a license or pay copyright
+    royalties for obtaining the right to inspect and copy the records unless
+    otherwise provided by applicable statute'. Two limits gut it for our
+    purposes. First, it is a rule about CONTRACTS FOR ACCESS to records, not a
+    declaration that state works are public domain — it constrains how an agency
+    may charge, not whether copyright subsists. Second, the survey's own gloss is
+    that the provision reaches 'public agencies (not state agencies as defined in
+    Indiana Code 4-13-1-1)' — and the BMV is a STATE agency, so the carve-out
+    plausibly does not reach it at all. No {{PD-INGov}} tag exists on Commons.
+    Indiana therefore sits at the federal default: 17 U.S.C. §105 does not extend
+    to the states, so TREAT THE ARTWORK AS COPYRIGHTED. Recorded as
+    unresearched-default-adverse with the near-miss stated, because a future
+    researcher will find IC 5-14-3-3 and be tempted by it.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies. The current base is a pictorial
+    country scene with a covered bridge; render
+    `emblem: {present: true, rendered: placeholder}` and approximate nothing.
+    State-seal protection is independent of copyright and is unresearched for
+    Indiana.
+  photograph_caution: >-
+    Standing rule: a CC tag on a Commons photograph of an Indiana plate is the
+    PHOTOGRAPHER's licence on the PHOTOGRAPH, not a licence on the design. Our
+    renders are generated from this file and never derived from a photograph, so
+    those obligations never attach.
+  sources:
+    - "https://codes.findlaw.com/in/title-5-state-and-local-administration/in-code-sect-5-14-3-3.html  # FETCHED. IC 5-14-3-3: no contract may 'require the public to obtain a license or pay copyright royalties for obtaining the right to inspect and copy the records unless otherwise provided by applicable statute'"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR: the Indiana entry, including the 'not state agencies as defined in Indiana Code 4-13-1-1' qualifier that limits it"
+    - "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States  # the §105-does-not-reach-the-states rule and the complete state PD-tag list — no Indiana tag"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. Recommendations in the declarative present; read as RECOMMENDED PRACTICE."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is paywalled and was NOT obtained. No J686 dimension is quoted anywhere in this dataset."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges"
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name top centre between the bolt holes, at least 0.25 in above the plate number, 0.125 in from the top edge; characters 0.75-1.0 in"
+    stacked_characters: "AAMVA: stacked characters are part of the official plate number, at most two stacked"
+    replacement_cycle: "AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. INDIANA SITS AT THE BOTTOM OF THAT RANGE: registrants are reported to receive new plates on a rolling SEVEN-YEAR basis bearing the same number as before (secondary). If confirmed, Indiana and Florida bracket AAMVA's recommendation exactly — 7 against Florida's legislated 10."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" is UNCITED in its Wikipedia source
+    and is not relied on here. Note the trap it sets for Indiana specifically:
+    the Indiana article cites an ALPCA page for 'standard plate size
+    documentation', which is precisely the circular enthusiast sourcing PRD-PLATES
+    §4 warns about. No Indiana plate dimension is recorded in this file.
+
+display_rules:
+  default: "ONE plate, REAR. IC 9-18.1-4-4 requires the plate 'upon the rear of the vehicle' for all vehicles except the enumerated front-display classes."
+  front_plate_required_when:
+    - "TRACTOR, DUMP TRUCK, or TRUCK WITH A REAR-MOUNTED FORKLIFT: the plate goes 'upon the front of the vehicle' (IC 9-18.1-4-4). Note this is not merely a truck-tractor rule like Ohio's and Florida's — Indiana extends front display to dump trucks and forklift-carrying trucks, i.e. to vehicles whose rear is habitually obstructed by equipment. The RATIONALE is visible in the class list."
+  mounting: "IC 9-18.1-4-4: 'securely fastened, in a horizontal and upright position', 'at a height of at least twelve (12) inches from the ground', 'clearly visible', 'maintained free from foreign materials and in a condition to be clearly legible', and 'not obstructed or obscured by tires, bumpers, accessories, or other opaque objects'"
+  validation_sticker: "IC 9-18.1-4-4: on renewal the sticker must be 'securely affixed in the upper right corner of the license plate' and must 'cover the previous registration expiration year'. Indiana therefore STACKS stickers over one another — a render-layer fact and an OCR hazard."
+  penalty: "IC 9-18.1-4-4: 'A person that violates this section commits a Class C infraction.'"
+  rear_only_history: "Indiana is reported rear-only since 1956 (secondary). The statute corroborates the current state of affairs but dates nothing."
+  sources:
+    - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-4.html  # FETCHED. IC 9-18.1-4-4: front display for tractors, dump trucks and rear-mounted-forklift trucks; rear for everything else; horizontal and upright; 12-inch minimum height; visibility and obstruction rules; upper-right renewal sticker covering the previous year; Class C infraction"
+    - "https://iga.in.gov/laws/2025/ic/titles/9  # CANONICAL Indiana Code host — served a JavaScript shell only, NOT fetched as text"
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Indiana  # LOCATOR ONLY: rear plates only since 1956"
+
+series:
+
+  - id: us-in-standard-2017
+    class: standard
+    categories: [car, van, bus]
+    period: { start: 2017 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "999LLL"
+      regex: '\A\d{3}[A-Z]{1,3}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          THREE DIGITS THEN ONE TO THREE LETTERS — a VARIABLE-LENGTH serial, in
+          the Delaware family of schema stressors: the regex must quantify
+          (`{1,3}`) rather than fix width, and any consumer that assumes a fixed
+          US plate length is wrong on Indiana. The reported arrangements are
+          123A, 123AB and 123ABC. No separator is printed. No statutory
+          constraint exists to record as `regex_statutory`, because IC 9-18.1-4-3
+          delegates 'size, character... content' wholesale to bureau rules
+          adopted under IC 4-22-2, and those rules (Indiana Administrative Code)
+          were NOT obtained in this pass.
+        excluded: []
+        excluded_note: "no letter exclusions stated in statute or observed; recorded as an open question rather than as an assertion of none"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: >-
+        Dark blue serial on a reflective pictorial country scene with a covered
+        bridge. The background hex is recorded as plain reflective white only
+        because the scene sits ON a white sheet; the SCENE has no hex and none is
+        invented. The serial colour is named, not hexed, for the same reason.
+      legend_top: "INDIANA"
+      graphic: { present: true, rendered: placeholder, description: "country scene with a covered bridge; secondary observation only, never a statutory drawing" }
+      emblem: { present: true, rendered: placeholder }
+      county_sticker: { present: true, position: "top", content: "county number and county name, on a white sticker" }
+    replacement_cycle:
+      years: 7
+      evidence: secondary
+      note: >-
+        'Registrants receive new plates on a rolling 7-year basis, bearing the
+        same number they had previously' (secondary). Two consequences if true,
+        and both matter: Indiana sits at the BOTTOM of AAMVA's 7-10 year
+        recommendation, and — unusually — the SERIAL SURVIVES the replacement, so
+        an Indiana plate number does not date the plate it is printed on. A parse
+        API must not infer era from an Indiana serial.
+    region_encoding: >-
+      COUNTY ON A STICKER, NOT IN THE SERIAL — but Indiana is the US state where
+      this distinction is most easily got wrong, because it USED to be in the
+      serial. From 1963 to 2008 the plate carried a numeric county prefix (01
+      Adams through 92 Whitley, with overflow 93-99 for Marion and Lake), and
+      from 1950 to 1962 a two-letter county prefix. Since 2008 the county number
+      and name ride on a sticker at the top of the plate. So a decode table for
+      Indiana geography is PERIOD-BOUND and applies only to pre-2008 serials —
+      exactly the trap PRD-PLATES §2.4 records for the French SIV band. All of
+      this is secondary; no primary was obtained.
+    sources:
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-3.html  # FETCHED. IC 9-18.1-4-3, the delegation: 'The bureau shall adopt rules under IC 4-22-2 regarding the size, character, display, mounting, securing, content, issuance, replacement, and life cycle of license plates, temporary license plates, renewal stickers, and other proof of registration.' This is the reason no format claim in this file can be statute-grade."
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-1.html  # FETCHED. IC 9-18.1-4-1: on registering, the bureau issues 'proof of registration for display on the vehicle', either 'a regular license plate under this article' or 'a distinctive license plate designed and issued under IC 9-18.5'"
+      - "https://iga.in.gov/laws/2025/ic/titles/9  # CANONICAL, not fetched (JS shell)"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Indiana  # LOCATOR ONLY: 2017-present covered-bridge base; serial formats 123A / 123AB / 123ABC; county number and name on a white sticker at top; the rolling 7-year replating keeping the same number; the 1950-1962 and 1963-2008 county-prefix schemes"
+    notes: >-
+      INDIANA STANDARD ISSUE, CURRENT BASE. The id is dated on a
+      SECONDARY first-issue year and carries `period_evidence:
+      secondary-first-issue` to say so; PRD-QUALITY's id contract means a dated
+      id minted on a soft boundary must be aliased rather than moved if the
+      boundary shifts, so the flag is load-bearing, not decorative. The entry's
+      real contribution to the dataset is the two structural facts around the
+      format: Indiana's plate spec is in ADMINISTRATIVE RULES, not statute
+      (IC 9-18.1-4-3), and Indiana's county geography moved OUT of the serial in
+      2008, which makes every pre-2008 Indiana decode table period-bound.
+
+  - id: us-in-standard-2013
+    class: standard
+    categories: [car, van, bus]
+    period: { start: 2013, end: 2017 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "999LLL"
+      regex: '\A\d{3}[A-Z]{1,3}\z'
+      evidence: secondary
+      charset: { notes: "same variable-length grammar as the current base — the 2017 change was a BASE change, not a format change" }
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: "black serial on reflective white fading to gold; no serial hex recorded"
+      legend_top: "INDIANA"
+      legend_bottom: "Bicentennial 1816-2016"
+      graphic: { present: true, rendered: placeholder }
+      emblem: { present: true, rendered: placeholder }
+      county_sticker: { present: true, position: "corner", content: "county number" }
+    region_encoding: "county number on the plate corner; not in the serial"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Indiana  # LOCATOR ONLY: 2013-2017 Bicentennial base, black on white-to-gold, serial formats 123A / 123AB / 123ABC, county number and expiration in the corners"
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-3.html  # FETCHED. The same delegation governed this base; it is why neither base has a statute-grade format"
+    notes: >-
+      ONE SERIES BACK (Bicentennial base, 2013-2017). Carried per L2 scope, and
+      it repeats the Ohio lesson in a second state: CONSECUTIVE BASES SHARE ONE
+      SERIAL GRAMMAR, so the regex cannot date the plate and the artwork is the
+      only discriminator. Combined with Indiana's serial-preserving 7-year
+      replating, this means an Indiana serial carries essentially no temporal
+      signal at all — worth stating plainly before someone builds era inference
+      on top of it.
+
+  - id: us-in-motorcycle-2010
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2010 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "M999LL"
+      regex: '\AM\d{3}[A-Z]{1,2}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          The leading M is a CLASS TOKEN, not a separator and not a serial block:
+          Indiana marks the motorcycle class inside the string. Reported
+          arrangement M123AB running from M101AA. Because the token is a literal,
+          an Indiana motorcycle plate is self-identifying from the string alone —
+          the only class in this group's five states of which that is true
+          without a range lookup.
+      progression: "observed from M101AA (secondary)"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: "screened blue on white (secondary); no serial hex recorded"
+      emblem: { present: true, rendered: placeholder }
+      size_note: "reduced motorcycle size; NO dimension recorded — Indiana delegates size to bureau rules (IC 9-18.1-4-3) and AAMVA delegates dimensions to the unpinned SAE J686"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Indiana  # LOCATOR ONLY: motorcycle plates 2010-present, screened blue on white, format M123AB from M101AA"
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-4.html  # FETCHED. IC 9-18.1-4-4's rear-display and 12-inch mounting rules apply to motorcycles as to other vehicles"
+    notes: >-
+      MOTORCYCLE. Its own series because the format differs (class token plus a
+      shorter tail) and the plate size differs. This is the entry that makes
+      Indiana's class-token convention visible; see the trailer series for the
+      two-character form of the same idea.
+
+  - id: us-in-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "TR999LLL"
+      regex: '\ATR\d{3}[A-Z]{1,3}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          TR is a TWO-CHARACTER CLASS TOKEN, and the same convention runs across
+          Indiana's commercial classes: TK for truck (observed TK101LAA to
+          TK713ORW as of July 2024), TC for semi tractor, SP for the permanent
+          semi-trailer. Those three are outside L2 core-class scope and are
+          recorded here as EVIDENCE OF THE CONVENTION rather than as series of
+          their own. CAUTION for a render or OCR consumer: under AAMVA's stacked
+          -character rule a two-character token like TR may well be PRINTED
+          STACKED; whether Indiana stacks it was not established.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: "screened black on white (secondary)"
+      legend_bottom: "TRAILER, with gross weight"
+      emblem: { present: true, rendered: placeholder }
+      weight_class_note: "the trailer plate prints the GROSS WEIGHT at the bottom alongside the class legend — a weight-class encoding carried as printed TEXT, not in the serial (secondary)"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Indiana  # LOCATOR ONLY: trailer format TR123ABC, screened black on white, 'TRAILER' and gross weight at bottom; and the parallel TK / TC / SP class tokens"
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-1.html  # FETCHED. IC 9-18.1-4-1 is the issuance frame for every plate class; it carries no class grammar"
+    notes: >-
+      TRAILER. `period.start` is an INSTRUMENT-IN-FORCE UPPER BOUND, not a
+      first-issue year: no source dated the TR series, so the year of the
+      statutes read is recorded rather than a year invented. The weight-class
+      legend is the fact worth carrying — Indiana answers the "does this state
+      encode weight class?" question with YES, but as printed text under the
+      serial, which is invisible to a string parser and visible to a renderer.
+
+  - id: us-in-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999LLL"
+      regex: '\A\d{3}[A-Z]{1,3}\z'
+      evidence: secondary
+      charset: { notes: "specialty and 'special group recognition' plates carry ordinary serials on an alternative design; no distinct grammar was sourced" }
+    design:
+      background: { finish: retroreflective }
+      note: "one design per authorised group; designs are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: null
+      count_status: RECORDED-GAP
+      count_note: >-
+        No count was obtained. www.in.gov/bmv is reachable at its root but every
+        plate sub-path tried returned 404 or timed out, so neither the official
+        catalogue nor a count was captured; no secondary count was found either.
+        Recorded as `null` with the cause stated rather than guessed.
+      official_list_url: "https://www.in.gov/bmv/licenses-permits-ids/license-plates/specialty-license-plates/"
+      official_list_fetch_status: "NOT CAPTURED — 404 on the parent path and a 60 s timeout on the specialty path, 2026-08-02"
+      statutory_basis: "IC 9-18.5 — 'distinctive license plate designed and issued under IC 9-18.5' is the statutory alternative to the regular plate (IC 9-18.1-4-1). IC 9-18.5-1-1 scopes the chapter to a person who 'is the registered owner or lessee of a vehicle' or 'applies to register or renew the registration of a vehicle'. NO PETITION THRESHOLD was found in the sections read — a structural contrast with Illinois (2,000 applications) and Wisconsin (500 signatures), and a recorded gap rather than a finding of none."
+      known_programme_note: "Indiana's BLACKOUT plate — an all-black standard-serial plate promoted on the BMV homepage ('Visit your local branch to switch your design to a blackout license plate') — is the most visible current Indiana optional plate. It is an OPTIONAL DESIGN on the ordinary serial, i.e. exactly the specialty shape, and is indexed here rather than given a series."
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-1-4-1.html  # FETCHED. IC 9-18.1-4-1: the regular-plate / IC 9-18.5 distinctive-plate fork"
+      - "https://codes.findlaw.com/in/title-9-motor-vehicles/in-code-sect-9-18-5-1-1.html  # FETCHED. IC 9-18.5-1-1: the scope of the special-group-recognition chapter"
+      - "https://www.in.gov/bmv/  # FETCHED (root only): the BMV's own promotion of the blackout plate and its 'Specialty & Personalized License Plates' section"
+    notes: >-
+      THE INDIANA SPECIALTY PROGRAM INDEX — one entry for the whole programme per
+      PRD-PLATES §2.5, with the count declared as a gap. The structural finding is
+      that Indiana routes optional plates through a dedicated CODE ARTICLE
+      (IC 9-18.5) rather than through per-plate statutes as Ohio does or through a
+      petition threshold as Illinois and Wisconsin do. That article is the right
+      place to count from once iga.in.gov is reachable, and counting from an edict
+      beats counting from a brochure.
