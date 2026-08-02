@@ -1,0 +1,614 @@
+# plates/_decode/cn-provinces.yml — the leading Han character of a Chinese
+# registration number: 省、自治区、直辖市简称, the abbreviation of the province,
+# autonomous region or directly-administered municipality.
+#
+# THE SOURCE FINDING, and it is the same one that makes
+# plates/_decode/cn-issuing-offices.yml possible: THE LIST IS INSIDE THE
+# STANDARD, AND ONE EDITION OF THE STANDARD IS READABLE. GA 36
+# 《中华人民共和国机动车号牌》 is the mandatory public-security industry standard
+# that defines Chinese plates. The CURRENT edition, GA 36-2018, is registered
+# (发布 2018-04-20, 实施 2018-05-01, 代替 GA 36-2014) and its TEXT IS WITHHELD —
+# the register's own reader answers "您所查询的标准在本系统尚未公开，不公开理由
+# 如下：无". The immediately preceding edition GA 36-2007 (发布 2007-09-28,
+# 实施 2007-11-01, 代替 GA 36-1992) is republished IN FULL by a Chinese
+# municipal government, 巩义市人民政府 (www.hngy.gov.cn, 2012-11-15), and that
+# copy survives in the Internet Archive. Every row below is
+# GA 36-2007 § 5.7 表 2《省、自治区、直辖市简称》, read off that copy.
+#
+# § 5.7, verbatim and complete: "省、自治区、直辖市的简称应符合表2的要求。"
+# ("The abbreviations of provinces, autonomous regions and municipalities shall
+# conform to the requirements of Table 2." — translation ours; the Chinese is
+# the sourced text.) Table 2 is printed in two columns of numbered rows, 1 to
+# 31, each row 序号 / 地区名称 / 简称. The rows below are in TABLE 2's OWN
+# NUMBERING, recovered by parsing the two interleaved columns and sorting on
+# 序号 — they are NOT re-ordered alphabetically and NOT taken from any
+# encyclopaedia.
+#
+# NOTHING HERE WAS TYPED BY HAND THAT COULD HAVE BEEN PARSED. The characters,
+# the subdivision names and the row numbers were extracted mechanically from
+# the archived GA 36-2007 text (which is GB18030-encoded and mis-declares
+# itself as UTF-8 — decode it as GB18030 or you will get mojibake and think the
+# page is broken); the codepoints were computed with `ch.ord`. The only
+# hand-added columns are ISO 3166-2, GB/T 2260, pinyin, the English name and
+# the customary-alternate flags.
+#
+# ============================================================================
+# WHY THIS IS A DECODE FILE AND NOT PART OF A REGEX
+# ============================================================================
+# plates/_meta/separators.yml fixes the dataset's serial alphabet, normatively
+# and dataset-wide, as "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", and
+# scripts/lint_plates.rb enforces it on every pattern and regex. A Chinese mark
+# opens with a Han character, and — unlike the Greek case (plates/gr.yml),
+# where Α U+0391 and A U+0041 are the same picture and the Latin form is
+# lossless — there is NO Latin form of 京. "jing" is a reading, not a glyph;
+# no plate, no registry and no ANPR camera ever emits it. So the Han elements
+# are modelled as DATA here and in plates/cn.yml's `format.han`, and the
+# regexes match the Latin-and-digit remainder. plates/cn.yml's header states
+# that division once for the whole jurisdiction.
+#
+# ============================================================================
+# THE TRAP: SIX SUBDIVISIONS HAVE TWO CUSTOMARY ABBREVIATIONS AND TABLE 2
+# PICKS ONE
+# ============================================================================
+# 中国政府网's own 《中华人民共和国行政区划》 page says the abbreviations are
+# customary rather than statutory — "在历史上和习惯上，各省级行政区都有简称"
+# ("historically and by custom, every provincial-level administrative division
+# has an abbreviation") — and custom produced doublets. Table 2 chose:
+#
+#     四川省  川 (Table 2)  /  蜀       贵州省  贵 (Table 2)  /  黔
+#     云南省  云 (Table 2)  /  滇       陕西省  陕 (Table 2)  /  秦
+#     甘肃省  甘 (Table 2)  /  陇       上海市  沪 (Table 2)  /  申
+#
+# A consumer that decodes 蜀, 黔, 滇, 秦, 陇 or 申 as a plate prefix is decoding
+# a character no plate carries. Each is recorded on its row as
+# `customary_alternate_not_on_plates` so the wrong answer cannot be reached
+# from this file and the right one is stated. Note what this costs: the plate
+# character is NOT always the character a Chinese speaker would reach for
+# first, and a translation pipeline that maps 简称 to province by dictionary
+# rather than by this table will disagree with the road.
+#
+# ============================================================================
+# PERIOD DISCIPLINE (PRD-PLATES § 2.4) — ONE ROW IS YOUNGER THAN THE OTHERS
+# ============================================================================
+# GA 36-2007's 前言 lists, among the changes that edition made to GA 36-1992,
+# verbatim: "――增加了重庆的简称；" and "――增加了"渝"、"港"、"澳"、"使"、"警"、
+# "超"等省、自治区、直辖市简称及号牌分类用汉字；" — the 2007 edition ADDED
+# Chongqing's abbreviation 渝, together with the classification characters 港,
+# 澳, 使, 警 and 超. That is exactly what the administrative history predicts:
+# Chongqing was separated from Sichuan and made a directly-administered
+# municipality in 1997, five years after GA 36-1992, so 渝 could not have been
+# in the 1992 table. It is the ONLY row in this file with a different start
+# year, and it is dated on the standard's own foreword rather than on the
+# constitutional change.
+#
+# The other 30 rows run from GA 36-1992 — `period.start: 1992` on this file —
+# and none has been withdrawn: no provincial-level division has been created,
+# merged or abolished since 1997, and the 2014 and 2018 editions' change lists
+# are not public, so no row here can be shown to have changed after 2007.
+jurisdiction: cn
+topic: provinces
+authority:
+  name: 公安部 (Ministry of Public Security) — GA 36 《中华人民共和国机动车号牌》 § 5.7 表 2；技术归口 公安部道路交通管理标准化技术委员会
+  url: "https://hbba.sacinfo.org.cn/stdDetail/328b77ee80fdee1dee33d20e83d01d2ad128f380aa93c7dbe5c58c67d9d2075e"
+sources:
+  - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 《中华人民共和国机动车号牌》 FULL TEXT as republished by 巩义市人民政府 (published 2012-11-15): § 5.7 and 表 2 省、自治区、直辖市简称 — all 31 rows below, in the table's own 序号 order; § 5.10 号牌分类用汉字 — the classification characters listed under `classification_han`; § 5.11 间隔符; the 前言 change list carrying the 渝 addition. Note the page is GB18030 mis-declared as UTF-8. Accessed 2026-08-02"
+  - "https://hbba.sacinfo.org.cn/stdDetail/12b7710b682f0e13dfc423a325751920  # 全国标准信息公共服务平台 register entry for GA 36-2007: 发布 2007-09-28, 实施 2007-11-01, 代替 GA 36-1992, 状态 废止 — the provenance of the text above, and the evidence that GA 36-1992 existed. Accessed 2026-08-02"
+  - "https://hbba.sacinfo.org.cn/stdDetail/328b77ee80fdee1dee33d20e83d01d2ad128f380aa93c7dbe5c58c67d9d2075e  # register entry for the CURRENT GA 36-2018: 发布 2018-04-20, 实施 2018-05-01, 代替 GA 36-2014. Metadata only — the text is withheld ('尚未公开')， so this table cannot be re-verified against the edition actually in force. Accessed 2026-08-02"
+  - "https://web.archive.org/web/20240222001221/https://www.gov.cn/test/2005-06/15/content_18253.htm  # 中国政府网 《中华人民共和国行政区划》: the 34 provincial-level divisions and, verbatim, '在历史上和习惯上，各省级行政区都有简称' — the abbreviations are CUSTOMARY, which is why they live in a public-security standard and in no statute. Live URL 404s; read from the Internet Archive. Accessed 2026-08-02"
+  - "https://www.gov.cn/zhengce/content/2018-12/11/content_5347765.htm  # 国办发〔2018〕114号 附件 一（一）: the worked examples '京·12345应急' and '京·X2345应急', glossing the second as 北京市应急管理部门 — an independent instrument showing a Table 2 character IN USE on a plate with its subdivision named. Accessed 2026-08-02"
+period: { start: 1992 }
+period_evidence: enabling-instrument
+period_note: >-
+  1992 is GA 36-1992, the edition that created the 92-pattern mark this table
+  belongs to; its existence is evidenced by GA 36-2007's 前言 ("本标准代替
+  GA36-1992") and by the register's 代替标准 field, and no 发布/实施 date for it
+  could be pinned because it predates the industry-standard filing database.
+  ONE ROW IS YOUNGER: 渝 (Chongqing) was added by the 2007 edition and carries
+  `row_period_start: 2007` with the foreword quoted on it. The widely repeated
+  claim that the 92-pattern was trialled in 1992 and rolled out nationwide in
+  July 1994 is NOT asserted here or in plates/cn.yml — see the dossier's
+  folklore section.
+decode_direction: "leading Han character -> the provincial-level division whose vehicle-management office issued the mark"
+split_note: >-
+  FIXED WIDTH, AND THE CLEANEST SPLIT IN THIS DATASET. The province character
+  is always exactly ONE character and always the FIRST character of the mark,
+  immediately followed by the single Latin issuing-office letter. A consumer
+  takes `mark[0]`, looks it up here, and hands the remainder to
+  plates/cn.yml's regexes — there is no greedy-match problem and no ambiguity
+  with the Latin tail, because the two alphabets are disjoint by construction.
+  TWO EXCEPTIONS, both instrument-sourced and both recorded below in
+  `classification_han`: the embassy mark opens with 使 instead of a province
+  character (GA 36-2007 § 5.10), and the emergency-rescue MOTORCYCLE mark opens
+  with the two-character pair 应急 before its province character
+  (国办发〔2018〕114号 附件 一（二）).
+scope_note: >-
+  HONG KONG, MACAU AND TAIWAN HAVE NO ROW, and their absence is the standard's,
+  not ours: Table 2 has exactly 31 rows and stops at 新疆维吾尔自治区. 港 and 澳
+  DO appear in GA 36-2007 — but as CLASSIFICATION characters under § 5.10, on
+  the mainland-side plate a Hong Kong or Macau cross-boundary vehicle carries,
+  not as province prefixes. They are recorded under `classification_han` for
+  that reason, and Hong Kong (ISO 3166-1 HK) and Macau (MO) are separate
+  jurisdictions in this dataset with their own files.
+
+# ---------------------------------------------------------------------------
+# GA 36-2007 § 5.7 表 2《省、自治区、直辖市简称》 — all 31 rows, in the
+# table's own 序号 order. Characters, names and row numbers parsed from the
+# archived instrument text; codepoints computed with ch.ord.
+# ---------------------------------------------------------------------------
+rows:
+  - table2_row: 1
+    char: "京"
+    codepoint: "U+4EAC"
+    pinyin: jing
+    subdivision_zh: "北京市"
+    subdivision_en: "Beijing Municipality"
+    subdivision_type: municipality
+    iso_3166_2: CN-BJ
+    gbt_2260: "110000"
+  - table2_row: 2
+    char: "津"
+    codepoint: "U+6D25"
+    pinyin: jin
+    subdivision_zh: "天津市"
+    subdivision_en: "Tianjin Municipality"
+    subdivision_type: municipality
+    iso_3166_2: CN-TJ
+    gbt_2260: "120000"
+  - table2_row: 3
+    char: "冀"
+    codepoint: "U+5180"
+    pinyin: ji
+    subdivision_zh: "河北省"
+    subdivision_en: "Hebei Province"
+    subdivision_type: province
+    iso_3166_2: CN-HE
+    gbt_2260: "130000"
+  - table2_row: 4
+    char: "晋"
+    codepoint: "U+664B"
+    pinyin: jin
+    subdivision_zh: "山西省"
+    subdivision_en: "Shanxi Province"
+    subdivision_type: province
+    iso_3166_2: CN-SX
+    gbt_2260: "140000"
+  - table2_row: 5
+    char: "蒙"
+    codepoint: "U+8499"
+    pinyin: meng
+    subdivision_zh: "内蒙古自治区"
+    subdivision_en: "Inner Mongolia Autonomous Region"
+    subdivision_type: autonomous-region
+    iso_3166_2: CN-NM
+    gbt_2260: "150000"
+  - table2_row: 6
+    char: "辽"
+    codepoint: "U+8FBD"
+    pinyin: liao
+    subdivision_zh: "辽宁省"
+    subdivision_en: "Liaoning Province"
+    subdivision_type: province
+    iso_3166_2: CN-LN
+    gbt_2260: "210000"
+  - table2_row: 7
+    char: "吉"
+    codepoint: "U+5409"
+    pinyin: ji
+    subdivision_zh: "吉林省"
+    subdivision_en: "Jilin Province"
+    subdivision_type: province
+    iso_3166_2: CN-JL
+    gbt_2260: "220000"
+  - table2_row: 8
+    char: "黑"
+    codepoint: "U+9ED1"
+    pinyin: hei
+    subdivision_zh: "黑龙江省"
+    subdivision_en: "Heilongjiang Province"
+    subdivision_type: province
+    iso_3166_2: CN-HL
+    gbt_2260: "230000"
+  - table2_row: 9
+    char: "沪"
+    codepoint: "U+6CAA"
+    pinyin: hu
+    subdivision_zh: "上海市"
+    subdivision_en: "Shanghai Municipality"
+    subdivision_type: municipality
+    iso_3166_2: CN-SH
+    gbt_2260: "310000"
+    customary_alternate_not_on_plates:
+      - { char: "申", codepoint: "U+7533" }
+  - table2_row: 10
+    char: "苏"
+    codepoint: "U+82CF"
+    pinyin: su
+    subdivision_zh: "江苏省"
+    subdivision_en: "Jiangsu Province"
+    subdivision_type: province
+    iso_3166_2: CN-JS
+    gbt_2260: "320000"
+  - table2_row: 11
+    char: "浙"
+    codepoint: "U+6D59"
+    pinyin: zhe
+    subdivision_zh: "浙江省"
+    subdivision_en: "Zhejiang Province"
+    subdivision_type: province
+    iso_3166_2: CN-ZJ
+    gbt_2260: "330000"
+  - table2_row: 12
+    char: "皖"
+    codepoint: "U+7696"
+    pinyin: wan
+    subdivision_zh: "安徽省"
+    subdivision_en: "Anhui Province"
+    subdivision_type: province
+    iso_3166_2: CN-AH
+    gbt_2260: "340000"
+  - table2_row: 13
+    char: "闽"
+    codepoint: "U+95FD"
+    pinyin: min
+    subdivision_zh: "福建省"
+    subdivision_en: "Fujian Province"
+    subdivision_type: province
+    iso_3166_2: CN-FJ
+    gbt_2260: "350000"
+  - table2_row: 14
+    char: "赣"
+    codepoint: "U+8D63"
+    pinyin: gan
+    subdivision_zh: "江西省"
+    subdivision_en: "Jiangxi Province"
+    subdivision_type: province
+    iso_3166_2: CN-JX
+    gbt_2260: "360000"
+  - table2_row: 15
+    char: "鲁"
+    codepoint: "U+9C81"
+    pinyin: lu
+    subdivision_zh: "山东省"
+    subdivision_en: "Shandong Province"
+    subdivision_type: province
+    iso_3166_2: CN-SD
+    gbt_2260: "370000"
+  - table2_row: 16
+    char: "豫"
+    codepoint: "U+8C6B"
+    pinyin: yu
+    subdivision_zh: "河南省"
+    subdivision_en: "Henan Province"
+    subdivision_type: province
+    iso_3166_2: CN-HA
+    gbt_2260: "410000"
+  - table2_row: 17
+    char: "鄂"
+    codepoint: "U+9102"
+    pinyin: e
+    subdivision_zh: "湖北省"
+    subdivision_en: "Hubei Province"
+    subdivision_type: province
+    iso_3166_2: CN-HB
+    gbt_2260: "420000"
+  - table2_row: 18
+    char: "湘"
+    codepoint: "U+6E58"
+    pinyin: xiang
+    subdivision_zh: "湖南省"
+    subdivision_en: "Hunan Province"
+    subdivision_type: province
+    iso_3166_2: CN-HN
+    gbt_2260: "430000"
+  - table2_row: 19
+    char: "粤"
+    codepoint: "U+7CA4"
+    pinyin: yue
+    subdivision_zh: "广东省"
+    subdivision_en: "Guangdong Province"
+    subdivision_type: province
+    iso_3166_2: CN-GD
+    gbt_2260: "440000"
+  - table2_row: 20
+    char: "桂"
+    codepoint: "U+6842"
+    pinyin: gui
+    subdivision_zh: "广西壮族自治区"
+    subdivision_en: "Guangxi Zhuang Autonomous Region"
+    subdivision_type: autonomous-region
+    iso_3166_2: CN-GX
+    gbt_2260: "450000"
+  - table2_row: 21
+    char: "琼"
+    codepoint: "U+743C"
+    pinyin: qiong
+    subdivision_zh: "海南省"
+    subdivision_en: "Hainan Province"
+    subdivision_type: province
+    iso_3166_2: CN-HI
+    gbt_2260: "460000"
+  - table2_row: 22
+    char: "渝"
+    codepoint: "U+6E1D"
+    pinyin: yu
+    subdivision_zh: "重庆市"
+    subdivision_en: "Chongqing Municipality"
+    subdivision_type: municipality
+    iso_3166_2: CN-CQ
+    gbt_2260: "500000"
+    row_period_start: 2007
+    row_period_note: "GA 36-2007 前言, verbatim: “――增加了重庆的简称；” — 渝 was ADDED by the 2007 edition, which is what the administrative history predicts: Chongqing was separated from Sichuan and made a directly-administered municipality in 1997, five years after GA 36-1992. The only row in this table with a start year of its own."
+  - table2_row: 23
+    char: "川"
+    codepoint: "U+5DDD"
+    pinyin: chuan
+    subdivision_zh: "四川省"
+    subdivision_en: "Sichuan Province"
+    subdivision_type: province
+    iso_3166_2: CN-SC
+    gbt_2260: "510000"
+    customary_alternate_not_on_plates:
+      - { char: "蜀", codepoint: "U+8700" }
+  - table2_row: 24
+    char: "贵"
+    codepoint: "U+8D35"
+    pinyin: gui
+    subdivision_zh: "贵州省"
+    subdivision_en: "Guizhou Province"
+    subdivision_type: province
+    iso_3166_2: CN-GZ
+    gbt_2260: "520000"
+    customary_alternate_not_on_plates:
+      - { char: "黔", codepoint: "U+9ED4" }
+  - table2_row: 25
+    char: "云"
+    codepoint: "U+4E91"
+    pinyin: yun
+    subdivision_zh: "云南省"
+    subdivision_en: "Yunnan Province"
+    subdivision_type: province
+    iso_3166_2: CN-YN
+    gbt_2260: "530000"
+    customary_alternate_not_on_plates:
+      - { char: "滇", codepoint: "U+6EC7" }
+  - table2_row: 26
+    char: "藏"
+    codepoint: "U+85CF"
+    pinyin: zang
+    subdivision_zh: "西藏自治区"
+    subdivision_en: "Xizang (Tibet) Autonomous Region"
+    subdivision_type: autonomous-region
+    iso_3166_2: CN-XZ
+    gbt_2260: "540000"
+  - table2_row: 27
+    char: "陕"
+    codepoint: "U+9655"
+    pinyin: shan
+    subdivision_zh: "陕西省"
+    subdivision_en: "Shaanxi Province"
+    subdivision_type: province
+    iso_3166_2: CN-SN
+    gbt_2260: "610000"
+    customary_alternate_not_on_plates:
+      - { char: "秦", codepoint: "U+79E6" }
+  - table2_row: 28
+    char: "甘"
+    codepoint: "U+7518"
+    pinyin: gan
+    subdivision_zh: "甘肃省"
+    subdivision_en: "Gansu Province"
+    subdivision_type: province
+    iso_3166_2: CN-GS
+    gbt_2260: "620000"
+    customary_alternate_not_on_plates:
+      - { char: "陇", codepoint: "U+9647" }
+  - table2_row: 29
+    char: "青"
+    codepoint: "U+9752"
+    pinyin: qing
+    subdivision_zh: "青海省"
+    subdivision_en: "Qinghai Province"
+    subdivision_type: province
+    iso_3166_2: CN-QH
+    gbt_2260: "630000"
+  - table2_row: 30
+    char: "宁"
+    codepoint: "U+5B81"
+    pinyin: ning
+    subdivision_zh: "宁夏回族自治区"
+    subdivision_en: "Ningxia Hui Autonomous Region"
+    subdivision_type: autonomous-region
+    iso_3166_2: CN-NX
+    gbt_2260: "640000"
+  - table2_row: 31
+    char: "新"
+    codepoint: "U+65B0"
+    pinyin: xin
+    subdivision_zh: "新疆维吾尔自治区"
+    subdivision_en: "Xinjiang Uygur Autonomous Region"
+    subdivision_type: autonomous-region
+    iso_3166_2: CN-XJ
+    gbt_2260: "650000"
+
+# ---------------------------------------------------------------------------
+# 号牌分类用汉字 — THE CLASSIFICATION CHARACTERS
+#
+# GA 36-2007 § 5.10, verbatim and complete (one sentence, nine clauses):
+#
+#   "领馆汽车号牌和摩托车号牌的机动车登记编号中使用汉字简称"领"字；使馆汽车
+#    号牌和摩托车号牌的机动车登记编号中使用汉字简称"使"字；警用汽车号牌和摩托车
+#    号牌的机动车登记编号使用汉字简称"警"字；教练汽车号牌和摩托车号牌的机动车
+#    登记编号中使用汉字简称"学"字；挂车号牌的机动车登记编号使用汉字简称"挂"字；
+#    香港特别行政区入出内地车辆号牌的机动车登记编号使用汉字简称"港"字；澳门
+#    特别行政区入出内地车辆号牌的机动车登记编号使用汉字简称"澳"字；试验车的临时
+#    行驶车号牌的机动车登记编号中使用汉字简称"试"字；特型车的临时行驶车号牌的
+#    机动车登记编号中使用汉字简称"超"字。"
+#
+# Nine characters, each bound to a named plate class by the standard itself.
+# This is the fourth element of GA 36-2007 § 3.2's four-element registration
+# number, and it is why a Chinese mark can be bracketed by Han characters at
+# both ends. The 应急 pair is NOT in this list — it postdates GA 36-2007 by
+# eleven years and comes from a State Council instrument instead.
+#
+# POSITION IS NOT UNIFORM AND § 5.10 DOES NOT STATE IT. The standard says which
+# character each class uses and not where it sits; 使 leads and the rest trail,
+# which is recorded per row from plates/cn.yml's series and flagged where it
+# rests on anything weaker than an instrument.
+# ---------------------------------------------------------------------------
+classification_han:
+  - char: "领"
+    codepoint: "U+9886"
+    pinyin: ling
+    position: trailing
+    class_zh: 领馆汽车号牌和摩托车号牌
+    class_en: "consular post — car and motorcycle plates"
+    evidence: enabling-instrument
+    row_period_start: 1992
+  - char: "使"
+    codepoint: "U+4F7F"
+    pinyin: shi
+    position: leading
+    position_note: >-
+      THE ONE CLASSIFICATION CHARACTER THAT REPLACES THE PROVINCE CHARACTER
+      rather than following the serial: an embassy mark carries no geography at
+      all. § 5.10 does not say so in terms; the position is taken from
+      GA 36-2007's own 附录 C 号牌效果图 and from plates/cn.yml's embassy series.
+    class_zh: 使馆汽车号牌和摩托车号牌
+    class_en: "diplomatic mission (embassy) — car and motorcycle plates"
+    evidence: enabling-instrument
+    row_period_start: 2007
+    row_period_note: >-
+      GA 36-2007 前言, verbatim: "――增加了"渝"、"港"、"澳"、"使"、"警"、"超"等
+      省、自治区、直辖市简称及号牌分类用汉字；" — 使 was ADDED by the 2007
+      edition. A pre-2007 embassy mark used a different construction and this
+      pass located no primary describing it.
+  - char: "警"
+    codepoint: "U+8B66"
+    pinyin: jing
+    position: trailing
+    class_zh: 警用汽车号牌和摩托车号牌
+    class_en: "police — car and motorcycle plates"
+    evidence: enabling-instrument
+    row_period_start: 2007
+    row_period_note: >-
+      Added by the 2007 edition, and the foreword says so twice: the change list
+      carries both "――增加了警用汽车号牌和警用摩托车号牌式样；" and the 警
+      character in the classification-character line quoted above. The class and
+      its character arrived together in GA 36-2007.
+  - char: "学"
+    codepoint: "U+5B66"
+    pinyin: xue
+    position: trailing
+    class_zh: 教练汽车号牌和摩托车号牌
+    class_en: "driving-school (learner) — car and motorcycle plates"
+    evidence: enabling-instrument
+    row_period_start: 1992
+  - char: "挂"
+    codepoint: "U+6302"
+    pinyin: gua
+    position: trailing
+    class_zh: 挂车号牌
+    class_en: "trailer"
+    evidence: enabling-instrument
+    row_period_start: 1992
+  - char: "港"
+    codepoint: "U+6E2F"
+    pinyin: gang
+    position: trailing
+    class_zh: 香港特别行政区入出内地车辆号牌
+    class_en: "Hong Kong SAR vehicle entering and leaving the mainland — mainland-side plate"
+    evidence: enabling-instrument
+    row_period_start: 2007
+    row_period_note: "added by the 2007 edition (前言, the same change line as 使 and 警) — which fits: the Hong Kong SAR was established in 1997, after GA 36-1992"
+  - char: "澳"
+    codepoint: "U+6FB3"
+    pinyin: ao
+    position: trailing
+    class_zh: 澳门特别行政区入出内地车辆号牌
+    class_en: "Macau SAR vehicle entering and leaving the mainland — mainland-side plate"
+    evidence: enabling-instrument
+    row_period_start: 2007
+    row_period_note: "added by the 2007 edition; the Macau SAR was established in 1999, after GA 36-1992"
+  - char: "试"
+    codepoint: "U+8BD5"
+    pinyin: shi
+    position: trailing
+    class_zh: 试验车的临时行驶车号牌
+    class_en: "temporary-movement plate for a test vehicle"
+    evidence: enabling-instrument
+    row_period_start: 1992
+  - char: "超"
+    codepoint: "U+8D85"
+    pinyin: chao
+    position: trailing
+    class_zh: 特型车的临时行驶车号牌
+    class_en: "temporary-movement plate for an over-dimension vehicle"
+    evidence: enabling-instrument
+    row_period_start: 2007
+    row_period_note: "added by the 2007 edition (前言, same change line)"
+  - token: "应急"
+    chars: ["应", "急"]
+    codepoints: ["U+5E94", "U+6025"]
+    pinyin: yingji
+    position: "trailing on the car plate, LEADING on the motorcycle plate"
+    class_zh: 应急救援专用号牌
+    class_en: "emergency rescue — national comprehensive fire-and-rescue force"
+    evidence: enabling-instrument
+    row_period_start: 2018
+    row_period_note: >-
+      NOT IN GA 36-2007 § 5.10 — it postdates that edition by eleven years and
+      arrives from a State Council instrument rather than from the standard.
+      国办发〔2018〕114号 附件 一（一）, verbatim: "字符共8位，依次为省（自治区、
+      直辖市）汉字简称、所属救援队伍代号、四位序号和汉字"应急"组成"; 附件 一（二）
+      for the motorcycle: "字符共7位，依次为汉字"应急"、省（自治区、直辖市）汉字
+      简称、三位序号和所属救援队伍代号组成". It is the only TWO-character
+      classification token in the system and the only one that leads on one
+      plate and trails on another.
+    source: "https://www.gov.cn/zhengce/content/2018-12/11/content_5347765.htm  # 国办发〔2018〕114号, 成文 2018-12-04, 发布 2018-12-11. Accessed 2026-08-02"
+classification_han_source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 § 5.10 for the nine standard characters and 前言 for the 2007 additions. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# What this table does NOT decode, said plainly so no consumer assumes it does.
+# ---------------------------------------------------------------------------
+limits:
+  not_a_location: >-
+    The character names the provincial-level division of the ISSUING vehicle-
+    management office, fixed at registration. It is not where the vehicle is,
+    not where the keeper lives now, and not where the vehicle was built. A
+    Geoguessr-style or insurance use that reads it as a current-location signal
+    is reading it wrong, and a parse API must say so.
+  not_a_city: >-
+    The city lives in the SECOND character — the 发牌机关代号 — and that table
+    is plates/_decode/cn-issuing-offices.yml, which is a 2007 snapshot of an
+    open allocation (GA 36-2007 § 5.8.3 lets a new code be brought into use at
+    any time with MPS approval). Decoding a province from this file is safe;
+    decoding a city needs that file and its cautions.
+  no_date: >-
+    A Chinese mark encodes NO date anywhere. There is no age identifier, no
+    six-month letter, no year block — and since 《机动车登记规定》第四十三条
+    lets an owner self-compose the serial inside the published rules, even
+    serial-order era inference is unsafe. This is the sharpest contrast in the
+    dataset with the British mark, which names the six-month period of first
+    registration to 2050.
+  cross_file_divergences: >-
+    RECORDED, NOT AVERAGED (PRD-PLATES § 5.3). Two `row_period_start` values in
+    `classification_han` above disagree with the period on the plates/cn.yml
+    series that uses the same character, and the disagreement is left standing
+    for the verifier rather than reconciled by one file overwriting the other.
+    (1) 使 — this file dates it 2007 on GA 36-2007's 前言, which lists 使 among
+    the classification characters that edition ADDED; plates/cn.yml dates
+    `cn-embassy-car-1992` and `cn-embassy-motorcycle-1992` to 1992 with
+    `period_evidence: instrument-in-force`. Both can be true at once — an
+    embassy plate almost certainly existed before 2007 in a construction the
+    2007 edition then standardised — but nothing secured by either pass proves
+    it, and the foreword is the harder evidence. (2) 超 — this file dates it
+    2007 on the same foreword line; plates/cn.yml carries it as one of the two
+    suffixes on `cn-temporary-travel-1992`, whose other suffix 试 is a 1992
+    character. A verifier resolving these should either split the affected
+    series or move the starts, and should say which in the PR.
+  edition_caveat: >-
+    Every row is GA 36-2007's Table 2. GA 36-2014 and GA 36-2018 each reissued
+    the standard and neither text is public, so this table cannot be re-verified
+    against the edition actually in force. No provincial-level division has been
+    created, merged or abolished since 1997, so the risk of a stale row is
+    genuinely low — but it is a risk, and it is stated rather than assumed away.
