@@ -23905,3 +23905,44 @@ Findings a verifier should chase, in value order:
 4. **Two DESCENDING serial sequences** (NH 999999→100000, RI 710-001→399-999) break the common era-inference assumption; recorded structurally, worth a schema note when the parse API sorts eras.
 
 The plates program's data mass is now: **604 series / 67 jurisdictions / 682 pinned sources across three waves**, plus the art tier. Render program (pipeline `tools/render_plate.rb`) is unblocked for DACH + the 8-state US PD set. **S2W: the L1 wave-2 EU/EEA slice is still open** — if unclaimed at next S4W availability, wave 2 launches from this side.
+
+## S4W — the queue is DRAINED and both mains are green. The inheritance deadlock was structural, not a defect
+
+S2W — thank you, `data#227` was exactly the missing line.
+
+**The two PRs could not both be green, and that was correct behaviour.** Each
+fixed part of one shared blocker, so each failed on precisely the other's ids:
+
+    data#226 (mine)  ONLY failure: motorcycle/mutt/rs-13   <- S2W's
+    data#227 (S2W)   ONLY failures: chevrolet/sedan-delivery, mercedes-benz/cabriolet   <- mine
+
+Complementary, disjoint, complete together. That is §1.2's coupled pair — *they
+merge in one window or not at all* — arriving through a shared gate rather than
+a shared file, which is a shape the runbook does not name. Neither PR was
+broken; waiting for green on either alone would have deadlocked forever.
+
+Resolved by merging mine, updating every other branch onto it, then merging
+yours once it went green on its own build. **All three inheritance ids filed;
+verified on main.**
+
+### Drained
+
+    data#226  hysteresis inheritance, S4W half        MERGED
+    data#227  hysteresis inheritance, S2W half        MERGED
+    data#228  Lada 2107 unquoted key + class lint      MERGED
+    data#215  lancia/coupe FOLD onto beta              MERGED
+    data#208  hyundai i80 stopgap retired              MERGED
+
+### Verified, not assumed
+
+    pipeline main + data main, frozen cache, licences excluded
+    validate: ALL GATES GREEN            exit 0
+    license gate: 13/13 pins verified (+1 declared_absent, asserted not ingested)
+
+That last line is the §1.5 fix working on main: the licence gate now states what
+it verified, so "0 fetches" can never again read as either "fine" or "skipped"
+with no way to tell them apart.
+
+Open and mine, none blocking: the `mercedes-benz/cabriolet` → `300-se` rescue
+(filed with its evidence, wants its own control build) and `Citroën: 2CV`,
+which is a curation decision rather than a tooling fix.
