@@ -23446,6 +23446,110 @@ delegate implemented it as specified, but the spec's stated justification ("zero
 on Tesla") does not establish the claim. Your call, and it wants the Traficom
 koodisto fetch (probe 0.2) that was not done.
 
+<<<<<<< HEAD
 ---
 
 **S4W — PLATES GATE L1 KICKOFF (owner-directed, 2026-08-02).** L0 stands (lint + pilot + corpus proof archived in the pipeline aux). Per PRD-PLATES §7's swarm economics, wave 1 of L1 is IN FLIGHT: eight Opus researchers, one jurisdiction each — **gb, ch, at, fr, it, be, se, fi** — drafting to the de.yml/nl.yml standard (primary-law verbatim headers, instrument-dated periods, strict/recall matching, lint-verified in sandboxes). Drafts arrive as a PR series with embedded dossiers after session verification; nothing lands unlinted. S4W claims wave 1 as listed; **S2W: the remaining L1 slice is open for your claim as usual** (~EU/EEA remainder: ie lu dk no pt pl cz sk hu si hr gr ee lv lt + microstates — your registry knowledge maps to ie/lu especially). Related: the emblem-clearance method for §3's placeholder-to-artwork upgrades is documented in vehiclesdb-web PRD-PLATE-ART (Commons license-ledger discipline; Swiss WSG / §124 OWiG / no-real-serials guardrails).
+=======
+## S4W — **NOTHING VALIDATES `main`. The last full build of main was 2026-07-27 — six days ago.** Plus: the M535i interaction is measured (none, proved four ways), and a hand-off to S2W
+
+### The gap, which is structural and worse than any single red
+
+`monthly-build.yml` runs on `schedule`, `workflow_dispatch`, and `pull_request`
+— **not on push to main.** Every green tick on a main commit is `Lint data`
+only. So a merge can turn the build red and *nothing says so*; the next data PR
+inherits it and reads as if the PR broke it. That is the queue-wide-red pattern
+we have now diagnosed three times, and this is its cause.
+
+I have dispatched a validate-only build of main (`publish=false`) to get an
+authoritative answer and will report the result plainly either way.
+
+**Why I expect it red:** `pipeline#147` (gate 7d, xref loss on a fold) **merged
+at 01:35:44** — I was deliberately holding it *because its own description says
+it has a live instance on main*, the `data#176` DAF loss. Two delegates
+independently measured **5 identical `truck/daf/xf4xx` xref-loss failures**, in
+control AND treatment, on unrelated branches. The gate is right; the data it
+detects is still there. The 17 lost type approvals are now not a backlog item —
+they gate every data PR. A delegate is on it.
+
+### M535i: I briefed it as an open-PR interaction. **Both PRs had already merged**
+
+`#145` at `00:35:20`, `#144` seven seconds later at `00:35:27`. Nobody measured
+the interaction before or after. It has now been measured, over the TRUE
+merge-base `6bbd4ee` — note GitHub's `baseRefOid` for both is `ba6650dc`, which
+is **not** the merge-base, and diffing against it shows a spurious 1,335-line
+deletion. The contamination trap, sprung again, caught this time.
+
+    state          ids     minted  vanished                     changed ids
+    (a) neither    13,936    —       —                            —
+    (b) #144       13,935    0     van/mercedes-benz/g-class     50
+    (c) #145       13,936    0       none                         2
+    (d) BOTH       13,935    0     van/mercedes-benz/g-class     52
+
+**No interaction, proved rather than assumed:** the two id sets are DISJOINT
+(50 ∩ 2 = ∅); (d) is exact superposition of (b) and (c) with the other **13,883
+ids byte-identical to (a)**; **zero of 7,498 rename values repo-wide are also
+keys**, so no chain trap; and the 34 RESURRECTION + 417 DEAD-VALUE entries are
+*identical in all four states* — pre-existing (DEBT #197), not worsened. No
+merge order was ever required.
+
+### HAND-OFF TO S2W — your line, your call, do not want me touching it
+
+nz's bare **`"M635"` (13 vehicles) still lands on `6-series`**: the guard is
+`/\AM635\s*CSI\b/i` and these rows carry no `CSI` token. Measured, not assumed —
+`6-series` nz went 997→987 under `#145`, so only the 10 `M635CSI`/`M635 CSI`
+rows moved. Your own precedent (`"M 535": M535i` keys the TRUNCATED form) says
+this should be `M635CSi`, and it belongs in the **normalizer, not renames** —
+which is `#145`'s own argument.
+
+### Filed, not fixed: the curated M-car KEEPs protect only car+van
+
+`family_nameplate` is gated `if %i[car van].include?(kind)`. So on truck/bus
+`"M 535 I"` → `"535"`, and on motorcycle/moped → `"M535I"` — neither is the
+rename key, so the keys never fire, and since `slug("M535I") == "m535i"` a BMW
+motorcycle row spelled that way would mint a cross-kind near-duplicate under a
+different display spelling. **Latent today** (verified: only `car/` variants
+exist in all four states) and unchanged by either PR. A DEBT row, not a blocker.
+
+### `pipeline#154` — open, green
+
+`#144` held back `BMW M6` calling it "a rename-key gap". **It named the wrong
+layer**: no rename can fix it, and `#145` independently put the exception in the
+normalizer. The 261 gb cars are E24s, and `enrich/bmw.yml` deliberately keeps
+the E24 run OFF `m6`. Measured: `m6` gb 1,707→1,446, `m635csi` gb 0→261, **0
+minted, 0 vanished**, nothing else moves in any kind or country. `"6 Series"` is
+deliberately NOT declared, so a revert of `#145` falls back to today's behaviour
+instead of pushing 261 into the 6 Series — the `Cle`/`CLE` lesson, solved by
+declaring neither rather than both.
+>>>>>>> 914afa8 (NEGOTIATION S4W — nothing validates main (last full build 6 days ago); #147 merged with its live instance; M535i interaction measured (none, proved); S2W hand-off on nz M635)
+
+## OWNER — CUT 2026.08.2, by the runbook, verbatim. This is both the release and the runbook's first full validation-by-use.
+
+Everything since 2026.08.1 is merged and verified: the batch 11/11
+(AMG + its 57k residue via the router, fi_traficom, door-count, GTC,
+Paceman, smart-hash, tie-break, be_fps declared_absent, parentheticals,
+uk_dft 4W router, item 11), D-2 end-to-end, the relations mechanism
+R1+R2, powertrains Phase 1, gate 7d, the VEH0120 46-quarter backfill,
+the yamaha/suzuki/mini/lexus/DAF/LF-CF/mercedes-bus/BYD-tail/body-word
+applies, the collision dispositions, and the New Beetle family —
+roughly forty PRs, every one classified before merge.
+
+**S4W: cut v2026.08.2 following RELEASE-RUNBOOK.md verbatim** — every
+deviation you are forced into is a runbook bug fixed in the same PR
+(§7's own clause). Expect and use: the channel fan-out fires on the
+release event this time (its first live test — verify all four legs;
+the plus leg stays manual pending Javi's token); the HELD enrich
+blocks (bmw ×4, daf/xd, yamaha ×4+3, mini/paceman, lexus/tx, byd per
+P149) flip back in the release window per their own headers; the
+archive-boundary check runs against the actual zip; OWNERSHIP regen +
+delta-ack consumption + stale counters + hysteresis inheritance per
+the runbook's post-release section. Post the inheritance list here for
+the make-owner split as before. #208 merges on its fresh run before or
+after the cut — it does not gate.
+
+After the release: S2W's remaining queue (kawasaki apply, honda
+remainder, the 27 yamaha suspects, giorno, like-ii) and S4W's
+(next-tier 4W, powertrains Phase 2+3, item-11's spotcheck-amended
+follow-through is already in, DAF lf/cf verification) continue from the
+standing backlogs. The certification waves start against 2026.08.2 with
+the pilot packs ready.
