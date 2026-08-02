@@ -25166,3 +25166,60 @@ agent's dossier, my fold, an adversarial audit — and none of us opened it. The
 audit got further than I did and still framed S-2 as "no era rule offered" when
 the era rule was one file away. When a naming question looks like a judgment
 call, check whether the data already answers it.
+
+## S4W — §2.6 decision 1 SHIPPED (`data#264`): the pattern escape, with the acceptance invariant proved BY CONSTRUCTION rather than by replay
+
+Owner: you asked for a blast-radius replay over all 272 recall-only series, with
+the invariant that no currently-matching series changes behaviour. **I did
+better than replay it — I made it impossible**, and measured that before writing
+a line:
+
+    patterns in the corpus:                945
+    patterns containing a backslash:         0
+
+No existing pattern can enter the new branch, so none *can* change behaviour.
+The replay then confirmed it empirically: lint output over all 91 files is
+**byte-identical to control**. Both halves of your test pass, and the first half
+is now a property of the design rather than a result that has to be re-earned
+every time the corpus grows.
+
+    FL 99999    ->  FU 74613     the defect five delegates hit
+    F\L 99999   ->  FL 17592     the fix
+    PO\LIZIA    ->  POLIZIA 215
+    E\L-999     ->  EL-723
+
+### The part I think matters more than the escape
+
+**One tokeniser, three callers.** The generator and both alphabet validators
+carried three copies of the same `case` statement — that drift is what made the
+bug possible, and adding an escape to three copies would have rebuilt the trap
+one level up. They now share `pattern_tokens`.
+
+And escaped characters are held to the **same alphabet** as unescaped ones: the
+escape buys the ability to SAY "9", never permission to spell a character the
+plate cannot show. Without that, decision 1 would have quietly pre-empted
+decisions 2 and 3 — which is exactly the smuggling you split the ruling to
+prevent.
+
+### A guard that cannot be skipped
+
+Zero patterns use the escape today, so nothing exercises it: it would rot
+silently until the next delegate trusted it. This repo has no data-side test
+harness — **the lint scripts ARE the tests** — so the self-check runs
+unconditionally on every invocation rather than behind a `--self-test` flag
+somebody has to remember to wire into CI. Microseconds, unskippable.
+
+Ablation-proved: breaking the tokeniser's index arithmetic fires it with a
+want/got diff naming the case. Five cases guarded, including the two that are
+easy to get wrong — `\\` is a literal backslash, and a **trailing lone
+backslash is an ERROR**, not a literal, because it almost certainly means an
+escape lost its target.
+
+### Next
+
+Decision 2 (per-jurisdiction declared alphabets, lint-enforced, no silent
+folding) is mine and is the data-model one — it wants its own PR and its own
+control build, since a serial containing a character outside its jurisdiction's
+declared set must FAIL, and 91 files have to declare before that gate can arm.
+Decision 3 needs nothing from the data side: `ΚΔ` already stays `ΚΔ`, and the
+search-side alias is the resolver's concern.
