@@ -2313,7 +2313,7 @@ DAF:
   XF480F:     XF     # same
   XF510F:     XF     # same
   XF530F:     XF     # same
-  LF260F:     LF260     # same (LF 260FA…)
+  LF260F:     LF        # FLATTENED 2026-08-02 by §X-2 below: was -> LF260, which §X-2 makes a fold key, and renames are NOT transitive — left pointing at LF260 this key would land on an intermediate and stop. Trailing "F" is still the one-letter axle-code fusion (LF 260FA…)
   # ── §A-D2: DAF's pre-1997 ranges exist in the corpus only INSIDE axle codes.
   # Only truck/daf/55 (3 vehicles) and /95 (12) are published today; these folds
   # recover the rest. ──
@@ -2369,6 +2369,87 @@ DAF:
   XG450:   XG        # as XG430. fi,nl
   XG480:   XG        # as XG430. es,fi,lu,nl
   XG530:   XG        # as XG430. es,fi,lu,nl
+
+  # ── §X-2 the POWER SUFFIX, LF and CF (2026-08-02): the sibling families §X-1
+  # missed. Same defect, same shape, same target discipline — but LF and CF have
+  # far longer histories than XD/XG, so the series-vs-rating call was re-derived
+  # from scratch here rather than inherited.
+  #
+  # THE MEASUREMENT that settles it, and it is per-record in our OWN corpus, not
+  # a caption: es_dgt's fixed-width microdata carries engine power in kW as an
+  # explicit spec field (offset 224). Converting kW->hp (x1.35962) reproduces the
+  # badge number on the LF/CF rows:
+  #   CF 530 FA  390.0 kW -> 530.3 hp     LF 230 FA  172.0 kW -> 233.9 hp
+  #   CF 480 FT  355.0 kW -> 482.7 hp     LF 260 FA  194.0 kW -> 263.8 hp
+  #   CF 450 FT  330.0 kW -> 448.7 hp     LF 320 FA  239.0 kW -> 324.9 hp
+  # 26 of 30 distinct LF/CF model strings in es_dgt 2026-03 match their badge
+  # within +-8 hp; the register states the number twice, once as a spec.
+  #
+  # SECOND, INDEPENDENT corpus proof (nl_rdw, same register, same download):
+  # the historic caption form is <series>.<power> and BOTH halves are present —
+  # "FA LF 45.180" x3, "LF45.180" x2, "LF 55.250" x2, "FT CF 85.460" x6,
+  # "FTCF85.410T" x9, "FANCF75.360U" x3. The very same numbers then appear
+  # directly after the BARE badge: "LF 180 FA" (472 vehicles), "LF 250 FA",
+  # "CF 460 FT", "CF 410 FT" (1,928). A number that is the power of an LF45
+  # cannot be a designation when it follows a bare LF.
+  # Wikipedia lists the ranges as line items ("LF series" / "CF series") —
+  # https://en.wikipedia.org/wiki/DAF_Trucks
+  #
+  # KEPT, DELIBERATELY — the LF/CF equivalent of §X-1's xf105 trap, and there
+  # are FIVE of them, not one. LF45/LF55 and CF65/CF75/CF85 are real SERIES
+  # designations, not ratings, and folding them would destroy live nameplates:
+  #   - The kW instrument above is a known-answer test and it answers NO on all
+  #     five: "FA LF 45"/"FA LF55" measure 181.6 kW = 247 hp (not 45 or 55),
+  #     "DAF CF85" 315.0 kW = 428 hp, "FACF65" 218.7 kW = 297 hp. The digits are
+  #     not the power of these units, so they are not a rating.
+  #   - They carry their OWN power suffix: "LF45.180", "CF 85.410" — a series
+  #     cannot be the rating and take a rating at the same time.
+  #   - en.wikipedia.org/wiki/DAF_CF: "Originally launched as the 65, 75, and 85
+  #     series (from 1992 through 1997)", "renamed the CF range in 1998", and
+  #     "DAF 65, 75 & 85 CF (1998-2000)" — 65/75/85 are the series.
+  #   - en.wikipedia.org/wiki/DAF_LF: "The LF45 and LF55 are powered by Cummins B
+  #     Series engines... all LF55s use the 6 cylinder due to their increased
+  #     size and weight" — LF45/LF55 are distinct models, not power steps.
+  #   - Lineage corroborates: they succeed the Leyland-DAF 45/55, which this file
+  #     already publishes as truck/leyland-daf/45 and /55 (§A-D2).
+  # Untouched here and verified untouched in the control-vs-treatment id diff.
+  #
+  # AVAILABILITY UNION verified at (country,SOURCE) level, not country: both
+  # parents already carry es:es_dgt fi:fi_traficom gb:uk_dft lu:lu_snca
+  # nl:nl_rdw, and every id below is a strict SUBSET of that. No child carries a
+  # (country,source) pair its parent lacks, so nothing ARRIVES and nothing is
+  # lost. Evidence lost by these folds: NONE.
+  #
+  # CHAIN: LF260F above was `-> LF260` and is repointed to LF, because LF260
+  # becomes a fold key here and renames do not apply transitively. Fascf/Fatcf
+  # `-> CF85` need NO change precisely because CF85 is kept — the trap and the
+  # chain are the same fact seen twice.
+  CF260:   CF        # power rating, not a designation — target truck/daf/cf is LIVE (es,fi,gb,lu,nl). es,nl
+  CF290:   CF        # as CF260. es,fi,nl
+  CF300:   CF        # as CF260. fi,nl
+  CF320:   CF        # as CF260. es,nl
+  CF330:   CF        # as CF260. es,fi,nl
+  CF340:   CF        # as CF260. es,fi,nl
+  CF370:   CF        # as CF260. es,fi,nl
+  CF400:   CF        # as CF260. es,nl
+  CF410:   CF        # as CF260. es,fi,nl
+  CF430:   CF        # as CF260. es,nl
+  CF440:   CF        # as CF260. es,fi,nl
+  CF450:   CF        # as CF260. es,fi,lu,nl
+  CF460:   CF        # as CF260. es,fi,nl
+  CF480:   CF        # as CF260. es,fi,lu,nl
+  CF510:   CF        # as CF260. fi,nl
+  CF530:   CF        # as CF260. fi,lu,nl
+  LF180:   LF        # power rating, not a designation — target truck/daf/lf is LIVE (es,fi,gb,lu,nl). es,fi,nl
+  LF210:   LF        # as LF180. es,fi,nl
+  LF220:   LF        # as LF180. es,fi,nl
+  LF230:   LF        # as LF180. es,fi,nl
+  LF250:   LF        # as LF180. es,fi,nl
+  LF260:   LF        # as LF180; LF260F above is repointed to LF for this reason. es,fi,nl
+  LF280:   LF        # as LF180. es,nl
+  LF290:   LF        # as LF180. es,fi,nl
+  LF310:   LF        # as LF180. es,nl
+  LF320:   LF        # as LF180. es,fi,nl
 
 Daihatsu:
   Hijet: Hi-Jet                               # spelling variant of "Hi-Jet" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
