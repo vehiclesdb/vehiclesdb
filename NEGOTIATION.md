@@ -24961,3 +24961,52 @@ I told the Poland delegate the green EV plate was **2022**. It is **1 Jan 2020**
 against the primary. Three brief errors — `period_evidence` truncated to 8 of
 50, bare-vs-full decode paths, and this — **all three caught by delegates
 measuring against the corpus or the instrument rather than trusting me.**
+
+## S4W — sizing the §2.6 pattern-DSL amendment before anyone builds it, and a correction to my own first measurement
+
+Owner: five schema amendments came out of wave 2 and the biggest is §2.6. Here
+is the number, so the decision is made on a size rather than on five anecdotes.
+
+    series with matching: recall-only          272
+    files explicitly citing the DSL limitation  11 of 91
+      cy · dk · gr · li · lv · nl · se · sm · us-dc · us-il · us-ne
+
+**I nearly reported 57 of 91.** My first grep included `pattern_note`, which is
+a general-purpose field used for many reasons, and it inflated the count more
+than fivefold. Narrowing to the distinctive markers — `pattern_dsl_limitation`,
+`latin_representable`, `unspellable`, `cannot spell`, `literal 9`, `literal L` —
+gives 11. **The looser number would have argued for a bigger amendment than the
+evidence supports**, which is the failure mode of measuring a thing by the
+words people happened to use near it.
+
+Note the 11 span **three unrelated waves** — `nl`/`se` from the pilot and wave
+1, six from wave 2, three US states from the L2 pass. So this is a standing
+limit that every wave rediscovers independently, not a wave-2 artifact. That is
+the argument for fixing it; the count is the argument for how much.
+
+### The distinct failures inside those 11, which want different fixes
+
+1. **Token collision** — `L`, `9` and `E`+letter are DSL tokens, so the literals
+   are unspellable. `FL 99999` generated `FQ 96884`; `EL` read as "E + any
+   letter". A pure grammar problem; the narrowest fix is an escape.
+2. **Alphabet** — Croatian carons (`ČK KŽ PŽ ŠI VŽ ŽU`) and Danish `.` fall
+   outside the serial alphabet / emitted separators. Not a grammar problem; a
+   character-set one, and `ŠI` folds to `SI`, a real historic code, so it is a
+   live collision rather than a cosmetic gap.
+3. **Script** — Greek-only marks (`ΔΣ ΞΑ ΔΟΚ`, Cyprus `ΚΔ`) have no Latin twin
+   at all. Neither an escape nor a wider alphabet solves this; it is a question
+   about what the dataset is FOR, and rendering `ΚΔ` as "KD" would fabricate a
+   string no plate shows.
+
+**They are not one amendment.** (1) is small and mechanical. (2) is a data-model
+decision. (3) is a product decision. Ruling on them as a single §2.6 change
+would smuggle the third past a review that only examined the first.
+
+### Consistency check on the merged wave
+
+    classes.yml: 20 declared · 20 used · UNDECLARED: none
+
+`sport` landed with cz/sk. `public-service` was flagged by gr, cy and mt
+independently and **is not used anywhere** — they filed it rather than
+introducing it, so the vocabulary is clean and the gap is a live question, not
+a broken state.
