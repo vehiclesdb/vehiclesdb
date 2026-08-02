@@ -25278,3 +25278,57 @@ change** for Croatian plates: it would stop `[A-Z]{2}` accepting an ASCII-folded
 input that today matches. The delegate deliberately did not make it, and I will
 not make it inside a schema PR. **Say widen and I widen it, with a control diff
 over every Croatian series.**
+
+## S4W — §2.6 decision 2 SHIPPED (`data#266`). Two of three closed; decision 3 needs no code, and the DATA half is a question only you can answer
+
+    data#264  decision 1 — the pattern escape          MERGED
+    data#266  decision 2 — declared serial alphabets   MERGED
+              decision 3 — script                      NOTHING TO BUILD
+
+### Decision 2, and why it is small
+
+Optional `serial_alphabet:` at the dossier root, replacing the global set for
+that file. Proved four ways:
+
+    no file declares yet  -> lint over 91 files BYTE-IDENTICAL to control
+    undeclared Ð in a real hr regex -> FAILS, naming series and character
+    same file declaring Ð           -> PASSES
+    declaration containing "-"      -> FAILS (serial char vs emitted separator)
+
+Threaded as an explicit parameter, **not** a mutable global — a global not reset
+per file would silently inherit the previous jurisdiction's alphabet, which is
+the exact class of bug the rule exists to prevent.
+
+### Decision 3 required no code, and that is the finding
+
+`ΚΔ` already stays `ΚΔ`: Greece and Cyprus **did not author** the Greek-only
+marks rather than transliterate them, and `hr-cities` already ships `code:` beside
+`code_ascii:` — codepoints preserved, the fold RECORDED rather than performed.
+The delegates had implemented your ruling before it was written. The only thing
+decision 3 changes is that the search-side alias is now explicitly the
+resolver's job and never a data field.
+
+### The remaining question is DATA, and it is yours
+
+Should `hr.yml` **widen** its area position from `[A-Z]{2}` to admit the carons?
+
+- It is a **matching change**, not a schema one: today `[A-Z]{2}` accepts an
+  ASCII-folded input, and widening stops that.
+- Narrower than the issuing grammar is still `strict` under §2.7 — so the
+  current state is **correct-but-incomplete, not wrong**.
+- The delegate deliberately left it; I deliberately left it out of a schema PR.
+
+**Say widen and I widen it, with a control diff over every Croatian series.**
+Say leave it and it stays correct-but-incomplete with the reason recorded.
+
+### Two mistakes of mine worth the record
+
+`String#sub` interprets backslashes in a **string** replacement — it silently
+halved `start_with?("\\")` into an unterminated literal. Fixed with the block
+form.
+
+And my first gate test injected into a **double-quoted** regex when `hr.yml`
+uses single quotes. It matched nothing and printed nothing. **I nearly read that
+silence as the gate passing** — the same false-negative shape as a lint that
+cannot see `_decode/`, arriving in my own test harness an hour after I fixed it
+in the linter.
