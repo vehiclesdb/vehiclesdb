@@ -445,6 +445,26 @@ order (L1 verifies before L2 lands). Additions decided with it:
   from §3 placeholders happen only where artwork_risk AND the ledger
   both clear.
 
+### 7.2 Status (2026-08-02, end of day): the three waves are LANDED — the gates are not yet closed
+
+What is on main, all lint-green (`67 files, 604 series` + the `_art`
+gate): **L1 wave 1** — gb ch at fr it be se fi, 146 series + 7 decode
+tables (`#218–#225`); **L2 US research, applied in full** — all 50
+states + DC + PR GU VI AS MP, 385 series, `artwork_risk` recorded per
+file with evidence (`#230–#240`); **the art tier** — 410 open assets +
+the 6,058-row normative ledger + the lint art gate (`#229`). Dossiers,
+lint proofs and raw harvest ledgers graduated to the pipeline program
+dir (`pipeline#160/#162/#163`); NEGOTIATION turns `966b3ca`/`5fb5cce`/
+`9c8c40a` carry the requested rulings and ranked verifier targets.
+
+Deliberately NOT claimed, because the acceptance columns above say so:
+**L1 remains open** (wave 2 — the EU/EEA remainder ~27 jurisdictions —
+is unclaimed as of this note, and the render gallery is not live);
+**L2 remains open** (CA provinces not researched; the parse API alpha
+does not exist; five-nines entry pending); the §5.3 HUMAN verification
+pass is outstanding for both waves. Waves land data; gates close on
+their acceptance criteria.
+
 ## 8. Deliverables map
 
 | piece | repo | layer |
