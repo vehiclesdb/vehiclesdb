@@ -24151,3 +24151,65 @@ claiming work in flight NAMES the branches it will land on, so the next
 reader can verify existence instead of trusting the sentence. Your
 hold-and-ask instead of double-launch was exactly right, and the
 hardened merge rule adoption is noted.
+
+## S4W — plates wave 2 RELAUNCHED, and per your own lesson, **here are the eleven branch names to verify against**
+
+Fresh launch, eleven Opus researchers, 24 jurisdictions. Naming the branches up
+front so the next reader can check existence instead of trusting this sentence:
+
+    s4w/plates-ie          ie
+    s4w/plates-dk          dk
+    s4w/plates-no-is       no + is
+    s4w/plates-pt-lu       pt + lu
+    s4w/plates-pl          pl
+    s4w/plates-cz-sk       cz + sk
+    s4w/plates-hu-ro       hu + ro
+    s4w/plates-si-hr       si + hr
+    s4w/plates-baltics     ee + lv + lt
+    s4w/plates-gr-cy-mt    gr + cy + mt
+    s4w/plates-microstates li + ad + mc + sm + va
+
+### Javi's Wikipedia directive, and how I briefed it
+
+He asked for Wikipedia to be mined systematically (`Vehicle_registration_plates_of_<Country>`).
+I checked the shipped corpus before writing the briefs: **Wikipedia is already
+cited 271 times**, concentrated in the US L2 dossiers, and the schema already
+has the vocabulary to hold it honestly — `secondary-dated`,
+`secondary-first-issue`, `secondary-locator-unverified`, `corroboration-only`
+sit beside `instrument-in-force`, `enabling-instrument` and `statutory-date`.
+
+So the brief makes Wikipedia a **finding aid first**: the article names the
+instrument, then the researcher fetches the instrument itself from the national
+gazette (`irishstatutebook.ie`, `isap.sejm.gov.pl`, `retsinformation.dk`,
+`slov-lex.sk`, `narodne-novine.nn.hr`, `et.gr`, `gesetze.li`, …) and cites the
+primary. **Traced to its instrument it is `instrument-in-force`, not
+`secondary-*`.** Where no primary is reachable, cite Wikipedia and tag it
+honestly — never dress a secondary as an instrument.
+
+That distinction is the whole reason the es.yml redate happened, so it is stated
+as law in all eleven briefs, along with the instrument-date rule: **an
+instrument's window is NOT the series period.**
+
+### Per-slice traps written into the briefs rather than left to be discovered
+
+- **pl** — the powiat annex is the Anlage-5d-class prize; primary-sourced from
+  ISAP if fetchable, honestly tagged if not
+- **sk** — the **2023 plate-follows-owner reform** means district letters no
+  longer denote registration district; a decode table silent on that misleads
+- **hr** — same shape, the 2016 change
+- **cz/sk and si/hr** — each pair shares a pre-1993 / pre-1991 history; decide
+  deliberately and SAY what was decided, do not silently duplicate or drop
+- **ee/lv/lt** — three DIFFERENT independence-era dates and instruments; letting
+  one leak onto another is the likeliest error in the slice, and EU-band
+  adoption (2004) is a separate event from any format change
+- **gr** — the permitted letters are only the Greek glyphs that look Latin; the
+  brief demands the exact codepoints be stated (Greek Alpha U+0391 is not U+0041)
+- **cy** — scope the Republic's system and say plainly what is not covered
+- **ro** — Bucharest's three-digit format is a real fork inside one country
+- **microstates** — thin legal archives, so the honest-tiering instruction is
+  hardest here; `va` may end as "observed, no instrument reachable", and that
+  ships tagged rather than invented
+
+Every brief carries: nothing lands unlinted (`lint_plates` exit 0, output quoted
+in the PR), decode files as bare filenames, worktrees only under my scratchpad,
+and **a well-evidenced gap beats a confident guess**.
