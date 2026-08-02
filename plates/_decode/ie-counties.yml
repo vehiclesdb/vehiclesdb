@@ -1,0 +1,227 @@
+# plates/_decode/ie-counties.yml — Irish index marks (the county/city identifier
+# in the middle group of an Irish registration).
+#
+# THE SOURCE FINDING, and it is the Austrian result rather than the German one:
+# THE IRISH INDEX-MARK LIST IS IN THE INSTRUMENTS, TWICE OVER, AND NOTHING BELOW
+# COMES FROM A SECONDARY SOURCE. Two independent statutory tables enumerate it:
+#
+#   * THE REGISTRATION TABLE — S.I. No. 445 of 1986 inserted "Part II" into the
+#     Schedule to the Road Vehicles (Index Marks) Regulations, 1958, allotting
+#     the new two-letter/one-letter marks to each licensing authority, and its
+#     new article 3 dates them to the day: "the index marks in Part I of the
+#     Schedule ... shall not be assigned to vehicles first registered on or
+#     after the 1st day of January, 1987 and the index marks in Part II ...
+#     shall be assigned to vehicles first registered on or after the 1st day of
+#     January, 1987." That table was then re-enacted, with the IRISH-LANGUAGE
+#     PLACENAME beside each mark, as the Table to paragraph 4 of the First
+#     Schedule to the Vehicle Registration and Taxation Regulations, 1992
+#     (S.I. No. 318 of 1992), and again in the First Schedule as substituted by
+#     S.I. No. 432 of 1999.
+#   * THE TRADE-LICENCE TABLE — Article 6(3)(a) of S.I. No. 409 of 1992 as
+#     substituted by S.I. No. 328 of 2013 and again by S.I. No. 243 of 2014.
+#     This is the ONLY instrument located in this pass that carries the
+#     POST-MERGER identifiers T (Tipperary), L (Limerick City and County) and
+#     W (Waterford City and County).
+#
+# THE DISCREPANCY IS REAL AND IS RECORDED, NOT AVERAGED (PRD-PLATES §5.3): the
+# VRT First Schedule table still reads TN / TS / LK / L / WD / W and has never
+# been amended to add T or to merge LK into L and WD into W, while the
+# trade-licence table WAS amended for exactly that reason — S.I. 328/2013's own
+# explanatory note: "These Regulations provide for a single identifier for trade
+# licences issued in Limerick, Tipperary and Waterford." Every row below
+# therefore carries `instruments:` naming which table it comes from, and the
+# post-2014 rows carry `registration_plate_authority: trade-licence-table-only`
+# so a consumer can see precisely how far the evidence reaches.
+#
+# Referenced by: plates/ie.yml (ie-standard-1987, ie-standard-1991,
+# ie-standard-2013, ie-trade-1993) via region_encoding.
+#
+# PERIOD DISCIPLINE (PRD-PLATES §2.4): these are the marks assignable to
+# vehicles FIRST REGISTERED on or after 1 January 1987. The pre-1987 marks are a
+# different, disjoint set and are handled in `historic_pre_1987` below — they are
+# NOT in `codes:` and a pre-1987 plate must never be decoded through it. Marks
+# are not withdrawn from plates already issued: a 1988 TS plate stays a TS plate
+# forever, which is why TN/TS/LK/WD remain decodable long after 2014.
+jurisdiction: ie
+topic: counties
+authority:
+  name: "Road Vehicles (Index Marks) Regulations, 1958, Schedule Part II (inserted by S.I. No. 445 of 1986); Vehicle Registration and Taxation Regulations, 1992, First Schedule paragraph 4"
+  url: "https://www.irishstatutebook.ie/eli/1992/si/318/made/en/print"
+sources:
+  - "https://www.irishstatutebook.ie/eli/1986/si/445/made/en/print  # S.I. No. 445 of 1986, Road Vehicles (Index Marks) (Amendment) (No. 2) Regulations, 1986 — inserts Schedule Part II (the new marks, per licensing authority) and the new art. 3 dating them to first registrations on or after 01-01-1987; sealed 20-12-1986. Accessed 2026-08-02"
+  - "https://www.irishstatutebook.ie/eli/1992/si/318/made/en/print  # S.I. No. 318 of 1992, First Schedule para. 4 TABLE 'INDEX MARKS AND CORRESPONDING PLACENAMES' — the same 29 marks with the Irish placename each plate must exhibit. Accessed 2026-08-02"
+  - "https://www.irishstatutebook.ie/eli/1999/si/432/made/en/print  # S.I. No. 432 of 1999 — substitutes the whole First Schedule; the para. 4 table is re-enacted unchanged except the Offaly placename spelling (Úibh Fhailí -> Uibh Fhailí). Accessed 2026-08-02"
+  - "https://www.irishstatutebook.ie/eli/2013/si/328/made/en/print  # S.I. No. 328 of 2013 — substitutes Art. 6(3)(a) of S.I. 409/1992 with a table giving T to BOTH Tipperary ridings, L to both Limerick authorities and W to both Waterford authorities; 'shall apply to trade licences issued for 2014 and subsequent years'. Accessed 2026-08-02"
+  - "https://www.irishstatutebook.ie/eli/2014/si/243/made/en/print  # S.I. No. 243 of 2014 — substitutes that table again for the merged authority names (Limerick City and County, Tipperary, Waterford City and County); 'shall apply to trade licences issued on or after 01 June 2014'. Accessed 2026-08-02"
+  - "https://www.irishstatutebook.ie/eli/1958/si/14/made/en/print  # S.I. No. 14 of 1958, Road Vehicles (Index Marks) Regulations, 1958 — the PRE-1987 Schedule (later Part I), quoted in historic_pre_1987 below. In operation 01-02-1958. Accessed 2026-08-02"
+period: { start: 1987 }
+period_evidence: instrument-in-force
+period_note: >-
+  1987 is not the date of the instrument (sealed 20 December 1986) but the date
+  the marks became assignable, stated in the instrument's own new article 3:
+  marks in Part II "shall be assigned to vehicles first registered on or after
+  the 1st day of January, 1987". Rows added later carry their own `since:`.
+
+# A parse API needs this, and unlike Austria the Irish answer is clean.
+maximal_munch: true
+maximal_munch_note: >-
+  Take the LONGEST matching code — L vs LK vs LD vs LH vs LM vs LS, C vs CE vs
+  CN vs CW, T vs TN vs TS, W vs WD vs WH vs WW vs WX, D vs DL, K-prefixed KE/KK/
+  KY, M-prefixed MH/MN/MO. The split is nevertheless UNAMBIGUOUS even on
+  separator-stripped input, because the index mark is a pure letter run bounded
+  by digits on both sides: "121D12345" splits at the letter run "D" and nowhere
+  else. Irish marks are self-delimiting; the maximal-munch rule matters only for
+  the mark itself, never for finding its boundaries.
+
+# The placename is not decoration: First Schedule para. 4 requires the plate to
+# "exhibit the placename set out in the Table ... opposite the mention in the
+# Table of the index mark on the plate". The spelling below is the CURRENT
+# instrument's spelling; `placename_variants` records where instruments differ,
+# because they do and a render layer has to pick one.
+codes:
+  - { code: C,  placename: "Corcaigh",          county: "Cork",             licensing_authority: "Cork County Council and the Lord Mayor, Aldermen and Burgesses of Cork", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: CE, placename: "An Clár",           county: "Clare",            licensing_authority: "Clare County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: CN, placename: "An Cabhán",         county: "Cavan",            licensing_authority: "Cavan County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: CW, placename: "Ceatharlach",       county: "Carlow",           licensing_authority: "Carlow County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: D,  placename: "Baile Átha Cliath", county: "Dublin",           licensing_authority: "Dublin County Council and the Right Honourable the Lord Mayor, Aldermen and Burgesses of Dublin", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014], placename_variants: ["Baile Atha Cliath (S.I. 328/2013 and S.I. 243/2014 print it without the fada on Atha)"] }
+  - { code: DL, placename: "Dún na nGall",      county: "Donegal",          licensing_authority: "Donegal County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: G,  placename: "Gaillimh",          county: "Galway",           licensing_authority: "Galway County Council and the Mayor, Aldermen and Burgesses of Galway", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: KE, placename: "Cill Dara",         county: "Kildare",          licensing_authority: "Kildare County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: KK, placename: "Cill Chainnigh",    county: "Kilkenny",         licensing_authority: "Kilkenny County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: KY, placename: "Ciarraí",           county: "Kerry",            licensing_authority: "Kerry County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: L,  placename: "Luimneach",         county: "Limerick",         licensing_authority: "The Mayor, Aldermen and Burgesses of Limerick (1986); Limerick City and County (from S.I. 243/2014)", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014], note: "L was the LIMERICK CITY mark from 1987 (LK was the county). S.I. 328/2013 gave L to both Limerick authorities for trade licences and S.I. 243/2014 renamed the holder 'Limerick City and County'. The VRT First Schedule table still carries L and LK as separate rows." }
+  - { code: LD, placename: "An Longfort",       county: "Longford",         licensing_authority: "Longford County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: LH, placename: "Lú",                county: "Louth",            licensing_authority: "Louth County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014], placename_variants: ["Lughbhaidh appears in some non-statutory usage; every instrument read in this pass prints Lú"] }
+  - { code: LK, placename: "Luimneach",         county: "Limerick",         licensing_authority: "Limerick County Council", instruments: [si-445-1986, si-318-1992, si-432-1999], superseded_by: L, superseded_note: "absent from the trade-licence table as substituted by S.I. 328/2013; still in the un-amended VRT First Schedule table. Plates issued under LK stay valid and decodable." }
+  - { code: LM, placename: "Liatroim",          county: "Leitrim",          licensing_authority: "Leitrim County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: LS, placename: "Laois",             county: "Laois",            licensing_authority: "Laoighis County Council (so spelled in S.I. 445/1986)", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: MH, placename: "An Mhí",            county: "Meath",            licensing_authority: "Meath County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: MN, placename: "Muineachán",        county: "Monaghan",         licensing_authority: "Monaghan County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: MO, placename: "Maigh Eo",          county: "Mayo",             licensing_authority: "Mayo County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: OY, placename: "Uíbh Fhailí",       county: "Offaly",           licensing_authority: "Offaly County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014], placename_variants: ["Úibh Fhailí (S.I. 318/1992)", "Uibh Fhailí (S.I. 432/1999)", "UÍBH FHAILÍ (S.I. 287/1990)", "Uíbh Fhailí (S.I. 328/2013, S.I. 243/2014)"] }
+  - { code: RN, placename: "Ros Comáin",        county: "Roscommon",        licensing_authority: "Roscommon County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: SO, placename: "Sligeach",          county: "Sligo",            licensing_authority: "Sligo County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: T,  placename: "Tiobraid Árann",    county: "Tipperary",        licensing_authority: "Tipperary North / Tipperary South (S.I. 328/2013); Tipperary (S.I. 243/2014)", since: 2014, instruments: [si-328-2013, si-243-2014], registration_plate_authority: trade-licence-table-only, note: "THE ONLY MARK IN THIS TABLE WITH NO VRT INSTRUMENT. T is prescribed for TRADE LICENCE plates by S.I. 328/2013 (for licences issued for 2014 onwards) and S.I. 243/2014. No amendment adding T to the Table to paragraph 4 of the First Schedule to S.I. 318/1992 — the table that governs ordinary REGISTRATION plates — was located in a title-level sweep of the Irish Statute Book's annual S.I. indexes for 1990 to 2025 (by title, not full text; see plates/ie.yml, ie-standard-2013.notes for the grading). Its use on registration plates is therefore NOT established from an instrument here; see plates/ie.yml, ie-standard-2013.notes." }
+  - { code: TN, placename: "Tiobraid Árann",    county: "Tipperary North Riding", licensing_authority: "Tipperary North Riding County Council", instruments: [si-445-1986, si-318-1992, si-432-1999], superseded_by: T, superseded_note: "absent from the trade-licence table as substituted by S.I. 328/2013; still in the un-amended VRT First Schedule table." }
+  - { code: TS, placename: "Tiobraid Árann",    county: "Tipperary South Riding", licensing_authority: "Tipperary South Riding County Council", instruments: [si-445-1986, si-318-1992, si-432-1999], superseded_by: T, superseded_note: "as TN" }
+  - { code: W,  placename: "Port Láirge",       county: "Waterford",        licensing_authority: "The Mayor, Aldermen and Burgesses of Waterford (1986); Waterford City and County (from S.I. 243/2014)", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014], note: "W was the WATERFORD CITY mark from 1987 (WD was the county), on the same pattern as L/LK." }
+  - { code: WD, placename: "Port Láirge",       county: "Waterford",        licensing_authority: "Waterford County Council", instruments: [si-445-1986, si-318-1992, si-432-1999], superseded_by: W, superseded_note: "as LK" }
+  - { code: WH, placename: "An Iarmhí",         county: "Westmeath",        licensing_authority: "Westmeath County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: WW, placename: "Cill Mhantáin",     county: "Wicklow",          licensing_authority: "Wicklow County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+  - { code: WX, placename: "Loch Garman",       county: "Wexford",          licensing_authority: "Wexford County Council", instruments: [si-445-1986, si-318-1992, si-432-1999, si-328-2013, si-243-2014] }
+
+instrument_key:
+  si-445-1986: "S.I. No. 445 of 1986 — Road Vehicles (Index Marks) (Amendment) (No. 2) Regulations, 1986, Schedule Part II. Marks assignable to vehicles first registered on or after 01-01-1987."
+  si-318-1992: "S.I. No. 318 of 1992 — Vehicle Registration and Taxation Regulations, 1992, First Schedule para. 4 Table. Reg. 9 in operation 01-01-1993 (Reg. 3)."
+  si-432-1999: "S.I. No. 432 of 1999 — Vehicle Registration and Taxation (Amendment) Regulations, 1999, substituting the First Schedule; sealed 22-12-1999."
+  si-328-2013: "S.I. No. 328 of 2013 — trade-licence table, applying to trade licences issued for 2014 and subsequent years."
+  si-243-2014: "S.I. No. 243 of 2014 — trade-licence table, applying to trade licences issued on or after 01-06-2014."
+
+not_in_this_table:
+  - "ZV — the vintage-vehicle mark (S.I. 318/1992 Reg. 9(1)(d), re-enacted as Reg. 9(1A)(e) by S.I. 542/2012). It is an index mark in the statute's own words but it encodes AGE, not geography, and carries no placename."
+  - "ZZ — the temporary registration mark for non-residents. Not geographic; no instrument prescribing it was located (see plates/ie.yml, ie-temporary-zz)."
+  - "Galway city, Dún Laoghaire, and the post-2014 city/county councils generally: Ireland allots ONE mark per licensing authority AREA, and city/county pairs share a mark (C, D, G) or held adjacent marks (L/LK, W/WD). There is no separate city code beyond that pair."
+
+# ---------------------------------------------------------------------------
+# THE PRE-1987 SYSTEM. A different, disjoint set of marks, and deliberately NOT
+# authored row-by-row — what is authored is the base table plus the expansion
+# RULE, which is stronger than a partial list.
+# ---------------------------------------------------------------------------
+historic_pre_1987:
+  period: { start: 1958, end: 1987 }
+  period_evidence: instrument-in-force
+  period_note: >-
+    1958 dates the CONSOLIDATED LIST read below (S.I. No. 14 of 1958, in
+    operation 1 February 1958), not the system: the marks themselves descend
+    from registrations under the Motor Car Act, 1903 and the Roads Act, 1920,
+    and the 1958 regulations' own explanatory note says they "replace a number
+    of orders (now revoked)". Those pre-1958 orders were not fetched — recorded
+    gap. The end is exact: S.I. 445/1986's new art. 3 stops these marks being
+    assigned to vehicles first registered on or after 1 January 1987.
+  base_table_source: "https://www.irishstatutebook.ie/eli/1958/si/14/made/en/print  # S.I. No. 14 of 1958, Schedule (later renamed Part I by S.I. 445/1986). Accessed 2026-08-02"
+  stems:
+    - { marks: [IC], authority: "Carlow County Council" }
+    - { marks: [ID], authority: "Cavan County Council" }
+    - { marks: [IE], authority: "Clare County Council" }
+    - { marks: [IF, ZB, ZK, ZT], authority: "Cork County Council" }
+    - { marks: [IH, ZP], authority: "Donegal County Council" }
+    - { marks: [IK, RI, YI, Z, ZA, ZC, ZE, ZI, ZD, ZH, ZJ, ZL, ZO, ZU], authority: "Dublin County Council and The Right Honourable the Lord Mayor, Aldermen and Burgesses of Dublin" }
+    - { marks: [IM, ZM], authority: "Galway County Council" }
+    - { marks: [IN, ZX], authority: "Kerry County Council" }
+    - { marks: [IO, ZW], authority: "Kildare County Council" }
+    - { marks: [IP], authority: "Kilkenny County Council" }
+    - { marks: [CI], authority: "Laoighis County Council" }
+    - { marks: [IT], authority: "Leitrim County Council" }
+    - { marks: [IU], authority: "Limerick County Council" }
+    - { marks: [IX], authority: "Longford County Council" }
+    - { marks: [IY, ZY], authority: "Louth County Council" }
+    - { marks: [IZ], authority: "Mayo County Council" }
+    - { marks: [AI, ZN], authority: "Meath County Council" }
+    - { marks: [BI], authority: "Monaghan County Council" }
+    - { marks: [IR], authority: "Offaly County Council" }
+    - { marks: [DI], authority: "Roscommon County Council" }
+    - { marks: [EI], authority: "Sligo County Council" }
+    - { marks: [FI], authority: "Tipperary, North Riding County Council" }
+    - { marks: [HI], authority: "Tipperary, South Riding County Council" }
+    - { marks: [KI], authority: "Waterford County Council" }
+    - { marks: [LI], authority: "Westmeath County Council" }
+    - { marks: [MI, ZR], authority: "Wexford County Council" }
+    - { marks: [NI], authority: "Wicklow County Council" }
+    - { marks: [PI, ZF], authority: "The Lord Mayor, Aldermen and Burgesses of Cork" }
+    - { marks: [TI], authority: "The Mayor, Aldermen and Burgesses of Limerick" }
+    - { marks: [WI], authority: "The Mayor, Aldermen and Burgesses of Waterford" }
+  stems_added_later:
+    - { marks: [SI, ZG, ZS, ZV], authority: "Dublin County Council and the Lord Mayor, Aldermen and Burgesses of Dublin", instrument: "S.I. No. 6 of 1986, sealed 19-01-1986", note: "ZV here is the pre-1987 DUBLIN ordinary mark. The post-1992 ZV vintage series re-uses the same two letters for a different purpose entirely — a collision a parse API must carry. Note also the ORDER: S.I. 231/1981 allotted the three-letter expansions ASI..ZSI, AZG..YZG, AZS..YZS and AZV..YZV five years BEFORE S.I. 6/1986 allotted the two-letter stems SI, ZG, ZS and ZV themselves. The expansion rule below is a decode rule, not a chronology." }
+    - { marks: [ZZP], authority: "Donegal County Council", instrument: "S.I. No. 28 of 1982, sealed 23-02-1982", note: "the one four-character outlier: a leading Z on the ZP stem, i.e. the expansion rule applied to a two-letter stem that itself begins with Z." }
+  three_letter_expansion_rule: >-
+    THE THREE-LETTER MARKS ARE STEM + ONE LEADING LETTER, AND THAT IS HOW TO
+    DECODE THEM. Every three-letter mark in the fourteen amending instruments
+    listed below is formed by prefixing a single letter to a two-letter stem
+    already allotted to the same authority: AIC..ZIC to Carlow's IC, AZA..YZA
+    and AZC..YZC and AZE..YZE and AZH..YZH and AZI..YZI and AZJ..YZJ and
+    AZL..YZL and AZO..YZO and AZU..YZU and AZG/AZS/AZV series to Dublin's ZA/ZC/
+    ZE/ZH/ZI/ZJ/ZL/ZO/ZU/ZG/ZS/ZV, KPI..ZPI and AZF..LZF to Cork City's PI/ZF,
+    ATI..ZTI to Limerick City's TI, AWI..JWI to Waterford City's WI, and so on
+    for every county. So: STRIP THE LEADING LETTER, LOOK UP THE REMAINING TWO
+    (or, for a two-letter mark, look it up directly).
+    EPISTEMIC LABEL, stated because it matters: this rule is an INDUCTION over
+    the fourteen instruments read in this pass, every one of which conforms
+    without exception. NO INSTRUMENT STATES IT. It is not law, it is a reliable
+    regularity, and a parse API must treat a non-conforming mark as unresolved
+    rather than forcing it.
+  exhaustive_list_status: not-authored
+  exhaustive_list_note: >-
+    The complete pre-1987 mark list is the 1958 Schedule as amended fourteen
+    times, and merging those fourteen insertions row-by-row is gate-L4 work
+    (PRD-PLATES §7). It is deliberately NOT half-done here: a partial list read
+    as complete would make a parse API declare real plates invalid, which is
+    worse than declaring them unresolved. The amending instruments, all read and
+    all conforming to the expansion rule above, are pinned so the merge can be
+    done later without re-discovery.
+  amending_instruments:
+    - "https://www.irishstatutebook.ie/eli/1959/si/8/made/en/print    # S.I. 8/1959 — Clare"
+    - "https://www.irishstatutebook.ie/eli/1959/si/107/made/en/print  # S.I. 107/1959 — Dublin, Westmeath"
+    - "https://www.irishstatutebook.ie/eli/1959/si/136/made/en/print  # S.I. 136/1959 — Limerick City, Galway, Sligo"
+    - "https://www.irishstatutebook.ie/eli/1960/si/46/made/en/print   # S.I. 46/1960 — Laoighis, Offaly, Monaghan"
+    - "https://www.irishstatutebook.ie/eli/1960/si/244/made/en/print  # S.I. 244/1960 — Dublin, Waterford, Wexford"
+    - "https://www.irishstatutebook.ie/eli/1961/si/283/made/en/print  # S.I. 283/1961 — ten authorities"
+    - "https://www.irishstatutebook.ie/eli/1963/si/69/made/en/print   # S.I. 69/1963 — Dublin"
+    - "https://www.irishstatutebook.ie/eli/1964/si/8/made/en/print    # S.I. 8/1964 — Dublin, Cork City, Carlow, Louth"
+    - "https://www.irishstatutebook.ie/eli/1965/si/30/made/en/print   # S.I. 30/1965 — eight authorities"
+    - "https://www.irishstatutebook.ie/eli/1967/si/128/made/en/print  # S.I. 128/1967 — Dublin, Tipperary North Riding"
+    - "https://www.irishstatutebook.ie/eli/1968/si/121/made/en/print  # S.I. 121/1968 — Dublin, Cork City, Limerick City, Kerry, Westmeath"
+    - "https://www.irishstatutebook.ie/eli/1970/si/101/made/en/print  # S.I. 101/1970 — the largest single amendment, thirteen or more authorities"
+    - "https://www.irishstatutebook.ie/eli/1981/si/231/made/en/print  # S.I. 231/1981 — Dublin, Limerick, Mayo, Tipperary South Riding"
+    - "https://www.irishstatutebook.ie/eli/1982/si/28/made/en/print   # S.I. 28/1982 — Donegal (ZZP)"
+    - "https://www.irishstatutebook.ie/eli/1986/si/6/made/en/print    # S.I. 6/1986 — Dublin (SI, ZG, ZS, ZV)"
+  skipped_letters_folklore: >-
+    FOLKLORE FLAG, recorded not repeated: the widely circulated claim that the
+    letters G, S and V were "skipped, as these were intended for Scotland" is
+    NOT stated in any instrument read in this pass. What the instruments show is
+    narrower and different: the 1958 Schedule contains no TWO-letter mark
+    beginning with G, S or V — but it is full of THREE-letter marks that do
+    (GYI, SYI, VYI, all Dublin), and S.I. No. 6 of 1986 later allotted the
+    two-letter mark SI to Dublin outright. So no permanent reservation is
+    observable in the primary record. The claim is recorded here as unverified
+    and is not asserted by this file; establishing or refuting it needs the
+    pre-1958 orders the 1958 regulations revoked, which were not fetched.
