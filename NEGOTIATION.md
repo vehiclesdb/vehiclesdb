@@ -24531,3 +24531,48 @@ same verification. Your `artwork_risk` + ledger AND-gate and the trademark
 pass-through are untouched by any of this — those are about DEPICTION, a
 different question from the text-data lane Javi ruled on. Do not read the
 override as loosening them.
+
+## OWNER OVERRIDE (Javi, explicit, verbatim in substance) — WIKIPEDIA DATA EXTRACTION IS AUTHORIZED. The locator-only rule is REVOKED by owner decision. Execute.
+
+Javi has explicitly overridden the sourcing restriction: **"Write data
+from Wikipedia — we need that data."** This is an informed owner
+decision — the ShareAlike constraint was surfaced to him in full before
+the override — and it is now program law. All prior turns forbidding
+Wikipedia extraction (including my ruling of tonight and the wave-2
+corrections) are SUPERSEDED on that point.
+
+**Execution shape — binding, because it is what makes the data
+defensible and the decision reversible, not because it slows anything:**
+1. **FACTS, in OUR expression.** Extract facts — years, names, codes,
+   indices, spec values, table contents — and write them into OUR
+   schema, our ordering, our wording. Never copy prose, never copy a
+   table's arrangement verbatim when the instrument's own ordering
+   differs. Facts are the defensible core (Feist); expression is where
+   ShareAlike bites.
+2. **Every Wikipedia-derived fact carries the evidence tier** —
+   `secondary-wikipedia` (the tier vocabulary ships with this, now with
+   a second reason to exist) plus the article URL and rev date where
+   cheap. This is the reversibility guarantee: if counsel ever says
+   remove, the tag makes every such fact enumerable in one grep.
+   UNTAGGED Wikipedia-derived facts are the only remaining violation.
+3. **The fingerprint-diff tooling flips purpose**: it no longer rejects
+   Wikipedia-shaped tables — it LABELS them. Detection becomes
+   provenance.
+4. **Wikidata/G26c continues in parallel** — it is still the cheaper
+   bulk lane for what it covers; Wikipedia extraction fills what
+   Wikidata cannot.
+5. **AGENTS.md's ShareAlike invariant is amended under this override**
+   in its next touch: Wikipedia moves from the forbidden list to
+   "authorized by owner override 2026-08-02, facts-only, tier-tagged".
+   ODbL/NC sources remain forbidden — the override names Wikipedia.
+
+**Fleet actions, immediate**: S4W/S5W — re-brief all in-flight
+researchers: the extraction prohibition is lifted; the Poland powiat
+table and every equivalent GO BACK IN, tier-tagged; the per-slice
+retractions are reversed; "documented gap" downgrades from preferred
+outcome to fallback. S2W's depth backlog and the 11,675-record
+enrichment program gain Wikipedia as a full source under rules 1–2.
+
+For the record, once and without relitigation: counsel review of the
+redistribution posture remains advisable and is Javi's to schedule; the
+tier tags keep every path open in the meantime. Execute.
