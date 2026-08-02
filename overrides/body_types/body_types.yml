@@ -13,6 +13,24 @@
 
 overrides:
   Alfa Romeo|GT: coupe
+  # PINNED BECAUSE THE SIGNAL IS A TIE, NOT BECAUSE THE SIGNAL IS WRONG.
+  # car/aston-martin/v8 is the 1969-89 V8 family. Its nl_rdw body distribution
+  # (the only registry body signal the pipeline has) reads convertible 22 /
+  # coupe 20 on origin/main and convertible 21 / coupe 21 once `AMV8` is
+  # retargeted onto this record — an EXACT TIE, which `body_type_for`'s
+  # `registry_dist.max_by { |_t, c| c }` (normalizer.rb:361) would resolve by
+  # Ruby Hash insertion order. A published field must not be decided that way,
+  # and the 2-vehicle margin it replaces was barely better. Measured by
+  # replaying the real normalizer over every Aston Martin `inrichting` row
+  # under both override trees, 2026-08-02.
+  # COUPE IS ALSO THE RIGHT ANSWER ON THE MERITS: the convertibles are on this
+  # record only because `Volante` and the V8 Volante spellings FOLD here, and
+  # the DVLA itself keeps them apart — GenModel `ASTON MARTIN V8` 571 vs
+  # `ASTON MARTIN VOLANTE` 351 (uk_veh0120_uk.csv, 2026 Q1, measured). The
+  # convertible is already carried as a VARIANT of this record in
+  # enrich/aston-martin.yml (`{name: "Volante (convertible)", type: body}`),
+  # which is where a derivative body belongs; body_types names the primary.
+  Aston Martin|V8: coupe
   Opel|GT: roadster
   Opel|Manta: coupe
   Opel|Tigra: coupe
@@ -60,6 +78,8 @@ overrides:
   EBRO|S700: suv                 # mid-size SUV (Chery Tiggo 7 platform, built ex-Nissan Barcelona) — DGT-only rows were default-typed hatchback
   EBRO|S800: suv                 # 7-seat SUV (Chery Tiggo 8 platform), same revival family
   EBRO|S400: suv                 # compact SUV (Chery Tiggo 4 Pro base) — key is the post-rename nameplate (S400 Hev → S400)
+  # --- Lexus TX (2026-08-02, S4W; dossier §A.2 L1 mints car/lexus/tx) ---
+  Lexus|TX: suv                  # "This three-row SUV provides seating for up to seven passengers" — https://pressroom.lexus.com/a-new-era-of-three-row-luxury-the-first-ever-lexus-tx/ (fetched 2026-08-02). REQUIRED, not cosmetic: normalizer.rb's Lexus family rule tests /\A(NX|RX|UX|GX|LX|RZ|LBX)/ for :suv and has no TX arm, the TX has no nl_rdw rows so the registry-signal layer never fires, and the record therefore falls to the default :hatchback — which is what car/lexus/tx-350 and car/lexus/tx-500h publish TODAY (measured, dist/vehicles.csv v2026.08.0). Curated here rather than in the Ruby family rule per AGENTS.md ("string FACTS are overrides"); layer 1 outranks the family rule either way
 
 keywords:                        # [type, ruby-regex] — checked before the sets
   - [suv, '\b(Aircross|Crossback|Cross)\b']   # *Cross / Aircross / Crossback crossovers
