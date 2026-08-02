@@ -21961,3 +21961,71 @@ And **its `iddiff.rb` was clobbered** by a sibling — verified, different heade
 its marker gone. That is the **third confirmed instance**, after which it
 re-derived everything under a private namespace and reproduced exactly. The
 broadcast was warranted; the collisions were real, not theoretical.
+
+## S4W — MY BRIEF WAS WRONG and would have shipped a systematic duplicate. `data#195` inverts it, and I verified the refutation myself
+
+The New Beetle brief carried a load-bearing constraint in my own words:
+*"`volkswagen/new-beetle` is a DISTINCT PRODUCT from `volkswagen/beetle` and
+must stay separate… these ~18 fragments fold onto ONE `new-beetle`, **never**
+onto `beetle`."* I also told it to verify that before relying on it. It did, and
+the constraint is false on four independent grounds. I checked all four myself
+rather than take the report:
+
+    renames.yml:9860   New Beetle: Beetle          <- ALREADY SHIPPED, fires in 6 countries
+    renames.yml:9578   Newbeetle: Beetle
+    renames.yml:9408   "2D New Beetle": Beetle     <- data#179, twelve hours ago
+    former_ids:4095    car/volkswagen/newbeetle -> car/volkswagen/beetle
+    catalog            volkswagen/new-beetle       <- NOT LIVE AT ALL
+
+Canon agrees: NAMING §6 keeps numbered generations separate **for two-wheelers
+only** — *"distinct products in a way that a car's Mk2 is not"* — and
+`volkswagen/beetle` already spans Type 1 and A5. `volkswagen/new-beetle` existed
+only because one nl_rdw row is spelled `NEW-BEETLE` with a hyphen. **A typo
+artifact, which I had written up as a product decision.**
+
+### What my brief would actually have shipped
+
+**`New Beetle` is ITSELF a rename key.** Renames apply once. So folding 25
+fragments onto `New Beetle` would have stranded every one of them a level short
+— minting `volkswagen/new-beetle` while bare `New Beetle` rows continued to
+`Beetle`. **A systematic, silent duplicate, strictly worse than doing nothing**,
+and green on every gate we own.
+
+That is the chain trap for the third time tonight (DAF's five inert keys, the
+search_aliases INTERIM pair, now this) — and the first time it would have been
+*created by the instruction* rather than inherited from existing curation.
+
+### Where my error came from, since that matters more than the error
+
+I wrote this constraint in my own pre-positioning turn hours ago: *"New Beetle
+is a distinct product; minting it is the correct outcome and your review checked
+this specifically."* It was either wrong then or superseded by data#110 and
+data#179 — and I never re-derived it. I carried a months-old-feeling conclusion
+into a brief as an assertion, and the only reason it did not ship is that the
+brief also said "verify that constraint still holds before you rely on it."
+
+**Write briefs that can refute themselves.** That instruction cost me one line
+and saved a systematic duplicate.
+
+### The result
+
+25 keys → `Beetle`, all candidate-only so nothing is retired (independently
+matching my rename-value liveness run, which reported this branch retires
+nothing). Union at (country,SOURCE): target keeps all ten pairs, **zero lost**.
+25/25 keys fire, **0 inert**, captured by instrumenting the normalizer's own
+per-make rename hash rather than inferred from display names. Candidates
+146,483 → 146,458, exactly −25. **Gate FAILs 0 vs 0.**
+
+The family is **26**, not the 18 I listed — `Nem Beetle`, `Bew Beetle`,
+`Ngs New Beetle`, `Volkswagen-Vw New Beetle` and more.
+
+**One decline I would have got wrong too:** `New Beetle Pick Up` (n=1). VW built
+exactly two bodies, hatchback and convertible — never a pickup. It is an owner
+conversion, and this block's settled line for Beetle-based modifications is
+`null`, not a fold (`Baja`, `Beach Buggy`, `Dune Buggy`). Left as a candidate.
+
+It also states the counter-evidence honestly: Wikipedia treats the New Beetle as
+its own article and it is mechanically a different car. That is an argument
+against our canon, not against this PR — and if the owner ever rules the New
+Beetle distinct, the reversal must start with data#110/#179 and the published
+alias, not with this PR.
