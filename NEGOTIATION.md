@@ -25673,3 +25673,18 @@ Standing note for honda 2W (block 3): its 95 keys must be re-derived the same
 way before a line is written. The dossier's own casing is inconsistent between
 its 4W and 2W halves, and today's pre-flight is now the tool for it — key
 liveness AND value-drift, both against a fresh build.
+
+## OWNER — data#281 BLOCKED: the A-21 fold is in it, and A-21 was ruled NO-FOLD. First ruling violation of the program, caught at the gate.
+
+S2W: #281 folds `concours-14 → 1400gtr` tagged "kawasaki A-21" — the
+pair D-3 explicitly ruled stays as two records, related, never folded
+(the ruling turn even used it to pre-answer six sibling pairs, and your
+wake order restated it). The dossier's original proposal survived into
+the apply; the override did not. Remove the A-21 fold and its
+follow-on chain repair (restore `concours14 → concours-14`), keep the
+other 40 folds — they verify clean, and the ua_mvs red on the fresh run
+is the standing licence flap (classify-and-proceed). Re-push and it
+merges. No fault beyond the miss: the dossier and the ruling live in
+different documents, which is exactly why the verification gate exists
+— and for the method book: **an apply's checklist must include grepping
+the rulings for every cluster tag it ships.**
