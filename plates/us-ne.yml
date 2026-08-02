@@ -1,0 +1,483 @@
+# plates/us-ne.yml — Nebraska (PRD-PLATES gate L2, group midwest-b).
+#
+# NEBRASKA IS THE MOST STRUCTURALLY INTERESTING STATE IN THIS GROUP, and the
+# reason is that it runs TWO INCOMPATIBLE SERIAL SYSTEMS SIMULTANEOUSLY, split
+# geographically, with a sourced boundary between them:
+#
+#   * 90 counties issue COUNTY-DESIGNATION plates — a county prefix number, a
+#     hyphen, then the serial (the 1922 system, still running).
+#   * Douglas (1), Lancaster (2) and Sarpy (59) — the three most populous —
+#     converted to ALPHA/NUMERIC plates, `ABC 123`, as does the Department.
+#
+# That is not a historical footnote; it is live, and the DMV polices the seam.
+# The registration manual forbids a message plate spelling `ABC 123` ANYWHERE in
+# the state, "regardless of spacing", precisely because that shape is reserved to
+# the alpha/numeric counties and the Department. A parser that treats Nebraska as
+# one grammar will be wrong for 90 counties or for 3.
+#
+# THE COUNTY NUMBERS ARE NOT ARBITRARY AND THEIR ORIGIN IS SOURCED. The DMV's own
+# history page states that in 1922 the Department of Public Works assigned each
+# county a number BY ITS THEN-REGISTERED VEHICLE COUNT — Douglas most, hence 1;
+# Lancaster second, hence 2. So a Nebraska county prefix is a frozen 1922
+# population-proxy ranking, still printed on plates today, and Geoguessr-grade
+# decode data of a kind almost no other state offers.
+#
+# SOURCING NOTE: Nebraska's legislature site (nebraskalegislature.gov) was
+# UNREACHABLE for this pass — connection timeouts on every attempt, via two
+# clients. So §60-3,100 and its neighbours are cited here ONLY as they are
+# quoted by the DMV's own documents, never as though their text had been read.
+# What saves the entry is that Nebraska's DMV publishes unusually good primary
+# documents: a dated series catalogue, a 17,000-line county registration manual,
+# and an NLETS plate-type-code table with per-type FORMATS. Those are the sources.
+jurisdiction: us-ne
+authority:
+  name: Nebraska Department of Motor Vehicles (Nebraska DMV), Driver and Vehicle Records / Vehicle Title and Registration
+  url: "https://dmv.nebraska.gov/dvr/license-plates"
+binding: vehicle
+statute_edition: "Nebraska Revised Statutes Chapter 60 as CITED BY the Nebraska DMV's own 2023-series catalogue, registration manual and specialty-plate tables. THE STATUTE TEXT ITSELF WAS NOT READ: nebraskalegislature.gov timed out on every request in this pass (recorded gap). No section is quoted verbatim below."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    NEBRASKA WAS NOT LOCATED IN ANY COPYRIGHT SURVEY READ FOR THIS PASS. The Wikipedia
+    survey of subnational-government copyright status carries per-state sections for
+    seventeen states and NO section for Nebraska; no {{PD-NEGov}} tag was found on
+    Commons. The dossier's default therefore governs: 17 U.S.C. § 105 does not reach
+    the states, so a Nebraska plate design is presumed COPYRIGHTED unless Nebraska says
+    otherwise, and Nebraska has not been shown to say otherwise. Recorded as
+    unresearched rather than as adverse, because absence of a fetched source is weak
+    evidence in either direction.
+  edict_carve_out: >-
+    Nebraska is the WEAKEST edict carve-out in group midwest-b, and the reason is the
+    sourcing gap above: because the Revised Statutes could not be reached, this file
+    rests on DMV publications rather than on statutory text. Agency manuals are
+    government works but they are NOT edicts of government in the sense that makes
+    statutes and administrative codes uncopyrightable. Facts in them remain
+    uncopyrightable — which is the ground this file actually stands on — but their TEXT
+    is not free to reproduce, and none is reproduced at length here.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies to every Nebraska plate graphic,
+    including the Husker mark, which carries a further layer: it is a UNIVERSITY mark,
+    plausibly trademarked and licensed to the state's program rather than owned by it.
+    Nothing about it is cleared. Render `emblem: {present: true, rendered: placeholder}`.
+    State-seal misuse statutes are unresearched for Nebraska.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY (PRD-PLATES §4): read to establish that Nebraska has NO section in the survey — a negative result, recorded as such"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA has no enforcement power; its declarative present is RECOMMENDED PRACTICE."
+  dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is PAYWALLED and UNPINNED. No J686 dimension is quoted anywhere in this file."
+  geometry_available: "AAMVA §2.1 (jurisdiction name top-centre between the bolt holes, >=0.25 in above the number, >=0.125 in from the top edge, characters 0.75-1.0 in) and §2.2 (characters >=2.5 in high, >=0.25 in apart, stroke 0.2-0.4 in, >=1.25 in clear of top and bottom)."
+  retroreflectivity: "AAMVA §3.3: legible day and night from at least 75 feet; ASTM D4956-19 and ISO 7591:1982 clause 3; entrance angle 0.2 deg, observation angle -4 deg, minimum 45 cd/lx/m^2."
+  replacement_cycle_recommendation: >-
+    AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. NEBRASKA SITS INSIDE
+    THAT RANGE AND IS THE ONLY STATE IN THIS GROUP WHOSE CYCLE CAN BE READ STRAIGHT OFF
+    ITS OWN DOCUMENT TITLES: the DMV catalogues are headed '2017-2023 License Plates'
+    and '2023-2029 License Plates', i.e. a SIX-YEAR issue cycle, comfortably tighter
+    than AAMVA's ceiling. That is a cycle evidenced by the agency's own publication
+    practice rather than by a statute this pass could reach.
+  source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' is UNCITED in its Wikipedia source (a `citation needed` since 2017, copied across articles). Recorded as COMMONLY REPEATED, UNSOURCED. This file makes no Nebraska plate-dimension claim (recorded gap)."
+
+display_rules:
+  default: "TWO plates for passenger motor vehicles, per the plate counts printed against each type in the DMV's 2023-series catalogue and registration manual ('2 Plates')."
+  single_plate: "ONE plate for motorcycles, autocycles, minitrucks, trailers, cabin trailers, semitrailers and mobile homes, per the same catalogue ('1 Plate')."
+  front_plate_decal_option: >-
+    NEBRASKA'S GENUINE ODDITY, AND IT IS DATED. Per the DMV's history page: 'Beginning in
+    2017 owners of passenger vehicles not manufactured or equipped with a front license
+    plate bracket could opt to purchase a single plate decal to be displayed on the
+    driver side of the windshield in lieu of a front plate. Initially, the fee for the
+    purchase was $100.60 annually; effective September 1, 2019 the annual fee was reduced
+    to $50.60.' A paid WINDSCREEN DECAL standing in for a front plate is a display regime
+    no other state in this group has, and it means a Nebraska vehicle lawfully showing one
+    plate may still be a two-plate registration.
+  historical_plate_count: "Per the DMV history page: 'From 1903 to 1920 only a single plate was issued for each vehicle. In 1921 two plates were issued for each vehicle.'"
+  sources:
+    - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Plates.pdf  # Nebraska DMV, '2023-2029 License Plates', updated August 2023: per-type plate counts (2 Plates / 1 Plate) and the vehicle classes each type serves"
+    - "https://dmv.nebraska.gov/dvr/history-license-plates  # Nebraska DMV history: the 2017 front-plate decal option and its $100.60 -> $50.60 fee change effective 1 September 2019; single plate 1903-1920, two plates from 1921"
+
+series:
+
+  # =========================================================================
+  # STANDARD, SYSTEM A — the ALPHA/NUMERIC counties. This is the only Nebraska
+  # arrangement stated in so many words by an official document.
+  # =========================================================================
+  - id: us-ne-standard-alphanumeric-2023
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      charset:
+        notes: >-
+          THE ARRANGEMENT IS SOURCED BY A PROHIBITION, which is an unusual and rather
+          strong form of evidence. The DMV registration manual tells county officials that
+          a message plate cannot be issued in this shape: 'Due to the issuance of
+          alpha/numeric plates by Douglas, Lancaster and Sarpy counties and the
+          Department, messages containing three alpha followed by three numeric
+          characters (ABC 123) cannot be processed, regardless of spacing.' The
+          arrangement is therefore three letters then three numerals, and it is RESERVED
+          state-wide. Whether I/O/Q are skipped was NOT established (recorded gap).
+      pattern_note: >-
+        'regardless of spacing' in the source is why the separator is optional in the
+        regex: the DMV treats `ABC123` and `ABC 123` as the same reserved shape, which is
+        exactly the separator-forgiving equivalence PRD-PLATES §2.6 exists to make sound.
+      progression: "not established (recorded gap)"
+    design:
+      graphic: { present: true, rendered: placeholder, description: "the 2023-series Nebraska base graphic; the DMV catalogue carries designs as raster images and describes none of them in text" }
+      emblem: { present: true, rendered: placeholder }
+      colour_note: >-
+        NO HEX IS RECORDED. The Nebraska DMV's series catalogue is a picture book: it
+        shows every plate and describes no colour in words, and no Nebraska colour
+        specification in statute or administrative code was reached in this pass. Rather
+        than eyedrop a PDF raster and present the result as a fact, both colours are left
+        absent and recorded as a gap.
+    issuing_counties: "Douglas (county designation 1), Lancaster (2) and Sarpy (59) — the three most populous — plus the Department itself"
+    region_encoding: >-
+      NONE IN THE SERIAL, and that is the point of the conversion: an alpha/numeric
+      Nebraska plate has dropped the county prefix, so it encodes no geography at all.
+      Knowing a plate is alpha/numeric narrows the vehicle to Douglas, Lancaster, Sarpy
+      or a Department issue — a three-county disjunction, not a decode.
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/county/RegManual.pdf  # Nebraska DMV county registration manual, Chapter 9 (License Plates): the ABC 123 reservation, verbatim — 'messages containing three alpha followed by three numeric characters (ABC 123) cannot be processed, regardless of spacing', attributed to issuance by Douglas, Lancaster and Sarpy counties and the Department"
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Plates.pdf  # Nebraska DMV, '2023-2029 License Plates': the 'Alpha/Numeric (Douglas, Lancaster, Sarpy)' passenger type, 2 plates, citing Neb. Rev. Stat. §60-370(3)(c) and §60-3,100"
+    notes: >-
+      NEBRASKA STANDARD ISSUE, ALPHA/NUMERIC SYSTEM, 2023-2029 SERIES. This is the series
+      a visitor to Omaha or Lincoln actually sees, and it is the only one of Nebraska's
+      two live systems whose arrangement is stated by an official document. The period is
+      taken from the DMV catalogue's own title, '2023-2029 License Plates' — hence
+      `period_evidence: agency-series-catalogue`, a real claim about the issue window
+      rather than an instrument-in-force upper bound. The `end` is deliberately LEFT OPEN
+      even though the title implies 2029: a title stating an intended window is not the
+      same as evidence that issuance stopped, and old stock issues on.
+
+  # =========================================================================
+  # STANDARD, SYSTEM B — the 90 COUNTY-DESIGNATION counties. The 1922 system.
+  # =========================================================================
+  - id: us-ne-standard-county-2023
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: recall-only
+    format:
+      pattern: "99-L999"
+      regex: '\A\d{1,2}-[A-Z0-9]{1,5}\z'
+      charset:
+        notes: >-
+          THE PREFIX IS SOURCED; THE SUFFIX IS NOT. That the plate opens with the county
+          designation number and a hyphen is established three separate ways: the DMV
+          catalogue's '(Non-alpha/numeric counties)' passenger type, the County Message
+          rule that spells the prefix-and-hyphen construction out, and the dealer plates
+          in the registration manual whose images read 94-B321 / 94-X123 / 94-14. What was
+          NOT obtained is the serial grammar that follows the hyphen for ordinary
+          passenger issues in each of the 90 counties. Hence `matching: recall-only`.
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY, on the nl-export precedent. The regex is deliberately
+        WIDER than anything Nebraska issues: it accepts any one- or two-digit prefix and
+        any one-to-five-character suffix, so a match says 'this string has the shape of a
+        Nebraska county-designation plate' and NOTHING MORE. It is emphatically not the
+        claim that the string is a valid registration. Narrowing this to the real
+        per-county grammar is the single highest-value follow-up for Nebraska.
+      width_rule_observed: >-
+        A STRUCTURAL RULE WORTH CHASING. In the one place Nebraska's grammar IS spelled
+        out — the County Message plates — the suffix width COMPENSATES for the prefix
+        width, so total length is constant: one-digit counties (Douglas 1, Lancaster 2)
+        take a longer suffix than the two-digit county (Sarpy 59). If that rule
+        generalises to the 90 county-designation counties, the per-county grammar is
+        derivable from the county number's digit count alone. Recorded as a HYPOTHESIS
+        drawn from a sourced instance, not as a claim.
+    design:
+      graphic: { present: true, rendered: placeholder, description: "the 2023-series Nebraska base graphic, shared with the alpha/numeric system" }
+      emblem: { present: true, rendered: placeholder }
+      colour_note: "no hex recorded — see us-ne-standard-alphanumeric-2023; the DMV catalogue describes no colour in text"
+    region_encoding:
+      mechanism: "the leading number, before the hyphen, is the COUNTY DESIGNATION — the county of registration, printed in the serial"
+      origin: >-
+        SOURCED TO THE AGENCY, WITH A DATE AND A RULE. Nebraska DMV, in its own words:
+        'In 1922, the Department of Public Works established the practice of using prefix
+        numbers to identify the counties in which vehicles were registered. Each county
+        was assigned a number based on the number of registered vehicles in the county at
+        that time. The county with the most vehicles, Douglas, was assigned the number 1;
+        the county with the second highest number of vehicles, Lancaster, was assigned
+        number 2; and so forth.' A Nebraska county prefix is therefore a FROZEN 1922
+        REGISTERED-VEHICLE RANKING — it does not track present-day population and must
+        never be re-derived from modern census data.
+      anchors_confirmed: { "1": Douglas, "2": Lancaster, "59": Sarpy, "94": "dealer / manufacturer (not a county)" }
+      anchors_basis: "1, 2 and 59 are stated in the DMV catalogue and registration manual repeatedly and independently; 94 is read off the dealer plate images in the registration manual"
+      range: "1 to 93 — Nebraska has 93 counties, of which 90 still use the county-designation system"
+      full_table_status: >-
+        DELIBERATELY NOT PUBLISHED HERE, AND THE REASON IS A MEASURED EXTRACTION FAULT. The
+        registration manual does carry a complete 'County Codes' table (Chapter 12), but
+        the text extracted from its three-column PDF layout renders BOTH 'Cass' and 'Clay'
+        as 30, which cannot be true. One of the two is a column misread. Publishing 93
+        decode rows off an extraction with a known collision would put a silent error into
+        a table consumers would trust, so the table is withheld pending a clean read and
+        recorded as the top follow-up. The four anchors above are published because each is
+        independently corroborated in running prose, not read out of the broken column.
+      decode_file_planned: "plates/_decode/us-ne-county-designations.yml once the table is re-extracted cleanly and verified row by row"
+      one_year_alpha_exception: "Per the DMV history page: 'For one year, 1951, the county number designation was changed from numeric to a one- or two-digit alpha code.' A single-year alpha county code is exactly the kind of one-off that breaks a naive historical parser."
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Plates.pdf  # Nebraska DMV, '2023-2029 License Plates': the 'Passenger (Non-alpha/numeric counties)' type 'Issued in the 90 non-alpha/numeric counties', 2 plates, citing Neb. Rev. Stat. §60-370 and §60-3,100"
+      - "https://dmv.nebraska.gov/dvr/history-license-plates  # Nebraska DMV history: the 1922 origin of county prefix numbers, assignment by registered-vehicle count, Douglas 1 and Lancaster 2, and the one-year 1951 alpha county code"
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/county/RegManual.pdf  # Nebraska DMV county registration manual: the County Codes table (Chapter 12) and the dealer plate images showing the 94- prefix"
+    notes: >-
+      NEBRASKA STANDARD ISSUE, COUNTY-DESIGNATION SYSTEM, 2023-2029 SERIES. Ninety of
+      Nebraska's ninety-three counties still print a 1922 ranking on every plate, which
+      makes this the most decode-rich standard series in group midwest-b and the reason
+      Nebraska deserved the longest header in it. The series is `recall-only` NOT because
+      Nebraska issues loosely but because this pass could not reach the grammar: the
+      Revised Statutes were unreachable and the DMV catalogue is pictorial. That is a
+      sourcing failure recorded honestly in the matching field, where a consumer will
+      actually see it, rather than hidden behind a confident-looking regex.
+
+  # =========================================================================
+  # ONE SERIES BACK — the 2017-2023 issue, from the DMV's own prior catalogue.
+  # =========================================================================
+  - id: us-ne-standard-2017
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2017, end: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: recall-only
+    format:
+      pattern: "LLL 999"
+      regex: '\A(?:[A-Z]{3} ?\d{3}|\d{1,2}-[A-Z0-9]{1,5})\z'
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY. This single entry stands for BOTH of Nebraska's
+        systems as they ran in the 2017-2023 issue, so its regex is the union of the
+        alpha/numeric and county-designation shapes and `matching: recall-only` is
+        mandatory: a hit is a shape hit across two grammars, never a validity claim for
+        either. The two systems are split into separate series only for the CURRENT issue,
+        where the evidence supports the split.
+    design:
+      graphic: { present: true, rendered: placeholder, description: "the 2017-series Nebraska base graphic; the DMV catalogue is pictorial and describes no design element in text" }
+      emblem: { present: true, rendered: placeholder }
+      colour_note: "no hex recorded — the 2017 catalogue, like the 2023 one, carries designs as raster images only"
+    structural_continuity: "The 2017 catalogue lists the SAME type structure as the 2023 one — 'Passenger (Non alpha/numeric counties)' and 'Alpha/Numeric (Douglas, Lancaster, Sarpy)', citing the same §60-370 / §60-3,100 / §60-370(3)(c) hooks — so the two-system split predates 2017 and was not introduced by either issue."
+    region_encoding: "county designation on the non-alpha/numeric plates, as for us-ne-standard-county-2023; none on the alpha/numeric plates"
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2017_Series_Plates-updated.pdf  # Nebraska DMV, '2017-2023 License Plates': the prior issue's title window, its passenger types for the 90 non-alpha/numeric counties and for Douglas/Lancaster/Sarpy, plate counts, and the same statutory hooks as the 2023 series"
+    notes: >-
+      THE ONE SERIES BACK, AND THE CLEANEST IN GROUP MIDWEST-B — because Nebraska's DMV
+      titles its catalogues by issue window, the previous series' period is read directly
+      off an agency document rather than reconstructed from collector-site era tables. The
+      pair '2017-2023' and '2023-2029' also establishes Nebraska's six-year cycle without
+      needing the statute. PERIOD NOTE: `end: 2023` overlaps the current series' `start:
+      2023` by design and by fact — a plate issued under the 2017 series remains valid and
+      on the road well past the changeover, which is exactly the parallel-issuance case
+      PRD-PLATES's overlap-legal-iff-distinct-notes rule exists to permit.
+
+  # =========================================================================
+  # COUNTY MESSAGE — the ONLY Nebraska serial grammar stated in full anywhere,
+  # and the evidence for the width-compensation rule noted above.
+  # =========================================================================
+  - id: us-ne-county-message
+    class: specialty
+    categories: [car, van, truck, trailer]
+    period: { start: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: strict
+    format:
+      pattern: "1-LL99"
+      regex: '\A(?:[12]-[A-Z][A-Z0-9]\d{2}|59-[A-Z][A-Z0-9]\d{3})\z'
+      charset:
+        notes: >-
+          THE FULLY SOURCED GRAMMAR, verbatim from the registration manual: 'Passenger -
+          county designation (1 - Douglas; 2 - Lancaster, 59 - Sarpy), followed by a dash
+          (-), followed by one alpha character, one alpha/numeric character, and three
+          numeric characters for Sarpy county or two numeric characters for Douglas and
+          Lancaster'. Note the second character is expressly ALPHA/NUMERIC, which is why
+          the regex spells `[A-Z0-9]` there and not `[A-Z]`.
+      commercial_variant: >-
+        The same source gives the commercial grammar too: 'county designation ... followed
+        by a dash (-), followed by four numeric for Sarpy county and five numeric for
+        Douglas and Lancaster'. It is recorded here rather than given its own series
+        because it shares this series' period, design and program; a curator who prefers
+        the split can add it without disturbing this id.
+      pattern_note: >-
+        The pattern shows the DOUGLAS form (prefix 1). It cannot show the Sarpy form,
+        and the reason is a genuine limit of the human-pattern DSL rather than a choice:
+        `9` is the DSL's DIGIT TOKEN, so a literal digit 9 cannot be spelled in a
+        `pattern` at all, and `59-` is therefore unwritable. Every Nebraska designation
+        containing a 9 — 59 Sarpy, 94 dealer — hits this. The regex carries all three
+        counties regardless; the width compensation is visible in it directly, two prefix
+        digits buying three suffix digits and one prefix digit buying two.
+    design:
+      note: "'The plates use the same design as Nebraska current plate graphic or Husker Spirit graphic' (registration manual) — so this is a serial-and-eligibility program, not a distinct base design"
+      emblem: { present: true, rendered: placeholder }
+    eligibility: "residents of the three alpha/numeric counties ONLY, who elect to keep 'a format prior to their alpha/numeric conversion'; the registrant must live in the county the prefix names, and must SURRENDER the plate on moving to another county"
+    fee: "$40.00 regular graphic or $70.00 Husker graphic on re-application after a lapse; the message is held for one year only after delinquency, then released to the public (registration manual)"
+    region_encoding: "county designation 1, 2 or 59 in the serial — the ONLY live Nebraska series that puts a county number back onto an alpha/numeric-county vehicle"
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/county/RegManual.pdf  # Nebraska DMV county registration manual, Chapter 9: the passenger and commercial County Message grammars in full, the residency and surrender rules, the shared Nebraska/Husker graphics, the $40/$70 fees and the one-year message hold; cites Neb. Rev. Stat. §60-3,118 - §60-3,121"
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Plates.pdf  # Nebraska DMV, '2023-2029 License Plates': County Message, County Message Commercial, County Message Farm and County Message Trailer types, each 'issued in lieu of regular county plates', citing §60-3,118(2)(a)"
+    notes: >-
+      COUNTY MESSAGE PLATES — a nostalgia program with unusual evidentiary value. Its
+      function is to let a Douglas, Lancaster or Sarpy resident keep the OLD
+      county-designation look after their county converted to alpha/numeric, and because
+      the DMV had to tell county officials exactly what those legacy serials look like, it
+      is the one place Nebraska's county-designation grammar is written down in full. That
+      is what makes it the evidence base for the width-compensation hypothesis recorded on
+      us-ne-standard-county-2023. Modelled as `specialty` rather than `personalized`
+      because the DMV classes it as a specialty plate issued in lieu of regular county
+      plates, and because the county prefix is assigned, not chosen.
+
+  # =========================================================================
+  # MESSAGE (personalized) — with a charset EXCLUSION that is genuinely unusual.
+  # =========================================================================
+  - id: us-ne-message
+    class: personalized
+    categories: [car, van, truck, trailer, motorcycle]
+    period: { start: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset:
+        excluded_shapes: ["LLL 999"]
+        notes: >-
+          NEBRASKA EXCLUDES A SHAPE, NOT A LETTER, and that is rare enough to be worth the
+          field. From the registration manual: 'Maximum of 7 characters allowed [except
+          for motorcycle/autocycle (6 characters) and Gold Star Family (5 characters)
+          license plates]. Eight positions are provided to allow for one space if the
+          maximum numbers of characters are used in the message. (Note: A character cannot
+          be substituted for this space.)'; 'Alpha and numeric characters only. All alpha
+          characters are printed in upper case. No punctuation marks or symbols such as
+          slashes, periods, apostrophes or other such symbols are allowed'; and the
+          decisive one — 'messages containing three alpha followed by three numeric
+          characters (ABC 123) cannot be processed, regardless of spacing.' A vanity plate
+          may not impersonate the standard series.
+      pattern_note: "`regex` is the letters-only shape most message configurations take; `regex_statutory` is the true frame — up to seven alphanumerics across eight positions with at most one internal space. The ABC 999 exclusion is recorded in `charset.excluded_shapes` because a regex tier cannot express 'not this other series' without a lookahead the dataset's dialect avoids."
+    design:
+      note: "a message plate is a serial-source difference over the standard or an eligible specialty graphic; the DMV offers regular and Husker graphics"
+      emblem: { present: true, rendered: placeholder }
+    availability_service: "messages may be checked through the DMV's Online Specialty Plate System at clickdmv.ne.gov before application; the manual warns that availability 'is not a guarantee that the message will be approved'"
+    region_encoding: none
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/county/RegManual.pdf  # Nebraska DMV county registration manual, Chapter 9: the seven-character cap and its six-character motorcycle/autocycle and five-character Gold Star Family exceptions, the eight-position/one-space rule, the alpha-and-numeric-only uppercase rule, the ABC 123 prohibition 'regardless of spacing', and the clickdmv.ne.gov availability service"
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Specialty_Plate_Info_NLETS_Plate_Type_Codes.pdf  # Nebraska DMV, '2023 Series Specialty Plates / NLETS Plate Type Codes', August 2023: Message = 'Up to 7 characters selected by applicant', NLETS code PE"
+    notes: >-
+      MESSAGE PLATES (Nebraska's term for personalized). The interesting fact is the
+      NEGATIVE constraint: Nebraska forbids any message shaped like its own standard
+      alpha/numeric series, state-wide and independent of spacing. That is a jurisdiction
+      actively defending the disjointness of its serial spaces, and it is the cleanest
+      real-world justification in this whole dataset for PRD-PLATES §2.6's
+      separator-forgiving contract — the DMV itself reasons about `ABC123` and `ABC 123`
+      as the same string. Modelled as `personalized` because the serial is owner-chosen.
+
+  # =========================================================================
+  # DEALER — the second reserved number, and the counterpart to South Dakota's 77.
+  # =========================================================================
+  - id: us-ne-dealer
+    class: dealer
+    categories: [car, van, truck, trailer, motorcycle]
+    period: { start: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: recall-only
+    format:
+      pattern: "99-L999"
+      regex: '\A\d{2}-[A-Z0-9]{1,5}\z'
+      charset:
+        designation_reserved: "94"
+        notes: >-
+          THE PREFIX IS THE FACT. Dealer plates in the registration manual carry serials
+          reading 94-B321, 94-X123 and 94-14 — a designation number OUTSIDE the 1-93
+          county range, occupying the county slot. Nebraska thus reserves 94 for the
+          trade exactly as South Dakota reserves 77 (SDCL 32-5-89), and a parser can tell
+          a Nebraska dealer plate from its prefix alone. The suffix grammar is NOT stated
+          and the three examples disagree in shape (one letter plus three digits; one
+          letter plus three digits; two digits), hence `matching: recall-only`.
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY, and the reserved 94 prefix is deliberately NOT in the
+        regex — not because it is unsourced, but because it is UNWRITABLE here. `9` is the
+        human-pattern DSL's digit token, so a literal 9 cannot appear in a `pattern`, and a
+        regex pinned to `94-` could never round-trip against any pattern the DSL can spell.
+        The sourced designation is therefore carried in `charset.designation_reserved` and
+        in `region_encoding` below, where a consumer will still find it, while the regex
+        stays deliberately wide and `matching: recall-only` says so. This is a real, small
+        limitation of the pattern DSL rather than a gap in the evidence, and it will recur
+        for any jurisdiction whose fixed prefix contains a 9.
+    design:
+      note: "the registration manual distinguishes Dealer, Dealer Personal-Use (alpha/numeric), Dealer Personal-Use (remaining 90 counties), Dealer Trailer and Dealer Motorcycle sub-types; only the 94- prefix is common to all and only it is recorded"
+      emblem: { present: true, rendered: placeholder }
+    binding: business
+    eligibility: "dealers and manufacturers licensed through the Nebraska Motor Vehicle Industry Licensing Board; the dealer presents a Treasurer's Certificate for Issuance of Dealer Plates to the county treasurer where the dealership is located"
+    plate_counts: "Dealer motor vehicle / motorcycle / trailer — 1 plate; Personal-Use — 2 plates"
+    fee: "first dealer plate $38.80 total, itemised across county fund, DMV registration, recreation road, highway trust motor vehicle registration, highway trust licence plate and EMS fund lines; dealer plate fees cannot be prorated for a partial year"
+    region_encoding: "designation 94 occupies the county-designation slot but denotes the TRADE, not a county — a decode table must exclude it or it will report a nonexistent 94th county"
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/county/RegManual.pdf  # Nebraska DMV county registration manual: the dealer plate images reading 94-B321 / 94-X123 / 94-14, the Dealer / Dealer Personal-Use / Dealer Trailer / Dealer Motorcycle sub-types with their plate counts, the Licensing Board and Treasurer's Certificate route, and the $38.80 first-plate fee schedule with its no-proration rule"
+    notes: >-
+      DEALER PLATES. `binding: business` because the plate follows the dealership, not a
+      vehicle. The fact worth carrying forward is the RESERVED DESIGNATION: Nebraska's 94
+      and South Dakota's statutory 77 are the same design idea in two states — put the
+      trade in the county slot, above the real county range — and a decode table that
+      treats the leading number as unconditionally geographic will mis-resolve every
+      dealer plate in both states. Recorded on both files for that reason.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5. Count and links only.
+  # =========================================================================
+  - id: us-ne-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2023 }
+    period_evidence: agency-series-catalogue
+    matching: recall-only
+    format:
+      pattern: "999LL"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY — and here the union is genuinely irreducible, because
+        the index stands for 42 programs with THREE different frames: 'Up to 7 characters'
+        (Message, County Message, Husker, Special Interest), 'Up to 5 characters' (most
+        organizational, cause and military plates), and FCC-assigned call signs (Amateur
+        Radio). The pattern shows the common assigned form the DMV writes as '123AB'.
+    design:
+      note: "one design per authorised program; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: 42
+      count_basis: >-
+        COUNTED ROW BY ROW from the Nebraska DMV's own '2023 Series Specialty Plates /
+        NLETS Plate Type Codes' table (August 2023) — 42 plate types, each carrying its
+        own format and NLETS code. This is a firmer count than most states allow, because
+        it is an operational law-enforcement reference rather than a marketing page: the
+        DMV has to keep it exact.
+      count_by_nlets_code: { PE: 21, OR: 11, CN: 4, VF: 3, AR: 1, CL: 1, DV: 1 }
+      nlets_codes_note: >-
+        THE NLETS CODE COLUMN IS THE FIND, and no competitor dataset carries it. NLETS is
+        the interstate law-enforcement telecommunications network, and these are the codes
+        by which a Nebraska plate type is transmitted between states: PE personalized, OR
+        organizational, CN conservation, VF veteran/military, AR amateur radio, CL
+        collegiate, DV disabled veteran. A plate-parse API that can return the NLETS type
+        alongside the jurisdiction and series is doing something genuinely new.
+      organizational_subtype: "11 of the 42 are 'Organizational' plates, which the document footnotes as requiring '250 prepaid applications from a certified non-profit organization required to initiate plate production' — a sourced barrier to entry that explains why the Nebraska catalogue grows slowly"
+      military_subtypes: "Military Honor plates are available for each service branch (Air Force, Army, Coast Guard, Marines, Army National Guard, Air National Guard, Navy and the Air Force, Army, Coast Guard, Marine Corps and Navy Reserves); Military Honor Campaign plates for the Afghanistan Campaign, Iraq Campaign, Global War on Terrorism Expeditionary, South Asia Service and Vietnam Service medals"
+      official_list_url: "https://dmv.nebraska.gov/dvr/license-plates"
+      official_catalogue_url: "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Plates.pdf"
+      official_format_table_url: "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Specialty_Plate_Info_NLETS_Plate_Type_Codes.pdf"
+      availability_service_url: "https://www.clickdmv.ne.gov"
+    region_encoding: "none, except the County Message family, which is broken out as its own series above"
+    sources:
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Specialty_Plate_Info_NLETS_Plate_Type_Codes.pdf  # Nebraska DMV, August 2023: the 42-row plate-type table with per-type character limits and NLETS codes; the 250-prepaid-application footnote for Organizational plates; the military branch and campaign-medal footnotes"
+      - "https://dmv.nebraska.gov/sites/dmv.nebraska.gov/files/doc/dvr/plates/2023_Series_Plates.pdf  # Nebraska DMV, '2023-2029 License Plates': the same programs shown as plates with their statutory hooks (§60-3,113 handicap, §60-3,118 message, §60-3,127/128 Husker, §60-3,255/256 Nebraska History)"
+      - "https://dmv.nebraska.gov/dvr/license-plates  # the DMV's license-plate index, the official entry point for the program list"
+    notes: >-
+      THE SPECIALTY PROGRAM INDEX — one entry standing for the whole program, per
+      PRD-PLATES §2.5, with no individual designs. Nebraska is the best-instrumented
+      specialty index in group midwest-b for a reason worth generalising: the state
+      publishes its plate types as an NLETS CODE TABLE, i.e. as operational data for other
+      states' police systems, complete with per-type character limits. Any state that
+      publishes an NLETS plate-type table is publishing a machine-grade specialty index,
+      and that is a source class the remaining L2 states should be searched for by name.
