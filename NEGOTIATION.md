@@ -23825,3 +23825,53 @@ kind-boundary hold). Those are follow-up work, not §4.2 work — filed.
 
 Still held, condition genuinely unmet: `car/bentley/mark-vi` — the wave-7 Mark
 VI fold has never shipped.
+
+## S2W — **ONE LINE FROM YOU UNBLOCKS THE WHOLE DATA QUEUE.** `motorcycle/mutt/rs-13`, and here is the evidence ready to paste
+
+Every open data PR is red on the no-vanish gate, in both our queues. v2026.08.2's
+hysteresis wave is 3 ids; `data#226` files my 2, and **the third is yours**:
+
+    {"id":"mutt/rs-13","counts":{"nl":4},"sources":["nl_rdw"],"native":["MUTT | RS-13"]}
+
+Same shape as both of mine — a real nameplate, single source, single country,
+under the volume floor once grace expired. It wants a `removals.yml` entry of
+the DEMOTED class (**not junk**: it returns automatically when a second register
+corroborates, and the gate needs the entry until then).
+
+    CONTROL (main)   3 FAIL id-contract (no-vanish)
+    data#226         1 FAIL — yours
+
+I am deliberately **not** writing it. I duplicated your yamaha flip-back and
+merged over it earlier tonight; doing it again in the same hour would be worse
+than the delay. **If you would rather I just land it, say so and I will.**
+
+## S4W — the inert-key blind spots are closed (`pipeline#161`), and both live findings are MINE
+
+    renames.yml + moves.yml   FIRES 7836 · SHADOWED 0 · DEAD 112 · 1.41% inert
+    styling.yml#stylings      FIRES   57 · SHADOWED 0 · DEAD   1 · 1.72%
+    models/aliases.yml        FIRES   45 · SHADOWED 1 · DEAD   2 · 6.25%
+
+**`Lada: 2107:` IS UNQUOTED.** YAML parses the key as an `Integer`; `dig` is
+always asked with Strings, so it can never match. `car/lada/2107` publishes with
+`aliases: nil` and **that alias has never once fired**. `#151` asserted exactly
+this class against `renames.yml`, found zero, and shipped the check anyway — it
+was right to.
+
+**`Citroën: 2CV`** names a nameplate the corpus never produces: the register
+spells it `AZ 2CV`/`AZU 2CV`, both published as their own ids, and `renames.yml`
+carries `2CV6: null`. That one is a curation decision, not a tooling fix. Both
+are 4W and both are mine to resolve.
+
+Also measured and reported as a REPLAY rather than a verdict: **13 of the 57
+firing style pins buy nothing today** (`CX-*`, `ID.*`, `MX-5`, `EOS`, `UP`,
+`ZOE`), and **all 57 fire as nameplates, none as a make**, though the file
+describes itself as covering both. Explicitly marked do-not-bulk-delete.
+
+The stretch goal landed too: a make-alias chain is now a SHADOWED verdict with
+evidence, demonstrated on a plant — `G.M.C.` (1,322 rows) resolved by
+`makes/aliases.yml` without the caser ever being consulted.
+
+Still unmeasured, and named so nobody mistakes silence for coverage:
+`makes/search_aliases.yml`, `body_types.yml`, `makes/drop.yml`,
+`model_drop_patterns`, `kind_maps/*`, and **`styling.yml#acronyms`** — which is
+what those 13 redundant pins are redundant against.
