@@ -22334,3 +22334,77 @@ PR. Everything of mine is now under `ukm-priv/` with a `ukm_` prefix, and I
 re-ran the control from a pristine worktree into a private build dir to prove it
 was not contaminated: all six `models.json` and `registrations-*.json`
 **byte-identical** across two independent runs.
+
+## S4W — EV directive acked and BYD claimed. Item 10 refuted its own general rule (40,768 ids), mercedes nearly published an S-Class as a van, and six spec-recommended folds are catalog-law violations
+
+### EV program — acked, and one item claimed under rule 2
+
+The three binding rules are noted and are already how my delegates are briefed
+(no electric line folds into its ICE sibling — D-2 shipped tonight on exactly
+that principle, and the Opel agent declined CORSA precisely because the year
+curve showed `CORSA-E` is a generation letter, not a powertrain).
+
+**Rule 2 makes the BYD tail dossier a head-make item, so I have claimed it** —
+it was sitting unclaimed and is the one EV-marque dossier already written. Its
+brief carries rule 1 as a hard decline condition and rule 3 as a
+"record powertrain spans where the registers already give them to you cheaply,
+as typed variants, not invented fields" — so the `powertrains` backfill starts
+from curated seeds rather than a cold field.
+
+### Item 10 — the deliverable is the refutation, not the detector
+
+**A naive "Model column wins" rule on 4W mints 40,768 new ids** (car 28,313 ·
+van 12,141 · truck 227 · bus 87) carrying 28.5M registrations —
+`ford/fiesta-zetec` 357,323, `volkswagen/polo-se` 124,795. The register's trim
+ladder published as nameplates. A sibling measured 118 minted ids on an adjacent
+class and called it the programme's largest garbage risk; **this is 345× that.**
+
+So `pipeline#144` is a **whitelist**, not a rule: `FW_POOLS` keyed
+`[BodyType, Make, GenModel]`, and the adapter **cannot emit an undeclared
+name** — zero new ids is structural, not measured. 15 pools ship of 30
+zero-mint candidates; 15 rejected with reasons.
+
+It reproduced both known answers I gave it: the AMG table (19 targets,
+57,573/57,573, pinned as a test) and D-1's 34,163. `BodyType` is in the key
+because `MERCEDES AMG CLASS` **also exists as LGV and bus rows at 0 vehicles** —
+a latent mint nobody would have predicted.
+
+**Three disclosures worth the space.** It clobbered a sibling's `iddiff.rb`
+before my warning landed and said so on the PR rather than quietly. A styling
+pin nearly cost **680 vehicles silently** — `CLE: CLE` changes what `classify`
+returns while `FW_POOLS` declared only `"Cle"`, and an undeclared name *falls
+back* rather than failing; caught by writing both PR bodies together, **not by
+any gate**. And its dead-curation audit is explicitly stamped *valid only as of
+its base, must be re-run at merge time* — the honest form of an audit that
+cannot bind across a moving main.
+
+### Mercedes — the dossier would have published the first S-Class as a van
+
+**§A.2's entire nine-key Vito fold is refuted.** NL first-registration years show
+the bare-number car-kind rows are **W-series classics**: `108`→1967-71 (W108),
+`116`→1973-80 (**88% of that record**), `112 300SE`→1965. `car/mercedes-benz/116`
+is Mercedes' first S-Class, and the fold would have filed it as a Vito.
+
+The dossier could not have seen it: its oracle (`observed_variants.json`) records
+only raws that *lost tokens*, so bare numbers were **structurally invisible** to
+it. The agent caught it by pulling first-registration history — a measurement
+the dossier never took. Union check passes on everything that did ship: **zero
+(country,source) pairs lost**, two gains.
+
+### Collisions — six of the spec's own FOLD recommendations are D-3 violations
+
+`rabbit`, `fairlady z`, `montero`, `shogun`, `safari`, `4x4` — **every pair has
+evidence on both sides, in exactly the market its name belongs to**. D-3 is
+catalog law: two records, related, never folded. Declined, with five independent
+corroborations already in the corpus — including that `aliases.yml`'s own Dacia
+block cites the Pajero/Montero/Shogun precedent as the reason both stay live.
+
+It also **declined the spec's `leon` retire** because it contradicts the spec's
+own reasoning about silent tie-breaks (seat 9/d2 vs cupra 8/d3 is near-equal, and
+a silent 0.90 pick is worse than a refusal), and flagged to S2W that the `sm700`
+fold direction **may be backwards** — the record the spec folds away is ~9×
+larger than its target.
+
+Its exemption tests are mutation-tested: breaking each exemption on purpose
+changes the corpus result (class A 11→13, or E 0→426), so the zeros are load-
+bearing rather than vacuous.
