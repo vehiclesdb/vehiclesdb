@@ -1,0 +1,220 @@
+# plates/_decode/se-diplomatic.yml — Swedish beskickningsskylt country codes.
+#
+# WHY THIS IS A _decode FILE AND NOT AN INLINE TABLE (PRD-PLATES §2.4): 128
+# rows is past the "small" threshold that put FZV Anlage 2 inline in de.yml,
+# and it is a CLOSED, PRIMARY list — Transportstyrelsen publishes the whole
+# thing, so it qualifies on the other limb of the rule ("a reference … if the
+# full table is primary-sourced and closed").
+#
+# THE SOURCE MOVED, AND THAT MATTERS FOR PROVENANCE. Until 2 June 2025 this
+# table WAS a regulation annex: TSFS 2015:63 Bilaga 1 ("Landskod enligt
+# 12 kap. 3 § 1") and Bilaga 2 ("Kategorikod enligt 12 kap. 3 § 3"). TSFS
+# 2025:33 repealed both annexes and rewrote 12 kap. 3 § so that the codes are
+# no longer enumerated in the föreskrift at all — they now live only on
+# Transportstyrelsen's website. Both are cited below: the website for the
+# CURRENT list, the repealed annex for the fact that this used to be enacted
+# text and for the pre-2025 kategorikod set (which had no "J").
+#
+# DECODE DISCIPLINE: the assigning authority is NOT Transportstyrelsen. 11 kap.
+# 2 § förordningen (2019:383): "Sammansättningen av tecken på skyltar för
+# beskickningsfordon bestäms av Regeringskansliet (Utrikesdepartementet) med
+# hänsyn till det berörda landet och den ställning som den som äger eller
+# använder fordonet har." Missions open and close; a code withdrawn from this
+# list does not become undecodable for plates already issued, so rows are
+# closed by period and never deleted — the same rule de.yml records for German
+# district codes.
+#
+# ALPHABET OBSERVATION (a fact about the table, not a rule): across all 128
+# codes the letters I, O and Q never appear, while V does (EV = IDEA). That is
+# the opposite of the ordinary registration-number alphabet, which excludes
+# I, Q, V, Å, Ä and Ö. No primary states a letter rule for landskoder; the
+# observation is recorded so a parse API does not infer one.
+jurisdiction: se
+topic: diplomatic
+authority:
+  name: Regeringskansliet (Utrikesdepartementet) — codes; Transportstyrelsen — publication
+  url: "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/skylt-for-beskickningsfordon-diplomatfordon/"
+sources:
+  - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/skylt-for-beskickningsfordon-diplomatfordon/  # the current 128-row landskod table and the kategorikod table (A-H, 'I eller J'); accessed 2026-08-02"
+  - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63.pdf  # TSFS 2015:63 as enacted, Bilaga 1 'Landskod enligt 12 kap. 3 § 1' and Bilaga 2 'Kategorikod enligt 12 kap. 3 § 3' (kategorikod A-I, no J) — the version in force 2016-01-01; accessed 2026-08-02"
+  - "https://www.transportstyrelsen.se/TSFS/TSFS%202025_33.pdf  # TSFS 2025:33: 'dels att 3 kap. 17 §, 6 kap. 14 §, 12 kap. 4 § samt bilaga 1 och 2 ska upphöra att gälla' — in force 2 June 2025, which is when the table left the regulation; accessed 2026-08-02"
+  - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 11 kap. 2 §: the character composition is set by Regeringskansliet (Utrikesdepartementet); accessed 2026-08-02"
+period: { start: 2025 }
+period_evidence: instrument-in-force
+period_note: >-
+  2025 is the date of the SOURCE now read (the Transportstyrelsen web table,
+  which replaced TSFS 2015:63 Bilaga 1 on 2 June 2025), not the date any code
+  was first assigned. The beskickningsskylt regime itself is far older —
+  förordningen (1988:964) om skyltar för beskickningsfordon took effect on
+  1 October 1988 — and the per-mission code assignments are Utrikesdepartementet
+  decisions that are not individually dated in any published source. Treat every
+  row as "in force when read"; do not infer an assignment year from it.
+
+# ---------------------------------------------------------------------------
+# LANDSKOD — two letters, the mission. 128 rows, verbatim from the authority's
+# table, keyed by code (the table is printed mission-first; keying by code is
+# the decode direction a parse API needs).
+# ---------------------------------------------------------------------------
+landskod:
+  AA: "Sydafrikas ambassad"
+  AB: "Albaniens ambassad"
+  AC: "Algeriets ambassad"
+  AD: "Tysklands ambassad"
+  AE: "Armeniens ambassad"
+  AF: "Amerikas förenta staters ambassad"
+  AG: "Angolas ambassad"
+  AH: "Saudiarabiens ambassad"
+  AJ: "Argentinas ambassad"
+  AK: "Australiens ambassad"
+  AL: "Österrikes ambassad"
+  AM: "Bangladesh ambassad"
+  AN: "Belgiens ambassad"
+  AP: "Bolivias ambassad"
+  AR: "Botswanas ambassad"
+  AS: "Brasiliens ambassad"
+  AT: "Bulgariens ambassad"
+  AU: "Canadas ambassad"
+  AW: "Chiles ambassad"
+  AX: "Folkrepubliken Kinas ambassad"
+  AY: "Colombias ambassad"
+  AZ: "Republiken Koreas ambassad"
+  BA: "Demokratiska folkrepubliken Koreasambassad"
+  BB: "Afghanistans ambassad"
+  BC: "Cubas ambassad"
+  BD: "Danmarks ambassad"
+  BE: "Dominikanska republikens ambassad"
+  BF: "Egyptens ambassad"
+  BG: "Ecuadors ambassad"
+  BH: "Spaniens ambassad"
+  BJ: "Etiopiens ambassad"
+  BK: "Finlands ambassad"
+  BL: "Frankrikes ambassad"
+  BM: "Storbritanniens ambassad"
+  BN: "Greklands ambassad"
+  BP: "Guatemalas ambassad"
+  BR: "Kazakstans ambassad"
+  BS: "Ungerns ambassad"
+  BT: "Indiens ambassad"
+  BU: "Indonesiens ambassad"
+  BW: "Iraks ambassad"
+  BX: "Irans ambassad"
+  BY: "Irlands ambassad"
+  BZ: "Islands ambassad"
+  CA: "Israels ambassad"
+  CB: "Italiens ambassad"
+  CC: "Japans ambassad"
+  CD: "Kenyas ambassad"
+  CE: "Laos ambassad"
+  CF: "Libanons ambassad"
+  CG: "Libyens folkkontor"
+  CH: "Malaysias ambassad"
+  CJ: "Marockos ambassad"
+  CK: "Mexikos ambassad"
+  CL: "Moçambiques ambassad"
+  CM: "Nicaraguas ambassad"
+  CN: "Nigerias ambassad"
+  CP: "Norges ambassad"
+  CR: "Qatars ambassad"
+  CS: "Pakistans ambassad"
+  CT: "Panamas ambassad"
+  CU: "Nederländernas ambassad"
+  CW: "Perus ambassad"
+  CX: "Filippinernas ambassad"
+  CY: "Polens ambassad"
+  CZ: "Portugals ambassad"
+  DA: "Rumäniens ambassad"
+  DB: "Senegals ambassad"
+  DD: "Sri Lankas ambassad"
+  DE: "Schweiz ambassad"
+  DF: "Tanzanias ambassad"
+  DG: "Tjeckiens ambassad"
+  DH: "Thailands ambassad"
+  DJ: "Tunisiens ambassad"
+  DK: "Turkiets ambassad"
+  DL: "Rysslands ambassad"
+  DM: "Uruguays ambassad"
+  DN: "Venezuelas ambassad"
+  DP: "Vietnams ambassad"
+  DR: "Serbiens ambassad"
+  DS: "Zambias ambassad"
+  DT: "Zimbabwes ambassad"
+  DU: "FN:s flyktingkommissariat"
+  DW: "Världssjöfartsuniversitet"
+  DX: "Nordiska rådets presidiesekretariat"
+  DY: "Namibias ambassad"
+  DZ: "Sudans ambassad"
+  EA: "Europeiska rymdorganisationen (ESA)"
+  EB: "Europeiska Unionen (EU)"
+  EC: "Burundis ambassad"
+  ED: "Estlands ambassad"
+  EE: "Lettlands ambassad"
+  EF: "Litauens ambassad"
+  EG: "Kroatiens ambassad"
+  EH: "Sloveniens ambassad"
+  EJ: "Slovakiens ambassad"
+  EK: "Bosnien-Hercegovinas ambassad"
+  EL: "Eritreas ambassad"
+  EM: "Ukrainas ambassad"
+  EN: "Cyperns ambassad"
+  EP: "Makedoniens ambassad"
+  ER: "Kuwaits ambassad"
+  ES: "Honduras ambassad"
+  ET: "Rwandas ambassad"
+  EV: "International Institute for Democracy and Electoral Assistance (IDEA)"
+  EX: "Kap Verdes ambassad"
+  EY: "Östersjöstaternas råds sekretariat (CBSS)"
+  FA: "Vitrysslands ambassad"
+  FB: "Demokratiska Republiken Kongos ambassad"
+  FC: "El Salvadors ambassad"
+  FD: "Syriens ambassad"
+  FE: "GIWA (Global International WatersAssessment)"
+  FF: "Apostoliska nuntiaturen"
+  FG: "European Commission/RepresentationIn Sweden"
+  FH: "GWPO (Global Water PartnershipOrganisation)"
+  FJ: "Förenade Arabemiratens ambassad"
+  FK: "Moldaviens ambassad"
+  FL: "Georgiens ambassad"
+  FM: "Azerbajdzjans ambassad"
+  FN: "Nya Zeelands ambassad"
+  FP: "Mongoliets ambassad"
+  FS: "Republiken Kongos ambassad"
+  FT: "Kosovos ambassad"
+  FU: "Paraguays ambassad"
+  FW: "Palestinas ambassad"
+  FX: "Europeiska investeringsbanken"
+  FY: "Sekretariatet för Nordliga dimensionens partnerskap för hälsa och socialt välbefinnande (NDPHS)"
+  FZ: "Uzbekistans ambassad"
+
+# ---------------------------------------------------------------------------
+# KATEGORIKOD — one letter, the holder's standing. Note the I/J pair: the
+# repealed TSFS 2015:63 Bilaga 2 listed only "I  tjänsteman vid internationell
+# organisation"; the current web table reads "I eller J", so J is an addition
+# made after the annex was written. Recorded as two rows with the same meaning
+# rather than as the string "I eller J", so the table is machine-usable.
+# ---------------------------------------------------------------------------
+kategorikod:
+  A: "beskickningschef"
+  B: "ambassad"
+  C: "diplomat"
+  D: "administrativ/teknisk tjänsteman"
+  E: "karriärkonsulat"
+  F: "karriärkonsul"
+  G: "konsulattjänsteman"
+  H: "internationell organisation"
+  I: "tjänsteman vid internationell organisation"
+  J: "tjänsteman vid internationell organisation"
+kategorikod_note: >-
+  TSFS 2015:63 Bilaga 2 as enacted (in force 2016-01-01) ended at I. The
+  current Transportstyrelsen table prints "I eller J" against the single
+  meaning "tjänsteman vid internationell organisation". No instrument dating
+  J's addition was found — recorded gap.
+
+# The middle group is a THREE-DIGIT löpnummer allocated inside each landskod
+# (TSFS 2015:63 12 kap. 3 § 2: "ett löpnummer (tre siffror) inom respektive
+# landskod"). It is a per-mission sequence with no published meaning, so there
+# is nothing to decode below the landskod + kategorikod pair.
+lopnummer:
+  digits: 3
+  scope: "per landskod"
+  decodes_to: null
+  source: "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 12 kap. 3 §, consolidated; accessed 2026-08-02"
