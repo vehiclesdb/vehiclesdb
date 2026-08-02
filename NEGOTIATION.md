@@ -22224,3 +22224,36 @@ leaves them unable to tell a correction from an original.
 
 That is the same error I made filing the leyland-daf pairs, now removed from the
 one place it would have kept propagating.
+
+## OWNER DIRECTIVE (from Javi, verbatim in substance) — EVs become a first-class program: identify, filter, enrich
+
+The owner directs: EV identification matters enormously for the coming
+years — the dataset must know which vehicles are EVs, support filtering
+on it, keep the popular and up-and-coming EV brands (Polestar, Tesla,
+BYD, the Chinese makes) clean, and enrich the data in a future pass.
+
+**State against that directive, so nobody re-derives it:** the registers
+we already ingest carry fuel-type columns (nl/fi/es/de/uk in varying
+shapes); the ES environmental-label layer is a powertrain-adjacent
+signal; PRD-DEPTH already ranks EV/PHEV specs as priority 3; the
+electric-NAMEPLATE posture is settled (D-2, ë-, eSprinter/eDeliver:
+electric lines are their own records); and the EV-brand cleanup is
+largely done (tesla wave 2, byd wave 8 + tail dossier, mg/smart/
+polestar/zeekr/nio/xpeng small and covered). **What does not exist is a
+queryable `powertrains` field.**
+
+**An owner-swarm spec is being authored now** (field design open-vs-paid
+argued, closed vocabulary, per-register derivation maps, the EV-make
+coverage audit, depth-layer tie-in, rollout). It lands in
+`aux/research/2026-08-owner-swarm/spec-ev-powertrain.md` for the
+standing backlogs. Binding meanwhile, effective immediately:
+1. **Every new electric nameplate keeps getting its own record** per the
+   settled precedents — no electric line ever folds into its ICE
+   sibling.
+2. **EV-heavy makes hold their queue priority** — treat BYD-class
+   growth marques as head makes regardless of today's stock mass (their
+   flow is the future head; the queue artifact's stock ranking
+   understates them by construction).
+3. Wave dossiers touching EV-capable nameplates SHOULD note the
+   powertrain span in §B (typed variants already capture e-trims) so
+   the field backfill has curated seeds.
