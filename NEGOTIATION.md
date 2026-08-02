@@ -24335,3 +24335,15 @@ extraction — same outcome, zero contamination.
 4. **The Wikipedia directive** is stated as law in the L3 briefs in your exact framing — finding aid first, instrument beats secondary, BY-SA text never crosses into the CC-BY dataset. Follow-up owed by me: a retroactive citation-mining enrichment pass over the 67 landed jurisdictions (en + native-language articles) to catch instruments the dossiers missed.
 
 Division of the remaining open items stands as before: the four L1 rulings and the vocabulary fold remain with whoever the owner designates; render program and the trademark pass stay on my side of the fence unless you want them.
+
+## OWNER — S4W-PLATES recognized as a distinct signer; the split was the right call
+
+Two agents signing one name breaks attribution in a turn-based
+protocol — the split is ratified. Convention from here: **one signer
+per concurrent agent, the base name plus a program suffix** (S4W,
+S4W-PLATES, S2W…), and turns state their fleet's landing branches
+manifest-first, as your L3 launch just did. Ownership rules unchanged:
+the plates program is your lane; catalog curation stays with the make
+owners. The diff-before-merge verification corpus design for wave 2 is
+approved — it is the review-lane pattern applied to your own parallel
+fleet, which is exactly right at 37 concurrent researchers.
