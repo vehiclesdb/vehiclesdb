@@ -1,0 +1,1372 @@
+# plates/mx.yml — Mexico (PRD-PLATES gate L3).
+#
+# EVERY format, dimension, character-metric, alphabet and series-allocation
+# claim in this file comes from ONE primary instrument and its predecessor,
+# both read off the Diario Oficial de la Federación:
+#
+#   * NOM-001-SCT-2-2016 — "Placas metálicas, calcomanías de identificación y
+#     tarjetas de circulación empleadas en automóviles, tractocamiones,
+#     autobuses, camiones, motocicletas, remolques, semirremolques,
+#     convertidores y grúas, matriculados en la República Mexicana, licencia
+#     federal de conductor, calcomanía de verificación físico-mecánica, listado
+#     de series asignadas por tipo de vehículo, servicio y entidad federativa o
+#     dependencia de gobierno, especificaciones y método de prueba",
+#     DOF 24 June 2016. In force sixty calendar days after publication
+#     (numeral 13, verbatim: "Para los efectos correspondientes, la presente
+#     Norma Oficial Mexicana entrará en vigor sesenta días naturales contados a
+#     partir de la fecha de su publicación en el Diario Oficial de la
+#     Federación") — 23 August 2016.
+#   * NOM-001-SCT-2-2000, DOF 26 January 2001, in force sixty calendar days
+#     later (27 March 2001) and CANCELLED by the 2016 NOM (Transitorio SEGUNDO,
+#     verbatim: "Una vez que entre en vigor la presente Norma Oficial Mexicana
+#     definitiva, se cancela la Norma Oficial Mexicana NOM-001-SCT-2-2000 …
+#     publicada en el Diario Oficial de la Federación el 26 de enero de 2001, y
+#     sus modificaciones publicadas con fecha 1 de julio de 2002 y 3 de marzo de
+#     2003"). This is the ONE-SERIES-BACK layer.
+#   * The ACUERDO of 25 September 2000 (DOF) — the Secretarial agreement the
+#     NOM is issued under, which is where the PLATE VALIDITY rule lives and,
+#     decisively for this file, where the COLOURS are made optional.
+#
+# SIX STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. MEXICO IS FEDERATED IN ISSUANCE AND UNITARY IN FORMAT — SO IT GETS ONE
+#    FILE, NOT THIRTY-TWO. The 31 states and Ciudad de México each register
+#    their own vehicles and each design their own plate artwork, but the
+#    CHARACTER ORDER of every Mexican serial is fixed nationally by the SCT in
+#    Tabla C del Apéndice "B" Normativo, and the SERIAL RANGES are allocated
+#    nationally in Apéndice "C" Normativo so that no two states can collide.
+#    NOM 5.1.4.4, verbatim: "La conformación de los caracteres de
+#    identificación (letras y dígitos) que integran los números de serie para
+#    los diferentes tipos de placas, deben sujetarse a lo establecido en la
+#    Tabla C del Apéndice 'B' Normativo." Every `format.pattern` below is a row
+#    of that table. Contrast us-*.yml and (in this same wave) au-*/ca-*: those
+#    federations set their formats per state, Mexico does not.
+#
+# 2. THE COLOURS ARE OPTIONAL AND STATE-CHOSEN — SO NO STANDARD SERIES HERE
+#    CARRIES A BACKGROUND HEX. The 2000 Acuerdo, ARTICULO TERCERO, verbatim:
+#    "la combinación de colores a utilizar en los caracteres de identificación,
+#    fondo y leyendas, serán optativos, para lo cual deben utilizarse colores
+#    contrastantes, fondo oscuro con caracteres claros o fondo claro con
+#    caracteres oscuros, debiendo remitir a la Secretaría, por conducto de la
+#    Dirección General de Autotransporte Federal para su autorización, los
+#    modelos de placas que determinen." A Mexican plate's colours are therefore
+#    a per-state, per-canje FACT that changes every three years (see 3), not a
+#    national one — so `design.background.color` is ABSENT from every ordinary
+#    series in this file and its absence is a sourced finding, exactly as
+#    plates/gb.yml omits `design.plate` because no British regulation fixes it.
+#    The NOM prescribes colours in exactly one place — Sistema Nacional de
+#    Protección Civil (5.1.6.5.1: "Placa metálica de color rojo pantone 200C al
+#    100%") — and that is the only series here that carries one.
+#
+# 3. THE THREE-YEAR CYCLE IS REAL, IT IS PRIMARY, AND IT IS NOT A REDESIGN
+#    MANDATE. Acuerdo ARTICULO SEPTIMO, verbatim: "La vigencia de las placas
+#    será de tres años, contados a partir de que las entidades federativas, el
+#    Distrito Federal o la Secretaría hayan realizado sus canjes totales de
+#    placas, ya sea en los años 1998, 1999 o 2000, de tal forma que los
+#    siguientes canjes totales deberán efectuarse en los años 2001, 2002 o 2003,
+#    según corresponda y así sucesivamente en los trienios posteriores." NOM
+#    2016 numeral 9.4 keeps that rule alive by reference. What the instruments
+#    fix is a REPLACEMENT cycle (canje) whose phase differs per state; the
+#    widely repeated "Mexican states redesign their plates every three years"
+#    is the consequence, not the rule, and the artwork of a given state in a
+#    given trienio is NOT modelled here (PRD-PLATES §2.5).
+#
+# 4. THE HYPHENS ARE PHYSICAL. NOM Apéndice A, under every figure, verbatim:
+#    "Las dimensiones de los guiones serán de 16 x 5.6." — the group separator
+#    is a stamped 16 × 5.6 mm bar, not typography, and 5.1.4.3 says the figures
+#    "contienen un guión o dos guiones de separación entre letras y dígitos".
+#    Every regex here therefore spells the hyphen as a MANDATORY literal
+#    (PRD-PLATES §2.6 rule 2: regexes are written in printed form). The
+#    five-character motorcycle formats print NO separator and carry none.
+#
+# 5. FRONT AND REAR DIFFER — BY A LETTER, NOT A COLOUR. NOM 5.3.5, verbatim:
+#    "Asimismo, se colocarán en la esquina superior izquierda y en diferente
+#    color cada una, la letra 'F' para la placa frontal y la letra 'T' para la
+#    placa trasera del vehículo." Both plates carry the same serial; the F/T
+#    marker is what differs. `rear_differs: true` on the road series records it.
+#    5.3.4: "Las placas deberán tener impreso el Escudo Nacional en la parte
+#    inferior izquierda."
+#
+# 6. FOUR LETTERS ARE FORBIDDEN, AND ONLY SINCE 2016. Apéndice C repeats under
+#    every per-entity table: "NOTA: EN LOS CARACTERES ALFABÉTICOS NO DEBERÁN
+#    UTILIZARSE LAS LETRAS I, Ñ, O, Q." No equivalent note appears anywhere in
+#    NOM-001-SCT-2-2000, so the 2001-era series in this file carry NO
+#    `regex_strict` — their alphabet is unrestricted so far as any primary
+#    secured for this pass says. Ñ is outside this dataset's serial alphabet
+#    (plates/_meta/separators.yml) and so never reaches a regex.
+#
+# REGEX POLICY (identical to plates/nl.yml, de.yml and gb.yml): `format.regex`
+# is the LINT-ROUND-TRIPPABLE regex — the lint generates serials from
+# `format.pattern` (L -> any A-Z, 9 -> any 0-9) and requires the regex to accept
+# every one, so `regex` can never be narrower than the pattern's own alphabet.
+# `format.regex_strict` carries the sourced 23-letter NOM alphabet, which
+# `regex` cannot carry because the lint generates "I", "O" and "Q".
+jurisdiction: mx
+authority:
+  name: Secretaría de Comunicaciones y Transportes (SCT) — Dirección General de Autotransporte Federal
+  url: "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016"
+binding: vehicle
+binding_note: >-
+  Mexican plates bind to the VEHICLE: the NOM's stated purpose (Considerando)
+  is "que los vehículos automotores nacionales que circulan dentro del
+  territorio nacional, se encuentren debidamente identificados y se compruebe
+  la posesión legal de los mismos". Registration is state-level (the entidad
+  federativa or the Secretaría for federal carriers), and a change of state
+  means a new plate out of the receiving state's allocated range.
+
+instrument:
+  citation: "NOM-001-SCT-2-2016, Norma Oficial Mexicana, expedida por el Comité Consultivo Nacional de Normalización de Transporte Terrestre (Subsecretaría de Transporte, SCT)"
+  published: "2016-06-24"
+  in_force: "2016-08-23"          # publication + 60 días naturales (numeral 13)
+  in_force_rule: >-
+    Numeral 13 (Vigencia), verbatim: "Para los efectos correspondientes, la
+    presente Norma Oficial Mexicana entrará en vigor sesenta días naturales
+    contados a partir de la fecha de su publicación en el Diario Oficial de la
+    Federación."
+  cancels: "NOM-001-SCT-2-2000 (DOF 26-01-2001, y sus modificaciones DOF 01-07-2002 y 03-03-2003) — Transitorio SEGUNDO"
+  enabling: >-
+    Ley Orgánica de la Administración Pública Federal art. 36 fracc. I, XII y
+    XXVII; Ley Federal sobre Metrología y Normalización arts. 1, 38 fracc. II,
+    40 fracc. XVI, 41, 43, 47, 51 y 64; Ley de Caminos, Puentes y Autotransporte
+    Federal art. 5 fracc. VI; Reglamento de Tránsito en Carreteras y Puentes de
+    Jurisdicción Federal art. 85; and the Acuerdo Secretarial published in the
+    DOF on 25 September 2000, Décimo Sexto.
+  draft_history: "PROY-NOM-001-SCT2-2012 was ordered published on 21 March 2013 (Considerando) — the definitive NOM arrived three years later."
+  source: "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # front matter, Considerandos, numerales 1-15, Apéndices A/B/C; accessed 2026-08-02"
+  licence: >-
+    DOF texts are edicts of the Mexican federal government. Ley Federal del
+    Derecho de Autor art. 14 fracc. VIII excludes from copyright protection
+    "los textos legislativos, reglamentarios, administrativos o judiciales, así
+    como sus traducciones oficiales" (publication of them as a compilation is
+    reserved to the State). Facts are extracted; no DOF text is redistributed
+    beyond the quoted fragments this file cites.
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+charset_defaults:
+  letters: [A, B, C, D, E, F, G, H, J, K, L, M, N, P, R, S, T, U, V, W, X, Y, Z]
+  excluded_letters: [I, O, Q]
+  excluded_letters_also: ["Ñ"]
+  excluded_letters_note: >-
+    "NOTA: EN LOS CARACTERES ALFABÉTICOS NO DEBERÁN UTILIZARSE LAS LETRAS
+    I, Ñ, O, Q." — repeated verbatim under every per-entity allocation table in
+    Apéndice C Normativo of the 2016 NOM. The rule is NEW in 2016: no such note
+    appears in NOM-001-SCT-2-2000, whose own Apéndice C tables carry none.
+  source: "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C Normativo, per-entity tables, closing NOTA"
+
+common:
+  dimensions:
+    road: { w: 300, h: 150, unit: mm }
+    motorcycle_2016: { w: 215, h: 134, unit: mm }
+    motorcycle_2001: { w: 150, h: 100, unit: mm }
+    note: >-
+      NOM 5.1.1, verbatim: "Las placas metálicas para automóviles,
+      tractocamiones, autobuses, camiones, remolques, semirremolques y
+      convertidores (dolly), grúas deben ser rectangulares con las siguientes
+      dimensiones: Largo 300 mm / Ancho 150 mm." 5.1.2: "Placas metálicas para
+      motocicleta deben ser rectangulares con las siguientes dimensiones:
+      Largo 215 mm / Ancho 134 mm." The MOTORCYCLE plate GREW in 2016: the 2000
+      NOM's 5.1.1.2 gave 150 × 100 mm. The road plate is unchanged at 300 × 150
+      (the North American 12 × 6 inch convention).
+    corners: "radius 14,0 mm; a 3,0 mm hole 13,0 mm from the periphery in the upper-right corner for the SCT aluminium seal; four 20,0 × 6,0 mm mounting slots (two on motorcycle plates); 3,0 mm perimeter ceja (5.1.1.1, 5.1.2.1)"
+    source: "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.1.1, 5.1.1.1, 5.1.2, 5.1.2.1"
+  characters:
+    emboss_height_mm: 2.0
+    stroke_width_road_mm: 5.6
+    stroke_width_motorcycle_mm: 5.0
+    hyphen_mm: { w: 16, h: 5.6 }
+    note: >-
+      5.1.3.1, verbatim: "los caracteres de las placas metálicas para
+      automóviles, tractocamiones, autobuses, camiones, remolques,
+      semirremolques y convertidores (dolly), grúas, deben ser troquelados en
+      alto relieve con una altura de 2,0 mm y un ancho de rasgo de 5,6 mm …
+      utilizando los patrones de letras y dígitos establecidos en las figuras de
+      la 36 a la 39 del Apéndice A Normativo. Para el caso de motocicletas los
+      caracteres deberán ser troquelados en alto relieve con una altura de
+      2,0 mm y un ancho de rasgo de 5,0 mm." 5.1.3.2: "El área de caracteres
+      alfanuméricos de la serie de placa deberá ser exclusiva y estar libre de
+      figuras, distintivos o leyendas que dificulten su lectura."
+    font_posture: >-
+      The glyph shapes are STATUTORY DRAWINGS (figuras 36-39 of Apéndice A
+      Normativo), not a named typeface — the same posture PRD-PLATES §6 records
+      for the UK, Germany and Spain. No licensable font is mandated and none is
+      recorded here.
+    source: "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.1.3.1, 5.1.3.2, 5.1.4.3 (guiones 16 x 5.6)"
+  security:
+    two_d_code: "20 × 20 mm two-dimensional error-correcting code printed directly on the reflective sheeting, controlled by the SCT (5.3.11.1)"
+    seal: "aluminium rivet 6,5-7,5 mm bearing 'SCT' on the face and the manufacturer's registration number on the back (5.3.1), plus two engraved seals in the sheeting itself (5.3.2)"
+    escudo: "Escudo Nacional printed at the lower left of every plate (5.3.4)"
+    front_rear: "letter 'F' (frontal) or 'T' (trasera) in the upper-left corner, each in a different colour (5.3.5)"
+    source: "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.3.1, 5.3.2, 5.3.4, 5.3.5, 5.3.11.1"
+  validity:
+    years: 3
+    note: >-
+      Acuerdo (DOF 25-09-2000) ARTICULO SEPTIMO, verbatim: "La vigencia de las
+      placas será de tres años, contados a partir de que las entidades
+      federativas, el Distrito Federal o la Secretaría hayan realizado sus
+      canjes totales de placas, ya sea en los años 1998, 1999 o 2000, de tal
+      forma que los siguientes canjes totales deberán efectuarse en los años
+      2001, 2002 o 2003, según corresponda y así sucesivamente en los trienios
+      posteriores." NOM 2016 numeral 9.4 keeps it in force by reference: "La
+      vigencia de las placas y calcomanías se sujetará a lo dispuesto en el
+      artículo séptimo del Acuerdo Secretarial … publicado en el Diario Oficial
+      de la Federación el 25 de Septiembre de 2000." In practice states run
+      their canje on their own phase, so the trienio boundary is per-state and
+      is NOT modelled as a series period.
+    source: "https://www.dof.gob.mx/nota_detalle.php?codigo=2060390&fecha=25/09/2000  # ARTICULO SEPTIMO"
+  colours:
+    posture: state-optional
+    note: >-
+      See file header §2. Acuerdo ARTICULO TERCERO makes the colour combination
+      optativa for every canje from 2000 onward, subject only to contrast and to
+      SCT authorization of the model. Consequently `design.background.color` is
+      absent from the ordinary series in this file. Where a colour IS
+      prescribed — Protección Civil — it is carried on that series and cited.
+    source: "https://www.dof.gob.mx/nota_detalle.php?codigo=2060390&fecha=25/09/2000  # ARTICULO TERCERO, penultimate paragraph"
+
+region_encoding_note: >-
+  Mexican plates encode the issuing entidad federativa NOT by a prefix but by
+  the RANGE the serial falls in — a national allocation in Apéndice C Normativo.
+  The table is large, closed and primary, so it lives in
+  plates/_decode/mx-entity-series.yml and is referenced from the series below.
+
+series:
+
+  # =========================================================================
+  # TRANSPORTE PRIVADO — ENTIDADES FEDERATIVAS. Tabla C row 9. This is the
+  # national private format and the single most important record in this file.
+  # =========================================================================
+  - id: mx-private-car-2016
+    class: standard
+    categories: [car]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL-999-L"
+      regex: '\A[A-Z]{3}-\d{3}-[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]{3}-\d{3}-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+      charset:
+        letters: [A, B, C, D, E, F, G, H, J, K, L, M, N, P, R, S, T, U, V, W, X, Y, Z]
+        notes: "I, Ñ, O and Q are excluded by the Apéndice C nota — see charset_defaults"
+      progression: >-
+        Allocated as a contiguous interval per entidad federativa
+        (AAA-001-A … AFZ-999-Z is Aguascalientes, AGA-001-A … CYZ-999-Z is Baja
+        California, and so on to ZDA-001-A … ZHZ-999-Z for Zacatecas). Within a
+        state the NOM publishes only the interval, not the issue order.
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder, note: "Escudo Nacional at the lower left (5.3.4), plus whatever gráficos, emblemas, logotipos or escudos the state elects under 5.3.3" }
+      rear_differs: true
+      rear_differs_note: "same serial front and rear; the front plate carries 'F' and the rear 'T' in the upper-left corner, each in a different colour (5.3.5)"
+      colour_note: "state-optional, contrasting, SCT-authorized — see common.colours"
+    region_encoding: "plates/_decode/mx-entity-series.yml  # private_entity, car_from/car_to"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice B Normativo Tabla C, row 9 'Transporte Privado (Entidades Federativas) — Automóviles — AAA-000-A'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A, Figura 18 'Transporte Privado Automóvil Entidades Federativas' (siete caracteres); guiones 16 x 5.6"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C Normativo, 'NUMERACIÓN DE LAS PLACAS TRANSPORTES PRIVADOS ASIGNADAS A CADA ENTIDAD FEDERATIVA' — the 31 per-state ranges carried in the decode file"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=2060390&fecha=25/09/2000  # Acuerdo ARTICULO TERCERO (colours optional) and SEPTIMO (three-year vigencia)"
+    notes: >-
+      THE current private-car plate of the 31 Mexican states, three letters,
+      three digits, one letter, created by NOM-001-SCT-2-2016. period.start 2016
+      is the INSTRUMENT date: the NOM was published on 24 June 2016 and came into
+      force on 23 August 2016, and each state then reaches the new format on its
+      own canje date, so a 2016 start is the earliest any AAA-000-A plate can
+      exist, not the date every state began issuing them. Ciudad de México is NOT
+      in this series — it issues A00-AAA (see mx-cdmx-private-car-2016), which is
+      why a CDMX plate can never collide with a state plate.
+
+  - id: mx-private-truck-2016
+    class: standard
+    categories: [truck]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-9999-L"
+      regex: '\A[A-Z]{2}-\d{4}-[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{4}-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+      charset: { notes: "no I/Ñ/O/Q — see charset_defaults" }
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+      colour_note: "state-optional — see common.colours"
+    region_encoding: "plates/_decode/mx-entity-series.yml  # private_entity, truck_from/truck_to"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 9 'Camiones — AA-0000-A'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 19 'Transporte Privado Camión, Tractocamión y Grúas Entidades Federativas' (siete caracteres)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C per-entity truck ranges (AA-0001-A … AF-9999-Z Aguascalientes, etc.)"
+    notes: >-
+      Private TRUCK, TRACTOCAMIÓN and GRÚA registrations of the 31 states — a
+      different serial space from the private car series and a different shape,
+      which is what lets a Mexican decoder tell a camión from an automóvil
+      without any other signal.
+
+  - id: mx-private-bus-2016
+    class: standard
+    categories: [bus]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-LLL-99"
+      regex: '\A\d{2}-[A-Z]{3}-\d{2}\z'
+      regex_strict: '\A\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]{3}-\d{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+      colour_note: "state-optional — see common.colours"
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 9 'Autobuses — 00-AAA-00'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 20 'Transporte Privado Autobús Entidades Federativas'"
+    notes: >-
+      Private BUS registrations of the 31 states. The NOM allocates the
+      per-entity bus ranges in a separate Apéndice C table which was NOT carried
+      into plates/_decode/mx-entity-series.yml in this pass (recorded gap); a
+      decoder can still identify the SHAPE as a state private bus.
+
+  - id: mx-private-trailer-2016
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9LL-999-L"
+      regex: '\A\d[A-Z]{2}-\d{3}-[A-Z]\z'
+      regex_strict: '\A\d[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{3}-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+      colour_note: "state-optional — see common.colours"
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 9 'Remolques — 0AA-000-A'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 21 'Transporte Privado Remolque Entidades Federativas'"
+    notes: >-
+      Private TRAILER and SEMITRAILER registrations of the 31 states. A trailer
+      carries ONE plate, so `rear_differs` is false and the F/T rule of 5.3.5
+      does not bite here.
+
+  - id: mx-private-dolly-2016
+    class: trailer
+    categories: [dolly]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-99999"
+      regex: '\A[A-Z]-\d{5}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{5}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C rows 8 and 9, 'Convertidor (Dolly) — A-00000'"
+    notes: >-
+      CONVERTIDOR (dolly) — the converter axle that turns a semitrailer into a
+      full trailer. Tabla C gives the SAME order (A-00000) for the Ciudad de
+      México and the Entidades Federativas rows, which is the one place the NOM
+      hands two issuers one shape; they are separated only by their allocated
+      ranges, so a dolly serial does not by itself say which issuer made it.
+
+  # =========================================================================
+  # TRANSPORTE PRIVADO — CIUDAD DE MÉXICO. Tabla C row 8. CDMX is a separate
+  # issuer with separate FORMATS, which is why it needs no separate file.
+  # =========================================================================
+  - id: mx-cdmx-private-car-2016
+    class: standard
+    categories: [car]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L99-LLL"
+      regex: '\A[A-Z]\d{2}-[A-Z]{3}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]{3}\z'
+      charset: { notes: "no I/Ñ/O/Q — see charset_defaults" }
+      progression: "one allocated interval, A01-AAA … Z99-ZZZ, 27'704,259 combinations"
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+      colour_note: "CDMX chooses its own colours under the Acuerdo — see common.colours"
+    region_encoding: "plates/_decode/mx-entity-series.yml  # private_cdmx, vehicle: car"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 8 'Transporte Privado (Ciudad de México) — Automóviles — A00-AAA'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 14 'Transporte Privado Automóvil Ciudad de México' (seis caracteres)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'NUMERACIÓN DE LAS PLACAS ASIGNADAS A LA CIUDAD DE MÉXICO — TRANSPORTES PRIVADOS — A01-AAA - Z99-ZZZ'"
+    notes: >-
+      Private cars of the Ciudad de México — SIX characters where the states use
+      seven, and one single national range rather than 31 intervals. The pattern
+      is what identifies the issuer: no state plate has this shape.
+
+  - id: mx-cdmx-private-truck-2016
+    class: standard
+    categories: [truck]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-999-LL"
+      regex: '\A[A-Z]-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{3}-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\z'
+      progression: "A-001-AA … Z-999-ZZ, 12'154,833 combinations"
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: "plates/_decode/mx-entity-series.yml  # private_cdmx, vehicle: truck"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 8 'Camiones — A-000-AA'; Apéndice A Figura 15"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C CDMX transportes privados camiones range"
+    notes: >-
+      Private trucks, tractocamiones and grúas of the Ciudad de México. NOTE the
+      collision hazard this file cannot remove: the SAME shape A-000-AA is what
+      the FEDERAL autotransporte transfronterizo de pasaje row of Tabla C also
+      prescribes, so a bare A-000-AA string is ambiguous between CDMX private
+      truck and federal cross-border passenger service, and only the plate's
+      leyendas and colours (which the NOM leaves to the issuer) resolve it.
+
+  - id: mx-cdmx-private-trailer-2016
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-9L-99"
+      regex: '\A[A-Z]-\d[A-Z]-\d{2}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]-\d[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{2}\z'
+      progression: "A-1A-01 … Z-9Z-99, 471,339 combinations"
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: "plates/_decode/mx-entity-series.yml  # private_cdmx, vehicle: trailer"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 8 'Remolques — A-0A-00'; Apéndice A Figura 17 (cinco caracteres)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C CDMX remolques range A-1A-01 - Z-9Z-99"
+    notes: >-
+      Private trailers and semitrailers of the Ciudad de México. Five characters
+      in three groups — the most distinctive shape in the whole Mexican set and
+      therefore a near-free identification for a parse API.
+
+  # =========================================================================
+  # TRANSPORTE PRIVADO FRONTERIZO — the BORDER-ZONE private series. Tabla C
+  # row 2. Seven entities only, all of them on a land border.
+  # =========================================================================
+  - id: mx-private-border-car-2016
+    class: standard
+    categories: [car]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L99-LLL-9"
+      regex: '\A[A-Z]\d{2}-[A-Z]{3}-\d\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]{3}-\d\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+      colour_note: "state-optional — see common.colours"
+    region_encoding: "plates/_decode/mx-entity-series.yml  # private_border, car_from/car_to"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 2 'Transporte Privado Fronterizo — Automóviles — A00-AAA-0'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 8 'Para vehículos del Transporte Privado Local Fronterizo' (siete caracteres)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'FRONTERIZOS — NUMERACIÓN DE LAS PLACAS ASIGNADAS A CADA ENTIDAD FEDERATIVA TRANSPORTES PRIVADOS' — seven entities: BC, BCS, Coahuila, Chiapas, Chihuahua, Sonora, Tamaulipas"
+    notes: >-
+      The FRONTERIZO private-car plate, issued in the border zone only, by the
+      seven entities Apéndice C lists (Baja California, Baja California Sur,
+      Coahuila, Chiapas, Chihuahua, Sonora, Tamaulipas). Its ranges live in the
+      Z-tail of the national space, deliberately far from the ordinary private
+      allocation. Border trucks, buses and trailers take AAA-000-A — the SAME
+      shape as the ordinary private CAR series — and are told apart only by
+      range, which is the sharpest reason this jurisdiction needs a decode file
+      rather than a prefix rule.
+
+  # =========================================================================
+  # MOTOCICLETAS — PRIVADAS. Tabla C row 16 gives THREE orders for one
+  # modality, so this is three series (one series = one PATTERN, the same rule
+  # plates/nl.yml applies to the GV sidecodes).
+  # =========================================================================
+  - id: mx-private-motorcycle-2016-a
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L99LL"
+      regex: '\A[A-Z]\d{2}[A-Z]{2}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]\d{2}[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\z'
+    design:
+      plate: { w: 215, h: 134, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+      note: "one plate, rear only; characters troquelados at 2,0 mm height and 5,0 mm stroke (5.1.3.1)"
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 16 'Transporte Privado — Ciudad de México y Entidades Federativas Motocicleta — A00AA / 0A0AA / A0AA0'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 29 'Transporte Privado Motocicleta Ciudad de México y Entidades Federativas' (cinco caracteres); 5.1.2 dimensions 215 x 134 mm"
+    notes: >-
+      Private MOTORCYCLE order A00AA — the first of the three arrangements Tabla
+      C sanctions for one and the same modality. Five characters and NO printed
+      hyphen (Figura 29 is a five-character figure). Both the Ciudad de México
+      and the Entidades Federativas issue from this row, so the shape does not
+      identify the issuer.
+
+  - id: mx-private-motorcycle-2016-b
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9L9LL"
+      regex: '\A\d[A-Z]\d[A-Z]{2}\z'
+      regex_strict: '\A\d[ABCDEFGHJKLMNPRSTUVWXYZ]\d[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\z'
+    design:
+      plate: { w: 215, h: 134, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 16, second order '0A0AA'"
+    notes: >-
+      Private MOTORCYCLE order 0A0AA — the second of the three Tabla C
+      arrangements. Kept as its own entry because a series is one PATTERN and a
+      parse API must be able to score each shape independently.
+
+  - id: mx-private-motorcycle-2016-c
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L9LL9"
+      regex: '\A[A-Z]\d[A-Z]{2}\d\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]\d[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\d\z'
+    design:
+      plate: { w: 215, h: 134, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 16, third order 'A0AA0'"
+    notes: >-
+      Private MOTORCYCLE order A0AA0 — the third of the three Tabla C
+      arrangements, and the only Mexican shape that both begins with a letter
+      and ends with a digit at five characters.
+
+  # =========================================================================
+  # SERVICIO PÚBLICO LOCAL — the state and CDMX for-hire series. Tabla C
+  # rows 10, 11 and 14.
+  # =========================================================================
+  - id: mx-public-car-2016
+    class: taxi
+    categories: [car]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-999-LLL"
+      regex: '\A[A-Z]-\d{3}-[A-Z]{3}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{3}-[ABCDEFGHJKLMNPRSTUVWXYZ]{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+      colour_note: "state-optional — see common.colours"
+    region_encoding: "plates/_decode/mx-entity-series.yml  # public_border for the seven border entities; the non-border public-local ranges were not carried in this pass"
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 11 'Público Local (Entidades Federativas) — Automóviles — A-000-AAA'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 25 'Automóvil público local para Entidades Federativas' (siete caracteres)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 3 'Público Local (Fronterizos) — Automóviles, Camiones, Autobuses y Remolques — A-000-AAA' (same order, Z-tail ranges)"
+    notes: >-
+      SERVICIO PÚBLICO LOCAL cars — taxis and for-hire cars licensed by an
+      entidad federativa. `class: taxi` is used for the whole público-local
+      family because _meta/classes.yml has no for-hire-carrier value and taxi is
+      defined as "for-hire vehicles where separately serialized or colored",
+      which is exactly what this is. The BORDER público-local series shares the
+      identical order A-000-AAA and is separated only by range (Apéndice C
+      allocates it entirely inside the Z tail), so this series' regex is the
+      right shape claim for both and the decode file carries the border ranges.
+
+  - id: mx-public-truck-2016
+    class: taxi
+    categories: [truck]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-LLL-99L"
+      regex: '\A\d-[A-Z]{3}-\d{2}[A-Z]\z'
+      regex_strict: '\A\d-[ABCDEFGHJKLMNPRSTUVWXYZ]{3}-\d{2}[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 11 'Camiones — 0-AAA-00A'; Apéndice A Figura 26"
+    notes: >-
+      Público-local FREIGHT vehicles of the entidades federativas — carriers
+      operating under a state concession rather than a federal permit, which is
+      the line the NOM draws between this series and the Autotransporte Federal
+      family below.
+
+  - id: mx-public-bus-2016
+    class: taxi
+    categories: [bus]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-99999-L"
+      regex: '\A[A-Z]-\d{5}-[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{5}-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 11 'Autobuses — A-00000-A'; Apéndice A Figura 27"
+    notes: >-
+      Público-local BUSES of the entidades federativas — the state-concession
+      urban and intercity bus fleets. Seven characters with a five-digit middle
+      group, a shape no other Mexican series uses.
+
+  - id: mx-cdmx-public-car-2016
+    class: taxi
+    categories: [car]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L-9999-L"
+      regex: '\A[A-Z]-\d{4}-[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{4}-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 10 'Público Local (Ciudad de México) — Libre y Sitio — A-0000-A'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 22 'Público local para la Ciudad de México, Libre y Sitio' (seis caracteres)"
+    notes: >-
+      The Mexico City TAXI plate — "libre" (cruising) and "sitio" (rank) taxis
+      share one order. Note the NOM shape A-0000-A is also the order Tabla C
+      row 1 gives to federal "Pasaje Económico y Mixto", so this string is
+      ambiguous on shape alone between a CDMX taxi and a federal economy
+      passenger vehicle; the leyendas resolve it.
+
+  - id: mx-cdmx-public-fixedroute-2016
+    class: taxi
+    categories: [bus, van]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999-L-999"
+      regex: '\A\d{3}-[A-Z]-\d{3}\z'
+      regex_strict: '\A\d{3}-[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 10 'Con itinerario fijo — 000-A-000'; Apéndice A Figura 23"
+    notes: >-
+      Mexico City FIXED-ROUTE public transport (microbuses, combis, the
+      "itinerario fijo" concessions) — a single letter between two three-digit
+      groups. The distinctive symmetry makes this the easiest CDMX shape to
+      recognise.
+
+  # =========================================================================
+  # DEMOSTRACIÓN (dealer/trade plates). Tabla C rows 6, 7 and 15. The CDMX row
+  # is the only Mexican series with LITERAL fixed letters.
+  # =========================================================================
+  - id: mx-cdmx-dealer-2016
+    class: dealer
+    categories: [car, truck, bus, trailer, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "DM-LL-9"
+      regex: '\ADM-[A-Z]{2}-\d\z'
+      regex_strict: '\ADM-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d\z'
+      charset: { fixed_letters: "DM", notes: "the first group is literally DM (demostración); allocated range DM-AA-1 … DM-ZZ-9" }
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 6 'Transporte Privado — Demostración, Ciudad de México (Todo tipo de vehículos) — DM-AA-0'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'DM-AA-1 - DM-ZZ-9'; Apéndice A Figura 12 (cinco caracteres)"
+    notes: >-
+      Ciudad de México DEMOSTRACIÓN (dealer/demonstration) plates. The only
+      Mexican series whose leading group is a fixed literal — DM — which makes
+      it the one Mexican plate a machine can classify with certainty from the
+      first two characters.
+
+  - id: mx-dealer-2016
+    class: dealer
+    categories: [car, truck, bus, trailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-LL-99L"
+      regex: '\A\d-[A-Z]{2}-\d{2}[A-Z]\z'
+      regex_strict: '\A\d-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{2}[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 7 'Demostración Entidades Federativas (Todo tipo de vehículos) — 0-AA-00A'; Apéndice A Figura 13 (seis caracteres)"
+    notes: >-
+      DEMOSTRACIÓN plates of the entidades federativas — the state equivalent of
+      the CDMX DM series, but with no literal marker, so it is identifiable only
+      by shape.
+
+  - id: mx-dealer-motorcycle-2016
+    class: dealer
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L999L"
+      regex: '\A[A-Z]\d{3}[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]\d{3}[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 215, h: 134, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 15 'Demostración — Ciudad de México y Entidades Federativas Motocicleta — A000A'"
+    notes: >-
+      MOTORCYCLE demonstration plates, one order for both the Ciudad de México
+      and the states — five characters, letter-digits-letter, no separator.
+
+  # =========================================================================
+  # AUTO ANTIGUO (historic). Tabla C row 12 — the shortest Mexican serials.
+  # =========================================================================
+  - id: mx-cdmx-historic-2016
+    class: historic
+    categories: [car, truck, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9LL-99"
+      regex: '\A\d[A-Z]{2}-\d{2}\z'
+      regex_strict: '\A\d[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder, note: "5.1.6.3 requires a distintivo identifying the Auto Antiguo service plus the leyenda and pictograma of that service (figuras 31 y 32)" }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 12 'Transporte Privado (Autos Antiguos) — Ciudad de México — 0AA-00'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.1.6.3 Auto Antiguo distintivo; Apéndice A Figura 31 (cinco caracteres)"
+    notes: >-
+      Ciudad de México AUTO ANTIGUO (historic vehicle) plates. The NOM prescribes
+      a distintivo, leyenda and pictograma for the class but — unlike Germany's H
+      suffix or Spain's histórico regime — sets NO age threshold: the eligibility
+      rule is state law and is not modelled here (recorded gap).
+
+  - id: mx-historic-2016
+    class: historic
+    categories: [car, truck, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-9-L"
+      regex: '\A[A-Z]{2}-\d-[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 12 'Entidades Federativas — AA-0-A'; Apéndice A Figura 32 (cuatro caracteres)"
+    notes: >-
+      AUTO ANTIGUO plates of the entidades federativas — FOUR characters, the
+      shortest serial the 2016 NOM issues anywhere, and the only Mexican format
+      with a single-digit middle group.
+
+  # =========================================================================
+  # VEHÍCULO ECOLÓGICO. Tabla C row 17 — Mexico's EV/alternative-fuel series.
+  # =========================================================================
+  - id: mx-eco-2016
+    class: electric
+    categories: [car, truck, bus, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99L-999"
+      regex: '\A\d{2}[A-Z]-\d{3}\z'
+      regex_strict: '\A\d{2}[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder, note: "distintivo per figura 33 plus the leyenda VEHÍCULO ECOLÓGICO" }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 17 'Vehículo Ecológico — Ciudad de México y Entidades Federativas — 00A-000'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.1.6.4, verbatim: placas 'para los vehículos que utilicen combustibles y/o energías alternas con motores denominados ecológicos para protección del medio ambiente, deben contar en su diseño con distintivo que los identifique, como el que se muestra en la figura 33 … Así como la leyenda VEHÍCULO ECOLÓGICO'"
+    notes: >-
+      VEHÍCULO ECOLÓGICO — the Mexican alternative-fuel/EV series, one order for
+      both the Ciudad de México and the states. Note the class is broader than
+      `electric` suggests: 5.1.6.4 covers any vehicle using "combustibles y/o
+      energías alternas", so hybrids and gas conversions qualify where the issuer
+      says they do.
+
+  # =========================================================================
+  # CAPACIDADES DIFERENTES (disability). Tabla C row 22 and row 1's federal
+  # equivalent.
+  # =========================================================================
+  - id: mx-cdmx-disability-2016
+    class: specialty
+    categories: [car, truck, bus, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-L-99"
+      regex: '\A\d{2}-[A-Z]-\d{2}\z'
+      regex_strict: '\A\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]-\d{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder, note: "5.1.6.2: distintivo per figura 30 plus the leyenda y pictograma del servicio Capacidades Diferentes" }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 22 'Capacidades Diferentes — Ciudad de México todos los vehículos — 00-A-00'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.1.6.2 Capacidades Diferentes distintivo; Apéndice A Figura 30 (cinco caracteres)"
+    notes: >-
+      CAPACIDADES DIFERENTES (disability) plates of the Ciudad de México.
+      `class: specialty` is the least-bad fit from _meta/classes.yml, which has
+      no disability value; the vocabulary gap is flagged in the jurisdiction
+      dossier rather than papered over with an invented class.
+
+  - id: mx-disability-2016
+    class: specialty
+    categories: [car, truck, bus, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-LLL"
+      regex: '\A\d{2}-[A-Z]{3}\z'
+      regex_strict: '\A\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 22 'Entidades Federativas todos los vehículos — 00-AAA'"
+    notes: >-
+      CAPACIDADES DIFERENTES plates of the entidades federativas — five
+      characters in two groups, distinct from the CDMX three-group form, and one
+      of only two 2016 series that carry no letter after the digits.
+
+  # =========================================================================
+  # POLICE AND CIVIL PROTECTION. Tabla C rows 4, 5, 18, 19, 20.
+  # =========================================================================
+  - id: mx-police-2016
+    class: police
+    categories: [car, truck, van]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999L-9"
+      regex: '\A[A-Z]{2}-\d{3}[A-Z]-\d\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{3}[ABCDEFGHJKLMNPRSTUVWXYZ]-\d\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 4 'Corporaciones Policiacas y de Vigilancia — Patrullas de todo tipo de vehículos — AA-000A-0'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 10 'Corporaciones policiacas y de vigilancia vehículo' (siete caracteres)"
+    notes: >-
+      PATRULLAS — police and public-security fleets of every level below the
+      federal police. A 2000-Acuerdo rule that the 2016 NOM does not repeat is
+      worth recording here: ARTICULO NOVENO of the Acuerdo required that "los
+      caracteres de identificación de las placas para las unidades de las
+      diferentes corporaciones policiacas y de vigilancia deben corresponder al
+      número económico que porte la unidad" — the plate had to match the fleet
+      number painted on the car.
+
+  - id: mx-police-motorcycle-2016
+    class: police
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL99L"
+      regex: '\A[A-Z]{2}\d{2}[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\d{2}[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+    design:
+      plate: { w: 215, h: 134, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 4 (second entry) 'Patrullas de tipo motocicletas — AA00A'; Apéndice A Figura 11 (cinco caracteres)"
+    notes: >-
+      POLICE MOTORCYCLE plates — five characters, no separator, distinct from
+      every private motorcycle order by having TWO leading letters.
+
+  - id: mx-federal-police-2016
+    class: police
+    categories: [car, truck, van]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-9999-L"
+      regex: '\A[A-Z]{2}-\d{4}-[A-Z]\z'
+      regex_strict: '\APF-\d{4}-[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+      charset: { fixed_letters: "PF", notes: "Apéndice C allocates the whole federal-police block as PF-0001-A … PF-9999-Z, so the leading pair is in practice the literal PF even though Tabla C spells the order generically as AA-0000-A" }
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: none
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 5 'Policía Federal — Patrullas de todo tipo de vehículos — AA-0000-A'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'SERIES ASIGNADAS PF-0001-A - PF-9999-Z'"
+    notes: >-
+      POLICÍA FEDERAL fleet plates. This is the one series in the file whose
+      ISSUING BODY no longer exists: the Policía Federal was wound up in 2019 and
+      its functions passed to the Guardia Nacional. The series is left OPEN
+      because no instrument secured for this pass closes it, and PF plates
+      remained in circulation; whether the Guardia Nacional issues from the same
+      block is a recorded gap. This is also the reason `regex_strict` is pinned
+      to the literal PF while `regex` keeps Tabla C's generic AA order — the tier
+      order (strict inside loose) holds and the honest wide claim survives.
+
+  - id: mx-emergency-2016
+    class: government
+    categories: [car, truck, van, bus]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999-LL"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{3}-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C rows 18 and 19 'Ambulancias' and 'Bomberos — Ciudad de México y Entidades Federativas — AA-000-AA' (identical order)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 34 'Heroico Cuerpo de Bomberos y Ambulancias de Ciudad de México y Entidades Federativas' (siete caracteres)"
+    notes: >-
+      AMBULANCIAS and BOMBEROS. Tabla C gives them two rows and ONE order
+      (AA-000-AA), and Apéndice A gives them ONE figure (34), so under
+      PRD-PLATES §2.3 they are one series with a shared format and design rather
+      than two — the color-only-variant rule applied to a leyenda-only variant.
+
+  - id: mx-civil-protection-2016
+    class: government
+    categories: [car, truck, van, bus, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-LL-999"
+      regex: '\A\d{2}-[A-Z]{2}-\d{3}\z'
+      regex_strict: '\A\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { color: "#BA0C2F", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: top, color: "#63666A", content: "grey bar 300 × 25 mm, Pantone Cool Gray 10 at 60%, carrying four Sistema Nacional de Protección Civil symbols at Cool Gray 10 100%", hex_basis: observed }
+      band_hex_note: >-
+        The hex is an observed rendering of Cool Gray 10 at FULL strength (the
+        symbols); the BAR itself is that colour at 60%, which the NOM states as a
+        tint and which no hex in this file attempts to compute.
+      emblem: { present: true, rendered: placeholder, note: "SNPC symbol at 3/4 as a background wash; SNPC symbol grey/red at mid-left; universal civil-protection symbol orange/blue at mid-right" }
+      rear_differs: true
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 20 'Protección Civil — Coordinación Nacional de Protección Civil / Ciudad de México y Entidades Federativas todos los vehículos — 00-AA-000'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 5.1.6.5.1-5.1.6.5.3, verbatim: 'Placa metálica de color rojo pantone 200C al 100%'; the 300 x 25 mm grey bars top and bottom at Cool gray 10 al 60%; 'la palabra PROTECCIÓN CIVIL y debajo de ésta la palabra MÉXICO, ambas escritas en mayúsculas y color rojo pantone 200C al 100%'; the entity name and Código Fiscal on the lower bar"
+    notes: >-
+      SISTEMA NACIONAL DE PROTECCIÓN CIVIL — the ONLY series in this file whose
+      colours the NOM prescribes, which is why it is the only one carrying a
+      background hex. The hexes are `observed` renderings of the NAMED Pantone
+      references (200 C red, Cool Gray 10 grey): PRD-PLATES §6 lets us build to a
+      colour standard and forbids reproducing it, and Pantone's own coordinates
+      are a licensed dataset, so the numbered colour is cited and the hex is
+      marked observed — the same posture plates/gb.yml takes for BS AU 145e.
+
+  # =========================================================================
+  # AUTOTRANSPORTE FEDERAL — the SCT's own series (Tabla C row 1), issued by
+  # the Secretaría rather than by any state, for federally permitted carriers.
+  # =========================================================================
+  - id: mx-federal-freight-2016
+    class: standard
+    categories: [truck, bus, trailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-LL-9L"
+      regex: '\A\d{2}-[A-Z]{2}-\d[A-Z]\z'
+      regex_strict: '\A\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}-\d[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+      progression: >-
+        Apéndice C allocates the federal space by traffic: carga 01-AA-1A …
+        99-CZ-9Z (motrices) and 01-TX-1A … 99-VZ-9Z (remolques); pasaje
+        01-HA-1A … 99-JZ-9Z; turismo 01-RA-1A … 99-RZ-9Z; con inversión
+        extranjera, arrendamiento, transfronterizo and internacional each get
+        their own blocks. The SECOND GROUP is the discriminator.
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: none
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 1 'Autotransporte Federal — Carga, Pasaje y Turismo, con inversión extranjera, arrendamiento … — 00-AA-0A' (also Transfronterizo de carga, Transporte Internacional Largo Recorrido, and Grúas de Arrastre)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice A Figura 1 'Para vehículos Motrices y Remolques del Servicio de Autotransporte Federal (Carga, Pasaje, Turismo y Arrendamiento)' (seis caracteres)"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'SERVICIO DE AUTOTRANSPORTE FEDERAL (CARGA, PASAJE Y TURISMO)' range blocks"
+    notes: >-
+      AUTOTRANSPORTE FEDERAL — the federally permitted road-haulage and
+      intercity-passenger fleet, plated by the SCT rather than by a state and
+      recognisable anywhere in Mexico. `class: standard` is used because
+      _meta/classes.yml has no commercial-carrier value and this is the ordinary
+      registration of those vehicles; the same choice plates/us-fl.yml makes for
+      its Apportioned series. FOUR distinct Tabla C modalities share this one
+      order — carga/pasaje/turismo, transfronterizo de carga, transporte
+      internacional de largo recorrido, and grúas de arrastre — separated only by
+      their Apéndice C range blocks.
+
+  - id: mx-federal-transfer-2016
+    class: temporary
+    categories: [car, truck, bus, trailer]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-L9-LL"
+      regex: '\A\d{2}-[A-Z]\d-[A-Z]{2}\z'
+      regex_strict: '\A\d{2}-[ABCDEFGHJKLMNPRSTUVWXYZ]\d-[ABCDEFGHJKLMNPRSTUVWXYZ]{2}\z'
+      progression: "01-A1-AA … 99-C9-ZZ"
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: none
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 1 'Traslado Nacional (Para todo tipo de vehículos) — 00-A0-AA'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'TRASLADO NACIONAL — SERIES ASIGNADAS 01-A1-AA - 99-C9-ZZ'; Apéndice A Figura 5"
+    notes: >-
+      TRASLADO NACIONAL — the federal transfer/ferry plate for moving an
+      unregistered vehicle across the country, which is Mexico's `temporary`
+      class in the PRD vocabulary sense (short-validity, movement-only). Distinct
+      from the state DEMOSTRACIÓN plates above, which are bound to a dealer
+      rather than to a journey.
+
+  - id: mx-federal-transfer-motorcycle-2016
+    class: temporary
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "MT999L"
+      regex: '\AMT\d{3}[A-Z]\z'
+      regex_strict: '\AMT\d{3}[ABCDEFGHJKLMNPRSTUVWXYZ]\z'
+      charset:
+        fixed_letters: "MT"
+        notes: >-
+          Apéndice C, verbatim: "NOTA: En la numeración de placas para traslado
+          de motocicleta no se modifican las letras 'MT'." Range MT001A …
+          MT999Z. Tabla C spells the order generically as AA000A; the NOTA is
+          what fixes the pair, so the literal is written into the pattern.
+    design:
+      plate: { w: 215, h: 134, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 1 'Traslado Nacional (Para Motocicletas) — AA000A'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'TRASLADO NACIONAL MOTOCICLETAS — MT001A - MT999Z' + the NOTA fixing 'MT'"
+    notes: >-
+      MOTORCYCLE TRASLADO NACIONAL. One of only two Mexican series with a fixed
+      literal prefix (the other is CDMX DM), and the cleanest example in this
+      file of Apéndice C constraining what Tabla C leaves generic.
+
+  - id: mx-federal-inspection-2016
+    class: government
+    categories: [car, truck, van]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-99"
+      regex: '\A[A-Z]{2}-\d{2}\z'
+      regex_strict: '\AA[DEFGHJKLMNPRSTUVWXYZ]-\d{2}\z'
+      charset: { notes: "Apéndice C allocates AD-01 … AZ-99, so the first letter is A and the second runs D-Z inside the NOM alphabet" }
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: true
+    region_encoding: none
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Tabla C row 1 'Inspección de Vías Generales de Comunicación Federal — AA-00'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # Apéndice C 'SERIES ASIGNADAS AD-01 - AZ-99'; Apéndice A Figura 7 (cuatro caracteres)"
+    notes: >-
+      SCT road-inspection vehicles (Inspección de Vías Generales de
+      Comunicación) — four characters, joint-shortest in the file with the state
+      Auto Antiguo series, and the only Mexican format with two letters followed
+      by exactly two digits.
+
+  # =========================================================================
+  # ONE SERIES BACK — NOM-001-SCT-2-2000 (DOF 26-01-2001, in force
+  # 27-03-2001, cancelled when the 2016 NOM took effect on 23-08-2016).
+  # Apéndice C Normativo of that NOM is the source of every order below.
+  # =========================================================================
+  - id: mx-private-car-2001
+    class: standard
+    categories: [car]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-99-99"
+      regex: '\A[A-Z]{3}-\d{2}-\d{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+      note: "the 2000 NOM has no F/T rule; 5.3.5's front/rear letters are a 2016 addition"
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # NOM-001-SCT-2-2000, Apéndice C Normativo, row 8 'Transportes Privados (Entidades Federativas) — Automóviles — AAA-00-00'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774737&fecha=26/01/2001  # NOM-001-SCT-2-2000 numeral 5.1.1 (300 x 150 mm) and the 'entrará en vigor sesenta días naturales después de su publicación' clause"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=5442476&fecha=24/06/2016  # 2016 NOM Transitorio SEGUNDO — the cancellation that ends this period"
+    notes: >-
+      THE ONE-BACK national private car format — three letters and two
+      two-digit groups, the shape most Mexicans still picture when they picture a
+      plate. PERIOD DISCIPLINE, and it matters here: 2001 is an INSTRUMENT date,
+      not a first-issue date. NOM-001-SCT-2-2000 was published on 26 January 2001
+      and took effect sixty calendar days later, but its own numeral 5.1.4
+      addresses states that "ya hayan efectuado su canje total de placas" in 1998
+      or 1999 — so AAA-00-00 plates were already on the road when the instrument
+      that documents them appeared, and the true creation date of the format is
+      NOT pinned by any primary secured in this pass. period.end 2016 is the
+      cancellation of the 2000 NOM by the 2016 NOM's Transitorio SEGUNDO; plates
+      already issued stayed valid to the end of their trienio and beyond.
+
+  - id: mx-private-truck-2001
+    class: standard
+    categories: [truck]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL-99-999"
+      regex: '\A[A-Z]{2}-\d{2}-\d{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 8 'Camiones — AA-00-000'"
+    notes: >-
+      One-back private TRUCK format of the entidades federativas. Two letters and
+      a 2+3 digit split — replaced in 2016 by AA-0000-A, which keeps the two
+      leading letters and moves to a single four-digit block plus a check letter.
+
+  - id: mx-private-bus-2001
+    class: standard
+    categories: [bus]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9-LLL-99"
+      regex: '\A\d-[A-Z]{3}-\d{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 8 'Autobuses — 0-AAA-00'"
+    notes: >-
+      One-back private BUS format of the entidades federativas — the closest
+      shape in the whole Mexican corpus to the 2016 private bus order
+      (00-AAA-00), differing only in the leading group's width, which is exactly
+      the kind of near-collision an era-inference engine has to handle.
+
+  - id: mx-private-trailer-2001
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9-LL-9999"
+      regex: '\A\d-[A-Z]{2}-\d{4}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 8 'Remolques — 0-AA-0000'"
+    notes: >-
+      One-back private TRAILER format of the entidades federativas, replaced in
+      2016 by 0AA-000-A.
+
+  - id: mx-cdmx-private-car-2001
+    class: standard
+    categories: [car]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999-LLL"
+      regex: '\A\d{3}-[A-Z]{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 7 'Transportes Privados (Distrito Federal) — Automóviles — 000-AAA'"
+    notes: >-
+      One-back DISTRITO FEDERAL private car format. Note the name change the
+      instruments record: the 2000 NOM says Distrito Federal throughout, the 2016
+      NOM says Ciudad de México throughout — the 2016 constitutional reform is
+      visible in the plate law. The format also inverts: 000-AAA became A00-AAA.
+
+  - id: mx-cdmx-private-truck-2001
+    class: standard
+    categories: [truck]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99-99-LL"
+      regex: '\A\d{2}-\d{2}-[A-Z]{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 7 'Camiones — 00-00-AA'"
+    notes: >-
+      One-back DISTRITO FEDERAL private truck format — two digit pairs then two
+      letters, a shape the 2016 NOM abandons entirely.
+
+  - id: mx-public-car-2001
+    class: taxi
+    categories: [car]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99-99-LLL"
+      regex: '\A\d{2}-\d{2}-[A-Z]{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 10 'Público Local (Entidades Federativas) — Automóviles — 00-00-AAA' (and row 3, the fronterizo equivalent, same order)"
+    notes: >-
+      One-back PÚBLICO LOCAL car format of the entidades federativas. The 2000
+      NOM gives the SAME order to the border público-local row, so this shape
+      covered both, exactly as A-000-AAA does in the 2016 NOM.
+
+  - id: mx-historic-2001
+    class: historic
+    categories: [car, truck, motorcycle]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL-99"
+      regex: '\A[A-Z]{2}-\d{2}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: mechanism
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 11 'Transportes Privados (Autos Antiguos) — Entidades Federativas — AA-00'"
+    notes: >-
+      One-back AUTO ANTIGUO format of the entidades federativas — four
+      characters, and the same shape the 2000 NOM gives to SCT road-inspection
+      vehicles (row 13, AA-00), which the 2016 NOM keeps for inspection while
+      moving historics to AA-0-A. A four-character Mexican string is therefore
+      genuinely ambiguous across eras and classes and a parse API must say so.
+
+  - id: mx-police-2001
+    class: police
+    categories: [car, truck, van, motorcycle]
+    period: { start: 2001, end: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99-999"
+      regex: '\A\d{2}-\d{3}\z'
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { finish: retroreflective }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=774741&fecha=26/01/2001  # Apéndice C row 4 'Corporaciones Policiacas y de Vigilancia — Todo tipo de vehículos — 00-000'"
+      - "https://www.dof.gob.mx/nota_detalle.php?codigo=2060390&fecha=25/09/2000  # Acuerdo ARTICULO NOVENO — the plate characters had to correspond to the unit's número económico"
+    notes: >-
+      One-back POLICE format — five DIGITS and nothing else, the only
+      all-numeric series either NOM ever prescribed, and the direct consequence
+      of the Acuerdo's rule that a patrol plate had to reproduce the vehicle's
+      fleet number. The 2016 NOM abandons it for AA-000A-0.
