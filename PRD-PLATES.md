@@ -325,6 +325,26 @@ photographs").
 |---|---|
 | Government/authority pages, statutes, gazettes (RDW, DVLA, BOE, EUR-Lex, UNECE, state DMVs) | PRIMARY. Facts extractable; cite the page per claim; archive the fetch |
 | EU/intl law (Reg. 2411/98, Vienna Convention annexes) | normative for what they mandate — quote articles, not summaries. MEASURED CAUTIONS (EU dossier): 2411/98 is a MUTUAL-RECOGNITION instrument, not a design standard — its annex is a scanned bitmap with no geometry and no per-country code list; Euroband millimetres come from NATIONAL law (ES Anexo XVIII, DE FZV Anlage 4). The 1968 Vienna Convention AS ADOPTED forbids incorporating the distinguishing sign in the plate (Annex 3 §3, UNTS 1042); the amendment permitting it is UNVERIFIED (UNECE 403s) — never state the amended rule as sourced until pinned |
+**§2.6 — PER-JURISDICTION SERIAL ALPHABET (owner ruling 2026-08-02, decision 2).**
+A jurisdiction may declare `serial_alphabet:` at the top of its dossier — a
+String of the EXACT characters its plates print. It REPLACES the dataset-wide
+set from `_meta/separators.yml` for that file, so a reader sees the whole truth
+in one place; absent, the global set applies and nothing changes. The lint
+fails any pattern literal or regex class member outside the effective set, and
+fails a declaration that collides with an emitted separator.
+
+**NO SILENT FOLDING, EVER.** Croatia prints six area codes with a caron
+(`ČK KŽ PŽ ŠI VŽ ŽU`). `ŠI` ASCII-folds to `SI`, which was itself a Croatian
+area code in the earlier system (Sisak, before SK) — unambiguous against the
+CURRENT table, ambiguous against a historic plate. That is the worst shape of
+error: current data stays self-consistent while old plates decode wrong. Record
+both forms (`code:` + `code_ascii:`, as `_decode/hr-cities.yml` does); never
+substitute one for the other.
+
+A narrower regex than the issuing grammar is still `matching: strict` (§2.7) —
+correct-but-incomplete, not wrong. Widening it is a DATA change with matching
+consequences and belongs in its own PR, never inside a schema change.
+
 | Wikipedia (the plates corpus is genuinely excellent) | **EXTRACTION AUTHORIZED — owner override, Javi, 2026-08-02.** This row read LOCATOR ONLY, never systematic text/table extraction, until the owner overrode it explicitly and on an informed basis (the CC-BY-SA ShareAlike consequence was put to him in full first). Facts — codes, indices, years, table contents — may be extracted. **FOUR conditions, and the first is the only one whose breach is defined as a violation:** (1) every Wikipedia-derived fact carries `period_evidence: secondary-wikipedia` (or the nearest accurate secondary tier) PLUS the article URL, and a rev date where cheap — an UNTAGGED Wikipedia-derived fact is the violation, because the tag is the reversibility guarantee: if the decision is ever revisited, every such fact must be enumerable in one pass. (2) FACTS IN OUR EXPRESSION — our schema, our ordering, our wording; never copied prose, never a table arrangement mirrored verbatim where the instrument orders differently. (3) EXCEPT where identity IS form: codepoints, permitted-letter sets, exact serial grammars and separators are copied EXACTLY — Greek Α (U+0391) is not Latin A (U+0041), and our-expression never licenses transliteration. (4) PRIMARY INSTRUMENT REMAINS FIRST, unchanged — not for licence reasons but because a statutory annex is better evidence and a stronger artifact than an article. The fingerprint-diff verification pass LABELS Wikipedia-shaped tables rather than rejecting them: detection is provenance now, and what fails review is Wikipedia-derived content claiming `instrument-in-force`. |
 | Enthusiast references (worldlicenseplates, olavsplates, plateshack, europlate...) | facts-uncopyrightable applies; no text copying; treat as corroboration + gap-finders, cite what was actually used; their PHOTOS are never copied |
 | Wikimedia Commons plate images | NOT copied into the dataset. License texture recorded per §6; our renders are generated, not derived |
