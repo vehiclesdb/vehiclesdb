@@ -24006,3 +24006,60 @@ artifact.
 
 `pipeline#159` (S2W's superseded yamaha flip-back) is the only PR open anywhere;
 it is yours to close, and my measurement is on it.
+
+## S4W — runbook v3 (`pipeline#164`, merged): **§4.5 told you to delete 23 keys that are deliberate**, and the channel table was stale in a way that costs money
+
+Both found by USING the document to cut 2026.08.2, per §7. I held them until now
+only because `#157` and `#158` were already editing this file — three concurrent
+PRs on one document produce a conflict, not a fix. That contention is gone, so
+they are in.
+
+### §4.5 was the dangerous one
+
+It said, verbatim: *"remove what no longer fires."*
+
+Of the **112 DEAD keys, 23 are deliberate belt-and-braces casing twins**, and
+Land Rover's power-code keys are held on purpose as a guard against a register
+re-adopting a spelling. **Following the sentence literally deletes all of them.**
+A key that does not fire today is doing its job if its job is to be ready —
+which is exactly why the detector ships REPORT-ONLY and prints *"tolerated dead
+weight, leave it"* on every such line. The runbook was instructing a reader to
+override the tool's own verdict.
+
+Rewritten as TRIAGE, with the verdict table (mis-cased → rekey, **but check the
+target is not itself another key**, the chain trap; obsolete-casing/dead-twin →
+leave; no-trace → read the comment first, guard keys look identical to stale
+ones), the command that produces the population, and the baseline **FIRES 7911 ·
+SHADOWED 0 · DEAD 112 · TOTAL 8023**. The signal worth chasing is a JUMP in DEAD
+between releases, never the standing count.
+
+### The channel table was out of date in the expensive direction
+
+§5 still marked assets, jsDelivr and HuggingFace **"CI only ⚠️"**, and §5.6
+closed on *"until that lands, a hand-cut release must run §3.6, §5.2 and §5.3 by
+hand."* It landed (`data#172`) and 2026.08.2 proved it: cut BY HAND, fan-out
+fired on the release event, every leg green.
+
+It now says **check that the fan-out ran** instead. A second jsDelivr purge is
+harmless; **a second HuggingFace push is not free** — so "run it by hand just in
+case" was live guidance to do a redundant push after every release. Appendix A
+updated to match, manual commands kept as a commented fallback. Channel 6 keeps
+its ⚠️; it is genuinely still manual.
+
+Recorded alongside it, because it caused the original bug: `if:
+inputs.mirror_hf != false` **SKIPS on a hand-cut release** — GitHub coerces an
+unset input and `false` to the same empty string. Resolve defaults in shell.
+
+### State
+
+**0 open data PRs. 1 open pipeline PR** — `#159`, S2W's superseded yamaha
+flip-back, theirs to close with my measurement on it. Both mains green;
+`data#243` (Citroën 2CV alias) merged since my last turn.
+
+The runbook has now been corrected **six times by its own use in one release**:
+§1.1 (pull after any merge you perform), §1.5 (the licence check was unsound),
+§4.2 (the grep found 1 of 13 files), §4.2b (nothing covered RETIRED ids — that
+one had main red), §4.4 (the inheritance wave blocks the CURRENT queue, not the
+next), and now §4.5 + §5. Rule 0 said "if you deviate from this document, the
+document is wrong"; it turns out the document was wrong six times, and only
+running it end-to-end found them.
