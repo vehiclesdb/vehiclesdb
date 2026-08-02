@@ -87,6 +87,13 @@
 # description. Likewise the 1990s code list (the popis attached to NN 12/93,
 # 22/93, 19/96, 149/02), which NN 12/1993 čl. 34 expressly kept alive for a
 # transitional period and which was not fetched.
+# The registration-area position prints six codes with a caron (ČK KŽ PŽ ŠI
+# VŽ ŽU). Declared here in exact codepoints per PRD-PLATES §2.6 so the regexes
+# below can express the plate's REAL alphabet instead of an ASCII shadow of it.
+# The SERIAL-suffix position does NOT carry diacritics — see regex_strict, which
+# enumerates the Croatian alphabet without them — so only the AREA position is
+# widened. One pattern token `L`, two different letter alphabets.
+serial_alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ČŠŽ"
 jurisdiction: hr
 authority:
   name: Ministarstvo unutarnjih poslova Republike Hrvatske — Pravilnik o registraciji i označavanju vozila
@@ -299,8 +306,8 @@ series:
     matching: strict
     format:
       pattern: "LL 9999-LL"
-      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
-      regex_strict: '\A[A-Z]{2} ?\d{3,4}[- ][ABCDEFGHIJKLMNOPRSTUVZ]{1,2}\z'
+      regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      regex_strict: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][ABCDEFGHIJKLMNOPRSTUVZ]{1,2}\z'
       charset:
         letters: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, R, S, T, U, V, Z]
         letters_excluded: [Q, W, X, Y]
@@ -344,7 +351,7 @@ series:
     variants:
       - class: personalized
         name: "registarske pločice po narudžbi"
-        format: { pattern: "LL 9999-LL", regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
+        format: { pattern: "LL 9999-LL", regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
         period: { start: 2018 }
         note: >-
           A TO-ORDER mark, not a vanity mark: čl. 21 st. 1 lets the owner order
@@ -359,7 +366,7 @@ series:
           - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 21 st. 1-2"
       - class: temporary
         name: "green characters — foreigners and temporary registration"
-        format: { pattern: "LL 9999-LL", regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
+        format: { pattern: "LL 9999-LL", regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
         design: { foreground: "#008000", hex_basis: observed }
         note: >-
           Čl. 18 st. 3, verbatim: "Na registarskim pločicama za vozila stranaca
@@ -374,7 +381,7 @@ series:
           - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 3"
       - class: standard
         name: "red characters — oversize and overweight vehicles"
-        format: { pattern: "LL 9999-LL", regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
+        format: { pattern: "LL 9999-LL", regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
         design: { foreground: "#CC0000", hex_basis: observed }
         note: >-
           Čl. 18 st. 4: red characters "za vozila koja ne odgovaraju propisanim
@@ -419,7 +426,7 @@ series:
     matching: strict
     format:
       pattern: "LL 9999-LL"
-      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
       charset: { letters_excluded: [Q, W, X, Y], notes: "no alphabet provision appears in NN 12/1993 at all — the exclusion is carried over from the modern instruments and is weaker evidence here than on hr-standard-2016. Recorded as such; no regex_strict is shipped for this series." }
       separator_note: "as on hr-standard-2016 — the arms occupy the first gap, the hyphen the second, and NN 12/1993 čl. 18 spells neither."
     design:
@@ -469,8 +476,8 @@ series:
     matching: strict
     format:
       pattern: "LL 9999-LL"
-      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
-      regex_strict: '\A[A-Z]{2} ?\d{3,4}[- ][ABCDEFGHIJKLMNOPRSTUVZ]{1,2}\z'
+      regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      regex_strict: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][ABCDEFGHIJKLMNOPRSTUVZ]{1,2}\z'
       charset: { letters_excluded: [Q, W, X, Y], notes: "as common.alphabet" }
       layout_note: "the same mark on a SQUARE plate, laid out over three lines in Obrazac 5: area code and arms on line 1, digits on line 2, letters on line 3. The hyphen is not printed in the two-line arrangement — a rendering fact, not a format fact."
     design:
@@ -504,7 +511,7 @@ series:
     matching: strict
     format:
       pattern: "LL 9999-LL"
-      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      regex: '\A[A-ZČŠŽ]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
       charset: { letters_excluded: [Q, W, X, Y] }
     design:
       plate: { note: "Obrazac 6; dimensions NOT legible in the published raster — recorded gap" }
@@ -534,7 +541,7 @@ series:
     matching: recall-only
     format:
       pattern: "LL LLLLLL"
-      regex: '\A[A-Z]{2} ?[A-Z0-9]{1,7}(?:-[A-Z0-9]{1,6})?\z'
+      regex: '\A[A-ZČŠŽ]{2} ?[A-Z0-9]{1,7}(?:-[A-Z0-9]{1,6})?\z'
       charset:
         letters_extra: [X, Y, W]
         notes: "čl. 22 st. 3, verbatim: 'Registarski broj iz stavka 1. ovoga članka simetrično je otisnut te uključuje i strana slova X, Y i W.' The by-choice mark is the ONLY Croatian mark that may carry them."
@@ -597,7 +604,7 @@ series:
     matching: strict
     format:
       pattern: "LL PV-999"
-      regex: '\A[A-Z]{2} ?PV[- ]\d{3,4}\z'
+      regex: '\A[A-ZČŠŽ]{2} ?PV[- ]\d{3,4}\z'
       grammar: "Čl. 18 st. 8 NN 130/2017, verbatim: 'Broj registarskih pločica za oldtimere (starodobna vozila) sastoji se od slovne oznake PV i tri ili četiri numeričke oznake.' PV = povijesno vozilo. The area code and arms are retained; čl. 18 st. 9 applies the ordinary plate forms and glyph drawing to it."
     design:
       plate: { note: "čl. 18 st. 9 applies st. 5-7 — the same Obrasci 3-6 as the ordinary plate" }
@@ -630,7 +637,7 @@ series:
     matching: strict
     format:
       pattern: "LL PP-999"
-      regex: '\A[A-Z]{2} ?PP[- ]\d{3,4}\z'
+      regex: '\A[A-ZČŠŽ]{2} ?PP[- ]\d{3,4}\z'
       grammar: "Čl. 39 st. 2 NN 130/2017: 'Broj prenosivih pločica sastoji se od slovne oznake PP i tri ili četiri numeričke oznake.' PP = prenosive pločice."
     design:
       plate: { note: "čl. 39 st. 3 applies čl. 18 st. 5-7 — the ordinary Obrasci" }
