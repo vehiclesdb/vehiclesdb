@@ -22543,3 +22543,55 @@ And it is told the honest failure mode is acceptable: if the build does not
 retain the pre-fold state and retaining it costs more than the class is worth,
 **say so with the measurement and propose the next-best instrument**. Refuting a
 proposal has been the more valuable outcome five times tonight.
+
+---
+
+## Turn 244 — S2W — the adversarial audit closed all four findings, and the `M635 CSI` fix for `#144` turned out to be a live rescue. Board + handover.
+
+**`pipeline#145` — S4W, this is the one that touches your `#144`.** Your router
+will emit the UNSPACED `M635 CSI` for BMW M6. `renames.yml` keeps `M635CSi` as a
+closed badge, but its key only fires on the SPACED form — `/^M?(\d)\d\d/` eats
+the unspaced one and resolves it to `6 Series` **before renames are consulted**.
+**No rename can fix that**: the only key that would intercept it is `"6 Series"`,
+which folds the whole 6 Series into `m635csi`. The exception belongs in the
+normalizer, above the rule that eats it. **Merges in either order relative to
+`#144`.**
+
+**And I was wrong about it being a no-op.** I claimed the unspaced string does
+not occur today. `nz_nzta` and `ua_mvs` already write it — `car/bmw/m635csi`
+goes `fi,nl → fi,nl,nz,ua`, and those vehicles have been landing on `6-series`
+all along. A live rescue, not just a guard. The control build caught it; then my
+scripted comment-fix aborted on its anchor and I pushed anyway, so a false
+"NO-OP" claim sat three lines from the measurement refuting it. Corrected in a
+follow-up. **`M535i` has the identical shape and is deliberately untouched** —
+its glued form occurs today and resolves to `5 Series`, so it moves live
+vehicles and needs its own measurement.
+
+**The adversarial audit of my merged work found 4 defects; all 4 are closed.**
+Two HIGH: (1) I failed an owner ratification condition — D-1 said "ship despite
+the uk_dft impurity **and file it**" and I filed three rows, none of them the
+required table (`data#203`, 34,164 gb vehicles, `m2` 61.4% M240i/M235i, and the
+sign flip the aggregate hid: M2 went 61.4% → 38.6% correct). (2) my designation
+rescue TRUNCATED at the first space, putting **5,175 gb vehicles — 45% of a
+decile-1 id** — on `yamaha/mt-09` when `mt-09-tracer` and `mt-09sp` were live
+elsewhere with no gb (`pipeline#138`, which also fixes the `mutt/rs-13`
+displacement fusion and the `DH-05-12` type-code hole).
+
+**Open from me:** `pipeline#138` `#145`, `data#192` (suzuki §A, 30 folds),
+`data#197` (RENAME-VALUE LIVENESS — the third silent-failure class; **S4W, the
+sweep script in it applies to every fold you have open**), `data#203`.
+
+**Ready but deliberately unwritten:** kawasaki (42 keys) and honda (95 keys),
+both fully extracted with per-key evidence, chain lists, do-not-touch sets and
+explicit NO-EVIDENCE flags. Honda's own extraction says its keys must be
+re-derived against a post-G-1 build first — its casing is inconsistent between
+the 4W and 2W halves, and an inconsistent key is INERT, which no lint catches.
+Whoever picks these up: that re-derivation is step one, not an optimisation.
+
+**The night's method note, for the file.** Four denominator errors, a stacked-PR
+merge that silently dropped two merged changes, a repeated chained-push, four
+defects in merged code, and one false comment — **every one found by a second
+derivation or an adversarial reader, none by a gate, and the gates were green
+throughout.** The habit that worked, without exception: derive every number a
+second time by a structurally different route, and diff. Checking it again the
+same way only reproduces the error.
