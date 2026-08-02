@@ -1,0 +1,1105 @@
+# plates/si.yml — Slovenia (PRD-PLATES gate L1, wave 2).
+#
+# EVERY format, colour, dimension and class claim here is read from the Uradni
+# list Republike Slovenije, in the instruments' own published text, on
+# 2026-08-02. FIVE instruments carry the file, and between them they date every
+# Slovenian plate change since independence:
+#   * Pravilnik o registraciji motornih in priklopnih vozil, Uradni list RS,
+#     št. 48/2011 z dne 24. 6. 2011 — THE CURRENT BASE. 27.-33. člen (plates),
+#     35. člen (chosen marks), 38.-41. člen (export, missions, historic, test),
+#     Priloga IV (area codes), Priloga V (dimensions), Priloga VI (19 specimen
+#     drawings). 58. člen: "Ta pravilnik začne veljati 4. julija 2011."
+#   * Pravilnik o registrskih tablicah motornih in priklopnih vozil, Uradni
+#     list RS, št. 83/2006 z dne 4. 8. 2006 — the GREEN BORDER instrument.
+#   * Pravilnik o registrskih tablicah motornih in priklopnih vozil, Uradni
+#     list RS, št. 29/2004 z dne 26. 3. 2004 — the EU-BAND instrument, and the
+#     one that made the border BLACK.
+#   * Pravilnik o registrskih tablicah motornih in priklopnih vozil, Uradni
+#     list RS, št. 95/2001 z dne 29. 11. 2001 — "Ta pravilnik začne veljati
+#     1. decembra 2001."
+#   * Pravilnik o obrazcih prometnih dovoljenj in vozniškega dovoljenja ter o
+#     registrskih tablicah, Uradni list RS, št. 5/1992 z dne 31. 1. 1992 —
+#     THE FOUNDING INSTRUMENT of independent Slovenia's plate.
+#
+# THE SIX STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE COAT OF ARMS IS THE DECODE, NOT THE LETTERS. 28. člen (1), verbatim:
+#    "Za oznako registracijskega območja je grb OBČINE, kjer je sedež UPRAVNE
+#    ENOTE v tem registracijskem območju." There are only ELEVEN area codes but
+#    FIFTY-EIGHT upravne enote, so thirteen visually different plates all read
+#    "LJ" and only the shield separates Kočevje from Domžale from Ljubljana. The
+#    Slovenian plate carries strictly more geography than its text does, and a
+#    text-only parser throws that away. Both levels are in
+#    plates/_decode/si-regions.yml.
+#
+# 2. THE HYPHEN IS IN THE REGULATION, AND ITS RULE CHANGED TWICE. 1992
+#    (6. člen): "Za drugim znakom registrske oznake vozila je pomišljaj" — after
+#    the SECOND character. 2006 (2. člen (2)): "Za zaporedjem črk ali številk je
+#    pomišljaj" — after the run. 2011 (28. člen (1)): "Za prvim delom zaporedja
+#    črk ali številk je pomišljaj" — after the first PART. Three wordings, one
+#    glyph, and all three are primary. Every `pattern` here prints it.
+#    Slovenia's specimen drawings render it as a raised dot; the dataset writes
+#    the hyphen the LAW names, because U+00B7 is in the forgiving set of
+#    plates/_meta/separators.yml but not the emitted set (PRD-PLATES §2.6).
+#
+# 3. THE CHARSET RULE IS THIRTY-FOUR YEARS OLD AND ALMOST UNCHANGED. 1992
+#    (15. člen): "se v registrski oznaki vozila ne uporablja črk O, Č, Š in Ž
+#    ter črke B v kombinaciji s številko 8, I v kombinaciji s številko 1 in G v
+#    kombinaciji s številko 6." 2011 (30. člen (2)): "Pri kombinacijah črk in
+#    številk je v neposredni povezavi prepovedana uporaba črke »I« in številke
+#    »1«, črke »B« in številke »8« ter črke »G« in številke »6«. Črka »O« se ne
+#    sme uporabiti. Registrska oznaka je sestavljena iz črk slovenske abecede,
+#    razen črk Č, Š, Ž." The 2011 text adds the SLOVENE-ALPHABET basis, which is
+#    what excludes Q, W, X and Y — and 35. člen (3) then re-admits X, Y and W
+#    for CHOSEN marks only. One rule genuinely flipped: in 2006 "Črka »O« se
+#    zapiše kot številka »0«" (write O as zero); in 2011 O is simply forbidden.
+#    THE ADJACENCY RULE IS DELIBERATELY NOT ENCODED IN ANY REGEX HERE — see
+#    common.alphabet.adjacency for why, and treat that as a recorded gap.
+#
+# 4. THE 2006 INSTRUMENT HAS NO APPLICATION DATE, AND THIS FILE SAYS SO.
+#    83/2006's 21. člen: "Ta pravilnik začne veljati petnajsti dan po objavi v
+#    Uradnem listu Republike Slovenije, UPORABLJATI PA SE ZAČNE ŠEST MESECEV PO
+#    SKLENITVI POGODBE O IZDELAVI IN DOBAVI REGISTRSKIH TABLIC." The trigger is
+#    a procurement contract whose date the instrument does not state and which
+#    this pass could not pin. So the green-border series' start is the one date
+#    in the file that is NOT primary: it is carried as 2008 on secondary
+#    evidence, labelled `secondary-wikipedia`, with the alternative reading
+#    (2006/2007) stated rather than averaged away.
+#
+# 5. THE BORDER WENT GREEN, BLACK, GREEN — AND THE WIDELY REPEATED "BLUE" IS
+#    WRONG. 1992 (6. člen) and 2001 (2. člen): "obrobljena z ZELENO črto".
+#    2004 (2. člen (2)): "bele barve, obrobljene s ČRNO črto" — the EU-band
+#    pravilnik replaced the green edge with a black one. 2006 (2. člen (2)):
+#    "Registrska tablica je obrobljena z ZELENO obrobno črto" — green again.
+#    en.wikipedia describes the 2008 change as a reversion "from previous blue";
+#    the primaries say the previous border was BLACK, and blue is the POLICE
+#    plate's border (2004 čl. 20, 2006 čl. 16). Recorded as a folklore
+#    correction, not silently adopted.
+#
+# 6. THE EU BAND IS DATED TO THE DAY BY THE INSTRUMENT ITSELF, and the date is
+#    an event rather than a calendar date: 29/2004's 27. člen, verbatim: "Ta
+#    pravilnik začne veljati petnajsti dan po objavi v Uradnem listu Republike
+#    Slovenije, uporabljati pa se začne Z DNEM PRISTOPA REPUBLIKE SLOVENIJE V
+#    EVROPSKO UNIJO" — 1 May 2004. The gazette date, 26 March 2004, is not the
+#    period start. This is the Spanish-decree trap avoided in the one place a
+#    Slovenian dossier could most easily fall into it.
+#
+# ON THE SFRY ERA — see common.predecessor_system. Decided, stated, and NOT
+# authored as a series here; the same decision is taken in plates/hr.yml, and
+# the reason is that one shared historical layer must not be duplicated into
+# two national files.
+jurisdiction: si
+authority:
+  name: Ministrstvo za infrastrukturo Republike Slovenije — Pravilnik o registraciji motornih in priklopnih vozil
+  url: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292"
+binding: vehicle
+binding_note: >-
+  The mark is assigned to the VEHICLE, but the ARMS bind to the OWNER'S
+  RESIDENCE AT ISSUE — the 2004 instrument states it outright (22. člen (1):
+  the arms are those of the town "v kateri ima lastnik vozila, OB IZDAJI
+  REGISTRSKIH TABLIC, svoje stalno prebivališče"). A vehicle-keyed consumer may
+  join on the mark; a geography-keyed consumer must treat the shield and the
+  code as evidence about the registrant at issue, exactly as in Croatia.
+instrument:
+  citation: "Pravilnik o registraciji motornih in priklopnih vozil, Uradni list RS, št. 48/11"
+  enabling: "Zakon o motornih vozilih (Uradni list RS, št. 106/10) — the pravilnik's 1. člen names it and 30. člen of that zakon supplies the registration organisations"
+  objava: "2011-06-24"
+  uveljavitev: "2011-07-04"
+  uveljavitev_source: "58. člen, verbatim: 'Ta pravilnik začne veljati 4. julija 2011.' A named calendar date, not a formula — the strongest kind of period evidence."
+  deferred_provisions:
+    - "31. člen (the detailed form of the lettering) applies 'z dnem uveljavitve tehnične specifikacije za obliko zapisa na registrskih tablicah' — an UNDATED trigger, and the technical specification itself was not located in this pass. Recorded gap; it is why no glyph geometry appears in this file."
+    - "35. and 40. člen (chosen marks; historic-vehicle plates) apply from 4 February 2013 — 56. člen, 'Določbe 35. in 40. člena tega pravilnika se začnejo uporabljati 4. februarja 2013.' Those two series therefore start in 2013, not 2011."
+  repealed:
+    - "Pravilnik o registraciji motornih in priklopnih vozil (Uradni list RS, št. 66/05, 48/06, 66/07) — ceased to apply on 2011-07-04 except two annexes with their own run-out dates (57. člen)"
+    - "Pravilnik o registrskih tablicah motornih in priklopnih vozil (Uradni list RS, št. 83/06), except 5. and 14. člen which applied until 4 February 2013 (57. člen)"
+  survival_clause: >-
+    57. člen (2), verbatim and important: "Ne glede na prejšnji odstavek se
+    pravilnika iz prejšnjega odstavka UPORABLJATA ZA VOZILA POLICIJE IN VOZILA
+    SLOVENSKE VARNOSTNO-OBVEŠČEVALNE AGENCIJE do izdaje predpisov iz tretjega
+    odstavka 27. člena zakona." The 2005/2006 instruments remain the operative
+    law for police and SOVA vehicles. Whether those replacement regulations have
+    since issued was NOT established in this pass — a recorded gap that the
+    si-police series carries on its face.
+
+common:
+  plate_text_structure: >-
+    28. člen (1), verbatim and complete: "Na registrski tablici, katere podlaga
+    je bela, je na levi strani modro polje z »evropskim znakom«, ki je oblikovan
+    v skladu z Uredbo Sveta (ES) št. 2411/98 … »Evropski znak« je zlato rumene
+    barve, pod njim je mednarodna nacionalna oznaka Republike Slovenije v beli
+    barvi. Registracijsko območje je označeno s črnimi črkami, registrska oznaka
+    vozila pa s črnimi črkami in številkami. Za oznako registracijskega območja
+    je grb občine, kjer je sedež upravne enote v tem registracijskem območju
+    (29. člen tega pravilnika). Za prvim delom zaporedja črk ali številk je
+    pomišljaj. Registrska tablica je obrobljena z zeleno obrobno črto."
+    Five zones, left to right: EU field — area code — municipal arms — mark —
+    and a green line around the whole thing.
+  euro_band:
+    side: left
+    content: eu-stars+SLO
+    distinguishing_sign: "SLO"
+    statute: "28. člen (1). Note the three-letter national sign — Slovenia is one of the EU states whose distinguishing sign is not two letters, which a fixed-width band renderer must accommodate."
+    scope: "28. člen (2): 'Predpisani »evropski znak« je vsebinski del vseh registrskih tablic, razen registrskih tablic vozil za izvoz.' The band is on EVERY Slovenian plate except the export plate — including the historic plate and the diplomatic plate, and unlike Austria, where the band follows the plate's colour."
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 28. člen (1)-(2). Accessed 2026-08-02"
+  emblem:
+    what: "grb občine, kjer je sedež upravne enote v tem registracijskem območju (28. člen (1))"
+    absent_on: "28. člen (2): 'Grba občine ne vsebujejo registrske tablice za vozila za izvoz ter vozila tujih konzularnih in diplomatskih predstavništev.'"
+    execution: "28. člen (3): 'Grafična oblika grba občine za uporabo na registrski tablici mora biti prilagojena grafični obliki registrske tablice.' The regulation requires the arms to be redrawn for the plate — so the plate arms are not simply the municipal arms as blazoned."
+    artwork_risk: unresearched
+    artwork_note: >-
+      Fifty-eight municipal coats of arms, each protected under its own
+      municipal instrument and none assessed in this pass. PRD-PLATES §3
+      applies: every series below carries `rendered: placeholder`.
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 28. člen. Accessed 2026-08-02"
+  alphabet:
+    letters: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, P, R, S, T, U, V, Z]
+    excluded: [O, Q, W, X, Y, "Č", "Š", "Ž"]
+    statute: >-
+      30. člen (2): "Črka »O« se ne sme uporabiti. Registrska oznaka je
+      sestavljena iz črk slovenske abecede, razen črk Č, Š, Ž." The Slovene
+      alphabet is A B C Č D E F G H I J K L M N O P R S Š T U V Z Ž — twenty-five
+      letters, and it contains NO Q, W, X or Y. Remove Č, Š, Ž and O and
+      twenty-one letters remain. This is the file's only derived set, and the
+      derivation is arithmetic on a quoted premise rather than an inference.
+    vanity_exception: "35. člen (3): 'Ne glede na drugi odstavek 30. člena tega pravilnika, sme izbrani del oznake registrske tablice vsebovati tudi črke X, Y in W. Vsebuje lahko tudi črko O, vendar v tem primeru ne sme oznaka vsebovati številke 0.'"
+    adjacency:
+      rule: "30. člen (2): 'Pri kombinacijah črk in številk je v neposredni povezavi prepovedana uporaba črke »I« in številke »1«, črke »B« in številke »8« ter črke »G« in številke »6«.'"
+      not_encoded: >-
+        DELIBERATELY ABSENT FROM EVERY REGEX IN THIS FILE. "V neposredni
+        povezavi" — in direct connection — is not defined in the pravilnik, and
+        because the mark is built from HOMOGENEOUS blocks separated by a
+        hyphen, the only place an I could ever be adjacent to a 1 is across that
+        hyphen. Whether the hyphen breaks the adjacency is exactly the question
+        the text does not answer. Encoding either reading in `regex_strict`
+        would ship an interpretation as a fact, so neither is encoded and the
+        ambiguity is recorded here. A future pass with the technical
+        specification (31. člen) in hand can close it.
+    no_space_substitution: "30. člen (2), final sentence: 'Posameznega znaka se ne sme nadomestiti s presledkom.' A character may not be replaced by a space — which is a primary source for the proposition that the printed gaps are NOT part of the mark."
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 30. člen (2), 35. člen (3). Accessed 2026-08-02"
+  mark_combinations:
+    five_character: ["999LL", "LL999", "99LLL", "LLL99", "9LLL9"]
+    four_character: ["99LL", "LL99", "999L", "9LL9"]
+    statute: >-
+      30. člen (1): five characters on every plate except the 180x180 and
+      150x110 sizes, which take four or five. (3) enumerates the five-character
+      arrangements: "številka, številka, številka, črka, črka; črka, črka,
+      številka, številka, številka; številka, številka, črka, črka, črka; črka,
+      črka, črka, številka, številka; številka, črka, črka, črka, številka."
+      (4) enumerates the four-character ones: "številka, številka, črka, črka;
+      črka, črka, številka, številka; številka, številka, številka, črka;
+      številka, črka, črka, številka."
+    finding: >-
+      A CLOSED ENUMERATION, which is rare and valuable: the Slovenian mark space
+      is not "any five alphanumerics" but exactly five named shapes, so a regex
+      built as their union is the authority's own grammar rather than an
+      approximation. The 2006 predecessor listed only THREE five-character
+      shapes and TWO four-character ones; 2011 added LLL99, 9LLL9, 999L and
+      9LL9. That expansion is the reason si-standard-2008 and si-standard-2011
+      are separate series despite sharing a design.
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 30. člen; https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2006-01-3637/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 4. člen of 83/2006"
+  dimensions:
+    "520x120": { w: 520, h: 120, unit: mm, use: "M, N and O category vehicles — the default plate (risba št. 1)" }
+    "340x220": { w: 340, h: 220, unit: mm, use: "M, N and O where the rear cannot take the 520 mm plate; 27. člen (3) permits it on the REAR ONLY (risba št. 2)" }
+    "180x180": { w: 180, h: 180, unit: mm, use: "L3e, L4e, L5e, L7e — motorcycles, tricycles, heavy quadricycles (risba št. 3); also T, C and R" }
+    "150x110": { w: 150, h: 110, unit: mm, use: "L1e, L2e, L6e — mopeds and light quadricycles (risba št. 4)" }
+    note: >-
+      520 x 120 mm, not the 520 x 110 mm of Germany, Italy, the Netherlands and
+      Croatia — Slovenia sizes its plate like AUSTRIA, one centimetre taller
+      than its other neighbours. That is the single most render-relevant fact in
+      the file, and it comes from a table rather than from prose: Priloga V
+      crosses vehicle categories against the four sizes. Read from the gazette
+      PDF as a rendered page, after a column-aligned text extraction of the same
+      table mis-assigned the X marks by two columns.
+    source: "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P005-0000.PDF  # PRILOGA V, 'MERE REGISTRSKIH TABLIC ZA POSAMEZNE KATEGORIJE VOZIL'. Accessed 2026-08-02"
+  material_and_security:
+    statute: >-
+      32. člen (2): "Vse registrske in preskusne tablice, razen preskusnih
+      samolepilnih tablic, so izdelane iz aluminijaste pločevine ali drugega
+      ustreznega materiala. Vidna površina registrske in preskusne tablice je
+      odsevna in vsebuje dva zaščitna elementa, in sicer varnostno oznako »RS«
+      in virtualno varnostno oznako, ki sta vidna le pod določenim kotom."
+      (3): the export plate and the self-adhesive test plate carry no virtual
+      security mark.
+    plate_serial: >-
+      33. člen (1) — a fact with no analogue in the other wave-2 files: every
+      plate carries, ON ITS FRONT FACE, a manufacturer's serial number made of
+      "znaka »SLO« in kombinacije desetih številk", plus a barcode. So a
+      Slovenian plate bears TWO numbers: the registration mark, and a ten-digit
+      plate identity that is not the registration at all. A scraper reading
+      "SLO" plus ten digits off a photograph has not found a registration mark.
+    colorimetry: >-
+      NOT SPECIFIED IN THE PRAVILNIK. 32. člen (4) pushes it out of the
+      instrument entirely: "Natančnejša specifikacija materiala … ter barva in
+      zaščitni elementi registrske in preskusne tablice se določijo s
+      specifikacijami ministrstva ob objavi javnega naročila." The colour is
+      defined in a PROCUREMENT SPECIFICATION, not in law. Every hex in this file
+      is therefore `hex_basis: observed` — there is no Slovenian equivalent of
+      the Austrian CIE quadrangle to cite, and this clause is the primary proof
+      that there is none.
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 32.-33. člen. Accessed 2026-08-02"
+  font:
+    name: null
+    statutory_basis: "31. člen, in its entirety: 'Podrobnosti o obliki zapisa na registrski tablici so navedene v tehnični specifikaciji.' One sentence, delegating everything, to a document the pravilnik does not name, publish or date — and which 55. člen then makes the trigger for 31. člen's own application. The specimen drawings in Priloga VI are the only published glyph evidence and carry no measurements."
+    licence: "PRD-PLATES §6 applies unchanged: derive glyphs from the drawings, never from a third-party TTF. Slovenia is a WEAKER case than Germany for a public-domain argument because the operative document is a procurement specification rather than a statutory annex. Recorded gap."
+    secondary_note: "en.wikipedia names the typeface as Helvetica. That is a secondary claim about a document this pass never saw, and it is recorded here rather than in any design block."
+    secondary_evidence: secondary-wikipedia
+    secondary_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Slovenia  # 'Text in Helvetica typeface'. Accessed 2026-08-02"
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 31. člen, 55. člen. Accessed 2026-08-02"
+  predecessor_system:
+    decision: >-
+      THE SFRY SERIES IS DELIBERATELY NOT AUTHORED HERE, AND plates/hr.yml TAKES
+      THE SAME DECISION FOR THE SAME REASON. Slovenia and Croatia both left one
+      federal system in 1991; authoring it in each national file would duplicate
+      a single historical layer, give it two ids, and let the two copies drift
+      apart under later correction. It belongs in ONE historical jurisdiction
+      file at gate L4 (PRD-PLATES §7 — "historical depth, the pre-2000 world"),
+      not twice at L1. What is recorded in each national file is the HINGE, from
+      that nation's own primary, so the L4 pass has two dated anchors to work
+      from.
+    hinge: >-
+      The Slovenian hinge is quieter than the Croatian one and is worth stating
+      precisely, because it is easy to overstate. Uradni list RS, št. 5/1992 is
+      a wholly new instrument of the Republic of Slovenia; it does not repeal a
+      Yugoslav plate regulation by name. What it does is 17. člen: "Določbe
+      pravilnika o evidentiranju traktorjev in traktorskih priklopnikov (Uradni
+      list SRS, št. 3/83) in pravilnika o vozniških dovoljenjih … OSTANEJO V
+      VELJAVI, kolikor niso v nasprotju z določbami tega pravilnika" — two
+      SOCIALIST REPUBLIC OF SLOVENIA instruments of 1983 are expressly kept
+      alive so far as they do not conflict. So the 1992 break is a REPLACEMENT
+      of the plate with continuity of the surrounding administrative law.
+    hinge_evidence: transitional-provision
+    what_was_not_established: >-
+      No instrument reached in this pass states how long SFRY-era plates
+      remained valid on Slovenian roads, and 5/1992 contains no transitional
+      article about them. That is a genuine gap and is NOT filled by analogy
+      with Croatia, whose NN 12/1993 čl. 34 does address it. Recording the
+      asymmetry is the honest output: the two countries' transitions are not
+      documented to the same depth in their own gazettes.
+    source: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/1992-01-0273/pravilnik-o-obrazcih-prometnih-dovoljenj-in-vozniskega-dovoljenja-ter-o-registrskih-tablicah  # Uradni list RS, št. 5/1992 z dne 31. 1. 1992, 17. člen and 18. člen. Accessed 2026-08-02"
+
+region_encoding_tables:
+  reference: "plates/_decode/si-regions.yml"
+  bare_filename: "si-regions.yml"
+  reference_note: "the full path is what resolves and is what 77 of the 78 corpus references use; the bare filename is carried alongside because plates/ie.yml (wave 2) references its table bare, and a consumer may meet either form"
+  note: >-
+    Eleven codes (Priloga IV) crossed with fifty-eight upravne enote
+    (29. člen (1)), because the ARMS resolve below the letters. Both levels are
+    primary and both are in that file.
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — LJ [arms] 497-AR, green edge, since 2011.
+  # =========================================================================
+  - id: si-standard-2011
+    class: standard
+    categories: [car, van, truck, bus, trailer, tractor, machine]
+    period: { start: 2011 }
+    period_evidence: enacted-commencement
+    period_start_precise: "2011-07-04"
+    matching: strict
+    format:
+      pattern: "LL 999-LL"
+      regex: '\A[A-Z]{2} ?(?:\d{3}-[A-Z]{2}|[A-Z]{2}-\d{3}|\d{2}-[A-Z]{3}|[A-Z]{3}-\d{2}|\d-[A-Z]{3}\d)\z'
+      regex_strict: '\A(?:CE|GO|KK|KP|KR|LJ|MB|MS|NM|PO|SG) ?(?:\d{3}-[ABCDEFGHIJKLMNPRSTUVZ]{2}|[ABCDEFGHIJKLMNPRSTUVZ]{2}-\d{3}|\d{2}-[ABCDEFGHIJKLMNPRSTUVZ]{3}|[ABCDEFGHIJKLMNPRSTUVZ]{3}-\d{2}|\d-[ABCDEFGHIJKLMNPRSTUVZ]{3}\d)\z'
+      charset:
+        letters: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, P, R, S, T, U, V, Z]
+        letters_excluded: [O, Q, W, X, Y]
+        notes: "see common.alphabet. The exclusion is derived by arithmetic on a quoted premise (the Slovene alphabet minus Č/Š/Ž minus O), not inferred."
+      regex_strict_note: >-
+        The strict twin tightens TWO things the round-trippable regex cannot
+        carry: the 21-letter alphabet (30. člen (2)) and the ELEVEN legal area
+        codes (Priloga IV). Slovenia is one of the few jurisdictions where
+        pinning the prefix to a closed list is honest — there are eleven of
+        them, they are printed in the regulation, and unlike Austria no
+        withdrawn codes are known to be circulating. It does NOT carry the
+        I/1, B/8, G/6 adjacency rule; see common.alphabet.adjacency.
+      progression: >-
+        NOT PUBLISHED. The pravilnik enumerates the five arrangements but says
+        nothing about the order in which they are exhausted, so a Slovenian
+        plate CANNOT be dated from its serial by anything in this file.
+        Recorded gap.
+      separator_note: >-
+        TWO POSITIONS, DIFFERENT IN KIND. The gap after the area code holds the
+        MUNICIPAL ARMS (28. člen (1)) and is written as an optional emitted
+        space. The mark's own separator is a hyphen the regulation names —
+        "Za prvim delom zaporedja črk ali številk je pomišljaj" — and is
+        therefore written as a hyphen LITERAL, not as a class: unlike Croatia's
+        ordinary plate, Slovenia's separator has a statutory basis.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "risba št. 1, Priloga VI; the 340 x 220 alternative is REAR-ONLY (27. člen (3))" }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "risba št. 2 — 'Pritrjena je lahko le na zadnji strani vozila'" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "'katere podlaga je bela' (28. člen (1)) plus 'Vidna površina … je odsevna' (32. člen (2)). Colour words; the colorimetry lives in a procurement specification (see common.material_and_security)." }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", width: null, hex_basis: observed, spec_note: "'Registrska tablica je obrobljena z zeleno obrobno črto' (28. člen (1)) — a colour WORD. The hex is sampled from risba št. 1 as published in the gazette PDF and is explicitly NOT a spec claim; no width is prescribed anywhere." }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, stars_color: "#FFCC00", letter_color: "#FFFFFF", note: "'»Evropski znak« je zlato rumene barve, pod njim je mednarodna nacionalna oznaka Republike Slovenije v beli barvi' (28. člen (1))" }
+      emblem: { present: true, rendered: placeholder, position: "between the area code and the mark", note: "grb občine, kjer je sedež upravne enote — the decode-bearing element; see si-regions.yml" }
+      rear_differs: false
+      display: "front and rear except for L, O, T, C and R categories, which carry one plate — 33. člen (2)"
+      security: { marks: ["RS", "virtual mark visible only at an angle"], plate_serial: "SLO + ten digits + barcode on the front face (33. člen (1))" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    region_encoding_mechanism: >-
+      TWO LEVELS. The two letters give one of eleven registration areas
+      (29. člen (1)-(2), Priloga IV). The SHIELD gives the upravna enota inside
+      that area — 28. člen (1), "grb občine, kjer je sedež upravne enote v tem
+      registracijskem območju" — of which there are fifty-eight. A text-only
+      parse resolves the first level and must report the second as unknown
+      rather than as absent. Both bind to the owner's residence AT ISSUE
+      (see binding_note), not to the current owner or the vehicle's location.
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # Uradni list RS, št. 48/2011 z dne 24. 6. 2011 — 27. člen (plate types and forms), 28. člen (the plate), 29. člen (areas), 30. člen (the mark and its five arrangements), 32.-33. člen (material, security, plate serial), 58. člen ('Ta pravilnik začne veljati 4. julija 2011.')"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P006-0000.PDF  # PRILOGA VI, risbe št. 1-4 — the specimen 'LJ [grb] 497-AR' at 520x120, 340x220, 180x180 and 150x110 mm, and the green edge"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P004-0000.PDF  # PRILOGA IV — the eleven area codes"
+    notes: >-
+      THE CURRENT SLOVENIAN PLATE. Its period start is a named calendar date in
+      the instrument's own final article, which is the best kind of period
+      evidence and needs no interpretation. Note what did NOT change in 2011:
+      the white ground, the green edge, the municipal arms and the EU field all
+      come from the 2006 instrument, and the arms and green edge go back to
+      1992. What DID change is the MARK: 30. člen (3)-(4) expanded the closed
+      list of arrangements from three five-character shapes to five, and from
+      two four-character shapes to four, and 30. člen (2) turned the 2006 rule
+      "write O as zero" into a flat prohibition on O. That format change is why
+      this is a distinct series from si-standard-2008 rather than a redesign of
+      it.
+
+  # =========================================================================
+  # THE GREEN EDGE RETURNS — the 2006 instrument, applied on an UNDATED trigger.
+  # =========================================================================
+  - id: si-standard-2008
+    class: standard
+    categories: [car, van, truck, bus, trailer, tractor, machine]
+    period: { start: 2008, end: 2011 }
+    period_evidence: secondary-dated
+    period_start_evidence_tier: secondary-wikipedia
+    period_start_note: >-
+      THE ONE NON-PRIMARY DATE IN THIS FILE, flagged rather than smoothed over.
+      Uradni list RS, št. 83/2006 was published on 4 August 2006 and its
+      21. člen says it enters into force on the fifteenth day after publication
+      but "UPORABLJATI PA SE ZAČNE ŠEST MESECEV PO SKLENITVI POGODBE O IZDELAVI
+      IN DOBAVI REGISTRSKIH TABLIC" — six months after a supply contract whose
+      date the instrument does not give and which this pass could not locate.
+      21. člen (2) then keeps the 2004 rules running "do začetka uporabe tega
+      pravilnika". So the instrument dates the CHANGEOVER to an event, and the
+      event is undated in law. 2008 is taken from en.wikipedia, which describes
+      the green border as reverting in 2008 and is consistent with a 2007
+      procurement plus six months. THE ALTERNATIVE READING IS 2006 OR 2007 AND
+      IS NOT AVERAGED AWAY: if the contract was concluded in 2006, this series
+      begins in 2007. A future pass should look for the ministry's procurement
+      notice, which would settle it to the day.
+      Reporting the instrument's own 2006 date as the period start would be the
+      Spanish-decree error, and is not done.
+      period.end 2011 IS primary — 58. člen of 48/2011.
+    matching: strict
+    format:
+      pattern: "LL 999-LL"
+      regex: '\A[A-Z]{2} ?(?:\d{3}-[A-Z]{2}|[A-Z]{2}-\d{3}|\d{2}-[A-Z]{3})\z'
+      regex_strict: '\A(?:CE|GO|KK|KP|KR|LJ|MB|MS|NM|PO|SG) ?(?:\d{3}-[ABCDEFGHIJKLMNPRSTUVZ]{2}|[ABCDEFGHIJKLMNPRSTUVZ]{2}-\d{3}|\d{2}-[ABCDEFGHIJKLMNPRSTUVZ]{3})\z'
+      charset:
+        letters_excluded: [O, Q, W, X, Y]
+        notes: >-
+          4. člen (2) of 83/2006: "Črka »O« se ZAPIŠE KOT ŠTEVILKA »0«" — the
+          2006 rule turns O into a zero rather than forbidding it, which is a
+          different rule with the same effect on the issued alphabet. The
+          Slovene-alphabet basis (minus Č, Š, Ž) is identical to 2011.
+      grammar_note: >-
+        THREE five-character arrangements, not five: 4. člen (3) of 83/2006
+        lists only "številka, številka, številka, črka, črka; črka, črka,
+        številka, številka, številka; številka, številka, črka, črka, črka".
+        LLL99 and 9LLL9 do not exist in this series. That is the whole reason it
+        is cut separately from si-standard-2011.
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed, spec_note: "2. člen (2) of 83/2006: 'Registrska tablica je obrobljena z zeleno obrobno črto, razen registrske tablice za vozila policije, ki je obrobljena z modro obrobno črto.' The green edge returns here after four years of black." }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, note: "called 'evropski logo' in this instrument and 'evropski znak' in the 2011 one — a drafting change, not a design change" }
+      emblem: { present: true, rendered: placeholder, note: "2. člen (2): 'Za oznako registracijskega območja je grb občine.' The 2006 text says only 'the municipality'; the 2011 text spells out WHICH municipality (the one hosting the upravna enota's seat). The mechanism is the same." }
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2006-01-3637/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # Uradni list RS, št. 83/2006 z dne 4. 8. 2006 — 2. člen (the plate, the green edge, the blue police edge), 3. člen (the eleven areas), 4. člen (the mark: three five-character and two four-character arrangements), 5. člen (chosen marks), 21. člen (the undated application trigger)"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Slovenia  # the 2008 changeover year ONLY — tagged secondary-wikipedia; every other claim on this series is from the Uradni list. Accessed 2026-08-02"
+    notes: >-
+      THE SERIES THE INSTRUMENT COULD NOT DATE. Everything about its content is
+      primary and everything about its start is not, and the file says which is
+      which. Design-wise this is the plate Slovenia still uses; format-wise it
+      is a narrower mark space than the current one. Old plates were not
+      recalled at either boundary — the 2011 pravilnik has no exchange
+      obligation — so 2006-arrangement marks remain on the road inside the
+      2011 design, and the two series overlap in the wild.
+
+  # =========================================================================
+  # THE EU BAND ARRIVES — and the border goes BLACK, not blue.
+  # =========================================================================
+  - id: si-standard-2004
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2004, end: 2008 }
+    period_evidence: enacted-commencement
+    period_start_precise: "2004-05-01"
+    period_start_note: >-
+      27. člen of 29/2004, verbatim: "Ta pravilnik začne veljati petnajsti dan
+      po objavi v Uradnem listu Republike Slovenije, uporabljati pa se začne Z
+      DNEM PRISTOPA REPUBLIKE SLOVENIJE V EVROPSKO UNIJO." Accession was
+      1 May 2004. The gazette date — 26 March 2004 — is NOT the period start,
+      and the entry-into-force date (fifteen days later, ~10 April 2004) is not
+      either: the instrument distinguishes veljavnost from uporaba and this
+      dataset follows the instrument. period.end inherits the undated trigger of
+      the 2006 instrument and is therefore as soft as si-standard-2008's start.
+    matching: strict
+    format:
+      pattern: "LL 99-9999"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{2}-[A-Z0-9]{1,4}\z'
+      grammar: >-
+        2. člen (2) of 29/2004: the mark is "za motorna kolesa … iz treh do
+        štirih, za druga motorna vozila pa iz treh do šestih črk ali kombinacije
+        črk in številk", and "Za DRUGIM ZNAKOM registrske oznake vozila je
+        pomišljaj" — the hyphen sits after the second character regardless of
+        where the letter/digit boundary falls, which is a genuinely different
+        rule from 2006 and 2011.
+      why_no_strict_twin: >-
+        29/2004 states no alphabet at all. The O/Č/Š/Ž exclusions of 1992 and
+        the Slovene-alphabet basis of 2011 both sit outside this instrument, and
+        applying either to it would be an assumption. No `regex_strict` is
+        shipped; the gap is recorded instead.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "risbe 1-7 of 29/2004; the Priloga V size table is a 2006/2011 construction" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#000000", hex_basis: spec, spec_note: "2. člen (2), verbatim: 'so bele barve, OBROBLJENE S ČRNO ČRTO'. Black is stated as a colour word and black is unambiguous, so this is the one border hex in the file that is not merely observed." }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, note: "'na njihovi levi strani je modro polje z »evropskim logom« zlato rumene barve (slike 1 do 7), pod njim je mednarodna nacionalna oznaka Republike Slovenije v beli barvi'" }
+      emblem: { present: true, rendered: placeholder, note: "2. člen (2): 'Za oznako registracijskega območja je grb krajevno pristojnega organa, ki vodi vozilo v evidenci registriranih vozil' — and 22. člen (1) then binds it to the owner's residence AT PLATE ISSUE" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    region_encoding_note: "the eleven-area structure predates this instrument; 29/2004 carries its own seznam as priloga št. 1. That list was not separately fetched — a recorded gap, mitigated by the fact that 83/2006 and 48/2011 both list the same eleven areas."
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2004-01-1253/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # Uradni list RS, št. 29/2004 z dne 26. 3. 2004 — 2. člen (the plate, the BLACK border, the EU logo, the 3-6 character mark, the hyphen after the second character), 22. člen (the arms bind at issue), 25. člen (repeals 95/01, 56/03 and 73/00), 27. člen (applies from EU accession)"
+    notes: >-
+      THE FOLKLORE CORRECTION LIVES HERE. This is the plate that the enthusiast
+      web describes as having a BLUE border which was reverted to green in 2008.
+      The instrument says black: "bele barve, obrobljene s črno črto". Blue is
+      the POLICE border in the same instrument (20. člen, "obrobljena z modro
+      črto"), which is the most likely origin of the confusion. The green edge
+      of 1992-2004 was therefore replaced by black for roughly four years and
+      then restored — green, black, green — and the 2004-2008 black-edged plate
+      is the odd one out in thirty-four years of Slovenian plates.
+
+  # =========================================================================
+  # PRE-ACCESSION — green edge, no EU field. 2001-2004.
+  # =========================================================================
+  - id: si-standard-2001
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2001, end: 2004 }
+    period_evidence: enacted-commencement
+    period_start_precise: "2001-12-01"
+    matching: strict
+    format:
+      pattern: "LL 99-9999"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{2}-[A-Z0-9]{1,4}\z'
+      grammar: "2. člen of 95/2001: the mark is 'za motorna kolesa iz treh do štirih, za druga motorna vozila pa iz treh do šestih črk ali kombinacije črk in številk. Za drugim znakom registrske oznake vozila je pomišljaj.' Identical to 2004 — the 2004 instrument changed the DESIGN, not the mark."
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "sizes are given by drawing in this instrument; the 520 x 120 value is carried forward from the later instruments and is not separately sourced here" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed, spec_note: "2. člen: 'je bele barve, obrobljena z ZELENO črto'" }
+      band: { side: none }
+      band_note: "NO EU field. Slovenia acceded on 1 May 2004 and 29/2004 is the instrument that put the blue field on the plate; before it there is nothing on the left of the area code."
+      emblem: { present: true, rendered: placeholder, note: "'Za oznako registracijskega območja je grb' (2. člen)" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2001-01-4754/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # Uradni list RS, št. 95/2001 z dne 29. 11. 2001 — 2. člen (white, green edge, area code, arms, 3-6 character mark, hyphen after the second character), 14. člen (the arms bind to the owner's residence at issue), 20. člen (repeals parts of 5/92 and 70/95), 22. člen ('Ta pravilnik začne veljati 1. decembra 2001.')"
+    notes: >-
+      A NAMED COMMENCEMENT DATE, two days after publication — unusually tight,
+      and unambiguous. This series exists as its own record because it is the
+      last Slovenian plate with no EU field, and because it is the instrument
+      that repealed the plate provisions of the 1992 founding pravilnik
+      (20. člen: "prenehajo veljati določbe 6., 7., 9., 10., 11., 12. in
+      13. člena pravilnika o obrazcih prometnih dovoljenj in vozniškega
+      dovoljenja ter o registrskih tablicah (Uradni list RS, št. 5/92 in
+      70/95)"). Design-wise it is indistinguishable from the 1992 plate; what
+      changed is the minimum mark length, from two characters to three.
+
+  # =========================================================================
+  # THE FOUNDING SERIES — independent Slovenia's first plate, 1992.
+  # =========================================================================
+  - id: si-standard-1992
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 1992, end: 2001 }
+    period_evidence: enacted-commencement
+    period_start_precise: "1992-02-15"
+    period_start_note: >-
+      Uradni list RS, št. 5/1992 was published on 31 January 1992 and its
+      18. člen says "Ta pravilnik začne veljati 15. dan po objavi v Uradnem
+      listu Republike Slovenije" — the fifteenth day, i.e. 15 February 1992.
+      The instrument is signed 16 January 1992 by the Minister of the Interior;
+      neither the signature date nor the gazette date is the period start.
+    matching: strict
+    format:
+      pattern: "LL 99-9999"
+      regex: '\A[A-Z]{2} ?(?:[A-Z0-9]-[A-Z0-9]|[A-Z0-9]{2}-[A-Z0-9]{1,4})\z'
+      regex_strict: '\A[A-Z]{2} ?(?:[A-NP-Z0-9]-[A-NP-Z0-9]|[A-NP-Z0-9]{2}-[A-NP-Z0-9]{1,4})\z'
+      grammar: >-
+        6. člen, verbatim: the mark is "za motorna kolesa iz treh do štirih, za
+        druga motorna vozila pa iz DVEH do šestih črk, številk ali kombinacije
+        črk in številk. Za drugim znakom registrske oznake vozila je pomišljaj,
+        KADAR PA JE REGISTRSKA OZNAKA SESTAVLJENA IZ DVEH ZNAKOV, PA JE POMIŠLJAJ
+        ZA PRVIM ZNAKOM." Two characters is the all-time Slovenian minimum and
+        the special hyphen rule for it is the second alternative in the regex.
+      charset:
+        letters_excluded: [O]
+        notes: >-
+          15. člen: "Na registrskih in evidenčnih tablicah se v registrski
+          oznaki vozila ne uporablja črk O, Č, Š in Ž ter črke B v kombinaciji s
+          številko 8, I v kombinaciji s številko 1 in G v kombinaciji s številko
+          6." NOTE WHAT IS ABSENT: the 1992 rule has NO Slovene-alphabet basis,
+          so it does not exclude Q, W, X or Y. Only O is excluded from the
+          ASCII letters, and `regex_strict` therefore drops O and nothing else.
+          Whether Q/W/X/Y were ever actually issued is a separate question this
+          pass could not answer, and the twin follows the text rather than the
+          guess.
+    design:
+      plate: { note: "sizes by drawing (risbe 1-4); no millimetres are printed in the instrument's text. Recorded gap." }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "'je bele barve' (6. člen); the retroreflectivity is not stated in 5/1992 and is carried from the later instruments" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed, spec_note: "'obrobljena z zeleno črto' (6. člen) — the green edge is in the plate from day one of independence" }
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "6. člen: 'Za oznako registracijskega območja je grb mesta, v katerem je sedež občine, katere pristojni organ za notranje zadeve je izdal registrske tablice.' The municipal-arms mechanism is founding, not a later refinement — only the naming of the responsible body has changed since." }
+    region_encoding: "plates/_decode/si-regions.yml"
+    region_encoding_note: >-
+      14. člen refers the codes to "seznam oznak registracijskih območij, ki je
+      objavljen skupaj s tem pravilnikom" — an annex NOT fetched in this pass.
+      The 1992 code set is therefore a RECORDED GAP and si-regions.yml carries
+      the 2011 set only. Note also that the 1992 arms key is the OBČINA of the
+      issuing internal-affairs body, not the upravna enota of the modern text —
+      an administrative reorganisation sits between them, and a 1990s plate's
+      shield may not resolve against a modern table.
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/1992-01-0273/pravilnik-o-obrazcih-prometnih-dovoljenj-in-vozniskega-dovoljenja-ter-o-registrskih-tablicah  # Uradni list RS, št. 5/1992 z dne 31. 1. 1992 — 6. člen (the plate, green edge, arms, 2-6 character mark), 8. člen (diplomatic, BLACK with yellow), 11.-13. člen (temporary, police, oversize, tractor, moped, test), 14. člen (the code annex), 15. člen (the charset rule), 17. člen (SRS instruments kept alive), 18. člen (in force on the fifteenth day)"
+    notes: >-
+      THE PLATE THAT REPLACED THE YUGOSLAV ONE, and the point at which this file
+      stops. It is a full Slovenian design — white ground, GREEN edge, municipal
+      arms, area code, hyphenated mark — issued from 15 February 1992, seven
+      months after independence. Two of its features did not survive: the
+      two-character minimum mark (gone in 2001) and the BLACK diplomatic plate
+      with yellow characters (8. člen; white with green activity letters from
+      2004). The pre-1992 federal series is deliberately not modelled here — see
+      common.predecessor_system.
+
+  # =========================================================================
+  # MOTORCYCLES AND MOPEDS under the current instrument.
+  # =========================================================================
+  - id: si-motorcycle-2011
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2011 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 99-LL"
+      regex: '\A[A-Z]{2} ?(?:\d{2}-[A-Z]{2}|[A-Z]{2}-\d{2}|\d{3}-[A-Z]|\d-[A-Z]{2}\d|\d{3}-[A-Z]{2}|[A-Z]{2}-\d{3}|\d{2}-[A-Z]{3}|[A-Z]{3}-\d{2}|\d-[A-Z]{3}\d)\z'
+      grammar: >-
+        30. člen (1): "Na registrski tablici dimenzij 180 x 180 mm in 150 x 110
+        mm je registrska oznaka sestavljena iz štirih ali petih znakov." The
+        motorcycle plate is the ONLY size (with the moped plate) that may carry
+        a FOUR-character mark, so its regex is the union of the four
+        arrangements of 30. člen (4) and the five of 30. člen (3) — nine
+        alternatives, all enumerated in the regulation.
+    design:
+      plate: { w: 180, h: 180, unit: mm, note: "risba št. 3; Priloga V assigns it to L3e, L4e, L5e and L7e, and also to T, C and R" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      display: "rear only — 33. člen (2) exempts categories L, O, T, C and R from the front-and-rear rule"
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 30. člen (1), (3), (4); 33. člen (2)"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P005-0000.PDF  # PRILOGA V — L3e/L4e/L5e/L7e take the 180 x 180 plate; T, C and R take 520 x 120 or 180 x 180"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P006-0000.PDF  # risba št. 3 — the specimen shows a FOUR-character mark, 'LJ [grb] 49-AR', on this size"
+    notes: >-
+      A SEPARATE SERIES ON BOTH AXES: the plate is a 180 mm square laid out over
+      two lines, and the mark may be four characters where the car plate must be
+      five. The gazette's own specimen makes the point — risba št. 1 shows
+      "497-AR" and risba št. 3 shows "49-AR". Note the size table puts TRACTORS
+      and agricultural trailers on this same square plate as an alternative to
+      the 520 mm one, which is why they appear in si-standard-2011's categories
+      rather than in a series of their own after 2004.
+
+  - id: si-moped-2011
+    class: moped
+    categories: [moped]
+    period: { start: 2011 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 99-LL"
+      regex: '\A[A-Z]{2} ?(?:\d{2}-[A-Z]{2}|[A-Z]{2}-\d{2}|\d{3}-[A-Z]|\d-[A-Z]{2}\d|\d{3}-[A-Z]{2}|[A-Z]{2}-\d{3}|\d{2}-[A-Z]{3}|[A-Z]{3}-\d{2}|\d-[A-Z]{3}\d)\z'
+      grammar: "as si-motorcycle-2011 — 30. člen (1) treats the 150 x 110 plate identically to the 180 x 180 one for mark length."
+    design:
+      plate: { w: 150, h: 110, unit: mm, note: "risba št. 4; Priloga V assigns it to L1e, L2e and L6e" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 27. člen (1) lists only four plate KINDS and no moped kind; 30. člen (1); 32. člen (1)"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P005-0000.PDF  # PRILOGA V — L1e, L2e, L6e take the 150 x 110 plate"
+    notes: >-
+      THE SERIES THAT EXISTS BECAUSE ANOTHER ONE WAS ABOLISHED. Until 2011 the
+      Slovenian moped plate was YELLOW with a black edge and its own article in
+      every instrument from 1992 to 2006 (see si-moped-1992). The 2011 pravilnik
+      has no moped article at all: 27. člen (1) lists four kinds of plate —
+      registered vehicle, export, foreign mission, historic — and Priloga V
+      simply assigns L1e/L2e/L6e a 150 x 110 plate under the ordinary rules.
+      A moped registered from 4 July 2011 therefore carries a small WHITE
+      plate with the green edge and the EU field. That abolition is a NEGATIVE
+      finding — established by the absence of the article in an instrument that
+      replaced one which had it, plus the presence of the size row — and it is
+      recorded as such rather than asserted from a photograph.
+
+  # =========================================================================
+  # CHOSEN MARKS — the 2013 date is in the instrument, not the instrument's date.
+  # =========================================================================
+  - id: si-personalized-2013
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2013 }
+    period_evidence: enacted-commencement
+    period_start_precise: "2013-02-04"
+    period_start_note: >-
+      56. člen of 48/2011, verbatim: "Določbe 35. in 40. člena tega pravilnika
+      se začnejo uporabljati 4. februarja 2013. Rezervacije izbranih delov
+      oznake registrskih tablic, opravljene do uveljavitve tega pravilnika,
+      ostanejo v veljavi do poteka rezervacije." A provision inside a 2011
+      instrument that starts running in 2013 — and it also preserves reservations
+      made under the OLD regime, which is why the series is dated from 2013 while
+      chosen marks themselves are older (5. člen of 83/2006 and 4. člen of
+      29/2004 both had them, on the same undated application trigger as
+      si-standard-2008; those earlier regimes are a recorded gap, not a series).
+    matching: recall-only
+    format:
+      pattern: "LL LLLLLL"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{1,6}(?:-[A-Z0-9]{1,5})?\z'
+      grammar: >-
+        35. člen (1): "Izbrani del oznake lahko vsebuje najmanj tri in največ
+        šest znakov. Ti znaki so lahko ali samo črke ali pa kombinacije črk in
+        številk. Izbrani del oznake lahko med znaki vsebuje NAJVEČ EN POMIŠLJAJ,
+        vendar ne na začetku ali koncu oznake. Izbere se lahko le taka
+        kombinacija znakov, ki jo omogoča prostor na tablici." (3) admits X, Y
+        and W, and admits O on condition the mark carries no 0. (5) forbids
+        chosen marks on foreign-mission plates and on test plates.
+      why_recall_only: >-
+        The regex is deliberately wider than the issuing grammar and a match is
+        a shape hit only (PRD-PLATES §2.7). It does not enforce the
+        three-character floor, does not count the hyphen against the six-character
+        budget, cannot express the O-excludes-0 rule, and cannot express
+        "kombinacija znakov, ki jo omogoča prostor na tablici" — a physical-fit
+        test no grammar can carry. Per §2.7 no `regex_strict` is shipped.
+    design:
+      plate: { note: "identical to the standard series in every dimension and colour — only the mark is chosen" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/si-regions.yml"
+    region_encoding_mechanism: "the area code and arms are retained — 35. člen calls it the 'IZBRANI DEL oznake', the chosen PART of the mark, so the geography is untouched and Slovenia has no way to buy an anonymous plate."
+    validity:
+      reservation_years: 5
+      statute: "37. člen (3): a reservation is held for the chooser for five years; if no plate is ordered in that time the reservation is deleted and the fee is not refunded. 37. člen (2): the reservation lapses in five days without proof of payment."
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 35. člen (the grammar, the single hyphen, X/Y/W, the O/0 rule, the exclusions), 36.-37. člen (application, reservation, five-year hold), 56. člen (applies from 4 February 2013)"
+    notes: >-
+      THE FILE'S SHARPEST INSTRUMENT-DATE ILLUSTRATION AFTER CROATIA'S 2016. The
+      enabling instrument is dated 2011 and in force from 4 July 2011, but this
+      SERIES begins on 4 February 2013 because the instrument says two of its
+      articles do. Taking 2011 would have been the error the brief warns about,
+      and it would have been made by anyone reading only the instrument's own
+      commencement clause. Note also 35. člen (1)'s last sentence, which makes
+      issuance depend on whether the chosen mark FITS — a legal criterion that
+      is physical rather than grammatical, and the reason this series can never
+      be `strict`.
+
+  # =========================================================================
+  # HISTORIC VEHICLES — light blue, "MV", and a conflict between text and drawing.
+  # =========================================================================
+  - id: si-historic-2013
+    class: historic
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2013 }
+    period_evidence: enacted-commencement
+    period_start_precise: "2013-02-04"
+    period_start_note: "56. člen of 48/2011 — 40. člen applies from 4 February 2013, on the same footing as the chosen-mark provision. There is no historic-vehicle plate in any earlier Slovenian instrument read in this pass."
+    matching: recall-only
+    format:
+      pattern: "MV L9-999"
+      regex: '\AMV ?[A-Z0-9]{1,3}[- ][A-Z0-9]{1,4}\z'
+      grammar: >-
+        40. člen (1): "Registrska tablica za starodobna vozila vsebuje na levi
+        strani modro polje z »evropskim znakom« in oznako Republike Slovenije v
+        beli barvi pod njim, nato sledi oznaka za starodobna vozila »MV« in grb
+        občine iz 28. člena tega pravilnika. Temu sledi registrska oznaka, ki jo
+        sestavlja OBIČAJNA štiri- ali petmestna kombinacija črk in številk. Ta
+        kombinacija je lahko tudi izbirna."
+      recorded_conflict: >-
+        THE TEXT AND THE DRAWING DISAGREE, AND THE DISAGREEMENT IS RECORDED
+        RATHER THAN RESOLVED (PRD-PLATES §5.3). 40. člen (1) says the mark is
+        the ORDINARY four- or five-character combination, which by 30. člen (3)-(4)
+        means one of nine enumerated arrangements. Risba št. 9 of Priloga VI
+        shows the specimen "MV [grb] H1-001" — a letter followed by four digits,
+        an arrangement that appears in NEITHER list. Either the drawing is
+        illustrative only, or the historic plate uses a reserved arrangement
+        outside 30. člen; the instrument does not say which. `matching:
+        recall-only` and a deliberately loose regex are the honest output.
+      note_on_mv: "MV is a fixed literal, not an area code. There is no area code on this plate at all — the arms remain, but the letters are replaced by MV. A parse API must not look MV up in si-regions.yml; that file's `collisions` block says so."
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "risbe št. 9-12 give the same four sizes as the ordinary plate" }
+      background: { color: "#0072BC", finish: retroreflective, hex_basis: observed, spec_note: "40. člen (2): 'Ne glede na določbe prvega odstavka 28. člena je osnovna barva registrskih tablic SVETLO MODRA' — light blue, a colour word; the hex is sampled from risba št. 9 and is not a spec claim." }
+      foreground: "#FFFFFF"
+      foreground_hex_basis: observed
+      border: { color: "#FFFFFF", hex_basis: observed, spec_note: "40. člen (2): the 'MV' mark, the registration mark and the plate BORDER are all white — the only Slovenian plate whose edge is not green, black or blue." }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, note: "the historic plate keeps the EU field — 40. člen (1) states it expressly, and 28. člen (2) exempts only the export plate" }
+      emblem: { present: true, rendered: placeholder, note: "'grb občine iz 28. člena tega pravilnika' — the historic plate keeps the municipal arms even though it has no area code" }
+    region_encoding: inline
+    region_encoding_note: "no area code; the ARMS are the only geographic element, and they resolve to an upravna enota via si-regions.yml rather than to one of the eleven letters."
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 40. člen (1)-(2); 56. člen (applies from 4 February 2013)"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P006-0000.PDF  # PRILOGA VI risbe št. 9-12 — 'MV [grb] H1-001', white on light blue, white edge, at 520x120, 340x220, 180x180 and 150x110 mm"
+    notes: >-
+      Slovenia's oldtimer plate inverts the whole design: light blue ground,
+      white characters, white edge, and MV (muzejsko/starodobno vozilo) where
+      the area code belongs. It is the only Slovenian series whose mark may ALSO
+      be chosen — 40. člen (1)'s last sentence, "Ta kombinacija je lahko tudi
+      izbirna" — which is the opposite of Croatia, where čl. 22 st. 9 forbids
+      exactly that. The text/drawing conflict above is the file's one
+      unresolved format question and is flagged for the verifier.
+
+  # =========================================================================
+  # EXPORT — the only Slovenian plate with no EU field and no arms.
+  # =========================================================================
+  - id: si-export-2011
+    class: export
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2011 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 999-LL"
+      regex: '\A[A-Z]{2} ?(?:\d{3}-[A-Z]{2}|[A-Z]{2}-\d{3}|\d{2}-[A-Z]{3}|[A-Z]{3}-\d{2}|\d-[A-Z]{3}\d)\z'
+      grammar: "38. člen (1): the export plate is 'ne glede na določbe prvega odstavka 28. člena tega pravilnika rumene barve, na njej pa je s predpisanimi črnimi znaki označena registrska oznaka vozila' — the ORDINARY mark on a yellow plate, so 30. člen's arrangements apply unchanged."
+      validity_marking: "38. člen (2): 'Na registrski tablici vozila za izvoz sta za registrsko oznako, NA ČRNI NALEPKI, Z RUMENIMI ŠTEVILKAMI, označena mesec in leto, ko poteče veljavnost prometnega dovoljenja' — a black sticker with yellow figures showing the month and year of expiry, at the right-hand end (risbe št. 5-8). It is NOT part of the mark and must not be parsed into it."
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "risba št. 5; the same four sizes as the ordinary plate (risbe 6, 7, 8)" }
+      background: { color: "#FFE500", finish: retroreflective, hex_basis: observed, spec_note: "'rumene barve' (38. člen (1)) — a colour word only; the hex is sampled from risba št. 5" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#FFE500", hex_basis: observed, spec_note: "risba št. 5 shows a yellow plate with a darker yellow edge and no coloured border line; no border is prescribed in 38. člen" }
+      band: { side: none }
+      band_note: "28. člen (2), verbatim: 'Predpisani »evropski znak« je vsebinski del vseh registrskih tablic, RAZEN registrskih tablic vozil za izvoz.' The export plate is the single exception in the whole system."
+      emblem: { present: false, note: "28. člen (2): 'Grba občine ne vsebujejo registrske tablice za vozila za izvoz ter vozila tujih konzularnih in diplomatskih predstavništev.'" }
+      expiry_panel: { position: right, background: "#000000", foreground: "#FFE500", content: "MM over YY", note: "38. člen (2)" }
+      security: { virtual_mark: false, note: "32. člen (3): the export plate carries no virtual security mark" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    region_encoding_note: "the AREA CODE remains (risba št. 5 shows 'LJ 497-AR') even though the arms do not, so the first decode level survives and the second does not."
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 38. člen (1)-(2), 28. člen (2), 32. člen (3)"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P006-0000.PDF  # PRILOGA VI, section 2 'REGISTRSKE TABLICE VOZIL NAMENJENIH ZA IZVOZ', risbe št. 5-8"
+    notes: >-
+      A yellow plate for three distinct situations, all named in 38. člen (1):
+      a foreigner's temporarily registered vehicle being driven out at the end
+      of a stay, a vehicle bought in Slovenia for registration abroad, and a
+      vehicle leaving after conversion or completion. It absorbs the job that
+      the separate "začasno registrirano vozilo" plate did until 2004 (see
+      si-temporary-1992). The expiry sticker is the only date-bearing element
+      on any Slovenian plate.
+
+  # =========================================================================
+  # FOREIGN MISSIONS — white plate, GREEN activity letters.
+  # =========================================================================
+  - id: si-diplomatic-2011
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2011 }
+    period_evidence: enacted-commencement
+    matching: recall-only
+    format:
+      pattern: "CMD 999-99"
+      regex: '\A(?:CMD|CD|CC|M) ?\d{1,3}[- ]\d{1,4}\z'
+      grammar: >-
+        39. člen (1) gives four positions: the European sign with the Slovenian
+        national mark; "na drugem mestu je oznaka dejavnosti predstavništva
+        oziroma statusa oseb"; "na tretjem mestu je številčna oznaka države, iz
+        katere je predstavništvo, akreditirano v Republiki Sloveniji, KI JO
+        DOLOČI AGENCIJA"; "na četrtem mestu je registrska številka vozila".
+        (2) closes the letter set: "CMD" for at most two vehicles of a mission
+        head, "CD" for other diplomatic-status vehicles, "CC" for consular, "M"
+        for administrative and technical staff.
+      why_recall_only: >-
+        NEITHER WIDTH IS PRESCRIBED. The country code is assigned by the agency
+        and the pravilnik does not say how many digits it has; the vehicle
+        number is not bounded either. Risba št. 16 shows "CMD 784-68", which is
+        consistent with a three-digit country code and a two-digit serial and
+        equally consistent with other splits — the drawing cannot settle it. The
+        quantifiers above are an admitted widening and a match is a shape hit
+        only.
+      pattern_note: "the pattern prints the CMD form because the activity mark is a closed set of four literals, not a free letter run; writing it as `LLL` would round-trip against a regex admitting every three-letter string."
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "risba št. 16; also 340x220, 180x180, 150x110 (risbe 17-19)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "39. člen (3): 'Osnovna barva registrskih tablic je bela'" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      activity_letters: { color: "#8DC63F", hex_basis: observed, spec_note: "39. člen (2)-(3): the activity letters are GREEN ('ki so zelene barve'), while 'številčna oznaka države … in registrska oznaka vozila pa sta črni'. Two ink colours on one plate." }
+      border: { color: "#8DC63F", hex_basis: observed, spec_note: "the green edge of 28. člen (1) is not disapplied by 39. člen, and risba št. 16 shows it" }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, note: "39. člen (1) lists it as the first element — mission plates keep the EU field" }
+      emblem: { present: false, note: "28. člen (2) excludes the municipal arms from foreign-mission plates" }
+    region_encoding: inline
+    region_encoding_note: >-
+      NO AREA CODE AND NO ARMS. The leading letters are an ACTIVITY mark and the
+      first numeric group is a COUNTRY code assigned by the agency — neither is
+      geographic in the si-regions.yml sense. The country-code table is not
+      published in the pravilnik ("ki jo določi agencija") and was not obtained
+      from any primary: a RECORDED GAP, and PRD-PLATES puts diplomatic decode
+      tables at gate L4 in any case.
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 39. člen (1)-(3), 28. člen (2), 35. člen (5) (no chosen marks on these plates)"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P006-0000.PDF  # PRILOGA VI, section 5 'REGISTRSKE TABLICE VOZIL TUJIH PREDSTAVNIŠTEV', risbe št. 16-19 — 'CMD 784-68' in green and black on white"
+    notes: >-
+      The 1992 founding instrument gave foreign missions a BLACK plate with
+      YELLOW characters (5/1992, 8. člen: "osnovna barva registrskih tablic je
+      črna, črke in številke na njej pa so rumene") and issued it for each
+      calendar year. The modern white plate with green activity letters is
+      already in place in 29/2004 (21. člen) and 83/2006 (17. člen) in the same
+      words as 2011. THE 1992-2004 BLACK SERIES IS DELIBERATELY NOT AUTHORED:
+      8. člen lists five components — area code, country number, activity
+      letters, vehicle mark and the year of validity — without giving a width or
+      an order for any of them, and any pattern would be invention. It is
+      recorded here as a gap with its colour fact preserved.
+
+  # =========================================================================
+  # TEST PLATES — "PR" on a red field.
+  # =========================================================================
+  - id: si-test-2011
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2011 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL PR 999-LL"
+      regex: '\A[A-Z]{2} ?PR ?(?:\d{3}-[A-Z]{2}|[A-Z]{2}-\d{3}|\d{2}-[A-Z]{3}|[A-Z]{3}-\d{2}|\d-[A-Z]{3}\d)\z'
+      grammar: >-
+        41. člen (2): "Trajna preskusna tablica in samolepilna preskusna tablica
+        za vozila sta bele barve, na njih pa je ZA OZNAKO REGISTRACIJSKEGA
+        OBMOČJA napis »PR« (preskušnja) črne barve na rdečem polju in registrska
+        oznaka vozila. Črke in številke, iz katerih je sestavljena registrska
+        oznaka, so črne barve." PR sits AFTER the area code, not instead of it —
+        which is why this regex keeps the two-letter prefix.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "risba št. 13, trajna (permanent). Also 450 x 100 mm samolepilna (risba št. 14) and 150 x 110 mm, self-adhesive or permanent (risba št. 15)" }
+      plate_variants:
+        - { w: 450, h: 100, unit: mm, note: "samolepilna — self-adhesive; the only Slovenian plate that is not aluminium (32. člen (2))" }
+        - { w: 150, h: 110, unit: mm, note: "samolepilna ali trajna" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#8DC63F", hex_basis: observed, spec_note: "risbe št. 13-15 show the ordinary green edge; 41. člen does not disapply 28. člen (1)" }
+      pr_field: { background: "#E4002B", foreground: "#000000", hex_basis: observed, spec_note: "'napis »PR« (preskušnja) črne barve na rdečem polju' (41. člen (2)); the drawings set PR vertically in a red rectangle immediately after the area code" }
+      band: { side: none, note: "risbe št. 13-15 show NO EU field on the test plate, which is a conflict with 28. člen (2)'s 'vseh registrskih tablic, razen … za izvoz'. The 2006 predecessor resolved it explicitly — 2. člen (3) of 83/2006 excluded BOTH export and test plates — and the 2011 drafting dropped the test exclusion from the text while the drawings kept it. Recorded conflict; the drawings are followed because they are the more specific source." }
+      emblem: { present: false, note: "risbe št. 13-15 show no arms; 41. člen does not mention them. The 2006 text (16. člen (4)) expressly excluded test plates from carrying the arms." }
+      security: { virtual_mark: false, note: "32. člen (3): self-adhesive test plates carry no virtual security mark" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    region_encoding_note: "the area code is retained and decodes normally; the arms, which carry the second decode level, are not present."
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 41. člen (1)-(3), 42.-44. člen (permits, permanent test plates, one-year validity), 32. člen (2)-(3), 35. člen (5)"
+      - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P006-0000.PDF  # PRILOGA VI, section 4 'PRESKUSNE REGISTRSKE TABLICE VOZIL V RS', risbe št. 13-15 — 'LJ [PR] 784-KM'"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2006-01-3637/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 2. člen (3) and 16. člen (4) of 83/2006 — the explicit test-plate exclusions the 2011 text dropped"
+    notes: >-
+      Slovenia's test plate is issued in two regimes that share one design:
+      a per-drive permit (42. člen) and a PERMANENT test plate held by dealers,
+      manufacturers and testing organisations under a renewable one-year
+      authorisation (43.-44. člen). Classified `temporary` rather than `dealer`
+      because the plate itself is per-drive in the ordinary case and the
+      business-bound holding is the exception. Chosen marks are forbidden on it
+      (35. člen (5)). The EU-field conflict recorded on the band is the second
+      of this file's two text/drawing disagreements.
+
+  # =========================================================================
+  # POLICE — blue edge, blue P, and an open question about which law applies.
+  # =========================================================================
+  - id: si-police-1992
+    class: police
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1992 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "P 99-999"
+      regex: '\AP ?[A-Z0-9]{2}-[A-Z0-9]{2,3}\z'
+      grammar: >-
+        16. člen (1) of 83/2006: "Registrska tablica za vozila policije je bele
+        barve, na njej pa je predpisani »evropski logo« in z modro barvo vpisana
+        črka »P« ter registrska označba vozila, ki je sestavljena iz kombinacije
+        številk ali črk in številk. Za drugim znakom registrske označbe je
+        pomišljaj, za črko »P« pa je simbol uniformirane policije Republike
+        Slovenije." The earlier instruments fix the length: five characters for
+        motor vehicles and four for motorcycles (5/1992 10. člen; 95/2001
+        6. člen; 29/2004 20. člen).
+      note: "P is a fixed literal in place of the area code, and the POLICE SYMBOL stands where the municipal arms stand on a civil plate. There is no geographic element at all."
+    design:
+      plate: { note: "sizes by drawing in each instrument; no millimetres recorded" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#0033A0"
+      foreground_hex_basis: observed
+      foreground_note: "the characters are BLUE, not black — 'z modro barvo vpisana črka »P« ter registrska označba vozila'"
+      border: { color: "#0033A0", hex_basis: observed, spec_note: "2. člen (2) of 83/2006 carves the police plate out of the green-edge rule: 'razen registrske tablice za vozila policije, ki je obrobljena z modro obrobno črto'. 29/2004 20. člen and 5/1992 10. člen say the same in their own words." }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, note: "present from 29/2004 onward; the 1992 and 2001 police plates had no EU field, exactly as the civil plates of those years" }
+      emblem: { present: true, rendered: placeholder, note: "'simbol uniformirane policije Republike Slovenije' — a police emblem, not a municipal coat of arms" }
+    region_encoding: none
+    region_encoding_note: "no area code. si-regions.yml does not apply, and its `collisions` block records that P is not a code."
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/1992-01-0273/pravilnik-o-obrazcih-prometnih-dovoljenj-in-vozniskega-dovoljenja-ter-o-registrskih-tablicah  # 5/1992 10. člen — the founding police plate: white, blue edge, blue P, police symbol, five characters (four for motorcycles)"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2006-01-3637/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 83/2006 2. člen (2) and 16. člen — the current text"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 48/2011 57. člen (2) — the 2005/2006 instruments continue to apply to police and SOVA vehicles"
+    notes: >-
+      THE ONE SLOVENIAN SERIES WHOSE GOVERNING LAW IS AN OPEN QUESTION, and it
+      is stated rather than papered over. 57. člen (2) of the 2011 pravilnik
+      keeps the 2005 and 2006 instruments alive "za vozila Policije in vozila
+      Slovenske varnostno-obveščevalne agencije DO IZDAJE PREDPISOV iz tretjega
+      odstavka 27. člena zakona" — until the regulations under the Zakon o
+      motornih vozilih issue. Whether they have since issued was NOT established
+      in this pass, so the design recorded here is the 83/2006 one and the
+      series is left open-ended. period.start is 1992 because the blue-edged
+      P plate is continuous from the founding instrument; the only design change
+      inside the run is the EU field arriving with 29/2004, recorded on the band
+      rather than by splitting the series, because the distinguishing features —
+      the literal P, the blue ink, the blue edge and the police symbol — never
+      changed. SOVA vehicles are covered by the same survival clause and no
+      plate specification for them was located: recorded gap.
+
+  # =========================================================================
+  # THE THREE SERIES THAT WERE ABOLISHED — recorded because they are still seen.
+  # =========================================================================
+  - id: si-moped-1992
+    class: moped
+    categories: [moped]
+    period: { start: 1992, end: 2011 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL 9999"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{2}[- ]?[A-Z0-9]{2,3}\z'
+      grammar: >-
+        5/1992 12. člen and, in the same words, 95/2001 9. člen and 29/2004
+        21. člen: "Registrska tablica za kolo z motorjem je RUMENE barve,
+        obrobljena s črno črto, na njej pa je s črnimi črkami označeno
+        registracijsko območje in s kombinacijo črnih črk in številk registrska
+        oznaka vozila, ki je sestavljena iz štirih do petih črk ali kombinacije
+        črk in številk." Four or five characters. THE MOPED ARTICLES DO NOT
+        STATE A HYPHEN RULE — unlike the motor-vehicle articles — which is why
+        the separator is optional in the regex.
+    design:
+      plate: { note: "risbe 5, 10, 15, 20 and 30 of 29/2004; no millimetres in the text" }
+      background: { color: "#FFE500", finish: retroreflective, hex_basis: observed, spec_note: "'rumene barve' — the same colour word as the export plate, and the reason a yellow Slovenian plate is ambiguous without its border" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#000000", hex_basis: spec, spec_note: "'obrobljena s črno črto' — black, unambiguous" }
+      band: { side: left, color: "#003399", content: eu-stars+SLO, hex_basis: observed, note: "from 29/2004 only. NOTE the Austrian contrast: Austria exempts mopeds from the EU field; Slovenia's 29/2004 21. člen puts 'Za »evropskim logom« in oznako registracijskega območja je grb' on the moped plate, so it carries both the field and the arms." }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/1992-01-0273/pravilnik-o-obrazcih-prometnih-dovoljenj-in-vozniskega-dovoljenja-ter-o-registrskih-tablicah  # 5/1992 12. člen"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2004-01-1253/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 29/2004 21. člen — the yellow moped plate with the EU logo and the arms"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # 48/2011 — 27. člen (1) lists four plate kinds and no moped kind; Priloga V puts L1e/L2e/L6e on the ordinary 150 x 110 plate. The ABSENCE is what ends this series."
+    notes: >-
+      A YELLOW MOPED PLATE FOR NINETEEN YEARS, ABOLISHED IN 2011. The end date
+      is `instrument-dated-both-ends` on a NEGATIVE: the 2011 pravilnik replaced
+      an instrument that had a moped article, contains no moped article of its
+      own, and assigns mopeds a size row under the ordinary white-plate rules.
+      No exchange obligation exists, so yellow moped plates issued before
+      4 July 2011 remain on the road — which is why the series is recorded at
+      all rather than dropped as historical.
+
+  - id: si-agricultural-1992
+    class: agricultural
+    categories: [tractor, trailer, machine]
+    period: { start: 1992, end: 2004 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL 99-99"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{2}-[A-Z0-9]{2}\z'
+      grammar: "5/1992 13. člen and 95/2001 8. člen: the tractor plate carries the area code and a mark 'sestavljena iz štirih črk ali kombinacije štirih črk in številk. Za drugim znakom registrske oznake vozila je pomišljaj.' Exactly four characters, hyphen after the second."
+    design:
+      plate: { note: "risbe 22-25 of 5/1992" }
+      background: { color: "#00563F", finish: retroreflective, hex_basis: observed, spec_note: "'TEMNO ZELENE barve' — dark green, a colour word; the hex is an observed reading" }
+      foreground: "#FFFFFF"
+      foreground_hex_basis: observed
+      border: { color: "#FFFFFF", hex_basis: observed, spec_note: "'obrobljena z belo črto'" }
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "'Za označbo registracijskega območja je grb' (95/2001 8. člen)" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/1992-01-0273/pravilnik-o-obrazcih-prometnih-dovoljenj-in-vozniskega-dovoljenja-ter-o-registrskih-tablicah  # 5/1992 13. člen — the dark green EVIDENČNA tablica for tractors and tractor trailers"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2001-01-4754/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 95/2001 8. člen — unchanged"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2004-01-1253/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 29/2004 19. člen — 'Registrska tablica za traktor je BELE barve, obrobljena je s črno črto' — the dark green plate ends here"
+    notes: >-
+      A DARK GREEN PLATE WITH WHITE CHARACTERS, and in 1992 it was not even
+      called a registration plate: 13. člen calls it an EVIDENČNA TABLICA, a
+      recording plate, reflecting that tractors were entered in a register
+      rather than registered. 29/2004 19. člen turned it white with a black
+      edge and folded it into the ordinary system, and by 2011 Priloga V simply
+      assigns T, C and R categories the ordinary 520 x 120 or 180 x 180 plate —
+      which is why si-standard-2011 carries `tractor` and `machine` in its
+      categories and there is no modern agricultural series.
+
+  - id: si-temporary-1992
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1992, end: 2004 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL 99-999"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{2}-[A-Z0-9]{2,3}\z'
+      grammar: "5/1992 9. člen and 95/2001 4. člen: the mark is 'sestavljena iz štirih ali petih, za motorna kolesa pa treh črk ali kombinacije treh črk in številk. Za drugim znakom registrske oznake vozila, razen za motorna kolesa, je pomišljaj.'"
+    design:
+      plate: { note: "risbe 13-15 of 5/1992; risbe 6-8 of 95/2001" }
+      background: { color: "#8FD8A0", finish: retroreflective, hex_basis: observed, spec_note: "'SVETLO ZELENE barve' — light green, a colour word; the hex is an observed reading and is the file's least certain colour" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      border: { color: "#000000", hex_basis: spec, spec_note: "'obrobljena s črno črto'" }
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      year_panel: { position: right, content: "year of the last temporary registration", note: "'Za registrsko oznako vozila je oznaka leta, v katerem je bila opravljena zadnja začasna registracija vozila' (95/2001 4. člen)" }
+    region_encoding: "plates/_decode/si-regions.yml"
+    sources:
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/1992-01-0273/pravilnik-o-obrazcih-prometnih-dovoljenj-in-vozniskega-dovoljenja-ter-o-registrskih-tablicah  # 5/1992 9. člen"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2001-01-4754/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 95/2001 4. člen"
+      - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2004-01-1253/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # 29/2004 5. člen — 'Registrska tablica začasno registriranega motornega in priklopnega vozila je BELE barve, obrobljena je s črno črto' — the light green plate ends here"
+    notes: >-
+      A LIGHT GREEN PLATE CARRYING A YEAR. It ends in 2004, when 29/2004
+      5. člen made temporarily registered vehicles white with a black edge and
+      kept the year mark; and by 2011 the separate class is gone altogether —
+      27. člen (1) lists four plate kinds and temporary registration is served
+      by the yellow EXPORT plate, whose 38. člen (1) opens with exactly the
+      1992 use case, "vozila, registrirana določen čas, ki jih tujec po
+      končanem bivanju odpelje iz Republike Slovenije". The 2004-2011 white
+      version is a RECORDED GAP rather than a fourth standard-lookalike series:
+      it differs from the ordinary plate only by the year panel, and cutting it
+      as a series would have needed a design claim this pass did not verify
+      against a drawing.
