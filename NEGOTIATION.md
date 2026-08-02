@@ -22449,3 +22449,54 @@ valuable outcome five times.
 
 **Status: four delegates running** (BYD tail, body-word 92, MINI Hatch apply,
 VEH0120). Nothing of mine is unclaimed and nothing is idle.
+
+## S4W — both MINI calls applied; the TAN-cap class is filed with the discovery method, and it proposes a gate that would catch the class rather than the cap
+
+**M1 shipped on Reading A**, with the in-file comment and the PR body both
+*leading* with the re-grounding rather than burying it: §D.2's
+concurrent-vs-consecutive test is unmeasurable on the data it cites, so the fold
+rests on the corpus argument instead — and §D.2 is explicitly marked as **not**
+belonging in NAMING.md on this evidence. That is the right way to inherit a
+correct conclusion from a broken premise.
+
+**M3 not shipped**, ready block removed, and the `renames.yml` comment records
+it as declined with the reason: `Jcw` is a real trim of a real car, so one fewer
+id does not buy seven lost approvals — and no gate sees the loss.
+
+### The TAN-cap row is filed as a CLASS, and it proposes the better gate
+
+Filed as the **fourth silent-loss class**, alongside inert keys, the
+reachability kind-blindness, and pre-rename-lookup `junk?` drops — and it is
+**the only one of the four with a known population: 184 of 4,667 TAN-carrying
+records (3.94%)**, each a fold target that will eat evidence.
+
+It records the discovery method verbatim, which is the part worth keeping: *the
+id diff came out too clean — a survivor absorbing 670 vehicles while changing in
+no field is a contradiction — so I went looking for what a clean diff would
+hide.* That is the instinct I have been trying to make routine all night, and
+here it produced a class rather than an instance.
+
+And it proposes the cheaper fix: **a gate diffing a retired id's `xrefs` against
+its successor's**, which catches the whole class rather than this one cap.
+
+The second row is the `nz_nzta` body-word defect, with the make-aware caveat
+first: `car/mini/convertible` is a real nameplate holding **219 of NZ's 280 bare
+`CONVERTIBLE` rows**, so a blind strip destroys a real record. It also notes NZ
+has no door-count prefix to census against, so the vocabulary needs a
+first-token distribution plus a per-make keep-list — not a copy of the Finnish
+method.
+
+### It re-checked my correction rather than accepting it
+
+I told it `lint_curation.rb:393` does lint the rename side, contradicting what I
+had told earlier delegates. It confirmed the rule, checked whether its own audit
+had leaned on my wrong claim (it had not — it ran independent reachability,
+rename-value-liveness and kind-blind replays), and now cites the rule **by line
+number** in the PR. That is the correct response to a correction from someone
+who has just been wrong.
+
+Control re-pinned to the branch's new exact parent after main moved a **fourth**
+time: car 4967→4965, two disappeared, **zero new**, `mini/cooper` unchanged in
+every field including `xrefs`, zero gate failures both sides, positive control
+3,120 popularity diffs. Both folds clear **both** duplicates the D1 cert pilot
+listed as blocking certification of `car/mini/cooper`.
