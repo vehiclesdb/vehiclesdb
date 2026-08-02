@@ -1,0 +1,1091 @@
+# plates/se.yml — Sweden (PRD-PLATES gate L1).
+#
+# EVERY format, colour, dimension and class claim here comes from one of four
+# primary layers, and each series says which:
+#
+#   1. förordningen (2019:383) om fordons registrering och användning —
+#      the ordinance in force since 1 July 2019, which REPLACED förordningen
+#      (2001:650) om vägtrafikregister (repealed by förordning 2019:384).
+#      It carries the registration-number rule itself.
+#   2. Transportstyrelsens föreskrifter och allmänna råd (TSFS 2015:63) om
+#      registrering av fordon m.m. i vägtrafikregistret, in force 1 January
+#      2016, consolidated to TSFS 2026:72 — the delegated instrument that
+#      carries every plate DIMENSION, COLOUR and layout rule. 15 kap. 1 §
+#      andra stycket förordningen (2019:383) is the bemyndigande: "Transport-
+#      styrelsen får meddela ytterligare föreskrifter om registreringsbevis,
+#      utformningen av registreringsskyltar, hur personliga fordonsskyltar får
+#      användas och om förfarandet i de avseenden som regleras i denna
+#      förordning."
+#   3. Repealed-but-citable ancestors where they DATE something the current
+#      instruments do not: bilregisterkungörelsen (1972:599), förordningen
+#      (1988:964) om skyltar för beskickningsfordon, förordningen (1988:965)
+#      om personliga fordonsskyltar, and the amending förordning (1998:788).
+#   4. Transportstyrelsen's own published pages and news items — the ONLY
+#      source for the issued letter alphabet, the blocked letter combinations,
+#      and the day the letter-final format began. Where a page has been taken
+#      down the archived capture is cited with its capture timestamp.
+#
+# THE FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. ONE REGISTRATION NUMBER, TWO SHAPES, TWO DATES. 3 kap. 1 § förordningen
+#    (2019:383), verbatim:
+#        "Registreringsnumret ska bestå av
+#           1. tre bokstäver och tre siffror, eller
+#           2. tre bokstäver, två siffror och en bokstav."
+#    Those are alternatives of ONE issuance system, but they started 47 years
+#    apart, so they are modelled as two `standard` series. Splitting them is
+#    the single highest-value modelling choice in this file: a Swedish plate
+#    whose last character is a LETTER cannot predate 16 January 2019, and that
+#    is the only date signal a Swedish plate string carries at all.
+#    Every non-standard plate type (taxi, saluvagn, tävling, interim,
+#    provisorisk, terrängskoter, motorcycle) carries whichever shape the
+#    vehicle's registration number has, so those series take the UNION regex
+#    with one representative `pattern` — the de.yml Anlage-1 treatment.
+#
+# 2. THE LETTER-FINAL SHAPE IS DATED TWICE, AND THE COMMON "2019 FÖRORDNING"
+#    STORY IS WRONG. The enabling amendment is förordning (2017:100), utfärdad
+#    16 February 2017, which substituted the two-alternative wording into
+#    7 kap. 1 § förordningen (2001:650) "i stället för lydelsen enligt
+#    förordningen (2016:1216)" — and 2016:1216 entered into force 20 MAY 2017.
+#    So the letter-final shape became LEGAL on 2017-05-20. Transportstyrelsen
+#    then announced, on 2019-01-16: "Idag tilldelas de första registrerings-
+#    skyltarna med det nya formatet för registreringsnummer, där sista siffran
+#    även kan vara en bokstav." So it became ISSUED on 2019-01-16.
+#    period.start records the ISSUANCE date (2019) because that is what a
+#    parse API infers from; the legal date sits in the notes. förordningen
+#    (2019:383) merely re-enacted the same words on 1 July 2019 — it is NOT
+#    the instrument that created the format, and any dataset that says so is
+#    repeating a plausible-looking coincidence of numbers.
+#
+# 3. THE ISSUED ALPHABET IS AN AUTHORITY STATEMENT, NOT A REGULATION. Neither
+#    the förordning nor TSFS 2015:63 restricts the letters. Transportstyrelsen
+#    states the restriction in its own words (news, 2015-10-07):
+#        "I och med att några bokstäver av läsbarhetsskäl är undantagna från
+#         tilldelning (I, Q, V, Å, Ä och Ö) samt att 91 bokstavskombinationer
+#         sedan tidigare är spärrade från tilldelning, ger det nuvarande
+#         systemet 11,1 miljoner tänkbara bokstavskombinationer."
+#    and, for the new shape (news, 2019-01-16):
+#        "I de nya registreringsnumren används inte bokstaven O som sista
+#         tecken, eftersom det är lätt att missta bokstaven O för siffran 0.
+#         Sedan tidigare används inte heller bokstäverna I, Q, V, Å, Ä och Ö."
+#    Å, Ä and Ö are outside this dataset's serial alphabet anyway
+#    (_meta/separators.yml), so only I, Q and V bite — plus O in the final
+#    position of the new shape. This is what `regex_strict` carries; `regex`
+#    cannot, because the lint generates every letter A-Z from an "L".
+#
+# 4. NO GEOGRAPHY, AND ONLY ONE DECODABLE DIMENSION. The länsbokstav (county
+#    letter) was removed when this system came in — Transportstyrelsen,
+#    2019-01-16: "Senaste gången registreringsnumren ändrades var 1972. Då
+#    togs länsbokstaven bort och formatet med tre siffror och tre bokstäver
+#    infördes." Since then a Swedish registration number encodes NOTHING:
+#    no region, no year, no vehicle class. Allocation is sequential-ish but
+#    numbers from deregistered vehicles are RE-USED ("de nya numren kommer att
+#    användas parallellt med att gamla registreringsnummer återanvänds"), so
+#    even letter-block age inference is unsound. The one exception worth
+#    recording: first letters Y and Z entered service only in October 2015, so
+#    a Y- or Z-initial number cannot predate that month. The ONLY Swedish
+#    plate with a real decode table is the beskickningsskylt (diplomatic) —
+#    see plates/_decode/se-diplomatic.yml.
+#
+# 5. SWEDEN HAS NO HISTORIC-VEHICLE PLATE AND NO EXPORT PLATE. Both are
+#    genuine negative findings, not gaps in this pass. Veteran vehicles keep
+#    their ordinary plates (age affects inspection intervals, not plates), and
+#    export is handled by TILLFÄLLIG REGISTRERING — the red interimsskylt —
+#    under 15-22 §§ lagen (2019:370) and 10 kap. förordningen (2019:383).
+#    The old exportvagnskungörelsen (1964:39) and turistvagnskungörelsen
+#    (1972:601) regimes are gone; 2 kap. of the current förordning knows only
+#    tillfällig registrering.
+#
+# SEPARATOR POLICY: the printed gap between letter group and digit group is a
+# GAP, not a glyph — TSFS 2015:63 6 kap. 4 § says only "tre bokstäver till
+# vänster och tre siffror till höger". Per PRD-PLATES §2.6 that gap is written
+# as the emitted SPACE in `pattern` and as an optional " ?" in every regex.
+#
+# REGEX POLICY: `format.regex` is the lint-round-trippable regex over the full
+# A-Z/0-9 alphabet; `format.regex_strict` carries the sourced issuing alphabet
+# (no I, Q, V; no final O in the 2019 shape). No `regex_statutory` is used:
+# the Swedish statute is not wider than what is issued, it is silent.
+#
+# FONT: NO TYPEFACE IS MANDATED. TSFS 2015:63 prescribes plate outer
+# dimensions, colours, the black frame and the left/right and top/bottom
+# arrangement of the character groups, and nothing else — no named font, no
+# character height, no stroke width, and no statutory Schriftmuster of the
+# German or Spanish kind. Per PRD-PLATES §6 the render layer therefore has no
+# licensable font to clear and no drawing to derive from either; the schematic
+# fallback applies and the gap is recorded.
+jurisdiction: se
+authority:
+  name: Transportstyrelsen
+  url: "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/"
+binding: vehicle
+instrument:
+  citation: "Förordning (2019:383) om fordons registrering och användning, i lydelse t.o.m. SFS 2024:998"
+  in_force: "2019-07-01"
+  replaces: "Förordning (2001:650) om vägtrafikregister (upphävd 2019-07-01 genom förordning 2019:384)"
+  delegated: "Transportstyrelsens föreskrifter och allmänna råd (TSFS 2015:63) om registrering av fordon m.m. i vägtrafikregistret, i kraft 2016-01-01, konsoliderad t.o.m. TSFS 2026:72"
+  source: "https://data.riksdagen.se/dokument/sfs-2019-383.html  # consolidated text; Övergångsbestämmelser 2019:383 p.1 'Denna förordning träder i kraft den 1 juli 2019'; accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  number_rule:
+    text: >-
+      3 kap. 1 § förordningen (2019:383), verbatim: "Transportstyrelsen ska i
+      samband med registreringen av ett fordon tilldela det ett registrerings-
+      nummer. Registreringsnumret ska bestå av 1. tre bokstäver och tre siffror,
+      eller 2. tre bokstäver, två siffror och en bokstav."
+    source: "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 1 §; accessed 2026-08-02"
+  layout:
+    text: >-
+      TSFS 2015:63 6 kap. 4 §, verbatim: "På en enradig registreringsskylt anges
+      registreringsnumret med – tre bokstäver till vänster och tre siffror till
+      höger, eller – tre bokstäver till vänster och två siffror och en bokstav
+      till höger. På en tvåradig skylt anges registreringsnumret med – tre
+      bokstäver överst och tre siffror under bokstäverna, eller – tre bokstäver
+      överst och två siffror och en bokstav under de tre bokstäverna. Bokstäver
+      och siffror är svarta på vit ljusreflekterande botten. Skylten har svart
+      ram."
+    source: "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # TSFS 2015:63 consolidated, 6 kap. 4 § (as amended by TSFS 2019:53); accessed 2026-08-02"
+  plate_shapes:
+    text: >-
+      TSFS 2015:63 6 kap. 2 §, verbatim: "Registreringsskyltar utformas 1. som
+      en enradig skylt med yttermåtten 520 mm x 110 mm, 2. som en enradig skylt
+      med yttermåtten 300 mm x 110 mm, 3. som en enradig, självhäftande skylt
+      med yttermåtten 260 mm x 70 mm, eller 4. som en tvåradig skylt med
+      yttermåtten 170 mm x 150 mm."
+    allocation: >-
+      6 kap. 3 §: 520x110 for bil, motorredskap, terrängvagn and släpfordon
+      (300x110 where the mounting space does not allow it; 170x150 for a
+      släpfordon where the vehicle's construction motivates it); 300x110 for
+      traktor; 170x150 for motorcykel and moped klass I; 260x70 for
+      terrängskoter.
+    tolerances: >-
+      From Transportstyrelsen's own size table, footnoted per row: "* Tillåten
+      avvikelse/tolerans på längden är max 1,3 mm och på höjden max 3,1 mm"
+      (marks the 520x110 and 300x110 entries) and "** Tillåten
+      avvikelse/tolerans på längden är max 4,3 mm och på höjden max 4,1 mm"
+      (marks the 170x150 entries). The 260x70 self-adhesive plate and the
+      provisorisk skylt rows carry NO tolerance marker — recorded as published,
+      not extrapolated.
+    source: "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 2-3 §; tolerances from the authority's own size table (see design_sources); accessed 2026-08-02"
+  charset:
+    letters_excluded: ["I", "Q", "V", "Å", "Ä", "Ö"]
+    letters_excluded_final_position_extra: ["O"]
+    letters_issued: [A, B, C, D, E, F, G, H, J, K, L, M, N, O, P, R, S, T, U, W, X, Y, Z]
+    basis: authority-statement
+    note: >-
+      NOT a regulation rule. Transportstyrelsen states it in its own words:
+      "några bokstäver av läsbarhetsskäl är undantagna från tilldelning (I, Q,
+      V, Å, Ä och Ö)" (2015-10-07) and "I de nya registreringsnumren används
+      inte bokstaven O som sista tecken ... Sedan tidigare används inte heller
+      bokstäverna I, Q, V, Å, Ä och Ö" (2019-01-16). Å, Ä and Ö cannot appear
+      in this dataset's serial alphabet at all (_meta/separators.yml), so the
+      operative exclusions here are I, Q, V everywhere and O in the final
+      position of the letter-final shape.
+    corroboration: >-
+      The published blocked-combination list is an independent check: not one
+      of its ~100 three-letter combinations contains I, Q or V. That is
+      corroboration, not a source, and is recorded as such.
+    sources:
+      - "https://web.archive.org/web/20170820033303/https://www.transportstyrelsen.se/sv/Nyhetsarkiv/y-och-z-som-forsta-bokstav-pa-registreringsskylten/  # Transportstyrelsen news 2015-10-07, archived capture 2017-08-20: the (I, Q, V, Å, Ä, Ö) exclusion verbatim, the 11.1 -> 12.1 million combination arithmetic, and the Y/Z rollout"
+      - "https://web.archive.org/web/20210925055728/https://www.transportstyrelsen.se/sv/Nyhetsarkiv/2019/nu-kommer-de-nya-registreringsnumren/  # Transportstyrelsen news 2019-01-16, archived capture 2021-09-25: the final-O exclusion and the first-issue statement"
+  blocked_combinations:
+    count: 100
+    list: [APA, ARG, ASS, BAJ, BSS, CUC, CUK, CUM, DUM, ETA, ETT, FAG, FAN, FEG, FEL, FEM, FES, FET, FNL, FUC, FUK, FUL, GAM, GAY, GEJ, GEY, GHB, GUD, GYN, HAT, HBT, HKH, HOR, HOT, KGB, KKK, KUC, KUF, KUG, KUK, KYK, LAM, LAT, LEM, LOJ, LSD, LUS, MAD, MAO, MEN, MES, MLB, MUS, NAZ, NRP, NSF, NYP, OND, OOO, ORM, PAJ, PKK, PLO, PMS, PUB, RAP, RAS, ROM, RPS, RUS, SEG, SEX, SJU, SOS, SPY, SUG, SUP, SUR, TBC, TOA, TOK, TRE, TYP, UFO, USA, WAM, WAR, WWW, XTC, XTZ, XUK, XXL, XXX, ZEX, ZOG, ZPY, ZUG, ZUP, ZOO]
+    note: >-
+      "Undantagna bokstavskombinationer vid tilldelning av registreringsnummer"
+      — Transportstyrelsen's own heading. The list applies to the THREE-LETTER
+      group. It is deliberately NOT compiled into any regex (the nl.yml
+      precedent for the thirteen Dutch combinations): a blocked combination is
+      a non-issuance rule, not a well-formedness rule, and plates carrying a
+      formerly-issued blocked combination are still on the road —
+      Transportstyrelsen grants a number change for exactly that case
+      ("Vi beviljar byte av registreringsnummer om man har en
+      bokstavskombination som tidigare använts men som idag är spärrad").
+      Five of the entries (ZEX, ZPY, ZUG, ZUP, ZOO) were added in October 2015
+      with the Y/Z first-letter rollout; the news item of that date counts
+      "91 bokstavskombinationer sedan tidigare", which reconciles with the 100
+      published today.
+    sources:
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/byte-av-registreringsnummer/sparrade-bokstavskombinationer/  # the full list; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/byte-av-registreringsnummer/  # 'Vi beviljar byte av registreringsnummer om man har en bokstavskombination som tidigare använts men som idag är spärrad'; accessed 2026-08-02"
+  eu_band:
+    side: left
+    content: eu-stars+S
+    rule: >-
+      TSFS 2015:63 6 kap. 5 § andra stycket: "Registreringsskylt enligt 2 § 1,
+      2 och 4 har ett sådant märke som anges i 7 kap. 2 § 2" — i.e. the 520x110,
+      300x110 and 170x150 plates carry the mark "utformat i enlighet med rådets
+      förordning (EG) nr 2411/98". 6 kap. 6 § disapplies it: "Vad som sägs i 5 §
+      andra stycket gäller inte för tillfälliga registreringsskyltar,
+      provisoriska skyltar eller skyltar för beskickningsfordon." The 260x70
+      self-adhesive terrängskoter plate is not in the 5 § list either.
+    taxi_saluvagn_tavling: >-
+      Expressly included: 6 kap. 7 § (taxi), 16 § (saluvagn) and 19 § (tävling)
+      each end with "Skylten har ett sådant märke som anges i 7 kap. 2 § 2."
+    added_2014: >-
+      Transportstyrelsen press release 2013-05-08: "EU-märkning införs på de
+      mindre så kallade USA-skyltarna, saluvagnsskyltar och taxiskyltar.
+      (Skyltar för beskickningsfordon, terrängmotorfordon och tillfälliga
+      fordon samt provisoriska skyltar kommer även i fortsättningen att vara
+      utan EU-symbol.)" and "Idag finns möjlighet att få en ordinarie
+      registreringsskylt eller MC-skylt utan EU-symbol. Den möjligheten tas
+      bort från och med årsskiftet."
+    national_sign_alternative: >-
+      TSFS 2015:63 7 kap. 2-4 §: the nationality mark is EITHER an ellipse of
+      at least 175 x 115 mm bearing a black "S" at least 80 mm high with
+      10 mm strokes on white, OR the Reg. 2411/98 band. The oval sticker route
+      still exists for vehicles whose plates predate the band.
+    hex_basis: observed
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 5-6 §, 7 kap. 2-4 §; accessed 2026-08-02"
+      - "https://web.archive.org/web/20161225212648/http://www.transportstyrelsen.se/sv/press/pressmeddelanden/sveriges-registreringsskyltar-forandras  # Transportstyrelsen press release 2013-05-08, archived capture 2016-12-25: EU marking extended to USA/saluvagn/taxi plates, non-EU plates withdrawn from the turn of the year, MC plate reduced to 170x150, fabrikatskod added"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/bilder-och-matt-pa-registreringsskyltar/  # 'Alla skyltar har en EU-symbol ... med några undantag: beskickningsskylt (diplomat), självhäftande skylt för terrängmotorfordon, tillfällig registreringsskylt och provisorisk skylt'; accessed 2026-08-02"
+  plate_markings:
+    vin_and_make: >-
+      TSFS 2015:63 6 kap. 5 § första stycket: "På registreringsskylten anges
+      hela fordonsidentifieringsnumret enligt 3 kap. 3 § 2 eller motsvarande
+      särskilda märkning samt de säkerhetsdetaljer som Transportstyrelsen
+      bestämmer." Transportstyrelsen adds that the FABRIKATSKOD is printed too
+      ("Det står till exempel VO för Volvo och TO för Toyota direkt på
+      skylten"). Both sit outside the serial and are recorded as design facts,
+      never as part of the registration number.
+    source: "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/bilder-och-matt-pa-registreringsskyltar/  # 'Identifieringsmärkning och fabrikatskod på skyltarna'; accessed 2026-08-02"
+  design_sources:
+    size_and_colour_table: "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/bilder-och-matt-pa-registreringsskyltar/  # the authority's own Typ av skylt / Skyltfärg / Teckenfärg / Storlekar table for all eleven plate types, plus the tolerance footnotes; accessed 2026-08-02"
+    illustrations_note: >-
+      Every non-black/white hex in this file is `hex_basis: observed`, sampled
+      from Transportstyrelsen's own published plate illustrations. Those
+      illustrations are glossy renders with gradients, so the values are
+      INDICATIVE. No Swedish instrument gives an RAL or RGB value for any plate
+      colour — TSFS 2015:63 names colours only ("gul", "grön", "ljusblå",
+      "orange", "röd", "vit ljusreflekterande") — which is the same posture
+      de.yml records for Germany's "grünes Kennzeichen".
+
+series:
+
+  # =========================================================================
+  # THE STANDARD SERIES, SHAPE 1: AAA 111. The system the länsbokstav was
+  # dropped for, still issuing after half a century.
+  # =========================================================================
+  - id: se-standard-1972
+    class: standard
+    categories: [car, van, truck, bus, trailer, tractor, machine]
+    period: { start: 1972 }
+    period_evidence: authority-statement
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?\d{3}\z'
+      charset:
+        letters_excluded: ["I", "Q", "V", "Å", "Ä", "Ö"]
+        excluded_combinations_ref: common.blocked_combinations
+        notes: >-
+          The exclusion is an AUTHORITY STATEMENT, not a regulation rule — see
+          common.charset. regex_strict encodes the three exclusions that fall
+          inside this dataset's serial alphabet (I, Q, V); Å, Ä and Ö cannot be
+          written at all.
+      progression: >-
+        Sequential-ish, but numbers freed by deregistration are RE-USED
+        ("de nya numren kommer att användas parallellt med att gamla
+        registreringsnummer återanvänds", 2019-01-16), so a letter block gives
+        no reliable age. ONE date signal survives: "Från och med oktober månad
+        2015 går det att få Y eller Z som första bokstav på registreringsskylten"
+        — a Y- or Z-initial Swedish number cannot predate October 2015.
+      separator_note: >-
+        The gap between letter group and digit group is a printed GAP with no
+        glyph (TSFS 2015:63 6 kap. 4 §: "tre bokstäver till vänster och tre
+        siffror till höger"). Written as the emitted SPACE per PRD-PLATES §2.6.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 110, unit: mm, note: "'USA-skylt' — only where the mounting space does not allow the 520 mm plate; granted by Transportstyrelsen after assessing the space (written application with a photo)" }
+        - { w: 170, h: 150, unit: mm, note: "two-row; for a släpfordon only where the vehicle's construction motivates it (TSFS 2015:63 6 kap. 3 §)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec, spec_note: "TSFS 2015:63 6 kap. 4 §: 'Bokstäver och siffror är svarta på vit ljusreflekterande botten.'" }
+      foreground: "#000000"
+      border: { color: "#000000", note: "'Skylten har svart ram' (6 kap. 4 §)" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed, note: "the mark is prescribed by cross-reference to Reg. 2411/98; no Swedish instrument gives the blue's RAL or RGB" }
+      emblem: { present: false }
+      rear_differs: false
+      display: "front and rear on a bil; front on traktor, motorredskap and terrängmotorfordon; rear on motorcykel, moped klass I and släpfordon (3 kap. 6 § förordningen 2019:383)"
+      extra_markings: "full fordonsidentifieringsnummer (VIN) plus the two- or three-character fabrikatskod, printed on the plate outside the serial"
+    region_encoding: none
+    region_encoding_note: >-
+      NONE, deliberately and by design: the county letter was removed when this
+      system replaced the old one. A Swedish registration number encodes no
+      region, no year and no vehicle class.
+    sources:
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 1 § alternative 1 ('tre bokstäver och tre siffror'); 3 kap. 4-7 § (how many plates, where they go, legibility); accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfst?bet=1972%3A599&upph=true  # bilregisterkungörelse (1972:599) 14 §: 'Registreringsnumret består av tre bokstäver och tre siffror' — the original enactment of this shape; 18 §: the four plate shapes (480x110, 300x110, 195x155, 260x70 self-adhesive), letters left / digits right, one-row and two-row, 'svart på vit ljusreflekterande botten'; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfst?bet=1972%3A605  # kungörelse (1972:605) om införande av ny vägtrafiklagstiftning 2 §: 'bilregisterkungörelsen (1972:599) ... träder i kraft den 1 maj 1973', and the repeal of kungörelsen (1937:49) angående beskaffenheten av registreringsskyltar; accessed 2026-08-02"
+      - "https://web.archive.org/web/20210925055728/https://www.transportstyrelsen.se/sv/Nyhetsarkiv/2019/nu-kommer-de-nya-registreringsnumren/  # 'Senaste gången registreringsnumren ändrades var 1972. Då togs länsbokstaven bort och formatet med tre siffror och tre bokstäver infördes'; number re-use; accessed 2026-08-02"
+      - "https://web.archive.org/web/20170820033303/https://www.transportstyrelsen.se/sv/Nyhetsarkiv/y-och-z-som-forsta-bokstav-pa-registreringsskylten/  # Y and Z as first letter from October 2015; the (I, Q, V, Å, Ä, Ö) exclusion; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 2-5 §: the four plate shapes, which vehicle gets which, the layout and colours, the EU mark; accessed 2026-08-02"
+    notes: >-
+      THE SWEDISH STANDARD PLATE, first shape. PERIOD DISAGREEMENT, RECORDED
+      RATHER THAN AVERAGED (PRD-PLATES §5.3): Transportstyrelsen says "1972"
+      twice in its own words (2017-02-17: "Dagens system för registreringsnummer
+      med tre bokstäver och tre siffror har funnits sedan 1972"; 2019-01-16:
+      "Senaste gången registreringsnumren ändrades var 1972"), and the
+      instrument that carries the rule — bilregisterkungörelsen (1972:599) — is
+      a 1972 SFS number but entered into force on 1 MAY 1973 (kungörelse
+      1972:605 § 2). Both can be true of different things, because § 67 of
+      kungörelse 1972:605 provides that vehicles already on a county register
+      kept their OLD numbers "till den tidpunkt när skyldighet att använda nytt
+      registreringsnummer och ny registreringsskylt inträtt enligt kungörelsen
+      (1971:819) om övergång till nytt bilregistreringssystem" — i.e. the
+      changeover ran on its own 1971 instrument and plausibly began issuing new
+      numbers during 1972. That 1971 instrument is in NO online database
+      (recorded gap), so period.start follows the authority's own repeated
+      statement (1972) and this note carries the 1 May 1973 in-force date. The
+      PREDECESSOR format (county letter + digits) is therefore documented but
+      NOT authored as a series: its grammar sits in repealed instruments
+      (kungörelsen 1937:49, vägtrafikförordningen 1951:648, vägtrafik-
+      kungörelsen 1951:743) that no reachable database carries, and inventing a
+      shape for it was declined.
+
+  # =========================================================================
+  # THE STANDARD SERIES, SHAPE 2: AAA 11A. The only date a Swedish plate
+  # string carries.
+  # =========================================================================
+  - id: se-standard-2019
+    class: standard
+    categories: [car, van, truck, bus, trailer, tractor, machine]
+    period: { start: 2019 }
+    period_evidence: first-issue-announced
+    matching: strict
+    format:
+      pattern: "LLL 99L"
+      regex: '\A[A-Z]{3} ?\d{2}[A-Z]\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?\d{2}[ABCDEFGHJKLMNPRSTUWXYZ]\z'
+      charset:
+        letters_excluded: ["I", "Q", "V", "Å", "Ä", "Ö"]
+        letters_excluded_final: ["I", "Q", "V", "O", "Å", "Ä", "Ö"]
+        excluded_combinations_ref: common.blocked_combinations
+        notes: >-
+          The FINAL letter additionally excludes O. Transportstyrelsen,
+          2019-01-16, verbatim: "Precis som idag är det inte alla bokstäver som
+          kommer att användas som sista tecken. I de nya registreringsnumren
+          används inte bokstaven O som sista tecken, eftersom det är lätt att
+          missta bokstaven O för siffran 0." regex_strict is the only place this
+          can live: the lint generates every letter A-Z from an "L".
+      progression: >-
+        "Från och med nu kommer de nya registreringsnumren att fasas in
+        successivt och de nya kombinationerna kommer att prioriteras när
+        registreringsnummer ska tilldelas" (2019-01-16). Both shapes issue in
+        parallel and the old one was not withdrawn: "Men det gamla formatet
+        finns också kvar. Det innebär att ingen behöver byta ut sin
+        registreringsskylt."
+      tax_month_note: >-
+        A real consequence of the shape change, stated by the authority: the
+        month in which fordonsskatt falls due is keyed to the LAST DIGIT, so
+        where the final character is a letter it is the SECOND-TO-LAST character
+        that governs — "och det är alltid en siffra".
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 110, unit: mm, note: "'USA-skylt'" }
+        - { w: 170, h: 150, unit: mm, note: "two-row" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 1 § alternative 2 ('tre bokstäver, två siffror och en bokstav'); accessed 2026-08-02"
+      - "https://rkrattsdb.gov.se/SFSdoc/17/170100.PDF  # SFS 2017:100, utfärdad 16 februari 2017: 'Regeringen föreskriver att 7 kap. 1 § förordningen (2001:650) om vägtrafikregister i stället för lydelsen enligt förordningen (2016:1216) ... ska ha följande lydelse' — the two-alternative wording, verbatim; accessed 2026-08-02"
+      - "https://rkrattsdb.gov.se/SFSdoc/16/161216.PDF  # SFS 2016:1216 Ikraftträdande p.1: 'Denna förordning träder i kraft den 20 maj 2017' — the date the amended 7 kap. 1 § took effect, and therefore the date the letter-final shape became legal; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfsr?bet=2001%3A650  # SFS register for förordningen (2001:650): 2016:1216 'Ikraft: 2017-05-20 överg.best.' and 2017:100 'ändr. 7 kap. 1 § i 2016:1216' — the amendment chain, from the official register; accessed 2026-08-02"
+      - "https://web.archive.org/web/20210925055728/https://www.transportstyrelsen.se/sv/Nyhetsarkiv/2019/nu-kommer-de-nya-registreringsnumren/  # Transportstyrelsen news 2019-01-16: 'Idag tilldelas de första registreringsskyltarna med det nya formatet' + the final-O exclusion + the fordonsskatt rule; accessed 2026-08-02"
+      - "https://web.archive.org/web/20170820073927/https://www.transportstyrelsen.se/sv/Nyhetsarkiv/beslutat--nya-registreringsnummer-infors-under-2019/  # Transportstyrelsen news 2017-02-17: 'Den 16 februari fattade regeringen beslut om att genomföra de nödvändiga ändringarna i förordningen om vägtrafikregister', 12.1 million combinations exhausting during 2019, existing numbers retained; accessed 2026-08-02"
+    notes: >-
+      THE LETTER-FINAL SHAPE, and the one Swedish era signal. period.start 2019
+      is the FIRST-ISSUE date the authority announced on the day
+      (2019-01-16, "Idag tilldelas de första registreringsskyltarna med det nya
+      formatet"), not an instrument date. FOLKLORE FLAG, and it is the reason
+      this series is sourced three deep: the change is very widely attributed to
+      "the 2019 förordning". It is not. The enabling amendment is förordning
+      (2017:100) of 16 February 2017, which rewrote the pending lydelse in
+      förordning (2016:1216); that lydelse entered into force on 20 May 2017,
+      under the OLD förordningen (2001:650) om vägtrafikregister. Förordningen
+      (2019:383) simply re-enacted the same two alternatives when it replaced
+      2001:650 on 1 July 2019, five and a half months AFTER the first plates
+      were issued. Three dates, all sourced, none of them interchangeable:
+      2017-02-16 decided, 2017-05-20 legal, 2019-01-16 issued.
+
+  # =========================================================================
+  # MOTORCYCLE AND MOPED KLASS I — the two-row 170x150 plate. Same numbers,
+  # different plate, so a series of its own (PRD-PLATES §2.3 design limb).
+  # =========================================================================
+  - id: se-motorcycle
+    class: motorcycle
+    categories: [motorcycle, moped]
+    period: { start: 1972 }
+    period_evidence: authority-statement
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      pattern_note: >-
+        The pattern shows shape 1; the regex is the UNION of both registration-
+        number shapes, because a motorcycle carries whichever shape its own
+        registration number has. Shape 2 only from 2019-01-16 — see
+        se-standard-2019.
+      charset: { letters_excluded: ["I", "Q", "V", "Å", "Ä", "Ö"], notes: "as common.charset" }
+      layout_note: >-
+        TSFS 2015:63 6 kap. 4 § andra stycket: on the two-row plate the three
+        letters sit on the UPPER row and the digits (or two digits + letter) on
+        the lower row. The space in the pattern is the single-line textual
+        rendering of that row break, not a printed glyph.
+    design:
+      plate: { w: 170, h: 150, unit: mm }
+      plate_variants:
+        - { w: 520, h: 110, unit: mm, note: "TSFS 2015:63 6 kap. 3 §: where the mounting space does not allow the 170x150 plate, Transportstyrelsen may supply a 520x110 or 300x110 plate instead" }
+        - { w: 300, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed }
+      rear_differs: false
+      display: "rear only (3 kap. 6 § förordningen 2019:383)"
+    region_encoding: none
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 3 § ('För motorcykel och moped klass I tillhandahålls en skylt som avses i 2 § 4') and 6 kap. 4 § andra stycket (the two-row arrangement); accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 4 § (one plate for motorcycle/moped klass I) and 3 kap. 6 § (rear placement); accessed 2026-08-02"
+      - "https://web.archive.org/web/20161225212648/http://www.transportstyrelsen.se/sv/press/pressmeddelanden/sveriges-registreringsskyltar-forandras  # Transportstyrelsen 2013-05-08: 'Slopandet av kontrollmärkena har möjliggjort en minskning av storleken på MC-skylten. Det nya måttet kommer att vara 170 X 150 mm' — the current size dates from that review; accessed 2026-08-02"
+    notes: >-
+      MOTORCYCLES AND MOPED KLASS I share ONE plate and one number system, so
+      they are one series with two categories rather than two series: the
+      PRD-PLATES §2.3 test (own series iff format OR design OR period differs)
+      separates nothing between them. period.start follows the standard series
+      because the NUMBER is the same national number; the 170x150 plate itself
+      is younger — Transportstyrelsen announced the reduction on 2013-05-08 and
+      the 2014 authority publication already prints 170x150, superseding the
+      195x155 two-row plate of bilregisterkungörelsen 18 § c. The date moped
+      klass I first became registration-liable in Sweden was not pinned in this
+      pass (recorded gap), so no separate moped period is asserted.
+
+  # =========================================================================
+  # TERRÄNGSKOTER — the 260x70 self-adhesive plate. Its own series because
+  # both the design and the EU-band posture differ.
+  # =========================================================================
+  - id: se-offroad-selfadhesive
+    class: standard
+    categories: [snowmobile, atv]
+    period: { start: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      pattern_note: "representative shape; the regex is the union of both registration-number shapes"
+    design:
+      plate: { w: 260, h: 70, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: none }
+      band_note: >-
+        NO EU BAND. TSFS 2015:63 6 kap. 5 § andra stycket gives the Reg. 2411/98
+        mark to plates under 2 § 1, 2 and 4 only — the 260x70 self-adhesive
+        plate under 2 § 3 is not in the list — and Transportstyrelsen's own page
+        names "självhäftande skylt för terrängmotorfordon" among the four plate
+        types without the EU symbol.
+      adhesive: true
+    region_encoding: none
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 2 § 3 (260x70 självhäftande) and 6 kap. 3 § ('För terrängskoter tillhandahålls en skylt som avses i 2 § 3'); 5 § andra stycket for the EU-mark list; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/bilder-och-matt-pa-registreringsskyltar/  # 'Självhäftande skylt — Enradig registreringsskylt för terrängmotorfordon (till exempel snöskoter)'; the size/colour table row 'Terrängmotorfordonsskylt vit svart 260 x 70 mm'; accessed 2026-08-02"
+    notes: >-
+      SNOWMOBILE / ATV PLATE. Recorded under class `standard` because it is the
+      ordinary registration plate of an ordinary privately-owned vehicle, only
+      in a self-adhesive 260x70 form; _meta/classes.yml has no off-road class
+      and none is invented here. period.start 2016 is INSTRUMENT-DATED (TSFS
+      2015:63, in force 2016-01-01); the 260x70 self-adhesive plate is far older
+      — bilregisterkungörelsen 18 § d prescribed the same 260x70 self-adhesive
+      form — but no date for its introduction was pinned.
+
+  # =========================================================================
+  # TAXI — two series, because the T came off on a dated day.
+  # =========================================================================
+  - id: se-taxi-t-1998
+    class: taxi
+    categories: [car, van, bus]
+    period: { start: 1998, end: 2017 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?\d{3}\z'
+      charset: { letters_excluded: ["I", "Q", "V", "Å", "Ä", "Ö"] }
+      t_mark_note: >-
+        THE "T" IS NOT PART OF THE SERIAL. Bilregisterkungörelsen 18 §, as
+        amended by förordning (1998:788), verbatim: "Bokstaven T anges till
+        höger om registreringsnumret, dock inte om fordonet enligt förordningen
+        (1988:965) om personliga fordonsskyltar är försett med personliga
+        fordonsskyltar. Bokstäver och siffror utförs i svart på gul
+        ljusreflekterande botten." It is a stamped mark beside the number, so
+        it lives in `design`, not in `format.regex`. Only the AAA 111 shape ever
+        appeared on a T plate: the letter-final shape began issuing in 2019, two
+        years after the T was withdrawn.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 110, unit: mm }
+      background: { color: "#DC9D00", finish: retroreflective, hex_basis: observed, spec_note: "the instrument says only 'gul ljusreflekterande botten' — no RAL, no RGB" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed, note: "only from the 2013-05-08 review; taxi plates made before then carry no EU symbol" }
+      extra_field: { position: right, content: "the letter T, stamped beside the registration number" }
+    region_encoding: none
+    sources:
+      - "https://rkrattsdb.gov.se/SFSdoc/98/980788.PDF  # förordning (1998:788) om ändring i bilregisterkungörelsen (1972:599), 18 §: the T and 'svart på gul ljusreflekterande botten', verbatim; 'Denna förordning träder i kraft den 1 oktober 1998'; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfsr?bet=1972%3A599&upph=true  # SFS register: 'Ändring, SFS 1998:788 ... Ikraft: 1998-10-01'; accessed 2026-08-02"
+      - "https://web.archive.org/web/20170408075118/http://www.transportstyrelsen.se/sv/Nyhetsarkiv/inte-langre-nagra-t-pa-taxiskyltar  # Transportstyrelsen news 2017-04-03, archived capture 2017-04-08: 'Taxiskyltens utseende förändras från och med den 1 april 2017. Det T som tidigare varit instansat till höger om registreringsnumret tas bort' and 'Skyltar som tillverkats innan den 1 april 2017 och som har det gamla utseendet med ett instansat T kommer fortfarande att vara giltiga'; accessed 2026-08-02"
+      - "https://web.archive.org/web/20160519223846if_/http://www.transportstyrelsen.se/globalassets/global/publikationer/vag/fordon/svenska_registreringsskyltar_2014.pdf  # Transportstyrelsen publication 201.143 (U07), March 2014: 'Taxiskylt ... Bokstaven T anges till höger om registreringsnumret. Mått: 520 x 110 mm. Finns också i måttet: 300 x 110 mm'; accessed 2026-08-02"
+    notes: >-
+      THE YELLOW TAXI PLATE WITH THE STAMPED T, 1 October 1998 to 31 March 2017.
+      period.end 2017 closes ISSUANCE only: plates manufactured before 1 April
+      2017 remain valid indefinitely, which the authority states in terms, so a
+      T plate seen today is legal and is a hard pre-April-2017 manufacturing
+      signal — one of the very few dating tells on any Swedish plate. Parallel
+      with se-taxi-2017 during 2017, which is why both carry distinct notes.
+
+  - id: se-taxi-2017
+    class: taxi
+    categories: [car, van, bus]
+    period: { start: 2017 }
+    period_evidence: authority-announcement
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      pattern_note: "representative shape; the regex is the union of both registration-number shapes"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 110, unit: mm }
+      background: { color: "#DC9D00", finish: retroreflective, hex_basis: observed, spec_note: "TSFS 2015:63 6 kap. 7 §: 'På en taxiskylt är bokstäver och siffror svarta på gul ljusreflekterande botten. Registreringsskylten har svart ram.' Colour named, not numbered." }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed }
+      note: "identical to the ordinary plate in every respect except the yellow ground — which was the stated point of removing the T"
+    region_encoding: none
+    variants:
+      - class: personalized
+        note: >-
+          PERSONLIG SKYLT FÖR TAXI — a personal character combination on the
+          yellow taxi ground. TSFS 2015:63 12 kap. 9 §: "En personlig
+          fordonsskylt kan även utformas på det sätt som anges i 6 kap. 7 eller
+          20 §" (taxi yellow or tävling orange). Recorded as a sub-entry because
+          only the ground colour differs from se-personal.
+        sources:
+          - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/bilder-och-matt-pa-registreringsskyltar/  # size table row 'Personlig skylt för taxi | gul | svart | 520 x 110 mm, 300 x 110 mm'; accessed 2026-08-02"
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 7-9 §: the taxi plate's colours and frame, when it is supplied, and that an ordinary plate may be used until the taxi plate arrives; accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 11 §: 'Ett fordon som har anmälts för användning i taxitrafik enligt taxitrafiklagen (2012:211) ska ha en särskild registreringsskylt (taxiskylt)', with the 2 b kap. 1 § exception; 3 kap. 12 §: the plates must be returned when the vehicle leaves taxi service; accessed 2026-08-02"
+      - "https://web.archive.org/web/20170408075118/http://www.transportstyrelsen.se/sv/Nyhetsarkiv/inte-langre-nagra-t-pa-taxiskyltar  # Transportstyrelsen news 2017-04-03: the T removed from 1 April 2017; accessed 2026-08-02"
+    notes: >-
+      THE TAXI PLATE WITHOUT THE T, from 1 April 2017. Its own series rather
+      than a colour variant of the standard plate because it is a distinct
+      statutory issuance (3 kap. 11 § makes it compulsory for a vehicle notified
+      for taxi traffic, and 3 kap. 12 § requires its surrender), and because its
+      predecessor carried an extra stamped character. Note the 2 b kap. 1 §
+      taxitrafiklagen exception, added by förordning (2020:632): a vehicle
+      notified under that provision need not have a taxi plate at all, so
+      "yellow plate" is a sufficient but not necessary condition for a Swedish
+      taxi.
+
+  # =========================================================================
+  # SALUVAGNSSKYLT — the green trade plate. Bound to a BUSINESS, not a
+  # vehicle, exactly like the German rote Kennzeichen.
+  # =========================================================================
+  - id: se-dealer-saluvagn
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine, snowmobile]
+    period: { start: 1973 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      characters: 6
+      charset:
+        notes: >-
+          TSFS 2015:63 6 kap. 16 §, verbatim: "En saluvagnsskylt har en
+          beteckning med sex tecken och utformas enligt 2 § 1 eller 4. Bokstäver
+          och siffror utförs i svart på grön ljusreflekterande botten." The
+          föreskrift gives the COUNT but not the arrangement; Transportstyrelsen's
+          own published illustration shows both registration-number shapes
+          ("MLB 803" and "MLB 36U"), which is why the union regex is used. The
+          1972 ancestor was explicit — bilregisterkungörelsen 42 §: "skyltens
+          nummer, som består av tre bokstäver och tre siffror".
+      fields_note: >-
+        THE VEHICLE-TYPE LETTER IS A FIELD, NOT PART OF THE BETECKNING.
+        TSFS 2015:63 6 kap. 18 §: "På skylten anges, utöver beteckningen enligt
+        16 §, det slag av fordon som skylten avser enligt följande: 1. För bil
+        bokstaven 'B'. 2. För motorcykel och moped klass I bokstaven 'M'.
+        3. För traktor och motorredskap bokstaven 'T'. 4. För terrängmotorfordon
+        bokstäverna 'TM'. 5. För släpfordon bokstaven 'S' eller, om samtliga
+        släpfordon ... utgörs av släpvagnar med en skattevikt av högst 3 ton,
+        släpslädar eller terrängsläp, bokstäverna 'LS'." Time-limited licences
+        additionally carry the expiry date stamped into the plate. Neither can
+        be expressed in a single `pattern` string — the same schema pressure
+        PRD-PLATES §2.2 records for Japan.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 170, h: 150, unit: mm, note: "two-row, for motorcycle and moped klass I (TSFS 2015:63 6 kap. 17 §)" }
+      background: { color: "#03995C", finish: retroreflective, hex_basis: observed, spec_note: "'grön ljusreflekterande botten' (6 kap. 16 §) — colour named, not numbered" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed, note: "EU mark added by the 2013-05-08 review; earlier saluvagn plates carry none" }
+      extra_field: { position: right, content: "vehicle-type letter B / M / T / TM / S / LS; plus a stamped expiry date on time-limited licences" }
+      hangs: "the plate is HUNG on the vehicle being driven, not fixed: rear on bil, motorcykel, moped klass I and släpfordon; front on traktor, motorredskap and terrängmotorfordon (9 kap. 3 § förordningen 2019:383)"
+    binding: business
+    region_encoding: none
+    validity:
+      note: >-
+        9 kap. 5 §: a saluvagnsskylt issued in a given calendar year may be used
+        after that year's end for as long as the licence lasts, provided the
+        holder pays the annual vägtrafikregisteravgift and saluvagnsskatt and
+        keeps the vehicles insured. The licence itself runs indefinitely or, on
+        special grounds, for a limited term.
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 16-18 §: six characters, black on green reflective, black frame, EU mark, which plate size on which vehicle, and the B/M/T/TM/S/LS type letters (18 § in the TSFS 2026:72 lydelse); accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 9 kap. 1-9 §: saluvagnslicens, where the plate is hung, replacement plates get a DIFFERENT beteckning, annual fees, surrender on revocation; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfst?bet=1972%3A599&upph=true  # bilregisterkungörelse (1972:599) 42 §: 'Saluvagnsskylt har rektangulär form med yttermåtten 480x110 mm och upptar skyltens nummer, som består av tre bokstäver och tre siffror. Bokstäver och siffror upptas i en rad och utförs i svart på grön ljusreflekterande botten' — the regime's original enactment, in force 1 May 1973; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/for-fordonsbranschen/saluvagnslicens/  # 'en grön skylt med svarta tecken'; 520x110 and 170x150; time-limited plates carry a stamped validity date; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/globalassets/global/bilder/vag/fordon/saluvagnsskyltar.png  # the authority's own illustration: beteckningar 'MLB 803' and 'MLB 36U' with the type letter B / M outside the beteckning, and the stamped date block on the time-limited variants; accessed 2026-08-02"
+    notes: >-
+      SALUVAGNSSKYLT — the Swedish trade plate. BINDING NOTE: like the German
+      rote Kennzeichen and unlike every other entry here, this plate binds to a
+      BUSINESS ("den som yrkesmässigt tillverkar, transporterar eller handlar
+      med fordon eller släpfordon") and moves between unregistered and
+      deregistered vehicles, so `binding: business` is set and a vehicle-keyed
+      consumer must not join on it. Two details a parse API needs: the
+      beteckning is NOT a registration number and never appears in the
+      vägtrafikregister as one; and 9 kap. 4 § provides that a lost plate is
+      replaced "med en annan beteckning än den som fanns på den tidigare
+      skylten", so a saluvagn beteckning is not stable across replacement.
+      period.start 1973 is the in-force date of bilregisterkungörelsen (1972:599)
+      — see se-standard-1972's period note for the 1972/1973 disagreement — and
+      the current six-character rule, 520x110 size and EU mark are all younger.
+
+  # =========================================================================
+  # BESKICKNINGSSKYLT — the only Swedish plate with a decode table.
+  # =========================================================================
+  - id: se-diplomatic
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1988 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 999L"
+      regex: '\A[A-Z]{2} ?\d{3}[A-Z]\z'
+      regex_strict: '\A[A-F][ABCDEFGHJKLMNPRSTUVWXYZ] ?\d{3}[A-J]\z'
+      characters: 6
+      charset:
+        notes: >-
+          regex_strict is sourced by ENUMERATION of the closed tables, not by a
+          stated letter rule: across all 128 published landskoder the first
+          letter is always A-F and the second never I, O or Q; the kategorikod
+          table runs A-H plus "I eller J". Note that V IS used in a landskod
+          (EV = International IDEA) even though V is excluded from ordinary
+          registration numbers — the two alphabets are different, and a parse
+          API must not share them.
+      composition: >-
+        TSFS 2015:63 12 kap. 3 §, verbatim: "Teckensammansättningen ska, från
+        vänster på den enradiga registreringsskylten, bestå av 1. en landskod
+        (två bokstäver) som utvisar vilken beskickning ägaren eller brukaren av
+        fordonet tillhör, 2. ett löpnummer (tre siffror) inom respektive
+        landskod, och 3. en kategorikod (en bokstav) som utvisar ägarens eller
+        brukarens ställning." On the two-row plate the landskod is on the upper
+        row and the löpnummer + kategorikod on the lower row.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 170, h: 150, unit: mm, note: "two-row" }
+        - { w: 300, h: 110, unit: mm }
+      background: { color: "#469BD1", finish: retroreflective, hex_basis: observed, spec_note: "TSFS 2015:63 12 kap. 2 §: 'Tecknen är svarta på ljusblå ljusreflekterande botten. Skylten har svart ram.' Identical wording to förordning (1988:964) 2 §, thirty-seven years earlier." }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      band_note: >-
+        NO EU BAND — TSFS 2015:63 6 kap. 6 § disapplies the mark for skyltar för
+        beskickningsfordon, and the authority's own page lists beskickningsskylt
+        first among the four exceptions. Nor does the plate carry the VIN /
+        fabrikatskod marking (6 kap. 6 § again).
+    binding: owner
+    binding_note: >-
+      Set to `owner` deliberately. 11 kap. 2 § förordningen (2019:383): the
+      character composition is fixed by Regeringskansliet "med hänsyn till det
+      berörda landet och den ställning som den som äger eller använder fordonet
+      har. Om dessa förhållanden ändras, ska fordonet tilldelas nya skyltar."
+      The plate therefore tracks the HOLDER'S STATUS, not the vehicle: a
+      promotion or a posting change re-plates the same car.
+    region_encoding: "plates/_decode/se-diplomatic.yml"
+    region_encoding_note: >-
+      128 landskoder + 10 kategorikoder, both closed and primary. Held in a
+      _decode file rather than inline (PRD-PLATES §2.4) because 138 rows is well
+      past de.yml's Anlage-2 inline threshold.
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 12 kap. 1 a § (definitions of landskod and kategorikod, added by TSFS 2025:33), 12 kap. 2 § (six characters, black on light blue reflective, black frame), 12 kap. 3 § (the 2+3+1 composition, one-row and two-row); 6 kap. 6 § (no EU mark, no VIN marking); accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfst?bet=1988%3A964&upph=true  # förordning (1988:964) om skyltar för beskickningsfordon 2 §, verbatim: 'Skyltar för beskickningsfordon upptar sex tecken som utgörs av bokstäver och siffror. Tecknen utförs i svart på ljusblå reflekterande botten.'; Övergångsbestämmelser: 'Denna förordning träder i kraft den 1 oktober 1988'; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfsr?bet=1988%3A964&upph=true  # SFS register: 'Ikraft: 1988-10-01 överg.best.', 'Upphävd: 2001-10-01' (absorbed into förordningen 2001:650); accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 11 kap. 1-5 §: who gets the plates (immunity/privileges), Utrikesdepartementet decides and supplies them, new plates when status changes, ordinary plates if the vehicle becomes taxable; 15 kap. 13 §: Säkerhetspolisen may grant an exemption on security grounds; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/skylt-for-beskickningsfordon-diplomatfordon/  # the 128-row landskod table and the kategorikod table; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/globalassets/global/bilder/vag/fordon/diplomat.png  # authority illustration: 'ML 803 B' one-row and 'ML / 803B' two-row, black on light blue, no EU band; accessed 2026-08-02"
+    notes: >-
+      THE BESKICKNINGSSKYLT. period.start 1988 is a REAL start, not an
+      instrument-in-force convenience: förordningen (1988:964) created the
+      six-character light-blue plate and took effect on 1 October 1988, with a
+      transitional grace to the end of December 1988. The colour wording has
+      survived verbatim through three instruments (1988:964 -> 2001:650 ->
+      2019:383 + TSFS 2015:63), which is why the design claim is `spec` while
+      the hex is `observed`. SECURITY EXEMPTION worth recording for a claims
+      model: 15 kap. 13 § lets Säkerhetspolisen exempt a vehicle from the
+      beskickningsskylt requirement "om det finns särskilda skäl som gäller
+      säkerheten" — so absence of a blue plate does not disprove diplomatic
+      ownership.
+
+  # =========================================================================
+  # TILLFÄLLIG REGISTRERING — the red interimsskylt. This is also Sweden's
+  # export plate; there is no separate export series.
+  # =========================================================================
+  - id: se-temporary-interim
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      pattern_note: >-
+        Representative shape; the regex is the union of both registration-number
+        shapes, because TSFS 2015:63 6 kap. 11 § assigns the number "enligt 4 §"
+        — the ordinary rule.
+      number_identity_rule: >-
+        6 kap. 11 § andra stycket, and it matters to a parse API: for a vehicle
+        registered under 16 § lagen (2019:370) the temporary number is THE SAME
+        as the one it will get at ordinary registration; for a vehicle
+        registered under 17 § it "får inte motsvara ett eventuellt tidigare
+        tilldelat registreringsnummer".
+      fields_note: >-
+        The plate carries the registration's expiry as day, month and year
+        (6 kap. 12 §), printed as a stacked day-over-month block at the LEFT and
+        the year at the RIGHT — the reverse of the German Kurzzeitkennzeichen
+        layout. A vehicle used under 20 § lagen (2019:370) additionally carries
+        the letter "B" (restricted use). None of that fits a single `pattern`.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 170, h: 150, unit: mm, note: "two-row" }
+      background: { color: "#BB0908", finish: retroreflective, hex_basis: observed, spec_note: "6 kap. 11 § tredje stycket: 'Bokstäver och siffror utförs i vitt på röd ljusreflekterande botten.'" }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      band_note: "no EU mark and no VIN/fabrikatskod marking (6 kap. 6 §); Transportstyrelsen lists 'tillfällig registreringsskylt' among the four EU-symbol exceptions"
+      extra_field:
+        position: left
+        content: "day over month of expiry; the year sits at the right-hand end; a 'B' below the year marks a vehicle restricted under 20 § lagen (2019:370)"
+    region_encoding: none
+    validity:
+      note: >-
+        Set per decision, not by a fixed statutory period; the expiry is printed
+        on the plate. A vehicle temporarily registered under 17 § första stycket
+        1-3 lagen (2019:370) must LEAVE the country within the registration's
+        validity (10 kap. 3 § förordningen 2019:383), and non-departure of a
+        non-Union good is reported to Tullverket.
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 11-13 §: the number rule, white on red reflective, the day/month/year field, the 'B' marking, and the stripped-down plate usable while the dated ones are awaited; 6 kap. 6 § for the EU-mark exclusion; accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 10 kap. 1-8 §: application, the out-of-country obligation, 'När en tillfällig registrering har beslutats ska Transportstyrelsen tillhandahålla särskilda registreringsskyltar (interimsskyltar)', and 'En interimsskylt får dock inte vara provisorisk'; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/import-och-export-av-fordon/export-och-tillfallig-registrering/tillfallig-registrering/  # 'Den särskilda registreringsskylten är röd med vit text och finns som enradig skylt med yttermåtten 520 x 110 mm, tvåradig skylt med yttermåtten 170 x 150 mm'; 'årtal angivet till höger på skylten och dag och månad till vänster'; 'Om ett fordon endast får användas i begränsad omfattning, är skylten försedd med ett B'; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/globalassets/global/bilder/vag/fordon/interimsskyltar.png  # authority illustration: white on red, '03/04 MLB 803 2014' and '31/01 MLB 36U 2019 B'; accessed 2026-08-02"
+    notes: >-
+      INTERIMSSKYLT — and SWEDEN'S EXPORT PLATE, which is why this file has no
+      `export` series. The old exportvagnskungörelsen (1964:39) and
+      turistvagnskungörelsen (1972:601) regimes, both still cross-referenced in
+      bilregisterkungörelsen 3 §, are gone; export, import and temporary foreign
+      use all run through tillfällig registrering under 15-22 §§ lagen
+      (2019:370). period.start 2016 is INSTRUMENT-DATED (TSFS 2015:63, in force
+      2016-01-01); the tillfällig-registrering regime itself dates from
+      förordningen (2001:650), in force 1 October 2001, and the red/white design
+      is older than the föreskrift that now states it — the earlier date was not
+      pinned (recorded gap).
+
+  - id: se-provisional
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2016 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      pattern_note: "the provisional plate carries the vehicle's OWN registration number, so the regex is the union of both shapes"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FCA62F", finish: unspecified, hex_basis: observed, spec_note: "TSFS 2015:63 6 kap. 15 §: 'En provisorisk registreringsskylt har sådan form som avses i 2 § 1. Bokstäver och siffror utförs i svart på gul botten.' Note the ABSENCE of 'ljusreflekterande' — the only Swedish plate whose colour rule omits the word, exactly as bilregisterkungörelsen 25 § omitted it before. `finish: unspecified` records that absence rather than asserting non-reflectivity from silence, though Transportstyrelsen's own photograph of the plate shows a matte, un-sheened surface." }
+      foreground: "#000000"
+      band: { side: none }
+      band_note: "no EU mark, no VIN/fabrikatskod marking (6 kap. 6 §)"
+    region_encoding: none
+    validity:
+      note: >-
+        3 kap. 17 § förordningen (2019:383): usable only until the owner or
+        driver has received a replacement plate (ersättningsskylt), which must
+        then be fitted as soon as possible.
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 15 §; 6 kap. 6 § for the EU-mark exclusion; accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 13-18 §: the Polismyndighet issues the provisional plate on an ersättningsskylt application, the use-ban carve-outs, and 3 kap. 5 § andra stycket permitting the drive to the police station on no plate at all; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfst?bet=1972%3A599&upph=true  # bilregisterkungörelse 25 §: 'Provisorisk registreringsskylt utformas som enradig skylt med yttermåtten 445x120 mm ... Bokstäver och siffror utförs i svart på gul botten' — the pre-2016 size, superseded; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/globalassets/global/press/registreringsskyltar/provisorisk-regskylt_ny.jpg  # Transportstyrelsen's own photograph of a provisorisk skylt — the source of the observed hex and of the matte, un-sheened surface observation; accessed 2026-08-02"
+    notes: >-
+      PROVISORISK REGISTRERINGSSKYLT — issued by the POLICE, not by
+      Transportstyrelsen, when a plate is lost or stolen. Its own series rather
+      than a variant because the issuing authority, the colour and the (absent)
+      retroreflectivity requirement all differ from the ordinary plate. SIZE
+      CHANGE WORTH RECORDING: 445x120 mm under bilregisterkungörelsen 25 § and
+      still 445x120 in Transportstyrelsen's own March 2014 publication; 520x110
+      under TSFS 2015:63 6 kap. 15 § (in force 2016-01-01). Distinct from the
+      interimsskylt: 10 kap. 4 § provides in terms that "En interimsskylt får
+      dock inte vara provisorisk."
+
+  # =========================================================================
+  # PERSONLIG FORDONSSKYLT — and the file's one schema stressor.
+  # =========================================================================
+  - id: se-personal
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine, snowmobile]
+    period: { start: 1988 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLLLLL"
+      regex: '\A(?![A-Z]{3} ?\d{3}\z)(?![A-Z]{3} ?\d{2}[A-Z]\z)(?![A-Z]{2} ?\d{3}[A-Z]\z)[A-Z0-9](?:[A-Z0-9]| ){0,5}[A-Z0-9]\z'
+      characters: { min: 2, max: 7 }
+      charset:
+        note: >-
+          SCHEMA STRESSOR, FLAGGED FOR THE MAINTAINER. Transportstyrelsen:
+          "Du får använda alla bokstäver i svenska alfabetet, A-Ö" — so Å, Ä and
+          Ö ARE issued on personal plates, and they are OUTSIDE this dataset's
+          serial alphabet (_meta/separators.yml: "ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          0123456789" and nothing else). Per PRD-PLATES §2.6 that is "a schema
+          amendment, not a data entry": the regexes here are therefore
+          deliberately NARROWER than the issuing grammar in that one respect,
+          which §2.7 confirms is still `strict`. A Swedish personal plate reading
+          "SÖDER" will not match, and cannot until _meta/separators.yml grows.
+        equivalences: >-
+          "O och 0 (nolla) jämställs som tecken, I och 1 (ett) jämställs som
+          tecken" — SONNY and S0NNY are the SAME combination for allocation
+          purposes, as are SOFIA and SOF1A. A regex cannot express an
+          equivalence class; recorded here for the parse API, which must
+          canonicalise O/0 and I/1 before deduplicating personal combinations.
+        space_rule: >-
+          "Det får finnas mellanrum mellan tecknen under förutsättning att
+          teckenkombinationen inklusive mellanrum ryms på skylten. Ett mellanrum
+          tar samma plats på skylten som ett tecken." So a space COUNTS toward
+          the 2-7 budget. It is still an emitted separator per PRD-PLATES §2.6
+          and is written as a bare literal inside an alternation, never inside a
+          mixed character class (§2.8).
+        forbidden_shapes: >-
+          "Det är inte tillåtet med teckenkombinationer som motsvarar
+          registreringsnummer (tre bokstäver + tre siffror eller tre bokstäver +
+          två siffror + en bokstav) eller skylt för beskickningsfordon (två
+          bokstäver + tre siffror + en bokstav)." All three shapes are excluded
+          by the negative lookaheads at the head of `regex` — which is why this
+          series needs no `regex_strict`: the sourced narrowing is already in
+          `regex`.
+        discretionary: >-
+          Two rules that are NOT enumerable and are therefore not encoded:
+          TSFS 12 kap. 10 § ("En personlig fordonsskylt får inte utformas så att
+          den kan bedömas medföra olägenhet eller väcka anstöt") and 12 kap. 11 §
+          (trade-mark, company-name and personal-name rights are weighed under
+          the olägenhet test). Same posture as de.yml's "gute Sitten" note.
+      size_limits: >-
+        TSFS 12 kap. 9 §, verbatim: "En personlig fordonsskylt upptar två till
+        sju tecken om fordonet är försett med sådan skylt som avses i 6 kap.
+        2 § 1. En personlig fordonsskylt som avses i 6 kap. 2 § 2-4 upptar två
+        till sex tecken." So 2-7 on the 520x110 plate and 2-6 on the 300x110,
+        260x70 and 170x150 plates. Transportstyrelsen adds, on its own page and
+        not in the föreskrift, that "En mc-skylt får ha högst tre tecken per
+        rad" — a layout constraint on the two-row plate.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 110, unit: mm, note: "2-6 characters" }
+        - { w: 170, h: 150, unit: mm, note: "2-6 characters, at most three per row" }
+        - { w: 260, h: 70, unit: mm, note: "2-6 characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed, note: "12 kap. 9 §: 'Skylten har ett sådant märke som anges i 7 kap. 2 § 2'" }
+      extra_field: { position: right, content: "the date the plate was ordered (12 kap. 12 §)" }
+      identification_sticker: >-
+        12 kap. 13-14 §: a separate identifieringsmärke carrying the vehicle's
+        ORDINARY registration number, the personal character combination and the
+        VIN must be stuck to the inside of the rear right side window. Without
+        it the personal plates may not be used. This is the mechanism that keeps
+        the ordinary number alive for tax, inspection and enforcement.
+    binding: owner
+    binding_note: >-
+      The RIGHT is personal and time-limited, not the plate: 11 kap. 9 §
+      förordningen (2019:383) gives ten years, renewable in five- or ten-year
+      periods, and the combination may be moved to another vehicle the holder
+      owns on notification. 15 kap. 7 § 6 lets Transportstyrelsen permit a
+      transfer of the right to someone else, but only "om det finns särskilda
+      skäl". The vehicle keeps its ordinary registration number throughout.
+    region_encoding: none
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 12 kap. 9-15 §: 2-7 / 2-6 characters, letters or digits or both, the EU mark, the no-look-alike rule, the anstöt/olägenhet tests, the order date on the plate, the identifieringsmärke and its placement; accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 11 kap. 6-10 §: definition, Transportstyrelsen grants the right at a price Trafikverket sets, transfer between the holder's vehicles, ten years renewable by five or ten; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfst?bet=1988%3A965&upph=true  # förordning (1988:965) om personliga fordonsskyltar 3 §: 'En personlig fordonsskylt skall uppta två till sex tecken. Tecknen utgörs av bokstäver eller siffror eller en kombination av båda' — the original two-to-SIX rule; 4 §: ten years, renewable, non-transferable; accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfsr?bet=1988%3A965&upph=true  # SFS register: 'Ikraft: 1988-10-01'; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/personlig-skylt/  # 'Du får använda alla bokstäver i svenska alfabetet, A-Ö'; the O/0 and I/1 equivalences; the space rule; the forbidden registration-number and beskickning shapes; SEK 6 900 for ten years; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/personlig-skylt/regler-for-att-aga-en-personlig-skylt/  # the identifieringsmärke requirement and the advice to refit ordinary plates when driving abroad; accessed 2026-08-02"
+    notes: >-
+      PERSONLIG FORDONSSKYLT, from 1 October 1988 (förordning 1988:965), and the
+      most schema-stressing entry in this file for three separate reasons: it
+      admits Å, Ä and Ö, which this dataset's serial alphabet cannot spell; it
+      treats O/0 and I/1 as THE SAME CHARACTER for allocation, which no regex
+      can express; and it counts a SPACE as a character position while
+      PRD-PLATES §2.6 classifies space as a separator a lenient consumer may
+      delete — a consumer deriving a separator-free twin of this regex is
+      therefore doing something semantically different here than everywhere
+      else in the dataset. The character budget also grew: 2-6 under the 1988
+      förordning, 2-7 on the full-size plate under TSFS 2015:63 12 kap. 9 §.
+      The date of that widening was not pinned (recorded gap).
+
+  # =========================================================================
+  # TÄVLINGSSKYLT — orange, compulsory, and a vocabulary gap.
+  # =========================================================================
+  - id: se-competition
+    class: specialty
+    categories: [car, motorcycle]
+    period: { start: 2016 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?(?:\d{3}|\d{2}[A-Z])\z'
+      regex_strict: '\A[ABCDEFGHJKLMNOPRSTUWXYZ]{3} ?(?:\d{3}|\d{2}[ABCDEFGHJKLMNPRSTUWXYZ])\z'
+      pattern_note: >-
+        The competition plate carries the vehicle's OWN registration number in
+        black on orange — "Tävlingsskyltarna för rallybilar och enduro- och
+        trialmotorcyklar är orangea med registreringsnumret i svart" — so the
+        regex is the union of both registration-number shapes. A personal
+        combination may also be issued on the orange ground (TSFS 12 kap. 9 §
+        last sentence, referring to 6 kap. 20 §).
+    design:
+      plate: { w: 300, h: 110, unit: mm }
+      plate_variants:
+        - { w: 170, h: 150, unit: mm, note: "two-row, enduro and trial motorcycles" }
+        - { w: 520, h: 110, unit: mm, note: "TSFS 6 kap. 19 §: another size under 2 § may be assigned where the vehicle's construction motivates it" }
+      background: { color: "#DE5E1C", finish: retroreflective, hex_basis: observed, spec_note: "TSFS 2015:63 6 kap. 20 §: 'Bokstäver och siffror utförs i svart på orange ljusreflekterande botten.'" }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+S, hex_basis: observed, note: "6 kap. 19 §: 'Skylten har även ett sådant märke som anges i 7 kap. 2 § 2'" }
+      display: "one front and one rear on a rally car; rear only on an enduro/trial motorcycle"
+    region_encoding: none
+    eligibility:
+      note: >-
+        Keyed to a textkod in the vägtrafikregister, which is unusually
+        machine-legible for an eligibility rule: T71MC (enduro and trial
+        motorcycles) and T71R, T71X, T71Y, T71Z, T71ZE, T71ZK (rally cars) take
+        the orange plate; T71ZO takes ordinary white plates.
+      usage: >-
+        The plate signals a dispens: "Fordon med tävlingsskylt har dispens som
+        innebär att de endast får köras på allmänna vägar i samband med
+        tävlingar, mellan specialsträckor i tävlingen." A competition motorcycle
+        may additionally be ridden in connection with training or competition
+        organised by a club registered with "Svenska motorcykel- och
+        snöskoterförbundet eller Motorförarnas helnykterhetsförbund".
+    sources:
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63k.pdf  # 6 kap. 19-20 §: which plate size for which competition vehicle, the EU mark, black on orange reflective; accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 3 kap. 9-10 §: 'En registreringsskylt för ett fordon som har registrerats för användning som tävlingsfordon (tävlingsfordonsskylt) ska ha det särskiljande utseende som framgår av föreskrifter...', and the duty to surrender them; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/TSFS/TSFS%202015_63.pdf  # TSFS 2015:63 as enacted, Ikraftträdande p.1: 'Denna författning träder i kraft den 1 januari 2016' — the tävlingsskylt provisions were in the föreskrift from day one; accessed 2026-08-02"
+      - "https://www.transportstyrelsen.se/sv/vagtrafik/fordon/aga-kopa-eller-salja-fordon/registreringsskyltar/tavlingsskyltar/  # 'Från och med 1 januari 2016 ska de flesta tävlingsfordon ha tävlingsskylt'; 300x110 front and rear for rally cars, 170x150 rear for enduro/trial; the textkod list; accessed 2026-08-02"
+    notes: >-
+      TÄVLINGSSKYLT. CLASS CAVEAT, and it is a real one: _meta/classes.yml
+      defines `specialty` as "optional-design programs on standard serials (US
+      state programs)", and this plate is neither optional nor a program — it is
+      COMPULSORY for a registered competition vehicle and it exists to make such
+      vehicles visually separable ("Genom en särskiljande registreringsskylt kan
+      tävlingsfordon enklare urskiljas från övriga fordon"). `specialty` is
+      recorded as the least-wrong fit and a `competition` class is proposed to
+      the vocabulary in the dossier — the same move de.yml made when it filed
+      the tax-exempt green plate under `agricultural`. Announced in the
+      2013-05-08 review as a new plate type and brought in with TSFS 2015:63 on
+      1 January 2016.
+
+  # =========================================================================
+  # MILITARY — a different register, a different authority, a different colour
+  # scheme, and the least-sourced entry here.
+  # =========================================================================
+  - id: se-military
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer, machine]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    # RECALL-ONLY (PRD-PLATES §2.7): militärtrafikförordningen states the
+    # COLOURS and that the number is rendered in "gula siffror", and delegates
+    # everything else — length, grouping, any leading letters — to Försvars-
+    # makten's own föreskrifter, which were not reached in this pass. A 1-6
+    # digit regex is therefore deliberately wider than whatever Försvarsmakten
+    # actually issues, and a match is a shape hit and nothing more.
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A\d{1,6}\z'
+      pattern_note: >-
+        DIGITS ONLY is sourced — 5 kap. 6 § militärtrafikförordningen (2009:212):
+        "Fordonets registreringsnummer ska anges på skylten med gula siffror på
+        svart botten." The WIDTH is not: no reachable instrument states it. The
+        1-6 quantifier is a recall envelope, not a claim.
+    design:
+      plate: { w: 360, h: 100, unit: mm }
+      plate_variants:
+        - { note: "Transportstyrelsen's 2014 publication: 'Mått: 360 x 100 mm. Finns i flera olika mått.' The other sizes are not enumerated anywhere reached." }
+      background: { color: "#000000", finish: unspecified, hex_basis: spec, spec_note: "5 kap. 6 § militärtrafikförordningen names only 'gula siffror på svart botten' — the only Swedish plate that inverts the national black-on-light scheme. Black is taken at face value; the yellow is NOT, see foreground_note." }
+      foreground: "#FFD400"
+      foreground_note: >-
+        HEX IS A PLACEHOLDER FOR A NAMED COLOUR, and is flagged rather than
+        dressed up as observed: the instrument says "gula siffror" and nothing
+        more, no RAL or RGB exists, and no authority-published image of a
+        Swedish military plate was located in this pass (Transportstyrelsen's
+        2014 publication shows one but the file was not reachable at a stable
+        URL). Treat #FFD400 as "some yellow" until a render spec or an
+        authority image is pinned.
+      band: { side: none }
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://data.riksdagen.se/dokument/sfs-2009-212.html  # militärtrafikförordning (2009:212) 5 kap. 3 § (Försvarsmakten assigns the number), 5 kap. 6 § (yellow digits on black; the number may instead be painted directly on the vehicle and that counts as a plate; 3 kap. 6-7 § förordningen 2019:383 apply in relevant parts; Försvarsmakten may issue further design rules), 5 kap. 6 a § (US military vehicles under the 2023 DCA may be given Swedish military plates on request); accessed 2026-08-02"
+      - "https://rkrattsbaser.gov.se/sfsr?bet=2009%3A212  # SFS register: 'Ikraft: 2009-04-29 överg.best.'; accessed 2026-08-02"
+      - "https://web.archive.org/web/20160519223846if_/http://www.transportstyrelsen.se/globalassets/global/publikationer/vag/fordon/svenska_registreringsskyltar_2014.pdf  # Transportstyrelsen publication 201.143 (U07), March 2014: 'Militär registreringsskylt — Fordon som finns i det militära fordonsregistret använder denna skylt. Mått: 360 x 100 mm. Finns i flera olika mått.'; accessed 2026-08-02"
+      - "https://data.riksdagen.se/dokument/sfs-2019-383.html  # 1 kap. 1 § andra stycket: the militärtrafikförordning's registration rules apply INSTEAD of this ordinance's; 2 kap. 3 a §: Försvarsmakten, FMV and FRA vehicles enter the civil vägtrafikregister on notification under 5 kap. 13 § militärtrafikförordningen; accessed 2026-08-02"
+    notes: >-
+      MILITÄR REGISTRERINGSSKYLT. A separate REGISTER, not merely a separate
+      series: Försvarsmakten keeps the militära fordonsregistret and assigns the
+      numbers, and 1 kap. 1 § förordningen (2019:383) disapplies the civil rules
+      for it. Two things are hard-sourced — yellow digits on black, and 360x100
+      mm — and the grammar is not, which is why `matching: recall-only`.
+      Försvarsmaktens egna föreskrifter (FFS) were not reached in this pass;
+      pinning them is the single highest-value follow-up for this series.
+      period.start 2009 is INSTRUMENT-DATED (militärtrafikförordningen took
+      effect 2009-04-29, replacing militära vägtrafikkungörelsen 1974:97); the
+      Swedish military registration system is decades older. Live edge worth
+      recording: 5 kap. 6 a §, added by förordning (2024:603), lets American
+      military vehicles present in Sweden under the December 2023
+      defence-cooperation agreement carry Swedish military plates on request.
