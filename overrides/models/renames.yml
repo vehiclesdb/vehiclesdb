@@ -939,6 +939,22 @@ Bentley:
 
   "New Flying Spur":               Flying Spur            # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=1, dup of car/bentley/flying-spur
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Saloon: null                            # body class in the model column: saloon — 8 v, nl_rdw handelsbenaming ×7, nz_nzta MODEL ×1; raw "SALOON"×8. Bentley keeps 36 live records (arnage, azure, bentayga, brooklands…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Bertone:
   X 1/9: X1/9                                 # spelling variant of "X1/9" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
@@ -1388,6 +1404,25 @@ Buick:
   Lacrosse Eassist: Lacrosse                  # us_fueleconomy bases "LaCrosse eAssist" at LaCrosse — https://www.fueleconomy.gov/feg/download.shtml
   Wildcat Custom: Wild Cat                    # Custom is a Wildcat trim level. NB the fold target keeps the SETTLED spelling `Wild Cat`; Buick's own spelling is "Wildcat" and that DIRECTION question is FILED, not reversed here (reversing is a 4-country repoint)
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Convertible: null                       # body class in the model column: convertible — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "CONVERTIBLE COUPE"×1 "CONVERTIBLE"×1. Buick keeps 44 live records (apollo, cascada, centurion, century…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Coupe: null                             # body class in the model column: coupe — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "COUPE"×2 "COUPE CONVERTIBLE"×1. Buick keeps 44 live records (apollo, cascada, centurion, century…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Hardtop: null                           # body class in the model column: hardtop — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "HARDTOP"×2. Buick keeps 44 live records (apollo, cascada, centurion, century…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Roadster: null                          # body class in the model column: roadster — 20 v, nz_nzta MODEL ×14, nl_rdw handelsbenaming ×6; raw "ROADSTER"×20. Buick keeps 44 live records (apollo, cascada, centurion, century…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Bultaco:
   Brinco C: Brinco  # C/S/R are same-2kW equipment trims of the one Brinco e-moped platform (2015 revival); rename CREATES the Brinco nameplate (https://newatlas.com/bultaco-brinco-street-bikes/43202/)
 
@@ -1512,7 +1547,7 @@ Cadillac:
   "2D Fleetwood": Fleetwood                         # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/fleetwood; raw "2D FLEETWOOD COUPE/3290"
   "2D Fleetwood Brougham": Fleetwood Brougham       # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/fleetwood-brougham; raw "2D FLEETWOOD BROUGHAM"
   "2D Fleetwood Eldorado": El Dorado                # 2 veh/2 rows (fi, fi_traficom) -> live cadillac/el-dorado; raw "2D FLEETWOOD ELDORADO COUPE 68-69347"
-  "2D Hardtop": Hardtop                             # 7 veh/5 rows (fi, fi_traficom) -> live cadillac/hardtop; raw "2D HARDTOP COUPE DE VILLE/3290"
+  "2D Hardtop": null                                # REPLACES a `=> Hardtop` fold shipped by data#179: the target `cadillac/hardtop` is itself a fake body-word nameplate, and a rename VALUE naming a retired id RESURRECTS it (renames are single-pass — S2W Turn 242 / data#197). body class in the model column: hardtop — 7 v, fi_traficom ×7; raw "2D HARDTOP COUPE DE VILLE/3290"×3 "2D HARDTOP COUPE DE VILLE/3300"×1 "2D HARDTOP COUPE DE VILLE J724/329"×1. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
   "2D Series 62": Series 62                         # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/series-62; raw "2D SERIES 62 CONVERTIBLE-55-6267/328"
   "2D Sixty-Two": Series 62                         # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/series-62; raw "2D SIXTY-TWO COUPE"
   "4D Bls": Bls                                     # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/bls; raw "4D BLS SEDAN 2.0 AUTOMATIC-CFD49S/268"
@@ -1521,7 +1556,7 @@ Cadillac:
   "4D Fleetwood": Fleetwood                         # 13 veh/13 rows (fi, fi_traficom) -> live cadillac/fleetwood; raw "4D FLEETWOOD LIMOUSINE 81/3800"
   "4D Fleetwood 75": Fleetwood 75                   # 4 veh/3 rows (fi, fi_traficom) -> live cadillac/fleetwood-75; raw "4D FLEETWOOD 75 LIMOUSINE 6733/3800"
   "4D Fleetwood Brougham": Fleetwood Brougham       # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/fleetwood-brougham; raw "4D FLEETWOOD BROUGHAM"
-  "4D Hardtop": Hardtop                             # 3 veh/3 rows (fi+nl, fi_traficom+nl_rdw) -> live cadillac/hardtop; raw "4D HARDTOP SEDAN DE VILLE/3300"
+  "4D Hardtop": null                                # REPLACES a `=> Hardtop` fold shipped by data#179: the target `cadillac/hardtop` is itself a fake body-word nameplate, and a rename VALUE naming a retired id RESURRECTS it (renames are single-pass — S2W Turn 242 / data#197). body class in the model column: hardtop — 3 v, fi_traficom ×2, nl_rdw handelsbenaming ×1; raw "4D HARDTOP SEDAN DE VILLE/3300"×1 "4D HARDTOP SEDAN DE VILLE 71-68349/3290"×1 "4D HARDTOP SEDAN"×1. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
   "4D Seville": Seville                             # 8 veh/4 rows (fi, fi_traficom) -> live cadillac/seville; raw "4D SEVILLE SEDAN STS-KY5-Y/285"
   "4D Seville Sts": Seville                         # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/seville; raw "4D SEVILLE STS SEDAN/295"
   "4D Sixty-Two": Series 62                         # 1 veh/1 rows (fi, fi_traficom) -> live cadillac/series-62; raw "4D SIXTY-TWO SEDAN 60-6239/3330"
@@ -1601,6 +1636,37 @@ Cadillac:
   Xts Hearse: Xts                             # same, on the XTS. us_fueleconomy REFUTES here specifically (own baseModel "XTS Hearse", 7 rows) while folding the XT5 hearse — the two treatments cannot both be right; followed the XT5 precedent
   Limosine: Limousine                         # registry misspelling of Limousine (nl/nz). NB the target is itself a bare body word and is deliberately KEPT, not nulled: us_fueleconomy gives `Limousine` its own baseModel across 16 rows (MY1984-2011) — Cadillac's professional-car chassis were a separately-certified product line
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Convertible: null                       # body class in the model column: convertible — 54 v, nz_nzta MODEL ×30, nl_rdw handelsbenaming ×16, fi_traficom ×8; raw "CONVERTIBLE"×43 "CONVERTIBLE COUPE"×4 "CONVERTIBLE COUPE/3290"×2. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Coupe: null                             # body class in the model column: coupe — 198 v, nz_nzta MODEL ×189, nl_rdw handelsbenaming ×7, fi_traficom ×2; raw "COUPE"×195 "CADILLAC COUPE"×2 "Coupe"×1. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Hardtop: null                           # body class in the model column: hardtop — 5 v, nl_rdw handelsbenaming ×5; raw "HARDTOP COUPE"×3 "HARDTOP SEDAN DEVILLE"×1 "HARDTOP SEDAN DE VILLE"×1. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Roadster: null                          # body class in the model column: roadster — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "ROADSTER CONVERTIBLE"×1 "ROADSTER"×1. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Saloon: null                            # body class in the model column: saloon — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "SALOON"×3. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 14 v, nz_nzta MODEL ×7, nl_rdw handelsbenaming ×6, fi_traficom ×1; raw "SEDAN"×14. Cadillac keeps 49 live records (allante, ats, bls, brougham…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  # The other half of the same class: a body word FOLLOWED BY A MODEL survives
+  # collapse_variant intact and IS assignable. Each key below is a real string
+  # the pipeline probes today (recording proxy) that currently mints an
+  # unpublished candidate id; each value is a record ALREADY PUBLISHED, so this
+  # slice mints neither an id nor a spelling. Same idiom as the shipped
+  # `Coupe De Ville`/`Sedan De Ville` keys 70 lines up.
+  Convertible De Ville: De Ville           # 1 v nl_rdw "CADILLAC | CONVERTIBLE DE VILLE" — currently candidate cadillac/convertible-de-ville; the de Ville convertible is the same nameplate as the coupé/sedan (matches the shipped "Coupe De Ville": De Ville key) — https://en.wikipedia.org/wiki/Cadillac_de_Ville_series
+  Convertible Deville: De Ville            # 2 v nl_rdw "CADILLAC | CONVERTIBLE DEVILLE" — unspaced registry spelling of the line above (matches the shipped "Coupe Deville": De Ville repoint)
+  Convertible Eldorado: El Dorado          # 1 v nz_nzta "CADILLAC | CONVERTIBLE ELDORADO" — currently candidate cadillac/convertible-eldorado; cadillac/el-dorado is live and the Eldorado convertible is that nameplate — https://en.wikipedia.org/wiki/Cadillac_Eldorado
+  Coupe 62: Series 62                      # 3 v nz_nzta "CADILLAC | COUPE 62" — currently candidate cadillac/coupe-62; "62" is the Series 62 and cadillac/series-62 is live, so catalog corroboration decides the spelling (NAMING.md §2) — https://en.wikipedia.org/wiki/Cadillac_Series_62
+
 Cagiva:
   "125 Mito":                                "Mito 125"                     # PERMUTATION FOLD (verified batch, tier A): AGAINST THE RAW TOTAL (359 vs 224), because the 359 is one register contradicting itself while the manufacturer's own type designation and three other registers agree on Mito-first.
 
@@ -1611,6 +1677,23 @@ Capri:
   Capri: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
   Cl: CL                                    # raw "CL"; "Cl" is a title-cased initialism, not a nameplate
   CL50: CL                                  # same moped as the "CL"/"CL 50" rows — one nameplate published under two ids because "CL50" keeps its caps (alphanumeric token) while bare "CL" gets title-cased. brommer.nl files them together: https://www.brommer.nl/merk/capri/cl/
+
+Caterham:
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Convertible: null                       # body class in the model column: convertible — 3 v, nl_rdw handelsbenaming ×2, fi_traficom ×1; raw "CONVERTIBLE"×3. Caterham keeps 3 live records (s3, seven, super-seven…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Chery:
   Icaur 03: iCAUR 03                      # official styling of Chery's off-road EV sub-brand is iCAUR (https://www.icaur.com/); the default caser yields "Icaur"
@@ -1939,6 +2022,26 @@ Chevrolet:
   Fleetside Pick Up:         Fleetside Pick-Up  # DISPLAY-ONLY: observed_model_names van/chevrolet/fleetside-pick-up = "Fleetside Pick Up | Fleetside Pick-Up | Fleetside Pickup"; the existing `Fleetside Pickup:` line pins only one of the two twins
   Chev:                      null  # the make's NICKNAME written into the model column — the identical class the settled `Chevrolet: null` line already covers. Raws: nl_rdw "CHEV" ×1, nz_nzta "CHEV" ×1 (car); truck rows "CHEV K2500", "CHEV-FLEETWOOD JAMBAREE" carry a model that this key cannot reach and are separately noted in §E.2. No honest survivor: the string names the marque, not a vehicle.
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Cabriolet: null                         # body class in the model column: cabriolet — 4 v, nl_rdw handelsbenaming ×3, nz_nzta MODEL ×1; raw "CABRIOLET"×4. Chevrolet keeps 145 live records (alero, apache, astro, avalanche…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Convertible: null                       # body class in the model column: convertible — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "CONVERTIBLE"×2 "CORVETTE CONVERTIBLE"×1. Chevrolet keeps 145 live records (alero, apache, astro, avalanche…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Coupe: null                             # body class in the model column: coupe — 262 v, nz_nzta MODEL ×252, nl_rdw handelsbenaming ×10; raw "COUPE"×262. Chevrolet keeps 145 live records (alero, apache, astro, avalanche…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Roadster: null                          # body class in the model column: roadster — 21 v, nz_nzta MODEL ×19, nl_rdw handelsbenaming ×2; raw "ROADSTER"×21. Chevrolet keeps 145 live records (alero, apache, astro, avalanche…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 194 v, nz_nzta MODEL ×181, nl_rdw handelsbenaming ×13; raw "SEDAN"×194. Chevrolet keeps 145 live records (alero, apache, astro, avalanche…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Chrysler:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
@@ -2037,6 +2140,22 @@ Chrysler:
   Crown Imperial: Imperial                    # the same designation with the tokens inverted (the limousine)
   Imperial Le Baron: Imperial                 # LeBaron was the Imperial's TOP TRIM (and a coachbuilder name), NOT the separate 1977-95 Chrysler LeBaron — the `Le Baron` record SURVIVES
   Charger R/T: Charger                        # R/T is the performance trim of the Australian Chrysler Valiant Charger; raws "CHARGER R/T" (nl/nz) beside "CHARGER XL" — https://en.wikipedia.org/wiki/Chrysler_Valiant_Charger
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Limousine: null                         # body class in the model column: limousine — 6 v, nz_nzta MODEL ×5, nl_rdw handelsbenaming ×1, us_fueleconomy model ×0; raw "LIMOUSINE"×6 "Limousine"×0. Chrysler keeps 72 live records (airstream, alpine, aspen, avenger…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Citroën:
   "Saloon":      null   # body word exposed by the C-1 parenthetical strip: raw "(II CV BL) SALOON" nl 1 (+ nz) — stripping the bracket leaves the BODY, not a nameplate. "SALOON" appears across Aston Martin, Bentley, Bristol, Cadillac, Crossley and Daimler in the same column the same way, so it is a register habit rather than a Citroen model (removals.yml carries the ledger line)
@@ -2242,6 +2361,22 @@ Citroën:
   Nemo 1: Nemo                       # displacement fragment (raws "Nemo 1,4 HDi", "NEMO 1,3")
   Nemo 1.4HDI: Nemo                  # engine spec suffix (1,066 NL registrations)
   AK400: Ak                          # the "400" is the 400 kg payload rating of the 2CV Fourgonnette AK — https://en.wikipedia.org/wiki/Citro%C3%ABn_2CV
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Sedan: null                             # body class in the model column: sedan — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "SEDAN"×3. Citroën keeps 97 live records (acadiane, adria, ami, ami-6…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Coopop:
   Coopop-Q1: Q1              # same hyphenated-badge case; Coopop Q1
@@ -2468,6 +2603,22 @@ Daimler:
   V 8: V8                                     # spelling variant of "V8" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   V8 250: V8250                               # spelling variant of "V8250" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Saloon: null                            # body class in the model column: saloon — 22 v, nz_nzta MODEL ×19, nl_rdw handelsbenaming ×3; raw "SALOON"×22. Daimler keeps 40 live records (century, century-mk2, conquest, consort…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Datsun:
   280 ZX: 280ZX                               # the S130 badge is the closed 280ZX (https://en.wikipedia.org/wiki/Nissan_S130, 1978-83); nl_rdw bare forms tie (8 vs 6) so the marque decides; matches the unrenamed Datsun house form (280C, 180B, 160J). The block's spaced 240Z/260Z/280Z lines are filed as debt, not fought here [rekeyed with the ZX pin (#71): the pin changes the produced form Zx->ZX — the pin/rename-key interaction this PR documents]
   "120Y": "120 Y"                             # spelling variant of "120 Y" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -2478,6 +2629,22 @@ Datsun:
 
   "New Sunny":           Sunny        # New-guard pre-positioning, UK replay (S2W handover): pipeline#111 rescued `NEW <x>` from junk? and this make already publishes the stripped nameplate, so without this key the next build MINTS A DUPLICATE. classify-derived both ways — classify(raw)="New X", classify(stripped)=the live nameplate. — uk_dft n=39; car/datsun/sunny is live
   "New Cherry":          Cherry       # New-guard pre-positioning, UK replay (S2W handover): pipeline#111 rescued `NEW <x>` from junk? and this make already publishes the stripped nameplate, so without this key the next build MINTS A DUPLICATE. classify-derived both ways — classify(raw)="New X", classify(stripped)=the live nameplate. — uk_dft n=20; car/datsun/cherry is live
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Roadster: null                          # body class in the model column: roadster — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "ROADSTER"×2 "DATSUN ROADSTER"×1. Datsun keeps 48 live records (bluebird, bluebird-1200, cedric, cherry…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 De Soto:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -2494,6 +2661,23 @@ De Soto:
   # Combi 1.9D LX-EHH653/245") are deliberately NOT rescued. ──
   "4D Custom": Custom                               # 1 veh/1 rows (fi, fi_traficom) -> live de-soto/custom; raw "4D CUSTOM"
   Desoto: null                                # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Roadster: null                          # body class in the model column: roadster — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "ROADSTER"×3. De Soto keeps 14 live records (adventurer, airflow, cf, custom…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 17 v, nz_nzta MODEL ×15, nl_rdw handelsbenaming ×2; raw "SEDAN"×17. De Soto keeps 14 live records (adventurer, airflow, cf, custom…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Derbi:
   # moped Senda 50 — one nameplate: every 50cc trim/edition/registry-code row
@@ -2700,6 +2884,23 @@ Dodge:
   Ram Van 2.8CRD Aut. Van:       Ram Van      # spaced twin of "Ram Van 2.8CRD Aut.van" [nl] — same slug van/dodge/ram-van-2-8crd-aut-van; an engine+transmission string on the Ram Van body, not a nameplate — https://www.fueleconomy.gov/feg/download.shtml
   Wc 52:                         WC52         # spaced twin of "Wc-52" [nl] — same slug van/dodge/wc-52; the block's own settled precedent is "Wc 56: WC56", a short letter prefix glued to digits IS the nameplate for this make
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 43 v, nz_nzta MODEL ×34, nl_rdw handelsbenaming ×8, fi_traficom ×1; raw "COUPE"×41 "COUPE (DU)"×1 "COUPE DR"×1. Dodge keeps 88 live records (a100, aries, aspen, avenger…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Van: null                               # body class in the model column: van — 4 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×2; raw "VAN"×3 "DODGE VAN"×1. Dodge keeps 88 live records (a100, aries, aspen, avenger…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 DS:
   "4": DS N°4                             # renamed from DS 4 on 2025-05-14; German orders opened June 2025 (https://www.media.stellantis.com/de-de/ds/press/ds-automobiles-gibt-preise-fuer-den-neuen-ds-n04-bekannt-und-oeffnet-die-bestellbuecher)
   "8": DS N°8                             # the flagship is DS N°8, not "DS 8" — production from 2025-04 at Melfi (https://www.media.stellantis.com/de-de/ds/press/ds-automobiles-enthuellt-modellbezeichnung-neues-topmodell-heisst-ds-n08)
@@ -2815,6 +3016,23 @@ Elmoto:
 
 Evt:
   "Evt-4000E":                 4000E                # embedded make prefix — strip_make_prefix needs [\s,]+ after the prefix, so a hyphenated or fused badge survives (the IVA pilot's diagnosis)
+
+Excalibur:
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Sedan: null                             # body class in the model column: sedan — 4 v, nz_nzta MODEL ×3, nl_rdw handelsbenaming ×1; raw "SEDAN"×4. Excalibur keeps 1 live record (phaeton…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 FAW:
   EHS9: E-HS9                                 # Hongqi E-HS9 is hyphenated (https://en.wikipedia.org/wiki/Hongqi_E-HS9); nl_rdw E-HS9 n=133 vs EHS9 n=14. Hongqi-vs-FAW make attribution filed as a moves.yml question, not handled here
@@ -3471,8 +3689,8 @@ Ford:
   Prefect 10:   Prefect                   # "10" is the Ford Ten/E93A designation carried as a suffix — https://en.wikipedia.org/wiki/Ford_Prefect
   Mondeo ST220:   Mondeo                    # ST220 is the Mondeo's performance trim badge — https://en.wikipedia.org/wiki/Ford_Mondeo
   Custom V8:   Custom                    # V8 = engine on the 1949-51 Ford Custom — https://en.wikipedia.org/wiki/Ford_Custom
-  Raodster:      Roadster                  # V8 = engine designation on a body-style string
-  Roadster V8:   Roadster                  # V8 = engine designation on a body-style string
+  Raodster: null                                    # REPLACES a `=> Roadster` fold shipped by data#183: the target `ford/roadster` is itself a fake body-word nameplate, and a rename VALUE naming a retired id RESURRECTS it (renames are single-pass — S2W Turn 242 / data#197). body class in the model column: roadster — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "RAODSTER CABRIOLET"×1 "RAODSTER"×1. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Roadster V8: null                                 # REPLACES a `=> Roadster` fold shipped by data#183: the target `ford/roadster` is itself a fake body-word nameplate, and a rename VALUE naming a retired id RESURRECTS it (renames are single-pass — S2W Turn 242 / data#197). body class in the model column: roadster — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "ROADSTER V8"×2. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
   Pheaton:   Phaeton                   # registry misspelling of the same body-style string
   F 150 Raptor:                              F-150          # post-#42 spaced form observed in the control build (was keyed F150 Raptor) — control build 2026-07-26 19:41, gate-fail fix
   F 150 Xlt:                                 F-150          # post-#42 spaced form (was keyed F150 Xlt) — control build 2026-07-26 19:41, gate-fail fix
@@ -3490,6 +3708,27 @@ Ford:
 
   "New Anglia":                    Anglia                 # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=2, dup of car/ford/anglia
   "New Prefect":                   Prefect                # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=1, dup of car/ford/prefect
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Convertible: null                       # body class in the model column: convertible — 7 v, nz_nzta MODEL ×4, nl_rdw handelsbenaming ×3; raw "CONVERTIBLE"×6 "CONVERTIBLE COUPE"×1. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Coupe: null                             # body class in the model column: coupe — 576 v, nz_nzta MODEL ×561, nl_rdw handelsbenaming ×15; raw "COUPE"×574 "FORD COUPE"×2. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Limousine: null                         # body class in the model column: limousine — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "LIMOUSINE"×3. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Roadster: null                          # body class in the model column: roadster — 155 v, nz_nzta MODEL ×132, nl_rdw handelsbenaming ×19, fi_traficom ×4; raw "ROADSTER"×153 "Roadster"×1 "ROADSTER CONVERTIBLE"×1. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Saloon: null                            # body class in the model column: saloon — 8 v, nl_rdw handelsbenaming ×4, nz_nzta MODEL ×4; raw "SALOON"×8. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 142 v, nz_nzta MODEL ×135, nl_rdw handelsbenaming ×7; raw "SEDAN"×139 "SEDAN COUPE"×1 "SEDAN COUPE V8 SUPER DE LUXE"×1. Ford keeps 200 live records (a, aa, aerostar, anglia…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Gas Gas:
   Enducross: EC          # same nameplate: EC is short for Enducross — shared TAN e9*92/61*0062*09 with gas-gas/ec (https://en.wikipedia.org/wiki/Gas_Gas)
@@ -3821,6 +4060,23 @@ Honda:
   "Z50J Monkey":                             "Monkey Z50J"                  # PERMUTATION FOLD (verified batch, tier A): Name-first 20 vs code-first 9 (2.2:1).
   "Gold Wing GL1100":                "GL1100 Gold Wing"       # PERMUTATION FOLD (tier B, direction settled by sibling consistency): code-first 4v2 is thin alone, but the SAME nameplate one displacement down (GL1000 Gold Wing) shipped in tier A at 676:11. A family should not render two ways because one member has six rows
   "Z50 Monkey":                      "Monkey Z50"             # PERMUTATION FOLD (tier B, direction settled by sibling consistency): name-first 7v5 is thin, but Monkey Z50A shipped in tier A on its own count and a third Monkey sibling agrees — three members, one order
+
+Hudson:
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Sedan: null                             # body class in the model column: sedan — 6 v, nz_nzta MODEL ×4, nl_rdw handelsbenaming ×2; raw "SEDAN"×6. Hudson keeps 6 live records (commodore, hornet, pacemaker, super…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Humber:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -6573,6 +6829,23 @@ Mercury:
   Cougar XR7: Cougar XR-7                     # fused register shape (nl_rdw n=28) folds in
   Montclair: Mont Clair                       # spelling variant of "Mont Clair" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 9 v, nz_nzta MODEL ×6, nl_rdw handelsbenaming ×3; raw "COUPE"×9. Mercury keeps 37 live records (caliente, capri, capri-ghia, colony-park…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 3 v, nz_nzta MODEL ×2, nl_rdw handelsbenaming ×1; raw "MERCURY SEDAN"×1 "SEDAN"×1 "SEDAN COUPE"×1. Mercury keeps 37 live records (caliente, capri, capri-ghia, colony-park…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 MG:
   # ── casing-contradiction batch: MGA/MGB closed tokens finished; the TD
   # fix forces the TF family in the same commit (flap insurance) or a new
@@ -6995,6 +7268,24 @@ Morris:
   # also lives in van; the key is not probed there). ──
   "Oxford Serie": Oxford Series               # raw "OXFORD SERIE II/2460" fi_traficom 1, "OXFORD SERIE" nz_nzta 1 — continental spelling of the Morris Oxford Series (https://en.wikipedia.org/wiki/Morris_Oxford). The English twin is ALREADY in the candidate queue at nl 13 ("OXFORD SERIES II/III/VI", nl_rdw), so this is a FOLD, not a rename: fi+nz join nl and the published record gains a country. Sibling published records eight-series / eight-series-i / minor-series / 8-series-e already carry the English form
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Estate: null                            # body class in the model column: estate — 5 v, nz_nzta MODEL ×4, nl_rdw handelsbenaming ×1; raw "ESTATE"×5. Morris keeps 53 live records (clubman, cooper, cooper-s, cowley…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Saloon: null                            # body class in the model column: saloon — 9 v, nl_rdw handelsbenaming ×5, nz_nzta MODEL ×4; raw "SALOON"×8 "SALOON 8 HP"×1. Morris keeps 53 live records (clubman, cooper, cooper-s, cowley…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Van: null                               # body class in the model column: van — 16 v, nz_nzta MODEL ×15, nl_rdw handelsbenaming ×1; raw "VAN"×16. Morris keeps 53 live records (clubman, cooper, cooper-s, cowley…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Moto Guzzi:
   Moto-Guzzi: null                        # motorcycle es|nl — hyphenated by the caser from raw "MOTO-GUZZI"
   "1200 Sport 8V Abs":               1200 Sport 8V              # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
@@ -7165,6 +7456,22 @@ Nissan:
 
   "New Urvan":           Urvan        # New-guard pre-positioning, UK replay (S2W handover): pipeline#111 rescued `NEW <x>` from junk? and this make already publishes the stripped nameplate, so without this key the next build MINTS A DUPLICATE. classify-derived both ways — classify(raw)="New X", classify(stripped)=the live nameplate. — uk_dft n=4; car/nissan/urvan and bus/nissan/urvan are both live
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 33 v, nz_nzta MODEL ×28, nl_rdw handelsbenaming ×5; raw "COUPE"×33. Nissan keeps 106 live records (almera, almera-classic, almera-tino, altima…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Norton:
   Norton: null                            # motorcycle nl|nz
   "Commando 850MK III":                      Commando 850 Mk III      # Ungluing "850MK" and casing MK the British way. nl_rdw carries "850 COMMANDO MKIII" and "850 COMMANDO MK3 ROADSTER" — the 850 is always spaced off in the register, and MK is Mark, which British usage writes "Mk III" not "MK III". Word order preserved as published rather than reordered to match the raw: this display comes from another source and reordering would be a second, unevidenced change.
@@ -7198,6 +7505,22 @@ Oldsmobile:
   "2D Starfire": Starfire                           # 1 veh/1 rows (fi, fi_traficom) -> live oldsmobile/starfire; raw "2D STARFIRE CONVERTIBLE/3130"
   "4D Ninety Eight": Ninety-Eight                   # 1 veh/1 rows (fi, fi_traficom) -> live oldsmobile/ninety-eight; raw "4D NINETY EIGHT"
   SUPER88: Super 88                           # spelling variant of "Super 88" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Sedan: null                             # body class in the model column: sedan — 5 v, nz_nzta MODEL ×4, nl_rdw handelsbenaming ×1; raw "SEDAN"×5. Oldsmobile keeps 59 live records (achieva, alero, aurora, bravada…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Omoda:
   "5": Omoda 5                            # official European name is "Omoda 5" (https://www.omodajaecoo-auto.de/modelle/omoda-5); "C5" is the China/LatAm designation
@@ -7403,6 +7726,23 @@ Packard:
   # remainder was NOT already live (type-approval strings like "5D Felicia
   # Combi 1.9D LX-EHH653/245") are deliberately NOT rescued. ──
   "2D Caribbean": Caribbean                         # 1 veh/1 rows (fi, fi_traficom) -> live packard/caribbean; raw "2D CARIBBEAN CONVERTIBLE 2631-2678/3100-53"
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 2 v, fi_traficom ×1, nz_nzta MODEL ×1; raw "COUPE"×2. Packard keeps 20 live records (caribbean, clipper, clipper-super, custom-eight…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 2 v, fi_traficom ×1, nl_rdw handelsbenaming ×1; raw "SEDAN"×2. Packard keeps 20 live records (caribbean, clipper, clipper-super, custom-eight…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Panhard:
   Pl 17: PL17                                 # spelling variant of "PL17" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -7648,6 +7988,23 @@ Plymouth:
   Roadrunner: Road Runner                     # spelling variant of "Road Runner" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Special Deluxe: Special De Luxe             # spelling variant of "Special De Luxe" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
   Plymouth: null                              # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 49 v, nz_nzta MODEL ×46, nl_rdw handelsbenaming ×3; raw "COUPE"×49. Plymouth keeps 53 live records (acclaim, baracuda, barracuda, barracuda-formula-s…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Roadster: null                          # body class in the model column: roadster — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "ROADSTER"×2. Plymouth keeps 53 live records (acclaim, baracuda, barracuda, barracuda-formula-s…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Poessl:
   Roadcruiser: Road Cruiser                   # spelling variant of "Road Cruiser" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -7976,6 +8333,23 @@ Pontiac:
   # Wave · 1 key, 0 vehicles, 2 rows
   Wave 5:                           Wave                    # trim/engine/body designation of the Wave — 0v 2r ca,us/ca_nrcan,us_fueleconomy
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 8 v, nz_nzta MODEL ×5, nl_rdw handelsbenaming ×3; raw "COUPE"×8. Pontiac keeps 45 live records (acadian, astre, aztek, beaumont…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 16 v, nz_nzta MODEL ×12, nl_rdw handelsbenaming ×3, fi_traficom ×1; raw "SEDAN"×16. Pontiac keeps 45 live records (acadian, astre, aztek, beaumont…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Porsche:
   # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
   # + control-vs-treatment build). When the adapter removes the leading body
@@ -8108,6 +8482,22 @@ Porsche:
   "Carrera-Targa": "911"     # 1 row (raw "PORSCHE CARRERA-TARGA"): the hyphen form slugifies to carrera-targa — the SAME slug as the retired Carrera/Targa id, so without this key that id stays open
   Porche: null               # register MISSPELLING of the MAKE written into the model column — the same class as this block's shipped `Porsche: null`. 2 vehicles / 2 rows (fi_traficom + nl_rdw); carries no model information at any altitude, so no alias target is honest (population recorded in removals.yml)
   Porsche: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 9 v, nz_nzta MODEL ×6, nl_rdw handelsbenaming ×2, fi_traficom ×1; raw "COUPE"×8 "Coupe 1600 S"×1. Porsche keeps 18 live records (boxster, cayenne, cayman, gt…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Puch:
   P1 40KM/H: P1                               # L1e/L2e speed-class marker folds (NAMING.md §6); exposed by the two-wheeler spacing fix [reason re-attached: the union merge lifted this line out of a block whose comment sat above it]
@@ -8376,6 +8766,23 @@ Riley:
   "2D Elf-Mk": Elf Mk                               # 1 veh/1 rows (fi, fi_traficom) -> live riley/elf-mk; raw "2D ELF-MK II/2030"
   Rma: R M A                                  # spelling variant of "R M A" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Saloon: null                            # body class in the model column: saloon — 4 v, nz_nzta MODEL ×3, nl_rdw handelsbenaming ×1; raw "SALOON"×3 "RILEY SALOON"×1. Riley keeps 22 live records (adelphi, brooklands, elf, elf-mk…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Sedan: null                             # body class in the model column: sedan — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "SEDAN"×2. Riley keeps 22 live records (adelphi, brooklands, elf, elf-mk…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Rolls-Royce:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
@@ -8398,6 +8805,23 @@ Rolls-Royce:
   Silvershadow: Silver Shadow                 # spelling variant of "Silver Shadow" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
   "New Silver Spur":               Silver Spur            # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=1, dup of car/rolls-royce/silver-spur
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Limousine: null                         # body class in the model column: limousine — 3 v, nl_rdw handelsbenaming ×3, us_fueleconomy model ×0; raw "LIMOUSINE"×2 "LIMOUSINE III"×1 "Limousine"×0. Rolls-Royce keeps 54 live records (black-badge-cullinan, black-badge-ghost, black-badge-spectre, camargue…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Saloon: null                            # body class in the model column: saloon — 11 v, nl_rdw handelsbenaming ×6, nz_nzta MODEL ×5; raw "SALOON"×11. Rolls-Royce keeps 54 live records (black-badge-cullinan, black-badge-ghost, black-badge-spectre, camargue…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Rover:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -8683,6 +9107,40 @@ Saab:
   "9 -3 Sport": "9-3"        # 1 row (raw "SAAB 9 -3 SPORT SEDAN"): a stray space before the hyphen reaches the SAME slug as the retired 9-3-sport, so without this key that id stays open
   "9-3-Viggen": "9-3"        # 1 row (raw "SAAB 9-3-VIGGEN"): hyphen-joined form, slug 9-3-viggen — the retired id again
   Saab: null                                  # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Cabriolet: null                         # body class in the model column: cabriolet — 5 v, nl_rdw handelsbenaming ×3, es_dgt ×1, nz_nzta MODEL ×1; raw "CABRIOLET"×3 "SAAB CABRIOLET"×2. Saab keeps 15 live records (sonett, v4…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+  Estate: null                            # body class in the model column: estate — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "ESTATE"×2. Saab keeps 15 live records (sonett, v4…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
+Saturn:
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 3 v, nz_nzta MODEL ×2, nl_rdw handelsbenaming ×1; raw "COUPE"×3. Saturn keeps 15 live records (astra, aura, ion, l100-200…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Scania:
   Irizar: null           # chassis+bodybuilder registration strings ("SCANIA IRIZAR I4/NEW CENTURY", RDW), not a Scania nameplate — in bus kind the bodybuilder IS the make (Plaxton/Caetano precedent; irizar/i4-i6-i8 exist). NOTE: drops ua evidence (Century/PB-era bodies not yet catalogued under irizar)
@@ -9024,6 +9482,23 @@ Simca:
 Simson:
   Awo: AWO                                  # AWO = Awtowelo, the Soviet-era trade name under which Simson (Suhl) built the 425; never a word. Variants AWO 425 S (Sport) and 425 T (Touren). https://en.wikipedia.org/wiki/Simson_(company) — NOTE the register also holds "AW0 425" with a DIGIT ZERO for the letter O, which is registry noise and correctly stayed below threshold
 
+Singer:
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Saloon: null                            # body class in the model column: saloon — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "SALOON"×3. Singer keeps 15 live records (bantam, chamois, gazelle, hunter…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Smart:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
@@ -9240,6 +9715,22 @@ Sunbeam:
   # the losing id becomes a former_ids alias. Blast radius is car-only (Sunbeam
   # also lives in motorcycle; the key is not probed there). ──
   "Alpine Serie": Alpine Series               # raw "ALPINE SERIE V" nl 16, "ALPINE SERIE III" nl 5, "ALPINE SERIE IV" nl 2, "ALPINE SERIE II" nl 1, "ALPINE SERIE V CABRIOLET" nl 1, "ALPINE SERIE" nz 1 — the Rootes Alpine ran Series I-V (https://en.wikipedia.org/wiki/Sunbeam_Alpine); the Roman numeral is stripped by collapse_variant, leaving two ids for one nameplate. car/sunbeam/alpine-series is ALREADY PUBLISHED (fi, nl) from the English raws, so this is a pure FOLD onto a live twin
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Saloon: null                            # body class in the model column: saloon — 2 v, nl_rdw handelsbenaming ×1, nz_nzta MODEL ×1; raw "SALOON"×2. Sunbeam keeps 17 live records (alpine, alpine-gt, alpine-roadster, alpine-series…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Super Soco:
   Cpx: CPx                                  # THE CORRECT FORM IS NOT ALL-CAPS: VMoto Soco writes CPx/CUx with a LOWERCASE x (https://en.vmotosoco.com/cpx-en/). Wikipedia writes CPX and is wrong. A bulk "type codes are uppercase" rule would have produced "CPX" confidently — this is why the acronym worklist is stylings-first and per-token
@@ -10985,6 +11476,39 @@ Willys:
   Cj 3B: CJ-3B                              # REPOINT (was → CJ3B). "Willys dramatically updated its CJ line on January 28, 1953 with the CJ-3B" — x51 hyphenated (https://www.jeep.com/history/1950s.html)
   Cj-5: CJ-5                                # REPOINT (was → CJ5); Willys built the CJ-5 from 1955, marque form hyphenated — same source as CJ-3B
 
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 6 v, nz_nzta MODEL ×4, nl_rdw handelsbenaming ×2; raw "COUPE"×4 "COUPE'"×1 "COUPE SP"×1. Willys keeps 24 live records (cj-3b, cj-5, cj2a, jeep…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
+Wolseley:
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Saloon: null                            # body class in the model column: saloon — 4 v, nz_nzta MODEL ×3, nl_rdw handelsbenaming ×1; raw "SALOON"×4. Wolseley keeps 9 live records (hornet, hornet-special, six, wasp…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
 Yamaha:
 # ── §A FOLD APPLY, 2026-08-01: 98 type-code records onto 39 nameplates ───────
 # Yamaha prints the mapping on its own owner's-manual covers as
@@ -11464,4 +11988,20 @@ Zundapp Famel:
   1203 Minibus:   "1203"    # minibus body of the same van (nl)
   "1203 Dvs 12L/A": "1203"  # RDW type string on the same van (nl)
   Skoda:   null   # the MAKE written into the model column (raws: es_dgt "SKODA" ×1, nl_rdw "SKODA" ×1). Not a nameplate, and no honest rename target exists — the row says nothing about which Škoda it is. Same adjudication as the settled "Landrover: null". Ledger line in removals.yml
+
+# ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
+# the model column and it published as a nameplate. Measured on a
+# control-vs-treatment build against a frozen cache: the closed 13-word
+# vocabulary (coupe/roadster/sedan/saloon/convertible/cabriolet/limousine/
+# cabrio/estate/hardtop/mpv/wagon/van) matches 92 published car ids, of
+# which 21 are REAL nameplates and must never be swept (audi/coupe,
+# fiat/coupe, mazda/mpv, smart/roadster, tesla/roadster …, 49,837 vehicles).
+# The keys below are the other half: a bare body word with NO second token
+# in any register and at least one live sibling record for the same make
+# that the row cannot be assigned to, so no alias target is honest and the
+# id retires to removals.yml rather than to a former_ids alias. Keys are the
+# exact strings the pipeline probes at the rename site (recording proxy at
+# `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
+# runs first. ──
+  Coupe: null                             # body class in the model column: coupe — 2 v, fi_traficom ×1, nz_nzta MODEL ×1; raw "COUPE"×2. Škoda keeps 33 live records (citigo, elroq, enyaq, epiq…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
