@@ -6776,6 +6776,92 @@ Mini:
   # Combi 1.9D LX-EHH653/245") are deliberately NOT rescued. ──
   "2D One": Cooper                                  # 4 veh/1 rows (fi, fi_traficom) -> live mini/cooper; raw "2D ONE HATCHBACK 1.6-RA31/247"
 
+  # ── §A.1 M2 — doubled-p misspelling (dossier aux/research/2026-08-owner-swarm/mini-lexus-smart.md §A.1 cluster M2) ──
+  # Survives only because normalizer.rb#mini's /COOPER/ test cannot match
+  # "COOPPER". Same class as the `Forrester: Forester` key shipped for Subaru
+  # in wave 7. Derived against the POST-SPLIT catalog (pipeline#133, merged as
+  # 6efedb3); this cluster does not touch aceman/paceman. Independently
+  # corroborated by the D1 certification pilot, which lists this id as one of
+  # two live duplicates BLOCKING certification of car/mini/cooper —
+  # aux/research/2026-08-owner-swarm/cert-pilot-packs.md §A2.
+  #
+  # KIND-BLINDNESS CHECKED, NOT ASSUMED: renames are make-scoped and kind-blind,
+  # and MINI has van records (van/mini/clubvan, van/mini/1000-van) plus a
+  # moped/mini/70 candidate. A per-row replay of ALL SIX KINDS shows the string
+  # "Coopper S" is produced in kind `car` ONLY — zero rows in
+  # van/moped/truck/bus/motorcycle.
+  #
+  # RENAME-VALUE LIVENESS CHECKED (S2W Turn 242 / data#197, the resurrection
+  # class): the retired display string "Coopper S" is not the VALUE of any
+  # rename in this file, nor a moves.yml target, nor an aliases.yml entry — so
+  # no pre-existing key can resurrect the retired id under a live key.
+  #
+  # NOT IN THIS BATCH, each for a measured reason. §A.1 M3 (`Jcw: Cooper`,
+  # `Jcw E: Cooper`) was measured and DECLINED BY THE OWNER: it is
+  # availability-lossless but NOT evidence-lossless. Control-vs-treatment shows
+  # it delists 7 EU whole-vehicle type approvals, because car/mini/cooper is
+  # already AT reconciler.rb:261's 25-TAN cap, so the four TANs on car/mini/jcw
+  # (e1*2018/858*00373*02..05) and the three on car/mini/jcw-e
+  # (e1*2018/858*00347*02..04) fall on the floor when those rows fold in — the
+  # survivor's xrefs come out byte-identical to the control and NO GATE SEES THE
+  # LOSS. `Jcw` is not a wrong id, it is a real trim of a real car, so one fewer
+  # id does not buy the trade. Filed as a class in DEBT.md (3.94% of TAN-carrying
+  # records sit at the cap). §A.1 M4 (classic Mini) is deferred to a cross-make
+  # pass per the dossier's own recommendation — the same records exist under
+  # austin, morris, rover, leyland, leyland-cars, austin-morris and innocenti,
+  # and renames are make-scoped, so a mini-only pass fixes one eighth and
+  # increases the inconsistency.
+  "Coopper S": Cooper        # 2 veh / 1 raw "COOPPER S" (es:es_dgt 1, nl:nl_rdw 1) -> live mini/cooper, which already holds es:es_dgt 2219 + nl:nl_rdw 110728. Union LOSSLESS at (country,SOURCE). Per-row corpus replay, all six kinds, frozen cache
+
+  # ── §A.1 M1 — NZTA writes the BODY WORD where the nameplate belongs ──
+  # THE RATIONALE IS THE CORPUS, NOT A RENAME ARGUMENT. The dossier justified
+  # this fold with a "concurrent vs consecutive" rename test (§D.2) measured on
+  # NZ. That test is UNMEASURABLE on the data it cites: nz_nzta is a full-fleet
+  # STOCK snapshot aggregated server-side by MAKE,MODEL only (see
+  # pipeline/sources/nz_nzta.rb, groupByFieldsForStatistics => "MAKE,MODEL") —
+  # there is NO year column, so accumulated stock shows both labels at once
+  # whether the rename was concurrent or consecutive, and a D-3 generation
+  # boundary would look identical. The conclusion is right; the reasoning is
+  # replaced. What actually carries it:
+  #   1. Corpus-wide, EVERY register that writes MINI's nameplate AND the word
+  #      "Hatch" in one string treats Hatch as the BODY and Cooper as the
+  #      NAMEPLATE: th_dlt "Cooper S Hatch RHD" (38 veh), "John Cooper Works
+  #      Hatch R" (27), "Cooper Hatch RHD" (16), "Cooper SE Hatch RHD" (12);
+  #      fi_traficom "2D COOPER S HATCHBACK 1.6-RE31/247" +7 siblings (17).
+  #      All 93+17 vehicles already resolve to Cooper. NZ is the ONLY register
+  #      that writes HATCH bare — because NZTA drops the nameplate.
+  #   2. NZTA demonstrably leaks body words into its MODEL column: COUPE 1,839
+  #      veh across 57 makes, SEDAN 616/52, CONVERTIBLE 280/15, VAN 32/10,
+  #      WAGON 11/10, HATCHBACK 6/2, LIFTBACK 1/1. Same defect class pipeline#131
+  #      fixed for fi_traficom, where car/porsche/coupe was 251 Finnish 911s.
+  #   3. The fold CANNOT mis-attribute the trim: every other NZ MINI hatch string
+  #      already resolves to Cooper via normalizer.rb#mini's
+  #      /COOPER|^ONE\b|^MINI\b/ — COOPER 5,673, COOPER S 1,033, ONE 710,
+  #      JOHN COOPER WORKS 74. There is no second MINI-hatch record to land on.
+  #   4. First-party, re-fetched: BMW Group's own name for this car before 2024
+  #      was MINI Hatch — "The new MINI Hatch, which celebrated its production
+  #      start at the MINI plant in Oxford in November 2013, will also be built
+  #      in the Netherlands from summer 2014" —
+  #      https://www.press.bmwgroup.com/global/article/detail/T0166729EN/bmw-group-to-build-new-mini-hatch-also-at-vdl-nedcar?language=en
+  #      and from 2024 it is Cooper — "the five-door Cooper is now joining the
+  #      new MINI family" —
+  #      https://www.press.bmwgroup.com/global/article/detail/T0442899EN/the-new-mini-cooper-5-door?language=en
+  #   5. Independent second opinion, catalog side: the D1 certification pilot
+  #      lists car/mini/hatch as a live duplicate BLOCKING certification of
+  #      car/mini/cooper — cert-pilot-packs.md §A2.
+  # FOLD-SAFEGUARD: car/mini/hatch is the ONLY record catalog-wide whose display
+  # name is "Hatch", so the retired display string cannot become unresolvable.
+  # KIND-BLIND CHECK: "Hatch" is produced in kind `car` ONLY (all-six-kind
+  # replay). NOTE the dossier's van hazard for this key is FALSE — nz_nzta
+  # declares kinds = car|motorcycle|moped|bus and maps "PASSENGER CAR/VAN" =>
+  # :car, so it never emits a van row; the suggested van tripwire would guard
+  # nothing. RENAME-VALUE LIVENESS: "Hatch" is not the VALUE of any rename here.
+  # FILED SEPARATELY (DEBT.md): the nz_nzta body-word defect. Its fix must be
+  # MAKE-AWARE — car/mini/convertible is a REAL nameplate ("MINI Convertible
+  # making its debut in spring 2004") and holds 219 of NZ's 280 bare CONVERTIBLE
+  # rows, so a blind body-word strip would destroy a real record.
+  Hatch: Cooper              # 3,587 veh / 1 raw "HATCH" (nz:nz_nzta only) -> live mini/cooper, which already holds nz:nz_nzta 7,568. Union LOSSLESS at (country,SOURCE); the retired id carries NO xrefs and no source the survivor lacks, so evidence lost: NONE
+
 Mitsubishi:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
