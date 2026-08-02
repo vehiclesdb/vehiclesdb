@@ -1,0 +1,159 @@
+# plates/_decode/cz-kraj.yml — the Czech region (kraj) codes carried by a
+# registrační značka.
+#
+# THE SOURCE FINDING, and it is the Austrian case rather than the German one:
+# THE LIST IS INSIDE THE REGULATION. Two lists, in fact, and a consumer needs
+# both, because Czech law encodes the kraj in TWO DIFFERENT ALPHABETS depending
+# on which series it is looking at:
+#
+#   1. A LETTER, for standard, dealer and one-trip marks. § 24 ods. 2 vyhlášky
+#      č. 343/2014 Sb.: "První písmeno ve standardní registrační značce
+#      vyjadřuje kód kraje" in the 2001 wording; the letter-to-kraj assignment
+#      itself is § 28 of vyhláška č. 343/2014 Sb. (and was § 19 ods. 2 of
+#      vyhláška č. 243/2001 Sb., with the identical fourteen pairs).
+#   2. A TWO-DIGIT NUMERAL, for historic-vehicle and sports-vehicle marks.
+#      § 26 ods. 6 vyhlášky č. 343/2014 Sb.: "Na tabulkách s registrační
+#      značkou pro historická vozidla a registrační značkou pro sportovní
+#      vozidla se používají číselné kódy pro ...".
+#
+# The two alphabets DO NOT AGREE and are not derivable from one another —
+# Jihomoravský is B in letters and 02 in numerals, Jihočeský is C and 03. A
+# parse API that learned one and inferred the other would be wrong on twelve of
+# the fourteen rows. Both are authored here, in the instrument's own order.
+#
+# PERIOD DISCIPLINE (PRD-PLATES §2.4). The fourteen kraje were created by
+# ústavní zákon č. 347/1997 Sb. and have not been re-cut since, so unlike the
+# German and Austrian tables this one has no withdrawn rows and no merger
+# history. What DID change is the meaning of the code on a plate, and it
+# changed on a dated day — see `portability_2015` below. The letter pairs
+# themselves are unchanged between the 2001 and the 2014 regulation; the pass
+# read both and diffed them.
+#
+# Referenced by plates/cz.yml via region_encoding.
+jurisdiction: cz
+topic: kraj
+authority:
+  name: "Vyhláška č. 343/2014 Sb., o registraci vozidel — § 28 (letters) and § 26 ods. 6 (numerals)"
+  url: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609"
+sources:
+  - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb., o registraci vozidel, částka 136 rozeslaná 31. prosince 2014, as published in the official Sbírka zákonů PDF. § 28 'Způsob zajišťování tabulek s registrační značkou' carries the fourteen kraj LETTERS a) to n); § 26 ods. 6 carries the fourteen kraj NUMERALS 01 to 14; § 24 ods. 2 the 5-8 character rule; § 27 ods. 3 the letter charset. Accessed 2026-08-02"
+  - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb., o registraci vozidel, částka 92 rozeslaná 17. července 2001. § 19 ods. 2 'Tabulky s registrační značkou se přidělují pouze podle kódu kraje' — the SAME fourteen letter pairs, first enacted. § 19 ods. 3: 'Registrační místa okresních úřadů vydávají tabulky pouze s registrační značkou podle místní příslušnosti svého kraje.' Accessed 2026-08-02"
+  - "https://www.psp.cz/sqw/sbirka.sqw?cz=343&r=2014  # official Sbírka index entry: Částka 136 (31. 12. 2014), Účinnost od 1. 1. 2015, still in force. Accessed 2026-08-02"
+period: { start: 2001 }
+period_evidence: enacted-commencement
+period_note: >-
+  2001 is the letter system's own commencement, not an instrument date: vyhláška
+  č. 243/2001 Sb. § 32 provides "Tato vyhláška nabývá účinnosti dnem vyhlášení"
+  and the Sbírka masthead of částka 92 reads "Rozeslána dne 17. července 2001",
+  so the kraj letters entered force on 17 JULY 2001 — not on 29 June 2001, which
+  is the date the minister SIGNED the vyhláška and which secondary sources
+  routinely quote as a range ("introduced between 29 June and 17 July 2001").
+  The table has run unbroken since; vyhláška č. 343/2014 Sb. re-enacted the same
+  fourteen pairs with effect from 1 January 2015.
+
+decode_direction: "code -> kraj of the registration place that ISSUED the mark"
+split_note: >-
+  FIXED WIDTH, and self-delimiting for the wrong reason. The kraj letter is a
+  SINGLE character and it is the FIRST LETTER of the mark, not the first
+  character: § 24 ods. 2 vyhlášky 243/2001 Sb., verbatim, "První písmeno ve
+  standardní registrační značce vyjadřuje kód kraje, do jehož obvodu náleží
+  registrační místo, které registrační značku přiděluje". On the canonical
+  modern mark (digit, letter, digit, gap, four digits — "1A2 3456") that letter
+  sits at position 2, which is why a naive first-character decode fails on every
+  Czech plate. Three series are expressly EXCLUDED from the rule by the same
+  sentence: diplomatic, cizinecká and historic marks.
+
+portability_2015:
+  effective: "2015-01-01"
+  effect: >-
+    THE CODE STOPPED TRACKING THE VEHICLE. Under vyhláška č. 243/2001 Sb. § 20
+    ods. 1, verbatim: "Při převodu vozidla do obvodu registračního místa, pro
+    něž je určen jiný kód kraje, přidělí nové registrační místo vždy novou
+    registrační značku a vydá novou tabulku registrační značky." — a move to
+    another kraj FORCED a new mark. Vyhláška č. 343/2014 Sb. carries no such
+    provision, and from its commencement on 1 January 2015 the mark is retained
+    on a change of keeper or of kraj.
+  consequence: >-
+    Exactly as in Slovakia after 2023, though eight years earlier and by a
+    quieter route (an omission rather than an express repeal): a decode of the
+    kraj letter is a claim about WHERE THE MARK WAS ISSUED, never about where
+    the vehicle is registered now. For marks issued before 2015 the two
+    coincided at issue; for marks issued since, and for any pre-2015 mark whose
+    vehicle has since moved, they need not.
+  evidence: instrument-in-force
+  evidence_note: >-
+    The 2001 rule is quoted verbatim from the primary. Its ABSENCE from the 2014
+    vyhláška is this pass's own reading of the successor text, which is weaker
+    than a repeal clause would be; the widely repeated "as of 1 January 2015
+    registration numbers are not changed if the owner moves to another region"
+    is corroborating secondary and is tagged as such below. No transitional
+    provision was located expressly stating the retention rule — recorded gap.
+  corroboration: secondary-wikipedia
+  corroboration_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Czech_Republic  # 'As of 1 January 2015, registration numbers are not changed if the owner of a vehicle moves to another region or if the vehicle is re-registered to a new owner residing in a different region.' Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# 1. THE LETTER CODES — § 28 vyhlášky č. 343/2014 Sb., in the instrument's own
+#    order a) to n). Used by cz-standard-*, cz-dealer, cz-transfer.
+# ---------------------------------------------------------------------------
+letters:
+  - { code: A, kraj: "Hlavní město Praha" }
+  - { code: S, kraj: "Středočeský" }
+  - { code: U, kraj: "Ústecký" }
+  - { code: L, kraj: "Liberecký" }
+  - { code: K, kraj: "Karlovarský" }
+  - { code: H, kraj: "Královéhradecký" }
+  - { code: E, kraj: "Pardubický" }
+  - { code: P, kraj: "Plzeňský" }
+  - { code: C, kraj: "Jihočeský" }
+  - { code: J, kraj: "Vysočina" }
+  - { code: B, kraj: "Jihomoravský" }
+  - { code: M, kraj: "Olomoucký" }
+  - { code: T, kraj: "Moravskoslezský" }
+  - { code: Z, kraj: "Zlínský" }
+letters_note: >-
+  Fourteen codes for fourteen kraje — a CLOSED, COMPLETE table, which is the
+  useful thing about it: an unmatched leading letter on a standard Czech mark is
+  not an unknown region, it is a malformed or non-standard mark. Recorded
+  drafting defect in the FIRST enactment, because it is visible in the official
+  PDF and a future verifier will otherwise think this file miscopied it:
+  § 19 ods. 2 of vyhláška č. 243/2001 Sb. labels FIFTEEN sub-paragraphs a) to
+  m) but prints the letter "e)" TWICE — once for Karlovarský and again for
+  Královéhradecký — so its list runs a) b) c) d) e) e) f) ... m). The pairs
+  themselves are correct and are unchanged in § 28 of vyhláška č. 343/2014 Sb.,
+  which numbers them cleanly a) to n).
+
+# ---------------------------------------------------------------------------
+# 2. THE NUMERIC CODES — § 26 ods. 6 vyhlášky č. 343/2014 Sb. Used ONLY by
+#    cz-historic-2015 and cz-sport, where the two digits open the mark.
+# ---------------------------------------------------------------------------
+numerals:
+  - { code: "01", kraj: "Hlavní město Praha" }
+  - { code: "02", kraj: "Jihomoravský" }
+  - { code: "03", kraj: "Jihočeský" }
+  - { code: "04", kraj: "Pardubický" }
+  - { code: "05", kraj: "Královéhradecký" }
+  - { code: "06", kraj: "Vysočina" }
+  - { code: "07", kraj: "Karlovarský" }
+  - { code: "08", kraj: "Liberecký" }
+  - { code: "09", kraj: "Olomoucký" }
+  - { code: "10", kraj: "Plzeňský" }
+  - { code: "11", kraj: "Středočeský" }
+  - { code: "12", kraj: "Moravskoslezský" }
+  - { code: "13", kraj: "Ústecký" }
+  - { code: "14", kraj: "Zlínský" }
+numerals_note: >-
+  The numeral identifies "registračního místa, které zajišťuje registraci
+  historických vozidel na správním území kraje" (§ 26 ods. 1) — the ONE
+  registration office per kraj that handles historic vehicles, so the code is a
+  kraj code with an administrative extra meaning. These codes are ALPHABETICAL
+  BY CZECH KRAJ NAME (Hlavní město Praha, Jihomoravský, Jihočeský, Pardubický,
+  ...) rather than following the letter table's order, which is why the two
+  tables look unrelated: they are two different orderings of the same fourteen
+  regions. Note 01 is Praha in both alphabets and nothing else lines up.
+
+not_region_codes:
+  - "F — the leading letter of a TEST mark (registrační značka pro zkušební provoz), § 26 ods. 4 vyhlášky 343/2014 Sb.: 'začíná vždy písmenem „F“'. F is not a kraj letter in either regulation, and vyhláška 243/2001 Sb. § 18 ods. 1 expressly kept F out of the general letter charset, which is what made it available as a series marker."
+  - "V — the historic-vehicle marker, § 26 ods. 1: the mark is 'dvoumístným číselným znakem ... a velkým písmenem „V“'. Under the 2001 regulation the mark was V + four digits with NO kraj code at all (§ 16 ods. 5), so a bare-V historic mark is pre-2015 and carries no geography."
+  - "R — the sports-vehicle marker, § 26 ods. 5, in the same numeral+letter position as V."
+  - "CD, XX, XS, HC — diplomatic and cizinecká prefixes, § 24 ods. 3 vyhlášky 343/2014 Sb. Expressly excluded from the kraj rule and carrying no geography."
+  - "G, O, Q, W — issued in NO position. § 27 ods. 3 vyhlášky 343/2014 Sb. enumerates the letters usable after the kraj code as A, B, C, D, E, F, H, I, J, K, L, M, N, P, R, S, T, U, V, X, Y, Z — twenty-two of twenty-six. The 2001 predecessor (§ 18 ods. 1 vyhlášky 243/2001 Sb.) was tighter still, omitting F and H as well and leaving twenty."

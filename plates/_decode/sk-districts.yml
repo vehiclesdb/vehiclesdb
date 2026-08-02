@@ -1,0 +1,314 @@
+# plates/_decode/sk-districts.yml — the Slovak okres codes carried by the first
+# letter pair of an evidenčné číslo.
+#
+# THE SOURCE IS A STATUTORY BODY PROVISION, NOT A TABLE ON THE WEB. Every row
+# below is transcribed mechanically (a script, not a human retype) from § 36
+# ods. 2 of vyhláška Ministerstva vnútra Slovenskej republiky č. 9/2009 Z. z.,
+# ktorou sa vykonáva zákon o cestnej premávke, in the CONSOLIDATED VERSION IN
+# FORCE ON 1 AUGUST 2022 — the last version of that section before it was
+# repealed. Its opening words, verbatim: "Pre potreby evidenčného čísla sa
+# označenie okresov ustanovuje takto:". 72 district rows, 93 codes.
+#
+# THE ONE FACT A CONSUMER MUST NOT MISS — AND IT IS WHY THIS FILE OPENS WITH IT
+# RATHER THAN BURYING IT IN PROSE:
+#
+#   ON 1 JANUARY 2023 THE DISTRICT MEANING WAS ABOLISHED PROSPECTIVELY.
+#   Three dated primary acts, all quoted below in `decoupling_2023`:
+#     * zákon č. 128/2021 Z. z. Čl. I bod 32 DELETED the second sentence of
+#       § 124 ods. 1 zákona č. 8/2009 Z. z. — the sentence that said "Prvá
+#       dvojica písmen evidenčného čísla označuje okres, v ktorom je vozidlo
+#       evidované" (the first letter pair designates the district in which the
+#       vehicle is registered). Čl. IV: "Tento zákon nadobúda účinnosť
+#       1. januára 2023."
+#     * the same act, bod 31, replaced the word "okresov" with "údajov" in the
+#       delegation in § 123 ods. 20 — the ministry no longer has power to
+#       prescribe DISTRICT markings on plates at all.
+#     * vyhláška č. 480/2022 Z. z. Čl. I bod 7, in force 1 January 2023:
+#       "§ 36 sa vypúšťa." — the table reproduced in this file was struck out
+#       of the regulation on that date.
+#
+#   CONSEQUENCE FOR A PARSE API, stated as a rule rather than a caution:
+#   a decode of the leading letter pair is a claim about WHERE AND WHEN THE
+#   PLATE WAS ISSUED, never about where the vehicle is registered now, and for
+#   a plate first issued on or after 1 January 2023 it is not a geographic
+#   claim at all. Two separate 2023 changes make it wrong:
+#     (a) NEW ISSUES are allocated from a single national sequence with no
+#         district input (§ 124 ods. 1 in its post-2023 wording gives only the
+#         SHAPE: "Za prvou dvojicou písmen sa za štátnym znakom Slovenskej
+#         republiky uvádzajú tri číslice a dvojica písmen").
+#     (b) EXISTING plates stay with the vehicle when it changes hands and
+#         crosses a district boundary — § 116 ods. 14, inserted by the same
+#         act, verbatim: "Pri zmene držby vozidla sa ponechávajú tabuľky
+#         s evidenčným číslom na vozidle a to aj v tom prípade, ak má nový
+#         držiteľ adresu pobytu, sídla, prevádzkarne alebo organizačnej zložky
+#         v pôsobnosti iného orgánu Policajného zboru." Before that date the
+#         opposite rule applied — § 116 ods. 13 in the version in force on
+#         1 August 2022: "ak orgán Policajného zboru eviduje zmenu z iného
+#         okresu pobytu, sídla alebo prevádzkarne, pridelí vozidlu evidenčné
+#         číslo a vydá tabuľku s evidenčným číslom".
+#     A plate carrying BA therefore means "issued in Bratislava before 2023",
+#     and the vehicle may lawfully have lived in Košice ever since.
+#
+# The rows remain live data, not history: vyhláška č. 480/2022 Z. z. Čl. I
+# bod 10 inserted § 41e into vyhláška 9/2009, verbatim: "(1) Tabuľky
+# s evidenčným číslom ... podľa predpisov účinných do 31. decembra 2022
+# zostávajú v platnosti. (2) Tabuľky s evidenčným číslom ... podľa predpisov
+# účinných do 31. decembra 2022 sa vydávajú do vyčerpania ich skladových
+# zásob." District plates stay lawful indefinitely and were still being issued
+# from stock after the reform date, so the reform has NO end date on the road.
+#
+# Referenced by plates/sk.yml via region_encoding on the pre-2023 district
+# series; the current series (sk-standard-2023) deliberately carries
+# `region_encoding: none`.
+jurisdiction: sk
+topic: districts
+authority:
+  name: "Vyhláška Ministerstva vnútra Slovenskej republiky č. 9/2009 Z. z., § 36 ods. 2 (repealed 1 January 2023)"
+  url: "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf"
+sources:
+  - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # vyhláška MV SR č. 9/2009 Z. z., consolidated version in force 01.08.2022 - 29.12.2022, § 36 ods. 2 'Pre potreby evidenčného čísla sa označenie okresov ustanovuje takto' — all 72 rows below, extracted by script from the official PDF. Accessed 2026-08-02"
+  - "https://www.slov-lex.sk/static/pdf/1997/90/ZZ_1997_90_19970401.pdf  # vyhláška MV SR č. 90/1997 Z. z., § 44 ods. 4 'Označenie okresov pre potreby evidenčného čísla sa ustanovuje takto' — the FIRST enactment of this table, in force 1 April 1997, with fewer codes per district (e.g. 'BB, BC' where 2022 has 'BB, BC, BK'; 'ZA, ZI' where 2022 has 'ZA, ZI, ZL'). Per-code first-issue dates are a recorded gap. Accessed 2026-08-02"
+  - "https://www.slov-lex.sk/static/pdf/2022/480/ZZ_2022_480.pdf  # vyhláška č. 480/2022 Z. z. Čl. I bod 7 '§ 36 sa vypúšťa.'; Čl. II commences that item on 1 January 2023; Čl. I bod 10 inserts § 41e (existing plates remain valid, stock is issued out). Accessed 2026-08-02"
+  - "https://www.slov-lex.sk/static/pdf/2021/128/ZZ_2021_128_20211201.pdf  # zákon č. 128/2021 Z. z. Čl. I body 31, 32 and 11 (§ 116 ods. 14); Čl. IV 'Tento zákon nadobúda účinnosť 1. januára 2023.' Accessed 2026-08-02"
+  - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20220801.pdf  # zákon č. 8/2009 Z. z. as in force 01.08.2022 — § 124 ods. 1 second sentence (the district rule, pre-repeal) and § 116 ods. 13 (new number on a cross-district change). Accessed 2026-08-02"
+  - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # zákon č. 8/2009 Z. z. as in force 01.01.2023 — the same two provisions AFTER the reform. Diffing the pair IS the evidence for this file's central caveat. Accessed 2026-08-02"
+period: { start: 1997, end: 2022 }
+period_evidence: instrument-dated-both-ends
+period_note: >-
+  1997 is the commencement of vyhláška MV SR č. 90/1997 Z. z. (1 April 1997),
+  which first enacted this table; 2022 is the last full year of § 36 ods. 2
+  vyhlášky 9/2009, repealed with effect from 1 January 2023. NEITHER bound is
+  the validity of the plates: they remain lawful indefinitely (§ 41e) and were
+  issued from stock past the end date. The period is the period of the CODE
+  SYSTEM, and per-row periods are a recorded gap — Slovak district reform added
+  codes over time (see the 90/1997 comparison in `sources`) and the instruments
+  never dated the additions.
+decode_direction: "code -> district of ISSUE (pre-2023). NEVER code -> district of current registration."
+maximal_munch: false
+split_note: >-
+  Unlike Austria and Germany, the Slovak prefix is FIXED-WIDTH: § 124 ods. 1
+  makes it exactly two letters, so the split point is unambiguous and no
+  longest-match rule is needed. The residual ambiguity is semantic, not
+  lexical, and it is the 2023 one described in `decoupling_2023`.
+
+decoupling_2023:
+  effective: "2023-01-01"
+  applies_to: "every evidenčné číslo FIRST ISSUED on or after this date, and every pre-2023 plate that has since changed hands"
+  district_meaning_after: none
+  instruments:
+    - citation: "zákon č. 128/2021 Z. z., Čl. I bod 32"
+      text: "V § 124 ods. 1 sa vypúšťa druhá veta."
+      effect: >-
+        The deleted sentence is the whole district claim: "Prvá dvojica písmen
+        evidenčného čísla označuje okres, v ktorom je vozidlo evidované." After
+        1 January 2023 § 124 ods. 1 reads only "Evidenčné číslo tvoria písmená
+        a číslice. Za prvou dvojicou písmen sa za štátnym znakom Slovenskej
+        republiky uvádzajú tri číslice a dvojica písmen." — a SHAPE with no
+        geography in it.
+      commencement: "Čl. IV: 'Tento zákon nadobúda účinnosť 1. januára 2023.'"
+    - citation: "zákon č. 128/2021 Z. z., Čl. I bod 31"
+      text: "V § 123 ods. 20 sa slovo „okresov“ nahrádza slovom „údajov“."
+      effect: >-
+        The delegation to the ministry stops mentioning districts, so the
+        regulation lost its power to prescribe a district marking at all. This
+        is why the table below could be, and was, struck out wholesale.
+    - citation: "zákon č. 128/2021 Z. z., Čl. I bod 11 (new § 116 ods. 14)"
+      text: >-
+        "Pri zmene držby vozidla sa ponechávajú tabuľky s evidenčným číslom na
+        vozidle a to aj v tom prípade, ak má nový držiteľ adresu pobytu, sídla,
+        prevádzkarne alebo organizačnej zložky v pôsobnosti iného orgánu
+        Policajného zboru."
+      effect: >-
+        PLATE FOLLOWS THE VEHICLE across a district boundary. This is what
+        breaks the decode for EXISTING plates, not just new ones — a BA plate on
+        the road today may be on a vehicle registered anywhere in Slovakia.
+    - citation: "zákon č. 128/2021 Z. z., Čl. I bod 29 (§ 123 ods. 8)"
+      text: >-
+        "Orgán Policajného zboru pridelí vozidlu evidenčné číslo, ku ktorému už
+        má držiteľ vozidla ponechané tabuľky s evidenčným číslom z iného
+        vozidla, ak o to držiteľ vozidla požiada."
+      effect: >-
+        PLATE FOLLOWS THE OWNER: a holder may keep the plates off one vehicle
+        (§ 116 ods. 17) and have them assigned to another. Slovakia is therefore
+        NOT a `binding: owner` jurisdiction in the Swiss sense — the binding
+        stays with the vehicle by default (§ 116 ods. 14) and moves to the owner
+        only on request. plates/sk.yml records `binding: vehicle` with that
+        qualification stated on the series.
+    - citation: "vyhláška č. 480/2022 Z. z., Čl. I bod 7"
+      text: "§ 36 sa vypúšťa."
+      effect: "Struck the table below out of vyhláška 9/2009 with effect from 1 January 2023 (Čl. II)."
+  what_did_not_change: >-
+    THE STRING SHAPE. Both before and after the reform an ordinary Slovak plate
+    is two letters, the state arms, three digits, two letters. A parse API
+    cannot tell a 2022 district plate from a 2024 national-sequence plate by
+    shape alone; only the letter pair against this table plus the knowledge that
+    post-reform pairs are allocated alphabetically from AA distinguishes them,
+    and the two sets OVERLAP. Record the ambiguity; do not resolve it by guess.
+  allocation_after_2023:
+    claim: "new pairs are allocated nationally in alphabetical sequence from AA"
+    evidence: secondary-wikipedia
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Slovakia  # 'arbitrary letters of the alphabet (assigned alphabetically, starting with AA)'. Accessed 2026-08-02"
+    note: >-
+      NOT FOUND IN ANY INSTRUMENT. § 124 ods. 1 prescribes the shape and is
+      silent on allocation order; neither the zákon nor vyhláška 9/2009 in its
+      post-2023 wording publishes an allocation rule. Tagged secondary-wikipedia
+      and NOT relied on by any regex in plates/sk.yml. Recorded gap.
+
+collisions:
+  - "SK — Svidník (a district code) AND the international distinguishing sign of Slovakia itself, which appears on the same plate in the blue EU field (§ 35 ods. 9 vyhlášky 9/2009: 'Rozlišovací znak Slovenskej republiky sa skladá z písmen SK'). A parse API reading the band and the serial must not conflate them."
+  - "PS — Prešov (a district code) AND, in the same vyhláška, a VEHICLE CATEGORY letter pair used throughout § 35 ('vozidlu kategórie ... PS a LS'). Textual collision only; the plate positions differ."
+  - "EE / ZZ — NOT district codes. § 125 ods. 1 and 2 zákona 8/2009 reserve them for foreign missions and for mission administrative/technical staff. A leading EE or ZZ must be routed to the diplomatic series, never to this table."
+  - "EL / EV — NOT district codes since 1 January 2023. § 35 ods. 7 vyhlášky 9/2009, as replaced by vyhláška 480/2022: 'Písmená na tabuľke s evidenčným číslom vozidla podľa § 123 ods. 18 zákona začínajú písmenami EL alebo EV' — the electric/plug-in-hybrid prefix. Neither pair appears in the district table below, so there is no historical clash, but a parse API must know them."
+  - "Y — never a district code, and reserved in the TRAILING pair: § 35 ods. 3 vyhlášky 9/2009 puts Y first in the letter pair after the state arms for category O and R vehicles (trailers). This is the one piece of structure that survived 2023 intact."
+
+# ---------------------------------------------------------------------------
+# THE TABLE. Rows are the 72 district entries of § 36 ods. 2 in the annex's own
+# alphabetical-by-district order; `codes` lists the pairs the annex assigns to
+# each, in the annex's own order within the row. Extracted by script from the
+# official slov-lex PDF, not retyped.
+# ---------------------------------------------------------------------------
+districts:
+  - district: "Banská Bystrica"
+    codes: [BB, BC, BK]
+  - district: "Banská Štiavnica"
+    codes: [BS]
+  - district: "Bardejov"
+    codes: [BJ]
+  - district: "Bánovce nad Bebravou"
+    codes: [BN]
+  - district: "Brezno"
+    codes: [BR]
+  - district: "Bratislava"
+    codes: [BA, BD, BE, BI, BL, BT]
+  - district: "Bytča"
+    codes: [BY]
+  - district: "Čadca"
+    codes: [CA]
+  - district: "Detva"
+    codes: [DT]
+  - district: "Dolný Kubín"
+    codes: [DK]
+  - district: "Dunajská Streda"
+    codes: [DS]
+  - district: "Galanta"
+    codes: [GA]
+  - district: "Gelnica"
+    codes: [GL]
+  - district: "Hlohovec"
+    codes: [HC]
+  - district: "Humenné"
+    codes: [HE]
+  - district: "Ilava"
+    codes: [IL]
+  - district: "Kežmarok"
+    codes: [KK]
+  - district: "Komárno"
+    codes: [KN]
+  - district: "Košice"
+    codes: [KE, KC, KI]
+  - district: "Košice-okolie"
+    codes: [KS]
+  - district: "Krupina"
+    codes: [KA]
+  - district: "Kysucké Nové Mesto"
+    codes: [KM]
+  - district: "Levice"
+    codes: [LV, LL]
+  - district: "Levoča"
+    codes: [LE]
+  - district: "Liptovský Mikuláš"
+    codes: [LM]
+  - district: "Lučenec"
+    codes: [LC]
+  - district: "Malacky"
+    codes: [MA]
+  - district: "Martin"
+    codes: [MT]
+  - district: "Medzilaborce"
+    codes: [ML]
+  - district: "Michalovce"
+    codes: [MI]
+  - district: "Myjava"
+    codes: [MY]
+  - district: "Námestovo"
+    codes: [NO]
+  - district: "Nitra"
+    codes: [NR, NI, NT]
+  - district: "Nové Mesto nad Váhom"
+    codes: [NM]
+  - district: "Nové Zámky"
+    codes: [NZ, NC]
+  - district: "Partizánske"
+    codes: [PE]
+  - district: "Pezinok"
+    codes: [PK]
+  - district: "Piešťany"
+    codes: [PN]
+  - district: "Poltár"
+    codes: [PT]
+  - district: "Poprad"
+    codes: [PP]
+  - district: "Považská Bystrica"
+    codes: [PB]
+  - district: "Prešov"
+    codes: [PO, PV, PS]
+  - district: "Prievidza"
+    codes: [PD]
+  - district: "Púchov"
+    codes: [PU]
+  - district: "Revúca"
+    codes: [RA]
+  - district: "Rimavská Sobota"
+    codes: [RS]
+  - district: "Rožňava"
+    codes: [RV]
+  - district: "Ružomberok"
+    codes: [RK]
+  - district: "Sabinov"
+    codes: [SB]
+  - district: "Senec"
+    codes: [SC]
+  - district: "Senica"
+    codes: [SE]
+  - district: "Skalica"
+    codes: [SI]
+  - district: "Snina"
+    codes: [SV]
+  - district: "Sobrance"
+    codes: [SO]
+  - district: "Spišská Nová Ves"
+    codes: [SN]
+  - district: "Stará Ľubovňa"
+    codes: [SL]
+  - district: "Stropkov"
+    codes: [SP]
+  - district: "Svidník"
+    codes: [SK]
+  - district: "Šaľa"
+    codes: [SA]
+  - district: "Topoľčany"
+    codes: [TO]
+  - district: "Trebišov"
+    codes: [TV]
+  - district: "Trenčín"
+    codes: [TN, TC, TE]
+  - district: "Trnava"
+    codes: [TT, TA, TB]
+  - district: "Turčianske Teplice"
+    codes: [TR]
+  - district: "Tvrdošín"
+    codes: [TS]
+  - district: "Veľký Krtíš"
+    codes: [VK]
+  - district: "Vranov nad Topľou"
+    codes: [VT]
+  - district: "Zlaté Moravce"
+    codes: [ZM]
+  - district: "Zvolen"
+    codes: [ZV]
+  - district: "Žarnovica"
+    codes: [ZC]
+  - district: "Žiar nad Hronom"
+    codes: [ZH]
+  - district: "Žilina"
+    codes: [ZA, ZI, ZL]
