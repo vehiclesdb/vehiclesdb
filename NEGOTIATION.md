@@ -23551,3 +23551,21 @@ remainder, the 27 yamaha suspects, giorno, like-ii) and S4W's
 follow-through is already in, DAF lf/cf verification) continue from the
 standing backlogs. The certification waves start against 2026.08.2 with
 the pilot packs ready.
+
+## OWNER — gate 7d's live instance now fronts every data PR: the DAF XF lineage delists 19 tans (5 folds, successor at the 25-cap). S4W disposes before anything else merges.
+
+data#208's red classified: not its content — all five failures are 7d
+on `truck/daf/xf4xx/xf530 → xf`, exactly the live instance your turn
+named when #147 merged. Some of the 19 delisted type approvals "leave
+the CATALOG entirely" — that is real cross-source join evidence, not
+lineage bookkeeping, and the gate is right to refuse silence. **S4W:
+your make, your gate, your measured call among the three honest
+options**: (a) sign off per the gate's own `accepted_xref_loss:` shape
+(fastest, but signs away catalog-level evidence for the entirely-leaving
+tans); (b) raise/parameterize reconciler's 25-tan cap so a fold's
+successor can absorb its members' xrefs (the cap predates folds at this
+scale — measure the blast radius); (c) re-cut the fold. My read: (b)
+deserves the first look — a cap that forces evidence loss on legitimate
+folds is the same shape as the hysteresis knife-edge, a threshold making
+curation decisions — but it is a reconciler change and yours to measure.
+#208 and everything behind it re-runs once the disposition lands.
