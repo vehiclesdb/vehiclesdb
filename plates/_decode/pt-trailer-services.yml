@@ -1,0 +1,96 @@
+# plates/_decode/pt-trailer-services.yml — the Portuguese TRAILER registration
+# prefixes: the issuing regional service, one or two letters.
+#
+# This is the one place geography survives on a Portuguese plate. Car, motorcycle
+# and moped numbers carry none at all — the national car series is purely
+# sequential — but a Portuguese trailer number is, verbatim from the statute,
+# "uma ou duas letras identificadoras do serviço regional que procedeu à
+# matrícula, seguidas de um número de ordem" (Regulamento de Matrícula, art. 4.º
+# n.º 1). The letters are the district office that issued it, not the trailer's
+# home district and not the towing vehicle's.
+#
+# THE TABLE IS A STATUTORY ANNEX, and it was AMENDED ONCE, which is why this
+# file carries two vintages instead of one:
+#
+#   * Decreto-Lei n.º 54/2005, de 3 de março — ANEXO I as originally enacted.
+#     22 rows. Viseu is "VS".
+#   * Decreto-Lei n.º 106/2006, de 8 de junho, art. 1.º n.º 3 — replaces
+#     Anexo I wholesale. Same 22 districts, same 21 codes, and Viseu is "VI".
+#
+# The Viseu change is recorded, not averaged, and not treated as a misprint:
+# both readings were taken from the Diário da República page images (the 2005
+# facsimile at p. 1896 and the 2006 facsimile at p. 4054), so both are what the
+# gazette printed. From the 2006 instrument's entry into force the operative
+# code is VI; VS is on the road on every trailer plated between 2005 and 2006
+# and on every earlier one issued under the same code. A parse API must accept
+# BOTH — which is exactly the "decode tables rot" hazard PRD-PLATES §9 names,
+# caught here inside a single fourteen-month window.
+#
+# WHAT THIS TABLE IS NOT: it is not a district-code table for cars. There has
+# never been one in the modern Portuguese system. And it is not the EXPORT
+# prefix set — export numbers take a single trailing letter from a different,
+# four-member list (L / P / A / M), which is carried inline on pt-export in
+# plates/pt.yml rather than here, because it is a different statutory list in a
+# different article with different members.
+#
+# Referenced by: pt-trailer (plates/pt.yml) via region_encoding.
+jurisdiction: pt
+topic: trailer-services
+authority:
+  name: "Regulamento do Número e Chapa de Matrícula (anexo ao Decreto-Lei n.º 54/2005, de 3 de março), Anexo I — na redação do Decreto-Lei n.º 106/2006, de 8 de junho"
+  url: "https://dre.pt/application/conteudo/346124"
+sources:
+  - "https://files.diariodarepublica.pt/1s/2006/06/111a00/40524060.pdf  # Decreto-Lei n.º 106/2006 (DR I-A n.º 111, 08-06-2006), art. 1.º n.º 3 + ANEXO I, p. 4054: the CURRENT 22-row table, with Viseu = VI. Locator: https://dre.pt/application/conteudo/346124 — accessed 2026-08-02"
+  - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # Decreto-Lei n.º 54/2005 (DR I-A n.º 44, 03-03-2005), ANEXO I 'Tabela de dígitos identificadores dos serviços emissores de matrículas de reboques (referente ao n.º 2 do artigo 4.º)', p. 1896: the SUPERSEDED table, with Viseu = VS. Locator: https://dre.pt/application/conteudo/589934 — accessed 2026-08-02"
+period: { start: 2006 }
+period_evidence: instrument-in-force
+period_note: >-
+  2006 is the vintage of the list read here (Decreto-Lei n.º 106/2006, published
+  08-06-2006; no entry-into-force clause of its own, so the general 5-day
+  vacatio of Lei n.º 74/98 applies and the operative date is 13-06-2006 —
+  DERIVED from the default rule, not stated by the instrument, and flagged as
+  such). The CODES themselves are far older than either instrument: the
+  composition "letter(s) + serial" is drawn in the pre-1992 plate model
+  (DL 54/2005 Anexo II, Modelo V, "L-10978"), so trailers were numbered this way
+  for decades before any text reachable in this pass. The instrument that first
+  enacted the list was not located — recorded gap, and the reason this file's
+  period is an instrument vintage rather than a series start.
+maximal_munch: true
+maximal_munch_note: >-
+  Single-letter codes collide with the prefixes of two-letter ones and the
+  digits that follow give no separator help, so a parser MUST take the longest
+  matching code before the serial: A (Ponta Delgada) inside AV (Aveiro) and AN
+  (Angra do Heroísmo); C (Coimbra) inside CB (Castelo Branco); L (Lisboa) inside
+  LE (Leiria); P (Porto) inside PT (Portalegre). E (Évora), H (Horta) and M
+  (Funchal) are unambiguous.
+
+codes:
+  # Mainland districts (distritos), in the order the annex prints them.
+  - { code: AV, name: "Aveiro" }
+  - { code: BE, name: "Beja" }
+  - { code: BR, name: "Braga" }
+  - { code: BN, name: "Bragança" }
+  - { code: CB, name: "Castelo Branco" }
+  - { code: C,  name: "Coimbra" }
+  - { code: E,  name: "Évora" }
+  - { code: FA, name: "Faro" }
+  - { code: GD, name: "Guarda" }
+  - { code: LE, name: "Leiria" }
+  - { code: L,  name: "Lisboa" }
+  - { code: PT, name: "Portalegre" }
+  - { code: P,  name: "Porto" }
+  - { code: SA, name: "Santarém" }
+  - { code: SE, name: "Setúbal" }
+  - { code: VC, name: "Viana do Castelo" }
+  - { code: VR, name: "Vila Real" }
+  - { code: VI, name: "Viseu", superseded_code: VS, superseded_note: "VS in the 2005 Anexo I; VI since the 2006 replacement. Both were printed by the Diário da República; both are on the road." }
+  # Autonomous regions — the annex lists the Azores by ISLAND-GROUP district
+  # (three of them) and Madeira by its single district, under the same heading.
+  - { code: AN, name: "Angra do Heroísmo", kind: autonomous-region, region: "Açores" }
+  - { code: H,  name: "Horta",             kind: autonomous-region, region: "Açores" }
+  - { code: A,  name: "Ponta Delgada",     kind: autonomous-region, region: "Açores" }
+  - { code: M,  name: "Funchal",           kind: autonomous-region, region: "Madeira" }
+
+# Sanity note for the verifier: 22 rows, and the set is complete against
+# Portugal's administrative map — 18 mainland distritos + the 3 Azorean
+# distritos + Funchal. No code is duplicated; no district is missing.

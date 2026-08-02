@@ -174,6 +174,38 @@ def mutate(serial)
 end
 
 files = Dir[File.join(ROOT, "plates", "*.yml")] + Dir[File.join(ROOT, "plates", "*", "*.yml")]
+
+# ── EVERY SIDECAR MUST AT LEAST PARSE ────────────────────────────────────────
+#
+# The line below excludes `_meta/`, `_decode/` and `_art/` from the SERIES
+# rules, which is correct — they carry no series and every series-shaped check
+# would be meaningless on them.
+#
+# But excluding them from the file list excluded them from EVERYTHING, including
+# "is this valid YAML". Found 2026-08-02 by a wave-2 researcher whose
+# `_decode/ro-counties.yml` had a `note:` at sequence-item indentation: Psych
+# rejects the file outright, and **`lint_plates` reported OK**. A decode table
+# that cannot be loaded is not a lesser problem than a malformed dossier — it is
+# the same problem, on a file the linter was structurally unable to see.
+#
+# So: parse them all, apply the series rules only where they belong. This is
+# deliberately the WEAKEST possible check — DOES IT LOAD, and is it non-empty.
+# Nothing about shape: `_decode` tables differ by country and `_art/_ledger.yml`
+# is an Array where the decode tables are Hashes. My first draft asserted Hash
+# and this very check failed the ledger on its first run — inventing a schema
+# here would be a second guess, not a gate, and the gate is what was missing.
+sidecars = files.select { |f| f.include?("/_meta/") || f.include?("/_decode/") || f.include?("/_art/") }
+sidecars.each do |f|
+  rel = f.sub("#{ROOT}/", "")
+  begin
+    doc = YAML.safe_load_file(f, permitted_classes: [Date], aliases: false)
+    fail!("#{rel}: parses to nothing (empty document) — a sidecar the loader cannot read is dead weight") if doc.nil?
+  rescue Psych::SyntaxError => e
+    fail! "#{rel}: DOES NOT PARSE — #{e.message}. This file was previously invisible to this lint; a decode " \
+          "table that cannot be loaded fails as hard as a malformed dossier."
+  end
+end
+
 files = files.reject { |f| f.include?("/_meta/") || f.include?("/_decode/") || f.include?("/_art/") }
 seen_series = {}
 series_count = 0
