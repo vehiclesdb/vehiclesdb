@@ -40,16 +40,45 @@
 #    enforces with a negative lookahead (the only illegal combination the
 #    quantifiers alone would admit is 3 letters + 2 letters + 4 digits = 9).
 #
-# 3. PERIOD CLAIMS ARE INSTRUMENT-DATED, AND SAY SO. The German
-#    Unterscheidungszeichen + Erkennungsnummer system, and the Euro-Feld
-#    design, both predate the FZV 2023 by decades. NO PRIMARY for either origin
-#    date was secured in this pass (see the L0 report's gap list), so every
-#    entry carries `period_evidence: instrument-in-force` and a note saying in
-#    terms that the year is the date of the instrument that STATES the rule, not
-#    the date the series began. The two exceptions are dated from their own
-#    enabling statute: the E-Kennzeichen (Elektromobilitätsgesetz of
-#    5 June 2015) and the moped insurance-plate colour cycle (anchored on the
-#    Verkehrsjahr the FZV names).
+# 3. PERIOD CLAIMS ARE DATED FROM THE CREATING INSTRUMENTS (L1 redate pass,
+#    2026-08-02). The L0 file carried FZV-2023 consolidation dates as series
+#    starts and said so; this pass replaced them with the actual era
+#    boundaries, each pinned to its Bundesgesetzblatt instrument (official
+#    scans via offenegesetze.de, all fetched 2026-08-02):
+#      * 1956 — Verordnung zur Änderung von Vorschriften des
+#        Straßenverkehrsrechts vom 14. März 1956 (BGBl. I S. 199; issue Nr. 15,
+#        ausgegeben 9.4.1956): creates the Unterscheidungszeichen +
+#        Erkennungsnummer system (§ 23 Abs. 2 StVZO), black-on-white AND the
+#        green tax-exempt colour (§ 60 Abs. 1), the Anlage IV official/
+#        diplomatic/military codes, and — Anlage II — the SAME five serial
+#        shapes FZV 2023 Anlage 1 still prints. In force 1.7.1956 for newly
+#        plated vehicles; old-system plates until 1.7.1958.
+#      * 1995 — 21. ÄndVstVR vom 6. Januar 1995 (BGBl. I S. 8): inserts § 60
+#        Abs. 1b StVZO ("Einführung des Euro-Kennzeichens", auf Antrag) +
+#        Anlage Va. In force 15.1.1995.
+#      * 1996/97 — 23. ÄndVstVR vom 12. November 1996 (BGBl. I S. 1738):
+#        Saisonkennzeichen (§ 23 Abs. 1b + Anlage Vb), in force 1.3.1997.
+#      * 1997 — 25. ÄndVstVR vom 22. Juli 1997 (BGBl. I S. 1889):
+#        Oldtimerkennzeichen with the H (§ 21c, § 23 Abs. 1c, Anlage Vc),
+#        in force 29.7.1997 (day after Verkündung 28.7.1997).
+#      * 1998 — 27. ÄndVstVR vom 9. März 1998 (BGBl. I S. 441):
+#        Kurzzeitkennzeichen (§ 28 StVZO + Anlage Vd), Art. 1 in force
+#        14.3.1998 (day after Verkündung 13.3.1998), remainder 1.5.1998.
+#      * 2000 — 32. ÄndVstVR vom 20. Juli 2000 (BGBl. I S. 1090): Euro plate
+#        mandatory for plates newly fitted from 1.11.2000; pre-existing
+#        plates "gelten weiter"; § 60 Abs. 1b repealed.
+#      * 2006/07 — FZV vom 25. April 2006 (BGBl. I S. 988, Art. 1 of the
+#        Neuordnungs-VO), in force 1.3.2007: first FZV codification; the
+#        "03"/"04", "06", "07" numbering rules and the export digits-then-
+#        letter rule verbatim — the honest UPPER BOUND where no creating
+#        instrument was secured (dealer-red, oldtimer-red, export).
+#      * 2015 — EmoG vom 5. Juni 2015 (BGBl. I S. 898) + 50. ÄndVstVR vom
+#        15. September 2015 (BGBl. I S. 1573, § 9a FZV 2011), in force
+#        26.9.2015: the E-Kennzeichen. The one L0 date that was already true.
+#    Where only a consolidation evidences a rule, the series says so with
+#    `period_evidence: instrument-in-force-upper-bound` and a gap note at the
+#    point of use; folklore years are flagged, never asserted, and conflicts
+#    between an instrument and a secondary are RECORDED, not averaged.
 #
 # REGEX POLICY: as in plates/nl.yml, `format.regex` is the lint-round-trippable
 # regex and `format.regex_strict` (proposed schema addition) carries the
@@ -71,6 +100,156 @@ instrument:
   textnachweis_ab: "2023-09-01"
   replaces: "FZV 2011 (V 9232-14 v. 3.2.2011 I 139)"
   source: "https://www.gesetze-im-internet.de/fzv_2023/FZV.pdf  # front matter: Ausfertigungsdatum, Vollzitat, Stand, 'Ersetzt V 9232-14 v. 3.2.2011 I 139 (FZV 2011)', 'Textnachweis ab: 1.9.2023'"
+
+# ---------------------------------------------------------------------------
+# The era instruments (L1 redate pass, 2026-08-02) — each cited ONCE here with
+# its verbatim key passage; per-series sources point at the same URLs. All
+# URLs are the official Bundesgesetzblatt scans republished at
+# media.offenegesetze.de (stable, unpaywalled); the citation of record is the
+# BGBl page. All fetched and read 2026-08-02.
+# ---------------------------------------------------------------------------
+era_instruments:
+  v1956:
+    citation: "Verordnung zur Änderung von Vorschriften des Straßenverkehrsrechts vom 14. März 1956, BGBl. 1956 I S. 199 (Nr. 15, ausgegeben zu Bonn am 9. April 1956)"
+    url: "https://media.offenegesetze.de/bgbl1/1956/bgbl1_1956_15.pdf  # fetched 2026-08-02"
+    creates: >-
+      The district-prefix system. § 23 Abs. 2 StVZO (new version), verbatim:
+      "Das von der Zulassungsstelle zuzuteilende Kennzeichen enthält das
+      Unterscheidungszeichen für den Verwaltungsbezirk und die
+      Erkennungsnummer, unter der das Fahrzeug bei der Zulassungsstelle
+      eingetragen ist. Das Unterscheidungszeichen für den Verwaltungsbezirk
+      besteht aus einem bis drei Buchstaben nach dem Plan in Anlage I. Die
+      Erkennungsnummer besteht aus Buchstaben und Zahlen." § 60 Abs. 1 (new
+      version), verbatim: "Unterscheidungszeichen und Erkennungsnummern (§ 23
+      Abs. 2) sind in schwarzer Schrift auf weißem Grund anzugeben. Bei
+      Fahrzeugen, deren Halten von der Kraftfahrzeugsteuer befreit ist, ist
+      die Beschriftung grün auf weißem Grund ... Form, Größe und Ausgestaltung
+      von Kennzeichen müssen den Mustern und Angaben in Anlage V entsprechen."
+    grammar_continuity: >-
+      Anlage II (1956), "Reihenfolge für die Ausgabe der ... Fahrzeugerkennungs-
+      nummern": Gruppe I a) "A 1 - A 999 bis Z 1 - Z 999", b) "AA 1 - AA 99 bis
+      ZZ 1 - ZZ 99"; Gruppe II "AA 100 - AA 999 bis ZZ 100 - ZZ 999"; Gruppe
+      III a) "A 1000 - A 9999 bis Z 1000 - Z 9999", b) "AA 1000 - AA 9999 bis
+      ZZ 1000 - ZZ 9999" — the SAME five shapes as FZV 2023 Anlage 1, with
+      every block starting at 1, 100 or 1000 (no leading zeros), 70 years
+      earlier. The 1956 alphabet was narrower (20 letters; per the main
+      Wikipedia locator J replaced I from 7.11.1956, B/F/G added 12.8.1992,
+      I/O/Q added 26.5.2000 — SECONDARY, recorded not asserted).
+    commencement: >-
+      § 72a StVZO (inserted), verbatim: "§ 60 Abs. 1 und 4 sowie die Anlagen I
+      bis V | am 1. Juli 1956 für Fahrzeuge, denen die Zulassungsstelle ein
+      Kennzeichen neuen Rechts zuteilt, | am 1. Juli 1958 für die übrigen
+      kennzeichenpflichtigen Fahrzeuge" (same staging for § 23 Abs. 2). So the
+      system starts 1.7.1956 and the pre-1956 occupation-era plates end by
+      1.7.1958.
+  v1995_euro:
+    citation: "Einundzwanzigste Verordnung zur Änderung straßenverkehrsrechtlicher Vorschriften (21. ÄndVstVR) vom 6. Januar 1995, BGBl. 1995 I S. 8 (Nr. 1, ausgegeben zu Bonn am 12. Januar 1995)"
+    url: "https://media.offenegesetze.de/bgbl1/1995/bgbl1_1995_1.pdf  # fetched 2026-08-02"
+    creates: >-
+      The Euro-Kennzeichen. Inserts § 60 Abs. 1b StVZO, verbatim: "(1b)
+      Abweichend von Absatz 1 Satz 5 Halbsatz 1 und Absatz 1a Satz 1 dürfen
+      auf Antrag Kennzeichen zugeteilt werden, die mit einem blauen Euro-Feld
+      und mit einer Beschriftung nach Anlage Va versehen sind. Die Kennzeichen
+      müssen reflektierend sein und nach Maßgabe der Anlage Va dem Normblatt
+      DIN 74 069, Ausgabe Mai 1989, entsprechen sowie auf der Vorderseite das
+      DIN-Prüf- und Überwachungszeichen mit der zugehörigen Registernummer
+      tragen." Inserts Anlage Va, "Muster und Maße der Euro-Kennzeichen"
+      (published in an Anlageband to BGBl 1995 I Nr. 1 — the Anlageband
+      itself, which carries the Schriftmuster, was NOT fetched: recorded gap).
+      Closing formula, verbatim: "Diese Verordnung tritt am 15. Januar 1995
+      in Kraft." AUF ANTRAG — the Euro plate is optional from 15.1.1995 and
+      only becomes mandatory for newly fitted plates on 1.11.2000 (v2000).
+  v2000_mandate:
+    citation: "Zweiunddreißigste Verordnung zur Änderung straßenverkehrsrechtlicher Vorschriften (32. ÄndVStVR) vom 20. Juli 2000, BGBl. 2000 I S. 1090 (Nr. 34)"
+    url: "https://media.offenegesetze.de/bgbl1/2000/bgbl1_2000_34.pdf  # fetched 2026-08-02"
+    creates: >-
+      The Euro-plate mandate and the DIN-era issuance cutoff. New transitional
+      provision in § 72 Abs. 2 StVZO, verbatim: "§ 60 Abs. 1 Satz 5 erster
+      Halbsatz (Form, Größe und Ausgestaltung einschließlich Beschriftung der
+      Euro-Kennzeichen) ist spätestens ab dem 1. November 2000 auf
+      Kraftfahrzeuge und Anhänger anzuwenden, die von diesem Tag ab erstmals
+      in den Verkehr kommen oder aus anderem Anlass mit einem neuen
+      Kennzeichen ausgerüstet werden. Kennzeichen, die vor dem 1. November
+      2000 zugeteilt worden sind und in Form, Größe und Ausgestaltung § 60
+      Abs. 1 Satz 5 erster Halbsatz und Anlage V in der vor diesem Termin
+      geltenden Fassung entsprechen, gelten weiter." And: "Die
+      Übergangsvorschrift '§ 60 Abs. 1b (Einführung des Euro-Kennzeichens)'
+      wird aufgehoben." Also repeals the Deutsche-Bundespost successor-company
+      registration transitional — the tail end of the 1956 Anlage IV's BP/DB
+      world.
+  v1996_saison:
+    citation: "Dreiundzwanzigste Verordnung zur Änderung straßenverkehrsrechtlicher Vorschriften (23. ÄndVstVR) vom 12. November 1996, BGBl. 1996 I S. 1738 (Nr. 60, ausgegeben zu Bonn am 21. November 1996)"
+    url: "https://media.offenegesetze.de/bgbl1/1996/bgbl1_1996_60.pdf  # fetched 2026-08-02"
+    creates: >-
+      The Saisonkennzeichen. Art. 1 Nr. 2 Buchstabe a inserts § 23 Abs. 1b
+      StVZO, verbatim: "(1b) Auf Antrag wird für ein Fahrzeug ein auf einen
+      nach vollen Monaten bemessenen Zeitraum (Zulassungszeitraum) befristetes
+      amtliches Kennzeichen nach Anlage Vb zugeteilt, das jedes Jahr in diesem
+      Zeitraum auch wiederholt verwendet werden darf (Saisonkennzeichen). Das
+      Fahrzeug darf auf öffentlichen Straßen nur während des auf diesem
+      Kennzeichen angegebenen Zeitraums in Betrieb gesetzt oder abgestellt
+      werden." Plus Anlage Vb "Muster und Maße der Saisonkennzeichen".
+      Art. 4, verbatim: "Artikel 1 Nr. 1, 2 Buchstabe a, Nr. 3, 6, 7
+      Buchstabe d, Nr. 9, 13 Buchstabe b Doppelbuchstabe bb, Nr. 14 Buchstabe
+      b Doppelbuchstabe bb, Nr. 15, 17 Buchstabe b, Artikel 2 und 3 treten am
+      1. März 1997 in Kraft" — the Saison provisions are in that list, so
+      issuance begins 1.3.1997.
+  v1997_oldtimer:
+    citation: "Fünfundzwanzigste Verordnung zur Änderung straßenverkehrsrechtlicher Vorschriften (25. ÄndVstVR) vom 22. Juli 1997, BGBl. 1997 I S. 1889 (Nr. 52, ausgegeben zu Bonn am 28. Juli 1997)"
+    url: "https://media.offenegesetze.de/bgbl1/1997/bgbl1_1997_52.pdf  # fetched 2026-08-02"
+    creates: >-
+      The Oldtimerkennzeichen (H). Inserts § 21c StVZO (Betriebserlaubnis als
+      Oldtimer) and § 23 Abs. 1c StVZO ("... zugeteilt (Oldtimerkennzeichen)",
+      per Anlage Vc). Anlage Vc "Muster und Maße der Oldtimerkennzeichen",
+      verbatim: "Der Kennbuchstabe 'H' nach der Zahl in der Erkennungsnummer
+      gibt an, daß für das Fahrzeug eine Betriebserlaubnis als Oldtimer gemäß
+      § 21c erteilt worden ist." and "Mehr als sieben Stellen (Buchstaben und
+      Ziffern ohne Kennbuchstabe 'H') auf einem Kennzeichen ..." — the
+      seven-position cap is 1997-original. Art. 3, verbatim: "Diese Verordnung
+      tritt am Tage nach der Verkündung in Kraft." — i.e. 29 July 1997.
+      Also (Nr. 8) inserts "der Bundesanstalt Technisches Hilfswerk," into the
+      Anlage IV heading — THW joins the official-plate table in 1997.
+  v1998_kurzzeit:
+    citation: "Siebenundzwanzigste Verordnung zur Änderung straßenverkehrsrechtlicher Vorschriften (27. ÄndVstVR) vom 9. März 1998, BGBl. 1998 I S. 441 (Nr. 14, ausgegeben zu Bonn am 13. März 1998)"
+    url: "https://media.offenegesetze.de/bgbl1/1998/bgbl1_1998_14.pdf  # fetched 2026-08-02"
+    creates: >-
+      The Kurzzeitkennzeichen. Art. 1 amends § 28 StVZO ("Kurzzeitkennzeichen
+      zuzuteilen und besondere Fahrzeugscheine nach Muster 4, auch ohne
+      vorherige Bezeichnung des Fahrzeugs ..."; "(5) Kurzzeitkennzeichen sind
+      in schwarzer [Schrift] ... herzustellen") and adds Anlage Vd "Muster und
+      Maße der Kurzzeitkennzeichen". Art. 5, verbatim: "Die Artikel 1 und 3
+      Nr. 2b und 2g sowie Artikel 4 treten am Tage nach der Verkündung in
+      Kraft. Im übrigen tritt die Verordnung am 1. Mai 1998 in Kraft." — the
+      creating StVZO provisions are in force 14.3.1998. Art. 4 amends § 7
+      Abs. 2 Nr. 5 IntKfzV (export plates): the Dienstsiegel becomes "mit
+      einem Durchmesser von 35 mm" beside the existing "(RAL 2002)" — proof
+      the red-sealed export regime predates the FZV.
+  v2006_fzv:
+    citation: "Verordnung zur Neuordnung des Rechts der Zulassung von Fahrzeugen zum Straßenverkehr und zur Änderung straßenverkehrsrechtlicher Vorschriften vom 25. April 2006, BGBl. 2006 I S. 988 (Nr. 21, ausgegeben zu Bonn am 29. April 2006) — Art. 1 = FZV 2006"
+    url: "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # fetched 2026-08-02"
+    creates: >-
+      The first FZV. Art. 12 Abs. 2, verbatim: "Im Übrigen tritt diese
+      Verordnung am 1. März 2007 in Kraft." Verbatim rules used as UPPER
+      BOUNDS in this file: Kurzzeitkennzeichen "besteht die Erkennungsnummer
+      nur aus Ziffern und beginnt mit '03' oder '04'. Das Kurzzeitkennzeichen
+      enthält außerdem ein Ablaufdatum, das längstens auf fünf Tage ab der
+      Zuteilung zu bemessen [ist]"; rotes Kennzeichen "... nur aus Ziffern und
+      beginnt mit '06'"; rotes Oldtimerkennzeichen "... nur aus Ziffern und
+      beginnt mit '07'"; Ausfuhrkennzeichen "aus einer ein- bis vierstelligen
+      Zahl und einem nachfol[genden Buchstaben]". Anlage 3 already lists THW,
+      X ("Dienstfahrzeuge der auf Grund des Nordatlantikvertrages errichteten
+      internationalen militärischen Hauptquartiere ...") and the five new-Land
+      codes.
+  v2015_e:
+    citation: "Fünfzigste Verordnung zur Änderung straßenverkehrsrechtlicher Vorschriften (50. ÄndVstVR) vom 15. September 2015, BGBl. 2015 I S. 1573 (Nr. 36, ausgegeben zu Bonn am 25. September 2015)"
+    url: "https://media.offenegesetze.de/bgbl1/2015/bgbl1_2015_36.pdf  # fetched 2026-08-02"
+    creates: >-
+      The E-Kennzeichen's issuing rule. Inserts § 9a FZV 2011 ("Kennzeichnung
+      elektrisch betriebener Fahrzeuge" — "den Kennbuchstaben 'E' im Anschluss
+      an die Er[kennungsnummer]") and Anlage 3a (the badge for foreign
+      electric vehicles, "zu § 9a Absatz 4"). "Diese Verordnung tritt am Tag
+      nach der Verkündung in Kraft." — i.e. 26 September 2015, the first day
+      an E plate could issue. § 9a FZV 2011 is today's § 11 FZV 2023.
 
 # ---------------------------------------------------------------------------
 # Jurisdiction-wide facts, cited once.
@@ -173,8 +352,8 @@ series:
   - id: de-standard
     class: standard
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1995 }        # 15.1.1995 — 21. ÄndVstVR in force (era_instruments.v1995_euro)
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "LL-LL 9999"
@@ -220,6 +399,10 @@ series:
       seal: { name: Stempelplakette, diameter_mm: null, content: "coloured Land arms, Land name, registration authority name, unique Druckstücknummer, and a CONCEALED security code that can only be revealed irreversibly; self-destroying on removal", source_note: "§ 12 Abs. 3 FZV + Anlage 5" }
       rear_differs: false
       display: "front and rear on motor vehicles; rear only on trailers, motorcycles and class L5e vehicles; front only on single-axle tractors (§ 12 Abs. 5 FZV)"
+      spec_history:
+        - { from: 1995, to: 2000, basis: "§ 60 Abs. 1b StVZO (21. ÄndVstVR, in force 15.1.1995): Euro-Feld plates AUF ANTRAG — optional, parallel with DIN-era issuance; reflective per DIN 74069 Ausgabe Mai 1989 (updated to Ausgabe Juli 1996 by the 23. ÄndVstVR)" }
+        - { from: 2000, basis: "32. ÄndVStVR: Euro plate mandatory for vehicles first coming into traffic from 1.11.2000 and for ANY plate newly fitted from that day; pre-1.11.2000 plates 'gelten weiter'" }
+        - { from: 2023, basis: "FZV 2023 (BGBl. 2023 I Nr. 199): the consolidation this file's format and design claims cite; reflective per DIN 74069 Oct 2022" }
     region_encoding: "plates/_decode/de-districts.yml"
     region_encoding_mechanism: >-
       The Unterscheidungszeichen is 1-3 letters identifying the Verwaltungsbezirk of
@@ -251,16 +434,111 @@ series:
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_1.html  # Anlage 1: the five Erkennungsnummer shapes and the umlaut exclusion, verbatim"
       - "https://www.gesetze-im-internet.de/fzv_2023/__12.html  # § 12 Abs. 1: black on white, black-bordered; Abs. 2: reflective + DIN 74069; Abs. 5: front/rear rules"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 1: dimensions, FE-Schrift, Euro-Feld, the eight-position cap; Abschnitt 2: the general plates"
+      - "https://media.offenegesetze.de/bgbl1/1995/bgbl1_1995_1.pdf  # 21. ÄndVstVR vom 6.1.1995, BGBl. I S. 8 — § 60 Abs. 1b StVZO + Anlage Va 'Muster und Maße der Euro-Kennzeichen'; 'Diese Verordnung tritt am 15. Januar 1995 in Kraft.' PERIOD START. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/2000/bgbl1_2000_34.pdf  # 32. ÄndVStVR vom 20.7.2000, BGBl. I S. 1090 — Euro plate mandatory for newly fitted plates from 1.11.2000; pre-existing plates 'gelten weiter'. Fetched 2026-08-02"
     notes: >-
-      THE GERMAN STANDARD SERIES — the strongest region signal in the L0 pilot and
-      the only one of the four pilot jurisdictions whose plate names its place of
-      registration. PERIOD CAVEAT, stated plainly: 2023 is the date of the FZV that
-      STATES this format, not the date the system began. The
-      Unterscheidungszeichen + Erkennungsnummer system and the Euro-Feld design both
-      long predate it (FZV 2011 before, StVZO before that); no primary for either
-      origin date was secured, and inventing one was declined. No age is encoded on a
-      German plate at all — unlike the UK, a German plate string carries region but
+      THE GERMAN STANDARD SERIES (Euro-Feld era) — the strongest region signal in
+      the pilot and the only pilot jurisdiction whose plate names its place of
+      registration. period.start 1995 is the CREATING instrument's own
+      commencement: the 21. ÄndVstVR of 6.1.1995 inserted § 60 Abs. 1b StVZO
+      ("auf Antrag ... blauen Euro-Feld ... nach Anlage Va") and entered force
+      15.1.1995 (era_instruments.v1995_euro, quoted). Optional until 1.11.2000,
+      mandatory for newly fitted plates from that day (v2000_mandate, quoted) —
+      recorded in design.spec_history, not cut as a separate series, because
+      mark, serial grammar and colours did not change (the gb-standard-2001
+      BS-AU-145d/e precedent). FOLKLORE/SECONDARY, recorded not asserted: the
+      German Wikipedia locator and the enthusiast site kennzeichen-guide.de
+      report staged pre-instrument issuance — Berlin and Brandenburg from
+      January 1994, Sachsen from July 1994 — "auf Basis der abzusehenden
+      Bundesverordnung"; no instrument authorising 1994 issuance was located in
+      this pass, so 1994 is NOT this series' start and the conflict is recorded
+      here rather than averaged. The SERIAL GRAMMAR is far older than the
+      design: Anlage 1's five shapes are verbatim descendants of Anlage II of
+      the 1956 instrument (see de-standard-1956 and
+      era_instruments.v1956.grammar_continuity). No age is encoded on a German
+      plate at all — unlike the UK, a German plate string carries region but
       never date.
+
+  # =========================================================================
+  # THE PRE-EURO STANDARD SERIES, 1956-2000 (DIN-Schrift era). Added by the
+  # L1 redate pass under the "current + one back" rule.
+  # =========================================================================
+  - id: de-standard-1956
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1956, end: 2000 }   # 1.7.1956 (v1956 § 72a) — 31.10.2000
+                                         # (v2000_mandate: Euro mandatory for
+                                         # plates fitted from 1.11.2000)
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL-LL 9999"
+      regex: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?\d{1,4}\z'
+      regex_strict: '\A(?![A-Z]{3}-[A-Z]{2} ?\d{4}\z)[A-Z]{1,3}-[A-Z]{1,2} ?(?:[1-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3})\z'
+      charset:
+        notes: >-
+          1956 grammar, Anlage II verbatim (era_instruments.v1956): the same
+          five blocks as today's Anlage 1, every block starting at 1, 100 or
+          1000 — no leading zeros, which regex_strict carries. CAVEAT: the
+          1956-era LETTER SET was narrower than A-Z (20 letters at launch; per
+          the Wikipedia locator J replaced I from 7.11.1956, B/F/G were added
+          12.8.1992 and I/O/Q on 26.5.2000 — secondary, recorded not
+          asserted), so regex_strict is deliberately NOT narrowed to a
+          period-specific alphabet no primary was secured for.
+      max_positions_note: >-
+        No "acht Stellen" rule exists in the 1956 text; total length was
+        governed by which Anlage II GRUPPEN a district was allocated (the
+        Anlage I plan marks each district Gruppe I/II/III), which kept
+        combinations within the plate. The negative lookahead is retained from
+        de-standard as the de-facto outer bound; it is a modelling choice
+        here, not a quoted 1956 rule.
+      separator_note: >-
+        As on the Euro series: the gap between Unterscheidungszeichen and
+        Erkennungsnummer held the Stempelplakette; the hyphen and space are
+        the conventional textual rendering.
+    design:
+      plate: { w: 520, h: 110, unit: mm, note: "Anlage V (1956), 'c) Andere Kraftfahrzeuge und Anhänger, einzeilig': the 520 x 110 einzeilig drawing is 1956-original — the dimension predates the Euro plate by four decades" }
+      background: { color: "#FFFFFF", finish: painted, hex_basis: spec, spec_note: "§ 60 Abs. 1 StVZO (1956), verbatim: 'Unterscheidungszeichen und Erkennungsnummern (§ 23 Abs. 2) sind in schwarzer Schrift auf weißem Grund anzugeben.' Reflective sheeting only became required for new plates on 29.9.1989 per the Wikipedia locator — SECONDARY, recorded not asserted (no instrument secured); hence finish: painted with this note rather than an unsourced reflectivity claim." }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      band_note: "no Euro-Feld — that is the boundary with de-standard; late DIN-era plates (1995-2000) ran in parallel with optional Euro plates"
+      font:
+        name: "DIN 1451 Mittelschrift (attribution); statutory object = the Anlage V (1956) Schriftmuster drawings"
+        note: >-
+          The 1956 instrument prescribes plate lettering by DRAWING (Anlage V),
+          exactly as the FZV 2023 does for FE-Schrift. "DIN-Kennzeichen" and
+          the DIN 1451 attribution are the universal secondary name for the
+          era's lettering (and FZV 2023 still names DIN 1451-2:1986-02 for
+          Bundeswehr plates); the 1956 gazette scan's drawings were not
+          measured in this pass, so the FONT NAME is recorded as attribution,
+          not as a quoted statutory name.
+    region_encoding: "plates/_decode/de-districts.yml"
+    region_encoding_mechanism: >-
+      § 23 Abs. 2 StVZO (1956), verbatim: the Kennzeichen contains "das
+      Unterscheidungszeichen für den Verwaltungsbezirk", "aus einem bis drei
+      Buchstaben nach dem Plan in Anlage I" — the district list was IN the
+      StVZO in 1956 (Anlage I, ~600 codes printed in BGBl. 1956 I Nr. 15) and
+      only later delegated to Bundesanzeiger publication (§ 9 Abs. 3 FZV
+      today). Decode rows for withdrawn 1956-era codes need period discipline;
+      the code list grew again in 1990/91 when the new Länder joined the
+      system.
+    sources:
+      - "https://media.offenegesetze.de/bgbl1/1956/bgbl1_1956_15.pdf  # Verordnung zur Änderung von Vorschriften des Straßenverkehrsrechts vom 14.3.1956, BGBl. I S. 199 — § 23 Abs. 2 (district prefix + Erkennungsnummer, Anlage I plan), § 60 Abs. 1 (black on white), Anlage II (the five serial blocks), Anlage V (plate drawings, 520x110 einzeilig), § 72a (in force 1.7.1956 for newly plated vehicles; old plates until 1.7.1958). PERIOD START, verbatim quotes in era_instruments.v1956. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/2000/bgbl1_2000_34.pdf  # 32. ÄndVStVR vom 20.7.2000, BGBl. I S. 1090 — PERIOD END: Euro form mandatory for plates newly fitted from 1.11.2000, so DIN-era issuance ends 31.10.2000; 'Kennzeichen, die vor dem 1. November 2000 zugeteilt worden sind ... gelten weiter' — ended-but-on-the-road, stated in the instrument itself. Fetched 2026-08-02"
+    notes: >-
+      THE DIN-SCHRIFT ERA, 1.7.1956 - 31.10.2000: black-on-white, no Euro
+      band, district prefix + Anlage II serial — the system the Euro series
+      inherited its grammar from, one series back per the L1 rule.
+      period.end 2000 is an ISSUANCE end with statutory grandfathering: plates
+      assigned before 1.11.2000 "gelten weiter" (v2000_mandate, verbatim), so
+      DIN plates remain lawful on continuously registered vehicles today —
+      the parallel-validity note the overlap rule requires. Overlaps
+      de-standard 1995-2000 because the Euro plate was optional ("auf Antrag")
+      in that window and both forms issued side by side. The pre-1956
+      occupation-era systems (white-on-black, 1948 four-zone codes) are
+      OUT OF SCOPE for L1 (historical depth is L4); the 1956 instrument's own
+      transitional gives them until 1.7.1958.
 
   # =========================================================================
   # HISTORIC — H suffix.
@@ -268,8 +546,8 @@ series:
   - id: de-historic-h
     class: historic
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1997 }        # 29.7.1997 — 25. ÄndVstVR in force (era_instruments.v1997_oldtimer)
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "LL-LL 999H"
@@ -294,15 +572,29 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__10.html  # § 10 Abs. 1: on application, a vehicle with a § 23 StVZO Gutachten is ASSIGNED an Oldtimerkennzeichen; it consists of Unterscheidungszeichen + Erkennungsnummer per § 9 Abs. 1 plus 'den Kennbuchstaben \"H\" als amtlichen Zusatz hinter der Erkennungsnummer'"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 4: the H suffix's typographic rule and the seven/five/four-position caps"
+      - "https://media.offenegesetze.de/bgbl1/1997/bgbl1_1997_52.pdf  # 25. ÄndVstVR vom 22.7.1997, BGBl. I S. 1889 — inserts § 21c StVZO (Betriebserlaubnis als Oldtimer), § 23 Abs. 1c ('Oldtimerkennzeichen') and Anlage Vc with the 'H' rule and the seven-position cap, verbatim in era_instruments.v1997_oldtimer; in force 29.7.1997. PERIOD START. Fetched 2026-08-02"
     notes: >-
-      H-KENNZEICHEN. Note § 10 Abs. 1's discretion, which a claims model should
-      record: the authority "kann im Einzelfall" count periods before first placing
-      on the market during which the vehicle operated off public roads towards the
-      minimum age in § 2 Satz 1 Nr. 22 FZV. The 30-year threshold itself lives in
-      that definition and in § 23 StVZO, neither of which was fetched in this pass —
-      the threshold is therefore a recorded gap, and the widely-repeated "30 years"
-      is NOT asserted here as sourced. An H plate may also be a Saisonkennzeichen
-      (Anlage 4 Abschnitt 4 Nr. 4 last sentence) or a Wechselkennzeichen.
+      H-KENNZEICHEN, created 1997: the 25. ÄndVstVR of 22.7.1997 inserted § 21c
+      and § 23 Abs. 1c StVZO plus Anlage Vc, in force 29.7.1997 — and the
+      seven-position cap this series still carries is 1997-original ("Mehr als
+      sieben Stellen ... ohne Kennbuchstabe 'H'", Anlage Vc verbatim). CONFLICT
+      RECORDED, NOT AVERAGED: the widely repeated claim that the first
+      H-Kennzeichen was assigned on 1 JULY 1997 (Wikipedia, attributing a KBA
+      Pressebericht 2001 figure of 57,960 Oldtimerkennzeichen; the KBA PDF was
+      not fetched in this pass) predates the creating instrument's entry into
+      force by four weeks; either the KBA date is loose or issuance rested on
+      something not located here. Until the KBA primary is fetched and read,
+      1997 stands on the instrument and the 1-July story is flagged. Note
+      § 10 Abs. 1 FZV's discretion, which a claims model should record: the
+      authority "kann im Einzelfall" count off-road periods towards the minimum
+      age in § 2 Satz 1 Nr. 22 FZV. The 30-year threshold itself lives in that
+      definition and in § 23 StVZO, neither of which was fetched — the
+      threshold remains a recorded gap and the widely-repeated "30 years" is
+      NOT asserted here as sourced. H-Saisonkennzeichen exist since 1.10.2017
+      (BGBl. 2017 I S. 522, 553 per the Wikipedia locator — instrument not
+      fetched, recorded as locator only). An H plate may also be a
+      Saisonkennzeichen (Anlage 4 Abschnitt 4 Nr. 4 last sentence) or a
+      Wechselkennzeichen.
 
   # =========================================================================
   # ELECTRIC — E suffix. The one German series with a properly dated start.
@@ -342,15 +634,20 @@ series:
       - "https://www.gesetze-im-internet.de/emog/EmoG.pdf  # Elektromobilitätsgesetz, Ausfertigungsdatum 05.06.2015 (BGBl. I S. 898) — the enabling statute § 11 FZV keys off; note § 8 Abs. 2: the Act EXPIRES at the end of 31.12.2026"
       - "https://www.gesetze-im-internet.de/fzv_2023/__11.html  # § 11 Abs. 1-2: an E-Kennzeichen is the § 9 Abs. 1 plate (optionally also a green or seasonal one) with 'den Kennbuchstaben \"E\" als amtlichen Zusatz hinter der Erkennungsnummer'; Abs. 4: the Anlage 3 badge route for foreign vehicles; Abs. 5: foreign E-markings are recognised as equivalent"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 5a: E-Kennzeichen executed per Abschnitt 4, plus the Saison variants and position caps"
+      - "https://media.offenegesetze.de/bgbl1/2015/bgbl1_2015_36.pdf  # 50. ÄndVstVR vom 15.9.2015, BGBl. I S. 1573 — inserts § 9a FZV 2011 ('den Kennbuchstaben \"E\" im Anschluss an die Erkennungsnummer') and Anlage 3a; 'tritt am Tag nach der Verkündung in Kraft' = 26.9.2015, the first day an E plate could issue. Fetched 2026-08-02"
     notes: >-
-      E-KENNZEICHEN. period.start 2015 is a REAL start, not an instrument date: the
-      Elektromobilitätsgesetz of 5 June 2015 created the eligibility § 11 FZV
-      implements, so 2015 is the earliest possible issuance year. TIME BOMB WORTH
-      RECORDING NOW: EmoG § 8 Abs. 2 provides that the Act ceases to be in force at
-      the end of 31 December 2026 — inside the current audit horizon. Unless it is
-      extended, this series' `period.end` becomes 2026 and the quarterly audit should
-      re-check it. Also note § 79 Abs. 9 FZV carries a non-application footnote
-      against § 11 which was not resolved in this pass (recorded gap).
+      E-KENNZEICHEN. period.start 2015 SURVIVED the L1 redate pass — the one L0
+      period that was already true: the Elektromobilitätsgesetz of 5 June 2015
+      created the eligibility, and the 50. ÄndVstVR of 15.9.2015 (BGBl. I
+      S. 1573, era_instruments.v2015_e) inserted the issuing rule § 9a FZV 2011
+      (today's § 11 FZV 2023), in force 26 September 2015 — so 2015 is both the
+      enabling-statute year and the first-issuance year, now pinned at both
+      ends. TIME BOMB WORTH RECORDING: EmoG § 8 Abs. 2 provides that the Act
+      ceases to be in force at the end of 31 December 2026 — inside the current
+      audit horizon. Unless it is extended, this series' `period.end` becomes
+      2026 and the quarterly audit should re-check it. Also note § 79 Abs. 9
+      FZV carries a non-application footnote against § 11 which was not
+      resolved in this pass (recorded gap).
 
   # =========================================================================
   # SEASONAL.
@@ -358,8 +655,8 @@ series:
   - id: de-seasonal
     class: seasonal
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1997 }        # 1.3.1997 — 23. ÄndVstVR Art. 4 (era_instruments.v1996_saison)
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "LL-LL 999"
@@ -393,13 +690,23 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__10.html  # § 10 Abs. 3: Saisonkennzeichen on application; Betriebszeitraum as an amtlicher Zusatz behind the Erkennungsnummer; full months, 2-11 months; green plates may also be seasonal; the operate-and-park prohibition"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 5: the four seasonal plate forms and the month-field rule"
+      - "https://media.offenegesetze.de/bgbl1/1996/bgbl1_1996_60.pdf  # 23. ÄndVstVR vom 12.11.1996, BGBl. I S. 1738 — Art. 1 Nr. 2a inserts § 23 Abs. 1b StVZO (the Saisonkennzeichen, verbatim in era_instruments.v1996_saison) + Anlage Vb; Art. 4 puts the Saison provisions in force 1.3.1997. PERIOD START. Fetched 2026-08-02"
     notes: >-
-      SAISONKENNZEICHEN. Its own series rather than a variant because the DESIGN
-      differs (an added operating-period field) while the serial grammar does not —
-      the PRD-PLATES §2.3 test resolves cleanly. It composes with other classes:
-      green plates (§ 10 Abs. 2), Oldtimerkennzeichen and E-Kennzeichen can all be
-      issued AS seasonal plates, which means class is genuinely multi-valued here and
-      the single-`class` schema cannot express the combination.
+      SAISONKENNZEICHEN, created by the 23. ÄndVstVR of 12.11.1996 with the
+      Saison provisions in force 1 March 1997 (Art. 4, quoted in
+      era_instruments.v1996_saison) — even the operate-OR-park prohibition is
+      1996-original ("nur während des ... Zeitraums in Betrieb gesetzt oder
+      abgestellt werden", § 23 Abs. 1b verbatim). The 2-to-11-month bounds are
+      cited here to § 10 Abs. 3 FZV 2023 only: whether the 1996 original
+      carried the same bounds was not verified (the OCR of the fee-and-annex
+      pages is partial) — recorded gap, deliberately not asserted. Its own
+      series rather than a variant because the DESIGN differs (an added
+      operating-period field) while the serial grammar does not — the
+      PRD-PLATES §2.3 test resolves cleanly. It composes with other classes:
+      green plates (§ 10 Abs. 2), Oldtimerkennzeichen and E-Kennzeichen can
+      all be issued AS seasonal plates, which means class is genuinely
+      multi-valued here and the single-`class` schema cannot express the
+      combination.
 
   # =========================================================================
   # GREEN — TAX-EXEMPT. Green lettering on white, and the class vocabulary has
@@ -408,8 +715,8 @@ series:
   - id: de-green-taxexempt
     class: agricultural
     categories: [tractor, machine, trailer, truck]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1956 }        # 1.7.1956 — § 60 Abs. 1 Satz 2 StVZO as amended 14.3.1956 (era_instruments.v1956)
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "LL-LL 9999"
@@ -425,17 +732,32 @@ series:
     region_encoding: "plates/_decode/de-districts.yml"
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__10.html  # § 10 Abs. 2: green lettering on white for vehicles whose keeper is exempt from motor-vehicle tax, with the seven-item exclusion list, plus the trailer special rule under § 10 KraftStG"
+      - "https://media.offenegesetze.de/bgbl1/1956/bgbl1_1956_15.pdf  # V. vom 14.3.1956, BGBl. I S. 199 — § 60 Abs. 1 Satz 2 StVZO, verbatim: 'Bei Fahrzeugen, deren Halten von der Kraftfahrzeugsteuer befreit ist, ist die Beschriftung grün auf weißem Grund; dies gilt nicht für Fahrzeuge von Behörden, für Fahrzeuge des Personals von diplomatischen und konsularischen Vertretungen sowie für Fahrzeuge, deren Haltern Steuererlaß gewährt worden ist.' In force 1.7.1956 (§ 72a). PERIOD START. Fetched 2026-08-02"
     notes: >-
-      GRÜNES KENNZEICHEN. CLASS CAVEAT, and it is a real one: the legal criterion is
-      not agriculture at all — it is that "der Halter von der Kraftfahrzeugsteuer
-      befreit ist". _meta/classes.yml has no tax-exempt class, so `agricultural` is
-      recorded as the closest fit and the dominant population, but the statute's own
-      exclusion list shows how much wider the category is: authority vehicles,
-      diplomatic and consular staff vehicles, buses and 8-9-seat cars mainly in
-      scheduled service and their trailers, Leichtkrafträder and Kleinkrafträder,
-      vehicles of severely disabled persons under § 3a KraftStG, particularly
-      low-emission vehicles, and any vehicle on a Wechselkennzeichen are all EXCLUDED
-      from the green plate. Flagged as a vocabulary gap in the L0 report.
+      GRÜNES KENNZEICHEN, and the redate pass's biggest surprise: the green
+      tax-exempt colour rule is 1956-ORIGINAL, in the very sentence after
+      black-on-white — § 60 Abs. 1 Satz 2 StVZO as amended 14.3.1956, quoted
+      verbatim in the source line, in force 1.7.1956, and already with an
+      exclusion list of the same shape as today's § 10 Abs. 2 FZV (authority
+      vehicles and diplomatic/consular personnel vehicles excluded from
+      green). The 32. ÄndVStVR (2000) still carries a transitional headed
+      "§ 60 Abs. 1 Satz 2 (grüne amtliche Kennzeichen)" — continuity across
+      the era boundary. CLASS CAVEAT, and it is a real one: the legal
+      criterion is not agriculture at all — it is that "der Halter von der
+      Kraftfahrzeugsteuer befreit ist". _meta/classes.yml has no tax-exempt
+      class, so `agricultural` is recorded as the closest fit and the dominant
+      population, but the statute's own exclusion list shows how much wider
+      the category is: authority vehicles, diplomatic and consular staff
+      vehicles, buses and 8-9-seat cars mainly in scheduled service and their
+      trailers, Leichtkrafträder and Kleinkrafträder, vehicles of severely
+      disabled persons under § 3a KraftStG, particularly low-emission
+      vehicles, and any vehicle on a Wechselkennzeichen are all EXCLUDED from
+      the green plate. Flagged as a vocabulary gap in the L0 report. DESIGN
+      CAVEAT for the period claim: the green plate here carries today's
+      Euro-band design; its 1956-1995 execution was the DIN form (green on
+      white, no band). The colour RULE is continuous since 1956; the current
+      DESIGN is not — same split as de-standard vs de-standard-1956, recorded
+      here instead of cutting a low-value historical twin (L4 work).
 
   # =========================================================================
   # DEALER — rote Kennzeichen, digits-only beginning 06.
@@ -443,8 +765,11 @@ series:
   - id: de-dealer-red
     class: dealer
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 2007 }        # UPPER BOUND — the "06" rule verbatim in the
+                                   # FZV 2006, in force 1.3.2007; the series is
+                                   # older and its creating instrument was not
+                                   # secured (see notes)
+    period_evidence: instrument-in-force-upper-bound
     matching: strict
     format:
       pattern: "LL-06999"
@@ -463,21 +788,37 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__41.html  # § 41: Prüfungs-, Probe- und Überführungsfahrten; Abs. 1 the red-on-white colour rule; Abs. 2 assignment to trustworthy manufacturers, parts makers, workshops, dealers and trailer makers (plus THW, Bundespolizei, BKA, Länder police, Bundeswehr, customs) for REPEATED use on DIFFERENT vehicles, and 'einer nur aus Ziffern bestehenden und mit \"06\" beginnenden Erkennungsnummer'; Abs. 3 the per-trip Fahrzeugscheinheft log, kept one year"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 7: red script and red border; Anlage 13 is the Fahrzeugscheinheft"
+      - "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # FZV vom 25.4.2006, BGBl. I S. 988 — the '06' rule verbatim ('... nur aus Ziffern und beginnt mit \"06\"'), in force 1.3.2007 (Art. 12 Abs. 2). PERIOD UPPER BOUND. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/1998/bgbl1_1998_14.pdf  # 27. ÄndVstVR vom 9.3.1998, BGBl. I S. 441 — Art. 1 amends the § 28 StVZO rote-Kennzeichen machinery ('Für die mit roten Kennzeichen versehenen ...') and, per its other articles in force 1.5.1998, ends red-plate transfer use by private persons; evidences the red-plate regime pre-FZV without stating the 06 numbering. Fetched 2026-08-02"
     notes: >-
       ROTE KENNZEICHEN — the German dealer/trade plate, and the cleanest "06"
-      identification in the dataset. BINDING NOTE: like Swiss plates but for a
-      different reason, this plate does NOT bind to a vehicle — it binds to a
-      BUSINESS and moves between vehicles, which is why `binding: business` is set on
-      the series and why a vehicle-keyed consumer must not join on it. § 41 Abs. 3
-      requires a written per-trip record (plate, date, start and end, driver and
-      address, vehicle class, make, VIN and route), retained for a year — the
-      compensating audit trail for an untethered plate.
+      identification in the dataset. PERIOD, honestly: 2007 is an UPPER BOUND —
+      the earliest instrument secured in this pass that states the digits-only
+      "06" rule is the first FZV (25.4.2006, in force 1.3.2007, verbatim in
+      era_instruments.v2006_fzv). The regime is decades older: § 28 StVZO
+      carried red plates before the FZV (the 1998 instrument amending it is
+      pinned above), and the enthusiast/Wikipedia lore that red plates exist
+      "since the 1920s" and took district-code + number form in 1956 is
+      FLAGGED AS UNSOURCED — the 14.3.1956 instrument was read in full and
+      does not touch § 28, so the 1956 story is not asserted. Locating the
+      instrument that first fixed the 05/06/07 number blocks (a pre-2006 StVZO
+      amendment or a Verkehrsblatt directive) is the recorded gap. BINDING
+      NOTE: like Swiss plates but for a different reason, this plate does NOT
+      bind to a vehicle — it binds to a BUSINESS and moves between vehicles,
+      which is why `binding: business` is set on the series and why a
+      vehicle-keyed consumer must not join on it. § 41 Abs. 3 requires a
+      written per-trip record (plate, date, start and end, driver and address,
+      vehicle class, make, VIN and route), retained for a year — the
+      compensating audit trail for an untethered plate. Also worth recording:
+      FZV 2023 § 41 Abs. 4 gives technical inspection bodies the "05" block —
+      an unmodelled sibling series (05 = Prüfstellen) sharing this format.
 
   - id: de-oldtimer-red
     class: dealer
     categories: [car, van, truck, bus, motorcycle]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 2007 }        # UPPER BOUND — the "07" rule verbatim in the
+                                   # FZV 2006, in force 1.3.2007 (see notes)
+    period_evidence: instrument-in-force-upper-bound
     matching: strict
     format:
       pattern: "LL-07999"
@@ -491,14 +832,23 @@ series:
       band: { side: left, color: "#003399", content: eu-stars+D }
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__43.html  # § 43: trips to and from Oldtimer events need neither Betriebserlaubnis nor Zulassung if the vehicle carries a rotes Oldtimerkennzeichen; Abs. 2 applies § 41 Abs. 2-6 and requires 'einer nur aus Ziffern bestehenden und mit den Ziffern \"07\" beginnenden Erkennungsnummer', with the Anlage 15 Fahrzeugscheinheft"
+      - "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # FZV vom 25.4.2006, BGBl. I S. 988 — 'Das rote Oldtimerkennzeichen besteht aus einem Unterscheidungszeichen und einer Erkennungsnummer jeweils nach § 8 Abs. 1, jedoch besteht die Erkennungsnummer nur aus Ziffern und beginnt mit \"07\"', in force 1.3.2007 (Art. 12 Abs. 2). PERIOD UPPER BOUND. Fetched 2026-08-02"
     notes: >-
-      ROTES OLDTIMERKENNZEICHEN — the 07 series. Distinguished from the 06 dealer
-      plate by two digits and by one crucial restriction: § 43 Abs. 2 provides that
-      this plate "nur an dem Fahrzeug verwendet werden darf, für das es ausgegeben
-      wurde", so unlike the 06 plate it is NOT freely transferable between vehicles.
-      CLASS CAVEAT: recorded as `dealer` because it shares § 41's machinery, but it
-      is functionally a historic-vehicle event plate; a class vocabulary with a
-      `historic` and a `dealer` value cannot express "both".
+      ROTES OLDTIMERKENNZEICHEN — the 07 series. PERIOD, honestly: 2007 is an
+      UPPER BOUND — the FZV 2006 states the "07" rule verbatim (source line;
+      in force 1.3.2007) and is the earliest instrument secured for it. The
+      series demonstrably predates that codification: the Wikipedia locator
+      records that BEFORE 1 March 2007 (the FZV's own commencement day) the 07
+      plate also served 20-year-old Youngtimers — a pre-FZV practice under the
+      § 28 StVZO red-plate machinery — but no StVZO-era instrument stating
+      "07" was located; that instrument is the recorded gap. Distinguished
+      from the 06 dealer plate by two digits and by one crucial restriction:
+      § 43 Abs. 2 provides that this plate "nur an dem Fahrzeug verwendet
+      werden darf, für das es ausgegeben wurde", so unlike the 06 plate it is
+      NOT freely transferable between vehicles. CLASS CAVEAT: recorded as
+      `dealer` because it shares § 41's machinery, but it is functionally a
+      historic-vehicle event plate; a class vocabulary with a `historic` and a
+      `dealer` value cannot express "both".
 
   # =========================================================================
   # SHORT-TERM AND EXPORT — the two date-bearing German plates.
@@ -506,8 +856,8 @@ series:
   - id: de-shortterm
     class: temporary
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1998 }        # 14.3.1998 — 27. ÄndVstVR Art. 1 in force (era_instruments.v1998_kurzzeit)
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "LL-03999"
@@ -530,17 +880,33 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__42.html  # § 42 Abs. 1: conditions (type-approved or individually approved, valid HU/SP, insurance); Abs. 4: 'einer nur aus Ziffern bestehenden und mit \"03\" oder \"04\" beginnenden Erkennungsnummer' plus the five-day expiry date; Abs. 3: need not be firmly affixed"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 6: the three Kurzzeitkennzeichen forms, the yellow/black date field, the 35 mm blue seal"
+      - "https://media.offenegesetze.de/bgbl1/1998/bgbl1_1998_14.pdf  # 27. ÄndVstVR vom 9.3.1998, BGBl. I S. 441 — Art. 1 creates the Kurzzeitkennzeichen in § 28 StVZO ('Kurzzeitkennzeichen sind in schwarzer [Schrift] ... herzustellen') + Anlage Vd; Art. 5: Art. 1 in force 14.3.1998, remainder 1.5.1998. PERIOD START, quotes in era_instruments.v1998_kurzzeit. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # FZV vom 25.4.2006, BGBl. I S. 988 — '... nur aus Ziffern und beginnt mit \"03\" oder \"04\". Das Kurzzeitkennzeichen enthält außerdem ein Ablaufdatum, das längstens auf fünf Tage ab der Zuteilung zu bemessen [ist]', in force 1.3.2007 — the earliest instrument secured that states the 03 option. Fetched 2026-08-02"
     notes: >-
-      KURZZEITKENNZEICHEN — five days, a yellow expiry field, and a blue seal
-      instead of the usual Land-arms Stempelplakette. Unlike the 06 dealer plate it
-      is tied to ONE vehicle (§ 42 Abs. 3 Nr. 2) and, unlike an ordinary plate, it
-      need not be firmly attached.
+      KURZZEITKENNZEICHEN, created by the 27. ÄndVstVR of 9.3.1998 (Art. 1, in
+      force 14 March 1998) as the black-script short-term plate that replaced
+      private use of red plates — the same instrument's remaining articles, in
+      force 1.5.1998, closed the red-plate route for private transfer runs.
+      FORMAT-HISTORY CAVEAT, recorded at the point of use: the "03 oder 04"
+      wording in this series' regex is evidenced from 1.3.2007 (FZV 2006,
+      verbatim in the source line); the 1998-2007 numbering could not be read
+      from the 1998 scan (the Anlage Vd pages' OCR is partial), and the
+      widely repeated claim that pre-2007 Kurzzeitkennzeichen began with "04"
+      only is SECONDARY (Wikipedia locator) — recorded, not asserted. Five
+      days, a yellow expiry field, and a blue seal instead of the usual
+      Land-arms Stempelplakette. Unlike the 06 dealer plate it is tied to ONE
+      vehicle (§ 42 Abs. 3 Nr. 2) and, unlike an ordinary plate, it need not
+      be firmly attached.
 
   - id: de-export
     class: export
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 2007 }        # UPPER BOUND — digits-then-letter rule
+                                   # verbatim in the FZV 2006, in force
+                                   # 1.3.2007; the regime is much older (see
+                                   # notes: 1998 IntKfzV seal pin, pre-1988
+                                   # design change flagged)
+    period_evidence: instrument-in-force-upper-bound
     matching: strict
     format:
       pattern: "LL-9999L"
@@ -574,13 +940,25 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/__45.html  # § 45: Fahrten zur dauerhaften Verbringung eines Fahrzeuges in das Ausland; Abs. 1 the insurance/HU conditions and the one-year cap; Abs. 2 'einer ein- bis vierstelligen Zahl und einem nachfolgenden Buchstaben' plus the expiry-date field"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 8: no Euro-Feld, the non-retroreflective red date field, the RAL 2002 seal"
+      - "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # FZV vom 25.4.2006, BGBl. I S. 988 — the export Erkennungsnummer 'aus einer ein- bis vierstelligen Zahl und einem nachfol[genden Buchstaben]' verbatim, in force 1.3.2007. PERIOD UPPER BOUND for the format as modeled. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/1998/bgbl1_1998_14.pdf  # 27. ÄndVstVR vom 9.3.1998, BGBl. I S. 441, Art. 4 — amends § 7 Abs. 2 Nr. 5 IntKfzV: the export plate's Dienstsiegel becomes 'mit einem Durchmesser von 35 mm' beside the pre-existing '(RAL 2002)' — the RAL-2002 red seal the FZV 2023 still prescribes was already law in 1998, under the Verordnung über internationalen Kraftfahrzeugverkehr, not the FZV. LINEAGE PIN, not a start. Fetched 2026-08-02"
     notes: >-
-      AUSFUHRKENNZEICHEN. Three things make it unique in Germany: the digits-then-
-      letter Erkennungsnummer, the absence of the Euro-band, and a field the law
+      AUSFUHRKENNZEICHEN. PERIOD, honestly: 2007 is an UPPER BOUND for the
+      series AS MODELED (digits-then-letter Erkennungsnummer): that rule's
+      earliest secured statement is the FZV 2006 (verbatim, in force
+      1.3.2007). The export-plate REGIME is far older and pre-FZV lived in the
+      IntKfzV: the 1998 amendment pinned above adjusts its § 7 Dienstsiegel
+      and shows RAL 2002 — today's seal colour — already in force, and the
+      Wikipedia locator's photo caption dates a distinct older design
+      ("Ausfuhrkennzeichen bis 1988") — SECONDARY, recorded not asserted.
+      Neither the origin of the digits-then-letter serial nor the 1988(?)
+      design change was primary-sourced; both are the recorded gaps here.
+      Three things make it unique in Germany: the digits-then-letter
+      Erkennungsnummer, the absence of the Euro-band, and a field the law
       requires NOT to be retroreflective. § 45 Abs. 1 also carries a nice
-      period-logic constraint for a claims model: the plate may only be issued if
-      the next roadworthiness inspection date falls AFTER the registration's expiry
-      date, otherwise the inspection must be done first.
+      period-logic constraint for a claims model: the plate may only be issued
+      if the next roadworthiness inspection date falls AFTER the
+      registration's expiry date, otherwise the inspection must be done first.
 
   # =========================================================================
   # ANLAGE 2 SERIES — federal, Land, diplomatic, military. § 9 Abs. 1 Satz 7:
@@ -590,8 +968,10 @@ series:
   - id: de-federal-government
     class: government
     categories: [car, van, truck, bus, motorcycle]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1956 }        # 1.7.1956 — Anlage IV StVZO created by the
+                                   # V. vom 14.3.1956 (era_instruments.v1956);
+                                   # the CODE LIST has evolved, see notes
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "BD-999999"
@@ -607,23 +987,42 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 Nr. 1 (Bund: BD, BG, BP, BW, THW, Y, X with their registering authorities) and Nr. 2 (the 16 Land codes and which organs they cover)"
       - "https://www.gesetze-im-internet.de/fzv_2023/__9.html  # § 9 Abs. 1 Satz 6-7: which bodies may receive Anlage 2 plates, and the digits-only, max-six-digit Erkennungsnummer rule"
+      - "https://media.offenegesetze.de/bgbl1/1956/bgbl1_1956_15.pdf  # V. vom 14.3.1956, BGBl. I S. 199 — Anlage IV (zu § 23 Abs. 2): 'A. Bund: BD Dienstfahrzeuge des Bundestages, des Bundesrates und der Bundesregierung; BG Dienstfahrzeuge des Bundesgrenzschutzes; BP Deutsche Bundespost; BW Bundes-Wasser- und Schiffahrtsverwaltung; DB Deutsche Bundesbahn; Y Dienstfahrzeuge der deutschen Streitkräfte' + 'B. Länder' (B, BWL, BYL, HB, HEL, HH, NL, RPL, RWL, SH), and § 23 Abs. 2: 'Die Erkennungsnummern dieser Fahrzeuge ... bestehen nur aus Zahlen; die Zahlen dürfen nicht mehr als fünf - bei Fahrzeugen der deutschen Streitkräfte sechs - Stellen haben.' In force 1.7.1956. PERIOD START. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/1997/bgbl1_1997_52.pdf  # 25. ÄndVstVR vom 22.7.1997 — Nr. 8 inserts 'der Bundesanstalt Technisches Hilfswerk,' into the Anlage IV heading: THW joins the table in 1997. Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # FZV vom 25.4.2006 — Anlage 3 already carries THW, X and the five new-Land codes (BBL etc.), in force 1.3.2007. Fetched 2026-08-02"
     notes: >-
-      FEDERAL AND LAND OFFICIAL SERIES. Two facts a decode table must carry, both
-      verbatim from Anlage 2: BG (Bundespolizei) is "noch gültig, wird nicht mehr
-      zugeteilt" — still valid, no longer assigned, exactly the ended-but-on-the-road
-      case PRD-PLATES's `ended: true` semantics exist for at the series level and
-      that decode rows need at the row level. And the CONSULAR case has no code of
-      its own: career consular posts carry "das Unterscheidungszeichen des
-      Verwaltungsbezirkes am Sitz des Konsulats", i.e. an ordinary district prefix,
-      so German consular vehicles are NOT identifiable from the plate string. Also
-      here: 1-1 for the Bundestag President's official car (Anlage 2 Nr. 4), the only
-      German plate whose prefix is a digit.
+      FEDERAL AND LAND OFFICIAL SERIES — 1956-original as a SYSTEM: Anlage IV
+      of the 14.3.1956 instrument created the official-code table and the
+      digits-only rule in the same breath (both verbatim in the source line).
+      THE CODE LIST IS THE PART THAT MOVED, and a decode table must carry it
+      by period: 1956 had BD/BG/BP/BW/DB/Y and TEN Land codes (RWL for
+      Nordrhein-Westfalen — today NRW; no BBL/LSA/LSN/MVL/THL before
+      reunification); BP meant DEUTSCHE BUNDESPOST in 1956 and means
+      Bundespolizei today — the same two letters changed meaning, which is a
+      trap for any historical decode; DB (Deutsche Bundesbahn) left with
+      privatisation (the 32. ÄndVStVR still repeals a Bundespost-successor
+      transitional in 2000); THW was added in 1997 (pinned); the digit cap
+      rose from five (six for the Streitkräfte) to six for all (§ 9 Abs. 1
+      Satz 7 FZV 2023). The exact instruments for the post-1990 Land codes and
+      the NRW/RWL switch were not located — recorded gaps for the decode
+      table, not for this series' start. Two facts a decode table must carry,
+      both verbatim from Anlage 2 (2023): BG (Bundespolizei) is "noch gültig,
+      wird nicht mehr zugeteilt" — still valid, no longer assigned, exactly
+      the ended-but-on-the-road case PRD-PLATES's `ended: true` semantics
+      exist for at the series level and that decode rows need at the row
+      level. And the CONSULAR case has no code of its own: career consular
+      posts carry "das Unterscheidungszeichen des Verwaltungsbezirkes am Sitz
+      des Konsulats", i.e. an ordinary district prefix, so German consular
+      vehicles are NOT identifiable from the plate string. Also here: 1-1 for
+      the Bundestag President's official car (Anlage 2 Nr. 4), the only German
+      plate whose prefix is a digit.
 
   - id: de-diplomatic
     class: diplomatic
     categories: [car, van, motorcycle]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1956 }        # 1.7.1956 — Anlage IV C StVZO: "0 Fahrzeuge
+                                   # des Diplomatischen Corps" (era_instruments.v1956)
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "0-999999"
@@ -640,19 +1039,31 @@ series:
     sources:
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 Nr. 3: '0, B oder BN — Diplomatische Vertretungen oder internationale Organisationen und in Abhängigkeit vom Status der bevorrechtigten Person', registered at Berlin or Bonn"
       - "https://www.gesetze-im-internet.de/fzv_2023/__9.html  # § 9 Abs. 1 Satz 6-7"
+      - "https://media.offenegesetze.de/bgbl1/1956/bgbl1_1956_15.pdf  # V. vom 14.3.1956, BGBl. I S. 199 — Anlage IV 'C. Diplomatisches Corps: 0 Fahrzeuge des Diplomatischen Corps', with the § 23 Abs. 2 digits-only rule (max five digits then). In force 1.7.1956. PERIOD START. Fetched 2026-08-02"
     notes: >-
-      GERMAN DIPLOMATIC SERIES. Unlike Spain — where CD/OI/CC/TA each get their own
-      background colour — Germany keeps the ordinary black-on-white design and
-      signals status only through the prefix, so a German diplomatic plate is
-      visually a normal plate. The mission-identifying number group inside the
-      Erkennungsnummer is a Foreign Office allocation and is not published in the
-      FZV; it is a recorded gap, deliberately not guessed.
+      GERMAN DIPLOMATIC SERIES — the zero prefix is 1956-original: Anlage IV C
+      of the 14.3.1956 instrument reads, in its entirety, "0 Fahrzeuge des
+      Diplomatischen Corps" (source line), making 0 the founding member of
+      today's 0/B/BN trio. WHAT IS NOT 1956: the B and BN prefixes for
+      diplomatic vehicles registered at Berlin and Bonn appear in Anlage 2 FZV
+      2023 (and B doubles as the Berlin Land code); no instrument dating their
+      introduction was located in this pass — recorded gap, presumably tied to
+      the Bonn/Berlin seat split, deliberately not guessed. The 1956 digit cap
+      was five; today six (§ 9 Abs. 1 Satz 7). Unlike Spain — where
+      CD/OI/CC/TA each get their own background colour — Germany keeps the
+      ordinary black-on-white design and signals status only through the
+      prefix, so a German diplomatic plate is visually a normal plate. The
+      mission-identifying number group inside the Erkennungsnummer is a
+      Foreign Office allocation and is not published in the FZV; it is a
+      recorded gap, deliberately not guessed.
 
   - id: de-military-bundeswehr
     class: military
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 2023 }
-    period_evidence: instrument-in-force
+    period: { start: 1956 }        # 1.7.1956 — "Y Dienstfahrzeuge der deutschen
+                                   # Streitkräfte", Anlage IV A (era_instruments.v1956);
+                                   # the X (NATO HQ) prefix is LATER — gap noted
+    period_evidence: enabling-instrument
     matching: strict
     format:
       pattern: "Y-999999"
@@ -675,10 +1086,22 @@ series:
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_2.html  # Anlage 2 Nr. 1: 'Y Dienstfahrzeuge der Bundeswehr (Zentrale Militärkraftfahrtstelle – ZMK, Hardter Straße 9, 41179 Mönchengladbach/Rheindahlen)' and 'X Dienstfahrzeuge der auf Grund des Nordatlantikvertrages errichteten internationalen militärischen Hauptquartiere'"
       - "https://www.gesetze-im-internet.de/fzv_2023/anlage_4.html  # Anlage 4 Abschnitt 3: Bundeswehr plate forms (Leichtkrafträder/Kleinkrafträder, other Krafträder, other vehicles single- and two-line) plus RAL 9005/9001, the Bundesfarben, the digit-1 spacing rule and the last-three-digits group gap"
       - "https://www.gesetze-im-internet.de/fzv_2023/__12.html  # § 12 Abs. 2 last sentence: Bundeswehr and NATO-HQ plates are exempt from DIN 74069 and the DIN test mark"
+      - "https://media.offenegesetze.de/bgbl1/1956/bgbl1_1956_15.pdf  # V. vom 14.3.1956, BGBl. I S. 199 — Anlage IV A: 'Y Dienstfahrzeuge der deutschen Streitkräfte (Auskunft: Bundesministerium für Verteidigung)'; § 23 Abs. 2: digits only, 'bei Fahrzeugen der deutschen Streitkräfte sechs' Stellen — the six-digit military allowance is 1956-original. In force 1.7.1956. PERIOD START (for Y). Fetched 2026-08-02"
+      - "https://media.offenegesetze.de/bgbl1/2006/bgbl1_2006_21.pdf  # FZV vom 25.4.2006 — Anlage 3: 'X Dienstfahrzeuge der auf Grund des Nordatlantikvertrages errichteten internationalen militärischen Hauptquartiere, die ihren regelmäßigen Standort im Inland haben' — X's earliest secured appearance; in force 1.3.2007. Fetched 2026-08-02"
     notes: >-
-      BUNDESWEHR (Y) AND NATO HEADQUARTERS (X). Its own series and not a variant of
-      the federal one: the FONT differs (DIN 1451-2 instead of FE-Schrift), the
-      Euro-band is absent, the reflectivity standard is disapplied and the colours
-      are given as RAL codes rather than named. Y is famously a single letter serving
-      the entire armed forces, which is why it looks like a district code and is not
-      one.
+      BUNDESWEHR (Y) AND NATO HEADQUARTERS (X). Y IS 1956-ORIGINAL — Anlage IV
+      A of the 14.3.1956 instrument, verbatim in the source line, together
+      with the military six-digit allowance that today applies to all Anlage 2
+      vehicles. PERIOD ASYMMETRY RECORDED AT POINT OF USE: this series' regex
+      accepts Y and X, but the period claim anchors on Y; the X prefix is NOT
+      in the 1956 Anlage IV, and its earliest secured appearance is the FZV
+      2006 Anlage 3 (pinned; in force 1.3.2007) — the instrument that first
+      assigned X to the NATO headquarters (plausibly 1960s, after the 1955
+      NATO accession) was not located and is the recorded gap. Its own series
+      and not a variant of the federal one: the FONT differs (DIN 1451-2
+      instead of FE-Schrift), the Euro-band is absent, the reflectivity
+      standard is disapplied and the colours are given as RAL codes rather
+      than named — and the DIN script on today's Y plate is the direct
+      survival of the 1956-2000 standard lettering (see de-standard-1956).
+      Y is famously a single letter serving the entire armed forces, which is
+      why it looks like a district code and is not one.

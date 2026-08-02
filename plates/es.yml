@@ -1,8 +1,10 @@
-# plates/es.yml — Spain (PRD-PLATES gate L0 pilot).
+# plates/es.yml — Spain (PRD-PLATES gate L0 pilot; PROVINCIAL-HISTORY REDATE
+# PASS, 2026-08-02, to the L1 evidence standard).
 #
-# EVERY format, colour and letter-exclusion claim in this file comes from
-# Real Decreto 2822/1998 (Reglamento General de Vehículos) ANEXO XVIII, read
-# in BOTH texts, because they differ and the difference IS the era boundary:
+# EVERY format, colour and letter-exclusion claim for the CURRENT series comes
+# from Real Decreto 2822/1998 (Reglamento General de Vehículos) ANEXO XVIII,
+# read in BOTH texts, because they differ and the difference IS the era
+# boundary:
 #
 #   * ORIGINAL text, BOE-A-1999-1826, in force 26-07-1999 — its Anexo XVIII
 #     I.A.a) still describes the PROVINCIAL ordinary-car system
@@ -23,6 +25,33 @@
 # This settles the "Spanish 2000 cutover" that PRD-PLATES §5.3 flags as a
 # folklore-prone boundary: the instrument is dated, published and its entry
 # into force is stated by BOE itself as 17-09-2000. No averaging required.
+#
+# THE PROVINCIAL HISTORY IS NOW INSTRUMENT-DATED TOO (redate pass). The
+# earlier release of this file carried the INSTRUMENT WINDOW of RD 2822/1998
+# (1999-2000) as the es-provincial period — an instrument date shipped as a
+# series start, the exact defect the L1 period_evidence discipline exists to
+# prevent, and one that produced a user-visible falsehood (a format that ran
+# for three decades displayed as a two-year series). The primaries are now
+# secured, all on boe.es (BOE + Gazeta facsimiles), all fetched 2026-08-02:
+#
+#   * DECRETO 2046/1971, de 13 de agosto (BOE núm. 214, 07-09-1971,
+#     BOE-A-1971-1149) — rewrites Código de la Circulación arts. 230-234.
+#     New art. 231.I is the SUFFIX-LETTERS REFORM, verbatim: "la contraseña
+#     de la provincia donde se matricule el vehículo: Un número de cuatro
+#     cifras, que irá desde el 0000 al 9999, y una o dos letras de una serie,
+#     que comienza por la letra A y termina por las letras ZZ". Disposición
+#     final: in force "a los treinta días naturales de su publicación" =
+#     7 OCTOBER 1971 — the folkloric "1971"/"October 1971" start, now dated
+#     to the day by its instrument. (Corrección de errores, BOE-A-1971-1472,
+#     checked: it does not touch the plate articles.)
+#   * The NUMERIC-ONLY provincial era behind it: RD 17-09-1900 (Gaceta 263,
+#     20-09-1900) creates per-province registration; RO 24-05-1907 (Gaceta
+#     160, 09-06-1907) prescribes the first plate FORMAT (contraseña + guión
+#     + number, black on white); re-enacted by the Reglamentos of 23-07-1918
+#     and 15-06-1926 and by the Código de la Circulación arts. 230-233
+#     (Decreto 25-09-1934, in force 01-11-1934 per BOE-A-1934-9025); closed
+#     by Decreto 2046/1971 (disposición transitoria primera keeps the old
+#     plates valid indefinitely).
 #
 # COLOUR POLICY: Anexo XVIII Cuadro 3 specifies, per colour, a FOUR-CORNER
 # CIE chromaticity box plus a MINIMUM luminance factor. That constrains a
@@ -155,34 +184,64 @@ series:
       flag and the E sign "no será necesario que lleven en su parte posterior el
       signo distintivo de la nacionalidad española previsto en la señal V-7".
       DIMENSION CORRECTION worth recording: the statute says 520 x 110 mm, not the
-      500 x 110 that circulates in secondary sources.
+      500 x 110 that circulates in secondary sources. START-DATE FOLKLORE FLAG
+      (redate pass): the legal start is 17-09-2000 (disposición final única:
+      "el día siguiente al de su publicación", BOE 223 of 16-09-2000; BOE Análisis
+      concurs) — a SUNDAY. The widely repeated "18 September 2000" is the first
+      working day, an issuance-practice date; both are true statements about
+      different things, and the instrument date is the one recorded here.
 
   # =========================================================================
-  # THE PRE-2000 PROVINCIAL SERIES.
+  # THE 1971-2000 PROVINCIAL SUFFIX-LETTERS SERIES (redated; was 1999-2000).
   # =========================================================================
   - id: es-provincial
     class: standard
     categories: [car, van, truck, bus, motorcycle]
-    period: { start: 1999, end: 2000 }
-    period_evidence: instrument-window
+    period: { start: 1971, end: 2000 }
+    period_evidence: instrument-dated-both-ends
     matching: strict
     format:
       pattern: "LL-9999-LL"
       regex: '\A[A-Z]{1,2}-\d{4}-[A-Z]{1,2}\z'
-      regex_strict: '\A(?:AB|AL|AV|BA|BI|BU|CA|CC|CE|CO|CR|CS|CU|GC|GI|GR|GU|HU|IB|LE|LO|LU|MA|ML|MU|NA|OU|PO|SA|SE|SG|SO|SS|TE|TF|TO|VA|VI|ZA|A|B|C|H|J|L|M|O|P|S|T|V|Z)-\d{4}-[A-Z]{1,2}\z'
+      regex_strict: '\A(?:AB|AL|AV|BA|BI|BU|CA|CC|CE|CO|CR|CS|CU|GC|GE|GI|GR|GU|HU|IB|LE|LO|LU|MA|ML|MU|NA|OR|OU|PM|PO|SA|SE|SG|SH|SO|SS|TE|TF|TO|VA|VI|ZA|A|B|C|H|J|L|M|O|P|S|T|V|Z)-\d{4}-[A-Z]{1,2}\z'
       charset:
         notes: >-
-          Anexo XVIII I.A.a) as ORIGINALLY enacted, verbatim: "tres grupos de
-          caracteres, constituidos por la contraseña de la provincia donde se
-          matricula el vehículo; un número de cuatro cifras, que irá desde el 0000 al
-          9999, y una o dos letras de una serie, que comienza por la letra A y
-          termina por las letras ZZ, sin emplearse aquellas letras del alfabeto que
-          puedan dar lugar a confusión." Note the trailing letter group here starts at
-          A (not BBB) and is ONE OR TWO letters, and that the excluded letters are
-          NOT enumerated in this text — hence regex_strict keeps [A-Z]{1,2} for that
-          group and constrains only the province contraseña, which IS enumerated
-          (Anexo XVIII II.A, 52 codes).
-      separator_note: "Anexo XVIII prescribes three groups and their mm spacing (Cuadro 1 rows 'ordinaria ... con siglas de provincia'), not a separator glyph; the hyphen is the conventional printed rendering."
+          TWO ENUMERATING INSTRUMENTS, three decades apart, SAME WORDING. Código de
+          la Circulación art. 231.I as rewritten by Decreto 2046/1971 (in force
+          07-10-1971), verbatim: "la contraseña de la provincia donde se matricule
+          el vehículo: Un número de cuatro cifras, que irá desde el 0000 al 9999, y
+          una o dos letras de una serie, que comienza por la letra A y termina por
+          las letras ZZ, sin emplearse aquellas letras del alfabeto que puedan dar
+          lugar a confusión." Anexo XVIII I.A.a) of RD 2822/1998 as ORIGINALLY
+          enacted re-states it near-verbatim. Note the trailing letter group starts
+          at A (not BBB) and is ONE OR TWO letters, and that the excluded letters
+          are NOT enumerated in either text — hence regex_strict keeps [A-Z]{1,2}
+          for that group and constrains only the province contraseña, which IS
+          enumerated twice: art. 233 as rewritten 1971 (includes GE Gerona, OR
+          Orense, PM Baleares, SH Sahara) and Anexo XVIII II.A 1998 (52 codes;
+          GI, OU, IB replace GE, OR, PM after the province renames; no SH).
+          regex_strict is the UNION of both lists — 56 codes — because plates under
+          every one of them were lawfully issued inside this period. The SH reading
+          comes from a degraded facsimile ("Sahara ... SH" in the BOE scan) and is
+          flagged for the verifier.
+      progression: >-
+        Within a province the four digits cycle 0000-9999, then the trailing letter
+        group advances one step in a series the statute itself orders: "comienza
+        por la letra A y termina por las letras ZZ" — SINGLE letters first (M-1234-A),
+        TWO letters after Z was exhausted (M-1234-AB), which is why the suffix
+        count is an intra-series progression and not a separate series. Each
+        province advanced at its own registration rate, so the same suffix letter
+        maps to different years in different provinces — suffix decoding is
+        per-province or nothing. The Orden of 15-09-2000's preamble confirms the
+        exhaustion dynamic: the system "está próximo a agotarse en las provincias
+        de Madrid y Barcelona".
+      separator_note: >-
+        The GUIÓN IS STATUTORY in this era: the dimensions table of art. 232 as
+        rewritten by Decreto 2046/1971 carries an explicit "Longitud del guión"
+        row (as did its 1907, 1918, 1926 and 1934 predecessors for the numeric
+        era). The 1999 Anexo XVIII re-enactment prescribes group spacing in mm
+        without naming the glyph; the hyphen in the pattern is the statutory
+        printed separator, not a convention.
     design:
       plate: { w: 520, h: 110, unit: mm, reflective_surface: { w: 510, h: 100 } }
       plate_variants:
@@ -202,22 +261,135 @@ series:
         consolidated Cuadro 1 still carries four "con siglas de provincia" rows
         today, footnoted "Placas de matrícula con arreglo a lo establecido en las
         disposiciones transitorias de la Orden de 15 de septiembre de 2000".
+      design_history: >-
+        The dimensions above are the 1999 Cuadro 1 values, which govern the era's
+        tail and every replacement plate made since. For 1971-1999 the governing
+        text was the Código de la Circulación as rewritten by Decreto 2046/1971:
+        art. 230.II, verbatim, "El fondo de las placas será reflectante, de color
+        blanco para los automóviles y rojo para los remolques y semirremolques.
+        Las letras y números serán de color negro mate" — so white REFLECTIVE
+        ground with black matte characters is a 1971 statutory fact, not a
+        1980s-retrofit folklore date. Art. 232's table gives the era's placa larga
+        as 490 x 100 mm (not 520 x 110, which arrived with RD 2822/1998); the
+        490 x 100 reading is from the BOE facsimile's partially degraded table and
+        is flagged for the verifier.
     region_encoding: "plates/_decode/es-provinces.yml"
     sources:
-      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1999-1826  # ORIGINAL RD 2822/1998 text, Anexo XVIII I.A.a): province contraseña + 4 digits + 1-2 letters (A..ZZ); BOE Análisis block: 'Fecha de entrada en vigor: 26/07/1999'"
-      - "https://www.boe.es/buscar/doc.php?id=BOE-A-2000-16805  # the Orden that replaced it, in force 17-09-2000, plus both disposiciones transitorias (voluntary re-plating; mandatory new dimensions on replacement)"
-      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.A: the 52 province contraseñas; Cuadro 1 'con siglas de provincia' rows"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1971-1149  # Decreto 2046/1971, de 13 de agosto (BOE 214, 07-09-1971): art. 231.I = the suffix-letters format verbatim; art. 230.II colours; art. 232 dimensions + guión; art. 233 the 1971 contraseña list (GE, OR, PM, SH); disposición final = in force 30 días naturales after publication -> 07-10-1971; DT 1.ª old numeric plates keep validity. Facsimile: https://www.boe.es/boe/dias/1971/09/07/pdfs/A14559-14572.pdf — accessed 2026-08-02"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1971-1472  # Corrección de errores of Decreto 2046/1971 (BOE 275, 17-11-1971) — READ AND CHECKED: fixes arts. 146/165/208-209/24x only; the plate articles stand as published. Accessed 2026-08-02"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1999-1826  # ORIGINAL RD 2822/1998 text, Anexo XVIII I.A.a): province contraseña + 4 digits + 1-2 letters (A..ZZ) re-enacted; BOE Análisis block: 'Fecha de entrada en vigor: 26/07/1999'"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-2000-16805  # the Orden that ENDED new issuance in this format: disposición final única 'entrará en vigor el día siguiente al de su publicación' (BOE 223, 16-09-2000) -> in force 17-09-2000, stated by BOE's own Análisis; plus both disposiciones transitorias (voluntary re-plating; mandatory new dimensions on replacement). Accessed 2026-08-02"
+      - "https://www.boe.es/buscar/pdf/1999/BOE-A-1999-1826-consolidado.pdf  # Anexo XVIII II.A: the 52 province contraseñas of the 1998 list; Cuadro 1 'con siglas de provincia' rows"
     notes: >-
-      THE PROVINCIAL SYSTEM — Spain's only region-decodable series. PERIOD CAVEAT,
-      stated plainly: start/end here record the INSTRUMENT WINDOW in which this
-      format was the enacted ordinary-car format (RD 2822/1998 in force 26-07-1999;
-      superseded for new registrations 17-09-2000), NOT the life of the system. The
-      province + 4 digits + 1-2 letters shape is much older — commonly given as
-      1971 — but no primary for that start was secured in this pass, so it is a
-      recorded gap rather than an invented date, and the id is deliberately
-      `es-provincial` and not `es-provincial-1971`. Plates already issued remain
+      THE PROVINCIAL SUFFIX-LETTERS SYSTEM, 1971-2000 — Spain's only
+      region-decodable modern series, REDATED in the 2026-08-02 pass. Start:
+      Decreto 2046/1971 published BOE 07-09-1971, in force at 30 días naturales =
+      7 OCTOBER 1971 (its own disposición final; the commonly repeated "October
+      1971" is thereby confirmed and dated to the day). End for NEW registrations:
+      Orden de 15-09-2000, in force 17-09-2000 (disposición final única + BOE
+      Análisis). FOLKLORE FLAG, recorded not averaged: the enthusiast web and
+      Wikipedia commonly give 18 September 2000 — 17-09-2000 was a SUNDAY, so the
+      first national-series plates were ISSUED Monday the 18th; that is an
+      issuance-practice date, not the legal boundary, and the instrument date
+      stands. The former release of this entry carried period 1999-2000 (the RD
+      2822/1998 instrument window) with the honest caveat that no 1971 primary was
+      secured; the primary is now secured and the period is corrected. The id
+      stays `es-provincial` (not `es-provincial-1971`) under the id contract
+      (PRD-QUALITY I-5/I-6): amend, never rename. Plates already issued remain
       valid indefinitely and are re-issued on request; RGV Art. 27.2 lets an owner
       swap a provincial plate for a national one on a change of province.
+      REMAINING GAPS at point of use: (1) the instruments that switched GE->GI,
+      OR->OU and PM->IB on plates after the 1992/1997/1998 province renames were
+      not chased — the 1998 Anexo XVIII list is the pinned post-rename authority;
+      (2) SH (Sahara) issuance necessarily ended with Spain's 1976 withdrawal, but
+      no instrument closing the code was located; (3) the per-province single- to
+      two-letter switchover dates are administrative allocation, published nowhere
+      located in this pass.
+
+  # =========================================================================
+  # THE NUMERIC-ONLY PROVINCIAL ERA, 1900-1971 (new in the redate pass).
+  # One recall-only series for seven decades of one continuous per-province
+  # numbering scheme whose surface details (code list, digit count) were
+  # revised by successive instruments — the era boundary INSIDE the era is
+  # soft, so a regex hit here is a shape claim, never a validity claim.
+  # =========================================================================
+  - id: es-provincial-numeric
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1900, end: 1971 }
+    period_evidence: instrument-dated-both-ends
+    matching: recall-only
+    format:
+      pattern: "LL-999999"
+      regex: '\A[A-Z]{1,3}-\d{1,6}\z'
+      pattern_note: >-
+        REPRESENTATIVE ONLY, and the regex is deliberately wide — hence
+        recall-only. The contraseña ran ONE TO THREE letters: the 1907 list
+        includes three-letter codes (Albacete ALB, Cáceres CAC, Castellón CAS,
+        Segovia SEG, Teruel TER), trimmed in later lists. The number is the
+        province's permit order number with NO fixed width — it grew with the
+        province's registrations, from 1 digit to 6 (art. 233 of the 1934 Código
+        contemplates "cinco o más cifras" and Madrid exceeded 600000 before
+        1971). No single regex is the grammar of any one year of this era.
+      progression: >-
+        Strictly sequential per province: the number is "el número de orden del
+        permiso de circulación" (1918 art. 13.d, 1926 art. 15.d, 1934 art. 232
+        — the 1907 text says "de la licencia"). Province + number therefore
+        encodes registration order within the province, which is why period
+        photographs can be dated by plate number against provincial totals —
+        an inference for the encyclopedia, not for this dataset.
+      separator_note: >-
+        The guión is statutory throughout: 1907 concl. 3.ª "separado por un
+        guión", and every subsequent dimensions table (1918, 1926, 1934) carries
+        a "Longitud del guión" row.
+    design:
+      background: { color: "#FFFFFF", finish: painted, hex_basis: observed, note: "no colour spec exists for this era beyond the words; no reflectivity requirement — reflectante arrives with Decreto 2046/1971" }
+      foreground: "#000000"
+      band: { side: none }
+      note: >-
+        BLACK ON WHITE FOR THE WHOLE ERA, by four successive instruments: 1907
+        concl. 3.ª "Las letras de la contraseña y el número se pintarán en negro
+        sobre fondo blanco"; 1918 art. 13.e) and 1926 art. 15.e) "caracteres
+        negros sobre fondo blanco"; 1934 art. 232 "caracteres latinos negros, de
+        trazo de ancho uniforme, sobre fondo blanco liso". Verified against the
+        primaries because mid-century dark plates are a neighbouring-country
+        pattern (PT, FR) that misattaches to Spain in collector folklore. The
+        1934 Código also fixes character metrics (art. 233 table) and a
+        two-line rear layout option once the number reaches five digits
+        ("podrá colocarse en la placa posterior la contraseña de la provincia
+        centrada y encima del número", plate height then min 260 mm).
+    region_encoding: "plates/_decode/es-provinces.yml"
+    region_encoding_note: >-
+      PERIOD-DISCIPLINE CAVEAT: the decode table is the 1998 Anexo XVIII list.
+      This era's lists differ per instrument (1907, 1918, 1926, 1934 art. 232,
+      1971 art. 233): three-letter codes until at latest 1926, no Gran
+      Canaria/Tenerife split in 1907, Sahara SH in the 1971 list. Historical
+      decode rows are L4 work (PRD-PLATES §7) — recorded gap.
+    sources:
+      - "https://www.boe.es/datos/pdfs/BOE/1900/263/A01141-01142.pdf  # RD 17-09-1900 (Gaceta de Madrid 263, 20-09-1900, pp. 1141-1142), 'Reglamento para el servicio de coches automóviles por las carreteras': per-province authorization + 'En el Gobierno civil de cada provincia habrá un registro general de este servicio' (art. 6); vehicle inscriptions required but NO plate format prescribed. Accessed 2026-08-02"
+      - "https://www.boe.es/gazeta/dias/1907/06/09/pdfs/GMD-1907-160.pdf  # RO 24-05-1907 (Gaceta 160, 09-06-1907): THE FIRST PLATE FORMAT — concl. 3.ª two plates, 'la contraseña de la provincia, y á continuación y separado por un guión el número de orden de la licencia', black on white; concl. 5.ª the first contraseña list (1-3 letters); concl. 6.ª dimensions. Its preamble states pre-1907 display was non-uniform ('exige uniformar el criterio'). Accessed 2026-08-02"
+      - "https://www.boe.es/datos/pdfs/BOE/1918/205/A00231-00237.pdf  # RD 23-07-1918 (Gaceta 205, 24-07-1918), Reglamento art. 13.d)-f): same composition, revised code list, black on white. Locator page: https://www.boe.es/buscar/doc.php?id=BOE-A-1918-3950 — accessed 2026-08-02"
+      - "https://www.boe.es/datos/pdfs/BOE/1926/170/A01642-01654.pdf  # RD 15-06-1926 (Gaceta 170, 19-06-1926), Reglamento art. 15.a)-g): two plates, contraseña + guión + permit number, black on white, revised list incl. Ceuta and Melilla. Locator: https://www.boe.es/buscar/doc.php?id=BOE-A-1926-6136 — accessed 2026-08-02"
+      - "https://www.boe.es/datos/pdfs/BOE/1934/269/A02634-02677.pdf  # Código de la Circulación (Decreto 25-09-1934, Gaceta 269, 26-09-1934), arts. 230-233: the era's final numeric-format text, quoted in design.note above. Locator: https://www.boe.es/buscar/doc.php?id=BOE-A-1934-8197 — accessed 2026-08-02"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1934-9025  # Orden circular (Gaceta 294, 21-10-1934): the Código's entry into force is 1 November 1934. Accessed 2026-08-02"
+      - "https://www.boe.es/buscar/doc.php?id=BOE-A-1971-1149  # Decreto 2046/1971: ENDS the era at its own entry into force, 07-10-1971; DT 1.ª, verbatim: 'Los automóviles, remolques y semirremolques, matriculados en la fecha de entrada en vigor de este Decreto, conservarán la contraseña y número de su matrícula indefinidamente'. Accessed 2026-08-02"
+    notes: >-
+      THE NUMERIC-ONLY PROVINCIAL ERA (PP-NNNNNN), 1900-1971, modelled as ONE
+      recall-only series because it is one continuous per-province sequential
+      numbering — a vehicle registered in 1905 kept its number under every later
+      reglamento — while its surface rules shifted instrument by instrument.
+      PERIOD HONESTY, stated at point of use: 1900 dates the REGISTRATION regime
+      (RD 17-09-1900); the earliest plates displayed province + number
+      NON-UNIFORMLY, as the 1907 preamble itself testifies; the prescribed
+      FORMAT begins with RO 24-05-1907. A consumer needing the format-instrument
+      window should read 1907, and both dates are pinned above. The era closes
+      on 07-10-1971 (Decreto 2046/1971 in force), with old plates valid
+      indefinitely (DT 1.ª) — so numeric plates remained ON THE ROAD for decades
+      past 1971, exactly as provincial suffix plates remain today. The 1900
+      start also honours the lint's period rail (first national plates 1893;
+      Spain 1900). Entry-into-force of the 1900 Reglamento itself is not stated
+      in its text (no vacatio clause located) — recorded gap; its Gaceta
+      publication is 20-09-1900.
 
   # =========================================================================
   # ORDINARY SPECIAL SERIES — prefix letter + 4 digits + 3 letters, all from
@@ -282,7 +454,13 @@ series:
       plate on the right bearing the towing vehicle's registration (Anexo XVIII
       III.4). Trailers and semi-trailers share one series here because Anexo XVIII
       treats them in one subparagraph with one prefix letter — contrast the
-      Netherlands, where W and O split them.
+      Netherlands, where W and O split them. PREDECESSOR RECORDED AS A GAP (redate
+      pass): the Código as rewritten by Decreto 2046/1971 already gave trailers a
+      dedicated format — art. 231.II, verbatim, "la letra R, un número que irá
+      desde el 1 al 999.999 y la contraseña de la provincia donde se matricule el
+      vehículo", on a red reflective ground (art. 230.II) — i.e. R-NNNNNN-PP,
+      1971-1999. Not authored as a series in this pass (historical depth is L4);
+      pinned here so the id can be cut later without disturbing this one.
 
   - id: es-moped-1999
     class: moped
