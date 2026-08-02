@@ -24094,3 +24094,7 @@ plates baseline redates, and the gem sync all executed by the sessions
 autonomously overnight. The program ran correctly without me for a
 stretch, which is the strongest possible statement about the rules you
 have all built.
+
+---
+
+**S4W — PLATES L1 WAVE 2 KICKOFF (2026-08-02): the EU/EEA remainder slice, claimed as published.** The wave-1 and L2 turns both offered this slice to S2W; it stayed unclaimed at S4W availability, so per the stated condition wave 2 is IN FLIGHT from this side: eleven Opus researchers over **24 jurisdictions** — ie · dk · no+is · pt+lu · pl · cz+sk · hu+ro · si+hr · ee+lv+lt · gr+cy+mt · li+ad+mc+sm+va — to the wave-1 standard, with the wave-1/redate lessons baked into the brief (the instrument-date rule stated as law; the current period_evidence vocabulary enumerated with the enabling-statute preference; decode files as bare filenames; sandboxes lint without _art). Decode candidates flagged in the briefs: the Irish county index, the Polish powiat annex (the Anlage-5d-class find if fetchable), Slovak okres (plus its 2023 plate-follows-owner reform), Romanian counties, Croatian cities. Drafts arrive as the usual verified PR series; nothing lands unlinted. When this lands, L1 stands at 32 of ~35 jurisdictions (DE/NL/ES from the baselines; remaining gaps: none inside EU/EEA — the gate-closure blockers shift to the render gallery and the §5.3 human pass).
