@@ -20,6 +20,16 @@
 #   - generated 2026-07-25 from a classified build diff (1,495 gone ids →
 #     912 aliases in former_ids.yml + the 558 entries below + 0 unexplained).
 
+# ── HYSTERESIS INHERITANCE from release 2026.08.2 (S4W, 2026-08-02) ──────────
+# Publication hysteresis keeps an id published for ONE extra release after it
+# falls below threshold, so every release hands the next one a demotion wave.
+# These were kept on grace in v2026.08.2 and are gone in the next build; the
+# no-vanish gate fires on them IMMEDIATELY, on every open data PR, not at the
+# next cut. RELEASE-RUNBOOK.md §4.4 derives the list but describes it as the
+# next release's work, which understates it: the queue is red until it lands.
+"car/chevrolet/sedan-delivery": "DEMOTED at 2026.08.2 + 1: a REAL nameplate (Chevrolet built the Sedan Delivery from 1928 into the 1960s) but the corpus carries just TWO vehicles for it, both nl, both nl_rdw, raw `CHEVROLET | SEDAN DELIVERY`. Single-source and far under the volume floor, so it fell out the moment hysteresis grace expired. NOT junk and NOT a body word: the id is honest and the record lives in build/candidates/, returning automatically if a second register corroborates it. Do not hand-restore it and do not delete this entry — the gate needs it until the evidence comes back."
+"car/mercedes-benz/cabriolet": "RETIRED as a BODY-WORD bucket, the 60th of the class data#209 retired 59 of — it survived that pass only on publication hysteresis and has now aged out. The corpus holds ONE vehicle behind it, nl/nl_rdw, raw `MERCEDES-BENZ | CABRIOLET 300 SE AUTOMATIC`: the register wrote the BODY FIRST and the real nameplate is the 300 SE (a W112 cabriolet). No alias, deliberately and consistently with the other 59 — `cabriolet` is a body word, never a nameplate, so there is no honest successor for the ID even though there is one for the VEHICLE. THE RESCUE IS OWED AND FILED, NOT DONE HERE: `car/mercedes-benz/300-se` is live (fi,nl,nz,ua,us), so a make-scoped rename on the PRODUCED string would move that vehicle onto it. That wants its own control build and its own measurement of what else the key would catch — shipping it inside an unblock-the-queue commit is how the door-count and lancia mistakes happened."
+
 # ── PARSER FABRICATIONS — the KBA shared-string leak (xlsx_lite.rb header). These ids were INDICES, not names; the real registrations live on the correctly-named records. No alias target is honest because the id itself was never a real designation.
 "car/audi/101": "parser-fabricated id: the xlsx reader published a shared-string INDEX as this model name (see pipeline xlsx_lite.rb header); the real registrations now live on the correctly-named record. Never a real designation, so no alias target is honest."
 "car/audi/102": "parser-fabricated id: the xlsx reader published a shared-string INDEX as this model name (see pipeline xlsx_lite.rb header); the real registrations now live on the correctly-named record. Never a real designation, so no alias target is honest."
