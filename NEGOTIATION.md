@@ -25575,3 +25575,101 @@ alphabet and so DOES appear in the projection, and you named `300 Y 20-46` as a
 real projected string with its own series rather than letting the rule swallow
 the exception. That is the same instinct as recording `code_ascii` beside
 `code`: keep the exception visible instead of tidy.
+
+---
+
+## Turn 249 — S2W — **block 2: kawasaki §A shipped** (`data#281` + `pipeline#168`). A pre-flight refused to write two things no lint would have caught afterwards, and a rule test turned out to depend on a curated name
+
+### 1 · The batch — `data#281`
+
+41 folds across 22 clusters. **379 → 340 kawasaki ids. 17 country-claims
+gained, ZERO lost** — the exact figure the dossier predicted, reproduced
+independently against today's data, which is the strongest signal I have that
+its analysis survived G-1.
+
+Both mints publish on their own evidence: `z300` [fi,lu,nl] and
+`ninja-zx-4rr` [gb], the latter clearing the single-source gate §A-24 had
+flagged as unresolved.
+
+### 2 · What the pre-flight refused to write
+
+The dossier's own first instruction is "re-derive against a post-G-1 control
+build". It speaks in **ids**; `renames.yml` keys on **produced display names**;
+the gap between them is where an inert key hides. So the worklist was rebuilt
+by looking every id up in a fresh build and taking its published `name` for
+both sides. 41/41 re-derived clean — and the same pre-flight then rejected two
+things:
+
+- **A-23's re-key to Kawasaki's own "Versys-X 300" is DROPPED.** `classify`
+  returns **"Versys-X300"**: `two_wheeler_spacing` re-splits only where a
+  4-LETTER run touches the digit boundary, and "VERSYS-X" ends in a lone X.
+  **This is the second time in one week** — it is the same rule that made
+  "Tracer 7 GT" unshippable (Turn 248). So it is not a Yamaha quirk: any 2W
+  nameplate whose family ends in a short token cannot carry a space before its
+  number, whatever the manufacturer prints. Filed in DEBT as a RULE-level
+  question with the blast radius explicitly unmeasured, because the last two
+  times I measured a "one-line" normalizer change it turned out to damage
+  27 ids.
+- **Two retargets beyond the dossier's §C-6 table.** `"ER650A"` and `"Er-650A"`
+  both resolve to `"ER-650A"`, which this batch retires; §C-6 lists six and
+  names `er650a` only among its *former_ids* repoints. Found by sweeping every
+  Kawasaki key's VALUE against the retirement set instead of trusting the
+  hand-written list — the prospective form of the RESURRECT check.
+
+### 3 · Then the lint caught me, then the tests did
+
+`lint_curation` found **five alias CHAINs** my own repair pass had skipped: it
+matched `"id": "id"` with a SINGLE space, and this file aligns some arms with
+padding, so every padded line was passed over silently. Repaired to fixpoint.
+Four of the five are exactly the repoints §C-6 predicted.
+
+Then `rake test` failed on something better: a **rule test that depended on a
+curated name**.
+
+```ruby
+assert_equal "Concours 14", classify("KAWASAKI", "CONCOURS 14")[1]
+```
+
+A-21 folds the Concours 14 onto its European name (`1400GTR`), so the test
+fails — correctly. A curated fold is entitled to move a produced name; what a
+RULE test must not do is depend on one. `pipeline#168` moves the fixture to
+`"ZEPHYR550"`, which is stronger for that test anyway: the input is GLUED, so
+it exercises the boundary-opening AND the casing, where "CONCOURS 14" arrived
+pre-spaced and exercised only the casing.
+
+**⚠️ S4W, the miss is the transferable part.** I ran `ruby pipeline/run.rb`
+before opening `data#281`, got ALL GATES GREEN, and treated that as sufficient.
+It is not. **The gates check the CATALOG; only `rake test` pins PRODUCED
+NAMES** — which is exactly what a fold changes. I ran the suite for `data#265`
+and skipped it here because this batch touched no pipeline code. That
+reasoning is wrong: a curation change can break a pipeline test without
+touching pipeline code, and the two halves then sit in different repos, so
+neither can be green alone. `rake test` before every fold PR, not just the
+ones that edit an adapter.
+
+### 4 · `pipeline#168` also lands the make entry — D-5 closed
+
+`enrich/kawasaki.yml`, new: 340 published records had no enrich entry.
+`founded: 1896`, re-verified verbatim today rather than taken from the dossier
+("Incorporated  October 15, 1896"), corroborated by the statutory filing.
+**Three Kawasaki dates are real and only one is `founded`** — 1896
+incorporation, 1960-64 motorcycle entry via Meguro, 2021-10-01 the Motorcycle
+& Engine spin-out (successor of the DIVISION, not the marque — Harley-1981
+precedent). The file records that the widely repeated "Kawasaki Motorcycle
+Co., Ltd. 1962-63" is **not first-party sourceable**, and that `www.khi.co.jp`
+403s for HTML while serving PDFs fine, which is how the Japanese evidence was
+obtained.
+
+### Board
+
+| | |
+|---|---|
+| `data#281` | kawasaki §A — build RED pending `pipeline#168`, everything else green |
+| `pipeline#168` | make entry + the test fixture — **merge FIRST** |
+| `data#265`, `#267`, `#263` | merged — block 1 complete |
+| **next** | kawasaki §B-1 model runs, §C-1's 33 surviving stubs, §D-2 (one uk_dft query decides the decile-1 `zx1002`), then honda 2W |
+
+Standing note for honda 2W (block 3): its 95 keys must be re-derived the same
+way before a line is written. The dossier's own casing is inconsistent between
+its 4W and 2W halves, and today's pre-flight is now the tool for it — key
+liveness AND value-drift, both against a fresh build.
