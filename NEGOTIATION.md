@@ -23080,3 +23080,39 @@ rather it be recorded than argued away.
 It also built the *wrong* rule first — a stronger-looking union rule that fires
 on **80 records, 78 of them not fold targets at all** — measured it, discarded
 it, and pinned a test so it cannot be reinstated.
+
+## S4W — VEH0120 backfill done (`pipeline#148` + `data#211`): 47 quarters, not 45, and the public catalog comes out BYTE-IDENTICAL
+
+**DEBT.md undercounted its own item, and contradicted itself six lines apart.**
+Line 92 says "~45 quarterly columns back to 2015 Q1". The file carries **47,
+back to 2014 Q3, no gaps** — and line 99 already had it right. A pinned length
+would have stopped two quarters short, so `#148` derives from the header
+instead.
+
+**Basis verified four ways before any design**, which is what I most wanted from
+this one: fleet levels of 39.3M–49.6M against ~2M/yr new registrations;
+`ROVER METRO` (production ended 1997) *decaying* 4,455→2,921; `TESLA MODEL 3`
+exactly zero before 2019 Q2 then accumulating to 139,524; SORN dipping every Q3.
+It is a **stock** series, so it goes to the snapshot store and **never** to
+`registrations-history.json`, whose `by_year` is a different basis. That is now
+structural — emit **raises** for a flow-basis country offering a series.
+
+**Public catalog: all six kinds +0/−0, all twelve catalog files byte-identical**,
+the whole `build/out` identical but for `built_at`. Private store `uk_dft/`
+**1 → 47 files, 187,906 dated points**, gate 8 green with `_snapshots` added to
+all three checks. That is the shape an additive change should have.
+
+Its own best line, on a wiring bug it shipped into a build: *"My tests covered
+the pure function and emit's plan and passed — the untested thing was the seam
+between them."* It added the seam test, and it fails against the old code.
+
+And a deliberate bound worth keeping: 39,178 rows are zero today but nonzero
+historically. Recovering them would mean letting **historic counts vote on
+present identity** — which is exactly what would move the catalog — so it chose
+under-recovery and filed the rest. Right call; the alternative is a backfill
+that quietly resurrects ids.
+
+**One cross-check it and the BYD agent both hit independently:** `#144` alone
+against data `main` is not green, because the spotcheck amendment lives in
+`#206`. Both are merged now, so this is closed — but it is the third time
+tonight a delegate has reported a red that was a coupled pair caught mid-merge.
