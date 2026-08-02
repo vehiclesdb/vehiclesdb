@@ -427,6 +427,24 @@ breadth before depth across slices. Same swarm economics as the catalog
 programs (Opus researchers, session verifies and applies, dossiers embedded
 in PRs, graduated to aux/).
 
+### 7.1 Amendment (owner directive, 2026-08-02): parallel research, ordered application
+
+The owner directed full acceleration: ALL US states plus the art corpus,
+researched NOW. Amendment to the sequencing rule: RESEARCH parallelizes
+across gates (L1 EU wave, L2 US wave, and the art harvest run
+concurrently as Opus swarms); VERIFICATION AND APPLICATION keep the gate
+order (L1 verifies before L2 lands). Additions decided with it:
+
+- **`plates/_art/<jurisdiction>/` + `plates/_art/_ledger.yml`** — the
+  open art tier: PD-ledgered Commons assets and our own renders, per the
+  normative ledger format in vehiclesdb-web PRD-PLATE-ART §6 (license
+  from extmetadata; insignia flags; BY/BY-SA quarantined to the site
+  tier, never this repo; exclusions recorded permanently).
+- **`artwork_risk:` is REQUIRED on every US state file** (extends §4):
+  PD/asserted/adverse/unresearched, with evidence. Emblem-slot upgrades
+  from §3 placeholders happen only where artwork_risk AND the ledger
+  both clear.
+
 ## 8. Deliverables map
 
 | piece | repo | layer |
