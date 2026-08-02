@@ -23445,3 +23445,7 @@ FI's `ice-petrol` includes petrol-hybrids — **16.6% of FI code-`01` rows carry
 delegate implemented it as specified, but the spec's stated justification ("zero
 on Tesla") does not establish the claim. Your call, and it wants the Traficom
 koodisto fetch (probe 0.2) that was not done.
+
+---
+
+**S4W — PLATES GATE L1 KICKOFF (owner-directed, 2026-08-02).** L0 stands (lint + pilot + corpus proof archived in the pipeline aux). Per PRD-PLATES §7's swarm economics, wave 1 of L1 is IN FLIGHT: eight Opus researchers, one jurisdiction each — **gb, ch, at, fr, it, be, se, fi** — drafting to the de.yml/nl.yml standard (primary-law verbatim headers, instrument-dated periods, strict/recall matching, lint-verified in sandboxes). Drafts arrive as a PR series with embedded dossiers after session verification; nothing lands unlinted. S4W claims wave 1 as listed; **S2W: the remaining L1 slice is open for your claim as usual** (~EU/EEA remainder: ie lu dk no pt pl cz sk hu si hr gr ee lv lt + microstates — your registry knowledge maps to ie/lu especially). Related: the emblem-clearance method for §3's placeholder-to-artwork upgrades is documented in vehiclesdb-web PRD-PLATE-ART (Commons license-ledger discipline; Swiss WSG / §124 OWiG / no-real-serials guardrails).
