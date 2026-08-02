@@ -1,0 +1,315 @@
+# plates/_decode/hr-cities.yml — Croatian registracijska područja (registration areas).
+#
+# THE SOURCE FINDING, and it is the Anlage-5d case rather than the German one:
+# THE CODE LIST IS IN THE REGULATION. Članak 52. stavak 2. of the Pravilnik o
+# registraciji i označavanju vozila (NN 130/2017), verbatim: "Popis oznaka
+# registracijskih područja nalazi se u Prilogu 1. koji je tiskan uz ovaj
+# Pravilnik i njegov je sastavni dio." Prilog 1 is a closed, primary, 34-row
+# table printed inside the pravilnik, listing for each two-letter code the
+# gradovi (towns) and općine (municipalities) it covers. Every row below is
+# extracted MECHANICALLY from that annex as published on
+# narodne-novine.nn.hr — not transcribed by hand and not taken from any
+# secondary compilation.
+#
+# THIRTY-FOUR CODES, not the "36+" that circulates on the enthusiast web. The
+# annex numbers them 1-34 and the `annex_no` field preserves that numbering.
+#
+# ---------------------------------------------------------------------------
+# THE CAVEAT THAT MAKES THIS TABLE HONEST — READ IT BEFORE DECODING ANYTHING.
+# It lives HERE, in the table, and not only in prose in plates/hr.yml, because
+# a consumer who loads this file and never reads the dossier is exactly the
+# consumer who will get it wrong.
+# ---------------------------------------------------------------------------
+decodes_to: >-
+  The registration area whose stanica za tehnički pregled vozila issued THIS
+  MARK, which is the area of the then-owner's prebivalište / boravište /
+  sjedište AT THE MOMENT OF ISSUE (čl. 5 st. 1 NN 130/2017). It is NOT a claim
+  about where the vehicle is now, nor about where its CURRENT owner lives.
+does_not_decode_to: >-
+  The current owner's residence; the place of manufacture; the place of the
+  technical inspection (čl. 5 st. 2 expressly permits an inspection station
+  OUTSIDE the area to issue a mark bearing the owner's own area code).
+caveat_2016:
+  date: "2016-07-04"
+  instrument: "Pravilnik o izmjenama i dopunama Pravilnika o registraciji i označavanju vozila, NN 45/2016, čl. 5 and čl. 10"
+  what_changed: >-
+    Until 3 July 2016 the SELLER of a vehicle had to deregister it and hand the
+    plates back, and the plates could pass to the buyer only "ako su
+    kupoprodajnim ugovorom ili pisanom izjavom ... ustupljene kupcu I AKO SE PRI
+    PROMJENI VLASNIŠTVA NE MIJENJA REGISTRACIJSKO PODRUČJE" (NN 151/2008
+    čl. 40 st. 3) — the same-area condition was written into the rule, so a
+    surviving mark was strong evidence about the CURRENT owner's area.
+    NN 45/2016 čl. 5 replaced that article outright: "U slučaju prodaje ili
+    drugog načina promjene vlasništva na vozilu, novi vlasnik vozila dužan je u
+    roku od 15 dana od stjecanja vozila registrirati vozilo na svoje ime ili ga
+    odjaviti" — the duty moved to the BUYER and the surrender of the plates
+    dropped out of the sale case entirely. The rule is carried forward verbatim
+    as čl. 48 st. 1 of NN 130/2017.
+  effect_on_this_table: >-
+    For any mark that has changed hands on or after 2016-07-04, the code is
+    evidence about the area of the owner AT FIRST ISSUE and about nobody since.
+    A parse API must NOT report the code as the current holder's area. The link
+    is not severed — čl. 25 st. 1 NN 130/2017 still issues NEW marks "za vozilo
+    koje se registrira u drugom registracijskom području" — but it is no longer
+    refreshed on every change of owner, and čl. 47 st. 7 additionally lets a
+    surrendered plate be taken over by "druga osoba na temelju ovjerene izjave
+    vlasnika registarskih pločica o ustupanju", i.e. by a different person.
+  confidence_rule: >-
+    current-area: unsound after 2016-07-04. area-at-issue: sound.
+    Consumers that cannot date a mark must degrade to area-at-issue.
+# ---------------------------------------------------------------------------
+jurisdiction: hr
+topic: cities
+authority:
+  name: "Pravilnik o registraciji i označavanju vozila, Prilog 1 (POPIS OZNAKA REGISTRACIJSKIH PODRUČJA) — Ministarstvo unutarnjih poslova"
+  url: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html"
+sources:
+  - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 (27.12.2017.), Pravilnik o registraciji i označavanju vozila — čl. 52 st. 2 (the delegation) and Prilog 1 'POPIS OZNAKA REGISTRACIJSKIH PODRUČJA', all 34 rows with their gradovi and općine. Accessed 2026-08-02"
+  - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 (23.12.2008.) — the PREVIOUS base pravilnik, čl. 52 st. 2 and its own 34-row POPIS, diffed against the 2017 annex to produce `changed_2008_2017` below. Accessed 2026-08-02"
+  - "https://narodne-novine.nn.hr/clanci/sluzbeni/2016_05_45_1165.html  # NN 45/2016 (13.5.2016.) — čl. 5 (the ownership-transfer rule that produced caveat_2016) and čl. 10 (stupa na snagu 4. srpnja 2016.). Accessed 2026-08-02"
+period: { start: 2018 }
+period_evidence: enacted-commencement
+period_note: >-
+  2018, not 2017: NN 130/2017 was published on 27 December 2017 but its own
+  čl. 59 says "stupa na snagu 1. siječnja 2018. godine" (with a handful of
+  provisions deferred to 20 May 2018). The gazette date is not the period.
+  The CODES themselves are far older — most of them are unchanged since the
+  1993 system — but per-code start dates are a recorded gap: the popis attached
+  to the Pravilnik o registraciji vozila na motorni pogon i priključnih vozila
+  (NN 12/93, 22/93, 19/96, 149/02) was not reachable in this pass, and the 1993
+  pravilnik's own čl. 34 expressly kept the OLD popis alive for a transitional
+  period, so the 1990s code set is not asserted here.
+
+# ---------------------------------------------------------------------------
+# THE DIACRITIC PROBLEM — a PRD-PLATES §2.6 finding, recorded, not folded away.
+# ---------------------------------------------------------------------------
+diacritics:
+  affected_codes: ["ČK", "KŽ", "PŽ", "ŠI", "VŽ", "ŽU"]
+  finding: >-
+    Six of the 34 codes are printed on the plate with a caron. Č, Š and Ž are
+    NOT in the dataset's serial alphabet (plates/_meta/separators.yml declares
+    it as A-Z 0-9), so no `format.pattern` or `format.regex` in plates/hr.yml
+    can spell them: the area-code position is written `[A-Z]{2}` there and is
+    therefore NARROWER than the issuing grammar for these six areas. Per
+    PRD-PLATES §2.7 that is still `matching: strict` — narrower is strict — but
+    a consumer matching a photographed Croatian plate MUST either ASCII-fold the
+    input or widen the class itself. Extending the serial alphabet is a schema
+    amendment (§2.6), not a data entry, and is NOT attempted here.
+  authority_acknowledges_it: >-
+    Čl. 22 st. 7 NN 130/2017 refuses a by-choice mark "ako drugom vozilu već
+    nije dodijeljen registarski broj zbog kojeg može doći do DUPLIRANJA PRILIKOM
+    TRANSLITERACIJE registarskih brojeva" — the regulation itself contemplates
+    transliteration collisions. `code_ascii` below is our fold (Č->C, Š->S,
+    Ž->Z); within the current 34 it is collision-free, which we checked.
+  ascii_fold_collision_warning: >-
+    ŠI folds to SI, and SI was itself a Croatian area code in the earlier system
+    (Sisak, before SK). The fold is unambiguous against the CURRENT table and
+    ambiguous against the historical one. Since the historical table is a
+    recorded gap above, a consumer decoding an old plate must treat SI as
+    unresolved rather than as Šibenik.
+
+# ---------------------------------------------------------------------------
+# What moved between the 2008 annex and the 2017 annex, from diffing the two
+# primaries. Recorded because decode tables rot (PRD-PLATES §9) and because it
+# shows the annex is maintained at the MUNICIPALITY level, not the code level.
+# ---------------------------------------------------------------------------
+changed_2008_2017:
+  codes_added: []
+  codes_removed: []
+  method: "set-diff of the two annex texts, computed rather than read; the first hand-written version of this block asserted three changes that the diff does not support and one that a line-break artefact in the 2008 HTML had invented, and was replaced"
+  code_set: "IDENTICAL in both annexes — all 34, same letters, same annex numbering. Nothing was added and nothing was withdrawn between 2008 and 2018."
+  coverage_gained:
+    KA: ["općina Kamanje"]
+    PU: ["grad Vodnjan (promoted from općina)", "općina Guntana", "općina Tar-Vabriga"]
+    ŠI: ["općina Tribunj", "općina Murter renamed Murter-Kornati"]
+    VU: ["općina Štitar"]
+    ZD: ["općina Kolan", "općina Vrsi"]
+    RI: ["općina Lopar"]
+  coverage_lost:
+    ŽU: ["općina Gunja", "općina Vrbanja"]
+  promotions:
+    KT: "Popovača promoted to grad; Jasenovac demoted from grad to općina"
+    PŽ: "Kutjevo promoted from općina to grad"
+    VK: "Otok promoted from općina to grad"
+    ZG: "Sveta Nedelja (općina) becomes the grad Sveta Nedjelja — a spelling change as well as a promotion"
+  annex_defects_reproduced:
+    - "KT lists Popovača TWICE in the 2017 annex — once as a grad and once as an općina. Reproduced as printed; not silently deduplicated."
+    - "VŽ prints the općina as 'Martijabec' in the 2017 annex where the 2008 annex printed 'Donji Martijanec'. Read as a typo in the instrument, reproduced as a finding rather than corrected (the at-districts 'BH- Tamsweg' precedent)."
+    - "Casing drifts between the two annexes ('Dubrovačko Primorje'/'Dubrovačko primorje', 'Vinodolska Općina'/'Vinodolska općina', 'Zlatar-Bistrica'/'Zlatar Bistrica'). The 2017 spelling is the one carried below."
+  gap: "per-row (per-code and per-municipality) validity periods. The annex is republished whole and carries no dates of its own."
+
+# ---------------------------------------------------------------------------
+# PRILOG 1 — the 34 codes, in the annex's own order and numbering.
+# `towns` = gradovi, `municipalities` = općine, verbatim from the annex.
+# ---------------------------------------------------------------------------
+codes:
+  - code: "BJ"
+    code_ascii: "BJ"
+    annex_no: 1
+    towns: ["Bjelovar", "Čazma", "Garešnica"]
+    municipalities: ["Berek", "Hercegovac", "Ivanska", "Kapela", "Nova Rača", "Rovišće", "Severin", "Šandrovac", "Štefanje", "Velika Pisanica", "Velika Trnovitica", "Veliko Trojstvo", "Zrinski Topolovac"]
+  - code: "BM"
+    code_ascii: "BM"
+    annex_no: 2
+    towns: ["Beli Manastir"]
+    municipalities: ["Bilje", "Čeminac", "Darda", "Draž", "Jagodnjak", "Kneževi Vinogradi", "Petlovac", "Popovac"]
+  - code: "ČK"
+    code_ascii: "CK"
+    annex_no: 3
+    towns: ["Čakovec", "Mursko Središće", "Prelog"]
+    municipalities: ["Belica", "Dekanovec", "Domašinec", "Donja Dubrava", "Donji Kraljevec", "Donji Vidovec", "Goričan", "Gornji Mihaljevec", "Kotoriba", "Mala Subotica", "Nedelišće", "Orehovica", "Podturen", "Pribislavec", "Selnica", "Strahoninec", "Sveta Marija", "Sveti Juraj na Bregu", "Sveti Martin na Muri", "Šenkovec", "Štrigova", "Vratišinec"]
+  - code: "DA"
+    code_ascii: "DA"
+    annex_no: 4
+    towns: ["Daruvar", "Grubišno Polje", "Lipik", "Pakrac"]
+    municipalities: ["Dežanovac", "Đulovac", "Končanica", "Sirač", "Veliki Grđevac"]
+  - code: "DE"
+    code_ascii: "DE"
+    annex_no: 5
+    towns: ["Čabar", "Delnice"]
+    municipalities: ["Brod Moravice", "Fužine", "Lokve", "Mrkopalj", "Ravna Gora", "Skrad"]
+  - code: "DJ"
+    code_ascii: "DJ"
+    annex_no: 6
+    towns: ["Đakovo"]
+    municipalities: ["Drenje", "Gorjani", "Levanjska Varoš", "Punitovci", "Satnica Đakovačka", "Semeljci", "Strizivojna", "Trnava", "Viškovci"]
+  - code: "DU"
+    code_ascii: "DU"
+    annex_no: 7
+    towns: ["Dubrovnik", "Korčula", "Metković", "Opuzen", "Ploče"]
+    municipalities: ["Blato", "Dubrovačko primorje", "Janjina", "Konavle", "Kula Norinska", "Lastovo", "Lumbarda", "Mljet", "Orebić", "Pojezerje", "Slivno", "Smokvica", "Ston", "Trpanj", "Vela Luka", "Zažablje", "Župa dubrovačka"]
+  - code: "GS"
+    code_ascii: "GS"
+    annex_no: 8
+    towns: ["Gospić", "Novalja", "Otočac", "Senj"]
+    municipalities: ["Brinje", "Donji Lapac", "Karlobag", "Lovinac", "Perušić", "Plitvička Jezera", "Udbina", "Vrhovine"]
+  - code: "IM"
+    code_ascii: "IM"
+    annex_no: 9
+    towns: ["Imotski"]
+    municipalities: ["Cista Provo", "Lokvičići", "Lovreć", "Podbablje", "Proložac", "Runovići", "Zagvozd", "Zmijavci"]
+  - code: "KA"
+    code_ascii: "KA"
+    annex_no: 10
+    towns: ["Duga Resa", "Karlovac", "Ozalj", "Slunj"]
+    municipalities: ["Barilovići", "Bosiljevo", "Cetingrad", "Draganić", "Generalski Stol", "Kamanje", "Krnjak", "Lasinja", "Netretić", "Rakovica", "Ribnik", "Vojnić", "Žakanje"]
+  - code: "KC"
+    code_ascii: "KC"
+    annex_no: 11
+    towns: ["Đurđevac", "Koprivnica"]
+    municipalities: ["Drnje", "Đelekovec", "Ferdinandovac", "Gola", "Hlebine", "Kalinovac", "Kloštar Podravski", "Koprivnički Bregi", "Koprivnički Ivanec", "Legrad", "Molve", "Novigrad Podravski", "Novo Virje", "Peteranec", "Podravske Sesvete", "Rasinja", "Sokolovac", "Virje"]
+  - code: "KR"
+    code_ascii: "KR"
+    annex_no: 12
+    towns: ["Donja Stubica", "Klanjec", "Krapina", "Oroslavje", "Pregrada", "Zabok", "Zlatar"]
+    municipalities: ["Bedekovčina", "Budinščina", "Desinić", "Đurmanec", "Gornja Stubica", "Hrašćina", "Hum na Sutli", "Jesenje", "Konjščina", "Kraljevec na Sutli", "Krapinske Toplice", "Kumrovec", "Lobor", "Mače", "Marija Bistrica", "Mihovljan", "Novi Golubovec", "Petrovsko", "Radoboj", "Stubičke Toplice", "Sveti Križ Začretje", "Tuhelj", "Veliko Trgovišće", "Zagorska Sela", "Zlatar Bistrica"]
+  - code: "KT"
+    code_ascii: "KT"
+    annex_no: 13
+    towns: ["Kutina", "Novska", "Popovača"]
+    municipalities: ["Jasenovac", "Lipovljani", "Popovača", "Velika Ludina"]
+  - code: "KŽ"
+    code_ascii: "KZ"
+    annex_no: 14
+    towns: ["Križevci"]
+    municipalities: ["Gornja Rijeka", "Kalnik", "Sveti Ivan Žabno", "Sveti Petar Orehovec"]
+  - code: "MA"
+    code_ascii: "MA"
+    annex_no: 15
+    towns: ["Makarska", "Vrgorac"]
+    municipalities: ["Baška Voda", "Brela", "Gradac", "Podgora", "Tučepi"]
+  - code: "NA"
+    code_ascii: "NA"
+    annex_no: 16
+    towns: ["Donji Miholjac", "Našice"]
+    municipalities: ["Donja Motičina", "Đurđenovac", "Feričanci", "Koška", "Magadenovac", "Marijanci", "Podgorač", "Podravska Moslavina", "Viljevo"]
+  - code: "NG"
+    code_ascii: "NG"
+    annex_no: 17
+    towns: ["Nova Gradiška"]
+    municipalities: ["Cernik", "Davor", "Dragalić", "Gornji Bogićevci", "Nova Kapela", "Okučani", "Rešetari", "Stara Gradiška", "Staro Petrovo Selo", "Vrbje"]
+  - code: "OG"
+    code_ascii: "OG"
+    annex_no: 18
+    towns: ["Ogulin"]
+    municipalities: ["Josipdol", "Plaški", "Saborsko", "Tounj"]
+  - code: "OS"
+    code_ascii: "OS"
+    annex_no: 19
+    towns: ["Belišće", "Osijek", "Valpovo"]
+    municipalities: ["Antunovac", "Bizovac", "Čepin", "Erdut", "Ernestinovo", "Petrijevci", "Šodolovci", "Vladislavci", "Vuka"]
+  - code: "PU"
+    code_ascii: "PU"
+    annex_no: 20
+    towns: ["Buje", "Buzet", "Labin", "Novigrad", "Pazin", "Poreč", "Pula", "Rovinj", "Umag", "Vodnjan"]
+    municipalities: ["Bale", "Barban", "Brtonigla", "Cerovlje", "Fažana", "Guntana", "Gračišće", "Grožnjan", "Kanfanar", "Karojba", "Kaštelir-Labinci", "Kršan", "Lanišće", "Ližnjan", "Lupoglav", "Marčana", "Medulin", "Motovun", "Oprtalj", "Pićan", "Raša", "Sveta Nedelja", "Sveti Lovreč", "Sveti Petar u Šumi", "Svetvinčenat", "Tar-Vabriga", "Tinjan", "Višnjan", "Vižinada", "Vrsar", "Žminj"]
+  - code: "PŽ"
+    code_ascii: "PZ"
+    annex_no: 21
+    towns: ["Kutjevo", "Pleternica", "Požega"]
+    municipalities: ["Brestovac", "Čaglin", "Jakšić", "Kaptol", "Velika"]
+  - code: "RI"
+    code_ascii: "RI"
+    annex_no: 22
+    towns: ["Bakar", "Cres", "Crikvenica", "Kastav", "Kraljevica", "Krk", "Mali Lošinj", "Novi Vinodolski", "Opatija", "Rab", "Rijeka", "Vrbovsko"]
+    municipalities: ["Baška", "Čavle", "Dobrinj", "Jelenje", "Klana", "Kostrena", "Lopar", "Lovran", "Malinska-Dubašnica", "Matulji", "Mošćenička Draga", "Omišalj", "Punat", "Vinodolska općina", "Viškovo", "Vrbnik"]
+  - code: "SB"
+    code_ascii: "SB"
+    annex_no: 23
+    towns: ["Slavonski Brod"]
+    municipalities: ["Bebrina", "Brodski Stupnik", "Bukovlje", "Donji Andrijevci", "Garčin", "Gornja Vrba", "Gundinci", "Klakar", "Oprivsavci", "Oriovac", "Podcrkavlje", "Sibinj", "Sikirevci", "Slavonski Šamac", "Velika Kopanica", "Vrpolje"]
+  - code: "SK"
+    code_ascii: "SK"
+    annex_no: 24
+    towns: ["Glina", "Hrvatska Kostajnica", "Petrinja", "Sisak"]
+    municipalities: ["Donji Kukuruzari", "Dvor", "Gvozd", "Hrvatska Dubica", "Lekenik", "Majur", "Martinska Ves", "Sunja", "Topusko"]
+  - code: "SL"
+    code_ascii: "SL"
+    annex_no: 25
+    towns: ["Orahovica", "Slatina"]
+    municipalities: ["Crnac", "Čačinci", "Čađavica", "Mikleuš", "Nova Bukovica", "Sopje", "Voćin", "Zdenci"]
+  - code: "ST"
+    code_ascii: "ST"
+    annex_no: 26
+    towns: ["Hvar", "Kaštela", "Komiža", "Omiš", "Sinj", "Solin", "Split", "Stari Grad", "Supetar", "Trilj", "Trogir", "Vis", "Vrlika"]
+    municipalities: ["Bol", "Dicmo", "Dugi Rat", "Dugopolje", "Hrvace", "Jelsa", "Klis", "Lećevica", "Marina", "Milna", "Muć", "Nerežišća", "Okrug", "Otok", "Podstrana", "Postira", "Prgomet", "Primorski Dolac", "Pučišća", "Seget", "Selca", "Sućuraj", "Sutivan", "Šestanovac", "Šolta", "Zadvarje"]
+  - code: "ŠI"
+    code_ascii: "SI"
+    annex_no: 27
+    towns: ["Drniš", "Knin", "Skradin", "Šibenik", "Vodice"]
+    municipalities: ["Bilice", "Biskupija", "Civljane", "Ervenik", "Kijevo", "Kistanje", "Murter-Kornati", "Pirovac", "Primošten", "Promina", "Rogoznica", "Ružić", "Tisno", "Tribunj", "Unešić"]
+  - code: "VK"
+    code_ascii: "VK"
+    annex_no: 28
+    towns: ["Otok", "Vinkovci"]
+    municipalities: ["Andrijaševci", "Ivankovo", "Jarmina", "Markušica", "Nijemci", "Nuštar", "Privlaka", "Stari Jankovci", "Stari Mikanovci", "Tordinci", "Vođinci"]
+  - code: "VT"
+    code_ascii: "VT"
+    annex_no: 29
+    towns: ["Virovitica"]
+    municipalities: ["Gradina", "Lukač", "Pitomača", "Suhopolje", "Špišić Bukovica"]
+  - code: "VU"
+    code_ascii: "VU"
+    annex_no: 30
+    towns: ["Ilok", "Vukovar"]
+    municipalities: ["Bogdanovci", "Borovo", "Lovas", "Negoslavci", "Štitar", "Tompojevci", "Tovarnik", "Trpinja"]
+  - code: "VŽ"
+    code_ascii: "VZ"
+    annex_no: 31
+    towns: ["Ivanec", "Lepoglava", "Ludbreg", "Novi Marof", "Varaždin", "Varaždinske Toplice"]
+    municipalities: ["Bednja", "Beretinec", "Breznica", "Breznički Hum", "Cestica", "Donja Voća", "Gornji Kneginec", "Jalžabet", "Klenovnik", "Ljubešćica", "Mali Bukovec", "Martijabec", "Maruševec", "Petrijanec", "Sračinec", "Sveti Đurđ", "Sveti Ilija", "Trnovec Bartolovečki", "Veliki Bukovec", "Vidovec", "Vinica", "Visoko"]
+  - code: "ZD"
+    code_ascii: "ZD"
+    annex_no: 32
+    towns: ["Benkovac", "Biograd na Moru", "Nin", "Obrovac", "Pag", "Zadar"]
+    municipalities: ["Bibinje", "Galovac", "Gračac", "Jasenice", "Kali", "Kolan", "Kukljica", "Lišane Ostrovičke", "Novigrad", "Pakoštane", "Pašman", "Polača", "Poličnik", "Posedarje", "Povljana", "Preko", "Privlaka", "Ražanac", "Sali", "Stankovci", "Starigrad", "Sukošan", "Sveti Filip i Jakov", "Škabrnje", "Tkon", "Vir", "Vrsi", "Zemunik Donji"]
+  - code: "ZG"
+    code_ascii: "ZG"
+    annex_no: 33
+    towns: ["Zagreb", "Dugo Selo", "Ivanić-Grad", "Jastrebarsko", "Samobor", "Sveta Nedjelja", "Sveti Ivan Zelina", "Velika Gorica", "Vrbovec", "Zaprešić"]
+    municipalities: ["Bedenica", "Bistra", "Brckovljani", "Brdovec", "Dubrava", "Dubravica", "Farkaševac", "Gradec", "Jakovlje", "Klinča Sela", "Kloštar Ivanić", "Krašić", "Kravarsko", "Križ", "Luka", "Marija Gorica", "Orle", "Pisarovina", "Pokupsko", "Preseka", "Pušća", "Rakovec", "Rugvica", "Stupnik", "Žumberak"]
+  - code: "ŽU"
+    code_ascii: "ZU"
+    annex_no: 34
+    towns: ["Županja"]
+    municipalities: ["Babina Greda", "Bošnjaci", "Cerna", "Drenovci", "Gradište"]

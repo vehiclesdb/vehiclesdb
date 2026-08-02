@@ -1,0 +1,123 @@
+# plates/_decode/si-regions.yml — Slovenian registracijska območja, and the
+# thing that actually makes a Slovenian plate decodable: THE MUNICIPAL ARMS.
+#
+# TWO LEVELS, and the second one is the interesting one.
+#
+# LEVEL 1 — the two-letter code. Only ELEVEN exist, and both halves of the fact
+# are primary: 29. člen (1) of the Pravilnik o registraciji motornih in
+# priklopnih vozil (Uradni list RS, št. 48/11) names the eleven registration
+# areas and, for each, the upravne enote it covers; 29. člen (2) delegates the
+# LETTERS to Priloga IV ("Oznake registracijskih območij, ki se uporabljajo na
+# registrskih in preskusnih tablicah, so navedene v seznamu oznak
+# registracijskih območij v Prilogi IV tega pravilnika"), which is a one-page
+# table printed with the regulation. Both are reproduced below, in the
+# regulation's own numbering — which is the same in the article and the annex.
+#
+# LEVEL 2 — the coat of arms, which is NOT decoration. 28. člen (1), verbatim:
+# "Za oznako registracijskega območja je grb občine, kjer je sedež upravne
+# enote v tem registracijskem območju." The shield between the code and the
+# serial is the arms of the MUNICIPALITY THAT HOSTS THE SEAT OF THE UPRAVNA
+# ENOTA — not of the registration area. So thirteen visually different plates
+# all read "LJ", and the shield is the only thing that tells Kočevje from
+# Domžale from Ljubljana. A Slovenian plate therefore carries strictly more
+# geography than its letters do, and a text-only parse throws it away.
+# 28. člen (3) adds that the arms must be adapted graphically to the plate.
+#
+# WHAT THE ARMS BIND TO, and when. The 2011 pravilnik states the rule
+# positionally and leaves the binding to the registration rules; its 2004
+# predecessor said it outright, and the sense has not changed —
+# Uradni list RS, št. 29/04, 22. člen (1), verbatim: "se uporabi grb mesta, v
+# katerem je sedež organa, ki vodi vozilo v evidenci in v kateri ima lastnik
+# vozila, OB IZDAJI REGISTRSKIH TABLIC, svoje stalno prebivališče oziroma
+# začasno prebivališče". The arms are fixed AT ISSUE, to the then-owner's
+# residence. Same caution as the Croatian city code: decode to
+# residence-at-issue, never to "where this car is now".
+#
+# NOT A COMPLETE ARMS CATALOGUE. This file names the upravne enote whose seat
+# municipality supplies each shield; it does NOT carry the 58 blazons, their
+# artwork or their licensing. Municipal arms are protected independently of
+# copyright and PRD-PLATES §3 puts them in the placeholder slot
+# (`design.emblem.rendered: placeholder` in plates/si.yml). Recorded gap:
+# a per-upravna-enota arms ledger.
+jurisdiction: si
+topic: regions
+authority:
+  name: "Pravilnik o registraciji motornih in priklopnih vozil, 29. člen in Priloga IV — Ministrstvo za infrastrukturo / upravne enote"
+  url: "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292"
+sources:
+  - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2011-01-2292  # Uradni list RS, št. 48/2011 z dne 24. 6. 2011 — 29. člen (1) the eleven areas with their upravne enote, (2) the delegation to Priloga IV; 28. člen (1) the grb občine rule; 58. člen 'Ta pravilnik začne veljati 4. julija 2011.' Accessed 2026-08-02"
+  - "https://www.uradni-list.si/files/RS_-2011-048-02292-OB~P004-0000.PDF  # PRILOGA IV, 'REGISTRACIJSKA OBMOČJA — Seznam oznak registracijskih območij', the eleven code letters, read from the gazette PDF. Accessed 2026-08-02"
+  - "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2004-01-1253/pravilnik-o-registrskih-tablicah-motornih-in-priklopnih-vozil  # Uradni list RS, št. 29/2004 z dne 26. 3. 2004, 22. člen (1) — the arms bind to the owner's residence AT PLATE ISSUE. Accessed 2026-08-02"
+period: { start: 2011 }
+period_evidence: enacted-commencement
+period_note: >-
+  2011 is the commencement of the instrument these rows are printed in
+  (58. člen: "Ta pravilnik začne veljati 4. julija 2011."), not the age of the
+  codes. The ELEVEN-AREA system is much older — the 2006 predecessor
+  (Uradni list RS, št. 83/06, 3. člen) lists the same eleven areas with the
+  same upravne enote — and the two-letter codes themselves go back to the first
+  independent-Slovenia instrument (Uradni list RS, št. 5/92, 14. člen, whose
+  own seznam was not fetched in this pass). Per-code start dates are therefore
+  a RECORDED GAP, and 1992-era codes withdrawn since would not appear here.
+maximal_munch: false
+maximal_munch_note: >-
+  Not needed. Slovenian area codes are all exactly two letters (Priloga IV has
+  no one-letter entry), and 30. člen separates the area code from the serial by
+  a shield rather than by ambiguity. The prefix is the first two characters,
+  full stop — unlike Austria, where the split is genuinely ambiguous.
+collisions:
+  - "KR (Kranj) vs KK (Krško) vs KP (Koper) — three K- codes, no overlap, listed only because they are the set most often mistyped for one another."
+  - "MV is NOT an area code. It is the fixed prefix of the starodobno (historic) plate, 40. člen: 'nato sledi oznaka za starodobna vozila »MV«'. A parse API must not look it up here."
+  - "PR is NOT an area code either. It is the red 'preskušnja' field on a test plate, 41. člen (2), and it sits AFTER the area code rather than replacing it."
+  - "CMD / CD / CC / M are activity codes on foreign-mission plates (39. člen (2)) and REPLACE the area code entirely; those plates carry no arms at all (28. člen (2))."
+
+# ---------------------------------------------------------------------------
+# The eleven areas. `upravne_enote` is the list from 29. člen (1) verbatim;
+# each one's SEAT MUNICIPALITY supplies one distinct coat of arms under
+# 28. člen (1), which is why this list is the arms key and not just trivia.
+# ---------------------------------------------------------------------------
+codes:
+  - code: CE
+    region: "Celje"
+    priloga_iv_no: 1
+    upravne_enote: ["Celje", "Laško", "Mozirje", "Slovenske Konjice", "Šentjur pri Celju", "Šmarje pri Jelšah", "Velenje", "Žalec"]
+  - code: KP
+    region: "Koper"
+    priloga_iv_no: 2
+    upravne_enote: ["Izola", "Koper", "Piran", "Sežana", "Ilirska Bistrica"]
+  - code: KR
+    region: "Kranj"
+    priloga_iv_no: 3
+    upravne_enote: ["Jesenice", "Kranj", "Radovljica", "Škofja Loka", "Tržič"]
+  - code: KK
+    region: "Krško"
+    priloga_iv_no: 4
+    upravne_enote: ["Brežice", "Krško", "Sevnica"]
+  - code: LJ
+    region: "Ljubljana"
+    priloga_iv_no: 5
+    upravne_enote: ["Domžale", "Grosuplje", "Hrastnik", "Kamnik", "Kočevje", "Litija", "Ljubljana", "Logatec", "Ribnica", "Trbovlje", "Vrhnika", "Zagorje ob Savi", "Cerknica"]
+  - code: MB
+    region: "Maribor"
+    priloga_iv_no: 6
+    upravne_enote: ["Lenart", "Maribor", "Ormož", "Pesnica", "Ptuj", "Ruše", "Slovenska Bistrica"]
+  - code: MS
+    region: "Murska Sobota"
+    priloga_iv_no: 7
+    upravne_enote: ["Gornja Radgona", "Lendava", "Ljutomer", "Murska Sobota"]
+  - code: GO
+    region: "Nova Gorica"
+    priloga_iv_no: 8
+    upravne_enote: ["Ajdovščina", "Idrija", "Nova Gorica", "Tolmin"]
+  - code: NM
+    region: "Novo mesto"
+    priloga_iv_no: 9
+    upravne_enote: ["Črnomelj", "Metlika", "Novo mesto", "Trebnje"]
+  - code: PO
+    region: "Postojna"
+    priloga_iv_no: 10
+    upravne_enote: ["Postojna"]
+  - code: SG
+    region: "Slovenj Gradec"
+    priloga_iv_no: 11
+    upravne_enote: ["Dravograd", "Radlje ob Dravi", "Ravne na Koroškem", "Slovenj Gradec"]

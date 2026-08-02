@@ -1,0 +1,327 @@
+# plates/_decode/dk-serial-blocks.yml — what a Danish registration number's
+# DIGIT BLOCK says about the vehicle.
+#
+# WHY THIS FILE EXISTS AND WHAT IT IS NOT. Denmark encodes NO GEOGRAPHY. The
+# single letter on a pre-1958 plate was a county marker and it is long gone;
+# since then the two letters are a pure serial, re-used after deregistration
+# and restarted from AA when the digital register came in, so they date and
+# locate nothing. What a Danish number DOES still encode is the vehicle's kind
+# or use, and it encodes it in the DIGITS. This file is that decode, and it is
+# the only decode table Denmark supports.
+#
+# THE LEGAL BASIS IS PRIMARY; THE TABLE IS NOT IN ANY INSTRUMENT.
+# BEK nr 663 af 10/06/2025 § 68, stk. 3, verbatim: "Skatteforvaltningen kan
+# inddele registreringsnumre i serier efter køretøjers art eller anvendelse."
+# The POWER to divide numbers into series by vehicle kind or use is enacted;
+# the DIVISION is published only by the authority, in its plate catalogue, and
+# has never been an annex to anything. That is why this file exists as a decode
+# table rather than as a quotation, and why its rows are tiered by source.
+#
+# THE HINGE DATE IS 6 JUNE 2012, and it is dated by an instrument, not by an
+# enthusiast page. BEK nr 504 af 30/05/2012 § 118: "Bekendtgørelsen træder i
+# kraft den 6. juni 2012." SKAT dated its complete plate catalogue "pr.
+# 06.06.2012" to the same day. On that day the fine-grained per-kind blocks
+# were consolidated: cars, vans, lorries, motorcycles and approved tractors now
+# share one range, and only two carve-outs survived — 76.000-77.999 for
+# diplomatic plates and 98.000-99.999 for taxis and patient transport.
+# English Wikipedia says "after 2012"; Danish Wikipedia says the digital
+# register came in "i 2011". Both are approximations of a date the
+# bekendtgørelse gives exactly.
+#
+# SOURCE TIERS, PER ROW, AND WHY THEY DIFFER BETWEEN THE TWO ERAS
+#   * `primary-authority` — SKAT's own documents: the 2012 plate catalogue
+#     (complete, every stocked plate type with its number range) and the
+#     archived skat.dk per-plate pages from the 2009 EU-plate rollout (one
+#     page per type, each carrying Serie / Betegnelse / Størrelse / Farve /
+#     Nummerrække / Format). Only ONE of those per-plate pages survived in the
+#     Internet Archive in a readable state — "Personbil - EU", Serie 61 — so
+#     the pre-2012 era has exactly one primary row.
+#   * `secondary-wikipedia` — the rest of the pre-2012 rows. Both the English
+#     and the Danish Wikipedia article carry a pre-2012 block table, each
+#     crediting the enthusiast register nrpl.dk. THE TWO TABLES DISAGREE, and
+#     PRD-PLATES §5.3 says record disagreements rather than average them, so
+#     conflicting rows carry both readings and a `conflict:` note. Nothing here
+#     is presented as an instrument.
+#
+# HOW A CONSUMER SHOULD USE THIS
+#   1. Establish the era first. A Danish number gives no era signal of its own,
+#      so the era must come from the vehicle record, not from the plate.
+#   2. In the 2012- era, only the diplomatic and taxi blocks are decisive; the
+#      general range says "car, van, lorry, motorcycle or approved tractor" and
+#      no more.
+#   3. In the pre-2012 era, treat every row below `evidence: secondary-wikipedia`
+#      as a hypothesis with a confidence, never as a fact. Old-stock plates from
+#      the pre-2012 blocks were still being issued alongside the new ones for
+#      years afterwards (Danish Wikipedia reports "frem til i hvert fald 2022"),
+#      so a pre-2012-shaped number on a 2020 registration is not an anomaly.
+jurisdiction: dk
+topic: serial-blocks
+authority:
+  name: Skatteforvaltningen (Motorstyrelsen) — Køretøjsregisteret
+  url: "https://motorst.dk/borger/nummerplader"
+sources:
+  - "https://www.retsinformation.dk/eli/lta/2025/663/dan/xml  # BEK 663/2025 § 68, stk. 3 — the enacted power to divide registration numbers into series by vehicle kind or use; accessed 2026-08-02"
+  - "https://www.retsinformation.dk/eli/lta/2012/504/dan/xml  # BEK 504/2012 § 118 — 'Bekendtgørelsen træder i kraft den 6. juni 2012', the hinge date; accessed 2026-08-02"
+  - "https://web.archive.org/web/20170917063422/https://www.skat.dk/getFiles.aspx?Id=e6c2c7e8-e7a7-4b5e-b15e-4b67e27d3f66&name=planche_nummerplader_2012.pdf  # SKAT, 'Liste over alle pladetyper i Danmark pr. 06.06.2012' — the complete plate-stock poster, source of every 2012- row below; archived capture 2017-09-17; accessed 2026-08-02"
+  - "https://web.archive.org/web/20110716080639/http://www.skat.dk/SKAT.aspx?oId=1826647  # skat.dk 'Personbil - EU', Serie 61: nummerrække 20.000-59.999, størrelse 120 x 504, farve Hvid/sort/rød, format '@@ ## ###'; the only pre-2012 row here with an authority source; archived capture 2011-07-16; accessed 2026-08-02"
+  - "https://web.archive.org/web/20120127070602/http://www.skat.dk/SKAT.aspx?oId=1826638  # skat.dk 'Nummerplader med EU-symbol', headed 'Aktuelle EU-nummerplader pr. 12. oktober 2009', the index of the per-plate pages; accessed 2026-08-02"
+  - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Denmark  # secondary-wikipedia: the pre-2012 block table, credited to nrpl.dk; accessed 2026-08-02"
+  - "https://da.wikipedia.org/wiki/Nummerplade  # secondary-wikipedia: a second, differently-cut pre-2012 block table, also credited to nrpl.dk, plus the note that pre-2012 stock kept being issued 'frem til i hvert fald 2022'; accessed 2026-08-02"
+period: { start: 1976 }
+period_evidence: statutory-date
+period_note: >-
+  1976 is the 1 April 1976 numbering guidelines that the whole two-letter system
+  rests on (BEK 663/2025 § 72, stk. 4, nr. 4). The table itself is split into
+  two eras at 6 June 2012; each era carries its own dates below. No row here
+  claims a date of its own — SKAT publishes ranges, never the day a range
+  opened.
+
+# ---------------------------------------------------------------------------
+# ERA 2: 6 JUNE 2012 ONWARDS. Primary throughout — every row is a line of
+# SKAT's own plate catalogue, dated by the catalogue's own title.
+# ---------------------------------------------------------------------------
+blocks_2012:
+  period: { start: 2012 }
+  period_evidence: instrument-in-force
+  period_note: >-
+    6 June 2012, from BEK 504/2012 § 118's commencement clause, corroborated by
+    the date SKAT put on the catalogue itself ("pr. 06.06.2012").
+  evidence: primary-authority
+  note: >-
+    The consolidation is the point. Before this date a Danish number told you
+    the vehicle's kind; after it, the general range covers cars, vans, lorries,
+    motorcycles and approved tractors alike, and only the diplomatic and taxi
+    carve-outs still decode. Ranges are written here as SKAT prints them.
+  rows:
+    - range: "10-99"
+      digits: 2
+      means: "fast prøveskilt (trade plate) — car and motorcycle alike"
+      series_ref: dk-dealer-testplate
+    - range: "100-999"
+      digits: 3
+      means: "stor knallert (moped over 30 km/h), and registreret traktor"
+      series_ref: [dk-moped-large, dk-tractor-registered]
+      note: >-
+        SKAT stocks two different plates on one range — the moped's 145x125 mm
+        white plate and the tractor's 240x165 mm one — so three digits alone do
+        not separate them; the plate SIZE does.
+    - range: "1.000-9.999"
+      digits: 4
+      means: "påhængsvogn, sættevogn and påhængsredskab (incl. campingvogn), and lille knallert"
+      series_ref: [dk-trailer-1976, dk-moped-small-2006]
+      note: >-
+        Again two plates on one range, separated by colour and size rather than
+        by number: the trailer plate is 504x120 mm yellow, the small moped's is
+        145x125 mm yellow.
+    - range: "10.000-75.999"
+      digits: 5
+      means: "the general range — personbil, vare-/lastbil, motorcykel, godkendt traktor"
+      series_ref: [dk-standard-1976, dk-van-commercial-yellow, dk-van-parrot-2009, dk-motorcycle-1976, dk-tractor-approved]
+      note: "DOES NOT DECODE to a vehicle kind. Together with 78.000-97.999 this is the consolidated block; the plate's colour and size carry the class, the number does not."
+    - range: "76.000-76.999"
+      digits: 5
+      means: "diplomatic — foreign states' diplomatic and consular missions"
+      series_ref: dk-diplomatic-mission
+      evidence: "primary-authority for the 76.000-77.999 block; secondary-wikipedia for the split at 77.000"
+      note: >-
+        SKAT's catalogue gives the diplomatic block undivided as 76.000-77.999.
+        The split into 76 for states' missions and 77 for international
+        organisations is reported consistently by both Wikipedia articles and is
+        tagged secondary-wikipedia; the block, the blue plate and the compulsory
+        EU band are primary (BEK 663/2025 §§ 76 and 68, stk. 5).
+    - range: "77.000-77.999"
+      digits: 5
+      means: "diplomatic — international organisations and institutions"
+      series_ref: dk-diplomatic-organisation
+      evidence: "primary-authority for the block; secondary-wikipedia for the split"
+    - range: "78.000-97.999"
+      digits: 5
+      means: "the general range, upper half — see 10.000-75.999"
+      series_ref: [dk-standard-1976, dk-van-commercial-yellow, dk-van-parrot-2009, dk-motorcycle-1976, dk-tractor-approved]
+    - range: "98.000-99.999"
+      digits: 5
+      means: "taxi and patient transport — SKAT's '20% (Taxi og sygetransportere)', after the reduced registration-tax rate"
+      series_ref: dk-taxi
+    - range: "RF10000-RF99999"
+      digits: 5
+      prefix: RF
+      means: "airport (airside-only) vehicle"
+      series_ref: dk-airport-rf
+    - range: "RF1000-RF9999"
+      digits: 4
+      prefix: RF
+      means: "airport (airside-only) trailer"
+      series_ref: dk-airport-rf-trailer
+      note: "SKAT's catalogue prints this range as 'RF1000-FR9999'; the trailing FR is a transposition in the source, recorded and not silently corrected"
+    - range: "100000-999999"
+      digits: 6
+      means: "blokvogn (heavy haulage) — the only Danish number with six digits, and no letters"
+      series_ref: dk-blokvogn
+    - range: "2-7 characters, letters and/or digits"
+      digits: null
+      means: "ønskenummer (personalised) — BEK 663/2025 § 74, stk. 2"
+      series_ref: dk-personalized-1992
+      evidence: primary-instrument
+      note: "the one row in this file whose grammar comes from the instrument rather than from the catalogue"
+
+# ---------------------------------------------------------------------------
+# ERA 1: 1 APRIL 1976 TO 5 JUNE 2012. One primary row; the rest is
+# secondary-wikipedia, and the two Wikipedia tables do not agree.
+# ---------------------------------------------------------------------------
+blocks_pre2012:
+  period: { start: 1976, end: 2012 }
+  period_evidence: statutory-date
+  period_note: >-
+    Opens with the 1 April 1976 numbering guidelines (BEK 663/2025 § 72, stk. 4,
+    nr. 4) and closes on 5 June 2012, the day before BEK 504/2012 came into
+    force. The closing date is exact; the opening date is the guidelines' date
+    and not a date on which any particular block opened.
+  issuance_tail_warning: >-
+    THE BLOCKS CLOSED; THE PLATES DID NOT. Danish Wikipedia reports that
+    remaining stock from these series kept being issued alongside the new
+    allocation "frem til i hvert fald 2022". A number in a pre-2012 block is
+    therefore evidence about the PLATE, not about the registration date.
+  default_evidence: secondary-wikipedia
+  conflict_summary: >-
+    The English and Danish Wikipedia tables agree on eight ranges and disagree
+    on four. The substantive disagreements are (a) whether 5.500-9.999 was small
+    mopeds or trailers/semi-trailers, (b) which of 78.000-87.999 and
+    88.000-97.999 was the square-plate goods vehicle and which the rectangular,
+    (c) whether tractors sat at 700-999 or also at 19.000-19.499, and (d) three
+    ranges that only the Danish table carries (30.00-49.99 exhausted, the
+    prøveskilt ranges, and 19.500-19.999 varemotorcykler). Every disagreement is
+    recorded on its row. Nothing is averaged.
+  rows:
+    - range: "001-699"
+      digits: 3
+      means: "stor knallert (moped up to 45 km/h)"
+      agreement: "en and da agree"
+    - range: "700-999"
+      digits: 3
+      means: "registreret traktor"
+      agreement: "en and da agree"
+    - range: "1.000-2.999"
+      digits: 4
+      means: "påhængsredskab, incl. campingvogn"
+      agreement: >-
+        en gives 'Trailers, 10 00 - 29 99'; da gives '10 00-29 99
+        Påhængsredskaber, herunder campingvogne'. Same range, da is the more
+        specific reading and is the one written here.
+    - range: "3.000-4.999"
+      digits: 4
+      means: "withdrawn — letter combinations exhausted"
+      agreement: "da only; absent from en"
+    - range: "5.000-5.399"
+      digits: 4
+      means: "faste prøveskilte, cars"
+      agreement: "da only; absent from en"
+    - range: "5.400-5.499"
+      digits: 4
+      means: "faste prøveskilte, motorcycles"
+      agreement: "da only; absent from en"
+      note: >-
+        Note the tension with the 2012- era, where SKAT gives the prøveskilt
+        range as 10-99 (two digits). Either the prøveskilt number was
+        renumbered at the consolidation or one of the two sources is wrong; no
+        source reached resolves it, and both readings are left standing.
+    - range: "5.500-9.999"
+      digits: 4
+      means: "DISPUTED"
+      conflict: >-
+        da: 'lille knallert (30-knallert), from letter block VB onwards'.
+        en: 'Small mopeds' at 5 500-9 999 AND 'Trailers and semi-trailers' at
+        55 00-99 99. da resolves the overlap by letter block — 55.00-99.99 up to
+        UZ is trailers and semi-trailers, 5.500-9.999 from VB is small mopeds —
+        which is the only reading that makes both ranges consistent, and is
+        therefore the one recorded as most likely. It is still secondary.
+      most_likely: "lille knallert from letter block VB; trailers and semi-trailers up to letter block UZ"
+    - range: "10.000-18.999"
+      digits: 5
+      means: "motorcykel"
+      agreement: "en and da agree"
+    - range: "19.000-19.499"
+      digits: 5
+      means: "godkendt traktor"
+      agreement: "en and da agree"
+    - range: "19.500-19.999"
+      digits: 5
+      means: "varemotorcykel (goods motorcycle)"
+      agreement: "da only; absent from en"
+    - range: "20.000-59.999"
+      digits: 5
+      means: "personbil, rectangular plate"
+      evidence: primary-authority
+      agreement: >-
+        THE ONE PRIMARY ROW IN THIS ERA. skat.dk's own 'Personbil - EU' page
+        gives Serie 61 with nummerrække 20.000-59.999, and both Wikipedia
+        tables agree with it. The agreement is worth recording: where the
+        authority can be checked, the secondary tables are right.
+    - range: "60.000-75.999"
+      digits: 5
+      means: "personbil with a square rear plate"
+      agreement: "en and da agree"
+    - range: "76.000-76.999"
+      digits: 5
+      means: "diplomatic — states' missions"
+      agreement: "en and da agree; unchanged through the consolidation"
+    - range: "77.000-77.999"
+      digits: 5
+      means: "diplomatic — international organisations"
+      agreement: "en and da agree; unchanged through the consolidation"
+    - range: "78.000-87.999"
+      digits: 5
+      means: "DISPUTED — vare- and lastbil"
+      conflict: >-
+        en: 'Trucks, buses, vans (rectangular format)'. da: 'Vare- og lastbiler
+        m. kvadratisk bagnummerplade' (SQUARE rear plate). The two articles
+        assign the rectangular and square readings to 78.000-87.999 and
+        88.000-97.999 in opposite order. Neither is primary and no authority
+        source reached covers either range, so both readings stand.
+      most_likely: null
+    - range: "88.000-97.999"
+      digits: 5
+      means: "DISPUTED — vare- and lastbil"
+      conflict: "the mirror image of 78.000-87.999; en says square, da says rectangular"
+      most_likely: null
+    - range: "98.000-99.699"
+      digits: 5
+      means: "taxi and hire limousine, rectangular plate"
+      agreement: "en and da agree"
+    - range: "99.700-99.999"
+      digits: 5
+      means: "taxi and hire limousine with a square rear plate"
+      agreement: "en and da agree"
+
+# ---------------------------------------------------------------------------
+# WHAT IS NOT IN THIS FILE
+# ---------------------------------------------------------------------------
+not_covered:
+  pre_1958_county_letters: >-
+    The single letter on a pre-1958 Danish plate WAS geographic — an amt or city
+    marker — and that much is corroborated from the instrument side, since BEK
+    633/2009 § 101, stk. 2 and BEK 651/2011 § 102, stk. 2 both keep
+    single-letter plates lawful on the road. But no source reached, primary or
+    secondary, ENUMERATES the letters against their counties. A decode table
+    with no rows is worse than no decode table, so none is shipped and the gap
+    is filed in plates/dk.yml under dk-gap-pre1958-county-letters. The
+    enthusiast register nrpl.dk, cited by both Wikipedia articles, is the
+    likeliest place a full list exists.
+  police_district_combinations: >-
+    Danish Wikipedia reports that more than a hundred two-letter combinations
+    used by the individual police districts before the Centralregisteret for
+    Motorkøretøjer centralised registration in the late 1960s are permanently
+    skipped in allocation. The list is not reproduced and no claim is made about
+    its membership.
+  nordic_border_office_codes: >-
+    The abolished nordiske grænsenummerplade is reported to have carried the
+    issuing motor office in its first two digits. No source enumerates the
+    codes; see dk-border-nordic in plates/dk.yml.
+  letter_blocks: >-
+    NO LETTER-BLOCK DECODE EXISTS AND NONE IS INVENTED. Danish letters are a
+    pure serial: they are re-used after twelve years (BEK 663/2025 § 2, stk. 6
+    corroborates the twelve), allocation restarted from AA with the digital
+    register, and stock from the old per-kind blocks kept being issued for a
+    decade afterwards. Wikipedia's "highest assigned serial letters" columns
+    record how far allocation had reached in each block at the time of writing;
+    they are a moving watermark rather than a decode, and they are deliberately
+    not reproduced here.

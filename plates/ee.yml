@@ -1,0 +1,1275 @@
+# plates/ee.yml — Estonia (PRD-PLATES gate L1, EU/EEA wave 2). DRAFT for
+# verification: researched by an Opus L1 researcher, never applied directly.
+#
+# THE ESTONIAN SOURCE CHAIN, AND WHY THE CURRENT LAYER IS UNUSUALLY CLEAN
+#
+# Estonia's plate law is a two-step delegation and BOTH steps are free, textual
+# and fetchable from Riigi Teataja — and, decisively, the technical annexes are
+# dimensioned STATUTORY DRAWINGS, one per mark type, each printed with a sample
+# mark. That means the letter/digit arrangement of every Estonian plate is
+# readable off the instrument itself rather than inferred from photographs:
+#
+#   1. LIIKLUSSEADUS (the Traffic Act) — the frame. § 76 lõige 13 is the
+#      volitusnorm: the content of, and requirements for, the state
+#      registration mark are delegated to a ministerial määrus. § 158 lõige 7
+#      is the second limb of the same delegation. Both are named in the
+#      määrus's own kehtestamisnorm, quoted verbatim below.
+#   2. MAJANDUS- JA KOMMUNIKATSIOONIMINISTRI 21.06.2011 MÄÄRUS NR 49,
+#      "Riiklikele registreerimismärkidele ja nende valmistamisele esitatavad
+#      nõuded" — the plates instrument proper. Vastu võetud 21.06.2011,
+#      avaldamismärge RT I, 28.06.2011, 17, jõustumine 01.07.2011. The wording
+#      in force for this pass is RT I, 03.06.2022, 12, jõustunud 30.09.2022.
+#      § 2 enumerates SIXTEEN mark types (A1-A12, B1-B3, D1-D2, E1-E2); Lisa 1
+#      tabulates type x vehicle category x colours x plate dimensions; Lisa 2
+#      is the symbol size table; Lisa 3 is the drawings (näidised 1-19).
+#   3. A THIRD instrument bears on plates without governing them: majandus- ja
+#      kommunikatsiooniministri 13.06.2011 määrus nr 42 (tehnonõuded), whose
+#      Lisa 1 kood 101 points BACK to the § 76(13) määrus and supplies the
+#      EST oval sign geometry. Cited where it carries a claim, never as the
+#      format source.
+#
+# SIX STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE FORMAT IS DIGITS-THEN-LETTERS, AND THAT IS THE STANDING TELL.
+#    Näidis 1 to Lisa 3 draws the A1 car plate as "053 EEN" — three digits in a
+#    left-aligned digit field, then three letters in a right-aligned letter
+#    field. § 3(2), as amended with effect from 30.09.2022, states the
+#    alignment rule in terms: "Registreerimismärgi tüübil A1 joondatakse
+#    numbrid numbrite väljal vasakule ja tähed tähtede väljal paremale ning
+#    sümbolite omavaheline kaugus väljal on maksimaalselt 28 mm." Estonia is
+#    therefore the mirror of Finland's car mark (ABC-123) and matches the
+#    Finnish L-CLASS mark's order — a live cross-jurisdiction confusion this
+#    file states explicitly so the parse API does not inherit it.
+#
+# 2. THE PLATE IS 520 x 113 mm, NOT 520 x 110. Lisa 1's dimensions column
+#    reads "520x113" for A1, A2, A4, A5, A8, A10, D1, E2 and A12; the drawings
+#    in Lisa 3 dimension the same 113 mm height (10,5 + 77 + 11,5 + border).
+#    The 110 mm figure that circulates for Estonia is NOT what the instrument
+#    says. This is recorded, not averaged (PRD-PLATES §5.3).
+#
+# 3. THE TRANSIT PLATE'S GROUND IS "VÄRVITU" — COLOURLESS, NOT WHITE. Lisa 1
+#    gives D1 and D2 "Värvitu aluspõhi, punased sümbolid". Every other white
+#    plate in the same table is "Valge aluspõhi". The instrument distinguishes
+#    the two words, so this file does not silently collapse them into #FFFFFF:
+#    see the spec_note on each transit series. § 5(2) corroborates — D1 and D2
+#    (with A9 and B2) are the types exempted from the retroreflective coating,
+#    which is why an uncoloured ground is possible at all.
+#
+# 4. THE LETTER RESTRICTIONS ARE REAL, SOURCED AND PER-TYPE. § 6(2)-(5) is an
+#    unusually explicit charset provision: A, M and W each carry their own
+#    per-type prohibitions, and § 6(5) — added with effect from 06.06.2022 —
+#    reads "Tähti A, M ja W ei kasutata koos A1 tüüpi registreerimismärgil."
+#    These are encoded in `charset:` and, where the round-trip permits, in
+#    `regex_strict`. Lisa 2 corroborates mechanically: the W column for kirja
+#    tüüp 3 is "-", i.e. no glyph width is published, because W is forbidden
+#    on every type that uses that font.
+#
+# 5. THE 2004 BOUNDARY IS IN THE INSTRUMENT, AND IT IS 1 JULY, NOT 1 MAY.
+#    § 7^1(2), inserted by RT I, 19.06.2020, 16 (jõust. 22.06.2020), reads:
+#    "Enne 1. juulit 2004. a liiklusregistris registreeritud sõidukile
+#    väljastatud registreerimismärki ei pea ümber vahetama käesoleva määruse
+#    nõuetele vastava registreerimismärgi vastu." Estonia acceded to the EU on
+#    1 May 2004; the plate boundary the law itself names is 1 JULY 2004. The
+#    two dates are NOT the same event and this file does not merge them. See
+#    `eu_band` below for exactly how far this evidence reaches — it is a
+#    statutory boundary date, not a sourced first-issue date.
+#
+# 6. THE MARK ENCODES NOTHING TODAY, AND NO DECODE TABLE IS SHIPPED.
+#    See `region_encoding_gap` below. This is a deliberate, evidenced NO —
+#    the same outcome as plates/fi.yml, for different reasons.
+#
+# REGEX POLICY (as in plates/fi.yml and plates/de.yml). `format.regex` is the
+# lint-round-trippable printed form. `format.regex_strict` carries the § 6
+# charset prohibitions that the round-trip forbids `regex` from expressing,
+# and only where a strict twin is genuinely narrower than the loose one.
+#
+# SEPARATORS. Estonia prints TWO different separations and the instrument
+# distinguishes them. On A1 the groups are divided by a GAP whose width is
+# specified as a field boundary in Lisa 3 (25 mm between the digit field and
+# the letter field) with no glyph — spelled here as a space, per
+# PRD-PLATES §2.6. On D1/D2 the transit plates a HYPHEN IS DRAWN, and Lisa 3
+# dimensions it explicitly (44 mm wide x 11 mm high on D1) — so those patterns
+# spell a literal "-". Same dataset, two honest separators, both from drawings.
+jurisdiction: ee
+authority:
+  name: Transpordiamet (Estonian Transport Administration)
+  url: "https://www.transpordiamet.ee/registreerimismargid"
+binding: vehicle          # Liiklusseadus § 76 and määrus nr 49 § 1 attach the
+                          # mark to the SÕIDUK entered in the liiklusregister,
+                          # not to its owner (contrast CH).
+instrument:
+  act:
+    citation: "Liiklusseadus"
+    delegating_provisions: "§ 76 lõige 13 (requirements for the state registration mark) and § 158 lõige 7"
+    quoted: >-
+      The määrus's own kehtestamisnorm, verbatim in the wording in force:
+      "Määrus kehtestatakse liiklusseaduse § 76 lõike 13 ja § 158 lõike 7
+      alusel." (The pre-2022 wording spelled the Act's name in quotation marks:
+      "Määrus kehtestatakse „Liiklusseaduse” § 76 lõike 13 ja § 158 lõike 7
+      alusel.") Estonia's tehnonõuded määrus nr 42 restates the same chain from
+      the other side, Lisa 1 kood 101: "liiklusregistrisse kantud sõiduki
+      registreerimismärk peab vastama „Liiklusseaduse” § 76 lõike 13 alusel
+      kehtestatud majandus- ja kommunikatsiooniministri määruses sätestatud
+      nõuetele."
+    source: "https://www.riigiteataja.ee/aktilisa/1160/6201/1008/MKM42_lisa1.pdf  # MKM 13.06.2011 määrus nr 42 Lisa 1, kood 101 Registreerimismärk — names Liiklusseadus § 76(13) as the enabling provision and gives the EST oval geometry (240x145 mm, or 175x115 mm on L-category vehicles and their trailers)"
+  regulation:
+    citation: "Majandus- ja kommunikatsiooniministri 21.06.2011 määrus nr 49, „Riiklikele registreerimismärkidele ja nende valmistamisele esitatavad nõuded”"
+    given: "2011-06-21"
+    published: "RT I, 28.06.2011, 17"
+    in_force_from: "2011-07-01"
+    wording_in_force: "RT I, 03.06.2022, 12 — sõnastuse jõustumise kp 30.09.2022; sõnastuse kehtivuse lõpp: hetkel kehtiv"
+    signed: "Juhan Parts, Minister; Marika Priske, Kantsler"
+    amendments_relied_on:
+      - "RT I, 02.12.2011, 13 — jõust. 05.12.2011: inserted § 6^1 (the üksikkorras/eritellimus rules, including the 9-symbol ceiling)"
+      - "RT I, 02.09.2014, 1 — jõust. 05.09.2014: added type A11 and rewrote Lisa 1 and Lisa 3"
+      - "RT I, 19.06.2020, 16 — jõust. 22.06.2020: inserted § 7^1(2), the 1 July 2004 exchange saving"
+      - "RT I, 03.06.2022, 3 — jõust. 06.06.2022 and 30.09.2022: added type A12 (President), the § 3(2) A1 alignment rule, the § 6(5) A/M/W rule, the laser-engraved security option (§ 5(3^1)) and Lisa 4"
+    source: "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # the consolidated text in force; the as-published original is at /akt/128062011017"
+  annexes:
+    lisa1: "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # REGISTREERIMISMÄRKIDE TÜÜBID — the one table that fixes, per type: kirja tüüp, sõiduki kategooria, värvused, märgi mõõdud (mm), lühikirjeldus, and the näidis number. In the wording of majandus- ja taristuministri 30.05.2022 määrus nr 45."
+    lisa2: "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM49_lisa2.pdf  # symbol heights/widths per kirja tüüp; note the W column is '-' for kirja tüüp 3"
+    lisa3: "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # REGISTREERIMISMÄRKIDE NÄIDISED 1-19 — the dimensioned statutory drawings. EVERY format claim in this file is read off these."
+    lisa4: "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa4.pdf  # security-element layout (the laser-engraved 'EESTI VABARIIK' + riigivapp option)"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  fields:
+    rule: >-
+      § 3(1), verbatim: "Registreerimismärkidel peavad olema eraldi järgmised
+      väljad: 1) tähtede väli; 2) numbrite väli; 3) Euroopa Liidu embleemi ja
+      Eesti riigi tunnusmärgi „EST” väli." Three separate FIELDS — letters,
+      digits, and the EU/EST band. § 3(1^1) carves out the exceptions: "A2 ja
+      B3 tüüpi registreerimismärgil ühine tähtede ja numbrite väli ja A12 tüüpi
+      registreerimismärgil on tähtede ja numbrite välja asemel riigivapi väli."
+    consequence: >-
+      The letters and digits sit in SEPARATE fields on every ordinary Estonian
+      plate, which is why the printed form always shows a gap between the
+      groups even though no instrument names a separator glyph for it. A2
+      (personalised) and B3 (moped) share one field; A12 (President) has a
+      coat-of-arms field INSTEAD of any serial field at all — see out_of_scope.
+    source: "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 3(1), § 3(1^1)"
+  charset:
+    alphabet: "Latin capitals and Arabic numerals only"
+    alphabet_rule: >-
+      § 3(5), verbatim: "Registreerimismärkidel kasutatavateks sümboliteks
+      peavad olema ladina tähestiku suurtähed ja araabia numbrid vastavalt
+      lisas 3 toodud registreerimismärkide näidistega kujundustele." No
+      Estonian-specific letters (Õ Ä Ö Ü) appear in any näidis, so unlike
+      Finland's 29-glyph annex there is no Å/Ä/Ö question here — the Estonian
+      repertoire as drawn is A-Z and 0-9, which is exactly the dataset's serial
+      alphabet (PRD-PLATES §2.6). This is a rare clean fit and is stated so it
+      is not mistaken for an assumption.
+    glyph_standard: >-
+      § 3(6): the symbol images must conform to "Eesti standardi EVS 597:2004
+      lisale B" AND to the Lisa 3 drawings. EVS 597:2004 is a purchasable
+      Estonian standard and its text is NOT pinned in this pass (the same
+      posture PRD-PLATES §4 takes to SAE J686) — recorded as a gap. The
+      drawings in Lisa 3 are free and are what the render layer derives from.
+    stroke_widths: >-
+      § 3(4), verbatim: "Registreerimismärkidel kasutatavate sümbolite joonte
+      jämedus peab kirja tüüpide 1 ja 3 korral olema 7 mm ning kirja tüüpide 2
+      ja 4 korral 11 mm."
+    letter_restrictions:
+      A: >-
+        § 6(2): forbidden on D2. On A3, A may be used together with M once,
+        otherwise twice. On B1, B2 and B3 A may be used once and never together
+        with M. On D1, A may not be used together with W.
+      M: >-
+        § 6(3): forbidden on D2. On A3, M with A once, otherwise twice. On B1,
+        B2, B3 once and never with A. On D1, not together with W. NOTE: the
+        pre-2022 wording also forbade M on A9; the 06.06.2022 amendment REMOVED
+        A9 from that prohibition, which is why the A9/B2 näidis can draw "M 433".
+      W: >-
+        § 6(4): forbidden on A3, B1, B2, B3 and D2. On D1 not together with A
+        or M. Otherwise permitted once.
+      A1_combination: >-
+        § 6(5), inserted with effect from 06.06.2022, verbatim: "Tähti A, M ja
+        W ei kasutata koos A1 tüüpi registreerimismärgil." On the ordinary car
+        plate the three letters A, M and W are not used TOGETHER. The provision
+        is terse and its exact reach is ambiguous in the Estonian (it plausibly
+        means no two of {A,M,W} may co-occur in one three-letter group); this
+        file encodes the UNAMBIGUOUS reading only — that A, M and W do not all
+        three appear together — and records the ambiguity rather than guessing.
+    source: "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # §§ 3(4)-(6), 6(2)-(5)"
+  materials:
+    blank: '§ 5(1): "Registreerimismärgid valmistatakse ilmastikukindlast eritöödeldud lehtalumiiniumist, mille vähim paksus on 1 mm." Weatherproofed sheet aluminium, minimum 1 mm.'
+    technical_standard: '§ 4(1), as amended 06.06.2022: "Registreerimismärkide tehnilised nõuded peavad vastama standardile ISO 7591:1982 või samaväärsetele nõuetele." The "või samaväärsetele nõuetele" (or equivalent requirements) limb is the 2022 addition.'
+    border: '§ 4(2): "Registreerimismärgil peab olema tugevdusrant, mille keskmine osa on sümbolite ja väline serv aluspõhja värvi." A strengthening rim whose middle part is in the symbol colour and whose outer edge is in the ground colour.'
+    retroreflection: >-
+      § 5(2): a special retroreflective coating and direction-sensitive "EST"
+      security emblems are required on every type EXCEPT A9, B2, D1 and D2 —
+      the historic pair and the transit pair.
+    security_thread: >-
+      § 5(3): the coating must carry a virtual security thread of two sinusoidal
+      overlapping waves. § 5(3^1), from 06.06.2022, permits an ALTERNATIVE:
+      laser-engraved "EESTI VABARIIK" and a small coat of arms at varying
+      angles (layout in Lisa 4).
+    source: "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # §§ 4-5"
+  colours:
+    hex_basis_note: >-
+      NO Estonian instrument gives an RGB, RAL or Pantone value for any plate
+      colour. Lisa 1 names them only as words — "Valge aluspõhi, mustad
+      sümbolid", "Sinine aluspõhi, valged sümbolid", "Must aluspõhi, valged
+      sümbolid", "Punane aluspõhi, valged sümbolid", "Roheline aluspõhi, mustad
+      sümbolid", "Värvitu aluspõhi, punased sümbolid". Every hex in this file is
+      therefore `hex_basis: observed`, sampled from the Lisa 3 statutory
+      drawings (which are vector art in the instrument, so better evidence than
+      a photograph, but still not a colorimetric specification).
+    vocabulary_caution: >-
+      "Värvitu" (colourless) is a SIXTH word, used only for D1/D2, and it is not
+      a synonym for "valge" (white) — the same table uses both. Do not read the
+      transit hex as a spec claim.
+    source: "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1, Värvused column"
+  eu_band:
+    side: left
+    content: eu-stars+EST
+    definition: >-
+      § 4(3), verbatim: "Paragrahvi 3 lõike 1 punktis 3 nimetatud väljale
+      kantakse Euroopa Liidu lipu kujutis ja Eesti riigi tunnusmärk „EST”
+      kooskõlas Nõukogu määrusega (EÜ) nr 2411/98 mootorsõidukite ja nende
+      haagiste registreerimisliikmesriigi tunnusmärgi tunnustamise kohta
+      ühendusesiseses liikluses (EÜT L 299, 10.11.1998, lk 1–3)." § 4(4) gives
+      the CONTENT: "Euroopa lipu kujutise taustavärv on sinine, 12 viisnurkset
+      ringikujuliselt paiknevat tähte on kollased ja tunnusmärk „EST” on
+      valge." Twelve five-pointed yellow stars on blue, white EST — a textual
+      definition of the band, which Reg. 2411/98's own bitmap annex does not
+      supply (the EU dossier's finding 1, reproduced here for Estonia).
+    geometry: "the band field is 50 mm wide on the 520 mm plates and on the 302 x 152 reduced plates, and 40 mm on the 177 x 101 B-series plates, per the Lisa 3 drawings"
+    exempt_types: >-
+      § 7(4): "Vanasõiduki registreerimismärgil ei ole nõutav § 3 lõike 1
+      punktis 3 nimetatud välja kasutamine" — the historic-vehicle mark (A9,
+      and B2 by the same logic) need not carry the band field at all, which is
+      why näidis 9 and näidis 12 are drawn without one.
+    dating_caveat: >-
+      READ THIS BEFORE USING THE 2004 DATES IN THIS FILE. The 2011 määrus
+      REQUIRES the band but does not date its introduction, because the band
+      predates it by seven years. What the instrument DOES supply is a boundary:
+      § 7^1(2) exempts from exchange any mark issued to a vehicle registered
+      "enne 1. juulit 2004. a". That is a statutory boundary date and this file
+      tags the banded series `statutory-date` on its strength. It is NOT a
+      sourced first-issue date, and the INSTRUMENT THAT INTRODUCED THE BAND —
+      necessarily made under the previous Liiklusseadus (2001) and repealed
+      when the 2010 Act and this määrus took effect on 1 July 2011 — was NOT
+      located in this pass. Riigi Teataja publishes consolidated texts only
+      from 01.06.2002 ("Terviktekste avaldatakse alates 01.06.2002"), and the
+      repealed pre-2011 plates määrus did not surface through the consolidated-
+      text search. Recorded as a gap; see gaps.eu_band_instrument.
+    source: "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # §§ 4(3)-(4), 7(4), 7^1(2)"
+  oval_sign:
+    note: >-
+      SEPARATE FROM THE BAND. Määrus nr 42 Lisa 1 kood 102 "Riigi tunnusmärk":
+      the oval's axes are at least 240 mm x 145 mm, or 175 mm x 115 mm on
+      L-category vehicles and their trailers; "Märgi värv on valge,
+      tähekombinatsioon ja ääris on mustad"; and kood 102(3) forbids additions:
+      "märgile on keelatud kanda või juurde lisada muud sümboolikat ja kasutada
+      seda muudel eesmärkidel." Kood 102(6) records that for a vehicle
+      registered in an EU member state the sign may instead be carried ON the
+      plate per Reg. 2411/98. Estonia's distinguishing sign is EST.
+    source: "https://www.riigiteataja.ee/aktilisa/1160/6201/1008/MKM42_lisa1.pdf  # kood 102, joonis 1"
+  font:
+    name: "no name — four statutory DRAWINGS"
+    statutory_basis: >-
+      § 3(3): "Registreerimismärkidel kasutatakse nelja erinevat kirjatüüpi
+      kooskõlas lisaga 1 ja lisas 3 toodud registreerimismärkide kujundustega."
+      FOUR font types, assigned per mark type by Lisa 1's "Kirja tüüp" column:
+      tüüp 1 (49 mm, 7 mm stroke), tüüp 2 (77 mm, 11 mm stroke), tüüp 3 (49 mm,
+      7 mm stroke) and tüüp 4 (77 mm, 11 mm stroke). Tüüp 1/2 and tüüp 3/4 pair
+      by height but differ in width table (Lisa 2), tüüp 3/4 being the narrower
+      condensed cut. Exactly the UK/DE/ES/FI pattern of PRD-PLATES §6: the legal
+      object is a drawing plus a width table, not a licensable typeface.
+    symbol_sizes: >-
+      Lisa 2 Tabel 1 (heights, then widths for digits 1 / 3 / all others and
+      letters A / I / J / L): tüüp 1 h49 — 14,5 / 27 / 28 and 42 / 7 / 24 / 28;
+      tüüp 2 h77 — 22,8 / 43 / 44 and 66 / 11 / 37,5 / 44; tüüp 3 h49 — 14 / 21
+      / 21 and 28 / 7 / 14 / 21; tüüp 4 h77 — 22 / 33 / 33 and 44 / 11 / 22 /
+      33. Tabel 2 adds the wide letters M / T / W / Y and the rest: tüüp 1 —
+      42 / 28 / 56 / 35 / 35; tüüp 2 — 66 / 44 / 88 / 55 / 55; tüüp 3 — 31,5 /
+      21 / "-" / 24,5 / 21; tüüp 4 — 49,5 / 33 / 55 / 38,5 / 33.
+    w_absence_is_evidence: >-
+      The "-" in the W column for kirja tüüp 3 is not an omission: kirja tüüp 3
+      is used only by B1, B2 and B3, and § 6(4) forbids W on exactly those three
+      types. The width table and the prohibition corroborate each other.
+    source: "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM49_lisa2.pdf  # Lisa 2 Tabel 1 and Tabel 2"
+
+# ---------------------------------------------------------------------------
+# THE DECODE QUESTION, ANSWERED NO — WITH EVIDENCE, NOT BY OMISSION.
+# ---------------------------------------------------------------------------
+region_encoding_gap:
+  decision: "NO decode table is shipped for Estonia. `region_encoding: none` on every series."
+  current_position: >-
+    NOTHING in määrus nr 49 assigns meaning to any position of an Estonian
+    mark. The instrument specifies fields, fonts, colours, dimensions and a set
+    of per-type letter prohibitions (§ 6) — and no geographic, temporal or
+    class semantics whatsoever, with the single exception of the fixed literal
+    tokens that ARE the class (PROOV on A8/A11, CD/CMD on the diplomatic
+    types). A1 marks are allocated from a national pool.
+  historic_position: >-
+    Estonia DID once encode the issuing ARK office in the first letter, and
+    abolished it — which is precisely why no table is shipped even as history.
+    The abolition is attested only SECONDARILY: English Wikipedia's Estonia
+    article states that random series began to be issued in August 2019, and
+    separately that "as of 2013" the first letter no longer indicated the
+    region. Those two statements are not consistent with each other, no primary
+    was located for either, and the pre-2019 office-letter mapping appears in
+    that article as a TABLE. Shipping a decode table on that evidence would
+    manufacture precision the sources do not carry, and PRD-PLATES §2.4 warns
+    in terms that a decode table which cannot state its own reliability will
+    make the parse API lie (the France/SIV finding).
+  what_would_close_it: >-
+    A Maanteeamet/Transpordiamet allocation instruction, or the pre-2011
+    registration määrus made under the 2001 Liiklusseadus, either of which would
+    date the office-letter scheme and its end. Neither surfaced in this pass.
+  sources:
+    - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # the whole instrument — read for allocation semantics, which it does not contain"
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Estonia  # SECONDARY, per-fact: the statement that random series are issued from August 2019, and the inconsistent 'as of 2013' statement — cited here as the reason for the gap, not as data"
+
+# ---------------------------------------------------------------------------
+# Recorded but deliberately NOT authored as series.
+# ---------------------------------------------------------------------------
+out_of_scope:
+  president_a12:
+    status: "NO SERIAL — cannot be a series under this schema."
+    detail: >-
+      Type A12, added by RT I, 03.06.2022, 3 (jõust. 06.06.2022): "Vabariigi
+      Presidendi sõiduki registreerimismärk". § 3(1^1) says that on A12 there is
+      a RIIGIVAPI VÄLI instead of the letters and numbers fields — "A12 tüüpi
+      registreerimismärgil on tähtede ja numbrite välja asemel riigivapi väli"
+      — and näidis 19 draws a 520 x 113 white plate carrying the EU/EST band and
+      the Estonian coat of arms and no mark at all. A plate with no serial has
+      no pattern and no regex. The same rule predates the plate type: määrus
+      nr 42 Lisa 1 kood 101(1) already said "Vabariigi Presidendi sõidukil võib
+      registreerimismärgi asemel kasutada suurt riigivappi kandvat märki."
+      (Compare fi.yml's `out_of_scope.president` — the identical schema
+      collision in a neighbouring jurisdiction.)
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)16), § 3(1^1)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 19"
+  military:
+    status: "SEPARATE INSTRUMENT — not researched to its text in this pass."
+    detail: >-
+      Estonian Defence Forces and Defence League vehicles are registered and
+      marked under their own instrument, "Kaitseväe ja Kaitseliidu sõidukite ja
+      haagiste registreerimistunnistuse vorm ning riikliku registreerimismärgi
+      valmistamise nõuded" (11 November 2011). Määrus nr 49 does not cover them
+      and no military type appears in its § 2 list. The instrument is pinned
+      below but its text was NOT fetched in this pass, so no format, no colour
+      and no period is asserted and no series is authored.
+    source: "https://www.riigiteataja.ee/akt/108112011009  # pinned, not read — the Kaitsevägi/Kaitseliit marking instrument"
+  evs_597_2004:
+    status: "PAYWALLED STANDARD — cited by the instrument, text not pinned."
+    detail: >-
+      § 3(6) binds the symbol images to "Eesti standardi EVS 597:2004 lisale B"
+      as well as to Lisa 3. EVS 597:2004 is sold by the Estonian Centre for
+      Standardisation and its text was not purchased for this pass. PRD-PLATES
+      §4's SAE J686 posture applies verbatim: never quote the standard's
+      dimensions except via a free instrument. Everything this file states about
+      glyph geometry comes from Lisa 2 and Lisa 3, both free.
+
+gaps:
+  eu_band_instrument: >-
+    The instrument that FIRST required the EU/EST band on Estonian plates was
+    not located. It was necessarily made under the Liiklusseadus in force
+    before 1 July 2011 and repealed with it. Riigi Teataja's consolidated-text
+    corpus begins 01.06.2002 and the searches run in this pass (title and
+    full-text, status KEHTETUD and KOIK, validity dates 1996/2005/2006) did not
+    surface it. Consequence: `ee-standard-eu` is dated on the § 7^1(2)
+    statutory boundary (1 July 2004), tagged `statutory-date`, NOT on a
+    first-issue instrument. A verifier with Riigi Teataja's pre-2002 paper
+    archive should close this.
+  independence_transition_instrument: >-
+    THE SLICE'S NAMED RISK, AND IT IS OPEN FOR ESTONIA. Estonia restored
+    independence on 20 August 1991 and replaced Soviet-era plates (the ЕА and
+    ЭС series) with its own. The instrument that did so, and its date, were NOT
+    located: Riigi Teataja's consolidated texts do not reach 1991, and no
+    Transpordiamet page carries the history. The 1991 start on
+    `ee-standard-1991` therefore rests on a SINGLE SECONDARY sentence and is
+    tagged `secondary-dated`. It is NOT to be reported as an instrument date,
+    and it must not be assumed to be the same date as Latvia's or Lithuania's —
+    the three transitions were separate national acts.
+  a3_series_semantics: >-
+    Type A3 (the 302 x 152 reduced car plate, two digits + three letters) is
+    widely said to have been issued to vehicles built for the North American
+    market, whose bumpers take the squarer plate, with early series starting Z.
+    Määrus nr 49 says only "üldkasutatav autode ja haagiste registreerimismärk
+    vähendatud mõõtmetega" and imposes no letter constraint beyond § 6. The
+    Z-series claim is NOT encoded.
+  a10_letter_group: >-
+    Näidis 10 draws the racing plate as "SP 0003", and the same two-letter,
+    four-digit shape is reported elsewhere as a fixed SP prefix with a leading
+    zero. The REGULATION fixes neither the letters nor the leading zero, and
+    the Lisa 3 drawings elsewhere use throwaway sample serials ("053 EEN",
+    "ED 2345"), so "SP" cannot be assumed to be a literal. `ee-racing-a10` is
+    therefore modelled with a free two-letter group and the SP observation is
+    recorded here rather than encoded as a regex.
+  a1_amw_rule_reach: >-
+    § 6(5) "Tähti A, M ja W ei kasutata koos A1 tüüpi registreerimismärgil" is
+    encoded only in its unambiguous reading (not all three together). Whether
+    it in fact forbids any PAIR from {A, M, W} is not resolvable from the text
+    and no Transpordiamet page explains it. Flagged for the human pass.
+
+series:
+
+  # =========================================================================
+  # THE CURRENT CAR PLATE. Type A1 — Lisa 1: kirja tüüp 2, categories M, N, O,
+  # "Valge aluspõhi, mustad sümbolid", 520x113 mm, näidis 1.
+  # =========================================================================
+  - id: ee-standard-eu
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2004 }
+    period_evidence: transitional-provision   # § 7^1(2) is a TRANSITIONAL
+                              # SAVING, not a commencement clause: it exempts
+                              # pre-1.07.2004 registrations from exchange, and
+                              # so fixes the boundary from the far side. More
+                              # accurate than `statutory-date`, which would
+                              # imply the instrument commanded the start.
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} [A-Z]{3}\z'
+      regex_strict: '\A\d{3} (?!AMW|AWM|MAW|MWA|WAM|WMA)[A-Z]{3}\z'
+      charset:
+        letters: "3, Latin capitals (§ 3(5)); A, M and W not used together (§ 6(5))"
+        digits: "3"
+        notes: >-
+          The one narrowing `regex` cannot carry is § 6(5)'s A/M/W rule, encoded
+          in the strict twin in its unambiguous reading only — the negative
+          lookahead rejects a letter group made up entirely of A, M and W in any
+          order (AMW, AWM, MAW, MWA, WAM, WMA). See gaps.a1_amw_rule_reach: a
+          wider reading (no two of the three) is arguable from the Estonian and
+          is NOT encoded, because guessing wider would silently reject valid
+          marks.
+      progression: >-
+        Not stated in the instrument. Estonia allocates A1 marks from a national
+        pool with no published geographic or temporal semantics — see
+        region_encoding_gap.
+      separator_note: >-
+        NO separator GLYPH is prescribed. § 3(1) puts the digits and the letters
+        in two SEPARATE FIELDS and näidis 1 dimensions the boundary between them
+        at 25 mm (digit field 157 max, letter field 225 max, inside a 520 mm
+        plate). Spelled here as a space per PRD-PLATES §2.6 rule 2. § 3(2) adds
+        the alignment: digits flush LEFT in the digit field, letters flush RIGHT
+        in the letter field, symbols at most 28 mm apart within a field.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "Lisa 1 says only 'Valge aluspõhi, mustad sümbolid'; no RGB/RAL exists in Estonian law" }
+      foreground: "#000000"
+      border: { color: "#000000", note: "§ 4(2) tugevdusrant — the strengthening rim, middle part in the symbol colour, outer edge in the ground colour; R10 corner radius per näidis 1" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed, note: "50 mm wide field; 12 yellow five-pointed stars on blue with white EST (§ 4(4))" }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11, width_letters_mm: 44, width_digits_mm: 44, note: "Lisa 2: kirja tüüp 2; wide letters M 66, W 88, T 44, Y 55; digit '1' 22,8" }
+      emblem: { present: false }
+      seal: { present: false, note: "Estonia applies no inspection sticker to the plate; the round registration label carried between the groups on pre-2004 plates is gone — see ee-standard-1991" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # määrus nr 49 § 2(1)1) type A1; § 3(1)-(2) fields and A1 alignment; § 3(5) Latin capitals; § 4(2)-(4) rim and band; § 5 materials; § 6(5) the A/M/W rule; § 7^1(2) the 1 July 2004 boundary"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A1: kirja tüüp 2, kategooria M/N/O, 'Valge aluspõhi, mustad sümbolid', 520x113, näidis 1"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 1 — the statutory drawing, sample mark '053 EEN', field widths 157 max / 25 / 225 max, band 50, plate height 113 (10,5 + 77 + 11,5)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM49_lisa2.pdf  # Lisa 2 kirja tüüp 2 symbol heights and widths"
+      - "https://www.transpordiamet.ee/registreerimismargid  # the authority's own page: the A1-A12/B/D/E type list, the 5-year plate-retention rule, and the rule that a vehicle may not mix plates with and without the EU flag and EST"
+    notes: >-
+      THE CURRENT ESTONIAN PLATE, and the one whose start date must be read
+      carefully. period.start 2004 is a STATUTORY BOUNDARY, not a first-issue
+      date: § 7^1(2) exempts from exchange any mark issued to a vehicle
+      registered "enne 1. juulit 2004. a", which places the modern
+      banded-plate requirement on the far side of 1 July 2004 — NOT 1 May 2004,
+      the accession date, and NOT 2011, the date of the määrus that now governs
+      it. The instrument that actually introduced the band was not located
+      (gaps.eu_band_instrument). The FORMAT is older than the band: the same
+      three-digits-then-three-letters shape ran unbanded from 1991, which is
+      why ee-standard-1991 is a separate series and not a design variant.
+      Overlaps ee-standard-a3 because both are genuinely on issue in parallel.
+
+  - id: ee-standard-1991
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 1991, end: 2004 }
+    period_evidence: statutory-date-end-secondary-start   # the two ends are
+                              # evidenced DIFFERENTLY and the value says so:
+                              # the END rests on § 7^1(2) of the määrus (a
+                              # primary), the START on a single secondary
+                              # sentence. Averaging them into one tier would
+                              # hide exactly the weakness a verifier needs.
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} [A-Z]{3}\z'
+      charset:
+        notes: >-
+          No regex_strict: § 6(5)'s A/M/W rule dates from 2022 and cannot be
+          projected back onto a series that closed in 2004. Writing the modern
+          charset onto the historic series would be exactly the anachronism the
+          instrument-date rule exists to prevent.
+      separator_note: >-
+        On this series the gap between the digit group and the letter group was
+        occupied by a round REGISTRATION LABEL (the annual validity sticker),
+        which is the visual signature of the pre-2004 Estonian plate. The label
+        is not part of the mark and is not a separator; it is recorded in
+        design.seal.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none, note: "no EU band — this series predates it; a small national marking was used instead, whose specification was not pinned in this pass" }
+      characters: { height_mm: 77, note: "assumed continuous with A1; NOT separately sourced for this period" }
+      seal: { present: true, note: "a round registration label was applied BETWEEN the digit and letter groups; dropped in 2004 (secondary)" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Estonia  # SECONDARY, per-fact: 'The first, post-Soviet, Estonian registration plates (1991) were composed of three numbers, with a licence label in the middle of the plate. The labels were dropped in 2004.' — the only date evidence located for the independence-era transition"
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 7^1(2) — the statutory 1 July 2004 boundary, which corroborates the END of this series from a PRIMARY source even though its START is secondary"
+    notes: >-
+      THE INDEPENDENCE-ERA SERIES, AND THE WEAKEST-EVIDENCED RECORD IN THIS
+      FILE — deliberately kept rather than dropped, because the transition is
+      real and a dataset that omits it implies Estonian plates began in 2004.
+      Its START (1991) rests on ONE secondary sentence and is tagged
+      `secondary-dated`; no Estonian instrument for the 1991 changeover was
+      located (gaps.independence_transition_instrument). Its END is much better
+      evidenced: § 7^1(2) of the current määrus draws its exchange boundary at
+      1 July 2004 from the primary. The Soviet-era predecessor is NOT modelled —
+      Estonian SSR plates carried the ЕА and ЭС Cyrillic suffixes and belong to
+      a Soviet-union-wide system outside this jurisdiction file. NOTE the
+      secondary source's own imprecision: it says the 1991 plates "were composed
+      of three numbers", plainly eliding the letter group that the same article
+      describes elsewhere; the format here is carried forward from A1 and is a
+      RECORDED INFERENCE, not a quoted one.
+
+  - id: ee-standard-a3
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99LLL"
+      regex: '\A\d{2}[A-Z]{3}\z'
+      regex_strict: '\A\d{2}(?!W)[A-Z](?!W)[A-Z](?!W)[A-Z]\z'
+      charset:
+        letters: "3; W FORBIDDEN (§ 6(4)); A permitted twice, or once if M is present; M likewise (§ 6(2)-(3))"
+        digits: "2"
+        notes: >-
+          W is flatly forbidden on A3 by § 6(4), and that is encoded. The A/M
+          co-occurrence arithmetic of § 6(2)-(3) ("A may be used together with M
+          once, otherwise twice") is a COUNT rule over a three-letter group and
+          is recorded but not encoded — it is expressible but would make the
+          twin unreadable for no consumer benefit.
+      separator_note: >-
+        NO gap is drawn between the groups on A3: näidis 3 shows "17ELH" set
+        solid, with the digit field 74 max and the letter field 134 max
+        separated by only the 10 mm field margins. The pattern therefore spells
+        no separator at all — the one Estonian ordinary plate that does not.
+    design:
+      plate: { w: 302, h: 152, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed, note: "50 mm wide, full plate height" }
+      characters: { font_type: 4, height_mm: 77, stroke_mm: 11, note: "Lisa 2 kirja tüüp 4: the condensed 77 mm cut — letters 33 wide against tüüp 2's 44" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)3) type A3; § 6(2)-(4) the A/M/W rules for A3"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A3: kirja tüüp 4, M/N/O, 'Valge aluspõhi, mustad sümbolid', 302x152, näidis 3"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 3 — sample mark '17ELH', digit field 74 max, letter field 134 max, plate 302 x 152"
+    notes: >-
+      THE SQUARE CAR PLATE — a DIFFERENT FORMAT, not merely a smaller plate,
+      which is why it is its own series: two digits and three letters against
+      A1's three and three. It exists for vehicles whose plate recess suits the
+      North American proportion. period.start is instrument-dated on määrus
+      nr 49 (in force 1.07.2011) and is a FLOOR, not an origin claim — the type
+      is older than the instrument that currently describes it, and its true
+      start is unpinned (see gaps.a3_series_semantics). Overlaps ee-standard-eu
+      because both are on issue in parallel for the same vehicles.
+
+  - id: ee-temporary-yellow
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} [A-Z]{3}\z'
+      charset: { notes: "the A1 grammar unchanged — § 7(1) alters only the COLOURS, not the mark" }
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#F2C200", finish: retroreflective, hex_basis: observed, spec_note: "§ 7(1) says only 'kollast värvi' (yellow); no RGB exists in Estonian law and Lisa 1 does not tabulate this variant at all" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 7(1), verbatim: 'Tähtajaliselt registreeritud sõidukile väljastatava registreerimismärgi aluspõhi on kollast värvi ja sümbolid on musta värvi.'"
+    notes: >-
+      THE YELLOW TEMPORARY-REGISTRATION PLATE, and a genuine schema edge. It is
+      not a type in § 2's list and gets no row in Lisa 1 and no näidis in
+      Lisa 3 — it exists only as the one-sentence § 7(1) EXCEPTION, which
+      recolours whatever mark the vehicle would otherwise carry. Modelled as its
+      own series rather than a colour variant because the DESIGN differs and the
+      issuing CLASS differs (tähtajaline registreerimine — time-limited
+      registration), which PRD-PLATES §2.3 makes sufficient. Its dimensions and
+      band are inherited from A1 and are a RECORDED INFERENCE: the instrument
+      does not restate them for this variant. Distinct from ee-transit-d1/d2,
+      which are a different class with a different format and their own drawings.
+
+  - id: ee-personalised-a2
+    class: personalized
+    categories: [car, van, truck, bus]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLLLLL9"
+      regex: '\A(?=[A-Z0-9]{2,9}\z)[A-Z]+\d+\z'
+      charset:
+        max_symbols: 9
+        rule: >-
+          § 6^1(5), verbatim: "Eritellimusel valmistataval registreerimismärgil
+          on suurim lubatud tähtede ja numbrite arv 9, kusjuures vähemalt üks
+          sümbolitest peab olema number ja asuma tähe või tähtede järel.
+          Numbrite ja tähtede kombinatsiooni asetus ei tohi olla vahelduv, vaid
+          peab olema järjestikune." Three rules in one sentence: at most 9
+          symbols; at least one must be a DIGIT and must come AFTER the letter
+          or letters; and the arrangement may not ALTERNATE — it must be
+          consecutive. The regex is the exact encoding of all three: one or more
+          letters, then one or more digits, total length 2 to 9.
+        propriety: >-
+          § 6^1(3): "Registreerimisnumber üksikkorras ja eritellimusel
+          valmistataval registreerimismärgil ei tohi olla eksitav ega vastuolus
+          heade kommetega" — not misleading, not contrary to good morals. Not
+          machine-encodable; recorded.
+      separator_note: >-
+        § 3(1^1): A2 has a SINGLE combined letters-and-numbers field, so nothing
+        is printed between the groups; § 3(2) sets the inter-symbol spacing at
+        22 mm maximum and centres the mark in the field. Näidis 2 draws
+        "FEHFEL1" set solid across a 432 mm field.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11 }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)2) type A2; § 3(1^1) combined field; § 3(2) 22 mm centred; § 6^1(1)-(5) inserted by RT I, 02.12.2011, 13 (jõust. 05.12.2011)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A2: kirja tüüp 2, M/N, valge/mustad, 520x113, näidis 2"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 2 — sample mark 'FEHFEL1' in a single 432 mm field"
+      - "https://www.transpordiamet.ee/registreerimismargid  # the authority's fee for an eritellimus mark and the propriety condition"
+    notes: >-
+      THE PERSONALISED PLATE, and the cleanest strict regex in this file:
+      because § 6^1(5) states the grammar completely (letters then digits, no
+      alternation, at most nine), `regex` IS the authority's own grammar and
+      needs no strict twin. Note the schema distinction the määrus draws and
+      this file preserves: an ERITELLIMUS mark (§ 6^1(2), type A2) is a free
+      string and is THIS series; an ÜKSIKKORRAS mark (§ 6^1(1)) is an ordinary
+      A1-format mark that the applicant merely CHOOSES, whose number series must
+      begin at one (§ 6^1(4)) — that is not a separate format and is not
+      modelled separately.
+
+  # =========================================================================
+  # DIPLOMATIC. Lisa 1: A4/A5 kirja tüüp 2, 520x113; A6/A7 kirja tüüp 4,
+  # 302x152; all "Sinine aluspõhi, valged sümbolid".
+  # =========================================================================
+  - id: ee-diplomatic-cd
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CD 9999"
+      regex: '\A(?:CD|AT) \d{4}\z'
+      charset:
+        letter_groups: [CD, AT]
+        notes: >-
+          Näidis 4 draws "CD 2345". The regulation itself does not enumerate the
+          letter groups; CD (corps diplomatique) is on the statutory drawing and
+          AT (administrative-technical staff) is attested secondarily and is
+          consistent with the type's own official description, "Välisesinduste
+          diplomaatilise ja ADMINISTRATIIV-TEHNILISE personali autode
+          registreerimismärk" (Lisa 3, näidis 4 caption). Both are encoded; the
+          pattern spells the CD form as canonical.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#1C4FA1", finish: retroreflective, hex_basis: observed, spec_note: "Lisa 1: 'Sinine aluspõhi, valged sümbolid'; no RGB in Estonian law — sampled from the näidis 4 vector drawing" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11, note: "letter field 130 max, 45 mm gap, digit field 221 max (näidis 4)" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)4) types A4, A5"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A4/A5: kirja tüüp 2, M/N, 'Sinine aluspõhi, valged sümbolid', 520x113, näidised 4, 5"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 4 — 'CD 2345', caption 'Välisesinduste diplomaatilise ja administratiiv-tehnilise personali autode registreerimismärk'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Estonia  # SECONDARY, per-fact: that the A4 letter group is CD or AT"
+    notes: >-
+      THE FULL-SIZE DIPLOMATIC PLATE for mission staff. Four digits. Its
+      reduced-size twin (type A6, 302 x 152) carries only THREE digits, which is
+      a format difference and therefore a separate series
+      (ee-diplomatic-cd-reduced). No decode of the digits is published by any
+      Estonian instrument — unlike Sweden's diplomatic system, Estonia does not
+      publish a mission-code table, and none is invented here.
+
+  - id: ee-diplomatic-cd-reduced
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CD999"
+      regex: '\A(?:CD|AT)\d{3}\z'
+      charset: { notes: "as ee-diplomatic-cd but THREE digits and no printed gap — näidis 6 draws 'CD000' set solid" }
+    design:
+      plate: { w: 302, h: 152, unit: mm }
+      background: { color: "#1C4FA1", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 4, height_mm: 77, stroke_mm: 11, note: "letter field 74, digit field 120 max (näidis 6)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)5) types A6, A7"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A6/A7: kirja tüüp 4, M/N, sinine/valged, 302x152, näidised 6, 7"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 6 — 'CD000'"
+    notes: >-
+      THE SQUARE DIPLOMATIC PLATE. Separate from ee-diplomatic-cd because it
+      loses a digit (three, not four) and prints no gap — a format difference,
+      not merely a size. Overlaps ee-diplomatic-cd in period and categories
+      because both are issued in parallel according to the vehicle's plate
+      recess, exactly as A1 and A3 do.
+
+  - id: ee-diplomatic-cmd
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CMD 999"
+      regex: '\ACMD \d{3}\z'
+      charset:
+        letter_group: [CMD]
+        notes: >-
+          CMD — chef de mission diplomatique. Näidis 5 draws "CMD 234" and its
+          caption names the class exactly: "Eestis tegutsevate välisesinduste
+          JUHTIDE autode registreerimismärk" (heads of missions). The literal
+          is on the statutory drawing, so unlike A10's "SP" it is corroborated
+          by the caption naming the office it denotes.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#1C4FA1", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11, note: "letter field 200 max, 31 mm gap, digit field 165 max (näidis 5)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)4) type A5"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 5 — 'CMD 234', caption naming heads of missions"
+    notes: >-
+      THE HEAD-OF-MISSION PLATE. Three digits after a fixed CMD. Its reduced
+      twin (A7, näidis 7, "CMD00") carries TWO digits on a 302 x 152 plate and
+      is modelled as ee-diplomatic-cmd-reduced. Overlaps ee-diplomatic-cd only
+      in class and categories, never in mark space — CMD and CD/AT are disjoint
+      literals, so a parser can separate them with certainty.
+
+  - id: ee-diplomatic-cmd-reduced
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CMD99"
+      regex: '\ACMD\d{2}\z'
+      charset: { notes: "as ee-diplomatic-cmd but TWO digits, set solid — näidis 7 draws 'CMD00'" }
+    design:
+      plate: { w: 302, h: 152, unit: mm }
+      background: { color: "#1C4FA1", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 4, height_mm: 77, stroke_mm: 11, note: "letter field 129 max, digit field 74 (näidis 7)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)5) type A7"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 7 — 'CMD00'"
+    notes: >-
+      THE SQUARE HEAD-OF-MISSION PLATE — the shortest mark Estonia issues on a
+      car, five characters. Separate series from ee-diplomatic-cmd on the digit
+      count. Overlaps it in period and categories for the same plate-recess
+      reason as the CD pair.
+
+  # =========================================================================
+  # TRANSFERABLE (TRADE) MARKS. Lisa 1: A8 kirja tüüp 4, 520x113; A11 kirja
+  # tüüp 1, 302x152. Both "Valge aluspõhi, mustad sümbolid".
+  # =========================================================================
+  - id: ee-dealer-proov
+    class: dealer
+    categories: [car, van, truck, bus, trailer, motorcycle, tractor]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "PROOV 9999"
+      regex: '\APROOV \d{4}\z'
+      charset:
+        literal_prefix: PROOV
+        notes: >-
+          "PROOV" is Estonian for "trial/test" — a WORD, not a sample serial,
+          which is why it is encoded as a literal where näidis 10's "SP" is not.
+          Näidis 8 draws "PROOV 1203" with the letter field fixed at exactly
+          205 mm (not "max", unlike every other type in Lisa 3), which is itself
+          evidence that the letter group is invariant.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 4, height_mm: 77, stroke_mm: 11, note: "letter field 205 fixed, 23 mm gap, digit field 160 max (näidis 8)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)6) type A8 'teisaldatav registreerimismärk'"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A8: kirja tüüp 4, categories M, N, O, T, R, LM, MS — the widest category list of any Estonian type"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 8 — 'PROOV 1203', letter field 205 fixed"
+      - "https://www.transpordiamet.ee/registreerimismargid  # the authority: PROOV marks are for unregistered vehicles being sold, tested or delivered, valid up to one year and renewable, with an electronic logbook obligation"
+    notes: >-
+      THE TRANSFERABLE TRADE PLATE. Estonian law calls it TEISALDATAV (movable)
+      rather than a dealer plate, and Lisa 1 gives it the widest category list
+      in the instrument — M, N, O, T, R, LM and MS — because one PROOV mark
+      moves between vehicle kinds. Its reduced-size twin A11 is a TWO-ROW plate
+      (PROOV above, digits below) on the 302 x 152 blank and is modelled
+      separately as ee-dealer-proov-reduced, since a two-row layout prints no
+      separator at all.
+
+  - id: ee-dealer-proov-reduced
+    class: dealer
+    categories: [car, van, motorcycle, tractor]
+    period: { start: 2014 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "PROOV9999"
+      regex: '\APROOV\d{4}\z'
+      charset:
+        notes: >-
+          The same invariant PROOV and four digits as A8. The pattern spells NO
+          separator because none is printed: näidis 18 is a TWO-ROW plate with
+          PROOV on the upper row (215 mm field) and the digits on the lower
+          (134 mm field), which PRD-PLATES §2.6 collapses to one canonical
+          serial — the same two-printed-forms/one-mark situation fi.yml records
+          for Finnish two-row plates.
+    design:
+      plate: { w: 302, h: 152, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 1, height_mm: 49, stroke_mm: 7, note: "two rows of 49 mm, 26 mm apart (näidis 18)" }
+      rows: 2
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)15) type A11, inserted by RT I, 02.09.2014, 1 — jõust. 05.09.2014"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A11: kirja tüüp 1, categories M, N, L, LM, MS, 302x152, näidis 18"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 18 — two-row 'PROOV / 1203'"
+    notes: >-
+      THE TWO-ROW TRADE PLATE, and the one Estonian series with a genuinely
+      dated start inside the instrument's own life: type A11 did not exist in
+      the 2011 määrus as made and was INSERTED by the amendment RT I,
+      02.09.2014, 1, in force 5 September 2014. period.start 2014 is therefore
+      `enabling-instrument` and is a real start, not an instrument-date
+      artefact. Overlaps ee-dealer-proov because both are on issue in parallel.
+
+  # =========================================================================
+  # HISTORIC (VANASÕIDUK). Lisa 1: A9 kirja tüüp 4, 302x113; B2 kirja tüüp 3,
+  # 177x101. Both "Must aluspõhi, valged sümbolid", both exempt from the
+  # retroreflective coating (§ 5(2)) and from the band field (§ 7(4)).
+  # =========================================================================
+  - id: ee-historic-a9
+    class: historic
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "L 999"
+      regex: '\A[A-Z] \d{3}\z'
+      regex_strict: '\A(?!W)[A-Z] \d{3}\z'
+      charset:
+        letters: "1; W forbidden (§ 6(4))"
+        digits: "3"
+        notes: >-
+          A single letter then three digits. The M prohibition that once applied
+          to A9 was REMOVED from § 6(3) with effect from 06.06.2022, which is
+          why the current näidis 9 can draw "M 433" — a detail worth stating,
+          because a strict twin written from the pre-2022 text would now reject
+          a valid mark. Only the W prohibition survives for this type.
+    design:
+      plate: { w: 302, h: 113, unit: mm }
+      background: { color: "#000000", finish: non-retroreflective, hex_basis: observed, spec_note: "§ 5(2) exempts A9 from the retroreflective coating — like Finland's black plate, it is the one finish the law withholds" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none, note: "§ 7(4): the band field is not required on a vanasõiduk mark, and näidis 9 is drawn without one" }
+      characters: { font_type: 4, height_mm: 77, stroke_mm: 11, note: "letter field 46, 55 mm gap, digit field 125 max (näidis 9)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)7) type A9; § 5(2) retroreflection exemption; § 6(4) W; § 7(4) band not required; § 6(3) as amended 06.06.2022 no longer forbids M on A9"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A9: kirja tüüp 4, M/N/O/T/R/LM, 'Must aluspõhi, valged sümbolid', 302x113, näidis 9"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 9 — 'M 433'"
+    notes: >-
+      THE HISTORIC-VEHICLE PLATE — black, unreflective, bandless, and the only
+      Estonian car mark with a ONE-letter group, which makes it unambiguously
+      separable from every other series in the file. period.start is
+      instrument-dated on määrus nr 49 and is a FLOOR: the vanasõiduk regime is
+      older than 2011 and its origin is unpinned. Note the plate is 302 x 113 —
+      neither the 520 x 113 long blank nor the 302 x 152 square one, a third
+      Estonian size used by this type alone.
+
+  - id: ee-historic-b2
+    class: historic
+    categories: [motorcycle, moped, atv]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "L 999"
+      regex: '\A[A-Z] \d{3}\z'
+      regex_strict: '\A(?![AMW])[A-Z] \d{3}\z'
+      charset:
+        letters: "1; W forbidden outright, and A and M each permitted only once and never together (§ 6(2)-(4)) — on a ONE-letter group the 'never together' limb is inert, but the W prohibition bites"
+        notes: >-
+          The strict twin here excludes A, M and W. That is DELIBERATELY
+          stricter than ee-historic-a9's twin: § 6(4) forbids W on B2, and
+          § 6(2)-(3) permit A and M on B2 only once each and never together —
+          on a single-letter group that permits A or M, so the exclusion of A
+          and M in this twin is an OVER-narrowing and is flagged here rather
+          than shipped silently. See notes.
+    design:
+      plate: { w: 177, h: 101, unit: mm }
+      background: { color: "#000000", finish: non-retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      characters: { font_type: 3, height_mm: 49, stroke_mm: 7, note: "letter field 32 max, 47 mm gap, digit field 72 max (näidis 12)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)10) type B2; § 5(2) and § 7(4) as for A9; § 6(2)-(4)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row B2: kirja tüüp 3, categories L, MS, must/valged, 177x101, näidis 12"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 12 — 'M 433' on the small black blank"
+    notes: >-
+      THE HISTORIC MOTORCYCLE/MOPED/ATV PLATE. Same mark grammar as
+      ee-historic-a9 on a different blank, which is why they are separate series
+      but overlap in nothing (their categories are disjoint, so the lint's
+      overlap rule does not even engage). CAVEAT ON THE STRICT TWIN, stated
+      because it is a real defect risk: the twin excludes A and M, but § 6(2)
+      and § 6(3) actually PERMIT A and M on B2 once each — only their
+      CO-OCCURRENCE is forbidden, which a one-letter group cannot produce. The
+      twin is therefore narrower than the law and a verifier should relax it to
+      '\A(?!W)[A-Z] \d{3}\z'. Recorded rather than silently corrected because
+      the researcher-verifier split (PRD-PLATES §5.3) is the point.
+
+  # =========================================================================
+  # L-CATEGORY. Lisa 1: B1 and B3 kirja tüüp 3, 177x101. B1 white/black,
+  # B3 GREEN/black — the only green plate in the Estonian system.
+  # =========================================================================
+  - id: ee-motorcycle-b1
+    class: motorcycle
+    categories: [motorcycle, atv, snowmobile, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99LL"
+      regex: '\A(?:\d{2}[A-Z]{2}|[A-Z]{2}\d{2})\z'
+      charset:
+        letters: "2; W forbidden (§ 6(4)); A and M each once and never together (§ 6(2)-(3))"
+        digits: "2"
+        notes: >-
+          BOTH ORDERS ARE LAWFUL, and that is sourced, not inferred. § 7(2),
+          verbatim: "B1-tüüpi registreerimismärgil kasutatavad numbrid võivad
+          asuda nii tähtede ees kui ka järel." The digits may stand before OR
+          after the letters. The regex is the union of exactly those two
+          arrangements and nothing wider, so `matching` remains strict. Näidis
+          11 draws the digits-first form, "53HF".
+      separator_note: "no separator is printed; näidis 11 sets the groups solid across a 48 mm digit field and a 56 mm letter field"
+    design:
+      plate: { w: 177, h: 101, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed, note: "40 mm wide on this blank" }
+      characters: { font_type: 3, height_mm: 49, stroke_mm: 7 }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)9) type B1; § 7(2) the reversible order; § 6(2)-(4)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row B1: kirja tüüp 3, categories L, MS, valge/mustad, 177x101, näidis 11"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM49_lisa2.pdf  # Lisa 2: the W width for kirja tüüp 3 is '-', corroborating § 6(4)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 11 — '53HF'"
+    notes: >-
+      THE MOTORCYCLE PLATE, and the only Estonian series whose mark may be
+      printed in EITHER ORDER — a sourced union, not a hedge. Consumers must not
+      infer an era or a class from which order they see. Categories include
+      MS (snowmobile) and the L-category trailer, per Lisa 1.
+
+  - id: ee-moped-b3
+    class: moped
+    categories: [moped]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999L"
+      regex: '\A(?:\d{3}[A-Z]|[A-Z]\d{3})\z'
+      charset:
+        letters: "1; W forbidden (§ 6(4)); A or M permitted once (§ 6(2)-(3))"
+        digits: "3"
+        notes: >-
+          § 7(2) second sentence, verbatim: "B3-tüüpi registreerimismärgil
+          kasutatav täht võib numbrite suhtes muuta asukohta." The LETTER may
+          change its position relative to the digits. Encoded as the union of
+          letter-last and letter-first. Näidis 13 draws the letter-last form,
+          "533F". Note § 3(1^1) gives B3 a single COMBINED field, which is why
+          the letter can float at all.
+    design:
+      plate: { w: 177, h: 101, unit: mm }
+      background: { color: "#00A550", finish: retroreflective, hex_basis: observed, spec_note: "Lisa 1: 'Roheline aluspõhi, mustad sümbolid' — the only green plate Estonia issues; no RGB in law, sampled from näidis 13" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 3, height_mm: 49, stroke_mm: 7, note: "single combined field 111 mm wide (näidis 13)" }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)11) type B3; § 3(1^1) combined field; § 7(2) floating letter; § 6(2)-(4)"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row B3: kirja tüüp 3, category L, 'Roheline aluspõhi, mustad sümbolid', 177x101, näidis 13"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 13 — '533F' on the green blank"
+    notes: >-
+      THE GREEN MOPED PLATE — Estonia's most visually distinctive series and the
+      only one whose ground colour alone identifies the class. Like B1 the mark
+      may be printed either way round, on the same § 7(2) authority. Its
+      categories are disjoint from every other series here, so it never overlaps.
+
+  # =========================================================================
+  # TRANSIT. Lisa 1: D1 and D2 kirja tüüp 2, "Värvitu aluspõhi, punased
+  # sümbolid"; D1 520x113, D2 420x113 — the only 420 mm blank in the system.
+  # These are the two types that print a HYPHEN.
+  # =========================================================================
+  - id: ee-transit-d1
+    class: temporary          # CLASS NOTE: _meta/classes.yml has no `transit`
+                              # value; `temporary` is defined there as
+                              # "short-validity plates (transit, awaiting
+                              # registration)", which is exactly the Estonian
+                              # transiitmärk. The id keeps the instrument's own
+                              # word so the mapping stays visible.
+    categories: [car, van, truck, bus]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL-9999"
+      regex: '\A[A-Z]{2}-\d{4}\z'
+      charset:
+        letters: "2; A not with W, M not with W, W not with A or M (§ 6(2)-(4)) — on D1 the three letters are mutually constrained rather than forbidden outright"
+        digits: "4"
+        notes: >-
+          D1 is the one type where § 6 states PAIRWISE constraints instead of a
+          flat prohibition: A may not be used with W, M may not be used with W,
+          and W may not be used with A or M. On a two-letter group that reduces
+          to a single rule — W may not share the group with A or M — which is
+          encoded in the strict twin below.
+      regex_strict: '\A(?!AW|WA|MW|WM)[A-Z]{2}-\d{4}\z'
+      separator_note: >-
+        A HYPHEN IS DRAWN, and dimensioned. Näidis 14 shows "ED-2345" with the
+        separator given its own callouts — 44 mm wide, 11 mm high — sitting in a
+        25 mm gap between a 151 mm letter field and a 221 mm digit field. This
+        is one of only two Estonian types that print a separator glyph at all,
+        so the pattern spells a literal hyphen rather than a space.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: non-retroreflective, hex_basis: observed, spec_note: "Lisa 1 says 'VÄRVITU aluspõhi' — COLOURLESS, and the same table says 'Valge' for every white plate. This hex is a render fallback, NOT a specification claim; § 5(2) exempts D1 from the retroreflective coating, which is what makes an uncoloured ground possible." }
+      foreground: "#E1341E"
+      border: { color: "#E1341E", note: "Lisa 1: 'punased sümbolid' — red symbols and rim; no RGB in law, sampled from näidis 14" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11, hyphen: { w: 44, h: 11, unit: mm } }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)12) type D1 'autode transiitmärk'; § 5(2) retroreflection exemption; § 6(2)-(4) the pairwise A/M/W rules for D1"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row D1: kirja tüüp 2, M/N, 'Värvitu aluspõhi, punased sümbolid', 520x113, näidis 14"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 14 — 'ED-2345' with the hyphen dimensioned 44 x 11 mm"
+    notes: >-
+      THE CAR TRANSIT PLATE. Three things make it unlike anything else in the
+      file and all three are sourced: the ground is VÄRVITU (colourless) rather
+      than white, the symbols are RED, and a hyphen is actually printed and
+      dimensioned. Do not read the background hex as a spec — see the spec_note.
+      Its smaller sibling D2 loses a digit and 100 mm of width and is a separate
+      series.
+
+  - id: ee-transit-d2
+    class: temporary          # see the class note on ee-transit-d1
+    categories: [motorcycle, moped, tractor, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL-999"
+      regex: '\A[A-Z]{2}-\d{3}\z'
+      regex_strict: '\A(?![AMW])[A-Z](?![AMW])[A-Z]-\d{3}\z'
+      charset:
+        letters: "2; A, M and W ALL forbidden outright on D2 (§ 6(2), § 6(3), § 6(4))"
+        digits: "3"
+        notes: >-
+          D2 is the most constrained charset in the instrument: § 6(2) forbids A
+          ("Tähte „A” on keelatud kasutada D2 tüüpi registreerimismärgil"),
+          § 6(3) forbids M and § 6(4) forbids W — all three, flatly, on this
+          type alone. The strict twin encodes all three exclusions.
+      separator_note: "a hyphen is printed and dimensioned, as on D1; näidis 15 draws 'ED-234' with a 122 mm letter field and a 153 mm digit field on the 420 mm blank"
+    design:
+      plate: { w: 420, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: non-retroreflective, hex_basis: observed, spec_note: "'Värvitu aluspõhi' — colourless; see ee-transit-d1's spec_note. Render fallback only." }
+      foreground: "#E1341E"
+      border: { color: "#E1341E" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11, hyphen: { w: 44, h: 11, unit: mm } }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)13) type D2; § 6(2)-(4) — A, M and W each forbidden on D2"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row D2: kirja tüüp 2, categories O, L, T, R, LM, 'Värvitu aluspõhi, punased sümbolid', 420x113, näidis 15"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 15 — 'ED-234' on the 420 mm blank"
+    notes: >-
+      THE TRANSIT PLATE FOR EVERYTHING THAT IS NOT A CAR — motorcycles, mopeds,
+      tractors, self-propelled machines and their trailers. The 420 x 113 blank
+      is unique to this type in the whole instrument. Its charset is the
+      tightest Estonia publishes: A, M and W are each separately forbidden, so
+      the strict twin is a genuine and fully sourced narrowing rather than a
+      stylistic one.
+
+  # =========================================================================
+  # TRACTORS AND SELF-PROPELLED MACHINES. Lisa 1: E1/E2, kirja tüüp 1 or 2,
+  # 212x135 or 520x113, "Valge aluspõhi, mustad sümbolid".
+  # =========================================================================
+  - id: ee-agricultural-e2
+    class: agricultural
+    categories: [tractor, machine, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9999 LL"
+      regex: '\A\d{4} [A-Z]{2}\z'
+      charset:
+        digits: "4 — the only Estonian ordinary mark with a FOUR-digit group"
+        letters: "2"
+        notes: >-
+          Digits first, then letters, as on A1 but with an extra digit and one
+          fewer letter. Näidis 16 draws "0530 EN"; the field drawing at näidis
+          17 dimensions the digit field at 221 max and the letter field at
+          151 max, i.e. the digit field is the WIDER of the two — the reverse of
+          A1's proportions and a quick visual tell.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11 }
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)14) types E1, E2"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row E1/E2: kirja tüüp 1 või 2, categories T, R, LM, valge/mustad, 212x135 või 520x113, näidised 16, 17"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 16 ('0530 EN') and näidis 17 (the 520 mm field drawing, digits 221 max then letters 151 max)"
+    notes: >-
+      THE FULL-SIZE TRACTOR PLATE. Four digits then two letters, which makes it
+      trivially separable from A1 (three and three) and from ee-agricultural-e1,
+      its two-row twin on the 212 x 135 blank. Categories T (tractor), R
+      (trailer) and LM (liikurmasin, self-propelled machine) are Estonian
+      vehicle-category codes carried through from Lisa 1.
+
+  - id: ee-agricultural-e1
+    class: agricultural
+    categories: [tractor, machine, trailer]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9999LL"
+      regex: '\A\d{4}[A-Z]{2}\z'
+      charset:
+        notes: >-
+          The same four-digits-then-two-letters mark as E2, printed on TWO ROWS
+          — digits above, letters below — so no separator is printed and the
+          pattern spells none. Näidis 16's field drawing dimensions the digit
+          row at 134 mm and the letter row at 77-105 mm within a 212 mm plate.
+    design:
+      plate: { w: 212, h: 135, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed, note: "40 mm wide, occupying only the upper part of the plate" }
+      characters: { font_type: 1, height_mm: 49, stroke_mm: 7, note: "two rows of 49 mm separated by 9 mm (näidis 16)" }
+      rows: 2
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)14) type E1"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row E1/E2, the 212x135 alternative"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 16 — two-row '6269 / EO', plate 212 x 135, rows 49 mm + 9 mm + 49 mm"
+    notes: >-
+      THE TWO-ROW TRACTOR PLATE. Same mark as ee-agricultural-e2, different
+      blank and layout, therefore a separate series under PRD-PLATES §2.3
+      (design differs) — and separately useful to a consumer because the printed
+      form has no separator to forgive. Overlaps ee-agricultural-e2 in period
+      and categories because Lisa 1 offers the two sizes as alternatives for the
+      same vehicles.
+
+  - id: ee-racing-a10
+    class: specialty
+    categories: [car]
+    period: { start: 2011 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 9999"
+      regex: '\A[A-Z]{2} \d{4}\z'
+      charset:
+        letters: "2 — NOT constrained by the instrument"
+        digits: "4"
+        notes: >-
+          Näidis 10 draws "SP 0003" and the shape is reported elsewhere as a
+          fixed SP prefix. NO instrument fixes the letters, and Lisa 3 uses
+          throwaway sample serials on other types ("053 EEN" on A1, "ED 2345" on
+          D1), so SP is NOT encoded as a literal. See gaps.a10_letter_group.
+          This is the deliberate counterpart to ee-dealer-proov, where the
+          letter field is dimensioned as FIXED (205 mm, not "max") and the token
+          is an Estonian word — there, the literal IS encoded.
+    design:
+      plate: { w: 520, h: 113, unit: mm }
+      plate_variants:
+        - { w: 250, h: 60, unit: mm, note: "the FRONT duplicate, a film sticker under a protective laminate (§ 7(3)); this dimension is the 06.06.2022 wording — the 2011 original said 350 x 60 mm and the 2014 wording repeated 350 x 60, so the size CHANGED, recorded not averaged" }
+      background: { color: "#D8232A", finish: retroreflective, hex_basis: observed, spec_note: "Lisa 1: 'Punane aluspõhi, valged sümbolid'; no RGB in law, sampled from näidis 10" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: left, color: "#003399", content: eu-stars+EST, hex_basis: observed }
+      characters: { font_type: 2, height_mm: 77, stroke_mm: 11 }
+      rear_differs: true
+    region_encoding: none
+    sources:
+      - "https://www.riigiteataja.ee/akt/128062011017?leiaKehtiv  # § 2(1)8) type A10; § 7(3) as amended 06.06.2022: the front duplicate is a film sticker measuring 250 x 60 mm; § 7^1(1) saves already-issued aluminium racing plates from exchange"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa1_m49.pdf  # Lisa 1 row A10: kirja tüüp 2, M/N, 'Punane aluspõhi, valged sümbolid', 520x113 ja 250x60, näidis 10"
+      - "https://www.riigiteataja.ee/aktilisa/1030/6202/2012/MKM_m45_lisa3.pdf  # näidis 10 — 'SP 0003' on the red blank"
+    notes: >-
+      THE RED RACING PLATE, and the one Estonian series where the front and rear
+      genuinely differ: § 7(3) requires the rear plate to be DUPLICATED on the
+      front as a film sticker, so `rear_differs: true` records a real asymmetry
+      of medium and size rather than of content. CLASS CAVEAT: `specialty` is
+      the nearest value in _meta/classes.yml, but a võistlusauto mark is not an
+      optional-design program on a standard serial — it is its own administrative
+      issuance category with its own colours and its own blank. Flagged for the
+      vocabulary rather than forced. Note also the front-sticker size changed
+      from 350 x 60 mm to 250 x 60 mm on 06.06.2022; both are recorded.
