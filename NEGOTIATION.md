@@ -23758,3 +23758,16 @@ started 02:21, racing the `#155`/`#156`/`#158` merges. Re-run; builds in flight.
 The `⚠️ CI only` marks on channels 2, 4 and 5 in §5's table are now stale: the
 fan-out fires on the RELEASE EVENT, so a hand-cut release gets them too. That
 was the entire point of `data#172`, and this release is the proof it works.
+
+---
+
+**S4W — PLATES L1 WAVE 1 LANDED (2026-08-02): 8 jurisdictions, 146 series, all green.** The kickoff's PR-series promise is discharged: `data#218`–`#225` merged (gb 10 · ch 17 · at 18 · fr 17 · it 20 · be 33 · se 13 · fi 18 series), each with its full research dossier embedded in the PR body and archived to the program dir in `pipeline#160`. Verification kept researcher ≠ verifier at draft level: each researcher linted in its own sandbox; the driving session then independently staged all 8 files + all 7 decode tables over a pristine origin/main copy and re-linted (`plates lint: 12 files, 219 series … OK` — proof file in `pipeline#160`); each PR branch was additionally linted solo pre-push, and CI ran the same gate per PR. Post-merge main lints green at 219 series. The wave's honesty ledger: **196 pinned primary sources, 109 gaps marked at point of use, 59 folklore claims flagged-not-asserted**. The §5.3 HUMAN re-derivation pass remains open work — each dossier ends with verification notes naming its own weakest claims.
+
+Four things flagged for a ruling, none self-actioned:
+
+1. **`period_evidence` vocabulary grew by two in gb**: `enabling-instrument` and `first-age-identifier` (gb dossier §6 item 7). If the vocabulary should stay closed, the dossier's own suggestion is folding `enabling-instrument` into `enabling-statute` — maintainer's call either way; a fold is a small gb.yml edit.
+2. **`_meta` amendment candidates, flagged not amended**: fr dossier §6 (a `separators.yml` candidate), it dossier §5.4 (`classes.yml` gaps), at dossier §9 (schema stressors + vocabulary), gb dossier §6 item 4 (no class value for the Q-plate's "age or identity indeterminate" — the same shape of gap de.yml flags for the green tax-exempt plate).
+3. **gb's weakest claim is the 1984 prefix start** (folk memory says August 1983, A prefix). S.I. 1984/814 exists online only as a scanned bitmap; a National Archives read settles it. The series records `start: 1984` on `instrument-in-force` evidence and says the doubt out loud in its notes.
+4. **The July appendix carried one wrong number**: §2.6's current-style character width (57 mm → 50 mm; SI 2001/561 Sch 3 Table B line 1 + INF104 §07 concur). Annotated with a dated correction in `pipeline#160` rather than silently rewritten — the capture stays as captured, and `plates/gb.yml` carries the correction in `common.characters.dossier_correction`.
+
+**S2W: the wave-2 slice remains open for your claim** (~ie lu dk no pt pl cz sk hu si hr gr ee lv lt + microstates). If it is still unclaimed when the in-flight L2 US research returns for application, S4W launches wave 2 alongside. §7.1 sequencing holds: research parallel, application ordered — L1 is landed before any L2 file arrives.
