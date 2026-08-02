@@ -1,0 +1,879 @@
+# plates/lt.yml — Lithuania (PRD-PLATES gate L1, EU/EEA wave 2). DRAFT for
+# verification: researched by an Opus L1 researcher, never applied directly.
+#
+# THE LITHUANIAN SOURCE POSITION, STATED HONESTLY UP FRONT
+#
+# This file is materially WEAKER-SOURCED than plates/ee.yml, and the difference
+# is not a research shortfall to be papered over — it is the finding.
+#
+#   * WHAT IS PRIMARY. Every FORMAT, COLOUR and DIMENSION claim below comes
+#     from AB Regitra, the state enterprise that runs the Lithuanian vehicle
+#     register and issues the plates — i.e. from the authority's own published
+#     description of its own product, one page per plate type. Regitra also
+#     states, on several of those pages, the DATE from which a plate type has
+#     been available, which is first-class period evidence of the
+#     `secondary-first-issue` kind (an authority asserting its own first issue,
+#     not an instrument commanding it).
+#   * WHAT IS MISSING. THE INSTRUMENT ITSELF. No Lithuanian legal act was
+#     reached in this pass: the order (susisiekimo ministro / vidaus reikalų
+#     ministro įsakymas) or government resolution that prescribes the plates,
+#     and the Lithuanian standard LST 1447 that the trade refers to, were not
+#     located at a fetchable URL, and Regitra's own legal-information pages
+#     returned 404. Consequently NOT ONE series in this file carries
+#     `instrument-in-force`. See gaps.instrument.
+#   * WHAT THAT COSTS. Nothing in this file may be read as "the law says".
+#     It is "the issuing authority says", which is weaker in kind, and every
+#     `period_evidence` value records which.
+#
+# THREE STRUCTURAL FACTS
+#
+# 1. LITHUANIA VARIES THE MARK BY VEHICLE KIND, AND THAT IS THE SYSTEM'S
+#    SIGNATURE. Regitra's general-use page gives FIVE different compositions
+#    on one page: cars three letters + three numbers; trailers and semi-trailers
+#    two letters + three numbers; motorcycles three numbers + two letters;
+#    mopeds two numbers + three letters; powerful quadricycles two numbers +
+#    two letters. Each is its own series here, because each is its own format.
+#    Note especially that the MOTORCYCLE mark runs digits-first while the CAR
+#    mark runs letters-first — the same inversion Finland legislates (fi.yml
+#    structural fact 2), arrived at independently.
+#
+# 2. THE CLASS IS IN THE FIRST CHARACTER, FOR FOUR CLASSES. T = taksi,
+#    H = istorinė (historic), P = the temporary/commercial plate, E = electric.
+#    These are fixed literal prefixes on otherwise numeric marks, which makes
+#    Lithuanian special-class plates unusually machine-separable — and is why
+#    those series carry real `regex` grammars rather than catch-alls.
+#
+# 3. THE VYTIS IS A DATED DESIGN CHANGE AND IS NOT THE EU BAND. Regitra's
+#    current pages show the coat of arms of Lithuania (Vytis) on general-use,
+#    taxi and electric plates. The EU band is a SEPARATE, EARLIER change. This
+#    file keeps them as two events with two dates and two evidence tiers, per
+#    the standing instruction that band adoption is never merged with a format
+#    or design change.
+#
+# SEPARATORS — READ BEFORE TRUSTING A PATTERN. Regitra states the COMPOSITION
+# of every mark (how many letters, how many digits, in what order) but does NOT
+# state what, if anything, is printed between the groups, and this pass reached
+# no statutory drawing for Lithuania (contrast Estonia, where Lisa 3 dimensions
+# every gap). The patterns below therefore spell:
+#   * a SPACE on the 520 x 110 car and trailer marks, where a printed gap is
+#     universally shown in the authority's own plate imagery; and
+#   * NO separator on the small square blanks and on the T/H/P/E class marks,
+#     which the authority and the secondary sources alike render solid
+#     ("T06868", "H02401", "P28737").
+# Both choices are RECORDED INFERENCES, flagged per series, and both are made
+# safe by PRD-PLATES §2.6: a separator-forgiving consumer collapses the two
+# printed forms to one canonical serial either way.
+jurisdiction: lt
+authority:
+  name: AB Regitra (State Enterprise Regitra — the Lithuanian vehicle register and plate issuer)
+  url: "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/"
+binding: vehicle
+instrument:
+  status: >-
+    NOT PINNED. No Lithuanian legal act governing registration plates was
+    reached in this pass. The candidates that should be pinned by a verifier
+    with access to e-tar.lt / e-seimas.lrs.lt are: the Minister of Transport
+    and Communications order approving the vehicle registration rules
+    ("Motorinių transporto priemonių ir jų priekabų registravimo taisyklės"),
+    the order approving the plate standard, and the Lithuanian standard
+    LST 1447 (plate dimensions and typeface), whose edition and current status
+    are unknown to this pass.
+  authority_pages_used:
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # the five compositions, the five plate formats, colours, the EU band and the Vytis placement"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/diplomatic-of-foreign-missions-and-of-international-organisations/  # green ground, digit-group semantics, and the 11 October 2004 availability date"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/temporary-commercial/  # P prefix, red characters, and the 3 April 2018 change to unlimited validity"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/taxi/  # T prefix, the 13 July 2006 first issue and the 3 April 2018 white standard"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/for-historic-cars/  # H prefix and the 1 July 2014 first issue"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/for-electric-vehicles/  # E prefix and the 1 July 2016 first issue"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/personal/  # personalised character counts and content rules"
+    - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/exclusive/  # the premium-combination catalogue — see out_of_scope.exclusive"
+
+common:
+  plate_formats:
+    note: >-
+      Regitra numbers its blanks 1 to 5 and reuses the numbering across every
+      plate type, so the same five sizes carry all classes:
+    sizes:
+      format_1: { w: 520, h: 110, unit: mm, use: "cars, trailers, semi-trailers, motorcycles" }
+      format_2: { w: 300, h: 150, unit: mm, use: "cars, trailers, semi-trailers" }
+      format_3: { w: 250, h: 150, unit: mm, use: "motorcycles, powerful quadricycles" }
+      format_4: { w: 145, h: 120, unit: mm, use: "mopeds" }
+      format_5: { w: 185, h: 210, unit: mm, use: "motorcycles" }
+    dimension_caution: >-
+      Regitra's general-use page gives format 5 as 185 x 210 mm; its
+      diplomatic page gives the same slot as 182 x 210 mm. A 3 mm disagreement
+      between two pages of the same authority is RECORDED, not averaged
+      (PRD-PLATES §5.3). Neither figure is traceable to an instrument here.
+    source: "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/"
+  colours:
+    hex_basis_note: >-
+      No Lithuanian instrument was reached, so there is no RGB/RAL source of
+      any kind for this jurisdiction. Regitra names colours in words only —
+      the general-use surface is "white, light reflective" with "black" edging,
+      letters and numbers; the diplomatic surface is "green, light reflective
+      and with a repetitive safety mark" with white characters; the temporary
+      surface is white with "red" characters. Every hex below is
+      `hex_basis: observed` and is a RENDER FALLBACK, not a specification.
+  eu_band:
+    side: left
+    content: eu-stars+LT
+    definition: >-
+      Regitra: there is "a blue strip on its left edge" carrying the EU symbol
+      and the "LT" distinguishing mark in white. Lithuania's distinguishing
+      sign is LT.
+    started: 2004
+    dating: >-
+      SECONDARY ONLY, AND KEPT SEPARATE FROM EVERY FORMAT CHANGE. Lithuania
+      acceded to the European Union on 1 May 2004. The plate band's own start
+      date was not established from any instrument or from Regitra, which
+      describes the band as a present fact without dating it. The English
+      Wikipedia article states that all plates issued since 2004 bear the band,
+      and that plates issued between the restoration of independence and
+      accession bore a similar stripe carrying a small Lithuanian flag in the
+      band's place. That is the whole of the evidence and it is secondary.
+    predecessor: "a stripe of the same shape bearing the Lithuanian national flag instead of the EU symbol — see lt-standard-national"
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact: the 2004 band and the pre-2004 national-flag stripe"
+  vytis:
+    what: "the coat of arms of Lithuania (Vytis), a mounted armoured knight"
+    placement: >-
+      Regitra, general-use page: on format 1 the Vytis "is displayed between the
+      blue band and the letters"; on the other formats it sits above the EU
+      symbol on the blue band itself. The same placement is described on the
+      taxi and electric-vehicle pages.
+    started: 2023
+    dating: >-
+      THE PRESENCE IS PRIMARY, THE DATE IS SECONDARY. That the Vytis is on
+      current Lithuanian plates is stated by the issuing authority on three of
+      its own pages. WHEN it arrived is not stated by Regitra anywhere this pass
+      reached; the October 2023 date comes from the English Wikipedia article
+      and is carried as `secondary-dated`. It is a DESIGN change only — no
+      source suggests the mark's composition changed with it.
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY: the Vytis is present and its placement is specified"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact: that plates issued since October 2023 carry the coat of arms"
+  charset:
+    excluded_letters_claim: >-
+      Q, W and X are reported not to be used in Lithuanian registration marks.
+      This is SECONDARY (English Wikipedia) and was not confirmed by Regitra or
+      by any instrument, so it is NOT encoded in any regex or regex_strict in
+      this file — recorded here so a verifier can either pin it and tighten the
+      strict twins, or refute it. Encoding an unverified exclusion would make
+      the dataset reject valid marks, which is the worse failure.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact"
+
+# ---------------------------------------------------------------------------
+# THE DECODE QUESTION, ANSWERED NO — AND THIS ONE IS A GENUINE DISPUTE.
+# ---------------------------------------------------------------------------
+region_encoding_gap:
+  decision: "NO decode table is shipped for Lithuania. `region_encoding: none` on every series."
+  the_dispute: >-
+    THIS IS THE ONE PLACE WHERE MY OWN BRIEF AND MY SOURCES DISAGREE, AND IT IS
+    RECORDED RATHER THAN RESOLVED. The research brief for this slice described
+    Lithuania as having a "historically meaningful FIRST letter". The English
+    Wikipedia article instead states that the SECOND letter designated the
+    county of registration, and that from 2004 the area designation was
+    abolished and any letter became admissible in that position. The two
+    accounts identify DIFFERENT POSITIONS in the mark. No Lithuanian
+    instrument, and no Regitra page, was reached that settles it. Shipping a
+    positional decode table while unsure WHICH POSITION it decodes would be the
+    precise failure PRD-PLATES §2.4 warns about — a decode table that makes the
+    parse API lie — so none is shipped, in either position.
+  also_unresolved: >-
+    Even taking the county reading at face value, the scheme is described as
+    ABOLISHED in 2004, so any table would be a historic-only decode covering
+    marks issued before then, whose start date is equally unpinned.
+  what_would_close_it: >-
+    The pre-2004 Lithuanian registration rules, or a Regitra allocation
+    instruction, either of which would state which position carried the code
+    and when it stopped.
+  sources:
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact: the SECOND-letter county reading and its 2004 abolition — cited as the reason for the gap, not as data"
+
+out_of_scope:
+  exclusive:
+    status: "A SALES CATEGORY, NOT A SERIES — deliberately not authored."
+    detail: >-
+      Regitra sells "exclusive" numbers — combinations such as a letter group
+      followed by 777, three identical letters with a low serial, and other
+      premium patterns — in four priced groups. These are ORDINARY general-use
+      marks in the ordinary general-use format, distinguished only by
+      desirability and price. Under PRD-PLATES §2.3 that is neither a format nor
+      a design nor a period difference, so it is not a series; a consumer that
+      needs it wants a price list, not a plate record.
+    source: "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/exclusive/"
+  military:
+    status: "NOT RESEARCHED TO A SOURCE IN THIS PASS — no series authored."
+    detail: >-
+      Lithuanian Armed Forces vehicles are reported to carry marks of the shape
+      LK + three digits + a letter, on a black plate with white characters and a
+      Lithuanian flag at the left, adopted November 2008. That is SECONDARY and
+      uncorroborated by any page this pass reached; Regitra does not list a
+      military type among the nine it issues, which is consistent with the
+      military register being separate. No format, colour or period is asserted.
+    source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact — pinned as a lead, not used as data"
+  bicycle_carrier_plate:
+    status: "NOT A VEHICLE REGISTRATION — recorded, not authored."
+    detail: >-
+      Regitra lists among its nine plate types "a plate to mark the bicycles
+      that are being carried" — a repeater plate for a rear-mounted bicycle
+      rack. It duplicates the towing vehicle's existing mark rather than
+      carrying one of its own, so it has no serial grammar of its own, and under
+      PRD-PLATES §2.7 it would in any case be a `recall-only` echo of whatever
+      series the car belongs to. Not authored.
+    source: "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/"
+
+gaps:
+  instrument: >-
+    THE PRINCIPAL GAP. No Lithuanian legal instrument was pinned: not the
+    registration rules, not the plate standard, not LST 1447. Regitra's
+    /lt/teisine-informacija/teises-aktai/ and /lt/paslaugos/valstybinio-numerio-zenklai/
+    both returned HTTP 404 in this pass, and no e-tar.lt or e-seimas.lrs.lt
+    document was reached. Consequence: every series here is dated on an
+    authority statement or a secondary, never on an instrument, and the file
+    contains no `instrument-in-force` value at all. This is the single highest-
+    value target for a verifier on this jurisdiction.
+  independence_transition: >-
+    THE SLICE'S NAMED RISK, AND IT IS OPEN FOR LITHUANIA. Lithuania declared the
+    restoration of its independence on 11 March 1990 — EARLIER than Estonia's
+    and Latvia's 1991 restorations, which is exactly why these three dates must
+    never be shared between the three files. But the date on which Lithuania
+    began ISSUING its own plates, and the instrument that ordered it, were NOT
+    established. The only evidence reached frames the pre-EU series as running
+    "between the restoration of Lithuanian independence in 1990 and the
+    country's accession to the European Union in 2004", which dates the series
+    to a CONSTITUTIONAL event rather than to a plate instrument. lt-standard-national
+    therefore starts at 1990 on that secondary framing, and its true first-issue
+    date is very likely LATER than 1990 and is unknown. Do not report 1990 as an
+    instrument date and do not let it migrate to ee.yml or lv.yml.
+  vytis_instrument: >-
+    The order that added the Vytis to Lithuanian plates was not located; only
+    its presence (Regitra, primary) and its approximate date (secondary) are
+    recorded. lt-standard-vytis's 2023 start is `secondary-dated` in consequence.
+  printed_separators: >-
+    No statutory drawing was reached for any Lithuanian plate, so what is
+    printed between the mark's groups is inferred per series and flagged in each
+    `separator_note`. Estonia's Lisa 3 is the model of what would close this.
+  motorcycle_layout: >-
+    Motorcycle plates are issued on format 3 (250 x 150 mm) and format 5
+    (185 x 210 mm), both far from the 520 x 110 proportion, so the mark is
+    almost certainly printed on TWO ROWS. No source reached states the row
+    split, so no `rows:` value is asserted for those series.
+
+series:
+
+  # =========================================================================
+  # THE GENERAL-USE CAR MARK — three letters, three numbers.
+  # Regitra: "three letters and three numbers", formats 1 and 2.
+  # =========================================================================
+  - id: lt-standard-vytis
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2023 }
+    period_evidence: secondary-dated
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} \d{3}\z'
+      charset:
+        letters: "3"
+        digits: "3"
+        notes: >-
+          Q, W and X are reported unused (common.charset) but that is secondary
+          and unverified, so no strict twin narrows this series. The mark is
+          allocated without any published geographic or temporal semantics —
+          see region_encoding_gap.
+      separator_note: >-
+        RECORDED INFERENCE. Regitra states the composition but not the printed
+        separator. A gap between the letter and digit groups is shown in the
+        authority's own plate imagery on the 520 x 110 blank, and is spelled
+        here as a space per PRD-PLATES §2.6 rule 2. On the 300 x 150 blank the
+        mark is very likely set on two rows with no separator at all; a
+        forgiving consumer collapses both forms to one serial.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm, note: "Regitra format 2" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "Regitra: the surface is 'white, light reflective'; no RGB source exists for Lithuania" }
+      foreground: "#000000"
+      border: { color: "#000000", note: "Regitra: the edging, letters and numbers are black" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Vytis, the coat of arms of Lithuania, between the blue band and the letters on format 1; above the EU symbol on the band on the other formats", note: "PRD-PLATES §3 emblem rule: rendered as a neutral placeholder unless the artwork's licence is affirmatively clean" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY (authority): 'three letters and three numbers' for cars; formats 1 (520x110) and 2 (300x150); white light-reflective surface, black edging and characters; the blue strip with the EU symbol and LT; the Vytis and its placement"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact: that plates issued since October 2023 bear the coat of arms — the sole evidence for period.start"
+    notes: >-
+      THE CURRENT LITHUANIAN CAR PLATE. Split from lt-standard-eu on ONE
+      dated design change — the addition of the Vytis — and on nothing else:
+      the mark's composition, the colours, the blanks and the EU band are all
+      unchanged across the boundary. period.start 2023 is `secondary-dated` and
+      is the weakest claim in this series; the Vytis's PRESENCE, by contrast, is
+      stated by the issuing authority and is solid. If a verifier cannot confirm
+      the October 2023 date, the correct remedy is to MERGE this series back
+      into lt-standard-eu, not to invent a different date.
+
+  - id: lt-standard-eu
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2004, end: 2023 }
+    period_evidence: secondary-dated
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} \d{3}\z'
+      charset: { notes: "identical to lt-standard-vytis — the Vytis is a design change, not a format change" }
+      separator_note: "as lt-standard-vytis; a recorded inference"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+      emblem: { present: false, note: "no Vytis on this series — that is the whole of the difference from lt-standard-vytis" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY (authority): the composition, blanks, colours and EU band that this series shares with its successor"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact: 'All plates issued since 2004 also bear a blue EU identification stripe on their left-hand edge' — the sole evidence for period.start; and the October 2023 coat-of-arms change, which dates period.end"
+    notes: >-
+      THE EU-BAND SERIES, 2004 to 2023 — and the record that keeps the band
+      separate from everything else. period.start 2004 is the BAND's date, not
+      a format date: the three-letters-three-numbers composition is older than
+      the band and ran unchanged across the 2004 boundary, which is why
+      lt-standard-national carries the same format with a different left-hand
+      stripe. Both ends of this series are secondary; neither is an instrument
+      date. Lithuania acceded to the EU on 1 May 2004 but no source reached ties
+      the plate change to that day, so the year alone is recorded.
+
+  - id: lt-standard-national
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1990, end: 2004 }
+    period_evidence: secondary-dated
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} \d{3}\z'
+      charset:
+        notes: >-
+          The composition is carried forward from the current series and is a
+          RECORDED INFERENCE for this period, not a quoted one: no source
+          reached states the pre-2004 composition directly, only that the
+          pre-2004 plates differed in the STRIPE. The middle-letter county code
+          reported for this era is deliberately not encoded — see
+          region_encoding_gap.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, content: "lt-flag", note: "a stripe of the same shape and position as the later EU band, bearing a small Lithuanian flag instead of the EU symbol; no colour specification was reached, so no hex is claimed" }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Lithuania  # SECONDARY, per-fact: plates issued 'between the restoration of Lithuanian independence in 1990 and the country's accession to the European Union in 2004 bore a similar stripe with a small Lithuanian flag in place of the flag of the European Union' — the sole evidence for this series"
+    notes: >-
+      THE INDEPENDENCE-ERA SERIES, AND THE WEAKEST RECORD IN THIS FILE — kept
+      because omitting it would imply Lithuanian plates began at EU accession.
+      READ gaps.independence_transition BEFORE USING period.start. 1990 is the
+      date of the RESTORATION OF INDEPENDENCE (11 March 1990), which the single
+      secondary source uses to bound the series; it is almost certainly EARLIER
+      than the first Lithuanian plate issue, and no instrument was found. It is
+      tagged `secondary-dated` and must not be reported as an instrument date.
+      It is also NOT Estonia's date and NOT Latvia's: Lithuania restored
+      independence in March 1990, Estonia and Latvia in 1991, and the three
+      plate transitions were separate national acts on separate timetables.
+      Soviet-era Lithuanian plates are not modelled — they belong to the
+      union-wide system, outside this jurisdiction file.
+
+  # =========================================================================
+  # THE OTHER GENERAL-USE COMPOSITIONS — one series per format, all from the
+  # same Regitra page.
+  # =========================================================================
+  - id: lt-trailer
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2004 }
+    period_evidence: secondary-locator-unverified   # the 2004 start is INHERITED from the EU-band date, not sourced for this series: a locator, unverified
+    matching: strict
+    format:
+      pattern: "LL 999"
+      regex: '\A[A-Z]{2} \d{3}\z'
+      charset: { notes: "TWO letters, against three on a car — the trailer mark is a character shorter and is therefore trivially separable from lt-standard-*" }
+      separator_note: "as lt-standard-vytis; a recorded inference"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY (authority): trailers and semi-trailers carry 'two letters and three numbers', on formats 1 and 2"
+    notes: >-
+      THE TRAILER MARK. Modelled as its own series because the FORMAT differs
+      from the car mark by a letter — not merely the class. period.start is
+      carried from the EU-band date and inherits its secondary evidence; no
+      source dates the trailer composition itself.
+
+  - id: lt-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2004 }
+    period_evidence: secondary-locator-unverified   # the 2004 start is INHERITED from the EU-band date, not sourced for this series: a locator, unverified
+    matching: strict
+    format:
+      pattern: "999LL"
+      regex: '\A\d{3}[A-Z]{2}\z'
+      charset:
+        notes: >-
+          DIGITS FIRST, then two letters — the inverse of the car mark, and the
+          most useful structural tell on a Lithuanian plate. Regitra:
+          motorcycles carry "three numbers and two letters".
+      separator_note: >-
+        RECORDED INFERENCE, and a cautious one: the motorcycle blanks are
+        250 x 150 and 185 x 210 mm, so the mark is almost certainly set on two
+        rows and prints no separator. No source reached states the row split
+        (gaps.motorcycle_layout), so the pattern spells the mark solid and no
+        `rows:` value is asserted.
+    design:
+      plate: { w: 250, h: 150, unit: mm }
+      plate_variants:
+        - { w: 185, h: 210, unit: mm, note: "Regitra format 5; the diplomatic page gives this blank as 182 x 210 — see common.plate_formats.dimension_caution" }
+        - { w: 520, h: 110, unit: mm, note: "Regitra lists motorcycles among the users of format 1 as well" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY (authority): motorcycles carry 'three numbers and two letters', on formats 3 and 5 (and format 1 is listed for motorcycles too)"
+    notes: >-
+      THE MOTORCYCLE MARK — digits before letters, mirroring exactly the
+      Finnish L-class inversion recorded in fi.yml, and reached by a different
+      legal route. A consumer must not infer Lithuania from a digits-first mark
+      alone: Estonia's A1 car mark is also digits-first, with three digits and
+      three letters against Lithuania's three and two.
+
+  - id: lt-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2004 }
+    period_evidence: secondary-locator-unverified   # the 2004 start is INHERITED from the EU-band date, not sourced for this series: a locator, unverified
+    matching: strict
+    format:
+      pattern: "99LLL"
+      regex: '\A\d{2}[A-Z]{3}\z'
+      charset: { notes: "two digits then THREE letters — Regitra: mopeds carry 'two numbers and three letters'" }
+      separator_note: "recorded inference; the 145 x 120 mm moped blank is close to square and the mark is spelled solid"
+    design:
+      plate: { w: 145, h: 120, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY (authority): mopeds carry 'two numbers and three letters' on format 4 (145x120)"
+    notes: >-
+      THE MOPED MARK, on Lithuania's smallest blank. Note the collision hazard
+      this file makes explicit: the Lithuanian moped mark (two digits, three
+      letters) has EXACTLY the same shape as the Estonian reduced-size car mark
+      ee-standard-a3. Only the plate size and the band's country code separate
+      them, so a parse API must not treat this shape as diagnostic of either
+      jurisdiction on its own.
+
+  - id: lt-quadricycle
+    class: motorcycle
+    categories: [quadricycle]
+    period: { start: 2004 }
+    period_evidence: secondary-locator-unverified   # the 2004 start is INHERITED from the EU-band date, not sourced for this series: a locator, unverified
+    matching: strict
+    format:
+      pattern: "99LL"
+      regex: '\A\d{2}[A-Z]{2}\z'
+      charset: { notes: "Regitra: powerful quadricycles carry 'two numbers and two letters' — the shortest general-use mark Lithuania issues" }
+      separator_note: "recorded inference; spelled solid on the 250 x 150 blank"
+    design:
+      plate: { w: 250, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/of-general-use/  # PRIMARY (authority): powerful quadricycles carry 'two numbers and two letters' on format 3 (250x150)"
+    notes: >-
+      THE QUADRICYCLE MARK. CLASS CAVEAT: `motorcycle` is the nearest value in
+      _meta/classes.yml, which has no quadricycle class; the vehicle kind is
+      carried precisely in `categories` instead. Its four-character mark is the
+      shortest in the Lithuanian general-use system and shares its blank with
+      lt-motorcycle, from which it differs by one digit.
+
+  # =========================================================================
+  # CLASS-PREFIXED SERIES — T, H, P, E. These carry the strongest grammars in
+  # the file because the class letter is a fixed literal.
+  # =========================================================================
+  - id: lt-taxi
+    class: taxi
+    categories: [car]
+    period: { start: 2006 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "T99999"
+      regex: '\AT\d{5}\z'
+      charset:
+        literal_prefix: T
+        notes: "Regitra: the taxi mark is 'a letter T and five numbers'. T is a fixed literal, so this regex IS the authority's grammar and needs no strict twin."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Vytis" }
+    variants:
+      - class: taxi
+        design: { background: { color: "#F2C200", finish: retroreflective, hex_basis: observed }, foreground: "#000000" }
+        note: >-
+          THE EARLIER YELLOW TAXI PLATE. Regitra states that the white standard
+          described above was approved from 3 April 2018 and that yellow plates
+          issued earlier remain valid and "don't have to be changed". Recorded
+          as a colour-only variant per PRD-PLATES §2.3 rather than as its own
+          series, because the mark and the blanks are unchanged — only the
+          ground colour differs. Its own start is the series start, 13 July 2006.
+        sources:
+          - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/taxi/"
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/taxi/  # PRIMARY (authority): 'a letter T and five numbers'; formats 1 and 2; white with black characters, the earlier yellow plates still valid; the Vytis; first available 13 July 2006; the white standard approved 3 April 2018"
+    notes: >-
+      THE TAXI PLATE. period.start 2006 is `secondary-first-issue`: the issuing
+      authority states the date on which this plate type became available to
+      users (13 July 2006), which is a first-issue assertion by the issuer
+      rather than an instrument commanding it. The 2018 colour change is carried
+      as a variant, NOT as a period boundary, because the mark did not change
+      and both colours remain lawfully in use.
+
+  - id: lt-historic
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 2014 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "H99999"
+      regex: '\AH\d{5}\z'
+      charset:
+        literal_prefix: H
+        notes: "Regitra: historic cars carry 'the letter H plus five numbers'. Motorcycles carry H plus FOUR numbers and are a separate series."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    variants:
+      - class: historic
+        design: { background: { color: "#6B4423", finish: retroreflective, hex_basis: observed }, foreground: "#FFFFFF" }
+        note: >-
+          THE EARLIER BROWN HISTORIC PLATE. Regitra: "The brown coloured vehicle
+          registration number license plates that have been issued earlier don't
+          have to be changed." The white standard was approved from 3 April
+          2018. Colour-only variant, same reasoning as the yellow taxi plate.
+          The brown hex is a render fallback — no source gives a value.
+        sources:
+          - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/for-historic-cars/"
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/for-historic-cars/  # PRIMARY (authority): H + five numbers for cars; formats 1, 2, 3, 4, 5; white reflective with black characters and the blue strip; earlier brown plates need not be changed; first available 1 July 2014; standard approved 3 April 2018"
+    notes: >-
+      THE HISTORIC-VEHICLE PLATE. period.start 2014 is the authority's own
+      statement that plates of this type have been available to users since
+      1 July 2014 — `secondary-first-issue`. Unlike Estonia's and Finland's
+      historic plates, the Lithuanian one is NOT a black retro plate: it is an
+      ordinary white EU-band plate distinguished only by the H prefix, and its
+      predecessor was brown rather than black.
+
+  - id: lt-historic-motorcycle
+    class: historic
+    categories: [motorcycle, moped]
+    period: { start: 2014 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "H9999"
+      regex: '\AH\d{4}\z'
+      charset: { notes: "Regitra: historic motorcycles carry 'H plus four numbers' — one digit shorter than the car mark" }
+    design:
+      plate: { w: 250, h: 150, unit: mm }
+      plate_variants:
+        - { w: 185, h: 210, unit: mm }
+        - { w: 145, h: 120, unit: mm, note: "mopeds" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/for-historic-cars/  # PRIMARY (authority): motorcycles use 'H' plus four numbers, on formats 3, 4 and 5"
+    notes: >-
+      THE HISTORIC MOTORCYCLE PLATE. Separate series from lt-historic on the
+      digit count (four, not five). Categories are disjoint from lt-historic's,
+      so the two never collide in the lint's overlap test despite sharing a
+      class and a start date.
+
+  - id: lt-temporary-commercial
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2018 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "P99999"
+      regex: '\AP\d{5}\z'
+      charset:
+        literal_prefix: P
+        notes: "Regitra: cars and trailers carry 'P' + five digits; motorcycles 'P' + four (a separate series)."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "Regitra: the surface is 'white, light reflective'" }
+      foreground: "#E1341E"
+      border: { color: "#E1341E", note: "Regitra: 'the edging, letters and numbers ... are red'" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed, note: "the temporary plate DOES carry the EU band, unusually for a trade plate" }
+    validity:
+      rule: >-
+        Regitra: "Since 3 April 2018 the vehicle registration number license
+        plates of this type are issued for an unlimited period." Operators
+        receive a two-year usage right in the register, extendable on payment.
+      territorial_limit: >-
+        Regitra states these plates are valid only within Lithuania and that
+        "their use is unlawful" outside the country's borders — an important
+        constraint for any consumer treating them as ordinary registrations.
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/temporary-commercial/  # PRIMARY (authority): P + five digits for cars and trailers, P + four for motorcycles; formats 1, 2 and 3; white with RED characters and the blue EU strip; unlimited validity since 3 April 2018; valid only in Lithuania"
+    notes: >-
+      THE COMMERCIAL/TRADE PLATE — Lithuania's dealer plate in substance, but
+      classed `temporary` because _meta/classes.yml defines that value as
+      short-validity plates and defines `dealer` as a plate bound to a business
+      rather than a vehicle. The Lithuanian plate is genuinely both, and the
+      2018 move to unlimited validity pulls it further toward `dealer`; the
+      class choice is flagged rather than silently made. period.start 2018 is
+      the authority's own date for the CURRENT regime, not for the plate type as
+      such, which is older and undated here — a deliberate under-claim.
+
+  - id: lt-temporary-commercial-motorcycle
+    class: temporary
+    categories: [motorcycle]
+    period: { start: 2018 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "P9999"
+      regex: '\AP\d{4}\z'
+      charset: { notes: "Regitra: motorcycles carry 'P' + four digits on format 3" }
+    design:
+      plate: { w: 250, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#E1341E"
+      border: { color: "#E1341E" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/temporary-commercial/  # PRIMARY (authority): 'P' + four digits for motorcycles, format 3 (250x150)"
+    notes: >-
+      THE MOTORCYCLE TRADE PLATE. Separate series from
+      lt-temporary-commercial on the digit count. Its categories are disjoint
+      from that series', so no overlap arises.
+
+  - id: lt-electric
+    class: electric
+    categories: [car, van]
+    period: { start: 2016 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "EL9999"
+      regex: '\AE[A-Z]\d{4}\z'
+      charset:
+        literal_prefix: E
+        notes: >-
+          Regitra: the mark is "two letters (letter 'E' and any other letter in
+          alphabet ascending order) and four numbers that indicate a serial
+          number". The first letter is a fixed E; the second is a free letter
+          that advances alphabetically as blocks are exhausted, which is a
+          PROGRESSION rule, not a constraint on any single mark. The regex
+          therefore leaves the second letter free — narrowing it to the blocks
+          issued so far would reject valid future marks.
+      progression: >-
+        The second letter advances in alphabetical order across serial blocks
+        (Regitra). This is the only published progression rule in the Lithuanian
+        system and is the one place a Lithuanian mark carries era information.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Vytis" }
+    eligibility:
+      rule: >-
+        Originally pure electric vehicles. Regitra: from 3 April 2018 the type
+        was extended to plug-in hybrids — vehicles with "an electric
+        rechargeable energy storage system, which can be recharged externally".
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/for-electric-vehicles/  # PRIMARY (authority): E + one free letter + four digits; formats 1 and 2; white with black characters, blue EU strip and the Vytis; first available 1 July 2016; extended to plug-in hybrids from 3 April 2018"
+    notes: >-
+      THE ELECTRIC-VEHICLE PLATE. period.start 2016 is the authority's own
+      first-issue date (1 July 2016). Note that this is a DISTINGUISHING mark
+      rather than a different-coloured plate: unlike China's green EV plates,
+      the Lithuanian EV plate is an ordinary white plate whose serial begins
+      with E, so the class is readable from the string alone — which is what
+      makes it worth a series rather than a flag.
+
+  - id: lt-personalised
+    class: personalized
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2004 }
+    period_evidence: secondary-locator-unverified   # the 2004 start is INHERITED from the EU-band date, not sourced for this series: a locator, unverified
+    matching: strict
+    format:
+      pattern: "LLLLL9"
+      regex: '\A(?=[A-Z0-9]*\d)[A-Z0-9]{1,6}\z'
+      charset:
+        max_symbols: 6
+        rule: >-
+          Regitra: cars and trailers may carry "from 1 to 6 characters, one of
+          which must be a number"; motorcycles from 1 to 5. The regex encodes
+          exactly that — one to six characters from the serial alphabet, with a
+          lookahead requiring at least one digit somewhere. UNLIKE Estonia's A2,
+          Lithuania publishes NO ordering rule, so letters and digits may
+          interleave freely and the regex does not impose a letters-then-digits
+          shape.
+        content_rules: >-
+          Regitra excludes vulgar, jargon and swear words, concepts offensive to
+          races or religions, and inscriptions coinciding with the names of
+          states, international organisations or their abbreviations. Not
+          machine-encodable; recorded.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: left, color: "#003399", content: eu-stars+LT, hex_basis: observed }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/personal/  # PRIMARY (authority): 1-6 characters for cars and trailers and 1-5 for motorcycles, at least one a number; the content restrictions; formats 1, 2, 3 and 5; white with black characters and the blue EU strip"
+    notes: >-
+      THE PERSONALISED PLATE. period.start 2004 is inherited from the EU-band
+      date and is NOT sourced for this type specifically — Regitra gives no
+      first-issue date for personalised plates, so this is the file's most
+      speculative start and is flagged as such. The motorcycle ceiling of five
+      characters is recorded in `charset` but not given its own series, because
+      the grammar is otherwise identical and a five-character mark already
+      matches this regex.
+
+  # =========================================================================
+  # DIPLOMATIC — the one Lithuanian series with published digit semantics.
+  # =========================================================================
+  - id: lt-diplomatic
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2004 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      charset:
+        digits: "6 on a car; 5 on a motorcycle or trailer (a separate series)"
+        notes: >-
+          An all-numeric mark, unique in the Lithuanian system, and the only one
+          whose positions carry published meaning. Regitra: the first two digits
+          are the foreign mission's code, assigned by the Department of
+          Protocol, drawn from the ranges 01-43, 60 and 80-91; the third digit is
+          the vehicle category (1 head of mission, 2 mission vehicle,
+          3 diplomatic personnel's personal vehicle, 4 administrative and
+          technical staff's personal vehicle); the last three are the serial.
+      composition_note: >-
+        The third digit's four values are enumerated by the authority and are
+        encoded nowhere else in this file; they are recorded here rather than as
+        a decode table because a four-row enumeration is a `charset` fact, not a
+        table (PRD-PLATES §2.4 puts small mappings inline by design). The
+        MISSION-CODE mapping — which country is 01, which is 14 — is NOT
+        published by Regitra and is NOT shipped; see notes.
+      separator_note: >-
+        RECORDED INFERENCE. The mark is reported to print as three groups
+        (two digits, one digit, three digits). No source reached dimensions the
+        gaps, so the pattern spells the mark solid and a forgiving consumer
+        recovers the grouped form.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 300, h: 150, unit: mm }
+      background: { color: "#0E7A3C", finish: retroreflective, hex_basis: observed, spec_note: "Regitra: the surface is 'green, light reflective and with a repetitive safety mark'; no RGB source exists" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", note: "Regitra: 'The edging, letters and numbers ... are white'" }
+      band: { side: none, note: "no EU band is described on the diplomatic plate by the authority; recorded as described, not assumed" }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/diplomatic-of-foreign-missions-and-of-international-organisations/  # PRIMARY (authority): six digits on a car and five on a motorcycle or trailer; the 01-43/60/80-91 mission-code ranges; the third-digit category values; green reflective ground with white characters; 'available for the users since 11 October 2004'"
+    notes: >-
+      THE DIPLOMATIC PLATE — green, all-numeric, and the only Lithuanian mark
+      with published positional semantics. period.start 2004 is
+      `secondary-first-issue` on the authority's own statement that the type has
+      been available since 11 October 2004 — a date in October, NOT the 1 May
+      accession date and NOT the same event as the EU band, which this series
+      does not even carry. NO MISSION-CODE DECODE TABLE IS SHIPPED: the
+      authority publishes the code RANGES but not the country mapping, and the
+      individual assignments circulate only in secondary compilations. A decode
+      table of embassies built from those would be exactly the confident guess
+      this dataset refuses; the ranges are recorded instead so a consumer knows
+      the field exists and how wide it is.
+
+  - id: lt-diplomatic-motorcycle
+    class: diplomatic
+    categories: [motorcycle, trailer]
+    period: { start: 2004 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d{5}\z'
+      charset: { notes: "five digits, against six on a car — Regitra states the difference explicitly" }
+    design:
+      plate: { w: 250, h: 150, unit: mm }
+      plate_variants:
+        - { w: 185, h: 210, unit: mm, note: "given as 182 x 210 on this authority page — see common.plate_formats.dimension_caution" }
+      background: { color: "#0E7A3C", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.regitra.lt/en/services/state-number-plates/types-of-vehicle-registration-number-license-plates/diplomatic-of-foreign-missions-and-of-international-organisations/  # PRIMARY (authority): 'motorcycles and trailers display five numbers'"
+    notes: >-
+      THE DIPLOMATIC MOTORCYCLE AND TRAILER PLATE. Separate series from
+      lt-diplomatic on the digit count. Because the mark loses a digit, the
+      published positional semantics of the six-digit car mark cannot be
+      assumed to carry over unchanged, and no source reached states how the
+      five digits divide — recorded as an open question rather than inferred.

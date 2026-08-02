@@ -1,0 +1,842 @@
+# plates/pt.yml — Portugal (PRD-PLATES gate L1, EU/EEA wave 2).
+#
+# ONE INSTRUMENT CARRIES ALMOST THIS WHOLE FILE, and it is not the one the
+# secondary web cites. The Portuguese plate is governed by the REGULAMENTO DO
+# NÚMERO E CHAPA DE MATRÍCULA, annexed to Decreto-Lei n.º 54/2005, de 3 de
+# março (DR I-A n.º 44, pp. 1892-1897), amended by Decreto-Lei n.º 106/2006,
+# de 8 de junho (DR I-A n.º 111, pp. 4052-4060), Decreto-Lei n.º 112/2009, de
+# 18 de maio, Lei n.º 46/2010, de 7 de setembro, and Decreto-Lei n.º 2/2020,
+# de 14 de janeiro (DR 1.ª série n.º 9, pp. 4-12). All fetched from
+# files.diariodarepublica.pt on 2026-08-02, text AND page images.
+#
+# THE FOUR FORMAT WINDOWS ARE ENACTED LAW, NOT FOLKLORE. Regulamento art. 3.º
+# n.º 2, verbatim, in one paragraph, with the dates in the statute itself:
+#
+#     "2 — O grupo de duas letras posiciona-se da seguinte forma:
+#        a) Matrículas atribuídas até 29 de Fevereiro de 1992 — AA-00-00;
+#        b) Matrículas atribuídas a partir de 1 de Março de 1992 — 00-00-AA;
+#        c) Matrículas atribuídas a partir do fim da utilização do modelo
+#           referido na alínea anterior — 00-AA-00."
+#
+# and n.º 3 (renumbered n.º 4 by DL 2/2020) adds the fourth:
+#
+#     "Após o esgotamento dos números de matrícula correspondentes à alínea c)
+#      do número anterior, o número de matrícula ... passa a ser constituído
+#      por dois grupos de duas letras e um grupo central de dois algarismos."
+#
+# READ THAT AGAIN, BECAUSE IT IS THE WHOLE JOB. Two of the four boundaries are
+# CALENDAR DATES fixed by statute (29-02-1992 / 01-03-1992). The other two are
+# not dates at all — they are EXHAUSTION EVENTS. The statute says the next
+# format begins when the previous one runs out, and it says so twice. So:
+#
+#   * es.yml's trap does not arise here in its usual form, but its MIRROR
+#     IMAGE does. There, an instrument's own window was shipped as a series
+#     period. Here, an instrument's own in-force date would be shipped as a
+#     series START — and it would be wrong by seven weeks. DL 2/2020 entered
+#     into force on 15-01-2020 (art. 11.º, "no dia seguinte ao da sua
+#     publicação"). The AA-00-AA SERIES did not start then. Its own art. 3.º
+#     is explicit that the new models "passam a ser obrigatórios para todas as
+#     matrículas atribuídas a partir da data em que se esgotar a atual série".
+#     pt.wikipedia states "15 de janeiro de 2020" for the format change; that
+#     is the INSTRUMENT date, and it is the error this dataset exists to not
+#     make. en.wikipedia states 3 March 2020, which is a first-issue date.
+#     Both Wikipedias were read; they disagree; the disagreement is RECORDED
+#     on the series, not averaged.
+#   * The ENABLING instrument for AA-00-AA is therefore NOT DL 2/2020. It is
+#     DL 54/2005 itself, whose art. 3.º n.º 3 legislated the fourth format
+#     fifteen years before it was needed. DL 2/2020 only approved the plate
+#     MODELS for it (a new Anexo V) and removed the date strip. Every
+#     secondary source that calls DL 2/2020 "the law that created the new
+#     plates" has the mechanism backwards.
+#
+# THE SIDE LABEL IS NOT THE FORMAT, and Portugal is the country where that
+# confusion is easiest to make. From 01-01-1998 to the AA-00-AA cutover, the
+# right-hand end of a Portuguese car plate carried a YELLOW BOX with the YEAR
+# over the MONTH of first registration (Regulamento art. 5.º n.º 4). It is a
+# registration DATE, printed beside the serial, never inside it — no character
+# of a Portuguese registration number has ever encoded time or place. DL
+# 2/2020's preamble gives the reason it was abolished, and it is a good one:
+# "esta menção gera interpretações incorretas por parte das entidades
+# fiscalizadoras do trânsito de outros Estados-Membros ... uma vez que diversos
+# países utilizam a referida solução não para a indicação da data da primeira
+# matrícula do veículo, mas para inscrever a data limite de validade da
+# matrícula". Portugal's own registration date was being read abroad as an
+# EXPIRY date. The preamble also records that Portugal was alone in the Union
+# in printing it, Italy excepted.
+#
+# COLOUR POLICY, and it differs from Spain's on purpose. Anexo XVIII gave
+# Spain four-corner CIE boxes; the Portuguese Regulamento gives COLOUR NAMES
+# and nothing else — "fundo de cor branca", "a preto", "fundo amarelo", "fundo
+# vermelho", "azul retrorrefletor". A name constrains far less than a gamut,
+# so every hex in this file is `hex_basis: observed` and no `color_spec` is
+# claimed, because there is none to cite. What IS cited is the retroreflectivity
+# requirement and the colour NAME, per series.
+#
+# DIMENSIONS COME FROM THE ANNEX DRAWINGS, which are page images in the DR
+# PDF and not text-extractable. They were rendered at 150 dpi and read
+# (dl54.pdf pp. 1896-1897; dl2020.pdf pp. 10-12). Values legible at that
+# resolution are recorded with `dimension_basis: statutory-drawing`; values
+# that were not legible are ABSENT rather than guessed.
+#
+# GEOGRAPHY: there is none on a Portuguese car plate, ever, and that is a
+# sourced negative rather than a missing table — art. 3.º composes the number
+# from digits and letters with no locational element in any of the four
+# windows. Geography survives in exactly two places, both of them statutory
+# lists and both authored: the TRAILER issuing-service prefix
+# (plates/_decode/pt-trailer-services.yml) and the EXPORT customs-office letter (inline on
+# pt-export). A third, the three-letter câmara municipal code on the
+# transitional moped plate, is authored as a mechanism without its table,
+# because the table is not in the instrument.
+jurisdiction: pt
+authority:
+  name: "Instituto da Mobilidade e dos Transportes, I. P. (IMT) — Regulamento do Número e Chapa de Matrícula, anexo ao Decreto-Lei n.º 54/2005, de 3 de março, na redação atual"
+  url: "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2005-128100380"
+binding: vehicle
+binding_note: >-
+  Regulamento art. 8.º n.º 1, verbatim: "A cada veículo em condições de circular
+  só pode ser atribuído um número de matrícula." The number is the vehicle's for
+  life and does not follow an owner — the opposite of Belgium (be.yml,
+  `binding: owner`) and of Luxembourg's personalised numbers (lu.yml). Art. 8.º
+  n.os 2-4 carve out the one exception, and it is narrow and non-transferable:
+  on the request of security, military, diplomatic or judicial authorities the
+  registrar may issue up to FOUR SUPPLEMENTARY numbers to an operationally
+  sensitive vehicle, and may even issue one to a vehicle registered in another
+  country. A parse API must therefore not assume plate-to-vehicle is injective
+  in Portugal, only that vehicle-to-base-number is.
+
+charset_defaults:
+  letters: "A-Z"
+  excluded_letters_note: >-
+    NONE ARE EXCLUDED BY THE INSTRUMENT — and that is a finding, not an
+    omission. The Regulamento composes the number from "duas letras" and
+    "algarismos" and prescribes no alphabet restriction anywhere, in contrast
+    to Spain (vowels, Ñ, Q struck out by name in Anexo XVIII) and Luxembourg
+    (I and O struck out, plus ten named pairs). The only hint that Portugal
+    filters combinations at all is in DL 2/2020's own preamble, which prices
+    the AA-00-AA series at "cerca de 74 anos" of theoretical life reduced to
+    "45 anos" in practice, "nomeadamente pela não utilização de combinações que
+    possam formar palavras ou siglas que se entenda dever evitar". So an
+    avoid-list EXISTS as a matter of administrative practice and its effect is
+    quantified in a statutory preamble — but its MEMBERS are published nowhere
+    located in this pass. Recorded gap; no `regex_strict` is offered for the
+    ordinary series, because inventing the excluded set would be worse than
+    having none.
+  source: "https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # DL 2/2020 preamble: the 74-year/45-year estimate and the reason for the difference"
+
+display_rules:
+  two_plates: "automóveis e máquinas industriais: one front, one rear (Regulamento art. 7.º n.º 1)"
+  one_plate_rear_only: "motociclos, ciclomotores, triciclos, quadriciclos, reboques e máquinas industriais rebocáveis — rear only (art. 7.º n.º 2)"
+  mounting: "principal axis horizontal, perpendicular and centred on the vehicle's median longitudinal plane or, failing that, to its LEFT; lower edge not below 200 mm and upper edge not above 1200 mm from the ground (art. 7.º n.os 3-4)"
+  machinery_exception: "on máquinas industriais where construction or function forbids it, a SINGLE plate may be mounted laterally on the RIGHT-HAND side, and removable plates may be authorised (art. 7.º n.º 7, added by DL 106/2006)"
+  minimum_character_height: "where reduced-size plates are authorised for constructive or functional reasons, characters may not fall below 60 mm (art. 9.º n.º 3, in the DL 2/2020 wording — the 2005 original set no floor, so this is a 2020 tightening)"
+  source: "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # Regulamento art. 7.º; https://files.diariodarepublica.pt/1s/2006/06/111a00/40524060.pdf  # art. 7.º n.º 7; https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # art. 9.º n.º 3"
+
+pre_1937_history_note: >-
+  BEFORE THE 1937 NATIONAL SERIES, tagged `secondary-wikipedia` in its entirety
+  and deliberately NOT authored as series. The Portuguese-language Wikipedia
+  article dates the plate obligation itself to a Decreto de 3 de outubro de 1901
+  requiring every car to carry a metal plate at the rear, and describes an
+  intermediate 1911-1936 arrangement built on zone letters rather than a single
+  national run. Neither the 1901 decree nor any 1911 instrument was reached on
+  dre.pt in this pass — the DRE search interface is a single-page application
+  whose backend is not fetchable, and the pre-1910 Diário do Governo is not on
+  the files service under the modern path scheme. Formats for those eras are
+  therefore NOT recorded: a series entry needs a grammar, and a grammar taken
+  from an encyclopedia paragraph without an instrument behind it is exactly the
+  confident guess this dataset prefers a gap to.
+  Source (locator and sole authority for the two dates above):
+  https://pt.wikipedia.org/wiki/Matr%C3%ADculas_de_autom%C3%B3veis_em_Portugal
+
+series:
+
+  # =========================================================================
+  # THE CURRENT SERIES — AA-00-AA. Enabled 2005, modelled 2020, issued from
+  # the exhaustion of 00-AA-00.
+  # =========================================================================
+  - id: pt-national-2020
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, tricycle, quadricycle]
+    period: { start: 2020 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 99 LL"
+      regex: '\A[A-Z]{2}[- ]\d{2}[- ][A-Z]{2}\z'
+      separator_note: >-
+        THE DASHES ARE GONE, and the deletion is legible in two independent
+        places in the same instrument. (1) TEXT: DL 54/2005's art. 3.º n.º 1
+        and n.º 3 both ended "sendo os grupos separados entre si por traços";
+        when DL 2/2020 rewrote n.º 3 as the new n.º 4 it reproduced the
+        composition and DROPPED that clause. (2) DRAWING: the Anexo V Modelo I
+        dimension chain prescribes only spacing — 10 mm between characters
+        inside a group and 20 mm between groups — and draws no separator glyph,
+        where the Anexo IV Modelo I drawing it replaces plainly draws one. The
+        canonical printed form in `pattern` is therefore the GAP. `regex` still
+        spells the position as the sanctioned separator-only class `[- ]`
+        (PRD-PLATES §2.8) because the instrument now prescribes millimetres and
+        no glyph, which is precisely the es-consular-cc-1999 situation: with no
+        glyph mandated, both members of the emitted set are inside the grammar,
+        so the class is `strict` rather than a widening. FLAGGED FOR THE
+        VERIFIER: this reading rests on the statutory drawing plus a deletion,
+        and a photograph of an issued plate would settle it in one look.
+      progression: >-
+        Nationally sequential and non-geographic, like every Portuguese series
+        since 1937. The known anchor is the first number, AA-01-AA, so the two
+        letter pairs and the central digits advance from there; the exact
+        odometer order (which of the three groups rolls first) is not stated by
+        the instrument and is not asserted here. DL 2/2020's preamble prices the
+        space at "cerca de 74 anos" theoretical and "45 anos" practical, and
+        notes the design deliberately leaves room to go to THREE central digits
+        later — so a future AA-000-AA is contemplated in the enacting text
+        itself and should not surprise a consumer.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "Modelo II — automóveis, rear only, two rows (letters over digits+letters)" }
+        - { note: "Modelo IV — motociclos de cilindrada superior a 50 cm3 e triciclos" }
+        - { note: "Modelo V — ciclomotores, motociclos até 50 cm3 e quadriciclos" }
+        - { note: "Modelo VI — ciclomotores de três rodas e quadriciclos" }
+      dimension_basis: statutory-drawing
+      characters: { h: [75, 80], stroke: "1/7 h", gap: 10, group_gap: 20, unit: mm, note: "character height is a RANGE in the drawing (75 a 80), not a single value; widths are marked 6/7h for letters and 4/7h for digits, i.e. proportional to height rather than absolute" }
+      plate_construction: { border: 5, corner_radius: 10, unit: mm, note: "5 mm black peripheral border; R=10 corner radius; band field 45 mm wide, internally 7.5 + 30 + 7.5" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band:
+        side: left
+        color: "#003399"
+        hex_basis: observed
+        content: eu-stars+P
+        note: >-
+          Blue retroreflective field, 45 mm wide, carrying the twelve yellow
+          retroreflective stars above and the white letter P below. The annex
+          labels the three colours in words on the drawing itself — "Azul
+          retrorrefletor", "Amarelo retrorrefletor", "Branco retrorrefletor" —
+          which is the only colour specification Portuguese law gives.
+      emblem: { present: false }
+      rear_differs: false
+      date_strip: { present: false, note: "ABOLISHED with this model. See the file header." }
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # THE ENABLING INSTRUMENT: Regulamento art. 3.º n.º 3 as originally enacted — 'dois grupos de duas letras e um grupo central de dois algarismos', triggered by exhaustion of the 00-AA-00 series. DL 54/2005, DR I-A n.º 44, 03-03-2005. Accessed 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # DL 2/2020 (DR 1.ª série n.º 9, 14-01-2020): art. 3.º renumbers that rule as art. 3.º n.º 4 and drops the 'traços' clause; art. 4.º adds ANEXO V (the models drawn for this format); art. 5.º n.º 1 d) maps this window to Anexo V; art. 11.º in force 15-01-2020. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Portugal  # secondary-wikipedia: first issue AA-01-AA on 3 March 2020, and 99-ZZ-99 as the last number of the preceding series. Read 2026-08-02"
+      - "https://www.motojornal.pt/diploma-que-regula-as-matriculas-foi-publicado/  # contemporaneous Portuguese motoring press, 15-01-2020: reports the preceding series as due to run out 'at the end of next February', i.e. a March 2020 start — independent of Wikipedia and consistent with it"
+    notes: >-
+      THE CURRENT PORTUGUESE SERIES. Period start is `secondary-first-issue`
+      and not `instrument-in-force`, deliberately: the statutory trigger is the
+      EXHAUSTION of the previous series, an event no instrument dates, so the
+      only possible evidence for the start is a first-issue report. Two
+      independent secondaries agree on March 2020 — Wikipedia gives 3 March
+      2020 with the first number AA-01-AA, and the Portuguese motoring press on
+      15-01-2020 expected exhaustion at the end of February. FOLKLORE FLAG,
+      recorded not averaged: pt.wikipedia gives 15 January 2020 for the same
+      change; that is DL 2/2020's own entry into force and it is an instrument
+      date masquerading as a series start — the two Wikipedias contradict each
+      other and only one of them is describing the series. Old plates stay on
+      the road: DL 2/2020's own preamble provides that existing plates "podem
+      manter-se em uso, sem necessidade de substituição", optionally replaceable
+      at the owner's choice, and Regulamento art. 5.º n.º 12 says the same in
+      enacting terms. Vehicles of historic interest may be authorised to carry
+      the model in use at their own first registration (art. 9.º n.º 3 of DL
+      2/2020's transitional article) — Portugal has no historic-plate SERIES,
+      only a historic-plate PERMISSION, which is why no `historic` entry appears
+      in this file.
+
+  # =========================================================================
+  # 00-AA-00 — the third window.
+  # =========================================================================
+  - id: pt-national-2005
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, tricycle, quadricycle]
+    period: { start: 2005, end: 2020 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99-LL-99"
+      regex: '\A\d{2}-[A-Z]{2}-\d{2}\z'
+      separator_note: >-
+        The hyphen IS statutory in this window: art. 3.º n.º 1, verbatim,
+        "sendo os grupos separados entre si por traços", and the Anexo IV
+        Modelo I drawing draws the glyph between groups. Contrast the 2020
+        model, where the clause was deleted.
+      progression: "sequential and non-geographic; the letter pair advances as the digit groups roll"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "Modelo II — automóveis, rear only, two rows" }
+        - { note: "Modelo IV/V — motociclos de cilindrada superior a 50 cm3 e triciclos; from 01-01-2007 Modelo V, in PLASTIC (art. 5.º n.º 10). DL 106/2006 first set that date at 01-01-2006 and DL 112/2009 moved it to 01-01-2007 — a one-year slip visible only by reading both amendments" }
+      dimension_basis: statutory-drawing
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+P }
+      date_strip:
+        present: true
+        side: right
+        color: "#F9B700"
+        hex_basis: observed
+        content: year-over-month
+        note: >-
+          The yellow box at the right-hand end carries the YEAR above and the
+          MONTH below, of FIRST REGISTRATION — the Anexo IV Modelo I drawing
+          renders it as "98 / 01" (January 1998). It is not an expiry date and
+          not part of the serial. Present on Modelos I and II (cars) only;
+          the trailer model has never carried it.
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # THE ENABLING INSTRUMENT: DL 54/2005 art. 3.º n.º 2 c) — '00-AA-00' for numbers issued from the end of the use of the preceding model; preamble states the reason: 'As actuais séries de matrícula dos automóveis encontram-se praticamente esgotadas'. Art. 5.º n.º 1 c) + n.os 3-4: white retroreflective ground, black characters, plus the year/month indication at the right-hand end. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Portugal  # secondary-wikipedia: 00-AA-00 introduced 2005 and running to 99-ZZ-99 in March 2020. Read 2026-08-02"
+      - "https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=1103&tabela=leis  # Decreto-Lei n.º 112/2009, de 18 de maio, as carried by the Procuradoria-Geral Distrital de Lisboa database: the amendment that moves the plastic-motorcycle-plate date from 01-01-2006 (DL 106/2006) to 01-01-2007, and that inserts the electronic-identification device into the Regulamento. Consulted as a SECONDARY carrier of the text — the Diário da República original for this one amendment was not reached. Accessed 2026-08-02"
+    notes: >-
+      THE 2005-2020 WINDOW. Both ends are exhaustion events rather than
+      instrument dates, so both are `secondary-first-issue`: this format began
+      when 99-99-ZZ ran out and ended when 99-ZZ-99 ran out. DL 54/2005 is the
+      enabling instrument and its own dates are known precisely — published
+      03-03-2005, no entry-into-force clause of its own, so the general 5-day
+      vacatio of Lei n.º 74/98 puts it in force on 08-03-2005 (DERIVED from the
+      default rule, not stated; flagged) except for Regulamento arts. 11.º,
+      15.º and 16.º, which its art. 6.º delays to 01-01-2006. NOT USED AS THE
+      SERIES START, on the instrument-date rule. THE MONTH IS THE GAP: no
+      source located in this pass gives the day, or even the month, on which
+      the first 00-AA-00 number was issued, and the enthusiast monthly-series
+      tables that would settle it are dead links. A consumer needing better than
+      year granularity here should treat 2005 as approximate.
+
+  # =========================================================================
+  # 00-00-AA — the second window. BOTH ENDS ARE CALENDAR DATES IN A STATUTE.
+  # =========================================================================
+  - id: pt-national-1992
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1992, end: 2005 }
+    period_evidence: statutory-date-start-secondary-end
+    matching: strict
+    format:
+      pattern: "99-99-LL"
+      regex: '\A\d{2}-\d{2}-[A-Z]{2}\z'
+      separator_note: "statutory hyphens (art. 3.º n.º 1, 'separados entre si por traços')"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { note: "Anexo III Modelo II — automóveis, rear, two rows; Modelo III — reboques; Modelo IV — motociclos, triciclos e quadriciclos > 50 cm3, drawn at 170 mm wide" }
+      dimension_basis: statutory-drawing
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+P }
+      band_caveat: >-
+        READ THIS BEFORE TRUSTING THE BAND ON A 1992-1997 PLATE. The band is
+        drawn on the Anexo III models — the drawing labels "AZUL
+        RETRORREFLECTOR", "AMARELO RETRORREFLECTOR" and shows the P — but
+        Anexo III as read here was published in 2005 and REPLACED again in 2006,
+        so it is a re-enactment of the 1992 model, not the 1992 instrument. The
+        EU distinguishing-sign band rests on Regulation (EC) 2411/98 of
+        3 November 1998, which postdates this window's opening by six years. So
+        either the band was on Portuguese plates before the Regulation, or the
+        2005 re-enactment modernised the drawing. This pass could not reach the
+        1992 instrument to tell them apart. The band is recorded because the
+        primary in hand draws it; the caveat is recorded because the primary in
+        hand cannot date it.
+      date_strip: { present: false, note: "the year/month box arrives with the NEXT model window, on 01-01-1998 — Anexo IV, not Anexo III" }
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 Regulamento art. 3.º n.º 2 a)-b): AA-00-00 for numbers issued 'até 29 de Fevereiro de 1992' and 00-00-AA 'a partir de 1 de Março de 1992' — both boundary dates enacted verbatim. Art. 5.º n.º 1 b) + n.º 3: for numbers issued between 01-01-1992 and 31-12-1997 the plate is Anexo III — retroreflective, white ground, black letters, digits, dashes and peripheral border. Accessed 2026-08-02"
+    notes: >-
+      THE 1992-2005 WINDOW, and the one place in this file where a boundary is
+      dated TO THE DAY by a statute: numbers up to 29-02-1992 are AA-00-00,
+      numbers from 01-03-1992 are 00-00-AA. Its far end is an exhaustion event
+      (see pt-national-2005). A PRECISION WORTH KEEPING, because it is a real
+      two-month seam and secondary sources collapse it: the NUMBER format
+      changed on 01-03-1992, but the PLATE MODEL changed on 01-01-1992 — art.
+      5.º n.º 1 puts Anexo II (black) on everything up to 31-12-1991 and
+      Anexo III (white retroreflective) on everything from 01-01-1992. So
+      registrations made in January and February 1992 carry an OLD-FORMAT
+      AA-00-00 number on a NEW white reflective plate, and that combination is
+      lawful, sourced, and invisible in every secondary account of the change.
+      The instrument that actually made the 1992 change was not reached: DL
+      54/2005 states the dates but revokes only arts. 1.º-3.º of Decreto
+      Regulamentar n.º 13/98, de 15 de junho and arts. 35.º and 37.º of the
+      Regulamento do Código da Estrada (Decreto n.º 39 987, de 22 de dezembro de
+      1954), so the 1992 amendment lives somewhere in the chain between those
+      two and is a recorded gap.
+
+  # =========================================================================
+  # AA-00-00 — the first modern national series.
+  # =========================================================================
+  - id: pt-national-1937
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1937, end: 1992 }
+    period_evidence: statutory-date-end-secondary-start
+    matching: strict
+    format:
+      pattern: "LL-99-99"
+      regex: '\A[A-Z]{2}-\d{2}-\d{2}\z'
+      progression: >-
+        Reported to have run from AA-10-00 to ZZ-99-99 across fifty-five years,
+        i.e. the letter pair advances as the four digits roll and the series
+        did NOT start at AA-00-00 itself. That range is `secondary-wikipedia`;
+        the STATUTE gives only the shape.
+      separator_note: "hyphens, drawn in the Anexo II models ('ML-79-08', 'MF-09-78')"
+    design:
+      plate: { w: 460, h: 100, unit: mm, note: "Anexo II Modelo I — automóveis, FRONT" }
+      plate_variants:
+        - { w: 340, h: 230, unit: mm, note: "Modelo II — automóveis, rear, two rows (letters over digits)" }
+        - { w: 520, h: 120, unit: mm, note: "Modelo III — automóveis, rear, single row" }
+        - { note: "Modelo IV — motociclos, drawn at 230 mm wide" }
+        - { w: 520, h: 120, unit: mm, note: "Modelo V — reboques" }
+      dimension_basis: statutory-drawing
+      background: { color: "#000000", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      note: >-
+        WHITE ON BLACK, and unlike Spain this is not collector folklore but
+        enacted text: Regulamento art. 5.º n.º 2, verbatim, "As chapas de
+        matrícula dos modelos constantes do anexo II têm fundo de cor preta e
+        letras, algarismos e traços de cor branca". No retroreflectivity is
+        required for this model — the requirement appears for the first time in
+        n.º 3, for Anexo III. The drawings label the two colours "BRANCO" and
+        "PRETO" and nothing else, so `finish: painted` is an inference from the
+        ABSENCE of the retroreflector requirement rather than a positive claim.
+      date_strip: { present: false }
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 Regulamento art. 3.º n.º 2 a) — 'Matrículas atribuídas até 29 de Fevereiro de 1992 — AA-00-00'; art. 5.º n.º 1 a) + n.º 2 — Anexo II for numbers issued up to 31-12-1991, black ground, white characters; Anexo II Modelos I-V drawings. Accessed 2026-08-02"
+      - "https://pt.wikipedia.org/wiki/Matr%C3%ADculas_de_autom%C3%B3veis_em_Portugal  # secondary-wikipedia: the second national registration system entered into force on 1 January 1937. Read 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Portugal  # secondary-wikipedia: the run AA-10-00 to ZZ-99-99, and black plates with white characters through 1992. Read 2026-08-02"
+    notes: >-
+      THE FIFTY-FIVE-YEAR SERIES. Its END is enacted law, to the day
+      (29-02-1992, DL 54/2005 art. 3.º n.º 2 a)). Its START is not: 1 January
+      1937 is `secondary-wikipedia` and the instrument behind it was not
+      reached, so `period_evidence: statutory-date` describes the END only and
+      the note is where the asymmetry is declared. Anyone re-verifying should
+      start from the Regulamento do Código da Estrada (Decreto n.º 39 987, de
+      22 de dezembro de 1954) arts. 35.º and 37.º, which DL 54/2005 revokes by
+      name and which therefore carried the plate rules for the bulk of this
+      window — but 1954 is itself mid-series, so the 1937 instrument is a
+      third link back and remains unlocated. NOT the pre-1937 systems: those
+      are described in the file's `pre_1937_history_note` and are not authored.
+
+  # =========================================================================
+  # TRAILERS — the one geographic decode on a Portuguese plate.
+  # =========================================================================
+  - id: pt-trailer
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2005 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "L-999999"
+      regex: '\A[A-Z]{1,2}[- ]\d{1,6}\z'
+      regex_strict: '\A(?:AV|BE|BR|BN|CB|FA|GD|LE|PT|SA|SE|VC|VR|VI|VS|AN|A|C|E|H|L|M|P)[- ]\d{1,6}\z'
+      charset:
+        notes: >-
+          The prefix is the ISSUING SERVICE, one or two letters, and the list is
+          enumerated twice — DL 54/2005 Anexo I and, replacing it, DL 106/2006
+          Anexo I. `regex_strict` is the UNION of both vintages (VS and VI both
+          appear, for Viseu before and after the 2006 replacement), because
+          trailers were lawfully plated under each. Longest-match first in the
+          alternation, because single-letter codes are prefixes of two-letter
+          ones. The SERIAL is "um número de ordem" with no width fixed by the
+          instrument; the 6-digit bound in `regex` is taken from the widest
+          serial the annex drawings actually print ("L-10978" in Anexo II,
+          "L 807890" in Anexo IV, "L 808970" in Anexo V) and is a narrowing, not
+          a statutory claim — which keeps the series `strict` under §2.7.
+      separator_note: "the pre-2020 drawings show a dash; the 2020 Anexo V Modelo III drawing shows a gap, as on the car plate. `[- ]` covers both vintages of this one continuing series."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      dimension_basis: statutory-drawing
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+P }
+      date_strip: { present: false, note: "trailers never carried the year/month box — art. 5.º n.º 4 confines it to Modelos I and II, the car plates" }
+    region_encoding: "plates/_decode/pt-trailer-services.yml"
+    region_encoding_file: pt-trailer-services.yml
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 Regulamento art. 4.º n.os 1-2: 'O número de matrícula dos reboques é constituído por uma ou duas letras identificadoras do serviço regional que procedeu à matrícula, seguidas de um número de ordem', with the table at Anexo I; Anexo II Modelo V, Anexo III Modelo III and Anexo IV Modelo III drawings. Accessed 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2006/06/111a00/40524060.pdf  # DL 106/2006 art. 1.º n.º 3: replaces Anexo I — the current code list. Accessed 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # DL 2/2020 Anexo, ANEXO V Modelo III — Reboques: the current trailer plate model, drawn as 'L 808970' with the EU band and no dash. Accessed 2026-08-02"
+    notes: >-
+      PORTUGUESE TRAILERS ARE DECODABLE AND PORTUGUESE CARS ARE NOT. The prefix
+      names the district office that issued the registration — not the trailer's
+      base, not the towing vehicle's plate. PERIOD HONESTY: 2005 is the vintage
+      of the instrument that ENACTS the rule read here, exactly as in
+      es-provinces.yml, and not the date the composition began. The composition
+      is demonstrably older, and the proof is inside the same instrument: Anexo
+      II Modelo V — the model governing numbers issued UP TO 31-12-1991 — is
+      drawn as "L-10978". So trailers were numbered letter-plus-serial before
+      1992 and the enacting instrument for that is a recorded gap. Contrast
+      Spain, where the trailer letter is a fixed R prefix and the province code
+      trails; here the letter IS the geography and there is no fixed prefix.
+
+  # =========================================================================
+  # EXPORT — yellow, with its own four-member customs-office letter set.
+  # =========================================================================
+  - id: pt-export
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2005 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99999 L"
+      regex: '\A\d{1,6}[- ][A-Z]\z'
+      regex_strict: '\A\d{1,6}[- ][LPAM]\z'
+      charset:
+        letters: [L, P, A, M]
+        notes: >-
+          Art. 4.º n.º 3, verbatim: the export number is "um número de ordem,
+          seguido da letra inicial de Lisboa, Porto, Açores ou Madeira,
+          consoante o serviço alfandegário que a processe" — the INITIAL of the
+          customs service that processed it. Four members, inline here rather
+          than in a decode file because it is a different statutory list from
+          the trailer table, in a different article, with different members
+          (the trailer table has no Açores row at all — it splits the Azores
+          into three district codes AN/H/A).
+      progression: "sequential per customs office; the drawing prints five digits ('24783 L') but the instrument fixes no width"
+    design:
+      plate: { w: 520, h: 110, unit: mm, note: "Anexo V Modelo I as enacted in 2005; renumbered ANEXO VI by DL 2/2020 art. 7.º b) without change of content" }
+      plate_variants:
+        - { w: 340, h: 220, unit: mm, note: "Modelo II — two rows" }
+      dimension_basis: statutory-drawing
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+P }
+      expiry_box:
+        side: right
+        content: "EXP over expiry"
+        note: >-
+          The right-hand box carries the letters EXP above the validity limit —
+          the drawing renders it as "EXP / 91 5". This is the one Portuguese
+          plate that has always carried a date on its face, and it is an EXPIRY
+          date, not a registration date. Note the irony recorded in DL 2/2020's
+          preamble: foreign enforcement bodies were reading the ORDINARY plate's
+          registration strip as if it were this one.
+    region_encoding: inline
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 Regulamento art. 4.º n.º 3 (the number) and art. 6.º n.º 1 (the plate): 'Nos veículos destinados à exportação, a chapa de matrícula é de um dos modelos constantes do anexo V, tendo cor amarela e letras, algarismos, traços e rebordo periférico a preto'; Anexo V Modelos I-II drawings. Accessed 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # DL 2/2020 art. 7.º b): 'O anexo V é renumerado como anexo VI' — the export annex moves, its content does not. Accessed 2026-08-02"
+    notes: >-
+      EXPORT PLATES — yellow ground, black characters, EXP box. A trap for a
+      parse API and the reason this entry exists as its own series rather than a
+      colour variant: the export letter is a SUFFIX drawn from {L, P, A, M},
+      while the trailer letter is a PREFIX drawn from a 21-code table that also
+      contains L, P, A and M with DIFFERENT meanings — L is Lisboa in both, but
+      A is Ponta Delgada on a trailer and the whole of the Açores on an export
+      plate, and M is Funchal on a trailer and the whole of Madeira here.
+      Disambiguation is by POSITION, never by letter.
+
+  # =========================================================================
+  # DIPLOMATIC — a primary colour rule, a secondary number grammar.
+  # =========================================================================
+  - id: pt-diplomatic
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2005 }
+    period_evidence: instrument-in-force
+    matching: recall-only
+    format:
+      pattern: "999-CD999"
+      regex: '\A\d{1,3}-(?:CD|CC|FM)\d{1,3}\z'
+      pattern_note: >-
+        THE GRAMMAR HERE IS SECONDARY AND THE COLOUR IS PRIMARY — an unusual
+        split, and the reason this series is `recall-only`. DL 54/2005 art. 6.º
+        n.º 2 prescribes only that the CHARACTERS, dashes and border be red on
+        the plates of diplomatic-corps members, career consuls, non-resident
+        administrative and technical staff of foreign missions, and bodies
+        covered by the Protocol on the Privileges and Immunities of the European
+        Communities. It composes no number. The CD / CC / FM group letters and
+        the surrounding digit groups are taken from Wikipedia
+        (`secondary-wikipedia`); the group widths are unverified, which is why
+        the regex bounds them loosely and no `regex_strict` is offered.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#CE1126"
+      foreground_note: >-
+        Art. 6.º n.º 2, verbatim: "os caracteres, traços e rebordo periférico das
+        chapas de matrícula são de cor vermelha". The instrument names the
+        colour and nothing more — no gamut, no RAL, no CIE. hex_basis observed.
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+P }
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 Regulamento art. 6.º n.º 2 — the RED characters rule and the exact list of who gets them. Accessed 2026-08-02"
+      - "https://pt.wikipedia.org/wiki/Matr%C3%ADculas_de_autom%C3%B3veis_em_Portugal  # secondary-wikipedia: white plates with red characters, and the CD / CC / FM group letters with digits either side. Read 2026-08-02"
+    notes: >-
+      CORPO DIPLOMÁTICO E CONSULAR. Recorded as `diplomatic` although the
+      statutory provision is one sentence covering diplomats, career consuls,
+      mission staff AND European-institution personnel in a single breath — the
+      controlled vocabulary would split those across `diplomatic`, `consular`
+      and something it does not have. One series, because the instrument makes
+      one rule. CLASS CAVEAT flagged rather than resolved. THE REAL GAP: the
+      body that assigns the CD/CC/FM prefixes and their per-mission numbering is
+      the Ministério dos Negócios Estrangeiros, not the IMT, and no MNE
+      instrument was reached — so no mission decode table exists here and none
+      was invented. PRD-PLATES puts diplomatic decode tables at gate L4.
+
+  # =========================================================================
+  # TEMPORARY IMPORT — the blue-character plate.
+  # =========================================================================
+  - id: pt-temporary-import
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2005 }
+    period_evidence: instrument-in-force
+    matching: recall-only
+    format:
+      pattern: "99-99-LL"
+      regex: '\A(?:[A-Z]{2}[- ]\d{2}[- ][A-Z]{2}|\d{2}-[A-Z]{2}-\d{2}|\d{2}-\d{2}-[A-Z]{2}|[A-Z]{2}-\d{2}-\d{2})\z'
+      pattern_note: >-
+        NO NUMBER GRAMMAR IS ASSERTED, and the regex is the union of the four
+        ordinary Portuguese shapes purely so a consumer gets a shape hit — hence
+        `recall-only`, in the same spirit as nl-export. DL 54/2005 establishes
+        this plate only by penalising its absence: art. 2.º n.º 1 a) v) fines
+        "Circulação de automóvel ou de reboque importado temporariamente com
+        chapa de matrícula provisória não possuindo caracteres, traço e rebordo
+        periférico de cor azul". That sentence proves the plate exists and proves
+        its colour; it composes no number, and neither does anything else in the
+        Regulamento. `pattern` shows an ordinary shape only because the schema
+        requires one.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003399"
+      foreground_note: "characters, dashes and peripheral border in BLUE — the only Portuguese plate so coloured. hex_basis observed; the instrument names the colour and gives no spec."
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 art. 2.º n.º 1 a) v): the temporarily-imported vehicle's provisional plate must carry BLUE characters, dashes and peripheral border. Accessed 2026-08-02"
+    notes: >-
+      MATRÍCULA PROVISÓRIA for temporarily imported vehicles — blue characters.
+      An honest half-entry: the colour is primary and precise, the grammar is
+      absent from the instrument, and rather than borrow a grammar from a
+      secondary this series is marked `recall-only` and says so. The entry earns
+      its place because the blue-character rule is otherwise unrecorded anywhere
+      machine-readable, and because a parse API that meets a blue Portuguese
+      plate should be able to name it.
+
+  # =========================================================================
+  # MOPEDS AND SMALL QUADRICYCLES — yellow, and conditionally commenced.
+  # =========================================================================
+  - id: pt-moped-2006
+    class: moped
+    categories: [moped, motorcycle, quadricycle, tricycle]
+    period: { start: 2006 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-LL-99"
+      regex: '\A(?:\d{2}-[A-Z]{2}-\d{2}|[A-Z]{2}[- ]\d{2}[- ][A-Z]{2})\z'
+      pattern_note: >-
+        Mopeds carry the ORDINARY national number, not a series of their own —
+        art. 3.º n.º 1 composes one number for "automóveis, motociclos,
+        ciclomotores, triciclos e quadriciclos" together. This series exists
+        because the PLATE differs (yellow, its own models), not because the
+        serial does, and the regex is therefore the union of the two national
+        formats in force across its period.
+    design:
+      plate: { note: "Modelo VI of Anexo IV (2006-2020), replaced by Modelo V of Anexo V from the AA-00-AA cutover; Modelo VII / Modelo VI for three-wheeled mopeds and quadricycles with room for a wider plate" }
+      dimension_basis: statutory-drawing
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band:
+        side: left
+        color: "#003399"
+        hex_basis: observed
+        content: eu-stars+P
+        note: >-
+          THE BAND ARRIVED HERE IN 2020, NOT 2006, and DL 2/2020's preamble says
+          why in terms: it harmonises "os modelos das chapas de matrícula dos
+          ciclomotores e motociclos com o dos restantes veículos, no que se
+          refere à inclusão do dístico identificador do Estado-Membro de
+          matrícula, previsto no Regulamento (CE) n.º 2411/98 ... facilitando a
+          circulação internacional destes veículos". So a Portuguese moped plate
+          issued before the cutover has no EU band and one issued after does.
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2006/06/111a00/40524060.pdf  # DL 106/2006: extends the Regulamento to ciclomotores and quadriciclos; new art. 5.º n.º 8 — 'A chapa de matrícula dos motociclos de cilindrada não superior a 50 cm3, dos ciclomotores e dos quadriciclos ... deve obedecer às características e dimensões do modelo VI do anexo IV ..., apresentando fundo a amarelo e letras, algarismos, traços e rebordo periférico a preto'; art. 2.º n.º 1 — conditional commencement. Accessed 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # DL 2/2020: art. 5.º n.º 6 as amended moves this class to Modelo V of the new Anexo V from the cutover date, and the preamble states the EU-band harmonisation reason. Accessed 2026-08-02"
+    notes: >-
+      CICLOMOTORES, MOTOCICLOS ATÉ 50 cm3 E QUADRICICLOS — yellow ground, black
+      characters. `period_evidence: enabling-instrument` and NOT
+      `instrument-in-force`, because DL 106/2006's art. 2.º n.º 1 gives this
+      class a CONDITIONAL commencement and not a date: its provisions "entram em
+      vigor conjuntamente com a regulamentação relativa ao registo de propriedade
+      destes veículos". The instrument that carried that property-registration
+      regime, and therefore the real day this series began, was not reached in
+      this pass — a recorded gap, and the reason 2006 is the enabling
+      instrument's year rather than a first-issue claim. Until that condition
+      was met the transitional municipal scheme applied — see
+      pt-moped-municipal-2006, which is the series a Portuguese moped plate of
+      that era actually bears.
+
+  - id: pt-moped-municipal-2006
+    class: moped
+    categories: [moped, motorcycle]
+    period: { start: 2006, ended: true, year_end_min: 2006 }
+    period_evidence: transitional-provision
+    matching: recall-only
+    format:
+      pattern: "9-LLL-99-99"
+      regex: '\A\d{1,3}-[A-Z]{3}-\d{2}-\d{2}\z'
+      pattern_note: >-
+        THE ONLY PORTUGUESE PLATE THAT EVER ENCODED A MUNICIPALITY. DL 106/2006
+        art. 2.º n.º 1 a), in substance: the number is a group of three letters
+        standing for the CÂMARA MUNICIPAL that registered the vehicle, preceded
+        by a per-series order number starting at 1, and followed by two groups
+        of two digits giving the order of registration. The Anexo II drawings
+        render it on two rows, as "4-ETZ" over "12-30". `recall-only` because
+        the width of the leading order number is not fixed by the instrument and
+        because the three-letter municipal codes are NOT enumerated anywhere in
+        it — the mechanism is statutory, the table is not, so no decode file was
+        built and none was reconstructed from elsewhere.
+    design:
+      plate: { note: "Modelo 1 (ciclomotores) and Modelo 2 (motociclos até 50 cm3) of Anexo II to DL 106/2006, both drawn as two-row plates" }
+      dimension_basis: statutory-drawing
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      variant_colour_note: >-
+        TWO GROUNDS, ONE FORMAT, split by engine size — art. 2.º n.º 1 d):
+        ciclomotores get a YELLOW ground and motociclos up to 50 cm3 a WHITE
+        one, with black letters, digits, dashes and border on both. The yellow
+        is recorded as the entry's background because ciclomotores are the
+        dominant population; the white variant is a colour-only difference on
+        the same format and period, hence a note per PRD-PLATES §2.3 rather than
+        a second series.
+    region_encoding: "câmara municipal — three-letter codes not enumerated by the instrument; no decode table authored"
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2006/06/111a00/40524060.pdf  # DL 106/2006 art. 2.º n.º 1 a)-e) and ANEXO II Modelos 1-2: the transitional municipal moped number, its two grounds, the retroreflectivity requirement, and the rule that the number survives the owner's move to another concelho. Accessed 2026-08-02"
+    notes: >-
+      THE TRANSITIONAL MUNICIPAL MOPED SERIES — issued by câmaras municipais
+      while the national moped register was being stood up. `ended: true` with
+      `year_end_min: 2006` rather than a hard end, which is the schema's
+      known-over-undated shape: the scheme was expressly transitional and is
+      certainly closed, but no instrument closing it was reached, so the dataset
+      states that it ended without asserting when. Worth keeping for a parse API
+      because these plates are still on the road and nothing else in the
+      Portuguese system looks remotely like them. One human detail preserved
+      from the instrument, because it explains why the codes cannot be treated
+      as a live geography: art. 2.º n.º 1 b) freezes the number when the owner
+      moves to another municipality or sells to someone in one — so the
+      municipal code records where the moped was FIRST registered and may have
+      been wrong about its whereabouts for twenty years.
+
+  # =========================================================================
+  # INDUSTRIAL MACHINERY — where the enacted text and the enacted drawing
+  # disagree, and the disagreement is recorded rather than resolved.
+  # =========================================================================
+  - id: pt-machinery-2006
+    class: agricultural
+    categories: [machine, trailer]
+    period: { start: 2006 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99-LL-99 L"
+      regex: '\A(?:\d{2}-[A-Z]{2}-\d{2}|[A-Z]{2}[- ]\d{2}[- ][A-Z]{2})[- ][A-Z]\z'
+      charset:
+        notes: >-
+          Art. 3.º n.º 3 (added by DL 106/2006): the machinery number follows the
+          ordinary composition "sendo o número de matrícula seguido de uma letra
+          identificativa da classe de circulação definida nos termos do anexo II
+          do regulamento para atribuição de matrícula a máquinas industriais". So
+          the trailing letter is a CIRCULATION-CLASS code, and its value set
+          lives in a different regulation which was not reached — recorded gap,
+          and the reason there is no `regex_strict`. The drawings render it in
+          its own box at the right-hand end, separated by a gap rather than a
+          dash, which is why `pattern` spells that position with a space.
+    design:
+      plate: { note: "Modelos VIII (front/rear/side) and IX (rear/side) of Anexo IV; replaced by Modelos VII and VIII of Anexo V from the AA-00-AA cutover" }
+      dimension_basis: statutory-drawing
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_conflict:
+        text_says: "fundo a vermelho e letras, algarismos, traços e rebordo periférico a preto — a RED ground with black characters (art. 5.º n.º 11)"
+        drawing_says: "the Anexo IV Modelo VIII and IX drawings label the plate ground BRANCO RETRORREFLECTOR and add VERMELHO RETRORREFLECTOR as a separate label, apparently for the right-hand class-letter box only"
+        recorded: >-
+          THE INSTRUMENT CONTRADICTS ITSELF and this dataset does not pick a
+          winner. Both readings are from the same Diário da República: the
+          enacting sentence in art. 5.º n.º 11 and the annexed drawing it
+          points at. `design.background` is recorded as WHITE because that is
+          what the drawing — the thing a manufacturer builds from — labels, with
+          the red confined to the class-letter field; the enacting sentence is
+          preserved verbatim here so a verifier can overturn that choice with one
+          look at a photograph. PRD-PLATES §5.3: record disagreements, never
+          average them.
+    region_encoding: none
+    sources:
+      - "https://files.diariodarepublica.pt/1s/2006/06/111a00/40524060.pdf  # DL 106/2006: art. 3.º n.º 3 (the class letter), art. 5.º n.º 11 (the red-ground sentence), ANEXO IV Modelos VIII-IX (the drawings that label the ground white), art. 2.º n.º 2 (conditional commencement: 'entram em vigor conjuntamente com a sua regulamentação'). Accessed 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2020/01/00900/0000400012.pdf  # DL 2/2020 art. 5.º n.º 11 as amended: the same red-ground wording, models moved to Anexo V VII-VIII. Accessed 2026-08-02"
+    notes: >-
+      MÁQUINAS INDUSTRIAIS E MÁQUINAS INDUSTRIAIS REBOCÁVEIS. CLASS CAVEAT: the
+      controlled vocabulary has no works/industrial-machinery class, and
+      `agricultural` is the same compromise es-special-vehicles-1999 records for
+      the same reason — the statutory category is broader than farming. Flagged
+      as a vocabulary gap, and the second file in this dataset to flag it, which
+      is the point at which it becomes worth a vocabulary PR. Commencement is
+      conditional in the same way as the moped series ("entram em vigor
+      conjuntamente com a sua regulamentação"), hence `enabling-instrument`.
+
+  # =========================================================================
+  # STATE FLEETS — no primary reached. Authored from a secondary, tagged.
+  # =========================================================================
+  - id: pt-military
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2005 }
+    period_evidence: secondary-wikipedia
+    matching: recall-only
+    format:
+      pattern: "MG-99-99"
+      regex: '\A(?:MG|ME|MX|AM|AP)[- ]\d{2}[- ]\d{2}\z'
+      pattern_note: >-
+        `pattern` spells one branch of the prefix alternation (MG, the Army)
+        because the human-pattern DSL has no alternation and the lint
+        round-trips every pattern-generated serial against `regex`; the other
+        four prefixes are equally in `regex` and equally representative.
+        WHOLLY `secondary-wikipedia`. The Portuguese armed forces register
+        outside the Regulamento de Matrícula — DL 54/2005 art. 8.º n.º 2 shows
+        the civil registrar dealing with "entidades militares" as an external
+        applicant, and no Defence instrument was reached in this pass. Wikipedia
+        gives the branch prefixes as MG, ME and MX for the Army, AP for the Navy
+        and AM for the Air Force; it gives no digit grammar, so the two-by-two
+        digit shape here is this dataset's own conservative rendering and NOT a
+        claim. `recall-only`, and a match means only "this looks like a
+        Portuguese military prefix".
+    design:
+      note: "no colour, dimension or model is recorded — the Regulamento does not cover these plates and no Defence instrument was reached. Deliberately absent rather than guessed."
+    region_encoding: none
+    sources:
+      - "https://pt.wikipedia.org/wiki/Matr%C3%ADculas_de_autom%C3%B3veis_em_Portugal  # secondary-wikipedia: MG / ME / MX (Exército), AP (Marinha), AM (Força Aérea). Read 2026-08-02"
+      - "https://files.diariodarepublica.pt/1s/2005/03/044a00/18921897.pdf  # DL 54/2005 art. 8.º n.º 2 — the civil register treats military entities as external applicants for supplementary numbers, which is the primary evidence that a separate military register exists"
+    notes: >-
+      ARMED FORCES. The whole entry is a tagged secondary and it says so three
+      times, because the alternative was to omit a class every other L1
+      jurisdiction in this dataset carries. Period start 2005 is the DATASET's
+      observation window, not a claim about when military prefixes began — the
+      series is certainly far older. A verifier should treat every field here as
+      unconfirmed and start from the Ministério da Defesa Nacional's own
+      regulations, which are the missing primary.
+
+  - id: pt-police-gnr
+    class: police
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2005 }
+    period_evidence: secondary-wikipedia
+    matching: recall-only
+    format:
+      pattern: "GNR L-99"
+      regex: '\AGNR[- ][A-Z][- ]\d{2,4}\z'
+      pattern_note: >-
+        `secondary-wikipedia`: the Guarda Nacional Republicana is reported to
+        plate its vehicles as the letters GNR followed by a single letter and a
+        two-, three- or four-digit serial. No primary was reached. `recall-only`.
+    design:
+      note: "not recorded — no primary. See pt-military."
+    region_encoding: none
+    sources:
+      - "https://pt.wikipedia.org/wiki/Matr%C3%ADculas_de_autom%C3%B3veis_em_Portugal  # secondary-wikipedia: GNR plates as GNR + letter + 2-4 digits. Read 2026-08-02"
+    notes: >-
+      GUARDA NACIONAL REPUBLICANA. Same posture as pt-military: tagged
+      secondary, recall-only, design absent. Note what is NOT here — the PSP
+      (Polícia de Segurança Pública) and the municipal police forces, for which
+      no source of any tier was located. Their absence is a gap, not a claim
+      that they use ordinary plates.
