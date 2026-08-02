@@ -1,0 +1,610 @@
+# plates/ca-nt.yml — Northwest Territories (PRD-PLATES gate L3, Canada
+# territories). THE NON-RECTANGULAR CASE.
+#
+# ── WHY THIS FILE MATTERS BEYOND ITS POPULATION ────────────────────────────
+#
+# PRD-PLATES § 2.2 names the Northwest Territories by name as the reason the
+# schema carries an optional `design.shape:` — "non-rectangular plates exist
+# (Canada's NT polar-bear plate)". This is that file, and it is the first in
+# the dataset to populate the key. Everything a renderer needs to know about
+# why it cannot assume a rectangle is here, sourced.
+#
+# ── FOUR STRUCTURAL FACTS ──────────────────────────────────────────────────
+#
+# 1. THE PLATE TYPES AND THEIR SERIAL PREFIXES ARE IN THE REGULATION, AS A
+#    CLOSED LIST. Motor Vehicle Registration and Licence Plate Regulations,
+#    R-054-94, reg. 8(2), verbatim opening: "The Registrar may issue the
+#    following types of licence plates:" — then thirteen lettered paragraphs,
+#    each naming a type AND its identifying characters:
+#      (a) amateur radio, displaying a valid amateur radio service call sign
+#          allocated to the registrant by the Government of Canada with a call
+#          sign prefix of "VE8";
+#      (b) commercial, displaying the letter "C" followed by numbers;
+#      (c) construction, displaying the letter "H" followed by numbers;
+#      (d) crown, displaying a crown for motor vehicles carrying a member of
+#          the Royal Family of Canada or a representative of the Sovereign;
+#      (e) dealer, displaying the letter "D" followed by numbers;
+#      (f) government, displaying the letter "G" followed by numbers;
+#      (g) motorcycle, displaying numbers;
+#      (h) personalized, displaying letters or a combination of letters and
+#          numbers;
+#      (i) regular, displaying numbers;
+#      (j) rental, displaying the letter "RE" followed by numbers;
+#      (k) school bus, displaying the letter "S" followed by numbers;
+#      (l) trailer, displaying the letter "T" followed by numbers;
+#      (m) veteran, displaying the letters "VET" or "V" followed by numbers.
+#    Together with Yukon's C.O. 1978/120 s. 10 and the United Kingdom's
+#    Schedule 3 Table A, this is one of only three closed statutory format
+#    tables secured anywhere in this programme's territory work.
+#
+# 2. THE DESIGN, BY CONTRAST, IS PURE DISCRETION. reg. 11(1), verbatim: "The
+#    Registrar may issue licence plates in the colour and style the Registrar
+#    thinks fit." reg. 11(2) adds special-occasion plates "in the number,
+#    colour and style the Registrar thinks fit", and reg. 11(3), added by
+#    R-012-2025, adds the striking power to "issue licence plates NOT INTENDED
+#    FOR USE ON A MOTOR VEHICLE" — the territory legislates the collector
+#    souvenir plate. The Act reinforces the discretion at s. 44: "The Registrar
+#    may, from time to time, issue a new series of licence plates." So: serial
+#    grammar legislated, appearance not. That asymmetry is the file's shape.
+#
+# 3. THE POLAR BEAR IS A REGISTERED CANADIAN TRADE-MARK OWNED BY THE
+#    TERRITORIAL GOVERNMENT, AND THAT IS PRIMARY, NOT FOLKLORE.
+#    CIPO application 1050364, registration TMA558214: owner "Government of the
+#    Northwest Territories", filed 2000-03-10, registered 2002-02-20, status
+#    REGISTERED / "LIVE/REGISTRATION/Issued and Active", goods "Licence plates",
+#    services "Transportation services, namely vehicular registration and title
+#    transfers, the issuance and renewal of vehicular license plates and
+#    conducting driving tests". This is the strongest artwork_risk evidence in
+#    the Canada-west group and stands beside Wyoming's W.S. 8-3-117 as the
+#    programme's clearest example of a plate device protected by a regime that
+#    survives any copyright finding.
+#    IT HAS BEEN EXERCISED. Nunavut's minister of economic development and
+#    transportation, David Akeeagok, in the Legislative Assembly on
+#    2024-11-05, verbatim as reported: "Earlier this year, we signed an
+#    agreement with the Government of the Northwest Territories allowing us to
+#    create our own bear-shaped plate without infringing any trademark
+#    legalities." A neighbouring jurisdiction had to LICENCE the shape to use
+#    it. See plates/ca-nu.yml.
+#
+# 4. WHAT THE SHAPE COSTS THE RENDER LAYER, STATED PLAINLY. A bear-silhouette
+#    plate has no rectangle to fit a viewBox to, no constant character baseline
+#    across the serial, and a bolt-hole geometry that does not follow AAMVA's
+#    (which BC's ICBC bulletin cites and which assumes a rectangle). The
+#    US/world research dossier called NT and NU "the single best argument in
+#    this whole document that the schema needs a non-rectangular `shape`
+#    field", and also flagged that they "make the 'we render our own SVG' plan
+#    concretely harder for two jurisdictions". Both remain true; `design.shape`
+#    records the fact, the outline itself is trade-marked (fact 3) and is NOT
+#    reproduced.
+#
+# SEPARATOR NOTE (§ 2.6): reg. 8(2) prescribes letters "followed by numbers"
+# and prescribes no glyph and no grouping. Regexes here accept an optional
+# single space at the letter/digit boundary and assert no grouping inside the
+# digit run.
+jurisdiction: ca-nt
+authority:
+  name: Registrar of Motor Vehicles, Government of the Northwest Territories (Department of Infrastructure, Driver and Vehicle Services)
+  url: "https://www.inf.gov.nt.ca/en/services/driver-and-vehicle-services"
+binding: vehicle
+binding_note: >-
+  Act s. 42(1)-(2): the certificate of registration must IDENTIFY the licence
+  plate issued or transferred to the vehicle, and "No person shall operate a
+  motor vehicle on a highway under a certificate of registration unless the
+  licence plate attached to the motor vehicle is the licence plate identified in
+  the certificate of registration." Act s. 39 and reg. 8(6) then permit transfer
+  of a plate to another of the owner's vehicles on application and fee. The
+  binding is plate-to-certificate, and the certificate follows the owner.
+instrument:
+  statute:
+    citation: "Motor Vehicles Act, R.S.N.W.T. 1988, c. M-16, ss. 39-49 (transfer, issue, dealer plates, certificates, new series, use, placing of plates)"
+    key_text: >-
+      s. 44, verbatim: "The Registrar may, from time to time, issue a new series
+      of licence plates." s. 40 conditions issue on entitlement to a certificate
+      of registration, "prescribed eligibility requirements for the licence
+      plate" and the prescribed fee (as amended SNWT 2015, c. 28, s. 9).
+    source: "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.a.pdf  # ss. 39-49 read verbatim 2026-08-02 (bilingual office consolidation PDF)"
+  regulation:
+    citation: "Motor Vehicle Registration and Licence Plate Regulations, R-054-94, made by the Commissioner under s. 349 of the Motor Vehicles Act"
+    amended_by: "R-037-95; R-007-2000; R-011-2001 (in force 2001-04-01); R-081-2009; R-054-2010 (in force 2010-07-01); R-029-2011 (in force 2011-04-01); R-034-2013 (in force 2013-05-01); R-056-2016 (in force 2016-05-01); R-060-2016; R-050-2017 [repealed by R-055-2017]; R-056-2017 (in force 2017-07-01); R-037-2020; R-085-2020; R-110-2020; R-012-2025; R-036-2025 [E]; R-037-2026 (in force 2026-06-15)"
+    consolidation_caveat: >-
+      The served text states its own status, verbatim: "This consolidation is
+      not an official statement of the law. It is an office consolidation
+      prepared by Legislation Division, Department of Justice, for convenience
+      of reference only. The authoritative text of regulations can be
+      ascertained from the Revised Regulations of the Northwest Territories,
+      1990 and the monthly publication of Part II of the Northwest Territories
+      Gazette." Recorded because it is the honest evidence grade of every
+      regulation citation below.
+    source: "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # regs. 1, 2, 7, 8, 9, 11, 12, 13 and Schedule F read verbatim 2026-08-02"
+  trademark:
+    citation: "Canadian Intellectual Property Office, application 1050364, registration TMA558214"
+    owner: "Government of the Northwest Territories"
+    filed: "2000-03-10"
+    registered: "2002-02-20"
+    status: "REGISTERED — LIVE/REGISTRATION/Issued and Active"
+    goods: "Licence plates"
+    services: "Transportation services, namely vehicular registration and title transfers, the issuance and renewal of vehicular license plates and conducting driving tests"
+    source: "https://ised-isde.canada.ca/cipo/trademark-search/1050364  # accessed 2026-08-02"
+  licence: "NWT consolidations are published by the Department of Justice, Legislation Division; edicts of government, cited not reproduced. The CIPO record is a federal public register."
+
+artwork_risk:
+  posture: asserted-registered-trademark
+  basis: >-
+    THE STRONGEST ASSERTION IN THE CANADA-WEST GROUP AND ONE OF THE STRONGEST IN
+    THE PROGRAMME. The Government of the Northwest Territories holds a live
+    Canadian trade-mark registration (TMA558214, filed 2000, registered 2002)
+    whose GOODS are, in terms, "Licence plates". A trade-mark regime is
+    independent of copyright and survives any public-domain finding, which is
+    exactly the seal/emblem hazard PRD-PLATES § 4 flags as generally
+    unresearched — here documented, with a register entry.
+  exercised: >-
+    NOT A PAPER RIGHT. Nunavut ran the bear shape from 1999 to 2012 under an
+    agreement with the NWT, dropped it, and in 2024 signed a fresh agreement to
+    return to a bear-shaped plate — its own minister describing the purpose as
+    being able to make one "without infringing any trademark legalities". A
+    neighbouring government treated this mark as a real obstacle and negotiated
+    around it.
+  emblem_rule: >-
+    PRD-PLATES § 3 placeholder default applies with unusual force here, because
+    in the Northwest Territories the EMBLEM AND THE PLATE OUTLINE ARE THE SAME
+    OBJECT. There is no emblem slot to placeholder out: the trade-marked bear IS
+    the plate silhouette. Consequence for the render layer: NT cannot be
+    rendered at fidelity under the § 3 rules at all, and the honest output is a
+    schematic rectangle with `design.shape` recorded and the outline omitted.
+    That is a real coverage limit and it is stated rather than worked around.
+  sources:
+    - "https://ised-isde.canada.ca/cipo/trademark-search/1050364  # the registration itself"
+    - "https://nunatsiaq.com/stories/article/polar-bear-licence-plates-coming-back-to-nunavut/  # 2024-11-08; Minister Akeeagok quoted on the licensing agreement and the 1999-2012 arrangement"
+
+display_rules:
+  default: >-
+    Act s. 47(2), verbatim: "Subject to subsection (2.1), no person shall operate
+    or park a motor vehicle, other than a motorcycle, trailer or a prescribed
+    class of motor vehicle, on a highway unless a licence plate is securely
+    attached to the REAR BUMPER of the vehicle." NT specifies the BUMPER, not
+    merely the rear of the vehicle — a stricter mounting rule than any other
+    jurisdiction in this group.
+  heavy_commercial_front: >-
+    s. 47(2.1): "No person shall operate or park on a highway a commercial
+    vehicle having a gross weight that exceeds 4500 kg unless that vehicle has a
+    licence plate attached to the FRONT bumper." Note the threshold: 4 500 kg,
+    against British Columbia's 5 500 kg licensed GVW decal threshold and
+    Florida's 26 001 lb front-plate threshold. These are three different numbers
+    for three different rules and must not be normalised.
+  motorcycle: "s. 47(3): securely attached to the REAR FENDER."
+  trailer: "s. 47(4): attached to the back of the trailer 'at a position not lower than the rear axle'."
+  one_jurisdiction_only: "s. 47.1(1): no person shall operate a motor vehicle with licence plates issued by more than one jurisdiction attached to it."
+  sources:
+    - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.a.pdf  # ss. 47(2), (2.1), (3), (4), 47.1(1)"
+
+common:
+  vehicle_classes:
+    statement: >-
+      reg. 8(1): "The Registrar may issue licence plates for the following
+      classes of vehicles: (a) commercial vehicles; (b) construction vehicles;
+      (c) dealer inventory vehicles; (d) government vehicles; (e) motorcycles;
+      (f) private vehicles; (g) rental vehicles; (h) school buses; (i) society
+      vehicles; (j) trailers." Note that reg. 8(1) (classes of VEHICLE) and
+      reg. 8(2) (types of PLATE) are different lists that do not map one-to-one:
+      Schedule F Part 1 is a cross-tabulation of the two with shaded cells for
+      "combinations not authorized". "Society vehicles" is a class no other
+      jurisdiction in this group has — reg. 1 defines it as "a motor vehicle
+      owned by a society incorporated under the Societies Act".
+    source: "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(1), Schedule F Part 1"
+  design_discretion:
+    statement: >-
+      reg. 11, verbatim: "(1) The Registrar may issue licence plates in the
+      colour and style the Registrar thinks fit. (2) The Registrar may issue
+      licence plates for special occasions in the number, colour and style the
+      Registrar thinks fit. (3) The Registrar may issue licence plates not
+      intended for use on a motor vehicle." Subsection (3) was added by
+      R-012-2025.
+    source: "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 11(1)-(3)"
+  reservation:
+    statement: >-
+      reg. 9 is a genuine curiosity worth recording: NT runs a plate-NUMBER
+      RESERVATION market. "(1) The Registrar may determine the licence plate
+      numbers and the year of the licence plates which may be reserved and which
+      may not be reserved. (2) A person may apply to the Registrar to reserve a
+      licence plate or licence plates." Schedule F Part 2 prices it at $107,
+      against $45 to replace a lost personalized plate and $27 for any other.
+      reg. 9(4) lets the Registrar re-issue a reserved plate once the associated
+      registration has been expired more than a year. So an NT REGULAR serial —
+      bare digits — can be individually reserved, which means a low or
+      attractive number carries market value inside an otherwise anonymous
+      numeric series.
+    source: "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 9(1)-(4), Schedule F Part 2 items 1-4"
+  design_note: >-
+    Colours, the aurora/landscape artwork and the "Spectacular Northwest
+    Territories" legend come from secondary reporting only; reg. 11(1) puts them
+    entirely in the Registrar's discretion and no NT publication carrying them
+    was reachable (the Department of Infrastructure's Driver and Vehicle
+    Services pages resolve but serve a generic programme index with no
+    plate content — checked 2026-08-02, recorded as a negative finding).
+  digit_length_note: >-
+    reg. 8(2) says "numbers", full stop — no length. The six-digit current
+    regular serial is a SECONDARY claim, carried in `regex` (narrower than the
+    regulation, therefore still `strict` under § 2.7) with the regulation's own
+    unbounded form in `regex_statutory`. A secondary source records the regular
+    range reaching 378949 as of 2024-11-05, which is consistent with six digits
+    and is not asserted as a range claim.
+
+series:
+
+  # =========================================================================
+  # REGULAR — the standard series. Bare digits, on a bear.
+  # =========================================================================
+  - id: ca-nt-regular
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1986 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_statutory: '\A\d+\z'
+      evidence: regulation-for-grammar-secondary-for-length
+      grammar_verbatim: "reg. 8(2)(i): \"regular, displaying numbers\"."
+      progression: "ascending; a secondary source records the range reaching 378949 as of 2024-11-05. Not asserted."
+    design:
+      shape: polar-bear-silhouette
+      shape_note: >-
+        THE SCHEMA KEY PRD-PLATES § 2.2 CREATED FOR THIS CASE. The plate outline
+        is a polar bear in profile, not a rectangle. It is the territory's
+        registered trade-mark (TMA558214) and is therefore recorded as a FACT
+        and never reproduced. A renderer must not assume a rectangular viewBox,
+        a uniform character baseline, or AAMVA bolt-hole geometry for the
+        Northwest Territories.
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#0033A0"
+      legend_bottom: "Spectacular Northwest Territories"
+      emblem: { present: true, rendered: placeholder, description: "the bear outline IS the plate; there is no separable emblem slot" }
+      rear_differs: false
+      design_basis: secondary
+    notes: >-
+      PERIOD: 1986 comes only from the per-territory encyclopedia article's
+      format table (six digits from 1986), which carries no footnote for that
+      row; it is tagged `secondary-wikipedia` per the PRD-PLATES § 4 Wikipedia
+      condition. Nothing in R-054-94 or the Act dates any serial length, and
+      R-054-94 itself post-dates 1986 by eight years — an instrument that
+      DOCUMENTS an older practice, which is precisely the case the
+      instrument-date rule exists to stop us mis-dating.
+      DESIGN REFRESH, RECORDED BUT NOT MADE A SERIES BOUNDARY: secondary
+      reporting puts a graphic and material update at 2010, and the regulation's
+      own amendment history contains R-054-2010, in force 1 July 2010. The
+      coincidence of years is suggestive and is NOT evidence — the content of
+      R-054-2010 was not inspected, and a fee amendment would sit in the same
+      slot. Recorded as a lead, not a claim.
+      SHAPE: the bear silhouette is reported as introduced in 1970 for the
+      territorial centennial and retained since. That is a DESIGN fact spanning
+      several serial series and is not used to date this one.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(i) 'regular, displaying numbers'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Northwest_Territories  # FINDING AID (PRD-PLATES §4 Wikipedia row): six digits from 1986, the 1970 bear shape, the 2010 update, the reported serial range; accessed 2026-08-02"
+      - "https://ised-isde.canada.ca/cipo/trademark-search/1050364  # the shape is a registered trade-mark of the GNWT"
+
+  - id: ca-nt-regular-1970
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1970, end: 1985 }
+    period_evidence: secondary-wikipedia
+    matching: recall-only
+    format:
+      pattern: "99999"
+      regex: '\A\d{1,6}\z'
+      evidence: secondary-and-internally-inconsistent
+    design:
+      shape: polar-bear-silhouette
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#0033A0"
+      design_basis: secondary
+    notes: >-
+      THE "ONE SERIES BACK", AND ITS SOURCE CONTRADICTS ITSELF — WHICH IS WHY
+      THIS SERIES IS recall-only. The per-territory encyclopedia format table
+      gives, for this window, "1970-1985: Five-digit format with hyphen
+      (1-234)". That example has FOUR digits, not five, so the row is internally
+      inconsistent and cannot be encoded as a grammar. MAJORITY IS NOT
+      AUTHORITY and neither is a table that disagrees with its own example: the
+      regex is deliberately a one-to-six-digit union, a shape hit and nothing
+      more, and the contradiction is recorded rather than resolved by picking
+      the reading we prefer. What IS safely carried is that the window is
+      numeric-only and that it is the era in which the bear silhouette was
+      introduced (reported 1970, territorial centennial).
+      The earlier reported windows (1966-1969 "12-345", 1952-1965 "123",
+      1950-1951 "1234", 1945-1950 "123") are NOT authored: one unfootnoted
+      table is not enough for five series.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Northwest_Territories  # FINDING AID: the format-history table, including the self-contradictory 1970-1985 row; accessed 2026-08-02"
+
+  # =========================================================================
+  # THE PREFIXED TYPES — one series per reg. 8(2) paragraph.
+  # =========================================================================
+  - id: ca-nt-commercial
+    class: standard
+    categories: [truck, van, bus]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "C99999"
+      regex: '\AC ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(b): \"commercial, displaying the letter 'C' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      PERIOD EVIDENCE, STATED ONCE FOR ALL THE PREFIXED TYPES: reg. 8 closes
+      with the note "R-034-2013,s.7; R-012-2025,s.4", so the section as it now
+      reads was substituted by R-034-2013 (in force 1 May 2013) and amended by
+      R-012-2025. 2013 is therefore an UPPER BOUND on when each prefixed
+      grammar began, never its creation — the NWT plainly issued commercial
+      plates before 2013, and the pre-2013 text of reg. 8 was not retrieved
+      (recorded gap, and the single highest-value follow-up for this file).
+      Every prefixed series below carries the same 2013 upper bound for the same
+      reason and does not repeat this note.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(b), closing amendment note to reg. 8"
+
+  - id: ca-nt-construction
+    class: standard
+    categories: [truck, machine]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "H99999"
+      regex: '\AH ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(c): \"construction, displaying the letter 'H' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: "A dedicated CONSTRUCTION-vehicle plate type is unusual and reflects the territory's economy; reg. 8(1)(b) makes construction vehicles their own vehicle class as well. See ca-nt-commercial for the shared period reasoning."
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(c), reg. 8(1)(b)"
+
+  - id: ca-nt-dealer
+    class: dealer
+    categories: [car, van, truck]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "D99999"
+      regex: '\AD ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(e): \"dealer, displaying the letter 'D' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      Act s. 41: where the Registrar issues a dealer a certificate of
+      registration that does NOT describe a vehicle, the Registrar issues "one
+      licence plate of the class for dealers" — a plate with no vehicle behind
+      it. reg. 13(2) then confines its use: no person shall operate a vehicle
+      displaying a dealer inventory vehicle plate "except for promotional
+      activities or for the purpose of testing the motor vehicle for suitability
+      for (a) lease; (b) sale; or (c) exchange." See ca-nt-commercial for the
+      shared period reasoning.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(e), reg. 13(1)-(2)"
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.a.pdf  # Act s. 41"
+
+  - id: ca-nt-government
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "G99999"
+      regex: '\AG ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(f): \"government, displaying the letter 'G' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      reg. 1 defines a government vehicle broadly — "a motor vehicle operated in
+      the Northwest Territories by ANY LEVEL of government unless that vehicle
+      is exempted by the Registrar" — so federal, territorial, municipal and
+      Indigenous-government fleets share one G series. Contrast Yukon, which
+      splits territorial (Y), federal (F+letters) and municipal (D+letters) into
+      three statutory grammars. reg. 12 then permits the opposite move: "If the
+      Registrar is satisfied that an appropriate situation exists, the Registrar
+      may issue a licence plate of a type other than government to a government
+      vehicle" — a legislated unmarked-fleet power, the NWT analogue of
+      Wyoming's covert-plate statute. A parse product must not claim that
+      absence of a G prefix proves a vehicle is not government-operated.
+      See ca-nt-commercial for the shared period reasoning.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 1 definition, reg. 8(2)(f), reg. 12"
+
+  - id: ca-nt-rental
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "RE9999"
+      regex: '\ARE ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(j): \"rental, displaying the letter 'RE' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      reg. 1: "'rental vehicle' means a motor vehicle leased for a period NOT
+      EXCEEDING 30 DAYS" — a bright-line definition a fleet-data consumer can
+      actually use. Note the regulation's own slip, reproduced faithfully:
+      paragraph (j) says "the LETTER 'RE'", which is two letters. Quoted as
+      written; not corrected. See ca-nt-commercial for the shared period
+      reasoning.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 1 definition, reg. 8(2)(j)"
+
+  - id: ca-nt-school-bus
+    class: standard
+    categories: [bus]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "S9999"
+      regex: '\AS ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(k): \"school bus, displaying the letter 'S' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: "See ca-nt-commercial for the shared period reasoning. The School Bus Regulations (motor-vehicles.r13) are the neighbouring instrument and were not read in this pass."
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(k)"
+
+  - id: ca-nt-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "T9999"
+      regex: '\AT ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(l): \"trailer, displaying the letter 'T' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: "Act s. 47(4) puts the trailer plate on the back of the trailer at a position not lower than the rear axle. See ca-nt-commercial for the shared period reasoning."
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(l)"
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.a.pdf  # Act s. 47(4)"
+
+  - id: ca-nt-veteran
+    class: specialty
+    categories: [car, van, truck]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "V9999"
+      regex: '\A(?:VET|V) ?\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(m): \"veteran, displaying the letters 'VET' or 'V' followed by numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      Two alternative prefixes in one paragraph, hence one series with an
+      alternation. Alberta and Yukon both route veterans' eligibility through
+      the Royal Canadian Legion by regulation; the NWT regulation states no
+      eligibility test here, leaving it to reg. 8's "prescribed eligibility
+      requirements" hook in Act s. 40(b). See ca-nt-commercial for the shared
+      period reasoning.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(m)"
+
+  - id: ca-nt-amateur-radio
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "VE8LLL"
+      regex: '\AVE8 ?[A-Z]{1,3}\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(a): \"amateur radio, displaying a valid amateur radio service call sign allocated to the registrant by the Government of Canada with a call sign prefix of 'VE8'\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      THE SERIAL IS A FEDERAL CALL SIGN AND THE TERRITORY SAYS SO IN TERMS:
+      "allocated to the registrant by the Government of Canada". VE8 is the
+      federal amateur prefix block for the Northwest Territories, exactly as VY1
+      is Yukon's (plates/ca-yt.yml, ca-yt-ham) — two territories whose amateur
+      plates are mutually exclusive by federal construction, which makes them a
+      reliable discriminator. reg. 8(3) is a nice piece of schema realism: "An
+      amateur radio licence plate or a personalized licence plate may be issued
+      in respect of a motorcycle, but such licence plates must be of a SIMILAR
+      DESIGN to a motorcycle licence plate" — the class flag survives the size
+      change. The suffix length is not stated in the regulation; the 1-to-3
+      letter suffix is the federal call-sign structure, and is why `matching`
+      remains `strict` (the regex sits at or inside the issuing grammar).
+      Classed as `specialty` for want of an amateur-radio class in
+      _meta/classes.yml; see plates/ca-yt.yml common.vocabulary_gap.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(a), reg. 8(3)"
+
+  - id: ca-nt-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d+\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(g): \"motorcycle, displaying numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      SAME GRAMMAR AS ca-nt-regular AND THAT IS THE FINDING, NOT AN ERROR:
+      reg. 8(2)(g) and 8(2)(i) both say "displaying numbers", so an NT
+      motorcycle serial and an NT regular serial are indistinguishable by shape
+      alone and can only be told apart by plate SIZE and by the registry. A
+      parse product must not claim class from an all-numeric NWT serial. The two
+      series overlap in period and are distinguished by `categories` and by
+      these notes, as the lint's overlap rule requires. Act s. 47(3) puts the
+      plate on the rear fender.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(g) and 8(2)(i) side by side"
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.a.pdf  # Act s. 47(3)"
+
+  - id: ca-nt-personalized
+    class: personalized
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9])*\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(h): \"personalized, displaying letters or a combination of letters and numbers\"."
+    design: { shape: polar-bear-silhouette, background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#0033A0", design_basis: secondary }
+    notes: >-
+      RECALL-ONLY, AND NOTE THE PRECISE READING THE REGULATION FORCES. "Letters
+      OR a combination of letters and numbers" — on its face an all-NUMERIC
+      personalized plate is not authorised, since every permitted form contains
+      at least one letter. Our regex is wider than that (it accepts all-digit
+      strings) because it must also serve as a catch-all with no published
+      length bound, so the series is honestly `recall-only`. NO LENGTH IS
+      PRESCRIBED anywhere in R-054-94, which is why no `regex_statutory` bound
+      appears here — the neighbouring Yukon regulation caps its personalized
+      plates at six characters and the NWT does not. Fees: Schedule F Part 1
+      distinguishes applicants under 60 from those 60 or older, and reg. 8(5)
+      halves the fee for the latter — an age-graded plate fee, which no other
+      jurisdiction in this group has.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(h), reg. 8(5), Schedule F Part 1 items 8-9"
+
+  - id: ca-nt-crown
+    class: government
+    categories: [car]
+    period: { start: 2013 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9])*\z'
+      evidence: regulation
+      grammar_verbatim: "reg. 8(2)(d): \"crown, displaying a crown for motor vehicles carrying a member of the Royal Family of Canada or a representative of the Sovereign\"."
+    design:
+      shape: polar-bear-silhouette
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#0033A0"
+      emblem: { present: true, rendered: placeholder, description: "a crown — which reg. 8(2)(d) makes the plate's entire content" }
+      design_basis: regulation-for-device-only
+    notes: >-
+      A PLATE WHOSE PRESCRIBED CONTENT IS A PICTURE, NOT A SERIAL. Every other
+      paragraph of reg. 8(2) names characters; paragraph (d) names a CROWN, and
+      nothing else. On the regulation's own words the crown plate carries no
+      registration mark at all, which means (i) there is no serial for a parse
+      API to return, (ii) `format` here is a schema-satisfying placeholder and
+      is marked `recall-only` for that reason rather than because the grammar is
+      broad, and (iii) it is a live instance of _meta/separators.yml's
+      `never_separator` concern in its strongest form — the whole face is the
+      symbol. Distinct from ca-nt-government both in period reasoning and in
+      content: reg. 8(2)(d) is a ceremonial plate for vehicles carrying "a
+      member of the Royal Family of Canada or a representative of the
+      Sovereign", i.e. the Commissioner of the Northwest Territories, not the
+      territorial fleet. Schedule F Part 1 item 4 prices it at $13 under the
+      Government column.
+    sources:
+      - "https://www.justice.gov.nt.ca/en/files/legislation/motor-vehicles/motor-vehicles.r12.pdf  # reg. 8(2)(d), Schedule F Part 1 item 4"
