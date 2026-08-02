@@ -23264,3 +23264,73 @@ Both caught before shipping.
 `models/aliases.yml` are the same risk class, unmeasured; and a chain routed
 through a make-*alias* change is invisible to it. Naming the blind spots is what
 makes the 110 trustworthy.
+
+## S4W — OWNER: your corpus pin is right, and it was silently switching off `#144`'s mint guard. `pipeline#152` splits the gate and REVERTS MY OWN `#150`
+
+I merged `#150` before reading your `5c6575f` properly. It is now reverted in
+`pipeline#152`, and the reason is worth more than the fix.
+
+### `#150` was green because it SKIPPED, and it broke a rule you had just written
+
+Your pin says *"never loosen to tolerances"*. `#150` answered the restatement
+with ±2pp share bands — precisely what you ruled out, one commit earlier. And
+it never executed on CI **even once**: my branch already contained your pin, so
+the run that gated it reported
+
+    25 runs, 47 assertions, 0 failures, 4 skips
+
+Green by skipping. That is the same failure class I shipped a detector for in
+`#151`, one PR earlier, and this instance was mine. Exact equality is restored.
+
+### The finding that is NOT about me: the pin was applied to two different claims
+
+    VINTAGE-DEPENDENT   "A-Class is 16,759 vehicles"        — one snapshot only
+    VINTAGE-INDEPENDENT "every declared nameplate is produced by some Model
+                         string" · "the register produces no nameplate the pool
+                         fails to declare" · "decomposes onto exactly these 19,
+                         none unresolvable"
+
+The second class is pure SET MEMBERSHIP. A restatement moves counts; it does not
+change which cars exist. Gating those on an exact SHA left **`#144`'s MINT GUARD
+and DEAD-SET GUARD inert wherever the cache is not byte-identical to one
+machine's copy** — and a fresher vintage tests them HARDER, because a nameplate
+newly appearing in the register is the regression they exist to catch and only a
+new vintage can show it. The pin was suppressing the one input that makes them
+bind.
+
+### Measured both ways, against a synthetic restatement
+
+Counts scaled 4.5% (89,877 rows moved), every name string untouched — the shape
+of the revision you cited:
+
+    current main   10 runs,    35 assertions, 2 skips
+    #152           11 runs, 6,618 assertions, 1 skip    (only the COUNT claim skips)
+
+And injecting the regression the guard exists to catch — a new Model string
+under `MERCEDES AMG CLASS` landing outside the declared set:
+
+    current main   0 failures, 2 skips  — does not notice at all
+    #152           2 failures, naming it: `the register now produces nameplate
+                   "EQA" (Model "EQA 250 AMG LINE"), which the pool does not declare`
+
+Pinned cache unchanged: 11 runs, 6,619 assertions, 0 failures, **0 skips**.
+
+**Scope stated honestly:** the pipeline repo's `test.yml` carries no source
+cache, so both corpus tests skip there regardless. This buys coverage in
+`monthly-build.yml` — the job that gates every data PR and every release, and
+the one that actually saw the restatement.
+
+### The data queue's remaining red was never the AMG test
+
+The failing `build` on `data#210`/`#208` is the `mercedes-benz/amg` spotcheck
+reporting **`missing gb`** against the PRE-`#206` reason text — stale branches
+predating the curation lockstep. **Rebased and pushed: `bodyword-92-class`,
+`byd-tail-data`, `veh0120-debt-closed`.** `hyundai-i800-data` left alone, its
+delegate is still live in that worktree. Neither `#150` nor `#152` unblocked
+anything; your pin and `#206` did.
+
+### One interaction to flag before it bites
+
+`pipeline#148` backfills 46 VEH0120 quarters. That moves gb counts corpus-wide,
+so it will move the pinned AMG table **and** `VEH0120_CORPUS_SHA`. Under `#152`
+that is a clean, loud, single-commit re-pin; today it would land as a skip.
