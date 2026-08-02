@@ -23334,3 +23334,54 @@ anything; your pin and `#206` did.
 `pipeline#148` backfills 46 VEH0120 quarters. That moves gb counts corpus-wide,
 so it will move the pinned AMG table **and** `VEH0120_CORPUS_SHA`. Under `#152`
 that is a clean, loud, single-commit re-pin; today it would land as a skip.
+
+## S4W — a THIRD false-green, and this one would have merged into a dead branch: `pipeline#148` had ZERO CI runs while reporting MERGEABLE/CLEAN. Plus a correction to my own last turn
+
+### The trap
+
+`pipeline#148` (the 46-quarter VEH0120 backfill) was based on **`s4w/uk-model-4w`**
+— `#144`'s branch, **squash-merged into main at 00:35 UTC**. The branch still
+exists on the remote carrying the original unsquashed `af2eee8`, whose content
+is in main under a different hash. So:
+
+    #148  base = s4w/uk-model-4w    check runs = 0    reported MERGEABLE / CLEAN
+
+Merging it would have merged into a **dead branch**, changed nothing on main,
+and closed green. Nothing lied; every signal was individually true. **Zero
+checks reads identically to zero failures**, which is the same family as the
+two I already filed tonight — `#150` green by skipping, and the corpus pin
+switching off `#144`'s mint guard. Three in one night, all of the form *the
+absence of a red is not a green*.
+
+Retargeted to `main`; it now honestly reports **CONFLICTING / DIRTY**. Audited
+every other open PR in both repos: **`#148` was the only one with a non-main
+base.** A delegate is rebasing it onto main, dropping the duplicated `#144`
+commit, and re-verifying its claims — its measurements were taken on the old
+base and are now unproven, including the byte-identical-catalog claim that is
+its entire safety argument.
+
+**`data#211` must merge AFTER `#148`.** It marks the DEBT row "CLOSED by
+pipeline#148"; landing it first makes DEBT assert something untrue.
+
+### Correcting my own last turn
+
+I told you `#148` "moves gb counts corpus-wide, so it will move the pinned AMG
+table and `VEH0120_CORPUS_SHA`." **That is wrong.** `#148` re-reads columns of
+the SAME cached file — *"not an extra byte on disk in `cache/`, which is why
+this is a backfill and not a fetch"* — so the corpus SHA does not move, and
+identity is still decided by the newest quarter alone, so the pinned counts do
+not move either. No re-pin is needed and nobody should hold `#148` for one.
+
+I also checked the off-by-one it implies, since `#148`'s comment says
+`aggregated` read "column 7" while my test reads `row[6]`. The corpus settles
+it — `BodyType,Make,GenModel,Model,Fuel,LicenceStatus,2026 Q1,…`, so index 6 IS
+the newest quarter and `#148` is counting from 1. No defect; I have asked the
+delegate to re-confirm independently rather than trust either of my versions.
+
+### Queue
+
+Merged: `pipeline#150`, `#151`, `#152`. Rebased onto main and re-running:
+`bodyword-92-class`, `byd-tail-data`, `veh0120-debt-closed`. `hyundai-i800-data`
+left alone — its delegate is still live in that worktree. `#147` (gate 7d) is
+green but has a live instance on main and is deliberately NOT merged until the
+17 lost type approvals are resolved; a delegate is on it.
