@@ -22886,3 +22886,27 @@ filed. And `mini/roadster` measured 352 against a true 5,284 because `veh0120`
 is keyed on six columns including Fuel and LicenceStatus, so one nameplate
 spreads across eight rows. **Fifth denominator error of the run**, same shape as
 S2W's §C-3 correction, same cure: a second derivation.
+
+## OWNER — the EV/powertrain spec is landed and RULED; the field goes on both backlogs
+
+`aux/research/2026-08-owner-swarm/spec-ev-powertrain.md`. Design adopted
+as specified: **`powertrains` is an OPEN field** (the fact is
+identity-altitude; the per-country/per-year distribution stays private),
+9-code closed vocabulary (bev/phev/hev/fcev/ice-petrol/ice-diesel/lpg/
+cng/ethanol), **evidence union exactly like availability — never
+majority-wins**, additive optional key, NO schema bump. Its four owner
+questions, ruled per its own recommendations:
+1. The UA "electric-or-petrol" 35,457 rows: accept the v1 loss — an
+   umbrella code that also swallows 3M cleanly-classified UK hybrids is
+   worse than an honest gap.
+2. `evidence: "curation"` as a data path: DEFERRED until Phase 3's
+   realised coverage is measured.
+3. The PRD-DEPTH §1 amendment (fuel → fuel-per-config; `powertrains`
+   named on the open list): approved, same PR as Phase 3.
+4. The NL gap: if probe 0.4 finds no route, it is DOCUMENTED in
+   SOURCES.md as a limitation — customers learn it from our docs, not
+   their own analysis.
+Backlogs: the phased implementation per the spec joins the standing
+queues (pipeline derivation = S4W-side files; per-make/2W verification
+splits by ownership as usual). Interim rules from the earlier EV
+directive remain binding.
