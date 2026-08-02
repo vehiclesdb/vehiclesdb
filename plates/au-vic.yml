@@ -1,0 +1,215 @@
+# plates/au-vic.yml — Victoria (PRD-PLATES gate L3, Australia).
+#
+# VICTORIA IS THE BEST-EVIDENCED AUSTRALIAN JURISDICTION IN THIS WAVE, and the
+# reason is one page: VicRoads publishes, on its own General issue number plates
+# page, THE FIRST COMBINATION ISSUED IN EACH YEAR — a year-by-year table running
+# from 1960 to the present for cars and trucks and a second one for motorcycles.
+# That is an agency-published series catalogue, which is exactly the artefact
+# every other Australian jurisdiction lacks. It gives us, from the authority:
+#   * the CURRENT car/truck series and its first combination ("1AA.1AA"),
+#     with the month it started (08/2013) and the month the previous series
+#     stopped (01/2013, at "ZSA 000");
+#   * the CURRENT motorcycle series and its first combination ("1A.1AA"), whose
+#     table row is 2011;
+#   * the colour history, in the agency's own three lines (below);
+#   * one genuinely out-of-sequence block, which VicRoads flags itself.
+# Every period in this file is therefore `agency-stated-date` or
+# `agency-series-catalogue`, and none is folklore.
+#
+# THE STRUCTURAL AUSTRALIAN FACT STILL HOLDS HERE: the Road Safety (Vehicles)
+# Regulations 2021 (Vic) do not carry a serial grammar either — no Australian
+# registration regulation does (see the header of plates/au-tas.yml, which
+# quotes the empowering words). What Victoria has is not a better LAW, it is a
+# better AGENCY PAGE. Recorded that way.
+#
+# SEPARATOR NOTE (PRD-PLATES §2.6): a Victorian plate prints a RAISED DOT
+# between the two groups, and VicRoads itself writes the combination both ways
+# on the same page — "1AA.1AA" in the prose, "1AA 1AA" in the table. Neither
+# glyph is serial-significant: the dot is the printed group separator and the
+# dataset spells it as the emitted SPACE, per §2.6 rule 2. A consumer's
+# forgiving tier already deletes FULL STOP (U+002E), so "1AA.1AA" canonicalises
+# correctly with no amendment needed.
+jurisdiction: au-vic
+authority:
+  name: VicRoads (Department of Transport and Planning, Victoria)
+  url: "https://www.vicroads.vic.gov.au/registration/number-plates"
+binding: vehicle
+instrument:
+  citation: "Road Safety (Vehicles) Regulations 2021 (Vic), made under the Road Safety Act 1986 (Vic)"
+  access_note: >-
+    legislation.vic.gov.au serves the instrument and was reachable in this pass,
+    but NO PROVISION OF IT IS QUOTED HERE, because the provisions that would
+    matter (a serial grammar, a colour spec, a plate dimension) do not exist in
+    it — the Australian pattern. The Victorian display rules were therefore not
+    re-derived from the Regulations at this gate and are a recorded gap; the
+    Queensland and Tasmanian files carry the equivalent rules verbatim from
+    their own instruments, and Victoria's are understood to be materially the
+    same, which is an EXPECTATION, not a claim, and is not encoded.
+  licence: "legislation.vic.gov.au publishes Victorian legislation; VicRoads pages are Victorian Crown copyright. Facts extracted, text quoted only where marked verbatim (PRD-PLATES §4)"
+
+national_schemes:
+  heavy_vehicle: >-
+    Heavy vehicles over 4.5 t GVM are registered under the Heavy Vehicle
+    National Law as applied in Victoria and carry a NATIONAL HEAVY VEHICLE
+    NUMBER PLATE issued by the State registrar on the national pattern. This is
+    a mechanism note, not a series: the national heavy-vehicle serial grammar
+    was not obtained from the NHVR or any State instrument in this pass
+    (recorded gap, L4). Three State instruments name the object in those words
+    — Qld reg 2021 s 117(2)(c), Tas reg 2021 reg 88(6), NT Motor Vehicles
+    Regulations 1977 reg 10.
+  light_vehicle_standards: >-
+    Australian Light Vehicle Standards Rules 2015 (national MODEL law,
+    Parliamentary Counsel's Committee, consolidated 22 March 2019) rule 86,
+    verbatim: "At least 1 number plate light must be fitted to the rear of a
+    vehicle" and it must illuminate the plate "so the characters on the number
+    plate can be read at night 20 metres from the rear of the vehicle". The
+    Rules disclaim legal effect of themselves. They prescribe NO plate
+    dimension, colour or serial grammar — there is no national plate standard
+    in Australia.
+  ev_labels: >-
+    Victoria issues NUMBER PLATE LABELS for electric and hydrogen vehicles —
+    labels fixed to the plate, not a plate series — which is the Australian
+    Light Vehicle Standards Rules 2015 Part 12 labelling family (rules 143-144A
+    require LPG, natural-gas and hydrogen labels "fixed conspicuously to its
+    front and rear number plates"). Recorded as a mechanism; no series.
+  source: "https://www.pcc.gov.au/uniform/Australian%20Light%20Vehicle%20Standards%20Rules%202015%20-%2022%20March%202019.pdf  # ALVSR 2015 rule 86 and rules 143-144A, accessed 2026-08-02"
+
+series:
+
+  # =========================================================================
+  # CURRENT GENERAL ISSUE — cars and trucks.
+  # =========================================================================
+  - id: au-vic-standard
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2013 }        # VicRoads' own year table: 08/2013 -> 1AA 1AA
+    period_evidence: agency-stated-date
+    matching: strict
+    format:
+      pattern: "9LL 9LL"
+      regex: '\A\d[A-Z]{2} ?\d[A-Z]{2}\z'
+      evidence: agency
+      charset:
+        notes: >-
+          VicRoads, verbatim: "The current general issue plate series includes:
+          a registration number starting from 1AA.1AA". Numeral, two letters,
+          numeral, two letters — six characters in two printed groups of three.
+          NO LETTER OR DIGIT EXCLUSIONS ARE PUBLISHED by VicRoads, so no
+          `regex_strict` is written; the widely repeated claim that Victoria
+          skips 0 in the first and fourth positions is UNSOURCED and is
+          deliberately NOT encoded (see notes).
+      progression: "ascending; VicRoads' own table shows the leading digit block advancing slowly (1AA 1AA in 08/2013, 1BA 1AA in 2014, 1DX 6UF in 2015, 1GP 4AA in 2016), so the leading numeral is a series marker with decades of headroom"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground_note: >-
+        VicRoads, verbatim: "blue characters on a white reflective background".
+        The white is recorded as a hex with `hex_basis: observed`; THE BLUE IS
+        NOT — VicRoads names the colour and never specifies it, and inventing a
+        blue would be exactly the fabricated-fact failure PRD-PLATES §9 warns
+        about. A `foreground` hex lands when a Victorian specification does.
+      colour_history: >-
+        VicRoads' own three lines, verbatim: "1960 - 1977: Black background,
+        white characters" / "1978 - 1994: White background, green characters" /
+        "1995 - current: White background, blue characters". Note the boundaries
+        are COLOUR boundaries, not series boundaries — the 1995 blue arrived
+        mid-way through the three-letter series and did not start a new one,
+        which is why colour is recorded on the series rather than used to cut it.
+      legend_bottom: "the current State slogan, printed centre-bottom"
+      legend_rule: "VicRoads, verbatim: 'the current slogan printed on the centre bottom of the plate (not included on slimline)'. The slogan is a VARIABLE of the design — Victoria has changed it by policy several times — and the current text is deliberately not hard-coded here"
+      plate: { w: 372, h: 134, unit: mm }
+      plate_dimension_note: "the Australian passenger size; VicRoads does not publish its own millimetres, so this is the cross-State figure sourced in plates/au-wa.yml (WA DoT: 372 x 134 mm) and plates/au-nt.yml (NT MVR: 372 x 133 mm), flagged as such"
+      slimline_variant: "VicRoads offers a slimline plate, on which the slogan is omitted — a design variant of this series, not a series of its own (PRD-PLATES §2.3)"
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.vicroads.vic.gov.au/registration/number-plates/standard-number-plates/general-issue-number-plates  # VicRoads 'General issue number plates', read via the Internet Archive snapshot of 2018-07-02 (the live host 403s to non-browser clients), accessed 2026-08-02: 'a registration number starting from 1AA.1AA'; 'blue characters on a white reflective background'; the slogan rule and the slimline exception; the year-by-year first-combination table whose row 08/2013 is '1AA 1AA' and whose row 01/2013 is 'ZSA 000'; the three colour-era lines"
+    notes: >-
+      VICTORIA'S CURRENT GENERAL ISSUE, AGENCY-DATED TO THE MONTH. The
+      changeover is unusually well evidenced for Australia: VicRoads' table
+      shows 01/2013 as the last three-letter row ("ZSA 000") and 08/2013 as the
+      first row of this series ("1AA 1AA"), so the transition is bracketed by
+      the agency itself and `period.start: 2013` is a real claim rather than a
+      locator's guess. FOLKLORE FLAGGED AND NOT ENCODED: the claim repeated
+      across the enthusiast web and the plate-parsing corpora that Victoria
+      excludes the digit 0 from the first and fourth positions is not stated by
+      VicRoads anywhere on the page that states everything else about this
+      series — if it were true, it would be a `regex_strict`, and its absence
+      here is a deliberate refusal, not an oversight. The evidence VicRoads DOES
+      give cuts slightly against it being a hard rule at the fourth position and
+      says nothing either way; a verifier with a Victorian registration corpus
+      can settle it in minutes, and that is the right way to settle it.
+      SNAPSHOT CAVEAT: the page was read from a 2018 archive because the live
+      host blocks machine clients; the series it describes is still the current
+      one (the leading numeral is 1, and VicRoads' progression shows it moving
+      at roughly one letter-block per year), but the table's later rows are not
+      in evidence here and the file therefore makes no claim about which block
+      is in issue today.
+
+  # =========================================================================
+  # ONE SERIES BACK — cars and trucks.
+  # =========================================================================
+  - id: au-vic-standard-3l3n
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1960, end: 2013 }
+    period_evidence: agency-series-catalogue
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      evidence: agency
+      charset: { notes: "three letters then three numerals. The arrangement is read off VicRoads' own year table, every row of which from 1960 to 01/2013 is of this shape (HCK 620, ARN 000, QAU 000, ZSA 000, ...)" }
+      progression: "ascending through the three-letter block; VicRoads' table gives the first combination issued in each calendar year, which makes this the only Australian series in the wave with an agency-published year-to-serial map"
+    design:
+      colour_history: "VicRoads, verbatim: '1960 - 1977: Black background, white characters'; '1978 - 1994: White background, green characters'; '1995 - current: White background, blue characters'. This series spans all three eras"
+      out_of_sequence_block: "VicRoads flags one exception in its own words, verbatim: 'Note: The number plate series of RAA.000 to RBZ.999 was issued out of sequence and were green characters on a white background.' An agency-declared out-of-sequence block is a genuinely useful parse fact and is recorded rather than smoothed away"
+      plate: { w: 372, h: 134, unit: mm }
+    region_encoding: none
+    sources:
+      - "https://www.vicroads.vic.gov.au/registration/number-plates/standard-number-plates/general-issue-number-plates  # VicRoads (Internet Archive snapshot 2018-07-02, accessed 2026-08-02): the year-by-year first-combination table from 1960 (HCK 620) to 01/2013 (ZSA 000); the three colour-era lines; the RAA.000-RBZ.999 out-of-sequence note verbatim"
+    notes: >-
+      THE PREVIOUS VICTORIAN GENERAL ISSUE. `period.start: 1960` IS AN UPPER
+      BOUND AND IS LABELLED AS ONE: 1960 is simply the first row of VicRoads'
+      table, and the three-letter series demonstrably predates it (the 1960 row
+      already reads "HCK 620", deep inside the H block). The series' true start
+      is earlier and is a recorded gap; what the agency evidences is that this
+      shape was in issue from at least 1960. `period.end: 2013` is a real
+      agency-bracketed claim (last row 01/2013). The RAA-RBZ out-of-sequence
+      block is the kind of fact no competing dataset carries and it comes
+      straight from the registrar.
+
+  # =========================================================================
+  # MOTORCYCLES — a separate series because the ARRANGEMENT differs, not just
+  # the size (PRD-PLATES §2.3: own series iff format OR design OR period).
+  # =========================================================================
+  - id: au-vic-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2011 }        # VicRoads' motorcycle table: 2011 -> 1A 1AA
+    period_evidence: agency-stated-date
+    matching: strict
+    format:
+      pattern: "9L 9LL"
+      regex: '\A\d[A-Z] ?\d[A-Z]{2}\z'
+      evidence: agency
+      charset: { notes: "VicRoads, verbatim: 'The current general issue motorcycle plate series includes: a registration number starting from 1A.1AA'. Five characters — numeral, letter, numeral, two letters — printed in two groups. Shorter than the car series because the plate is smaller" }
+    design:
+      foreground_note: "VicRoads, verbatim: 'blue characters on a white reflective background'"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      legend: "VIC"
+      legend_rule: "VicRoads, verbatim: 'the “VIC” slogan printed on the plate' — the motorcycle plate carries the abbreviation, not the full State slogan, because there is no room"
+      rear_differs: false
+    display: "VicRoads, verbatim: 'Motorcycles are only issued with one plate.'"
+    predecessor: "the previous motorcycle series was two letters then three numerals (VicRoads' motorcycle table, every row from 1960 'CO 026' to 2010 'JA 000'); it is NOT authored as its own series here because the lean scope for this gate is current + one back on the STANDARD line, and the motorcycle predecessor adds a fourth series to a file that already carries the evidence for it in this field (recorded, not padded)"
+    region_encoding: none
+    sources:
+      - "https://www.vicroads.vic.gov.au/registration/number-plates/standard-number-plates/general-issue-number-plates  # VicRoads (Internet Archive snapshot 2018-07-02, accessed 2026-08-02): the motorcycle series 'starting from 1A.1AA', the VIC slogan, the one-plate rule, and the motorcycle year table whose 2011 row is '1A 1AA' and whose 2010 row is 'JA 000'"
+    notes: >-
+      VICTORIAN MOTORCYCLE GENERAL ISSUE, AND THE DATE IS THE AGENCY'S: the
+      motorcycle table's 2011 row is the first "1A 1AA"-shaped entry and 2010 is
+      the last two-letter one ("JA 000"), so the motorcycle line changed over
+      TWO YEARS BEFORE the car line did (2011 vs 08/2013). That asymmetry is the
+      point of modelling motorcycles as their own series rather than as a size
+      variant: in Victoria they are a separate allocation stream with a separate
+      grammar and a separate changeover date, and a parser that treats a
+      motorcycle plate as a short car plate will mis-date it by two years.
