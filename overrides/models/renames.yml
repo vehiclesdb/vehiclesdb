@@ -6928,7 +6928,7 @@ Opel:
   Corsa 1: Corsa                   # truncated displacement (raws "CORSA 1,3S GT", "CORSA 1,2S")
   Corsa 1.2S: Corsa                # engine spec suffix
   Corsa C: Corsa                   # spaced generation letter C (2000-07); the hyphenated "CORSA-C" already folds in collapse_variant — https://en.wikipedia.org/wiki/Opel_Corsa
-  Corsa E: Corsa                   # generation E (2014-19), NOT the electric "Corsa-e" (which is generation F). Raw "CORSA E, 1,4" is a 1.4 PETROL car — https://en.wikipedia.org/wiki/Opel_Corsa
+  Corsa E: Corsa                   # generation E (2014-19), NOT the electric "Corsa-e" (which is generation F). Raw "CORSA E, 1,4" is a 1.4 PETROL car — https://en.wikipedia.org/wiki/Opel_Corsa . D-2 (2026-08-02) CONFIRMED THIS AND WIDENED IT: the HYPHENATED "CORSA-E" is the same generation E, not the electric car. nl_rdw's 32,533 CORSA-E vehicles first-register 2014:340 2015:7,988 2016:8,074 2017:6,481 2018:6,358 2019:3,297 and ZERO after 2019, beside its CORSA-A/-B/-C generation series; fi_traficom's 4,794 are 99.4% pre-2020; fi "CORSA-E VAN" 199 runs 2015-2019. A car still on sale in 2026 cannot have a curve that stops in 2019. So CORSA is deliberately NOT in the pipeline's ELECTRIC_NAMEPLATES pin, this key stays load-bearing for the spaced spelling, and former_ids.yml "car/opel/corsa-e" keeps its published meaning
   Corsa Edition 1.2T Xhl: Corsa    # ES 22-char MODELO_ITV truncation: Edition trim + 1.2 turbo
   Corsa GS 1.2T Xhl Hybr: Corsa    # same truncation: GS trim + 1.2 turbo hybrid
   Corsa GS 1.2T Xhl MT6: Corsa     # same truncation: GS trim + 6-speed manual (2,962 ES registrations)
@@ -6947,14 +6947,22 @@ Opel:
   Monza Gse: Monza                 # GS/E is the fuel-injected performance trim (raw "MONZA,-GS/E")
   Speedster Turbo: Speedster       # engine variant of the Speedster
   Zafira 1: Zafira                 # truncated displacement (raws "ZAFIRA 1,9CDTI", "ZAFIRA 1,4T")
-  Ampera EV: Ampera-e     # SPLIT, not a fold: the Ampera-e is a rebadged Chevrolet Bolt (BEV), a different car from the Volt-based Ampera EREV; raws "Ampera-e EV" survived the -E strip only via the trailing " EV" — https://en.wikipedia.org/wiki/Opel_Ampera
+  # ── D-2 (2026-08-02): Opel's electric line becomes its own nameplates. The
+  # split is a NORMALIZER change (ELECTRIC_NAMEPLATES) and not a key in this
+  # file, because collapse_variant's -[A-G] strip ran BEFORE the rename lookup —
+  # no line here could ever have reached those rows. The three annotations below
+  # only keep the seams honest; NO fold key is added, and none is deleted. ──
+  Ampera EV: Ampera-e     # SPLIT, not a fold: the Ampera-e is a rebadged Chevrolet Bolt (BEV), a different car from the Volt-based Ampera EREV; raws "Ampera-e EV" survived the -E strip only via the trailing " EV" — https://en.wikipedia.org/wiki/Opel_Ampera . D-2: NOW INERT — the normalizer pin resolves "AMPERA-E EV" to "Ampera-e" directly, so this key drops from 2 probing rows to 0 (probe-count diff over all 377,986 corpus rows). KEPT, NOT DELETED: it is the flap insurance if the pin is ever narrowed, and retiring a key needs its own dead-key replay (the wave-7 `Astra Twin Top` precedent). It is also still the SOURCE of the value "Ampera-e"; the styling.yml AMPERA-E pin now carries that job for the pinned path
+  # NOT ADDED, deliberately: no `Corsa-e: …` / `Combo-e: …` keys. The pin emits
+  # the canonical display directly, so such a key would be probed by zero rows —
+  # the silently-inert class wave-7 retired lines for.
   Combo C Van: Combo                    # generation C + the panel-van BODY
   Combo C-Van: Combo                    # hyphenated twin
   Combo C Van Cng: Combo                # generation + body + CNG fuel
-  Combo Cargo: Combo                    # "Cargo" is the panel-van BODY of the Combo E (raws "COMBO-E CARGO") — https://en.wikipedia.org/wiki/Opel_Combo
+  Combo Cargo: Combo                    # "Cargo" is the panel-van BODY of the Combo — https://en.wikipedia.org/wiki/Opel_Combo . COMMENT CORRECTED by D-2: the raw it used to name, "COMBO-E CARGO", is the ELECTRIC van and now resolves to "Combo Electric" ahead of this lookup. The key stays LIVE on the ICE spellings — probe count 8 → 4 rows over the full corpus, so it is not a dead key
   Combo Cargo 650KG Dies: Combo         # ES 22-char truncation: body + 650 kg payload + diesel
   Combo Edition N1 100 C: Combo         # ES truncation: Edition trim + N1 category + 100 CV
-  Combo Life: Combo                     # the passenger BODY of the Combo E (Wikipedia: "Combo Life (current generation branding)") — https://en.wikipedia.org/wiki/Opel_Combo
+  Combo Life: Combo                     # the passenger BODY of the Combo (Wikipedia: "Combo Life (current generation branding)") — https://en.wikipedia.org/wiki/Opel_Combo . D-2: the van-kind "Combo-e Life" raws now resolve to "Combo Electric" first; the key stays LIVE (probe count 3 → 2 rows). NB every CAR-kind Combo row, electric and ICE alike, is dropped before this file is consulted by drop_patterns `\bCOMBO\b` — measured, unchanged by D-2
   Combo Van: Combo                      # panel-van BODY (9,316 NL registrations)
   Combo-Van: Combo                      # hyphenated twin
   Combo-Van-Cng: Combo                  # body + CNG fuel

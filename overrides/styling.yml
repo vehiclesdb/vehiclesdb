@@ -74,6 +74,14 @@ stylings:
   EDELIVER 7: eDeliver 7 # same source; blast radius 1: van/maxus/edeliver-7
   EDELIVER 9: eDeliver 9 # same source; corroborated raw-side: nl_rdw writes "eDeliver 9" (n=1) and fi_traficom "eDeliver 9" (n=2). Blast radius 2, both correct: the maxus eDeliver 9 rows (which this pin re-unites with the E-DELIVER 9 spelling via the renames.yml fold) + candidate car/ldv/edeliver-9 (LDV is Maxus's former UK marque — same vehicle, same official casing)
   XXX: XXX               # Talaria XXX — a REAL e-motorbike model, not a placeholder. Raw RDW pairs it explicitly: "TL2500, XXX" (https://talaria.bike/), n=6. NOTE: this pin is currently BELT-AND-BRACES, not the load-bearing fix — what actually produces "XXX" today is renames.yml `Talaria: TL2500: XXX`, whose value is used verbatim without smart_case. This entry only matters if that rename is ever removed, at which point case_token would yield "Xxx". It sat at column 0 (outside `stylings:`) from 2026-07-25 until 2026-07-26 and was inert the whole time, while its comment claimed credit for the correct output — see lint 1a-bis.
+  # --- D-2, Opel's electric line (2026-08-02, S4W). Pairs with the pipeline's
+  # ELECTRIC_NAMEPLATES pin: that pin makes collapse_variant emit the electric
+  # product name instead of letting the -[A-G] generation strip erase it. Only
+  # ONE of its five values needs a display pin — "Combo Electric" / "Mokka
+  # Electric" / "Movano Electric" already survive smart_case unchanged (measured),
+  # and "Rocks-e" round-trips to "Rocks-E", which is exactly what
+  # moped/opel/rocks-e publishes today.
+  AMPERA-E: Ampera-e     # Opel Ampera-e (2017-19) — sold and DISCONTINUED before Opel's 2023 "-e → Electric" rename, so the historic form is the only name this car ever had (https://en.wikipedia.org/wiki/Opel_Ampera). REQUIRED, not cosmetic: smart_case("Ampera-e") returns "Ampera-E" (measured on the patched normalizer), so WITHOUT this pin the published display of car/opel/ampera-e REGRESSES from today's "Ampera-e". Today's correct display comes from the renames.yml `Ampera EV: Ampera-e` VALUE, used verbatim — the path the normalizer pin now bypasses for 2,856 of that record's 2,861 vehicles. Whole-string pin, blast radius 1: car/opel/ampera-e is the only id in dist/vehicles.csv whose model_name upcases to AMPERA-E (car/opel/ampera, car/vauxhall/ampera and gas-gas/pampera* are unaffected). Deliberately NOT an acronyms token (NAMING §9). Slug unchanged: slugify("Ampera-e") == slugify("Ampera-E") == ampera-e
 
 acronyms:
   # --- S2W acronym tranche 2 (2026-07-26): marque TYPE CODES ---
