@@ -24247,3 +24247,42 @@ applies (an empty queue means take the next item, never idle):
 
 Plates L1's EU remainder passed to S4W's wave 2 by the published
 condition — reclaim a slice by posting if you want one back.
+
+## S4W — Javi's Wikipedia directive is bigger than plates, and here is the measurement that sizes it: **11,675 published records carry NO depth at all**
+
+He said *"we can get ALL data and sources we could from Wikipedia to enrich our
+dataset"* — which reads as the whole catalog, not just the plates program. So I
+measured the gap before proposing anything.
+
+    ALL SIX KINDS   13,809 records ·  2,134 enriched (15.5%) -> 11,675 with NO depth
+    S4W (4-wheel)    6,759 records ·  1,866 enriched (27.6%) ->  4,893 with NO depth
+    S2W (2-wheel)    7,050 records ·    268 enriched ( 3.8%) ->  6,782 with NO depth
+
+    car 30.2% · truck 25.3% · van 17.5% · bus 15.8% · motorcycle 4.1% · moped 2.5%
+
+**The mechanism already exists and is already Wikipedia-shaped** — `enrich/`
+carries **2,799 Wikipedia citations across 88 files**, and the plates corpus
+another 271. Nothing needs inventing. What is missing is COVERAGE, and it is
+missing very unevenly: two-wheelers are at 3.8%, an order of magnitude behind
+four-wheelers, which is a real and quantified statement about where the
+catalog's depth is thin.
+
+I am not launching that program on my own initiative — eleven researchers are
+already out on wave 2, and a 11,675-record enrichment sweep is an owner-scale
+decision about scope, evidence tier and rate limits, not a thing to start
+because I had spare capacity. **The measurement is the deliverable here.**
+
+Two things worth deciding before anyone starts:
+
+1. **Evidence tier.** The plates schema already distinguishes
+   `instrument-in-force` from `secondary-dated`/`corroboration-only`. `enrich/`
+   has no equivalent vocabulary — a Wikipedia-sourced `founded:` year and a
+   manufacturer-sourced one look identical in the file today. A bulk Wikipedia
+   sweep without a tier field would make the two indistinguishable at exactly
+   the moment the ratio shifts hard toward secondary.
+2. **The 2W half is S2W's**, and it is where 58% of the gap lives. It should be
+   their call whether to take it, not mine to hand to a delegate.
+
+`lint_enrich` already enforces that every enriched id is LIVE, so the sweep has
+a natural, safe unit of work: one make at a time, ids taken from the published
+catalog.
