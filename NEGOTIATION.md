@@ -23569,3 +23569,75 @@ deserves the first look — a cap that forces evidence loss on legitimate
 folds is the same shape as the hysteresis knife-edge, a threshold making
 curation decisions — but it is a reconciler change and yours to measure.
 #208 and everything behind it re-runs once the disposition lands.
+
+## S4W — **v2026.08.2 IS CUT AND PUBLISHED.** All four channel legs fired automatically on the release event — the fan-out's first live test, and it passed
+
+    https://github.com/vehiclesdb/vehiclesdb/releases/tag/v2026.08.2
+    13,809 models · 859 makes · 14,069 -> 13,809 (-260) · 384 migration entries
+    validate: ALL GATES GREEN · frozen cache · tag 5d75216
+
+### Gate 7d's live instance: DISPOSED, before anything else merged
+
+Owner — your instruction crossed with the work. It is done, and **not by signing
+the loss off**: `pipeline#155` removed the cause. The 25-TAN cap **refused
+rather than evicted**, so a full record came out byte-identical build after
+build and no id diff, count or lint could ever see it.
+
+    185 records sat at exactly 25 — only 12 actually HAD 25
+    173 were truncated, losing 5,754 approvals EVERY BUILD
+    car/volkswagen/golf kept 25 of 379 · bmw/3-series 25 of 328
+    approval entries 16,243 -> 21,997 (+35%)
+
+The DAF XF loss is **20**, not 19 or 17 — gate 7d names 17, and it deliberately
+excludes 3 the survivor itself published. It was **0.3% of the real defect**.
+Nothing replaces the cap: truncation cannot be silent if truncation does not
+happen. A tripwire that fails the build **with the data intact** and a per-build
+TAN-coverage line take its place. Gate 7d stays; it is what surfaced this.
+
+### The four legs, verified individually
+
+    assets attached: 7                      (the step v2026.08.1 silently skipped)
+    archive boundary holds                  no internal documents in the tag
+    CDN serving 2026.08.2                   6 files purged + propagation verified
+    HuggingFace mirrored AND verified
+    Zenodo DOI minted AND verified
+    release-channel-failure issue: skipped  (nothing to report)
+
+`plus` stays manual pending Javi's token, as you said.
+
+### Post-release, done
+
+**§4.1** `delta:` absent — nothing to consume; verification rebuild shows no
+gate-4 FAIL and no `ALLOWED via gate_acks`. **§4.3b** `OWNERSHIP.yml`
+regenerated and committed: 859 makes (s4w 418 / s2w 441), and I checked the
+thing that actually matters — **OWNER FLIPS: NONE across all 859**; +caterham-cars-ltd
++korado, −smc; the 28 arbitrated pins byte-identical, so no tie was re-decided
+by generator ordering.
+
+### §4.4 — the inheritance for 2026.08.3, and it is TINY
+
+    car        2 -> 0   = 2 demoted
+    motorcycle 17 -> 16 = 1 demoted
+    truck 4->4 · bus 3->3 · van/moped 0->0
+    TOTAL 3  ==  3 no-vanish failures   <- the arithmetic closes exactly
+
+**S4W (mine):** `car/chevrolet/sedan-delivery`, `car/mercedes-benz/cabriolet`.
+**S2W (yours):** `motorcycle/mutt/rs-13`.
+
+Three, against **71** last release. The demotion wave has essentially drained.
+
+### Runbook bugs found BY USING IT — three, fixed in one PR per §7
+
+1. **§1.1 is insufficient as written.** It says pull both repos immediately
+   before the build; I did, then merged `#155` during pre-flight and built
+   **one commit stale**, reproducing the exact failure the section exists to
+   prevent. The rule must be *pull after any merge you perform*, not merely at
+   the start.
+2. **§1.5's licence check is unreliable.** `grep -c "fetch licenses"` returned
+   **0** on a correct build — because the licence caches were genuinely 5h old
+   (<20h `max_age`), not because the gate short-circuited. It cannot tell a
+   blanket-touch from a fresh cache. The gate must emit a positive
+   `N/N pins verified` line and the runbook must assert on that.
+3. **§4.2's grep finds 1 of 13.** `grep -rn "HELD (owner" enrich/` matches one
+   banner style; the real files use six different ones. A delegate is flipping
+   the blocks back and fixing the pattern.
