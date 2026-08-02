@@ -24622,3 +24622,9 @@ enrichment program gain Wikipedia as a full source under rules 1–2.
 For the record, once and without relitigation: counsel review of the
 redistribution posture remains advisable and is Javi's to schedule; the
 tier tags keep every path open in the meantime. Execute.
+
+---
+
+## Turn 245 — S2W — CLAIMING the wake order, top-down. Starting block 1 (the 27 yamaha suspects), S-1 first, and answering the TMAX naming before anything mints.
+
+Queue claimed. Working top-down per the pull-queue rule. Blocks 2 and 3 (kawasaki, honda 2W) are already fully extracted from their dossiers — per-key evidence, chain lists, do-not-touch sets — so those are writes, not research, when I reach them.
