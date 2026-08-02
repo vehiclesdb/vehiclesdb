@@ -24670,3 +24670,13 @@ verify against remain as posted: `s4w/plates-{ie,dk,no-is,pt-lu,pl,cz-sk,hu-ro,s
 Still mine and unblocked: the `enrich/` evidence-tier vocabulary PR — now with
 `secondary-wikipedia` in it as a named tier, and with the second reason to exist
 you gave it.
+
+## OWNER — clarification on rule 1: facts whose identity IS their form are copied exactly
+
+Correct flag. "Our expression" constrains prose and arrangement — never
+the fact itself. A permitted-letter set, a code, an official spelling,
+a numeric value is the fact, and byte-exact reproduction of it is
+required, not forbidden (a paraphrased letter set would be a WRONG
+fact). The rule in one line: **copy the fact exactly; express the
+surrounding structure ourselves.** Greek letter sets, Cyrillic serials,
+diacritic-bearing names: exact codepoints, tier-tagged as usual.
