@@ -5,6 +5,15 @@ Citroën:
   2CV: [Deux Chevaux, Ente]                          # FR spoken form; DE nickname ("duck")
 
 Cupra:
+  # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. `car/seat/leon`
+  # publishes "León" too, so bare "leon" is a rung-4 multi-id REFUSAL
+  # (resolver.rb:192-199; find_alias_name_collisions.rb class B). Retiring ONE
+  # side would make bare "leon" resolve, and that was proposed — DECLINED: the
+  # two are a D-3 rebadge pair of near-equal reach (seat 9 countries/d2, cupra
+  # 8/d3, measured on dist 2026.08.1) and both opt-ins are sourced, so a silent
+  # 0.90 pick of one badge is worse than a refusal that returns both as
+  # alternates — the same reasoning this repo applies to classes C/D/E. The
+  # durable fix is a `rebadge_of` relation row, not deleting a sourced fact.
   Leon: [León]                  # ES official spelling — Cupra's Spanish site writes "CUPRA León" (https://www.cupraofficial.es/coches/leon)
 
 Dacia:
@@ -18,11 +27,29 @@ Dacia:
 Derbi:
   Senda 50: [Senda DRD]         # DRD (Derbi Racing Development) sub-badge on 2004+ Senda 50s — how the bikes are commonly listed ("Senda DRD Racing/X-Treme")
 
-Fiat:
-  "500": [Cinquecento]                               # IT spoken form (also a distinct 90s nameplate — alias stays on the icon)
-
+# Fiat: block removed with its only entry — `"500": [Cinquecento]`. RETIRED
+# 2026-08-02: "Cinquecento" is also the display name of `car/fiat/cinquecento`
+# (Type 170, 1991-98; 4 countries fi,gb,nl,ua — measured on dist 2026.08.1),
+# so the alias made resolver rung 4 REFUSE bare "cinquecento" for BOTH records
+# (resolver.rb:184-190; scripts/find_alias_name_collisions.rb class A). The
+# retired line's own note said "alias stays on the icon" while acknowledging the
+# distinct nameplate — that judgement predates the measurement and assumed the
+# alias could coexist harmlessly; it could not. "Cinquecento" is Italian for
+# "five hundred", i.e. merely TRANSLATIONAL, which is the retire criterion, and
+# the 500's other names are unaffected. Header deleted per lint_curation 1a2
+# (empty make block). D-3 does NOT apply: these are two different products, not
+# one product under two market names.
 Ford:
-  Mustang: [Stang, Pony]                             # common nicknames
+  Mustang: [Stang]                                   # common nickname
+  # `Pony` RETIRED from Mustang 2026-08-02: it is the display name of
+  # `car/hyundai/pony` (d7, 5 countries fi,gb,nl,nz,ua — measured on dist
+  # 2026.08.1), so it made rung 4 REFUSE bare "pony" (resolver.rb:184-190;
+  # find_alias_name_collisions.rb class A, cross-make). The Mustang DEFINED the
+  # pony-car class and wears a horse badge, but "Pony" is not a name it was
+  # marketed under — and unlike every sourced line in this file the retired
+  # entry carried only "common nicknames", no source, which the header rule at
+  # the foot of this file requires. Weak alias shadowing a real nameplate =
+  # retire. `Stang` is unaffected and keeps resolving.
   Model T: [Tin Lizzie]                              # historic nickname
 
 Gas Gas:
@@ -35,6 +62,14 @@ Honda:
   Super Cub: [スーパーカブ, Cub]                     # JP katakana; universal short form
 
 Lada:
+  # D-3 PAIR, alias KEPT — bare "4x4" is a rung-4 refusal because `car/lada/4x4`
+  # (d4, es,fi,lu,nl) and `car/chevrolet/4x4` (d9, nl,nz) both hold it as a NAME.
+  # Both Lada ids carry availability evidence (niva de,fi,gb,nl,nz,ua), so D-3
+  # (NEGOTIATION.md:16835, clarified :19721) makes them two records with a
+  # relation, NEVER a fold. `Нива` folds to "" under the normalizer and is not
+  # indexed at all (resolver.rb:296) — it can never collide. The chevrolet id is
+  # a separate question (drivetrain spec as a nameplate) and is NOT dispositioned
+  # here; `s4w/g13-rebaseline` already carries both ids in the name-shape debt.
   Niva: [Нива, 4x4]                                  # Cyrillic; 2006-2021 official renaming
   2107: [Semyorka, Жигули]                           # RU nickname ("the seven"); Zhiguli family name
 
@@ -42,12 +77,31 @@ Mercedes-Benz:
   G-Class: [Geländewagen, G-Wagen]                   # original name; universal nickname
 
 Mitsubishi:
+  # D-3 PAIR (three-way), aliases KEPT — bare "montero" and "shogun" are both
+  # rung-4 refusals because `mitsubishi/montero` (car d6 8 countries incl ca,us,
+  # es; van d9) and `mitsubishi/shogun` (car d6 4 incl gb; van d6) are live
+  # NAMES. A fold of both onto pajero was proposed — DECLINED: every side
+  # carries availability evidence in exactly the market its name belongs to,
+  # which is D-3's own decision rule, and pajero↔montero↔shogun is named as a
+  # relation-field customer in spec-g26c-relations §B7.2. This very file already
+  # cites the precedent at the Dacia block. Awaiting the relation field, not a
+  # ruling (NEGOTIATION.md:19721).
   Pajero: [Montero, Shogun]                          # ES/Americas name; UK name — same nameplate
 
 Montesa:
   Cota 4RT 301RR: [Cota 301RR]  # Montesa's own short form — official model-page copy and launch news say "Cota 301RR" (https://montesa.com/en/modelos/cota-4rt-301rr/)
 
 Nissan:
+  # D-3 PAIRS, aliases KEPT — both are rung-4 refusals and both were proposed as
+  # folds; DECLINED on the same rule. `car/nissan/fairlady-z` (d6, fi,my,nl,th)
+  # and `car/nissan/z` (d6, ca,nl,nz,ua,us) each carry availability evidence, in
+  # the JDM/grey-import and export markets their names belong to — the owner
+  # names this pair as the relation field's customer (NEGOTIATION.md:21574).
+  # Same for `car/nissan/safari` (d7, gb,nz,ua) vs patrol (car d4 6 countries,
+  # van d4 3, bus d10 2). NOTE "safari" ALSO refuses because of four unrelated
+  # foreign nameplates — gmc/pontiac/tata (car) and temsa (bus) — so bare
+  # "safari" can never resolve no matter what Nissan does; that half is ACCEPTED
+  # as correct behavior, and is why the alias is not worth retiring either.
   Z: [Fairlady Z]                                    # JP domestic name for the Z line
   Patrol: [Safari]                                   # JP domestic market name
 
@@ -68,8 +122,25 @@ Santana:
   PS10: [Aníbal]                # ES market name — the Santana Aníbal / PS-10 utility 4x4 (Linares, 2003-2011; https://autopista.es/noticias-motor/articulo/mot11298.htm)
 
 SEAT:
-  Leon: [León]                  # ES official spelling — seat.es titles "SEAT León"; international sites drop the accent
+  Leon: [León]                  # ES official spelling — seat.es titles "SEAT León"; international sites drop the accent — see the Cupra block: KNOWN class-B collision, both opt-ins deliberately kept
+  # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. "Córdoba" folds
+  # to "cordoba", which is also the NAME of `car/chrysler/cordoba` (d5, fi,nl,
+  # nz), so this bare-resolution opt-in (§1.5 mechanism, resolver.rb:177-179) is
+  # dead on arrival: bare "cordoba" refuses. Retiring it was proposed as
+  # hygiene; DECLINED — the customer outcome is identical either way (no match
+  # + alternates), so the only effect would be deleting a true, documented
+  # native spelling that still feeds SDK search. Two different cars, legitimate
+  # alias, refusal is correct behavior = ACCEPT under the detector's own
+  # taxonomy. Nothing SEAT can do makes bare "cordoba" unambiguous.
   Cordoba: [Córdoba]            # named after the city; Spanish-market materials carry the accent
+  # DO NOT DELETE "Málaga" AS REDUNDANT. It folds to its own record's name on
+  # purpose: rung 3 bails on one-token input and rung 4 fires only on ALIASES,
+  # so publishing the name as an alias is the ONLY way to opt a single-word
+  # nameplate into bare resolution — resolver.rb:177-179 cites this exact entry.
+  # It is the one opt-in in the catalog that WORKS (the León ×2 and Córdoba ones
+  # are dead), and an early collision-detector run mis-flagged it as redundant
+  # before the mechanism was understood. Any tool that recommends removing it
+  # has made that mistake.
   Malaga: [Málaga, Gredos]      # ES accent (city name); Gredos = Greek market name (Málaga sounded like the swear word malakas)
   "600": [Seiscientos, Seílla]  # ES spoken forms of the icon that motorized Spain (Fiat 500: Cinquecento precedent)
 
@@ -101,6 +172,16 @@ Toyota:
 #         here (the normalizer already folds those).
 Volkswagen:
   Beetle: [Käfer, Vocho, Fusca, Coccinelle, Type 1]  # DE official; MX; BR; FR nicknames; factory type
+  # D-3 PAIR, alias KEPT — bare "rabbit" is a rung-4 refusal because
+  # `car/volkswagen/rabbit` is a live NAME (d7, ca,fi,nl,nz,ua,us). Folding it
+  # onto the Golf was proposed as the highest-value fix in the set; DECLINED —
+  # the rabbit id carries availability evidence in ca+us, exactly the market its
+  # name belongs to, so D-3 makes this two records with a relation, never a
+  # fold. The evidence is already captured as prose in the pipeline at
+  # enrich/volkswagen.yml:385-386 (Mk1 1974-84 and Mk5 2006-09 under the NA
+  # name) — the "prose-only capture" class spec-g26c-relations §B7.2 exists to
+  # machine-read. Until the relation field lands the refusal stands and is
+  # correct; the alias is what makes the Golf reachable as "rabbit" via rung 3.
   Golf: [Rabbit]                                     # US market name (Mk1, and 2006-09 Mk5)
   Transporter: [Bulli, Kombi]                        # DE nickname; BR/AU market name
   ID.3: [ID3]                                        # common unpunctuated form
