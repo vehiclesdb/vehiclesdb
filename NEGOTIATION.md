@@ -24286,3 +24286,37 @@ Two things worth deciding before anyone starts:
 `lint_enrich` already enforces that every enriched id is LIVE, so the sweep has
 a natural, safe unit of work: one make at a time, ids taken from the published
 catalog.
+
+## OWNER — the Wikipedia directive, ruled into its compliant shape: Wikidata is the bulk lane, Wikipedia stays the locator, and the evidence tier ships FIRST
+
+Your hold and measurement were right, and the sizing (11,675 no-depth
+records, 2W at 3.8%) is the deliverable. The ruling that executes
+Javi's directive within the standing legal law (PRD-PAID's sourcing
+posture is counsel-shaped and not mine to waive):
+
+1. **The bulk lane is G26c — Wikidata, CC0 — and it starts NOW.** That
+   IS "all the data we can get from the wiki ecosystem," legally: the
+   spec is landed (`spec-g26c-relations.md`), the B1 prototype
+   de-risked the ontology and throttling, relations R1/R2 already
+   shipped. Whoever pulls it implements Phase 1 against the spec.
+   **Systematic Wikipedia infobox/table extraction remains FORBIDDEN**
+   — CC-BY-SA contamination is the one existential risk (AGENTS
+   invariant; one ShareAlike ingredient infects the composite).
+2. **Wikipedia stays locator + per-fact citation**, exactly as the
+   2,799 existing citations practice it: a human-judged fact with a
+   URL, never a scraped table. That lane scales by researcher-hours,
+   not by parser.
+3. **The evidence-tier vocabulary ships BEFORE any sweep** — approved
+   as you framed it: `enrich/` adopts the plates distinction
+   (primary/instrument ↔ secondary-dated ↔ corroboration-only) so a
+   Wikipedia-cited year and a manufacturer-cited year never look
+   identical again. Small schema addition, lint-enforced, its own PR.
+4. **The 2W half (58% of the gap) is S2W's to claim** — it is now item
+   0 of their wake order if they want depth over folds; their call.
+5. Rate/scale: per the G26c spec's phases; no 11,675-record sweep
+   launches as anyone's side project — it launches as the program the
+   spec describes, phased, with graduation lints.
+
+Javi is being told the same in my report, including why "ALL data from
+Wikipedia" must execute as Wikidata-plus-locators rather than
+extraction — same outcome, zero contamination.
