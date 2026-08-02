@@ -22029,3 +22029,75 @@ its own article and it is mechanically a different car. That is an argument
 against our canon, not against this PR — and if the owner ever rules the New
 Beetle distinct, the reversal must start with data#110/#179 and the published
 alias, not with this PR.
+
+## S4W — RETRACTION: "nothing lints the rename side" is FALSE. I wrote the rule that catches it, forgot it, and briefed three agents with the error. Plus a NEW silent-loss class from the MINI apply
+
+### The retraction, because I have said it repeatedly and it is load-bearing
+
+I have asserted all night — in `data#176`'s PR body, in several turns here, and
+in **three delegate briefs** — that the chain trap ships with *"green build, no
+lint, no gate"* and that **nothing lints the rename side**.
+
+**False.** The LF/CF delegate reconstructed `data#176`'s pre-flatten state and
+ran the lint: **10 failures — 5 `former_ids` CHAIN + 5 renames DIRECTION WAR.**
+The rule is `scripts/lint_curation.rb:393`, *"a rename whose TARGET is also a
+KEY in the same block"*, failing at :425, and it **landed in `data#26` on
+2026-07-26 — six days before `data#176`.**
+
+The comment at `lint_curation.rb:334` credits that rule to me. **I wrote it,
+forgot it, and then briefed three agents to expect no lint coverage.** Corrected
+on `data#176` as well, because a PR body is what the next person reads when they
+hit this class.
+
+What survives: the id diff is still needed for what the lint truly cannot see —
+a key firing on **nothing** (inert), and cross-kind spill. The DAF fold hit the
+first. But the practical rule is now the opposite of what I said: **run
+`lint_curation` FIRST** — seconds, not a six-minute build.
+
+That is the second time tonight I have carried a stale conclusion into a brief
+as an assertion (after the New Beetle constraint). Both were caught only because
+the brief told the delegate to verify. I am adding to the template: **state
+which claims are assertions I have not re-derived, so they get checked rather
+than inherited.**
+
+### `data#199` — LF/CF, and a better instrument than #176 had
+
+26 ids, exactly the audit's 10+16. It did **not** inherit #176's evidence; it
+re-derived and found something stronger: **`es_dgt` carries engine power in kW
+as an explicit spec field**, and kW×1.35962 reproduces the badge on 26 of 30
+LF/CF strings (`CF 530 FA` → 390.0 kW → 530.3 hp). `nl_rdw` independently
+carries the `<series>.<power>` form with both halves present (`FA LF 45.180`).
+
+**The trap is five ids, not one** — `lf45 lf55 cf65 cf75 cf85` are real series
+and are kept, and the kW instrument doubles as the known-answer test that says
+so (`FA LF 45` measures 247 hp, not 45). Chain audit: one link each side, and
+`Fascf/Fatcf → CF85` needed no change *because* CF85 is kept — the trap and the
+chain turned out to be the same fact seen twice.
+
+Its negative control is the sharpest thing in the batch: built differing by
+**exactly two lines**, it shows that without the flatten `truck/daf/lf260`
+**survives as a different, smaller record** — nastier than #176's version,
+because a "did the id list shrink?" check passes while the id lives on.
+
+### `data#200` / `pipeline#139` — MINI, and a NEW silent-loss class
+
+It shipped one key, withheld the one the dossier recommended, and the reason is
+a class we have not seen:
+
+**Folding `Jcw`/`Jcw E` into `cooper` is availability-lossless but NOT
+evidence-lossless.** `car/mini/cooper` is already at `reconciler.rb:261`'s
+**25-TAN cap**, so the fold **delists 7 EU type approvals** — 0 of 7 survive.
+**No gate sees it**: the id diff is clean, the union is lossless, the lints are
+silent, and the survivor's `xrefs` are byte-identical. It found it because the
+id diff looked "too clean" and it went looking for what a clean diff would hide.
+
+Scoped as a class: **184 of 4,667 TAN-carrying records (3.94%) sit at the cap**,
+so any fold onto one of those silently drops evidence. That is a fourth silent
+class, alongside inert keys, the reachability blind spots, and pre-rename-lookup
+drops.
+
+It also refutes the dossier's `Hatch → Cooper` rationale as **unmeasurable** —
+`nz_nzta` is a stock snapshot with **no year column**, so the "concurrent vs
+consecutive" test §D.2 rests on cannot be run on the data it cites. It
+recommends the fold anyway, on a corpus argument I find stronger, and leaves the
+call to me. I will take it.
