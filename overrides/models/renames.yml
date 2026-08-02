@@ -11764,11 +11764,26 @@ Yamaha:
   "MTN1000D":            "MT-10SP"   # cover "MTN1000D (MT-10 SP)", manuals D83/BW8/BGG-28199-E0; PDP /hyper-naked/mt-10-sp/. Target spelling matches the live record's produced name
   "MTM890D":             "XSR900 GP"   # cover "MTM890D (XSR900 GP)", manual BMG-28199-E0/E1; PDP /sport-heritage/xsr900-gp/
   "MTM890D-U":           "XSR900 GP"   # cover "MTM890D-U (XSR900 GP 35kW)" — -U is the 35 kW equipment variant OF THE GP
-# MTT890D-K / MTT890D-Sk (Tracer 9 GT+) are NOT here on purpose: "+" is not
-# slug-safe. "Tracer 9 GT+" slugifies to tracer-9-gt, one hyphen away from the
-# published tracer-9gt and a different machine; "Tracer 9GT+" collides with it
-# outright. Yamaha's own URL says tracer-9-gt-plus. Escalated in DEBT rather
-# than improvised — that is the whole lesson of S-4.
+# MTT890D-K / MTT890D-Sk (Tracer 9 GT+) — RESOLVED, and by measurement rather
+# than taste. "+" is dropped by `Support.slugify`, so the printed name cannot
+# be the id's name: "Tracer 9GT+" slugifies to tracer-9gt and collides with
+# the published GT outright. That is not theoretical — RDW's "TRACER9 GT+"
+# and "TRACER 9 GT+" already produce "Tracer 9GT+" and are ALREADY merged
+# into tracer-9gt, silently.
+#
+# Two options were on the table in DEBT and both are now closed:
+#   (1) teach slugify "+" -> "plus". KILLED: 27 published records carry "+"
+#       in their name — "260Z 2+2", "365 GT4 2+2", "Elan +2", "XG+530",
+#       "Agility 16+ 125", four Trek Allant+ e-bikes — and every one re-slugs.
+#       27 ids damaged to represent 1.
+#   (2) normalise the family to spaced. KILLED by the spelling note above:
+#       glued IS the house rule, so spacing the family fights the normalizer.
+# What is left is the name Yamaha itself uses in its URL, /tracer-9-gt-plus/,
+# spelled to the house convention: "Tracer 9GT Plus" -> tracer-9gt-plus.
+# Distinct id, no collision, no blast radius, nothing retired.
+  "MTT890D-K":           "Tracer 9GT Plus"   # cover "MTT890D-K (TRACER 9 GT+)", manual BLG-28199-E0/E1; PDP /sport-touring/tracer-9-gt-plus/; UK "TRACER 9 GT+ (MTT890D-K)" n=737
+  "MTT890D-Sk":          "Tracer 9GT Plus"   # produced form is "MTT890D-Sk" (title-cased), NOT "MTT890D-SK"; cover BVV-28199-E0; UK "TRACER 9 GT+ Y-AMT MTT890D-SK" n=156
+  "Tracer 9GT+":         "Tracer 9GT Plus"   # the produced form of RDW "TRACER9 GT+" / "TRACER 9 GT+" — TODAY these slug into tracer-9gt and vanish into the GT record
   "MTN320-A":            "MT-03"   # "MTN320-A (MT-03)" — Yamaha EU manual PBRGF8199E0E
   "MTN125-A":            "MT-125"   # "MTN125-A (MT-125)" — Yamaha EU manual PBWTF8199E0E
   "MT125A":              "MT-125"   # library.ymcapps.net "MT-125 ABS - MT125A"
@@ -11822,21 +11837,32 @@ Yamaha:
   "MTT690-U":            "Tracer 7"   # -U = 35 kW A2 restriction (equipment). Straddles: 157/180 post-2020, printed evidence is Tracer-700-era. See the compromise note above
   "MTT690-S":            "Tracer 7"   # 2026 only. UK "TRACER 7 Y-AMT (MTT690-S)"; cover "MTT690-S (Tracer 7 Y-AMT)" PD43F8199E0E. Y-AMT is a transmission option
   "MTT690-SU":           "Tracer 7"   # 2026 only. Y-AMT + 35 kW, both equipment
-  "MTT690D":             "Tracer 7 GT"   # 2025-2026 only. Cover "MTT690D (Tracer 7 GT)" PD90F8199E0E; UK "TRACER 7 GT (MTT 690D)" n=170
-  "MTT690D-S":           "Tracer 7 GT"   # UK "TRACER 7 GT Y-AMT (MTT690D-S)" n=32
-  "MTT690D-U":           "Tracer 7 GT"   # cover "MTT690D-U (Tracer 7 GT 35kW)" PD90F8199E0E
-  "MTT690D-SU":          "Tracer 7 GT"   # Y-AMT + 35 kW on the GT
+  "MTT690D":             "Tracer 7GT"   # 2025-2026 only. Cover "MTT690D (Tracer 7 GT)" PD90F8199E0E; UK "TRACER 7 GT (MTT 690D)" n=170
+  "MTT690D-S":           "Tracer 7GT"   # UK "TRACER 7 GT Y-AMT (MTT690D-S)" n=32
+  "MTT690D-U":           "Tracer 7GT"   # cover "MTT690D-U (Tracer 7 GT 35kW)" PD90F8199E0E
+  "MTT690D-SU":          "Tracer 7GT"   # Y-AMT + 35 kW on the GT
 # NOT a 2019-20 "Tracer 700 GT" mix-up: that bike existed but was a PACK on the
 # same homologation (MTT690-A), never its own code, so its vehicles stay on
 # tracer-700 where they belong. MTT690D is the code Yamaha created when the GT
 # became a separate model for MY2025 — hence the clean 2025-2026 year span.
 #
-# SPELLING: "Tracer 7 GT" spaced, as Yamaha and the UK register both print it.
-# This is deliberately INCONSISTENT with the published "Tracer 9GT" / "Tracer
-# 900GT", which are glued because they were minted from register strings, not
-# decided. Normalising those two retires published ids and is filed in DEBT
-# with the GT+ question it is entangled with — propagating a defect into a new
-# id to look tidy is the wrong trade.
+# SPELLING — CORRECTED 2026-08-02, same day it shipped. data#263 used the
+# SPACED "Tracer 7 GT" and justified it by calling the published "Tracer 9GT"
+# / "Tracer 900GT" accidents "minted from register strings, not decided".
+# They are neither accidental nor register-derived: `Normalizer#
+# two_wheeler_spacing` GLUES a trailing short token onto the preceding number
+# across every 2W make — "TRACER 9 GT" -> "Tracer 9GT", "NINJA 1000 SX" ->
+# "Ninja 1000SX", "MT 09 SP" -> "MT-09SP". Pass 2 re-splits only where a
+# 4-LETTER run touches the digit boundary, so "TRACER"(6) splits and "GT"(2)
+# does not. It is a documented house rule with a DO NOT REVERT history note.
+#
+# So the spaced spelling was not a tidier choice, it was a nameplate SPLIT
+# waiting to happen: "TRACER 7 GT" produces "Tracer 7GT" -> tracer-7gt, while
+# these keys were sending the type codes to tracer-7-gt. Two ids, one machine,
+# the moment any source writes the name in words — and the UK register writes
+# exactly that for 202 vehicles, hidden today only because they fall back to
+# the bare stub (DEBT: the single-digit nameplate gap). Caught before release,
+# so no former_ids arm is owed for tracer-7-gt; it never shipped.
   "MTT850D":             "Tracer 900GT"   # library.ymcapps.net "TRACER 900 GT - MTT850D"; RDW "MTT850D (TRACER900 GT)" n=1521
   "MT09TRA":             "MT-09 Tracer"   # RDW "MT09TRA (MT-09 TRACER)" n=430. ⚠ Yamaha's manual DB says "TRACER 900 - MT09TRA" — same code, two eras. See dossier §D-2.
   "MTM850":              "XSR900"   # library.ymcapps.net "XSR900 - MTM850"; RDW "MTM850 (XSR900)" n=190
