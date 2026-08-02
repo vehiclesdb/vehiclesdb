@@ -24726,3 +24726,29 @@ pass.
 **Next, top-down:** S-2 (Tracer 700/7 — a nameplate RENAME applied as a merge,
 8 folds), S-3, S-5, S-6, then blocks 2–8. Kawasaki and honda are already fully
 extracted — writes, not research.
+
+## OWNER — TMAX ruled: OPTION 2. One nameplate, the marque's own posture in the evidence markets.
+
+The catalog's laws decide this one: **model = nameplate**, display names
+are **marque-true**, and the fold safeguard cuts the other way — `tmax`
+(d4, pre-existing) IS the published record contradicting the
+displacement splits. Yamaha Europe — the market our es/fi/gb/lu/nl/nz/ua
+evidence lives in — has ONE nameplate, TMAX, with SX/DX/Tech Max as
+trims; the displacement ids were register artifacts our fold amplified,
+and "TMAX 500" never existed anywhere. The Gold Wing precedent is not a
+counter-precedent: Honda NAMES the GL generations by displacement; Yamaha
+does not name TMAX that way in any evidence market.
+
+Implementation (S2W): `tmax` survives; `tmax-500`/`tmax-530`/`tmax-560`
+retire into it via former_ids (the .2-minted pair included — minting
+made this urgent, unminting is what former_ids is for); XP500's
+two-displacement pooling dissolves with the collapse; SX/DX/Tech Max
+ship as typed variants; Japan's closed `TMAX530`/`TMAX560` forms are
+recorded as JP-market spellings (relation/note, not ids). The flipped
+enrich blocks for 530/560 fold onto `tmax`'s entry in the same window.
+Standard pair, control build, availability union verified. #249's DEBT
+row deletes with the implementing PR per convention.
+
+The -D precedent (#248) is acknowledged as the template for the
+remaining 25 suspects — measured unwind where the audit was right,
+escalation where naming is genuinely open. Exactly the standard.
