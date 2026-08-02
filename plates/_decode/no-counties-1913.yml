@@ -1,0 +1,148 @@
+# plates/_decode/no-counties-1913.yml — the Norwegian SINGLE-letter county
+# index, 1 April 1913 to 31 March 1971.
+#
+# PROVENANCE, STATED FIRST BECAUSE IT IS NOT UNIFORM. Two different things
+# live in this file and they are sourced differently:
+#
+#   * THE ERA'S BOUNDARIES ARE STATUTORY. Forskrift om bruk av kjøretøy
+#     (FOR-1990-01-25-92) § 2-16 is headed "Kjennemerke for registreringsordning
+#     før 1. april 1971" and gives the composition — "En bokstav og tre til
+#     seks tall" — in a regulation that is IN FORCE TODAY, because a 30-year-old
+#     vehicle may still be plated to the order of its first registration
+#     (§ 2-15). So the format and the closing date are primary.
+#   * THE LETTER-TO-COUNTY MAPPING IS NOT. No Norwegian instrument reachable in
+#     this pass enumerates it. The allocation was made by kongelig resolusjon
+#     of 18 March 1913 and amended by later royal resolutions, none of which is
+#     carried by lovdata (whose holdings begin far later) and none of which was
+#     retrieved. Every row below is therefore `secondary-wikipedia`, taken from
+#     no.wikipedia's article and re-expressed in this dataset's own shape and
+#     ordering — keyed by LETTER, which is the decode direction, rather than by
+#     the article's police-district arrangement.
+#
+# WHAT WAS DELIBERATELY NOT TAKEN. The source article also carries per-police-
+# district NUMBER-RANGE allocations sourced to a 1936 almanac ("Hvem Hvad Hvor"
+# 1936). Those are a single-year snapshot of an allocation that moved
+# constantly, and shipping them would assert a period discipline the evidence
+# cannot carry. They are omitted on purpose, not overlooked.
+#
+# THE ROWS ARE PERIODISED, because four of them genuinely move: G dies, Z is
+# born, Q and P arrive late. Those four dates are the reason this table is
+# worth having — a Norwegian plate reading "G-1234" cannot postdate 1930, and
+# one reading "P-123" cannot predate 1967.
+jurisdiction: "no"
+topic: counties
+authority:
+  name: Statens vegvesen (successor); the allocation was made by kongelig resolusjon
+  url: "https://lovdata.no/dokument/SF/forskrift/1990-01-25-92/KAPITTEL_2"
+period: { start: 1913, end: 1971 }
+period_evidence: statutory-date-end-secondary-start
+period_note: >-
+  Both boundaries are dated to the day, from different tiers. START: the lov om
+  motorvogner of 21 June 1912 and the kongelig resolusjon of 18 March 1913 both
+  took effect on 1 APRIL 1913 (secondary-wikipedia — neither instrument was
+  retrieved). END: 31 MARCH 1971, which is primary — FOR-1990-01-25-92 § 2-16
+  names the order "før 1. april 1971" and § 2-17 opens the successor order "fra
+  og med 1. april 1971", so the boundary is stated in an in-force regulation
+  even though the 1913 instrument is not.
+sources:
+  - "https://lovdata.no/dokument/SF/forskrift/1990-01-25-92/KAPITTEL_2  # FOR-1990-01-25-92 § 2-16: 'En bokstav og tre til seks tall', with a horizontal stroke at half height between letter and digits; § 2-15: the 30-year eligibility that keeps this order live. PRIMARY. Accessed 2026-08-02"
+  - "https://no.wikipedia.org/wiki/Kjennemerke_for_motorkj%C3%B8ret%C3%B8y_i_Norge  # secondary-wikipedia (rev. 2026-07-16): EVERY letter-to-county row below; the 1912 lov / 1913 kgl.res. commencement of 1 April 1913; the Z (kgl.res. 20 April 1929), G (invalid 1 January 1931), Q (kgl.res. 12 July 1934 § 63) and P (1967) datings; the 1918 amt->fylke renaming; the June 1991 revival. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# THE LETTER INDEX. `amt` is the pre-1918 name of the unit, `fylke` the name it
+# carried after the 1918 renaming took effect (1 January 1919) — the SAME
+# territory under two names, not two allocations, which is why one row carries
+# both. `period` is per row and closes at 1971 unless the letter died earlier.
+# ---------------------------------------------------------------------------
+letters:
+  A: { amt: "Kristiania amt", fylke: "Oslo", period: { start: 1913, end: 1971 } }
+  B: { amt: "Smaalenenes amt", fylke: "Østfold", period: { start: 1913, end: 1971 } }
+  C: { amt: "Akershus amt", fylke: "Akershus", period: { start: 1913, end: 1971 } }
+  D: { amt: "Hedemarkens amt", fylke: "Hedmark", period: { start: 1913, end: 1971 } }
+  E: { amt: "Kristians amt", fylke: "Oppland", period: { start: 1913, end: 1971 } }
+  F: { amt: "Buskeruds amt", fylke: "Buskerud", period: { start: 1913, end: 1971 } }
+  G:
+    amt: "Jarlsberg og Larviks amt"
+    fylke: "Vestfold"
+    period: { start: 1913, end: 1931 }
+    note: >-
+      WITHDRAWN, and the only letter in this table that was. G was invalid from
+      1 JANUARY 1931 because C and G proved too easy to confuse in traffic;
+      Vestfold had already begun issuing Z from 20 April 1929, and every G plate
+      was exchanged for a Z plate KEEPING THE SAME DIGITS over the winter of
+      1930/31. A "G-" plate is therefore a hard pre-1931 artefact, and its Z
+      twin carries the identical number.
+  H: { amt: "Bratsberg amt", fylke: "Telemark", period: { start: 1913, end: 1971 } }
+  I: { amt: "Nedenes amt", fylke: "Aust-Agder", period: { start: 1913, end: 1971 } }
+  K: { amt: "Lister og Mandals amt", fylke: "Vest-Agder", period: { start: 1913, end: 1971 } }
+  L: { amt: "Stavanger amt", fylke: "Rogaland", period: { start: 1913, end: 1971 } }
+  O:
+    amt: "Bergen amt"
+    fylke: "Bergen"
+    period: { start: 1913, end: 1971 }
+    note: >-
+      A CITY, not a county — Bergen was its own registration unit alongside
+      Hordaland (R). The royal household still holds O-1 for use in Bergen.
+  P:
+    fylke: "Svalbard"
+    period: { start: 1967, end: 1971 }
+    note: >-
+      SVALBARD, allocated only in 1967 — half a century after the rest of the
+      table. Svalbard's road network was privately owned by Store Norske
+      Spitsbergen Kulkompani, so P plates were YELLOW ON BLACK (the
+      not-approved-for-public-road colouring) and were not valid on the
+      mainland. P is one of the two letters NOT revived for veteran use in 1991.
+  Q:
+    fylke: "Ufortollete biler (uncustomed vehicles)"
+    period: { start: 1934, end: 1971 }
+    note: >-
+      NOT GEOGRAPHIC AT ALL — a nationwide series for the temporary registration
+      of vehicles on which customs duty had not been paid, introduced by
+      kongelig resolusjon of 12 July 1934 § 63. It is the direct ancestor of the
+      modern red-bordered export plate (`no-export-1971`), which replaced it in
+      1971. Q is the other letter not revived in 1991. A parse API must not
+      treat Q as a place.
+  R: { amt: "Søndre Bergenhus amt", fylke: "Hordaland", period: { start: 1913, end: 1971 } }
+  S: { amt: "Nordre Bergenhus amt", fylke: "Sogn og Fjordane", period: { start: 1913, end: 1971 } }
+  T: { amt: "Romsdals amt", fylke: "Møre og Romsdal", period: { start: 1913, end: 1971 } }
+  U: { amt: "Søndre Trondhjems amt", fylke: "Sør-Trøndelag", period: { start: 1913, end: 1971 } }
+  V: { amt: "Nordre Trondhjems amt", fylke: "Nord-Trøndelag", period: { start: 1913, end: 1971 } }
+  W: { amt: "Nordlands amt", fylke: "Nordland", period: { start: 1913, end: 1971 } }
+  X: { amt: "Tromsø amt", fylke: "Troms", period: { start: 1913, end: 1971 } }
+  Y: { amt: "Finmarken amt", fylke: "Finnmark", period: { start: 1913, end: 1971 } }
+  Z:
+    fylke: "Vestfold"
+    period: { start: 1929, end: 1971 }
+    note: "Vestfold from 20 April 1929, replacing G — see the G row."
+
+letters_never_used: [J, M, N]
+letters_never_used_note: >-
+  J, M and N appear nowhere in the allocation, and Æ, Ø and Å cannot be written
+  in this dataset's serial alphabet at all. Recorded as an observation about the
+  table, not as a sourced rule: no instrument stating a letter-exclusion policy
+  for the 1913 order was retrieved.
+
+revival:
+  from: 1991
+  scope: >-
+    County letters came back into LIMITED use from June 1991: a vehicle
+    previously registered on a county-letter plate, or an imported vehicle of
+    model year 1970 or older, may be registered on one at the owner's choice,
+    with three to six digits in any combination — including the "telefonnummer"
+    grouping 00-00-00. Every previously used letter is available EXCEPT P and Q.
+    Unlike the 1913-1971 originals these plates follow the vehicle on sale.
+  authority_basis: >-
+    The current statutory hook is FOR-1990-01-25-92 §§ 2-15 to 2-18 (a vehicle
+    first registered more than 30 years ago may be plated to the order in force
+    at its first registration). The June 1991 start date and the P/Q exclusion
+    are secondary-wikipedia; no instrument dating the revival was retrieved.
+  source: "https://no.wikipedia.org/wiki/Kjennemerke_for_motorkj%C3%B8ret%C3%B8y_i_Norge  # secondary-wikipedia (rev. 2026-07-16). Accessed 2026-08-02"
+
+royal_household:
+  reserved: "A-1 to A-20, and O-1 (used only in Bergen)"
+  note: >-
+    The one part of this table that never lapsed: the royal household kept the
+    A-1..A-20 series through the 1971 cutover and still receives new
+    registrations on it. Ordinary plates are used when the vehicle is driven
+    without a member of the household aboard, and on sale.
+  source: "https://no.wikipedia.org/wiki/Kjennemerke_for_motorkj%C3%B8ret%C3%B8y_i_Norge  # secondary-wikipedia (rev. 2026-07-16). Accessed 2026-08-02"
