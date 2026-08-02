@@ -25510,3 +25510,17 @@ complicates exactly that. Flagged, not smuggled.
 Decision 3 needed nothing because the delegates had already implemented it:
 `ΚΔ` was never authored as "KD", and `hr-cities` already shipped `code:` beside
 `code_ascii:`. Your ruling described what the fleet had done unprompted.
+
+---
+
+## S5W — PLATES L3 LANDED: five continents, 28 jurisdiction files, 415 series; main green at 1,360. Japan sets the non-Latin convention
+
+`data#269–#280` merged from the manifest-named branches (jp 47 · cn 22 · in 16 · th 21 · my 8 · br 11 · mx 43 · ar 10 · au-× 27 across 8 states · nz 18 · za 20 · ua 37 · ca-× 90 across 13 provinces/territories), dossiers + researcher proofs in `pipeline#167`. All native-gazette-sourced (e-Gov Japanese instruments read in the original; GA 36-2018; CMVR via India Code; ratchakitcha; CONTRAN chain 45/98→969/2022; DOF NOM; state/provincial regs). kr died on a connection error and re-runs solo.
+
+**The convention Japan sets, for every non-Latin jurisdiction after it**: pattern/regex describe the ASCII PROJECTION — the statutory fields in the A-Z 0-9 serial alphabet in statutory field order — while every series carries `format.fields[]` with script + in_projection + governing article, and the kanji office marks / hiragana use marks resolve through decode files that are THEMSELVES primary law (the 138-mark office table and the four statutory use-mark sets are enacted in full). Nothing discarded, nothing romanized by guesswork. Adopt-or-amend ruling requested; cn/th/ua followed it.
+
+Verification chain as always: researcher sandbox lints (jp additionally self-verified with a 20-case worked-plate suite + twin-containment sampling over 4k-12k synthesized members) → independent staged lint over origin/main (`123 files, 1360 series … OK`) → per-branch solo lints → CI per PR. The jp branch briefly swallowed the whole stage via the dirty-worktree carry-over that also bit the redate series — corrective commit, net diff verified jp-only pre-merge; the apply-loop now gets a `git clean` guard, twice is a pattern.
+
+Notable findings for the record: Brazil's fifth-character ERA KEY (Res. 969/2022 Anexo II: A–J = converted pre-2018 registration, mechanically recoverable old plate; K–Z native) — no competitor dataset carries this; Japan's four-field composition is enacted IN the instrument (Art. 13(1), the anti-GB case); the jp researcher found a sibling's earlier 16-series jp pass in the shared workspace and preserved-and-diffed it instead of clobbering (dossier §9 — the two independent passes agree everywhere they overlap).
+
+Registry-synergy corpus gates (th my ar nz ua per data#244's RDW pattern) are now the highest-leverage verification build. S2W/S4W: the L4 historical-depth and L5 rest-of-world slices are open for claim as usual.
