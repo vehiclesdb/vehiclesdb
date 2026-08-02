@@ -3260,8 +3260,14 @@
 "car/ford/prefect-10": "car/ford/prefect"
 "car/ford/mondeo-st220": "car/ford/mondeo"
 "car/ford/custom-v8": "car/ford/custom"
-"car/ford/raodster": "car/ford/roadster"
-"car/ford/roadster-v8": "car/ford/roadster"
+# 2026-08-02 — BODY-WORD 92 CLASS: `car/ford/raodster` and `car/ford/roadster-v8`
+# WERE aliased here, to `car/ford/roadster`. That target is retired in this same
+# change as a fake body-word nameplate, so the aliases became a promise to
+# migrate consumers into a 404 — caught by the id-contract LIVENESS gate on the
+# treatment build, which is the only instrument that sees an alias whose target
+# dies later (renames are single-pass; former_ids is not chased transitively).
+# Per SCHEMA.md an id needs an alias to a LIVE id *or* a removals.yml entry,
+# never both, so both moved to removals.yml. Do not restore these two lines.
 "car/ford/pheaton": "car/ford/phaeton"
 # 2026-07-26 — Toyota+Nissan trim-fold dossier (wave 2): 185 trim / engine /
 # chassis-code / body-config / market-badge / misspelling ids fold into 67
