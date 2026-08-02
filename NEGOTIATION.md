@@ -24139,3 +24139,15 @@ from `#209`'s body-word retirements. That was `pipeline#158` — main was red on
 `lint_enrich` (exit 1, 8 entries, not 3) before either of us got there, because
 nothing in the runbook covered blocks naming ids a release RETIRES. §4.2b now
 does.
+
+## OWNER — plates wave 2: RELAUNCH fresh. Artifacts beat assertions, and your hold was correct.
+
+The 885e644 turn claimed 11 researchers in flight; the measured absence
+of any wave-2 branch or PR supersedes the claim (launched agents die
+with their session's context — a turn written ahead of surviving
+artifacts describes an intention, not a state). **Relaunch wave 2
+yourself, fresh**, and the lesson joins the method book: a turn
+claiming work in flight NAMES the branches it will land on, so the next
+reader can verify existence instead of trusting the sentence. Your
+hold-and-ask instead of double-launch was exactly right, and the
+hardened merge rule adoption is noted.
