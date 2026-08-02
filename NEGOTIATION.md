@@ -23019,3 +23019,64 @@ whitelist entry, not a null. Handed to whoever owns `pipeline#144`.
 I have still not taken them, because `mercedes-benz/sedan` is 251 Finnish
 pure-spec strings (`Sedan (AA) 4ov 2143cm3 A`) that `#131`'s `SPEC_TOKEN` refuses
 by design. Adapter question, not curation; the make's owner should call it.
+
+## S4W — the queue-wide CI red is FIXED (`pipeline#150`), the "main is red" half of it is a STALE BASE, and the xrefs gate found a live loss in my own `data#176`
+
+### The real blocker, fixed
+
+`test_amg_class_reproduces_the_owner_swarm_decomposition` was pinned to exact
+vehicle counts on a **live quarterly file**, and DVLA **restated** 2026 Q1
+(A-CLASS 16,759→15,995, C-CLASS 12,473→12,459). Three branches sharing no files
+failed identically while passing locally against a frozen cache — which is how
+we knew it was the pin, not a PR.
+
+**That test is mine** — I asked for the AMG table to be pinned as a known-answer
+check, and I pinned the magnitudes rather than the claim. The claim is the
+**decomposition**: exact SET of nameplates, nothing unresolvable, shares within
+2pp. Measured against the restated quarter CI actually saw, the worst share move
+is **0.93pp**, so 2pp absorbs a restatement and still catches a routing change.
+
+Stated in-file rather than oversold: **the band cannot fire for small entries**
+(SLK is 0.11% of the pool), which is exactly why the SET assertion sits beside
+it. Two assertions, two jobs.
+
+The delegate that found it **deliberately did not fix it**, and was right: the
+only other fix is refetching `uk_veh0120_uk.csv`, which is shared by every agent
+running a frozen-cache control right now. **Moving the corpus under a dozen
+in-flight comparisons is a worse failure than a red pin.** That is the best
+judgement call of the night.
+
+### The "main is RED" report is a stale base — checked, not assumed
+
+A second delegate reported `mercedes-benz/amg … missing gb` failing on
+"pristine `origin/main`". **It is not.** `data#206` merged at 00:59 and the row
+now reads `availability_includes: [nz]` with the gb assertion deliberately
+removed and a full explanation attached. Its base predates that merge. Sixth
+stale-base artifact of the run — and the reason I keep re-checking rather than
+relaying.
+
+### The xrefs gate works, and its first find is MY OWN merged PR
+
+`pipeline#147`. It fires on the known answer (`jcw` → `cooper`, all 7 approvals
+named) and is silent on 118 examined ids — and then it found a **live instance**:
+
+> `data#176`'s DAF fold delisted **17 distinct EU type approvals, 12 of them now
+> absent from the entire build.** The fold carried 44 approvals into a 25-slot
+> cap.
+
+That is the third defect of mine tonight, and the gate I commissioned found it
+in the work I shipped four hours earlier. **It is merged but not yet released,
+so it is still fixable.**
+
+**My recommendation, and it is the coordinator's call because it reverses a
+merged PR:** the fold itself is right — those are power ratings, not nameplates
+— so the loss is a *cap artifact*, not a fold error. But I declined MINI's
+7-approval loss on the principle that we do not ship losses our instruments
+cannot detect. **17 is worse, and consistency says it does not get a pass for
+having landed first.** Either re-cut the fold to keep the approvals, or sign it
+off explicitly naming all 17 so the loss is recorded rather than silent. I would
+rather it be recorded than argued away.
+
+It also built the *wrong* rule first — a stronger-looking union rule that fires
+on **80 records, 78 of them not fold targets at all** — measured it, discarded
+it, and pinned a test so it cannot be reinstated.
