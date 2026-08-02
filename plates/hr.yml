@@ -1,0 +1,853 @@
+# plates/hr.yml — Croatia (PRD-PLATES gate L1, wave 2).
+#
+# EVERY format, colour and class claim in this file is read from Narodne novine
+# — the Croatian official gazette — in the instruments' own published text, on
+# 2026-08-02. Five instruments carry the file:
+#   * Pravilnik o registraciji i označavanju vozila, NN 130/2017 (27.12.2017.)
+#     — THE CURRENT BASE. Čl. 18 (the plate), čl. 21-22 (to-order and by-choice
+#     marks), čl. 24 (diplomatic), čl. 25 (when a new mark is issued),
+#     čl. 34 (test), čl. 39 (transferable), čl. 44 (export), čl. 47-48
+#     (deregistration and change of owner), čl. 52 + Prilog 1 (the area codes).
+#   * Pravilnik o izmjenama i dopunama …, NN 45/2016 (13.5.2016.) — THE EU-BAND
+#     AMENDMENT and the ownership-transfer reform. Čl. 10 dates both.
+#   * Pravilnik o registraciji i označavanju vozila, NN 151/2008 (23.12.2008.)
+#     — the previous base; the origin of the by-choice, oldtimer (PV),
+#     transferable (PP) and export (RH) series.
+#   * Pravilnik o registraciji vozila na motorni pogon i priključnih vozila,
+#     NN 12/1993 (5.2.1993.) — the founding independent-Croatia instrument.
+#   * Pravilnik o registraciji i označavanju vozila Ministarstva obrane i
+#     Oružanih snaga RH, NN 71/2018 (4.8.2018.) — the military system, which is
+#     a SEPARATE pravilnik under a separate enabling provision.
+#
+# THE SIX STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE CODE LIST IS IN THE REGULATION, like Austria's Anlage 5d and unlike
+#    Germany's Bundesanzeiger list. Čl. 52 st. 2 NN 130/2017: "Popis oznaka
+#    registracijskih područja nalazi se u Prilogu 1. koji je tiskan uz ovaj
+#    Pravilnik i njegov je sastavni dio." Thirty-four codes, extracted
+#    mechanically into hr-cities.yml. No Wikipedia table was used for it.
+#
+# 2. THE SERIAL GRAMMAR HAS NOT CHANGED SINCE 1993. Čl. 18 st. 2 NN 130/2017:
+#    "Registarski broj vozila sastoji se od tri ili četiri numeričke i jedne
+#    ili dvije slovne oznake." Čl. 18 NN 12/1993, verbatim, thirty-three years
+#    earlier: "Registarski broj vozila sastoji se od tri ili četiri numeričke i
+#    jedne ili dvije slovne oznake." Word for word. Every Croatian series break
+#    in this file is therefore a DESIGN break, never a format break.
+#
+# 3. THE EU BAND ARRIVED IN 2016, NOT AT ACCESSION IN 2013 — and this is the
+#    instrument-date rule earning its keep. Croatia acceded on 1 July 2013 and
+#    NN 83/2013 is dated 1.7.2013, but that amendment does not touch the plate:
+#    it rewrites čl. 5 (registration of EEA nationals), čl. 40 and čl. 50. The
+#    band comes from NN 45/2016 čl. 2, which rewrote čl. 13 st. 1 to add "Na
+#    krajnjoj lijevoj strani registarske pločice otisnuta je oznaka Republike
+#    Hrvatske sukladno Uredbi Vijeća (EZ) broj 2411/98". And NN 45/2016's own
+#    čl. 10 gives the date, which is neither its gazette date nor 2013:
+#    "Ovaj Pravilnik objavit će se u »Narodnim novinama«, a stupa na snagu
+#    4. srpnja 2016. godine." Published 13 May 2016, in force 4 JULY 2016.
+#    THREE YEARS AND THREE DAYS after accession.
+#
+# 4. THE 2016 REFORM ALSO CUT THE PLATE LOOSE FROM THE OWNER. NN 45/2016 čl. 5
+#    replaced čl. 40 outright. Before: the SELLER deregistered and returned the
+#    plates, and they could pass to the buyer only "ako su kupoprodajnim
+#    ugovorom ili pisanom izjavom … ustupljene kupcu i AKO SE PRI PROMJENI
+#    VLASNIŠTVA NE MIJENJA REGISTRACIJSKO PODRUČJE" (NN 151/2008 čl. 40 st. 3).
+#    After: "novi vlasnik vozila dužan je u roku od 15 dana od stjecanja vozila
+#    registrirati vozilo na svoje ime ili ga odjaviti" — the duty is the
+#    BUYER'S and surrender drops out of the sale case. Carried forward verbatim
+#    as čl. 48 st. 1 NN 130/2017. What SURVIVES is čl. 25 st. 1: a new mark is
+#    still issued "za vozilo koje se registrira u drugom registracijskom
+#    području". So the code is not severed from geography — it is frozen at
+#    issue. The full caveat is stated inside hr-cities.yml, where a consumer
+#    who never reads this file will still meet it.
+#
+# 5. SIX OF THE THIRTY-FOUR AREA CODES CANNOT BE SPELLED BY THIS DATASET.
+#    ČK, KŽ, PŽ, ŠI, VŽ and ŽU carry a caron; the serial alphabet in
+#    plates/_meta/separators.yml is A-Z 0-9. Every `[A-Z]{2}` prefix below is
+#    therefore NARROWER than the issuing grammar for those six areas — still
+#    `matching: strict` per PRD-PLATES §2.7 (narrower is strict), but a
+#    consumer matching a photographed plate must ASCII-fold first. The
+#    regulation knows the problem: čl. 22 st. 7 refuses a by-choice mark that
+#    could "doći do dupliranja prilikom transliteracije registarskih brojeva".
+#    Extending the serial alphabet is a §2.6 schema amendment and is NOT
+#    attempted here. `code_ascii` in hr-cities.yml carries our fold.
+#
+# 6. THE PLATE DIMENSIONS ARE A RECORDED GAP, HONESTLY. The pravilnik gives no
+#    millimetres for registarske pločice: čl. 18 st. 5-7 delegates "oblik i
+#    sadržaj" to Obrasci 3-6, which are DIMENSIONED DRAWINGS. Narodne novine
+#    publishes them as 229x70-pixel rasters in which the dimension figures are
+#    not legible. Two of them are big enough to read and are recorded as spec
+#    (Obrazac 4 = 280 x 200 mm, Obrazac 5 = 180 x 180 mm); the single-line
+#    plate's 520 x 110 mm is carried as `secondary-wikipedia` and labelled as
+#    such, because guessing it from the EU norm would be a guess.
+#
+# WHAT IS NOT IN THIS FILE, and why. Croatian POLICE plates (reportedly six
+# digits in two groups, blue on white) are NOT modelled: no instrument
+# prescribing them was reached in this pass, and the civil pravilnik does not
+# mention them. Recorded as a gap rather than filled from an enthusiast
+# description. Likewise the 1990s code list (the popis attached to NN 12/93,
+# 22/93, 19/96, 149/02), which NN 12/1993 čl. 34 expressly kept alive for a
+# transitional period and which was not fetched.
+jurisdiction: hr
+authority:
+  name: Ministarstvo unutarnjih poslova Republike Hrvatske — Pravilnik o registraciji i označavanju vozila
+  url: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html"
+binding: vehicle
+binding_note: >-
+  The mark is assigned to the VEHICLE at registration and, since 2016-07-04,
+  survives a change of owner without being surrendered (NN 130/2017 čl. 48
+  st. 1). Vehicle-keyed consumers may join on it. Two qualifications: čl. 25
+  st. 1 re-issues the mark when the vehicle is registered in a different
+  registration area, and čl. 47 st. 7 lets a surrendered plate be taken over
+  by "druga osoba na temelju ovjerene izjave vlasnika registarskih pločica o
+  ustupanju" — a plate can move to another person's vehicle.
+instrument:
+  citation: "Pravilnik o registraciji i označavanju vozila, »Narodne novine« br. 130/2017"
+  enabling: "Zakon o sigurnosti prometa na cestama, čl. 242 st. 4 — the delegation named in the pravilnik's own preamble"
+  objava: "2017-12-27"
+  stupanje_na_snagu: "2018-01-01"
+  stupanje_source: "Čl. 59 NN 130/2017, verbatim: 'Ovaj Pravilnik objavit će se u »Narodnim novinama«, a stupa na snagu 1. siječnja 2018. godine, osim članka 7. stavka 3., 4. i 5., članka 12. stavka 3. i 4., članka 18. stavka 7. … koji stupaju na snagu 20. svibnja 2018. godine.'"
+  predecessors:
+    - "NN 151/2008 (23.12.2008.), in force on the eighth day after publication — Pravilnik o registraciji i označavanju vozila; amended by NN 89/2010, 104/2010, 83/2013, 52/2015, 45/2016"
+    - "NN 12/1993 (5.2.1993.), signed 22 January 1993, in force on the eighth day after publication — Pravilnik o registraciji vozila na motorni pogon i priključnih vozila; amended by NN 22/1993, 19/1996, 149/2002"
+    - "NN 5/2005 … 68/2007 — Pravilnik o registraciji vozila, named in NN 151/2008 čl. 53 and NOT fetched in this pass (recorded gap)"
+  amendment_search: >-
+    A title search of the Narodne novine index for "registraciji i označavanju
+    vozila" (naslovi=da) on 2026-08-02 returns exactly nine items: the 2008
+    base, its five amendments, the 2017 base, and the two military pravilnici.
+    NO amendment to NN 130/2017 appears. The file therefore treats NN 130/2017
+    as the consolidated current text; if an amendment exists outside the title
+    index it is a recorded gap in this pass, not a denial.
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  plate_text_structure: >-
+    Čl. 18 st. 1 NN 130/2017, verbatim and complete: "Registarske pločice za
+    vozila izrađene su od metala, presvučene reflektirajućom folijom, bijele su
+    boje na kojima je crnim slovima otisnuta oznaka registracijskog područja i
+    registarski broj vozila. Na krajnjoj lijevoj strani registarske pločice
+    otisnuta je razlikovna oznaka Republike Hrvatske, a između oznake
+    registracijskog područja i registarskog broja otisnut je grb Republike
+    Hrvatske." Four zones, left to right: EU band — area code — coat of arms —
+    registration number.
+  colours:
+    statute: >-
+      The pravilnik states colours as WORDS, never as coordinates: "bijele su
+      boje" (white ground), "crnim slovima" (black characters) for the ordinary
+      plate; "otisnute brojke i slova zelene su boje" for foreigners' and
+      temporarily registered vehicles (čl. 18 st. 3); "crvene su boje" for
+      oversize/overweight vehicles (čl. 18 st. 4); "plave su boje … brojke i
+      slova su žute boje" for diplomatic (čl. 24 st. 1); "zelene su boje …
+      žutim slovima" for export (čl. 44 st. 1).
+    hex_basis_rule: >-
+      No Croatian instrument in this pass gives a colorimetric specification
+      for CIVIL plates — no CIE quadrangle as in Austria, no RAL number. Every
+      civil hex below is therefore `hex_basis: observed` and is the obvious
+      reading of the colour word, recorded as such. THE MILITARY PRAVILNIK IS
+      THE EXCEPTION and is the only sourced colour in the file: NN 71/2018
+      čl. 23 st. 1 gives "žute je boje broj 1003, prema RAL-ovu katalogu boja".
+    retroreflective: "'presvučene reflektirajućom folijom' — čl. 18 st. 1, unconditional for civil plates. Expressly NOT so for military ones: NN 71/2018 čl. 23 st. 7, 'Registarska pločica za vozila Ministarstva i Oružanih snaga nema reflektirajuća svojstva.'"
+    source: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 1-4, čl. 24 st. 1, čl. 44 st. 1. Accessed 2026-08-02"
+  alphabet:
+    ordinary: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, R, S, T, U, V, Z]
+    excluded: [Q, W, X, Y, "Č", "Ć", "Đ", "Š", "Ž"]
+    basis: >-
+      INFERRED, and labelled as inferred rather than quoted, because no
+      provision spells the ordinary series' alphabet directly. Two provisions
+      bound it. (1) Čl. 21 NN 130/2017 lets an owner order a plate carrying a
+      pre-chosen "registarskim brojem vozila IZ ČLANKA 18. STAVKA 2." — i.e.
+      drawn from the ordinary space — and st. 2 then says "Registarski broj iz
+      stavka 1. ovoga članka ne može sadržavati slova Č, Ć, Đ, Š i Ž." (2) Čl.
+      22 st. 3 says the BY-CHOICE mark "uključuje i strana slova X, Y i W" —
+      "also includes the FOREIGN letters X, Y and W", which only parses if they
+      are absent from the ordinary set. Q is in neither alphabet: it is not a
+      letter of Croatian. The 22 letters above are the Croatian Latin alphabet
+      minus its five diacritic letters and minus the digraphs.
+    caution: >-
+      The area CODE is a different alphabet from the registration NUMBER and
+      does carry diacritics (ČK, KŽ, PŽ, ŠI, VŽ, ŽU). Do not apply the 22-letter
+      set to the prefix.
+    source: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 21 st. 1-2, čl. 22 st. 3. Accessed 2026-08-02"
+  separator:
+    printed: "-"
+    statute_for_by_choice: >-
+      Čl. 22 st. 2, verbatim: "Između brojčanih i slovnih oznaka obvezna je
+      crtica, a između slovnih oznaka može se odabrati crtica. Crtica se računa
+      kao jedan od znakova." A hyphen is MANDATORY between the digit group and
+      the letter group, OPTIONAL between letter groups, and counts against the
+      seven-character budget. This is a primary source for the glyph.
+    ordinary_series_gap: >-
+      For the ORDINARY mark, čl. 18 prescribes no separator glyph at all — the
+      hyphen is visible only in Obrazac 3, a drawing. Every ordinary regex here
+      therefore spells that position as the separator-only class `[- ]`
+      (PRD-PLATES §2.8, the es-consular precedent): the printed hyphen is
+      certain from the drawing, its statutory basis is not, and `pattern` shows
+      the canonical printed form.
+    arms_position: >-
+      The gap between the area code and the number is occupied by the ŠAHOVNICA
+      (čl. 18 st. 1, "između oznake registracijskog područja i registarskog
+      broja otisnut je grb Republike Hrvatske"), not by a separator glyph. It is
+      written here as an optional emitted SPACE, exactly as Italy's marchio
+      ufficiale is in plates/it.yml.
+    source: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 22 st. 2, čl. 18 st. 1. Accessed 2026-08-02"
+  script:
+    statute: "Čl. 19 st. 1, verbatim: 'Slovne oznake na registarskim pločicama upisuju se latiničnim pismom, a brojčane oznake arapskim brojkama. Oblik slova i brojki tiskan je na Obrascu 15, a izgled grba na Obrascu 16.'"
+    font: >-
+      NO TYPEFACE IS NAMED. As in the UK, Germany, Spain and Austria, the legal
+      object is a DRAWING — Obrazac 15 — and the render layer must derive glyphs
+      from it rather than from any third-party TTF (PRD-PLATES §6). Unlike the
+      Austrian KDV, Obrazac 15 publishes no per-glyph millimetres in a form this
+      pass could read (see structural fact 6). Recorded gap.
+    source: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 19. Accessed 2026-08-02"
+  euro_band:
+    side: left
+    content: eu-stars+HR
+    statute: >-
+      Čl. 18 st. 1: "Na krajnjoj lijevoj strani registarske pločice otisnuta je
+      razlikovna oznaka Republike Hrvatske". The cross-reference to Reg. (EC)
+      2411/98 is in the amending instrument that introduced it (NN 45/2016
+      čl. 2) and in čl. 1a st. 2 as inserted by NN 45/2016 čl. 1: "Ovim se
+      Pravilnikom uređuje primjena Uredbe Vijeća (EZ) br. 2411/98…".
+    oval_still_prescribed: >-
+      Čl. 20 keeps the separate adhesive OVAL for international traffic — white,
+      major axis 175 mm, minor axis 115 mm, letters "HR" in black 80 mm high
+      with a 10 mm stroke — and st. 2 then says that inside the EU the band on
+      the plate is accepted instead. These are the only millimetres the
+      pravilnik prints for any marking.
+    source: "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 1, čl. 20 st. 1-2; https://narodne-novine.nn.hr/clanci/sluzbeni/2016_05_45_1165.html  # čl. 1-2. Accessed 2026-08-02"
+  emblem:
+    name: "grb Republike Hrvatske (šahovnica)"
+    statute: "Čl. 18 st. 1 places it between the area code and the number; čl. 19 st. 1 delegates its appearance to Obrazac 16."
+    artwork_risk: unresearched
+    artwork_note: >-
+      The Croatian coat of arms is a state symbol whose use is regulated
+      independently of copyright, and no assessment was made in this pass.
+      PRD-PLATES §3 applies unchanged: `rendered: placeholder` on every series.
+  dimensions:
+    obrazac_3: { note: "single-line plate for motor vehicles, trailers, tractors and machines — čl. 18 st. 5. Dimensions NOT legible in the published raster; see structural fact 6" }
+    obrazac_4: { w: 280, h: 200, unit: mm, basis: read-from-drawing, note: "two-line plate for vehicles whose construction cannot take Obrazac 3 — čl. 18 st. 6. 280 and 200 are the two figures legible in the published drawing" }
+    obrazac_5: { w: 180, h: 180, unit: mm, basis: read-from-drawing, note: "motorcycles and quadricycles — čl. 18 st. 7" }
+    obrazac_6: { note: "mopeds and light quadricycles — čl. 18 st. 7. Dimensions not legible" }
+    source: "https://narodne-novine.nn.hr/files/_web/sluzbeni-dio/2017/130000/images/9529.jpg  # Obrazac 4, the dimensioned drawing; https://narodne-novine.nn.hr/files/_web/sluzbeni-dio/2017/130000/images/9521.jpg  # Obrazac 5. Accessed 2026-08-02"
+  predecessor_system:
+    decision: >-
+      THE SFRY SERIES IS DELIBERATELY NOT AUTHORED HERE, AND THE SAME DECISION
+      IS TAKEN IN plates/si.yml. Croatia and Slovenia both left one federal
+      system in 1991, so authoring it in each national file would duplicate a
+      single historical layer in two places, give it two ids, and invite the two
+      copies to drift. It belongs in ONE historical jurisdiction file at gate L4
+      (PRD-PLATES §7), not twice at L1. What IS recorded here is the hinge, from
+      the Croatian primary itself.
+    hinge: >-
+      NN 12/1993 čl. 34, verbatim: "Danom stupanja na snagu ovoga Pravilnika
+      prestaje važiti Pravilnik o registraciji vozila (»Narodne novine«, broj
+      46/84.) i Pravilnik o registraciji motornih i priključnih vozila, obrascu
+      prometne i vozačke dozvole (»Narodne novine«, broj 54/91., 6/92. i
+      35/92.), OSIM POPISA REGISTRACIJSKIH PODRUČJA koja vrijede do isteka roka
+      iz članka 322. stavak 1. Zakona o sigurnosti prometa na cestama." NN 46/84
+      is the SFRY-era instrument as republished in the Croatian gazette; NN
+      54/91 is the first instrument of independent Croatia (1991). Neither was
+      fetched in this pass. Note what the article does: it repeals the old rules
+      but KEEPS THE OLD AREA-CODE LIST alive transitionally — which is why the
+      1990s code set is a recorded gap in hr-cities.yml rather than a guess.
+    design_continuity: >-
+      The white ground, black characters and the arms-between-groups layout of
+      the 1993 plate are commonly described as the Yugoslav design with the red
+      star replaced by the šahovnica. That specific claim is secondary and is
+      tagged as such; what the primary supports is only that čl. 18 NN 12/1993
+      already prescribes exactly the layout still in force.
+    transitional_validity: >-
+      THE OLD PLATES DID NOT VANISH IN 1991, AND THE PRIMARIES SAY SO TWICE.
+      NN 12/1993 čl. 34 repealed the pre-independence pravilnici "OSIM POPISA
+      REGISTRACIJSKIH PODRUČJA koja vrijede do isteka roka iz članka 322. stavak
+      1. Zakona o sigurnosti prometa na cestama" — the OLD AREA-CODE LIST
+      survived the repeal for a statutory transitional period. Fifteen years
+      later NN 151/2008 čl. 53 was still winding it down: marks issued under the
+      1993 and 2005 popisi "usklađivat će se s Popisom oznaka registracijskih
+      područja iz članka 52. stavka 2. ovog Pravilnika KOD PRVE REGISTRACIJE
+      VOZILA U REPUBLICI HRVATSKOJ I KOD PROMJENE VLASNIKA" — harmonised on
+      first registration or change of owner, i.e. never for a car that simply
+      stayed put. This is why "the SFRY series ended in 1991" would be a false
+      claim and why the pre-1991 layer is period-tagged `transitional-provision`
+      wherever it is eventually authored.
+    transitional_validity_evidence: transitional-provision
+    transitional_validity_source: "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 čl. 53; https://narodne-novine.nn.hr/clanci/sluzbeni/1993_02_12_185.html  # NN 12/1993 čl. 34"
+    design_continuity_evidence: secondary-wikipedia
+    design_continuity_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Croatia  # 'The design of Croatian license plates comes from old Yugoslav license plates from the 1980s … switching the red star … with the coat of arms'. Accessed 2026-08-02"
+    source: "https://narodne-novine.nn.hr/clanci/sluzbeni/1993_02_12_185.html  # NN 12/1993 čl. 34. Accessed 2026-08-02"
+
+region_encoding_tables:
+  reference: "plates/_decode/hr-cities.yml"
+  bare_filename: "hr-cities.yml"
+  reference_note: "the full path is what resolves and is what 77 of the 78 corpus references use; the bare filename is carried alongside because plates/ie.yml (wave 2) references its table bare, and a consumer may meet either form"
+  note: >-
+    One closed, primary, 34-row table (Prilog 1 NN 130/2017), extracted
+    mechanically. The 2016 caveat is stated INSIDE that file, not only here.
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — the 1993 serial inside the 2016 design.
+  # =========================================================================
+  - id: hr-standard-2016
+    class: standard
+    categories: [car, van, truck, bus, trailer, tractor, machine]
+    period: { start: 2016 }
+    period_evidence: enacted-commencement
+    period_start_precise: "2016-07-04"
+    matching: strict
+    format:
+      pattern: "LL 9999-LL"
+      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      regex_strict: '\A[A-Z]{2} ?\d{3,4}[- ][ABCDEFGHIJKLMNOPRSTUVZ]{1,2}\z'
+      charset:
+        letters: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, R, S, T, U, V, Z]
+        letters_excluded: [Q, W, X, Y]
+        notes: "see common.alphabet — INFERRED from čl. 21 st. 2 and čl. 22 st. 3, not quoted. The prefix is a different alphabet and DOES carry carons; `[A-Z]{2}` cannot express ČK KŽ PŽ ŠI VŽ ŽU."
+      progression: >-
+        NOT PUBLISHED. Čl. 18 st. 2 fixes the shape (three or four digits, one
+        or two letters) and nothing in the pravilnik says how the space is
+        walked, so a Croatian plate CANNOT be dated from its serial by anything
+        in this file. Recorded gap. The only serial-borne era signal is the
+        WIDTH: a three-digit/one-letter mark is an early allocation in its area
+        and a four-digit/two-letter mark a late one, which is an ordering, not
+        a date.
+      separator_note: >-
+        Two positions, and they are different in kind. The gap after the area
+        code holds the ŠAHOVNICA and is written as an optional emitted space.
+        The gap between digits and letters is a printed hyphen, certain from
+        Obrazac 3 but not spelled in čl. 18, so it is written as the
+        separator-only class `[- ]` per PRD-PLATES §2.8.
+    design:
+      plate: { w: 520, h: 110, unit: mm, basis: secondary-wikipedia, basis_note: "the pravilnik delegates dimensions to Obrazac 3, whose figures are illegible in the published 229x70 raster — see the file header, structural fact 6" }
+      plate_variants:
+        - { w: 280, h: 200, unit: mm, basis: read-from-drawing, note: "Obrazac 4 — vehicles whose construction cannot take the single-line plate (čl. 18 st. 6)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "'bijele su boje … presvučene reflektirajućom folijom' (čl. 18 st. 1) — a colour WORD, not a coordinate" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: left, color: "#003399", content: eu-stars+HR, hex_basis: observed, note: "čl. 18 st. 1 'razlikovna oznaka Republike Hrvatske'; the 2411/98 cross-reference is in NN 45/2016 čl. 1-2" }
+      emblem: { present: true, rendered: placeholder, position: "between the area code and the number", note: "grb Republike Hrvatske, čl. 18 st. 1; appearance delegated to Obrazac 16" }
+      rear_differs: false
+      display: "front and rear (čl. 24 st. 1 of the Pravilnik o registraciji … Ministarstva obrane uses the same phrasing for military vehicles; the civil requirement is in the Zakon o sigurnosti prometa na cestama, not in this pravilnik — recorded gap)"
+    region_encoding: "plates/_decode/hr-cities.yml"
+    region_encoding_mechanism: >-
+      THE PREFIX IS THE DECODE, AND ITS BINDING IS FROZEN AT ISSUE. Čl. 5 st. 1
+      NN 130/2017 registers a vehicle at a station "prema registracijskom
+      području u kojem vlasnik vozila ima prebivalište, boravište, privremeni
+      ili stalni boravak ili sjedište", and st. 2 lets a station OUTSIDE that
+      area do the work while still issuing the owner's own area code. Since
+      2016-07-04 the mark is not surrendered on a sale (čl. 48 st. 1), so it
+      records the area of the owner AT ISSUE and of nobody since. Čl. 25 st. 1
+      still re-issues on a move to another area. A parse API must report
+      "area at issue", never "current owner's area".
+    variants:
+      - class: personalized
+        name: "registarske pločice po narudžbi"
+        format: { pattern: "LL 9999-LL", regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
+        period: { start: 2018 }
+        note: >-
+          A TO-ORDER mark, not a vanity mark: čl. 21 st. 1 lets the owner order
+          plates carrying "unaprijed zadanim registarskim brojem vozila iz
+          članka 18. stavka 2. ovoga Pravilnika ako je zatraženi registarski
+          broj slobodan" — a CHOSEN serial inside the ordinary grammar, so a
+          sub-entry rather than a series (PRD-PLATES §2.3). Format and design
+          are identical to the standard series. It is new in NN 130/2017: no
+          equivalent appears in NN 151/2008. Čl. 21 st. 2 supplies the file's
+          only direct statement about the ordinary alphabet.
+        sources:
+          - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 21 st. 1-2"
+      - class: temporary
+        name: "green characters — foreigners and temporary registration"
+        format: { pattern: "LL 9999-LL", regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
+        design: { foreground: "#008000", hex_basis: observed }
+        note: >-
+          Čl. 18 st. 3, verbatim: "Na registarskim pločicama za vozila stranaca
+          kojima je odobren privremeni ili stalni boravak i za privremeno
+          registrirana vozila, otisnute brojke i slova zelene su boje." A
+          COLOUR-ONLY variant of the same format and period, therefore a
+          sub-entry and not a series (PRD-PLATES §2.3). Note that the 2008 text
+          of the same rule also covered foreign trade, transport and cultural
+          representations and foreign correspondents; NN 130/2017 dropped that
+          clause.
+        sources:
+          - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 3"
+      - class: standard
+        name: "red characters — oversize and overweight vehicles"
+        format: { pattern: "LL 9999-LL", regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z' }
+        design: { foreground: "#CC0000", hex_basis: observed }
+        note: >-
+          Čl. 18 st. 4: red characters "za vozila koja ne odgovaraju propisanim
+          uvjetima za dimenzije vozila (duljina, širina, visina) odnosno čija je
+          najveća dopuštena masa veća od propisane, odnosno koja premašuju
+          dopuštena osovinska opterećenja". Colour-only, hence a sub-entry.
+        sources:
+          - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 4"
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2016_05_45_1165.html  # NN 45/2016 čl. 2 (the band added to čl. 13 st. 1) and čl. 10 ('stupa na snagu 4. srpnja 2016. godine') — the period start, dated to the day by the instrument itself"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 18 (plate, format, colours), čl. 19 (script), čl. 20 (the oval), čl. 25 (re-issue), čl. 48 (change of owner), čl. 52 + Prilog 1 (area codes)"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Croatia  # 520 x 110 mm single-line dimensions ONLY — tagged secondary-wikipedia; every other claim on this series is from Narodne novine. Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT CROATIAN PLATE, and the file's headline finding is its START
+      DATE. Not 2013 (accession), not 13 May 2016 (the gazette date of the
+      amending pravilnik), but 4 JULY 2016, because NN 45/2016 čl. 10 says so in
+      terms. The serial grammar it carries is the 1993 one, unchanged; what 2016
+      changed is the band on the left and, in the same instrument, the rule that
+      used to hand the plates back on every sale. Old plates were NOT recalled —
+      NN 45/2016 čl. 8 says the owner "nije dužan mijenjati registarske pločice
+      izdane na obrascima koji su vrijedili do stupanja na snagu ovoga
+      Pravilnika" — so band-less plates remain legal indefinitely and the two
+      standard series overlap in the wild by design. One further reversal is
+      worth recording: NN 45/2016 čl. 7 ordered that a worn plate be replaced
+      with a NEW mark, and NN 130/2017 čl. 25 st. 3 undid that, restoring the
+      SAME mark with the band added.
+
+  # =========================================================================
+  # ONE SERIES BACK — the same serial, no band. 1993 to 2016.
+  # =========================================================================
+  - id: hr-standard-1993
+    class: standard
+    categories: [car, van, truck, bus, trailer, tractor, machine]
+    period: { start: 1993, end: 2016 }
+    period_evidence: enacted-commencement
+    period_start_precise: "1993-02-13"
+    period_start_note: >-
+      NN 12/1993 was published on 5 February 1993 and its čl. 35 says "Ovaj
+      Pravilnik stupa na snagu osmoga dana od objave u »Narodnim novinama«" —
+      the eighth day, i.e. 13 February 1993. The instrument is signed 22 January
+      1993; neither the signature date nor the gazette date is the period start.
+    matching: strict
+    format:
+      pattern: "LL 9999-LL"
+      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      charset: { letters_excluded: [Q, W, X, Y], notes: "no alphabet provision appears in NN 12/1993 at all — the exclusion is carried over from the modern instruments and is weaker evidence here than on hr-standard-2016. Recorded as such; no regex_strict is shipped for this series." }
+      separator_note: "as on hr-standard-2016 — the arms occupy the first gap, the hyphen the second, and NN 12/1993 čl. 18 spells neither."
+    design:
+      plate: { w: 520, h: 110, unit: mm, basis: secondary-wikipedia, basis_note: "NN 12/1993 čl. 18 delegates size to Obrasci 4-7, which are not published as legible drawings" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "'presvučena reflektirajućom folijom, bijele je boje' — čl. 18 NN 12/1993" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: none }
+      band_note: "NO EU band and no distinguishing sign on the plate. Čl. 18 NN 12/1993 describes only the area code, the arms and the number; the distinguishing sign was the separate white oval, which čl. 24 of that pravilnik prescribes for international traffic."
+      emblem: { present: true, rendered: placeholder, note: "grb Republike Hrvatske 'propisanim bojama', čl. 18 NN 12/1993 — the arms are in the plate from the first independent-era instrument" }
+      rear_differs: false
+    region_encoding: "plates/_decode/hr-cities.yml"
+    region_encoding_mechanism: >-
+      Same prefix mechanism, but with the PRE-2016 binding, which was tighter:
+      NN 151/2008 čl. 40 st. 3 let the plates pass to a buyer only if the
+      registration area did not change, so for a plate issued before
+      2016-07-04 and not re-registered since, the code is much better evidence
+      about the current owner's area than it is for a later plate. The CODE SET
+      of the 1990s is a recorded gap — NN 12/1993 čl. 34 kept the older popis
+      alive transitionally and that list was not fetched.
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/1993_02_12_185.html  # NN 12/1993 (5.2.1993.) čl. 18 (the plate and the serial grammar, word for word identical to the 2017 text), čl. 19 (diplomatic), čl. 34 (repeals), čl. 35 (in force on the eighth day)"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 čl. 13 (the same plate), čl. 40 st. 3 (the pre-2016 same-area condition on ceding plates to a buyer)"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2016_05_45_1165.html  # NN 45/2016 čl. 2 and čl. 10 — what ends this series and when"
+    notes: >-
+      THE PLATE THAT IS STILL ON THE ROAD. This series ends as an ISSUING
+      series on 2016-07-04 and not as a VALID one: NN 45/2016 čl. 8 and
+      NN 130/2017 čl. 57 both say the owner is not obliged to change plates
+      issued on the older forms, and NN 130/2017 čl. 25 st. 3 replaces a worn
+      band-less plate with the same mark PLUS the band. The 1993-2016 window
+      spans three base pravilnici (NN 12/1993, the 2005 series, NN 151/2008)
+      and is cut here as ONE series because the three of them prescribe the
+      same plate: white ground, black characters, area code, arms, three-or-four
+      digits and one-or-two letters. Where they differ is in procedure, not in
+      the mark. The 2005-2007 instruments (NN 5/05 … 68/07) were named in
+      NN 151/2008 čl. 53 but not fetched — a recorded gap that could yet split
+      this series.
+
+  # =========================================================================
+  # MOTORCYCLES AND MOPEDS — same serial, different plate.
+  # =========================================================================
+  - id: hr-motorcycle-2016
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2016 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 9999-LL"
+      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      regex_strict: '\A[A-Z]{2} ?\d{3,4}[- ][ABCDEFGHIJKLMNOPRSTUVZ]{1,2}\z'
+      charset: { letters_excluded: [Q, W, X, Y], notes: "as common.alphabet" }
+      layout_note: "the same mark on a SQUARE plate, laid out over three lines in Obrazac 5: area code and arms on line 1, digits on line 2, letters on line 3. The hyphen is not printed in the two-line arrangement — a rendering fact, not a format fact."
+    design:
+      plate: { w: 180, h: 180, unit: mm, basis: read-from-drawing, spec_note: "read from Obrazac 5, the only Croatian plate drawing published at a legible size" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: left, color: "#003399", content: eu-stars+HR, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: "plates/_decode/hr-cities.yml"
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 7 ('Oblik i sadržaj registarskih pločica za motocikle i četverocikle tiskan je na Obrascu 5, a za mopede i lake četverocikle na Obrascu 6')"
+      - "https://narodne-novine.nn.hr/files/_web/sluzbeni-dio/2017/130000/images/9521.jpg  # Obrazac 5, the dimensioned drawing: 180 x 180 mm, three-line layout"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2016_05_45_1165.html  # čl. 9 replaces Obrasci 5-12 and čl. 10 dates the change to 2016-07-04"
+    notes: >-
+      A SEPARATE SERIES ON DESIGN, NOT ON FORMAT (PRD-PLATES §2.3): the mark is
+      the čl. 18 st. 2 mark, but the plate is a 180 mm square whose layout puts
+      the digits and letters on separate lines, which a renderer must model and
+      a one-line pattern cannot express. NN 130/2017 čl. 59 defers the motorcycle
+      form specifically — "članka 22. stavka 6. u dijelu kojim se propisuje
+      oblik i sadržaj obrasca registarskih pločica za motocikle i četverocikle"
+      enters into force on 20 May 2018, four and a half months after the rest —
+      but that deferral touches the BY-CHOICE motorcycle plate, not this one.
+
+  - id: hr-moped-2016
+    class: moped
+    categories: [moped]
+    period: { start: 2016 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 9999-LL"
+      regex: '\A[A-Z]{2} ?\d{3,4}[- ][A-Z]{1,2}\z'
+      charset: { letters_excluded: [Q, W, X, Y] }
+    design:
+      plate: { note: "Obrazac 6; dimensions NOT legible in the published raster — recorded gap" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: left, color: "#003399", content: eu-stars+HR, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/hr-cities.yml"
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # čl. 18 st. 7 — mopeds and light quadricycles on Obrazac 6"
+    notes: >-
+      Separated from the motorcycle series ONLY because the pravilnik separates
+      the forms (Obrazac 6 against Obrazac 5) and therefore separates the plate.
+      Croatia does NOT give mopeds a distinct colour the way Slovenia did until
+      2011 — čl. 18 st. 1's white ground is unqualified. The dimensions are the
+      recorded gap that keeps this entry thin.
+
+  # =========================================================================
+  # BY-CHOICE (VANITY) PLATES — the one genuinely different grammar.
+  # =========================================================================
+  - id: hr-personalized-2008
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2008 }
+    period_evidence: enacted-commencement
+    matching: recall-only
+    format:
+      pattern: "LL LLLLLL"
+      regex: '\A[A-Z]{2} ?[A-Z0-9]{1,7}(?:-[A-Z0-9]{1,6})?\z'
+      charset:
+        letters_extra: [X, Y, W]
+        notes: "čl. 22 st. 3, verbatim: 'Registarski broj iz stavka 1. ovoga članka simetrično je otisnut te uključuje i strana slova X, Y i W.' The by-choice mark is the ONLY Croatian mark that may carry them."
+      grammar: >-
+        Čl. 22 NN 130/2017. St. 1: "najmanje tri do najviše sedam brojčanih ili
+        slovnih znakova ili od kombinacije brojčanih i slovnih znakova na dijelu
+        registarske pločice iza oznake registracijskog područja i grba Republike
+        Hrvatske". St. 2: "U slučaju izbora numeričkih znakova obvezno je
+        odabrati najmanje jedan slovni znak. Između brojčanih i slovnih oznaka
+        obvezna je crtica, a između slovnih oznaka može se odabrati crtica.
+        Crtica se računa kao jedan od znakova." St. 8: letters-only marks on
+        Obrazac 8, or on the 7+8 combination, are three to SIX characters.
+      why_recall_only: >-
+        The regex above is deliberately wider than the issuing grammar and a
+        match is a shape hit only (PRD-PLATES §2.7). It does not enforce the
+        "at least one letter if digits are chosen" rule, does not count the
+        hyphen against the seven-character budget, does not enforce the
+        three-character floor, and cannot express čl. 22 st. 7 at all — that
+        provision makes issuance turn on a MINISTERIAL JUDGMENT ("nije
+        provokativan, neetičan ili protivan pravnom poretku") which no regex
+        can carry. Per §2.7 a recall-only series ships no regex_strict.
+    design:
+      plate: { note: "Obrasci 7-10, one per body class; dimensions not legible" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: left, color: "#003399", content: eu-stars+HR, hex_basis: observed, note: "from 2016-07-04 only; the 2008-2016 by-choice plate had no band, exactly as the standard series" }
+      emblem: { present: true, rendered: placeholder }
+      font_note: "čl. 19 st. 2 gives the by-choice plate its own glyph drawing — Obrazac 17, not the Obrazac 15 used by every other plate. Croatia prints vanity marks in a DIFFERENT typeface, which a renderer must model."
+    region_encoding: "plates/_decode/hr-cities.yml"
+    region_encoding_mechanism: "the area code and arms are retained and precede the chosen part (čl. 22 st. 1, 'na dijelu registarske pločice iza oznake registracijskog područja i grba Republike Hrvatske'), so the geographic decode is unaffected."
+    validity:
+      term_years: 5
+      statute: "Čl. 23: the right of use runs five years from registration, is renewable in five-year terms on payment, and lapsing it obliges the owner to deregister within 15 days and return the plates."
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 čl. 14 — the by-choice plate is introduced here (three to seven characters, X/Y/W admitted); čl. 15 the five-year term; čl. 55 in force on the eighth day after publication on 23.12.2008"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 22 (the grammar, the mandatory hyphen, the ministerial refusal ground, the transliteration-duplication ground), čl. 19 st. 2 (Obrazac 17 glyphs), čl. 23 (term)"
+    notes: >-
+      The Croatian vanity plate keeps its geography: unlike a British or Dutch
+      personalised mark it cannot escape the area code. Two provisions here are
+      worth a consumer's attention beyond the grammar. Čl. 22 st. 7 refuses a
+      mark that could collide with another ON TRANSLITERATION — the regulation's
+      own acknowledgement of the diacritic problem this dataset records in
+      structural fact 5 — and it also refuses anything colliding with the
+      oldtimer PV pattern. Čl. 22 st. 9 forbids by-choice marks on diplomatic
+      and oldtimer plates entirely. period.start is 2008 because NN 151/2008
+      introduced the series; the 2016 band and the 2018 grammar refinements are
+      changes WITHIN it, and the 2016 design change is recorded on the band
+      entry rather than by splitting the series, because the choice grammar —
+      the thing that makes it its own series — did not change in 2016.
+
+  # =========================================================================
+  # OLDTIMERS — the one Croatian series with a LITERAL in the mark.
+  # =========================================================================
+  - id: hr-historic-2008
+    class: historic
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2008 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL PV-999"
+      regex: '\A[A-Z]{2} ?PV[- ]\d{3,4}\z'
+      grammar: "Čl. 18 st. 8 NN 130/2017, verbatim: 'Broj registarskih pločica za oldtimere (starodobna vozila) sastoji se od slovne oznake PV i tri ili četiri numeričke oznake.' PV = povijesno vozilo. The area code and arms are retained; čl. 18 st. 9 applies the ordinary plate forms and glyph drawing to it."
+    design:
+      plate: { note: "čl. 18 st. 9 applies st. 5-7 — the same Obrasci 3-6 as the ordinary plate" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: left, color: "#003399", content: eu-stars+HR, hex_basis: observed, note: "from 2016-07-04" }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/hr-cities.yml"
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 čl. 13 st. 8-9 — the PV mark is introduced here"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 18 st. 8-9; čl. 22 st. 9 (no by-choice mark on an oldtimer); čl. 47 st. 7 (oldtimer plates are held 180 days after deregistration, twice the ordinary 90)"
+    notes: >-
+      PV IS A LITERAL, NOT A LETTER GROUP: the two characters are fixed, so this
+      series' regex is genuinely strict without a strict twin — the sourced
+      grammar IS the pattern (the PRD-PLATES §2.7 case where 29 of 31 L0 series
+      needed no twin). The oldtimer mark is protected from collision in two
+      directions: čl. 22 st. 7 refuses a by-choice mark that would coincide with
+      it, and čl. 22 st. 9 forbids choosing a mark for an oldtimer at all.
+
+  # =========================================================================
+  # TRANSFERABLE (TRADE) PLATES — bound to a business, not a vehicle.
+  # =========================================================================
+  - id: hr-dealer-2008
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2008 }
+    period_evidence: enacted-commencement
+    binding: business
+    matching: strict
+    format:
+      pattern: "LL PP-999"
+      regex: '\A[A-Z]{2} ?PP[- ]\d{3,4}\z'
+      grammar: "Čl. 39 st. 2 NN 130/2017: 'Broj prenosivih pločica sastoji se od slovne oznake PP i tri ili četiri numeričke oznake.' PP = prenosive pločice."
+    design:
+      plate: { note: "čl. 39 st. 3 applies čl. 18 st. 5-7 — the ordinary Obrasci" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      emblem: { present: true, rendered: placeholder, note: "'Između oznake grada i broja prenosive pločice otisnut je grb Republike Hrvatske' — čl. 39 st. 1" }
+      band: { side: left, color: "#003399", content: eu-stars+HR, hex_basis: observed, note: "not separately prescribed for this series; inherited with the Obrasci replaced by NN 45/2016 čl. 9" }
+    region_encoding: "plates/_decode/hr-cities.yml"
+    region_encoding_note: >-
+      A WORDING CHANGE WORTH RECORDING. NN 151/2008 čl. 33 st. 1 said the plate
+      carries "oznaka registracijskog područja"; NN 130/2017 čl. 39 st. 1 says
+      it carries "oznaka GRADA" — the city. Whether the drafter meant a
+      different set of codes or was writing loosely is not resolvable from the
+      text, and Prilog 1 contains no separate city list. Decode with
+      hr-cities.yml, but flag transferable plates as lower confidence.
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 čl. 33 — prenosive pločice introduced, 'oznaka registracijskog područja'"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 36-42 — the traffic licence and the certificate book, čl. 39 the plate itself, čl. 38 st. 3 each certificate valid at most 7 days"
+    notes: >-
+      Croatia's trade plate is a genuinely transferable registration: it comes
+      with a prometna dozvola and a bound book of fifty numbered certificates
+      (čl. 38), each issued for at most seven days, and the evidence of use is
+      part of the record. Issued and withdrawn by the POLICE (čl. 40, čl. 42),
+      not by the inspection stations that do ordinary registration — the only
+      civil series in this file with a different issuing authority.
+
+  # =========================================================================
+  # EXPORT — the only civil plate with no area code at all.
+  # =========================================================================
+  - id: hr-export-2008
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2008 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "RH 9999-LL"
+      regex: '\ARH ?\d{3,4}[- ][A-Z]{1,2}\z'
+      grammar: "Čl. 44 NN 130/2017: 'zelene su boje na kojima je žutim slovima otisnuta oznaka RH i broj izvozne pločice. Između oznake RH i broja izvozne pločice otisnut je grb Republike Hrvatske.' St. 2: 'Broj izvozne pločice sastoji se od tri ili četiri numeričke i jedne ili dvije slovne oznake.'"
+    design:
+      plate: { note: "čl. 44 st. 3 applies čl. 18 st. 5-7" }
+      background: { color: "#007A33", finish: retroreflective, hex_basis: observed, spec_note: "'zelene su boje' — a colour word; the hex is an observed reading and is NOT a spec claim" }
+      foreground: "#FFD100"
+      foreground_hex_basis: observed
+      band: { side: none }
+      band_note: "no EU band: the country identity is the literal RH in the mark itself, which is what makes this the only civil series whose prefix is not an area code."
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    region_encoding_note: "RH is Republika Hrvatska, a national literal, NOT a row in hr-cities.yml. A parse API that looks it up there will get a miss, and should."
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 — izvozne pločice introduced with the RH literal and the green/yellow scheme"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 43 (what the owner must produce), čl. 44 (the plate), čl. 46 (replacement)"
+    notes: >-
+      Green ground, yellow characters, the arms between RH and the number. The
+      export registration comes with its own traffic licence stamped "IZVOZNA"
+      (čl. 43 st. 2) and the evidence record names the destination state
+      (čl. 45 st. 2) — so unlike the ordinary series this one records where the
+      vehicle went. period.start 2008 follows NN 151/2008, which is where the
+      series first appears; no equivalent is in NN 12/1993.
+
+  # =========================================================================
+  # DIPLOMATIC — blue and yellow, and the numeric country code is its decode.
+  # =========================================================================
+  - id: hr-diplomatic-1993
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1993 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "999-A-999"
+      pattern_note: >-
+        The pattern prints the "A" (diplomatic) form as its canonical example
+        because the activity letter is a CLOSED set of three literals — A, C, M
+        — not a free letter position. Writing it as `L` would round-trip against
+        a regex that admits every letter, which would be a wider claim than
+        čl. 24 st. 2 makes. The regex carries the closed set.
+      regex: '\A\d{2,3}[- ][ACM][- ]\d{1,3}\z'
+      grammar: >-
+        Čl. 24 st. 1 NN 130/2017: the plate "sadrže: brojčanu oznaku zemlje iz
+        koje je predstavništvo, slovnu oznaku djelatnosti predstavništva,
+        odnosno statusa osobe u tim predstavništvima i registarski broj vozila"
+        — country number, activity letter, vehicle number, in that order.
+        St. 2 closes the letter set: "A" for diplomatic missions and staff with
+        diplomatic status, "C" for consular posts and staff with consular
+        status, "M" for foreign employees of those missions WITHOUT diplomatic
+        status.
+      widths_unspecified: >-
+        NEITHER the country-code width NOR the serial width is prescribed
+        anywhere in the pravilnik. The quantifiers above are a deliberate
+        widening to cover what the text leaves open, which is why this series
+        is the file's weakest format claim. It is kept `strict` rather than
+        `recall-only` because every LITERAL in it is sourced — the three-letter
+        set is closed by čl. 24 st. 2 — and the regex is narrower than the
+        (unbounded) statutory text rather than wider than the issued grammar.
+    design:
+      background: { color: "#003399", finish: retroreflective, hex_basis: observed, spec_note: "'plave su boje' — colour word only" }
+      foreground: "#FFD100"
+      foreground_hex_basis: observed
+      band: { side: none }
+      emblem: { present: false, note: "čl. 24 prescribes no arms on the diplomatic plate, unlike every other civil series" }
+      supplementary_plate: >-
+        Čl. 24 st. 3 adds a second, ELLIPTICAL plate in black with yellow
+        letters: "CMD" for the head of mission, "CD" for a person with
+        diplomatic status, "CC" for a consular officer (Obrazac 14). It is a
+        SEPARATE physical object carried alongside the registration plate, not
+        part of the mark, and is modelled here rather than as its own series
+        because it carries no serial.
+    region_encoding: inline
+    region_encoding_note: >-
+      The leading numeric group is a COUNTRY code assigned to each accredited
+      mission, not a geographic area code — hr-cities.yml must not be consulted
+      for it. The country-code table itself is NOT published in the pravilnik
+      and was not obtained from any primary in this pass: it is a RECORDED GAP,
+      and PRD-PLATES puts diplomatic decode tables at gate L4 in any case.
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/1993_02_12_185.html  # NN 12/1993 čl. 19 — the blue/yellow plate with country number, activity letter and vehicle number, from the founding instrument"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2008_12_151_4118.html  # NN 151/2008 čl. 16 — the A/C/M letter set stated in the modern wording, plus the CMD/CD/CC ellipse"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 24 st. 1-3 (current), čl. 22 st. 9 (no by-choice mark on these plates)"
+    notes: >-
+      ONE SERIES ACROSS THIRTY-THREE YEARS, deliberately. The 1993, 2008 and
+      2017 texts prescribe the same plate — blue ground, yellow characters,
+      country number then activity letter then serial — and the 2016 band
+      amendment did not touch čl. 16/24, so this series has no EU band and no
+      2016 break. What DID change is invisible in the format: the 1993 text
+      lists the activity letters in a different place from the 2008 text. The
+      widths and the country-code table are the two recorded gaps, and they are
+      the reason a consumer should treat a Croatian diplomatic match as weak.
+
+  # =========================================================================
+  # TEST PLATES.
+  # =========================================================================
+  - id: hr-temporary-test-2008
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2008 }
+    period_evidence: enacted-commencement
+    matching: recall-only
+    format:
+      pattern: "99999"
+      regex: '\A[A-Z0-9]{2,8}(?:[- ][A-Z0-9]{1,6})?\z'
+      grammar: >-
+        Čl. 34 NN 130/2017 gives the pokusna pločica its COLOURS and its forms
+        (Obrasci 18-19 for ordinary test use, 20-21 for technical inspection)
+        and says the plates are "izrađene … od retro-reflektivnog bijelog
+        laminata". IT PRESCRIBES NO SERIAL GRAMMAR AT ALL — no character count,
+        no arrangement, no alphabet.
+      why_recall_only: >-
+        Because there is nothing to be strict about. The regex is an admitted
+        catch-all: a match says only "this string has a shape a Croatian test
+        plate could have" and is emphatically not a validity claim
+        (PRD-PLATES §2.7). Shipping a confident pattern here would be inventing
+        one; the gap is recorded instead.
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "'bijele su boje' plus 'retro-reflektivnog bijelog laminata' (čl. 34 st. 3) — laminate, not the metal-and-foil construction of čl. 18" }
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      emblem: { present: false, note: "not prescribed in čl. 34. NN 12/1993 čl. 25 DID put the arms on the test plate ('oznaka registracijskog područja, grb Republike Hrvatske i registarski broj'); the modern text dropped the mention. Recorded, not resolved." }
+    region_encoding: mechanism-only
+    region_encoding_note: "NN 12/1993 čl. 25 put an area code on the test plate; NN 130/2017 čl. 34 does not mention one. Whether the current test plate carries a code is NOT established from the primary — recorded gap."
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/1993_02_12_185.html  # NN 12/1993 čl. 25 — the older, more specific test-plate description"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2017_12_130_2993.html  # NN 130/2017 čl. 34 (colours, laminate, forms), čl. 35 (the register kept of them)"
+    notes: >-
+      THE THINNEST SERIES IN THE FILE, AND HONESTLY SO. Croatia's test plate is
+      prescribed by colour and by drawing and by nothing else; the two things a
+      parse API wants — the grammar and whether an area code is present — are
+      both absent from the current text, and the 1993 text answers only the
+      second, and differently. `matching: recall-only` and two recorded gaps are
+      the correct output here. A future pass should read Obrasci 18-21, which
+      were not legible in this one.
+
+  # =========================================================================
+  # MILITARY — a different pravilnik, and the file's only sourced colour.
+  # =========================================================================
+  - id: hr-military-2014
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer, machine]
+    period: { start: 2014 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "HV 9999-LL"
+      regex: '\AHV ?\d{3,4}[- ][A-Z]{1,2}\z'
+      grammar: >-
+        NN 71/2018 čl. 23: "(2) Na registarskoj pločici otisnuta je slovna
+        oznaka 'HV' i registarski broj vozila. (3) Između oznake 'HV' i
+        registarskog broja otisnut je grb Republike Hrvatske propisnim bojama.
+        (4) Registarski broj vozila sastoji se od tri ili četiri brojčane i
+        jedne ili dvije slovne oznake." The civil grammar exactly, with HV
+        (Hrvatska vojska) standing where the area code stands.
+    design:
+      plate: { note: "Obrazac 5 of the military pravilnik — not the civil Obrazac 5" }
+      background: { color: "#F9A800", finish: non-retroreflective, hex_basis: ral-conversion, spec_note: "THE ONLY SOURCED COLOUR IN THIS FILE: čl. 23 st. 1, 'žute je boje broj 1003, prema RAL-ovu katalogu boja'. RAL 1003 Signalgelb is a physical colour standard; the hex is a conversion and is NOT part of the standard, which is why hex_basis says so. A renderer should prefer the RAL number." }
+      ral: "1003"
+      foreground: "#000000"
+      foreground_hex_basis: observed
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "grb Republike Hrvatske 'propisnim bojama', čl. 23 st. 3" }
+      retroreflective: false
+      retroreflective_source: "čl. 23 st. 7, verbatim: 'Registarska pločica za vozila Ministarstva i Oružanih snaga nema reflektirajuća svojstva.' A deliberate NEGATIVE against the civil rule."
+    region_encoding: none
+    region_encoding_note: "HV is a national service literal. hr-cities.yml does not apply."
+    sources:
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2014_11_133_2505.html  # NN 133/2014 (14.11.2014.) čl. 23 — the first of the two military pravilnici read here; identical plate spec"
+      - "https://narodne-novine.nn.hr/clanci/sluzbeni/2018_08_71_1458.html  # NN 71/2018 (4.8.2018.) čl. 23 (the plate, RAL 1003, non-reflective), čl. 25 (the painted mark for combat vehicles, RAL 9005)"
+    notes: >-
+      A SEPARATE REGULATORY UNIVERSE, like Italy's. Military registration is
+      done by the Ministry of Defence under its own pravilnik, and this series
+      is cut at 2014 because NN 133/2014 is the earliest military instrument
+      READ in this pass — not because it is the earliest that exists. NN 71/2018
+      re-enacts the identical plate specification, so no second series is cut.
+      Two facts have no civil analogue: the plate is expressly NOT
+      retroreflective, and combat vehicles get no plate at all but a mark
+      PAINTED on the vehicle in RAL 9005 black over the vehicle's own base
+      colour (čl. 25 st. 1) — a registration mark that is not a plate, which the
+      schema records here in prose rather than forcing into `design.plate`.
+      Wikipedia describes VP/MP suffix letters for military-police vehicles;
+      that is not in either pravilnik as read and is NOT asserted.
