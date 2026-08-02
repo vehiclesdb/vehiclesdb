@@ -1,0 +1,960 @@
+# plates/_decode/jp-office-marks.yml — the Japanese regional office marks (地名).
+#
+# WHAT THIS TABLE IS. Every Japanese registration number opens with a
+# 運輸監理部・運輸支局・自動車検査登録事務所 を表示する文字 — the characters that
+# display the transport bureau, transport branch office or vehicle inspection
+# and registration office in whose jurisdiction the vehicle is BASED. Unlike
+# the German district list (a Bundesanzeiger publication) and the British
+# memory tags (a DVLA leaflet), THIS TABLE IS ENACTED LAW: it is 別表第一
+# (Appended Table 1) of the 自動車登録規則 (Automobile Registration Regulation,
+# 昭和四十五年運輸省令第七号 / Ministry of Transport Ordinance No. 7 of 1970),
+# referred to by name in Article 13 item 1 of that ordinance. Every row below
+# is that table, in the ordinance's own order, with the `area` column quoted
+# verbatim in Japanese.
+#
+# ONE TABLE, FOUR NUMBER SYSTEMS. 別表第一 is also the table the OTHER Japanese
+# plate families read from: 道路運送車両法施行規則 § 36-17(2) applies it to
+# 検査対象軽自動車 (kei cars), § 36-18(2) to 二輪の小型自動車 (motorcycles over
+# 250 cm3), and § 63-4(2) to 検査対象外軽自動車 (125-250 cm3 motorcycles).
+# One decode table therefore serves every series in plates/jp.yml.
+#
+# THE SCRIPT LINE (PRD-PLATES §2.6). These marks are written in kanji and
+# hiragana. They are NOT in the dataset's serial alphabet (A-Z 0-9), so they
+# can never appear in a `format.pattern` or a `format.regex`; plates/jp.yml
+# carries them as a `format.fields[]` entry with `script: kanji-hiragana` and
+# points at this file. The `romaji` column below is a DATASET-ADDED
+# transliteration for Latin-alphabet consumers — see `romaji_basis`.
+#
+# WHAT THE MARK MEANS, AND WHAT IT DOES NOT. Article 13(1) item 1 keys the mark
+# to 「自動車の使用の本拠の位置」 — the position of the vehicle's BASE OF USE,
+# not the owner's address and not where the vehicle is now. Article 13(2) then
+# freezes the mark against later boundary changes, verbatim: 「運輸監理部又は運輸
+# 支局の管轄区域が変更された場合においては、当該変更前に法の規定により登録された
+# 自動車登録番号については、…前項に規定する基準に適合しないこととなつたときであ
+# つても、同項に規定する基準に適合するものとみなす」 — a mark issued before a
+# boundary change stays valid afterwards. A decoder must therefore treat a mark
+# as evidence of the base of use AT FIRST REGISTRATION (or last renumbering),
+# never as a current-location signal. This is the same caution plates/gb.yml
+# records for DVLA memory tags and PRD-PLATES §2.4 records for the French SIV.
+#
+# ROWS ARE NEVER DELETED. No mark has been withdrawn from 別表第一 in any
+# revision e-Gov publishes (2017-04-01 onward): the table has only grown,
+# 117 rows -> 135 -> 140. Where a mark was ADDED, the row carries the
+# enforcement date of the amending ordinance as `from` (see `period_evidence`
+# below) — that is an instrument date, not a guess.
+#
+# Referenced by plates/jp.yml via `region_encoding` on every road series.
+jurisdiction: jp
+topic: office-marks
+authority:
+  name: 国土交通省 (Ministry of Land, Infrastructure, Transport and Tourism, MLIT)
+  url: "https://laws.e-gov.go.jp/law/345M50000800007"
+instrument:
+  citation: "自動車登録規則 別表第一（第十三条関係） — Automobile Registration Regulation (Ministry of Transport Ordinance No. 7 of 20 February 1970), Appended Table 1 (relating to Article 13)"
+  law_id: "345M50000800007"
+  promulgated: "1970-02-20"
+  consolidated_at: "2026-04-01"
+  consolidation_revision_id: "345M50000800007_20260401_508M60000800041"
+  enabling_article: >-
+    自動車登録規則 § 13(1) item 1, verbatim: 「自動車の使用の本拠の位置を管轄する
+    運輸監理部又は運輸支局（使用の本拠の位置が自動車検査登録事務所の管轄区域に属する
+    場合にあつては、当該自動車検査登録事務所。次項において同じ。）を表示する文字
+    （別表第一）」 — "characters displaying the Transport Administration Department
+    or Transport Branch Office having jurisdiction over the position of the base
+    of use of the motor vehicle (or, where that position falls within the
+    jurisdiction of a Motor Vehicle Inspection and Registration Office, that
+    office) (Appended Table 1)". Translation is this dataset's; the Japanese is
+    the authority.
+sources:
+  - "https://laws.e-gov.go.jp/law/345M50000800007  # 自動車登録規則 § 13 and 別表第一 — every row below, verbatim; accessed 2026-08-02"
+  - "https://laws.e-gov.go.jp/api/2/law_data/345M50000800007_20260401_508M60000800041?law_full_text_format=xml  # the machine-readable consolidation this file was transcribed from (e-Gov API v2), accessed 2026-08-02"
+  - "https://laws.e-gov.go.jp/api/2/law_revisions/345M50000800007  # the revision list that dates the 2020 and 2025 additions; accessed 2026-08-02"
+  - "https://www.mlit.go.jp/jidosha/jidosha_tk6_000036.html  # MLIT, 図柄ナンバープレート（地方版）— corroborates the 2020-05-11 (17 regions) and 2025-05-07 (5 regions) waves and names them; accessed 2026-08-02"
+  - "https://www.mlit.go.jp/report/press/content/001856564.pdf  # MLIT press release of 令和7年1月17日 naming the five 2025 marks (十勝・日光・江戸川・南信州・安曇野) and recording that 青森県田舎館村 was moved into the 弘前 area — which is exactly what this table 弘前 row says in its own words; accessed 2026-08-02"
+licence: >-
+  e-Gov 法令検索 publishes Japanese statutes and ordinances; Japanese law is an
+  edict of government. The Japanese text quoted here is the instrument's own.
+  MLIT pages are 国土交通省 publications.
+period: { start: 1970 }
+period_evidence: enabling-instrument
+period_note: >-
+  1970 is the promulgation of the 自動車登録規則 itself (昭和45年運輸省令第7号,
+  1970-02-20), which is the instrument this table lives in. It is NOT a claim
+  that the office-mark scheme began in 1970: Japanese plates carried a place
+  name long before the 1970 ordinance consolidated the rule, and no primary for
+  the scheme's own start was secured in this pass (recorded gap — see
+  dossier-jp.md). PER-ROW `from` values are different and stronger: they are
+  the enforcement dates of the amending ordinances e-Gov publishes.
+row_period_evidence:
+  "2017": >-
+    instrument-in-force-upper-bound — 2017-04-01 (平成28年国土交通省令第87号,
+    promulgated 2016-12-28) is the EARLIEST consolidation e-Gov holds for this
+    ordinance. 117 of the 140 rows are already present in it, so 2017 is an
+    UPPER BOUND on their introduction, never a start date. Most are far older.
+  "2020": >-
+    enabling-instrument — 18 rows (17 distinct marks; 知床 appears under both
+    the 釧路 and 北見 offices) first appear in the consolidation in force
+    2020-05-11 (令和2年国土交通省令第45号, promulgated 2020-04-10). MLIT's
+    figure-plate page names the same 17 as the 「第2弾」 wave of ご当地ナンバー,
+    交付開始 令和2年5月11日 — instrument and authority page agree to the day.
+  "2025": >-
+    enabling-instrument — 5 rows first appear in the consolidation in force
+    2025-05-07 (令和7年国土交通省令第59号, promulgated 2025-04-30): 十勝, 日光,
+    江戸川, 南信州, 安曇野. MLIT's press release of 令和7年1月17日 announces the
+    same five for 交付開始 令和7年5月頃, and adds that 青森県田舎館村 was moved
+    into the 弘前 area — which is exactly what the 弘前 row's `area` text says.
+romaji_basis: >-
+  DATASET-ADDED, NOT SOURCED. 別表第一 is written entirely in kanji and hiragana
+  and contains no Latin transliteration. The `romaji` field is a modified
+  Hepburn rendering added by this dataset so that a Latin-alphabet consumer can
+  index the table; long vowels are written WITHOUT macrons (Kyoto, Osaka, Kobe,
+  Koto, Shonan, Joetsu, Kitakyushu) because the dataset's own alphabet is
+  ASCII. Treat `mark` as normative and `romaji` as advisory.
+duplicate_marks_note: >-
+  Two marks appear on TWO rows each and both duplications are real: 知床 is
+  issued by BOTH the 釧路 and the 北見 offices (Shiretoko straddles them), and
+  富士山 by BOTH the 山梨 and the 沼津 offices (Mt Fuji straddles Yamanashi and
+  Shizuoka). 140 rows, 138 distinct marks. A decoder keyed on the mark alone
+  therefore resolves those two to a PAIR of offices, not to one.
+counts: { rows: 140, distinct_marks: 138 }
+marks:
+  - mark: "札幌"
+    romaji: "Sapporo"
+    office: "札幌運輸支局"
+    area: "札幌運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "函館"
+    romaji: "Hakodate"
+    office: "函館運輸支局"
+    area: "函館運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "旭川"
+    romaji: "Asahikawa"
+    office: "旭川運輸支局"
+    area: "旭川運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "室蘭"
+    romaji: "Muroran"
+    office: "室蘭運輸支局"
+    area: "室蘭運輸支局の管轄区域（苫小牧市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "苫小牧"
+    romaji: "Tomakomai"
+    office: "室蘭運輸支局"
+    area: "室蘭運輸支局の管轄区域（苫小牧市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "釧路"
+    romaji: "Kushiro"
+    office: "釧路運輸支局"
+    area: "釧路運輸支局の管轄区域（野付郡、標津郡及び目梨郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "知床"
+    romaji: "Shiretoko"
+    office: "釧路運輸支局"
+    area: "釧路運輸支局の管轄区域（野付郡、標津郡及び目梨郡に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "帯広"
+    romaji: "Obihiro"
+    office: "帯広運輸支局"
+    area: "帯広運輸支局の管轄区域（帯広市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "十勝"
+    romaji: "Tokachi"
+    office: "帯広運輸支局"
+    area: "帯広運輸支局の管轄区域（帯広市を除く。）内"
+    from: 2025
+    from_evidence: enabling-instrument
+  - mark: "北見"
+    romaji: "Kitami"
+    office: "北見運輸支局"
+    area: "北見運輸支局の管轄区域（斜里郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "知床"
+    romaji: "Shiretoko"
+    office: "北見運輸支局"
+    area: "北見運輸支局の管轄区域（斜里郡に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "青森"
+    romaji: "Aomori"
+    office: "青森運輸支局"
+    area: "青森運輸支局の管轄区域（弘前市、中津軽郡及び南津軽郡（田舎館村に限る。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "弘前"
+    romaji: "Hirosaki"
+    office: "青森運輸支局"
+    area: "青森運輸支局の管轄区域（弘前市、中津軽郡及び南津軽郡（田舎館村に限る。）に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "八戸"
+    romaji: "Hachinohe"
+    office: "八戸自動車検査登録事務所"
+    area: "八戸自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "盛岡"
+    romaji: "Morioka"
+    office: "岩手運輸支局"
+    area: "岩手運輸支局の管轄区域（盛岡市、八幡平市、滝沢市及び紫波郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "岩手"
+    romaji: "Iwate"
+    office: "岩手運輸支局"
+    area: "岩手運輸支局の管轄区域（盛岡市、一関市、八幡平市、奥州市、滝沢市、紫波郡、胆沢郡及び西磐井郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "平泉"
+    romaji: "Hiraizumi"
+    office: "岩手運輸支局"
+    area: "岩手運輸支局の管轄区域（一関市、奥州市、胆沢郡及び西磐井郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "仙台"
+    romaji: "Sendai"
+    office: "宮城運輸支局"
+    area: "宮城運輸支局の管轄区域（仙台市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "宮城"
+    romaji: "Miyagi"
+    office: "宮城運輸支局"
+    area: "宮城運輸支局の管轄区域（仙台市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "秋田"
+    romaji: "Akita"
+    office: "秋田運輸支局"
+    area: "秋田運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "山形"
+    romaji: "Yamagata"
+    office: "山形運輸支局"
+    area: "山形運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "庄内"
+    romaji: "Shonai"
+    office: "庄内自動車検査登録事務所"
+    area: "庄内自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "福島"
+    romaji: "Fukushima"
+    office: "福島運輸支局"
+    area: "福島運輸支局の管轄区域（会津若松市、郡山市、白河市、喜多方市、南会津郡、耶麻郡、河沼郡、大沼郡及び西白河郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "会津"
+    romaji: "Aizu"
+    office: "福島運輸支局"
+    area: "福島運輸支局の管轄区域（会津若松市、喜多方市、南会津郡、耶麻郡、河沼郡及び大沼郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "郡山"
+    romaji: "Koriyama"
+    office: "福島運輸支局"
+    area: "福島運輸支局の管轄区域（郡山市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "白河"
+    romaji: "Shirakawa"
+    office: "福島運輸支局"
+    area: "福島運輸支局の管轄区域（白河市及び西白河郡に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "いわき"
+    romaji: "Iwaki"
+    office: "いわき自動車検査登録事務所"
+    area: "いわき自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "水戸"
+    romaji: "Mito"
+    office: "茨城運輸支局"
+    area: "茨城運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "土浦"
+    romaji: "Tsuchiura"
+    office: "土浦自動車検査登録事務所"
+    area: "土浦自動車検査登録事務所の管轄区域（古河市、結城市、下妻市、常総市、つくば市、守谷市、筑西市、坂東市、桜川市、つくばみらい市、結城郡及び猿島郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "つくば"
+    romaji: "Tsukuba"
+    office: "土浦自動車検査登録事務所"
+    area: "土浦自動車検査登録事務所の管轄区域（古河市、結城市、下妻市、常総市、つくば市、守谷市、筑西市、坂東市、桜川市、つくばみらい市、結城郡及び猿島郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "宇都宮"
+    romaji: "Utsunomiya"
+    office: "栃木運輸支局"
+    area: "栃木運輸支局の管轄区域（日光市、大田原市、那須塩原市、塩谷郡（塩谷町に限る。）及び那須郡（那須町に限る。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "日光"
+    romaji: "Nikko"
+    office: "栃木運輸支局"
+    area: "栃木運輸支局の管轄区域（日光市及び塩谷郡（塩谷町に限る。）に限る。）内"
+    from: 2025
+    from_evidence: enabling-instrument
+  - mark: "那須"
+    romaji: "Nasu"
+    office: "栃木運輸支局"
+    area: "栃木運輸支局の管轄区域（大田原市、那須塩原市及び那須郡（那須町に限る。）に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "とちぎ"
+    romaji: "Tochigi"
+    office: "佐野自動車検査登録事務所"
+    area: "佐野自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "前橋"
+    romaji: "Maebashi"
+    office: "群馬運輸支局"
+    area: "群馬運輸支局の管轄区域（前橋市及び北群馬郡（吉岡町に限る。）に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "高崎"
+    romaji: "Takasaki"
+    office: "群馬運輸支局"
+    area: "群馬運輸支局の管轄区域（高崎市及び安中市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "群馬"
+    romaji: "Gunma"
+    office: "群馬運輸支局"
+    area: "群馬運輸支局の管轄区域（前橋市、高崎市、安中市及び北群馬郡（吉岡町に限る。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "大宮"
+    romaji: "Omiya"
+    office: "埼玉運輸支局"
+    area: "埼玉運輸支局の管轄区域（川口市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "川口"
+    romaji: "Kawaguchi"
+    office: "埼玉運輸支局"
+    area: "埼玉運輸支局の管轄区域（川口市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "川越"
+    romaji: "Kawagoe"
+    office: "所沢自動車検査登録事務所"
+    area: "所沢自動車検査登録事務所の管轄区域（川越市、坂戸市、鶴ヶ島市及び入間郡（三芳町を除く。）に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "所沢"
+    romaji: "Tokorozawa"
+    office: "所沢自動車検査登録事務所"
+    area: "所沢自動車検査登録事務所の管轄区域（川越市、坂戸市、鶴ヶ島市及び入間郡（三芳町を除く。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "熊谷"
+    romaji: "Kumagaya"
+    office: "熊谷自動車検査登録事務所"
+    area: "熊谷自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "春日部"
+    romaji: "Kasukabe"
+    office: "春日部自動車検査登録事務所"
+    area: "春日部自動車検査登録事務所の管轄区域（越谷市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "越谷"
+    romaji: "Koshigaya"
+    office: "春日部自動車検査登録事務所"
+    area: "春日部自動車検査登録事務所の管轄区域（越谷市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "千葉"
+    romaji: "Chiba"
+    office: "千葉運輸支局"
+    area: "千葉運輸支局の管轄区域（成田市、富里市、山武市、香取郡（東庄町を除く。）及び山武郡（芝山町及び横芝光町に限る。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "成田"
+    romaji: "Narita"
+    office: "千葉運輸支局"
+    area: "千葉運輸支局の管轄区域（成田市、富里市、山武市、香取郡（東庄町を除く。）及び山武郡（芝山町及び横芝光町に限る。）に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "市川"
+    romaji: "Ichikawa"
+    office: "習志野自動車検査登録事務所"
+    area: "習志野自動車検査登録事務所の管轄区域（市川市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "船橋"
+    romaji: "Funabashi"
+    office: "習志野自動車検査登録事務所"
+    area: "習志野自動車検査登録事務所の管轄区域（船橋市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "習志野"
+    romaji: "Narashino"
+    office: "習志野自動車検査登録事務所"
+    area: "習志野自動車検査登録事務所の管轄区域（市川市及び船橋市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "袖ヶ浦"
+    romaji: "Sodegaura"
+    office: "袖ヶ浦自動車検査登録事務所"
+    area: "袖ヶ浦自動車検査登録事務所の管轄区域（市原市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "市原"
+    romaji: "Ichihara"
+    office: "袖ヶ浦自動車検査登録事務所"
+    area: "袖ヶ浦自動車検査登録事務所の管轄区域（市原市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "松戸"
+    romaji: "Matsudo"
+    office: "野田自動車検査登録事務所"
+    area: "野田自動車検査登録事務所の管轄区域（松戸市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "野田"
+    romaji: "Noda"
+    office: "野田自動車検査登録事務所"
+    area: "野田自動車検査登録事務所の管轄区域（松戸市、柏市及び我孫子市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "柏"
+    romaji: "Kashiwa"
+    office: "野田自動車検査登録事務所"
+    area: "野田自動車検査登録事務所の管轄区域（柏市及び我孫子市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "品川"
+    romaji: "Shinagawa"
+    office: "東京運輸支局"
+    area: "東京運輸支局の管轄区域（世田谷区を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "世田谷"
+    romaji: "Setagaya"
+    office: "東京運輸支局"
+    area: "東京運輸支局の管轄区域（世田谷区に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "練馬"
+    romaji: "Nerima"
+    office: "練馬自動車検査登録事務所"
+    area: "練馬自動車検査登録事務所の管轄区域（杉並区及び板橋区を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "杉並"
+    romaji: "Suginami"
+    office: "練馬自動車検査登録事務所"
+    area: "練馬自動車検査登録事務所の管轄区域（杉並区に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "板橋"
+    romaji: "Itabashi"
+    office: "練馬自動車検査登録事務所"
+    area: "練馬自動車検査登録事務所の管轄区域（板橋区に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "足立"
+    romaji: "Adachi"
+    office: "足立自動車検査登録事務所"
+    area: "足立自動車検査登録事務所の管轄区域（江東区、葛飾区及び江戸川区を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "江東"
+    romaji: "Koto"
+    office: "足立自動車検査登録事務所"
+    area: "足立自動車検査登録事務所の管轄区域（江東区に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "葛飾"
+    romaji: "Katsushika"
+    office: "足立自動車検査登録事務所"
+    area: "足立自動車検査登録事務所の管轄区域（葛飾区に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "江戸川"
+    romaji: "Edogawa"
+    office: "足立自動車検査登録事務所"
+    area: "足立自動車検査登録事務所の管轄区域（江戸川区に限る。）内"
+    from: 2025
+    from_evidence: enabling-instrument
+  - mark: "八王子"
+    romaji: "Hachioji"
+    office: "八王子自動車検査登録事務所"
+    area: "八王子自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "多摩"
+    romaji: "Tama"
+    office: "多摩自動車検査登録事務所"
+    area: "多摩自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "横浜"
+    romaji: "Yokohama"
+    office: "神奈川運輸支局"
+    area: "神奈川運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "川崎"
+    romaji: "Kawasaki"
+    office: "川崎自動車検査登録事務所"
+    area: "川崎自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "湘南"
+    romaji: "Shonan"
+    office: "湘南自動車検査登録事務所"
+    area: "湘南自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "相模"
+    romaji: "Sagami"
+    office: "相模自動車検査登録事務所"
+    area: "相模自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "山梨"
+    romaji: "Yamanashi"
+    office: "山梨運輸支局"
+    area: "山梨運輸支局の管轄区域（富士吉田市及び南都留郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "富士山"
+    romaji: "Fujisan"
+    office: "山梨運輸支局"
+    area: "山梨運輸支局の管轄区域（富士吉田市及び南都留郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "新潟"
+    romaji: "Niigata"
+    office: "新潟運輸支局"
+    area: "新潟運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "長岡"
+    romaji: "Nagaoka"
+    office: "長岡自動車検査登録事務所"
+    area: "長岡自動車検査登録事務所の管轄区域（糸魚川市、妙高市及び上越市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "上越"
+    romaji: "Joetsu"
+    office: "長岡自動車検査登録事務所"
+    area: "長岡自動車検査登録事務所の管轄区域（糸魚川市、妙高市及び上越市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "富山"
+    romaji: "Toyama"
+    office: "富山運輸支局"
+    area: "富山運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "金沢"
+    romaji: "Kanazawa"
+    office: "石川運輸支局"
+    area: "石川運輸支局の管轄区域（金沢市、かほく市、河北郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "石川"
+    romaji: "Ishikawa"
+    office: "石川運輸支局"
+    area: "石川運輸支局の管轄区域（金沢市、かほく市、河北郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "長野"
+    romaji: "Nagano"
+    office: "長野運輸支局"
+    area: "長野運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "松本"
+    romaji: "Matsumoto"
+    office: "松本自動車検査登録事務所"
+    area: "松本自動車検査登録事務所の管轄区域（岡谷市、飯田市、諏訪市、茅野市、安曇野市、諏訪郡、下伊那郡、東筑摩郡（生坂村に限る。）及び北安曇郡（池田町及び松川村に限る。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "諏訪"
+    romaji: "Suwa"
+    office: "松本自動車検査登録事務所"
+    area: "松本自動車検査登録事務所の管轄区域（岡谷市、諏訪市、茅野市及び諏訪郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "南信州"
+    romaji: "Minami-Shinshu"
+    office: "松本自動車検査登録事務所"
+    area: "松本自動車検査登録事務所の管轄区域（飯田市及び下伊那郡に限る。）内"
+    from: 2025
+    from_evidence: enabling-instrument
+  - mark: "安曇野"
+    romaji: "Azumino"
+    office: "松本自動車検査登録事務所"
+    area: "松本自動車検査登録事務所の管轄区域（安曇野市、東筑摩郡（生坂村に限る。）及び北安曇郡（池田町及び松川村に限る。）に限る。）内"
+    from: 2025
+    from_evidence: enabling-instrument
+  - mark: "福井"
+    romaji: "Fukui"
+    office: "福井運輸支局"
+    area: "福井運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "岐阜"
+    romaji: "Gifu"
+    office: "岐阜運輸支局"
+    area: "岐阜運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "飛騨"
+    romaji: "Hida"
+    office: "飛騨自動車検査登録事務所"
+    area: "飛騨自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "静岡"
+    romaji: "Shizuoka"
+    office: "静岡運輸支局"
+    area: "静岡運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "浜松"
+    romaji: "Hamamatsu"
+    office: "浜松自動車検査登録事務所"
+    area: "浜松自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "沼津"
+    romaji: "Numazu"
+    office: "沼津自動車検査登録事務所"
+    area: "沼津自動車検査登録事務所の管轄区域（熱海市、三島市、富士宮市、伊東市、富士市、御殿場市、下田市、裾野市、伊豆市、伊豆の国市、賀茂郡、田方郡及び駿東郡（小山町に限る。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "伊豆"
+    romaji: "Izu"
+    office: "沼津自動車検査登録事務所"
+    area: "沼津自動車検査登録事務所の管轄区域（熱海市、三島市、伊東市、下田市、伊豆市、伊豆の国市、賀茂郡及び田方郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "富士山"
+    romaji: "Fujisan"
+    office: "沼津自動車検査登録事務所"
+    area: "沼津自動車検査登録事務所の管轄区域（富士宮市、富士市、御殿場市、裾野市及び駿東郡（小山町に限る。）に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "名古屋"
+    romaji: "Nagoya"
+    office: "愛知運輸支局"
+    area: "愛知運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "豊橋"
+    romaji: "Toyohashi"
+    office: "豊橋自動車検査登録事務所"
+    area: "豊橋自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "岡崎"
+    romaji: "Okazaki"
+    office: "西三河自動車検査登録事務所"
+    area: "西三河自動車検査登録事務所の管轄区域（岡崎市及び額田郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "三河"
+    romaji: "Mikawa"
+    office: "西三河自動車検査登録事務所"
+    area: "西三河自動車検査登録事務所の管轄区域（岡崎市、豊田市及び額田郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "豊田"
+    romaji: "Toyota"
+    office: "西三河自動車検査登録事務所"
+    area: "西三河自動車検査登録事務所の管轄区域（豊田市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "一宮"
+    romaji: "Ichinomiya"
+    office: "小牧自動車検査登録事務所"
+    area: "小牧自動車検査登録事務所の管轄区域（一宮市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "尾張小牧"
+    romaji: "Owari-Komaki"
+    office: "小牧自動車検査登録事務所"
+    area: "小牧自動車検査登録事務所の管轄区域（一宮市及び春日井市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "春日井"
+    romaji: "Kasugai"
+    office: "小牧自動車検査登録事務所"
+    area: "小牧自動車検査登録事務所の管轄区域（春日井市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "三重"
+    romaji: "Mie"
+    office: "三重運輸支局"
+    area: "三重運輸支局の管轄区域（四日市市、伊勢市、鈴鹿市、亀山市、鳥羽市、志摩市、多気郡（明和町に限る。）及び度会郡（大紀町を除く。）を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "四日市"
+    romaji: "Yokkaichi"
+    office: "三重運輸支局"
+    area: "三重運輸支局の管轄区域（四日市市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "伊勢志摩"
+    romaji: "Ise-Shima"
+    office: "三重運輸支局"
+    area: "三重運輸支局の管轄区域（伊勢市、鳥羽市、志摩市、多気郡（明和町に限る。）及び度会郡（大紀町を除く。）に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "鈴鹿"
+    romaji: "Suzuka"
+    office: "三重運輸支局"
+    area: "三重運輸支局の管轄区域（鈴鹿市及び亀山市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "滋賀"
+    romaji: "Shiga"
+    office: "滋賀運輸支局"
+    area: "滋賀運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "京都"
+    romaji: "Kyoto"
+    office: "京都運輸支局"
+    area: "京都運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "大阪"
+    romaji: "Osaka"
+    office: "大阪運輸支局"
+    area: "大阪運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "なにわ"
+    romaji: "Naniwa"
+    office: "なにわ自動車検査登録事務所"
+    area: "なにわ自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "堺"
+    romaji: "Sakai"
+    office: "和泉自動車検査登録事務所"
+    area: "和泉自動車検査登録事務所の管轄区域（堺市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "和泉"
+    romaji: "Izumi"
+    office: "和泉自動車検査登録事務所"
+    area: "和泉自動車検査登録事務所の管轄区域（堺市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "神戸"
+    romaji: "Kobe"
+    office: "神戸運輸監理部"
+    area: "神戸運輸監理部の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "姫路"
+    romaji: "Himeji"
+    office: "姫路自動車検査登録事務所"
+    area: "姫路自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "奈良"
+    romaji: "Nara"
+    office: "奈良運輸支局"
+    area: "奈良運輸支局の管轄区域（橿原市、磯城郡（川西町を除く。）及び高市郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "飛鳥"
+    romaji: "Asuka"
+    office: "奈良運輸支局"
+    area: "奈良運輸支局の管轄区域（橿原市、磯城郡（川西町を除く。）及び高市郡に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "和歌山"
+    romaji: "Wakayama"
+    office: "和歌山運輸支局"
+    area: "和歌山運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "鳥取"
+    romaji: "Tottori"
+    office: "鳥取運輸支局"
+    area: "鳥取運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "島根"
+    romaji: "Shimane"
+    office: "島根運輸支局"
+    area: "島根運輸支局の管轄区域（出雲市、仁多郡及び飯石郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "出雲"
+    romaji: "Izumo"
+    office: "島根運輸支局"
+    area: "島根運輸支局の管轄区域（出雲市、仁多郡及び飯石郡に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "岡山"
+    romaji: "Okayama"
+    office: "岡山運輸支局"
+    area: "岡山運輸支局の管轄区域（倉敷市、笠岡市、井原市、浅口市、浅口郡及び小田郡を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "倉敷"
+    romaji: "Kurashiki"
+    office: "岡山運輸支局"
+    area: "岡山運輸支局の管轄区域（倉敷市、笠岡市、井原市、浅口市、浅口郡及び小田郡に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "広島"
+    romaji: "Hiroshima"
+    office: "広島運輸支局"
+    area: "広島運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "福山"
+    romaji: "Fukuyama"
+    office: "福山自動車検査登録事務所"
+    area: "福山自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "下関"
+    romaji: "Shimonoseki"
+    office: "山口運輸支局"
+    area: "山口運輸支局の管轄区域（下関市に限る。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "山口"
+    romaji: "Yamaguchi"
+    office: "山口運輸支局"
+    area: "山口運輸支局の管轄区域（下関市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "徳島"
+    romaji: "Tokushima"
+    office: "徳島運輸支局"
+    area: "徳島運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "高松"
+    romaji: "Takamatsu"
+    office: "香川運輸支局"
+    area: "香川運輸支局の管轄区域（高松市に限る。）内"
+    from: 2020
+    from_evidence: enabling-instrument
+  - mark: "香川"
+    romaji: "Kagawa"
+    office: "香川運輸支局"
+    area: "香川運輸支局の管轄区域（高松市を除く。）内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "愛媛"
+    romaji: "Ehime"
+    office: "愛媛運輸支局"
+    area: "愛媛運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "高知"
+    romaji: "Kochi"
+    office: "高知運輸支局"
+    area: "高知運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "福岡"
+    romaji: "Fukuoka"
+    office: "福岡運輸支局"
+    area: "福岡運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "北九州"
+    romaji: "Kitakyushu"
+    office: "北九州自動車検査登録事務所"
+    area: "北九州自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "久留米"
+    romaji: "Kurume"
+    office: "久留米自動車検査登録事務所"
+    area: "久留米自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "筑豊"
+    romaji: "Chikuho"
+    office: "筑豊自動車検査登録事務所"
+    area: "筑豊自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "佐賀"
+    romaji: "Saga"
+    office: "佐賀運輸支局"
+    area: "佐賀運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "長崎"
+    romaji: "Nagasaki"
+    office: "長崎運輸支局及び厳原自動車検査登録事務所"
+    area: "長崎運輸支局及び厳原自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "佐世保"
+    romaji: "Sasebo"
+    office: "佐世保自動車検査登録事務所"
+    area: "佐世保自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "熊本"
+    romaji: "Kumamoto"
+    office: "熊本運輸支局"
+    area: "熊本運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "大分"
+    romaji: "Oita"
+    office: "大分運輸支局"
+    area: "大分運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "宮崎"
+    romaji: "Miyazaki"
+    office: "宮崎運輸支局"
+    area: "宮崎運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "鹿児島"
+    romaji: "Kagoshima"
+    office: "鹿児島運輸支局"
+    area: "鹿児島運輸支局の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "奄美"
+    romaji: "Amami"
+    office: "奄美自動車検査登録事務所"
+    area: "奄美自動車検査登録事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
+  - mark: "沖縄"
+    romaji: "Okinawa"
+    office: "沖縄総合事務局陸運事務所、宮古運輸事務所及び八重山運輸事務所"
+    area: "沖縄総合事務局陸運事務所、宮古運輸事務所及び八重山運輸事務所の管轄区域内"
+    from: 2017
+    from_evidence: instrument-in-force-upper-bound
