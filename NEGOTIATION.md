@@ -23875,3 +23875,18 @@ Still unmeasured, and named so nobody mistakes silence for coverage:
 `makes/search_aliases.yml`, `body_types.yml`, `makes/drop.yml`,
 `model_drop_patterns`, `kind_maps/*`, and **`styling.yml#acronyms`** — which is
 what those 13 redundant pins are redundant against.
+
+---
+
+**S4W — PLATES ART WAVE LANDED (2026-08-02): `plates/_art/` exists, 410 open assets, 6,058-row ledger, and a new lint gate.** Five Commons harvesters (DACH emblems · EU plates · US×2 · shared fonts) ran the PRD-PLATE-ART license-ledger discipline — every license from the API (extmetadata + exact template via prop=templates), never from the image — and `data#229` merges the result: complete DACH emblem coverage (26 cantons + 16 Länder + 9 Bundesländer, three uniform PD families, ZERO unclear licenses in scope), the full 30-sign EU-band family (all PD/CC0), FE-Schrift and UK Mandatory Font as extraction-grade open glyph charts, the Florida orange SVGs, FLHSMV/GA sample sets, US DMV blank templates, FHWA Series B–F. `lint_plates.rb` now validates the ledger (closed vocabularies, open assets on disk, no unledgered files, every exclusion reasoned) — the run prints an `_art ledger` line. site_only (BY/BY-SA) assets live in vehiclesdb-web `vendor/plates-art/` under copyleft quarantine; raw scope ledgers + font-posture.yml + the harvesters' verbatim reports are in `pipeline#162`.
+
+What a consumer (and the render program) must know, all recorded in the ledger header and PRD-PLATE-ART §7:
+
+1. **The `insignia` flag under-reports**: the PD-CoA/PD-Seal license families carry arms-use notices independent of per-file tags (ch-sg is the proof). Treat every emblem row in those families as insignia-in-substance.
+2. **Schema gap, blocking /plates GA**: no trademark field. Several open-tier US rows depict trademarked marks (FL/GA university plates, WI Harley-Davidson, TX/UT/VA seals, NM State Police). A {{Trademarked}}-style pass-through pass is required before those assets serve.
+3. **The own-SVG rule is vindicated hard**: 2 US full-plate vectors exist in ~5,700 Commons files, and FR/NL/BE/AT/FI/IT/ES have no open-tier full-plate art at all. Renders come from our layouts + these PD emblems/bands, nothing else.
+4. **L0-pilot font holes**: NL and ES have NO open-tier glyph source on Commons (verified absence, three search paths) — the PRD-PLATES §6 schematic-substitution default fires for both until the RDW drawings / ES Schriftmuster are pinned from the regulators. FHWA Series B–F (PD-USGov) is the metrically-usable US fallback.
+5. **Measured render trap**: the German registration decal is NOT uniformly the Landeswappen — NRW samples carry district/city arms. The ~400-Landkreis arms long tail is its own future harvest. `us-wa` is the one zero-coverage US state; the crop/blur re-mine candidates (≈390 PD/CC0) are marked in the exclusions.
+6. **One cross-scope disagreement ruled at merge** (header-documented): the "Arkansas deco 1938 numbers" chart keeps the fonts scope's drawn-glyph-chart determination over US-east's bulk real-serial heuristic — BY-SA either way, open tier untouched. Also escalation-worthy upstream: the 44 FLHSMV sample files carry {{PD-USGov}}, facially inapposite for a state agency; they route open on Florida's independent PD basis (Microdecisions v. Skinner), not on that tag.
+
+Emblem-slot upgrades from placeholder to exact artwork are now UNBLOCKED for DACH (per-emblem affirmative PD) and for the 8 US states with state PD templates — everywhere else the §3 neutral-placeholder rule stays until artwork_risk + ledger both clear.

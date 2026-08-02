@@ -174,7 +174,7 @@ def mutate(serial)
 end
 
 files = Dir[File.join(ROOT, "plates", "*.yml")] + Dir[File.join(ROOT, "plates", "*", "*.yml")]
-files = files.reject { |f| f.include?("/_meta/") || f.include?("/_decode/") }
+files = files.reject { |f| f.include?("/_meta/") || f.include?("/_decode/") || f.include?("/_art/") }
 seen_series = {}
 series_count = 0
 matching_tally = Hash.new(0)
@@ -349,6 +349,52 @@ puts "plates lint: #{files.size} files, #{series_count} series"
 puts "plates lint: matching #{matching_tally.sort.map { |k, v| "#{k}=#{v}" }.join(' ')}" \
      " | twins #{twin_tally.sort.map { |k, v| "#{k}=#{v}" }.join(' ')}" \
      " | separators emitted #{EMITTED.to_a.map(&:inspect).join(',')} forgiving #{FORGIVING.size}"
+
+# --- the art ledger gate (PRD-PLATES §7.1 amendment; PRD-PLATE-ART §6) ------
+# plates/_art/<jurisdiction>/ holds ONLY open-tier (PD/CC0) assets, and
+# _ledger.yml is the normative per-file license record for every tier —
+# site_only assets live in web storage, excluded rows are entries only.
+# Enforced: closed tier/element vocabulary; required keys per row; every
+# open row's asset on disk; every asset on disk ledgered open exactly once;
+# every exclusion states its reason.
+ART_DIR = File.join(ROOT, "plates", "_art")
+ART_ELEMENTS = %w[emblem full_plate band font_sample decal].freeze
+art_ledger = File.join(ART_DIR, "_ledger.yml")
+if File.exist?(art_ledger)
+  rows = begin
+    YAML.safe_load_file(art_ledger, permitted_classes: [], aliases: false)
+  rescue Psych::SyntaxError => e
+    fail! "_art/_ledger.yml: does not parse — #{e.message}"
+    nil
+  end
+  if rows.is_a?(Array)
+    open_paths = Set.new
+    rows.each_with_index do |r, i|
+      id = "_art/_ledger.yml[#{i}] #{r['file'] || r['title']}"
+      %w[title jurisdiction element tier license source_url accessed].each do |k|
+        fail! "#{id}: #{k} missing" if r[k].to_s.empty?
+      end
+      # `file` names the local asset — excluded rows never downloaded one
+      fail! "#{id}: file missing" if r["tier"] != "excluded" && r["file"].to_s.empty?
+      fail! "#{id}: tier #{r['tier'].inspect} not open|site_only|excluded" unless %w[open site_only excluded].include?(r["tier"])
+      fail! "#{id}: element #{r['element'].inspect} outside the vocabulary" unless ART_ELEMENTS.include?(r["element"])
+      fail! "#{id}: excluded without exclusion_reason" if r["tier"] == "excluded" && r["exclusion_reason"].to_s.empty?
+      next unless r["tier"] == "open"
+      p = File.join(ART_DIR, r["jurisdiction"].to_s, r["file"].to_s)
+      fail! "#{id}: open-tier asset missing on disk" unless File.exist?(p)
+      fail! "#{id}: two open rows claim one asset path" unless open_paths.add?(p)
+    end
+    Dir[File.join(ART_DIR, "*", "*")].each do |p|
+      fail! "_art asset without an open ledger row: #{p.sub("#{ROOT}/", '')}" unless open_paths.include?(p)
+    end
+    art_tally = rows.group_by { |r| r["tier"] }.transform_values(&:size)
+    puts "plates lint: _art ledger #{rows.size} rows (#{art_tally.sort.map { |k, v| "#{k}=#{v}" }.join(' ')}), #{open_paths.size} open assets verified"
+  elsif rows
+    fail! "_art/_ledger.yml: does not parse as a row array"
+  end
+elsif Dir.exist?(ART_DIR)
+  fail! "plates/_art exists without _ledger.yml — assets must not land unledgered"
+end
 if FAILURES.any?
   FAILURES.each { |f| puts "LINT FAIL: #{f}" }
   puts "#{FAILURES.size} failure(s)."
