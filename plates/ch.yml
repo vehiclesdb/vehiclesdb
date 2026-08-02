@@ -1,0 +1,1273 @@
+# plates/ch.yml — Switzerland (PRD-PLATES gate L1). DRAFT for verification.
+#
+# EVERY format, colour, layout and class claim in this file comes from the
+# consolidated federal law on fedlex.admin.ch, fetched 2026-08-02:
+#   * VZV — Verordnung vom 27. Oktober 1976 über die Zulassung von Personen und
+#     Fahrzeugen zum Strassenverkehr (Verkehrszulassungsverordnung), SR 741.51,
+#     Stand am 1. Januar 2026. Art. 82-87a are THE plate chapter (heading "213
+#     Kontrollschilder"), Art. 90-97 the moped chapter, Art. 151 the transitional
+#     provisions that date three of the series below.
+#   * VVV — Verkehrsversicherungsverordnung vom 20. November 1959, SR 741.31,
+#     Stand am 1. Januar 2026. Art. 13-15 Wechselschilder, Art. 16-19 + Anhang 2
+#     provisional registration, Art. 20-21 Tagesausweise, Art. 22-26 Kollektiv-
+#     Fahrzeugausweise (the dealer-plate regime), Art. 35-37 the moped vignette.
+#   * VTS — Verordnung vom 19. Juni 1995 über die technischen Anforderungen an
+#     Strassenfahrzeuge, SR 741.41, Stand am 1. Januar 2026. Art. 45 + Anhang 4
+#     Ziff. 4 the "CH" distinguishing sign; Art. 96 front-and-rear duty.
+#   * WSchG — Wappenschutzgesetz vom 21. Juni 2013, SR 232.21, for the arms.
+#
+# ---------------------------------------------------------------------------
+# THE SIX STRUCTURAL FACTS THAT SHAPE THIS FILE
+# ---------------------------------------------------------------------------
+#
+# 1. THE PLATE BINDS TO THE OWNER, NOT THE VEHICLE — and the law says so in one
+#    sentence. Art. 87 Abs. 1 VZV, verbatim: "Die einmal zugeteilte Schildnummer
+#    bleibt für den Halter reserviert." (The number once allocated stays reserved
+#    FOR THE KEEPER.) Art. 87 Abs. 5 adds that the plates themselves "bleiben
+#    Eigentum der Behörde" — they never become the keeper's property, let alone
+#    the vehicle's. Three more provisions only make sense on that reading: VVV
+#    Art. 13 Abs. 2 issues a Wechselschild "nur für Fahrzeuge desselben Halters
+#    und mit Standort im gleichen Kanton"; VZV Art. 94 Abs. 5 lets a deregistered
+#    moped's plate be re-allocated "für ein anderes Motorfahrrad des gleichen
+#    Halters"; and VZV Art. 74 Abs. 5 gives the keeper 14 days to put another
+#    vehicle on the road before the plates must go back ("Lässt der Halter innert
+#    14 Tagen kein anderes Fahrzeug in den Verkehr setzen, so hat er auch die
+#    Kontrollschilder unverzüglich zurückzugeben"). Hence `binding: owner`
+#    at the top of this file — the field PRD-PLATES §2.2 introduced for exactly
+#    this jurisdiction. A vehicle-keyed consumer must not join on a Swiss plate.
+#
+# 2. THE CANTON TABLE IS IN THE ORDINANCE, IT IS CLOSED, AND IT IS 26 ROWS.
+#    Art. 84 Abs. 1 VZV: "Jeder Kanton wird mit zwei grossen Buchstaben wie folgt
+#    bezeichnet:" followed by the table reproduced in plates/_decode/ch-cantons.yml
+#    (ZH BE LU UR SZ OW NW GL ZG FR SO BS BL SH AR AI SG GR AG TG TI VD VS NE GE
+#    JU, in the ordinance's own order of precedence). This is the German-Anlage-2
+#    case, not the German-district case: small, closed, primary, inlineable. The
+#    ONE period fact the table carries is also primary — the Jura row is footnoted
+#    "Kanton eingefügt durch Ziff. I der V vom 15. Nov. 1978, in Kraft seit
+#    1. Jan. 1979 (AS 1978 1805)", so JU cannot appear on a plate allocated before
+#    1979 and everything JU decodes to was BE before that.
+#
+# 3. FRONT AND REAR DIFFER, AND THE DIFFERENCE IS THE COATS OF ARMS. This is the
+#    single most-asked Swiss plate fact and Art. 85 answers it exactly:
+#      Abs. 1 (FRONT plate for Motorwagen; also the single plate for Motoreinachser,
+#      land- und forstwirtschaftliche Fahrzeuge and Arbeitsanhänger), verbatim:
+#      "sind von links nach rechts die zugeteilten Buchstaben, ein Punkt auf halber
+#      Höhe und die Zahlen aufzutragen." — letters, a MID-HEIGHT POINT, numbers.
+#      NO ARMS AT ALL on the front plate.
+#      Abs. 2 sentence 1 (REAR Hochformat for Motorwagen; and the plates for
+#      Motorräder, Kleinmotorräder, Leicht-, Klein- und dreirädrige Motorfahrzeuge,
+#      Transport- und Ausnahmeanhänger): "müssen im oberen Teil von links nach
+#      rechts das eidgenössische Wappen, die Kantonsbuchstaben und das
+#      Kantonswappen, im unteren Teil die Kontrollnummer tragen." — FEDERAL arms
+#      left, canton letters centre, CANTON arms right, number on the second line.
+#      Abs. 2 sentence 2 (REAR Langformat for Motorwagen and their trailers): "muss
+#      von links nach rechts das eidgenössische Wappen, die Kantonsbuchstaben,
+#      einen Punkt auf halber Höhe, die Kontrollnummer und das Kantonswappen
+#      tragen." — federal arms, letters, point, number, CANTON ARMS LAST.
+#      Abs. 3 (military trailers): "Das Wappen fällt weg."
+#      Abs. 4 + Art. 84 Abs. 4 (diplomatic/consular): the sign field replaces the
+#      arms and the plates "enthalten keine Wappen".
+#      Art. 84 Abs. 3 (federal plates): "tragen nur das eidgenössische Wappen".
+#    Art. 83 Abs. 2 governs how they are made: "Wappen, Buchstaben und Zahlen sind
+#    auf 1,5 mm erhaben gepresst. Die Wappen müssen der offiziellen Gestaltung
+#    entsprechen." Every series below carries the placement in
+#    `design.layout_front` / `design.layout_rear` so the render layer can lay out
+#    the emblem slots without re-reading the statute, and `rear_differs: true`
+#    where Art. 85 makes them differ.
+#
+# 4. THE ARMS CANNOT BE LICENSED — so §3's placeholder rule is not a caution here,
+#    it is the only lawful option. WSchG Art. 8 Abs. 1: "Das Schweizerwappen, die
+#    Wappen der Kantone, Bezirke, Kreise und Gemeinden ... dürfen nur von dem
+#    Gemeinwesen, zu dem sie gehören, gebraucht werden." Abs. 3: "Die Zeichen nach
+#    den Absätzen 1 und 2 können nicht lizenziert und nicht übertragen werden."
+#    There is therefore no clean-licence route to the exact artwork for ANY of the
+#    27 arms (federal + 26 cantonal) — PRD-PLATES §6's "affirmatively clean per
+#    emblem" exit does not exist in Switzerland. Recorded honestly, and NOT read
+#    as legal advice: WSchG Art. 8 Abs. 4 lit. a does permit use "als Abbildung in
+#    Wörterbüchern, Nachschlagewerken, wissenschaftlichen und ähnlichen Werken",
+#    which is an encyclopedia-shaped exception a lawyer should look at before the
+#    site ships anything but placeholders. Until then: placeholders everywhere.
+#
+# 5. THERE IS NO EURO BAND, AND THE "CH" IS A STICKER, NOT PART OF THE PLATE.
+#    Nothing in VZV Art. 82-87a mentions a national band, a flag field or an EU
+#    strip. The distinguishing sign lives in a different ordinance and a different
+#    object: VTS Art. 45 Abs. 1 — "Motorfahrzeuge und Anhänger, die ins Ausland
+#    fahren, müssen hinten ein Landeszeichen nach Anhang 4 tragen" — and VTS
+#    Anhang 4 Ziff. 4: "Das Landeszeichen setzt sich aus den zwei lateinischen
+#    grossen Buchstaben «CH» zusammen. Sie müssen schwarz auf einer elliptischen
+#    weissen Fläche angebracht sein, deren Hauptachse waagrecht liegt", minimum
+#    ellipse 175 x 115 mm, letters 80 mm high, 40 mm wide, 10 mm stroke. It is
+#    required only for journeys abroad and is carried in `common.country_sign`,
+#    never in a series' `design.band`, which is `{ side: none }` everywhere.
+#
+# 6. THE PRINTED SEPARATOR IS A GLYPH THIS DATASET CANNOT EMIT — stated up front
+#    because it is the one place this file departs from what the plate shows.
+#    Art. 85 Abs. 1 and Abs. 2 prescribe "ein Punkt auf halber Höhe" between the
+#    canton letters and the number on every single-line plate. A mid-height point
+#    is U+00B7 MIDDLE DOT; U+00B7 is in _meta/separators.yml's FORGIVING set but
+#    NOT in its EMITTED set, so writing it would be a lint failure under
+#    PRD-PLATES §2.6, and rightly: the dataset commits to writing only "-" and
+#    " ". Two consequences, both benign:
+#      (a) `pattern` spells the gap as a SPACE — which is also literally correct
+#          for the two-line Hochformat and motorcycle plates, where Art. 85 Abs. 2
+#          puts the letters and the number on different lines and there is no
+#          point at all;
+#      (b) every `regex` accepts `[- ]?` at that position — hyphen, space, or
+#          nothing — and a §2.6-conformant consumer that strips the forgiving set
+#          maps a real "ZH·123456" onto "ZH123456", which the separator-free twin
+#          of these regexes matches exactly. The contract holds; only the printed
+#          glyph is unrepresentable. See the dossier for the amendment this file
+#          recommends (add U+00B7 to `forgiving` explicitly — it is already there —
+#          and record the Swiss point in `never_separator_note`'s neighbourhood as
+#          a KNOWN emitted-set gap rather than leaving it undocumented).
+#
+# ---------------------------------------------------------------------------
+# REGEX POLICY (PRD-PLATES §2.7 tiers), applied consistently below
+# ---------------------------------------------------------------------------
+#   regex            the lint-round-trippable printed form: [A-Z]{2} for the
+#                    canton, `[- ]?` for the point, and 1-6 digits. The SIX-DIGIT
+#                    bound is the only number claim in this file that is NOT in
+#                    the ordinance — see the gap note on `common.numbering`.
+#   regex_strict     the sourced narrowing: the 26 canton codes of Art. 84 Abs. 1
+#                    as a literal alternation, plus no-leading-zeros where
+#                    Art. 84 Abs. 2's "beginnt ... in der Regel mit der Zahl 1"
+#                    supports it (flagged as an INFERENCE, not a quotation).
+#   regex_statutory  the outer legal bound: the ordinance caps NOTHING, so the
+#                    statutory twin drops the digit ceiling entirely — and, for
+#                    the U and Z plates, admits the marking letter in any of the
+#                    positions the ordinance leaves open, because it prescribes
+#                    the LETTER and not its place.
+jurisdiction: ch
+authority:
+  name: Bundesamt für Strassen (ASTRA) / kantonale Strassenverkehrsämter — Verkehrszulassungsverordnung (VZV)
+  url: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de"
+binding: owner
+binding_note: >-
+  Art. 87 Abs. 1 VZV: "Die einmal zugeteilte Schildnummer bleibt für den Halter
+  reserviert." The plate is allocated to the KEEPER and follows the keeper, not
+  the vehicle; Art. 87 Abs. 5 keeps ownership of the physical plate with the
+  authority. This is the jurisdiction PRD-PLATES §2.4 names when it introduces
+  `binding:`; every series in this file inherits `owner` unless it says otherwise.
+instrument:
+  citation: "Verordnung vom 27. Oktober 1976 über die Zulassung von Personen und Fahrzeugen zum Strassenverkehr (Verkehrszulassungsverordnung, VZV), SR 741.51, Stand am 1. Januar 2026"
+  ausfertigungsdatum: "1976-10-27"
+  entry_in_force: "1977-01-01"
+  stand: "2026-01-01"
+  companion_instruments:
+    - "Verkehrsversicherungsverordnung vom 20. November 1959 (VVV), SR 741.31, Stand am 1. Januar 2026"
+    - "Verordnung vom 19. Juni 1995 über die technischen Anforderungen an Strassenfahrzeuge (VTS), SR 741.41, Stand am 1. Januar 2026"
+    - "Bundesgesetz vom 21. Juni 2013 über den Schutz des Schweizerwappens und anderer öffentlicher Zeichen (Wappenschutzgesetz, WSchG), SR 232.21"
+  source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # front matter: 'vom 27. Oktober 1976 (Stand am 1. Januar 2026)', SR-Nummer 741.51; dateEntryInForce 1977-01-01 per fedlex.data.admin.ch"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  canton_codes: [AG, AI, AR, BE, BL, BS, FR, GE, GL, GR, JU, LU, NE, NW, OW, SG, SH, SO, SZ, TG, TI, UR, VD, VS, ZG, ZH]
+  canton_codes_note: >-
+    The 26 codes of Art. 84 Abs. 1 VZV, sorted alphabetically here for regex
+    derivation; the ordinance prints them in the constitutional order of
+    precedence (ZH BE LU UR SZ OW NW GL ZG FR SO BS BL SH AR AI SG GR AG TG TI VD
+    VS NE GE JU), which plates/_decode/ch-cantons.yml preserves. Closed list: the
+    ordinance says "Jeder Kanton wird mit zwei grossen Buchstaben wie folgt
+    bezeichnet" and then enumerates, so there is no open tail and no delegation —
+    the contrast with § 9 Abs. 3 FZV (Germany, ~400 codes in the Bundesanzeiger)
+    could not be sharper.
+  canton_codes_source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 84 Abs. 1 VZV, the 26-row table, with the Jura footnote 'Kanton eingefügt durch Ziff. I der V vom 15. Nov. 1978, in Kraft seit 1. Jan. 1979 (AS 1978 1805)'"
+  numbering:
+    rule: >-
+      Art. 84 Abs. 2 VZV, verbatim: "Die Nummerierung beginnt für Motorwagen,
+      Motoreinachser und Anhänger einerseits und Motorräder, Klein- und
+      dreirädrige Motorfahrzeuge anderseits separat sowie für jede Schilderart
+      nach Grundfarbe und besonderer Kennzeichnung getrennt in der Regel mit der
+      Zahl 1."
+    consequences:
+      - "Number spaces are per CANTON x per BACKGROUND COLOUR x per SPECIAL MARKING, and additionally split between the motorcar/single-axle/trailer family and the motorcycle/small/three-wheeler family. A number therefore repeats across series and colours: 'ZH 12345' can exist simultaneously as a white car plate, a light-blue work-vehicle plate and a light-green agricultural plate."
+      - "TRAILERS SHARE THE MOTORCAR NUMBER SPACE. Art. 84 Abs. 2 groups 'Motorwagen, Motoreinachser und Anhänger' as one series, so a Swiss trailer registration is not distinguishable from a car registration by its string — only by the plate it is printed on."
+      - "No leading zeros: the numbering BEGINS at 1 and counts upward. Recorded as an INFERENCE from 'in der Regel mit der Zahl 1', not as a quotation of a no-leading-zero rule — 'in der Regel' expressly leaves room for exceptions. It lives in regex_strict, never in regex."
+    digit_ceiling: null
+    digit_ceiling_note: >-
+      RECORDED GAP, and the most important one in this file. NOTHING in the VZV,
+      the VVV or the VTS caps the number of digits in a Kontrollnummer. Art. 85
+      Abs. 5 delegates the typography — "Das ASTRA bestimmt das Schriftbild und
+      die Abmessungen für Buchstaben und Zahlen" — and the ASTRA determination was
+      not retrievable from any government source in this pass. Every `regex` below
+      therefore uses \d{1,6} as a PRACTICAL bound (six digits is the widest form
+      observed on issued plates, in the largest cantons), and every
+      `regex_statutory` drops the ceiling to \d+ because that is the honest outer
+      legal bound. A verifier who pins the ASTRA rule should tighten `regex` and
+      delete this note.
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 84 Abs. 2 (separate numbering per colour, marking and vehicle family) and Art. 85 Abs. 5 (ASTRA sets the script and dimensions)"
+  colours:
+    rule: >-
+      Art. 82 Abs. 1 VZV is an exhaustive list of the six background colours, and
+      it is the whole Swiss colour system: "Es werden abgegeben: a. Kontrollschilder
+      mit weissem Grund und schwarzer Schrift für Motorwagen, Motorräder, Klein-
+      und dreirädrige Motorfahrzeuge, Motoreinachser und Anhänger; b. ... mit
+      hellblauem Grund ... für Arbeitsfahrzeuge; c. ... mit hellbraunem Grund ...
+      für Ausnahmefahrzeuge; d. ... mit hellgrünem Grund ... für land- und
+      forstwirtschaftliche Fahrzeuge; e. ... mit gelbem Grund ... für
+      Kleinmotorräder und Leichtmotorfahrzeuge; f. Kontrollschilder mit
+      schattenschwarzem Grund und weisser Schrift für Armeefahrzeuge."
+    hex_basis_note: >-
+      The ordinance NAMES colours and gives no RAL or RGB value anywhere — the
+      same situation de.yml records for the German green and red plates. Every hex
+      below is therefore `hex_basis: observed`, chosen as the standard web colour
+      for the German colour word, and must not be treated as a spec value.
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 82 Abs. 1 lit. a-f"
+  special_markings:
+    rule: >-
+      Art. 82 Abs. 2 VZV, the closed list of specially-marked plates: "Besonders
+      gekennzeichnet werden: a. die Schilder für die provisorische Zulassung nach
+      Artikel 18 VVV; b. ...; c. die Händlerschilder mit dem Buchstaben «U»;
+      d. die Schilder für Fahrzeuge von Haltern mit diplomatischen oder
+      konsularischen Vorrechten und Immunitäten mit dem Zeichen «CD», «CC» oder
+      «AT» auf dunkelgrünem oder dunkelblauem Feld."
+    lit_b_repealed: "Aufgehoben durch Ziff. I der V vom 11. April 2001, mit Wirkung seit 1. Juni 2001 (AS 2001 1387) — the Mietwagen (rental-car) marking; modelled as ch-rental-1977, ENDED 2001."
+    consequence: >-
+      Anything NOT on this list carries an ordinary, unmarked plate. That is a
+      sourced NEGATIVE and it kills four series a naive reading would invent:
+      Tagesschilder (day plates, VVV Art. 20) are unmarked ordinary plates;
+      Wechselschilder (VVV Art. 13-15) are unmarked ordinary plates; police and
+      cantonal government fleets carry ordinary cantonal plates; and federal
+      administration vehicles are expressly registered "mit kantonalen
+      Kontrollschildern" (VFBF Art. 24 Abs. 1). Each is recorded as a variant or a
+      note, never as a series.
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 82 Abs. 2 lit. a-d and the footnote repealing lit. b"
+  dimensions:
+    rule: >-
+      Art. 83 Abs. 3 VZV: "Die Kontrollschilder weisen folgende Formate auf, wobei
+      die Ecken mit einem Radius von 1 cm abgerundet sind: a. Das vordere Schild
+      für Motorwagen sowie das Schild für Motoreinachser, land- und
+      forstwirtschaftliche Fahrzeuge und Arbeitsanhänger haben eine Länge von 30 cm
+      und eine Höhe von 8 cm. b. Das hintere Schild für Motorwagen sowie das Schild
+      für Transportanhänger an Motorwagen haben entweder eine Länge von 30 cm und
+      eine Höhe von 16 cm (Hochformat) oder eine Länge von 50 cm und eine Höhe von
+      11 cm (Langformat). c. Das Schild für Motorräder, Klein- und dreirädrige
+      Motorfahrzeuge sowie für ihre Anhänger hat eine Länge von 18 cm und eine Höhe
+      von 14 cm. d. Das Schild für Kleinmotorräder und Leichtmotorfahrzeuge sowie
+      für ihre Anhänger hat eine Länge von 10 cm und eine Höhe von 14 cm."
+    front_motorcar: { w: 300, h: 80, unit: mm, corner_radius_mm: 10 }
+    rear_motorcar_hochformat: { w: 300, h: 160, unit: mm, corner_radius_mm: 10 }
+    rear_motorcar_langformat: { w: 500, h: 110, unit: mm, corner_radius_mm: 10 }
+    motorcycle: { w: 180, h: 140, unit: mm, corner_radius_mm: 10 }
+    light_and_small_motorcycle: { w: 100, h: 140, unit: mm, corner_radius_mm: 10 }
+    military_trailer: "Art. 83 Abs. 5: the two-line plate takes the motorcycle format, the single-line plate the front motorcar format"
+    diplomatic: "Art. 83 Abs. 4: for vehicles of keepers with diplomatic or consular privileges and immunities the ASTRA may set deviating formats"
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 83 Abs. 3 lit. a-d, Abs. 4, Abs. 5"
+  material:
+    rule: >-
+      Art. 83 Abs. 1 VZV: "Die Kontrollschilder bestehen aus korrosionsbeständigem
+      Metall; sie können mit einem rückstrahlenden Belag versehen sein. Das ASTRA
+      kann andere geeignete Materialien zulassen und Minimalanforderungen für das
+      rückstrahlende Material festlegen." Art. 83 Abs. 2: "Wappen, Buchstaben und
+      Zahlen sind auf 1,5 mm erhaben gepresst. Die Wappen müssen der offiziellen
+      Gestaltung entsprechen."
+    retroreflective_regime: >-
+      RETROREFLECTION IS OPTIONAL AND CANTONAL, which is unusual in Europe and is
+      the reason `finish` is `retroreflective-optional` throughout. Art. 87a VZV:
+      "Die Kantone stellen Schilder mit reflektierendem Belag zur Verfügung. Sie
+      entscheiden, ob solche Schilder für alle Fahrzeuge oder nur auf Ersuchen des
+      Halters abgegeben oder umgetauscht werden." Art. 87a was INSERTED by the
+      amendment of 15 April 1987, in force 1 May 1987 (AS 1987 628) — see the
+      period note on ch-standard. The single exception is the moped plate, where
+      Art. 94 Abs. 6 makes a yellow reflective coating mandatory.
+    embossing: "raised 1.5 mm — arms, letters and numbers alike (Art. 83 Abs. 2); Swiss plates are pressed metal, not printed"
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 83 Abs. 1-2 and Art. 87a"
+  font:
+    name: null
+    statutory_basis: >-
+      Art. 85 Abs. 5 VZV, verbatim and in its entirety: "Das ASTRA bestimmt das
+      Schriftbild und die Abmessungen für Buchstaben und Zahlen." No typeface is
+      named in the ordinance, no drawing is annexed to it, and the ASTRA's
+      determination was not retrievable from any government source in this pass.
+    licence: >-
+      NO LICENSABLE FONT IS MANDATED — the same finding the EU dossier records for
+      the UK, Germany and Spain, reached here by a different route: Switzerland
+      does not even publish a Schriftmuster in the ordinance, it delegates. Per
+      PRD-PLATES §6 the render layer therefore uses the schematic fallback and
+      records the substitution; no third-party "Swiss plate font" TTF is touched.
+    gap: "the ASTRA Schriftbild determination is a RECORDED GAP — unpinned, and the reason no character heights or stroke widths appear in this file"
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 85 Abs. 5"
+  country_sign:
+    letters: "CH"
+    shape: ellipse
+    background: "#FFFFFF"
+    foreground: "#000000"
+    min_ellipse: { w: 175, h: 115, unit: mm }
+    min_letters: { h: 80, w: 40, stroke: 10, unit: mm }
+    rule: >-
+      VTS Art. 45 Abs. 1: "Motorfahrzeuge und Anhänger, die ins Ausland fahren,
+      müssen hinten ein Landeszeichen nach Anhang 4 tragen." VTS Anhang 4 Ziff. 4:
+      "Das Landeszeichen setzt sich aus den zwei lateinischen grossen Buchstaben
+      «CH» zusammen. Sie müssen schwarz auf einer elliptischen weissen Fläche
+      angebracht sein, deren Hauptachse waagrecht liegt." — with the minimum
+      dimensions above. It is a SEPARATE OBJECT stuck on the vehicle, not a field
+      on the plate; Switzerland has no Euro band and no national strip.
+    source: "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de  # VTS Art. 45 Abs. 1 and Anhang 4 Ziff. 4 (Mindestmasse: Höhe der Ellipse 11,5 cm, Breite 17,5 cm, Höhe der Buchstaben 8 cm, Breite 4 cm, Strichbreite 1 cm)"
+  display:
+    motorcar: "VTS Art. 96: 'Motorwagen müssen vorn und hinten das für diese Stellen bestimmte Kontrollschild tragen.' — front AND rear, and the two are physically different plates (see structural fact 3)"
+    motorcycle: "VTS Art. 136 Abs. 4: 'Bei Motorrädern, Leicht-, Klein- und dreirädrigen Motorfahrzeugen muss das Kontrollschild hinten angebracht werden.' — rear only, one plate"
+    agricultural: "VTS Art. 162 Abs. 1: agricultural and forestry motor vehicles carry ONE plate, front or rear as convenient; agricultural EXCEPTIONAL vehicles must carry one front and one rear"
+    single_axle: "VTS Art. 167: 'Das Kontrollschild muss gut sichtbar angebracht sein.'"
+    placement: "VTS Art. 45 Abs. 2: readable and as near vertical as possible; tilt at most 30° up / 15° down; lower edge at least 0.20 m and upper edge at most 1.50 m (0.10 m lower-edge minimum for M and N class front plates); the rear plate readable within 30° either side of the longitudinal axis"
+    source: "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de  # VTS Art. 45 Abs. 2, Art. 96, Art. 136 Abs. 4, Art. 162 Abs. 1, Art. 167"
+  arms:
+    federal: { present: true, rendered: placeholder }
+    cantonal: { present: true, rendered: placeholder, count: 26 }
+    rule: "Art. 83 Abs. 2 VZV: 'Die Wappen müssen der offiziellen Gestaltung entsprechen.' Art. 85 Abs. 1-4 fixes WHERE they go (structural fact 3)."
+    licence_posture: >-
+      WSchG Art. 8 Abs. 1 reserves the Swiss and cantonal arms to the polity they
+      belong to; Abs. 3: "Die Zeichen nach den Absätzen 1 und 2 können nicht
+      lizenziert und nicht übertragen werden." There is no licensable route to the
+      artwork, so PRD-PLATES §3's placeholder is mandatory rather than merely
+      prudent. Abs. 4 lit. a's reference-work exception is noted, not relied on.
+    source: "https://www.fedlex.admin.ch/eli/cc/2015/613/20250701/de  # WSchG Art. 8 Abs. 1, 3, 4 lit. a"
+  not_modelled:
+    - "EXPORT PLATES DO NOT EXIST. Art. 82 Abs. 1-2 VZV is exhaustive and has no export series; a vehicle permanently leaving Switzerland is simply deregistered. The nearest regime is the PROVISIONAL immatriculation of VVV Art. 16-19 (vehicles whose Standort is in Switzerland only for a limited time), which is modelled as ch-provisional. Sourced negative, not an omission."
+    - "HISTORIC / VETERAN PLATES DO NOT EXIST as a plate class. Art. 82's colour list has no historic entry and no VZV or VTS provision creates one; Swiss veteran vehicles carry ordinary white plates. (The administrative 'Veteranenfahrzeug' status is an entry in the Fahrzeugausweis; its federal basis was NOT located in the VZV or VTS text fetched here and is a recorded gap.) This is the only L1 core class Switzerland genuinely lacks."
+    - "TAXI PLATES DO NOT EXIST. Professional passenger transport is authorised on the driving licence (VZV Art. 25), not on the plate."
+    - "CANTONAL NUMBER AUCTIONS AND CHOSEN NUMBERS are cantonal law, outside the federal instruments read here, and are not modelled (PRD-PLATES §2.5 scope discipline)."
+
+region_encoding_tables:
+  cantons:
+    reference: "plates/_decode/ch-cantons.yml"
+    inline_codes: [AG, AI, AR, BE, BL, BS, FR, GE, GL, GR, JU, LU, NE, NW, OW, SG, SH, SO, SZ, TG, TI, UR, VD, VS, ZG, ZH]
+    note: >-
+      26 rows, closed, primary, and small enough for PRD-PLATES §2.4's "inline
+      table" branch — the codes are inlined here for regex derivation and the full
+      table with German/French/Italian names and the Jura period row lives in the
+      decode file. Two decode traps a parse API must carry: (1) the two-letter
+      canton code is fixed-width, so there is no maximal-munch problem of the
+      Spanish kind; (2) the code identifies the canton of the KEEPER's Standort
+      (VZV Art. 77), not where the vehicle is, and it follows the keeper on a
+      move — VZV Art. 120 (Standortwechsel) sends the annulled certificate and the
+      plates back to the former canton when a vehicle is admitted in another, and
+      VZV Art. 95 Abs. 2 states the moped equivalent expressly ("Wird der Standort
+      eines Motorfahrrads in einen andern Kanton verlegt, so ist beim neuen
+      Standortkanton ein neues Kontrollschild einzuholen").
+    source: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # Art. 84 Abs. 1"
+
+series:
+
+  # =========================================================================
+  # THE STANDARD SERIES — white ground, black script, canton letters + number.
+  # =========================================================================
+  - id: ch-standard
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      charset:
+        letters: "exactly two, and only the 26 canton codes of Art. 84 Abs. 1 VZV"
+        notes: >-
+          The letter pair is NOT a free alphabet: Art. 84 Abs. 1 enumerates the 26
+          codes and nothing else may appear. regex keeps [A-Z]{2} only because the
+          lint round-trips it against the pattern's L placeholders; regex_strict
+          carries the enumeration, which is the sourced grammar.
+      progression: >-
+        Art. 84 Abs. 2: numbering starts at 1 per canton, per background colour,
+        per special marking, and separately for the motorcar/single-axle/trailer
+        family. Consequence for era inference: a Swiss plate encodes NO date
+        whatsoever — only the keeper's canton — and a low number means an early
+        allocation only within one canton's one colour, never nationally.
+      separator_note: >-
+        Printed as "ein Punkt auf halber Höhe" (Art. 85 Abs. 1) on the front and
+        long-format plates, and as a LINE BREAK on the Hochformat rear plate. The
+        pattern spells a space; the regex accepts hyphen, space or nothing. See
+        structural fact 6.
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "FRONT plate, corners rounded r=10 mm" }
+      plate_variants:
+        - { w: 300, h: 160, unit: mm, note: "REAR Hochformat (two-line)" }
+        - { w: 500, h: 110, unit: mm, note: "REAR Langformat (single-line)" }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed, spec_note: "Art. 82 Abs. 1 lit. a names 'weissem Grund und schwarzer Schrift' with no RAL/RGB value; Art. 87a leaves retroreflection to the cantons" }
+      foreground: "#000000"
+      band: { side: none }
+      band_note: "no Euro band, no national strip — see structural fact 5; the 'CH' oval is a separate sticker under VTS Art. 45 Abs. 1 and is required only for journeys abroad"
+      emblem:
+        present: true
+        rendered: placeholder
+        note: "federal arms + the arms of the allocating canton, on the REAR plate only; WSchG Art. 8 Abs. 3 makes them unlicensable, so the placeholder rule is mandatory (structural fact 4)"
+      layout_front: "left to right: canton letters, a point at half height, the number. NO ARMS (Art. 85 Abs. 1)."
+      layout_rear: "Hochformat — upper part left to right: federal arms, canton letters, canton arms; lower part: the number. Langformat — left to right: federal arms, canton letters, point at half height, number, canton arms (Art. 85 Abs. 2)."
+      rear_differs: true
+      rear_differs_note: >-
+        TRUE, and structurally so: the Swiss front plate is 300x80 mm with no arms
+        at all, the rear plate is 300x160 or 500x110 mm and carries two coats of
+        arms. This is the UK-style asymmetry PRD-PLATES §2.2 introduced
+        `rear_differs` for, arriving in a stronger form than in the UK — there the
+        difference is colour, here it is size, layout and emblem content.
+      display: "front and rear (VTS Art. 96)"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    region_encoding_mechanism: >-
+      The two letters are the canton of the keeper's Standort — "der Ort, wo das
+      Fahrzeug nach Gebrauch in der Regel für die Nacht abgestellt wird"
+      (VZV Art. 77 Abs. 1), with the keeper's domicile deemed the Standort in the
+      three cases of Art. 77 Abs. 2. Closed 26-row table, primary, in Art. 84
+      Abs. 1 itself. Because the plate binds to the keeper, the code decodes the
+      KEEPER's canton and not the vehicle's location or origin.
+    variants:
+      - class: standard
+        note: >-
+          WECHSELSCHILDER (interchangeable plates, VVV Art. 13-15). One plate or
+          plate pair serves TWO vehicles of the same keeper with Standort in the
+          same canton — "Wechselschilder werden für höchstens zwei Fahrzeuge
+          erteilt. Diese Einschränkung gilt nicht für Arbeitsmotorwagen und
+          Anhänger" (Art. 13 Abs. 2) — and only that vehicle currently carrying the
+          plate may be used on public roads (Art. 14 Abs. 1). Motor vehicles pair
+          only with motor vehicles and trailers only with trailers, and both must
+          be able to carry the same KIND of plate (Art. 13 Abs. 3). A SUB-ENTRY and
+          not a series because the plate is ordinary and unmarked: Art. 82 Abs. 2's
+          list of specially-marked plates does not include it. Each vehicle still
+          gets its own Fahrzeugausweis (Art. 13 Abs. 4).
+        sources:
+          - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 13 Abs. 2-4 (same keeper, same canton, at most two vehicles, motor-with-motor / trailer-with-trailer, separate Fahrzeugausweis), Art. 14 Abs. 1 (only the vehicle carrying the plate may run), Art. 15 (separate insurance proof per vehicle)"
+      - class: temporary
+        note: >-
+          TAGESSCHILDER (day plates, VVV Art. 20-21). Plates issued with a
+          Tagesausweis "für eine Gültigkeitsdauer von 24, 48, 72 oder 96 Stunden"
+          (Art. 20 Abs. 4), returnable at expiry (Abs. 5), for unpaid journeys only
+          with at most eight occupants besides the driver (Art. 20a Abs. 1). A
+          SUB-ENTRY and not a series, on the same sourced negative: Art. 82 Abs. 2
+          does not mark them, so they are ordinary plates from the canton's
+          ordinary number space.
+        sources:
+          - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 20 Abs. 4-5 (24/48/72/96 hours, return at expiry), Art. 20a (unpaid journeys, occupant limit, dangerous-goods and heavy-goods exclusions), Art. 21 (collective liability insurance, surcharge for late return)"
+      - class: government
+        note: >-
+          POLICE, CANTONAL AND FEDERAL FLEETS carry ordinary cantonal plates.
+          Art. 82 Abs. 2 marks no government series, and the VFBF says so
+          affirmatively for the Confederation: "Verwaltungsfahrzeuge werden mit
+          kantonalen Kontrollschildern immatrikuliert" (Art. 24 Abs. 1). Only
+          ARMY vehicles get their own plates (ch-military-m). A sub-entry recording
+          a negative, so that a consumer does not go looking for a Swiss government
+          series that does not exist.
+        sources:
+          - "https://www.fedlex.admin.ch/eli/cc/2005/163/20240401/de  # VFBF Art. 24 Abs. 1 (federal administration vehicles on cantonal plates), Art. 28 (only military vehicles, NDB and Armasuisse vehicles get Militärkontrollschilder)"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. a (white ground, black script, for Motorwagen etc.); Art. 83 Abs. 1-3 (metal, 1.5 mm embossing, the four formats, 10 mm corner radius); Art. 84 Abs. 1-2 (the 26 canton codes; numbering per colour/marking/family from 1); Art. 85 Abs. 1-2 (front layout without arms, rear layouts with federal and cantonal arms); Art. 87 Abs. 1 and 5 (number reserved for the keeper; plates stay the authority's property); Art. 87a (cantonal discretion on retroreflective plates)"
+      - "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de  # VTS Art. 96 (front and rear on Motorwagen); Art. 45 Abs. 2 (placement geometry)"
+    notes: >-
+      THE SWISS STANDARD SERIES. period.start 1977 is the VZV's own entry into
+      force (1 January 1977) and is marked `instrument-in-force` for the reason
+      de.yml marks its German equivalent: the canton-letters-plus-number system is
+      far older than the VZV — the federal Motorfahrzeuggesetz of 1932 is the
+      usual attribution — and NO PRIMARY for that origin date was secured in this
+      pass, so it is not asserted. What the consolidated ordinance does date is the
+      surrounding regime: Art. 83 Abs. 1-2 and Art. 85 Abs. 2's long-format layout
+      sentence take their present wording from the amendment of 15 April 1987, in
+      force 1 May 1987 (AS 1987 628), and the same amendment INSERTED Art. 87a
+      (cantons must make retroreflective plates available) and restated Art. 151
+      Abs. 5 ("Kontrollschilder früherer Formate sind zu ersetzen, wenn die
+      zuständige Behörde den Fahrzeughalter dazu auffordert"). So 1 May 1987 is a
+      real design boundary — before it there was no reflective-plate duty at all —
+      but the pre-1987 TEXT was not retrievable (fedlex publishes no machine-
+      readable consolidation before 2000 and the AS 1987 628 scan was unreachable),
+      so no pre-1987 design is described here and no separate pre-1987 series is
+      invented. That boundary is the single highest-value item on the verifier's
+      list. FORMAT STABILITY, stated plainly: unlike NL sidecodes or the Spanish
+      2000 cutover, the Swiss STRING has not changed shape since at least 1977, so
+      a Swiss plate carries no era signal at all.
+
+  - id: ch-standard-trailer
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      charset: { notes: "identical grammar to ch-standard — and, per Art. 84 Abs. 2, drawn from the SAME number space as motorcars" }
+    design:
+      plate: { w: 300, h: 160, unit: mm, note: "Transportanhänger an Motorwagen — Hochformat, or 500x110 Langformat" }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm, note: "Transportanhänger, Langformat" }
+        - { w: 300, h: 80, unit: mm, note: "ARBEITSANHÄNGER take the front-plate format and the front-plate layout: letters, point, number, no arms (Art. 83 Abs. 3 lit. a + Art. 85 Abs. 1)" }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "federal + cantonal arms on Transport- und Ausnahmeanhänger plates (Art. 85 Abs. 2); ABSENT on Arbeitsanhänger plates (Art. 85 Abs. 1)" }
+      layout_rear: "Transport- und Ausnahmeanhänger: upper part federal arms, canton letters, canton arms; lower part the number (Art. 85 Abs. 2). Arbeitsanhänger: letters, point, number, no arms (Art. 85 Abs. 1)."
+      rear_differs: false
+      display: "one plate, at the rear"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. a (Anhänger take the white plate); Art. 83 Abs. 3 lit. a-b (Arbeitsanhänger 30x8, Transportanhänger 30x16 or 50x11); Art. 84 Abs. 2 (trailers share the motorcar number space); Art. 85 Abs. 1-2 (the two different layouts)"
+      - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 13 Abs. 2 (Wechselschilder for trailers are not capped at two vehicles); Art. 22 Abs. 2bis (a towing vehicle's rear dealer plate may serve as the trailer's plate)"
+    notes: >-
+      SWISS TRAILER PLATES. Its own series rather than a variant of ch-standard for
+      one reason and one only: the DESIGN differs by trailer type — an
+      Arbeitsanhänger carries the armless 300x80 front-plate form while a
+      Transportanhänger carries the armed rear-plate form — which is exactly the
+      PRD-PLATES §2.3 test. The STRING, by contrast, is indistinguishable from a
+      car's: Art. 84 Abs. 2 puts "Motorwagen, Motoreinachser und Anhänger" in ONE
+      number space, so no consumer can tell a Swiss trailer registration from a car
+      registration by parsing it. Recorded here because a parse API that scores
+      ch-standard and ch-standard-trailer must return BOTH with equal confidence
+      and say why. Trailers up to and including 750 kg still need their own plate
+      in Switzerland — the Dutch "repeat the tractor's number on a white plate"
+      rule has no Swiss equivalent — except that VZV Art. 72 Abs. 1 lit. c exempts
+      certain agricultural and works trailers from registration altogether.
+
+  # =========================================================================
+  # MOTORCYCLES — same white plate, its own number space, 180x140 mm.
+  # =========================================================================
+  - id: ch-motorcycle
+    class: motorcycle
+    categories: [motorcycle, quadricycle]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      progression: >-
+        SEPARATE NUMBER SPACE, and this is the one Swiss fact that partially
+        rescues plate-string disambiguation: Art. 84 Abs. 2 numbers "Motorräder,
+        Klein- und dreirädrige Motorfahrzeuge" apart from the motorcar family, so
+        the same canton runs two independent counters. A string alone still cannot
+        say which counter it came from — only the plate's SIZE can.
+      separator_note: "on the two-line motorcycle plate the letters and the number are on different lines (Art. 85 Abs. 2), so there is no printed point at all"
+    design:
+      plate: { w: 180, h: 140, unit: mm, corner_radius_mm: 10 }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "federal arms, canton letters, canton arms across the upper part (Art. 85 Abs. 2)" }
+      layout_rear: "upper part left to right: federal arms, canton letters, canton arms; lower part: the number (Art. 85 Abs. 2)"
+      rear_differs: false
+      display: "rear only, one plate (VTS Art. 136 Abs. 4)"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. a (Motorräder, Klein- und dreirädrige Motorfahrzeuge on the white plate); Art. 83 Abs. 3 lit. c (18 cm x 14 cm, also for their trailers); Art. 84 Abs. 2 (separate number space); Art. 85 Abs. 2 (two-line layout with both arms)"
+      - "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de  # VTS Art. 136 Abs. 4 (rear plate only on Motorräder, Leicht-, Klein- und dreirädrige Motorfahrzeuge)"
+    notes: >-
+      MOTORCYCLE AND SMALL/THREE-WHEELER PLATES. Covers Motorräder, Kleinmotorfahrzeuge
+      and dreirädrige Motorfahrzeuge (the last two being the Swiss quadricycle and
+      trike categories), plus their trailers, all on the 180x140 mm two-line white
+      plate. NOT covered here: Kleinmotorräder and Leichtmotorfahrzeuge, which
+      Art. 82 Abs. 1 lit. e puts on the YELLOW plate — see ch-lightmotor-yellow.
+      The Swiss category boundary is genuinely counter-intuitive: "Kleinmotorrad"
+      (yellow) and "Klein- und dreirädriges Motorfahrzeug" (white) are different
+      legal animals whose names differ by two words.
+
+  # =========================================================================
+  # YELLOW — Kleinmotorräder and Leichtmotorfahrzeuge.
+  # =========================================================================
+  - id: ch-lightmotor-yellow
+    class: moped
+    categories: [moped, quadricycle]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      charset: { notes: "same canton-plus-number grammar; the distinguishing feature is the yellow ground, not the string" }
+    design:
+      plate: { w: 100, h: 140, unit: mm, corner_radius_mm: 10 }
+      background: { color: "#FFFF00", finish: retroreflective-optional, hex_basis: observed, spec_note: "Art. 82 Abs. 1 lit. e names 'gelbem Grund und schwarzer Schrift'; no RAL/RGB in the ordinance" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "Art. 85 Abs. 2 lists Kleinmotorräder and Leichtmotorfahrzeuge among the two-line plates carrying federal arms, canton letters and canton arms in the upper part" }
+      layout_rear: "upper part left to right: federal arms, canton letters, canton arms; lower part: the number (Art. 85 Abs. 2)"
+      rear_differs: false
+      display: "rear only (VTS Art. 136 Abs. 4)"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. e (yellow ground, black script, for Kleinmotorräder und Leichtmotorfahrzeuge — 'Fassung gemäss Anhang 1 Ziff. II 10 der V vom 19. Juni 1995 ..., in Kraft seit 1. Okt. 1995 (AS 1995 4425)'); Art. 83 Abs. 3 lit. d (10 cm x 14 cm, also for their trailers — 'Fassung gemäss Ziff. I der V vom 30. Nov. 2012, in Kraft seit 1. Juli 2013 (AS 2012 7149)'); Art. 84 Abs. 2 (own number space per colour); Art. 85 Abs. 2"
+    notes: >-
+      THE YELLOW PLATE FOR KLEINMOTORRÄDER AND LEICHTMOTORFAHRZEUGE. period.start
+      1977 is the VZV's entry into force, because Art. 82 Abs. 1's structure is
+      original 1976 text; what IS separately dated is lit. e's present WORDING
+      (in force 1 October 1995, AS 1995 4425) and the 100x140 mm format of Art. 83
+      Abs. 3 lit. d (in force 1 July 2013, AS 2012 7149). Neither predecessor
+      wording was retrievable, so neither is described and no earlier series is
+      invented — the 2013 dimension change in particular is a candidate for a
+      pre-2013 series once AS 2012 7149's own text is read. DO NOT CONFUSE with
+      ch-motorfahrrad: both plates are yellow and both are 100x140 mm, but the
+      Motorfahrrad plate carries a mandatory reflective coating and an annual
+      insurance vignette and the Kleinmotorrad plate carries the two coats of arms.
+
+  # =========================================================================
+  # MOTORFAHRRÄDER — the yellow moped plate with the insurance vignette.
+  # =========================================================================
+  - id: ch-motorfahrrad
+    class: moped
+    categories: [moped]
+    period: { start: 1978 }
+    period_evidence: transitional-provision
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      separator_note: "letters in the upper third, number in the lower part (Art. 94 Abs. 6) — a line break, not a printed point"
+    design:
+      plate: { w: 100, h: 140, unit: mm }
+      background: { color: "#FFFF00", finish: retroreflective, hex_basis: observed, spec_note: "Art. 94 Abs. 6: 'weisen einen gelb reflektierenden Belag auf' — the ONE Swiss plate where retroreflection is mandatory rather than cantonal" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false, note: "Art. 94 Abs. 6 places only the canton letters and the number; no arms are prescribed for cantonal moped plates. Federal moped plates DO carry a mark — see the variant." }
+      layout_rear: "upper third, left: the letters allocated to the canton; lower part: the number — both black and raised (Art. 94 Abs. 6). The insurance vignette goes in the upper third beside the letters (VVV Art. 35 Abs. 3)."
+      extra_field:
+        name: Versicherungsvignette
+        position: "upper third of the plate"
+        content: "the last two digits of the issue year plus an individual number"
+        validity: "1 January of the printed year to 31 May of the following year (VVV Art. 36 Abs. 1)"
+        note: >-
+          The Swiss moped plate is the only plate in this file that carries a
+          DATE, and it carries it on a sticker rather than in the serial: VVV
+          Art. 35 Abs. 1-3 makes the vignette the proof of liability insurance and
+          requires it to "die beiden letzten Ziffern des Abgabejahres sowie eine
+          individuelle Nummer tragen". A parse API cannot read it from the string;
+          an image pipeline can, and it dates the vehicle's insurance year exactly.
+      rear_differs: false
+      display: "one plate"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    variants:
+      - class: government
+        note: >-
+          FEDERAL MOPEDS carry a different mark: VZV Art. 96 Abs. 1 lit. a — the
+          plates are issued by the office competent under the VFBF, "sind
+          unbefristet gültig und tragen im obern Drittel von links nach rechts ein
+          weisses Schweizer Kreuz und die Buchstaben gemäss der VFBF", and no proof
+          of insurance is required. The VFBF calls them "Post- und Regie-
+          Kontrollschilder (PR-Schilder)" (Art. 27) but does NOT publish the letter
+          set, which is a RECORDED GAP — the letters are therefore not modelled and
+          no pattern is guessed. Cantonal mopeds for which no liability insurance
+          is taken out get "ordentliche kantonale Kontrollschilder einer besonderen
+          vom Kanton zu bestimmenden Nummernserie" (Art. 96 Abs. 2) — a cantonal
+          sub-series with no federal grammar.
+        sources:
+          - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 96 Abs. 1 lit. a-c and Abs. 2"
+          - "https://www.fedlex.admin.ch/eli/cc/2005/163/20240401/de  # VFBF Art. 27 (mopeds of the Confederation on PR-Schilder)"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 90 (a moped is admitted with its Fahrzeugausweis, the plate named in it and a valid insurance vignette); Art. 94 Abs. 1-6 (issuing canton, one number reusable across several mopeds of the same keeper, 30-day substitute rule, transfer on vehicle change, and the 14x10 cm yellow reflective plate with the letters in the upper third left and the number below); Art. 95 Abs. 2 (a new plate from the new canton when the Standort moves); Art. 151 Abs. 6 (mopeds imported or made in Switzerland FROM 1 JANUARY 1978 must carry a Fahrzeugausweis and Kontrollschild under this ordinance; earlier ones ran on the old-law Etikette and transferable insurance mark until 31 December 1983)"
+      - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 35 Abs. 1-4 (the vignette IS the insurance proof; design per Anhang 3; last two digits of the issue year plus an individual number; placed in the upper third of the plate; minimum cover CHF 2 million), Art. 36 Abs. 1 (valid 1 January of the printed year to 31 May of the following year)"
+    notes: >-
+      THE MOPED PLATE — and the one Swiss series with a genuinely dated start.
+      period.start 1978 is not an instrument date but a rule: VZV Art. 151 Abs. 6
+      requires mopeds imported or manufactured in Switzerland from 1 January 1978
+      to carry a Fahrzeugausweis and a Kontrollschild under the VZV, while mopeds
+      imported before that date stayed on the OLD regime — "Etikette,
+      übertragbares Versicherungskennzeichen" — until 31 December 1983. That old
+      regime is the true "one series back" for this class, and it is deliberately
+      NOT modelled as a series: a label and a transferable insurance mark have no
+      serial grammar to write a pattern for, and the instrument that created them
+      was repealed by VZV Art. 152 and not retrieved. Art. 94's present wording
+      dates from 1 January 2012 (AS 2011 4941). THE OWNER-BINDING IS SHARPEST
+      HERE: Art. 94 Abs. 3 lets the SAME plate number be entered in the
+      Fahrzeugausweise of several mopeds of the same keeper in the same canton,
+      and Abs. 4 lets it move to a substitute moped for up to 30 days without any
+      authorisation at all.
+
+  # =========================================================================
+  # LIGHT BLUE — Arbeitsfahrzeuge (work vehicles).
+  # =========================================================================
+  - id: ch-workvehicle-blue
+    class: standard
+    categories: [machine, truck]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      charset: { notes: "same grammar; own number space per Art. 84 Abs. 2's per-colour split" }
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "front; rear 300x160 or 500x110 as for ch-standard" }
+      plate_variants:
+        - { w: 300, h: 160, unit: mm }
+        - { w: 500, h: 110, unit: mm }
+      background: { color: "#ADD8E6", finish: retroreflective-optional, hex_basis: observed, spec_note: "Art. 82 Abs. 1 lit. b names 'hellblauem Grund und schwarzer Schrift'; the hex is the standard web colour for the German colour word, NOT a spec value" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      layout_front: "letters, point at half height, number; no arms (Art. 85 Abs. 1)"
+      layout_rear: "as ch-standard (Art. 85 Abs. 2)"
+      rear_differs: true
+      display: "front and rear on Motorwagen (VTS Art. 96)"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. b (light-blue ground, black script, for Arbeitsfahrzeuge — original 1976 text, no amending footnote); Art. 82 Abs. 3 (a plate change is required when the vehicle's classification changes, except for classification changes lasting at most six months on vehicles up to 3500 kg or three months on others); Art. 84 Abs. 2 (own number space per background colour)"
+    notes: >-
+      THE LIGHT-BLUE WORK-VEHICLE PLATE. CLASS CAVEAT, and it is a real one:
+      _meta/classes.yml has no value for a work vehicle (mobile crane, concrete
+      pump, construction machine), so `standard` is recorded as the least-wrong fit
+      and a VOCABULARY GAP is flagged for the L1 report — the natural additions are
+      `work-vehicle` for this series and `oversize` for ch-exceptional-brown.
+      Art. 82 Abs. 3 is worth a claims model's attention: the plate follows the
+      vehicle's CLASSIFICATION, so a vehicle that changes class must change plates
+      — with an explicit six-month (up to 3500 kg) or three-month (heavier)
+      tolerance. This is a Swiss series in the fullest sense: distinct colour,
+      distinct number space, same string grammar.
+
+  # =========================================================================
+  # LIGHT BROWN — Ausnahmefahrzeuge (vehicles exceeding the general limits).
+  # =========================================================================
+  - id: ch-exceptional-brown
+    class: standard
+    categories: [truck, machine, trailer]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "front; rear 300x160 or 500x110" }
+      plate_variants:
+        - { w: 300, h: 160, unit: mm }
+        - { w: 500, h: 110, unit: mm }
+      background: { color: "#D2B48C", finish: retroreflective-optional, hex_basis: observed, spec_note: "Art. 82 Abs. 1 lit. c names 'hellbraunem Grund und schwarzer Schrift'; the hex is the standard web tone for the colour word, NOT a spec value" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      layout_rear: "as ch-standard; Ausnahmeanhänger take the two-line layout with both arms (Art. 85 Abs. 2)"
+      rear_differs: true
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. c (light-brown ground, black script, for Ausnahmefahrzeuge — original 1976 text); Art. 85 Abs. 2 (Ausnahmeanhänger among the two-line plates); Art. 84 Abs. 2"
+      - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 22 Abs. 3 (a special authorisation is still required for Ausnahmefahrzeuge even when running on dealer plates)"
+    notes: >-
+      THE LIGHT-BROWN EXCEPTIONAL-VEHICLE PLATE. An "Ausnahmefahrzeug" is a vehicle
+      that exceeds the general dimension or weight limits and runs on a special
+      authorisation. SAME CLASS CAVEAT as ch-workvehicle-blue: `standard` is a
+      least-wrong fit for a vocabulary that has no `oversize` value, and the gap is
+      flagged rather than papered over. The colour is the whole identification —
+      the string is the ordinary canton-plus-number, from its own per-colour number
+      space.
+
+  # =========================================================================
+  # LIGHT GREEN — land- und forstwirtschaftliche Fahrzeuge.
+  # =========================================================================
+  - id: ch-agricultural-green
+    class: agricultural
+    categories: [tractor, machine, trailer]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "Art. 83 Abs. 3 lit. a puts land- und forstwirtschaftliche Fahrzeuge on the 30x8 single-line form" }
+      background: { color: "#90EE90", finish: retroreflective-optional, hex_basis: observed, spec_note: "Art. 82 Abs. 1 lit. d names 'hellgrünem Grund und schwarzer Schrift'; no RAL/RGB in the ordinance" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false, note: "Art. 85 Abs. 1 puts agricultural and forestry vehicles on the ARMLESS layout — letters, point, number" }
+      layout_front: "left to right: canton letters, point at half height, number. No arms (Art. 85 Abs. 1)."
+      rear_differs: false
+      display: "ONE plate, front or rear at the operator's convenience; agricultural EXCEPTIONAL vehicles must carry one at each end (VTS Art. 162 Abs. 1)"
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. d (light-green ground, black script, for land- und forstwirtschaftliche Fahrzeuge — 'Fassung gemäss Anhang 1 Ziff. II 10 der V vom 19. Juni 1995 ..., in Kraft seit 1. Okt. 1995 (AS 1995 4425)'); Art. 83 Abs. 3 lit. a (30 cm x 8 cm); Art. 85 Abs. 1 (armless layout); Art. 84 Abs. 2"
+      - "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de  # VTS Art. 162 Abs. 1 (one plate, front or rear; two for agricultural exceptional vehicles)"
+    notes: >-
+      THE LIGHT-GREEN AGRICULTURAL PLATE — the only Swiss colour whose class maps
+      cleanly onto _meta/classes.yml. Two design facts set it apart from every other
+      colour: it is a 300x80 mm SINGLE plate (not a front/rear pair), and Art. 85
+      Abs. 1 groups it with the front plate, so it carries NO coats of arms at all.
+      lit. d took its present wording on 1 October 1995 (AS 1995 4425); the earlier
+      wording was not retrieved and no pre-1995 series is invented. Note the sharp
+      contrast with Germany's green plate, which is a TAX-EXEMPTION marker with an
+      agricultural majority — the Swiss green plate really is about agriculture and
+      forestry, and the VZV says so in those words.
+
+  # =========================================================================
+  # MILITARY — schattenschwarz ground, white script, the letter M.
+  # =========================================================================
+  - id: ch-military-m
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "M 999999"
+      regex: '\AM[- ]?\d{1,6}\z'
+      regex_strict: '\AM[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\AM[- ]?\d+\z'
+      charset:
+        fixed_letters: "M"
+        notes: >-
+          Art. 84 Abs. 3 VZV, verbatim: "Die Kontrollschilder des Bundes tragen nur
+          das eidgenössische Wappen und erhalten den Buchstaben M für
+          Militärkontrollschilder." One letter, not two — the only Swiss series
+          whose prefix is not a canton code, which makes it the single most
+          reliable string-level identification in this file.
+      group_note: >-
+        Art. 85 Abs. 3 gives a real grouping rule for MILITARY TRAILERS: on the
+        two-line plate "werden die ersten zwei Zahlen im oberen Teil neben dem
+        zugeteilten Buchstaben aufgeführt"; on the single-line plate "wird ein
+        grösserer Abstand zwischen der zweiten und dritten Zahl gemacht". A 2+n
+        digit grouping the single-`pattern` schema cannot express.
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "single-line form; two-line military trailer plates take the motorcycle format (Art. 83 Abs. 5)" }
+      plate_variants:
+        - { w: 180, h: 140, unit: mm, note: "two-line military trailer plate (Art. 83 Abs. 5)" }
+      background: { color: "#1C1C1C", finish: painted, hex_basis: observed, spec_note: "Art. 82 Abs. 1 lit. f names 'schattenschwarzem Grund und weisser Schrift'; 'schattenschwarz' has no RAL or RGB value in the ordinance and the hex is a reading of the word, not a spec" }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "the federal arms ONLY — Art. 84 Abs. 3; no cantonal arms, because the plate is federal. On military TRAILER plates 'das Wappen fällt weg' entirely (Art. 85 Abs. 3)." }
+      painted_on_body: >-
+        Art. 82 Abs. 1 lit. f carries a provision no other European plate law in
+        this dataset has: "lassen sich diese Kontrollschilder nicht zweckmässig
+        anbringen, so werden Wappen, Buchstabe und Nummer in einem schattenschwarzen
+        Feld auf die Karosserie aufgemalt" — where a physical plate cannot sensibly
+        be fitted, the arms, letter and number are PAINTED ON THE BODYWORK in a
+        shadow-black field. A render layer must be able to emit a plate that is not
+        a plate.
+      rear_differs: false
+    binding: government
+    region_encoding: none
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 1 lit. f (shadow-black ground, white script, army vehicles, and the paint-on-bodywork fallback); Art. 83 Abs. 5 (military trailer formats); Art. 84 Abs. 3 (federal plates carry only the federal arms and the letter M); Art. 85 Abs. 3 (military trailer digit grouping; no arms)"
+      - "https://www.fedlex.admin.ch/eli/cc/2005/163/20240401/de  # VFBF Art. 28 (military vehicles and the vehicles of the Federal Intelligence Service and Armasuisse are registered by the SVSAA on Militärkontrollschilder); Art. 24 Abs. 1 (ordinary administration vehicles use CANTONAL plates instead); Art. 29 Übergangsbestimmung ('Fahrzeuge des Grenzwachtkorps und der Zolluntersuchungsbehörden dürfen noch bis spätestens am 31. Dezember 2023 mit militärischen Fahrzeugausweisen und Militärkontrollschildern verkehren')"
+    notes: >-
+      MILITÄRKONTROLLSCHILDER. `binding: government` overrides the file-level
+      `owner`: these plates are neither keeper-reserved nor cantonal — they are
+      issued and administered federally by the SVSAA under the VFBF. Two
+      boundaries a consumer must not blur: VFBF Art. 24 Abs. 1 puts ordinary
+      federal ADMINISTRATION vehicles on cantonal plates, so "federal vehicle" does
+      not imply an M plate; and VFBF Art. 29 required Grenzwachtkorps and customs
+      investigation vehicles to leave the military registers by 31 December 2023,
+      which is an ENDED sub-population inside a live series and exactly the kind of
+      row-level period discipline PRD-PLATES §2.4 warns about.
+
+  # =========================================================================
+  # DIPLOMATIC AND CONSULAR — CD, CC, AT on a dark green or dark blue field.
+  # =========================================================================
+  - id: ch-diplomatic-cd
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CD LL 999-999"
+      regex: '\ACD[- ]?[A-Z]{2}[- ]?\d{1,4}[- ]\d{1,4}\z'
+      regex_strict: '\ACD[- ]?(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?\d{1,4}[- ]\d{1,4}\z'
+      regex_statutory: '\ACD[- ]?[A-Z]{2}[- ]?\d+[- ]\d+\z'
+      fields:
+        - { name: sign, value: "CD", note: "on a dark green or dark blue field (Art. 82 Abs. 2 lit. d)" }
+        - { name: canton, note: "the two canton letters, in BLACK — Art. 84 Abs. 4" }
+        - { name: mission_serial, note: "first number group: 'Ordnungsnummer innerhalb der Mission, des Postens, der Delegation oder der Organisation'; the LOWEST numbers are reserved for the head of mission and the deputies (Art. 84 Abs. 4)" }
+        - { name: state_code, note: "second number group: 'bezeichnet den einzelnen Staat oder die Organisation' — the country/organisation code. The code TABLE is an FDFA allocation and is NOT published in the VZV: recorded gap, deliberately not guessed (PRD-PLATES puts diplomatic decode tables at L4)." }
+      separator_note: >-
+        Art. 84 Abs. 4 prescribes "die Zahlen und der Punkt" and Art. 85 Abs. 4
+        "die durch einen Punkt getrennten zwei Zahlengruppen" — the group
+        separator is again a point the dataset cannot emit, spelled here as a
+        hyphen in the pattern and as an emitted-separator class in the regex.
+      digit_bound_note: "the ordinance caps NEITHER group; \\d{1,4} is a practical bound and regex_statutory drops it"
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "front; Art. 83 Abs. 4 lets the ASTRA set deviating formats for these plates" }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm, note: "rear Langformat" }
+        - { w: 300, h: 160, unit: mm, note: "rear Hochformat" }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      sign_field: { color: "#006400", alt_color: "#00008B", foreground: "#FFFFFF", hex_basis: observed, note: "Art. 82 Abs. 2 lit. d requires the CD/CC/AT sign to sit 'auf dunkelgrünem oder dunkelblauem Feld' but does NOT say which sign takes which colour — RECORDED GAP; the widely repeated green-for-CD / blue-for-CC-and-AT split is NOT sourced here and is flagged as folklore" }
+      band: { side: none }
+      emblem: { present: false, note: "Art. 84 Abs. 4, verbatim: the plates 'enthalten keine Wappen, jedoch Kantonsbuchstaben in schwarzer Farbe' — the ONLY Swiss road plates with no coat of arms at all" }
+      layout_front: "left to right: the field bearing the sign, the canton letters, then the two number groups separated by a point (Art. 85 Abs. 4)"
+      layout_rear: "Langformat as the front; Hochformat — upper part the sign field and the canton letters, lower part the two number groups (Art. 85 Abs. 4)"
+      manufacture: "Art. 84 Abs. 4: the sign and letters may be photographically and indelibly set into the metal; the numbers and the point in black may be applied the same way OR consist of stamped aluminium pieces riveted onto the plate — the only Swiss plate that is not necessarily embossed"
+      rear_differs: true
+    binding: owner
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 2 lit. d (CD/CC/AT on a dark green or dark blue field — 'Eingefügt durch Anhang 1 Ziff. II 10 der V vom 19. Juni 1995 ..., in Kraft seit 1. Okt. 1995 (AS 1995 4425)'); Art. 83 Abs. 4 (ASTRA may set deviating formats); Art. 84 Abs. 4 (no arms, black canton letters, the two dot-separated number groups and what each means, photographic or riveted manufacture); Art. 85 Abs. 4 (front / long-rear / high-rear layouts); Art. 86 Abs. 1 (who gets CD); Art. 87 Abs. 4 (issued in agreement with the FDFA)"
+      - "https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de  # VTS Art. 33 Abs. 6 (vehicles of keepers with diplomatic or consular privileges are exempt from periodic inspection)"
+    notes: >-
+      THE CD SERIES. Art. 86 Abs. 1 defines eligibility exactly: service cars of
+      diplomatic missions and the private vehicles of their diplomatic staff; the
+      same for permanent missions to intergovernmental organisations; and service
+      cars of institutional beneficiaries under Art. 2 Abs. 1 lit. a, b, i, j, k, l
+      and m of the Gaststaatgesetz (SR 192.12) plus the vehicles of their most
+      senior officials who enjoy diplomatic status in Switzerland. Art. 86 Abs. 4
+      forbids the use of a SEPARATE "CD" or "AT" sign (a loose badge) outright.
+      TWO RECORDED GAPS, both deliberate: the country/organisation code table
+      behind the second number group is an FDFA allocation and is not in the VZV;
+      and the ordinance does not assign the dark-green and dark-blue fields to
+      particular signs. Neither was guessed. The Swiss design choice is the mirror
+      image of Germany's: Germany hides diplomatic status in an ordinary-looking
+      plate, Switzerland puts a coloured sign field on the plate and takes the
+      coats of arms off.
+
+  - id: ch-consular-cc
+    class: consular
+    categories: [car, van, motorcycle]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CC LL 999-999"
+      regex: '\ACC[- ]?[A-Z]{2}[- ]?\d{1,4}[- ]\d{1,4}\z'
+      regex_strict: '\ACC[- ]?(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?\d{1,4}[- ]\d{1,4}\z'
+      regex_statutory: '\ACC[- ]?[A-Z]{2}[- ]?\d+[- ]\d+\z'
+      charset: { notes: "identical structure to ch-diplomatic-cd; only the sign differs" }
+    design:
+      plate: { w: 300, h: 80, unit: mm }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm }
+        - { w: 300, h: 160, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      sign_field: { color: "#00008B", alt_color: "#006400", foreground: "#FFFFFF", hex_basis: observed, note: "dark blue OR dark green per Art. 82 Abs. 2 lit. d; the assignment is a recorded gap — see ch-diplomatic-cd" }
+      band: { side: none }
+      emblem: { present: false, note: "no arms (Art. 84 Abs. 4)" }
+      layout_front: "sign field, canton letters, two dot-separated number groups (Art. 85 Abs. 4)"
+      rear_differs: true
+    binding: owner
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 86 Abs. 2 ('Das Zeichen «CC» ist für Dienstwagen der von einem Berufsbeamten geleiteten konsularischen Posten und für Motorfahrzeuge von Berufskonsularbeamten bestimmt'); Art. 86 Abs. 4 (separate CC signs allowed for at most one car of each honorary head of post holding the Federal Council's exequatur, with 'CC-Zeichen bewilligt' entered in the Fahrzeugausweis); Art. 82 Abs. 2 lit. d; Art. 84 Abs. 4; Art. 85 Abs. 4"
+    notes: >-
+      THE CC SERIES — career consular posts and career consular officers. Its own
+      series rather than a variant of CD because the printed sign is part of the
+      string. The one asymmetry worth recording: Art. 86 Abs. 4 bans separate
+      (loose) "CD" and "AT" signs absolutely, but permits a separate "CC" sign for
+      at most one car of each HONORARY head of post who has been granted the
+      exequatur — with the permission noted in the Fahrzeugausweis. So a Swiss "CC"
+      badge on a car is not necessarily a CC PLATE, which is a distinction an image
+      pipeline will meet before a string parser does.
+
+  - id: ch-diplomatic-at
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "AT LL 999-999"
+      regex: '\AAT[- ]?[A-Z]{2}[- ]?\d{1,4}[- ]\d{1,4}\z'
+      regex_strict: '\AAT[- ]?(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?\d{1,4}[- ]\d{1,4}\z'
+      regex_statutory: '\AAT[- ]?[A-Z]{2}[- ]?\d+[- ]\d+\z'
+    design:
+      plate: { w: 300, h: 80, unit: mm }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm }
+        - { w: 300, h: 160, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      sign_field: { color: "#00008B", alt_color: "#006400", foreground: "#FFFFFF", hex_basis: observed, note: "dark blue OR dark green per Art. 82 Abs. 2 lit. d; assignment is a recorded gap" }
+      band: { side: none }
+      emblem: { present: false }
+      layout_front: "sign field, canton letters, two dot-separated number groups (Art. 85 Abs. 4)"
+      rear_differs: true
+    binding: owner
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 86 Abs. 3 ('Das Zeichen «AT» ist für Motorfahrzeuge der Mitglieder des Verwaltungs- und technischen Personals der diplomatischen Missionen bestimmt'); Art. 86 Abs. 4 (separate AT signs forbidden); Art. 82 Abs. 2 lit. d; Art. 84 Abs. 4; Art. 85 Abs. 4"
+    notes: >-
+      THE AT SERIES — administrative and technical staff of diplomatic missions.
+      Recorded as `class: diplomatic` because _meta/classes.yml has no finer value;
+      the legal category is narrower than CD and sits below it in the privileges
+      hierarchy, which the sign itself is designed to show. Switzerland is unusual
+      in giving A&T staff their own SIGN at all: most jurisdictions fold them into
+      the diplomatic or the ordinary series.
+
+  # =========================================================================
+  # PROVISIONAL REGISTRATION — the red bar, the control sticker, and "Z".
+  # =========================================================================
+  - id: ch-provisional
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1977 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}\z'
+      regex_statutory: '\A[A-Z]{2}[- ]?\d+\z'
+      charset:
+        notes: >-
+          Same string grammar as an ordinary plate — the special marking is the RED
+          BAR, which is a design element and not a character. VVV Anhang 2 A Ziff. 1:
+          "Die Schilder für provisorisch immatrikulierte Motorfahrzeuge werden
+          unabhängig von den übrigen Kontrollschildern nummeriert. Mit der
+          Nummerierung kann von vorne begonnen werden, wenn Gewähr besteht, dass
+          sich nicht gleichzeitig zwei verschiedene provisorisch immatrikulierte
+          Motorwagen oder Motorräder mit gültigen Kontrollschildern gleicher Nummer
+          in Verkehr befinden." — an independently restartable number space, the
+          only one in this file that may legally REUSE a number.
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "VVV Anhang 2 A Ziff. 2: these plates are of THIN SHEET METAL and otherwise follow VZV Art. 83 and 85" }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm }
+        - { w: 300, h: 160, unit: mm }
+        - { w: 180, h: 140, unit: mm, note: "motorcycle" }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "as the ordinary plates — VVV Anhang 2 A Ziff. 2 applies VZV Art. 83 and 85 unchanged" }
+      extra_field:
+        name: "roter Balken"
+        position: "immediately after the control number"
+        color: "#FF0000"
+        hex_basis: observed
+        raised: true
+        dimensions: { front_and_motorcycle: { w: 33, h: 67, unit: mm }, rear_motorcar: { w: 36, h: 75, unit: mm } }
+        content: "the year BEFORE the year of expiry, impressed into the bar (VVV Anhang 2 A Ziff. 4)"
+        note: >-
+          VVV Anhang 2 A Ziff. 3, verbatim: "Die Schilder für provisorisch
+          immatrikulierte Motorfahrzeuge tragen anschliessend an die Kontrollnummer
+          einen erhaben gepressten, senkrechten roten Balken ... Auf den vorderen
+          Schildern für Motorwagen und den Schildern für Motorräder und für
+          Kleinmotorräder ist der rote Balken 33 mm breit und 67 mm hoch, auf den
+          hinteren Schildern für Motorwagen 36 mm breit und 75 mm hoch."
+      control_sticker:
+        name: Kontrollmarke
+        placement: "stuck onto the red bar"
+        dimensions: { w: 30, h: 50, unit: mm, corner_radius_mm: 2 }
+        background: "#FF0000"
+        content: "the expiry MONTH in black, 33 mm high with a 4.5 mm stroke, centred; the last two digits of the expiry YEAR in white"
+        note: "VVV Art. 18 Abs. 2 and Anhang 2 B Ziff. 1-2; the stickers are procured by the cantons (B Ziff. 3)"
+      rear_differs: true
+    validity:
+      max_months: 12
+      note: >-
+        VVV Art. 17 Abs. 1-2: the Fahrzeugausweis for a provisionally registered
+        vehicle is time-limited so that it expires at latest on the day given in
+        the insurance proof and ALWAYS at the end of a month; validity must end at
+        latest in the twelfth month following issue, except that certificates
+        issued in October or November may run to the end of the FOLLOWING year.
+        The plates lose validity with the certificate (Art. 18 Abs. 1) and,
+        uniquely, need not be handed back — VZV Art. 87 Abs. 5 excludes exactly
+        these plates from the rule that plates stay the authority's property.
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 16 (a vehicle is provisionally registered when its Standort is in Switzerland only, or only still, for a limited time; uncleared vehicles only provisionally and only with customs consent); Art. 17 Abs. 1-5 (validity, extension, Standort, fees); Art. 18 Abs. 1-2 (special plates per Anhang 2 A; the control sticker per Anhang 2 B); Art. 19 (insurance); Anhang 2 A Ziff. 1-4 and B Ziff. 1-3 (independent numbering, thin sheet metal, the red bar and its dimensions, the impressed year, the sticker)"
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 2 lit. a (plates for provisional registration are specially marked); Art. 87 Abs. 5 (provisional plates are the exception to authority ownership); Art. 79 Abs. 2-3 (validity governed by the VVV)"
+    notes: >-
+      PROVISORISCHE IMMATRIKULATION. Switzerland's answer to the export and transit
+      plate — and it is deliberately NOT either: the criterion is that the vehicle's
+      Standort is in Switzerland only temporarily (VVV Art. 16 Abs. 1), whether it
+      is arriving or leaving. The plate is an ordinary cantonal plate with a raised
+      vertical RED BAR after the number, a year impressed into the bar and a
+      month/year sticker on top of it, so a Swiss provisional plate carries a date
+      that no string parser can see. Its number space may be restarted from 1,
+      which no other Swiss series may do. period.start 1977 is the VZV/VVV regime
+      date; Anhang 2 took its present form from the amendment of 15 April 1987
+      (AS 1987 628) and was last revised with effect from 1 February 2019
+      (AS 2019 249) — neither earlier text was retrieved.
+
+  - id: ch-provisional-z
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1987 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999999Z"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}[- ]?Z\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}[- ]?Z\z'
+      regex_statutory: '\A(?:Z[- ]?[A-Z]{2}[- ]?\d+|[A-Z]{2}[- ]?Z[- ]?\d+|[A-Z]{2}[- ]?\d+[- ]?Z)\z'
+      charset:
+        fixed_letters: "Z"
+        notes: >-
+          VVV Anhang 2 A Ziff. 3, second half: "Schilder unverzollter Fahrzeuge
+          tragen zusätzlich den Buchstaben «Z»." The letter is prescribed; its
+          POSITION is not, anywhere in the VVV or the VZV. `regex` writes the
+          trailing position, which is the observed printed form; `regex_statutory`
+          admits every position the text leaves open. Recorded gap.
+    design:
+      plate: { w: 300, h: 80, unit: mm }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm }
+        - { w: 300, h: 160, unit: mm }
+        - { w: 180, h: 140, unit: mm, note: "motorcycle" }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      extra_field:
+        name: "roter Balken"
+        color: "#FF0000"
+        hex_basis: observed
+        note: "as ch-provisional — the Z is ADDITIONAL to the red bar, not instead of it"
+      rear_differs: true
+    validity: { max_months: 12, note: "as ch-provisional; VVV Art. 17 Abs. 3 additionally lets customs authorise up to 48 hours' use on re-entry after the provisional registration expired abroad, against a frontier insurance under Art. 44" }
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Anhang 2 A Ziff. 3 (the red bar, its dimensions, and 'Schilder unverzollter Fahrzeuge tragen zusätzlich den Buchstaben «Z»' — footnoted AS 1987 1350); Art. 16 Abs. 2 (uncleared vehicles may be registered only provisionally and only with the customs authorities' consent); Art. 17 Abs. 3 (the 48-hour customs tolerance)"
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 79 Abs. 3 (a provisional certificate for an uncleared vehicle may exceed the customs authorisation only where the authorisation expressly says so)"
+    notes: >-
+      THE "Z" PLATE — provisional registration of an UNCLEARED (unverzollt) vehicle,
+      the Swiss plate every plate-spotter asks about. Its own series and not a
+      variant of ch-provisional because the printed string differs by a character.
+      period.start 1987 follows Anhang 2's footnoted amendment (AS 1987 1350); the
+      Anhang as a whole took its present form from the amendment of 15 April 1987
+      (AS 1987 628). THE POSITION OF THE Z IS A RECORDED GAP: the ordinance
+      prescribes the letter and is silent on where it goes, so `regex` carries the
+      observed trailing form and `regex_statutory` carries the full legal latitude
+      — the honest use of the §2.7 tier that the German file uses for statutes that
+      are wider than practice.
+
+  # =========================================================================
+  # DEALER — Händlerschilder with the letter "U", and their 1977 predecessors.
+  # =========================================================================
+  - id: ch-dealer-u
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 1977 }
+    period_evidence: transitional-provision
+    matching: strict
+    format:
+      pattern: "LL 999999U"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}[- ]?U\z'
+      regex_strict: '\A(?:AG|AI|AR|BE|BL|BS|FR|GE|GL|GR|JU|LU|NE|NW|OW|SG|SH|SO|SZ|TG|TI|UR|VD|VS|ZG|ZH)[- ]?[1-9]\d{0,5}[- ]?U\z'
+      regex_statutory: '\A(?:U[- ]?[A-Z]{2}[- ]?\d+|[A-Z]{2}[- ]?U[- ]?\d+|[A-Z]{2}[- ]?\d+[- ]?U)\z'
+      charset:
+        fixed_letters: "U"
+        notes: >-
+          VZV Art. 82 Abs. 2 lit. c, verbatim and in full: "die Händlerschilder mit
+          dem Buchstaben «U»". That is the entire federal rule — the letter is
+          mandated and its POSITION is not stated in the VZV, the VVV or the VTS.
+          Same treatment as ch-provisional-z: `regex` writes the observed trailing
+          U, `regex_statutory` admits the three positions the text leaves open, and
+          the position is a recorded gap for the verifier.
+      progression: "own number space: Art. 84 Abs. 2 splits numbering by SPECIAL MARKING as well as by colour, so the U series counts from 1 independently in each canton"
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "front; rear 300x160 or 500x110" }
+      plate_variants:
+        - { w: 500, h: 110, unit: mm }
+        - { w: 300, h: 160, unit: mm }
+        - { w: 180, h: 140, unit: mm, note: "motorcycle dealer plate" }
+        - { w: 100, h: 140, unit: mm, note: "Kleinmotorrad dealer plate" }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed, spec_note: "the ground colour follows the vehicle family the Kollektiv-Fahrzeugausweis covers — light green for land- und forstwirtschaftliche Motorfahrzeuge, light blue for Arbeitsmotorfahrzeuge (VVV Art. 22 Abs. 1 lit. d-e read with VZV Art. 82 Abs. 1)" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+    binding: business
+    binding_note: >-
+      OVERRIDES the file-level `owner`. A Händlerschild hangs on a KOLLEKTIV-
+      FAHRZEUGAUSWEIS issued to a BUSINESS (VVV Art. 23 Abs. 1) and is fitted to
+      whatever qualifying vehicle the business needs to move — "Der Kollektiv-
+      Fahrzeugausweis berechtigt zum Anbringen der darin genannten Händlerschilder
+      an geprüften und nichtgeprüften ... Fahrzeugen der im Ausweis genannten Art"
+      (Art. 24 Abs. 1). Neither vehicle-keyed nor keeper-keyed consumers may join
+      on it.
+    validity: { note: "VZV Art. 79 Abs. 1: the Kollektiv-Fahrzeugausweis is valid for an indefinite period, unlike the Tagesausweis and the provisional certificate" }
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 2 lit. c (Händlerschilder carry the letter U); Art. 84 Abs. 2 (separate numbering per special marking); Art. 79 Abs. 1 (indefinite validity); Art. 151 Abs. 4 ('Kontrollschilder mit besonderer Kennzeichnung nach Artikel 82 Absatz 2 Buchstaben b und c werden ab 1. Juli 1977 abgegeben.')"
+      - "https://www.fedlex.admin.ch/eli/cc/1959/1271_1321_1317/de  # VVV Art. 22 (dealer plates are issued for Motorwagen, Motorräder, Kleinmotorräder, agricultural and forestry motor vehicles, work motor vehicles and trailers, with the cross-use table of Abs. 2 and the towing-vehicle rear-plate rule of Abs. 2bis); Art. 23 (issued to businesses meeting the Anhang 4 conditions); Art. 23a (withdrawal); Art. 24 Abs. 1-6 (permitted uses, the 3.5 t goods-transport restrictions, documentation); Art. 25 (who may drive; the two-year log for unaccompanied test drives by prospective buyers); Art. 26 (insurance)"
+    notes: >-
+      HÄNDLERSCHILDER — the Swiss dealer plate, and the ONLY series in this file
+      with a start date that is a real issuance date rather than an instrument
+      date. VZV Art. 151 Abs. 4 says it in terms: specially-marked plates under
+      Art. 82 Abs. 2 lit. b and c "werden ab 1. Juli 1977 abgegeben", so 1 July
+      1977 is the earliest possible U plate and `period_evidence` is
+      `transitional-provision`, not `instrument-in-force`. The compensating audit
+      trail Germany builds into its 06 plate has a Swiss analogue in VVV Art. 25
+      Abs. 3: a business that lets a prospective buyer take an unaccompanied test
+      drive must keep a register of those journeys for TWO YEARS and show it to
+      the enforcement authorities on demand.
+
+  - id: ch-dealer-pre1977
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1977, end: 1980 }
+    period_evidence: transitional-window
+    matching: recall-only
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      pattern_note: >-
+        RECALL-ONLY, and for the §2.7 reason exactly: these are the pre-VZV dealer
+        and test plates, which by definition carried NO special marking, so their
+        printed form is the ordinary canton-letters-plus-number shape and the regex
+        is the ordinary standard-series regex. A match says only "this string has
+        the shape of a Swiss cantonal registration" — never that it is a pre-1977
+        dealer plate. There is no narrowing available and, per §2.7, a recall-only
+        series may not carry a regex_strict.
+    design:
+      plate: { w: 300, h: 80, unit: mm, note: "format not separately sourced; the VZV's own transitional rule (Art. 151 Abs. 5) contemplates 'Kontrollschilder früherer Formate' still in circulation" }
+      background: { color: "#FFFFFF", finish: unspecified, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+    binding: business
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 151 Abs. 4, verbatim: 'Die bisherigen Schilder für Mietwagen, Händler- und Versuchsschilder sind innerhalb dreier Jahre seit Inkrafttreten dieser Verordnung gegen Schilder mit besonderer Kennzeichnung auszutauschen.'; Art. 151 Abs. 5 ('Kontrollschilder früherer Formate sind zu ersetzen, wenn die zuständige Behörde den Fahrzeughalter dazu auffordert'); Art. 152 (repealing the pre-VZV Bundesratsbeschlüsse, including the BRB of 22 January 1969 on diplomatic and consular plates)"
+    notes: >-
+      THE ONE SERIES BACK, for the dealer class — and the honest limits of it.
+      PERIOD SEMANTICS, stated plainly: `start: 1977` is NOT this series' start.
+      These plates ("die bisherigen Schilder für Mietwagen, Händler- und
+      Versuchsschilder") predate the VZV and their own start date is unsourced,
+      because the instruments that created them were repealed by VZV Art. 152 and
+      their texts were not retrievable from fedlex in this pass. What the period
+      records is the WINDOW in which they remained lawfully on Swiss roads under
+      the VZV's own transitional rule: from the VZV's entry into force on 1 January
+      1977 until the three-year exchange deadline expired on 1 January 1980. That
+      is a hard, primary, dated close — `end: 1980` is sourced, `start: 1977` is a
+      floor. A verifier who reaches AS 1976 2423's printed original, or the
+      pre-1977 Bundesratsbeschlüsse listed in Art. 152, can replace the floor with
+      a real start and should.
+
+  - id: ch-rental-1977
+    class: dealer
+    categories: [car, van, bus]
+    period: { start: 1977, end: 2001 }
+    period_evidence: transitional-provision
+    matching: recall-only
+    format:
+      pattern: "LL 999999"
+      regex: '\A[A-Z]{2}[- ]?\d{1,6}\z'
+      pattern_note: >-
+        RECALL-ONLY. Art. 82 Abs. 2 lit. b required rental-car plates to be
+        specially marked but the repealing amendment took the DESCRIPTION of the
+        marking out with the letter, so the consolidated text now reads "b. …" and
+        no primary in reach says what the mark was. The regex is therefore the
+        ordinary cantonal shape and a match is a shape hit only. Guessing the
+        marking letter was declined.
+    design:
+      plate: { w: 300, h: 80, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective-optional, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: true
+    region_encoding: "plates/_decode/ch-cantons.yml"
+    sources:
+      - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 82 Abs. 2 lit. b, now shown as repealed with the footnote 'Aufgehoben durch Ziff. I der V vom 11. April 2001, mit Wirkung seit 1. Juni 2001 (AS 2001 1387)'; Art. 151 Abs. 4 (specially-marked plates under Abs. 2 lit. b and c issued from 1 July 1977)"
+    notes: >-
+      THE MIETWAGEN (RENTAL-CAR) SERIES — ENDED, and the cleanest dated pair of
+      brackets in this file: it begins on 1 July 1977 with Art. 151 Abs. 4's
+      issuance date for specially-marked plates under Art. 82 Abs. 2 lit. b, and it
+      ends on 1 June 2001 with lit. b's repeal (AS 2001 1387). Both dates come from
+      the consolidated ordinance's own apparatus. CLASS CAVEAT: recorded as
+      `dealer` because the VZV itself grouped rental plates with dealer and test
+      plates in Art. 151 Abs. 4 and because the marking attached to a BUSINESS, but
+      a rental car's plate was vehicle-fitted, not floating like a Händlerschild —
+      a vocabulary gap worth a `rental` value if another jurisdiction produces one.
+      Since 1 June 2001 Swiss rental cars have carried ordinary plates, which is
+      why no live successor series exists.

@@ -1,0 +1,110 @@
+# plates/_decode/ch-cantons.yml — the Swiss canton letters. DRAFT for verification.
+#
+# THE SOURCE FINDING, and it is the good kind: this table is NOT a Wikipedia
+# scrape and not an enthusiast list. It is enacted law, printed as a two-column
+# table inside the ordinance itself — Verkehrszulassungsverordnung (VZV),
+# SR 741.51, Art. 84 Abs. 1: "Jeder Kanton wird mit zwei grossen Buchstaben wie
+# folgt bezeichnet:" followed by exactly the 26 rows below, in exactly this
+# order. Every row here is that table, verbatim, in the ordinance's own order
+# (the constitutional order of precedence, NOT alphabetical), with the French
+# and Italian canton names taken from the FR and IT language versions of the
+# same consolidated article.
+#
+# This is the German-Anlage-2 case and not the German-district case, and the
+# contrast is worth stating because it drives the schema choice: § 9 Abs. 3 FZV
+# delegates the ~400 German district codes to Bundesanzeiger publications, so
+# plates/de.yml can only cite the MECHANISM; VZV Art. 84 Abs. 1 enumerates all
+# 26 Swiss codes inside the regulation, so this table is closed, primary and
+# complete on its face. There is no delegation, no open tail and no "on
+# application by the canton" clause.
+#
+# Referenced by: plates/ch.yml (ch-standard, ch-standard-trailer, ch-motorcycle,
+# ch-lightmotor-yellow, ch-motorfahrrad, ch-workvehicle-blue,
+# ch-exceptional-brown, ch-agricultural-green, ch-diplomatic-cd,
+# ch-consular-cc, ch-diplomatic-at, ch-provisional, ch-provisional-z,
+# ch-dealer-u, ch-dealer-pre1977, ch-rental-1977) via region_encoding.
+# NOT referenced by ch-military-m: federal military plates carry the single
+# letter M and no canton code at all (VZV Art. 84 Abs. 3).
+jurisdiction: ch
+topic: cantons
+authority:
+  name: Verkehrszulassungsverordnung (VZV), SR 741.51, Art. 84 Abs. 1
+  url: "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de"
+sources:
+  - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de  # VZV Art. 84 Abs. 1 — the 26-row table, German names and codes, in the ordinance's own order; and the Jura footnote 'Kanton eingefügt durch Ziff. I der V vom 15. Nov. 1978, in Kraft seit 1. Jan. 1979 (AS 1978 1805)'"
+  - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/fr  # OAC art. 84 al. 1 — the same table with the FRENCH canton names"
+  - "https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/it  # OAC art. 84 cpv. 1 — the same table with the ITALIAN canton names"
+accessed: "2026-08-02"
+period: { start: 1977 }
+period_evidence: instrument-in-force
+period_note: >-
+  1977 is the VZV's entry into force (1 January 1977), not the date the two-letter
+  canton abbreviations came into use — they are the ordinary Swiss cantonal
+  abbreviations and long predate the ordinance. No primary for their origin was
+  secured in this pass, so none is asserted. The ONE row with a real, dated,
+  primary start is JU: the ordinance's own footnote records the Jura row as
+  "Kanton eingefügt durch Ziff. I der V vom 15. Nov. 1978, in Kraft seit
+  1. Jan. 1979 (AS 1978 1805)" — the canton of Jura separated from Bern and the
+  code entered the table on 1 January 1979. A plate allocated before that date
+  cannot read JU, and the territory JU covers read BE.
+
+# Decode facts a parse API must carry.
+maximal_munch: false
+maximal_munch_note: >-
+  Not applicable, and that is a genuine simplification over Spain: every Swiss
+  code is EXACTLY two capital letters (VZV Art. 84 Abs. 1: "mit zwei grossen
+  Buchstaben"), so the letter/number boundary is fixed at position 2 and there is
+  no longest-match ambiguity of the C / CA / CC / CE kind that es-provinces.yml
+  has to warn about.
+decode_semantics: >-
+  The code identifies the canton of the KEEPER's Standort, not the vehicle's
+  location, origin or manufacture. VZV Art. 77 Abs. 1 defines Standort as "der
+  Ort, wo das Fahrzeug nach Gebrauch in der Regel für die Nacht abgestellt wird",
+  with the keeper's domicile deemed the Standort in the three cases of Abs. 2.
+  Because the plate binds to the keeper (VZV Art. 87 Abs. 1), the code moves when
+  the KEEPER moves: VZV Art. 120 returns the annulled certificate and plates to
+  the former canton when a vehicle is admitted in another, and VZV Art. 95 Abs. 2
+  makes the same rule explicit for mopeds. A decoded canton is therefore a claim
+  about a person, not about a vehicle — the sharpest practical consequence of
+  Switzerland's owner-binding, and one a vehicle-keyed consumer will get wrong by
+  default.
+collisions:
+  - "AG (Aargau), AI (Appenzell Innerrhoden), AR (Appenzell Ausserrhoden) — no collision with the diplomatic sign AT, which occupies its own field ahead of the canton letters (VZV Art. 85 Abs. 4), but a naive left-anchored parser reading 'AT BE 12-34' will try AT as a canton code and must not."
+  - "The letter M is NOT a canton code: it is the federal military marker of VZV Art. 84 Abs. 3, and it is a SINGLE letter, which is what distinguishes it structurally."
+  - "The letter U (dealer marking, VZV Art. 82 Abs. 2 lit. c) and the letter Z (uncleared provisional vehicle, VVV Anhang 2 A Ziff. 3) are markings, not canton codes; the ordinance does not fix their position, so a parser must not assume they trail the number even though that is the observed form."
+codes:
+  - { code: ZH, de: "Zürich",             fr: "Zurich",                      it: "Zurigo",            period: { start: 1977 } }
+  - { code: BE, de: "Bern",               fr: "Berne",                       it: "Berna",             period: { start: 1977 } }
+  - { code: LU, de: "Luzern",             fr: "Lucerne",                     it: "Lucerna",           period: { start: 1977 } }
+  - { code: UR, de: "Uri",                fr: "Uri",                         it: "Uri",               period: { start: 1977 } }
+  - { code: SZ, de: "Schwyz",             fr: "Schwyz",                      it: "Svitto",            period: { start: 1977 } }
+  - { code: OW, de: "Obwalden",           fr: "Obwald",                      it: "Obvaldo",           period: { start: 1977 } }
+  - { code: NW, de: "Nidwalden",          fr: "Nidwald",                     it: "Nidvaldo",          period: { start: 1977 } }
+  - { code: GL, de: "Glarus",             fr: "Glaris",                      it: "Glarona",           period: { start: 1977 } }
+  - { code: ZG, de: "Zug",                fr: "Zoug",                        it: "Zugo",              period: { start: 1977 } }
+  - { code: FR, de: "Freiburg",           fr: "Fribourg",                    it: "Friburgo",          period: { start: 1977 } }
+  - { code: SO, de: "Solothurn",          fr: "Soleure",                     it: "Soletta",           period: { start: 1977 } }
+  - { code: BS, de: "Basel-Stadt",        fr: "Bâle-Ville",                  it: "Basilea Città",     period: { start: 1977 } }
+  - { code: BL, de: "Basel-Landschaft",   fr: "Bâle-Campagne",               it: "Basilea Campagna",  period: { start: 1977 } }
+  - { code: SH, de: "Schaffhausen",       fr: "Schaffhouse",                 it: "Sciaffusa",         period: { start: 1977 } }
+  - { code: AR, de: "Appenzell A. Rh",    fr: "Appenzell, Rhodes extérieures", it: "Appenzello esterno", period: { start: 1977 } }
+  - { code: AI, de: "Appenzell I. Rh.",   fr: "Appenzell, Rhodes intérieures", it: "Appenzello interno", period: { start: 1977 } }
+  - { code: SG, de: "St. Gallen",         fr: "Saint-Gall",                  it: "San Gallo",         period: { start: 1977 } }
+  - { code: GR, de: "Graubünden",         fr: "Grisons",                     it: "Grigioni",          period: { start: 1977 } }
+  - { code: AG, de: "Aargau",             fr: "Argovie",                     it: "Argovia",           period: { start: 1977 } }
+  - { code: TG, de: "Thurgau",            fr: "Thurgovie",                   it: "Turgovia",          period: { start: 1977 } }
+  - { code: TI, de: "Tessin",             fr: "Tessin",                      it: "Ticino",            period: { start: 1977 } }
+  - { code: VD, de: "Waadt",              fr: "Vaud",                        it: "Vaud",              period: { start: 1977 } }
+  - { code: VS, de: "Wallis",             fr: "Valais",                      it: "Vallese",           period: { start: 1977 } }
+  - { code: NE, de: "Neuenburg",          fr: "Neuchâtel",                   it: "Neuchâtel",         period: { start: 1977 } }
+  - { code: GE, de: "Genf",               fr: "Genève",                      it: "Ginevra",           period: { start: 1977 } }
+  - { code: JU, de: "Jura",               fr: "Jura",                        it: "Giura",             period: { start: 1979 }, period_evidence: enabling-amendment, note: "row inserted by Ziff. I der V vom 15. Nov. 1978, in force 1 Jan. 1979 (AS 1978 1805); before that the territory registered as BE" }
+
+# Not a decode dimension, recorded so nobody looks for one: the Swiss plate
+# carries NO date, NO issuing-office code below canton level and NO vehicle-type
+# code inside the serial. Vehicle type is signalled by the plate's BACKGROUND
+# COLOUR and SIZE (VZV Art. 82 Abs. 1, Art. 83 Abs. 3), both of which are
+# properties of the physical object rather than of the string. Number ranges are
+# not published: VZV Art. 84 Abs. 2 says only that each per-canton, per-colour,
+# per-marking counter starts "in der Regel mit der Zahl 1".
+no_further_decode: true
