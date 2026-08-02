@@ -4933,6 +4933,61 @@ Land Rover:
   "New Range Rover":         Range Rover            # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate, dup of car/land-rover/range-rover. produced string verified against the build: the model half is "New Range Rover". (My first draft keyed "Rover New Range Rover" — an artifact of splitting the record name on its FIRST space when the make display is two words, "Land Rover". That key was inert; the duplicate sweep caught it)
   "New Range Rover Sport":   Range Rover Sport      # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate, dup of car/land-rover/range-rover-sport; same two-word-make note as above
 
+  # ── §P-1 POWER-CODE fold (2026-08-02), completing the two P400 keys above.
+  # THE P NUMBER IS A POWER RATING, NOT A NAMEPLATE — JLR badges petrol engines
+  # P<PS> (D<PS> for diesel, a trailing `e` for the plug-in hybrids), so the
+  # same P vocabulary rides on all SEVEN of this make's live nameplates in the
+  # NRCan tables — "Range Rover P530", "Range Rover Sport P530", "Range Rover
+  # Velar P400", "Range Rover Evoque P250", "Discovery P360", "Discovery Sport
+  # P250", "Defender 110 P400"
+  # (cache/ca_2026-fuel-consumption-ratings-2026-07-17.csv:348-357 and
+  # cache/ca_2015-2024-fuel-consumption-ratings-2026-03-23.csv). NRCan settles
+  # it outright by writing ONE model value carrying TWO ratings —
+  # "Range Rover P360/P400" (…2015-2024…csv:6986, MY2021) and "Range Rover
+  # Sport P360/P400" (:6992) — which parses only if the number is a spec. This
+  # is DAF XF480 (data#176) in another register.
+  #
+  # THE TARGET WAS DECIDED, NOT ASSUMED. data#176 deliberately KEPT `xf105`
+  # because that digit-run really was a generation series, so the same question
+  # is owed here: is "New Range Rover" a distinct GENERATION deserving its own
+  # id? Two answers, and they agree on the survivor:
+  #  (a) Even read at its strongest it is one — "New" is the launch adjective
+  #      for the L460, the genuine fifth generation
+  #      (https://en.wikipedia.org/wiki/Range_Rover_(L460)) — and this catalog
+  #      already rules that GENERATIONS ARE NOT NAMEPLATES, for this very make:
+  #      normalizer.rb#land_rover:750 "Discovery 1-5 = generations, not
+  #      nameplates", same ruling as "Golf VII" -> Golf. xf105 was the opposite
+  #      case: DAF lists the XF105 as its own line item; Land Rover lists no
+  #      "New Range Rover" model. Its current range page names the model "Range
+  #      Rover" and shows D300/P460e/P550e as SPECIFICATIONS —
+  #      https://www.rangerover.com/en-gb/range-rover/index.html
+  #  (b) The registers do not even use it as a stable label. Both feeds carry
+  #      the prefixed and the bare form of the SAME car and drop the prefix a
+  #      year later:
+  #        us_fueleconomy "New Range Rover P360 MHEV" MY2022-2023  vs
+  #                       "Range Rover P360 MHEV"     MY2022+2024
+  #        ca_nrcan       "New Range Rover P530"      MY2022 only  vs
+  #                       "Range Rover P530"          MY2023,2024,2026
+  #      A generation label does not appear twice in ONE model year under two
+  #      spellings and then quietly vanish.
+  # So the survivor is the LIVE car/land-rover/range-rover (14 countries, incl.
+  # ca+us) — NOT a minted new-range-rover. Nothing is retired: all nine ids are
+  # CANDIDATES (single source, zero counts — reconciler.rb#publishable?), so
+  # they need neither a former_ids alias nor a removals manifest, and the fold
+  # is evidence ARRIVING on the survivor. Chain audit: none of these nine is a
+  # rename VALUE anywhere in this block, and neither target is a key here or an
+  # alias SOURCE in former_ids/removals/moves — both are terminal (the data#176
+  # chain trap does not apply, checked on both sides). ──
+  "New Range Rover Lwb":         Range Rover        # raw "New Range Rover LWB" us_fueleconomy MY2022-2023, 3 rows. LWB is the long-wheelbase BODY — the same feed writes "Range Rover LWB" MY2015-2022 (9 rows), which the normalizer's land_rover family rule already folds to Range Rover (normalizer.rb:748). Shipped precedent in this block: "One Ten"/"110" — wheelbase ≠ nameplate
+  "New Range Rover P360":        Range Rover        # raw "New Range Rover P360 MHEV" us_fueleconomy MY2022-2023. Twin in the SAME feed: "Range Rover P360 MHEV" MY2022+2024 — same car, prefix dropped. P360 = 3.0 Ingenium I6 at 360 PS
+  "New Range Rover P360 Lwb":    Range Rover        # raw "New Range Rover P360 LWB MHEV" us_fueleconomy MY2022-2023. Twin: "Range Rover P360 LWB MHEV" MY2024. Power badge + wheelbase body, neither a nameplate
+  "New Range Rover P440":        Range Rover        # raw "New Range Rover P440 PHEV" us_fueleconomy MY2023 (1 row). The `e`-class plug-in badge — the same feed later rates the same car "Range Rover P550 PHEV" (MY2025) and ca_nrcan writes it "Range Rover P550e PHEV". A nameplate does not change number when the battery does
+  "New Range Rover P530":        Range Rover        # raw "New Range Rover P530" ca_nrcan, cache/ca_2015-2024-fuel-consumption-ratings-2026-03-23.csv:7964 (MY2022). Twin in the SAME file: "Range Rover P530" :8879 (MY2023), :9721 (MY2024), and cache/ca_2026-…-2026-07-17.csv:348 (MY2026). P530 = the 4.4 V8 at 530 PS
+  "New Range Rover P530 Lwb":    Range Rover        # raw "New Range Rover P530 LWB" ca_nrcan …2015-2024….csv:7965 (MY2022). Twin: "Range Rover P530 LWB" :8880, :9722 and …2026….csv:349
+  "New Range Rover Sport P360":  Range Rover Sport  # raw "New Range Rover Sport P360 MHEV" us_fueleconomy MY2023. Twin in the SAME feed: "Range Rover Sport P360 MHEV" MY2022,2024,2025,2026 (4 rows). Target car/land-rover/range-rover-sport is live in 13 countries incl. ca+us
+  "New Range Rover Sport P400":  Range Rover Sport  # raw "New Range Rover Sport P400 MHEV" us_fueleconomy MY2023. Twin: "Range Rover Sport P400 MHEV" MY2022,2024,2025,2026. ca_nrcan writes the pair as one value — "Range Rover Sport P360/P400" (…2015-2024….csv:6992)
+  "New Range Rover Sport P440":  Range Rover Sport  # raw "New Range Rover Sport P440 PHEV" us_fueleconomy MY2023. ca_nrcan rates the same plug-in Sport "Range Rover Sport P460e PHEV" (MY2025) — the number moved, the car did not
+
 Leike:
   Leike: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
