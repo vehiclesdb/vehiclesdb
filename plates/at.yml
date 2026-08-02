@@ -1,0 +1,1424 @@
+# plates/at.yml — Austria (PRD-PLATES gate L1).
+#
+# EVERY format, colour, dimension and class claim here comes from two
+# instruments on ris.bka.gv.at, read in their consolidated tagesaktuelle
+# Fassung on 2026-08-02, plus the two original Bundesgesetzblatt PDFs that
+# date the two system changes:
+#   * Kraftfahrgesetz 1967 (KFG 1967), BGBl. Nr. 267/1967, zuletzt geändert
+#     durch BGBl. I Nr. 79/2026 — § 48 (Kennzeichen), § 48a (Kennzeichen nach
+#     eigener Wahl), § 49 (Kennzeichentafeln), § 54 (Abzeichen).
+#   * Kraftfahrgesetz-Durchführungsverordnung 1967 (KDV 1967), BGBl. Nr.
+#     399/1967, zuletzt geändert durch BGBl. II Nr. 384/2024 — § 25d and
+#     Anlage 5e (the plate SPEC), § 26 and Anlage 5d (the CODE and SERIAL
+#     spec).
+#   * BGBl. Nr. 375/1988 (11. KFG-Novelle) — dates the white plate.
+#   * BGBl. Nr. 267/1967 and BGBl. Nr. 399/1967 as ORIGINALLY enacted — date
+#     and describe the black plate that preceded it.
+#
+# THE FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE DISTRICT CODE LIST *IS* IN THE REGULATION — the exact opposite of
+#    Germany. § 26 Abs. 1 KDV, verbatim: "Die Bezeichnung der den
+#    Zulassungsschein ausstellenden Behörde im Kennzeichen bestimmt sich nach
+#    Anlage 5d." Anlage 5d is a closed, primary, 98-row table printed inside
+#    the KDV. It is therefore authored in full in
+#    plates/_decode/at-districts.yml — no Bundesanzeiger problem, no guesswork.
+#    § 48 Abs. 4 KFG fixes its shape: "Das Kennzeichen muss mit einem oder zwei
+#    Buchstaben als Bezeichnung der Behörde, in deren örtlichem Wirkungsbereich
+#    das Fahrzeug zugelassen ist, beginnen."
+#
+# 2. § 26 Abs. 6 KDV IS THE SERIAL GRAMMAR, AND IT IS COMPLETE — the Austrian
+#    analogue of FZV Anlage 1. For ordinary vehicles (Z 2), verbatim:
+#      a) "vier oder fünf Zeichen, bei den in den Landeshauptstädten und im
+#         Land Wien zugewiesenen Kennzeichen fünf oder sechs Zeichen"
+#      d) "mindestens eine Ziffer und einen bis drei Buchstaben enthalten"
+#      e) "mit einer Ziffer beginnen und mit einem Buchstaben enden"
+#      f) "alle Buchstaben und alle Ziffern nur je in geschlossenen Blöcken
+#         enthalten; das Verwenden von Buchstaben abwechselnd mit Ziffern ist
+#         unzulässig"
+#    plus two charset rules that bind the WHOLE dataset:
+#      Z 4  "Es dürfen nur Großbuchstaben verwendet werden; die Verwendung der
+#            Buchstaben Q, Ä, Ö und Ü ist unzulässig."
+#      Z 5  "Die Ziffer 0 an der ersten Stelle im Ziffernblock ist unzulässig.
+#            Bei Vormerkzeichen gemäß Z 2 ist der Buchstabe O an der ersten
+#            Stelle im Buchstabenblock unzulässig."
+#    A WUNSCHKENNZEICHEN (Z 3) inverts the shape: "mit einem Buchstaben
+#    beginnen und mit einer Ziffer enden". Letters-then-digits therefore means
+#    personalized, digits-then-letters means ordinary — the single most useful
+#    structural tell on an Austrian plate, and it is in the regulation, not in
+#    folklore.
+#
+# 3. THE SEPARATOR IS A COAT OF ARMS, AND THE LAW SAYS WHAT TO WRITE INSTEAD.
+#    § 49 Abs. 4 KFG: "Zwischen der Bezeichnung der Behörde und dem
+#    Vormerkzeichen muss das Wappen des Bundeslandes angebracht sein, in dem
+#    die Behörde ihren Sitz hat." § 26 Abs. 7 KDV then supplies the textual
+#    rendering, verbatim: "In einer schriftlichen Mitteilung des Kennzeichens
+#    ist anstelle des Landeswappens ein Bindestrich zu setzen. Beim Anschreiben
+#    des Kennzeichens auf der Begutachtungsplakette (§ 57a Abs. 5 KFG 1967)
+#    kann der Bindestrich entfallen."
+#    That is a rare thing: a primary source for BOTH the emitted separator AND
+#    for its being optional. Every `pattern` here prints the hyphen; every
+#    regex spells the position as the separator-only class `[- ]?` (PRD-PLATES
+#    §2.8), because the law prescribes a hyphen, permits its omission, and
+#    prescribes no glyph at all on the plate itself.
+#
+# 4. PERIOD CLAIMS ARE COMMENCEMENT-DATED, NOT GUESSED. Three real dates carry
+#    this file, each from a commencement provision rather than from the date of
+#    the consolidating instrument:
+#      1989-01-01  BGBl. Nr. 375/1988 Art. V Abs. 4 lit. b — the rewritten
+#                  § 48 Abs. 4 (authority letters), § 48a (Wunschkennzeichen)
+#                  and § 49 Abs. 4 (WHITE plate, red-white-red edging, Land
+#                  arms) enter into force. Art. V Abs. 6 lets non-conforming
+#                  stock be used up "bis längstens 31. Jänner 1990".
+#      2002-11-01  BGBl. I Nr. 80/2002 — the EU field. The § 49 Fassung valid
+#                  25.05.2002-31.10.2002 has no such sentence; the Fassung
+#                  valid from 01.11.2002 does. Diffing the two consolidated
+#                  versions IS the evidence.
+#      2017-04-01  BGBl. I Nr. 9/2017 — § 49 Abs. 4 Z 5, the green-lettered
+#                  electric plate. Absent from the Fassung valid 01.01.2017,
+#                  present in the Fassung valid from 01.04.2017.
+#    Two more come from dates printed INSIDE the KDV: motorcycle plates
+#    "werden ab 1. April 2005 nur mehr nach dem Muster VIII ... ausgegeben"
+#    (§ 25d Abs. 3 in the Fassung valid 01.04.2011), and the historic-vehicle
+#    plate provision (§ 25d Abs. 5) first appears in the Fassung valid from
+#    01.04.2018. `period_evidence: enacted-commencement` marks all of these;
+#    `instrument-in-force` marks the rest, and means exactly what it means in
+#    plates/de.yml — the year of the instrument that STATES the rule.
+#
+# 5. AUSTRIA HAS NO EXPORT, TAXI, SEASONAL OR AGRICULTURAL PLATE. Searched for
+#    and not found in KFG §§ 48-49 or KDV § 26 / Anlagen 5d-5e: an export
+#    series (the green ÜBERSTELLUNGSKENNZEICHEN does that job — § 46 Abs. 1a
+#    expressly contemplates "aus dem Bundesgebiet in das Ausland"), a taxi
+#    series, a seasonal series, an agricultural series. Their absence is
+#    recorded rather than filled.
+#
+# REGEX POLICY, as in plates/de.yml and plates/nl.yml: `format.regex` is the
+# lint-round-trippable regex; `format.regex_strict` carries the sourced
+# tightenings the round-trip forbids — the § 26 Abs. 6 Z 4 letter exclusion
+# (no Q), the Z 5 no-leading-zero rule, and the Z 5 no-leading-O rule for
+# ordinary Vormerkzeichen. Total serial LENGTH is expressed with a lookahead,
+# because the KDV counts CHARACTERS of the Vormerkzeichen while the shape is
+# two variable-width blocks and plain quantifiers cannot say "four to six
+# characters, digits then one to three letters" in one pass.
+jurisdiction: at
+authority:
+  name: Kraftfahrgesetz 1967 (KFG 1967) — Bundesministerium für Innovation, Mobilität und Infrastruktur
+  url: "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384"
+binding: vehicle
+binding_note: >-
+  § 48 Abs. 1 KFG: "Für jedes Kraftfahrzeug und jeden Anhänger ist ... bei der
+  Zulassung ein eigenes Kennzeichen ... zuzuweisen" — the assignment is per
+  VEHICLE, so vehicle-keyed consumers may join on it. The two exceptions carry
+  their own `binding:` on the series: the Probefahrtkennzeichen binds to a
+  BUSINESS (§ 45), and the Wunschkennzeichen is expressly a personal right
+  (§ 48a Abs. 7, "ein höchstpersönliches Recht, das nicht auf andere Personen
+  übertragbar ist"), which survives deregistration for its fifteen years.
+instrument:
+  citation: "Kraftfahrgesetz 1967, BGBl. Nr. 267/1967, zuletzt geändert durch BGBl. I Nr. 79/2026; Kraftfahrgesetz-Durchführungsverordnung 1967, BGBl. Nr. 399/1967, zuletzt geändert durch BGBl. II Nr. 384/2024"
+  kfg_ausfertigungsdatum: "1967-07-28"
+  kfg_inkrafttreten: "1968-01-01"
+  kfg_inkrafttreten_source: "§ 135 Abs. 1 KFG 1967, verbatim: 'Dieses Bundesgesetz tritt mit Ausnahme der im Abs. 2 angeführten Bestimmungen mit 1. Jänner 1968 in Kraft.'"
+  kdv_ausfertigungsdatum: "1967-12-29"
+  eli_kfg48: "https://ris.bka.gv.at/eli/bgbl/1967/267/P48/NOR40279588"
+  source: "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1967_267_0/1967_267_0.pdf  # original KFG 1967 as enacted, 62. Stück, ausgegeben am 28. Juli 1967 — § 48, § 49 and § 135 read from the PDF"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  colours:
+    statute: >-
+      § 49 Abs. 4 KFG gives the colour table in full, and it is the whole
+      Austrian colour system in one place. "Die Farbe der Kennzeichentafeln muss
+      sein: Bei Tafeln für
+      1. Kraftwagen, Motorräder, Motorräder mit Beiwagen, Motordreiräder und
+         Anhänger, vorbehaltlich der Z 3 und 4 — weiß / schwarz;
+      2. Motorfahrräder, vierrädrige Leichtkraftfahrzeuge sowie für Anhänger
+         gemäß Abs. 3 — rot / weiß;
+      3. vorübergehend zugelassene Fahrzeuge sowie für Probefahrtkennzeichen —
+         blau / weiß;
+      4. Überstellungskennzeichen — grün / weiß;
+      5. Kraftfahrzeuge der Klasse L, M1, M2, M3, N1, N2 und N3 jeweils mit
+         reinem Elektroantrieb oder mit Wasserstoff-Brennstoffzellenantrieb —
+         weiß / grün."
+    retroreflective: "'Der Grund der Kennzeichentafeln muss aus rückstrahlendem Material bestehen.' (§ 49 Abs. 4 KFG) — unconditional, unlike the 1967 text which required it only for Z 1 and Z 2."
+    source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4: the five-row colour table, the retroreflection rule, the EU field, the Land arms, the red-white-red edging, the temporary-registration year stripe, the Hohlprägung. Accessed 2026-08-02"
+  colorimetry:
+    basis: >-
+      Anlage 5e B.2.5.2 KDV, verbatim: "Bei Messungen nach den Richtlinien der
+      CIE-Publikation Nr. 15 (1971) und bei Beleuchtung der Folienoberfläche mit
+      CIE-Normlichtart D 65 bei einem Anleuchtwinkel von 45° zur Normalen
+      (45/0° – Geometrie, 2° Beobachter) muss die Farbe der zwischen den roten
+      Randstreifen liegenden Flächen der Grundfolie in dem in Tabelle 2
+      angeführten Farbbereich liegen." Austria specifies a CIE CHROMATICITY
+      QUADRANGLE and a minimum luminance factor — NOT an RGB or RAL value. Every
+      hex in this file is therefore `hex_basis: observed`; the quadrangle is the
+      spec and is reproduced here so a renderer can do better than a guess.
+    weiss: { x: [0.355, 0.305, 0.285, 0.335], y: [0.355, 0.305, 0.325, 0.375], beta_min: 0.55 }
+    rot:   { x: [0.690, 0.595, 0.569, 0.655], y: [0.310, 0.315, 0.341, 0.345], beta_min: 0.05 }
+    blau:  { x: [0.105, 0.232, 0.240, 0.180], y: [0.240, 0.250, 0.200, 0.140], beta_min: 0.10 }
+    gruen: { x: [0.115, 0.200, 0.297, 0.242], y: [0.300, 0.490, 0.360, 0.265], beta_min: 0.15 }
+    source: "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # KDV Anlage 5e (zu § 25d), B.2.5.2 Colorimetrische Eigenschaften, TABELLE 2. Accessed 2026-08-02"
+  dimensions:
+    muster:
+      I:    { w: 520, h: 120, unit: mm, use: "GKT einzeilig; also motorcycles where a single-line plate is type-approved (§ 25d Abs. 3)" }
+      III:  { w: 300, h: 200, unit: mm, use: "GKT zweizeilig" }
+      Ia:   { w: 520, h: 120, unit: mm, use: "PKT (Probefahrt) einzeilig" }
+      IIIa: { w: 270, h: 200, unit: mm, use: "PKT zweizeilig" }
+      IV:   { w: 520, h: 120, unit: mm, use: "ÜKT / VZT einzeilig" }
+      V:    { w: 270, h: 200, unit: mm, use: "ÜKT / VZT zweizeilig" }
+      VI:   { w: 150, h: 115, unit: mm, use: "MFT — Motorfahrräder and vierrädrige Leichtkraftfahrzeuge" }
+      VII:  { w: 250, h: 200, unit: mm, use: "HKT zweizeilig; the FORMER motorcycle plate before 1 April 2005" }
+      VIII: { w: 210, h: 170, unit: mm, use: "MRT — motorcycles, and dreirädrige Kraftfahrzeuge ohne Aufbau" }
+      IX:   { w: 460, h: 120, unit: mm, use: "HKT einzeilig; also permitted as a FRONT plate for short Wunschkennzeichen (§ 25d Abs. 6)" }
+    source: "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # KDV Anlage 5e A. KENNZEICHENFORMATE, the ten Muster with their millimetre formats. Accessed 2026-08-02"
+    note: >-
+      520 x 120 mm, not the 520 x 110 mm of Germany, the Netherlands and Spain.
+      Austria's single-line plate is one centimetre taller than its neighbours'
+      — the single most render-relevant fact in this file.
+  font:
+    name: null
+    statutory_basis: >-
+      NO TYPEFACE IS NAMED ANYWHERE. Anlage 5e A.2.2 ends: "Abmessungen und
+      Aussehen der Wappen und der Schriftzeichen sind gemäß den beim
+      Bundesminister ... aufliegenden Mustern zu gestalten." The legal object is
+      a drawing on file with the ministry, exactly as the EU dossier found for
+      the UK, Germany and Spain. What Anlage 5e A.3 DOES publish is per-glyph
+      geometry, which is enough to render from: stroke width 10 mm throughout;
+      character height 71-72 mm; character widths in mm — A 47; B, D, E, Z 38;
+      I 10; L 33 or 28; F, J, P, R, T 38; C, G, H, K, N, O, S, U, V, X, Y 38;
+      M 43 or 38; W 51 or 42; digit 1 = 25; digits 3, 4, 6, 8, 9, 0 = 38;
+      digits 2, 5, 7 = 38. Tolerance +0.5 / -1.0 mm.
+    spacing: >-
+      "Der Abstand der Buchstaben und Ziffern untereinander muss graphisch
+      ausgewogen sein und soll zwischen 8 und 15 mm betragen"; and between the
+      letter block and the digit block "möglichst das Eineinhalbfache des
+      größten im Vormerkzeichen auftretenden Schriftzeichenabstandes" — a 1.5x
+      inter-block gap, which is the visual reason an Austrian serial reads as
+      two groups.
+    licence: >-
+      PRD-PLATES §6 applies unchanged: the render layer derives glyphs from the
+      published geometry, never from a third-party TTF. Austria is a weaker case
+      than Germany for the public-domain argument (no §5(1) UrhG equivalent was
+      researched in this pass — recorded gap), which is one more reason to
+      derive rather than embed.
+    source: "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # KDV Anlage 5e A.2.2 (Muster on file with the Minister) and A.3 Form und Größe der Schriftzeichen. Accessed 2026-08-02"
+  euro_band:
+    side: left
+    content: eu-stars+A
+    statute: >-
+      § 49 Abs. 4 KFG, verbatim: "Bei weißen Kennzeichentafeln, ausgenommen
+      solchen gemäß Z 5 für Motorfahrräder und vierrädrige Leichtkraftfahrzeuge,
+      und bei roten Kennzeichentafeln gemäß Abs. 3 muss am linken Rand in einem
+      blauen Feld mit zwölf gelben Sternen das internationale
+      Unterscheidungszeichen in weißer Schrift angegeben sein."
+    note: >-
+      TWO FINDINGS. (1) Austria does NOT cross-reference Reg. (EC) 2411/98 the
+      way FZV Anlage 4 Nr. 3 does — the KFG simply describes a blue field with
+      twelve yellow stars and the distinguishing sign in white, and Anlage 5e's
+      A.1.1 "EU-Emblem" heading is followed by a drawing, so no geometry is
+      extractable from Austrian law. (2) The band follows the plate's COLOUR,
+      not its class: the red trailer plate under § 49 Abs. 3 carries it, and the
+      blue Probefahrt, blue/red temporary and green Überstellung plates do not.
+    source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4. Accessed 2026-08-02"
+  emblem:
+    statute: >-
+      § 49 Abs. 4 KFG, verbatim: "Zwischen der Bezeichnung der Behörde und dem
+      Vormerkzeichen muss das Wappen des Bundeslandes angebracht sein, in dem
+      die Behörde ihren Sitz hat; dies gilt nicht für Fahrzeuge gemäß § 54
+      Abs. 3 und Abs. 3a lit. a und b sowie für Motorfahrräder und vierrädrige
+      Leichtkraftfahrzeuge. Bei den in § 40 Abs. 1 lit. a angeführten Fahrzeugen
+      tritt an die Stelle des Landeswappens das Bundeswappen, bei den zur
+      Verwendung für die Feuerwehr bestimmten Fahrzeugen tritt an die Stelle des
+      Landeswappens das Feuerwehr-Korpsabzeichen."
+    execution: >-
+      Anlage 5e A.2.2: the Wappenplakette for GKT and MRT is a transparent
+      translucent-printed foil thermally and irremovably bonded to the base
+      foil; for ÜKT, VZT, PKT and AAT it is a retroreflective self-adhesive
+      plastic foil with translucent screen printing. The arms are printed per the
+      federal and Land arms regulations with two substitutions, verbatim: "Dabei
+      tritt an die Stelle: der Farbe Silber die Farbe Weiß; der Farbe Gold die
+      Farbe Gelb." Below the arms, the Bundesland name in block capitals 4 or
+      5 mm high depending on word length.
+    rendered: placeholder
+    render_note: >-
+      PRD-PLATES §3 placeholder rule applies: nine Land arms plus the federal
+      arms plus the Feuerwehr-Korpsabzeichen, none licence-cleared. The
+      Silber->Weiß / Gold->Gelb substitution is recorded because a renderer that
+      ever does clear them will need it.
+    source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4; https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e A.2.2. Accessed 2026-08-02"
+  edging:
+    statute: >-
+      § 49 Abs. 4 KFG, verbatim: "Weiße Kennzeichentafeln (Z 1 und Z 5,
+      ausgenommen solche für Motorfahrräder und vierrädrige
+      Leichtkraftfahrzeuge) müssen an ihrer oberen und unteren Kante
+      rot-weiß-rot gerandet sein; Kennzeichentafeln für Motorfahrräder und
+      vierrädrige Leichtkraftfahrzeuge müssen weiß, solche gemäß Z 5 grün
+      umrandet sein."
+    note: >-
+      The red-white-red stripes run along the TOP and BOTTOM edges only, and are
+      the Austrian plate's signature. Note the colorimetric spec measures "die
+      zwischen den roten Randstreifen liegenden Flächen" — the stripes are
+      outside the measured area.
+  hologram:
+    statute: >-
+      § 49 Abs. 4 KFG: plates must carry "eine Hohlprägung ... die das
+      Bundeswappen mit der Umschrift 'Republik Österreich' und die dem Hersteller
+      der Kennzeichentafeln vom Bundesminister ... zugewiesene Kontrollnummer
+      zeigt". Anlage 5e A.2.1 gives its geometry: the mark sits inside an
+      elliptical embossed ring of 12 mm x 18 mm principal diameters, lettering
+      at least 1 mm high, control number below the legend.
+  serial_grammar:
+    ordinary_source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 6 Z 2 (ordinary), Z 3 (Wunschkennzeichen), Z 4 (letter exclusion), Z 5 (leading 0 / leading O). Accessed 2026-08-02"
+    letters_excluded: ["Q", "Ä", "Ö", "Ü"]
+    no_leading_zero: true
+    no_leading_o_ordinary: true
+    counts:
+      ordinary: "4 or 5 characters; 5 or 6 for plates assigned in the Landeshauptstädte and in Land Wien (Z 2 lit. a)"
+      two_line_and_probefahrt: "4 or 5; 4 to 6 in the Landeshauptstädte and Wien (Z 2 lit. b)"
+      ueberstellung: "4; 4 or 5 in the Landeshauptstädte and Wien (Z 2 lit. b)"
+      vorlaeufig: "4 (Z 2 lit. b)"
+      historic_single_line: "3; 3 or 4 in the Landeshauptstädte or Wien (Z 2 lit. b)"
+      motorfahrrad: "3 to 4; 3 to 5 in the Landeshauptstädte and Wien (Z 2 lit. c)"
+      wunschkennzeichen: "3 to 5; 3 to 6 in the Landeshauptstädte and Wien (Z 3 lit. a)"
+      official: "§ 26 Abs. 6 Z 1 lit. a: the Vormerkzeichen of Abs. 2-4 vehicles (except the fire brigade) 'dürfen nur Ziffern enthalten' — DIGITS ONLY, with NO published length rule; the six-digit bound used in this file is inferred from the GKT row of Anlage 5e and is flagged per series"
+    length_encoding_note: >-
+      Every serial-length rule above is encoded as a LOOKAHEAD over the
+      Vormerkzeichen — `(?=[A-Z0-9]{4,6}\z)` and friends — because the KDV counts
+      characters of a two-block variable-width serial and plain quantifiers
+      cannot express that. The lookahead's class is serial-alphabet-only, so it
+      is invisible to a consumer deriving separator-free twins.
+  offensive_combinations:
+    statute: "§ 26 Abs. 8 KDV enumerates, for Wunschkennzeichen, the combinations that count as anstößig 'für sich allein oder in Kombination mit der Behördenbezeichnung' — National Socialist organisation abbreviations (DAF, HJ, KZ, NS, NSBO, NSD, NSDAP, NSFK, NSKK, NSV, SA, SS) and a long, dated list of far-right numeric and letter codes with their meanings given in the regulation itself."
+    modelled: false
+    modelled_note: >-
+      NOT encoded as a charset exclusion, deliberately. The list binds only
+      WUNSCHKENNZEICHEN, it is a refusal rule applied at assignment rather than a
+      grammar, and it interacts with the Behördenbezeichnung (so "BH" is
+      simultaneously the lawful military prefix and a forbidden Wunschkennzeichen
+      combination). Recorded as a fact of the jurisdiction; a validator that
+      rejected these strings outright would be wrong about existing plates.
+    source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 8 Z 1-2. Accessed 2026-08-02"
+  absent_classes:
+    export: "No export series. § 46 Abs. 1a KFG puts transfers 'aus dem Bundesgebiet in das Ausland' inside the green ÜBERSTELLUNGSKENNZEICHEN, which is modelled here as class temporary."
+    taxi: "No taxi series found in KFG §§ 48-49 or KDV § 26 / Anlagen 5d-5e."
+    seasonal: "No seasonal series — no Austrian analogue of the German Saisonkennzeichen was found."
+    agricultural: "No agricultural series; Zugmaschinen, Motorkarren and selbstfahrende Arbeitsmaschinen carry ordinary plates (§ 49 Abs. 6 Z 2 KFG governs only where they are mounted)."
+    moped_insurance: "Austria has no German-style Versicherungskennzeichen: mopeds are REGISTERED and carry a red MFT plate under the same § 26 grammar."
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — GKT with the EU field.
+  # =========================================================================
+  - id: at-standard
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)\d{1,5}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)[1-9]\d{0,4}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset:
+        letters_excluded: ["Q", "Ä", "Ö", "Ü"]
+        notes: >-
+          § 26 Abs. 6 Z 4 KDV: "Es dürfen nur Großbuchstaben verwendet werden; die
+          Verwendung der Buchstaben Q, Ä, Ö und Ü ist unzulässig." Z 5 adds the two
+          positional rules regex_strict carries and `regex` cannot: no 0 first in
+          the digit block, and — for ordinary Vormerkzeichen only — no O first in
+          the letter block. Hence [1-9] and [A-NPR-Z] in the strict twin.
+      progression: >-
+        § 26 Abs. 6 Z 2 KDV: the Vormerkzeichen is a DIGIT BLOCK followed by a
+        LETTER BLOCK ("mit einer Ziffer beginnen und mit einem Buchstaben enden",
+        "alle Buchstaben und alle Ziffern nur je in geschlossenen Blöcken"), with
+        one to three letters and at least one digit, four or five characters in
+        total — five or six for plates assigned in the Landeshauptstädte and in
+        Land Wien. The KDV publishes no allocation order inside those blocks.
+      length_note: >-
+        The regex's {4,6} is the UNION of the two sourced ranges (4-5 outside the
+        state capitals, 5-6 inside), because a series spans all 98 authorities and
+        the KDV attaches the wider range to the ASSIGNING AUTHORITY, not to the
+        code. A per-authority narrowing needs the Landeshauptstadt question
+        settled — see plates/_decode/at-districts.yml, landeshauptstadt_note.
+      separator_note: >-
+        The gap between the Behördenbezeichnung and the Vormerkzeichen is
+        physically occupied by the LAND COAT OF ARMS (§ 49 Abs. 4 KFG), not by a
+        printed glyph. § 26 Abs. 7 KDV supplies the textual rendering — a hyphen —
+        and expressly allows it to be dropped on the Begutachtungsplakette, which
+        is why the regex spells the position `[- ]?`.
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III, zweizeilig" }
+        - { w: 460, h: 120, unit: mm, note: "Muster IX, permitted as a FRONT plate for short Wunschkennzeichen and for capital-city plates of up to four Vormerkzeichen (§ 25d Abs. 6 KDV)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 49 Abs. 4 Z 1 KFG names the colour 'weiß'; Anlage 5e B.2.5.2 bounds it to the CIE quadrangle in common.colorimetry.weiss with a minimum luminance factor of 0.55" }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red", note: "§ 49 Abs. 4 KFG: white Z-1 plates 'müssen an ihrer oberen und unteren Kante rot-weiß-rot gerandet sein'" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed, note: "the KFG describes a blue field with twelve yellow stars and no colour value; unlike Germany it does not cross-reference Reg. 2411/98" }
+      emblem: { present: true, rendered: placeholder, position: "between the Behördenbezeichnung and the Vormerkzeichen", content: "Wappen des Bundeslandes in which the assigning authority sits, with the Bundesland name in 4 or 5 mm block capitals beneath" }
+      rear_differs: false
+      display: "front and rear on Kraftwagen and on three-wheelers with a closed cabin-type body; rear only on the § 49 Abs. 6 Z 2 KFG list (mopeds, motorcycles, three-wheelers without a body, quadricycles with handlebar characteristics, light quadricycles, self-propelled machines up to 40 km/h, tractors, transport and motor karren, and trailers)"
+    region_encoding: "plates/_decode/at-districts.yml"
+    region_encoding_mechanism: >-
+      § 48 Abs. 4 KFG: one or two letters naming the AUTHORITY in whose local
+      area the vehicle is registered. Unlike Germany's, the list is inside the
+      regulation (KDV Anlage 5d, 98 rows) and is therefore fully authored in the
+      decode file. The split point is unambiguous for this series because the
+      Vormerkzeichen must begin with a digit — the prefix is exactly the leading
+      letter run. It is NOT unambiguous for at-wunschkennzeichen.
+    variants:
+      - class: standard
+        format: { pattern: "LL-999L" }
+        note: >-
+          WECHSELKENNZEICHEN (§ 48 Abs. 2 KFG). On application, TWO OR THREE
+          vehicles of the same applicant share a single Kennzeichen, provided they
+          fall in the same Obergruppe of § 3 Abs. 1 Z 1, 2 or 4 and plates of the
+          same format and design fit all of them; "das Wechselkennzeichen darf zur
+          selben Zeit nur auf einem der Fahrzeuge geführt werden". A variant, not a
+          series: the serial grammar and the design are unchanged. Note the
+          contrast with Germany, where the Wechselkennzeichen SPLITS the string
+          across two plate parts and the single-`pattern` schema cannot express it;
+          Austria simply issues the same plate.
+        sources:
+          - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 2: two or three vehicles, same Obergruppe, same plate format, one at a time. Accessed 2026-08-02"
+      - class: standard
+        format: { pattern: "LL-999L" }
+        note: >-
+          DECKKENNZEICHEN (§ 48 Abs. 1 and 1a KFG) — a SECOND, not-otherwise-assigned
+          Kennzeichen issued alongside the real one for vehicles of the
+          Bundespräsident and the named office-holders, of the public security
+          service, federal finance administration, prison service, armed forces and
+          finance-criminal authorities, and of foreign heads of mission. Security
+          and military-intelligence fleets may hold several per vehicle, and § 48
+          Abs. 1a permits reciprocal cover plates for foreign police and customs
+          vehicles under international agreement. Recorded because it is the one
+          Austrian plate that is DELIBERATELY indistinguishable from an ordinary
+          one — a fact a parse API's confidence model should know and can never
+          detect.
+        sources:
+          - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 1 Z 1-3, Abs. 1a, Abs. 1b. Accessed 2026-08-02"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 4: 'Die Kennzeichen müssen aus lateinischen Buchstaben und arabischen Ziffern bestehen. Das Kennzeichen muss mit einem oder zwei Buchstaben als Bezeichnung der Behörde ... beginnen.' Abs. 5: the delegation to Verordnung. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 1 (Anlage 5d), Abs. 6 Z 2 (the ordinary serial grammar), Z 4-5 (charset), Abs. 7 (the hyphen). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4: white/black, retroreflective, EU field, Land arms, red-white-red edging; Abs. 4a: the voluntary swap to an EU plate. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # KDV Anlage 5e: GKT einzeilig = Muster I 520 x 120 mm, EU emblem +, weiß/schwarz, Wappen +, up to 6 Vormerkzeichen; GKT zweizeilig = Muster III 300 x 200 mm. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2002-05-25  # the § 49 Fassung in force 25.05.2002-31.10.2002 — NO EU-field sentence. The pair of Fassungen is the period evidence. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2002-11-01  # the § 49 Fassung in force from 01.11.2002 (BGBl. I Nr. 80/2002) — the EU-field sentence appears. Accessed 2026-08-02"
+    notes: >-
+      THE AUSTRIAN STANDARD SERIES. period.start 2002 is a REAL commencement, not
+      an instrument date: the EU field became mandatory on white plates on
+      1 November 2002 under BGBl. I Nr. 80/2002, and the two consolidated § 49
+      Fassungen either side of that date differ by exactly that sentence. The
+      FORMAT is older — the authority-letter frame dates from 1 January 1989 (see
+      at-standard-preeu) — which is why this entry and its predecessor share a
+      grammar and differ only in the blue field. § 49 Abs. 4a is the reason both
+      remain on the road: a keeper whose vehicle has no EU plate "hat die
+      Möglichkeit, die Ausfolgung solcher Kennzeichentafeln zu beantragen", and
+      may keep the existing Kennzeichen while doing so. Nothing in Austrian law
+      forces the swap, so pre-2002 white plates are lawful indefinitely and the
+      two series are genuinely parallel.
+
+  # =========================================================================
+  # ONE SERIES BACK — the white plate BEFORE the EU field, 1989-2002.
+  # =========================================================================
+  - id: at-standard-preeu
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 1989, end: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)\d{1,5}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)[1-9]\d{0,4}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset:
+        letters_excluded: ["Q", "Ä", "Ö", "Ü"]
+        notes: "as at-standard — but see the grammar caveat in notes: these charset rules are read from the CURRENT § 26 KDV, not from the version in force in 1989"
+      grammar_caveat: >-
+        THE 1989-2002 SERIAL GRAMMAR WAS NOT RE-DERIVED FROM THE KDV VERSION IN
+        FORCE THEN. RIS's consolidated § 26 KDV reaches back only to the Fassung
+        valid from 19.03.2004 (FassungVom=1997-01-01 returns HTTP 404), so the
+        regexes here are the CURRENT grammar applied backwards. What IS sourced
+        for 1989 is the statutory frame: BGBl. Nr. 375/1988 Art. I Z 31 replaced
+        § 48 Abs. 4 KFG with the one-or-two-letter authority prefix followed by
+        "das Zeichen ..., unter dem das Fahrzeug bei der Behörde vorgemerkt ist",
+        and Art. V Abs. 4 lit. b commenced it on 1 January 1989. Recorded gap.
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: none }
+      band_note: >-
+        THE DIFFERENCE THAT MAKES THIS A SERIES. § 49 Abs. 4 KFG in the Fassung
+        valid 25.05.2002-31.10.2002 contains no EU-field sentence at all; the
+        Fassung valid from 01.11.2002 does. Plates issued before that date carry
+        the red-white-red edging and the Land arms but no blue field, and remain
+        lawful — § 49 Abs. 4a makes the swap optional and never compulsory.
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes" }
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1988_375_0/1988_375_0.pdf  # BGBl. Nr. 375/1988 (11. KFG-Novelle), 138. Stück, ausgegeben am 15. Juli 1988. Art. I Z 31 rewrites § 48 Abs. 4 ('Kennzeichen muß mit einem oder zwei Buchstaben als Bezeichnung der Behörde, die den Zulassungsschein ausgestellt hat, beginnen'); Art. I Z 35 rewrites § 49 Abs. 4 (weiß/schwarz, rot-weiß-rot gerandet, Landeswappen); Art. V Abs. 4 lit. b commences both on 1 January 1989; Art. V Abs. 5 lets the Landeshauptmann stagger commencement per authority; Art. V Abs. 6 allows non-conforming stock 'bis längstens 31. Jänner 1990'. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=1990-07-28  # the earliest § 49 Fassung RIS holds (BGBl. Nr. 458/1990) — already white/black with the red-white-red edging and the Land arms, and with NO EU field. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4a: the voluntary swap that keeps this series on the road. Accessed 2026-08-02"
+    notes: >-
+      THE PRE-EU WHITE PLATE, 1989-2002 — the one series back from the current
+      standard, and a design change rather than a format change. period.start is
+      the commencement date in BGBl. Nr. 375/1988 Art. V Abs. 4 lit. b; period.end
+      is the day the EU field became mandatory. ROLLOUT, stated because the
+      instrument states it: Art. V Abs. 5 empowered each Landeshauptmann to set
+      DIFFERENT commencement dates for the individual authorities in his area
+      (with the Wunschkennzeichen plate issue capped at 1 January 1990), so the
+      1989 date is a legal start, not a nationwide switchover. Distinct from
+      at-standard by the absent blue field, and from at-blackplate by everything
+      else.
+
+  # =========================================================================
+  # TWO SERIES BACK — the black plate of the original KFG 1967. Kept because
+  # the original Bundesgesetzblätter describe it verbatim and it is still
+  # seen on historic vehicles.
+  # =========================================================================
+  - id: at-blackplate
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1968, end: 1990 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "W-99999"
+      regex: '\A(?:ST|B|G|K|L|N|O|S|T|V|W)[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:ST|B|G|K|L|N|O|S|T|V|W)[- ]?[1-9]\d{0,5}\z'
+      charset:
+        notes: >-
+          DIGITS ONLY after the letter. § 26 Abs. 5 KDV 1967 as originally enacted,
+          verbatim: "Als Vormerkzeichen, das sind die Zeichen, unter denen die
+          Fahrzeuge gemäß § 48 Abs. 4 letzter Satz des Kraftfahrgesetzes 1967 bei
+          der Behörde vorgemerkt sind, sind Zahlen zu verwenden." No digit-count
+          rule was found in either 1967 instrument; the {1,6} bound is this pass's
+          own and is flagged in notes. The no-leading-zero rule in regex_strict is
+          likewise carried back from the modern § 26 Abs. 6 Z 5 and is NOT sourced
+          for 1968 — treat regex_strict here as a hypothesis, not a claim.
+      prefix_note: >-
+        § 26 Abs. 1 KDV 1967 as enacted gives the BUNDESLAND letters: "für das
+        Burgenland B, für Kärnten K, für Niederösterreich N, für Oberösterreich O,
+        für Salzburg S, für Steiermark St, für Tirol T, für Vorarlberg V, für
+        Wien W." Abs. 2 adds "Die Bezeichnung der Landeshauptstadt Graz hat im
+        Kennzeichen zu lauten G, die Bezeichnung der Landeshauptstadt Linz hat im
+        Kennzeichen zu lauten L." The instrument prints Steiermark as "St" in mixed
+        case; the dataset's serial alphabet is uppercase-only (PRD-PLATES §2.6), so
+        it is recorded as ST and the mixed-case printing is noted here.
+      structure_note: >-
+        § 48 Abs. 4 KFG 1967 as enacted, verbatim: "Das Kennzeichen muß mit einem
+        Buchstaben als Bezeichnung des Bundeslandes ... beginnen und, außer bei
+        Kennzeichen für vorübergehend zugelassene Fahrzeuge, anschließend an die
+        Bezeichnung des Bundeslandes die Bezeichnung der Behörde, die den
+        Zulassungsschein ausgestellt hat, in arabischen Ziffern enthalten. Werden
+        jedoch Kennzeichen von Behörden zugewiesen, deren örtlicher
+        Wirkungsbereich den Bereich einer Landeshauptstadt oder von Wien umfaßt, so
+        kann anstelle der Bezeichnung des Bundeslandes und der Behörde die
+        Bezeichnung des Bundeslandes allein oder ein anderer Buchstabe treten." So
+        the digit run is NOT one field: its leading digits identified the district
+        authority and the rest was the vehicle's Vormerkzeichen — a decode
+        dimension inside the number, whose key was never published in the
+        instruments read here and is a recorded gap.
+    design:
+      plate: { w: null, h: null, unit: mm }
+      dimensions_note: "no dimensions were secured for the black plate: KDV Anlage 5e post-dates it and the 1967 instruments give none. Recorded gap."
+      background: { color: "#000000", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      emblem: { present: false }
+      border: { note: "§ 49 Abs. 4 KFG 1967: moped plates white-bordered, trailer plates (other than the Abs. 3 foreign-trailer plates) RED-bordered — the black era's only colour coding on an otherwise uniform plate" }
+      hologram: { note: "§ 49 Abs. 4 KFG 1967 already required the Hohlprägung with the Staatswappen and the maker's control number — the one design element that survived 1989 unchanged" }
+    region_encoding: none
+    region_encoding_note: >-
+      NOT decodable through plates/_decode/at-districts.yml. This series encodes
+      the BUNDESLAND in a letter and the authority in DIGITS; the modern table maps
+      1-2 LETTER codes to authorities and does not apply. A parse API must not
+      route a black-plate string through it.
+    sources:
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1967_267_0/1967_267_0.pdf  # KFG 1967 as enacted, BGBl. Nr. 267/1967. § 48 Abs. 4 (Bundesland letter + authority digits + Vormerkzeichen); § 49 Abs. 4, verbatim: 'Auf den Kennzeichentafeln muß das Kennzeichen in weißer Schrift eingepreßt sein. ... Der Grund der Kennzeichentafeln muß schwarz sein, jedoch bei Motorfahrrädern und bei Kennzeichentafeln gemäß Abs. 3 rot, bei Probefahrtkennzeichen und bei vorübergehend zugelassenen Fahrzeugen blau und bei Überstellungskennzeichen grün.'; § 135 Abs. 1 (in force 1 January 1968). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1967_399_0/1967_399_0.pdf  # KDV 1967 as enacted, BGBl. Nr. 399/1967, 97. Stück, ausgegeben am 29. Dezember 1967. § 26 Abs. 1 (the nine Bundesland letters), Abs. 2 (G Graz, L Linz), Abs. 5 (Vormerkzeichen = Zahlen). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1988_375_0/1988_375_0.pdf  # BGBl. Nr. 375/1988 Art. V Abs. 6: non-conforming plate stock usable 'bis längstens 31. Jänner 1990' — the last date a black plate could lawfully be assigned. Accessed 2026-08-02"
+    notes: >-
+      THE BLACK PLATE — white script on a black ground, no reflective sheeting
+      required except for the categories § 49 Abs. 4 KFG 1967 named, no coat of
+      arms, no band. period.start 1968 is INSTRUMENT-IN-FORCE and says so: § 135
+      Abs. 1 commenced KFG 1967 on 1 January 1968, but black plates long predate it
+      (the KFG 1955 regime was not fetched in this pass — recorded gap), so 1968 is
+      the date of the instrument that STATES the rule, not the date the design
+      began. period.end 1990 IS sourced: BGBl. Nr. 375/1988 Art. V Abs. 6 allowed
+      remaining non-conforming stock to be used up "bis längstens 31. Jänner 1990",
+      which is the last lawful ASSIGNMENT of a black plate; Art. VII Abs. 1 had
+      already limited interim re-assignment of "das bisherige Kennzeichen" to six
+      months. HOW LONG BLACK PLATES REMAINED VALID ON THE ROAD IS A RECORDED GAP:
+      § 48 Abs. 5 KFG empowers a Verordnung to fix "der Zeitpunkt, bis zu dem die
+      bisher geführten Kennzeichen gegen Kennzeichen eines neu festgesetzten
+      Systems ausgetauscht sein müssen", and that Verordnung was not located. The
+      widely-repeated claim that Austrian plates were exchanged by a single 1990
+      deadline is therefore NOT asserted here. FOLKLORE FLAG: enthusiast sources
+      render these plates with a full stop grouping the digits ("W 123.456"); no
+      such glyph appears in § 48, § 49 or KDV § 26 as enacted, so it is not in the
+      pattern or the regex and would, if ever sourced from a physical spec, be a
+      `never_separator` question for plates/_meta/separators.yml rather than a data
+      entry.
+
+  # =========================================================================
+  # MOTORCYCLES — MRT, Muster VIII, and a date printed inside the KDV.
+  # =========================================================================
+  - id: at-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2005 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)\d{1,5}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)[1-9]\d{0,4}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV, as at-standard" }
+      length_note: >-
+        Anlage 5e's MRT row gives "4 bis 6" Vormerkzeichen with the footnote
+        "Anzahl der Vormerkzeichen bei Nachbestellungen und Wunschkennzeichen bis
+        zu 6 Zeichen", and its field L/LI entry caps the normal case at four
+        characters. Four is therefore the ordinary motorcycle serial length and
+        five or six occur on reorders, Wunschkennzeichen and capital-city plates;
+        the regex carries the union.
+      fields_note: >-
+        A schema stressor, from Anlage 5e field L/LI: on a Muster VIII
+        Wunschkennzeichen with six Vormerkzeichen assigned in a Landeshauptstadt,
+        "die erste Stelle des Vormerkzeichens in der oberen Zeile nach dem Wappen
+        und die restlichen 5 Stellen des Vormerkzeichens in der unteren Zeile" —
+        the serial is SPLIT ACROSS TWO LINES at a position that depends on its
+        length. A single `pattern` string cannot express that; it is the same
+        pressure PRD-PLATES §2.2 records for Japan.
+    design:
+      plate: { w: 210, h: 170, unit: mm, note: "Muster VIII" }
+      plate_variants:
+        - { w: 520, h: 120, unit: mm, note: "Muster I — permitted for a motorcycle only where a single-line plate has been type-approved for that vehicle (§ 25d Abs. 3 KDV)" }
+        - { w: 250, h: 200, unit: mm, note: "Muster VII — the FORMER motorcycle plate, superseded for new issues on 1 April 2005; § 25d Abs. 3 gives its holders a right to swap to Muster VIII, optionally keeping the same Kennzeichen" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes" }
+      rear_differs: false
+      display: "rear only (§ 49 Abs. 6 Z 2 KFG). Front plates that were once fitted to three-wheelers without a body and to handlebar-steered quadricycles had to be surrendered to a Zulassungsstelle by 31 December 2007."
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d&FassungVom=2011-04-01  # § 25d Abs. 3 KDV in the Fassung valid from 01.04.2011, verbatim: 'Kennzeichentafeln für Motorräder werden ab 1. April 2005 nur mehr nach dem Muster VIII der Anlage 5e ausgegeben.' The current Fassung has dropped the date; this one preserves it. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d  # current § 25d Abs. 3 (Muster VIII default, Muster I where approved, the swap right) and Abs. 4 (three-wheelers without a body take Muster VIII). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: MRT row (EU emblem +, weiß/schwarz, Wappen +, 4-6 Vormerkzeichen, Muster VII/VIII); KENNZEICHENFORMATE VIII = 210 x 170 mm, VII = 250 x 200 mm. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4 (colours, EU field, arms) and Abs. 6 Z 2 (rear only). Accessed 2026-08-02"
+    notes: >-
+      MOTORCYCLE PLATES. period.start 2005 is a date PRINTED INSIDE THE
+      REGULATION — "ab 1. April 2005 nur mehr nach dem Muster VIII" — which
+      survives in the 2011 consolidated Fassung and was dropped from the current
+      one, a good argument for reading historical Fassungen rather than only
+      today's. The pre-2005 Muster VII plate is recorded as a plate_variant rather
+      than its own series because its serial grammar is identical and § 25d Abs. 3
+      keeps it lawful: a keeper "hat die Möglichkeit" to swap, never a duty. Muster
+      VII is now the two-line HISTORIC plate, so the same 250 x 200 mm blank serves
+      two eras and two classes — a fact a render pipeline must not collapse.
+
+  # =========================================================================
+  # MOPEDS — MFT. Red, no EU field, no coat of arms, and the smallest plate.
+  # =========================================================================
+  - id: at-moped
+    class: moped
+    categories: [moped]
+    period: { start: 1989 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-99L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{3,5}\z)\d{1,4}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{3,5}\z)[1-9]\d{0,3}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV" }
+      length_note: >-
+        § 26 Abs. 6 Z 2 lit. c KDV: "bei Kennzeichen für Motorfahrräder drei bis
+        vier Zeichen, bei den in den Landeshauptstädten und im Land Wien
+        zugewiesenen Kennzeichen drei bis fünf Zeichen". Anlage 5e's MFT row adds a
+        cap on the WHOLE string — "6 *)", with the footnote "Anzahl der Zeichen
+        insgesamt (Zulassungsbereich + Vormerkzeichen)" — the only place in the
+        Austrian system where prefix and serial are counted together, and the
+        reason a two-letter district cannot issue a five-character moped serial.
+        That interaction is recorded rather than encoded, because it depends on the
+        prefix's length and the regex quantifies the two independently.
+      separator_note: >-
+        CAVEAT. § 26 Abs. 7 KDV frames the hyphen as what is written "anstelle des
+        Landeswappens", and the moped plate has NO coat of arms (§ 49 Abs. 4 KFG
+        expressly excepts Motorfahrräder and vierrädrige Leichtkraftfahrzeuge). The
+        `[- ]?` position is therefore an ANALOGY here, not a quotation. Anlage 5e's
+        Muster VI splits the string across fields G (Behörde), H (first one or two
+        Vormerkzeichen) and K (last three) with no separator glyph at all.
+    design:
+      plate: { w: 150, h: 115, unit: mm, note: "Muster VI — the smallest Austrian plate" }
+      background: { color: "#CC0000", finish: retroreflective, hex_basis: observed, spec_note: "§ 49 Abs. 4 Z 2 KFG names the colour 'rot'; Anlage 5e B.2.5.2 bounds it to the CIE quadrangle in common.colorimetry.rot with a minimum luminance factor of 0.05. The hex is an approximate sRGB rendering of that region's centroid, not a value from the instrument." }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", note: "§ 49 Abs. 4 KFG: 'Kennzeichentafeln für Motorfahrräder und vierrädrige Leichtkraftfahrzeuge müssen weiß ... umrandet sein' — white border, and no red-white-red edging" }
+      band: { side: none }
+      band_note: "Anlage 5e's MFT row records the EU emblem as absent, and § 49 Abs. 4 confines the blue field to white plates and to the Abs. 3 red trailer plates. A red Austrian plate WITHOUT a blue field is a moped; a red one WITH it is a foreign-trailer plate."
+      emblem: { present: false, note: "§ 49 Abs. 4 KFG excepts Motorfahrräder and vierrädrige Leichtkraftfahrzeuge from the Land arms" }
+      rear_differs: false
+      display: "rear only (§ 49 Abs. 6 Z 2 KFG)"
+      legibility: "§ 49 Abs. 4 KFG: characters legible at 40 m in daylight and clear weather, 'bei Motorfahrrädern und vierrädrigen Leichtkraftfahrzeugen auf mindestens 20 m' — the only class with a relaxed legibility distance"
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4 Z 2 (rot/weiß), the white border, the no-arms exception, the 20 m legibility rule; Abs. 6 Z 2 (rear only). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 6 Z 2 lit. c: three to four characters, three to five in the Landeshauptstädte and Wien. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: MFT row (EU emblem -, rot/weiß, Wappen -, 6 characters in total, Muster VI); KENNZEICHENFORMATE VI = 150 x 115 mm; A.2 fields G, H, K. Accessed 2026-08-02"
+    notes: >-
+      MOTORFAHRRAD- UND LEICHTKRAFTFAHRZEUG-KENNZEICHEN. Austria REGISTERS mopeds
+      and issues a proper Kennzeichen, so there is no analogue of the German
+      Versicherungskennzeichen with its annual colour cycle. period.start 1989 is
+      the commencement of the authority-letter format (BGBl. Nr. 375/1988 Art. V
+      Abs. 4 lit. b); the RED colour itself is much older and is already in § 49
+      Abs. 4 KFG 1967 as enacted, so this series inherits a colour from the black
+      era and a format from 1989. Class caveat: the same plate serves vierrädrige
+      Leichtkraftfahrzeuge (L6e quadricycles), which are not mopeds; `moped` is the
+      closest value in _meta/classes.yml and the wider scope is recorded here.
+
+  # =========================================================================
+  # ELECTRIC — green script on white. Austria's cleanly dated EV plate.
+  # =========================================================================
+  - id: at-electric
+    class: electric
+    categories: [car, van, truck, bus, motorcycle, moped]
+    period: { start: 2017 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)\d{1,5}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)[1-9]\d{0,4}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV — the serial grammar is the ordinary one; only the colours change" }
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+        - { w: 210, h: 170, unit: mm, note: "Muster VIII, for class L vehicles taking a motorcycle plate" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#007A3D"
+      foreground_note: >-
+        § 49 Abs. 4 Z 5 KFG, verbatim: "Kraftfahrzeuge der Klasse L, M1, M2, M3,
+        N1, N2 und N3 jeweils mit reinem Elektroantrieb oder mit
+        Wasserstoff-Brennstoffzellenantrieb — weiß / grün". The statute names the
+        colour without an RAL or RGB value and Anlage 5e's colorimetric table
+        bounds only the GROUND FOIL, not the script, so this hex is observed within
+        a named colour and has no spec behind it at all.
+      border: { color: "#007A3D", note: "§ 49 Abs. 4 KFG: Z-5 plates are GREEN-bordered, not red-white-red — 'Kennzeichentafeln ... solche gemäß Z 5 grün umrandet'" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed, note: "the EU field is present because the plate is white; § 49 Abs. 4 excepts only Z-5 plates FOR MOPEDS AND LIGHT QUADRICYCLES from it" }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes" }
+    optionality:
+      note: >-
+        § 49 Abs. 4b KFG makes the green plate BIDIRECTIONALLY optional: the keeper
+        of a Z-5 vehicle "hat die Möglichkeit, anstelle der Kennzeichentafel gemäß
+        Abs. 4 Z 5 eine herkömmliche Kennzeichentafel gemäß Abs. 4 Z 1 oder 2 zu
+        beantragen", and equally may apply for a Z-5 plate if none has been issued,
+        in which case a new Kennzeichen is assigned in principle but the existing
+        one may be kept on request. So an Austrian EV may lawfully wear a black-on-
+        white plate and a green-on-white plate is not a reliable EV detector in
+        either direction — a real caveat for any consumer inferring powertrain.
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-01-01  # the § 49 Fassung in force 01.01.2017-31.03.2017 — NO Z 5, no 'Elektroantrieb'. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-04-01  # the § 49 Fassung in force from 01.04.2017 (BGBl. I Nr. 9/2017) — Z 5 appears. The pair of Fassungen is the period evidence. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # current § 49 Abs. 4 Z 5 (weiß/grün), the green border rule, the EU-field exception for Z-5 moped plates, Abs. 4b (the two-way option). Accessed 2026-08-02"
+    notes: >-
+      DAS GRÜNE KENNZEICHEN. period.start 2017 is a REAL commencement: § 49 Abs. 4
+      Z 5 KFG is absent from the consolidated Fassung in force on 1 January 2017 and
+      present in the one in force from 1 April 2017 (BGBl. I Nr. 9/2017). SCHEMA
+      NOTE worth flagging for the L1 verifier: KDV Anlage 5e's Kennzeichenarten
+      table has NO ROW for the green plate — it still lists only GKT, HKT, DKT,
+      PKT, ÜKT, VZT, AAT, MFT and MRT — so the electric plate lives entirely in the
+      KFG's colour table and inherits its geometry from whichever Muster its vehicle
+      class would otherwise take. The regulation has not caught up with the statute;
+      that is the regulation's problem, and it is recorded rather than papered over.
+
+  # =========================================================================
+  # HISTORIC — HKT. Austria's oldtimer plate is a SHORT SERIAL, not a suffix.
+  # =========================================================================
+  - id: at-historic
+    class: historic
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2018 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-99L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{3,4}\z)\d{1,3}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{3,4}\z)[1-9]\d{0,2}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV — the ordinary grammar, shortened" }
+      length_note: >-
+        § 26 Abs. 6 Z 2 lit. b KDV, fourth indent: "bei einzeiligen
+        Kennzeichentafeln für historische Fahrzeuge nach dem Muster IX der Anlage
+        5e drei Zeichen, bei den in den Landeshauptstädten oder im Land Wien
+        zugewiesenen Kennzeichen drei oder vier". Anlage 5e's HKT row says the same
+        with the footnote "Anzahl der Vormerkzeichen bei den in den
+        Landeshauptstädten und Wien zugewiesenen Kennzeichen bis zu 4 Zeichen".
+        THREE characters, digits then letters, is the whole tell: no other Austrian
+        road series is that short.
+    design:
+      plate: { w: 460, h: 120, unit: mm, note: "Muster IX, einzeilig — 60 mm shorter than the ordinary single-line plate" }
+      plate_variants:
+        - { w: 250, h: 200, unit: mm, note: "Muster VII, zweizeilig — the same blank the pre-2005 motorcycle plate used" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes" }
+    optionality:
+      note: >-
+        § 25d Abs. 5 KDV second sentence: "Der Zulassungsbesitzer eines
+        historischen Fahrzeuges hat die Möglichkeit, anstelle der Kennzeichentafel
+        nach dem Muster IX oder VII eine Kennzeichentafel nach dem in der Anlage 5e
+        für die jeweilige Fahrzeugart vorgesehenen Muster zu beantragen." A historic
+        vehicle may therefore carry an ordinary plate, so the short plate is
+        sufficient but not necessary evidence of historic status.
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d&FassungVom=2018-04-01  # § 25d Abs. 5 KDV first appears in the Fassung in force from 01.04.2018: 'Kennzeichentafeln für historische Fahrzeuge (Kraftwagen und Anhänger) sind nach dem Muster IX (einzeilige Kennzeichentafel) oder nach dem Muster VII (zweizeilige Kennzeichentafel) der Anlage 5e zu gestalten.' Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d&FassungVom=2011-04-01  # the § 25d Fassung in force 01.04.2011-31.03.2018 has NO historic-vehicle provision — the pair of Fassungen is the period evidence. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 6 Z 2 lit. b, fourth indent: three characters, three or four in the capitals. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: HKT einzeilig/zweizeilig rows (EU emblem +, weiß/schwarz, Wappen +, 3 Vormerkzeichen); KENNZEICHENFORMATE IX = 460 x 120 mm, VII = 250 x 200 mm. Accessed 2026-08-02"
+    notes: >-
+      HISTORISCHES KENNZEICHEN. Nothing like the German H-suffix or the Dutch dark
+      blue plate: Austria signals historic status by SHORTENING THE SERIAL and the
+      PLATE, keeping the ordinary colours, and taking 60 mm off the single-line
+      blank. period.start 2018 is a REAL commencement — § 25d Abs. 5 KDV is absent
+      from the Fassung in force 01.04.2011-31.03.2018 and present in the Fassung
+      from 01.04.2018. TWO RECORDED GAPS: (1) the definition of "historisches
+      Fahrzeug" lives in § 2 Abs. 1 KFG, which was not fetched in this pass, so no
+      age threshold is asserted here and the widely-repeated "30 years" is NOT
+      claimed; (2) § 25d Abs. 5 names only "Kraftwagen und Anhänger", so whether a
+      historic MOTORCYCLE can take an HKT plate is unresolved and the categories
+      list follows the regulation's wording rather than expectation.
+
+  # =========================================================================
+  # DIPLOMATIC AND CONSULAR — the Land letter plus D or K, and no coat of arms.
+  # =========================================================================
+  - id: at-diplomatic
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "WD-99999"
+      regex: '\A(?:STD|BD|GD|KD|ND|OD|SD|TD|VD|WD)[- ]?(?=[A-Z0-9]{1,5}\z)\d{1,5}[A-Z]{0,4}\z'
+      regex_strict: '\A(?:STD|BD|GD|KD|ND|OD|SD|TD|VD|WD)[- ]?(?=[A-Z0-9]{1,5}\z)[1-9]\d{0,4}[A-PR-Z]{0,4}\z'
+      charset:
+        letters_excluded: ["Q", "Ä", "Ö", "Ü"]
+        notes: >-
+          § 26 Abs. 6 Z 1 lit. c KDV, verbatim: the Vormerkzeichen of Abs. 5
+          vehicles "dürfen außer Ziffern auch Buchstaben enthalten. Sie müssen aber
+          jedenfalls mit einer Ziffer beginnen und dürfen alle Ziffern und alle
+          Buchstaben nur in geschlossenen Blöcken enthalten; das Verwenden von
+          Buchstaben abwechselnd mit Ziffern ist unzulässig." NOTE THE PRECISION
+          POINT: Z 5's no-leading-O rule is expressly limited to "Vormerkzeichen
+          gemäß Z 2", so it does NOT bind here and regex_strict excludes only Q.
+          The no-leading-zero rule in the same Ziffer is unrestricted and does bind.
+      length_note: "Anlage 5e's DKT row caps the Vormerkzeichen at 5; § 26 Abs. 6 gives Abs. 5 vehicles no count of their own, so 5 is the only sourced bound."
+      prefix_note: >-
+        DERIVED, and flagged as derived. § 26 Abs. 5 KDV says to use "die Buchstaben
+        gemäß Abs. 3" — the Land letters B, K, N, O, S, ST, T, V, W — except for
+        vehicles based in Graz, where "die Bezeichnung der Behörde gemäß Anlage 5d"
+        (G) is used instead; and that "diesen folgt ... der Buchstabe D". The ten
+        alternatives in the regex are that rule applied; the KDV never prints them
+        as a list. STD is the only three-letter prefix the Austrian system produces,
+        and the Graz exception exists precisely because ST is already two letters.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "Muster I" }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+        - { w: 250, h: 200, unit: mm, note: "Muster VII" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: false, note: "§ 49 Abs. 4 KFG: the Land-arms requirement 'gilt nicht für Fahrzeuge gemäß § 54 Abs. 3 und Abs. 3a lit. a und b' — Anlage 5e's DKT row records the Wappen as absent" }
+      cd_sign: >-
+        SEPARATE FROM THE PLATE. § 54 Abs. 3c KFG: the signs "CD" and "CC" "müssen
+        in der bei Kennzeichentafeln üblichen Art am Fahrzeug angebracht sein. Das
+        Recht, diese Zeichen zu führen, ist in den Zulassungsschein einzutragen."
+        They are plate-like badges alongside the Kennzeichen, not part of it, and are
+        therefore not in the pattern.
+    region_encoding: inline
+    region_encoding_note: "prefix decode in plates/_decode/at-districts.yml, diplomatic_consular block; the mission-identifying allocation inside the Vormerkzeichen is not published in the KDV and is NOT authored (PRD-PLATES puts diplomatic decode tables at L4)"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 5 lit. a: the D letter, its beneficiary definition (Legitimationskarte for the diplomatic corps in Vienna, for officials of international organisations in Austria with equivalent status, and for members of diplomatic rank of permanent missions), the Graz exception, and the security caveat 'sofern nicht aus Sicherheitsgründen die Zuweisung eines Kennzeichens gemäß Abs. 6 (Vormerkzeichen) erforderlich ist'; Abs. 6 Z 1 lit. c the serial grammar. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=54  # § 54 Abs. 3 lit. a-c (who may display CD), Abs. 3b (household family members), Abs. 3c (how the sign is affixed and recorded). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4: the no-arms exception for § 54 Abs. 3 vehicles; the EU field on white plates. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: Diplomat (DKT) row — EU emblem +, weiß/schwarz, Wappen -, 5 Vormerkzeichen, Muster I/III/VII. Accessed 2026-08-02"
+    notes: >-
+      AUSTRIAN DIPLOMATIC PLATES. Like Germany and unlike Spain, Austria keeps the
+      ordinary black-on-white design and signals status through the PREFIX plus one
+      structural cue — the missing coat of arms, which leaves a visible gap where
+      every other white Austrian plate carries arms. Vienna's concentration of
+      international organisations makes WD overwhelmingly the populated prefix.
+      COLLISION WARNING a parse API must carry: ND, SD and GD are simultaneously
+      Anlage 5d district codes (Neusiedl am See, Schärding, Gmünd) and BD is
+      simultaneously the Bundesbus sachlicher Bereich. The tie-break is the serial,
+      not the prefix — an ordinary Vormerkzeichen must END WITH A LETTER (§ 26
+      Abs. 6 Z 2 lit. e), a diplomatic one need not — and where a diplomatic serial
+      does carry a trailing letter block the string is genuinely ambiguous.
+      period.start 2002 is the EU-field commencement, since the DKT is a white
+      plate; the D letter itself is far older and is already in § 26 Abs. 4 lit. a
+      of the KDV as enacted in 1967.
+
+  - id: at-consular
+    class: consular
+    categories: [car, van, motorcycle]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "WK-99999"
+      regex: '\A(?:STK|BK|GK|KK|NK|OK|SK|TK|VK|WK)[- ]?(?=[A-Z0-9]{1,5}\z)\d{1,5}[A-Z]{0,4}\z'
+      regex_strict: '\A(?:STK|BK|GK|KK|NK|OK|SK|TK|VK|WK)[- ]?(?=[A-Z0-9]{1,5}\z)[1-9]\d{0,4}[A-PR-Z]{0,4}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 1 lit. c KDV, as at-diplomatic; the Z 5 no-leading-O rule does not bind Abs. 5 Vormerkzeichen" }
+      prefix_note: "derived from § 26 Abs. 5 lit. b the same way at-diplomatic's is, with K in place of D"
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "Muster I" }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+        - { w: 250, h: 200, unit: mm, note: "Muster VII" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: false, note: "§ 49 Abs. 4 KFG excepts § 54 Abs. 3a lit. a und b vehicles from the Land arms — but NOT lit. c" }
+    region_encoding: inline
+    region_encoding_note: "prefix decode in plates/_decode/at-districts.yml, diplomatic_consular block"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 5 lit. b: the K letter for holders of a Legitimationskarte for the Konsularkorps in Österreich, excluding Austrian nationals and stateless persons ordinarily resident in Austria before their appointment. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=54  # § 54 Abs. 3a lit. a (career consular posts' service vehicles), lit. b (foreign career consuls), lit. c (heads of honorary consular posts — 'Diese Berechtigung gilt jedoch nur für jeweils ein Kraftfahrzeug eines Leiters einer honorarkonsularischen Vertretungsbehörde'). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: the DKT row covers the consular plate too — the annex has no separate consular row. Accessed 2026-08-02"
+    notes: >-
+      AUSTRIAN CONSULAR PLATES. A DRAFTING ASYMMETRY WORTH THE VERIFIER'S TIME:
+      § 49 Abs. 4 KFG removes the Land arms for "§ 54 Abs. 3 und Abs. 3a lit. a und
+      b" vehicles, and § 26 Abs. 5 KDV assigns the K letter to the same population
+      — but § 54 Abs. 3a lit. c (the single car of a head of an HONORARY consular
+      post) is inside the CC entitlement and outside both. On the face of the
+      instruments an honorary consul's car may display CC while carrying an ordinary
+      district plate WITH arms. That reading is not corroborated by any second
+      primary and is recorded as an open question, not asserted. COLLISIONS: NK and
+      VK are simultaneously the district codes for Neunkirchen and Völkermarkt.
+
+  # =========================================================================
+  # WUNSCHKENNZEICHEN — the inverted serial, and a personal right.
+  # =========================================================================
+  - id: at-wunschkennzeichen
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 1989 }
+    period_evidence: enacted-commencement
+    binding: owner
+    matching: strict
+    format:
+      pattern: "LL-LLL99"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{3,6}\z)[A-Z]{1,5}\d{1,5}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{3,6}\z)[A-PR-Z]{1,5}[1-9]\d{0,4}\z'
+      charset:
+        letters_excluded: ["Q", "Ä", "Ö", "Ü"]
+        notes: >-
+          § 26 Abs. 6 Z 4 KDV binds here as everywhere. Z 5's SECOND sentence does
+          NOT: the no-leading-O rule is expressly confined to "Vormerkzeichen gemäß
+          Z 2", so a Wunschkennzeichen may begin with O. Its FIRST sentence — no 0
+          first in the digit block — is unrestricted and is carried in regex_strict.
+      progression: >-
+        § 26 Abs. 6 Z 3 KDV inverts the ordinary shape: lit. d "mindestens einen
+        Buchstaben und mindestens eine Ziffer enthalten", lit. e "mit einem
+        Buchstaben beginnen und mit einer Ziffer enden", lit. f the same closed-block
+        rule. LETTERS THEN DIGITS. Note that Z 3 does NOT repeat Z 2 lit. d's
+        one-to-three-letter cap, so a Wunschkennzeichen may carry up to five letters
+        within its length budget — which is why the regex quantifies [A-Z]{1,5}.
+      length_note: >-
+        § 26 Abs. 6 Z 3 lit. a: "mindestens drei und können bis zu fünf Zeichen, bei
+        den in den Landeshauptstädten und im Land Wien ... bis zu sechs Zeichen";
+        lit. b narrows it for two-line plates and Probefahrtkennzeichen (3-5, 3-6 in
+        the capitals), for Überstellungskennzeichen (3-4, 3-5) and for temporarily
+        registered vehicles (4); lit. c for mopeds (3-4, 3-5). The regex carries the
+        union {3,6}.
+      ambiguity_note: >-
+        THE ONE PLACE THE AUSTRIAN PREFIX IS NOT SELF-DELIMITING. Because a
+        Wunschkennzeichen's Vormerkzeichen begins with a letter, the boundary
+        between the Behördenbezeichnung and the serial cannot be recovered from the
+        string: "BZAB1" is both B (Bregenz) + ZAB1 and BZ (Bludenz) + AB1. Record the
+        ambiguity in the parse output; do not resolve it by preference.
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      plate_variants:
+        - { w: 460, h: 120, unit: mm, note: "Muster IX — § 25d Abs. 6 KDV: 'Bei kurzen Wunschkennzeichen mit bis zu drei, in den Landeshauptstädten und Wien zugewiesenen Kennzeichen mit bis zu vier Vormerkzeichen können auf Antrag auch vordere Kennzeichentafeln nach dem Muster IX (Format 460 x 120 mm) ausgegeben werden' — a FRONT-ONLY variant, and the one place Austrian law makes front and rear plates differ" }
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+        - { w: 210, h: 170, unit: mm, note: "Muster VIII, motorcycles" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes" }
+      rear_differs: true
+      rear_differs_note: "true ONLY for the § 25d Abs. 6 short-Wunschkennzeichen case, where a 460 x 120 mm Muster IX plate may be issued for the FRONT while the rear keeps the ordinary blank"
+    validity:
+      years: 15
+      note: >-
+        § 48a Abs. 8 KFG: "Das Recht zur Führung eines Wunschkennzeichens erlischt
+        spätestens nach Ablauf von 15 Jahren ab dem Tag der ersten Zuweisung, im Fall
+        vorangegangener Reservierung ab Bekanntgabe der Reservierung." Unused
+        reservations lapse after five years. Abs. 8a allows a 15-year renewal applied
+        for at most six months before expiry against the 200 EUR
+        Verkehrssicherheitsbeitrag; Abs. 8b requires plates with a lapsed
+        Wunschkennzeichen to be surrendered and a Standardkennzeichen assigned.
+        DEREGISTERING THE VEHICLE DOES NOT END THE RIGHT: "Eine Abmeldung des
+        Fahrzeuges mit dem Wunschkennzeichen oder eine Aufhebung der Zulassung
+        innerhalb des 15-jährigen Zeitraumes lässt das Recht auf Führung des
+        Wunschkennzeichens unberührt."
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48a  # § 48a: Abs. 1 (the non-authority part may be freely chosen), Abs. 2 lit. a-d (form set by Verordnung, not already assigned or reserved, not reserved for a special-use class, not ridiculous or offensive alone or in combination with the authority code), Abs. 3-4 (200 EUR levy + 14 EUR administration fee), Abs. 7 ('ein höchstpersönliches Recht, das nicht auf andere Personen übertragbar ist ... auf den Wirkungsbereich der Behörde beschränkt'), Abs. 7a (early surrender), Abs. 8/8a/8b (15 years, renewal, lapse). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 6 Z 3 (the inverted grammar and the length table), Z 4-5 (charset), Abs. 8 (the enumerated offensive combinations). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d  # § 25d Abs. 6: the 460 x 120 mm front plate for short Wunschkennzeichen. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1988_375_0/1988_375_0.pdf  # BGBl. Nr. 375/1988 Art. I Z 33 inserts § 48a with the 15-year rule already in it; Art. V Abs. 4 lit. b commences it on 1 January 1989; Art. V Abs. 5 caps the plate-issue commencement for Wunschkennzeichen at 1 January 1990. Accessed 2026-08-02"
+    notes: >-
+      WUNSCHKENNZEICHEN — and the reason `binding: owner` sits on this series while
+      the file default is `binding: vehicle`. § 48a Abs. 7 makes it "ein
+      höchstpersönliches Recht", untransferable between persons and confined to the
+      issuing authority's area, and Abs. 8 keeps it alive for fifteen years across
+      deregistrations. It is a Swiss-style owner binding hiding inside a
+      vehicle-bound system, and a vehicle-keyed consumer that joins on it will be
+      wrong the moment the keeper changes cars. period.start 1989 is the
+      commencement of § 48a itself. The design is that of whichever ordinary plate
+      the vehicle would otherwise take, which is why this series overlaps
+      at-standard in appearance and is separated from it only by the inverted
+      serial — the one thing you can see.
+
+  # =========================================================================
+  # DEALER — Probefahrtkennzeichen (PKT). Blue, no EU field, bound to a
+  # BEWILLIGUNG rather than to a vehicle.
+  # =========================================================================
+  - id: at-dealer-probefahrt
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 1989 }
+    period_evidence: enacted-commencement
+    binding: business
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)\d{1,5}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,6}\z)[1-9]\d{0,4}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV — the ordinary Z 2 grammar, including the no-leading-O rule" }
+      length_note: "§ 26 Abs. 6 Z 2 lit. b, first indent: Probefahrtkennzeichen carry four or five characters, four to six for plates assigned in the Landeshauptstädte and Land Wien. Anlage 5e's PKT row caps them at 5."
+      series_separation_note: >-
+        § 48 Abs. 5 KFG, last sentence, verbatim: "Für zugelassene Fahrzeuge, für
+        vorübergehend zugelassene Fahrzeuge, für Überstellungsfahrten und für
+        Probefahrten dürfen nicht dieselben Kennzeichenserien festgesetzt werden."
+        The four populations are drawn from DISJOINT serial ranges. That is a real,
+        sourced disambiguation rule and it is exactly what a parse API would want —
+        but the ranges themselves are not published in the KFG or the KDV, so it
+        cannot be encoded. The overlapping regexes in this file are the honest
+        consequence, and closing that gap is the single highest-value follow-up for
+        Austria. The same sentence also forbids sharing series between Kraftwagen,
+        Krafträder and Motorfahrräder.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "Muster Ia" }
+      plate_variants:
+        - { w: 270, h: 200, unit: mm, note: "Muster IIIa, zweizeilig" }
+        - { w: 210, h: 170, unit: mm, note: "§ 25d Abs. 3a KDV: motorcycle Probefahrt plates 'können nach dem Muster IIIa oder nach Maßgabe des Musters VIII der Anlage 5e ohne EU-Emblem ausgestaltet sein'" }
+      background: { color: "#0057A8", finish: retroreflective, hex_basis: observed, spec_note: "§ 49 Abs. 4 Z 3 KFG names the colour 'blau'; Anlage 5e B.2.5.2 bounds it to the CIE quadrangle in common.colorimetry.blau with a minimum luminance factor of 0.10. The hex is an approximate sRGB rendering of that region's centroid." }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      band_note: "Anlage 5e's PKT row records the EU emblem as absent, and § 49 Abs. 4 confines the blue field to white plates and to the Abs. 3 red plates. A blue Austrian plate never carries it."
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes, executed for PKT as a retroreflective self-adhesive foil with translucent screen printing (Anlage 5e A.2.2) rather than the thermally bonded plaque used on GKT and MRT" }
+      attachment: "§ 49 Abs. 7 KFG: Probefahrt plates need not be permanently fixed — they 'dürfen jedoch ... auch behelfsmäßig mit dem Fahrzeug verbunden sein'"
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 3: on granting a Probefahrt permission, one or more Probefahrtkennzeichen are assigned on application, for Kraftwagen, Krafträder, Motorfahrräder only, Anhänger or all vehicle types; 'Ein mit einer Bewilligung zugewiesenes Probefahrtkennzeichen darf erst nach Erlöschen dieser Bewilligung mit einer anderen Bewilligung zugewiesen werden.' Abs. 5 last sentence: disjoint series. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=45  # § 45 Abs. 1: Probefahrten with unregistered vehicles need the permission of the authority for the place from which the applicant mainly disposes of the plates; the definition covers roadworthiness/performance testing, demonstration, business transfers, and collection by the buyer. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4 Z 3 (blau/weiß), Abs. 6 (a Probefahrt plate may be fitted in addition to the vehicle's own), Abs. 7 (behelfsmäßig attachment). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: Probe (PKT) row — EU emblem -, blau/weiß, Wappen +, 5 Vormerkzeichen, Muster Ia/IIIa; KENNZEICHENFORMATE Ia = 520 x 120 mm, IIIa = 270 x 200 mm; 'Für PKT Muster VI: Untergrund der Tafel blau.' Accessed 2026-08-02"
+    notes: >-
+      PROBEFAHRTKENNZEICHEN — the Austrian trade plate, blue with white script.
+      BINDING NOTE: like the German rotes Kennzeichen and for the same reason, this
+      plate binds to a BEWILLIGUNG held by a business, not to a vehicle, and moves
+      between vehicles; a vehicle-keyed consumer must not join on it. § 49 Abs. 6
+      makes the point visible in law — during a Probefahrt the trade plate may be
+      fitted IN ADDITION to plates the vehicle already carries, which is the one
+      Austrian case where a vehicle lawfully displays two Kennzeichen at once.
+      period.start 1989 is the format commencement; the blue colour is already in
+      § 49 Abs. 4 KFG 1967 as enacted.
+
+  # =========================================================================
+  # TEMPORARY (1) — Überstellungskennzeichen (ÜKT). Green, and Austria's
+  # export plate in all but name.
+  # =========================================================================
+  - id: at-temporary-ueberstellung
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 1989 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,5}\z)\d{1,4}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4,5}\z)[1-9]\d{0,3}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV — the ordinary Z 2 grammar" }
+      length_note: "§ 26 Abs. 6 Z 2 lit. b, second indent: 'Überstellungskennzeichen vier Zeichen, bei den in den Landeshauptstädten und im Land Wien zugewiesenen Kennzeichen vier oder fünf Zeichen'. Four is the base case; the regex carries the union {4,5}."
+      fields_note: >-
+        THE EXPIRY IS A FIELD, NOT PART OF THE SERIAL. Anlage 5e A.2.3, verbatim:
+        "Auf den Kennzeichentafeln für Überstellungskennzeichen ist der Aufdruck
+        'gültig bis' bzw. 'valid until' anzubringen und Raum für die aufzuklebende
+        Etikette freizulassen; diese ist mit dem Ablaufdatum zu lochen." The date is
+        a PUNCHED, water-marked, retroreflective self-adhesive label — not printed
+        characters — which is why no pattern string can carry it. The bilingual
+        legend is the only English on any Austrian plate, and it says what this
+        plate is for.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "Muster IV" }
+      plate_variants:
+        - { w: 270, h: 200, unit: mm, note: "Muster V, zweizeilig" }
+      background: { color: "#007A3D", finish: retroreflective, hex_basis: observed, spec_note: "§ 49 Abs. 4 Z 4 KFG names the colour 'grün'; Anlage 5e B.2.5.2 bounds it to the CIE quadrangle in common.colorimetry.gruen with a minimum luminance factor of 0.15. The hex is an approximate sRGB rendering of that region's centroid." }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes, retroreflective self-adhesive execution (Anlage 5e A.2.2)" }
+      extra_field: { position: "field F on Muster IV/V", content: "the 'gültig bis / valid until' legend and the punched Ablaufvignette" }
+      attachment: "§ 49 Abs. 7 KFG: may be attached behelfsmäßig"
+    validity:
+      max_weeks: 3
+      note: >-
+        § 46 Abs. 2 KFG: "Die Bewilligung ist für die beantragte Dauer, höchstens
+        jedoch für drei Wochen zu erteilen." The plate is issued only against a
+        cost-covering usage fee AND a security deposit, refundable if the plate is
+        returned within a year of issue (§ 49 Abs. 1) — the only Austrian plate with
+        a deposit, and the compensating control for an untethered plate.
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=46  # § 46 Abs. 1 (unregistered vehicles, vehicles whose plates are lost, and Wechselkennzeichen vehicles), Abs. 1a (domestic transfers and transfers 'aus dem Bundesgebiet in das Ausland', with the § 57a evidence requirements), Abs. 1b (inbound transfers require AEO certification), Abs. 2 (insurance confirmation; 'Diese Kennzeichen sind Überstellungskennzeichen (§ 48 Abs. 1) und dürfen nur bei Überstellungsfahrten geführt werden'; three-week cap), Abs. 4 (Überstellungsfahrtschein), Abs. 5 (surrender). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 1 (usage fee + security deposit, refundable within a year), Abs. 4 Z 4 (grün/weiß), Abs. 7 (behelfsmäßig attachment). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: Überstellung (ÜKT) row — EU emblem -, grün/weiß, Wappen +, 5 Vormerkzeichen, Muster IV/V; A.2 field F 'Bei ÜKT Ablaufplakette'; A.2.3 Ablaufvignette. Accessed 2026-08-02"
+    notes: >-
+      ÜBERSTELLUNGSKENNZEICHEN — green with white script, and AUSTRIA'S EXPORT PLATE
+      IN ALL BUT NAME. _meta/classes.yml has an `export` value and Austria has no
+      export series; § 46 Abs. 1a instead routes permanent removal abroad through
+      this permission, alongside purely domestic transfers, so the class here is
+      `temporary` and the export function is recorded rather than mis-classed.
+      Distinct from at-temporary-vorlaeufig, which is blue with a red year field and
+      belongs to a vehicle that IS registered, if provisionally: the green plate is
+      granted to a PERSON for a journey and is surrendered when the entitlement
+      lapses.
+
+  # =========================================================================
+  # TEMPORARY (2) — vorübergehende Zulassung (VZT). Blue with a red year
+  # field, and the only Austrian plate that states its own expiry in figures.
+  # =========================================================================
+  - id: at-temporary-vorlaeufig
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1989 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4}\z)\d{1,3}[A-Z]{1,3}\z'
+      regex_strict: '\A[A-Z]{1,2}[- ]?(?=[A-Z0-9]{4}\z)[1-9]\d{0,2}[A-NPR-Z][A-PR-Z]{0,2}\z'
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"], notes: "§ 26 Abs. 6 Z 4 and Z 5 KDV — the ordinary Z 2 grammar" }
+      length_note: "§ 26 Abs. 6 Z 2 lit. b, third indent: 'Kennzeichen für vorübergehend zugelassene Fahrzeuge vier Zeichen' — exactly four, with no capital-city widening. The tightest length rule in the Austrian system, and the reason this regex has a fixed {4} lookahead."
+      fields_note: >-
+        THE EXPIRY YEAR IS A FIELD, AND IT IS PRINTED. § 49 Abs. 4 KFG, verbatim:
+        "Auf Kennzeichentafeln für vorübergehend zugelassene Fahrzeuge müssen auf
+        einem roten Streifen am rechten Rand der Tafel in weißer Schrift die zwei
+        letzten Ziffern der Jahreszahl des Kalenderjahres angegeben sein, in dem die
+        Zulassung erlischt." Two digits, white on red, at the right edge — outside
+        the serial and outside the pattern. NOTE THE 1967 CONTRAST: the same
+        sentence in the KFG as enacted named the year "in dem das Kennzeichen
+        zugewiesen wurde" — the year of ASSIGNMENT, not of EXPIRY. The meaning of
+        the two digits changed at some point between 1967 and 1990, and pinning that
+        amendment is a recorded gap; a decoder of an old photograph must not assume
+        today's reading.
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "Muster IV" }
+      plate_variants:
+        - { w: 270, h: 200, unit: mm, note: "Muster V, zweizeilig" }
+      background: { color: "#0057A8", finish: retroreflective, hex_basis: observed, spec_note: "Anlage 5e's VZT row gives the ground as 'blau/rot' — the blue field with the red year insert; § 49 Abs. 4 Z 3 KFG names only 'blau'. CIE bounds in common.colorimetry.blau and .rot." }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes, retroreflective self-adhesive execution" }
+      extra_field:
+        position: right
+        content: "the last two digits of the calendar year in which the registration expires"
+        background: { color: "#CC0000" }
+        foreground: "#FFFFFF"
+        note: "Anlage 5e A.1: 'Der rote Einsatz für die Jahreszahlen am rechten Rand kann auch soweit verkleinert werden, dass er sich innerhalb des geprägten Randes befindet und der geprägte Rand ausgespart wird.' For a Muster VI (moped-size) VZT plate: 'Untergrund der Tafel blau mit roten Feld mit Angabe der letzten zwei Ziffern der Jahreszahl des Kalenderjahres in dem die Zulassung erlischt.'"
+    region_encoding: "plates/_decode/at-districts.yml"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4 Z 3 (blau/weiß for temporarily registered vehicles) and the red year-stripe sentence. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 6 Z 2 lit. b, third indent: exactly four characters. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: Vorübergehende Zulassung (VZT) row — EU emblem -, blau/rot, weiß script, Wappen +, 4 Vormerkzeichen, Muster IV/V; A.1 the shrinkable red insert; A.2 field F. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1967_267_0/1967_267_0.pdf  # KFG 1967 as enacted, § 49 Abs. 4: the same red stripe already existed but carried the year 'in dem das Kennzeichen zugewiesen wurde'. Accessed 2026-08-02"
+    notes: >-
+      KENNZEICHEN FÜR VORÜBERGEHEND ZUGELASSENE FAHRZEUGE — blue with a red
+      two-digit year at the right edge. Distinct from at-temporary-ueberstellung in
+      colour, in field content (a printed year versus a punched label), in serial
+      length (exactly four versus four-or-five) and in legal nature: this plate
+      belongs to a vehicle that has a registration with an end date, while the green
+      plate belongs to a person with a three-week permission. Both are class
+      `temporary` because _meta/classes.yml has one value for both ideas, and the
+      difference is stated here rather than lost. period.start 1989 is the format
+      commencement; the blue colour and the red year stripe both go back to § 49
+      Abs. 4 KFG 1967 as enacted.
+
+  # =========================================================================
+  # FOREIGN AND CARRIER TRAILERS — AAT. Red, EU-banded, and RECALL-ONLY: it
+  # repeats the towing vehicle's own Kennzeichen.
+  # =========================================================================
+  - id: at-trailer-foreign
+    class: trailer
+    categories: [trailer]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    # RECALL-ONLY (PRD-PLATES §2.7): § 49 Abs. 3 KFG issues these plates "mit
+    # dessen Kennzeichen" — the TOWING VEHICLE's registration — so the regex is
+    # the union of the ordinary and the Wunschkennzeichen shapes. A match says
+    # only that the string has a shape Austria issues; it is not a claim that
+    # the string is a valid carrier-plate registration.
+    matching: recall-only
+    format:
+      pattern: "LL-999L"
+      regex: '\A[A-Z]{1,2}[- ]?(?:(?=[A-Z0-9]{4,6}\z)\d{1,5}[A-Z]{1,3}|(?=[A-Z0-9]{3,6}\z)[A-Z]{1,5}\d{1,5})\z'
+      pattern_note: >-
+        The pattern shown is ONE representative shape (the ordinary serial). This
+        series has no format of its own: the plate carries whatever Kennzeichen the
+        towing vehicle already holds, so any ordinary or Wunschkennzeichen shape may
+        appear on it and the regex is the union of the two.
+      charset: { letters_excluded: ["Q", "Ä", "Ö", "Ü"] }
+    design:
+      plate: { w: 520, h: 120, unit: mm, note: "Muster I" }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+      background: { color: "#CC0000", finish: retroreflective, hex_basis: observed, spec_note: "§ 49 Abs. 4 Z 2 KFG puts 'Anhänger gemäß Abs. 3' in the rot/weiß row; CIE bounds in common.colorimetry.rot" }
+      foreground: "#FFFFFF"
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed, note: "§ 49 Abs. 4 KFG extends the EU field to 'roten Kennzeichentafeln gemäß Abs. 3' — the one non-white Austrian plate that carries it" }
+      border: { note: "Anlage 5e's AAT row: 'Muster I, III, jedoch ohne rot-weiß-roten Randstreifen' — the ordinary blanks WITHOUT the red-white-red edging, because the ground is already red" }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes, retroreflective self-adhesive execution" }
+      attachment: "§ 49 Abs. 7 KFG: may be attached behelfsmäßig"
+    region_encoding: "plates/_decode/at-districts.yml"
+    region_encoding_note: "the prefix decodes to the authority that registered the TOWING VEHICLE, not the trailer — the trailer may be foreign or unregistered altogether"
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 3 Z 1-3, verbatim scope: trailers with a FOREIGN registration to be towed by an Austrian-registered vehicle (§ 83) where the applicant shows inbound transport business; unregistered trailers to be towed abroad; and 'auf der Anhängekupplung des Kraftfahrzeuges montierte Lastenträger, am Fahrzeugheck montierte abnehmbare Ladekräne oder auf der Rückseite von Omnibussen montierte Schikörbe'. Abs. 4 Z 2 (rot/weiß) and the EU-field extension. Abs. 8: where a towbar-mounted bicycle carrier hides the rear plate, the driver must display either the rear plate or 'eine rote Kennzeichentafel mit dem Kennzeichen des Zugfahrzeuges'. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40267389/NOR40267389.html  # Anlage 5e: Ausländische Anhänger (AAT) row — EU emblem +, rot/weiß, Wappen +, 6 Vormerkzeichen, 'Muster I, III, jedoch ohne rot-weiß-roten Randstreifen'. Accessed 2026-08-02"
+    notes: >-
+      THE RED CARRIER PLATE. Austria's answer to a problem most jurisdictions leave
+      unsolved: a bike rack, a rear-mounted crane or a ski basket that hides the
+      rear plate gets its own RED plate bearing the towing vehicle's registration
+      (§ 49 Abs. 3 Z 3 and Abs. 8), and the same plate type serves foreign trailers
+      and trailers being towed abroad. It is the only red Austrian plate with an EU
+      band — the moped plate is red without one — and the only plate the regulation
+      strips of the red-white-red edging, sensibly, since the ground is already red.
+      RECALL-ONLY and marked so: the regex is a union of the two Austrian serial
+      grammars because § 49 Abs. 3 makes the plate carry an EXISTING registration,
+      exactly the nl-export case.
+
+  # =========================================================================
+  # OFFICIAL SERIES — § 26 Abs. 2-4 KDV. Digits-only Vormerkzeichen.
+  # =========================================================================
+  - id: at-government
+    class: government
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "A-999999"
+      regex: '\A(?:ST|A|B|K|N|O|S|T|V|W|FV|PT|BD|JW)[- ]?\d{1,6}\z'
+      regex_strict: '\A(?:ST|A|B|K|N|O|S|T|V|W|FV|PT|BD|JW)[- ]?[1-9]\d{0,5}\z'
+      charset:
+        notes: >-
+          DIGITS ONLY. § 26 Abs. 6 Z 1 lit. a KDV: the Vormerkzeichen of vehicles
+          under Abs. 2 to 4 — except the fire brigade — "dürfen nur Ziffern
+          enthalten". No letters at all, so the Z 2 shape rules do not apply and the
+          no-leading-zero rule of Z 5 is the only charset constraint left.
+      length_note: >-
+        THE SIX-DIGIT BOUND IS AN INFERENCE, and is flagged as one. § 26 Abs. 6
+        Z 1 lit. a gives these Vormerkzeichen no length rule at all, and Z 2's
+        counts apply expressly to "die nicht unter Abs. 2 bis 5 fallenden
+        Fahrzeuge". Anlage 5e has no row for official plates either — they are
+        ordinary GKT blanks with a different prefix, and the GKT row caps
+        Vormerkzeichen at six. That is where {1,6} comes from. Contrast Germany,
+        where § 9 Abs. 1 Satz 7 FZV states the six-digit cap in terms.
+      prefix_note: >-
+        § 26 Abs. 2: the letter A for vehicles of the Bundespräsident, the
+        Presidents of the Nationalrat and Bundesrat, members of the Bundesregierung,
+        Staatssekretäre, the Volksanwaltschaft, and the Presidents or Vice-Presidents
+        of the Rechnungshof, Verfassungsgerichtshof, Verwaltungsgerichtshof and
+        Oberster Gerichtshof. § 26 Abs. 3: the nine Land letters B, K, N, O, S, ST,
+        T, V, W for vehicles of Landtag Presidents, Landesregierung members and
+        Landesvolksanwaltschaften. § 26 Abs. 4: FV Finanzverwaltung, PT Post, BD
+        Bundesbusdienst, JW Justizwache. BP and BH are carried by at-police and
+        at-military; FW by at-government-fire.
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem:
+        present: true
+        rendered: placeholder
+        content: "Wappen des Bundeslandes as a rule; the BUNDESWAPPEN replaces it 'bei den in § 40 Abs. 1 lit. a angeführten Fahrzeugen' (§ 49 Abs. 4 KFG)"
+        note: >-
+          RECORDED GAP: § 40 Abs. 1 lit. a KFG was NOT fetched in this pass (the RIS
+          request for § 40 timed out repeatedly), so which vehicles take the federal
+          arms rather than a Land's is not established here. It is reasonable to
+          expect the A-prefixed federal fleet to be inside that provision; that
+          expectation is NOT asserted as sourced.
+    region_encoding: inline
+    region_encoding_note: >-
+      NOT geographic. The Land letters here denote the ORGAN (a Landtag President's
+      car), not the place of registration, and A and the sachliche Bereiche denote
+      no place at all. Decode via plates/_decode/at-districts.yml's
+      federal_letter, land_letters and sachliche_bereiche blocks — never via its
+      `codes` table.
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 2 (A), Abs. 3 (the nine Land letters, verbatim list), Abs. 4 lit. c/e/f/h (FV, PT, BD, JW; lit. b repealed by BGBl. II Nr. 275/2007, lit. d by BGBl. II Nr. 376/2002), Abs. 6 Z 1 lit. a (digits only). Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 4: 'bei Fahrzeugen, die zur Verwendung im Bereiche des öffentlichen Sicherheitsdienstes, der Bundesfinanzverwaltung, der Strafvollzugsverwaltung, der Post oder für die Feuerwehr bestimmt sind, sowie bei Heeresfahrzeugen ... an Stelle der Bezeichnung der Behörde die Bezeichnung des sachlichen Bereiches zu enthalten'. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4: the Bundeswappen substitution for § 40 Abs. 1 lit. a vehicles. Accessed 2026-08-02"
+    notes: >-
+      THE AUSTRIAN OFFICIAL SERIES — one entry for § 26 Abs. 2 to 4 because they
+      share one grammar (digits only) and one design (an ordinary white plate). TWO
+      COLLISIONS a parse API must carry, both real: B, K, S, T, V, W and ST are
+      simultaneously Land ORGAN letters here and, for the first six, Anlage 5d
+      DISTRICT codes; and BD is simultaneously the Bundesbus code and the Burgenland
+      diplomatic prefix. Both resolve on the serial — an ordinary district plate's
+      Vormerkzeichen must end with a letter and these are digits-only — and neither
+      resolves on the prefix. N and O appear ONLY here: no Austrian district code is
+      N or O. period.start 2002 is the EU-field commencement, since these are white
+      plates; the letters themselves are as old as the KDV.
+
+  - id: at-police
+    class: police
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "BP-999999"
+      regex: '\ABP[- ]?\d{1,6}\z'
+      regex_strict: '\ABP[- ]?[1-9]\d{0,5}\z'
+      charset: { notes: "digits only (§ 26 Abs. 6 Z 1 lit. a KDV); the {1,6} bound is the same inference recorded on at-government" }
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, content: "Wappen des Bundeslandes or, per § 49 Abs. 4 KFG, the Bundeswappen where § 40 Abs. 1 lit. a applies — see the gap recorded on at-government" }
+    region_encoding: none
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 4 lit. a: 'für Fahrzeuge, die zur Verwendung im Bereich der Bundespolizei bestimmt sind, BP'; Abs. 6 Z 1 lit. a. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 1 Z 2 and Abs. 1a: security-service vehicles may additionally hold one or more DECKKENNZEICHEN, which look like ordinary plates. Accessed 2026-08-02"
+    notes: >-
+      BUNDESPOLIZEI. Its own series rather than a variant of at-government because
+      _meta/classes.yml separates `police` from `government` and the KDV gives it its
+      own lit. a. Note § 26 Abs. 4 lit. b, the Zollwache code, was REPEALED by
+      BGBl. II Nr. 275/2007 and lit. d by BGBl. II Nr. 376/2002 — repealed codes are
+      not authored here and are a recorded gap for L4, because a plate whose code has
+      been repealed stays on the road exactly as in Germany. The one thing this
+      series cannot tell you: § 48 Abs. 1 lets security fleets carry several
+      Deckkennzeichen, so an unmarked police car deliberately does not read as BP.
+
+  - id: at-military
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "BH-999999"
+      regex: '\ABH[- ]?\d{1,6}\z'
+      regex_strict: '\ABH[- ]?[1-9]\d{0,5}\z'
+      charset: { notes: "digits only (§ 26 Abs. 6 Z 1 lit. a KDV); the {1,6} bound is the same inference recorded on at-government" }
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 4 lit. g: 'für Heeresfahrzeuge BH'; Abs. 6 Z 1 lit. a (digits only); Abs. 8 Z 2, which lists 'BH' among the combinations forbidden to Wunschkennzeichen. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 1 Z 2: Bundesheer vehicles may also hold Deckkennzeichen. Accessed 2026-08-02"
+    notes: >-
+      HEERESFAHRZEUGE. Unlike the German Bundeswehr's Y plates, Austrian army plates
+      are ordinary white EU plates with an ordinary typeface and the ordinary
+      reflectivity requirement — the prefix is the only difference. THE DETAIL WORTH
+      THE FILE: "BH" is simultaneously the lawful military prefix under § 26 Abs. 4
+      lit. g and an expressly forbidden Wunschkennzeichen combination under § 26
+      Abs. 8 Z 2, where the regulation glosses it "(Blood and Honour)". The same two
+      letters are also the standard abbreviation for Bezirkshauptmannschaft
+      throughout Anlage 5d, where they are not a code at all.
+
+  - id: at-government-fire
+    class: government
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2002 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "FW-999LL"
+      regex: '\AFW[- ]?\d{2,3}[A-Z]{1,2}\z'
+      regex_strict: '\AFW[- ]?[1-9]\d{1,2}[A-Z]{1,2}\z'
+      charset:
+        letters_excluded: ["Q", "Ä", "Ö", "Ü"]
+        notes: >-
+          The trailing letters are NOT free: § 26 Abs. 6 Z 1 lit. b KDV requires
+          them to be "ein oder zwei Buchstaben, die der Bezeichnung der Behörde im
+          Sinne der Anlage 5d entsprechen müssen, in deren Sprengel das Fahrzeug
+          zugelassen ist". regex_strict keeps [A-Z]{1,2} rather than enumerating the
+          98 Anlage 5d codes, because the closed list belongs in
+          plates/_decode/at-districts.yml where it can carry per-row periods; a
+          validator wanting full strictness should join the two.
+      progression: >-
+        § 26 Abs. 6 Z 1 lit. b, verbatim: fire-brigade Vormerkzeichen "müssen mit
+        zwei oder drei Ziffern beginnen und es folgen ein oder zwei Buchstaben".
+        Two or three digits, then the district code.
+    design:
+      plate: { w: 520, h: 120, unit: mm }
+      plate_variants:
+        - { w: 300, h: 200, unit: mm, note: "Muster III" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { top: "red-white-red", bottom: "red-white-red" }
+      band: { side: left, color: "#003399", content: eu-stars+A, hex_basis: observed }
+      emblem:
+        present: true
+        rendered: placeholder
+        content: "the FEUERWEHR-KORPSABZEICHEN, not a coat of arms"
+        note: "§ 49 Abs. 4 KFG, verbatim: 'bei den zur Verwendung für die Feuerwehr bestimmten Fahrzeugen tritt an die Stelle des Landeswappens das Feuerwehr-Korpsabzeichen'. The only Austrian plate whose emblem slot holds a corps badge; PRD-PLATES §3 placeholder rule applies, and its licensing is unresearched."
+    region_encoding: "plates/_decode/at-districts.yml"
+    region_encoding_note: >-
+      THE DISTRICT CODE IS A SUFFIX HERE, NOT A PREFIX. Decode the LAST one or two
+      letters against the `codes` table; the leading FW is the sachlicher Bereich.
+      This is the only Austrian series in which the geography sits at the end of the
+      string, and a parse API that assumes prefix-decoding will read it backwards.
+    sources:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 4 lit. i (FW) and Abs. 6 Z 1 lit. b (two or three digits followed by the Anlage 5d code of the Sprengel of registration) — expressly carved out of the digits-only rule in lit. a. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # § 49 Abs. 4: the Feuerwehr-Korpsabzeichen replaces the Land arms. Accessed 2026-08-02"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 4: fire-brigade vehicles carry the sachlicher Bereich in place of the authority code. Accessed 2026-08-02"
+    notes: >-
+      FEUERWEHR — the most interesting serial in the Austrian system and the reason
+      it earns its own entry rather than folding into at-government. It is the ONE
+      exception § 26 Abs. 6 Z 1 lit. a carves out of the digits-only rule for
+      official plates, and it inverts the whole jurisdiction's geometry: two or three
+      digits first, then the district code, so "FW-123GU" is a Graz-Umgebung fire
+      appliance and the geography is at the END. It is also the only Austrian plate
+      whose emblem is a corps badge rather than arms. CLASS CAVEAT, and it is a real
+      one: _meta/classes.yml has no `fire` value, so `government` is recorded as the
+      closest fit — Austrian fire services are overwhelmingly municipal volunteer
+      corps rather than state fleets, which the class does not express. Flagged as a
+      vocabulary gap.

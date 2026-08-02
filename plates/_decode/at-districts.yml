@@ -1,0 +1,287 @@
+# plates/_decode/at-districts.yml — Austrian Behördenbezeichnungen im Kennzeichen.
+#
+# THE SOURCE FINDING, and it is the opposite of Germany's: the Austrian
+# district code list IS IN THE REGULATION. § 48 Abs. 5 KFG 1967 delegates it
+# ("Durch Verordnung sind die Bezeichnung der Behörde und die sachlichen
+# Bereiche, das System der Zeichen, unter denen die Fahrzeuge bei der Behörde
+# vorzumerken sind (Abs. 4) ... festzusetzen"), and § 26 Abs. 1 KDV 1967
+# discharges the delegation by pointing at ANLAGE 5d: "Die Bezeichnung der den
+# Zulassungsschein ausstellenden Behörde im Kennzeichen bestimmt sich nach
+# Anlage 5d." Anlage 5d is a CLOSED, PRIMARY, 98-row table printed inside the
+# regulation — so unlike the German ~400-code Bundesanzeiger list (PRD-PLATES
+# §2.4), it is authored here in full, verbatim, in the annex's own order
+# (by Bundesland, then as the annex prints them).
+#
+# The non-geographic prefixes are NOT in Anlage 5d — they are in § 26 KDV
+# itself (Abs. 2 the federal letter A, Abs. 3 the nine Land letters, Abs. 4 the
+# seven sachliche Bereiche, Abs. 5 the diplomatic D and consular K suffixes).
+# They are recorded below in their own blocks, because a parse API needs all
+# four sets to resolve a prefix and because several of them COLLIDE with
+# Anlage 5d district codes (see `collisions`).
+#
+# Referenced by: plates/at.yml (at-standard, at-motorcycle, at-moped,
+# at-historic, at-electric, at-dealer-probefahrt, at-temporary-*,
+# at-trailer-foreign, at-wunschkennzeichen) via region_encoding.
+#
+# PERIOD DISCIPLINE (PRD-PLATES §2.4): these are the codes in the CONSOLIDATED
+# Anlage 5d in force on the access date (Fassung im RIS seit 26.09.2024,
+# NOR40265416). Austrian district reform has repeatedly merged Bezirke
+# (Bruck-Mürzzuschlag, Hartberg-Fürstenfeld, Murtal and Südoststeiermark are
+# themselves 2012/2013 merger codes), and codes withdrawn from the annex stay
+# on the road because a plate is only exchanged on re-registration. WITHDRAWN
+# CODES ARE THEREFORE NOT IN THIS TABLE AND ARE A RECORDED GAP for L4 — a
+# decode of a physical plate whose prefix is absent here must be treated as
+# unresolved, never as invalid.
+jurisdiction: at
+topic: districts
+authority:
+  name: "Kraftfahrgesetz-Durchführungsverordnung 1967 (KDV 1967), Anlage 5d (zu § 26 Abs. 1)"
+  url: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Anlage=5d"
+sources:
+  - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Anlage=5d  # Anlage 5d 'Bezeichnung der Behörde im Kennzeichen', all 98 rows in nine Bundesland blocks; Dokumentnummer NOR40265416, im RIS seit 26.09.2024. Accessed 2026-08-02"
+  - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 KDV 1967: Abs. 1 (delegation to Anlage 5d), Abs. 2 (letter A), Abs. 3 (nine Land letters), Abs. 4 (sachliche Bereiche BP/FV/PT/BD/BH/JW/FW), Abs. 5 (diplomatic D / consular K, and the Graz exception), Abs. 6 (the Vormerkzeichen grammar), Abs. 7 (hyphen for the Wappen in writing). Accessed 2026-08-02"
+  - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=48  # § 48 Abs. 4 KFG 1967: the prefix is 'einem oder zwei Buchstaben als Bezeichnung der Behörde, in deren örtlichem Wirkungsbereich das Fahrzeug zugelassen ist'; Abs. 5 the delegation. Accessed 2026-08-02"
+period: { start: 1989 }
+period_evidence: enacted-commencement
+period_note: >-
+  1989 is the commencement of the CODE SYSTEM these rows belong to, not of the
+  individual rows: BGBl. Nr. 375/1988 (11. KFG-Novelle) Artikel V Abs. 4 lit. b
+  put the rewritten § 48 Abs. 4 KFG (one or two letters for the AUTHORITY, in
+  place of the pre-1989 single BUNDESLAND letter) into force on 1 January 1989.
+  Individual rows are younger or older than that; per-row periods are a
+  recorded gap.
+
+# A parse API must carry these, because Austrian prefixes are NOT
+# self-delimiting the way German ones are.
+maximal_munch: true
+maximal_munch_note: >-
+  Take the LONGEST matching code. The split point is unambiguous for ORDINARY
+  registrations because § 26 Abs. 6 Z 2 lit. e KDV requires the Vormerkzeichen
+  to BEGIN WITH A DIGIT — so the prefix is exactly the leading letter run. It is
+  genuinely AMBIGUOUS for WUNSCHKENNZEICHEN, whose Vormerkzeichen must begin
+  with a LETTER (Z 3 lit. e): "BZAB1" is both B (Bregenz) + "ZAB1" and BZ
+  (Bludenz) + "AB1", and nothing in the string resolves it. Record the
+  ambiguity; do not average it away.
+
+collisions:
+  - "B — BH Bregenz (Anlage 5d, Vorarlberg) AND the Burgenland Land letter (§ 26 Abs. 3)"
+  - "K — LPD Kärnten/Klagenfurt (Anlage 5d) AND the Kärnten Land letter (§ 26 Abs. 3) AND the consular suffix letter (§ 26 Abs. 5 lit. b)"
+  - "S — LPD Salzburg/Salzburg (Anlage 5d) AND the Salzburg Land letter (§ 26 Abs. 3)"
+  - "W — Landespolizeidirektion Wien (Anlage 5d) AND the Wien Land letter (§ 26 Abs. 3)"
+  - "G — LPD Steiermark/Graz (Anlage 5d) AND, per the § 26 Abs. 5 Graz exception, the base of the diplomatic prefix GD and consular prefix GK"
+  - "BD — Bundesbus sachlicher Bereich (§ 26 Abs. 4 lit. f) AND the Burgenland diplomatic prefix B+D (§ 26 Abs. 5 lit. a)"
+  - "ND — BH Neusiedl am See (Anlage 5d) AND the Niederösterreich diplomatic prefix N+D"
+  - "SD — BH Schärding (Anlage 5d) AND the Salzburg diplomatic prefix S+D"
+  - "GD — BH Gmünd (Anlage 5d) AND the Graz diplomatic prefix G+D"
+  - "NK — BH Neunkirchen (Anlage 5d) AND the Niederösterreich consular prefix N+K"
+  - "VK — BH Völkermarkt (Anlage 5d) AND the Vorarlberg consular prefix V+K"
+  - "BH — Heeresfahrzeuge (§ 26 Abs. 4 lit. g) AND, in the annex's own prose, the abbreviation for Bezirkshauptmannschaft (which is NOT a code) AND an expressly forbidden Wunschkennzeichen combination (§ 26 Abs. 8 Z 2, 'Blood and Honour')"
+collisions_resolution: >-
+  The diplomatic/consular collisions resolve on the SERIAL, not the prefix:
+  § 26 Abs. 6 Z 2 lit. d and e require an ordinary Vormerkzeichen to contain one
+  to three letters and to END WITH A LETTER, whereas the Abs. 5
+  (diplomatic/consular) Vormerkzeichen need only begin with a digit and is in
+  practice digits-only — so "ND-12345" is Niederösterreich diplomatic and
+  "ND-123XY" is Neusiedl am See. Where an Abs. 5 Vormerkzeichen does carry a
+  trailing letter block the collision is UNRESOLVABLE from the string alone.
+
+# ---------------------------------------------------------------------------
+# ANLAGE 5d — the 98 authority codes, verbatim, in the annex's own order.
+# `authority` is the annex's own wording, abbreviations expanded once:
+# BH. = Bezirkshauptmannschaft, Mag. = Magistrat, Exp. = Expositur,
+# LPD = Landespolizeidirektion.
+# ---------------------------------------------------------------------------
+codes:
+  # I. BURGENLAND
+  - { code: E,  land: Burgenland, authority: "Landespolizeidirektion Burgenland für das Gebiet der Gemeinden Eisenstadt und Rust", landeshauptstadt: true }
+  - { code: EU, land: Burgenland, authority: "BH. Eisenstadt" }
+  - { code: ND, land: Burgenland, authority: "BH. Neusiedl am See" }
+  - { code: MA, land: Burgenland, authority: "BH. Mattersburg" }
+  - { code: OP, land: Burgenland, authority: "BH. Oberpullendorf" }
+  - { code: OW, land: Burgenland, authority: "BH. Oberwart" }
+  - { code: GS, land: Burgenland, authority: "BH. Güssing" }
+  - { code: JE, land: Burgenland, authority: "BH. Jennersdorf" }
+  # II. KÄRNTEN
+  - { code: K,  land: Kärnten, authority: "Landespolizeidirektion Kärnten für das Gebiet der Gemeinde Klagenfurt am Wörthersee", landeshauptstadt: true }
+  - { code: VI, land: Kärnten, authority: "Landespolizeidirektion Kärnten für das Gebiet der Gemeinde Villach" }
+  - { code: VL, land: Kärnten, authority: "BH. Villach" }
+  - { code: WO, land: Kärnten, authority: "BH. Wolfsberg" }
+  - { code: SP, land: Kärnten, authority: "BH. Spittal an der Drau" }
+  - { code: FE, land: Kärnten, authority: "BH. Feldkirchen" }
+  - { code: HE, land: Kärnten, authority: "BH. Hermagor" }
+  - { code: SV, land: Kärnten, authority: "BH. St. Veit an der Glan" }
+  - { code: KL, land: Kärnten, authority: "BH. Klagenfurt" }
+  - { code: VK, land: Kärnten, authority: "BH. Völkermarkt" }
+  # III. NIEDERÖSTERREICH
+  - { code: P,  land: Niederösterreich, authority: "Landespolizeidirektion Niederösterreich für das Gebiet der Gemeinde St. Pölten", landeshauptstadt: true }
+  - { code: AM, land: Niederösterreich, authority: "BH. Amstetten" }
+  - { code: BN, land: Niederösterreich, authority: "BH. Baden" }
+  - { code: BL, land: Niederösterreich, authority: "BH. Bruck an der Leitha" }
+  - { code: GF, land: Niederösterreich, authority: "BH. Gänserndorf" }
+  - { code: GD, land: Niederösterreich, authority: "BH. Gmünd" }
+  - { code: HL, land: Niederösterreich, authority: "BH. Hollabrunn" }
+  - { code: HO, land: Niederösterreich, authority: "BH. Horn" }
+  - { code: KO, land: Niederösterreich, authority: "BH. Korneuburg" }
+  - { code: KR, land: Niederösterreich, authority: "BH. Krems an der Donau" }
+  - { code: LF, land: Niederösterreich, authority: "BH. Lilienfeld" }
+  - { code: ME, land: Niederösterreich, authority: "BH. Melk" }
+  - { code: MI, land: Niederösterreich, authority: "BH. Mistelbach" }
+  - { code: MD, land: Niederösterreich, authority: "BH. Mödling" }
+  - { code: NK, land: Niederösterreich, authority: "BH. Neunkirchen" }
+  - { code: PL, land: Niederösterreich, authority: "BH. St. Pölten" }
+  - { code: SB, land: Niederösterreich, authority: "BH. Scheibbs" }
+  - { code: TU, land: Niederösterreich, authority: "BH. Tulln" }
+  - { code: WT, land: Niederösterreich, authority: "BH. Waidhofen an der Thaya" }
+  - { code: WB, land: Niederösterreich, authority: "BH. Wiener Neustadt" }
+  - { code: ZT, land: Niederösterreich, authority: "BH. Zwettl" }
+  - { code: WN, land: Niederösterreich, authority: "Landespolizeidirektion Niederösterreich für das Gebiet der Gemeinde Wr. Neustadt" }
+  - { code: KS, land: Niederösterreich, authority: "Mag. Krems an der Donau" }
+  - { code: WY, land: Niederösterreich, authority: "Mag. Waidhofen an der Ybbs" }
+  - { code: SW, land: Niederösterreich, authority: "Landespolizeidirektion Niederösterreich für das Gebiet der Gemeinde Schwechat und die im Gebiet der Gemeinden Fischamend, Klein-Neusiedl und Schwadorf gelegenen Teile des Flughafens Wien-Schwechat" }
+  - { code: KG, land: Niederösterreich, authority: "BH Tulln für das Gebiet der Gemeinde Klosterneuburg (Außenstelle Klosterneuburg)" }
+  # IV. OBERÖSTERREICH
+  - { code: L,  land: Oberösterreich, authority: "Landespolizeidirektion Oberösterreich für das Gebiet der Gemeinde Linz", landeshauptstadt: true }
+  - { code: BR, land: Oberösterreich, authority: "BH. Braunau am Inn" }
+  - { code: EF, land: Oberösterreich, authority: "BH. Eferding" }
+  - { code: FR, land: Oberösterreich, authority: "BH. Freistadt" }
+  - { code: GM, land: Oberösterreich, authority: "BH. Gmunden" }
+  - { code: GR, land: Oberösterreich, authority: "BH. Grieskirchen" }
+  - { code: KI, land: Oberösterreich, authority: "BH. Kirchdorf an der Krems" }
+  - { code: LL, land: Oberösterreich, authority: "BH. Linz-Land" }
+  - { code: PE, land: Oberösterreich, authority: "BH. Perg" }
+  - { code: RI, land: Oberösterreich, authority: "BH. Ried im Innkreis" }
+  - { code: RO, land: Oberösterreich, authority: "BH. Rohrbach im Mühlkreis" }
+  - { code: SD, land: Oberösterreich, authority: "BH. Schärding" }
+  - { code: SE, land: Oberösterreich, authority: "BH. Steyr-Land" }
+  - { code: UU, land: Oberösterreich, authority: "BH. Urfahr-Umgebung" }
+  - { code: VB, land: Oberösterreich, authority: "BH. Vöcklabruck" }
+  - { code: WL, land: Oberösterreich, authority: "BH. Wels" }
+  - { code: SR, land: Oberösterreich, authority: "Landespolizeidirektion Oberösterreich für das Gebiet der Gemeinde Steyr" }
+  - { code: WE, land: Oberösterreich, authority: "Landespolizeidirektion Oberösterreich für das Gebiet der Gemeinde Wels" }
+  # V. SALZBURG
+  - { code: S,  land: Salzburg, authority: "Landespolizeidirektion Salzburg für das Gebiet der Gemeinde Salzburg", landeshauptstadt: true }
+  - { code: SL, land: Salzburg, authority: "BH. Salzburg-Umgebung" }
+  - { code: HA, land: Salzburg, authority: "BH. Hallein" }
+  - { code: JO, land: Salzburg, authority: "BH. St. Johann" }
+  - { code: ZE, land: Salzburg, authority: "BH. Zell am See" }
+  - { code: TA, land: Salzburg, authority: "BH. Tamsweg", note: "the consolidated annex prints 'BH- Tamsweg' — a typo in the instrument, reproduced here as a finding, not corrected in the source" }
+  # VI. STEIERMARK
+  - { code: G,  land: Steiermark, authority: "Landespolizeidirektion Steiermark für das Gebiet der Gemeinde Graz", landeshauptstadt: true }
+  - { code: GU, land: Steiermark, authority: "BH. Graz-Umgebung" }
+  - { code: BM, land: Steiermark, authority: "BH. Bruck-Mürzzuschlag" }
+  - { code: DL, land: Steiermark, authority: "BH. Deutschlandsberg" }
+  - { code: HF, land: Steiermark, authority: "BH. Hartberg-Fürstenfeld" }
+  - { code: MT, land: Steiermark, authority: "BH. Murtal" }
+  - { code: LB, land: Steiermark, authority: "BH. Leibnitz" }
+  - { code: LN, land: Steiermark, authority: "BH. Leoben" }
+  - { code: LI, land: Steiermark, authority: "BH. Liezen" }
+  - { code: MU, land: Steiermark, authority: "BH. Murau" }
+  - { code: SO, land: Steiermark, authority: "BH. Südoststeiermark" }
+  - { code: VO, land: Steiermark, authority: "BH. Voitsberg" }
+  - { code: WZ, land: Steiermark, authority: "BH. Weiz" }
+  - { code: GB, land: Steiermark, authority: "Exp. Gröbming" }
+  - { code: LE, land: Steiermark, authority: "Landespolizeidirektion Steiermark für das Gebiet der Gemeinde Leoben" }
+  - { code: BA, land: Steiermark, authority: "BH Liezen für das Gebiet der Gemeinden Bad Aussee, Altaussee, Grundlsee und Bad Mitterndorf (Außenstelle Bad Aussee)" }
+  # VII. TIROL
+  - { code: I,  land: Tirol, authority: "Landespolizeidirektion Tirol für das Gebiet der Gemeinde Innsbruck", landeshauptstadt: true }
+  - { code: IL, land: Tirol, authority: "BH. Innsbruck" }
+  - { code: IM, land: Tirol, authority: "BH. Imst" }
+  - { code: KB, land: Tirol, authority: "BH. Kitzbühel" }
+  - { code: KU, land: Tirol, authority: "BH. Kufstein" }
+  - { code: LA, land: Tirol, authority: "BH. Landeck" }
+  - { code: RE, land: Tirol, authority: "BH. Reutte" }
+  - { code: SZ, land: Tirol, authority: "BH. Schwaz" }
+  - { code: LZ, land: Tirol, authority: "BH. Lienz" }
+  # VIII. VORARLBERG
+  - { code: B,  land: Vorarlberg, authority: "BH. Bregenz" }
+  - { code: FK, land: Vorarlberg, authority: "BH. Feldkirch" }
+  - { code: BZ, land: Vorarlberg, authority: "BH. Bludenz" }
+  - { code: DO, land: Vorarlberg, authority: "BH. Dornbirn" }
+  # IX. WIEN
+  - { code: W,  land: Wien, authority: "Landespolizeidirektion Wien", landeshauptstadt: true }
+
+landeshauptstadt_note: >-
+  `landeshauptstadt: true` marks the codes this pass reads as
+  "in den Landeshauptstädten ... zugewiesen" for the purposes of § 26 Abs. 6
+  Z 2 lit. a KDV (one Vormerkzeichen character MORE than elsewhere). It is
+  flagged as an INFERENCE, not a primary: the annex names those authorities
+  "Landespolizeidirektion X für das Gebiet der Gemeinde <Landeshauptstadt>",
+  which is why the nine are picked out, but the KDV never says that the
+  extra character attaches to those CODES. Vorarlberg is the case that proves
+  the inference is not safe: its Landeshauptstadt is Bregenz, whose plates
+  are issued by "BH. Bregenz" (code B) over a whole district, and the annex
+  gives Vorarlberg no Landespolizeidirektion row at all — so B is left
+  unmarked here and the question is a recorded gap.
+
+# ---------------------------------------------------------------------------
+# THE NON-GEOGRAPHIC PREFIXES — § 26 KDV itself, not Anlage 5d.
+# ---------------------------------------------------------------------------
+federal_letter:
+  source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 2"
+  A: >-
+    Fahrzeuge, die zur Verwendung für den Bundespräsidenten, die Präsidenten des
+    Nationalrates, die Präsidenten des Bundesrates, die Mitglieder der
+    Bundesregierung, die Staatssekretäre, die Mitglieder der Volksanwaltschaft,
+    den Präsidenten oder Vizepräsidenten des Rechnungshofes, des
+    Verfassungsgerichtshofes und Verwaltungsgerichtshofes oder des Obersten
+    Gerichtshofes bestimmt sind
+
+land_letters:
+  source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 3, verbatim list"
+  scope: >-
+    Fahrzeuge, die zur Verwendung für die Präsidenten der Landtage sowie für die
+    Mitglieder der Landesregierungen sowie für die Mitglieder der
+    Landesvolksanwaltschaften bestimmt sind
+  codes:
+    B: Burgenland
+    K: Kärnten
+    N: Niederösterreich
+    O: Oberösterreich
+    S: Salzburg
+    ST: Steiermark
+    T: Tirol
+    V: Vorarlberg
+    W: Wien
+  note: >-
+    ST is the only THREE-position prefix base in the system and the reason the
+    § 26 Abs. 5 Graz exception exists (see diplomatic_consular below). N and O
+    appear ONLY here — no Anlage 5d district carries them.
+
+sachliche_bereiche:
+  source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 4 lit. a-i (lit. b repealed by BGBl. II Nr. 275/2007, lit. d by BGBl. II Nr. 376/2002)"
+  codes:
+    BP: "Fahrzeuge, die zur Verwendung im Bereich der Bundespolizei bestimmt sind"
+    FV: "Fahrzeuge, die zur Verwendung im Bereich der Finanzverwaltung bestimmt sind"
+    PT: "Fahrzeuge, die zur Verwendung im Bereich der Post bestimmt sind"
+    BD: "Omnibusse, die zur Verwendung im Kraftfahrlinienverkehr der Österreichischen Bundesbahnen und der Post- und Telegraphenverwaltung (Bundesbusdienst) bestimmt sind"
+    BH: "Heeresfahrzeuge"
+    JW: "Fahrzeuge, die zur Verwendung im Bereich der Justizwache bestimmt sind"
+    FW: "Fahrzeuge, die zur Verwendung für die Feuerwehr bestimmt sind"
+  note: >-
+    FW is the ONE prefix whose serial encodes geography: § 26 Abs. 6 Z 1 lit. b
+    requires a fire-brigade Vormerkzeichen to "mit zwei oder drei Ziffern
+    beginnen und es folgen ein oder zwei Buchstaben, die der Bezeichnung der
+    Behörde im Sinne der Anlage 5d entsprechen müssen, in deren Sprengel das
+    Fahrzeug zugelassen ist" — so the district code moves to the END of the
+    string and the `codes` table above decodes the SUFFIX, not the prefix.
+
+diplomatic_consular:
+  source: "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # § 26 Abs. 5 lit. a (D) and lit. b (K), plus the Graz exception in the opening sentence"
+  mechanism: >-
+    For the vehicles listed in § 54 Abs. 3 and Abs. 3a lit. a und b KFG 1967
+    (the CD and CC entitlement classes), the sachlicher Bereich is "die
+    Buchstaben gemäß Abs. 3" — i.e. the LAND letter — "bei Fahrzeugen mit dem
+    Standort in Graz ist an Stelle der Buchstaben gemäß Abs. 3 die Bezeichnung
+    der Behörde gemäß Anlage 5d zu verwenden" (so G, not ST). That base letter
+    is then followed by D for the diplomatic corps and internationally
+    equivalent officials, or K for the consular corps.
+  diplomatic_prefixes: [BD, KD, ND, OD, SD, STD, TD, VD, WD, GD]
+  consular_prefixes:   [BK, KK, NK, OK, SK, STK, TK, VK, WK, GK]
+  derivation_note: >-
+    The twenty prefixes above are DERIVED by applying the § 26 Abs. 5 rule to
+    the § 26 Abs. 3 list plus the Graz exception; the KDV nowhere prints them as
+    a table. They are recorded here because a parse API needs them, and marked
+    as derived, not quoted. WD is overwhelmingly the populated one (the
+    diplomatic corps and the Vienna-based international organisations), and
+    several of the others may never have been issued — an unverified claim,
+    left unverified.
