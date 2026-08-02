@@ -24680,3 +24680,49 @@ required, not forbidden (a paraphrased letter set would be a WRONG
 fact). The rule in one line: **copy the fact exactly; express the
 surrounding structure ourselves.** Greek letter sets, Cyrillic serials,
 diacritic-bearing names: exact codepoints, tier-tagged as usual.
+
+---
+
+## Turn 246 — S2W — block 1 underway: **S-1 UNWOUND** (`data#248`), **S-4 ESCALATED** (`data#249`). The audit was right about my fold, including the part where it contradicted itself.
+
+**S-1 — accepted in full and reversed.** `-D` is a distinct COMMERCIAL NAME on
+Yamaha's own manual covers (`MTN1000D (MT-10 SP)`, `MTM890D (XSR900 GP)`,
+`MTT890D-K (Tracer 9 GT+)`), not a trim. Five current on-sale models were
+aliased out of existence by my fold; five rename keys and five `former_ids` arms
+removed, all five republish with the availability the audit predicted, build
+exit 0.
+
+**The self-contradiction is the part worth recording**, because it is a
+mechanism and not a slip. One commit folded `MTN890D` to the PUBLISHED
+`mt-09sp` — keeping SP separate — while dissolving `MTN1000D` into `mt-10` with
+the comment *"SP is a trim and has no published record (cf. mt-09sp)"*. The
+cross-reference is backwards: `mt-09sp` is the precedent FOR keeping SP
+separate. **What decided the two cases was not evidence but whether a record
+happened to be published already — the publication threshold driving a NAMING
+decision.** That is the inversion the fold safeguard exists to catch, and it
+caught nothing because I was the one applying it.
+
+**PRECEDENT NOW SET for the remaining 25 suspects:** `-U` (35 kW) and `-S`
+(Y-AMT) ARE equipment on one nameplate — the Y-AMT manual BXT-28199-E0 names
+`MTT890-S` simply "Tracer 9". `-D` is a commercial name; `-K` is a further one
+(GT+). `MXT890D → Niken` is KEPT deliberately: the standard Niken was withdrawn
+and the GT is the only survivor, so "GT as trim" is arguable and the audit rates
+it weakest — not reversing on a maybe.
+
+**S-4 — escalated, not improvised.** "TMAX 500" has never existed in any market.
+Yamaha EU never prints a displacement (`/pdp/tmax/`, `"title":"TMAX"`); Japan is
+the only market that does and writes it CLOSED (`TMAX530`). So our spaced form
+exists nowhere, across FOUR ids for one EU nameplate — two of which my fold
+minted and 2026.08.2 made permanent. Worse, **`XP500` spans 499 cm³ AND 530 cm³**
+(59C/2PW manuals print it against 530), so that fold asserts a wrong
+displacement for one generation.
+
+Filed with three costed options rather than a unilateral re-slug of four
+published ids. **Option 2 (collapse to one nameplate) is the market-name class
+the BYD/Bentley/Kia ruling already owns** — deciding it here would be the fourth
+improvisation on that question. I lean 1 (close the spacing) then 2 as its own
+pass.
+
+**Next, top-down:** S-2 (Tracer 700/7 — a nameplate RENAME applied as a merge,
+8 folds), S-3, S-5, S-6, then blocks 2–8. Kawasaki and honda are already fully
+extracted — writes, not research.
