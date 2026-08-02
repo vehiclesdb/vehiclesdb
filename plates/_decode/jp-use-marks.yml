@@ -1,0 +1,205 @@
+# plates/_decode/jp-use-marks.yml — the 平仮名 (hiragana) / ローマ字 (Roman
+# letter) USE-CATEGORY mark, the third field of a Japanese plate, as enacted.
+#
+# WHAT IT IS. Every Japanese registration number and vehicle number carries one
+# character (occasionally two — see `motorcycle_over_250cc` group 2 below) that
+# states WHAT THE VEHICLE IS USED FOR: for-hire (bus, taxi, freight carrier),
+# ordinary private, rental/car-share, or duty-exempt foreign-owned. It is the
+# single highest-value decode dimension on the plate after the place name,
+# because it is the one field that a photograph resolves without any external
+# table — and because the PERMITTED SET DIFFERS BY VEHICLE SYSTEM, which is what
+# this file exists to make machine-readable without folklore.
+#
+# FOUR SETS, FOUR INSTRUMENTS, AND THEY DO NOT INTERCHANGE. This is the trap:
+#
+#   * registered vehicles (登録自動車 — 普通/小型, the green-on-white and
+#     white-on-green plates): 自動車登録規則 別表第三. For-hire = あいうえかきくけこを.
+#   * inspected kei vehicles (検査対象軽自動車, the black-on-yellow and
+#     yellow-on-black plates): 道路運送車両法施行規則 別表第二の五. For-hire = りれ.
+#   * motorcycles over 250 cc (二輪の小型自動車): 道路運送車両法施行規則 別表第三
+#     (a DIFFERENT 別表第三 from the first bullet's — same label, different
+#     ordinance). For-hire = ゆりれ.
+#   * 126-250 cc motorcycles (検査対象外軽自動車): NO TABLE EXISTS. See `gaps`.
+#
+# Read that list twice. り and れ are FOR-HIRE marks on a kei plate and PRIVATE
+# marks on a registered plate; れ is the rental mark on a registered plate and a
+# for-hire mark on a kei plate; わ is rental on both but sits alone in the kei
+# table and paired with れ in the registered one. A decoder that resolves the
+# hiragana without first resolving which system the plate belongs to will invert
+# the commercial/private distinction on a large fraction of Japanese traffic.
+# The plate's COLOUR is what disambiguates, and the colour is itself statutory
+# (see plates/jp.yml `common.colours`).
+#
+# WHAT IS *NOT* IN ANY OF THESE TABLES, and is therefore not asserted here:
+# お, し, へ, ん appear in none of the four sets. The reasons universally given
+# for their absence (お confusable with あ, し an unlucky reading, へ an
+# unfortunate word, ん unpronounceable as a syllable) are folklore — no
+# instrument states a reason, and none is claimed here. What IS a sourced fact is
+# the omission itself, which is why every set below is written out in full.
+#
+# SCRIPT AND CODEPOINTS (PRD-PLATES §4, the identity-is-form rule). The hiragana
+# are recorded in the instrument's own characters. The Roman letters are
+# recorded TWICE: `chars` carries the instrument's FULL-WIDTH forms exactly as
+# e-Gov publishes them (Ａ = U+FF21, not U+0041), and `ascii` carries the
+# half-width normalisation that plates/jp.yml's regexes are written in, because
+# PRD-PLATES §2.6 confines the dataset's serial alphabet to A-Z and 0-9. The
+# plate itself is embossed, not typeset; the width distinction is an artefact of
+# the statute's typography, and recording both is what keeps that honest.
+jurisdiction: jp
+topic: use-marks
+script: "Hiragana, plus Latin capitals for the duty-exempt foreign-owner sets"
+authority:
+  name: "自動車登録規則 別表第三（第十三条関係）and 道路運送車両法施行規則 別表第二の五（第三十六条の十七関係）/ 別表第三（第三十六条の十八関係）"
+  url: "https://laws.e-gov.go.jp/law/345M50000800007"
+sources:
+  - "https://laws.e-gov.go.jp/api/1/lawdata/345M50000800007  # 自動車登録規則 別表第三 — the four registered-vehicle rows below, verbatim; and 第十三条第一項第三号, the field itself; accessed 2026-08-02"
+  - "https://laws.e-gov.go.jp/api/1/lawdata/326M50000800074  # 道路運送車両法施行規則 別表第二の五 (kei) and 別表第三 (motorcycles over 250 cc), verbatim; and 第三十六条の十七第一項第三号, 第三十六条の十八第一項第二号, 第六十三条の四第一項第三号; accessed 2026-08-02"
+  - "https://laws.e-gov.go.jp/law/326M50000800074  # Form No. 13 remark (6), the character-width rule that presupposes the two-character ＣＬＶ+hiragana combination on motorcycle plates"
+period: { start: 1970 }
+period_evidence: instrument-in-force
+period_note: >-
+  1970 is the in-force date of 自動車登録規則 (1 March 1970), the instrument that
+  carries the registered-vehicle set. The kei and motorcycle sets live in
+  道路運送車両法施行規則 (Ministerial Ordinance No. 74 of 1951). Both are
+  consolidations documenting a practice older than themselves; neither dates the
+  use-mark convention's start, and no primary for that start was secured. The
+  two-character ＣＬＶ+hiragana motorcycle combination is demonstrably LATER than
+  the rest of the table (it exists because single characters ran out) but the
+  amendment that introduced it was not pinned — recorded gap.
+
+sets:
+
+  # =========================================================================
+  # 1. REGISTERED VEHICLES (登録自動車) — 自動車登録規則 別表第三（第十三条関係）
+  #    These are the green-on-white (private) and white-on-green (for-hire)
+  #    plates: 普通自動車 and 小型自動車, i.e. everything above 660 cc.
+  # =========================================================================
+  registered:
+    applies_to: "登録自動車 (普通自動車 + 小型自動車) — plates/jp.yml series jp-registered-*"
+    instrument: "自動車登録規則 別表第三（第十三条関係）"
+    groups:
+      - group: 1
+        category_ja: "自動車運送事業の用に供する自動車"
+        category_en: "vehicles used for a motor carrier business (for hire)"
+        chars: "あいうえかきくけこを"
+        count: 10
+        plate_colour: "white characters on green (事業用)"
+      - group: 2
+        category_ja: "自家用自動車（次号及び第４号に規定するものを除く。）"
+        category_en: "private vehicles, other than those in groups 3 and 4"
+        chars: "さすせそたちつてとなにぬねのはひふほまみむめもやゆらりるろ"
+        count: 29
+        plate_colour: "green characters on white (自家用)"
+      - group: 3
+        category_ja: "道路運送法施行規則（昭和２６年運輸省令第７５号）第５２条の規定により受けた許可に係る自家用自動車"
+        category_en: "private vehicles under a permit granted by art. 52 of the Road Transport Act Enforcement Regulations — i.e. rental cars (レンタカー) and car-share fleets"
+        chars: "れわ"
+        count: 2
+        plate_colour: "green characters on white (自家用)"
+      - group: 4
+        category_ja: "日本国籍を有しない者が所有する自家用自動車で、法令の規定により関税又は消費税が免除されているもの及び別に国土交通大臣が指定するもの"
+        category_en: "private vehicles owned by persons without Japanese nationality and exempted from customs duty or consumption tax, plus those separately designated by the Minister — in practice the US-forces personnel plates"
+        chars: "ＥＨＫＭＴＹよ"
+        ascii: "EHKMTY"
+        ascii_note: >-
+          Six Latin capitals plus the hiragana よ. The Latin members ARE in the
+          dataset's serial alphabet, so unlike every other row in this file they
+          appear inside plates/jp.yml's regexes (series jp-registered-usforces).
+          Y is the member almost every photograph shows.
+        count: 7
+        plate_colour: "green characters on white (自家用)"
+
+  # =========================================================================
+  # 2. INSPECTED KEI VEHICLES (検査対象軽自動車) — 道路運送車両法施行規則
+  #    別表第二の五（第三十六条の十七関係）. The yellow plates, up to 660 cc.
+  #    NOTE THE INVERSION against set 1: り and れ are FOR-HIRE here.
+  # =========================================================================
+  kei:
+    applies_to: "検査対象軽自動車 — plates/jp.yml series jp-kei-*"
+    instrument: "道路運送車両法施行規則 別表第二の五（第三十六条の十七関係）"
+    groups:
+      - group: 1
+        category_ja: "事業用自動車"
+        category_en: "for-hire vehicles"
+        chars: "りれ"
+        count: 2
+        plate_colour: "yellow characters on black (事業用)"
+      - group: 2
+        category_ja: "自家用自動車（次号及び第４号に規定するものを除く。）"
+        category_en: "private vehicles, other than those in groups 3 and 4"
+        chars: "あいうえかきくけこさすせそたちつてとなにぬねのはひふほまみむめもやゆよらるろを"
+        count: 39
+        plate_colour: "black characters on yellow (自家用)"
+        note: >-
+          The widest of the four sets: it takes both the for-hire block of the
+          registered table (あいうえかきくけこを) and most of its private block,
+          because a kei plate signals for-hire use through り/れ instead.
+      - group: 3
+        category_ja: "道路運送法施行規則第５２条の規定により受けた許可に係る自家用自動車"
+        category_en: "rental / car-share kei vehicles"
+        chars: "わ"
+        count: 1
+        plate_colour: "black characters on yellow (自家用)"
+      - group: 4
+        category_ja: "日本国籍を有しない者が所有する自家用自動車で、法令の規定により関税又は消費税が免除されているもの。"
+        category_en: "duty-exempt kei vehicles owned by persons without Japanese nationality"
+        chars: "ＡＢ"
+        ascii: "AB"
+        count: 2
+        plate_colour: "black characters on yellow (自家用)"
+
+  # =========================================================================
+  # 3. MOTORCYCLES OVER 250 cc (二輪の小型自動車) — 道路運送車両法施行規則
+  #    別表第三（第三十六条の十八関係）. White plate with a GREEN BORDER; no
+  #    class code at all (第三十六条の十八 lists only three fields).
+  # =========================================================================
+  motorcycle_over_250cc:
+    applies_to: "二輪の小型自動車 — plates/jp.yml series jp-motorcycle-*"
+    instrument: "道路運送車両法施行規則 別表第三（第三十六条の十八関係）"
+    groups:
+      - group: 1
+        category_ja: "事業用自動車"
+        category_en: "for-hire motorcycles"
+        chars: "ゆりれ"
+        count: 3
+        plate_colour: "white characters on green, white border (事業用)"
+      - group: 2
+        category_ja: "自家用自動車（次号及び第４号に規定するものを除く。）"
+        category_en: "private motorcycles, other than those in groups 3 and 4"
+        chars: "あいうえかきくけこさすせそたちつてとなにぬねのはひふほまみむめもやらるを"
+        count: 36
+        plate_colour: "green characters on white, green border (自家用)"
+        combination:
+          chars: "ＣＬＶ"
+          ascii: "CLV"
+          rule_ja: "（２）　次に掲げる文字をその順序により組み合わせたもの　イ　ＣＬＶ　ロ　（１）に掲げる文字"
+          rule_en: >-
+            "characters combined in the following order: (a) C, L or V; (b) a
+            character listed in (1)" — a TWO-CHARACTER use mark, a Latin capital
+            followed by a hiragana (Cあ, Lあ, Vあ ...), giving three more passes
+            through the serial space when single characters run out. Form No. 13
+            remark (6) confirms it physically, prescribing a 17.5 mm office-mark
+            width and a 19 mm Latin-letter width "自家用又は事業用の別等を表示する
+            文字として文字の組合せを用いる場合" (where a character COMBINATION is
+            used as the use mark). This is the one place in the Japanese system
+            where a Latin capital appears on an ordinary private plate.
+      - group: 3
+        category_ja: "道路運送法施行規則第５２条の規定により受けた許可に係る自家用自動車"
+        category_en: "rental motorcycles"
+        chars: "ろわ"
+        count: 2
+        plate_colour: "green characters on white, green border (自家用)"
+      - group: 4
+        category_ja: "日本国籍を有しない者が所有する自家用自動車で、法令の規定により関税又は消費税が免除されているもの及び別に国土交通大臣が指定するもの"
+        category_en: "duty-exempt motorcycles owned by persons without Japanese nationality"
+        chars: "ＡＢＥＨＫＭＴＹよ"
+        ascii: "ABEHKMTY"
+        count: 9
+        plate_colour: "green characters on white, green border (自家用)"
+
+gaps:
+  - "126-250 cc motorcycles (検査対象外軽自動車) have NO enacted use-mark table. 道路運送車両法施行規則 第六十三条の四第一項第三号 requires 「自家用又は事業用の別等を表示する平仮名又はローマ字」 and, unlike its three siblings, cites no 別表. The permitted set for that class is therefore unsourced and is not asserted anywhere in this dataset."
+  - "126-250 cc motorcycles likewise have no enacted CLASS-CODE table: 第六十三条の四第一項第一号 requires 「検査対象外軽自動車の用途による分類番号を表示するアラビア数字」 (one Arabic numeral) and cites no appendix. The statutory drawing (Form No. 14) shows 6 in the example, which is an illustration and not a rule."
+  - "The order WITHIN each set is the instrument's own printed order and is NOT an issuance order. Nothing sourced says which character is issued first, or that the sets advance in the printed sequence, so no era inference may be drawn from a use mark."
+  - "The amendment that added the ＣＬＶ two-character motorcycle combination was not pinned; only its presence in the consolidated text and in Form No. 13 remark (6) is evidenced."
+  - "お, し, へ and ん are absent from all four sets. The absence is sourced (the sets are exhaustive); the usual explanations for it are not, and are recorded as folklore in the jurisdiction dossier."

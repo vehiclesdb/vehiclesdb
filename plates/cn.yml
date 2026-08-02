@@ -1,0 +1,1431 @@
+# plates/cn.yml — People's Republic of China (mainland), PRD-PLATES gate L3.
+#
+# ============================================================================
+# 1. THE SOURCE SITUATION, STATED FIRST BECAUSE IT SHAPES EVERY CLAIM HERE
+# ============================================================================
+# Chinese plates are defined by ONE mandatory instrument: GA 36
+# 《中华人民共和国机动车号牌》, a 强制性 (mandatory) public-security industry
+# standard issued by 公安部 (the Ministry of Public Security). Its authority is
+# delegated by ministerial rule: 《机动车登记规定》(公安部令第164号) 第八十五条,
+# verbatim — "机动车登记证书、号牌、行驶证、检验合格标志的式样由公安部统一制定并
+# 监制。机动车登记证书、号牌、行驶证、检验合格标志的制作应当符合有关标准。"
+# ("The forms of the vehicle registration certificate, number plates, driving
+# licence and inspection mark are uniformly formulated and supervised by the
+# Ministry of Public Security. Their manufacture shall conform to the relevant
+# standards." — translation ours.)
+#
+# THE EDITION PROBLEM, AND THE ONE PIECE OF LUCK.
+#   * The CURRENT edition is GA 36-2018: 发布 2018-04-20, 实施 2018-05-01,
+#     代替 GA 36-2014, 技术归口 公安部道路交通管理标准化技术委员会, 起草单位
+#     公安部交通管理科学研究所. All of that is PINNED from the national standards
+#     register. Its TEXT IS WITHHELD: the register's reader answers
+#     "您所查询的标准在本系统尚未公开，不公开理由如下：无" and its download
+#     endpoint returns zero bytes. GA 36-2014 and GA 36-2007 answer
+#     "废止标准不提供标准文本阅读服务".
+#   * The luck: GA 36-2007 — the immediately preceding edition, 发布 2007-09-28,
+#     实施 2007-11-01, 代替 GA 36-1992 — is republished IN FULL by a Chinese
+#     municipal government, 巩义市人民政府 (www.hngy.gov.cn), 2012-11-15, and
+#     that copy survives in the Internet Archive. Clauses 3 to 7 and Annexes A
+#     and B of that text are the backbone of this file, quoted verbatim.
+#   * CONSEQUENCE, and it is recorded on every affected series: claims taken
+#     from GA 36-2007 describe the 92-pattern system AS IT STOOD IN 2007. The
+#     2014 and 2018 revisions' change lists are not public. Where a 2018 fact is
+#     needed and only GA 36-2007 has it (colours, dimensions, serial grammar),
+#     the claim is made with `standard_edition: GA 36-2007` on the series and is
+#     a named verifier target. Where 2018 changed something we CAN see — the new
+#     energy vehicle plates — the Ministry's own announcements are the source.
+#   * The Wikipedia articles (en + zh) were used as a MANDATORY FINDING AID and
+#     nothing else: their citations were mined, the instruments they name were
+#     fetched, and those instruments are what is cited. Their CC BY-SA prefix
+#     tables and text were never extracted. Everything the finding aid asserted
+#     that no instrument confirmed is in the dossier's folklore section, and
+#     three of those claims are named in the notes below so a verifier can see
+#     what was DELIBERATELY not asserted.
+#
+# ============================================================================
+# 2. THE HAN LINE — where the dataset's serial alphabet stops (PRD-PLATES §2.6)
+# ============================================================================
+# GA 36-2007 § 3.2 defines the thing a plate carries, verbatim:
+#   "机动车登记编号 registration number of motor vehicle
+#    按照不同类型的机动车号牌，机动车登记编号包含省、自治区、直辖市的汉字简称、
+#    用英文字母表示发牌机关的代号、由阿拉伯数字和英文字母组成的序号和有特殊性质的
+#    机动车使用的号牌分类用汉字简称。"
+#   ("Depending on the type of plate, the registration number comprises the
+#    Chinese-character abbreviation of the province / autonomous region /
+#    municipality, the issuing-authority code expressed as a Latin letter, a
+#    serial composed of Arabic numerals and Latin letters, and — for vehicles of
+#    special character — a Chinese-character classification abbreviation."
+#    Translation ours; the Chinese is the sourced text.)
+#
+# So a Chinese registration number has FOUR elements, two of them Han. The
+# dataset's serial alphabet is A-Z and 0-9 and PRD-PLATES § 2.6 says a
+# jurisdiction that prints a glyph inside the serial "is a schema amendment,
+# not a data entry". This file does NOT smuggle Han characters into any
+# `format.pattern`, `format.regex`, `format.regex_strict` or
+# `format.regex_statutory`. Instead:
+#
+#   format.pattern / format.regex  cover the MACHINE-READABLE LATIN+DIGIT
+#                                  remainder — the issuing-authority letter and
+#                                  the serial. This is precisely the substring
+#                                  an ALPR, a car-park barrier or a validation
+#                                  library matches on, so the regex layer stays
+#                                  useful rather than decorative.
+#   format.han                     carries the Han elements as structured data:
+#                                  `prefix` (always the province character,
+#                                  decoded by plates/_decode/cn-provinces.yml),
+#                                  `suffix` (the classification character, when
+#                                  the class has one), `printed`, `script: Han`
+#                                  and an INFORMATIONAL Han-aware regex that is
+#                                  explicitly outside the § 2.6 contract and is
+#                                  NOT lint-validated.
+#
+# A consumer validating "京A·12345" therefore: (1) splits the leading Han
+# character and looks it up in cn-provinces.yml; (2) splits a trailing Han
+# character if present and looks it up in `common.classification_han` below;
+# (3) matches what is left — "A12345" — against `format.regex`. The two decode
+# files make steps 1 and 2 mechanical. The schema amendment PRD-PLATES § 2.6
+# anticipates (a `never_separator` / non-Latin-element ruling in
+# _meta/separators.yml) is REQUESTED in the dossier; until it lands, this is the
+# honest encoding and it is stated here once rather than guessed per series.
+#
+# THE SEPARATOR. GA 36-2007 § 5.11, verbatim: "间隔符对机动车登记编号进行有效
+# 分割。间隔符可以和机动车登记编号同样冲压并着色。" ("The separator effectively
+# divides the registration number. The separator may be embossed and coloured in
+# the same way as the registration number.") It is the raised mid-dot printed
+# between the issuing-authority letter and the serial. U+00B7 MIDDLE DOT is in
+# _meta/separators.yml's FORGIVING set but NOT in its EMITTED set, so this file
+# may not spell it; every regex here accepts an OPTIONAL emitted separator
+# `[- ]?` at that position instead, exactly as plates/gb.yml does for the
+# statutory millimetre gap. Nothing is lost: the dot is forgiving-strippable by
+# construction.
+#
+# ============================================================================
+# 3. THE SERIAL GRAMMAR — the best-sourced thing in this file
+# ============================================================================
+# GA 36-2007 § 5.9.1 序号编码规则, verbatim:
+#   "a) 序号的每一位都使用阿拉伯数字；
+#    b) 序号的每一位可单独使用英文字母，26个英文字母中O和I不能使用；
+#    c) 序号中允许出现2位英文字母，26个英文字母中O和I不能使用。"
+# — the serial is all digits, or carries ONE letter, or carries AT MOST TWO
+# letters, and O and I are never letters in a serial. § 5.9.2 a) then fixes
+# WHICH positions those letters may occupy, in 表 3 "序号用字母和数字组合方式",
+# with two serial widths (四位数 / 五位数) and eleven combinations; the sourced
+# rule for release order is verbatim: "序号用数字和字母组合方式的使用应按表3的
+# 规定依次有序使用。序号的使用率超过60％后，应经省级公安机关交通管理部门批准并报
+# 公安部交通管理局备案后，依次启用下一种组合方式。" Table 3, transcribed:
+#
+#   #   letters at positions      4-position   5-position
+#   1   (none, all digits)            yes          yes
+#   2   1                             yes          yes
+#   3   1,2                           yes          yes
+#   4   2                             yes          yes
+#   5   3                             yes          yes
+#   6   4                             yes          yes
+#   7   5                             NO           yes
+#   8   1,5                           NO           yes
+#   9   4,5                           NO           yes
+#   10  1,3                           yes          yes
+#   11  2,3                           yes          yes
+#
+# EVERY `regex_strict` in this file is that table, mechanically. It is the
+# tightest sourced serial grammar this programme has secured outside the UK's
+# Schedule 3 Table A, and it is why `regex` (which the lint round-trips against
+# `pattern`, and which therefore cannot carry the O/I exclusion or the position
+# rule) has a strict twin nearly everywhere.
+#
+# THE I/O ASYMMETRY, WHICH ALMOST EVERY OTHER DATASET GETS WRONG. The O and I
+# exclusion is a rule about the SERIAL. The ISSUING-AUTHORITY LETTER uses the
+# full alphabet: GA 36-2007's 前言 lists "增加了发牌机关代号"I"" among the
+# changes that edition made, and Annex A gives "O" to the
+# "省、自治区公安厅交通管理局、处车辆管理所" in every province (the famous
+# "O 牌"). So `[A-Z]` for the office letter and `[0-9A-HJ-NP-Z]` for the serial,
+# in the same regex, is not an inconsistency — it is the sourced rule.
+#
+# ============================================================================
+# 4. PERIOD POLICY (PRD-PLATES §2.4, the instrument-date rule)
+# ============================================================================
+# The system in force is the "92-pattern" (92式) created by GA 36-1992, whose
+# existence and designation year are evidenced by GA 36-2007's own 前言 ("本标准
+# 代替GA36-1992") and by the national register's 代替标准 field for GA 36-2007.
+# GA 36-1992 itself PREDATES the industry-standard filing database, so no
+# 发布/实施 date for it could be pinned; series that GA 36-2007 shows unchanged
+# therefore carry `period: { start: 1992 }` with
+# `period_evidence: enabling-instrument` and say so. Where GA 36-2007's 前言
+# records that this edition ADDED a class or its classification character, the
+# series is dated 2007 instead, with the foreword quoted on the series.
+# The much-repeated claim that the 92-pattern was trialled in 乌鲁木齐/大庆 in
+# 1992 and rolled out nationwide in July 1994 is NOT asserted here: no primary
+# was secured for either date (dossier folklore F-1).
+jurisdiction: cn
+authority:
+  name: 公安部交通管理局 (Traffic Management Bureau, Ministry of Public Security)
+  url: "https://www.mps.gov.cn/"
+  url_status: >-
+    www.mps.gov.cn returned HTTP 521 on every request from this workstation on
+    2026-08-02 (the ministry's origin, not a block we could route around); every
+    ministry page used here is cited through the Internet Archive with its
+    archive URL and its original URL, and the archived captures were read in
+    full.
+binding: vehicle
+binding_note: >-
+  The registration number belongs to the VEHICLE, not the keeper: GA 36-2007
+  § 3.1 defines 机动车号牌 as "准予机动车在中华人民共和国境内道路上行驶的法定
+  标志，其号码是机动车登记编号" — "the legal mark permitting a motor vehicle to
+  travel on roads within the People's Republic of China; its number is the
+  vehicle registration number". 《机动车登记规定》(公安部令第164号) 第四十四条
+  lets a former owner re-apply for the OLD number on a new vehicle only if they
+  held the vehicle and used that number for at least a year, and 第四十五条
+  extends it to a spouse after a year of marriage — the exceptions prove the
+  rule. 第四十三条: the number is chosen "通过计算机随机选取或者按照选号规则自行
+  编排的方式" (computer random draw or owner self-composition inside the
+  published rules), through a single national number-selection system.
+
+instrument:
+  standard:
+    citation: "GA 36-2018 《中华人民共和国机动车号牌》 (mandatory public-security industry standard)"
+    issued: "2018-04-20"
+    in_force: "2018-05-01"
+    replaces: "GA 36-2014"
+    ccs: R82
+    ics: "43.040.60"
+    technical_committee: 公安部道路交通管理标准化技术委员会
+    approving_body: 公安部
+    drafting_units: 公安部交通管理科学研究所、公安部交通安全产品质量监督检测中心、常州华日升反光材料股份有限公司
+    filing: "备案号 66154-2019, 备案日期 2019-06-06"
+    text_status: >-
+      NOT PUBLIC. hbba.sacinfo.org.cn's online reader returns "您所查询的标准在
+      本系统尚未公开，不公开理由如下：无" and /portal/download/ returns 0 bytes.
+      Every format, colour and dimension claim in this file is therefore sourced
+      to GA 36-2007 (full text, government-republished) or to a Ministry
+      announcement, and each series records which.
+    source: "https://hbba.sacinfo.org.cn/stdDetail/328b77ee80fdee1dee33d20e83d01d2ad128f380aa93c7dbe5c58c67d9d2075e  # every field above; accessed 2026-08-02"
+  lineage:
+    - { code: "GA 36-1992", note: "the 92-pattern's creating edition; evidenced only by GA 36-2007's 前言 ('本标准代替GA36-1992') and the register's 代替标准 field — it predates the filing database and no dates for it were secured" }
+    - { code: "GA 36-2007", issued: "2007-09-28", in_force: "2007-11-01", replaces: "GA 36-1992", status: 废止, note: "THE READABLE EDITION — full text republished by 巩义市人民政府" }
+    - { code: "GA 36-2014", issued: "2014-01-24", in_force: "2014-01-24", replaces: "GA 36-2007", status: 废止, repealed: "2019-03-11", note: "text withheld; change list unknown — a recorded gap between the readable 2007 text and the current 2018 edition" }
+    - { code: "GA 36-2018", issued: "2018-04-20", in_force: "2018-05-01", replaces: "GA 36-2014", status: 现行 }
+  lineage_source: "https://hbba.sacinfo.org.cn/stdQueryList  # 全国标准信息公共服务平台 (行业标准) query for GA 36 — all four editions with 发布/实施/废止 dates and 代替标准; accessed 2026-08-02"
+  enabling_rule:
+    citation: "《机动车登记规定》, 公安部令第164号 — 2021年12月4日第8次部务会议审议通过, 公布 2021-12-17 (部长 赵克志), 施行 2022-05-01"
+    relevant_articles: "第四十三条 (number selection), 第四十四条-第四十五条 (retaining a number), 第四十六条-第四十八条 (临时行驶车号牌 and its validity ladder), 第四十九条 (临时入境机动车号牌), 第五十条 (uniform national plate management system), 第八十五条 (the MPS sets the FORM of the plate; manufacture follows the relevant standards)"
+    source: "https://www.gov.cn/gongbao/content/2022/content_5682413.htm  # State Council Gazette 2022 No. 9, full text; accessed 2026-08-02"
+  related:
+    - "GA 666-2018 《机动车号牌用反光膜》 (发布/实施 2018-05-01, 代替 GA 666-2006) — the retroreflective-film standard GA 36 defers colour and retroreflection to; text not public"
+    - "GA/T 804-2024 《机动车号牌专用固封装置》 (实施 2024-12-31, 代替 GA 804-2008) — the anti-theft plate fastener GA 36-2007 § 7.1 c) requires, two per plate face"
+    - "GA/T 16.7-2012 《道路交通管理信息代码 第7部分：机动车号牌种类代码》 — the closed CODE LIST for plate types; text not public and a named verifier target"
+    - "NY 345.1-2005 《拖拉机号牌》 (农业部, 发布/实施 2005-01-17, 现行) — GA 36-2007 表 1 row 19 delegates tractor plates to it in terms ('按 NY 345.1-2005 执行'). Its PDF is downloadable from the register but is a scanned image with no text layer, so no tractor series is modelled here (recorded gap)"
+    - "《警车管理规定》, 公安部令第89号 (2007), as amended by 公安部令第174号 (公布 2025-11-25, 施行 2025-12-29) — police plates"
+    - "《临时入境机动车和驾驶人管理规定》, 公安部令第90号 (通过 2006-11-08, 公布 2006-12-01, 施行 2007-01-01, replacing 公安部令第4号 of 1989-05-01) — temporary-entry plates"
+    - "《国务院办公厅关于国家综合性消防救援车辆悬挂应急救援专用号牌有关事项的通知》, 国办发〔2018〕114号 (成文 2018-12-04, 发布 2018-12-11) — the emergency-rescue plates, and the only Chinese plate whose full encoding rule is published in an accessible instrument"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  registration_number_elements:
+    order: [province_han, office_letter, serial, classification_han]
+    note: >-
+      GA 36-2007 § 3.2, quoted in full in the header. The fourth element appears
+      only on the classes GA 36-2007 § 5.10 lists. The emergency-rescue plates
+      (国办发〔2018〕114号) are the one class that departs from this order: the
+      motorcycle plate puts its TWO-character classification pair 应急 FIRST.
+    source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 § 3.2; accessed 2026-08-02"
+  province_han:
+    decode: "plates/_decode/cn-provinces.yml"
+    count: 31
+    note: "GA 36-2007 § 5.7 表 2 — 31 rows, one character each, closed and primary. Hong Kong, Macau and Taiwan have no row."
+  office_letter:
+    alphabet: "A-Z"
+    includes_i_and_o: true
+    decode: "plates/_decode/cn-issuing-offices.yml"
+    rules: >-
+      GA 36-2007 § 5.8.1-5.8.3 (quoted in the decode file): the code identifies
+      the vehicle-management office; the four directly-administered
+      municipalities hold the whole alphabet A-Z in sequence; anywhere else a
+      new code needs MPS Traffic Management Bureau approval, so the allocation
+      is OPEN and Annex A is a 2007 snapshot.
+    source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 § 5.8 + 附录 A 表 A.1; accessed 2026-08-02"
+  serial:
+    letters_excluded: [I, O]
+    max_letters: 2
+    widths_defined: [4, 5]
+    combinations_source: "GA 36-2007 § 5.9.2 a) 表 3 — transcribed in this file's header and encoded in every regex_strict below"
+    release_rule: >-
+      "序号的使用率超过60％后，应经省级公安机关交通管理部门批准并报公安部交通管理
+      局备案后，依次启用下一种组合方式" — a combination is opened only once the
+      previous ones are 60% consumed, in Table 3's order. This is the Chinese
+      equivalent of an age identifier and the reason a letter-bearing serial
+      implies a LATER issue than an all-digit one within the same office code.
+      It is a one-sided inference and this dataset makes no year claim from it.
+    recycling_rule: "GA 36-2007 § 5.9.2 b): '机动车登记中收回的号牌，其机动车登记编号6个月后可重新使用。' — a surrendered number returns to the pool after six months"
+    source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 § 5.9; accessed 2026-08-02"
+  classification_han:
+    note: >-
+      GA 36-2007 § 5.10, verbatim and complete: "领馆汽车号牌和摩托车号牌的机动车
+      登记编号中使用汉字简称"领"字；使馆汽车号牌和摩托车号牌的机动车登记编号中使用
+      汉字简称"使"字；警用汽车号牌和摩托车号牌的机动车登记编号使用汉字简称"警"字；
+      教练汽车号牌和摩托车号牌的机动车登记编号中使用汉字简称"学"字；挂车号牌的机动车
+      登记编号使用汉字简称"挂"字；香港特别行政区入出内地车辆号牌的机动车登记编号使用
+      汉字简称"港"字；澳门特别行政区入出内地车辆号牌的机动车登记编号使用汉字简称"澳"
+      字；试验车的临时行驶车号牌的机动车登记编号中使用汉字简称"试"字；特型车的临时
+      行驶车号牌的机动车登记编号中使用汉字简称"超"字。"
+    characters:
+      - { han: 领, script: Han, pinyin: "lǐng", meaning: "consular corps (驻华领事馆)" }
+      - { han: 使, script: Han, pinyin: "shǐ",  meaning: "diplomatic corps (驻华使馆)" }
+      - { han: 警, script: Han, pinyin: "jǐng", meaning: "police vehicle (警车)" }
+      - { han: 学, script: Han, pinyin: "xué",  meaning: "driving-instruction vehicle (教练车)" }
+      - { han: 挂, script: Han, pinyin: "guà",  meaning: "trailer / semi-trailer (挂车)" }
+      - { han: 港, script: Han, pinyin: "gǎng", meaning: "Hong Kong vehicle entering/leaving the mainland" }
+      - { han: 澳, script: Han, pinyin: "ào",   meaning: "Macau vehicle entering/leaving the mainland" }
+      - { han: 试, script: Han, pinyin: "shì",  meaning: "test vehicle, on a temporary-travel plate" }
+      - { han: 超, script: Han, pinyin: "chāo", meaning: "over-dimension/over-mass special vehicle, on a temporary-travel plate" }
+      - { han: 应急, script: Han, pinyin: "yìngjí", meaning: "national comprehensive fire-and-rescue vehicle", source_note: "NOT in GA 36-2007 § 5.10 — created later by 国办发〔2018〕114号, and the only TWO-character classification element" }
+    source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 § 5.10; accessed 2026-08-02"
+  materials:
+    metal: "GA 36-2007 § 6.1.1.1: aluminium of at least 1.0 mm (1.2 mm, or steel, for the large-vehicle rear plate and the trailer plate), to GB/T 3880.1 / GB/T 3880.2; surface film to GA 666-2006"
+    paper: "§ 6.1.1.2: temporary-ENTRY plates are printed on 200-220 g watermarked paper and laminated. § 6.1.1.3: the domestic temporary-travel plate is 125 g white card"
+    service_life: "§ 6.3: '金属材料号牌的使用寿命不得少于四年。' — a metal plate's service life shall be not less than four years"
+    embossing: "§ 6.6.3: characters and the separator stand proud of the plate face by more than 1 mm, inside a stiffening rib of more than 1 mm"
+    fastening: "§ 7.1 c): every plate face except the temporary-entry and temporary-travel plates is fixed with at least two uniform anti-theft fasteners embossed with the issuing-authority code (GA/T 804)"
+    enlarged_number: "§ 7.3: heavy and medium goods vehicles and their trailers carry the registration number painted on the body at 2.5x plate size"
+    source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 §§ 6, 7; accessed 2026-08-02"
+  colour_basis:
+    note: >-
+      GA 36 NAMES colours and never numbers them for the metal plates: § 6.8.2
+      and § 6.8.3 defer the day and night chromaticity coordinates to
+      GA 666-2006 § 4.4, a standard whose text is not public. Only two colours
+      are numbered anywhere in the readable text, and both are on the PAPER
+      plates and the red characters: § 6.8.1 fixes the red paint as GB/T
+      3181-1995 大红 (R03); § 6.4 fixes the temporary plates' ground tints as
+      GB/T 3181-1995 天(酞)蓝 (PB09) and 棕黄 (YR06). EVERY hex value in this
+      file is therefore `hex_basis: observed` — a rendering convenience, not a
+      sourced fact — and re-sourcing them from GA 666 is a named verifier
+      target.
+    named_colours_source: "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 §§ 6.4, 6.8, and 表 1's colour column; accessed 2026-08-02"
+
+series:
+
+  # =========================================================================
+  # THE CIVIL 92-PATTERN CORE. GA 36-2007 表 1 "号牌的分类、规格、颜色及适用
+  # 范围" is the closed classification; rows 1-19 of that table are the source
+  # for every dimension, colour and scope claim in this block, and each series
+  # quotes its own row.
+  # =========================================================================
+
+  - id: cn-small-car-1992
+    class: standard
+    categories: [car, van]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 3 (format/design); GA 36-1992 (period)"
+    matching: strict
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{5}\z'
+      regex_strict: '\A[A-Z][- ]?(?:\d{5}|[A-HJ-NP-Z]\d{4}|[A-HJ-NP-Z]{2}\d{3}|\d[A-HJ-NP-Z]\d{3}|\d{2}[A-HJ-NP-Z]\d{2}|\d{3}[A-HJ-NP-Z]\d|\d{4}[A-HJ-NP-Z]|[A-HJ-NP-Z]\d{3}[A-HJ-NP-Z]|\d{3}[A-HJ-NP-Z]{2}|[A-HJ-NP-Z]\d[A-HJ-NP-Z]\d{2}|\d[A-HJ-NP-Z]{2}\d{2})\z'
+      charset:
+        office_letter: "A-Z (I and O included — see the header's I/O asymmetry note)"
+        serial_letters_excluded: [I, O]
+        notes: "regex_strict is GA 36-2007 表 3's five-position column, all eleven rows"
+      progression: "combinations open in 表 3 order once the previous is 60% consumed (§ 5.9.2 a)); the inference is one-sided and no year claim is made from it"
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province>·<office letter><5-position serial>"
+        printed_example: "京A·12345"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{5}\z'
+        regex_informational_note: >-
+          NOT part of the PRD-PLATES § 2.6 contract, NOT lint-validated, and NOT
+          a substitute for format.regex — provided because a consumer holding a
+          whole Chinese plate string needs one expression to split it. The Han
+          class is the 31 characters of cn-provinces.yml in Table 2's order.
+    design:
+      plate: { w: 440, h: 140, unit: mm }
+      count: 2
+      background: { color: "#1C3F94", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", note: "白框线 — the white keyline is part of the sourced colour description" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      note: >-
+        GA 36-2007 表 1 row 3, verbatim: 小型汽车号牌 / 440×140 / 蓝底白字白框线
+        / 2 / 中型以下的载客、载货汽车和专项作业车。 § 6.5 b) adds that on the
+        small-car plate BOTH the ground colour and the characters are
+        retroreflective ("小型汽车号牌和轻便摩托车号牌底色和字符均为反光") —
+        which is not true of the yellow plates, whose ground is retroreflective
+        but whose black characters are not.
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+      note: >-
+        Two independent geographic elements: the Han character gives the
+        province-level jurisdiction (closed, 31 values); the Latin letter gives
+        the issuing vehicle-management office within it (open list, MPS-approved
+        additions). For the four directly-administered municipalities the letter
+        is a BATCH marker with no place meaning at all (§ 5.8.2).
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 3 (dimensions, colours, count, scope); § 5.1.1 (the 440x140 layout group); § 5.9 (serial grammar, regex_strict); § 6.5 b) (both ground and characters retroreflective); accessed 2026-08-02"
+      - "https://web.archive.org/web/20161122160811/http://www.mps.gov.cn/n2254098/n4904352/c5550094/content.html  # 公安部交通管理局, 2016-11-21: '与普通汽车号牌相比，新能源汽车号牌号码由5位升为6位' — the primary that fixes the ORDINARY car serial at FIVE positions; accessed 2026-08-02"
+      - "https://hbba.sacinfo.org.cn/stdDetail/12b7710b682f0e13dfc423a325751920  # GA 36-2007 register entry: 代替 GA 36-1992 — the evidence for period.start 1992; accessed 2026-08-02"
+    notes: >-
+      The ordinary blue plate: light passenger and goods vehicles and special
+      operating vehicles below medium size, two plates per vehicle, 440x140 mm,
+      white on blue with a white keyline. period.start 1992 is the designation
+      year of GA 36-1992, the edition that created the 92-pattern; that
+      standard's own issue and in-force dates could not be pinned (it predates
+      the industry-standard filing database), and the widely repeated
+      "trial 1992, nationwide July 1994" pair has NO primary and is not asserted
+      (dossier folklore F-1). The five-position serial is sourced twice over —
+      GA 36-2007 表 3's 五位数 column and the Ministry's 2016 NEV announcement,
+      which contrasts the ordinary plate's five positions with the NEV plate's
+      six. Colours are named, not numbered, in the readable text; the hex is
+      observed (see common.colour_basis).
+
+  - id: cn-large-car-1992
+    class: standard
+    categories: [truck, bus]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 1"
+    matching: strict
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{5}\z'
+      regex_strict: '\A[A-Z][- ]?(?:\d{5}|[A-HJ-NP-Z]\d{4}|[A-HJ-NP-Z]{2}\d{3}|\d[A-HJ-NP-Z]\d{3}|\d{2}[A-HJ-NP-Z]\d{2}|\d{3}[A-HJ-NP-Z]\d|\d{4}[A-HJ-NP-Z]|[A-HJ-NP-Z]\d{3}[A-HJ-NP-Z]|\d{3}[A-HJ-NP-Z]{2}|[A-HJ-NP-Z]\d[A-HJ-NP-Z]\d{2}|\d[A-HJ-NP-Z]{2}\d{2})\z'
+      charset: { serial_letters_excluded: [I, O], notes: "GA 36-2007 表 3, five-position column" }
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province>·<office letter><5-position serial>"
+        printed_example: "沪A·12345"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{5}\z'
+    design:
+      plate: { w: 440, h: 140, unit: mm, position: front }
+      plate_variants:
+        - { w: 440, h: 220, unit: mm, position: rear, note: "the two-line rear plate" }
+      count: 2
+      background: { color: "#FFD500", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000", note: "黑框线" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+      rear_differs_note: >-
+        Not a colour or format difference — a SHAPE difference. GA 36-2007
+        表 1 row 1 gives 前：440×140 / 后：440×220, and § 5.2 assigns the
+        440x220 layout to "大型汽车后号牌和挂车号牌". China is the dataset's
+        clearest case of front/rear asymmetry by dimension rather than by
+        colour (contrast the UK, where the asymmetry is colour).
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 1: 大型汽车号牌 / 前 440x140 后 440x220 / 黄底黑字黑框线 / 2 / 中型（含）以上载客、载货汽车和专项作业车；半挂牵引车；电车; §§ 5.1.1, 5.2; accessed 2026-08-02"
+      - "https://web.archive.org/web/20161122160811/http://www.mps.gov.cn/n2254098/n4904352/c5550094/content.html  # the five-position ordinary-car serial; accessed 2026-08-02"
+    notes: >-
+      The yellow plate: medium and larger passenger and goods vehicles and
+      special operating vehicles, semi-trailer tractors, and TROLLEYBUSES
+      (电车 — named in the table's scope column and easy to miss). Same
+      registration-number grammar as the small-car plate; different colour and a
+      taller rear plate. Note the scope boundary is the vehicle SIZE CLASS, not
+      commercial use: a privately owned medium bus is yellow-plated.
+
+  - id: cn-trailer-1992
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 2"
+    # RECALL-ONLY (PRD-PLATES §2.7): the readable text fixes the trailer plate's
+    # DESIGN and its classification character but never states which of the two
+    # serial widths 表 3 defines applies to it — that lives in Annex C's
+    # figures, which the government republication reproduces as headings only.
+    # The regex therefore spans both widths and a match is a SHAPE hit.
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      width_note: >-
+        GA 36-2007 表 3 defines four-position and five-position serials and does
+        not say which classes take which. On a trailer plate the trailing 挂
+        occupies a character cell, which is why the four-position reading is the
+        likely one; it is NOT asserted. Pin it and this series becomes strict
+        with 表 3's four-position column as its regex_strict.
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 挂, script: Han, pinyin: "guà", role: classification }
+        printed: "<province>·<office letter><serial>挂"
+        printed_example: "京A·1234挂"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}挂\z'
+    design:
+      plate: { w: 440, h: 220, unit: mm }
+      count: 1
+      background: { color: "#FFD500", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      note: "ONE plate only (表 1 row 2's 数量 column), the same 440x220 two-line layout as the large-vehicle rear plate (§ 5.2). Base material is at least 1.2 mm aluminium or steel (§ 6.1.1.1 b))."
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 2: 挂车号牌 / 440x220 / 黄底黑字黑框线 / 1 / 全挂车和不与牵引车固定使用的半挂车; § 5.10 (the 挂 character); § 6.1.1.1 b); accessed 2026-08-02"
+      - "https://www.gov.cn/gongbao/content/2022/content_5682413.htm  # 《机动车登记规定》(公安部令第164号) 第九条: '车辆管理所办理注册登记时，应当对牵引车和挂车分别核发机动车登记证书、号牌、行驶证和检验合格标志' — tractor and trailer are separately registered and separately plated; accessed 2026-08-02"
+    notes: >-
+      Full trailers and semi-trailers not permanently coupled to their tractor.
+      The scope wording matters: a semi-trailer that IS permanently coupled is
+      not separately plated. 《机动车登记规定》第九条 confirms the separate
+      registration at rule level. One plate, rear only, on the tall 440x220
+      layout it shares with the large-vehicle rear plate.
+
+  - id: cn-motorcycle-1992
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 9"
+    # RECALL-ONLY: as with the trailer plate, the serial WIDTH for this class is
+    # in Annex C's figures and not in the readable text.
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province><office letter><serial>"
+        printed_example: "京A12345"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}\z'
+    design:
+      plate: { w: 220, h: 95, unit: mm, position: front }
+      plate_variants:
+        - { w: 220, h: 140, unit: mm, position: rear, note: "the two-line rear plate" }
+      count: 2
+      background: { color: "#FFD500", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+      rear_differs_note: "220x95 single-line front, 220x140 two-line rear (表 1 row 9; §§ 5.3, 5.4.1)"
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 9: 普通摩托车号牌 / 前 220x95 后 220x140 / 黄底黑字黑框线 / 普通二轮摩托车和普通三轮摩托车; §§ 5.3, 5.4.1; accessed 2026-08-02"
+    notes: >-
+      Ordinary two-wheel and three-wheel motorcycles. THE FRONT PLATE IS A
+      2007 FACT AND MAY NOT BE A 2018 ONE: GA 36-2007 表 1 gives this class a
+      front plate of 220x95 mm as well as the rear 220x140, and the count
+      column reads 2. Whether GA 36-2014 or GA 36-2018 withdrew the front
+      motorcycle plate cannot be checked — neither text is public — and this is
+      a named verifier target. The dataset records what the readable edition
+      says and flags the exposure rather than quietly modernising it.
+
+  - id: cn-moped-1992
+    class: moped
+    categories: [moped]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 10"
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province><office letter><serial>"
+        printed_example: "沪A12345"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}\z'
+    design:
+      plate: { w: 220, h: 95, unit: mm, position: front }
+      plate_variants:
+        - { w: 220, h: 140, unit: mm, position: rear }
+      count: 2
+      background: { color: "#1C3F94", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 10: 轻便摩托车号牌 / 蓝底白字白框线 / 轻便摩托车 (dimensions merged with row 9); § 6.5 b) (ground AND characters retroreflective, as on the small-car plate); accessed 2026-08-02"
+    notes: >-
+      轻便摩托车 (light motorcycle / moped) plates are the motorcycle plate in
+      the SMALL-CAR colourway — blue ground, white characters, white keyline —
+      and GA 36-2007 § 6.5 b) names them alongside the small-car plate as the
+      two classes whose ground AND characters are both retroreflective. The
+      dimensions cell of 表 1 row 10 is merged with row 9's, which is how the
+      220x95 front / 220x140 rear pair is read here. Same width caveat as the
+      motorcycle plate, hence recall-only.
+
+  - id: cn-lowspeed-1992
+    class: agricultural
+    categories: [truck, machine]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 15"
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province><office letter><serial>"
+        printed_example: "冀A12345"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}\z'
+    design:
+      plate: { w: 300, h: 165, unit: mm }
+      count: 2
+      background: { color: "#FFD500", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 15: 低速车号牌 / 300x165 / 黄底黑字黑框线 / 2 / 低速载货汽车、三轮汽车和轮式自行机械车; § 5.5; accessed 2026-08-02"
+    notes: >-
+      低速车号牌 — low-speed goods vehicles, three-wheeled vehicles and wheeled
+      self-propelled machinery. The 300x165 mm plate is unique to this class and
+      is the squarest metal plate in the Chinese range. CLASS CAVEAT: the
+      dataset's _meta/classes.yml has no term for a low-speed-vehicle regime;
+      `agricultural` is the closest existing term because this is the plate on
+      rural three-wheelers and wheeled machinery, and the dossier requests a
+      `low-speed` vocabulary addition rather than leaving the choice implicit.
+      Tractors proper are NOT this class: 表 1 row 19 sends them to
+      NY 345.1-2005, whose text is a scanned image, so no tractor series is
+      modelled (recorded gap).
+
+  - id: cn-driving-school-car-1992
+    class: standard
+    class_note: >-
+      教练汽车号牌 is a distinct legal issuance category in GA 36-2007 表 1
+      (row 7) with its own classification character, but _meta/classes.yml has
+      no term for a driving-instruction regime. `standard` is used because the
+      vehicle is an ordinary civil registration whose plate carries a
+      permitted-use marker, and the dossier requests a `driving-school`
+      vocabulary addition. A consumer must read class_note, not just class.
+    categories: [car, bus]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 7"
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 学, script: Han, pinyin: "xué", role: classification }
+        printed: "<province>·<office letter><serial>学"
+        printed_example: "京A·1234学"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}学\z'
+    design:
+      plate: { w: 440, h: 140, unit: mm }
+      count: 2
+      background: { color: "#FFD500", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      note: "表 1 row 7: 黄底黑字，黑'学'字黑框线 — the 学 character is BLACK like the rest, unlike the red 使/领/警 of the diplomatic and police plates"
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 7: 教练汽车号牌 / 黄底黑字，黑'学'字黑框线 / 教练用汽车 (dimensions and count merged from row 3's 440x140 / 2); § 5.1.1 (the 440x140 layout group includes 教练汽车号牌); § 5.10 (the 学 character); accessed 2026-08-02"
+    notes: >-
+      Driving-instruction cars. The class shares the 440x140 layout group with
+      the small-car, consular and cross-boundary plates (§ 5.1.1 names all of
+      them together), which is how the dimensions and the count of 2 are read
+      from 表 1's merged cells. recall-only for the serial-width reason given on
+      the trailer series.
+
+  - id: cn-driving-school-motorcycle-1992
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 13"
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 学, script: Han, pinyin: "xué", role: classification }
+        printed: "<province><office letter><serial>学"
+        printed_example: "京A1234学"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}学\z'
+    design:
+      plate: { w: 220, h: 95, unit: mm, position: front }
+      plate_variants:
+        - { w: 220, h: 140, unit: mm, position: rear }
+      count: 2
+      background: { color: "#FFD500", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 13: 教练摩托车号牌 / 黄底黑字，黑'学'字黑框线 / 教练用摩托车; §§ 5.3, 5.4.1 name 教练摩托车前/后号牌 in the 220x95 and 220x140 layout groups; accessed 2026-08-02"
+    notes: >-
+      Driving-instruction motorcycles — the motorcycle plate carrying 学. Listed
+      separately from the car version because the standard lists it separately
+      and because the plate dimensions differ, which is the § 2.3 test.
+
+  - id: cn-police-car-2007
+    class: police
+    categories: [car, van, truck, bus]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 8"
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 警, script: Han, pinyin: "jǐng", role: classification, colour: red }
+        printed: "<province>·<office letter><serial>警"
+        printed_example: "京A·1234警"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}警\z'
+    design:
+      plate: { w: 440, h: 140, unit: mm }
+      count: 2
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      accent: { color: "#D7000F", element: "the 警 character", hex_basis: observed, named_colour: "GB/T 3181-1995 大红 (R03), per GA 36-2007 § 6.8.1" }
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+      rear_differs_note: "GA 36-2007 § 5.1.3 gives the police car plate SEPARATE front and rear layouts (图 3 / 图 4) at the same 440x140 size — the drawings are not reproduced in the government republication, so what differs is a recorded gap"
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 8: 警用汽车号牌 / 白底黑字，红'警'字黑框线 / 汽车类警车; § 5.1.3 (separate front and rear layouts); 前言 '增加了警用汽车号牌和警用摩托车号牌式样' — the evidence for period.start 2007; accessed 2026-08-02"
+      - "https://www.gov.cn/gongbao/2026/issue_12586/202602/content_7059934.html  # 《警车管理规定》 as republished with 公安部令第174号 (公布 2025-11-25, 施行 2025-12-29): 第七条 '警车号牌分为汽车、摩托车两种。均为铝质材，底色为白底反光。号牌应当符合《警车号牌式样》和机动车号牌的行业标准。'; 第十一条 (car: one plate front and one rear; motorcycle: one at the rear); 第十条 (issued by PROVINCIAL-level traffic management, not the local office); accessed 2026-08-02"
+    notes: >-
+      Police cars. period.start 2007 is instrument-dated on GA 36-2007's own
+      前言, which lists "增加了警用汽车号牌和警用摩托车号牌式样" among that
+      edition's changes — the police plate LAYOUTS are a 2007 addition to the
+      standard. 《警车管理规定》第七条 independently confirms the white
+      retroreflective ground and the two-type split, and 第十条 adds a fact GA 36
+      does not carry: police plates are issued by the PROVINCIAL public security
+      department's traffic management arm, so the issuing-office letter on a
+      police plate does not decode the way a civil one does. The 《警车号牌式样》
+      annex to 公安部令第174号 is marked "（以上附件略，详情请登录公安部网站）" in
+      the Gazette and www.mps.gov.cn was unreachable — the exact serial grammar
+      is therefore a recorded gap and this series is recall-only.
+      NOT ASSERTED: the widely repeated claim that police-adjacent civil plates
+      use the office letter "O" as a de-facto police segment. GA 36-2007
+      Annex A does give O to the provincial department's own vehicle office in
+      every province, which is a real and sourced fact recorded in the decode
+      file; every further claim about O is folklore (dossier F-3).
+
+  - id: cn-police-motorcycle-2007
+    class: police
+    categories: [motorcycle]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 14"
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 警, script: Han, pinyin: "jǐng", role: classification, colour: red }
+        printed: "<province><office letter><serial>警"
+        printed_example: "京A1234警"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}警\z'
+    design:
+      plate: { w: 220, h: 140, unit: mm }
+      count: 1
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      accent: { color: "#D7000F", element: "the 警 character", hex_basis: observed }
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      note: "ONE plate, at the rear — 表 1 row 14's count column reads 1, and 《警车管理规定》第十一条 says '摩托车号牌应当在车身后部安装一面'. The police motorcycle is the one motorcycle class with no front plate in the 2007 text."
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 14: 警用摩托车号牌 / 220x140 / 白底黑字，红'警'字黑框线 / 1 / 摩托车类警车; § 5.4.3; 前言 (2007 addition); accessed 2026-08-02"
+      - "https://www.gov.cn/gongbao/2026/issue_12586/202602/content_7059934.html  # 《警车管理规定》第七条 and 第十一条; accessed 2026-08-02"
+    notes: >-
+      Police motorcycles. The only class in 表 1 whose count column reads 1 among
+      the motorcycle rows, and the rule-level confirmation is in the police
+      regulation itself. Same serial-width gap as the police car plate.
+
+  - id: cn-embassy-car-1992
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1992 }
+    period_evidence: instrument-in-force
+    standard_edition: "GA 36-2007 表 1 row 4"
+    # RECALL-ONLY, and this one is the most deliberate in the file. GA 36-2007
+    # § 5.1.2 gives the EMBASSY car plate a layout of its own (图 2), separate
+    # from the single layout (图 1) that every other 440x140 class shares. That
+    # separation is the strongest evidence in the readable text that the embassy
+    # registration number is NOT built on the province + office-letter pattern —
+    # and the readable text never says what it IS built on. The regex is
+    # therefore a deliberately wide digits-only shape and a match is a shape hit.
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A\d{4,6}\z'
+      han:
+        prefix: none
+        prefix_note: >-
+          NO province character. This is the one civil class where the leading
+          element of GA 36-2007 § 3.2's structure is absent — § 5.1.2's separate
+          layout is the evidence, and Annex C.4's drawing (not reproduced) would
+          settle it.
+        suffix: { han: 使, script: Han, pinyin: "shǐ", role: classification, colour: red }
+        printed: "<digits>使"
+        printed_example: "123456使"
+        regex_informational: '\A\d{4,6}使\z'
+    design:
+      plate: { w: 440, h: 140, unit: mm }
+      count: 2
+      background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      accent: { color: "#D7000F", element: "the 使 character", hex_basis: observed, named_colour: "GB/T 3181-1995 大红 (R03)" }
+      border: { color: "#FFFFFF", note: "白框线" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: none
+    region_encoding_note: "No province character and no issuing-office letter — an embassy plate encodes no Chinese geography at all."
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 4: 使馆汽车号牌 / 黑底白字，红'使'、'领'字白框线 / 驻华使馆的汽车 (dimensions and count merged from row 3); § 5.1.2 (the embassy plate has its OWN 440x140 layout, 图 2); § 5.10 (the 使 character); 前言 (the 使 glyph was ADDED in this edition); accessed 2026-08-02"
+    notes: >-
+      Embassy cars. Black ground, white characters, a RED 使, white keyline,
+      440x140, two plates. Everything in the previous sentence is sourced;
+      the SERIAL GRAMMAR IS NOT. The commonly repeated form — a three-digit
+      mission/country code followed by a three-digit serial — has no primary in
+      the accessible record and is NOT asserted here (dossier folklore F-2);
+      the regex is a deliberately wide four-to-six-digit shape so that a
+      consumer gets recall without being told a lie about validity.
+      period_evidence is instrument-in-force, not enabling-instrument: China had
+      diplomatic plates long before 2007, but GA 36-2007's 前言 records the 使
+      glyph as an addition to that edition's character annex, so the only
+      instrument date available documents an older practice.
+
+  - id: cn-embassy-motorcycle-1992
+    class: diplomatic
+    categories: [motorcycle]
+    period: { start: 1992 }
+    period_evidence: instrument-in-force
+    standard_edition: "GA 36-2007 表 1 row 11"
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A\d{4,6}\z'
+      han:
+        prefix: none
+        suffix: { han: 使, script: Han, pinyin: "shǐ", role: classification, colour: red }
+        printed: "<digits>使"
+        regex_informational: '\A\d{4,6}使\z'
+    design:
+      plate: { w: 220, h: 95, unit: mm, position: front }
+      plate_variants:
+        - { w: 220, h: 140, unit: mm, position: rear, note: "§ 5.4.2 gives the embassy motorcycle REAR plate its own layout (图 8), separate from the other motorcycle rear plates (图 7)" }
+      count: 2
+      background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      accent: { color: "#D7000F", element: "the 使 character", hex_basis: observed }
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+    region_encoding: none
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 11: 使馆摩托车号牌 / 黑底白字，红'使'、'领'字白框线 / 驻华使馆的摩托车; §§ 5.3, 5.4.2; accessed 2026-08-02"
+    notes: >-
+      Embassy motorcycles. Same grammar gap as the embassy car plate, hence
+      recall-only. Modelled separately because § 5.4.2 gives it a distinct rear
+      layout and the dimensions differ.
+
+  - id: cn-consulate-car-1992
+    class: consular
+    categories: [car, van]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 5"
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 领, script: Han, pinyin: "lǐng", role: classification, colour: red }
+        printed: "<province>·<office letter><serial>领"
+        printed_example: "沪A·1234领"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}领\z'
+    design:
+      plate: { w: 440, h: 140, unit: mm }
+      count: 2
+      background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      accent: { color: "#D7000F", element: "the 领 character", hex_basis: observed, named_colour: "GB/T 3181-1995 大红 (R03)" }
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+      note: >-
+        THE STRUCTURAL DIFFERENCE FROM THE EMBASSY PLATE, and it is sourced:
+        § 5.1.1 puts 领馆汽车号牌 in the SHARED 440x140 layout group (图 1)
+        together with the small-car, cross-boundary and driving-school plates,
+        while § 5.1.2 gives 使馆汽车号牌 a layout of its OWN (图 2). Consular
+        plates therefore carry the province character and the issuing-office
+        letter and decode geographically; embassy plates do not.
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 5: 领馆汽车号牌 / 黑底白字，红'使'、'领'字白框线 / 驻华领事馆的汽车; § 5.1.1 (shared layout group — the geographic decode); § 5.10 (the 领 character); accessed 2026-08-02"
+    notes: >-
+      Consular cars. The consulate's host city is decodable because the plate is
+      built on the ordinary province + office-letter frame — § 5.1.1's layout
+      grouping is the evidence, and it is the single most useful sourced fact
+      about Chinese diplomatic plates. Serial width unpinned, hence recall-only.
+      Unlike 使, the 领 character is NOT in GA 36-2007's list of characters that
+      edition added, so this class is dated to the 1992 enabling instrument.
+
+  - id: cn-consulate-motorcycle-1992
+    class: consular
+    categories: [motorcycle]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 12"
+    matching: recall-only
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 领, script: Han, pinyin: "lǐng", role: classification, colour: red }
+        printed: "<province><office letter><serial>领"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}领\z'
+    design:
+      plate: { w: 220, h: 95, unit: mm, position: front }
+      plate_variants:
+        - { w: 220, h: 140, unit: mm, position: rear }
+      count: 2
+      background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      accent: { color: "#D7000F", element: "the 领 character", hex_basis: observed }
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 12: 领馆摩托车号牌; §§ 5.3, 5.4.1 (the consular motorcycle sits in the SHARED motorcycle layout groups, unlike the embassy motorcycle); accessed 2026-08-02"
+    notes: >-
+      Consular motorcycles. Note the parallel with the cars: § 5.4.1 puts the
+      consular motorcycle rear plate in the shared layout (图 7) while § 5.4.2
+      gives the embassy motorcycle its own (图 8).
+
+  - id: cn-hkmacau-crossborder-2007
+    class: standard
+    class_note: >-
+      港澳入出境车号牌 is a cross-boundary regime for vehicles registered in Hong
+      Kong or Macau that enter the mainland; _meta/classes.yml has no term for
+      it (`temporary` is wrong — these are multi-year permits; `export` and
+      `transit` are wrong in the opposite direction). `standard` is used and the
+      dossier requests a `cross-border` vocabulary addition.
+    categories: [car, van, truck, bus]
+    period: { start: 2007 }
+    period_evidence: instrument-in-force
+    standard_edition: "GA 36-2007 表 1 row 6"
+    matching: recall-only
+    format:
+      pattern: "Z9999"
+      regex: '\AZ[- ]?[A-Z0-9]{4,5}\z'
+      charset:
+        office_letter: [Z]
+        notes: >-
+          The office letter is FIXED at Z by Annex A footnote 9, verbatim:
+          "表示广东省公安厅交通管理局车辆管理所核发的港澳入出境车号牌使用的发牌机关
+          代号为"Z"。" This is the only class in the file whose issuing-office
+          letter is a literal, which is why it is written into the pattern.
+      han:
+        prefix: { han: 粤, role: province, script: Han, fixed: true, note: "always Guangdong — the plates are issued by 广东省公安厅交通管理局车辆管理所" }
+        suffix: { han: [港, 澳], script: Han, role: classification, note: "港 for a Hong Kong vehicle, 澳 for a Macau vehicle (§ 5.10); the printed Latin/digit portion is identical, which is why one series carries both" }
+        printed: "粤Z·<serial>港  or  粤Z·<serial>澳"
+        printed_example: "粤Z·1234港"
+        regex_informational: '\A粤Z[·\- ]?[A-Z0-9]{4,5}[港澳]\z'
+    design:
+      plate: { w: 440, h: 140, unit: mm }
+      count: 2
+      background: { color: "#000000", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      accent: { color: "#FFFFFF", element: "the 港/澳 character", hex_basis: observed, note: "WHITE, not red — 表 1 row 6 reads 黑底白字，白'港'、'澳'字白框线, which is exactly how this class is told apart from the diplomatic plates that share its black ground" }
+      border: { color: "#FFFFFF" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding:
+      type: fixed
+      note: "粤 + Z always; the plate encodes the ISSUING regime, not a Guangdong location."
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 6: 港澳入出境车号牌 / 黑底白字，白'港'、'澳'字白框线 / 港澳地区入出内地的汽车; § 5.1.1 (shared 440x140 layout); § 5.10 (the 港/澳 characters); 附录 A footnote 9 (the Z code); 前言 ('增加了...'港'、'澳'...' — the evidence for period.start 2007); accessed 2026-08-02"
+    notes: >-
+      Hong Kong and Macau vehicles entering the mainland. period.start 2007 is
+      an instrument-in-force date: GA 36-2007's 前言 lists 港 and 澳 among the
+      characters that edition added, but the regime itself is older — the widely
+      repeated claim that 粤Z港/粤Z澳 replaced the 86-pattern "广东02"/"广东03"
+      plates in 2001 has no primary and is NOT asserted (dossier folklore F-4).
+      Mainland-registered vehicles crossing the OTHER way are outside GA 36
+      entirely. Serial width unpinned, hence recall-only; the fixed Z is
+      sourced, and it makes this the most identifiable Chinese plate of all.
+
+  # =========================================================================
+  # NEW ENERGY VEHICLES. The one part of the current standard whose creation is
+  # documented by accessible primaries — the Ministry's own announcements —
+  # because GA 36-2018's text is withheld.
+  # =========================================================================
+
+  - id: cn-nev-small-2016
+    class: electric
+    categories: [car, van]
+    period:
+      start: 2016
+      rollout:
+        pilot: "2016-12-01 — 上海、南京、无锡、济南、深圳"
+        expansion_1: "2017-11 — plus 河北保定、吉林长春、福建福州、山东青岛、河南郑州、广东中山、广西柳州、重庆、四川成都、云南昆明"
+        expansion_2: "by end 2017 — every municipality, provincial capital and autonomous-region capital, plus at least one or two further cities per province"
+        national: "first half of 2018 — '全国所有城市全面启用新号牌'"
+        national_note: >-
+          The Ministry's August 2017 announcement gives the national step as a
+          HALF-YEAR, not a date. The specific date 2018-06-15 that circulates
+          widely has no primary in the accessible record and is not asserted
+          (dossier folklore F-5).
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2018 incorporates the NEV plates; its text is withheld, so every claim here is the Ministry's own announcements"
+    matching: strict
+    format:
+      pattern: "L999999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{6}\z'
+      regex_strict: '\A[A-Z][- ]?[0-9A-HJ-NP-Z]{6}\z'
+      regex_strict_note: >-
+        The strict twin carries ONLY the I/O exclusion, and that is carried
+        forward from GA 36-2007 § 5.9.1 b)/c) — it is NOT verified against
+        GA 36-2018, whose text is withheld. It deliberately does NOT encode a
+        letter POSITION: see the powertrain note below.
+      charset:
+        serial_positions: 6
+        serial_letters_excluded: [I, O]
+        notes: "six positions is sourced verbatim; the position rule is not"
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province><office letter><6-position serial>"
+        printed_example: "京AD12345"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{6}\z'
+    design:
+      background:
+        color: "#A9D8A0"
+        gradient: { from: "#F5FAF2", to: "#57B948", note: "渐变绿 — a graded green; the Ministry names the colour and numbers nothing" }
+        finish: retroreflective
+        hex_basis: observed
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false }
+      marking: { note: "'增加了专用标识' — the Ministry's announcement records a dedicated NEV identifier mark on the plate; the readable sources do not describe or place it" }
+      rear_differs: false
+      dimensions_status: >-
+        DELIBERATELY ABSENT. GA 36-2007 predates this class and GA 36-2018's
+        text is withheld, so no plate size for the NEV plate is sourced. The
+        480x140 mm figure that circulates is not asserted (dossier folklore
+        F-6). Note that the emergency-rescue CAR plate, created two years later
+        by 国办发〔2018〕114号, IS 480x140 mm and IS sourced — which makes the
+        NEV figure plausible and still unproven.
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20161122160811/http://www.mps.gov.cn/n2254098/n4904352/c5550094/content.html  # 公安部交通管理局, 2016-11-21, '新能源汽车专用号牌将在5城市试点启用': '自2016年12月1日起，上海、南京、无锡、济南、深圳5个城市将率先试点启用新能源汽车号牌'; '小型新能源汽车号牌底色采用渐变绿色，大型新能源汽车号牌底色采用黄绿双拼色'; '与普通汽车号牌相比，新能源汽车号牌号码由5位升为6位'; '字母“D”代表纯电动汽车，字母“F”代表非纯电动汽车（包括插电式混合动力和燃料电池汽车等）'; original www.mps.gov.cn URL now HTTP 521; accessed via archive 2026-08-02"
+      - "https://web.archive.org/web/20181024152732/http://www.mps.gov.cn/n2253534/n2253535/n2253537/c5757013/content.html  # 公安部交通管理局, 2017-08-13, '公安部将在全国逐步推广新能源汽车专用号牌': the full rollout ladder quoted in period.rollout, verbatim, including '2018年上半年，全国所有城市全面启用新号牌'; also '新号牌签注唯一的生产序列标识' and the 50-选-1 random draw; accessed 2026-08-02"
+      - "https://hbba.sacinfo.org.cn/stdDetail/328b77ee80fdee1dee33d20e83d01d2ad128f380aa93c7dbe5c58c67d9d2075e  # GA 36-2018 register entry — the standard that carries the NEV plate into the mandatory standard, 实施 2018-05-01, text withheld; accessed 2026-08-02"
+    notes: >-
+      The small new-energy vehicle plate — the graded-green plate. FOUR THINGS
+      ARE SOURCED VERBATIM and they are the four that matter: the serial went
+      from five positions to SIX; the small-vehicle ground is 渐变绿 (graded
+      green) while the large-vehicle ground is 黄绿双拼 (a yellow-green split);
+      the letter D means 纯电动 (battery electric) and F means 非纯电动
+      (plug-in hybrid, fuel cell and the rest); and the plate carries a
+      dedicated identifier mark. THE POSITION OF THAT LETTER IS NOT SOURCED.
+      Every popular account says the letter is the FIRST serial position on a
+      small NEV plate and the LAST on a large one; no Ministry document, no
+      instrument and no standard text in the accessible record says so, and this
+      dataset does not assert it (dossier folklore F-7). It is the single
+      highest-value verifier target for China: pin it, and this series' regex
+      tightens to a genuinely diagnostic expression in one line. period.start
+      2016 is the enabling instrument — the Ministry's announcement creating the
+      pilot — with the whole rollout ladder recorded in period.rollout rather
+      than averaged into one date, which is exactly the Mercosur pattern
+      PRD-PLATES § 2.2 anticipates.
+
+  - id: cn-nev-large-2016
+    class: electric
+    categories: [truck, bus]
+    period:
+      start: 2016
+      rollout:
+        pilot: "2016-12-01 — 上海、南京、无锡、济南、深圳"
+        national: "first half of 2018"
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L999999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{6}\z'
+      regex_strict: '\A[A-Z][- ]?[0-9A-HJ-NP-Z]{6}\z'
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province><office letter><6-position serial>"
+        printed_example: "京A12345D"
+        printed_example_note: "illustrative only — the example places the powertrain letter last because that is the reported convention for large NEV plates, and the convention is NOT asserted as fact anywhere in this record"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{6}\z'
+    design:
+      background:
+        color: "#57B948"
+        split: { left: "#FFD500", right: "#57B948", note: "黄绿双拼色 — a two-tone yellow/green ground; the proportions are not sourced" }
+        finish: retroreflective
+        hex_basis: observed
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      dimensions_status: "absent for the same reason as the small NEV plate"
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20161122160811/http://www.mps.gov.cn/n2254098/n4904352/c5550094/content.html  # 公安部交通管理局, 2016-11-21: '大型新能源汽车号牌底色采用黄绿双拼色'; the six-position serial; the D/F meanings; accessed 2026-08-02"
+      - "https://web.archive.org/web/20181024152732/http://www.mps.gov.cn/n2253534/n2253535/n2253537/c5757013/content.html  # 公安部交通管理局, 2017-08-13: national rollout; accessed 2026-08-02"
+    notes: >-
+      The large new-energy vehicle plate — the yellow-and-green split plate,
+      for the vehicle sizes that would otherwise take the yellow large-vehicle
+      plate. Modelled as its own series rather than a colour variant because the
+      Ministry names the two grounds separately and because the two are scoped
+      to different vehicle sizes; the split proportions and the plate dimensions
+      are unsourced. The powertrain-letter position caveat on
+      cn-nev-small-2016 applies here identically and with the opposite reported
+      convention, which is precisely why neither is asserted.
+
+  # =========================================================================
+  # TEMPORARY REGIMES. Paper plates, and the only Chinese classes whose ground
+  # colours are NUMBERED in a public standard (GB/T 3181-1995 designations).
+  # =========================================================================
+
+  - id: cn-temporary-travel-1992
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, machine]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 16 (the 式样 was MODIFIED in that edition — 前言: '修改了临时行驶车号牌式样')"
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      derivation_note: >-
+        The registration number's ELEMENTS come from GA 36-2007 § 3.2 and the
+        widths from § 5.9's four- and five-position serial types; the class's own
+        grammar lives in Annex C.16's drawings, which the government
+        republication reproduces as headings only. The regex is therefore a
+        derivation, not a transcription, and the series is recall-only.
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: [试, 超], script: Han, role: classification, optional: true, note: "试 on a TEST vehicle's temporary plate, 超 on an over-dimension/over-mass special vehicle's; absent on the two ordinary variants" }
+        printed: "<province><office letter><serial>[试|超]"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}[试超]?\z'
+    design:
+      plate: { w: 220, h: 140, unit: mm }
+      count: 1
+      background: { color: "#CFE4F5", finish: paper, hex_basis: observed, named_colour: "GB/T 3181-1995 天(酞)蓝 PB09 — the ground TINT of the within-jurisdiction variant, per GA 36-2007 § 6.4 c)" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      material: "125 g white card (§ 6.1.1.3), placed inside the windscreen on the right (§ 7.1 e)) — not fixed, not fastened"
+    variants:
+      - class: temporary
+        design: { background: { color: "#E3C08A", finish: paper, hex_basis: observed, named_colour: "GB/T 3181-1995 棕黄 YR06" }, foreground: "#000000" }
+        note: >-
+          BROWN-YELLOW TINT, three uses distinguished only by the classification
+          character: cross-jurisdiction movement (no character), a TEST vehicle
+          (试), and an over-dimension/over-mass special vehicle (超). The blue
+          tint above is for movement WITHIN one administrative jurisdiction.
+          A tint-and-character variant of one format and period, so a sub-entry
+          per PRD-PLATES § 2.3.
+        sources:
+          - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 16 (all four uses and their tints); § 6.4 c)-d) (the two GB/T 3181-1995 colour designations); accessed 2026-08-02"
+    validity:
+      note: >-
+        Set by rule, not by standard. 《机动车登记规定》(公安部令第164号)
+        第四十七条: 30 days for an unsold vehicle, a newly acquired but
+        unregistered vehicle, or a new vehicle for export sale; SIX MONTHS for
+        research and type testing; 90 days for the over-dimension special
+        vehicles that cannot be registered at all; and 15 days where the plate
+        itself cannot be made in time. No more than three temporary plates for
+        the first two cases, one for the export case; never longer than the
+        compulsory insurance; and void three days after the permanent plates
+        arrive. 第四十八条 adds a separate temporary plate for intelligent
+        connected vehicle road testing and demonstration, matching the test
+        permit and capped at six months.
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 16: 临时行驶车号牌 / 220x140 / 天(酞)蓝底纹黑字黑框线 (行政辖区内) and 棕黄底纹黑字黑框线 (跨行政辖区 / 试 / 超) / 1; §§ 5.4.5, 6.1.1.3, 6.4 c)-d), 7.1 e); § 5.10 (试 and 超); accessed 2026-08-02"
+      - "https://www.gov.cn/gongbao/content/2022/content_5682413.htm  # 《机动车登记规定》第四十六条-第四十八条: the five qualifying situations and the whole validity ladder quoted above; accessed 2026-08-02"
+    notes: >-
+      The domestic temporary-travel plate: a printed card, one per vehicle,
+      behind the windscreen. It is the only Chinese class whose colours are
+      NUMBERED in a public standard, because paper printing is specified against
+      GB/T 3181-1995 rather than against the withheld retroreflective-film
+      standard — which is why its two hexes are the only ones in this file with a
+      named colour designation behind them. Its serial grammar is derived rather
+      than transcribed, so it is recall-only. GA 36-2007's 前言 records that this
+      edition MODIFIED the temporary plate's 式样, so the 2007 description is not
+      necessarily the 1992 one and certainly not necessarily the 2018 one.
+
+  - id: cn-temporary-entry-car-1992
+    class: temporary
+    categories: [car, van, truck, bus]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 17 (式样 MODIFIED in that edition per its 前言)"
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      derivation_note: "as on cn-temporary-travel-1992 — elements from § 3.2, widths from § 5.9, class grammar in Annex C.17's drawings which are not reproduced"
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "<province><office letter><serial>, with the permitted area/route and expiry printed on the plate"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}\z'
+    design:
+      plate: { w: 220, h: 140, unit: mm }
+      count: 1
+      background: { color: "#CFE4F5", finish: paper, hex_basis: observed, named_colour: "GB/T 3181-1995 天(酞)蓝 PB09 for the WITHIN-AREA variant (§ 6.4 a)); 棕黄 YR06 for the cross-area variant (§ 6.4 b))" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      material: "200-220 g watermarked paper, laminated (§ 6.1.1.2); placed inside the windscreen on the right (§ 7.1 e))"
+      note: "表 1 row 17's colour cell reads 白底棕蓝色专用底纹，黑字黑边框 — a white ground carrying a dedicated brown/blue security tint"
+    validity:
+      note: >-
+        《临时入境机动车和驾驶人管理规定》(公安部令第90号) 第五条, verbatim:
+        "临时入境机动车号牌为纸质号牌，载明允许行驶的区域、线路和有效期。临时入境
+        机动车号牌背面为临时入境机动车行驶证，签注车辆类型、号牌号码、厂牌型号、行驶
+        区域或者线路、有效期等信息。" — the plate IS the vehicle licence, printed
+        on its back. 第六条: validity matches the entry approval and never
+        exceeds three months, and may not be extended. 第七条: the car plate goes
+        inside the windscreen on the right; the motorcycle plate is carried with
+        the vehicle. 第二十二条: printed centrally by the Ministry.
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+      note: "issued by the municipal or prefecture-level traffic management department at the point of entry or the point of departure (公安部令第90号 第三条)"
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 17: 临时入境汽车号牌 / 220x140 / 白底棕蓝色专用底纹，黑字黑边框 / 临时入境汽车; §§ 5.4.4, 6.1.1.2, 6.4 a)-b), 7.1 e); accessed 2026-08-02"
+      - "http://www.gov.cn/gongbao/content/2007/content_772748.htm  # 《临时入境机动车和驾驶人管理规定》 (公安部令第90号, 施行 2007-01-01, replacing 公安部令第4号 of 1989-05-01): 第三条, 第五条, 第六条, 第七条, 第二十二条, and 第二十一条 (Hong Kong, Macau and Taiwan vehicles are handled 参照 this rule); accessed 2026-08-02"
+    notes: >-
+      The temporary-entry plate for a foreign-registered car. It is a laminated
+      watermarked card whose REVERSE is the vehicle licence, it states the area
+      or route the vehicle may use, and it never lasts more than three months.
+      Two ground tints, distinguished by whether the vehicle stays inside one
+      area or crosses between areas — the same blue/brown-yellow logic as the
+      domestic temporary plate, and sourced to the same clause of GA 36-2007.
+      Hong Kong, Macau and Taiwan vehicles on organised trips are handled by
+      reference to this rule (公安部令第90号 第二十一条), which is a different
+      regime from the 粤Z 港/澳 cross-boundary plates above.
+
+  - id: cn-temporary-entry-motorcycle-1992
+    class: temporary
+    categories: [motorcycle]
+    period: { start: 1992 }
+    period_evidence: enabling-instrument
+    standard_edition: "GA 36-2007 表 1 row 18"
+    matching: recall-only
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z][- ]?[A-Z0-9]{4,5}\z'
+      derivation_note: "as on the temporary-entry car plate"
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][A-Z][·\- ]?[A-Z0-9]{4,5}\z'
+    design:
+      plate: { w: 88, h: 60, unit: mm }
+      count: 1
+      background: { color: "#CFE4F5", finish: paper, hex_basis: observed, named_colour: "GB/T 3181-1995 天(酞)蓝 PB09 / 棕黄 YR06 as for the car plate" }
+      foreground: "#000000"
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      note: >-
+        THE SMALLEST PLATE IN THE CHINESE RANGE at 88x60 mm, and the only one
+        whose dimensional tolerance the standard states in absolute terms
+        (§ 6.6.1: +/-0.5 mm, where every other size gets +/-0.5%). Annex B.5
+        makes the reason plain: its characters are the temporary-entry car
+        plate's glyphs reduced 2.5 times. Carried with the vehicle rather than
+        displayed (§ 7.1 e); 公安部令第90号 第七条).
+    validity: { note: "as for the temporary-entry car plate — 公安部令第90号 第六条, maximum three months, not extendable" }
+    region_encoding:
+      type: province-and-office
+      decode: ["plates/_decode/cn-provinces.yml", "plates/_decode/cn-issuing-offices.yml"]
+    sources:
+      - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 表 1 row 18: 临时入境摩托车号牌 / 88x60; §§ 5.6, 6.6.1, 附录 B.5 (the 2.5x reduction); accessed 2026-08-02"
+      - "http://www.gov.cn/gongbao/content/2007/content_772748.htm  # 公安部令第90号 第六条, 第七条; accessed 2026-08-02"
+    notes: >-
+      The temporary-entry motorcycle plate. Modelled separately from the car
+      plate purely because of the dimensions — a 20-fold difference in area is
+      the clearest possible § 2.3 design difference.
+
+  # =========================================================================
+  # EMERGENCY RESCUE. Created outside GA 36 by a State Council instrument, and
+  # for that reason the ONLY Chinese plate whose complete encoding rule is
+  # published in text this programme could read.
+  # =========================================================================
+
+  - id: cn-emergency-rescue-car-2018
+    class: government
+    class_note: >-
+      The national comprehensive fire-and-rescue force is a civil state service
+      (it moved out of the armed police in 2018), so `government` is the right
+      term in _meta/classes.yml; it is not `police` and not `military`.
+    categories: [car, van, truck, bus]
+    period: { start: 2018 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L9999"
+      regex: '\A(?:[A-Z]\d{4}|\d{5})\z'
+      regex_strict: '\A(?:[XS]\d{4}|\d{5})\z'
+      charset:
+        force_codes: { X: 消防救援 (fire and rescue), S: 森林消防 (forest fire) }
+        no_letter_form: "a serial with NO force letter and five digits marks a vehicle belonging to the Ministry of Emergency Management itself"
+      han:
+        prefix: { role: province, script: Han, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: { han: 应急, script: Han, pinyin: "yìngjí", role: classification, colour: red, note: "the only TWO-character classification element in the Chinese range" }
+        printed: "<province>·<force letter><4 digits>应急  or  <province>·<5 digits>应急"
+        printed_example: "京·X2345应急"
+        regex_informational: '\A[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新][·\- ]?(?:[XS]\d{4}|\d{5})应急\z'
+        total_characters: 8
+    design:
+      plate: { w: 480, h: 140, unit: mm }
+      count: 2
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      accent: { color: "#D7000F", element: "the 应急 pair, and — on the FRONT plate only — the force letter", hex_basis: observed }
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: true
+      rear_differs_note: >-
+        Verbatim: "汽车号牌分为前牌和后牌，前牌的所属救援队伍代号为红色，后牌的所属
+        救援队伍代号为黑色。" — the force letter is RED on the front plate and
+        BLACK on the rear. The dataset has no other series where front and rear
+        differ by the colour of a single character.
+    region_encoding:
+      type: province-only
+      decode: "plates/_decode/cn-provinces.yml"
+      note: >-
+        There is NO issuing-office letter on this plate: the second position is
+        the force code, not an office code. A parse API that reaches for
+        cn-issuing-offices.yml on an 应急 plate will produce confident nonsense.
+    sources:
+      - "https://www.gov.cn/zhengce/zhengceku/2018-12/11/content_5347765.htm  # 《国务院办公厅关于国家综合性消防救援车辆悬挂应急救援专用号牌有关事项的通知》 国办发〔2018〕114号 (成文 2018-12-04, 发布 2018-12-11), 二 and 附件 一（一）: '字符共8位，依次为省（自治区、直辖市）汉字简称、所属救援队伍代号、四位序号和汉字“应急”组成。其中，所属救援队伍代号用X代表消防救援、S代表森林消防。应急部的专用号牌不用英文字母，以与地方的专用号牌区别，如“京·12345应急”表示车辆归属应急部，“京·X2345应急”表示车辆归属北京市应急管理部门。'; 附件 二 '汽车号牌规格为480毫米×140毫米'; 附件 三 (front/rear colour difference); 二 '专用号牌为白底黑字，配以红色汉字“应急”'; accessed 2026-08-02"
+    notes: >-
+      The emergency-rescue plate, and the best-documented Chinese plate in this
+      file: a State Council General Office notice publishes the complete
+      encoding rule, the dimensions and the front/rear difference in TEXT, which
+      GA 36 does only in withheld drawings. Eight characters: province, force
+      code, four digits, 应急 — or, for the Ministry of Emergency Management's
+      own vehicles, province, FIVE digits, 应急, with no letter at all, and the
+      notice gives both worked examples itself. The scope is set by the same
+      notice: fire engines, aerial platforms, special-duty and logistics fire
+      vehicles, fire motorcycles, rescue command vehicles, rescue transport,
+      fire publicity vehicles and fire-scene survey vehicles, with the Ministry
+      of Emergency Management as issuing authority. Vehicles moved to these
+      plates from military plates get a one-off vehicle-and-vessel tax
+      exemption in the year of the change, which is how the notice quietly dates
+      the transfer of the force out of the armed police.
+
+  - id: cn-emergency-rescue-motorcycle-2018
+    class: government
+    categories: [motorcycle]
+    period: { start: 2018 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999L"
+      regex: '\A\d{3}[A-Z]\z'
+      regex_strict: '\A\d{3}[XS]\z'
+      han:
+        prefix: { han: 应急, script: Han, role: classification, colour: red, note: "THE ONLY CHINESE PLATE WHOSE CLASSIFICATION CHARACTERS COME FIRST" }
+        province: { role: province, script: Han, position: 3, decode: "plates/_decode/cn-provinces.yml" }
+        suffix: none
+        printed: "应急<province><3 digits><force letter>"
+        printed_example: "应急京123X"
+        regex_informational: '\A应急[京津冀晋蒙辽吉黑沪苏浙皖闽赣鲁豫鄂湘粤桂琼渝川贵云藏陕甘青宁新]\d{3}[XS]\z'
+        total_characters: 7
+    design:
+      plate: { w: 220, h: 140, unit: mm }
+      count: 1
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      accent: { color: "#D7000F", element: "the 应急 pair", hex_basis: observed }
+      border: { color: "#000000" }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+      note: "one plate, at the rear; the force letter is BLACK (the front/rear red-letter rule applies only to the car plate)"
+    region_encoding:
+      type: province-only
+      decode: "plates/_decode/cn-provinces.yml"
+      note: "the province character is the THIRD character, not the first — the 应急 pair leads"
+    sources:
+      - "https://www.gov.cn/zhengce/zhengceku/2018-12/11/content_5347765.htm  # 国办发〔2018〕114号 附件 一（二）: '字符共7位，依次为汉字“应急”、省（自治区、直辖市）汉字简称、三位序号和所属救援队伍代号组成。其中，所属救援队伍代号用X代表消防救援、S代表森林消防。'; 附件 二 '摩托车号牌规格为220毫米×140毫米'; 附件 三（二）(single rear plate, black force letter); accessed 2026-08-02"
+    notes: >-
+      The emergency-rescue motorcycle plate, and the one Chinese registration
+      number that inverts the § 3.2 element order: the two-character 应急 pair
+      leads, the province character follows it, and the force letter closes.
+      Seven characters against the car plate's eight. Any parser that assumes
+      "first character = province" for China is wrong exactly here, which is
+      why the rule is spelled out on the series rather than left to the header.

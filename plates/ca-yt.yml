@@ -1,0 +1,656 @@
+# plates/ca-yt.yml — Yukon (PRD-PLATES gate L3, Canada territories).
+#
+# ── THE HEADLINE: YUKON LEGISLATES ITS SERIAL GRAMMARS, ALL OF THEM, IN ONE
+#    SECTION, AND IT IS THE BEST FORMAT SOURCE IN THE CANADA-WEST GROUP.
+#
+# Motor Vehicles Regulations, C.O. 1978/120 (effective 5 June 1978), made under
+# the Motor Vehicles Act, section 10, opening words verbatim:
+#
+#   "10. All vehicles registered under the Motor Vehicles Act shall be
+#    classified and all certificates of registration and licence plates shall be
+#    issued as follows:"
+#
+# and then, for each of nineteen lettered paragraphs, a sentence of the form
+# "The plate's identification marks shall be ...". That sentence is a directly
+# regex-able statutory grammar, per class, with per-paragraph amendment notes
+# that DATE each grammar. It is the same kind of artefact as the United
+# Kingdom's Schedule 3 Table A (plates/gb.yml fact 1) and the Northwest
+# Territories' reg. 8(2) list (plates/ca-nt.yml) — and it is the reason this
+# file carries `matching: strict` on sixteen of its nineteen series while the
+# neighbouring Alberta file carries it on two.
+#
+# THE PARAGRAPH AMENDMENT NOTES ARE THE PERIOD EVIDENCE. Yukon's consolidation
+# prints, under each paragraph, notes such as "[Paragraph 10(g) amended by
+# O.I.C. 1990/112]" and "[Paragraph 10(q) added by O.I.C. 2007/121]". A
+# paragraph ADDED by an instrument gets `period_evidence: enabling-instrument`
+# and that instrument's year; a paragraph AMENDED by an instrument gets the
+# amendment year and `instrument-in-force-upper-bound` UNLESS an independent
+# source dates the resulting arrangement to the same year — which happens once,
+# for the private series, and is called out there.
+#
+# ── FOUR FURTHER FACTS ─────────────────────────────────────────────────────
+#
+# 1. ONE PLATE, WITH A LEGISLATED OPTION FOR TWO. s. 11(1), verbatim (as
+#    replaced by O.I.C. 1990/112): "When a certificate of registration is issued
+#    for a vehicle, only one licence plate shall be issued for the vehicle."
+#    s. 11(3): "Notwithstanding subsection (1), two identical plates may be
+#    issued for the same vehicle." Yukon is a one-plate territory whose
+#    regulation nonetheless contemplates a matched pair, and s. 11(4) then says
+#    where each goes. The 2004 Saskatchewan news release naming the single-plate
+#    jurisdictions lists "the three territories" — corroborating, from outside.
+#
+# 2. THE SAME LEADING LETTER MEANS TWO DIFFERENT THINGS AND THE SECOND
+#    CHARACTER IS WHAT DISAMBIGUATES. Read the grammars together:
+#      F + four DIGITS       = Farm            (10(j))
+#      F + two LETTERS + ≤2 digits = Government of Canada (10(o))
+#      D + three DIGITS      = Dealer          (10(a), 10(a.1))
+#      D + two LETTERS + ≤2 digits = Municipal Government  (10(p))
+#    A parse layer that keys on the first character alone will mislabel Yukon
+#    federal-fleet plates as farm plates and municipal plates as dealer plates.
+#    The disambiguator is whether character 2 is a digit or a letter. This is a
+#    real, sourced trap and it is why this file gives each of the four its own
+#    series rather than folding them.
+#
+# 3. THE PERSONALIZED GRAMMAR IS DEFINED BY EXCLUSION, WHICH IS WHY IT IS
+#    recall-only. 10(k): "any combination of six or fewer letters or digits
+#    THAT DO NOT CONFLICT WITH PARAGRAPHS (a) TO (j) and are approved by the
+#    registrar". Our regex cannot express "does not collide with any of ten
+#    other grammars", so it is deliberately wider than what the registrar
+#    issues — the textbook § 2.7 recall-only case, sourced rather than assumed.
+#
+# 4. YUKON GOVERNMENT WEB PAGES WERE UNREACHABLE THROUGHOUT THIS PASS.
+#    yukon.ca returned HTTP 403 to every request (browser user-agent, full
+#    Accept headers, both http and https), and legislation.yukon.ca returned
+#    403 as well; laws.yukon.ca returned 403 to the site pages but served the
+#    regulation PDF itself at
+#    /cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf. So this
+#    file rests on the REGULATION and on the ACT, with no agency page behind it.
+#    Colours, design elements and dimensions are consequently secondary-only and
+#    are marked as such; nothing about the look of a Yukon plate is asserted
+#    from a Yukon source, because none was reachable.
+#
+# SEPARATOR NOTE (§ 2.6): the regulation prescribes character SEQUENCES and
+# names no separator glyph and no gap. Every regex here accepts an optional
+# single space at the letter/digit boundary, which is the honest encoding of an
+# authority that prescribes the sequence and is silent on typography — the same
+# posture plates/de.yml takes for the Plaketten gap and plates/gb.yml for the
+# Table B millimetre gap.
+jurisdiction: ca-yt
+authority:
+  name: Registrar of Motor Vehicles, Government of Yukon
+  url: "https://laws.yukon.ca/cms/images/LEGISLATION/PRINCIPAL/2002/2002-0153/2002-0153.pdf"
+authority_url_note: >-
+  The authority URL points at the ACT rather than at an agency page because
+  every Government of Yukon web host refused this pass (see header fact 4). A
+  verifier with working access should replace it with the yukon.ca motor-vehicles
+  landing page and re-check every `secondary` grade in this file against it.
+binding: vehicle
+binding_note: >-
+  Motor Vehicles Act s. 53(4), verbatim: "Every licence plate issued under this
+  Act remains the property of the Government of the Yukon and the person in
+  possession of it shall return it to the Minister whenever the Minister so
+  requires for cause." s. 48 governs transfer of TRAILER plates between the
+  owner's own trailers on payment of the prescribed fee, and forbids passing
+  them between owners.
+instrument:
+  statute:
+    citation: "Motor Vehicles Act, R.S.Y. 2002, c. 153, ss. 47-64 (registration, issue, validation, display and misuse of licence plates)"
+    key_text: >-
+      s. 53(1): "At the time of the issue of a certificate of registration the
+      registrar shall issue to the owner of the registered vehicle licence plates
+      in the number and of the design PRESCRIBED." s. 53(3): "Licence plates
+      shall be of the type and colour PRESCRIBED." Yukon is the only jurisdiction
+      in this seven-file group whose statute sends design to a REGULATION rather
+      than to an official's discretion — and the regulation then delivers, in
+      s. 10, which is why this file is the group's best-sourced.
+    source: "https://laws.yukon.ca/cms/images/LEGISLATION/PRINCIPAL/2002/2002-0153/2002-0153.pdf  # ss. 53(1)-(5) read verbatim 2026-08-02 (bilingual consolidation PDF)"
+  regulation:
+    citation: "Motor Vehicles Regulations, C.O. 1978/120 (Commissioner's Order), effective 5 June 1978, made under the Motor Vehicles Act"
+    effective: "1978-06-05"
+    revokes: "C.O. 1978/24; 1977/176; 1976/260; 1977/45; 1974/250; 1971/63; 1973/11; 1976/36; 1976/111; 1976/248; 1977/44; 1976/30; 1976/31; 1968/118; 1969/121; 1974/330; 1970/188; 1972/19; 1973/122; 1977/38; 1969/190; 1974/336; 1973/77; 1973/133; 1977/40"
+    amending_instruments_relied_on: "O.I.C. 1989/173 (ss. 10-12 replaced); 1990/112 (s. 11 replaced; paras 10(e), (g), (i), (j) amended); 2000/61 (paras 10(e), (f) amended; paras 10(l), (m) added); 2002/128 (s. 15 fees); 2004/212 (para 10(n) added); 2007/121 (paras 10(a), (a.1), (f), (i), (o), (p), (q)); 2010/158 (s. 9.9 added); 2015/230 (paras 10(b), (b.01), (d), (k), (l), (m), s. 11(2)(b), (3), (4), s. 15(1)(p), (q), s. 16(4)(b))"
+    source: "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10 paragraphs (a)-(q) with amendment notes, s. 11, s. 15(1)(p)-(q), s. 16 — read verbatim 2026-08-02"
+  licence: "Yukon consolidations are edicts of government published by the Government of Yukon. Cited, not reproduced."
+
+artwork_risk:
+  posture: unresearched-crown-copyright-presumed
+  basis: >-
+    Crown copyright under s. 12 of the Copyright Act (Canada) is the Canadian
+    default and no Yukon disclaimer was found — nor could one have been, since
+    every Yukon government web host refused connection this pass. Recorded as
+    UNRESEARCHED rather than presumed either way.
+  emblem_rule: >-
+    PRD-PLATES § 3 placeholder default applies to the prospector graphic, which
+    secondary sources report as continuously present on Yukon plates since 1952
+    and which is the territory's identifying device. It is NOT a statutory
+    drawing — C.O. 1978/120 contains no design annex — so the German
+    PD-inside-the-instrument argument (§ 5(1) UrhG) has no Yukon analogue.
+  sources:
+    - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # the regulation contains no design annex: a negative finding, checked"
+
+display_rules:
+  count: "s. 11(1): only ONE licence plate is issued per certificate of registration. s. 11(3): two identical plates MAY be issued."
+  location: >-
+    s. 11(2), verbatim: "(a) in the case of a tractor designed to tow trailers
+    or a dump truck, the plate shall be attached to the front of the vehicle so
+    that the bottom of the plate is at least as high off the ground as the front
+    axle is; (b) in the case of any other vehicle, the plate shall be attached
+    to the rear of the vehicle so that the bottom of the plate is at least as
+    high off the ground as the rear axle, or, in respect of snowmobiles, as
+    authorized by the registrar." When two identical plates are issued, s. 11(4)
+    puts one on the rear (mandatory) and permits one on the front.
+  truck_tractor_inversion: >-
+    Yukon, like Alberta and Florida, puts the tractor's plate on the FRONT.
+    Three jurisdictions, three statutes, one rule — recorded so a reviewer does
+    not read any of them as a transcription error.
+  height_rule_direction: >-
+    Yukon legislates a MINIMUM height relative to the AXLE, not a fixed
+    ground clearance. Wyoming legislates a minimum from the ground; Washington
+    and Florida legislate maxima. These are not the same rule and must not be
+    normalised together.
+  sources:
+    - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 11(1)-(5)"
+    - "https://www.saskatchewan.ca/government/news-and-media/2004/june/28/saskatchewan-moves-to-a-single-plate-on-june-30th  # CORROBORATION from outside Yukon: 'Alberta, Quebec, Newfoundland and Labrador, Nova Scotia, Prince Edward Island and the three territories use single licence plates.'"
+
+common:
+  design_note: >-
+    NO COLOUR, NO DIMENSION AND NO DESIGN ELEMENT IN THIS FILE COMES FROM A
+    YUKON SOURCE. The statute prescribes that colour and type be "prescribed"
+    and the regulation then prescribes only the identification marks — it
+    carries no colour, no size and no drawing. Every `design` block below is
+    therefore `hex_basis: observed` with a secondary basis, and `design.plate`
+    is absent throughout. The reported black-on-reflective-white with a screened
+    prospector at the left, red "Yukon" on a sky-blue band at the bottom and the
+    slogan "The Klondike", and the reported 12 x 6 in / 30 x 15 cm size
+    standardised in 1955, are recorded here once and asserted nowhere.
+  charset_disagreement: >-
+    RECORDED, NOT AVERAGED. Two secondary readings of the Yukon private-series
+    alphabet disagree: the world dossier (plates-research-us-world.md § 2.1)
+    reports "excludes I, O, Q, U"; the per-territory encyclopedia article
+    reports "letters I, Q, U, Y excluded" — the two agree on I, Q and U and
+    disagree on O and Y. C.O. 1978/120 s. 10(g) states only "three letters",
+    with no exclusion. No `regex_strict` narrows any letter position in this
+    file, and the disagreement stands as a verifier target.
+  vocabulary_gap: >-
+    _meta/classes.yml has no class for AMATEUR-RADIO plates, which C.O.
+    1978/120 s. 10(h) and the NWT's reg. 8(2)(a) both create as their own
+    statutory type. `ca-yt-ham` is filed under `specialty` as the nearest
+    available value; adding an `amateur-radio` class is a _meta PR with a
+    definition, per PRD-PLATES § 2.3, and should not be done ad hoc here.
+
+series:
+
+  # =========================================================================
+  # PRIVATE — the standard series, and the one paragraph whose amendment year
+  # is independently corroborated.
+  # =========================================================================
+  - id: ca-yt-private
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1990 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL99"
+      regex: '\A[A-Z]{3} ?\d{1,2}\z'
+      evidence: regulation
+      grammar_verbatim: "C.O. 1978/120 s. 10(g): \"The plate's identification marks shall be three letters followed by one digit or two digits\"; \"Issued for private vehicles or vehicles owned or leased and operated by Government of Yukon\"."
+      progression: "not published"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      legend_top: "YUKON"
+      legend_bottom: "The Klondike"
+      emblem: { present: true, rendered: placeholder, description: "screened gold prospector at left" }
+      rear_differs: false
+      design_basis: secondary
+    notes: >-
+      THE PERIOD IS EARNED TWICE OVER, WHICH IS RARE IN THIS GROUP. The
+      consolidation prints "[Paragraph 10(g) amended by O.I.C. 1990/112]"
+      immediately after the three-letters-then-one-or-two-digits sentence, and
+      the independent per-territory encyclopedia format table reports the ABC12
+      arrangement as running "1990-present". An instrument year and an
+      independent secondary landing on the same year is the strongest period
+      evidence any series in this file has, so the grade is
+      `enabling-instrument` rather than `instrument-in-force-upper-bound`.
+      NOTE WHAT THE GRAMMAR ACTUALLY PERMITS, because it is wider than the
+      reported arrangement: "one digit OR two digits", so a three-letter +
+      SINGLE-digit Yukon plate is lawful under the CURRENT regulation, which is
+      exactly the pre-1990 reported arrangement (see ca-yt-private-1982). The
+      regex accepts both, and a consumer must not read a five-character Yukon
+      private plate as necessarily pre-1990.
+      NOTE ALSO the class overlap the regulation itself creates: 10(g) covers
+      "private vehicles OR vehicles owned or leased and operated by Government
+      of Yukon", so a Yukon government fleet vehicle may lawfully wear either a
+      private plate (10(g)) or a "Y" government plate (10(i)).
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(g) grammar + amendment note O.I.C. 1990/112"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Yukon  # FINDING AID (PRD-PLATES §4 Wikipedia row): ABC12 reported 1990-present, corroborating the instrument year; accessed 2026-08-02"
+
+  - id: ca-yt-private-1982
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1982, end: 1989 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "LLL-9"
+      regex: '\A[A-Z]{3}[- ]?\d\z'
+      evidence: secondary
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      legend_bottom: "The Klondike"
+      emblem: { present: true, rendered: placeholder, description: "screened gold prospector" }
+      design_basis: secondary
+    notes: >-
+      THE "ONE SERIES BACK", AND THE HONEST ODDITY ABOUT IT: this arrangement is
+      still lawful. O.I.C. 1990/112 WIDENED s. 10(g) from one digit to "one digit
+      or two digits" rather than replacing it, so three letters + one digit
+      remains inside the current issuing grammar and ca-yt-private's regex
+      accepts it. The 1982-1989 window and the hyphenated rendering come only
+      from the per-territory encyclopedia article, whose row carries no
+      footnote; the pre-1982 forms it reports (A123 from 1976 with region-coded
+      letters, 1234 from 1946, 123 from 1924) are NOT authored here because
+      nothing dates them beyond that one table.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Yukon  # FINDING AID: ABC-1 reported 1982-1989; accessed 2026-08-02"
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(g) as it now reads, showing the one-digit form survives"
+
+  # =========================================================================
+  # THE OTHER STATUTORY GRAMMARS, one series per paragraph of s. 10.
+  # =========================================================================
+  - id: ca-yt-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "M9999"
+      regex: '\AM ?\d{4,5}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(b): \"The plate's identification marks shall be the letter 'M' followed by four or five digits\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(b) amended by O.I.C. 2015/230]" is the only date the
+      consolidation gives, and an amendment date is an UPPER BOUND on the
+      arrangement's start, not its creation — Yukon obviously plated motorcycles
+      before 2015. The 2015 amendment is what added the five-digit option (the
+      neighbouring paragraph 10(b.01), for off-road vehicles, was ADDED by the
+      same instrument, which is what a capacity expansion looks like).
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(b)"
+
+  - id: ca-yt-commercial
+    class: standard
+    categories: [truck, bus, van]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "C9999"
+      regex: '\AC ?[A-Z0-9]{4}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(f): \"The plate's identification marks shall be the letter 'C' followed by any four letters or digits.\" \"Issued for commercial vehicles or for vehicles rented or leased by a person, firm, or corporation and used as a private vehicle or a commercial vehicle\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(f) REPLACED by O.I.C. 2007/121]" — a replacement, not an
+      amendment, so the grammar as it now reads dates from 2007 and the grade is
+      `enabling-instrument`. The earlier text was amended by O.I.C. 2000/61.
+      This is the only Yukon grammar with a genuinely MIXED tail ("any four
+      letters or digits"), which is why its regex uses [A-Z0-9] rather than a
+      digit or letter run.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(f)"
+
+  - id: ca-yt-rented
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2000 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "RLL99"
+      regex: '\AR[A-Z]{2} ?\d{1,2}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(e): \"The plate's identification marks shall be the letter 'R' followed by two other letters followed by one digit or by two digits\"; issued for vehicles \"rented or leased by a person, firm, or corporation and used as private or as commercial vehicles, unless the vehicle is registered and plates are issued for it under paragraph (f)\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      Amended by O.I.C. 1990/112 and again by O.I.C. 2000/61; 2000 is the later
+      amendment and therefore the upper bound. Note the explicit either/or with
+      paragraph (f): the SAME rental vehicle may lawfully carry an R-series or a
+      C-series plate depending on how it was registered, so "R prefix" is not a
+      reliable rental indicator and "C prefix" is not a reliable commercial one.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(e)"
+
+  - id: ca-yt-farm
+    class: agricultural
+    categories: [truck, tractor]
+    period: { start: 1990 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "F9999"
+      regex: '\AF ?\d{4}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(j): \"The plate's identification marks shall be the letter F followed by four digits\"; \"Issued for a motor vehicle whose owner uses it in the cultivation of land or the raising of livestock or poultry for commercial purpose, but not for any other commercial purpose\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(j) amended by O.I.C. 1990/112]". READ THIS GRAMMAR NEXT TO
+      ca-yt-government-canada: both begin with F, and the ONLY thing separating
+      a Yukon farm plate from a Yukon federal-fleet plate is whether character 2
+      is a digit or a letter. See header fact 2.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(j)"
+
+  - id: ca-yt-government-yukon
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "Y9999"
+      regex: '\AY ?\d{1,4}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(i): \"The plate's identification marks shall be the letter 'Y' followed by up to four digits\"; \"Issued only to the Government of Yukon\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(i) amended by O.I.C. 1990/112]" then "[replaced by O.I.C.
+      2007/121]" — the replacement is the operative instrument, hence 2007 and
+      `enabling-instrument`. "Up to four digits" means a Y-series plate may be
+      two characters long, which is the shortest lawful Yukon serial.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(i)"
+
+  - id: ca-yt-government-canada
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "FLL99"
+      regex: '\AF[A-Z]{2} ?\d{1,2}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(o): \"The plate's identification marks shall be the letter 'F' followed by two letters followed by up to two digits\"; \"Issued only to the Government of Canada\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(o) ADDED by O.I.C. 2007/121]" — a creation, hence
+      `enabling-instrument` on a firm footing. A TERRITORY issuing plates
+      specifically to the FEDERAL government is worth flagging: the federal
+      fleet in Yukon wears Yukon plates from a Yukon-legislated series, not
+      federal plates. Collides on the leading F with ca-yt-farm; see header
+      fact 2.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(o)"
+
+  - id: ca-yt-municipal
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "DLL99"
+      regex: '\AD[A-Z]{2} ?\d{1,2}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(p): \"The plate's identification marks shall be the letter 'D' followed by two letters followed by up to two digits\"; \"Issued only to a municipality\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(p) ADDED by O.I.C. 2007/121]". Collides on the leading D
+      with ca-yt-dealer; see header fact 2. Three tiers of government
+      (territorial 10(i), federal 10(o), municipal 10(p)) each get their own
+      statutory grammar in Yukon — a completeness no province in this group
+      matches.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(p)"
+
+  - id: ca-yt-rcmp
+    class: police
+    categories: [car, van, truck]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "MPL99"
+      regex: '\AMP[A-Z] ?\d{1,2}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(q): \"The plates' identification marks shall be the letters 'MP' followed by one letter followed by up to two digits\"; \"Issued only to the Royal Canadian Mounted Police.\""
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(q) ADDED by O.I.C. 2007/121]". The consolidation adds
+      "(Refer also to Section 3 of Regulation attached to O.I.C. 2007/121)",
+      which was NOT retrieved — a named gap. Note what this series means for any
+      plate-parse product: Yukon PUBLISHES the police prefix, where Wyoming
+      legislates covert plates that must not disclose public ownership
+      (W.S. 31-2-207). Opposite policies, both statutory.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(q)"
+
+  - id: ca-yt-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer, snowmobile, atv]
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "D999"
+      regex: '\AD(?:LR)? ?\d{3}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(a) and s. 10(a.1): \"The plate's identification marks shall be either the letter 'D' followed by three digits or the letters DLR followed by three digits\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      TWO PARAGRAPHS, ONE GRAMMAR, HENCE ONE SERIES. 10(a) covers "Dealer -
+      Cars, Trucks, Buses, and other vehicles not provided for" and 10(a.1),
+      added by O.I.C. 2007/121, covers "Dealer - Motor cycle, trailer,
+      snowmobile and off-road vehicle"; both prescribe the identical
+      D+3-digits / DLR+3-digits alternative, so PRD-PLATES § 2.3's test (own
+      series iff format OR design OR period differs) puts them in one record
+      with both vehicle scopes in `categories`. 10(a) points at Motor Vehicles
+      Act s. 54 for the use rules. Collides on the leading D with
+      ca-yt-municipal; see header fact 2.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(a), 10(a.1)"
+
+  - id: ca-yt-ham
+    class: specialty
+    categories: [car, van, truck]
+    period: { start: 1978 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "VY1LLL"
+      regex: '\AVY1 ?[A-Z]{1,3}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(h): \"The plate's identification marks shall be the letters 'VY' followed by the numeral '1' followed by one, two, or three letters.\" \"Issued for a vehicle whose registered owner holds a valid ham radio operator's licence and call number\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      THE SERIAL IS A FEDERAL CALL SIGN, NOT A YUKON ALLOCATION. VY1 is the
+      Innovation, Science and Economic Development Canada amateur-radio prefix
+      block for Yukon, so the territory's plate grammar embeds a federal
+      identifier and the registrar allocates nothing. The Northwest Territories
+      does the identical thing with VE8 (reg. 8(2)(a), plates/ca-nt.yml), and
+      the two territories' amateur plates are therefore mutually exclusive by
+      construction — a genuinely reliable two-territory discriminator. Paragraph
+      10(h) carries NO amendment note, so it is original to C.O. 1978/120 and
+      1978 is an upper bound on when this grammar began, not its first issue.
+      Classed as `specialty` for want of an amateur-radio class; see
+      common.vocabulary_gap.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(h), no amendment note"
+
+  - id: ca-yt-veteran
+    class: specialty
+    categories: [car, van, truck]
+    period: { start: 2004 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9999"
+      regex: '\A\d{4}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(n): \"The plate's identification marks shall be four digits\"; \"The plate will be issued only for private vehicles registered to a veteran as determined by the registrar in accordance with criteria approved by the registrar and the Royal Canadian Legion.\""
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(n) ADDED by O.I.C. 2004/212]" — a creation, so 2004 is a
+      real start. FOUR BARE DIGITS is the shortest and least distinctive Yukon
+      grammar: it collides with nothing else in s. 10 only because every other
+      paragraph begins with a letter. Note the Royal Canadian Legion appears in
+      the eligibility test here exactly as it does in Alberta's AR 320/2002
+      s. 66.1(4) — the same private body adjudicating a government plate in two
+      jurisdictions.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(n)"
+
+  - id: ca-yt-snowmobile
+    class: standard
+    categories: [snowmobile]
+    period: { start: 1978 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "S9999"
+      regex: '\AS ?\d{4,5}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(c): \"The plate's identification marks shall be the letter 'S' followed by four or five digits\"; \"Issued for snowmobiles\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      Paragraph 10(c) carries no amendment note and is therefore original to the
+      1978 order; 1978 is an upper bound on the grammar's start. s. 11(2)(b)
+      leaves snowmobile plate placement "as authorized by the registrar" — the
+      one Yukon vehicle type with no legislated mounting position.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(c), s. 11(2)(b)"
+
+  # =========================================================================
+  # THE REGISTRAR-DISCRETION GRAMMARS. Each says "any combination, approved by
+  # the registrar, of six or fewer letters or digits" — a real statutory LENGTH
+  # BOUND with an unexpressible approval condition, so all are recall-only.
+  # =========================================================================
+  - id: ca-yt-personalized
+    class: personalized
+    categories: [car, van, truck]
+    period: { start: 2015 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,5}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(k): \"The plate's identification marks shall be any combination of six or fewer letters or digits that do not conflict with paragraphs (a) to (j) and are approved by the registrar\"; \"Issued only on approval by the registrar for private vehicles.\""
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      RECALL-ONLY FOR A SOURCED REASON, not for want of evidence: the regex
+      cannot express "does not conflict with paragraphs (a) to (j)", so it is
+      deliberately WIDER than the issuing grammar and a match is a shape hit.
+      This is the cleanest example of § 2.7's distinction in the whole Canada
+      group — Yukon's own text tells us the regex is too wide. The six-character
+      bound IS sourced and is real. Fee: s. 15(1)(p), "for the issuing of a
+      personalized or vintage motor vehicle licence plate, and in addition to
+      the registration fees payable under section 14, $125.00"; replacement
+      s. 15(1)(q), $25.00. "[Paragraph 10(k) amended by O.I.C. 2015/230]".
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(k), s. 15(1)(p)-(q)"
+
+  - id: ca-yt-vintage
+    class: historic
+    categories: [car, truck, motorcycle, snowmobile]
+    period: { start: 2000 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,5}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(l) 'Vintage motor vehicle (car/truck)' and s. 10(m) 'Vintage motor vehicle (motor cycle/snowmobile)': \"The plate's identification marks shall be any combination, approved by the registrar, of six or fewer letters or digits\"; \"Issued only on approval by the registrar for private vehicles.\""
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraphs 10(l) and 10(m) ADDED by O.I.C. 2000/61]", both later
+      replaced by O.I.C. 2015/230. 2000 is the creation year. Two paragraphs,
+      identical grammar, different vehicle scope — merged into one series with
+      both scopes in `categories`, on the same § 2.3 test used for the dealer
+      series. DISTINCT FROM ca-yt-antique below: vintage is a registrar-approved
+      combination on a current plate; antique is a plate bearing the words
+      "Antique Auto" under s. 16, with its own statutory commencement date.
+      Vintage plates share the personalized plate's $125 fee (s. 15(1)(p)).
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(l), 10(m), s. 15(1)(p)"
+
+  - id: ca-yt-antique
+    class: historic
+    categories: [car, van, truck]
+    period: { start: 1980 }
+    period_evidence: enacted-commencement
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,5}\z'
+      evidence: none-published
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      legend: "Antique Auto"
+      design_basis: regulation-for-legend-only
+    notes: >-
+      A COMMENCEMENT DATE IN THE REGULATION'S OWN WORDS, which is why this is
+      the only series here graded `enacted-commencement`. s. 16(4), verbatim:
+      "Effective February 1, 1980 upon registration, (a) licence plates bearing
+      the words 'Antique Auto' shall be issued to the owner, or (b) if the owner
+      produces Yukon licence plates that were issued during the year of
+      manufacture of that antique motor vehicle that are in a condition
+      satisfactory to the registrar, the registrar may approve the use of such
+      plates." The (b) branch is the Alberta s. 65(2) rule again and carries the
+      same consequence: a Yukon-registered antique may lawfully wear a
+      decades-old plate as its LIVE registration. s. 16(3)(c): "Registration
+      shall be valid for as long as the vehicle is in existence and further
+      renewal of registration shall not be required" — a non-expiring
+      registration, as in British Columbia's Division 22. s. 16(5) confines
+      operation to daylight unless the vehicle has conforming lights. Fee $25
+      (s. 16(4)(c)). No serial grammar is prescribed for the "Antique Auto"
+      plate, hence recall-only.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 16(3)(c), (4)(a)-(c), (5), (6); amendment note O.I.C. 2015/230 on 16(4)(b)"
+
+  - id: ca-yt-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2015 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "LL9999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,5}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(d): \"The plate's identification marks shall be any combination, approved by the registrar, of six or fewer letters or digits\"; \"Issued for trailers\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(d) REPLACED by O.I.C. 2015/230]" — the grammar as it now
+      reads dates from 2015, and the replacement removed whatever fixed shape
+      preceded it in favour of registrar discretion. Motor Vehicles Act s. 48
+      governs transfer of trailer plates between the owner's own trailers.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(d)"
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/PRINCIPAL/2002/2002-0153/2002-0153.pdf  # Act s. 48 transfer of trailer licence plates"
+
+  - id: ca-yt-offroad
+    class: standard
+    categories: [atv]
+    period: { start: 2015 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "LL9999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,5}\z'
+      evidence: regulation
+      grammar_verbatim: "s. 10(b.01): \"The plate's identification marks shall be any combination, approved by the registrar, of six or fewer letters or digits;\" \"Issued for off-road vehicles\"."
+    design: { background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }, foreground: "#000000", design_basis: secondary }
+    notes: >-
+      "[Paragraph 10(b.01) ADDED by O.I.C. 2015/230]" — a creation, so 2015 is
+      a real start for off-road vehicle registration in Yukon. Included because
+      it is part of the same statutory table and costs nothing; a consumer
+      scoped to road vehicles should filter on `categories`.
+    sources:
+      - "https://laws.yukon.ca/cms/images/LEGISLATION/SUBORDINATE/1978/1978-0120/1978-0120.pdf  # s. 10(b.01)"

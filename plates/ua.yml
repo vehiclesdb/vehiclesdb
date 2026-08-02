@@ -1,0 +1,1672 @@
+# plates/ua.yml — Ukraine (PRD-PLATES gate L3).
+#
+# EVERY type, dimension, colour, character-count, letter-set and class claim in
+# this file is read from the CONSOLIDATED TEXT of the governing instrument on
+# zakon.rada.gov.ua, fetched 2026-08-03:
+#
+#   Наказ Міністерства внутрішніх справ України від 02 березня 2021 року № 166
+#   «Про деякі питання номерних знаків транспортних засобів», зареєстрований
+#   в Міністерстві юстиції України 22 березня 2021 р. за № 353/35975
+#   (rada id z0353-21) — approving (1) ВИМОГИ до номерних знаків транспортних
+#   засобів and (2) ЄДИНІ ЗРАЗКИ номерних знаків транспортних засобів.
+#   Current revision: 16.12.2025, basis z1709-25. Status: чинний.
+#   Amended by МВС orders № 814 (12.12.2022), № 259 (31.03.2023),
+#   № 354 (27.04.2023), № 53 (30.01.2024), № 761 (03.11.2025).
+#
+# and from the standard it displaced (ДСТУ 4278:2004, «Чинний від 2004-02-20»)
+# and the standard amendment that produced the CURRENT DESIGN
+# (Зміна № 1 до ДСТУ 4278:2012, fetched as the МВС ЦБДР PDF). Full sourcing,
+# including what could NOT be pinned, is in dossier-ua.md.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# SEVEN STRUCTURAL FACTS THAT SHAPE THIS FILE
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# 1. THE PLATE ALPHABET IS CYRILLIC, AND IT IS STATUTORY, NOT CONVENTIONAL.
+#    Розділ III п. 9 of the Вимоги, verbatim:
+#      "На знаках типів 2, 6, 8, 13, 14, 16, підтипу 3-3 застосовують літери
+#       української абетки, що збігаються з написом літер латинської абетки."
+#      ("On plates of types 2, 6, 8, 13, 14, 16 and subtype 3-3 the letters of
+#       the UKRAINIAN alphabet that COINCIDE IN WRITING with letters of the
+#       Latin alphabet are used.")
+#      "На знаках типів 1, 5, 7, 15, 17, 18, підтипів 3-1, 3-2 застосовують
+#       літери української та латинської абеток."
+#      "На знаках типу 9, 10, 12 застосовують літери української абетки."
+#      "На знаках типу 4 застосовують літеросполуки «CD», «СС» або літеру «S»
+#       латинської абетки."
+#    Measured from the codepoints of Додаток 4 (the region table) as published,
+#    the "coinciding" set is EXACTLY TWELVE Cyrillic letters:
+#      І U+0406 · А U+0410 · В U+0412 · Е U+0415 · К U+041A · М U+041C ·
+#      Н U+041D · О U+041E · Р U+0420 · С U+0421 · Т U+0422 · Х U+0425
+#    whose Latin LOOKALIKES are  I A B E K M H O P C T X.
+#    NOTE THE FOUR TRAPS: Cyrillic В reads B (never V), Cyrillic Н reads H
+#    (never N), Cyrillic Р reads P (never R), Cyrillic С reads C (never S).
+#
+# 2. HOW THAT IS MODELLED HERE, AND WHY. The lint's pattern DSL generates Latin
+#    A–Z for its `L` token, so a `format.regex` written over Cyrillic could
+#    never round-trip. This file therefore does NOT declare a per-jurisdiction
+#    `serial_alphabet:` (PRD-PLATES §2.6 decision 2): every `pattern`, `regex`
+#    and `regex_strict` here is written in the MACHINE-READABLE LATIN
+#    TRANSLITERATION of the printed glyphs — which is also what OCR, the
+#    Vienna-Convention rationale for the 12-letter restriction, and every
+#    consumer's keyboard produce. The CYRILLIC TRUTH is not folded away and not
+#    lost: it is carried in `script:` below, in each series' `charset:`, and
+#    code-by-code as `code:` (Cyrillic) beside `code_ascii:` (Latin) in
+#    plates/_decode/ua-regions.yml, exactly as _decode/hr-cities.yml does for
+#    the Croatian carons. NO SILENT FOLDING: the fold direction is recorded, it
+#    is injective over the twelve, and the reverse map is published.
+#
+# 3. THE SERIES ALPHABET IS A CLOSED STATUTORY LIST — AND IT IS EXACTLY THE
+#    12 × 12 CROSS PRODUCT. Додаток 5 to the Вимоги ("Літеросполуки, які можна
+#    використовувати для позначення серій номерних знаків") lists, for the
+#    ordinary group (types 2, 6 and subtypes 1-1-1, 1-3-1, 3-3, 8-1-1, 8-1-2),
+#    144 pairs. Computed rather than eyeballed: those 144 are precisely every
+#    ordered pair over the twelve letters of fact 1 — nothing missing, nothing
+#    extra. `regex_strict` on those series is therefore EXACT, not approximate.
+#    Every OTHER subtype has its own closed block in Додаток 5 (trailers,
+#    electric, taxi/bus, mopeds, motorcycles), each of which is enumerated into
+#    an exact regex twin below. Those blocks are drawn from the LATIN alphabet
+#    (fact 1's second sentence), which is why an electric plate can end "ZK"
+#    and an ordinary one never can.
+#
+# 4. THE REGION LETTERS AND THE REGION DIGITS ARE TWO DIFFERENT ENCODINGS ON
+#    TWO DIFFERENT PLATE FAMILIES. Додаток 4 gives 27 regions × FOUR letter
+#    pairs each (108 pairs) — used on types 1, 5, 12–17 and subtypes 3-1, 3-2,
+#    8-2 (Розділ III п. 3). Додаток 6 gives the same 27 regions ONE OR TWO
+#    NUMERIC codes (01–27, plus 31 for Kyiv city) — used on types 2, 6, 7, 11
+#    and subtype 3-3 (Розділ III п. 5). A parse API must not mix them.
+#    Both tables are in plates/_decode/ua-regions.yml.
+#
+# 5. SINCE DECEMBER 2022 A UKRAINIAN PLATE MAY CARRY NO REGION AT ALL.
+#    Розділ III п. 1 (as amended by Наказ № 814 від 12.12.2022) excepts
+#    "знаки, що належать транспортним засобам, які зареєстровані на підставі
+#    договору, укладеного в електронній формі" and puts the літеросполуки
+#    «ЕD», «DC», «DI», «PD» in the region slot instead. Any decode of the left
+#    pair must test those four FIRST. (And «ЕD» is printed in the instrument
+#    with a CYRILLIC Е and a LATIN D — recorded, not corrected, in the decode
+#    table.)
+#
+# 6. THE CURRENT DESIGN IS 2015; THE CURRENT RULEBOOK IS 2021. The serial
+#    grammar АА 1234 АА has not changed since ДСТУ 4278:2004 came into force on
+#    20 February 2004. What changed on 31 March 2015 was the DESIGN (the blue
+#    UA/flag band replacing the 2004 blue-over-yellow coat-of-arms panel, and
+#    the character font). What changed in 2021 was the LEGAL VEHICLE: Закон
+#    № 124-IX від 20.09.2019 rewrote ст. 34 of the Закон «Про дорожній рух» so
+#    that "Єдині зразки номерних знаків та вимоги до них ... встановлюються
+#    Міністерством внутрішніх справ України" — moving the plate spec out of the
+#    national-standard system and into an МВС order, which is Наказ № 166.
+#    So: 2015 series are DESIGN breaks, 2021+ series are new SUBTYPES.
+#
+# 7. THE PLATE IS THE VEHICLE'S, BUT THE COMBINATION FOLLOWS THE OWNER.
+#    See `binding` below — Ukraine is a genuine hybrid and the schema's
+#    `binding:` field cannot say so on its own.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# REGEX POLICY (identical to plates/gb.yml, de.yml, nl.yml)
+#   `format.regex` is the LINT-ROUND-TRIPPABLE regex: the lint generates serials
+#   from `format.pattern` (L -> any A-Z, 9 -> any 0-9) and requires the regex to
+#   accept every one, so `regex` can never be narrower than the pattern's own
+#   alphabet. `format.regex_strict` carries the sourced grammar — the twelve
+#   transliterated Cyrillic letters, the Додаток 5 series blocks, the Додаток 6
+#   numeric code set — which `regex` cannot carry.
+#
+# SEPARATOR NOTE (PRD-PLATES §2.6): a Ukrainian plate prints NO separator
+# glyph. Додаток 3 fixes character HEIGHTS in millimetres and the ЄДИНІ ЗРАЗКИ
+# drawings fix the group gaps; no provision of the Вимоги names a separator
+# character. The space in every `pattern` here is the conventional textual
+# rendering of that printed gap, and every regex accepts it as optional —
+# the same treatment plates/de.yml gives the Plaketten gap.
+# ─────────────────────────────────────────────────────────────────────────────
+jurisdiction: ua
+authority:
+  name: Міністерство внутрішніх справ України / Головний сервісний центр МВС (ГСЦ МВС)
+  url: "https://mvs.gov.ua/"
+  url_note: >-
+    The operational authority is the Головний сервісний центр МВС at
+    https://hsc.gov.ua/ — which returned HTTP 403 (Akamai edge) to every fetch
+    attempt in this pass, from curl and from the fetch tool alike. The МВС
+    portal above answered 200 and is used as the authority URL; every FACTUAL
+    claim in this file is cited to zakon.rada.gov.ua, not to either site.
+binding: vehicle
+binding_note: >-
+  Ukraine is a hybrid and the one-word field cannot say so. Ст. 34 of the Закон
+  України «Про дорожній рух» (3353-XII) assigns the mark to the VEHICLE: "На
+  зареєстровані транспортні засоби ... таким транспортним засобам присвоюються
+  номерні знаки (їх буквено-цифрова комбінація)." But the Порядок державної
+  реєстрації (постанова КМУ від 07.09.1998 № 1388) lets an OWNER put the
+  буквено-цифрова комбінація into storage on deregistration and re-attach it to
+  another of that owner's vehicles — "зберігання буквено-цифрової комбінації
+  номерних знаків перереєстрованих або знятих з обліку транспортних засобів для
+  подальшого закріплення за іншими транспортними засобами власника" — and
+  ДСТУ 4278:2004 п. 3.6 said it outright for the 2004 regime: "Номерні знаки
+  типів 1, 3, 5 є власність особи, яка їх придбала ... зберігаються в
+  реєстраційному підрозділі до їх перезакріплення за іншим транспортним засобом
+  цього власника чи передання за його згодою іншій особі, зареєстрованій у цьому
+  регіоні, але не більше 5 років."
+  Consequence for a parse API: a Ukrainian mark's region letters are evidence
+  about the region of registration AT ISSUE, and about nothing since.
+instrument:
+  citation: >-
+    Наказ Міністерства внутрішніх справ України від 02 березня 2021 року № 166
+    «Про деякі питання номерних знаків транспортних засобів»
+  made: "2021-03-02"
+  registered_minjust: "2021-03-22"
+  registration_no: "353/35975"
+  in_force: "from the day of official publication (п. 3 of the order)"
+  revision: "16.12.2025 (basis z1709-25)"
+  status: "чинний"
+  enabling_statute: >-
+    Ст. 34 Закону України «Про дорожній рух» (3353-XII), verbatim: "Єдині зразки
+    номерних знаків та вимоги до них, у тому числі тих, що виготовляються за
+    індивідуальним замовленням, встановлюються Міністерством внутрішніх справ
+    України." The preceding paragraph adds: "Номерні знаки повинні відповідати
+    встановленим зразкам та вимогам." Both paragraphs were put in this form by
+    Закон № 124-IX від 20.09.2019 and Закон № 2658-IX від 06.10.2022.
+  enabling_statute_source: "https://zakon.rada.gov.ua/laws/show/3353-12  # Закон України «Про дорожній рух» від 28.06.1993 № 3353-XII, ст. 34 «Реєстрація та облік транспортних засобів», consolidated text as at 03.08.2026. Accessed 2026-08-03"
+  amended_by:
+    - "Наказ МВС № 814 від 12.12.2022 (Додаток 5 re-issued; the «ЕD»/«DC»/«DI»/«PD» online-registration літеросполуки added to Розділ III п. 1)"
+    - "Наказ МВС № 259 від 31.03.2023 (type 16 — СБУ — added; Додатки 2, 7, 8 re-issued)"
+    - "Наказ МВС № 354 від 27.04.2023 (title change; «державний номерний знак» -> «номерний знак» throughout; Додатки 4 and 6 amended)"
+    - "Наказ МВС № 53 від 30.01.2024 (type 17 — УДО — added)"
+    - "Наказ МВС № 761 від 03.11.2025 (18 types; Додаток 1, 2, 3, 5, 9, 10 re-issued; diplomatic field colour changed to оливковий; «CDP»/«DP» replaced by «CD»/«СС»; type 18 added)"
+  source: "https://zakon.rada.gov.ua/laws/show/z0353-21  # front matter, Розділи I-IV and Додатки 1-12 of the ВИМОГИ, consolidated text as at revision 16.12.2025. Accessed 2026-08-03"
+  licence: >-
+    zakon.rada.gov.ua publishes the official texts of Ukrainian legislation.
+    Ukrainian law (Закон «Про авторське право і суміжні права») excludes
+    normative acts and their official translations from copyright protection —
+    the edicts-of-government position. Quoted, never reproduced wholesale.
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide script and charset facts, cited once, referenced per series.
+# ---------------------------------------------------------------------------
+script:
+  printed: Cyrillic (Ukrainian)
+  recorded_as: "Latin transliteration by GLYPH SHAPE (not by phonetics)"
+  homoglyph_map:
+    # Cyrillic codepoint -> the Latin letter it is drawn as. Injective.
+    "І U+0406": I
+    "А U+0410": A
+    "В U+0412": B
+    "Е U+0415": E
+    "К U+041A": K
+    "М U+041C": M
+    "Н U+041D": H
+    "О U+041E": O
+    "Р U+0420": P
+    "С U+0421": C
+    "Т U+0422": T
+    "Х U+0425": X
+  latin_alphabet_note: >-
+    Genuinely LATIN letters also appear, and are not transliterations of
+    anything: Розділ III п. 9 admits "літери української та латинської абеток"
+    on types 1, 5, 7, 15, 17, 18 and subtypes 3-1, 3-2, and the Додаток 5 series
+    blocks for electric vehicles (U/Q/Z/Y), trailers (X/F/С), taxis and buses
+    (A/B/T), mopeds (D/G/О, N/V/F/H/К/М) and motorcycles (J/L, R/S) are written
+    in them. Where those blocks contain a Cyrillic letter among Latin ones —
+    «СF», «UХ», «КD», «МD», «ОD», «АD» in the published consolidated text — the
+    mixed script is recorded as published in the dossier and NOT normalised
+    here; the transliteration collapses them to the same glyph either way.
+  designation_letters:
+    note: >-
+      Розділ III п. 1 fixes the designation letters per type. Their SCRIPT was
+      measured from the published text and is not uniform — recorded exactly:
+    values:
+      - "«CD» (types 4-1, 4-2) — LATIN C + LATIN D"
+      - "«СС» (types 4-3, 4-4) — CYRILLIC С U+0421 twice, although п. 9 says type 4 uses the LATIN alphabet. An internal inconsistency of the instrument, recorded not corrected; transliterates to CC either way"
+      - "«S» (types 4-5, 4-6, 17) — LATIN S"
+      - "«Т» (subtypes 8-2, 12-1) — CYRILLIC Т U+0422 -> T"
+      - "«ТР» (subtype 12-2) — CYRILLIC Т Р -> TP"
+      - "«Е» (type 13) — CYRILLIC Е U+0415 -> E"
+      - "«В» (type 14) — CYRILLIC В U+0412 -> B, NOT V"
+      - "«G» (type 15) — LATIN G"
+      - "«С» (type 16) — CYRILLIC С U+0421 -> C"
+      - "«D», «С», «О» (type 18) — LATIN D, CYRILLIC С U+0421, CYRILLIC О U+041E"
+  source: "https://zakon.rada.gov.ua/laws/show/z0353-21  # Розділ III п. 1 and п. 9; Додаток 4 and Додаток 5 codepoints measured from the published HTML. Accessed 2026-08-03"
+
+charset_defaults:
+  homoglyph_letters_latin: [A, B, C, E, H, I, K, M, O, P, T, X]
+  homoglyph_letters_cyrillic: "АВСЕНІКМОРТХ"
+  region_pairs: 108
+  region_pairs_note: >-
+    Додаток 4 gives FOUR літеросполуки per region for all 27 regions — 108
+    pairs, no duplicates (computed). The annex prints them in four unlabelled
+    columns under a single heading "Літеросполука"; it does NOT say which
+    column is which era, so no era is claimed from the instrument. The
+    commonly-published chronology (column 1 = 2004, column 2 = 2013,
+    columns 3-4 = 2021) is recorded in plates/_decode/ua-regions.yml tagged
+    secondary-wikipedia, never as an instrument claim.
+  series_pairs_ordinary: 144
+  series_pairs_ordinary_note: >-
+    Exactly the 12 × 12 cross product — verified by computing the set from the
+    published Додаток 5 and differencing it against the full product: nothing
+    missing, nothing extra.
+  source: "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 4 (108 pairs / 27 regions) and Додаток 5 (the per-subtype series blocks). Accessed 2026-08-03"
+
+# ---------------------------------------------------------------------------
+# COLOUR. The instrument specifies colour as a CHROMATICITY BOX, never as a
+# code — so every hex below is `observed` and the statutory truth is here.
+# ---------------------------------------------------------------------------
+common:
+  chromaticity:
+    note: >-
+      Додаток 9 «Координати колірності кутових точок допустимої колірної
+      ділянки» gives, per colour, the x/y chromaticity coordinates of the FOUR
+      corner points of the permitted region plus a minimum luminance factor
+      (коефіцієнт яскравості). A four-corner region plus a luminance FLOOR does
+      not determine a display colour, so no hex in this file is derived from it;
+      the hexes are marked `observed` and this block is the sourced spec.
+    boxes:
+      "білий (white)": { corners: [[0.285, 0.315], [0.340, 0.370], [0.355, 0.355], [0.300, 0.300]], luminance_min: 0.35 }
+      "жовтий (yellow)": { corners: [[0.427, 0.483], [0.465, 0.534], [0.545, 0.454], [0.487, 0.423]], luminance_min: 0.27 }
+      "червоний (red)": { corners: [[0.513, 0.338], [0.658, 0.348], [0.715, 0.291], [0.542, 0.300]], luminance_min: 0.05 }
+      "світло-блакитний (light blue)": { corners: [[0.200, 0.200], [0.140, 0.220], [0.180, 0.300], [0.240, 0.280]], luminance_min: 0.17 }
+      "синій (blue)": { corners: [[0.144, 0.030], [0.224, 0.167], [0.180, 0.176], [0.106, 0.100]], luminance_min: 0.01 }
+      "оливковий (olive)": { corners: [[0.380, 0.550], [0.428, 0.577], [0.460, 0.546], [0.437, 0.505]], luminance_min: 0.04 }
+    absent: >-
+      GREEN — the colour of the characters on every electric-vehicle plate
+      (subtypes 1-1-2, 1-2-2, 1-3-2, 3-2, 5-2-1, 5-2-2) — has NO entry in
+      Додаток 9. The annex covers field colours only. `зелений` is therefore
+      the one colour word in the Вимоги with no colorimetric definition at all.
+    source: "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 9 (chromaticity corner points) and Додаток 10 (photometric coefficients for the retroreflective colours). Accessed 2026-08-03"
+  tolerance: "Розділ II п. 2: «Допускається відхилення габаритних розмірів знаків ±1 %»"
+  state_symbol: >-
+    Розділ III п. 2: on types 1-3, 5-7, 11, 13-17 and subtypes 8-2, 12-2 the
+    plate carries the symbol of state belonging — "зліва у вигляді напису «UA»
+    та зображення Державного Прапора України, розміщених на тлі прямокутника
+    синього кольору" for the long plates, in the upper-left for the tall ones,
+    the small state coat of arms on blue for type 7 and subtype 11-1, and an
+    oval bearing "UA" at the upper right for subtype 8-2.
+
+series:
+
+  # =========================================================================
+  # TYPE 1 — the ordinary plate family. Four digits between two letter pairs;
+  # left pair = region (Додаток 4), right pair = series (Додаток 5).
+  # =========================================================================
+  - id: ua-standard-2015
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[ABCEHIKMOPTX]{2}\z'
+      charset:
+        region_letters: [A, B, C, E, H, I, K, M, O, P, T, X]
+        series_letters: [A, B, C, E, H, I, K, M, O, P, T, X]
+        notes: >-
+          Latin transliterations of the twelve Cyrillic homoglyph letters. The
+          series pair is EXACTLY the 12 × 12 cross product (Додаток 5, ordinary
+          block); the region pair is 108 of those 144 (Додаток 4) plus the four
+          online-registration літеросполуки ЕD/DC/DI/PD, which are outside the
+          twelve and therefore outside regex_strict — see notes.
+      progression: >-
+        Розділ III: серія letters advance within a region; the порядковий номер
+        runs 0001-9999 inside a серія. Since постанова КМУ of 30.06.2023 an
+        owner may CHOOSE the combination at registration, so the ordinal is no
+        longer a reliable time signal within a series.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed, chromaticity_ref: "синій" }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 (підтип 1-1-1 «Знаки для всіх типів автомобілів»); Додаток 2 Таблиця 1 (520 x 112 mm, 4 digits incl. region code, 4 letters, white field, black characters, retroreflective); Додаток 3 (70 mm digits and letters); Розділ III пп. 1, 3, 4, 6, 7, 9"
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 4 (region літеросполуки) and Додаток 5 (the 144-pair ordinary series block)"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А: підтип 1-1 composition, verbatim — «UA – символ державної належності; АА – літеросполука, що позначає адміністративно-територіальну належність; 1234 – порядковий номер; АВ – літеросполука, що позначає серію»"
+      - "https://zakon.rada.gov.ua/laws/show/3353-12  # Закон України «Про дорожній рух» ст. 34 — the enabling statute: «Єдині зразки номерних знаків та вимоги до них ... встановлюються Міністерством внутрішніх справ України»; and «таким транспортним засобам присвоюються номерні знаки (їх буквено-цифрова комбінація)». Accessed 2026-08-03"
+      - "https://uk.wikipedia.org/wiki/Номерні_знаки_України  # period.start: «З 31 березня 2015 року відповідно до змін в ДСТУ 4278:2012 почалась видача номерних знаків нового зразка». secondary-wikipedia; accessed 2026-08-03"
+    notes: >-
+      THE CURRENT UKRAINIAN CAR PLATE. period.start records the date the 2015
+      DESIGN entered issue — the blue UA/flag band and the current font — not a
+      format change: the АА 1234 АА grammar is unchanged since ДСТУ 4278:2004
+      came into force on 20 February 2004 (see ua-standard-2004). The date
+      itself is `secondary-first-issue`: the primary that carries it, Зміна № 1
+      до ДСТУ 4278:2012, is held in this pass as the МВС ЦБДР typescript whose
+      commencement line reads "ПРИЙНЯТО ТА НАДАНО ЧИННОСТІ: наказ Міністерства
+      економічного розвитку і торгівлі України від _______________ р. № ___" —
+      BLANK. The 31 March 2015 date is the Ukrainian Wikipedia article's, and it
+      is flagged for the verifier.
+      REGION SLOT EXCEPTION: since Наказ № 814 від 12.12.2022, a vehicle
+      registered on an electronically concluded contract carries «ЕD», «DC»,
+      «DI» or «PD» in the left pair instead of a region code. Those four are NOT
+      inside `regex_strict` (D and P are outside the twelve), so a plate issued
+      that way matches `regex` and not `regex_strict`. That is deliberate and it
+      is the single most important thing to know before decoding a modern
+      Ukrainian plate.
+
+  - id: ua-electric-2015
+    class: electric
+    categories: [car, van, truck, bus]
+    period: { start: 2020 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:Q[ABCDEFGHIJKLMNOPQRSTUXY]|U[ABCDEFGHIJKLMNOPRSTUXY]|[YZ][ABCDEFGHIJKLMNOPRSTUVXYZ])\z'
+      charset:
+        series_first_letter: [Q, U, Y, Z]
+        notes: >-
+          Ninety-three pairs, enumerated in Додаток 5 for subtypes 1-1-2 and
+          1-3-2 and written out exactly in regex_strict. All four first letters
+          are LATIN and none of them is in the twelve-letter homoglyph set, so
+          an electric plate's series pair can never be mistaken for an ordinary
+          one. Q, U, Y, Z do not exist in the ordinary block at all.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#009639"
+      foreground_note: >-
+        Додаток 2 Таблиця 1: «Колір цифр, літер та ребра жорсткості знаків —
+        зелений». GREEN HAS NO CHROMATICITY BOX in Додаток 9 (see
+        common.chromaticity.absent), so this hex is observed and unsourced to
+        any colorimetric specification.
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 1-1-2 «Спеціальні знаки для всіх типів автомобілів, які приводяться в рух електричним двигуном і не мають двигуна внутрішнього згоряння»; Додаток 2 Таблиця 1 (white field, GREEN characters); Додаток 5 (the 93-pair U/Q/Z/Y block)"
+      - "https://uk.wikipedia.org/wiki/Номерні_знаки_України  # period.start 2020: green plates first issued with the Z· series in 2020, Y· from 2022. secondary-wikipedia; accessed 2026-08-03"
+    notes: >-
+      BATTERY-ELECTRIC CARS — green characters on the ordinary white field,
+      same grammar, a series block of its own. Distinct from ua-standard-2015 in
+      character colour and series alphabet only. period.start 2020 is the
+      secondary first-issue claim; the SUBTYPE as a legal object dates from
+      Наказ № 166 (2021), and a verifier who cannot confirm 2020 should move the
+      start to 2021 with period_evidence enabling-instrument.
+      Z-SERIES CAVEAT: Ukrainian media reported in April 2023 that plates
+      bearing «Z» and «V» were banned as invasion symbolism. The consolidated
+      Додаток 5 as at 16.12.2025 STILL LISTS ZA-ZZ here and VA-VZ on subtype
+      3-2. The instrument governs; the discrepancy is flagged in the dossier.
+
+  - id: ua-trailer-2021
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:C[FGJLNRSUY]|[FX][FGJLNRSUVYZ])\z'
+      charset:
+        series_first_letter: [C, F, X]
+        notes: >-
+          Thirty-one pairs, enumerated in Додаток 5 for subtype 1-1-3 and
+          written out exactly in regex_strict. The block is published as
+          «СF СG СJ СL СN СR СS СU СY» with a CYRILLIC С and «FF…FZ», «XF…XZ»
+          with LATIN F and X — a mixed-script row that transliterates without
+          ambiguity to C/F/X and is recorded as published in the dossier.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 1-1-3 «Знаки для автомобільних причепів»; Додаток 2 Таблиця 1 (520 x 112, 4 digits, 4 letters, white/black); Додаток 5 (the 31-pair C/F/X block for subtype 1-1-3)"
+    notes: >-
+      TRAILERS AND SEMI-TRAILERS. Identical in size, colour and grammar to the
+      car plate; what separates them is the closed 31-pair series block, which
+      is disjoint from every other block in Додаток 5. period.start 2021 is the
+      order that created subtype 1-1-3 as a distinct object — it is present in
+      the ORIGINAL 2021 revision of Додаток 2 (checked against the 09.04.2021
+      text), so the subtype is not one of the later additions.
+
+  - id: ua-taxi-2015
+    class: taxi
+    categories: [car, bus, van]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:A[DFGJLNRSUV]|B[DF]|T[DFGJLNRS])\z'
+      charset:
+        notes: >-
+          Twenty pairs for subtype 1-2-1, enumerated in Додаток 5 and written
+          out exactly. Published as «АD АF АG АJ АL АN АR АS АU АV» with a
+          CYRILLIC А and «BD BF TD TF TG TJ TL TN TR TS» in Latin.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed, chromaticity_ref: "жовтий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 1-2-1 «Знаки для автобусів і таксі, які внесені до Єдиного державного реєстру юридичних осіб та фізичних осіб — підприємців як засоби провадження господарської діяльності з перевезення пасажирів автомобільним транспортом»; Додаток 2 Таблиця 1 (yellow field, black characters); Додаток 5 (the 20-pair block for subtype 1-2-1)"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 1-2: «Застосовують для автобусів, мікроавтобусів, таксі, на які видано ліцензію на перевезення пасажирів»"
+    notes: >-
+      LICENSED BUSES, MINIBUSES AND TAXIS — a yellow field, otherwise the car
+      plate. The yellow taxi/bus plate is older than the 2015 design (ДСТУ
+      4278:2004 п. 2.3: «Знаки типу 1 з полем жовтого кольору застосовують для
+      автобусів, мікроавтобусів, таксі»); this entry is the 2015-design series
+      and ua-taxi-2004 is its predecessor. Eligibility is REGISTRY-BASED, not
+      vehicle-based: the operator must appear in the ЄДР as carrying on
+      passenger transport.
+
+  - id: ua-taxi-electric-2021
+    class: electric
+    categories: [car, bus, van]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:A[YZ]|B[GJLNQR]|T[UVYZ])\z'
+      charset:
+        notes: "Twelve pairs for subtype 1-2-2, enumerated in Додаток 5: AY AZ BG BJ BL BN BQ BR TU TV TY TZ."
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed, chromaticity_ref: "жовтий" }
+      foreground: "#009639"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 1-2-2 (electric licensed buses and taxis); Додаток 2 Таблиця 1 (yellow field, GREEN characters); Додаток 5 (the 12-pair block for subtype 1-2-2)"
+    notes: >-
+      ELECTRIC LICENSED BUSES AND TAXIS — the only Ukrainian plate that is
+      yellow AND green, and the rarest of the ordinary family. Distinct from
+      ua-taxi-2015 in character colour and series block, and from
+      ua-electric-2015 in field colour and series block.
+
+  - id: ua-nonformat-2015
+    class: standard
+    categories: [car, van]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[ABCEHIKMOPTX]{2}\z'
+      charset:
+        notes: >-
+          Same grammar and same 144-pair series block as ua-standard-2015 —
+          Додаток 5 lists підтип 1-3-1 in the ordinary group. The difference is
+          entirely geometric.
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 58, letter_height_mm: 40 }
+      band: { side: left, position: upper, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      layout: "two-line: region літеросполука upper left, series upper right, four digits below"
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 1-3-1 «Знаки для автомобілів із неформатним місцем закріплення номерного знака»; Додаток 2 Таблиця 1 (300 x 150 mm); Додаток 3 (digits 58 mm, letters 40 mm — the only subtype where the two heights differ); Розділ III пп. 6, 7 (region upper left, series upper right)"
+    notes: >-
+      THE SHORT-AND-TALL PLATE, for vehicles whose plate recess is not the
+      520 x 112 European oblong — American and Japanese-market cars, in
+      practice. Ukraine solves that case with a distinct SUBTYPE and a distinct
+      geometry rather than with a tolerance, and it is the ONLY Ukrainian plate
+      whose digits and letters have different heights (58 / 40 mm).
+
+  - id: ua-nonformat-electric-2021
+    class: electric
+    categories: [car, van]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:Q[ABCDEFGHIJKLMNOPQRSTUXY]|U[ABCDEFGHIJKLMNOPRSTUXY]|[YZ][ABCDEFGHIJKLMNOPRSTUVXYZ])\z'
+      charset:
+        notes: "Додаток 5 gives subtypes 1-1-2 and 1-3-2 ONE shared 93-pair block, so this twin is identical to ua-electric-2015's."
+    design:
+      plate: { w: 300, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#009639"
+      characters: { digit_height_mm: 58, letter_height_mm: 40 }
+      band: { side: left, position: upper, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 1-3-2; Додаток 2 Таблиця 1 (300 x 150, GREEN characters); Додаток 5 (shared 1-1-2 / 1-3-2 block)"
+    notes: >-
+      BATTERY-ELECTRIC CARS WITH A NON-STANDARD PLATE RECESS — the intersection
+      of ua-electric-2015 and ua-nonformat-2015, and a genuinely separate
+      subtype in Додаток 1 rather than a variant of either.
+
+  # =========================================================================
+  # TYPE 2 — «знаки для разових поїздок» (single-journey / transit plates).
+  # The NUMERIC region code family: Додаток 6, not Додаток 4.
+  # =========================================================================
+  - id: ua-transit-2015
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99 LL 9999"
+      regex: '\A\d{2} ?[A-Z]{2} ?\d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1\d|2[0-7]|31) ?[ABCEHIKMOPTX]{2} ?\d{4}\z'
+      charset:
+        region_codes: "01-27 and 31 (Додаток 6)"
+        notes: >-
+          Розділ III п. 5: type 2 carries a NUMERIC region code from Додаток 6,
+          not a letter pair. Розділ III п. 7: the series letters are placed
+          «після коду адміністративно-територіальної належності». Kyiv city has
+          two codes, 11 and 31; the other 26 regions have one each.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#D52B1E", finish: non-retroreflective, hex_basis: observed, chromaticity_ref: "червоний" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 70, letter_height_mm: 70, region_code_height_mm: 50 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      material: "полістирольна стрічка permitted (Розділ IV п. 3) — this is a throwaway plate"
+      rear_differs: false
+    validity:
+      note: >-
+        A single-journey plate. The ВИМОГИ do not state a validity period; the
+        older type 2.1 / 2.2 split (two months for an owner, ten days for a
+        dealer) is not in the current instrument and is NOT asserted here.
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 тип 2 «Знаки для разових поїздок для всіх типів автомобілів, автомобільних причепів»; Додаток 2 Таблиця 1/2 (520 x 112, 6 digits incl. region code, 2 letters, red field, white characters, NO retroreflective film); Додаток 3 (digits 70 mm, region code 50 mm); Розділ III пп. 5, 7"
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 6 «КОДИ, які позначають адміністративно-територіальну належність місця реєстрації транспортного засобу» — 01-27, Kyiv 11 and 31"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 2-1: «22 – код адміністративно-територіальної належності; АН – літеросполука, що позначає серію; 0880 – порядковий номер» — the group order this pattern encodes"
+    notes: >-
+      THE RED TRANSIT PLATE for cars, vans, lorries, buses and trailers. Two
+      things make it the most misread Ukrainian plate: the region is a NUMBER
+      here and a LETTER PAIR on every type-1 plate, and the six digits the
+      instrument counts INCLUDE the two-digit region code («Кількість цифр
+      (зокрема код регіону) — 6»), so the running number is four digits, not
+      six. Non-retroreflective and permitted to be made of polystyrene strip:
+      Ukraine treats this as consumable, not as a plate.
+
+  # =========================================================================
+  # TYPE 3 — mopeds. 140 x 114 mm.
+  # =========================================================================
+  - id: ua-moped-2015
+    class: moped
+    categories: [moped]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:O[DFGJLNQRSUY]|[DG][ABCDEFGHIJKLMNOPRSTUVXYZ])\z'
+      charset:
+        series_first_letter: [D, G, O]
+        notes: >-
+          Fifty-nine pairs for subtype 3-1 in Додаток 5, written out exactly.
+          The O block is published with a CYRILLIC О («ОD ОF ОG ОJ ОL ОN ОQ ОR
+          ОS ОU ОY»); D and G are Latin. Note ОQ — the only place a Q follows a
+          non-Latin first letter anywhere in Додаток 5.
+    design:
+      plate: { w: 140, h: 114, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 30, letter_height_mm: 30 }
+      band: { side: left, position: upper, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      layout: "two-line: region літеросполука upper left, series upper right, four digits below"
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 3-1 «Знаки для мопедів»; Додаток 2 Таблиця 2 (140 x 114 mm, 4 digits, 4 letters, white/black, retroreflective); Додаток 3 (30 mm); Розділ III пп. 3, 6, 7, 9 (subtype 3-1 uses BOTH the Ukrainian and Latin alphabets)"
+    notes: >-
+      MOPEDS — Ukraine's smallest road plate. Same four-digit, four-letter
+      grammar as the car plate on a 140 x 114 mm rectangle. Mopeds became
+      subject to state registration under ст. 34 of the Закон «Про дорожній
+      рух» as amended by Закон № 586-VI від 24.09.2008, with effect from
+      1 January 2010 — the obligation predates this design.
+
+  - id: ua-moped-electric-2021
+    class: electric
+    categories: [moped]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?(?:F[ABCDEHIKMOPT]|N[ABCDEFGHIJKLMNOPRSTUXY]|V[ABCDEFGHIJKLMNOPRSTUVXYZ]|[HKM][DFGJLNQRSUY])\z'
+      charset:
+        series_first_letter: [F, H, K, M, N, V]
+        notes: >-
+          Ninety-one pairs for subtype 3-2 in Додаток 5, written out exactly.
+          The H, К and М blocks are published with CYRILLIC К U+041A and
+          М U+041C and a Latin H, and VХ carries a CYRILLIC Х — the most
+          script-mixed row in the annex.
+    design:
+      plate: { w: 140, h: 114, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#009639"
+      characters: { digit_height_mm: 30, letter_height_mm: 30 }
+      band: { side: left, position: upper, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 3-2 «Спеціальні знаки для мопедів, які приводяться в рух електричним двигуном»; Додаток 2 Таблиця 2 (140 x 114, GREEN characters); Додаток 5 (the 91-pair block for subtype 3-2)"
+    notes: >-
+      ELECTRIC MOPEDS — green characters, and the largest special series block
+      in Додаток 5 after the electric car block. Ukraine gave e-mopeds 91 series
+      pairs and e-cars 93: the two blocks are disjoint, so the series pair alone
+      distinguishes an electric moped from an electric car.
+
+  - id: ua-moped-transit-2015
+    class: temporary
+    categories: [moped]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99 LL 9999"
+      regex: '\A\d{2} ?[A-Z]{2} ?\d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1\d|2[0-7]|31) ?[ABCEHIKMOPTX]{2} ?\d{4}\z'
+      charset:
+        notes: >-
+          Розділ III п. 5 puts subtype 3-3 on the NUMERIC Додаток 6 codes;
+          Додаток 5 puts its series letters in the ordinary 144-pair block;
+          Розділ III п. 7 places them «після коду».
+    design:
+      plate: { w: 140, h: 114, unit: mm }
+      background: { color: "#D52B1E", finish: non-retroreflective, hex_basis: observed, chromaticity_ref: "червоний" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 30, letter_height_mm: 30 }
+      material: "полістирольна стрічка permitted (Розділ IV п. 3)"
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 3-3 «Знаки для разових поїздок для мопедів»; Додаток 2 Таблиця 2 (140 x 114, red field, white characters, 6 digits, 2 letters, NO film); Розділ III пп. 5, 6, 7, 9"
+    notes: >-
+      THE MOPED TRANSIT PLATE — the type-2 grammar (numeric region code, series
+      pair, four-digit number) on the moped's 140 x 114 mm rectangle. Note that
+      it carries SIX digits where the ordinary moped plate carries four: the
+      transit family always spends two of its digits on the region.
+
+  # =========================================================================
+  # TYPE 4 — diplomatic and consular. OLIVE since the 761/2025 amendment.
+  # =========================================================================
+  - id: ua-diplomatic-cd-2025
+    class: diplomatic
+    categories: [car, van, bus]
+    period: { start: 2025 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "CD 999 999"
+      regex: '\ACD ?\d{3} ?\d{3}\z'
+      regex_strict: '\ACD ?(?:0(?:0[1-9]|[1-9]\d)|[1-4]\d{2}) ?\d{3}\z'
+      charset:
+        fixed_letters: "CD"
+        notes: >-
+          Розділ III п. 1: «літеросполуки «CD» — на знаках підтипів 4-1 та 4-2».
+          Розділ III п. 9: type 4 uses the LATIN alphabet. Розділ III п. 10:
+          «три цифри, розміщені безпосередньо після літер, позначають код
+          держави дипломатичного представництва, консульської установи,
+          міжнародної організації», and «три останні цифри позначають порядковий
+          номер транспортного засобу». regex_strict restricts the country code
+          to 001-499 on the Зміна № 1 до ДСТУ 4278:2012 footnote; the current
+          Вимоги state no range.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "підтип 4-2 — the same format for motorcycles, scooters, quadricycles and tricycles of diplomatic staff; letters and digits 40 mm" }
+      background: { color: "#8A9A24", finish: retroreflective, hex_basis: observed, chromaticity_ref: "оливковий" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 4-1 / 4-2; Додаток 2 Таблиця 2 (520 x 112 and 220 x 174, 6 digits, 2 letters, ОЛИВКОВИЙ field, white characters); Додаток 3 (70 mm / 40 mm); Розділ III пп. 1, 8, 9, 10; Додаток 9 (the оливковий chromaticity box, added by Наказ № 761)"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 4-1 footnote: «Цифри 001-499 означають код держави дипломатичної установи, міжнародної організації, держави консульської установи» — the source of regex_strict's country-code range"
+    notes: >-
+      DIPLOMATIC STAFF of missions, consulates and international organisations,
+      and their families. The OLIVE field and white characters arrived with
+      Наказ МВС № 761 від 03.11.2025 (revision in force 16.12.2025), which also
+      replaced the previous «CDP» marking with «CD» and gave the plate the blue
+      UA band it did not previously carry. Before that these plates were WHITE
+      with black characters — see ua-diplomatic-cdp-2021. The country code is
+      allocated by the ГДІП, not by МВС; the per-country table is a decode
+      table for gate L4 and is deliberately not modelled here (PRD-PLATES §2.5).
+
+  - id: ua-consular-cc-2025
+    class: consular
+    categories: [car, van]
+    period: { start: 2025 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "CC 999 999"
+      regex: '\ACC ?\d{3} ?\d{3}\z'
+      regex_strict: '\ACC ?(?:0(?:0[1-9]|[1-9]\d)|[1-4]\d{2}) ?\d{3}\z'
+      charset:
+        fixed_letters: "CC"
+        notes: >-
+          Розділ III п. 1: «літеросполуки ... «СС» — на знаках підтипів 4-3 та
+          4-4». THE INSTRUMENT PRINTS «СС» IN CYRILLIC (С U+0421 twice) while
+          п. 9 says type 4 uses the LATIN alphabet — an internal inconsistency,
+          recorded and not corrected. Either way the glyph pair is CC.
+          Розділ III п. 10: on 4-3 / 4-4 the first three digits are «код держави
+          почесного консульства».
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "підтип 4-4 — motorcycles etc. of honorary consulates; 40 mm characters" }
+      background: { color: "#8A9A24", finish: retroreflective, hex_basis: observed, chromaticity_ref: "оливковий" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 4-3 / 4-4 «Знаки для автомобілів почесних консульств та почесних консулів»; Додаток 2 Таблиця 2 (olive field, white characters, 6 digits, 2 letters); Розділ III пп. 1, 9, 10"
+    notes: >-
+      HONORARY CONSULATES AND HONORARY CONSULS — a Ukrainian distinction the
+      2021 order draws that most jurisdictions fold into the consular class.
+      Before Наказ № 761 (2025) these subtypes were marked «DP» and were white;
+      the class boundary moved with the marking, so a pre-2025 «DP» plate is not
+      an honorary-consular plate.
+
+  - id: ua-diplomatic-s-2025
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2025 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "S 999 999"
+      regex: '\AS ?\d{3} ?\d{3}\z'
+      regex_strict: '\AS ?(?:0(?:0[1-9]|[1-9]\d)|[1-4]\d{2}) ?\d{3}\z'
+      charset:
+        fixed_letters: "S"
+        notes: "Розділ III п. 1: «літеру «S» — на знаках підтипів 4-5, 4-6 та типу 17». LATIN S (measured). Додаток 2 Таблиця 3 gives subtype 4-5 ONE letter and six digits."
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "підтип 4-6 — motorcycles etc. of administrative-technical staff; 40 mm characters" }
+      background: { color: "#8A9A24", finish: retroreflective, hex_basis: observed, chromaticity_ref: "оливковий" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 4-5 / 4-6 «Знаки для автомобілів адміністративно-технічного персоналу дипломатичних представництв, консульств, міжнародних організацій та членів їх сімей»; Додаток 2 Таблиця 3 (520 x 112 / 220 x 174, 6 digits, 1 letter, olive field, white characters); Розділ III пп. 1, 8, 9, 10"
+    notes: >-
+      ADMINISTRATIVE AND TECHNICAL STAFF of diplomatic missions — the single-S
+      plate. The only Ukrainian plate whose entire letter content is one
+      character. Note that «S» also marks type 17 (Управління державної
+      охорони), where it is followed by a region літеросполука and three
+      digits — the two are unambiguous on length.
+
+  - id: ua-diplomatic-cdp-2021
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2021, end: 2025 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "CDP 999"
+      regex: '\ACDP ?\d{3}\z'
+      charset:
+        fixed_letters: "CDP"
+        notes: >-
+          The 09.04.2021 text of Розділ III п. 1, verbatim: «літеросполуки
+          «CDP» - на знаках підтипів 4-1 та 4-2, «DP» - на знаках підтипів 4-3
+          та 4-4, літеру «S» - на знаках підтипів 4-5 та 4-6». Додаток 2
+          Таблиця 2 of the same text gives subtypes 4-1 / 4-2 THREE letters and
+          THREE digits — the three digits being the country code, per the
+          Зміна № 1 до ДСТУ 4278:2012 drawing «CDP 123».
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "підтип 4-2 (motorcycles)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21/ed20210409  # the ORIGINAL text of Наказ № 166: Розділ III п. 1 («CDP», «DP», «S»), Додаток 2 Таблиця 2 (4-1 / 4-2: 3 digits, 3 letters, БІЛИЙ field, black characters). Accessed 2026-08-03"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 4-1: «CDP – позначення призначеності; 123 – код»"
+    notes: >-
+      THE PREVIOUS DIPLOMATIC PLATE — white, black characters, marked «CDP»,
+      and carrying only the three-digit country code. Modelled because the
+      2025 amendment changed marking, field colour and digit count at once, so
+      a consumer parsing a photograph taken before December 2025 needs this
+      series to exist. period is instrument-dated at BOTH ends: the original
+      Наказ № 166 at the lower end, Наказ № 761 від 03.11.2025 (revision in
+      force 16.12.2025) at the upper. Wikipedia dates the visible changeover to
+      April 2026, which is when the new plates began to appear rather than when
+      the requirement changed — the gap is stated in the dossier.
+
+  # =========================================================================
+  # TYPES 5 and 6 — motorcycles and their transit plates.
+  # =========================================================================
+  - id: ua-motorcycle-2015
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[JL][ABCDEFGHIJKLMNOPRSTUVXYZ]\z'
+      charset:
+        series_first_letter: [J, L]
+        notes: >-
+          Forty-eight pairs for subtypes 5-1-1 and 5-1-2 in Додаток 5: J and L
+          each with the same 24 second letters (every Latin letter except Q and
+          W). Exact, not approximate.
+    design:
+      plate: { w: 220, h: 174, unit: mm }
+      plate_variants:
+        - { w: 140, h: 114, unit: mm, note: "підтип 5-1-2 — the small motorcycle plate; characters 30 mm instead of 40 mm; region upper LEFT and series upper RIGHT instead of region top and series bottom" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 40, letter_height_mm: 40 }
+      band: { side: left, position: upper, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      layout: "підтип 5-1-1 — three lines: region літеросполука across the top, four digits, series pair at the bottom (Розділ III пп. 6, 7)"
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 5-1-1 / 5-1-2 «Знаки для мотоциклів, моторолерів, мотоколясок, квадроциклів, трициклів ... а також для задніх причепів до них»; Додаток 2 Таблиця 3 (220 x 174 and 140 x 114, 4 digits, 4 letters, white/black); Додаток 3 (40 mm / 30 mm); Розділ III пп. 3, 6, 7, 9; Додаток 5 (the 48-pair J/L block)"
+    notes: >-
+      MOTORCYCLES, SCOOTERS, QUADRICYCLES AND TRICYCLES, and the rear trailers
+      towed by them. Two sizes, one grammar, one series block — so one series
+      with a plate variant rather than two. The J/L block is disjoint from every
+      other block in Додаток 5, which makes the series pair a sufficient
+      motorcycle test on its own.
+
+  - id: ua-motorcycle-electric-2021
+    class: electric
+    categories: [motorcycle]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[RS][ABCDEFGHIJKLMNOPRSTUVXYZ]\z'
+      charset:
+        series_first_letter: [R, S]
+        notes: "Forty-eight pairs for subtypes 5-2-1 and 5-2-2 in Додаток 5 — R and S each with the same 24 second letters. Structurally the mirror of the J/L block."
+    design:
+      plate: { w: 220, h: 174, unit: mm }
+      plate_variants:
+        - { w: 140, h: 114, unit: mm, note: "підтип 5-2-2 — small plate, 30 mm characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#009639"
+      characters: { digit_height_mm: 40, letter_height_mm: 40 }
+      band: { side: left, position: upper, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 5-2-1 / 5-2-2 (electric motorcycles etc.); Додаток 2 Таблиця 3 (GREEN characters); Додаток 5 (the 48-pair R/S block)"
+    notes: >-
+      ELECTRIC MOTORCYCLES AND TRICYCLES — green characters, its own 48-pair
+      block. Ukraine gives every electric subtype a dedicated series block
+      rather than a suffix letter, so the electric fact is recoverable from the
+      serial alone on all six electric subtypes.
+
+  - id: ua-motorcycle-transit-2015
+    class: temporary
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99 9999 LL"
+      regex: '\A\d{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A(?:0[1-9]|1\d|2[0-7]|31) ?\d{4} ?[ABCEHIKMOPTX]{2}\z'
+      charset:
+        notes: >-
+          Розділ III п. 6 puts the numeric region code «у верхній частині знака»
+          on subtype 6-1 and п. 7 puts the series pair «у нижній частині» — so
+          the reading order down the plate is code, number, series. The Зміна № 1
+          до ДСТУ 4278:2012 drawing for підтип 6-1 labels exactly that order:
+          «22 – код; 8320 – порядковий номер; АВ – серія».
+    design:
+      plate: { w: 220, h: 174, unit: mm }
+      background: { color: "#D52B1E", finish: non-retroreflective, hex_basis: observed, chromaticity_ref: "червоний" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 40, letter_height_mm: 40, region_code_height_mm: 30 }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 тип 6 «Знаки для разових поїздок для мотоциклів...»; Додаток 2 Таблиця 3 (підтип 6-1: 220 x 174, 6 digits, 2 letters, red field, white characters, no film); Додаток 3 (40 mm, region code 30 mm); Розділ III пп. 5, 6, 7"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 6-1 — the code / number / series stacking order"
+    notes: >-
+      THE LARGE MOTORCYCLE TRANSIT PLATE (subtype 6-1). Separated from
+      ua-motorcycle-transit-small-2015 because the instrument places the series
+      pair differently on the two subtypes, which changes the STRING and not
+      just the geometry: 6-1 reads code / number / series, 6-2 reads code /
+      series / number. This is the only place in the Ukrainian system where two
+      subtypes of one type produce different serial orders.
+
+  - id: ua-motorcycle-transit-small-2015
+    class: temporary
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99 LL 9999"
+      regex: '\A\d{2} ?[A-Z]{2} ?\d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1\d|2[0-7]|31) ?[ABCEHIKMOPTX]{2} ?\d{4}\z'
+      charset:
+        notes: "Розділ III п. 7: on subtype 6-2 the series letters come «після коду адміністративно-територіальної належності», as on type 2 and subtype 3-3."
+    design:
+      plate: { w: 140, h: 114, unit: mm }
+      background: { color: "#D52B1E", finish: non-retroreflective, hex_basis: observed, chromaticity_ref: "червоний" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 30, letter_height_mm: 30 }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 2 Таблиця 3 (підтип 6-2: 140 x 114, 6 digits, 2 letters, red/white, no film); Додаток 3 (30 mm); Розділ III пп. 6, 7 (code upper LEFT, series after the code)"
+    notes: >-
+      THE SMALL MOTORCYCLE TRANSIT PLATE (subtype 6-2) — same red single-journey
+      family, same six digits and two letters, but the code-then-series order of
+      the car transit plate rather than the stacked order of subtype 6-1.
+
+  # =========================================================================
+  # TYPE 7 — plates made to the owner's individual order (vanity).
+  # Enabled by постанова КМУ № 1081 (2000), specified by the МВС Вимоги.
+  # =========================================================================
+  - id: ua-vanity-car
+    class: personalized
+    categories: [car, van, truck, bus]
+    period: { start: 2000 }
+    period_evidence: enabling-instrument
+    # RECALL-ONLY (PRD-PLATES §2.7): the content of a type-7 plate is chosen by
+    # the owner within limits that two instruments state DIFFERENTLY — постанова
+    # КМУ № 1081 says «від трьох до восьми символів» while Додаток 2 Таблиця 4
+    # of the Вимоги gives «2-8» letters and «2 (7)» digits. The regex is the
+    # union of both readings plus the two-digit region code the plate also
+    # carries, so a match is a SHAPE hit and never a validity claim.
+    matching: recall-only
+    format:
+      pattern: "99 LLL"
+      regex: '\A\d{2} ?[A-Z0-9]{2,8}\z'
+      pattern_note: >-
+        The pattern shows the shortest legal shape: the two-digit region code
+        (Додаток 6, printed small under the state symbol per Розділ III п. 6)
+        followed by the owner's chosen characters. A graphic element may also
+        appear (Розділ III п. 11), and it is not part of the serial.
+      charset:
+        notes: >-
+          Розділ III п. 9: type 7 uses «літери української та латинської
+          абеток» — the widest alphabet of any Ukrainian plate. Розділ III
+          п. 11: a type-7 plate may carry letters; letters and digits; letters,
+          digits and a graphic element; or letters and a graphic element.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 76, letter_height_mm: 76, alt_height_mm: 70, region_code_height_mm: 30 }
+      band: { side: left, color: "#005BBB", content: "small state coat of arms on blue (Розділ III п. 2 — type 7 carries the герб, not the flag)", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/1081-2000-п  # постанова КМУ від 11 липня 2000 р. № 1081 «Про запровадження номерних знаків транспортних засобів, що виготовляються за індивідуальними замовленнями їх власників», п. 1 and п. 2: «містить від трьох до восьми символів для автомобілів»; п. 2-1 (added by постанова КМУ № 1203 від 17.11.2021): «Зразки ... та вимоги до них установлюються Міністерством внутрішніх справ». Accessed 2026-08-03"
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 7-1; Додаток 2 Таблиця 4 (520 x 112, 2 (7) digits, 2-8 letters, white/black, retroreflective); Додаток 3 (76 (70) mm, region code 30 mm); Розділ III пп. 2, 5, 6, 9, 11"
+    notes: >-
+      OWNER-ORDERED PLATES for cars. period.start 2000 is the enabling КМУ
+      resolution, which is the date the regime began — the МВС Вимоги only took
+      over the SPECIFICATION in 2021 (постанова КМУ № 1203 від 17.11.2021 added
+      п. 2-1 and deleted the resolution's own annex of samples). Content limits
+      that ARE sourced and are not in the regex: no state authority's name, no
+      state arms or flag of Ukraine or of any other state or international
+      organisation, nothing obscene or discriminatory, and — since постанова
+      КМУ № 367 від 21.04.2023 — no symbolism of the communist or
+      national-socialist totalitarian regimes or of the Russian invasion of
+      Ukraine. One plate, one vehicle.
+
+  - id: ua-vanity-motorcycle
+    class: personalized
+    categories: [motorcycle]
+    period: { start: 2000 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "99 LLL"
+      regex: '\A\d{2} ?[A-Z0-9]{2,6}\z'
+      pattern_note: "As ua-vanity-car, with the motorcycle limit: постанова КМУ № 1081 п. 2 «та від трьох до шести символів для мотоциклів»; Додаток 2 Таблиця 4 gives 2-6 letters and 2 (6) digits."
+    design:
+      plate: { w: 220, h: 174, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 40, alt_height_mm: 50, letter_height_mm: 40, region_code_height_mm: 30 }
+      band: { side: left, position: upper, color: "#005BBB", content: "small state coat of arms on blue", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/1081-2000-п  # п. 2, the six-symbol motorcycle limit. Accessed 2026-08-03"
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 7-2; Додаток 2 Таблиця 4 (220 x 174, 2 (6) digits, 2-6 letters); Додаток 3 (40 (50) mm)"
+    notes: >-
+      OWNER-ORDERED PLATES for motorcycles — the same regime on the 220 x 174 mm
+      plate, with the graphic element placed in the upper part rather than at
+      the right edge (ДСТУ 4278:2004 п. 2.18, carried into practice). Two digits
+      normally, up to six permitted, and two to six letters.
+
+  # =========================================================================
+  # TYPE 8 — tractors and agricultural / construction machinery.
+  # =========================================================================
+  - id: ua-tractor-2015
+    class: agricultural
+    categories: [tractor, machine, trailer]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "99999 LL"
+      regex: '\A\d{5} ?[A-Z]{2}\z'
+      regex_strict: '\A\d{5} ?[ABCEHIKMOPTX]{2}\z'
+      charset:
+        notes: >-
+          Розділ III п. 3 does NOT list subtypes 8-1-1 / 8-1-2 among the plates
+          that carry a region літеросполука — only 8-2 does. Додаток 5 puts
+          8-1-1 and 8-1-2 in the ordinary 144-pair block, so both letters are
+          SERIES letters and the plate carries no region at all. The Зміна № 1
+          до ДСТУ 4278:2012 drawing for підтип 8-1 confirms it: «32419 –
+          порядковий номер; АА – літеросполука, що позначає серію».
+    design:
+      plate: { w: 225, h: 165, unit: mm }
+      plate_shape: "trapezoid — Додаток 2 Таблиця 4 gives 225 mm at the top and 125 mm at the bottom («У дужках наведено довжину нижньої частини знака»)"
+      plate_variants:
+        - { w: 520, h: 112, unit: mm, note: "підтип 8-1-2 — the long tractor plate; 70 mm characters instead of 58 mm; series pair to the RIGHT instead of at the bottom" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 58, letter_height_mm: 58 }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 8-1-1 / 8-1-2 «Знаки для тракторів, самохідних шасі, самохідних сільськогосподарських, дорожньо-будівельних і меліоративних машин, сільськогосподарської техніки, інших механізмів»; Додаток 2 Таблиця 4 (225 (125) x 165 and 520 x 112, 5 digits, 2 letters, white/black); Додаток 3 (58 / 70 mm); Розділ III пп. 3, 7, 9; Додаток 5 (8-1-1 and 8-1-2 in the ordinary block)"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 8-1 — number then series, no region"
+    notes: >-
+      TRACTORS AND SELF-PROPELLED MACHINERY. Two facts make this the odd plate
+      of the system: it is the ONLY non-rectangular Ukrainian plate (a trapezoid,
+      225 mm across the top and 125 mm across the bottom — the schema's
+      `design.plate_shape` case), and it is the only ordinary-family plate with
+      NO region encoding, because Розділ III п. 3 pointedly omits subtypes 8-1-1
+      and 8-1-2 from the list of plates that may carry a літеросполука. Both
+      letters are series letters.
+
+  - id: ua-tractor-transit
+    class: temporary
+    categories: [tractor, machine]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    # RECALL-ONLY (PRD-PLATES §2.7): the instrument contradicts itself on the
+    # letter count. Розділ III п. 6 says the letter «Т» is placed «ліворуч від
+    # літеросполуки, що позначає адміністративно-територіальну належність» —
+    # T plus a two-letter region pair, i.e. three letters — while Додаток 2
+    # Таблиця 4 gives subtype 8-2 «Кількість літер: 2». The regex admits both
+    # readings rather than picking one, so a match is a shape hit.
+    matching: recall-only
+    format:
+      pattern: "T LL 99999"
+      regex: '\AT ?[A-Z]{1,2} ?\d{5}\z'
+      pattern_note: "The pattern shows the Розділ III п. 6 reading (Т + region pair + five digits); the regex also admits the Додаток 2 reading (Т + one letter + five digits)."
+      charset:
+        fixed_letters: "T"
+        notes: >-
+          «Т» is CYRILLIC Т U+0422 in the instrument (measured), transliterating
+          to Latin T. Розділ III п. 3 lists subtype 8-2 among the plates that
+          carry a region літеросполука from Додаток 4 — the only type-8 subtype
+          that does.
+    design:
+      plate: { w: 190, h: 150, unit: mm }
+      background: { color: "#D52B1E", finish: non-retroreflective, hex_basis: observed, chromaticity_ref: "червоний" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 45, letter_height_mm: 45 }
+      band: { side: right, position: upper, content: "oval bearing «UA» (Розділ III п. 2)" }
+      material: "полістирольна стрічка permitted (Розділ IV п. 3)"
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтип 8-2 «Знаки номерні «транзит» для тракторів...»; Додаток 2 Таблиця 4 (190 x 150, 5 digits, 2 letters, red field, white characters, no film); Додаток 3 (45 mm); Розділ III пп. 2, 3, 6, 9"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 8-2: «т – літеросполука, яка свідчить, що знак транзитний; АА – літеросполука, що означає адміністративно-територіальну належність; 00000 – порядковий номер» — the three-letter reading"
+    notes: >-
+      THE TRACTOR TRANSIT PLATE, issued when machinery is sold through a maker
+      or dealer. Recorded as recall-only because the ВИМОГИ disagree with
+      themselves about how many letters it carries and this pass will not
+      average two primary readings — the older ДСТУ drawing supports the
+      three-letter reading, Додаток 2 supports two. Flagged for the verifier as
+      the highest-value single question in this file.
+
+  # =========================================================================
+  # TYPES 9 and 10 — the armed forces. Black field, white characters, and the
+  # only Ukrainian plates whose letters are NOT restricted to the twelve.
+  # =========================================================================
+  - id: ua-military
+    class: military
+    categories: [car, van, truck, bus, trailer, machine]
+    period: { start: 2004 }
+    period_evidence: enabling-instrument
+    # RECALL-ONLY (PRD-PLATES §2.7): Розділ III п. 9 says these plates use
+    # «літери української абетки» WITHOUT the homoglyph restriction, so the
+    # letter may be one of Ukrainian's non-Latin letters (Г, Ф, Ч, Ю, Я ...)
+    # that this dataset's Latin-transliterated regex cannot express. A match on
+    # [A-Z] is therefore a shape hit: it neither covers the whole issuing
+    # alphabet nor lies inside it.
+    matching: recall-only
+    format:
+      pattern: "9999 L9"
+      regex: '\A\d{4} ?[A-Z]\d\z'
+      pattern_note: >-
+        Додаток 2 Таблиця 4 gives type 9 five digits and one letter. The
+        arrangement — four digits of running number, then a letter-plus-digit
+        series — is not stated in the Вимоги; it is the Ukrainian Wikipedia
+        article's description and is tagged as such in sources.
+      charset:
+        notes: >-
+          Розділ III п. 9: «На знаках типу 9, 10, 12 застосовують літери
+          української абетки» — the FULL Ukrainian alphabet, with no
+          Latin-lookalike restriction. Neither Додаток 4 nor Додаток 5 covers
+          types 9 and 10: the armed forces set their own information content
+          (Зміна № 1 до ДСТУ 4278:2012, п. 3.1: «Інформаційний зміст знаків
+          типів 9 та 10 визначають у встановленому порядку відповідні
+          уповноважені органи»). There is therefore NO statutory series list to
+          write a strict twin against.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#000000", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 76, letter_height_mm: 76 }
+      band: { side: none }
+      material: "листова сталь permitted for types 9, 10 and 18 (Розділ IV п. 3); painted to ДСТУ ISO 12944-7:2019 rather than filmed (Розділ IV п. 5)"
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 тип 9 «Знаки для всіх типів автомобілів, автомобільних причепів, автобусів, самохідних машин та механізмів Збройних Сил України, а також тих, які належать органам військової контррозвідки Служби безпеки України»; Додаток 2 Таблиця 4 (520 x 112, 5 digits, 1 letter, ЧОРНИЙ field, white characters, no film); Додаток 3 (76 mm); Розділ III п. 9; Розділ IV пп. 3, 5"
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 «Чинний від 2004-02-20», Таблиця 2 (types 9, 10) and Таблиця 4 (type 9: 5 digits, 1 letter) — verbatim reproduction of the national standard; the official text is behind ДП «УкрНДНЦ». Accessed 2026-08-03"
+      - "https://uk.wikipedia.org/wiki/Номерні_знаки_України  # the four-digit unit number plus letter-and-digit series arrangement, and the claim that the black design is unchanged since 1995. secondary-wikipedia; accessed 2026-08-03"
+    notes: >-
+      ARMED FORCES OF UKRAINE and the military counter-intelligence organs of
+      the SBU. Black field, white characters, steel permitted, no retroreflective
+      film and no state symbol. period.start 2004 is the earliest date this pass
+      could EVIDENCE (ДСТУ 4278:2004, in force 20 February 2004, already
+      contains types 9 and 10 with today's counts); the design is widely
+      reported unchanged since 1995 and the true start is therefore earlier —
+      a recorded gap, not a claim.
+
+  - id: ua-military-motorcycle
+    class: military
+    categories: [motorcycle, tractor, trailer]
+    period: { start: 2004 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "9999 L9"
+      regex: '\A\d{4} ?[A-Z]\d\z'
+      pattern_note: "Same five-digit / one-letter content as type 9 on the 220 x 174 mm plate."
+    design:
+      plate: { w: 220, h: 174, unit: mm }
+      background: { color: "#000000", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 58, letter_height_mm: 58 }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 тип 10 «Знаки для мотоциклів, моторолерів, мотоколясок, квадроциклів, трициклів ... тракторів і тракторних причепів Збройних Сил України»; Додаток 2 Таблиця 4 (220 x 174, 5 digits, 1 letter, black/white); Додаток 3 (58 mm)"
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 Таблиця 2 and Таблиця 4 (type 10: 5 digits, 1 letter). Accessed 2026-08-03"
+    notes: >-
+      ARMED FORCES MOTORCYCLES, TRACTORS AND TRACTOR TRAILERS — type 9's content
+      on the motorcycle plate. Separated from ua-military because the plate size
+      and character height differ, which is a design break under
+      _meta/classes.yml's own rule.
+
+  # =========================================================================
+  # TYPE 11 — the National Police. The only Ukrainian plate with NO letters.
+  # =========================================================================
+  - id: ua-police-2021
+    class: police
+    categories: [car, van, truck, bus, machine]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99 9999"
+      regex: '\A\d{2} ?\d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1\d|2[0-7]|31) ?\d{4}\z'
+      charset:
+        notes: >-
+          Додаток 2 Таблиця 5 gives subtype 11-1 six digits and «–» letters.
+          Розділ III п. 5 puts type 11 on the NUMERIC Додаток 6 codes and п. 6
+          places the code «під символом державної належності» — printed at
+          30 mm against the number's 76 mm, so the two are visually distinct
+          fields on one plate rather than one six-digit string.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "підтип 11-2 — motorcycles, tractors and tractor trailers of the National Police; digits 50 mm, region code 25 mm" }
+      background: { color: "#8CC8E8", finish: retroreflective, hex_basis: observed, chromaticity_ref: "світло-блакитний" }
+      foreground: "#FFFFFF"
+      characters: { digit_height_mm: 76, region_code_height_mm: 30 }
+      band: { side: left, color: "#005BBB", content: "small state coat of arms on blue", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "Розділ III п. 13: the plate must carry the emblem of the National Police of Ukraine, described and drawn in Указ Президента України від 09 грудня 2015 року № 692" }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 11-1 / 11-2 «Знаки для всіх типів автомобілів, самохідних машин та механізмів Національної поліції України, що використовуються для забезпечення публічної безпеки і порядку»; Додаток 2 Таблиця 5 (520 x 112 and 220 x 174, 6 digits, NO letters, СВІТЛО-БЛАКИТНИЙ field, white characters); Додаток 3 (76 / 50 mm, code 30 / 25 mm); Розділ III пп. 2, 5, 6, 13; Додаток 9 (світло-блакитний chromaticity box)"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А тип 11: «16 – код адміністративно-територіальної належності; 3412 – порядковий номер»"
+    notes: >-
+      NATIONAL POLICE. The only Ukrainian plate with no letters at all, and the
+      only one on the світло-блакитний field. The six digits Додаток 2 counts
+      include the two-digit region code printed small under the state arms, so
+      the number a human reads off the plate is four digits. The emblem is a
+      presidential-decree device and is rendered as a neutral placeholder per
+      PRD-PLATES §3 until its own licensing is affirmatively cleared.
+
+  # =========================================================================
+  # TYPES 13-17 — uniformed state services. One designation letter, a region
+  # літеросполука and three digits. Added to the order in three waves.
+  # =========================================================================
+  - id: ua-dsns-2021
+    class: government
+    categories: [car, van, truck, trailer, machine]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z] ?[A-Z]{2} ?\d{3}\z'
+      regex_strict: '\AE ?[ABCEHIKMOPTX]{2} ?\d{3}\z'
+      charset:
+        designation_letter: "E (Cyrillic Е U+0415)"
+        notes: >-
+          Розділ III п. 1: «літеру «Е» — на знаках типу 13». Розділ III п. 3
+          admits the Додаток 4 літеросполуки on types 12-17. Додаток 2 Таблиця 5
+          gives three letters and three digits, which is exactly designation +
+          region pair + serial. THE INSTRUMENT DOES NOT STATE the order of the
+          designation letter relative to the літеросполука for types 13-17; the
+          order used here is inferred from Розділ III п. 6, which for subtype
+          8-2 does state it («літеру «Т» розміщують ліворуч від літеросполуки»).
+          The regex accepts an optional gap at both letter boundaries so that a
+          plate printed either way still matches.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "тип 13-2 — motorcycles, tractors and tractor trailers; 40 mm characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "Розділ III п. 14: emblem of the ДСНС per Указ Президента України від 16 вересня 2016 року № 395" }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 13-1 / 13-2 «Знаки ... Оперативно-рятувальної служби цивільного захисту»; Додаток 2 Таблиця 5 (520 x 112 and 220 x 174, 3 digits, 3 letters, white/black); Додаток 3 (70 / 40 mm); Розділ III пп. 1, 3, 6, 9, 14"
+    notes: >-
+      THE STATE EMERGENCY SERVICE (ДСНС) fire and rescue fleet. Designation
+      letter «Е» — Cyrillic Е U+0415, transliterating to Latin E, NOT the Latin
+      E of an English word. Present in the original 2021 order, unlike types 16,
+      17 and 18.
+
+  - id: ua-border-guard-2021
+    class: government
+    categories: [car, van, truck, trailer, machine]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z] ?[A-Z]{2} ?\d{3}\z'
+      regex_strict: '\AB ?[ABCEHIKMOPTX]{2} ?\d{3}\z'
+      charset:
+        designation_letter: "B (Cyrillic В U+0412)"
+        notes: >-
+          Розділ III п. 1: «літеру «В» — на знаках типу 14». THE LETTER IS
+          CYRILLIC В U+0412, whose Latin lookalike is B — a plate reading
+          "В АА 123" transliterates to "B AA 123" and NEVER to "V AA 123". This
+          is the single most likely transliteration error in the Ukrainian
+          system and it is why the homoglyph map in `script:` is published.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "тип 14-2 — motorcycles, tractors and tractor trailers; 40 mm characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "Розділ III п. 15: emblem of the Державна прикордонна служба per Указ Президента України від 07 серпня 2001 року № 594" }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 14-1 / 14-2 «Знаки ... Державної прикордонної служби України»; Додаток 2 Таблиця 5; Додаток 3; Розділ III пп. 1, 3, 9, 15"
+    notes: >-
+      THE STATE BORDER GUARD SERVICE. Classed `government` rather than
+      `military` because the vocabulary's `military` entry reads "armed-forces
+      registration systems" and the ДПСУ, though a military formation in
+      Ukrainian law, is not part of the Збройні Сили and does not use the
+      type 9/10 black plates. The class assignment is a curation judgement and
+      is recorded as such.
+
+  - id: ua-national-guard-2021
+    class: government
+    categories: [car, van, truck, trailer, machine]
+    period: { start: 2021 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z] ?[A-Z]{2} ?\d{3}\z'
+      regex_strict: '\AG ?[ABCEHIKMOPTX]{2} ?\d{3}\z'
+      charset:
+        designation_letter: "G (Latin G — measured; there is no Cyrillic homoglyph for G)"
+        notes: >-
+          Розділ III п. 1: «літеру «G» — на знаках типу 15». Розділ III п. 9
+          lists type 15 among those using «літери української та латинської
+          абеток», which is exactly why a Latin-only letter can appear here.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "тип 15-2 — motorcycles, tractors and tractor trailers; 40 mm characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "Розділ III п. 16: emblem of the Національна гвардія per Указ Президента України від 12 травня 2014 року № 464" }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 15-1 / 15-2 «Знаки ... Національної гвардії України»; Додаток 2 Таблиця 6 (520 x 112 and 220 x 174, 3 digits, 3 letters, white/black); Додаток 3; Розділ III пп. 1, 3, 9, 16"
+    notes: >-
+      THE NATIONAL GUARD OF UKRAINE. Its designation letter «G» has no Cyrillic
+      lookalike at all, which makes a National Guard plate the clearest
+      demonstration that Ukraine's letter set is genuinely two alphabets and not
+      one transliterated one.
+
+  - id: ua-sbu-2023
+    class: government
+    categories: [car, van, truck, trailer, machine]
+    period: { start: 2023 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z] ?[A-Z]{2} ?\d{3}\z'
+      regex_strict: '\AC ?[ABCEHIKMOPTX]{2} ?\d{3}\z'
+      charset:
+        designation_letter: "C (Cyrillic С U+0421)"
+        notes: "Розділ III п. 1: «літеру «С» — на знаках типу 16». Cyrillic С U+0421 -> Latin C, never S."
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "тип 16-2 — motorcycles, tractors and tractor trailers; 40 mm characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "Розділ III п. 17: emblem of the СБУ per Указ Президента України від 14 лютого 2002 року № 129" }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 16-1 / 16-2 «Знаки ... Служби безпеки України, крім транспортних засобів, які належать органам військової контррозвідки Служби безпеки України»; Додаток 2 Таблиця 6; Розділ III пп. 1, 9, 17 (the п. 17 emblem paragraph was ADDED by Наказ МВС № 259 від 31.03.2023, which is what dates this series)"
+    notes: >-
+      THE SECURITY SERVICE OF UKRAINE, minus its military counter-intelligence
+      organs, which take the black armed-forces plates of type 9/10 instead —
+      the instrument carves that exception in both places, and it is the only
+      Ukrainian body split across two plate types. period.start 2023 is
+      Наказ МВС № 259 від 31.03.2023, which created type 16.
+
+  - id: ua-udo-2024
+    class: government
+    categories: [car, van, truck, trailer, machine]
+    period: { start: 2024 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z] ?[A-Z]{2} ?\d{3}\z'
+      regex_strict: '\AS ?[ABCEHIKMOPTX]{2} ?\d{3}\z'
+      charset:
+        designation_letter: "S (Latin S)"
+        notes: >-
+          Розділ III п. 1: «літеру «S» — на знаках підтипів 4-5, 4-6 та типу
+          17». The same letter serves the diplomatic administrative-technical
+          plate and the state-protection service; they are separable on shape
+          (S + 6 digits versus S + 2 letters + 3 digits) and on field colour
+          (olive versus white).
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "тип 17-2 — motorcycles, tractors and tractor trailers; 40 mm characters" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 70, letter_height_mm: 70 }
+      band: { side: left, color: "#005BBB", content: "UA + Ukrainian flag", hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, note: "Розділ III п. 18: emblem of the Управління державної охорони per Указ Президента України від 05 грудня 2001 року № 1189" }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 17-1 / 17-2 «Знаки ... Управління державної охорони України»; Додаток 2 Таблиця 6; Розділ III пп. 1, 9, 18 (the п. 18 emblem paragraph was ADDED by Наказ МВС № 53 від 30.01.2024, which dates this series)"
+    notes: >-
+      THE STATE GUARD DEPARTMENT (УДО) — the service that protects the
+      President and the highest offices of state. Added to the order in 2024,
+      the second-newest Ukrainian plate type.
+
+  - id: ua-dsst-2025
+    class: military
+    categories: [car, van, truck, bus, trailer, machine]
+    period: { start: 2025 }
+    period_evidence: enabling-instrument
+    # RECALL-ONLY (PRD-PLATES §2.7): Додаток 2 Таблиця 6 gives type 18 five
+    # digits and one letter, and Розділ III п. 1 names the letters «D», «С»,
+    # «О» — but nothing in the instrument states whether the letter leads or
+    # trails the digits, and type 18 is three months old with no published
+    # sample text. The regex admits both orders, so a match is a shape hit.
+    matching: recall-only
+    format:
+      pattern: "L 99999"
+      regex: '\A(?:[A-Z] ?\d{5}|\d{5} ?[A-Z])\z'
+      pattern_note: "The pattern shows the letter-leading reading, by analogy with types 13-17; the regex also admits the digits-leading reading of types 9 and 10, which type 18 otherwise resembles."
+      charset:
+        designation_letters: "D (Latin), C (Cyrillic С U+0421), O (Cyrillic О U+041E)"
+        notes: "Розділ III п. 1: «літери «D», «С», «О» — на знаках типу 18». Розділ III п. 9 puts type 18 on both alphabets, which is consistent with one Latin and two Cyrillic designation letters."
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      plate_variants:
+        - { w: 220, h: 174, unit: mm, note: "підтип 18-2 — motorcycles, tractors and tractor trailers; 58 mm characters" }
+      background: { color: "#FFFFFF", finish: non-retroreflective, hex_basis: observed, chromaticity_ref: "білий" }
+      foreground: "#000000"
+      characters: { digit_height_mm: 76, letter_height_mm: 76 }
+      band: { side: none }
+      material: "листова сталь permitted (Розділ IV п. 3); painted rather than filmed (Розділ IV п. 5)"
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://zakon.rada.gov.ua/laws/show/z0353-21  # Додаток 1 підтипи 18-1 / 18-2 «Знаки ... Державної спеціальної служби транспорту, Державної служби спеціального зв’язку та захисту інформації України»; Додаток 2 Таблиця 6 (520 x 112 and 220 x 174, 5 digits, 1 letter, white field, black characters, NO retroreflective film); Додаток 3 (76 / 58 mm); Розділ III пп. 1, 9; Розділ IV пп. 3, 5 — the whole type was added by Наказ МВС № 761 від 03.11.2025"
+    notes: >-
+      THE STATE SPECIAL TRANSPORT SERVICE and the State Service of Special
+      Communications — both military formations, which is why the class is
+      `military` and why the plate takes the armed-forces treatment (steel,
+      paint, no film) on a white field rather than black. THE NEWEST UKRAINIAN
+      PLATE TYPE, three months old at the time of this pass. Until 2025 these
+      services' vehicles carried the black type 9/10 plates, which the
+      Зміна № 1 до ДСТУ 4278:2012 expressly extended to them.
+
+  # =========================================================================
+  # THE PREVIOUS DESIGN REGIME — ДСТУ 4278:2004, «Чинний від 2004-02-20»,
+  # superseded in issue by the 2015 design. Same serial grammar throughout:
+  # the 2015 break is a DESIGN break, which is why these five entries exist.
+  # =========================================================================
+  - id: ua-standard-2004
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2004, end: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[ABCEHIKMOPTX]{2}\z'
+      charset:
+        notes: >-
+          ДСТУ 4278:2004 п. 2.6: «На знаках типів 1 та 5 літери української
+          абетки, розміщені з лівого боку знака, означають адміністративно-
+          територіальну або загальнодержавну належність ... Літери української
+          абетки, розміщені з правого боку знака, означають його серію», with
+          Додаток Б (27 regions + the загальнодержавна pair ІІ) and Додаток В
+          (the series grid). Примітка 1 to Таблиця 4: «Для знаків, за винятком
+          типу 4, застосовують літери української абетки, що збігаються з
+          написом літер латинської абетки» — the twelve-letter rule, already in
+          force in 2004.
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band:
+        side: left
+        color: "#005BBB"
+        color_lower: "#FFD700"
+        content: "small state coat of arms above, «UA» below, on a rectangle split into equal blue (upper) and lemon-yellow (lower) halves"
+        hex_basis: observed
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 «ДОРОЖНІЙ ТРАНСПОРТ. ЗНАКИ НОМЕРНІ ТРАНСПОРТНИХ ЗАСОБІВ. Загальні вимоги. Правила застосування», «Чинний від 2004-02-20»: Таблиця 1 (type 1), Таблиця 3 (520 x 112), Таблиця 4 (type 1: 4 digits), п. 2.6 (letter roles), п. 2.9 (the blue-over-lemon-yellow panel with the arms above and UA below), Додаток Б, Додаток В. Verbatim reproduction of the national standard; the official text is behind ДП «УкрНДНЦ». Accessed 2026-08-03"
+      - "https://uk.wikipedia.org/wiki/Номерні_знаки_України  # period.end 2015 — the date issue of the current design began. secondary-wikipedia; accessed 2026-08-03"
+    notes: >-
+      THE 2004 PLATE. Same АА 1234 АА grammar as today's — the 2015 change was
+      the BAND and the font, not the serial. The 2004 panel is described by the
+      standard itself and is the reliable way to date a Ukrainian photograph:
+      «зліва у вигляді прямокутника, поділеного на дві рівні частини, верхня з
+      яких блакитного кольору, а нижня лимонно-жовтого, у вигляді напису UА
+      знизу та малого герба України зверху». The blue UA/flag band of the
+      current design replaced it. period.start is the standard's own
+      commencement line; period.end is the secondary first-issue date of the
+      successor design, and old-stock plates remain valid indefinitely — a
+      2004-design plate on the road in 2026 is entirely lawful.
+
+  - id: ua-taxi-2004
+    class: taxi
+    categories: [car, bus, van]
+    period: { start: 2004, end: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[ABCEHIKMOPTX]{2}\z'
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#005BBB", color_lower: "#FFD700", content: "arms above, UA below, blue over lemon-yellow", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 п. 2.3: «Знаки типу 1 з полем жовтого кольору застосовують для автобусів, мікроавтобусів, таксі». Accessed 2026-08-03"
+    notes: >-
+      THE 2004 YELLOW PLATE for buses, minibuses and taxis — a colour variant of
+      the 2004 type 1 with the same grammar, and the ancestor of ua-taxi-2015.
+      The 2004 standard attached it to the VEHICLE KIND (bus, minibus, taxi);
+      the 2021 order attaches it instead to the OPERATOR'S REGISTRY ENTRY, which
+      is a genuine change of rule and not a change of wording.
+
+  - id: ua-motorcycle-2004
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2004, end: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL 9999 LL"
+      regex: '\A[A-Z]{2} ?\d{4} ?[A-Z]{2}\z'
+      regex_strict: '\A[ABCEHIKMOPTX]{2} ?\d{4} ?[ABCEHIKMOPTX]{2}\z'
+      charset:
+        notes: "ДСТУ 4278:2004 п. 2.6 applies the region-left / series-right rule to types 1 AND 5; Таблиця 4 gives type 5 four digits."
+    design:
+      plate: { w: 220, h: 174, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, position: upper, color: "#005BBB", color_lower: "#FFD700", content: "arms above, UA below", hex_basis: observed }
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 Таблиця 1 (type 5 «Знаки для мотоциклів, моторолерів, мотоколясок»), Таблиця 3 (220 x 174), Таблиця 4, п. 2.6. Accessed 2026-08-03"
+    notes: >-
+      THE 2004 MOTORCYCLE PLATE. One plate per motorcycle (ДСТУ 4278:2004
+      п. 3.1: «на автотранспорті — два знаки; на тракторах, мототранспорті,
+      причепах — один знак»), same size as today's large motorcycle plate,
+      2004 panel.
+
+  - id: ua-transit-2004
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2004, end: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99 LL 9999"
+      regex: '\A\d{2} ?[A-Z]{2} ?\d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1\d|2[0-7]|31) ?[ABCEHIKMOPTX]{2} ?\d{4}\z'
+      charset:
+        notes: "ДСТУ 4278:2004 Таблиця 4 gives type 2 four digits and two letters; the numeric region code came with the code table the 2012 standard and the 2021 order both carry."
+    design:
+      plate: { w: 520, h: 112, unit: mm }
+      background: { color: "#D52B1E", finish: non-retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: left, color: "#005BBB", color_lower: "#FFD700", content: "arms above, UA below", hex_basis: observed }
+      note: "ДСТУ 4278:2004 п. 2.11: types 2 and 6 carry a place for a sticker showing the MONTH of issue — the 2004 regime's validity marker."
+      rear_differs: false
+    region_encoding: "plates/_decode/ua-regions.yml"
+    sources:
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 Таблиця 1 (type 2 «Знаки для разових поїздок»), Таблиця 3 (520 x 112), Таблиця 4 (4 digits, 2 letters), п. 2.11 (the month sticker). Accessed 2026-08-03"
+      - "https://web.archive.org/web/20180328225320/http://www.sai.gov.ua/uploads/filemanager/file/zmina-1-dstu-4278.pdf  # Зміна № 1 до ДСТУ 4278:2012, Додаток А підтип 2-1 — the code / series / number order carried forward"
+    notes: >-
+      THE 2004 RED TRANSIT PLATE. Recorded with the code-series-number shape the
+      2012 standard's Додаток А draws, because the 2004 standard's own Таблиця 4
+      gives only counts (4 digits, 2 letters) and its Додаток А is a set of
+      drawings this pass could not read. A verifier who reaches the 2004
+      drawings should re-derive the digit count: four in 2004 against six today
+      is a real difference, and it is the weakest claim in this file's 2004
+      block.
+
+  - id: ua-tractor-2004
+    class: agricultural
+    categories: [tractor, machine, trailer]
+    period: { start: 2004, end: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "99999 LL"
+      regex: '\A\d{5} ?[A-Z]{2}\z'
+      regex_strict: '\A\d{5} ?[ABCEHIKMOPTX]{2}\z'
+    design:
+      plate: { w: 288, h: 206, unit: mm }
+      plate_shape: "trapezoid — ДСТУ 4278:2004 Таблиця 3 gives «288(140)» length, the bracketed figure being the lower edge"
+      background: { color: "#FFFFFF", finish: non-retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "http://www.infocar.com.ua/law_ukr/law_22.html  # ДСТУ 4278:2004 Таблиця 1 (type 8 «Знаки для тракторів, тракторних причепів, самохідних машин і механізмів»), Таблиця 3 (288(140) x 206), Таблиця 4 (5 digits, 2 letters), п. 2.20 (film on types 1, 3-5, 7 only). Accessed 2026-08-03"
+    notes: >-
+      THE 2004 TRACTOR PLATE — a LARGER trapezoid than today's (288 x 206 mm
+      with a 140 mm lower edge, against 225 x 165 with a 125 mm lower edge), and
+      the clearest dimensional break between the two regimes. Five digits and a
+      two-letter series, no region encoding, then as now.
