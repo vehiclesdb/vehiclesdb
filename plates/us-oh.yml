@@ -1,0 +1,404 @@
+# plates/us-oh.yml — Ohio (PRD-PLATES gate L2, group midwest-a).
+#
+# WHAT OHIO IS FOR IN THIS DATASET: the state where the DISPLAY statute is
+# unusually generous and the DESIGN statute is silent. ORC 4503.19 and 4503.21
+# together settle, in primary law, that Ohio is a REAR-ONLY jurisdiction with a
+# single inverted exception (commercial tractors display on the FRONT) — the
+# same shape as Florida's truck-tractor rule and, like Florida's, a genuine
+# outlier a naive front/rear classifier gets wrong. But nothing in Chapter 4503
+# states a serial arrangement, a colour, or a plate dimension for the ordinary
+# passenger plate. Ohio legislates DISPLAY and delegates DESIGN.
+#
+# SOURCING RULE APPLIED HERE (PRD-PLATES §4): edicts of government are public
+# domain at every level, so every display, temporary-tag, county-sticker and
+# government-plate claim below cites the Ohio Revised Code. The serial
+# ARRANGEMENTS are a different matter and are flagged as such: no primary
+# carrying them was obtained, so they are recorded with
+# `period_evidence: secondary-first-issue` and `format.evidence: secondary`,
+# never as statute-grade.
+#
+# FETCH-PROVENANCE NOTE (honest, and it applies to every file in this group):
+# codes.ohio.gov — the official Ohio Revised Code host — refused every request
+# from this environment (TCP reset), as did bmv.ohio.gov (an F5 rejection
+# page). The statutory text quoted here was read from codes.findlaw.com, a
+# third-party REPRODUCTION of the same edict. Both URLs are carried on every
+# source line: the FindLaw URL is what was actually fetched, the codes.ohio.gov
+# URL is the canonical citation a verifier should re-derive from. An edict does
+# not change by being reprinted, but the provenance chain must say which copy
+# was read.
+#
+# REGEX FORM (PRD-PLATES §2.6): every regex here is in PRINTED form — the
+# separator is spelled where the plate shows it, and only `-` and ` ` are ever
+# spelled, per plates/_meta/separators.yml.
+#
+# NOT HERE, DELIBERATELY (PRD-PLATES §2.5 + the L2 scope): individual specialty
+# DESIGNS (L4); Ohio's commercial-truck (PBC 1234) and apportioned (PBC1234)
+# series, which are outside the L2 core-class list; and any government-plate
+# SERIES, because ORC 4503.16 gives the legend but no serial shape and none was
+# sourced (recorded gap).
+jurisdiction: us-oh
+authority:
+  name: Ohio Bureau of Motor Vehicles (Ohio BMV), Ohio Department of Public Safety
+  url: "https://www.bmv.ohio.gov/"
+binding: vehicle
+statute_edition: "Ohio Revised Code Title XLV (Motor Vehicles), Chapter 4503, as reproduced by codes.findlaw.com and read 2026-08-02. The official host codes.ohio.gov was unreachable from this environment; no edition banner was therefore captured, and the edition is an UNVERIFIED currency claim."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched-default-adverse
+  basis: >-
+    NOTHING FAVOURABLE WAS FOUND FOR OHIO, and that is the finding rather than a
+    gap in the search. The governing default is that 17 U.S.C. §105 does not
+    extend to the states, so a state work is copyrighted unless the state says
+    otherwise. Two surveys were checked for an Ohio carve-out and both are
+    silent: the Wikipedia survey of subnational copyright status covers
+    seventeen states and Ohio is NOT among them, and Commons' own
+    copyright-rules-by-territory page for the United States lists state PD tags
+    for CA, FL, GA, MA, ME, MN (Geological Survey), OK, WA (Redistricting
+    Commission) and one Alabama municipality — there is no {{PD-OHGov}}. No
+    Ohio statute, AG opinion or case establishing a public-domain rule for state
+    works was located. Ohio therefore sits at the default: TREAT THE ARTWORK AS
+    COPYRIGHTED. This is the opposite pole from Florida and must not be
+    softened by analogy to it.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies with full force. The current
+    "Sunrise in Ohio" base is a full-bleed pictorial scene (skyline, hills,
+    river, wheat field, a child on a swing, a Wright Flyer) — the highest-risk
+    artwork category in the program, in a state with no PD posture. Render
+    `emblem: {present: true, rendered: placeholder}` and do not approximate the
+    scene beyond a neutral field. State-seal protection is independent of
+    copyright and is unresearched for Ohio.
+  photograph_caution: >-
+    The standing rule (PRD-PLATES §6): a CC licence on a Commons photograph of
+    an Ohio plate is the PHOTOGRAPHER's licence on the PHOTOGRAPH; the uploader
+    had no standing over the design. Because our renders are generated from
+    data and never derived from a photograph, those obligations never attach —
+    which is the whole argument for the own-SVG rule and is doing real work in
+    an adverse state like this one.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR + NEGATIVE FINDING: seventeen states are covered and Ohio is not one of them"
+    - "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States  # the §105-does-not-reach-the-states rule, and the exhaustive list of state PD tags — no Ohio tag exists"
+
+# ---------------------------------------------------------------------------
+# The US standards chain, recorded once per US file. Voluntary, no federal
+# mandate, and the delegation trap: AAMVA sends dimensions to SAE J686, whose
+# own text is PAYWALLED and UNPINNED. Nothing here quotes J686.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA writes recommendations in the declarative present; read as RECOMMENDED PRACTICE, never as requirement."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends plate dimensions and bolt holes to SAE J686. J686's own text was NOT obtained (paywalled); no J686 dimension is quoted anywhere in this dataset."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges"
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name in the top centre between the bolt holes, at least 0.25 in above the plate number and 0.125 in from the top edge; jurisdiction characters 0.75-1.0 in"
+    stacked_characters: "AAMVA: 'If stacked characters are used, they are part of the official license plate number. No more than two characters are to be stacked.' Load-bearing in this GROUP — see the stacked-pair note on the Illinois and Wisconsin files."
+    replacement_cycle: "AAMVA §1.1 recommends a rolling or full replacement cycle 'not to exceed 7 to 10 years'. Ohio legislates NO replacement cycle at all (recorded gap) — contrast Michigan, which legislates a hard 10-year non-renewal, and Illinois, which runs a 10-year replating programme."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" that supposedly fixed the 6x12 inch
+    plate is UNCITED in its Wikipedia source (a `citation needed` since 2017,
+    copied verbatim across articles — circular). It is NOT relied on here. Ohio
+    has no statutory plate dimension at all, so this file records no dimension
+    for the Ohio plate rather than importing the folklore number.
+
+# ---------------------------------------------------------------------------
+# Display rules — Ohio's best-sourced layer, entirely from statute.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "ONE plate, REAR. ORC 4503.19: 'The owner shall display the license plate and, when required, the validation sticker on the rear of the vehicle.'"
+  front_plate_required_when:
+    - "COMMERCIAL TRACTOR: 'However, a commercial tractor shall display the license plate on the front' (ORC 4503.19; repeated in ORC 4503.21) — front-only, the inverse of the state default and the same outlier shape as Florida's truck-tractor rule"
+  mounting: "ORC 4503.21: the plate must be displayed 'in plain view on the rear of the motor vehicle' and 'shall be securely fastened so as not to swing, and shall not be covered by any material that obstructs its visibility'. NOTE: unlike Florida (100 ft) and Illinois/Michigan (100 ft), Ohio's statute states NO legibility distance."
+  temporary_display: "ORC 4503.21: a temporary motor vehicle license registration is displayed 'in plain view from the rear of the vehicle either in the rear window or on an external rear surface'"
+  county_sticker: "ORC 4503.19 requires issuance of 'a county identification sticker, which shall be attached to the license plate' identifying the owner's county of residence. This is a STICKER, not a serial field — Ohio geography is on the plate but never in the plate string."
+  school_bus: "ORC 4503.19: 'The registrar or deputy registrar shall not issue a license plate for a school bus' — school buses are outside the ordinary plate system entirely"
+  penalty: "ORC 4503.19 and ORC 4503.21: 'Whoever violates this section is guilty of a minor misdemeanor.'"
+  front_plate_history: "Ohio required front plates until 1 July 2020 and has been rear-only since. The DATE is LOCATOR-GRADE (Wikipedia); what IS primary is that the current statutory text reads rear-only, which corroborates the change without dating it."
+  sources:
+    - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-19.html  # FETCHED. ORC 4503.19: rear display, commercial-tractor front exception, county identification sticker, school-bus exclusion, $7.50 per set of two / $6.50 single replacement, minor misdemeanor"
+    - "https://codes.ohio.gov/ohio-revised-code/section-4503.19  # CANONICAL citation for the same edict — NOT fetched this pass (host refused the connection)"
+    - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-21.html  # FETCHED. ORC 4503.21: plain view on the rear, commercial tractor front, no-swing/no-obstruction, temporary-tag rear-window display, minor misdemeanor"
+    - "https://codes.ohio.gov/ohio-revised-code/section-4503.21  # CANONICAL, not fetched"
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY (PRD-PLATES §4): 'Only rear plates have been required for all classes of vehicles, except commercial tractors, since July 1, 2020.' The DATE is not asserted as sourced."
+
+series:
+
+  # =========================================================================
+  # STANDARD ISSUE — current and one back. Same serial arrangement across
+  # both, which is why the ids are dated: the BASE changed, the format did not.
+  # =========================================================================
+  - id: us-oh-standard-2021
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2021 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          NO OHIO STATUTE CONSTRAINS THE ORDINARY SERIAL. ORC 4503.19 speaks of
+          "a license plate" and never of its composition; the only place Chapter
+          4503 states a character grammar is ORC 4503.182, for TEMPORARY tags
+          (seven positions — see us-oh-temporary). No letter exclusions are
+          stated anywhere and none were observed. Consequently this file carries
+          NO `regex_statutory` for the standard series: there is no statutory
+          outer bound to record, and inventing one would be worse than the gap.
+      progression: "sequential three-letter blocks with a four-digit counter; observed range JDA 1000 -> JDZ 9999, then JRQ 1000 -> KRA 6695 as of 2025-05-23 (secondary)"
+    design:
+      background: { finish: retroreflective }
+      colour_note: >-
+        Dark blue screened serial on a full-bleed sunrise scene. NO HEX IS
+        RECORDED. Ohio's statute states no colour, the BMV site was unreachable,
+        and a hex invented from a photograph would be a fabricated fact wearing
+        a data field's clothes. Colour is a recorded gap, not an estimate.
+      legend_top: "OHIO"
+      legend_bottom: "Birthplace of Aviation"
+      graphic: { present: true, rendered: placeholder, description: "pictorial sunrise scene — skyline, hills, river, wheat field, a child on a swing and a Wright Flyer, with a red banner; observed via a Wikipedia locator only, never from a statutory drawing" }
+      emblem: { present: true, rendered: placeholder }
+      flat_vs_embossed: "reported as Ohio's first FLAT (screened, non-embossed) passenger base — secondary, and a real render-layer input if confirmed"
+      county_sticker: { present: true, position: "bottom centre", content: "county name, or on request the county number" }
+    region_encoding: "none in the serial. Ohio's county appears on a STICKER attached to the plate (ORC 4503.19), and the county-number scheme was replaced by county-NAME stickers on standard passenger plates in 2018 (secondary). A parse API must never try to decode Ohio geography out of the string."
+    sources:
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-19.html  # FETCHED. ORC 4503.19: the county identification sticker attached to the plate; rear display; the absence of any serial grammar"
+      - "https://codes.ohio.gov/ohio-revised-code/section-4503.19  # CANONICAL, not fetched"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY: 'Sunrise in Ohio' first issued 2021-12-29; serial format ABC 1234; ranges JDA 1000-JDZ 9999 and JRQ 1000-KRA 6695 (2025-05-23); the 2018 return to county-NAME stickers"
+    notes: >-
+      OHIO STANDARD ISSUE, CURRENT BASE ("Sunrise in Ohio"). PERIOD CAVEAT, and
+      it is the important line in this entry: `start: 2021` rests on a Wikipedia
+      first-issue date of 29 December 2021 and on nothing else. No Ohio primary
+      dating a base introduction was obtained — Ohio does not legislate base
+      changes, the BMV host refused connections, and collector-site era tables
+      are exactly what PRD-PLATES §9 warns about. The year is therefore carried
+      with `period_evidence: secondary-first-issue`, which is a first-class
+      admission and not a footnote: a verifier must re-derive it before this
+      claim enters the five-nines ledger. The FORMAT is on the same footing.
+      What IS statute-grade here is only the county sticker and the display
+      rules.
+
+  - id: us-oh-standard-2013
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2013, end: 2021 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      evidence: secondary
+      charset: { notes: "identical grammar to the current base — the 2021 change was a BASE change, not a format change" }
+    design:
+      background: { finish: retroreflective }
+      colour_note: "dark blue serial on a word-cloud background with a red triangle; no hex recorded, for the reason given on the current base"
+      legend_top: "OHIO"
+      legend_bottom: "Birthplace of Aviation"
+      graphic: { present: true, rendered: placeholder, description: "'Ohio Pride' word-cloud field; secondary only" }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "county sticker; no serial encoding"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY: 'Ohio Pride' base, 2013-04-15 to 2021-12-28, serial format ABC 1234, 46 slogan variants"
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-19.html  # FETCHED. The statutory frame this base was issued under is unchanged, which is why no format difference is recorded"
+    notes: >-
+      ONE SERIES BACK ("Ohio Pride", 2013-2021). Carried because L2 asks for the
+      previous standard base, and it earns its place by demonstrating something a
+      format-only dataset would miss: TWO CONSECUTIVE OHIO BASES SHARE ONE
+      SERIAL GRAMMAR. A regex match on `ABC 1234` therefore dates an Ohio plate
+      not at all — the discriminator is the base artwork and the serial BLOCK,
+      not the shape. Both this period and the boundary date are
+      secondary-first-issue and overlap the current base's start year by
+      construction; the transition is recorded as adjacent, not as parallel
+      issuance.
+
+  # =========================================================================
+  # CORE DISTINCT CLASSES (L2 scope): motorcycle, trailer, dealer, temporary.
+  # Government is a RECORDED GAP — see the file header.
+  # =========================================================================
+  - id: us-oh-motorcycle-2015
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LLL99"
+      regex: '\A[A-Z]{3}\d{2}\z'
+      evidence: secondary
+      charset: { notes: "five positions, no printed separator observed; the reduced plate size is departmental, not statutory" }
+      progression: "observed from AAA01 (secondary)"
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      size_note: "reduced motorcycle size; NO dimension recorded — Ohio legislates none and AAMVA delegates dimensions to the unpinned SAE J686"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY: motorcycle series 2015-present, format ABC12, from AAA01"
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-19.html  # FETCHED. ORC 4503.19 governs issuance and rear display for motorcycles as for other vehicles; no motorcycle-specific grammar exists"
+    notes: >-
+      MOTORCYCLE. Its own series rather than a flag on the standard plate
+      because the FORMAT differs (five positions against seven) and the plate
+      size differs. Everything except the display rule is secondary; recorded as
+      such rather than omitted, because a plates dataset with no US motorcycle
+      coverage is less useful than one with flagged coverage.
+
+  - id: us-oh-trailer-2021
+    class: trailer
+    categories: [trailer]
+    period: { start: 2021 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "ULL 9999"
+      regex: '\AU[A-Z]{2} ?\d{4}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          The leading U is an OBSERVED BLOCK ALLOCATION, not a statutory prefix:
+          the non-commercial trailer series is reported running from UAA 1000,
+          i.e. Ohio reserved the U-block for trailers. It is spelled as a literal
+          here because that is what the current series prints, but a verifier
+          should treat it as a range fact that will expire when the block does.
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY: non-commercial trailer 2021-present, format UBC 1234, from UAA 1000"
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-21.html  # FETCHED. ORC 4503.21 display duty applies to the trailer plate as to any other"
+    notes: >-
+      NON-COMMERCIAL TRAILER. Separately serialized, hence its own series under
+      PRD-PLATES §2.3. The interesting modelling point is the U-BLOCK: Ohio
+      distinguishes the class by a letter block inside a shared grammar rather
+      than by a distinct grammar, so `[A-Z]{3} ?\d{4}` alone cannot tell a
+      trailer plate from a passenger plate — only the block can, and blocks
+      exhaust. A parse API must rank, not decide, on this evidence.
+
+  - id: us-oh-dealer-2021
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2021 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "999 L9LL"
+      regex: '\A\d{3} ?[A-Z]\d[A-Z]{2}\z'
+      evidence: secondary-weak
+      charset:
+        notes: >-
+          FLAGGED AS THE WEAKEST FORMAT CLAIM IN THIS FILE. The arrangement
+          "123 A1BC" comes from a single secondary table and is unusual enough
+          (a letter-digit-letter-letter tail) that it may be a transcription of a
+          STACKED pair rather than a linear serial. No Ohio primary was
+          obtained. A verifier should either confirm it against a BMV source or
+          delete this series; it is carried, flagged, rather than silently
+          dropped, because dealer plates are inside the L2 core-class list.
+    design:
+      background: { finish: retroreflective }
+      legend_bottom: "Dealer"
+      emblem: { present: true, rendered: placeholder }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY, and the sole source for this format: dealer series 2021-present, format 123 A1BC"
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-19.html  # FETCHED. ORC 4503.19 is the issuance frame; it carries no dealer-plate grammar"
+    notes: >-
+      DEALER PLATES. `binding: business` for the same reason as Germany's rote
+      Kennzeichen and Florida's dealer plate: the plate follows the dealership,
+      not a vehicle. The format is the one entry in this file I would expect a
+      verifier to change.
+
+  - id: us-oh-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9]{7}\z'
+      evidence: statutory
+      charset:
+        notes: >-
+          ORC 4503.182, verbatim: temporary registrations 'shall bear a
+          distinctive combination of SEVEN letters, numerals, or letters and
+          numerals, and shall incorporate a security feature that, to the
+          greatest degree possible, prevents tampering with any of the
+          information that is entered upon it when it is issued.' THIS IS THE
+          ONLY STATUTORY SERIAL GRAMMAR IN THE WHOLE OF OHIO'S PLATE LAW, which
+          is why the temporary tag — normally the least interesting class — is
+          the best-sourced series in this file. Seven positions exactly, the
+          full alphanumeric alphabet, no exclusions stated.
+    design:
+      material: "paper/card; ORC 4503.21 requires display 'in plain view from the rear of the vehicle either in the rear window or on an external rear surface'"
+      background: { finish: none }
+      emblem: { present: false }
+      security_feature: "required by ORC 4503.182 — anti-tamper, unspecified in kind"
+    validity: "FORTY-FIVE DAYS. ORC 4503.182: 'A temporary motor vehicle license registration issued under division (A) of this section is valid for a period of forty-five days from date of issuance and is not transferable or renewable.'"
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-182.html  # FETCHED. ORC 4503.182: the seven-character grammar, the 45-day validity, non-transferable and non-renewable, the anti-tamper security feature, and the use restriction"
+      - "https://codes.ohio.gov/ohio-revised-code/section-4503.182  # CANONICAL, not fetched"
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-21.html  # FETCHED. ORC 4503.21: where the temporary registration is displayed"
+    notes: >-
+      TEMPORARY REGISTRATION. `period.start: 2026` is an INSTRUMENT-IN-FORCE
+      UPPER BOUND — the statute is in force in the edition read and says nothing
+      about when the seven-character grammar began; Ohio has issued temporary
+      tags since long before. Recorded as an upper bound rather than invented,
+      exactly as the Florida pilot does. Two facts here are worth carrying
+      forward: paper temporary tags with a MANDATED CHARACTER COUNT are rare in
+      US law, and the 45-day window is longer than Michigan's 30 — temporary
+      validity is a genuine per-state variable, not a constant.
+
+  # =========================================================================
+  # SPECIALTY — PROGRAM INDEX ONLY (PRD-PLATES §2.5). No individual designs.
+  # =========================================================================
+  - id: us-oh-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      evidence: secondary
+      charset: { notes: "specialty plates carry ORDINARY serials on an alternative design; no separate grammar is stated in law or observed" }
+    design:
+      background: { finish: retroreflective }
+      note: "one design per authorised programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: null
+      count_status: RECORDED-GAP
+      count_note: >-
+        NO COUNT IS RECORDED, AND THE REASON IS PART OF THE RECORD. Ohio's own
+        plate catalogue lives at bmv.ohio.gov, which returned an F5 rejection
+        page to every request from this environment; no official figure was
+        obtained, and no secondary figure was found either (the Wikipedia
+        article states only that 'Ohio state law authorizes the Bureau of Motor
+        Vehicles to issue a number of specialty passenger plates, as defined in
+        Ohio Rev. Code chapter 4503' — a count-free sentence). Recording `null`
+        with a stated cause is the honest move; a guessed order of magnitude
+        would be indistinguishable from a fact once it is in YAML.
+      official_list_url: "https://www.bmv.ohio.gov/rs-license-plates.aspx"
+      official_list_fetch_status: "BLOCKED — F5/ASM rejection page ('The requested URL was rejected') on every attempt from this environment, 2026-08-02"
+      statutory_basis: "Ohio Revised Code Chapter 4503 authorises the individual specialty plates one section at a time (the sections in the 4503.4x-4503.9x range), rather than by a single generic authorisation with a petition threshold. That is the structural contrast with Illinois (2,000 applications, 625 ILCS 5/3-600) and Wisconsin (500 signatures, Wis. Stat. 341.14): OHIO'S SPECIALTY CATALOGUE IS A LIST OF STATUTES, so its true size is countable from the code itself — a tractable follow-up that needs codes.ohio.gov to be reachable."
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio  # LOCATOR ONLY: 'Ohio state law authorizes the Bureau of Motor Vehicles to issue a number of specialty passenger plates, as defined in Ohio Rev. Code chapter 4503' — no number given"
+      - "https://codes.findlaw.com/oh/title-xlv-motor-vehicles-aeronautics-watercraft/oh-rev-code-sect-4503-14.html  # FETCHED. ORC 4503.14 is a worked example of the per-plate statutory pattern: it authorises plates bearing 'the official call letters of the applicant as assigned by the federal communications commission' for licensed amateur-radio and broadcast operators"
+    notes: >-
+      THE OHIO SPECIALTY PROGRAM INDEX — one entry standing for the whole
+      programme, per PRD-PLATES §2.5. The count is a declared gap. The finding
+      worth carrying forward is STRUCTURAL rather than numeric: Ohio does not
+      have a generic specialty-plate mechanism with a petition threshold the way
+      Illinois and Wisconsin do; it authorises plates individually in statute.
+      That makes the Ohio catalogue enumerable from a public-domain edict rather
+      than from an agency page — a better long-run source than any brochure, and
+      one that also explains why the amateur-radio call-sign plate (ORC 4503.14)
+      is a SPECIALTY plate whose serial is not assigned by the state at all but
+      by the FCC. That is a genuinely unusual serial provenance and the only
+      Ohio plate whose characters are governed by federal allocation.
