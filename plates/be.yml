@@ -1,0 +1,1840 @@
+# plates/be.yml — Belgium (PRD-PLATES gate L1, EU/EEA slice).
+#
+# EVERY format, colour, dimension and class claim in this file is taken from
+# one of two consolidated Belgian instruments, fetched from the federal
+# Justel database on 2026-08-02:
+#
+#   * ARRETE ROYAL du 20 juillet 2001 relatif a l'immatriculation de vehicules
+#     / KONINKLIJK BESLUIT van 20 juli 2001 betreffende de inschrijving van
+#     voertuigen — M.B./B.S. 08.08.2001 p. 27022, NUMAC 2001014153,
+#     Justel dossier 2001-07-20/35, in force 01-10-2001, consolidated to
+#     22-07-2025. Its art. 38 abrogated the arrete royal du 31 decembre 1953
+#     portant reglementation de l'immatriculation des vehicules a moteur et
+#     des remorques, which had governed Belgian registration for 48 years.
+#     THE FRAME: who gets which CATEGORY of plate, and who owns the number.
+#   * ARRETE MINISTERIEL du 23 juillet 2001 relatif a l'immatriculation de
+#     vehicules — M.B./B.S. 08.08.2001 p. 27048, NUMAC 2001014154,
+#     Justel dossier 2001-07-23/30, in force 01-10-2001, consolidated to
+#     22-07-2025. THE SPEC: dimensions, colours (as RAL codes), inscriptions.
+#     Art. 21 of the arrete royal is the delegation that makes it so:
+#     "Le ministre determine les dimensions, la forme, la couleur,
+#     l'inscription et le graphisme des marques d'immatriculation et des
+#     reproductions ainsi que les conditions techniques auxquelles les
+#     reproductions doivent repondre."
+#
+# THE FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE PLATE BELONGS TO THE PERSON, NOT THE CAR. This is the single most
+#    distinctive fact about Belgian registration and it is why this file
+#    carries `binding: owner` at the jurisdiction level. Art. 22 § 2 of the
+#    arrete royal, verbatim: "Pour chaque nouvelle immatriculation, la
+#    direction responsable pour l'immatriculation des vehicules ... delivre
+#    une nouvelle marque d'immatriculation, A MOINS QUE LE DEMANDEUR N'AIT
+#    EXPRIME DANS SA DEMANDE LE SOUHAIT DE METTRE LA MARQUE D'IMMATRICULATION
+#    ... D'UN AUTRE VEHICULE DEJA IMMATRICULE A SON NOM, SUR LE VEHICULE QUI
+#    EST L'OBJET DE LA NOUVELLE IMMATRICULATION". Art. 25 § 1 goes further:
+#    the number may be transferred to the holder's spouse, legal cohabitant
+#    or children, and (since 01-08-2025) on death to the surviving spouse,
+#    cohabitant, a child or a first-degree parent in the direct line. Art. 22
+#    § 2's keep-your-number rule was INSERTED by the arrete royal of
+#    6 November 2010 (in force 15-11-2010); the family-transfer rule in
+#    art. 25 is in the 2001 text as originally published. A vehicle-keyed
+#    consumer must not join on a Belgian plate number.
+#
+# 2. THERE IS ONLY ONE OFFICIAL PLATE, AND IT IS THE REAR ONE. Art. 1, 20°
+#    defines the "marque d'immatriculation" as "une plaque d'immatriculation
+#    officielle delivree par la Direction Immatriculation des Vehicules";
+#    art. 1, 22° defines a "reproduction" as "une reproduction de la marque
+#    d'immatriculation, SANS SCEAU EN RELIEF"; and art. 30 provides that "une
+#    reproduction de la marque d'immatriculation est fixee au milieu ou sur le
+#    cote gauche de la face anterieure d'un vehicule a moteur". So the front
+#    plate is legally a copy, made by a certified private manufacturer
+#    (art. 24 of the arrete ministeriel, § 4-§ 8), while the rear plate is
+#    state property carrying an embossed oval "CV" seal. `rear_differs: false`
+#    is recorded because the INSCRIPTION is identical; the legal status is not.
+#
+# 3. THE INDEX IS THE WHOLE PARSING STORY. Art. 4 § 1, 1° of the arrete
+#    ministeriel, verbatim: "s'il s'agit de la marque d'immatriculation
+#    rectangulaire, d'une LETTRE OU D'UN CHIFFRE (INDEX) suivi d'un tiret de
+#    separation situe sur la ligne mediane horizontale de la marque
+#    d'immatriculation et d'une combinaison de soit trois lettres suivies de
+#    trois chiffres ou soit trois chiffres suivis de trois lettres." The index
+#    is what tells car from trailer from taxi from oldtimer from moped from
+#    trade plate. Belgian plates encode NO geography whatsoever — every series
+#    below carries `region_encoding: none`, and that is a sourced negative,
+#    not an omission: nothing in either instrument assigns any character to a
+#    province, commune or region.
+#    The same paragraph carries the exhaustion rule, which no other EU
+#    jurisdiction in this dataset has: "En cas d'epuisement de ces series, la
+#    lettre ou le chiffre (index) est PLACE(E) DERRIERE". That future shape is
+#    carried in `regex_statutory`, never in `regex`, because it is not issued.
+#
+# 4. THREE GENERATIONS, AND THIS FILE MODELS ALL THREE.
+#      G1  01-10-2001 -> 14-11-2010  national format. 340 x 110 mm, red on
+#          white, NO European band on ordinary car plates. Belgium was the
+#          last EU-15 state to put the euroband on its ordinary plate.
+#      G2  15-11-2010 -> 31-12-2020  European format. 520 x 110 mm (or
+#          340 x 210 mm square), euroband, ruby red RAL 3003, and a DIGIT
+#          index on every category — cars, motorcycles, trade plates alike.
+#      G3  01-01-2021 -> open        the arrete ministeriel of 15 December
+#          2019 (in force 01-01-2021) replaced articles 1-25 wholesale and
+#          moved every non-ordinary category onto its own LETTER index
+#          (O, Q, T, M, S, G, U, V, Y, Z, W, X). The arrete ministeriel of
+#          21 October 2022 (in force 01-01-2023) then re-cut article 4 and
+#          re-stated the oldtimer rule in age terms.
+#    The ordinary passenger series is CONTINUOUS across G2 and G3 (digit index,
+#    unchanged), so it is one series here with period.start 2010. Everything
+#    else gets one entry per generation.
+#
+# 5. PERIOD CLAIMS ARE INSTRUMENT-DATED, AND THE 2010 DATE IS A REAL ONE.
+#    Two independent primary confirmations of 15 November 2010:
+#      arrete royal 6 November 2010, art. 19: "Le present arrete entre en
+#      vigueur le 15 novembre 2010."
+#      arrete ministeriel 8 November 2010, art. 16: "Le present arrete entre
+#      en vigueur le 15 novembre 2010."
+#    Every OTHER start year in this file is likewise the in-force date of the
+#    instrument that states the rule, and carries `period_evidence`. The
+#    pre-2001 history — Belgium's three-letters-three-digits plate is
+#    universally dated to 1973 on the enthusiast web — is NOT asserted here:
+#    the arrete ministeriel of 30 August 1967 that the 2001 instrument
+#    replaced is not carried in Justel's consolidated database (probed,
+#    empty), so 1973 stays FOLKLORE until a primary lands. ONE LEAD IS PINNED
+#    FOR THE NEXT PASS, and it is a good one: art. 38 of the arrete royal of
+#    20 July 2001 lists, by date, every decree that amended the 1953
+#    registration decree, and the list includes an "arrete royal du
+#    21 DECEMBRE 1973". That is the most likely home of the format the web
+#    dates to 1973 — but it has not been read, so nothing is claimed from it.
+#    Art. 40 § 1 of the same decree gives one hard pre-2001 fact that IS
+#    sourced: plates issued under the 1953 decree stayed valid "a l'exception
+#    des marques d'immatriculation 'CD' avec un numero d'immatriculation
+#    constitue des lettres 'CD' suivies de QUATRE CHIFFRES" — so the
+#    pre-2001 Belgian diplomatic plate was CD + four digits, and it was
+#    withdrawn rather than grandfathered.
+#
+# REGEX POLICY (as in plates/de.yml and plates/nl.yml): `format.regex` is the
+# lint-round-trippable form; `format.regex_strict` carries the tighter sourced
+# alphabet the round-trip forbids `regex` from expressing (the mandated first
+# letter of a letter group); `format.regex_statutory` carries the wider legal
+# bound where the arrete ministeriel permits shapes DIV does not issue (the
+# digits-first ordering, the letter index on the ordinary series, and the
+# index-at-the-end exhaustion form).
+# TWO-LINE PLATES: motorcycle (210 x 140 mm), moped (100 x 120 mm) and the
+# square 340 x 210 mm car plate stack their groups with NO printed glyph
+# between them — art. 4 § 1, 2° says the groups together follow the
+# rectangular combinations "SANS TIRET DE SEPARATION". Those series therefore
+# spell that position as the separator-only class `[- ]` sanctioned by
+# PRD-PLATES § 2.8, exactly as es-consular-cc-1999 does, while `pattern` shows
+# the canonical printed hyphen.
+jurisdiction: be
+authority:
+  name: SPF Mobilite et Transports — Direction Immatriculation des Vehicules (DIV) / FOD Mobiliteit en Vervoer — Directie Inschrijvingen van Voertuigen
+  url: "https://mobilit.belgium.be/fr/route/immatriculer"
+binding: owner
+instrument:
+  royal_decree:
+    citation: "Arrete royal du 20 juillet 2001 relatif a l'immatriculation de vehicules (M.B. 08.08.2001 p. 27022), Justel 2001-07-20/35, NUMAC 2001014153, en vigueur 01-10-2001"
+    promulgation: "2001-07-20"
+    publication: "2001-08-08"
+    in_force: "2001-10-01"
+    consolidated_to: "2025-07-22"
+    replaces: "Arrete royal du 31 decembre 1953 portant reglementation de l'immatriculation des vehicules a moteur et des remorques, abroge par l'art. 38"
+    eli: "https://www.ejustice.just.fgov.be/eli/arrete/2001/07/20/2001014153/justel"
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # consolidated Justel text: art. 1 definitions, art. 20 plate categories, art. 21 delegation to the minister, art. 22 the keep-your-number rule, art. 25 family transfer, arts. 29-31 placement"
+  ministerial_decree:
+    citation: "Arrete ministeriel du 23 juillet 2001 relatif a l'immatriculation de vehicules (M.B. 08.08.2001 p. 27048), Justel 2001-07-23/30, NUMAC 2001014154, en vigueur 01-10-2001"
+    promulgation: "2001-07-23"
+    publication: "2001-08-08"
+    in_force: "2001-10-01"
+    consolidated_to: "2025-07-22"
+    replaces: "Arrete ministeriel du 30 aout 1967 determinant le modele des marques et des certificats d'immatriculation (Justel 1967-08-30/04 — NO CONSOLIDATED TEXT IN JUSTEL; probed 2026-08-02, empty)"
+    eli: "https://www.ejustice.just.fgov.be/eli/arrete/2001/07/23/2001014154/justel"
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # consolidated Justel text: chapitre III cars and trailers, chapitre IV motorcycles, chapitre V mopeds and light quadricycles, chapitre VI reproductions"
+  amendments_that_matter:
+    - citation: "Arrete royal du 6 novembre 2010 modifiant l'arrete royal du 20 juillet 2001, Justel 2010-11-06/03"
+      in_force: "2010-11-15"
+      effect: "created the European-format regime on the arrete royal side: art. 21 delegation rewritten, art. 22 keep-your-number rule inserted, arts. 29-31 placement rewritten"
+      source: "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110603&table_name=loi  # art. 19: 'Le present arrete entre en vigueur le 15 novembre 2010.'"
+    - citation: "Arrete ministeriel du 8 novembre 2010 modifiant l'arrete ministeriel du 23 juillet 2001, Justel 2010-11-08/01 (M.B. 12.11.2010)"
+      in_force: "2010-11-15"
+      effect: "THE EUROPEAN-FORMAT INSTRUMENT. Replaced arts. 3-16: 520 x 110 / 340 x 210 mm, euroband, ruby red RAL 3003, the digit (index) on every category, road red RAL 3020 for temporary plates, mint green RAL 6029 for trade plates; abrogated the EUR and EUROCONTROL plates"
+      source: "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 16: 'Le present arrete entre en vigueur le 15 novembre 2010.' Annexes 1-3 are IMAGES, not reproduced in Justel (M.B. 12-11-2010 p. 70960-70980)"
+    - citation: "Arrete ministeriel du 23 mars 2014 modifiant l'arrete ministeriel du 23 juillet 2001, Justel 2014-03-23/02"
+      in_force: "2014-03-31"
+      effect: "inserted chapitre IVbis (arts. 15/1-15/5): the MOPED and light-quadricycle plate, index 'S'"
+      source: "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032302&table_name=loi  # art. 2: 'Le present arrete entre en vigueur le 31 mars 2014.'"
+    - citation: "Arrete ministeriel du 28 mars 2014 modifiant l'arrete ministeriel du 23 juillet 2001, Justel 2014-03-28/07"
+      in_force: "2014-03-31"
+      effect: "inserted art. 4 § 1/1 (the PERSONALISED inscription grammar), moved the oldtimer and trailer rules to the first letter of the LETTER GROUP ('O', 'Q'), gave the motorcycle letter group its 'M', added the second hyphen to the CD plate, and renamed the two sizes 'rectangulaire' and 'carree'"
+      source: "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032807&table_name=loi  # art. 9: 'Le present arrete entre en vigueur le 31 mars 2014.'"
+    - citation: "Arrete ministeriel du 15 decembre 2019 modifiant l'arrete ministeriel du 23 juillet 2001, Justel 2019-12-15/19 (M.B. 15.05.2020)"
+      in_force: "2021-01-01"
+      effect: "THE LETTER-INDEX INSTRUMENT. Replaced arts. 1-25: every non-ordinary category moved onto its own letter index (O oldtimer, Q trailer, T taxi, M motorcycle, S moped, G agricultural, U national, V/Y/Z trade, W temporary stay, X export); trade plates changed from mint green RAL 6029 to moss green RAL 6005; the moped plate shrank from 210 x 140 to 100 x 120 mm"
+      source: "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # art. 5: 'Le present arrete entre en vigueur le 1er janvier 2021.' (art. 9, the G plate, and art. 13 § 4 entered into force 01-10-2020 per the Justel footnotes)"
+    - citation: "Arrete ministeriel du 21 octobre 2022 modifiant l'arrete ministeriel du 23 juillet 2001, Justel 2022-10-21/06 (M.B. 22.12.2022)"
+      in_force: "2023-01-01"
+      effect: "replaced art. 4 in full: renumbered §§ 2-5, and restated the oldtimer criterion in AGE terms (more than thirty years, with a twenty-five-to-thirty retention rule for the same holder) instead of by cross-reference to the technical-conditions decree"
+      source: "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2022102106&table_name=loi  # the replacement text of art. 4 in full"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  dimensions:
+    rectangular: { w: 520, h: 110, unit: mm, name: "marque d'immatriculation rectangulaire" }
+    square: { w: 340, h: 210, unit: mm, name: "marque d'immatriculation carree" }
+    motorcycle: { w: 210, h: 140, unit: mm, name: "marque d'immatriculation moto" }
+    moped: { w: 100, h: 120, unit: mm, name: "plaque format cyclo" }
+    border_mm: 5
+    relief_mm: 1
+    note: >-
+      Art. 3 § 2 of the arrete ministeriel names only the two car sizes and adds
+      that "Le choix entre les deux formats ... doit correspondre avec
+      l'emplacement prevu pour le montage de la marque d'immatriculation A
+      L'ARRIERE du vehicule" — the size follows the rear mounting recess, not
+      the owner's taste. Art. 3 § 5 lets a car use the 210 x 140 motorcycle size
+      by prior authorisation where the manufacturer's recess is too small for
+      either car size. Corners are rounded; the 5 mm border ("liseret") and the
+      inscription stand at least 1 mm proud of the ground.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 3 § 2 and § 5 (car/trailer), art. 11 § 2 (motorcycle 210 x 140), art. 18 § 2 (moped 100 x 120)"
+    corroboration: "https://mobilit.belgium.be/fr/route/immatriculer-et-radier/plaques-et-certificats-dimmatriculation/format-de-plaque  # DIV's own page names the same four: 'Plaque rectangulaire (52 x 11 cm)', 'Plaque de format carre (34 x 21 cm)', 'Plaque de format moto (21x14 cm)', 'Plaque format cyclo (10x12 cm)'"
+  colours:
+    ordinary: "rouge rubis (RAL 3003) inscription and border on a white retroreflective ground — art. 4 § 1, art. 12 § 1, art. 19 § 1"
+    temporary: "fond rouge signalisation (RAL 3020), white inscription and border — art. 5 § 1, art. 13 § 1, art. 21 § 1"
+    agricultural: "fond rouge (RAL 3020), white inscription and border — art. 9 § 3"
+    trade_and_national: "vert mousse (RAL 6005) inscription and border on white — art. 8 § 1, art. 10 § 1, art. 16 § 1, art. 17 § 1, art. 22 § 1"
+    superseded: "vert menthe (RAL 6029) was the trade-plate colour under the arrete ministeriel of 8 November 2010, replaced by RAL 6005 on 01-01-2021"
+    hex_caveat: >-
+      THE STATUTE'S COLOUR CLAIM IS A RAL CODE, NOT AN sRGB VALUE. RAL Classic
+      publishes no normative sRGB mapping, so every hex in this file for a
+      RAL-named colour is a CONVENTIONAL CONVERSION carried for rendering only:
+      RAL 3003 -> #9B111E, RAL 3020 -> #CC0605, RAL 6005 -> #114232,
+      RAL 6029 -> #007243. The authoritative value is the RAL code, which each
+      series also carries in `*_spec`. Consumers doing colour-critical work must
+      read the RAL code, not the hex.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # the RAL codes, verbatim, per article"
+  euro_band:
+    side: left
+    content: eu-stars+B
+    geometry_rectangular: "blue rectangular zone against the left and bottom border, height 98-100 mm, width 40-50 mm"
+    geometry_square: "blue rectangular zone 2-5 mm from the left and bottom border, height 100 mm, width 40-50 mm"
+    geometry_motorcycle: "blue rectangular zone 1-3 mm from the left and bottom border, height 62 mm, width 31 mm"
+    geometry_moped: "blue rectangular zone 4-5 mm from the left border and 7-9 mm from the bottom border, height 35 mm, width 18 mm"
+    composition: >-
+      Art. 3 § 3, verbatim: the blue zone "presente vers le bas une lettre 'B'
+      blanche comme signe distinctif du pays, surmontee d'un cercle de douze
+      etoiles jaunes a cinq branches. Le fond, les etoiles et le signe
+      distinctif du pays sont retro-reflechissants." Belgium gives the band's
+      MILLIMETRES but, like every other jurisdiction surveyed, gives no colour
+      value for the blue and no star geometry — for the star-wreath ratio the
+      only sourced value anywhere in this dataset is DE FZV Anlage 4 Nr. 3.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 3 § 3 (car), art. 11 § 4 (motorcycle), art. 18 § 2 (moped)"
+  seal:
+    name: "sceau en relief (CV)"
+    shape: oval
+    content: "the stylised letters 'C' and 'V' (Circulation / Verkeer), in the same colour as the plate's border"
+    size_car: { h_min: 21, h_max: 22, w_min: 13, w_max: 14, unit: mm }
+    size_small: { h_min: 16, h_max: 17, w_min: 10, w_max: 11, unit: mm }
+    note: >-
+      The embossed CV seal is what makes a plate the OFFICIAL plate: art. 1, 22°
+      of the arrete royal defines a reproduction as a copy "sans sceau en relief".
+      It is a lettermark, not a coat of arms, so PRD-PLATES § 3's emblem hazard
+      does not arise for Belgium — there is no state seal, no provincial arms and
+      no artwork on a Belgian plate at all.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 3 § 4, art. 11 § 3, art. 18 § 2"
+  font:
+    name: null
+    statutory_basis: >-
+      NO TYPEFACE IS NAMED. Art. 3 § 2, verbatim: "L'inscription se compose de
+      caracteres droits, normalises dont la forme et les dimensions sont
+      definies a l'annexe 1ere." Annexe 1 (cars and trailers), Annexe 2
+      (motorcycles) and Annexe 2bis (mopeds) are DRAWINGS, published as images
+      and expressly not reproduced in the Justel consolidation ("Image non
+      reprise pour des raisons techniques, voir M.B. du 15-05-2020, p. 34158").
+      Belgium is therefore the same case the EU dossier found for the UK, Germany
+      and Spain: the legal object is a statutory drawing, not a licensable font
+      file, and PRD-PLATES § 6's derive-from-the-drawing rule applies.
+    pitch: "art. 24 § 4, 4°: the horizontal distance between the centre of each sign is 50 mm on car reproductions and 39,2 mm on motorcycle reproductions — the only character metric available as TEXT rather than as a drawing"
+    pre_2010_metrics: >-
+      The 2001 text, before the drawings replaced it, gave the metrics in words
+      and they are recorded here because they are the only fully textual Belgian
+      character spec: ordinary car plate, characters 70 mm high x 35 mm wide,
+      the digit "1" 20 mm wide, the letter "I" 9 mm wide, stroke 9 mm, the
+      separating hyphen 12 x 6 mm; trailer and trade plates 75 x 45 mm, "1"
+      25 mm, "I" 11 mm, stroke 11 mm, hyphen 18 x 11 mm; motorcycle plates
+      50 x 30 mm, "1" 17 mm, "I" 7 mm, stroke 7 mm.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 3 § 2, art. 24 § 4, and the ANNEXES note"
+    source_2001: "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # the arrete ministeriel AS PUBLISHED in the Moniteur belge of 08-08-2001, carrying the textual character metrics that the 2010 and 2019 amendments replaced with drawings. This is the OFFICIAL as-published body; the same text is mirrored at https://etaamb.openjustice.be/fr/2001014154.html, which is a third-party copy and was used only to LOCATE the NUMAC (etaamb's own banner says it is not the official version)"
+  reproduction_spec:
+    note: >-
+      Art. 24 § 4 (as amended by the arrete royal of 4 July 2025, in force
+      01-08-2025) is unusually specific for a front plate: a single aluminium
+      sheet of type EN 1050, EN 1200 or EN 3105 conforming to EN-485, or an
+      acrylic sheet at least 3 mm thick; corners rounded to a radius of 10 +/- 2
+      mm; a 6 mm hole in each corner with its centre 12 mm from the edges for
+      car plates (5 mm at 9 mm for motorcycle plates); class 1 retroreflective
+      film laminated over the whole support, bearing a colourless identification
+      mark of the film maker and of the plate maker. Type certification is
+      granted by the Minister for a renewable period of 10 years.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 24 § 4 and § 6"
+  readability:
+    note: >-
+      Art. 29 of the arrete royal (as amended 20-03-2012): plates "restent
+      visibles en tout temps et sont lisibles le jour par temps clair a une
+      distance minimum de QUARANTE METRES", reduced to thirty metres for car
+      plates in the 210 x 140 motorcycle size and to TWENTY METRES for
+      motorcycle plates. Art. 31 § 2 forbids covering a plate "meme pas avec une
+      matiere transparente", and art. 31 § 1 forbids drilling extra holes.
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arts. 29-31"
+  index_allocation_gap:
+    note: >-
+      WHICH DIGIT INDEX DIV IS CURRENTLY ISSUING IS NOT PUBLISHED. The arrete
+      ministeriel fixes the SHAPE (one index character, then three letters and
+      three digits) but the allocation order — the widely-repeated "1-... until
+      2016, then 2-..., then 3-..." — is an administrative fact that appears on
+      no primary page reached in this pass (DIV's own format page gives only the
+      four physical sizes). This file therefore claims NO per-index date and its
+      regexes accept any digit index. A verified per-index table would be the
+      single highest-value addition to Belgian era inference and is recorded as
+      an open gap, not guessed.
+    source: "https://mobilit.belgium.be/fr/route/immatriculer-et-radier/plaques-et-certificats-dimmatriculation/format-de-plaque  # DIV's format page: sizes only, no index series table (accessed 2026-08-02)"
+
+# ---------------------------------------------------------------------------
+# The index vocabulary — small, closed, primary, so inlined per PRD-PLATES
+# § 2.4's "inline table (small)" rule. This is Belgium's answer to Germany's
+# Anlage 2: not geography, but VEHICLE CATEGORY.
+# ---------------------------------------------------------------------------
+region_encoding_tables:
+  index_letters_2021:
+    source: "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 §§ 2-5, art. 5 § 4, art. 8 § 3, art. 9 § 2, art. 10 § 3, art. 12 §§ 2-3, art. 13 § 4, art. 16 § 3, art. 17 § 3, art. 19 §§ 2-3, art. 21 § 4, art. 22 § 3"
+    digits: "0-9 — ordinary plates for motor vehicles and their holders (art. 4 § 1); the general run"
+    letters:
+      CD: "diplomatic and consular corps, missions and international organisations (art. 7, art. 15)"
+      G: "agricultural and forestry tractors whose holder claims the fuel-excise exemption; second character is always 'L' (art. 9)"
+      M: "motorcycles, motor tricycles and motor quadricycles (art. 12 § 2)"
+      O: "oldtimer — a vehicle in circulation more than thirty years (art. 4 § 2); on a motorcycle plate the letter group then starts with 'M', on a moped plate with 'S'"
+      Q: "trailers (art. 4 § 3)"
+      S: "mopeds and light quadricycles; letter group starts A (class A moped), B (class B moped), P (speed pedelec), U (light quadricycle) (art. 19 § 2)"
+      T: "licensed taxi service (letter group starts 'X') or hire with driver (letter group starts 'L') (art. 4 § 4)"
+      U: "plaque nationale — twenty-day national-use plate; second letter follows (art. 10 § 3, art. 17 § 3, art. 23 § 3)"
+      V: "plaque professionnelle (art. 8 § 3, 3°)"
+      W: "short-duration temporary plate for a temporary stay in Belgium; second letter excludes M, Q, S for cars, is 'Q' for trailers, 'M' for motorcycles, 'S' for mopeds (art. 5 § 4, art. 13 § 4, art. 21 § 4)"
+      X: "short-duration EXPORT plate; same second-letter scheme as W (art. 5 § 4, art. 13 § 4)"
+      Y: "plaque essai — test plate (art. 8 § 3, 1°)"
+      Z: "plaque marchand — dealer plate (art. 8 § 3, 2°)"
+      A: "supplementary plate for the president of the Chamber, federal ministers, ministers of State, the higher judiciary, provincial governors and named senior officials (arrete royal art. 20 § 2, 2°)"
+      E: "supplementary plate for the presidents, members and services of the Community and Regional governments (arrete royal art. 20 § 2, 3°)"
+      P: "supplementary plate for members of the federal, regional, Community and Belgian European parliaments (arrete royal art. 20 § 2, 4°)"
+    note: >-
+      COLLISIONS WORTH FLAGGING. "M", "O", "S" and "Q" appear BOTH as an index
+      and as the mandated first letter of a letter group, in different series —
+      an oldtimer motorcycle is "O-Mxx-999" and a temporary motorcycle is
+      "WM-99-xxx". "P" is simultaneously a supplementary-plate index and the
+      first letter of a speed-pedelec letter group. "A", "E" and "P" as indexes
+      are followed by only one to three DIGITS, so they never collide with the
+      three-letters-three-digits shapes. And note that the supplementary plates
+      are ADDITIONAL: art. 20 § 2 requires the vehicle already to carry an
+      ordinary or CD plate, and "Le titulaire d'une double immatriculation
+      choisit laquelle des deux marques d'immatriculation est apposee sur son
+      vehicule."
+  reserved_shapes_for_personalised_plates:
+    source: "https://mobilit.belgium.be/fr/route/immatriculer/plaque-personnalisee/introduction  # DIV's own list of combinations a personalised plate may not take, accessed 2026-08-02, page last updated 16/07/2026"
+    forbidden:
+      - "les lettres CD, afin d'eviter la confusion avec les plaques des corps diplomatiques"
+      - "les lettres W, X, Y et Z suivies d'une lettre, de deux chiffres, puis de trois lettres"
+      - "3 lettres suivies de 2 chiffres et des lettres W, X, Y et Z suivies d'une lettre"
+      - "les lettres TX et TL, afin d'eviter la confusion avec les plaques taxi"
+      - "les lettres Z, V et Y suivies de 3 lettres et de 3 chiffres"
+      - "la lettre U suivie d'une lettre, de 2 chiffres et de 3 lettres"
+      - "3 lettres suivies de 4 chiffres / 4 lettres suivies de 3 chiffres / 3 chiffres suivis de 4 lettres / 4 chiffres suivis de 3 lettres"
+      - "la lettre B suivie de 3 chiffres et d'une lettre"
+    note: >-
+      This list is the most useful single corroboration DIV publishes, because it
+      is the NEGATIVE image of the issuing grammar: every shape a personalised
+      plate may not take is a shape some official series does take. Two entries
+      are not explained by the arrete ministeriel and are recorded as open
+      questions rather than decoded: the "W, X, Y et Z" second group (Y and Z
+      trade plates take L-LLL-999, not LL-99-LLL) and the "lettre B suivie de
+      3 chiffres et d'une lettre" reservation.
+
+series:
+
+  # =========================================================================
+  # G3/G2 — THE ORDINARY SERIES. Continuous since 15 November 2010: the digit
+  # index survived the 2021 re-cut untouched, so this is one series, not two.
+  # =========================================================================
+  - id: be-standard-2010
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2010 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-LLL-999"
+      regex: '\A\d-[A-Z]{3}-\d{3}\z'
+      regex_statutory: '\A(?:[A-Z0-9]-(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})|(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})-[A-Z0-9])\z'
+      charset:
+        index: "0-9 for the general run; the letters listed in region_encoding_tables.index_letters_2021 are reserved to other series"
+        notes: >-
+          Neither instrument excludes any letter from the three-letter group of an
+          ordinary plate — there is no Belgian equivalent of the Dutch no-vowels
+          rule or the German umlaut exclusion. The only constraint stated anywhere
+          is art. 4 § 1/1, 4°, which forbids a PERSONALISED inscription from
+          colliding with the official series; it says nothing about the letters
+          used inside those series.
+      progression: >-
+        Art. 4 § 1, 1° alinea 2, verbatim: "En cas d'epuisement de ces series, la
+        lettre ou le chiffre (index) est place(e) derriere, precede(e) d'un tiret
+        de separation ... et d'une combinaison de soit trois lettres suivies de
+        trois chiffres ou soit trois chiffres suivis de trois lettres." That
+        trailing-index shape is IN FORCE but not issued, which is exactly what
+        regex_statutory is for. The order in which DIV consumes indexes and letter
+        groups is not published (see common.index_allocation_gap).
+      two_line_note: >-
+        Art. 4 § 1, 2°: on the 340 x 210 square plate the inscription is the index
+        and a hyphen, then a group of at most three characters above a group of at
+        most four, "les groupes pris ensemble doivent respecter les combinaisons
+        telles que prevues en 1°, SANS TIRET DE SEPARATION". The square plate
+        therefore prints exactly ONE hyphen; `pattern` above shows the rectangular
+        plate, which prints two.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm, note: "marque d'immatriculation carree; chosen when the rear recess demands it (art. 3 § 2)" }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle size on a car, by prior DIV authorisation only where the manufacturer's recess is too small (art. 3 § 5)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec, spec_note: "art. 4 § 1: 'La marque d'immatriculation ordinaire a un fond blanc'; art. 3 § 1: 'Le fond de la marque d'immatriculation est retroreflechissant'" }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      foreground_note: "art. 4 § 1, verbatim: 'L'inscription et le lisere sont de couleur rouge rubis (RAL 3003).' The hex is a conventional sRGB conversion — see common.colours.hex_caveat."
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, note: "art. 3 § 3 gives the band's millimetres and its composition but no colour value for the blue" }
+      emblem: { present: false, note: "Belgian plates carry no coat of arms and no artwork; the only mark is the embossed oval CV seal" }
+      seal: { name: "sceau en relief CV", h_min: 21, h_max: 22, w_min: 13, w_max: 14, unit: mm }
+      rear_differs: false
+      display: >-
+        One official plate at the REAR (arrete royal art. 29) plus a certified
+        REPRODUCTION at the front, fixed centrally or on the left of the front
+        face (art. 30). A trailer that is not itself registered in Belgium carries
+        a reproduction of the towing vehicle's plate, as does a rear-mounted bike
+        carrier and a coach's rear luggage box (art. 30).
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 1 (inscription, colours), art. 3 (sizes, euroband, seal, retroreflection)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # arrete ministeriel 8 November 2010, art. 3 (the first European-format inscription: 'd'un chiffre (index) suivi d'un tiret ... et d'une combinaison de soit trois lettres suivies de trois chiffres soit trois chiffres suivis de trois lettres') and art. 16 (in force 15-11-2010)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110603&table_name=loi  # arrete royal 6 November 2010, art. 19 (in force 15-11-2010)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal arts. 20 § 1, 1° (the ordinary category), 22 § 2 (the number follows the holder), 29-31 (placement)"
+    notes: >-
+      THE BELGIAN STANDARD SERIES, from 15 November 2010 — a REAL start date,
+      given twice in identical words by the royal and the ministerial instrument.
+      period.start is therefore `enabling-instrument`, not `instrument-in-force`.
+      The 2019 re-cut (in force 01-01-2021) widened the index to "une lettre ou
+      un chiffre" and the 2022 re-cut (in force 01-01-2023) renumbered the
+      paragraphs, but neither touched the digit-index passenger shape, so this is
+      one continuous series. Between 15-11-2010 and 31-12-2020 the SAME shape was
+      also issued to motorcycles, trailers, oldtimers and trade vehicles, which
+      had digit indexes then too — so a bare "1-ABC-123" match does not by itself
+      say "car", and the sibling G2 series in this file record which letter groups
+      narrowed it. No geography and no date is encoded anywhere in the string.
+
+  # =========================================================================
+  # G3 — THE LETTER-INDEX CATEGORIES, all in force 01-01-2021.
+  # =========================================================================
+  - id: be-trailer-q-2021
+    class: trailer
+    categories: [trailer]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "Q-LLL-999"
+      regex: '\AQ-[A-Z]{3}-\d{3}\z'
+      regex_statutory: '\AQ-(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})\z'
+      charset: { index: [Q], notes: "art. 4 § 3: the 'Q' index is delivered on registration or re-registration of TRAILERS, unless the number was reserved as a personalised inscription under arrete royal art. 23" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      rear_differs: false
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 3 (the Q index for trailers), art. 4 § 1 (inscription and colours)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # the 2019 instrument that moved Q from the letter group to the INDEX, art. 5 in force 01-01-2021"
+    notes: >-
+      TRAILERS, "Q" INDEX, from 01-01-2021. Belgium registers trailers separately
+      and gives them their own number, unlike the Dutch rule that ties light
+      trailers to the towing vehicle's plate — but arrete royal art. 30 still
+      requires a REPRODUCTION of the towing vehicle's plate on a trailer that is
+      not itself Belgian-registered, and on a bike carrier. Before 01-01-2021 a
+      trailer carried an ordinary digit index with a letter group beginning "Q"
+      (see be-trailer-2010), and before 15-11-2010 a 520 x 110 BLACK-on-white
+      plate whose letter group began "U" or "Q" (see be-trailer-2001) — the only
+      Belgian plate that ever carried the euroband while ordinary car plates did
+      not.
+
+  - id: be-taxi-t-2021
+    class: taxi
+    categories: [car, van]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "T-LLL-999"
+      regex: '\AT-[A-Z]{3}-\d{3}\z'
+      regex_strict: '\AT-[XL][A-Z]{2}-\d{3}\z'
+      charset:
+        index: [T]
+        first_letter_of_group: [X, L]
+        notes: >-
+          Art. 4 § 4, verbatim: "Pour ce qui est de la categorie 'service de taxi
+          autorise', le groupe de lettres commence par un 'X' et pour la categorie
+          'location avec chauffeur', le groupe de lettres commence par un 'L'." So
+          T-Xxx-999 is a licensed taxi and T-Lxx-999 is hire-with-driver — a
+          two-way class split inside one index, which a single `class` cannot
+          express and which regex_strict therefore carries as an alternation.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 4: the T index, the X/L split, the cross-reference to art. 15 § 2, 2° of the arrete royal of 8 July 1970 on taxes assimilated to income tax, and the duty to RETURN the plate as soon as the vehicle stops qualifying"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/immatriculer-un-taxi-ou-un-vehicule-destine-la-location-avec  # DIV's taxi registration page (accessed 2026-08-02)"
+    notes: >-
+      TAXI AND HIRE-WITH-DRIVER, "T" INDEX, from 01-01-2021. Unusually for this
+      dataset the taxi plate is NOT a colour variant — Belgium keeps the ordinary
+      ruby-red-on-white design and signals the trade through the index alone,
+      where the Netherlands uses a light-blue ground. Art. 4 § 4 also carries an
+      enforcement rule a claims model should note: "Des que le vehicule automobile
+      de personnes ne satisfait plus aux conditions ... la marque d'immatriculation
+      doit etre rendue". Before 01-01-2021 the marker was a letter group beginning
+      "TX" behind a digit index (see be-taxi-2010).
+
+  - id: be-historic-o-2021
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "O-LLL-999"
+      regex: '\AO-[A-Z]{3}-\d{3}\z'
+      regex_statutory: '\AO-(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})\z'
+      charset: { index: [O], notes: "art. 4 § 2: the 'O' index, unless the number was reserved as a personalised inscription" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field:
+        condition: "only where the number is a PERSONALISED reservation under arrete royal art. 23, in which case the index is not 'O' and the age must be signalled some other way"
+        content: "a red vignette 26 x 26 mm bearing the word 'Oldtimer', placed below the embossed seal and before the registration number"
+        note: "art. 4 § 2 alinea 2; the vignette must meet annexe 4. It was 28 x 28 mm under the 2014 text and shrank to 26 x 26 mm with the 2022 re-cut."
+    validity:
+      min_age_years: 30
+      retention_age_years: 25
+      note: >-
+        Art. 4 § 2, verbatim: the "O" plates "peuvent etre delivrees lors de
+        l'immatriculation ou de la reimmatriculation des vehicules automobiles mis
+        en circulation depuis PLUS DE TRENTE ANS. Toutefois, les vehicules
+        automobiles qui sont mis en circulation depuis plus de vingt-cinq ans mais
+        moins de trente ans et qui ont deja ete immatricules sous la marque
+        d'immatriculation avec la lettre (index) 'O' ... peuvent rester
+        immatricules ou etre reimmatricules sous cette marque d'immatriculation ...
+        a condition que ces vehicules restent immatricules ou soient reimmatricules
+        AU NOM DU MEME TITULAIRE." The thirty-year threshold is therefore SOURCED
+        for Belgium, unlike the German thirty years which plates/de.yml records as
+        an unresolved gap. The twenty-five-year grandfather clause is the residue
+        of the pre-2023 regime, which admitted vehicles over twenty-five.
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 2 (the O index, the thirty-year rule, the twenty-five-year retention, the Oldtimer vignette)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2022102106&table_name=loi  # the arrete ministeriel of 21 October 2022 that restated the criterion in AGE terms; in force 01-01-2023"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # the 2019 instrument that moved 'O' from the letter group to the index, in force 01-01-2021"
+    notes: >-
+      OLDTIMER, "O" INDEX. Two dates, both recorded: the index moved from the
+      letter group to the index position on 01-01-2021, and the eligibility test
+      changed from a cross-reference (art. 2 § 2, 7° of the technical-conditions
+      decree of 15 March 1968) to a plain thirty-year age test on 01-01-2023.
+      period.start records the FORMAT change, which is what a parser needs.
+      Motorcycles and mopeds have their own O series (see be-historic-o-moto-2021
+      and the note on be-moped-s-2014): the index is the same but the letter group
+      must then begin "M" or "S" respectively.
+
+  - id: be-historic-o-moto-2021
+    class: historic
+    categories: [motorcycle]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "O-LLL-999"
+      regex: '\AO-[A-Z]{3}[- ]\d{3}\z'
+      regex_strict: '\AO-M[A-Z]{2}[- ]\d{3}\z'
+      charset:
+        index: [O]
+        first_letter_of_group: [M]
+        notes: "art. 12 § 3, verbatim: 'les marques d'immatriculation avec lettre (index) \"O\" sont delivrees lors de l'immatriculation ou de la re-immatriculation des vehicules mentionnes a l'article 2, § 2, 1° de l'arrete royal du 10 octobre 1974 ... Les series de lettres commencent par un \"M\".'"
+      separator_note: >-
+        Two-line plate: the letter group sits ABOVE the digit group with no printed
+        glyph between them, so the position is spelled as the separator-only class
+        `[- ]` (PRD-PLATES § 2.8). Only the hyphen after the index is printed.
+    design:
+      plate: { w: 210, h: 140, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, geometry: "62 x 31 mm, 1-3 mm from the left and bottom border" }
+      seal: { name: "sceau en relief CV", h_min: 16, h_max: 17, w_min: 10, w_max: 11, unit: mm }
+      rear_differs: false
+      display: "rear only — a motorcycle carries no front reproduction (arrete royal art. 30 applies the front reproduction to vehicles of art. 1, 6°, a)"
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 12 § 3 (the O index with an M letter group), art. 11 (moto plate 210 x 140, euroband 62 x 31, CV seal 16-17 x 10-11)"
+    notes: >-
+      HISTORIC MOTORCYCLE, "O" index with an "M" letter group, from 01-01-2021.
+      Kept as its own entry rather than folded into be-historic-o-2021 because both
+      the format (the mandated M) and the design (210 x 140 two-line) differ, which
+      is the PRD-PLATES § 2.3 test applied literally. Note that art. 12 § 3 keys
+      eligibility to art. 2 § 2, 1° of the arrete royal of 10 October 1974 on the
+      technical conditions for mopeds and motorcycles — NOT to the thirty-year test
+      that art. 4 § 2 now uses for cars, so the two O series do not share a
+      criterion. That divergence was not resolved in this pass and is a recorded gap.
+
+  - id: be-motorcycle-m-2021
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "M-LLL-999"
+      regex: '\AM-[A-Z]{3}[- ]\d{3}\z'
+      regex_statutory: '\AM-(?:[A-Z]{3}[- ]\d{3}|\d{3}[- ][A-Z]{3})\z'
+      charset:
+        index: [M]
+        notes: "art. 12 § 2, verbatim: 'l'inscription consiste en la lettre (index) \"M\" suivie d'un tiret de separation et d'un groupe de trois lettres au-dessus d'un groupe de trois chiffres ou d'un groupe de trois chiffres au-dessus d'un groupe de trois lettres'"
+      separator_note: "two-line plate; the group boundary carries no printed glyph, hence the separator-only class `[- ]` (PRD-PLATES § 2.8)"
+    design:
+      plate: { w: 210, h: 140, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, geometry: "62 x 31 mm, 1-3 mm from the left and bottom border" }
+      seal: { name: "sceau en relief CV", h_min: 16, h_max: 17, w_min: 10, w_max: 11, unit: mm }
+      rear_differs: false
+      display: "rear only; readable at twenty metres rather than the forty required of car plates (arrete royal art. 29)"
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 11 (moto plate: metal plate, inscription, European symbol, embossed seal, rounded corners, 210 x 140 mm, 5 mm border, annexe 2 characters, 62 x 31 mm blue zone) and art. 12 § 2 (the M index)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # the 2019 instrument that introduced the M index, in force 01-01-2021"
+      - "https://mobilit.belgium.be/fr/route/immatriculer-et-radier/plaques-et-certificats-dimmatriculation/format-de-plaque  # DIV: 'Plaque de format moto (21x14 cm)' is mandatory for motorcycles"
+    notes: >-
+      MOTORCYCLES, TRICYCLES AND MOTOR QUADRICYCLES, "M" INDEX, from 01-01-2021.
+      The chapter covers all three vehicle kinds under one heading ("marques
+      d'immatriculation moto"). Between 15-11-2010 and 31-12-2020 the plate carried
+      a DIGIT index with an M letter group (see be-motorcycle-2010), and before
+      15-11-2010 it was a YELLOW plate with black characters (see
+      be-motorcycle-2001) — the only Belgian plate that was ever yellow.
+
+  - id: be-moped-s-2014
+    class: moped
+    categories: [moped, quadricycle]
+    period: { start: 2014 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "S-LLL-999"
+      regex: '\AS-[A-Z]{3}[- ]\d{3}\z'
+      regex_strict: '\AS-[ABPU][A-Z]{2}[- ]\d{3}\z'
+      regex_statutory: '\AS-(?:[A-Z]{3}[- ]\d{3}|\d{3}[- ][A-Z]{3})\z'
+      charset:
+        index: [S]
+        first_letter_of_group: [A, B, P, U]
+        notes: >-
+          Art. 19 § 2, verbatim: "Les series de lettres commencent par la lettre
+          'A' pour les cyclomoteurs de classe A, par la lettre 'B' pour les
+          cyclomoteurs de classe B et par la lettre 'P' pour un 'speed pedelec'
+          ... Pour les quadricycles legers ... Les series de lettres commencent
+          par la lettre 'U'." So the SECOND character of the string decodes the
+          exact vehicle kind — a four-way split no other series in this file has.
+      separator_note: "two-line plate; separator-only class `[- ]` at the stacked group boundary (PRD-PLATES § 2.8)"
+    design:
+      plate: { w: 100, h: 120, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, geometry: "35 x 18 mm, 4-5 mm from the left border and 7-9 mm from the bottom border" }
+      seal: { name: "sceau en relief CV", h_min: 16, h_max: 17, w_min: 10, w_max: 11, unit: mm }
+      size_change_note: >-
+        THE PLATE SHRANK. Art. 15/1 § 2 as inserted on 31-03-2014 gave the moped
+        plate the MOTORCYCLE size, 210 x 140 mm; the 2019 instrument (in force
+        01-01-2021) moved it to chapitre V and cut it to 100 x 120 mm with its own
+        character drawing (annexe 2bis). A moped plate made between 2014 and 2020
+        is therefore physically twice the size of one made today while carrying the
+        same inscription — a design change inside one series, recorded here rather
+        than split, because the serial grammar never changed.
+      rear_differs: false
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032302&table_name=loi  # arrete ministeriel 23 March 2014 inserting chapitre IVbis, art. 15/2 § 2 ('la lettre \"S\" suivie d'un tiret...'), and art. 2: 'Le present arrete entre en vigueur le 31 mars 2014.'"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 18 (100 x 120 mm, 35 x 18 mm blue zone, annexe 2bis characters) and art. 19 §§ 2-4 (the S index, the A/B/P/U letter split, the O oldtimer variant, the Cour/A/E/P supplementary rule)"
+      - "https://mobilit.belgium.be/fr/route/immatriculer-et-radier/plaques-et-certificats-dimmatriculation/format-de-plaque  # DIV: 'Plaque format cyclo (10x12 cm)' is mandatory for mopeds, speed pedelecs and light quadricycles"
+    notes: >-
+      MOPEDS, SPEED PEDELECS AND LIGHT QUADRICYCLES, "S" INDEX, from 31 March
+      2014 — a REAL start, given by the entry-into-force article of the instrument
+      that created the category, not by a consolidation date. "P" for speed
+      pedelecs and "U" for light quadricycles were added by the 2019 instrument
+      (in force 01-01-2021), so an S-Pxx-999 plate cannot predate 2021 while an
+      S-Axx-999 or S-Bxx-999 plate can go back to 2014 — the one genuine
+      era-inference tell in the Belgian system. Historic mopeds take the "O" index
+      with a letter group beginning "S" (art. 19 § 3), and short-duration
+      temporary and export moped plates BOTH begin "WS" (art. 21 § 4), which is
+      the only place in Belgian law where the export plate does not begin "X".
+
+  - id: be-agricultural-g-2020
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 2020 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "G-LLL-999"
+      regex: '\AG-[A-Z]{3}-\d{3}\z'
+      regex_strict: '\AG-L[A-Z]{2}-\d{3}\z'
+      charset:
+        index: [G]
+        first_letter_of_group: [L]
+        notes: "art. 9 § 2, verbatim: 'la lettre \"G\" est suivie d'un tiret ..., de la lettre \"L\" et d'une combinaison de deux lettres suivie d'un tiret ... et d'une combinaison de trois chiffres'"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm, note: "square form: 'G' + hyphen + 'L' + two letters above three digits" }
+      background: { color: "#CC0605", finish: retroreflective, hex_basis: spec, spec: "RAL 3020", spec_note: "art. 9 § 3, verbatim: 'Les marques d'immatriculation visees aux §§ 1er et 2 ont un fond rouge (RAL 3020). L'inscription et le lisere sont blancs.'" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 9 §§ 1-4: the G plate is issued to holders claiming the fuel-excise exemption of art. 429 §§ 2, i and 3, b of the programme law of 27 December 2004 for vehicles of art. 1 § 2, 59° of the arrete royal of 15 March 1968; red RAL 3020 ground, white inscription; and the duty to return the plate when the exemption lapses"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # art. 2 of the 2019 instrument, which the Justel footnote dates in force 01-10-2020"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 1, 8°, inserted by the arrete royal of 7 May 2013, in force 01-06-2013 — the category's own creation date"
+    notes: >-
+      AGRICULTURAL AND FORESTRY TRACTORS, "G" INDEX, red on white. CLASS AND
+      CRITERION CAVEAT, and it is a real one: like the German green plate, the
+      legal test is FISCAL, not agronomic — the G plate goes to holders who claim
+      the fuel-excise exemption, and it must be returned when the exemption stops.
+      TWO DATES: the category was created by the arrete royal of 7 May 2013 (in
+      force 01-06-2013), but the G-Lxx-999 inscription and the red ground come
+      from the 2019 ministerial instrument, whose art. 2 the Justel footnote dates
+      in force 01-10-2020. period.start records the FORMAT, and the earlier
+      category date is recorded here rather than laundered into the period.
+      Belgium is the second jurisdiction in this dataset (after Germany) to give
+      a hard colour code for a plate ground rather than a colour name.
+
+  - id: be-national-u-2021
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "UL-99-LLL"
+      regex: '\AU[A-Z]-\d{2}-[A-Z]{3}\z'
+      charset:
+        first_letters: [U]
+        notes: >-
+          Art. 10 § 1, 1°, verbatim: "de deux lettres suivies d'un tiret ... et
+          d'une combinaison de deux chiffres correspondant a L'ANNEE DE VALIDITE,
+          ainsi que d'une combinaison de trois lettres"; art. 10 § 3: "la premiere
+          lettre est la lettre 'U' suivie d'une deuxieme lettre". DIV's own page
+          says the pair currently in issue is "UA".
+      fields_note: >-
+        THE YEAR IS INSIDE THE SERIAL. The two digits are the last two of the
+        expiry year, and two GREEN vignettes to the right of the European symbol
+        carry the day (upper) and the month (lower). Together they give a full
+        expiry date — the only Belgian series besides the W/X temporaries where
+        the string itself carries a date.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#114232"
+      foreground_spec: "RAL 6005"
+      foreground_note: "art. 10 § 1, verbatim: 'L'inscription et le lisere sont de couleur vert mousse (RAL 6005).'"
+      border: { color: "#114232", spec: "RAL 6005", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { position: "right of the European symbol", content: "two green vignettes, day above and month below, per annexe 4" }
+    validity:
+      days: 20
+      note: "DIV: valid twenty consecutive calendar days, one plate per vehicle per holder per year, EXPIRES AUTOMATICALLY without a deregistration step, cannot be renewed, and is valid on Belgian territory only"
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 10 §§ 1-3 (car/trailer national plate), art. 17 (motorcycle national plate), art. 23 (moped national plate)"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/plaque-nationale  # DIV: moss green on white retroreflective, 'UA' before the validity year, two green stickers for month and day, twenty consecutive calendar days, one per vehicle per year, Belgian territory only (accessed 2026-08-02)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 1, 7° and the reference to the arrete royal of 8 January 1996 on commercial and national plates"
+    notes: >-
+      PLAQUE NATIONALE, "U" INDEX. Belgium's short national-use plate: it is tied
+      to a DETERMINED VEHICLE (hence `binding: vehicle`, against the jurisdiction
+      default) for deliveries, roadworthiness tests and demonstrations, for twenty
+      days, inside Belgium only. CLASS CAVEAT: the underlying instrument is the
+      arrete royal of 8 January 1996 on COMMERCIAL and national plates, so a case
+      could be made for `dealer`; `temporary` is recorded because the defining
+      feature is a twenty-day self-expiring validity and because any natural or
+      legal person may hold one, not only a trade.
+
+  - id: be-dealer-marchand-z-2021
+    class: dealer
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "Z-LLL-999"
+      regex: '\AZ-[A-Z]{3}-\d{3}\z'
+      charset:
+        index: [Z]
+        notes: "art. 8 § 3, 2°, verbatim: 'la plaque marchand : la premiere lettre \"Z\" est suivie d'une combinaison de trois lettres dont la premiere lettre ne doit pas etre la lettre \"M\" et \"S\"' — M and S are withheld because they mark the motorcycle and moped trade plates (art. 16 § 3, art. 22 § 3)"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#114232"
+      foreground_spec: "RAL 6005"
+      border: { color: "#114232", spec: "RAL 6005", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { position: "between the letter group and the digit group", content: "a vignette conforming to annexe 5, carrying the expiry year (art. 8 § 2)" }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 8 §§ 1-3 (white ground, moss green RAL 6005 inscription and border, the L-LLL-999 shape, the annexe 5 vignette, and the three index letters Y / Z / V)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 1, 7°: commercial plates are governed by the arrete royal of 8 January 1996"
+    notes: >-
+      PLAQUE MARCHAND — the Belgian dealer plate, "Z" index. `binding: business`:
+      like the German rote Kennzeichen it attaches to a trade, not to a vehicle,
+      which is why a vehicle-keyed consumer must not join on it. Its motorcycle
+      twin keeps the Z index and takes a letter group beginning "M" (art. 16 § 3),
+      its moped twin a letter group beginning "S" (art. 22 § 3) — which is exactly
+      why the car series withholds M and S from its own first letter. Green: moss
+      green RAL 6005 since 01-01-2021, mint green RAL 6029 from 15-11-2010 (see
+      be-commercial-2010), plain "verts" with no code before that.
+
+  - id: be-dealer-essai-y-2021
+    class: dealer
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "Y-LLL-999"
+      regex: '\AY-[A-Z]{3}-\d{3}\z'
+      charset: { index: [Y], notes: "art. 8 § 3, 1°: the test plate's index is 'Y' and the first letter of its three-letter group is neither 'M' nor 'S'" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#114232"
+      foreground_spec: "RAL 6005"
+      border: { color: "#114232", spec: "RAL 6005", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { position: "between the letter group and the digit group", content: "annexe 5 vignette carrying the expiry year" }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 8 § 3, 1° (plaque essai, index Y) and art. 8 §§ 1-2 (colours and vignette)"
+    notes: >-
+      PLAQUE ESSAI — the Belgian TEST plate, "Y" index, distinct from the dealer
+      plate it shares a design with. Recorded as its own series rather than a
+      variant because the index letter is part of the format and a parse API must
+      be able to score "Y-" against "Z-" independently. Under the pre-2010 regime
+      the test plate was identified instead by the letter pair "ZX", "ZY" or "ZZ"
+      at the head of the letter group (see be-commercial-2001), which is why the
+      modern Y index reads as a promotion of that convention rather than an
+      invention.
+
+  - id: be-dealer-professionnelle-v-2021
+    class: dealer
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "V-LLL-999"
+      regex: '\AV-[A-Z]{3}-\d{3}\z'
+      charset: { index: [V], notes: "art. 8 § 3, 3°: the professional plate's index is 'V' and the first letter of its three-letter group is neither 'M' nor 'S'" }
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#114232"
+      foreground_spec: "RAL 6005"
+      border: { color: "#114232", spec: "RAL 6005", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { position: "between the letter group and the digit group", content: "annexe 5 vignette carrying the expiry year" }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 8 § 3, 3° (plaque professionnelle, index V)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # the 2019 instrument that created the professional plate alongside the test and dealer plates, in force 01-01-2021"
+    notes: >-
+      PLAQUE PROFESSIONNELLE, "V" index — the NEWEST Belgian trade category, with
+      no predecessor: the 2001 and 2010 texts knew only the test plate and the
+      dealer plate, and the professional plate first appears in the 2019
+      instrument. period.start 2021 is therefore both the instrument date and the
+      real start, which is unusual in this file and worth stating.
+
+  - id: be-temporary-w-2021
+    class: temporary
+    categories: [car, van, truck, bus, trailer, motorcycle, moped]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "WL-99-LLL"
+      regex: '\AW[A-Z]-\d{2}-[A-Z]{3}\z'
+      charset:
+        first_letters: [W]
+        second_letter_decode:
+          car: "any letter except M, Q and S (art. 5 § 4, 1°)"
+          trailer: "Q (art. 5 § 4, 2°)"
+          motorcycle: "M (art. 13 § 4, 1°)"
+          moped: "S (art. 21 § 4)"
+        notes: "art. 5 § 1, 1°, verbatim: 'd'un groupe de deux lettres suivi des deux derniers chiffres du millesime suivi des trois lettres. Les chiffres sont separes des lettres par un tiret de separation situe sur la ligne mediane horizontale de la marque d'immatriculation.'"
+      fields_note: >-
+        THE PLATE CARRIES ITS OWN EXPIRY. The two digits are the last two of the
+        expiry YEAR, embossed in the serial; two vignettes carry the DAY (upper)
+        and the MONTH (lower). Art. 5 § 3 makes the vignette colour the fiscal
+        tell: "Les marques d'immatriculation transit sont munies d'une vignette
+        ROUGE; les marques d'immatriculation provisoire ont une vignette BLEUE" —
+        red for the import-duty/VAT-exempt transit regime, blue for the ordinary
+        provisional one. A single `pattern` string cannot carry the vignettes.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 13" }
+        - { w: 100, h: 120, unit: mm, note: "moped form, art. 21" }
+      background: { color: "#CC0605", finish: retroreflective, hex_basis: spec, spec: "RAL 3020", spec_note: "art. 5 § 1, verbatim: 'ont un fond rouge signalisation (RAL 3020). L'inscription et le lisere sont blancs.'" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { content: "two vignettes: day above, month below; red for transit, blue for provisional (art. 5 §§ 2-3)" }
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 5 §§ 1-4 (cars and trailers), art. 13 §§ 1-4 (motorcycles), art. 21 §§ 1-4 (mopeds)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 5 § 1 (who may hold a temporary registration) and art. 20 § 1, 3° (the short-duration category); art. 5 § 3: a temporary registration runs at least two months and a NEW plate is issued on every extension"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/immatriculer-temporairement-plaque-w  # DIV: the W plate is for people making a temporary stay in Belgium; three indicators of validity — the embossed year plus day and month stickers, red or blue by tax regime; the plate is deregistered automatically on expiry (accessed 2026-08-02)"
+    notes: >-
+      THE "W" PLATE — short-duration temporary registration for a temporary STAY in
+      Belgium, red on white. `binding: vehicle`, against the jurisdiction default:
+      arrete royal art. 22 § 2 expressly withholds the keep-your-number right where
+      a short-duration temporary plate has been issued. Note that DIV also delivers
+      a REPRODUCTION with these plates (art. 22 § 1 last sentence), which it does
+      not do for ordinary ones. Its export twin is be-export-x-2021, and the two
+      are distinguishable by a single character — except on mopeds, where art. 21
+      § 4 gives BOTH the "WS" prefix.
+
+  - id: be-export-x-2021
+    class: export
+    categories: [car, van, truck, bus, trailer, motorcycle]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "XL-99-LLL"
+      regex: '\AX[A-Z]-\d{2}-[A-Z]{3}\z'
+      charset:
+        first_letters: [X]
+        second_letter_decode:
+          car: "any letter except M, Q and S (art. 5 § 4, 3°)"
+          trailer: "Q (art. 5 § 4, 4°)"
+          motorcycle: "M (art. 13 § 4, 2°)"
+        notes: "same inscription grammar as the W plate — two letters, the last two digits of the expiry year, three letters — with 'X' as the first letter"
+      fields_note: "expiry year embossed in the serial; day and month on two vignettes, red for transit and blue for provisional (art. 5 §§ 2-3)"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 13 § 4, 2°" }
+      background: { color: "#CC0605", finish: retroreflective, hex_basis: spec, spec: "RAL 3020" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { content: "two vignettes: day above, month below; red for transit, blue for provisional" }
+    validity:
+      days: 30
+      note: "DIV: thirty calendar days, longer only in the VAT-exempt cases; a Belgian resident exporting a personal vehicle may hold one X plate per year"
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 5 § 4, 3°-4° (export auto and export trailer) and art. 13 § 4, 2° (export motorcycle)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 1, 3°/1, inserted by the arrete royal of 19 February 2016 in force 01-05-2016 — the export category's own creation date; art. 5 § 1, 10°-13° names the holders"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/exporter-un-vehicule-plaque-x  # DIV: thirty calendar days, the three validity indicators, and the eligible holders (accessed 2026-08-02)"
+    notes: >-
+      THE "X" PLATE — the Belgian EXPORT plate, red on white, thirty days. TWO
+      DATES, both recorded: the export category was carved out of the general
+      short-duration temporary category by the arrete royal of 19 February 2016 (in
+      force 01-05-2016), which inserted art. 20 § 1, 3°/1; the "X" letter and the
+      LL-99-LLL inscription come from the 2019 ministerial instrument in force
+      01-01-2021, and that is what period.start records. Unlike the German
+      Ausfuhrkennzeichen, the Belgian export plate KEEPS the euroband.
+
+  - id: be-international-2021
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9-LLL-999"
+      regex: '\A\d-[A-Z]{3}-\d{3}\z'
+      regex_statutory: '\A(?:[A-Z0-9]-(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})|(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})-[A-Z0-9])\z'
+      charset:
+        notes: >-
+          Art. 6 alinea 2, verbatim: "En ce qui concerne l'inscription, les
+          dispositions de l'article 4, § 1er, points 1° et 2° de cet arrete sont
+          d'application." The long-duration temporary plate therefore takes the
+          ORDINARY inscription, with no distinguishing index of its own.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 14" }
+        - { w: 100, h: 120, unit: mm, note: "moped form, art. 20" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 6 (car), art. 14 (motorcycle), art. 20 (moped): white ground, ruby red RAL 3003, ordinary inscription, and the rule that the inscription may NOT be kept for a subsequent ordinary registration"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 1, 4° (the long-duration temporary category, called the 'marque d'immatriculation internationale') and art. 5 § 1, 1°-3° (diplomatic and consular staff, SHAPE and NATO members and their families)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 5 of the 2010 instrument, which gave this plate the fixed index EIGHT — 'du chiffre (index) huit suivi d'un tiret ... et d'une combinaison de trois lettres suivies de trois chiffres'"
+    notes: >-
+      MARQUE D'IMMATRICULATION INTERNATIONALE — the long-duration temporary plate,
+      for diplomatic and consular staff, SHAPE and NATO personnel and comparable
+      holders whose vehicle does not carry a CD plate. A NEGATIVE FINDING WORTH
+      RECORDING: since 01-01-2021 this plate is NOT distinguishable from an
+      ordinary plate by its string. Between 15-11-2010 and 31-12-2020 it was: the
+      arrete ministeriel of 8 November 2010 fixed its index at the digit EIGHT, so
+      "8-ABC-123" was an international plate and nothing else (see
+      be-international-2010). The 2019 instrument dropped that, and no replacement
+      marker appears anywhere in the consolidated text. Art. 6 § 2 adds a rule a
+      claims model should keep: on expiry "l'inscription ne peut pas etre conservee
+      pour une immatriculation sous une plaque normale" — the one Belgian number
+      that its holder may NOT keep.
+
+  - id: be-diplomatic-cd-2010
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2010 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "CD-LL-999"
+      regex: '\ACD-[A-Z]{2}-\d{3}\z'
+      charset:
+        fixed_letters: "CD"
+        notes: >-
+          Art. 7, 1°, verbatim: "d'une combinaison des lettres 'CD' suivies d'un
+          tiret de separation ..., de deux lettres suivies d'un tiret de separation
+          ... et de trois chiffres". The motorcycle CD plate (art. 15) is the same
+          string with the letter group forced to begin "M".
+      separator_note: >-
+        THE SECOND HYPHEN IS YOUNGER THAN THE PLATE. The arrete ministeriel of
+        8 November 2010 prescribed only ONE hyphen — "Les lettres 'CD' sont
+        separees des autres caracteres par un tiret" — so a CD plate issued between
+        15-11-2010 and 30-03-2014 prints "CD-AB123". The second hyphen was inserted
+        by the arrete ministeriel of 28 March 2014, in force 31-03-2014.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm, note: "'CD' and a hyphen, then two letters above three digits" }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle CD plate, art. 15; letter group begins 'M'" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 7 (car CD plate: white ground, ruby red RAL 3003, CD-LL-999) and art. 15 (motorcycle CD plate, letter group begins 'M')"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 6 of the 2010 instrument: the CD plate becomes ruby red on white with a single hyphen, in force 15-11-2010"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032807&table_name=loi  # art. 4 of the 2014 instrument: the second hyphen, in force 31-03-2014"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 4: the CD plate is assigned on the proposal of the Protocol service of the FPS Foreign Affairs, to members of the diplomatic or consular corps, to persons with comparable immunities, and to missions and permanent establishments of public international organisations for their service vehicles"
+    notes: >-
+      THE CD PLATE, from 15 November 2010. Belgium keeps the ordinary ruby-red
+      design and signals diplomatic status through the literal letters "CD" — the
+      German approach (status in the prefix, ordinary colours) rather than the
+      Spanish one (a colour per corps). CONSULAR CAVEAT: art. 20 § 4 of the arrete
+      royal puts the consular corps INSIDE the CD category, so Belgium has no
+      separate consular series and `class: consular` is unused for this
+      jurisdiction. The two-letter group is a mission code allocated by the Protocol
+      service and is NOT published in either instrument — a decode table would be an
+      L4 deliverable and is deliberately not guessed here. Before 15-11-2010 the CD
+      plate was two-coloured: green "CD", then a red letter and three red digits
+      (see be-diplomatic-2001).
+
+  - id: be-supplementary-court
+    class: government
+    categories: [car]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999"
+      regex: '\A\d{1,3}\z'
+      charset:
+        notes: "art. 4 § 5, 1°, verbatim: 'les marques d'immatriculation \"Cour\": un a trois chiffres uniquement' — digits only, one to three of them, and nothing else on the plate"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 12 § 4, 1°" }
+        - { w: 100, h: 120, unit: mm, note: "moped form, art. 19 § 4, 1°" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 5, 1° (car), art. 12 § 4, 1° (motorcycle), art. 19 § 4, 1° (moped)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 1, 2° and § 2, 1°: the 'Cour' plate goes to members of the royal family and dignitaries of the Court, and is issued only IN ADDITION to a plate the vehicle already carries"
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # the arrete ministeriel as published 08-08-2001, art. 4 § 2, 1°: 'un a trois chiffres seulement' — the composition is unchanged since 01-10-2001"
+    notes: >-
+      THE COURT PLATE — one to three digits and nothing else, the shortest
+      inscription in this dataset and the only Belgian plate with no letters at
+      all. It is a SUPPLEMENTARY plate: arrete royal art. 20 § 2 requires the
+      vehicle already to carry an ordinary or CD plate, and "Le titulaire d'une
+      double immatriculation choisit laquelle des deux marques d'immatriculation
+      est apposee sur son vehicule", so the same car legally has two numbers and
+      shows one. period.start 2001 is the in-force date of the arrete ministeriel
+      that states the composition; the composition itself survived the 2010, 2019
+      and 2022 rewrites unchanged, which is why the series is not split.
+
+  - id: be-supplementary-aep
+    class: government
+    categories: [car]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "A-999"
+      regex: '\A[AEP]-\d{1,3}\z'
+      charset:
+        index: [A, E, P]
+        notes: >-
+          Art. 4 § 5, 2°, verbatim: "les marques d'immatriculation 'A', 'E' ou 'P':
+          la lettre 'A', 'E' ou 'P' est suivie d'un trait de separation et d'un a
+          trois chiffres." The letter is the office, not a serial character:
+          A = federal executive and senior magistracy, E = Community and Regional
+          governments, P = parliamentarians (arrete royal art. 20 § 2, 2°-4°).
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 12 § 4, 2°" }
+        - { w: 100, h: 120, unit: mm, note: "moped form, art. 19 § 4, 2°" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 5, 2° (car), art. 12 § 4, 2° (motorcycle), art. 19 § 4, 2° (moped)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 20 § 2, 2°-4°: who receives an A, E or P plate, including ministers of State, provincial governors, the heads of recognised religions and of the Central Freethought Council, and Belgian members of the European Parliament"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/plaque-personnalisee/introduction  # DIV reserves A-0 to A-999999, E-0 to E-999999 and P-0 to P-999999 against personalised inscriptions — corroborating that the letter is an office marker and not a free serial (accessed 2026-08-02)"
+    notes: >-
+      THE A / E / P SUPPLEMENTARY PLATES — Belgium's political-office plates, and
+      an unusually legible piece of constitutional structure on a licence plate:
+      "E" exists because Belgium has Community and Regional governments distinct
+      from the federal one. Like the Court plate these are ADDITIONAL to an
+      ordinary or CD plate and the holder chooses which to display. DIV's
+      personalised-plate page reserves A-, E- and P- ranges up to six digits, which
+      is wider than the one-to-three digits the arrete ministeriel prescribes — the
+      discrepancy is recorded, not averaged, and the statutory bound is what
+      `regex` carries.
+
+  - id: be-personalized-2014
+    class: personalized
+    categories: [car, van, truck, bus, trailer, motorcycle, moped]
+    period: { start: 2014 }
+    period_evidence: enabling-instrument
+    # RECALL-ONLY (PRD-PLATES § 2.7): the regex below accepts any hyphen-grouped
+    # alphanumeric string, which is deliberately WIDER than the grammar DIV
+    # issues — the eight-character cap, the at-least-one-letter rule and the
+    # long list of reserved shapes cannot be expressed without either a
+    # mixed separator/serial character class (forbidden by § 2.8) or an
+    # unescaped dot (rejected by the lint's atom walker). A match here is a
+    # shape hit and nothing more.
+    matching: recall-only
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z0-9]+(?:-[A-Z0-9]+)*\z'
+      max_positions: 8
+      max_positions_note: >-
+        Art. 4 § 1/1, verbatim: "2° l'inscription se compose d'un maximum de
+        8 caracteres, LE TIRET DE SEPARATION ETANT EGALEMENT CONSIDERE COMME UN
+        CARACTERE; 3° l'inscription ne peut pas se composer uniquement de
+        chiffres; ... 5° l'inscription ne peut pas commencer ou finir par un tiret
+        de separation; 6° le sceau en relief precede l'inscription." DIV states the
+        same cap physically: "elle est composee au maximum de 9 emplacements, dont
+        un emplacement impose (le sceau de la DIV), ce qui permet une combinaison
+        de maximum 8 caracteres."
+      charset:
+        notes: >-
+          Art. 4 § 1/1, 1°: letters and digits are separated by a hyphen, and a
+          hyphen may also separate letter groups from digit groups. 4°: the
+          inscription "ne peut pas creer de confusion avec l'inscription d'autres
+          marques d'immatriculation", enumerating articles 4 § 2 alinea 1, §§ 4 and
+          5, 5, 6, 7, 9, 12, 13, 14, 16 and 19 — see
+          region_encoding_tables.reserved_shapes_for_personalised_plates for DIV's
+          own rendering of that list.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm }
+        - { w: 100, h: 120, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { condition: "oldtimer only", content: "a red 26 x 26 mm 'Oldtimer' vignette below the seal, because a personalised inscription cannot also carry the 'O' index (art. 4 § 2 alinea 2)" }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 4 § 1/1 (the personalised inscription grammar) and art. 4 § 2 alinea 2 (the Oldtimer vignette that replaces the O index)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032807&table_name=loi  # art. 3 a) of the 2014 instrument, which inserted art. 4 § 1/1; art. 9: in force 31-03-2014"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 23 (reservation of a chosen number against a fee, five months to use it) as replaced by the arrete royal of 28 March 2014, in force 31-03-2014"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/plaque-personnalisee/introduction  # DIV's own conditions and the list of forbidden combinations (accessed 2026-08-02)"
+    notes: >-
+      PERSONALISED INSCRIPTIONS, from 31 March 2014. The one Belgian series whose
+      regex is honestly `recall-only`: the sourced grammar is a length cap plus a
+      blacklist of shapes, and neither survives the round-trip discipline. Two
+      details worth keeping: the 2014 text allowed an all-digit inscription for
+      vehicles registered that way BEFORE 1 JANUARY 1954 — a grandfather clause
+      reaching back to the pre-numberplate era — and the 2022 re-cut dropped it,
+      so an all-digit personalised inscription is no longer obtainable. And
+      arrete royal art. 22 § 2 carries the one recorded fact about a retired
+      index: a holder with a reserved number whose plate no longer complies may
+      keep the old number, "a l'exception des marques d'immatriculation commencant
+      par un chiffre (index) '9'", in which case the number survives WITHOUT the
+      leading 9.
+
+  # =========================================================================
+  # G2 — 15 NOVEMBER 2010 to 31 DECEMBER 2020. European format, digit index on
+  # every category. Still very much on the road: arrete ministeriel art. 25
+  # keeps a non-conforming plate valid "jusqu'au moment de la prochaine
+  # immatriculation, reimmatriculation ou renouvellement".
+  # =========================================================================
+  - id: be-motorcycle-2010
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2010, end: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-LLL-999"
+      regex: '\A\d-[A-Z]{3}[- ]\d{3}\z'
+      charset:
+        notes: >-
+          Arrete ministeriel of 8 November 2010, art. 10, verbatim: "L'inscription
+          consiste en un chiffre (index) suivi d'un tiret et en un groupe de trois
+          lettres au-dessus groupe de trois chiffres." From 31-03-2014 the arrete
+          ministeriel of 28 March 2014 added art. 12 § 2's rule that "le groupe de
+          lettres commence par un 'M'" — so a plate from this series issued after
+          31-03-2014 reads 9-Mxx-999, and one issued before it need not. That split
+          is stated here rather than encoded, because the series has one format and
+          two charset epochs.
+      separator_note: "two-line plate; separator-only class `[- ]` at the stacked group boundary"
+    design:
+      plate: { w: 210, h: 140, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, geometry: "62 x 31 mm, 5 mm from the left and bottom border under the 2010 text" }
+      rear_differs: false
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 9 (moto plate becomes 210 x 140 with a European symbol and annexe 2 characters) and art. 10 (the digit index and the 62 x 31 mm blue zone at 5 mm from the borders); art. 16: in force 15-11-2010"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032807&table_name=loi  # art. 7: the letter group must begin with 'M' from 31-03-2014"
+    notes: >-
+      MOTORCYCLES UNDER THE DIGIT INDEX, 15-11-2010 to 31-12-2020. This is the
+      series that makes a bare "1-ABC-123" ambiguous: for ten years a Belgian
+      motorcycle carried the same string shape as a car, and only the 210 x 140
+      plate told them apart. The M INDEX that resolves it arrived on 01-01-2021
+      (be-motorcycle-m-2021); the M LETTER GROUP, which narrows but does not
+      resolve it, arrived on 31-03-2014.
+
+  - id: be-historic-2010
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 2014, end: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-OLL-999"
+      regex: '\A\d-O[A-Z]{2}-\d{3}\z'
+      charset:
+        first_letter_of_group: [O]
+        notes: "arrete ministeriel of 28 March 2014, art. 3 b), verbatim: 'les marques d'immatriculation dont le GROUPE DE LETTRES commence par un \"O\" sont delivrees lors de l'immatriculation ou de la reimmatriculation des vehicules automobiles vises a l'article 2, § 2, 7°, de l'arrete royal du 15 mars 1968'"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { condition: "personalised numbers only", content: "a red 28 x 28 mm 'Oldtimer' vignette below the seal — it shrank to 26 x 26 mm with the 2022 re-cut" }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032807&table_name=loi  # art. 3 b): the O letter group, the 28 x 28 mm Oldtimer vignette; art. 9: in force 31-03-2014"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # art. 4 § 3 as replaced: 'O' becomes an INDEX from 01-01-2021, closing this series"
+    notes: >-
+      OLDTIMERS UNDER THE DIGIT INDEX, 31-03-2014 to 31-12-2020. period.start is
+      2014 and not 2010 because the oldtimer marker was carried in a different
+      place before that: under the arrete ministeriel as published in 2001 it was
+      already the first letter of the letter group, but the 2010 European-format
+      instrument left art. 4 § 3 untouched while replacing the surrounding
+      inscription, so the shape 9-Oxx-999 is only pinned from the 2014 text. The
+      pre-2010 shape is be-historic-2001.
+
+  - id: be-trailer-2010
+    class: trailer
+    categories: [trailer]
+    period: { start: 2014, end: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-QLL-999"
+      regex: '\A\d-Q[A-Z]{2}-\d{3}\z'
+      charset:
+        first_letter_of_group: [Q]
+        notes: "arrete ministeriel of 28 March 2014, art. 3 c), verbatim: 'les marques d'immatriculation dont le groupe de lettres commence par un \"Q\" sont delivrees lors de l'immatriculation ou de la reimmatriculation des remorques'"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2014032807&table_name=loi  # art. 3 c): the Q letter group for trailers; art. 9: in force 31-03-2014"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # 'Q' becomes an INDEX from 01-01-2021, closing this series"
+    notes: >-
+      TRAILERS UNDER THE DIGIT INDEX, 31-03-2014 to 31-12-2020, with "Q" at the
+      head of the letter group. The 2001 text gave trailers "U" OR "Q" and a
+      black-on-white 520 x 110 plate; the 2014 text kept only "Q" and folded
+      trailers into the ordinary ruby-red design; the 2019 text promoted "Q" to
+      the index. Three regimes, three entries, one letter.
+
+  - id: be-taxi-2010
+    class: taxi
+    categories: [car, van]
+    period: { start: 2010, end: 2020 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9-TXL-999"
+      regex: '\A\d-TX[A-Z]-\d{3}\z'
+      charset:
+        notes: >-
+          The arrete ministeriel as published in 2001, art. 4 § 5: "Les marques
+          d'immatriculation dont le groupe des lettres commence par 'TX' sont
+          delivrees lors de l'immatriculation de vehicules mentionnes dans
+          l'article 28, § 3, premier alinea de l'arrete royal du 20 juillet 2001."
+          Neither the 2010 nor the 2014 instrument touched that paragraph, so the
+          TX letter group simply acquired a digit index on 15-11-2010.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # the arrete ministeriel as published 08-08-2001, art. 4 § 5: the 'TX' letter group for taxis"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 3, which put a digit index in front of every ordinary inscription from 15-11-2010"
+      - "https://mobilit.belgium.be/fr/route/immatriculer/plaque-personnalisee/introduction  # DIV reserves 'les lettres TX et TL, afin d'eviter la confusion avec les plaques taxi' — corroborating that both prefixes are live in the register (accessed 2026-08-02)"
+    notes: >-
+      TAXIS UNDER THE DIGIT INDEX, 15-11-2010 to 31-12-2020, letter group "TX".
+      period_evidence is `instrument-in-force` and not `enabling-instrument`
+      because the 2010 instrument did not restate art. 4 § 5 — the TX rule was
+      already there and merely inherited the new index. DIV's personalised-plate
+      reservation list names both "TX" and "TL", which is how the pre-2021 taxi
+      convention survives into the modern T-Xxx / T-Lxx split.
+
+  - id: be-commercial-2010
+    class: dealer
+    categories: [car, van, truck, bus, trailer, motorcycle]
+    period: { start: 2010, end: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-LLL-999"
+      regex: '\A\d-[A-Z]{3}-\d{3}\z'
+      regex_statutory: '\A\d-(?:[A-Z]{3}-\d{3}|\d{3}-[A-Z]{3})\z'
+      charset:
+        notes: >-
+          Arrete ministeriel of 8 November 2010, art. 8, verbatim: "d'un chiffre
+          (index) suivi d'un tiret ... et d'une combinaison de soit trois lettres
+          suivies de trois chiffres, soit trois chiffres suivis de trois lettres."
+          The 2010 text does NOT distinguish the test plate from the dealer plate
+          by any letter — the distinction was carried by the certificate and the
+          vignette, not by the string. That is why the 2019 instrument's Y / Z / V
+          indexes were a real gain in parseability.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle trade plate, art. 15 as amended in 2010" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#007243"
+      foreground_spec: "RAL 6029"
+      foreground_note: "arrete ministeriel of 8 November 2010, art. 8 and art. 13, verbatim: 'L'inscription et le lisere sont verts menthe (RAL 6029)' — MINT green, replaced by moss green RAL 6005 on 01-01-2021"
+      border: { color: "#007243", spec: "RAL 6029", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { position: "below the hyphen, between the letter group and the digit group", content: "a 26 x 26 mm rounded-corner vignette carrying the year of issue in small print, the abbreviation 'DIV', the expiry year in large print, and an oval CV logo between the last two digits" }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 8 (car trade plate: mint green RAL 6029, digit index, the 26 x 26 mm vignette and its four contents) and art. 13 (motorcycle trade plate); art. 16: in force 15-11-2010"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # art. 12, replacing the trade-plate article with the Y / Z / V letter indexes and moss green RAL 6005, in force 01-01-2021"
+    notes: >-
+      TRADE PLATES UNDER THE DIGIT INDEX, 15-11-2010 to 31-12-2020 — and the only
+      Belgian plate ever specified as MINT green (RAL 6029). It is worth recording
+      that for that decade the string alone could not tell a test plate from a
+      dealer plate; only the vignette and the registration certificate could. The
+      three-way Y / Z / V split that fixes this is be-dealer-essai-y-2021,
+      be-dealer-marchand-z-2021 and be-dealer-professionnelle-v-2021.
+
+  - id: be-temporary-2010
+    class: temporary
+    categories: [car, van, truck, bus, trailer, motorcycle]
+    period: { start: 2010, end: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9-999999"
+      regex: '\A\d-\d{6}\z'
+      charset:
+        notes: >-
+          Arrete ministeriel of 8 November 2010, art. 4, verbatim: "d'un chiffre
+          (index) suivi d'un tiret ..., de six chiffres en format ordinaire suivis
+          du millesime en petit format". Digits only — the pre-2021 Belgian
+          temporary plate had no letters at all, which is the single cleanest
+          structural tell in the whole system.
+      fields_note: "the two-digit year is printed in SMALL format after the six ordinary digits and is not part of the serial; a month vignette (red for transit, blue for provisional) completes the expiry date"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm, note: "index and hyphen, then three digits above three digits, the lower group preceded by the small-format year" }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 11 of the 2010 instrument" }
+      background: { color: "#CC0605", finish: retroreflective, hex_basis: spec, spec: "RAL 3020", spec_note: "arrete ministeriel of 8 November 2010, art. 4 and art. 11: 'un fond rouge signalisation (RAL 3020)'" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+      extra_field: { content: "a rectangular vignette carrying the expiry month; RED for a transit registration, BLUE for a provisional one" }
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 4 (car temporary plate: RAL 3020, digit index, six digits, small-format year) and art. 11 (motorcycle temporary plate); art. 16: in force 15-11-2010"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2019121519&table_name=loi  # the 2019 instrument replacing this with the W / X letter scheme, in force 01-01-2021"
+    notes: >-
+      SHORT-DURATION TEMPORARY PLATES UNDER THE DIGIT INDEX, 15-11-2010 to
+      31-12-2020: red ground, white characters, and SEVEN DIGITS with no letter
+      anywhere. Distinct from be-international-2010, which shared the red-plate
+      chapter's neighbourhood but was white with ruby-red characters and a fixed
+      index of eight. The transit/provisional distinction was, and still is,
+      carried by the vignette colour rather than by the number.
+
+  - id: be-international-2010
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2010, end: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "8-LLL-999"
+      regex: '\A8-[A-Z]{3}-\d{3}\z'
+      charset:
+        index: ["8"]
+        notes: >-
+          Arrete ministeriel of 8 November 2010, art. 5, verbatim: "du CHIFFRE
+          (INDEX) HUIT suivi d'un tiret situe sur la ligne mediane horizontale de
+          la marque d'immatriculation et d'une combinaison de trois lettres suivies
+          de trois chiffres". A fixed index digit, reserved to one category — the
+          only such reservation Belgian law has ever made.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 210, unit: mm }
+        - { w: 210, h: 140, unit: mm, note: "motorcycle form, art. 12 of the 2010 instrument, same index eight" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_spec: "RAL 3003"
+      border: { color: "#9B111E", spec: "RAL 3003", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed }
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 5 (car international plate, index eight) and art. 12 (motorcycle international plate, index eight); art. 16: in force 15-11-2010"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # art. 6 as it stands today, which no longer reserves any index"
+    notes: >-
+      THE INDEX-EIGHT PLATE, 15-11-2010 to 31-12-2020 — Belgium's long-duration
+      temporary registration for diplomatic and NATO-related holders, and the one
+      period in which such a plate could be identified from its string alone.
+      Recorded here precisely because the capability was LOST on 01-01-2021 when
+      the 2019 instrument sent this plate back to the ordinary inscription (see
+      be-international-2021). A parse API can therefore date an "8-ABC-123" plate
+      to this decade with high confidence, which no other Belgian shape allows.
+
+  # =========================================================================
+  # G1 — 1 OCTOBER 2001 to 14 NOVEMBER 2010. The national format: a small
+  # 340 x 110 mm plate, red on white, and NO European band on ordinary cars.
+  # Arrete ministeriel art. 25 keeps these plates legally valid until the
+  # vehicle's next registration, re-registration or renewal, so they are still
+  # on Belgian roads today.
+  # =========================================================================
+  - id: be-standard-2001
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{3}-\d{3}\z'
+      regex_statutory: '\A(?:[A-Z]{3}-\d{3}|[A-Z]-\d{4}|[A-Z]{2}-\d{3})\z'
+      charset:
+        notes: >-
+          Arrete ministeriel as published 08-08-2001, art. 4 § 1, verbatim:
+          "L'inscription est constituee d'une combinaison de trois lettres suivies
+          de trois chiffres, ou de la combinaison soit d'une lettre et de quatre
+          chiffres, soit de deux lettres et de trois chiffres. Les lettres sont
+          separees des chiffres par un tiret: AU CENTRE de la marque
+          d'immatriculation pour la premiere combinaison mentionnee, VERS LE BAS de
+          celle-ci pour les autres combinaisons." The hyphen's HEIGHT therefore
+          encoded which of the three shapes was in use — a typographic tell no
+          regex can carry, recorded here instead. The two short shapes are older
+          stock kept in issue and are held in regex_statutory.
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec, spec_note: "art. 4 § 1: 'La marque d'immatriculation ordinaire a un fond blanc'; art. 3 § 1: retroreflective ground" }
+      foreground: "#9B111E"
+      foreground_note: >-
+        art. 4 § 1 (2001), verbatim: "L'inscription et le lisere sont ROUGES" — a
+        colour NAME with no code. RAL 3003 first appears in the arrete ministeriel
+        of 8 November 2010, so this hex carries hex_basis observed, not spec.
+      foreground_hex_basis: observed
+      border: { color: "#9B111E", width_mm: 5 }
+      band: { side: none }
+      band_note: >-
+        NO EUROPEAN BAND. Art. 4 § 1 as published in 2001 says nothing about a
+        European symbol, while art. 4 § 4 (trailers) and art. 10 (trade plates) both
+        specify one in detail — so the omission is deliberate and sourced, not an
+        oversight in the reading. Belgium put the euroband on its ORDINARY plate
+        only on 15 November 2010, later than any other founding Member State.
+      characters: { h: 70, w: 35, w_digit_one: 20, w_letter_i: 9, stroke: 9, hyphen_w: 12, hyphen_h: 6, unit: mm }
+      seal: { name: "sceau en relief CV", h: 20, w: 12, unit: mm }
+      rear_differs: false
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # the arrete ministeriel of 23 July 2001 AS PUBLISHED in the Moniteur belge of 08-08-2001: art. 3 (340 x 110 mm, rounded corners, 5 mm border, 1 mm relief, character metrics, 20 x 12 mm CV seal) and art. 4 § 1 (white ground, red inscription and border, the three inscription shapes and the hyphen-height rule)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014154&caller=SUM&view_numac=2001014154f  # the Justel header giving 'Entree en vigueur: 1 octobre 2001' and art. 25, which keeps superseded plates valid until the next registration"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # the instrument that closed this series on 14-11-2010"
+    notes: >-
+      THE PRE-EUROPEAN BELGIAN PLATE, 01-10-2001 to 14-11-2010: 340 x 110 mm, red
+      on white, no blue band. PERIOD CAVEAT, stated plainly: 2001 is the in-force
+      date of the arrete ministeriel that STATES this format, not the date the
+      format began. The three-letters-three-digits plate long predates it — the
+      2001 instrument replaced the arrete ministeriel of 30 August 1967, whose text
+      Justel does not carry in consolidated form (probed 2026-08-02, empty
+      response). FOLKLORE FLAG: the enthusiast web dates this format to 1973
+      essentially unanimously; that year is NOT asserted here and remains unsourced
+      until the 1967 instrument or its amendments are obtained from the Moniteur
+      belge archive. Also from this era and deliberately not modelled as series:
+      the "EUR" plate for European institutions (art. 8: blue on white, "EUR" in
+      reduced format inside a ring of twelve yellow stars, then four digits or
+      three digits and a letter) and the "EUROCONTROL" plate (art. 9: three digits
+      or two digits and a letter, then "EURO" in reduced format). Both were
+      abrogated by art. 7 of the arrete ministeriel of 8 November 2010.
+
+  - id: be-trailer-2001
+    class: trailer
+    categories: [trailer]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{3}-\d{3}\z'
+      regex_strict: '\A[UQ][A-Z]{2}-\d{3}\z'
+      charset:
+        first_letter_of_group: [U, Q]
+        notes: "art. 4 § 4 (2001), verbatim: 'Les marques d'immatriculation dont le groupe de lettres commence par un \"U\" ou un \"Q\" sont delivrees lors de l'immatriculation de remorques.'"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      foreground_note: "art. 4 § 4 (2001), verbatim: 'Ces marques d'immatriculation ont un fond blanc. L'inscription et le lisere sont NOIRS.' Belgian trailers were black-on-white while Belgian cars were red-on-white."
+      border: { color: "#000000", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, geometry: "blue zone against the left edge, 100 mm high x 45 mm wide" }
+      characters: { h: 75, w: 45, w_digit_one: 25, w_letter_i: 11, stroke: 11, hyphen_w: 18, hyphen_h: 11, unit: mm }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # art. 4 § 4 as published 08-08-2001: the U/Q letter groups, 520 x 110 mm, black on white, the European symbol with its 100 x 45 mm blue zone, and the character metrics"
+    notes: >-
+      THE BELGIAN TRAILER PLATE, 01-10-2001 to 14-11-2010 — and the reason this
+      file insists on the euroband finding: for nine years a Belgian TRAILER
+      carried the twelve stars and the "B" while the CAR TOWING IT did not, because
+      art. 4 § 4 specified a European symbol and art. 4 § 1 did not. It was also
+      bigger (520 x 110 against the car's 340 x 110) and a different colour
+      (black against red). Trade plates (art. 10) were the other pre-2010 euroband
+      carrier.
+
+  - id: be-motorcycle-2001
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL-999"
+      regex: '\A[A-Z]{3}[- ]\d{3}\z'
+      regex_strict: '\A[MW][A-Z]{2}[- ]\d{3}\z'
+      charset:
+        first_letter_of_group: [M, W]
+        notes: "art. 12 (2001), verbatim: 'L'inscription est constituee d'un groupe de trois lettres au dessus d'un groupe de trois chiffres. § 2. Le groupe de lettres commence par un \"M\" ou un \"W\".'"
+      separator_note: "two-line plate with no index and no printed glyph between the groups; the position is the separator-only class `[- ]` (PRD-PLATES § 2.8)"
+    design:
+      plate: { w: 140, h: 175, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed, spec_note: "art. 12 § 1 (2001), verbatim: 'La marque d'immatriculation ordinaire a un fond JAUNE. L'inscription et le lisere sont noirs.' The statute names the colour without a code, so the hex is observed within a named colour." }
+      foreground: "#000000"
+      border: { color: "#000000", width_mm: 5 }
+      band: { side: none }
+      band_note: "no European symbol on the 2001 motorcycle plate; art. 11 as published mentions only inscription, seal and security elements. The euroband arrived with art. 9 of the arrete ministeriel of 8 November 2010."
+      characters: { h: 50, w: 30, w_digit_one: 17, w_letter_i: 7, stroke: 7, unit: mm }
+      seal: { name: "sceau en relief CV", h: 15, w: 9, unit: mm }
+      rear_differs: false
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # arts. 11-12 as published 08-08-2001: the moto plate's construction and character metrics, the 140 x 175 mm PORTRAIT format, the yellow ground with black inscription and border, and the M/W letter rule"
+    notes: >-
+      THE YELLOW BELGIAN MOTORCYCLE PLATE, 01-10-2001 to 14-11-2010 — the only
+      Belgian plate that was ever yellow, and the only one that was taller than it
+      was wide (140 mm wide x 175 mm high; today's is 210 x 140, landscape). It
+      carried no index and no European band. A three-letter group beginning "M" or
+      "W" above three digits, on a portrait yellow plate, is therefore a
+      one-glance date range for a Belgian motorcycle.
+
+  - id: be-historic-2001
+    class: historic
+    categories: [car, van, truck, bus]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "OLL-999"
+      regex: '\AO[A-Z]{2}-\d{3}\z'
+      charset:
+        first_letter_of_group: [O]
+        notes: "art. 4 § 3 (2001), verbatim: 'Les marques d'immatriculation dont le groupe de lettres commence par un \"O\" sont delivrees lors de l'immatriculation des vehicules automobiles visees a l'article 2, § 2, 7°, de l'arrete royal du 15 mars 1968 ... L'inscription est constituee d'une combinaison de trois lettres suivies de trois chiffres.'"
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_hex_basis: observed
+      border: { color: "#9B111E", width_mm: 5 }
+      band: { side: none }
+      characters: { h: 70, w: 35, w_digit_one: 20, w_letter_i: 9, stroke: 9, unit: mm }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # art. 4 § 3 as published 08-08-2001: the O letter group, restricted to the three-letters-three-digits shape"
+    notes: >-
+      OLDTIMERS UNDER THE NATIONAL FORMAT, 01-10-2001 to 14-11-2010. Note the
+      narrowing that art. 4 § 3 performs: an ordinary plate could take any of three
+      shapes, but an oldtimer plate was confined to three letters and three digits,
+      so "O" plus two letters plus three digits is the complete grammar. The
+      eligibility test was a cross-reference to art. 2 § 2, 7° of the
+      technical-conditions decree of 15 March 1968 rather than an age in years;
+      the plain thirty-year test is a 2023 innovation (see be-historic-o-2021).
+
+  - id: be-diplomatic-2001
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CD-L-999"
+      regex: '\ACD-[A-Z]-\d{3}\z'
+      charset:
+        fixed_letters: "CD"
+        notes: "art. 7 (2001), verbatim: 'L'inscription comporte les lettres \"CD\" de couleur VERTE, suivies d'une lettre ROUGE et de trois chiffres ROUGES. Les lettres \"CD\" sont separees de l'autre lettre et des chiffres par un tiret au bas de la marque d'immatriculation.'"
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#9B111E"
+      foreground_hex_basis: observed
+      foreground_note: >-
+        A TWO-COLOUR INSCRIPTION, unique in this dataset: the letters "CD" are
+        GREEN and the following letter and three digits are RED, on a white ground
+        with a red border. `design.foreground` records the dominant red because the
+        schema carries one foreground; the green "CD" is recorded in
+        `foreground_secondary`. Neither colour is given a code in the 2001 text.
+      foreground_secondary: { color: "#007A33", applies_to: "the letters CD", hex_basis: observed }
+      border: { color: "#9B111E", width_mm: 5 }
+      band: { side: none }
+    binding: owner
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # art. 7 as published 08-08-2001: white ground, red border, green 'CD', red letter and three red digits, hyphens set low"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=fr&la=F&cn=2010110801&table_name=loi  # art. 6, which made the whole inscription ruby red RAL 3003 from 15-11-2010"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 40 § 1: plates issued under the abrogated 1953 decree stay valid EXCEPT 'CD' plates whose number is 'CD' followed by four digits — the sourced shape of the pre-2001 Belgian diplomatic plate, and the only one the 2001 reform withdrew outright"
+    notes: >-
+      THE TWO-COLOUR CD PLATE, 01-10-2001 to 14-11-2010. Green "CD", then one red
+      letter and three red digits — a design the 2010 European-format instrument
+      abolished in favour of a single ruby red. It is the only plate in the L0/L1
+      dataset whose inscription is specified in two colours, and it is a genuine
+      schema stressor: `design.foreground` is a scalar, so the second colour has to
+      live in an ad-hoc key. Note also the single letter where the modern plate has
+      two, which makes the pre-2010 CD number four characters shorter. THE ONE
+      SOURCED PRE-2001 SHAPE IN THIS FILE sits behind it: arrete royal art. 40 § 1
+      grandfathered every plate issued under the abrogated 1953 decree except a CD
+      plate reading "CD" plus FOUR DIGITS, which tells us both what the old
+      diplomatic plate looked like and that it alone was forcibly replaced.
+
+  - id: be-commercial-2001
+    class: dealer
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "ZLL-999"
+      regex: '\AZ[A-Z]{2}-\d{3}\z'
+      charset:
+        first_letter_of_group: [Z]
+        notes: >-
+          Art. 10 § 3 (2001), verbatim: "1. la plaque essai 'auto': les deux
+          premieres lettres 'ZX', 'ZY' ou 'ZZ' sont suivies d'une troisieme lettre,
+          a l'exclusion des lettres 'M', 'Q', 'U' et 'W'; 2. la plaque essai
+          'remorque': les deux premieres lettres 'ZZ' sont suivies de la troisieme
+          lettre 'Q' ou 'U'; 3. la plaque marchand 'auto': la premiere lettre 'Z'
+          est suivie d'une deuxieme lettre a l'exclusion des lettres 'M', 'Q', 'U',
+          et 'W' a 'Z'; 4. la plaque marchand 'remorque' la premiere lettre 'Z' est
+          suivie d'une deuxieme lettre 'Q' ou 'U'."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#007243"
+      foreground_hex_basis: observed
+      foreground_note: "art. 10 § 1 (2001): 'L'inscription et le bord sont VERTS' — a colour name with no code; RAL 6029 first appears in 2010 and RAL 6005 in 2021"
+      border: { color: "#007243", width_mm: 5 }
+      band: { side: left, color: "#003399", content: eu-stars+B, hex_basis: observed, geometry: "blue zone against the left edge, 100 mm high x 45 mm wide" }
+      characters: { h: 75, w: 45, w_digit_one: 25, w_letter_i: 11, stroke: 11, hyphen_w: 18, hyphen_h: 11, unit: mm }
+      extra_field: { position: "between the last digit and the right edge", content: "a green rounded-corner vignette 45 x 38 mm carrying the year of issue, 'DIV', the expiry year in large print and an oval CV logo" }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # art. 10 as published 08-08-2001: 520 x 110 mm, white ground, green inscription and border, the European symbol, the 45 x 38 mm vignette and the four ZX/ZY/ZZ/Z sub-schemes"
+    notes: >-
+      TRADE PLATES UNDER THE NATIONAL FORMAT, 01-10-2001 to 14-11-2010 — the
+      second pre-2010 Belgian plate to carry the euroband, and the ancestor of both
+      the modern "Y" test plate and the modern "Z" dealer plate: art. 10 § 3
+      distinguished them by the SECOND letter ("ZX"/"ZY"/"ZZ" for a test plate, any
+      other second letter for a dealer plate), and by whether the third letter was
+      "Q" or "U" for a trailer. `regex` covers the whole Z family; the four
+      sub-schemes are recorded in charset rather than split into four series,
+      because the 2001 text presents them as characteristics of one plate type.
+
+  - id: be-temporary-2001
+    class: temporary
+    categories: [car, van, truck, bus, trailer, motorcycle]
+    period: { start: 2001, end: 2010 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      charset:
+        notes: "art. 5 § 1 (2001), verbatim: 'L'inscription se compose des deux derniers chiffres du millesime en PETIT FORMAT, suivis de six chiffres en format ordinaire.' The serial proper is the six ordinary digits; the year is a smaller typographic field ahead of them, 32 mm high against the serial's full height."
+        fields_note: "small-format year digits 32 x 16 mm (the digit '1' 9 mm), stroke 4 mm, all set the same distance from the bottom edge"
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      plate_variants:
+        - { w: 180, h: 140, unit: mm, note: "motorcycle form, art. 13 (2001): two stacked groups of three digits with the small year digits to the left of the lower group" }
+      background: { color: "#CC0605", finish: retroreflective, hex_basis: observed, spec_note: "art. 5 § 1 (2001): 'ont un fond ROUGE. L'inscription et le lisere sont blancs' — a colour name; RAL 3020 first appears in the 2010 instrument" }
+      foreground: "#FFFFFF"
+      border: { color: "#FFFFFF", width_mm: 5 }
+      band: { side: none }
+      extra_field: { position: "above the year digits", content: "a rounded-corner vignette 45 x 38 mm carrying an individual number in small black print and the expiry MONTH in large white print, with an oval CV logo between the month's two digits; RED for transit, BLUE for provisional" }
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.ejustice.just.fgov.be/cgi/article_body.pl?language=fr&caller=summary&pub_date=01-08-08&numac=2001014154  # art. 5 as published 08-08-2001 (car temporary plate: red ground, white inscription, small-format year plus six digits, the 45 x 38 mm month vignette and its red/blue transit/provisional rule) and art. 13 (motorcycle form, 180 x 140 mm)"
+      - "https://www.ejustice.just.fgov.be/cgi_loi/article.pl?language=fr&lg_txt=f&numac_search=2001014153&caller=SUM&view_numac=2001014153f  # arrete royal art. 1, 4°-5° defining 'immatriculation transit' (import-duty and VAT exemption granted) against 'immatriculation provisoire' (no exemption) — the distinction the vignette colour carries"
+    notes: >-
+      SHORT-DURATION TEMPORARY PLATES UNDER THE NATIONAL FORMAT, 01-10-2001 to
+      14-11-2010: red ground, white digits, no index, no European band, and a
+      month-only vignette rather than the day-and-month pair used from 2021. The
+      transit/provisional split is worth carrying into any parse model because it
+      is FISCAL, not operational: arrete royal art. 1, 4° defines a transit
+      registration as one where the FPS Finance has granted exemption from import
+      duty and VAT (or VAT alone), and art. 1, 5° defines a provisional
+      registration as one where it has not.
