@@ -10054,6 +10054,80 @@ Volkswagen:
   "LT46": Lt  # GVW class 4.6 t, fused sibling of `Lt 46` — https://en.wikipedia.org/wiki/Volkswagen_LT
   "LT55D": Lt  # GVW class 5.5 t + diesel (first-gen LT range topped out at LT55) — https://en.wikipedia.org/wiki/Volkswagen_LT
   Dune Buggy: null  # SPACED sibling of the Dune-Buggy null above, measured live in the verification build (nz raws `DUNE BUGGY`); same kit-car class — https://en.wikipedia.org/wiki/Dune_buggy
+  # ── §NB NEW BEETLE FAMILY (2026-08-02, owner backlog item 8). 25 keys. Every
+  # key below is a PRODUCED string captured by instrumenting Normalizer's own
+  # per-make rename hash over all six kinds on a frozen cache — NOT inferred
+  # from a record's display name, which is how inert keys have shipped before.
+  #
+  # THE TARGET IS `Beetle`, NOT a new `new-beetle`, and that INVERTS the brief
+  # this PR was scoped from. The brief held `volkswagen/new-beetle` to be a
+  # distinct product that must stay separate. The corpus refutes it four ways:
+  #   1. `New Beetle: Beetle` (§5.2 above) has been SHIPPED since data#110
+  #      (2026-07-27) and FIRES TODAY in six countries — ca, es, fi, nl, ua, us
+  #      (classify replay, this build).
+  #   2. `Newbeetle: Beetle` (data#110) and `"2D New Beetle": Beetle` (data#179,
+  #      2026-08-01) fold the same nameplate. #179 landed twelve hours ago.
+  #   3. `former_ids.yml` already retires `car/volkswagen/newbeetle` ->
+  #      `car/volkswagen/beetle` — a PUBLISHED alias asserting the same thing.
+  #   4. Canon: DECISIONS.md "Model = nameplate"; NAMING.md §6 keeps numbered
+  #      generations separate for TWO-WHEELERS only — "distinct products in a
+  #      way that a car's Mk2 is not". `volkswagen/beetle` already spans the
+  #      Type 1 and the A5 Beetle; the New Beetle is its third generation.
+  #   DECISIONS.md's fold safeguard ("look for a published record that says A is
+  #   its own model") PASSES: none exists. `volkswagen/new-beetle` is only an
+  #   nl_rdw candidate, n=2, and exists solely because one row is spelled
+  #   `NEW-BEETLE` with a hyphen — a typo artifact, not a naming decision.
+  #
+  # CHAIN SAFETY — the exact trap this family sets. `New Beetle` IS itself a
+  # rename key, so targeting it would strand every row one level short (renames
+  # apply ONCE), minting `volkswagen/new-beetle` while bare `New Beetle` rows
+  # kept folding to `Beetle`: a systematic duplicate, arriving silently. `Beetle`
+  # is NOT a key — verified zero key-whose-target-is-a-key in this whole block —
+  # so every line below terminates in one hop.
+  #
+  # SAFETY: every line folds onto `car/volkswagen/beetle`, ALREADY PUBLISHED, so
+  # this batch can mint neither a new id nor a new spelling.
+  # Nameplate, the Typ 9C/1C/1Y factory codes and the GL/GLS/S/Highline trims:
+  # https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  # baseModel: EPA/DOE `vehicles.csv` — model "New Beetle" baseModel **Beetle**
+  # (61 rows) and "New Beetle Convertible" baseModel **Beetle** (21 rows),
+  # re-verified against the pinned cache this build reads —
+  # https://www.fueleconomy.gov/feg/download.shtml
+  #
+  # NOT FOLDED, deliberately — `New Beetle Pick Up` (van, nl, nl_rdw, 1 veh/1
+  # row, raw "NEW BEETLE PICK UP"). VW never built one: the factory offered
+  # exactly two bodies, "3-door hatchback (Coupé)" and "2-door convertible
+  # (Cabriolet)". A New Beetle registered as a van-kind pickup is an owner
+  # CONVERSION, and the settled line in this block for owner modifications on a
+  # Beetle base is `null`, not a fold (`Baja`, `Beach Buggy`, `Buggy`, `Dune
+  # Buggy` above). Folding it would claim for the nameplate a body style VW
+  # never made; nulling it needs a removals.yml manifest and its own review.
+  # Left as an n=1 candidate — it cannot publish without corroboration. ──
+  "2 D New Beetle": Beetle              # 1 veh/1 row (fi, fi_traficom); raw "2 D NEW BEETLE CABRIOLET 2.0". SPACED sibling of the shipped `"2D New Beetle": Beetle` door-count rescue (data#179) — same Finnish "<door><BODY> <model>" grammar, one space apart — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "Bew Beetle": Beetle                  # 1 veh/1 row (nl, nl_rdw); raw "BEW BEETLE CABRIOLET". B/N keyboard-adjacent corruption of "NEW"; folds safely regardless of what the first token was meant to be, because the nameplate token BEETLE is present — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "Nem Beetle": Beetle                  # 2 veh/1 row (nl, nl_rdw); raw "NEM BEETLE". Corrupted "NEW" (W read as M); same argument as `Bew Beetle` — the BEETLE token carries the nameplate — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beatle": Beetle                  # 2 veh/2 rows (nl, nl_rdw); raws "NEW BEATLE", "NEW BEATLE CABRIOLET". MISSPELLING; the bare `Beatle: Beetle` key already ships one line up for the Type 1 — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beeetle": Beetle                 # 1 veh/1 row (nl, nl_rdw); raw "NEW BEEETLE". MISSPELLING (trebled E) — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beelte": Beetle                  # 1 veh/1 row (nl, nl_rdw); raw "NEW BEELTE CABRIOLET". MISSPELLING (transposed LT) — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beet": Beetle                    # 1 veh/1 row (nl, nl_rdw); raw "NEW BEET". TRUNCATION of NEW BEETLE — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle 1": Beetle                # 1 veh/1 row (fi, fi_traficom); raw "NEW BEETLE 1,4" — the comma decimal truncates to "1". Engine displacement is a spec on the car kind, not a nameplate (NAMING.md §6) — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle 2": Beetle                # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE 2,5 L" — comma decimal truncates to "2". Displacement, same rule — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle 2.5L": Beetle             # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE 2.5L". The 2.5 L five-cylinder is an engine option of the nameplate — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle 9C": Beetle               # 1 veh/1 row (fi, fi_traficom); raw "NEW BEETLE 9C". "Typ 9C: Coupé for Europe and others (1997–)" — a FACTORY TYPE CODE, not a nameplate; its siblings 1C/1Y appear in the same register's `-9C`/`-1C`/`-1Y` suffixes — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle Cabirolet": Beetle        # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE CABIROLET". MISSPELLING of Cabriolet — a BODY STYLE ("2-door convertible (Cabriolet)"), which one record covers — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle Carbilet": Beetle         # 1 veh/1 row (es, es_dgt); raw "NEW BEETLE CARBILET". MISSPELLING of Cabriolet, same body style — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle Comvertible": Beetle      # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE COMVERTIBLE". MISSPELLING of Convertible; the correctly-spelled "NEW BEETLE CONVERTIBLE" already folds via `New Beetle` — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle GL": Beetle               # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE GL". US TRIM LEVEL — "'GL,' 'GLS,' and 'S' models are referenced for U.S. models"; trims fold (NAMING.md §6) — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle GLS": Beetle              # 4 veh/2 rows (nl, nl_rdw); raws "NEW BEETLE GLS", "NEW BEETLE GLS 2DR". US TRIM LEVEL, same source line as GL — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle GLS L285 2.0I GT": Beetle # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE GLS L285 2.0I GT". TRIM + type serial + 2.0 injection engine + GT — every token after the nameplate is a spec — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle Highline": Beetle         # 1 veh/1 row (fi, fi_traficom); raw "New Beetle Highline". VW EQUIPMENT LINE ("Highline" is named in the convertible context) — a trim word — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beetle S": Beetle                # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETLE S". US TRIM LEVEL, same source line as GL/GLS — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New Beettle": Beetle                 # 1 veh/1 row (nl, nl_rdw); raw "NEW BEETTLE". MISSPELLING; the bare `Beettle: Beetle` key already ships one line up — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "New-Beetle": Beetle                  # 2 veh/1 row (nl, nl_rdw); raw "NEW-BEETLE". HYPHEN form — case_token splits on "-" so this produces its own display and its own candidate id `volkswagen/new-beetle`. This single row is the entire reason that id exists — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "Ngs New Beetle": Beetle              # 1 veh/1 row (nl, nl_rdw); raw "NGS NEW BEETLE". Three-letter registrant/importer prefix glued to the nameplate; no VW nameplate is "NGS" — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "Volkswagen-Vw New Beetle": Beetle    # 1 veh/1 row (nl, nl_rdw); raw "VOLKSWAGEN-VW NEW BEETLE". Make + make abbreviation glued to the nameplate; same class as the shipped `Vw Beetle: Beetle` — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "Vw New Beetle": Beetle               # 1 veh/1 row (nl, nl_rdw); raw "VW NEW BEETLE". Make abbreviation glued to the nameplate, exactly like the shipped `Vw Beetle: Beetle` — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
+  "Vw New Beetle 2": Beetle             # 1 veh/1 row (fi, fi_traficom); raw "VW New Beetle 2,0" — abbreviation + comma-decimal displacement. Combines the `Vw Beetle` and `New Beetle 2` cases — https://en.wikipedia.org/wiki/Volkswagen_New_Beetle
 
 Volvo:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
