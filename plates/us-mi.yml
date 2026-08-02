@@ -1,0 +1,408 @@
+# plates/us-mi.yml — Michigan (PRD-PLATES gate L2, group midwest-a).
+#
+# WHAT MICHIGAN CONTRIBUTES THAT NO OTHER STATE IN THIS GROUP DOES: a
+# LEGISLATED PLATE LIFETIME, stated as a prohibition rather than as a schedule.
+# MCL 257.224 says a registration plate 'shall not be renewed 10 years after the
+# date that registration plate was issued'. Read that carefully — Michigan does
+# not order a replating, it forbids a renewal, which achieves the same end from
+# the other direction and means the ten-year clock runs per PLATE, from ITS
+# issue date, not per fleet and not per base. Florida legislated a 10-year
+# replacement cycle; Michigan legislated a 10-year renewal bar. Same number,
+# different instrument, and only one of them produces a synchronised state-wide
+# reissue.
+#
+# MICHIGAN'S SECOND CONTRIBUTION IS A COLOUR RULE THAT SPECIFIES A PROPERTY, NOT
+# A VALUE. MCL 257.225 requires 'a marked contrast between the color of the
+# registration plate and the numerals or letters on the plate' — the same
+# legislative move as Florida's 'distinguishing color' for Horseless Carriage
+# plates. A dataset that only stores hexes cannot represent this claim at all;
+# it is recorded here as a constraint, and no hex is invented to satisfy it.
+#
+# FETCH-PROVENANCE NOTE: www.legislature.mi.gov reset the connection on every
+# attempt and www.michigan.gov returned 403 from this environment. Statutory
+# text below was read from codes.findlaw.com, a third-party REPRODUCTION of the
+# same edict; the canonical legislature.mi.gov citation accompanies each source
+# line and was NOT fetched.
+#
+# NOT HERE, DELIBERATELY: individual specialty/fundraising DESIGNS (L4 per
+# PRD-PLATES §2.5); the MOTORCYCLE series, because no source in this pass gave a
+# Michigan motorcycle serial format and a plates file should carry a declared
+# gap rather than a plausible guess (see the dossier); and the personalized
+# series, which is outside the L2 core-class list.
+jurisdiction: us-mi
+authority:
+  name: Michigan Department of State (Secretary of State)
+  url: "https://www.michigan.gov/sos"
+binding: vehicle
+statute_edition: "Michigan Compiled Laws, Chapter 257 (Michigan Vehicle Code), as reproduced by codes.findlaw.com and read 2026-08-02. FindLaw warns its text 'may not reflect the most recent version of the law'; currency is UNVERIFIED."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched-default-adverse
+  basis: >-
+    No favourable Michigan authority was located. The governing default is that
+    17 U.S.C. §105 does not extend to the states, so a state work is copyrighted
+    unless the state says otherwise. Both surveys checked are silent on
+    Michigan: the Wikipedia survey of subnational copyright status covers
+    seventeen states and Michigan is NOT among them, and Commons'
+    copyright-rules-by-territory page for the United States lists the state PD
+    tags that exist — CA, FL, GA, MA, ME plus narrow agency tags for MN, OK, WA
+    and one Alabama municipality — with no {{PD-MIGov}}. No Michigan statute, AG
+    opinion or case establishing public-domain status for state works was found.
+    TREAT THE ARTWORK AS COPYRIGHTED.
+    WHAT IS SAFE REGARDLESS: MCL 257.224's reflectorization and 100-foot
+    legibility requirements, MCL 257.225's contrast rule and mounting height, and
+    the ten-year renewal bar are all EDICTS OF GOVERNMENT and public domain at
+    every level. The adverse posture bites on the artwork, not the spec.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies. The current base carries the
+    'Pure Michigan' wordmark — which raises a question the copyright analysis does
+    not reach: Pure Michigan is the state's TOURISM BRAND, and brand marks carry
+    TRADEMARK protection entirely independent of copyright and of any public-
+    records rule. A state seal statute would be the analogous hazard; here it is a
+    marketing mark. Render `emblem: {present: true, rendered: placeholder}` and do
+    not reproduce the wordmark. This trademark exposure is UNRESEARCHED and is
+    flagged as its own open question, distinct from the copyright posture above.
+  photograph_caution: >-
+    Standing rule: a CC tag on a Commons photograph of a Michigan plate is the
+    PHOTOGRAPHER's licence on the PHOTOGRAPH, not on the design. Our renders are
+    generated from this file, never derived from a photograph, so those
+    obligations never attach.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR + NEGATIVE FINDING: Michigan is not among the states covered"
+    - "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States  # the §105-does-not-reach-the-states rule and the complete state PD-tag list — no Michigan tag"
+    - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. The plate spec that IS available is statutory and therefore a PD edict"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. Recommendations in the declarative present; read as RECOMMENDED PRACTICE."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is paywalled and was NOT obtained. Michigan legislates no plate dimension either, so NO DIMENSION IS RECORDED for the Michigan plate — a gap, deliberately left open rather than filled from the 1956 folklore."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges"
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name top centre between the bolt holes, at least 0.25 in above the plate number, 0.125 in from the top edge; characters 0.75-1.0 in"
+    stacked_characters: "AAMVA: stacked characters are part of the official plate number, at most two stacked"
+    retroreflectivity: "AAMVA §3.3: readable in daylight and at night from at least 75 feet. MCL 257.224 legislates BOTH halves of that independently: 'made of fully reflectorized material and shall be clearly visible at night' and 'of sufficient size to be plainly readable from a distance of 100 feet during daylight'."
+    replacement_cycle: "AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. MICHIGAN LEGISLATED THE TOP OF THE RANGE AS A RENEWAL BAR — see `plate_lifetime` below. It is the mechanism, not the number, that is unusual."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" is UNCITED in its Wikipedia source
+    and is not relied on here. The Michigan article repeats it in the form
+    '1956 standardized plate size... (except those for motorcycles)', which is the
+    same circular text. No Michigan plate dimension is recorded in this file.
+
+# ---------------------------------------------------------------------------
+# plate_lifetime — Michigan's signature fact, recorded once at file level
+# because it is a property of Michigan law rather than of any one series.
+# ---------------------------------------------------------------------------
+plate_lifetime:
+  mechanism: renewal-bar
+  years: 10
+  statutory_text: "MCL 257.224: 'a registration plate issued by the department under this section shall not be renewed 10 years after the date that registration plate was issued'"
+  consequence: >-
+    Because the bar runs from EACH PLATE's own issue date, Michigan's fleet
+    turns over continuously rather than in a synchronised reissue. Two data
+    consequences follow and both matter for a parse API. First, a Michigan plate
+    observed today is at most ten years old, which puts a hard floor under any
+    era inference — something no other state in this group provides. Second, the
+    owner may ask for the SAME NUMBER back on the replacement plate (the
+    department 'may reissue plates with the same registration number upon
+    request'), so a serial can outlive the piece of metal it was first stamped
+    on, and serial continuity does not imply plate continuity.
+  exceptions: "plates for state-owned vehicles and certain nonprofits do not expire on time at all; they expire when 'worn out or illegible' (MCL 257.224)"
+  reported_but_unquoted: "the same section was reported to expire most plates on 31 December in the fifth year following issuance; that sentence was NOT captured verbatim and is recorded as reported-only, not as a claim"
+  source: "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. MCL 257.224: one plate per vehicle, contents, fully reflectorized material, 100-foot daylight legibility, the ten-year renewal bar, replacement on payment of the fee, same-number reissue on request, and the worn-out-or-illegible rule for state and nonprofit plates"
+
+display_rules:
+  default: "ONE plate, REAR. MCL 257.224: 'upon registering a vehicle, the secretary of state shall issue to the owner 1 registration plate'. MCL 257.225: 'a registration plate issued for a vehicle shall be attached to the rear of the vehicle.'"
+  front_plate_required_when:
+    - "TRUCK TRACTOR or ROAD TRACTOR: 'A registration plate issued for a truck tractor or road tractor shall be attached to the front of the vehicle' (MCL 257.225) — front-ONLY, since Michigan issues just one plate. The same inversion as Florida and Ohio, and a third independent instance of it in this dataset: a US front/rear model that does not carry a per-class exception will be wrong in at least three states."
+  mounting: "MCL 257.225: 'The plate shall be attached at a height of not less than 12 inches from the ground, measured from the bottom of the plate' — twelve inches, against Illinois's five. Michigan also requires the plate be kept clearly visible and free from foreign materials."
+  colour_constraint: "MCL 257.225: 'A registration plate or an expiration tab on the registration plate shall be of a different color designated by the secretary of state with a marked contrast between the color of the registration plate and the numerals or letters on the plate.' A statutory colour PROPERTY with no value — see the file header."
+  legibility: "MCL 257.224: the plate must be 'of sufficient size to be plainly readable from a distance of 100 feet during daylight' and 'made of fully reflectorized material and shall be clearly visible at night'"
+  penalty: "MCL 257.225: 'A person who violates this section is responsible for a civil infraction.' Note this is CIVIL — contrast Ohio's minor misdemeanor and Illinois's Class A misdemeanor for deliberate concealment."
+  historic_military_exception: "MCL 257.225 allows a historic military vehicle to carry its plate INSIDE the vehicle if it was not originally equipped with exterior mounting provisions — a display exemption of the same family as Florida's former-military exemption under s. 320.086(5)"
+  rear_only_history: "Michigan is reported to have required only rear plates since 1981 (secondary). The statute corroborates the present rule but dates nothing."
+  sources:
+    - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-225.html  # FETCHED. MCL 257.225: rear attachment, the truck-tractor/road-tractor front exception, the 12-inch minimum height, horizontal secure fastening, the marked-contrast colour rule, the historic-military interior-storage allowance, and the civil-infraction penalty"
+    - "https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-257-225  # CANONICAL citation for the same edict — NOT fetched (connection reset)"
+    - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. MCL 257.224: one plate issued, 100-foot legibility, fully reflectorized material"
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: 'Only rear plates have been required since 1981.'"
+
+series:
+
+  - id: us-mi-standard-2013
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2013 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          Three letters then four numerals. NO MICHIGAN STATUTE STATES A SERIAL
+          ARRANGEMENT: MCL 257.224 requires only that the plate carry 'the
+          registration number' plus the state name and an expiration indication
+          'which may be shown by a tab or sticker furnished by the secretary of
+          state'. MCL 257.803b, the personalized-plate section, is equally
+          silent on length — 'Personalized plates must bear letters and numbers as
+          the secretary of state prescribes' — so unlike Illinois or Wisconsin,
+          Michigan gives no statutory character cap even indirectly, and this
+          file therefore carries NO `regex_statutory`. There is nothing to bound
+          it with.
+      progression: "observed DAA 0000 to approximately FAZ 9999 as of January 2026 (secondary) — a three-letter block advancing over a four-digit counter"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: >-
+        Reflective white field with a blue band at the BOTTOM and a dark serial.
+        Only the white field is hexed, and it is marked observed. The blue is not
+        hexed: Michigan's statute prescribes contrast, not colour, the Department
+        of State site was unreachable, and a hex sampled from a photograph would
+        be a fabricated fact.
+      band: { side: bottom, colour_named: blue, content: "michigan.org" }
+      legend_top: "MICHIGAN"
+      legend_slogan: "Pure Michigan"
+      graphic: { present: true, rendered: placeholder, description: "'Pure Michigan' wordmark at top and a blue band at the bottom carrying michigan.org; secondary observation only, and see artwork_risk for the trademark caution on the wordmark" }
+      emblem: { present: true, rendered: placeholder }
+      validation_sticker: { position: "corner", content: "expiration", source_note: "MCL 257.224: expiration 'may be shown by a tab or sticker furnished by the secretary of state'; MCL 257.225 requires the TAB itself to contrast with the plate" }
+    region_encoding: "none. Michigan encodes no geography in the serial and prints no county legend."
+    sources:
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. MCL 257.224: one plate per vehicle; plate contents (registration number, state name, expiration by tab or sticker); fully reflectorized material; 100-foot daylight legibility; the ten-year renewal bar; same-number reissue on request"
+      - "https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-257-224  # CANONICAL, not fetched (connection reset)"
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-803b.html  # FETCHED. MCL 257.803b: 'Personalized plates must bear letters and numbers as the secretary of state prescribes', must be of the same material as standard plates, must not duplicate another plate, and the sequence is not reassigned in a subsequent year unless the holder fails to reapply — evidence that Michigan delegates the character grammar entirely"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: 'Pure Michigan' base from April 2013, serial format ABC 1234, range DAA 0000 to ~FAZ 9999 as of January 2026, blue band at bottom, michigan.org"
+    notes: >-
+      MICHIGAN STANDARD ISSUE, CURRENT BASE. `start: 2013` rests on a secondary
+      first-issue month (April 2013) and carries `period_evidence:
+      secondary-first-issue` to say so. The entry's most consequential content is
+      not the format but the file-level `plate_lifetime` block it inherits: the
+      ten-year renewal bar puts an upper bound on the age of any Michigan plate
+      in circulation, while the same-number reissue right means the SERIAL can be
+      much older than the metal. Those two facts pull in opposite directions and
+      a parse API must hold both.
+
+  - id: us-mi-standard-2007
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2007, end: 2013 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      evidence: secondary
+      charset: { notes: "identical grammar to the current base — the 2013 change moved the blue band from top to bottom and changed the URL legend, not the serial" }
+      progression: "observed BAA 0000 to approximately CPS 0999 (secondary) — note the blocks run CONTINUOUSLY into the 2013 base's DAA start, which is why the serial cannot date the base"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: "reflective white with a blue band at the TOP; no band hex recorded"
+      band: { side: top, colour_named: blue, content: "www.Michigan.gov" }
+      legend_top: "MICHIGAN"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: the 1 January 2007 to April 2013 base, blue band at top, www.Michigan.gov legend, serial format ABC 1234, range BAA 0000 to ~CPS 0999"
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. The same statutory frame governed this base; it is why no format difference is recorded"
+    notes: >-
+      ONE SERIES BACK (2007-2013). The serial BLOCKS are the interesting record
+      here: B through C on this base, D through F on the next, with no gap. So
+      Michigan's letter block is a coarse era signal even though the FORMAT is
+      not — the opposite arrangement from Illinois, where the format changed at
+      the base boundary and the blocks restarted. Two neighbouring states, two
+      incompatible era-inference strategies; the dataset must carry the block
+      ranges (secondary) or lose the signal entirely.
+
+  - id: us-mi-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "L999999"
+      regex: '\A[A-Z]\d{6}\z'
+      evidence: secondary
+      charset: { notes: "one letter then six numerals, no printed separator observed; the letter is a block marker rather than a class token — observed D through F, so it does not identify the class the way Indiana's TR does" }
+      progression: "observed D000000 to F134612 as of October 2024 (secondary)"
+    design:
+      background: { finish: retroreflective }
+      legend_bottom: "PERMANENT TRAILER"
+      emblem: { present: true, rendered: placeholder }
+    validity: "PERMANENT — the legend says so on the plate itself, which makes this a series whose end condition is the vehicle's, not the year's"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: trailer plates D000000 to F134612 as of October 2024, marked 'PERMANENT TRAILER'"
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. MCL 257.224's one-plate rule and reflectorization requirement apply to trailer plates as to others"
+    notes: >-
+      PERMANENT TRAILER. `period.start` is an instrument-in-force upper bound: no
+      source dated this series. The permanence is worth noting against the
+      file-level ten-year renewal bar — a plate that is never renewed cannot be
+      caught by a bar on renewal, so the trailer plate escapes Michigan's own
+      lifetime rule by construction. That interaction is the kind of thing a
+      claims model should be able to express.
+
+  - id: us-mi-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999 D 999"
+      regex: '\A\d{3} ?D ?\d{3}\z'
+      evidence: secondary
+      charset: { notes: "an infix class token: the letter D sits BETWEEN two numeric groups rather than prefixing them. Observed 000 D 000 to 077 D 999 as of May 2026. Michigan is the only state in this group that marks a class mid-serial, which breaks any parser that assumes class tokens are prefixes." }
+    design:
+      background: { finish: retroreflective }
+      legend_bottom: "DEALER"
+      emblem: { present: true, rendered: placeholder }
+    binding: business
+    permitted_use: >-
+      MCL 257.244: 'A dealer owning a vehicle otherwise required to be registered
+      under this act may operate or move the vehicle on a street or highway
+      without registering the vehicle if the vehicle displays, as prescribed under
+      section 225, a special plate issued to the owner by the secretary of state.'
+      A vehicle bearing the dealer plate 'may be driven on a street or highway for
+      demonstration purposes by a prospective buyer or lessee for a period of 72
+      hours', and a new purchaser or lessee may likewise use it for up to 72 hours
+      after taking possession while registration is completed. 'The secretary of
+      state shall determine the number of plates a manufacturer, dealer, or
+      transporter reasonably needs in its business.'
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-244.html  # FETCHED. MCL 257.244: the dealer-plate authorisation, display per section 225, the 72-hour demonstration and post-sale windows, and the secretary of state's power to set the number of plates a business needs"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: dealer serial range 000 D 000 to 077 D 999 as of May 2026, marked 'DEALER'"
+    notes: >-
+      DEALER PLATES. `binding: business` — MCL 257.244 attaches the plate to the
+      dealer, not the vehicle, and the 72-hour demonstration window is the
+      clearest statement in this group of what a trade plate actually LICENSES: a
+      period of use, not a registration. The infix D is the format curiosity.
+
+  - id: us-mi-government
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999 X 999"
+      regex: '\A\d{3} ?X ?\d{3}\z'
+      evidence: secondary
+      charset: { notes: "the same infix-token shape as the dealer plate, with X in place of D. Observed 130 X 000 to approximately 136 X 999 as of January 2026." }
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+    binding: vehicle
+    validity: "MCL 257.224 exempts state-owned and certain nonprofit plates from time expiry entirely — they expire when 'worn out or illegible'. So a Michigan government plate has no expiry date at all, only a condition."
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-224.html  # FETCHED. MCL 257.224: plates for state-owned vehicles and certain nonprofits do not expire on time but when worn out or illegible"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: government/municipal serial range 130 X 000 to ~136 X 999 as of January 2026"
+    notes: >-
+      GOVERNMENT / MUNICIPAL. The statutory fact is the good one: this is a plate
+      class whose VALIDITY IS A CONDITION rather than a date. PRD-PLATES's runs
+      shape handles open-ended periods, but 'ends when worn out' is not a year and
+      cannot be made into one — recorded in prose, deliberately, rather than
+      forced into `period.end`.
+
+  - id: us-mi-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d+\z'
+      evidence: statutory-inferred
+      charset:
+        notes: >-
+          MCL 257.226a: 'All temporary registration plates or markers must be
+          serially numbered and upon issuance the number must be noted on the
+          statement of vehicle sale form'. SERIALLY NUMBERED is the whole of the
+          statutory grammar — a numeric series with NO STATED WIDTH, so the
+          quantifier is unbounded and makes no width claim, exactly as Florida's
+          Horseless Carriage series does under an equivalently open statute. The
+          inference that 'serially numbered' means digits only is marked
+          `statutory-inferred` rather than `statutory`: it is a reading of the
+          phrase, not a quotation of a character set.
+    design:
+      material: "paper or card marker. MCL 257.226a: 'A temporary registration plate or marker must show in ink the date of issue, a description of the vehicle for which issued, and any other information required by the secretary of state.'"
+      background: { finish: none }
+      emblem: { present: false }
+      destruction_rule: "MCL 257.226a: 'When the regular plate is attached to a vehicle for which a temporary registration plate or marker was issued, the temporary plate must be destroyed.'"
+    validity: "THIRTY DAYS. MCL 257.226a issues the temporary plate 'for a period not to exceed 30 days pending receipt of regular registration plates' — against Ohio's forty-five next door, which is the clearest single illustration in this group that temporary validity is a per-state variable."
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-226a.html  # FETCHED. MCL 257.226a: the 30-day maximum, the in-ink date and vehicle description, serial numbering with the number noted on the statement of vehicle sale, and the destruction requirement"
+      - "https://www.legislature.mi.gov/Laws/MCL?objectName=MCL-257-226a  # CANONICAL, not fetched (connection reset)"
+    notes: >-
+      TEMPORARY REGISTRATION PLATE OR MARKER. Michigan legislates the temporary
+      plate's LIFECYCLE — issue, note the number on the sale form, destroy on
+      receipt of the regular plate — while legislating almost nothing about its
+      appearance. The destruction duty is unusual enough to be worth carrying: it
+      means a Michigan temporary marker is not merely expired but SUPPOSED NOT TO
+      EXIST after the regular plate arrives, which is a different fact about the
+      world than an expired plate sitting in a glovebox.
+
+  - id: us-mi-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      evidence: secondary
+      charset: { notes: "fundraising and university plates carry ordinary serials on an alternative design; no distinct grammar was sourced" }
+    design:
+      background: { finish: retroreflective }
+      note: "one design per authorising public act; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: null
+      count_status: RECORDED-GAP-WITH-SECONDARY-FIGURE
+      count_secondary: "20 authorised at one time (excluding universities), of which 14 reported in production"
+      count_note: >-
+        No OFFICIAL count was obtained: www.michigan.gov returned 403 to every
+        request from this environment. A secondary source states that 'State law
+        limits the number of fundraising plates (excluding universities)
+        available at one time to 20, and 14 are currently in production.' That
+        figure is recorded as SECONDARY and unreconciled — the statutory cap it
+        describes was NOT located in the section of MCL 257.811e that was read,
+        so the '20' is a claim about a statute rather than a quotation from one,
+        and a verifier should either find the cap or strike the figure. Per
+        PRD-PLATES §5.3 the discrepancy is recorded, not averaged away.
+      official_list_url: "https://www.michigan.gov/sos/vehicle/plates"
+      official_list_fetch_status: "BLOCKED — HTTP 403 on every attempt, 2026-08-02"
+      statutory_basis: >-
+        MCL 257.811e is the mechanism, and Michigan's is the most legislature-
+        heavy in this group: a fundraising plate exists only if A PUBLIC ACT
+        AUTHORISES IT, and that act must identify the purpose of the plate and
+        create or designate a nonprofit fund (naming its administrator where a
+        fund is created). A start-up fee covering the 'three-year average of the
+        cost to the secretary of state of developing a new fund-raising plate'
+        must be paid within eighteen months. Critically, the section imposes NO
+        MINIMUM APPLICATION THRESHOLD — where Illinois requires 2,000
+        applications and Wisconsin 500 signatures, Michigan requires an act of
+        the legislature and money. Three states, three completely different
+        gatekeeping mechanisms for the same product.
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/mi/chapter-257-motor-vehicles/mi-comp-laws-257-811e.html  # FETCHED. MCL 257.811e: authorisation by public act, the purpose and nonprofit-fund requirements, the three-year-average start-up fee payable within 18 months, and the absence of any application threshold"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Michigan  # LOCATOR ONLY: 'State law limits the number of fundraising plates (excluding universities) available at one time to 20, and 14 are currently in production.'"
+    notes: >-
+      THE MICHIGAN SPECIALTY PROGRAM INDEX — one entry for the whole programme per
+      PRD-PLATES §2.5, with the official count declared a gap and a secondary
+      figure carried, flagged, alongside. The durable finding is the mechanism:
+      Michigan gates specialty plates through the LEGISLATURE, Illinois through a
+      2,000-application petition, Wisconsin through 500 signatures, Ohio through
+      individual authorising statutes, and Indiana through a dedicated code
+      article. Whatever the catalogue counts turn out to be, those five
+      mechanisms are the structural fact — and they predict the churn rate of
+      each state's catalogue better than any snapshot count could.

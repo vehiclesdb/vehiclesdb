@@ -1,0 +1,516 @@
+# plates/us-il.yml — Illinois (PRD-PLATES gate L2, group midwest-a).
+#
+# WHY ILLINOIS IS THE BEST-SOURCED FILE IN THIS GROUP: alone among the five
+# midwest-a states, Illinois legislates the PLATE ITSELF rather than delegating
+# it. 625 ILCS 5/3-412 states the dimensions (6 by 12 inches for first-division
+# vehicles, 4 by 7 for autocycles), the reflectorizing requirement, the
+# 100-foot daylight legibility standard, and — uniquely in this group — the
+# LEGEND, by name: every Illinois plate carries 'Land of Lincoln' because the
+# statute says so, not because a designer chose it. And 625 ILCS 5/3-405.1
+# enumerates the permitted vanity and personalized character combinations
+# exhaustively, which is the closest thing to a published serial grammar any
+# state in this group offers.
+#
+# THREE ILLINOIS FACTS THAT DESERVE TO SURVIVE INTO THE PARSE API:
+#   1. DIGITAL PLATES ARE LAW HERE. 3-412 speaks throughout of 'registration
+#      plates OR DIGITAL registration plates' and of 'a digital registration
+#      plate and metal plate as set forth in Section 3-401.5'. A jurisdiction
+#      where the registration mark may be a SCREEN is a schema question the rest
+#      of this dataset has never had to face; it is flagged, not modelled.
+#   2. THE 2017 BASE CHANGED ITS OWN LAYOUT MID-RUN — from AB1 2345 to AB 12345,
+#      same seven characters, moved space. That is precisely the case
+#      PRD-PLATES §2.6 was written for: a separator-forgiving consumer
+#      canonicalizes both to one serial, which is why the dataset commits to
+#      which characters are separators.
+#   3. THE SOLIDUS IN COLLECTOR NOTATION IS NOT A SEPARATOR. Illinois plates
+#      written 'D/L 1234' or '1234 S/T' by collectors are, on the metal, STACKED
+#      CHARACTER PAIRS — and AAMVA Ed.3 is explicit that 'if stacked characters
+#      are used, they are part of the official license plate number'. So the
+#      honest encoding is the two characters written flat (DL, ST), never a '/',
+#      which is in the FORGIVING set but not the EMITTED set and would fail the
+#      lint for good reason. This reading is stated as an INTERPRETATION and is
+#      the first thing a verifier should check.
+#
+# FETCH-PROVENANCE NOTE: www.ilga.gov (the official Illinois General Assembly
+# host) reset the connection on every attempt, and www.ilsos.gov returned 403 to
+# every request from this environment. Statutory text below was read from
+# codes.findlaw.com, a third-party REPRODUCTION of the same edict; canonical
+# ilga.gov citations are carried alongside and were NOT fetched.
+#
+# NOT HERE, DELIBERATELY: individual specialty DESIGNS (L4 per PRD-PLATES §2.5)
+# and the vanity/personalized series, which sit outside the L2 core-class list —
+# the statutory vanity grammar is recorded instead as evidence inside the
+# standard series' charset notes, where it does real work.
+jurisdiction: us-il
+authority:
+  name: Illinois Secretary of State, Vehicle Services Department
+  url: "https://www.ilsos.gov/departments/vehicles/home.html"
+binding: vehicle
+statute_edition: "Illinois Compiled Statutes, Chapter 625 Act 5 (Illinois Vehicle Code), Article IV of Chapter 3, as reproduced by codes.findlaw.com and read 2026-08-02. FindLaw warns its text 'may not reflect the most recent version of the law'; currency is UNVERIFIED."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched-default-adverse
+  basis: >-
+    No favourable Illinois authority was located. The governing default is that
+    17 U.S.C. §105 does not extend to the states, so a state work is copyrighted
+    unless the state says otherwise. Two surveys were checked for an Illinois
+    carve-out and both are silent: the Wikipedia survey of subnational copyright
+    status covers seventeen states and Illinois is NOT among them, and Commons'
+    copyright-rules-by-territory page for the United States enumerates the state
+    PD tags that exist (CA, FL, GA, MA, ME, plus narrow agency tags for MN, OK,
+    WA and one Alabama municipality) — there is no {{PD-ILGov}}. No Illinois
+    statute, AG opinion or case establishing public-domain status for state works
+    was found. TREAT THE ARTWORK AS COPYRIGHTED.
+    A NOTE ON WHAT IS SAFE ANYWAY: because Illinois puts its plate spec in
+    STATUTE, the dimensions, the reflectorizing requirement, the 100-foot
+    legibility standard and the 'Land of Lincoln' legend are all EDICTS OF
+    GOVERNMENT, which are public domain at every level. The adverse posture bites
+    on the Lincoln portrait and skyline artwork, not on the spec — which is
+    exactly the split PRD-PLATES §4 predicts and the reason it prefers statutes
+    over brochures.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies. The current base carries a grey
+    Abraham Lincoln portrait graphic and a Chicago/Springfield skyline — pictorial
+    artwork in a state with no PD posture, i.e. the highest-risk category. Render
+    `emblem: {present: true, rendered: placeholder}`; do not approximate the
+    portrait. State-seal protection is independent of copyright and is
+    unresearched for Illinois.
+  photograph_caution: >-
+    Standing rule: a CC tag on a Commons photograph of an Illinois plate is the
+    PHOTOGRAPHER's licence on the PHOTOGRAPH. Our renders are generated from this
+    file and never derived from a photograph, so those obligations never attach.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR + NEGATIVE FINDING: Illinois is not among the states covered"
+    - "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States  # the §105-does-not-reach-the-states rule and the complete state PD-tag list — no Illinois tag"
+    - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. The plate SPEC is statutory and therefore a PD edict regardless of the artwork posture"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. Recommendations in the declarative present; read as RECOMMENDED PRACTICE."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is paywalled and was NOT obtained. ILLINOIS DOES NOT NEED IT: 625 ILCS 5/3-412(c) states 6 by 12 inches in statute, so the Illinois dimension in this file is sourced to an edict and not to the standards chain at all."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges"
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name top centre between the bolt holes, at least 0.25 in above the plate number, 0.125 in from the top edge; characters 0.75-1.0 in"
+    stacked_characters: "AAMVA: 'If stacked characters are used, they are part of the official license plate number. No more than two characters are to be stacked.' LOAD-BEARING HERE — it is the basis for reading collector notation 'D/L' and 'S/T' as stacked pairs DL and ST rather than as separated tokens."
+    retroreflectivity: "AAMVA §3.3: readable in daylight and at night from at least 75 feet. Illinois legislates a STRICTER daylight standard — 100 feet, 625 ILCS 5/3-412(c) — which is a nice worked example of a state adopting above the recommendation."
+    replacement_cycle: "AAMVA §1.1 recommends 7-10 years. Illinois runs a MANDATORY TEN-YEAR replating phased in with the 2017 base and scheduled to end in 2026 (secondary), i.e. at the top of AAMVA's range, matching Florida."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" is UNCITED in its Wikipedia source
+    (citation-needed since 2017, copied across articles — circular) and is NOT
+    relied on. Illinois needs no folklore: its 6x12 inch dimension is stated in
+    625 ILCS 5/3-412(c), in law, and that is what this file cites.
+
+digital_plates:
+  status: authorised-by-statute
+  note: >-
+    625 ILCS 5/3-412 refers throughout to 'registration plates OR DIGITAL
+    registration plates' and to the issuance of 'a digital registration plate and
+    metal plate as set forth in Section 3-401.5'. Illinois therefore contemplates
+    a registration mark that is a SCREEN, in law, today. This dataset does not
+    model it: every field here describes the physical plate. It is flagged
+    because a display device breaks assumptions the schema quietly makes —
+    a fixed background colour, a static serial, a manufacture date, even the
+    idea that the plate has one appearance. If digital plates spread, the schema
+    needs a `medium:` discriminator, and Illinois is where that pressure will
+    first show up.
+  source: "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. 3-412(a): 'one registration plate or digital registration plate for a motorcycle, trailer, semitrailer, moped, autocycle, or truck-tractor, 2 registration plates, or a digital registration plate and metal plate as set forth in Section 3-401.5, for other motor vehicles'"
+
+display_rules:
+  default: "TWO PLATES, FRONT AND REAR, for ordinary motor vehicles — Illinois is a front-plate state, unlike every other state in this group. 625 ILCS 5/3-413 requires 'one in the frontmost and one in the rearmost' position."
+  one_plate_classes: "625 ILCS 5/3-412(a): ONE plate for a motorcycle, trailer, semitrailer, moped, autocycle, or TRUCK-TRACTOR. 3-413 confirms motorcycles and trailers display at the rear only."
+  mounting: "625 ILCS 5/3-413: plates 'securely fastened in a horizontal position' at 'a height of not less than 5 inches from the ground, measuring from the bottom of such plate', 'clearly visible and shall be maintained in a condition to be clearly legible, free from any materials that would obstruct the visibility'. Note the FIVE-inch minimum — lower than Michigan's and Indiana's twelve, so a mounting-height rule cannot be treated as a US constant."
+  concealment: "625 ILCS 5/3-413 makes it an offence to modify 'the original manufacturer's mounting location of the rear registration plate' so as 'to conceal the registration or to knowingly cause it to be obstructed' in order to hinder a peace officer — a CLASS A MISDEMEANOR, i.e. criminal, where the ordinary display violation is not."
+  legibility: "625 ILCS 5/3-412(c): each plate and its letters and numerals 'shall be of sufficient size to be plainly readable from a distance of 100 feet during daylight, and shall be coated with reflectorizing material'"
+  sources:
+    - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-413.html  # FETCHED. 625 ILCS 5/3-413: frontmost and rearmost display, rear-only for motorcycles and trailers, horizontal fastening, the 5-inch minimum height, visibility and legibility, and the Class A misdemeanor concealment offence"
+    - "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=062500050K3-413  # CANONICAL citation for the same edict — NOT fetched (host reset the connection)"
+    - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. 625 ILCS 5/3-412(a) one-plate classes; (c) the 100-foot legibility and reflectorizing requirements"
+
+series:
+
+  - id: us-il-standard-2017
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2017 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A[A-Z]{2} ?\d{5}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          TWO LETTERS THEN FIVE NUMERALS, seven characters in all. No Illinois
+          statute states the ordinary serial arrangement — 625 ILCS 5/3-412(b)
+          requires only that the plate display 'the registration number assigned
+          to the vehicle for which it is issued, the name of this State, which
+          may be abbreviated, the year number for which it was issued, which may
+          be abbreviated, the phrase "Land of Lincoln"'. What the statute DOES
+          bound is the OWNER-CHOSEN space: 625 ILCS 5/3-405.1 defines a vanity
+          plate as displaying '1 to 7 letters and no numbers or 1, 2, or 3
+          numbers and no letters', and enumerates personalized combinations for
+          first-division vehicles as 1 through 5 letters plus 0-99, or 6 letters
+          plus 0-9. Seven positions is therefore the plate's statutory CAPACITY,
+          evidenced from the vanity side, and the ordinary series fills it
+          exactly. That is evidence, not a grammar, so no `regex_statutory` is
+          recorded — the vanity rule does not bound department-assigned serials.
+      layout_change_note: >-
+        THE SEPARATOR CASE, and the reason PRD-PLATES §2.6 exists. Within the
+        first year of this base the printed layout moved from AB1 2345 to
+        AB 12345 — the SAME SEVEN CHARACTERS, with the space relocated from
+        after the first digit to after the letters. A separator-forgiving
+        consumer canonicalizes both to AB12345 and is right to; a naive
+        fixed-position parser sees two different formats and is wrong. The
+        `regex` here spells the CURRENT printed form with an optional space, so
+        it accepts AB 12345 and AB12345 but not the retired AB1 2345 grouping —
+        which is correct, because that grouping is not what the series prints
+        now, and a consumer needing both should derive the separator-free twin
+        per §2.6 rule 2 rather than widen this regex.
+      progression: "observed AA1 1001 to AF9 9999 at introduction, and EN 76001 to GC 32739 as of 2026-03-18 (secondary)"
+      manufacture_note: "new serial dies and UV-printer screening rather than painting, reported from August 2023 (secondary) — a manufacturing change inside a base, with no format consequence"
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4 }
+      plate_dimension_note: "625 ILCS 5/3-412(c), verbatim: 'The dimensions of the plate issued to vehicles of the first division shall be 6 by 12 inches.' A STATUTORY dimension — rare in this group, and the reason no AAMVA/SAE inference is needed for Illinois."
+      material: "'coated with reflectorizing material' (625 ILCS 5/3-412(c))"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: >-
+        Reflective gradient blue-to-white fade with a dark blue serial. NO
+        GRADIENT OR SERIAL HEX IS RECORDED: the statute prescribes no colour at
+        all, the Secretary of State's site was unreachable, and a hex sampled
+        from a photograph would be a fabricated fact. The white background hex
+        is the pale end of the fade and is marked observed.
+      legend_top: "ILLINOIS"
+      legend_slogan: "Land of Lincoln"
+      legend_rule: "STATUTORY. 625 ILCS 5/3-412(b) requires the plate to display 'the registration number assigned to the vehicle for which it is issued, the name of this State, which may be abbreviated, the year number for which it was issued, which may be abbreviated, the phrase \"Land of Lincoln\"'. Illinois is the only state in this group whose SLOGAN is legislated rather than chosen."
+      graphic: { present: true, rendered: placeholder, description: "grey Abraham Lincoln portrait at far left and a white Chicago/Springfield skyline; secondary observation only" }
+      emblem: { present: true, rendered: placeholder }
+    replacement_cycle:
+      years: 10
+      evidence: secondary
+      statutory_frame: "625 ILCS 5/3-414.1: 'Registration plates issued for motor vehicles shall be valid for an indefinite term of not less than one year', with discretion in the Secretary of State to issue 2-year or 5-year multi-year plates. The statute sets no replacement cycle; the ten-year programme is administrative."
+      note: "a mandatory ten-year replating was phased in with this base and is reported scheduled to end in 2026 (secondary). Illinois therefore sits at the TOP of AAMVA's 7-10 recommendation, with Florida, against Indiana's reported 7."
+    region_encoding: "none. Illinois encodes no geography in the plate string and prints no county legend; the plate is uniform statewide."
+    sources:
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. 625 ILCS 5/3-412: (a) plate counts per class and the digital-plate alternative; (b) the mandated plate contents including 'Land of Lincoln'; (c) 100-foot legibility, reflectorizing material, and the 6 by 12 inch first-division dimension; (m) the 4 by 7 inch autocycle plate"
+      - "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=062500050K3-412  # CANONICAL, not fetched (connection reset)"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-405-1.html  # FETCHED. 625 ILCS 5/3-405.1: the vanity definition ('1 to 7 letters and no numbers or 1, 2, or 3 numbers and no letters'), the enumerated personalized combinations, and the ban on characters, symbols, foreign words and punctuation"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-414-1.html  # FETCHED. 625 ILCS 5/3-414.1: plates valid for an indefinite term of not less than one year; discretionary 2-year and 5-year multi-year plates"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY: the 2017 base, the AB1 2345 -> AB 12345 layout change, serial ranges AA1 1001-AF9 9999 and EN 76001-GC 32739 (2026-03-18), the August 2023 die/UV change, and the ten-year replating ending 2026"
+    notes: >-
+      ILLINOIS STANDARD ISSUE, CURRENT BASE. The best-specified standard series
+      in midwest-a, and the only one whose DIMENSION, LEGEND, REFLECTORIZATION
+      and LEGIBILITY are all statute-grade. What is NOT statute-grade is the one
+      thing consumers most want — the serial arrangement — so `period_evidence`
+      and `format.evidence` both read secondary and a verifier must re-derive
+      them. The layout-change note is the entry's most reusable content: Illinois
+      is the worked example of why a plates dataset must commit to a separator
+      contract instead of treating printed grouping as identity.
+
+  - id: us-il-standard-2001
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2001, end: 2017 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "999 9999"
+      regex: '\A\d{3} ?\d{4}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          ALL-NUMERIC seven positions in the principal arrangement (123 4567),
+          with ABC 123 and A12 3456 also reported on the same base. The
+          all-numeric primary is the point of interest: it means an Illinois
+          plate of this era carries NO LETTERS AT ALL, so a validator that
+          assumes every US plate mixes letters and digits rejects sixteen years
+          of Illinois issuance. The parallel arrangements are recorded in this
+          note rather than as sibling series because no primary establishes their
+          periods or their share.
+      progression: "observed 100 0001 to 999 9999 (secondary)"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_note: "the same statutory 6 by 12 inches (625 ILCS 5/3-412(c)) — the dimension is a property of Illinois law, not of the base"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      colour_note: "reflective gradient white-to-blue fade with a blue serial; no gradient or serial hex recorded"
+      legend_top: "ILLINOIS"
+      legend_slogan: "Land of Lincoln"
+      graphic: { present: true, rendered: placeholder, description: "Abraham Lincoln graphic, centred; secondary only" }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY: the 2001-2016 base, its white-to-blue fade and centred Lincoln graphic, the 123 4567 primary format with ABC 123 and A12 3456 alongside, range 100 0001 to 999 9999"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. The same statutory frame — dimensions, reflectorizing, 100-foot legibility and the 'Land of Lincoln' legend — governed this base"
+    notes: >-
+      ONE SERIES BACK (2001-2016 Lincoln base). Unlike Ohio and Indiana, where
+      consecutive bases share a grammar, ILLINOIS CHANGED FORMAT AT THE BASE
+      BOUNDARY — all-numeric 123 4567 gave way to LL 99999. That makes the
+      Illinois regex genuinely era-discriminating, and it is the one place in
+      this group where a serial shape alone dates a plate to a base. Worth
+      knowing before a parse API generalises the opposite lesson from Ohio.
+
+  - id: us-il-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LL 9999"
+      regex: '\A[A-Z]{2} ?\d{4}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          Two letters then four numerals. I, O and Q are reported unused —
+          the classic lookalike exclusion, and the same three letters 33 CFR
+          174.23 excludes from US vessel numbers for exactly this reason. The
+          exclusion is SECONDARY and is deliberately NOT encoded as a
+          `regex_strict`: a strict twin asserts the authority's own alphabet, and
+          a collector table is not the authority. Recorded as a note so a
+          verifier can promote it.
+      progression: "observed AA 101 to GE 2085 as of 2025-04-26 (secondary)"
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      size_note: "reduced motorcycle size; the statute states dimensions only for first-division vehicles (6x12) and autocycles (4x7), so the motorcycle size is a recorded gap"
+    display: "ONE plate, rear — 625 ILCS 5/3-412(a) issues a single plate for a motorcycle and 3-413 places it at the rear"
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. 3-412(a): one plate for a motorcycle; (m) the 4 by 7 inch autocycle dimension, which shows the legislature sizing small plates when it chooses to"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-413.html  # FETCHED. 3-413: motorcycles display at the rear only"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY: motorcycle format AB 1234, range AA 101 to GE 2085 (2025-04-26), I/O/Q not used"
+    notes: >-
+      MOTORCYCLE. Its own series because format, size and plate COUNT all differ
+      from the standard plate — Illinois issues two plates for a car and one for
+      a motorcycle, in statute. `period.start` is an instrument-in-force upper
+      bound; no source dated this series.
+
+  - id: us-il-trailer-semi
+    class: trailer
+    categories: [trailer]
+    period: { start: 1999 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "9999 ST"
+      regex: '\A\d{1,7} ?ST\z'
+      evidence: secondary-interpreted
+      charset:
+        notes: >-
+          THE STACKED-PAIR READING, stated openly because it is an
+          interpretation. Collector sources write this serial '1234 S/T'. The
+          solidus is not printed on the plate and is not a separator in this
+          dataset's contract (it sits in the FORGIVING set but not the EMITTED
+          set, so the lint would reject it, correctly). Read with AAMVA Ed.3 —
+          'If stacked characters are used, they are part of the official license
+          plate number. No more than two characters are to be stacked.' — the
+          notation denotes an S OVER A T, one stacked pair, and the pair is part
+          of the serial. It is therefore written flat as ST. A verifier should
+          confirm the stacking against an Illinois source before this reading
+          propagates to the other four states where the same notation appears.
+          The digit group is VARIABLE-LENGTH (observed 1 S/T through 1032416 S/T),
+          hence the quantifier rather than a fixed width.
+      progression: "observed 1 S/T to 1032416 S/T (secondary)"
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      stacked_characters: { present: true, pair: "ST", note: "rendered as a two-character stack per AAMVA's two-character limit; interpreted, not sourced from Illinois" }
+    validity: "PERMANENT semitrailer registration since 1999 (secondary) — a plate with no expiry is a real modelling case: `period.end` stays open and the VEHICLE, not the year, ends the plate's life"
+    display: "ONE plate, rear — 625 ILCS 5/3-412(a) issues a single plate for a trailer or semitrailer and 3-413 places it at the rear"
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. 3-412(a): one plate for a trailer or semitrailer"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-413.html  # FETCHED. 3-413: trailers display at the rear only"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY: semi-trailer format 1234 S/T, range 1 S/T to 1032416 S/T, permanent since 1999"
+      - "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf  # the stacked-character rule the ST reading rests on"
+    notes: >-
+      SEMI-TRAILER. Carried as the trailer-class series for Illinois, and it is
+      the file's clearest schema contribution: it is where the SOLIDUS PROBLEM is
+      resolved. Collector notation across at least four states in this group
+      (IL, WI) writes stacked pairs with a slash; the dataset writes them flat and
+      says why. If the verifier rejects the stacked reading, the correct fix is
+      to delete the ST token, NOT to emit a slash — §2.6 rule 3 makes a
+      serial-internal glyph a schema amendment, not a data entry.
+
+  - id: us-il-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d{1,7}\z'
+      evidence: secondary-interpreted
+      charset:
+        notes: >-
+          A LIMITATION OF THE PATTERN DSL IS VISIBLE HERE AND IS WORTH STATING
+          PLAINLY, because this series is the first in the dataset to hit it.
+          The Illinois dealer plate prints a stacked D-over-L pair (collector
+          notation 'D/L') ahead of a variable-length numeric group, and under
+          AAMVA Ed.3 that stacked pair IS part of the official plate number. The
+          honest `pattern` would therefore be "DL 99999" — but PRD-PLATES §2.2's
+          human-pattern DSL reserves `L` for "any letter" and `9` for "any
+          digit" and provides NO ESCAPE for a literal L or a literal 9, so that
+          string cannot be written: the lint correctly generates "DF 23681" from
+          it and correctly fails the round trip. Rather than corrupt the regex to
+          accept D-plus-any-letter (which would claim plates Illinois does not
+          issue), the serial modelled here is the NUMERIC GROUP ONLY, and the DL
+          pair is recorded in `design.stacked_characters` where it can be
+          rendered without being asserted as a matchable prefix. The DSL escape
+          is a schema-amendment candidate; it is raised in the group dossier.
+          The digit group is reported variable in length and to identify the
+          dealership's location, which — if true — makes this the ONE ILLINOIS
+          PLATE WITH A GEOGRAPHIC SIGNAL IN THE SERIAL. No decode table was
+          obtained and none is asserted; it is recorded as a lead for a later
+          `_decode` file.
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      stacked_characters: { present: true, pair: "DL", position: prefix, note: "interpreted per AAMVA as a stacked pair; unconfirmed against an Illinois source, and deliberately NOT carried in format.regex — see the charset note on the DSL escape problem" }
+    binding: business
+    validity: "issued ANNUALLY (secondary) — unlike the permanent semi-trailer plate, so the dealer plate is the short-cycle end of Illinois issuance"
+    region_encoding: "SUSPECTED, NOT SOURCED: the numeric group is reported to identify the dealership's location. Recorded as a lead. A parse API must not decode it until a table exists."
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY, and the sole source for this format: dealer plates with a D/L prefix and variable digits, issued annually, identifying the dealership location"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. The general issuance frame; it carries no dealer grammar"
+    notes: >-
+      DEALER PLATES. `binding: business` — the plate follows the dealership, not
+      a vehicle. Everything except the binding is secondary, and the suspected
+      geographic encoding is the most interesting unverified claim in this file.
+
+  - id: us-il-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2020 }
+    period_evidence: secondary-first-issue
+    matching: strict
+    format:
+      pattern: "999 LL 999"
+      regex: '\A\d{3} ?[A-Z]{2} ?\d{3}\z'
+      evidence: secondary
+      charset:
+        notes: >-
+          Three numerals, two letters, three numerals — eight characters, longer
+          than any Illinois metal plate, which is itself a useful discriminator.
+          The series has churned: 123 4567 from 2001, 123 A 456 from spring 2003,
+          and 123 AA 456 from late 2020 (all secondary). The current shape is
+          recorded; the predecessors are noted rather than given series, because
+          no primary dates them.
+    design:
+      material: "paper temporary registration permit"
+      background: { finish: none }
+      emblem: { present: false }
+    statutory_frame: "625 ILCS 5/3-407 gives the Secretary of State discretion over the 'design, color and format' of temporary permits and states no character grammar — the opposite of Ohio, whose ORC 4503.182 legislates seven positions exactly."
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-407.html  # FETCHED. 625 ILCS 5/3-407: temporary permits issued in the Secretary of State's discretion, with 'design, color and format' left to that discretion; no character grammar"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY: temporary formats 123 4567 (2001), 123 A 456 (spring 2003), 123 AA 456 (late 2020 to present)"
+    notes: >-
+      TEMPORARY REGISTRATION PERMIT. The pairing with Ohio is the lesson worth
+      keeping: two neighbouring states, one legislating the temporary tag's
+      character count to the digit and the other delegating even the colour. A
+      dataset that models temporary plates as a single US concept will be wrong
+      about both.
+
+  - id: us-il-government
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "MP 99999"
+      regex: '\A(?:MP|FV|W) ?\d{1,6}\z'
+      evidence: secondary-interpreted
+      charset:
+        notes: >-
+          DELIBERATELY A UNION, hence `matching: recall-only`. Illinois issues
+          several distinct public-fleet series that were reported only as
+          prefixes and never as complete grammars: M/P for municipal police, F/V
+          for fire vehicles, and a reserved W designation for state-owned
+          vehicles. The two-letter prefixes are written flat as stacked pairs on
+          the AAMVA reading used throughout this file. A match against this regex
+          says 'this string has the SHAPE of an Illinois public-fleet plate' and
+          nothing more — it is not a validity claim for any one of the three
+          series, and per PRD-PLATES §2.7 a `regex_strict` here would be a
+          contradiction and is absent.
+    design:
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      stacked_characters: { present: true, note: "MP and FV interpreted as stacked pairs per AAMVA; unconfirmed" }
+    binding: vehicle
+    binding_note: "the plate binds to an agency-owned VEHICLE, not to the agency as such — unlike a dealer plate, which is why `binding: business` is wrong here"
+    region_encoding: "none established; a municipal-police plate identifies a municipality by ISSUANCE, not by any decoded field of the serial"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY, and the sole source: Municipal Police M/P prefix, Fire Department F/V prefix, State Owned reserved W designation"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-412.html  # FETCHED. The general issuance frame under which distinctive plates for particular vehicle classes are issued"
+    notes: >-
+      GOVERNMENT / PUBLIC-FLEET PLATES, modelled as ONE recall-only union rather
+      than as three thinly-sourced strict series. This is the honest use of
+      `recall-only` outside the Netherlands' export case: the regex is
+      deliberately wider than any single grammar the Secretary of State issues,
+      because the grammars themselves were not obtained. Splitting it into three
+      strict series would look better and claim more than the evidence supports.
+
+  - id: us-il-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A[A-Z]{2} ?\d{5}\z'
+      evidence: secondary
+      charset: { notes: "special plates carry ordinary serials on an alternative design; 625 ILCS 5/3-405.1's ban on 'characters, symbols... foreign words, or letters of punctuation' applies to the owner-chosen space and is the only statutory alphabet rule in Illinois plate law" }
+    design:
+      background: { finish: retroreflective }
+      note: "one design per approved special plate; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: null
+      count_status: RECORDED-GAP
+      count_note: >-
+        No count was obtained: www.ilsos.gov returned 403 to every request from
+        this environment, and the secondary source gives only 'a large variety of
+        specialty plates to include plates for colleges, professional sports
+        teams, law enforcement, hunting (sporting), medical research, and many
+        other causes' — a count-free sentence. Recorded as `null` with the cause
+        stated.
+      official_list_url: "https://www.ilsos.gov/departments/vehicles/license_plate_guide/home.html"
+      official_list_fetch_status: "BLOCKED — HTTP 403 on every attempt, 2026-08-02"
+      statutory_basis: >-
+        625 ILCS 5/3-600 is the generic authorisation, and it carries the two
+        numbers that matter more than any catalogue count because they are
+        STATUTORY and they govern the programme's shape: a special plate series
+        may not issue until 'applications, as prescribed by the Secretary, have
+        been received for 2,000 plates of that series'; military-service and
+        military-medal plates are EXEMPT from that threshold and 'the Secretary
+        may immediately begin issuing that special plate'; and where fewer than
+        1,000 sets remain actively registered for two consecutive years the
+        Secretary may discontinue the plate or require conversion to a Universal
+        special plate with decals.
+      churn_note: >-
+        The 1,000-set discontinuation rule means the Illinois catalogue is a
+        MOVING TARGET with authorised-but-dying programmes in it, and the
+        'Universal special plate with decals' conversion is a genuinely unusual
+        endgame: a retired design does not vanish, it becomes a decal on a
+        generic plate. Any future L4 specialty-design pass must model that
+        conversion or it will double-count.
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-600.html  # FETCHED. 625 ILCS 5/3-600: the 2,000-application threshold, the military exemption from it, and the 1,000-set / two-consecutive-year discontinuation and Universal-plate conversion"
+      - "https://codes.findlaw.com/il/chapter-625-vehicles/il-st-sect-625-5-3-405-1.html  # FETCHED. 625 ILCS 5/3-405.1: 'No vanity nor personalized license plates shall be approved, manufactured, or distributed that contain any characters, symbols other than the international accessibility symbol for vehicles operated by or for persons with disabilities, foreign words, or letters of punctuation.'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois  # LOCATOR ONLY: the categories of Illinois specialty plates, with no count given"
+    notes: >-
+      THE ILLINOIS SPECIALTY PROGRAM INDEX — one entry for the whole programme per
+      PRD-PLATES §2.5. The catalogue count is a declared gap, but Illinois gives
+      something better and more durable than a count: the programme's CREATION and
+      DEATH thresholds, in statute. 2,000 applications to be born, fewer than
+      1,000 live sets over two years to be killed. Those numbers will still be
+      true when today's catalogue is stale, and they are the reason this index is
+      worth more than a scraped list would have been.

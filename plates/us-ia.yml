@@ -1,0 +1,438 @@
+# plates/us-ia.yml — Iowa (PRD-PLATES gate L2, group midwest-b).
+#
+# IOWA PUTS THE COUNTY ON EVERY PLATE, BY STATUTE, AND IT IS NOT A CODE. Iowa
+# Code § 321.166(2): "Every registration plate issued by the county treasurer
+# shall display the name of the county". That is a mandatory geographic legend on
+# essentially every Iowa plate — a stronger rule than Florida's, where the county
+# name is a county-level opt-out — but it encodes nothing in the SERIAL. So Iowa
+# is the clearest case in this dataset of geography that is READABLE but not
+# DECODABLE: you can see the county on the plate and you cannot recover it from
+# the plate number. `region_encoding` below says exactly that.
+#
+# IOWA ALSO SPELLS THREE SERIAL AFFIXES INTO STATUTE, which is unusual and
+# genuinely useful, because each is a sourced literal a parser can key on:
+#   * "DV" PRECEDES the number on disabled-veteran plates (§ 321.166(6));
+#   * "D" appears on dealer plates, at serial character size (§ 321.166(3));
+#   * "special" appears on special truck plates (§ 321.166(2)).
+# Those are specified as their own series below.
+#
+# AND IOWA LEGISLATES THAT EACH NEW SERIES MUST LOOK DIFFERENT FROM THE LAST:
+# § 321.166(5), "When a new series of registration plates is issued to replace a
+# current series, the new registration plates shall be of a distinctively
+# different color from the series which is replaced." Kansas legislates the same
+# idea (K.S.A. 8-147(d)). Two neighbouring states have independently made their
+# own series boundaries visually detectable, which is a gift to this dataset.
+jurisdiction: us-ia
+authority:
+  name: Iowa Department of Transportation, Motor Vehicle Division (plates issued through the county treasurers)
+  url: "https://www.legis.iowa.gov/docs/code/321.166.pdf"
+binding: vehicle
+statute_edition: "Iowa Code 2026, Chapter 321 (Motor Vehicles and Law of the Road), §§ 321.34 and 321.166 as published by the Iowa Legislature; and Iowa Administrative Code 761 ch. 401 (Special Registration Plates), whose rule 401.3 carries [ARC 8937C, IAB 2/19/25, effective 3/26/25]"
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    IOWA WAS NOT LOCATED IN ANY COPYRIGHT SURVEY READ FOR THIS PASS. The Wikipedia survey
+    of subnational-government copyright status carries per-state sections for seventeen
+    states and NO section for Iowa; no {{PD-IAGov}} tag was found on Commons. The
+    dossier's default therefore governs: 17 U.S.C. § 105 does not reach the states, so an
+    Iowa plate design is presumed COPYRIGHTED unless Iowa says otherwise, and Iowa has not
+    been shown to say otherwise. Recorded as unresearched, not adverse — absence of a
+    fetched source is weak evidence either way.
+  edict_carve_out: >-
+    Iowa's carve-out is unusually wide because Iowa legislates unusually much of its plate.
+    The size ceiling, the character height and stroke limits, the 100-foot daylight
+    readability rule, the county-name legend, the contrast rule, the distinct-colour rule
+    for new series, the DV prefix, the dealer D and the 'special' truck legend are ALL in
+    the Iowa Code, and the minimum and maximum character counts are in the Iowa
+    Administrative Code. Edicts of government are uncopyrightable at every level
+    ({{PD-US-GovEdict}}), so nearly the whole factual layer of this file is affirmatively
+    clean regardless of Iowa's posture on artwork.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies to the current Iowa base graphic and to
+    the 'processed emblem' and 'organization decal' that § 321.166(9) provides space for
+    on special plates. The organization decals carry an ADDITIONAL layer: § 321.34(13)
+    decals are designed by nonprofit organizations and approved by the department, so they
+    are third-party artwork licensed into a state program rather than state work at all,
+    and a clean state posture would not clear them. Render
+    `emblem: {present: true, rendered: placeholder}`. Iowa state-seal misuse statutes are
+    unresearched.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY (PRD-PLATES §4): read to establish that Iowa has NO section in the survey — a negative result, recorded as such"
+    - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166, the statutory plate specification itself — an edict of government, PD"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA has no enforcement power; its declarative present is RECOMMENDED PRACTICE."
+  dimensions_delegated: >-
+    AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is PAYWALLED and
+    UNPINNED, and no J686 dimension is quoted here. IOWA IS THE ONE STATE IN GROUP
+    MIDWEST-B THAT DOES NOT NEED IT: § 321.166(1)(a) states a size ceiling in law — plates
+    'of a size NOT TO EXCEED six inches by twelve inches' — so Iowa's dimension is sourced
+    to an Iowa edict and owes nothing to the standards chain or to the uncited 1956 story.
+  geometry_available: >-
+    AAMVA §2.1 and §2.2 supply the renderable layout geometry generally. For Iowa the
+    CHARACTER geometry is in statute and is stricter in kind: § 321.166(3) caps character
+    height at four inches and stroke width at five-eighths of an inch, where AAMVA §2.2
+    sets a 2.5-inch character-height FLOOR. The two are compatible — AAMVA's minimum sits
+    below Iowa's maximum — but note they are opposite instruments, a floor and a ceiling.
+  retroreflectivity: "AAMVA §3.3: legible day and night from at least 75 feet; ASTM D4956-19 and ISO 7591:1982 clause 3; entrance angle 0.2 deg, observation angle -4 deg, minimum 45 cd/lx/m^2. Iowa's own statutory legibility rule is a 100-foot DAYLIGHT test (§ 321.166(4)), which is a different measurement, not a stricter version of the same one."
+  replacement_cycle_recommendation: "AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. Iowa legislates NO replacement cycle in § 321.166 or § 321.34; instead § 321.34(2)(a) lets the department REASSIGN existing plates indefinitely and issue an annual validation sticker. Recorded gap as to any Iowa cycle."
+  source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The '1956 AMA standardization agreement' said to have fixed the 6x12 inch plate is
+    UNCITED in its Wikipedia source (a `citation needed` since 2017, copied across
+    articles — circular). Recorded as COMMONLY REPEATED, UNSOURCED. Iowa is the state where
+    this matters least and is easiest to demonstrate: Iowa's six-by-twelve is cited below to
+    § 321.166(1)(a), which states it in law, so nothing in this file depends on the folklore.
+
+# ---------------------------------------------------------------------------
+# Display rules. Iowa is a TWO-PLATE state with a six-class single-plate list.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "TWO plates. Iowa Code § 321.34(1): the county treasurer 'shall issue to the owner one registration plate for a motorcycle, motorized bicycle, autocycle, truck tractor, trailer, or semitrailer and TWO registration plates for every other motor vehicle'."
+  single_plate_classes: ["motorcycle", "motorized bicycle", "autocycle", "truck tractor", "trailer", "semitrailer"]
+  validation_sticker: >-
+    § 321.34(2)(a): one validation sticker per set of plates, specifying the month and
+    year of expiration, 'displayed only on the rear registration plate, EXCEPT that the
+    sticker shall be displayed on the FRONT registration plate of a truck tractor' — the
+    truck-tractor inversion again, this time applied to the sticker rather than the plate.
+    A sticker for the upcoming year issued before the current year expires does not
+    invalidate the registration and need not be displayed until the vehicle would otherwise
+    be driving on an expired registration under § 321.39.
+  expiration_on_plate: "§ 321.166(7): the year and month of expiration, which may be abbreviated, shall be displayed on plates issued by the county treasurer; the department may prescribe a distinctive emblem or validation sticker to designate them. Not required on § 321.19 plates."
+  plate_retention_on_transfer: "§ 321.34(1): plates are assigned to the OWNER, not the vehicle — on transferring the vehicle the owner REMOVES the plates and either forwards them to a county treasurer or has them assigned to another vehicle within thirty days. Iowa is therefore closer to the Swiss owner-binding model than most US states, though the binding is still recorded as `vehicle` because registration itself is vehicle-keyed."
+  sources:
+    - "https://www.legis.iowa.gov/docs/code/321.34.pdf  # Iowa Code § 321.34(1): one plate for six named classes and two for every other motor vehicle, plates assigned to the owner, removal on transfer and the thirty-day reassignment window; (2)(a) the validation sticker, its month-and-year content, rear display and the truck-tractor front-display exception, and the early-sticker rule"
+    - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(7): the year and month of expiration displayed on county-treasurer-issued plates"
+
+series:
+
+  # =========================================================================
+  # THE STANDARD-ISSUE SERIES.
+  # =========================================================================
+  - id: us-ia-standard
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){1,6}\z'
+      charset:
+        min_characters: 2
+        min_characters_basis: "Iowa Admin. Code r. 761-401.3(1): 'Plates will be issued with a minimum of two characters.' A sourced FLOOR, which almost no state states."
+        notes: >-
+          § 321.166(2) is the statutory grammar and it is broad: 'Every registration plate
+          or pair of plates shall display a registration plate number which shall consist of
+          ALPHABETICAL OR NUMERICAL CHARACTERS OR A COMBINATION THEREOF and the name of this
+          state, which may be abbreviated.' No width and no arrangement are stated, and the
+          department is authorised to 'adopt rules to implement this subsection'. NO LETTER
+          EXCLUSIONS appear in § 321.166 or § 321.34 — whether Iowa skips I/O/Q was NOT
+          established (recorded gap).
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY, on the nl-export precedent. Iowa's serial ARRANGEMENT is
+        not stated in the Code, the implementing rules were not located, and the Iowa DOT
+        website returned HTTP 403 to every request in this pass. What IS sourced is a
+        two-character FLOOR (761-401.3(1)) and, for emblem plates, a five-character ceiling
+        (761-401.3(2)); the regex encodes the floor and stays wide above it, and
+        `matching: recall-only` says a hit is a shape hit only.
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4 }
+      plate_dimension_note: >-
+        § 321.166(1)(a), verbatim: plates 'shall be of metal and of a size NOT TO EXCEED six
+        inches by twelve inches, except that the size of plates issued for use on autocycles,
+        motorized bicycles, motorcycles, motorcycle trailers, and trailers with an empty
+        weight of two thousand pounds or less shall be established by the department.' Note
+        this is a CEILING, unlike Florida's § 320.06(3)(a), which states minima for the same
+        two numbers. The reduced sizes are departmental and were not obtained (gap).
+      small_trailer_option: "§ 321.166(1)(b) and (8): trailers of 2,000 lb empty weight or less receive smaller plates by rule, but 'may, upon request, be licensed with regular-sized license plates'"
+      character_geometry: "§ 321.166(3): the registration plate number 'shall be displayed in characters which shall not exceed a height of four inches nor a stroke width exceeding five-eighths of an inch'. Sizes for autocycles, motorized bicycles, motorcycles, small trailers and motorcycle trailers are prescribed by the department."
+      legibility: "§ 321.166(4): the plate number, except on the small-vehicle classes, 'shall be of sufficient size to be readable from a distance of one hundred feet during daylight' — a DAYLIGHT test, where Minnesota's counterpart is a night test"
+      contrast_rule: "§ 321.166(5): 'There shall be a marked contrast between the color of the registration plates and the data which is required to be displayed on the registration plates.'"
+      series_colour_change_rule: >-
+        § 321.166(5), verbatim and consequential for this dataset: 'When a new series of
+        registration plates is issued to replace a current series, the new registration
+        plates shall be of a DISTINCTIVELY DIFFERENT COLOR from the series which is
+        replaced, except for collegiate registration plates issued under section 321.34,
+        subsection 7 or 7A.' Iowa has legislated that its series boundaries are visually
+        detectable — and then carved collegiate plates out of the rule, so collegiate plates
+        alone may span a boundary without changing colour.
+      legend_state: "Iowa (may be abbreviated, § 321.166(2))"
+      legend_county: "the name of the county — mandatory on every plate issued by a county treasurer (§ 321.166(2))"
+      colour_note: >-
+        NO HEX IS RECORDED. Iowa mandates CONTRAST and mandates CHANGE-ON-REISSUE but names
+        no colour value, the implementing rules were not located, and the Iowa DOT site
+        returned 403. Recorded gap rather than an eyedropped value.
+      emblem: { present: true, rendered: placeholder }
+      material: "metal (§ 321.166(1)(a))"
+    region_encoding:
+      geographic_legend: >-
+        PRESENT, MANDATORY AND NOT DECODABLE. § 321.166(2): 'Every registration plate issued
+        by the county treasurer shall display the name of the county, including any plate
+        issued pursuant to section 321.34' — with named exceptions for Pearl Harbor and
+        purple heart plates issued before 1 January 1997, and for collegiate, fire fighter
+        and medal of honor plates. So the county appears as PRINTED TEXT on essentially
+        every Iowa plate, and encodes nothing in the serial. There is no geographic decode
+        in an Iowa plate string.
+      contrast_with_florida: >-
+        Iowa's county legend is STRONGER than Florida's. Florida § 320.06(3)(a) lets a county
+        commission vote the county name off its plates in favour of the state motto or
+        'Sunshine State'; Iowa gives the county no such opt-out and instead exempts specific
+        PLATE TYPES. The modelling consequence differs accordingly: in Florida the bottom
+        legend is a property of the selling county, in Iowa it is a property of the plate type.
+      contrast_with_neighbours: >-
+        Worth stating for the encyclopedia, because this group contains both designs: Iowa and
+        Kansas put the county on the plate as a LEGEND or letters, while Nebraska and (by
+        report) South Dakota put a county NUMBER into the serial itself. Only the latter is
+        machine-decodable from a plate string.
+    sources:
+      - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(1)(a)-(b): metal, the six-by-twelve CEILING, departmental sizes for small vehicles, the small-trailer regular-plate option; (2) the alphabetical-or-numerical-or-combination grammar, the abbreviable state name, the MANDATORY county name with its Pearl Harbor / purple heart / collegiate / fire fighter / medal of honor exceptions, the 'special' truck legend and the rulemaking authority; (3) four-inch character height and five-eighths-inch stroke ceilings and the dealer 'D'; (4) the 100-foot daylight readability rule; (5) marked contrast and the distinctively-different-colour rule for new series with its collegiate carve-out; (6) the DV prefix; (7) year and month of expiration; (8) small-trailer plates; (9) design consistency and emblem space for special plates; (10) no issuance fee on a special-plate redesign"
+      - "https://www.legis.iowa.gov/docs/iac/chapter/761.401.pdf  # Iowa Admin. Code r. 761-401.3(1): the two-character minimum; 401.3(2): the five-character maximum for plates with a processed emblem and for § 321.34(13) plates. [ARC 8937C, IAB 2/19/25, effective 3/26/25]"
+    notes: >-
+      IOWA STANDARD ISSUE. THE ID IS DELIBERATELY UNDATED and the series is deliberately
+      `recall-only`: Iowa legislates its plate's PHYSICS in unusual detail — a size ceiling,
+      a character-height ceiling, a stroke ceiling, a daylight readability distance — and
+      leaves its GRAMMAR to rules this pass could not reach, with the Iowa DOT website
+      returning 403 to every request.
+      PERIOD CAVEAT: `start: 2026` is the Iowa Code edition read and is an UPPER BOUND on the
+      true start of the current base, not a claim about it. THE ONE SERIES BACK IS A
+      RECORDED GAP — but Iowa is the state where recovering it should be EASIEST, because
+      § 321.166(5) guarantees that each new series differs in colour from the one it
+      replaced, so the series history is in principle a colour sequence and a single
+      departmental source would unlock the whole chain.
+
+  # =========================================================================
+  # THE THREE STATUTORY SERIAL AFFIXES. Each is a sourced literal, which makes
+  # these the most confidently specified Iowa series in the file.
+  # =========================================================================
+  - id: us-ia-disabled-veteran
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "DV999"
+      regex: '\ADV ?[A-Z0-9]{1,5}\z'
+      charset:
+        prefix_literal: "DV"
+        notes: >-
+          § 321.166(6), verbatim: 'Registration plates issued to a disabled veteran under
+          the provisions of section 321.105 shall display the alphabetical characters "DV"
+          which shall PRECEDE the registration plate number.' A statutory literal PREFIX is
+          the single most parser-friendly fact a plate statute can contain, and Iowa states
+          it unambiguously. The number following DV is the ordinary registration plate
+          number, whose grammar is unsourced (see us-ia-standard).
+      pattern_note: "the DV prefix is a sourced literal and is fixed in the regex; the following number is left wide because Iowa's serial grammar is not sourced. The optional separator reflects that § 321.166 prescribes no spacing."
+    design:
+      note: "§ 321.166(6): the plates 'may also display a persons with disabilities parking sticker if issued to the disabled veteran by the department under section 321L.2'"
+      emblem: { present: true, rendered: placeholder }
+      colour_note: "no hex recorded; § 321.166 names no colour value"
+    region_encoding: "county name legend as on the standard series (§ 321.166(2))"
+    sources:
+      - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(6): the mandatory 'DV' prefix on disabled-veteran plates issued under § 321.105, and the optional persons-with-disabilities parking sticker under § 321L.2"
+    notes: >-
+      DISABLED VETERAN PLATES. Its own series because the statute mandates a FORMAT
+      difference — a literal prefix inside the plate number — which under PRD-PLATES §2.3 is
+      a series-making difference of a stronger kind than a mere legend change. CLASS
+      CAVEAT: recorded as `standard`, since _meta/classes.yml has no veteran or disability
+      class and this is an ordinary registration carrying a mandated prefix. Iowa's
+      eligibility criteria are in § 321.105, which was not read in this pass (gap).
+
+  - id: us-ia-dealer
+    class: dealer
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "D9999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){1,6}\z'
+      charset:
+        marker_literal: "D"
+        notes: >-
+          § 321.166(3), verbatim: 'Special plates issued to dealers shall display the
+          alphabetical character "D", which shall be of the SAME SIZE as the characters in
+          the registration plate.' Note what the statute does and does not say: it requires
+          the character D to appear, at serial character size, but — unlike the DV rule in
+          subsection (6) — it does NOT say the D precedes the number or forms part of it.
+          Its POSITION is therefore unsourced, which is why this series is `recall-only`
+          while the disabled-veteran series above is `strict`.
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY. The regex deliberately does NOT pin the D, because
+        pinning it to the front would assert a position the statute does not state. The
+        sourced fact — that a same-size D appears — is carried in
+        `charset.marker_literal` instead, where it cannot be mistaken for a grammar.
+    design:
+      note: "the D is required to be the same size as the serial characters, which distinguishes it from a small legend or emblem and is why it may well be part of the number"
+      emblem: { present: true, rendered: placeholder }
+    binding: business
+    region_encoding: "county name legend as on the standard series, since dealer plates are issued by the county treasurer (§ 321.166(2))"
+    sources:
+      - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(3): the dealer 'D' at the same size as the registration plate characters"
+    notes: >-
+      DEALER PLATES. `binding: business` on the standing reasoning that the plate follows the
+      trade rather than a vehicle. The interesting discipline point is the CONTRAST WITH THE
+      DV RULE two subsections away: Iowa's legislature said 'shall PRECEDE the registration
+      plate number' for DV and merely 'shall display the alphabetical character "D"' for
+      dealers, and this file honours that difference by pinning one and not the other. It
+      would have been easy, and wrong, to write both as prefixes.
+
+  - id: us-ia-special-truck
+    class: standard
+    categories: [truck]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){1,6}\z'
+      pattern_note: "REPRESENTATIVE SHAPE ONLY; § 321.166(2) mandates a LEGEND on these plates and says nothing about their serial, so the standard series' unsourced grammar applies and `matching: recall-only` follows"
+    design:
+      legend: "special"
+      legend_rule: "§ 321.166(2), verbatim: 'Special truck registration plates shall display the word \"special\".'"
+      emblem: { present: true, rendered: placeholder }
+      colour_note: "no hex recorded; § 321.166 names no colour value"
+    region_encoding: "county name legend as on the standard series (§ 321.166(2))"
+    sources:
+      - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(2): the mandatory 'special' legend on special truck registration plates"
+    notes: >-
+      SPECIAL TRUCK PLATES. A statutory legend series on the Florida model — us-fl-restricted
+      and us-fl-wrecker are the same shape of record. CLASS CAVEAT: recorded as `standard`,
+      because the vocabulary has no commercial or farm-truck class and the legend carries the
+      meaning. What a 'special truck' IS under Iowa law is defined elsewhere in Chapter 321
+      and was not resolved in this pass (recorded gap) — the legend and its mandate are
+      sourced, the underlying vehicle class is not.
+
+  # =========================================================================
+  # BLACKOUT — statutory, and the Iowa half of a two-state Midwestern pattern.
+  # =========================================================================
+  - id: us-ia-blackout
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){1,6}\z'
+      pattern_note: "REPRESENTATIVE SHAPE ONLY; § 321.34(11C) authorises the plate and its design without stating a serial grammar, so the standard series' unsourced grammar applies"
+    design:
+      note: >-
+        THE DESIGN IS SOURCED ONLY BY ITS NAME AND BY AN EXEMPTION. § 321.34(11C) creates
+        'Blackout plates' as a numbered special-plate subsection, and § 321.166(9) lists
+        blackout plates among the special plates EXEMPT from the rule that special plates
+        'shall be consistent with the design and color of regular registration plates' —
+        which is the statutory way of saying the blackout plate is allowed to look
+        completely unlike an Iowa plate. Its actual colours are not stated in the Code and
+        the Iowa DOT site returned 403, so no hex is recorded here.
+      design_freedom_basis: "§ 321.166(9) exempts gold star, medal of honor, collegiate, fire fighter, natural resources, BLACKOUT and flying our colors plates from the design-and-colour-consistency requirement imposed on other special plates"
+      emblem: { present: false }
+      colour_note: >-
+        NO HEX RECORDED — and the contrast with North Dakota is the point. North Dakota
+        legislated its blackout plate's colours as VALUES (NDCC § 39-04-10.18(2): 'a solid
+        black background', 'white numbers and letters'), so us-nd-blackout carries
+        `hex_basis: statute`. Iowa legislated only that its blackout plate need not match
+        the regular design. Same plate concept, two states, and only one of them is
+        citable for a colour.
+    region_encoding: "county name legend as on the standard series, since these are county-treasurer-issued plates (§ 321.166(2))"
+    sources:
+      - "https://www.legis.iowa.gov/docs/code/321.34.pdf  # Iowa Code § 321.34(11C): 'Blackout plates' as an authorised special registration plate subsection"
+      - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(9): blackout plates among those exempt from the design-and-colour-consistency requirement, i.e. the statutory licence for the design to differ"
+    notes: >-
+      BLACKOUT PLATES. Broken out as its own series because § 321.166(9) expressly frees it
+      from the design and colour of the regular plate, which is a design difference in the
+      §2.3 sense even though the Code never says what the design IS. Iowa and North Dakota
+      both run statutory blackout plates — a small Midwestern convergence worth recording
+      for the encyclopedia — and comparing the two is instructive about sourcing: one state
+      wrote the colours into law and the other wrote only a permission.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5. Counted from the statute.
+  # =========================================================================
+  - id: us-ia-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL99"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){1,6}\z'
+      charset:
+        max_characters_emblem_plates: 5
+        max_characters_basis: "Iowa Admin. Code r. 761-401.3(2): 'Plates with a processed emblem, and plates issued under Iowa Code section 321.34(13), are limited to five characters whether personalized or issued as a letter-number designated plate.' A sourced, emblem-conditional ceiling — the frame narrows because the emblem takes plate space."
+        min_characters: 2
+      pattern_note: "REPRESENTATIVE SHAPE ONLY; the index stands for many programs, and the sourced constraints are the two-character floor and the five-character emblem-plate ceiling rather than any arrangement"
+    design:
+      consistency_rule: >-
+        § 321.166(9): special plates other than the exempt list 'shall be CONSISTENT WITH THE
+        DESIGN AND COLOR of regular registration plates but shall provide a space on a
+        portion of the plate for the purpose of allowing the placement of a distinguishing
+        processed emblem or an organization decal.' So Iowa's default specialty plate is the
+        standard plate plus an emblem slot — which is why the emblem-plate character ceiling
+        exists and why most Iowa specialty designs are not free-form.
+      exempt_from_consistency: ["gold star", "medal of honor", "collegiate", "fire fighter", "natural resources", "blackout", "flying our colors"]
+      note: "one design per authorised program; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_statutory: 30
+      count_basis: >-
+        COUNTED FROM THE STATUTE — the numbered subsections of Iowa Code § 321.34 that
+        authorise a plate type: radio operators (3), permanent (4), personalized (5), sample
+        (6), collegiate (7), medal of honor (8), ex-prisoner of war (8A), fire fighter (10),
+        emergency medical services (10A), natural resources (11), love our kids (11A),
+        motorcycle rider education (11B), blackout (11C), flying our colors (11D), persons
+        with disabilities (14), legion of merit (15), national guard (16), Pearl Harbor (17),
+        purple heart (18), United States armed forces retired (19), silver or bronze star
+        (20), distinguished service / navy / air force cross (20A), soldier's / navy and
+        marine corps / airman's medal (20B), Iowa heritage (21), education (22), breast
+        cancer awareness (23), gold star (24), civil war sesquicentennial (25), fallen peace
+        officers (26) and United States veteran (27).
+      count_caveat: >-
+        SUBSECTIONS ARE NOT DESIGNS, and in Iowa the gap is wide in both directions.
+        § 321.34(7) collegiate plates cover every participating institution under one
+        subsection, and § 321.34(13) is an open-ended NONPROFIT ORGANIZATION DECAL program
+        under which any qualifying organization may have a decal approved — so the number of
+        DESIGNS offered is materially greater than 30 and was not obtained. Conversely the
+        count includes subsections that are not really specialty designs at all (permanent
+        plates, sample plates). No Iowa DOT figure exists to reconcile against, because the
+        Iowa DOT site returned HTTP 403 on every request in this pass. Recorded, not
+        averaged (PRD-PLATES §5.3).
+      organization_decal_program: >-
+        § 321.34(13) with Iowa Admin. Code r. 761-401.4: a nonprofit organization meeting the
+        § 321.34(13)'a'/'b' criteria applies on Form 411346 for approval of a decal DESIGN,
+        and the department must notify approval or denial within 60 days; the department may
+        revoke an approved decal on finding a false statement, with notice. This is the
+        mechanism by which the Iowa catalogue grows without further legislation, and it is
+        the reason the design count is unbounded from the statute alone.
+      personalized_rules: >-
+        Iowa Admin. Code r. 761-401.5: personalized plates under § 321.34(5) are orderable
+        online; an application is rejected if the requested combination is already issued or
+        reserved for any other plate series; the department must not issue a combination it
+        determines falls into the rule's prohibited categories (the specific categories were
+        not extracted — gap); personalized plates are unavailable for the plate types listed
+        in 401.2(2)'a' onward.
+      fee_relief_on_redesign: "§ 321.166(10): if the department reissues a new design for a special plate, existing holders 'shall not be required to pay the issuance fee' — a rare statutory protection against redesign churn costs"
+      official_list_url: "https://www.legis.iowa.gov/docs/code/321.34.pdf"
+      iowa_dot_status: "the Iowa DOT plate pages (iowadot.gov) returned HTTP 403 on every request in this pass, via WebFetch and curl alike; recorded so a later run does not mistake it for unfetched-but-fine"
+    region_encoding: "county name legend, EXCEPT that § 321.166(2) exempts collegiate, fire fighter and medal of honor plates, and Pearl Harbor and purple heart plates issued before 1 January 1997 — so on those types the county is genuinely absent"
+    sources:
+      - "https://www.legis.iowa.gov/docs/code/321.34.pdf  # Iowa Code § 321.34: the thirty numbered plate-authorising subsections counted above, including (11C) blackout and (13) the nonprofit organization decal program; (3) radio operator call-letter plates; (5) personalized plates"
+      - "https://www.legis.iowa.gov/docs/code/321.166.pdf  # Iowa Code § 321.166(9): the design-and-colour consistency rule, the emblem/decal space requirement and the seven-type exemption list; (10) no issuance fee on a special-plate redesign; (2) the county-name exemptions for collegiate, fire fighter and medal of honor plates"
+      - "https://www.legis.iowa.gov/docs/iac/chapter/761.401.pdf  # Iowa Admin. Code 761 ch. 401: r. 401.3 the two-character floor and five-character emblem-plate ceiling; r. 401.4 the nonprofit decal approval process, Form 411346, the 60-day decision and revocation; r. 401.5 personalized plate ordering, rejection and prohibition rules"
+    notes: >-
+      THE SPECIALTY PROGRAM INDEX — one entry standing for the whole program, per
+      PRD-PLATES §2.5, with no individual designs. Iowa counts cleanly from the statute the
+      way North Dakota does, and carries the same honest caveat in sharper form: the
+      open-ended § 321.34(13) decal program means the DESIGN count is unbounded from the
+      Code alone, while several counted subsections are not designs at all. The genuinely
+      novel Iowa facts for this dataset are structural rather than numeric — the default
+      specialty plate is the STANDARD plate plus an emblem slot (§ 321.166(9)), the emblem
+      slot COSTS characters (five-character ceiling, r. 761-401.3(2)), and a redesign cannot
+      be charged to existing holders (§ 321.166(10)).

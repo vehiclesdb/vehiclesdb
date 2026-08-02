@@ -1,0 +1,875 @@
+# plates/us-ca.yml — California (PRD-PLATES gate L2, group: pacific).
+#
+# WHY CALIFORNIA IS THE DEEPEST US FILE IN THIS WAVE, and what makes it
+# different from the Florida pilot: Florida's plate FACTS live in the STATUTE
+# (§ 320.06 fixes the seven-character cap, the legends and the 6x12 minimum).
+# California's do NOT. Vehicle Code § 4851 is the whole statutory design spec
+# and it is one sentence long — registration number + "California" or "Cal." +
+# the year or a validation device. There is no statutory character cap, no
+# statutory colour, no statutory legend beyond the state name.
+#
+# So the primary source for California FORMAT facts is not the code, it is the
+# DMV's own VEHICLE INDUSTRY REGISTRATION PROCEDURES MANUAL (VIRPM) — an agency
+# handbook published in full on dmv.ca.gov, which turns out to carry exactly
+# the material this dataset needs and which no competing dataset appears to
+# have found:
+#   * VIRPM Appendix 1E is a YEAR-BY-YEAR TABLE of California plate colours,
+#     character colours, sticker colours and SERIAL SERIES from 1914 to 1980,
+#     published by the issuing agency. It is the primary that dates the 1980
+#     seven-character cutover: "In 1980, seven characters were introduced in
+#     regular series license plates."
+#   * VIRPM 21.180 publishes the 144 three-letter strings "deleted from the
+#     regular series license plate configuration" — an agency-sourced
+#     charset exclusion list for the STANDARD series, not merely a vanity
+#     refusal list.
+#   * VIRPM 21.025 / 21.100 give the character counts for Legacy and
+#     Environmental (personalized) plates.
+# Where the VIRPM speaks, this file cites the VIRPM. Where only the Vehicle
+# Code speaks, it cites the Code. Wikipedia is cited as a LOCATOR only, and
+# every claim resting on it says so in terms.
+#
+# THE BIG PERIOD FACT IN THIS FILE: California exhausted the 1ABC123 format at
+# 9ZZZ999 and flipped to a MIRRORED 123ABC1 in March 2026. This file is written
+# in August 2026, i.e. inside the first year of the new series. The flip is
+# reported by news media and by Wikipedia; NO DMV instrument stating it was
+# obtained (recorded gap). The 1980 START of the format it replaced IS
+# agency-primary (Appendix 1E).
+#
+# REGEX FORM (PRD-PLATES §2.6): printed form throughout. California prints its
+# passenger serial with no separator at all, so no separator appears in any
+# regex here except in the personalized/temporary entries where the DMV's own
+# examples show none either.
+jurisdiction: us-ca
+authority:
+  name: California Department of Motor Vehicles (DMV)
+  url: "https://www.dmv.ca.gov/portal/vehicle-registration/license-plates-decals-and-placards/"
+binding: vehicle
+statute_edition: >-
+  California Vehicle Code and Government Code as served by
+  leginfo.legislature.ca.gov, read 2026-08; California DMV Vehicle Industry
+  Registration Procedures Manual (VIRPM), the edition live on dmv.ca.gov in
+  2026-08 (the manual carries no edition number; its pages footer
+  "Copyright (c) 2026 State of California").
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4/§7.1.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: public-domain-favourable-narrower-than-florida
+  basis: >-
+    California is favourable but on a NARROWER ground than Florida. A
+    California agency may claim copyright only where the Legislature has
+    affirmatively authorised it; the Public Records Act does not supply that
+    authorisation. Wikimedia Commons maintains {{PD-CAGov}} and its own text
+    rests the tag on the California Public Records Act (Gov. Code § 7920 et
+    seq.) and on County of Santa Clara v. California First Amendment Coalition
+    (2009). Contrast Arizona, which expressly asserts copyright, and NY/PA/WA,
+    which are adverse.
+  counter_evidence: >-
+    RECORDED HONESTLY, BECAUSE IT CUTS THE OTHER WAY: every page of the DMV
+    website — including the Vehicle Industry Registration Procedures Manual
+    pages this file cites as its primary source — carries the footer
+    "Copyright (c) 2026 State of California". A blanket footer is not a
+    legislative authorisation and does not by itself defeat the PD-CAGov
+    analysis, but it IS an assertion by the issuing agency and a verifier
+    should see it rather than discover it. The tension is not resolved here.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies to (a) the red "California"
+    SCRIPT WORDMARK, which is the plate's whole graphic identity and is a
+    specific lettering artwork rather than a fact, and (b) the Great Seal of
+    California where it appears on exempt/legislative plates. US doctrine that
+    TYPEFACE DESIGNS are uncopyrightable (font SOFTWARE is a different thing)
+    would tend to clear a re-drawn script, but that doctrine was not
+    independently sourced in this pass and is recorded as a gap, so the
+    placeholder stands. Render `emblem: {present: true, rendered: placeholder}`.
+  seal_regime: >-
+    SEPARATE FROM COPYRIGHT AND PARTIALLY UNRESEARCHED. Government Code § 405
+    was fetched and prescribes the COLOURS of the Great Seal when it is
+    reproduced in colour (down to Textile Color Card Association cable
+    numbers) — evidence that the Seal is regulated in its own right. The
+    MISUSE/penalty provision was NOT located in this pass and is a recorded
+    gap. Do not render the Seal.
+  photograph_caution: >-
+    Commons photographs of California plates are mixed, not uniformly
+    share-alike: the US/world dossier measured File:10851 CA.jpg as CC0 via
+    the extmetadata API. Either way the tag is the PHOTOGRAPHER's licence on
+    the PHOTOGRAPH; the uploader had no standing over the design. Our renders
+    are generated from the DMV's own published specifications and never from
+    a photograph, so no share-alike obligation attaches.
+  sources:
+    - "https://commons.wikimedia.org/w/index.php?title=Template:PD-CAGov&action=raw  # the California PD tag exists and is in active use (Category:PD California)"
+    - "https://commons.wikimedia.org/w/index.php?title=Template:PD-CAGov/en&action=raw  # the tag's own reasoning: California Public Records Act (Gov. Code § 7920 et seq.) + County of Santa Clara v. CFAC"
+    - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=405  # Gov. Code § 405: the statutory colour specification for the Great Seal — the seal is separately regulated"
+    - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/personalized-configurations-mandatory-refusal/  # the DMV page footer 'Copyright (c) 2026 State of California' — the counter-evidence, cited where it actually appears"
+
+# ---------------------------------------------------------------------------
+# The US standards chain. Recorded per state because adoption is VOLUNTARY and
+# because the delegation trap matters: AAMVA sends dimensions to SAE J686,
+# whose own text is PAYWALLED and UNPINNED. Nothing below quotes J686.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA writes recommendations in the declarative present; read them as RECOMMENDED PRACTICE, not requirement."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686. J686's own text is paywalled and was NOT obtained; no J686 dimension is quoted anywhere in this dataset. California's 12x6 in is taken from the DMV's own page instead, which is better sourcing than the standard would have been."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges"
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name in the top centre between the bolt holes, at least 0.25 in above the plate number, at least 0.125 in from the top edge, characters 0.75-1.0 in"
+    stacked_characters: "AAMVA: stacked characters are part of the official plate number; at most two stacked. DIRECTLY RELEVANT TO CALIFORNIA — the dealer, press-photographer and moped plates all print a stacked or small-format letter group beside a full-size number (see us-ca-dealer)."
+    replacement_cycle: "AAMVA §1.1 recommends a rolling or full replacement cycle 'not to exceed 7 to 10 years'. CALIFORNIA HAS NO REPLACEMENT CYCLE AT ALL: VIRPM 21.260 and the DMV's own YOM rules assume 1963 plates are still on the road, and the Vehicle Code contains no periodic-replacement duty. California is therefore the clean counter-example to Florida's legislated 10 years."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" that supposedly fixed 6x12 in is
+    UNCITED in its Wikipedia source (a `citation needed` since 2017, copied
+    verbatim across articles — circular). The California article repeats it.
+    IT IS NOT USED HERE: California's 12x6 in comes from the DMV's own
+    licence-plate page, and VIRPM Appendix 1E independently records that
+    "a standard size of 12 x 6 for autos" arrived with the 1956 issue —
+    an agency statement of the same fact without the folklore attached.
+
+# ---------------------------------------------------------------------------
+# Display rules. California is a TWO-PLATE state with a truck-tractor
+# inversion that mirrors Florida's — front only.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "TWO plates, front and rear. VC § 5200(a), verbatim: 'When two license plates are issued by the department for use upon a vehicle, they shall be attached to the vehicle for which they were issued, one in the front and the other in the rear.' VC § 5200(b): where only one plate is issued it goes on the rear, 'unless the license plate is issued for use upon a truck tractor, in which case the license plate shall be displayed in accordance with Section 4850.5.'"
+  issuance_rule: "VC § 4850(a): the department issues 'two partially or fully reflectorized license plates or devices for a motor vehicle, other than a motorcycle, and one ... for all other vehicles required to be registered'. VIRPM 1.075 states the operational list: 'Trailers, motorcycles, special equipment (SE), tow dollies, and commercial truck tractors with a TR, DR, or DS body type model are issued one license plate. All other vehicle types registered in California are issued two license plates except apportioned vehicles base-plated in another state, which are issued only a sticker.'"
+  truck_tractor: "VIRPM 1.075, verbatim: 'Truck tractors must have the license plate attached to the front of the vehicle. If truck tractors are assigned special interest license plates, the license plate with the stickers must be attached to the front of the vehicle and the other license plate destroyed.' FRONT-ONLY — the same inversion Florida legislates in § 320.0706, reached here by agency rule rather than statute."
+  reflectorization: "VC § 4850(b) forbids letting any contract to a nongovernmental entity 'for the manufacturing of reflectorized safety license plates'; (c) a $1 reflectorization fee; (d) owners of NONREFLECTORIZED plates are NOT required to replace them — which is why 1963 black plates are lawfully on California roads in 2026. (e) names the section the Schrade-Belotti Act."
+  sticker_placement: "Registration validation stickers go on the REAR plate, except that truck tractors and heavy commercial vehicles display them on the front plate. LOCATOR-GRADE for the 10,001 lb threshold (Wikipedia, citing VC § 5204, which was not fetched); the truck-tractor half is VIRPM 1.075 and is sourced."
+  sources:
+    - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5200  # § 5200(a) front and rear; (b) rear unless truck tractor"
+    - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=4850  # § 4850: two reflectorized plates (one for non-motor vehicles), the manufacturing prohibition, the $1 fee, the no-forced-replacement rule, the Schrade-Belotti Act"
+    - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/general-registration-information/license-plates/  # VIRPM 1.075: the one-plate vehicle list, the truck-tractor FRONT rule, Central License Plate Issuance"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — the mirrored 123ABC1, new in March 2026.
+  # =========================================================================
+  - id: us-ca-standard-123abc1
+    class: standard
+    categories: [car, van]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999LLL9"
+      regex: '\A\d{3}[A-Z]{3}\d\z'
+      regex_strict: '\A\d{3}(?!ABM|ANO|APE|ARS|ASB|ASS|BAD|BAG|BED|BRA|BUN|BUT|BVD|CHP|CIA|COC|COK|CON|COP|CQC|CQK|CQN|CUL|CUM|CUN|CUR|CUZ|DAG|DAM|DDT|DIC|DIE|DIK|DOA|DUD|DUF|DUM|DUN|FAG|FAN|FAT|FBI|FCK|FKU|FOC|FOK|FQC|FQK|FQU|FUC|FUD|FUG|FUK|FUN|FUX|FUY|GAT|GAY|GEE|GOD|GQD|GUT|HAG|HAM|HEL|HEN|HIC|HIK|HIV|HOG|HOR|HQR|JAP|JAZ|JEW|JIG|KIK|KKK|KOC|KOK|KON|KOX|KQC|KQK|KQN|KQX|KYK|LAY|LSD|MEX|NAG|NGR|NIG|NIP|NUN|OVA|PEA|PEE|PEW|PIG|PIS|POT|POW|PST|PUD|PUS|PYS|QVA|RAG|RAT|RAW|RUT|SAC|SAK|SAM|SEX|SHT|SIF|SIN|SLA|SOB|SOT|SQB|SUC|SUK|SUR|SUX|TIT|TUB|UCK|UPP|UPU|URN|URP|USB|USR|VUC|VUK|VUX|WAD|WOP|WQP|YEP|YID)[A-Z]{3}\d\z'
+      charset:
+        excluded: [ABM, ANO, APE, ARS, ASB, ASS, BAD, BAG, BED, BRA, BUN, BUT, BVD, CHP, CIA, COC, COK, CON, COP, CQC, CQK, CQN, CUL, CUM, CUN, CUR, CUZ, DAG, DAM, DDT, DIC, DIE, DIK, DOA, DUD, DUF, DUM, DUN, FAG, FAN, FAT, FBI, FCK, FKU, FOC, FOK, FQC, FQK, FQU, FUC, FUD, FUG, FUK, FUN, FUX, FUY, GAT, GAY, GEE, GOD, GQD, GUT, HAG, HAM, HEL, HEN, HIC, HIK, HIV, HOG, HOR, HQR, JAP, JAZ, JEW, JIG, KIK, KKK, KOC, KOK, KON, KOX, KQC, KQK, KQN, KQX, KYK, LAY, LSD, MEX, NAG, NGR, NIG, NIP, NUN, OVA, PEA, PEE, PEW, PIG, PIS, POT, POW, PST, PUD, PUS, PYS, QVA, RAG, RAT, RAW, RUT, SAC, SAK, SAM, SEX, SHT, SIF, SIN, SLA, SOB, SOT, SQB, SUC, SUK, SUR, SUX, TIT, TUB, UCK, UPP, UPU, URN, URP, USB, USR, VUC, VUK, VUX, WAD, WOP, WQP, YEP, YID]
+        excluded_count: 144
+        excluded_basis: >-
+          VIRPM 21.180, verbatim heading: "Restricted License Plate
+          Configurations — The following configurations are deleted from the
+          regular series license plate configuration and are not available for
+          personalized license plates". Note the two claims in that sentence:
+          these 144 three-letter strings are deleted from the REGULAR SERIES,
+          and they are separately unavailable to personalized applicants. It is
+          the first claim that makes this a `charset` fact rather than a vanity
+          rule, and it is why `regex_strict` exists on this series.
+        excluded_wrinkle: >-
+          The DMV's own worked example for the six-character automobile
+          configuration on the very same page is "123SAM" — and SAM is on the
+          restricted list. Read the example as illustrative, not as an issued
+          serial. Recorded because a naive scraper would treat it as a sample.
+        notes: >-
+          NO STATUTORY CHARACTER CAP EXISTS IN CALIFORNIA. VC § 4851 is the
+          whole statutory design rule: "Every license plate shall have
+          displayed upon it the registration number assigned to the vehicle for
+          which it is issued, together with the word 'California' or the
+          abbreviation 'Cal.' and the year number for which it is issued or a
+          suitable device issued by the department for validation purposes,
+          which device shall contain the year number for which issued." There
+          is nothing to put in `regex_statutory`; its absence here is a FACT
+          about California law, not an omission. Contrast Florida, whose
+          § 320.06(3)(a) caps the serial at seven characters.
+      progression: "Mirror of the exhausted 1ABC123 format: the three leading numerals advance and the letter group follows. REPORTED, not sourced — the DMV publishes no progression rule that was located."
+      pattern_note: >-
+        REPORTED LETTER-POSITION RULE, NOT ENCODED: secondary sources state
+        that I, O and Q are used only as the MIDDLE letter of the three-letter
+        group (the fifth character in 123ABC1, the third in 1ABC123). The
+        underlying citation chain is Wikipedia -> a San Jose Police Department
+        training PDF, which is not the issuing authority. It is deliberately
+        NOT written into `regex_strict`, because `regex_strict` is reserved for
+        the AUTHORITY's own alphabet (PRD-PLATES §2.7) and this is not it.
+        Recorded as a gap for the verifier to chase to a DMV instrument.
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4 }
+      plate_dimension_note: "From the DMV's own licence-plate page: automobile, commercial and trailer plates 12 in x 6 in; motorcycle plates 7 in x 4 in (pre-1970 motorcycle plates 8 in x 5 in); identification plates 7 in x 4 in (pre-1981 8 in x 5 in). This is an AGENCY statement of dimensions and is used in preference to the AAMVA/SAE chain, whose own text is unpinned."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003DA5"
+      colour_note: >-
+        NEITHER COLOUR IS IN ANY INSTRUMENT LOCATED. VC § 4850 mandates
+        reflectorization and says nothing about hue; VC § 4851 names no colour.
+        The reflective-white ground and dark-blue characters are
+        `hex_basis: observed` and both hexes are APPROXIMATIONS taken from the
+        design as depicted on DMV pages. Treat as unverified. By contrast the
+        HISTORIC colours in this file (1963 black/yellow, 1970 blue/yellow)
+        ARE agency-sourced, from VIRPM Appendix 1E and VC § 5004.3 — an
+        unusual inversion where the old designs are better sourced than the
+        current one.
+      legend_top: "California"
+      legend_top_note: "Rendered as a red SCRIPT wordmark, not as block capitals. VC § 4851 requires only 'the word \"California\" or the abbreviation \"Cal.\"' — the script treatment is departmental, not statutory."
+      legend_bottom: "dmv.ca.gov"
+      legend_bottom_note: "The DMV web address has been carried as the plate's bottom legend since 2011 per LOCATOR sources; no DMV instrument stating the date was obtained. California is one of very few jurisdictions worldwide whose standard plate advertises a URL."
+      emblem: { present: false }
+      graphic: { present: true, rendered: placeholder, description: "the red script 'California' wordmark is the plate's only graphic element; there is no seal, no state map and no scenic art on the standard base" }
+      band: { side: none }
+      rear_differs: false
+      manufacture: "California plates have been manufactured by incarcerated workers at Folsom State Prison since 1947 — LOCATOR-GRADE (Wikipedia citing the CALPIA catalogue); recorded because plate manufacture is a recurring question and because CALPIA is a state entity whose catalogue would be the primary to chase."
+    replacement_cycle:
+      years: null
+      note: >-
+        CALIFORNIA HAS NO REPLACEMENT CYCLE. No periodic-replacement duty was
+        located in the Vehicle Code, and VC § 4850(d) affirmatively provides
+        that owners of nonreflectorized plates need not replace them. VIRPM
+        21.260 and the Year of Manufacture rules take for granted that 1963
+        plates remain in service. This is the strongest single counter-example
+        in the dataset to the idea that AAMVA's 7-10 year recommendation is
+        followed: Florida legislated 10 years, California legislated nothing.
+    region_encoding: none
+    region_encoding_note: "California encodes no geography in the plate string and prints no county legend. The only county artefact is administrative (VIRPM Chart 2 - County Codes, used in DMV records, never on the plate)."
+    sources:
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/personalized-configurations-mandatory-refusal/  # VIRPM 21.180: the 144 three-letter strings 'deleted from the regular series license plate configuration'; the restricted letter/number combination table naming the automobile, commercial, CA Exempt, DP and DV configurations"
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=4851  # § 4851: the entire statutory design rule — registration number + 'California' or 'Cal.' + year or validation device. No character cap, no colour, no legend."
+      - "https://www.dmv.ca.gov/portal/vehicle-registration/license-plates-decals-and-placards/license-plates/  # DMV: plate dimensions 12x6 in (auto/commercial/trailer), 7x4 in (motorcycle, pre-1970 8x5), 7x4 in (identification, pre-1981 8x5); 'Generally, license plates remain with the vehicle they were issued to.'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY (PRD-PLATES §4): the March 2026 flip to 123ABC1 after 9ZZZ999, the 2011 dmv.ca.gov legend, the I/O/Q middle-letter rule, Folsom manufacture. None is asserted as sourced here."
+    notes: >-
+      CALIFORNIA'S CURRENT STANDARD SERIES. PERIOD CAVEAT: `start: 2026` is the
+      year of the instruments read (the live VIRPM and the 2026 Vehicle Code)
+      and is an UPPER BOUND, following the us-fl-standard convention. It
+      happens to coincide with the reported real start — secondary sources
+      (Wikipedia citing the Sacramento Bee and Fox5 San Diego) put the flip at
+      MARCH 2026, immediately after the 1ABC123 format exhausted at 9ZZZ999 —
+      but no DMV instrument stating the date was obtained, so the month is not
+      claimed and the year is claimed only as a bound. THE FLIP ITSELF is the
+      interesting structural fact: California does not redesign when a format
+      runs out, it MIRRORS the existing one, which is why the base design has
+      outlived two complete serial systems. A parse API must therefore treat
+      1ABC123 and 123ABC1 as two series of one visually identical plate.
+
+  # =========================================================================
+  # ONE SERIES BACK — 1ABC123, 1980 to 2026. The 1980 start is AGENCY-PRIMARY.
+  # =========================================================================
+  - id: us-ca-standard-1abc123
+    class: standard
+    categories: [car, van]
+    period: { start: 1980, end: 2026 }
+    period_evidence: agency-manual-dated-start
+    matching: strict
+    format:
+      pattern: "9LLL999"
+      regex: '\A\d[A-Z]{3}\d{3}\z'
+      charset:
+        excluded_ref: "us-ca-standard-123abc1 — the same 144 three-letter strings apply; VIRPM 21.180 states the deletion against the regular series as such, not against a particular arrangement of it"
+        notes: "Same absence of a statutory cap as the current series; see us-ca-standard-123abc1."
+      progression: >-
+        VIRPM Appendix 1E, verbatim: "In 1980, seven characters were
+        introduced in regular series license plates. Acceptable auto license
+        plate series for 1980 only: 1AAA000 to 1SZZ999." The reported rule
+        thereafter is that the ABC123 tail runs AAA000 -> ZZZ999 before the
+        leading digit advances — LOCATOR-GRADE beyond the 1980 block the DMV
+        itself publishes.
+      unissued_blocks_reported: >-
+        LOCATOR ONLY: 1SWD000-1TZZ999, 1WAA000-1ZYZ999, 3FMH000-3FZZ999,
+        3YAA000-3ZYZ999 and 3ZZH000-3ZZZ999 reported never issued;
+        1ZZA000-1ZZZ999 and 3ZZA000-3ZZG999 reserved for Livery;
+        1UAA000-1VZZ999 reserved for Lake Tahoe, Yosemite and Whale Tail
+        specialty plates. Not asserted as sourced. A specialty-block table like
+        this is exactly what a parse API wants and exactly what no primary
+        publishes; recorded as a research target.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003DA5"
+      design_generations_note: >-
+        MODELLING DECISION, STATED OPENLY. This entry is cut on FORMAT, not on
+        base design, because the format boundary (1980, 2026) is the only one
+        with agency evidence at either end. Within it the base design changed
+        several times, all LOCATOR-GRADE: 1980 blue base with yellow
+        characters; 1982 "The Golden State" white base (an extra-cost option
+        that became standard in 1987); 1987 white base with an EMBOSSED red
+        state name; 1993 white base with a GRAPHIC red state name; 1998
+        "SESQUICENTENNIAL - 150 YEARS" legend; 2001 legend removed; 2011
+        "dmv.ca.gov" legend added. A future pass with a DMV instrument for any
+        of those boundaries should split this series and alias this id under
+        the PRD-QUALITY I-5/I-6 contract.
+      emblem: { present: false }
+      graphic: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/file/vr-manual-appendix-1e/  # VIRPM Appendix 1E (PDF), California License Plate Data 1914-1980: 'In 1980, seven characters were introduced in regular series license plates. Acceptable auto license plate series for 1980 only: 1AAA000 to 1SZZ999.' Also the year-by-year colour/series table this file's historic claims rest on."
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/appendix-1e-california-license-plate-data-1914-1980/  # the VIRPM page that serves the appendix"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY: the 2026 end of the format, the base-design generations, the unissued and reserved blocks"
+    notes: >-
+      THE FORMAT CALIFORNIA RAN FOR FORTY-SIX YEARS. Its START is properly
+      sourced — VIRPM Appendix 1E says the seven-character regular series
+      arrived in 1980 and gives the exact 1980 block — which makes this one of
+      the few US series in the dataset with an agency-dated boundary. Its END
+      is LOCATOR-GRADE (reported March 2026 on exhaustion at 9ZZZ999) and is
+      recorded as 2026 because the successor series is demonstrably in issue in
+      2026; a verifier should replace it with a DMV instrument or downgrade it.
+      DISAGREEMENT RECORDED, NOT AVERAGED (PRD-PLATES §5.3): VIRPM Appendix 1E
+      dates the blue-and-yellow base "1970-1980", Wikipedia dates it from 1969,
+      and VC § 5004.3 — a statute — describes the blue/yellow appearance as
+      that of plates "issued by the department from 1969 to 1986, inclusive".
+      Three instruments, three boundaries, no average taken.
+
+  # =========================================================================
+  # LEGACY — the 1960s black plate, back in production, WITH ITS COLOURS IN
+  # STATUTE. This is the rare case where a US plate design is specified by law.
+  # =========================================================================
+  - id: us-ca-legacy-1960s
+    class: specialty
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2015 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9]{6}\z'
+      charset:
+        notes: >-
+          VIRPM 21.025, verbatim: "Legacy License Plates are available in
+          sequential configurations of six characters and in personalized
+          configurations of two to seven characters and may be issued to
+          automobiles, commercial vehicles (excluding international
+          registration plan [IRP]), motorcycles, trailer coach (CCH), and
+          permanent trailer identification (PTI)." SIX CHARACTERS is the whole
+          published constraint — the DMV does not say WHICH six-character
+          arrangement, so the regex here is deliberately the union of all of
+          them and this series is `matching: recall-only`. A match is a shape
+          hit, not a validity claim.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { color: "#000000", finish: retroreflective, hex_basis: statutory-description }
+      foreground: "#FFC72C"
+      colour_basis: >-
+        THE COLOURS ARE IN THE STATUTE. VC § 5004.3 authorises three legacy
+        designs by colour and by reference to the period whose appearance they
+        replicate: (1) "Yellow background with black lettering per the
+        appearance of California license plates issued by the department from
+        1956 to 1962, inclusive"; (2) "Black background with yellow lettering
+        per the appearance of California license plates issued by the
+        department from 1965 to 1968, inclusive"; (3) "Blue background with
+        yellow lettering per the appearance of California license plates issued
+        by the department from 1969 to 1986, inclusive." The HEXES are still
+        approximations — the statute names colours, not values — but the
+        colour NAMES and the periods they refer to are law.
+      emblem: { present: false }
+      rear_differs: false
+      reproduction_note: "LOCATOR ONLY: the reissued plates use a modern reflective black coating rather than the original dull black paint, and the narrower character dies of the 7-character era rather than the wider 6-character dies of the originals. A collector-visible difference; recorded because a render should not claim to reproduce the 1963 artefact."
+    program_threshold: "VC § 5004.3: the department must collect 'not less than 7,500 paid applications for any one of the particular plates' before issuing it, and had 'until January 1, 2015, to receive the required number of applications', with refunds if the threshold was missed."
+    program_outcome: "LOCATOR ONLY: only the 1960s black-with-yellow design reached 7,500 before the deadline; the 1950s yellow-with-black and 1970s blue-with-yellow designs did not, and are authorised but never issued. Recorded because an authorised-but-dead design is exactly the trap PRD-PLATES §2.5 warns about — the statute lists three, the road carries one."
+    region_encoding: none
+    sources:
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5004.3  # § 5004.3: the three legacy designs with their colours and their reference periods (1956-1962, 1965-1968, 1969-1986), the 7,500 paid-application threshold, the 1 January 2015 deadline and the refund rule"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/california-ca-1960s-legacy-license-plates/  # VIRPM 21.025: six-character sequential, two-to-seven-character personalized, the eligible vehicle types, the plate-with-owner rule"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY: only the 1960s design met the threshold; issuance began 2015; modern coating and narrower dies"
+    notes: >-
+      THE ONE US PLATE DESIGN IN THIS WAVE WHOSE COLOURS ARE LEGISLATED.
+      Everywhere else in the US pass the statutes specify a PROPERTY
+      (Florida: "a distinguishing color") and leave the VALUE to the
+      department; VC § 5004.3 names the values. It also does something no other
+      instrument found in this programme does: it uses the state's own past
+      designs as the specification, and in doing so publishes a set of
+      historical base periods (1956-1962, 1965-1968, 1969-1986) as law. Those
+      periods disagree with both the DMV's own Appendix 1E and with the
+      collector literature, and the disagreement is recorded on
+      us-ca-standard-1abc123 rather than resolved. `start: 2015` is an upper
+      bound taken from the reported first issuance year, not from an
+      instrument.
+
+  # =========================================================================
+  # PERSONALIZED — "Environmental License Plates", the original US vanity plate.
+  # =========================================================================
+  - id: us-ca-personalized
+    class: personalized
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9]{2,7}\z'
+      charset:
+        excluded_ref: "us-ca-standard-123abc1 — the same 144 restricted three-letter strings are unavailable to personalized applicants, VIRPM 21.180"
+        notes: >-
+          VIRPM 21.100, verbatim: "Environmental License Plates (ELP) are the
+          original personalized license plate. ELPs are only available
+          personalized with two to seven characters and may be issued to
+          automobiles, commercial vehicles, motorcycles, and trailers."
+          TWO TO SEVEN CHARACTERS is agency-sourced and is what the regex
+          encodes.
+      substitution_rule: >-
+        VIRPM 21.180, verbatim: "Any special license plate application which
+        contains '1' and 'I' used interchangeable or '0' and 'O' or 'Q' used
+        interchangeably must be rejected." A LOOKALIKE-COLLISION rule aimed at
+        the plate-reading problem rather than at taste, and a good example of
+        why a validator needs the authority's own alphabet rather than a
+        generic alphanumeric class.
+      conflict_table: >-
+        VIRPM 21.180 publishes the configurations unavailable to personalized
+        applicants "because they conflict with existing license plate series",
+        and in doing so publishes the CURRENT SHAPE OF SEVERAL OTHER
+        CALIFORNIA SERIES — which is why this file can spec them at all:
+        3 numbers + 2 letters (000AA-000E0, Reserved); 3 numbers + 3 letters
+        (123SAM, Automobile); 4 numbers + 2 letters (0000PH Purple Heart
+        Vessels, 1234AB, 0000DP Disabled Person, 0000DV Disabled Veteran);
+        5 numbers + 1 letter (12345R, Commercial); 5 numbers + 2 letters
+        (30000DP, 00000DV); 5 numbers + 1 letter + 1 number (11111A1,
+        Commercial); 7 numbers (1234567, CA Exempt).
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003DA5"
+      note: "ELPs may be issued on the standard base or on most special-interest bases; the design is that of the chosen base."
+    refusal_criteria: >-
+      VIRPM 21.180 is one of the most explicit refusal standards published by
+      any US DMV, and it is quoted because the criteria themselves are the
+      fact: "DMV must refuse any personalized license plate configuration that
+      may carry connotations offensive to good taste and decency, or which
+      would be misleading" — including a configuration that has a sexual
+      connotation, is a vulgar/contemptuous/prejudicial/racially or ethnically
+      degrading term, is profane or obscene, "has been restricted (deleted)
+      from regular series license plates", has a negative connotation to a
+      specific group, misrepresents a law enforcement entity, is a foreign or
+      slang word, or "is a phonetic spelling or mirror image" of any of those.
+    statutory_hook: "VC § 5101 authorises environmental licence plates for the registered owner or lessee of 'a passenger vehicle, commercial motor vehicle, motorcycle, trailer, or semitrailer'. VC § 5105 governs refusal and cancellation of offensive or misleading configurations. NEITHER SECTION STATES A CHARACTER LIMIT — the two-to-seven rule is the DMV's, not the Legislature's."
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/environmental-license-plates/  # VIRPM 21.100: ELPs 'only available personalized with two to seven characters'; eligible vehicle types; plate-with-owner"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/personalized-configurations-mandatory-refusal/  # VIRPM 21.180: the refusal criteria, the 1/I and 0/O/Q substitution rule, the similar-configuration rule, the 144 restricted strings, the conflicting-configuration table"
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5101  # § 5101: who may apply for environmental licence plates"
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5105  # § 5105: departmental refusal and cancellation of offensive or misleading configurations"
+    notes: >-
+      CALIFORNIA'S PERSONALIZED PLATE IS STATUTORILY CALLED AN ENVIRONMENTAL
+      LICENSE PLATE because its fees fund environmental programmes, which is
+      why a reader chasing "vanity plate" through the Vehicle Code finds
+      nothing. Modelled as its own series for the same reason as Florida's: the
+      SERIAL SOURCE differs — owner-chosen rather than department-assigned —
+      even though the character frame overlaps the standard series.
+
+  # =========================================================================
+  # HISTORIC — two permanent series, both in statute, both numbered from 1.
+  # =========================================================================
+  - id: us-ca-horseless-carriage
+    class: historic
+    categories: [car]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999"
+      regex: '\A\d+\z'
+      charset:
+        notes: >-
+          VC § 5004, verbatim: "The special identification plates assigned to
+          motor vehicles with an engine of 16 or more cylinders manufactured
+          prior to 1965 and to any motor vehicle manufactured in the year 1922
+          and prior thereto shall run in a separate numerical series,
+          commencing with 'Horseless Carriage No. 1'." A separate numerical
+          series with a stated origin and NO STATED WIDTH — hence the unbounded
+          quantifier, which makes no width claim.
+      progression: "strictly sequential from 1"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "VC § 5004: 'Each series of plates shall have different and distinguishing colors.' The statute specifies DISTINCTNESS, not a value — the same drafting choice Florida makes in § 320.086(1). No colour is recorded."
+      legend: "Horseless Carriage"
+    eligibility: "VC § 5004(a): a motor vehicle with an engine of 16 or more cylinders manufactured prior to 1965, OR any motor vehicle manufactured in 1922 or earlier. A FIXED-CUTOFF threshold — it never moves."
+    validity: "VIRPM 21.120: the plates are PERMANENTLY assigned to the vehicle and cannot be reassigned; no additional renewal fee; the plates cannot be retained by the owner; the vehicle is subject to a fixed annual vehicle licence fee of $2 (R&TC § 10753.5) and is limited to historical exhibition, parades and club activities."
+    fee: "VC § 5004: '$25 shall be charged for the initial issuance', replacement per § 9265."
+    region_encoding: none
+    sources:
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5004  # § 5004: the 16-cylinder and 1922-or-earlier eligibility, the 'Horseless Carriage No. 1' series, 'different and distinguishing colors', the $25 initial fee"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/historical-vehicle-and-horseless-carriage-license-plates/  # VIRPM 21.120: permanent assignment, no reassignment, no retention, the $2 fixed VLF, the exhibition-use restriction, and that these plates are NOT available personalized"
+    notes: >-
+      HORSELESS CARRIAGE. California and Florida legislate this series in
+      almost identical terms — a separate numerical run from "Horseless
+      Carriage No. 1", a distinguishing but unnamed colour, permanence — which
+      is worth recording as a genuine cross-state convergence rather than a
+      coincidence, and as a hint that the two statutes share an ancestor. The
+      eligibility rules differ: California's is a FIXED cutoff (1922, or 16+
+      cylinders pre-1965), Florida's Horseless Carriage is a fixed 1945 cutoff,
+      and California's own Historical Vehicle series below is ROLLING.
+
+  - id: us-ca-historical-vehicle
+    class: historic
+    categories: [car, truck, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999"
+      regex: '\A\d+\z'
+      charset:
+        notes: "VC § 5004: 'The special identification plates assigned to vehicles specified in paragraph (3) of subdivision (a) shall run in a separate numerical series, commencing with \"Historical Vehicle No. 1\".' Same shape as the Horseless Carriage series, same absence of a stated width."
+      progression: "strictly sequential from 1"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "VC § 5004: 'Each series of plates shall have different and distinguishing colors' — the Historical Vehicle plate must therefore differ in colour from the Horseless Carriage plate, but neither value is stated."
+      legend: "Historical Vehicle"
+    eligibility: "VIRPM 21.120: a motor vehicle or trailer manufactured AFTER 1922, at least 25 YEARS OLD, and of historic interest. A ROLLING threshold — the eligible set silently grows every year, which is the kind of claim the quarterly audit has to re-derive rather than trust."
+    region_encoding: none
+    sources:
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5004  # § 5004(a)(3) and the 'Historical Vehicle No. 1' series"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/historical-vehicle-and-horseless-carriage-license-plates/  # VIRPM 21.120: manufactured after 1922, at least 25 years old, of historic interest; the exhibition-use restriction and the $2 fixed VLF"
+    notes: >-
+      HISTORICAL VEHICLE. Its own series and not a variant of Horseless
+      Carriage because § 5004 gives it its own numerical run and requires it to
+      carry a different colour. The eligibility contrast inside a single
+      section is the modelling lesson: § 5004 carries a FIXED cutoff and a
+      ROLLING one side by side, and only the rolling one needs re-auditing.
+
+  # =========================================================================
+  # YEAR OF MANUFACTURE — the series that has no serial of its own, because it
+  # borrows a serial the department issued decades ago.
+  # =========================================================================
+  - id: us-ca-year-of-manufacture
+    class: historic
+    categories: [car, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: >-
+          A YOM plate carries whatever serial the department issued in the
+          matching year, so its regex is necessarily the UNION of California's
+          historic arrangements and a match is a shape hit only. The DMV
+          publishes the acceptable series per era, and those ARE precise:
+          VIRPM 21.260 / Appendix 1E — "1963-1969 year model automobiles must
+          have black license plates with yellow characters within the
+          alpha-numeric series of AAA000-YYY999"; 1963-1969 commercial
+          "A00000-Z99999 or 00000A-99999Z"; "1970-1980 year model automobiles
+          vehicles must have blue license plates with yellow characters within
+          the alpha-numeric series of 000AAA-999ZZZ"; 1970-1980 commercial
+          "00000A-99999Z", with 1975-1980 also "1A00001 to 3Z99999";
+          1970-1980 motorcycles "0A0000-9Z9999"; and 1980 autos may also use
+          "1AAA000 to 1SZZ999".
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: unknown }
+      design_note: "The design is that of the original year. VIRPM 21.260: plates 'May be restored/painted but cannot deviate from the original colors or configurations', and the year validation sticker corresponding to the vehicle's model year must be attached and authenticated by a DMV employee before assignment."
+    eligibility: "VC § 5004.1(a)(1): an owner of a 1980 OR OLDER model-year vehicle may use plates 'with the date of year corresponding to the model-year date when the vehicle was manufactured, if the model-year date license plate is legible and serviceable, as determined by the department'. VIRPM 21.260 narrows it operationally: 1969 or prior for autos, trailers and motorcycles; 1972 or prior for commercial vehicles. § 5004.1(a)(2) lets the department 'consult with an organization of old car hobbyists' in judging correspondence — a rare statutory delegation to a hobby community."
+    restrictions: "VIRPM 21.260: YOM vehicles have FULL operating privileges and are NOT restricted to historical activities (unlike Historical Vehicle plates); replicas, specially constructed vehicles and kit cars do not qualify; Environmental and Special Recognition plates are excluded from the programme."
+    regulatory_hook: "California Code of Regulations Title 13, Article 3.3, §§ 205.00-205.14 governs the programme. THE CCR TEXT WAS NOT FETCHED in this pass (recorded gap) — VIRPM 21.260 cites it and is used in its place."
+    region_encoding: none
+    sources:
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5004.1  # § 5004.1: 1980-or-older model year, legible and serviceable, the old-car-hobbyist consultation, the $45 application and $10 renewal fees"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/year-of-manufacture-yom-license-plates/  # VIRPM 21.260: the 1969/1972 operational cutoffs, the sticker-equals-year rule with worked examples, the AAA000-YYY999 black-base rule, the CCR Title 13 Art. 3.3 hook"
+      - "https://www.dmv.ca.gov/portal/file/vr-manual-appendix-1e/  # VIRPM Appendix 1E: the per-era acceptable series for autos, commercial vehicles and motorcycles"
+    notes: >-
+      YEAR OF MANUFACTURE IS THE SCHEMA'S EDGE CASE AND EARNS ITS PLACE HERE
+      FOR THAT REASON: a currently-issuable registration whose plate is a
+      forty-to-a-hundred-year-old artefact supplied by the owner, authenticated
+      rather than manufactured. `matching: recall-only` is the honest reading —
+      the regex is the union of every California arrangement, so a hit says
+      "this could be a California plate of some era", never "this is a valid
+      YOM registration". The DMV's sticker arithmetic is worth carrying
+      verbatim because it is genuinely counter-intuitive: "A 1956 license plate
+      with a 1958 sticker equals a 1958 plate and must be placed on a 1958 year
+      model vehicle."
+
+  # =========================================================================
+  # CORE CLASSES the state separately serializes. The formats come from the
+  # VIRPM 21.180 conflict table where it speaks, and are LOCATOR-GRADE
+  # where it does not — each entry says which.
+  # =========================================================================
+  - id: us-ca-commercial
+    class: standard
+    categories: [truck, van, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999L9"
+      regex: '\A\d{5}[A-Z]\d?\z'
+      charset:
+        notes: >-
+          BOTH commercial arrangements come from VIRPM 21.180's table of
+          configurations unavailable to personalized applicants "because they
+          conflict with existing license plate series": "5 numbers; 1 letter"
+          with the example 12345R, and "5 numbers; 1 letter; 1 number" with the
+          example 11111A1, both labelled License Type "Commercial". The regex
+          is the union of exactly those two and nothing wider, so `matching`
+          is strict.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003DA5"
+      note: "Commercial plates share the standard base design; the class is carried by the serial arrangement, not by a legend."
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/personalized-configurations-mandatory-refusal/  # VIRPM 21.180: '5 numbers; 1 letter' (12345R) and '5 numbers; 1 letter; 1 number' (11111A1), License Type Commercial"
+      - "https://www.dmv.ca.gov/portal/file/vr-manual-appendix-1e/  # VIRPM Appendix 1E .0110: the commercial series history — 1963-1969 A00000-Z99999 or 00000A-99999Z on the black base; 1970-1980 00000A-99999Z on the blue base; 1975-1980 also 1A00001-3Z99999"
+    notes: >-
+      COMMERCIAL PLATES. CLASS CAVEAT: recorded as `standard` because
+      _meta/classes.yml has no `commercial` value and the PRD's `standard`
+      definition ("the default series issued to private road vehicles") fits
+      awkwardly. The same caveat Florida records for its Wrecker plate. The
+      value of this entry is that its format is AGENCY-SOURCED — a US
+      commercial-plate format with a citation is unusual — and that it shows
+      how VIRPM 21.180's negative list (what a vanity applicant may NOT ask
+      for) is in fact a positive catalogue of California's live series.
+
+  - id: us-ca-exempt
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "9999999"
+      regex: '\A\d{7}\z'
+      charset:
+        notes: "VIRPM 21.180's conflict table: '7 numbers', example 1234567, License Type 'CA Exempt'. Seven numerals and nothing else — an all-numeric government series is unusual in the US and is the reason a validator must not assume a US plate contains a letter."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      legend: "CALIFORNIA EXEMPT"
+      emblem: { present: true, rendered: placeholder, description: "exempt plates carry a state-seal-derived device; NOT rendered — the Great Seal is separately regulated (see artwork_risk.seal_regime)" }
+      colour_note: "No instrument stating the exempt plate's colours was located (recorded gap)."
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/personalized-configurations-mandatory-refusal/  # VIRPM 21.180: '7 numbers' / 1234567 / CA Exempt"
+    notes: >-
+      CALIFORNIA EXEMPT — the government fleet series. Recorded because the
+      seven-numeral shape is genuinely distinctive and because it is the one
+      California series whose whole format is published in a single agency
+      line. The legend text and the emblem are LOCATOR/observation-grade and
+      are marked as such; only the format is sourced here.
+
+  - id: us-ca-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99L9999"
+      regex: '\A\d{2}[A-Z]\d{4}\z'
+      charset:
+        notes: >-
+          LOCATOR-GRADE FORMAT. The 12A1234 arrangement and its reported start
+          in 1982 come from Wikipedia and the collector literature; no DMV
+          instrument stating the current motorcycle arrangement was located
+          (recorded gap). What IS agency-sourced is the PREVIOUS motorcycle
+          format and the plate size: VIRPM Appendix 1E gives the 1970-1980
+          motorcycle series as 0A0000-9Z9999 on the blue base with plates
+          "5 x 8", and the DMV's licence-plate page gives the current
+          motorcycle plate as 7 in x 4 in (pre-1970: 8 in x 5 in).
+    design:
+      plate: { w: 7, h: 4, unit: in }
+      plate_dimension_note: "DMV licence-plate page: motorcycle plates 7 in x 4 in; motorcycle plates issued before 1970 are 8 in x 5 in. Appendix 1E independently records the 1970-1980 motorcycle plate as 5 in x 8 in — the axes are transposed between the two agency statements and NEITHER is corrected here."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#003DA5"
+      rear_differs: false
+    display: "VC § 4850(a): a motorcycle is issued ONE plate; VC § 5200(b) puts it on the rear."
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/vehicle-registration/license-plates-decals-and-placards/license-plates/  # DMV: motorcycle plate 7x4 in, pre-1970 8x5 in"
+      - "https://www.dmv.ca.gov/portal/file/vr-manual-appendix-1e/  # VIRPM Appendix 1E .0115: the 1970-1980 motorcycle series 0A0000-9Z9999 and the 5x8 plate size"
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=4850  # § 4850(a): one plate for a motorcycle"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY: the current 12A1234 arrangement, its reported 1982 start, and the reported I/O/Q exclusion"
+    notes: >-
+      MOTORCYCLE. Its own series because the format, the plate size and the
+      one-plate rule all differ from the standard passenger series. The format
+      is the weakest claim in this file and says so: the DMV publishes the
+      motorcycle plate's SIZE but not its current serial arrangement, so the
+      regex rests on collector-corroborated locator sources. A verifier should
+      either find a DMV instrument or downgrade this series to recall-only.
+
+  - id: us-ca-permanent-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "9LL9999"
+      regex: '\A\d[A-Z]{2}\d{4}\z'
+      charset:
+        notes: "LOCATOR-GRADE: the 4AB1234 arrangement of the Permanent Trailer Identification (PTI) plate and its reported 2001 start come from Wikipedia and the collector literature. No DMV instrument stating the arrangement was located (recorded gap). VIRPM 21.025 does confirm that PTI is a live plate type eligible for Legacy designs."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      legend_top: "California Perm Trailer"
+      legend_note: "LOCATOR-GRADE legend text."
+    display: "VC § 4850(a) / VIRPM 1.075: a trailer is issued ONE plate, displayed on the rear."
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/general-registration-information/license-plates/  # VIRPM 1.075: trailers are issued one plate"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/california-ca-1960s-legacy-license-plates/  # VIRPM 21.025 names 'permanent trailer identification (PTI)' as a live plate type"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY: Permanent Trailer 4AB1234 from 2001, replacing the AT-HT prefixed trailer plates of 1982-2001"
+    notes: >-
+      PERMANENT TRAILER IDENTIFICATION. Recorded because California moved
+      trailers to a PERMANENT registration in 2001 (reported) and because the
+      predecessor — trailer plates with AT through HT prefixes, 1982-2001 — is
+      a dead series still lawfully on the road, the same shape as Florida's
+      "Collectible" plate. Neither the current format nor the transition date
+      is agency-sourced; both are recorded as gaps.
+
+  - id: us-ca-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "99999"
+      regex: '\A[A-Z0-9]{1,8}\z'
+      charset:
+        notes: >-
+          THE SERIAL IS THE FIRM'S OCCUPATIONAL LICENCE NUMBER, not a plate
+          series. VIRPM 2.090, verbatim: "Special license plates bearing the
+          firm's license number are issued to licensed firms other than
+          lessor-retailers (VC §11714)." The printed plate additionally carries
+          a stacked class letter (D dealer / L lessor / R remanufacturer per
+          LOCATOR sources) and a small sequence suffix distinguishing multiple
+          sets held by one firm. Because the visible string is a licence number
+          of unstated width plus stacked decoration, the regex here is
+          deliberately over-broad and this series is `matching: recall-only`.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      stacked_characters_note: "AAMVA Ed.3 treats stacked characters as PART OF the official plate number, at most two stacked. California's dealer plate is the case that makes this bite: the class letter and the set suffix are both printed small or stacked, so a normaliser that drops them destroys the identity. The decision belongs in the parse layer."
+    binding: business
+    permitted_use: >-
+      VC § 11715 via VIRPM 2.090: special plates may be used on any vehicle
+      owned or lawfully possessed by the licensee, including to tow or
+      transport other vehicles, and by a dealer for delivery to a buyer where
+      the sale is consummated at the place of delivery. They may NOT be used on
+      work or service vehicles, on vehicles being moved under a DMV permit from
+      a vessel/railroad depot/warehouse, on an unregistered vehicle
+      transporting more than one load of vehicles for sale, or on a
+      currently-registered dealer-owned vehicle whose former owner filed a
+      release of liability and whose report of sale is displayed.
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/general-information-licensees/special-dealer-manufacturer-remanufacturer-and-distributor-license-plates/  # VIRPM 2.090: plates bear the firm's licence number (VC § 11714); the § 11715 permitted-use and prohibited-use lists; additional sets and replacements via form OL 22"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY: the printed D/L/R + 5 numerals + small suffix arrangement and its reported generations (1970, 1987, 1993, 2011)"
+    notes: >-
+      DEALER / MANUFACTURER / REMANUFACTURER / DISTRIBUTOR PLATES.
+      `binding: business` for the same reason as Germany's rote Kennzeichen and
+      Florida's dealer plate: the plate follows the firm, not a vehicle — and
+      California makes that literal by printing the firm's OCCUPATIONAL LICENCE
+      NUMBER as the serial. That is a genuinely different kind of plate string
+      from everything else in this file: it is not drawn from a series at all,
+      which is why it is `recall-only` and why a parse API should treat a hit
+      here as "possibly a California trade plate" and nothing more.
+
+  - id: us-ca-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2019 }
+    period_evidence: statutory-operative-date
+    matching: strict
+    format:
+      pattern: "LL99L99"
+      regex: '\A[A-Z]{2}\d{2}[A-Z]\d{2}\z'
+      charset:
+        notes: >-
+          LOCATOR-GRADE ARRANGEMENT: the AB12C34 shape of the California
+          temporary paper plate is reported by Wikipedia citing VC § 4456(a)(9)
+          — but § 4456 itself, which WAS fetched, does not state a format; it
+          requires only that "the dealer or lessor-retailer shall attach the
+          temporary license plates issued by the reporting system". The
+          arrangement is therefore a property of the DMV's reporting system and
+          is recorded as unsourced. The PERIOD, by contrast, is statutory.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      material: "printed on special paper by the dealer through the DMV reporting system, not metal"
+      background: { finish: none }
+      note: "The temporary plate additionally carries the vehicle identification number and an expiry date in the published examples; not asserted as sourced."
+    validity: "Temporary plates bridge the gap between sale and arrival of the metal plates; the report-of-sale copy is attached to the vehicle before delivery (VC § 4456(a))."
+    region_encoding: none
+    sources:
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=4456  # § 4456: the report-of-sale duty; (a)(9) 'the dealer or lessor-retailer shall attach the temporary license plates issued by the reporting system'; 'This section shall become operative January 1, 2019'; amended Stats. 2021 Ch. 256"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_California  # LOCATOR ONLY: the AB12C34 series, and the pre-2019 history (California was the last US state with no temporary-plate requirement; AB 516 of 2016 closed it)"
+    notes: >-
+      CALIFORNIA'S TEMPORARY PLATE IS THE NEWEST SERIES IN THIS FILE AND THE
+      ONLY ONE WITH A CLEAN STATUTORY OPERATIVE DATE: § 4456 says in terms
+      "This section shall become operative January 1, 2019", so `start: 2019`
+      is a real claim rather than an upper bound. It exists because until then
+      California was the last state in the union requiring no temporary plate
+      at all — new cars ran on dealer paper inserts, which is why the DMV's own
+      historical record and the legislative history (AB 516, 2016) are worth
+      keeping in the notes: a dataset that models only current formats cannot
+      explain why a 2018 California car has no plate in a photograph.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5. Count and official
+  # links only; no individual designs.
+  # =========================================================================
+  - id: us-ca-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999LLL9"
+      regex: '\A\d{3}[A-Z]{3}\d\z'
+      charset: { notes: "Specialty plates carry ORDINARY sequential serials on an alternative design, or a personalized configuration of two to seven characters. Some programmes are issued from reserved blocks of the standard series — 1UAA000-1VZZ999 is reported reserved for Lake Tahoe, Yosemite and Whale Tail — which means a specialty plate is not always distinguishable from a standard one by its serial alone." }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      design_space: >-
+        THE ONLY US SPECIALTY-PLATE GEOMETRY FOUND IN STATUTE IN THIS WAVE.
+        VC § 5060 requires that the plates permit law enforcement to readily
+        identify the letters and numbers, and prescribes for passenger vehicles
+        a 2 in x 3 in space to the LEFT of the numbers for the distinctive
+        design plus a 5/8 in high strip below the numbers for a message; for
+        motorcycles, a five-character configuration with the design space on
+        the left and sharp character contrast. That is directly renderable
+        layout data, from the Legislature rather than from an agency.
+      emblem: { present: true, rendered: placeholder }
+      note: "One design per authorised programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here."
+    program_index:
+      count_official: null
+      count_official_note: >-
+        NO OFFICIAL TOTAL IS PUBLISHED. Unlike Florida, whose FLHSMV says "over
+        100 different specialty license plates" in its own words, the
+        California DMV publishes CATEGORISED LISTS and no count. This is
+        recorded as an absence rather than filled with a secondary figure.
+      count_enumerated_special_interest: 15
+      enumerated_special_interest: ["Arts Council", "Breast Cancer Awareness", "California 1960s Legacy", "California Agriculture (CalAg)", "California Museums (Snoopy)", "Collegiate", "Environmental", "Firefighters", "Have A Heart, Be A Star, Help Our KIDS", "Lake Tahoe Conservancy", "Memorial", "Pet Lovers", "Veterans' Organizations", "Whale Tail (Coastal Protection and Access)", "Yosemite Conservancy"]
+      enumerated_special_plates: ["Amateur Radio Call Letters", "Antique Motorcycle", "Bicentennial Bill of Rights", "Citizens Band", "Disabled Person/Veteran", "Exempt", "Foreign Organization", "Historical Vehicles", "Honorary Consul Corps", "Horseless Carriages", "Livery", "Moped", "Olympic Games 1984", "Press Photographer", "Special Equipment"]
+      enumerated_recognition_occupational: ["Congressional Medal of Honor", "Gold Star Family", "Ex-Prisoner of War", "Legion of Valor", "Pearl Harbor Survivor", "Purple Heart", "Dealers", "Dismantlers", "Manufacturers", "New Vehicle Distributor", "Remanufacturers", "Transporters", "State Assembly", "State Senate", "U.S. House Representatives", "U.S. Senator", "Apportioned Power Unit"]
+      enumeration_basis: "Counted off the DMV's own Special Interest & Special License Plates index page, 2026-08. The three lists above are the DMV's own groupings, not ours. VIRPM Chapter 21 independently carries 56 sub-sections covering these types and is the deeper index."
+      official_list_url: "https://www.dmv.ca.gov/portal/vehicle-registration/license-plates-decals-and-placards/license-plates/special-interest-special-license-plates/"
+      official_manual_url: "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/"
+      program_threshold: "VC § 5060: a sponsoring organization must be tax-exempt under IRC § 501(c)(3) and submit a financial plan plus a plate design; 'No organization may be included in the program until not less than 7,500 applications for the particular special interest license plates are received', collected within 12 months of the enabling legislation, extendable once to 24 months."
+      discontinuation_rule: "VC § 5060: if outstanding valid plates fall below 7,500 the department notifies the sponsor, and if the number is still below 7,500 a year later the department 'will no longer issue or replace those special interest license plates'. Plates already issued stay valid, renewable, retainable and transferable. So California, like Florida, accumulates AUTHORISED-BUT-DEAD programmes whose plates remain on the road — the index is a moving target by design."
+      registration_counts_url: null
+      registration_counts_note: >-
+        NO EQUIVALENT OF FLORIDA'S MONTHLY ACTIVE SPECIALTY PLATES REPORT WAS
+        FOUND FOR CALIFORNIA. Florida publishes per-programme issuance volumes
+        monthly; California publishes none that was located. Recorded as a
+        negative result, because the Florida portal was the single most
+        valuable structured artefact in the US pass and the natural question is
+        whether other states match it. On this evidence, California does not.
+    region_encoding: none
+    sources:
+      - "https://www.dmv.ca.gov/portal/vehicle-registration/license-plates-decals-and-placards/license-plates/special-interest-special-license-plates/  # the DMV's own three-way grouping of special interest, special, and special recognition/occupational/legislative/apportioned plates — the 15+15+17 enumeration above"
+      - "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=5060  # § 5060: the 501(c)(3) sponsor requirement, the 7,500-application threshold and its 12/24-month window, the 2x3 in design space and 5/8 in message strip for passenger plates, the five-character motorcycle rule, and the below-7,500 discontinuation duty"
+      - "https://www.dmv.ca.gov/portal/handbook/vehicle-industry-registration-procedures-manual-2/special-plates/  # VIRPM Chapter 21: 56 sub-sections, the deeper official index"
+    notes: >-
+      THE CALIFORNIA SPECIALTY PROGRAM INDEX — one entry standing for the whole
+      programme, which is what PRD-PLATES §2.5 asks for at this gate. Two
+      things to carry forward. First, VC § 5060 is the best specialty-plate
+      GEOMETRY source found anywhere in the US wave: a legislature that
+      specifies a 2 x 3 inch design space and a 5/8 inch message strip is
+      handing the render layer its layout for free, and the same section
+      supplies the 7,500-in / 7,500-out lifecycle that makes the index a
+      moving target. Second, the absence of a California issuance-volume
+      report is itself a finding: Florida's monthly active-plate portal has no
+      California counterpart, so the differentiator identified in the L0 pass
+      does not generalise and must be re-checked state by state.

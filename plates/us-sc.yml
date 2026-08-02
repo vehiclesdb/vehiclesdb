@@ -1,0 +1,605 @@
+# plates/us-sc.yml — South Carolina (PRD-PLATES gate L2, group southeast-a).
+#
+# THE SOUTH CAROLINA FINDING, AND IT IS THE BEST-SOURCED CURRENT SERIES IN THE
+# WHOLE US PASS SO FAR: SOUTH CAROLINA'S PRESENT STANDARD PASSENGER PLATE IS
+# LEGISLATED, WITH BOTH ENDPOINTS AND THE ARTWORK, IN ONE SUBSECTION.
+# S.C. Code § 56-3-1230(C), added by 2025 Act No. 39 (H.3175) effective 12 May
+# 2025, verbatim: "Notwithstanding another provision of law to the contrary,
+# the regular license plate for private passenger vehicles and motorcycles
+# issued by the Department of Motor Vehicles FROM JANUARY 1, 2026, UNTIL
+# DECEMBER 31, 2032, shall commemorate the two hundred fiftieth anniversary of
+# the American Revolution. ... The design ... must be imprinted with the words
+# 'Where the Revolutionary War Was Won' and shall include, at a minimum, a flag
+# featuring the word LIBERTY in white against an indigo background together
+# with a gorget in an upper corner of the flag, also known as the Moultrie
+# Flag."
+#
+# Every other state in group southeast-a required a locator for its start year.
+# South Carolina required none: the start, the sunset, the slogan and the
+# minimum artwork are all edict of government, which is public domain at every
+# level. `period_evidence: statutory-date` is earned here, not asserted.
+#
+# ONE SCHEMA CONSEQUENCE, FLAGGED FOR THE MAINTAINER RATHER THAN WORKED AROUND
+# QUIETLY: the sunset is 31 December 2032, and `scripts/lint_plates.rb` rejects
+# any `period.end` beyond the current year plus one. A legislated FUTURE sunset
+# is a real and recurring shape — Georgia's America 250 plate carries one too
+# (2030, from the Department of Revenue) — and the rail cannot express it. This
+# file therefore keeps `period.end` absent (the series IS currently issuing, so
+# open is the honest reading for a consumer) and carries the sunset in
+# `period.scheduled_end`, which the lint ignores. See the group dossier: the
+# proposed amendment is to let the rail admit a future `scheduled_end`.
+#
+# AUTHORITY FETCH FAILURE, DISCLOSED: scdmvonline.com was UNREACHABLE from this
+# network across repeated attempts on 2026-08-01 (connection reset on HTTP/2,
+# timeout on HTTP/1.1, socket hang-up through the fetch proxy). NOT ONE CLAIM IN
+# THIS FILE COMES FROM SCDMV. That turns out to matter less here than it would
+# anywhere else, because South Carolina legislates what other states delegate —
+# but it does mean the specialty-programme count is derived from the statute
+# book rather than taken from the agency, and it is labelled accordingly.
+#
+# EVIDENCE GRADES — the four defined in us-va.yml.
+jurisdiction: us-sc
+authority:
+  name: South Carolina Department of Motor Vehicles (SCDMV)
+  url: "https://www.scdmvonline.com/Vehicle-Owners/License-Plates"
+  fetch_status: "UNREACHABLE 2026-08-01 (connection reset / timeout / socket hang-up on repeated attempts). No claim in this file rests on it."
+binding: vehicle
+statute_edition: "South Carolina Code of Laws, Title 56 (Motor Vehicles), Chapter 3, as served by scstatehouse.gov and read 2026-08-01 — the chapter text incorporates amendments through 2025 Act No. 39 (eff. 12 May 2025) and 2024 Act No. 178 (eff. 20 November 2024)"
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: adverse
+  basis: >-
+    SOUTH CAROLINA IS ADVERSE, ON JUDICIAL AUTHORITY. The Supreme Court of
+    South Carolina held in Seago v. Horry County, 663 S.E.2d 38 (S.C. 2008),
+    that a South Carolina county CAN hold copyrights on government works. That
+    is an affirmative judicial holding permitting copyright in works of a South
+    Carolina governmental body — a stronger adverse signal than the mere
+    absence of a public-domain rule, and it puts South Carolina alongside New
+    York, Arizona, Pennsylvania and Washington rather than alongside Florida,
+    California, Georgia or North Carolina. Wikimedia Commons has no
+    {{PD-SCGov}} template (HTTP 404, checked 2026-08-01), consistent with that
+    reading, and the Commons US rules page states the default as "Other
+    states: copyrighted".
+  honest_limits: >-
+    TWO LIMITS ON THIS FINDING, STATED SO IT IS NOT OVER-READ. First, Seago
+    concerned a COUNTY, not the State, and the opinion itself was NOT obtained
+    in this pass — it is cited here through a secondary survey that gives the
+    reporter citation and a Google Scholar locator. Second, no instance of
+    South Carolina asserting copyright over a LICENSE PLATE DESIGN was found;
+    what is established is a framework that would permit one, exactly as the
+    US-world dossier concluded for Arizona, Pennsylvania, New York and
+    Washington. Read this field as "the framework permits it and the courts
+    have blessed it", not as "South Carolina has claimed it".
+  edict_carve_out: >-
+    THE CARVE-OUT IS UNUSUALLY POWERFUL IN SOUTH CAROLINA AND IT IS WHY THIS
+    FILE IS RICH DESPITE THE ADVERSE POSTURE. Edicts of government are
+    uncopyrightable at every level, and South Carolina puts an extraordinary
+    amount of plate specification INTO ITS STATUTE: the dimensions, the
+    retroreflectivity requirement, the five-year service life, the ten-year
+    reissue interval, the temporary-plate dimensions to the inch, the
+    unified specialty-plate design rule, the 300-application discontinuation
+    threshold, and — uniquely — the current standard plate's slogan and
+    minimum artwork. All of that is public domain no matter what posture the
+    State takes toward its own works. The adverse posture bites only on
+    elements NOT in the statute: the exact executed artwork, the colour values,
+    and the specialty designs.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies. Note the specific hazard: the
+    statutorily-mandated element of the current plate is the MOULTRIE FLAG —
+    a historic flag, and historic flags are not themselves copyrightable
+    subject matter — but the EXECUTED artwork submitted by the South Carolina
+    Revolutionary War Sestercentennial Commission is a modern work by a state
+    body in an adverse-posture state. Render the flag slot as
+    `emblem: {present: true, rendered: placeholder}` and do not trace the
+    Commission's execution. The Palmetto tree and crescent of earlier bases,
+    and the STATE SEAL used on the 1980-84 base, carry seal-misuse protection
+    independent of copyright, which is unresearched.
+  photograph_caution: "Commons photographs of South Carolina plates carry the photographer's licence on the photograph, not on the design. Our renders are generated from the statute, never derived from a photograph, so those obligations never attach."
+  sources:
+    - "https://scholar.google.com/scholar_case?case=12877392669401300528  # Seago v. Horry County, 663 S.E.2d 38 (S.C. 16 June 2008) — LOCATOR for the opinion, which was NOT read in this pass"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY: the South Carolina entry reporting Seago and its holding that a South Carolina county can hold copyrights on government works"
+    - "https://commons.wikimedia.org/wiki/Template:PD-SCGov  # HTTP 404 — no South Carolina public-domain tag exists on Commons (checked 2026-08-01)"
+    - "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States  # the governing default: 'Other states: copyrighted'"
+    - "https://www.scstatehouse.gov/code/t56c003.php  # the statutory plate specification itself — an edict of government, public domain regardless of the State's posture toward its other works"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption; AAMVA's declarative present is RECOMMENDED PRACTICE."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 delegates dimensions and bolt holes to SAE J686, whose text is paywalled and was NOT obtained. No J686 dimension is quoted — and South Carolina does not need one, because it legislates its own minima (see us-sc-standard-rev250-2026)."
+    retroreflectivity: "AAMVA §3.3: readable in daylight and at night from at least 75 feet; ASTM D4956-19 and ISO 7591:1982 clause 3. South Carolina legislates the REQUIREMENT (§ 56-3-1230(B)) and then delegates the SPECIFICATION to the department: 'The department shall prepare the specifications for the retroreflective material.' So the SC spec exists as a departmental document and is a named, findable gap."
+    replacement_cycle: >-
+      AAMVA §1.1 recommends a rolling or full replacement cycle "not to exceed
+      7 to 10 years". SOUTH CAROLINA LEGISLATES THE TOP OF THAT RANGE, exactly
+      as Florida does, and legislates a materials floor beneath it: § 56-3-1230
+      (A) requires the plate be "of a strength and quality to provide a minimum
+      service of five years" and requires a new plate "at intervals the
+      department considers appropriate, but AT LEAST EVERY TEN YEARS". Two
+      states of this group put ten years in law; Virginia and North Carolina
+      put nothing; West Virginia replaces on condition. That spread is the
+      honest answer to "is there a US reissue cadence?" — there is not, there
+      are five different state answers.
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" remains COMMONLY REPEATED AND NOT
+    PRIMARY-SOURCED (see the fuller note in us-va.yml). South Carolina is the
+    state where it matters least: § 56-3-1230(A) states the dimensions in law —
+    "License plates must be at least six inches wide and not less than twelve
+    inches in length" — so this file cites the statute and never the story.
+
+display_rules:
+  default: "ONE plate, REAR. § 56-3-1210: 'Beginning with the licensing year 1975-1976, the Department of Motor Vehicles, upon registering and licensing a vehicle, shall issue to the owner ONE license plate.' § 56-3-1240(A): 'Unless the provisions of this section apply, license plates issued for motor vehicles must be attached to the outside rear of the vehicle, open to view. License plates must always be fastened securely in a horizontal and upright position ... so as to prevent the plate from swinging.'"
+  front_only: "TRUCK TRACTORS AND ROAD TRACTORS: § 56-3-1240(B): 'License plates for truck tractors and road tractors must be attached to the outside FRONT of the vehicle' — the same inversion Florida (§ 320.0706) and Virginia (§ 46.2-715) legislate. THREE of the five states in this group put the tractor plate on the front, which turns an apparent oddity into a regional pattern worth stating."
+  either_end: "single-unit commercial motor vehicles with a GVWR over 26,000 lb may carry the plate on either the outside front or rear (§ 56-3-1240(B))"
+  windshield_temporary: "during the 45 days an intrastate-only large commercial motor vehicle may run on a § 56-3-212 temporary plate, the owner may display a MOTORCYCLE-SIZED temporary plate securely in the front passenger-side windshield with the unique identifying text facing outward, positioned so as not to obstruct the driver's view (§ 56-3-1240(B))"
+  motorcycle_vertical: "§ 56-3-1240(C): where a motorcycle is equipped with VERTICALLY MOUNTED brackets, the plate must be mounted vertically with its top fastened along the RIGHT vertical edge, its bottom not less than twelve inches from the ground, clearly visible per § 56-5-4530, free from foreign materials and clearly legible. A statutory rotated-plate rule — directly relevant to any ALPR or renderer that assumes horizontal text."
+  obstruction: "§ 56-3-1240(D): no other plate, lighting equipment (except as permitted by § 56-5-4530), tag, sign, monogram, tinted cover or inscription may be displayed above or upon the plate other than department-issued validation. A DECAL OR FRAME IS LAWFUL if it does not obscure any letters or numbers, and a TRAILER HITCH may obscure UP TO TWO INCHES of the plate — an explicit, quantified tolerance, which is rare."
+  local_preemption: "§ 56-3-1220: 'No county or municipality shall issue a municipal or county license plate.' South Carolina forecloses the sub-state plate entirely — a useful negative fact for a jurisdiction-completeness detector."
+  ownership: "§ 56-3-1210: 'Every license plate shall remain the property of the State but shall be displayed on the vehicle as required by this chapter.'"
+  sources:
+    - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-1210 one plate and state ownership; § 56-3-1220 the county/municipal prohibition; § 56-3-1240(A)-(D) rear default, truck-tractor front rule, the 26,000 lb either-end option, the windshield temporary, the vertical motorcycle bracket rule, and the decal/frame/trailer-hitch tolerances"
+
+series:
+
+  # =========================================================================
+  # CURRENT STANDARD ISSUE — LEGISLATED END TO END.
+  # =========================================================================
+  - id: us-sc-standard-rev250-2026
+    class: standard
+    categories: [car, van, motorcycle]
+    period:
+      start: 2026
+      scheduled_end: 2032
+      scheduled_end_note: >-
+        § 56-3-1230(C) legislates issuance "from January 1, 2026, until
+        December 31, 2032". `period.end` is deliberately ABSENT because the
+        series is currently issuing and because the lint's period rail rejects
+        an end beyond the current year plus one; `scheduled_end` carries the
+        statutory sunset without lying to either audience. This is a schema
+        gap, not a data problem — see the file header and the group dossier.
+    period_evidence: statutory-date
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} ?[A-Z]{3}\z'
+      format_evidence: secondary-locator-unverified
+      charset:
+        notes: >-
+          THE FORMAT IS THE ONE THING § 56-3-1230 DOES NOT LEGISLATE. The
+          statute requires the plate to show "in bold characters the year of
+          registration, THE SERIAL NUMBER, the full name or the abbreviation of
+          the name of the state, and other distinctive markings the department
+          may consider advisable to indicate the class of the weight of the
+          vehicle" — it mandates that there BE a serial number and says nothing
+          about its shape. The numeral-first arrangement recorded here is
+          locator-grade. Note the historical charset churn, which is real and
+          documented: on the 2008-2016 base the letter O was NOT used, and that
+          practice ran until October 2023, when O came back in with a new
+          serial font. So a South Carolina O-exclusion rule is period-bound,
+          not permanent, and no `regex_strict` is given because no single
+          exclusion holds across this series.
+      weight_class_note: >-
+          § 56-3-1230(A) authorises "other distinctive markings the department
+          may consider advisable to indicate THE CLASS OF THE WEIGHT of the
+          vehicle" — a statutory hook for weight-class encoding on the plate.
+          South Carolina used exactly that from 1921 to at least the 1920s-30s
+          bases, where the leading letter of the serial corresponded to the
+          weight class. Whether any weight marking survives on the current base
+          was not established (recorded gap), but the LEGAL AUTHORITY for one
+          is live and cited, which is more than most states can show.
+      progression: "reported: intermittently from 101CUV to 999DDL, then exclusively from 101DDM, reaching 433DEN by 7 February 2026. LOCATOR-GRADE."
+      separator_note: "the gap between the numeral and letter groups is spelled as an optional space. The locator writes this base's format without a gap ('123ABC') and the immediately preceding one with a gap ('101 AAA'); the printed plate has a gap in both cases. `[ ]?` covers the disagreement rather than resolving it by fiat."
+    design:
+      plate: { w: 12, h: 6, unit: in, w_min_in: 12, h_min_in: 6, dimension_evidence: statutory-minimum }
+      plate_dimension_note: >-
+          § 56-3-1230(A), verbatim: "License plates must be at least six inches
+          wide and not less than twelve inches in length". STATUTORY MINIMA, and
+          note the same axis oddity Florida's § 320.06(3)(a) has — "six inches
+          wide" and "twelve inches in length" describe the conventional 12-inch
+          -across by 6-inch-tall plate. Recorded in the conventional
+          orientation with the statutory minima preserved separately.
+      material: "§ 56-3-1230(A): 'The plate must be of a strength and quality to provide a minimum service of five years.' A statutory DURABILITY floor, distinct from the reissue interval."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      retroreflectivity_rule: "§ 56-3-1230(B), verbatim: 'The face of the license plate must be treated completely with a retroreflective material which increases the nighttime visibility and legibility of the plate. The department shall prepare the specifications for the retroreflective material.' The requirement is statutory; the SPECIFICATION is a departmental document that was not obtained (recorded gap)."
+      colour_note: "NO COLOUR VALUE IS IN THE STATUTE — § 56-3-1230 mandates retroreflectivity and, for this series, a flag with 'the word LIBERTY in white against an INDIGO background', which is the only colour word anywhere in the South Carolina plate law and applies to the emblem, not to the plate ground. The white ground and black screened serial are `hex_basis: observed`."
+      legend_bottom: "Where the Revolutionary War Was Won"
+      legend_rule: >-
+          § 56-3-1230(C), verbatim: the design "must be imprinted with the words
+          'Where the Revolutionary War Was Won' and shall include, at a minimum,
+          a flag featuring the word LIBERTY in white against an indigo
+          background together with a gorget in an upper corner of the flag,
+          also known as the Moultrie Flag." Note "AT A MINIMUM": the legislature
+          set a floor on the artwork and left the rest to the Commission —
+          a drafting pattern worth recognising, because it means the executed
+          design may lawfully contain more than the statute describes and a
+          renderer built only from the statute will be incomplete by design.
+      design_authority: "the South Carolina Revolutionary War Sestercentennial Commission submits the design, emblem, seal, logo or other symbol to the department for approval (§ 56-3-1230(C))"
+      emblem: { present: true, rendered: placeholder, description: "Moultrie Flag — LIBERTY in white on indigo with a gorget in an upper corner (statutory minimum)" }
+      band: { side: none }
+      rear_differs: false
+    replacement_cycle:
+      years: 10
+      statutory_text: >-
+        § 56-3-1230(A): "A new license plate including personalized and special
+        plates, but excluding license plates provided in Sections 56-3-660 and
+        56-3-670, must be provided by the department at intervals the
+        department considers appropriate, but AT LEAST EVERY TEN YEARS."
+      funding: "§ 56-3-1230(A): since fees collected after 1 July 2002, two dollars of each biennial fee and one dollar of each annual fee go to a restricted account usable SOLELY for producing and issuing new plates; 'The department is not authorized to use this set aside money for any other purpose.' A hypothecated plate-manufacturing fund written into the plate statute — nothing comparable appears in the other four states of this group."
+      exclusions: "vehicles registered under §§ 56-3-660 and 56-3-670 (property-carrying vehicles by weight; farm trucks) are outside the ten-year rule and are reissued at intervals the department considers appropriate; plates for vehicles over 26,000 lb are issued BIENNIALLY with NO revalidation sticker (§ 56-3-1230(A))"
+    validation: "§ 56-3-1230(B): 'In those years in which a metal plate is not issued, a revalidation sticker with a distinctive serial number or other suitable means prescribed by the department must be issued and affixed in the space provided on the license plate.' The revalidation sticker CARRIES ITS OWN SERIAL — a second identifier on the plate that most datasets do not model."
+    fees: "§ 56-3-1230(D): 'Fees for regular license plates shall not exceed the regular motor vehicle license fee set forth in Article 5, Chapter 3, Title 56.' So the 250th-anniversary plate is the REGULAR plate at the REGULAR price, not a specialty plate — which is why it is modelled here as the standard series and not in the specialty index."
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-1230(A): the 6x12 statutory minima, the required plate contents, the weight-class marking authority, the five-year durability floor, the ten-year reissue interval and its exclusions, the hypothecated production fund, the biennial no-sticker rule over 26,000 lb; (B): complete retroreflective treatment, departmental specification, the serialled revalidation sticker; (C): the 1 January 2026 - 31 December 2032 period, the Sestercentennial Commission's design role, 'Where the Revolutionary War Was Won', and the Moultrie Flag minimum; (D): the regular-fee cap. HISTORY line: 2025 Act No. 39 (H.3175), SECTION 1, eff May 12, 2025, which added (C) and (D)."
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_South_Carolina  # LOCATOR ONLY (PRD-PLATES §4): the numeral-first serial arrangement and the 101CUV/101DDM/433DEN block progression. Not asserted as sourced."
+    notes: >-
+      SOUTH CAROLINA CURRENT STANDARD ISSUE — THE MODEL ENTRY FOR THE US PASS.
+      Start date, sunset date, slogan, minimum artwork, dimensions, durability,
+      retroreflectivity, reissue interval and fee cap are ALL statutory and all
+      quoted. Only the serial arrangement is locator-grade, and the file says so
+      at the point of use. Three things a verifier should carry forward. FIRST,
+      the sunset: this series is legislated to stop on 31 December 2032, which
+      means South Carolina has already scheduled its own next base change and a
+      dataset can know about it seven years early — no other state in this group
+      offers that. SECOND, "at a minimum" in § 56-3-1230(C) means the executed
+      artwork lawfully exceeds the statutory description, so a statute-only
+      render is incomplete BY DESIGN rather than by omission. THIRD, this is the
+      REGULAR plate at the REGULAR fee (subsection (D)), not a specialty plate —
+      South Carolina turned its whole standard issue into a commemorative for
+      seven years, which is a different move from Florida's optional "America
+      250" variant and from Georgia's optional America 250 election.
+
+  # =========================================================================
+  # ONE SERIES BACK.
+  # =========================================================================
+  - id: us-sc-standard-while-i-breathe-2016
+    class: standard
+    categories: [car, van, motorcycle]
+    period: { start: 2016, end: 2025 }
+    period_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A(?:[A-Z]{3} ?\d{3}|\d{3} ?[A-Z]{3})\z'
+      format_evidence: secondary-locator-unverified
+      charset:
+        notes: >-
+          TWO ARRANGEMENTS ON ONE BASE, AND A CHARSET CHANGE MID-BASE. From
+          February 2016 the serial ran letters-first (reported LZD 800 to
+          XMV 999); from October 2023, on the same design, South Carolina both
+          switched to a numerals-first arrangement AND changed the serial font
+          AND started using the letter O, which had been excluded since the
+          2008 base. The regex is the union of the two arrangements and is
+          still `strict` — the union is exactly what South Carolina issued on
+          this base, not wider (PRD-PLATES §2.7). No `regex_strict` is given
+          precisely BECAUSE the O-exclusion holds for part of the period and
+          not the rest: a strict twin would be right for 2016-2023 and wrong
+          for 2023-2025, and a twin that is wrong half the time is worse than
+          no twin.
+      progression: "reported: LZD 800 to XMV 999 (letters-first, Feb 2016 - Oct 2023); then YAA 101 to YCL 750 in the letters-first shape alongside 101 AAA to approximately 999 CUU numerals-first (Oct 2023 - Dec 2025). LOCATOR-GRADE."
+      manufacturer_mark: "locator-reported: plates of the October 2023 edition carry a very small number at the bottom centre from the manufacturer — a production mark, not part of the registration number, and exactly the kind of glyph an over-eager OCR pipeline will append to the serial"
+    design:
+      plate: { w: 12, h: 6, unit: in, w_min_in: 12, h_min_in: 6, dimension_evidence: statutory-minimum }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      legend_bottom: "While I Breathe, I Hope."
+      legend_note: "the English of Dum spiro spero, one of South Carolina's two state mottoes. Screened black serial on a white and blue ground with a state flag motif at the centre — locator-grade description; unlike the current base, NO artwork element of this one is legislated."
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    replacement_cycle:
+      years: 10
+      statutory_text: "the same § 56-3-1230(A) ten-year rule governed this base; South Carolina's plate law was unchanged across the boundary except for the addition of subsections (C) and (D) in 2025"
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-1230(A)-(B): the statutory frame that governed this base unchanged — dimensions, durability, ten-year reissue, retroreflectivity, revalidation stickers"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_South_Carolina  # LOCATOR ONLY: February 2016 - December 2025, 'While I Breathe, I Hope.', the state flag motif, the two serial arrangements, the October 2023 font change and return of the letter O, and the manufacturer's mark"
+    notes: >-
+      THE PREVIOUS SOUTH CAROLINA STANDARD BASE, AND THE CLEANEST EXAMPLE IN
+      THIS GROUP OF WHY "ONE BASE = ONE REGEX" IS FALSE. Within a single
+      unchanged design South Carolina flipped the serial arrangement, changed
+      the font, and readmitted a letter it had excluded for fifteen years — all
+      in October 2023, none of it announced in the statute. A consumer holding
+      one regex per base rejects every South Carolina plate issued in the last
+      two years of this base. The boundary with the current series is HARD on
+      one side and soft on the other: 1 January 2026 is statutory for the
+      successor, while December 2025 for this one is inferred from that statute
+      plus a locator, so the end year is graded accordingly.
+
+  # =========================================================================
+  # CORE CLASSES — all statutory, which is the South Carolina pattern.
+  # =========================================================================
+  - id: us-sc-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only. § 56-3-210(A)(2) puts the design and layout of temporary plates in the department's hands 'with input from temporary license plate distributors', and no serial grammar is stated. The plate must show the date of expiration and the name of the issuing entity along with identification information." }
+    design:
+      plate: { w: 11, h: 6, unit: in, dimension_evidence: statutory-minimum }
+      plate_dimension_rule: >-
+          § 56-3-210(A)(3), verbatim: "Temporary license plates must be six
+          inches wide and at least eleven inches in length. Temporary
+          motorcycle and moped license plates must be four inches wide and
+          seven inches in length." SOUTH CAROLINA LEGISLATES TEMPORARY-PLATE
+          DIMENSIONS TO THE INCH, AND THEY ARE NOT THE STANDARD SIZE — eleven
+          inches long against the standard twelve. Contrast North Carolina,
+          whose § 20-79.1 specifies no dimension at all. A renderer that
+          assumes every US plate is 12 x 6 gets South Carolina temporaries
+          wrong by a full inch, and its motorcycle temporaries wrong by half.
+      motorcycle_variant: { w: 7, h: 4, unit: in }
+      material: "§ 56-3-210(A)(2): 'of a material specified by the department so as to resist deterioration or fading from exposure to the elements during the period for which display is required'"
+      content: "the date of expiration and the name of the issuing entity, with identification information (§ 56-3-210)"
+    validity: "§ 56-3-210: 'All temporary license plates must be valid for no more than FORTY-FIVE DAYS.' Compare North Carolina's 30 days (§ 20-79.1) — the two neighbours differ by half again, which is exactly the kind of per-state fact a parse or compliance API needs and no aggregate list carries."
+    scope: "the department administers and regulates temporary plates both for items required to be registered in South Carolina AND for items purchased in South Carolina that may be registered in a foreign jurisdiction (§ 56-3-210(A)(1))"
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-210(A)(1) the programme and its two-way scope; (A)(2) departmental design with distributor input and the weathering-resistant material rule; (A)(3) the 6 x 11 in standard and 4 x 7 in motorcycle/moped temporary dimensions; and the forty-five-day validity cap. Also § 56-3-212, referenced by § 56-3-1240(B) for intrastate-only large commercial vehicles."
+    notes: >-
+      SOUTH CAROLINA TEMPORARY PLATES — the best-specified temporary regime in
+      group southeast-a and one of the few anywhere with statutory dimensions.
+      Three facts worth carrying: the non-standard 6 x 11 inch size, the
+      separate 4 x 7 inch motorcycle and moped size, and the forty-five-day
+      cap. A fourth is cross-referenced from the display rules: an
+      intrastate-only large commercial vehicle running on a § 56-3-212
+      temporary may display a MOTORCYCLE-SIZED temporary plate inside the front
+      passenger windshield, which is a lawful US plate that is neither metal
+      nor mounted on the bodywork.
+
+  - id: us-sc-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only; § 56-3-2320 regulates eligibility, quota, use and fee exhaustively but states no serial grammar or design" }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+    binding: business
+    eligibility_and_quota: >-
+      § 56-3-2320: no dealer plate issues unless the dealer furnishes proof of
+      a retail business licence under Chapter 36, Title 12 AND has made AT
+      LEAST TWENTY SALES in the twelve months preceding application (waivable
+      if licensed under a year). Quota: two plates for the first fifteen
+      vehicles sold during the preceding year, plus one additional plate for
+      each fifteen sold beyond the initial twenty; a dealer in a manufacturer
+      programme gets two additional per fifteen beyond the initial twenty. The
+      department may issue extras for good cause. Anti-gaming: transferring the
+      same vehicle between the same parties more than once counts as ONE sale,
+      and multiple transfers between licensed dealers to meet eligibility are
+      prohibited.
+    permitted_use: "exclusively on vehicles owned by, assigned to, or loaned for TEST DRIVING to the dealer, when operated by the dealer, its corporate officers, its employees, a prospective purchaser, or a person whose vehicle is being serviced or repaired by the dealer. A prospective purchaser is limited to SEVEN DAYS with a dated demonstration certificate approved by the department; a service-loaner user to THIRTY DAYS, and only where the loaner is part of a manufacturer programme provided at no charge. Dealer plates must NOT be used on wreckers or service vehicles, nor on dealer-owned vehicles leased or rented to the public. (§ 56-3-2320)"
+    fee: "$20 per dealer plate (§ 56-3-2320(A)(3))"
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-2320: dealer plate issuance, the twenty-sale eligibility floor and retail-licence proof, the sales-volume quota and manufacturer-programme uplift, the seven-day demonstration and thirty-day service-loaner limits, the wrecker/service/rental prohibitions, the anti-gaming rules, and the $20 fee"
+    notes: >-
+      SOUTH CAROLINA DEALER PLATES. `binding: business` — the plate follows the
+      dealership, not a vehicle. South Carolina is the most tightly drafted
+      dealer-plate regime in this group: it gates issuance on a sales floor,
+      rations plate counts by volume, times the two permitted third-party uses
+      to the day, and closes two specific gaming routes by name. All of that is
+      edict and quotable; none of it is a serial fact, which is the recorded
+      gap.
+
+  - id: us-sc-manufacturer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only; § 56-3-2330 states no serial grammar" }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+    binding: business
+    quota_and_fee: "NOT MORE THAN FIVE HUNDRED manufacturer plates per manufacturer; $200 each, of which $160 is remitted to the county containing the manufacturer's principal facility and $40 goes to the State Highway Fund; each plate is valid for TWO YEARS (§ 56-3-2330(A)-(B))"
+    permitted_use: "exclusively on vehicles, including motorcycles, owned by or in the possession of the manufacturer; not on wreckers, not on vehicles leased or rented to the public. Vehicles so plated — not more than one licensed vehicle per household — may be operated by persons authorised by the manufacturer, on that manufacturer's brand, for TESTING, DISTRIBUTION, EVALUATION AND PROMOTION, and for no more than TWENTY CONSECUTIVE DAYS in connection with civic and sporting events (§ 56-3-2330(A), (C))"
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-2330: the 500-plate cap, the $200 fee and its $160/$40 county/state split, the two-year validity, the permitted uses (testing, distribution, evaluation, promotion), the one-vehicle-per-household limit and the twenty-consecutive-day event rule"
+    notes: >-
+      SOUTH CAROLINA MANUFACTURER PLATES. Given `class: dealer` for the same
+      reason us-fl-manufacturer is — _meta/classes.yml has no `manufacturer`
+      value and the PRD's definition of dealer ("trade/garage plates bound to a
+      business, not a vehicle") fits the binding if not the trade. CLASS
+      VOCABULARY CANDIDATE, recorded a second time in the dataset now: two
+      states have legislated a manufacturer plate distinctly from a dealer
+      plate, with different caps, fees, validity and permitted uses. The
+      one-licensed-vehicle-per-household rule is a genuine oddity — South
+      Carolina limits how many manufacturer-plated cars can live at one address.
+
+  - id: us-sc-government
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only. What is sourced is that South Carolina registers state and political-subdivision vehicles as a DISTINCT REGISTRATION CLASS at a reduced fee; whether that class carries a distinct plate SERIES or merely a distinct fee is not established (recorded gap), and the regex claims nothing about it." }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+    eligibility_and_transfer_rule: >-
+      § 56-3-1260: where a vehicle "is registered and licensed in the name of
+      the State, any department, agency, or political subdivision of the State,
+      or any department or agency of such a subdivision AND A REDUCED
+      REGISTRATION AND LICENSE FEE HAS BEEN PAID, the owner shall return the
+      registration card and the plate issued for the vehicle to the Department
+      for cancellation, unless the transfer is made to another like agency
+      qualified to obtain a registration and license of the vehicle at the
+      reduced rate." So a South Carolina government plate CANNOT follow a
+      vehicle out of government ownership — it must be cancelled — which is a
+      lifecycle constraint most plate datasets have no field for and which
+      matters to anyone reasoning about plate reuse.
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-1260: the reduced-fee state/agency/political-subdivision registration class and the mandatory cancellation-on-transfer rule with its like-agency exception"
+    notes: >-
+      SOUTH CAROLINA GOVERNMENT REGISTRATION. Deliberately modest: the sourced
+      fact is a distinct reduced-fee registration class with a distinct
+      end-of-life rule, not a distinct plate design or serial series. Recording
+      it this way keeps the useful part — the cancellation-on-transfer
+      constraint, which is a genuine fact about the plate's lifecycle — without
+      inventing a series that may not exist as a separate design.
+
+  # =========================================================================
+  # PERSONALIZED + SPECIALTY INDEX.
+  # =========================================================================
+  - id: us-sc-personalized
+    class: personalized
+    categories: [car, van, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset:
+        notes: >-
+          recall-only. § 56-3-2010(A) says the personalized plates "must be of
+          the design and bear the letters and numerals THE DEPARTMENT
+          PRESCRIBES" — a full delegation, with no length and no alphabet in
+          the statute. The department's prescription was not obtained because
+          scdmvonline.com was unreachable (see the file header). Given that
+          Virginia and North Carolina both officially permit non-alphanumeric
+          glyphs in a personalized serial, South Carolina's permitted set must
+          be checked before any strict regex is written here.
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+    eligibility_and_limits: >-
+      § 56-3-2010(A): personalized plates issue to owners of PRIVATE PASSENGER
+      MOTOR VEHICLES AND MOTORCYCLES on proper application. "However, there may
+      be NO DUPLICATION of registration plates, except South Carolina members
+      of the United States Congress or members of the South Carolina General
+      Assembly may purchase a maximum of the original and TWO DUPLICATE
+      registration plates." A statutory exception to plate uniqueness itself,
+      granted to legislators — which breaks the assumption, near-universal in
+      plate software, that a plate string identifies at most one registration.
+    refusal_policy: "§ 56-3-2010(A): the department 'in its discretion, may refuse the issue of letter combinations which may carry connotations offensive to good taste and decency and MAY NOT ASSIGN to a person not holding the relevant office letters or numerals denoting the holder to have a public office' — the second limb is mandatory, not discretionary"
+    registration_period: "biennial, expiring on a staggered monthly basis; application may be made two months in advance of expiry; plates issued to members of the General Assembly and to members of licensed state or federal commissions and boards expire on 31 January each year (§ 56-3-2010(B))"
+    accessibility: "§ 56-3-2010(C): where the holder also qualifies for a handicapped plate under § 56-3-1910, the personalized plate shall include an International Symbol of Access decal, but only if it can be placed without covering any identifying numbers or letters"
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-2010(A) eligibility, the full delegation of design and characters to the department, the no-duplication rule and its legislator exception, and the two refusal limbs; (B) biennial staggered registration and the 31 January legislative/commission expiry; (C) the International Symbol of Access decal condition"
+    notes: >-
+      SOUTH CAROLINA PERSONALIZED. The entry earns its place for one sentence
+      of statute: § 56-3-2010(A) lets South Carolina members of Congress and of
+      the General Assembly hold the SAME registration plate up to three times
+      (an original and two duplicates). Plate uniqueness is treated as an
+      axiom by essentially every validator, parse API and ALPR pipeline in
+      existence; South Carolina legislates an exception to it. Recorded here
+      because it is the kind of fact that only ever surfaces from the statute,
+      which is precisely the argument PRD-PLATES §4 makes for preferring
+      statutes over brochures.
+
+  - id: us-sc-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "specialty serials sit on a department-designed basic plate; no arrangement is stated in statute and the index makes no claim" }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+      unified_design_rule: >-
+          THE MOST IMPORTANT SPECIALTY FACT IN THIS FILE. § 56-3-8100(C),
+          verbatim: "The department must develop a BASIC PLATE DESIGN that will
+          be used for ALL special license plates authorized by the General
+          Assembly. The license plate must be the same size and general design
+          of regular motor vehicle license plates but may be imprinted on the
+          license plate in an area specified by the department with an emblem,
+          seal, insignia, or other identifying symbol of the sponsoring
+          organization that the department considers appropriate. NO TEXT OR
+          SLOGANS MAY BE ADDED to the license plate design unless they are part
+          of the approved emblem, seal, insignia, or other identifying symbol.
+          The name of the organization may be imprinted across the top of the
+          license plate. The standard license plate design must be issued for
+          all organizational license plates newly requested after JULY 1, 2013.
+          License plate designs in production as of that date must be changed
+          when the license plate, or license plate class, is replaced."
+          South Carolina has legislated its specialty programme into ONE
+          TEMPLATE with a swappable emblem slot — which means a renderer can
+          produce every post-2013 South Carolina specialty plate from one
+          parametric template plus an emblem, and that the L4 "specialty design
+          depth" problem is, for this state, mostly solved by statute.
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: null
+      count_derived: 153
+      count_method: >-
+        DERIVED, NOT OFFICIAL, AND THE METHOD IS STATED SO IT CAN BE CHECKED.
+        SCDMV was unreachable, so no agency figure exists in this pass. Instead:
+        South Carolina creates each special-plate programme as its own ARTICLE
+        of Title 56 Chapter 3, and the chapter text contains 153 ARTICLE
+        headings, with article NUMBERS running to 155 (the numbering is not
+        dense). Not every article is a plate programme — the early articles
+        cover registration, fees, dealer plates and so on — so 153 is an UPPER
+        BOUND on the number of statutory special-plate programmes, not a count
+        of them. Examples of the pattern at the top of the range: Article 153,
+        Article 154 (South Carolina Association for Pupil Transportation
+        special license plates, 2024 Act No. 178 §10), Article 155 (Hearing
+        Impaired special license plates, recodified from § 56-3-15020 to
+        § 56-3-16410 at the Code Commissioner's direction). RECORDED AS A
+        DERIVED UPPER BOUND. Do not publish it as "South Carolina has 153
+        specialty plates".
+      official_list_url: "https://www.scstatehouse.gov/code/t56c003.php"
+      application_fee: "§ 56-3-8100(A): before producing a special plate created by the General Assembly after 1 January 2006, the department must receive SIX THOUSAND EIGHT HUNDRED DOLLARS from the individual or organisation seeking it AND a marketing plan approved by the department"
+      discontinuation_threshold: >-
+        § 56-3-8100(H), verbatim: "If the department receives LESS THAN THREE
+        HUNDRED biennial applications and renewals for a particular special
+        license plate, it shall not produce additional special license plates
+        in that series. The department shall continue to issue special license
+        plates of that series until the existing inventory is exhausted."
+        THIS IS THE NUMBER THE FLORIDA FILE RECORDED AS A GAP. us-fl's
+        specialty index notes that § 320.08056(8)(a) obliges Florida to
+        discontinue an approved specialty plate in stated circumstances and
+        that "the numeric threshold triggering discontinuation was not
+        extracted in this pass (recorded gap)". South Carolina's equivalent
+        threshold is 300 biennial applications and renewals, and subsection (I)
+        applies the same test by name to thirteen specific articles. The
+        Florida gap is not filled by this — different state, different statute
+        — but the SHAPE is now confirmed twice: US specialty programmes die by
+        numeric threshold, and the plates stay lawfully on the road until
+        inventory runs out.
+      fee_structure: "§ 56-3-8100(D)-(G): the regular biennial registration fee plus an organisation-requested additional fee, changeable only every five years from the first year of issue; if none is requested and none is prescribed by law the department may collect ten dollars; the department's production and administration costs come off the top and the remainder goes to the organisation or, absent a request, to the general fund"
+      biennial_period: "each special plate is issued or revalidated for a biennial period expiring twenty-four months from the month of issue (§§ 56-3-8100(D), 56-3-1230)"
+      motorcycle_rule: "§ 56-3-8100(K): each new classification of special vehicle plate, 'including, but not limited to, MOTORCYCLE license plates', must meet the requirements of Articles 81 and 82 of Chapter 3, Title 56"
+    region_encoding: none
+    sources:
+      - "https://www.scstatehouse.gov/code/t56c003.php  # § 56-3-8100(A) the $6,800 fee and marketing plan; (C) the unified basic design, the emblem slot, the no-added-text rule, the organisation name across the top, and the 1 July 2013 mandatory-adoption date; (D)-(G) the fee structure and distribution; (H) the 300-application discontinuation threshold and issue-until-exhausted rule; (I) the thirteen articles it is applied to by name; (K) the motorcycle classification rule. Also the chapter's 153 ARTICLE headings, from which the derived upper bound is taken."
+    notes: >-
+      THE SOUTH CAROLINA SPECIALTY PROGRAM INDEX — and the one place in group
+      southeast-a where the specialty programme is BETTER sourced than the
+      standard plate, because South Carolina legislates the programme rather
+      than administering it. Three findings. FIRST, the unified basic design
+      (§ 56-3-8100(C)) makes South Carolina's specialty catalogue mechanically
+      renderable from one template plus an emblem — an L4 shortcut no other
+      state in this group offers. SECOND, the 300-application discontinuation
+      threshold answers, for South Carolina, the question us-fl recorded as an
+      open gap for Florida. THIRD, the count is DERIVED and labelled as an
+      upper bound rather than borrowed from an enthusiast site, because the
+      agency was unreachable; a verifier with SCDMV access should replace it
+      with the agency's own figure and keep the statutory structure either way.
