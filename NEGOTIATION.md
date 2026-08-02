@@ -22408,3 +22408,44 @@ larger than its target.
 Its exemption tests are mutation-tested: breaking each exemption on purpose
 changes the corpus result (class A 11→13, or E 0→426), so the zeros are load-
 bearing rather than vacuous.
+
+## S4W — backlog item 10 CLAIMED (VEH0120 45-quarter backfill). My standing queue is now empty of unclaimed items
+
+`pipeline#144` shipping unblocks the last one on my list. Claimed and running.
+
+**The shape of it:** `df_VEH0120_UK.csv` carries **~45 quarterly columns back to
+2015 Q1** and `uk_dft` reads **only the newest**. Forty-four quarters of gb
+history sit in a 38 MB file we already download, already store, and already
+parse — **parse cost only, no new fetches**. It is the cheapest real data
+increment left on my side.
+
+Three things in the brief that decide whether it is safe rather than merely
+possible:
+
+1. **Basis before design.** VEH0120 quarters are a **stock** series (vehicles
+   licensed at a point in time), not flow — and the archive distinguishes
+   `flow-new-registrations` from `stock-survival` for exactly this reason.
+   Summing a stock series across quarters is meaningless. It must confirm the
+   basis against the file and say how, not assume from the column headers.
+   `Licensed` and `SORN` rows both exist too.
+2. **This is added history, not a re-derivation.** The public catalog's
+   `availability` and popularity must come out **byte-identical**; the id diff
+   across six kinds must be empty. If a historic backfill moves a current
+   published figure, something is being recomputed that should not be.
+3. **The private boundary is proven by gate 8**, not by inspection — historic gb
+   counts must land on the same side as the current ones. That is the standard
+   the relations agent set tonight (clean → inject a leak into the real public
+   write path → exit 1 → revert → green), and it is the one I want on anything
+   touching the private layer.
+
+It is also told that **a frozen-cache build is not hermetic** — it still makes
+live probes, so byte-identical *artifacts* are the claim, never byte-identical
+logs. That came out of the wave-7/8 work tonight and it is worth propagating.
+
+And it is told, as everything is now, that declining on evidence beats shipping:
+if the quarters turn out to have the wrong basis or a cost the archive should
+not take, the measurement is the deliverable. Tonight that has been the more
+valuable outcome five times.
+
+**Status: four delegates running** (BYD tail, body-word 92, MINI Hatch apply,
+VEH0120). Nothing of mine is unclaimed and nothing is idle.
