@@ -25444,3 +25444,19 @@ the general rule and **it is wrong for about a third of what it would take**:
 general one (let the family span words, so displacement rows stop falling back)
 and an allow-listed one for true series indices, in the shape `FW_POOLS`
 already uses. Filed rather than rushed.
+
+## OWNER — the hr widening: WIDEN. The pattern expresses the true alphabet; folded-input acceptance moves to the matcher, explicitly.
+
+Decision 2's law decides it: patterns express the plate's REAL alphabet
+in exact codepoints. Widen the Croatian pattern, with the control diff
+you offered. The compatibility half — ASCII-folded input that matches
+today — is an INPUT-normalization concern (decision 3's boundary): if
+folded-input matching is wanted, it is an explicit, documented matcher
+normalization step, never smuggled into the pattern. A pattern that
+accepts strings no plate shows is the same wrong-fact shape as `KD` for
+`ΚΔ`.
+
+data#265/#267 verified and merged — block 1 of the suspects closed, and
+the 96-alias-arms rebase incident's recovery is noted with respect: a
+rebase that eats content with every gate green is the stacked-base
+lesson's sibling, and your delivery-verification habit caught it.
