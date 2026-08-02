@@ -1,0 +1,1188 @@
+# plates/gb.yml — United Kingdom (PRD-PLATES gate L1).
+#
+# EVERY layout, colour, character-metric and class claim here comes from the
+# Road Vehicles (Display of Registration Marks) Regulations 2001 (S.I. 2001
+# No. 561, ROAD TRAFFIC), made 26 February 2001, laid before Parliament
+# 28 February 2001, in force 21 March 2001 for regulations 1(1)(a) and 17 and
+# 1 September 2001 for all other purposes, as revised on legislation.gov.uk
+# ("Latest available (revised); there are currently no known outstanding
+# effects"), together with its enabling Act (Vehicle Excise and Registration
+# Act 1994 c. 22, ss. 23(3), (4) and 57) and the DVLA leaflet INF104 (4/22).
+# Trailer claims come from the Trailer Registration Regulations 2018
+# (S.I. 2018 No. 1203) and DVLA INF291 (2/26).
+#
+# FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE COMPOSITION OF A BRITISH REGISTRATION MARK IS NOT IN ANY REGULATION.
+#    VERA 1994 § 23(1), verbatim: "Where the Secretary of State registers a
+#    vehicle under section 21(1) he shall assign to the vehicle a mark (a
+#    'registration mark') indicating the registered number of the vehicle."
+#    The regulation-making power in § 23(4) reaches only "(a) the size, shape
+#    and character of registration marks to be fixed on any vehicle, and
+#    (b) the manner in which registration marks are to be displayed and
+#    rendered easily distinguishable". WHICH letters and digits a mark is made
+#    of — the memory tag, the age identifier, the random triple — is therefore
+#    an ADMINISTRATIVE allocation by the Secretary of State, published by DVLA
+#    in INF104 and nowhere in law. This is the German pattern exactly (§ 9
+#    Abs. 3 FZV delegates the district codes to the Bundesanzeiger), arriving
+#    in Britain by a different route.
+#    What the law DOES fix, and fixes completely, is the set of NINE permitted
+#    LAYOUTS in Schedule 3 Table A. Table A is small, closed, primary and
+#    directly regex-able: it is the single best statutory format source
+#    secured for any jurisdiction in this programme, and every `format.regex`
+#    in this file is anchored on one of its nine rows.
+#
+# 2. THE PLATE HAS NO PRESCRIBED SIZE — SO NO SERIES HERE CARRIES ONE.
+#    Regulation 14 and Schedule 3 Table B prescribe character height, character
+#    width, stroke width, inter-character spacing, inter-group spacing and
+#    MINIMUM margins, in millimetres. They never prescribe a plate width or a
+#    plate height, and neither does Schedule 2. The 520 x 111 mm oblong every
+#    British motorist can draw from memory is a BRITISH STANDARD dimension
+#    (BS AU 145e), and BS AU 145e is a copyrighted, paywalled BSI publication
+#    which PRD-PLATES § 6 permits us to build to and forbids us to reproduce.
+#    Consequently `design.plate` is ABSENT from every series in this file and
+#    its absence is a sourced finding, not an omission. `design.characters`
+#    carries the metrics the Regulations do give.
+#
+# 3. FRONT AND REAR DIFFER, AND BRITAIN IS THE SCHEMA'S REFERENCE CASE FOR IT.
+#    Schedule 2 Part A1, verbatim: "2. Where the registration mark is displayed
+#    on the front of the vehicle, it must have black characters on a white
+#    background." / "3. Where the registration mark is displayed on the back of
+#    a vehicle, it must have black characters on a yellow background." The
+#    identical pair appears in Part 1 (1.9.2001-31.8.2021, BS AU 145d) and in
+#    Part 2 (optional specification for 1.1.1973-31.8.2001 vehicles, BS AU
+#    145a). `rear_differs: true` therefore appears on every road series here.
+#
+# 4. PERIOD CLAIMS ARE INSTRUMENT-DATED, AND THE ONE FOLKLORE YEAR IS NAMED.
+#    The current format's start is PRIMARY twice over: INF104 § 03 — "The
+#    current vehicle registration format was introduced on 1 September 2001" —
+#    and S.I. 2001/561 reg. 1(1)(b), which brings the Regulations into force
+#    "for all other purposes, on 1st September 2001". The PREFIX system's start
+#    is not. It is recorded here as 1984, the year of The Road Vehicles
+#    (Registration and Licensing) (Amendment) Regulations 1984 (S.I. 1984/814),
+#    which S.I. 2001/561's own marginal citation M2 identifies as one of the
+#    "relevant amendments" to regulations 17 to 22 of the 1971 Regulations (the
+#    revoked format-and-display provisions) — an instrument date, carrying
+#    `period_evidence: instrument-in-force`, and stated in terms in that
+#    series' notes. S.I. 1984/814 is available on legislation.gov.uk ONLY as a
+#    scanned PDF with no text layer; it was fetched and could not be read. The
+#    universally repeated "August 1983" A-prefix start is NOT asserted here:
+#    no primary for it was secured, and it is logged as folklore in the
+#    jurisdiction dossier.
+#
+# 5. NORTHERN IRELAND LIVES INSIDE THIS FILE, NOT BESIDE IT. ISO 3166-1 gives
+#    the United Kingdom one code; Northern Ireland has no ISO 3166-1 code of
+#    its own, and — decisive for us — the Northern Irish mark shapes are
+#    prescribed BY THE UK-WIDE INSTRUMENT: Schedule 3 Table A rows 8 and 9 are
+#    each qualified "being a form of mark issued only in Northern Ireland".
+#    So NI is modelled as its own SERIES in this file rather than as a separate
+#    jurisdiction file, which is also what the id contract wants (a UK consumer
+#    asking "is this a British mark?" must get one answer from one file). Two
+#    further NI facts carry real consequences and are recorded on those series:
+#    reg. 16(8)(b) forbids the national flag and identifier letters on a
+#    vehicle "recorded in the part of the register relating to Northern
+#    Ireland", and reg. 2(1)'s "relevant date" is 1st January 1948 in Northern
+#    Ireland against 1st October 1938 in Great Britain.
+#
+# REGEX POLICY (identical to plates/de.yml and plates/nl.yml): `format.regex`
+# is the LINT-ROUND-TRIPPABLE regex — the lint generates serials from
+# `format.pattern` (L -> any A-Z, 9 -> any 0-9) and requires the regex to
+# accept all of them, so `regex` can never be narrower than the pattern's
+# alphabet. `format.regex_strict` carries the tighter, sourced form — here the
+# DVLA memory-tag alphabet and the age-identifier value set from INF104, which
+# `regex` cannot carry because the lint generates "I", "Q" and "00".
+#
+# SEPARATOR NOTE (PRD-PLATES § 2.6): a British mark prints NO separator glyph.
+# What Table B line 5 prescribes is a GAP in millimetres — 33 mm between the
+# age identifier and the random letters on a current-style plate. The space in
+# every `pattern` here is the conventional textual rendering of that gap (and
+# is how INF104, HMRC and the Regulations themselves write the examples:
+# "DE51 ABC", "A123 ABC", "XA51 ABC", "A123 4567"); every regex accepts it as
+# optional, exactly as plates/de.yml does for the Plaketten gap.
+jurisdiction: gb
+authority:
+  name: Driver and Vehicle Licensing Agency (DVLA), for the Secretary of State for Transport
+  url: "https://www.gov.uk/government/organisations/driver-and-vehicle-licensing-agency"
+binding: vehicle
+binding_note: >-
+  INF104 § 01, verbatim: "The registration number is given to the vehicle, not
+  the registered keeper. It will stay with the vehicle (until the vehicle is
+  broken up, destroyed or exported permanently out of the country) unless the
+  registered keeper applies to take it off and put it on another vehicle or on
+  to a retention certificate (V778)." Note the ownership twist § 01 opens with,
+  which no other jurisdiction in this dataset states so bluntly: "Vehicle
+  registration numbers ... are owned by the Secretary of State."
+instrument:
+  citation: "The Road Vehicles (Display of Registration Marks) Regulations 2001, S.I. 2001 No. 561 (ROAD TRAFFIC), made under the Vehicle Excise and Registration Act 1994 (c. 22), ss. 23(3), (4) and 57"
+  made: "2001-02-26"
+  laid_before_parliament: "2001-02-28"
+  in_force_partial: "2001-03-21"      # regs 1(1)(a) and 17 only
+  in_force_general: "2001-09-01"      # all other purposes
+  revision_status: "Latest available (revised) on legislation.gov.uk; there are currently no known outstanding effects"
+  revokes: "Road Vehicles (Registration and Licensing) Regulations 1971 (S.I. 1971/450) regs 17-22 and Schs 2-3; Road Vehicles (Registration and Licensing) Regulations (Northern Ireland) 1973 (S.R. & O. (N.I.) 1973 No. 490) regs 18-23 and Schs 2-3; S.I. 1972/1865 reg 6; S.I. 1975/1089; S.I. 1976/2180 reg 2(6),(8),(9); S.I. 1984/814 (whole instrument)"
+  amended_by:
+    - "S.I. 2001/1079 (reg 14(11) wording, 1.9.2001)"
+    - "S.I. 2002/2687 (reg 11(1A) design/pattern/texture ban; reg 14A imported-vehicle sizes, 22.11.2002)"
+    - "S.I. 2009/811 (reg 16 substituted — flags, identifiers, 27.4.2009)"
+    - "S.I. 2018/1295 (EU Exit definitions, 28.12.2018 / 31.12.2020)"
+    - "S.I. 2020/1276 (reg 16(4A)-(4D), (11) — green plates for zero-emission vehicles, 8.12.2020)"
+    - "S.I. 2020/1363 (Sch 2 Part A1 / BS AU 145e; reg 10(1A),(4A); reg 17A; reg 18(a) 'constructed on or before 1st January 1980', 1.1.2021)"
+    - "S.I. 2021/831 (reg 10(2) wording, 27.8.2021)"
+    - "S.I. 2025/82 (assimilated-law wording, 27.2.2025)"
+  source: "https://www.legislation.gov.uk/uksi/2001/561  # front matter (Made / Laid / Coming into force), reg 1(1)(a)-(b), Sch 1 revocations, and every F-note amendment listed above"
+  licence: "legislation.gov.uk: 'All content is available under the Open Government Licence v3.0 except where otherwise stated.' DVLA leaflets (INF104, INF291) are Crown copyright under OGL v3.0."
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  layouts:
+    note: >-
+      Schedule 3 Part 1 (Table A) — "PERMITTED LAYOUTS FOR REGISTRATION MARKS",
+      column (1) verbatim. This is the closed, statutory list of mark SHAPES a
+      British plate may display. Reg 13(1): "a registration mark of a
+      description specified in column (1) of Table A must be laid out on the
+      registration plate in conformity with one of the diagrams specified in
+      relation to that description in column (2)".
+    rows:
+      - "1. A group consisting of two letters and two numbers followed by a group of 3 letters (for example DE51 ABC)."
+      - "2. A group consisting of a single letter and not more than 3 numbers followed by a group of 3 letters (for example A123 ABC)."
+      - "3. A group of 3 letters followed by a group consisting of not more than 3 numbers and a single letter (for example ABC 123A)."
+      - "4. A group of 4 numbers followed by a single letter or a group of 2 letters (for example 1234 AB, 1234 A)."
+      - "5. A group of not more than 3 numbers followed by a group of not more than 3 letters (for example 123 ABC, 123 AB, 12 A)."
+      - "6. A group of not more than 3 letters followed by a group of not more than 3 numbers (for example ABC 123, AB 123, A 12)."
+      - "7. A single letter or group of 2 letters followed by a group of 4 numbers (for example AB 1234, A 1234)."
+      - "8. A group of 3 letters followed by a group of 4 numbers (for example ABZ 1234, being a form of mark issued only in Northern Ireland)."
+      - "9. A group of 4 numbers followed by a group of 3 letters (for example 1234 ABZ, being a form of mark issued only in Northern Ireland)."
+    line_rules: >-
+      Reg 13(2): "A mark displayed on a motor cycle may not be laid out in
+      conformity with diagram 1a, 2a, 3a, 4a, 5a, 6a, 7a, 8a or 9a" — the "a"
+      diagrams are the single-line ones, so a motorcycle mark is ALWAYS
+      two-line. Reg 13(3): diagrams 2c, 3c, 4b and 7b (the three-line and
+      other legacy arrangements) may not be used on a plate fixed to a vehicle
+      first registered on or after 1.9.2001, nor on a replacement plate fitted
+      on or after that date, "except where the vehicle was first registered
+      before 1st January 1973". The DIAGRAMS THEMSELVES are line drawings in
+      Schedule 3 Part 2 and are not reproduced here (PRD-PLATES § 6: cite,
+      never embed) — but note they are Crown-copyright material published
+      inside a statutory instrument under OGL v3.0, not a paywalled standard.
+    source: "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Part 1 Table A rows 1-9 verbatim; Part 2 diagram list; Part 3 Table B"
+  colours:
+    standard: >-
+      Schedule 2 Part A1 paras 2-3 (vehicles first registered, and new plates
+      fitted, on or after 1.9.2021), verbatim: "Where the registration mark is
+      displayed on the front of the vehicle, it must have black characters on a
+      white background." / "Where the registration mark is displayed on the
+      back of a vehicle, it must have black characters on a yellow background."
+      Schedule 2 Part 1 paras 2-3 say the same for 1.9.2001-31.8.2021, and
+      Part 2 paras 2-3 for the optional 1.1.1973-31.8.2001 specification.
+    hex_basis_note: >-
+      The Regulations NAME the colours and never number them. The chromaticity
+      coordinates live in BS AU 145d/145e, which are copyrighted BSI documents
+      (Sch 2 Part 1 marginal citation M5 even gives the ISBN and tells the
+      reader to buy a copy). Under PRD-PLATES § 6 we build to them and never
+      reproduce them, so every hex in this file is `hex_basis: observed` inside
+      a statutorily named colour — the same posture plates/de.yml takes for
+      "grünes Kennzeichen" and "rotes Kennzeichen".
+    source: "https://www.legislation.gov.uk/uksi/2001/561/schedule/2  # Sch 2 Parts A1, 1, 2 and 3"
+  standards:
+    current: "BS AU 145e — 'the British Standard specification for retroreflecting number plates published on 28th February 2018 under number BS AU 145e' (Sch 2 Part A1 para 1(a)); mandatory for vehicles first registered on or after 1.9.2021 (reg 10(1A)) and for ANY replacement plate fitted on or after 1.9.2021 (reg 10(4A))"
+    previous: "BS AU 145d — 'published on 15 January 1998' (Sch 2 Part 1 para 1(a), marginal citation M5: British Standards Institution, 389 Chiswick High Road, London W4 4AL, ISBN 0 580 28985 0); mandatory 1.9.2001-31.8.2021"
+    older: "BS AU 145a (published 11 September 1972, Sch 2 Part 2 para 1(a)) and BS AU 145 (published 31 October 1967, Sch 2 Part 3 B.1)"
+    equivalence: "each Part also admits 'any other relevant standard or specification recognised for use in an EEA State and which, when in use, offers a performance equivalent'"
+    markings: >-
+      Sch 2 Part A1 paras 5-7: each plate must display BELOW the mark the
+      standard's number, the name of the supplier or manufacturer of the parts,
+      and the name and postcode of the supplying outlet; those markings must be
+      permanently marked, NON-retroreflecting, of a single shade, 3-10 mm high,
+      and at least 7 mm below the mark. Para 8 permits a border that is
+      permanent, non-retroreflecting, single-shade, at least 10 mm clear of any
+      character, not above the other markings, and no more than 5 mm wide.
+    ip_note: "BS AU 145e is paywalled BSI copyright. PRD-PLATES § 6 applies: cite, build to, never redistribute. No dimension in this file is taken from it."
+    source: "https://www.legislation.gov.uk/uksi/2001/561/schedule/2  # Sch 2 Part A1 paras 1, 5-8; Part 1 para 1 + M5; Part 2 para 1 + M6; Part 3 B.1 + M7"
+  characters:
+    current_style:
+      height_mm: 79
+      width_mm: 50
+      stroke_mm: 14
+      space_within_group_mm: 11
+      space_between_groups_mm: 33
+      vertical_space_between_groups_mm: 19
+      min_margin_mm: 11
+    pre_2001_style:
+      height_mm: 89
+      width_mm: 64
+      stroke_mm: 16
+      space_within_group_mm: 13
+      space_between_groups_mm: 38
+      vertical_space_between_groups_mm: 19
+      min_margin_mm: 13
+    reduced_style:
+      height_mm: 64
+      width_mm: 44
+      stroke_mm: 10
+      space_within_group_mm: 10
+      space_between_groups_mm: 30
+      vertical_space_between_groups_mm: 13
+      min_margin_mm: 11
+      applies_to: "motor cycle, motor tricycle, quadricycle, agricultural machine, works truck, road roller (reg 14(3)); also every vehicle within reg 14A"
+    letter_i_and_figure_1: "excepted from the width rule throughout (reg 14(4)); Table B lines 8-9 give the 13-37 / 11-33 mm and 13-60 / 11-54 mm spacing ranges permitted on pressed or embossed plates fixed before 1.9.2001 and on 'classic' plates"
+    tolerance: "reg 12(2): character height may be +/- 1 mm; any other dimension +/- 0.5 mm"
+    dossier_correction: >-
+      THE SOURCE APPENDIX IS WRONG ON ONE NUMBER AND THIS FILE CORRECTS IT.
+      aux/research/plates-2026-07/plates-research-eu-intl.md § 2.6 tabulates
+      "Character width (except 1 / I) ... Current style: 57". It is 50 mm.
+      Table B line 1 ("Character width (all new registration plates from 1.9.01
+      except replacement of 'classic' plates)") gives 50 mm at 79 mm height and
+      44 mm at 64 mm height; 57 mm is Table B LINE 2 — the width for "other
+      registration plates", i.e. the pre-1.9.2001 and classic-replacement case.
+      INF104 § 07 agrees with the Regulations: "characters (except the number 1
+      or letter I) must be 50mm wide".
+    source: "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Part 3 Table B lines 1-9, columns (2) 89 mm / (3) 79 mm / (4) 64 mm"
+    source_secondary: "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 (4/22) § 07, character dimensions and the Group 1 / Group 2 table"
+  font:
+    name: "the prescribed font (statutory drawing — no named typeface)"
+    statutory_basis: >-
+      Reg 2(1), verbatim: "'prescribed font' means the style shown in Schedule 4
+      for a character of the height specified in that Schedule." Schedule 4 has
+      two Parts — "FONT DESCRIBED FOR CHARACTERS 79 MILIMETRES IN HEIGHT" and
+      "FONT PRESCRIBED FOR CHARACTERS 64 MILIMETRES IN HEIGHT" (the
+      Regulations' own spelling of "millimetres") — and each Part is a DRAWING.
+      Reg 15(1) makes the prescribed font mandatory on any plate fixed to a
+      vehicle first registered on or after 1.9.2001 and on any replacement
+      plate fitted on or after that date (except for pre-1.1.1973 vehicles);
+      reg 15(2) allows older plates a style "substantially similar", and
+      reg 15(4) lists the six disqualifying formations: italic script, any
+      non-vertical font, a font whose stroke curvature or alignment is
+      substantially different, multiple strokes, broken strokes, and any
+      formation making one character look like another. Reg 15(3): serifs are
+      neither required nor disqualifying.
+    licence: >-
+      NO LICENSABLE FONT IS MANDATED — the same structural finding as Germany
+      and Spain. The legal object is the Schedule 4 drawing, published inside a
+      statutory instrument and available under the Open Government Licence
+      v3.0, so the render layer derives glyphs FROM THE STATUTORY DRAWING and
+      never from a third-party "UK number plate" TTF whose own licence is
+      unstated. "Charles Wright" appears NOWHERE in the Regulations; see the
+      folklore note in the dossier.
+    source: "https://www.legislation.gov.uk/uksi/2001/561/regulation/15  # reg 15(1)-(4)"
+    source_schedule: "https://www.legislation.gov.uk/uksi/2001/561/schedule/4  # Sch 4 Parts 1 and 2 — the two prescribed-font drawings"
+  flags_and_identifiers:
+    rule: >-
+      Reg 16(1): "No material other than a registration mark and material
+      complying with the requirements of any of the relevant standards
+      mentioned in Schedule 2 may be displayed on a registration plate."
+      Reg 16(4) then permits, on a plate or device TO THE LEFT of the
+      registration plate (reg 16(5)(a)) and not encroaching into the margin
+      (reg 16(5)(b)), one arrangement of letters from reg 16(9) with one
+      emblem from reg 16(10) positioned above it (reg 16(6)); neither may
+      exceed 50 mm in width (reg 16(7)).
+    identifiers: ["United Kingdom", "UNITED KINGDOM", "UK", "Great Britain", "GREAT BRITAIN", "GB", "England", "ENGLAND", "Eng", "ENG", "Scotland", "SCOTLAND", "Sco", "SCO", "Wales", "WALES", "Cymru", "CYMRU", "Cym", "CYM"]
+    emblems: ["Union flag", "Cross of Saint George (flag of England)", "Cross of Saint Andrew / the Saltire (flag of Scotland)", "Red Dragon of Wales (flag of Wales)"]
+    eu_band_status: >-
+      THE EU BAND IS LEGACY-ONLY IN THE UNITED KINGDOM. Reg 16(3) permits the
+      letters "GB" on a plate or device "in accordance with the Annex to
+      Council Regulation (EC) No. 2411/98" only "provided the plate or other
+      device was originally fixed to the vehicle, and complied with the Annex,
+      before IP completion day" (words inserted by S.I. 2020/1363). No new
+      British plate may carry the EU band, and reg 16(8)(a) makes the flag
+      route unavailable to a vehicle that carries the old GB band. The
+      international distinguishing sign itself changed from GB to UK on
+      28 September 2021 by depositary notification under the 1968 Convention
+      (see the EU/intl dossier § 2.8).
+    northern_ireland_exclusion: >-
+      Reg 16(8)(b), verbatim: paragraph (4) "does not apply ... if the relevant
+      vehicle is recorded in the part of the register relating to Northern
+      Ireland." A Northern Irish registration may therefore display NO flag and
+      NO identifier letters — a design fact that follows the REGISTER, not the
+      mark, and one a renderer must honour.
+    source: "https://www.legislation.gov.uk/uksi/2001/561/regulation/16  # reg 16(1)-(11), as substituted by S.I. 2009/811 and amended by S.I. 2020/1276 and S.I. 2020/1363"
+    source_secondary: "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 08; also the UK-sticker matrix: a vehicle showing the UK identifier with the Union flag needs no separate sticker in the EU 'unless they are travelling to Spain, Malta or Cyprus'"
+  age_identifiers:
+    rule: >-
+      INF104 § 05, complete: a vehicle registered March-August of year YY takes
+      the two-digit code YY; a vehicle registered September of YY to February of
+      YY+1 takes YY+50. The table runs from "Sept 2001 - Feb 2002 = 51" and
+      "March 2002 - Aug 2002 = 02" to "March 2029 - Aug 2029 = 29 / Sept 2029 -
+      Feb 2030 = 79", closing with "This pattern will continue until all
+      possible variations have been used." HMRC's export-plate table
+      (VATNINMT3500) continues the identical rule to "March 2049 - August 2049
+      = 49 / Sept 2049 - Feb 2050 = 99", which is the same rule stated by a
+      second government source and is why this file treats the value set as
+      02-49 and 51-99 rather than 00-99.
+    excluded_values: ["00", "01", "50"]
+    excluded_values_note: >-
+      DERIVED, NOT QUOTED: 00 and 50 cannot arise from the rule (no year 00 was
+      reached before the format existed); 01 would mean March-August 2001, which
+      predates the format's 1 September 2001 start, and 51 (September 2001 -
+      February 2002) is the first identifier the DVLA table prints. The
+      exclusion is encoded only in `regex_strict`, never in `regex`.
+    decode_reference: "plates/_decode/gb-age-identifiers.yml"
+    source: "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 (4/22) § 05, 'Age identifiers' table, Sept 2001 - Feb 2030"
+    source_secondary: "https://www.gov.uk/hmrc-internal-manuals/vat-new-means-transport-northern-ireland/vatninmt3500  # HMRC VATNINMT3500 continues the same age-identifier rule to Sept 2049 - Feb 2050 = 99"
+  memory_tags:
+    rule: >-
+      INF104 § 03: the current mark opens with a "2 letter memory tag (these
+      refer to the region in the country where a vehicle is FIRST registered)".
+      The first letter is the postal area, the second selects the DVLA office
+      within it. INF104 § 05 tabulates every tag; the three closing bullets are
+      the charset law: "We will not use I, Q or Z in local memory tags
+      identifiers"; "We will still issue existing 'Q' marks"; "We will only use
+      Z as a random letter."
+    caveat: >-
+      A memory tag records WHERE THE VEHICLE WAS FIRST REGISTERED, not where it
+      is kept now and not where its keeper lives. Any Geoguessr-style or
+      insurance use that reads it as a current-location signal is reading it
+      wrong, and a parse API must say so.
+    edge_cases:
+      - "HW — INF104: '(HW will be used exclusively for Isle of Wight residents)'. The one genuinely sub-regional British tag."
+      - "MN and MAN — INF104: '(MN + MAN Reserved for the Isle of Man)'. The Isle of Man is a separate jurisdiction (ISO 3166-1 IM) with its own registration system; DVLA reserves these so no British mark collides with it."
+    decode_reference: "plates/_decode/gb-memory-tags.yml"
+    source: "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 (4/22) § 05, 'DVLA memory tags and age identifiers', all 19 postal areas and their office tag lists"
+
+# ---------------------------------------------------------------------------
+# Classes the United Kingdom HAS but this file deliberately does not model,
+# each with the primary that proves the class exists and the reason no
+# `format` is authored. Inventing a regex for any of these was declined.
+# ---------------------------------------------------------------------------
+classes_not_modelled:
+  dealer:
+    exists: true
+    mechanism: >-
+      VERA 1994 § 23(5)(a): the Secretary of State may by regulations "make
+      provision for assigning general registration marks to persons holding
+      trade licences and (in particular) prescribe the registration marks to be
+      carried by vehicles the use of which is authorised by a trade licence".
+      Road Vehicles (Registration and Licensing) Regulations 2002 (S.I.
+      2002/2742) reg 39: "On issuing a trade licence the Secretary of State
+      shall assign to the holder of the licence a general registration mark in
+      respect of that licence." Reg 40(1)-(2): a SET of trade plates is issued
+      per licence and "Each trade plate shall show the general registration
+      mark assigned to the holder". Reg 40(3)-(4): an extra plate where the
+      licence covers motorcycles and other vehicles; only ONE plate where it
+      covers motorcycles alone. Reg 42(2): the plates must be displayed so that
+      regs 5 and 6 of the 2001 Display Regulations would be satisfied "if the
+      general registration mark assigned to the holder were a registration mark
+      assigned to the vehicle". Reg 40(5): the plates remain the property of
+      the Secretary of State. Sch 6 Part I paras 2-7: no altering, defacing or
+      adding to a plate; nothing that could be mistaken for one.
+    binding: business
+    why_not_modelled: >-
+      NEITHER THE FORMAT NOR THE COLOUR OF A GENERAL REGISTRATION MARK IS
+      PUBLISHED IN ANY PRIMARY LOCATED IN THIS PASS. S.I. 2002/2742 prescribes
+      the issue, the display and the offences and never the appearance;
+      S.I. 2001/561 governs marks assigned to VEHICLES; gov.uk's trade-licence
+      pages and DVLA form guidance VTL301G cover permitted uses and display
+      positions ("put them on both the front and back of the vehicle, or just
+      the back for motorcycles"; "visible and easily readable from a distance
+      of 20 metres"; "not cover the existing number plates, unless it's a
+      motorcycle") and never the mark's shape. The red-on-white trade plate is
+      universally described on the enthusiast web; it is NOT asserted here.
+    sources:
+      - "https://www.legislation.gov.uk/ukpga/1994/22/section/23  # VERA 1994 s 23(5)(a)-(b): general registration marks and trade plates"
+      - "https://www.legislation.gov.uk/uksi/2002/2742  # RVRL 2002 regs 39-42 and Sch 6 Part I paras 2-7"
+      - "https://www.gov.uk/trade-licence-plates/rules  # display positions and the 20-metre legibility rule"
+      - "https://assets.publishing.service.gov.uk/media/69c552b0cdfd19de13d0f71f/vtl301g-guidance-notes.pdf  # VTL301G guidance notes: permitted uses and display of trade plates; no format or colour"
+  diplomatic:
+    exists: true
+    mechanism: >-
+      HMRC Diplomatic Privileges manual DIPPRIV6700 ("Motor vehicles:
+      registration"), verbatim: "Diplomatic vehicles may be registered through
+      the DVLA on either diplomatic or normal British plates. A special
+      registration document will be issued in both cases." The page routes
+      applications to the DVLA Specialist Registrations team (Swansea SA99 1DR)
+      and the Protocol Directorate at the FCDO.
+    why_not_modelled: >-
+      A government primary confirms a DIPLOMATIC SERIES EXISTS and none
+      publishes its grammar. The mission-code-plus-D-or-X shape everyone
+      repeats is not in the Display Regulations at all: Schedule 3 Table A has
+      no digits-letter-digits layout, so if the diplomatic series really takes
+      that shape it does so outside Table A and the discrepancy itself needs
+      explaining before anything is asserted. Recorded as a gap for L2/L4,
+      exactly as plates/de.yml records the German mission-number sub-decode.
+    sources:
+      - "https://www.gov.uk/hmrc-internal-manuals/diplomatic-privileges/dippriv6700  # DIPPRIV6700, updated 20 February 2019: diplomatic or normal British plates, special registration document, DVLA Specialist Registrations + FCDO Protocol Directorate"
+  temporary:
+    exists: false
+    mechanism: >-
+      THE UNITED KINGDOM HAS NO TEMPORARY REGISTRATION PLATE. There is no
+      British analogue of the German Kurzzeitkennzeichen or the Spanish placa
+      verde: a vehicle is either registered (and carries its assigned mark
+      permanently) or moved under a trade licence. The two things closest to a
+      temporary regime are the trade plate (above) and the tax-free / personal
+      export mark (modelled below as gb-export-x, which is a genuine
+      registration with an end date rather than a permit). INF104 § 06 mentions
+      a "temporary registration certificate (V379)" only as an identity
+      document a plate supplier may accept.
+    sources:
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 06 lists V379 among the documents proving entitlement; no temporary plate series appears anywhere in the leaflet"
+  moped:
+    exists: false
+    mechanism: >-
+      NO DISTINCT BRITISH MOPED PLATE. The Display Regulations know "motor
+      cycle" (reg 2(1): "a vehicle having 2 wheels and includes a vehicle of
+      that description in combination with a sidecar"), "motor tricycle" (three
+      wheels symmetrically arranged) and "quadricycle" (four wheels, max net
+      engine power 15 kW, unladen mass not exceeding 550 kg for a goods vehicle
+      or 400 kg otherwise) — and nothing else in that family. A moped carries
+      an ordinary mark on a motorcycle plate; see gb-motorcycle-2001.
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/2  # reg 2(1) definitions of motor cycle, motor tricycle and quadricycle — no moped category"
+  military:
+    exists: true
+    why_not_modelled: >-
+      Ministry of Defence vehicles carry MoD-assigned marks that fit no
+      Schedule 3 Table A description, and no primary for their grammar was
+      located. HMRC VATNINMT3500 touches the edge of it — "For security
+      reasons, UK forces personnel are issued with standard index numbers" —
+      which tells us forces PERSONNEL get ordinary marks and says nothing about
+      service VEHICLES. Recorded as a gap.
+    sources:
+      - "https://www.gov.uk/hmrc-internal-manuals/vat-new-means-transport-northern-ireland/vatninmt3500  # 'For security reasons, UK forces personnel are issued with standard index numbers'"
+  personalised:
+    exists: true
+    why_not_modelled: >-
+      A British personalised mark has NO FORMAT OF ITS OWN — it is an ordinary
+      mark from one of the Table A layouts, transferred between vehicles.
+      INF104 § 01-02: marks are "owned by the Secretary of State"; a purchaser
+      buys "the right to apply to put it on a vehicle registered in your name
+      or someone else's name (the nominee)"; the mark stays with the vehicle
+      unless taken off onto a retention certificate (V778). The one hard rule
+      a parse API must carry: "You can't use a registration number to make your
+      vehicle appear younger than it actually is" — so a mark's age identifier
+      is an UPPER bound on the vehicle's age, never a lower one, and any
+      Table A shape may legally sit on a much newer vehicle.
+    sources:
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 §§ 01-02 and § 04 (the no-younger rule, the GBP 1,000 fine and MOT failure for misrepresentation)"
+
+legacy_layouts_not_modelled: >-
+  Table A rows 3 to 7 describe the SUFFIX system (ABC 123A), the four-number
+  and dateless arrangements (1234 AB, 123 ABC, ABC 123, AB 1234) that Britain
+  issued before 1963 and that survive in enormous numbers on personalised and
+  historic vehicles. They are DELIBERATELY not authored as series in this L1
+  pass: PRD-PLATES scopes L1 at the current standard series plus ONE series
+  back, and no primary dating ANY of them was secured (the suffix system's
+  1963 start and the prefix system's 1983 start are both folklore in this
+  pass). Their SHAPES are nevertheless fully sourced in `common.layouts` above
+  and are carried in the union regex of gb-historic-blacksilver, so a parse
+  API can already recognise them as British without this file inventing a
+  period for them. Authoring them is L4 work (PRD-PLATES § 7, "Historical
+  depth (the pre-2000 world)").
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — 1 September 2001. Table A row 1.
+  # =========================================================================
+  - id: gb-standard-2001
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2001 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL99 LLL"
+      regex: '\A[A-Z]{2}\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\A[ABCDEFGHKLMNOPRSVWY][ABCDEFGHJKLMNOPRSTUVWXY](?:0[2-9]|[1-4]\d|5[1-9]|[6-9]\d) ?[ABCDEFGHJKLMNOPRSTUVWXYZ]{3}\z'
+      structure:
+        - "characters 1-2: DVLA memory tag (region of FIRST registration)"
+        - "characters 3-4: age identifier (six-month issue period)"
+        - "characters 5-7: three letters chosen at random"
+      charset:
+        memory_tag_first_letter: [A, B, C, D, E, F, G, H, K, L, M, N, O, P, R, S, V, W, Y]
+        letters_excluded_from_memory_tag: [I, Q, Z]
+        letters_excluded_everywhere: [I, Q]
+        notes: >-
+          INF104 § 05, the three closing bullets verbatim: "We will not use I, Q
+          or Z in local memory tags identifiers" / "We will still issue existing
+          'Q' marks" / "We will only use Z as a random letter." The first-letter
+          set above is the CLOSED list of postal-area letters INF104 § 05
+          actually tabulates (19 of them — J, T, U and X never appear as a first
+          letter either, alongside the excluded I, Q and Z). THE ONE INFERENCE
+          IN THIS FILE, flagged as such for the verifier: the three bullets read
+          together exclude I and Q from the random triple as well, because Z is
+          the only one of the three given an explicit random-letter carve-out.
+          INF104 does not say so in terms. `regex_strict` encodes the inference;
+          `regex` does not, so a consumer who distrusts it loses nothing.
+      progression: >-
+        The age identifier advances twice a year, on 1 March and 1 September
+        (INF104 § 05). Within a six-month period the random triple advances;
+        DVLA does not publish the intra-period allocation order. Because a mark
+        may be transferred to any vehicle (INF104 § 02) and may never make a
+        vehicle "appear younger than it actually is" (§ 04), the age identifier
+        is an UPPER bound on a vehicle's age and never a lower one.
+      separator_note: >-
+        The gap is a MEASUREMENT, not a glyph: Table B line 5 requires 33 mm of
+        horizontal space between the age identifier and the random letters at
+        79 mm character height (38 mm at 89 mm, 30 mm at 64 mm). The space in
+        `pattern` renders that gap as INF104 and the Regulations themselves
+        write it ("DE51 ABC"); both regexes accept it as optional.
+    design:
+      plate_note: >-
+        NO PLATE DIMENSIONS ARE RECORDED, AND THAT IS THE FINDING: neither
+        S.I. 2001/561 nor its Schedules prescribe a plate width or height. Only
+        characters, spacings and MINIMUM margins are regulated (reg 14,
+        Table B). Plate sizes live in BS AU 145e, which is paywalled BSI
+        copyright (PRD-PLATES § 6).
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "Sch 2 Part A1 para 2: black characters on a white background at the FRONT. Retroreflection per BS AU 145e (para 1)." }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed, spec_note: "Sch 2 Part A1 para 3: black characters on a yellow background at the BACK. The statute names 'yellow' and gives no coordinates." }
+      foreground: "#000000"
+      rear_differs: true
+      characters: { height_mm: 79, width_mm: 50, stroke_mm: 14, space_within_group_mm: 11, space_between_groups_mm: 33, min_margin_mm: 11, source_note: "reg 14(1),(4)(a),(5)-(7),(9) with Table B column (3) lines 1, 3, 4, 5, 7" }
+      font: { name: "prescribed font (Sch 4 Part 1, 79 mm)", mandatory: true, note: "reg 15(1): mandatory on any plate fixed to a vehicle first registered on or after 1.9.2001" }
+      band: { side: left, optional: true, content: "one emblem from reg 16(10) above one identifier from reg 16(9)", max_width_mm: 50, note: "OPTIONAL. There is no mandatory band on a British plate. The EU/GB band is legacy-only: reg 16(3) allows it only where the plate was fixed and compliant before IP completion day." }
+      emblem: { present: false, rendered: placeholder, note: "no emblem, seal or coat of arms appears on a British registration plate. The optional flag under reg 16(10) sits on a separate plate or device to the LEFT of the registration plate, not on it (reg 16(1),(5)(a))." }
+      display: "front and rear (regs 5 and 6). Rear plate must be lit between sunset and sunrise (reg 9)."
+      surface_rules: "reg 11(1): no reflex-reflecting material may be applied to any part of the plate and the characters must not be made retroreflective; reg 11(1A): no design, pattern or texture; reg 11(2)-(3): nothing that impairs a true photographic image, including the fixing screws."
+      spec_history:
+        - { from: 2001, to: 2021, standard: "BS AU 145d", basis: "Sch 2 Part 1, mandatory under reg 10(2) for vehicles first registered 1.9.2001-31.8.2021" }
+        - { from: 2021, standard: "BS AU 145e", basis: "Sch 2 Part A1, mandatory under reg 10(1A) for vehicles first registered on or after 1.9.2021 and under reg 10(4A) for ANY replacement plate fitted on or after that date; reg 17A allowed voluntary early compliance from 1.1.2021" }
+    region_encoding: "plates/_decode/gb-memory-tags.yml"
+    region_encoding_mechanism: >-
+      Characters 1-2 are the memory tag. The FIRST letter is a postal area, the
+      SECOND selects the DVLA office inside it, and the pair together names the
+      office where the vehicle was FIRST registered — never its current
+      location and never the keeper's address. The table is DVLA's, published
+      in INF104 § 05 and in no statutory instrument: VERA 1994 § 23(4) does not
+      empower regulations over the composition of a mark, only over its size,
+      shape, character and display. That is why the decode lives in a _decode
+      file citing a leaflet rather than a schedule.
+    age_encoding: "characters 3-4; decode via plates/_decode/gb-age-identifiers.yml and common.age_identifiers above"
+    sources:
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 (4/22) § 03: 'The current vehicle registration format was introduced on 1 September 2001. It consists of: 2 letter memory tag (these refer to the region in the country where a vehicle is first registered); 2 numbers (these tell you when it was issued); a space and 3 letters chosen at random'; § 05 memory tags, age identifiers and the I/Q/Z bullets; § 07 character dimensions"
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 1: 'A group consisting of two letters and two numbers followed by a group of 3 letters (for example DE51 ABC)'; Table B column (3) for the 79 mm metrics"
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/2  # Sch 2 Part A1 paras 1-8 (BS AU 145e, white front / yellow rear, supplier markings, border) and Part 1 paras 1-3 (BS AU 145d)"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/15  # reg 15(1): the prescribed font is mandatory from 1.9.2001"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/16  # reg 16: the optional flag/identifier device, its 50 mm cap, and the legacy-only GB band"
+      - "https://www.legislation.gov.uk/ukpga/1994/22/section/23  # VERA 1994 s 23(1) (the mark is assigned to the vehicle) and s 23(4) (the regulation-making power reaches size, shape, character and display only)"
+    notes: >-
+      THE CURRENT BRITISH MARK, and the strongest combined DATE-plus-REGION
+      signal in the entire dataset: two characters say where a vehicle was first
+      registered and two say when, to within six months, from a table that runs
+      to 2050. period.start 2001 is a REAL start, not an instrument date — it is
+      stated twice, by INF104 § 03 and by reg 1(1)(b) of the very instrument
+      that prescribes the layout, which is why `period_evidence` is
+      `enabling-instrument` and not `instrument-in-force`. MODELLING DECISION,
+      stated because a verifier will ask: the 1 September 2021 switch from
+      BS AU 145d to BS AU 145e is NOT cut as a second series. The MARK did not
+      change, the colours did not change and the character metrics did not
+      change; what changed is the plate-manufacturing standard and the
+      supplier-marking and border rules. Under PRD-PLATES § 2.3 that is a
+      specification change inside one design, so it is recorded in
+      `design.spec_history` with both instruments cited. Splitting it would
+      have created two series with byte-identical regexes and no consumer-
+      visible difference.
+
+  # =========================================================================
+  # MOTORCYCLES — same mark, different plate. Its own series because the
+  # DESIGN differs on four axes at once (two lines only, rear only, 64 mm
+  # characters, 30 mm group gap).
+  # =========================================================================
+  - id: gb-motorcycle-2001
+    class: motorcycle
+    categories: [motorcycle, tricycle, quadricycle]
+    period: { start: 2001 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL99 LLL"
+      regex: '\A[A-Z]{2}\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\A[ABCDEFGHKLMNOPRSVWY][ABCDEFGHJKLMNOPRSTUVWXY](?:0[2-9]|[1-4]\d|5[1-9]|[6-9]\d) ?[ABCDEFGHJKLMNOPRSTUVWXYZ]{3}\z'
+      charset: { notes: "identical to gb-standard-2001 — a motorcycle mark is an ordinary mark; only the plate differs" }
+      layout_note: >-
+        TWO LINES, ALWAYS. Reg 13(2): "A mark displayed on a motor cycle may not
+        be laid out in conformity with diagram 1a, 2a, 3a, 4a, 5a, 6a, 7a, 8a or
+        9a" — the single-line diagrams — so the mark is stacked, the memory tag
+        and age identifier above and the random triple below, separated by the
+        13 mm vertical space of Table B line 6. INF104 § 07 says the same in
+        plain words: "Motorcycle and motor tricycle number plate characters
+        (registered on or after 1 January 1973) must be set on 2 lines."
+    design:
+      plate_note: "no prescribed plate dimensions — see gb-standard-2001 and the header"
+      background: { color: "#FFFF00", finish: retroreflective, hex_basis: observed, spec_note: "Sch 2 Part A1 para 3: the mark is displayed on the BACK, so the background is yellow. A post-1.9.2001 motorcycle has no front plate at all, which is why this series' primary background is the yellow one." }
+      foreground: "#000000"
+      rear_differs: false
+      rear_differs_note: "false BECAUSE there is only one plate: reg 6(5)(a) — 'a registration plate must not be fixed on the front of a vehicle if it was first registered on or after 1st September 2001' (motor cycles and motor tricycles without a four-wheeled-type body). Reg 6(5)(b): a pre-1.9.2001 machine MAY carry a front plate but need not."
+      characters: { height_mm: 64, width_mm: 44, stroke_mm: 10, space_within_group_mm: 10, space_between_groups_mm: 30, vertical_space_between_groups_mm: 13, min_margin_mm: 11, source_note: "reg 14(3) permits 64 mm on a motor cycle, motor tricycle, quadricycle, agricultural machine, works truck or road roller; Table B column (4) lines 1, 3, 4, 5, 6, 7" }
+      font: { name: "prescribed font (Sch 4 Part 2, 64 mm)", mandatory: true, note: "Schedule 4 has a SECOND drawing specifically for 64 mm characters — the reduced set is a distinct statutory font, not a scaled copy of the 79 mm one" }
+      band: { side: left, optional: true, max_width_mm: 50 }
+      display: "rear only for machines first registered on or after 1.9.2001 (reg 6(5)(a)); rear plate lit between sunset and sunrise (reg 9), with the relevant-area diagonal reduced to 15 metres for 44 mm characters (reg 9(5)(a))"
+    region_encoding: "plates/_decode/gb-memory-tags.yml"
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/6  # reg 6(5)(a)-(b): no front plate on a motor cycle or non-car-bodied motor tricycle first registered on or after 1.9.2001"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/13  # reg 13(2): the nine single-line diagrams are unavailable to a motor cycle"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/14  # reg 14(3): 64 mm characters permitted for motor cycles, motor tricycles, quadricycles, agricultural machines, works trucks and road rollers"
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Table B column (4): 44 mm width, 10 mm stroke, 10 mm within group, 30 mm between groups, 13 mm vertical, 11 mm margin"
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 07 'Motorcycles and tricycles': rear only from 1.9.2001; two lines from 1.1.1973; the quadricycle 15 kW / 400 kg (550 kg goods) threshold"
+    notes: >-
+      BRITISH MOTORCYCLES CARRY AN ORDINARY MARK ON AN EXTRAORDINARY PLATE.
+      A separate series and not a variant because the design differs on four
+      axes at once — rear-only, two-line-only, 64 mm characters and a second
+      statutory font drawing — which is exactly the PRD-PLATES § 2.3 test.
+      Two edge cases INF104 § 07 states and this series carries: a tricycle
+      "made from four-wheeled bodies, such as saloon cars" may use EITHER the
+      car or the motorcycle requirements, while a tricycle built from a
+      motorcycle must use the motorcycle rules; and a quadricycle must display
+      FRONT AND REAR plates but may use the reduced 64 mm set if its net engine
+      power is 15 kW or less and its unladen weight is 400 kg or less (550 kg
+      for a goods vehicle). Mopeds are not a British plate category at all —
+      see classes_not_modelled.moped.
+
+  # =========================================================================
+  # ZERO-EMISSION GREEN FLASH — 8 December 2020. The only British plate
+  # feature that carries a numbered colour.
+  # =========================================================================
+  - id: gb-green-zev-2020
+    class: electric
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2020 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL99 LLL"
+      regex: '\A[A-Z]{2}\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\A[ABCDEFGHKLMNOPRSVWY][ABCDEFGHJKLMNOPRSTUVWXY](?:0[2-9]|[1-4]\d|5[1-9]|[6-9]\d) ?[ABCDEFGHJKLMNOPRSTUVWXYZ]{3}\z'
+      charset: { notes: "identical to gb-standard-2001 — the green flash marks the vehicle, never the mark" }
+      format_note: >-
+        THE MARK IS UNCHANGED AND THAT IS THE POINT: a British zero-emission
+        vehicle is NOT identifiable from its registration string. Contrast the
+        German E-Kennzeichen, which appends a literal "E" to the
+        Erkennungsnummer and is therefore parseable. Any consumer trying to
+        infer powertrain from a British mark will fail, and a parse API must
+        say so rather than guess.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: true
+      band:
+        side: left
+        color: "#00B140"
+        hex_basis: observed
+        spec: "Pantone 7481c"
+        width_min_mm: 40
+        width_max_mm: 50
+        finish: retroreflective
+        note: >-
+          Reg 16(4B), verbatim: the plate or device "must be— (a) made from
+          retroreflective material; (b) colour Pantone 7481c or a colour match
+          that is as close as possible to this colour; (c) no less than forty
+          millimetres and no more than fifty millimetres in width." A PANTONE
+          REFERENCE IS NOT AN RGB VALUE: the hex above is an sRGB approximation
+          of Pantone 7481 C and is marked observed accordingly. This is the only
+          numbered colour anywhere in British plate law, and it arrived by
+          amendment in 2020.
+      band_content: "reg 16(4D): the green device may itself carry one reg 16(9) identifier with one reg 16(10) emblem above it, subject to the same 50 mm and margin limits"
+      exclusivity: "reg 16(4C): 'No other vehicle may display a plate or other device which is green in colour.'"
+      trailer_rule: "reg 16(11)(b): where an eligible vehicle is towing a trailer, the green-device paragraphs may also apply to the plate fixed to that trailer"
+    eligibility: >-
+      Reg 16(11)(a), verbatim: an "'eligible vehicle' means a vehicle to which
+      these regulations apply and which cannot produce any tailpipe emissions."
+      Note what this is NOT: it is not a tax class, not a CO2 threshold and not
+      a battery-capacity test, so a plug-in hybrid is excluded by construction.
+    region_encoding: "plates/_decode/gb-memory-tags.yml"
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/16  # reg 16(4A)-(4D) and (11), inserted by The Road Vehicles (Display of Registration Marks) (Amendment) Regulations 2020 (S.I. 2020/1276) regs 1, 4, in force 8.12.2020: Pantone 7481c, 40-50 mm, retroreflective, exclusivity, the tailpipe definition and the trailer extension"
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 09: 'From 8 December 2020 eligible zero emission vehicles (ZEVs) are permitted to display a green flash on the left hand side of the number plate'"
+      - "https://www.gov.uk/displaying-number-plates/rules-number-plates  # 'display a green flash, if you have a zero-emission vehicle'"
+    notes: >-
+      THE GREEN FLASH. period.start 2020 is a REAL start with a day attached:
+      S.I. 2020/1276 came into force on 8 December 2020 and INF104 § 09 gives
+      the same date, so this is `enabling-instrument`, not folklore. Its own
+      series rather than a sub-entry of gb-standard-2001 because BOTH the
+      period and the design differ (PRD-PLATES § 2.3), and because the class
+      vocabulary's `electric` value would otherwise have no British home. The
+      flash is OPTIONAL — a zero-emission vehicle without one is entirely
+      lawful — so a green flash is evidence of a ZEV and its absence is
+      evidence of nothing.
+
+  # =========================================================================
+  # NORTHERN IRELAND — Table A rows 8 and 9, each "issued only in Northern
+  # Ireland". Two shapes, therefore two series (one pattern = one series).
+  # =========================================================================
+  - id: gb-ni-standard
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{3} ?\d{4}\z'
+      charset:
+        notes: >-
+          NO STRICT TWIN IS AUTHORED. The Northern Irish letter triple is
+          universally described as a district code (the second and third letters,
+          always including an I or a Z, naming the council area of issue) plus a
+          leading serial letter — and NO PRIMARY FOR THAT TABLE WAS LOCATED in
+          this pass. DVLA's INF104 memory-tag table is Great Britain only and
+          says nothing about Northern Ireland; nidirect routes registration
+          questions to DVLA and publishes no format page. Rather than launder
+          the enthusiast tables into a `regex_strict`, this series carries only
+          the statutory shape, and the decode is recorded as a gap.
+      layout_note: "reg 13(2) applies here too: a Northern Irish motorcycle mark may not use diagram 8a (the single-line one), so it is stacked like any other motorcycle mark"
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: true
+      characters: { height_mm: 79, width_mm: 50, stroke_mm: 14, space_within_group_mm: 11, space_between_groups_mm: 33, min_margin_mm: 11 }
+      font: { name: "prescribed font (Sch 4 Part 1, 79 mm)", mandatory: true }
+      band:
+        side: none
+        note: >-
+          NO FLAG AND NO IDENTIFIER LETTERS. Reg 16(8)(b): the flag-and-
+          identifier permission in reg 16(4) "does not apply ... if the relevant
+          vehicle is recorded in the part of the register relating to Northern
+          Ireland." This is the single most visible design difference between a
+          Northern Irish plate and a British one, and it keys off the REGISTER
+          entry rather than the mark, so it survives the vehicle moving to Great
+          Britain. The green zero-emission device of reg 16(4A) is NOT excluded
+          by reg 16(8) — reg 16(8) disapplies only paragraph (4) — which is
+          worth a verifier's eye.
+      display: "front and rear (regs 5 and 6). Reg 2(1) fixes the 'relevant date' — the boundary between the two fixing regimes — at 1st January 1948 in Northern Ireland against 1st October 1938 in Great Britain."
+    region_encoding: mechanism-only
+    region_encoding_mechanism: >-
+      The three-letter group is understood to carry a district identifier in its
+      second and third letters, one of which is always I or Z (which is why the
+      Regulations' own examples are "ABZ 1234" and "1234 ABZ"). The allocation
+      table is NOT published by DVLA on gov.uk and was not located in any
+      primary in this pass. Recorded as a gap; no _decode file is authored,
+      because an unsourced decode is worse than none.
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 8, verbatim: 'A group of 3 letters followed by a group of 4 numbers (for example ABZ 1234, being a form of mark issued only in Northern Ireland).'"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/16  # reg 16(8)(b): no flag or identifier on a vehicle recorded in the Northern Ireland part of the register"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/2  # reg 2(1): 'relevant date' means 1st October 1938 in Great Britain and 1st January 1948 in Northern Ireland"
+      - "https://www.gov.uk/hmrc-internal-manuals/vat-new-means-transport-northern-ireland/vatninmt3500  # 'Since 2014 the DVLA (Driver and Vehicle Licensing Agency) has been responsible for Vehicle Excise Duty and licensing of vehicles in Northern Ireland'"
+    notes: >-
+      THE NORTHERN IRISH STANDARD MARK — three letters and four numbers, and
+      the reason a British plate parser cannot be a two-letter-memory-tag
+      parser. Modelled inside gb.yml rather than as its own jurisdiction file
+      because Northern Ireland has no ISO 3166-1 code and because the shape is
+      prescribed by the UK-wide instrument itself. PERIOD CAVEAT, stated
+      plainly: 2001 is the date of the instrument that STATES this shape, not
+      the date Northern Ireland began issuing it — the Northern Irish system is
+      decades older (the 1973 Northern Irish Regulations it replaced are in
+      Schedule 1's revocation list), and no primary for its origin was secured.
+      Unlike the Great Britain series this one encodes NO DATE AT ALL: a
+      Northern Irish mark is dateless, which is exactly why Northern Irish marks
+      are prized as personalised marks in Great Britain.
+
+  - id: gb-ni-reversed
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{4} ?[A-Z]{3}\z'
+      charset: { notes: "as gb-ni-standard: no sourced district table, so no strict twin" }
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: true
+      band: { side: none, note: "reg 16(8)(b) as for gb-ni-standard" }
+    region_encoding: mechanism-only
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 9, verbatim: 'A group of 4 numbers followed by a group of 3 letters (for example 1234 ABZ, being a form of mark issued only in Northern Ireland).'"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/16  # reg 16(8)(b)"
+    notes: >-
+      THE REVERSED NORTHERN IRISH SHAPE. A separate series from gb-ni-standard
+      because a series is one PATTERN — the parse API must be able to score
+      "1234 ABZ" and "ABZ 1234" independently, exactly as plates/nl.yml scores
+      the three alternating 1951 GV shapes separately. Table A row 9 is the
+      only primary secured for it, so like row 8 it carries an instrument date
+      and no district decode.
+
+  # =========================================================================
+  # THE PREVIOUS STANDARD FORMAT — the PREFIX system. Table A row 2. This is
+  # the "one series back" PRD-PLATES L1 requires, and the one period claim in
+  # this file that is NOT firmly dated at its start.
+  # =========================================================================
+  - id: gb-prefix-1984
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1984, end: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "L999 LLL"
+      regex: '\A[A-Z]\d{1,3} ?[A-Z]{3}\z'
+      structure:
+        - "character 1: year prefix letter (changed annually, later twice-yearly)"
+        - "characters 2-4: one to three numbers"
+        - "final 3 characters: area code letters"
+      charset:
+        notes: >-
+          NO STRICT TWIN IS AUTHORED. The prefix era's letter restrictions (the
+          excluded prefix letters, the local-office area-code table) are not in
+          INF104, which covers only the current format, and not in the
+          Regulations, which prescribe shape and not composition. Table A row 2
+          is the whole of the sourced grammar, so `regex` IS the grammar and
+          `matching` is `strict`.
+      layout_note: "reg 13(3): diagram 2c — one of the three arrangements permitted for this shape — may NOT be used on a plate fixed to a vehicle first registered on or after 1.9.2001, nor on a replacement plate fitted on or after that date unless the vehicle was first registered before 1.1.1973"
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "Sch 2 Part 2 para 2 (the optional specification for vehicles registered 1.1.1973-31.8.2001, BS AU 145a): black characters on a white background at the front" }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed, spec_note: "Sch 2 Part 2 para 3: black characters on a yellow background at the back" }
+      foreground: "#000000"
+      rear_differs: true
+      characters: { height_mm: 89, width_mm: 64, stroke_mm: 16, space_within_group_mm: 13, space_between_groups_mm: 38, vertical_space_between_groups_mm: 19, min_margin_mm: 13, source_note: "reg 14(2) permits 89 mm on a vehicle first registered before 1.9.2001; Table B column (2). A REPLACEMENT plate fitted on or after 1.9.2001 to such a vehicle must drop to 79 mm/50 mm (reg 14(2)(a) and (4)(a)(ii)), so a 1990s car wearing new plates is metrically a modern plate." }
+      font: { name: "prescribed font, or a style substantially similar", mandatory: false, note: "reg 15(2): plates outside reg 15(1) may use a style 'substantially similar to the prescribed font'; reg 15(4) still forbids italics, non-vertical fonts, multiple or broken strokes and lookalike formations. A REPLACEMENT plate fitted from 1.9.2001 must use the prescribed font (reg 15(1)(b))." }
+      band: { side: left, optional: true, max_width_mm: 50 }
+      rear_differs_history: "the yellow rear plate is the 1.1.1973 boundary the Regulations use throughout (Sch 2 Parts 2 and 3, reg 18), not a 2001 innovation"
+    region_encoding: mechanism-only
+    region_encoding_mechanism: >-
+      The final two of the three trailing letters were the LOCAL OFFICE code
+      under the pre-2001 system; the first was a serial letter. No primary for
+      the office table was located in this pass — INF104 documents only the
+      current memory tags — so no decode file is authored and the mechanism is
+      recorded instead.
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 2, verbatim: 'A group consisting of a single letter and not more than 3 numbers followed by a group of 3 letters (for example A123 ABC).' Table B column (2) for the 89 mm metrics"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/13  # reg 13(3): diagram 2c unavailable to plates fixed from 1.9.2001"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/14  # reg 14(2): 89 mm characters permitted on pre-1.9.2001 vehicles, but not on a replacement plate"
+      - "https://www.legislation.gov.uk/uksi/2001/561  # reg 17 marginal citation M2: 'S.I. 1971/450. The Relevant amendments are by S.I. 1972/1865, 1975/1089 and 1984/814' — the instrument trail for the pre-2001 format provisions; Sch 1 revokes S.I. 1984/814 in whole"
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 03: the current format 'was introduced on 1 September 2001' — which dates the END of prefix issuance to 31 August 2001"
+    notes: >-
+      THE PREFIX SYSTEM — the format Britain replaced on 1 September 2001, and
+      the one series in this file whose START IS NOT PRIMARY-SOURCED. The END is
+      firm: INF104 § 03 dates the current format to 1 September 2001, so prefix
+      issuance stopped on 31 August 2001. The START is recorded as 1984 on
+      INSTRUMENT EVIDENCE ONLY: S.I. 2001/561's own marginal citation M2 names
+      The Road Vehicles (Registration and Licensing) (Amendment) Regulations
+      1984 (S.I. 1984/814) as a relevant amendment to regulations 17 to 22 of
+      the 1971 Regulations — the format-and-display provisions these Regulations
+      revoked — and Schedule 1 revokes it in whole. THE TEXT OF S.I. 1984/814
+      COULD NOT BE READ: legislation.gov.uk carries it only as a scanned PDF
+      with no text layer ("This item of legislation is only available to
+      download and view as PDF"), it was fetched (401 KB) and `pdftotext`
+      extracted four bytes. So 1984 is the year of an instrument in the right
+      chain, not a quoted commencement, and it is flagged for the verifier. The
+      universally repeated "August 1983" A-prefix start is NOT asserted here —
+      it is logged as folklore in the dossier. A verifier who pins 1983 from a
+      primary should move this start and say so in the PR.
+
+  # =========================================================================
+  # 'Q' MARKS — Table A row 2 with a literal Q. Age unknown by design.
+  # =========================================================================
+  - id: gb-q
+    class: standard
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "Q999 LLL"
+      regex: '\AQ\d{1,3} ?[A-Z]{3}\z'
+      charset:
+        fixed_letters: "Q"
+        notes: >-
+          The prefix letter is the literal Q, which is why this series needs no
+          strict twin for its first character. INF104 § 05 confirms Q marks are
+          live: "We will still issue existing 'Q' marks", set immediately beside
+          "We will not use I, Q or Z in local memory tags identifiers" — i.e. Q
+          is excluded from the CURRENT format precisely so that it can go on
+          meaning this.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: true
+      band: { side: left, optional: true, max_width_mm: 50 }
+    region_encoding: none
+    region_encoding_note: "a Q mark encodes neither region nor date — that is its entire semantic content"
+    sources:
+      - "https://www.gov.uk/vehicle-registration/q-registration-numbers  # 'DVLA issues Q registration numbers to vehicles whose age or identity is in doubt' and 'To get a Q registration number, your vehicle has to pass a type approval process'"
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 05: 'We will still issue existing Q marks'; 'We will not use I, Q or Z in local memory tags identifiers'"
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 2 supplies the layout a Q mark is displayed in"
+    notes: >-
+      THE Q MARK — the British answer to "we cannot establish what this vehicle
+      is or when it was built": kit cars, rebuilt write-offs, imports without
+      provenance. CLASS CAVEAT, and it is a real one: _meta/classes.yml has no
+      value for "identity or age indeterminate", so `standard` is recorded as
+      the closest fit. It is emphatically NOT `temporary` — a Q mark is a
+      permanent registration, and the common belief that Q means "temporary
+      import" describes a regime that no longer applies. Flagged as a
+      vocabulary gap, in the same terms plates/de.yml flags the green
+      tax-exempt plate. period.start is an instrument date: Table A row 2 is the
+      only primary secured for the layout, and DVLA publishes no start year for
+      the Q series.
+
+  # =========================================================================
+  # EXPORT — the tax-free / personal-export mark. X + month letter + age
+  # identifier + random triple. Table A row 1's shape, carrying two dates.
+  # =========================================================================
+  - id: gb-export-x
+    class: export
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2001 }
+    period_evidence: first-age-identifier
+    matching: strict
+    format:
+      pattern: "XL99 LLL"
+      regex: '\AX[A-Z]\d{2} ?[A-Z]{3}\z'
+      regex_strict: '\AX[A-F](?:0[2-9]|[1-4]\d|5[1-9]|[6-9]\d) ?[A-Z]{3}\z'
+      structure:
+        - "character 1: literal X, 'Indicates export'"
+        - "character 2: month of issue, A-F"
+        - "characters 3-4: age identifier, same six-month rule as the standard series"
+        - "characters 5-7: 'Random' alpha characters, 'For security reasons'"
+      charset:
+        fixed_letters: "X"
+        month_letters: { A: "March or September", B: "April or October", C: "May or November", D: "June or December", E: "July or January", F: "August or February" }
+        notes: >-
+          HMRC VATNINMT3500, verbatim: "Vehicles supplied in the UK under the
+          new means of transport regime will be registered on export plates with
+          the DVLA if they are to be used on the UK's roads prior to removal. A
+          special series of index numbers are used in the format below." The
+          table gives X = "Indicates export"; the second letter = "Month in
+          which mark is issued" with the six values above; the two digits =
+          "Age identifier" on the same rule as the ordinary series, tabulated
+          from March 2002 = 02 through "Sept 2049 - Feb 2050 = 99"; and the
+          trailing three = "Alpha characters ... Random".
+        month_letter_note: >-
+          THE MONTH LETTER IS AMBIGUOUS BY CONSTRUCTION and a parse API must not
+          resolve it alone: A means March OR September, B April OR October, and
+          so on. The disambiguation comes from the age identifier beside it —
+          March-August takes YY, September-February takes YY+50 — so the PAIR
+          resolves to a single month, and neither character does on its own.
+          This is the tightest date encoding anywhere in this dataset: a British
+          export mark names the month.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      background_rear: { color: "#FFFF00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      rear_differs: true
+      colour_gap_note: >-
+        NO PRIMARY PRESCRIBING A DISTINCTIVE COLOUR FOR THIS SERIES WAS LOCATED.
+        The colours above are the general rule of Sch 2 Part A1 paras 2-3, which
+        applies to any registration plate unless another instrument provides
+        otherwise, and HMRC's page says only "export plates" without describing
+        them. Enthusiast references describe a red-on-white personal-export
+        plate carrying an expiry date; that is NOT asserted here and is recorded
+        as a gap.
+      band: { side: left, optional: true, max_width_mm: 50 }
+    region_encoding: none
+    region_encoding_note: "characters 1-2 are export and month, NOT a memory tag — an X-series mark carries no region signal at all, and a consumer decoding 'XA' against the memory-tag table will get a wrong answer (X is not even a valid memory-tag first letter, which is the tell)"
+    sources:
+      - "https://www.gov.uk/hmrc-internal-manuals/vat-new-means-transport-northern-ireland/vatninmt3500  # HMRC VAT New Means of Transport (Northern Ireland) manual, VATNINMT3500 'The format of the tax-free registration mark': the worked example 'XA51 ABC', the X/month/age/random breakdown, the month-letter table, the age table to Sept 2049 - Feb 2050 = 99, and 'For security reasons, UK forces personnel are issued with standard index numbers'"
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 1 supplies the layout: two letters and two numbers followed by three letters"
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 05 age-identifier table, against which the '51' in HMRC's own example resolves to September 2001 - February 2002"
+    notes: >-
+      THE TAX-FREE / PERSONAL EXPORT MARK — Britain's export series, and the
+      only British mark that encodes a MONTH. period.start 2001 is derived, not
+      quoted, and the derivation is recorded so a verifier can check it in one
+      step: HMRC's own worked example is "XA51 ABC", and INF104's age table maps
+      51 to September 2001 - February 2002, which is the first six-month period
+      of the current format. Hence `period_evidence: first-age-identifier`. The
+      series in its CURRENT shape therefore cannot predate 1 September 2001;
+      earlier British export plates existed under the old formats and are not
+      modelled. Note the jurisdictional oddity worth keeping: the clearest
+      published description of a UK-wide export mark sits in an HMRC manual
+      about NORTHERN IRELAND, because the Northern Ireland Protocol made the
+      new-means-of-transport regime a Northern Irish VAT question — and the same
+      page records that "Since 2014 the DVLA ... has been responsible for
+      Vehicle Excise Duty and licensing of vehicles in Northern Ireland."
+
+  # =========================================================================
+  # TRAILERS — a wholly separate statute, a wholly separate mark space, and
+  # the only British plate with its own prescribed layout diagram.
+  # =========================================================================
+  - id: gb-trailer-2018
+    class: trailer
+    categories: [trailer]
+    period: { start: 2018 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L999 9999"
+      regex: '\A[A-Z]\d{3} ?\d{4}\z'
+      regex_strict: '\A[ABD-Z]\d{3} ?\d{4}\z'
+      charset:
+        letters_excluded: [C]
+        notes: >-
+          Trailer Registration Regulations 2018 reg 15(1), verbatim: the
+          Secretary of State "must as soon as practicable assign a registration
+          mark of one letter followed by seven numbers to the trailer."
+          Schedule 2 para 1(1): "A registration mark must be displayed as a
+          group consisting of one letter and three numbers followed by a group
+          consisting of four numbers (for example A123 4567)". The C exclusion
+          is DVLA's, from INF291: "Please note that a DVLA issued trailer
+          registration number will never start with the letter 'C'." No further
+          letter exclusion is published, so `regex_strict` excludes C and
+          nothing else.
+      layout_note: >-
+        TWO LINES, PRESCRIBED. Schedule 2 para 1(1) prescribes the stacked
+        layout in the regulation itself (one letter and three numbers over four
+        numbers), with 5 mm of vertical space between the groups (para 1(4)) —
+        a tighter stack than any Display Regulations layout. INF291 renders it
+        as "A123 / 4567".
+    design:
+      plate_note: >-
+        INF291: "A trailer registration plate is the same shape as the standard
+        motorcycle plate" — a SHAPE statement, not a dimension, and no width or
+        height is prescribed here either.
+      background: { color: "#FFFFFF", finish: painted, hex_basis: observed, spec_note: "Sch 2 para 2(1), verbatim: 'A registration plate must have solid black characters on a white background.' NOTE WHAT IS MISSING: the trailer regulations do not require retroreflecting material and do not reference BS AU 145 at all. The finish is recorded as painted for that reason and flagged for the verifier." }
+      foreground: "#000000"
+      rear_differs: false
+      rear_differs_note: "there is only one plate, and it is white front-style even though it is displayed at the REAR — the one British plate that breaks the white-front/yellow-rear rule, because it is issued under a different statute"
+      characters: { height_mm: 64, width_mm: 44, width_mm_i_and_1: 10, stroke_mm: 10, space_within_group_mm: 10, vertical_space_between_groups_mm: 5, min_margin_top_and_lateral_mm: 5, min_margin_bottom_mm: 13, source_note: "Sch 2 para 1(3)-(6). Para 1(7) repeats the Display Regulations' measuring conventions and para 1(8) the +/-1 mm / +/-0.5 mm tolerances." }
+      font: { name: "prescribed font (drawing in Sch 2 para 1(2)(a))", mandatory: false, note: "Sch 2 para 1(2): the prescribed font OR 'a style which is substantially similar'; paras 1(9)-(10), inserted by S.I. 2021/1043, carry the same serif tolerance and the same six forbidden formations as reg 15(3)-(4) of the Display Regulations" }
+      band: { side: none, note: "Sch 2 para 2(5): 'No material, other than a registration mark, may be displayed on a registration plate except for information that identifies the manufacturer of the registration plate.' No flag, no identifier, no band. INF291 accordingly instructs that a UK sticker 'must not be displayed on the trailer registration plate'." }
+      surface_rules: "Sch 2 para 2(2)-(3): no design, pattern or texture, and nothing that impairs a true photographic image"
+      display: "Reg 17(1): on the rear, vertically, as far as reasonably practicable from the towing vehicle's own plate, distinguishable from behind in normal daylight. Reg 17(2): if a rear plate is impossible, one on BOTH SIDES."
+    validity:
+      certificate_years: 10
+      note: "INF291: 'Your trailer registration certificate is valid for 10 years.' Registration is compulsory for trailers over 750 kg used in most of Europe and is unavailable to trailers of 750 kg or less and to A-frame trailers."
+    binding: vehicle
+    region_encoding: none
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2018/1203  # The Trailer Registration Regulations 2018, made 20 November 2018 under the Haulage Permits and Trailer Registration Act 2018 (c. 19) ss 13-25 and the Vehicles (Crime) Act 2001 ss 25(1), 41(2)(a); reg 15 in force 21.11.2018 (Sch 1 para 1(j)); reg 15(1) the one-letter-seven-numbers mark; Sch 2 para 1 the layout, font and metrics; Sch 2 para 2 the black-on-white plate; reg 17 fixing"
+      - "https://assets.publishing.service.gov.uk/media/69df60e8a68b527bd9408e8a/trailer-registration-service-guidance-inf291.pdf  # DVLA INF291 (2/26): 'The format of the trailer registration number is one letter followed by 7 numbers, which are set out over 2 lines'; 'a DVLA issued trailer registration number will never start with the letter C'; the same plate metrics; the 10-year certificate; the over-750 kg scope and the A-frame exclusion"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/5  # reg 5(2)(b)-(c): where a vehicle tows a trailer the TOWING VEHICLE's rear mark is displayed on the trailer (or the rearmost trailer) — the ordinary British rule the 2018 scheme sits on top of, not in place of"
+    notes: >-
+      THE BRITISH TRAILER MARK — a genuinely separate registration space under a
+      genuinely separate statute, and the newest British series. Two facts make
+      it structurally unlike every other entry here. FIRST, it does not replace
+      the ordinary rule: reg 5(2) of the Display Regulations still requires the
+      TOWING VEHICLE's mark to be repeated on the rearmost trailer, so a
+      registered trailer travelling abroad carries TWO plates showing TWO
+      DIFFERENT MARKS, and INF291 says exactly that ("It must be displayed as
+      well as the towing vehicle's registration plate and must be fixed as far
+      as reasonably possible from this plate"). SECOND, its purpose is
+      international: the scheme exists to satisfy the 1968 Convention on Road
+      Traffic, which reg 2(1) of the 2018 Regulations defines as "the
+      Convention", and INF291 lists Ireland, Cyprus, Malta and Spain as the
+      European countries that do not require it. period.start 2018 is the
+      commencement of reg 15 (21 November 2018), not the date the public service
+      opened.
+
+  # =========================================================================
+  # HISTORIC — the black-and-silver regime. A DESIGN laid over whatever mark
+  # the vehicle already holds, so RECALL-ONLY (PRD-PLATES § 2.7).
+  # =========================================================================
+  - id: gb-historic-blacksilver
+    class: historic
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    # RECALL-ONLY: this series has no format of its own. The black-and-silver
+    # plate is a permitted SPECIFICATION for a vehicle old enough to qualify,
+    # and the vehicle keeps whichever mark it already holds — which may be any
+    # of the nine Table A shapes. The regex is therefore the union of all nine,
+    # and a match says only "this string has a shape Britain has issued".
+    matching: recall-only
+    format:
+      pattern: "LLL 999"
+      regex: '\A(?:[A-Z]{2}\d{2} ?[A-Z]{3}|[A-Z]\d{1,3} ?[A-Z]{3}|[A-Z]{3} ?\d{1,3}[A-Z]|\d{4} ?[A-Z]{1,2}|\d{1,3} ?[A-Z]{1,3}|[A-Z]{1,3} ?\d{1,3}|[A-Z]{1,2} ?\d{4}|[A-Z]{3} ?\d{4}|\d{4} ?[A-Z]{3})\z'
+      pattern_note: >-
+        The pattern shown is ONE representative shape (Table A row 6, the
+        dateless letters-then-numbers arrangement most pre-1980 British vehicles
+        wear). The regex is the union of all NINE Table A descriptions, in Table
+        A's own order, because the black-and-silver specification attaches to
+        the VEHICLE's age and not to the mark's shape.
+    design:
+      plate_note: "no prescribed plate dimensions"
+      background: { color: "#000000", finish: painted, hex_basis: observed, spec_note: "Sch 2 Part 3 B.2: 'A plate displaying white, silver or light grey letters and numbers on a black surface'" }
+      foreground: "#FFFFFF"
+      foreground_alternatives: ["white", "silver", "light grey"]
+      foreground_note: >-
+        Sch 2 Part 3 B.2, verbatim: "A plate displaying white, silver or light
+        grey letters and numbers on a black surface having every character
+        indelibly inscribed on the surface or so attached to the surface that it
+        cannot readily be detached from it". THREE colours are permitted for the
+        characters and the statute names them without numbering them, so the hex
+        is the first-named alternative, marked observed. Four constructions are
+        allowed: (a) cast or pressed metal with raised characters, (b) a plate
+        with separate characters attached, (c) a plastic plate with reverse
+        engraved or foil characters, or (d) "an unbroken rectangular area on the
+        surface of the vehicle" where it is flat or almost flat — the last being
+        the only place British law contemplates a mark painted directly onto the
+        bodywork.
+      rear_differs: false
+      rear_differs_note: "black and silver front AND rear — the historic regime is the one British case where the two plates match"
+      illuminated_variant:
+        note: "Sch 2 Part 3 A: where the plate is built so the mark can be illuminated from behind through translucent characters, the mark 'must be formed of white translucent characters on a black background' and must appear white on black when lit during the hours of darkness"
+      font: { name: "prescribed font, or a style substantially similar", mandatory: false, note: "reg 15(1)(b) expressly excepts a vehicle first registered before 1.1.1973 from the prescribed-font requirement even on a replacement plate, so a genuine period style is lawful here and nowhere else" }
+      band: { side: none }
+      characters:
+        height_mm: 79
+        width_mm: 57
+        stroke_mm: 14
+        space_within_group_mm: 11
+        space_between_groups_mm: 33
+        vertical_space_between_groups_mm: 19
+        min_margin_mm: 11
+        note: >-
+          THESE ARE INF104 § 07's "GROUP 2" METRICS — the column headed
+          "Traditional number plates for vehicles manufactured before 1 January
+          1973" — and they are the ones that belong on a black-and-silver plate.
+          They are Table B COLUMN (3) with LINE 2 for the width: 57 mm, not the
+          50 mm of line 1, because line 1 is expressly "all new registration
+          plates from 1.9.01 EXCEPT replacement of 'classic' plates". A classic
+          plate is therefore the one modern British plate that keeps the wider
+          57 mm character. INF104's "Group 1" column (89 / 64 / 16 / 13 / 38 /
+          13 / 13 / 19) remains available under reg 14(2) to any plate on a
+          vehicle first registered before 1.9.2001 that was itself fitted before
+          that date. Table B lines 8-9 additionally give pressed or embossed
+          plates fixed before 1.9.2001 and "classic" plates their unique "I"/"1"
+          spacing latitude — 13-37 mm and 13-60 mm at 89 mm height, 11-33 mm and
+          11-54 mm at 79 mm — which exists nowhere else in British plate law and
+          is why period cast plates with widely-spaced 1s are lawful.
+        alternative_group1: { height_mm: 89, width_mm: 64, stroke_mm: 16, space_within_group_mm: 13, space_between_groups_mm: 38, min_margin_mm: 13, basis: "reg 14(2) + Table B column (2); INF104 § 07 'Group 1'" }
+    eligibility:
+      base_rule: "Sch 2 Part 3 applies to a vehicle FIRST REGISTERED before 1st January 1973 (reg 10(5))"
+      extension: >-
+        Reg 18, verbatim: "For the purposes of these Regulations a vehicle which
+        was first registered on or after 1st January 1973 shall be treated as if
+        it was first registered before that date if— (a) it is an exempt vehicle
+        for the purposes of paragraph 1A(1) of Schedule 2 to the Act and was
+        constructed on or before 1st January 1980, or (b) not being such a
+        vehicle, it was constructed before 1st January 1973." The words "and was
+        constructed on or before 1st January 1980" were INSERTED by S.I.
+        2020/1363 reg 6 with effect from 1 January 2021.
+      source_disagreement: >-
+        RECORDED, NOT AVERAGED (PRD-PLATES § 5.3). INF104 § 07 says: "From April
+        2020 vehicles manufactured before 1 January 1980 are also able to display
+        traditional 'black and white' number plates. You must: have applied to
+        DVLA; be registered within the 'historic vehicles' tax class." The
+        instrument says "constructed ON OR BEFORE 1st January 1980" and its
+        amendment took effect on 1 January 2021. Both are consistent with the
+        underlying mechanism — reg 18(a) keys off the historic-vehicle tax class
+        in Sch 2 para 1A(1) VERA, which was a ROLLING 40-year exemption, so April
+        2020 is when the rolling class first reached 1980-built vehicles and
+        January 2021 is when the amendment FROZE the cut-off there — but the two
+        dates and the before/on-or-before wording differ on their face and the
+        difference is recorded rather than resolved.
+    region_encoding: mechanism-only
+    region_encoding_note: "whatever the underlying mark encodes; a pre-1980 British mark is generally a local-office code with no memory tag"
+    sources:
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/2  # Sch 2 Part 3 A.1-2 and B.1-2: the illuminated white-on-black variant, the BS AU 145 reflective option, and the white/silver/light-grey-on-black plate with its four permitted constructions"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/10  # reg 10(5): a vehicle first registered before 1.1.1973 may use Part 3, Part 2, Part A1 or Part 1"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/18  # reg 18(a)-(b) and the S.I. 2020/1363 insertion of 'constructed on or before 1st January 1980'"
+      - "https://www.legislation.gov.uk/uksi/2001/561/regulation/15  # reg 15(1)(b): the prescribed font is not forced onto a replacement plate for a pre-1.1.1973 vehicle"
+      - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A rows 1-9, the nine shapes the union regex is built from; Table B lines 8-9 for the 'classic' plate spacing latitude"
+      - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 07 'Traditional number plates for vehicles made before 1 January 1973', the April 2020 extension and the two DVLA conditions"
+    notes: >-
+      THE BLACK-AND-SILVER PLATE — Britain's historic regime, and a textbook
+      `recall-only` series: it is a permitted PLATE SPECIFICATION, not an
+      issuance series, so it has no grammar of its own and its regex is the
+      union of every shape Table A admits. A match means "this string is
+      British-shaped", never "this is a valid historic registration", and a
+      consumer reading `matching` gets that without inferring it. period.start
+      2001 is the instrument date of the Regulations that state the
+      specification, NOT the date black plates began (they are older than the
+      yellow ones — the 1.1.1973 boundary in Sch 2 Part 3 is precisely the date
+      after which reflective white/yellow became the norm). Two DVLA conditions
+      sit outside the Regulations and are recorded from INF104 because a claims
+      model needs them: the keeper must have APPLIED to DVLA and the vehicle
+      must be REGISTERED IN THE HISTORIC VEHICLES TAX CLASS. Age alone is not
+      enough.

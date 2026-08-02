@@ -1,0 +1,1147 @@
+# plates/fr.yml — France (PRD-PLATES gate L1).
+#
+# EVERY format, colour, period and class claim in this file is sourced to one
+# of five French primaries, all fetched 2026-08-02 and pinned per claim below:
+#
+#   (1) Arrêté du 9 février 2009 relatif aux MODALITÉS d'immatriculation des
+#       véhicules (NOR DEVS0824995A), consolidated to 2 August 2026 — this is
+#       where the NUMBER lives, in its annexe VII.
+#   (2) Arrêté du 9 février 2009 fixant les CARACTÉRISTIQUES et le mode de pose
+#       des plaques d'immatriculation des véhicules (NOR DEVS0824974A),
+#       consolidated to 1 January 2026 — this is where the PLATE lives:
+#       colours, the Euro-band, the identifiant territorial, the annexe 7
+#       special-plate colour table.
+#   (3) Arrêté du 23 mars 2009 (NOR DEVS0906197A) — the entry-into-force date.
+#   (4) Arrêté du 15 avril 1996 relatif aux plaques d'immatriculation
+#       réflectorisées — the colorimetry (chromaticity quadrilaterals).
+#   (5) Arrêté du 5 novembre 1984 relatif à l'immatriculation des véhicules
+#       (abrogated 31 December 2009) — the one-series-back FNI system.
+#   plus code de la route art. R. 317-8 (how many plates, on what) and
+#   art. R. 322-2 (the number is attributed "à titre définitif au véhicule").
+#
+# THE FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. FRANCE SPLITS THE NUMBER FROM THE PLATE ACROSS TWO INSTRUMENTS OF THE SAME
+#    DAY. Arrêté (1) art. 2 II: "La composition du numéro d'immatriculation
+#    présent sur le certificat d'immatriculation figure à l'annexe VII du
+#    présent arrêté." Arrêté (2) art. 1: "Le présent arrêté fixe les
+#    prescriptions techniques applicables aux plaques d'immatriculation visées
+#    à l'article R. 317-8 du code de la route et à leur contenu réglementaire."
+#    Every series below therefore cites TWO texts, and a claim sourced to the
+#    wrong one of the pair is a defect. Both are dated 9 February 2009 and both
+#    are commonly cited as "l'arrêté du 9 février 2009", which is exactly how
+#    format claims get mis-attributed.
+#
+# 2. THE DÉPARTEMENT ON A MODERN FRENCH PLATE IS NOT A REGION SIGNAL, AND IT IS
+#    NOT PART OF THE NUMBER. Annexe VII knows nothing about départements: a SIV
+#    number is "2 lettres, suivies de 3 chiffres, suivis de 2 lettres". The
+#    département lives in a right-hand blue band, the "identifiant territorial",
+#    and arrêté (2) art. 9 says in terms:
+#      "Les plaques d'immatriculation des véhicules portant le numéro définitif
+#       prévu à l'article R. 322-2 du code de la route doivent comporter un
+#       identifiant territorial constitué par le logo officiel d'une région ou
+#       de la collectivité européenne d'Alsace et le numéro de l'un des
+#       départements de cette collectivité territoriale."
+#      "Le choix de cet identifiant territorial est libre et peut ne pas avoir
+#       de lien avec le domicile du titulaire du certificat d'immatriculation."
+#    That second sentence is the whole French trap, in the authority's own
+#    words. region_encoding is `none` on every SIV series in this file and the
+#    band is documented as a plate GRAPHIC. The one thing the band DOES
+#    constrain is internal consistency — the logo's région must own the
+#    number's département — which is why plates/_decode/fr-departements.yml
+#    carries the région on every row. The FNI series is the opposite case and
+#    decodes properly; see fact 5.
+#
+# 3. THE LETTER ALPHABET IS NOT IN THE LAW. Annexe VII gives SHAPES and nothing
+#    else: no excluded letters, no reserved combinations, no progression order.
+#    The universally repeated claims that the SIV omits I, O and U, that SS is
+#    skipped, and that the series increments right-to-left from AA-001-AA, are
+#    NOT in either arrêté, are not on service-public.gouv.fr, and no French
+#    government publication stating them was located in this pass. They are
+#    recorded as FOLKLORE (commonly repeated, unsourced) in the dossier and are
+#    NOT asserted here. Consequence, and it is deliberate: the standard series
+#    carries NO alphabet-narrowing `regex_strict`. The only narrowing this file
+#    writes is `(?!WW-)`, and that one is sourced — annexe VII C reserves the
+#    two-letter group WW for provisional numbers, so a definitive number cannot
+#    open with it without colliding with a different series in the same annexe.
+#
+# 4. PERIOD CLAIMS ARE INSTRUMENT-DATED — EXCEPT THE ONE THAT ISN'T. 15 April
+#    2009 is a REAL, primary-sourced start: arrêté (3) art. 1, verbatim, "Les
+#    dispositions du décret du 9 février 2009 susvisé et de l'arrêté du
+#    9 février 2009 susvisé relatif aux modalités d'immatriculation des
+#    véhicules entrent en vigueur le 15 avril 2009", with art. 2 fixing the
+#    same date for the plate provisions. Every SIV series here starts 2009 on
+#    that evidence (`period_evidence: enabling-instrument`). The FNI series
+#    starts 1984 on `instrument-in-force` evidence only: the system is
+#    universally dated to 1950, no primary for 1950 was secured, and inventing
+#    one was declined.
+#
+# 5. THE 2026 PINK PLATES ARE A REAL SERIES SPLIT, NOT A COSMETIC ONE. Until
+#    31 December 2025 neither arrêté prescribed ANY colour for WW provisional
+#    or W garage plates — verified against the 2009 original and the version in
+#    force on 1 June 2025, where annexe 7 has three items and none of them is
+#    WW or W. The arrêté du 21 novembre 2025 (NOR INTS2532392A) art. 1 inserted
+#    a fourth item — "Le numéro d'immatriculation est reproduit sur chaque
+#    plaque d'immatriculation en caractères noirs sur fond rose" — and art. 3
+#    fixed its entry into force at 1 January 2026. Design differs, so per
+#    PRD-PLATES §2.3 the WW and W garage regimes are each TWO series, split at
+#    2025/2026. A pink French plate cannot predate 2026; that is one of very
+#    few hard date signals a French plate carries.
+#
+# REGEX POLICY. As in plates/de.yml and plates/nl.yml, `format.regex` is the
+# lint-round-trippable form (the lint generates serials from `format.pattern`,
+# L -> any A-Z and 9 -> any 0-9, and every one must match). `format.regex_strict`
+# carries the tighter SOURCED form, and in this file it does exactly three
+# things, each of them quoted from the arrêté in the series that carries it:
+#   * the WW-collision lookahead on every definitive-number series;
+#   * the numeric RANGES of the diplomatic and consular groups (1-199 country,
+#     200-399 delegation country, 400-499 organisation, 500/600/700 fixed,
+#     1-999 and 100-9999 order groups) — every one of which starts at 1, so the
+#     strict twins also carry the no-leading-zeros consequence the way
+#     plates/de.yml carries Anlage 1's;
+#   * the closed organisation letters U/E/S on the CD delegation series.
+# It never narrows an alphabet the law leaves open: the definitive series has
+# no letter restriction at all (fact 3), and the K delegation letters are
+# printed with a trailing ELLIPSIS in annexe VII D.3 where the parallel CD
+# provision ends with a semicolon, so that one series' strict twin narrows its
+# numbers and leaves its letter class at [A-Z].
+#
+# SEPARATOR STRESSOR, FLAGGED FOR THE §2.6 OWNER. Annexe VII D.2 and D.3 print
+# a FULL STOP inside the consular number: "Remarque : les deux derniers groupes
+# de chiffres seront séparés par un point. Exemple : 105 C 1.75." U+002E is in
+# the dataset's FORGIVING set but not in its EMITTED set, so this file cannot
+# spell it. The two affected series (fr-consular-c, fr-consular-k) therefore
+# write a SPACE at that position, with `separator_note` on each saying so and
+# quoting the arrêté. This is the first sourced case in the dataset of an
+# authority prescribing a separator glyph outside the emitted pair, and it is
+# an amendment candidate for plates/_meta/separators.yml — see the dossier.
+# A forgiving consumer is unaffected: U+002E is already strippable, so
+# "105 C 1.75" and "105 C 1 75" canonicalise to the same serial.
+jurisdiction: fr
+authority:
+  name: Ministère de l'intérieur — Système d'immatriculation des véhicules (SIV)
+  url: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237165"
+binding: vehicle
+binding_note: >-
+  Code de la route art. R. 322-2 I, verbatim: "Ce certificat comporte un numéro
+  d'immatriculation attribué à titre définitif au véhicule par un système
+  informatique centralisé." The number binds to the VEHICLE and, unlike the FNI
+  it replaced, follows it for life across owners and across départements. The
+  one exception in this file is the W garage series, which binds to a BUSINESS.
+instruments:
+  - citation: "Arrêté du 9 février 2009 relatif aux modalités d'immatriculation des véhicules"
+    nor: DEVS0824995A
+    role: "the NUMBER — composition in annexe VII; the WW and W garage regimes; the diplomatic series"
+    date: "2009-02-09"
+    consolidated: "2026-08-02"
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237165"
+  - citation: "Arrêté du 9 février 2009 fixant les caractéristiques et le mode de pose des plaques d'immatriculation des véhicules"
+    nor: DEVS0824974A
+    role: "the PLATE — colours, Euro-band, identifiant territorial, annexe 7 special-plate colours, dimensions (annexe 1 bis)"
+    date: "2009-02-09"
+    consolidated: "2026-01-01"
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128"
+  - citation: "Arrêté du 23 mars 2009 relatif à l'entrée en vigueur de dispositions relatives aux plaques et inscriptions, à la réception et à l'homologation et à l'immatriculation des véhicules"
+    nor: DEVS0906197A
+    role: "fixes 15 April 2009 as the SIV start"
+    date: "2009-03-23"
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020446205"
+  - citation: "Arrêté du 15 avril 1996 relatif aux plaques d'immatriculation réflectorisées"
+    role: "homologation of plates and retroreflective products; the colorimetry"
+    date: "1996-04-15"
+    consolidated: "2026-01-01"
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000193190"
+  - citation: "Arrêté du 21 novembre 2025 modifiant les caractéristiques des plaques d'immatriculation des véhicules faisant l'objet d'une immatriculation provisoire en WW ou en W garage"
+    nor: INTS2532392A
+    role: "creates the black-on-PINK WW / W garage plate from 1 January 2026"
+    date: "2025-11-21"
+    source: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052971649"
+  - citation: "Arrêté du 5 novembre 1984 relatif à l'immatriculation des véhicules"
+    role: "the FNI system — abrogated 31 December 2009"
+    date: "1984-11-05"
+    abrogated: "2009-12-31"
+    source: "https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006075077"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  colours:
+    standard: >-
+      Arrêté (2) art. 7 al. 1, verbatim: "Pour les véhicules portant le numéro
+      définitif prévu à l'article R. 322-2 du code de la route, le numéro
+      d'immatriculation est reproduit sur chaque plaque d'immatriculation en
+      caractères noirs non rétroréfléchissants sur fond rétroréfléchissant
+      blanc." Note the asymmetry the statute is explicit about and most
+      summaries drop: the GROUND retroreflects, the CHARACTERS must not.
+    special: >-
+      Arrêté (2) art. 7 al. 3: "Pour les immatriculations listées en annexe 7 du
+      présent arrêté, les caractéristiques des couleurs des numéros
+      d'immatriculation et du fond des plaques d'immatriculation sont définies
+      dans cette annexe." Annexe 7 is the complete special-colour table and has
+      exactly four items — transit/free-zone (white on red), diplomatic
+      (orange or white on jasper green), collection (white on black, optional),
+      and, from 1 January 2026 only, WW and W garage (black on pink).
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 7"
+  colorimetry:
+    note: >-
+      The arrêté du 15 avril 1996 fixes each colour as a QUADRILATERAL of
+      chromaticity coordinates, not as an RGB or RAL value — so every hex in
+      this file is either trivially exact (#FFFFFF, #000000) or a derivation,
+      and each one says which it is in `hex_basis`. Values below are the daytime
+      coordinates as printed.
+    blanc: { points: [[0.350, 0.360], [0.300, 0.310], [0.285, 0.325], [0.335, 0.375]], luminance_factor_min: 0.35 }
+    bleu: { points: [[0.078, 0.171], [0.150, 0.220], [0.210, 0.160], [0.137, 0.038]], luminance_factor_min: 0.01 }
+    noir: { points: [[0.385, 0.355], [0.300, 0.270], [0.260, 0.310], [0.345, 0.395]] }
+    jaune: { points: [[0.545, 0.454], [0.487, 0.423], [0.427, 0.483], [0.465, 0.534]] }
+    rose: { points: [[0.345, 0.155], [0.500, 0.195], [0.470, 0.295], [0.365, 0.280]], added: "2026-01-01" }
+    not_specified: [rouge, vert-jaspe, orangé]
+    not_specified_note: >-
+      The three annexe-7 colours that matter most for the special series — the
+      transit RED, the diplomatic JASPER GREEN and the diplomatic ORANGE — have
+      NO coordinates anywhere in the 1996 arrêté's table. They are named and not
+      numbered, exactly as PRD-PLATES found for the German green and red plates.
+      Their hexes below are marked `observed` and are the weakest colour claims
+      in this file.
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000193190  # tableau des coordonnées trichromatiques (jour); art. 1 bis added 2026-01-01 exempting pink WW/W plates from the art. 1 homologation rule while binding them to the pink coordinates"
+  euro_band:
+    side: left
+    content: eu-stars+F
+    rule: >-
+      Arrêté (2) art. 8, verbatim: "Les plaques d'immatriculation des véhicules
+      portant le numéro définitif prévu à l'article R. 322-2 du code de la route
+      doivent obligatoirement comporter le symbole européen complété de la lettre
+      'F'." — "Le symbole européen complété de la lettre 'F' doit se situer dans
+      la partie utile de la plaque d'immatriculation à l'extrémité gauche de
+      celle-ci, sur fond bleu rétroréfléchissant." — and the exclusion that
+      matters: "Les dispositions du présent article ne sont pas applicables aux
+      plaques spécifiques des véhicules immatriculés avec un usage 'véhicule de
+      collection'."
+    geometry_gap: >-
+      The symbol's dimensions are in annexes 1 bis and 6 bis, both of which
+      Légifrance publishes only as JO fac-similé IMAGES. No French Euro-band
+      geometry was secured in this pass (contrast Germany, whose Anlage 4 gives
+      the star-wreath ratio as text).
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 8"
+  identifiant_territorial:
+    side: right
+    optional: false
+    owner_chosen: true
+    rule: >-
+      Arrêté (2) art. 9: the band is "constitué par le logo officiel d'une
+      région ou de la collectivité européenne d'Alsace et le numéro de l'un des
+      départements de cette collectivité territoriale", it sits "à l'extrémité
+      droite" of the useful part "sur fond bleu non obligatoirement
+      rétroréfléchissant", it must be "identique sur la plaque avant et sur la
+      plaque arrière", and — the sentence that governs every consumer of this
+      dataset — "Le choix de cet identifiant territorial est libre et peut ne
+      pas avoir de lien avec le domicile du titulaire du certificat
+      d'immatriculation." Art. 9 also disapplies the band for the "véhicule
+      importé en transit", "véhicule en transit temporaire" and "véhicule de
+      collection" usages, and reserves reproduction of the logos to homologated
+      plate makers.
+    decode: "plates/_decode/fr-departements.yml"
+    decode_note: >-
+      The decode file exists for the FNI series and for validating the band's
+      (région, département) pairing. It must NEVER be used to infer where a
+      SIV-numbered vehicle is kept.
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 9"
+  font:
+    name: null
+    statutory_basis: >-
+      Arrêté (2) art. 6, verbatim: "Les lettres et les chiffres du numéro
+      d'immatriculation sont constitués par des caractères bâtons ne comportant,
+      ni rétrécissement, ni empattement, ni ouverture supérieure à 3 mm pour les
+      caractères fermés." That is the WHOLE typeface specification in French
+      law: sans-serif, no narrowing, no serifs, and closed characters may not
+      have an aperture wider than 3 mm.
+    licence: >-
+      NO NAMED TYPEFACE IS MANDATED — France is a third data point for the EU
+      dossier's finding (UK prescribes a drawing, Germany a Schriftmuster,
+      France a written description). PRD-PLATES §6 therefore applies at its
+      cleanest here: the render layer derives glyphs from the statutory
+      description, never from a third-party "plaque" TTF.
+    source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 6"
+  dimensions:
+    status: gap
+    note: >-
+      RECORDED GAP, and a hard one. Every French plate dimension lives in
+      "annexe 1 bis — Tableau récapitulatif des dimensions de plaques homologuées
+      et particularités (cotes en mm)", which Légifrance does not publish as
+      text: the annexe body is a link to a PDF, and the PDF is the JO fac-similé
+      IMAGE ("Vous pouvez consulter l'image dans le fac-similé du JO nº 0040 du
+      17/02/2015, texte nº 38"; the current table is in JO nº 0121 du
+      17/05/2020). The same is true of annexes 2, 3, 4 bis and 6 bis (the layout
+      plans) and of the pre-2015 annexe 1. NO dimension is therefore asserted in
+      this file — not 520 x 110, not 275 x 200, not the 210 x 130 motorcycle
+      plate. Those figures are widely published by French plate retailers and
+      are NOT sourced here. Next action for the human pass: pdftotext the two JO
+      fac-similés, or obtain them from the JO archive.
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000041887893  # annexe 1 bis — body is a PDF link only"
+      - "https://www.legifrance.gouv.fr/download/pdf?id=RoSk8Ua8lFJWJLVDjh-XCyfJvp_yqT8SIiOnWW6Q0Fc=  # the annexe 1 bis / 2 / 3 / 4 bis PDF (Cloudflare-protected; not retrievable in this pass)"
+      - "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000030249176  # arrêté du 11 février 2015 creating annexe 1 bis — 'consulter l'image dans le fac-similé du JO nº 0040 du 17/02/2015, texte nº 38'"
+  plate_count:
+    rule: >-
+      Code de la route art. R. 317-8 I: "Tout véhicule à moteur, à l'exception
+      des matériels de travaux publics doit être muni de deux plaques
+      d'immatriculation", with motocyclettes, tricycles à moteur, quadricycles à
+      moteur, cyclomoteurs and agricultural/forestry vehicles allowed a single
+      REAR plate, and W garage vehicles using removable plates. Art. R. 317-8 II
+      governs trailers and semi-trailers: separately registered above the
+      regulatory mass, otherwise carrying a plate that reproduces the towing
+      vehicle's number. Art. R. 317-8 IV delegates the characteristics to the
+      two ministers, which is the hook arrêté (2) hangs on.
+    source: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042266062  # art. R. 317-8, version en vigueur depuis le 16 juin 2025"
+  usages:
+    note: >-
+      France models several plate-relevant categories not as number series but
+      as "mentions relatives à l'usage du véhicule" on the certificat. Arrêté
+      (1) art. 4 lists them verbatim: "véhicule administration civile de
+      l'Etat-code TGPE", "véhicule militaire-numéro militaire", "véhicule
+      agricole-numéro d'exploitation", "véhicule de démonstration-date de fin de
+      validité de l'usage", "véhicule de collection", "véhicule en transit
+      temporaire-date de fin de validité de l'usage", "véhicule importé en
+      transit-date de fin de validité de l'usage", "véhicule zone franche du
+      pays de Gex", "véhicule zone franche de Haute-Savoie". Only three of the
+      nine change the PLATE (collection, and the two transit usages, plus the
+      two free-zone usages by annexe 7 item 1); the rest are certificate-only
+      and are therefore NOT series here.
+    military_gap: >-
+      MILITARY IS A RECORDED GAP. The "véhicule militaire" usage shows that a
+      separate "numéro militaire" exists alongside the SIV number, but neither
+      arrêté states its composition and no defence-ministry instrument was
+      located in this pass. French military plates are consequently NOT modelled
+      — deliberately, rather than guessed.
+    source: "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000049860467  # art. 4"
+
+series:
+
+  # =========================================================================
+  # THE STANDARD SERIES — SIV, 15 April 2009 onward. AA-123-AA.
+  # =========================================================================
+  - id: fr-siv-standard
+    class: standard
+    categories: [car, van, truck, bus, trailer, semitrailer, tractor, machine]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999-LL"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      grammar: >-
+        Annexe VII A, verbatim: "Le numéro d'immatriculation attribué à titre
+        définitif au véhicule se compose des éléments suivants : 2 lettres,
+        suivies de 3 chiffres, suivis de 2 lettres, les blocs de chiffres et de
+        lettres étant séparés par des tirets. Exemple : AA-111-AA."
+      charset:
+        letters_excluded: []
+        notes: >-
+          NO LETTER IS EXCLUDED BY THE LAW. Annexe VII states shapes only. The
+          familiar claim that I, O and U are never issued (as lookalikes of 1, 0
+          and V) and that SS is skipped appears in no French primary located in
+          this pass and is recorded as folklore in the dossier, NOT as data.
+          `regex_strict` therefore narrows on exactly one sourced ground: annexe
+          VII C assigns the two-letter group WW to provisional numbers, so a
+          definitive number opening "WW-" would collide with a different series
+          of the same annexe.
+      progression: >-
+        NOT SOURCED. Neither arrêté states an allocation order. The widely
+        repeated right-to-left increment (digits, then the right letter pair,
+        then the left) and the 277,977,744-combination count are folklore here
+        until a French primary states them — which matters, because the parse
+        API's French age inference depends entirely on that ordering.
+      separator: "-"
+      separator_note: >-
+        The hyphens are PRINTED and are regulated objects, not typography:
+        arrêté (2) art. 6 requires "les caractères et les tirets" to resist use
+        and forbids repositioning a detached one, and art. 10 I requires the
+        tirets to be integrated at manufacture. Art. 7 last sentence: "La
+        définition, les dimensions, l'ordre et l'espacement des tirets sont
+        fixés par le tableau à l'annexe 1 bis et par les plans aux annexes 2 à
+        4 bis" — i.e. the geometry is in the image-only annexes (see the
+        dimensions gap).
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec, spec_note: "arrêté (2) art. 7: 'fond rétroréfléchissant blanc'; the white chromaticity quadrilateral and luminance factor >= 0.35 are in the arrêté du 15 avril 1996" }
+      foreground: "#000000"
+      foreground_note: "'caractères noirs NON rétroréfléchissants' — the characters are required not to retroreflect, unlike the ground"
+      band: { side: left, color: "#003399", content: eu-stars+F, hex_basis: observed, note: "art. 8 requires the European symbol completed by 'F' on a retroreflective blue ground; the 1996 arrêté gives the blue only as a chromaticity quadrilateral, so the hex is the conventional EU blue and is observed, not specified" }
+      extra_field:
+        position: right
+        content: "identifiant territorial — official logo of a région (or of the collectivité européenne d'Alsace) plus the number of one of its départements"
+        background: "blue, not necessarily retroreflective"
+        owner_chosen: true
+        note: "art. 9; identical front and rear; reproduced only by homologated manufacturers"
+      emblem: { present: true, rendered: placeholder, note: "the identifiant territorial carries an official REGIONAL LOGO — 18 régions plus the collectivité européenne d'Alsace, none licence-cleared. PRD-PLATES §3 placeholder rule applies. Art. 9 calls them 'libres de droit' but restricts WHO may reproduce them, which is a manufacturing rule and not a licence grant to this dataset." }
+      shape_note: "art. 5: the useful part is rectangular with the long side horizontal; the physical support must be symmetric about a vertical axis and may be slightly curved; a lower 'bavette' outside the useful part may carry only the seller's or fitter's references"
+      background_pattern_rule: "art. 5: 'Les trames de fonds de plaques ne doivent pas comporter de caractères explicites (lettre ou symbole) ou ostentatoires' — decorative background textures are allowed, explicit letters or symbols in them are not"
+      rear_differs: false
+      display: "two plates (front and rear) on motor vehicles per art. R. 317-8 I"
+    region_encoding: none
+    region_encoding_mechanism: >-
+      NONE — and this is the headline French fact. The SIV number is attributed
+      "à titre définitif au véhicule par un système informatique centralisé"
+      (art. R. 322-2 I) in one national series; it contains no geographic group,
+      it does not change when the keeper moves, and the département shown on the
+      plate is a freely chosen graphic (art. 9 of arrêté (2), quoted in full in
+      this file's header). plates/_decode/fr-departements.yml exists to decode
+      the FNI series and to validate the band's (région, département) pairing —
+      never to place a SIV-numbered vehicle.
+    variants:
+      - class: trailer
+        note: >-
+          Trailers and semi-trailers below the mass threshold of art. R. 317-8 II
+          carry a plate REPRODUCING the towing vehicle's number rather than one
+          of their own, and it may be removable. Format-identical and
+          colour-identical, so a sub-entry per PRD-PLATES §2.3 and not a series.
+        sources:
+          - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042266062  # art. R. 317-8 II"
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII A: '2 lettres, suivies de 3 chiffres, suivis de 2 lettres ... Exemple : AA-111-AA'"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 5-10: plate constitution, caractères bâtons, black on retroreflective white, European symbol + F, identifiant territorial and its free choice"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020446205  # arrêté du 23 mars 2009 art. 1-2: the SIV enters into force 15 April 2009"
+      - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032401205  # code de la route art. R. 322-2 I: number attributed 'à titre définitif au véhicule par un système informatique centralisé'"
+      - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042266062  # code de la route art. R. 317-8: two plates, trailer rules, delegation to the ministers"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000193190  # arrêté du 15 avril 1996: homologation + the white and blue chromaticity quadrilaterals"
+    notes: >-
+      THE FRENCH STANDARD SERIES, and the cleanest "looks geographic, is not"
+      case in the dataset. Three cautions a consumer needs. (i) The number is
+      permanent and national: no département group, no re-registration on a
+      move, and therefore no region signal at all — the blue band on the right
+      is decoration the owner picked. (ii) The alphabet is unsourced: this file
+      accepts every A-Z in both letter pairs because French law restricts
+      neither, and the famous I/O/U exclusion is folklore until a primary lands.
+      (iii) The series has been open since 15 April 2009 with no announced
+      successor; art. R. 322-2 makes the number die with the vehicle, not with
+      the owner.
+
+  # =========================================================================
+  # MOTORCYCLES — same number, different plate regime.
+  # =========================================================================
+  - id: fr-siv-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999-LL"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      charset: { notes: "annexe VII A applies unchanged — motorcycles take the ordinary definitive number" }
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+F, hex_basis: observed }
+      rear_differs: true
+      display: "ONE plate, rear only — art. R. 317-8 I allows motocyclettes, tricycles à moteur, quadricycles à moteur non carrossés and cyclomoteurs a single rear plate"
+      layout: "two lines, per the plans in annexe 4 bis (the motorcycle/moped-specific layout annexe created in 2015)"
+      dimensions_note: >-
+        The 2015 reform is dated and sourced even though its numbers are not:
+        arrêté (2) art. 11 bis, verbatim, "Les plaques d'immatriculation des
+        motocyclettes, des tricycles à moteur, des quadricycles à moteur, non
+        carrossés, et des cyclomoteurs posées avant le 1er juillet 2015, dont
+        les dimensions et caractéristiques étaient prévues aux annexes 1, 3, 4,
+        5 et 6 de l'arrêté du 9 février 2009 susvisé doivent être remplacées
+        avant le 1er juillet 2017 par des plaques d'immatriculation dont les
+        dimensions et caractéristiques sont prévues aux annexes 1 bis, 3, 4 bis
+        et 6 bis." So there IS a hard French motorcycle-plate size change with a
+        1 July 2015 start and a 1 July 2017 compliance deadline — and the mm on
+        both sides of it are in image-only annexes (see the dimensions gap).
+        The frequently quoted 210 x 130 mm is NOT sourced here.
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII A — motorcycles take the ordinary definitive number"
+      - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042266062  # art. R. 317-8 I: single rear plate for motocyclettes, tricycles, quadricycles non carrossés, cyclomoteurs"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 7 (two-line layout per annexes 3 à 4 bis) and art. 11 bis (the 1 July 2015 / 1 July 2017 replacement rule)"
+    notes: >-
+      MOTORCYCLES. Its own series and not a variant of fr-siv-standard because
+      the plate regime differs on three sourced points: one plate instead of two
+      (art. R. 317-8 I), its own layout annexe (4 bis), and a statutory
+      dimensional cut-over on 1 July 2015 with a 1 July 2017 deadline
+      (art. 11 bis). The NUMBER is identical to a car's, so a French motorcycle
+      registration is not distinguishable from a car's by string alone — the
+      exact opposite of the Netherlands, where the first letter encodes the
+      category.
+
+  # =========================================================================
+  # MOPEDS — two series, split by annexe VII's own 30 June 2015 boundary.
+  # =========================================================================
+  - id: fr-siv-cyclomoteur-2009
+    class: moped
+    categories: [moped]
+    period: { start: 2009, end: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L 99 L"
+      regex: '\A[A-Z]{1,2} \d{2,3} [A-Z]\z'
+      grammar: >-
+        Annexe VII A, second paragraph, verbatim: "Pour le cas particulier des
+        cyclomoteurs immatriculés jusqu'au 30 juin 2015, il se compose de 1 à 2
+        lettres, suivies de 2 à 3 chiffres, suivis de 1 lettre, avec un espace
+        entre les blocs de lettres et le bloc de chiffres. Au-delà de cette
+        date, ceux qui ont été préalablement immatriculés suivant ce format
+        conservent leur numéro d'immatriculation. Exemple : A 11 A."
+      separator: " "
+      separator_note: "the arrêté specifies a SPACE here and hyphens for the definitive number — the only French series pair whose separators differ, and a clean illustration of why the dataset commits to a separator set (PRD-PLATES §2.6)"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+F, hex_basis: observed }
+      display: "one plate, rear only (art. R. 317-8 I)"
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII A second paragraph: the cyclomoteur format and its 30 June 2015 cut-off"
+      - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042266062  # art. R. 317-8 I: cyclomoteurs carry a single rear plate"
+    notes: >-
+      THE FRENCH MOPED FORMAT, closed 30 June 2015 — the shortest registration
+      in this file (as few as four characters, "A 11 A") and the only French
+      series that is NOT the definitive AA-123-AA shape. Two things a parse API
+      must carry. (i) The series is CLOSED to new issue but NOT withdrawn: the
+      annexe says in terms that mopeds already registered this way "conservent
+      leur numéro d'immatriculation", so these strings stay valid indefinitely —
+      the ended-but-on-the-road case. (ii) period.start 2009 is the SIV's start,
+      not the format's: mopeds became registrable in France before the SIV and
+      this shape probably predates 15 April 2009 under the FNI. No primary for
+      an earlier start was secured — recorded gap.
+
+  - id: fr-siv-moped
+    class: moped
+    categories: [moped]
+    period: { start: 2015 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999-LL"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      charset: { notes: "the cyclomoteur exception in annexe VII A runs 'jusqu'au 30 juin 2015'; from 1 July 2015 a newly registered moped takes the ordinary definitive number" }
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+F, hex_basis: observed }
+      display: "one plate, rear only (art. R. 317-8 I); two-line layout per annexe 4 bis"
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII A: the cyclomoteur exception ends 30 June 2015"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 11 bis: cyclomoteur plates posed before 1 July 2015 replaced by 1 July 2017 with annexe 1 bis / 4 bis plates"
+    notes: >-
+      MOPEDS FROM 1 JULY 2015 — the date is the authority's own, written into
+      annexe VII as the end of the cyclomoteur exception and into art. 11 bis as
+      the start of the new plate annexes. This series overlaps
+      fr-siv-cyclomoteur-2009 at 2015 by construction: the old numbers keep
+      running while the new shape starts, which is exactly the parallel-issuance
+      case PRD-PLATES §2.2 sanctions.
+
+  # =========================================================================
+  # DEALER — W garage. Two series, split by the 2026 pink plate.
+  # =========================================================================
+  - id: fr-wgarage-2009
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2009, end: 2025 }
+    period_evidence: enabling-instrument
+    binding: business
+    matching: strict
+    format:
+      pattern: "W-999-LL"
+      regex: '\AW-\d{3}-[A-Z]{2}\z'
+      grammar: >-
+        Annexe VII B, verbatim: "Le numéro W garage se compose de la lettre W,
+        suivie de 3 chiffres, suivis de 2 lettres, les blocs de chiffres et de
+        lettres étant séparés par des tirets. Exemple : W-111-AA."
+    design:
+      background: { finish: retroreflective, note: "NO COLOUR IS PRESCRIBED for W garage plates in any version of the arrêté before 1 January 2026 — verified against the 2009 original and the version in force 1 June 2025, whose annexe 7 has three items, none of them W or WW. Art. 7 al. 1's black-on-white rule is expressly limited to vehicles 'portant le numéro définitif', which a W garage number is not. The colour is therefore a RECORDED GAP for this period, not an assumption." }
+      band: { side: left, content: eu-stars+F, note: "art. 8's Euro-symbol duty is also written for 'véhicules portant le numéro définitif'; whether it reached W garage plates before 2026 is unresolved — recorded gap" }
+      removable: true
+      removable_note: "art. R. 317-8 I and arrêté (2) art. 4 allow removable plates for vehicles circulating under a W garage certificate — France's answer to the German rote Kennzeichen"
+    region_encoding: none
+    validity: { period: "civil year", note: "the W garage certificate runs for the calendar year and carries the end date of validity; renewal is applied for between 1 November and 31 December" }
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII B: W + 3 chiffres + 2 lettres, hyphen-separated"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000047977247  # art. 9: who may hold a W garage certificate (professionnels du commerce de l'automobile, réparateurs, importateurs, transporteurs, coopératives agricoles, établissements de formation), the permitted uses (essais techniques, transport pour carrossage, présentation à la presse, présentation à l'acheteur, remorquage), the calendar-year validity, and the rule that where the W number is used on an already-registered vehicle 'ce numéro doit seul être utilisé'"
+      - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042266062  # art. R. 317-8 I: removable plates for W garage vehicles"
+    notes: >-
+      W GARAGE, 2009-2025 — the French trade plate, and like the German 06 plate
+      it binds to a BUSINESS and moves between vehicles, so `binding: business`
+      is set and a vehicle-keyed consumer must not join on it. Art. 9's rule
+      that where a W number is used on an already-registered vehicle "ce numéro
+      doit seul être utilisé" is the tell: the vehicle's own plates come off.
+      This entry exists as a separate series from fr-wgarage-2026 solely because
+      the DESIGN changed on 1 January 2026 (PRD-PLATES §2.3); the number format
+      is identical across the split. TRANSITIONAL GAP: no provision on plates
+      ALREADY IN SERVICE on 1 January 2026 was located — whether a pre-2026 W
+      garage plate had to be replaced with a pink one, and by when, is
+      unresolved, so `period.end: 2025` records the end of the old DESIGN's
+      issuance and not necessarily the end of its validity.
+
+  - id: fr-wgarage-2026
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2026 }
+    period_evidence: enabling-instrument
+    binding: business
+    matching: strict
+    format:
+      pattern: "W-999-LL"
+      regex: '\AW-\d{3}-[A-Z]{2}\z'
+      grammar: "annexe VII B unchanged — the 2025 amendment touched only the plate, never the number"
+    design:
+      background: { color: "#FF41B2", finish: non-retroreflective, hex_basis: derived, hex_note: "DERIVED, NOT STATED. The arrêté names the colour only as 'rose' and binds it to the chromaticity quadrilateral (0.345,0.155) (0.500,0.195) (0.470,0.295) (0.365,0.280) added to the arrêté du 15 avril 1996 by the arrêté du 21 novembre 2025 art. 2. The hex is the sRGB rendering of that quadrilateral's centroid (x=0.4200, y=0.2312) at Y=0.30, red-channel-clipped because the specified pink is outside the sRGB gamut. No photograph was consulted. Flagged for the human pass." }
+      foreground: "#000000"
+      finish_note: "the new art. 1 bis of the arrêté du 15 avril 1996, verbatim: 'Les dispositions de l'article 1er ne sont pas applicables aux plaques d'immatriculation provisoire WW et immatriculation W garage présentées en caractères noirs sur fond rose.' — pink WW/W plates are exempted from the homologation-and-retroreflective-product regime that binds every other French plate, while still being bound to the pink coordinates"
+      band: { side: left, content: eu-stars+F, note: "art. 8's duty is written for definitive numbers; not resolved for pink plates — recorded gap" }
+      removable: true
+    region_encoding: none
+    validity: { period: "civil year" }
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 4 (version en vigueur depuis le 01/01/2026): 'Le numéro d'immatriculation est reproduit sur chaque plaque d'immatriculation en caractères noirs sur fond rose.'"
+      - "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052971649  # arrêté du 21 novembre 2025 (NOR INTS2532392A) art. 1 (inserts annexe 7 item 4), art. 2 (inserts art. 1 bis and the pink coordinates into the arrêté du 15 avril 1996), art. 3 ('Le présent arrêté entre en vigueur le 1er janvier 2026')"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII B: the W garage number composition, unchanged"
+    notes: >-
+      W GARAGE FROM 1 JANUARY 2026 — black on PINK. The most useful new date
+      signal in European plate data: a pink French plate cannot predate 2026,
+      and before 2026 no French instrument prescribed any colour for these
+      plates at all. Note also what the change reveals about French plate law's
+      shape — the pink plate had to be exempted from the 1996 homologation
+      arrêté to exist, because a pink retroreflective product is not a
+      homologated type.
+
+  # =========================================================================
+  # TEMPORARY — WW. Same 2026 split, same reason.
+  # =========================================================================
+  - id: fr-ww-2009
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2009, end: 2025 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "WW-999-LL"
+      regex: '\AWW-\d{3}-[A-Z]{2}\z'
+      grammar: >-
+        Annexe VII C, verbatim: "Le numéro WW se compose de deux lettres WW,
+        suivies de 3 chiffres, suivis de 2 lettres, les blocs de chiffres et de
+        lettres étant séparés par des tirets. Exemple : WW-111-AA."
+      fields_note: "the plate additionally bears the WW registration's END-OF-VALIDITY DATE as mm/aa at the right-hand end of the useful part (arrêté (2) art. 7 al. 2) — a field a single pattern string cannot carry"
+    design:
+      background: { finish: retroreflective, note: "no colour prescribed before 1 January 2026 — same recorded gap as fr-wgarage-2009" }
+      band: { side: left, content: eu-stars+F, note: "unresolved for provisional numbers — recorded gap" }
+      extra_field: { position: right, content: "mm/aa, the end of the WW registration's validity" }
+    region_encoding: none
+    validity:
+      months: 4
+      months_extended: 6
+      note: >-
+        Art. 8 II: "Un certificat provisoire d'immatriculation WW est délivré au
+        demandeur lui permettant de circuler, pendant quatre mois. Cette durée
+        est de six mois pour les véhicules neufs vendus incomplets aux fins de
+        carrossage, les machines agricoles automotrices et les véhicules de
+        catégories R et S mentionnés au I." — and "L'immatriculation provisoire
+        est suivie obligatoirement d'une immatriculation définitive".
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII C: WW + 3 chiffres + 2 lettres"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000053057758  # art. 8 I: the closed list of WW-eligible vehicles, including 'les véhicules neufs exportés vers les départements d'outre-mer et les collectivités d'outre-mer, vers l'Union européenne ou vers les Etats tiers' and used vehicles 'destinés à être directement exportés en dehors du territoire métropolitain'; art. 8 II: four months, six for incomplete/agricultural"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 7 al. 2: the WW expiry date is reproduced on the plate"
+    notes: >-
+      WW PROVISIONAL, 2009-2025 — AND FRANCE'S EXPORT PLATE. There is no
+      separate French export series: art. 8 I puts export squarely inside WW,
+      listing new vehicles exported to the DOM/COM, to the EU or to third
+      states, used vehicles bought from a French dealer for direct export, and
+      diplomatic vehicles being exported "après restitution de leurs plaques
+      diplomatiques aux autorités douanières". A consumer looking for
+      `class: export` in France should read this series and fr-ww-2026. The
+      four-month validity and the mandatory follow-on definitive registration
+      are both in art. 8 II. Same transitional gap as fr-wgarage-2009: nothing
+      located governs WW plates already in service on 1 January 2026, so
+      `period.end: 2025` closes the old design's issuance, not its validity.
+
+  - id: fr-ww-2026
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2026 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "WW-999-LL"
+      regex: '\AWW-\d{3}-[A-Z]{2}\z'
+      grammar: "annexe VII C unchanged"
+      fields_note: "mm/aa expiry field at the right-hand end, now specified as black on pink"
+    design:
+      background: { color: "#FF41B2", finish: non-retroreflective, hex_basis: derived, hex_note: "same derivation and same caveat as fr-wgarage-2026" }
+      foreground: "#000000"
+      extra_field: { position: right, content: "mm/aa expiry", foreground: "#000000", background: "rose" }
+      band: { side: left, content: eu-stars+F, note: "unresolved — recorded gap" }
+    region_encoding: none
+    validity: { months: 4, months_extended: 6 }
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 4: 'caractères noirs sur fond rose' plus 'La date de fin de validité de l'immatriculation provisoire WW (mm/aa) est reproduite dans la partie utile de la plaque, à l'extrémité droite de celle-ci et en caractères noirs sur fond rose.'"
+      - "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052971649  # arrêté du 21 novembre 2025 art. 1 and art. 3 (in force 1 January 2026)"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000053057758  # art. 8, version en vigueur depuis le 01/01/2026"
+    notes: >-
+      WW PROVISIONAL FROM 1 JANUARY 2026 — black on pink, with the expiry month
+      and year in the right-hand field on the same pink ground. Same split logic
+      as the W garage pair: identical number, new design, new series. Note that
+      art. 8 itself was independently amended with effect from the same date
+      (arrêté du 15 décembre 2025 art. 2), so the whole WW regime turns over on
+      1 January 2026 and the human pass should re-read art. 8 rather than assume
+      continuity of the eligibility list.
+
+  # =========================================================================
+  # TRANSIT AND FREE-ZONE — the red plates.
+  # =========================================================================
+  - id: fr-transit-red
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999-LL"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      charset: { notes: "these are ORDINARY definitive numbers — annexe VII creates no transit number. What changes is the plate, and the certificate's `usage` mention." }
+      fields_note: "for the two transit usages the plate additionally carries the usage's end-of-validity date as mm/aa at the right-hand end, in white on red (annexe 7 item 1). The Gex and Haute-Savoie free-zone usages take the red plate WITHOUT a date."
+    design:
+      background: { color: "#CC0000", finish: retroreflective, hex_basis: observed, hex_note: "annexe 7 says 'fond rouge' and the arrêté du 15 avril 1996's colorimetric table has NO red row — the colour is named and not numbered, so this hex is observed within a named colour and is one of the weakest claims in the file" }
+      foreground: "#FFFFFF"
+      band: { side: left, content: eu-stars+F, note: "art. 8 is not disapplied for transit plates (only for collection), so the European symbol is required" }
+      extra_field: { position: right, content: "mm/aa end of the usage's validity, white on red — transit usages only" }
+      identifiant_territorial: absent
+      identifiant_territorial_note: "art. 9 last paragraph expressly disapplies the identifiant territorial to 'véhicule importé en transit' and 'véhicule en transit temporaire' plates — so a red French plate has no département band at all"
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 1: 'Usages \"véhicule en transit temporaire\", \"véhicule importé en transit\", \"véhicule pays de Gex\" et \"véhicule pays de Savoie\" — Le numéro d'immatriculation est reproduit sur chaque plaque d'immatriculation en caractères blancs sur fond rouge.'"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000049860467  # art. 4: the usages 'véhicule en transit temporaire', 'véhicule importé en transit', 'véhicule zone franche du pays de Gex', 'véhicule zone franche de Haute-Savoie'"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 7 al. 4 (the usage expiry date on the plate), art. 9 last paragraph (no identifiant territorial), art. 10 II (exceptional ministerial authorisations to depart from annexe 7 for 'véhicule importé en transit')"
+    notes: >-
+      THE RED PLATES — successors of the old TT (transit temporaire) and IT
+      (importé en transit) series, plus the two Alpine free-zone usages. Two
+      caveats. (i) CLASS CAVEAT: `temporary` fits the two transit usages, whose
+      certificate mention itself carries an end-of-validity date, but NOT the
+      Gex and Haute-Savoie free-zone usages, which are a customs status rather
+      than a short validity — _meta/classes.yml has no fiscal-zone class and the
+      four usages share one annexe-7 colour row, so they share one series here.
+      (ii) Art. 10 II lets the two ministers authorise, case by case, a plate
+      for an "importé en transit" vehicle "dans des caractéristiques n'entrant
+      pas dans le cadre défini à l'annexe 7" — a sanctioned escape hatch from
+      the design this series records.
+
+  # =========================================================================
+  # COLLECTION — the black plate, and the only French plate with no EU band.
+  # =========================================================================
+  - id: fr-collection
+    class: historic
+    categories: [car, van, truck, bus, motorcycle, trailer, tractor, machine]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "LL-999-LL"
+      regex: '\A[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
+      charset: { notes: "an ordinary definitive number; annexe VII creates no collection number" }
+    design:
+      background: { color: "#000000", finish: non-retroreflective, hex_basis: observed, hex_note: "annexe 7 item 3 names 'fond noir'; the 1996 colorimetric table does carry a 'noir' quadrilateral, but for the CHARACTERS of ordinary plates, and no finish is stated for the collection ground — hence observed" }
+      foreground: "#FFFFFF"
+      optional: true
+      optional_note: "annexe 7 item 3 is permissive, not mandatory: 'Le numéro d'immatriculation PEUT être reproduit sur chaque plaque d'immatriculation en caractères blancs sur fond noir.' A collection vehicle may equally run ordinary black-on-white plates, so absence of a black plate proves nothing."
+      band: { side: none }
+      band_note: >-
+        THE ONLY FRENCH PLATE WITHOUT THE EURO-BAND. Arrêté (2) art. 8 last
+        paragraph: "Les dispositions du présent article ne sont pas applicables
+        aux plaques spécifiques des véhicules immatriculés avec un usage
+        'véhicule de collection'." Art. 9 disapplies the identifiant territorial
+        to the same plates. So a black French plate carries the number and
+        nothing else — no stars, no F, no département.
+      identifiant_territorial: absent
+    region_encoding: none
+    eligibility:
+      note: >-
+        Arrêté (1) art. 4 conditions the "véhicule de collection" usage on the
+        vehicle satisfying "les dispositions du 6.3 de l'article R. 311-1 du
+        code de la route" and not being able to meet art. R. 321-15, with
+        supporting documents including an attestation from the manufacturer or
+        from the Fédération française des véhicules d'époque.
+      threshold_gap: >-
+        The age threshold itself lives in art. R. 311-1 6.3, which was NOT
+        fetched in this pass. The commonly repeated "30 years" is therefore NOT
+        asserted here — the same discipline plates/de.yml applied to the German
+        H-Kennzeichen threshold.
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 3: 'Véhicules de collection — Le numéro d'immatriculation peut être reproduit sur chaque plaque d'immatriculation en caractères blancs sur fond noir.'"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 8 last paragraph (no European symbol) and art. 9 last paragraph (no identifiant territorial) for collection plates"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000049860467  # art. 4: the 'véhicule de collection' usage and its conditions, referring to art. R. 311-1 6.3"
+    notes: >-
+      VÉHICULE DE COLLECTION — white on black, optional, and stripped of both
+      blue bands. Worth stating plainly for the encyclopedia: France did not
+      revive a historic FORMAT (contrast the Dutch dark-blue regime, which is
+      tied to sidecode 1/2/3 registrations); a French collection vehicle carries
+      an ordinary modern AA-123-AA number, merely printed white on black. The
+      black plate is also the only French design whose absence of an EU band is
+      itself sourced rather than inferred.
+
+  # =========================================================================
+  # DIPLOMATIC AND CONSULAR — annexe VII D. Five entries, one per sourced
+  # composition. Colours from annexe 7 item 2.
+  # =========================================================================
+  - id: fr-diplomatic-cd
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999 CD 9999"
+      regex: '\A\d{1,3} (?:CMD|CD) \d{1,4}(?: 973)?(?: [ZX])?\z'
+      regex_strict: '\A(?:[1-9]|[1-9]\d|1\d{2}|4\d{2}|500|600|700) (?:CMD|CD) [1-9]\d{0,3}(?: 973)?(?: [ZX])?\z'
+      regex_strict_note: >-
+        The strict twin encodes the numeric ranges annexe VII D.1 actually
+        states — first group 1-199, or 400-499 for an international
+        organisation, or the fixed 500 (hautes personnalités), 600 (Conseil de
+        l'Europe, Strasbourg) and 700 (CIRC, Lyon) — plus the no-leading-zero
+        consequence of every range starting at 1. It deliberately does NOT
+        enforce the tighter 1-999 sub-range that applies to the second group in
+        the hautes-personnalités case only, because a single alternation
+        carrying that exception would be less readable than the fact is worth.
+      grammar: >-
+        Annexe VII D.1. Ambassades: "a) Un premier groupe de un à trois chiffres
+        (1 à 199) identifiant le pays représenté ; b) Le sigle CMD (chef de
+        mission diplomatique) ou CD (corps diplomatique) ; c) Un deuxième groupe
+        de un à quatre chiffres (1 à 9999) indiquant l'ordre d'immatriculation
+        par ambassade. Exemple : 100 CD 20." Hautes personnalités: the country
+        group is the fixed number 500, the sigle is CD, and the second group
+        runs 1 à 999. Organisations internationales: the first group is 400-499,
+        with 600 for the Conseil de l'Europe at Strasbourg and 700 for the
+        Institut international de recherche sur le cancer at Lyon, then CMD or
+        CD, then 1 à 9999. "Pour l'Agence spatiale européenne, en Guyane, le
+        numéro d'identification est complété par le chiffre 973. Exemple :
+        405 CD 20 973."
+      suffix_rule: >-
+        Annexe VII D.4, common to CMD, CD, C and K: a Z is appended at the right
+        of the last digit group for a vehicle registered with exemption from the
+        certificate tax, and an X for a vehicle belonging to a person who does
+        NOT enjoy fiscal or customs immunities. Examples: "105 CD 5 Z",
+        "600 CD 20 X".
+      range_note: "the country group is 1-199 and the organisation group 400-499 (with the fixed 500, 600, 700 cases) — ranges the regex deliberately does NOT encode, because a numeric range is not a lexical constraint and PRD-PLATES keeps regexes lexical; the ranges are recorded here for the decode layer"
+    design:
+      background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed, hex_note: "annexe 7 item 2 says 'fond vert jaspe'; the 1996 colorimetric table has no green row at all, so this is a named colour with no coordinates anywhere in French law — observed, and flagged" }
+      foreground: "#E87511"
+      foreground_note: "'caractères orangés' — likewise named and not numbered"
+      band: { side: left, content: eu-stars+F, note: "art. 8 applies to definitive numbers; whether it reaches diplomatic plates is not stated — recorded gap" }
+    region_encoding: none
+    region_encoding_note: "the leading 1-199 group is a COUNTRY code allocated by the Ministère des affaires étrangères and is NOT published in the arrêté — a diplomatic decode table is L4 work per PRD-PLATES §7 and is deliberately not authored here"
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII D.1 (CMD/CD compositions for ambassades, hautes personnalités and organisations internationales, plus the ESA/Guyane 973 completion) and D.4 (the Z and X suffixes)"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 2: 'Séries CMD, CD — Le numéro d'immatriculation est reproduit sur chaque plaque d'immatriculation en caractères orangés sur fond vert jaspe.'"
+      - "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032401205  # code de la route art. R. 322-2 V: diplomatic vehicles' numbers are completed by a status-linked specific number"
+    notes: >-
+      CMD / CD — the French diplomatic series. Unlike Germany, which signals
+      diplomatic status only through an ordinary-looking prefix, France gives
+      the corps its own colour scheme, and unlike Spain it uses ONE green for
+      four series and distinguishes them by the character colour. Note the
+      annexe-7 trap the design must carry: a CD or CMD number is ORANGE on
+      green, but the SAME number becomes WHITE on green the moment a Z or X
+      suffix is added (annexe 7 item 2, "Cas particulier"), so character colour
+      is not a reliable series discriminator on its own.
+
+  - id: fr-diplomatic-cd-delegation
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L 999 CD 999"
+      regex: '\A[A-Z] \d{3} (?:CMD|CD) \d{1,3}(?: [ZX])?\z'
+      regex_strict: '\A[UES] (?:2\d{2}|3\d{2}) (?:CMD|CD) (?:[1-9]|[1-9]\d|[1-9]\d{2})(?: [ZX])?\z'
+      grammar: >-
+        Annexe VII D.1, délégations auprès des organisations internationales:
+        "une lettre désignant l'organisation : U (UNESCO), E (OCDE), S (Conseil
+        de l'Europe) ; un premier groupe de trois chiffres (200 à 399)
+        identifiant le pays représenté ; le sigle CMD ou CD ; un deuxième groupe
+        de un à trois chiffres (1 à 999) indiquant l'ordre d'immatriculation par
+        délégation. Exemple : U 300 CD 20."
+      charset:
+        organisation_letters: [U, E, S]
+        notes: >-
+          The CD delegation list is CLOSED in the arrêté's own punctuation — it
+          ends with a semicolon after "S (Conseil de l'Europe)". That is why
+          this series carries a regex_strict on [UES] and the K delegation
+          series below does not: the K list ends with an ellipsis.
+    design:
+      background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed }
+      foreground: "#E87511"
+      band: { side: left, content: eu-stars+F }
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII D.1, délégations: the organisation letter, the 200-399 country group, CMD/CD, and the 1-999 order group"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 2: orange on jasper green"
+    notes: >-
+      CD DELEGATIONS TO INTERNATIONAL ORGANISATIONS — the only French series
+      that opens with a bare organisation letter, which makes "U 300 CD 20"
+      trivially separable from an embassy's "100 CD 20". Distinct from
+      fr-diplomatic-cd because the composition has a leading letter and a
+      three-digit country group in a different range.
+
+  - id: fr-consular-c
+    class: consular
+    categories: [car, van, motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999 C 999 99"
+      regex: '\A\d{1,3} C \d{1,3} \d{2,3}(?: [ZX])?\z'
+      regex_strict: '\A(?:[1-9]|[1-9]\d|1\d{2}) C (?:[1-9]|[1-9]\d|[1-9]\d{2}) \d{2,3}(?: [ZX])?\z'
+      regex_strict_note: "annexe VII D.2's own ranges: country group 1-199, consular order group 1-999 — both starting at 1, hence no leading zeros"
+      grammar: >-
+        Annexe VII D.2, verbatim: "un premier groupe de un à trois chiffres
+        (1 à 199) identifiant le pays représenté ; la lettre C (corps
+        consulaire) ; un deuxième groupe de un à trois chiffres (1 à 999)
+        indiquant l'ordre d'immatriculation par consulat ; le numéro du
+        département. Remarque : les deux derniers groupes de chiffres seront
+        séparés par un point. Exemple : 105 C 1.75."
+      separator: " "
+      separator_note: >-
+        THE ARRÊTÉ PRESCRIBES A FULL STOP HERE, NOT A SPACE — "les deux derniers
+        groupes de chiffres seront séparés par un point", example "105 C 1.75".
+        U+002E is in this dataset's FORGIVING set but not its EMITTED set
+        (plates/_meta/separators.yml), so `pattern` and `regex` write a space at
+        that position and this note records the divergence rather than laundering
+        it. Consequences: (a) a forgiving consumer is unaffected, because
+        stripping the forgiving set turns both "105 C 1.75" and "105 C 1 75"
+        into "105C175"; (b) a strict, printed-form consumer will miss the dotted
+        form; (c) this is the dataset's first sourced case of an authority
+        prescribing a separator outside the emitted pair, and it is an amendment
+        candidate for _meta/separators.yml. See the dossier.
+      trailing_group_note: "the last group is 'le numéro du département' — 2 characters in metropolitan France and 3 for the overseas départements, which is why the regex quantifies \\d{2,3}. Corsican consular numbers would need 2A/2B; no French primary states how the point-separated form handles a letter-bearing département code, and it is NOT invented here"
+    design:
+      background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      foreground_note: "annexe 7 item 2: 'Séries C et K — ... en caractères blancs sur fond vert jaspe.'"
+      band: { side: left, content: eu-stars+F }
+    region_encoding: "plates/_decode/fr-departements.yml"
+    region_encoding_note: >-
+      THE ONE MODERN FRENCH SERIES THAT REALLY DOES ENCODE GEOGRAPHY. The final
+      group is the département of the consular post, written into the number
+      itself by annexe VII D.2 — not a chosen band. It decodes through
+      plates/_decode/fr-departements.yml exactly as an FNI suffix does.
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII D.2: the C series composition, the point rule and the département group; D.4 for the Z and X suffixes"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 2: white on jasper green for C and K"
+    notes: >-
+      C — CAREER CONSULAR CORPS, for holders of the carte spéciale CC and for
+      service vehicles of consular posts headed by career consular officers.
+      Two things make it the most interesting French series: it is the only
+      modern French registration whose STRING contains a département, and it is
+      the series that broke the dataset's separator contract (see
+      `separator_note`). A parse API should treat a match here as a genuine
+      region claim, in flat contradiction to the SIV band.
+
+  - id: fr-diplomatic-k
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999 K 9999"
+      regex: '\A\d{1,3} K \d{3,4}(?: (?:973|67))?(?: [ZX])?\z'
+      regex_strict: '\A(?:[1-9]|[1-9]\d|1\d{2}|4\d{2}|600|700) K (?:[1-9]\d{2}|[1-9]\d{3})(?: (?:973|67))?(?: [ZX])?\z'
+      regex_strict_note: "annexe VII D.3's ranges: country group 1-199 or organisation group 400-499 (600 Conseil de l'Europe, 700 CIRC), order group 100-9999. The two completions are LITERALS in the arrêté — 973 for the ESA in Guyane, 67 for the European Parliament's Strasbourg office — so both regexes spell them out rather than quantifying."
+      grammar: >-
+        Annexe VII D.3. Ambassades: "a) Un premier groupe de un à trois chiffres
+        (1 à 199) identifiant le pays représenté ; b) La lettre K ; c) Un
+        deuxième groupe de trois à quatre chiffres (100 à 9999) indiquant
+        l'ordre d'immatriculation par ambassade. Exemple : 105 K 100."
+        Organisations internationales: first group 400-499 (600 for the Conseil
+        de l'Europe at Strasbourg, 700 for the Institut international de
+        recherche sur le cancer at Lyon), then K, then 100 à 9999. "Exemples :
+        401 K 1000 ; 600 K 100." The ESA in Guyane completes the number with
+        973 and the European Parliament's Strasbourg secretariat office with 67.
+      note: "the embassy and organisation forms share one lexical shape (1-3 digits, K, 3-4 digits) and are therefore one series; they differ only by the numeric RANGE of the first group, which the regex does not encode"
+    design:
+      background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: left, content: eu-stars+F }
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII D.3, ambassades and organisations internationales; D.4 for Z and X"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 2: white on jasper green"
+    notes: >-
+      K — INTERNATIONAL CIVIL SERVANTS (carte spéciale FI) AND ADMINISTRATIVE
+      AND TECHNICAL STAFF (carte spéciale AT) of missions, consular posts,
+      international organisations and delegations. Not "diplomatic" in the
+      strict Vienna sense at all — annexe VII D.3 defines the series precisely
+      as the NON-assimilated staff — but `_meta/classes.yml` has no vocabulary
+      value between `diplomatic` and `consular`, so `diplomatic` is recorded as
+      the closest fit and this note carries the truth. COLLISION WORTH FLAGGING:
+      an organisation K number completed by 973 or 67 has the same four-group
+      shape as a consulate K number (fr-consular-k), and the two loose regexes
+      genuinely overlap. Only the numeric RANGE of the first group separates
+      them — 400-499/600/700 for an organisation, 1-199 for a consulate — which
+      is why both series carry range-encoding strict twins. A parse API should
+      score on the strict twins here, not the loose ones.
+
+  - id: fr-consular-k
+    class: consular
+    categories: [car, van, motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999 K 999 99"
+      regex: '\A\d{1,3} K \d{1,3} \d{2,3}(?: [ZX])?\z'
+      regex_strict: '\A(?:[1-9]|[1-9]\d|1\d{2}) K (?:[1-9]|[1-9]\d|[1-9]\d{2}) \d{2,3}(?: [ZX])?\z'
+      regex_strict_note: "country group 1-199, consular order group 1-999 (annexe VII D.3, consulats)"
+      grammar: >-
+        Annexe VII D.3, consulats: "un premier groupe de un à trois chiffres
+        (1 à 199) identifiant le pays représenté ; La lettre K ; un deuxième
+        groupe de un à trois chiffres (1 à 999) indiquant l'ordre
+        d'immatriculation par consulat ; le numéro du département, tel qu'il est
+        utilisé dans les séries normales. Remarque : les deux derniers groupes
+        de chiffres seront séparés par un point. Exemple : 105 K 10.75."
+      separator: " "
+      separator_note: "same full-stop divergence as fr-consular-c; see that series' separator_note and the dossier"
+      historic_cross_reference: >-
+        Note the phrase "le numéro du département, TEL QU'IL EST UTILISÉ DANS
+        LES SÉRIES NORMALES". That wording is a 1984 fossil left standing in a
+        2009 annexe: the "séries normales" that used département numbers were
+        the FNI's, abrogated on 31 December 2009. The consular series is thus
+        the last place in French law where the FNI's geographic convention is
+        still operative.
+    design:
+      background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: left, content: eu-stars+F }
+    region_encoding: "plates/_decode/fr-departements.yml"
+    region_encoding_note: "the trailing group is the consular post's département, written into the number — decodable, unlike the SIV band"
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII D.3, consulats: composition, the point rule, and the 'tel qu'il est utilisé dans les séries normales' cross-reference"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 2"
+    notes: >-
+      K AT A CONSULAR POST — the administrative-and-technical staff counterpart
+      of the C series, and the second of the two French numbers containing a
+      département. Distinct from fr-diplomatic-k because the composition
+      differs: a consulate K number has FOUR groups and an embassy K number
+      three, and the consulate's order group runs 1-999 where the embassy's runs
+      100-9999.
+
+  - id: fr-diplomatic-k-delegation
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2009 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "L 999 K 999"
+      regex: '\A[A-Z] \d{3} K \d{1,3}(?: [ZX])?\z'
+      regex_strict: '\A[A-Z] (?:2\d{2}|3\d{2}) K (?:[1-9]|[1-9]\d|[1-9]\d{2})(?: [ZX])?\z'
+      regex_strict_note: >-
+        THE STRICT TWIN NARROWS THE NUMBERS ONLY AND LEAVES THE LETTER OPEN ON
+        PURPOSE. It encodes annexe VII D.3's country range 200-399 and order
+        range 1-999, and keeps [A-Z] at the organisation position — see
+        `charset.notes` for why closing that class would be an invention.
+      grammar: >-
+        Annexe VII D.3, délégations auprès des organisations internationales:
+        "une lettre désignant l'organisation : U (UNESCO), E (OCDE), S (Conseil
+        de l'Europe)... ; un premier groupe de trois chiffres (200 à 399)
+        identifiant le pays représenté ; la lettre K ; un deuxième groupe de un
+        à trois chiffres (1 à 999) indiquant l'ordre d'immatriculation par
+        délégation. Exemple : U 305 K 10."
+      charset:
+        notes: >-
+          NO regex_strict, deliberately. The organisation-letter list in D.3 is
+          printed with a TRAILING ELLIPSIS — "U (UNESCO), E (OCDE), S (Conseil
+          de l'Europe)..." — where the corresponding D.1 list for CD delegations
+          ends with a plain semicolon. The arrêté therefore leaves the K
+          delegation letters OPEN, and narrowing this regex to [UES] would
+          invent a closure the authority declined to write. The asymmetry
+          between D.1 and D.3 is real and is recorded, not smoothed.
+    design:
+      background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: left, content: eu-stars+F }
+    region_encoding: none
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000030801732  # annexe VII D.3, délégations — note the ellipsis after 'S (Conseil de l'Europe)'"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 2"
+    notes: >-
+      K DELEGATIONS — administrative and technical staff of foreign delegations
+      to international organisations. Modelled separately from fr-diplomatic-k
+      because of the leading organisation letter, and the one series in this
+      file whose strict twin deliberately stops short of its letter class,
+      because of a single typographic detail in the arrêté (an ellipsis where
+      the parallel CD provision has a semicolon) that a paraphrase would erase.
+
+  # =========================================================================
+  # ONE SERIES BACK — the FNI, 1950/1984 to 2009. THE geographic French plate.
+  # =========================================================================
+  - id: fr-fni-1984
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, semitrailer, tractor, machine]
+    period: { start: 1984, end: 2009 }
+    period_evidence: instrument-in-force
+    # RECALL-ONLY (PRD-PLATES §2.7), and for an unusual reason: the composition
+    # annexe of the governing instrument IS NOT PUBLISHED. Légifrance renders
+    # annexe I of the arrêté du 5 novembre 1984 as the single line "(Annexe non
+    # reproduite, voir JO du 22 décembre 1984 pages 11837 et suivantes". So the
+    # widths below are NOT primary-sourced; the regex is an observed envelope
+    # and a match against it is a shape hit, nothing more.
+    matching: recall-only
+    format:
+      pattern: "999 LL 99"
+      regex: '\A\d{1,4} [A-Z]{1,3} (?:\d{2,3}|2[AB])\z'
+      grammar_gap: >-
+        THE COMPOSITION IS A RECORDED GAP. Arrêté du 5 novembre 1984 art. 1:
+        "La composition des numéros d'immatriculation de toutes les séries
+        susvisées est définie en annexe I du présent arrêté." Annexe I is not
+        reproduced by Légifrance ("Annexe non reproduite, voir JO du 22 décembre
+        1984 pages 11837 et suivantes"), so the only government-published
+        statement of the FNI shape located in this pass is the example
+        "123 AB 45" on service-public.gouv.fr. The 1-to-4-digit and
+        1-to-3-letter widths, and the 2A/2B Corsican forms, are the widely
+        repeated envelope and are recorded as recall-only, not as sourced
+        grammar. Next action: the JO of 22 December 1984, pp. 11837 et seq.
+      separator: " "
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, hex_note: "the FNI-era plate colour rules are in neither arrêté read here; the widely repeated white-front / yellow-rear regime and the date it ended are NOT sourced in this pass" }
+      foreground: "#000000"
+      band: { side: none, note: "unresolved: the EU band became compulsory in France at a date no instrument read here supplies; plates made late in the FNI era carry it and early ones do not" }
+    region_encoding: "plates/_decode/fr-departements.yml"
+    region_encoding_mechanism: >-
+      GENUINELY GEOGRAPHIC, and the reason this series matters. Under the 1984
+      arrêté the certificat was issued "soit par la préfecture du département du
+      domicile du propriétaire" (art. 2) and a change of département was a
+      mutation requiring a new certificate (art. 10 A/B) — so the trailing
+      département group told you where the vehicle was kept, and it CHANGED when
+      the owner moved. Decode right-to-left through
+      plates/_decode/fr-departements.yml, remembering that pre-1976 Corsica
+      (20), the pre-1968 Seine and Seine-et-Oise codes and the pre-1962 Algerian
+      codes are NOT in that table and must resolve to "unknown" rather than to a
+      modern département.
+    sources:
+      - "https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006075077  # arrêté du 5 novembre 1984 relatif à l'immatriculation des véhicules; art. 1 (the series: normales, TT and IT, diplomatic CMD/CD/C/K, W, WW including the export series WAL à WZL and WAE à WZE, FFECSA and DF; composition delegated to annexe I); art. 2 (préfecture du département du domicile); abrogated 31 December 2009"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006889019  # annexe I 'Composition des numéros d'immatriculation' — rendered as '(Annexe non reproduite, voir JO du 22 décembre 1984 pages 11837 et suivantes'. This citation evidences the GAP, not the format."
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000042128428  # arrêté (1) art. 19 II-III: the 1984 arrêté continues to apply to vehicles without a definitive number until 31 December 2009 at the latest, and such vehicles may keep circulating under their old number until a formality produces a new certificate"
+      - "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020446205  # arrêté du 23 mars 2009: SIV from 15 April 2009; the former rules run on for already-registered vehicles until 14 October 2009"
+      - "https://www.service-public.gouv.fr/particuliers/vosdroits/F20319  # the French administration's own plate page, giving the old FNI format as '123 AB 45' and the SIV as 'AB-123-CD'"
+    notes: >-
+      THE FNI — France's plate for two human generations, and the one that
+      actually decodes. Four things the dataset has to say honestly. (i) THE
+      PERIOD: 1984 is the date of the instrument that governed the system at its
+      end, not the date the system began; the FNI is universally dated to 1950
+      and no primary for 1950 was secured, so 1950 is recorded as folklore and
+      1984 as instrument-in-force. (ii) THE END: 2009, but softly — art. 19 III
+      of the 2009 arrêté lets an FNI-numbered vehicle keep circulating under its
+      old number until a formality forces a new certificate, so FNI plates are
+      still legally on French roads in 2026 and a parse API must not treat them
+      as expired. (iii) THE FORMAT is recall-only because the governing annexe
+      is unpublished (see grammar_gap) — the single largest sourcing hole in
+      this file. (iv) THE FAMILY: art. 1 of the 1984 arrêté also names TT and IT
+      special series, W and WW special series including the EXPORT sub-series
+      WAL-WZL and WAE-WZE, and FFECSA/DF series, all of whose compositions live
+      in the same unpublished annexe. None of them is modelled, deliberately.

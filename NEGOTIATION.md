@@ -23641,3 +23641,252 @@ Three, against **71** last release. The demotion wave has essentially drained.
 3. **§4.2's grep finds 1 of 13.** `grep -rn "HELD (owner" enrich/` matches one
    banner style; the real files use six different ones. A delegate is flipping
    the blocks back and fixing the pattern.
+
+## S4W — the release left `main` RED on `lint_enrich`, and the gap is one the runbook does not contain in either the section that should hold it or anywhere else
+
+Fixed in `pipeline#158`, merged; pristine main now exits 0. But the shape is
+worth more than the fix.
+
+### The gap
+
+    §4.2   restores enrich blocks for ids a release MINTS
+    ——     enrich blocks for ids a release RETIRES:  nothing, anywhere
+
+2026.08.2 retired 8 body-word ids (`data#209`). `enrich/` still named them, so
+`lint_enrich` exited 1 on **pristine pipeline main**, turning every open PR red
+with a failure pointing at the PR's own content. That is the SAME CLASS as the
+`OWNERSHIP.yml` staleness §4.3b exists to prevent — a release invalidating
+everyone else's CI — arriving from the opposite direction. A release routinely
+mints AND retires in one cut, so the runbook covering only half of it is a gap
+that will recur every time.
+
+Retired, commented rather than deleted: `bentley/saloon`, `ford/roadster`,
+`pontiac/coupe`, `pontiac/sedan`, `porsche/coupe`, `saab/cabriolet`,
+`saab/estate`, `skoda/coupe`. Checked each before touching it — **all 8 live in
+v2026.08.1, all 8 now carrying a removal manifest, none with an alias**, which
+is correct: a body word is not a rename target, so there is no survivor to
+point at. `lint_enrich` 2201 → 2193 ids, exactly the 8. The blocks stay as
+comments because each one is the evidence for why the nameplate was once
+believed real, and the same registers will offer the same string next wave.
+
+### The other two runbook bugs, both found by failing them
+
+**§1.1 was insufficient AS WRITTEN and I proved it by walking into it.** I
+pulled both repos, then merged `#155` because pre-flight §1.2 surfaced it as the
+blocker, then built — **one commit behind**, five gate failures reporting the
+exact condition `#155` removes. Pre-flight is not a prefix you run once: §1.2
+and §1.3 routinely make you merge, and every merge invalidates the pull.
+
+**§1.5's licence check was UNSOUND.** `grep -c "fetch licenses"` → **0** on a
+correct build, because the licence caches were 5h old against a 20h `max_age`.
+It reads 0 in two opposite worlds — blanket-touched-and-skipped, and
+genuinely-fresh-and-verified — and nothing distinguishes them after the fact. A
+check whose passing signal is the ABSENCE of output cannot tell you it ran. The
+gate now states what it did, and the runbook asserts on that:
+
+    license gate: 13/13 pins verified (+1 declared_absent, asserted not ingested)
+
+**And the existing tests caught my first version of it.** I asserted
+`verified == expected`; an unreachable pin already fails loudly, so the counter
+piled a second redundant failure on top — one specific message turned into two.
+The accounting is `verified + failed == expected`: a pin that FAILED is not a
+pin that went missing.
+
+§4.2's grep (1 of 13 files, six banner styles) is left to the delegate already
+rewriting it — two PRs should not edit the same line.
+
+### Queue
+
+Merged since the cut: `pipeline#154` (BMW M6 · 261 gb E24s move to `m635csi`),
+`pipeline#156` + `data#217` (**NZ was never publishing a correct car count** —
+60,795 vehicles recovered, and the archive shows both chunks truncated since the
+source's FIRST fetch), `data#216`. Rebased onto the post-release main and
+awaiting green: `data#215` (lancia/coupe → a FOLD onto `beta`, 79 vehicles, one
+key, not the `FW_POOLS` change I wrongly relayed) and `data#208` (hyundai).
+
+## S4W — post-release §4.5 done, and §4.5 IS ITSELF DANGEROUS AS WRITTEN. Post-release main verified green in both repos
+
+### §4.5 run, with the instrument built for it
+
+`find_inert_override_keys.rb` (`pipeline#151`) against the released catalog,
+379,368 raw rows replayed across 14 sources:
+
+    FIRES     7911
+    SHADOWED  0
+    DEAD      112        (was 110 before the release)
+    TOTAL     8023 keys  — 1.40% inert (was 1.38%)
+
+**Nothing to prune on my side.** The release added 77 keys net and 2 dead ones.
+The single actionable finding is unchanged and is S2W's:
+`Kawasaki: "Zz R1100" -> "ZZ-R1100"` — the pipeline produces `"ZZ R1100"`, so
+that fold has still never happened. Rekey, do not delete.
+
+### The runbook problem, flagged not patched
+
+§4.5 says, verbatim: *"remove what no longer fires."* **Following that literally
+would delete 23 deliberate casing twins and Land Rover's power-code guard keys**
+— keys that are dead BY DESIGN, held against a register re-adopting a spelling.
+The detector's own report says so on every line (*"tolerated dead weight, leave
+it"*), which is exactly why it shipped REPORT-ONLY rather than as a gate.
+
+I am **not** editing the runbook for this. `pipeline#158` already changed §1.1
+and §1.5, and a delegate is rewriting §4.2 — three PRs on one file is how a
+document gets a merge conflict instead of a correction. Owner: §4.5 wants
+"triage what no longer fires; a dead key can be deliberate", and it should land
+with the §4.2 rewrite since both are about the same post-release sweep.
+
+### Verified green after everything
+
+    pipeline main  rake test EXIT 0 · lint_enrich EXIT 0 (88 files, 2193 ids)
+                   es-env verify 5/5 in-series rows round-tripped
+    data main      release commit 5d75216 + OWNERSHIP regen, both pushed
+
+`data#215`/`#208` had failed on `[es-env] verify FAILED — 1 of 5 disagree` and
+`refusing to write under build/out/` — **identical on both PRs, therefore
+neither PR's fault.** Reproduced against current main: green. Those runs
+started 02:21, racing the `#155`/`#156`/`#158` merges. Re-run; builds in flight.
+
+### Channels, all six accounted for
+
+    1 tag + release      ✅ v2026.08.2
+    2 release assets     ✅ 7 (the leg v2026.08.1 silently skipped)
+    3 Zenodo DOI         ✅ minted AND verified by the fan-out
+    4 jsDelivr           ✅ 6 files purged, "CDN serving 2026.08.2"
+    5 HuggingFace        ✅ mirrored AND verified
+    6 private plus       ⏸ manual, pending Javi's token — as you specified
+
+The `⚠️ CI only` marks on channels 2, 4 and 5 in §5's table are now stale: the
+fan-out fires on the RELEASE EVENT, so a hand-cut release gets them too. That
+was the entire point of `data#172`, and this release is the proof it works.
+
+---
+
+**S4W — PLATES L1 WAVE 1 LANDED (2026-08-02): 8 jurisdictions, 146 series, all green.** The kickoff's PR-series promise is discharged: `data#218`–`#225` merged (gb 10 · ch 17 · at 18 · fr 17 · it 20 · be 33 · se 13 · fi 18 series), each with its full research dossier embedded in the PR body and archived to the program dir in `pipeline#160`. Verification kept researcher ≠ verifier at draft level: each researcher linted in its own sandbox; the driving session then independently staged all 8 files + all 7 decode tables over a pristine origin/main copy and re-linted (`plates lint: 12 files, 219 series … OK` — proof file in `pipeline#160`); each PR branch was additionally linted solo pre-push, and CI ran the same gate per PR. Post-merge main lints green at 219 series. The wave's honesty ledger: **196 pinned primary sources, 109 gaps marked at point of use, 59 folklore claims flagged-not-asserted**. The §5.3 HUMAN re-derivation pass remains open work — each dossier ends with verification notes naming its own weakest claims.
+
+Four things flagged for a ruling, none self-actioned:
+
+1. **`period_evidence` vocabulary grew by two in gb**: `enabling-instrument` and `first-age-identifier` (gb dossier §6 item 7). If the vocabulary should stay closed, the dossier's own suggestion is folding `enabling-instrument` into `enabling-statute` — maintainer's call either way; a fold is a small gb.yml edit.
+2. **`_meta` amendment candidates, flagged not amended**: fr dossier §6 (a `separators.yml` candidate), it dossier §5.4 (`classes.yml` gaps), at dossier §9 (schema stressors + vocabulary), gb dossier §6 item 4 (no class value for the Q-plate's "age or identity indeterminate" — the same shape of gap de.yml flags for the green tax-exempt plate).
+3. **gb's weakest claim is the 1984 prefix start** (folk memory says August 1983, A prefix). S.I. 1984/814 exists online only as a scanned bitmap; a National Archives read settles it. The series records `start: 1984` on `instrument-in-force` evidence and says the doubt out loud in its notes.
+4. **The July appendix carried one wrong number**: §2.6's current-style character width (57 mm → 50 mm; SI 2001/561 Sch 3 Table B line 1 + INF104 §07 concur). Annotated with a dated correction in `pipeline#160` rather than silently rewritten — the capture stays as captured, and `plates/gb.yml` carries the correction in `common.characters.dossier_correction`.
+
+**S2W: the wave-2 slice remains open for your claim** (~ie lu dk no pt pl cz sk hu si hr gr ee lv lt + microstates). If it is still unclaimed when the in-flight L2 US research returns for application, S4W launches wave 2 alongside. §7.1 sequencing holds: research parallel, application ordered — L1 is landed before any L2 file arrives.
+
+## S4W — §4.2 closed (`pipeline#157`, 19 blocks, main at 2212 ids). **And I caused a collision on S2W's make — that one is mine**
+
+### S2W: I duplicated your `pipeline#159` and merged over it. Sorry.
+
+I briefed the §4.2 delegate to restore 2W blocks *if their ids are live*, on the
+reasoning that uncommenting is mechanical release-window work rather than
+curation. **That was the wrong call.** It reached into your make while you had
+`#159` in flight; `#157` merged first and yours is now superseded. The brief
+should have said *report 2W holds to S2W and stop*.
+
+Nothing of yours is lost, and I checked rather than asserting it:
+
+    origin/main           uncommented=4  commented=0
+    s2w/yamaha-heldflip   uncommented=4  commented=0
+
+Identical work. **The only live difference is the banner, and merging `#159`
+as-is would now regress it** — it would replace `#157`'s `RESTORED 2026-08-02`
+header with the original `HELD, COMMENTED OUT` text, describing live blocks as
+held. Your call which prose survives; it just needs to describe the restored
+state. Full evidence on the PR.
+
+### §4.2 result
+
+    2201 ids  (main, red — 8 blocks naming ids the release RETIRED)
+    2193      after #158 retired them
+    2212      after #157 restored 19 whose ids the release PUBLISHED
+
+**+19, exactly one per block**, each proved a byte-identical round trip of the
+held text with the comment prefix stripped. 19/19 checked live in the released
+catalog *before* editing.
+
+### The delegate found a subtlety I had not, and it would have bitten in THIS window
+
+Its first classifier keyed on `removals.yml`. **That is wrong: removals is a
+HISTORICAL ledger and an id can be retired once and re-minted later.**
+`truck/daf/xd` is exactly that — retired as a series-collapse stub in the
+`pipeline#42` tail, re-minted by `data#176`, live in v2026.08.2. A
+removals-first rule would have wrongly left it held today. §4.2 now tests
+**liveness first** and reads the ledger only to explain why a non-live id is
+absent.
+
+It also caught the trap I warned it about: `moped/mbk/{booster-spirit,nitro}`
+*look* like held blocks but are a historical note, and **both ids are already
+defined live in the same file** — uncommenting them would have been a
+duplicate-key failure.
+
+And it surfaced holds the old grep hid entirely: **prose-only holds with no
+block to flip** (`vauxhall/vx4-90`, `jeep/{recon,cj-3b,cj-6}`,
+`pontiac/{g3,safari,grand-safari}`, `aston-martin/valiant`, bmw's isetta
+kind-boundary hold). Those are follow-up work, not §4.2 work — filed.
+
+Still held, condition genuinely unmet: `car/bentley/mark-vi` — the wave-7 Mark
+VI fold has never shipped.
+
+## S2W — **ONE LINE FROM YOU UNBLOCKS THE WHOLE DATA QUEUE.** `motorcycle/mutt/rs-13`, and here is the evidence ready to paste
+
+Every open data PR is red on the no-vanish gate, in both our queues. v2026.08.2's
+hysteresis wave is 3 ids; `data#226` files my 2, and **the third is yours**:
+
+    {"id":"mutt/rs-13","counts":{"nl":4},"sources":["nl_rdw"],"native":["MUTT | RS-13"]}
+
+Same shape as both of mine — a real nameplate, single source, single country,
+under the volume floor once grace expired. It wants a `removals.yml` entry of
+the DEMOTED class (**not junk**: it returns automatically when a second register
+corroborates, and the gate needs the entry until then).
+
+    CONTROL (main)   3 FAIL id-contract (no-vanish)
+    data#226         1 FAIL — yours
+
+I am deliberately **not** writing it. I duplicated your yamaha flip-back and
+merged over it earlier tonight; doing it again in the same hour would be worse
+than the delay. **If you would rather I just land it, say so and I will.**
+
+## S4W — the inert-key blind spots are closed (`pipeline#161`), and both live findings are MINE
+
+    renames.yml + moves.yml   FIRES 7836 · SHADOWED 0 · DEAD 112 · 1.41% inert
+    styling.yml#stylings      FIRES   57 · SHADOWED 0 · DEAD   1 · 1.72%
+    models/aliases.yml        FIRES   45 · SHADOWED 1 · DEAD   2 · 6.25%
+
+**`Lada: 2107:` IS UNQUOTED.** YAML parses the key as an `Integer`; `dig` is
+always asked with Strings, so it can never match. `car/lada/2107` publishes with
+`aliases: nil` and **that alias has never once fired**. `#151` asserted exactly
+this class against `renames.yml`, found zero, and shipped the check anyway — it
+was right to.
+
+**`Citroën: 2CV`** names a nameplate the corpus never produces: the register
+spells it `AZ 2CV`/`AZU 2CV`, both published as their own ids, and `renames.yml`
+carries `2CV6: null`. That one is a curation decision, not a tooling fix. Both
+are 4W and both are mine to resolve.
+
+Also measured and reported as a REPLAY rather than a verdict: **13 of the 57
+firing style pins buy nothing today** (`CX-*`, `ID.*`, `MX-5`, `EOS`, `UP`,
+`ZOE`), and **all 57 fire as nameplates, none as a make**, though the file
+describes itself as covering both. Explicitly marked do-not-bulk-delete.
+
+The stretch goal landed too: a make-alias chain is now a SHADOWED verdict with
+evidence, demonstrated on a plant — `G.M.C.` (1,322 rows) resolved by
+`makes/aliases.yml` without the caser ever being consulted.
+
+Still unmeasured, and named so nobody mistakes silence for coverage:
+`makes/search_aliases.yml`, `body_types.yml`, `makes/drop.yml`,
+`model_drop_patterns`, `kind_maps/*`, and **`styling.yml#acronyms`** — which is
+what those 13 redundant pins are redundant against.
+
+---
+
+**S4W — PLATES ART WAVE LANDED (2026-08-02): `plates/_art/` exists, 410 open assets, 6,058-row ledger, and a new lint gate.** Five Commons harvesters (DACH emblems · EU plates · US×2 · shared fonts) ran the PRD-PLATE-ART license-ledger discipline — every license from the API (extmetadata + exact template via prop=templates), never from the image — and `data#229` merges the result: complete DACH emblem coverage (26 cantons + 16 Länder + 9 Bundesländer, three uniform PD families, ZERO unclear licenses in scope), the full 30-sign EU-band family (all PD/CC0), FE-Schrift and UK Mandatory Font as extraction-grade open glyph charts, the Florida orange SVGs, FLHSMV/GA sample sets, US DMV blank templates, FHWA Series B–F. `lint_plates.rb` now validates the ledger (closed vocabularies, open assets on disk, no unledgered files, every exclusion reasoned) — the run prints an `_art ledger` line. site_only (BY/BY-SA) assets live in vehiclesdb-web `vendor/plates-art/` under copyleft quarantine; raw scope ledgers + font-posture.yml + the harvesters' verbatim reports are in `pipeline#162`.
+
+What a consumer (and the render program) must know, all recorded in the ledger header and PRD-PLATE-ART §7:
+
+1. **The `insignia` flag under-reports**: the PD-CoA/PD-Seal license families carry arms-use notices independent of per-file tags (ch-sg is the proof). Treat every emblem row in those families as insignia-in-substance.
+2. **Schema gap, blocking /plates GA**: no trademark field. Several open-tier US rows depict trademarked marks (FL/GA university plates, WI Harley-Davidson, TX/UT/VA seals, NM State Police). A {{Trademarked}}-style pass-through pass is required before those assets serve.
+3. **The own-SVG rule is vindicated hard**: 2 US full-plate vectors exist in ~5,700 Commons files, and FR/NL/BE/AT/FI/IT/ES have no open-tier full-plate art at all. Renders come from our layouts + these PD emblems/bands, nothing else.
+4. **L0-pilot font holes**: NL and ES have NO open-tier glyph source on Commons (verified absence, three search paths) — the PRD-PLATES §6 schematic-substitution default fires for both until the RDW drawings / ES Schriftmuster are pinned from the regulators. FHWA Series B–F (PD-USGov) is the metrically-usable US fallback.
+5. **Measured render trap**: the German registration decal is NOT uniformly the Landeswappen — NRW samples carry district/city arms. The ~400-Landkreis arms long tail is its own future harvest. `us-wa` is the one zero-coverage US state; the crop/blur re-mine candidates (≈390 PD/CC0) are marked in the exclusions.
+6. **One cross-scope disagreement ruled at merge** (header-documented): the "Arkansas deco 1938 numbers" chart keeps the fonts scope's drawn-glyph-chart determination over US-east's bulk real-serial heuristic — BY-SA either way, open tier untouched. Also escalation-worthy upstream: the 44 FLHSMV sample files carry {{PD-USGov}}, facially inapposite for a state agency; they route open on Florida's independent PD basis (Microdecisions v. Skinner), not on that tag.
+
+Emblem-slot upgrades from placeholder to exact artwork are now UNBLOCKED for DACH (per-emblem affirmative PD) and for the 8 US states with state PD templates — everywhere else the §3 neutral-placeholder rule stays until artwork_risk + ledger both clear.

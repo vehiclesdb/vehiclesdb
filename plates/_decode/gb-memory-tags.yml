@@ -1,0 +1,202 @@
+# plates/_decode/gb-memory-tags.yml — DVLA memory tags (current British format).
+#
+# THE SOURCE FINDING, and it is the mirror image of the German one: this table
+# is NOT in any statutory instrument and never could be. VERA 1994 § 23(4)
+# empowers regulations over "(a) the size, shape and character of registration
+# marks to be fixed on any vehicle, and (b) the manner in which registration
+# marks are to be displayed" — not over WHICH letters a mark is made of. The
+# composition of a British mark is an administrative allocation by the
+# Secretary of State under § 23(1), and DVLA publishes it in the leaflet
+# INF104. So where plates/_decode/es-provinces.yml is enacted law and the
+# German district list is a Bundesanzeiger publication, this is a leaflet —
+# and a leaflet from the issuing authority is still a PRIMARY (PRD-PLATES § 4:
+# "Government/authority pages ... PRIMARY").
+#
+# Every row below is INF104 (4/22) § 05 "DVLA memory tags and age identifiers",
+# transcribed in the leaflet's own order and its own grouping (postal area
+# letter -> DVLA office -> tag list). WHERE INF104 PRINTS A RANGE it is kept as
+# a range and NOT expanded, because expanding it would require deciding what
+# the range does with I, Q and Z — a decision the leaflet makes elsewhere, in
+# prose, and which is recorded here as `range_rule` rather than baked silently
+# into 25 invented rows.
+#
+# EVERY TAG IS QUOTED, AND IT HAS TO BE. Psych resolves the bare scalar NO to
+# the boolean false (as it does ON, OFF, TRUE, YES), and "NO" is a real
+# Newcastle memory tag. An unquoted tag list therefore silently turns one row
+# into `false` and a decode lookup misses it forever. This is the same class of
+# defect plates/de.yml records for bare YAML dates, found here by round-tripping
+# the file through YAML.safe_load and re-checking every tag against /\A[A-Z]{2}\z/
+# — a check worth keeping in any future decode-table pass.
+#
+# Referenced by: gb-standard-2001, gb-motorcycle-2001, gb-green-zev-2020
+# (plates/gb.yml) via region_encoding.
+jurisdiction: gb
+topic: memory-tags
+authority:
+  name: Driver and Vehicle Licensing Agency (DVLA)
+  url: "https://www.gov.uk/government/publications/vehicle-registration-numbers-and-number-plates"
+sources:
+  - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 (4/22) § 05 — every row of this file, plus the three charset bullets and the HW / MN+MAN notes"
+  - "https://www.gov.uk/government/publications/vehicle-registration-numbers-and-number-plates  # INF104 landing page, updated 12 April 2022 (stable citation)"
+  - "https://www.legislation.gov.uk/ukpga/1994/22/section/23  # VERA 1994 s 23(1) and (4) — why this table is administrative and not statutory"
+licence: "Crown copyright, Open Government Licence v3.0 (DVLA publication)"
+period: { start: 2001 }
+period_evidence: enabling-instrument
+period_note: >-
+  The memory-tag scheme began with the current format on 1 September 2001
+  (INF104 § 03). Individual OFFICE allocations have changed since — DVLA closed
+  its local offices in 2013 and the office names below are the issuing offices
+  as INF104 (4/22) prints them, which a decode must treat as the historical
+  allocation point, not as a list of open counters. Rows are never deleted:
+  a mark issued under a withdrawn allocation stays on the road, exactly as
+  plates/_decode/de-districts.yml requires for German codes.
+
+# What the tag means, and what it does NOT mean.
+semantics: >-
+  INF104 § 03: the first two characters are a "2 letter memory tag (these refer
+  to the region in the country where a vehicle is first registered)". The FIRST
+  letter is the postal area; the SECOND selects the DVLA office within it.
+caveat: >-
+  A memory tag records WHERE THE VEHICLE WAS FIRST REGISTERED. It is not the
+  keeper's address, not the vehicle's current location, and not stable across
+  a re-registration or a transfer of a personalised mark. Any consumer using
+  it as a present-tense geographic signal is using it wrongly, and a parse API
+  must return it labelled as first-registration provenance.
+
+charset_rules:
+  excluded_from_tags: ["I", "Q", "Z"]
+  z_rule: "Z is used only as a random letter (positions 5-7), never in a memory tag"
+  q_rule: "Q is excluded from memory tags because it remains in service as the prefix of the indeterminate-age Q series (plates/gb.yml#gb-q)"
+  first_letters_used: [A, B, C, D, E, F, G, H, K, L, M, N, O, P, R, S, V, W, Y]
+  first_letters_absent: [I, J, Q, T, U, X, Z]
+  first_letters_absent_note: >-
+    J, T, U and X simply do not appear as postal-area letters in INF104 § 05's
+    table; I, Q and Z are excluded by the leaflet's own bullet. The absence is
+    recorded as a fact about the published table, not as a rule DVLA states.
+  bullets_verbatim:
+    - "We will not use I, Q or Z in local memory tags identifiers"
+    - "We will still issue existing 'Q' marks"
+    - "We will only use Z as a random letter"
+  range_rule: >-
+    Where INF104 prints a range ("BA - BY", "EA - EY", "MA - MY", "OA - OY",
+    "RA - RY", "VA - VY") the second letter runs A to Y inclusive, minus the
+    excluded I and Q (Z is above Y and so is excluded by the range itself).
+    This expansion is DERIVED from the bullets above; it is stated here once
+    rather than written into the rows, so a consumer can see exactly which
+    codes are transcribed and which are computed.
+
+areas:
+  - letter: A
+    name: Anglia
+    offices:
+      - { office: Peterborough, tags: ["AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AJ", "AK", "AL", "AM", "AN"] }
+      - { office: Norwich,      tags: ["AO", "AP", "AR", "AS", "AT", "AU"] }
+      - { office: Ipswich,      tags: ["AV", "AW", "AX", "AY"] }
+  - letter: B
+    name: Birmingham
+    offices:
+      - { office: Birmingham, range: "BA-BY" }
+  - letter: C
+    name: Cymru
+    offices:
+      - { office: Cardiff, tags: ["CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CJ", "CK", "CL", "CM", "CN", "CO"] }
+      - { office: Swansea, tags: ["CP", "CR", "CS", "CT", "CU", "CV"] }
+      - { office: Bangor,  tags: ["CW", "CX", "CY"] }
+  - letter: D
+    name: Deeside to Shrewsbury
+    offices:
+      - { office: Chester,    tags: ["DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DJ", "DK"] }
+      - { office: Shrewsbury, tags: ["DL", "DM", "DN", "DO", "DP", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY"] }
+  - letter: E
+    name: Essex
+    offices:
+      - { office: Chelmsford, range: "EA-EY" }
+  - letter: F
+    name: Forest & Fens
+    offices:
+      - { office: Nottingham, tags: ["FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FJ", "FK", "FL", "FM", "FN", "FP"] }
+      - { office: Lincoln,    tags: ["FR", "FS", "FT", "FV", "FW", "FX", "FY"] }
+  - letter: G
+    name: Garden of England
+    offices:
+      - { office: Maidstone, tags: ["GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GJ", "GK", "GL", "GM", "GN", "GO"] }
+      - { office: Brighton,  tags: ["GP", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY"] }
+  - letter: H
+    name: Hampshire & Dorset
+    offices:
+      - { office: Bournemouth, tags: ["HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HJ"] }
+      - { office: Portsmouth,  tags: ["HK", "HL", "HM", "HN", "HO", "HP", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY"],
+          note: "INF104, verbatim: '(HW will be used exclusively for Isle of Wight residents)' — the only sub-office geographic reservation in the table" }
+  - letter: K
+    name: null
+    name_note: "INF104 gives no regional name for the K area — the 'Letter' and 'Postal area' columns are blank beside Borehamwood and Northampton. Recorded as null rather than invented."
+    offices:
+      - { office: Borehamwood, tags: ["KA", "KB", "KC", "KD", "KE", "KF", "KG", "KH", "KJ", "KK", "KL"] }
+      - { office: Northampton, tags: ["KM", "KN", "KO", "KP", "KR", "KS", "KT", "KU", "KV", "KW", "KX", "KY"] }
+  - letter: L
+    name: London
+    offices:
+      - { office: Wimbledon,   tags: ["LA", "LB", "LC", "LD", "LE", "LF", "LG", "LH", "LJ"] }
+      - { office: Borehamwood, tags: ["LK", "LL", "LM", "LN", "LO", "LP", "LR", "LS", "LT"] }
+      - { office: Sidcup,      tags: ["LU", "LV", "LW", "LX", "LY"] }
+  - letter: M
+    name: Manchester & Merseyside
+    offices:
+      - { office: Manchester, range: "MA-MY",
+          note: "INF104, verbatim: '(MN + MAN Reserved for the Isle of Man)'. The Isle of Man is a separate jurisdiction (ISO 3166-1 IM) with its own registration system; MN is withheld from the British range and MAN is withheld as a three-letter group so that no British mark collides with a Manx one." }
+  - letter: N
+    name: North
+    offices:
+      - { office: Newcastle, tags: ["NA", "NB", "NC", "ND", "NE", "NG", "NH", "NJ", "NK", "NL", "NM", "NN", "NO"],
+          note: "NF is absent from INF104's Newcastle list and is not assigned elsewhere in the table; transcribed as printed, not corrected" }
+      - { office: Stockton,  tags: ["NP", "NR", "NS", "NT", "NU", "NV", "NW", "NX", "NY"] }
+  - letter: O
+    name: Oxford
+    offices:
+      - { office: Oxford, range: "OA-OY" }
+  - letter: P
+    name: Preston
+    offices:
+      - { office: Preston,  tags: ["PA", "PB", "PC", "PD", "PE", "PF", "PG", "PH", "PJ", "PK", "PL", "PM", "PN", "PO", "PP", "PR", "PS", "PT"] }
+      - { office: Carlisle, tags: ["PU", "PV", "PW", "PX", "PY"] }
+  - letter: R
+    name: Reading
+    offices:
+      - { office: Theale, range: "RA-RY", note: "the postal area is Reading; the issuing office INF104 names is Theale" }
+  - letter: S
+    name: Scotland
+    offices:
+      - { office: Glasgow,   tags: ["SA", "SB", "SC", "SD", "SE", "SF", "SG", "SH", "SJ"] }
+      - { office: Edinburgh, tags: ["SK", "SL", "SM", "SN", "SO"] }
+      - { office: Dundee,    tags: ["SP", "SR", "SS", "ST"] }
+      - { office: Aberdeen,  tags: ["SU", "SV", "SW"] }
+      - { office: Inverness, tags: ["SX", "SY"] }
+  - letter: V
+    name: Severn Valley
+    offices:
+      - { office: Worcester, range: "VA-VY" }
+  - letter: W
+    name: West of England
+    offices:
+      - { office: Exeter,  tags: ["WA", "WB", "WC", "WD", "WE", "WF", "WG", "WH", "WJ"] }
+      - { office: Truro,   tags: ["WK", "WL"] }
+      - { office: Bristol, tags: ["WM", "WN", "WO", "WP", "WR", "WS", "WT", "WU", "WV", "WW", "WX", "WY"] }
+  - letter: Y
+    name: Yorkshire
+    offices:
+      - { office: Leeds,     tags: ["YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YJ", "YK", "YL"] }
+      - { office: Sheffield, tags: ["YM", "YN", "YO", "YP", "YR", "YS", "YT", "YV"] }
+      - { office: Beverley,  tags: ["YU", "YW", "YX", "YY"] }
+
+# Ambiguity notes a parse API must carry.
+ambiguity:
+  - "MAXIMAL MUNCH DOES NOT APPLY HERE, unlike es-provinces: a British memory tag is ALWAYS exactly two characters, because the age identifier that follows is always exactly two digits. There is no longest-match problem."
+  - "A tag decodes only in the current (post-1.9.2001) format. The same two letters at the start of a pre-2001 mark are NOT a memory tag: in the suffix system they are the first two of a three-letter area code, and in the prefix system the leading letter is a YEAR code. A parse API must establish the series before consulting this table."
+  - "X is never a memory-tag first letter, which is what makes the export series (plates/gb.yml#gb-export-x, 'XA51 ABC') mechanically separable from an ordinary mark despite sharing its shape."
+  - "Northern Irish marks have no memory tag at all and must not be decoded through this table (see plates/gb.yml#gb-ni-standard)."
+
+# What this table deliberately does NOT contain.
+not_modelled:
+  - "The pre-2001 local-office area codes (the trailing two letters of a suffix or prefix mark). No primary was located; recorded as a gap in the gb dossier."
+  - "The Northern Irish district letters. No primary was located; recorded as a gap."
+  - "Which office issued which tag AT A GIVEN DATE. INF104 publishes one snapshot; DVLA local offices closed in 2013 and the leaflet was reissued 4/22 without a period column, so per-row period discipline is impossible from this source and is not faked."
