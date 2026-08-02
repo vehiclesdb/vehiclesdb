@@ -5298,6 +5298,63 @@ Lada:
   "1200S": "1200 S"                           # spelling variant of "1200 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
 Lancia:
+  # ── `car/lancia/coupe` is the BODY-WORD 92 class, disposition FOLD (not NULL,
+  # not KEEP). Third adjudication of this id; the first two were both wrong, so
+  # the whole argument is written out here rather than compressed to one line.
+  #
+  # WHAT THE ROWS ARE. Whole-corpus replay of production `classify` over all 14
+  # sources × all six kinds (2026-08-02, frozen cache; data e720afe, pipeline
+  # 9397e92) says `Lancia|Coupe` is produced by EXACTLY THREE ROWS, all `car`:
+  #     uk_dft  gb  GenModel "LANCIA COUPE"  61   (Model col: COUPE 2000 VX 21,
+  #                                                COUPE IE 2000 12, COUPE VOLUMEX 28)
+  #     nz_nzta nz  MODEL    "COUPE"         17
+  #     nz_nzta nz  MODEL    "COUPE V.X"      1
+  # All 79 are Lancia BETA COUPÉS. VX/Volumex is the supercharged Beta Coupé of
+  # June 1983 — "the Coupé VX and HPE VX followed soon after (June 1983). These
+  # three variants were known as Volumex models … of all the road-going
+  # production Betas"; "around 150 RHD Coupés were imported to the UK", against
+  # 49 VX-badged survivors on the UK register today (https://en.wikipedia.org/wiki/Lancia_Beta)
+  #
+  # WHY NOT KEEP (the id looks like a real market name and is not). The only
+  # other Lancia that could be a bare "Coupé" is the Kappa Coupé, and it "was
+  # only built with left-hand drive" (https://en.wikipedia.org/wiki/Lancia_Kappa)
+  # — impossible in two RHD registers, never badged "Lancia Coupé", and NZ has
+  # no Kappa row at all. The gb half's apparent authority is uk_dft's GenModel
+  # column, which the body-word dossier calls "the manufacturer-declared model
+  # family" — TRUE for modern rows, FALSE here: the same column also carries
+  # `LANCIA BERLINA` (5), `LANCIA CPE` (39), `LANCIA HF` (5), `LANCIA SPYDER`
+  # (17) beside `LANCIA BETA` (494). A body word, an abbreviation and a trim
+  # letter-pair cannot all be declared families; for pre-1990 Lancias that
+  # column is a hand-keyed fragment field that splits ONE nameplate nine ways.
+  #
+  # WHY NOT NULL (the dossier's call, refuted). Nulling deletes 79 evidenced
+  # Beta Coupés. The dossier's reason was "spans Fulvia/Beta/2000 coupés — all
+  # live, so it names no one car"; the nz corpus refutes that directly. When
+  # NZTA means another Lancia coupé it WRITES THE NAMEPLATE (`GAMMA COUPE` 2,
+  # `FLAVIA COUPE` 1, `2000 COUPE HF` 1, and 42 `FULVIA` rows with zero
+  # `FULVIA COUPE`); the only cluster where the nameplate is routinely dropped
+  # is the Beta Coupé one — `BETA COUPE` 12, `VX COUPE` 4, `BETACOUPE` 2,
+  # `BETA VX COUPE` 2, `VXCOUPE`/`BETA COUPE VX`/`VOLUMEX BETA COUPE`/
+  # `VOLUMEX CPE`/`COUPE V.X` 1 each. NZ writing a bare body word is a KNOWN
+  # register habit, not a market name (DEBT.md: nz_nzta `COUPE` 1,839 veh over
+  # 57 makes), so it is evidence AGAINST a nameplate reading, not for one.
+  #
+  # WHY THE VALUE IS `Beta`, and why this is a completion rather than a claim:
+  # the normalizer ALREADY folds the spelled-out form — nz `BETA COUPE` → Beta
+  # (12 veh) and nl `BETA COUPE 1600`/`BETA COUPE VOLUMEX` → Beta today. This
+  # key only makes the abbreviated spelling agree with the spelled-out one.
+  # `car/lancia/beta` is LIVE and LEGITIMATE (fi|gb|nl|nz|ua; the Beta is a
+  # manufacturer nameplate, 1972-84, 111,801 Coupés built) and its evidence is a
+  # strict SUPERSET of this id's {gb,nz} — availability-subset check PASSES,
+  # zero countries lost. Migration alias in former_ids.yml.
+  #
+  # KIND-BLIND, as all renames are: the replay above found ZERO `Lancia|Coupe`
+  # rows in van/truck/bus/motorcycle/moped, so it fires in `car` only today.
+  # Spotcheck tripwire added for the fold and for the two records it must not
+  # disturb. NOT SHIPPED, deliberately: `Cpe` (gb 39, `CPE 2000 I`) — "CPE" is
+  # also how a register abbreviates the Lancia 2000 Coupé Iniezione, and that
+  # ambiguity is exactly what got this id wrong twice. Filed, not improvised.
+  Coupe: Beta                                 # FOLD: 79 veh (gb 61 uk_dft GenModel "LANCIA COUPE" / nz 18 nz_nzta "COUPE","COUPE V.X") are Beta Coupés — VX = the June 1983 supercharged Beta Coupé, ~150 RHD imported to the UK (https://en.wikipedia.org/wiki/Lancia_Beta); the only bare-"Coupé" Lancia, the Kappa Coupé, "was only built with left-hand drive" (https://en.wikipedia.org/wiki/Lancia_Kappa) so it cannot be in a RHD register
   Montecarlo: Monte Carlo                     # spelling variant of "Monte Carlo" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
 Land Rover:
