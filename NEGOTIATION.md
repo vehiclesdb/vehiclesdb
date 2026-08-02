@@ -24874,3 +24874,90 @@ running delegates told. That is now two brief errors this wave (the
 `period_evidence` truncation, and this), both caught by delegates measuring
 against the corpus rather than trusting me — which is the review direction this
 project is supposed to have, working.
+
+## S4W — **PLATES WAVE 2 COMPLETE: 11 of 11 slices, 24 jurisdictions, all merged.** Poland got the annex; the instrument-date rule fired in nine countries
+
+    91 jurisdiction files · 22 decode tables · plates lint OK · 0 open data PRs
+
+`data#250 #251 #252 #254 #255 #256 #258 #259 #260 #261 #262`, plus `#253`
+(the sidecar gate) and `#257` (the PRD amendment).
+
+### Poland got the annex, and caught a repeal nobody else has
+
+**380 rows, 689 distinct prefixes, 100% primary, ZERO secondary.** The route
+matters and generalises: ISAP sits behind an Imperva JS wall that 403s every
+retry, but **`api.sejm.gov.pl/eli` serves the identical Dziennik Ustaw PDFs plus
+the amendment graph with no bot wall.** Recommend it to anyone hitting ISAP.
+
+And the finding that would have sunk the PR: **`Dz.U. 2022 poz. 1847` — which
+every secondary description still cites — was REPEALED on 2024-11-30.** The
+successor's annex differs in real rows and adds a plate class that did not
+exist. The delegate proved the divergence by rendering the image-only 2022 PDF
+as a control.
+
+### The instrument-date rule fired in NINE countries. A sample:
+
+    PT  AA-00-AA   pt.wikipedia says 15 Jan 2020 = the decree's OWN entry into
+                   force. The statutory trigger is EXHAUSTION of the prior
+                   series — ~7 weeks later. The Spanish falsehood, in the wild.
+    PT  the enabling instrument is DL 54/2005, not DL 2/2020 — legislated
+                   FIFTEEN YEARS early. "Every secondary has this backwards."
+    PL  reform = 1 May 2000, not 2001: the instrument is dated 19 Jun 1999 and
+                   generally commences 1 Jul 1999, but §49 EXCEPTS the plate
+                   provisions to 1 May 2000.
+    SK  2023 reform = 1 Jan 2023, from an instrument PROMULGATED 9 Apr 2021 —
+                   and its commencement had already slipped once.
+    LI  1925, not 1924: decree dated 4 Dec 1924, commences 1 Jan 1925.
+    DK  EU band = 12 Oct 2009 — §100 carved the EU-symbol clause out of that
+                   bekendtgørelse's own 1 Jul 2009 commencement by 99 days.
+    IE  1991, not 1993 — an ADMINISTRATIVE event mistaken for a design one.
+
+Three dimension corrections against universally-repeated figures: **DK is
+504×120**, **PL is 520×114**, and **Malta mandates no dimension at all** — so
+520×110 is not claimed for it.
+
+### The finest piece of method in the wave
+
+Cyprus's letter list sits on a scan with **no text layer**, so its script is
+unanswerable from glyphs. The delegate settled it by **COLLATION**: the gazette
+lists `A B E H K M N P T X Y Z` in *Latin* alphabetical order, whereas as Greek
+they would be out of order — while Greece's instrument lists its fourteen in
+*Greek* order. So **Greece prints Greek restricted to Latin-lookalikes; Cyprus
+prints Latin restricted to Greek-lookalikes**, and Cyprus's set is Greece's
+minus I and O. That is an answer extracted from ordering alone.
+
+### The microstates surprised the brief
+
+I briefed five thin dossiers leaning on Wikipedia. **Four of five had excellent
+reachable primary law** — li 13/13 instrument-grade, sm 19/19, mc 16/17, ad
+14/16. Only Vatican is genuinely thin (0/8), and its dimensions are **disputed
+three ways**, so it ships **no plate size at all** rather than picking one.
+
+### SCHEMA AMENDMENTS THE WAVE EARNED — §2.6, for the owner, not data edits
+
+Five delegates independently hit the same wall and **none of them faked around
+it**, which is the result I care about most:
+
+- the pattern DSL **cannot spell a literal `L`, `9`, or `E`+letter** — they are
+  tokens. "FL 99999" generated `FQ 96884`; `EL` read as "E + any letter"
+- **carons**: six Croatian codes (`ČK KŽ PŽ ŠI VŽ ŽU`) fall outside the A–Z
+  serial alphabet, so no pattern can spell them (and `ŠI` folds to `SI`, a real
+  historic code — a live collision)
+- **Greek-only marks** (`ΔΣ ΞΑ ΔΟΚ`, Cyprus's `ΚΔ`) have no Latin twin;
+  rendering `ΚΔ` as "KD" would fabricate a string no plate shows — **not
+  authored**, with `latin_representable:` per row
+- **Denmark's military plates print a FULL STOP inside the number**; U+002E is
+  `forgiving` but not `emitted`
+- **`_meta/classes.yml` wants `sport`** (cz §26/5 and sk §127/9 independently)
+  and `public-service` (flagged by gr, cy and mt independently)
+
+Every one is recorded as prose with the true grammar preserved and the series
+downgraded to `recall-only` rather than a regex that lies.
+
+### My third brief error this wave
+
+I told the Poland delegate the green EV plate was **2022**. It is **1 Jan 2020**
+(`Dz.U. 2019 poz. 1272 §9`); 2022 is a re-enactment. Caught by the delegate
+against the primary. Three brief errors — `period_evidence` truncated to 8 of
+50, bare-vs-full decode paths, and this — **all three caught by delegates
+measuring against the corpus or the instrument rather than trusting me.**
