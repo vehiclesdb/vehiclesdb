@@ -2,6 +2,115 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.08.2] - 2026-08-02 — the false-green release
+
+**13,809 models across 859 makes (14,069 → 13,809, −260). The count fell and no
+evidence was lost: 384 migration entries carry every retired id forward.** This
+release retires nameplates that were never nameplates — horsepower ratings, door
+counts, power codes, body words and trim strings that registers had filed as if
+they were models. Every retirement is an alias or a removal manifest, so a
+consumer resolving an old id still lands on the right record. Registrations are
+conserved exactly: the Lancia fold, to take one measured example, moved 79
+vehicles between ids with a whole-corpus total of 72,127,507 before and after.
+
+Built on a **frozen source cache**: this is a correctness release, so the data
+axis was deliberately held still and the entire diff is attributable to curation
+and pipeline fixes rather than upstream drift.
+
+| kind | 2026.08.1 | 2026.08.2 | Δ |
+|---|---:|---:|---:|
+| car | 4,949 | 4,895 | −54 |
+| van | 616 | 618 | +2 |
+| motorcycle | 5,901 | 5,744 | −157 |
+| moped | 1,299 | 1,306 | +7 |
+| truck | 914 | 867 | −47 |
+| bus | 390 | 379 | −11 |
+
+### The type-approval crosswalk was losing a quarter of itself, silently
+
+`reconciler.rb` capped each record at 25 EU type approvals. The cap **refused**
+rather than evicted, so output was byte-identical build after build and nothing
+— no id diff, no count change, no lint — could see it. 185 records sat at
+exactly 25 and only **12 actually had 25**; the other **173 were truncated,
+losing 5,754 approvals on every build** (`car/volkswagen/golf` kept 25 of 379,
+`car/bmw/3-series` 25 of 328). The cap was an arbitrary constant, never
+revisited since the initial v2 commit, and PRD-3 §61 argues the opposite: the
+TAN⇄id crosswalk is a flagship asset.
+
+Approval entries **16,243 → 21,997 (+35%)**. Nothing replaces the cap, because
+truncation cannot be silent if truncation does not happen; two loud things that
+never drop a row take its place — a tripwire that fails the build with the data
+intact, and a per-build line reporting TAN-join coverage (`pipeline#155`).
+
+It surfaced because a new gate caught the sliver of it that coincided with a
+fold: the DAF XF lineage was delisting 19 approvals into a successor already at
+the cap (`pipeline#147`). Both are in this release; the gate stays.
+
+### Nameplates that were never nameplates
+
+- **Body words** — 59 ids retired (`hardtop`, `roadster`, `cabriolet` and
+  kin), with the 21 real nameplates in the same shape proved untouched (#209)
+- **Horsepower ratings** — DAF XF/XG/XD, 19 ids fold onto 3 (#176); the LF and
+  CF power suffixes, 26 ids onto 2 (#199)
+- **Door counts** — 1,011 rename keys covering 11,169 vehicles, folding onto
+  397 already-published records with zero new nameplates (#179)
+- **Power codes** — Land Rover, 9 candidate ids onto 2 live records (#193)
+- **Type codes** — Suzuki §A, 30 records onto their type-code nameplates (#192)
+- **Sub-brand pooling** — Mercedes-AMG's 57,573-vehicle GB residue decomposed
+  onto 19 already-live records via a Model-column whitelist, **zero ids minted
+  and zero strings unresolvable** (#206); the bus O-number boundary and the
+  Marco Polo truncation, 12 ids (#204)
+- **Marque waves** — Lexus (#194), MINI (#200), Bentley's GTC ladder (#178),
+  VW's New Beetle family folded onto `beetle` rather than minting a
+  `new-beetle` (#195), the XJ re-cut (#196), BYD's tail wave (#210)
+
+### Retroactive UK fleet history — a decade, at parse cost
+
+DfT's VEH0120 extract ships **47 quarterly columns and the adapter read one**.
+The other 46 (`2025-Q4 … 2014-Q3`) are now filed as 184,092 dated
+(record, quarter) observations — same file, same licence, **no additional
+fetch, not one extra cache byte**. The public catalog is byte-identical as a
+result: identity is still decided by the newest quarter alone and the history
+rides as a passenger (`pipeline#148`).
+
+### Powertrains, Phase 1 — private
+
+Propulsion derived from eight registers (ES, LU, DE, FI, MY, UA, US, CA) into a
+closed 9-code vocabulary, reaching **8,984 of 13,869 records (64.8%)**. Evidence
+unions across sources exactly as `availability` does — never majority-wins — so
+a nameplate offered as both BEV and diesel carries both. **Nothing publishes in
+this release**; the open field is Phase 3 (`pipeline#153`). The three registers
+that cannot answer the question are documented rather than left as a silent gap
+(#212).
+
+### Instruments
+
+Several checks that were believed to bind did not, and this release fixes the
+checks as well as the data:
+
+- The **licence gate** no longer passes on unverified pins — a frozen cache
+  used to make all 14 pinned licence texts look fresh and the gate
+  short-circuited having compared nothing (#177)
+- The **corpus vintage pin** was gating structural claims that any vintage can
+  answer, leaving the Model-column router's mint guard inert on every CI run;
+  counts stay pinned and exact, set membership now runs always (`pipeline#152`)
+- An **inert-key detector** reports dead override keys — 110 of 7,946 (1.38%),
+  ablation-proved in both directions (`pipeline#151`)
+- An **alias/name collision detector**, report-only (#201), and 11 class-A
+  collisions dispositioned — 2 retired, 9 documented as correct (#202)
+- **Rename-value liveness** filed as a silent-failure class: a surviving rename
+  whose value names a retired id resurrects it (#197)
+- `report:junk_drops` documented blind to rows that die before the rename
+  lookup (#189), and the reachability test's two blind spots filed (#180)
+
+### Also
+
+Zenodo DOI rollout with `CITATION.cff` (concept DOI `10.5281/zenodo.21744943`),
+the release archive boundary fixed so the internal process layer stops leaking
+into Zenodo archives while `data/licenses/` stays for provenance, the release
+channel fan-out re-keyed to the release event rather than its creator (#172),
+and `OWNERSHIP.yml` regenerated.
+
 ## [2026.08.1] - 2026-08-01 — the fold release
 
 **15,626 → 14,069 model ids** (car 6,238→4,949 · truck 1,224→914 · van
