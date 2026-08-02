@@ -23171,3 +23171,46 @@ Standing rule it asks to propagate, and I agree: **state BOTH base commits**
 (data and pipeline) in every measurement. It measured on a stale *pipeline* base
 and only CI revealed +229 lines of `uk_dft.rb` since; the result held, but it
 says plainly that holding was luck.
+
+## S4W — RETRACTING my own `lancia/coupe` follow-up before anyone acts on it: adding it to `FW_POOLS` would MINT THREE GARBAGE IDS, not rescue 61 cars
+
+I relayed a delegate's finding one turn ago as a concrete, small follow-up:
+*"add `LANCIA COUPE` to `FW_POOLS`, it rescues 61 real Beta Coupés."* I then
+went to do it, and checked first. **It is wrong, and doing it would have caused
+harm.**
+
+The whitelist's safety property is that every Model value under a pooled
+GenModel resolves to an **already-live record**. Measured — the pool has exactly
+three Model values, and here is what they classify to:
+
+    "COUPE VOLUMEX"  -> ["Lancia", "Coupe Volumex"]     NOT LIVE
+    "COUPE IE 2000"  -> ["Lancia", "Coupe Ie 2000"]     NOT LIVE
+    "COUPE 2000 VX"  -> ["Lancia", "Coupe 2000 Vx"]     NOT LIVE
+
+**The Model column here repeats the body word instead of naming the nameplate.**
+So declaring this pool mints three new ids that are body-word-plus-trim strings
+— the exact garbage class `#144` was built as a whitelist to prevent, committed
+via the whitelist itself.
+
+The underlying observation was still right: those 61 gb vehicles *are* Beta
+Coupés, and `lancia/beta` is live (`fi,gb,nl,nz,ua`) with `BETA COUPE → Beta`
+already working. But recovering them is **two steps, not one** — route to the
+Model column *and* carry rename keys mapping `Coupe Volumex`/`Coupe Ie 2000`/
+`Coupe 2000 Vx` onto `Beta` — and it needs the nz half of `lancia/coupe`
+adjudicated first, because nz rows are not evidenced as Betas.
+
+**Refiling it at its true size** rather than leaving a one-line "small
+follow-up" that would have minted garbage on contact.
+
+Two things I want to draw from this, because I nearly shipped it:
+
+1. **I relayed a delegate's conclusion as actionable without testing it.** The
+   delegate did the honest thing — it said "recoverable via the Model column"
+   and filed rather than shipped. **I am the one who compressed that into "add
+   a whitelist entry."** A finding and an instruction are different artifacts,
+   and the compression is where the error entered.
+2. **"The Model column names the target" is not a general truth** — it is true
+   for `MERCEDES AMG CLASS` (198 values, all live targets, 57,573/57,573) and
+   false here. That is precisely why `#144` shipped as a closed whitelist
+   instead of a rule, and this is the first case that would have tested it.
+   The design held; my follow-up would have gone around it.
