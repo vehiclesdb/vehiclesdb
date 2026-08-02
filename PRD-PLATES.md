@@ -101,6 +101,15 @@ series:
                                  # series without a strict twin are strict).
     format:
       pattern: "9-LLL-99"        # human pattern: 9=digit L=letter, literal
+                                 # ESCAPE (owner ruling 2026-08-02): \9 and \L
+                                 # are the LITERAL characters, for plates that
+                                 # print a 9 or an L — "F\L 99999" is Liechtenstein,
+                                 # not "F + any letter". \\ is a literal backslash;
+                                 # a trailing lone backslash is an ERROR. Escaped
+                                 # characters are held to the SAME alphabet as
+                                 # unescaped ones: the escape buys the ability to
+                                 # SAY "9", never permission to spell a character
+                                 # the plate cannot show.
                                  # separators as printed, drawn only from the
                                  # separator character set (§2.6)
       regex: "\\A\\d{1}-[A-Z]{3}-\\d{2}\\z"   # anchored; MUST pass the lint
