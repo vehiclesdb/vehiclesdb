@@ -1,0 +1,655 @@
+# plates/us-nv.yml — Nevada (PRD-PLATES gate L2, mountain group).
+#
+# NEVADA IS THE BEST-LEGISLATED PLATE SYSTEM IN THIS GROUP. Where Arizona
+# delegates everything and Colorado legislates a character cap, NRS Chapter 482
+# writes the plate itself: § 482.270 fixes what must appear on every plate and
+# how bright it must be, § 482.265 fixes how many are issued and sets the
+# 250-application threshold every special plate must clear, § 482.272 and
+# § 482.274 give motorcycles, mopeds and trailers their own sections, and
+# § 482.266 does something no other state in this group does at all — it orders
+# the department to MANUFACTURE REPLICAS OF ITS OWN PRE-1982 PLATES "using
+# substantially the same process, dies and materials".
+#
+# THE 1982 LINE IS THE THING TO UNDERSTAND ABOUT NEVADA. Three separate
+# sections turn on it. § 482.270(3) forbids the department to issue redesigned
+# plates to a person who held plates before 1 January 1982 without that
+# person's approval. § 482.2705(3) keeps a pre-1982 passenger designation valid
+# "during the period for which the plate was originally issued as well as during
+# any extensions by stickers". § 482.266 lets anyone else buy a replica of the
+# same design. So Nevada has a legislatively protected legacy fleet AND a
+# legislatively authorised reproduction programme — a live series and a revival
+# series of the same design, side by side, both current.
+#
+# THE SEPARATOR FINDING (PRD-PLATES §2.6): the glyph between the serial groups
+# on a modern Nevada plate is THE OUTLINE OF THE STATE OF NEVADA. It is a
+# design element occupying a separator position, not a character. Every regex
+# below therefore spells that position with the emitted SPACE, and
+# `design.serial_separator_glyph` records what is actually printed. See the
+# note on `us-nv-standard-2024`.
+#
+# WHAT IS NOT HERE (PRD-PLATES §2.5): individual special-plate DESIGNS.
+jurisdiction: us-nv
+authority:
+  name: Nevada Department of Motor Vehicles (DMV)
+  url: "https://dmv.nv.gov/platesmain.htm"
+binding: vehicle
+statute_edition: >-
+  Nevada Revised Statutes, Chapter 482 (Motor Vehicles and Trailers: Licensing,
+  Registration, Sales and Leases), the Legislative Counsel Bureau's own
+  compilation, revision stamp "[Rev. 6/29/2024 4:15:19 PM--2023]" — i.e. the
+  2023 statutes as revised to 29 June 2024. leg.state.nv.us returns 403 to
+  automated clients; the chapter was read from the Internet Archive capture of
+  28 May 2025, which preserves that revision stamp.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    NO EVIDENCE EITHER WAY WAS FOUND, AND NONE IS INVENTED. Nevada does not
+    appear in the survey of state copyright postures that the US research
+    dossier relied on — the Wikipedia article on the copyright status of works
+    by subnational governments carries an Arizona section, a Colorado section
+    and a Utah section, and its Nevada heading is EMPTY. No Nevada analogue of
+    Arizona's asserted-copyright policy page or Colorado's § 24-72-203(4)
+    authorisation was located in this pass, and no Nevada public-records
+    provision was read. Absence of a found assertion is weak evidence of
+    anything: under the governing rule (17 U.S.C. § 105 does not extend to the
+    states) the DEFAULT for a US state design is copyrighted unless that state
+    says otherwise, so Nevada must be treated as default-copyrighted until
+    researched.
+  next_step: >-
+    Read NRS Chapter 239 (Public Records) for a copyright-reservation clause of
+    the Colorado kind, and the Nevada State Library and Archives / Secretary of
+    State website policies for an assertion of the Arizona kind. Both are cheap
+    and both are exactly where the answer sat in the two states where it was
+    found.
+  emblem_rule: >-
+    PRD-PLATES §3 placeholder default applies, and applies to more than usual
+    here: the Nevada plate's identity is carried by the STATE-OUTLINE glyph
+    between the serial groups and by the stylised mountain range along the
+    bottom. Render both as `rendered: placeholder`. Nevada state seal statutes
+    are UNRESEARCHED (standing gap, US dossier §4.5).
+  photograph_caution: >-
+    Standard finding, unchanged: a Commons CC BY-SA tag on a Nevada plate
+    photograph licenses the PHOTOGRAPH, not the design, and never reaches a
+    render generated from the spec.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY (PRD-PLATES §4): consulted, and recorded here precisely because its Nevada section is EMPTY — the negative result is the claim"
+
+# ---------------------------------------------------------------------------
+# The US standards chain. Nevada is the one state in this group whose statute
+# states a MEASURABLE retroreflectivity requirement of its own, so the AAMVA
+# row below has a live counterpart in state law.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, PAYWALLED and UNPINNED. No J686 dimension is quoted."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges."
+    jurisdiction_name_layout: "AAMVA §2.1: jurisdiction name top-centre between the bolt holes, at least 0.25 in above the plate number and 0.125 in from the top edge; jurisdiction characters 0.75-1.0 in."
+    retroreflectivity: >-
+      AAMVA §3.3 recommends readability "in both daylight and nighttime from
+      distances of at least 75 feet", with materials per ASTM D4956-19 and
+      ISO 7591:1982 clause 3 and a minimum 45 cd/lx/m2 at 0.2 degrees entrance /
+      -4 degrees observation. NEVADA LEGISLATES ITS OWN, AND MORE DEMANDING,
+      VERSION: § 482.270(4) requires plates "treated to reflect light and to be
+      at least 100 times brighter than conventional painted number plates" and,
+      when properly mounted on an unlighted vehicle and viewed from a vehicle
+      with standard headlights, VISIBLE at not less than 1,500 feet and READABLE
+      at not less than 110 feet. Nevada's readable distance exceeds AAMVA's
+      recommendation by 35 feet, and its 100x brightness ratio has no AAMVA
+      counterpart at all. This is the single most quantitative plate provision
+      found in the mountain group.
+    replacement_cycle: "AAMVA §1.1 recommends a cycle not to exceed 7 to 10 years. Nevada legislates none; instead § 482.270(3) protects pre-1982 holders from forced redesign, which is the inverse policy."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" appears in the Wikipedia Nevada
+    article footnoted to Christopher Garrish, "Reconsidering the Standard Plate
+    Size", Plates (ALPCA), October 2016 — a hobbyist magazine whose title
+    announces that it reconsiders the claim it is cited for. The US dossier
+    already found the story uncited on the parent article. COMMONLY REPEATED,
+    UNSOURCED. Nevada's own statute prescribes no dimension: § 482.270(4) says
+    "The Director may determine and vary the size, shape and form and the
+    material of which license plates are made" — a legislature expressly
+    declining to fix the size.
+
+display_rules:
+  default: >-
+    TWO plates for a motor vehicle other than a motorcycle or moped, ONE for
+    everything else. § 482.265(1): "The Department shall furnish to every owner
+    whose vehicle is registered two license plates for a motor vehicle other
+    than a motorcycle or moped and one license plate for all other vehicles
+    required to be registered hereunder." § 482.275(1) then requires one at the
+    rear and one at the front.
+  front_plate_exception: >-
+    § 482.275(2): if the vehicle "was not manufactured to include a bracket,
+    device or other contrivance to display and secure a front license plate" and
+    the manufacturer provided no other means, the rear plate must be attached
+    and the front plate MAY be attached at the owner's option. § 482.275(3) is
+    the part that matters for a dataset: the exception does NOT relieve the
+    department of the duty to issue a SET OF TWO, and does not reduce any fee —
+    the owner "shall retain the other license plate" and surrender both as a set
+    when required. So a one-plate Nevada car is still a two-plate registration.
+  mounting: "§ 482.275(4): securely fastened so as to prevent swinging, at a height not less than 12 inches from the ground measured from the bottom of the plate, clearly visible, free from foreign materials and legible"
+  displayed_content: >-
+    § 482.270(5): every plate must display (a) the registration number, or
+    combination of letters and numbers, assigned to the vehicle and owner;
+    (b) the name of this State, which MAY BE ABBREVIATED; (c) if issued for a
+    calendar year, the year; and (d) otherwise, except as provided in
+    § 482.2085, the month and year the registration expires. Note (b): Nevada
+    expressly authorises an abbreviated state name on the plate.
+  manufacture: "§ 482.267 requires production at a facility of the Department of Corrections, with an exception; the factory moved from Nevada State Prison to the Northern Nevada Correctional Center in 2012 (locator-grade for the move)"
+  sources:
+    - "https://www.leg.state.nv.us/nrs/nrs-482.html  # NRS 482.265 two-plates-or-one and the special-plate fee and threshold rules; 482.270 general specifications and redesign; 482.275 display, front-plate exception, retention duty and mounting height; 482.267 production at a Department of Corrections facility. Read via the Internet Archive capture of 28 May 2025 (leg.state.nv.us 403s automated clients)."
+
+series:
+
+  # =========================================================================
+  # CURRENT STANDARD ISSUE — "Home Means Nevada", current arrangements.
+  # =========================================================================
+  - id: us-nv-standard-2024
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2024 }
+    period_evidence: corroboration-only
+    matching: strict
+    format:
+      pattern: "999 9L9"
+      regex: '\A(?:\d{3} ?\d[A-Z]\d|\d{2}[A-Z] ?\d{3})\z'
+      regex_strict: '\A(?:\d{3} ?\d[A-HJ-NP-Z]\d|\d{2}[A-HJ-NP-Z] ?\d{3})\z'
+      charset:
+        notes: >-
+          THE ALPHABET EXCLUSION IS REAL AND LONG-RUNNING: the letters I, O and
+          Q have not been used in Nevada passenger serials since the 2001 base
+          and the practice continues. That is what `regex_strict` encodes, and
+          it is why a strict twin exists here at all — the round-trip forbids
+          `regex` from carrying it (PRD-PLATES §2.7). The exclusion is
+          corroboration-grade (a collector reference reached through a locator),
+          not authority-stated, and is recorded as such; the statute is silent,
+          because § 482.2705(2) hands the Director the whole question: "the
+          Director shall determine the combinations of letters and numbers which
+          constitute the designations for license plates assigned to passenger
+          cars and trucks."
+      pattern_note: >-
+        TWO ARRANGEMENTS ARE CURRENT AT ONCE, so `regex` is their union and
+        `pattern` shows the first. Since March 2024 Nevada has issued 123 4A5
+        (from 000 0A0) and 12A 345 (resuming at 49H 000) CONCURRENTLY on the
+        same base. This is not a recall-only union of unknowns — both members
+        are attested arrangements the DMV is issuing today, so the union IS the
+        issuing grammar and `matching: strict` is correct. Compare
+        us-az-standard-2020-transitional, which is recall-only precisely because
+        its union members were NOT individually attested.
+      progression: "the Z series is reserved for issuance through dealerships, and had reached the ZZZ series on the Home Means Nevada base as of March 2024 (corroboration-grade)"
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4 }
+      plate_dimension_note: "NOT IN CHAPTER 482 — § 482.270(4) expressly leaves size, shape, form and material to the Director. The 12x6 figure is the North American convention from the AAMVA/SAE chain, not a Nevada claim."
+      background: { finish: retroreflective }
+      material_spec: "§ 482.270(4): treated to reflect light, at least 100 times brighter than conventional painted number plates; visible at 1,500 feet and readable at 110 feet at night from a vehicle with standard headlights; plainly readable at 100 feet in daylight"
+      colour_note: >-
+        NO HEX IS CLAIMED. Chapter 482 names no colour. The design is described
+        by a Wikipedia LOCATOR as an embossed black serial on a sky-blue plate
+        with a stylised multi-coloured mountain range along the bottom,
+        "NEVADA" screened in black at top centre and "Home Means Nevada"
+        screened in black within the mountain range. Recorded as a lead.
+      serial_separator_glyph: >-
+        THE PRINTED SEPARATOR IS THE OUTLINE OF THE STATE OF NEVADA, not a
+        hyphen, dot or space. Under PRD-PLATES §2.6 the dataset may emit only
+        '-' and ' ', so every regex here spells that position with an optional
+        SPACE and this field records the truth. The reasoning is the one already
+        set out in _meta/separators.yml's never_separator note for German and
+        Austrian coats of arms: a graphic between serial groups is a DESIGN
+        ELEMENT carried in `design`, never a serial character, and a consumer
+        deriving a separator-free twin is right to collapse "123 4A5" to
+        "1234A5". Nevada is the first US instance of that pattern in the dataset
+        and should be added to the never_separator discussion by PR.
+      legend_top: "NEVADA"
+      legend_bottom: "Home Means Nevada"
+      graphic: { present: true, rendered: placeholder, description: "stylised multi-coloured mountain range along the lower edge; state-outline glyph between serial groups — locator-grade" }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: >-
+      NONE TODAY, AND NEVADA IS THE COUNTY-LETTER STATE THAT GAVE IT UP. Nevada
+      historically encoded the county in the serial — a single letter, then a
+      two-letter code, then three-letter blocks (Clark: B, then C/CA-CF/CJ-CZ,
+      then CAA-CGZ/CJA-CZZ/TAA-TLU; Washoe: W, then W/WA, then WAA-WOZ/WRA-WRX;
+      and so on for all seventeen counties). Nothing in a modern Nevada serial
+      encodes geography. The historic county table is L4 scope and is NOT
+      reproduced here, but it is a genuine decode table and § 482.266's replica
+      programme keeps it commercially live — the DMV's own page points buyers of
+      Circa 1982 Replica plates at "county designator" plate numbers.
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # NRS 482.2705(1)-(2): the Director orders preparation of passenger and truck plates in the same manner as § 482.270 and determines the letter-and-number combinations; § 482.270(4)-(5) the material, brightness and visibility requirements and the mandatory plate contents"
+      - "https://dmv.nv.gov/platesnumbers.htm  # Nevada DMV, Previously-Issued Standard Plate Numbers: 'You may obtain any standard plate number (\"123ABC\") or special counter plate number (\"Lake Tahoe 12345\")' subject to an 18-month dormancy or a release form; and '\"123ABC\" can be ordered in the Home Means Nevada or Circa 1982 styles only'"
+      - "https://dmv.nv.gov/platesmain.htm  # Nevada DMV: 'License plates are available in the standard Home Means Nevada design and more than 30 specialty designs'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY (PRD-PLATES §4): the March 2024 arrangement change, the two concurrent current arrangements and their ranges, the I/O/Q exclusion, the state-outline separator, the design description and the historic county-code table. None is asserted as sourced."
+    notes: >-
+      NEVADA STANDARD ISSUE, CURRENT ARRANGEMENTS. THE BASE IS OLDER THAN THE
+      SERIES: "Home Means Nevada" debuted 1 November 2016 and the March 2024
+      change was to the SERIAL ARRANGEMENT only, which is why the previous
+      arrangement has its own entry below rather than being folded in here.
+      `period_evidence: corroboration-only` because March 2024 rests on a
+      locator and a collector reference; the DMV's own November 2016 debut
+      announcement is a dead URL preserved only in the Internet Archive and was
+      not re-fetched in this pass. WHY THE UNION MATTERS: a consumer that
+      assumes one current arrangement per US state will mis-parse Nevada today,
+      and the same assumption will mis-parse New Mexico, which runs THREE
+      concurrent standard designs with three different arrangements.
+
+  # =========================================================================
+  # ONE SERIES BACK — same base, previous arrangement.
+  # =========================================================================
+  - id: us-nv-standard-2016
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2016, end: 2024 }
+    period_evidence: corroboration-only
+    matching: strict
+    format:
+      pattern: "999 L99"
+      regex: '\A\d{3} ?[A-Z]\d{2}\z'
+      regex_strict: '\A\d{3} ?[A-HJ-NP-Z]\d{2}\z'
+      charset: { notes: "the same I/O/Q exclusion, corroboration-grade, encoded in the strict twin only; § 482.2705(2) leaves the combinations to the Director" }
+      progression: "000 A00 to 999 Z99; the parallel 123 ABC dealer-issue block ran 000 ZDK to 999 ZZZ on the same base (corroboration-grade)"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      material_spec: "§ 482.270(4), unchanged"
+      serial_separator_glyph: "the Nevada state outline, as on the current series"
+      colour_note: "identical Home Means Nevada base; no hex claimed"
+      legend_top: "NEVADA"
+      legend_bottom: "Home Means Nevada"
+      graphic: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.2705(2): the Director's power over the combinations, under which this arrangement was issued"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY: the 1 November 2016 debut of the Home Means Nevada base, the 000 A00 to 999 Z99 range and the ZDK-ZZZ dealer block"
+    notes: >-
+      THE PREVIOUS ARRANGEMENT ON THE CURRENT BASE. It is separated from
+      us-nv-standard-2024 because the format differs and PRD-PLATES §2.3 makes
+      format a series boundary, and it is kept because the two are visually
+      identical — a photograph cannot distinguish them, only the serial can.
+      That is precisely the case a format-plus-period dataset exists to resolve
+      and no competitor models.
+
+  # =========================================================================
+  # THE PREVIOUS BASE DESIGN — Sierra Nevada, 2001-2017.
+  # =========================================================================
+  - id: us-nv-standard-sierra-2001
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2001, end: 2017 }
+    period_evidence: corroboration-only
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A(?:\d{3} ?[A-Z]{3}|\d{2}[A-Z] ?\d{3})\z'
+      regex_strict: '\A(?:\d{3} ?[A-HJ-NP-Z]{3}|\d{2}[A-HJ-NP-Z] ?\d{3})\z'
+      charset: { notes: "the I/O/Q exclusion begins with this base — the locator records it as first observed here and continuing to the present. Corroboration-grade." }
+      pattern_note: "two arrangements again: 123 ABC from January 2001, then 12A 345 from April 2015 as the three-letter space ran out. The union is the issuing grammar for the base, so strict."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      material_spec: "§ 482.270(4), unchanged"
+      colour_note: >-
+        NO HEX CLAIMED. Locator description: an embossed dark blue serial on a
+        graphic plate showing the Sierra Nevada mountains in light blue against a
+        yellow-and-orange gradient sky, "NEVADA" screened in dark blue at top
+        centre, "THE SILVER STATE" screened in white at bottom centre. The
+        serial became screened rather than embossed in December 2006 and
+        embossed again from July 2015 with different dies — a manufacturing
+        change inside one design, which is a sub-entry question, not a series
+        boundary.
+      serial_separator_glyph: "the Nevada state outline, adopted as the separator on the July 2015 re-embossed variant (corroboration-grade)"
+      legend_top: "NEVADA"
+      legend_bottom: "THE SILVER STATE"
+      graphic: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.270(1): 'the Director shall order the redesign and preparation of motor vehicle license plates' — the power under which a base change happens at all"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY: the January 2001 start, the December 2006 screening change, the April 2015 arrangement change, the July 2015 re-embossing and state-shape separator, and concurrent issuance with the Home Means Nevada base from 1 November 2016 until supplies were exhausted"
+    notes: >-
+      THE PREVIOUS BASE. The overlap with us-nv-standard-2016 is REAL AND
+      DELIBERATE, and is exactly the parallel-issuance case PRD-PLATES §2.2
+      anticipates: the Sierra base kept being issued from existing stock after
+      the Home Means Nevada base debuted on 1 November 2016, until supplies ran
+      out. Old stock issues on — recorded, not smoothed.
+
+  # =========================================================================
+  # THE CIRCA-1982 REPLICA — statutorily mandated reproduction of a dead design.
+  # =========================================================================
+  - id: us-nv-replica-1982
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 1997 }
+    period_evidence: statutory-date
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} ?[A-Z]{3}\z'
+      charset: { notes: "the replica carries a CURRENT serial in the historic style, or a historic 'county designator' number reclaimed under the previously-issued-numbers rule. The DMV states the constraint precisely: '\"123ABC\" can be ordered in the Home Means Nevada or Circa 1982 styles only.'" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      manufacture_rule: >-
+        § 482.266(2), verbatim on the point that makes this series unique: the
+        Department "shall manufacture the license plates using substantially the
+        same process, dies and materials as were used to manufacture license
+        plates before January 1, 1982", and shall deliver within 180 days of
+        acceptance or payment, whichever is later.
+      colour_note: >-
+        NO HEX CLAIMED, but the colour requirement IS statutory in form:
+        § 482.266(1) defines the product as plates "substantially in the same
+        color and form as license plates manufactured before January 1, 1982".
+        The statute names no hue; it names an IDENTITY RELATION to a previous
+        design. That is a third kind of statutory colour provision, alongside
+        Florida's "distinguishing color" (a property) and Colorado's "green
+        mountains and a white sky" (a description).
+      graphic: { present: true, rendered: placeholder }
+    fee: "the manufacturing fee prescribed by the Department, capped by § 482.266(3)(b) at $25, credited to the State Highway Fund and allocated to the Revolving Account for the Issuance of Special License Plates under § 482.1805"
+    not_a_special_plate: >-
+      § 482.266(1), final flush paragraph: a request under this section "does
+      not, by itself, constitute a request for special license plates pursuant
+      to subsection 3 of NRS 482.265". The replica therefore escapes the $35
+      special-plate fee AND the 250-application threshold — a deliberate
+      legislative carve-out that keeps a nostalgia programme out of the
+      charitable-plate machinery.
+    keep_your_number: "§ 482.266(4): the requester may KEEP the plates currently registered to them if the replica carries the same letters and numbers — so the same serial can lawfully exist twice, in two styles, in one household"
+    region_encoding: "historic county-designator numbers are obtainable through this programme (Nevada DMV), which is the only live consumer of the pre-1982 county table"
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.266 in full: the written-request procedure, the same-process-dies-and-materials manufacturing duty, the 180-day delivery deadline, the $25 fee cap and its destination, the not-a-special-plate carve-out and the keep-your-old-plates rule; Source note (Added to NRS by 1997, 1502)"
+      - "https://dmv.nv.gov/platesmain.htm  # Nevada DMV lists 'Circa 1982 Replica' among the MAIN NEVADA PLATES, alongside Home Means Nevada, Accessible and Exempt"
+      - "https://dmv.nv.gov/platesnumbers.htm  # Nevada DMV: 'See Circa 1982 Replica Plates for blue plates and \"county designator\" plate numbers'"
+    notes: >-
+      THE REPLICA SERIES, AND THE BEST-DATED ENTRY IN THIS FILE.
+      `period_evidence: statutory-date` with start 1997 because § 482.266's own
+      Source note reads "(Added to NRS by 1997, 1502)" — the section was created
+      in the 1997 session, so the programme cannot predate it. That is a real
+      claim, not an upper bound, and it is the model for how the rest of this
+      group's undated series should eventually be fixed: Nevada's compilation
+      prints a Source line under every section, and those lines are the primary
+      evidence for period boundaries that this whole gate is short of. WHY THE
+      SERIES MATTERS CONCEPTUALLY: it is a CURRENTLY ISSUED plate of a
+      DISCONTINUED DESIGN, which breaks the assumption that design age and issue
+      period travel together, and it sits beside a legislatively protected
+      legacy fleet of the genuine article (§ 482.270(3), § 482.2705(3)).
+
+  # =========================================================================
+  # MOTORCYCLE — its own statutory section.
+  # =========================================================================
+  - id: us-nv-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2017 }
+    period_evidence: corroboration-only
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      charset:
+        notes: >-
+          § 482.272(1) is the whole statutory rule and it fixes nothing: "Each
+          license plate for a motorcycle or moped may contain a number of
+          characters, including numbers and letters, as determined necessary by
+          the Director. Only one plate may be issued for a motorcycle or moped."
+          The six-digit arrangement recorded here is CORROBORATION-GRADE — it
+          comes from a collector reference through a locator, not from the
+          Department — and it is stated as strict because it is narrower than
+          what the Director may issue, not wider. If it is wrong it is wrong;
+          it is not disguised as authority.
+      progression: "sequential; the locator record has the Home Means Nevada motorcycle base starting at 288001 in 2017 and continuing"
+    design:
+      plate: { unit: in, note: "reduced motorcycle size; no dimension is stated in Chapter 482 and none was obtained (recorded gap)" }
+      background: { finish: retroreflective }
+      material_spec: "§ 482.270(4) applies to all license plates"
+      colour_note: "the motorcycle plate follows the Home Means Nevada passenger base; no hex claimed"
+      graphic: { present: true, rendered: placeholder }
+    moped_rule: >-
+      § 482.272(2) requires the moped plate to be "distinct in appearance from
+      the license plate for a motorcycle", the distinction to be made "by,
+      without limitation, the size, color or design of the plate", and exempts
+      it from displaying the month and year of expiry. A moped plate is
+      therefore a separate series by statutory command — but no moped format,
+      size or colour was obtained, so it is a RECORDED GAP rather than an
+      invented entry.
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.272 License plates: Motorcycles and mopeds — character count at the Director's discretion, one plate only, the moped-distinctness duty and the expiry-date exemption"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY: the six-digit numeric arrangement and the 2017 transition to the Home Means Nevada motorcycle base"
+    notes: >-
+      MOTORCYCLE PLATES. Included because § 482.272 gives motorcycles their own
+      section and their own issuance rule, which is the test PRD-PLATES §2.3
+      sets for a separate series. The honest weakness is the FORMAT: the statute
+      delegates the character count entirely, and the six-digit arrangement is
+      corroboration-grade. Recorded with that grade visible rather than omitted,
+      because a consumer meeting a six-digit Nevada plate should at least know
+      what it probably is.
+
+  # =========================================================================
+  # TRAILER — its own statutory section, and a two-size rule.
+  # =========================================================================
+  - id: us-nv-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999 L"
+      regex: '\A\d{5} ?[A-Z]\z'
+      regex_strict: '\A\d{5} ?[EFGHJKLMSUVWXY]\z'
+      charset:
+        notes: >-
+          § 482.274(3): "The Director shall determine the registration numbers
+          assigned to trailers." The five-digits-plus-suffix-letter arrangement
+          and the observed suffix set (E, F, G, H, J, K, L, M, S, U, V, W, X, Y)
+          are CORROBORATION-GRADE from a locator; the suffix set is what
+          `regex_strict` encodes, and note that it independently reproduces the
+          I/O/Q exclusion seen on passenger plates while also skipping A-D, N,
+          P-R, T and Z.
+    design:
+      plate: { w: 12, h: 6, unit: in, note: "§ 482.274(2): the Director shall order preparation of TWO SIZES of trailer plate; the smaller 'may be used for trailers with a gross vehicle weight of less than 1,000 pounds'. The smaller size's dimensions were not obtained (recorded gap)." }
+      background: { finish: retroreflective }
+      colour_note: "same design as the passenger base (corroboration-grade); no hex claimed"
+      graphic: { present: true, rendered: placeholder }
+    no_expiry_date_variant: "§ 482.274(1): a plate for a full trailer or semitrailer registered under § 482.483(3) need NOT display the month and year the registration expires — a permanent-registration trailer plate"
+    no_special_plates: "§ 482.274(5): the Department shall NOT issue a § 482.483(3) full trailer or semitrailer any special plate available under §§ 482.3667 to 482.3823 — one of the few express exclusions from the specialty programme in any state read for this gate"
+    grandfather: "§ 482.274(4): trailer plates issued before 1 July 1975 bearing a different designation remain valid for the period for which they were issued"
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.274 License plates: Trailers — preparation in the same manner as § 482.270, the two-size rule and the 1,000-pound threshold, the Director's power over trailer numbers, the pre-1975 grandfather clause, the permanent-registration exemption from month/year display and the express exclusion from the specialty programme"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY: the 12345 A arrangement and the observed suffix-letter set"
+    notes: >-
+      TRAILER PLATES. The statutory content is unusually rich for a class that
+      most states leave to administrative practice, and two provisions are worth
+      a consumer's attention: the two-size rule means a Nevada trailer plate may
+      not be 12x6 at all, and the § 482.274(5) exclusion means a permanent-
+      registration semitrailer CANNOT carry a specialty design — a negative fact
+      that a parse API can use.
+
+  # =========================================================================
+  # DEALER — the letter-prefixed business series.
+  # =========================================================================
+  - id: us-nv-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z]\d{5}\z'
+      regex_strict: '\A[DLR]\d{5}\z'
+      charset:
+        notes: >-
+          The prefix letter carries the meaning: D, L or R for the dealer,
+          lessor and rebuilder families (corroboration-grade from a locator).
+          `regex` accepts any prefix letter because the round-trip against
+          `pattern` forbids it from carrying the restriction (PRD-PLATES §2.7);
+          `regex_strict` is the sourced-as-far-as-it-goes prefix set.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "same design as the passenger base (corroboration-grade); no hex claimed"
+      graphic: { present: true, rendered: placeholder }
+    binding: business
+    statutory_basis: "§ 482.320 (Manufacturers, distributors, dealers and rebuilders: Special plates) authorises the class; § 482.320 cross-refers the display rules in §§ 482.275 and 482.330, so a dealer plate is displayed like any other"
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.320 Manufacturers, distributors, dealers and rebuilders: Special plates, and its cross-reference to the §§ 482.275 / 482.330 display rules"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY: the D/L/R prefix families and the five-digit body"
+    notes: >-
+      DEALER PLATES. `binding: business` for the same reason as Germany's rote
+      Kennzeichen and Florida's dealer plate — the plate follows the dealership,
+      not a vehicle. Note that Nevada's passenger plates ALSO do not follow the
+      vehicle in the ordinary sense, since § 482.2715 lets a registrant maintain
+      a plate code across vehicles; Nevada is closer to Arizona's owner-binding
+      than the top-level `binding: vehicle` suggests, and that tension is
+      recorded rather than resolved.
+
+  # =========================================================================
+  # GOVERNMENT / EXEMPT.
+  # =========================================================================
+  - id: us-nv-exempt
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "L99999"
+      regex: '\A[A-Z]\d{5}\z'
+      regex_strict: '\A[EX]\d{5}\z'
+      charset: { notes: "E or X prefix plus five digits (corroboration-grade); the prefix restriction lives in the strict twin because the round-trip forbids it in `regex`" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "same design as the passenger base (corroboration-grade); no hex claimed"
+      graphic: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://dmv.nv.gov/platesmain.htm  # Nevada DMV lists 'Exempt Plates' among the MAIN NEVADA PLATES"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada  # LOCATOR ONLY: the E/X prefix and five-digit body"
+    notes: >-
+      EXEMPT (GOVERNMENT FLEET) PLATES. Recorded as class `government` because
+      _meta/classes.yml defines that as "civil government fleets with distinct
+      series" and Nevada's exempt plate is exactly that. The statutory basis was
+      NOT isolated in this pass — Chapter 482 has an exempt-vehicle regime but
+      the section was not read — so the entry rests on the DMV's own plate index
+      plus a locator for the arrangement (recorded gap).
+
+  # =========================================================================
+  # PERSONALIZED — "personalized prestige" in Nevada's own words.
+  # =========================================================================
+  - id: us-nv-personalized
+    class: personalized
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 1969 }
+    period_evidence: statutory-date
+    matching: recall-only
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9]+\z'
+      charset:
+        notes: >-
+          NO WIDTH CLAIM IS MADE, because the width is regulatory and was not
+          obtained. § 482.3667(6): "The Department may limit by regulation the
+          number of letters and numbers used, prohibit the use of inappropriate
+          letters or combinations of letters and numbers and prohibit the
+          transfer of personalized prestige license plates from one vehicle or
+          trailer to another if such a transfer would result in an inappropriate
+          use of letters or combination of letters and numbers." The regulation
+          itself lives in the Nevada Administrative Code and was not read
+          (recorded gap), so the regex is an unbounded recall bound in the
+          us-fl-horseless-carriage style.
+        office_restriction: "§ 482.3667(7): the Department shall not assign to any person not holding the relevant office any letters and numbers denoting that the holder holds a public office"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      note: "§ 482.3669 contemplates personalized prestige plates issued 'in lieu of the regular Nevada license plate or plates', and § 482.266 lets a personalized plate be taken in the Circa 1982 replica style"
+    eligibility: "private passenger cars, motorcycles, trucks or trailers, EXCEPT a full trailer or semitrailer registered under § 482.483(3) and EXCEPT a moped registered under § 482.2155 (§ 482.3667(2))"
+    validity: "valid for 12 months and renewable on expiration, except as provided in § 482.2065 (§ 482.3667(3))"
+    priority_rule: "§ 482.3667(5): in case of conflict, the person who first applied and has continuously renewed has priority — a first-come rule written into statute rather than left to policy"
+    fee: "$35 for the first issuance and $20 for a renewal sticker, in addition to all other licence fees and applicable taxes (§ 482.367(1)(a)-(b))"
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.3667 in full: the Department's duty to establish and design them, the eligible and excluded vehicle classes, the 12-month validity, transferability, the first-applicant priority rule, the regulatory power over the number of characters and the public-office restriction; § 482.3669 regulations; § 482.367(1) the $35 and $20 fees; Source note (Added to NRS by 1969, 100)"
+    notes: >-
+      PERSONALIZED PRESTIGE PLATES. `period_evidence: statutory-date` with start
+      1969 on the strength of § 482.3667's own Source line, "(Added to NRS by
+      1969, 100)" — the second properly dated series in this file and, again,
+      dated from the compilation's Source note rather than from a secondary.
+      `matching: recall-only` is the correct grade and worth stating plainly: an
+      unbounded alphanumeric regex is deliberately wider than any grammar Nevada
+      actually issues, so a match is a shape hit and nothing more, exactly as
+      PRD-PLATES §2.7 requires such a regex to be labelled.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-nv-special-plate-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLL999"
+      regex: '\A[A-Z0-9]+(?: [A-Z0-9]+)?\z'
+      charset: { notes: "Nevada specialty serials come in two shapes the DMV names itself — a standard-style number and a 'special counter plate number' such as 'Lake Tahoe 12345' — so the regex is an explicit recall bound covering one or two alphanumeric groups, and makes no width claim" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      note: "one design per authorised programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: "more than 30"
+      count_official_quote: "Nevada DMV, in its own words: 'License plates are available in the standard Home Means Nevada design and more than 30 specialty designs.'"
+      count_caveat: >-
+        The DMV's own plate index nevertheless LISTS more than thirty items in
+        the charitable-and-collegiate group alone, plus twenty-one veteran
+        plates and four main plates, so "more than 30" is plainly a floor rather
+        than a total. Both figures are recorded; neither is averaged
+        (PRD-PLATES §5.3). The veteran group as listed: Air Force, Army, Army
+        Airborne, Coast Guard, Marine Corps, National Guard - Air Force,
+        National Guard - Army, Navy, Navy Seabees, Woman Veteran, Disabled
+        Veteran, Disabled Female Veteran, Medal of Honor, Silver Star, Bronze
+        Star (with Valor), Ex-Prisoner of War, Fallen Military, Gold Star,
+        Pearl Harbor Survivor/Veteran, Purple Heart, National Guard (active
+        duty).
+      official_list_url: "https://dmv.nv.gov/platesmain.htm"
+      official_charitable_url: "https://dmv.nv.gov/platescharitable.htm"
+      statutory_range: >-
+        NEVADA AUTHORISES ITS SPECIAL PLATES BY STATUTE, one section per
+        programme, in the block NRS 482.3667 to 482.3823 inclusive — a range the
+        chapter itself cites repeatedly as a unit (see §§ 482.274(5), 482.2703,
+        482.368). A future pass can therefore enumerate the catalogue from the
+        code rather than from a web page, which is the same structural advantage
+        Colorado and New Mexico have and Arizona and Utah do not.
+      creation_threshold: >-
+        § 482.265(3)(c): "The Department shall not design, prepare or issue a
+        special license plate unless, within 4 years after the date on which the
+        measure authorizing the issuance becomes effective, it receives at least
+        250 applications for the issuance of that plate." A four-year window and
+        a 250-application floor — an order of magnitude below Colorado's
+        three-thousand-signature gate, and the reason Nevada's catalogue is
+        larger and churns faster.
+      fees: "§ 482.265(3)(a)-(b): $35 for initial issuance and $10 for renewal, in each case exclusive of any additional fee added to generate funds for a particular cause or charitable organisation. Observed charitable pricing on the DMV's own page runs $61 initial / $30 renewal for a sequential plate and $96 / $50 personalized, of which $25 initial and $20 renewal go to the cause."
+      exclusion: "§ 482.265(4): the threshold and fee rules do NOT apply to § 482.37901. § 482.2655 separately bars issuing certain special plates for 90 days after a vehicle fails an emissions test (§§ 482.381, 482.3812, 482.3814, 482.3816) — a plate programme used as an environmental enforcement lever, which is unusual enough to record."
+    region_encoding: none
+    sources:
+      - "https://www.leg.state.nv.us/nrs/nrs-482.html  # § 482.265(3) the $35/$10 special-plate fees and the 250-application / 4-year threshold, and (4) its exclusion; § 482.2655 the 90-day emissions-failure bar; the §§ 482.3667-482.3823 range as the statutory catalogue"
+      - "https://dmv.nv.gov/platesmain.htm  # Nevada DMV: 'more than 30 specialty designs', the four MAIN NEVADA PLATES and the full veteran and charitable/collegiate listings"
+      - "https://dmv.nv.gov/platescharitable.htm  # Nevada DMV charitable and collegiate plates: the sequential-versus-personalized fee structure and the per-cause allocations"
+    notes: >-
+      THE SPECIAL-PLATE PROGRAM INDEX — one entry for the whole programme, per
+      PRD-PLATES §2.5. Nevada is the most quantitatively documented specialty
+      programme in the mountain group: the threshold, the window, both fee tiers
+      and the per-cause allocation are all in statute or on the DMV's own pages,
+      and the catalogue itself is a statutory range. What is NOT here, and is
+      the obvious next capture, is issuance VOLUME — Florida publishes a monthly
+      active-plate report and Nevada does not appear to; if a Nevada equivalent
+      exists it would be the second such artefact in the dataset and worth as
+      much as the first.
