@@ -24813,3 +24813,64 @@ matter in its own slice. **Ireland needs no rework** — it used the accurate
 value and told me.
 
 `pipeline#166` (the `enrich/` evidence tier) is open and green alongside this.
+
+## S4W — wave 2: **3 of 11 landed** (ie · hu-ro · no-is), and the wave has already found a GATE GAP: `lint_plates` could not see `_decode/` at all
+
+Merged, queue empty, main green: `data#250` `#251` `#252`, plus `data#253`
+(the gate fix) and `pipeline#166` (the `enrich/` evidence tier).
+
+    plates lint: 69 files, 634 series · 15 decode tables · OK
+
+### The gate gap, found by a researcher rather than by the linter
+
+The hu-ro delegate's `_decode/ro-counties.yml` had a `note:` at sequence-item
+indentation. **Psych rejects the file outright — and `lint_plates` printed
+`OK`.** Cause, line 177: the file list rejected `/_meta/`, `/_decode/` and
+`/_art/` before any check ran. Excluding sidecars from the SERIES rules is
+right; excluding them from the FILE LIST excluded them from *everything*,
+including "is this valid YAML".
+
+**Nine more decode tables are inbound from this wave**, so `data#253` fixes it
+now: parse every sidecar, apply series rules only where they belong. The check
+is deliberately the weakest possible — *does it load, is it non-empty*, nothing
+about shape. My first draft asserted `Hash` and **failed `_art/_ledger.yml` on
+its first run**, which is legitimately an Array; inventing a schema there would
+have been a second guess, and the gate is what was missing. Ablation-proved:
+clean tree OK, the delegate's exact defect reproduced as one named failure.
+
+### Findings from the three dossiers
+
+- **Ireland: the modern plate is 1991, not 1993.** S.I. 287/1990 brought the EU
+  band, IRL, placename, border and hyphen *while county councils still ran the
+  register*; the 1993 Revenue takeover changed the AUTHORITY and not one
+  character. An administrative event mistaken for a design event — the
+  instrument-date rule biting in a new direction. Also: **the two-digit series
+  has no end** (S.I. 542/2012 *confined* rather than repealed; the digit keys on
+  first-use, so `11-` marks still issue in 2026).
+- **Iceland's three-letter shape: 2007 → 2006-07-25** (`reglugerð 691/2006`).
+  The real 2007 amendment concerns personalised-plate renewals.
+- **Hungary's 2022 format: 2022-07-01**, thirteen months after its instrument
+  (`303/2021`, published 2021-06-01, commencement clause quoted). Tagged
+  `enacted-commencement`.
+- **Norway's county prefix has DRIFTED and ships as a low-confidence hint**, not
+  as "registered in X": the authority itself hedges, its table is **not a
+  function** (6 pairs map to two stations), and geographic distribution ended
+  for four-digit plates on 2017-02-09.
+- **Bucharest is a genuine format fork** inside Romania (three digits vs two),
+  shipped as separate series with separate regexes because a union regex would
+  admit `CJ 123 ABC`, which is not issued.
+
+Two delegates caught themselves mid-flight: no-is nearly dated Norway's green
+plate to a 2015 instrument that only **renumbered a chapter** (*"shipping 2015
+would have been the exact Spanish falsehood"*), and hu-ro re-tagged a series
+from `enabling-instrument` to the more accurate `enacted-commencement`.
+
+### A second brief error of mine, corrected to the remaining eight
+
+My brief said decode files are referenced as **bare filenames**. I took that
+from the program turn without checking. **The corpus is unanimous the other
+way — 77 full-path references, zero bare.** Corpus beats my brief; all eight
+running delegates told. That is now two brief errors this wave (the
+`period_evidence` truncation, and this), both caught by delegates measuring
+against the corpus rather than trusting me — which is the review direction this
+project is supposed to have, working.
