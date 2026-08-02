@@ -1,0 +1,170 @@
+# plates/_decode/gb-age-identifiers.yml — the British age identifier.
+#
+# THE SOURCE FINDING: this is the most precisely decodable date signal in the
+# whole plates dataset, and — like the memory tags — it is NOT law. VERA 1994
+# § 23(4) does not reach the composition of a mark, so the twice-yearly code
+# is an administrative allocation published in DVLA's leaflet INF104 and, for
+# the export series, in HMRC's VAT manual. Both are authority publications and
+# therefore PRIMARY under PRD-PLATES § 4.
+#
+# THE RULE, and it is complete and mechanical:
+#   a vehicle first registered March-August of year YY takes the code YY
+#   a vehicle first registered September of YY to February of YY+1 takes YY+50
+# INF104 § 05 tabulates it from "Sept 2001 - Feb 2002 = 51" to "March 2029 -
+# Aug 2029 = 29 / Sept 2029 - Feb 2030 = 79" and closes: "This pattern will
+# continue until all possible variations have been used." HMRC VATNINMT3500
+# states the SAME rule for the export series and carries its table to
+# "March 2049 - August 2049 = 49" and "Sept 2049 - Feb 2050 = 99".
+#
+# EVERY ROW BELOW CARRIES ITS SOURCE. Rows marked `source: inf104` are printed
+# in INF104's table. Rows marked `source: hmrc-continuation` are printed in
+# HMRC's table but not in INF104's — they are as sourced as the others, from a
+# second government publication, and are marked separately only so a verifier
+# can see which authority each half came from. NOTHING here is extrapolated
+# past 2049/50: the codes after that are undecided ("until all possible
+# variations have been used" is not a formula) and are recorded as a gap.
+#
+# Referenced by: gb-standard-2001, gb-motorcycle-2001, gb-green-zev-2020,
+# gb-export-x (plates/gb.yml) via age_encoding.
+jurisdiction: gb
+topic: age-identifiers
+authority:
+  name: Driver and Vehicle Licensing Agency (DVLA)
+  url: "https://www.gov.uk/government/publications/vehicle-registration-numbers-and-number-plates"
+sources:
+  - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 (4/22) § 05 'Age identifiers' — every row marked source: inf104, plus the continuation sentence"
+  - "https://www.gov.uk/hmrc-internal-manuals/vat-new-means-transport-northern-ireland/vatninmt3500  # HMRC VATNINMT3500 — the same rule stated for the export series and tabulated to 'Sept 2049 - Feb 2050 = 99'; every row marked source: hmrc-continuation"
+licence: "Crown copyright, Open Government Licence v3.0"
+period: { start: 2001 }
+period_evidence: enabling-instrument
+period_note: >-
+  The scheme began with the current format on 1 September 2001 (INF104 § 03;
+  S.I. 2001/561 reg 1(1)(b)), and 51 is the first identifier issued.
+
+rule:
+  march_to_august: "code = YY (the two-digit year)"
+  september_to_february: "code = YY + 50 (of the year the period STARTS in)"
+  changeover_days: ["1 March", "1 September"]
+  first_code: "51"
+  last_published_code: "99"
+  values_never_issued: ["00", "01", "50"]
+  values_never_issued_note: >-
+    DERIVED, NOT QUOTED. 00 and 50 cannot arise from the rule. 01 would be
+    March-August 2001, which precedes the format's 1 September 2001 start, and
+    INF104's table opens at 51. This is the exclusion `format.regex_strict`
+    encodes in plates/gb.yml; `format.regex` deliberately does not.
+
+direction_of_inference: >-
+  ONE-SIDED, and a parse API must say so. The age identifier gives the period
+  in which the MARK was issued, which is an UPPER bound on the vehicle's age
+  and never a lower one, because a mark may be transferred to an older vehicle
+  and INF104 § 04 forbids only the reverse: "You can't use a registration
+  number to make your vehicle appear younger than it actually is." A 21-plate
+  car was registered no earlier than March 2021; a 21-plate car may lawfully
+  BE older than that only if the mark was assigned to it at first registration
+  in that window, which is the ordinary case — but a personalised mark on the
+  same car could be from any era, so the inference runs only from mark to
+  earliest-possible-registration, never from mark to build year.
+
+codes:
+  - { code: "51", from: "2001-09", to: "2002-02", source: inf104 }
+  - { code: "02", from: "2002-03", to: "2002-08", source: inf104 }
+  - { code: "52", from: "2002-09", to: "2003-02", source: inf104 }
+  - { code: "03", from: "2003-03", to: "2003-08", source: inf104 }
+  - { code: "53", from: "2003-09", to: "2004-02", source: inf104 }
+  - { code: "04", from: "2004-03", to: "2004-08", source: inf104 }
+  - { code: "54", from: "2004-09", to: "2005-02", source: inf104 }
+  - { code: "05", from: "2005-03", to: "2005-08", source: inf104 }
+  - { code: "55", from: "2005-09", to: "2006-02", source: inf104 }
+  - { code: "06", from: "2006-03", to: "2006-08", source: inf104 }
+  - { code: "56", from: "2006-09", to: "2007-02", source: inf104 }
+  - { code: "07", from: "2007-03", to: "2007-08", source: inf104 }
+  - { code: "57", from: "2007-09", to: "2008-02", source: inf104 }
+  - { code: "08", from: "2008-03", to: "2008-08", source: inf104 }
+  - { code: "58", from: "2008-09", to: "2009-02", source: inf104 }
+  - { code: "09", from: "2009-03", to: "2009-08", source: inf104 }
+  - { code: "59", from: "2009-09", to: "2010-02", source: inf104 }
+  - { code: "10", from: "2010-03", to: "2010-08", source: inf104 }
+  - { code: "60", from: "2010-09", to: "2011-02", source: inf104 }
+  - { code: "11", from: "2011-03", to: "2011-08", source: inf104 }
+  - { code: "61", from: "2011-09", to: "2012-02", source: inf104 }
+  - { code: "12", from: "2012-03", to: "2012-08", source: inf104 }
+  - { code: "62", from: "2012-09", to: "2013-02", source: inf104 }
+  - { code: "13", from: "2013-03", to: "2013-08", source: inf104 }
+  - { code: "63", from: "2013-09", to: "2014-02", source: inf104 }
+  - { code: "14", from: "2014-03", to: "2014-08", source: inf104 }
+  - { code: "64", from: "2014-09", to: "2015-02", source: inf104 }
+  - { code: "15", from: "2015-03", to: "2015-08", source: inf104 }
+  - { code: "65", from: "2015-09", to: "2016-02", source: inf104 }
+  - { code: "16", from: "2016-03", to: "2016-08", source: inf104 }
+  - { code: "66", from: "2016-09", to: "2017-02", source: inf104 }
+  - { code: "17", from: "2017-03", to: "2017-08", source: inf104 }
+  - { code: "67", from: "2017-09", to: "2018-02", source: inf104 }
+  - { code: "18", from: "2018-03", to: "2018-08", source: inf104 }
+  - { code: "68", from: "2018-09", to: "2019-02", source: inf104 }
+  - { code: "19", from: "2019-03", to: "2019-08", source: inf104 }
+  - { code: "69", from: "2019-09", to: "2020-02", source: inf104 }
+  - { code: "20", from: "2020-03", to: "2020-08", source: inf104 }
+  - { code: "70", from: "2020-09", to: "2021-02", source: inf104 }
+  - { code: "21", from: "2021-03", to: "2021-08", source: inf104 }
+  - { code: "71", from: "2021-09", to: "2022-02", source: inf104 }
+  - { code: "22", from: "2022-03", to: "2022-08", source: inf104 }
+  - { code: "72", from: "2022-09", to: "2023-02", source: inf104 }
+  - { code: "23", from: "2023-03", to: "2023-08", source: inf104 }
+  - { code: "73", from: "2023-09", to: "2024-02", source: inf104 }
+  - { code: "24", from: "2024-03", to: "2024-08", source: inf104 }
+  - { code: "74", from: "2024-09", to: "2025-02", source: inf104 }
+  - { code: "25", from: "2025-03", to: "2025-08", source: inf104 }
+  - { code: "75", from: "2025-09", to: "2026-02", source: inf104 }
+  - { code: "26", from: "2026-03", to: "2026-08", source: inf104 }
+  - { code: "76", from: "2026-09", to: "2027-02", source: inf104 }
+  - { code: "27", from: "2027-03", to: "2027-08", source: inf104 }
+  - { code: "77", from: "2027-09", to: "2028-02", source: inf104 }
+  - { code: "28", from: "2028-03", to: "2028-08", source: inf104 }
+  - { code: "78", from: "2028-09", to: "2029-02", source: inf104 }
+  - { code: "29", from: "2029-03", to: "2029-08", source: inf104 }
+  - { code: "79", from: "2029-09", to: "2030-02", source: inf104 }
+  - { code: "30", from: "2030-03", to: "2030-08", source: hmrc-continuation }
+  - { code: "80", from: "2030-09", to: "2031-02", source: hmrc-continuation }
+  - { code: "31", from: "2031-03", to: "2031-08", source: hmrc-continuation }
+  - { code: "81", from: "2031-09", to: "2032-02", source: hmrc-continuation }
+  - { code: "32", from: "2032-03", to: "2032-08", source: hmrc-continuation }
+  - { code: "82", from: "2032-09", to: "2033-02", source: hmrc-continuation }
+  - { code: "33", from: "2033-03", to: "2033-08", source: hmrc-continuation }
+  - { code: "83", from: "2033-09", to: "2034-02", source: hmrc-continuation }
+  - { code: "34", from: "2034-03", to: "2034-08", source: hmrc-continuation }
+  - { code: "84", from: "2034-09", to: "2035-02", source: hmrc-continuation }
+  - { code: "35", from: "2035-03", to: "2035-08", source: hmrc-continuation }
+  - { code: "85", from: "2035-09", to: "2036-02", source: hmrc-continuation }
+  - { code: "36", from: "2036-03", to: "2036-08", source: hmrc-continuation }
+  - { code: "86", from: "2036-09", to: "2037-02", source: hmrc-continuation }
+  - { code: "37", from: "2037-03", to: "2037-08", source: hmrc-continuation }
+  - { code: "87", from: "2037-09", to: "2038-02", source: hmrc-continuation }
+  - { code: "38", from: "2038-03", to: "2038-08", source: hmrc-continuation }
+  - { code: "88", from: "2038-09", to: "2039-02", source: hmrc-continuation }
+  - { code: "39", from: "2039-03", to: "2039-08", source: hmrc-continuation }
+  - { code: "89", from: "2039-09", to: "2040-02", source: hmrc-continuation }
+  - { code: "40", from: "2040-03", to: "2040-08", source: hmrc-continuation }
+  - { code: "90", from: "2040-09", to: "2041-02", source: hmrc-continuation }
+  - { code: "41", from: "2041-03", to: "2041-08", source: hmrc-continuation }
+  - { code: "91", from: "2041-09", to: "2042-02", source: hmrc-continuation }
+  - { code: "42", from: "2042-03", to: "2042-08", source: hmrc-continuation }
+  - { code: "92", from: "2042-09", to: "2043-02", source: hmrc-continuation }
+  - { code: "43", from: "2043-03", to: "2043-08", source: hmrc-continuation }
+  - { code: "93", from: "2043-09", to: "2044-02", source: hmrc-continuation }
+  - { code: "44", from: "2044-03", to: "2044-08", source: hmrc-continuation }
+  - { code: "94", from: "2044-09", to: "2045-02", source: hmrc-continuation }
+  - { code: "45", from: "2045-03", to: "2045-08", source: hmrc-continuation }
+  - { code: "95", from: "2045-09", to: "2046-02", source: hmrc-continuation }
+  - { code: "46", from: "2046-03", to: "2046-08", source: hmrc-continuation }
+  - { code: "96", from: "2046-09", to: "2047-02", source: hmrc-continuation }
+  - { code: "47", from: "2047-03", to: "2047-08", source: hmrc-continuation }
+  - { code: "97", from: "2047-09", to: "2048-02", source: hmrc-continuation }
+  - { code: "48", from: "2048-03", to: "2048-08", source: hmrc-continuation }
+  - { code: "98", from: "2048-09", to: "2049-02", source: hmrc-continuation }
+  - { code: "49", from: "2049-03", to: "2049-08", source: hmrc-continuation }
+  - { code: "99", from: "2049-09", to: "2050-02", source: hmrc-continuation }
+
+not_modelled:
+  - "Codes for periods after February 2050. INF104 says the pattern continues 'until all possible variations have been used' and neither authority publishes what happens when 99 is reached; extrapolating past the published tables was declined."
+  - "The Northern Irish and pre-2001 systems encode no date at all — see plates/gb.yml#gb-ni-standard and #gb-prefix-1984 — so this table must never be applied to them."
