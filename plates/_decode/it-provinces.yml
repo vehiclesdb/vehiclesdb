@@ -1,0 +1,348 @@
+# plates/_decode/it-provinces.yml — Italy's two province-keyed code tables.
+#
+# THE SOURCE FINDING, and it is the same shape as the Spanish one: this is NOT
+# Wikipedia. Both tables are ENACTED LAW — Appendice XI al Titolo III of the
+# Regolamento di esecuzione e di attuazione del nuovo codice della strada
+# (D.P.R. 16 dicembre 1992, n. 495), read off Normattiva's Akoma-Ntoso export of
+# the consolidated act. Every row below is that appendix, verbatim, in its own
+# printed order, including its typographical defects (see `sic` below).
+#
+# TWO TABLES, NOT ONE, AND THEY DO NOT INTERCHANGE. This is the trap the file
+# exists to prevent:
+#
+#   * `mctc_offices` (Appendice XI comma 1) — the sigle of the provincial
+#     motorisation offices, a LETTER PLUS A NUMBER (A1 Alessandria, B6 Milano,
+#     P4 Roma, X4 Oristano). This is the PREFIX OF THE TARGA PROVVISORIA
+#     (art. 255 comma 2 lett. a)). Referenced by: it-temporary-provvisoria.
+#   * `province_sigle` (Appendice XI comma 1-bis) — the two-letter sigle of the
+#     provinces, which is what the RIGHT-HAND STICKER on a modern plate carries
+#     (art. 256 comma 4-bis + art. 260 comma 3), and what the pre-1993 provincial
+#     plates carried in the mark itself. Referenced by: it-standard-1999
+#     (sticker only), it-provincial-1959, it-provincial-motorcycle-1959.
+#
+# Rome is P4 in the first table and the literal word "Roma" in the second. A
+# decoder that reaches for the wrong table on an Italian string will produce
+# confident nonsense.
+#
+# WHAT THE STICKER ACTUALLY MEANS (art. 260 comma 3, verbatim): the lower
+# sticker "reca in bianco la sigla della PROVINCIA DI RESIDENZA DELL'INTESTATARIO
+# della carta di circolazione", and both stickers "non formano parte integrante
+# della targa e non influiscono ai fini dell'identificazione del veicolo e del
+# relativo intestatario". So on a post-1999 plate the code is (a) removable,
+# (b) about the KEEPER'S RESIDENCE rather than the place of registration, and
+# (c) legally not part of the plate. On a pre-1993 plate the sigla is in the mark
+# and denotes the province OF REGISTRATION (art. 320 D.P.R. 420/1959). Same two
+# letters, opposite semantics, and a parse API must not blend them. This is
+# Italy's version of the French SIV caution recorded in PRD-PLATES §2.4.
+jurisdiction: it
+topic: provinces
+authority:
+  name: "D.P.R. 16 dicembre 1992, n. 495 — Appendice XI al Titolo III (introdotta/modificata dal D.P.R. 4 settembre 1998, n. 355, art. 5)"
+  url: "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:1992-12-16;495"
+sources:
+  - "https://www.normattiva.it/do/atto/caricaAKN?dataGU=19921228&codiceRedaz=092G0531&dataVigenza=20260802  # Appendice XI al Titolo III, comma 1 (sigle degli uffici provinciali M.C.T.C.) and comma 1-bis (sigle delle province) — every row below, verbatim; accessed 2026-08-02"
+  - "https://www.normattiva.it/do/atto/caricaAKN?dataGU=19921228&codiceRedaz=092G0531&dataVigenza=20160101  # the SAME appendix at 1 January 2016, which still carries the four sigle later withdrawn (Carbonia-Iglesias CI, Medio Campidano VS, Ogliastra OG, Olbia-Tempio OT) — the primary for the `withdrawn` rows"
+  - "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:1992-12-16;495~art255  # art. 255 comma 2 lett. a): the office sigla is the first element of a targa provvisoria, and the list 'può essere aggiornato con decreto del Ministro dei trasporti e della navigazione, a seguito dell'istituzione di ulteriori province'"
+  - "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:1992-12-16;495~art260  # art. 260 comma 3: what the two stickers carry and their legal non-status"
+period: { start: 1998 }
+period_evidence: instrument-in-force
+period_note: >-
+  Italian province sigle long predate 1998 — they are commonly said to date from
+  1927, for which NO PRIMARY was secured and which is therefore recorded as
+  folklore rather than as a period claim. 1998 is the date of D.P.R. 4 settembre
+  1998, n. 355, the instrument that inserted the list read here (its art. 5
+  amended Appendice XI). A physical plate older than 1998 must be decoded
+  through this table with care: provinces created in 1992 (Lecco LC, Lodi LO,
+  Rimini RN, Prato PO, Crotone KR, Vibo Valentia VV, Verbano-Cusio-Ossola VB) and
+  later (Monza-Brianza MB, Fermo FM, Barletta-Andria-Trani BT in 2004-2009, Sud
+  Sardegna SU in 2016) never appeared on a provincial-era plate at all.
+
+# PERIOD DISCIPLINE (PRD-PLATES §2.4). D.P.R. 20 luglio 2017, n. 140 (GU
+# 22-09-2017 n. 222) withdrew four sigle and added one, and its art. 2 comma 2
+# states the rule every decode table of this kind needs, verbatim:
+#   "I veicoli dotati di targhe di immatricolazione con le sigle delle province,
+#    di cui al comma 1, possono continuare a circolare fino a una nuova
+#    immatricolazione o fino alla cessazione dalla circolazione."
+# Withdrawn codes therefore stay on the road indefinitely and rows are CLOSED BY
+# PERIOD, never deleted — exactly as § 9 Abs. 3 FZV requires for German district
+# codes (plates/de.yml).
+withdrawn_rule_source: "https://www.normattiva.it/do/atto/caricaAKN?dataGU=19921228&codiceRedaz=092G0531&dataVigenza=20260802  # AGGIORNAMENTO (55) to Appendice XI: D.P.R. 20 luglio 2017, n. 140, art. 2 comma 2"
+
+# Disambiguation notes a parse API must carry:
+#   * EVERY province sigla is exactly two letters EXCEPT Roma, which the appendix
+#     prints as the whole word "Roma". There is consequently no maximal-munch
+#     problem of the Spanish kind (C vs CA vs CC vs CE...) — the only special
+#     case is the four-letter one. Appendice XII comma 3 legislates the
+#     abbreviation for the one place it is needed: "Nel caso in cui la targa del
+#     veicolo traente contenga la parola Roma essa viene riportata sulla targa
+#     ripetitrice mediante la sigla RM."
+#   * The dataset records serials uppercase (plates/_meta/separators.yml
+#     `case: upper`), so "Roma" is matched as ROMA. The appendix's mixed-case
+#     printing is preserved in `printed_as`.
+#   * Three sigle carry a heraldic device the appendix describes in words and
+#     which a render pipeline must not silently drop: Aosta ("La O è sormontata
+#     dallo stemma"), Bolzano ("La Z è sormontata dallo stemma"), Trento ("La N è
+#     sormontata dallo stemma"). PRD-PLATES §3 placeholder rule applies to those
+#     three emblems.
+maximal_munch: false
+
+province_sigle:
+  - { code: "AG", name: "Agrigento" }
+  - { code: "AL", name: "Alessandria" }
+  - { code: "AN", name: "Ancona" }
+  - { code: "AO", name: "Aosta", emblem_note: "La O è sormontata dallo stemma" }
+  - { code: "AR", name: "Arezzo" }
+  - { code: "AP", name: "Ascoli Piceno" }
+  - { code: "AT", name: "Asti" }
+  - { code: "AV", name: "Avellino" }
+  - { code: "BA", name: "Bari" }
+  - { code: "BT", name: "Barletta - Andria-Trani", printed_as: "Barletta - Andria-Trani" }
+  - { code: "BL", name: "Belluno" }
+  - { code: "BN", name: "Benevento" }
+  - { code: "BG", name: "Bergamo" }
+  - { code: "BI", name: "Biella" }
+  - { code: "BO", name: "Bologna" }
+  - { code: "BZ", name: "Bolzano", emblem_note: "La Z è sormontata dallo stemma" }
+  - { code: "BS", name: "Brescia" }
+  - { code: "BR", name: "Brindisi" }
+  - { code: "CA", name: "Cagliari" }
+  - { code: "CL", name: "Caltanissetta" }
+  - { code: "CB", name: "Campobasso" }
+  - { code: "CE", name: "Caserta" }
+  - { code: "CT", name: "Catania" }
+  - { code: "CZ", name: "Catanzaro" }
+  - { code: "CH", name: "Chieti" }
+  - { code: "CO", name: "Como" }
+  - { code: "CS", name: "Cosenza" }
+  - { code: "CR", name: "Cremona" }
+  - { code: "KR", name: "Crotone" }
+  - { code: "CN", name: "Cuneo" }
+  - { code: "EN", name: "Enna" }
+  - { code: "FM", name: "Fermo" }
+  - { code: "FE", name: "Ferrara" }
+  - { code: "FI", name: "Firenze" }
+  - { code: "FG", name: "Foggia" }
+  - { code: "FC", name: "Forlì Cesena", printed_as: "Forli' Cesena" }
+  - { code: "FR", name: "Frosinone" }
+  - { code: "GE", name: "Genova" }
+  - { code: "GO", name: "Gorizia" }
+  - { code: "GR", name: "Grosseto" }
+  - { code: "IM", name: "Imperia" }
+  - { code: "IS", name: "Isernia" }
+  - { code: "AQ", name: "L'Aquila" }
+  - { code: "SP", name: "La Spezia" }
+  - { code: "LT", name: "Latina" }
+  - { code: "LE", name: "Lecce" }
+  - { code: "LC", name: "Lecco" }
+  - { code: "LI", name: "Livorno" }
+  - { code: "LO", name: "Lodi" }
+  - { code: "LU", name: "Lucca" }
+  - { code: "MC", name: "Macerata" }
+  - { code: "MN", name: "Mantova" }
+  - { code: "MS", name: "Massa Carrara" }
+  - { code: "MT", name: "Matera" }
+  - { code: "ME", name: "Messina" }
+  - { code: "MI", name: "Milano" }
+  - { code: "MO", name: "Modena" }
+  - { code: "MB", name: "Monza-Brianza" }
+  - { code: "NA", name: "Napoli" }
+  - { code: "NO", name: "Novara" }
+  - { code: "NU", name: "Nuoro" }
+  - { code: "OR", name: "Oristano" }
+  - { code: "PD", name: "Padova" }
+  - { code: "PA", name: "Palermo" }
+  - { code: "PR", name: "Parma" }
+  - { code: "PV", name: "Pavia" }
+  - { code: "PG", name: "Perugia" }
+  - { code: "PU", name: "Pesaro e Urbino" }
+  - { code: "PE", name: "Pescara" }
+  - { code: "PC", name: "Piacenza" }
+  - { code: "PI", name: "Pisa" }
+  - { code: "PT", name: "Pistoia" }
+  - { code: "PN", name: "Pordenone" }
+  - { code: "PZ", name: "Potenza" }
+  - { code: "PO", name: "Prato" }
+  - { code: "RG", name: "Ragusa" }
+  - { code: "RA", name: "Ravenna" }
+  - { code: "RC", name: "Reggio Calabria" }
+  - { code: "RE", name: "Reggio Emilia" }
+  - { code: "RI", name: "Rieti" }
+  - { code: "RN", name: "Rimini" }
+  - { code: "ROMA", name: "Roma", printed_as: "Roma", note: "the appendix prints the sigla as the whole word 'Roma'; Appendice XII comma 3 substitutes 'RM' on repeater plates" }
+  - { code: "RO", name: "Rovigo" }
+  - { code: "SA", name: "Salerno" }
+  - { code: "SS", name: "Sassari" }
+  - { code: "SV", name: "Savona" }
+  - { code: "SI", name: "Siena" }
+  - { code: "SR", name: "Siracusa" }
+  - { code: "SO", name: "Sondrio" }
+  - { code: "SU", name: "Sud Sardegna", added_by: "D.P.R. 20 luglio 2017, n. 140", period: { start: 2017 } }
+  - { code: "TA", name: "Taranto" }
+  - { code: "TE", name: "Teramo" }
+  - { code: "TR", name: "Terni" }
+  - { code: "TO", name: "Torino" }
+  - { code: "TP", name: "Trapani" }
+  - { code: "TN", name: "Trento", emblem_note: "La N è sormontata dallo stemma" }
+  - { code: "TV", name: "Treviso" }
+  - { code: "TS", name: "Trieste" }
+  - { code: "UD", name: "Udine" }
+  - { code: "VA", name: "Varese" }
+  - { code: "VE", name: "Venezia" }
+  - { code: "VB", name: "Verbano Cusio Ossola" }
+  - { code: "VC", name: "Vercelli" }
+  - { code: "VR", name: "Verona" }
+  - { code: "VV", name: "Vibo Valentia", printed_as: "Vibo Valenzia", sic: "the appendix misprints the province name as 'Vibo Valenzia'; the code VV is unaffected" }
+  - { code: "VI", name: "Vicenza" }
+  - { code: "VT", name: "Viterbo" }
+
+# WITHDRAWN, NOT DELETED. These four sigle were removed from Appendice XI by
+# D.P.R. 20 luglio 2017, n. 140 when the four Sardinian provinces were
+# reorganised into Sud Sardegna, and vehicles carrying them "possono continuare a
+# circolare fino a una nuova immatricolazione o fino alla cessazione dalla
+# circolazione" (art. 2 comma 2). A decoder must still resolve them.
+province_sigle_withdrawn:
+  - { code: "CI", name: "Carbonia-Iglesias", period: { start: 1998, end: 2017 }, withdrawn_by: "D.P.R. 20 luglio 2017, n. 140" }
+  - { code: "VS", name: "Medio Campidano", period: { start: 1998, end: 2017 }, withdrawn_by: "D.P.R. 20 luglio 2017, n. 140" }
+  - { code: "OG", name: "Ogliastra", period: { start: 1998, end: 2017 }, withdrawn_by: "D.P.R. 20 luglio 2017, n. 140" }
+  - { code: "OT", name: "Olbia-Tempio", period: { start: 1998, end: 2017 }, withdrawn_by: "D.P.R. 20 luglio 2017, n. 140" }
+
+# ---------------------------------------------------------------------------
+# Appendice XI comma 1 — the M.C.T.C. provincial office sigle. The bare region
+# letters (A, B, C, ...) are HEADINGS in the appendix's own layout, not codes: no
+# targa provvisoria carries a bare letter. Recorded because they explain the
+# numbering and because F, G, I, J, K, Q, U, Y and Z are unused, which is itself
+# a useful validation fact.
+# ---------------------------------------------------------------------------
+mctc_offices:
+  used_by: "plates/it.yml#it-temporary-provvisoria"
+  maintenance: "art. 255 comma 2 lett. a): the list 'può essere aggiornato con decreto del Ministro dei trasporti e della navigazione, a seguito dell'istituzione di ulteriori province' — it grows by ministerial decree, so rows need period discipline as provinces are created"
+  regions:
+    A: "Piemonte e Valle d'Aosta"
+    B: "Lombardia"
+    C: "Trentino Alto Adige"
+    D: "Veneto"
+    E: "Friuli Venezia Giulia"
+    H: "Liguria"
+    L: "Emilia Romagna"
+    M: "Toscana"
+    N: "Umbria"
+    O: "Marche"
+    P: "Lazio"
+    R: "Abruzzo e Molise"
+    S: "Campania e Basilicata"
+    T: "Puglia"
+    V: "Calabria"
+    W: "Sicilia"
+    X: "Sardegna"
+  regions_note: "F, G, I, J, K, Q, U, Y and Z are not used as region letters; the groupings are administrative and pair Piemonte with Valle d'Aosta, Abruzzo with Molise and Campania with Basilicata."
+  codes:
+    - { code: "A1", name: "Alessandria" }
+    - { code: "A2", name: "Aosta" }
+    - { code: "A3", name: "Asti" }
+    - { code: "A4", name: "Cuneo" }
+    - { code: "A5", name: "Novara" }
+    - { code: "A6", name: "Torino" }
+    - { code: "A7", name: "Vercelli" }
+    - { code: "A8", name: "Biella" }
+    - { code: "A9", name: "Verbania" }
+    - { code: "B1", name: "Bergamo" }
+    - { code: "B2", name: "Brescia" }
+    - { code: "B3", name: "Como" }
+    - { code: "B4", name: "Cremona" }
+    - { code: "B5", name: "Mantova" }
+    - { code: "B6", name: "Milano" }
+    - { code: "B7", name: "Pavia" }
+    - { code: "B8", name: "Sondrio" }
+    - { code: "B9", name: "Varese" }
+    - { code: "B10", name: "Lecco" }
+    - { code: "B11", name: "Lodi" }
+    - { code: "B12", name: "Monza-Brianza", printed_as: "B 12", sic: "the appendix prints a space inside the code" }
+    - { code: "C1", name: "Bolzano" }
+    - { code: "C2", name: "Trento" }
+    - { code: "D1", name: "Belluno" }
+    - { code: "D2", name: "Padova" }
+    - { code: "D3", name: "Rovigo" }
+    - { code: "D4", name: "Treviso" }
+    - { code: "D5", name: "Venezia" }
+    - { code: "D6", name: "Verona" }
+    - { code: "D7", name: "Vicenza" }
+    - { code: "E1", name: "Gorizia" }
+    - { code: "E2", name: "Udine" }
+    - { code: "E3", name: "Pordenone" }
+    - { code: "E4", name: "Trieste" }
+    - { code: "H1", name: "Genova" }
+    - { code: "H2", name: "Imperia" }
+    - { code: "H3", name: "La Spezia" }
+    - { code: "H4", name: "Savona" }
+    - { code: "L1", name: "Bologna" }
+    - { code: "L2", name: "Ferrara" }
+    - { code: "L3", name: "Forlì", printed_as: "Forli'" }
+    - { code: "L4", name: "Modena" }
+    - { code: "L5", name: "Parma" }
+    - { code: "L6", name: "Piacenza" }
+    - { code: "L7", name: "Ravenna" }
+    - { code: "L8", name: "Reggio Emilia" }
+    - { code: "L9", name: "Rimini" }
+    - { code: "M1", name: "Arezzo" }
+    - { code: "M2", name: "Firenze" }
+    - { code: "M3", name: "Grosseto" }
+    - { code: "M4", name: "Livorno" }
+    - { code: "M5", name: "Lucca" }
+    - { code: "M6", name: "Massa Carrara" }
+    - { code: "M7", name: "Pisa" }
+    - { code: "M8", name: "Pistoia" }
+    - { code: "M9", name: "Siena" }
+    - { code: "M10", name: "Prato" }
+    - { code: "N1", name: "Perugia" }
+    - { code: "N2", name: "Terni" }
+    - { code: "O1", name: "Ancona" }
+    - { code: "O2", name: "Ascoli Piceno" }
+    - { code: "O3", name: "Macerata" }
+    - { code: "O4", name: "Pesaro" }
+    - { code: "O5", name: "Fermo", printed_as: "05", sic: "the appendix prints a zero where every other Marche code has the letter O; read as O5" }
+    - { code: "P1", name: "Frosinone" }
+    - { code: "P2", name: "Latina" }
+    - { code: "P3", name: "Rieti" }
+    - { code: "P4", name: "Roma" }
+    - { code: "P5", name: "Viterbo" }
+    - { code: "R1", name: "Campobasso" }
+    - { code: "R2", name: "Chieti" }
+    - { code: "R3", name: "L'Aquila" }
+    - { code: "R4", name: "Pescara" }
+    - { code: "R5", name: "Teramo" }
+    - { code: "R6", name: "Isernia" }
+    - { code: "S1", name: "Avellino" }
+    - { code: "S2", name: "Benevento" }
+    - { code: "S3", name: "Caserta" }
+    - { code: "S4", name: "Matera" }
+    - { code: "S5", name: "Napoli" }
+    - { code: "S6", name: "Potenza" }
+    - { code: "S7", name: "Salerno" }
+    - { code: "T1", name: "Bari" }
+    - { code: "T2", name: "Brindisi" }
+    - { code: "T3", name: "Foggia" }
+    - { code: "T4", name: "Lecce" }
+    - { code: "T5", name: "Taranto" }
+    - { code: "T6", name: "Barletta-Andria-Trani" }
+    - { code: "V1", name: "Catanzaro" }
+    - { code: "V2", name: "Cosenza" }
+    - { code: "V3", name: "Reggio Calabria" }
+    - { code: "V4", name: "Crotone" }
+    - { code: "V5", name: "Vibo Valentia" }
+    - { code: "W1", name: "Agrigento" }
+    - { code: "W2", name: "Caltanissetta" }
+    - { code: "W3", name: "Catania" }
+    - { code: "W4", name: "Enna" }
+    - { code: "W5", name: "Messina" }
+    - { code: "W6", name: "Palermo" }
+    - { code: "W7", name: "Ragusa" }
+    - { code: "W8", name: "Siracusa" }
+    - { code: "W9", name: "Trapani" }
+    - { code: "X1", name: "Cagliari" }
+    - { code: "X2", name: "Nuoro" }
+    - { code: "X3", name: "Sassari" }
+    - { code: "X4", name: "Oristano" }
+  gaps:
+    - "No office code exists for Sud Sardegna, nor for the four Sardinian provinces withdrawn in 2017 — the office list and the province list were maintained on different schedules and do not correspond one-to-one."
+    - "Verbania (A9) is the office; the province is Verbano-Cusio-Ossola (VB). The names are not interchangeable."
+    - "The appendix gives no office for the pre-1992 provinces that no longer exist, and none for provinces created after the last amendment to comma 1 — recorded gap."
