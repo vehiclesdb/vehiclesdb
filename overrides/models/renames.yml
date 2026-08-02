@@ -11890,6 +11890,27 @@ Yamaha:
   "MWD300":              "Tricity 300"   # "MWD300 (Tricity 300)" — Yamaha EU manual PBEDF8199E0E
   "MWD300D":             "Tricity 300"   # "MWD300D (Tricity 300 Airbag)" — airbag is equipment
   "MWS125-C":            "Tricity 125"   # "MWS125-C (Tricity 125)" — Yamaha EU manual PBCSF8199E0E; UK "MWS 125-C TRICITY 125" n=262
+# ── S-5, 2026-08-02 · the folds below were RIGHT and INCOMPLETE ────────────
+# `MWS125-C -> Tricity 125` and `LTS125-C -> D'elight` are correct on the
+# manufacturer's evidence. Each still left the same machine publishing as TWO
+# ids in two country sets, because only the CODE spelling was folded and the
+# register's own spelling was not.
+#
+# HOW IT GOT MISSED, from the original PR body: "1 dead (Delight -> D'elight)
+# — already folded by G-1, dropped rather than shipped inert". The
+# re-derivation check did its job and found the draft key dead; the dead key
+# was then DELETED instead of re-derived against the record it had collided
+# with. G-1 had folded the bare stub to `delight-125`, so the key that would
+# have worked is the live record's produced name — "Delight 125" — which was
+# never tried. The check looked one step upstream of where the answer was.
+  "Delight 125":         "D'elight"   # UK "DELIGHT 125 (LTS 125-C)" n=1,263 produces "Delight 125" -> delight-125 [gb], while LTS125-C's fold minted d-elight [es,fi,lu,nl,nz]. One machine, two ids, two country sets
+  "MWS125":              "Tricity 125"   # UK "MWS125" n=661 -> mws125 [gb]. The SAME register also writes "TRICITY 125" n=154, so gb was split across two ids for one scooter
+  "MWS125-A":            "Tricity 125"   # manual PBR7F8199E0E cover "TRICITY 125"; RDW "MWS125-A (TRICITY ABS)" n=6 — ABS is equipment. Bare "MWS125" is not a Yamaha string: every first-party occurrence carries a suffix
+  "MWS150":              "Tricity 155"   # 155 cm3, NOT 150 — Yamaha TH's own manual is titled "MWS150-C MWS150-A OWNER'S MANUAL" and served at /docs/owner-manual/commuter/en/tricity155-en.pdf; Yamaha JP BB8-F8199-J1 prints "MWS150-A … TRICITY 155". There has never been a "Tricity 150"
+# Yamaha later recoded the 155 as MWS155-A, which is why the digits in the old
+# code disagree with the displacement. Outside the audit's declared scope but
+# taken with it: leaving it publishes `MWS150` as a nameplate asserting a
+# displacement Yamaha never sold.
   "XVS950XR-A":          "SCR950"   # library.ymcapps.net "SCR950 - XVS950XR-A"; RDW "XVS950XR-A (SCR950)" n=33
   "XVS950CUD-A":         "XV950R"   # library.ymcapps.net "XV950R ABS - XVS950CUD-A"; RDW "XVS950CUD-A (XV950R)" n=20
   "LCG125":              "RayZR"   # "LCG125 (RayZR)" — Yamaha library BUV-F8199-E1. CREATES a missing nameplate
@@ -11993,6 +12014,9 @@ Yamaha:
   Xmax 300:                  XMAX 300               # MAX series — all-caps closed (global.yamaha-motor.com MAX-series page) (display-only)
   Yl-1:                      YL1                    # type code — closed uppercase
   Yzf-R1:                    YZF-R1                 # type code — closed uppercase (display-only)
+  "Yzf-R3":                  "YZF-R3"   # type code — closed uppercase (display-only). S-6: three produced spellings compete on this id and none was pinned
+  "Yzf R3":                  "YZF-R3"   # observed produced form; Yamaha hyphenates the R-series (YZF-R1/R3/R7)
+  "Yzf  R3":                 "YZF-R3"   # observed produced form with a DOUBLE space — real, straight out of build/observed_model_names.json
   Yzfr 1:                    YZF-R1                 # type code — closed uppercase
   "Aerox Abs":                       Aerox                      # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   "Bw's":                    BW's                 # Yamaha's BW's keeps the apostrophe — confirmed via MBK's platform history, the MBK Booster being the BW's twin
