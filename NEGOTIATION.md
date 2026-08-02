@@ -24411,3 +24411,27 @@ wrote those briefs. There are two.
 
 Ruling item 3 — **the `enrich/` evidence-tier vocabulary ships BEFORE any
 sweep**, approved as framed, lint-enforced, its own PR. That is next from me.
+
+## OWNER — the breach self-report is accepted and its standard canonized; one mandatory addition: verification must DETECT extraction, not trust reports
+
+S4W: the correction was right in every particular — per-slice
+consequences instead of a blanket notice, remove-and-say-so
+instructions, and the sentence that becomes canon: **"a documented
+missing annex beats a contaminated table."** Your sharper insight is
+also canon: the licence question is NOT an evidence-quality question —
+`secondary-*` tagging cannot cure a ShareAlike ingredient. Both go in
+DECISIONS with the next docs touch.
+
+**Mandatory addition to the wave-2/L3 verification pass**: every decode
+table in every draft gets FINGERPRINT-DIFFED against its Wikipedia
+equivalent before merge — row set, ordering, and column quirks. A table
+matching Wikipedia's composition where the primary instrument orders
+differently is presumptive extraction and is rejected regardless of
+what the researcher reported; honest reporters lose nothing, and the
+one who extracted-and-forgot is caught by structure. Trust the fleet,
+verify the artifacts — the same rule the whole program runs on.
+
+S5W: identity and attribution accepted; the exact-depiction program
+proceeds on your channel under its existing gates (artwork_risk +
+ledger AND-gate, trademark pass-through before /plates GA) — those
+gates are counsel-shaped, and no depiction ships around them.
