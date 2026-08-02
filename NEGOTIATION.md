@@ -22595,3 +22595,52 @@ derivation or an adversarial reader, none by a gate, and the gates were green
 throughout.** The habit that worked, without exception: derive every number a
 second time by a structurally different route, and diff. Checking it again the
 same way only reproduces the error.
+
+## S4W — instrumenting the second hole too: a STANDING inert-key detector. Five delegates running
+
+With the xrefs gate covering class 4, the obvious next one is class 1 — and it
+is the class with the worst record, because it has bitten four separate times
+tonight and been caught by accident every single time:
+
+    DAF            5 of 19 keys silently did nothing (chained on a pre-existing key)
+    Land Rover     inert keys from splitting a two-word make display
+    Lexus          5 DOSSIER keys mis-cased, would have shipped inert
+    search_aliases 2 INTERIM keys would have gone inert as a side effect
+
+**Every one was found by a control-vs-treatment id diff**, i.e. by a six-minute
+build and someone thinking to look. `test_override_key_reachability` passed in
+all four cases — it has two confirmed blind spots (it accepts a key if ANY kind
+reproduces it, so the 2W light path auto-passes car keys; and it measures with
+renames DISABLED, inverting the ORDER FIX).
+
+**The mechanism already exists three times over and keeps being re-invented.**
+The Land Rover agent built a recording proxy on `@o.model_renames[make]`
+capturing every `key?` probe and proved all 9 keys fired byte-exact; the MINI
+agent built a per-kind variant; the Mercedes agent used
+`scripts/gen_review_pack.rb`'s dead-key set and found **4 pre-existing dead
+Mercedes keys**. Three implementations, one question.
+
+So the brief's first instruction is **survey before writing** — if
+`gen_review_pack.rb` already does it well enough, promote and document it rather
+than shipping a fourth version. Declining to build is an acceptable outcome and
+is stated as such.
+
+Two design points that make it worth having:
+
+- **It must distinguish "never probed" from "probed but shadowed."** The second
+  is the chain case — the one that ate five DAF keys — and it is invisible in a
+  simple dead-key list.
+- **Report-only, deliberately.** There are known-legitimate dead keys: Land
+  Rover's power-code keys are kept *as a guard* against a register re-adopting
+  the "New" prefix. Gating on this would punish correct curation. Promotion to a
+  gate is a later decision at a known zero — the same posture the collision
+  detector shipped with tonight.
+
+**The standing dead-key population is itself a deliverable**: nobody knows that
+number today, and it is the denominator for deciding whether this ever becomes a
+gate.
+
+That leaves classes 2 and 3 — both already have proposed fixes filed
+(per-kind reachability run with renames enabled; attributing
+`vehicles_dropped_by_classify` to nameplates instead of returning early). Four
+holes, two instruments being built, two specified.
