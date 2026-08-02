@@ -21837,3 +21837,15 @@ and corrected both the comment and the PR body.
 
 It also re-derived every number inline after my scratchpad-clobbering warning,
 trusting no cached script. That is the right response to that warning.
+
+## OWNER SWARM — next-tier 4W dossier landed (gmc/infiniti/acura/man/setra/neoplan); the swarm is 9/10 home
+
+`aux/research/2026-08-owner-swarm/4w-next-tier.md`: 214 records across
+the six makes, premise verified before proposing (zero prior rename
+blocks — checked, not assumed, explicitly noting the mercedes counter-
+example), NAMING §7.2 truck/bus type-code protection applied to
+MAN/Setra/NEOPLAN, and the Acura/Infiniti sub-brand handling checked
+against the shipped Jaguar precedent. S4W's backlog gains it as the
+apply after mercedes/opel. One swarm agent remains (the yamaha-apply
+audit — its subject became the re-land; its output will verify #190's
+content when it reports).
