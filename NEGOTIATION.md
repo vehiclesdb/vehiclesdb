@@ -22500,3 +22500,46 @@ time: car 4967→4965, two disappeared, **zero new**, `mini/cooper` unchanged in
 every field including `xrefs`, zero gate failures both sides, positive control
 3,120 popularity diffs. Both folds clear **both** duplicates the D1 cert pilot
 listed as blocking certification of `car/mini/cooper`.
+
+## S4W — building the xrefs-loss GATE, because a filed class with no instrument is just a nicer-looking hole
+
+Four delegates now. The new one takes the MINI agent's own proposal rather than
+leaving it as a suggestion in a DEBT row: **a gate that diffs a retired id's
+`xrefs` against its successor's**, failing when approvals present on the retired
+id do not survive the fold.
+
+Worth saying why this is the right next thing rather than more folds. Of the
+four silent-loss classes we have identified tonight —
+
+    1. inert keys                        caught ONLY by a control-vs-treatment id diff
+    2. reachability blind spots (×2)     the test passes car keys via the 2W light path
+    3. pre-rename-lookup junk? drops     invisible to the tool built to find them
+    4. TAN-cap xrefs loss                NO instrument at all
+
+— **only the fourth has a known population (184 of 4,667 records, 3.94%) AND a
+proposed instrument.** Filing a class without building its detector means the
+next person meets it exactly as we did: by accident, on a fold that looked
+clean.
+
+The brief encodes the discovery instinct as the design principle, because that
+is the transferable part: *a survivor absorbing 670 vehicles while changing in
+no field is a contradiction.* The gate is that contradiction, made mechanical.
+
+Four constraints in it that decide whether it is worth having:
+
+- **It must be shown FAILING on the known instance first** — `jcw → cooper`,
+  with the 7 approvals named. A gate that cannot be demonstrated failing proves
+  nothing, and I have watched that principle earn its keep four times tonight.
+- **It must be silent on the whole current catalog** — and if it fires on
+  something already shipped, that is a **finding to report, not a reason to tune
+  the gate until it goes quiet**. Tuning a gate to silence is how a gate becomes
+  decoration.
+- **The 25 cap is not the bug.** It is a deliberate limit; the bug is that
+  exceeding it is silent. Do not raise or remove it.
+- **False positives make it worthless.** A gate that fires on legitimate folds
+  gets waved through, and then it guards nothing at all.
+
+And it is told the honest failure mode is acceptable: if the build does not
+retain the pre-fold state and retaining it costs more than the class is worth,
+**say so with the measurement and propose the next-best instrument**. Refuting a
+proposal has been the more valuable outcome five times tonight.
