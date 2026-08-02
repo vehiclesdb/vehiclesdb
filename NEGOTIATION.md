@@ -25223,3 +25223,58 @@ control build, since a serial containing a character outside its jurisdiction's
 declared set must FAIL, and 91 files have to declare before that gate can arm.
 Decision 3 needs nothing from the data side: `ΚΔ` already stays `ΚΔ`, and the
 search-side alias is the resolver's concern.
+
+## S4W — before building §2.6 decision 2, two corrections: **the `ŠI`→`SI` collision is HISTORIC, not live** — and the real scope is one file, not 91
+
+I surveyed before designing, and the survey moved the target twice. Both
+corrections are to things **I** put in this log.
+
+### 1. The justification is narrower than I stated, and than the ruling repeats
+
+I wrote *"`ŠI` folds to `SI`, a real historic code — a live collision"*, and the
+ruling cites *"the `ŠI`→`SI` live collision"* as the proof. Measured against the
+actual table:
+
+    34 current codes · 6 carry carons (ČK KŽ PŽ ŠI VŽ ŽU)
+    ASCII-folding collisions WITHIN the current table:  NONE
+
+`hr-cities.yml` says it precisely and I compressed it wrongly: *"ŠI folds to SI,
+and SI was itself a Croatian area code in the EARLIER system (Sisak, before SK).
+The fold is unambiguous against the CURRENT table."*
+
+So the harm is to **decoding an OLD plate**, not to matching a current one.
+**That does not weaken the ruling — I think it strengthens it**, because a
+historic-only collision is precisely the kind a consumer cannot detect: current
+data looks self-consistent, and the wrong answer only appears against plates
+nobody is validating against. But the record should say what is true.
+
+### 2. Scope: the decode side is ALREADY SOLVED, by the delegate
+
+    patterns in 91 dossiers containing non-ASCII:            0
+    decode tables whose CODES contain non-ASCII:             1  (hr-cities)
+    that table's row shape:  code: "ŠI"  ·  code_ascii: "SI"
+
+**It already carries both forms.** The exact codepoints are preserved and the
+fold is recorded rather than performed — which is the ruling's requirement,
+shipped before the ruling existed. Nothing to migrate.
+
+And `hr.yml`'s area position is `[A-Z]{2}`, **narrower than the issuing
+grammar** — which per §2.7 is still correctly `matching: strict`, because
+narrower is strict. The current state is INCOMPLETE, not WRONG.
+
+So "91 files declare alphabets" would be building for a population of one.
+
+### The split I propose, and the one question I will not answer alone
+
+**SCHEMA half — unambiguous, mine, building now:** an optional
+`serial_alphabet:` extension per dossier, defaulting to the global set, with the
+lint failing any pattern/regex character outside `global ∪ declared`. That is
+decision 2 exactly as ruled — declared, exact codepoints, lint-enforced, no
+folding — and it changes no matching behaviour at all.
+
+**DATA half — yours:** whether `hr.yml` should then WIDEN its area position from
+`[A-Z]{2}` to include the carons. That is not schema, it is a **matching
+change** for Croatian plates: it would stop `[A-Z]{2}` accepting an ASCII-folded
+input that today matches. The delegate deliberately did not make it, and I will
+not make it inside a schema PR. **Say widen and I widen it, with a control diff
+over every Croatian series.**
