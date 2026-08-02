@@ -1,0 +1,842 @@
+# plates/lu.yml — Luxembourg (PRD-PLATES gate L1, EU/EEA wave 2).
+#
+# ONE INSTRUMENT, READ END TO END, CARRIES THIS ENTIRE FILE. Every format,
+# every colour, every dimension, every special series, every historic design
+# window and the sequence table in plates/_decode/lu-series-order.yml comes
+# from the REGLEMENT GRAND-DUCAL DU 17 JUIN 2003 relatif a l'identification des
+# vehicules routiers, a leurs plaques d'immatriculation et aux modalites
+# d'attribution de leurs numeros d'immatriculation — Memorial A n. 87 of
+# 25 June 2003, pages 1622-1632 — as amended by the reglement grand-ducal du
+# 18 octobre 2006 (Memorial A n. 190 of 6 November 2006, chapitre III,
+# articles 15-19). Both were fetched in full from Legilux on 2026-08-02 and
+# both are text-extractable, drawings included, which is why almost nothing in
+# this file is observed and almost nothing is secondary.
+#
+# THE START DATE IS THE INSTRUMENT'S OWN COMMENCEMENT CLAUSE, AND HERE THAT IS
+# CORRECT. The instrument-date rule says an instrument's window is not a series
+# period — but it says so because the two usually differ, not because they
+# always do. Luxembourg is the case where they coincide and the text proves it:
+# art. 20 ends "qui entre en vigueur le 1er juillet 2003", and the same date
+# is then used as the operative dividing line four more times inside the
+# instrument: art. 12 chapeau (which plate designs a vehicle may keep), art. 16
+# §1 (which NUMBERS may stay in use), §4 (which PLATES may stay in use) and §5
+# (red plates, to be exchanged by 31-12-2003). A date the instrument itself
+# uses as the dividing line for the whole subject matter is a series boundary,
+# not merely a publication fact.
+#
+# THE ACCURACY HERE IS LOAD-BEARING. `lu_snca` is a live register inside this
+# project, so a wrong Luxembourg format is not a trivia error, it is a
+# resolver error. Two things follow, and both are deliberate:
+#   * every regex has a sourced `regex_strict` twin wherever the instrument
+#     enumerates an alphabet or a numeric range, which it does far more often
+#     than most European instruments; and
+#   * the current-series letter order is shipped as a decode table
+#     (plates/_decode/lu-series-order.yml) whose transcription is checked arithmetically
+#     against the instrument's own exclusion rules — 566 pairs, and 566 is
+#     what 26x26 minus the I/O pairs minus the ten named pairs must equal.
+#
+# THE FOUR PECULIARITIES THAT SHAPE THE FILE
+#
+# 1. YELLOW IS THE ORDINARY COLOUR. Art. 11: "Le fond des plaques
+#    d'immatriculation est de couleur jaune retroreflechissante et les
+#    caracteres alphanumeriques y apposes sont de couleur noire non
+#    retroreflechissante." Not a rear-plate convention as in the UK and not a
+#    class marker as in NL — every ordinary Luxembourg plate, front and rear,
+#    is yellow, and has been since 1974.
+#
+# 2. THE SPECIAL SERIES ARE NUMBER RANGES, NOT DESIGNS. Art. 7 carves the
+#    number space into reserved blocks — 1-19 for the Grand-Ducal Court, 20-50
+#    for the government garage, P1-P99 for the Chamber of Deputies, AA and ZZ
+#    and CD prefixes for the state, limited-use vehicles and the diplomatic
+#    corps. They are authored as separate series because their GRAMMAR differs,
+#    even though most of them are printed on exactly the same yellow plate.
+#
+# 3. PERSONALISED NUMBERS ARE A REAL, REGULATED, OWNER-BOUND CLASS, and they
+#    are the one place Luxembourg's plate-to-vehicle binding breaks. Art. 8
+#    gives them a statutory waiting list, a transfer right between the holder's
+#    own vehicles, a 36-month reservation after the vehicle goes off the road,
+#    and inheritance to a first-degree relative on death. Art. 9 §2 then works
+#    out five distinct outcomes depending on who renounces what. This is not a
+#    vanity add-on bolted to the side of the system; it is written into its
+#    core.
+#
+# 4. THE HISTORIC DESIGNS ARE DATED TO THE DAY BY ART. 12, which is unusual and
+#    valuable: 340x110 black with white characters for vehicles first
+#    registered before 01-01-1974; 340x110 yellow retroreflective with black
+#    characters from 01-01-1974 to 31-12-1987; 520x110 yellow with the European
+#    emblem from 01-01-1988 to 30-06-2003. Three windows, one article, no
+#    folklore.
+jurisdiction: lu
+authority:
+  name: "Ministere de la Mobilite et des Travaux publics — reglement grand-ducal modifie du 17 juin 2003 relatif a l'identification des vehicules routiers, a leurs plaques d'immatriculation et aux modalites d'attribution de leurs numeros d'immatriculation"
+  url: "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf"
+binding: vehicle
+binding_note: >-
+  DEFAULT VEHICLE, WITH A STATUTORY OWNER-BOUND EXCEPTION — and a consumer must
+  model both. Art. 9 §1: a number granted at first registration stays attached
+  to that vehicle until it is definitively withdrawn from circulation in
+  Luxembourg, and for at least five years after the relevant trigger, after
+  which it may be re-issued. But a PERSONALISED number (art. 8) belongs to the
+  holder, transfers between that holder's vehicles, survives the vehicle by 36
+  months, and passes to a first-degree relative on death. Art. 9 §2 b) also lets
+  the holder of an ORDINARY current-series number convert it into a personalised
+  one on transfer, at which point that number changes binding mid-life. So the
+  same six-character string can be vehicle-bound or owner-bound depending on
+  history, and nothing on the plate says which.
+authority_note: >-
+  OPERATOR vs REGULATOR, worth stating because this repo ingests `lu_snca`. The
+  2003 instrument names the SNCT — Societe Nationale de Controle Technique — as
+  the body that makes red plates and export plates available to holders (art.
+  14), while the NUMBER is attributed by the minister responsible for transport
+  (art. 1). The vehicle-registration operator is today the Societe Nationale de
+  Circulation Automobile (SNCA), successor to that role; the instrument text
+  read here predates the renaming and says SNCT throughout. Recorded so that a
+  reader matching this file against the `lu_snca` register does not think the
+  two are different systems.
+
+charset_defaults:
+  excluded_letters: [I, O]
+  excluded_pairs: [AA, CD, HJ, KK, KZ, PD, SA, SS, WC, ZZ]
+  excluded_note: >-
+    Annexe, paragraphe 2, verbatim: the current series does not use "les series
+    qui impliquent une des combinaisons de lettres AA, CD, HJ, KK, KZ, PD, SA,
+    SS, WC et ZZ" nor "les series qui impliquent les lettres I ou O". Three of
+    the ten pairs are explained elsewhere in the same instrument — AA, CD and ZZ
+    are reserved as special series by art. 7 — and the remaining seven (HJ, KK,
+    KZ, PD, SA, SS, WC) are given no reason at all. Recorded as unexplained
+    rather than rationalised. I and O go for the usual 1/l and 0/O legibility
+    reason, which the instrument also does not state.
+  source: "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # Annexe, paragraphes 1-2, p. 1632"
+
+display_rules:
+  two_plates: "every registered vehicle carries a rear plate; a FRONT plate as well, except motorcycles, tricycles, mopeds, light quadricycles, trailers and towed vehicles (art. 2, first paragraph)"
+  same_number: "front and rear must carry the same number (art. 2)"
+  mounting: "as vertical as possible, legible in all circumstances; the rear plate in the location prescribed by Directive 70/222/EEC (four-wheelers) or 93/94/EC (two- and three-wheelers), failing which below 120 cm from the ground; the front plate below 120 cm (art. 15)"
+  no_perforation: "the rear plate must be fixed by means that do NOT perforate it — with a listed set of exceptions (trailers, semi-trailers, trucks, industrial and agricultural tractors, self-propelled machines) where screws or rivets are allowed; where perforation is unavoidable, the visible fixing parts must match either the plate ground or the perforated characters (art. 15)"
+  unregistered_movement: "an insured but not-yet-registered vehicle MAY carry plates on the shortest route to or from a roadworthiness test or, after a failed test, to a repair shop or the owner's home — the only lawful use of plates on an unregistered vehicle (art. 2, third paragraph)"
+  removal_duty: "the holder MUST remove the plates when the vehicle goes off the road for export or scrapping, when it is to be re-registered under another number, or when the number is transferred as a personalised number to another vehicle — and must DESTROY them unless they are immediately reused on another vehicle registered in the same name (art. 15, last two paragraphs)"
+  source: "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # arts. 2 and 15, pp. 1622-1623 and 1629"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT SERIES.
+  # =========================================================================
+  - id: lu-standard-2003
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, tricycle, quadricycle, trailer]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 9999"
+      regex: '\A[A-Z]{2}[- ]\d{4}\z'
+      regex_strict: '\A(?!AA|CD|HJ|KK|KZ|PD|SA|SS|WC|ZZ)[A-HJ-NP-Z]{2}[- ][4-9]\d{3}\z'
+      charset:
+        notes: >-
+          `regex_strict` is the instrument's own grammar, all of it, from the
+          Annexe: six alphanumeric positions, "quatre chiffres precedes de deux
+          lettres" (para. 1); no I and no O and none of the ten named pairs
+          (para. 2); and the numeric element of the CURRENT series confined to
+          4000-9999 by the 2006 amendment, because 0001-0099 is reserved to
+          mopeds and light quadricycles and 0100-3999 to personalised numbers.
+          That last constraint is the one most likely to be missed — a
+          Luxembourg plate reading "AB 1234" is NOT a current-series number, it
+          is a personalised one, and the difference is legally and practically
+          real.
+      progression: >-
+        THE PREFIX IS THE ONLY DECODABLE DIMENSION OF A LUXEMBOURG PLATE, and it
+        decodes time, not place. The Annexe fixes the order of the 566 usable
+        letter pairs in a printed 15-column grid read COLUMN-MAJOR (see
+        plates/_decode/lu-series-order.yml), and pairs the walk with an advancing thousands
+        digit: "BA 4000 - BA 4999, CA 5000 - CA 5999, DA 6000 - DA 6999, etc."
+        So each prefix takes one thousand-block per pass, the table is walked
+        again at the next thousand, and 566 x 6000 = 3,396,000 numbers exist in
+        the current series. Ordering two plates by issue is therefore sound;
+        DATING one is not, because the instrument publishes the order and never
+        the calendar.
+      separator_note: >-
+        The instrument prescribes six alphanumeric POSITIONS and never a
+        separator glyph — art. 11 and the Annexe are silent, and art. 13
+        delegates "la disposition des caracteres alphanumeriques sur les plaques
+        d'immatriculation ainsi que leur forme, leur taille et leur emboutissage"
+        to a cahier des charges approved by the minister, which is NOT published
+        in the Memorial and was not reached. That delegation is the reason the
+        separator position is spelled as the sanctioned separator-only class
+        `[- ]` (PRD-PLATES §2.8) rather than as a literal: the gap is real, the
+        glyph is unlegislated.
+    design:
+      plate: { w: 520, h: 110, unit: mm, thickness: [1, 1.5] }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm, thickness: [1, 1.5], note: "the square alternative, at the holder's choice of mounting" }
+        - { w: 270, h: 80, unit: mm, thickness: [1, 1.5], note: "motocycles" }
+        - { w: 200, h: 140, unit: mm, thickness: [1, 1.5], note: "motocycles, tall alternative" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_note: "characters are NON-retroreflective black — the instrument specifies the negative explicitly, which a render layer should honour"
+      band:
+        side: left
+        color: "#003399"
+        hex_basis: observed
+        content: eu-stars+L
+        note: >-
+          "un aplat de couleur bleue retroreflechissante contenant, dans sa
+          partie superieure, les douze etoiles de couleur jaune
+          retroreflechissante rappelant le drapeau europeen et, dans sa partie
+          inferieure, le signe distinctif national constitue par la lettre latine
+          L en couleur blanche retroreflechissante", with the geometry taken by
+          reference from the annex to Regulation (EC) 2411/98. NOTE THE COLOUR
+          COLLISION this creates and no other EU state has: the stars are yellow
+          and so is the plate, so on a Luxembourg plate the euroband's yellow is
+          the SAME family as the ground it sits beside.
+      emblem: { present: false }
+      rear_differs: false
+      fallback_size_rule: >-
+        Where the prescribed dimensions cannot be fitted, the 2003 text sent the
+        fitter to "les criteres techniques de l'emplacement de la plaque"; the
+        2006 amendment (art. 17) replaced that with a concrete rule — the
+        MOTORCYCLE dimensions may be used instead. A rare case of an amendment
+        making a specification less discretionary rather than more.
+    region_encoding: "plates/_decode/lu-series-order.yml"
+    region_encoding_file: lu-series-order.yml
+    region_encoding_note: >-
+      NOT geography. Luxembourg encodes none, anywhere, in any series — a
+      sourced negative, since arts. 6-8 compose every number from reserved
+      ranges and a sequential table with no locational element. The referenced
+      table decodes ISSUE ORDER.
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 (Memorial A n. 87, 25-06-2003): art. 6 (first available number in the current series), art. 11 (dimensions, yellow retroreflective ground, non-retroreflective black characters, the blue EU field with 12 yellow stars and the white L), art. 20 (in force 01-07-2003), Annexe paras. 1-3 (composition, exclusions, order grid). Accessed 2026-08-02"
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2006/10/18/n1/jo/fr/pdf  # RGD 18-10-2006 (Memorial A n. 190, 06-11-2006): art. 17 (the motorcycle-dimension fallback), art. 19 (the 0001-0099 / 0100-3999 / 4000-9999 split), art. 37 (in force 18-12-2006). Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT LUXEMBOURG SERIES — two letters, four digits, yellow. Started
+      by the instrument's own commencement clause on 1 July 2003, which is a
+      genuine series boundary here rather than a mere publication date (see the
+      file header). Old numbers were not recalled: art. 16 §1 lets pre-2003
+      numbers stay in use and only forces conformity on a change of owner or on
+      re-registration after the registration card lapses — with a carve-out for
+      historic vehicles holding a four- or five-character number, which the 2006
+      amendment widened again so that a re-registration after card expiry never
+      forces a historic vehicle to renumber. That is why four-digit and
+      five-digit Luxembourg plates are still legally on the road in 2026 and
+      why lu-legacy-* below are not dead entries.
+
+  - id: lu-personalized-2003
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, tricycle, quadricycle, trailer]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: recall-only
+    format:
+      pattern: "9999"
+      regex: '\A(?:[A-Z]{2}[- ]\d{1,4}|\d{4,5})\z'
+      pattern_note: >-
+        A UNION OF FOUR SHAPES, hence `recall-only`. Art. 8 §1 lets an applicant
+        request a personalised number drawn from the current series, from the
+        four-digit series 1000-9999, or from the five-digit series
+        10000-99999; the 2006 amendment adds the 0100-3999 numeric element
+        inside each letter series. So a personalised Luxembourg number may look
+        exactly like an ordinary one, may look like a bare four- or five-digit
+        number, and cannot be told apart from an ordinary current-series plate
+        by inspection alone — except in the one direction that IS decidable: a
+        two-letter plate whose digits fall below 4000 is personalised, because
+        the current series starts at 4000. A match here is a shape hit only.
+      progression: >-
+        Not sequential — chosen. The four-digit series is scarce enough to have
+        a statutory queue: "les demandes pour l'octroi d'un tel numero sont
+        inscrites, dans l'ordre sequentiel de leur entree, dans une liste
+        d'attente", one per person for life, allocated as numbers free up.
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+      note: "no design of its own — a personalised number is printed on the ordinary plate. It is a SERIES here rather than a sub-entry because its number grammar and its binding both differ (PRD-PLATES §2.3)."
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 8 (the three series a personalised number may come from, the waiting list, transfer between the holder's vehicles, the 36-month reservation, inheritance at first degree, and the fees of 50 EUR on first grant / 24 EUR on transfer) and art. 9 §2 (the five renunciation outcomes). Accessed 2026-08-02"
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2006/10/18/n1/jo/fr/pdf  # RGD 18-10-2006 art. 19: 0100-3999 within each letter series becomes available as personalised numbers. Accessed 2026-08-02"
+    notes: >-
+      NUMEROS D'IMMATRICULATION PERSONNALISES. The fees recorded above are the
+      2003 figures and are the one field in this file known to be STALE: the
+      charge is widely reported at 200 EUR today, and no amending instrument
+      changing it was located on Legilux in this pass. Recorded as a dated gap
+      rather than updated from a secondary, because a fee is exactly the kind of
+      fact that is cheap to get wrong and expensive to be wrong about. Note also
+      the transfer mechanism in art. 16 §1 that a parse API should know: a
+      pre-2003 two-letters-three-digits number carried forward as a personalised
+      number gets AN EXTRA DIGIT INSERTED before its three ("ces trois chiffres
+      sont precedes par un chiffre supplementaire"), so some modern-looking
+      six-character Luxembourg plates are legacy numbers padded to fit.
+
+  # =========================================================================
+  # MOPEDS AND LIGHT QUADRICYCLES — the two-digit plate.
+  # =========================================================================
+  - id: lu-moped-2003
+    class: moped
+    categories: [moped, quadricycle]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 99"
+      regex: '\A[A-Z]{2}[- ]\d{2}\z'
+      regex_strict: '\A(?!AA|CD|HJ|KK|KZ|PD|SA|SS|WC|ZZ)[A-HJ-NP-Z]{2}[- ]\d{2}\z'
+      pattern_note: >-
+        FOUR DIGITS ARE ALLOCATED AND TWO ARE PRINTED. The Annexe, last
+        paragraph: the numeric element for mopeds and light quadricycles runs
+        0010-0099 (0001-0099 after the 2006 amendment), "les deux premiers
+        chiffres de ce numero n'etant toutefois pas repris sur la plaque
+        d'immatriculation". So the register holds a six-character number and the
+        plate shows four characters. A consumer joining a printed Luxembourg
+        moped plate against a register field must left-pad the digits to four,
+        or the join silently fails — this is the single highest-value fact in
+        this file for `lu_snca` work.
+    design:
+      plate: { w: 130, h: 90, unit: mm, thickness: 1.5 }
+      plate_variants:
+        - { w: 90, h: 130, unit: mm, thickness: 1.5, note: "portrait alternative" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band:
+        side: top
+        color: "#003399"
+        hex_basis: observed
+        content: eu-stars+L
+        note: >-
+          THE ONE BAND THAT MOVES. Art. 11, final paragraph: by derogation the
+          moped and light-quadricycle plate may carry the blue field along its
+          TOP edge instead of its left, "le signe distinctif national etant dans
+          ce cas appose a droite des douze etoiles" — so the L sits beside the
+          stars rather than beneath them. Recorded as `side: top` because that
+          is the layout the small plate actually uses.
+      design_history: >-
+        Mopeds and light quadricycles registered before 01-07-2003 may keep a
+        quite different plate (art. 12 §4): yellow retroreflective, 85 x 150 mm
+        or 150 x 85 mm, with the national sign rendered as a yellow
+        retroreflective L, 14 mm high with a 2 mm stroke, on a black
+        non-retroreflective oval of 30 x 20 mm, and the black capitals CMA to
+        its right. No European band at all.
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 Annexe final paragraph (the 0010-0099 range and the unprinted leading digits), art. 11 (130x90 / 90x130, thickness 1.5 mm, the top-edge band derogation), art. 12 §4 (the pre-2003 CMA plate), art. 17 (for mopeds and light quadricycles the 'plaque d'identite' of the 1955 arrete grand-ducal serves as the registration plate). Accessed 2026-08-02"
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2006/10/18/n1/jo/fr/pdf  # RGD 18-10-2006 art. 19: the moped range becomes 0001-0099. Accessed 2026-08-02"
+    notes: >-
+      CYCLOMOTEURS ET QUADRICYCLES LEGERS. A separate series and not a size
+      variant, because the PRINTED grammar is genuinely different — four
+      characters, not six. Art. 17 also records a legal subtlety worth keeping:
+      for these vehicles the identity plate under the arrete grand-ducal of
+      23 November 1955 "tient lieu de plaque d'immatriculation", their
+      registration record stands in for an immatriculation and their identity
+      card for a registration card. They are, strictly, registered by a
+      different mechanism that the plate rules are mapped onto.
+
+  # =========================================================================
+  # THE ART. 7 RESERVED RANGES.
+  # =========================================================================
+  - id: lu-court-2003
+    class: government
+    categories: [car, van]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99"
+      regex: '\A(?:CD[- ])?\d{1,2}\z'
+      regex_strict: '\A(?:CD[- ])?(?:[1-9]|1\d)\z'
+      pattern_note: "art. 7 a): the numbers 1 to 19, and the same numbers prefixed CD"
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 a): 'Les vehicules de la Cour grand-ducale sont immatricules sous les numeros compris entre 1 et 19, ainsi que sous les numeros compris entre 1 et 19, precedes des lettres CD.' Accessed 2026-08-02"
+    notes: >-
+      THE GRAND-DUCAL COURT holds the nineteen lowest numbers in the country, in
+      both a plain and a CD-prefixed form — the CD form because the Court's
+      vehicles also travel under diplomatic arrangements. CLASS CAVEAT:
+      `government` is the closest member of the controlled vocabulary; the head
+      of state's household is neither a civil-government fleet nor a diplomatic
+      mission. Art. 10 §1 additionally allows the minister to grant these
+      vehicles a SECONDARY number "choisi en dehors de l'evolution normale" of
+      the current series — an unmarked ordinary-looking plate — which is a real
+      hazard for any consumer inferring officialdom from a low number.
+
+  - id: lu-government-2003
+    class: government
+    categories: [car, van, bus]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99"
+      regex: '\A(?:CD[- ])?\d{2}\z'
+      regex_strict: '\A(?:CD[- ])?(?:[2-4]\d|50)\z'
+      pattern_note: "art. 7 b): the numbers 20 to 50, plain and CD-prefixed"
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 b): the government garage takes 20 to 50, and 20 to 50 preceded by CD. Accessed 2026-08-02"
+    notes: >-
+      LE GARAGE DU GOUVERNEMENT — thirty-one numbers, immediately above the
+      Court's nineteen, so the first fifty Luxembourg numbers are entirely
+      accounted for by the state. Same art. 10 §1 secondary-number caveat as
+      lu-court-2003. Distinct from lu-state-2003 (the AA series), which covers
+      the administrations rather than the ministerial fleet.
+
+  - id: lu-parliament-2003
+    class: government
+    categories: [car, van]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "P 99"
+      regex: '\AP[- ]\d{1,2}\z'
+      regex_strict: '\AP[- ](?:[1-9]|[1-9]\d)\z'
+      pattern_note: "art. 7 d): the numbers 1 to 99 preceded by the Latin letter P"
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+      additional_front_plate:
+        shape: oval
+        w: 300
+        h: 180
+        unit: mm
+        background: "#FFFFFF"
+        foreground: "#CE1126"
+        hex_basis: observed
+        note: >-
+          A SECOND, NON-REGISTRATION PLATE, and one of the few non-rectangular
+          plates in this dataset. Art. 3 §2: members of the Chamber of Deputies
+          may fit, to the FRONT of a passenger or commercial vehicle registered
+          in their own name, an oval plate 300 mm wide by 180 mm high bearing a
+          red Latin P on white, the letter 100 mm high with a 16 mm stroke. It
+          is a status marker, not a registration — it carries no number, and it
+          sits on a vehicle whose ordinary plates are unchanged. Distinct from
+          the P-prefixed NUMBER in art. 7 d), which is the Chamber's own fleet.
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 d) (the P1-P99 fleet numbers) and art. 3 §2 (the oval red-P front plate for members, with its exact geometry). Accessed 2026-08-02"
+    notes: >-
+      LA CHAMBRE DES DEPUTES. Two quite different things share the letter P and
+      the schema keeps them apart: a reserved NUMBER RANGE for the Chamber's own
+      vehicles (this series' format) and a personal OVAL BADGE that individual
+      deputies may fit to their own cars (this series' design sub-entry). CLASS
+      CAVEAT: `government` for a legislature.
+
+  - id: lu-state-2003
+    class: government
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "AA 9999"
+      regex: '\AAA[- ]\d{4}\z'
+      regex_strict: '\AAA[- ][1-9]\d{3}\z'
+      pattern_note: "art. 7 e): the numbers 1000 to 9999 preceded by the Latin letters AA — which is exactly why AA is one of the ten pairs struck out of the current series"
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 e): 'Les vehicules de l'Etat et de ses administrations sont immatricules sous les numeros compris entre 1000 et 9999, precedes des lettres latines AA.' Accessed 2026-08-02"
+    notes: >-
+      L'ETAT ET SES ADMINISTRATIONS. Visually identical to an ordinary plate —
+      same yellow, same six characters, same band — and distinguishable only by
+      the reserved AA prefix. Note that POLICE, CUSTOMS and the Ministry of
+      State's special services are NOT given a series of their own: art. 10 §1
+      names them only as bodies that may hold an additional current-series
+      number "choisi en dehors de l'evolution normale". So Luxembourg has no
+      police plate series, and this file records none — a sourced negative, not
+      a gap.
+
+  - id: lu-limited-use-2003
+    class: agricultural
+    categories: [tractor, machine, trailer, truck]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "ZZ 9999"
+      regex: '\AZZ[- ]\d{4}\z'
+      regex_strict: '\AZZ[- ][1-9]\d{3}\z'
+      pattern_note: "art. 7 f): 1000 to 9999 preceded by ZZ, for vehicles falling under the tax regime for categories of vehicle of necessarily limited use"
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 f): the ZZ series for 'les vehicules tombant sous l'application de la reglementation fixant la taxe sur les vehicules automoteurs de certaines categories de vehicules a usage necessairement limite'. Accessed 2026-08-02"
+    notes: >-
+      THE ZZ SERIES — a TAX category wearing a plate. CLASS CAVEAT, and a
+      genuine one: the instrument defines this series by reference to a vehicle
+      TAX regulation, not by vehicle type, so its population is whatever that
+      regulation covers — in practice agricultural and works vehicles of
+      necessarily limited use. `agricultural` is the nearest member of the
+      controlled vocabulary and it is narrower than the statutory category. The
+      tax regulation itself was not fetched, so the exact population is a
+      recorded gap. This is the third file in the dataset to want a
+      works/limited-use class that does not exist (see es-special-vehicles-1999
+      and pt-machinery-2006).
+
+  # =========================================================================
+  # DIPLOMATIC.
+  # =========================================================================
+  - id: lu-diplomatic-2003
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "CD 99-99"
+      regex: '\ACD[- ]\d{2}-\d{2}\z'
+      pattern_note: >-
+        The instrument composes this one to the character. Art. 7 c): the number
+        is 1000-9999 preceded by CD, and "Le predit numero a quatre chiffres est
+        divise par un tiret en deux groupes a deux chiffres, le premier groupe
+        designant l'organisme diplomatique ou l'organisme international officiel
+        en question, le deuxieme groupe formant un numero courant." The hyphen
+        INSIDE the digits is statutory and is a group boundary; the gap after CD
+        is not legislated, hence the class.
+      progression: "group 1 identifies the mission or international organisation and is invariable for it; group 2 is a serial within that body"
+    design:
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+      note: "no distinctive colour — unlike Spain's red CD plate, the Luxembourg diplomatic plate is an ordinary yellow plate with a reserved prefix"
+    region_encoding: "mission prefix — the two-digit organisation codes are not published in the instrument; no decode table authored"
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 c): the CD series, the two-group split and what each group means, plus the exhaustive list of who qualifies. Art. 19 §3 abrogates the reglement ministeriel du 11 septembre 1995 that previously determined the eligible categories. Accessed 2026-08-02"
+    notes: >-
+      CORPS DIPLOMATIQUE. The eligibility list in art. 7 c) is unusually
+      concrete and worth preserving as a fact about Luxembourg rather than about
+      plates: beyond accredited diplomats and officials of international bodies
+      with diplomatic or analogous status, it names by office the President,
+      Vice-Presidents, political-group chairs and Secretary-General of the
+      EUROPEAN PARLIAMENT; the judges, advocates-general and registrar of the
+      COURT OF JUSTICE; the President, members and Secretary-General of the
+      COURT OF AUDITORS; the members and registrar of the COURT OF FIRST
+      INSTANCE; the President and Vice-Presidents of the EIB; the head and
+      deputy head of the EFTA Bureau; and the President and members of the
+      finance committee of the European Investment Fund. That is the European
+      institutional geography of Luxembourg City, written into a plate
+      regulation. THE DECODE TABLE IS A GAP: the instrument states the
+      MECHANISM (first group = the body) and publishes no codes, and no
+      Ministry of Foreign Affairs list was reached. PRD-PLATES puts diplomatic
+      decode tables at gate L4; this entry carries the mechanism so a table can
+      be hung off it later without an id change.
+
+  # =========================================================================
+  # RED PLATES — the dealer/trade plate, and the only non-yellow ground.
+  # =========================================================================
+  - id: lu-dealer-red-2003
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, tricycle, quadricycle, moped, trailer]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9999 99"
+      regex: '\A\d{4}[- ]\d{2}\z'
+      regex_strict: '\A[1-9]\d{3}[- ]\d{2}\z'
+      pattern_note: >-
+        Art. 7 g): "un numero a quatre chiffres, compris entre 1000 et 9999,
+        suivi des deux derniers chiffres du millesime de l'annee a la fin de
+        laquelle expire la validite des plaques". The trailing pair is an EXPIRY
+        YEAR, not part of the serial — a red plate reading "4821 27" expires at
+        the end of 2027. It is the only Luxembourg plate that dates itself, and
+        the date it carries is a deadline, not a birthday.
+      progression: "the four-digit block is a serial; the trailing year advances with each issue cycle"
+    design:
+      plate: { w: 340, h: 110, unit: mm, thickness: [1, 1.5] }
+      background: { color: "#CE1126", finish: non-retroreflective, hex_basis: observed }
+      foreground: "#FFFFFF"
+      foreground_note: "art. 11: red NON-retroreflective ground with white NON-retroreflective digits — the instrument specifies the absence of retroreflectivity on both, uniquely in this file"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L, note: "red plates carry the European field too — art. 11, 'Chaque plaque d'immatriculation ET CHAQUE PLAQUE ROUGE doit arborer, a son extremite gauche, un aplat de couleur bleue'" }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 4 (who may hold red plates, the five permitted uses, the front/rear pairing rule, the Benelux equivalence, the surrender duties), art. 7 g) (the number), art. 11 (340x110, red non-retroreflective ground, white digits, the EU field), art. 14 (supplied by the SNCT against a fee, 70% refundable within three months of expiry), art. 16 §5 (pre-2003 red plates to be exchanged by 31-12-2003). Accessed 2026-08-02"
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2006/10/18/n1/jo/fr/pdf  # RGD 18-10-2006: the fee for a pair of special or red plates set at 150 EUR. Accessed 2026-08-02"
+    notes: >-
+      PLAQUES ROUGES — Luxembourg's trade plate, held by roadworthiness-test
+      bodies and by businesses authorised to trade in or repair road vehicles.
+      Validity is fixed by statute and generous: "le dernier jour de la deuxieme
+      annee suivant l'annee de leur delivrance", so a plate issued at any point
+      in 2025 runs to 31 December 2027. THE BENELUX FACT, which no other file in
+      this dataset carries: art. 4 §4 assimilates Belgian "plaques marchandes"
+      and Dutch commercial plates to Luxembourg red plates, provided the rules
+      of Benelux Committee of Ministers decision M(92)13 of 2 December 1992 are
+      respected — so a Belgian trade plate is lawfully a Luxembourg trade plate,
+      and the corresponding Belgian or Dutch circulation documents replace the
+      Luxembourg registration card (art. 18, amending art. 92 of the 1955
+      arrete). A cross-border validation rule, in a plate regulation, sourced.
+
+  # =========================================================================
+  # EXPORT.
+  # =========================================================================
+  - id: lu-export-2003
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2003 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9999 9999"
+      regex: '\A\d{4}[- ]\d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1[0-2])\d{2}[- ][1-9]\d{3}\z'
+      pattern_note: >-
+        TWO ROWS, LINEARISED. Art. 7 h): the number is 1000-9999 "precede des
+        deux chiffres du mois et des deux derniers chiffres du millesime de
+        l'annee a la fin desquels expire la validite de l'immatriculation, les
+        deux groupes de chiffres ainsi constitues etant superposes et separes
+        par un trait horizontal". The plate is therefore stacked — MMYY above a
+        horizontal rule, the serial below — with the three letters EXP also
+        stacked. `pattern` writes the two rows left to right with a separator,
+        because the schema has no two-row primitive; `regex_strict` enforces the
+        month as a real month, which is what makes this shape recognisable at
+        all.
+      layout: "MM YY over a horizontal rule, serial beneath, with EXP set vertically alongside"
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", hex_basis: observed, content: eu-stars+L }
+      note: "art. 11, fourth paragraph, singles this plate out for a size of its own: 'les plaques d'immatriculation dont question sous h) de l'article 7 doivent avoir une largeur de 340 mm et une hauteur de 110 mm' — the only dimension in the instrument attached to a SERIES rather than to a vehicle class"
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 7 h) (the number, the stacked layout, the EXP letters, and the three-month export condition), art. 11 (the 340x110 size), art. 14 (supplied by the SNCT). Accessed 2026-08-02"
+    notes: >-
+      EXPORT PLATES. The qualifying condition is tighter than most European
+      export regimes and is worth recording: the vehicle must be "destine a etre
+      exporte dans un delai inferieur a trois mois a partir de leur date
+      d'immatriculation" — three months from registration, not from application.
+      Unlike nl-export this series does NOT reuse the vehicle's existing
+      registration, so it is `strict` rather than `recall-only`: it has a
+      grammar of its own and the grammar is enacted.
+
+  # =========================================================================
+  # ARMY.
+  # =========================================================================
+  - id: lu-army-2003
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2003 }
+    period_evidence: statutory-authority-undated
+    matching: recall-only
+    format:
+      pattern: "9999"
+      regex: '\A\d{1,6}\z'
+      pattern_note: >-
+        NO GRAMMAR IS ENACTED AND NONE IS INVENTED — hence `recall-only` and a
+        deliberately shapeless regex. Art. 3 §1 does two things and only two:
+        it fixes the COLOURS ("un numero dont les lettres et les chiffres sont
+        peintes en couleur blanche sur fond noir") and it names the issuing
+        authority ("Les numeros d'immatriculation des vehicules de l'Armee sont
+        attribues par le Commandant de l'Armee"). Digit count, letters, ranges:
+        absent from the instrument. The pattern shows four digits only because
+        the schema requires a pattern.
+    design:
+      background: { color: "#000000", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      note: >-
+        Art. 3 §1 also permits these vehicles to carry EITHER the national
+        distinguishing sign as specified in art. 12 §6 (the black L on a white
+        oval, 175 x 115 mm) OR "un autre signe distinctif special" which the
+        instrument does not describe. `finish: painted` follows the instrument's
+        own verb — the colours are "peintes" — and no retroreflectivity is
+        required, in contrast to every civilian series here.
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 3 §1: army vehicles NOT subject to registration carry white-on-black plates, numbered by the Army Commander, optionally with the national or a special distinguishing sign. Accessed 2026-08-02"
+    notes: >-
+      L'ARMEE LUXEMBOURGEOISE. The provision governs vehicles that are NOT
+      subject to civil registration at all, which is why it sits in the
+      instrument's chapter on plate characteristics rather than in its chapter
+      on number attribution — the Army is outside the register, and this
+      regulation reaches it only to say what its plates must look like.
+      `period_evidence: statutory-authority-undated`: the 2003 instrument is
+      the authority for the colour rule and the start recorded here is that
+      instrument's commencement, but white-on-black army plates plainly predate
+      it and no earlier instrument was reached. Grammar is a recorded gap, and
+      the place to look is the Army Commander's own service orders, which are
+      not published in the Memorial.
+
+  # =========================================================================
+  # THE PRE-2003 WORLD. Three design windows, dated to the day by art. 12,
+  # carrying one shared and undated number grammar.
+  # =========================================================================
+  - id: lu-legacy-euro-1988
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1988, end: 2003 }
+    period_evidence: statutory-date
+    matching: recall-only
+    format:
+      pattern: "LL 999"
+      regex: '\A(?:\d{2,3}|\d{2}[- ][A-Z]{2}|[A-Z]{2}[- ]\d{2}|[A-Z][- ]\d{4}|[A-Z]{2}[- ]\d{3})\z'
+      pattern_note: >-
+        THE NUMBER GRAMMAR IS SHARED ACROSS ALL THREE PRE-2003 WINDOWS AND IS
+        DATED BY NONE OF THEM. Art. 16 §1 enumerates the pre-2003 compositions
+        that may stay in use: "deux ou de trois chiffres", "deux chiffres et de
+        deux lettres", "une lettre et de quatre chiffres", "deux lettres et de
+        trois chiffres". That is a list of four shapes with no order and no
+        dates, so the regex is their union and the series is `recall-only`. The
+        two-digits-and-two-letters shape is spelled in BOTH orders here because
+        the instrument gives a composition, not an arrangement — an honest
+        widening rather than a guessed order.
+    design:
+      plate: { w: 520, h: 110, unit: mm, note: "rear, where the mounting location is 520 mm wide per Directive 70/222/EEC" }
+      plate_variants:
+        - { w: 340, h: 110, unit: mm, note: "rear where the location is only 340 mm wide, and the FRONT plate in every case — art. 12 §3 sends both back to the §2 specification" }
+        - { w: 240, h: 200, unit: mm, note: "motocycles, WITHOUT the European emblem and with the national L sign below the number on black" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band:
+        side: left
+        color: "#003399"
+        hex_basis: observed
+        content: eu-stars
+        note: >-
+          THE EMBLEM WITHOUT THE LETTER, and the distinction is the whole point
+          of this window. Art. 12 §3 gives "l'embleme des Communautes
+          Europeennes de couleur bleu-azur NON retroreflechissante avec au
+          centre un cercle de douze etoiles de couleur jaune retroreflechissante
+          a cinq rais dont les pointes ne se touchent pas, la hauteur de
+          l'embleme etant de 80 mm et la largeur de 120 mm" — twelve stars, an
+          80 x 120 mm field, a NON-retroreflective blue, and NO national letter
+          inside it. The L had to be carried separately, on the oval sign, and
+          art. 12 §6 says so in terms: "Le signe distinctif national ne doit pas
+          etre incorpore dans la plaque d'immatriculation." Incorporating the
+          country letter into the band is precisely what the 2003 instrument
+          changed, and it is why a 1990s Luxembourg plate and a 2003 one are
+          told apart at a glance.
+      national_sign:
+        shape: oval
+        w: 175
+        h: 115
+        unit: mm
+        background: "#FFFFFF"
+        foreground: "#000000"
+        note: "art. 12 §6: a separate rear oval, black L 80 mm high with a 10 mm stroke on white, 175 x 115 mm — or the same painted or applied directly to a substantially vertical rear surface. Mandatory for every vehicle plated under art. 12 §§1-3."
+      construction: { material: aluminium, min_thickness: 1.5, character_relief: 1.5, unit: mm, note: "art. 12 §5 — embossed characters at least 1.5 mm proud, not required for mopeds and light quadricycles" }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 12 §3 (vehicles first registered from 01-01-1988 and before 01-07-2003: the 520x110 yellow plate with the EC emblem, its exact geometry, the 340 mm fallback and the motorcycle plate), §5 (aluminium and relief), §6 (the separate oval L and the prohibition on incorporating it), art. 16 §1 (the four surviving number compositions) and §4 (pre-2003 plates may stay in use). Accessed 2026-08-02"
+    notes: >-
+      THE 1988-2003 DESIGN WINDOW. Both boundaries are calendar dates enacted in
+      one article of one instrument, which is why `statutory-date` is earned
+      here rather than asserted. The window is a PERMISSION, not a mandate — art.
+      12 opens "Par derogation aux dispositions de l'article 11, les dispositions
+      suivantes s'appliquent aux plaques d'immatriculation des vehicules
+      immatricules avant le 1er juillet 2003", and §3 says such vehicles "peuvent
+      etre munis" of this plate. So these designs are what a pre-2003 vehicle MAY
+      still lawfully carry today, and the period is an eligibility window keyed
+      to FIRST REGISTRATION rather than a manufacturing window. Conformity is
+      forced only on a change of owner or on re-registration after the
+      registration card lapses (art. 16 §4), with historic vehicles exempted.
+
+  - id: lu-legacy-yellow-1974
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1974, end: 1988 }
+    period_evidence: statutory-date
+    matching: recall-only
+    format:
+      pattern: "LL 999"
+      regex: '\A(?:\d{2,3}|\d{2}[- ][A-Z]{2}|[A-Z]{2}[- ]\d{2}|[A-Z][- ]\d{4}|[A-Z]{2}[- ]\d{3})\z'
+      pattern_note: "the same undated union as lu-legacy-euro-1988 — see that entry's note; art. 16 §1 lists the compositions without dating them"
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      plate_variants:
+        - { w: 240, h: 200, unit: mm, note: "motocycles, with the national L sign below the number on a black field" }
+      background: { color: "#F9B700", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      national_sign:
+        shape: oval
+        w: 175
+        h: 115
+        unit: mm
+        background: "#FFFFFF"
+        foreground: "#000000"
+        note: "art. 12 §6 applies to this window too — the separate rear oval, black L on white"
+      construction: { material: aluminium, min_thickness: 1.5, character_relief: 1.5, unit: mm }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 12 §2: vehicles first registered from 01-01-1974 and before 01-01-1988 may carry front and rear plates of 340 x 110 mm 'avec un fond de couleur jaune retroreflechissante sur lequel sont apposes des caracteres alphanumeriques en couleur noire non retroreflechissante'. Accessed 2026-08-02"
+    notes: >-
+      THE 1974-1988 DESIGN WINDOW — this is where Luxembourg's yellow comes
+      from, and the date is exact. No European element of any kind: the EC
+      emblem arrives with the next window and the euroband with the letter
+      arrives in 2003. So a Luxembourg plate that is yellow, 340 x 110, and
+      carries nothing at its left-hand end is a 1974-1987 first registration,
+      which makes this the most datable design in the country.
+
+  - id: lu-legacy-black
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1955, end: 1974 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LL 999"
+      regex: '\A(?:\d{2,3}|\d{2}[- ][A-Z]{2}|[A-Z]{2}[- ]\d{2}|[A-Z][- ]\d{4}|[A-Z]{2}[- ]\d{3})\z'
+      pattern_note: "the same undated union as lu-legacy-euro-1988 — see that entry's note"
+    design:
+      plate: { w: 340, h: 110, unit: mm }
+      plate_variants:
+        - { w: 240, h: 200, unit: mm, note: "motocycles, with the national L sign below the number" }
+      background: { color: "#000000", finish: painted, hex_basis: observed }
+      foreground: "#FFFFFF"
+      band: { side: none }
+      national_sign:
+        shape: oval
+        w: 175
+        h: 115
+        unit: mm
+        background: "#FFFFFF"
+        foreground: "#000000"
+        note: >-
+          Required at the rear like the later windows — BUT with the one
+          exemption in the instrument that lets the country letter onto the
+          plate itself: art. 12 §6's prohibition on incorporating the national
+          sign "ne s'applique toutefois ni aux motocycles ni aux vehicules qui
+          ont ete immatricules au Luxembourg au nom du proprietaire ou detenteur
+          actuel avant le premier janvier 1974". A pre-1974 plate still held by
+          the same owner may therefore carry its L, and that exemption is
+          personal to the holder — it dies with the sale.
+      construction: { material: aluminium, min_thickness: 1.5, character_relief: 1.5, unit: mm }
+    region_encoding: none
+    sources:
+      - "https://data.legilux.public.lu/eli/etat/leg/rgd/2003/06/17/n2/jo/fr/pdf  # RGD 17-06-2003 art. 12 §1: vehicles first registered before 01-01-1974 may carry 340 x 110 mm plates 'avec un fond de couleur noire non retroreflechissante, sur lequel les caracteres alphanumeriques sont reproduits en couleur blanche'; art. 12 §6 exemption. Art. 1 and the preamble cite the loi du 14 fevrier 1955 and the arrete grand-ducal du 23 novembre 1955 as the registration regime this all sits under. Accessed 2026-08-02"
+    notes: >-
+      THE BLACK ERA — white on black, and the one entry in this file whose START
+      is not a plate fact. `instrument-in-force-upper-bound` is exact about
+      that: the END, 1 January 1974, is enacted in art. 12 §1 and is solid; the
+      START, 1955, is the year of the REGISTRATION REGIME this instrument
+      descends from — the loi du 14 fevrier 1955 concernant la reglementation de
+      la circulation sur toutes les voies publiques and the arrete grand-ducal
+      du 23 novembre 1955 portant reglement de la circulation, both cited by
+      name in the 2003 instrument's preamble and art. 1. It is a regime date
+      standing in for an unknown design date, exactly as es-provincial-numeric
+      uses 1900 for a format that begins in 1907, and it is flagged here for the
+      same reason: a consumer wanting the design-instrument window should read
+      "before 1974" and treat the lower bound as unestablished. THE MISSING
+      LINK, pinned for the next pass: art. 19 §2 of the 2003 instrument
+      abrogates by name "le reglement grand-ducal modifie du 21 decembre 1991
+      sur le mode d'attribution des numeros d'immatriculation et d'identite des
+      vehicules", which is the immediate predecessor allocation rule and the
+      most likely home of the four legacy compositions. Legilux serves the
+      Memorial issue for 21-12-1991 (A n. 86 of 27-12-1991) and that issue does
+      NOT contain it — probed, ten ELI ordinals, all returning the same
+      tax-and-VAT issue — so the instrument is published under a Memorial this
+      pass could not locate. Recorded gap, with the search that failed.
