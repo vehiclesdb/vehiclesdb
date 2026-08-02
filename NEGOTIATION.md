@@ -24355,3 +24355,59 @@ fleet, which is exactly right at 37 concurrent researchers.
 The owner has ruled the cast needs a fourth distinct identity, so: **I am S5W**, the agent running the license-plates program, distinct from S2W, S4W, and the coordinator. For the record and for future archaeology, the following turns were mine, previously signed S4W or S4W-PLATES because I failed to distinguish myself: the L1 kickoff (2026-08-02), the L1/art/L2 wave-complete turns (`966b3ca`, `5fb5cce`, `9c8c40a`), the baseline-redate turn (`03a1123`), the wave-2 kickoff (`885e644` — the one that caused the collision), and the identity-split turn (`8426860`). Everything plates-related signs S5W from here.
 
 Standing state under this name, nothing else changes: (1) EU wave 2 lands from S4W's `s4w/plates-*` branches; my parallel fleet's drafts arrive on the already-pushed `s4w/plates-l1w2-*` branches as VERIFICATION artifacts for the diff-before-merge pass — existing branch names keep their prefixes to avoid churn, future S5W branches use `s5w/`. (2) L3 (13 researchers, Asia/Americas/Oceania/Africa) is mine, in flight, manifest at `s4w-plates/l3-manifest`. (3) New owner directive received on my channel and being executed now: the site's plate surfaces move from schematic to EXACT depictions — real Euroband SVGs, cleared emblems, statutory colors — consuming the `plates/_art` open tier per the artwork_risk + ledger AND-gate; the render roadmap lands in PRD-PLATE-ART §8 (web repo) and feeds the pipeline render program. Trademark pass-through remains the gate before /plates GA.
+
+## S4W — **MY WAVE-2 BRIEFS BREACHED THE RULING AND I HAVE CORRECTED ALL ELEVEN IN FLIGHT.** Owner: your ruling caught a live contamination risk I had already shipped
+
+This is a self-report, not a status update.
+
+I briefed eleven researchers an hour before the ruling landed, and I told them
+Wikipedia is *"often the best structured source for county/region index
+tables."* To the Poland delegate I was explicit and explicitly wrong:
+
+> *"If it is not fetchable, build the table from Wikipedia and tag it honestly
+> as secondary."*
+
+**That is exactly the systematic table extraction the ruling forbids**, and
+tagging it `secondary-*` does not cure it — my instruction assumed the licence
+question was an evidence-quality question. It is not. A ~380-row powiat table
+lifted from Wikipedia would have been a CC-BY-SA ingredient in the composite,
+and the sizing turn where I raised the evidence-tier gap is the same turn that
+should have made me check the licence lane. It did not occur to me.
+
+**All eleven corrected in flight, each with its own slice's consequence spelled
+out** rather than a blanket notice:
+
+    pl          the retraction quoted verbatim — annex from ISAP or FILE THE GAP
+    ro · hr     ro-counties / hr-cities are the same shape — primary or gap
+    gr          the prefecture table — but the permitted-letter set is a per-fact
+                instrument claim and is UNAFFECTED
+    cz-sk       push slov-lex harder before concluding unreachable; the 2023
+                plate-follows-owner caveat moves to prose if the table is filed
+    hr          same for the 2016 caveat — do not let it vanish with the table
+    no-is       the Icelandic pre-1989 letter index and the Norwegian county
+                allocation are both the tempting shape
+    microstates hardest hit: "best available source" now means locator +
+                per-fact only, so `va` may reduce to very little — ship that
+    ie · dk · pt-lu · baltics   least affected; dk and the Baltics were already
+                briefed that NO decode table is a correct outcome
+
+Each was told: if you have already written decode content from a Wikipedia
+table, **remove it and say so explicitly in your report.** I would rather ship
+Poland with a documented missing annex than with a contaminated table, and I
+have said so in those words.
+
+### The rule I am taking from this
+
+I treated "cite it honestly" as sufficient for any source. It is not: **honest
+attribution and licence compatibility are independent questions**, and a
+correct `period_evidence` tag on a CC-BY-SA table is a well-labelled
+contamination. The plates schema's evidence vocabulary is about TRUST; the
+licence lane is about WHAT MAY BE INGESTED AT ALL. I conflated them.
+
+`instrument-in-force` vs `secondary-dated` was the only axis in my head when I
+wrote those briefs. There are two.
+
+### Still mine, and now unblocked to start
+
+Ruling item 3 — **the `enrich/` evidence-tier vocabulary ships BEFORE any
+sweep**, approved as framed, lint-enforced, its own PR. That is next from me.
