@@ -22101,3 +22101,70 @@ It also refutes the dossier's `Hatch → Cooper` rationale as **unmeasurable** �
 consecutive" test §D.2 rests on cannot be run on the data it cites. It
 recommends the fold anyway, on a corpus argument I find stronger, and leaves the
 call to me. I will take it.
+
+## S4W — wave-7/8 closed (`data#198`+`pipeline#137`) and Opel D-2 shipped (`data#205`+`pipeline#140`). The dossier's LARGEST item is refuted, a shipped citation was false, and "a frozen-cache build is not hermetic"
+
+### Wave-7/8: five suspects, five verdicts, and a self-retraction
+
+**WRX STI — the presumptive UNFOLD is REFUTED; the fold stands.** Two regulators
+agree independently: EPA's only STI row carries `baseModel: WRX`, and DVLA 2026
+Q1 has **no `SUBARU WRX STI` GenModel** — all three STI strings sit inside
+`SUBARU WRX`. The review had misread the oracle's level, citing the EPA *menu*
+(which lists the model string) rather than `baseModel` (which pools it).
+
+**Bentayga — CITATION REFUTED, FOLD CONFIRMED.** The shipped quote is false:
+`models.html` lists Bentayga EWB and Bentayga as **siblings**. It withdrew the
+quote in-file rather than swapping it silently, and replaced it with fetched
+evidence plus a **negative control** (`zzz-not-a-model.html` → 404) proving the
+301 test is real. That same test dissolves the review's sharper charge.
+
+**Libero E12** — the "RESOLVED, not guessed" claim rested on one Wikipedia
+sentence; withdrawn and restated on 13 fi rows + a 25:1 nl ratio. **AMV8 → V8**
+and **Vintage V8** both confirmed and retargeted on register dates.
+
+**It retracted its own claim mid-flight**: it reported `origin/main` red with 16
+yamaha failures. CI's build passes — those are threshold-marginal 1-vehicle
+stubs that fall differently under a frozen local cache, because **13 of 36
+`nz_motorcycle_*.json` shards are empty payloads**. Retracted in the PR body
+rather than deleted.
+
+**And the line I want in the runbook: "a frozen-cache build is not hermetic."**
+Both its runs made live next-month probes and got *different failure text* for
+the same missing file. We have been treating frozen-cache as a sealed control
+all night; it is sealed for content, not for behaviour.
+
+### Opel D-2: the dossier's biggest item is wrong
+
+**CORSA — 37,469 registrations, the largest item in the dossier — is REFUTED by
+the corpus.** `CORSA-E` is the ICE **generation E**, not the electric car. The
+year curve settles it: nl_rdw's 32,533 run 2014–2019 with **zero after 2019**,
+while the Corsa-e launched 2019/2020 and is still sold. RDW writes the whole
+series (`CORSA-A`, `-B` 4,193, `-C` 23,259, `-E` 32,533) matching Opel's
+chronology to the year. The dossier reasoned that because the *spaced* `Corsa E`
+was the generation, the *hyphenated* one must be the product; **the year curve
+says both are the generation** — and `overrides/` already said so twice.
+
+Four nameplates pinned instead, union checked per operation at (country,SOURCE).
+**One declared evidence loss**, asserted rather than hidden: `car/vauxhall/mokka`
+loses `nz` (its only nz row was `MOKKA-E` ×1), recorded with
+`availability_excludes: [nz]`.
+
+Merge order **measured, not assumed**: data alone is RED (5 spotchecks);
+pipeline alone is green **but silently regresses the `Ampera-e` display to
+`Ampera-E` with all gates passing** — which is precisely why the styling pin is
+load-bearing. Pipeline first, data immediately after.
+
+### Two decisions I owed the MINI agent, now made
+
+**M1 `Hatch → Cooper`: ACCEPTED**, but on its corpus argument, not the dossier's
+— it showed the dossier's §D.2 rationale is *unmeasurable* (`nz_nzta` is a stock
+snapshot with no year column, so the test it rests on cannot be run). The
+`nz_nzta` adapter work is filed separately and **must be make-aware**:
+`car/mini/convertible` is a real nameplate holding 219 of NZ's 280 bare
+`CONVERTIBLE` rows.
+
+**M3 `Jcw`: DECLINED.** Seven EU type approvals lost, zero surviving, is real
+evidence loss, and one fewer id does not buy it. What makes it decisive rather
+than a judgment call: **no gate sees it**. We do not ship losses our instruments
+cannot detect, because the next person cannot audit what left. The class — 184
+of 4,667 TAN-carrying records at the cap — is being filed as its own DEBT row.
