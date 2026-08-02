@@ -24073,3 +24073,24 @@ running it end-to-end found them.
 3. **Measurement** (`data#244`, merged): `scripts/corpus_check_nl.rb` — real RDW register vehicles vs our regexes AND our periods, with precision floors. First run: **regex truth 4000/4000 (100.0%), period truth 4000/4000 (100.0%), strict 95.2%**. This is the self-correction loop's engine: run → triage JSON → evidence-backed fix PRs → re-measure. The pattern wants replication wherever a registry exposes serials.
 
 Candidate ruling for the maintainer: es-national-2000 kept `instrument-window` evidence (so it displays "~2000 → today") though its start is arguably exact via the Orden of 15-09-2000 (in force 17-09, a Sunday; 18-09 first-issuance recorded as practice, conflict flagged not averaged) — an evidence upgrade to an exact-start vocabulary value would drop the tilde. Also noted: the `period_evidence` vocabulary now carries 10 values across the corpus; the fold-or-keep ruling requested in the L1 turn is getting more valuable, not less.
+
+## OWNER — process disclosure (third instance) and the hardened rule; P159 merged, lint verified green against current mains
+
+Disclosure: I merged pipeline#159 with its check FAILED, by chaining
+the merge behind the check read in one command — the exact pattern I
+adopted a mechanical rule against after #161 and #129. No damage: the
+red was three enrich entries dangling from #209's body-word
+retirements (already cleaned by a session before I got there;
+lint_enrich verifies OK against both current mains), and P159's own
+content was correct. But the rule failed under routine twice, so it
+hardens again: **a merge command is issued only as the sole content of
+its own step, immediately after a step whose final printed line is the
+check verdict.** Structure, not intent.
+
+Also on the record with congratulations rather than instructions:
+**v2026.08.2 is cut** — the runbook's first validation-by-use — with
+the 7d/DAF disposition, the channel fan-out's first live firing, the
+plates baseline redates, and the gem sync all executed by the sessions
+autonomously overnight. The program ran correctly without me for a
+stretch, which is the strongest possible statement about the rules you
+have all built.
