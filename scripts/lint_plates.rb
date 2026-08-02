@@ -120,10 +120,10 @@ def regex_atoms(src)
 end
 
 # §2.6 + §2.8 — one regex, checked against the separator contract.
-def check_separator_contract(rel, id, key, src)
+def check_separator_contract(rel, id, key, src, alphabet = SERIAL_ALPHABET)
   literals, classes = regex_atoms(src)
   literals.uniq.each do |ch|
-    next if SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
+    next if alphabet.include?(ch) || EMITTED.include?(ch)
     hint = if FORGIVING.include?(ch)
              "it is in the FORGIVING set but not the EMITTED set — the dataset writes only #{EMITTED.to_a.map(&:inspect).join(' and ')}"
            else
@@ -146,7 +146,7 @@ def check_separator_contract(rel, id, key, src)
       end
     else
       members.each do |m|
-        next if m.start_with?("\\") || SERIAL_ALPHABET.include?(m)
+        next if m.start_with?("\\") || alphabet.include?(m)
         fail! "#{rel}: #{id} #{key} class [#{body}] member #{m.inspect} is outside the serial alphabet (PRD-PLATES §2.6)"
       end
     end
@@ -245,7 +245,7 @@ self_check_pattern_tokens!
 # pattern so the two cannot drift. Written against the TOKENISER, not against
 # raw characters: a `\` is grammar and never needs to be in the alphabet, while
 # the character it escapes is held to exactly the same rule as an unescaped one.
-def check_pattern_alphabet(rel, id, where, pattern)
+def check_pattern_alphabet(rel, id, where, pattern, alphabet = SERIAL_ALPHABET)
   toks = pattern_tokens(pattern)
   if toks == [[:dangling_escape]]
     fail! "#{rel}: #{id} #{where} ends in a lone backslash — an escape with nothing to escape. " \
@@ -254,7 +254,7 @@ def check_pattern_alphabet(rel, id, where, pattern)
   end
   toks.each do |kind, ch|
     next unless kind == :literal
-    next if SERIAL_ALPHABET.include?(ch) || EMITTED.include?(ch)
+    next if alphabet.include?(ch) || EMITTED.include?(ch)
     fail! "#{rel}: #{id} #{where} spells #{ch.inspect} (U+%04X) — patterns carry 9/L, escaped literals, " \
           "serial characters and emitted separators only (PRD-PLATES §2.6)" % ch.ord
   end
@@ -325,6 +325,41 @@ files.sort.each do |abs|
   fail! "#{rel}: authority {name, url} required" unless doc.dig("authority", "url").to_s.start_with?("http")
   raw = File.read(abs)
 
+  # ── PER-JURISDICTION SERIAL ALPHABET (owner ruling 2026-08-02, §2.6 dec. 2)
+  #
+  # A jurisdiction's serial alphabet is a FACT about that jurisdiction, so it is
+  # declared in that jurisdiction's own file, in exact codepoints — not folded,
+  # not inferred, not approximated by the nearest ASCII letter.
+  #
+  # WHY THIS EXISTS. Six Croatian area codes are printed with a caron
+  # (ČK KŽ PŽ ŠI VŽ ŽU) and Č/Š/Ž are outside the dataset-wide alphabet, so
+  # `plates/hr.yml` could only write `[A-Z]{2}` — NARROWER than the issuing
+  # grammar. Narrower is still `strict` under §2.7, so that is correct-but-
+  # incomplete rather than wrong; what it is NOT is a licence to fold. `ŠI`
+  # ASCII-folds to `SI`, which was itself a Croatian area code in the earlier
+  # system (Sisak, before SK) — so folding is unambiguous against the CURRENT
+  # table and AMBIGUOUS against a historic plate. That is the worst shape of
+  # error: current data stays self-consistent while old plates decode wrong,
+  # and nothing in the corpus can detect it.
+  #
+  # DEFAULT IS THE GLOBAL SET, so a file that declares nothing behaves exactly
+  # as before — this change moves no series. Declaring REPLACES rather than
+  # extends: a reader of hr.yml should see the whole truth in one place instead
+  # of mentally unioning it with separators.yml.
+  alphabet = SERIAL_ALPHABET
+  if (declared = doc["serial_alphabet"])
+    unless declared.is_a?(String) && !declared.empty?
+      fail! "#{rel}: serial_alphabet must be a non-empty String of the exact characters this jurisdiction prints"
+    else
+      alphabet = declared.chars.to_set
+      # A declaration that collides with the separator contract would make the
+      # same character mean two things in one serial.
+      clash = alphabet & EMITTED
+      fail! "#{rel}: serial_alphabet declares #{clash.to_a.inspect}, which are EMITTED separators — " \
+            "a character cannot be both a serial character and a separator" if clash.any?
+    end
+  end
+
   (doc["series"] || []).each do |s|
     series_count += 1
     id = s["id"].to_s
@@ -367,7 +402,7 @@ files.sort.each do |abs|
     # emitted separators, and nothing else. Escaped literals (`\9`, `\L`) are
     # checked against the same alphabet as everything else: the escape buys the
     # ability to SAY "9", not permission to spell characters a plate cannot show.
-    check_pattern_alphabet(rel, id, "format.pattern", pattern)
+    check_pattern_alphabet(rel, id, "format.pattern", pattern, alphabet)
 
     if regex_s.empty?
       fail! "#{rel}: #{id} format.regex required"
@@ -375,7 +410,7 @@ files.sort.each do |abs|
       begin
         re = Regexp.new(regex_s)
         fail! "#{rel}: #{id} regex not anchored (\\A...\\z)" unless regex_s.start_with?('\A') && regex_s.end_with?('\z')
-        check_separator_contract(rel, id, "format.regex", regex_s)
+        check_separator_contract(rel, id, "format.regex", regex_s, alphabet)
         unless pattern.empty?
           srand(id.sum) # deterministic per series
           serials_from(pattern).each do |ser|
@@ -405,7 +440,7 @@ files.sort.each do |abs|
       begin
         r = Regexp.new(src)
         fail! "#{rel}: #{id} #{key} not anchored (\\A...\\z)" unless src.start_with?('\A') && src.end_with?('\z')
-        check_separator_contract(rel, id, "format.#{key}", src)
+        check_separator_contract(rel, id, "format.#{key}", src, alphabet)
         strict_re = r if key == "regex_strict"
         next if pattern.empty?
         srand(id.sum + key.sum)
@@ -432,10 +467,10 @@ files.sort.each do |abs|
     (s["variants"] || []).each_with_index do |v, vi|
       vpat = v.dig("format", "pattern").to_s
       next if vpat.empty?
-      check_pattern_alphabet(rel, id, "variant[#{vi}] pattern", vpat)
+      check_pattern_alphabet(rel, id, "variant[#{vi}] pattern", vpat, alphabet)
       %w[regex regex_strict regex_statutory].each do |key|
         vsrc = v.dig("format", key).to_s
-        check_separator_contract(rel, id, "variant[#{vi}].#{key}", vsrc) unless vsrc.empty?
+        check_separator_contract(rel, id, "variant[#{vi}].#{key}", vsrc, alphabet) unless vsrc.empty?
       end
     end
 
