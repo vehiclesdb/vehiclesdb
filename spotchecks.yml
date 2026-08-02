@@ -698,6 +698,57 @@ checks:
     kind: motorcycle
     availability_includes: [gb, nl]
     reason: "The stub that SURVIVES, deliberately. 24,411 gb vehicles remain on it because 'YZF R125'/'YZF R6' write the index after a SPACE, which the designation rule does not cover (dossier C-3, filed). This row exists so the residual is visible: if it ever hits zero, someone widened the rule and owes yamaha/yzf a disposition."
+  # ── D-2 (2026-08-02): Opel's battery-electric line becomes its own
+  #    nameplates, following data/review/citroen-e-prefix-verdict.md. The split
+  #    is a NORMALIZER pin (ELECTRIC_NAMEPLATES) because collapse_variant's
+  #    -[A-G] generation strip runs BEFORE renames, so nothing in overrides/
+  #    could reach those rows. Renames are make-scoped but KIND-BLIND (NAMING
+  #    §3) and the pin fires on car AND van, so both kinds are asserted. ──
+  - id: opel/combo-electric
+    kind: van
+    availability_includes: [nl, fi, lu]
+    reason: "D-2, the largest operation: 2,324 vehicles across nl_rdw 2,233 / fi_traficom 85 / lu_snca 6 split off van/opel/combo. If this row fails, the ELECTRIC_NAMEPLATES pin stopped firing and the -[A-G] strip folded Combo Electric back onto the ICE van."
+  - id: opel/combo
+    kind: van
+    availability_includes: [de, es, fi, gb, lu, nl]
+    reason: "…and the ICE Combo must lose NO country to that split. Measured control-vs-treatment at (country, SOURCE) level: the same six (country, source) pairs before and after, 27,529 -> 25,205 vehicles. de/gb are the proof of no over-reach — neither KBA's Modellreihe nor DfT's GenModel ever writes a -E suffix."
+  - id: opel/ampera-e
+    availability_includes: [nl, fi, es, ua]
+    reason: "D-2 closes the cross-repo lockstep item filed in aux dossier-citroen-opel §5.1: the 2,856 AMPERA-E vehicles finally reach the Ampera-e record instead of car/opel/ampera. es and ua are NEW here and are the tripwire — they only arrive if the pin fires. Display must read 'Ampera-e' (overrides/styling.yml AMPERA-E pin), not 'Ampera-E'."
+  - id: opel/ampera
+    availability_includes: [es, fi, nl, ua]
+    reason: "…and the Volt-based Ampera EREV keeps all four countries after shedding those 2,856 vehicles (4,983 -> 2,127). Every one of the four still has non-electric raws: es 'OPEL AMPERA'/'AMPERA', fi 'AMPERA' x726, nl 'AMPERA' x1,365, ua 'AMPERA' x25."
+  - id: opel/mokka-electric
+    availability_includes: [ua, fi]
+    reason: "D-2: 22 vehicles, ua_mvs 21 + fi_traficom 1 — a TWO-SOURCE record, which is why it publishes while its Vauxhall twin does not. Mokka has no generation letter series at all (Mokka / Mokka X / Mokka), so -E here cannot be a generation."
+  - id: opel/mokka
+    availability_includes: [de, es, fi, ie, lu, nl, nz, ua]
+    reason: "…and the ICE Mokka keeps all eight countries: ua survives on 'MOKKA' x132 + 'MOKKA X' x10 after the 21 MOKKA-E vehicles leave."
+  - id: vauxhall/mokka
+    availability_includes: [gb, ua]
+    availability_excludes: [nz]
+    reason: "DECLARED EVIDENCE LOSS, NAMING §2 subset check. car/vauxhall/mokka published gb|nz|ua, and its ONLY nz row was nz_nzta 'VAUXHALL MOKKA-E' x1 — a Mokka Electric. After the split nz moves to car/vauxhall/mokka-electric, which is single-source at 1 vehicle and therefore stays a CANDIDATE, so nz leaves the published catalog. That is the correct reading (the ICE Vauxhall Mokka has no nz evidence) but it is a loss, so it is asserted in BOTH directions: gb/ua must stay, nz must not silently come back via a re-merge."
+  - id: opel/corsa-electric
+    exists: false
+    reason: "THE NEGATIVE RULING, and the most important row in this block. CORSA is deliberately NOT in ELECTRIC_NAMEPLATES: nl_rdw's 32,533 'CORSA-E' vehicles first-register 2014:340 2015:7,988 2016:8,074 2017:6,481 2018:6,358 2019:3,297 and ZERO after 2019, sitting beside that register's own CORSA-A/-B/-C series — i.e. the ICE generation E (2014-19), not the 2020+ electric car, which is still on sale. fi_traficom's 4,794 are 99.4% pre-2020. Minting this id would relabel ~37,300 petrol and diesel cars as electric AND collide with the published alias car/opel/corsa-e. If this row ever fails, read the ELECTRIC_NAMEPLATES comment before believing the change."
+  - id: opel/corsa-electric
+    kind: van
+    exists: false
+    reason: "Same ruling, van kind — the pin is car+van, so the negative assertion has to be too. fi_traficom 'CORSA-E VAN' x199 first-registers 2015-2019 and stops: Corsavan generation E, not an electric van."
+  - id: opel/corsa
+    availability_includes: [de, es, fi, gb, ie, lu, nl, nz, ua]
+    reason: "…and the ICE Corsa keeps all nine countries, unchanged by D-2. This is the volume tripwire for the negative ruling: 37,332 vehicles stayed put. Any drop here means someone added CORSA to the pin."
+  - id: opel/kadett
+    availability_includes: [es, fi, gb, lu, nl, nz, ua]
+    reason: "THE COLLISION TRIPWIRE. -E is also Opel's generation letter (Kadett E, 1984-91). If Kadett ever fragments into kadett-e*, someone widened ELECTRIC_NAMEPLATES or narrowed the -[A-G] class instead of using the closed product table."
+  - id: opel/rekord
+    availability_includes: [fi, gb, nl, nz, ua]
+    reason: "Same collision, second nameplate (Rekord E, 1977-86; the corpus also carries 'RECORD-E', folded by renames.yml `Record: Rekord`)."
+  - id: opel/rocks-e
+    kind: moped
+    availability_includes: [es, nl]
+    reason: "D-2 leaves Rocks-e alone: classify only calls collapse_variant for car and van, and every Rocks-e row is moped, so the nameplate survives on its KIND. ROCKS is nonetheless in ELECTRIC_NAMEPLATES as an armed tripwire for PROPOSAL-kind-boundary.md Q2 — the day L6e/L7e move to car, 4,352 registrations would otherwise fold to a phantom car/opel/rocks and orphan the `Rocks-E Cargo: Rocks-E` rename."
+
 
   # ── Mercedes-Benz residual §A.1 + §A.4.1 (S4W, 2026-08-02) ──────────────────
   # The bus O-number folds cross a DATE BOUNDARY (pre-1994 O-numbers ARE the
