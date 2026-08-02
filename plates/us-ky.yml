@@ -1,0 +1,770 @@
+# plates/us-ky.yml — Kentucky (PRD-PLATES gate L2, group southeast-b).
+#
+# KENTUCKY IS THE ONLY STATE IN THIS GROUP WHOSE PRIMARY LAW WAS ACTUALLY
+# OBTAINED, and the difference is visible on every line below. The Legislative
+# Research Commission serves the Kentucky Revised Statutes and the Kentucky
+# Administrative Regulations as fetchable documents — the statute endpoint returns
+# a PDF of the section, complete with its effective date and its full amendment
+# history back to the 1942 recodification. So where Alabama, Mississippi and
+# Tennessee in this group are documented from departmental instruments with the
+# statutory layer marked as a gap, Kentucky's design rule, display rule, historic
+# regime and personalized regime are all quoted from the statute itself, which is
+# a PD edict of government and the top of the PRD-PLATES §4 hierarchy.
+#
+# THE FINDING WORTH READING THE FILE FOR: Kentucky offers exactly the same pair of
+# standard options as Tennessee — a plain plate and an "In God We Trust" plate,
+# both statutory — and implements the pair in the opposite way. Tennessee gives the
+# two options DIFFERENT serial arrangements, so the string identifies the option.
+# Kentucky draws both from ONE allocation, so the string identifies nothing. Same
+# policy, opposite consequence for a parse API, and the two files should be read
+# together.
+#
+# REGEX FORM (PRD-PLATES §2.6): the current Kentucky serial is printed WITHOUT a
+# separator — the base was redesigned in 2020 so that, in a locator's words, the
+# "serial is not separated in middle, as with past designs". The regexes below
+# therefore spell no separator in the standard series, and spell an optional one
+# only in the personalized series, where the agency states that a space or dash may
+# be part of the requested combination.
+jurisdiction: us-ky
+authority:
+  name: Kentucky Transportation Cabinet (KYTC), Division of Motor Vehicle Licensing
+  url: "https://drive.ky.gov/Vehicles/Pages/License-Plates.aspx"
+binding: vehicle
+statute_edition: >-
+  Kentucky Revised Statutes as served by the Legislative Research Commission,
+  read at the versions effective July 15, 2026 (KRS 186.240 and 186.170),
+  January 1, 2025 (KRS 186.174) and June 20, 2005 (KRS 186.043); Kentucky
+  Administrative Regulations Title 601 Chapter 9 read at its certified 2026
+  versions. Each section's own effective date and amendment history is quoted in
+  the series that relies on it, which is why Kentucky's period claims are the
+  best-instrumented in this group.
+statute_ip_note: >-
+  RECORDED BECAUSE IT IS EVIDENCE, NOT BECAUSE IT BINDS: the LRC's statute and
+  regulation pages carry "Copyright © 2024 Kentucky Legislative Research
+  Commission - All rights reserved". That notice cannot reach the statutory text
+  itself — edicts of government are uncopyrightable at every level of US law, which
+  is exactly why PRD-PLATES §4 tells us to prefer the statute over the brochure —
+  but it is a real, fetched, affirmative copyright assertion by a Kentucky state
+  body over the material it publishes, and it is carried into `artwork_risk` below
+  as the only direct Kentucky IP evidence obtained.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched-leaning-asserted
+  basis: >-
+    Kentucky is absent from both columns of the pinned dossier's per-state table
+    and no Commons {{PD-KYGov}} tag was located, so the dossier's default governs:
+    17 U.S.C. §105 does not reach the states, therefore a Kentucky plate design is
+    copyrighted unless Kentucky says otherwise, and Kentucky was not found saying
+    otherwise. The one direct artefact fetched points the other way from a
+    clearance — the Legislative Research Commission asserts "All rights reserved"
+    over its published statutes and regulations. That assertion is legally
+    ineffective as to the statutory TEXT (edicts are PD), which is precisely what
+    makes it informative about POSTURE: a Kentucky state body's default reflex is
+    to assert. Graded leaning-asserted rather than adverse, because a publisher's
+    footer is not a considered claim over plate artwork, and because nothing
+    resembling Arizona's express statement was found.
+  edict_carve_out: >-
+    The practical consequence for this program is favourable and worth stating
+    plainly: nearly everything Kentucky-specific in this file comes FROM the
+    statutes and regulations, which are PD edicts regardless of the LRC's footer.
+    The design elements that are NOT in the statute — the state icon, the gradient,
+    the wordmark — are the only exposure, and they are the ones §3 renders as
+    placeholders anyway.
+  emblem_rule: >-
+    PRD-PLATES §3 placeholder default applies. The "state icon screened on the left"
+    of the current base renders as `emblem: {present: true, rendered: placeholder}`.
+    Note that KRS 186.240(1)(d) prescribes the plate's TEXTUAL content in detail —
+    identifier, jurisdiction indication, optional slogans, county, optional religious
+    legend — and prescribes no graphic at all, so the icon is a departmental design
+    choice with no statutory drawing behind it. That is the opposite of the German
+    position (§6), where statutory drawings put the design in the public domain: here
+    there is no drawing to inherit PD status from.
+  sources:
+    - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58177  # KRS 186.240 as served by the LRC, carrying the 'Copyright © 2024 Kentucky Legislative Research Commission - All rights reserved' notice; also the statutory content rule that prescribes text and no graphic"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY, via the pinned dossier: the default-copyrighted rule and the exception list, which does not include Kentucky"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption; recommendations in the declarative present, no enforcement power."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is PAYWALLED and was NOT obtained. No J686 dimension is quoted anywhere in this dataset. Kentucky's 12x6 in figure is locator-grade."
+    retroreflectivity: "AAMVA §3.3: readable in daylight and at night from at least 75 feet; materials per ASTM D4956-19 and ISO 7591:1982 clause 3. KENTUCKY LEGISLATED REFLECTORISATION AND FUNDED IT — see reflectorization below, which is the only dedicated statutory plate-reflectivity FUND found anywhere in this dataset."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in."
+    replacement_cycle: >-
+      AAMVA §1.1 recommends a cycle not to exceed 7 to 10 years. KENTUCKY LEGISLATED
+      NO NUMBER AT ALL: KRS 186.240(3) says the cabinet "shall issue reflectorized
+      license plates under the provisions of this subsection ON A SCHEDULE TO BE
+      DETERMINED AT THE DISCRETION OF THE CABINET". So Kentucky's replacement cadence
+      is a delegated administrative decision, not a legislated interval — the third
+      distinct answer in this group after Florida's legislated ten years, Mississippi's
+      legislated five and Tennessee's legislated-but-budget-conditional eight.
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 agreement" appears in the Kentucky article's lead as in every state
+    article read for this group, now carrying one citation — Garrish, Christopher,
+    "Reconsidering the Standard Plate Size", *Plates* (Automobile License Plate
+    Collectors Association), vol. 62 no. 5, October 2016 — which was not obtainable
+    and whose title implies revision rather than confirmation. Still unsourced.
+    Kentucky's 12x6 in figure here is locator-grade and labelled as such.
+
+# ---------------------------------------------------------------------------
+# The statutory content rule. KRS 186.240(1)(d) is the closest thing in this
+# group to a legislated plate SPECIFICATION, and it is unusual in what it omits.
+# ---------------------------------------------------------------------------
+statutory_content_rule:
+  citation: "KRS 186.240(1)(d), effective July 15, 2026"
+  elements:
+    - "1. The registration identifier"
+    - "2. An indication that Kentucky is the issuing jurisdiction"
+    - "3. At the discretion of the cabinet, any combination of: a. 'Bluegrass State'; or b. 'United We Stand, Divided We Fall'"
+    - "4. For standard plates for noncommercial vehicles: a. The county in which the plate is issued; and b. At the discretion of the person to whom the vehicle is registered, the phrase 'In God We Trust'"
+    - "5. For plates for commercial vehicles, the year the license expires and words or information the Department of Vehicle Regulation may prescribe by administrative regulation"
+  reading: >-
+    THREE THINGS THIS SECTION DOES THAT ARE WORTH MODELLING. First, it prescribes
+    a plate entirely in TEXT — identifier, jurisdiction, slogans, county, legend —
+    and prescribes no colour, no dimension, no graphic and no serial grammar.
+    Kentucky legislates what the plate SAYS and delegates what it LOOKS LIKE, which
+    is the mirror image of Alabama, where the department specifies geometry in
+    millimetric detail and the statute was unobtainable. Second, the two slogans are
+    at the CABINET's discretion while the religious legend is at the REGISTRANT's —
+    two different discretions in adjacent subparagraphs, and only the second creates
+    a per-vehicle variant. Third, the statute's own frame is "a standard plate ... for
+    POLICE IDENTIFICATION PURPOSES": Kentucky's plate-content rule is drafted as a
+    law-enforcement legibility rule, not as a design rule, which is why it reads as a
+    checklist of things that must be discernible rather than as a specification.
+  source: "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58177"
+
+reflectorization:
+  statutory_text: >-
+    KRS 186.240(2)-(3): the Transportation Cabinet "shall provide for the issuance of
+    reflectorized plates for all motor vehicles, and shall collect a fee ... of fifty
+    cents ($0.50)"; that fee is deposited into a "reflectorized license plate program
+    fund ... established in the state road fund and appropriated on a continual basis
+    to the cabinet", any year-end balance "shall be retained in the fund and shall not
+    revert to the state road fund", and interest earned is retained too.
+  note: >-
+    A HYPOTHECATED, NON-REVERTING, CONTINUALLY APPROPRIATED FUND WHOSE ONLY PURPOSE IS
+    PLATE REFLECTIVITY. No other jurisdiction surveyed in this dataset has one. It is
+    recorded because it is the mechanism behind Kentucky's replacement schedule — the
+    cabinet's discretion under subsection (3) is exercised against this fund's balance,
+    so Kentucky's reissue cadence is a function of fifty-cent fees rather than of a
+    legislated interval.
+  source: "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58177"
+
+display_rules:
+  default: >-
+    ONE plate, REAR. KRS 186.170(1)(a): the owner "shall display the registration
+    plate conspicuously upon the rear of the motor vehicle, except that the
+    registration plate upon a SEMITRAILER-TRACTOR shall be displayed upon the FRONT
+    of the tractor."
+  tractor_exception_note: >-
+    THE SAME OUTLIER FLORIDA HAS, IN A SECOND STATE. Florida's § 320.0706 makes a
+    truck tractor FRONT-ONLY, inverting that state's rear-only default, and it was
+    called a genuine US outlier in the L0 pilot. Kentucky does exactly the same thing
+    for a semitrailer-tractor, in a statute recodified in 1942. Two states, two
+    independent statutes, one rule — so the front-mounted tractor plate is a regional
+    convention rather than a Florida quirk, and any consumer modelling "which end is
+    the plate on" needs a per-vehicle-class answer, not a per-state one.
+  legibility: "KRS 186.170(1)(c): 'Plates shall be kept legible at all times and the rear plate shall be illuminated when being operated during the hours designated in KRS 189.030. No rim, frame, or other covering around the plate shall in any way obscure or cover any lettering or decal on the plate.'"
+  frame_rule_note: >-
+    That last sentence is more consequential than it looks: it protects the DECAL as
+    well as the lettering. Kentucky puts the county on a sticker (see the standard
+    series), so the anti-frame rule is doing double duty — obscuring the county
+    sticker is a display violation in the same breath as obscuring the serial.
+  receipt: "KRS 186.170(1)(b): the registration receipt, or a copy, must be kept in the vehicle at all times except for motorcycles, and be available for inspection"
+  registration_year: "KRS 186.170(2): April 1 to March 31 for commercial vehicles, trailers, semitrailers, mobile homes and recreational vehicles"
+  sources:
+    - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=57814  # KRS 186.170 effective July 15, 2026 (amended 2026 Ky. Acts ch. 135 sec. 17; recodified 1942 Ky. Acts ch. 208 sec. 1 from Ky. Stat. sec. 2739g-11): rear display, the semitrailer-tractor front exception, legibility and illumination, the rim/frame rule, the in-vehicle receipt, and the commercial registration year"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD BASE — plain option.
+  # =========================================================================
+  - id: us-ky-standard-2020
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2020 }
+    period_evidence: locator-dated
+    matching: strict
+    format:
+      pattern: "L9L999"
+      regex: '\A(?:[A-Z]\d[A-Z]\d{3}|[A-Z]{3}\d{3})\z'
+      regex_strict: '\A(?:[A-HJ-PR-TV-Z]\d[A-HJ-PR-TV-Z]\d{3}|[A-HJ-PR-TV-Z]{3}\d{3})\z'
+      charset:
+        excluded: ["I", "Q", "U"]
+        excluded_source_note: >-
+          THE ONLY AGENCY-SOURCED ALPHABET EXCLUSION IN THIS ENTIRE GROUP, and the
+          reason this is the only series in the group carrying a `regex_strict`.
+          KYTC, in its own words on its own plate page: "As of July 19, 2023, the
+          letters 'I', 'Q' and 'U' have been eliminated from all new personalized
+          plate applications. This will be consistent with the VISIBILITY RULES
+          ALREADY IN PLACE FOR STANDARD PLATES." The second sentence is the load-
+          bearing one: the cabinet states that the exclusion already governed
+          STANDARD plates before it was extended to personalized ones. Note the set
+          is I, Q, U — not the usual I, O, Q. Kentucky excludes U and keeps O, which
+          is unusual enough that a validator built on the common assumption will be
+          wrong in both directions.
+        notes: >-
+          Two arrangements have run on this one base: three letters then three
+          numerals from September 2020, and letter-digit-letter-three-numerals from
+          August 2021. Both are carried in `regex`, because they are two phases of one
+          counter on one physical base rather than two issuance systems — the same
+          call made for Alabama's eight arrangements in this group, and the opposite
+          call from Tennessee's two standard options, which differ by POLICY rather
+          than by exhaustion.
+      pattern_note: >-
+        The regex tier order holds as §2.7 requires: `regex_strict` (the cabinet's own
+        alphabet, I/Q/U removed) is contained in `regex` (both arrangements, full
+        alphabet), and there is no `regex_statutory` twin because KRS 186.240
+        prescribes plate CONTENT and no serial grammar at all — Kentucky's statute
+        simply has nothing to say about width or alphabet, so inventing an outer legal
+        bound would be inventing a statute.
+      progression: "reported ranges: ATF000 to AZZ999 and BCE000 to approximately CBZ999 in the three-letter arrangement; A0A000 to W1C050 as of March 2026 in the current arrangement. Locator-grade"
+    design:
+      plate: { w: 12, h: 6, unit: in, hex_basis_note: "locator-grade; no Kentucky instrument stating it was obtained" }
+      material: "aluminium (locator)"
+      manufacturer_reported: "Roederer Correctional Complex, La Grange, Kentucky — prison manufacture, in contrast with Mississippi's Nova Scotia commercial contractor in this same group. Locator-grade"
+      relief: >-
+        FLAT DIGITALLY PRINTED, not embossed — the base changed manufacturing method
+        in 2020. Kentucky therefore joins Alabama (screened since 2006) on the
+        digital side of the group while Mississippi still embosses, and the render
+        layer should not assume raised characters for any of the three.
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#00205B"
+      colour_note: >-
+        Both hexes are `observed` approximations of a described "dark blue serial on
+        white and light blue gradient plate" and are NOT sourced. KRS 186.240
+        prescribes no colour whatsoever, so there is no instrument to check them
+        against; a gradient also has no single background value. Treat as unverified.
+      legend_top: "KENTUCKY, with BLUEGRASS STATE above it in smaller type"
+      legend_statutory_basis: >-
+        Both legends are authorised by KRS 186.240(1)(d)2-3: the jurisdiction
+        indication is mandatory, and "Bluegrass State" is one of the two slogans the
+        cabinet may elect. The cabinet has chosen Bluegrass State and has NOT used
+        "United We Stand, Divided We Fall" on this base, which is a discretion
+        exercised rather than a rule followed.
+      legend_bottom: "<county name>, on a BLUE STICKER in a box"
+      county_sticker_note: >-
+        The county is a REMOVABLE STICKER in a debossed box, as in Tennessee and unlike
+        Mississippi, which embosses it into the metal. KRS 186.240(1)(d)4.a requires
+        "The county in which the plate is issued" to appear, and the sticker is the
+        cabinet's implementation of that requirement — so in Kentucky the statutory
+        county element and the physical plate can disagree after a move, which is
+        exactly why KRS 186.180 provides for issuance of plates on removal from one
+        county to another.
+      separator: none
+      separator_note: "The 2020 base prints the serial as one unbroken group — a locator notes the 'serial is not separated in middle, as with past designs'. The regexes accordingly spell no separator, in contrast with every other current series in this group."
+      emblem: { present: true, rendered: placeholder, description: "state icon screened on the left; not prescribed by statute — see artwork_risk.emblem_rule" }
+      rear_differs: false
+    region_encoding:
+      mechanism: "county appears as a printed STICKER legend and encodes nothing in the serial"
+      note: >-
+        There is no geographic decode in a Kentucky plate string. Kentucky is
+        nevertheless the historical origin of the practice in the United States: a
+        locator records that Kentucky's 1927 plate was the first state-issued
+        passenger plate in the country to carry the name of the county of issuance, and
+        the requirement survives today in KRS 186.240(1)(d)4.a. A century of county
+        legends, none of them ever encoded in the serial.
+    sources:
+      - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58177  # KRS 186.240(1)(d) effective July 15, 2026: the registration identifier, the jurisdiction indication, the cabinet's slogan discretion ('Bluegrass State' / 'United We Stand, Divided We Fall'), the county requirement for noncommercial standard plates, and the registrant's In God We Trust discretion; (2)-(3) the reflectorization mandate, the fifty-cent fee, the non-reverting program fund and the cabinet's discretionary replacement schedule"
+      - "https://drive.ky.gov/Vehicles/Pages/License-Plates.aspx  # KYTC: 'Standard-issue passenger plates (Bluegrass State and In God We Trust)'; the July 19, 2023 elimination of I, Q and U and the statement that this matches the visibility rules ALREADY IN PLACE FOR STANDARD PLATES"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Kentucky  # LOCATOR ONLY (PRD-PLATES §4): the September 2020 base start, the flat digital printing, the white/light-blue gradient and dark blue serial, the state icon at left, the county sticker, the unseparated serial, the ABC123 then A1B234 arrangements with their reported ranges, Roederer Correctional Complex manufacture, and the 1927 first-county-name claim. None asserted as sourced"
+    notes: >-
+      KENTUCKY STANDARD ISSUE, CURRENT BASE. THE ALPHABET IS BETTER SOURCED THAN THE
+      DATE, which is the reverse of the usual US situation and is worth saying out
+      loud: the I/Q/U exclusion comes from the cabinet's own page and is therefore
+      encoded in `regex_strict`, while `start: 2020` rests on a locator giving
+      September 21, 2020 and no KYTC or gubernatorial announcement of the base was
+      located. A verifier should look for the 2020 announcement; if the true date
+      moves within 2020 the id survives unchanged, and if it moves out of 2020 the id
+      becomes a former-id alias under the PRD-QUALITY I-5/I-6 contract.
+      WHY ONE SERIES ACROSS TWO ARRANGEMENTS: ABC123 ran until the three-letter space
+      neared exhaustion around CBZ999 and A1B234 took over in August 2021 on the same
+      base with the same design and the same alphabet. That is a counter rolling over,
+      not a new issuance system, so it is one series with a two-branch regex — and the
+      branch structure is itself the era signal a parse API can use, since a Kentucky
+      ABC123 plate cannot have been issued after mid-2021.
+
+  # =========================================================================
+  # THE IN GOD WE TRUST OPTION — statutory, and deliberately indistinguishable.
+  # =========================================================================
+  - id: us-ky-standard-igwt-2020
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2020 }
+    period_evidence: locator-dated
+    matching: strict
+    format:
+      pattern: "L9L999"
+      regex: '\A(?:[A-Z]\d[A-Z]\d{3}|[A-Z]{3}\d{3})\z'
+      regex_strict: '\A(?:[A-HJ-PR-TV-Z]\d[A-HJ-PR-TV-Z]\d{3}|[A-HJ-PR-TV-Z]{3}\d{3})\z'
+      charset:
+        excluded: ["I", "Q", "U"]
+        notes: "identical to the plain option in every respect, because the serials are drawn from the same pool — see pattern_note"
+      pattern_note: >-
+        THE REGEX IS IDENTICAL TO `us-ky-standard-2020` AND THAT IS THE FACT, NOT AN
+        OVERSIGHT. A locator records that the In God We Trust serials are "Taken from
+        standard allocation" — one number space, two designs. So a Kentucky serial
+        carries NO information about which of the two standard options it is on, and
+        any consumer that tries to infer the option from the string is guessing.
+        `matching: strict` is still correct: the regex is exactly the issuing grammar
+        for this series. It is simply also the grammar for its twin.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#00205B"
+      legend_top: "KENTUCKY, with BLUEGRASS STATE above it"
+      legend_extra: "IN GOD WE TRUST, screened in blue above the county sticker"
+      legend_bottom: "<county name>, on a blue sticker; the sticker box sits slightly lower than on the plain option"
+      legend_statutory_basis: >-
+        KRS 186.240(1)(d)4.b: the phrase appears "At the discretion of the person to
+        whom the vehicle is registered". THE DISCRETION IS THE REGISTRANT'S, WHICH IS
+        WHAT MAKES THIS A SERIES RATHER THAN A CABINET STYLING CHOICE — the same
+        statute puts the two slogans at the cabinet's discretion in the immediately
+        preceding subparagraph, and the drafter clearly distinguished the two kinds of
+        election.
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    fee: "no cost — reported as a no-cost alternative plate, consistent with a statutory registrant election rather than a specialty program"
+    region_encoding: "county as sticker legend; nothing encoded in the serial"
+    sources:
+      - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58177  # KRS 186.240(1)(d)4.b: 'At the discretion of the person to whom the vehicle is registered, the phrase In God We Trust' — the statutory basis, and its contrast with the cabinet's slogan discretion in subparagraph 3"
+      - "https://drive.ky.gov/Vehicles/Pages/License-Plates.aspx  # KYTC lists 'Bluegrass State and In God We Trust' as the two standard-issue passenger plates, both personalizable"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Kentucky  # LOCATOR ONLY: the option has run since January 2011 on the prior base and since September 2020 on this one; serials 'Taken from standard allocation'; the lowered county-sticker box; no-cost"
+    notes: >-
+      THE KENTUCKY IN GOD WE TRUST OPTION. Its own series under PRD-PLATES §2.3 on the
+      DESIGN test alone — the format is identical and the period is identical, but the
+      plate carries a legend the other does not, and a §2.3 variant becomes its own
+      series if format OR design OR period differs.
+      THE CROSS-STATE CONTRAST THIS GROUP EXISTS TO RECORD: Tennessee runs the same
+      statutory pair of standard options and gives them OPPOSITE serial arrangements
+      (ABC-1234 versus 123-ABCD), so a Tennessee string identifies the option
+      unambiguously. Kentucky runs the pair off one allocation, so a Kentucky string
+      identifies nothing. Neither state is wrong; the point is that "In God We Trust
+      plate" is a policy that two neighbours implemented with opposite consequences
+      for machine parsing, and a schema that modelled it as a boolean flag on one
+      standard series would have hidden that difference in both directions — inventing
+      distinguishability in Kentucky and destroying it in Tennessee.
+
+  # =========================================================================
+  # ONE SERIES BACK — the embossed Unbridled Spirit base.
+  # =========================================================================
+  - id: us-ky-standard-2008
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2008, end: 2020 }
+    period_evidence: locator-dated
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A(?:\d{3} ?[A-Z]{3}|[A-Z]{3} ?\d{3})\z'
+      charset:
+        notes: >-
+          Two arrangements on one base again — 123 ABC from 2008, then ABC 123 from
+          late 2019 when the numeric-first space reached 999 ZZZ. A locator adds that
+          the 'S' series was not used in the 123 ABC arrangement, a narrower exclusion
+          than the I/Q/U rule that governs the current base; it is locator-grade and is
+          therefore recorded here rather than encoded in a `regex_strict`.
+      separator_note: >-
+        THIS BASE PRINTED A SEPARATED SERIAL and its successor does not. The gap is
+        spelled ` ?` here for that reason, and its absence in `us-ky-standard-2020` is
+        equally deliberate. A separator-forgiving consumer canonicalises both to the
+        same string by construction (§2.6 rule 1), so the change costs nothing at
+        match time — but the dataset still records the printed form, because the
+        printed form is the fact.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      relief: "EMBOSSED — the pre-2020 manufacturing method"
+      background: { finish: retroreflective, hex_basis: unsourced }
+      colour_note: "described as an embossed dark blue serial on a white and light blue gradient; no hex recorded, as a gradient has no single value and none is sourced"
+      legend_top: "KENTUCKY"
+      legend_slogans: "BLUEGRASS STATE and UNBRIDLED SPIRIT, screened above and below a Kentucky Tourism logo"
+      legend_slogan_note: >-
+        WORTH NOTING AGAINST THE CURRENT STATUTE: this base carried a TOURISM LOGO and
+        an 'Unbridled Spirit' branding line, neither of which is among the elements KRS
+        186.240(1)(d) now authorises — the section allows 'Bluegrass State' or 'United
+        We Stand, Divided We Fall' and nothing else by way of slogan. Whether the
+        section then read differently was not checked; the amendment history shows
+        changes effective 2021, 2024 and 2026. Recorded as an open question rather than
+        as an inconsistency, and it is precisely the kind of question the statute's own
+        history line makes answerable.
+      legend_bottom: "<county name>, on a blue sticker in a debossed box"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "county as sticker legend; nothing encoded in the serial"
+    sources:
+      - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58177  # KRS 186.240's amendment history — amended 2021 Ky. Acts ch. 53 sec. 2 (eff. June 29, 2021), 2022 Ky. Acts ch. 18 sec. 15 and 2023 Ky. Acts ch. 129 sec. 3 (both eff. January 1, 2024), 2026 Ky. Acts ch. 199 sec. 6 (eff. July 15, 2026) — the trail a verifier follows to date the slogan rule against this base"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Kentucky  # LOCATOR ONLY: 'June 2008 - late 2019' for the 123 ABC arrangement (901 JCB to 999 ZZZ) and 'late 2019 - September 2020' for ABC 123 (AAA 000 to ATE 999; BAA 000 to approximately BCD 999); the Unbridled Spirit design and tourism logo; narrower serial dies; the 'S' series exclusion"
+    notes: >-
+      THE UNBRIDLED SPIRIT BASE, 2008 to 2020 — the predecessor L2 asks for. Two things
+      it contributes beyond completeness. First, it is the embossed half of Kentucky's
+      manufacturing boundary, so any render or OCR model that assumes one Kentucky
+      character rendering is wrong on one side of 2020. Second, its slogans raise a
+      real question against the current statutory list, and Kentucky is the one state
+      in this group where that question is ANSWERABLE — the LRC publishes each
+      section's full amendment history, so a verifier can date the slogan rule exactly
+      rather than guessing. That is the practical dividend of a state that serves its
+      own law.
+
+  # =========================================================================
+  # HISTORIC — statutory, permanent, and unusually well specified.
+  # =========================================================================
+  - id: us-ky-historic
+    class: historic
+    categories: [car, truck, motorcycle]
+    period: { start: 1968 }
+    period_evidence: statutory-creation-date
+    matching: strict
+    format:
+      pattern: "999"
+      regex: '\A\d+\z'
+      charset:
+        notes: >-
+          KRS 186.043(4), verbatim: "These plates shall have a serial number beginning
+          with the number '100' and continue in a consecutive numerical sequence." A
+          stated ORIGIN and a stated PROGRESSION with NO stated width — hence the
+          unbounded quantifier, which makes no width claim. Compare Florida's Horseless
+          Carriage and Antique series, which start at 1; Kentucky starts at 100, so a
+          Kentucky historic serial is at least three digits by construction.
+      progression: "strictly sequential from 100"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective, hex_basis: unsourced }
+      colour_rule: >-
+        KRS 186.043(4) requires "two (2) special license plates of a DIFFERENT COLOR
+        AND DESIGN than the regular license plate, which, in the judgment of the
+        secretary of the Transportation Cabinet, will best advertise, popularize, and
+        promote the Commonwealth of Kentucky." The statute specifies a design PROPERTY
+        (difference) and a design PURPOSE (promotion) and no design VALUE — the same
+        drafting move Florida makes with "a distinguishing color", one step further.
+      legend: "KENTUCKY plus 'Historic Motor Vehicle' inscribed conspicuously"
+      no_year_date: "KRS 186.043(4): the plates 'carry no year date' — an explicit statutory prohibition, and the physical correlate of the permanent registration below"
+      emblem: { present: true, rendered: placeholder }
+    plate_count: 2
+    plate_count_note: >-
+      TWO PLATES, IN A REAR-ONLY STATE. KRS 186.043(4) directs the secretary to issue
+      "two (2) special license plates" while KRS 186.170(1)(a) requires only a rear
+      plate on everything else. The statute does not say where the second goes.
+      Recorded as a genuine, sourced oddity rather than resolved by assumption, and it
+      is a live trap for any consumer that stores "plates issued" as a per-state
+      constant.
+    eligibility: >-
+      KRS 186.043(2): "'historic vehicle' shall mean all motor vehicles twenty-five
+      (25) years old or older, which are used primarily for exhibition in shows,
+      parades, tours, and other special uses, but not for general transportation." A
+      ROLLING twenty-five-year threshold plus a USE restriction — contrast Florida,
+      which runs a FIXED 1945 cutoff for Horseless Carriage and a rolling thirty years
+      for Antique. Kentucky's rolling threshold silently re-qualifies a new model year
+      every January and therefore needs re-auditing in a way a fixed cutoff never does.
+    validity: >-
+      Permanent. KRS 186.043(6): "The registration license and license plates of
+      historic motor vehicles shall be valid without renewal as long as the vehicle is
+      in existence", transferable to a new owner on application and a three-dollar fee.
+    authentic_plate_option: >-
+      A GENUINELY UNUSUAL PROVISION AND A REAL PARSING HAZARD. KRS 186.043(5): "Historic
+      vehicles may display an AUTHENTIC KENTUCKY LICENSE PLATE, twenty-five (25) years
+      or older, OR A REPRODUCTION of such a plate, if the historic motor vehicle plate
+      and the registration receipt are kept in the vehicle at all times." So a lawfully
+      registered Kentucky vehicle may be driving under a plate from ANY Kentucky series
+      of the last century — or a reproduction of one — with the current plate sitting in
+      the glovebox. Any Kentucky plate format the dataset ever records, however dead,
+      remains potentially LIVE on the road under this subsection. That is the strongest
+      argument in this group for the dataset's period discipline being about validity
+      rather than mere history.
+    legislative_intent: >-
+      KRS 186.043(1) states its own purpose, which is rare enough to quote: the General
+      Assembly intends "to recognize the special value of historic vehicles to the
+      Commonwealth, and also to recognize that historic vehicles, because of their
+      limited use and easily identifiable characteristics, do not require the same
+      degree of regulation as other vehicles."
+    region_encoding: none
+    sources:
+      - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=5928  # KRS 186.043 effective June 20, 2005 (created 1968 Ky. Acts ch. 14 secs. 1 to 5 and 7): the legislative-intent subsection, the rolling 25-year definition with its use restriction, the two-plate issuance, the different-colour-and-design rule, the 'Historic Motor Vehicle' legend, the no-year-date prohibition, the serial beginning at 100 in consecutive sequence, the authentic-or-reproduction period-plate option, and permanent validity with a $3 transfer"
+    notes: >-
+      KENTUCKY HISTORIC MOTOR VEHICLE PLATES — the best-specified series in this group,
+      and one of the best-specified in the dataset, because the whole of it is in one
+      statute. `period.start: 1968` is a REAL claim rather than an upper bound: the
+      section's own history line records "Created 1968 Ky. Acts ch. 14, secs. 1 to 5
+      and 7", so the series demonstrably begins in 1968 — the only series in this group
+      with a sourced true start rather than an instrument-in-force ceiling. That is
+      what a state serving its own statutes with amendment histories buys you, and it
+      is the concrete argument for prioritising jurisdictions whose legislatures
+      publish, when a gate has to be sequenced.
+
+  # =========================================================================
+  # PERSONALIZED — statutory plus regulatory, and the one series in this group
+  # whose serial may lawfully contain a separator.
+  # =========================================================================
+  - id: us-ky-personalized
+    class: personalized
+    categories: [car, van, truck, motorcycle]
+    period: { start: 1977 }
+    period_evidence: statutory-creation-date
+    matching: strict
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9](?:[- ]?[A-Z0-9]){0,5}\z'
+      regex_strict: '\A[A-HJ-PR-TV-Z0-9](?:[- ]?[A-HJ-PR-TV-Z0-9]){0,5}\z'
+      charset:
+        excluded: ["I", "Q", "U"]
+        max_characters: 6
+        max_characters_motorcycle: 5
+        notes: >-
+          KYTC, verbatim: "Personalized passenger plates may contain up to six alphas
+          and/or numeric characters IN ADDITION TO A SPACE OR DASH" and "Personalized
+          motorcycle plates may contain up to five alpha and/or numeric characters in
+          addition to a space or dash". And: "As of July 19, 2023, the letters 'I', 'Q'
+          and 'U' have been eliminated from all new personalized plate applications."
+          Both the cap and the exclusion are agency-stated, which is why this series
+          carries a `regex_strict` — the only other one in this group besides its
+          standard-plate siblings.
+      separator_note: >-
+        A SANCTIONED SEPARATOR-ONLY CLASS (PRD-PLATES §2.8), and here it is sourced
+        rather than inferred. The cabinet says the requested combination may include "a
+        space or dash" ON TOP OF the six characters, so the separator is genuinely
+        optional, genuinely either glyph, and genuinely not part of the six-character
+        budget. `[- ]?` is the honest encoding: it contains only separator characters
+        and is not negated, so a consumer deriving a separator-free twin deletes the
+        class with its quantifier and can never touch a serial character.
+      pattern_note: >-
+        `matching: strict` and the tier order holds: `regex_strict` (I/Q/U removed) is
+        contained in `regex` (full alphabet), and no `regex_statutory` twin exists
+        because KRS 186.174 defines a personalized plate by its PROVENANCE — "letters or
+        numbers or combinations of letters and numbers significant to the applicant" —
+        and states no width at all. The six-character bound is the cabinet's, not the
+        legislature's, and is labelled accordingly.
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_variants: [{ for: motorcycle, w: 7, h: 4, unit: in, note: "size is a regional convention and is NOT sourced for Kentucky; the FIVE-character motorcycle cap, however, IS agency-stated" }]
+      note: "any standard-issue, military or special plate may be personalized — the design is inherited from the underlying plate, not defined here"
+      emblem: { present: true, rendered: placeholder }
+    fee: "$25 personalized-plate fee to the county clerk, in addition to registration (KYTC); KRS 186.174(4)(c) sets a further $25 state fee for combining a SPECIAL plate with personalization, split $20 cabinet / $5 county clerk"
+    refusal_criteria:
+      statutory: >-
+        KRS 186.174(5)(b): a personalized plate shall not be issued if the cabinet
+        determines that "1. The message ... discriminates against a race, color,
+        religion, sex, or national origin; 2. The plate message is the name of a
+        trademarked or copyrighted product or brand name; or 3. The plate's lettering
+        or message is obscene or profane, as determined by the cabinet."
+      regulatory: >-
+        601 KAR 9:012 Section 5(1) adds a RECALL power after issuance: a plate issued
+        "through oversight or any other reason which carries letter or number
+        combinations offensive to good taste and decency ... shall be recalled by the
+        cabinet", the owner must take an ordinary plate, and the twenty-five dollar fee
+        is refunded.
+      note: >-
+        KENTUCKY IS THE ONLY STATE IN THIS GROUP WITH SOURCED CONTENT-REFUSAL CRITERIA,
+        and Florida's are a recorded gap in the L0 pilot. The trademark limb is worth
+        one extra line: subparagraph 2 bars a plate bearing "a trademarked or
+        copyrighted product or brand name", which is the same third-party-IP concern
+        Alabama's design specification polices for sponsor artwork — two states, two
+        instruments, one anxiety.
+    uniqueness_and_priority:
+      uniqueness: "KRS 186.174(5)(a): a personalized plate shall not be issued that would conflict with or duplicate any current issued plate. KYTC restates it: 'A personalized plate character combination may only appear on one plate at any given time.'"
+      priority: "KRS 186.174(5)(c): once obtained, the holder has first priority on that combination in each following year on timely renewal"
+      lapse: "601 KAR 9:012 Section 6: if a personalized plate is not renewed before September 1 of the preceding year, the cabinet shall not issue the same combination FOR ONE YEAR, and then only on proper application — a mandatory cooling-off period on a released vanity combination"
+      first_come: "601 KAR 9:012 Section 2: competing applications for the same combination are resolved by TIME-STAMP, each application being stamped immediately on receipt"
+    expiry: "KRS 186.174(3): personalized plates expire on the last day of the BIRTH MONTH of the person to whom the plate is registered — the same birth-month scheme Florida uses"
+    replacement: "KRS 186.174(4)(a): 'A personalized license plate shall be replaced on the same schedule as regular issue license plates unless it is damaged or unreadable' — so personalized plates inherit the cabinet's discretionary reflectorization schedule under KRS 186.240(3)"
+    region_encoding: none
+    sources:
+      - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=55748  # KRS 186.174 effective January 1, 2025 (created 1976 Ky. Acts ch. 153 sec. 3, effective January 1, 1977): the definition by provenance, online application, birth-month expiry, replacement on the regular schedule, the $25 special-plate combination fee and its $20/$5 split, the uniqueness rule, the three refusal criteria, and the renewal priority"
+      - "https://apps.legislature.ky.gov/law/kar/titles/601/009/012/  # 601 KAR 9:012 'Personalized license plates' (3 Ky.R. 186, eff. 9-1-1976; certified eff. 1-9-2026): the time-stamp first-come rule, the county-clerk issuance and inter-county forwarding procedure, the post-issuance recall for combinations offensive to good taste and decency with refund, and the one-year lapse embargo"
+      - "https://drive.ky.gov/Vehicles/Pages/License-Plates.aspx  # KYTC: six characters for passenger and five for motorcycle, each 'in addition to a space or dash'; the July 19, 2023 elimination of I, Q and U; the $25 fee; the Personalized Plate Review Committee pre-approval and the monthly Appeal Committee"
+    notes: >-
+      KENTUCKY PERSONALIZED PLATES. Modelled as its own series because the SERIAL SOURCE
+      differs — owner-chosen rather than cabinet-assigned — which is a format property
+      even where the character frame overlaps, the same call the Florida pilot made.
+      `period.start: 1977` is a REAL claim from the section's history line ("Created
+      1976 Ky. Acts ch. 153, sec. 3, effective January 1, 1977"), not an upper bound.
+      THE SEPARATOR IS THE ENTRY'S CONTRIBUTION TO THE SCHEMA. Everywhere else in this
+      dataset a separator is a printed feature of an authority-assigned serial;
+      here the cabinet lets the APPLICANT choose whether to have one and which glyph it
+      is, and says so in terms. It is the cleanest possible vindication of §2.6's
+      disjointness contract: because a space and a dash are never serial-significant,
+      a forgiving consumer collapses every applicant's stylistic choice to one
+      canonical string without being told anything else.
+
+  # =========================================================================
+  # TEMPORARY — regulatory, and a real security-feature record.
+  # =========================================================================
+  - id: us-ky-temporary
+    class: temporary
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9]+\z'
+      charset: { notes: "NO WIDTH OR ALPHABET CLAIM IS MADE. 601 KAR 9:140 governs the issuance, logging and control of temporary registration plates in detail and specifies no serial grammar whatsoever; none was obtained elsewhere" }
+      pattern_note: "`matching: recall-only` (§2.7): the regex is deliberately wider than anything Kentucky issues and a match is a shape hit, not a validity claim. No `regex_strict`, per §2.7."
+    design:
+      plate: { w: 12, h: 6, unit: in, hex_basis_note: "not sourced" }
+      security_feature: >-
+        PANOGRAPHIC, and the regulation defines the term itself — 601 KAR 9:140 Section
+        1: "'Panographic' means a surface that if scanned or xeroxed shall produce a
+        secured background word or image." That is a covert/overt security feature of
+        exactly the kind AAMVA §3.4 leaves to jurisdiction discretion, named and defined
+        in a state regulation, which is rare enough to record.
+      emblem: { present: false }
+    validity: "SIXTY DAYS. 601 KAR 9:140 Section 3, implementing KRS 186A.100(1): a county clerk shall not issue more than one 60-day temporary registration plate to a motor vehicle, motorcycle or owner; a dealer shall not issue more than one per sale; and 'A temporary registration plate shall not be renewed.'"
+    issuance_chain: >-
+      Dealer-mediated rather than owner-applied: a dealer representative applies to the
+      county clerk with photo identification and written dealer authorisation (or is
+      checked against the dealer's KRS 186.070(2) authorised-persons list), the clerk
+      issues from the Automated Vehicle Information System a receipt carrying the dealer,
+      the date and the CONTROL NUMBERS of each plate issued, and the dealer signs for
+      them.
+    audit_trail: >-
+      601 KAR 9:140 Section 4 requires a Temporary Tag Log (TC form 96-210) recording
+      the dealer's name, telephone and principal place of business, the plate number,
+      the delivery date, the expiration date, the purchaser's name, and the VIN, make
+      and model year — available on demand to cabinet officials and law enforcement.
+    region_encoding: none
+    sources:
+      - "https://apps.legislature.ky.gov/law/kar/titles/601/009/140/  # 601 KAR 9:140 'Temporary registration plates', relating to KRS 186.070, 186A.100, 186A.105(2) and 190.030: the panographic definition, the dealer-representative application and authorisation check, AVIS receipts and control numbers, the one-plate-per-sale and sixty-day non-renewable limits, and the TC 96-210 Temporary Tag Log contents"
+    notes: >-
+      KENTUCKY TEMPORARY REGISTRATION PLATES. `matching: recall-only` because the
+      regulation is rich about PROCESS and silent about FORMAT — it specifies who may
+      apply, what the clerk records, how long the plate lives and what security
+      substrate it is printed on, and never once says how many characters the number
+      has. Rather than invent a width, the series records what is genuinely known and
+      declares the regex a shape hit. The panographic definition is the keeper: it is a
+      state regulation defining a plate security feature in words, which is exactly the
+      sort of thing the render layer needs and no photograph can supply.
+
+  # =========================================================================
+  # DEALER — statutory, and bound to the business.
+  # =========================================================================
+  - id: us-ky-dealer
+    class: dealer
+    categories: [car, van, truck, motorcycle]
+    period: { start: 1996 }
+    period_evidence: regulatory-stated-date
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9]+\z'
+      charset: { notes: "no serial grammar is stated in KRS 186.070 or 601 KAR 9:220, both of which are about ENTITLEMENT to plates rather than the plates themselves; none was obtained elsewhere" }
+      pattern_note: "`matching: recall-only` (§2.7): wider than anything issued; a match is a shape hit. No `regex_strict`, per §2.7."
+    design:
+      plate: { w: 12, h: 6, unit: in, hex_basis_note: "not sourced" }
+      emblem: { present: true, rendered: placeholder }
+    binding: business
+    validity: "KRS 186.070(1)(d): 'License plates issued under this section shall annually expire on December 31' — a fixed calendar expiry, not the birth-month scheme that governs private plates"
+    allocation_rule:
+      basis: "601 KAR 9:220 Section 2, effective with the licensing period beginning January 1, 1996"
+      scale: >-
+        The number of dealer plates a Kentucky dealer may hold is a STEP FUNCTION OF
+        SALES VOLUME: ten or fewer sales, one plate; 11-25, two; 26-50, three; 51-75,
+        four; 76-100, five; above 100 sales, as many as the dealer requests. A dealer
+        licensed for under eighteen uninterrupted months may apply for any number.
+      good_cause: >-
+        Additional plates are available on the Motor Vehicle Commission's recommendation
+        for good cause, the regulation's own examples including lost or stolen plates
+        with a police report, test-drive burden, and transport to auctions or for
+        service.
+      note: >-
+        WHY A DATASET SHOULD CARE ABOUT A SALES-BANDED ENTITLEMENT TABLE: it bounds the
+        POPULATION of the series. Most plate series have an unbounded population; this
+        one is capped, per business, by a published function of that business's sales,
+        which makes Kentucky dealer plates one of the few series whose total issuance is
+        estimable from public data.
+    supplemental_plates: "601 KAR 9:220 Section 1(5) defines 'dealer plate' as 'any BASE PLATE or SUPPLEMENTAL PLATE issued pursuant to KRS 186.070' — the regulation contemplates two kinds and this file specifies neither, a recorded gap"
+    misuse_sanction: "KRS 186.070: a dealer's plates may be cancelled and the licence revoked for a year for misuse, with 601 KAR 9:220 defining misuse as use unauthorised by the statute or by the regulation's own Section 3"
+    region_encoding: none
+    sources:
+      - "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=51518  # KRS 186.070 'Registration of manufacturers and dealers - Dealer's plates and stickers': one dealer plate on registration, $14.50 per additional plate with $3 retained by the clerk, the December 31 annual expiry, the restriction on who may operate a dealer-plated vehicle, and revocation for misuse"
+      - "https://apps.legislature.ky.gov/law/kar/titles/601/009/220/  # 601 KAR 9:220 'Motor vehicle dealer plates': the definitions including base and supplemental plates, the sales-banded allocation table effective for the licensing period beginning January 1, 1996, the eighteen-month new-dealer rule, and the good-cause additional-plate examples"
+    notes: >-
+      KENTUCKY DEALER PLATES. `binding: business` for the standing reason — the plate
+      follows the dealership, not a vehicle, exactly as with Florida's dealer plates and
+      Germany's rote Kennzeichen. `period.start: 1996` is taken from the regulation's own
+      operative date ("Effective with the issuance of dealer plates for the licensing
+      period beginning January 1, 1996"), which dates the ALLOCATION REGIME rather than
+      the plate type; dealer plates plainly predate it, so 1996 is a regime boundary and
+      is labelled `regulatory-stated-date` rather than passed off as the series origin.
+      The format is the gap, and it is the same gap as for temporaries: Kentucky
+      regulates plate ADMINISTRATION exhaustively and plate TYPOGRAPHY not at all.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-ky-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9]{1,6}\z'
+      charset:
+        notes: >-
+          The six-character bound is inherited from the cabinet's own personalized-plate
+          statement rather than from any specialty-specific instrument, on the reasoning
+          that a special plate may be personalized and must therefore fit the same
+          frame. That is an INFERENCE, not a source, which is one of the two reasons
+          this series is recall-only.
+      pattern_note: "`matching: recall-only` (§2.7): one entry stands for 150+ plate types whose individual arrangements are out of scope at this gate (§2.5), on an unsourced width bound. A match is a shape hit. No `regex_strict`, per §2.7."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_variants: [{ for: motorcycle, w: 7, h: 4, unit: in }]
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+      note: "one design per authorised plate type; individual designs are L4 scope and none is described here"
+    program_index:
+      count_official: "over 150"
+      count_official_quote: >-
+        KYTC, in its own words: "Kentucky issues over 150 different types of passenger
+        and motorcycle license plates."
+      categories_official: ["Regular (Standard Issue)", "Special", "University", "Independent College", "Military", "Military Motorcycle", "Miscellaneous", "Disabled", "Special Motorcycle"]
+      categories_note: >-
+        The cabinet's own nine-way taxonomy, and note that it counts REGULAR STANDARD
+        ISSUE as one of the 150 types — so the figure is a count of plate TYPES in the
+        cabinet's catalogue, not of optional programs, and is not directly comparable
+        with Alabama's 398 catalogue entries or Tennessee's 200+ optional plates. Three
+        states, three incommensurable numerators. Recorded rather than harmonised.
+      statutory_framework:
+        - "KRS 186.162 — special license plates for members or supporters of groups and organizations; initial and renewal fees; combination with personalization; motorcycle special plates"
+        - "KRS 186.163 — special plates for specified military units, with qualification and proof requirements"
+        - "KRS 186.164 — collection and distribution of special plate fees; DESIGN, PRINTING AND REPLACEMENT; application process; voluntary contributions; audit of special plate funds and annual report"
+        - "KRS 186.166 — perpetual production of certain special plates, and the design of Purple Heart plates"
+        - "KRS 186.165 — exchange of one special plate for another and transfer to another vehicle"
+        - "KRS 186.041 / 186.172 / 186.1722 — military-related, firefighter and I Support Veterans plates"
+      perpetual_production_note: >-
+        KRS 186.166 is the interesting one and has no analogue elsewhere in this group:
+        Kentucky legislates PERPETUAL PRODUCTION for certain special plates, which means
+        the statute forbids the cabinet from discontinuing them. Most states' specialty
+        programs churn — Florida's § 320.08056(8)(a) obliges DISCONTINUATION in stated
+        circumstances — and Kentucky has legislated the opposite guarantee for a named
+        subset. A specialty index that assumes every program is mortal will be wrong
+        about Kentucky in a specific, statutory way.
+      audit_note: "KRS 186.164 requires an AUDIT of special licence plate funds and an ANNUAL REPORT — a published-report hook worth chasing, in the way Florida's monthly active-plate portal was: it is the kind of agency output that carries per-plate volumes and that nobody archives"
+      official_list_url: "https://drive.ky.gov/Vehicles/Pages/License-Plates.aspx"
+      official_plate_list_app_note: >-
+        KYTC directs users to a 'Plate List application page' carrying an image and
+        availability checker for every plate. It was NOT reachable in this pass —
+        secure.kentucky.gov returned 502 on every path tried — so no per-plate list or
+        image inventory was obtained. Recorded gap, and the single most valuable
+        Kentucky follow-up.
+    region_encoding: none
+    sources:
+      - "https://drive.ky.gov/Vehicles/Pages/License-Plates.aspx  # KYTC: 'Kentucky issues over 150 different types of passenger and motorcycle license plates', the nine-category taxonomy, and the statement that standard, motorcycle, military and special plates can all be personalized"
+      - "https://apps.legislature.ky.gov/law/statutes/chapter.aspx?id=38025  # KRS Chapter 186 section index: the statutory framework for special plates at 186.041, 186.162, 186.163, 186.164, 186.165, 186.166, 186.172 and 186.1722, including 186.164's design/printing/replacement and audit duties and 186.166's perpetual-production guarantee"
+    notes: >-
+      THE KENTUCKY SPECIALTY INDEX — one entry standing for the whole program, per §2.5.
+      Two things worth carrying forward. First, the count is not comparable across
+      states and this file refuses to make it look as though it were: Kentucky counts
+      TYPES including standard issue, Alabama counts catalogue ENTRIES including
+      personalized duplicates, Tennessee counts OPTIONAL plates. Any cross-state
+      "specialty plates per state" chart built on these three numbers would be
+      comparing three different things, and the dataset should keep saying so.
+      Second, KRS 186.166's perpetual-production guarantee is a real, statutory,
+      Kentucky-specific fact about program mortality that cuts directly against the
+      churn assumption the Florida pilot recorded — and it is exactly the kind of thing
+      only a state that publishes its own statutes will ever tell you.

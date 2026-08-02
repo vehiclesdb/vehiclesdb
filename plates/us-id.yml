@@ -1,0 +1,531 @@
+# plates/us-id.yml — Idaho (PRD-PLATES gate L2, northwest group).
+#
+# READ THIS FIRST: IDAHO IS THE WEAKEST-SOURCED FILE IN THIS GROUP, AND THE
+# REASON IS ACCESS, NOT ABSENCE. legislature.idaho.gov refused the TLS
+# handshake from this environment on every single attempt — default curl,
+# --tlsv1.2, --tls-max 1.2, --tlsv1.3, --http1.1, and a raw `openssl s_client`
+# probe all failed after connecting to 164.165.66.180:443, and WebFetch
+# returned ECONNRESET. law.justia.com, the fallback the US/world dossier itself
+# used for Idaho, returned HTTP 403. adminrules.idaho.gov refused TLS the same
+# way. SO IDAHO CODE 49-443 — the section that should carry the plate design,
+# the county designator and the numbering rule — WAS NEVER READ. Every other
+# state in this group rests on statute; Idaho rests on the Idaho
+# Transportation Department's own published pages, which PRD-PLATES §4 ranks
+# as PRIMARY but second-preference, plus clearly-flagged locator material.
+# The verifier should treat re-fetching Idaho Code 49-443 from a working
+# network as the single highest-value action on this file.
+#
+# WHAT IDAHO GIVES ANYWAY, AND IT IS NOT NOTHING. ITD states the county
+# designator, the standard plate identity, the specialty programme count, a
+# real charset exclusion, and — freshest of all — a DATED STATUTORY CHANGE
+# from the 2026 legislative session: House Bill 533 killed the registration
+# sticker and House Bill 577 killed the ten-year plate replacement cycle, both
+# effective 1 July 2026. That is a live, agency-sourced, dated fact one month
+# old at the time of writing, and no competing dataset will have it.
+#
+# THE COUNTY DESIGNATOR IS THE PRIZE AND ALSO THE RISK. Idaho does not number
+# its counties the way Montana and Wyoming do. It builds a code from the
+# county's INITIAL LETTER plus an ordinal within that letter — Ada is 1A,
+# Adams 2A, Bannock 1B, Bear Lake 2B, and a county that is the only one
+# starting with its letter gets the bare letter (Elmore E, Kootenai K, Nez
+# Perce N). That mechanism is self-evidently systematic and ITD confirms that
+# a county designator exists; but the TABLE below is locator-grade and is
+# flagged as such row by row. It is included because the mechanism is the
+# valuable claim and because a flagged table a verifier can check beats an
+# omission a verifier cannot.
+jurisdiction: us-id
+authority:
+  name: Idaho Transportation Department, Division of Motor Vehicles (Idaho DMV)
+  url: "https://itd.idaho.gov/dmv/registrations-plates-titles/license-plates/"
+binding: vehicle
+statute_edition: >-
+  NONE READ. Idaho Code Title 49, Chapter 4 was NOT obtained — see the header
+  note and research_notes.reachability. Idaho Administrative Code IDAPA
+  39.02.60 (the ITD special-plate rule, cited by ITD's own page as carrying
+  "The full list of rules for special plates ... 39.02.60 202.08 on page 9")
+  was likewise unreachable. All statutory-level claims in this file are
+  ABSENT, not summarised.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4/§7.1.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    UNRESEARCHED, AND RECORDED HONESTLY RATHER THAN GUESSED. Idaho appears
+    NOWHERE in the standing per-state copyright survey PRD-PLATES §4 works
+    from — neither in the favourable column (FL, CA, NC, NJ, MA, GA) nor in
+    the adverse column (NY, AZ, PA, WA). No {{PD-IDGov}} tag exists among the
+    state templates listed on Wikimedia Commons' US per-territory page. No
+    copyright notice was found on any Idaho page fetched in this pass: the
+    ITD plate estate's footer carries "Official Government Website / Visit
+    Idaho.gov / Accessibility / Cybersecurity / Privacy / Legal Notices /
+    Security" and NO copyright string, and www.idaho.gov/legal/ refused TLS so
+    the linked legal notices were never read. THE DEFAULT THEREFORE APPLIES
+    AND IS THE OPERATIVE POSTURE: a US state's works are copyrighted unless
+    that state says otherwise (17 U.S.C. §105 reaches federal works only and
+    does not extend to states), so Idaho plate artwork must be treated as
+    protected until Idaho says otherwise. "Unresearched" describes the
+    EVIDENCE, not the risk.
+  known_third_party_element: >-
+    ONE CONCRETE FLAG, AND IT IS NOT SPECULATIVE. Idaho's special-plate
+    catalogue as described by ITD includes college and university designs and
+    a Corvette plate; university marks and the Corvette name are third-party
+    trademarks whatever Idaho's own posture turns out to be. The
+    Appaloosa plate likewise implicates a breed-registry mark. So even a
+    favourable Idaho finding would not clear the whole catalogue.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies to the scenic mountain
+    graphic, the sky gradient and every special-plate design without
+    exception. No Idaho emblem is a candidate for an upgrade at this gate:
+    upgrades require BOTH a cleared artwork_risk and a ledger entry, and Idaho
+    has neither.
+  photograph_caution: "Standard: a Commons CC BY-SA tag on a photograph of an Idaho plate is the photographer's licence on the photograph, not on the design. Our renders are generated from spec, so the obligation never attaches."
+  sources:
+    - "https://itd.idaho.gov/dmv/registrations-plates-titles/license-plates/  # fetched 2026-08-02: the ITD plate estate. Footer measured — no copyright notice present."
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY: Idaho is NOT MENTIONED — a measured absence, which is why the posture is unresearched rather than favourable"
+    - "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States  # LOCATOR ONLY: no Idaho state PD template exists among those listed; the page's own rule is that state and local government works are generally subject to copyright"
+
+# ---------------------------------------------------------------------------
+# The US standards chain.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 delegates dimensions and bolt holes to SAE J686, which is paywalled and UNPINNED and is never quoted here. NO IDAHO DIMENSION WAS SOURCED AT ALL — Idaho Code 49-443 was unreachable — so the 12 x 6 in figure below is the North American convention as observed and carries no Idaho authority."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spacing at least 0.25 in, stroke 0.2-0.4 in, 1.25 in clear of the top and bottom edges"
+    replacement_cycle: >-
+      AAMVA §1.1 recommends a cycle "not to exceed 7 to 10 years". IDAHO RAN
+      TEN AND THEN ABOLISHED IT. ITD, in its own words: "All plates regardless
+      of design are good for 10 years with active registration", and, as of
+      2026: "House Bill 577 eliminated the requirement to replace license
+      plates every 10 years, allowing plates to remain in use as long as they
+      are readable and legible." So Idaho moved from the top of AAMVA's band
+      to Washington's position — an event-triggered rule with no clock — on
+      1 July 2026. This is the only jurisdiction in this wave observed
+      CHANGING its replacement regime, and the date is exact.
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' is COMMONLY REPEATED, UNSOURCED. Because no Idaho dimension was sourced at all, this file makes no dimension claim that could rest on it."
+
+# ---------------------------------------------------------------------------
+# Display rules — RECORDED GAP. Idaho Code 49-428 (display of plates) was not
+# reachable. The US/world dossier pins law.justia.com for Idaho Code 49-405;
+# that host returned 403 in this pass.
+# ---------------------------------------------------------------------------
+display_rules:
+  status: not-sourced
+  note: >-
+    NO IDAHO DISPLAY RULE IS RECORDED. Idaho is conventionally described as a
+    two-plate state, but no Idaho instrument was read in this pass and the
+    claim is therefore ABSENT rather than asserted. This is a deliberate
+    omission: every other state in this group carries its display rule
+    verbatim from statute, and a summarised or remembered Idaho rule would be
+    the only unsourced claim of its kind in the group.
+  gap: "Idaho Code 49-428 and 49-443 both unreachable; re-fetch from a working network"
+
+series:
+
+  # =========================================================================
+  # THE STANDARD-ISSUE SERIES. County-designator-prefixed.
+  # =========================================================================
+  - id: us-id-standard
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "9L 999L"
+      regex: '\A\d{0,2}[A-Z][- ]?[A-Z0-9]{3,5}\z'
+      charset:
+        notes: >-
+          IDAHO'S SERIAL GRAMMAR WAS NOT SOURCED FROM ANY INSTRUMENT. What ITD
+          states in its own words is the STRUCTURE: "The standard plate
+          includes a 'county designator' in the plate number that corresponds
+          with the county you live in." So the leading group is a county code
+          and the remainder is the plate number. The reported arrangements —
+          a one-or-two-character county designator followed by four or five
+          alphanumerics with a trailing letter that advances as the county's
+          series fills — are LOCATOR-GRADE, and the regex is deliberately
+          written as their UNION rather than as any one of them. That union is
+          wider than any grammar Idaho issues, which is exactly what
+          `matching: recall-only` means under PRD-PLATES §2.7: a match here is
+          a shape hit and nothing more.
+        personalized_exclusion_note: >-
+          ONE REAL, AGENCY-SOURCED CHARSET FACT EXISTS, though it governs
+          PERSONALIZED plates rather than this series. ITD, verbatim: "The
+          letter O and the number zero look the same on a license plate,
+          therefore only the number zero will be accepted." Idaho therefore
+          EXCLUDES THE LETTER O from owner-chosen configurations. Note the
+          delicious inconsistency this creates with the county designator
+          table, in which Oneida and Owyhee are reported as 1O and 2O — the
+          exclusion binds the owner, not the department.
+      separator_note: "The boundary between the county designator and the plate number is spelled as the separator-only class `[- ]`, sanctioned by PRD-PLATES §2.8, because it is a printed GAP and no authority text names a glyph. `pattern` shows the canonical printed form with a space."
+      progression: >-
+        LOCATOR-GRADE, NOT ASSERTED: the encyclopedia record reports the
+        trailing letter advancing as each county's block fills, with Ada
+        County reported at V and Canyon County at P. Recorded so a verifier
+        knows what to check; not claimed.
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_basis: convention-observed }
+      dimension_note: "NO IDAHO SOURCE. Idaho Code 49-443 was unreachable and no ITD dimension statement was found. 12 x 6 in is the North American convention as observed and carries no Idaho authority whatsoever."
+      background: { finish: retroreflective }
+      colour_note: >-
+        ITD, in its own words and this is the whole of the agency-sourced
+        design claim: "Idaho's standard license plate is the red, white and
+        blue scenic Idaho plate." No hex is invented from that. The
+        encyclopedia record adds a mountain scene with a red-to-white sky
+        gradient, pale blue mountains and a dark blue forest, with "IDAHO"
+        screened white at the top and "FAMOUS POTATOES" at the bottom; that
+        description is LOCATOR-GRADE and is recorded, not asserted.
+      legend_top: "IDAHO"
+      legend_bottom: "FAMOUS POTATOES"
+      legend_note: "Both legends are LOCATOR-GRADE. No Idaho instrument stating either was read. The bottom legend is famous enough that its absence from a sourced record is itself worth flagging."
+      graphic: { present: true, rendered: placeholder, description: "scenic mountain and sky design — 'the red, white and blue scenic Idaho plate' per ITD; the detail is locator-grade" }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+      cost: "ITD: 'Standard plates cost $3.75 per plate.'"
+      fulfilment: "ITD: 'License plates are made to order and are shipped by the US Postal Service. Please allow 6 weeks for new plates to arrive.' Idaho does not issue over the counter — a real operational difference from Wyoming and Montana, where the county treasurer hands the plate over."
+    replacement_rule:
+      former_clock_years: 10
+      former_rule_text: "ITD, before the change: 'All plates regardless of design are good for 10 years with active registration.'"
+      abolished:
+        effective: "2026-07-01"
+        instruments: ["House Bill 577 (2026 session) — eliminated the ten-year plate replacement requirement", "House Bill 533 (2026 session) — eliminated the requirement to display registration stickers"]
+        agency_text: >-
+          ITD, verbatim: "As of July 1, 2026, the DMV will stop providing
+          registration stickers and license plates will no longer be replaced
+          every ten years." And: "House Bill 577 eliminated the requirement to
+          replace license plates every 10 years, allowing plates to remain in
+          use as long as they are readable and legible." And: "House Bill 533
+          during the 2026 legislative session eliminated the requirement to
+          display registration stickers on license plates."
+      note: >-
+        TWO CONSEQUENCES A DATASET MUST CARRY. (1) Idaho moved from a
+        ten-year clock to a legibility test on a single dated day, so plate
+        age can no longer be inferred from issue cycle for any Idaho plate
+        current after 1 July 2026. (2) THE VALIDATION STICKER IS GONE. Every
+        other state in this group affixes a decal that carries the expiry;
+        Idaho stopped. A vision system trained to find an Idaho expiry sticker
+        will find nothing, and an Idaho plate photographed after July 2026
+        carries no visible validity marker at all. The bill numbers are
+        recorded but THE BILL TEXTS WERE NOT READ — legislature.idaho.gov was
+        unreachable — so the effect is agency-sourced, not statute-sourced.
+    region_encoding:
+      mechanism: >-
+        A LETTER-ORDINAL COUNTY CODE, NOT A NUMBER. Idaho's designator is
+        built from the county's INITIAL LETTER plus an ordinal ranking among
+        the counties sharing that letter, alphabetically: Ada is 1A and Adams
+        2A because Ada precedes Adams; Bannock, Bear Lake, Benewah, Bingham,
+        Blaine, Boise, Bonner, Bonneville, Boundary and Butte run 1B to 10B in
+        alphabetical order. A county that is the ONLY one beginning with its
+        letter takes the bare letter with no ordinal — Elmore E, Idaho I,
+        Kootenai K, Nez Perce N, Shoshone S, Valley V, Washington W. This is a
+        genuinely different mechanism from Montana's and Wyoming's frozen
+        historical rankings: Idaho's is DERIVABLE FROM THE COUNTY NAME, which
+        means it is stable under demographic change and would extend
+        automatically to a new county.
+      agency_confirmation: "ITD confirms the existence and the meaning of the designator in its own words: 'The standard plate includes a \"county designator\" in the plate number that corresponds with the county you live in.' ITD does NOT publish the table."
+      decode_evidence: secondary-locator-only
+      decode_caveat: >-
+        THE TABLE BELOW IS NOT A SOURCED CLAIM. It comes from the encyclopedia
+        record and from nothing else; no ITD, IDAPA or Idaho Code publication
+        of the mapping was obtained. It is included rather than omitted for
+        three reasons: the MECHANISM is agency-confirmed, the table is
+        internally consistent with the mechanism (which is a real check — an
+        invented table would not be), and a flagged table is checkable while
+        an absence is not. A verifier must pin it to Idaho Code 49-443 or an
+        ITD publication before any consumer relies on it. TWO ROWS TO CHECK
+        FIRST: Oneida (1O) and Owyhee (2O) use the letter O, which Idaho
+        excludes from owner-chosen plates for legibility — plausible, since
+        the exclusion binds the applicant and not the department, but exactly
+        the kind of thing a locator gets wrong.
+      table:
+        Ada: "1A"
+        Adams: "2A"
+        Bannock: "1B"
+        Bear Lake: "2B"
+        Benewah: "3B"
+        Bingham: "4B"
+        Blaine: "5B"
+        Boise: "6B"
+        Bonner: "7B"
+        Bonneville: "8B"
+        Boundary: "9B"
+        Butte: "10B"
+        Camas: "1C"
+        Canyon: "2C"
+        Caribou: "3C"
+        Cassia: "4C"
+        Clark: "5C"
+        Clearwater: "6C"
+        Custer: "7C"
+        Elmore: "E"
+        Franklin: "1F"
+        Fremont: "2F"
+        Gem: "1G"
+        Gooding: "2G"
+        Idaho: "I"
+        Jefferson: "1J"
+        Jerome: "2J"
+        Kootenai: "K"
+        Latah: "1L"
+        Lemhi: "2L"
+        Lewis: "3L"
+        Lincoln: "4L"
+        Madison: "1M"
+        Minidoka: "2M"
+        Nez Perce: "N"
+        Oneida: "1O"
+        Owyhee: "2O"
+        Payette: "1P"
+        Power: "2P"
+        Shoshone: "S"
+        Teton: "1T"
+        Twin Falls: "2T"
+        Valley: "V"
+        Washington: "W"
+      table_completeness: "44 rows for Idaho's 44 counties — the count matches, which is a weak but real consistency check on a locator table."
+    sources:
+      - "https://itd.idaho.gov/dmv/registrations-plates-titles/license-plates/  # ITD, quoted throughout: 'Idaho's standard license plate is the red, white and blue scenic Idaho plate'; 'Standard plates cost $3.75 per plate'; 'All plates regardless of design are good for 10 years with active registration'; 'The standard plate includes a \"county designator\" in the plate number that corresponds with the county you live in'; the made-to-order / six-week USPS fulfilment model; the personalized-plate rules including the letter-O exclusion"
+      - "https://itd.idaho.gov/faqs/permanent-plates-and-no-registration-stickers/  # ITD FAQ: the 1 July 2026 change, House Bill 533 (registration stickers) and House Bill 577 (the ten-year replacement requirement), quoted verbatim"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Idaho  # LOCATOR ONLY (PRD-PLATES §4): the county designator table, the reported serial arrangements and trailing-letter progression, the September 1991 base introduction, the 1987-1991 Centennial predecessor, the FAMOUS POTATOES legend, and the non-passenger formats. NONE of it is asserted as sourced here."
+      - "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf  # AAMVA Ed.3 §1.1 — the 7-to-10-year recommendation Idaho met and then abolished"
+    notes: >-
+      IDAHO STANDARD ISSUE. `matching: recall-only` IS THE HONEST DESCRIPTION
+      OF THIS SERIES AND NOT A HEDGE: the regex is a deliberate union of
+      several reported arrangements and is wider than anything Idaho issues,
+      so a match asserts a shape and nothing more. THE ID IS UNDATED and
+      `start: 2026` is the year ITD's estate was read — an UPPER BOUND. The
+      commonly repeated September 1991 introduction of the scenic base is
+      encyclopedia-grade and is NOT minted into the id. WHAT MAKES IDAHO WORTH
+      THE TROUBLE DESPITE THE SOURCING: it is the only state in this group
+      whose region code is DERIVABLE rather than historical — Montana and
+      Wyoming froze a 1930s ranking into law, Idaho encodes the county's own
+      name — and it is the only state observed CHANGING its replacement regime
+      and dropping its validation sticker, on a dated day, one month before
+      this pass.
+
+  # =========================================================================
+  # ONE SERIES BACK. Locator-grade in full, and marked as such.
+  # =========================================================================
+  - id: us-id-standard-centennial
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 1987, end: 1991 }
+    period_evidence: secondary-locator-only
+    period_caveat: >-
+      NOT A SOURCED CLAIM. Both boundary years come from the encyclopedia
+      record and nothing else; no Idaho instrument stating either was read,
+      and Idaho's statute host was unreachable. The series is recorded because
+      Idaho's design lineage is otherwise a blank between statehood and today,
+      and because a flagged predecessor is checkable. A verifier should pin it
+      to Idaho Code 49-443's history line or an ITD publication, or drop it.
+    matching: recall-only
+    format:
+      pattern: "9L 999L"
+      regex: '\A\d{0,2}[A-Z][- ]?[A-Z0-9]{3,5}\z'
+      charset: { notes: "same county-designator structure as the current base; no instrument sourced. Union regex, hence recall-only." }
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_basis: convention-observed }
+      background: { finish: retroreflective }
+      colour_note: "reported as the same mountain scenery as the current base but with two tall dark blue trees screened at the far left and the word CENTENNIAL — Idaho's statehood centennial fell in 1990, which makes a 1987-1991 centennial base chronologically coherent. LOCATOR-GRADE."
+      legend_top: "IDAHO"
+      graphic: { present: true, rendered: placeholder, description: "centennial mountain scene with trees at left — locator-grade" }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "the same letter-ordinal county designator; see us-id-standard.region_encoding, which carries the table and its caveat"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Idaho  # LOCATOR ONLY: the 1987-1991 Centennial base, its description, and its replacement by the scenic base. Nothing here is asserted as sourced."
+    notes: >-
+      THE PREVIOUS IDAHO BASE. This is the weakest entry in the whole
+      northwest group and it says so on its face: every claim in it is
+      locator-grade, including both period boundaries. It is retained rather
+      than dropped because Idaho's statehood centennial (1890 to 1990) gives
+      the reported dates an independent plausibility check, and because the
+      L2 brief asks for one series back — but a verifier is entitled to delete
+      it outright rather than publish it, and that would be a defensible call.
+      Distinct from us-id-standard in its reported centennial graphic and in
+      being closed.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5. Agency-counted.
+  # =========================================================================
+  - id: us-id-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "9L 999L"
+      regex: '\A[A-Z0-9](?:[- ]?[A-Z0-9])*\z'
+      charset: { notes: "no per-programme grammar was sourced; individual specialty specs are L4 per PRD-PLATES §2.5. The index carries a deliberately wide union and is recall-only." }
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_basis: convention-observed }
+      background: { finish: retroreflective }
+      note: "one design per authorised programme; the designs themselves are L4 scope and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: "over 40"
+      count_official_quote: "ITD, in its own words: 'Idaho offers over 40 special plates with unique designs for an additional cost. Fees collected from special plate sales go to a variety of causes like educational initiatives, farm research, recreation, conservation and more.'"
+      count_secondary: "approximately 40 active designs per the encyclopedia record — LOCATOR ONLY, and consistent with ITD's own figure rather than in conflict with it. Recorded, not merged."
+      naming: "Idaho calls them SPECIAL plates, not specialty plates. The distinction is Idaho's own and is preserved here because ITD's URLs, forms and mailbox (SpecialPlates@itd.idaho.gov) all use it."
+      rules_reference: >-
+        THE AUTHORITATIVE RULE IS NAMED BUT WAS NOT READ. ITD: 'The full list
+        of rules for special plates can be found in Idaho Administrative Code
+        39.02.60 202.08 on page 9 (PDF).' adminrules.idaho.gov refused TLS
+        from this environment, so IDAPA 39.02.60 is UNREAD. It is the single
+        document that would upgrade this index from an agency blurb to a
+        sourced rule set, and it is pinned here for the next pass.
+      eligibility_gated_programmes: "ITD: 'Some special plates, including disabled plates and military plates, require additional documentation to order.' Named order-by-mail-or-in-person programmes: Classic and Old Timer, military plates, Purple Heart plates, disabled veteran plates, radio amateur plates, wrecker plates."
+      named_programmes_reported: "Agriculture, Appaloosa, Aviation, Biking, Colleges/Universities, Corvette, Fire Fighters, Lewis & Clark, National Guard, Peace Officer, Pet Friendly, Purple Heart, Rotary, Sawtooth, Ski Idaho, Snowmobile, Veterans, Wildlife (multiple designs) — LOCATOR-GRADE list, recorded to show the catalogue's shape, not as an authoritative enumeration."
+      interactive_guide_url: "https://apps.itd.idaho.gov/Apps/Fund/Dealer/InteractivePlateProgramsGuide/LaunchPlateGuide.html"
+      interactive_guide_note: >-
+        ITD PUBLISHES AN INTERACTIVE PLATE PROGRAMS GUIDE — a structured,
+        official, per-programme artefact of exactly the kind the Florida pass
+        identified as the differentiator no competitor has. It was NOT
+        machine-read in this pass (it is a JavaScript application). If it
+        exposes a JSON endpoint it is the highest-value structured Idaho
+        source in existence and should be captured before L4.
+      official_rules_url: "https://adminrules.idaho.gov/rules/current/39/390260.pdf"
+      personalized_url: "https://dmvonline.itd.idaho.gov/OpenServices/OpenVehicleServices/CheckPersonalizedPlates"
+    region_encoding: "not sourced; whether Idaho special plates retain the county designator was not established (recorded gap). Note the contrast this leaves open: Montana replaces the county number on special series by statute, Wyoming keeps it."
+    sources:
+      - "https://itd.idaho.gov/dmv/registrations-plates-titles/license-plates/  # ITD: 'over 40 special plates', the causes the fees fund, the SPECIAL (not specialty) naming, the documentation-gated programmes and their order routes, the IDAPA 39.02.60 202.08 pointer, and the interactive guide link"
+      - "https://adminrules.idaho.gov/rules/current/39/390260.pdf  # IDAPA 39.02.60 — the authoritative special-plate rule, PINNED BUT UNREAD (TLS refused). This is the next pass's first fetch."
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Idaho  # LOCATOR ONLY: the reported ~40 active designs and the programme names"
+    notes: >-
+      THE IDAHO SPECIALTY INDEX — one entry standing for the whole programme,
+      per PRD-PLATES §2.5. The count is AGENCY-SOURCED ("over 40", ITD's own
+      words), which is stronger than Oregon's (unpublished) and Wyoming's
+      (enumerated but not totalled), though weaker than Washington's
+      (a statutory table). Two follow-ups are pinned and both are cheap:
+      IDAPA 39.02.60, which is the real rule set, and the Interactive Plate
+      Programs Guide, which may be a structured endpoint.
+
+  # =========================================================================
+  # PERSONALIZED — the one Idaho series with a genuinely sourced charset rule.
+  # =========================================================================
+  - id: us-id-personalized
+    class: personalized
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9])*\z'
+      charset:
+        excluded: ["O"]
+        excluded_encoding_note: >-
+          THE EXCLUSION LIVES IN `charset.excluded`, NOT IN THE REGEX, AND
+          THAT IS THE SCHEMA WORKING AS DESIGNED. PRD-PLATES §2.7 makes
+          `format.regex` the round-trippable tier — it is generated against
+          `format.pattern` by the lint and therefore CANNOT carry charset
+          restrictions, which is precisely why `regex_strict` and
+          `charset.excluded` exist. A `regex_strict` of
+          '\A[A-NP-Z0-9](?: ?[A-NP-Z0-9])*\z' would lint clean, but §2.7
+          forbids a strict twin on a `recall-only` series, and this series IS
+          recall-only because the LENGTH cap is unsourced. So the exclusion is
+          carried as cited data. When the IDAPA per-plate-type character cap
+          lands, this series becomes `strict` and that regex_strict can be
+          added in the same PR.
+        excluded_source: >-
+          ITD, verbatim and this is a real agency-sourced exclusion rather
+          than an inference: "Must contain at least one character. The letter
+          O and the number zero look the same on a license plate, therefore
+          only the number zero will be accepted." The letter O is therefore
+          excluded from Idaho owner-chosen configurations, and the numeral 0
+          is the only round character accepted.
+        notes: >-
+          Further ITD rules, in ITD's own words: "Your requested plate
+          combination is subject to review"; "The maximum number of characters
+          you can use depends on the plate type you want to register. A
+          character is a letter, number, or a space. Each space counts as one
+          character"; "Must be tasteful (in any language)"; "Cannot contain any
+          punctuation or special characters"; "Must not already be in use";
+          "If you allow the registration on your personalized plates to
+          expire, the combination will become immediately available for
+          reissue to another applicant." NOTE THE SECOND RULE CAREFULLY: IDAHO
+          COUNTS A SPACE AS A CHARACTER against the cap. That is a
+          jurisdiction treating a separator as serial-significant for LENGTH
+          purposes while it remains a separator for MATCHING purposes — worth
+          recording against plates/_meta/separators.yml, though it does not
+          breach the contract, because the space is still never part of the
+          serial's identity.
+      length_note: >-
+        NO CAP IS RECORDED BECAUSE ITD STATES NONE — the maximum "depends on
+        the plate type", and the per-type table was not obtained (it is
+        presumably in the unread IDAPA 39.02.60). The regex is therefore
+        unbounded in length, which makes no width claim, and this series is
+        `recall-only`.
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_basis: convention-observed }
+      background: { finish: retroreflective }
+      note: "ITD: personalized configurations may be applied to standard plates and to some special plates for an extra fee. Vehicles with a maximum gross vehicle weight over 26,000 pounds are NOT eligible."
+      emblem: { present: true, rendered: placeholder }
+    fee: "ITD: '$25 initial Personalization Program Fee ($15 additional per registration year).' Not all plates can be personalized."
+    eligibility: "ITD: usable on passenger vehicles, commercial vehicles, motorcycles and some recreational vehicles; not all plate types can be ordered online; vehicles over 26,000 lb maximum gross vehicle weight are excluded."
+    region_encoding: "none — an owner-chosen configuration replaces the county designator entirely, so a personalized Idaho plate carries NO geographic information. This is the one place where Idaho's region encoding is defeated by owner choice, and a parse API must not attempt a county decode on it."
+    sources:
+      - "https://itd.idaho.gov/dmv/registrations-plates-titles/license-plates/  # ITD's personalized-plate rules quoted verbatim above: the letter-O exclusion, the space-counts-as-a-character rule, the per-plate-type cap, the tastefulness and punctuation rules, the availability and re-issue rules, the $25/$15 fees, the eligible vehicle classes and the 26,000 lb exclusion"
+      - "https://dmvonline.itd.idaho.gov/OpenServices/OpenVehicleServices/CheckPersonalizedPlates  # ITD's own availability checker — the service that enforces 'Must not already be in use'"
+      - "https://adminrules.idaho.gov/rules/current/39/390260.pdf  # IDAPA 39.02.60 202.08, cited by ITD as carrying the full rule set — PINNED BUT UNREAD"
+    notes: >-
+      PERSONALIZED. Modelled as its own series for the us-fl-personalized
+      reason — the SERIAL SOURCE differs, owner-chosen rather than
+      department-assigned, which is a format property — and because it carries
+      THE ONLY GENUINELY SOURCED CHARSET EXCLUSION IN THIS ENTIRE FILE. The
+      letter-O rule is worth the whole entry: it is an authority's own words
+      about its own alphabet, which is exactly what PRD-PLATES §2.7 wants, and
+      it produces the pleasing inconsistency that Idaho's own county
+      designators for Oneida and Owyhee use a letter its citizens may not
+      choose. `recall-only` only because the LENGTH cap is unsourced; if the
+      IDAPA per-type table lands, this series becomes strict with a real
+      regex_strict.
+
+# ---------------------------------------------------------------------------
+# Classes Idaho separately serializes but which are NOT given series here,
+# because the only available formats are locator-grade and this file already
+# carries two locator-grade series. Adding four more would misrepresent the
+# file's evidence quality.
+# ---------------------------------------------------------------------------
+unspecified_classes:
+  motorcycle:
+    reported_format: "M-prefixed serials, reported as embossed MAA 1 to MZZ 999 and later screened M-numeric — LOCATOR-GRADE"
+    gap: "no ITD or statutory source; Idaho Code 49-443 unreachable"
+  trailer:
+    reported_format: "U-suffixed motorcycle-sized plates, later Z-prefixed — LOCATOR-GRADE"
+    gap: "no ITD or statutory source"
+  dealer:
+    reported_format: "reported as a D/L/R marking with a numeric serial — LOCATOR-GRADE"
+    gap: "no ITD or statutory source"
+  government:
+    reported_format: "reported agency-specific markings (Idaho State Police ISP, county sheriff, fire) — LOCATOR-GRADE. ITD publishes an 'Exempt plate order form (PDF)', so the class demonstrably exists."
+    gap: "no serial grammar sourced; the exempt order form was not read"
+  historic:
+    agency_hook: "ITD publishes a 'Classic and Old Timer Application (PDF)' — so Idaho runs at least two historic tiers under those names."
+    gap: "no eligibility threshold, legend or serial grammar sourced"
+  wrecker:
+    agency_hook: "ITD publishes an 'Order wrecker plates (PDF)' form, so wrecker is a distinct Idaho plate type — matching Florida, which legislates a 'Wrecker' bottom legend. Note _meta/classes.yml has no `wrecker` or `commercial` value."
+    gap: "no serial grammar or legend sourced"
+
+# ---------------------------------------------------------------------------
+# Dead ends and open items. This section is longer than the others in the
+# group on purpose: Idaho's gaps are access gaps, and access gaps are fixable.
+# ---------------------------------------------------------------------------
+research_notes:
+  reachability:
+    - "legislature.idaho.gov: TCP connects to 164.165.66.180:443 and then the TLS handshake fails. Tried: default curl (exit 35), --tlsv1.2, --tlsv1.2 --tls-max 1.2, --tlsv1.3, --http1.1, and a bare `openssl s_client -connect legislature.idaho.gov:443 -servername legislature.idaho.gov`, which printed 'Connecting to 164.165.66.180' and then nothing. WebFetch returned ECONNRESET. IDAHO CODE 49-443 WAS THEREFORE NEVER READ."
+    - "adminrules.idaho.gov: same TLS failure (curl exit 35). IDAPA 39.02.60 unread."
+    - "www.idaho.gov/legal/: same TLS failure. The state's legal notices were never read, which is why artwork_risk is unresearched rather than resolved either way."
+    - "law.justia.com: HTTP 403 on every Idaho Code path. NOTE FOR THE SOURCE APPENDIX: the US/world dossier's pin-list cites law.justia.com for Idaho Code 49-405 as a harvested URL; that route is now blocked and the appendix should say so."
+    - "itd.idaho.gov: fully reachable and unexpectedly rich — the DMV pages carry direct quotations worth citing, and the FAQ estate carries dated legislative changes. It is slow (60 s+ for some pages) and WebFetch timed out once where curl succeeded."
+  open_items:
+    - "IDAHO CODE 49-443 — the section that should carry the plate design, dimensions, county designator and numbering rule. First fetch of the next pass. Everything structural in this file is downstream of it."
+    - "IDAPA 39.02.60 (adminrules.idaho.gov/rules/current/39/390260.pdf) — ITD's own special-plate rule, including 202.08 which ITD says carries the full personalized-plate rules and presumably the per-plate-type character caps that would make us-id-personalized strict."
+    - "House Bill 533 and House Bill 577 (2026 session) — the bill texts behind the 1 July 2026 sticker and replacement-cycle abolition. The effect is agency-sourced; the instruments are not read."
+    - "The Interactive Plate Programs Guide at apps.itd.idaho.gov — check for a JSON endpoint. Potentially the best structured Idaho artefact in existence."
+    - "The county designator table needs an official source. Idaho Code 49-443 or an ITD publication; until then it is locator-grade and flagged."
+    - "No Idaho display rule is recorded at all. Idaho Code 49-428 or equivalent."

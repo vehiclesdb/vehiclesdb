@@ -1,0 +1,534 @@
+# plates/us-tx.yml — Texas (PRD-PLATES gate L2, group: southcentral).
+#
+# WHY TEXAS IS THE HARD ONE IN THIS GROUP, and what this pass actually settled:
+#
+# 1. THE ARTWORK-RISK QUESTION IS NOW ANSWERED, ADVERSELY, FROM A PRIMARY. The US
+#    research dossier (aux/research/plates-2026-07, §4.2) recorded Texas as
+#    "Not established — treat as default (copyrighted)". It is no longer a
+#    default: Tex. Transp. Code § 504.002(a)(3) says, in terms, that "the
+#    department is the exclusive owner of the design of each license plate", and
+#    § 504.005(a) gives TxDMV "sole control over the design, typeface, color, and
+#    alphanumeric pattern for all license plates". That is a STATUTORY ownership
+#    claim over plate designs — stronger and better sourced than Arizona's
+#    website assertion, which the dossier called "the most adverse posture
+#    found". See `artwork_risk`.
+#
+# 2. THE SEPARATOR ON A TEXAS PLATE IS A STATUTORY GLYPH, NOT PUNCTUATION.
+#    § 504.005(c): the department "shall design each license plate to include a
+#    design at least one-half inch wide that represents in silhouette the shape
+#    of Texas and that appears between letters and numerals." So what a consumer
+#    reads as the hyphen in "ABC-1234" is, in law, a state-shaped emblem sitting
+#    in the separator position. This dataset follows the house precedent set by
+#    plates/de.yml — where the position occupied by the Stempelplakette is still
+#    written as an emitted separator, and the glyph itself is carried in
+#    `design` — so `pattern` spells `-` and `design.separator_glyph` records what
+#    is physically printed. It is flagged to `_meta/separators.yml`'s
+#    `never_separator` discussion, because no consumer may treat the silhouette
+#    as serial content (PRD-PLATES §2.6 rule 3).
+#
+# 3. HB 718 (2023, eff. 1 JULY 2025) KILLED THE PAPER TEMPORARY TAG. Texas is
+#    the loudest US registration-law change of the decade: dealers now hand the
+#    buyer a METAL general-issue plate at the point of sale. Six paper tag types
+#    were abolished and four new limited-use METAL plates created. It is
+#    recorded here in `temporary_regime` rather than as series, because TxDMV
+#    publishes the regime in detail but publishes no serial format for the four
+#    new plates (recorded gap).
+#
+# SOURCING RULE APPLIED HERE (PRD-PLATES §4): the statute over the brochure.
+# Every design-authority, ownership, display and penalty claim below cites
+# Transportation Code Chapter 504. Where Chapter 504 is deliberately silent —
+# and it is silent about the alphanumeric pattern, because § 504.005(a) delegates
+# that to the department entirely — TxDMV's own pages carry the claim, and where
+# even TxDMV is silent the claim is marked `locator-unconfirmed` and NOT
+# laundered into a sourced fact.
+#
+# FETCH NOTE, recorded because it will bite the next researcher: as of this pass
+# statutes.capitol.texas.gov serves an Angular SPA and returns the same 245 KB
+# JS shell for /Docs/TN/htm/TN.504.htm, /SOTWDocs/... and the .pdf path alike —
+# no statute text is retrievable by fetch. The section texts quoted here were
+# read from texas.public.law's reproduction. The TEXT IS AN EDICT OF GOVERNMENT
+# and public domain at every level (PRD-PLATES §4); the canonical citation below
+# is the official URL, and the reproduction is named for reproducibility.
+jurisdiction: us-tx
+authority:
+  name: Texas Department of Motor Vehicles (TxDMV)
+  url: "https://www.txdmv.gov/motorists/license-plates"
+binding: vehicle
+statute_edition: "Texas Transportation Code, Title 7, Subtitle A, Chapter 504 (License Plates), as in force at 2026-08; section texts read 2026-08-02"
+statute_access_note: >-
+  Official host statutes.capitol.texas.gov is a JavaScript single-page
+  application and returns no statute text to a fetcher. Section text was read
+  from https://texas.public.law/statutes/tex._transp._code_section_504.005 (and
+  siblings), a verbatim reproduction. Edicts of government are PD at every level,
+  so the reproduction carries no rights of its own over the text; the official
+  URL is cited as the authority and the reproduction is named as the fetch path.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: copyright-asserted-by-statute
+  basis: >-
+    ADVERSE, AND THE ONLY STATE IN THIS GROUP WHOSE ADVERSE POSTURE IS IN THE
+    STATUTE ITSELF. Tex. Transp. Code § 504.002(a)(3), verbatim: "the department
+    is the exclusive owner of the design of each license plate". § 504.005(a),
+    verbatim: "The department has sole control over the design, typeface, color,
+    and alphanumeric pattern for all license plates." Read together these are an
+    express legislative assertion that plate DESIGNS are departmental property.
+    This resolves the gap the US dossier left open ("Texas and Delaware PD
+    posture — neither appears in the fetched source; treated as default
+    copyrighted"): Texas is not merely default-copyrighted, it is
+    affirmatively-claimed. Nothing was found asserting a PD rule for Texas state
+    works; no {{PD-TXGov}} tag exists on Commons in the sampled set.
+  practical_effect: >-
+    PRD-PLATES §3's neutral-placeholder default is MANDATORY here, not optional.
+    Render facts, layout geometry (AAMVA Ed.3) and colours; never trace or
+    approximate the state-shaped silhouette separator, the security-thread
+    artwork or any specialty graphic. Note the asymmetry that makes the program
+    still workable: § 504.002(a)(3) is itself an EDICT of government and
+    therefore public domain, so we may quote the statute that claims the design
+    while declining to reproduce the design.
+  emblem_rule: >-
+    The § 504.005(c) Texas silhouette is both a design element AND, arguably, a
+    state symbol; state-seal / state-symbol misuse statutes are a regime
+    independent of copyright and were NOT researched for Texas (recorded gap,
+    same gap the US dossier flagged nationally). Render
+    `emblem: {present: true, rendered: placeholder}` and revisit as a named
+    decision.
+  photograph_caution: >-
+    Commons photographs of Texas plates are dominantly CC BY-SA — measured
+    example from the dossier: File:1917-1921 Texas license plate.jpg, CC BY-SA
+    4.0, "own work". That is the PHOTOGRAPHER's licence on the PHOTOGRAPH; the
+    uploader had no standing over the design, and in Texas the department claims
+    that standing by statute. Because our renders are generated from the statute
+    and never derived from a photograph, neither the share-alike obligation nor
+    the department's design claim attaches to a photograph we never touch.
+  sources:
+    - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.002(a)(3): 'the department is the exclusive owner of the design of each license plate'; § 504.005(a): sole control over design, typeface, color and alphanumeric pattern (text read via texas.public.law reproduction — see statute_access_note)"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY (PRD-PLATES §4): confirms §105 does not reach the states and that no Texas PD rule is listed; used only to establish the ABSENCE of a favourable rule"
+
+# ---------------------------------------------------------------------------
+# The US standards chain. Recorded once per US file, verbatim from the pinned
+# dossier, because it is voluntary and because the delegation trap matters.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA has no enforcement power; it writes recommendations in the declarative present, which must be read as RECOMMENDED PRACTICE, not requirement."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1: 'License plate dimensions and bolt holes comply with the SAE International Motor Vehicle License Plates Standard J686.' J686's own text is paywalled and was NOT obtained; no J686 dimension is quoted anywhere in this dataset."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of the top and bottom edges"
+    jurisdiction_name_layout: "AAMVA §2.1: the jurisdiction name 'appears in the top center location between the bolt holes', at least 0.25 in above the plate number and at least 0.125 in from the top edge; jurisdiction characters 0.75-1.0 in"
+    stacked_characters: "AAMVA: 'If stacked characters are used, they are part of the official license plate number. No more than two characters are to be stacked.'"
+    replacement_cycle: "AAMVA §1.1: 'Because license plates lose significant retro-reflectivity within 7 years, a required rolling or full replacement cycle not to exceed 7 to 10 years is recommended.' TEXAS ABOLISHED ITS CYCLE ENTIRELY — see us-tx-standard.replacement_cycle."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA standardization agreement" that supposedly fixed the 6x12 inch
+    plate is UNCITED in its Wikipedia source (a `citation needed` since 2017,
+    copied verbatim across articles — circular). The Texas Wikipedia article
+    repeats it with a different reference (Garrish, "Reconsidering the Standard
+    Plate Size", ALPCA *Plates* 62(5), Oct 2016) — a members' magazine that was
+    NOT obtained. Recorded as COMMONLY REPEATED, STILL UNPINNED. Texas plate
+    dimensions are NOT in Chapter 504 at all (recorded gap): unlike Florida,
+    whose § 320.06(3)(a) states 6x12 in law, the Texas legislature left
+    dimensions entirely to § 504.005(a) departmental discretion.
+
+# ---------------------------------------------------------------------------
+# Display rules. Texas is a TWO-PLATE state by statute, with a statutory
+# one-plate carve-out for road tractors, motorcycles, trailers and semitrailers.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "TWO plates, front and rear. § 504.943(a): a person commits an offense if the person operates a motor vehicle that 'does not display two license plates that (1) have been assigned by the department for the period; and (2) comply with department rules regarding the placement of license plates'."
+  one_plate_classes: "§ 504.943(b): a road tractor, MOTORCYCLE, trailer or semitrailer must display one plate. Note the class list is in the OFFENSE section, not in the issuance section — Texas defines its one-plate classes by what is not prosecutable."
+  issuance_limit: "§ 504.010(b): 'the department shall issue only one license plate or set of plates for a vehicle during the registration period set by rule'; § 504.010(c) delegates PLACEMENT entirely to board rule, so mounting heights are in 43 TAC ch. 217, not in statute (43 TAC was NOT obtained — the Texas Secretary of State moved the TAC to an Appian portal during this pass; recorded gap)."
+  dealer_exception: "§ 504.943(c): the two-plate offense 'does not apply to a dealer operating a vehicle as provided by law'; TxDMV states that only ONE metal dealer plate is required per vehicle and it is 'displayed in the rear license plate holder'."
+  obscuring: "§ 504.945(a): offense to display a plate with blurring or reflective matter impairing readability of the STATE NAME or the number, with an unauthorised illuminated device/sticker/decal interfering with readability, or with a coating that 'distorts angular visibility or detectability' or obscures half or more of the state name. Express carve-outs at § 504.945(c) for trailer hitches, toll transponders, wheelchair lifts, towed trailers and bike/motorcycle racks."
+  flipper_offense: "§ 504.9465 creates a separate LICENSE PLATE FLIPPER offense — a mechanism to conceal or swap the displayed plate. Few states legislate this by name."
+  penalty: "§ 504.943(e): misdemeanor, fine not to exceed $200; a charge under § 504.943(a)(1) may be dismissed if remedied before first appearance on payment of a reimbursement fee not exceeding $10."
+  sources:
+    - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.943 two-plate rule and the road tractor/motorcycle/trailer/semitrailer one-plate class; § 504.945 obscuring offenses and carve-outs; § 504.9465 plate flipper; § 504.010 one set per period, placement delegated to board rule"
+    - "https://www.txdmv.gov/dealers/dealer-license-plates  # TxDMV: 'Only one metal dealer plate is required per vehicle and is displayed in the rear license plate holder.'"
+
+# ---------------------------------------------------------------------------
+# HB 718 — the metal-plate transition. Recorded as a REGIME, not as series,
+# because TxDMV documents the regime exhaustively and the serial formats of the
+# four new plate types not at all.
+# ---------------------------------------------------------------------------
+temporary_regime:
+  instrument: "House Bill 718, 88th Legislature (2023), effective 1 July 2025"
+  effect: "Paper temporary tags eliminated. TxDMV: 'All licensed dealers must issue metal license plates to buyers at the time of sale. Temporary tags will no longer be available to be printed for use.' Six paper tag types were abolished: Buyer's Temporary Tags, Dealer's Temporary Tags, 30-Day & One-Trip Permits, Dealer Agent Tags, Dealer Vehicle Specific Tags, Internet Down Tags."
+  what_the_buyer_gets: "the ordinary general-issue plate. TxDMV: 'The black and white general issue license plate, which replaces the buyer tag, is the one dealers should expect to issue most frequently.' So the buyer's plate is us-tx-standard, issued at the dealership out of a dealer-held allocation, not a distinct series."
+  four_new_metal_plates:
+    - "Buyer Provisional Plate — 'Single issuance plate for short-term use if dealers lack the required plate type for the vehicle in their inventory.'"
+    - "Dealer Temporary Plate (BLUE) — dealer business use: demonstration, loaners, transport, road testing. 'Personal use of vehicles with these plates is prohibited.' $10, two-year term matching the dealer licence."
+    - "Out-of-State Buyer Plate — 'Single issuance plate for vehicles sold to out-of-state buyers.'"
+    - "Temporary Registration Plate (RED) — replaces the one-trip and 30-day paper permits; issued by county tax offices and TxDMV regional service centres, with an expiration sticker on the plate."
+  serial_formats: "NOT PUBLISHED. TxDMV's dealer, county and law-enforcement HB 718 materials describe every one of these plates by use, colour, price and ordering channel, and none of them by serial pattern. RECORDED GAP — these four classes are deliberately not given series here rather than have their patterns invented."
+  manufacture_and_distribution: "plates are produced by the Texas Department of Criminal Justice (TDCJ) and shipped to a centralised warehouse operated by a TxDMV contractor, then direct-to-dealer; dealers order through an Inventory Management System (IMS) and assign through ePLATE (formerly eTAG). Board rules adopted October 2024 require dealers to store plates in a locked room or a bolted-down safe."
+  sequencing_rule: "TxDMV, to dealers: 'The general issue plates MUST be distributed in sequential order.' That is an authority statement that us-tx-standard's serial PROGRESSION is strictly sequential, which is worth more to a parse API than most design facts."
+  aftermath: "Senate Bill 1902 (89th Legislature, 2025) lets a dealer reassign general-issue plates taken in on a trade to another vehicle within 10 days; unassigned plates must be destroyed. Paper tags issued before 1 July 2025 remained valid until their own expiry."
+  sources:
+    - "https://www.txdmv.gov/dealers/HB718  # HB 718 implementation hub: effective 1 July 2025, the six abolished paper tags, the four new metal plates and their uses, TDCJ manufacture, IMS/ePLATE, October 2024 storage rules, SB 1902 10-day reassignment"
+    - "https://www.txdmv.gov/sites/default/files/body-files/2025-06-10_Texas_License_Plate_Changes_Press_Release.pdf  # TxDMV press release, 10 June 2025: 'starting July 1, 2025, motor vehicle dealers will begin issuing metal license plates directly to buyers of new and used vehicles'"
+    - "https://www.txdmv.gov/sites/default/files/body-files/ENF%20HB%20718%20FAQ%20Dealer%20Handout%20032125.pdf  # TxDMV enforcement/dealer handout: the four-plate chart, the blue Dealer Temporary and red Temporary Registration plates, 'The general issue plates MUST be distributed in sequential order'"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD-ISSUE SERIES — "The Texas Classic".
+  # =========================================================================
+  - id: us-tx-standard
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2012 }
+    period_evidence: authority-stated
+    matching: strict
+    format:
+      pattern: "LLL-9999"
+      regex: '\A[A-Z]{3}[- ]?\d{4}\z'
+      serial_basis: authority-stated-arrangement
+      charset:
+        notes: >-
+          NO STATUTORY CONSTRAINT EXISTS. § 504.005(a) hands the department "sole
+          control over the design, typeface, color, and ALPHANUMERIC PATTERN for
+          all license plates", and Chapter 504 then says nothing further about
+          length or alphabet — the exact opposite of Florida, whose
+          § 320.06(3)(a) caps the plate at seven characters in law. Texas's
+          seven-character frame is an AUTHORITY fact, not a statutory one:
+          TxDMV, describing the 2009 base, writes that "it began the
+          seven-character plate number" after "Texas' growth exhausted the six
+          character alpha-numeric plate patterns". `LLL-9999` is seven characters
+          inside that frame.
+        excluded_reported: ["A", "E", "I", "O", "U", "Q"]
+        excluded_basis: locator-unconfirmed
+        excluded_note: >-
+          VOWELS AND Q ARE REPORTED EXCLUDED FROM TEXAS SERIALS SINCE 1990, and
+          the report is LOCATOR-GRADE ONLY (Wikipedia, whose own citation is the
+          collector site licenseplates.cc). It is NOT promoted to a
+          `regex_strict` here, because PRD-PLATES §2.7 defines the strict tier as
+          "the authority's own alphabet" and TxDMV publishes no alphabet at all.
+          It is recorded because it is CORROBORATED BY THE ISSUED RANGE the same
+          locator gives — BBB-0001 to YZS-4943 as of 2026-03-29 — which begins at
+          BBB rather than AAA and contains no vowel in any reported position.
+          Promote to `regex_strict` when a TxDMV instrument states the alphabet.
+      progression: "strictly sequential. TxDMV, in its HB 718 dealer FAQ: 'The general issue plates MUST be distributed in sequential order.' Reported range BBB-0001 to YZS-4943 as of 2026-03-29 (locator)."
+      pattern_note: >-
+        The separator is written as `-` because that is how TxDMV, law
+        enforcement and every consumer spell a Texas plate number, and because
+        plates/de.yml sets the house precedent of writing an emitted separator at
+        a position physically occupied by a badge. What is actually PRINTED there
+        is the statutory Texas silhouette — see design.separator_glyph. The
+        regex accepts the space form as well, since the separator character set
+        (§2.6) is what a lenient consumer normalises across.
+      no_regex_statutory_note: >-
+        There is deliberately NO `regex_statutory` on any Texas series. Florida
+        has one because § 320.06(3)(a) states an outer legal bound (seven
+        alphanumerics). Texas states no bound whatsoever — § 504.005(a) is a
+        delegation, not a constraint — so a statutory tier would be an invention.
+        The absence is the fact.
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4 }
+      plate_dimension_basis: locator-unconfirmed
+      plate_dimension_note: >-
+        Chapter 504 states NO dimensions. 12 x 6 in is the North American
+        convention (AAMVA -> SAE J686, unpinned) and is reported for Texas by a
+        locator. Recorded, flagged, not sourced.
+      material: "aluminium, white sheeting; § 504.005(d): 'To promote highway safety, each license plate shall be made with a reflectorized material that provides effective and dependable brightness for the period for which the plate is issued.'"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_note: >-
+        Both hexes are `observed`, not sourced. § 504.005(a) puts colour under
+        departmental control and no departmental colour spec was obtained
+        (43 TAC ch. 217 was unreachable this pass — recorded gap). TxDMV's own
+        words for the design are "Black lettering on white sheeting design with
+        double security thread in the sheeting" and, in the HB 718 materials,
+        "the black and white general issue license plate".
+      legend_top: "TEXAS"
+      legend_bottom: "The Lone Star State"
+      separator_glyph:
+        printed: "silhouette of the State of Texas, at least one-half inch wide"
+        statutory_text: "§ 504.005(c): 'The department shall design each license plate to include a design at least one-half inch wide that represents in silhouette the shape of Texas and that appears between letters and numerals. The department may omit the silhouette of Texas from specially designed license plates.'"
+        consumer_rule: >-
+          NEVER SERIAL, NEVER DELETABLE-AS-SERIAL. This is the US instance of the
+          case `_meta/separators.yml` already anticipates for German and Austrian
+          coats of arms: a glyph that sits between serial groups is a DESIGN
+          ELEMENT carried in `design`, not a character. A consumer deriving a
+          separator-free twin deletes the emitted `-` we write and is correct;
+          an OCR pipeline that transcribes the silhouette as a character is
+          wrong. Worth adding to `_meta/separators.yml`'s never_separator list
+          by PR, since it is now a sourced, statutory example.
+        omission_clause: "the same subsection lets the department OMIT the silhouette from specially designed plates — so its presence does not identify a Texas plate and its absence does not exclude one."
+      security_features: "TxDMV: 'the first license plate in the country to feature two, high-visibility security threads embedded into the plate sheeting, making it easier for law enforcement to spot legitimate plates.' AAMVA Ed.3 §3.4 requires at least one overt/covert/forensic feature at jurisdiction discretion; Texas chose two overt threads."
+      emblem: { present: true, rendered: placeholder }
+      graphic: { present: false, note: "the Texas Classic is deliberately plain — TxDMV's stated design goal was public-safety legibility, reversing the 2009 full-colour graphic base" }
+      band: { side: none }
+      rear_differs: false
+    replacement_cycle:
+      years: null
+      abolished: true
+      statutory_or_authority_text: "TxDMV: 'As of November 1, 2016, the State of Texas no longer requires automatically replacing your plates after 7 years. However, you may apply at your county tax office for replacement plates if your license plates need to be replaced for cosmetic or readability reasons.'"
+      note: >-
+        TEXAS IS THE COUNTEREXAMPLE TO AAMVA §1.1. Florida legislated 10 years —
+        the top of AAMVA's recommended 7-to-10 band. Texas abolished the concept
+        on 1 November 2016 and now replaces on request only. Any consumer
+        modelling "US plates are replaced every 7-10 years" is wrong for the
+        second-largest vehicle fleet in the country. Voluntary replacement is
+        $6 plus a $0.50 automation fee (§ 504.007(a)(2); TxDMV states the same
+        figures).
+    region_encoding: none
+    region_encoding_note: "Texas encodes NOTHING geographic in the serial and never has in the modern era; the county of registration appears on no part of the plate. Contrast Oklahoma, whose 1981-2009 letter prefixes were county-coded (see us-ok)."
+    sources:
+      - "https://www.txdmv.gov/motorists/license-plates  # TxDMV: 'Current Design: The Texas Classic. Introduced in July 2012'; 'the first license plate in the country to feature two, high-visibility security threads'; 'As of November 1, 2016, the State of Texas no longer requires automatically replacing your plates after 7 years'; general-issue plate numbers 'assigned to you by TxDMV and cannot be personalized'"
+      - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.005(a) sole control over design/typeface/color/alphanumeric pattern; § 504.005(c) the half-inch Texas silhouette between letters and numerals, omittable on specially designed plates; § 504.005(d) reflectorized material; § 504.007 $6 replacement fee; § 504.010(b) one plate or set per registration period"
+      - "https://www.txdmv.gov/sites/default/files/body-files/ENF%20HB%20718%20FAQ%20Dealer%20Handout%20032125.pdf  # 'The general issue plates MUST be distributed in sequential order' — the progression claim"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Texas  # LOCATOR ONLY (PRD-PLATES §4): the ABC-1234 arrangement, the range BBB-0001 to YZS-4943 (as of 2026-03-29), the vowel/Q exclusion since 1990, and 12x6 in dimensions. None of these is asserted as sourced."
+    notes: >-
+      TEXAS CLASSIC, THE CURRENT GENERAL ISSUE. Note what Texas does NOT have: no
+      statutory dimension, no statutory colour, no statutory character cap, no
+      replacement cycle, no geographic encoding, and no published alphabet. The
+      entire specification lives in § 504.005(a)'s delegation, which makes Texas
+      the cleanest example in this group of a state whose plate facts are
+      administrative rather than legislative — and therefore the state where the
+      PRD's "prefer the statute over the brochure" rule yields the LEAST, because
+      the statute deliberately says almost nothing. The one thing the statute
+      does specify is the silhouette separator, and that turns out to be the
+      normatively interesting fact in the whole file. PERIOD: `start: 2012` is
+      TxDMV's own "Introduced in July 2012" and is a real claim, not an upper
+      bound; TxDMV separately dates the predecessor's launch to June 2009 while
+      the locator says July 2009, a disagreement that integer-year periods
+      dissolve and which is recorded here rather than averaged (PRD-PLATES §5.3).
+
+  # =========================================================================
+  # ONE SERIES BACK — "Lone Star Texas", the seven-character transition.
+  # =========================================================================
+  - id: us-tx-standard-lone-star
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2009, end: 2012 }
+    period_evidence: authority-stated
+    matching: strict
+    format:
+      pattern: "LL9-L999"
+      regex: '\A[A-Z]{2}\d[- ]?[A-Z]\d{3}\z'
+      serial_basis: authority-stated-arrangement
+      charset:
+        notes: >-
+          TxDMV describes this arrangement in prose rather than in notation, and
+          the prose is the source: "After 33 years, Texas' growth exhausted the
+          six character alpha-numeric plate patterns. The new passenger vehicle
+          plate patterns began with TWO LETTERS, FOLLOWED BY A NUMBER AND THEN A
+          LETTER AND THREE NUMBERS." That is `LL9-L999`, and it is one of the few
+          serial arrangements in this whole group stated by the issuing authority
+          in its own words rather than read off a collector's table.
+        excluded_reported: ["A", "E", "I", "O", "U", "Q"]
+        excluded_basis: locator-unconfirmed
+      progression: "reported BB1-B001 to approximately DZ9-Z999 (locator)"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_basis: locator-unconfirmed
+      material: "reflectorized per § 504.005(d); FIRST NON-EMBOSSED (fully screened/digital) general-issue plate in Texas"
+      background: { finish: retroreflective }
+      colour_note: >-
+        No hex asserted. TxDMV describes it only as the first plate "to use full
+        color and full-plate graphics"; the locator adds a Davis Mountains
+        landscape under a sky, a lone star and red and blue streaks in the upper
+        left. Because Texas asserts ownership of plate designs by statute, the
+        graphic is described but never reproduced.
+      legend_top: "TEXAS"
+      legend_bottom: "The Lone Star State"
+      separator_glyph: { printed: "silhouette of the State of Texas (§ 504.005(c) applied to this base as well)" }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    withdrawal_note: "TxDMV, unusually candidly, records WHY this base was replaced: 'the plate design was not favored by law enforcement, and some Texans complained the plate's colors clashed with their vehicle color.' The 2012 successor is monochrome for exactly that reason."
+    region_encoding: none
+    sources:
+      - "https://www.txdmv.gov/motorists/license-plates  # TxDMV 'Previous General-Issue Plate Designs — Lone Star Texas': first digital general-issue plate, first full colour and full-plate graphics, 'launched in June 2009', 'it began the seven-character plate number', the two-letters/number/letter/three-numbers pattern, the e-Vote selection and the law-enforcement objection"
+      - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.005(c)-(d): the silhouette separator and the reflectorized-material requirement, which apply to this base identically"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Texas  # LOCATOR ONLY: July 2009 - June 2012 dates and the BB1-B001 to DZ9-Z999 range; TxDMV's own 'June 2009' is preferred and the disagreement is recorded, not averaged"
+    notes: >-
+      LONE STAR TEXAS — THE SEVEN-CHARACTER TRANSITION. This series is the reason
+      the modern Texas format exists: TxDMV states that thirty-three years of
+      six-character patterns ran out and the plate went to seven characters here,
+      in 2009. Its predecessor ("Panoramic Texas", 2000-2009) was, in TxDMV's
+      words, "the last stamped plate in Texas history, and also the last
+      general-issue plate issued with six characters"; it is not given a series
+      in this L2 pass because L2 scope is the current series plus ONE back, and
+      because its several six-character arrangements are locator-grade only.
+
+  # =========================================================================
+  # GOVERNMENT — the EXEMPT plate. In scope per L2 ("government" is a core
+  # separately-serialized class).
+  # =========================================================================
+  - id: us-tx-exempt
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2014 }
+    period_evidence: locator-unconfirmed
+    matching: strict
+    format:
+      pattern: "999-9999"
+      regex: '\A\d{3}[- ]?\d{4}\z'
+      serial_basis: locator-unconfirmed
+      charset: { notes: "all-numeric, seven digits, on the Texas Classic base with 'EXEMPT' set between the state name and the serial. No TxDMV instrument stating the arrangement was obtained." }
+      progression: "reported 118-0000 onward on the current base (locator)"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      legend_top: "TEXAS"
+      legend_bottom: "The Lone Star State"
+      legend_mid: "EXEMPT"
+      separator_glyph: { printed: "silhouette of the State of Texas" }
+      emblem: { present: true, rendered: placeholder }
+    eligibility_note: >-
+      § 504.007(f) confirms the class exists in law by excluding "exempt plates
+      for governmental entities and temporary registration plates" from the
+      replacement-plate reuse rule of § 504.007(e). TxDMV's own 9 July 2025
+      memo, issued under the HB 718 regime, states who qualifies: "governmental
+      agencies (state, federal, city, county)", "public schools" and "certain
+      nonprofit organizations, as defined by statute". The same memo records a
+      distribution rule that matters after HB 718 — "Exempt plates are not
+      issued directly to dealers by the department", so unlike general-issue
+      plates they do not flow through the dealer allocation and must be obtained
+      through the county tax assessor outside webDEALER. The underlying
+      eligibility conditions live in Transportation Code ch. 502 (§ 502.451 et
+      seq.), which was NOT read this pass — recorded gap.
+    region_encoding: none
+    sources:
+      - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.007(f): 'exempt plates for governmental entities and temporary registration plates' named as a distinct class in statute"
+      - "https://www.txdmv.gov/sites/default/files/body-files/Memo_Exempt-Plates-Process_07092025.pdf  # TxDMV memo, 9 July 2025: eligible entities are 'governmental agencies (state, federal, city, county)', 'public schools' and 'certain nonprofit organizations, as defined by statute'; and 'Exempt plates are not issued directly to dealers by the department'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Texas  # LOCATOR ONLY: the 123-4567 arrangement, the 'EXEMPT' mid-legend, the 2014 move to the Texas Classic base and the 118-0000 range"
+    notes: >-
+      EXEMPT (GOVERNMENT FLEET) PLATES. Included because L2 names government as a
+      core class and because the statute independently confirms the class exists;
+      the FORMAT, however, is locator-grade and is labelled as such rather than
+      dressed up. The honest summary is: class sourced, arrangement not. A
+      verifier should re-derive the arrangement from 43 TAC ch. 217 once the
+      Texas Administrative Code is reachable again.
+
+  # =========================================================================
+  # PERSONALIZED — statutory, and vendored.
+  # =========================================================================
+  - id: us-tx-personalized
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2012 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?:[- ]?[A-Z0-9]){0,6}\z'
+      serial_basis: authority-frame-inferred
+      charset:
+        notes: >-
+          Owner-chosen inside the seven-character frame TxDMV describes for
+          general issue. § 504.005(a) leaves the alphanumeric pattern wholly to
+          the department and Chapter 504 states no cap, so the seven-character
+          bound here is INFERRED from TxDMV's own "seven-character plate number"
+          language rather than read off an instrument. TxDMV publishes
+          "Personalized License Plate Guidelines & Restrictions", but that
+          document is served through a JavaScript-rendered link and was NOT
+          retrieved this pass — the content-refusal criteria and the exact
+          character rules are a RECORDED GAP.
+        approval: "§ 504.101 requires the department to issue personalized plates 'including those sold by the private vendor under a contract with the department as provided by Section 504.851'. TxDMV: 'Personalized messages must be approved by the Texas Department of Motor Vehicles.'"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      note: "a personalized configuration may be ordered on the standard base or on most specialty designs; the design is therefore a property of the chosen base, not of this series"
+      emblem: { present: true, rendered: placeholder }
+    vendor: "sold through MyPlates.com, which TxDMV calls 'the state's plate marketing vendor', under the § 504.851 private-vendor contract. Terms are 1, 3 or 5 years; a selection not renewed within 60 days of expiry is automatically cancelled and released for anyone to order."
+    region_encoding: none
+    sources:
+      - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.101: the department shall issue personalized plates 'including those sold by the private vendor under a contract with the department as provided by Section 504.851'; § 504.005(a): the alphanumeric pattern is departmental"
+      - "https://www.txdmv.gov/motorists/license-plates  # TxDMV: myplates.com is 'the state's plate marketing vendor'; personalized messages must be approved by TxDMV; 1/3/5-year terms and the 60-day auto-cancellation; no refunds because plates are custom manufactured"
+    notes: >-
+      PERSONALIZED PLATES, MODELLED SEPARATELY BECAUSE THE SERIAL SOURCE DIFFERS —
+      owner-chosen rather than department-assigned — which is a format property
+      even where the character frame matches. The Texas wrinkle is that the
+      channel is PRIVATE: § 504.851 puts a commercial vendor between the citizen
+      and the department for personalized and much specialty issuance, which is
+      unusual among US states and is the reason the specialty index below points
+      at a vendor site rather than at a government catalogue.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX ONLY, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-tx-specialty-index
+    class: specialty
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2012 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL-9999"
+      regex: '\A[A-Z]{3}[- ]?\d{4}\z'
+      serial_basis: authority-stated-arrangement
+      charset: { notes: "specialty plates carry ORDINARY department-assigned serials on an alternative design unless personalized; the general-issue arrangement applies. § 504.008(b): 'the department may vary the design of a license plate to accommodate or reflect its use on a motor vehicle other than a passenger car or light truck.'" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      note: "one design per authorised program; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here. § 504.008(a): 'The department shall prepare the designs and specifications of specialty license plates.'"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_secondary: "506 available"
+      count_basis: locator-unconfirmed
+      count_note: >-
+        THE COUNT IS THE WEAKEST FACT IN THIS FILE AND IS LABELLED AS SUCH.
+        Wikipedia states "Texas has more specialty plates than any other state,
+        with 506 available" and cites a TxDMV URL for it; that TxDMV page
+        (/motorists/license-plates/specialty-license-plates) returned HTTP 403 to
+        every fetch attempt in this pass, so the figure could not be confirmed at
+        source. Compare Florida, where FLHSMV states "over 100" in its own words.
+        Recorded as a locator claim with its provenance, NOT reconciled and NOT
+        averaged (PRD-PLATES §5.3).
+      statutory_frame:
+        - "§ 504.008: the department prepares specialty designs and specifications; any motor vehicle other than one manufactured for off-highway use only is eligible"
+        - "§ 504.601(a): the default specialty issuance fee is $30, of which the department keeps $8 for administrative costs"
+        - "§ 504.6011: a SPONSOR may contract with the private vendor for marketing and sale, in which case the § 504.851 vendor fee schedule displaces the $30 and the vendor takes the remainder after the department's costs and the sponsor account deposit"
+        - "§ 504.851: the private-vendor contract itself — the instrument that makes Texas's specialty program commercially operated"
+        - "§ 504.009: SOUVENIR plates, which are NOT insignias of registration and are not street legal; $20, $40 personalized, sold in bulk minimum 25 for fundraising. A genuinely separate artefact that a plate dataset must not confuse with an issued plate."
+      official_program_pages:
+        - "https://www.txdmv.gov/motorists/license-plates  # the index page that names the vendor and the ordering path"
+        - "https://www.myplates.com/  # the § 504.851 private vendor's catalogue — a COMMERCIAL site, cited as the operative catalogue rather than mined"
+        - "http://100plates.txdmv.gov/  # TxDMV-hosted specialty-plate microsite linked from the plates index; not fetched this pass (recorded gap)"
+      military_and_restricted: "Subchapters D-G of Chapter 504 authorise roughly seventy named military, service-award and office-holder plates individually IN STATUTE (§§ 504.301-504.335, 504.400-504.417, 504.501-504.518). Unusually for a US state, Texas legislates specialty plates one statute at a time rather than by a general delegation — so a large part of the Texas specialty catalogue is itself an edict of government and therefore public domain even though the DESIGNS are claimed under § 504.002(a)(3)."
+    region_encoding: none
+    sources:
+      - "https://statutes.capitol.texas.gov/Docs/TN/htm/TN.504.htm  # § 504.008 specialty design authority and eligibility; § 504.601 the $30/$8 default fee split; § 504.6011 the sponsor-vendor route; § 504.009 souvenir plates; §§ 504.301-504.518 the individually legislated military/service/office plates"
+      - "https://www.txdmv.gov/motorists/license-plates  # TxDMV: order through myplates.com, 'the state's plate marketing vendor'; 1/3/5-year specialty terms; the 60-day cancellation rule; souvenir plates 'are not street legal and are not insignias of vehicle registration'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Texas  # LOCATOR ONLY: the '506 available' figure and the claim that Texas leads the US in specialty count — recorded unreconciled because the cited TxDMV page 403s"
+    notes: >-
+      THE TEXAS SPECIALTY INDEX — ONE ENTRY STANDING FOR THE WHOLE PROGRAM, which
+      is exactly what PRD-PLATES §2.5 asks for at this gate. Two things are worth
+      carrying forward. First, Texas is the US state where the specialty program
+      is most thoroughly PRIVATISED: § 504.851 puts a vendor in the middle and
+      §§ 504.6011-504.6012 route the money through it, so the operative catalogue
+      is a commercial website and there is no FLHSMV-style official brochure to
+      count from. Second, and pulling the other way, Texas legislates individual
+      plates by statute more than any other state in this group — which means a
+      large slice of the catalogue can be enumerated from Chapter 504 itself, an
+      edict of government, without touching the vendor at all. That is the route
+      a future L4 pass should take.
+
+# ---------------------------------------------------------------------------
+# Classes Texas separately serializes that are DELIBERATELY NOT given series
+# here, because no serial format was obtainable from any authority source and
+# PRD-PLATES forbids inventing one. Each is a named target for the next pass.
+# ---------------------------------------------------------------------------
+notable_classes_not_specced:
+  - class: dealer
+    evidence: "TxDMV /dealers/dealer-license-plates: metal dealer plates for franchised and independent dealers, manufacturers, converters and in-transit operators; two-year term matching the licence; $90 per Standard Dealer Plate (a $40 plate fee plus a $50 Plate Use Tax under Tex. Tax Code § 152.027); one plate per vehicle, rear only. Authorised by Transportation Code ch. 503, not ch. 504."
+    gap: "serial format not published by TxDMV and not obtained"
+  - class: temporary
+    evidence: "the four HB 718 metal plates — Buyer Provisional, Dealer Temporary (blue), Out-of-State Buyer, Temporary Registration (red) — see `temporary_regime` above"
+    gap: "no serial format published for any of the four"
+  - class: motorcycle
+    evidence: "§ 504.943(b) names motorcycles as a one-plate class, so Texas plainly issues a distinct motorcycle plate"
+    gap: "no arrangement obtained from TxDMV or from the locator's tables"
+  - class: trailer
+    evidence: "§ 504.943(b) names trailers and semitrailers as one-plate classes; § 504.516 sets rental/travel trailer fees"
+    gap: "no arrangement obtained"
+  - class: historic
+    evidence: "§ 504.501: specialty plates for a vehicle 'at least 25 years old or ... a custom vehicle or street rod', bearing 'Classic', 'Custom Vehicle' or 'Street Rod'. § 504.501(b) additionally permits YEAR-OF-MANUFACTURE plates — an owner may run a genuine plate 'of a plate design that was issued by this state in the same year as the model year of the vehicle', embossed with an alphanumeric pattern and approved by the department. That is a real modelling trap: a lawful current Texas registration may display a 1957 Texas plate."
+    gap: "the modern Classic/Custom/Street Rod serial arrangement was not obtained; the year-of-manufacture route has no arrangement of its own by construction"
+  - class: digital
+    evidence: "§§ 504.151-504.157 authorise DIGITAL license plates in Texas, with a $45 annual administrative fee by rule. TxDMV: 'The Texas Department of Motor Vehicles is working to secure a digital plate production partner to continue offering these plates.'"
+    gap: "`_meta/classes.yml` has no `digital` value, and a digital plate's serial is the vehicle's ordinary serial rendered on a screen. Flagged as a VOCABULARY question for the maintainer, not modelled here."

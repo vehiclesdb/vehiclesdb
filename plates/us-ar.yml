@@ -1,0 +1,427 @@
+# plates/us-ar.yml — Arkansas (PRD-PLATES gate L2, group: southcentral).
+#
+# READ THIS BEFORE TRUSTING ANY CLAIM IN THIS FILE. Arkansas is the WEAKEST-
+# SOURCED state in the southcentral group, and the reason is structural rather
+# than lazy: THE ARKANSAS CODE IS NOT FREELY FETCHABLE. Arkansas publishes its
+# code through LexisNexis — the "Arkansas Code" link in the state's own portal
+# navigation points at `advance.lexis.com/container?config=...`, a JavaScript
+# application behind a session — and every free reproduction tried in this pass
+# (law.justia.com, codes.findlaw.com) returned HTTP 403 behind Cloudflare. So
+# unlike Texas (Chapter 504 read in full), Oklahoma (Title 47 read in full) and
+# Louisiana (the OMV policy manual read in full), NOT ONE WORD OF ARKANSAS
+# STATUTE IS QUOTED BELOW. Everything here rests on the DFA — the issuing
+# authority, which is a primary source in its own right under PRD-PLATES §4 —
+# or is explicitly marked locator-grade.
+#
+# THAT IS ITSELF A FINDING, and it belongs in the record: edicts of government
+# are public domain at every level, which means Arkansas's statutes are PD by
+# law while being, in practice, unreachable without a commercial subscription.
+# The rights position and the access position have come apart. A verifier with
+# Lexis access closes most of the gaps in this file in an afternoon; a verifier
+# without it cannot, and no amount of care substitutes for the text.
+#
+# WHAT ARKANSAS IS ACTUALLY INTERESTING FOR: it is the counterexample to the
+# assumption that a new serial format means a new plate. The Arkansas base
+# design has been unchanged since MARCH 2006 — a twenty-year-old current base,
+# in the same league as the "oldest designs still in use" list the US dossier
+# records (Delaware 1959, Colorado 1960, DC 1975, Minnesota 1978, North Carolina
+# 1982) — while the serial ARRANGEMENT changed underneath it in April 2021 when
+# the numeric-first space ran out. Under PRD-PLATES §2.3 ("own series iff format
+# OR design OR period differs") that is two series on one design, and modelling
+# it any other way would let a parse API date an Arkansas plate fifteen years
+# wrong.
+jurisdiction: us-ar
+authority:
+  name: Arkansas Department of Finance and Administration (DFA), Office of Motor Vehicle
+  url: "https://www.dfa.arkansas.gov/office/motor-vehicle/"
+binding: vehicle
+statute_edition: "NONE READ. The Arkansas Code (Title 27, Transportation, subtitle 4, ch. 14 — Motor Vehicle Registration and Licensing) is published through LexisNexis and was not obtainable by fetch in this pass. See the header. Every statutory reference below is a POINTER, not a quotation."
+statute_access_note: >-
+  Attempted and failed: advance.lexis.com (JS container, session-gated, linked as
+  "Arkansas Code" from portal.arkansas.gov's own navigation); law.justia.com
+  (HTTP 403, Cloudflare interstitial); codes.findlaw.com (HTTP 403);
+  arkleg.state.ar.us FTPDocument paths (42-byte empty responses). Recorded so the
+  next pass does not repeat the same four dead ends.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: no-pd-rule-found-default-copyrighted
+  basis: >-
+    ADVERSE BY DEFAULT. 17 U.S.C. §105 does not reach the states, so an Arkansas
+    plate design is copyrighted unless Arkansas says otherwise, and no Arkansas
+    instrument saying otherwise was located: Arkansas does not appear in the
+    favourable column of the US dossier's per-state table, and no {{PD-ARGov}}
+    tag was found in the sampled Commons set. What was found is a general portal
+    assertion rather than a plate-specific one — the Arkansas.gov footer reads
+    "Copyright 2026. All Rights Reserved, Arkansas.gov", and the portal's
+    acceptable-use terms state "You may not capture Arkansas.gov pages within
+    frames or present Arkansas.gov content as your own." Those bind web content,
+    not plate designs, and are recorded as posture evidence only.
+  contractor_wrinkle: >-
+    A complication no other state in this group has. The Arkansas.gov portal is
+    operated by TYLER TECHNOLOGIES (the DMCA designated agent named in the
+    acceptable-use terms is "Tyler Technologies, Inc., Attention: Chief Legal
+    Council, 1 Tyler Drive, Yarmouth, ME"), and the plates themselves are
+    reported to be manufactured by WALDALE MANUFACTURING LIMITED of Amherst,
+    Nova Scotia — a private Canadian contractor, where Texas uses its own prison
+    industries. Where a private contractor draws or manufactures a state design,
+    "is this a state work?" stops being the only question. Flagged, not resolved.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies to the DIAMOND graphic that has
+    sat in the centre of the Arkansas base since 2006 (the diamond is an
+    Arkansas state symbol — the state is the only US diamond producer — so the
+    state-symbol regime, independent of copyright, is in play and is
+    unresearched). Render `emblem: {present: true, rendered: placeholder}`.
+  sources:
+    - "https://portal.arkansas.gov/v/acceptable-use/  # Arkansas.gov acceptable-use and legal notices: 'Copyright 2026. All Rights Reserved, Arkansas.gov'; the no-framing / no-passing-off rule; Tyler Technologies as DMCA designated agent"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY (PRD-PLATES §4): §105 does not reach the states; Arkansas is not listed among the states with a favourable rule — used to evidence an ABSENCE"
+
+# ---------------------------------------------------------------------------
+# The US standards chain — recorded once per US file (see us-fl.yml).
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption; AAMVA has no enforcement power."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 delegates dimensions and bolt holes to SAE J686, whose text is paywalled and UNPINNED; no J686 dimension is quoted anywhere in this dataset."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of the top and bottom edges"
+    replacement_cycle: "AAMVA §1.1 recommends a rolling or full replacement cycle 'not to exceed 7 to 10 years'. NO ARKANSAS REPLACEMENT CYCLE WAS FOUND, and on the evidence there is none: the current base has been issued continuously since March 2006, which is twenty years and twice AAMVA's outer bound. Recorded as an apparent absence, not as a sourced absence."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' remains COMMONLY REPEATED, UNSOURCED (PRD-PLATES §4). The Arkansas locator repeats it with the same unobtained ALPCA magazine citation the Texas article uses, and adds a genuinely interesting detail that is worth chasing to a primary one day: that Arkansas's 1947, 1952 and 1955 issues were already 6 x 12 in but had NON-STANDARD MOUNTING HOLES, so the 1956 issue was the first to comply fully. If true, that is evidence the 1956 convention was about bolt spacing as much as about size — which is exactly what AAMVA §3.1 still delegates to J686 today."
+
+# ---------------------------------------------------------------------------
+# Display rules. Recorded thinly and honestly, because the Arkansas Code was
+# unreachable and the DFA site does not restate the display rule.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "ONE plate, rear."
+  basis: locator-unconfirmed
+  note: >-
+    The claim "Only rear plates have been required since 1944" comes from a
+    LOCATOR and could not be traced to Arkansas Code § 27-14-716 or to any DFA
+    page in this pass. It is recorded because a display model needs a value and
+    because the claim is consistent with every Arkansas plate image in the
+    locator's tables, but it is NOT sourced and must not be published as though
+    it were. This is the single most-used fact in the file with the weakest
+    support; a verifier should close it first.
+  sources:
+    - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY (PRD-PLATES §4): 'Only rear plates have been required since 1944.' Not asserted as sourced; the underlying Arkansas Code section was not obtainable."
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD-ISSUE SERIES — a new ARRANGEMENT on a twenty-year-old
+  # DESIGN.
+  # =========================================================================
+  - id: us-ar-standard
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2021 }
+    period_evidence: locator-unconfirmed
+    matching: strict
+    format:
+      pattern: "LLL 99L"
+      regex: '\A[A-Z]{3} ?\d{2}[A-Z]\z'
+      serial_basis: locator-unconfirmed
+      charset:
+        notes: >-
+          NO ARKANSAS INSTRUMENT STATING AN ALPHABET OR A LENGTH WAS OBTAINED,
+          because the Code was unreachable and the DFA publishes no format page.
+          The arrangement recorded here — three letters, two numerals, one
+          letter — is locator-grade and is labelled as such throughout. It is
+          NOT given a `regex_strict`, because PRD-PLATES §2.7 reserves that tier
+          for the authority's own alphabet and Arkansas has published none.
+        excluded_reported: ["Q"]
+        excluded_basis: locator-unconfirmed
+        excluded_note: >-
+          Q is reported unused in Arkansas serials since 1968; U and V are
+          reported dropped from 1973 and ADDED BACK IN 2015, which is an unusual
+          direction of travel (most states shed letters over time and never
+          restore them) and is worth verifying precisely because it is unusual.
+          Recorded, not asserted.
+      progression: "reported AAA 01A onward, reaching BJA 95D as of 2025-10-31 (locator). Note this begins at AAA, i.e. the 2021 arrangement RESTARTED the alphabet rather than continuing the previous sequence — the opposite of Oklahoma, whose serials run straight through a base change."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_basis: locator-unconfirmed
+      material: "aluminium; reported manufactured by Waldale Manufacturing Limited, Amherst, Nova Scotia (locator)"
+      background: { finish: retroreflective }
+      colour_note: >-
+        NO HEX ASSERTED. The base is reported as an embossed black serial on a
+        reflective gradient sky-blue-and-white field with a diamond graphic
+        screened in the centre, "Arkansas" in dark red at the top and "The
+        Natural State" in dark red at the bottom. All of that is locator
+        description; no DFA colour spec was obtained and the Code was unreachable.
+      legend_top: "Arkansas"
+      legend_bottom: "The Natural State"
+      graphic: { present: true, rendered: placeholder, description: "diamond, centred — an Arkansas state symbol; not reproduced (see artwork_risk.emblem_rule)" }
+      emblem: { present: true, rendered: placeholder }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    region_encoding_note: "no geographic encoding in the serial and none reported historically; Arkansas is the plainest of the four states in this group on that axis."
+    sources:
+      - "https://www.dfa.arkansas.gov/office/motor-vehicle/  # the issuing authority: DFA Office of Motor Vehicle, the body that issues and administers Arkansas plates"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY (PRD-PLATES §4): the ABC 12D arrangement from April 2021, the AAA 01A to BJA 95D range as of 2025-10-31, the 2006 base design and its diamond graphic, the Q/U/V exclusions and the 2015 restoration of U and V, 12 x 6 in aluminium, Waldale manufacture. Wikipedia's own citation for the range is licenseplates.cc, a collector site. Nothing here is asserted as sourced."
+    notes: >-
+      ARKANSAS CURRENT ISSUE — SAME PLATE, NEW NUMBER SHAPE. The modelling
+      decision to record is why this is its own series rather than a note on the
+      2006 entry: PRD-PLATES §2.3 makes a format difference sufficient on its
+      own, and here the format is the ONLY difference — same design, same
+      slogan, same graphic, same everything visible except the arrangement of the
+      characters. A dataset that keyed series to base designs would have one
+      Arkansas series covering twenty years and no way to date a plate; keying to
+      format gives a 2006/2021 boundary that is actually useful to a parser. The
+      cost is that the boundary itself is locator-grade, and it is labelled that
+      way rather than dressed up.
+
+  # =========================================================================
+  # ONE SERIES BACK — the same design with the numeric-first arrangement.
+  # =========================================================================
+  - id: us-ar-standard-2006
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2006, end: 2021 }
+    period_evidence: locator-unconfirmed
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} ?[A-Z]{3}\z'
+      serial_basis: locator-unconfirmed
+      charset:
+        notes: "three numerals then three letters. Same absence of any published Arkansas alphabet as the current series; U and V are reported re-admitted to the alphabet part-way through this series' life, in 2015 (locator)."
+        excluded_reported: ["Q"]
+        excluded_basis: locator-unconfirmed
+      progression: "reported 001 KPG to 999 ZZZ (locator) — i.e. this arrangement CONTINUED the sequence of the 1996-2006 series rather than restarting it, which is why the base change of March 2006 is invisible in the serial and the format change of 2021 is not."
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_basis: locator-unconfirmed
+      background: { finish: retroreflective }
+      colour_note: "IDENTICAL to the current series — reflective gradient sky blue and white, centred diamond, dark red 'Arkansas' and 'The Natural State'. The design did not change in 2021; only the serial did."
+      legend_top: "Arkansas"
+      legend_bottom: "The Natural State"
+      graphic: { present: true, rendered: placeholder, description: "diamond, centred" }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.dfa.arkansas.gov/office/motor-vehicle/  # the issuing authority"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY: the March 2006 base introduction, the 123 ABC arrangement, the 001 KPG to 999 ZZZ range, and the April 2021 arrangement change that ends this series"
+    notes: >-
+      THE 2006 ARRANGEMENT. Worth stating plainly for anyone reading the two
+      Arkansas standard series side by side: the DESIGN spans both and has been
+      current since March 2006, which puts Arkansas within reach of the
+      "oldest designs still in use" group the US dossier lists (Delaware 1959,
+      Colorado 1960, DC 1975, Minnesota 1978, North Carolina 1982). If the
+      Arkansas base survives to 2036 it belongs on that list outright. The
+      series split here is a SERIAL boundary, and the file says so in both
+      directions so that no consumer mistakes it for a redesign.
+
+  # =========================================================================
+  # MOTORCYCLE — separately serialized, and on its own arrangement.
+  # =========================================================================
+  - id: us-ar-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: locator-unconfirmed
+    matching: strict
+    format:
+      pattern: "999 LL"
+      regex: '\A\d{3} ?[A-Z]{2}\z'
+      serial_basis: locator-unconfirmed
+      charset: { notes: "three numerals then two letters, on a reduced-size plate. Arkansas has run motorcycle serials on their own sequence since at least 1979, cycling through AB 12, 12 AB, AB 123 and now 123 AB — a state that has repeatedly exhausted a five-character motorcycle space." }
+      progression: "reported 001 AA to 537 EF as of 2021-10-25 (locator)"
+    design:
+      plate: { unit: in, note: "reduced motorcycle size; no dimension obtained from any Arkansas source" }
+      background: { finish: retroreflective }
+      legend_top: "ARK. M CYCLE"
+      legend_basis: locator-unconfirmed
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    registration_note: "all Arkansas motorcycle plates expired on 30 June until 1994, when staggered registration was introduced (locator) — a rare, datable administrative fact about a non-passenger class."
+    region_encoding: none
+    sources:
+      - "https://www.dfa.arkansas.gov/office/motor-vehicle/  # the issuing authority for all Arkansas plate classes"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY: the 123 AB arrangement from 2015, the 001 AA to 537 EF range, the 'ARK. M CYCLE' legend, and the 1994 move to staggered registration"
+    notes: >-
+      ARKANSAS MOTORCYCLE. Included because L2 names motorcycle as a core class
+      and because Arkansas plainly serializes it separately — the sequence has
+      cycled through four distinct arrangements since 1979, which is only
+      possible on an independent numbering space. Everything about the format is
+      locator-grade and is labelled so. Note the contrast with Texas, where a
+      motorcycle plate certainly exists (§ 504.943(b) makes motorcycles a
+      one-plate class) but no arrangement could be obtained at all, so no series
+      was minted.
+
+  # =========================================================================
+  # TRAILER — Arkansas issues PERMANENT trailer plates, split by tow class.
+  # =========================================================================
+  - id: us-ar-trailer-permanent
+    class: trailer
+    categories: [trailer]
+    period: { start: 2006 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "L999999"
+      regex: '\A[A-Z]{1,2} ?\d{5,6}\z'
+      serial_basis: locator-unconfirmed
+      charset:
+        notes: >-
+          A letter-prefix plus a six-digit block. The interesting fact is that
+          the PREFIX ENCODES THE TOWING CLASS rather than a region or a year:
+          A/B-prefixed permanent trailer plates are reported for trailers hauled
+          by automobiles and class 1 trucks, and PT-prefixed plates for trailers
+          hauled by class 2 through 8 trucks, on a visibly different colour
+          scheme (blue on tan rather than black on white). An S/P prefix is
+          reported as an unidentified third permanent-trailer classification.
+          The regex accepts one or two prefix letters and five or six digits to
+          cover the reported variants without asserting which is which.
+      progression: "reported A000 001 to B649830 as of 2021-05-29 for the automobile/class-1 series, PT00 001? to PT210303 as of 2022-04-28 for the class 2-8 series, and S/P000 001 to S/P000 923 as of 2022-11-29 for the unidentified third (all locator)"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_basis: locator-unconfirmed
+      background: { finish: retroreflective }
+      colour_note: "reported all-embossed black on white for the A/B and S/P series and all-embossed blue on tan for the PT series — a genuine colour-carries-meaning case, where the colour distinguishes the tow class. No hex asserted."
+      emblem: { present: false }
+      rear_differs: false
+    validity: "PERMANENT — Arkansas issues these as non-expiring trailer plates (locator). A permanent plate means no revalidation decal and therefore no year signal anywhere on the artefact, which is a real problem for any dating heuristic."
+    region_encoding: none
+    weight_class_encoding:
+      mechanism: "letter prefix"
+      table:
+        - { prefix: "A", meaning: "permanent trailer, hauled by automobiles and class 1 trucks", basis: locator-unconfirmed }
+        - { prefix: "B", meaning: "permanent trailer, continuation of the A series", basis: locator-unconfirmed }
+        - { prefix: "PT", meaning: "permanent trailer, hauled by class 2 through 8 trucks", basis: locator-unconfirmed }
+        - { prefix: "SP", meaning: "permanent trailer, classification not identified in any source consulted", basis: locator-unconfirmed }
+      note: >-
+        THIS IS THE ONE PLACE IN THE SOUTHCENTRAL GROUP WHERE A PREFIX CARRIES
+        VEHICLE-CLASS SEMANTICS THAT A PARSER COULD USE, which is why it is
+        recorded as a table rather than buried in prose. It is entirely
+        locator-grade and must be verified against DFA's own trailer-registration
+        material before any consumer relies on it.
+    sources:
+      - "https://www.dfa.arkansas.gov/office/motor-vehicle/  # the issuing authority"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY: the three permanent-trailer prefixes, their reported tow-class meanings, the colour split, and the observed ranges"
+    notes: >-
+      ARKANSAS PERMANENT TRAILER PLATES. Included because L2 names trailer as a
+      core class and because Arkansas's version has an actual decode in it — the
+      prefix tells you what tows the trailer. Everything is locator-grade. The
+      S/P series is recorded WITH ITS UNKNOWN MEANING rather than omitted,
+      because a decode table with a hole in it that says "hole" is more useful
+      than a tidy table that quietly drops the case it cannot explain.
+
+  # =========================================================================
+  # HISTORIC — Arkansas runs a permanent-style antique series, and an older one
+  # that is dead but still lawfully displayed.
+  # =========================================================================
+  - id: us-ar-antique
+    class: historic
+    categories: [car, truck]
+    period: { start: 2007 }
+    period_evidence: locator-unconfirmed
+    matching: strict
+    format:
+      pattern: "L9999"
+      regex: '\A[A-Z]\d{4}\z'
+      serial_basis: locator-unconfirmed
+      charset: { notes: "one letter then four numerals; reported A0001 onward. The predecessor arrangement was five numerals (12345, running to 99999), which exhausted and was re-based with a letter prefix in 2007 — the same exhaust-and-reprefix move Arkansas made on its passenger series in 2021." }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      plate_dimension_basis: locator-unconfirmed
+      background: { finish: retroreflective }
+      colour_note: "reported black on white with an antique-car graphic at left. No hex asserted."
+      graphic: { present: true, rendered: placeholder, description: "antique car, at left (locator description; not reproduced)" }
+      emblem: { present: true, rendered: placeholder }
+    eligibility:
+      text: >-
+        DFA's own catalogue entry, verbatim: "For historical or special interest
+        vehicles or any vehicle that is THIRTY (30) YEARS OLD OR OLDER, which is
+        essentially unaltered from the original manufacturers specifications."
+        DFA adds that "Certain modifications are permitted if they are
+        characteristic of the approximate era to which the vehicle belongs or
+        considered to be safety related (brakes, seal beam headlights, seat
+        belts, etc.)."
+      threshold_kind: rolling
+      threshold_note: >-
+        A ROLLING thirty-year threshold — eligibility moves every year — which
+        puts Arkansas with Florida's Antique plate (rolling 30 years, § 320.086(2)(a))
+        and against Florida's Horseless Carriage plate (fixed model year 1945 or
+        earlier). Texas's § 504.501 Classic is rolling 25. Three of the four
+        southcentral states therefore use rolling age thresholds and only the
+        fixed-cutoff kind is absent here. The distinction is operationally real:
+        a rolling threshold silently re-qualifies vehicles every 1 January and
+        must be re-audited; a fixed cutoff never changes.
+      plate_category: "DFA classifies it under the catalogue's 'Special Interest' plate category"
+      basis: authority-stated
+    superseded_variants:
+      - "the 1957-2007 five-numeral antique plate is reported NO LONGER ISSUED BUT STILL VALID — a dead series lawfully on the road, exactly the case PRD-PLATES's `ended: true` + `year_end_min:` semantics exist for. It is not given its own entry here because the only source for its own format is a locator and because L2 scope is the current series plus one back per class."
+      - "a separate ANTIQUE MOTORCYCLE plate is reported with a three-numeral-plus-letter arrangement (123A) on an 'ARK. M CYCLE / ANTIQUE' legend — recorded here rather than as a series for the same reason."
+    region_encoding: none
+    sources:
+      - "https://www.dfa.arkansas.gov/specialty-plates/antique-vehicle-license-plate-current/  # DFA's own catalogue entry for the CURRENT antique vehicle plate: the rolling 30-year eligibility rule, the essentially-unaltered condition, the era-characteristic and safety-modification allowances, the Affidavit for License for an Antique Vehicle, and the 'Special Interest' plate category"
+      - "https://www.dfa.arkansas.gov/specialty-plates/antique-vehicle-license-plate-valid-no-longer-issued/  # DFA's own catalogue entry titled 'Antique Vehicle License Plate - Valid - No Longer Issued' — the authority itself distinguishing a VALID but DISCONTINUED series, which is direct support for the ended-but-displayed modelling above"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY: the A1234 arrangement from 2007, the preceding 12345 arrangement running 1957-2007, the antique-car graphic, and the separate antique-motorcycle plate"
+    notes: >-
+      ARKANSAS ANTIQUE. The genuinely valuable thing here is not the format but
+      the DFA catalogue's own two-entry treatment: the department publishes
+      "Antique Vehicle License Plate - Current" and "Antique Vehicle License
+      Plate - Valid - No Longer Issued" as separate catalogue items. That is an
+      issuing authority explicitly modelling a discontinued-but-still-valid
+      series in its own public catalogue — the same distinction PRD-PLATES draws
+      with `ended: true`, arrived at independently by a state DMV, and the
+      strongest available evidence that the schema's period semantics match how
+      registrars actually think.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX ONLY, per PRD-PLATES §2.5. Arkansas gives the
+  # cleanest COUNT in this group, from the department's own content API.
+  # =========================================================================
+  - id: us-ar-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2021 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 99L"
+      regex: '\A[A-Z]{3} ?\d{2}[A-Z]\z'
+      serial_basis: locator-unconfirmed
+      charset: { notes: "specialty plates draw from the ordinary passenger allocation unless personalized — the locator records for several classes (Ambulance, School Vehicle) that the serial is 'Taken from passenger allocation' and shows both the 123 ABC and ABC 12D arrangements on them, which is consistent with specialty designs riding the standard sequence across the 2021 format change." }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      note: "one design per authorised program; individual designs are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: 131
+      count_basis: authority-enumerated
+      count_method: >-
+        COUNTED FROM THE DEPARTMENT'S OWN CONTENT API, which is the most solid
+        specialty count in this group. dfa.arkansas.gov runs its specialty
+        catalogue as a `specialty-plates` content type; a request to
+        /wp-json/wp/v2/specialty-plates returns an X-WP-Total header of 131
+        (fetched 2026-08-02). That is DFA's own enumeration of its own
+        catalogue, not a third-party tally.
+      count_caveats:
+        - "the total counts CATALOGUE ENTRIES, not currently-issuable programs: at least one entry is 'Antique Vehicle License Plate - Valid - No Longer Issued', i.e. a discontinued design the department still documents"
+        - "at least two apparent DUPLICATE pairs are visible in the first page alone ('Arkansas Sheriffs' Association' twice, 'Arkansas State Lodge Fraternal Order of Police' twice with and without the words 'License Plate'), so 131 is an upper bound on distinct programs"
+        - "the catalogue mixes true optional-design programs with administrative classes (Ambulance, Amateur Radio, Apportioned Truck, Transporter), so it is a plate-type catalogue rather than a specialty-program catalogue in the Florida sense"
+      official_list_url: "https://www.dfa.arkansas.gov/office/motor-vehicle/specialty-plates-placards/"
+      structured_endpoint: "https://www.dfa.arkansas.gov/wp-json/wp/v2/specialty-plates  # a genuinely machine-readable official catalogue with per-plate pages — rarer than it should be, and worth snapshotting periodically the way FLHSMV's monthly report is"
+    region_encoding: none
+    sources:
+      - "https://www.dfa.arkansas.gov/office/motor-vehicle/specialty-plates-placards/  # DFA's official specialty plates and placards catalogue"
+      - "https://www.dfa.arkansas.gov/wp-json/wp/v2/specialty-plates  # the same catalogue as structured data; X-WP-Total: 131 at fetch time 2026-08-02 — the count claim"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas  # LOCATOR ONLY: that specialty classes such as Ambulance and School Vehicle take their serials 'from passenger allocation' and therefore show both passenger arrangements"
+    notes: >-
+      THE ARKANSAS SPECIALTY INDEX. Arkansas gives the best-structured specialty
+      catalogue of the four states here and the worst statutory access, which is
+      an instructive pairing: the department's WordPress content API happily
+      hands over a complete, paginated, per-plate catalogue with a total in an
+      HTTP header, while the Code that authorises every one of those plates sits
+      behind a commercial subscription. The count is reported with its three
+      caveats rather than as a round number, because 131 is an upper bound on
+      distinct live programs and saying so costs nothing.

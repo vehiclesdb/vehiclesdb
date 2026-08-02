@@ -1,0 +1,427 @@
+# plates/us-ct.yml — Connecticut (PRD-PLATES gate L2, northeast group).
+#
+# WHY CONNECTICUT IS UNUSUAL, and what the statute actually carries: Connecticut
+# is one of the few states whose CURRENT BASE HAS A STATUTORY START DATE and
+# whose LEGENDS ARE LEGISLATED. C.G.S. § 14-21b(a) says the commissioner "shall
+# issue fully reflectorized safety number plates for new registrations and
+# renewal registrations issued ON AND AFTER JANUARY 1, 2000", that "each plate
+# shall bear the words 'Constitution State' and 'Connecticut'", and that the
+# commissioner "shall issue TWO fully reflectorized safety number plates". So
+# the base year, the two legends, the reflectorization and the two-plate rule
+# are all primary — not brochure, not folklore. What the statute does NOT carry
+# is the SERIAL GRAMMAR: Chapter 246 nowhere states a character count, an
+# alphabet or a dimension. Every serial claim below is therefore secondary and
+# is labelled as such (PRD-PLATES §4: Wikipedia is a LOCATOR; ctplates.info and
+# licenseplates.cc are enthusiast corroboration, cited because they were used).
+#
+# THE SEPARATOR PROBLEM, recorded here because Connecticut is the first
+# jurisdiction in the dataset to hit it: Connecticut prints a RAISED MIDDLE DOT
+# between serial groups (AB·12345), not a hyphen and not a space. U+00B7 is in
+# `_meta/separators.yml`'s FORGIVING set — so a lenient consumer already strips
+# it correctly — but it is NOT in the EMITTED set, so the dataset may not spell
+# it (PRD-PLATES §2.6). Every pattern and regex below therefore writes the gap
+# as U+0020 and this note carries the fact. That is a data-honest workaround,
+# not a silent one; whether the emitted set should grow a third member is a
+# `_meta` PR question and is raised in the group dossier, not decided here.
+#
+# ARTWORK: Connecticut turns out to have the most interesting IP evidence in
+# this group and it is NOT favourable — see `artwork_risk`.
+jurisdiction: us-ct
+authority:
+  name: Connecticut Department of Motor Vehicles (CT DMV)
+  url: "https://portal.ct.gov/dmv"
+binding: vehicle
+statute_edition: >-
+  General Statutes of Connecticut, Title 14 Chapter 246 (Motor Vehicles.
+  Operators and Motor Vehicles), as published by the Connecticut General
+  Assembly and revised to January 1, 2026 — the edition read for this pass.
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: adverse-evidence-found
+  basis: >-
+    Connecticut is NOT in the Commons/Wikipedia survey of state public-domain
+    postures (no {{PD-CTGov}} template exists on Commons — checked by API this
+    pass, result MISSING), so the §105 default applies: a state work is
+    copyrighted unless the state says otherwise. Connecticut has said the
+    OPPOSITE of otherwise, in statute. C.G.S. § 14-21w(e) expressly authorises
+    the Commissioner of Motor Vehicles to "provide for the REPRODUCTION AND
+    MARKETING of the Share the Road commemorative number plate IMAGE for use on
+    clothing, recreational equipment, posters, mementoes or other products or
+    programs", with the proceeds going to a statutory account. A legislature
+    that grants its DMV a commercial licensing right over a plate IMAGE is a
+    legislature treating that image as a proprietary asset. The same section,
+    at (a), adds "No use shall be made of such plates except as official
+    registration marker plates." This is direct statutory evidence of an
+    asserted interest and it is stronger evidence than the absence of a Commons
+    tag. Treat Connecticut as adverse alongside NY/PA/WA/AZ.
+  scope_caution: >-
+    § 14-21w(e) is about ONE commemorative plate (Share the Road), not about the
+    standard base. No instrument was found asserting copyright over the standard
+    2000 base itself, and none was found disclaiming it. The honest reading is:
+    Connecticut demonstrably treats at least one plate image as marketable state
+    property, and nothing in the corpus suggests the standard base is treated
+    differently.
+  emblem_rule: >-
+    PRD-PLATES §3 placeholder default applies without exception here. The
+    Connecticut base carries a screened STATE SHAPE at top left; state-shape and
+    state-seal protection independent of copyright is unresearched for
+    Connecticut (recorded gap, same gap the FL pilot recorded).
+  photograph_caution: >-
+    Commons photographs of Connecticut plates carry the PHOTOGRAPHER's licence,
+    not the design's — the uploader had no standing over the design. Because our
+    renders are generated from spec and never derived from a photograph, those
+    obligations never attach (PRD-PLATES §4, §6).
+  sources:
+    - "https://www.cga.ct.gov/current/pub/chap_246.htm  # C.G.S. § 14-21w(a) 'No use shall be made of such plates except as official registration marker plates'; § 14-21w(e) the reproduction-and-marketing authority over the plate IMAGE — the adverse evidence"
+    - "https://commons.wikimedia.org/w/api.php?action=query&titles=Template:PD-CTGov  # queried this pass: Template:PD-CTGov is MISSING on Commons — no Connecticut public-domain tag exists, unlike PD-FLGov/PD-CAGov/PD-MAGov/PD-MEGov"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR: Connecticut has no entry in this survey — recorded as unsurveyed, not as favourable"
+
+# ---------------------------------------------------------------------------
+# Display rules — all statutory, all quoted from Chapter 246.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "TWO plates. § 14-21b(a): the commissioner 'shall issue two fully reflectorized safety number plates'; § 14-18(a)(2): a vehicle for which two number plates have been issued 'shall ... display in a conspicuous place at the front and the rear of such vehicle the number plates'. § 14-18(a)(1) governs the one-plate case (rear only)."
+  legibility: "§ 14-18(c): plates 'shall be entirely unobscured and the numerals and letters thereon shall be plainly legible at all times'; horizontal; 'fastened so as not to swing'; and when lights are required the REAR plate 'shall be so illuminated as to be legible at a distance of fifty feet'."
+  one_per_end: "§ 14-18(c): 'Not more than one number plate shall be displayed on the front or rear of any motor vehicle' — subject to a commissioner's permission exception. A genuinely unusual rule; most states legislate a minimum, Connecticut legislates a maximum."
+  obstruction: "§ 14-18(c): 'Nothing may be affixed to a motor vehicle or to the official number plates displayed on such vehicle that obscures or impairs the visibility of any information on such number plates.'"
+  ownership: "§ 14-18(d): 'All number plates shall be the property of the state and no title therein shall pass to any person registering a motor vehicle' — except that on a new general issue 'the obsolete number plates shall become the property of the registrant upon the expiration date'."
+  sample_plates: "§ 14-18(e): the commissioner may issue a plate inscribed with the legend 'SAMPLE', which may not be displayed on any vehicle."
+  penalty: "§ 14-18(g): violation of subsection (a), (c), (d), (e) or (f) is an INFRACTION. § 14-21b(c): failure to display issued reflectorized plates as provided in § 14-18 is also an infraction."
+  sources:
+    - "https://www.cga.ct.gov/current/pub/chap_246.htm  # § 14-18(a)(1),(a)(2) display front/rear; (c) legibility, horizontality, 50-foot rear illumination, the not-more-than-one rule, the obstruction rule; (d) state ownership of plates; (e) SAMPLE plates; (g) infraction. § 14-21b(a),(c) two reflectorized plates and the display infraction"
+
+# ---------------------------------------------------------------------------
+# The US standards chain, recorded once per jurisdiction file. Nothing below
+# quotes SAE J686 (paywalled, unpinned — the standing rule).
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA writes recommendations in the declarative present; they are RECOMMENDED PRACTICE, not requirement."
+  aamva_geometry: "AAMVA §2.1 jurisdiction name top-centre between the bolt holes, >=0.25 in above the plate number, >=0.125 in from the top edge, characters 0.75-1.0 in; §2.2 serial characters >=2.5 in high, >=0.25 in apart, stroke 0.2-0.4 in, >=1.25 in clear of top and bottom; §3.3 readable in daylight and at night from >=75 feet, materials per ASTM D4956-19 and ISO 7591:1982 cl.3, entrance angle 0.2 deg, observation angle -4 deg, minimum 45 cd/lx/m^2."
+  dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is PAYWALLED and was NOT obtained. No J686 dimension is quoted here. Connecticut's own statute states NO plate dimension at all (Chapter 246 was read in full for this pass; the word 'inches' appears nowhere in a plate-size context) — so the 12x6 in figure below is `observed`, not sourced."
+  replacement_cycle_recommendation: "AAMVA §1.1 recommends a rolling or full replacement cycle 'not to exceed 7 to 10 years'. Connecticut legislates NO replacement cycle in Chapter 246 (recorded gap); its 2000 base has been in issue for 26 years, well past the AAMVA recommendation."
+  source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: >-
+    The "1956 AMA/AAMVA/NSC standardization agreement" appears in the Connecticut
+    Wikipedia article WITH a citation, unlike the US article where it is a bare
+    `citation needed` — but the citation is Christopher Garrish, "Reconsidering
+    the Standard Plate Size", *Plates* (ALPCA) vol. 62 no. 5, October 2016: a
+    hobby-association members' magazine, not obtained, not obtainable online, and
+    whose very TITLE announces that it reconsiders the standard story. Recorded
+    as COMMONLY REPEATED, STILL UNVERIFIED, with the pointer to the one artefact
+    that might settle it. Connecticut's own 6x12 in plate is not in its statute.
+
+series:
+
+  # =========================================================================
+  # CURRENT STANDARD ISSUE.
+  # =========================================================================
+  - id: us-ct-standard-2015
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2015 }
+    period_evidence: secondary-dated
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A[A-Z]{2} ?\d{5}\z'
+      charset:
+        notes: >-
+          Reported alphabet: letters I, O and Q not used. THE STATUTE STATES NO
+          ALPHABET AND NO LENGTH — Chapter 246 was read in full and contains no
+          character-count or character-set rule for standard plates, so this
+          exclusion is secondary (Wikipedia locator, sourced there to a Hartford
+          Courant report of the September 2015 changeover). It is recorded as a
+          note and deliberately NOT promoted to a `regex_strict`: PRD-PLATES
+          reserves the strict twin for the AUTHORITY's own alphabet, and laundering
+          a newspaper report into a strict twin is exactly the folklore failure
+          §4 forbids.
+      separator_note: >-
+        THE PRINTED SEPARATOR IS A RAISED MIDDLE DOT (U+00B7): the plate reads
+        AB·12345. U+00B7 is in `_meta/separators.yml`'s FORGIVING set but not its
+        EMITTED set, so the dataset spells the gap as U+0020 here and records the
+        true glyph in this note (PRD-PLATES §2.6). A lenient consumer already
+        strips U+00B7 correctly; a consumer RENDERING from this data must read
+        this note, not the pattern, to place the dot.
+      progression: "AA 00001 upward; reported at BW 99865 as of 31 October 2025 (licenseplates.cc — enthusiast corroboration, cited because used)"
+    design:
+      plate: { w: 12, h: 6, unit: in, w_mm: 304.8, h_mm: 152.4, hex_basis_note: "dimension OBSERVED, not sourced — Connecticut's statute states no plate size" }
+      background: { finish: retroreflective }
+      colour_note: >-
+        NO HEX IS RECORDED. The base is a GRADIENT (reflective sky blue fading to
+        white) with a dark blue serial, so a single background hex would be a
+        false claim, and § 14-21b mandates reflectorization while naming no
+        colour at all. Recorded as a gap rather than invented — the FL pilot's
+        lesson applied.
+      legend_top: "Connecticut"
+      legend_bottom: "Constitution State"
+      legend_rule: >-
+        STATUTORY. § 14-21b(a), verbatim: "Each plate shall bear the words
+        'Constitution State' and 'Connecticut'." The statute fixes the WORDS but
+        not their placement; top/bottom placement is observed. Note the contrast
+        with the 1987-1999 base, where the same two words appeared with
+        CONNECTICUT at top and CONSTITUTION STATE at bottom after a 1987 swap —
+        i.e. the statute has been satisfied by two different layouts.
+      emblem: { present: true, rendered: placeholder, description: "screened state shape at top left — observed; see artwork_risk" }
+      material: "'fully reflectorized safety number plates' (§ 14-21b(a)); no material is named in statute"
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # § 14-21b(a): fully reflectorized plates for registrations issued on and after January 1, 2000; the 'Constitution State' and 'Connecticut' legends; two plates issued. § 14-18: display"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut  # LOCATOR ONLY (PRD-PLATES §4): the August 2015 introduction of the seven-character AB·12345 arrangement, the I/O/Q exclusion, and the AA·00001 start. Its own citation for the changeover is a Hartford Courant news report of 18 September 2015"
+      - "https://www.licenseplates.cc/CT  # enthusiast corroboration, cited because used: the reported serial high-water mark BW·99865 as of 31 October 2025. No text or image copied"
+    notes: >-
+      CONNECTICUT CURRENT STANDARD. THE ID IS DATED 2015, NOT 2000, and that is a
+      deliberate schema decision: the DESIGN base is statutory from 1 January 2000
+      (§ 14-21b) but the SERIAL GRAMMAR changed twice on that base — to the interim
+      1ABCD2 and 1AB·CD2 shapes in 2013, and to the present AB·12345 shape in
+      August 2015. PRD-PLATES §2.3 makes a format change its own series, so the
+      2000 base carries three passenger series, of which this is the current one.
+      PERIOD EVIDENCE: `secondary-dated` — the 2015 date is a news/locator claim,
+      not a statutory one; the STATUTORY date that is beyond doubt is 2000, and it
+      belongs to the base, not to this serial format. The two 2013-2015 interim
+      formats are recorded in the group dossier and are deliberately NOT given
+      series here: they lasted fourteen and twenty months respectively, they are
+      the kind of transitional artefact §2.5 excludes, and no primary establishes
+      their boundaries.
+
+  # =========================================================================
+  # ONE SERIES BACK — the previous standard grammar on the same 2000 base.
+  # =========================================================================
+  - id: us-ct-standard-2000
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2000, end: 2013 }
+    period_evidence: statutory-date-start
+    matching: strict
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{3} ?[A-Z]{3}\z'
+      charset:
+        notes: >-
+          Reported: the 'O' series was not used and the 'V' series was reserved
+          for Veteran plates. Secondary (locator) — not promoted to a strict twin,
+          for the reason given on us-ct-standard-2015.
+      separator_note: "printed as a raised middle dot (123·ABC); spelled U+0020 here per PRD-PLATES §2.6 — see the file header"
+      progression: "100 NZN to 999 ZZX — i.e. it CONTINUED the sequence of the 1987-1999 base rather than restarting, which is why the 2000 base's first plate is not 100 AAA"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "same gradient sky-blue-to-white base with dark blue serial as us-ct-standard-2015; no hex recorded, same reason"
+      legend_top: "Connecticut"
+      legend_bottom: "Constitution State"
+      legend_rule: "§ 14-21b(a) — identical statutory legends; this series and the current one share a design and differ only in serial grammar"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # § 14-21b(a): the 1 January 2000 statutory start of the reflectorized base this series is issued on, and its two legends"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut  # LOCATOR ONLY: the 123·ABC arrangement on the January 2000 - June 2013 window, the 100·NZN to 999·ZZX range continuing from the previous base, the unused 'O' series and the Veteran 'V' reservation"
+    notes: >-
+      THE PREVIOUS STANDARD GRAMMAR, and the one with the best period evidence in
+      the whole Connecticut file: its START is § 14-21b's own "on and after
+      January 1, 2000", which is a statutory date, not a collector's recollection.
+      Its END (2013) is secondary. The sequence detail is the interesting one for
+      a parse API: Connecticut did NOT restart numbering at the base change, so a
+      123·ABC serial alone cannot distinguish a 1987-base plate from a 2000-base
+      plate — only the range can, and the boundary (999·NZM / 100·NZN) is
+      locator-grade. Recorded rather than smoothed over.
+
+  # =========================================================================
+  # CORE DISTINCT CLASSES (L2 scope: motorcycle, trailer, dealer, government).
+  # =========================================================================
+  - id: us-ct-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2015 }
+    period_evidence: secondary-dated
+    matching: strict
+    format:
+      pattern: "00 LLLL"
+      regex: '\A00 ?[A-Z]{4}\z'
+      charset: { notes: "a literal '00' prefix followed by four letters — the two zeros are part of the serial, not a pad. Reported secondary; no statutory grammar exists" }
+      separator_note: "printed as a raised middle dot (00·ABCD); spelled U+0020 here per PRD-PLATES §2.6"
+    design:
+      plate: { w: 7, h: 4, unit: in, dimension_note: "MOTORCYCLE PLATE SIZE NOT OBTAINED — Connecticut's statute states no dimension for any plate and no departmental spec was found. This entry is a PLACEHOLDER carrying the conventional US motorcycle size and must not be treated as sourced (recorded gap)" }
+      background: { finish: retroreflective }
+      legend_top: "Conn"
+      legend_bottom: "Motorcycle"
+      legend_note: "the top legend is reported as the ABBREVIATION 'Conn', not 'Connecticut' — if correct, this is the one Connecticut plate that does not satisfy § 14-21b(a)'s literal wording, which may simply mean § 14-21b does not reach motorcycles (it names 'passenger, combination and commercial registrations and other registrations as the commissioner deems feasible'). Recorded as an open question, not resolved."
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut  # LOCATOR ONLY: the 00·ABCD motorcycle arrangement introduced 2015 and shared with Classic Vehicle plates; the 'Conn'/'Motorcycle' legends"
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # § 14-21b(a) scopes the reflectorized-plate duty to 'passenger, combination and commercial registrations and other registrations as the commissioner deems feasible' — the statutory reason motorcycles may sit outside the legend rule"
+    notes: >-
+      MOTORCYCLE. The 00·ABCD block is reported to be SHARED with the Classic
+      Vehicle series — two different classes drawing from one serial space, which
+      means a serial alone does not determine the class and a parse API must
+      return both candidates. That is precisely the ambiguity model PRD-PAID's
+      parse endpoint is specified to expose (ranked candidates, not one answer),
+      and Connecticut is the first US case of it in this dataset.
+
+  - id: us-ct-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2015 }
+    period_evidence: secondary-dated
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A[A-Z]{2} ?\d{5}\z'
+      charset: { notes: "commercial trailers now draw the same AB·12345 grammar as passenger plates; the older V·12345 and W·12345 prefixed forms are reported to remain on the road (secondary)" }
+      separator_note: "printed as a raised middle dot; spelled U+0020 here per PRD-PLATES §2.6"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      colour_note: "reported as the passenger base with a RED serial and red border line rather than dark blue — a colour-only differentiation; no hex recorded (secondary, and the base is a gradient)"
+      legend_top: "Connecticut"
+      legend_bottom: "Trailer"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut  # LOCATOR ONLY: Trailer plates carry the passenger base with red serial and border and a 'Trailer' bottom legend; serial formats V·12345, W·12345 and now AB·12345"
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # Chapter 246 is the registration authority; it states no trailer plate grammar (recorded gap)"
+    notes: >-
+      TRAILER. Connecticut differentiates several non-passenger classes by SERIAL
+      COLOUR (red) on an otherwise identical base — Trailer, Commercial,
+      Apportioned, Construction, Factory, Farm and Fire Apparatus all reportedly
+      share the red-serial treatment. Under PRD-PLATES §2.3 a colour-only variant
+      of the same format+period is a sub-entry rather than a series; these are
+      given separate entries only where the FORMAT also differs. Trailer earns its
+      own entry because it also carries a distinct bottom legend, which is a
+      design difference.
+
+  - id: us-ct-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2015 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "XL 9999"
+      regex: '\AM?[XD][A-Z]{1,2} ?\d{1,4}\z'
+      charset:
+        notes: >-
+          Reported structure: a CLASS PREFIX ('X' new dealer, 'D' used dealer,
+          'MX'/'MD' for the motorcycle equivalents), then one or two sequential
+          letters, then a numeric suffix of one to four digits which IDENTIFIES
+          THE DEALERSHIP — the letters advance within a dealership, the number
+          names it. That is the inverse of the usual arrangement and is the reason
+          this series is `recall-only`: the regex is a union across five reported
+          width combinations per prefix and is wider than any single issuing
+          grammar.
+      separator_note: "printed as a raised middle dot (XA·0); spelled U+0020 here per PRD-PLATES §2.6"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      legend_bottom: "Dealer"
+    binding: business
+    region_encoding: "the NUMERIC SUFFIX identifies the DEALERSHIP, not a geography — a business decode, not a region decode. No decode table was obtained (recorded gap); it would be a per-dealer registry, which is out of PRD-PLATES scope in any event"
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut  # LOCATOR ONLY: the X/D/MX/MD dealer prefixes, the five reported width combinations each, and the rule that the numeric suffix signifies the dealership"
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # § 14-21c: number plates for manufacturers of motor vehicles or automotive equipment — the statutory hook for the manufacturer end of this class; the dealer grammar itself is not in Chapter 246 (recorded gap)"
+    notes: >-
+      DEALER. `binding: business` for the same reason as Germany's rote
+      Kennzeichen and Florida's dealer plate: the plate follows the dealership,
+      not a vehicle. `matching: recall-only` is the honest setting — a hit says
+      "this string has a shape Connecticut issues to dealers", not "this is a
+      valid dealer plate", because the regex unions five width variants across
+      four prefixes and no primary bounds any of them. PERIOD: the start is an
+      upper bound from the statute edition read, not a real start; Connecticut
+      dealer plates are reported to date to the 1920s.
+
+  - id: us-ct-municipal
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2015 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999 LLL"
+      regex: '\A\d{1,3} ?[A-Z]{2,3}\z'
+      charset:
+        notes: >-
+          Reported structure: one to three digits, then TWO OR THREE LETTERS THAT
+          NAME THE MUNICIPALITY. Six width combinations are reported (1·AB, 12·AB,
+          123·AB, 1·ABC, 12·ABC, 123·ABC), which is why this is `recall-only`.
+      separator_note: "printed as a raised middle dot; spelled U+0020 here per PRD-PLATES §2.6"
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      legend_bottom: "Municipal"
+      validation_note: "reported to use a 'MUNICIPAL CT' sticker in place of the ordinary validation sticker on the Preserve the Sound variant"
+    region_encoding: >-
+      YES — AND IT IS THE ONLY REAL GEOGRAPHIC DECODE IN A CONNECTICUT PLATE. The
+      two- or three-letter group indicates the TOWN OR CITY that owns the vehicle
+      (police cars and dump trucks included). THE DECODE TABLE WAS NOT OBTAINED —
+      no official municipal-code list was found in this pass, and Connecticut has
+      169 towns, so the table is substantial. Recorded as a gap and as a
+      candidate `plates/_decode/us-ct-municipal.yml` for a later gate. Until it
+      lands, a parse API must say "a Connecticut municipal plate" and stop, not
+      guess a town.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut  # LOCATOR ONLY: the six Municipal width combinations and the statement that 'the letters in the serial indicate the municipality'"
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # Chapter 246 read in full; it contains no municipal plate grammar and no municipal code table (recorded gap)"
+    notes: >-
+      MUNICIPAL — Connecticut's government class, and the one Connecticut series
+      that encodes geography. Modelled `government` rather than `police` even
+      though police cars carry it, because the class is defined by OWNERSHIP (the
+      town) and not by function; PRD-PLATES's `police` class is for fleets with a
+      series distinct from general government, which this is not.
+
+  # =========================================================================
+  # SPECIALTY — PROGRAM INDEX ONLY (PRD-PLATES §2.5). No individual designs.
+  # =========================================================================
+  - id: us-ct-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2015 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LL 99999"
+      regex: '\A[A-Z]{2} ?\d{5}\z'
+      charset: { notes: "commemorative plates carry ORDINARY serials on an alternative design; § 14-21w(b) is explicit that 'such number plates shall have letters and numbers selected by the Commissioner of Motor Vehicles', and several sections allow the registrant to carry over a previously issued number or a low number under § 14-160" }
+    design:
+      plate: { w: 12, h: 6, unit: in }
+      background: { finish: retroreflective }
+      note: "one design per authorised program; individual designs are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_statutory: 13
+      count_statutory_basis: >-
+        THIS COUNT IS PRIMARY, WHICH IS RARE FOR A US SPECIALTY INDEX. Connecticut
+        authorises commemorative plates ONE STATUTE AT A TIME, so the program list
+        can be counted directly out of Chapter 246's own table of contents rather
+        than off a DMV gallery. Thirteen sections carry the phrase "commemorative
+        number plates" as of the January 2026 revision: § 14-19b (collegiate),
+        14-21e (Long Island Sound), 14-21i (Greenways), 14-21j (Amistad), 14-21l
+        (Olympic Spirit), 14-21o (United We Stand), 14-21q (childhood cancer
+        awareness), 14-21s (wildlife conservation), 14-21u (Support Our Troops!),
+        14-21v (support for the nursing profession), 14-21w (Share the Road),
+        14-21x (Men's Health), 14-21y (Hartford Whalers), 14-21z (Save Our Lakes).
+        NOTE THE ARITHMETIC: that enumeration lists fourteen sections and the
+        phrase-count is thirteen, because § 14-19b's heading spells the program
+        differently ("collegiate commemorative number plates") and § 14-21e's does
+        not use the word "commemorative" at all. The discrepancy is recorded, not
+        resolved by picking a number — PRD-PLATES §5.3.
+      open_ended_route: "§ 14-19a additionally lets the commissioner issue SPECIAL number plates by REGULATION to members of qualifying organizations and to colleges, and to DISCONTINUE them — an open-ended route whose current membership is not countable from statute. So the true program count is 'thirteen-to-fourteen named in statute, plus an unknown number authorised by regulation'."
+      further_statutory_types: "Chapter 246 separately authorises non-commemorative special plates that are NOT part of the specialty program: § 14-20 (antique/rare/special interest, including year-of-manufacture plates), 14-20a (volunteer firefighters), 14-20b/c/d (veterans, war-period service, families of those killed in action), 14-21 (amateur radio), 14-21a (foreign consul), 14-21d (POW and Congressional Medal of Honor), 14-21h (animal population control), 14-27 (public service vehicles), 14-27a (vanpool)."
+      official_list_url: "https://portal.ct.gov/dmv"
+      official_list_caution: "CT DMV's own specialty-plate page was NOT successfully fetched in this pass (portal.ct.gov returns 404 on every guessed path and the Wayback CDX index for portal.ct.gov/dmv surfaces only image assets). The count above therefore rests on the STATUTE, which PRD-PLATES §4 prefers anyway — but the DMV's live catalogue remains unpinned (recorded gap)."
+      ip_note: "§ 14-21w(e) — the reproduction-and-marketing authority over a plate image — sits inside this program and is the file's artwork_risk evidence. See artwork_risk above."
+    region_encoding: none
+    sources:
+      - "https://www.cga.ct.gov/current/pub/chap_246.htm  # the chapter table of contents and section texts: the thirteen 'commemorative number plates' sections counted above; § 14-19a the regulation-made organizational and collegiate route including the discontinuance duty; § 14-21w(b) commissioner-selected letters and numbers, (e) the image-marketing authority"
+    notes: >-
+      THE CONNECTICUT SPECIALTY INDEX — and the best-sourced specialty index this
+      group produced, because Connecticut's legislature does the authorising
+      itself. Two things worth carrying forward. First, a statute-countable
+      program list is a genuinely better artefact than a DMV gallery: it is dated,
+      versioned, PD as an edict of government, and it cannot silently drift.
+      Second, the count is NOT a clean integer and the file says so — the
+      phrase-count (13) and the section-enumeration (14) disagree because two
+      sections word their headings differently, and PRD-PLATES §5.3 forbids
+      averaging a disagreement away.

@@ -1,0 +1,351 @@
+# plates/us-ks.yml — Kansas (PRD-PLATES gate L2, group midwest-b).
+#
+# KANSAS IS THE ONLY STATE IN THIS GROUP WHOSE SERIAL ARRANGEMENT IS FIXED BY
+# STATUTE. K.S.A. 8-147(c) does not delegate the format to the agency the way
+# Missouri, Minnesota, North Dakota and South Dakota all do — it states it:
+# "Each license plate shall contain a combination of three letters followed by a
+# combination of three numerals". That is an edict of government specifying a
+# regex, which is the best sourcing situation this program can hope for, and it
+# is why `us-ks-standard` is `matching: strict` while several of its neighbours
+# in this group are `recall-only`.
+#
+# THE STATUTE ALSO WROTE ITS OWN EXHAUSTION CLAUSE, which is unusual foresight
+# and matters for the parse layer: "except that once all allowable combinations
+# of letters and numerals have been used, each license plate shall contain an
+# arrangement of numerals or letters, or both, as shall be assigned by the
+# secretary of revenue." So Kansas law contains BOTH a precise current grammar
+# and a pre-authorised escape hatch out of it. `regex_statutory` encodes the
+# escape hatch; `regex` encodes the grammar.
+#
+# THE ONE THING THIS FILE COULD NOT RESOLVE is the county designation. K.S.A.
+# 8-132(d) refers, in passing and without defining them, to "the letters required
+# to designate the county in which such vehicle is registered" — telling us that
+# Kansas plates carry a county designator that even a vanity plate may not
+# displace, without telling us what it looks like or where on the plate it sits.
+# That gap is recorded in `region_encoding` rather than papered over, because
+# guessing at it would corrupt exactly the decode data this program exists to get
+# right. The Kansas Department of Revenue's own site was UNREACHABLE for this
+# pass (connection timeouts on every attempt), which is why the gap survives.
+jurisdiction: us-ks
+authority:
+  name: Kansas Department of Revenue, Division of Vehicles
+  url: "https://www.ksrevisor.gov/statutes/chapters/ch08/"
+binding: vehicle
+statute_edition: "Kansas Statutes Annotated Chapter 8 (Automobiles and Other Vehicles), Article 1, as published by the Kansas Office of Revisor of Statutes and fetched for this pass. K.S.A. 8-147 carries a 2025 amendment (L. 2025, ch. 75, § 6), so the design provisions read here are current to the 2025 session."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: unresearched
+  basis: >-
+    KANSAS WAS NOT LOCATED IN ANY COPYRIGHT SURVEY READ FOR THIS PASS. The Wikipedia
+    survey of subnational-government copyright status carries per-state sections for
+    seventeen states and NO section for Kansas; no {{PD-KSGov}} tag was found on
+    Commons. The dossier's default therefore governs: 17 U.S.C. § 105 does not reach the
+    states, so a Kansas plate design is presumed COPYRIGHTED unless Kansas says
+    otherwise, and Kansas has not been shown to say otherwise. Recorded as unresearched,
+    not as adverse — absence of a fetched source is weak evidence either way.
+  edict_carve_out: >-
+    KANSAS HAS THE STRONGEST EDICT CARVE-OUT IN GROUP MIDWEST-B, and it is worth stating
+    plainly because it is the practical answer to the unresearched posture above. The
+    facts this program most needs from Kansas — the three-letters-then-three-numerals
+    arrangement, the reflective coating duty, the mandatory colour change on each
+    reissue, the five-year reissue cycle, the personalized character caps — are ALL in
+    the Kansas Statutes Annotated, and edicts of government are uncopyrightable at every
+    level ({{PD-US-GovEdict}}). So the entire format layer of this file is affirmatively
+    clean regardless of what Kansas thinks about its artwork. Only the artwork is exposed.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default applies to whatever graphic the current Kansas
+    base carries — which this pass could not identify, since the Department of Revenue
+    site timed out. Render `emblem: {present: true, rendered: placeholder}`. Kansas
+    state-seal misuse statutes are a protection regime independent of copyright and are
+    unresearched.
+  sources:
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY (PRD-PLATES §4): read to establish that Kansas has NO section in the survey — a negative result, recorded as such"
+    - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0047.html  # K.S.A. 8-147, the statutory design spec itself — an edict of government, PD"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption. AAMVA has no enforcement power; its declarative present is RECOMMENDED PRACTICE."
+  dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is PAYWALLED and UNPINNED. No J686 dimension is quoted anywhere in this file."
+  geometry_available: "AAMVA §2.1 (jurisdiction name top-centre between the bolt holes, >=0.25 in above the number, >=0.125 in from the top edge, characters 0.75-1.0 in) and §2.2 (characters >=2.5 in high, >=0.25 in apart, stroke 0.2-0.4 in, >=1.25 in clear of top and bottom)."
+  retroreflectivity: "AAMVA §3.3: legible day and night from at least 75 feet; ASTM D4956-19 and ISO 7591:1982 clause 3; entrance angle 0.2 deg, observation angle -4 deg, minimum 45 cd/lx/m^2."
+  replacement_cycle_recommendation: >-
+    AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. KANSAS LEGISLATED FIVE —
+    TIGHTER THAN AAMVA'S FLOOR — and then legislated a way to stretch it. See
+    `replacement_cycle` on us-ks-standard: this is the most interesting replacement regime
+    in group midwest-b precisely because the legislature anticipated that plates might
+    outlast their nominal life and gave the director a rules-based extension rather than
+    forcing a statutory amendment.
+  source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' is UNCITED in its Wikipedia source (a `citation needed` since 2017, copied across articles). Recorded as COMMONLY REPEATED, UNSOURCED. Chapter 8 states no plate dimension, so this file makes no Kansas dimension claim (recorded gap)."
+
+# ---------------------------------------------------------------------------
+# Display rules. Kansas is a ONE-PLATE, REAR-ONLY state — with five statutory
+# exceptions, three of which move the plate to the FRONT.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "ONE plate, REAR. K.S.A. 8-132(a): the division 'shall furnish to every owner whose vehicle shall be registered one license plate'. K.S.A. 8-133(a): it 'shall be attached to the rear of the vehicle', and 'Except as otherwise provided in subsection (b), a Kansas registered vehicle shall not have a license plate attached to the front of the vehicle' — an express PROHIBITION on front display, not merely an absence of a requirement."
+  exceptions:
+    - "TRUCK TRACTOR: the plate 'shall be attached to the front of the truck tractor' (§ 8-133(b)(1)) — front-only, the inverse of the state default, and the same outlier shape Florida and North Dakota carry"
+    - "ANTIQUE VEHICLE displaying a model-year plate under K.S.A. 8-172 MAY be attached to the front (§ 8-133(b)(2))"
+    - "PERSONALIZED plate issued to a passenger vehicle or truck under § 8-132(c) MAY be attached to the front (§ 8-133(b)(3)) — so a Kansas vanity plate may lawfully appear where a standard plate may not"
+    - "CONCRETE MIXER TRUCK: may be attached to either the front or the rear (§ 8-133(b)(4))"
+    - "DUMP TRUCK of gross weight 26,000 lb or more: 'shall be attached to the front of the vehicle', but NOT if the vehicle is registered as a farm truck (§ 8-133(b)(5))"
+  mounting: "§ 8-133(c): securely fastened to prevent swinging, not less than 12 inches from the ground measured from the bottom of the plate, in a place and position clearly visible, free from foreign materials and legible"
+  enforcement_note: "§ 8-133(e) required a warning citation rather than a penalty for the dump-truck rule, and by its own terms 'shall expire and have no effect on and after January 1, 2022' — a self-repealing grace period, now spent"
+  suspension_contingency: "§ 8-133(d): if plate CONSTRUCTION is suspended under § 8-132, whatever 'plate, tag, token, marker or sign' is assigned is displayed as the director of vehicles prescribes — a wartime-style contingency still sitting in the code"
+  sources:
+    - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0033.html  # K.S.A. 8-133: rear attachment and the express front-display prohibition; the truck-tractor, antique, personalized, concrete-mixer and dump-truck exceptions; the 12-inch mounting rule; the expired warning-citation subsection; the construction-suspension contingency"
+    - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0032.html  # K.S.A. 8-132(a): one plate per registered vehicle"
+
+series:
+
+  # =========================================================================
+  # THE STANDARD-ISSUE SERIES — statutory arrangement, statutory reissue cycle,
+  # statutory colour change. Kansas legislates more of its plate than any other
+  # state in this group.
+  # =========================================================================
+  - id: us-ks-standard
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2025 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9])*\z'
+      charset:
+        notes: >-
+          K.S.A. 8-147(c), verbatim: 'Each license plate shall contain a combination of
+          three letters followed by a combination of three numerals, except that once all
+          allowable combinations of letters and numerals have been used, each license
+          plate shall contain an arrangement of numerals or letters, or both, as shall be
+          assigned by the secretary of revenue. The arrangement of numerals and letters of
+          license plates shall be uniform throughout each classification of registration.
+          The secretary may provide for the arrangement of the numerals and letters in
+          groups or otherwise and for other distinguishing marks on such license plates.'
+          NO LETTER EXCLUSIONS are stated anywhere in Chapter 8 — whether Kansas skips
+          I/O/Q was NOT established (recorded gap).
+      pattern_note: >-
+        `regex` encodes the arrangement the STATUTE fixes. `regex_statutory` encodes the
+        statute's own EXHAUSTION CLAUSE — 'an arrangement of numerals or letters, or both,
+        as shall be assigned by the secretary' — which is the outer legal bound once the
+        three-and-three space is used up, and the honest bound for a Kansas plate of
+        unknown vintage. This is the cleanest example in group midwest-b of the tier order
+        doing real work: the two tiers are not researcher caution, they are two sentences
+        of one statute.
+      grouping: "§ 8-147(c) lets the secretary arrange the characters 'in groups or otherwise', which is why the separator is optional in the regex rather than mandatory"
+    design:
+      material_and_finish: "§ 8-147(d): 'As new license plates are issued, the face of every license plate shall be completely coated with a reflective material. The reflectorized material shall be of such nature as to provide effective and dependable performance in the promotion of highway safety and vehicle identification throughout the service period for which the license plates are issued.' A $0.50 charge is added to the cost of each reflectorized plate."
+      contrast_rule: "§ 8-147(c): 'The letters and numerals of such license plates shall be in such contrast of colors to the background of the license plate as to make such letters and numerals easily readable.'"
+      colour_change_rule: >-
+        THE COLOUR IS REQUIRED TO CHANGE, WHICH IS A FACT ABOUT THE SERIES BOUNDARY ITSELF.
+        § 8-147(d): 'The director shall change the color of such license plates every time
+        new license plates are issued under K.S.A. 8-132(b).' Kansas has therefore
+        legislated that every reissue is visually distinguishable from its predecessor —
+        which means Kansas base generations are, in principle, separable by colour alone,
+        and that a complete Kansas history is a colour sequence. Iowa legislates the same
+        idea in different words (Iowa Code § 321.166(5)).
+      colour_note: >-
+        NO HEX IS RECORDED. Kansas mandates CONTRAST and mandates CHANGE but names no
+        colour value, and the Kansas Department of Revenue site was unreachable in this
+        pass, so no departmental colour specification was obtained. Recording an observed
+        hex from a photograph would attach a value to the wrong authority. Recorded gap.
+      decals: "§ 8-147(c): the secretary designs decals affixed to the plate to identify registration expiration information consistent with K.S.A. 8-134"
+      plate_content: "§ 8-132(a): the plate displays 'the registration number assigned to the vehicle and to the owner thereof, the name of the state, which may be abbreviated, and the year or years for which it is issued'"
+      emblem: { present: true, rendered: placeholder }
+      manufacture: "§ 8-147(b): plates are manufactured under contract with an organization or institution designated in K.S.A. 39-1208 — the Kansas correctional-industries route, the same arrangement South Dakota states more bluntly as its penitentiary plate plant"
+      distribution: "§ 8-147(e): plates ship directly to the treasurer of the county where they are to be used or, 'for digitally fulfilled license plate orders, directly to the customer for whom the plate is issued' — the digital-fulfilment clause is recent and is what the 2025 amendment added"
+    replacement_cycle:
+      years: 5
+      statutory_text: >-
+        § 8-132(b): 'During calendar year 1975 commencing on the effective date of this
+        act, and during every fifth calendar year thereafter, the division of vehicles
+        shall furnish one license plate for any type of vehicle an owner registers or has
+        the registration thereof renewed', with decals furnished in the four intervening
+        years.
+      extension_mechanism: >-
+        THE PART THAT MAKES KANSAS DIFFERENT. § 8-132(b) continues: 'Notwithstanding the
+        foregoing provisions of this subsection, whenever, in the discretion of the
+        director of vehicles, it is determined that the license plates currently being
+        issued and displayed are not deteriorating to the extent that their replacement is
+        warranted, the director may adopt rules and regulations to extend the five-year
+        issuance cycle provided for in this subsection by one year at a time, and in the
+        same manner the director may further extend such cycle by one year at a time,
+        successively as the director determines appropriate.' On expiry of an extended
+        term an owner may keep displaying the current plate 'for a period not to exceed
+        three registration years'. So the NOMINAL cycle is five years and the EFFECTIVE
+        cycle is unbounded — which is precisely why `period.start` on this series is an
+        upper bound and not a computed date. A dataset that inferred Kansas base
+        boundaries by counting five-year steps from 1975 would be wrong, and would look
+        confident while being wrong.
+      note: "AAMVA §1.1 recommends not exceeding 7 to 10 years; Kansas's nominal five is tighter, but the extension mechanism can carry it past AAMVA's ceiling without any change in the law"
+    region_encoding:
+      mechanism: "COUNTY DESIGNATION LETTERS — existence sourced, form NOT sourced"
+      status: unresolved
+      evidence: >-
+        K.S.A. 8-132(d) establishes that Kansas plates carry a county designator, and does
+        so obliquely, while regulating something else. Describing personalized plates, it
+        permits the applicant to choose characters 'in lieu of the letters and numbers
+        required by K.S.A. 8-147, and amendments thereto, OTHER THAN THE LETTERS REQUIRED
+        TO DESIGNATE THE COUNTY IN WHICH SUCH VEHICLE IS REGISTERED.' Two facts follow and
+        no more: (1) Kansas plates carry LETTERS designating the county of registration;
+        (2) those letters are so fundamental that even a vanity plate cannot replace them.
+      not_established: >-
+        WHAT THIS PASS COULD NOT DETERMINE: whether the county letters sit inside the
+        six-character serial or in a separate field such as a printed county name; how
+        many letters they are; the county-to-letters mapping; and whether all 105 Kansas
+        counties are designated or only some. K.S.A. 8-147 defines the serial as three
+        letters and three numerals and says nothing about county letters, which suggests
+        but does not establish that the designator is a SEPARATE plate element rather than
+        part of the serial. The Kansas Department of Revenue site, which would settle it,
+        timed out on every attempt. NOTHING IS ASSERTED — this is exactly the decode data
+        the parse API would lie with if it were guessed.
+      decode_file_planned: "plates/_decode/us-ks-county-designations.yml once the mechanism and the mapping are sourced"
+    sources:
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0047.html  # K.S.A. 8-147(c): the three-letters-then-three-numerals arrangement, the exhaustion clause, uniformity per classification, the grouping discretion, the contrast rule and the expiration decals; (d) the full reflective coating, its $0.50 charge and the mandatory colour change on each reissue; (b) manufacture under a K.S.A. 39-1208 contract; (e) shipping to the county treasurer or, for digitally fulfilled orders, to the customer. History: L. 2025, ch. 75, § 6"
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0032.html  # K.S.A. 8-132(a): one plate bearing the registration number, state name and year; (b) the five-year reissue cycle from 1975, the intervening decals, and the director's rules-based one-year-at-a-time extension with its three-registration-year grace; (d) 'the letters required to designate the county in which such vehicle is registered'"
+      - "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf  # AAMVA Ed.3 §1.1, the 7-10 year recommendation Kansas's nominal five sits inside and its extension mechanism can exceed"
+    notes: >-
+      KANSAS STANDARD ISSUE. THE ID IS DELIBERATELY UNDATED, on the same reasoning as
+      us-fl-standard: Kansas reissues on a five-year cycle that the director may extend
+      indefinitely by rule, so base-design generations exist but no primary establishing
+      their boundaries was obtained, and the Department of Revenue site was unreachable.
+      Minting a dated id on an inferred five-year step would be inventing a boundary the
+      statute expressly allows the director to move. When a primary lands, a dated id is
+      added and this id becomes its former-id alias under the PRD-QUALITY I-5/I-6 contract.
+      PERIOD CAVEAT: `start: 2025` is the statute edition read — K.S.A. 8-147 was amended
+      in the 2025 session — and is an UPPER BOUND on the true start of the current base,
+      not a claim about it. THE ONE SERIES BACK IS A RECORDED GAP for the same reason.
+
+  # =========================================================================
+  # PERSONALIZED — statutory caps, and the one Kansas plate that may lawfully be
+  # displayed on the front of a car.
+  # =========================================================================
+  - id: us-ks-personalized
+    class: personalized
+    categories: [car, truck, motorcycle]
+    period: { start: 2025 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z]{1,7}\z'
+      regex_statutory: '\A[A-Z0-9]{1,7}\z'
+      charset:
+        notes: >-
+          K.S.A. 8-132(d), verbatim: 'The division shall design distinctive, personalized
+          license plates to be issued that shall contain not more than seven letters or
+          numbers on truck or passenger vehicle license plates and not more than five
+          letters or numbers on motorcycle license plates, or a combination thereof, to be
+          designated by the applicant in lieu of the letters and numbers required by
+          K.S.A. 8-147 ... other than the letters required to designate the county in which
+          such vehicle is registered.' Note the personalized cap of SEVEN exceeds the
+          standard series' SIX — a Kansas vanity plate can be longer than a Kansas
+          standard plate.
+      pattern_note: "`regex` is the letters-only shape most vanity configurations take; `regex_statutory` is the true statutory frame of up to seven alphanumerics. The five-character motorcycle cap is a narrower bound not separately encoded."
+      availability_rule: "§ 8-132(d): the requested characters are issued 'Unless the letters or numbers designated by the applicant have been assigned to another vehicle' or are otherwise unavailable"
+    design:
+      note: "§ 8-132(c): 'Any license plate issued pursuant to subsection (a) or (b) may be a personalized license plate' and 'The division shall allow an applicant for a personalized license plate to personalize a license plate design established by subsection (a), (b) or (d)' — so personalization is a serial-source difference over an existing design, not a design of its own"
+      emblem: { present: true, rendered: placeholder }
+    eligibility: "any owner or lessee of a passenger vehicle, or of a truck licensed for a gross weight of not more than 20,000 pounds, applying at renewal of registration; also available for motorcycles (§ 8-132(d))"
+    fee: "$40.00 in addition to the ordinary registration fee, paid ONCE during the registration period for which the plates were issued; subsequent renewals within that period pay only the K.S.A. 8-143 registration fee (§ 8-132(d))"
+    display_privilege: "a personalized plate issued under § 8-132(c) MAY be attached to the front of the passenger vehicle or truck (§ 8-133(b)(3)) — an exception to Kansas's express prohibition on front plates"
+    region_encoding: "the county-designating letters are expressly PRESERVED on a personalized plate (§ 8-132(d)); see region_encoding on us-ks-standard for why their form is unresolved"
+    sources:
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0032.html  # K.S.A. 8-132(c): personalization of any subsection (a), (b) or (d) design; (d) the seven-character passenger/truck cap, the five-character motorcycle cap, the 20,000 lb truck eligibility limit, the $40 once-per-period fee, the availability rule, and the preservation of the county-designating letters"
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0033.html  # K.S.A. 8-133(b)(3): a personalized plate may be attached to the front of a passenger vehicle or truck"
+    notes: >-
+      PERSONALIZED PLATES. Modelled as its own series because the SERIAL SOURCE differs —
+      owner-chosen rather than division-assigned. Two Kansas oddities are worth carrying
+      forward. First, the personalized cap (seven) is LONGER than the standard arrangement
+      (six), so a length test alone cannot reject a Kansas plate. Second, a personalized
+      plate is one of only five things Kansas permits on the front of a vehicle, in a state
+      that otherwise forbids front plates outright — so front-plate presence is not
+      evidence of an out-of-state vehicle in Kansas.
+
+  # =========================================================================
+  # ANTIQUE — model-year plates, and the only other Kansas front-display licence.
+  # =========================================================================
+  - id: us-ks-antique
+    class: historic
+    categories: [car, truck]
+    period: { start: 2025 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "999999"
+      regex: '\A[A-Z0-9]{1,7}\z'
+      pattern_note: >-
+        REPRESENTATIVE SHAPE ONLY. A Kansas antique vehicle may display a MODEL-YEAR
+        plate under K.S.A. 8-172 — i.e. an actual plate from the vehicle's model year —
+        so this series has no grammar of its own at all: its serial space is the union of
+        every historical Kansas series. `matching: recall-only` is mandatory and a hit is
+        a shape hit only. K.S.A. 8-172 itself was not read in this pass (recorded gap);
+        the model-year regime is sourced only through the § 8-133(b)(2) cross-reference.
+    design:
+      note: "a model-year plate is an original historical plate, not a modern issue; no current design property applies"
+      emblem: { present: true, rendered: placeholder }
+    display_privilege: "§ 8-133(b)(2): 'a model year license plate issued for an antique vehicle, in accordance with K.S.A. 8-172 ... may be attached to the front of the antique vehicle'"
+    region_encoding: "unknown — a model-year plate carries whatever county designation its own era used"
+    sources:
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0033.html  # K.S.A. 8-133(b)(2): the model-year antique plate and its front-display permission, cross-referencing K.S.A. 8-172"
+    notes: >-
+      ANTIQUE / MODEL-YEAR PLATES. Included because of what it does to the parse layer
+      rather than for its own sake: like North Dakota's year-of-manufacture option, a
+      Kansas model-year plate means a LAWFULLY DISPLAYED, CURRENTLY REGISTERED vehicle may
+      be wearing a plate from any past decade. Any inference from plate design to
+      registration era must therefore carry an antique-regime exception, and this series
+      exists partly to make that exception visible in the data. K.S.A. 8-172's own
+      eligibility threshold and fee were not obtained (recorded gap).
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-ks-specialty-index
+    class: specialty
+    categories: [car, truck, motorcycle]
+    period: { start: 2025 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLL 999"
+      regex: '\A[A-Z]{3} ?\d{3}\z'
+      regex_statutory: '\A[A-Z0-9](?: ?[A-Z0-9])*\z'
+      charset: { notes: "K.S.A. 8-147(c) requires the arrangement to be 'uniform throughout each classification of registration', so a specialty classification has ITS OWN uniform arrangement, which need not be the passenger three-and-three; the arrangement per specialty class was not obtained (recorded gap)" }
+    design:
+      note: "one design per authorised program; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: null
+      count_status: >-
+        NOT ESTABLISHED — AND THE HONEST RECORD IS THAT NO NUMBER WAS OBTAINED, not a
+        number carried over from a secondary source. The Kansas Department of Revenue's
+        vehicle pages (ksrevenue.gov) TIMED OUT on every request in this pass, via two
+        clients and both HTTP versions, so neither an official count nor an official
+        catalogue was reached. Kansas's specialty plates are created individually by
+        statute across K.S.A. Chapter 8 Article 1, so a statutory count is obtainable in
+        principle by enumerating those sections the way this file's North Dakota
+        counterpart does — that enumeration was not completed here and is the top Kansas
+        follow-up.
+      structural_note: "K.S.A. 8-147(c) opens 'Except as authorized by other provisions of law', which is the hook every individually legislated Kansas specialty plate hangs from — the general format rule yields to each specialty statute"
+      official_list_url: "https://www.ksrevenue.gov/dovindex.html"
+      official_list_status: "UNREACHABLE in this pass (connection timeout); recorded so a later run does not mistake it for unfetched-but-fine"
+    region_encoding: "county-designating letters presumably preserved as on the standard series; not separately established"
+    sources:
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0047.html  # K.S.A. 8-147(c): 'Except as authorized by other provisions of law' — the clause under which individually legislated Kansas specialty plates displace the general arrangement, and the per-classification uniformity rule"
+      - "https://www.ksrevisor.gov/statutes/chapters/ch08/008_001_0032.html  # K.S.A. 8-132(c): specialty and standard designs alike may be personalized, which is what makes the specialty serial space share the personalized caps"
+    notes: >-
+      THE SPECIALTY PROGRAM INDEX — present as required by PRD-PLATES §2.5, but CARRYING NO
+      COUNT, which is the honest outcome for Kansas in this pass. Every other state in
+      group midwest-b yielded either an agency figure or a statutory enumeration; Kansas
+      yielded neither, because its revenue department's site was unreachable and the
+      statutory enumeration was not completed. Recording `count_official: null` with an
+      explicit `count_status` is better than importing Wikipedia's figure and better than
+      silence: a verifier can see precisely what is missing and precisely why. The
+      structural fact that IS sourced — that Kansas specialty plates are individually
+      legislated and displace the general format rule via 8-147(c)'s opening words — is
+      the more useful half for the parse layer anyway.

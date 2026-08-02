@@ -1,0 +1,547 @@
+# plates/us-nj.yml — New Jersey (PRD-PLATES gate L2, mid-Atlantic group).
+#
+# THE FINDING THIS FILE EXISTS FOR: NEW JERSEY'S SEPARATOR IS NOT A CHARACTER.
+# The gap in the middle of a New Jersey serial is occupied by a SILHOUETTE OF
+# THE STATE, embossed or screened between the third and fourth characters. That
+# is not typography and it is not punctuation — it is a design element sitting
+# in a serial gap, which is precisely the case `_meta/separators.yml`'s
+# `never_separator_note` already contemplates for German and Austrian coats of
+# arms. It was confirmed here TWICE and independently: from NJ MVC's own sample
+# plate image, which reads SAM<state outline>PLE, and from the locator's own
+# wording, which calls it a 'state-shaped separator'. This file therefore spells
+# the gap as an EMITTED SPACE and carries the glyph in `design`, never in the
+# serial. See `separator_finding`.
+#
+# WHY NEW JERSEY IS THE FAVOURABLE ARTWORK CASE IN THIS GROUP. Unlike its two
+# neighbours — New York adverse, Pennsylvania adverse by statute — New Jersey
+# affirmatively invites reuse: the State's own legal statement says 'anyone may
+# view, copy or distribute State information found here without obligation to
+# the State'. See `artwork_risk`.
+#
+# SOURCING RULE APPLIED HERE. New Jersey's plate law is DISPLAY law: N.J.S.A.
+# 39:3-33 governs where a plate goes and how legible it must be, and specifies
+# nothing about design, colour, dimension or serial grammar. So the statute
+# carries display, NJ MVC's own pages carry the charset, the historic and street
+# rod grammars, the plate categories and the dedicated-plate list, and the
+# passenger ARRANGEMENT is locator-grade and labelled per series.
+#
+# period_evidence / format_evidence vocabularies as in us-ny.yml.
+jurisdiction: us-nj
+authority:
+  name: New Jersey Motor Vehicle Commission (NJ MVC)
+  url: "https://www.nj.gov/mvc/"
+binding: vehicle
+statute_edition: "New Jersey Revised Statutes Title 39 (Motor Vehicles and Traffic Regulation), read 2026-08-02 through a third-party reproduction (see the sourcing caveat on 39:3-33). Edicts of government are public domain at every level, so the reproduction carries the text faithfully, but the OFFICIAL New Jersey Legislature service was not reachable in this pass and that is recorded as a gap."
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: public-domain-favourable
+  basis: >-
+    New Jersey affirmatively permits reuse of State information. The State of
+    New Jersey's own Legal Statement and Disclaimers says, in terms, that
+    'anyone may view, copy or distribute State information found here without
+    obligation to the State'. The Wikipedia survey of subnational copyright
+    status places New Jersey in the favourable column on the same basis and adds
+    two supports: Burnett v. County of Bergen, 402 N.J. Super. 319 (2008), read
+    as permitting commercial reproduction of records obtained under OPRA, and
+    the New Jersey Open Data Initiative Act (N.J.S.A. 52:18A-234.5), which makes
+    covered State data 'license-free, subject to reuse, and not subject to
+    copyright restrictions'.
+  evidence_grade: >-
+    THE STATE'S OWN LEGAL STATEMENT WAS FETCHED AND IS QUOTED — that is a
+    primary, agency-published source and the strongest artwork evidence in the
+    mid-Atlantic group after nothing at all. The Burnett opinion and the Open
+    Data Initiative Act were NOT fetched; they are recorded as citations located
+    through a locator, for a verifier to pull. The State's statement also
+    carries its own hedge — it makes no warranty that a particular item is free
+    of third-party copyright or trademark — so 'favourable' means the STATE does
+    not assert, not that every element on a plate is clear.
+  emblem_rule: >-
+    RENDER PLACEHOLDER ANYWAY. New Jersey's favourable posture is about
+    COPYRIGHT; the state silhouette that sits inside every standard serial, and
+    the State seal, carry protection INDEPENDENT of copyright under state-seal
+    misuse statutes, and that question is unresearched here exactly as it is for
+    Florida. `graphic: {present: true, rendered: placeholder}` stands until the
+    seal question is answered per-emblem.
+  photograph_caution: >-
+    Commons photographs of New Jersey plates are the photographer's licence on
+    the photograph; the uploader had no standing over the design. Because our
+    renders are generated from data, those share-alike obligations never attach.
+    NJ MVC's own sample-plate image was READ (to establish the separator finding)
+    and is NOT copied into the dataset.
+  sources:
+    - "https://www.nj.gov/nj/legal.shtml  # State of New Jersey Legal Statement and Disclaimers, section F: 'anyone may view, copy or distribute State information found here without obligation to the State', with the State's own no-warranty hedge"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY: surfaces Burnett v. County of Bergen, 402 N.J. Super 319 (2008) and N.J.S.A. 52:18A-234.5 (Open Data Initiative Act). Neither was fetched."
+
+# ---------------------------------------------------------------------------
+# THE SEPARATOR FINDING (PRD-PLATES §2.6 / §2.8).
+# ---------------------------------------------------------------------------
+separator_finding:
+  headline: "New Jersey prints a state-outline GRAPHIC in the serial gap."
+  observed: >-
+    NJ MVC's official 'Standard Plate Example' image (www.nj.gov/mvc/images/standard.jpg,
+    fetched and read 2026-08-02) shows the serial SAM<state outline>PLE: three
+    characters, a solid silhouette of New Jersey occupying the gap, three more
+    characters. The locator independently describes the 1993 and later bases as
+    carrying a 'state-shaped separator' added to the serial, and describes the
+    2014 base as having 'serial and separator screened rather than embossed' —
+    i.e. the separator is a printed OBJECT with a manufacturing method, not a
+    character.
+  encoding_decision: >-
+    The gap is spelled as an EMITTED SPACE (U+0020) in `pattern` and as an
+    optional space in `regex`, and the silhouette is carried in `design.graphic`.
+    This is the treatment `_meta/separators.yml` already prescribes for the
+    analogous case: its `never_separator_note` names 'the coats of arms / seals
+    that sit between groups on several German and Austrian plates (a design
+    element, carried in `design.emblem`, never in the serial)'. New Jersey is
+    that case in the United States, and the group's first one.
+  recommended_amendment: >-
+    Add the New Jersey state silhouette to `_meta/separators.yml`'s
+    `never_separator` list by name, with this citation, so the rule is stated
+    once for consumers rather than rediscovered per jurisdiction. No behaviour
+    changes — a separator-stripping consumer already deletes the space and can
+    never see the glyph — but the dataset should say why the space is there.
+  source: "https://www.nj.gov/mvc/vehicles/standplates.htm  # links the official 'Standard Plate Example' image at /mvc/images/standard.jpg, which is where the silhouette was read"
+
+# ---------------------------------------------------------------------------
+# The US standards chain. Voluntary; J686 never quoted.
+# ---------------------------------------------------------------------------
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 sends dimensions and bolt holes to SAE J686, whose text is paywalled and was NOT obtained. New Jersey states no plate dimension in Title 39. This file therefore carries NO sourced dimension — a recorded gap."
+    retroreflectivity: "AAMVA §3.3: readable 'in both daylight and nighttime from distances of at least 75 feet'. New Jersey legislates a DIFFERENT and stricter-sounding night rule of its own — the rear plate must be illuminated so as to be visible from 50 feet at night — which is a LIGHTING duty on the vehicle, not a retroreflectivity duty on the plate. The two are not the same claim and are not merged here."
+    replacement_cycle: "AAMVA §1.1 recommends a cycle 'not to exceed 7 to 10 years'. New Jersey legislates no replacement cycle; no reissuance programme was located. Recorded gap."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' is UNCITED in its Wikipedia source and is recorded as COMMONLY REPEATED, UNSOURCED. New Jersey has no statutory dimension to put in its place."
+
+# ---------------------------------------------------------------------------
+# Display rules. New Jersey is a TWO-PLATE state and legislates an unusual
+# NIGHT-VISIBILITY duty on the rear plate.
+# ---------------------------------------------------------------------------
+display_rules:
+  default: "TWO plates where two are issued — one front, one rear; ONE plate on the rear where only one is issued (N.J.S.A. 39:3-33)."
+  mounting: "§ 39:3-33: the owner 'shall display not less than 12 inches nor more than 48 inches from the ground in a horizontal position, and in such a way as not to swing, a registration plate or plates to be furnished by the commission'."
+  height_exception: "rear plates on TANK TRUCKS, TRAILERS and SANITATION VEHICLES may exceed the 48-inch ceiling (§ 39:3-33) — a genuine outlier clause worth keeping, since a naive validator of mounting height would flag lawful vehicles."
+  legibility: "§ 39:3-33: plates must be kept 'clear and distinct and free from grease, dust, or other blurring matter'."
+  frames: "§ 39:3-33: a plate frame may not conceal the STATE NAME or the REGISTRATION NUMBER. Note what this implies for a parse layer — New Jersey legislates that the jurisdiction legend is part of what must remain readable."
+  night_illumination: "NJ MVC: the rear plate 'must be illuminated to make it visible from 50 feet away at night'. This is a vehicle-lighting requirement, distinct from AAMVA's 75-foot retroreflectivity recommendation."
+  penalty: "§ 39:3-33: fines up to $500 and imprisonment for displaying fictitious numbers; up to $100 for other violations."
+  sources:
+    - "https://codes.findlaw.com/nj/title-39-motor-vehicles-and-traffic-regulation/nj-st-sect-39-3-33.html  # N.J.S.A. 39:3-33 as reproduced by a third party: the 12-48 inch horizontal non-swinging rule, two-plate/one-plate display, the tank truck/trailer/sanitation height exception, 'clear and distinct and free from grease, dust, or other blurring matter', the frame rule, and the penalty tiers. SOURCING CAVEAT: an edict of government is public domain at every level so the text is freely usable, but this is a REPRODUCTION — the official New Jersey Legislature service was unreachable in this pass and a verifier should re-derive from it."
+    - "https://www.nj.gov/mvc/vehicles/standplates.htm  # NJ MVC: 'two license plates - one for the front and one for the rear'; 'The license plates must be clean and visible at all times'; the rear-plate 50-foot night illumination rule"
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD-ISSUE SERIES.
+  # =========================================================================
+  - id: us-nj-garden-state-screened
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2014 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: official-agency-image
+    matching: strict
+    format:
+      pattern: "L99 LLL"
+      regex: '\A[A-Z]\d{2} ?[A-Z]{3}\z'
+      charset:
+        notes: >-
+          NO CHARSET RULE IS IN TITLE 39 — N.J.S.A. 39:3-33 is a display statute
+          and states no serial grammar. NJ MVC's personalisation rules give the
+          only official character constraint New Jersey publishes: a personalised
+          plate 'must have at least three letters and a maximum of seven
+          characters in combination of letters and numbers'. No letter exclusions
+          are published anywhere for the ordinary series.
+      pattern_note: >-
+        SPLIT EVIDENCE, RECORDED SEPARATELY. The 3+3 GROUPING and the
+        separator's existence are `official-agency-image` — read off NJ MVC's own
+        sample plate. The ALPHANUMERIC ARRANGEMENT within the groups (letter,
+        two numerals | three letters) and the A10-EFF starting point are
+        `secondary-locator-unverified`: only the locator states them. A verifier
+        can confirm the grouping from the agency image without leaving the
+        agency; the arrangement needs a primary that was not found.
+      progression: "reported to run A10-EFF -> Z99-SZZ, then A10-UAA -> R22-WPG as of 5 January 2026 (locator). The second block is evidence the first exhausted, which is useful era-inference signal and is recorded as reported, not as fact."
+    design:
+      background: { color: "#F5D547", finish: retroreflective, hex_basis: observed }
+      foreground: "#231F20"
+      colour_note: >-
+        NEITHER COLOUR IS IN STATUTE. The plate is a GRADIENT — reflective yellow
+        at the top fading to near-white at the bottom — which a single
+        `background.color` cannot express. The hex recorded is the top-of-plate
+        yellow, `hex_basis: observed` from NJ MVC's own sample image; the
+        gradient is stated here rather than flattened silently. This is a real
+        schema stressor: `design.background` assumes one colour and New Jersey
+        has two with a ramp between them.
+      background_gradient: { from: "#F5D547", to: "#FBF6E3", direction: top-to-bottom, hex_basis: observed }
+      legend_top: "New Jersey"
+      legend_bottom: "Garden State"
+      legend_case_note: "New Jersey sets both legends in MIXED CASE with a serif face for the state name and a bold sans for the slogan — unusual among US plates, most of which set the jurisdiction name in caps. Observed from the agency sample image."
+      graphic:
+        present: true
+        rendered: placeholder
+        description: "a solid silhouette of the State of New Jersey, printed IN THE SERIAL GAP between the third and fourth characters. See `separator_finding` — it is design, never serial."
+      emblem: { present: true, rendered: placeholder }
+      band: { side: none }
+      rear_differs: false
+      security_features: "the 2014 base is SCREENED rather than embossed; the 2010 base immediately before it added security threads to the centre (locator). A barcode appears at the lower right of the agency sample image — observed, purpose unstated by MVC, recorded as an observation."
+      dimension_note: "NO SOURCED DIMENSION (Title 39 states none; SAE J686 unpinned)."
+    region_encoding: none
+    sources:
+      - "https://www.nj.gov/mvc/vehicles/standplates.htm  # NJ MVC's standard-plate page and its official 'Standard Plate Example' image — the source for the 3+3 grouping, the state-outline separator, the gradient, the mixed-case legends and the two-plate rule"
+      - "https://www.nj.gov/mvc/vehicles/personalized.htm  # NJ MVC: 'A personalized plate must have at least three letters and a maximum of seven characters' — the only official New Jersey character constraint"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY (PRD-PLATES §4): the April 2014 date, the A12-BCD arrangement, the A10-EFF start and the R22-WPG progression"
+    notes: >-
+      GARDEN STATE, SCREENED (2014-). The current New Jersey standard issue.
+      `start: 2014` is locator-grade; what is agency-sourced is that this is the
+      design NJ MVC shows as its standard plate today. The 2010 and 2014 bases
+      share a serial arrangement and differ ONLY in manufacture — embossed with
+      security threads versus screened — which is exactly the kind of boundary
+      PRD-PLATES §2.3 says makes a separate series (design differs) while
+      warning that it will look like hair-splitting to a consumer. It is not:
+      an embossed New Jersey plate and a screened one are physically different
+      objects and a renderer must know which it is drawing.
+
+  # =========================================================================
+  # ONE SERIES BACK.
+  # =========================================================================
+  - id: us-nj-garden-state-embossed
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2010, end: 2014 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "L99 LLL"
+      regex: '\A[A-Z]\d{2} ?[A-Z]{3}\z'
+      charset: { notes: "as us-nj-garden-state-screened; no statutory charset. Reported range A10-AAA to T99-EEK." }
+    design:
+      background: { color: "#F5D547", finish: retroreflective, hex_basis: observed }
+      foreground: "#231F20"
+      background_gradient: { from: "#F5D547", to: "#FBF6E3", direction: top-to-bottom, hex_basis: observed }
+      legend_top: "New Jersey"
+      legend_bottom: "Garden State"
+      graphic: { present: true, rendered: placeholder, description: "state silhouette in the serial gap, EMBOSSED on this base" }
+      emblem: { present: true, rendered: placeholder }
+      band: { side: none }
+      security_features: "security threads added to the centre of the plate on this base (locator)"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY: July 2010, security threads added, A12-BCD from A10-AAA to T99-EEK"
+    notes: >-
+      GARDEN STATE, EMBOSSED (2010-2014). The previous base. It is the SAME
+      SERIAL FORMAT as the current one, which is why New Jersey is a good
+      warning for consumers: format alone cannot date a New Jersey plate after
+      2010, only the serial BLOCK can, and the blocks are locator-grade. Any
+      era-inference feature over New Jersey must say so.
+
+  # =========================================================================
+  # CORE DISTINCT CLASSES.
+  # =========================================================================
+  - id: us-nj-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2009 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "9LLL9"
+      regex: '\A\d[A-Z]{3}\d\z'
+      charset: { notes: "reported five-character motorcycle arrangement, numeral / three letters / numeral, current since 2009. Earlier reported arrangements (AB123, 123AB, A123B, A1234, 1234A) are not given series of their own — no primary for their periods." }
+    design:
+      background: { finish: retroreflective }
+      legend_top: "New Jersey"
+      emblem: { present: true, rendered: placeholder }
+      note: "reduced-size motorcycle plate; NO SOURCED DIMENSION."
+    region_encoding: none
+    sources:
+      - "https://www.nj.gov/mvc/vehicles/standplates.htm  # NJ MVC lists motorcycles among the vehicle types with their own plate handling"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY: current motorcycle format 1ABC2 from 2009 and the five superseded arrangements"
+    notes: "MOTORCYCLE. Class officially evidenced, arrangement locator-grade."
+
+  - id: us-nj-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2023 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "L99 TLL"
+      regex: '\A[A-Z]\d{2} ?T[A-Z]{2}\z'
+      charset:
+        notes: >-
+          The locator writes this format as A12-TCD. The T is read here as a
+          LITERAL trailer marker rather than a placeholder, because the locator's
+          own placeholder convention runs alphabetically (A, B, C, D) and T
+          breaks that run in the fourth-group's first position. THAT IS AN
+          INFERENCE, not a source, and it is flagged as one: if T is in fact a
+          placeholder the regex is wrong by a factor of 26 and must be widened
+          to '\A[A-Z]\d{2} ?[A-Z]{3}\z'.
+    design:
+      background: { finish: retroreflective }
+      legend_top: "New Jersey"
+      graphic: { present: true, rendered: placeholder, description: "state silhouette in the serial gap, as the passenger base" }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY: trailer A12-TCD from early 2023"
+    notes: >-
+      TRAILER. THE WEAKEST CLAIM IN THIS FILE and deliberately labelled as such:
+      it rests on a locator plus one inference about placeholder convention. It
+      is included because a recorded, flagged, falsifiable claim is worth more to
+      a verifier than a silent omission — but it must be verified before it
+      carries any five-nines claim.
+
+  - id: us-nj-dealer
+    class: dealer
+    categories: [car, van, truck]
+    period: { start: 2014 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    binding: business
+    format:
+      pattern: "DLL-99"
+      regex: '\AD[A-Z]{2}-?\d{2}\z'
+      charset: { notes: "reported new-car dealer format DBC-12 with the trailing pair reported to be a two-digit YEAR rather than a sequence counter, and reported letter series DAA through DKZ. The leading D is read as a literal dealer marker on the same placeholder-convention reasoning applied to the trailer series." }
+    design:
+      background: { finish: retroreflective }
+      legend_top: "New Jersey"
+      legend_bottom: "Dealer"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY: new-car dealer DBC-12 with two-digit year, series DAA-DKZ"
+    notes: >-
+      DEALER. `binding: business` — the plate follows the dealership. The
+      interesting reported feature is that the last two characters encode a
+      YEAR, which would make the New Jersey dealer plate one of the few US
+      serials with a TIME field in it. Locator-grade; worth a verifier's
+      attention precisely because it would be a decode-table-worthy fact if true.
+
+  - id: us-nj-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2012 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "L999999"
+      regex: '\A[A-Z]\d{6}\z'
+      charset: { notes: "reported single letter plus six numerals, current since 1 April 2012, issued in letter series." }
+    design:
+      background: { finish: unknown }
+      legend_top: "New Jersey"
+      note: "temporary tags are paper/plastic; no design source obtained. NJ MVC's own temporary-tag page was not reachable in this pass (recorded gap)."
+      emblem: { present: false }
+    validity: "not sourced (recorded gap)"
+    region_encoding: none
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY: temporary A123456 from 1 April 2012"
+    notes: >-
+      TEMPORARY. Included because New Jersey serialises temporary tags in their
+      own space, which is the L2 test. Every field here except the class is
+      locator-grade; the MVC page that would carry the validity period and the
+      design returned 404 on two attempts and is a recorded gap.
+
+  - id: us-nj-state-government
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2014 }
+    period_evidence: secondary-locator-unverified
+    format_evidence: secondary-locator-unverified
+    matching: strict
+    binding: business
+    format:
+      pattern: "SG99999"
+      regex: '\ASG\d{5}\z'
+      charset: { notes: "reported STATE GOVERNMENT format SG plus five numerals. New Jersey runs several parallel official series with their own literal prefixes — TD for the Department of Transportation, TPA for the Turnpike Authority, SPA for the State Police — which are NOT given series of their own here because no source beyond the locator was obtained for any of them." }
+    design:
+      background: { finish: retroreflective }
+      legend_top: "New Jersey"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "the leading token is an AGENCY code, not a geographic one — SG state government, TD transportation, TPA turnpike authority, SPA state police. That makes New Jersey's official plates the one place in this file where the serial carries decodable structure, and it is an ORGANISATIONAL decode, not a regional one. Locator-grade; a real decode table needs a primary."
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey  # LOCATOR ONLY: SG12345 state government, TD12345 DOT, TPA1234 Turnpike Authority, SPA123D State Police"
+    notes: >-
+      STATE GOVERNMENT. Modelled as one series with the sibling agency prefixes
+      recorded in `region_encoding` rather than as four thin series, because
+      minting four locator-only ids would spend four permanent, append-only
+      identifiers on unverified claims. One id, honestly scoped, is the
+      cheaper mistake to correct.
+
+  # =========================================================================
+  # HISTORIC — New Jersey runs TWO distinct regimes and NJ MVC publishes BOTH
+  # serial ranges itself. These are the best-sourced formats in the file.
+  # =========================================================================
+  - id: us-nj-historic
+    class: historic
+    categories: [car, truck, motorcycle]
+    period: { start: 2014 }
+    period_evidence: agency-page-in-force
+    format_evidence: official-agency-text
+    matching: strict
+    format:
+      pattern: "QQ9999"
+      regex: '\AQQ\d{4,5}\z'
+      charset:
+        notes: >-
+          NJ MVC publishes the range itself: series QQ1000-QQ99999. The QQ is a
+          LITERAL agency-published token — not an inference, unlike the trailer
+          and dealer markers above — and the numeric part is genuinely
+          VARIABLE-WIDTH (four or five digits), which is why the quantifier is a
+          range rather than a fixed width.
+      progression: "sequential within QQ1000-QQ99999 (NJ MVC)"
+    eligibility: "NJ MVC: 'the vehicle must be at least 25 years old and only used for exhibition and educational purposes' — a ROLLING threshold plus a USE restriction. The use restriction is the operative half: New Jersey does not let an eligible vehicle run historic plates as ordinary transport."
+    fee: "$44 (NJ MVC)"
+    design:
+      background: { finish: retroreflective }
+      legend_top: "New Jersey"
+      legend_bottom: "Historic"
+      legend_rule: "NJ MVC describes the 'Historic' designation as appearing on the bottom rim of the plate."
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.nj.gov/mvc/vehicles/historic.htm  # NJ MVC: 25-year rolling eligibility, exhibition-and-education-only use restriction, series QQ1000-QQ99999, 'Historic' bottom rim, $44 fee"
+    notes: >-
+      HISTORIC. New Jersey's rolling 25-year threshold is the same shape as New
+      York's and the opposite of Maryland's fixed 1999 cutoff and Florida's
+      fixed 1945 — three states, three different threshold designs, in one
+      research group. A dataset that models only one kind will be wrong about
+      the other two, and only the rolling kind needs annual re-auditing.
+
+  - id: us-nj-street-rod
+    class: historic
+    categories: [car]
+    period: { start: 2014 }
+    period_evidence: agency-page-in-force
+    format_evidence: official-agency-text
+    matching: strict
+    format:
+      pattern: "R9999"
+      regex: '\AR\d{4}\z'
+      charset: { notes: "NJ MVC publishes the range: series R1000-R9999. R is an agency-published literal." }
+      progression: "sequential within R1000-R9999 (NJ MVC)"
+    eligibility: "NJ MVC: 'modified antique automobiles manufactured before 1949 that are registered in a New Jersey street rod club or an affiliate of the National Street Rod Association Inc.' — a FIXED model-year cutoff (before 1949) PLUS a club-membership condition."
+    fee: "$15 (NJ MVC)"
+    design:
+      background: { finish: retroreflective }
+      legend_top: "New Jersey"
+      legend_bottom: "Street Rod"
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.nj.gov/mvc/vehicles/historic.htm  # NJ MVC: street rod eligibility (modified antiques manufactured before 1949, club or NSRA affiliate membership), series R1000-R9999, 'Street Rod' bottom rim, $15 fee"
+    notes: >-
+      STREET ROD. Its own series and not a variant of Historic because format,
+      eligibility and fee all differ. Note that New Jersey requires PRIVATE CLUB
+      MEMBERSHIP as a condition of a government registration class — a
+      delegation of eligibility to a non-governmental body, and the only example
+      of it found anywhere in the mid-Atlantic group.
+
+  # =========================================================================
+  # PERSONALISED.
+  # =========================================================================
+  - id: us-nj-personalized
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2014 }
+    period_evidence: agency-page-in-force
+    format_evidence: official-agency-text
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9]{3,7}\z'
+      regex_strict: '\A(?=[A-Z0-9]{3,7}\z)[A-Z0-9]*[A-Z][A-Z0-9]*[A-Z][A-Z0-9]*[A-Z][A-Z0-9]*\z'
+      charset:
+        notes: >-
+          NJ MVC, in its own words: 'A personalized plate must have at least
+          three letters and a maximum of seven characters in combination of
+          letters and numbers.' Two constraints, not one: a LENGTH ceiling of
+          seven, and a MINIMUM LETTER COUNT of three. `regex` carries the length
+          bound (and the floor of three characters implied by needing three
+          letters); `regex_strict` carries the at-least-three-letters rule, which
+          the round-trip against `pattern` forbids `regex` from expressing.
+      pattern_note: >-
+        The three-letter minimum is an unusual constraint — most states bound
+        length and alphabet, not letter COUNT — and it is exactly the kind of
+        authority-alphabet rule PRD-PLATES §2.7 invented `regex_strict` for.
+    fee: "$50 initial personalisation; $50 to reactivate a registration expired more than two years; $50 to reissue to a different owner (NJ MVC). Dedicated plates may additionally be personalised with up to FIVE characters for an initial $100 plus the annual renewal."
+    region_encoding: none
+    sources:
+      - "https://www.nj.gov/mvc/vehicles/personalized.htm  # NJ MVC: 'at least three letters and a maximum of seven characters in combination of letters and numbers'; the $50 fee tiers; Form SP-2"
+      - "https://www.nj.gov/mvc/vehicles/dedicated.htm  # NJ MVC: dedicated plates personalisable 'with up to five characters' for an initial $100 fee plus the annual renewal — a TIGHTER cap on a specialty base than on the standard one"
+    notes: >-
+      PERSONALISED. The five-character cap on a DEDICATED base versus seven on
+      the standard base is a real, agency-stated asymmetry and a trap for any
+      validator that treats personalisation as one rule per state.
+
+  # =========================================================================
+  # SPECIALTY — THE PROGRAM INDEX, per PRD-PLATES §2.5.
+  # =========================================================================
+  - id: us-nj-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle]
+    period: { start: 2014 }
+    period_evidence: agency-page-in-force
+    format_evidence: official-agency-text
+    matching: strict
+    format:
+      pattern: "L99 LLL"
+      regex: '\A[A-Z]\d{2} ?[A-Z]{3}\z'
+      charset: { notes: "specialty plates carry ORDINARY serials on an alternative design; when personalised they are capped at five characters rather than seven (NJ MVC)." }
+    design:
+      background: { finish: retroreflective }
+      note: "one design per approved programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      structure_official: >-
+        NJ MVC splits its programme into FIVE named tracks rather than one list:
+        Dedicated (special interest), Organizational, Sports, Military and
+        Volunteer, and Professional. Any single count for New Jersey is therefore
+        a count of one track, and this index refuses to invent a total.
+      count_dedicated: 17
+      count_dedicated_method: "ENUMERATED BY HAND from NJ MVC's own dedicated-plate page, read 2026-08-02: Organ Donor, Law Enforcement Memorial, Animal Friendly, Agriculture, Meadowlands, Deborah Heart & Lung, Liberty State Park, Treasure our Trees, Pinelands, United We Stand, Discover NJ History, Baymen's Heritage, Conquer Cancer, USS New Jersey Battleship, Olympic Spirit, Shore to Please, Conserve Wildlife. The agency states no count of its own — this is our enumeration of the agency's own list and is labelled as such."
+      count_organizational_types: 3
+      count_organizational_note: "NJ MVC states 'three organizational plate types' — Service Organizations, Community Organizations, Alumni Organizations — and does not publish the number of organisations within them. NOT a plate count."
+      count_total: null
+      count_total_note: "NO OFFICIAL TOTAL EXISTS for New Jersey and none is fabricated here. This is the honest opposite of Florida, where FLHSMV states 'over 100' itself."
+      dedicated_list_url: "https://www.nj.gov/mvc/vehicles/dedicated.htm"
+      organizational_list_url: "https://www.nj.gov/mvc/vehicles/organizational.htm"
+      sports_list_url: "https://www.nj.gov/mvc/vehicles/sport.htm"
+      index_url: "https://www.nj.gov/mvc/vehicles/standplates.htm"
+      fee_structure: "dedicated plates: $50 initial and $10 annual renewal, with two agency-stated exceptions — USS New Jersey Battleship is $15 annual, and Agriculture is $20 initial with NO annual renewal (NJ MVC). The exceptions matter: a fee model that assumes one rule per state gets New Jersey wrong twice."
+      churn_note: "no discontinuation rule located; whether New Jersey retires dead programmes is a recorded gap."
+    region_encoding: none
+    sources:
+      - "https://www.nj.gov/mvc/vehicles/dedicated.htm  # the 17 dedicated plates enumerated above, the $50/$10 fee structure and its two exceptions, the five-character personalisation cap"
+      - "https://www.nj.gov/mvc/vehicles/organizational.htm  # NJ MVC: 'three organizational plate types' - Service, Community, Alumni; 'Plate fees vary by plate type'"
+      - "https://www.nj.gov/mvc/vehicles/standplates.htm  # the five-track structure: Personalized, Dedicated, Specialty/Organizational, Sports, Special Vehicle (Historic/Hot Rod), Disability"
+    notes: >-
+      THE SPECIALTY PROGRAM INDEX. New Jersey is the case that shows why
+      `count_official` must be nullable: the state genuinely does not publish a
+      total, its programme is split across five tracks with different fee rules,
+      and any single number would be our invention. Recording 17 enumerated
+      dedicated plates plus three organisational TYPES plus an explicit null
+      total is the whole truth and is more useful to a consumer than a confident
+      wrong integer.
+
+# ---------------------------------------------------------------------------
+# GAPS.
+# ---------------------------------------------------------------------------
+gaps:
+  - "NO OFFICIAL SOURCE FOR THE PASSENGER SERIAL ARRANGEMENT. The 3+3 grouping is agency-image-sourced; the letter/digit arrangement within the groups is locator-only."
+  - "N.J.S.A. 39:3-33 was read through a third-party reproduction. The official New Jersey Legislature statute service was not reachable; re-derive before applying."
+  - "NO SOURCED PLATE DIMENSION or colour VALUE — Title 39 states neither."
+  - "The trailer T and dealer D literals are INFERENCES from placeholder convention, not sources. Flagged in-series."
+  - "NJ MVC's temporary-tag page 404'd twice; validity period and design unobtained."
+  - "Burnett v. County of Bergen and N.J.S.A. 52:18A-234.5 were not fetched — the artwork posture rests on the State's own legal statement, which WAS fetched."
+  - "No New Jersey equivalent of Florida's monthly issuance-volume report was found."
