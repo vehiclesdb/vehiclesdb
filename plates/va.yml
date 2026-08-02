@@ -1,0 +1,604 @@
+# plates/va.yml — Vatican City State (PRD-PLATES gate L1, microstates group).
+# DRAFT for verification. Fetched 2026-08-02.
+#
+# ---------------------------------------------------------------------------
+# READ THIS FIRST: THIS IS THE THINNEST-EVIDENCE FILE IN THE DATASET, AND IT
+# SAYS SO IN EVERY ROW.
+# ---------------------------------------------------------------------------
+# Vatican City State registers vehicles internally, in the "Registro veicoli
+# vaticani" (RVV), and publishes essentially nothing about how. Its laws appear
+# in the "Acta Apostolicae Sedis — Supplemento per le leggi e disposizioni
+# dello Stato della Città del Vaticano", which is not online as a searchable
+# archive; the Governatorato's own legislation page
+# (vaticanstate.va/it/stato-governo/legislazione-e-normativa/norm-general.html)
+# was fetched in this pass and carries ONLY documents from roughly 2020 onward
+# — public contracts, data protection, judicial appointments, the Fundamental
+# Law. It contains NOTHING on circolazione stradale, veicoli, immatricolazione
+# or targhe, and exposes no route to older instruments. That is a fetched
+# negative, not an assumption.
+#
+# THE CONSEQUENCE, STATED PLAINLY: exactly TWO primary-grade facts underpin
+# this file. Everything else is secondary, and every row is tagged.
+#
+#   PRIMARY 1 — THE CLASS DISTINCTION, from the Governatorato itself.
+#   vaticanstate.va, "Sigle automobilistiche", verbatim:
+#     "Due sono le sigle degli automezzi iscritti nel Registro veicoli
+#      vaticani (RVV):"
+#     SCV — "per le auto di proprietà dello Stato e degli Enti della Santa
+#            Sede"
+#     CV  — "per la auto di proprietà dei cittadini e delle personalità a cui
+#            è concessa l'immatricolazione nei ruoli vaticani"
+#     "La sigla internazionale è V."
+#   This is the single most important sentence available for this jurisdiction
+#   and it settles the question the brief flagged: SCV and CV are NOT variants
+#   of one series and NOT a range split. They are two REGISTERS with different
+#   eligibility — SCV is state-and-Holy-See property (class `government`), CV
+#   is private property of citizens and of persons granted Vatican
+#   registration (class `standard`). A consumer that treats "CV" as a typo for
+#   "SCV", or SCV as merely "the official range of CV", is wrong.
+#
+#   PRIMARY 2 — THE DISTINGUISHING SIGN, from the UN depositary record.
+#   The Holy See acceded to the Convention on Road Traffic (Geneva,
+#   19 September 1949) on 5 October 1953, and the depositary record carries
+#   the distinguishing sign "V". This corroborates the Governatorato's own
+#   "La sigla internazionale è V." from an independent primary record, and it
+#   is the only DATED instrument in this file that the Vatican is party to.
+#   Note what it does NOT do: the Geneva Convention prescribes the oval
+#   distinguishing sign (Annex 4), not the plate. It says nothing about
+#   Vatican serial formats, colours or dimensions.
+#
+# WHAT IS *NOT* ESTABLISHED — the honest list, because it is most of the file:
+#   * NO instrument prescribing the serial format, the colours, the dimensions
+#     or the typography was reachable. Every format below is observation
+#     reported by secondary sources.
+#   * The "Regolamento per la circolazione degli autoveicoli" of 1930 is NAMED
+#     by a secondary source (it.wikipedia), which attributes its Art. 10 to the
+#     red plates of cardinals and dignitaries. The instrument itself was NOT
+#     reachable; not its exact date, not its text, not its publication
+#     reference. It is recorded here as a NAMED-BUT-UNREACHED instrument and
+#     is never cited as if it had been read.
+#   * The "1998 legislative modification" that reportedly ended the cardinals'
+#     red plates is likewise named by a secondary source and unreached.
+#   * 31 January 1988, the reported start of the CV/SCV system, rests on
+#     secondary sources ONLY. No instrument, no gazette reference.
+#   * PLATE DIMENSIONS ARE GENUINELY DISPUTED between sources — see
+#     `dimensions_dispute` below. They are NOT averaged and NOT picked.
+#
+# The Vatican is NOT in the EU and there is no Euro band on any series here.
+#
+# ---------------------------------------------------------------------------
+# period_evidence VOCABULARY (as in us-ny.yml / the L1 microstates group):
+#   treaty-depositary-record   a UN depositary record; PRIMARY
+#   official-agency-page       an official Vatican page shows it current; PRIMARY
+#   secondary-wikipedia        WIKIPEDIA-DERIVED. Mandatory tag on every fact
+#                              taken from a Wikipedia article, corroborated or
+#                              not; the article URL rides on the source line.
+#   enthusiast-reference       a specialist plate reference (targheitaliane.it)
+#   corroboration-only         no date claim survives; the row exists on
+#                              description alone and its period.start is a
+#                              schema placeholder, not a claim
+#
+# format_evidence VOCABULARY (same group):
+#   official-agency-text | secondary-wikipedia | enthusiast-reference |
+#   not-established
+#
+# TAGGING RULE APPLIED THROUGHOUT THIS FILE: `secondary-wikipedia` marks the
+# SOURCE TIER, not the confidence. A fact can be Wikipedia-derived AND
+# independently corroborated by an enthusiast reference — where that is so the
+# note says which sources agree, and the tag still reads `secondary-wikipedia`,
+# because the point of the tag is that every Wikipedia-derived fact in the
+# dataset is enumerable by one grep. Nothing Wikipedia-derived in this file
+# claims `instrument-in-force`; no instrument was reachable to claim it with.
+# The facts below are written in this dataset's own schema and wording — the
+# articles were read for FACTS, not transcribed.
+# ---------------------------------------------------------------------------
+jurisdiction: va
+authority:
+  name: Governatorato dello Stato della Città del Vaticano — Registro veicoli vaticani (RVV)
+  url: "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html"
+binding: vehicle
+binding_note: >-
+  RECORDED ASSUMPTION, not a sourced claim. No instrument stating whether a
+  Vatican registration binds to the vehicle or to the owner was reachable.
+  `vehicle` is the dataset default and the ordinary continental practice; the
+  Governatorato's own wording — "le auto di proprietà dello Stato", "la auto
+  di proprietà dei cittadini" — describes an eligibility test on the OWNER
+  rather than a plate that follows the owner between vehicles, so it does not
+  support `owner` either. A verifier should treat this field as unresolved.
+statute_edition: >-
+  NO STATUTE EDITION EXISTS FOR THIS FILE. The Governatorato's legislation
+  index was read 2026-08-02 and contains no road-traffic instrument at all
+  (see the header). Where a date appears below it comes from a treaty record,
+  an official web page, or a named secondary source — never from a Vatican
+  instrument, because none was reachable.
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts.
+# ---------------------------------------------------------------------------
+common:
+  registers:
+    rule: >-
+      Two sigle only, per the Governatorato: SCV for vehicles owned by the
+      State and by entities of the Holy See; CV for vehicles owned by citizens
+      and by persons to whom registration in the Vatican rolls is granted.
+      There is no third sigla on the Governatorato's page.
+    scv_expansion: >-
+      "Status Civitatis Vaticanae" (Latin) is the expansion given by secondary
+      sources. The Governatorato's page states the sigla's SCOPE but does NOT
+      expand the abbreviation, so the expansion itself is secondary.
+    cv_expansion: >-
+      "Città del Vaticano" (Italian) per the same secondary sources; likewise
+      not expanded on the Governatorato's page.
+    source: "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html  # 'Due sono le sigle degli automezzi iscritti nel Registro veicoli vaticani (RVV)' — SCV 'per le auto di proprietà dello Stato e degli Enti della Santa Sede'; CV 'per la auto di proprietà dei cittadini e delle personalità a cui è concessa l'immatricolazione nei ruoli vaticani'"
+  country_sign:
+    letters: "V"
+    shape: ellipse
+    background: "#FFFFFF"
+    foreground: "#000000"
+    rule: >-
+      "La sigla internazionale è V." (Governatorato). Independently carried by
+      the UN depositary record for the Convention on Road Traffic (Geneva,
+      19 September 1949), to which the Holy See acceded on 5 October 1953.
+      Under that Convention the sign is an OVAL PLAQUE carried on the rear of
+      the vehicle, black on white — a separate object from the plate, exactly
+      as in Switzerland. It is NOT a field on any series below.
+    treaty_note: >-
+      The Holy See is a party to the 1949 GENEVA Convention. Its participation
+      in the 1968 VIENNA Convention on Road Traffic was NOT established in this
+      pass and must not be assumed.
+    sources:
+      - "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html  # 'La sigla internazionale è V.'"
+      - "https://treaties.un.org/pages/ViewDetailsV.aspx?src=TREATY&mtdsg_no=XI-B-1&chapter=11&clang=_en  # Convention on Road Traffic, Geneva, 19 September 1949; participant 'Holy See', accession 5 October 1953; distinguishing sign V"
+  separator:
+    printed: " "
+    rule: >-
+      The modern plates print the sigla, then a GAP, then the digits — reported
+      by it.wikipedia as the 1988 change itself: "le lettere non sono più
+      intervallate da punti e sono seguite da uno spazio che le separa dalle
+      cifre" (the letters are no longer separated by dots and are followed by a
+      space separating them from the digits). Every `pattern` below therefore
+      spells a space and every `regex` accepts `[- ]?`.
+    pre_1988_dots_gap: >-
+      DATASET LIMITATION, stated because it affects two series. The pre-1988
+      plates printed the sigla WITH DOTS — "S.C.V." — and U+002E FULL STOP is
+      in _meta/separators.yml's FORGIVING set but NOT its EMITTED set, so
+      PRD-PLATES §2.6 forbids writing it. The patterns below therefore spell
+      "SCV" undotted, exactly as ch.yml spells the Swiss mid-height point as a
+      space. A §2.6-conformant consumer strips the dots from a real "S.C.V. 84"
+      and reaches "SCV84", which the separator-free twin of these regexes
+      matches. Only the printed glyph is unrepresentable.
+    source: "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: the 1988 change described as dropping the dots and introducing the space"
+  dimensions_dispute:
+    status: UNRESOLVED
+    rule: >-
+      THREE SOURCES GIVE THREE DIFFERENT ANSWERS FOR THE MODERN REAR CAR PLATE
+      AND THEY ARE NOT RECONCILABLE. PRD-PLATES §5.3 says record the
+      disagreement and never average it, so no `design.plate` block in this
+      file carries a width and height. The claims, each attributed:
+        (a) 520 x 110 mm — en.wikipedia's infobox. This is exactly the EU
+            standard size, which is suspicious for a non-EU microstate whose
+            plates are made to Italian patterns, and it is uncited there.
+        (b) 340 x 115 mm from 1982, single-row — it.wikipedia.
+        (c) 300 x 100 mm from 1981, single-row; then 486 x 109 mm from 1988 —
+            targheitaliane.it.
+      (b) and (c) agree that a single-row plate arrived in the early 1980s and
+      disagree on the year and every dimension. (a) agrees with neither.
+    character_dimensions_note: >-
+      A CAUGHT ERROR, recorded so a verifier does not re-introduce it.
+      it.wikipedia gives "altezza 80 mm, larghezza 40 mm e spessore 10 mm" for
+      the rear and "altezza 57 mm, larghezza 28 mm e spessore 6 mm" for the
+      front. Read as PLATE dimensions these are absurd — a plate 80 mm tall and
+      40 mm wide cannot carry "CV 03566". They are CHARACTER dimensions
+      (height / width / stroke), which is also why they match the Italian
+      character specification of the period. A first pass through this file
+      transcribed them as plate sizes; they are recorded here as characters and
+      NOT as `design.plate`.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Vatican_City  # SECONDARY, uncited: 520 x 110 mm"
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: 340 x 115 mm from 1982; character heights 80/40/10 rear and 57/28/6 front"
+      - "https://www.targheitaliane.it/vatican/vatican_i.html  # ENTHUSIAST REFERENCE: 30 x 10 cm single-row from 1981; 486 x 109 mm rear from 1988"
+  manufacture:
+    rule: >-
+      Reported to be produced by the Istituto Poligrafico e Zecca dello Stato
+      (Italy) at its Foggia plant — i.e. by the same maker as Italian plates,
+      which is the likeliest explanation for the Italian-pattern dimensions and
+      for the 2011 graphic revision tracking an Italian one.
+    evidence: secondary-wikipedia
+    source: "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY"
+  seal:
+    rule: >-
+      Reported: a lead seal (piombo) bearing the papal arms, 8-12 mm across, is
+      applied by hand to the REAR plate only. If correct this is a physical
+      authentication device with no analogue elsewhere in this dataset. Carried
+      as a design note, never as part of the serial.
+    evidence: secondary-wikipedia
+    source: "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY"
+  emblem:
+    present: true
+    rendered: placeholder
+    rule: >-
+      The papal arms (crossed keys and tiara) appear on the seal and on papal
+      plates. PRD-PLATES §3's placeholder rule applies and there is no
+      affirmatively-clean licence route: the Holy See asserts control over its
+      insignia, and no permissive licence was located. Placeholder everywhere.
+  not_modelled:
+    - "DIPLOMATIC PLATES ARE NOT MODELLED, and the reason is a real one rather than an omission. Diplomatic missions ACCREDITED TO THE HOLY SEE sit in Italian territory and carry ITALIAN CD plates; the Vatican's own missions abroad carry the host state's diplomatic plates. Whether the Vatican itself issues any CD series was NOT established, and no source consulted describes one. Recorded as not-established rather than as a sourced negative."
+    - "NO TRAILER, EXPORT, HISTORIC, TAXI, AGRICULTURAL, SEASONAL, ELECTRIC OR PERSONALIZED SERIES was located. Given a territory of 0.44 km2 and a few hundred vehicles, their absence is plausible — but plausible is not sourced, and none of these is recorded as a negative finding."
+    - "MILITARY: the Pontifical Swiss Guard and the Gendarmeria are Vatican bodies whose vehicles are State property and therefore fall under SCV on the Governatorato's own wording. No distinct military or police series was located."
+
+series:
+
+  # =========================================================================
+  # THE TWO CURRENT REGISTERS. Same printed shape, DIFFERENT ELIGIBILITY —
+  # the one distinction in this file that rests on a primary source.
+  # =========================================================================
+  - id: va-scv-1988
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 1988 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      31 January 1988 is the reported start of the current CV/SCV system, given
+      by it.wikipedia and consistent with targheitaliane.it's account of a 1988
+      renumbering. NO INSTRUMENT WAS REACHED. The day-precision date is
+      therefore recorded in prose only; `period.start` carries the year, which
+      is all the evidence supports. This is exactly the case the
+      instrument-date rule warns about in reverse — here there is no instrument
+      whose date could be mistaken for the series start, because there is no
+      instrument at all.
+    matching: strict
+    format:
+      pattern: "SCV 99999"
+      regex: '\ASCV[- ]?\d{5}\z'
+      regex_statutory: '\ASCV[- ]?\d+\z'
+      format_evidence: secondary-wikipedia
+      format_note: >-
+        Five progressive digits for motor cars, reported concordantly by
+        it.wikipedia and targheitaliane.it, and consistent with the observed
+        "SCV.00893" and "CV 03566". The five-digit width is the only serial
+        claim here with two independent secondary sources behind it.
+        `regex_statutory` drops the width because nothing legal is known to cap
+        it — the honest outer bound.
+      progression: >-
+        Progressive. targheitaliane.it reports SCV car numbering running from
+        about 00526 and SCV motorcycle numbering from about 0056 at the 1988
+        renumbering; both figures are ENTHUSIAST-SOURCED and are recorded as
+        approximate starting points, not as range boundaries. No Vatican plate
+        encodes a date or a location.
+      separator_note: "sigla, gap, digits — see common.separator"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "no colour specification was reachable; white ground with black characters is the concordant secondary description" }
+      foreground: "#000000"
+      band: { side: none }
+      band_note: "no Euro band — Vatican City is not in the EU; the 'V' oval is a separate rear plaque under the 1949 Geneva Convention (common.country_sign)"
+      emblem: { present: true, rendered: placeholder, note: "papal-arms lead seal on the REAR plate only, per common.seal — reported, not sourced to an instrument" }
+      rear_differs: true
+      rear_differs_note: "reported: the rear plate is larger than the front and carries the lead seal, which the front does not. The dimensions themselves are DISPUTED — see common.dimensions_dispute; no width/height is asserted here."
+      characters_rear: { h: 80, w: 40, stroke: 10, unit: mm, basis: secondary }
+      characters_front: { h: 57, w: 28, stroke: 6, unit: mm, basis: secondary }
+      characters_note: "these are CHARACTER dimensions, not plate dimensions — see common.dimensions_dispute.character_dimensions_note for the error this corrects"
+    region_encoding: none
+    notes: >-
+      THE STATE REGISTER. SCV is reserved by the Governatorato to "le auto di
+      proprietà dello Stato e degli Enti della Santa Sede" — vehicles owned by
+      the State and by entities of the Holy See. Class `government` follows
+      directly from that wording. This is the older of the two sigle: every
+      Vatican plate from 1930 until the 1988 reform was an SCV plate, and CV
+      exists only from 1988.
+    sources:
+      - "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html  # PRIMARY (official Governatorato page): the SCV eligibility rule, verbatim, and 'La sigla internazionale è V.'"
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: 31 January 1988 system start; five-digit car serials; the dropped dots and the space"
+      - "https://www.targheitaliane.it/vatican/vatican_i.html  # ENTHUSIAST REFERENCE: the 1988 renumbering and the approximate SCV starting numbers"
+
+  - id: va-cv-1988
+    class: standard
+    categories: [car, van]
+    period: { start: 1988 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      CV did not exist before the 1988 reform — it is the sigla that reform
+      CREATED, which is why this series has no predecessor row while
+      va-scv-1988 does. Same evidence and same limits as va-scv-1988: reported
+      31 January 1988, no instrument reached, year-precision in `period.start`.
+    matching: strict
+    format:
+      pattern: "CV 99999"
+      regex: '\ACV[- ]?\d{5}\z'
+      regex_statutory: '\ACV[- ]?\d+\z'
+      format_evidence: secondary-wikipedia
+      format_note: >-
+        Five progressive digits, as for SCV. The observed example "CV 03566"
+        and the reported opening number "CV 03000" are both five-digit, and
+        it.wikipedia and targheitaliane.it agree the private car series opened
+        at CV 03000.
+      progression: >-
+        Progressive from a reported CV 03000 for private cars. ENTHUSIAST- AND
+        LOCATOR-SOURCED; treat as an approximate opening point, not a boundary.
+      separator_note: "sigla, gap, digits — see common.separator"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "as va-scv-1988 — no colour specification was reachable" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "papal-arms lead seal on the rear plate only — reported" }
+      rear_differs: true
+      rear_differs_note: "as va-scv-1988; dimensions disputed and therefore not asserted"
+      characters_rear: { h: 80, w: 40, stroke: 10, unit: mm, basis: secondary }
+      characters_front: { h: 57, w: 28, stroke: 6, unit: mm, basis: secondary }
+    region_encoding: none
+    notes: >-
+      THE PRIVATE REGISTER, and the row the brief singled out. CV is granted by
+      the Governatorato to "le auto di proprietà dei cittadini e delle
+      personalità a cui è concessa l'immatricolazione nei ruoli vaticani" —
+      vehicles owned by citizens and by persons to whom registration in the
+      Vatican rolls is granted. It is therefore a genuine STANDARD/private
+      series with an eligibility gate, not an official one, and not a sub-range
+      of SCV. Getting this backwards inverts the meaning of every Vatican plate
+      a consumer will ever parse.
+    sources:
+      - "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html  # PRIMARY (official Governatorato page): the CV eligibility rule, verbatim"
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: CV created in 1988; private car numbering opening at CV 03000; five-digit serials"
+      - "https://www.targheitaliane.it/vatican/vatican_i.html  # ENTHUSIAST REFERENCE: CV 03000+ residents' vehicles, CV 0300+ residents' motorcycles"
+
+  # =========================================================================
+  # MOTORCYCLES — four digits, square two-line plate.
+  # =========================================================================
+  - id: va-scv-motorcycle-1988
+    class: motorcycle
+    categories: [motorcycle, scooter, tractor]
+    period: { start: 1988 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "SCV 9999"
+      regex: '\ASCV[- ]?\d{4}\z'
+      regex_statutory: '\ASCV[- ]?\d+\z'
+      format_evidence: secondary-wikipedia
+      format_note: >-
+        FOUR digits, against five on the car series — the one structural
+        difference between the two-wheel and four-wheel number spaces. Reported
+        by it.wikipedia and targheitaliane.it.
+      separator_note: >-
+        The square plate prints the sigla on the UPPER line and the digits on
+        the LOWER line, so the printed separator is a LINE BREAK rather than a
+        gap; the pattern spells a space, as elsewhere in the dataset.
+    design:
+      plate: { w: 177, h: 177, unit: mm, basis: secondary, note: "square; reported by it.wikipedia. Unlike the car plates the motorcycle size is NOT disputed between sources, so it is asserted here." }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "papal-arms seal on the upper line beside the sigla — reported" }
+      layout: "two lines separated by a horizontal black rule, with a black border; reported introduced February 2009. The pre-2009 form is described as lacking the border and left-aligning the sigla."
+      rear_differs: false
+    region_encoding: none
+    notes: >-
+      STATE two-wheelers and tractors. Square 177 x 177 mm, four digits. The
+      February 2009 redesign (border plus a horizontal dividing rule) is a
+      DESIGN change within one series rather than a new series: the format and
+      the eligibility are unchanged, so under PRD-PLATES §2.3 it is a sub-entry
+      and it is recorded in `design.layout` rather than split out. A verifier
+      who pins an instrument for 2009 should reconsider that call.
+    sources:
+      - "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html  # PRIMARY: the SCV eligibility rule that makes this class `motorcycle` under the STATE register"
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: 177 x 177 mm square, four-digit progressive numbering, the February 2009 two-line redesign"
+
+  - id: va-cv-motorcycle-1988
+    class: motorcycle
+    categories: [motorcycle, scooter]
+    period: { start: 1988 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "CV 9999"
+      regex: '\ACV[- ]?\d{4}\z'
+      regex_statutory: '\ACV[- ]?\d+\z'
+      format_evidence: secondary-wikipedia
+      format_note: "four digits, reported opening at CV 0300 for private motorcycles"
+      separator_note: "line break on the square plate — see va-scv-motorcycle-1988"
+    design:
+      plate: { w: 177, h: 177, unit: mm, basis: secondary }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    notes: >-
+      PRIVATE two-wheelers — the CV counterpart of va-scv-motorcycle-1988,
+      separate because the register and therefore the eligibility differ, on
+      the Governatorato's own two-sigle statement. Its number space is
+      independent of the SCV one, so "SCV 0500" and "CV 0500" can both exist.
+    sources:
+      - "https://www.vaticanstate.va/it/stato-governo/note-generali/sigle-automobilistiche.html  # PRIMARY: the CV eligibility rule"
+      - "https://www.targheitaliane.it/vatican/vatican_i.html  # ENTHUSIAST REFERENCE: CV 0300+ residents' motorcycles, four digits"
+
+  # =========================================================================
+  # THE PAPAL PLATE — the most-asked Vatican plate fact, and weakly sourced.
+  # =========================================================================
+  - id: va-papal-red
+    class: government
+    categories: [car]
+    period: { start: 2002 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      "Since June 2002" is reported by it.wikipedia ALONE and is not
+      corroborated. Before that date the same source describes SCV 1 through
+      SCV 9 serving papal purposes, and targheitaliane.it instead describes red
+      plates across SCV 1-100 for the Pope AND cardinals — see the disagreement
+      recorded on va-cardinal-red. 2002 is therefore the weakest date in this
+      file and is tagged accordingly.
+    matching: strict
+    format:
+      pattern: "SCV 1"
+      regex: '\ASCV[- ]?1\z'
+      format_evidence: secondary-wikipedia
+      format_note: >-
+        A SINGLE-VALUE SERIES: the literal string "SCV 1". The pattern spells
+        the digit as a literal 1 rather than the 9 token precisely because this
+        series admits exactly one serial and a 9 token would generate serials
+        the series does not contain.
+      progression: "none — one serial"
+    design:
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#CC0000"
+      foreground_note: >-
+        RED characters on white, against black on white for every other series.
+        hex_basis OBSERVED and nothing more: no colour specification, no RAL
+        reference and no instrument was reachable, so #CC0000 is a rendering
+        convention for "rosso" and must not be treated as a spec value.
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, note: "papal arms" }
+      rear_differs: true
+    region_encoding: none
+    notes: >-
+      THE POPEMOBILE PLATE. Red characters on white, carried by the vehicle in
+      papal use. Reported to be SCV 1 exclusively since June 2002, where the
+      earlier practice extended red lettering across a small block of low SCV
+      numbers used by the Pope. Everything in this row is secondary; it is
+      included because it is the single most-searched fact about Vatican plates
+      and omitting it would leave a locator-grade claim uncontested elsewhere,
+      but it is tagged so no consumer mistakes it for sourced.
+    sources:
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: red characters on white, SCV 1 exclusively since June 2002, previously SCV 1-9"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Vatican_City  # SECONDARY, corroborating only that the papal vehicle carries SCV 1 in red lettering"
+
+  # =========================================================================
+  # HISTORIC SERIES.
+  # =========================================================================
+  - id: va-scv-1930
+    class: government
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1930, end: 1988 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      1930 is given concordantly by it.wikipedia and targheitaliane.it, both
+      placing the first Vatican plates about a year after the Lateran Treaty of
+      11 February 1929. The END is the 1988 reform that introduced CV and
+      dropped the dots. Neither boundary rests on an instrument. The Lateran
+      Treaty itself was NOT read in this pass and is not cited: whether it says
+      anything about vehicle circulation is unestablished, and it is named here
+      only as the political event the sources date the plates against.
+    matching: recall-only
+    format:
+      pattern: "SCV 9999"
+      regex: '\ASCV[- ]?\d{1,5}\z'
+      format_evidence: secondary-wikipedia
+      format_note: >-
+        DELIBERATELY WIDE, hence `matching: recall-only`. The sources describe
+        "S.C.V." followed by "un numero crescente" of VARIABLE length over a
+        58-year span across at least three plate generations, and none of them
+        states a grammar. `\d{1,5}` is a shape hit and nothing more: a match
+        does NOT assert that the string was ever issued.
+      separator_note: >-
+        PRINTED WITH DOTS as "S.C.V." for most or all of this period, and the
+        rear plate carried the sigla on one line and the number on another.
+        Neither the dots nor the line break is representable — see
+        common.separator.pre_1988_dots_gap.
+    design:
+      background: { color: "#FFFFFF", finish: non-reflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+      layout: "reported two-line rear plates (S.C.V. above, number below) until the early 1980s, then a single-line arrangement; the year and the dimensions of that change are DISPUTED — see common.dimensions_dispute"
+      rear_differs: true
+    region_encoding: none
+    notes: >-
+      THE ORIGINAL AND, UNTIL 1988, THE ONLY VATICAN REGISTER — private
+      vehicles of Vatican residents also carried SCV, because CV did not yet
+      exist. That is the substantive reason this row cannot simply be folded
+      into va-scv-1988: the class boundary moved under it. Modelled as ONE
+      series across 1930-1988 rather than split into the generations the
+      sources describe, because those generation boundaries are exactly the
+      folklore-prone era boundaries PRD-PLATES §9 warns about and no two
+      sources agree on them.
+    sources:
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: first plates 1930, 'S.C.V.' with dots and a growing number, two-line rear plates, the early-1980s single-line change"
+      - "https://www.targheitaliane.it/vatican/vatican_i.html  # ENTHUSIAST REFERENCE: 'La Città del Vaticano ha iniziato a produrre targhe nel 1930'; black on white; SCV plus an increasing number"
+
+  - id: va-cardinal-red
+    class: government
+    categories: [car]
+    period: { start: 1930, ended: true }
+    year_end_min: 1998
+    period_evidence: corroboration-only
+    period_note: >-
+      KNOWN-OVER-UNDATED, the Turn 97 schema shape. The series is reported
+      ENDED — "tale tipologia non è più stata confermata con modifica
+      legislativa del 1998" — but the reported 1998 modification was not
+      reached, so `ended: true` with `year_end_min: 1998` rather than a claimed
+      `end`. The START is inherited from the 1930 Regolamento that reportedly
+      created it and is no better sourced than that.
+    matching: recall-only
+    format:
+      pattern: "SCV 999"
+      regex: '\ASCV[- ]?\d{1,3}\z'
+      format_evidence: not-established
+      format_note: >-
+        THE SERIAL GRAMMAR OF THIS SERIES IS NOT ESTABLISHED. No source states
+        it. The regex is the low-numbered SCV shape of the period, written
+        deliberately wide, and `matching: recall-only` says so: a match is a
+        shape hit and carries NO claim that the string was a cardinal's plate.
+        This row exists to record a documented historical CLASS, not to support
+        validation.
+    design:
+      background: { color: "#FFFFFF", finish: non-reflective, hex_basis: observed }
+      foreground: "#CC0000"
+      foreground_note: "'targhe speciali con caratteri di colore rosso su base bianca' as reported; hex_basis observed, no spec value exists"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    notes: >-
+      RED PLATES FOR CARDINALS AND DIGNITARIES. it.wikipedia attributes these
+      to Art. 10 of a "Regolamento per la circolazione degli autoveicoli" of
+      1930 — A NAMED INSTRUMENT THAT WAS NOT REACHED, in this pass or by any
+      route tried, and which is therefore never cited below as if it had been
+      read. RECORDED DISAGREEMENT, per PRD-PLATES §5.3: it.wikipedia has red
+      lettering as a CARDINALS-AND-DIGNITARIES entitlement ended in 1998, while
+      targheitaliane.it describes red plates numbered SCV 1-100 serving "the
+      Pope and Cardinals" without an end date. The two accounts cannot both be
+      right about the modern position and neither is preferred here.
+    sources:
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: Art. 10 of the 1930 'Regolamento per la circolazione degli autoveicoli'; 'targhe speciali con caratteri di colore rosso su base bianca'; not reconfirmed after a 1998 legislative modification"
+      - "https://www.targheitaliane.it/vatican/vatican_i.html  # ENTHUSIAST REFERENCE, DISAGREEING: red-on-white SCV 1-100 for the Pope and Cardinals"
+
+  # =========================================================================
+  # TEST / TRADE PLATES.
+  # =========================================================================
+  - id: va-prova
+    class: dealer
+    categories: [car, van, truck, motorcycle]
+    period: { start: 1930 }
+    period_evidence: corroboration-only
+    period_note: >-
+      NO DATE IS ESTABLISHED FOR THIS SERIES AT EITHER END. `period.start` is
+      set to 1930 — the start of Vatican plate issuance generally — purely so
+      the row satisfies the schema's period rails, and it is NOT a claim that
+      test plates existed in 1930. This is the weakest period in the file;
+      `corroboration-only` is the honest tag and a verifier should treat the
+      start year as a placeholder to be replaced or the row to be dropped.
+    matching: recall-only
+    format:
+      pattern: "SCV 999"
+      regex: '\ASCV[- ]?\d{1,3}\z'
+      format_evidence: secondary-wikipedia
+      format_note: >-
+        The word PROVA is a LEGEND printed in red on the upper line, not part
+        of the serial, so it does not appear in the pattern; the serial proper
+        is the sigla plus a progressive number. Width not established — hence
+        `recall-only`.
+    design:
+      background: { color: "#FFFFFF", finish: non-reflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      legend: { text: "PROVA", color: "#CC0000", position: upper-line, basis: secondary }
+      emblem: { present: false }
+      plate: { w: 200, h: 275, unit: mm, basis: secondary, note: "reported; portrait orientation, derived from the Italian test-plate pattern" }
+    region_encoding: none
+    notes: >-
+      TEST / TRADE PLATES, for new vehicles moved through Italy or exported.
+      Reported to follow the Italian "prova" pattern, which fits the wider
+      picture of Vatican plates being made to Italian templates by the Italian
+      state printer. Class `dealer` under _meta/classes.yml: bound to a trade
+      activity rather than to a vehicle. Everything here is secondary and the
+      period is not established at all.
+    sources:
+      - "https://it.wikipedia.org/wiki/Targhe_d%27immatricolazione_della_Citt%C3%A0_del_Vaticano  # SECONDARY: metal test plates 200 x 275 mm, red 'PROVA' on the upper line, 'SCV' or 'S.C.V.' plus a progressive number below"
