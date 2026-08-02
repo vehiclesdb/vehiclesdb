@@ -1198,7 +1198,7 @@ BMW:
   # twins "X REIHE"/"Z REIHE" are already dropped by normalizer.rb#bmw; this
   # makes the class consistent from the overrides layer (dossier §1b; the
   # in-code cure is gaps G-2/G-3, filed). ──
-  "M Series":    null   # register group label: "BMW M SERIES" uk_dft GenModel 6,112 + "M SERIES" nz 107 — spans M2/M3/M4/M5/M6/M8/X5 M/X6 M/XM, all listed separately on bmwusa.com/vehicles/bmw-m/models.html (removals.yml carries the ledger line)
+  "M Series":    null   # register group label: "M SERIES" nz 107 — spans M2/M3/M4/M5/M6/M8/X5 M/X6 M/XM, all listed separately on bmwusa.com/vehicles/bmw-m/models.html (removals.yml carries the ledger line). SCOPE NARROWED 2026-08-02 (pipeline G-1c): uk_dft's "BMW M SERIES" GenModel (gb 6,112) no longer reaches this key — its Model column names the actual car ("M135 XDRIVE AUTO", "M5 PHEV AUTO"), so uk_dft.rb routes those rows to 1 Series/2 Series/7 Series/M3/M4/M5 at the source. The key stays LIVE for nz_nzta, whose rows carry no model string. NOT inert — verified against a build, not against test_override_key_reachability, which is kind-blind and would accept it either way.
   "I":           null   # register group label: "I" nz_nzta 1,319 — BMW's EV sub-brand letter; nz carries I3 (594), I8 (27), I4 (6), IX1 (2) separately, so these rows are the UNRESOLVED residue (audit v2026.07.5: id D6 + name D9)
   "X":           null   # register group label: "X" lu_snca 2 es_dgt 1 fi_traficom 1; "X SDRIVE 18D" es 1 — bare family letter spanning X1-X7+iX (removals.yml)
   "X Series":    null   # register group label: "X SERIES" nl_rdw 382 es_dgt 1 — sibling "X REIHE" (nl 12,009) is already dropped by normalizer.rb#bmw (removals.yml)
