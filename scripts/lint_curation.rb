@@ -615,6 +615,50 @@ else
   end
 end
 
+# ── every override key must be a STRING ──────────────────────────────────────
+#
+# YAML types bare scalars, and every one of these tables is looked up with a
+# String at runtime — `model_aliases.dig(make, model)`, `renames[make][str]`,
+# `stylings.key?(str.upcase)`. So a key written without quotes that YAML decides
+# is an Integer, Float, Boolean or Date CANNOT MATCH, ever. It does not error,
+# it does not warn: the curation is simply inert, and the record ships as though
+# the entry were never written.
+#
+# MEASURED, which is why this exists: `overrides/models/aliases.yml` carried
+#
+#     2107: [Semyorka, Жигули]
+#
+# under Lada. YAML parsed the key as Integer 2107, `dig` was always asked with
+# the String "2107", and so `car/lada/2107` published with `aliases: nil` from
+# the day it was written — the alias had NEVER FIRED. Found by the inert-key
+# detector (pipeline#161), not by any lint, and a corpus-wide sweep found it was
+# the only one. This makes sure it stays the only one.
+#
+# The trap is worst for the names most likely to hit it — numeric nameplates
+# (`2107`, `500`, `911`, `9-3`, `205`), `NO`/`ON`/`YES` (Booleans), and anything
+# shaped like a date. Those are exactly the strings a curator writes unquoted.
+curation_files.each do |abs|
+  y = begin
+    YAML.safe_load_file(abs, permitted_classes: [Date], aliases: false)
+  rescue StandardError
+    next # shape/parse problems are already reported above
+  end
+  next unless y.is_a?(Hash)
+  walk = lambda do |node, path|
+    return unless node.is_a?(Hash)
+    node.each do |k, v|
+      unless k.is_a?(String)
+        where = path.empty? ? "(top level)" : path
+        fail! "#{File.basename(abs)}: #{where} -> key #{k.inspect} parsed as #{k.class}, not String. " \
+              "Every lookup against this table uses a String, so a non-String key can NEVER match and the " \
+              "entry is silently inert. Quote it: \"#{k}\": ..."
+      end
+      walk.(v, path.empty? ? k.to_s : "#{path}.#{k}")
+    end
+  end
+  walk.(y, "")
+end
+
 # ── report ───────────────────────────────────────────────────────────────────
 if ENV["VDB_LINT_VERBOSE"]
   NOTES.each { |n| puts "note: #{n}" }

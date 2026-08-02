@@ -71,7 +71,7 @@ Lada:
   # a separate question (drivetrain spec as a nameplate) and is NOT dispositioned
   # here; `s4w/g13-rebaseline` already carries both ids in the name-shape debt.
   Niva: [Нива, 4x4]                                  # Cyrillic; 2006-2021 official renaming
-  2107: [Semyorka, Жигули]                           # RU nickname ("the seven"); Zhiguli family name
+  "2107": [Semyorka, Жигули]                         # RU nickname ("the seven"); Zhiguli family name. QUOTED, AND IT MUST STAY QUOTED: bare 2107 is parsed by YAML as an INTEGER, and reconciler.rb:347 looks this table up with `model_aliases.dig(make, model)` where `model` is always a String — so the unquoted key could never match and this alias had NEVER FIRED. car/lada/2107 shipped with `aliases: nil` from the day it was written. Found by the inert-key detector (pipeline#161); a corpus-wide sweep of every overrides/**/*.yml found this was the ONLY non-String key.
 
 Mercedes-Benz:
   G-Class: [Geländewagen, G-Wagen]                   # original name; universal nickname
