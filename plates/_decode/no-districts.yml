@@ -1,0 +1,901 @@
+# plates/_decode/no-districts.yml — the Norwegian two-letter prefix allocation.
+#
+# THE SOURCE IS PRIMARY AND THAT IS THE POINT. Secondary compilations of this
+# table circulate widely; this file is transcribed mechanically from Statens
+# vegvesen's own published table, "Bokstavkombinasjoner fra trafikkstasjon",
+# on the authority's Skiltserier page. No enthusiast list and no encyclopedia
+# was used for any row. 396 combinations, 402 assignments, read 2026-08-02.
+#
+# READ THE THREE CAVEATS BEFORE DECODING ANYTHING WITH THIS FILE.
+#
+# 1. THE AUTHORITY ITSELF SAYS "OFTEN", NOT "ALWAYS". Verbatim, from the page
+#    that carries the table: "Bokstavkombinasjonen baserer seg ofte på hvilken
+#    trafikkstasjon som har utstedt registreringsnummeret." An owner may
+#    request a combination from another station — the practice is common
+#    enough that Norwegian newspapers write about "Bærumskilt" being the
+#    country's most sought-after series — so a hit here is a claim about where
+#    the number was ISSUED, and only probably that. It is never a claim about
+#    where the vehicle or its owner is.
+#
+# 2. THE MAPPING IS NOT A FUNCTION. Six combinations appear against TWO
+#    stations in the authority's own table: CU (Jessheim and Lillestrøm),
+#    EX (Finnsnes and Hammerfest), FZ (Elverum and Hamar), LD (Horten and
+#    Tønsberg), NA (Larvik and Sandefjord), VS (Støren and Trondheim). They
+#    are recorded as published, both rows kept. Every value is therefore a
+#    LIST, uniformly, so a consumer never has to branch on the shape.
+#
+# 3. IT IS A SNAPSHOT, AND THE GEOGRAPHY HAS BEEN DECAYING FOR YEARS.
+#    Individual rows carry no dates because the authority publishes none —
+#    the table shows the allocation as it stands, not as it stood. Allocation
+#    has demonstrably drifted: the county structure behind the "Fylke" column
+#    is itself post-2020 (Innlandet, Vestland, Agder and Troms/Finnmark are
+#    the merged counties, and Norway split several of them again in 2024
+#    without the table following), and geographic distribution stopped
+#    entirely for FOUR-DIGIT plates on 9 February 2017 (secondary-wikipedia).
+#    Rows are never deleted on principle — a combination withdrawn from the
+#    list stays decodable for plates already issued — but this file cannot
+#    tell you WHEN a row became true.
+#
+# WHAT THIS MEANS FOR A PARSE API: treat a hit as a low-confidence issuing-
+# station hint on a five-digit plate, and as no signal at all on a four-digit
+# plate issued after 2017-02-09. Do not surface it as "registered in X".
+jurisdiction: no
+topic: districts
+authority:
+  name: Statens vegvesen
+  url: "https://www.vegvesen.no/kjoretoy/eie-og-vedlikeholde/skilt/skiltserier/"
+period: { start: 1971 }
+period_evidence: statutory-date
+period_note: >-
+  1971 dates the two-letter REGISTRATION ORDER, not any row: forskrift om bruk
+  av kjøretøy (FOR-1990-01-25-92) § 2-17 names the order "fra og med 1. april
+  1971". The ALLOCATION below is a 2026-08-02 reading of the authority's live
+  table; no row is individually dated, and none should be treated as having
+  been true on any particular past date. See caveat 3 in the header.
+sources:
+  - "https://www.vegvesen.no/kjoretoy/eie-og-vedlikeholde/skilt/skiltserier/  # Statens vegvesen, 'Skiltserier': the 'Bokstavkombinasjoner fra trafikkstasjon' table (every row below), the 'Felles bokstavkombinasjoner' table (see `common` below), the 'ofte' caveat and the number ranges. Accessed 2026-08-02"
+  - "https://lovdata.no/dokument/SF/forskrift/1990-01-25-92/KAPITTEL_2  # FOR-1990-01-25-92 § 2-17: the two-letter order dates from 1 April 1971. Accessed 2026-08-02"
+  - "https://no.wikipedia.org/wiki/Kjennemerke_for_motorkj%C3%B8ret%C3%B8y_i_Norge  # secondary-wikipedia (rev. 2026-07-16): geographic distribution ceased for four-digit plates on 9 February 2017; the I/M/O/Q letter exclusions and the limited use of G and W; the SS/NS avoidance. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# NATIONWIDE COMBINATIONS — allocated by what the vehicle IS, not by where the
+# number was issued. Verbatim headings from the authority's "Felles
+# bokstavkombinasjoner" table. These override the geographic table: an EL
+# number carries no district meaning at all.
+# ---------------------------------------------------------------------------
+common:
+  electric:
+    label: "Elektriskdrevet kjøretøy"
+    combinations: [EL, EK, EV, EB, EC, ED, EE, EF, EH, EJ, EN, EP, ER, EA, EU]
+  gas:
+    label: "Gassdrevet kjøretøy"
+    combinations: [GA]
+  hydrogen:
+    label: "Hydrogendrevet kjøretøy"
+    combinations: [HY]
+  diplomatic:
+    label: "Ambassadekjøretøy (Corps Diplomatique)"
+    combinations: [CD]
+
+# ---------------------------------------------------------------------------
+# THE LETTER ALPHABET, as a fact about the table rather than a rule.
+# Across all 396 combinations: the FIRST letter is drawn from
+# A B C D E F H J K L N P R S T U V X Y Z (20 letters — G and W never lead),
+# the SECOND adds W. I, M, O and Q appear in neither position, and Æ, Ø and Å
+# cannot be written in this dataset's serial alphabet at all.
+# no.wikipedia (secondary-wikipedia) gives the reason — "Bokstavene I, M, O,
+# Q, Æ, Ø og Å brukes ikke på grunn av likheten med andre bokstaver eller
+# sifre" — and adds that G is reserved (GA, gas) and W limited to four-digit
+# plates and prøveskilt. The observation above is derived from the authority's
+# own table; the reason is Wikipedia's.
+# ---------------------------------------------------------------------------
+alphabet:
+  first_letter: [A, B, C, D, E, F, H, J, K, L, N, P, R, S, T, U, V, X, Y, Z]
+  second_letter: [A, B, C, D, E, F, H, J, K, L, N, P, R, S, T, U, V, W, X, Y, Z]
+  never_used: [I, M, O, Q]
+  basis: derived-from-authority-table
+
+# ---------------------------------------------------------------------------
+# THE ALLOCATION — keyed by COMBINATION, which is the decode direction a parse
+# API needs (the authority prints it station-first). Always a list; see
+# caveat 2.
+# ---------------------------------------------------------------------------
+combinations:
+  AA:
+    - { county: "Østfold", station: "Halden" }
+  AB:
+    - { county: "Østfold", station: "Halden" }
+  AC:
+    - { county: "Østfold", station: "Halden" }
+  AD:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AE:
+    - { county: "Østfold", station: "Sarpsborg" }
+  AF:
+    - { county: "Østfold", station: "Sarpsborg" }
+  AH:
+    - { county: "Østfold", station: "Sarpsborg" }
+  AJ:
+    - { county: "Østfold", station: "Mysen" }
+  AK:
+    - { county: "Østfold", station: "Mysen" }
+  AL:
+    - { county: "Østfold", station: "Mysen" }
+  AN:
+    - { county: "Østfold", station: "Mysen" }
+  AP:
+    - { county: "Østfold", station: "Mysen" }
+  AR:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AS:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AT:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AU:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AV:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AW:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  AX:
+    - { county: "Østfold", station: "Moss" }
+  AY:
+    - { county: "Østfold", station: "Moss" }
+  AZ:
+    - { county: "Østfold", station: "Moss" }
+  BA:
+    - { county: "Østfold", station: "Moss" }
+  BB:
+    - { county: "Møre og Romsdal", station: "Ørsta" }
+  BC:
+    - { county: "Akershus", station: "Drøbak" }
+  BD:
+    - { county: "Akershus", station: "Drøbak" }
+  BE:
+    - { county: "Akershus", station: "Drøbak" }
+  BF:
+    - { county: "Akershus", station: "Drøbak" }
+  BH:
+    - { county: "Akershus", station: "Drøbak" }
+  BJ:
+    - { county: "Akershus", station: "Drøbak" }
+  BK:
+    - { county: "Akershus", station: "Drøbak" }
+  BL:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BN:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BP:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BR:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BS:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BT:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BU:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BV:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BW:
+    - { county: "Østfold", station: "Mysen" }
+  BX:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BY:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  BZ:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  CA:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  CB:
+    - { county: "Akershus", station: "Asker og Bærum" }
+  CC:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CE:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CF:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CH:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CJ:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CK:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CL:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CN:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CP:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CR:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CS:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CT:
+    - { county: "Akershus", station: "Lillestrøm" }
+  CU:
+    - { county: "Akershus", station: "Jessheim" }
+    - { county: "Akershus", station: "Lillestrøm" }
+  CV:
+    - { county: "Akershus", station: "Jessheim" }
+  CW:
+    - { county: "Finnmark", station: "Lakselv" }
+  CX:
+    - { county: "Akershus", station: "Jessheim" }
+  CY:
+    - { county: "Akershus", station: "Jessheim" }
+  CZ:
+    - { county: "Akershus", station: "Jessheim" }
+  DA:
+    - { county: "Oslo", station: "Oslo" }
+  DB:
+    - { county: "Oslo", station: "Oslo" }
+  DC:
+    - { county: "Oslo", station: "Oslo" }
+  DD:
+    - { county: "Oslo", station: "Oslo" }
+  DE:
+    - { county: "Oslo", station: "Oslo" }
+  DF:
+    - { county: "Oslo", station: "Oslo" }
+  DH:
+    - { county: "Oslo", station: "Oslo" }
+  DJ:
+    - { county: "Oslo", station: "Oslo" }
+  DK:
+    - { county: "Oslo", station: "Oslo" }
+  DL:
+    - { county: "Oslo", station: "Oslo" }
+  DN:
+    - { county: "Oslo", station: "Oslo" }
+  DP:
+    - { county: "Oslo", station: "Oslo" }
+  DR:
+    - { county: "Oslo", station: "Oslo" }
+  DS:
+    - { county: "Oslo", station: "Oslo" }
+  DT:
+    - { county: "Oslo", station: "Oslo" }
+  DU:
+    - { county: "Oslo", station: "Oslo" }
+  DV:
+    - { county: "Oslo", station: "Oslo" }
+  DW:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  DX:
+    - { county: "Oslo", station: "Oslo" }
+  DY:
+    - { county: "Oslo", station: "Oslo" }
+  DZ:
+    - { county: "Oslo", station: "Oslo" }
+  ES:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  ET:
+    - { county: "Innlandet", station: "Hamar" }
+  EX:
+    - { county: "Troms", station: "Finnsnes" }
+    - { county: "Finnmark", station: "Hammerfest" }
+  EY:
+    - { county: "Finnmark", station: "Kirkenes" }
+  EZ:
+    - { county: "Nordland", station: "Bodø" }
+  FA:
+    - { county: "Nordland", station: "Mosjøen" }
+  FB:
+    - { county: "Innlandet", station: "Lillehammer" }
+  FC:
+    - { county: "Troms", station: "Tromsø" }
+  FD:
+    - { county: "Nordland", station: "Bodø" }
+  FF:
+    - { county: "Finnmark", station: "Hammerfest" }
+  FH:
+    - { county: "Svalbard", station: "" }
+  FK:
+    - { county: "Troms", station: "Storslett" }
+  FL:
+    - { county: "Østfold", station: "Hafslund (tidligere Fredrikstad)" }
+  FN:
+    - { county: "Østfold", station: "Mysen" }
+  FP:
+    - { county: "Trøndelag", station: "Trondheim" }
+  FR:
+    - { county: "Finnmark", station: "Vadsø" }
+  FS:
+    - { county: "Innlandet", station: "Hamar" }
+  FT:
+    - { county: "Innlandet", station: "Hamar" }
+  FU:
+    - { county: "Innlandet", station: "Hamar" }
+  FV:
+    - { county: "Innlandet", station: "Hamar" }
+  FW:
+    - { county: "Innlandet", station: "Hamar" }
+  FX:
+    - { county: "Innlandet", station: "Hamar" }
+  FY:
+    - { county: "Innlandet", station: "Hamar" }
+  FZ:
+    - { county: "Innlandet", station: "Elverum" }
+    - { county: "Innlandet", station: "Hamar" }
+  HA:
+    - { county: "Innlandet", station: "Elverum" }
+  HB:
+    - { county: "Innlandet", station: "Elverum" }
+  HC:
+    - { county: "Innlandet", station: "Elverum" }
+  HD:
+    - { county: "Innlandet", station: "Elverum" }
+  HE:
+    - { county: "Innlandet", station: "Elverum" }
+  HF:
+    - { county: "Innlandet", station: "Tynset" }
+  HH:
+    - { county: "Innlandet", station: "Tynset" }
+  HJ:
+    - { county: "Innlandet", station: "Kongsvinger" }
+  HK:
+    - { county: "Innlandet", station: "Kongsvinger" }
+  HL:
+    - { county: "Innlandet", station: "Kongsvinger" }
+  HN:
+    - { county: "Innlandet", station: "Kongsvinger" }
+  HP:
+    - { county: "Innlandet", station: "Kongsvinger" }
+  HR:
+    - { county: "Innlandet", station: "Kongsvinger" }
+  HS:
+    - { county: "Innlandet", station: "Lillehammer" }
+  HT:
+    - { county: "Innlandet", station: "Lillehammer" }
+  HU:
+    - { county: "Innlandet", station: "Lillehammer" }
+  HV:
+    - { county: "Innlandet", station: "Lillehammer" }
+  HW:
+    - { county: "Vestland", station: "Bergen" }
+  HX:
+    - { county: "Innlandet", station: "Lillehammer" }
+  HZ:
+    - { county: "Innlandet", station: "Otta" }
+  JA:
+    - { county: "Innlandet", station: "Otta" }
+  JB:
+    - { county: "Innlandet", station: "Otta" }
+  JC:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JD:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JE:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JF:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JH:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JJ:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JK:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JL:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JN:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JP:
+    - { county: "Innlandet", station: "Gjøvik" }
+  JR:
+    - { county: "Innlandet", station: "Fagernes" }
+  JS:
+    - { county: "Innlandet", station: "Fagernes" }
+  JT:
+    - { county: "Innlandet", station: "Fagernes" }
+  JU:
+    - { county: "Buskerud", station: "Hønefoss" }
+  JV:
+    - { county: "Buskerud", station: "Hønefoss" }
+  JX:
+    - { county: "Buskerud", station: "Hønefoss" }
+  JY:
+    - { county: "Buskerud", station: "Hønefoss" }
+  JZ:
+    - { county: "Buskerud", station: "Hønefoss" }
+  KA:
+    - { county: "Buskerud", station: "Hønefoss" }
+  KB:
+    - { county: "Buskerud", station: "Gol" }
+  KC:
+    - { county: "Buskerud", station: "Gol" }
+  KD:
+    - { county: "Buskerud", station: "Gol" }
+  KE:
+    - { county: "Buskerud", station: "Drammen" }
+  KF:
+    - { county: "Buskerud", station: "Drammen" }
+  KH:
+    - { county: "Buskerud", station: "Drammen" }
+  KJ:
+    - { county: "Buskerud", station: "Drammen" }
+  KK:
+    - { county: "Buskerud", station: "Drammen" }
+  KL:
+    - { county: "Buskerud", station: "Drammen" }
+  KN:
+    - { county: "Buskerud", station: "Drammen" }
+  KP:
+    - { county: "Buskerud", station: "Drammen" }
+  KR:
+    - { county: "Buskerud", station: "Drammen" }
+  KS:
+    - { county: "Buskerud", station: "Drammen" }
+  KT:
+    - { county: "Buskerud", station: "Kongsberg" }
+  KU:
+    - { county: "Buskerud", station: "Kongsberg" }
+  KV:
+    - { county: "Buskerud", station: "Kongsberg" }
+  KX:
+    - { county: "Buskerud", station: "Kongsberg" }
+  KY:
+    - { county: "Buskerud", station: "Kongsberg" }
+  KZ:
+    - { county: "Vestfold", station: "Horten" }
+  LA:
+    - { county: "Vestfold", station: "Horten" }
+  LB:
+    - { county: "Vestfold", station: "Horten" }
+  LC:
+    - { county: "Vestfold", station: "Horten" }
+  LD:
+    - { county: "Vestfold", station: "Horten" }
+    - { county: "Vestfold", station: "Tønsberg" }
+  LE:
+    - { county: "Finnmark", station: "Vadsø" }
+  LF:
+    - { county: "Agder", station: "Setesdal" }
+  LH:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LJ:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LK:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LL:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LN:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LP:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LR:
+    - { county: "Vestfold", station: "Tønsberg" }
+  LS:
+    - { county: "Vestfold", station: "Larvik" }
+  LT:
+    - { county: "Vestfold", station: "Larvik" }
+  LU:
+    - { county: "Vestfold", station: "Larvik" }
+  LV:
+    - { county: "Vestfold", station: "Larvik" }
+  LX:
+    - { county: "Vestfold", station: "Larvik" }
+  LY:
+    - { county: "Vestfold", station: "Sandefjord" }
+  LZ:
+    - { county: "Vestfold", station: "Larvik" }
+  NA:
+    - { county: "Vestfold", station: "Larvik" }
+    - { county: "Vestfold", station: "Sandefjord" }
+  NB:
+    - { county: "Vestfold", station: "Larvik" }
+  NC:
+    - { county: "Vestfold", station: "Larvik" }
+  ND:
+    - { county: "Telemark", station: "Skien" }
+  NE:
+    - { county: "Telemark", station: "Skien" }
+  NF:
+    - { county: "Telemark", station: "Skien" }
+  NH:
+    - { county: "Telemark", station: "Skien" }
+  NJ:
+    - { county: "Telemark", station: "Skien" }
+  NK:
+    - { county: "Telemark", station: "Skien" }
+  NL:
+    - { county: "Telemark", station: "Skien" }
+  NN:
+    - { county: "Telemark", station: "Skien" }
+  NP:
+    - { county: "Telemark", station: "Skien" }
+  NR:
+    - { county: "Telemark", station: "Skien" }
+  NT:
+    - { county: "Telemark", station: "Skien" }
+  NU:
+    - { county: "Telemark", station: "Skien" }
+  NV:
+    - { county: "Telemark", station: "Notodden" }
+  NW:
+    - { county: "Trøndelag", station: "Trondheim" }
+  NX:
+    - { county: "Telemark", station: "Notodden" }
+  NY:
+    - { county: "Telemark", station: "Notodden" }
+  NZ:
+    - { county: "Telemark", station: "Notodden" }
+  PA:
+    - { county: "Telemark", station: "Rjukan" }
+  PB:
+    - { county: "Telemark", station: "Rjukan" }
+  PC:
+    - { county: "Agder", station: "Arendal" }
+  PD:
+    - { county: "Agder", station: "Arendal" }
+  PE:
+    - { county: "Agder", station: "Arendal" }
+  PF:
+    - { county: "Agder", station: "Arendal" }
+  PH:
+    - { county: "Agder", station: "Arendal" }
+  PJ:
+    - { county: "Agder", station: "Arendal" }
+  PK:
+    - { county: "Agder", station: "Arendal" }
+  PL:
+    - { county: "Agder", station: "Setesdal" }
+  PN:
+    - { county: "Agder", station: "Kristiansand" }
+  PP:
+    - { county: "Agder", station: "Kristiansand" }
+  PR:
+    - { county: "Agder", station: "Kristiansand" }
+  PS:
+    - { county: "Agder", station: "Kristiansand" }
+  PT:
+    - { county: "Agder", station: "Kristiansand" }
+  PU:
+    - { county: "Agder", station: "Kristiansand" }
+  PV:
+    - { county: "Agder", station: "Kristiansand" }
+  PW:
+    - { county: "Agder", station: "Kristiansand" }
+  PX:
+    - { county: "Agder", station: "Mandal" }
+  PY:
+    - { county: "Agder", station: "Mandal" }
+  PZ:
+    - { county: "Agder", station: "Mandal" }
+  RA:
+    - { county: "Agder", station: "Flekkefjord" }
+  RB:
+    - { county: "Agder", station: "Flekkefjord" }
+  RC:
+    - { county: "Agder", station: "Mandal" }
+  RD:
+    - { county: "Agder", station: "Mandal" }
+  RE:
+    - { county: "Rogaland", station: "Stavanger" }
+  RF:
+    - { county: "Rogaland", station: "Stavanger" }
+  RH:
+    - { county: "Rogaland", station: "Stavanger" }
+  RJ:
+    - { county: "Rogaland", station: "Stavanger" }
+  RK:
+    - { county: "Rogaland", station: "Stavanger" }
+  RL:
+    - { county: "Rogaland", station: "Stavanger" }
+  RN:
+    - { county: "Rogaland", station: "Stavanger" }
+  RP:
+    - { county: "Rogaland", station: "Stavanger" }
+  RR:
+    - { county: "Rogaland", station: "Stavanger" }
+  RS:
+    - { county: "Rogaland", station: "Stavanger" }
+  RT:
+    - { county: "Rogaland", station: "Stavanger" }
+  RU:
+    - { county: "Rogaland", station: "Stavanger" }
+  RV:
+    - { county: "Rogaland", station: "Stavanger" }
+  RW:
+    - { county: "Rogaland", station: "Stavanger" }
+  RX:
+    - { county: "Rogaland", station: "Stavanger" }
+  RY:
+    - { county: "Rogaland", station: "Stavanger" }
+  RZ:
+    - { county: "Rogaland", station: "Egersund" }
+  SA:
+    - { county: "Rogaland", station: "Egersund" }
+  SB:
+    - { county: "Rogaland", station: "Egersund" }
+  SC:
+    - { county: "Rogaland", station: "Haugesund" }
+  SD:
+    - { county: "Rogaland", station: "Haugesund" }
+  SE:
+    - { county: "Rogaland", station: "Haugesund" }
+  SF:
+    - { county: "Rogaland", station: "Haugesund" }
+  SH:
+    - { county: "Rogaland", station: "Haugesund" }
+  SJ:
+    - { county: "Rogaland", station: "Haugesund" }
+  SK:
+    - { county: "Rogaland", station: "Haugesund" }
+  SL:
+    - { county: "Rogaland", station: "Haugesund" }
+  SN:
+    - { county: "Vestland", station: "Bergen" }
+  SP:
+    - { county: "Vestland", station: "Bergen" }
+  SR:
+    - { county: "Vestland", station: "Bergen" }
+  SS:
+    - { county: "Vestland", station: "Bergen" }
+  ST:
+    - { county: "Vestland", station: "Bergen" }
+  SU:
+    - { county: "Vestland", station: "Bergen" }
+  SV:
+    - { county: "Vestland", station: "Bergen" }
+  SW:
+    - { county: "Troms", station: "Storslett" }
+  SX:
+    - { county: "Vestland", station: "Bergen" }
+  SY:
+    - { county: "Vestland", station: "Bergen" }
+  SZ:
+    - { county: "Vestland", station: "Bergen" }
+  TA:
+    - { county: "Vestland", station: "Bergen" }
+  TB:
+    - { county: "Vestland", station: "Bergen" }
+  TC:
+    - { county: "Vestland", station: "Bergen" }
+  TD:
+    - { county: "Vestland", station: "Bergen" }
+  TE:
+    - { county: "Vestland", station: "Bergen" }
+  TF:
+    - { county: "Vestland", station: "Voss" }
+  TH:
+    - { county: "Vestland", station: "Voss" }
+  TJ:
+    - { county: "Vestland", station: "Voss" }
+  TK:
+    - { county: "Vestland", station: "Voss" }
+  TL:
+    - { county: "Vestland", station: "Stord" }
+  TN:
+    - { county: "Vestland", station: "Stord" }
+  TP:
+    - { county: "Vestland", station: "Stord" }
+  TR:
+    - { county: "Vestland", station: "Stord" }
+  TS:
+    - { county: "Vestland", station: "Odda" }
+  TT:
+    - { county: "Vestland", station: "Odda" }
+  TU:
+    - { county: "Vestland", station: "Odda" }
+  TV:
+    - { county: "Vestland", station: "Førde" }
+  TW:
+    - { county: "Troms", station: "Harstad" }
+  TX:
+    - { county: "Vestland", station: "Førde" }
+  TY:
+    - { county: "Vestland", station: "Førde" }
+  TZ:
+    - { county: "Vestland", station: "Førde" }
+  UA:
+    - { county: "Vestland", station: "Nordfjordeid" }
+  UB:
+    - { county: "Vestland", station: "Nordfjordeid" }
+  UC:
+    - { county: "Vestland", station: "Sogndal" }
+  UD:
+    - { county: "Vestland", station: "Sogndal" }
+  UE:
+    - { county: "Møre og Romsdal", station: "Ålesund" }
+  UF:
+    - { county: "Møre og Romsdal", station: "Ålesund" }
+  UH:
+    - { county: "Møre og Romsdal", station: "Ålesund" }
+  UJ:
+    - { county: "Møre og Romsdal", station: "Ålesund" }
+  UK:
+    - { county: "Møre og Romsdal", station: "Ålesund" }
+  UL:
+    - { county: "Møre og Romsdal", station: "Ålesund" }
+  UN:
+    - { county: "Møre og Romsdal", station: "Ørsta" }
+  UP:
+    - { county: "Møre og Romsdal", station: "Ørsta" }
+  UR:
+    - { county: "Møre og Romsdal", station: "Molde" }
+  US:
+    - { county: "Møre og Romsdal", station: "Molde" }
+  UT:
+    - { county: "Møre og Romsdal", station: "Molde" }
+  UU:
+    - { county: "Møre og Romsdal", station: "Molde" }
+  UV:
+    - { county: "Møre og Romsdal", station: "Molde" }
+  UW:
+    - { county: "Finnmark", station: "Alta" }
+  UX:
+    - { county: "Møre og Romsdal", station: "Kristiansund" }
+  UY:
+    - { county: "Møre og Romsdal", station: "Kristiansund" }
+  UZ:
+    - { county: "Møre og Romsdal", station: "Kristiansund" }
+  VA:
+    - { county: "Møre og Romsdal", station: "Kristiansund" }
+  VB:
+    - { county: "Møre og Romsdal", station: "Sunndalsøra" }
+  VC:
+    - { county: "Møre og Romsdal", station: "Sunndalsøra" }
+  VD:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VE:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VF:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VH:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VJ:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VK:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VL:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VN:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VP:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VR:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VS:
+    - { county: "Trøndelag", station: "Støren" }
+    - { county: "Trøndelag", station: "Trondheim" }
+  VT:
+    - { county: "Trøndelag", station: "Støren" }
+  VU:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VV:
+    - { county: "Trøndelag", station: "Trondheim" }
+  VW:
+    - { county: "Trøndelag", station: "Levanger" }
+  VX:
+    - { county: "Trøndelag", station: "Orkdal" }
+  VY:
+    - { county: "Trøndelag", station: "Orkdal" }
+  VZ:
+    - { county: "Trøndelag", station: "Orkdal" }
+  XA:
+    - { county: "Trøndelag", station: "Brekstad" }
+  XB:
+    - { county: "Trøndelag", station: "Brekstad" }
+  XC:
+    - { county: "Trøndelag", station: "Brekstad" }
+  XD:
+    - { county: "Trøndelag", station: "Steinkjer" }
+  XE:
+    - { county: "Trøndelag", station: "Steinkjer" }
+  XF:
+    - { county: "Trøndelag", station: "Steinkjer" }
+  XH:
+    - { county: "Trøndelag", station: "Steinkjer" }
+  XJ:
+    - { county: "Trøndelag", station: "Steinkjer" }
+  XK:
+    - { county: "Trøndelag", station: "Levanger" }
+  XL:
+    - { county: "Trøndelag", station: "Levanger" }
+  XN:
+    - { county: "Trøndelag", station: "Stjørdal" }
+  XP:
+    - { county: "Trøndelag", station: "Stjørdal" }
+  XR:
+    - { county: "Trøndelag", station: "Namsos" }
+  XS:
+    - { county: "Trøndelag", station: "Namsos" }
+  XT:
+    - { county: "Trøndelag", station: "Namsos" }
+  XU:
+    - { county: "Trøndelag", station: "Namsos" }
+  XV:
+    - { county: "Nordland", station: "Mosjøen" }
+  XW:
+    - { county: "Trøndelag", station: "Steinkjer" }
+  XX:
+    - { county: "Nordland", station: "Mosjøen" }
+  XY:
+    - { county: "Nordland", station: "Mosjøen" }
+  XZ:
+    - { county: "Nordland", station: "Mosjøen" }
+  YA:
+    - { county: "Nordland", station: "Mo i Rana" }
+  YB:
+    - { county: "Nordland", station: "Mo i Rana" }
+  YC:
+    - { county: "Nordland", station: "Mo i Rana" }
+  YD:
+    - { county: "Nordland", station: "Mo i Rana" }
+  YE:
+    - { county: "Nordland", station: "Bodø" }
+  YF:
+    - { county: "Nordland", station: "Bodø" }
+  YH:
+    - { county: "Nordland", station: "Bodø" }
+  YJ:
+    - { county: "Nordland", station: "Bodø" }
+  YK:
+    - { county: "Nordland", station: "Fauske" }
+  YL:
+    - { county: "Nordland", station: "Fauske" }
+  YN:
+    - { county: "Nordland", station: "Narvik" }
+  YP:
+    - { county: "Nordland", station: "Narvik" }
+  YR:
+    - { county: "Nordland", station: "Narvik" }
+  YS:
+    - { county: "Nordland", station: "Narvik" }
+  YT:
+    - { county: "Nordland", station: "Svolvær" }
+  YU:
+    - { county: "Nordland", station: "Sortland" }
+  YV:
+    - { county: "Nordland", station: "Sortland" }
+  YW:
+    - { county: "Trøndelag", station: "Stjørdal" }
+  YX:
+    - { county: "Nordland", station: "Sortland" }
+  YY:
+    - { county: "Nordland", station: "Svolvær" }
+  YZ:
+    - { county: "Troms", station: "Harstad" }
+  ZA:
+    - { county: "Troms", station: "Harstad" }
+  ZB:
+    - { county: "Troms", station: "Harstad" }
+  ZC:
+    - { county: "Troms", station: "Tromsø" }
+  ZD:
+    - { county: "Troms", station: "Finnsnes" }
+  ZE:
+    - { county: "Troms", station: "Tromsø" }
+  ZF:
+    - { county: "Troms", station: "Finnsnes" }
+  ZH:
+    - { county: "Troms", station: "Tromsø" }
+  ZJ:
+    - { county: "Troms", station: "Finnsnes" }
+  ZK:
+    - { county: "Troms", station: "Tromsø" }
+  ZL:
+    - { county: "Troms", station: "Tromsø" }
+  ZN:
+    - { county: "Svalbard", station: "" }
+  ZP:
+    - { county: "Finnmark", station: "Vadsø" }
+  ZR:
+    - { county: "Finnmark", station: "Vadsø" }
+  ZS:
+    - { county: "Finnmark", station: "Kirkenes" }
+  ZT:
+    - { county: "Finnmark", station: "Alta" }
+  ZU:
+    - { county: "Finnmark", station: "Alta" }
+  ZV:
+    - { county: "Finnmark", station: "Alta" }
+  ZW:
+    - { county: "Finnmark", station: "Alta" }
+  ZX:
+    - { county: "Finnmark", station: "Hammerfest" }
+  ZY:
+    - { county: "Finnmark", station: "Alta" }
+  ZZ:
+    - { county: "Finnmark", station: "Lakselv" }
