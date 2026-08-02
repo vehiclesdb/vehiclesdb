@@ -1,0 +1,602 @@
+# plates/us-nc.yml — North Carolina (PRD-PLATES gate L2, group southeast-a).
+#
+# THE NORTH CAROLINA FINDING: THE STANDARD PLATE IS A CHOICE OF THREE, AND THE
+# CHOICE IS IN THE STATUTE. N.C. Gen. Stat. § 20-63(b) gives the owner of a
+# private passenger vehicle a statutory election between "(i) a 'First in
+# Flight' plate, (ii) a 'First in Freedom' plate, or (iii) a 'National/State
+# Mottos' plate", and the same subsection then DESCRIBES one of them in law:
+# the First in Flight plate "shall have the words 'First in Flight' printed at
+# the top of the plate above all other letters and numerals. The background of
+# the 'First in Flight' plate shall depict the Wright Brothers biplane flying
+# over Kitty Hawk Beach." A US state legislature specifying the SCENE on its
+# plate is rare, and it makes North Carolina the only state in this group whose
+# standard artwork is described by an edict of government.
+#
+# CONSEQUENCE FOR THE SCHEMA: North Carolina has THREE CONCURRENT CURRENT
+# STANDARD SERIES, not one, and they are not variants of each other — they run
+# in DISJOINT SERIAL BLOCKS, which means the plate string itself tells you
+# which design you are looking at. That is a genuinely useful parse signal and
+# it is modelled as three series under PRD-PLATES §2.3 (own series iff format
+# OR design OR period differs — here design and period both differ).
+#
+# SOURCING PATH DISCLOSURE, REQUIRED BY HONESTY: the North Carolina General
+# Assembly's own statute service (ncleg.gov) returns HTTP 403 from a Cloudflare
+# challenge to every automated fetch attempted in this pass — HTML and PDF,
+# with and without browser headers. § 20-63 and § 20-79.1 were therefore read
+# through a third-party reproduction (codes.findlaw.com). The UNDERLYING TEXT
+# is an edict of government and public domain; the READING PATH is second-hand
+# and is disclosed at every citation below with the marker "[via FindLaw;
+# ncleg.gov 403]". A verifier with browser access should re-derive both
+# sections from ncleg.gov directly before this file is applied.
+#
+# EVIDENCE GRADES — the four defined in us-va.yml: statutory-date,
+# official-agency-date, instrument-in-force-upper-bound,
+# secondary-locator-unverified.
+jurisdiction: us-nc
+authority:
+  name: North Carolina Division of Motor Vehicles (NCDMV)
+  url: "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx"
+binding: vehicle
+statute_edition: "North Carolina General Statutes, Chapter 20 (Motor Vehicles), Article 3 — §§ 20-63 and 20-79.1 as reproduced by codes.findlaw.com and read 2026-08-01; ncleg.gov itself was unreachable (403)"
+
+# ---------------------------------------------------------------------------
+# artwork_risk — required per jurisdiction by PRD-PLATES §4.
+# ---------------------------------------------------------------------------
+artwork_risk:
+  posture: public-domain-favourable
+  basis: >-
+    NORTH CAROLINA IS THE SECOND-BEST POSTURE IN THIS GROUP AFTER GEORGIA'S
+    GENERAL RULE, AND UNLIKE GEORGIA IT CARRIES NO PLATE-SPECIFIC CARVE-OUT.
+    Two independent supports. First, the public-records statute: N.C. Gen.
+    Stat. Chapter 132 provides that "The public records and public information
+    compiled by the agencies of North Carolina government or its subdivisions
+    are the property of the people. Therefore, it is the policy of this State
+    that the people may obtain copies of their public records and public
+    information free or at minimal cost unless otherwise specifically provided
+    by law." Second, the State Library of North Carolina treats state
+    documents in its collection as public domain under US copyright law and
+    publishes a State Document Public Domain Notice to that effect. Third, and
+    specific to this dataset, the standard plate's artwork is DESCRIBED IN THE
+    STATUTE ITSELF (§ 20-63(b), the Wright Brothers biplane over Kitty Hawk
+    Beach), and statutes are edicts of government — public domain at every
+    level, in every state, including states that assert copyright generally.
+  known_exceptions: >-
+    North Carolina's general "property of the people" rule is NOT absolute and
+    the exceptions are named: state law describes some specific record types
+    in which the State may hold copyright — archaeological resources collected
+    or excavated from State lands together with associated records and data,
+    and original tapes, notes, discs or other records created by stenotype,
+    shorthand or stenomask equipment as part of trial recording. NEITHER
+    EXCEPTION TOUCHES LICENSE PLATES. That matters: the honest posture is
+    "favourable with enumerated carve-outs, none applicable", not "everything
+    North Carolina makes is free".
+  no_commons_tag: >-
+    Wikimedia Commons has NO {{PD-NCGov}} template (HTTP 404, checked
+    2026-08-01), where it does have PD-FLGov, PD-CAGov and PD-GAGov. The
+    absence of a Commons tag is NOT evidence against the posture — it is
+    evidence that nobody has written the tag. Recorded so that a later reader
+    does not mistake a missing template for an adverse finding.
+  emblem_rule: >-
+    PRD-PLATES §3's placeholder default still applies to the Wright Flyer
+    graphic, the quill-pen graphic and the national-flag motif until each is
+    affirmatively cleared per-emblem. Even under a favourable copyright
+    posture, STATE SEALS AND EMBLEMS carry protection independent of copyright
+    and that question is unresearched for North Carolina. Render `emblem:
+    {present: true, rendered: placeholder}`.
+  photograph_caution: "Commons photographs of North Carolina plates carry the photographer's licence on the photograph, not on the design. Our renders are generated from data, never derived from a photograph, so those obligations never attach."
+  sources:
+    - "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/ByChapter/Chapter_132.html  # N.C. Gen. Stat. Chapter 132: public records and public information are 'the property of the people' (URL pinned; the host 403s automated fetches, see the header disclosure)"
+    - "http://digital.ncdcr.gov/cdm/ref/collection/p249901coll22/id/63754  # State Document Public Domain Notice, State Library of North Carolina"
+    - "http://copyright.lib.harvard.edu/states/north_carolina/  # Copyright at Harvard Library, North Carolina: the enumerated exceptions (archaeological resources; stenotype/shorthand/stenomask trial records) in which the State may hold copyright"
+    - "https://en.wikipedia.org/wiki/Copyright_status_of_works_by_subnational_governments_of_the_United_States  # LOCATOR ONLY: the survey entry that chases to the three primaries above"
+    - "https://commons.wikimedia.org/wiki/Template:PD-NCGov  # HTTP 404 — no Commons tag exists; recorded so its absence is not misread as adverse"
+
+us_standards:
+  no_federal_mandate: true
+  chain: "SAE J686 -> AAMVA License Plate Standard Edition 3 (September 2025) -> voluntary state adoption; AAMVA's declarative present is RECOMMENDED PRACTICE, not requirement."
+  aamva_edition_3:
+    dimensions_delegated: "AAMVA §3.1 delegates dimensions and bolt holes to SAE J686, whose text is paywalled and was NOT obtained. No J686 dimension is quoted."
+    character_layout: "AAMVA §2.2: characters at least 2.5 in high, spaced at least 0.25 in apart, stroke weight 0.2-0.4 in, at least 1.25 in clear of top and bottom edges"
+    legibility_comparison: "AAMVA §3.3 asks for readability from at least 75 feet day AND night. N.C. Gen. Stat. § 20-63(c) legislates 100 feet in daylight — the same figure West Virginia legislates in §17A-3-14(b)(2). Two states of this group, one number, arrived at independently."
+    retroreflectivity_gap: >-
+      NORTH CAROLINA'S PLATE STATUTE DOES NOT REQUIRE RETROREFLECTIVITY. This
+      is a real absence, not an oversight in the research: § 20-63 sets a
+      100-foot DAYLIGHT legibility bar and says nothing about night. Compare
+      South Carolina (§ 56-3-1230(B): "The face of the license plate must be
+      treated completely with a retroreflective material"), Georgia
+      (§ 40-2-31(c), same), West Virginia (§17A-3-14(b)(1): "Plates must
+      incorporate reflectorized material") and Florida (§ 320.06(3)(a)). Four
+      of the five states in this group legislate reflectivity; North Carolina
+      does not. Its plates are reflective in fact — the design descriptions all
+      say "reflective white" — but that is DEPARTMENTAL PRACTICE, and this file
+      records it as such.
+    replacement_cycle: "AAMVA §1.1 recommends a cycle not to exceed 7 to 10 years. No North Carolina replacement cycle was located in § 20-63 (recorded gap)."
+    source: "https://www.aamva.org/getmedia/646bcc8a-219b-47d8-b5cd-726240473163/License-Plate-Standard-Edition-3_September-2025-Update.pdf"
+  folklore_caution: "The '1956 AMA standardization agreement' remains COMMONLY REPEATED AND NOT PRIMARY-SOURCED; see the fuller note in us-va.yml. North Carolina's plate dimensions are not in § 20-63, so this file makes no North Carolina dimension claim."
+
+display_rules:
+  default: "ONE plate. § 20-63(a) [via FindLaw; ncleg.gov 403]: 'The Division upon registering a vehicle shall issue to the owner one registration plate for a motorcycle, trailer or semitrailer and for every other motor vehicle.'"
+  position: "§ 20-63(d) [via FindLaw; ncleg.gov 403] is drafted for the two-plate case and then falls through: plates 'shall be attached thereto, one in the front and the other in the rear: Provided, that when only one registration plate is issued for a motor vehicle ... said registration plate shall be attached to the rear.' Because § 20-63(a) issues one, the operative North Carolina rule is REAR ONLY — reached through a proviso rather than stated directly, which is worth noting for anyone quoting the statute at a glance."
+  legibility: "§ 20-63(c): 'Such registration plate and the required numerals thereon, except the year number for which issued, shall be of sufficient size to be plainly readable from a distance of 100 feet during daylight.' Note the carve-out — the YEAR NUMBER is exempt from the 100-foot rule, so a legibility model must not apply one threshold to the whole plate."
+  plate_contents: "§ 20-63(b): 'Every license plate must display the registration number assigned to the vehicle for which it is issued, the name of the State of North Carolina, which may be abbreviated, and the year number for which it is issued or the date of expiration.'"
+  sticker_abolition: "OFFICIAL AND DATED: 'Effective October 1, 2026, NCDMV is no longer issuing physical license plate stickers or printed vehicle registration cards.' (NCDMV). A US state removing the validation sticker from the plate entirely is a design change with direct consequences for any renderer or ALPR model that expects one, and it is the single most time-sensitive fact in this file."
+  sources:
+    - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # N.C. Gen. Stat. § 20-63 [via FindLaw; ncleg.gov 403]: (a) one plate; (b) plate contents and the three-design election, with the First in Flight description; (c) the 100-foot daylight rule and its year-number carve-out; (d) front/rear with the single-plate proviso"
+    - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV: the three standard designs by name, the October 1 2026 abolition of physical stickers and printed registration cards, and the specialty and personalized programmes"
+
+series:
+
+  # =========================================================================
+  # CURRENT STANDARD ISSUE — THREE CONCURRENT SERIES, ONE PER STATUTORY
+  # DESIGN ELECTION, RUNNING IN DISJOINT SERIAL BLOCKS.
+  # =========================================================================
+  - id: us-nc-standard-first-in-flight
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2009 }
+    period_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "LLL-9999"
+      regex: '\A[A-Z]{3}-?\d{4}\z'
+      regex_strict: '\A[A-Z][A-M][A-Z]-?\d{4}\z'
+      format_evidence: secondary-locator-unverified
+      charset:
+        notes: >-
+          THE SECOND LETTER IS THE CONSTRAINT, AND IT IS AN ALLOCATION RULE
+          RATHER THAN A LOOKALIKE EXCLUSION. On the current North Carolina
+          bases the second letter of the serial runs strictly A through M — so
+          AMZ is followed by BAA, BMZ by CAA, and so on. That is what
+          `regex_strict` encodes. It is a rationing device, not a legibility
+          one: North Carolina is not avoiding I/O/Q here, it is halving each
+          three-letter block so that three concurrent designs can share one
+          alphabet without colliding. The mirror-image rule ran on the
+          1985-2007 base with the second letter strictly N through Z, and the
+          switch from N-Z to A-M happened when ZZZ-9999 was reached in 2010.
+      progression: >-
+          Reported blocks for THIS design: AAA-1001 onwards from December 2010,
+          reaching approximately LKE-7520 by mid-2025; the immediately
+          preceding stretch of the same design ran ZNE-1001 to ZZZ-9999 from
+          October 2009. First letters are therefore in the A-L range and are
+          expected to run to N before exhaustion. LOCATOR-GRADE.
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_evidence: convention-not-sourced }
+      plate_dimension_note: "no North Carolina dimension is sourced — § 20-63 states none. 12 x 6 in is the North American convention (AAMVA -> SAE J686, voluntary), not a North Carolina claim."
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#1F4E9C"
+      colour_note: >-
+          NO COLOUR IS IN § 20-63, AND NEITHER IS REFLECTIVITY (see
+          us_standards.aamva_edition_3.retroreflectivity_gap). Blue serial on
+          reflective white with a light blue Wright Flyer graphic is
+          `hex_basis: observed` from a locator description. One locator detail
+          is worth carrying because it is a legibility fact rather than an
+          aesthetic one: North Carolina ran RED serials on this design from
+          April 2007 and reverted to blue in October 2009 "following
+          complaints that the red serials were too hard to read from a
+          distance" — which is precisely the § 20-63(c) 100-foot bar being
+          enforced by public complaint rather than by statute.
+      legend_top: "First in Flight"
+      legend_rule: >-
+          § 20-63(b) [via FindLaw; ncleg.gov 403], verbatim: the First in
+          Flight plate "shall have the words 'First in Flight' printed at the
+          top of the plate above all other letters and numerals. The background
+          of the 'First in Flight' plate shall depict the Wright Brothers
+          biplane flying over Kitty Hawk Beach." THE STATUTE SPECIFIES THE
+          SCENE. This is the only standard-plate artwork in group southeast-a
+          that is described by an edict of government, and it is the reason
+          North Carolina's design facts are quotable where Virginia's and West
+          Virginia's are not.
+      graphic: { present: true, rendered: placeholder, description: "Wright Brothers biplane flying over Kitty Hawk Beach, per § 20-63(b)" }
+      emblem: { present: true, rendered: placeholder }
+      band: { side: none }
+      rear_differs: false
+      digit_note: "locator-reported: newer production of this and the other two current designs uses an updated '8' glyph to differentiate it from 'B' — a glyph-level anti-confusion change within an unchanged design, invisible to any serial-range model"
+    region_encoding:
+      kind: optional-county-block
+      mechanism: "since 1999 the OBX prefix has been issued as a special series for DARE COUNTY (the Outer Banks). It is a reserved three-letter block carrying a geographic meaning inside an otherwise geography-free serial space."
+      evidence: secondary-locator-unverified
+      note: "this is the ONLY geographic signal located in a North Carolina serial. It is a reserved BLOCK, not a systematic county encoding: 99 of North Carolina's 100 counties leave no trace in the plate string, so a decode table would have exactly one row. Recorded because a one-row decode table is still a real fact and because a parse API that reports 'OBX -> Dare County' is right."
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # § 20-63(b) [via FindLaw; ncleg.gov 403]: the three-design election and the verbatim First in Flight description (words at top, Wright Brothers biplane over Kitty Hawk Beach); (a) one plate; (c) 100-foot daylight legibility"
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV names 'First in Flight' as one of three standard designs available for private passenger and private hauler vehicles and states what it commemorates (the Wright Brothers' first powered flight at Kitty Hawk, 1903)"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_North_Carolina  # LOCATOR ONLY (PRD-PLATES §4): the October 2009 blue-serial start, the December 2010 AAA-1001 block reset, the second-letter A-M allocation rule, the red-to-blue legibility reversion, the updated '8' glyph, and the OBX/Dare County series. None asserted as sourced."
+    notes: >-
+      NORTH CAROLINA FIRST IN FLIGHT — the default of the three statutory
+      designs and the oldest continuously issued. It is also one of the five
+      oldest US plate DESIGNS still in use by lineage (the First in Flight
+      concept dates to 1982, when it won ALPCA's Plate of the Year, the only
+      time North Carolina has been so honoured). The period recorded here is
+      for the CURRENT blue-serial execution from October 2009; the 1982-2007
+      lineage is L4 historical depth and is deliberately not modelled at this
+      gate. All three current designs share one format and one allocation rule
+      and differ only in artwork and serial block — which is exactly why they
+      are three series and not one with variants: PRD-PLATES §2.3 makes design
+      difference sufficient.
+
+  - id: us-nc-standard-first-in-freedom
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2015 }
+    period_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "LLL-9999"
+      regex: '\A[A-Z]{3}-?\d{4}\z'
+      regex_strict: '\A[A-Z][A-M][A-Z]-?\d{4}\z'
+      format_evidence: secondary-locator-unverified
+      charset: { notes: "same second-letter A-M allocation rule as the other two current designs; see us-nc-standard-first-in-flight for the reasoning" }
+      progression: "reported: PAA-1001 onwards from 1 July 2015, reaching approximately RKT-1298 by May 2025, with PMZ followed by RAA and RMZ to be followed by SAA — a P/R/S first-letter block disjoint from First in Flight's A-L and from the Mottos plate's T-V. LOCATOR-GRADE."
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_evidence: convention-not-sourced }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#1F4E9C"
+      legend_top: "First In Freedom"
+      legend_rule: "§ 20-63(b) [via FindLaw; ncleg.gov 403] names the 'First in Freedom' plate as one of the three elections but — unlike the First in Flight plate — does NOT describe its artwork. The quill-pen graphic and the two commemorative dates are therefore DEPARTMENTAL DESIGN, not statutory, and are recorded at a lower grade than the First in Flight scene."
+      graphic: { present: true, rendered: placeholder, description: "quill pen; locator-reported to carry the dates 20 May 1775 and 12 April 1776, commemorating the Mecklenburg Declaration and the Halifax Resolves" }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # § 20-63(b) [via FindLaw; ncleg.gov 403]: 'First in Freedom' as statutory election (ii), and the absence of any statutory description of its artwork"
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV: 'First in Freedom: Recognizes two important North Carolina milestones in the American Revolution'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_North_Carolina  # LOCATOR ONLY: the 1 July 2015 start, the PAA-1001 block, the quill pen, and the two 1775/1776 dates"
+    notes: >-
+      NORTH CAROLINA FIRST IN FREEDOM — the second statutory election, added
+      1 July 2015. The instructive contrast with its sibling is the SOURCING
+      ASYMMETRY inside a single statutory subsection: § 20-63(b) describes the
+      First in Flight plate's background in law and says nothing at all about
+      this one's. A dataset that records "statutory" as a property of the
+      SERIES rather than of the CLAIM would flatten that difference and be
+      wrong twice. Note also the revived slogan: "FIRST IN FREEDOM" was North
+      Carolina's plate slogan on the 1975-78 base, retired, and brought back
+      forty years later as an optional design.
+
+  - id: us-nc-standard-national-state-mottos
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2019 }
+    period_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "LLL-9999"
+      regex: '\A[A-Z]{3}-?\d{4}\z'
+      regex_strict: '\A[A-Z][A-M][A-Z]-?\d{4}\z'
+      format_evidence: secondary-locator-unverified
+      charset: { notes: "same second-letter A-M allocation rule; see us-nc-standard-first-in-flight" }
+      progression: "reported: TAA-1001 onwards from 1 July 2019, reaching approximately VFT-7102 by May 2025, with TMZ followed by VAA and VMZ to be followed by WAA. Note the SKIPPED LETTER: the block runs T then V, not T then U. LOCATOR-GRADE, and the skip is recorded rather than smoothed."
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_evidence: convention-not-sourced }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#1F4E9C"
+      legend_top: "IN GOD WE TRUST"
+      legend_middle: "To Be Rather Than to Seem"
+      legend_rule: "§ 20-63(b) [via FindLaw; ncleg.gov 403] names the 'National/State Mottos' plate as election (iii) without describing it. NCDMV describes it as including both the United States motto ('In God We Trust') and the North Carolina motto ('To Be Rather Than to Seem') — the English translation of Esse quam videri."
+      graphic: { present: true, rendered: placeholder, description: "national flag motif at the top, locator-reported" }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # § 20-63(b) [via FindLaw; ncleg.gov 403]: 'National/State Mottos' as statutory election (iii)"
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV: 'National/State Motto: Includes both the United States motto (In God We Trust) and North Carolina motto (To Be Rather Than to Seem)'"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_North_Carolina  # LOCATOR ONLY: the 1 July 2019 start, the TAA-1001 block, the T-then-V letter skip, and the national flag motif"
+    notes: >-
+      NORTH CAROLINA NATIONAL/STATE MOTTOS — the third and newest statutory
+      election, from 1 July 2019. Two details worth carrying. First, the
+      letter skip: the block goes T then V, so a consumer inferring "the next
+      block after T is U" is wrong, and a serial-range model built on
+      arithmetic rather than on the reported allocation will mis-attribute
+      U-series plates. Second, this design pairs a NATIONAL motto with a STATE
+      motto on the same plate, which is a different move from Florida's "In God
+      We Trust" variant (where the state motto simply replaces the county
+      legend) and worth distinguishing when the encyclopedia section compares
+      them.
+
+  # =========================================================================
+  # ONE SERIES BACK.
+  # =========================================================================
+  - id: us-nc-standard-first-in-flight-red-2007
+    class: standard
+    categories: [car, van, truck]
+    period: { start: 2007, end: 2009 }
+    period_evidence: secondary-locator-unverified
+    matching: strict
+    format:
+      pattern: "LLL-9999"
+      regex: '\A[A-Z]{3}-?\d{4}\z'
+      regex_strict: '\A[A-Z][N-Z][A-Z]-?\d{4}\z'
+      format_evidence: secondary-locator-unverified
+      charset:
+        notes: >-
+          THE ALLOCATION RULE IS THE MIRROR IMAGE OF TODAY'S. On this base and
+          its 1985-2007 predecessor the second letter ran strictly N through Z
+          — AZZ followed by BNA, BZZ by CNA — and that practice continued until
+          ZZZ-9999 was issued in 2010, at which point North Carolina reset to
+          AAA-1001 and inverted the rule to A-M. `regex_strict` here therefore
+          encodes [N-Z] where the current series encode [A-M], and the two are
+          disjoint in the second position. That disjointness is a genuine ERA
+          SIGNAL: second letter N-Z means pre-2010 allocation, A-M means
+          post-2010, and a parse API can date a North Carolina plate from one
+          character.
+      progression: "reported: WTF-1976 to approximately ZND-9999, issued mainly as replacements for earlier First in Flight plates carrying the older ABC-123 and ABC-12 formats. LOCATOR-GRADE."
+    design:
+      plate: { w: 12, h: 6, unit: in, dimension_evidence: convention-not-sourced }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#C8102E"
+      colour_note: "RED serial on reflective white with the light blue Wright Flyer graphic. The red was abandoned in October 2009 after complaints that it was too hard to read at distance — the design difference from the current base is exactly one colour, which under PRD-PLATES §2.3 is enough to make it its own series."
+      legend_top: "First in Flight"
+      graphic: { present: true, rendered: placeholder, description: "Wright Brothers biplane flying over Kitty Hawk Beach, per § 20-63(b)" }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # § 20-63(b)-(c) [via FindLaw; ncleg.gov 403]: the same statutory frame and the 100-foot daylight bar the red serial was said to fail in practice"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_North_Carolina  # LOCATOR ONLY: April 2007 - October 2009, red serials, the WTF-1976 to ZND-9999 range, the second-letter N-Z rule, and the legibility complaints that ended it"
+    notes: >-
+      THE PREVIOUS NORTH CAROLINA STANDARD EXECUTION — a colour change, not a
+      redesign, and included for two reasons. First, it is the honest "one
+      series back" for the First in Flight lineage. Second, it carries the
+      second-letter N-Z allocation rule, which is the era signal described in
+      its charset notes and is far more useful to a parser than the colour
+      itself. The 2009 overlap with the current series is the rollout, with old
+      stock issuing on.
+
+  # =========================================================================
+  # CORE CLASSES.
+  # =========================================================================
+  - id: us-nc-motorcycle
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset:
+        notes: >-
+          recall-only. § 20-63 states no motorcycle serial arrangement, and
+          NCDMV does not publish one. The ONE sourced size fact is indirect but
+          real: NCDMV caps a PERSONALIZED private motorcycle plate at SEVEN
+          character spaces against EIGHT for a personal vehicle, so the
+          motorcycle plate's usable field is one character shorter than the
+          car's. The seven-character recall bound here is therefore not
+          arbitrary for North Carolina motorcycles — it matches the state's own
+          published personalized limit — but it is still a recall bound, not a
+          claim about department-assigned serials.
+      halfspace_note: "NCDMV: 'Some special characters occupy one-half space in width. Half-space characters are allowed on motorcycle license plates.' A character-space model that counts glyphs rather than WIDTHS will over- or under-count North Carolina motorcycle plates."
+    design:
+      plate: { unit: in, dimension_note: "reduced-size motorcycle plate; no North Carolina dimension is sourced" }
+      background: { finish: retroreflective }
+      emblem: { present: true, rendered: placeholder }
+    display: "ONE plate, rear (§ 20-63(a) and the (d) proviso)"
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # § 20-63(a) [via FindLaw; ncleg.gov 403]: one registration plate for a motorcycle; (d): single plate goes on the rear"
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV character-limit table: private motorcycle 7 spaces against 8 for a personal vehicle; the half-space character rule specific to motorcycle plates"
+    notes: >-
+      NORTH CAROLINA MOTORCYCLE. Modelled separately because the statute names
+      motorcycles as their own issuance case in § 20-63(a) and because NCDMV
+      publishes a different character capacity for them. The half-space rule is
+      the kind of detail that never reaches a plate dataset and quietly breaks
+      validators: on a North Carolina motorcycle plate the constraint is
+      TYPOGRAPHIC WIDTH, not character count, so "7 characters" and "7 spaces"
+      are different limits and the state means the second.
+
+  - id: us-nc-trailer
+    class: trailer
+    categories: [trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only; § 20-63 names trailers and semitrailers as a distinct issuance case but states no serial arrangement, and NCDMV publishes none. The personalized limit for a private trailer is 8 spaces, the same as a personal vehicle." }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+    display: "ONE plate, rear (§ 20-63(a) and the (d) proviso)"
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-63.html  # § 20-63(a) [via FindLaw; ncleg.gov 403]: 'one registration plate for a motorcycle, trailer or semitrailer' — trailers named as their own case"
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV character-limit table: private trailer 8 spaces"
+    notes: >-
+      NORTH CAROLINA TRAILER AND SEMITRAILER. Thin by design: the statute
+      establishes that trailers are separately handled, the DMV establishes
+      that they have their own personalized capacity, and nothing sourced
+      establishes a serial arrangement. Recorded rather than invented.
+
+  - id: us-nc-temporary
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only. § 20-79.1 requires the DEALER to write information on the face of the plate by hand rather than the Division to assign a serial, so a 'serial format' in the usual sense may not exist for this class at all — which is itself the finding." }
+    design:
+      plate: { unit: in, dimension_note: "'designed by said Division'; NO design or size specification appears in § 20-79.1 (recorded gap). Contrast South Carolina, which legislates temporary-plate dimensions to the inch." }
+      background: { finish: null }
+      handwritten_content: >-
+          § 20-79.1 [via FindLaw; ncleg.gov 403] requires the dealer to write
+          clearly on the plate: the DATES OF ISSUANCE AND EXPIRATION; the MAKE,
+          MOTOR NUMBER AND SERIAL NUMBERS of the vehicle; and any other
+          information the Division requires. It is an offence to make any
+          misstatement of fact or knowingly to write false information on the
+          face of the plate or marker.
+    validity: >-
+      § 20-79.1: temporary plates or markers "shall expire and become void upon
+      the receipt of the limited registration plates or the annual registration
+      plates from the Division, or upon the rescission of a contract to
+      purchase a motor vehicle, or upon the expiration of 30 DAYS from the date
+      of issuance, depending upon whichever event shall first occur." A second
+      30-day plate may be issued in stated circumstances where title documents
+      cannot be obtained.
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-79-1.html  # N.C. Gen. Stat. § 20-79.1 [via FindLaw; ncleg.gov 403]: the 30-day/receipt-of-plates/rescission expiry triple, the second-plate provision, the dealer's hand-written content duty, the falsification offence, and the absence of any size or design specification"
+    notes: >-
+      NORTH CAROLINA TEMPORARY PLATES, AND A SCHEMA OBSERVATION WORTH THE
+      ENTRY. This series' "format" is not a serial grammar at all: § 20-79.1
+      makes the DEALER write the dates and the vehicle's make and numbers onto
+      the plate face by hand. The identifier on a North Carolina temporary tag
+      is thus partly VEHICLE data, not registration data — closer to a
+      completed form than to an assigned serial. The regex is recall-only and
+      the honest reading of a match is "this could be some North Carolina
+      alphanumeric string", nothing more. THE EXPIRY RULE IS THE VALUABLE PART
+      and it is a triple, not a duration: whichever of receipt-of-plates,
+      contract rescission, or 30 days comes first.
+
+  - id: us-nc-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "recall-only; N.C. Gen. Stat. § 20-79 (dealer license plates) was NOT obtained in this pass — ncleg.gov 403s and the FindLaw mirror for that section was not reached. Existence is inferred from § 20-79.1's own title, 'Use of temporary registration plates or markers by purchasers of motor vehicles IN LIEU OF DEALERS' PLATES', which presupposes a dealer plate regime." }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+    binding: business
+    region_encoding: none
+    sources:
+      - "https://codes.findlaw.com/nc/chapter-20-motor-vehicles/nc-gen-st-sect-20-79-1.html  # § 20-79.1's title and text presuppose dealers' plates ('in lieu of dealers' plates'), which sources the EXISTENCE of the class and nothing more"
+    notes: >-
+      NORTH CAROLINA DEALER PLATES — THE WEAKEST ENTRY IN THIS FILE AND
+      LABELLED AS SUCH. § 20-79 is the governing section and it was not
+      obtained: the General Assembly's service 403s automated fetches and the
+      mirror for that particular section was not reached before this pass
+      closed. What is sourced is that the class EXISTS, from the neighbouring
+      section's own title. Everything else — plate count rules, legend,
+      serial, colour — is a recorded gap. A verifier with browser access should
+      open § 20-79 first; it is the single cheapest quality win available for
+      North Carolina.
+
+  # =========================================================================
+  # PERSONALIZED — the second officially-sourced glyph-in-serial finding in
+  # this group, and the wider of the two.
+  # =========================================================================
+  - id: us-nc-personalized
+    class: personalized
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset:
+        notes: >-
+          NORTH CAROLINA OFFICIALLY PERMITS FOUR NON-ALPHANUMERIC GLYPHS INSIDE
+          A SERIAL, AND THE REGEX ABOVE CANNOT SPELL ANY OF THEM. NCDMV, in its
+          own words: "You can use numbers and some special characters,
+          including the question mark (?), ampersand (&), dollar sign ($) and
+          the 'at' symbol (@)." None of ?, &, $ or @ is in the dataset's serial
+          alphabet and none is a separator, so under PRD-PLATES §2.6 this is a
+          SCHEMA AMENDMENT — a `never_separator` entry with its source — and
+          not something a data file may decide alone. `matching: strict` is
+          still the correct value because the regex is NARROWER than what North
+          Carolina issues and §2.7 says narrower is strict; the consequence is
+          a KNOWN, SOURCED set of false negatives, recorded here rather than
+          hidden. SECOND, INDEPENDENT CHARSET FACT, and this one is a genuine
+          normalisation trap: "The letter 'O' is automatically converted into a
+          zero (0) on your personalized license plate to avoid confusion." So
+          North Carolina personalized serials contain NO letter O at all — a
+          state-enforced O-to-0 collapse at issue time, which means an OCR
+          pipeline that "corrects" 0 to O on a North Carolina vanity plate is
+          introducing the error rather than fixing it. THIRD: "Personalized
+          special plate requests must contain at least one letter."
+      character_limits:
+        source_note: "NCDMV's own table, in SPACES not characters (half-space glyphs exist; see us-nc-motorcycle)"
+        personal_vehicle: 8
+        private_motorcycle: 7
+        private_trailer: 8
+        disabled_license_plate: 6
+        special_license_plate: 4
+        note: "the SPECIAL-plate limit of 4 is the striking one: personalizing a North Carolina specialty plate leaves only four spaces, because the programme artwork occupies the rest of the field. Any model that assumes one vanity-length rule per state is wrong here by a factor of two."
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+      note: "standard and specialty designs can both be personalized; personalized plates are manufactured by an outside vendor and take about 6-8 weeks (NCDMV)"
+    refusal_policy: >-
+      NCDMV reserves the right to refuse submissions deemed offensive to good
+      taste and decency, over the space limit, or duplicating another issued
+      plate. NCDMV states its own legal theory on the page, which is worth
+      quoting because it is the state explaining the doctrine to the public:
+      "Supreme Court case law has deemed state-issued license plates as
+      'government speech' and provides the issuing agency with broad discretion
+      in refusing to issue or recall a plate with an indecent word/phrase or
+      meaning. Therefore, such speech is not subject to a First Amendment
+      analysis."
+    relinquishment: "a personalized text may not be given away but its RIGHTS may be released: form MVR-27N is filed with the plate, which is returned with a special code that relinquishes the text to a named person, who may then request it (NCDMV)"
+    region_encoding: none
+    sources:
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV: the permitted special characters (? & $ @), the automatic O-to-0 conversion, the at-least-one-letter rule, the five character-space limits, the half-space rule, the refusal criteria and the government-speech statement, and the MVR-27N relinquishment mechanism"
+    notes: >-
+      NORTH CAROLINA PERSONALIZED, AND THE STRONGEST SCHEMA FINDING OF GROUP
+      SOUTHEAST-A. Two of five states — North Carolina here with ? & $ @, and
+      Virginia with the ampersand — officially publish permission to print a
+      non-alphanumeric glyph INSIDE a serial. PRD-PLATES §2.6 anticipated this
+      exact case and prescribed the remedy: "A jurisdiction that prints a glyph
+      inside a serial is a schema amendment, not a data entry. If one lands, it
+      goes to _meta/separators.yml's `never_separator` list with its source, and
+      every consumer learns about it from one place." Two have landed, from
+      first-party DMV pages. The amendment is PROPOSED in the group dossier and
+      deliberately NOT made here. The O-to-0 conversion is separately valuable
+      and points the opposite way from every OCR heuristic in the field.
+
+  # =========================================================================
+  # SPECIALTY — PROGRAM INDEX ONLY (PRD-PLATES §2.5).
+  # =========================================================================
+  - id: us-nc-specialty-index
+    class: specialty
+    categories: [car, van, truck, motorcycle, trailer]
+    period: { start: 2026 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: recall-only
+    format:
+      pattern: "LLLLLLL"
+      regex: '\A[A-Z0-9](?: ?[A-Z0-9]){0,6}\z'
+      charset: { notes: "specialty serials are shorter than standard ones — the personalized limit on a special plate is FOUR spaces against eight on a personal vehicle — so no arrangement claim is made and the index is recall-only" }
+    design:
+      plate: { unit: in }
+      background: { finish: retroreflective }
+      note: "one design per authorised programme; the designs themselves are L4 scope (PRD-PLATES §2.5) and none is described here"
+      emblem: { present: true, rendered: placeholder }
+    program_index:
+      count_official: "more than 100"
+      count_official_quote: "NCDMV, in its own words: 'NCDMV issues specialty license plates representing more than 100 causes and interest groups.'"
+      official_list_url: "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx"
+      production_model: >-
+        THE MOST OPERATIONALLY DISTINCTIVE FACT: North Carolina specialty plates
+        are made in LIMITED PRODUCTION RUNS and go out of stock. NCDMV: "Special
+        plates are made in limited production runs, so your chosen plate may not
+        be available at the time you request it. Some speciality plates are
+        replaced with new designs; others may be discontinued. You are free to
+        choose another plate that is available, or if the plate is out of stock,
+        you may choose to have it mailed to you when it is back in stock." So
+        "authorised" and "obtainable" are different states in North Carolina at
+        any given moment, and a programme index that models only authorisation
+        will overstate what a resident can actually buy.
+      membership_gating: "NCDMV: specialty plates for most military and civic clubs are obtainable only on verification of membership or of the specific recognition — e.g. the Purple Heart plate requires proof of the award. The same proof-before-purchase pattern Florida labels a 'special requirement' subtype."
+      establishment_process: "organisations may apply to establish a NEW specialty plate through a published multi-step process (NCDMV, 'Process to establish a specialty plate')"
+      transfer_restriction: "on an owner's death some specialty plates (military, disabled veteran, disability) cannot transfer to a surviving spouse because the plates carry eligibility requirements; others, such as Prisoner of War, are transferable if the surviving spouse does not remarry and continues to renew annually (NCDMV)"
+    region_encoding: none
+    sources:
+      - "https://www.ncdot.gov/dmv/title-registration/license-plates/Pages/default.aspx  # NCDMV: 'more than 100 causes and interest groups'; the limited-production/out-of-stock model; the membership and award verification gating; the establishment process; and the death-transfer restrictions"
+    notes: >-
+      THE NORTH CAROLINA SPECIALTY PROGRAM INDEX — one entry standing for the
+      whole programme, per PRD-PLATES §2.5. The count is NCDMV's own "more than
+      100" and is recorded as an agency estimate, not a count: unlike Virginia,
+      North Carolina does not expose a faceted search that would reconcile a
+      total. What North Carolina gives instead, and no other state in this group
+      does, is an honest statement of the LIMITED-PRODUCTION model — which is
+      the fact that explains why enthusiast catalogues and state lists never
+      agree anywhere in the US. The right L4 move here is not to chase a count
+      but to capture stock state over time, the way the Florida monthly
+      active-plate report should be captured.
