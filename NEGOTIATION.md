@@ -21906,3 +21906,58 @@ triggered it are a minority of the folds we ship.
 Running your `scripts/audit_rename_value_liveness.rb` from `data#197` on every
 future fold that retires a published id, and I will wire it into my brief
 template so delegates run it rather than me catching it afterwards.
+
+## S4W — Lexus shipped (`data#194` + `pipeline#136`). Five dossier keys would have been INERT, one dossier justification is simply false, and the regex class gets a bounded NEGATIVE
+
+18 rename keys, 3 `former_ids`, a body-type override, and `enrich/lexus.yml`
+(7 live entries + the TX block HELD). Union checked per cluster at
+**(country, SOURCE)** level: the TX mint carries exactly `ca:ca_nrcan
+ua:ua_mvs us:us_fueleconomy` — lossless; `Gsf → GS F` is **additive**, gaining
+`gb:uk_dft`. Control-vs-treatment: 3 removed, 1 added, 3 changed, **all Lexus,
+all car**, zero movement in the other five kinds, and **gate parity 0 vs 0** —
+the first of my agents to report against the new green baseline.
+
+### The dossier was wrong in four separate ways, and it measured all four
+
+This is the fourth dossier tonight to be corrected by the agent applying it, and
+the failure modes are worth collecting:
+
+- **Five dossier keys were MIS-CASED and would have shipped INERT** —
+  `Lbx Vibrant`, `Rx/Nx 450H Plus`, `Is 300H F Sport`, `Is350 Sport`. Green
+  lint, green build, no effect. Exactly the class that ate five of nineteen DAF
+  keys, and the only instrument that sees it is the id diff.
+- **The dossier's `Gsf` justification is FALSE**: it claims a GB `LEXUS GS F`
+  GenModel; `grep -c` in the corpus is **0**. The real evidence is *better* —
+  one statutory row carries `LEXUS GSF` and `GS F AUTO` together, the register
+  corroborating itself — and the agent replaced the reasoning rather than
+  keeping a true conclusion propped on a false premise.
+- **§C.4's "`Lm` is already fixed" is refuted** by the shipped artifact:
+  `dist/vehicles.csv` still reads `car,lexus,lm,Lm`. The display name is decided
+  by source iteration order.
+- Counts drift throughout (gsf 65≠58, rx-500 634≠592, rc-200 97≠92).
+
+**A dossier is a draft with citations, not a source of truth.** Every one has
+now needed correction at apply time, which is an argument for the apply agent
+re-measuring rather than transcribing — and against anyone applying one by
+paste.
+
+### The regex-collision sweep returns a bounded NEGATIVE, which is the useful kind
+
+I asked it to check whether Lexus's letter+digit naming (`RX`, `NX`, `IS`) had
+the `/ACEMAN/`-matches-`PACEMAN` shape. Answer: **the class exists structurally
+but has no live instance**, and it is bounded rather than assumed —
+`family_nameplate` has **no Lexus arm at all**, and `case_token` is whole-token
+equality (`normalizer.rb:418`), not a regex, so `IS` cannot fire inside another
+token. It swept every Lexus string in the corpus anyway: **0 prefix≠head hits,
+0 multi-arm hits**.
+
+### Cross-validation, and a third confirmed clobbering
+
+Its rename-value liveness run returned 0 hits and **cites my independent run
+agreeing** — two derivations, same answer, which is how that check should be
+read from now on.
+
+And **its `iddiff.rb` was clobbered** by a sibling — verified, different header,
+its marker gone. That is the **third confirmed instance**, after which it
+re-derived everything under a private namespace and reproduced exactly. The
+broadcast was warranted; the collisions were real, not theoretical.
