@@ -1488,6 +1488,113 @@ BYD:
   # Tang · 1 key, 2 vehicles, 1 rows
   "Tang Dm-P":                      Tang                    # trim/engine/body designation of the Tang — 2v 1r ua/ua_mvs
 
+  # ══ BYD TAIL WAVE (2026-08-02) — dossier aux/research/2026-08-owner-swarm/
+  # byd-tail.md applied under the EV program (NEGOTIATION.md:22252, rule 2:
+  # BYD-class growth marques are head makes). TWELVE KEYS, 339 vehicles moved
+  # (van 192 · yuan-pro 123 · yuan-plus 16 · sea-lion-07 8), measured by a
+  # control-vs-treatment CANDIDATE diff: all 12 candidate ids disappear, 0 new
+  # candidates appear, so every key fires and none is inert. Frozen-cache
+  # builds off data b7b6187 + pipeline db602aa. GATES: the two sides fail
+  # IDENTICALLY and only on a defect that is already on main — one spotcheck,
+  # 'mercedes-benz/amg missing gb', reproduced in a PRISTINE control worktree
+  # with zero modifications (pipeline#144 moved 57,573 gb AMG-stub vehicles to
+  # real nameplates; spotchecks.yml:469 has not caught up). No other gate fails
+  # on either side. Every produced string replayed byte-exact through the real
+  # Normalizer#classify (12/12).
+  #
+  # THE DOSSIER'S HEADLINE HAZARD IS OBEYED, NOT PAPERED OVER: `Sea Lion 06`
+  # (424 ua) is NOT car/byd/sealion-6 — sealion-6's product is the Song Plus
+  # DM-i (4,775mm/2,765mm wheelbase) and 海狮06 is a different, longer Ocean
+  # SUV (4,810mm/2,820mm). NO KEY BELOW TOUCHES ANY 05/06 STRING, in either
+  # direction, and the only Sea Lion keys here carry `07`, whose target
+  # car/byd/sea-lion-07 is published and already ua-evidenced. The three
+  # near-identical families in this make were each checked before keying:
+  # Sea Lion 05/06/07 vs Sealion 5/6/7/8; Yuan / Yuan Plus / Yuan Pro /
+  # Yuan Up; Seal / Seal 5 / Seal 6 / Seal 06 / Seal U. Renames are EXACT
+  # string keys (normalizer.rb:290 `renames&.key?(nameplate)`), never
+  # prefixes, so no key below can reach a sibling nameplate.
+  #
+  # NOT DONE HERE, and each is argued in the PR body: the Chinese-name heads
+  # (Sea Lion 05/06, Song L/Plus, Tang L, Qin/Qin L/Qin Plus, Han L, Xia,
+  # Yuan Up) take no key at all — their trim suffixes would fold onto
+  # UNPUBLISHED heads, which consolidates candidate mass and rescues nothing
+  # (no head reaches KIND_THRESHOLDS[:car] = 1000 even fully consolidated:
+  # Sea Lion 06 → 659, Song Plus → 423, Song L → 375, Tang L → 139), and for
+  # `Song Plus EV` / `Song Plus Dm I` it would DESTROY the axis that resolves
+  # D-3's one-to-many (Song Plus EV → the BEV Seal U, Song Plus DM-i → the
+  # PHEV Sealion 6 — the powertrain token IS the discriminator). ──
+
+  # ── ETP3 · the dossier's HELD fold, RELEASED on a measurement. Both
+  # byd-tail.md §B.4 and enrich/byd.yml's van/byd/etp3 note hold these four
+  # keys "pending the uk_dft GenModel fix". THE HOLD IS A CONFLATION AND THE
+  # SOURCE FILE REFUTES IT. The §E.1 defect is a GenModel bucket carrying MORE
+  # THAN ONE published nameplate (BYD SEAL DESIGN EV = Seal 15,204 + Seal U
+  # 26,923 + Sealion 7 8,474). Read the same file for THIS bucket: VEH0120
+  # 2026 Q1, BodyType "Light goods vehicles", Make BYD, GenModel "BYD ETP"
+  # holds exactly TWO Model strings and both name ONE nameplate — "ETP3 EV"
+  # (186 Licensed + 0 SORN) and "ETP3" (0 Licensed + 1 SORN) = 187. One
+  # nameplate in, one nameplate out: the BMW "3 SERIES" shape the detector
+  # spec calls CORRECT pooling, not the seal-design-ev shape. No source fix is
+  # owed here and none is being waited on.
+  # MEASURED GAIN (control-vs-treatment, this PR): van/byd/etp3 published
+  # fi,nl and now publishes es,fi,gb,nl — +2 (country,source) pairs,
+  # (gb,uk_dft) + (es,es_dgt), 192 vehicles, 0 pairs lost. All four keys are
+  # UNPUBLISHED candidates, so nothing is retired and no former_ids/removals
+  # line is owed. POWERTRAIN SEED (EV directive rule 3): every gb row carries
+  # VEH0120 Fuel "Battery electric" — the ETP3 is BEV-only. ──
+  Etp:                              ETP3                    # uk_dft GenModel truncation of ETP3 — its OWN Model column writes "ETP3 EV" (186) and "ETP3" (1); 187v 1r gb/uk_dft [van]
+  Etp 3:                            ETP3                    # spaced spelling of ETP3 — 1v 1r es/es_dgt [van]
+  ET3:                              ETP3                    # BYD's short form for the same van (byd.com/eu sells it as ETP3/ET3) — 3v 1r nl/nl_rdw [van]
+  Electric Truck Panel 3 EM3:       ETP3                    # nl_rdw writes the acronym out in full: ETP = Electric Truck Panel, "3" the tonnage class — 1v 1r nl/nl_rdw [van]
+
+  # ── Sea Lion 07 · trim/battery-suffix folds onto the PUBLISHED Chinese-name
+  # record car/byd/sea-lion-07 (es,ua). VALUE IS "Sea Lion 07", TWO WORDS AND
+  # A LEADING ZERO — it slugifies to sea-lion-07 (the 海狮07 record), NOT to
+  # sealion-7 (the export record, also published, de/es/fi/ie/lu/nl/nz/th).
+  # Both records stay live and separate per D-3. No availability moves: both
+  # keys and the target are ua-only on the Chinese side. car/byd/sea-lion-07
+  # carries 0 type approvals, so reconciler.rb:261's 25-TAN cap is not in
+  # play. POWERTRAIN: 海狮07 spans BEV and DM-i; these two rows are the BEV
+  # arm, recorded as a typed variant in enrich/byd.yml rather than left in a
+  # slug (EV directive rule 3). ──
+  Sea Lion 07 EV:                   Sea Lion 07             # powertrain suffix of the 海狮07 (BEV arm) — 5v 1r ua/ua_mvs
+  Sea Lion 07 EV 610 Smart Edition: Sea Lion 07             # battery figure (610 km) + 智驾版 trim — NAMING §6's Leaf 40KWH precedent — 3v 1r ua/ua_mvs
+
+  # ── Yuan Plus · five trim/battery/edition suffixes onto the PUBLISHED
+  # car/byd/yuan-plus (es,ua), the 元PLUS — which is car/byd/atto-3's Chinese
+  # name and stays a separate record per D-3. Checked against the three
+  # near-identical siblings before keying: car/byd/yuan (nl,ua, published),
+  # `Yuan Up` (254 ua, candidate — car/byd/atto-2's Chinese name) and
+  # `Yuan Pro` (below) are all DIFFERENT products and take no key from this
+  # cluster. No availability moves (all ua-only); target carries 0 TANs.
+  # POWERTRAIN: 元PLUS is BEV-only, so `Yuan Plus EV` is a redundant
+  # powertrain token, not an electric line — folding it violates no EV rule. ──
+  Yuan Plus 510 Transcendent:       Yuan Plus               # battery figure (510 km) + 超越型 trim — 7v 1r ua/ua_mvs
+  Yuan Plus Flagship:               Yuan Plus               # 旗舰型 trim — 5v 1r ua/ua_mvs
+  Yuan Plus EV:                     Yuan Plus               # redundant powertrain suffix; the 元PLUS has no non-BEV variant — 2v 1r ua/ua_mvs
+  Yuan Plus EV Premium:             Yuan Plus               # powertrain suffix + trim — 1v 1r ua/ua_mvs
+  Yuan Plus Honor:                  Yuan Plus               # 荣耀版 (Honor Edition), a model-year trim — 1v 1r ua/ua_mvs
+
+  # ── Yuan Pro · ONE KEY THAT MINTS ONE NEW PUBLISHED ID, and that is the
+  # point. byd-tail.md §B.4 spotted that `Yuan Pro EV GS` (123 ar) and
+  # `Yuan Pro` (4 ua) are the same product but scored the pair against the
+  # 1,000-vehicle volume route and filed it as unpublishable. IT MISSED THE
+  # OTHER ARM: publishable? (reconciler.rb:162) is `sources.size >= 2 ||
+  # max_country_count >= threshold`, and this fold takes the FIRST arm —
+  # ar_dnrpa + ua_mvs = 2 sources, 127 vehicles, so car/byd/yuan-pro publishes.
+  # IN-CORPUS CORROBORATION FOR THE WHOLE SHAPE: car/byd/song-pro is ALREADY
+  # published on exactly this pair of registers (ar,ua) — LatAm BYD keeps the
+  # Chinese Dynasty names, so ar_dnrpa and ua_mvs writing the same nameplate is
+  # a demonstrated pattern in this make, not an inference. Both registers write
+  # the nameplate LITERALLY ("YUAN PRO", "YUAN PRO EV GS"); the key strips only
+  # a powertrain token and ar_dnrpa's trim letter, whose trim-ness is itself
+  # corroborated in-corpus by the GS/GL pair on `Dolphin Mini EV GS`(474)/
+  # `GL`(11) and by `Shark Dmo GS`. 元Pro is BEV-only, so `EV` is redundant,
+  # not an electric line — no EV-rule exposure. NOT car/byd/yuan-plus and NOT
+  # car/byd/yuan: three different BYD products, all three strings live in this
+  # corpus, none folded into another. ──
+  Yuan Pro EV GS:                   Yuan Pro                # ar_dnrpa powertrain token + GS trim on the 元Pro — 123v 1r ar/ar_dnrpa; PUBLISHES car/byd/yuan-pro (ar+ua, 2 sources, 127v)
+
 Cadillac:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
