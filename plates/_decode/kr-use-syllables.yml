@@ -1,0 +1,194 @@
+# plates/_decode/kr-use-syllables.yml — the Korean HANGUL USE-CATEGORY syllable.
+#
+# THE ONE FACT A PARSE API MUST NOT GUESS. Every Korean registration mark
+# carries exactly one hangul element between its class-code digits and its
+# four-digit serial (two hangul syllables on the diplomatic plate, where the
+# element is a WORD, not a syllable). That element is not decoration and it is
+# not a separator: it is the vehicle's USE category, and it is the only part of
+# a Korean mark that says whether the vehicle is private, for-hire, rented,
+# delivery or diplomatic. It is also the only part written in a non-Latin
+# script, so it lives here rather than inside a regex (see the SCRIPT LINE note
+# in plates/kr.yml).
+#
+# SOURCE: this whole table is ONE primary — 「자동차 등록번호판 등의 기준에
+# 관한 고시」 (MOLIT Notice on the standards for motor-vehicle registration
+# plates) Article 5(1), the table headed 구분 / 분류 / 기호 ("division /
+# classification / symbol"), reproduced row-for-row below in the notice's own
+# order. Article 5(1) is delegated legislation: 「자동차등록령」 (Presidential
+# Decree on Motor Vehicle Registration) Article 21(1) provides, verbatim:
+#   "등록번호는 법 제3조에 따른 자동차의 종류와 자동차의 용도(자동차운수사업용인
+#    것과 자동차운수사업용이 아닌 것으로 구분한다)에 따라 국토교통부장관이 정하여
+#    고시하는 기준에 의하여 각각 순서대로 부여한다."
+#   ["A registration number shall be assigned in sequence according to the type
+#    of the motor vehicle under Article 3 of the Act and the USE of the motor
+#    vehicle (divided into transport-business use and non-transport-business
+#    use), in accordance with the standards determined and published by notice
+#    by the Minister of Land, Infrastructure and Transport." — translation ours]
+#
+# The Article 5(1) table is published on law.go.kr as a raster IMAGE inside the
+# article text, not as machine-readable markup; the rows below were read off
+# that image (flSeq 150966223 for the in-force 제2025-121호 text, flSeq
+# 158473201 for the 제2025-676호 text — identical) and are transcribed here in
+# the original hangul with a translation note per group. NOTHING here is
+# transliterated into the serial alphabet: the hangul IS the datum.
+#
+# Referenced by: every series in plates/kr.yml via `hangul_field.decode`.
+jurisdiction: kr
+topic: use-syllables
+script: Hangul (Korean), Unicode Hangul Syllables block
+authority:
+  name: 국토교통부 (Ministry of Land, Infrastructure and Transport) — 「자동차 등록번호판 등의 기준에 관한 고시」 제5조
+  url: "https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%EB%B2%88%ED%98%B8%ED%8C%90%EB%93%B1%EC%9D%98%EA%B8%B0%EC%A4%80%EC%97%90%EA%B4%80%ED%95%9C%EA%B3%A0%EC%8B%9C"
+sources:
+  - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # 제2025-121호 (in force 2025-03-15), Art. 5(1) and its table image flSeq=150966223 — every row below"
+  - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000180990&type=XML  # 제2019-423호, Art. 5(1) table image flSeq=44282120 — the same 32/5/3/7 syllable sets, showing they predate the 3-digit reform"
+  - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 제2009-812호, Art. 5(1) table image flSeq=5123232 — the 2009 state: 일반용 was 바·사·아·자 (no 배) and 대여사업용 was 허 alone (no 하·호)"
+  - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%EB%A0%B9&type=XML  # 자동차등록령 제21조제1항, the delegation quoted above"
+accessed: "2026-08-02"
+period: { start: 2009 }
+period_evidence: instrument-in-force-upper-bound
+period_note: >-
+  The syllable system itself is far older than 2009 — it is the core of the
+  1973 Korean mark and every secondary account dates it there. 2009 is the
+  earliest date this table can be read from a PRIMARY: law.go.kr's 행정규칙
+  (administrative-rule) archive for this notice begins at 국토교통부고시
+  제2009-812호 (2009-08-24), and the pre-2009 건설교통부고시 versions are not
+  published there. So 2009 is an UPPER BOUND on the start of the table, not
+  its start. Individual ROWS are dated where the archive shows them changing
+  (see `added` on 배 / 하 / 호).
+
+# ---------------------------------------------------------------------------
+# HOW THE FIELD IS READ
+# ---------------------------------------------------------------------------
+mechanism: >-
+  On an ordinary (보통) or large (대형) registration plate the hangul element is
+  a SINGLE syllable and it sits between the class-code digits and the four-digit
+  serial: 123가4568 -> class 123, use 가, serial 4568. On the diplomatic plate
+  the element is a two-syllable WORD and it sits BEFORE the digits, stacked on
+  two lines or set as a pair: 외교 321-678. On the pre-2026 motorcycle plate
+  (Annexes 13/14/15) the element is a single syllable drawn from the 28-syllable
+  set below, and on the 2026 motorcycle plate (Annex 15-2) it is one syllable of
+  the 32-syllable non-commercial set followed by a digit (Art. 5(2)2).
+disambiguation: >-
+  The syllable alone is NOT sufficient to classify a Korean plate: colour and
+  the presence of an authority mark carry the rest. A white region-less plate
+  with 허/하/호 is a rental car (대여사업용 — non-commercial COLOURS, commercial
+  USE, and Art. 6 proviso expressly withholds the authority mark from it); a
+  YELLOW plate always carries an authority mark and one of 바/사/아/자/배. A
+  blue plate is an electric vehicle, a light-green plate is a corporate-business
+  vehicle, and both draw their syllable from the 32-syllable non-commercial set.
+closed: true
+closed_note: >-
+  The Article 5(1) table is exhaustive on its face — it is a table of 기호
+  (symbols), not of examples — so this list is closed for the plate types the
+  notice covers. It does NOT cover: 임 (temporary-operation plates, Annexes
+  9-10, where 임 is a fixed literal, not a use category), military plates (a
+  separate Ministry of National Defense system, not modelled here), or
+  construction machinery (「건설기계관리법」, a different statute).
+
+# ---------------------------------------------------------------------------
+# 1. 비사업용 (non-transport-business use), incl. SOFA vehicles.
+#    Table row: 비사업용(SOFA 자동차 포함) / 자가용(관용포함) — "private use
+#    (including government-owned)". 32 syllables. The set is systematic and the
+#    system is worth stating because it is how a reader remembers it: nine
+#    initial consonants ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ crossed with four vowels
+#    ㅏ ㅓ ㅗ ㅜ gives 36, minus the four ㅏ-row syllables 바/사/아/자 which the
+#    table assigns to transport-business use, leaving 32.
+# ---------------------------------------------------------------------------
+non_commercial:
+  use_ko: "비사업용 — 자가용(관용포함)"
+  use_en: "private, non-transport-business (government fleets included)"
+  count: 32
+  syllables: ["가","나","다","라","마","거","너","더","러","머","버","서","어","저","고","노","도","로","모","보","소","오","조","구","누","두","루","무","부","수","우","주"]
+  order_note: >-
+    Transcribed in the notice's own printed order (the four vowel rows in
+    sequence), not sorted. Issuance order within the set is not published.
+  applies_to_plates: ["Annex 1", "Annex 2", "Annex 2-1", "Annex 2-2", "Annex 5", "Annex 18", "corporate-business (Art. 4(1)1(다))"]
+
+# ---------------------------------------------------------------------------
+# 2. 자동차운수사업용 — 일반용 (transport-business, general). The YELLOW plate.
+# ---------------------------------------------------------------------------
+commercial_general:
+  use_ko: "자동차운수사업용 — 일반용"
+  use_en: "transport business, general (taxis, route buses, hire trucks)"
+  count: 5
+  syllables:
+    - { syllable: "바" }
+    - { syllable: "사" }
+    - { syllable: "아" }
+    - { syllable: "자" }
+    - { syllable: "배", added: 2019, added_evidence: instrument-in-force-upper-bound, note: "absent from the 제2009-812호 table, present in the 제2019-423호 table; the exact amendment that added it is not isolated here. Commonly associated with parcel-delivery (택배) trucks — that association is NOT in the notice and is not asserted." }
+
+# ---------------------------------------------------------------------------
+# 3. 대여사업용 (vehicle-rental business). White plate, NO authority mark.
+# ---------------------------------------------------------------------------
+rental:
+  use_ko: "자동차운수사업용 — 대여사업용"
+  use_en: "vehicle-rental business (hire cars)"
+  count: 3
+  syllables:
+    - { syllable: "허" }
+    - { syllable: "하", added: 2019, added_evidence: instrument-in-force-upper-bound }
+    - { syllable: "호", added: 2019, added_evidence: instrument-in-force-upper-bound }
+  added_note: >-
+    제2009-812호 lists 허 alone; 제2019-423호 lists 허, 하, 호. The rental set
+    grew because rental fleets exhausted 허 — an inference, and recorded as an
+    inference. What IS primary is that the two tables differ.
+  colour_note: >-
+    Art. 4(1)1(가) puts 대여사업용 vehicles under the NON-commercial colour rule
+    ("일반용(SOFA자동차, 대여사업용 자동차 포함)"), and Art. 6's proviso
+    withholds the authority mark from them, so a Korean rental car wears the
+    ordinary white private plate and is identifiable ONLY by its syllable.
+    A rental EV additionally gets the blue plate (Art. 1-3(4) includes
+    대여사업용 in the electric-vehicle plate class).
+
+# ---------------------------------------------------------------------------
+# 4. 외교용 (diplomatic). TWO-syllable WORDS, set before the digits, on the
+#    dark-navy plate. Note that these are the ONLY multi-syllable elements.
+# ---------------------------------------------------------------------------
+diplomatic:
+  use_ko: "외교용"
+  use_en: "diplomatic and related"
+  count: 7
+  words:
+    - { word: "외교", category_ko: "외교관용", category_en: "diplomatic mission / diplomatic agent" }
+    - { word: "영사", category_ko: "영사용", category_en: "consular" }
+    - { word: "준외", category_ko: "준외교관용", category_en: "quasi-diplomatic" }
+    - { word: "준영", category_ko: "준영사용", category_en: "quasi-consular" }
+    - { word: "국기", category_ko: "국제기구용", category_en: "international organisation" }
+    - { word: "협정", category_ko: "기타외교용", category_en: "other diplomatic — agreement" }
+    - { word: "대표", category_ko: "기타외교용", category_en: "other diplomatic — representative" }
+  colour_source: "Art. 4(1)1(나): 외교용(외교, 영사, 준외, 준영, 국기, 협정, 대표) : 감청색바탕에 흰색문자 — dark navy ground, white characters. The parenthesis in Art. 4 is the same seven-word list as the Art. 5 table, which is why this row is doubly sourced."
+
+# ---------------------------------------------------------------------------
+# 5. 이륜자동차 (motorcycles) on the Annex 13/14/15 plates — Art. 5(3).
+#    Verbatim: "제2항에도 불구하고 제2조제2항제3호에 따른 이륜자동차번호판에는
+#    가ㆍ나ㆍ다ㆍ라ㆍ마ㆍ바ㆍ사ㆍ아ㆍ자ㆍ차ㆍ카ㆍ타ㆍ파ㆍ하ㆍ거ㆍ너ㆍ더ㆍ러ㆍ머ㆍ버ㆍ
+#    서ㆍ어ㆍ저ㆍ처ㆍ커ㆍ터ㆍ퍼ㆍ허를 용도 기호로 표시한다."
+#    This set is DIFFERENT from the car set: it includes the aspirate consonants
+#    ㅊ ㅋ ㅌ ㅍ ㅎ (차 카 타 파 하, 처 커 터 퍼 허) which never appear on a car
+#    plate, and it has only two vowel rows.
+# ---------------------------------------------------------------------------
+motorcycle_legacy:
+  use_ko: "이륜자동차번호판(별표 13·14·15) 용도 기호"
+  use_en: "motorcycle plates of the Annex 13/14/15 pattern"
+  count: 28
+  syllables: ["가","나","다","라","마","바","사","아","자","차","카","타","파","하","거","너","더","러","머","버","서","어","저","처","커","터","퍼","허"]
+  note: >-
+    Art. 5(3) is the CURRENT text and it governs the Annex 13/14/15 plates,
+    which Art. 2(2)3 keeps alive only where the Annex 15-2 plate physically
+    cannot be fitted. The 제2009-812호 and 제2018-381호 texts had a shorter,
+    differently-worded rule ("가·나·다·라·라·마·바·사·아·자·차·카·타·파·하",
+    printing 라 twice — an evident typo in the source, reproduced here as an
+    observation and NOT corrected in this dataset's claim).
+motorcycle_current:
+  use_ko: "이륜자동차번호판(별표 15의2) 용도 기호 — Art. 5(2)2"
+  use_en: "motorcycle plates of the Annex 15-2 pattern (from 2026-03-20)"
+  rule: >-
+    "용도 기호: 제1항에 따른 용도별 비사업용 기호 1자리와 1부터 9까지의 숫자
+    1자리를 순서대로 표시한 2자리 기호" — a TWO-character use code: one syllable
+    drawn from the 32-syllable non-commercial set in section 1 above, followed
+    by one digit 1-9. It is preceded by a separate one-digit vehicle-type code
+    (Art. 5(2)1: "1부터 9까지의 숫자 1자리 기호"), so the head of an Annex 15-2
+    mark reads digit + syllable + digit, e.g. 1가2.
+  syllable_set: non_commercial

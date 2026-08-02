@@ -1,0 +1,1364 @@
+# plates/kr.yml — Republic of Korea (PRD-PLATES gate L3).
+#
+# EVERY dimension, colour, layout, class-code range and use-syllable claim in
+# this file comes from ONE instrument and its annexes: 「자동차 등록번호판 등의
+# 기준에 관한 고시」 — the Ministry of Land, Infrastructure and Transport
+# Notice on the standards for motor-vehicle registration plates — as in force,
+# 국토교통부고시 제2025-121호, promulgated and in force 15 March 2025 (with the
+# Article 2(2) / 4(2) / 5(2)-(3) amendments in that notice taking effect
+# 20 March 2026, and Annex 15-2 item 2 as further amended by 국토교통부고시
+# 제2025-676호 of 27 November 2025, likewise from 20 March 2026). Period claims
+# are taken from that notice's 부칙 (supplementary provisions), which is the
+# richest era source secured for any jurisdiction in this gate: it dates each
+# reform to the day.
+#
+# THE CHAIN OF AUTHORITY, top to bottom, because it decides what is law and
+# what is administrative practice:
+#   1. 「자동차관리법」 (Motor Vehicle Management Act, Act No. 21817) Article 10
+#      requires the plate to be affixed and forbids removing or obscuring it.
+#      It says NOTHING about what a mark is made of.
+#   2. 「자동차등록령」 (Presidential Decree) Article 21(1), verbatim:
+#      "등록번호는 법 제3조에 따른 자동차의 종류와 자동차의 용도(자동차운수사업용인
+#       것과 자동차운수사업용이 아닌 것으로 구분한다)에 따라 국토교통부장관이
+#       정하여 고시하는 기준에 의하여 각각 순서대로 부여한다."
+#      -> the COMPOSITION of a Korean mark is delegated, entirely, to a
+#      ministerial notice. Same shape as Germany (§9 FZV -> Bundesanzeiger) and
+#      Britain (VERA 1994 §23 -> DVLA INF104) — but Korea's delegate publishes
+#      the whole grammar, with millimetre drawings, which the other two do not.
+#   3. 「자동차관리법 시행규칙」 (Enforcement Rule) Article 6 splits規格/재질/색상
+#      by type and use, and Article 6(3) re-delegates the detail to the notice
+#      "after prior consultation with the Commissioner General of the National
+#      Police Agency".
+#   4. The notice itself, Articles 1-3 to 6 and Annexes 1 to 18.
+#
+# ---------------------------------------------------------------------------
+# THE SCRIPT LINE — read this before reading any regex in this file.
+# ---------------------------------------------------------------------------
+# A Korean registration mark is NOT a Latin/digit string. Its canonical printed
+# form is, for the current private car:
+#
+#       1 2 3 [가] 4 5 6 8          (Annex 2-1, sample serial as drawn)
+#
+# — three digits of class code, ONE HANGUL SYLLABLE naming the vehicle's use
+# category, four digits of serial, set in nine contiguous cells with NO
+# separator glyph anywhere on the plate. The hangul syllable is serial-
+# significant: it is the difference between a private car (가), a taxi (바) and
+# a rental car (허). It is emphatically NOT a separator and no consumer may
+# delete it.
+#
+# PRD-PLATES §2.6 fixes the dataset's serial alphabet at A-Z and 0-9 and says in
+# terms that a jurisdiction printing a glyph inside a serial "is a schema
+# amendment, not a data entry". Korea is that jurisdiction. Until the amendment
+# lands, this file draws the line exactly where §2.5/§2.6 and the Japan note in
+# §2.2 point:
+#
+#   * `format.pattern` / `format.regex` / `format.regex_strict` describe the
+#     MACHINE-READABLE DIGIT SKELETON of the mark and nothing else — the digits,
+#     in printed order, with the hangul element ELIDED. For 123가4568 the
+#     skeleton is 1234568 and the pattern is "9999999".
+#   * `format.hangul_field` (this file's local extension, the `fields[]`
+#     composition PRD-PLATES §2.2 anticipates for Japan) carries the elided
+#     element: its position, its script, its width in millimetres, its closed
+#     value set and a pointer into plates/_decode/kr-use-syllables.yml.
+#   * `matching: strict` is nonetheless correct on these series, and the reason
+#     is precise: `regex` is not WIDER than the issuing grammar of the serial as
+#     this dataset defines a serial (digits only) — it is exactly it, and
+#     `regex_strict` narrows it further to the authority's own class-code
+#     ranges. A match is a well-formedness claim about the digit skeleton. It is
+#     NOT, and this file never pretends it is, a claim that a full Korean mark
+#     including its hangul is valid. `hangul_field` is where that claim lives.
+#
+# The alternative — spelling the hangul position as a space or as `L` — was
+# considered and rejected in both directions: a space would license a lenient
+# consumer to DELETE a serial-significant character (§2.6's disjointness
+# guarantee exists to make that impossible), and `L` would assert that a Latin
+# letter appears on a Korean plate, which is false. The dossier for this
+# jurisdiction proposes the `_meta/separators.yml` `never_separator` entry that
+# would let a future schema version carry the syllable properly.
+#
+# ---------------------------------------------------------------------------
+# THE FIVE PERIOD FACTS THIS FILE IS BUILT ON, each instrument-dated.
+# ---------------------------------------------------------------------------
+# 1. 1 SEPTEMBER 2019 — THE 8-CHARACTER REFORM, for passenger cars only.
+#    국토교통부고시 제2018-529호 (27 Aug 2018), 부칙 제1조, verbatim:
+#      "제1조(시행일) 이 고시는 발령한 날부터 시행한다. 다만, 제2조 제2항, 제5조
+#       제1항, 별표 2, 별표 2-1의 개정규정은 2019년 9월 1일부터 시행한다."
+#    [Art. 1 (Effective date) This Notice shall enter into force on the day of
+#     its issuance. Provided that the amended provisions of Article 2(2),
+#     Article 5(1), Annex 2 and Annex 2-1 shall enter into force on
+#     1 September 2019.]
+#    Annex 2-1 is 비사업용(8자리 페인트방식) 보통 등록 번호판 — the eight-
+#    character non-commercial ordinary plate. Its transitional provision keeps
+#    every older plate valid: 부칙 제2조, "이 고시 시행당시 종전의 규정에 따라
+#    부착된 번호판은 이 고시에 적합한 것으로 본다".
+#
+# 2. 1 JULY 2020 — THE FILM PLATE WITH THE TAEGEUK BAND.
+#    국토교통부고시 제2019-89호 (22 Feb 2019), 부칙, verbatim:
+#      "이 고시는 2019년 9월 1일부터 시행한다. 다만, 별표2-2는 2020년 7월 1일부터
+#       시행한다."
+#    Annex 2-2 is 비사업용(8자리 필름부착방식) 보통 등록 번호판 — the reflective-
+#    film plate that carries the 66 mm blue left band with the taegeuk and the
+#    country abbreviation KOR. It is a DESIGN, not a format: the mark is the
+#    same eight characters.
+#
+# 3. 1 NOVEMBER 2021 — THE 3-DIGIT CLASS CODE REACHES EVERYTHING ELSE.
+#    국토교통부고시 제2021-1084호 (10 Sep 2021), 부칙 제1조, verbatim:
+#      "제1조(시행일) 이 고시는 2021년 9월 24일부터 시행한다. 다만 국토교통부 고시
+#       제2021-202호 자동차등록번호판 등의 기준에 관한 고시 제5조제1항, 별표 2,
+#       별표 2-2 개정규정은 2021년 11월 1일부터 시행한다."
+#    Reading the Article 5(1) tables across versions shows exactly what moved:
+#    in 제2019-423호 only 승용자동차 (passenger cars) had 100-699; buses, trucks
+#    and special vehicles were still 70-79 / 80-97 / 98,99. In 제2021-1084호 they
+#    are 700-799 / 800-979 / 980-997, with a new 긴급자동차 (emergency) row at
+#    998-999. THE POPULAR ACCOUNT THAT "KOREA WENT TO THREE DIGITS IN 2019" IS
+#    HALF RIGHT: cars did, in 2019; everything else did, in 2021.
+#
+# 4. 1 JANUARY 2024 — THE LIGHT-GREEN CORPORATE-BUSINESS PLATE.
+#    국토교통부고시 제2023-954호 (28 Dec 2023), 부칙 제1조: "이 고시는 2024년
+#    1월 1일부터 시행한다"; 부칙 제2조 applies the new Art. 4(1)1(다) to vehicles
+#    registered or rented on or after that date.
+#
+# 5. 20 MARCH 2026 — THE NEW MOTORCYCLE PLATE, AND MOTORCYCLES LOSE GEOGRAPHY.
+#    국토교통부고시 제2025-121호 (15 Mar 2025), 부칙 제1조: "... 제2조제2항,
+#    제4조제2항, 제5조제2항 및 제3항, 제6항의 개정규정은 2026년 3월 20일부터
+#    시행한다"; 제2025-676호 (27 Nov 2025), 부칙: "... 다만, 별표 15의2 제2호의
+#    개정규정은 2026년 3월 20일부터 시행한다". Annex 15-2 is the 210x150 mm
+#    plate, and Article 6's proviso withholds the authority mark from it.
+#
+# And the sixth, which is one level UP the chain and is the one-back boundary:
+# 6. 2004 — THE REGION-LESS ("전국", nationwide) PRIVATE PLATE.
+#    「자동차관리법 시행규칙」 제6조제2항 confines the authority mark to
+#    transport-business vehicles and is tagged [전문개정 2004.12.6] — wholly
+#    amended by 건설교통부령 제415호 of 6 December 2004, whose 부칙 ① reads "이
+#    규칙은 공포한 날부터 시행한다" (in force on promulgation). The YEAR is
+#    therefore primary. The DAY commonly repeated for the first region-less
+#    issue — 1 January 2004 — is NOT: it would have come from a 건설교통부고시
+#    that law.go.kr's administrative-rule archive does not reach (that archive
+#    begins at 국토교통부고시 제2009-812호, 24 August 2009). Recorded as folklore
+#    in the dossier; the year is asserted, the day is not.
+#
+# ---------------------------------------------------------------------------
+# WHAT IS DELIBERATELY NOT IN THIS FILE (PRD-PLATES §2.5)
+# ---------------------------------------------------------------------------
+#   * Military plates. Korean armed-forces registration is a Ministry of
+#     National Defense system outside 「자동차관리법」 and outside this notice;
+#     nothing about it was sourced, so nothing is claimed.
+#   * Construction machinery (「건설기계관리법」) — a different statute with its
+#     own plate regime.
+#   * The ~250-row 시/군/구 list printed on pre-2026 motorcycle plates: the
+#     notice does not enumerate it (see plates/_decode/kr-authority-marks.yml,
+#     `motorcycle_local_names`).
+#   * Pre-1996 formats, and the whole colonial/Republic-era chain. L4.
+#   * The notice's Articles 3, 3-2, 4-2 and 6-2 (durability testing, film
+#     warranty, inspection bodies, mounting geometry) — real, sourced, and
+#     below the era-inference usefulness line §2.5 draws.
+jurisdiction: kr
+authority:
+  name: 국토교통부 (Ministry of Land, Infrastructure and Transport, MOLIT) — 자동차운영보험과
+  url: "https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EC%9E%90%EB%8F%99%EC%B0%A8%EB%93%B1%EB%A1%9D%EB%B2%88%ED%98%B8%ED%8C%90%EB%93%B1%EC%9D%98%EA%B8%B0%EC%A4%80%EC%97%90%EA%B4%80%ED%95%9C%EA%B3%A0%EC%8B%9C"
+binding: vehicle
+binding_note: >-
+  「자동차등록령」 제21조제2항: a de-registered number may not be reused until
+  six months after the plate is recovered and the vehicle de-registered, with
+  an express exception letting a former transport-business operator take the
+  old number onto a new vehicle. So the number attaches to the VEHICLE, with a
+  narrow owner-follows-number carve-out for commercial fleets — not the Swiss
+  owner-binding, and worth stating because the carve-out is unusual.
+
+instrument:
+  citation: "「자동차 등록번호판 등의 기준에 관한 고시」 (Notice on the standards for motor-vehicle registration plates), 국토교통부고시 제2025-121호"
+  issued: "2025-03-15"
+  in_force: "2025-03-15"
+  delayed_provisions:
+    - "별표 9, 별표 10: nine months after issuance"
+    - "제2조제2항, 제4조제2항, 제5조제2항·제3항, 제6항: 2026-03-20"
+  status_note: >-
+    제2025-121호 is the version IN FORCE on the access date. A later amendment,
+    국토교통부고시 제2025-676호 (issued 2025-11-27), enters force one year after
+    issuance (2026-11-27) except its Annex 15-2 item 2 amendment, which took
+    effect 2026-03-20. Both texts were fetched; Articles 5 and 6 are identical
+    between them, so every claim in this file holds under either.
+  enabling:
+    - "「자동차관리법」 (Motor Vehicle Management Act) 제10조 (자동차등록번호판) — duty to affix; no composition rule"
+    - "「자동차등록령」 (Enforcement Decree) 제21조제1항 — assignment by vehicle type and use 'in accordance with the standards determined and published by notice by the Minister'"
+    - "「자동차관리법 시행규칙」 (Enforcement Rule) 제3조~제6조 — mounting, issue, and 제6조제3항's re-delegation of size/material/colour to the notice after consultation with the National Police Agency"
+  amendment_history_reachable_from: "국토교통부고시 제2009-812호 (2009-08-24). Earlier 건설교통부고시 versions are NOT published on law.go.kr — the single largest sourcing gap for this jurisdiction."
+  source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # full text of the in-force notice incl. every 부칙 quoted in the header"
+  licence: "국가법령정보센터 (law.go.kr) is the Korea Ministry of Government Legislation's official publication channel for statutes and administrative rules. Korean statutes and administrative rules are edicts of government. No text of the notice is redistributed here beyond the short verbatim quotations this dataset's sourcing law requires."
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  vehicle_types:
+    note: >-
+      「자동차관리법」 제3조제1항 — the five statutory vehicle types the class
+      code encodes. 1. 승용자동차 (passenger, built to carry 10 or fewer);
+      2. 승합자동차 (bus/van, 11 or more, plus deemed cases);
+      3. 화물자동차 (goods); 4. 특수자동차 (special — towing, recovery or
+      special-purpose, being none of the other three); 5. 이륜자동차
+      (motorcycle). This dataset's `categories` map onto them as
+      승용->car, 승합->bus+van, 화물->truck+van, 특수->machine+truck,
+      이륜->motorcycle.
+    source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%80%EB%A6%AC%EB%B2%95&type=XML  # 자동차관리법 제3조제1항"
+  plate_sizes:
+    note: >-
+      Article 1-3 splits registration plates into 대형등록번호판 (large — large
+      buses, goods vehicles of 4 t or more payload, special vehicles of 4 t or
+      more gross) and 보통등록번호판 (ordinary — everything else), and Article
+      2(2) lists the annex per plate. Every size below is from an annex TITLE
+      and is confirmed by the drawing's own dimension line and its footer
+      "가로 A mm x 세로 B mm(허용 범위: ± 0.5mm)" (width A by height B,
+      tolerance ±0.5 mm).
+    annexes:
+      - "Annex 1  — 비사업용 보통 등록 번호판 335 x 155 mm"
+      - "Annex 2  — 비사업용(7자리 페인트방식) 보통 등록번호판 520 x 110 mm"
+      - "Annex 2-1 — 비사업용(8자리 페인트방식) 보통 등록 번호판 520 x 110 mm"
+      - "Annex 2-2 — 비사업용(8자리 필름부착방식) 보통 등록 번호판 520 x 110 mm"
+      - "Annex 3  — 자동차 운수 사업용 보통 등록 번호판 335 x 170 mm"
+      - "Annex 4  — 자동차 운수 사업용 보통 등록 번호판 520 x 110 mm"
+      - "Annex 5  — 비사업용 대형 등록 번호판 440 x 200 mm"
+      - "Annex 6  — 자동차 운수 사업용 대형 등록 번호판 440 x 220 mm"
+      - "Annex 7  — 주한 외교공관 공관원 자동차 번호판 335 x 155 mm"
+      - "Annex 8  — 주한 외교공관 공관원 자동차 번호판 520 x 110 mm"
+      - "Annex 9  — 허가 기간이 11일 이상인 임시운행 허가 번호판 335 x 155 mm"
+      - "Annex 10 — 허가 기간이 11일 이상인 임시운행 허가 번호판 520 x 110 mm"
+      - "Annex 11 — 허가 기간이 10일 이하인 임시운행 허가 번호판 335 x 170 mm"
+      - "Annex 12 — 허가 기간이 10일 이하인 임시운행 허가 번호판 520 x 110 mm"
+      - "Annex 13/14/15 — 이륜자동차 번호판, 210 x 115 mm, one/two/three-syllable local name"
+      - "Annex 15-2 — 이륜자동차번호판 210 x 150 mm"
+      - "Annex 16 — 이륜자동차 임시운행 허가 번호판 210 x 115 mm"
+      - "Annex 17 — 삭제 (deleted)"
+      - "Annex 18 — 전기자동차 번호판 520 x 110 mm"
+    source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 1-3, Art. 2(2)-(3), annex titles"
+  material:
+    note: >-
+      Article 2(1), verbatim: "번호판의 재질은 알루미늄으로 하되 그 규격은 두께
+      1㎜의 KS D6701 A1050P \"0\" 으로 한다. 다만, 임시운행의 허가기간이 10일
+      이내인 임시운행허가번호판 ... 의 경우에는 두께 2.5㎜이상의 목재판으로
+      한다." — 1 mm aluminium to KS D6701 A1050P temper "0", EXCEPT the
+      short-term (10 days or less) temporary-operation plate, which is a
+      WOODEN board of 2.5 mm or more. Article 2(4): every character is embossed
+      1.3-1.6 mm proud (the short-term temporary plate excepted). Article 2(5):
+      registration and motorcycle plates may be paint-type or film-type; the
+      electric-vehicle plate MUST be film-type.
+    source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 2(1), 2(4), 2(5)"
+  colours:
+    note: >-
+      Article 4 names the colours; Article 4(4) numbers them. This is a rare
+      case where the authority publishes BOTH a colour-order notation and a
+      CIELAB triplet, so this file records which is which per colour and never
+      blends them.
+    paint_method:
+      basis: "Art. 4(4)가 — 국가기술표준원의 한국색표준분류기준 및 CIE L*a*b* 표색계에 의한다. 단, CIE L*a*b* 표색계의 허용오차는 ΔE*ab≤3으로 한다. (Korean Agency for Technology and Standards colour classification and CIE L*a*b*, tolerance ΔE*ab ≤ 3.)"
+      values:
+        - { name_ko: "분홍빛 흰색", name_en: "pinkish white", cielab: { L: 89.10, a: 0.58, b: 3.95 } }
+        - { name_ko: "보랏빛 검은색", name_en: "purplish black", cielab: { L: 25.70, a: 0.10, b: -5.48 } }
+        - { name_ko: "연녹색", name_en: "light green", cielab: { L: 73.37, a: -21.17, b: 53.88 } }
+        - { name_ko: "녹색",   name_en: "green",      munsell: "2.5G 4/10" }
+        - { name_ko: "적색",   name_en: "red",        munsell: "5R 4/14" }
+        - { name_ko: "황색",   name_en: "yellow",     munsell: "2.5Y 8/16" }
+        - { name_ko: "청색",   name_en: "blue",       munsell: "2.5PB 3/13" }
+        - { name_ko: "남색",   name_en: "navy",       munsell: "5PB 3/10" }
+        - { name_ko: "감청색", name_en: "dark navy",  munsell: "7.5PB 2/8" }
+        - { name_ko: "흰색",   name_en: "white",      munsell: "N9.5" }
+        - { name_ko: "검은색", name_en: "black",      munsell: "N1.5" }
+    film_method:
+      basis: "Art. 4(4)나 — 일반용 film ground colour to KS T 3507, given as four chromaticity corner points; 법인업무용 film ground given in CIE L*a*b* with a CIEDE2000 tolerance ΔE00 ≤ 5."
+      white_chromaticity: "KS T 3507 corners (x,y): (0.303,0.300) (0.368,0.366) (0.340,0.393) (0.274,0.329)"
+      corporate_cielab: { L: 71.15, a: -30.67, b: 60.02 }
+    hex_basis_policy: >-
+      Two bases appear in this file and they are never mixed. `hex_basis:
+      cielab-derived` means the hex was computed from the notice's own CIELAB
+      triplet (D65, sRGB, standard Lab->XYZ->linear-sRGB->gamma), so it is a
+      faithful rendering of a NUMBERED claim. `hex_basis: munsell-approximate`
+      means the notice gives only a Munsell colour-order notation, which is a
+      perceptual specification and not a coordinate: the hex is an
+      APPROXIMATION supplied for rendering and the `munsell:` value beside it is
+      the actual sourced claim. Never audit a munsell-approximate hex as a
+      colour fact; audit the notation.
+    source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 4(1)-(5) and the Art. 4(4) tables, images flSeq=150961777 (paint), 150966219 (film white), 150966221 (film light green)"
+  class_codes:
+    note: >-
+      Article 5(1) and its table — the CLASS CODE, the leading digit group. The
+      table is reproduced here because it is the single most useful decode fact
+      about a Korean plate after the syllable, and because the 3-digit ranges
+      arrived on two different dates (see header facts 1 and 3).
+    ranges_current:
+      - { type_ko: "승용자동차", type_en: "passenger", use: "비사업용 / 대여사업용", code: "100-699", digits: 3, from: 2019 }
+      - { type_ko: "승용자동차", type_en: "passenger", use: "일반사업용",            code: "01-69",   digits: 2 }
+      - { type_ko: "승합자동차", type_en: "bus",       use: "비사업용 / 대여사업용", code: "700-799", digits: 3, from: 2021 }
+      - { type_ko: "승합자동차", type_en: "bus",       use: "일반사업용",            code: "70-79",   digits: 2 }
+      - { type_ko: "화물자동차", type_en: "goods",     use: "비사업용",              code: "800-979", digits: 3, from: 2021 }
+      - { type_ko: "화물자동차", type_en: "goods",     use: "일반사업용",            code: "80-97",   digits: 2 }
+      - { type_ko: "특수자동차", type_en: "special",   use: "비사업용 / 대여사업용", code: "980-997", digits: 3, from: 2021 }
+      - { type_ko: "특수자동차", type_en: "special",   use: "일반사업용",            code: "98, 99",  digits: 2 }
+      - { type_ko: "긴급자동차", type_en: "emergency (police car, fire appliance)", use: "-", code: "998-999", digits: 3, from: 2021 }
+    proviso: >-
+      Article 5(1)'s proviso, verbatim: "다만, 제2조 제2항 별표 1, 별표 5 및
+      별표 18의 등록번호판을 사용하는 자동차에 대한 차종별 분류기호는
+      승용자동차는 01-69, 승합자동차는 70-79, 화물자동차는 80-97, 특수자동차는
+      98-99로 한다." — vehicles using the ANNEX 1 (335x155 ordinary), ANNEX 5
+      (440x200 large) or ANNEX 18 (electric) plate keep the TWO-digit code,
+      whatever their use. Those three plate specs are therefore seven-character
+      marks to this day, and Annex 18 is the surprise on that list: see
+      kr-electric's notes.
+    source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 5(1) + proviso; table image flSeq=150966223"
+  use_syllable:
+    note: >-
+      The hangul use-category element. Closed primary list, dated rows,
+      mechanism and the rental/commercial disambiguation rule:
+      plates/_decode/kr-use-syllables.yml
+    source: "plates/_decode/kr-use-syllables.yml  # Art. 5(1) table, 5(2), 5(3)"
+  authority_mark:
+    note: >-
+      The hangul place-name, present ONLY on transport-business plates
+      (and pre-2026 motorcycles, and temporary plates in officer-title form):
+      plates/_decode/kr-authority-marks.yml
+    source: "plates/_decode/kr-authority-marks.yml  # Art. 6 and its proviso"
+  separator_finding:
+    note: >-
+      NO KOREAN REGISTRATION PLATE PRINTS A SEPARATOR GLYPH, with exactly one
+      exception. The ordinary, large, commercial and motorcycle drawings set
+      every character in an abutting cell (Annex 2-1: 30 | 55 55 55 | 75 | 55 55
+      55 55 | 30 mm across 520 mm) with no gap and no mark between groups. The
+      exception is the DIPLOMATIC plate, where Annexes 7 and 8 draw a real
+      hyphen between the two three-digit groups — 외교 321-678 — with its own
+      cell in the dimension chain at mid-plate. That hyphen is a printed glyph,
+      and it is the only emitted separator in this file.
+    source: "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Annex 2-1 (flSeq 158474299/158474325), Annex 7 (158474385/158474389), Annex 8 (158474391/158474395) drawings"
+
+series:
+
+  # =========================================================================
+  # NON-COMMERCIAL (비사업용) — the ordinary 520 x 110 mm plate, 8 characters.
+  # The current standard. Two design regimes run in parallel and BOTH are
+  # current: Annex 2-1 (painted) and Annex 2-2 (reflective film with the
+  # taegeuk/KOR band). Art. 2(5) permits either for a registration plate.
+  # =========================================================================
+  - id: kr-noncommercial-8-film
+    class: standard
+    categories: [car]
+    period: { start: 2020 }        # 2020-07-01, 고시 제2019-89호 부칙
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9999999"
+      regex: '\A\d{7}\z'
+      regex_strict: '\A[1-6]\d{6}\z'
+      pattern_note: >-
+        DIGIT SKELETON ONLY — see the SCRIPT LINE in this file's header. The
+        printed mark is three class digits, one HANGUL syllable, four serial
+        digits, with no separator: 123가4568. The pattern elides the syllable;
+        `hangul_field` below carries it. `regex_strict` encodes Art. 5(1)'s
+        class range 100-699 for non-commercial and rental passenger cars.
+      hangul_field:
+        position: 4               # 1-indexed over the PRINTED mark, not the skeleton
+        after_skeleton_digits: 3
+        script: Hangul
+        length: 1
+        cell_width_mm: 85
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+        note: >-
+          A private car draws its syllable from the 32-syllable non-commercial
+          set; a RENTAL car (대여사업용) draws 허/하/호 and is otherwise
+          identical — same white plate, same 100-699 class range, and Art. 6's
+          proviso withholds the authority mark from it too. The syllable is the
+          only thing distinguishing them.
+      progression: "「자동차등록령」 제21조제1항: numbers are assigned 순서대로 (in sequence) within type and use; the proviso lets the registrant pick one of ten randomly drawn numbers within ranges the Minister sets. Intra-range allocation order is not published."
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: retroreflective, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색 / 흰색(필름)", note: "Art. 4(1)1(가): the FILM plate's ground is plain 흰색 white to KS T 3507; the CIELAB-derived hex here is the paint standard's 분홍빛 흰색 (L*89.10 a*0.58 b*3.95), retained as the closest numbered value the notice gives. The film ground is specified by chromaticity corners, not a single point — see common.colours.film_method." }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      foreground_spec: "보랏빛 검은색, CIE L* 25.70 a* 0.10 b* -5.48"
+      characters: { height_mm: 85, digit_cell_mm: 50, hangul_cell_mm: 85 }
+      band:
+        side: left
+        width_mm: 56.3
+        band_cell_mm: 65.0
+        content: "taegeuk + KOR"
+        color: "#0A19FC"
+        hex_basis: cmyk-naive
+        cmyk_spec: "Annex 2-2 item 5: 디자인 배경 basic ground 밝은색 C40 M4 Y0 K0 / 중간색 C96 M90 Y0 K1 / 어두운색 C100 M97 Y22 K29; 국가축약문자 KOR same three, KOR outline C9 M7 Y7 K0; 숫자 및 한글 C73 M67 Y65 K80"
+        note: "The band is a blue gradient, not a flat colour; the hex is a naive CMYK conversion of the mid tone and is for rendering only. This is Korea's equivalent of the EU band and it is NOT an EU band: it carries the national taegeuk and the ISO country abbreviation KOR."
+      emblem: { present: true, rendered: placeholder, note: "the taegeuk in the band is a national symbol; PRD-PLATES §3 placeholder rule applies until its licence posture is affirmatively cleared" }
+      hologram: { present: true, note: "Annex 2-2 item 4 (홀로그램 패턴) — a 25 mm grid of holographic security marks across the plate face" }
+      rear_differs: false
+    region_encoding: none
+    region_encoding_note: "Art. 6 proviso — non-commercial plates carry NO authority mark. See plates/_decode/kr-authority-marks.yml for why that is the single most important Korean decode fact."
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000176243&type=XML  # 고시 제2019-89호 부칙: '이 고시는 2019년 9월 1일부터 시행한다. 다만, 별표2-2는 2020년 7월 1일부터 시행한다' — the period.start"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 2(2), Art. 4(1)1(가), Art. 4(4)나, Art. 5(1) 100-699, Art. 6 proviso"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474359  # Annex 2-2 drawing: 520x110 mm, cells 65.0|50 50 50|85|50 50 50 50|20 = 520.0 exactly, the band GRAPHIC itself 56.3 mm wide with 1.28 mm to the first character cell, character height 85 mm, band with taegeuk and KOR, sample mark 123가4568"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=150966219  # Art. 4(4)나 KS T 3507 white chromaticity corners"
+    notes: >-
+      THE CURRENT KOREAN PRIVATE-CAR PLATE. Reflective-film construction with
+      the blue taegeuk/KOR band, in force from 1 July 2020 by 고시 제2019-89호.
+      Format identical to the painted Annex 2-1 plate that preceded it by ten
+      months; the band, the hologram grid and the film construction are the
+      difference, which is why this is its own series and not a variant. Old
+      plates stay valid: 고시 제2018-529호 부칙 제2조 deems every plate fitted
+      under the former provisions compliant.
+
+  - id: kr-noncommercial-8-paint
+    class: standard
+    categories: [car]
+    period: { start: 2019 }        # 2019-09-01, 고시 제2018-529호 부칙 제1조
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9999999"
+      regex: '\A\d{7}\z'
+      regex_strict: '\A[1-6]\d{6}\z'
+      pattern_note: "Digit skeleton only; printed mark is 123가4568. See the SCRIPT LINE header."
+      hangul_field:
+        position: 4
+        after_skeleton_digits: 3
+        script: Hangul
+        length: 1
+        cell_width_mm: 75
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색", spec: "CIE L* 89.10 a* 0.58 b* 3.95, ΔE*ab ≤ 3" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      foreground_spec: "보랏빛 검은색, CIE L* 25.70 a* 0.10 b* -5.48"
+      characters: { height_mm: 83, digit_cell_mm: 55, hangul_cell_mm: 75, margin_mm: 30 }
+      band: { side: none }
+      emblem: { present: false }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000149714&type=XML  # 고시 제2018-529호 부칙 제1조: '제2조 제2항, 제5조 제1항, 별표 2, 별표 2-1의 개정규정은 2019년 9월 1일부터 시행한다' — the 8-character reform, and this series' period.start"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 2(2), Art. 4(1)1(가), Art. 4(4)가, Art. 5(1)"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474325  # Annex 2-1 drawing: 520x110 mm, cells 30|55 55 55|75|55 55 55 55|30, character height 83 mm, sample mark 123가4568"
+    notes: >-
+      THE 2019 EIGHT-CHARACTER REFORM ITSELF, in its painted form. Annex 2-1
+      entered force 1 September 2019 and is the instrument that took the Korean
+      passenger-car class code from two digits to three (01-69 -> 100-699),
+      buying roughly a sixfold expansion of the number space. It runs in
+      parallel with the film plate (kr-noncommercial-8-film) from July 2020;
+      Art. 2(5) leaves the choice of construction open for registration plates,
+      so both are live and the parallel issue is real, not stock clearance.
+
+  - id: kr-noncommercial-8-heavy-film
+    class: standard
+    categories: [bus, van, truck, machine]
+    period: { start: 2021 }        # 2021-11-01, 고시 제2021-1084호 부칙 제1조
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9999999"
+      regex: '\A\d{7}\z'
+      regex_strict: '\A(?:7\d\d|8\d\d|9[0-7]\d|98\d|99[0-7])\d{4}\z'
+      pattern_note: "Digit skeleton only; printed mark is 700가1234 for a private bus, 800가1234 for a private goods vehicle. See the SCRIPT LINE header."
+      hangul_field:
+        position: 4
+        after_skeleton_digits: 3
+        script: Hangul
+        length: 1
+        cell_width_mm: 85
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+      class_ranges: "승합 700-799 · 화물 800-979 · 특수 980-997 (Art. 5(1)); 긴급자동차 998-999 is a separate emergency-service range and is NOT claimed by this series"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: retroreflective, hex_basis: cielab-derived, spec_name_ko: "흰색 (film, KS T 3507)" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 85, digit_cell_mm: 50, hangul_cell_mm: 85 }
+      band: { side: left, width_mm: 56.3, band_cell_mm: 65.0, content: "taegeuk + KOR", color: "#0A19FC", hex_basis: cmyk-naive }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000204502&type=XML  # 고시 제2021-1084호 부칙 제1조 ('제5조제1항, 별표 2, 별표 2-2 개정규정은 2021년 11월 1일부터 시행한다') and its Art. 5(1) table image flSeq=109183845 showing 700-799 / 800-979 / 980-997 / 998-999"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 5(1) as in force, same ranges"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474359  # Annex 2-2 drawing"
+    notes: >-
+      THE HALF OF THE REFORM NOBODY REPORTS. Buses, goods vehicles and special
+      vehicles did NOT get three-digit class codes in 2019 — comparing the
+      Article 5(1) tables of 고시 제2019-423호 and 제2021-1084호 shows them
+      still on 70-79 / 80-97 / 98,99 through 2021 and moving to 700-799 /
+      800-979 / 980-997 only on 1 November 2021, when a 998-999 emergency-
+      vehicle range (police cars, fire appliances) was created at the same time.
+      A three-digit code beginning with 7, 8 or 9 therefore dates a plate to
+      November 2021 at the earliest, which is a sharper age signal than the
+      1-6 passenger range gives.
+
+  - id: kr-noncommercial-8-heavy-paint
+    class: standard
+    categories: [bus, van, truck, machine]
+    period: { start: 2021 }        # 2021-11-01
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9999999"
+      regex: '\A\d{7}\z'
+      regex_strict: '\A(?:7\d\d|8\d\d|9[0-7]\d|98\d|99[0-7])\d{4}\z'
+      pattern_note: "Digit skeleton only. See the SCRIPT LINE header."
+      hangul_field:
+        position: 4
+        after_skeleton_digits: 3
+        script: Hangul
+        length: 1
+        cell_width_mm: 75
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 83, digit_cell_mm: 55, hangul_cell_mm: 75 }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000204502&type=XML  # 부칙 제1조 (2021-11-01) and Art. 5(1) table image flSeq=109183845"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474325  # Annex 2-1 drawing"
+    notes: >-
+      The painted construction of the same 2021 extension. Recorded separately
+      from the film plate because Art. 2(5) leaves both constructions open and
+      the two carry visibly different faces (no band, no hologram, 83 mm
+      characters in 55 mm cells against 85 mm in 50 mm cells).
+
+  # =========================================================================
+  # ONE SERIES BACK — the seven-character 520 x 110 mm plate (Annex 2).
+  # Still printed in the notice, because Annex 18 (electric) builds on it.
+  # =========================================================================
+  - id: kr-noncommercial-7-long
+    class: standard
+    categories: [car]
+    period: { start: 2009, end: 2019 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:0[1-9]|[1-6]\d)\d{4}\z'
+      pattern_note: "Digit skeleton only; printed mark is 52가3108 (Annex 2's own sample). Two class digits, hangul syllable, four serial digits."
+      hangul_field:
+        position: 3
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        cell_width_mm: 96
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 83, digit_cell_mm: 56, hangul_cell_mm: 96 }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474297  # Annex 2 drawing: 비사업용(7자리 페인트방식) 보통 등록번호판 520x110 mm, cells 44|56 56|96|56 56 56 56|44, character height 83 mm, sample mark 52가3108"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 고시 제2009-812호 Art. 2(2) already lists 별표 제1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15 — Annex 2 in force by 2009-08-24, the upper bound this period.start records"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000149714&type=XML  # 고시 제2018-529호 부칙 제1조 — Annex 2-1 supersedes this format for new passenger registrations from 2019-09-01, the period.end"
+    notes: >-
+      THE ONE-BACK PASSENGER SERIES, and a period claim this file states
+      carefully. period.start 2009 is an UPPER BOUND, not a start: the 520x110
+      mm long plate is universally dated to 1 November 2006 in Korean secondary
+      accounts, and no primary for that day was secured, because law.go.kr's
+      administrative-rule archive for this notice begins at 국토교통부고시
+      제2009-812호 (24 August 2009) and the 건설교통부고시 that introduced Annex 2
+      is not published there. What IS primary is that Annex 2 was already in
+      force on 2009-08-24. The 2006 date is logged as folklore in the
+      jurisdiction dossier and is NOT asserted here. period.end 2019 is exact:
+      from 1 September 2019 a non-commercial passenger car on an ordinary
+      520x110 plate takes the three-digit code, which Annex 2's seven cells
+      cannot hold. Marks already issued remain valid indefinitely.
+
+  - id: kr-noncommercial-7-long-heavy
+    class: standard
+    categories: [bus, van, truck, machine]
+    period: { start: 2009, end: 2021 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:7\d|8\d|9[0-9])\d{4}\z'
+      pattern_note: "Digit skeleton only; printed mark 70가1234 (bus), 80가1234 (goods), 98가1234 (special)."
+      hangul_field:
+        position: 3
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        cell_width_mm: 96
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 83 }
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474297  # Annex 2 drawing"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000180990&type=XML  # 고시 제2019-423호 Art. 5(1) table image flSeq=44282120 — buses/goods/special still on 70-79 / 80-97 / 98,99 AFTER the 2019 passenger reform"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000204502&type=XML  # 고시 제2021-1084호 부칙 제1조 — three-digit codes for these types from 2021-11-01, the period.end"
+    notes: >-
+      The same Annex 2 plate on non-passenger vehicles, which kept the
+      two-digit code for a further two years after cars lost it. Its existence
+      is why "Korean plates went to eight characters in 2019" is a half-truth:
+      between September 2019 and November 2021 Korea issued seven-character and
+      eight-character non-commercial plates side by side, distinguished purely
+      by vehicle type. Same upper-bound caveat on period.start as
+      kr-noncommercial-7-long.
+
+  # =========================================================================
+  # THE 2004 REGION-LESS PLATE, STILL CURRENT: Annex 1, 335 x 155 mm.
+  # =========================================================================
+  - id: kr-noncommercial-short
+    class: standard
+    categories: [car, bus, van, truck, machine]
+    period: { start: 2004 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:0[1-9]|[1-9]\d)\d{4}\z'
+      pattern_note: "Digit skeleton only; printed mark is 39나2764 (Annex 1's own sample). Two class digits, hangul syllable, four serial digits, one line."
+      hangul_field:
+        position: 3
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        cell_width_mm: 49
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+      class_note: "Art. 5(1) proviso keeps EVERY Annex 1 vehicle on two digits: 승용 01-69, 승합 70-79, 화물 80-97, 특수 98-99. regex_strict is their union minus 00."
+    design:
+      plate: { w: 335, h: 155, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 83, digit_cell_mm: 45, hangul_cell_mm: 49 }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%80%EB%A6%AC%EB%B2%95%20%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99&type=XML  # 시행규칙 제6조제2항, tagged [전문개정 2004.12.6]: the authority mark is required only on transport-business plates. 건설교통부령 제415호 부칙 ①: in force on promulgation, 2004-12-06"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 고시 제2009-812호 Art. 6 already carries the proviso '비사업용 및 대여사업용 ... 기호표시를 하지 아니하며' — the region-less private plate was settled law by 2009"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474239  # Annex 1 drawing: 비사업용 보통 등록 번호판 335x155 mm, cells 45 45|49|45 45 45 45, character height 83 mm, sample mark 39나2764, NO authority mark"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 5(1) proviso keeping Annex 1 on two digits; Art. 6 proviso"
+    notes: >-
+      THE NATIONWIDE ("전국") PLATE — the 2004 reform, and still issued today.
+      This is the plate that dropped Korean geography: before it, a private
+      Korean plate opened with a province mark (서울, 경기 ...) and a car that
+      moved house changed its number. 「자동차관리법 시행규칙」 제6조제2항 confines
+      the mark to transport-business vehicles and carries the tag [전문개정
+      2004.12.6], amended by 건설교통부령 제415호 in force on promulgation, so
+      the YEAR is primary. The commonly repeated first-issue day of 1 January
+      2004 is not: it would sit in a 건설교통부고시 outside law.go.kr's reach.
+      This series remains OPEN because Art. 5(1)'s proviso exempts Annex 1 from
+      the three-digit code — a car that physically cannot take a 520 mm plate
+      still receives a seven-character 335x155 mm mark in 2026.
+
+  - id: kr-noncommercial-large
+    class: standard
+    categories: [bus, truck, machine]
+    period: { start: 2004 }
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A[7-9]\d{5}\z'
+      pattern_note: "Digit skeleton only; printed mark is 52가3018 (Annex 5's own sample, drawn with a passenger code). On the vehicles Annex 5 actually serves the class code is 70-79, 80-97 or 98-99, which is what regex_strict encodes."
+      hangul_field:
+        position: 3
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        cell_width_mm: 64
+        values: non_commercial
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 440, h: 200, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 105, digit_cell_mm: 59, hangul_cell_mm: 64 }
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474377  # Annex 5 drawing: 비사업용 대형 등록 번호판 440x200 mm, cells 59 59|64|59 59 59 59, character height 105 mm, sample 52가3018, NO authority mark"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 1-3(1)가 (which vehicles take the large plate), Art. 5(1) proviso keeping Annex 5 on two digits, Art. 6 proviso"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%80%EB%A6%AC%EB%B2%95%20%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99&type=XML  # 시행규칙 제6조제2항 [전문개정 2004.12.6] — the region-less rule this plate is drawn under"
+    notes: >-
+      The large non-commercial plate: 440 x 200 mm with 105 mm characters, for
+      large buses and for goods and special vehicles at or above four tonnes.
+      Article 5(1)'s proviso names Annex 5 alongside Annex 1, so it too stayed
+      on the two-digit class code through both reforms — a private 4-tonne
+      truck registered today still wears a seven-character mark. Article 2(2)1
+      lets an emergency vehicle, and a vehicle whose front sensors clash with a
+      440 mm plate, substitute the ordinary size at the front.
+
+  # =========================================================================
+  # THE PRE-2004 REGIONAL PLATE — the true one-back on the geography axis.
+  # =========================================================================
+  - id: kr-regional-noncommercial
+    class: standard
+    categories: [car, bus, van, truck, machine]
+    period: { start: 1996, end: 2004 }
+    period_evidence: corroboration-only
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:0[1-9]|[1-9]\d)\d{4}\z'
+      pattern_note: >-
+        Digit skeleton only, and this series elides TWO non-Latin elements, not
+        one: the printed mark was 서울12가3456 — a two-syllable AUTHORITY MARK,
+        two class digits, one hangul use syllable, four serial digits.
+      hangul_field:
+        position: 4
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        values: non_commercial
+        decode: "plates/_decode/kr-use-syllables.yml"
+      authority_mark_field:
+        position: 1
+        script: Hangul
+        length: 2
+        decode: "plates/_decode/kr-authority-marks.yml"
+    design:
+      plate: { w: 335, h: 155, unit: mm }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: unsourced, note: "the pre-2004 plate's own colour specification is not reachable: it lived in a 건설교통부고시 outside law.go.kr's archive. The hex is carried over from the current 분홍빛 흰색 standard and is explicitly NOT a sourced claim for this series." }
+      foreground: "#393D45"
+      foreground_basis: unsourced
+      band: { side: none }
+    region_encoding: "plates/_decode/kr-authority-marks.yml"
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%80%EB%A6%AC%EB%B2%95%20%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99&type=XML  # 시행규칙 제6조제2항 [전문개정 2004.12.6] — the amendment that confined the authority mark to transport-business vehicles, hence this series' period.end"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 고시 제2009-812호 Art. 5(1) table image flSeq=5123232 — the two-digit class ranges 01-69/70-79/80-97/98,99 and the 32-syllable non-commercial set, as they stood at the earliest reachable version"
+      - "https://ko.wikipedia.org/wiki/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EC%B0%A8%EB%9F%89_%EB%B2%88%ED%98%B8%ED%8C%90  # SECONDARY, used only as a finding aid and cited here for the unpinned 1996-01-01 two-digit-code date; its own footnotes point at 2003 Naver-hosted 연합뉴스/매일경제 reports that were not reachable"
+    notes: >-
+      THE PLATE KOREA GAVE UP IN 2004, and the only series in this file whose
+      period.start rests on corroboration rather than an instrument.
+      period.end 2004 is instrument-backed (시행규칙 제6조제2항, wholly amended
+      2004-12-06). period.start 1996 is NOT: the Korean-language encyclopaedia
+      article, used as a finding aid under the standing Wikipedia rule, dates
+      the two-digit class code to 1 January 1996, its own footnotes point at
+      2003 news reports rather than at an instrument, and law.go.kr's
+      administrative-rule archive does not reach back past 2009-08-24, so the
+      건설교통부고시 that would settle it was never in reach. The year is
+      recorded with period_evidence: corroboration-only and should be treated
+      as the weakest claim in this file. What is NOT in doubt: before the 2004
+      amendment a Korean private plate opened with one of the seventeen
+      two-syllable authority marks, and after it, none did.
+
+  # =========================================================================
+  # TRANSPORT-BUSINESS (자동차운수사업용) — the YELLOW plates. These are the
+  # only Korean plates that still encode geography.
+  #
+  # CLASS-VOCABULARY NOTE (flagged for the maintainer): _meta/classes.yml has
+  # no term for a general for-hire/commercial-carriage plate. `taxi` is defined
+  # as "for-hire vehicles where separately serialized or colored", which is the
+  # closest available and is what these series carry, but the Korean 운수사업용
+  # plate covers route buses and hire goods vehicles as well as taxis. A
+  # `commercial` term is proposed in the jurisdiction dossier; nothing is
+  # invented here.
+  # =========================================================================
+  - id: kr-commercial-long
+    class: taxi
+    categories: [car, bus, van, truck]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:0[1-9]|[1-9]\d)\d{4}\z'
+      pattern_note: >-
+        Digit skeleton only; printed mark is 서울52바3108 (Annex 4's own
+        sample) — two-syllable authority mark, two class digits, hangul use
+        syllable, four serial digits.
+      hangul_field:
+        position: 4
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        cell_width_mm: 71
+        values: commercial_general
+        decode: "plates/_decode/kr-use-syllables.yml"
+      authority_mark_field:
+        position: 1
+        script: Hangul
+        length: 2
+        cell_width_mm: 55
+        layout: "two syllables stacked in one 55 mm cell"
+        decode: "plates/_decode/kr-authority-marks.yml"
+      class_note: "Art. 5(1): 일반사업용 keeps two digits across every vehicle type — 승용 01-69, 승합 70-79, 화물 80-97, 특수 98/99. The three-digit reforms did NOT touch commercial plates."
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#FFBC00", finish: painted, hex_basis: munsell-approximate, munsell: "2.5Y 8/16", spec_name_ko: "황색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      foreground_spec: "Art. 4(1)2: 자동차운수사업용 : 황색바탕에 검은색문자"
+      characters: { height_mm: 83, digit_cell_mm: 55, hangul_cell_mm: 71, authority_cell_mm: 55 }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: "plates/_decode/kr-authority-marks.yml"
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474371  # Annex 4 drawing: 자동차 운수 사업용 보통 등록 번호판 520x110 mm, cells 32|55(authority)|55 55|71|55 55 55 55|32, character height 83 mm, authority syllables 55 mm each, sample 서울52바3108"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 4(1)2 (yellow ground, black characters), Art. 5(1) 일반사업용 ranges, Art. 6 main clause"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%80%EB%A6%AC%EB%B2%95%20%EC%8B%9C%ED%96%89%EA%B7%9C%EC%B9%99&type=XML  # 시행규칙 제6조제2항 — the authority mark is MANDATORY on transport-business plates, rental excepted"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 고시 제2009-812호 Art. 2(2) lists Annex 4 — in force by 2009-08-24, the upper bound this period.start records"
+    notes: >-
+      THE YELLOW COMMERCIAL PLATE, and the only current Korean plate that tells
+      you where the vehicle is registered. Taxis, route buses and hire goods
+      vehicles all wear it, all keep the two-digit class code that private cars
+      left behind in 2019, and all carry one of 바/사/아/자/배. period.start
+      2009 is an upper bound for the same archive reason as
+      kr-noncommercial-7-long: Annex 4 is present in the earliest reachable
+      version of the notice and the 건설교통부고시 that created the 520x110 mm
+      commercial plate is not published. Do NOT read a yellow plate as a rental
+      car: rentals are white and region-less (Art. 6 proviso) and use 허/하/호.
+
+  - id: kr-commercial-short
+    class: taxi
+    categories: [car, bus, van, truck]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:0[1-9]|[1-9]\d)\d{4}\z'
+      pattern_note: >-
+        Digit skeleton only. TWO-LINE plate: line 1 is the authority mark then
+        the two class digits (서울 39), line 2 is the hangul use syllable then
+        the four serial digits (바2764). The skeleton concatenates them in
+        reading order.
+      hangul_field: { position: 4, after_skeleton_digits: 2, script: Hangul, length: 1, line: 2, decode: "plates/_decode/kr-use-syllables.yml", values: commercial_general }
+      authority_mark_field: { position: 1, script: Hangul, length: 2, line: 1, decode: "plates/_decode/kr-authority-marks.yml" }
+    design:
+      plate: { w: 335, h: 170, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#FFBC00", finish: painted, hex_basis: munsell-approximate, munsell: "2.5Y 8/16", spec_name_ko: "황색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { line1_height_mm: 48, line2_height_mm: 92 }
+      lines: 2
+      band: { side: none }
+    region_encoding: "plates/_decode/kr-authority-marks.yml"
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474365  # Annex 3 drawing: 자동차 운수 사업용 보통 등록 번호판 335x170 mm, two lines, line 1 서울 39 at 48 mm, line 2 바2764 at 92 mm"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 4(1)2, Art. 5(1), Art. 6"
+    notes: >-
+      The two-line commercial plate for vehicles that cannot take the 520 mm
+      strip. Same yellow, same syllables, same two-digit class code as
+      kr-commercial-long; the difference is the layout, which stacks the
+      authority mark and class code above the syllable and serial. Its 170 mm
+      height against Annex 1's 155 mm is a reliable tell in photographs.
+
+  - id: kr-commercial-large
+    class: taxi
+    categories: [bus, truck]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:[7-9]\d)\d{4}\z'
+      pattern_note: "Digit skeleton only. Two lines: 서울 39 over 바2764. Annex 6 serves large buses and 4-tonne-plus goods and special vehicles, so the class code is 70-79, 80-97 or 98/99."
+      hangul_field: { position: 4, after_skeleton_digits: 2, script: Hangul, length: 1, line: 2, decode: "plates/_decode/kr-use-syllables.yml", values: commercial_general }
+      authority_mark_field: { position: 1, script: Hangul, length: 2, line: 1, decode: "plates/_decode/kr-authority-marks.yml" }
+    design:
+      plate: { w: 440, h: 220, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#FFBC00", finish: painted, hex_basis: munsell-approximate, munsell: "2.5Y 8/16", spec_name_ko: "황색" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { line1_height_mm: 61, line2_height_mm: 116 }
+      lines: 2
+      band: { side: none }
+    region_encoding: "plates/_decode/kr-authority-marks.yml"
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474383  # Annex 6 drawing: 자동차 운수 사업용 대형 등록 번호판 440x220 mm, line 1 서울 39 at 61 mm, line 2 바2764 at 116 mm"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 1-3(1)가, Art. 4(1)2, Art. 6"
+    notes: >-
+      The large commercial plate — the biggest characters in the Korean system
+      at 116 mm, and the only Korean plate that is taller than the large
+      non-commercial one (220 mm against 200 mm), because the commercial layout
+      needs a line for the authority mark that the non-commercial layout does
+      not.
+
+  # =========================================================================
+  # ELECTRIC — Annex 18, the blue plate. Sourced, and genuinely surprising.
+  # =========================================================================
+  - id: kr-electric
+    class: electric
+    categories: [car]
+    period: { start: 2017 }        # 2017-06-09, 고시 제2017-152호 부칙 제1조
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A(?:0[1-9]|[1-6]\d)\d{4}\z'
+      pattern_note: >-
+        Digit skeleton only; the Annex 18 drawing's own sample mark is 52가3108
+        — SEVEN characters, two class digits, hangul syllable, four serial
+        digits. See the notes: this is not a transcription slip.
+      hangul_field:
+        position: 3
+        after_skeleton_digits: 2
+        script: Hangul
+        length: 1
+        cell_width_mm: 60
+        values: non_commercial + rental
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#B9D9F2", finish: retroreflective, hex_basis: pantone-approximate, pantone: "PANTONE 290C", cmyk: "C25 M2 Y0 K0", spec_name_ko: "파란색 (Art. 4(5))" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { height_mm: 83, digit_cell_mm: 56, hangul_cell_mm: 60 }
+      band:
+        side: left
+        width_mm: 35.8
+        content: "taegeuk + 대한민국 + EV pictogram at the right end"
+        color: "#0E4FA0"
+        hex_basis: pantone-approximate
+        pantone: "PANTONE 2727C"
+      pantone_table:
+        note: "Annex 18 item 3 마. 색상표 — the only Korean plate whose colours are given in PANTONE, twelve rows, transcribed here in full because they are the whole design"
+        rows:
+          - { key: A, part_ko: "바탕색", pantone: "PANTONE 290C", cmyk: "C25 M2 Y0 K0" }
+          - { key: B, part_ko: "픽토그램 내부", pantone: "PANTONE 283C", cmyk: "C35 M9 Y0 K0" }
+          - { key: C, part_ko: "픽토그램 테두리", pantone: "PANTONE 2727C", cmyk: "C71 M42 Y0 K0" }
+          - { key: D, part_ko: "태극마크 테두리", pantone: "PANTONE 2727C", cmyk: "C71 M42 Y0 K0" }
+          - { key: E, part_ko: "대한민국 글씨(영문포함)", pantone: "PANTONE 2727C", cmyk: "C71 M42 Y0 K0" }
+          - { key: F, part_ko: "대한민국 글씨 바탕색", pantone: "PANTONE 2707C", cmyk: "C17 M6 Y0 K0" }
+          - { key: G, part_ko: "태극문양 진한색", pantone: "PANTONE 292C", cmyk: "C49 M11 Y0 K0" }
+          - { key: H, part_ko: "태극문양 연한색", pantone: "PANTONE 283C", cmyk: "C35 M9 Y0 K0" }
+          - { key: I, part_ko: "태극패턴 큰무늬 진한색", pantone: "PANTONE 291C", cmyk: "C35 M10 Y0 K0" }
+          - { key: J, part_ko: "태극패턴 큰무늬 연한색", pantone: "PANTONE 2708C", cmyk: "C17 M17 Y0 K0" }
+          - { key: K, part_ko: "태극패턴 작은무늬 진한색", pantone: "PANTONE 544C", cmyk: "C23 M9 Y3 K0" }
+          - { key: L, part_ko: "태극패턴 작은무늬 연한색", pantone: "PANTONE 545C", cmyk: "C20 M7 Y5 K0" }
+      emblem: { present: true, rendered: placeholder, note: "taegeuk mark, taegeuk background pattern and an EV pictogram; national symbols, §3 placeholder rule" }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000079151&type=XML  # 고시 제2017-152호 부칙 제1조: '이 고시는 발령한 날부터 시행한다. 다만, 제1조의2 제4호에 의한 전기자동차 번호판 부착은 2017년 6월 9일부터 시행한다' — the period.start"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474493  # Annex 18: 전기자동차 번호판 520x110 mm; item 1 '번호판의 규격 : [별표 2]의 비사업용 보통등록 번호판과 같음'; item 3 the twelve-row PANTONE table above; the 다.상징 문양 drawing with sample mark 52가3108 and the EV pictogram"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 1-3(4) (which vehicles take the EV plate), Art. 2(5) (film construction MANDATORY for EV plates), Art. 4(5) (blue ground, black characters), Art. 5(1) proviso naming Annex 18 among the two-digit plates"
+    notes: >-
+      THE BLUE EV PLATE, in force 9 June 2017, and the one place where this
+      file's reading of the notice will surprise a Korean reader. Two textual
+      facts point the same way and both are quoted above: Annex 18 item 1 fixes
+      the plate's specification as "the same as the Annex 2 non-commercial
+      ordinary plate" — Annex 2 being the SEVEN-character 520x110 mm plate —
+      and Article 5(1)'s proviso expressly names Annex 18 among the plates whose
+      class code stays at 01-69 for passenger cars. The Annex 18 drawing agrees:
+      its sample mark is 52가3108 and its cell layout leaves room for seven
+      characters after the 35.8 mm taegeuk block on the left and the 35.2 mm EV
+      pictogram on the right. So the instrument, read straight, says a Korean
+      EV plate is a seven-character mark. Field reports of eight-character blue
+      plates are common and this file does NOT reconcile them; the conflict is
+      logged as the top verification target in the jurisdiction dossier. Scope:
+      Art. 1-3(4) gives the EV plate to electric vehicles other than
+      transport-business, corporate-business and emergency vehicles, but
+      expressly INCLUDES rental vehicles.
+
+  # =========================================================================
+  # CORPORATE BUSINESS (법인업무용) — the light-green plate, from 2024.
+  # =========================================================================
+  - id: kr-corporate-green
+    class: standard
+    categories: [car]
+    period: { start: 2024 }        # 2024-01-01, 고시 제2023-954호 부칙 제1조
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "9999999"
+      regex: '\A\d{7}\z'
+      regex_strict: '\A[1-6]\d{6}\z'
+      pattern_note: "Digit skeleton only; eight-character mark on the ordinary non-commercial layout, e.g. 123가4568 on a light-green ground."
+      hangul_field:
+        position: 4
+        after_skeleton_digits: 3
+        script: Hangul
+        length: 1
+        values: non_commercial
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#97BB36", finish: retroreflective, hex_basis: cielab-derived, spec_name_ko: "연녹색 (film)", spec: "CIE L* 71.15 a* -30.67 b* 60.02, ΔE00 ≤ 5 (CIEDE2000)" }
+      background_paint_variant: { color: "#ADBD4C", hex_basis: cielab-derived, spec: "연녹색 paint standard, CIE L* 73.37 a* -21.17 b* 53.88" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      band: { side: left, width_mm: 56.3, band_cell_mm: 65.0, content: "taegeuk + KOR", color: "#0A19FC", hex_basis: cmyk-naive }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000233340&type=XML  # 고시 제2023-954호 부칙 제1조 ('이 고시는 2024년 1월 1일부터 시행한다') and 부칙 제2조 (applies to vehicles registered or rented on or after that date; existing eligible vehicles MAY change over)"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 1-2(5) (definition of 법인업무용 자동차), Art. 1-3(5) (the plate class), Art. 4(1)1(다) (연녹색바탕에 검은색 문자), Art. 4(4)나2) (the CIELAB value and CIEDE2000 tolerance)"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=150966221  # Art. 4(4)나2) colour image: 연녹색 L* 71.15 a* -30.67 b* 60.02"
+    notes: >-
+      THE LIGHT-GREEN CORPORATE PLATE, in force 1 January 2024 — a tax-policy
+      instrument wearing a plate. Article 1-2(5) defines 법인업무용 자동차 by
+      ACQUISITION VALUE: passenger cars of 80 million won or more that are
+      (가) public vehicles of central and local government, the courts, the
+      National Assembly, the Constitutional Court or the election commissions;
+      (나) non-business passenger cars whose registered owner is a corporation,
+      leasing-company cars counting only where the lessee is a corporation; or
+      (다) rental-company cars hired to a corporation, where the hire runs a
+      year or more. Article 1-3(5) lets an agency head, in consultation with
+      the Minister, exempt a vehicle used directly for close protection,
+      security or criminal investigation. Format is the ordinary eight-character
+      non-commercial mark; only the ground colour changes, which is exactly why
+      it is a separate series and not a variant — Art. 4(4)나2) gives it its own
+      colorimetry and its own CIEDE2000 tolerance.
+
+  # =========================================================================
+  # DIPLOMATIC / CONSULAR — Annexes 7 and 8. The only plates with a hyphen.
+  # =========================================================================
+  - id: kr-diplomatic-long
+    class: diplomatic
+    categories: [car]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999-999"
+      regex: '\A\d{3}-\d{3}\z'
+      pattern_note: >-
+        The hyphen here is REAL: Annex 8 draws it as a glyph with its own cell
+        between the two three-digit groups. The two-syllable hangul WORD
+        (외교, 영사, 준외, 준영, 국기, 협정 or 대표) precedes the digits and is
+        carried in hangul_field, not in the pattern.
+      hangul_field:
+        position: 1
+        script: Hangul
+        length: 2
+        cell_width_mm: 61
+        layout: "two syllables stacked in one cell at the left of the plate"
+        values: diplomatic
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#1E2B57", finish: painted, hex_basis: munsell-approximate, munsell: "7.5PB 2/8", spec_name_ko: "감청색" }
+      foreground: "#FFFFFF"
+      foreground_basis: statutory-description
+      foreground_spec: "Art. 4(1)1(나): 외교용(외교, 영사, 준외, 준영, 국기, 협정, 대표) : 감청색바탕에 흰색문자"
+      characters: { height_mm: 55, note: "the digits are drawn 55 mm over a 110 mm plate, half the height of an ordinary plate's 83 mm, because the layout carries a stacked word and two groups" }
+      band: { side: none }
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474395  # Annex 8 drawing: 주한·외교공관·공관원 자동차 번호판 520x110 mm; horizontal chain 20 · 25.5 · 35.5 · 33.5 · 40 · 11 · 40 · 11 · 40 · 22.5 · 23.5 · 22.5 · 40 · 11 · 40 · 11 · 40 · 33 · 20 summing to 520; sample mark 외교 321-678 with a drawn hyphen"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 4(1)1(나) colour and the seven-word list; Art. 5(1) table 외교용 rows"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 고시 제2009-812호 Art. 2(2) lists Annexes 7 and 8 — in force by 2009-08-24, the upper bound this period.start records"
+    variants:
+      - class: consular
+        note: >-
+          The consular plate is this plate with 영사 in place of 외교, and the
+          quasi-diplomatic (준외), quasi-consular (준영), international-
+          organisation (국기) and other-diplomatic (협정, 대표) plates likewise.
+          Same format, same colours, same period — a WORD-only variant, so a
+          sub-entry per PRD-PLATES §2.3 rather than six near-identical series.
+          The full seven-word list with its Korean category names is in
+          plates/_decode/kr-use-syllables.yml under `diplomatic`.
+        sources:
+          - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 5(1) table rows 외교관용/영사용/준외교관용/준영사용/국제기구용/기타외교용"
+    notes: >-
+      THE DARK-NAVY DIPLOMATIC PLATE, and the only Korean plate that prints a
+      separator glyph — a hyphen with its own 22.5 mm cell between two
+      three-digit groups. It is also the only Korean plate whose hangul element
+      is a WORD rather than a syllable and the only one where that element comes
+      FIRST. The colour, 감청색, is given as a Munsell notation (7.5PB 2/8), not
+      a coordinate, so the hex is an approximation and the notation is the
+      claim. Six further diplomatic categories share the plate and are recorded
+      as a variant. No decode of the digits is published: whether 321-678 encodes
+      a mission is not stated in the notice and is not guessed here.
+
+  - id: kr-diplomatic-short
+    class: diplomatic
+    categories: [car]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999-999"
+      regex: '\A\d{3}-\d{3}\z'
+      pattern_note: "Two-line plate: line 1 is the hangul word spread across the width (외    교), line 2 is 321-678 with a drawn hyphen."
+      hangul_field: { position: 1, script: Hangul, length: 2, line: 1, values: diplomatic, decode: "plates/_decode/kr-use-syllables.yml" }
+    design:
+      plate: { w: 335, h: 155, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#1E2B57", finish: painted, hex_basis: munsell-approximate, munsell: "7.5PB 2/8", spec_name_ko: "감청색" }
+      foreground: "#FFFFFF"
+      foreground_basis: statutory-description
+      characters: { line1_height_mm: 34, line2_height_mm: 60 }
+      lines: 2
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474389  # Annex 7 drawing: 주한·외교공관·공관원 자동차 번호판 335x155 mm, two lines, word at 34 mm on line 1, digits at 60 mm on line 2, sample 외교 321-678"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 4(1)1(나); Art. 5(1) 외교용 rows"
+    notes: >-
+      The two-line diplomatic plate for vehicles that cannot take the 520 mm
+      strip. Identical serial grammar to kr-diplomatic-long including the drawn
+      hyphen; the difference is that the hangul word is set across the top line
+      with the two syllables spaced apart rather than stacked in a left cell.
+
+  # =========================================================================
+  # TEMPORARY OPERATION (임시운행허가) — Annexes 9 to 12.
+  # =========================================================================
+  - id: kr-temporary-long
+    class: temporary
+    categories: [car, bus, van, truck, machine]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d{5}\z'
+      pattern_note: >-
+        Digit skeleton only; the printed mark is 임01234 — the fixed hangul
+        syllable 임 (from 임시, "temporary") followed by five digits. 임 is a
+        LITERAL, not a use category: it identifies the plate type and takes no
+        other value.
+      hangul_field:
+        position: 1
+        script: Hangul
+        length: 1
+        cell_width_mm: 150
+        fixed_value: "임"
+        note: "not in plates/_decode/kr-use-syllables.yml — that table covers use categories, and 임 is a plate-type literal"
+    design:
+      plate: { w: 520, h: 110, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#F2F2F2", finish: painted, hex_basis: munsell-approximate, munsell: "N9.5", spec_name_ko: "흰색" }
+      foreground: "#282828"
+      foreground_basis: munsell-approximate
+      foreground_spec: "검은색, Munsell N1.5"
+      overprint: { type: diagonal-stripe, color: "#B01A2E", hex_basis: munsell-approximate, munsell: "5R 4/14", width_mm: 3, note: "Art. 4(3): 임시운행허가번호판은 흰색바탕에 검은색문자로 하고 3㎜폭의 적색사선을 긋는다 — a 3 mm red diagonal line is ruled across the plate" }
+      issuer_text: { present: true, note: "Art. 2(3) requires the issuing office name; the Annex 10 drawing prints 경상남도지사 (Governor of South Gyeongsang) below the 임" }
+      characters: { height_mm: 85 }
+      band: { side: none }
+    region_encoding: none
+    region_encoding_note: "the issuing officer's TITLE is printed in full rather than as a coded mark — see plates/_decode/kr-authority-marks.yml, temporary_plate_issuer"
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474407  # Annex 10 drawing: 허가 기간이 11일 이상인 임시운행 허가 번호판 520x110 mm, 임 in a 150 mm cell, five digits at 55 mm each, issuer 경상남도지사, red diagonals"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 1-3(3) (임시운행허가번호판 under 자동차관리법 제27조), Art. 2(3), Art. 4(3)"
+    notes: >-
+      The temporary-operation plate for permits of ELEVEN DAYS OR MORE, long
+      format. White with a 3 mm red diagonal, the literal 임, five digits and
+      the issuing officer's title. Under 「자동차관리법」 제10조제4항 a vehicle
+      without a proper registration plate may not be driven "except where a
+      temporary-operation plate under Article 27(2) is attached", which is what
+      this plate is for. 고시 제2025-121호 amends Annexes 9 and 10 with effect
+      nine months after issuance; the drawing cited is the amended one.
+
+  - id: kr-temporary-short-plate
+    class: temporary
+    categories: [car, bus, van, truck, machine]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "99999"
+      regex: '\A\d{5}\z'
+      pattern_note: "Digit skeleton only; printed mark 임01234 on a 335x155 mm plate."
+      hangul_field: { position: 1, script: Hangul, length: 1, fixed_value: "임" }
+    design:
+      plate: { w: 335, h: 155, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#F2F2F2", finish: painted, hex_basis: munsell-approximate, munsell: "N9.5", spec_name_ko: "흰색" }
+      foreground: "#282828"
+      foreground_basis: munsell-approximate
+      overprint: { type: diagonal-stripe, color: "#B01A2E", hex_basis: munsell-approximate, munsell: "5R 4/14", width_mm: 3 }
+      issuer_text: { present: true, note: "the Annex 9 drawing prints 경기도지사 (Governor of Gyeonggi) in a 150 x 28 mm block at lower right" }
+      characters: { height_mm: 77 }
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474401  # Annex 9 drawing: 허가 기간이 11일 이상인 임시운행 허가 번호판 335x155 mm, 임 at 79.5 mm cell, five digits at 45 mm, issuer 경기도지사"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 2(3), Art. 4(3)"
+    notes: >-
+      The eleven-days-or-more temporary plate in the compact 335 x 155 mm size.
+      Same grammar and same red diagonal as kr-temporary-long; recorded
+      separately because the annex, the dimensions and the character height all
+      differ, and because a parse consumer distinguishing plate photos needs
+      both.
+
+  - id: kr-temporary-shortterm
+    class: temporary
+    categories: [car, bus, van, truck, machine]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      pattern_note: >-
+        Digit skeleton only, and this plate has NO hangul serial element at all
+        — six digits alone. What it does carry, printed above the digits, is
+        the PERMIT PERIOD as a date range, e.g. 05.09.05~09.14 까지 ("until"),
+        and the issuing officer's title below.
+      validity_text_field:
+        position: "line 1"
+        script: "Hangul + digits"
+        content: "permit start and end dates, terminated by 까지"
+        note: "not a serial element; it is why this plate needs no expiry lookup"
+    design:
+      plate: { w: 335, h: 170, unit: mm }
+      plate_variants:
+        - { w: 520, h: 110, unit: mm, note: "Annex 12, the long format of the same plate" }
+      material: "wooden board of 2.5 mm or more — Art. 2(1) proviso; the ONLY non-aluminium plate in the Korean system, and Art. 2(4) excuses it from the 1.3-1.6 mm embossing every other plate requires"
+      background: { color: "#F2F2F2", finish: painted, hex_basis: munsell-approximate, munsell: "N9.5", spec_name_ko: "흰색" }
+      foreground: "#282828"
+      foreground_basis: munsell-approximate
+      overprint: { type: diagonal-stripe, color: "#B01A2E", hex_basis: munsell-approximate, munsell: "5R 4/14", width_mm: 3 }
+      issuer_text: { present: true, note: "the Annex 11 drawing prints 경기도지사" }
+      characters: { height_mm: 74 }
+      band: { side: none }
+    region_encoding: none
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474413  # Annex 11 drawing: 허가 기간이 10일 이하인 임시운행 허가 번호판 335x170 mm, date-range line '05.09.05~09.14 까지' at 30 mm, six digits at 74 mm, issuer 경기도지사"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 2(1) proviso (wooden board), Art. 2(4) (embossing excused), Art. 2(3) (Annexes 11 and 12), Art. 4(3)"
+    notes: >-
+      THE WOODEN PLATE. For temporary-operation permits of TEN DAYS OR LESS,
+      Article 2(1)'s proviso replaces the 1 mm aluminium blank with a wooden
+      board of 2.5 mm or more, and Article 2(4) excuses it from embossing — the
+      only Korean plate that is neither metal nor raised. Six digits, no hangul
+      in the serial, and the permit's own expiry printed on its face. A
+      consumer matching this regex should note that six bare digits are also the
+      skeleton of several other Korean series; the date line and the wooden
+      construction are what actually identify it.
+
+  # =========================================================================
+  # MOTORCYCLES (이륜자동차). 「자동차관리법」 제49조 + 제52조: motorcycles are
+  # 사용신고 (use-notification) vehicles, not 등록 (registration) vehicles, and
+  # the Act applies to them by cross-reference with "등록번호판" read as
+  # "이륜자동차번호판".
+  # =========================================================================
+  - id: kr-motorcycle-2026
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2026 }        # 2026-03-20
+    period_evidence: enabling-instrument
+    matching: strict
+    format:
+      pattern: "999999"
+      regex: '\A\d{6}\z'
+      regex_strict: '\A[1-9]\d{5}\z'
+      pattern_note: >-
+        Digit skeleton only; the printed mark is 1가2 over 3456 on two lines —
+        a one-digit VEHICLE-TYPE code, a hangul USE syllable, a one-digit use
+        suffix, then a four-digit serial. Art. 5(2): "1. 차종 기호: 1부터
+        9까지의 숫자 1자리 기호  2. 용도 기호: 제1항에 따른 용도별 비사업용 기호
+        1자리와 1부터 9까지의 숫자 1자리를 순서대로 표시한 2자리 기호". Both
+        digit fields exclude 0, which is what regex_strict encodes for the
+        leading position; the suffix digit's 1-9 range is recorded in
+        hangul_field rather than in the regex because the syllable sits between
+        them.
+      hangul_field:
+        position: 2
+        after_skeleton_digits: 1
+        script: Hangul
+        length: 1
+        cell_width_mm: 48
+        values: non_commercial
+        followed_by: "one digit 1-9"
+        decode: "plates/_decode/kr-use-syllables.yml"
+    design:
+      plate: { w: 210, h: 150, unit: mm }
+      background: { color: "#E4DFD8", finish: painted, hex_basis: cielab-derived, spec_name_ko: "분홍빛 흰색", spec: "Art. 4(2): 이륜자동차번호판은 분홍빛 흰색 바탕에 보랏빛 검은색 문자로 한다" }
+      foreground: "#393D45"
+      foreground_basis: cielab-derived
+      characters: { line1_height_mm: 46.5, line2_height_mm: 68, digit_cell_line1_mm: 31.5, digit_cell_line2_mm: 45 }
+      lines: 2
+      band: { side: none }
+    region_encoding: none
+    region_encoding_note: "Art. 6 proviso expressly exempts the Annex 15-2 plate from the authority mark — the 2026 change that took geography off Korean motorcycles"
+    sources:
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # 고시 제2025-121호 부칙 제1조: '제2조제2항, 제4조제2항, 제5조제2항 및 제3항, 제6항의 개정규정은 2026년 3월 20일부터 시행한다' — the period.start; Art. 5(2); Art. 4(2); Art. 6 proviso"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000268520&type=XML  # 고시 제2025-676호 부칙: '다만, 별표 15의2 제2호의 개정규정은 2026년 3월 20일부터 시행한다' — the character-metric amendment lands on the same day"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474471  # Annex 15-2 drawing: 이륜자동차번호판 210x150 mm, line 1 cells 31.5|48|31.5 at 46.5 mm, line 2 four cells of 45 at 68 mm, sample mark 1가2 / 3456"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=law&LM=%EC%9E%90%EB%8F%99%EC%B0%A8%EA%B4%80%EB%A6%AC%EB%B2%95&type=XML  # 자동차관리법 제49조 (이륜자동차 사용신고) and 제52조 (applying the registration-plate provisions to motorcycles)"
+    notes: >-
+      THE NEW KOREAN MOTORCYCLE PLATE, in force 20 March 2026 — bigger
+      (210 x 150 mm against 210 x 115 mm), region-less, and with a genuinely new
+      grammar: a leading vehicle-type digit that no car plate has, and a
+      two-character use code made of a syllable plus a digit. It is the first
+      Korean motorcycle plate to carry no geography, finishing on two wheels
+      what the 2004 amendment did on four. The colours also change: Article
+      4(2) puts this plate on the same pinkish-white/purplish-black pair as
+      cars, where the Annex 13/14/15 plate it replaces is white with BLUE
+      characters.
+
+  - id: kr-motorcycle-city
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force-upper-bound
+    matching: strict
+    format:
+      pattern: "9999"
+      regex: '\A\d{4}\z'
+      pattern_note: >-
+        Digit skeleton only, and this series elides THREE hangul elements: the
+        printed mark is 서울 중 over 가1234 — a two-syllable provincial
+        authority mark, a one-to-three-syllable city/county/district name, then
+        a hangul use syllable and the four-digit serial. Only the four digits
+        survive into the pattern.
+      hangul_field:
+        position: 3
+        script: Hangul
+        length: 1
+        cell_width_mm: 40
+        values: motorcycle_legacy
+        decode: "plates/_decode/kr-use-syllables.yml"
+        note: "Art. 5(3)'s 28-syllable set, which differs from the car set — it includes 차·카·타·파·하·처·커·터·퍼·허 and no ㅗ or ㅜ row"
+      authority_mark_field:
+        position: 1
+        script: Hangul
+        length: 2
+        decode: "plates/_decode/kr-authority-marks.yml"
+      local_name_field:
+        position: 2
+        script: Hangul
+        length: "1-3"
+        enumerated: false
+        note: "Art. 6 main clause requires the 시/군/구 name; Annexes 13, 14 and 15 are the same plate drawn for one-, two- and three-syllable names. The list of names is not published in the notice."
+    design:
+      plate: { w: 210, h: 115, unit: mm, tolerance_mm: 0.5 }
+      background: { color: "#F2F2F2", finish: painted, hex_basis: munsell-approximate, munsell: "N9.5", spec_name_ko: "흰색" }
+      foreground: "#1F3F8F"
+      foreground_basis: munsell-approximate
+      foreground_spec: "청색, Munsell 2.5PB 3/13 — Art. 4(2) proviso: 제2조제2항제3호에 따른 이륜자동차번호판은 흰색 바탕에 청색 문자로 한다"
+      characters: { line1_height_mm: 20, line2_height_mm: 51, digit_cell_mm: 35 }
+      lines: 2
+      band: { side: none }
+    region_encoding: "plates/_decode/kr-authority-marks.yml"
+    sources:
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474425  # Annex 13 drawing: 이륜자동차 번호판(시·군·구의 명칭이 한 자리인 경우) 210x115 mm, line 1 서울 중 at 20 mm, line 2 가1234 at 51 mm"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474431  # Annex 14 drawing, two-syllable local name, sample 서울 관악 / 가1234"
+      - "https://www.law.go.kr/LSW/flDownload.do?flSeq=158474437  # Annex 15 drawing, three-syllable local name"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2100000256300&type=XML  # Art. 2(2)3 (when this plate may still be used), Art. 4(2) proviso (white ground, BLUE characters), Art. 5(3) (the 28-syllable set), Art. 6 main clause (provincial mark plus city/county/district name)"
+      - "https://www.law.go.kr/DRF/lawService.do?OC=test&target=admrul&ID=2000000009069&type=XML  # 고시 제2009-812호 Art. 2(2) lists Annexes 13, 14, 15 — in force by 2009-08-24, the upper bound this period.start records"
+    notes: >-
+      THE CITY-NAMED MOTORCYCLE PLATE — white with BLUE characters, the only
+      blue-lettered plate in the Korean system, and the only current plate that
+      names a district rather than just a province. From 20 March 2026 it is no
+      longer the default: Article 2(2)3 keeps it alive only where mounting
+      space is short or where lamps and reflectors would clash with the larger
+      Annex 15-2 plate, so it stays OPEN rather than ended. Its use-syllable set
+      is its own (Art. 5(3), 28 syllables including the aspirates 차·카·타·파·하
+      that never appear on a car). period.start 2009 is the archive upper bound,
+      not a start.
