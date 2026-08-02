@@ -1,0 +1,1179 @@
+# plates/cz.yml — Czechia (PRD-PLATES gate L1, wave 2).
+#
+# EVERY format, colour, dimension and class claim below is read from the
+# OFFICIAL Sbírka zákonů PDFs on aplikace.mv.gov.cz — the Ministry of the
+# Interior's own scan of the gazette — indexed through the Chamber of Deputies'
+# Sbírka register (psp.cz), which supplies the částka, the rozeslána date, the
+# účinnost and the derogation chain. zakonyprolidi.cz, the obvious first stop,
+# returns HTTP 403 to this fetcher and e-sbirka.gov.cz is a JavaScript
+# application with no server-rendered text, so the gazette PDFs are the primary
+# and are cited as such. Four instruments carry this file:
+#
+#   * zákon č. 56/2001 Sb., o podmínkách provozu vozidel na pozemních
+#     komunikacích — the ENABLING statute. Částka 21, 19 February 2001,
+#     účinnost 1 July 2001. § 91 odst. 1 is the delegation every vyhláška below
+#     recites; § 7 and § 7b are the registrační značka and the registrační
+#     značka na přání.
+#   * vyhláška Ministerstva dopravy a spojů č. 243/2001 Sb., o registraci
+#     vozidel — THE 2001 CUTOVER. Signed 29 June 2001, částka 92 rozeslána
+#     17 July 2001, § 32 "Tato vyhláška nabývá účinnosti dnem vyhlášení".
+#   * vyhláška č. 291/2004 Sb. — the EU band. Signed 30 April 2004, částka 95
+#     rozeslána 13 May 2004, Čl. III "Tato vyhláška nabývá účinnosti dnem
+#     1. června 2004".
+#   * vyhláška č. 343/2014 Sb., o registraci vozidel — the CURRENT regulation.
+#     Částka 136 rozeslána 31 December 2014, účinnost 1 January 2015; repeals
+#     243/2001 and all seven of its amendments.
+#
+# THE FOUR STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE 2001 CUTOVER IS DATED TO THE DAY, AND THE FAMOUS DATE RANGE IS AN
+#    INSTRUMENT-DATE ARTEFACT. Secondary sources say the current system was
+#    "introduced between 29 June and 17 July 2001". Those are not a rollout
+#    window: 29 June 2001 is the date printed under the vyhláška's title ("ze
+#    dne 29. června 2001" — when the minister signed it) and 17 July 2001 is the
+#    masthead of částka 92 ("Rozeslána dne 17. července 2001"). Because § 32
+#    commences the vyhláška "dnem vyhlášení", the SECOND date is the legal start
+#    and the first is not a plate fact at all. This is the Spanish 1999-2000
+#    defect in miniature and it is recorded here so it is not repeated.
+#
+# 2. THE KRAJ CODE IS THE FIRST *LETTER*, NOT THE FIRST CHARACTER. § 24 odst. 2
+#    of vyhláška 243/2001 Sb., verbatim: "První písmeno ve standardní
+#    registrační značce vyjadřuje kód kraje, do jehož obvodu náleží registrační
+#    místo, které registrační značku přiděluje, vyjma registrační značky
+#    diplomatické, registrační značky cizinecké a registrační značky pro
+#    historická vozidla." On the canonical mark "1A2 3456" that letter is at
+#    POSITION 2. A parse API decoding position 1 fails on every Czech plate.
+#    The fourteen pairs are in plates/_decode/cz-kraj.yml, from the regulation.
+#
+# 3. THE PRINTED GAP IS A STICKER WELL, AND THE REGULATION SAYS SO. § 27 odst. 2
+#    of vyhláška 343/2014 Sb. (§ 17 odst. 2 of 243/2001 Sb., same words):
+#    "Mezi jednotlivé znaky se nevkládá žádné interpunkční znaménko... U
+#    registrační značky provedené na tabulce registrační značky v jednom řádku
+#    je mezi třetím a čtvrtým místem určeným pro znak mezera pro umístění
+#    nálepky o pravidelné technické prohlídce." NO PUNCTUATION between
+#    characters, and a physical GAP after position 3 that exists to hold the
+#    inspection sticker. Every `pattern` in this file therefore prints a SPACE
+#    at that position and never a hyphen — the hyphen belongs to the pre-2001
+#    system (fact 4), and writing one here would be a fabrication.
+#
+# 4. ONE GLYPH IN THIS JURISDICTION IS OUTSIDE THE DATASET'S ALPHABET, AND IT IS
+#    RECORDED RATHER THAN SPELLED. § 27 odst. 5 of vyhláška 343/2014 Sb.: "Pro
+#    speciální znaky se použije znak *." and § 26 odst. 7: on a mark for a
+#    bicycle carrier "je mezi třetím a čtvrtým místem určeným pro znak umístěn
+#    speciální znak". An ASTERISK occupies the sticker-well position on that one
+#    plate type. It is not in the serial alphabet and not an emitted separator
+#    (PRD-PLATES §2.6), so it appears NOWHERE in a pattern or a regex here; it
+#    is carried as prose on the cz-standard-2004 variant and is flagged as a
+#    `never_separator` candidate for plates/_meta/separators.yml. Note it sits
+#    BETWEEN groups, in the gap, so it is a separator-position glyph and not an
+#    in-serial one — which is why it is a lint-safe omission and not a lie.
+#
+# THE SHARED PRE-1993 ERA — THE DELIBERATE DECISION, STATED. Czechia and
+# Slovakia inherited ONE plate system from Czechoslovakia, and this pass models
+# it as ONE SERIES RECORDED TWICE, once per successor state, with a common
+# instrument chain and SEPARATELY SOURCED END DATES — because that is what the
+# law actually did. cz-spz-czechoslovak and sk-spz-czechoslovak carry the same
+# federal instrument (vyhláška ministerstva vnitra č. 145/1956 Ú. l., o provozu
+# na silnicích, as amended by 69/1981 Sb., 34/1984 Sb. and 64/1998 Sb.) and the
+# same format, and they diverge at the end:
+#   * CZECHIA — last lawful ASSIGNMENT 31 December 2001. Vyhláška 243/2001 Sb.
+#     § 28 odst. 2, verbatim: "Tabulky státních poznávacích značek vyrobené před
+#     účinností vyhlášky se přidělují na vozidla do vyčerpání zásob, nejdéle
+#     však do 31. prosince 2001." § 31 repealed 145/1956 Ú. l. and its
+#     amendments outright on 17 July 2001.
+#   * SLOVAKIA — last lawful ISSUE 31 March 1997, and VALIDITY ON THE ROAD ended
+#     31 December 2004 (zákon č. 315/1996 Z. z., prechodné ustanovenia ods. 3 as
+#     amended). See plates/sk.yml.
+# Neither file silently duplicates the other and neither drops the era. The
+# alternative — a single shared `cs-` jurisdiction file — was rejected because
+# PRD-PLATES §2.1 keys files on ISO 3166-1 and CS is a withdrawn code with no
+# current authority to cite; recording the era twice, with each successor's own
+# terminating instrument, keeps every claim attached to a live primary.
+#
+# WHAT THIS PASS COULD NOT ESTABLISH, recorded rather than filled:
+#   * THE PRE-2001 SERIAL COMPOSITION IS NOT PRIMARY-SOURCED. The okres-letter
+#     format lived in vyhláška ministerstva vnitra č. 145/1956 Ú. l., published
+#     in the ÚŘEDNÍ LIST and not in the Sbírka zákonů, so it is absent from the
+#     mv.gov.cz gazette archive. Vyhláška 34/1984 Sb. WAS fetched and OCR'd
+#     (it is a scan with no text layer) and it amends only § 91 and § 94 of
+#     145/1956 — the special-plate colours and the zvláštní SPZ — not the
+#     ordinary composition. The format on cz-spz-czechoslovak is therefore
+#     tagged `secondary-wikipedia`; its DATES are primary.
+#   * THE OKRES CODE TABLE for the pre-2001 system is NOT authored. Its
+#     instrument (145/1956 Ú. l.) was not reached. A well-evidenced gap.
+#   * CZECH MILITARY REGISTRATION is out of scope of the vyhláška read here;
+#     it sits under vyhláška č. 100/2018 Sb. o technické způsobilosti a
+#     pravidelných technických prohlídkách vojenských vozidel, which this pass
+#     did not fetch. Recorded gap, no series asserted.
+#   * NO CZECH ELECTRIC-VEHICLE SERIES WAS FOUND. Searched for in §§ 23-29 of
+#     vyhláška 343/2014 Sb. and in vyhláška 154/2023 Sb.: no analogue of the
+#     Slovak EL/EV prefix, the German E suffix or the Austrian green-lettered
+#     plate. Absence recorded in `absent_classes`, not filled from folklore.
+jurisdiction: cz
+authority:
+  name: Ministerstvo dopravy — vyhláška č. 343/2014 Sb., o registraci vozidel
+  url: "https://www.psp.cz/sqw/sbirka.sqw?cz=343&r=2014"
+binding: vehicle
+binding_note: >-
+  § 24 odst. 5 of vyhláška 243/2001 Sb., verbatim: "Přidělená registrační značka
+  na vozidlo se již na jiné vozidlo nepřiděluje." — a mark, once assigned to a
+  vehicle, is never assigned to another. The binding is to the VEHICLE and it is
+  exclusive, which is the opposite of the Slovak post-2023 position (see
+  plates/sk.yml, where a holder may carry plates from one vehicle to another).
+  Vehicle-keyed consumers may join on a Czech mark without qualification.
+instrument:
+  citation: "Vyhláška č. 343/2014 Sb., o registraci vozidel, ve znění vyhlášek č. 399/2015 Sb., 10/2017 Sb., 86/2017 Sb., 158/2017 Sb., 72/2019 Sb., 40/2020 Sb., 330/2022 Sb., 154/2023 Sb. a 203/2025 Sb.; zákon č. 56/2001 Sb., o podmínkách provozu vozidel na pozemních komunikacích"
+  enabling_statute: "zákon č. 56/2001 Sb., částka 21, rozeslána 19. února 2001, účinnost od 1. července 2001"
+  current_vyhlaska_promulgated: "2014-12-31"
+  current_vyhlaska_in_force: "2015-01-01"
+  source: "https://www.psp.cz/sqw/sbirka.sqw?cz=56&r=2001  # official Sbírka index: 'Zákon o podmínkách provozu vozidel na pozemních komunikacích a o změně zákona č. 168/1999 Sb.', Částka 21 (19. 2. 2001), Účinnost od 1. 7. 2001. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  serial_grammar:
+    current: >-
+      § 24 odst. 2 vyhlášky č. 343/2014 Sb., verbatim: "Jednotlivé znaky
+      registrační značky jsou provedeny nejméně 5 a nejvíce 8 velkými písmeny
+      latinské abecedy a arabskými číslicemi. V registrační značce musí být vždy
+      umístěno nejméně 1 písmeno a nejméně 1 číslice." Five to eight characters,
+      at least one letter and at least one digit.
+    pre_2015: >-
+      § 16 odst. 2 vyhlášky č. 243/2001 Sb. said the same with a NARROWER bound:
+      "nejméně pěti a nejvíce sedmi velkými písmeny latinské abecedy a arabskými
+      číslicemi" — five to SEVEN. The widening to eight is the substantive
+      grammar change of 1 January 2015 and is the reason cz-standard-2001 and
+      cz-standard-2004 carry different `regex_statutory` values.
+    letters_current: [A, B, C, D, E, F, H, I, J, K, L, M, N, P, R, S, T, U, V, X, Y, Z]
+    letters_pre_2015: [A, B, C, D, E, I, J, K, L, M, N, P, R, S, T, U, V, X, Y, Z]
+    letters_excluded_current: [G, O, Q, W]
+    letters_excluded_pre_2015: [F, G, H, O, Q, W]
+    letters_note: >-
+      § 27 odst. 3 vyhlášky 343/2014 Sb.: "Pro znaky vyjádřené velkým písmenem
+      latinské abecedy, které se přidávají za kód kraje nebo za první povinný
+      znak, se použijí písmena A, B, C, D, E, F, H, I, J, K, L, M, N, P, R, S,
+      T, U, V, X, Y, Z." § 18 odst. 1 vyhlášky 243/2001 Sb. gave the same
+      sentence with F and H ALSO absent. TWO CONSEQUENCES A VALIDATOR MUST NOT
+      MISS. (a) The rule binds only the characters ADDED AFTER the kraj code —
+      the kraj code itself may be H (Královéhradecký), which is why H is
+      simultaneously excluded and issued. (b) F was kept out of the 2001 list
+      precisely because § 16 odst. 8 reserved it as the test-plate marker; when
+      the 2014 regulation re-admitted F to the general alphabet it kept F as the
+      test marker too (§ 26 odst. 4), so F is now ambiguous by position.
+      The reason for excluding G, O, Q and W is not given in either instrument.
+    digits: >-
+      § 27 odst. 4 vyhlášky 343/2014 Sb.: "Pro znaky vyjádřené arabskou číslicí
+      se použijí číslice 1, 2, 3, 4, 5, 6, 7, 8, 9, 0." All ten. There is NO
+      Czech no-leading-zero rule — the contrast with Austria (§ 26 Abs. 6 Z 5
+      KDV) is real and is stated because a validator ported from at.yml would
+      otherwise reject lawful Czech marks.
+    layout: >-
+      § 27 odst. 1 vyhlášky 343/2014 Sb.: one or two rows; on two rows "v prvním
+      řádku jsou umístěny maximálně 3 znaky a v druhém řádku maximálně 5 znaků".
+      The 2001 predecessor capped the second row at FOUR (§ 17 odst. 1), which
+      follows from its seven-character maximum.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb., § 24 odst. 2, § 27 odst. 1-5. Accessed 2026-08-02"
+    source_2001: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb., § 16 odst. 2, § 17 odst. 1-2, § 18 odst. 1-2. Accessed 2026-08-02"
+  separator:
+    printed: " "
+    statute: >-
+      § 27 odst. 2 vyhlášky 343/2014 Sb.: "Mezi jednotlivé znaky se nevkládá
+      žádné interpunkční znaménko s výjimkou zvláštní registrační značky
+      k umístění na nosné zařízení připojitelné k silničnímu vozidlu.
+      U registrační značky provedené na tabulce registrační značky v jednom
+      řádku je mezi třetím a čtvrtým místem určeným pro znak mezera pro umístění
+      nálepky o pravidelné technické prohlídce."
+    note: >-
+      A rare thing, and worth stating because most jurisdictions leave it to
+      inference: the Czech regulation FORBIDS punctuation inside the mark and
+      then prescribes a functional GAP at a fixed position. The gap is a sticker
+      well, not typography. That is why every single-row `pattern` in this file
+      is "xxx yyyy" with a space and why none of them carries a hyphen — and it
+      is also why the pre-2001 SPZ, which DID print a hyphen, is a different
+      series and not a re-spelling of the same one.
+  colours:
+    statute: >-
+      § 29 odst. 2 vyhlášky 343/2014 Sb. gives the whole colour system as a
+      lettered list, and it is quoted per series below. The colours are named in
+      WORDS ONLY — "bílý podklad a černé znaky", "žlutý podklad", "zelené
+      znaky", "modrý pruh" — with no chromaticity box, no RAL reference and no
+      luminance factor anywhere in the instrument. UNLIKE Spain (Anexo XVIII
+      Cuadro 3) and Austria (KDV Anlage 5e B.2.5.2), Czech law constrains no
+      gamut at all. Every hex in this file is therefore `hex_basis: observed`
+      and no hex here is a sourced claim; the sourced claim is the colour WORD,
+      which is reproduced beside it.
+    retroreflective: >-
+      § 29 odst. 6 vyhlášky 343/2014 Sb. (§ 24 odst. 6 of the 2001 vyhláška, same
+      words): "Podklad všech tabulek registrační značky vyrobených ze slitin
+      lehkých kovů je reflexního provedení a je opatřen ochrannými prvky."
+      Unconditional for every light-alloy plate; the paper one-trip plate is the
+      single exception.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # § 29 odst. 2 a 6. Accessed 2026-08-02"
+  dimensions:
+    plates:
+      "520x110": "osobní a nákladní automobil, autobus, speciální vozidlo, přípojné vozidlo, traktor, samojízdný pracovní stroj — the default; also the test and dealer plate for those categories"
+      "340x200": "nákladní automobil, autobus, speciální vozidlo, přípojné vozidlo (two-line)"
+      "280x200": "osobní automobil, traktor a jeho přípojné vozidlo, samojízdný pracovní stroj (two-line)"
+      "200x160": "motocykl, přípojné vozidlo, traktor a jeho přípojné vozidlo, samojízdný pracovní stroj, ostatní silniční vozidla"
+      "320x160": "osobní automobil whose technický průkaz records a space for this plate"
+      "80x110": "moped se šlapadly; also the sports plate on a sports motorcycle"
+      "210x145": "zvláštní registrační značka pro jízdu z místa prodeje do místa registrace (the paper one-trip plate; 210 x 150 under the 2001 vyhláška)"
+      "330x85": "front plate on a sports automobile"
+    construction: >-
+      § 29 odst. 1: "Tabulku s registrační značkou tvoří obdélník se zaoblenými
+      rohy s poloměrem zaoblení 10 mm". § 29 odst. 4 (2001 § 24 odst. 4): "Po
+      obvodu všech tabulek s registrační značkou je vylisován barevný okraj,
+      jehož šírka čáry je 4 mm. Barva okraje je shodná s barvou znaků
+      jednotlivých druhů registračních značek." — a 4 mm embossed border IN THE
+      CHARACTER COLOUR, which is the single most render-relevant Czech fact: the
+      border is green on a historic plate and blue on a diplomatic one.
+    sticker_wells: >-
+      § 29 odst. 5 (2001 § 24 odst. 5): light-alloy plates carry EMBOSSED
+      CIRCULAR RECESSES for the periodic-technical-inspection sticker and the
+      emissions sticker. "Na tabulce registrační značky o rozměrech 200 x 160 mm
+      je umístěn pouze jeden kruhový prostor. Na tabulce registrační značky
+      o rozměrech 80 x 110 mm není kruhový prostor žádný." Two wells on a car
+      plate, one on a motorcycle plate, none on a moped plate.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # § 29 odst. 1, 4, 5, 6. Accessed 2026-08-02"
+  font:
+    name: null
+    statutory_basis: >-
+      NO TYPEFACE IS NAMED. What the regulation publishes is per-size GEOMETRY,
+      and it is enough to render from. § 24 odst. 10 vyhlášky 243/2001 Sb.,
+      verbatim: "a) o rozměrech 520 x 110 mm nebo 340 x 200 mm anebo
+      280 x 200 mm je výška znaku 75 mm a šířka znaku 40 mm; síla čáry je 10 mm,
+      b) o rozměrech 200 x 160 mm je výška znaku 56 mm a šířka znaku 30 mm; síla
+      čáry je 8 mm, c) o rozměrech 80 x 110 mm je výška znaku 28 mm a šířka
+      znaku 15 mm; síla čáry je 5 mm." Characters are EMBOSSED, not printed:
+      § 24 odst. 1 / § 29-recital "Registrační značka je vyznačena na tabulce
+      registrační značky formou prolisování", with the paper one-trip plate the
+      only printed exception ("formou vytištění").
+    licence: >-
+      PRD-PLATES §6 applies unchanged: derive glyphs from the published
+      geometry, never from a third-party TTF. No Czech public-domain-of-statutes
+      provision was researched in this pass (the German §5(1) UrhG argument was
+      not tested against Czech law) — recorded gap, and one more reason to
+      derive rather than embed.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 24 odst. 10. Accessed 2026-08-02"
+  euro_band:
+    side: left
+    content: eu-stars+CZ
+    statute: >-
+      Defined by vyhláška č. 291/2004 Sb. Čl. I bod 2, which inserted a new
+      § 2 písm. j) into vyhláška 243/2001 Sb., verbatim: "znak Evropské unie
+      s vyznačením rozlišovací značky České republiky je součástí tabulky
+      registrační značky a tvoří ho dvanáct žlutých pěticípých hvězd umístěných
+      v kruhu a bílá písmena „CZ“ na modrém pruhu."
+    two_line_rule: >-
+      § 29 odst. 2 písm. a): "je-li tabulka registrační značky uspořádána ve dvou
+      řádcích, umísťuje se modrý pruh se znakem Evropské unie s vyznačením
+      rozlišovací značky České republiky vlevo před znaky v prvním řádku" — on a
+      two-line plate the band sits left of the FIRST ROW only, not down the full
+      height. A render-relevant fact that photographs make obvious and text
+      sources usually omit.
+    geometry: >-
+      NOT EXTRACTABLE. Neither vyhláška gives millimetres for the band, the star
+      circle or the CZ lettering; the vzory are drawings in přílohy 13 and 15.
+      Same finding as Austria (KFG § 49 Abs. 4) and unlike Spain's Cuadro 5,
+      which at least prints a titled dimension figure. Recorded gap.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=4399  # vyhláška č. 291/2004 Sb., částka 95, Čl. I body 2 a 3. Accessed 2026-08-02"
+  distinguishing_sign:
+    statute: >-
+      § 25 vyhlášky 243/2001 Sb. specified the SEPARATE oval CZ sticker for
+      international traffic: minimum 175 mm wide by 115 mm high, characters at
+      least 80 mm high with a line width of at least 10 mm, black on white, with
+      a 4 mm black border. Vyhláška 291/2004 Sb. Čl. II odst. 5 then made it
+      unnecessary inside the EU for vehicles carrying the new band: owners whose
+      plates show the EU emblem "nemusí mít vozidlo označeno rozlišovací značkou
+      České republiky podle přílohy č. 15". The Czech analogue of the Spanish
+      V-7 reciprocity clause.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # § 25 odst. 1-3. Accessed 2026-08-02"
+  supplementary_plates:
+    statute: >-
+      § 26 vyhlášky 243/2001 Sb.: the doplňková registrační značka is a separate
+      OVAL plate, minimum 175 x 115 mm, blue ground with yellow characters and a
+      4 mm yellow border, bearing "CD" (Corps diplomatique), "CC" (Corps
+      consulaire) or "HC" (Consuls honoraires). It is NOT the registration mark
+      and carries no serial; it is modelled here as design metadata on the
+      diplomatic series rather than as a series of its own.
+    source: "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # § 26 odst. 1-5. Accessed 2026-08-02"
+  absent_classes:
+    electric: >-
+      NO ELECTRIC SERIES. Searched §§ 23-29 of vyhláška 343/2014 Sb. and the
+      whole of vyhláška 154/2023 Sb.: Czechia has no EL/EV prefix (contrast
+      Slovakia, § 35 odst. 7 vyhlášky 9/2009), no green-lettered EV plate
+      (contrast Austria, § 49 Abs. 4 Z 5 KFG) and no E suffix (contrast
+      Germany). Widely-circulated claims that Czech EVs carry "a green strip"
+      were not traced to any instrument and are NOT recorded as fact.
+    taxi: "No taxi series. Nothing in §§ 23-29 distinguishes a vehicle in for-hire service; contrast Spain's blue rear plate (Anexo XVIII Cuadro 1 note 7)."
+    seasonal: "No seasonal series — no Czech analogue of the German Saisonkennzeichen was found."
+    police: "No distinct police series in the registration vyhláška; Czech police vehicles carry standard marks. Not asserted beyond the absence."
+    military: "Out of scope of vyhláška 343/2014 Sb. Military vehicles register under vyhláška č. 100/2018 Sb.; that instrument was not fetched in this pass and NO military series is asserted. Recorded gap."
+    consular: "Not a separate series: § 24 odst. 3 folds consular vehicles into the same four-prefix set (CD, XX, XS, HC) as the diplomatic corps, so this file carries them as one series with the prefix distinction stated."
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — "1A2 3456" with the EU band.
+  # =========================================================================
+  - id: cz-standard-2004
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2004 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "9L9 9999"
+      regex: '\A\d[A-Z][A-Z0-9] \d{4}\z'
+      regex_strict: '\A\d[ABCEHJKLMPSTUZ][A-FH-NPR-VXYZ0-9] \d{4}\z'
+      regex_statutory: '\A[A-Z0-9]{3} [A-Z0-9]{2,5}\z'
+      charset:
+        letters_excluded: [G, O, Q, W]
+        notes: >-
+          See common.serial_grammar. `regex` carries the SHAPE actually issued —
+          digit, kraj letter, third character, sticker gap, four digits.
+          `regex_strict` adds the two sourced tightenings the round-trip forbids:
+          position 2 is restricted to the fourteen kraj letters of § 28 vyhlášky
+          343/2014 Sb., and position 3 to the twenty-two letters of § 27 odst. 3
+          plus any digit. `regex_statutory` is the outer bound of § 24 odst. 2 —
+          five to eight characters printed as three, the gap, and two to five —
+          and it is genuinely wider than what is issued, which is exactly the
+          us-fl situation PRD-PLATES §2.7 describes. The statute's further
+          requirement of "nejméně 1 písmeno a nejméně 1 číslice" cannot be
+          expressed without a lookahead spanning the separator position, which
+          §2.8 forbids, so it is recorded here in words and not in the regex.
+      progression: >-
+        The regulation publishes NO allocation order — neither vyhláška says how
+        the digits and the third character advance within a kraj. What is
+        sourced is the constraint: § 28 assigns one letter per kraj and § 19
+        odst. 3 of the 2001 vyhláška bound each registration office to its own
+        kraj's letter ("Registrační místa okresních úřadů vydávají tabulky pouze
+        s registrační značkou podle místní příslušnosti svého kraje"). The
+        widely-reported progression — a kraj first exhausts "9A9 9999" with a
+        digit at position 3, then moves to a LETTER at position 3 ("1AB 2345"),
+        Prague reaching that stage first — is corroborating secondary and is
+        the reason `regex` spells position 3 as [A-Z0-9] rather than \d.
+      progression_evidence: secondary-wikipedia
+      progression_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Czech_Republic  # 'As capacity expanded, regions added second letters (format 1xa 0000-9xa 9999), with Prague reaching this stage by 2009. By mid-2023, Prague's serial added an additional letter.' Accessed 2026-08-02"
+      separator_note: >-
+        The space is the § 27 odst. 2 sticker well, not punctuation — see
+        common.separator. It is spelled as a literal space rather than as
+        `[- ]?` (the Austrian solution) because Czech law does not merely omit a
+        glyph, it FORBIDS one: "Mezi jednotlivé znaky se nevkládá žádné
+        interpunkční znaménko."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm, note: "nákladní automobil, autobus, speciální vozidlo, přípojné vozidlo — two-line" }
+        - { w: 280, h: 200, unit: mm, note: "osobní automobil — two-line" }
+        - { w: 320, h: 160, unit: mm, note: "osobní automobil whose technický průkaz records a space for this size" }
+      characters: { h: 75, w: 40, stroke: 10, unit: mm, relief: embossed, note: "§ 24 odst. 10 písm. a) vyhlášky 243/2001 Sb., for the 520x110, 340x200 and 280x200 plates" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 29 odst. 2 písm. a) names only 'bílý podklad'; no chromaticity box exists in Czech law — see common.colours" }
+      foreground: "#000000"
+      foreground_note: "'černé znaky', embossed ('formou prolisování'), not printed"
+      border: { width: 4, unit: mm, color: "#000000", hex_basis: observed, note: "§ 29 odst. 4: a 4 mm embossed border in the SAME colour as the characters — black on this series" }
+      corner_radius: { r: 10, unit: mm }
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed, note: "twelve yellow five-pointed stars in a circle and white 'CZ' on a blue stripe; no millimetres are published — see common.euro_band" }
+      emblem: { present: false }
+      rear_differs: false
+      display: "front and rear on road motor vehicles; rear only on mopeds, motorcycles and motor tricycles (category L), centred, and on trailers"
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    region_encoding_mechanism: >-
+      The FIRST LETTER of the mark — position 2 on this series — is the kraj of
+      the issuing registration place (§ 24 odst. 2 vyhlášky 243/2001 Sb., quoted
+      in the file header). SINCE 1 JANUARY 2015 IT IS AN ISSUE-PLACE CLAIM ONLY:
+      vyhláška 343/2014 Sb. dropped the 2001 rule (§ 20 odst. 1) that forced a
+      new mark on a move to another kraj, so a vehicle may lawfully carry a
+      Prague A mark anywhere in Czechia. The decode file states this in terms.
+    variants:
+      - class: motorcycle
+        format: { pattern: "9L9 9999" }
+        design: { plate: { w: 200, h: 160, unit: mm }, characters: { h: 56, w: 30, stroke: 8, unit: mm } }
+        note: >-
+          Motorcycles carry the SAME mark on a 200 x 160 two-line plate with one
+          sticker well instead of two (§ 29 odst. 1 písm. d), odst. 5). A
+          size-only variant, hence a sub-entry per PRD-PLATES §2.3; recorded
+          with a class so class-keyed queries reach it.
+        sources:
+          - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # § 29 odst. 1 písm. d), odst. 5. Accessed 2026-08-02"
+      - class: moped
+        format: { pattern: "9L9 9999" }
+        design: { plate: { w: 80, h: 110, unit: mm }, characters: { h: 28, w: 15, stroke: 5, unit: mm } }
+        note: >-
+          "Moped se šlapadly" — a pedal moped — takes an 80 x 110 mm plate with
+          NO sticker well at all (§ 29 odst. 5). Size-only variant of the same
+          mark. Note this is a registered plate, not a German-style insurance
+          plate: Czechia has no Versicherungskennzeichen analogue.
+        sources:
+          - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # § 29 odst. 1 písm. f), odst. 5. Accessed 2026-08-02"
+      - class: standard
+        format: { pattern: "9L9 9999" }
+        note: >-
+          THE BICYCLE-CARRIER PLATE, and the one Czech plate this dataset cannot
+          spell. § 23 písm. b) bod 6 of vyhláška 343/2014 Sb. creates a mark "k
+          umístění na nosné zařízení připojitelné k silničnímu vozidlu"; § 26
+          odst. 7: "Na registrační značce k umístění na nosné zařízení
+          připojitelné k silničnímu vozidlu je mezi třetím a čtvrtým místem
+          určeným pro znak umístěn speciální znak."; § 27 odst. 5: "Pro speciální
+          znaky se použije znak *." The serial is the towing vehicle's own mark;
+          an ASTERISK replaces the sticker gap. Because * is neither in the
+          serial alphabet nor an emitted separator (PRD-PLATES §2.6), the
+          `pattern` above prints the ordinary space and the asterisk is recorded
+          HERE, in prose. It sits BETWEEN character groups, so it is a
+          separator-position glyph and a candidate for the `never_separator`
+          list in plates/_meta/separators.yml rather than a serial character —
+          flagged for that amendment, not asserted into it.
+        sources:
+          - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # § 23 písm. b) bod 6, § 26 odst. 7, § 27 odst. 2 a 5. Accessed 2026-08-02"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=4399  # vyhláška č. 291/2004 Sb., částka 95 rozeslána 13. května 2004. Čl. I bod 2 inserts the EU-emblem definition; Čl. I bod 3 rewrites § 24 so that § 24 odst. 2 písm. a) reads 'bílý podklad a černé znaky, v levé části je modrý pruh se znakem Evropské unie s vyznačením rozlišovací značky České republiky'; Čl. III 'Tato vyhláška nabývá účinnosti dnem 1. června 2004'. Accessed 2026-08-02"
+      - "https://www.psp.cz/sqw/sbirka.sqw?cz=291&r=2004  # official Sbírka index: Částka 96 [sic — the PDF masthead reads částka 95], Účinnost od 1. 6. 2004, zrušeno dnem 1. 1. 2015. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb.: § 23 (the class list), § 24 odst. 2 (5-8 characters), § 27 (layout, no punctuation, the sticker gap, the letter and digit charsets), § 28 (the kraj letters), § 29 (dimensions, colours, border, retroreflection). Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT CZECH SERIES, and the one nearly every Czech vehicle carries.
+      period.start 2004 IS A COMMENCEMENT, NOT AN INSTRUMENT DATE: the mark's
+      GRAMMAR is older — unchanged since 17 July 2001, see cz-standard-2001 —
+      and what changed on 1 June 2004 is the DESIGN, when vyhláška č. 291/2004
+      Sb. put the blue EU band on the plate. The two series are therefore split
+      exactly as Austria's at-standard and at-standard-preeu are: same serial,
+      different band, both lawful. Czechia acceded to the EU on 1 May 2004 and
+      the instrument commenced ONE MONTH LATER, on 1 June 2004 — a real gap, not
+      a rounding, and the reason this file does not record 2004-05-01. THE
+      PRE-2004 PLATES WERE NEVER RECALLED: vyhláška 291/2004 Sb. Čl. II odst. 1,
+      verbatim, "Tabulky s registrační značkou vydané před počátkem účinnosti
+      této vyhlášky zůstávají nadále platné", with stock issuable "nejdéle však
+      do 31. prosince 2007". So band-less 2001-2004 plates are lawful
+      indefinitely and the two series genuinely run in parallel.
+
+  # =========================================================================
+  # ONE SERIES BACK — the same mark WITHOUT the EU band, 2001-2004.
+  # =========================================================================
+  - id: cz-standard-2001
+    class: standard
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2001, end: 2004 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "9L9 9999"
+      regex: '\A\d[A-Z][A-Z0-9] \d{4}\z'
+      regex_strict: '\A\d[ABCEHJKLMPSTUZ][A-EIJ-NPR-VXYZ0-9] \d{4}\z'
+      regex_statutory: '\A[A-Z0-9]{3} [A-Z0-9]{2,4}\z'
+      charset:
+        letters_excluded: [F, G, H, O, Q, W]
+        notes: >-
+          THE DIFFERENCE FROM cz-standard-2004 IS REAL AND IS IN THE TWINS.
+          § 18 odst. 1 vyhlášky 243/2001 Sb. lists TWENTY letters usable after
+          the kraj code — "A, B, C, D, E, I, J, K, L, M, N, P, R, S, T, U, V, X,
+          Y, Z" — where the 2014 regulation lists twenty-two, having re-admitted
+          F and H. And § 16 odst. 2 caps the mark at SEVEN characters where
+          § 24 odst. 2 of the 2014 vyhláška allows eight. `regex_strict` and
+          `regex_statutory` carry both differences; `regex` is identical to the
+          successor's because the printed shape did not change.
+      separator_note: "§ 17 odst. 2 vyhlášky 243/2001 Sb. — the same no-punctuation rule and the same sticker gap between positions 3 and 4 as the 2014 successor."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      characters: { h: 75, w: 40, stroke: 10, unit: mm, relief: embossed }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 24 odst. 2 písm. a) vyhlášky 243/2001 Sb.: 'bílý podklad a černé znaky'" }
+      foreground: "#000000"
+      border: { width: 4, unit: mm, color: "#000000", hex_basis: observed }
+      corner_radius: { r: 10, unit: mm }
+      band: { side: none }
+      band_note: >-
+        THE DIFFERENCE THAT MAKES THIS A SERIES. § 24 odst. 2 of vyhláška
+        243/2001 Sb. as originally enacted reads, in full, "pro silniční motorová
+        vozidla a přípojná vozidla ± bílý podklad a černé znaky" — no blue
+        stripe, no EU emblem, no rozlišovací značka. The definition of the EU
+        emblem did not exist in Czech registration law until vyhláška 291/2004
+        Sb. inserted § 2 písm. j) with effect from 1 June 2004. Diffing the two
+        texts of § 24 IS the period evidence, exactly as the two RIS Fassungen of
+        Austrian § 49 KFG are for at-standard.
+      emblem: { present: false }
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    region_encoding_mechanism: >-
+      Same kraj letter as the successor — and in this era the code DID track the
+      vehicle: § 20 odst. 1 vyhlášky 243/2001 Sb., verbatim, "Při převodu vozidla
+      do obvodu registračního místa, pro něž je určen jiný kód kraje, přidělí
+      nové registrační místo vždy novou registrační značku a vydá novou tabulku
+      registrační značky." A mark issued in this period, still on its original
+      vehicle, is a reliable geographic claim in a way a post-2015 mark is not.
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb., o registraci vozidel, částka 92 rozeslána 17. července 2001. § 15 (druhy registračních značek), § 16 odst. 2 (5-7 characters, the kraj-letter rule), § 17 (layout and the sticker gap), § 18 odst. 1-2 (charsets), § 19 odst. 2 (the fourteen kraj letters), § 20 odst. 1 (new mark on a cross-kraj transfer), § 24 (dimensions and colours), § 32 ('Tato vyhláška nabývá účinnosti dnem vyhlášení'). Accessed 2026-08-02"
+      - "https://www.psp.cz/sqw/sbirka.sqw?cz=243&r=2001  # official Sbírka index: Částka 92, Účinnost od 17. 7. 2001, zrušeno dnem 1. 1. 2015; the seven amendments (496/2001, 368/2002, 98/2003, 401/2003, 291/2004, 244/2005, 334/2006) and the repealing instrument 343/2014. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=4399  # vyhláška č. 291/2004 Sb. Čl. II odst. 1: pre-existing plates 'zůstávají nadále platné', stock issuable to 31 December 2007 — the reason this series has no hard end on the road. Accessed 2026-08-02"
+    notes: >-
+      THE 2001 CUTOVER SERIES — the mark that replaced the okres-coded
+      Czechoslovak SPZ, without the EU band it acquired three years later.
+      period.start 17 July 2001 is the day částka 92 was distributed, which
+      § 32 makes the day the vyhláška took effect; it is NOT 29 June 2001, the
+      signature date that secondary sources pair with it to produce a spurious
+      "introduced between 29 June and 17 July" window. period.end is 1 June
+      2004, the commencement of vyhláška 291/2004 Sb.; both bounds are
+      instrument dates for real events, which is why period_evidence is
+      instrument-dated-both-ends. Distinct from cz-standard-2004 by the absent
+      blue field and by the two sourced grammar tightenings in its twins.
+
+  # =========================================================================
+  # THE SHARED CZECHOSLOVAK ERA — the okres-coded SPZ. Recorded in BOTH this
+  # file and plates/sk.yml, with each successor state's own end date.
+  # =========================================================================
+  - id: cz-spz-czechoslovak
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1984, end: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLL 99-99"
+      regex: '\A[A-Z]{2,3} \d{2}-\d{2}\z'
+      charset:
+        notes: >-
+          FORMAT EVIDENCE IS SECONDARY AND SAYS SO. Two or three letters
+          identifying the okres, then two groups of two digits separated by a
+          HYPHEN — the one Czech(oslovak) mark that really does print a
+          hyphen, which is why it cannot be folded into the post-2001 series.
+          The composition lived in §§ 90-91 of vyhláška ministerstva vnitra
+          č. 145/1956 Ú. l., o provozu na silnicích, published in the ÚŘEDNÍ
+          LIST rather than the Sbírka zákonů and therefore absent from the
+          mv.gov.cz gazette archive. Vyhláška 34/1984 Sb. was fetched and
+          OCR'd from the scan and amends only § 91 and § 94 — colours and the
+          zvláštní SPZ — so it does not supply the composition either.
+      evidence: secondary-wikipedia
+      evidence_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Czech_Republic  # 'Format (1960-1984): XX-NN-NN or XXX-NN-NN. Format (1984-2001): XX NN-NN or XXX NN-NN. ... two first letters represented the district (okres).' Accessed 2026-08-02"
+      okres_codes: >-
+        NOT AUTHORED. The okres letter table is a genuine decode candidate and a
+        genuine gap: its instrument (145/1956 Ú. l.) was not reached, and this
+        pass declines to reconstruct a ~90-row table from secondary text. A
+        parse API must treat the leading letters of a pre-2001 Czech mark as
+        UNRESOLVED, never as invalid, and must NOT route them through
+        cz-kraj.yml, which maps single kraj letters and does not apply.
+      prefix_note: >-
+        One prefix IS primary-sourced, from the 2001 vyhláška's own repeal
+        context rather than from the 1956 text: Prague marks began with A and
+        government vehicles with AA. That claim is secondary-wikipedia and is
+        recorded as a lead, not as data.
+    design:
+      plate: { w: null, h: null, unit: mm }
+      dimensions_note: "No dimensions secured: the 2001 vyhláška's § 24 table post-dates the series and 34/1984 Sb. gives none, stating only that 'rozměry písmen a číslic stanoví federální ministerstvo vnitra'. Recorded gap."
+      background: { color: "#FFFFFF", finish: painted, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false }
+      colour_note: >-
+        Black on white for ordinary vehicles; YELLOW ground with black characters
+        for commercial and heavy goods vehicles; BLUE ground with yellow
+        characters for foreign-owned vehicles. All three are secondary-wikipedia.
+        The one PRIMARY colour fact recovered for this era is in the variant
+        below, and it is the rental-fleet red.
+    region_encoding: "okres letters — decode table NOT authored, see format.okres_codes"
+    variants:
+      - class: dealer
+        format: { pattern: "LLL 99-99" }
+        design: { background: { color: "#FFFFFF", hex_basis: observed }, foreground: "#CC0000" }
+        note: >-
+          THE RENTAL-FLEET RED MARK, and the only pre-2001 colour claim in this
+          file with a primary behind it. Vyhláška federálního ministerstva vnitra
+          č. 34/1984 Sb. ze dne 16. února 1984, Čl. I bod 1, inserted a new
+          § 91 odst. 1 písm. d) into vyhláška 145/1956 Ú. l., verbatim: "u
+          vozidel, jejichž držiteli jsou organizace zabývající se půjčováním
+          vozidel a která jsou určena k poskytování této služby, červenými
+          písmeny a číslicemi na barvě podkladu stanovené podle písm. a) a b)."
+          Red characters on the ordinary ground, for vehicles held by
+          car-hire organisations. Recorded as class `dealer` because the mark
+          attaches to a hire BUSINESS's fleet; the hex is observed, the statute
+          says only "červenými". Text recovered by OCR from the gazette scan
+          (the 1984 PDF has no text layer), so the transcription is this pass's
+          own reading of an image and is flagged accordingly for the verifier.
+        sources:
+          - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=2105  # částka 6/1984, vydána dne 4. dubna 1984, položka 34 — vyhláška federálního ministerstva vnitra ze dne 16. února 1984, Čl. I bod 1 (§ 91 odst. 1 písm. d)) and bod 2 (§ 94, zvláštní státní poznávací značka). Scanned, no text layer; read by OCR. Accessed 2026-08-02"
+    sources:
+      - "https://www.psp.cz/sqw/sbirka.sqw?cz=34&r=1984  # official Sbírka index: 'Vyhláška federálního ministerstva vnitra, kterou se mění a doplňuje vyhláška ministerstva vnitra č. 145/1956 Ú.l. (Ú.v.), o provozu na silnicích, ve znění pozdějších předpisů', Částka 6 (4. 4. 1984), Účinnost od 1. 8. 1984, zrušeno dnem 17. 7. 2001, repealed by 243/2001. THE DATES ON THIS SERIES COME FROM HERE. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 31 (Zrušovací ustanovení) repeals 'vyhláška č. 145/1956 Ú. l., o provozu na silnicích' together with vyhlášky 69/1981 Sb., 34/1984 Sb. and 64/1998 Sb.; § 28 odst. 2 fixes the last assignment: 'Tabulky státních poznávacích značek vyrobené před účinností vyhlášky se přidělují na vozidla do vyčerpání zásob, nejdéle však do 31. prosince 2001.' Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=2105  # částka 6/1984 as scanned by the Ministry of the Interior — the gazette text of 34/1984 Sb. Accessed 2026-08-02"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Czech_Republic  # the FORMAT claim only (okres letters + NN-NN, space-separated from 1984, hyphen-separated 1960-1984) and the commercial-yellow / foreign-blue colour claims. secondary-wikipedia; every date on this series is primary. Accessed 2026-08-02"
+    notes: >-
+      THE CZECHOSLOVAK STÁTNÍ POZNÁVACÍ ZNAČKA — the system both successor
+      states inherited in 1993 and the reason this file and plates/sk.yml
+      overlap in history. READ period.start AS AN INSTRUMENT DATE AND NOTHING
+      MORE: 1984 is the commencement of vyhláška 34/1984 Sb. (1 August 1984),
+      the youngest primary in the 145/1956 Ú. l. chain that this pass could
+      reach, and the SPZ system is very much older. Secondary sources put the
+      hyphenated form at 1960 and the space-separated form at 1984, which is
+      consistent with that commencement but is not proved by it, and the
+      1932-1954 and 1954-1960 designs behind them are recorded as a known
+      unmodelled era rather than guessed at. period.end IS SOURCED TO THE DAY at
+      both the legal and the practical end: vyhláška 243/2001 Sb. § 31 repealed
+      the whole 145/1956 chain on 17 July 2001, and its § 28 odst. 2 let
+      already-manufactured SPZ plates keep being ASSIGNED until 31 December
+      2001. How long they remained VALID ON THE ROAD in Czechia was NOT
+      established — no exchange deadline was located in either vyhláška — and
+      that is a recorded gap and a real contrast with Slovakia, where the
+      deadline is expressly 31 December 2004. The two successor states thus
+      close the same era on different dates by different instruments, which is
+      precisely why this file records it rather than deferring to a shared
+      pre-1993 file.
+
+  # =========================================================================
+  # DIPLOMATIC AND CIZINECKÁ — white ground, blue characters, since 2004.
+  # =========================================================================
+  - id: cz-diplomatic-2004
+    class: diplomatic
+    categories: [car, van, motorcycle, moped]
+    period: { start: 2004 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "CD9 9999"
+      regex: '\A(?:CD|XX|XS|HC)\d \d{4}\z'
+      charset:
+        notes: >-
+          § 24 odst. 3 vyhlášky 343/2014 Sb., verbatim: "Registrační značka
+          diplomatická nebo cizinecká je složena z velkých písmen latinské
+          abecedy „CD“, „XX“, „XS“ nebo „HC“ a u automobilů z 5, u motocyklů ze 4
+          a u mopedů se šlapadly ze 3 arabských číslic." FOUR prefixes, and the
+          digit count varies by vehicle type. `pattern` and `regex` carry the
+          SEVEN-CHARACTER car form; the motorcycle (six) and moped (five) forms
+          are stated here rather than given their own series because only the
+          digit count differs.
+        prefix_meanings: >-
+          The four prefixes are not glossed in § 24 odst. 3 itself. § 29 odst. 2
+          písm. c) enumerates the four entitlement classes that share the colour
+          — persons enjoying diplomatic or consular privileges and immunities,
+          administrative-technical staff with limited privileges, service staff
+          of a mission or members of an international organisation, and honorary
+          consuls — but does not map them one-to-one onto CD/XX/XS/HC. WHICH
+          PREFIX GOES WITH WHICH CLASS IS A RECORDED GAP; the OVAL supplementary
+          plate (common.supplementary_plates) does gloss its own three letters
+          (CD = Corps diplomatique, CC = Corps consulaire, HC = Consuls
+          honoraires) and that is a different plate. PRD-PLATES puts diplomatic
+          decode tables at L4 and none is authored here.
+      separator_note: "the § 27 odst. 2 sticker gap after position 3, as on every single-row Czech plate"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 29 odst. 2 písm. c): 'bílý podklad a modré znaky'" }
+      foreground: "#0000CC"
+      foreground_note: "'modré znaky' — blue characters; no colour value is given anywhere in Czech law, so the hex is observed"
+      border: { width: 4, unit: mm, color: "#0000CC", hex_basis: observed, note: "§ 29 odst. 4: the border takes the CHARACTER colour, so a diplomatic plate has a blue border" }
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed }
+      supplementary_plate: { shape: oval, w_min: 175, h_min: 115, unit: mm, background: "#003399", foreground: "#FFCC00", content: "CD, CC or HC", note: "the doplňková registrační značka of § 26 vyhlášky 243/2001 Sb. — a SEPARATE oval plate, blue ground, yellow characters, 4 mm yellow border, carried alongside the registration plate" }
+      emblem: { present: false }
+    region_encoding: none
+    region_encoding_note: "expressly excluded from the kraj rule by § 24 odst. 2 vyhlášky 243/2001 Sb.; a diplomatic mark carries no geography"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 24 odst. 3 (the four prefixes and the per-category digit counts), § 29 odst. 2 písm. c) (white ground, blue characters, EU band, and the four entitlement classes). Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=4399  # vyhláška č. 291/2004 Sb. Čl. I bod 3, which is where the colour INVERTED — § 24 odst. 2 písm. c) as rewritten reads 'bílý podklad a modré znaky', replacing the 2001 text's 'modrý podklad a žluté znaky'. Čl. III commences it 1 June 2004; Čl. II odst. 4 gave existing diplomatic keepers until 31 December 2005 to exchange. Accessed 2026-08-02"
+    notes: >-
+      A FOLKLORE CORRECTION, and a clean one. Secondary sources date the Czech
+      diplomatic plate's switch from blue-on-yellow to blue-on-white to 2001. THE
+      INSTRUMENT DATES IT TO 1 JUNE 2004: vyhláška 243/2001 Sb. § 24 odst. 2
+      písm. c) and d) both read "modrý podklad a žluté znaky" for diplomatic and
+      cizinecká vehicles, and it was vyhláška 291/2004 Sb. Čl. I bod 3 that
+      replaced the whole of § 24 with a version reading "bílý podklad a modré
+      znaky". The prefix set changed at the same reform: 2001 knew only "DD" and
+      "XX" (§ 16 odst. 3), the current regulation knows CD, XX, XS and HC. The
+      predecessor is recorded separately as cz-diplomatic-2001. Čl. II odst. 4 of
+      the 2004 vyhláška set an exchange deadline of 31 December 2005 for this
+      class specifically — the ONLY compulsory plate exchange this pass found in
+      Czech law, and it is why the diplomatic series, unlike the standard one,
+      does not run in parallel with its predecessor indefinitely.
+
+  - id: cz-diplomatic-2001
+    class: diplomatic
+    categories: [car, van, motorcycle]
+    period: { start: 2001, end: 2005 }
+    period_evidence: transitional-provision
+    matching: strict
+    format:
+      pattern: "DD9 9999"
+      regex: '\A(?:DD|XX)[A-Z0-9] [A-Z0-9]{4}\z'
+      charset:
+        notes: >-
+          § 16 odst. 3 vyhlášky 243/2001 Sb., verbatim: "Registrační značka
+          diplomatická začíná vždy dvěma písmeny v provedení „DD“ nebo „XX“, za
+          nimiž se umíst'uje pět znaků složených z velkých písmen latinské
+          abecedy a arabských číslic." TWO prefixes, not four, and the five
+          following characters may be LETTERS OR DIGITS — a looser tail than the
+          2014 successor's five arabic numerals, which is why `regex` here
+          spells [A-Z0-9] where cz-diplomatic-2004 spells \d.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#003399", finish: retroreflective, hex_basis: observed, spec_note: "§ 24 odst. 2 písm. c) a d) vyhlášky 243/2001 Sb.: 'modrý podklad a žluté znaky'" }
+      foreground: "#FFCC00"
+      border: { width: 4, unit: mm, color: "#FFCC00", hex_basis: observed }
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: none
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 16 odst. 3 (DD / XX + five characters), § 24 odst. 2 písm. c) a d) ('modrý podklad a žluté znaky' for both diplomatická and cizinecká). Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=4399  # vyhláška č. 291/2004 Sb. Čl. II odst. 4: diplomatic and consular keepers were given an exchange deadline of 31 December 2005 — the source of period.end on this series. Accessed 2026-08-02"
+    notes: >-
+      THE BLUE DIPLOMATIC PLATE — yellow characters on a blue ground, no EU band,
+      two prefixes. period.end 2005 is NOT the date the successor started; it is
+      the EXCHANGE DEADLINE in vyhláška 291/2004 Sb. Čl. II odst. 4, which is why
+      period_evidence is transitional-provision and not instrument-in-force. The
+      overlap with cz-diplomatic-2004 between June 2004 and December 2005 is a
+      real transition window in which both designs were lawfully on the road, and
+      it is recorded rather than collapsed to a single switchover date.
+
+  # =========================================================================
+  # HISTORIC VEHICLES — green on white, and a kraj code that changed alphabet.
+  # =========================================================================
+  - id: cz-historic-2015
+    class: historic
+    categories: [car, van, truck, bus, motorcycle, moped]
+    period: { start: 2015 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "99V 9999"
+      regex: '\A\d{2}V [A-Z0-9]{4}\z'
+      regex_strict: '\A(?:0[1-9]|1[0-4])V [A-Z0-9]{4}\z'
+      charset:
+        notes: >-
+          § 26 odst. 1 vyhlášky 343/2014 Sb., verbatim: "Registrační značka pro
+          historická vozidla začíná vždy dvoumístným číselným znakem arabských
+          číslic registračního místa, které zajišťuje registraci historických
+          vozidel na správním území kraje, a velkým písmenem „V“, za nímž se
+          u historických automobilů umísťují 4, u historických motocyklů 3
+          a u historických mopedů se šlapadel 2 arabské číslice nebo písmena."
+          `regex_strict` restricts the leading pair to the FOURTEEN numeric kraj
+          codes 01 to 14 of § 26 odst. 6 — a sourced tightening the round-trip
+          cannot carry. `pattern` and `regex` give the seven-character
+          automobile form; motorcycles take three trailing characters and pedal
+          mopeds two.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 29 odst. 2 písm. e): 'bílý podklad a zelené znaky'" }
+      foreground: "#009933"
+      border: { width: 4, unit: mm, color: "#009933", hex_basis: observed, note: "green border, per the § 29 odst. 4 character-colour rule" }
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    region_encoding_mechanism: >-
+      THE NUMERIC ALPHABET, NOT THE LETTER ONE — the single most trap-laden fact
+      in Czech decoding. The two leading digits are the kraj code of § 26 odst. 6
+      (01 Praha, 02 Jihomoravský, 03 Jihočeský ...), which is ordered
+      ALPHABETICALLY BY KRAJ NAME and agrees with the letter table on Praha and
+      on nothing else. A parse API that mapped 02 to the second letter-table row
+      would return Středočeský instead of Jihomoravský. Both tables are in
+      cz-kraj.yml for exactly this reason.
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 26 odst. 1 (the numeral + V + digits form), § 26 odst. 6 (the fourteen numeric kraj codes), § 29 odst. 2 písm. e) (white ground, green characters, EU band). Účinnost 1. 1. 2015. Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT HISTORIC-VEHICLE MARK. period.start 2015 is the commencement of
+      vyhláška 343/2014 Sb. and marks a REAL format change, not a re-enactment:
+      the 2001 regulation's historic mark was V + four digits with NO kraj code
+      at all (see cz-historic-2001), and the 2014 regulation prefixed the
+      two-digit registration-place code. A bare-V historic plate is therefore
+      diagnostic of the earlier era and carries no geography whatsoever. The
+      mark is issued to vehicles holding a "průkaz historického nebo sportovně
+      historického vozidla" and NOT otherwise registered — it is a regime, not a
+      decoration, which is why it is a series and not a specialty variant.
+
+  - id: cz-historic-2001
+    class: historic
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2001, end: 2015 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "V99 99"
+      regex: '\AV\d{2} \d{2}\z'
+      charset:
+        notes: >-
+          § 16 odst. 5 vyhlášky 243/2001 Sb., verbatim: "Zvláštní registrační
+          značka pro historická vozidla začíná vždy znakem vyjadřujícím písmeno
+          „V“, za nímž se umíst'ují čtyři arabské číslice." Five characters: V
+          and four digits, and no kraj code.
+      grouping_caveat: >-
+        THE PRINTED GROUPING IS DERIVED, NOT QUOTED. § 16 odst. 5 gives the
+        character sequence and says nothing about where the gap falls; the space
+        after position 3 in `pattern` is this pass's application of the GENERAL
+        rule in § 17 odst. 2 ("mezi třetím a čtvrtým místem určeným pro znak
+        mezera"), which is written for single-row plates without excepting this
+        series. If a physical specimen or příloha č. 13 shows a different
+        grouping, this pattern is what changes. Flagged for the verifier rather
+        than presented as sourced.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 24 odst. 2 písm. f) vyhlášky 243/2001 Sb.: 'bílý podklad a zelené znaky'" }
+      foreground: "#009933"
+      border: { width: 4, unit: mm, color: "#009933", hex_basis: observed }
+      band: { side: none, note: "no EU band before 1 June 2004; vyhláška 291/2004 Sb. Čl. I bod 3 added it to this class too (§ 24 odst. 2 písm. e) as rewritten)" }
+      emblem: { present: false }
+    region_encoding: none
+    region_encoding_note: "expressly excluded from the kraj rule by § 16 odst. 2 vyhlášky 243/2001 Sb., and structurally so — the mark opens with the literal V"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 15 písm. b) bod 4, § 16 odst. 5, § 17 odst. 2, § 24 odst. 2 písm. f). Accessed 2026-08-02"
+    notes: >-
+      THE FIRST CZECH HISTORIC MARK — V plus four digits, green on white, no kraj
+      code and, until June 2004, no EU band. period runs from the commencement of
+      vyhláška 243/2001 Sb. on 17 July 2001 to the commencement of its successor
+      on 1 January 2015, when the two-digit kraj code was prefixed. Distinct from
+      cz-historic-2015 by that prefix and by nothing else; distinct from
+      cz-standard-2001 by class, colour and format.
+
+  # =========================================================================
+  # SPORTS VEHICLES — the R mark. New in the 2014 regulation.
+  # =========================================================================
+  - id: cz-sport
+    class: sport
+    categories: [car, motorcycle]
+    period: { start: 2015 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "99R 9999"
+      regex: '\A\d{2}R \d{4}\z'
+      regex_strict: '\A(?:0[1-9]|1[0-4])R \d{4}\z'
+      charset:
+        notes: >-
+          § 26 odst. 5 vyhlášky 343/2014 Sb., verbatim: "Registrační značka pro
+          sportovní vozidla začíná vždy dvoumístným číselným znakem arabských
+          číslic registračního místa, které zajišťuje registraci sportovních
+          vozidel na správním území kraje, a velkým písmenem „R“, za nímž se
+          u sportovních automobilů umísťují 4 a u sportovních motocyklů
+          3 arabské číslice." Structurally the twin of the historic mark with R
+          for V, and — unlike the historic mark — the trailing characters are
+          DIGITS ONLY, not "číslice nebo písmena".
+    design:
+      plate: { w: 330, h: 85, unit: mm }
+      plate_variants:
+        - { w: 80, h: 110, unit: mm, note: "§ 29 odst. 1 písm. f): the sports plate on a sports MOTORCYCLE takes the moped-sized plate" }
+      plate_note: "§ 29 odst. 1 písm. q): 330 x 85 mm 'pro tabulku s registrační značkou pro sportovní vozidlo, jedná-li se o přední tabulku umístěnou na přední části sportovního automobilu' — a FRONT plate size that exists nowhere else in Czech law and is the narrowest plate in this file"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_caveat: >-
+        NOT SEPARATELY SPECIFIED. § 29 odst. 2 enumerates colours for road
+        vehicles, tractors, diplomatic, export, historic, one-trip, dealer and
+        test marks — and does NOT list the sports mark. The white/black recorded
+        here is the § 29 odst. 2 písm. a) default applied by elimination, which
+        is an inference and is flagged as one. Recorded gap.
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    region_encoding_mechanism: "the NUMERIC kraj codes of § 26 odst. 6, identically to cz-historic-2015 — see that series' warning about the two incompatible Czech kraj alphabets"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 23 písm. b) bod 5 (the class), § 26 odst. 5 (the format), § 26 odst. 6 (the numeric kraj codes), § 29 odst. 1 písm. f) a q) (the two plate sizes). Accessed 2026-08-02"
+    notes: >-
+      THE SPORTS-VEHICLE MARK, issued against a "průkaz sportovního vozidla".
+      Absent from vyhláška 243/2001 Sb. entirely — § 15 of the 2001 regulation
+      lists four zvláštní classes and this is not one of them — so period.start
+      2015 is a genuine creation date, the commencement of vyhláška 343/2014 Sb.
+      Its class is `sport`, which this PR adds to plates/_meta/classes.yml with a
+      definition, because both jurisdictions in this slice have one (Slovakia's
+      is the S zvláštne evidenčné číslo of § 127 odst. 9 zákona 8/2009 Z. z.) and
+      neither fits `specialty`, which the vocabulary defines as an
+      optional-design programme on a standard serial.
+
+  # =========================================================================
+  # REGISTRAČNÍ ZNAČKA NA PŘÁNÍ — the personalized mark.
+  # =========================================================================
+  - id: cz-personalized
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, moped, trailer]
+    period: { start: 2015 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL9 9999"
+      regex: '\A[A-Z0-9]{3} [A-Z0-9]{4,5}\z'
+      charset:
+        notes: >-
+          § 25 vyhlášky 343/2014 Sb., verbatim: "Znaky registrační značky na
+          přání jsou provedeny s nejméně 7 a nejvíce 8 velkými písmeny latinské
+          abecedy a arabskými číslicemi. Registrační značka na přání pro mopedy
+          je provedena v 5 velkých písmenech latinské abecedy nebo arabskými
+          číslicemi. V registrační značce na přání se mohou písmena a číslice
+          použít libovolně." SEVEN OR EIGHT characters — one or two MORE than an
+          ordinary mark's minimum — and, expressly, letters and digits in any
+          arrangement. There is no kraj code, no reserved position and no
+          exclusion of G, O, Q or W in § 25: the § 27 odst. 3 alphabet binds
+          characters "které se přidávají za kód kraje nebo za první povinný
+          znak", and a personalized mark has neither. This series is therefore
+          the one place in Czech law where the full 36-character alphabet is
+          available, and `regex` says so.
+        secondary_restrictions: >-
+          Secondary sources report further limits — that G, CH, O, Q and W are
+          barred, that the mark must contain at least one numeral, and that it
+          costs 5,000 CZK per plate. NONE of these is in § 25 or in § 27, and the
+          statutory conditions live in § 7b zákona č. 56/2001 Sb., which this
+          pass did not fetch. They are recorded as secondary-wikipedia and are
+          NOT encoded in any regex here. Recorded gap.
+        secondary_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_the_Czech_Republic  # 'Available since 2017; format XXX-XXXXX ... Restrictions: letters G, CH, O, Q, W prohibited; must contain at least one numeral; cannot display abusive content.' Accessed 2026-08-02"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm, note: "§ 29 odst. 1 písm. i): truck, bus, special and trailer" }
+        - { w: 280, h: 200, unit: mm, note: "§ 29 odst. 1 písm. j): car, two-line" }
+        - { w: 200, h: 160, unit: mm, note: "§ 29 odst. 1 písm. k): motorcycle and trailer" }
+        - { w: 320, h: 160, unit: mm, note: "§ 29 odst. 1 písm. l)" }
+        - { w: 80, h: 110, unit: mm, note: "§ 29 odst. 1 písm. m): pedal moped" }
+      plate_note: "§ 29 odst. 1 gives the personalized mark its OWN six-size table (písm. h) to m)), separate from and parallel to the standard one — the clearest sign in the regulation that it is a distinct series rather than a variant"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed }
+      emblem: { present: false }
+    region_encoding: none
+    region_encoding_note: "no kraj code — § 25 imposes no positional structure at all, so a personalized Czech mark carries no geography even by accident"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 25 (K § 7b odst. 6 zákona) — 7 to 8 characters, mopeds 5, letters and digits used freely; § 29 odst. 1 písm. h) to m) (the six plate sizes). Účinnost 1. 1. 2015. Accessed 2026-08-02"
+    notes: >-
+      THE PERSONALIZED MARK, and a DATE CORRECTION. Secondary sources say custom
+      plates became available in 2017; § 25 is in vyhláška 343/2014 Sb. AS
+      ORIGINALLY PROMULGATED in částka 136 of 31 December 2014 and recites its
+      enabling provision as § 7b odst. 6 zákona č. 56/2001 Sb., so the mark
+      existed in Czech law from 1 January 2015. The 2017 date may well be when
+      issuance actually began or when § 7b was amended — vyhlášky č. 10/2017 Sb.,
+      86/2017 Sb. and 158/2017 Sb. all amended 343/2014 Sb. and none was fetched
+      — but it is not the date the series was created, and this file records the
+      instrument rather than the report. period_evidence is enacted-commencement
+      on that basis; the first-issue date is a recorded gap.
+
+  # =========================================================================
+  # ZVLÁŠTNÍ REGISTRAČNÍ ZNAČKY — dealer, one-trip and test.
+  # =========================================================================
+  - id: cz-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer, machine]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "L99 999"
+      regex: '\A[A-Z][A-Z0-9]{2} [A-Z0-9]{2,3}\z'
+      regex_strict: '\A[ABCEHJKLMPSTUZ][A-Z0-9]{2} [A-Z0-9]{2,3}\z'
+      charset:
+        notes: >-
+          § 26 odst. 2 vyhlášky 343/2014 Sb. (§ 16 odst. 6 of the 2001 vyhláška,
+          same words), verbatim: "Zvláštní registrační značka pro manipulační
+          provoz se skládá nejméně z 5 znaků a nejvíce z 6 znaků a začíná vždy
+          písmenem kódu kraje, ostatní znaky jsou složeny z velkých písmen
+          latinské abecedy a arabských číslic." The kraj letter is at POSITION 1
+          here, not position 2 — this series and cz-transfer are the only Czech
+          marks where the naive first-character decode is the correct one, and
+          `regex_strict` restricts that position to the fourteen kraj letters
+          accordingly.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 280, h: 200, unit: mm, note: "§ 29 odst. 1 písm. o)" }
+        - { w: 200, h: 160, unit: mm, note: "§ 29 odst. 1 písm. p): motorcycle, tractor, self-propelled machine" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 29 odst. 2: 'bílý podklad a zelené znaky'" }
+      foreground: "#009933"
+      border: { width: 4, unit: mm, color: "#009933", hex_basis: observed }
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed, note: "added by vyhláška 291/2004 Sb.; absent 2001-2004" }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    region_encoding_mechanism: "the kraj LETTER, at position 1 — see charset.notes"
+    binding: business
+    binding_note: >-
+      § 21 odst. 1 vyhlášky 243/2001 Sb.: the plates are issued "osobě, která
+      zabezpečuje jízdy vozidel dosud neregistrovaných" — manufacturers,
+      importers and dealers moving unregistered vehicles. § 21 odst. 2 forbids
+      their use on a vehicle already in the register, with one express exception:
+      test drives during repairs, where the special plate is placed OVER the
+      vehicle's own plate. The binding is to the BUSINESS, so a vehicle-keyed
+      consumer must not join on it.
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 26 odst. 2, § 29 odst. 1 písm. n) až p), § 29 odst. 2. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 16 odst. 6 (the format, unchanged since), § 21 odst. 1-2 (who gets them and the repair-test exception), § 22 (the per-plate journey log 'záznamy jízd'). Accessed 2026-08-02"
+    notes: >-
+      THE MANIPULAČNÍ (TRADE) PLATE — Czechia's dealer plate. period.start 2001
+      is instrument-in-force on vyhláška 243/2001 Sb.: the class existed before
+      2001 under § 94 of vyhláška 145/1956 Ú. l. as rewritten by 34/1984 Sb.
+      (which is titled "Zvláštní státní poznávací značka" and describes the same
+      arrangement, including the "záznam jízd" log book), so 2001 is the date of
+      the instrument that STATES this format, not the date the class began. Its
+      pre-2001 form is a recorded gap for the same reason as
+      cz-spz-czechoslovak's. Distinct from cz-test by its recipients, its serial
+      grammar and its purpose, and from cz-transfer by everything but colour.
+
+  - id: cz-test
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer, machine]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "F99 99"
+      regex: '\AF\d{2} \d{2}\z'
+      charset:
+        notes: >-
+          § 26 odst. 4 vyhlášky 343/2014 Sb. (§ 16 odst. 8 of the 2001 vyhláška,
+          same words), verbatim: "Zvláštní registrační značka pro zkušební provoz
+          se skládá z 5 znaků a začíná vždy písmenem „F“, ostatní znaky jsou
+          vyjádřeny arabskými číslicemi." Exactly five characters: the literal F
+          and four digits. No kraj code — this is the only Czech special mark
+          with no geography in it, because it is issued only with the ministry's
+          prior consent and is national.
+      grouping_caveat: "as on cz-historic-2001, the gap after position 3 is the general § 27 odst. 2 rule applied to a five-character mark, not a quoted grouping. Flagged."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 29 odst. 2: 'bílý podklad a zelené znaky'" }
+      foreground: "#009933"
+      border: { width: 4, unit: mm, color: "#009933", hex_basis: observed }
+      band: { side: left, color: "#003399", content: eu-stars+CZ, hex_basis: observed }
+      emblem: { present: false }
+    region_encoding: none
+    binding: business
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 26 odst. 4, § 29 odst. 2. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 16 odst. 8 (F + four digits); § 21 odst. 3, which restricts issue to vehicles 'u nichž nebyla dosud schválena technická způsobilost' or carrying unapproved parts, and only 'po předchozím souhlasu ministerstva'. Accessed 2026-08-02"
+    notes: >-
+      THE TEST PLATE — F plus four digits, green on white, issued only with the
+      Ministry of Transport's prior consent and only for vehicles whose technical
+      fitness has not yet been approved or which are carrying unapproved parts.
+      Shares the class `dealer` and the colour scheme with cz-dealer and is a
+      different series because its serial grammar, its recipients and its legal
+      trigger all differ: the dealer plate moves APPROVED unregistered vehicles,
+      this one moves UNAPPROVED ones. The reservation of the letter F is why
+      vyhláška 243/2001 Sb. kept F out of the ordinary letter alphabet
+      altogether; when the 2014 regulation re-admitted F to that alphabet it kept
+      the reservation here too, so F is now positionally ambiguous and a parse
+      API must use the five-character length to disambiguate.
+
+  - id: cz-transfer
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "L999999"
+      regex: '\A[A-Z]\d{6}\z'
+      regex_strict: '\A[ABCEHJKLMPSTUZ]\d{6}\z'
+      charset:
+        notes: >-
+          § 26 odst. 3 vyhlášky 343/2014 Sb. (§ 16 odst. 7 of the 2001 vyhláška,
+          same words), verbatim: "Zvláštní registrační značka pro jízdu z místa
+          prodeje do místa registrace silničního vozidla se skládá ze 7 znaků
+          a začíná vždy písmenem kódu kraje, ostatní znaky jsou vyjádřeny
+          arabskými číslicemi." Kraj letter at position 1, then six digits.
+      separator_note: >-
+        NO SEPARATOR AT ALL, and that is sourced rather than assumed. This is the
+        one Czech mark expressly EXCLUDED from the single-row sticker-gap rule:
+        § 27 odst. 1 provides that the three-and-five row split "neplatí pro
+        zvláštní registrační značku pro jízdu z místa prodeje do místa registrace
+        silničního vozidla, kde je v prvním řádku umístěn 1 znak a v druhém řádku
+        maximálně 6 znaků" — this plate is always TWO ROWS, one character over
+        six, so there is no in-line gap to spell.
+    design:
+      plate: { w: 210, h: 145, unit: mm }
+      plate_note: "210 x 145 mm under § 29 odst. 1 písm. g); 210 x 150 mm under § 24 odst. 1 písm. g) of the 2001 vyhláška — a 5 mm reduction at the 2015 recut, recorded because it is the only Czech plate whose dimensions changed"
+      background: { color: "#00A550", finish: printed, hex_basis: observed, spec_note: "§ 24 odst. 2 písm. g) vyhlášky 243/2001 Sb.: 'zelený podklad a černé znaky'" }
+      foreground: "#000000"
+      border: { width: 4, unit: mm, color: "#000000", hex_basis: observed, note: "§ 24 odst. 4: PRINTED, not embossed, on this plate alone — 'Na zvláštní registrační značce pro jednorázové použití s omezenou platností je natištěn černý okraj'" }
+      band: { side: none }
+      emblem: { present: false }
+      material: "TVRDÝ PAPÍR — hard paper, not light alloy. § 24 odst. 3 vyhlášky 243/2001 Sb.: 'Toto neplatí pro tabulku zvláštní registrační značky jednorázové s omezenou platností, která je vyrobena z tvrdého papíru.' The characters are PRINTED ('formou vytištění'), not embossed, and the plate carries no retroreflection and no sticker well."
+      printed_fields: "the validity period, the date of assignment, a space for a stamp and a space for an authorised signature are all PRINTED ON THE PLATE (§ 24 odst. 2 písm. g))"
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    region_encoding_mechanism: "the kraj LETTER, at position 1"
+    validity: "10 days from issue — § 21 odst. 4 vyhlášky 243/2001 Sb.: 'Na tabulce je vyznačena platnost registrační značky, která je stanovena na 10 dnů od jejího vydání.'"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 26 odst. 3, § 27 odst. 1 (the one-over-six two-row exception), § 29 odst. 1 písm. g). Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 16 odst. 7, § 17 odst. 1, § 21 odst. 4 (10-day validity, dealer issues them, the 'kniha vydání' register), § 24 odst. 1 písm. g), odst. 2 písm. g), odst. 3, odst. 4. Accessed 2026-08-02"
+    notes: >-
+      THE PAPER ONE-TRIP PLATE — green ground, black printed characters, issued
+      by the DEALER to a buyer for the single journey from the point of sale to
+      the place of registration, valid ten days. Called "zvláštní registrační
+      značka pro jednorázové použití s omezenou platností" in 2001 and renamed
+      "pro jízdu z místa prodeje do místa registrace silničního vozidla" in 2014
+      without changing its grammar. It is the only Czech plate made of paper, the
+      only one with printed rather than embossed characters, the only one with a
+      printed border, and the only one whose layout the regulation expressly
+      exempts from the single-row rule — four exceptions in one series, which is
+      why it is modelled separately rather than as a variant.
+
+  # =========================================================================
+  # EXPORT AND AGRICULTURAL — standard grammar, different plate.
+  # =========================================================================
+  - id: cz-export
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9L9 9999"
+      regex: '\A\d[A-Z][A-Z0-9] \d{4}\z'
+      charset:
+        notes: >-
+          The SERIAL is an ordinary standard mark; what distinguishes the series
+          is the plate. § 24 odst. 4 vyhlášky 343/2014 Sb. (§ 16 odst. 4 of the
+          2001 vyhláška, same words): "Registrační značka pro vývoz je doplněna
+          o červené pole sloužící k vyznačení její platnosti." No separate
+          grammar is prescribed, so no separate grammar is asserted here.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      validity_field: { side: right, color: "#CC0000", hex_basis: observed, content: "the expiry of the mark", note: "§ 29 odst. 2 písm. d): 'tabulka je na pravé straně doplněna červeným polem, ve kterém se vyznačuje její platnost'; on a two-line plate the red field moves LEFT of the first row ('umísťuje se červené pole vlevo před znaky v prvním řádku')" }
+      band: { side: none }
+      band_note: >-
+        A DELIBERATE ABSENCE, and it is the one place where the 2004 EU-band
+        amendment did NOT reach. § 29 odst. 2 písm. d) describes the export plate
+        as "bílý podklad a černé znaky, tabulka je na pravé straně doplněna
+        červeným polem" and — alone among the lettered paragraphs a) to i) — says
+        nothing about a modrý pruh. The red validity field occupies the position
+        the band would take on a two-line plate, which is presumably why. Stated
+        as a reading of the enumeration, not as an express exclusion.
+      emblem: { present: false }
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    validity: "maximum 3 months from assignment — § 29 odst. 2 písm. d): 'Platnost se stanovuje maximálně na 3 měsíce od jejího přidělení'"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 23 písm. a) bod 4 ('pro vozidla vyvezená do jiného státu'), § 24 odst. 4, § 29 odst. 2 písm. d). Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 15 písm. a) bod 4 ('pro vozidla odhlášená k trvalému vývozu do zahraničí'), § 16 odst. 4, § 24 odst. 2 písm. e). Accessed 2026-08-02"
+    notes: >-
+      THE EXPORT MARK — an ordinary Czech mark on a plate carrying a red validity
+      field at the right-hand end, valid at most three months. Czechia, unlike
+      Austria, has a genuine export class rather than folding the job into a
+      transfer plate. period.start 2001 is instrument-in-force on vyhláška
+      243/2001 Sb.; whether an equivalent existed under the 145/1956 chain was
+      not established. Note the difference in wording between the two
+      regulations, which is a real narrowing: 2001 said "odhlášená k trvalému
+      vývozu do zahraničí" (deregistered for PERMANENT export), 2014 says simply
+      "vyvezená do jiného státu".
+
+  - id: cz-agricultural
+    class: agricultural
+    categories: [tractor, machine, trailer]
+    period: { start: 2001 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "9L9 9999"
+      regex: '\A\d[A-Z][A-Z0-9] \d{4}\z'
+      charset:
+        notes: "the ordinary § 24 odst. 2 grammar; the series is distinguished by plate colour, not by serial"
+    design:
+      plate: { w: 280, h: 200, unit: mm }
+      plate_variants:
+        - { w: 520, h: 110, unit: mm, note: "§ 29 odst. 1 písm. a), where the vehicle has no space for the two-line plate" }
+        - { w: 200, h: 160, unit: mm, note: "§ 29 odst. 1 písm. d)" }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed, spec_note: "§ 29 odst. 2 písm. b): 'žlutý podklad a černé znaky'" }
+      foreground: "#000000"
+      border: { width: 4, unit: mm, color: "#000000", hex_basis: observed }
+      band: { side: none }
+      band_note: "§ 29 odst. 2 písm. b) describes only 'žlutý podklad a černé znaky' with no modrý pruh — the yellow plate carries no EU band. Same reading-of-the-enumeration caveat as cz-export."
+      emblem: { present: false }
+    region_encoding: "plates/_decode/cz-kraj.yml"
+    sources:
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=z&id=27609  # vyhláška č. 343/2014 Sb. § 29 odst. 2 písm. b): 'pro traktor a jeho přípojné vozidlo nebo samojízdný pracovní stroj — žlutý podklad a černé znaky'. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=3670  # vyhláška č. 243/2001 Sb. § 24 odst. 2 písm. b), whose SCOPE was wider: 'pro zvláštní motorová vozidla a zemědělské a lesnické traktory a jejich přípojná vozidla'. Accessed 2026-08-02"
+      - "https://aplikace.mv.gov.cz/sbirka-zakonu/ViewFile.aspx?type=c&id=4399  # vyhláška č. 291/2004 Sb. Čl. I bod 3, which narrowed the yellow class to 'traktor a jeho přípojné vozidlo nebo samojízdný pracovní stroj' with effect from 1 June 2004. Accessed 2026-08-02"
+    notes: >-
+      THE YELLOW PLATE. Czechia colour-codes agricultural and works machinery
+      rather than serialising it separately — the mark is an ordinary one and
+      only the ground is different, which under PRD-PLATES §2.3 would make it a
+      sub-entry were the CLASS not different; it is recorded as its own series
+      because the class is the point. A SCOPE CHANGE, dated: under vyhláška
+      243/2001 Sb. the yellow plate covered all "zvláštní motorová vozidla" plus
+      agricultural and forestry tractors and their trailers, and vyhláška
+      291/2004 Sb. narrowed it on 1 June 2004 to tractors, tractor trailers and
+      self-propelled works machines. Vehicles that left the yellow class on that
+      date moved to the white one; no exchange was required, so yellow plates
+      outside the current scope are lawfully on the road and a parse API must not
+      infer the current scope from an old plate.

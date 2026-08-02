@@ -1,0 +1,1439 @@
+# plates/sk.yml — Slovakia (PRD-PLATES gate L1, wave 2).
+#
+# EVERY claim below is read from slov-lex.sk, the Slovak government's own legal
+# portal, in its OFFICIAL CONSOLIDATED PDFs. slov-lex publishes a dated version
+# of every instrument at a stable URL — /static/pdf/<year>/<num>/ZZ_<year>_<num>
+# _<YYYYMMDD>.pdf — and a version-history index at /static/SK/ZZ/<year>/<num>/.
+# That is unusually good primary tooling and this pass leans on it hard: the
+# central finding of this file was established by DIFFING TWO CONSOLIDATED
+# VERSIONS of the same statute either side of a commencement date, exactly as
+# plates/at.yml diffs two RIS Fassungen. Five instruments carry the file:
+#
+#   * zákon č. 8/2009 Z. z. o cestnej premávke — the current statute. §§ 116,
+#     123-127 are the plate provisions; § 123 ods. 20 is the delegation.
+#   * vyhláška Ministerstva vnútra SR č. 9/2009 Z. z. — the implementing
+#     regulation. § 35 is the plate SPEC; § 36 (repealed 2023) WAS the district
+#     code table; § 37 the CD/CC plates.
+#   * zákon č. 128/2021 Z. z. z 18. marca 2021 — THE 2023 REFORM. Čl. IV:
+#     "Tento zákon nadobúda účinnosť 1. januára 2023."
+#   * vyhláška č. 480/2022 Z. z. z 15. decembra 2022 — the reform's regulatory
+#     half. Čl. II commences its plate items on 1 January 2023.
+#   * zákon NR SR č. 315/1996 Z. z. + vyhláška MV SR č. 90/1997 Z. z. (in force
+#     1 April 1997) and vyhláška MV SR č. 225/2004 Z. z. (1 May 2004) —
+#     the district era and the EU band.
+#
+# THE FIVE STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE 2023 REFORM IS THE BIGGEST FACT IN THIS JURISDICTION AND IT IS
+#    PRIMARY-SOURCED TO THE DAY. On 1 January 2023 Slovakia deleted the sentence
+#    that made its plates geographic. zákon č. 128/2021 Z. z. Čl. I bod 32: "V
+#    § 124 ods. 1 sa vypúšťa druhá veta." The deleted sentence read "Prvá dvojica
+#    písmen evidenčného čísla označuje okres, v ktorom je vozidlo evidované."
+#    Bod 31 replaced "okresov" with "údajov" in the delegation, stripping the
+#    ministry of power to prescribe district markings at all; vyhláška
+#    č. 480/2022 Z. z. Čl. I bod 7 then struck the district table itself —
+#    "§ 36 sa vypúšťa." Two more provisions of the same act break the decode
+#    for plates ALREADY ISSUED: new § 116 ods. 14 keeps the plates on the
+#    vehicle when it changes hands across a district boundary, and new text in
+#    § 123 ods. 8 lets a holder move kept plates onto a different vehicle.
+#    plates/_decode/sk-districts.yml opens with this and repeats it in a
+#    machine-readable `decoupling_2023` block, because a district table silent
+#    about it actively misleads.
+#
+# 2. THE SEPARATOR POSITION IS OCCUPIED BY THE COAT OF ARMS, AND IT USED TO BE A
+#    HYPHEN. § 35 ods. 8 vyhlášky 9/2009: "...a štátny znak Slovenskej
+#    republiky, ktorý je umiestnený na tabuľke s evidenčným číslom za prvou
+#    dvojicou písmen". Before 29 April 2006 a HYPHEN sat there and the statute
+#    said so: vyhláška 90/1997 § 44 ods. 2, "Za prvou dvojicou písmen podľa
+#    odseku 1 sa za POMLČKOU uvádzajú tri číslice a dvojica písmen". Vyhláška
+#    č. 227/2006 Z. z. Čl. I bod 13 replaced the words "za pomlčkou" with "za
+#    štátnym znakom Slovenskej republiky" throughout. Every regex in this file
+#    therefore spells that position as the separator-only class `[- ]?`
+#    (PRD-PLATES §2.8): a hyphen is what the law once prescribed and what Slovak
+#    text still commonly writes, a space is the printed gap, and neither is
+#    mandatory today.
+#
+# 3. THE DISTRICT TABLE IS A STATUTORY BODY PROVISION, NOT A WEB TABLE. § 36
+#    ods. 2 vyhlášky 9/2009 printed all 72 district rows and 93 codes inside the
+#    regulation. They are transcribed into plates/_decode/sk-districts.yml BY
+#    SCRIPT from the official PDF of the version in force on 1 August 2022 — the
+#    last before repeal. No table was taken from a secondary source.
+#
+# 4. SLOVAKIA'S BINDING IS VEHICLE-BY-DEFAULT, OWNER-BY-REQUEST. This is a
+#    genuinely new shape for the dataset and it is stated rather than
+#    approximated. § 116 ods. 14 keeps the plate on the VEHICLE by default;
+#    § 116 ods. 17 lets a holder keep the plates instead, for at most one year
+#    ("Tabuľku s evidenčným číslom si môže jej držiteľ ponechať najdlhšie jeden
+#    rok bez toho, aby bola pridelená inému vozidlu"), and § 123 ods. 8 then
+#    assigns that number to another of the holder's vehicles on request. It is
+#    NOT the Swiss `binding: owner` model, where the plate is the owner's as a
+#    matter of course. Recorded as `binding: vehicle` with the option stated.
+#
+# 5. THE SHAPE DID NOT CHANGE IN 2023, WHICH IS WHY THE REFORM IS A TRAP.
+#    Before and after, an ordinary Slovak plate is two letters, the arms, three
+#    digits, two letters. A parse API cannot tell a 2022 district plate from a
+#    2024 national-sequence plate by shape; both match the same regex, and the
+#    letter pairs OVERLAP because post-reform allocation runs alphabetically
+#    from AA through pairs the district table already used. The ambiguity is
+#    recorded in both this file and the decode table and is not resolved by
+#    guess.
+#
+# THE SHARED PRE-1993 ERA — THE DELIBERATE DECISION, STATED, AND IDENTICAL TO
+# THE ONE IN plates/cz.yml. Slovakia and Czechia inherited ONE plate system from
+# Czechoslovakia. This pass models it as one series RECORDED TWICE, once per
+# successor state, sharing the federal instrument chain (vyhláška ministerstva
+# vnitra č. 145/1956 Ú. l., o provozu na silnicích, as amended, most recently
+# reachable through vyhláška federálního ministerstva vnitra č. 34/1984 Sb.) and
+# the same okres-letter format, and DIVERGING AT THE END, because the two
+# republics ended it on different dates by different instruments:
+#   * SLOVAKIA — last ISSUE 31 March 1997 (zákon č. 315/1996 Z. z. took effect
+#     1 April 1997 and its transitional provision speaks of documents "vydané
+#     pred 1. aprílom 1997"), and VALIDITY ON THE ROAD ended 31 December 2004,
+#     expressly: "Doklady o evidencii vozidla a tabuľky s evidenčným číslom
+#     (štátne poznávacie značky) vydané pred 1. aprílom 1997 zostávajú
+#     v platnosti do 31. decembra 2004." Motorcycles were cut off six years
+#     earlier, at 31 December 1998, in the ORIGINAL text of the same provision.
+#   * CZECHIA — last ASSIGNMENT 31 December 2001, and no road-validity deadline
+#     was located at all. See plates/cz.yml.
+# The Slovak deadline moved: the 1997 text of the transitional provision said
+# 31 December 2002 and the version in force in 2005 says 31 December 2004, so
+# the commonly-quoted "Czechoslovak plates expired on 1 January 2005" is right
+# but only became right by amendment. Both readings are recorded below. Neither
+# country file duplicates the other silently and neither drops the era; a shared
+# `cs-` file was rejected because PRD-PLATES §2.1 keys on ISO 3166-1 and CS is
+# withdrawn with no authority left to cite.
+#
+# WHAT THIS PASS COULD NOT ESTABLISH, recorded rather than filled:
+#   * POST-2023 ALLOCATION ORDER. § 124 ods. 1 gives the shape and no
+#     instrument publishes an allocation rule. The widely-reported "assigned
+#     alphabetically starting with AA" is tagged secondary-wikipedia in the
+#     decode file and is relied on by no regex here.
+#   * THE PRE-1997 SERIAL COMPOSITION, exactly as in plates/cz.yml: its
+#     instrument is a 1956 Úřední list decree outside both gazette archives.
+#     Tagged secondary-wikipedia; the DATES are primary.
+#   * THE OKRES CODE TABLE FOR THE CZECHOSLOVAK ERA. Not authored. The 1997
+#     Slovak table is a different table with different codes and must not be
+#     used to decode a pre-1997 plate.
+#   * DIPLOMATIC AND SPECIAL-PLATE COLOURS AFTER 1 FEBRUARY 2009. Vyhláška
+#     9/2009 puts the vzory in prílohy 17 and 18, which are DRAWINGS; the
+#     colours quoted here come from the last instrument that stated them in
+#     words (vyhláška 225/2004 Z. z.) and from § 36 ods. 1 of vyhláška 9/2009
+#     as in force to 31 December 2022. Flagged per series.
+#   * WHICH MISSIONS HOLD WHICH EE/ZZ BLOCKS. PRD-PLATES puts diplomatic decode
+#     tables at L4; none is authored.
+jurisdiction: sk
+authority:
+  name: Ministerstvo vnútra Slovenskej republiky — zákon č. 8/2009 Z. z. o cestnej premávke a vyhláška č. 9/2009 Z. z.
+  url: "https://www.slov-lex.sk/ezbierky/pravne-predpisy/SK/ZZ/2009/8/"
+binding: vehicle
+binding_note: >-
+  VEHICLE BY DEFAULT, OWNER BY REQUEST — and the default changed on
+  1 January 2023. § 116 ods. 14 zákona č. 8/2009 Z. z., inserted by zákon
+  č. 128/2021 Z. z. Čl. I bod 11, verbatim: "Pri zmene držby vozidla sa
+  ponechávajú tabuľky s evidenčným číslom na vozidle a to aj v tom prípade, ak
+  má nový držiteľ adresu pobytu, sídla, prevádzkarne alebo organizačnej zložky
+  v pôsobnosti iného orgánu Policajného zboru." Before that date the opposite
+  applied: § 116 ods. 13 in the version in force on 1 August 2022 required a NEW
+  number whenever the change was registered from another okres. The owner-side
+  option is real but conditional — § 116 ods. 17 lets a holder retain the plates
+  off a vehicle for at most one year, and § 123 ods. 8 then assigns that number
+  to another of the holder's vehicles ON REQUEST. Vehicle-keyed consumers may
+  join on a Slovak mark; they must not assume the join is stable across a sale
+  in either direction, and they must not treat Slovakia as a Swiss-style
+  owner-bound jurisdiction.
+instrument:
+  citation: "Zákon č. 8/2009 Z. z. o cestnej premávke a o zmene a doplnení niektorých zákonov v znení neskorších predpisov; vyhláška Ministerstva vnútra Slovenskej republiky č. 9/2009 Z. z., ktorou sa vykonáva zákon o cestnej premávke"
+  zakon_in_force: "2009-02-01"
+  vyhlaska_in_force: "2009-02-01"
+  reform_act: "zákon č. 128/2021 Z. z. z 18. marca 2021, vyhlásené 9. 4. 2021, účinnosť 1. januára 2023 (Čl. IV)"
+  reform_regulation: "vyhláška č. 480/2022 Z. z. z 15. decembra 2022, vyhlásené 22. 12. 2022; Čl. II commences the plate items on 1. januára 2023"
+  source: "https://www.slov-lex.sk/static/SK/ZZ/2009/8/  # the official version history of zákon č. 8/2009 Z. z. — 57 dated consolidations, including '43. 01.01.2023 - 01.01.2023  366/2022 Z. z., 128/2021 Z. z., 181/2022 Z. z.'. Accessed 2026-08-02"
+
+# ---------------------------------------------------------------------------
+# Jurisdiction-wide facts, cited once and referenced per series.
+# ---------------------------------------------------------------------------
+common:
+  serial_grammar:
+    current: >-
+      § 124 ods. 1 zákona č. 8/2009 Z. z. AS IN FORCE FROM 1 JANUARY 2023, in
+      full: "Evidenčné číslo tvoria písmená a číslice. Za prvou dvojicou písmen
+      sa za štátnym znakom Slovenskej republiky uvádzajú tri číslice a dvojica
+      písmen." Two letters, the arms, three digits, two letters — seven
+      characters, fixed width, no optional parts.
+    pre_2023: >-
+      The SAME provision before that date carried one extra sentence between the
+      two: "Prvá dvojica písmen evidenčného čísla označuje okres, v ktorom je
+      vozidlo evidované." The shape is identical; only the meaning was removed.
+      This is the whole of the 2023 reform as it touches the serial, and the
+      reason every series in this file shares one regex.
+    charset: >-
+      § 124 ods. 3 písm. e) forbids, for personalized numbers, any number
+      "obsahujúceho písmená s diakritickým znamienkom alebo malé písmená" —
+      no diacritics, no lower case. That is the only charset rule in the statute:
+      NO LETTER IS EXCLUDED. Slovakia issues Q and W (contrast Czechia, which
+      bars G, O, Q and W by § 27 ods. 3 vyhlášky 343/2014 Sb.), and there is no
+      no-leading-zero rule. A validator ported from cz.yml or at.yml will reject
+      lawful Slovak plates.
+    reserved_positions:
+      Y: "§ 35 ods. 3 vyhlášky 9/2009: on a plate for a category O or R vehicle (trailers), the letter pair AFTER the arms begins with Y. The one piece of positional meaning that survived 2023 untouched."
+      EL_EV: "§ 35 ods. 7 vyhlášky 9/2009 as replaced by vyhláška 480/2022 with effect from 1 January 2023: the letters on an electric or externally-chargeable hybrid vehicle's plate 'začínajú písmenami EL alebo EV'."
+      EE_ZZ: "§ 125 ods. 1 and 2 zákona: reserved for foreign missions (EE) and for mission administrative/technical staff and trade representations (ZZ)."
+      P: "§ 126 ods. 3 písm. a): the police/ministry osobitné evidenčné číslo."
+    source: "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # zákon č. 8/2009 Z. z., consolidated version in force from 01.01.2023 — § 116, § 123, § 124, § 125, § 126, § 127. Accessed 2026-08-02"
+    source_pre_2023: "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20220801.pdf  # the same statute in force 01.08.2022 - 31.12.2022 — the pre-reform § 116 ods. 10-13 and § 124 ods. 1. Diffing this against the 2023 version IS the evidence for the reform. Accessed 2026-08-02"
+  separator:
+    printed: "the state coat of arms"
+    statute: >-
+      § 35 ods. 8 vyhlášky 9/2009: "Neoddeliteľnou súčasťou základnej fólie
+      tabuľky s evidenčným číslom je modrá plocha s rozlišovacím znakom
+      a hviezdičkami, ktorá je umiestnená na ľavom okraji tabuľky s evidenčným
+      číslom, a štátny znak Slovenskej republiky, ktorý je umiestnený na tabuľke
+      s evidenčným číslom za prvou dvojicou písmen, alebo ak ide o osobitné
+      evidenčné číslo, za písmenom P alebo za prvou dvojicou číslic, alebo za
+      písmenom C, ak ide o zvláštne evidenčné číslo."
+    encoding_note: >-
+      The gap holds the ARMS, so there is no glyph the dataset may print. Until
+      29 April 2006 there WAS one — a hyphen, prescribed in terms by vyhláška
+      90/1997 § 44 ods. 2 and vyhláška 225/2004 § 48 ods. 2 ("za pomlčkou") —
+      and vyhláška č. 227/2006 Z. z. Čl. I bod 13 replaced those words with "za
+      štátnym znakom Slovenskej republiky". Every regex here spells the position
+      `[- ]?`, the sanctioned separator-only class of PRD-PLATES §2.8, which
+      accepts the historic hyphen, the modern printed gap, and the closed-up
+      form Slovak registries and databases use. `pattern` prints a space for
+      post-2006 series and a hyphen for pre-2006 ones, matching what each plate
+      actually showed.
+    arms_geometry:
+      "520x110": { h: 49, w: 38, unit: mm }
+      "240x150": { h: 36, w: 30, unit: mm }
+      "145x110": { h: 24, w: 20, unit: mm }
+      source: "https://www.slov-lex.sk/static/pdf/2006/227/ZZ_2006_227.pdf  # vyhláška č. 227/2006 Z. z. Čl. I bod 21, inserting § 57 ods. 3 into vyhláška 225/2004: the arms are 4,9 cm high and 3,8 cm wide on the 52 x 11 cm plate, 3,6 x 3 cm on the 24 x 15 cm plate and 2,4 x 2 cm on the 14,5 x 11 cm plate. RARE: a jurisdiction that publishes millimetres for the emblem in the serial gap. Accessed 2026-08-02"
+  colours:
+    statute: >-
+      § 35 ods. 10 vyhlášky 9/2009, as replaced by vyhláška 480/2022 Z. z. Čl. I
+      bod 5 with effect from 1 January 2023: "Písmená a číslice na tabuľke
+      s evidenčným číslom sú vypuklé a sú čiernej farby na bielom podklade;
+      písmená a číslice na tabuľke s evidenčným číslom vozidla podľa § 123
+      ods. 18 zákona môžu byť zelenej farby na bielom podklade. Tabuľka
+      s evidenčným číslom má na okraji vylisovanú obvodovú drážku, ktorej farba
+      je totožná s farbou písmen a číslic evidenčného čísla a obsahuje ochranné
+      prvky."
+    special_plate_table: >-
+      § 36 ods. 1 vyhlášky 9/2009, in force to 31 December 2022, gave the whole
+      special-plate colour system in one place and is quoted per series below:
+      "M — červenej farby na bielom podklade; V — čiernej farby na žltom
+      podklade; H — červenej farby na žltom podklade; S — modrej farby na bielom
+      podklade; Z — čiernej farby na zelenom podklade; C alebo F — zelenej farby
+      na bielom podklade." That section was REPEALED with the district table on
+      1 January 2023 (vyhláška 480/2022 Čl. I bod 7, "§ 36 sa vypúšťa") and this
+      pass did NOT locate a replacement colour rule in the post-2023 text —
+      § 35 covers only black-on-white and the green EV option, and the vzory
+      moved into príloha č. 17, which is a drawing. RECORDED GAP: the special
+      plates' colours after 1 January 2023 are asserted here only as continuity
+      from the repealed § 36 and are flagged as such on each series.
+    no_gamut: >-
+      As in Czechia, and unlike Spain and Austria: Slovak law names colours in
+      WORDS ONLY — biela, čierna, červená, žltá, modrá, zelená — with no
+      chromaticity box, no RAL reference and no luminance factor. Every hex in
+      this file is `hex_basis: observed`; the sourced claim is the colour word,
+      reproduced beside it.
+    source: "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20230101.pdf  # vyhláška č. 9/2009 Z. z. in force from 01.01.2023, § 35 ods. 6, 7, 10. Accessed 2026-08-02"
+    source_special: "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # the same vyhláška in force 01.08.2022, § 36 ods. 1 (the six special-plate colours) and ods. 2 (the district table). Accessed 2026-08-02"
+  dimensions:
+    plates:
+      "520x110": "categories M, N, O, R, and goods and passenger quadricycles of category L7e — § 35 ods. 1 písm. a)"
+      "340x200": "the two-line alternative for the same categories — § 35 ods. 1 písm. a)"
+      "240x150": "categories L3e, L4e, L5e, T, C, PS, LS and multi-purpose L7e quadricycles; also every zvláštne evidenčné číslo plate — § 35 ods. 1 písm. b), ods. 5"
+      "145x110": "categories L1e, L2e, L6e — § 35 ods. 1 písm. c)"
+    note: >-
+      Slovak law states these in CENTIMETRES ("52 cm x 11 cm"), not millimetres;
+      they are converted here to the dataset's millimetre convention and the
+      original unit is recorded so a verifier reading § 35 is not surprised.
+      A 2022 addition worth keeping: vyhláška 480/2022 Čl. I bod 2 added, to
+      § 35 ods. 1 písm. a), that where the type-approval authority has granted an
+      exemption from the rear-plate mounting requirements, "tabuľka s evidenčným
+      číslom umiestnená vzadu má rozmery 24 cm x 15 cm" — a small plate at the
+      rear of an otherwise ordinary car.
+    source: "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20230101.pdf  # § 35 ods. 1-5. Accessed 2026-08-02"
+  euro_band:
+    side: left
+    content: eu-stars+SK
+    statute: >-
+      § 35 ods. 9 vyhlášky 9/2009, and it is one of the most completely specified
+      Eurobands in this dataset — Slovakia publishes the geometry that Austria,
+      Czechia and Spain do not. Verbatim: "Rozlišovací znak Slovenskej republiky
+      sa skladá z písmen SK bielej farby vysokých najmenej 2 cm, so šírkou čiar
+      0,4 cm. Nad písmenami je 12 žltých hviezdičiek, ktorých stredy ležia na
+      obvode kruhu s polomerom 1,5 cm; vzdialenosť medzi dvoma protiľahlými
+      vrcholmi tej istej hviezdičky je 0,4 cm až 0,5 cm. Rozlišovací znak
+      a hviezdičky sú vyhotovené na modrej ploche v tvare obdĺžnika vysokého
+      najmenej 9,8 cm a širokého najmenej 4 cm, najviac 5 cm. Ak sa rozmery
+      modrej plochy na tabuľke s evidenčným číslom zmenšia po rozdelení na dva
+      riadky, môžu sa rozmery rozlišovacieho znaku a hviezdičiek proporcionálne
+      zmenšiť."
+    geometry: { sk_letter_height_min: 20, sk_stroke: 4, star_circle_radius: 15, star_point_span: [4, 5], band_height_min: 98, band_width_min: 40, band_width_max: 50, unit: mm }
+    introduced: "1 May 2004 — vyhláška MV SR č. 225/2004 Z. z., ktorou sa vykonávajú niektoré ustanovenia zákona NR SR o premávke na pozemných komunikáciách; its final section reads 'Táto vyhláška nadobúda účinnosť 1. mája 2004', the day of Slovakia's EU accession"
+    source: "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20230101.pdf  # § 35 ods. 8-9. Accessed 2026-08-02"
+    source_2004: "https://www.slov-lex.sk/static/pdf/2004/225/ZZ_2004_225.pdf  # vyhláška č. 225/2004 Z. z. z 29. marca 2004: the blue field with the distinguishing sign and stars first appears in § 50; the closing provision commences the whole vyhláška on 1 May 2004. Accessed 2026-08-02"
+  font:
+    name: null
+    statutory_basis: >-
+      NO TYPEFACE IS NAMED and, unlike Czechia and Austria, NO PER-GLYPH
+      GEOMETRY IS PUBLISHED EITHER. § 35 ods. 10 says only that the characters
+      are "vypuklé" (embossed) and black on white; the vzory in príloha č. 17 are
+      drawings. What Slovak law DOES publish in millimetres is the EU band
+      (common.euro_band) and the coat of arms (common.separator.arms_geometry) —
+      the two elements a renderer would otherwise have to guess, and precisely
+      the ones Czech and Austrian law leave undimensioned. The character
+      geometry is the recorded gap here; between the two jurisdictions the
+      coverage is complementary and neither is complete.
+    licence: >-
+      PRD-PLATES §6: derive from published geometry, never from a third-party
+      TTF. With no Slovak glyph geometry published at all, a renderer must use
+      the schematic fallback for this jurisdiction and record the substitution.
+      No Slovak public-domain-of-statutes provision was researched — recorded gap.
+  materials:
+    statute: >-
+      § 123 ods. 3 zákona 8/2009 offers a genuine choice of MATERIAL, which is
+      rare: "Tabuľka s evidenčným číslom môže byť vyrobená a) zo zliatin ľahkých
+      kovov alebo b) zo zmesi polykarbonátu a polyesteru vyžarujúcej svetlo pri
+      zapnutom osvetlení vozidla." Light alloy, or a polycarbonate/polyester
+      blend that EMITS LIGHT when the vehicle's lighting is switched on — an
+      illuminated plate, available on request for category M, N, O and R
+      vehicles (§ 123 ods. 9), and if a vehicle takes both a front and a rear
+      plate the illuminated one must be at the REAR and the alloy one at the
+      front. § 123 ods. 12 and 13 let a keeper swap between the two materials
+      keeping the same number.
+    note: >-
+      Modelled as a material option on the standard series rather than as a
+      separate series: PRD-PLATES §2.3 makes a variant its own series iff format,
+      design or period differs, and the illuminated plate shares all three
+      (§ 35 ods. 6 gives it the same black-on-white and the same 52 x 11 cm).
+    source: "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 123 ods. 3, 9, 12, 13. Accessed 2026-08-02"
+  duplicates:
+    statute: >-
+      A genuinely unusual provision worth recording because it is VISIBLE ON THE
+      PLATE and a parse API will meet it. § 123 ods. 11 zákona 8/2009: a keeper
+      who has lost, had stolen or damaged a plate may ask for a DUPLICATE
+      bearing the original number, at most twice, and "Duplikát tabuľky
+      s pôvodným evidenčným číslom sa označuje arabským číslom v krúžku v pravom
+      hornom rohu tabuľky" — a small circled Arabic numeral in the top right
+      corner marks it as the first or second duplicate. It is not part of the
+      serial and appears in no regex here.
+    source: "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 123 ods. 11. Accessed 2026-08-02"
+  bicycle_carrier:
+    statute: >-
+      § 123 ods. 16 zákona 8/2009: where an approved bicycle carrier obscures the
+      plate, a second plate with the SAME number may be issued for the carrier,
+      and "Tabuľka s evidenčným číslom určená pre nosič bicyklov sa označuje
+      nápisom „NOSIČ“ na pravej strane tabuľky" — the word NOSIČ printed at the
+      right-hand end. § 123 ods. 17 forbids fitting it in the original plate's
+      place. The Slovak counterpart of the Czech asterisk plate, and easier to
+      model: the legend is a printed WORD outside the serial, not a glyph inside
+      the separator position, so nothing in the serial alphabet is disturbed.
+    source: "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 123 ods. 16-17. Accessed 2026-08-02"
+  absent_classes:
+    taxi: "No taxi series. Nothing in §§ 123-127 or § 35 distinguishes a for-hire vehicle."
+    seasonal: "No seasonal series — no Slovak analogue of the German Saisonkennzeichen was found."
+    moped: "No separate moped series: category L1e, L2e and L6e vehicles take an ordinary evidenčné číslo on the 14,5 x 11 cm plate (§ 35 ods. 1 písm. c)). Slovakia has no insurance-plate regime."
+    consular: "Not a separate series. § 125 ods. 3 gives consular vehicles the same evidenčné číslo as diplomatic ones and distinguishes them by a SEPARATE CD or CC plate (§ 37), which carries no serial and is modelled as design metadata."
+
+series:
+
+  # =========================================================================
+  # THE CURRENT STANDARD SERIES — the post-reform national sequence.
+  # =========================================================================
+  - id: sk-standard-2023
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2023 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "LL 999LL"
+      regex: '\A[A-Z]{2}[- ]?\d{3}[A-Z]{2}\z'
+      regex_strict: '\A[A-Z]{2}[- ]?\d{3}[A-XZ][A-Z]\z'
+      charset:
+        letters_excluded: []
+        notes: >-
+          NO LETTER IS EXCLUDED — see common.serial_grammar.charset. The single
+          sourced tightening `regex_strict` carries is POSITIONAL and comes from
+          § 35 ods. 3 vyhlášky 9/2009: the letter pair after the arms begins with
+          Y on category O and R vehicles, i.e. on TRAILERS, so an ordinary
+          vehicle's fifth letter is anything but Y. That is why the strict twin
+          spells [A-XZ] at that position and why sk-trailer exists as its own
+          series rather than as a variant.
+        prefix_reserved: >-
+          Four leading pairs never open an ordinary mark: EE and ZZ (§ 125 ods. 1
+          and 2, foreign missions), EL and EV (§ 35 ods. 7, electric and
+          externally-chargeable hybrid vehicles). They are NOT excluded from
+          `regex` because a parse API should match them and then route them by
+          series, which is what `regex_strict` on those series is for.
+      progression: >-
+        NOT PUBLISHED. § 124 ods. 1 prescribes the shape and no Slovak instrument
+        states an allocation order. The reported rule — a single national
+        sequence advancing alphabetically from AA — is secondary and is recorded
+        in plates/_decode/sk-districts.yml under `decoupling_2023.
+        allocation_after_2023` with its tag, not here, because it is a claim
+        about the decode rather than about the format.
+      separator_note: >-
+        The position holds the STATE ARMS (§ 35 ods. 8) and no glyph, so
+        `pattern` prints the gap as a space and `regex` spells it `[- ]?` — see
+        common.separator for the full reasoning and for the 2006 hyphen it
+        replaced.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm, note: "two-line, same categories — § 35 ods. 1 písm. a)" }
+        - { w: 240, h: 150, unit: mm, note: "L3e, L4e, L5e, T, C, PS, LS and multi-purpose L7e quadricycles — § 35 ods. 1 písm. b); also the rear plate where a mounting exemption has been granted (vyhláška 480/2022 Čl. I bod 2)" }
+        - { w: 145, h: 110, unit: mm, note: "L1e, L2e, L6e — § 35 ods. 1 písm. c)" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 35 ods. 10: 'čiernej farby na bielom podklade'; no chromaticity box exists in Slovak law — see common.colours.no_gamut" }
+      foreground: "#000000"
+      foreground_note: "'vypuklé' — embossed, not printed"
+      border: { color: "#000000", hex_basis: observed, note: "§ 35 ods. 10: 'Tabuľka s evidenčným číslom má na okraji vylisovanú obvodovú drážku, ktorej farba je totožná s farbou písmen a číslic' — an embossed peripheral groove in the character colour, carrying security features. No width is given, unlike the Czech 4 mm." }
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed, geometry_note: "fully dimensioned — see common.euro_band.geometry" }
+      emblem: { present: true, rendered: placeholder, position: "between the first letter pair and the digits, in the separator position", content: "štátny znak Slovenskej republiky (the double cross on three hills)", dimensions: { h: 49, w: 38, unit: mm }, render_note: "PRD-PLATES §3 placeholder rule: the Slovak state arms are not licence-cleared in this pass. The millimetres ARE published (vyhláška 227/2006 Čl. I bod 21) and are recorded so a renderer that clears them needs no further research." }
+      material_options: ["light alloy", "illuminated polycarbonate/polyester blend"]
+      rear_differs: false
+      display: "front and rear on categories M and N and on goods L7e quadricycles; rear only (centre or left) on L1e-L6e, O, R, PS and multi-purpose L7e — § 35 ods. 11"
+    region_encoding: none
+    region_encoding_note: >-
+      DELIBERATELY none, and this is the single most important field in this
+      file. The first letter pair of a mark issued on or after 1 January 2023
+      DOES NOT DENOTE A DISTRICT: zákon č. 128/2021 Z. z. Čl. I bod 32 deleted
+      the sentence that said it did, with effect from that date. Pairs allocated
+      after the reform REUSE letter combinations that the repealed district table
+      assigned to real okresy, so decoding a post-2023 mark through
+      plates/_decode/sk-districts.yml returns a confident, wrong answer. The
+      decode file is reachable from the PRE-2023 series only, and it states this
+      in its own `decoupling_2023` block so that a consumer who arrives at the
+      table without reading this file still learns it.
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # zákon č. 8/2009 Z. z. in force from 01.01.2023: § 124 ods. 1, verbatim 'Evidenčné číslo tvoria písmená a číslice. Za prvou dvojicou písmen sa za štátnym znakom Slovenskej republiky uvádzajú tri číslice a dvojica písmen.' — note the ABSENCE of the district sentence. Also § 116 ods. 14, § 123 ods. 3, 8, 11, 16-18. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2021/128/ZZ_2021_128_20211201.pdf  # zákon č. 128/2021 Z. z. z 18. marca 2021: Čl. I bod 32 'V § 124 ods. 1 sa vypúšťa druhá veta.'; bod 31 'V § 123 ods. 20 sa slovo „okresov“ nahrádza slovom „údajov“.'; bod 34 deletes 'v kombinácii s označením okresu' from § 124 ods. 3; bod 11 inserts § 116 ods. 14; bod 29 extends § 123 ods. 8; Čl. IV 'Tento zákon nadobúda účinnosť 1. januára 2023.' Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20230101.pdf  # vyhláška č. 9/2009 Z. z. in force from 01.01.2023: § 35 ods. 1 (dimensions), ods. 3 (the trailer Y), ods. 8 (EU field and the arms), ods. 9 (band geometry), ods. 10 (colours, embossing, the peripheral groove), ods. 11-16 (mounting). NOTE the absence of § 36. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2022/480/ZZ_2022_480.pdf  # vyhláška č. 480/2022 Z. z. z 15. decembra 2022, announced text: Čl. I bod 7 '§ 36 sa vypúšťa.', bod 4 (the EL/EV rule), bod 5 (§ 35 ods. 10), bod 10 (§ 41e transitional), Čl. II (commencement 1 January 2023 for these items). Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT SLOVAK SERIES, and the one that ended sixteen years of
+      geographic plates. period.start 2023 IS A COMMENCEMENT, NOT AN INSTRUMENT
+      DATE — the enabling act is zákon č. 128/2021 Z. z., adopted 18 March 2021
+      and promulgated 9 April 2021, and its Čl. IV defers the whole act to
+      1 January 2023. Recording 2021 here would be exactly the Spanish defect the
+      instrument-date rule exists to prevent, and it would be doubly wrong
+      because the act's OWN commencement date was itself moved: the transitional
+      § 143h it inserted is headed "Prechodné ustanovenie k úpravám účinným od
+      1. marca 2022", the fossil of an earlier plan that zákon č. 404/2021 Z. z.
+      postponed. THE FORMAT DID NOT CHANGE, which is why this series and its
+      predecessor share a regex and are separated by MEANING alone: PRD-PLATES
+      §2.3 makes a series its own iff format OR design OR period differs, and
+      here it is the region_encoding — a semantic, machine-readable difference
+      that a parse API must act on — plus the period. The pre-2023 plates were
+      never recalled: vyhláška 480/2022 Čl. I bod 10 inserted § 41e, "Tabuľky
+      s evidenčným číslom ... podľa predpisov účinných do 31. decembra 2022
+      zostávajú v platnosti", with stock issued out afterwards, so the two series
+      genuinely run in parallel and a plate issued in, say, February 2023 may
+      lawfully be a district plate from stock.
+
+  # =========================================================================
+  # THE DISTRICT ERA, 2006-2023 — same string, coat of arms, real geography.
+  # =========================================================================
+  - id: sk-standard-district-2006
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2006, end: 2023 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL 999LL"
+      regex: '\A[A-Z]{2}[- ]?\d{3}[A-Z]{2}\z'
+      regex_strict: '\A[A-Z]{2}[- ]?\d{3}[A-XZ][A-Z]\z'
+      charset:
+        notes: >-
+          Identical to sk-standard-2023 — that is the point of the pair. The
+          difference is not in the string but in what § 124 ods. 1 said ABOUT the
+          string: in this era its second sentence read "Prvá dvojica písmen
+          evidenčného čísla označuje okres, v ktorom je vozidlo evidované."
+        district_constraint: >-
+          A tightening that CANNOT be expressed here and belongs in the decode
+          layer: in this era the leading pair had to be one of the 93 codes in
+          § 36 ods. 2 vyhlášky 9/2009. It is not written into `regex_strict`
+          because the strict twin must remain a statement about the SERIES, and
+          a consumer validating a historic plate needs the code list with its
+          per-era caveats, not a 93-alternative regex frozen at one date. The
+          list is in plates/_decode/sk-districts.yml.
+      separator_note: "the arms, since 29 April 2006 — see common.separator"
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "between the first letter pair and the digits", content: "štátny znak Slovenskej republiky" }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_mechanism: >-
+      The FIRST LETTER PAIR is the okres in which the vehicle is registered —
+      § 124 ods. 1 zákona 8/2009, second sentence, in force to 31 December 2022.
+      Fixed width, so no maximal-munch rule is needed. TWO CAVEATS THE DECODE
+      FILE CARRIES IN FULL: a plate of this era that survived into 2023 has since
+      been able to cross district boundaries with its vehicle (§ 116 ods. 14), so
+      the decode is a claim about the district of ISSUE and not of current
+      registration; and the codes were reallocated to nothing after the repeal,
+      so an unmatched pair on a plate of this era is unresolved, never invalid.
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2006/227/ZZ_2006_227.pdf  # vyhláška č. 227/2006 Z. z.: Čl. I bod 13 replaces 'za pomlčkou' with 'za štátnym znakom Slovenskej republiky' in § 48 ods. 2, 3, ods. 4 písm. d) and § 51 ods. 1 of vyhláška 225/2004; bod 14 adds the arms to § 50 ods. 1; bod 21 gives the arms' millimetres; the closing article: 'Táto vyhláška nadobúda účinnosť 29. apríla 2006.' Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20220801.pdf  # zákon č. 8/2009 Z. z. in force 01.08.2022: § 124 ods. 1 with the district sentence intact, and § 116 ods. 13 requiring a new number on a cross-okres change. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # vyhláška č. 9/2009 Z. z. in force 01.08.2022: § 35 (the spec) and § 36 ods. 2 (the district table). Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/SK/ZZ/2004/225/  # the official version history of vyhláška 225/2004: version 2 runs 01.05.2004-28.04.2006, version 3 from 29.04.2006 under 227/2006 Z. z. — the day the hyphen became the arms. Accessed 2026-08-02"
+    notes: >-
+      THE PLATE MOST SLOVAK VEHICLES STILL CARRY. A FOLKLORE CORRECTION AT THE
+      START DATE: secondary sources put the coat of arms replacing the dash at
+      1 June 2006. The instrument says 29 APRIL 2006 — vyhláška č. 227/2006 Z. z.
+      commences itself on that day, and slov-lex's own version index for
+      vyhláška 225/2004 switches on the same date. period.end is 1 January 2023,
+      when the district meaning was deleted; the DESIGN did not change then, only
+      the meaning, which is why this series and sk-standard-2023 differ in
+      `region_encoding` and in nothing a camera can see. That is the trap this
+      dossier exists to close.
+
+  - id: sk-standard-district-2004
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 2004, end: 2006 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL-999LL"
+      regex: '\A[A-Z]{2}[- ]?\d{3}[A-Z]{2}\z'
+      charset:
+        notes: >-
+          Same seven characters, and in this era the separator is a REAL PRINTED
+          HYPHEN prescribed in terms — vyhláška č. 225/2004 Z. z. § 48 ods. 2:
+          "Za prvou dvojicou písmen podľa odseku 1 sa za pomlčkou uvádzajú tri
+          číslice a dvojica písmen." `pattern` therefore prints the hyphen here
+          and the space on the later series, and `regex` accepts both throughout
+          so that a consumer matching an undated string is not forced to choose.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed, note: "NEW on 1 May 2004 — this is the series that acquired it" }
+      emblem: { present: false }
+      emblem_note: >-
+        THE DIFFERENCE THAT MAKES THIS A SERIES. In this window the plate carried
+        NEITHER the top-left arms of the 1997 design NOR the mid-serial arms of
+        the 2006 one: the EU band replaced the former and the latter did not
+        exist yet. Slovakia therefore had a two-year period with a hyphen and no
+        coat of arms on the plate at all, which is the cleanest visual dating
+        signal in the jurisdiction.
+    region_encoding: "plates/_decode/sk-districts.yml"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2004/225/ZZ_2004_225.pdf  # vyhláška MV SR č. 225/2004 Z. z. z 29. marca 2004: § 48 ods. 1-2 (district pair, hyphen, three digits, letter pair), § 50 (the blue field with the distinguishing sign and stars), § 51 (osobitné evidenčné číslo: 'písmeno P a za pomlčkou päť číslic' or 'dvojica písmen označujúca okres, za pomlčkou písmeno X a tri číslice'), § 57 (the SK oval and the distinguishing sign); commencement 'Táto vyhláška nadobúda účinnosť 1. mája 2004'. Accessed 2026-08-02"
+    notes: >-
+      THE ACCESSION PLATE — hyphen, EU band, no coat of arms. period.start is
+      1 May 2004, the day Slovakia joined the European Union and the day vyhláška
+      225/2004 commenced; unlike Czechia, which waited a month, Slovakia timed
+      the instrument to accession exactly. period.end is 29 April 2006. Both
+      bounds are commencements of named vyhlášky, hence
+      instrument-dated-both-ends. Distinct from sk-standard-district-2006 by the
+      absent arms and the printed hyphen, and from sk-standard-district-1997 by
+      the presence of the band.
+
+  - id: sk-standard-district-1997
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, moped, trailer, tractor, machine]
+    period: { start: 1997, end: 2004 }
+    period_evidence: instrument-dated-both-ends
+    matching: strict
+    format:
+      pattern: "LL-999LL"
+      regex: '\A[A-Z]{2}[- ]?\d{3}[A-Z]{2}\z'
+      charset:
+        notes: >-
+          The format Slovakia adopted when it left the Czechoslovak system.
+          Vyhláška MV SR č. 90/1997 Z. z. § 43: "Evidenčné číslo tvoria písmená
+          a číslice."; § 44 ods. 1: "Prvá dvojica písmen evidenčného čísla
+          označuje okres, v ktorom je vozidlo evidované."; § 44 ods. 2: "Za prvou
+          dvojicou písmen podľa odseku 1 sa za pomlčkou uvádzajú tri číslice
+          a dvojica písmen." Unchanged in shape for twenty-six years.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm }
+        - { w: 240, h: 150, unit: mm, note: "motorcycles, motor tricycles and their trailers, and zvláštne motorové vozidlá — § 46 ods. 1 vyhlášky 90/1997" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed, spec_note: "§ 46 ods. 2 vyhlášky 90/1997: 'Písmená a číslice tvoriace evidenčné číslo sú vypuklé a sú čiernej farby na bielom podklade'" }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, position: "top left of the plate, with the letters SK beneath", content: "štátny znak Slovenskej republiky", note: "§ 46 ods. 1 vyhlášky 90/1997, verbatim: 'Na tabuľke s evidenčným číslom je umiestnený štátny znak Slovenskej republiky a pod ním písmená SK.' — the pre-EU national identifier, in the position the Euroband later took" }
+      identification_foil: "§ 46 ods. 3: a separate identification foil carrying the number, NOT issued for motorcycles, motor tricycles, zvláštne motorové vozidlá, trailers or special-number plates"
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: >-
+      The decode table's rows come from the 2022 version of the successor
+      regulation. The 1997 table (§ 44 ods. 4 vyhlášky 90/1997) is the SAME table
+      with FEWER codes per district — 'BB, BC' where 2022 has 'BB, BC, BK', 'ZA,
+      ZI' where 2022 has 'ZA, ZI, ZL'. Codes were added over time and the
+      instruments never dated the additions, so a code decoded against the 2022
+      list may not have existed in 1997. Recorded in the decode file's
+      period_note as a per-row gap rather than papered over.
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/1997/90/ZZ_1997_90_19970401.pdf  # vyhláška MV SR č. 90/1997 Z. z., ktorou sa vykonávajú niektoré ustanovenia zákona NR SR o premávke na pozemných komunikáciách, in force from 1 April 1997: § 43, § 44 ods. 1-2 (the format), § 44 ods. 4 (the district table), § 45 (EE and ZZ, and the CD/CC plates), § 46 (dimensions, colours, the arms with SK beneath, the identification foil, mounting). Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/1996/315/ZZ_1996_315_19970301.pdf  # zákon NR SR č. 315/1996 Z. z. o premávke na pozemných komunikáciách: § 94 (Evidenčné číslo) and its ods. 10 delegating the format to a vyhláška, § 95 (osobitné), § 96 (zvláštne). In force from 1 March 1997. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/SK/ZZ/1997/90/  # official version history: vyhláška 90/1997 ran 01.04.1997 - 30.04.2004, replaced by 225/2004 the day Slovakia joined the EU. Accessed 2026-08-02"
+    notes: >-
+      THE FIRST INDEPENDENT SLOVAK SERIES — the district system as originally
+      enacted, with the state arms in the TOP LEFT corner above the letters SK
+      and no European band. period.start 1 April 1997 is the commencement of
+      vyhláška 90/1997; period.end 1 May 2004 is the commencement of its
+      successor. Note the statute behind it (zákon 315/1996) took effect a month
+      earlier, on 1 March 1997, and delegated the format entirely — § 94 ods. 10,
+      "Podrobnosti o evidenčnom čísle, vyhotovení, tvare a rozmeroch tabuľky
+      s evidenčným číslom ... ustanoví všeobecne záväzný právny predpis" — so the
+      ENABLING date and the FORMAT date differ by a month and this file records
+      the latter. § 94 ods. 11 of the same statute is worth knowing about: it
+      empowers the ministry to order a MASS reassignment or exchange of plates,
+      which is the machinery behind the 1997 changeover.
+
+  # =========================================================================
+  # THE SHARED CZECHOSLOVAK ERA — recorded here and in plates/cz.yml.
+  # =========================================================================
+  - id: sk-spz-czechoslovak
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1984, end: 1997 }
+    period_evidence: transitional-provision
+    matching: strict
+    format:
+      pattern: "LLL 99-99"
+      regex: '\A[A-Z]{2,3} \d{2}-\d{2}\z'
+      charset:
+        notes: >-
+          Two or three letters for the okres, then two digit pairs joined by a
+          hyphen — the SAME format as cz-spz-czechoslovak, because it is the same
+          system. See that series for the full evidence discussion; in short, the
+          composition lived in vyhláška ministerstva vnitra č. 145/1956 Ú. l.,
+          published in the Úřední list and absent from both the Czech and the
+          Slovak online gazette archives.
+      evidence: secondary-wikipedia
+      evidence_source: "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Slovakia  # 'The older Czechoslovak system used XX NN-NN or XXY NN-NN format'. Corroborated by the equivalent Czech article. Accessed 2026-08-02"
+      okres_codes: >-
+        NOT AUTHORED, and expressly NOT the 1997 table. The Czechoslovak okres
+        letters are a different code set from the ones in
+        plates/_decode/sk-districts.yml; routing a pre-1997 Slovak plate through
+        that file would produce confident nonsense. A parse API must treat the
+        leading letters of a Czechoslovak-era mark as unresolved.
+    design:
+      plate: { w: null, h: null, unit: mm }
+      dimensions_note: "no dimensions secured — the 1997 vyhláška's § 46 post-dates the series. Recorded gap."
+      background: { color: "#FFFFFF", finish: painted, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: "okres letters — decode table NOT authored; do NOT use plates/_decode/sk-districts.yml"
+    validity_after_end:
+      last_issue: "1997-03-31"
+      last_valid_on_road: "2004-12-31"
+      motorcycles_last_valid: "1998-12-31"
+      statute: >-
+        Zákon NR SR č. 315/1996 Z. z., prechodné ustanovenia ods. 3, in the
+        version in force in 2005: "Doklady o evidencii vozidla a tabuľky
+        s evidenčným číslom (štátne poznávacie značky) vydané pred 1. aprílom
+        1997 zostávajú v platnosti do 31. decembra 2004." The ORIGINAL 1997 text
+        of the same paragraph set the deadline at 31 December 2002 and cut
+        motorcycles off at 31 December 1998: "s výnimkou motocyklov, ktorých
+        doklady o evidencii a tabuľky s evidenčným číslom ... zostávajú
+        v platnosti do 31. decembra 1998." The deadline was therefore EXTENDED by
+        amendment, twice-over from the motorcycle case, and the commonly-quoted
+        "Czechoslovak plates expired on 1 January 2005" is correct only about the
+        final position. Both readings are recorded; neither is averaged.
+      enforcement: >-
+        The same provision gave the deadline teeth, which is why Slovakia has a
+        real end date and Czechia does not: ods. 5 required the traffic
+        inspectorate to STRIKE OFF a vehicle whose keeper had not applied for a
+        new certificate and plate by the deadline.
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/1996/315/ZZ_1996_315_19970301.pdf  # zákon NR SR č. 315/1996 Z. z. as in force from 1 March 1997 — prechodné ustanovenia ods. 3 (31 December 2002; motorcycles 31 December 1998) and ods. 5 (strike-off). Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/1996/315/ZZ_1996_315_20050101.pdf  # the same statute in a 2005 consolidation — the same paragraph now reading 'vydané pred 1. aprílom 1997 zostávajú v platnosti do 31. decembra 2004'. Diffing the two versions dates the extension. Accessed 2026-08-02"
+      - "https://www.psp.cz/sqw/sbirka.sqw?cz=34&r=1984  # the federal Czechoslovak instrument chain, dated: vyhláška federálního ministerstva vnitra č. 34/1984 Sb., amending vyhláška ministerstva vnitra č. 145/1956 Ú. l., o provozu na silnicích, Částka 6 (4. 4. 1984), Účinnost od 1. 8. 1984. The Czech register is cited because the instrument is FEDERAL and predates the split; see plates/cz.yml for the Czech end of the same chain. Accessed 2026-08-02"
+    notes: >-
+      THE CZECHOSLOVAK PLATE, SLOVAK HALF. This is the deliberate treatment of
+      the shared pre-1993 era described in the file header: the same series
+      appears in plates/cz.yml as cz-spz-czechoslovak with the same federal
+      instrument and the same format, and the two diverge only in how each
+      successor state ended it. period.start 1984 is an INSTRUMENT DATE AND
+      NOTHING MORE — the commencement of vyhláška 34/1984 Sb., the youngest
+      reachable primary in the 145/1956 chain — and the system is much older;
+      that is stated rather than disguised, and the pre-1984 designs are recorded
+      as a known unmodelled era. period_evidence is transitional-provision
+      because the informative bound here is the END, and the end is a
+      transitional clause rather than a repeal: issue stopped when zákon 315/1996
+      took effect on 1 April 1997, and validity ran on for another seven years
+      and nine months under an expressly extended deadline. THE CONTRAST WITH
+      CZECHIA IS THE POINT OF RECORDING BOTH: Slovakia set a hard road-validity
+      deadline and enforced it with strike-off, Czechia set none and this pass
+      found no Czech exchange deadline at all.
+
+  # =========================================================================
+  # ELECTRIC — the EL / EV prefix, new on 1 January 2023.
+  # =========================================================================
+  - id: sk-electric
+    class: electric
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2023 }
+    period_evidence: enacted-commencement
+    matching: strict
+    format:
+      pattern: "EV 999LL"
+      regex: '\A(?:EL|EV)[- ]?\d{3}[A-Z]{2}\z'
+      pattern_note: >-
+        THE PATTERN SHOWS THE EV FORM AND THE REGEX CARRIES BOTH, for a schema
+        reason rather than a legal one: the human-pattern DSL of PRD-PLATES §2.2
+        reserves L for "any letter", so a literal EL prefix cannot be spelled as a
+        pattern at all without meaning "E followed by any letter". EV is equally
+        canonical — § 35 ods. 7 offers the two as alternatives with no preference —
+        and `regex` accepts both. Recorded because a reader comparing pattern and
+        regex will otherwise think one of them is wrong.
+      charset:
+        notes: >-
+          § 35 ods. 7 vyhlášky 9/2009 as REPLACED by vyhláška č. 480/2022 Z. z.
+          Čl. I bod 4, verbatim: "Písmená na tabuľke s evidenčným číslom vozidla
+          podľa § 123 ods. 18 zákona začínajú písmenami EL alebo EV." The
+          referenced § 123 ods. 18 defines the eligible vehicle: one "ktorého
+          jediným zdrojom energie je elektrina, alebo hybridného elektrického
+          vozidla s možnosťou externého nabíjania" — battery electric or
+          plug-in hybrid. The plate is issued ON REQUEST ("Na žiadosť držiteľa
+          vozidla alebo vlastníka vozidla"), so an EV without an EL/EV plate is
+          entirely normal and a parse API must not infer the converse.
+        why_two_prefixes: >-
+          The instrument gives EL and EV as alternatives without distinguishing
+          them, and this pass found nothing mapping one to battery-electric and
+          the other to plug-in hybrid. Recorded gap; do not assume the obvious
+          split.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#009933"
+      foreground_note: >-
+        § 35 ods. 10 as replaced: "písmená a číslice na tabuľke s evidenčným
+        číslom vozidla podľa § 123 ods. 18 zákona MÔŽU byť zelenej farby na
+        bielom podklade" — MAY be green, not must. Green characters are an option
+        within the series, and the peripheral groove follows the character colour
+        (§ 35 ods. 10 second sentence), so a green-lettered plate has a green
+        groove. The hex is observed; the statute says only "zelenej".
+      border: { color: "#009933", hex_basis: observed }
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "between EL/EV and the digits" }
+    region_encoding: none
+    region_encoding_note: "EL and EV are prefixes, not district codes, and neither pair appears in plates/_decode/sk-districts.yml — there is no historical clash to resolve"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2022/480/ZZ_2022_480.pdf  # vyhláška č. 480/2022 Z. z. Čl. I bod 3 (§ 35 ods. 6, green on the illuminated plate), bod 4 (§ 35 ods. 7, the EL/EV rule), bod 5 (§ 35 ods. 10, green characters and the matching groove); Čl. II commences all three on 1 January 2023. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # zákon č. 8/2009 Z. z. § 123 ods. 18: the eligible vehicle definition and the on-request nature of the plate. Accessed 2026-08-02"
+    notes: >-
+      SLOVAKIA HAS AN ELECTRIC PLATE AND CZECHIA DOES NOT — the sharpest
+      divergence between the two files, and one that is easy to get backwards
+      because the countries are so often treated as a pair. period.start 2023 is
+      the commencement of vyhláška 480/2022; a § 35 ods. 7 existed before that
+      date in a different form and the pre-2023 wording of the electric-plate
+      rule was not established in this pass (recorded gap), so this series is not
+      extended backwards. The prefix REPLACES the position a district code once
+      occupied, which makes an EL/EV plate structurally post-district even where
+      it was issued alongside district plates from stock.
+
+  # =========================================================================
+  # TRAILERS — the one positional rule that survived 2023.
+  # =========================================================================
+  - id: sk-trailer
+    class: trailer
+    categories: [trailer, semitrailer]
+    period: { start: 1997 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LL 999YL"
+      regex: '\A[A-Z]{2}[- ]?\d{3}Y[A-Z]\z'
+      charset:
+        notes: >-
+          § 35 ods. 3 vyhlášky 9/2009, verbatim: "Tabuľka s evidenčným číslom
+          prideleným vozidlu kategórie O a R má za štátnym znakom Slovenskej
+          republiky v dvojici písmen evidenčného čísla prvé písmeno Y; to
+          neplatí, ak ide o vozidlo kategórie O1, ktorého ťažným vozidlom je
+          vozidlo kategórie L." Y opens the SECOND letter pair. The exception is
+          real and is why `categories` here excludes the small trailers towed by
+          motorcycles: an O1 trailer behind a category L vehicle takes an
+          ordinary mark on a 24 x 15 or 14,5 x 11 cm plate (§ 35 ods. 2).
+        tractor_extension: >-
+          § 35 ods. 4 extends the same Y to a category T or C vehicle — an
+          agricultural or forestry tractor — "v odôvodnených prípadoch" where it
+          is given the full-size 52 x 11 cm plate. So a Y in that position means
+          "trailer, or a tractor on a car-sized plate", not "trailer" simpliciter.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 340, h: 200, unit: mm }
+        - { w: 240, h: 150, unit: mm, note: "the ordinary size for category R and for trailers behind category L vehicles" }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+      rear_differs: false
+      display: "rear only, centred or on the left — § 35 ods. 11 písm. a)"
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: >-
+      For plates issued before 1 January 2023 the leading pair is the district,
+      as on any Slovak plate of that era; for later ones it is not. The Y is
+      unaffected by the reform — it is a VEHICLE-CATEGORY marker, not a
+      geographic one, and it is the only positional meaning in the Slovak serial
+      that 2023 left standing.
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20230101.pdf  # vyhláška č. 9/2009 Z. z. § 35 ods. 2, 3, 4 and 11 písm. a). Accessed 2026-08-02"
+    notes: >-
+      THE SLOVAK TRAILER MARK. period.start 1997 is instrument-in-force and is
+      the weakest date in this file: the Y rule is quoted from vyhláška 9/2009,
+      in force since 1 February 2009, and this pass did NOT verify whether
+      vyhláška 90/1997 or 225/2004 carried the same rule, so 1997 is inferred
+      from the district system's own start rather than sourced. Flagged for the
+      verifier as the first thing to check in this file. Modelled as its own
+      series rather than a variant because the FORMAT differs — a reserved letter
+      at a fixed position is a grammar difference, and PRD-PLATES §2.3 makes that
+      a series.
+
+  # =========================================================================
+  # DIPLOMATIC — EE and ZZ, five digits, and a separate CD/CC plate.
+  # =========================================================================
+  - id: sk-diplomatic-mission
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1997 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "EE 99999"
+      regex: '\AEE[- ]?\d{5}\z'
+      charset:
+        notes: >-
+          § 125 ods. 1 zákona č. 8/2009 Z. z., verbatim: "Evidenčné číslo vozidiel
+          cudzích zastupiteľských úradov na území Slovenskej republiky tvorí
+          dvojica písmen EE a päť číslic." Word for word the same rule as § 45
+          ods. 1 vyhlášky 90/1997 Z. z. — "tvorí dvojica písmen EE a päť
+          číslic" — which is why this series runs unbroken from 1997.
+        block_allocation: >-
+          NOT AUTHORED. Which mission holds which five-digit block is exactly the
+          decode PRD-PLATES defers to L4, and no instrument publishes it.
+          Recorded gap.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#003399", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFCC00"
+      colour_source_caveat: >-
+        THE COLOUR IS SOURCED TO 2004 AND CARRIED FORWARD. Vyhláška č. 225/2004
+        Z. z. § 50 stated it in words — the letters and digits of the vehicles in
+        its § 49 (the diplomatic ones) "sú žltej farby na modrom podklade". The
+        current vyhláška 9/2009 puts the diplomatic vzory in príloha č. 17, which
+        is a DRAWING and yields no extractable text, and its § 35 ods. 10 speaks
+        only of black on white. This entry therefore asserts continuity, not a
+        current quotation, and says so. Recorded gap.
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "after the letter pair" }
+      supplementary_plate: { shape: ellipse, w_min: 175, h_min: 115, unit: mm, content: "CD or CC", note: "§ 125 ods. 3 zákona: members of foreign missions enjoying diplomatic immunity receive, WITH the plate, a separate značka bearing CD or CC. § 37 vyhlášky 9/2009 as replaced by vyhláška 480/2022 Čl. I bod 8 gives its spec: letters at least 8 cm high with 1 cm strokes, on an ellipse whose horizontal axis is at least 17,5 cm and vertical at least 11,5 cm. A COLOUR INVERSION ON 1 JANUARY 2023: the pre-2023 § 37 made the letters YELLOW ON BLUE ('Značka s písmenami CD a CC je žltej farby ... na modrom podklade'); the replacement makes them BLACK ON WHITE ('písmen CD alebo CC čiernej farby ... na bielom podklade'). Dated, primary, and easy to miss." }
+    region_encoding: none
+    region_encoding_note: "EE is a reserved pair, never a district code — see the collisions list in plates/_decode/sk-districts.yml"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 125 ods. 1 (EE + five digits), ods. 3 (the CD/CC plates), ods. 4 (delegation of their spec). Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/1997/90/ZZ_1997_90_19970401.pdf  # vyhláška MV SR č. 90/1997 Z. z. § 45 ods. 1-3 — the identical EE rule in 1997, and the ministry rather than the district inspectorate as the issuing authority. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2022/480/ZZ_2022_480.pdf  # vyhláška č. 480/2022 Z. z. Čl. I bod 8, replacing § 37: CD/CC become BLACK ON WHITE from 1 January 2023. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2004/225/ZZ_2004_225.pdf  # vyhláška č. 225/2004 Z. z. § 49-50: the yellow-on-blue diplomatic colour, stated in words. Accessed 2026-08-02"
+    notes: >-
+      THE MISSION PLATE — EE plus five digits, for the vehicles of foreign
+      diplomatic missions themselves. Distinct from sk-diplomatic-staff by its
+      prefix and by its holder class: this series is the MISSION's own vehicles,
+      that one is its people's. period.start 1997 is instrument-in-force on
+      vyhláška 90/1997, whose § 45 ods. 1 states the rule in the same words the
+      current statute uses; whether the EE prefix predates the 1997 reform was
+      not established, and given the Czechoslovak system used different
+      diplomatic markings entirely it probably does not. The 2023 reform did not
+      touch this series' serial — it is one of the few Slovak plates whose
+      meaning is exactly what it was in 1997.
+
+  - id: sk-diplomatic-staff
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1997 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "ZZ 99999"
+      regex: '\AZZ[- ]?\d{5}\z'
+      charset:
+        notes: >-
+          § 125 ods. 2 zákona č. 8/2009 Z. z., verbatim: "Evidenčné číslo vozidiel
+          administratívneho a technického personálu cudzích zastupiteľských
+          úradov so sídlom na území Slovenskej republiky a obchodných
+          zastupiteľstiev zriadených diplomatickou misiou tvorí dvojica písmen
+          ZZ a päť číslic." Again identical to § 45 ods. 2 vyhlášky 90/1997.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#003399", finish: retroreflective, hex_basis: observed }
+      foreground: "#FFCC00"
+      colour_source_caveat: "as sk-diplomatic-mission — sourced to vyhláška 225/2004 § 50 and carried forward; the current vzor is a drawing in príloha č. 17. Recorded gap."
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: none
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 125 ods. 2. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/1997/90/ZZ_1997_90_19970401.pdf  # vyhláška MV SR č. 90/1997 Z. z. § 45 ods. 2. Accessed 2026-08-02"
+    notes: >-
+      THE ADMINISTRATIVE-AND-TECHNICAL-STAFF PLATE — ZZ plus five digits, for the
+      PEOPLE of foreign missions and for trade representations established by a
+      mission, as against sk-diplomatic-mission's EE for the missions' own
+      vehicles. Recorded under class `diplomatic` rather than `consular` because
+      the vocabulary defines `consular` as the consular corps, which this is not:
+      administrative and technical staff are a distinct entitlement class in the
+      Vienna Convention and Slovak law treats them as such. The class is the
+      least-wrong fit and the mismatch is stated rather than hidden.
+
+  # =========================================================================
+  # OSOBITNÉ EVIDENČNÉ ČÍSLA — police and armed forces.
+  # =========================================================================
+  - id: sk-police
+    class: police
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 1997 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "P 99999"
+      regex: '\AP[A-Z]?[- ]?\d{5}\z'
+      charset:
+        notes: >-
+          § 126 ods. 3 písm. a) zákona č. 8/2009 Z. z.: an osobitné evidenčné
+          číslo is formed by "písmeno P a päť číslic, ktoré oddeľuje štátny
+          znak"; ods. 5 restricts it to vehicles of the Police Force and the
+          Ministry of the Interior; ods. 7 adds that "Za písmenom P podľa
+          odseku 3 písm. a) môže byť uvedené aj ďalšie písmeno" — an OPTIONAL
+          SECOND LETTER after the P, which is why `regex` spells [A-Z]?. Its
+          meaning is not published. Recorded gap.
+      privilege_note: >-
+        Worth recording because it is the reason the class exists: § 126 ods. 2
+        exempts the driver of a vehicle bearing an osobitné evidenčné číslo, when
+        necessary for the tasks in ods. 1, from no-entry, no-stopping and
+        no-standing signs and from the pedestrian-zone rules. The plate is an
+        operational permission, not merely an identifier.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_caveat: "NOT separately specified — § 35 ods. 10's black-on-white default is applied here by elimination, as § 36 (repealed) listed colours only for the zvláštne evidenčné čísla. Inference, flagged."
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "after the letter P — § 35 ods. 8 names this position expressly" }
+    region_encoding: none
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 126 ods. 1-3, 5, 7. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2004/225/ZZ_2004_225.pdf  # vyhláška č. 225/2004 Z. z. § 51 ods. 1 písm. a): the same P plate in its pre-2006 form, 'písmeno P a za pomlčkou päť číslic'. Accessed 2026-08-02"
+    notes: >-
+      THE POLICE PLATE. § 123 ods. 11 expressly denies duplicate plates to
+      holders of an osobitné evidenčné číslo under § 126 ods. 6, which is the
+      military row rather than this one — a distinction worth reading carefully.
+      period.start 1997 is instrument-in-force on the 315/1996 regime, whose § 95
+      created the osobitné evidenčné číslo class; the P FORMAT itself is quoted
+      from vyhláška 225/2004 for the pre-2006 era and from the current statute
+      after, and whether vyhláška 90/1997 used the same letter was not
+      established. Recorded gap.
+
+  - id: sk-military
+    class: military
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1997 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "99 99999"
+      regex: '\A\d{2}[- ]?\d{5}\z'
+      charset:
+        notes: >-
+          § 126 ods. 3 písm. b) zákona č. 8/2009 Z. z.: "dvojica číslic a päť
+          číslic, ktoré oddeľuje štátny znak"; ods. 6 restricts it to vehicles of
+          the armed forces, the Ministry of Defence and budgetary, contributory
+          or state enterprises in its remit. ALL DIGITS — the only Slovak mark
+          with no letter in it, which makes it trivially separable from every
+          other series in this file.
+        hyphen_variant: >-
+          § 126 ods. 4 preserves an older printed form and it is worth recording
+          because it is the one place Slovak law still writes a hyphen into a
+          serial: "Za osobitné evidenčné číslo podľa odseku 3 písm. b) sa
+          považuje aj evidenčné číslo vozidiel uvedených v odseku 6 tvorené
+          dvojicou číslic a za pomlčkou piatimi číslicami." Two digits, a HYPHEN,
+          five digits — the arms-separated and the hyphen-separated forms are
+          both lawful and are the same number, which is exactly why `regex`
+          spells the position `[- ]?`.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_caveat: "as sk-police — the black-on-white default applied by elimination. Inference, flagged."
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "after the first digit pair — § 35 ods. 8 names this position expressly" }
+    region_encoding: none
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 126 ods. 3 písm. b), ods. 4, ods. 6; § 123 ods. 11 (no duplicates for these plates); § 35 ods. 8 (the arms position). Accessed 2026-08-02"
+    notes: >-
+      THE ARMED-FORCES PLATE — seven digits split two-and-five. Distinct from
+      sk-police by class, by charset and by the express no-duplicate rule in
+      § 123 ods. 11, which bites on this row and not on the P one. period.start
+      1997 is instrument-in-force on the 315/1996 osobitné evidenčné číslo regime
+      and the FORMAT is quoted from the current statute; the pre-2009 form was
+      not verified. Recorded gap.
+
+  # =========================================================================
+  # ZVLÁŠTNE EVIDENČNÉ ČÍSLA — the six-letter family of § 127.
+  # =========================================================================
+  - id: sk-dealer
+    class: dealer
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLM999"
+      regex: '\A[A-Z]{2}M[A-Z]?\d{3}\z'
+      charset:
+        notes: >-
+          THE SHARED GRAMMAR OF THE § 127 FAMILY, quoted once here and referenced
+          by the five series that follow. ods. 3: "Zvláštne evidenčné číslo
+          tvoria písmená a číslice usporiadané v dvoch riadkoch okrem zvláštneho
+          evidenčného čísla obsahujúceho písmeno H alebo S, ktoré môžu byť
+          usporiadané v jednom riadku." ods. 4: "V prvom riadku sa uvádza dvojica
+          písmen". ods. 5: "V druhom riadku sa uvádza písmeno M, V, H, S, Z alebo
+          F a tri číslice ... Za písmeno M, V, H, S, Z alebo F sa môže uviesť aj
+          ďalšie písmeno." So: a letter pair on the top line, then the class
+          letter, an OPTIONAL extra letter, and three digits on the bottom line.
+          ods. 6 assigns M: newly manufactured vehicles, newly bought
+          never-registered vehicles, and vehicles in trial operation.
+        separator_note: >-
+          NO SEPARATOR IS SPELLED. The break between the two groups is a LINE
+          BREAK, not a printed glyph or a gap, so the pattern runs the six or
+          seven characters together. This is the one Slovak family where the
+          arms do NOT sit in the serial: § 35 ods. 8 places them after the first
+          letter pair, after P, after the first digit pair, or "za písmenom C, ak
+          ide o zvláštne evidenčné číslo" — naming only the C row.
+        district_note: >-
+          THE TOP-LINE PAIR WAS A DISTRICT CODE AND IS NOT ANY MORE. Before
+          1 January 2023 § 127 ods. 5 read "dvojicou písmen označujúcou okres,
+          v ktorom bolo zvláštne evidenčné číslo vydané"; zákon č. 128/2021 Z. z.
+          Čl. I bod 38 replaced those words with "prvou dvojicou písmen", and
+          bod 37 rewrote ods. 4 to say only "V prvom riadku sa uvádza dvojica
+          písmen". The 2023 reform reached these plates too, by the same act on
+          the same day, and any decode of the top line carries the same caveat as
+          on the ordinary series.
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      plate_note: "§ 35 ods. 5: every zvláštne evidenčné číslo plate is 24 x 15 cm, except that an H or S plate may in justified cases be 52 x 11, 34 x 20 or 14,5 x 11 cm"
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#CC0000"
+      foreground_note: "§ 36 ods. 1 písm. a) vyhlášky 9/2009 (in force to 31 December 2022): the characters of an M plate are 'červenej farby na bielom podklade'. See common.colours.special_plate_table for why this is a continuity claim after that date."
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: "the top-line letter pair, for plates issued before 1 January 2023 only — see format.charset.district_note"
+    binding: business
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 1-6. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # vyhláška č. 9/2009 Z. z. § 36 ods. 1 písm. a) (red on white) and § 35 ods. 5 (the 24 x 15 cm plate). Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2021/128/ZZ_2021_128_20211201.pdf  # zákon č. 128/2021 Z. z. Čl. I body 37 a 38 — the district wording struck out of § 127. Accessed 2026-08-02"
+    notes: >-
+      THE M PLATE — Slovakia's dealer plate, red on white, for new and
+      never-registered vehicles and for trial operation. period.start 2009 is
+      instrument-in-force on zákon 8/2009: the class existed earlier under § 96
+      of zákon 315/1996, but the SIX-LETTER family structure (M V H S Z F) is
+      quoted from the 2009 statute and the earlier letter set was not verified.
+      Recorded gap, and the same gap applies to the five series below.
+
+  - id: sk-export
+    class: export
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLV999"
+      regex: '\A[A-Z]{2}V[A-Z]?\d{3}\z'
+      charset:
+        notes: >-
+          The § 127 family grammar with V — see sk-dealer.format.charset. § 127
+          ods. 7: "Zvláštne evidenčné číslo obsahujúce písmeno V sa môže prideliť
+          len vozidlu určenému na jednotlivý vývoz zo Slovenskej republiky. Na
+          tabuľke so zvláštnym evidenčným číslom obsahujúcim písmeno V sa
+          vyznačuje doba jej platnosti." The plate CARRIES ITS OWN EXPIRY, as
+          the Czech export plate does in its red field.
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_note: "§ 36 ods. 1 písm. b): 'čiernej farby na žltom podklade' — black on YELLOW, where Czechia uses white with a red validity field. The two neighbours solve the same problem in visibly different ways."
+      validity_field: { content: "the expiry date, printed on the plate", note: "§ 127 ods. 7; no duration is fixed in the statute, unlike the Czech three-month cap" }
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: "as sk-dealer — top-line pair, pre-2023 only"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 3-5, 7. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # § 36 ods. 1 písm. b). Accessed 2026-08-02"
+    notes: >-
+      THE V PLATE — black on yellow, for a vehicle leaving Slovakia on an
+      individual export, carrying its own printed expiry. § 127 ods. 2 gives it a
+      jurisdictional quirk no other Slovak plate has: a V plate may be issued not
+      only by the police authority for the applicant's residence or place of
+      business but also "orgán Policajného zboru podľa miesta, kde bolo vozidlo
+      prevzaté" — the place the vehicle was collected. A decode of its top-line
+      pair therefore points at the COLLECTION district as readily as at the
+      holder's, even before the 2023 reform.
+
+  - id: sk-historic
+    class: historic
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLH999"
+      regex: '\A[A-Z]{2}H[A-Z]?\d{3}\z'
+      charset:
+        notes: >-
+          The § 127 family grammar with H. § 127 ods. 8: "Zvláštne evidenčné
+          číslo obsahujúce písmeno H sa môže prideliť len historickému vozidlu."
+          H is one of only TWO letters in the family that may be set on ONE line
+          rather than two (ods. 3), in which case "písmeno H alebo S a tri
+          číslice sa uvádzajú za prvou dvojicou písmen" — the same six or seven
+          characters in the same order, so one regex covers both layouts.
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      plate_variants:
+        - { w: 520, h: 110, unit: mm, note: "§ 35 ods. 5, in justified cases" }
+        - { w: 340, h: 200, unit: mm, note: "§ 35 ods. 5, in justified cases" }
+        - { w: 145, h: 110, unit: mm, note: "§ 35 ods. 5, in justified cases" }
+      background: { color: "#FFCC00", finish: retroreflective, hex_basis: observed }
+      foreground: "#CC0000"
+      foreground_note: "§ 36 ods. 1 písm. c): 'červenej farby na žltom podklade' — RED ON YELLOW, the most distinctive plate in either country in this slice and nothing like the Czech green-on-white historic mark"
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: "as sk-dealer — top-line pair, pre-2023 only"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 1 (historic vehicles not subject to registration may use the road only with a zvláštne evidenčné číslo), ods. 3 (one-line option for H and S), ods. 5, ods. 8. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # § 35 ods. 5 (the four permitted plate sizes) and § 36 ods. 1 písm. c) (red on yellow). Accessed 2026-08-02"
+    notes: >-
+      THE H PLATE — red on yellow. A STRUCTURAL DIFFERENCE FROM CZECHIA WORTH
+      STATING: the Czech historic mark (cz-historic-2015) is an ordinary
+      registration in a distinct colour, while the Slovak one is a ZVLÁŠTNE
+      evidenčné číslo — a plate for a vehicle that is NOT in the register at all
+      (§ 127 ods. 1 covers vehicles "ktoré nepodlieha evidencii a je historickým
+      alebo športovým vozidlom"). The two countries put historic vehicles on
+      opposite sides of the registration boundary, which a consumer joining
+      Czech and Slovak data on class alone would never see.
+
+  - id: sk-sport
+    class: sport
+    categories: [car, motorcycle]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLS999"
+      regex: '\A[A-Z]{2}S[A-Z]?\d{3}\z'
+      charset:
+        notes: "the § 127 family grammar with S. § 127 ods. 9: 'Zvláštne evidenčné číslo obsahujúce písmeno S sa môže prideliť len športovému vozidlu.' Like H, it may be set on one line (ods. 3) and may take any of the four plate sizes (§ 35 ods. 5)."
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#0000CC"
+      foreground_note: "§ 36 ods. 1 písm. d): 'modrej farby na bielom podklade'"
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: "as sk-dealer — top-line pair, pre-2023 only"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 1, 3, 9. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # § 36 ods. 1 písm. d). Accessed 2026-08-02"
+    notes: >-
+      THE S PLATE — blue on white, for a sports vehicle. Together with
+      cz-sport it is the reason this PR adds `sport` to plates/_meta/classes.yml:
+      two independent jurisdictions in one slice maintain a distinct series for
+      competition vehicles, and neither fits `specialty`, which the vocabulary
+      defines as an optional-design programme on a standard serial. Slovakia's,
+      like its historic plate, sits OUTSIDE the register; Czechia's sits inside
+      it — the same divergence, recorded on both.
+
+  - id: sk-agricultural
+    class: agricultural
+    categories: [tractor, machine]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLZ999"
+      regex: '\A[A-Z]{2}Z[A-Z]?\d{3}\z'
+      charset:
+        notes: "the § 127 family grammar with Z. § 127 ods. 10: 'Zvláštne evidenčné číslo obsahujúce písmeno Z sa môže prideliť len vozidlu kategórie PS a LS.' Categories PS and LS are Slovak national categories for self-propelled working machines and forestry machinery."
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      background: { color: "#00A550", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      foreground_note: "§ 36 ods. 1 písm. e): 'čiernej farby na zelenom podklade' — BLACK ON GREEN, where Czechia colours the same class of vehicle black on YELLOW. Neighbouring jurisdictions, opposite conventions, and a parse API that assumes a shared Visegrad palette will be wrong."
+      band: { side: none }
+      emblem: { present: false }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: "as sk-dealer — top-line pair, pre-2023 only"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 10. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # § 36 ods. 1 písm. e). Accessed 2026-08-02"
+    notes: >-
+      THE Z PLATE — black on green, for category PS and LS machinery. Note the
+      contrast with sk-standard-2023, whose `categories` already include tractor
+      and machine: an agricultural tractor of category T or C takes an ORDINARY
+      Slovak plate (with the Y marker if it is given the car-sized one, § 35
+      ods. 4), while a PS or LS self-propelled machine takes this special one.
+      The Slovak split is by category letter, the Czech split is by plate colour
+      on an otherwise ordinary mark, and neither maps onto the other.
+
+  - id: sk-temporary-c
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer, tractor, machine]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "C99999"
+      regex: '\AC[A-Z]?[- ]?\d{5}\z'
+      charset:
+        notes: >-
+          THE ONE MEMBER OF THE FAMILY WITH NO LETTER PAIR. § 127 ods. 12:
+          "Zvláštne evidenčné číslo obsahujúce v prvom riadku písmeno C
+          a v druhom riadku päť číslic sa môže prideliť ... za písmenom C sa môže
+          uviesť aj ďalšie písmeno. Na tabuľke so zvláštnym evidenčným číslom
+          obsahujúcim písmeno C sa vyznačuje doba jej platnosti." C plus five
+          digits, an optional extra letter, and a printed validity. ods. 4
+          expressly disapplies the top-line letter pair for this row ("to neplatí
+          ak ide o zvláštne evidenčné číslo podľa odseku 12"), which is why this
+          series alone in the family carries no district code and never did.
+        arms_position: "§ 35 ods. 8 names this row explicitly: the state arms sit 'za písmenom C, ak ide o zvláštne evidenčné číslo' — the C plate is the only zvláštne plate that carries the arms in the serial, hence the `[- ]?` in the regex."
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#009933"
+      foreground_note: "§ 36 ods. 1 písm. f): C and F plates alike are 'zelenej farby na bielom podklade'"
+      band: { side: none }
+      emblem: { present: true, rendered: placeholder, position: "after the letter C" }
+      validity_field: { content: "the validity period, printed on the plate" }
+    region_encoding: none
+    region_encoding_note: "structurally none — § 127 ods. 4 disapplies the top-line letter pair for this row, so the C plate carried no district code even before 2023"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 4, 12, 13; § 35 ods. 8. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # § 36 ods. 1 písm. f) and § 41 ods. 1 (C plates may also be issued by an okresný úrad). Accessed 2026-08-02"
+    notes: >-
+      THE C PLATE — green on white, C plus five digits, with a printed validity.
+      It does two jobs § 127 keeps deliberately separate: it covers a vehicle
+      seeking individual approval, deregistered for export or not subject to
+      registration (ods. 1), AND, under ods. 13, an unapproved motor or trailer
+      used for AGRICULTURAL OR FORESTRY WORK on its owner's application — an
+      application the statute requires to include photographs of the vehicle from
+      the front, side and rear. Modelled as `temporary` on the strength of its
+      printed validity; the agricultural use under ods. 13 is a genuine
+      class-boundary case and is recorded rather than resolved by splitting the
+      series.
+
+  - id: sk-limited-f
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2009 }
+    period_evidence: instrument-in-force
+    matching: strict
+    format:
+      pattern: "LLF999"
+      regex: '\A[A-Z]{2}F[A-Z]?\d{3}\z'
+      charset:
+        notes: "the § 127 family grammar with F. § 127 ods. 11: 'Zvláštne evidenčné číslo obsahujúce písmeno F sa môže prideliť len jednotlivému vozidlu s obmedzenou prevádzkou. Na tabuľke so zvláštnym evidenčným číslom obsahujúcim písmeno F sa vyznačuje doba jej platnosti.'"
+    design:
+      plate: { w: 240, h: 150, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#009933"
+      foreground_note: "§ 36 ods. 1 písm. f), which pairs F with C"
+      band: { side: none }
+      emblem: { present: false }
+      validity_field: { content: "the validity period, printed on the plate" }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_note: "as sk-dealer — top-line pair, pre-2023 only. Note the contrast with sk-temporary-c, which shares this series' colour but has no letter pair at all."
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 127 ods. 3-5, 11. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # § 36 ods. 1 písm. f). Accessed 2026-08-02"
+    notes: >-
+      THE F PLATE — green on white, for a "jednotlivé vozidlo s obmedzenou
+      prevádzkou", a single vehicle approved for restricted operation, with a
+      printed validity. Shares its colour and its class with sk-temporary-c and
+      is a different series because its grammar differs: F takes the family's
+      top-line letter pair and three digits, C takes no pair and five digits.
+      That difference is also a decode difference, which is the practical reason
+      to keep them apart.
+
+  # =========================================================================
+  # PERSONALIZED — the § 124 ods. 2 mark, reshaped by the 2023 reform.
+  # =========================================================================
+  - id: sk-personalized-2023
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2023 }
+    period_evidence: enacted-commencement
+    matching: recall-only
+    format:
+      pattern: "LL LLLLL"
+      regex: '\A[A-Z]{2}[- ]?[A-Z0-9]{5}\z'
+      charset:
+        notes: >-
+          § 124 ods. 2 zákona č. 8/2009 Z. z. AS REPLACED by zákon č. 128/2021
+          Z. z. Čl. I bod 33, verbatim: "Na žiadosť držiteľa vozidla alebo
+          vlastníka vozidla možno prideliť evidenčné číslo, v ktorom sa na prvých
+          dvoch miestach uvádzajú písmená a za štátnym znakom Slovenskej
+          republiky sa uvádzajú písmená, číslice alebo kombinácia písmen a číslic
+          iná ako je uvedená v odseku 1." Two LETTERS first — that part is not
+          free — then any five characters other than the ordinary
+          three-digits-two-letters arrangement.
+        prohibitions: >-
+          § 124 ods. 3, and the 2023 reform simplified it in a way that only
+          makes sense once the district code is gone. The provision refuses a
+          personalized number that is already assigned, that contains or forms
+          offensive, ridiculing, outrageous or insulting expressions, that
+          contains the name or abbreviation of a state body, political party or
+          movement, that contains text supporting a movement suppressing rights
+          and freedoms or preaching national, racial, class or religious
+          intolerance, or that contains diacritics or lower case. UNTIL 2023 each
+          of those tests read "alebo ktoré V KOMBINÁCII S OZNAČENÍM OKRESU tvorí
+          takéto výrazy" — the offensiveness was judged against the DISTRICT CODE
+          TOO, so the same five characters could be refused in one okres and
+          granted in another. Zákon č. 128/2021 Z. z. Čl. I bod 34 struck those
+          words. A small provision that captures the whole reform: when the
+          prefix stopped meaning a place, it stopped being able to make a word.
+        matching_note: >-
+          `matching: recall-only` (PRD-PLATES §2.7), and the test is the one the
+          PRD sets: is this regex WIDER than what the authority issues? It is.
+          § 124 ods. 2 admits any five-character tail "iná ako je uvedená
+          v odseku 1" — anything EXCEPT the ordinary three-digits-two-letters
+          arrangement — and no anchored regex in this dialect can subtract one
+          shape from a set without a negative lookahead spanning the separator
+          position. So `regex` accepts strings the authority would refuse, a
+          match is a shape hit and nothing more, and the series carries no
+          `regex_strict` because a deliberately over-broad regex cannot also be
+          the sourced grammar.
+        exclusions: "§ 124 ods. 4: not available for trailers (including trailers behind motorcycles, tricycles and quadricycles) or for vehicles of state bodies, local self-government, state funds and state budgetary and contributory organisations."
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "after the first letter pair, as on the ordinary series" }
+    region_encoding: none
+    region_encoding_note: "the leading pair is owner-chosen from 1 January 2023 and denotes nothing; before that date it was the owner's district and was NOT chosen — see sk-personalized-district"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20230101.pdf  # § 124 ods. 2-4 as in force from 01.01.2023. Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2021/128/ZZ_2021_128_20211201.pdf  # zákon č. 128/2021 Z. z. Čl. I bod 33 (the replacement of § 124 ods. 2) and bod 34 (deleting 'v kombinácii s označením okresu'); Čl. IV, commencement 1 January 2023. Accessed 2026-08-02"
+    notes: >-
+      THE CURRENT PERSONALIZED MARK, and the reform's least obvious consequence.
+      Before 2023 a Slovak vanity plate kept the owner's DISTRICT code and let
+      the owner choose only the five characters after it; from 2023 the owner
+      chooses the leading letter pair as well. That is a real widening of what
+      can be requested and it is why this series and sk-personalized-district are
+      separated. period.start 2023 is the commencement of zákon č. 128/2021
+      Z. z., not its 2021 adoption or promulgation.
+
+  - id: sk-personalized-district
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2009, end: 2023 }
+    period_evidence: instrument-dated-both-ends
+    matching: recall-only
+    format:
+      pattern: "LL LLLLL"
+      regex: '\A[A-Z]{2}[- ]?[A-Z0-9]{5}\z'
+      charset:
+        notes: >-
+          § 124 ods. 2 zákona č. 8/2009 Z. z. IN ITS PRE-2023 FORM, verbatim:
+          "Na žiadosť držiteľa vozidla alebo vlastníka vozidla možno prideliť
+          evidenčné číslo, v ktorom sa namiesto písmen a číslic podľa odseku 1 za
+          štátnym znakom Slovenskej republiky uvádzajú a) písmená na prvom až
+          piatom mieste, b) písmená na prvom až štvrtom mieste a číslica na
+          piatom mieste alebo c) písmená na prvom až treťom mieste a kombinácia
+          číslic na štvrtom a piatom mieste." THREE ENUMERATED SHAPES rather than
+          one open one: five letters; four letters and a digit; or three letters
+          and two digits. In every case the owner-chosen part follows the DISTRICT
+          code, which the owner did not choose. The 2023 replacement collapsed
+          the three shapes into a single "anything but the ordinary arrangement".
+        matching_note: >-
+          `matching: recall-only`, and here the gap is wider still: the authority
+          issued exactly THREE shapes (LLLLL, LLLLD, LLLDD after the district
+          code) and `regex` accepts all thirty-two combinations of five
+          alphanumerics. A match is a shape hit. The alternative — three
+          alternated branches inside one anchored regex — was rejected because
+          each branch would straddle the separator position and PRD-PLATES §2.8
+          forbids mixing separator and serial characters in one class.
+        strict_note: >-
+          The three enumerated shapes are all letter-initial and never place a
+          digit before a letter, which is a real tightening, but expressing it
+          would need an alternation whose branches straddle the separator
+          position; it is recorded in words instead of in a `regex_strict`, since
+          a twin that describes only one of three lawful branches would be worse
+          than none.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    region_encoding_mechanism: "the leading pair is the owner's district, exactly as on sk-standard-district-2006 — a personalized Slovak plate of this era is MORE reliably geographic than an ordinary one, because the owner had to be resident in the district to get it"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2009/8/ZZ_2009_8_20220801.pdf  # § 124 ods. 2 písm. a) až c) and ods. 3 with the 'v kombinácii s označením okresu' tests, as in force to 31 December 2022. Accessed 2026-08-02"
+    notes: >-
+      THE DISTRICT-ERA VANITY PLATE — three enumerated character shapes after a
+      district code the owner could not choose. period.end 2023 is the
+      commencement of zákon č. 128/2021 Z. z.; period.start 2009 is
+      instrument-in-force on zákon 8/2009, and whether vyhláška 225/2004 offered
+      a personalized number before that was not established (recorded gap).
+      Distinct from sk-personalized-2023 by the enumerated shapes, by the fixed
+      district prefix and by the offensiveness test being applied to the prefix
+      and the chosen characters TOGETHER.
+
+  # =========================================================================
+  # THE X PLATE — a government series that ended when zákon 8/2009 began.
+  # =========================================================================
+  - id: sk-official-x
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2004, end: 2009 }
+    period_evidence: transitional-provision
+    matching: strict
+    format:
+      pattern: "LLX999"
+      regex: '\A[A-Z]{2}[- ]?X\d{3}\z'
+      charset:
+        notes: >-
+          Vyhláška č. 225/2004 Z. z. § 51 ods. 1 písm. b): an osobitné evidenčné
+          číslo formed by "dvojica písmen označujúca okres, za pomlčkou písmeno X
+          a tri číslice" — the district pair, the hyphen (the arms after 29 April
+          2006, per vyhláška 227/2006 Čl. I bod 13, which amends § 51 ods. 1
+          písm. a) and b) by name), the letter X and three digits.
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
+      foreground: "#000000"
+      colour_caveat: "not separately specified in the sources read; the black-on-white default applied by elimination. Inference, flagged."
+      band: { side: left, color: "#003399", content: eu-stars+SK, hex_basis: observed }
+      emblem: { present: true, rendered: placeholder, position: "after the district pair, from 29 April 2006" }
+    region_encoding: "plates/_decode/sk-districts.yml"
+    sources:
+      - "https://www.slov-lex.sk/static/pdf/2004/225/ZZ_2004_225.pdf  # vyhláška č. 225/2004 Z. z. § 51 ods. 1 písm. b). Accessed 2026-08-02"
+      - "https://www.slov-lex.sk/static/pdf/2009/9/ZZ_2009_9_20220801.pdf  # vyhláška č. 9/2009 Z. z. § 41 ods. 2 (Prechodné ustanovenia), verbatim: 'Tabuľky s evidenčným číslom podľa doterajších predpisov OKREM tabuľky s osobitným evidenčným číslom obsahujúcim písmeno X na prvom mieste za skratkou okresu sa vydávajú držiteľom vozidiel do vyčerpania ich skladových zásob.' Accessed 2026-08-02"
+    notes: >-
+      THE X PLATE, AND THE ONE SLOVAK SERIES THAT WAS AFFIRMATIVELY KILLED. Every
+      other pre-2009 plate could be issued out of stock; § 41 ods. 2 of vyhláška
+      9/2009 carved the X plate OUT of that permission by name, so its issue
+      stopped dead on 1 February 2009. period_evidence is transitional-provision
+      for exactly that reason — the end date is a transitional carve-out, not a
+      repeal or a successor's commencement. period.start 2004 is
+      instrument-in-force on vyhláška 225/2004 and is not the date the class
+      began: § 95 of zákon 315/1996 created osobitné evidenčné čísla in 1997 and
+      whether the X letter was used from the start was not established. WHAT THE
+      X DENOTED is a recorded gap: neither instrument read in this pass says
+      which bodies held it, and the current § 126 has no X row at all.
