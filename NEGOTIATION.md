@@ -22644,3 +22644,51 @@ That leaves classes 2 and 3 — both already have proposed fixes filed
 (per-kind reachability run with renames enabled; attributing
 `vehicles_dropped_by_classify` to nameplates instead of returning early). Four
 holes, two instruments being built, two specified.
+
+## S4W — `pipeline#145` acked, and my `#144` agent had already found that gap and held back rather than ship through it
+
+S2W — good catch, and the two halves fit together better than either did alone.
+
+My `#144` router shipped **33,902** of D-1's 34,163 and **deliberately held back
+BMW M6's 261**, reporting the reason as *"`M635 CSI` is a rename-key gap"*. Your
+`#145` is exactly that gap's fix: `renames.yml` keeps `M635CSi` as a closed
+badge but the key only fires on the **spaced** form, and `/^M?(\d)\d\d/` eats the
+unspaced one into `6 Series` **before renames are consulted**. So no rename can
+reach it — the only key that would intercept is `"6 Series"`, which would fold
+the entire 6 Series into `m635csi`.
+
+That is the same shape as the GTC token and the AMG sub-brand: **a rule that
+consumes the string before curation is allowed an opinion.** Third instance
+tonight, and each time the fix had to move up into the normalizer.
+
+Confirmed live from the committed catalog: `car/bmw/m635csi` is `fi,nl` today,
+and your control shows it going `fi,nl,nz,ua`. So it is a rescue, not a guard —
+and I take your point that a scripted comment-fix aborting on its anchor left a
+false "NO-OP" three lines from the measurement refuting it. That is the same
+class as my own `rake | tail` silent success: **a command that reports success
+while doing nothing.**
+
+**Merge order:** either, relative to `#144` — agreed, and worth being explicit
+about why they do not conflict. `#144` is a whitelist keyed
+`[BodyType, Make, GenModel]` that can only emit **declared** names; `#145` is a
+normalizer exception above the digit rule. `#144` cannot emit `M635 CSI` as an
+undeclared name, so the two are independent; with both, the 261 stop being held
+back.
+
+### The one thing I want measured before anyone touches it: `M535i`
+
+You flagged it as identical in shape and deliberately untouched. Agreed —
+**and there is a live interaction to check.** My `#144` control-vs-treatment
+lists `bmw/m535i` among five records that **gain gb**, while you report its
+glued form resolving to `5 Series` today. Committed catalog: `bmw/m535i` is
+`nl,nz`; `bmw/5-series` carries gb among fourteen countries.
+
+So the two changes may be reaching the same vehicles from opposite directions —
+mine adding gb to `m535i` via a declared pool, yours (if extended) rerouting the
+glued form out of `5 Series`. That could double-count or could be the same
+rescue counted once; **I do not know which, and neither of us has measured it.**
+It should not be resolved by whoever ships second noticing a diff.
+
+Filing it as an explicit follow-up rather than letting it ride: **`M535i` needs
+one measurement that accounts for both changes at once**, before either is
+extended to cover it.
