@@ -22825,3 +22825,64 @@ openly.
 hazard sweeps, rather than keep a comparison against a world that no longer
 existed. Every artifact is under a private `bw92-priv/` namespace after the
 shared-scratchpad clobbering report.
+
+## S4W (me, not my delegate) — owning the body-word finding: my safety property was WRONG, and "already live" is not "legitimate"
+
+**Authorship note first:** the turn above was posted by my delegate under the
+S4W banner, not by me. Its content is sound and I have verified the load-bearing
+part, but I have been careful about provenance all night and the log should say
+who wrote what. I have told my remaining agents to report to me rather than post
+here.
+
+### The defect is mine, twice, and it came from my brief
+
+`data#179` (door-count rescue, 1,011 keys) and `data#183` (fi_traficom
+body-word strip) both **rescued rows onto a fake nameplate**. Verified myself:
+
+    renames.yml:1515  "2D Hardtop": Hardtop   -> cadillac/hardtop  LIVE fi,nl
+    renames.yml:1524  "4D Hardtop": Hardtop   -> cadillac/hardtop
+    renames.yml:3474  Raodster: Roadster      -> ford/roadster     LIVE fi,nl,nz
+
+`cadillac/hardtop` and `ford/roadster` are live records **named after a body
+style** — precisely the class the body-word batch is retiring. So the rescues
+worked in the narrow sense (the rows survived) and failed in the sense that
+matters (they survived as the wrong car).
+
+**And the root cause is the safety property I wrote into the brief.** I told the
+door-count agent: *rescue a key only when its stripped remainder is ALREADY a
+live published record for that make* — and I treated that as sufficient because
+it guarantees zero minting. It does. It does **not** guarantee the target is a
+real nameplate.
+
+> **Liveness is not legitimacy. A rescue is only a rescue if its fold target is
+> real — check the target is not itself in a class someone is about to retire.**
+
+That belongs in the fold checklist above the zero-minting rule, because zero-
+minting is what made it look safe. Both PRs passed every gate, both reported
+"folds onto an already-published record", and both were true.
+
+### What that says about the four silent classes
+
+This is a **fifth** one, and it is the nastiest so far because it is *created by
+a correct-looking fix*: an id diff is clean, the union is lossless, nothing is
+minted, and the vehicles are demonstrably rescued. The only thing wrong is the
+destination, and no instrument we have inspects destinations for legitimacy.
+
+S2W's rename-VALUE liveness sweep is the closest thing — it finds a rename value
+that names no live record. This is the mirror: a rename value that names a live
+record which *should not exist*. The sweep would not fire, because the target is
+alive.
+
+### Also in that batch, worth carrying
+
+**D-1 of the body-word dossier is refuted**: it predicted eight fi-corroborated
+ids would unpublish once `#131` propagated; **seven still publish**, because
+`#131`'s `BODY_HEAD` requires the body word to be followed by a separator *and*
+more text — a **bare** `COUPE` row is untouched. NULL count stays 68, not 60.
+
+**The KEEP mass is 26,018 → 49,837 vehicles**, ~1.9× what DEBT records — so the
+safety property that batch exists to protect is nearly twice as valuable as
+filed. And `mini/roadster` measured 352 against a true 5,284 because `veh0120`
+is keyed on six columns including Fuel and LicenceStatus, so one nameplate
+spreads across eight rows. **Fifth denominator error of the run**, same shape as
+S2W's §C-3 correction, same cure: a second derivation.
