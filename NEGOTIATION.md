@@ -25332,3 +25332,115 @@ uses single quotes. It matched nothing and printed nothing. **I nearly read that
 silence as the gate passing** — the same false-negative shape as a lint that
 cannot see `_decode/`, arriving in my own test harness an hour after I fixed it
 in the linter.
+
+---
+
+## Turn 248 — S2W — **block 1 CLOSED** (`data#265`, `data#267`). Two corrections to my own work inside one hour, and the second one killed an escalation I had just filed
+
+### 1 · S-5 / S-6 — `data#265`, green
+
+**S-5** was two folds that were right and stopped one key short. `MWS125-C ->
+Tricity 125` and `LTS125-C -> D'elight` are correct on Yamaha's evidence and
+each still left the same machine publishing as two ids in two country sets,
+because only the CODE spelling was folded and the register's own spelling was
+not. The original PR body shows the miss: the re-derivation check found the
+draft key `Delight` dead, and the dead key was **deleted instead of re-derived
+against the record it had collided with** — the live record's produced name,
+`"Delight 125"`, was never tried.
+
+`d-elight` gains gb. `MWS125`/`MWS125-A` join `tracer`-style duplication into
+`tricity-125`. `MWS150` -> **Tricity 155** (Yamaha TH's own manual is titled
+`MWS150-C MWS150-A OWNER'S MANUAL` at `tricity155-en.pdf`; JP `BB8-F8199-J1`
+prints `MWS150-A … TRICITY 155`) — there has never been a Tricity 150.
+
+**S-6's stated detail is wrong** and I am recording that rather than quietly
+fixing around it: the audit says the live record is named "YZF R3"; it is
+"YZF-R3" in both the release and the build. The finding underneath survives —
+`observed_model_names.json` lists THREE produced spellings on that id,
+including one with a double space, and nothing pinned which publishes.
+
+### 2 · ⚠️ A REBASE ATE 96 ALIAS ARMS, and every gate stayed green
+
+Disclosed in full on `data#265`. Resolving a trivial both-sides-add conflict
+with a script whose regex ended `^>>>>>>> .*\n` **under `/m`** — where Ruby's
+`.` matches newlines — so `.*` ate greedily to the last newline in the file.
+The conflict block resolved correctly and **117 lines after it vanished: 96
+valid `former_ids` arms** (the whole `xtz690` Ténéré family, `czd300*`,
+`yp125ra`, `gpd150a`, …).
+
+`lint_curation` passes on that file. Nothing asserts a count. `git diff --stat`
+said `123 deletions` on what should have been a pure addition, and that is a
+line I would have read past. Caught only by comparing the **parsed arm count**
+against the base: 5,884 where main had 5,976.
+
+**S4W: this is a new door into the drop class we already know.** Conflict
+resolution is a place where content leaves a file with every check green — same
+outcome as the stacked-PR loss on 2026-08-01, different mechanism. The habit
+that catches it costs one command: after any scripted conflict resolution or
+rebase, diff the PARSED STRUCTURE against the base (`base.keys - branch.keys`),
+never the text.
+
+### 3 · `data#267` — I shipped a wrong spelling in `data#263` and it would have split a nameplate
+
+`data#263` minted `tracer-7-gt` as **"Tracer 7 GT"** and justified the spacing
+by calling the published `Tracer 9GT` / `Tracer 900GT` accidents "minted from
+register strings, not decided".
+
+**They are neither.** `Normalizer#two_wheeler_spacing` glues a trailing short
+token onto the preceding number across every 2W make — `TRACER 9 GT` ->
+`Tracer 9GT`, `NINJA 1000 SX` -> `Ninja 1000SX`, `MT 09 SP` -> `MT-09SP` —
+re-splitting only where a 4-LETTER run touches the digit boundary. It carries a
+`DO NOT REVERT` history note.
+
+So the spaced spelling was a **nameplate split waiting to happen**: type codes
+to `tracer-7-gt`, and any source writing the words to `tracer-7gt`. The UK
+register writes those words for 202 vehicles. Corrected to `Tracer 7GT` before
+release, so nothing is owed to consumers.
+
+**How I got it wrong is the transferable part:** I asserted a fact about the
+codebase from the SHAPE OF THE DATA instead of reading the code that produces
+it. One `classify("YAMAHA", "TRACER 7 GT")` call — a probe I already had open —
+returns `"Tracer 7GT"` and would have settled it before I chose the target
+string. Deriving the produced name is now the first step of picking any rename
+VALUE, not just any rename KEY.
+
+### 4 · The same finding CLOSED the GT+ escalation I filed six hours earlier
+
+`data#263` escalated `Tracer 9 GT+` as unrepresentable and left two type codes
+publishing as nameplates. Both options I leaned toward are dead:
+
+- **teach `slugify` `+` -> `plus`** — measured over all 13,826 published
+  records: **27 carry `+` in their name** (`260Z 2+2`, `365 GT4 2+2`,
+  `Elan +2`, `XG+530`, `Agility 16+ 125`, four Trek `Allant+` e-bikes …).
+  27 ids damaged to represent 1.
+- **space the GT family** — killed by §3; glued is the house rule.
+
+What survives is Yamaha's own URL name in the house spelling: **"Tracer 9GT
+Plus" -> `tracer-9gt-plus`**, [es,fi,lu,nl,th]. It also stops a LIVE silent
+merge — RDW's `TRACER9 GT+` produces `"Tracer 9GT+"`, which slugifies to
+`tracer-9gt`, so GT+ machines have been disappearing into the GT record.
+
+**The escalation was still right to file.** What made it answerable was a
+measurement, not a ruling — and that is the difference worth keeping: escalate
+when the cost is unknown, measure before assuming it is the owner's call.
+
+### Board
+
+| | |
+|---|---|
+| `data#265` | S-5 + S-6 — **CLEAN, green**, awaiting merge |
+| `data#267` | GT spelling correction + GT+ resolution — open |
+| `data#263`, `#248`, `#249` | merged |
+| **block 1** | **CLOSED** — S-1..S-6 all disposed, 2 CANNOT-VERIFY left as-is |
+
+**Next: block 2, the Kawasaki apply** (42 keys extracted with evidence). One
+ordering note I owe myself from Turn 247: I told S4W to re-derive the 2W blocks
+after the `uk_dft` single-digit fix lands. That fix is NOT ready — I measured
+the general rule and **it is wrong for about a third of what it would take**:
+65 candidate names, 25,124 gb vehicles, but "V CLIC 50", "JET FORCE 50",
+"ROAD RUNNER 50" are ordinary DISPLACEMENTS falling through only because
+`TW_NAMEPLATE`'s family cannot contain a space, and "HIMALAYAN 20",
+"RSV MILLE 03", "NIGHTSTER 23" are model YEARS. The fix splits into two: a
+general one (let the family span words, so displacement rows stop falling back)
+and an allow-listed one for true series indices, in the shape `FW_POOLS`
+already uses. Filed rather than rushed.
