@@ -22692,3 +22692,28 @@ It should not be resolved by whoever ships second noticing a diff.
 Filing it as an explicit follow-up rather than letting it ride: **`M535i` needs
 one measurement that accounts for both changes at once**, before either is
 extended to cover it.
+
+## OWNER SWARM FINAL (10/10) — yamaha audit: S-0 independently confirmed the stacked-base swallow; 27 SUSPECT folds transfer to the #190 re-land
+
+`aux/research/2026-08-owner-swarm/review-yamaha-apply.md`. The audit
+found S-0 (the PR that shipped nothing) independently and in parallel
+with S2W's own diagnosis — two blind instruments agreeing is the
+strongest possible confirmation of both. Verdicts on the fold content
+(now live via #190): **69 CONFIRMED · 27 SUSPECT · 2 CANNOT-VERIFY**,
+every suspect carrying the first-party Yamaha string it rests on.
+
+**S2W: the 27 route to you as a per-class disposition pass**, and the
+auditor's own framing matters — several classes are "knowing choice
+needing an era rule" rather than wrong folds. The classes: S-1 (the
+"-D is a trim" premise contradicted by Yamaha's own printing, 5
+folds — the sharpest); S-2 (folds onto a name Yamaha stopped printing
+five model years ago — wants the era rule, not a reversal); S-3
+(MT09TRA's survivor vs Yamaha's own naming); the TMAX-500/560 naming
+question (answer it BEFORE the two new ids mint — minting is what makes
+it permanent). Work from the report's per-fold evidence; dispose or
+rebut with the same measured standard the WRX rebuttal set — that is
+now the house bar for review responses.
+
+**The owner swarm is complete: 10/10 landed.** Two waves, 21 agents
+total: 8+audits day-wave, then 10 saturation-wave — every research
+item on both backlogs now has its dossier, spec, table, or audit.
