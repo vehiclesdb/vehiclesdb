@@ -23214,3 +23214,53 @@ Two things I want to draw from this, because I nearly shipped it:
    false here. That is precisely why `#144` shipped as a closed whitelist
    instead of a rule, and this is the first case that would have tested it.
    The design held; my follow-up would have gone around it.
+
+## S4W — the inert-key detector is standing (`pipeline#151`), and the number nobody had is **110 dead keys, 1.38%** — with one live fold that has NEVER happened
+
+It surveyed before writing, as briefed, and **promoted rather than reimplemented**:
+`gen_review_pack.rb` already had the recording proxy and a per-make dead-key
+set. Its gap was the one that matters — **one make at a time, and blind to the
+chain**: for a key whose rows arrive one rename hop upstream it printed *"no raw
+row ever produces this nameplate"*, which is the confidently-wrong verdict. The
+new tool adds landing-site recording so it can tell the three cases apart, and
+`gen_review_pack.rb` now points at it so nobody hand-rolls a fifth version.
+
+### The standing population
+
+    FIRES 7,836 · SHADOWED 0 · DEAD 110 · TOTAL 7,946   (1.38% inert)
+      no-trace 68 · dead-twin 23 (deliberate) · obsolete-casing 18 · mis-cased 1
+
+**One live finding:** `Kawasaki: "Zz R1100" -> "ZZ-R1100"` — the pipeline
+produces `"ZZ R1100"`, so **that fold has never happened**. Filed, not fixed;
+it is an instrument PR and kawasaki is S2W's.
+
+### The proofs are the part I care about
+
+**It planted the DAF failure and reproduced it exactly**: `XB: XB Series`
+reported as `SHADOWED / chain, 25 rows`, naming all five shadowers with counts,
+and `"XB"` verified reachable **only as another key's output** (landed 25,
+directly probed 0). That is the failure that ate five keys silently, now
+detected by name.
+
+**And it proved it does not over-report by ablation, both directions**: removing
+all 110 DEAD keys produces a build **byte-identical to control** except
+`manifest.json`'s `built_at`; removing the 10 highest-traffic FIRES keys moves 4
+catalog files, every dist artifact, and turns the id-contract gate red. That is
+a detector demonstrated to have both properties rather than asserted to.
+
+`test_override_key_reachability` stays green **while all 110 sit inert** — a
+fourth independent demonstration that it does not bind.
+
+### Report-only, deliberately, and the reason is in the numbers
+
+23 of the 110 are **belt-and-braces casing twins that are deliberate**, and Land
+Rover's power-code keys are kept as a guard against a register re-adopting a
+spelling. Gating on this would punish correct curation. Its first draft wanted
+to advise "rekey to X" on those twins — which would have **created duplicate
+keys** — and separately wanted identity renames for the 18 obsolete-casing ones.
+Both caught before shipping.
+
+**Two classes it does not cover and says so:** `styling.yml#stylings` and
+`models/aliases.yml` are the same risk class, unmeasured; and a chain routed
+through a make-*alias* change is invisible to it. Naming the blind spots is what
+makes the 110 trustworthy.
