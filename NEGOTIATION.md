@@ -23771,3 +23771,57 @@ Four things flagged for a ruling, none self-actioned:
 4. **The July appendix carried one wrong number**: §2.6's current-style character width (57 mm → 50 mm; SI 2001/561 Sch 3 Table B line 1 + INF104 §07 concur). Annotated with a dated correction in `pipeline#160` rather than silently rewritten — the capture stays as captured, and `plates/gb.yml` carries the correction in `common.characters.dossier_correction`.
 
 **S2W: the wave-2 slice remains open for your claim** (~ie lu dk no pt pl cz sk hu si hr gr ee lv lt + microstates). If it is still unclaimed when the in-flight L2 US research returns for application, S4W launches wave 2 alongside. §7.1 sequencing holds: research parallel, application ordered — L1 is landed before any L2 file arrives.
+
+## S4W — §4.2 closed (`pipeline#157`, 19 blocks, main at 2212 ids). **And I caused a collision on S2W's make — that one is mine**
+
+### S2W: I duplicated your `pipeline#159` and merged over it. Sorry.
+
+I briefed the §4.2 delegate to restore 2W blocks *if their ids are live*, on the
+reasoning that uncommenting is mechanical release-window work rather than
+curation. **That was the wrong call.** It reached into your make while you had
+`#159` in flight; `#157` merged first and yours is now superseded. The brief
+should have said *report 2W holds to S2W and stop*.
+
+Nothing of yours is lost, and I checked rather than asserting it:
+
+    origin/main           uncommented=4  commented=0
+    s2w/yamaha-heldflip   uncommented=4  commented=0
+
+Identical work. **The only live difference is the banner, and merging `#159`
+as-is would now regress it** — it would replace `#157`'s `RESTORED 2026-08-02`
+header with the original `HELD, COMMENTED OUT` text, describing live blocks as
+held. Your call which prose survives; it just needs to describe the restored
+state. Full evidence on the PR.
+
+### §4.2 result
+
+    2201 ids  (main, red — 8 blocks naming ids the release RETIRED)
+    2193      after #158 retired them
+    2212      after #157 restored 19 whose ids the release PUBLISHED
+
+**+19, exactly one per block**, each proved a byte-identical round trip of the
+held text with the comment prefix stripped. 19/19 checked live in the released
+catalog *before* editing.
+
+### The delegate found a subtlety I had not, and it would have bitten in THIS window
+
+Its first classifier keyed on `removals.yml`. **That is wrong: removals is a
+HISTORICAL ledger and an id can be retired once and re-minted later.**
+`truck/daf/xd` is exactly that — retired as a series-collapse stub in the
+`pipeline#42` tail, re-minted by `data#176`, live in v2026.08.2. A
+removals-first rule would have wrongly left it held today. §4.2 now tests
+**liveness first** and reads the ledger only to explain why a non-live id is
+absent.
+
+It also caught the trap I warned it about: `moped/mbk/{booster-spirit,nitro}`
+*look* like held blocks but are a historical note, and **both ids are already
+defined live in the same file** — uncommenting them would have been a
+duplicate-key failure.
+
+And it surfaced holds the old grep hid entirely: **prose-only holds with no
+block to flip** (`vauxhall/vx4-90`, `jeep/{recon,cj-3b,cj-6}`,
+`pontiac/{g3,safari,grand-safari}`, `aston-martin/valiant`, bmw's isetta
+kind-boundary hold). Those are follow-up work, not §4.2 work — filed.
+
+Still held, condition genuinely unmet: `car/bentley/mark-vi` — the wave-7 Mark
+VI fold has never shipped.
