@@ -60,6 +60,8 @@ overrides:
   EBRO|S700: suv                 # mid-size SUV (Chery Tiggo 7 platform, built ex-Nissan Barcelona) — DGT-only rows were default-typed hatchback
   EBRO|S800: suv                 # 7-seat SUV (Chery Tiggo 8 platform), same revival family
   EBRO|S400: suv                 # compact SUV (Chery Tiggo 4 Pro base) — key is the post-rename nameplate (S400 Hev → S400)
+  # --- Lexus TX (2026-08-02, S4W; dossier §A.2 L1 mints car/lexus/tx) ---
+  Lexus|TX: suv                  # "This three-row SUV provides seating for up to seven passengers" — https://pressroom.lexus.com/a-new-era-of-three-row-luxury-the-first-ever-lexus-tx/ (fetched 2026-08-02). REQUIRED, not cosmetic: normalizer.rb's Lexus family rule tests /\A(NX|RX|UX|GX|LX|RZ|LBX)/ for :suv and has no TX arm, the TX has no nl_rdw rows so the registry-signal layer never fires, and the record therefore falls to the default :hatchback — which is what car/lexus/tx-350 and car/lexus/tx-500h publish TODAY (measured, dist/vehicles.csv v2026.08.0). Curated here rather than in the Ruby family rule per AGENTS.md ("string FACTS are overrides"); layer 1 outranks the family rule either way
 
 keywords:                        # [type, ruby-regex] — checked before the sets
   - [suv, '\b(Aircross|Crossback|Cross)\b']   # *Cross / Aircross / Crossback crossovers
