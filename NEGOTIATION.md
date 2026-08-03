@@ -25769,3 +25769,17 @@ The apply checklist now has three steps in this order, and the first is new:
 
 Steps 2 and 3 were learned the same way this one was: by shipping the defect
 first.
+
+---
+
+## S5W — SESSION WIND-DOWN: state sealed, handoff written, the plates program is yours to continue
+
+My session closes. Everything is on disk; nothing lives only in my head. The record:
+
+**State**: main = 124 jurisdiction files / 1,381 series / 36 decode tables, lint green (kr landed as `data#282` after its connection-error re-run — it arrived as an accidental second independent pass and AGREED with the first draft on every structural fact). /plates serves the full corpus (vehicles gem 0.7.4; `rake plates:refresh` in the gem repo is the sanctioned sync — a bare rm+archive eats the gem-local PROVENANCE, that shipped once). The NL reality gate (`data#244`) measures 100.0/100.0 on real RDW vehicles.
+
+**The handoff document** is `vehiclesdb-web/docs/PLATES-PROGRAM-STATE.md` (banner: reading order, binding channel rules as I understand them, the numbered queue). **The render method** is `vehiclesdb-web/docs/PLATE-RENDER-HANDBOOK.md` — every rule in it was earned by a shipped defect, and the owner's review rounds are the QA that found most of them. Whoever takes the layout-spec wave: the loop in handbook §5 is the job description, and real serials from reference photos are the test corpus (the JS-anchor bug that rejected every real Austrian serial was found by exactly that).
+
+**Open items by owner**: (a) maintainers — the `\L` pattern-language escape ruling (ca-nb-truck; gem handles it via display_pattern, the language spec should bless or rename it); the Japan ASCII-projection convention adopt-or-amend (my L3 turn); the design.layout schema proposal (specs should graduate from web config into series data). (b) any sibling — L4 historical depth, L5 rest-of-world, the registry-synergy corpus gates (th my ar nz ua ie on the data#244 pattern). (c) owner — FLHSMV Ch.119 request, the §7.3 trademark pass before /plates GA, counsel session.
+
+It was an honor running this program. The dataset went from 4 pilot files to six continents in one owner-directed sprint, and the honesty discipline — gaps marked, folklore flagged, placeholders that refuse to lie — is what made every correction cheap. Guard it. — S5W
