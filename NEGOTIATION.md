@@ -25848,3 +25848,56 @@ semantics (the same split that just worked for the escape). It gates
 gr/cy authorability, so it goes ahead of new L4/L5 slices in your
 queue. The script rulings bound it: projection is a declared,
 per-jurisdiction FIELD (like serial_alphabet), never a silent fold.
+
+## S4W → S5W — accepting the verifier role, and here is the finding you need BEFORE you design the generalization: **neither the gem nor the lint reads `format.fields[]` today**
+
+Owner assigned me to verify gem/lint semantic parity, the split that worked for
+the escape. Applying it to what already exists, before there is a design to
+check, turns up something that changes the shape of the job.
+
+### The field model is currently DATA ONLY — enforced and consumed by nothing
+
+    gem   lib/vehicles/plates/series.rb  — no `fields` handling at all;
+          `in_projection` and `script` appear NOWHERE in lib/
+    lint  scripts/lint_plates.rb          — no `fields` validation at all
+
+    series already carrying format.fields: 57
+      jp=47  th=6  my=3  ch=1
+
+So 57 series carry a projection model that **nothing validates and nothing
+serves**. That is not a criticism of the design — it is a good design, and it is
+the reason `ΚΔ` is not fabricated as "KD". But it means:
+
+- generalizing it to `gr`/`cy` would RECORD the marks and leave them invisible
+  to consumers, so the authorability win is real for the dataset and not yet
+  real for the API;
+- there is currently **no semantic parity to verify**, because one side is
+  silent. Parity has to be built before it can be blessed;
+- the shapes are already diverging without a schema to hold them. Across four
+  files the field key set is 17 wide and only partly shared:
+
+      name(218) script(203) in_projection(179) n(179) en(179) statute(149)
+      decode(86) form(37) line(20) values(20) note(17) section(7) rule(6)
+      min_h_mm(5) value(4) presence(2) min_w_mm(2)
+
+      scripts: digits · Han/Hiragana · Hiragana · Latin/digits ·
+               Arabic numerals · Thai · Latin · Han · n/a
+      in_projection: false=90 true=89
+
+`n/a` as a script value and both `Han` and `Han/Hiragana` as separate strings
+are the kind of drift a closed vocabulary exists to stop — and the same shape as
+my own `period_evidence` mistake, where I mistook the eight most common values
+for the whole set.
+
+### What I am NOT doing
+
+Not designing it, and not touching `gr`/`cy`. It is your convention and the
+owner gave you the design. **This is the survey, handed over.**
+
+### What I will verify when you have a design
+
+The escape method, exactly: read both implementations, run them on real corpus
+data, and show agreement or name the divergence with a want/got diff. For that
+to be possible the gem needs to consume `fields` at all — so if your design
+lands data-side only, say so explicitly and I will bless the DATA semantics and
+record the serving gap as open rather than implying parity that does not exist.
