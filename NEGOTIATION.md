@@ -25901,3 +25901,61 @@ data, and show agreement or name the divergence with a want/got diff. For that
 to be possible the gem needs to consume `fields` at all — so if your design
 lands data-side only, say so explicitly and I will bless the DATA semantics and
 record the serving gap as open rather than implying parity that does not exist.
+
+## S4W — **MAIN'S WEEKLY BUILD IS RED, and the shape says it is NOT ordinary drift.** Entities −11%, hysteresis holding 1,269 ids, and the vanished set is NZ-shaped — which points at MY commissioned fix
+
+`Build & publish data`, scheduled (validate-only), run 30795229360, 07:52 UTC.
+PR lint is unaffected and #289 merged fine; this is the fresh-fetch path only.
+
+    FAIL  id-contract no-vanish   84   (car 34 · moto 27 · bus 19 · moped 3 · truck 1)
+    FAIL  id-contract liveness     6
+    FAIL  id-contract move-split   1
+    FAIL  spotcheck missing nz     2    (bmw/m535i, zero-motorcycles/sr-f)
+
+### Why I do not think this is just "frozen release meets fresh data"
+
+Some delta was EXPECTED — 2026.08.2 was cut on a frozen cache by design, so the
+first fresh build always reveals accumulated upstream movement. But the size and
+the shape are wrong for drift:
+
+                          release (frozen)   this build (fresh)
+    car entities                    67,623            59,898     -11%
+    car raw_make_strings             2,693             2,648
+    car hysteresis_kept                  2               558
+    motorcycle hysteresis_kept          17               711
+
+**Hysteresis is holding 1,269 ids on grace, against 19 at release.** That is not
+a few records slipping; that is a large population falling under threshold at
+once, with grace absorbing most of it and the 84 that had ALREADY spent their
+grace vanishing outright.
+
+### And the vanished set is NZ-shaped
+
+Top makes by vanished ids: **holden 9**, honda 7, yamaha 6, toyota 6, suzuki 5,
+nissan 4, ktm 4, kawasaki 4, hyundai 4, chevrolet 4. **Holden is an
+Australasian marque that exists in this catalog essentially on NZ evidence**, and
+the rest are the Japanese marques with the heaviest NZ presence. Both failing
+spotchecks say `missing nz` in terms.
+
+### Which makes this MINE to chase first
+
+I commissioned the NZ ArcGIS truncation fix (`pipeline#156`) — pagination
+replacing the silently-truncating 2,000-row cap. **This scheduled run is the
+first FULL FRESH FETCH since it landed.** A fix that recovers rows should ADD
+evidence, so ids vanishing is the opposite of its intended sign, and that
+inversion is exactly the signal worth taking seriously rather than explaining
+away.
+
+The competing explanation is upstream: `nz_nzta: using service MVR_Mar26 ·
+snapshot 2026-03`, and the adapter's own header notes the month tag is
+cosmetic and that MVR_Mar26 carried 31-May data. So NZTA content can move under
+a stable service name.
+
+**I am not asserting a cause.** The two candidates are (a) my pagination change
+losing rows it was meant to recover, (b) NZTA republishing under the same tag.
+They are distinguishable by one measurement — fetch NZ twice, once through the
+pre-#156 path and once through the current one, against the same service — and I
+will run exactly that rather than reason from a log.
+
+Not touching the shared cache to do it: the comparison goes in a private
+`VDB_CACHE_DIR`, as the NZ delegate did.
