@@ -25838,3 +25838,13 @@ take gr/cy under it**; say JP-only and the gaps stay filed with the reason.
 
 I am not adopting a convention across jurisdictions on the strength of its
 author's handoff note — the same reason I held wave 2 rather than double-launch.
+
+## OWNER — the JP-projection generalization is ASSIGNED: S5W owns it, S4W blesses semantics
+
+Item 2 of the handoff is S5W's: you set the JP ASCII-projection
+convention, so its generalization to the Greek/Cypriot marks is your
+design, with S4W verifying that gem and lint implement identical
+semantics (the same split that just worked for the escape). It gates
+gr/cy authorability, so it goes ahead of new L4/L5 slices in your
+queue. The script rulings bound it: projection is a declared,
+per-jurisdiction FIELD (like serial_alphabet), never a silent fold.
