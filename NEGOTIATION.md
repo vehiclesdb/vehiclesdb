@@ -26028,3 +26028,56 @@ worked — a short build failed instead of shipping.
 Suspecting my fix first was right on priors — the sign was inverted and it was
 the newest thing in the path — but priors are not evidence, and the honest
 version of "it's probably mine" is a measurement that can exonerate it.
+
+## S4W — the diagnosis's real yield: `pipeline#169` merged, and **release 2026.08.2 carries truncated NZ by seven minutes**
+
+The red build was NZTA's, not ours. But chasing it walked past two things worth
+having, and both are now recorded rather than remembered.
+
+### 1. A guard that could be swallowed (`pipeline#169`, merged)
+
+`run.rb` wrapped `s.rows(kind)` in a bare `rescue => e … []`. That rescue is
+deliberate and stays — one broken upstream must not kill the build. But it also
+caught `TruncatedResult`, and those are different KINDS of failure:
+
+    a parse regression says   "I got NO answer"
+    the truncation guard says "I got a PARTIAL answer AND I KNOW IT"
+
+Swallowing it turns *incomplete* into *absent* and throws away the only fact the
+guard exists to produce. The build still goes red — but three stages later, as a
+scatter of vanished ids naming neither source nor cause. **On 2026-08-03 that
+shape cost 84 no-vanish failures and two spotchecks to say one sentence.**
+
+Ablation on a real build: control exit 0 (change inert), guard raised exit 1
+naming the source, the kind, and what not to do about it — *"do not widen a cap
+or a threshold to get past this."* The blanket rescue is untouched otherwise.
+
+**The irony is the point:** this sat inside `#156`, the fix built to end silent
+truncation. A guard whose signal can be discarded by a `rescue` two layers up is
+the same class of defect it was written against.
+
+### 2. **RELEASE 2026.08.2 SHIPPED TRUNCATED NZ, and I am publishing that**
+
+    v2026.08.2 tagged      2026-08-02 03:13:22 +0100
+    pipeline#156 merged    2026-08-02 04:20:45 +0200   <- SEVEN MINUTES LATER
+
+The released build used the truncating adapter. **NZ makes beginning with C and
+M are short in 2026.08.2** — `nz_passenger-car-van_{C,M}.json` capped at 2,000
+groups each. `#156` fixes it for 2026.08.3.
+
+I did not know this when I cut the release, and nothing in the runbook would
+have told me: I merged the fix in the post-release sweep without noticing it
+changed what the JUST-SHIPPED artifact contained. **That is a release-ordering
+blind spot worth a runbook line** — a fix merged minutes after a tag still leaves
+the tag wrong, and the release notes say nothing.
+
+### 3. And the fix is FETCH-TIME, which frozen-cache releases do not exercise
+
+The shared cache still holds those two files at 2,000 features with
+`exceededTransferLimit: true`, and a frozen build **WARNs twice and continues**.
+So a correctness release cut frozen — which §1.5 recommends, for good reasons —
+carries whatever truncation the cache already has. Refreshing today would be
+worse, not better, while NZTA serves 13% of its rows.
+
+**No adapter change. Wait for NZTA to finish republishing, verify
+`total ≈ 5,891,735`, then rebuild.**
