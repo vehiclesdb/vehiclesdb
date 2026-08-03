@@ -263,24 +263,101 @@ common:
       description, never from a third-party "plaque" TTF.
     source: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000020237128  # art. 6"
   dimensions:
-    status: gap
+    status: sourced
+    instrument: "arrêté du 9 février 2009 (plaques) annexe 1 bis, in the version substituted by the arrêté du 7 mai 2020 (NOR TRER2011996A) art. 1er 6°"
     note: >-
-      RECORDED GAP, and a hard one. Every French plate dimension lives in
-      "annexe 1 bis — Tableau récapitulatif des dimensions de plaques homologuées
-      et particularités (cotes en mm)", which Légifrance does not publish as
-      text: the annexe body is a link to a PDF, and the PDF is the JO fac-similé
-      IMAGE ("Vous pouvez consulter l'image dans le fac-similé du JO nº 0040 du
-      17/02/2015, texte nº 38"; the current table is in JO nº 0121 du
-      17/05/2020). The same is true of annexes 2, 3, 4 bis and 6 bis (the layout
-      plans) and of the pre-2015 annexe 1. NO dimension is therefore asserted in
-      this file — not 520 x 110, not 275 x 200, not the 210 x 130 motorcycle
-      plate. Those figures are widely published by French plate retailers and
-      are NOT sourced here. Next action for the human pass: pdftotext the two JO
-      fac-similés, or obtain them from the JO archive.
+      SOURCED, and the route matters because the previous pass could not take
+      it. Légifrance publishes annexe 1 bis only as a link to a PDF, and the
+      article body says so; but the SUBSTITUTING arrêté is reproduced in full in
+      the authenticated electronic Journal officiel, and the JO PDF carries the
+      whole table and the three layout plans as embedded images at 350-406 dpi.
+      Route: JO nº 0121 du 17/05/2020, texte 8 sur 82, downloaded from
+      legifrance.gouv.fr/download/file/…/JOE_TEXTE and read page by page. Every
+      figure below is transcribed from that table; the ±/+- tolerances are the
+      arrêté's own. Where a widely repeated retail figure exists it is noted as
+      what it is — a value INSIDE the statutory tolerance, not the nominal.
+    unit: mm
+    formats:
+      - id: long
+        annexe: "annexe 2 — cas général, 1 ligne"
+        length_overall: { nominal: 508, tolerance: "+14/-0", drawing_note: "the plan dimensions the physical support 520 ±2; the 520 mm plate sold everywhere in France is the +12 case" }
+        height_overall: { nominal: 98, tolerance: "+14/-0", with_bavette: { nominal: 120, tolerance: "+10/-2" } }
+        useful: { length_min: 508, height_min: 98 }
+        common_form: { w: 520, h: 110, basis: "within tolerance; the manufactured norm" }
+      - id: two_line
+        annexe: "annexe 3 — cas général, 2 lignes"
+        length_overall: { nominal: [263, 288], tolerance: "+14/-0" }
+        height_overall: { nominal: 188, tolerance: "+15/-0", with_bavette: { nominal: 210, tolerance: "+10/-3" } }
+        useful: { length_min: 263, height_min: 188, note: "263 minimum si longueur hors tout 275 ; 288 minimum si longueur hors tout 300" }
+        common_form: { w: 275, h: 200, basis: "within tolerance; the manufactured norm" }
+      - id: two_three_wheel
+        annexe: "annexe 4 bis — véhicules à deux ou trois roues à moteur et quadricycles à moteur, non carrossés"
+        length_overall: { nominal: 198, tolerance: "+14/-0" }
+        height_overall: { nominal: 118, tolerance: "+15/-0", with_bavette: { nominal: 140, tolerance: "+10/-3" } }
+        useful: { length_min: 198, height_min: 118 }
+        common_form: { w: 210, h: 130, basis: "within tolerance; the manufactured norm" }
+    corner_radius: { general: { nominal: 9, tolerance: "±3" }, two_three_wheel: { nominal: 8, tolerance: "±2" } }
+    characters:
+      general: { height: 75, height_tolerance: "±5", width: 39, width_tolerance: "±7", stroke: 11, stroke_tolerance: "±1", pitch_min: 45 }
+      two_three_wheel: { height: 45, height_tolerance: "±3", width: 23, width_tolerance: "±6", stroke: 7, stroke_tolerance: "±1", pitch_min: 24 }
+      width_exceptions:
+        general: { "M": { width: 43, tolerance: "±11" }, "W": { width: 43, tolerance: "±11" }, "1": { width: 25, tolerance: "±7" } }
+        two_three_wheel: { "M": { width: 25.5, tolerance: "±6.5" }, "W": { width: 25.5, tolerance: "±6.5" }, "1": { width: 14.5, tolerance: "±4.5" } }
+      uniformity: >-
+        Verbatim: "Les dimensions (hauteur, largeur, épaisseur) des différents
+        caractères d'une même plaque doivent être uniformes, exception faite, le
+        cas échéant, de la largeur des caractères 1, M et W." The PITCH is not
+        excepted — a French number is effectively monospaced at its entraxe.
+      clearances: { to_band_or_identifiant_min: 5, to_useful_edge_vertical_min: 5 }
+    tirets:
+      general: { length: 15, length_tolerance: "±2", height: 10, height_tolerance: "±1", entraxe: 177, entraxe_tolerance: "±10" }
+      two_three_wheel: { length: 10, length_tolerance: "±2", height: 6, height_tolerance: "±1", entraxe: "sans objet" }
+      printed_form: >-
+        THE STATUTORY GLYPH IS A BAR, NOT A HYPHEN, AND THE TABLE PROVES IT: a
+        tiret is 15 mm long and 10 mm high against 75 mm characters — a thick
+        short block at the middle of the cap height, which is exactly what issued
+        plates show (BK-604-DX, BP-257-RR, EP-651-TE, WW-477-WB). Recorded here
+        because `format.separator` can only spell "-", and a consumer drawing a
+        typographic hyphen draws the wrong object. Evidence: statutory +
+        photographic-observed.
+      position: >-
+        The two tirets are symmetric about the vertical axis of the useful part
+        (annexe 2 marks the axis at 260 ±5 from the left edge of a 520 mm plate),
+        so the layout of every AA-123-AA number is fixed. On the two-line plates
+        the FIRST tiret stays at the end of line 1: annexes 3 and 4 bis both draw
+        "AB -" over "725-FR" (annexe 3, 55 ±5 below the useful top edge) and
+        "AB -" over "948-MZ" (annexe 4 bis, 35 ±5), with the second tiret at
+        3/5 of the useful length (annexe 3) or 126 ±10 from the left (4 bis).
+    euro_symbol_zone:
+      general: { width_min: 44, height_min: 98, two_line_height: 100, two_line_height_tolerance: "+5/-3" }
+      two_three_wheel: { width_min: 29, height: 62, height_tolerance: "+5/-3" }
+      note: "annexe 1 bis dimensions the European symbol and the identifiant territorial zone with ONE pair of rows — the two blue zones are the same size, one at each end of the useful part"
+    identifiant_territorial_zone:
+      logo: { position: "centré dans la moitié supérieure de la zone dédiée", general: { width: 39, width_tolerance: "+0/-5", height: 44, height_tolerance: "+0/-5" }, two_three_wheel: { width: 24, width_tolerance: "+0/-3", height: 27, height_tolerance: "+0/-3" } }
+      department_digits:
+        general: { height: 32, height_tolerance: "±3", width: 15, width_tolerance: "±2", stroke: 5, stroke_tolerance: "±1" }
+        two_three_wheel: { height: 22, height_tolerance: "±2", width: 10, width_tolerance: "±2", stroke: 3, stroke_tolerance: "±1" }
+        dom_note: "la taille des caractères du numéro de département DOM peut être ajustée pour un rendu homogène"
+      zones_source: "annexe 6 bis (positions of the département marking zones) — still image-only and NOT transcribed here"
+    homologation_marking:
+      present: true
+      position: "bottom right of the useful part, under the identifiant territorial"
+      envelope: { width_max: 52, height_max: 35 }
+      note: >-
+        Annexes 2, 3 and 4 bis all reserve this box and letter it "TPPR XXXX" in
+        their illustrative renderings; issued plates carry the plate maker's own
+        homologation reference there (observed: "TPPR 6151", "TPPR 11033",
+        "P 1116"). The CONTENT is manufacturer-specific and is not modelled.
+    remaining_gap: >-
+      Annexe 6 bis (the further specification of the European symbol and of the
+      département marking zones) and the PRE-2015 annexes 1, 3, 4, 5 and 6 that
+      art. 11 bis retired on 1 July 2015 are still published as images only and
+      are NOT transcribed. So the cyclomoteur plate issued before 1 July 2015 and
+      every FNI-era plate remain dimensionally unsourced.
     sources:
-      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000041887893  # annexe 1 bis — body is a PDF link only"
-      - "https://www.legifrance.gouv.fr/download/pdf?id=RoSk8Ua8lFJWJLVDjh-XCyfJvp_yqT8SIiOnWW6Q0Fc=  # the annexe 1 bis / 2 / 3 / 4 bis PDF (Cloudflare-protected; not retrievable in this pass)"
-      - "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000030249176  # arrêté du 11 février 2015 creating annexe 1 bis — 'consulter l'image dans le fac-similé du JO nº 0040 du 17/02/2015, texte nº 38'"
+      - "https://www.legifrance.gouv.fr/download/file/RoSk8Ua8lFJWJLVDjh-XCyfJvp_yqT8SIiOnWW6Q0Fc=/JOE_TEXTE  # JO nº 0121 du 17/05/2020, texte 8 sur 82 — arrêté du 7 mai 2020 (NOR TRER2011996A), which substitutes annexes 1 bis, 2, 3 and 4 bis in full"
+      - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000041887893  # annexe 1 bis in force — body is a PDF link only, which is why the substituting arrêté is the readable route"
+      - "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000030249176  # arrêté du 11 février 2015 creating annexe 1 bis"
   plate_count:
     rule: >-
       Code de la route art. R. 317-8 I: "Tout véhicule à moteur, à l'exception
@@ -360,9 +437,17 @@ series:
         tirets to be integrated at manufacture. Art. 7 last sentence: "La
         définition, les dimensions, l'ordre et l'espacement des tirets sont
         fixés par le tableau à l'annexe 1 bis et par les plans aux annexes 2 à
-        4 bis" — i.e. the geometry is in the image-only annexes (see the
-        dimensions gap).
+        4 bis" — and that geometry is now transcribed under common.dimensions.
+        THE PRINTED FORM IS A BAR, NOT A HYPHEN: annexe 1 bis dimensions a tiret
+        at 15 x 10 mm against 75 mm characters, and issued plates BK-604-DX,
+        BP-257-RR, EP-651-TE and WW-477-WB all show a thick short block at the
+        middle of the cap height. A consumer drawing a typographic hyphen draws
+        the wrong object. Evidence: statutory + photographic-observed.
     design:
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne (508 +14/-0 x 98 +14/-0 hors tout; the plan draws the support at 520 ±2)" }
+      plate_variants:
+        - { w: 275, h: 200, lines: 2, source: "annexe 1 bis / annexe 3, cas général 2 lignes (263 utile mini si longueur hors tout 275; hauteur hors tout 188 +15/-0)" }
+        - { w: 300, h: 210, lines: 2, source: "annexe 1 bis / annexe 3, the second two-line size (288 utile mini si longueur hors tout 300; avec bavette 210 +10/-3)" }
       background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec, spec_note: "arrêté (2) art. 7: 'fond rétroréfléchissant blanc'; the white chromaticity quadrilateral and luminance factor >= 0.35 are in the arrêté du 15 avril 1996" }
       foreground: "#000000"
       foreground_note: "'caractères noirs NON rétroréfléchissants' — the characters are required not to retroreflect, unlike the ground"
@@ -373,7 +458,7 @@ series:
         background: "blue, not necessarily retroreflective"
         owner_chosen: true
         note: "art. 9; identical front and rear; reproduced only by homologated manufacturers"
-      emblem: { present: true, rendered: placeholder, note: "the identifiant territorial carries an official REGIONAL LOGO — 18 régions plus the collectivité européenne d'Alsace, none licence-cleared. PRD-PLATES §3 placeholder rule applies. Art. 9 calls them 'libres de droit' but restricts WHO may reproduce them, which is a manufacturing rule and not a licence grant to this dataset." }
+      emblem: { present: true, rendered: placeholder, note: "the identifiant territorial carries an official REGIONAL LOGO — 18 régions plus the collectivité européenne d'Alsace, none HELD. LICENCE ROUTE, corrected by reading art. 9 to its end: the logos are declared officiels ET LIBRES DE DROIT, and the article names their publisher — verbatim, 'Les logos des collectivités territoriales officiels et libres de droit, qui figurent sur le site internet du ministère de l intérieur : http://www.interieur.gouv.fr/, ne peuvent être reproduits sur les plaques d immatriculation que par le seul fabricant de plaques ou de matériau réfléchissant titulaire d homologation.' The reservation that follows is about reproducing them ON PLATES by makers without homologation — a manufacturing rule — and it sits after the words 'libres de droit'. So the blocker is ACQUIRING the official files, not their licence. PRD-PLATES §3 placeholder rule still applies until they are held and ledgered." }
       shape_note: "art. 5: the useful part is rectangular with the long side horizontal; the physical support must be symmetric about a vertical axis and may be slightly curved; a lower 'bavette' outside the useful part may carry only the seller's or fitter's references"
       background_pattern_rule: "art. 5: 'Les trames de fonds de plaques ne doivent pas comporter de caractères explicites (lettre ou symbole) ou ostentatoires' — decorative background textures are allowed, explicit letters or symbols in them are not"
       rear_differs: false
@@ -431,6 +516,7 @@ series:
       regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
       charset: { notes: "annexe VII A applies unchanged — motorcycles take the ordinary definitive number" }
     design:
+      plate: { w: 210, h: 130, unit: mm, lines: 2, source: "annexe 1 bis / annexe 4 bis, véhicules à deux ou trois roues (198 +14/-0 x 118 +15/-0 hors tout)" }
       background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
       foreground: "#000000"
       band: { side: left, color: "#003399", content: eu-stars+F, hex_basis: observed }
@@ -519,6 +605,7 @@ series:
       regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
       charset: { notes: "the cyclomoteur exception in annexe VII A runs 'jusqu'au 30 juin 2015'; from 1 July 2015 a newly registered moped takes the ordinary definitive number" }
     design:
+      plate: { w: 210, h: 130, unit: mm, lines: 2, source: "annexe 1 bis / annexe 4 bis — art. 11 bis puts cyclomoteur plates on these annexes from 1 July 2015" }
       background: { color: "#FFFFFF", finish: retroreflective, hex_basis: spec }
       foreground: "#000000"
       band: { side: left, color: "#003399", content: eu-stars+F, hex_basis: observed }
@@ -553,8 +640,9 @@ series:
         suivie de 3 chiffres, suivis de 2 lettres, les blocs de chiffres et de
         lettres étant séparés par des tirets. Exemple : W-111-AA."
     design:
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne" }
       background: { finish: retroreflective, note: "NO COLOUR IS PRESCRIBED for W garage plates in any version of the arrêté before 1 January 2026 — verified against the 2009 original and the version in force 1 June 2025, whose annexe 7 has three items, none of them W or WW. Art. 7 al. 1's black-on-white rule is expressly limited to vehicles 'portant le numéro définitif', which a W garage number is not. The colour is therefore a RECORDED GAP for this period, not an assumption." }
-      band: { side: left, content: eu-stars+F, note: "art. 8's Euro-symbol duty is also written for 'véhicules portant le numéro définitif'; whether it reached W garage plates before 2026 is unresolved — recorded gap" }
+      band: { side: left, content: eu-stars+F, note: "art. 8's Euro-symbol duty is written for 'véhicules portant le numéro définitif', so its text does not reach a W garage number; issued plates carry the symbol anyway. Photographic-observed: W-143-AK, black on white, euroband present and NO identifiant territorial." }
       removable: true
       removable_note: "art. R. 317-8 I and arrêté (2) art. 4 allow removable plates for vehicles circulating under a W garage certificate — France's answer to the German rote Kennzeichen"
     region_encoding: none
@@ -589,6 +677,7 @@ series:
       regex: '\AW-\d{3}-[A-Z]{2}\z'
       grammar: "annexe VII B unchanged — the 2025 amendment touched only the plate, never the number"
     design:
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne — the 2025 amendment changed the colour, not the geometry" }
       background: { color: "#FF41B2", finish: non-retroreflective, hex_basis: derived, hex_note: "DERIVED, NOT STATED. The arrêté names the colour only as 'rose' and binds it to the chromaticity quadrilateral (0.345,0.155) (0.500,0.195) (0.470,0.295) (0.365,0.280) added to the arrêté du 15 avril 1996 by the arrêté du 21 novembre 2025 art. 2. The hex is the sRGB rendering of that quadrilateral's centroid (x=0.4200, y=0.2312) at Y=0.30, red-channel-clipped because the specified pink is outside the sRGB gamut. No photograph was consulted. Flagged for the human pass." }
       foreground: "#000000"
       finish_note: "the new art. 1 bis of the arrêté du 15 avril 1996, verbatim: 'Les dispositions de l'article 1er ne sont pas applicables aux plaques d'immatriculation provisoire WW et immatriculation W garage présentées en caractères noirs sur fond rose.' — pink WW/W plates are exempted from the homologation-and-retroreflective-product regime that binds every other French plate, while still being bound to the pink coordinates"
@@ -627,9 +716,21 @@ series:
         lettres étant séparés par des tirets. Exemple : WW-111-AA."
       fields_note: "the plate additionally bears the WW registration's END-OF-VALIDITY DATE as mm/aa at the right-hand end of the useful part (arrêté (2) art. 7 al. 2) — a field a single pattern string cannot carry"
     design:
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne" }
       background: { finish: retroreflective, note: "no colour prescribed before 1 January 2026 — same recorded gap as fr-wgarage-2009" }
-      band: { side: left, content: eu-stars+F, note: "unresolved for provisional numbers — recorded gap" }
-      extra_field: { position: right, content: "mm/aa, the end of the WW registration's validity" }
+      band: { side: left, content: eu-stars+F, note: "not written for provisional numbers, but issued plates carry the symbol — photographic-observed (WW-799-VQ, WW-764-AS)" }
+      identifiant_territorial: present
+      identifiant_territorial_note: "photographic-observed: issued 2009-2025 WW plates carry a full identifiant territorial — WW-799-VQ with the Auvergne-Rhône-Alpes logo over 74, WW-764-AS with Limousin over 19. Art. 9 is not disapplied for WW."
+      extra_field:
+        position: right
+        content: "mm/aa, the end of the WW registration's validity"
+        printed: unobserved
+        printed_note: >-
+          Art. 7 al. 2 requires the expiry on the plate, but no issued 2009-2025
+          WW plate located in either pass shows it: the right-hand end carries
+          the identifiant territorial instead. The field only becomes visible on
+          the 2026 pink plate, whose annexe 7 item 4 puts it there in terms.
+          Divergence recorded, not resolved.
     region_encoding: none
     validity:
       months: 4
@@ -670,10 +771,13 @@ series:
       grammar: "annexe VII C unchanged"
       fields_note: "mm/aa expiry field at the right-hand end, now specified as black on pink"
     design:
-      background: { color: "#FF41B2", finish: non-retroreflective, hex_basis: derived, hex_note: "same derivation and same caveat as fr-wgarage-2026" }
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne" }
+      background: { color: "#FF41B2", finish: non-retroreflective, hex_basis: derived, hex_note: "same derivation as fr-wgarage-2026. The 'no photograph was consulted' caveat is now partly answered: Commons CC0 File:Plaque d'immatriculation provisoire - véhicule en attente d'immatriculation (101).jpg photographs an issued WW-477-WB pink plate, and CC0 File:France 2026 Temporary Plate.png is a vector rendering. Neither is colour-managed, so the hex stays DERIVED — but the colour is no longer unphotographed." }
       foreground: "#000000"
       extra_field: { position: right, content: "mm/aa expiry", foreground: "#000000", background: "rose" }
-      band: { side: left, content: eu-stars+F, note: "unresolved — recorded gap" }
+      band: { side: left, content: eu-stars+F, note: "photographic-observed: the pink plate keeps the blue euroband unchanged (WW-477-WB)" }
+      identifiant_territorial: absent
+      identifiant_territorial_note: "photographic-observed: the pink plate's right-hand end carries the mm/aa expiry, not an identifiant territorial (WW-477-WB, 06 over 26)"
     region_encoding: none
     validity: { months: 4, months_extended: 6 }
     sources:
@@ -705,12 +809,15 @@ series:
       charset: { notes: "these are ORDINARY definitive numbers — annexe VII creates no transit number. What changes is the plate, and the certificate's `usage` mention." }
       fields_note: "for the two transit usages the plate additionally carries the usage's end-of-validity date as mm/aa at the right-hand end, in white on red (annexe 7 item 1). The Gex and Haute-Savoie free-zone usages take the red plate WITHOUT a date."
     design:
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne" }
       background: { color: "#CC0000", finish: retroreflective, hex_basis: observed, hex_note: "annexe 7 says 'fond rouge' and the arrêté du 15 avril 1996's colorimetric table has NO red row — the colour is named and not numbered, so this hex is observed within a named colour and is one of the weakest claims in the file" }
       foreground: "#FFFFFF"
       band: { side: left, content: eu-stars+F, note: "art. 8 is not disapplied for transit plates (only for collection), so the European symbol is required" }
       extra_field: { position: right, content: "mm/aa end of the usage's validity, white on red — transit usages only" }
       identifiant_territorial: absent
       identifiant_territorial_note: "art. 9 last paragraph expressly disapplies the identifiant territorial to 'véhicule importé en transit' and 'véhicule en transit temporaire' plates — so a red French plate has no département band at all"
+      border_rule: { present: true, color: "#FFFFFF", note: "a thin white rule inset about 2 mm from the rim, on two independent photographs (AA-572-BF and EP-651-TE). In neither arrêté; photographic-observed." }
+      extra_field_layout: "the mm/aa prints as MONTH OVER YEAR, two short lines stacked at the right-hand end of the useful part (both references)"
     region_encoding: none
     sources:
       - "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000052974050  # annexe 7 item 1: 'Usages \"véhicule en transit temporaire\", \"véhicule importé en transit\", \"véhicule pays de Gex\" et \"véhicule pays de Savoie\" — Le numéro d'immatriculation est reproduit sur chaque plaque d'immatriculation en caractères blancs sur fond rouge.'"
@@ -744,6 +851,7 @@ series:
       regex_strict: '\A(?!WW-)[A-Z]{2}-\d{3}-[A-Z]{2}\z'
       charset: { notes: "an ordinary definitive number; annexe VII creates no collection number" }
     design:
+      plate: { w: 520, h: 110, unit: mm, source: "annexe 1 bis, cas général 1 ligne" }
       background: { color: "#000000", finish: non-retroreflective, hex_basis: observed, hex_note: "annexe 7 item 3 names 'fond noir'; the 1996 colorimetric table does carry a 'noir' quadrilateral, but for the CHARACTERS of ordinary plates, and no finish is stated for the collection ground — hence observed" }
       foreground: "#FFFFFF"
       optional: true
@@ -830,7 +938,8 @@ series:
       background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed, hex_note: "annexe 7 item 2 says 'fond vert jaspe'; the 1996 colorimetric table has no green row at all, so this is a named colour with no coordinates anywhere in French law — observed, and flagged" }
       foreground: "#E87511"
       foreground_note: "'caractères orangés' — likewise named and not numbered"
-      band: { side: left, content: eu-stars+F, note: "art. 8 applies to definitive numbers; whether it reaches diplomatic plates is not stated — recorded gap" }
+      band: { side: none, note: "SETTLED PHOTOGRAPHICALLY, and against the guess: French CD/CMD/C/K plates carry NO European symbol at all. Art. 8's duty is written for 'véhicules portant le numéro définitif', which a diplomatic number is not, and two independent photographs — 168 CD 66 in orange on jasper green, 431 K 12355 in white on jasper green — show a plain coloured face from rim to rim. Evidence: photographic-observed." }
+      border_rule: { present: true, color: "as the characters", note: "both references show a thin rule inset about 2 mm from the rim in the character colour, orange on the CD plate and white on the K plate. In neither arrêté; photographic-observed." }
     region_encoding: none
     region_encoding_note: "the leading 1-199 group is a COUNTRY code allocated by the Ministère des affaires étrangères and is NOT published in the arrêté — a diplomatic decode table is L4 work per PRD-PLATES §7 and is deliberately not authored here"
     sources:
@@ -963,6 +1072,15 @@ series:
         401 K 1000 ; 600 K 100." The ESA in Guyane completes the number with
         973 and the European Parliament's Strasbourg secretariat office with 67.
       note: "the embassy and organisation forms share one lexical shape (1-3 digits, K, 3-4 digits) and are therefore one series; they differ only by the numeric RANGE of the first group, which the regex does not encode"
+      observed_overflow: >-
+        FLAGGED FOR THE VERIFIER. Issued organisation K plates carry FIVE digits
+        in the order group, beyond annexe VII D.3's stated 100 à 9999. Two
+        independent Commons CC0 photographs, both under the 431 organisation
+        code: "431 K 12355" and "431 K 11589 Z". Both regexes above reject them.
+        The annexe is quoted correctly, so either the range has been outgrown in
+        practice or it was amended somewhere not located in this pass; the
+        widening is NOT made here because no instrument was found for it.
+        Evidence: photographic-observed.
     design:
       background: { color: "#0B5D3B", finish: retroreflective, hex_basis: observed }
       foreground: "#FFFFFF"
