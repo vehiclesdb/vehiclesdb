@@ -25783,3 +25783,58 @@ My session closes. Everything is on disk; nothing lives only in my head. The rec
 **Open items by owner**: (a) maintainers — the `\L` pattern-language escape ruling (ca-nb-truck; gem handles it via display_pattern, the language spec should bless or rename it); the Japan ASCII-projection convention adopt-or-amend (my L3 turn); the design.layout schema proposal (specs should graduate from web config into series data). (b) any sibling — L4 historical depth, L5 rest-of-world, the registry-synergy corpus gates (th my ar nz ua ie on the data#244 pattern). (c) owner — FLHSMV Ch.119 request, the §7.3 trademark pass before /plates GA, counsel session.
 
 It was an honor running this program. The dataset went from 4 pilot files to six continents in one owner-directed sprint, and the honesty discipline — gaps marked, folklore flagged, placeholders that refuse to lie — is what made every correction cheap. Guard it. — S5W
+
+## S4W — S5W's first handoff item is CLOSED by measurement: **BLESS the `\L` escape, do not rename it.** The gem and the lint already implement identical semantics
+
+S5W left three maintainer items. Two are mine and the first is answerable now,
+because both halves already exist and agree — nobody has to decide, only to
+check.
+
+### The escape is in use, in a jurisdiction I never touched
+
+`plates/ca-nb.yml`, `ca-nb-truck-2003` — a New Brunswick truck plate that
+literally prints an L:
+
+    pattern: '\L999999'      regex: '\AL\d{6}\z'
+
+The file's own note explains why. **That is my escape validated in the wild by
+another session**, four hours after it shipped, on a plate I had never seen.
+(My first grep for it said "unused" — the grep was mis-escaped, not the corpus.)
+
+### Gem and lint agree, verified rather than assumed
+
+    vehicles gem   @display_pattern = @pattern&.gsub(/\\(.)/) { $1 }
+    lint           backslash -> next character is a literal token
+
+    data pattern         "\\L999999"
+    gem display_pattern  "L999999"      <- what a human sees
+    lint tokens          [literal L][digit]x6
+    generated serial     "L777777"      matches \AL\d{6}\z -> TRUE
+
+    cross-check, UNESCAPED "L999999":
+    lint tokens          [letter]...    generated "Z777777" -> FALSE
+
+Both sides read a backslash as *"the next character is literal"*. The gem's
+`display_pattern` is simply the escape-stripped view for humans. **There is
+nothing to rename** — a rename would break `ca-nb` and the gem's derivation for
+no gain. Bless it in the language spec as shipped.
+
+One detail I checked because it would bite silently: the gem counts layout slots
+from `display_pattern` while excluding `- · . space`. An escaped separator would
+therefore un-escape into a character the slot count skips — which is **correct**,
+since an escaped hyphen is still a hyphen. No action, recorded so the next
+reader does not have to re-derive it.
+
+### The second item — Japan's ASCII projection — is the one I flagged, and it is now unowned
+
+S5W's session closed before answering whether the `format.fields[]` + projection
+model is meant to generalise beyond JP. **`gr` and `cy` are waiting on exactly
+that**: their Greek-only marks (`ΔΣ ΞΑ ΔΟΚ`, Cyprus `ΚΔ`) are filed as declared
+gaps because "KD" for `ΚΔ` fabricates a string no plate shows, and under the
+field model they become authorable.
+
+Owner: that is an adopt-or-amend call, not a data edit. **Say generalise and I
+take gr/cy under it**; say JP-only and the gaps stay filed with the reason.
+
+I am not adopting a convention across jurisdictions on the strength of its
+author's handoff note — the same reason I held wave 2 rather than double-launch.
