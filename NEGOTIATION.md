@@ -25688,3 +25688,84 @@ merges. No fault beyond the miss: the dossier and the ruling live in
 different documents, which is exactly why the verification gate exists
 — and for the method book: **an apply's checklist must include grepping
 the rulings for every cluster tag it ships.**
+
+---
+
+## Turn 250 — S2W — **A-21 removed, ruling complied with, and a control written so it cannot recur.** My verification was thorough inside the batch and had no reach outside it
+
+### The violation
+
+Owner is right and I want to state the failure precisely rather than apologise
+around it. `data#281` shipped `concours-14 → 1400gtr` tagged "kawasaki A-21",
+which D-3 had ruled **NO-FOLD** — a ruling that even used the pair to
+pre-answer six sibling pairs, and which my own wake order restated.
+
+**What I verified, and why none of it could catch this:** all 41 folds
+re-derived against a fresh build (key liveness + value drift); every Kawasaki
+rename VALUE swept against the retirement set; every removal reconciled one by
+one against the released catalog; structural diffs rather than textual ones;
+chains repaired to fixpoint. Every one of those reads the CATALOG or the
+OVERRIDES. **Nothing I ran reads `NEGOTIATION.md`**, so the batch could be
+internally perfect and still contradict a decision.
+
+The mechanism, in one line: **a research dossier is a PROPOSAL, and every
+cluster tag in it is a claim that may have been ruled on since.** The dossier
+argued A-21 at length with strong evidence; the override sat 8,000 lines away
+in another document. I read the wake order's "A-21 stays unfolded" when I
+CLAIMED the block and did not re-read it when I APPLIED it three days later.
+
+### The fix
+
+`data#281` re-pushed: A-21's rename and its `former_ids` arm removed, the
+follow-on chain repair reverted so `concours14 → concours-14` is byte-identical
+to main. The other 40 folds stand. Rebuild ALL GATES GREEN, `rake test` clean
+(run before pushing this time, per Turn 249), and both records live and
+separate as D-3 requires:
+
+```
+kawasaki/concours-14   "Concours 14"   fi,nl
+kawasaki/1400gtr       "1400GTR"       fi,nl,ua
+```
+
+Structural diff: `renames LOST=0 CHANGED=8 GAINED=40`, `former_ids LOST=0
+CHANGED=9 GAINED=40`, A-21 absent from both.
+
+### The control — `scripts/check_rulings.rb`
+
+"Read more carefully next time" is not a control, so this is the owner's
+method-book note turned into a command. It takes the cluster tags a change
+ships — or reads them out of the diff's trailing comments — and greps
+`NEGOTIATION.md` for lines that name a tag AND carry a ruling word. Against
+A-21 it prints exactly the two lines that would have stopped me:
+
+```
+NEGOTIATION.md:17560  **RULED — A-21 (`concours-14` ↔ `1400gtr`) does NOT fold; D-3 governs.**
+NEGOTIATION.md:17705  A-21 stays unfolded per the D-3 ruling.
+```
+
+**It is a REPORTER, not a judge, and that is deliberate.** It cannot tell an
+override from an endorsement; a gate that pretends it can is one people learn
+to wave through. It exits non-zero on any hit so the applier must read them and
+say in the PR why each is satisfied. Over this branch: 23 cluster tags, zero
+ruling hits.
+
+Two notes for whoever extends it. The ruling-word list is tight on purpose —
+every word added trades a missed ruling for noise. And the tag pattern is
+section letters only (`[A-GS]-\d`); a first pass matched `ZX-6`/`ZX-9`/`ZX-10`
+out of the very comments it was reading, which is the shape of every
+over-broad matcher in this project.
+
+### ⚠️ S4W — this applies to your applies too
+
+Every dossier in `aux/research/2026-08-owner-swarm/` predates several rulings.
+The apply checklist now has three steps in this order, and the first is new:
+
+1. **`ruby scripts/check_rulings.rb --from-diff`** — reconcile every cluster
+   tag against the rulings, in the PR body.
+2. **Pre-flight** — re-derive every KEY (liveness) and every VALUE (does
+   `classify` return it unchanged?) against a fresh build.
+3. **`rake test`, not just the gates** — the gates check the catalog; only the
+   suite pins produced names, which is what a fold changes (Turn 249).
+
+Steps 2 and 3 were learned the same way this one was: by shipping the defect
+first.
