@@ -25959,3 +25959,72 @@ will run exactly that rather than reason from a log.
 
 Not touching the shared cache to do it: the comparison goes in a private
 `VDB_CACHE_DIR`, as the NZ delegate did.
+
+## S4W — **NOT MY FIX. NZTA IS SERVING 760,000 OF 5,891,735 RECORDS — an interrupted publish, 24 minutes before the build started.** The gates did exactly their job
+
+I named my own `pipeline#156` as suspect number one. The measurement clears it,
+and it clears it by evidence rather than by argument.
+
+### The A/B, same live service, both arms fresh, separate private caches
+
+    kind          PRE (a759c31, truncating)   POST (e48489d, paginating)   delta
+    car             5,507 pairs / 472,433       5,507 / 472,433              0
+    motorcycle      2,726 /  24,721             2,726 /  24,721              0
+    moped           1,006 /   3,782             1,006 /   3,782              0
+    bus               346 /   4,728               346 /   4,728              0
+    HTTP requests     145                         145                        0
+    truncation events   0                           0                        0
+
+**145 of 145 cached payloads byte-identical between arms.** The pagination path
+never executes today, because the chunks are nowhere near the cap: car `C` is
+545 groups against 2,207 before, car `M` is 786 against 2,151. Post-fix ≡
+pre-fix by construction, and the red build's own log agrees — zero truncation
+lines in it.
+
+And run offline against the frozen full-size payloads, the fix's SIGN is what it
+claimed: car **+358 pairs / +59,730 vehicles**. It adds rows. It cannot subtract
+them.
+
+### The actual cause, measured three times
+
+    layer total          5,891,735  ->  760,000     (-87.1%, identical on 3 reads)
+    OBJECTID range       —              1 … 760,000, CONTIGUOUS, no gaps
+    lastEditDate         —              2026-08-03T07:28:01Z  (24 min pre-build)
+    retained: car 12.9% · motorcycle 13.0% · bus 12.6% · moped 12.6%
+
+Uniform across every vehicle type, and the live pair set is a near-perfect
+SUBSET of yesterday's — 21,051 pairs lost, **9** gained. A round 760,000 rows
+occupying OBJECTIDs 1–760,000 contiguously is an **interrupted / prefix-truncated
+publish**, not a refresh and not a sample. `MVR_Mar26` is still the only MVR
+service, and the archive shows the layer stable at full size on 2026-07-05 and
+2026-08-01.
+
+Both spotchecks fall straight out of it: `BMW / M 535`, `M 535 I` and
+`ZERO / SR/F` are **n=1 each** in the frozen register and absent live —
+singletons are what an 87% prefix truncation removes first, which is also why
+the vanished ids are long-tail nameplates of high-volume NZ marques (holden 522
+→ 155 car models).
+
+**Recommendation: change nothing in the adapter. Wait for NZTA to finish
+republishing and re-check `total ≈ 5,891,735` before rebuilding.** The gates
+worked — a short build failed instead of shipping.
+
+### Two real follow-ups the diagnosis surfaced, and I am taking both
+
+1. **`nz_nzta` documents 5,891,735 records and never asserts against it.** A
+   source-level floor check would have failed at the FETCH with *"NZ returned
+   760,000 of ~5.89M"* instead of surfacing three stages downstream as 84
+   vanished ids and two spotchecks. Same lesson as the licence gate: the check
+   belongs where the fact is known.
+2. **`run.rb:70-78` wraps `s.rows(kind)` in a bare `rescue => e … []`, which
+   SWALLOWS `TruncatedResult`.** The delegate constructed the failure: a source
+   raising the guard becomes an empty source with one WARN and the build
+   continues — defeating `#156`'s own contract that a short build must fail. It
+   did not fire today, but it is exactly the silent-failure class this program
+   keeps finding, sitting inside the fix meant to end it.
+
+### On my own reasoning
+
+Suspecting my fix first was right on priors — the sign was inverted and it was
+the newest thing in the path — but priors are not evidence, and the honest
+version of "it's probably mine" is a measurement that can exonerate it.
