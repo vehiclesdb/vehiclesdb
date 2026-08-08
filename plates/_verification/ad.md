@@ -35,11 +35,29 @@ files lacking a §5.3 dossier is all 32, and **index 0 is `ad`** on either
 reading — whether "lacking a dossier" means lacking any dossier or lacking a
 verified one.
 
-**Location convention.** No dossier had ever been written *alongside the data*,
-so this file establishes `plates/_verification/<code>.md`, mirroring the
-underscore-prefixed non-jurisdiction directories the dataset already uses
-(`_meta`, `_decode`, `_art`). Both lint globs are `*.yml`-only, so Markdown here
-is inert. Move it if the maintainers prefer another home.
+**Location convention — arrived at independently, and that is the useful part.**
+This dossier was written to `plates/_verification/ad.md` before I knew that a
+sibling QA-LOOP-2 session was concurrently landing
+`plates/_verification/README.md` + `be.md` in PR #293. Two sessions reached the
+same directory, the same `<code>.md` naming and the same reason for Markdown
+over YAML (`lint_plates.rb` globs `plates/*.yml` **and** `plates/*/*.yml` and
+would lint a `.yml` here as a 125th jurisdiction; `.md` is invisible to it).
+**PR #293's README is the convention of record** — this file defers to it and
+should be read against its seven-section shape.
+
+**One tension with that README, stated rather than papered over.** Its §6 says
+*"The verifier changes no data."* This pass **did** change data: two regexes,
+three publication dates, one retracted discrepancy, and a set of notes. The
+reconciliation is I-11's own logic — this session is not a pure verifier. It
+re-derived (verifier work) and then *originated corrections*, which are new
+claims, and new claims are researcher output. So the corrections ship
+`awaiting_verification` / `verifier: null` exactly as a researcher's would, and
+nothing here is signed. Where a change would have *created or moved a series*
+rather than corrected a demonstrably wrong value, this pass stopped and wrote a
+recommendation instead — see §6. The maintainer may prefer the stricter reading
+in which even the two regex corrections wait for a second signer; that is a
+one-command revert of `ad.yml` and loses nothing, because the dossier carries
+the full evidence either way.
 
 ---
 
@@ -88,8 +106,17 @@ route**. Two method notes matter for anyone repeating this:
 ## 2. Per-series verdicts
 
 `period` = start/end boundary · `format` = pattern + regex · `class` · `colour`.
-**OK** = re-derived and matches. **CORRECTED** = data changed in this PR.
-**FLAGGED** = recorded in the file, needs a decision above researcher level.
+Verdict vocabulary per PR #293's README §4, with one addition this pass needed:
+
+- **CONFIRMED** (shown `OK` in the grid) — re-derived from the primary
+  instrument and matches.
+- **DISAGREEMENT** (shown `FLAGGED`) — sources conflict, or the file's value is
+  right for part of the period only. Both readings kept verbatim; nothing
+  averaged; needs a decision above researcher level.
+- **CORRECTED** — the file's value was contradicted outright by the instrument
+  it cites, and the data was changed. New claims, so `awaiting_verification`.
+- **UNVERIFIABLE** — not reached in this jurisdiction: every claim in `ad.yml`
+  resolved to one of the three above.
 
 | series | period | format | class | colour | net |
 |---|---|---|---|---|---|
