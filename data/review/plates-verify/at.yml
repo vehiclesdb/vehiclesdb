@@ -1,0 +1,599 @@
+# PRD-PLATES §5.3 verification dossier — AUSTRIA
+#
+# Re-derivation of every claim in plates/at.yml that §5.3 puts in the
+# verifier's hands: period boundaries, format regexes, class, and colours.
+# Eighteen series, from the primary statutory source already pinned in the
+# file PLUS one independent route per claim family.
+#
+# QA-LOOP-2, index 1 of the sorted list of L1-wave jurisdiction files lacking
+# a §5.3 dossier. That list was, at origin/main 151f727, the 32 files landed
+# by the two L1 EU/EEA waves — wave 1 (at be ch fi fr gb it se, data#218-#225)
+# and wave 2 (ad cy cz dk ee gr hr hu ie is li lt lu lv mc mt no pl pt ro si
+# sk sm va, data#250-#262) — and NONE of the 32 had one, because no §5.3
+# dossier existed anywhere in either repo. Sorted: ad at be ch cy cz dk ee fi
+# fr gb gr hr hu ie is it li lt lu lv mc mt no pl pt ro se si sk sm va.
+# Index 1 = at. de/nl/es are excluded: they are the L0 pilot baselines, not
+# L1-wave files.
+---
+jurisdiction: at
+data_file: plates/at.yml
+gate: L1
+series_count: 18
+
+researcher: "plates L1 wave 1 Opus researcher (at slice) — data#220, dossier vehiclesdb-pipeline/aux/research/plates-2026-07/dossier-l1-at.md"
+verifier: "qa-loop-2/idx1 (this session)"
+verified_at: 2026-08-08
+base: "151f72727f2e6c5384e2122c892fb42cd58164de (origin/main)"
+
+# ══════════════════════════════════════════════════════════════════════════
+# I-11 — WHO SIGNS WHAT
+# ══════════════════════════════════════════════════════════════════════════
+i11:
+  researcher_not_verifier: >-
+    I did not author plates/at.yml and did not read the wave-1 research
+    dossier for Austria before re-deriving. Every claim below was worked from
+    the instruments first; the data file was read alongside, to compare.
+  new_claims_are_unverified: >-
+    The five findings in `findings:` are MY assertions, and no second reader
+    has checked them. They therefore ship status: awaiting_verification with
+    countersigner: null, and they are NOT applied to plates/at.yml as
+    corrections. Each is appended to the data file as a dated verifier note
+    that quotes the statute and leaves the researcher's original sentence
+    standing — the convention plates/pt.yml set at commit 151f727. The
+    maintainer applies; the verifier records.
+  visual_lane: >-
+    Finding F-3 lands inside a `design:` block. Per the owner's standing
+    division, art and render specs are not this pass's to edit. It is
+    reported and routed, not applied.
+
+# ══════════════════════════════════════════════════════════════════════════
+# METHOD
+# ══════════════════════════════════════════════════════════════════════════
+method:
+  primary_route: >-
+    The consolidated Bundesrecht (RIS "Bundesrecht konsolidiert") for KFG 1967
+    § 48, § 48a, § 49 and KDV 1967 § 25d, § 26 — the exact pages plates/at.yml
+    pins — re-fetched 2026-08-08 and read in full, plus the historical
+    Fassungen addressed by &FassungVom=.
+  independent_route: >-
+    The AUTHENTIC Bundesgesetzblatt PDFs. These are a different document
+    series from the consolidated text: they carry the amending instrument as
+    promulgated, including its EXPRESS COMMENCEMENT PROVISION, which the
+    consolidated view does not show. Where plates/at.yml dates a boundary by
+    diffing two consolidated Fassungen, this route tests that inference
+    against the legislature's own words. Downloaded and read: BGBl. Nr.
+    267/1967 (KFG as enacted), BGBl. Nr. 399/1967 (KDV as enacted), BGBl. Nr.
+    375/1988, BGBl. I Nr. 80/2002, BGBl. II Nr. 376/2002, BGBl. II Nr.
+    535/2004, BGBl. II Nr. 275/2007, BGBl. I Nr. 9/2017, BGBl. I Nr. 102/2017,
+    BGBl. II Nr. 298/2017.
+  third_route_offhost: >-
+    For the two findings that change what a consumer would believe, an
+    off-RIS official route: oesterreich.gv.at (the federal citizens' portal)
+    and infothek.bmimi.gv.at (the ministry that owns the plate). Used to
+    corroborate, never to establish — a portal is not an instrument.
+  rules_binding_me:
+    - "MAJORITY IS NOT AUTHORITY. Two of my routes agreeing does not outrank the instrument; the instrument is quoted and the routes are shown agreeing with it."
+    - "Never average a disagreement. F-2 spans two commencement dates four months apart; both are recorded, neither is split."
+    - "Quote the relied-on sentence verbatim, in German, at write time."
+    - "Every URL below was fetched during this pass. A citation I could not re-fetch is not evidence."
+    - "I changed no regex, no period, no class, no hex, no design block, and deleted no series."
+
+routes:
+  ris_consolidated:
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # KFG § 49, tagesaktuelle Fassung — the Abs. 4 colour table Z 1-5, retroreflection, EU field, Landeswappen, red-white-red edging, Hohlprägung. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=26  # KDV § 26, tagesaktuelle Fassung — Abs. 1-5 (the letter tables) and Abs. 6 Z 1-5 (the whole serial grammar), Abs. 7 (the hyphen). Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d  # KDV § 25d, tagesaktuelle Fassung + its full Fassungen list (16.10.2002 / 01.04.2005 / 01.11.2007 / 01.04.2011 / 01.04.2018 / 28.06.2019 / 01.03.2020, each naming its amending BGBl). Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d&FassungVom=2011-04-01  # § 25d Abs. 3 still carrying the '1. April 2005' date; no Abs. 5. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&Paragraf=25d&FassungVom=2018-04-01  # § 25d Abs. 5 (historic, Muster IX/VII) present. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2002-01-01  # § 49 Abs. 4 Z 2 pre-EU: 'Motorfahrräder sowie für Anhänger gemäß Abs. 3', no vierrädrige Leichtkraftfahrzeuge; retroreflection still limited to 'gemäß Z 1 und 2'. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-01-01  # no Z 5 at all. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-04-01  # Z 5 = 'L, M1 und N1'. RIS metadata: Inkrafttretensdatum 01.04.2017, Außerkrafttretensdatum 26.07.2017, 'zuletzt geändert durch BGBl. I Nr. 9/2017'. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-08-01  # Z 5 = 'L, M1, M2, M3, N1, N2 und N3'. RIS metadata: Inkrafttretensdatum 27.07.2017, 'zuletzt geändert durch BGBl. I Nr. 102/2017'. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&FassungVom=2006-01-01  # whole KDV as at 01.01.2006 — the only route on which § 26 Abs. 4 lit. b is still readable. Fetched 2026-08-08"
+  bgbl_authentic:
+    - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1967_267_0/1967_267_0.pdf  # KFG 1967 as enacted, 62. Stück, ausgegeben am 28. Juli 1967 — § 49 Abs. 4 (black ground) and § 135 Abs. 1 (commencement). Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1967_399_0/1967_399_0.pdf  # KDV 1967 as enacted, 97. Stück, ausgegeben am 29. Dezember 1967 — § 26 Abs. 1 (nine Land letters), Abs. 2 (G, L), Abs. 5 (Vormerkzeichen sind Zahlen). Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/1988_375_0/1988_375_0.pdf  # 11. KFG-Novelle — Art. V Abs. 4 lit. b (1 Jänner 1989), Abs. 5 (Wunschkennzeichen phase-in), Abs. 6 (stock to 31 Jänner 1990). Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/2002_80_1/2002_80_1.pdf  # BGBl. I Nr. 80/2002, ausgegeben am 24. Mai 2002 — Z 52 rewrites § 49 Abs. 4; § 135 Abs. 10 commences it 1 November 2002; § 135 Abs. 15 is the plate-swap transitional. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/2002_376_2/2002_376_2.pdf  # BGBl. II Nr. 376/2002 — Z 8 repeals § 26 Abs. 4 lit. d; Z 28 replaces Anlage 5e; § 70 Abs. 5 commences Anlage 5e 1 November 2002; § 70 Abs. 8 forbids non-EU tafeln after that date. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2004_II_535/BGBLA_2004_II_535.pdf  # Z 7 inserts § 25d Abs. 3 (Muster VIII 'ab 1. April 2005'); § 70 Abs. 7 commences it 1 April 2005. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2007_II_275/BGBLA_2007_II_275.pdf  # Z 19: '§ 26 Abs. 4 lit. b entfällt.' Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2017_I_9/BGBLA_2017_I_9.pdf  # ausgegeben am 13. Jänner 2017 — Z 37 appends § 49 Abs. 4 Z 5 ('L, M1 und N1'), Z 38/39 the EU-field and border sentences, Z 40 Abs. 4b; § 135 Abs. 32 Z 2 commences them 1 April 2017. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2017_I_102/BGBLA_2017_I_102.pdf  # ausgegeben am 26. Juli 2017 — Z 18 widens § 49 Abs. 4 Z 5; § 135 Abs. 33 Z 1 commences it 'mit Ablauf des Tages der Kundmachung'. Fetched 2026-08-08"
+    - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2017_II_298/BGBLA_2017_II_298.pdf  # Z 1 appends § 25d Abs. 5 (historic Muster IX/VII) and amends § 26 Abs. 6 Z 2; § 70 Abs. 20 commences both 1 April 2018. Fetched 2026-08-08"
+  offhost_official:
+    - "https://www.oesterreich.gv.at/de/themen/mobilitaet/kfz/5/Seite.061432  # federal citizens' portal, E-Nummerntafeln: the green plate is optional and has been available since 1 April 2017. Fetched 2026-08-08"
+    - "https://infothek.bmimi.gv.at/gruene-kennzeichen-jetzt-auch-fuer-elektro-lkw/  # the transport ministry's own announcement: 'Neu zugelassene E-Lkw der Fahrzeugklassen N2 und N3 sowie E-Busse der Fahrzeugklassen M2 und M3 erhalten das Kennzeichen mit grüner Schrift automatisch', the change having come into force in August. Fetched 2026-08-08"
+    - "https://www.oesterreich.gv.at/de/themen/mobilitaet/kfz/5/Seite.061100  # Wunschkennzeichen: three to six characters, must begin with a letter and end with a digit, fifteen-year right. Fetched 2026-08-08"
+
+# ══════════════════════════════════════════════════════════════════════════
+# PART 1 — CLAIMS, RE-DERIVED
+# One entry per claim family. `both_routes` names the two independent reads.
+# ══════════════════════════════════════════════════════════════════════════
+claims:
+
+  # ---- PERIOD BOUNDARIES: the seven dates that carry the whole file --------
+
+  "period/1968-01-01 — at-blackplate start":
+    data_says: "period: {start: 1968}, period_evidence: instrument-in-force"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (KFG 1967 as enacted, BGBl. Nr. 267/1967, § 135 Abs. 1), verbatim: 'Dieses Bundesgesetz tritt mit Ausnahme der im Abs. 2 angeführten Bestimmungen mit 1. Jänner 1968 in Kraft.'"
+      - "INDEPENDENT (the authentic 62. Stück masthead, 'Ausgegeben am 28. Juli 1967 — Nr. 267'): the promulgation date is five months before commencement, so 1968 is the in-force year and not the signature year. The file's `kfg_ausfertigungsdatum: 1967-07-28` and `kfg_inkrafttreten: 1968-01-01` are both right and are correctly distinguished."
+    note: >-
+      The file labels this `instrument-in-force` rather than
+      `enacted-commencement` and says why in terms: black plates long predate
+      the KFG 1967 and the KFG 1955 regime was not fetched. That honesty is
+      correct and I did not close the gap either — the pre-1967 instrument is
+      recorded below as unverifiable/not-attempted.
+
+  "period/1990-01-31 — at-blackplate end":
+    data_says: "period: {end: 1990}"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (BGBl. Nr. 375/1988 Art. V Abs. 6), verbatim: 'Bei der Behörde vorrätige, zur Deckung des laufenden Bedarfes erforderliche Kennzeichentafeln, die nicht dem § 49 Abs. 4 in der Fassung des Art. I Z 35 entsprechen, dürfen noch bis längstens 31. Jänner 1990 aufgebraucht und deren Kennzeichen zugewiesen werden.'"
+      - "INDEPENDENT (same instrument, Art. VII Abs. 1): interim re-assignment of 'das bisherige Kennzeichen' where new tafeln were unavailable is capped at 'längstens sechs Monate' from a § 48 Abs. 4 assignment — a second, tighter rail on how long the old design could still be handed out. The two provisions are consistent and both land inside 1990."
+
+  "period/1989-01-01 — the white plate, § 48 Abs. 4, § 48a":
+    data_says: "at-standard-preeu start 1989; at-moped, at-wunschkennzeichen, at-dealer-probefahrt, at-temporary-* all start 1989; period_evidence: enacted-commencement"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (BGBl. Nr. 375/1988 Art. V Abs. 4 lit. b), verbatim: 'In Kraft treten … b) Art. I Z 31 (§ 48 Abs. 4), Z 33 (§ 48 a) und Z 35 (§ 49 Abs. 4), unbeschadet der Abs. 5 und 6, am 1. Jänner 1989.' The file cites this pinpoint exactly — Art. V Abs. 4 lit. b — and the pinpoint is right down to the litera."
+      - "INDEPENDENT (the same instrument's Art. I Z 35 text, read directly rather than through the consolidated § 49): it is the amendment that introduces 'an ihrer oberen und unteren Kante rot-weiß-rot ge[randet]', which is the design claim the 1989 boundary carries. The commencement provision and the substantive text were checked against each other rather than either being taken alone."
+
+  "period/2002-11-01 — the EU field":
+    data_says: "at-standard start 2002; at-standard-preeu end 2002; at-diplomatic, at-consular, at-trailer-foreign, at-government, at-police, at-military, at-government-fire all start 2002; period_evidence: enacted-commencement"
+    verdict: confirmed-upgraded
+    both_routes:
+      - "PRIMARY, as the file has it: the consolidated § 49 Fassung valid 25.05.2002-31.10.2002 has no EU-field sentence and the Fassung valid from 01.11.2002 does. Re-run and reproduced."
+      - "INDEPENDENT (BGBl. I Nr. 80/2002, ausgegeben am 24. Mai 2002, Z 103 inserting § 135 Abs. 10), verbatim: '§ 49 Abs. 4, § 49 Abs. 4a und § 80 in der Fassung des Bundesgesetzes BGBl. I Nr. 80/2002 treten mit 1. November 2002 in Kraft.' And on the regulation side, BGBl. II Nr. 376/2002 Z 27 inserting § 70 Abs. 5, verbatim: 'Anlage 5e in der Fassung BGBl. II Nr. 376/2002 tritt mit 1. November 2002 in Kraft.'"
+    upgrade: >-
+      The file dates this boundary by DIFFING two consolidated Fassungen and
+      says so. Two express commencement provisions — one statutory, one
+      regulatory — say the same date in the legislature's own words. That is
+      strictly better evidence than a diff, and the maintainer should
+      consider re-pinning at-standard and at-standard-preeu to
+      BGBl. I Nr. 80/2002 § 135 Abs. 10 and BGBl. II Nr. 376/2002 § 70 Abs. 5.
+    boundary_nuance: >-
+      Not a defect, but the boundary has a shoulder the file does not record.
+      § 135 Abs. 15 KFG (as inserted by BGBl. I Nr. 80/2002), verbatim: 'Weiße
+      Kennzeichentafeln ohne EU-Emblem dürfen ab 1. Oktober 2002 nicht mehr
+      bestellt werden. Anträge auf Ausfolgung von Kennzeichentafeln mit
+      EU-Emblem mit dem bisherigen Kennzeichen (§ 49 Abs. 4a 3. Satz) können
+      bereits ab 1. Oktober 2002 gestellt werden.' Ordering flips a month
+      before issuing does. § 70 Abs. 8 KDV is the mirror image: for
+      freigehaltene Kennzeichen, non-conforming tafeln may not be issued at
+      all for a registration after 1 November 2002.
+
+  "period/2005-04-01 — at-motorcycle, Muster VIII":
+    data_says: "period: {start: 2005}, period_evidence: enacted-commencement"
+    verdict: confirmed-upgraded
+    both_routes:
+      - "PRIMARY (§ 25d Abs. 3 KDV in the Fassung valid from 01.04.2011 — the pin the file uses), verbatim: 'Kennzeichentafeln für Motorräder werden ab 1. April 2005 nur mehr nach dem Muster VIII der Anlage 5e ausgegeben.' Reproduced; and the current Fassung has indeed dropped the date, exactly as the file warns."
+      - "INDEPENDENT (BGBl. II Nr. 535/2004, Z 7 and § 70 Abs. 7): the novelle that inserted the rule, verbatim on insertion — 'Dem § 25d wird nach Abs. 2 folgender Abs. 3 angefügt: „(3) Kennzeichentafeln für Motorräder werden ab 1. April 2005 nur mehr nach dem Muster VIII der Anlage 5e …' — and verbatim on commencement: '§ 1c Abs. 2, § 25d Abs. 3 und Anlage 5e jeweils in der Fassung BGBl. II Nr. 535/2004 treten mit 1. April 2005 in Kraft.'"
+    upgrade: >-
+      The date is doubly fixed: it is written into the rule AND into the
+      commencement provision of the instrument that created the rule. The
+      file pins only the 2011 consolidated Fassung. BGBl. II Nr. 535/2004 is
+      the instrument and is worth pinning beside it — it also survives the
+      consolidated text dropping the date, which is the exact failure the
+      file was hedging against.
+
+  "period/2017-04-01 — at-electric":
+    data_says: "period: {start: 2017}, period_evidence: enacted-commencement"
+    verdict: confirmed-upgraded
+    both_routes:
+      - "PRIMARY (the pair of consolidated Fassungen the file pins): § 49 at 01.01.2017 has no Z 5; § 49 at 01.04.2017 has 'Kraftfahrzeuge der Klasse L, M1 und N1 jeweils mit reinem Elektroantrieb oder mit Wasserstoff-Brennstoffzellenantrieb — weiß / grün'. Reproduced."
+      - "INDEPENDENT (BGBl. I Nr. 9/2017, ausgegeben am 13. Jänner 2017): Z 37 'In § 49 Abs. 4 wird in der Tabelle folgende Z 5 angefügt', and the commencement provision, verbatim: '§ 48 Abs. 2, § 49 Abs. 4 und Abs. 4b jeweils in der Fassung des Bundesgesetzes BGBl. I Nr. 9/2017 mit 1. April 2017'. Corroborated off-host by oesterreich.gv.at, which states the E-Nummerntafel has been available since 1 April 2017."
+    see_finding: F-2
+
+  "period/2018-04-01 — at-historic":
+    data_says: "period: {start: 2018}, period_evidence: enacted-commencement"
+    verdict: confirmed-upgraded
+    both_routes:
+      - "PRIMARY (the pair of consolidated Fassungen the file pins): § 25d has no Abs. 5 in the Fassung valid 01.04.2011-31.03.2018 and has it from 01.04.2018. Reproduced."
+      - "INDEPENDENT (BGBl. II Nr. 298/2017): Z 1 '§ 25d wird folgender Abs. 5 angefügt', the same novelle adding the historic indent to § 26 Abs. 6 Z 2, and the commencement provision, verbatim: '(20) § 25d Abs. 5, § 26 Abs. 6 Z 2 und Anlage 5e in der Fassung des Bundesgesetzblattes BGBl. II Nr. 298/2017 treten mit 1. April 2018 in Kraft.' The § 25d Fassungen list on RIS names the same instrument for the 01.04.2018 version."
+    upgrade: >-
+      One instrument moves the plate spec, the serial-length rule and the
+      Anlage together and commences all three on one date. Pinning
+      BGBl. II Nr. 298/2017 would let at-historic's period, its
+      format.length_note and its design cite a single source instead of three
+      consolidated pages.
+    transitional_note: >-
+      BGBl. II Nr. 298/2017 also inserts a grandfather clause the file does
+      not carry: '(36) Bereits ausgegebene Kennzeichentafeln für historische
+      Fahrzeuge, die nicht den Mustern IX [oder VII entsprechen] …'. Recorded
+      for L4 depth, not asserted further — I did not read the full sentence
+      off the two-column scan and will not paraphrase what I did not read.
+
+  # ---- FORMAT REGEXES: all 18, against § 26 Abs. 6 KDV --------------------
+
+  "format/serial-grammar — all 18 series":
+    data_says: "see plates/at.yml format.regex and format.regex_strict per series"
+    verdict: confirmed
+    method: >-
+      § 26 Abs. 6 KDV was re-read in full from the current consolidated text
+      and each series' length range, block order and charset was re-derived
+      from it before the file's regex was looked at. Every one agreed.
+    per_series:
+      at-standard: "Z 2 lit. a — 'vier oder fünf Zeichen, bei den in den Landeshauptstädten und im Land Wien zugewiesenen Kennzeichen fünf oder sechs Zeichen'. Union 4-6 = the regex's (?=[A-Z0-9]{4,6}\\z). Z 2 lit. d 'mindestens eine Ziffer und einen bis drei Buchstaben', lit. e 'mit einer Ziffer beginnen und mit einem Buchstaben enden', lit. f closed blocks = \\d{1,5}[A-Z]{1,3}. CONFIRMED."
+      at-standard-preeu: "same grammar, same regex; only the design differs. CONFIRMED."
+      at-blackplate: "prefix alternation ST|B|G|K|L|N|O|S|T|V|W re-derived from KDV 1967 § 26 Abs. 1 (B K N O S St T V W) plus Abs. 2 (G Graz, L Linz) — eleven codes, complete, none spurious. Serial digits-only from Abs. 5, verbatim: 'sind Zahlen zu verwenden'. The {1,6} cap is the file's own inference and the file says so. CONFIRMED, with the inference correctly flagged."
+      at-motorcycle: "Z 2 lit. b first indent, 'zweizeiligen Kennzeichentafeln … vier oder fünf Zeichen, bei den in den Landeshauptstädten und im Land Wien zugewiesenen Kennzeichen vier bis sechs Zeichen'. Union 4-6. Motorcycles take Muster VIII, a two-line tafel, so lit. b governs, not lit. a — and the union is the same either way. CONFIRMED."
+      at-moped: "Z 2 lit. c, 'bei Kennzeichen für Motorfahrräder drei bis vier Zeichen, bei den … drei bis fünf Zeichen'. Union 3-5. CONFIRMED."
+      at-electric: "ordinary Z 2 grammar; only the colours change. CONFIRMED."
+      at-historic: "Z 2 lit. b fourth indent, 'bei einzeiligen Kennzeichentafeln für historische Fahrzeuge nach dem Muster IX der Anlage 5e drei Zeichen, bei den in den Landeshauptstädten oder im Land Wien zugewiesenen Kennzeichen drei oder vier'. Union 3-4. CONFIRMED — and this is the shortest road serial in the file, which the notes correctly call the tell."
+      at-diplomatic: "Z 1 lit. c — Abs. 5 vehicles 'dürfen außer Ziffern auch Buchstaben enthalten. Sie müssen aber jedenfalls mit einer Ziffer beginnen und dürfen alle Ziffern und alle Buchstaben nur in geschlossenen Blöcken enthalten'. Digits-then-letters, no count in § 26; the {1,5} cap comes from Anlage 5e's DKT row and the file says exactly that. Prefix set re-derived from Abs. 5 (Abs. 3 letters + D, Graz taking its Anlage 5d code) = STD BD GD KD ND OD SD TD VD WD. CONFIRMED."
+      at-consular: "same, with K. CONFIRMED."
+      at-wunschkennzeichen: "Z 3 — lit. a 'mindestens drei und können bis zu fünf Zeichen, bei den … bis zu sechs Zeichen' (union 3-6); lit. d at least one letter and one digit; lit. e 'mit einem Buchstaben beginnen und mit einer Ziffer enden'. CONFIRMED, and see the charset note below, which is the sharpest thing in the file."
+      at-dealer-probefahrt: "Z 2 lit. b first indent — Probefahrtkennzeichen share the two-line range, union 4-6. CONFIRMED."
+      at-temporary-ueberstellung: "Z 2 lit. b second indent, 'Überstellungskennzeichen vier Zeichen, bei den … vier oder fünf Zeichen'. Union 4-5. CONFIRMED."
+      at-temporary-vorlaeufig: "Z 2 lit. b third indent, 'Kennzeichen für vorübergehend zugelassene Fahrzeuge vier Zeichen'. Exactly 4. CONFIRMED — the file's (?=[A-Z0-9]{4}\\z) is the only fixed-length lookahead in the file and it is the only one the statute fixes."
+      at-trailer-foreign: "matching: recall-only, and the regex is the union of the Z 2 and Z 3 shapes. Correct posture: § 49 Abs. 3 tafeln carry a domestic Kennzeichen assigned under the ordinary rules, so no narrowing is available. CONFIRMED."
+      at-government: "Z 1 lit. a — Abs. 2 to 4 except lit. i 'dürfen nur Ziffern enthalten'. Prefix set re-derived: Abs. 2 (A), Abs. 3 (B K N O S ST T V W), Abs. 4 lit. c/e/f/h (FV PT BD JW) = the file's fourteen alternatives exactly, with BP, BH and FW correctly carried by their own series. The {1,6} cap is inferred from Anlage 5e's GKT row and the file flags it as an inference in terms. CONFIRMED."
+      at-police: "Abs. 4 lit. a, verbatim: 'für Fahrzeuge, die zur Verwendung im Bereich der Bundespolizei bestimmt sind, BP'. Digits only. CONFIRMED — but see F-1 on the note attached to it."
+      at-military: "Abs. 4 lit. g, 'für Heeresfahrzeuge BH'. Digits only. CONFIRMED."
+      at-government-fire: "Z 1 lit. b, verbatim: fire-brigade Vormerkzeichen 'müssen mit zwei oder drei Ziffern beginnen und es folgen ein oder zwei Buchstaben, die der Bezeichnung der Behörde im Sinne der Anlage 5d entsprechen müssen, in deren Sprengel das Fahrzeug zugelassen ist'. \\d{2,3}[A-Z]{1,2} is the rule transcribed, not approximated. CONFIRMED, and the region_encoding_note's warning that the district code is a SUFFIX here is correct and load-bearing."
+
+  "format/charset — the Z 4 and Z 5 exclusions, and their scope":
+    data_says: "letters_excluded [Q, Ä, Ö, Ü] on the letter-bearing series; regex_strict uses [A-NPR-Z] for the first letter of a Z-2 serial and [A-PR-Z] elsewhere; at-wunschkennzeichen's strict twin excludes only Q from its letters"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (§ 26 Abs. 6 Z 4), verbatim: 'Es dürfen nur Großbuchstaben verwendet werden; die Verwendung der Buchstaben Q, Ä, Ö und Ü ist unzulässig.' And Z 5, verbatim: 'Die Ziffer 0 an der ersten Stelle im Ziffernblock ist unzulässig. Bei Vormerkzeichen gemäß Z 2 ist der Buchstabe O an der ersten Stelle im Buchstabenblock unzulässig.'"
+      - "INDEPENDENT (oesterreich.gv.at, Wunschkennzeichen): 'The desired combination must begin with a letter and end with a digit', three to six characters — the portal states the Z 3 shape and the length union without the O-restriction, consistent with the statute limiting that restriction to Z 2."
+    the_sharp_bit: >-
+      The file reads Z 5's second sentence as scoped — 'Bei Vormerkzeichen
+      gemäß Z 2' — and therefore excludes leading O from at-standard and its
+      siblings but NOT from at-wunschkennzeichen, while applying the
+      unrestricted no-leading-zero rule everywhere. That is exactly what the
+      sentence says, it is the kind of scoping a fast reader flattens, and
+      the file gets it right in all eighteen regexes. Recorded because a
+      verifier should say when the researcher was more careful than the
+      claim required, not only when they were less.
+
+  # ---- CLASS -------------------------------------------------------------
+
+  "class/vocabulary — all 18 series":
+    data_says: "standard ×3, motorcycle, moped, electric, historic, diplomatic, consular, personalized, dealer, temporary ×2, trailer, government ×2, police, military"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY: every value is a key of plates/_meta/classes.yml (checked programmatically against the file at 151f727 — set difference empty)."
+      - "INDEPENDENT (the KDV's own taxonomy): each class maps to a distinct statutory hook — police to § 26 Abs. 4 lit. a, military to lit. g, government to Abs. 2-4, dealer to the Probefahrtkennzeichen of § 45 KFG, temporary to the Überstellungskennzeichen of § 46 and the vorübergehende Zulassung, personalized to § 48a, historic to § 25d Abs. 5, moped to § 49 Abs. 4 Z 2, electric to Z 5. No two series share a hook and no hook is unclaimed."
+    boundary_calls_i_checked:
+      - "at-government-fire is `government`, not a fire-specific class: _meta/classes.yml has no fire value, and FW is a sachlicher Bereich in the same Abs. 4 list as JW and PT. Correct."
+      - "at-dealer-probefahrt is `dealer` and carries binding: business — § 45 KFG assigns the Probefahrtkennzeichen to a trade, not a vehicle. Correct, and the file's top-level binding_note flags the exception rather than letting the file-level `binding: vehicle` swallow it."
+      - "at-moped is `moped` although the same tafel serves vierrädrige Leichtkraftfahrzeuge. `moped` is the nearest vocabulary value and the file records the widening in notes rather than inventing a class. Correct — but see F-4 on the date."
+
+  # ---- COLOURS -----------------------------------------------------------
+
+  "colours/the § 49 Abs. 4 table — all five rows":
+    data_says: "common.colours.statute quotes the five-row table; per-series background/foreground follow it"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (§ 49 Abs. 4 KFG, current consolidated text) — the table transcribed and compared word for word against common.colours.statute. It matches, including 'vorbehaltlich der Z 3 und 4' on row 1 and the full class list on row 5."
+      - "INDEPENDENT (BGBl. I Nr. 9/2017 Z 37 and BGBl. I Nr. 102/2017 Z 18, authentic PDFs): row 5's text reconstructed from the two amending instruments rather than from the consolidated view, and the reconstruction lands on the same words."
+    per_series_mapping:
+      - "Z 1 weiß/schwarz → at-standard, at-standard-preeu, at-motorcycle, at-historic, at-diplomatic, at-consular, at-wunschkennzeichen, at-government, at-police, at-military, at-government-fire. CONFIRMED."
+      - "Z 2 rot/weiß → at-moped, and at-trailer-foreign via 'sowie für Anhänger gemäß Abs. 3'. CONFIRMED."
+      - "Z 3 blau/weiß → at-dealer-probefahrt (Probefahrtkennzeichen) and at-temporary-vorlaeufig (vorübergehend zugelassene Fahrzeuge). CONFIRMED — the statute puts both in one row and the file splits them into two series without splitting the colour."
+      - "Z 4 grün/weiß → at-temporary-ueberstellung. CONFIRMED."
+      - "Z 5 weiß/grün → at-electric. CONFIRMED as to ground and script; see F-3 as to the border."
+      - "pre-1989 schwarz/weiß → at-blackplate, from KFG 1967 § 49 Abs. 4 as enacted, verbatim: 'Der Grund der Kennzeichentafeln muß schwarz sein, jedoch bei Motorfahrrädern und bei Kennzeichentafeln gemäß Abs. 3 rot, bei Probefahrtkennzeichen und bei vorübergehend zugelassenen Fahrzeugen blau und bei Überstellungskennzeichen grün.' The file quotes this with an ellipsis that omits only the 20 m legibility sentence. CONFIRMED."
+
+  "colours/the EU band — which plates carry it":
+    data_says: "band on every white series and on at-trailer-foreign (red); no band on at-moped"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (§ 49 Abs. 4 fifth sentence), verbatim: 'Bei weißen Kennzeichentafeln, ausgenommen solchen gemäß Z 5 für Motorfahrräder und vierrädrige Leichtkraftfahrzeuge, und bei roten Kennzeichentafeln gemäß Abs. 3 muss am linken Rand in einem blauen Feld mit zwölf gelben Sternen das internationale Unterscheidungszeichen in weißer Schrift angegeben sein.'"
+      - "INDEPENDENT (BGBl. I Nr. 9/2017 Z 38, which is the sentence as enacted): identical scope."
+    note: >-
+      A red plate WITH a blue field is a foreign-trailer plate and a red one
+      WITHOUT it is a moped — the file states this as a decode rule in
+      at-moped's band_note and it is exactly right off the statute. This is
+      also the sentence whose parallel in the eighth sentence the file
+      misreads; see F-3.
+
+  "colours/hex basis — every colour value in the file":
+    data_says: "hex_basis: observed throughout; common.colorimetry reproduces the Anlage 5e B.2.5.2 CIE quadrangles"
+    verdict: confirmed
+    both_routes:
+      - "PRIMARY (Anlage 5e B.2.5.2 as quoted in the file): Austria specifies a CIE chromaticity quadrangle and a minimum luminance factor, not an RGB or RAL value."
+      - "INDEPENDENT (§ 49 Abs. 4 itself): the statute names colours in words — weiß, schwarz, rot, blau, grün — and nowhere gives a numeric value. Two routes, no numeric colour spec, so every hex in the file MUST be `observed`. It is. No colour claim in this file overstates its source."
+    note: >-
+      This is the single most likely place for a plates dataset to invent
+      authority, and Austria's file does not: it reproduces the quadrangle so
+      a renderer can do better than a guess, and marks the hexes as
+      observations. Nothing to fix.
+
+# ══════════════════════════════════════════════════════════════════════════
+# PART 2 — FINDINGS. Disagreements, both readings verbatim, never averaged.
+# ══════════════════════════════════════════════════════════════════════════
+findings:
+
+  - id: F-1
+    series: at-police
+    claim_family: notes
+    severity: factual-error-in-prose
+    status: awaiting_verification
+    countersigner: null
+    applied_to_data: "dated verifier note appended to at-police.notes; the researcher's sentence left standing"
+    data_says: >-
+      "Note § 26 Abs. 4 lit. b, the Zollwache code, was REPEALED by
+      BGBl. II Nr. 275/2007 and lit. d by BGBl. II Nr. 376/2002"
+    source_says: >-
+      KDV 1967 § 26 Abs. 4 in der Fassung vom 01.01.2006, verbatim:
+      "b) für Fahrzeuge, die zur Verwendung im Bereich der Bundesgendarmerie
+      bestimmt sind, BG,"
+    verdict: >-
+      lit. b was the BUNDESGENDARMERIE code BG, not a Zollwache code. The
+      repeal date is right — BGBl. II Nr. 275/2007 Z 19, verbatim: "§ 26
+      Abs. 4 lit. b entfällt." — and it is legible as the tidy-up of the
+      1 July 2005 merger of the Bundesgendarmerie into the Bundespolizei,
+      which is exactly why BP (lit. a) survives and BG does not. The lit. d
+      half of the sentence is confirmed: BGBl. II Nr. 376/2002 Z 8, verbatim,
+      "§ 26 Abs. 4 lit. d entfällt."
+    what_lit_d_was: "unverifiable/not-attempted — lit. d was already repealed in the earliest consolidated Fassung I could render (01.01.2006), and I did not reach a pre-2002 rendering of § 26 within this pass. The file's claim that it was repealed is confirmed; the file's claim about what it CONTAINED is unsupported either way and should not be asserted."
+    why_it_matters: >-
+      The note is the file's only record of Austria's repealed official
+      codes, and it is the seed of the L4 backlog item it names. A BG plate
+      is a real thing a parse API will meet — the Gendarmerie ran a national
+      fleet for thirty-seven years under this KDV — and the note as written
+      sends a future researcher looking for customs vehicles.
+    evidence:
+      - "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011385&FassungVom=2006-01-01  # § 26 Abs. 4 lit. b, verbatim as quoted above"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2007_II_275/BGBLA_2007_II_275.pdf  # Z 19, verbatim: '§ 26 Abs. 4 lit. b entfällt.'"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/2002_376_2/2002_376_2.pdf  # Z 8, verbatim: '§ 26 Abs. 4 lit. d entfällt.'"
+
+  - id: F-2
+    series: at-electric
+    claim_family: period × categories
+    severity: overbroad-claim
+    status: awaiting_verification
+    countersigner: null
+    applied_to_data: "dated verifier note appended to at-electric.notes; period and categories untouched"
+    data_says: >-
+      period: {start: 2017} with categories [car, van, truck, bus,
+      motorcycle, moped] — i.e. the green plate is claimed available to
+      trucks and buses for the whole of the period beginning 2017.
+    source_says: >-
+      § 49 Abs. 4 Z 5 KFG AS ENACTED by BGBl. I Nr. 9/2017 (in force
+      1 April 2017), verbatim: "Kraftfahrzeuge der Klasse L, M1 und N1
+      jeweils mit reinem Elektroantrieb oder mit
+      Wasserstoff-Brennstoffzellenantrieb — weiß / grün". The classes M2, M3,
+      N2 and N3 were added by BGBl. I Nr. 102/2017 Z 18, verbatim: "In § 49
+      Abs. 4 Z 5 wird der Ausdruck „M1 und N1“ ersetzt durch „M1, M2, M3, N1,
+      N2 und N3“." — commenced by § 135 Abs. 33 Z 1 "mit Ablauf des Tages der
+      Kundmachung dieses Bundesgesetzes", the Bundesgesetzblatt having been
+      "Ausgegeben am 26. Juli 2017", i.e. in force 27 July 2017. RIS's own
+      metadata for that Fassung reads Inkrafttretensdatum 27.07.2017.
+    verdict: >-
+      Two commencements, not one. Green plates were available to L, M1 and N1
+      from 1 April 2017 and to M2, M3, N2 and N3 only from 27 July 2017.
+      at-electric's `truck` and `bus` categories are correct today and wrong
+      for the first 117 days of the period the series claims.
+    not_averaged: >-
+      The two dates are recorded as two dates. I have not moved period.start
+      to 2017-07-27 (that would erase the car and moped truth) and I have not
+      dropped truck and bus (that would erase the current truth). The schema
+      resolution — a second series, a per-category period, or a dated note —
+      is the maintainer's call under PRD-PLATES §2.2, and appending a series
+      id is the only one of those an append-only gate permits.
+    third_route: >-
+      The ministry that owns the plate says the same thing in its own words.
+      infothek.bmimi.gv.at, "Grüne Kennzeichen jetzt auch für Elektro-Lkw":
+      "Neu zugelassene E-Lkw der Fahrzeugklassen N2 und N3 sowie E-Busse der
+      Fahrzeugklassen M2 und M3 erhalten das Kennzeichen mit grüner Schrift
+      automatisch", the amendment having come into force in August. The
+      ministry's month is loose; the Bundesgesetzblatt's day is not. Where
+      they differ, the instrument governs — MAJORITY IS NOT AUTHORITY, and
+      neither is a ministry press page.
+    evidence:
+      - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2017_I_9/BGBLA_2017_I_9.pdf  # Z 37 as enacted ('L, M1 und N1'); § 135 Abs. 32 Z 2 commencement 1 April 2017"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2017_I_102/BGBLA_2017_I_102.pdf  # Z 18 the widening; § 135 Abs. 33 Z 1 commencement; masthead 'Ausgegeben am 26. Juli 2017'"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-04-01  # 'L, M1 und N1'; RIS Außerkrafttretensdatum 26.07.2017"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2017-08-01  # 'L, M1, M2, M3, N1, N2 und N3'; RIS Inkrafttretensdatum 27.07.2017"
+      - "https://infothek.bmimi.gv.at/gruene-kennzeichen-jetzt-auch-fuer-elektro-lkw/  # the ministry's own announcement"
+
+  - id: F-3
+    series: at-electric
+    claim_family: colours (border)
+    severity: misread-statute
+    status: awaiting_verification
+    countersigner: null
+    routed_to: "owner's visual lane — design: blocks are not this pass's to edit"
+    applied_to_data: "reported in the same dated verifier note on at-electric.notes; design.border left exactly as the researcher wrote it"
+    data_says: >-
+      design.border.color "#007A3D" with the note: '§ 49 Abs. 4 KFG: Z-5
+      plates are GREEN-bordered, not red-white-red — "Kennzeichentafeln ...
+      solche gemäß Z 5 grün umrandet"'
+    source_says: >-
+      § 49 Abs. 4 KFG, eighth sentence, verbatim and unelided: "Weiße
+      Kennzeichentafeln (Z 1 und Z 5, ausgenommen solche für Motorfahrräder
+      und vierrädrige Leichtkraftfahrzeuge) müssen an ihrer oberen und
+      unteren Kante rot-weiß-rot gerandet sein; Kennzeichentafeln für
+      Motorfahrräder und vierrädrige Leichtkraftfahrzeuge müssen weiß, solche
+      gemäß Z 5 grün umrandet sein."
+    verdict: >-
+      The sentence has two clauses and the file's ellipsis removes the
+      subject of the second one. Clause 1 puts Z 5 INSIDE the red-white-red
+      rule, excepting only mopeds and light quadricycles. Clause 2 is about
+      Motorfahrräder und vierrädrige Leichtkraftfahrzeuge, and "solche gemäß
+      Z 5" within clause 2 means the electric ones AMONG THOSE. So an
+      electric car (M1) wears a white plate with green script and
+      RED-WHITE-RED top and bottom edging; only an electric moped or light
+      quadricycle wears a green border. The file applies the green border to
+      the whole series, whose categories are car, van, truck, bus, motorcycle
+      and moped.
+    internal_inconsistency: >-
+      The same file reads the parallel exception in the FIFTH sentence
+      correctly — at-electric's band note says "§ 49 Abs. 4 excepts only Z-5
+      plates FOR MOPEDS AND LIGHT QUADRICYCLES from it", which is precisely
+      the reading the eighth sentence also requires. One sentence apart, two
+      readings. That is what makes this a confident finding rather than a
+      close call.
+    why_it_matters: >-
+      This is the render layer's single most visible Austrian output. The
+      owner's directive moved the site's plate surfaces from schematic to
+      exact depictions; an exact depiction of an Austrian EV plate with a
+      green border instead of the Republic's red-white-red edging is wrong in
+      the way a reader notices.
+    evidence:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # the eighth sentence, current text"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2017_I_9/BGBLA_2017_I_9.pdf  # Z 39, the sentence as enacted, identical wording"
+
+  - id: F-4
+    series: at-moped
+    claim_family: period (scope of the class caveat)
+    severity: undated-claim
+    status: awaiting_verification
+    countersigner: null
+    applied_to_data: "dated verifier note appended to at-moped.notes"
+    data_says: >-
+      "Class caveat: the same plate serves vierrädrige Leichtkraftfahrzeuge
+      (L6e quadricycles), which are not mopeds" — stated without a date,
+      inside a series whose period begins 1989.
+    source_says: >-
+      § 49 Abs. 4 Z 2 KFG in der Fassung vom 01.01.2002, verbatim: "2.
+      Motorfahrräder sowie für Anhänger gemäß Abs. 3 … rot / weiß". No
+      vierrädrige Leichtkraftfahrzeuge. They enter the row with BGBl. I Nr.
+      80/2002 in force 1 November 2002, and § 135 Abs. 15 KFG (same
+      instrument) is explicit that they were WHITE before: "Weiße
+      Kennzeichentafeln, die für vierrädrige Leichtkraftfahrzeuge ausgegeben
+      worden sind, bleiben noch bis längstens 31. Dezember 2002 gültig. Der
+      Zulassungsbesitzer eines solchen Fahrzeuges hat innerhalb dieser Frist
+      die weiße Kennzeichentafel gegen eine rote auszutauschen."
+    verdict: >-
+      The caveat is true from 2002-11-01 and false for 1989-2002. In that
+      earlier window a vierrädriges Leichtkraftfahrzeug carried a WHITE
+      plate — i.e. at-standard-preeu's design, not at-moped's — and the law
+      gave keepers until 31 December 2002 to swap. The claim needs the date,
+      not deletion.
+    evidence:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2002-01-01  # Z 2 without vierrädrige Leichtkraftfahrzeuge"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/2002_80_1/2002_80_1.pdf  # Z 52 rewriting § 49 Abs. 4; § 135 Abs. 10 (1 November 2002); § 135 Abs. 15 (the white-to-red swap, deadline 31 December 2002)"
+
+  - id: F-5
+    scope: common.colours.retroreflective
+    claim_family: colours (basis of the claim, not the claim)
+    severity: imprecise
+    status: awaiting_verification
+    countersigner: null
+    applied_to_data: "dated verifier note appended to common.colours.retroreflective"
+    data_says: >-
+      "'Der Grund der Kennzeichentafeln muss aus rückstrahlendem Material
+      bestehen.' (§ 49 Abs. 4 KFG) — unconditional, unlike the 1967 text
+      which required it only for Z 1 and Z 2."
+    source_says: >-
+      The Z 1-and-Z-2 limitation is not "the 1967 text". It was still the law
+      on 1 January 2002: § 49 Abs. 4 in der Fassung vom 01.01.2002, verbatim,
+      "Der Grund der Kennzeichentafeln gemäß Z 1 und 2 muß aus rückstrahlendem
+      Material bestehen." It became unconditional with BGBl. I Nr. 80/2002 on
+      1 November 2002 — the same instrument and the same day as the EU field.
+    verdict: >-
+      The current-law claim is correct; its stated history is off by
+      thirty-five years. Blue Probefahrt, blue vorläufig and green
+      Überstellung plates were outside the retroreflection duty until
+      2002-11-01, which is a real fact about how those plates looked for most
+      of the period at-dealer-probefahrt and at-temporary-* claim.
+    evidence:
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49&FassungVom=2002-01-01  # 'gemäß Z 1 und 2'"
+      - "https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10011384&Paragraf=49  # current text, unconditional"
+      - "https://www.ris.bka.gv.at/Dokumente/BgblPdf/2002_80_1/2002_80_1.pdf  # Z 52 and § 135 Abs. 10"
+
+# ══════════════════════════════════════════════════════════════════════════
+# PART 3 — OBSERVATIONS. Checked, not defects. Recorded so the next pass
+# does not spend its budget re-checking them.
+# ══════════════════════════════════════════════════════════════════════════
+observations:
+
+  - id: O-1
+    series: at-standard
+    about: format.length_note
+    text: >-
+      The note describes {4,6} as the union of "4-5 outside the state
+      capitals, 5-6 inside", which is § 26 Abs. 6 Z 2 lit. a exactly. But
+      lit. a is expressly "sofern lit. b und c nicht anderes bestimmen", and
+      lit. b gives two-line tafeln 4-5 / 4-6 — and at-standard carries a
+      Muster III two-line variant in its own plate_variants. So the
+      capital-city range is 4-6, not 5-6, for part of the series' own scope.
+      The UNION is unchanged and the regex is right; only the note's
+      arithmetic story is incomplete. Not raised as a finding.
+
+  - id: O-2
+    series: at-wunschkennzeichen
+    about: period.start
+    text: >-
+      period.start 1989 is § 48a's commencement and the file is right to use
+      it. BGBl. Nr. 375/1988 Art. V Abs. 5 adds a phase-in the file does not
+      carry: the Landeshauptmann could set the start date per authority "nach
+      Maßgabe der technischen, räumlichen und organisatorischen
+      Gegebenheiten", and "der Termin für die Ausgabe von Kennzeichentafeln
+      für Wunschkennzeichen darf nicht für einen späteren Zeitpunkt als für
+      den 1. Jänner 1990 vorgesehen werden." So the right to a
+      Wunschkennzeichen existed from 1989-01-01 but first issuance in a given
+      district could lawfully be up to a year later. An enacted-commencement
+      period is the correct schema answer; the phase-in is L4 depth.
+
+  - id: O-3
+    scope: file-level
+    about: what the file does better than the claim required
+    text: >-
+      Three things are worth naming so a maintainer does not "simplify" them
+      away. (1) The § 26 Abs. 7 hyphen is sourced BOTH as the emitted
+      separator and as optional, and the regexes spell the position [- ]?
+      accordingly — a rare case of a primary source for a separator's
+      optionality. (2) at-moped's separator_note correctly downgrades that
+      same [- ]? to an ANALOGY, because a moped plate has no Landeswappen for
+      the hyphen to stand in for. (3) at-government's length_note says in
+      terms that its {1,6} is an inference from Anlage 5e's GKT row and
+      contrasts it with Germany, where the cap is statutory. All three
+      survived re-derivation.
+
+  - id: O-4
+    scope: file-level
+    about: jurisdiction-completeness (PRD-PLATES §5.1)
+    text: >-
+      Searched § 26 Abs. 2-5 and § 49 Abs. 4 for a series the file does not
+      carry, and found none: every prefix the KDV assigns is claimed by some
+      series, and every colour row of § 49 Abs. 4 has at least one series.
+      The file's own §5 header records the absences it looked for and did not
+      find (no export, taxi, seasonal or agricultural series) and I
+      reproduced that search with the same result. The one genuinely
+      unclaimed thing is the set of REPEALED prefixes — BG, and whatever
+      lit. d was — which the file flags for L4 and which F-1 sharpens.
+
+# ══════════════════════════════════════════════════════════════════════════
+# PART 4 — WHAT I DID NOT VERIFY. Named, so the count is honest.
+# ══════════════════════════════════════════════════════════════════════════
+not_attempted:
+  - claim: "the content of the repealed § 26 Abs. 4 lit. d"
+    reason: "unverifiable/not-attempted — already repealed in the earliest § 26 Fassung I could render (01.01.2006); a pre-2002 rendering was not reached in this pass"
+  - claim: "the pre-1967 (KFG 1955) black-plate regime"
+    reason: "unverifiable/not-attempted — out of scope for L1; the file already records it as a gap and does not assert into it"
+  - claim: "Anlage 5e geometry (Muster I/III/VI/VII/VIII/IX millimetres, field positions) and the CIE quadrangle NUMBERS"
+    reason: "not-attempted — the numbers were read for consistency but not independently re-measured against a second rendering of the Anlage; and per this task's terms the render lane is the owner's. The colorimetric BASIS claim (that Austria specifies a quadrangle and not an RGB value, hence hex_basis: observed) WAS verified and is confirmed above."
+  - claim: "the 98-row Anlage 5d district table in plates/_decode/at-districts.yml"
+    reason: "not-attempted — a decode table is its own dossier; this pass verified only that at-government-fire decodes its SUFFIX against it and that at-blackplate correctly refuses to"
+  - claim: "corpus validation against real Austrian plates"
+    reason: "not-attempted — no Austrian registry corpus exists in this repo; the NL kenteken corpus is the only one wired (scripts/corpus_check_nl.rb)"
+
+# ══════════════════════════════════════════════════════════════════════════
+# PART 5 — WHAT THE MAINTAINER SHOULD DO
+# ══════════════════════════════════════════════════════════════════════════
+handoff:
+  countersign_needed:
+    - "F-1 through F-5 — a second reader, not me, against the instruments listed in each finding's evidence block"
+  data_changes_proposed_not_applied:
+    - "F-1: replace 'the Zollwache code' with the Bundesgendarmerie code BG, and drop the unsupported claim about lit. d's content"
+    - "F-2: split at-electric's heavy-vehicle scope from its 2017-04-01 start, by appending a new series id (append-only permits this; editing period.start does not preserve the car truth)"
+    - "F-3: at-electric design.border → red-white-red for the non-moped categories, green retained only for the L1e/L6e case. OWNER'S VISUAL LANE."
+    - "F-4: date at-moped's vierrädrige-Leichtkraftfahrzeuge caveat to 2002-11-01"
+    - "F-5: correct 'the 1967 text' to 'the pre-2002 text' and pin BGBl. I Nr. 80/2002"
+  source_pins_worth_upgrading:
+    - "at-standard / at-standard-preeu → BGBl. I Nr. 80/2002 § 135 Abs. 10 and BGBl. II Nr. 376/2002 § 70 Abs. 5 (express commencement, replacing a Fassung diff)"
+    - "at-motorcycle → BGBl. II Nr. 535/2004 Z 7 + § 70 Abs. 7"
+    - "at-historic → BGBl. II Nr. 298/2017 Z 1 + § 70 Abs. 20"
+    - "at-electric → BGBl. I Nr. 9/2017 § 135 Abs. 32 Z 2 and BGBl. I Nr. 102/2017 § 135 Abs. 33 Z 1"
+  gate_impact: >-
+    None of the above changes a series count. F-2's clean resolution ADDS a
+    series id, which the append-only rule permits and deletion would not.
