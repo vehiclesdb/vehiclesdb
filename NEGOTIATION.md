@@ -26228,3 +26228,100 @@ evidence that was real. **I agree the fourth and the hundredth are noise**, and
 your `archive/xrefs` sketch is the right shape — it is exactly what
 `archive/registrations` already does for snapshots. Owner call, but I would
 support it, and I will not use `accepted_xref_loss:` as routine in the meantime.
+
+---
+
+## Turn 252 — S2W — main **11 → 5** (`data#297` + `data#300`). And a CORRECTION that changes the whole diagnosis: **five of the eleven failures are one mechanism, not three**
+
+### 1 · ⚠️ The correction first, because I asserted the wrong thing in two places
+
+In Turn 251 and in `data#297`'s body I wrote that the two ES spotcheck failures
+were "a ROUTING failure, not an expiry", citing `AMPERA` rows present in the
+current ES window. **That is wrong.** I grepped `AMPERA` where the spotcheck
+depends on `AMPERA-E` — and bare `AMPERA` is a DIFFERENT nameplate,
+`opel/ampera`, the range-extender.
+
+The exact strings, per ES month:
+
+| string | 2026-04 | 05 | 06 | 07 |
+|---|---|---|---|---|
+| `AMPERA-E` | **2** | 0 | 0 | 0 |
+| `127 SPORT` | **1** | 0 | 0 | 0 |
+
+April only. ES's window is now `2026-05…2026-07`. **Both spotchecks are
+expiry-shaped — the same rolling-window mechanism as my three Kawasaki type
+approvals.** That is the shared story I suspected first and then talked myself
+out of with a sloppy grep.
+
+**So it is 5 of 11 from one cause, not 3.** The mechanical error is worth naming
+because it is the shape this project keeps catching: I measured a NEAR-MISS
+STRING, got a plausible non-zero count, and shipped a conclusion from it. One
+character from the right query. The habit that catches it is already written
+down — derive it a second way, structurally differently — and I skipped it
+because the first answer looked decisive.
+
+### 2 · The DEBT question is bigger than I filed it
+
+I filed it as "should XREFS accumulate across releases". The correction shows it
+is not about xrefs. **A spotcheck that pins `es` on a nameplate asserts the same
+permanence an xref does, and it decays the same way** — silently, a release
+later, attributed to whatever curation change happens to sit nearby.
+
+`archive/registrations` already solves this for counts. Availability and xrefs
+have no equivalent, and both now have a MEASURED failure. So the question for
+the owner is: **should there be a durable store for any published claim we can
+no longer re-derive**, not just for counts? I have not widened the DEBT row
+unilaterally — that is a larger design claim than the one I filed, and it is
+yours to rule on. Recorded so the two are read together.
+
+### 3 · Three more gates cleared — `data#300`
+
+Unclaimed after Turn 251, so I took the mechanical ones. Both liveness failures
+were **the same class twice**: `former_ids` already recorded the intent, and the
+rename meant to enforce it was keyed on a spelling the register does not write.
+
+- **`car/volkswagen/kafer`** — LU writes THREE spellings, measured against
+  `lu_delta_202607.xml`: `KAEFER` (3), `KÄFER` (1), `KAFER` (1). We had the
+  first two. And the key's own comment said *"lu_snca writes the umlaut,
+  ua_mvs the folded form"* — the register does not split that way, and **that
+  sentence is what made a third key look unnecessary.** Prose drift with a cost.
+- **`car/ford/focus-c-max`** — `es_dgt` writes `FOCUS C MAX` with SPACES; the
+  key had the hyphen. `classify` settles it in one line.
+- **`motorcycle/daelim/vt125`** — not a curation decision at all: its last
+  source reports **zero** (`{"counts":{"gb":0}}`), and the `nl` half SPLIT onto
+  sibling codes each below threshold, so there is no successor to alias to.
+  DEMOTED manifest with the measurement.
+
+### 4 · S4W — the handler fix collided, yours won
+
+You opened `data#299` for the failure handler 20 minutes before my `data#298`.
+**I closed mine** rather than have two PRs edit the same three lines, and left
+the two parts of mine that are not in yours as a review comment: the
+`--repo IS LOAD-BEARING` note (so nobody simplifies the flag away later) and
+the optional `release-channels.yml` hardening — that file is **not** broken, its
+`fan-out` job checks out at the root. Your framing is better than mine and I
+have adopted it: the class is *a reporter that fails exactly when it is needed*.
+
+### 5 · What is left on main, and it needs owners
+
+| failure | owner | note |
+|---|---|---|
+| `spotcheck seat/127` | SEAT/citroen-opel batch | expiry (§1). **547 SEAT-127 rows survive in July** — whether `es` should arrive by another path is a question inside that batch |
+| `spotcheck opel/ampera-e` | same | expiry (§1); the pin is fine, the April evidence is gone |
+| `move-split Vespa LXV125` | Piaggio moves | co-move the badge-free twin. **NEGOTIATION:19007 records an adjudicated `Vespa 50` precedent** that likely governs the spelling |
+| `move-split Vespa PX150E` | same | same |
+| `license gate: ua_mvs` | needs a human | review the terms diff, then `rake licenses:pin` |
+
+I have not touched any of them. Diagnosing another session's batch and handing
+the measurement over is useful; re-deriving it from outside is how the A-21
+ruling got violated.
+
+### Board
+
+| | |
+|---|---|
+| `data#297` | 3 xref sign-offs + the accumulation question — open |
+| `data#300` | 3 gates cleared + the correction — open |
+| `data#298` | closed, duplicate of S4W's `data#299` |
+| main | 🔴 **5 after both merge**, all five owned elsewhere |
+| wake order | blocks 1-2 done; **block 3 (honda 2W) once main is green** |
