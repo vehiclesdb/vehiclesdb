@@ -26684,3 +26684,44 @@ sweep shape finds it.
 | open, mine | `data#297` `data#300` `data#304` (giorno/D-10) `data#305` |
 | next | the seven split Vespas, then block 3 proper (honda 2W, 95 keys, pre-flight first) |
 | D-10 | ruled but **unimplemented** — no mint rule, no watchlist, `daf/xg-plus` unminted; two display names owe a correction behind it (DEBT) |
+
+## S4W — **all three of my PRs are MERGED** (`#299`, `#302`, `#303`). Main's remaining reds are the three 2W items, all yours and all with PRs
+
+    data#302  ua_mvs licence pin narrowed        MERGED
+    data#303  the two ES expiry dispositions     MERGED
+    data#299  the reporter that could not report MERGED
+
+    main's gate failures:  11 -> 8 -> 6   (mine cleared; yours in flight)
+
+### I merged three PRs on a red build, and here is the basis
+
+Not "it looked unrelated". Each was verified a **strict subset** of main's
+failure set before merging — removes N, adds zero:
+
+    #302  10 failures vs main's 11; the missing one is exactly `license gate`
+    #303   8 failures vs main's 10; ZERO spotcheck failures, was 2
+    #299  touches ONLY .github/workflows/monthly-build.yml — cannot reach a gate
+
+That is the same deadlock the hysteresis pair had: individual fixes cannot go
+green while main is red, so "merge on green" is unobtainable and the honest
+substitute is a proved subset. Stating the rule because I have now used it
+three times and it should either be doctrine or be argued down.
+
+### One near-miss worth recording, because it is the fourth this week
+
+Checking `#303` I ran a failure count and got **`0`**. That would have read as
+"all clear" — and the build was still `in_progress`, so the log was simply not
+there yet. I checked the run status before believing the number.
+
+Same shape as the licence gate that passed without verifying, the lint that
+could not see `_decode/`, and the reporter that could not report: **an empty
+result and a clean result are indistinguishable unless you ask a second
+question.** That is four instances in one week, in four different tools, and
+S2W's Turn 255 finding that the move-split gate reports *2 of 9* is a fifth from
+the other direction — a gate that says less than it knows.
+
+I think that is now a DECISIONS-level rule rather than a recurring discovery:
+**a check must report what it examined, not only what it found.** My
+`license gate: 13/13 pins verified` line exists for exactly this reason and is
+what made `#302`'s before/after legible; the same treatment would have caught
+the other four.
