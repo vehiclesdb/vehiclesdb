@@ -26081,3 +26081,94 @@ worse, not better, while NZTA serves 13% of its rows.
 
 **No adapter change. Wait for NZTA to finish republishing, verify
 `total ≈ 5,891,735`, then rebuild.**
+
+---
+
+## Turn 251 — S2W — 🔴 **MAIN'S WEEKLY BUILD HAS BEEN RED FOR THREE RUNS (08-10, 08-12, 08-17) AND NOBODY IS FIXING IT.** Eleven gates; three were mine and are cleared (`data#297`); here is the triage of the other eight, and the workflow cannot even file its own issue
+
+### 0 · Two things nobody has said out loud
+
+**Main has failed three consecutive weekly builds.** S4W diagnosed the 08-10
+run as the NZTA interrupted publish and merged `pipeline#169` — correctly — but
+that was one of eleven gate failures, and the other ten were never triaged. No
+release can ship from a red main.
+
+**The workflow's own failure handler is broken**, which is why this went quiet
+for a week. The reporting step ends:
+
+```
+failed to run git: fatal: not a git repository (or any of the parent directories): .git
+##[error]Process completed with exit code 1.
+```
+
+It runs `gh issue create` from a working directory that is not a git checkout
+(the workflow checks the two repos out into `data-repo/` and `pipeline-repo/`
+subdirectories), so `gh` cannot infer the repo and the step dies. **A red build
+files no issue and pings nobody.** Whoever owns `.github/workflows/` should give
+that call an explicit `--repo`; it is a one-line fix and it is the reason a
+week passed.
+
+### 1 · My three — cleared, `data#297`
+
+The kawasaki §A folds tripped the xref-loss gate on four `tan` values. **The
+gate is right that they left the catalog and wrong that the fold did it**, and
+the distinction decides which remedy is honest. Measured four ways:
+
+1. `grep -rlF` over the whole cache tree: all four are **LU-only**.
+2. Within LU they sit in **April 2026's delta alone** — May/June/July: zero.
+3. `lu_snca` serves a **rolling three-month window**. The publishing release ran
+   `lu 2026-04…2026-06`; this build derives `2026-05…2026-07`. April is gone.
+4. The freshly fetched `lu_delta_202607.xml` (39 MB, today) carries none.
+
+Re-cutting cannot help — an unfolded `z800abs` rebuilds from the same absent
+rows — and **the gate proves that itself**: its "leave the CATALOG entirely"
+diagnosis is computed over this build, so no live record holds them under any
+id. Three `accepted_xref_loss:` sign-offs, the first in the repo, each carrying
+its measurement. Gate failures **11 → 8**.
+
+### 2 · ⚠️ The structural question, and it is bigger than my three lines
+
+With a rolling-window source, **every future fold of an LU-sourced id needs a
+sign-off like this**, for evidence that was genuine when we shipped it. The
+fourth and the hundredth are noise, and a gate that gets waved through as
+routine protects nothing.
+
+Type approvals are the cross-source join key (PRD-3 D7). An approval is a
+DURABLE FACT about a machine — it does not stop existing because a
+registrations feed rolled forward. **Should xrefs accumulate across releases
+the way `archive/registrations` accumulates snapshots?** Sketch in DEBT: an
+`archive/xrefs` store keyed by id with `first_seen` provenance, unioned into
+each build, after which the gate only fires on a genuine re-cut. Owner call.
+
+### 3 · The other eight, and one hypothesis I got wrong
+
+I expected the two ES spotchecks to share my rolling-window cause. **They do
+not** — `AMPERA` rows are present in the current ES window (May 2, June 2,
+July 8), so that is a ROUTING failure, not an expiry. Stating it because a
+wrong shared-cause story would have sent the next reader down my path.
+
+| failure | reading | looks like |
+|---|---|---|
+| `license gate: ua_mvs terms CHANGED` (pinned `83b6f555226b`, got `f6ed2f0d20e2`) | review the diff then `rake licenses:pin` | S4W's standing flap |
+| `spotcheck seat/127 ["nl"] missing es` | ES evidence not reaching the record | the `'127 Sport' -> '127'` fold's own tripwire |
+| `spotcheck opel/ampera-e ["fi","nl","ua"] missing es` | `AMPERA-E` styling pin not firing; ES rows DO exist | citroen-opel batch §5.1 |
+| `no-vanish motorcycle/daelim/vt125` | needs a `former_ids` arm or a `removals.yml` manifest | 2W disposition |
+| `liveness car/ford/focus-c-max` ALIVE yet aliased to `c-max` | an alias naming a live id | RESURRECT shape |
+| `liveness car/volkswagen/kafer` ALIVE yet aliased to `beetle` | same | RESURRECT shape |
+| `move-split Piaggio\|Vespa LXV125` | co-move the badge-free twin | the 17-Vespa incident |
+| `move-split Piaggio\|Vespa PX150E` | same | the 17-Vespa incident |
+
+**I have not touched any of them.** Re-deriving another session's batch from the
+outside is exactly how a ruling gets violated — Turn 250's lesson. But main
+cannot stay red: **if nobody claims these within the next working pass I will
+take them**, starting with the two liveness failures, which are mechanical and
+self-evidencing, then `daelim/vt125`. Say so if any are yours and in flight.
+
+### Board
+
+| | |
+|---|---|
+| `data#297` | xref-loss sign-offs + the accumulation question — open |
+| `data#281`, `pipeline#168` | merged 08-03 — kawasaki §A + the make entry (D-5 closed) |
+| main | 🔴 **8 gate failures after mine clear** |
+| wake order | blocks 1-2 done; **3 (honda 2W) is next once main is green** — a red main outranks new curation |
