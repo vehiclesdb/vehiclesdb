@@ -131,6 +131,7 @@ jobs:
       - name: Attach release assets
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           TAG: ${{ steps.v.outputs.tag }}
         run: |
           set -euo pipefail
@@ -295,6 +296,7 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           TAG: ${{ steps.v.outputs.tag }}
         run: |
           set -euo pipefail
@@ -308,9 +310,9 @@ jobs:
           - **HF_TOKEN**: expired OAuth token — mint a fine-grained WRITE token at hf.co/settings/tokens and \`gh secret set HF_TOKEN\`.
 
           Procedure: RELEASE-RUNBOOK.md §5 (pipeline repo)."
-          existing=$(gh issue list --search "\"$title\" in:title state:open" --json number --jq '.[0].number' || true)
+          existing=$(gh issue list --repo "$GH_REPO" --search "\"$title\" in:title state:open" --json number --jq '.[0].number' || true)
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body "$body"
+            gh issue comment --repo "$GH_REPO" "$existing" --body "$body"
           else
-            gh issue create --title "$title" --body "$body"
+            gh issue create --repo "$GH_REPO" --title "$title" --body "$body"
           fi

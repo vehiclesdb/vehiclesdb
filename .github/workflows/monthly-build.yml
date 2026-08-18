@@ -188,6 +188,7 @@ jobs:
         working-directory: data-repo
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           VERSION=$(cat VERSION)
@@ -266,10 +267,21 @@ jobs:
 
       # A failed scheduled build must page a human. One issue, updated — never
       # a new issue per failure night (the OpenASN pattern, verbatim).
+      # --repo IS LOAD-BEARING, do not drop it: this step runs at the WORKSPACE
+      # ROOT, and monthly-build checks the two repos out into data-repo/ and
+      # pipeline-repo/ subdirectories (see the `path:` keys above). With no
+      # .git in the cwd, `gh` cannot infer the repository and every call here
+      # dies with "failed to run git: fatal: not a git repository". The
+      # `|| true` on the list call then leaves $existing empty, so the create
+      # runs and exits 1 — on a build that was ALREADY failing, so the extra
+      # error is invisible. Net effect: a red build pages nobody. That is
+      # exactly what happened 2026-08-10 / 08-12 / 08-17 — three consecutive
+      # red weekly builds, zero pipeline-failure issues, noticed a week late.
       - name: Open/update pipeline-failure issue
         if: failure() && github.event_name == 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           title="Scheduled data build failed"
           body="The scheduled build failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -280,11 +292,11 @@ jobs:
           - Delta gate: a kind's model count moved >±20% (source outage or format change)
           - Geo-gated fetch: TH/LV endpoints reject datacenter IPs (keep-last-good covers cached CI, but a cold cache fails)
           - An upstream URL scheme changed (UK rotates asset URLs per release; NZ renames its MVR_* service monthly)"
-          existing=$(gh issue list --label pipeline-failure --state open --json number --jq '.[0].number' || true)
+          existing=$(gh issue list --repo "$GH_REPO" --label pipeline-failure --state open --json number --jq '.[0].number' || true)
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            gh issue comment --repo "$GH_REPO" "$existing" --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
-            gh issue create --title "$title" --body "$body" --label pipeline-failure
+            gh issue create --repo "$GH_REPO" --title "$title" --body "$body" --label pipeline-failure
           fi
 
   # ── The release channel fan-out. Calling the reusable workflow rather than
