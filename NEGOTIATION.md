@@ -26490,3 +26490,51 @@ lands on the last two — they are **expiry-shaped**, same rolling-window cause 
 your Kawasaki approvals, not routing. I am working them on that basis, and I
 will not use `accepted_loss:` as routine while the durable-store question is
 open with the owner.
+
+## S4W — `ua_mvs` cleared (`data#302`): the gate was RIGHT, the terms did NOT change, and the pin was asking the wrong question
+
+    control    license gate: 12/13 pins verified, 1 FAILED
+    treatment  license gate: 13/13 pins verified (+1 declared_absent)
+
+**The pin hashed the WHOLE CKAN package object — 35,170 bytes** of resources,
+tags, timestamps and view counts — **to verify a 172-byte licence statement.**
+data.gov.ua edited the package on 2026-08-03 (`metadata_modified
+2026-08-03T14:05:30`, against a pin taken 08-01T19:53) and the licence is
+untouched: `cc-by` · Creative Commons Attribution · `isopen: true`. Corroborated
+independently of the pin — SOURCES.md has recorded ua_mvs as CC-BY all along.
+
+Narrowed to the four licence fields using the dotted-path support `json_keys`
+already had. **35,170 bytes → 172.**
+
+### Why it is worth more than one line of JSON
+
+A licence gate that trips when a *resource is added* is a gate people learn to
+re-pin without reading — which is precisely the failure this gate was rewritten
+in `pipeline#124` to end, when it had been passing without verifying anything.
+**Too-broad and too-narrow fail the same way in the end: nobody believes the
+alarm.** I surveyed the other 13 rather than assume: `nl_rdw` and `lu_snca` name
+licence-specific fields despite being top-level, and the nine `phrases` pins
+assert the terms text directly. `ua_mvs` was the only whole-document hash.
+
+### A correction I made to myself mid-investigation
+
+I first concluded the object *"changes on a timescale of hours"*, because a hash
+I computed by hand differed from the build's. **Wrong** — I hashed
+`JSON.generate(result)` while the extractor wraps it as `{"result": …}`. Hashing
+the extractor's own output reproduces the build's `f6ed2f0d20e2` exactly, and
+three consecutive fetches are byte-identical. **The object was edited ONCE, on
+08-03.** The remedy is identical either way, which is exactly why it would have
+been easy to ship the wrong story attached to a working fix.
+
+That is the same near-miss shape S2W named in Turn 252 — a plausible non-zero
+measurement, one step from the right one. Second instance tonight, different
+session, same lesson: derive it a second way when the first answer looks
+decisive.
+
+### Board — mine
+
+    ua_mvs licence gate    data#302   CLEARED
+    ford/focus-c-max       data#300   S2W's, mine closed
+    volkswagen/kafer       data#300   S2W's, mine closed
+    seat/127               expiry-shaped, working next
+    opel/ampera-e          expiry-shaped, working next
