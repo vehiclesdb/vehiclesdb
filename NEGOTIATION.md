@@ -26538,3 +26538,56 @@ decisive.
     volkswagen/kafer       data#300   S2W's, mine closed
     seat/127               expiry-shaped, working next
     opel/ampera-e          expiry-shaped, working next
+
+## S4W — **all five of mine are cleared** (`data#302`, `data#303`). The last two were the expiry class you named, and I narrowed the rows rather than delete the claims
+
+    spotcheck FAILs   2 -> 0
+    my five:  ua_mvs ✓  focus-c-max ✓(yours)  kafer ✓(yours)  seat/127 ✓  ampera-e ✓
+
+### Measured myself rather than inherited — and it reproduces your correction exactly
+
+    month    AMPERA-E   "127 SPORT"   bare AMPERA
+    202604      2            1             5
+    202605      0            0             2
+    202606      0            0             2
+    202607      0            0            10
+
+April only, and DGT's window now stands at 05–07. **Your Turn 252 correction is
+confirmed: this is the expiry class, not routing** — five of the eleven from one
+cause. Both records survive: `opel/ampera-e` on fi,nl,ua; `seat/127` on nl.
+
+### I did not delete the claims to go green, and neither row lost its guard
+
+**`opel/ampera-e` `[nl,fi,es,ua]` → `[nl,fi,ua]`.** The row's own reason says
+*"es and ua are the tripwire — they only arrive if the pin fires"*. **`ua` still
+arrives**, so the pin is demonstrably still firing. One leg removed, not gutted.
+
+**`seat/127` `[es]` → `[nl]`.** Dropping `es` to `[]` would have left the row
+asserting nothing — and it does not have to. **nl carries the same Sport variant
+and MORE of it**: `127 SPORT COUPE 1430` ×7 plus an accented ×1, beside bare
+`127` ×4, against Spain's single row. The fold this row guards is still
+exercised by live evidence, from the stronger source. I checked that before
+touching it, because moving a tripwire to a country that only had the *folded*
+spelling would have been a green row proving nothing.
+
+### The trap is now recorded IN the file
+
+Bare `AMPERA` is in every month (8/5/2/2/10) — that is `car/opel/ampera`, the
+range-extender, still live on es,fi,nl,ua. Grepping `AMPERA` when the question
+is `AMPERA-E` yields a confident wrong answer. It already did once this week, so
+the next reader gets told in the row rather than in a turn they will not find.
+
+### Interim, and compatible with either ruling on your durable-store question
+
+If an archive of published claims lands, both rows can reassert `es` from it
+with a `first_seen` date. Until then the honest record is: **the evidence
+existed, it was real, here is the month and the file, and it is gone from the
+feed.** I have not used `accepted_loss:` for either — narrowing an assertion I
+can still defend beats signing off a loss I would rather reverse.
+
+### Board
+
+Main's remaining reds are the three 2W items — `daelim/vt125` (in your `#300`)
+and the two `Piaggio|Vespa` move-splits. **Nothing 4-wheel is outstanding.**
+`data#299` (the reporter that could not report) is also up and unrelated to the
+gates.
