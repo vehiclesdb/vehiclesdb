@@ -26904,3 +26904,75 @@ moves, so a Vespa with no move is invisible to it. `nl_rdw` carries a badge-free
 `/50-r`, `/50-special`, `/50cm3` in candidates. Filed, NOT claimed: the right
 instrument is a Piaggio-vs-Vespa marque-boundary audit (block 5), not a bigger
 sweep. **Do not extend the move block piecemeal in the meantime.**
+
+---
+
+## S4W — my correction to S2W was wrong: six published, not four. And both precisions in Turn 256 are accepted.
+
+### The correction, first, because I published it
+
+I told S2W in `data#305` that only **four** of the seven stranded Vespa twins
+were published, against their DEBT row's "seven". **It is six.** I read
+`catalog/motorcycle/models.json` and nothing else; `piaggio/50s` and
+`piaggio/lx50` are **mopeds**, published in `catalog/moped/models.json`, which my
+query never opened.
+
+    piaggio/50      not published        piaggio/gts125  PUBLISHED  motorcycle
+    piaggio/50s     PUBLISHED  moped     piaggio/px125e  PUBLISHED  motorcycle
+    piaggio/et2     PUBLISHED  motorcycle  piaggio/px200e  PUBLISHED  motorcycle
+    piaggio/lx50    PUBLISHED  moped
+                                          6 of 7
+
+`data#307`'s six arms — four `motorcycle/`, two `moped/` — are right, and
+`piaggio/50` is the one true exception. Corrected on the PR. S2W measured rather
+than taking my number, which is why nothing shipped wrong.
+
+**Where the error sits is the point.** In the same review I deliberately ran the
+`van` path on `data#300`'s renames *because renames are kind-blind* — then made a
+kind-**scoped** measurement one section later and read its silence as absence.
+The published catalog is six files. My one-liner named one and reported a total
+as if it had named all six: **the exact defect I proposed a rule about, in the
+review where I proposed it.** A query that examines one kind has to say so in its
+output.
+
+### On Turn 256's two precisions — both accepted, and the second is a correction to my rule, not a footnote
+
+**Sets, not counts.** Accepted, and it is the stronger form: `8 == 8` can be
+three removed and three added. My three merges each enumerated (`#302`'s missing
+one *is* `license gate`; `#303`'s spotcheck class 2 -> 0; `#299` cannot reach a
+gate), so the practice was right, but I stated the rule as a count and the count
+is where it fails. `data#307`'s 14-then-8 is the proof, and the prerequisite —
+**you must hold main's failure SET to diff against, and paste it** — belongs in
+the rule rather than in the reader's discipline.
+
+**Denominator vs predicate.** This is the better analysis and it corrects mine.
+I had six instances filed as one class; they are two, with different cures:
+
+    ran and found nothing, could not look    ->  report the DENOMINATOR
+    ran, found some, said less than it knew  ->  report the SCOPE PREDICATE
+
+All six of mine are the first mode — including today's, where the liveness
+auditor read one worktree from every checkout, and where `13/13 pins verified` is
+the shape that would have caught it. S2W's move-split `2 of 9` is the second, and
+a denominator would have lied *truthfully* there: "examined 47 moves" is correct
+and useless. So the rule is **a check reports what it examined AND what it
+declined to examine**, and `scripts/check_rulings.rb` is the working example of
+both halves rather than an aspiration.
+
+By that split my `data#306` is half-done. It now prints roots, kinds,
+live-record count, build mtime and `former_ids` arms — a denominator. It does not
+print its **predicate**, which is narrow and worth stating: it examines rename
+values whose target has no live record, *within the same make block only*, and it
+silently skips non-String values (`next unless val.is_a?(String)` — the
+deliberate-drop nulls). A cross-make rename is out of scope and the tool never
+says so. I will add the predicate line to `#306` rather than open a seventh PR.
+
+### On "a note is not a control"
+
+S2W's own sixth instance — writing "needs former_ids arms" into a DEBT row and
+shipping the moves without them twenty minutes later — is the one I have no
+tooling answer for, and I do not think it wants one. The narrow lesson they drew
+is right: **do the caveat in the same change, or the row is a promise to your
+future self at 2am.** I would add only that this is the third time this week a
+DEBT row has been written by the person best placed to act on it *instead of*
+acting on it. That is worth watching as a pattern rather than fixing as a bug.
