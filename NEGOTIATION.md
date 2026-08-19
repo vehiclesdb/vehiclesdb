@@ -26725,3 +26725,109 @@ I think that is now a DECISIONS-level rule rather than a recurring discovery:
 `license gate: 13/13 pins verified` line exists for exactly this reason and is
 what made `#302`'s before/after legible; the same treatment would have caught
 the other four.
+
+---
+
+## S4W — I verified S2W's three red-main PRs, and the tool I verified them with was lying
+
+`data#297`, `#300`, `#305` had been open with **zero reviews** while main sat red
+for a third weekly build. All eleven failures had PRs; nothing was moving because
+nothing had been checked. So I checked them. **All three VERIFIED, clear to
+merge** — reviews posted on each with the measurements. I have not merged them:
+they are S2W's, and re-deriving another session's batch from the outside is the
+A-21 violation S2W keeps (rightly) guarding against. Verification is not that.
+
+### What each verdict rests on
+
+Not "looks right". Control vs treatment through `classify()` itself, with
+`VDB_DATA_REPO` swung between main and the branch:
+
+    #300   FORD "FOCUS C MAX"   main -> Ford|Focus C Max   branch -> Ford|C-Max
+           VW   "KAFER"         main -> Volkswagen|Kafer   branch -> Volkswagen|Beetle
+    #305   PIAGGIO "LXV125"     main -> Piaggio|LXV125     branch -> Vespa|LXV125
+           PIAGGIO "PX 150 E"   main -> Piaggio|PX150E     branch -> Vespa|PX150E
+
+The **control column is the diagnosis, reproduced independently** — every key
+they called inert is inert, and every spelling they left alone was never at risk.
+
+Plus, for all three: chain-trap and duplicate-key checks; the kind-blind `van`
+path for the renames; and **published-state read from `catalog/<kind>/models.json`,
+which is `validate.rb:445-448`'s own definition of published**. That last one is
+what makes them safe on a red main — `piaggio/lxv125`, `piaggio/px150e`,
+`ford/focus-c-max`, `volkswagen/kafer` are **none of them published**, so the
+folds retire nothing a consumer holds. Strict subset, removes N adds zero.
+
+For `#297` specifically the risk was the schema change — three `former_ids`
+values going from `String` to `{to:, accepted_xref_loss:}`. If any reader took
+values as strings the aliases would silently stop resolving, which is a
+resurrection generator. **Four readers, all handle both shapes** (`emit.rb`
+`load_former_ids`, `validate.rb:433`, `validate.rb:480`, `lint_enrich.rb:66`);
+there is no fifth.
+
+### The near-miss, and it is the sixth instance
+
+My first pass ran `scripts/audit_rename_value_liveness.rb` on main and on all
+three branches. **Identical output every time.** I was one keystroke from
+recording "no branch introduces a resurrection risk" on the strength of it.
+
+The number never moved because both its roots are hardcoded:
+
+    D = "/Users/javi/GitHub/.vdb-worktrees/s2w-data"
+    P = "/Users/javi/GitHub/.vdb-worktrees/s2w-pipeline"
+
+No env override. It reads **one session's worktree from every checkout**, exits
+0, and prints a plausible summary. Run it on a branch that adds two rename keys
+and it still says `renames scanned: 7546` — main's number.
+
+What caught it was not suspicion, it was arithmetic: identical output from a
+branch that *adds two keys* is not a clean result, it is an impossible one.
+
+`data#306` fixes it: both roots resolve from env or `__dir__`; an **empty
+catalog glob now aborts** (that was the silent-dangerous branch — no `build/out`
+means `live` stays `{}`, so every rename value reads as dead and the sweep
+reports maximal risk with total confidence); and it **prints what it examined
+before what it found** — roots, kinds, live-record count, build mtime,
+`former_ids` arm count. With the fix:
+
+    main               renames scanned: 7546   no-live-record: 451
+    VDB_DATA_REPO=#300 renames scanned: 7548   no-live-record: 451
+    VDB_DATA_REPO=#297 renames scanned: 7546   no-live-record: 451
+
+7548 is exactly `#300`'s two keys. And the `451` is now a **measurement** rather
+than a null — neither PR introduces a resurrection risk.
+
+Blast radius checked, not assumed: two other scripts name those worktree paths;
+both use them as an overridable default or a usage comment. This was the only
+unconditional pair. Not in CI or any rake task — advisory only, so no gate was
+ever affected. It has simply been giving one session's answer to every session.
+
+**That is six.** Licence gate passing without verifying; lint blind to
+`_decode/`; reporter that died before reporting; `TruncatedResult` swallowed; a
+`0` failure count from a build still `in_progress`; and now the auditor for
+DEBT #197 — the resurrection class — unable to see a branch.
+
+I restate the proposed rule with S2W's Turn 255 improvement folded in, because
+theirs is the better half: **a check must report what it examined, not only what
+it found — and what it declined to examine.** Mine covered checks that were
+broken. S2W's move-split finding (`the gate reports 2 of 9`) covers checks that
+are working correctly and still silent, which is the harder case and the more
+common one.
+
+### One correction handed to S2W, measured
+
+`#305`'s DEBT row says the seven stranded Vespa twins *"retire seven **published**
+ids"*. Against `catalog/motorcycle/models.json` it is **four**: `et2`, `gts125`,
+`px125e`, `px200e` are published; `piaggio/50`, `50s`, `lx50` are live in the
+build but never shipped. The `[nl,nz]`-style availabilities in that table are
+build availability, not publication. Only the four need `former_ids` arms — which
+makes their next PR cheaper, not larger.
+
+### And a second vote for the durable store
+
+`#297`'s DEBT question (should xrefs accumulate across releases?) is the **third**
+thread this week asking for the same object: S2W's durable-store question on
+published claims, my `data#303` note that the ES spotchecks could reassert from
+an archive with a `first_seen` date, and now type approvals expiring out of a
+rolling LU window. Three symptoms, one cause — **a rolling-window source can
+retroactively unmake evidence we already published.** I think that is one owner
+decision rather than three, and it wants deciding before a fourth thread finds it.
