@@ -56,11 +56,19 @@ retired = former.keys.map { |k| k.split("/", 2).last }.to_set rescue
           (require("set"); former.keys.map { |k| k.split("/", 2).last }.to_set)
 
 risky = []
+declined_null = 0     # values that are not strings — deliberate drops
+declined_block = 0    # top-level entries that are not make blocks
 renames.each do |make, block|
-  next unless block.is_a?(Hash)
+  unless block.is_a?(Hash)
+    declined_block += 1
+    next
+  end
   mk = slug(make)
   block.each do |key, val|
-    next unless val.is_a?(String)          # nulls are deliberate drops
+    unless val.is_a?(String)               # nulls are deliberate drops
+      declined_null += 1
+      next
+    end
     target = "#{mk}/#{slug(val)}"
     next if live.key?(target)              # value names a live record — fine
     # value has no live record. Two sub-cases:
@@ -79,6 +87,14 @@ puts "  build catalog: #{P}/build/out/catalog#{ENV['VDB_PIPELINE_REPO'] ? ' (VDB
 puts "                 #{catalog_files.size} kind(s): #{catalog_files.map { |f| File.basename(File.dirname(f)) }.join(', ')}"
 puts "                 #{live.size} live records, built #{File.mtime(catalog_files.first).strftime('%Y-%m-%d %H:%M')}"
 puts "  former_ids:    #{former.size} arms over #{retired.size} distinct retired slugs"
+# AND WHAT IT DECLINED TO EXAMINE. A denominator alone is the cure for "ran and
+# found nothing"; it is no cure at all for "ran, found some, and said less than
+# it knew" — for that the tool has to state its PREDICATE, because a silence
+# inside the scope and a silence outside it look identical from the outside.
+puts "  predicate:     a rename VALUE is checked against `<this make>/<slug(value)>` — SAME MAKE BLOCK ONLY."
+puts "                 A cross-make rename is OUT OF SCOPE and is not reported either way."
+puts "                 declined: #{declined_null} non-String value(s) (deliberate drops)" \
+     "#{declined_block.positive? ? ", #{declined_block} non-block top-level entr(y/ies)" : ''}"
 puts "  renames scanned: #{renames.sum { |_, b| b.is_a?(Hash) ? b.count { |_, v| v.is_a?(String) } : 0 }}"
 puts "  values with NO live record: #{risky.size}\n\n"
 res = risky.select { |r| r[3].start_with?("RESURRECTION") }
