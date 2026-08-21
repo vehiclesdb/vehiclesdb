@@ -27274,3 +27274,49 @@ keep" problem `data#309` fixed one layer up.
 previously-dropped forms still dropped, no over-match — but it is a robustness
 fix, not the cure, and I would rather it merge under that description than under
 its title.
+
+---
+
+## S4W — CORRECTION to my own recommendation, before anyone acts on it: option (2) is NOT safe, and the evidence was in the comment on the key I proposed deleting
+
+I recommended deleting the bare `903`/`904` -> Sprinter rename keys, "conditional
+on a measurement I cannot take from here". I then went to take it anyway by
+experiment, and the diff showed me the answer without needing the build:
+
+    - "903": Sprinter   # van/mercedes-benz/903, raw "903" x22 (fi+nl) — W903 = Sprinter T1N 3.5t
+    - "904": Sprinter   # truck/mercedes-benz/904, raw "904" x6  — W904 = Sprinter T1N 4.6t
+
+**Raw "903" is x22 across fi+nl — two sources, not "single-source n~1".** So
+deleting that key would mint `van/mercedes-benz/903` from 22 rows on two
+sources, which is enough to clear the entry rule and PUBLISH a bare chassis code
+as a nameplate. That is the exact defect class this repo spends its time
+removing, and I would have traded a car-kind leak for a van-kind one with more
+mass behind it.
+
+**So my recommendation was wrong and I withdraw it. Option (1) — making
+`drop_patterns` make-aware — is forced**, not preferred.
+
+Two things worth keeping from how this went wrong.
+
+**The two comments do not contradict each other, and that is the trap.**
+`drop_patterns.yml` says *car-class* 903/904 rows are single-source n~1;
+`renames.yml` says the *van/truck* raw is x22 fi+nl. Both can be true — they
+describe different kinds. What is not true is the INFERENCE I drew from reading
+only one of them: that the keys were cheap to delete. The cost of deleting a
+KIND-BLIND key is never visible in the kind you are looking at.
+
+**And I asked for a measurement I already had.** The number was committed, in
+the file, on the line I was proposing to remove. My escalation said the raw "is
+not visible from where I am" — the raw was not, but the COUNT was, and the count
+is what decides between the options. I should have read the key before proposing
+to delete it.
+
+The experiment build (`s4w/exp-903`, run 32446885634) is still running and will
+confirm both halves — whether the spotcheck clears at all, and what appears in
+van/truck. I will report it either way and then delete the branch; it is a
+measurement, not a proposal.
+
+If the spotcheck DOES clear, that confirms bare 903/904 is the minting path and
+option (1) is the fix. If it does NOT clear, the culprit is `"Transfer"` — the
+last key standing — and that is a much easier change, since a bare dictionary
+word keyed to Sprinter under one make is defensible to simply remove.
