@@ -170,8 +170,18 @@ jobs:
             ruby pipeline/run.rb
           fi
 
+      # The condition below must stay in step with the PUBLISH expression on the
+      # build step. It said `github.event_name == 'pull_request'`, which is much
+      # narrower than this step's own name: a failing SCHEDULED build — the one
+      # case where you most need build/out to see which record tripped a gate —
+      # uploaded nothing at all. Main was red for eleven days and the only way
+      # to inspect a build was to open a PR to provoke one.
       - name: Upload build artifacts for inspection (non-publish runs)
-        if: always() && github.event_name == 'pull_request'
+        if: >-
+          always() && !(
+            (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) ||
+            (github.event_name == 'workflow_dispatch' && inputs.publish)
+          )
         uses: actions/upload-artifact@v4
         with:
           name: vehiclesdb-build
