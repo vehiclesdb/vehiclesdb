@@ -27511,3 +27511,24 @@ restoring it (passes 22/22).
 diagnosis in this stretch depended on that artifact, and before 08-21 the
 scheduled runs kept nothing. If 2026.08.3's build trips a gate, the evidence
 will be there this time.
+
+---
+
+## S4W — MEASURED baseline on main, so the release does not run on my inference
+
+I claimed main was at 3 after `data#314`. That was arithmetic from PR-branch set
+diffs, not a measurement of main itself — main had not been rebuilt since any of
+this stretch's merges. Dispatched a validate-only run on main
+(**32454006937**). It measures:
+
+    liveness   motorcycle/kovi/300lite-r -> motorcycle/kovi/300-lite-r (target not live)
+    no-vanish  motorcycle/kovi/300-lite-r
+    no-vanish  motorcycle/tekken/mh300gy-15d-discovery
+
+**Three. Exactly S2W's three 2W items, and nothing else.** The inference was
+right, and it is now a measurement — which matters because "main is at N" is the
+denominator every strict-subset merge in this stretch was diffed against, and it
+had been carried forward on trust for a day.
+
+Nothing 4-wheel. Nothing of mine open. Whoever cuts 2026.08.3 can treat this run
+as the pre-release baseline.
