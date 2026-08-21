@@ -82,6 +82,23 @@ car:
   - '\A90[1-6](?:[\s.-]+\d*\s*|)(KA|AC|BA|OK)'  # chassis + body-code forms, separator optional and no trailing boundary: "906 AC 30", "906 KA 35", "902 KA", "906 BA35", "906BA35", "906OK30", "906BA50"
   - '\A90[1-6][.-]\d' # dotted/hyphened chassis sub-codes: "903.6 308CDI", "902.6 KA", "905.6", "904.6 413CDI" (nl personenauto carries the whole W90x zoo, n=1 each — measured)
   - '\A906\z'         # bare W906. NOTE make-blind: would also hit a bare Porsche "906" raw (none in any corpus to date). Bare "903"/"904" are deliberately NOT dropped — porsche/904 is a live id fed by the bare raw; stray Mercedes car-class "903"/"904" rows are single-source n~1 and cannot pass the 2-source/threshold entry rule
+  # MAKE-SCOPED (mapping shape, pipeline#… — a bare string stays make-blind).
+  # Bare "903"/"904" are the W903/W904 Sprinter chassis codes, and renames.yml
+  # folds them to "Sprinter" for the van/truck kinds where they belong (raw
+  # "903" x22 fi+nl, "904" x6). Renames are KIND-BLIND, so the same fold fired
+  # in the car kind and minted car/mercedes-benz/sprinter on [fi,nl] against the
+  # pinned spotcheck — with body_types ["hatchback"], which is the tell.
+  #
+  # This could not be written as a bare pattern: `porsche/904` is a LIVE id
+  # [nl,nz] fed by the identical raw, and a make-blind `\A90[34]\z` would delete
+  # it. That is why the previous note here said 903/904 were deliberately left
+  # undropped and leaned on "single-source n~1 cannot pass the 2-source rule" —
+  # a premise the 2026-08-21 refresh falsified, since the leaked record is
+  # exactly [fi,nl]. MEASURED, not argued: deleting the two rename keys instead
+  # clears this spotcheck but mints van/mercedes-benz/903 and
+  # truck/mercedes-benz/904 as live chassis-code nameplates (experiment build
+  # 32446885634) — one failure removed, two added.
+  - { make: Mercedes-Benz, pattern: '\A90[34]\z' }
   - '\b(SPINTER|SPRINER|SRINTER)\b'  # Sprinter MISSPELLINGS in passenger-car classes (fi M1 "SPINTER" x15, "SPINTER 310CDI PROSTYLE TREND", "SRINTER 316CDI-3.5T-906633/367" — measured); the van/truck-kind misspelling rows fold to van/truck sprinter via renames, untouched by this car-kind drop
 
 van: []
