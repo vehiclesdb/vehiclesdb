@@ -4103,6 +4103,29 @@ Hillman:
   "4D Super Minx": Super Minx                       # 1 veh/1 rows (fi, fi_traficom) -> live hillman/super-minx; raw "4D SUPER MINX III/2560-65"
 
 Honda:
+  # ── Prologue trim/drivetrain ladder -> the nameplate (2026-08-21) ──────────
+  # `car/honda/prologue-ex` was PUBLISHED in 2026.08.2 on [ca,ua] and is absent
+  # from the current build, which is what the no-vanish gate reports. The cause
+  # is not curation: `ua_mvs` no longer carries it (Ukraine is healthy and GREW
+  # this build — 1599 -> 1824 ua-bearing car ids — so this is a per-nameplate
+  # loss, not a source outage), and the only source left is ca_nrcan with
+  # counts {"ca" => 0}, a CATALOGUE listing rather than registrations.
+  #
+  # The successor is unambiguous and live: `honda/prologue` [ua,us]. EX, EX-L
+  # and Touring are Honda's standard trim ladder and FWD is a drivetrain, so all
+  # four are qualifiers on ONE nameplate — the same call as the `HR-V Exl Cvt`
+  # and `Legend Sh-Awd` arms already in former_ids.yml.
+  #
+  # All four are keyed, not just the one the gate named. Three of them sit in
+  # build/candidates at zero counts today; keying only `Prologue EX` would leave
+  # the others to mint the same defect the moment ca_nrcan counts move, which is
+  # exactly the resurrection shape data#310 just cleared five of. Produced names
+  # derived with classify() first — "PROLOGUE EX AWD" produces "Prologue EX",
+  # so the AWD form folds through the same key.
+  "Prologue EX":      Prologue   # Honda trim — ca_nrcan "Prologue EX AWD"/"Prologue EX"; the published id's successor
+  "Prologue EX-L":    Prologue   # Honda trim (EX-L sits above EX) — ca_nrcan, candidate at ca 0
+  "Prologue Touring": Prologue   # Honda trim (top of the ladder) — ca_nrcan, candidate at ca 0
+  "Prologue Fwd":     Prologue   # DRIVETRAIN, not a trim — us_fueleconomy, candidate at us 0
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
