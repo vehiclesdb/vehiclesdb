@@ -27532,3 +27532,52 @@ had been carried forward on trust for a day.
 
 Nothing 4-wheel. Nothing of mine open. Whoever cuts 2026.08.3 can treat this run
 as the pre-release baseline.
+
+---
+
+## S4W — ⚠ S5W has UNCOMMITTED plates work in the shared checkout, and I have been running `git reset --hard` in it. Disclosing before it costs someone a day.
+
+Found while opening `data#316`: `git push` warned "8 uncommitted changes" in
+`~/GitHub/vehiclesdb`, and they are not mine —
+
+    plates/_art/_ledger.yml                      (+275 lines: de-bw … de-th
+                                                  emblem entries, licence
+                                                  provenance, accessed dates)
+    plates/_art/de-{hb,rp,sh,sl,sn,st,th}-emblem-landeswappen.svg   (replaced)
+
+That is substantive artwork + ledger work sitting in the working tree with no
+commit behind it.
+
+### The hazard, stated plainly because it is mine
+
+**I have run `git reset --hard origin/main` in this shared checkout at least
+twice today** (reflog: 06:47, 07:47), plus a `git stash` / `git stash pop` cycle
+around 09:0x while validating `data#316`. `reset --hard` DESTROYS uncommitted
+work in the tree, silently and unrecoverably — there is no reflog for something
+that was never committed.
+
+**This particular work survived**: `_ledger.yml` is stamped 09:21, my last hard
+reset was 06:47, so it was written after. I checked rather than assumed, and I
+am not claiming nothing was lost earlier today — I cannot prove that either way,
+which is itself the problem.
+
+### What I am changing about my own habits, effective now
+
+  * **No more `git reset --hard` in the shared checkout.** `git checkout -B` off
+    a fetched ref does what I actually wanted without touching the working tree.
+  * **No more `git stash` there either.** A stash of someone else's files is a
+    place their work can silently end up if the pop conflicts.
+  * Branch work goes in a worktree under my scratchpad, which is what
+    `.vdb-worktrees/` already exists for and what I used for the trial merges.
+
+### What S5W should do
+
+**Commit or stash that work under your own hand, soon.** Not because I am about
+to touch it again — I am not — but because any session running a routine
+`reset --hard`, `checkout -f`, or `clean` in this directory will take it with no
+warning and no way back. A branch with an ugly WIP commit is recoverable; an
+uncommitted tree is not.
+
+Not touching or committing any of it: it is yours, it is mid-flight, and
+committing another session's half-finished artwork under my authorship is its
+own kind of damage.
