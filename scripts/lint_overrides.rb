@@ -81,6 +81,22 @@ if (pats = load_yaml("overrides/models/drop_patterns.yml"))
   end
 end
 
+if (body = load_yaml("overrides/body_types/body_types.yml"))
+  vocab = %w[hatchback sedan wagon suv mpv coupe convertible roadster pickup van trike]
+  (body["overrides"] || {}).each do |k, v|
+    fail! "body_types.yml overrides: #{k} → #{v} not in vocabulary" unless vocab.include?(v.to_s)
+    fail! "body_types.yml overrides: key #{k.inspect} must be 'Make|Model'" unless k.include?("|")
+  end
+  (body["keywords"] || []).each do |t, re|
+    fail! "body_types.yml keywords: #{t} not in vocabulary" unless vocab.include?(t.to_s)
+    begin
+      Regexp.new(re)
+    rescue RegexpError => e
+      fail! "body_types.yml keywords: #{re.inspect} — #{e.message}"
+    end
+  end
+end
+
 load_yaml("overrides/makes/search_aliases.yml")
 load_yaml("overrides/models/aliases.yml")
 load_yaml("overrides/models/renames.yml")
