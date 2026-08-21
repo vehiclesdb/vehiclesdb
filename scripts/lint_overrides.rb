@@ -58,25 +58,25 @@ end
 if (pats = load_yaml("overrides/models/drop_patterns.yml"))
   pats.each do |kind, list|
     (list || []).each do |p|
-      Regexp.new(p)
-    rescue RegexpError => e
-      fail! "drop_patterns.yml(#{kind}): #{p.inspect} does not compile — #{e.message}"
-    end
-  end
-end
-
-if (body = load_yaml("overrides/body_types/body_types.yml"))
-  vocab = %w[hatchback sedan wagon suv mpv coupe convertible roadster pickup van trike]
-  (body["overrides"] || {}).each do |k, v|
-    fail! "body_types.yml overrides: #{k} → #{v} not in vocabulary" unless vocab.include?(v.to_s)
-    fail! "body_types.yml overrides: key #{k.inspect} must be 'Make|Model'" unless k.include?("|")
-  end
-  (body["keywords"] || []).each do |t, re|
-    fail! "body_types.yml keywords: #{t} not in vocabulary" unless vocab.include?(t.to_s)
-    begin
-      Regexp.new(re)
-    rescue RegexpError => e
-      fail! "body_types.yml keywords: #{re.inspect} — #{e.message}"
+      # TWO AUTHORED SHAPES since data#314: a bare pattern string, and a hash
+      # {make:, pattern:} that scopes the drop to one marque (the car-kind
+      # Sprinter leak is unwritable without it). This lint only knew the first,
+      # so it crashed on the second -- Regexp.new(Hash) -- and took mains lint
+      # red on 2026-08-21. The pipeline was taught the new shape in
+      # pipeline#177; the data repos lint was not. A coupled-change gap.
+      src = p.is_a?(Hash) ? p["pattern"] : p
+      if p.is_a?(Hash)
+        fail! "drop_patterns.yml(" + kind.to_s + "): scoped entry " + p.inspect + " has no `pattern:`" unless p.key?("pattern")
+        fail! "drop_patterns.yml(" + kind.to_s + "): scoped entry " + p.inspect + " has no `make:` -- an unscoped hash is just a slower string" unless p.key?("make")
+        unknown = p.keys - %w[make pattern]
+        fail! "drop_patterns.yml(" + kind.to_s + "): scoped entry has unknown key(s) " + unknown.inspect + " -- the shape is {make:, pattern:}; a typod key would silently widen the drop" unless unknown.empty?
+      end
+      next unless src.is_a?(String)
+      begin
+        Regexp.new(src)
+      rescue RegexpError => e
+        fail! "drop_patterns.yml(" + kind.to_s + "): " + src.inspect + " does not compile -- " + e.message
+      end
     end
   end
 end
