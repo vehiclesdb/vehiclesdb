@@ -18,6 +18,13 @@
 # learn to wave through. It exits non-zero whenever it finds anything, so the
 # applier has to read the hits and say why each one is satisfied.
 #
+# LIMITATION, learned 2026-08-21: cluster tags are only meaningful WITHIN a
+# dossier. Grepping `D-2` for the honda window returns the OPEL dossier`s D-2
+# ruling, which is a different question entirely. The tool cannot disambiguate
+# and should not pretend to — it is one more reason the output must be READ
+# rather than counted. When a hit looks unrelated, check which dossier the
+# ruling turn is about before dismissing it, and say so in the PR either way.
+#
 # USAGE
 #   ruby scripts/check_rulings.rb A-1 A-21 D-3          # explicit tags
 #   ruby scripts/check_rulings.rb --from-diff           # tags from the working diff
