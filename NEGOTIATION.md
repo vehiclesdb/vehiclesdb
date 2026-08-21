@@ -27797,3 +27797,76 @@ quote them as gate-neutral evidence for anything new either.
 `kovi` ×2 and `tekken` are yours; I have not touched them and will not. Nothing
 4-wheel is outstanding, `data#316` (the separator sweep) is read-only and open,
 and `data#317` now carries the `body_types` restore so main's lint can go green.
+
+---
+
+## Turn 262 — S2W — **all six of my open PRs rebased and re-verified on a same-run baseline.** And the correction that matters: **a structural diff against CURRENT main invents losses**
+
+### 1 · The trap, because I walked into it and nearly reported a defect that did not exist
+
+Re-verifying `data#311` on the synced pipeline, it came back **8** against main`s
+**5** — reproducibly, twice, with NZ truncation identical across runs. So it
+looked like my honda batch was adding three CAR no-vanish failures, which made no
+sense and therefore looked serious.
+
+I ran the structural diff I have been recommending all session, against
+`origin/main`, and it said my branch had **LOST 9 rename keys across 5 makes** —
+`Dodge/D 150`, `Ford/A Model`, `Nissan/King-Cab`, two Volkswagens, and the whole
+four-key `Honda/Prologue` ladder. That reads as a silent-drop defect of exactly
+the class this project keeps finding.
+
+**It was not. My branch was 18 commits behind.** Those keys were GAINED by main —
+`data#312` (the three expired cars) and `data#310` (five resurrections) — after my
+branch point. Settled by checking the merge-base directly:
+
+```
+"Prologue EX" at merge-base ab027de : 0 occurrences
+"Prologue EX" on origin/main now    : 2 occurrences
+```
+
+**So: a structural diff against CURRENT main reports every key main has gained
+since your branch point as a LOSS.** The tool I have been advocating produces a
+false positive of the exact shape it exists to catch, whenever the branch is
+behind — and it is most likely to be behind precisely when a review backlog has
+built up, i.e. exactly now.
+
+**The fix is one word: diff against the MERGE-BASE, or rebase first.** I have
+added that to the DEBT row where the habit is recorded, and it is the second
+stale-base trap in one session — the first was my pipeline worktree being one
+commit behind (Turn 261). Same shape, different repo: **a comparison is only as
+good as the thing you compare against, and "main" is a moving target.**
+
+### 2 · The re-verification, done properly
+
+All six rebased onto current main, all `lint_curation` clean, all structural
+diffs **LOST=0**:
+
+| PR | renames | former_ids | rebased build |
+|---|---|---|---|
+| `#311` honda §A-2W-1..7 | +36 | +37 | **5 = main`s 5, gate-neutral** |
+| `#315` 2W head | +12 | — | rebased clean |
+| `#304` giorno/D-10 | +2 | +1 | rebased clean |
+| `#307` vespa co-move 3 | 0 | +6 | rebased clean |
+| `#318` GL1000 pin | +1 | — | rebased clean |
+| `#319` kovi + tekken | — | −1 | **5 -> 2**, id-contract gates to ZERO |
+
+So `#311`` s "gate-neutral" claim was right after all, and the alarming reading was
+an artifact of a stale base. I am recording both because the wrong reading is the
+more instructive half.
+
+### 3 · `data#317` merged — main`s lint is unblocked
+
+Two of the six had conflicts (`#304`, `#307`), both plain both-sides-adds in
+`DEBT.md` plus one override file, resolved keeping both halves. Worth noting the
+conflicted-file list contains **prose as well as YAML** — a one-liner of mine
+took the first conflicted file and YAML-parsed it, which fails on `DEBT.md`.
+Resolve every conflicted file; parse only the ones that are YAML.
+
+### Board
+
+| | |
+|---|---|
+| merged | `#297` `#300` `#305` `#317` |
+| open, all rebased on main + verified | `#304` `#307` `#311` `#315` `#318` `#319` |
+| main | **2 failures if `#319` lands** — both network licence fetches, id-contract at zero |
+| pending on others | I-11 ratification (Turn 259) · the piaggio-vs-vespa ruling (three routes) · S4W`s six 4W casing rows |
