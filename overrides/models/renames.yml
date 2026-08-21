@@ -7610,6 +7610,13 @@ Nimbus:
 Nio:
   ES8: EL8                                # NIO renamed ES6→EL6 and ES8→EL8 for Europe; the German lineup is ET5 / ET5 Touring / EL6 / EL8 (https://www.chinaelektro.de/nio/). The catalog already carries EL6, so this keeps the family consistent.
 
+Niu:
+  # 2W head certification, 2026-08-21. Same standalone-acronym defect as the
+  # Vespa/SYM GTS records — normalizer`s `case_token` leaves digit-bearing
+  # tokens alone and title-cases bare ones, so "GTS" became "Gts". NIU also
+  # writes its ranges with a lowercase i (NQi / MQi / UQi), which the same pass
+  # flattens to "Nqi" — two defects in one display string.
+  "Nqi Gts Pro":       NQi GTS Pro      # niu.com range pages write NQi GTS PRO; d6
 Nissan:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
@@ -10154,6 +10161,7 @@ SWM:
   Sixdays: Six Days                      # SWM Six Days — two words (the ISDE reference), from the tail batch
 
 SYM:
+  "Gts":               GTS                # SYM GTS 300i — same acronym, different marque, same caser defect
   "N.a.": null   # small placeholder block against SYM's 56 real names (FIDDLE alone is 36,746 registrations)
   "JET14EVO125LC Abs":               JET14EVO125LC              # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   Xpro:                      X Pro                # SYM writes X Pro with a space
@@ -10617,6 +10625,23 @@ Velocette:
   200LE: LE200                              # same string reversed. Folds into LE200, and DELIBERATELY NOT into bare "LE": the LE came in 149cc (Mk I/II) and 192cc (Mk III), so the 200 distinguishes a real machine. Merging it away would destroy that with no variant layer to catch it.
 
 Vespa:
+  # ── 2W HEAD CERTIFICATION finding, 2026-08-21 · the GTS acronym ────────────
+  # Found on the FIRST pass of the 2W head stratum (deciles 1-3 ordered by head
+  # presence, PRD-FIVE-NINES §1.2), exactly as the car pilot found head defects
+  # on its first run. FIVE records across THREE makes display "Gts":
+  #   vespa/gts            d1  <- the head record
+  #   vespa/gts-supertech  d5
+  #   vespa/gts-super-300  d9
+  #   sym/gts              d6
+  #   niu/nqi-gts-pro      d6
+  # while every digit-bearing sibling stays correct: GTS125, GTS250, GTS300,
+  # GTS300 Super, GTS150 Iget. That asymmetry IS the mechanism — normalizer.rb
+  # documents that `case_token` returns any digit-bearing token unchanged, so
+  # "GTS125" survives while a standalone "GTS" is title-cased. Not a Vespa quirk
+  # and not a register defect: it is the caser meeting a bare acronym.
+  "Gts":               GTS                # Gran Turismo Sport, an acronym — Piaggio writes "Vespa GTS" throughout its own range pages; d1 head record
+  "Gts Supertech":     GTS SuperTech      # Piaggio`s own trim styling is SuperTech (camelCase), cf. the GTS SuperSport
+  "Gts Super 300":     GTS Super 300      # same acronym, spaced trim
   Vespa: null                             # motorcycle es|nl AND moped nl|nz
   "GTS150 Iget Abs":                 GTS150 Iget                # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   "LX150 Iget Abs":                  LX150 Iget                 # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
