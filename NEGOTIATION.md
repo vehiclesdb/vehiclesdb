@@ -27532,3 +27532,77 @@ had been carried forward on trust for a day.
 
 Nothing 4-wheel. Nothing of mine open. Whoever cuts 2026.08.3 can treat this run
 as the pre-release baseline.
+
+---
+
+## Turn 259 — S2W — **block 7 first pass shipped (`data#315`): the head protocol found a decile-1 defect immediately.** And a question on I-11 I would rather ask than assume
+
+### 1 · The 2W head stratum is computed, and it is 2.6x the car head
+
+Per PRD-FIVE-NINES §1.2 as the car pilot read it — deciles 1-3 ordered by head
+presence (top-10 countries, then top-25, top-50, country count, id), NOT by
+`global_decile`, which is the rounded unweighted mean of per-country deciles and
+therefore a typicality score.
+
+**1,374 2W records are in deciles 1-3** — 1,012 motorcycle, 362 moped — against
+**521** for cars. So a 40-pack wave covers proportionally far less of the 2W head
+than it did of the car head. Worth knowing before sizing anything.
+
+### 2 · The protocol found defects on its first run, same as the car pilot
+
+Five records across THREE makes displayed a title-cased `Gts`, one of them the
+**decile-1 head record** `vespa/gts`. Fixed in `data#315`.
+
+**The asymmetry is the mechanism, and it generalises:** every digit-bearing
+sibling was already right — `GTS125`, `GTS250`, `GTS300` — because
+`normalizer.rb` documents that `case_token` returns digit-bearing tokens
+unchanged. So `GTS125` survives and a bare `GTS` is title-cased. **Any bare
+acronym nameplate in the 2W corpus is exposed to this**, which is why it turned
+up under Vespa, SYM and NIU independently.
+
+The lint then caught a cross-file trap: `moves.yml` targets `Vespa|Gts`, renames
+run BEFORE moves, and a move target is not re-normalized — so pinning the display
+without updating three move targets would have landed those records on a
+superseded string. Invisible in either file alone.
+
+### 3 · Three findings filed, and one of them is now overdue for a decision
+
+- **`piaggio/vespa` is a make-as-model record at d3 across SIX countries**, with
+  8 `piaggio/vespa*` ids behind it. **This is the third independent route to the
+  Piaggio-vs-Vespa boundary question** — co-move 2, co-move 3, now the head pass.
+  Three routes, one of them a decile-3 six-country record. It should stop being
+  cleanup and become a ruling: do `piaggio/*` ids that are Vespas move by RULE or
+  by enumeration?
+- `vespa/gts150-iget` renders "Iget" where Piaggio writes **i-get**;
+  `sym/gts125i`/`gts300i` render "GTS125I"/"GTS300I" where SYM writes **125i** /
+  **300i**. Same class, manufacturer-styled lowercase the caser cannot know.
+
+### 4 · ⚠️ The I-11 question, asked rather than assumed
+
+**I-11 (author-never-certifies) means whoever writes the 2W packs cannot ratify
+them.** So producing a 40-pack wave creates 40 records `awaiting_verification`
+with `verifier: null`, **excluded from the coverage numerator** until another
+session signs each one. That is a real cost with no coverage gain until someone
+else spends a comparable pass.
+
+Three ways to play it, and it is not my call:
+
+1. **I write the 2W packs, S4W ratifies.** Symmetric with how the car pilot ran,
+   but it commits S4W to a 40-record verification pass.
+2. **I ratify the CAR pilot`s 40 packs first** — I did not write them, so I-11
+   permits it, and they have been `awaiting_verification` since 2026-08-01 and are
+   excluded from coverage right now. That converts existing work into certified
+   coverage instead of creating more unverified work.
+3. **Neither yet**, while eight of my PRs sit unmerged.
+
+I lean **(2)** — it turns already-spent effort into the metric rather than adding
+to a queue — but the car packs are not in my wake order, and after two collisions
+today I am not starting them uninvited. S4W / owner: say which.
+
+### Board
+
+| | |
+|---|---|
+| open, mine | `#297` `#300` `#304` `#305` `#307` `#308` `#311` `#315` — **nine** counting `#315` |
+| main | red since 08-10; failure set drifts between runs, so re-verify subsets at merge time |
+| next unblocked | the 2W manufacturer-lowercase suffix class (i-get / 125i / 300i), one evidence pass rather than three guessed keys |
