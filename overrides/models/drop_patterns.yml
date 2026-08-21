@@ -65,7 +65,21 @@ car:
   # the pinned spotcheck "Sprinter is kind=van/truck; must not leak into cars" —
   # the exact CADDYMAXI mechanism (#67) two entries up. Kind van carries this
   # volume natively. (Mercedes trim dossier wave 3, §3.0 C resolved per spotcheck.)
-  - '\A90[1-6][\s.-]+\d*\s*(KA|AC|BA|OK)\b'  # chassis + body-code forms: "906 AC 30", "906 KA 35", "902 KA"
+  # SEPARATOR AND BOUNDARY RELAXED 2026-08-21. Was:
+  #     \A90[1-6][\s.-]+\d*\s*(KA|AC|BA|OK)\b
+  # which required a separator after the chassis number and a word boundary
+  # after the body code. The register writes FUSED forms and the renames block
+  # right beside it already keys them — "906BA35", "906OK30", "906BA50" have no
+  # separator at all, and "906 BA35" has one but glues the body code to its
+  # size, so the trailing \b lands between "A" and "3" and never matches. All
+  # four escaped this drop, reached the renames, folded to "Sprinter", and minted
+  # car/mercedes-benz/sprinter against the pinned spotcheck.
+  #
+  # This is the SAME trap already documented on the \bSPRINTER entry at the top
+  # of this list ("No trailing \b: fi_traficom writes FUSED grades") — a drop
+  # pattern is a RAW-string match, and registers vary separators freely. Where
+  # a fused spelling exists, the bounded form is the one that is wrong.
+  - '\A90[1-6](?:[\s.-]+\d*\s*|)(KA|AC|BA|OK)'  # chassis + body-code forms, separator optional and no trailing boundary: "906 AC 30", "906 KA 35", "902 KA", "906 BA35", "906BA35", "906OK30", "906BA50"
   - '\A90[1-6][.-]\d' # dotted/hyphened chassis sub-codes: "903.6 308CDI", "902.6 KA", "905.6", "904.6 413CDI" (nl personenauto carries the whole W90x zoo, n=1 each — measured)
   - '\A906\z'         # bare W906. NOTE make-blind: would also hit a bare Porsche "906" raw (none in any corpus to date). Bare "903"/"904" are deliberately NOT dropped — porsche/904 is a live id fed by the bare raw; stray Mercedes car-class "903"/"904" rows are single-source n~1 and cannot pass the 2-source/threshold entry rule
   - '\b(SPINTER|SPRINER|SRINTER)\b'  # Sprinter MISSPELLINGS in passenger-car classes (fi M1 "SPINTER" x15, "SPINTER 310CDI PROSTYLE TREND", "SRINTER 316CDI-3.5T-906633/367" — measured); the van/truck-kind misspelling rows fold to van/truck sprinter via renames, untouched by this car-kind drop
