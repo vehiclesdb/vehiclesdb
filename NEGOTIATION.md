@@ -27266,3 +27266,184 @@ PR bodies, including the ones I was careful about.
 
 The longer these sit the worse it gets — `#311` alone touches renames,
 former_ids and DEBT, and every S4W PR that lands raises the conflict surface.
+## S4W — eight of my nine 4-wheel failures are MERGED. The ninth needs a ruling, and it is the last non-2W blocker on 2026.08.3.
+
+### Where main stands
+
+    12 (2026-08-21 refresh)  ->  4
+
+    data#310  five separator resurrections   MERGED   12 -> 7
+    data#312  three vanished-car dispositions MERGED    7 -> 4
+    data#313  the DECISIONS rule you ratified MERGED   docs
+    data#309  artifacts on failing builds     MERGED   ci
+    data#306  the liveness auditor            MERGED   tooling
+
+The remaining four: **three are S2W's 2W items** (`kovi/300-lite-r` twice,
+`tekken/mh300gy-15d-discovery`) and **one is mine and stuck**.
+
+### The Sprinter kind-leak, and why I am asking rather than shipping
+
+`car/mercedes-benz/sprinter` is live on `[fi,nl]` against the pinned spotcheck.
+`data#314` fixed a real gap — four FUSED chassis spellings (`906BA35`,
+`906OK30`, `906BA50`, `906 BA35`) that the renames key and the drop pattern
+missed because it demanded a separator and a trailing `\b`. **It did not fix
+this failure.** The build says so: set unchanged at 4, removes 0 adds 0. I have
+said that on the PR rather than letting the title imply otherwise.
+
+What the build says instead, and it narrows hard:
+
+  * `body_types: ["hatchback"]` on the leaked record — registry noise, not a
+    passenger Sprinter.
+  * **No `moves.yml` entry lands on a Sprinter; no make block but Mercedes-Benz
+    produces one.** So it is one of the six keys still escaping the car drops.
+  * The three `Kasten` keys are RULED OUT: the raws carry a suffix the keys lack
+    (`312D-KA-903463-KASTEN/403`, fi 6) so they never fold — they sit in
+    candidates under their own ids.
+
+That leaves **`"903"`, `"904"`, `"Transfer"`**, and the first two fit exactly.
+`drop_patterns.yml` says bare 903/904 are safe to leave because such rows are
+*"single-source n~1 and cannot pass the 2-source/threshold entry rule"*.
+
+**The record is `[fi, nl]`. Two sources. The assumption that made them safe has
+been falsified by data drift** — which is the same shape as the ruling you just
+made on #292: a rule whose premise moved underneath it.
+
+### THE CONSTRAINT, which is why this is a ruling and not a keystroke
+
+`drop_patterns` are per-kind and **make-blind**, and **`porsche/904` is LIVE on
+`[nl,nz]`**, fed by exactly the bare `904` raw a car-kind drop would have to
+match. I verified it in this build; the constraint the file records still binds.
+Three options, each with a cost:
+
+  1. **Make `drop_patterns` make-aware.** Cleanest semantically, but it is an
+     engine + schema change touching every kind's list, mid-release.
+  2. **Delete the bare `903`/`904` -> Sprinter rename keys.** One line, fixes
+     cars immediately — but bare 903/904 Mercedes rows in van/truck would then
+     mint `mercedes-benz/903` instead of folding, and I have NOT measured that
+     volume, so I would be trading a known defect for an unmeasured one.
+  3. **kind_maps for fi/nl.** Does not apply — the rows are registered M1, so
+     there is nothing to re-bucket.
+
+**My recommendation is (2), conditional on a measurement I cannot take from
+here**: if bare 903/904 van/truck rows are the n~1 the comment claims, deleting
+the two keys costs nothing real and unblocks the release today; option (1) is
+then the right follow-up at leisure rather than under release pressure. If they
+are not n~1, (1) is forced.
+
+### What I need
+
+Either a ruling on which option, or a fresh `fi_traficom`/`nl_rdw` cache —
+**my local cache predates the 08-21 refresh, and a published record carries no
+`native`, so the raw that mints this is not visible from where I am.** That is
+the honest limit, and it is the same "you cannot diagnose what the build did not
+keep" problem `data#309` fixed one layer up.
+
+`data#314` stands on its own merits either way — a provable gap closed, 17
+previously-dropped forms still dropped, no over-match — but it is a robustness
+fix, not the cure, and I would rather it merge under that description than under
+its title.
+
+---
+
+## S4W — CORRECTION to my own recommendation, before anyone acts on it: option (2) is NOT safe, and the evidence was in the comment on the key I proposed deleting
+
+I recommended deleting the bare `903`/`904` -> Sprinter rename keys, "conditional
+on a measurement I cannot take from here". I then went to take it anyway by
+experiment, and the diff showed me the answer without needing the build:
+
+    - "903": Sprinter   # van/mercedes-benz/903, raw "903" x22 (fi+nl) — W903 = Sprinter T1N 3.5t
+    - "904": Sprinter   # truck/mercedes-benz/904, raw "904" x6  — W904 = Sprinter T1N 4.6t
+
+**Raw "903" is x22 across fi+nl — two sources, not "single-source n~1".** So
+deleting that key would mint `van/mercedes-benz/903` from 22 rows on two
+sources, which is enough to clear the entry rule and PUBLISH a bare chassis code
+as a nameplate. That is the exact defect class this repo spends its time
+removing, and I would have traded a car-kind leak for a van-kind one with more
+mass behind it.
+
+**So my recommendation was wrong and I withdraw it. Option (1) — making
+`drop_patterns` make-aware — is forced**, not preferred.
+
+Two things worth keeping from how this went wrong.
+
+**The two comments do not contradict each other, and that is the trap.**
+`drop_patterns.yml` says *car-class* 903/904 rows are single-source n~1;
+`renames.yml` says the *van/truck* raw is x22 fi+nl. Both can be true — they
+describe different kinds. What is not true is the INFERENCE I drew from reading
+only one of them: that the keys were cheap to delete. The cost of deleting a
+KIND-BLIND key is never visible in the kind you are looking at.
+
+**And I asked for a measurement I already had.** The number was committed, in
+the file, on the line I was proposing to remove. My escalation said the raw "is
+not visible from where I am" — the raw was not, but the COUNT was, and the count
+is what decides between the options. I should have read the key before proposing
+to delete it.
+
+The experiment build (`s4w/exp-903`, run 32446885634) is still running and will
+confirm both halves — whether the spotcheck clears at all, and what appears in
+van/truck. I will report it either way and then delete the branch; it is a
+measurement, not a proposal.
+
+If the spotcheck DOES clear, that confirms bare 903/904 is the minting path and
+option (1) is the fix. If it does NOT clear, the culprit is `"Transfer"` — the
+last key standing — and that is a much easier change, since a bare dictionary
+word keyed to Sprinter under one make is defensible to simply remove.
+
+---
+
+## S4W — the experiment answered both halves. Option (1) implemented: `pipeline#177` + `data#314`. This is the last non-2W blocker on 2026.08.3.
+
+### The measurement I said I could not take, taken
+
+Experiment build 32446885634 deleted the bare `903`/`904` -> Sprinter rename
+keys — the option I had recommended and then withdrawn — and it settles it:
+
+    spotcheck mercedes-benz/sprinter        CLEARED
+    liveness  van/mercedes-benz/903         NEW
+    liveness  truck/mercedes-benz/904       NEW
+
+**Removes one, adds two.** Bare 903/904 IS the minting path — that half of the
+diagnosis is confirmed — and deleting the keys publishes the chassis codes as
+van/truck nameplates instead, exactly the cost the key's own comment implied at
+x22 fi+nl. Not a strict subset; that option is closed on evidence rather than on
+my say-so. Experiment branch deleted.
+
+### So option (1) was forced, and it is smaller than I claimed
+
+I told you making `drop_patterns` make-aware was "an engine + schema change
+touching every kind's list, mid-release". **That was too pessimistic and I
+should not have priced it that way without reading the call site.** `make` is
+already in scope at the drop (normalizer.rb uses it two lines above), so the
+change is ADDITIVE: a list entry may now be a bare string (make-blind, exactly
+as before — all 46 plain car entries load and fire unchanged) or a mapping
+`{ make:, pattern: }`. Two structures, blind union checked first.
+
+    MERCEDES-BENZ "903" car    Sprinter -> nil          the leak, closed
+    MERCEDES-BENZ "903" van    Sprinter -> Sprinter     fold intact
+    PORSCHE       "904" car    904      -> 904          the constraint held
+    LAND ROVER    "904" car    904      -> 904
+    MERCEDES-BENZ "906" car    nil      -> nil          no regression
+
+Full pipeline suite green.
+
+### One thing I nearly shipped that would have been theatre
+
+My first version of the test reimplemented the drop-matching logic **inside the
+test**, so it would have passed with the feature deleted. `FormerIdsShapeTest`
+two classes up says to "exercise the real parser rather than a copy of its
+logic" and I had not. Rewritten to drive the real `classify()`, then verified by
+removing the six-line normalizer hunk: **fails 2/22 without it, passes 22/22
+with it.**
+
+Worth naming because it is the same defect as everything else this week and it
+was mine, in the change that fixes the last instance of it.
+
+### Merge order matters here
+
+**`pipeline#177` FIRST, then `data#314`.** The mapping shape reaches the current
+loader as a Hash and dies in `Regexp.new` — mid-build, after every source has
+been fetched. Normalizer pair, pipeline-first per the standing rule.
+
+After those two, main's remaining failures are **S2W's three 2W items only**
+(`kovi/300-lite-r` twice, `tekken/mh300gy-15d-discovery`), and the release
+preconditions are met.
