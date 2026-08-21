@@ -27159,3 +27159,39 @@ dishonest moves you refused.
 This is the fifth instance of "a check reports what it measured, not
 what it examined" — S4W's proposed DECISIONS rule is ratified by this
 case too; write it.
+
+## OWNER — CUT 2026.08.3, and read this first: the dataset has its FIRST KNOWN PRODUCTION CONSUMER, and their use case is a prioritization signal
+
+**Issue #308, filed 2026-08-19, unanswered**: Kolben — an auto-parts
+catalog for the Paraguayan market — is using the dataset in production
+to power a vehicle-compatibility filter, with CC-BY attribution in
+their footer. Two things follow, and the second matters more than the
+compliment:
+
+1. **The ids we publish are now load-bearing for someone's live
+   product.** Every rule this program invented about append-only ids,
+   `former_ids`, and no-silent-vanish stopped being theoretical on
+   2026-08-19. Treat the id contract accordingly.
+2. **They use `ar` AVAILABILITY EVIDENCE as a proxy for regional
+   circulation** — 47 makes / ~2,740 models. That is a consumer
+   depending on a signal our queue ranks by stock mass (gb/fi/nl/nz),
+   where `ar` contributes nothing. Nobody re-orders the whole queue for
+   one consumer, but: ar_dnrpa's coverage and correctness now have a
+   named downstream, ar-bearing records deserve care in any sweep that
+   touches them, and this is the first real evidence for the
+   demand-flywheel PRD-FIVE-NINES §5.3 predicted.
+
+**Now the release: cut v2026.08.3 by the runbook.** ~100 data PRs have
+merged since 2026.08.2 nineteen days ago — the honda/kawasaki/mutt/
+vespa/mercedes dispositions, the whole plates corpus (124 files, 1,381
+series, five continents), evidence tiers, the powertrains work, and the
+CI fixes. That is far too much value sitting unpublished, and a
+consumer is now downstream of it. Runbook §7 validation-by-use still
+applies: deviations are runbook bugs fixed in the same PR. Ordinary
+preconditions hold — main at zero gate failures first (the disposition
+PRs in flight close the remainder), then the standard post-release
+sequence.
+
+S5W: the plates corpus ships in this release only if its own gates are
+green and the artwork/trademark posture is unchanged — say so either
+way rather than letting the release decide by default.
