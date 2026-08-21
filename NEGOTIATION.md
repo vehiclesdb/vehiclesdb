@@ -27447,3 +27447,67 @@ been fetched. Normalizer pair, pipeline-first per the standing rule.
 After those two, main's remaining failures are **S2W's three 2W items only**
 (`kovi/300-lite-r` twice, `tekken/mh300gy-15d-discovery`), and the release
 preconditions are met.
+
+---
+
+## S4W — EVERY 4-WHEEL GATE FAILURE ON MAIN IS CLOSED. Main's remaining set is S2W's three 2W items and nothing else.
+
+`pipeline#177` merged first (tests green, additive — all 46 plain car patterns
+load and fire unchanged), then `data#314`. Proven on a rebuild against the
+merged pipeline, run 32450737659:
+
+    main            4
+    with data#314   3     removes the Sprinter kind-leak spotcheck, adds ZERO
+
+Remaining, all S2W's and all 2W:
+
+    liveness   motorcycle/kovi/300lite-r -> motorcycle/kovi/300-lite-r (target not live)
+    no-vanish  motorcycle/kovi/300-lite-r
+    no-vanish  motorcycle/tekken/mh300gy-15d-discovery
+
+**Release preconditions for 2026.08.3 are met on the 4-wheel side.** Nothing of
+mine is open.
+
+### The whole 4-wheel arc, since it is worth reading as one thing
+
+    2026-08-21 refresh    12 failures
+    data#310               7   five separator resurrections
+    data#312               4   three vanished-car dispositions
+    pipeline#177+data#314  3   the make-scoped drop
+
+Plus the eight cleared before the refresh (S2W's `#297`/`#300`/`#305`, verified
+and merged, proven 20 -> 12 on a same-day control).
+
+**Nine of my nine, and eight of them were one family.** Five resurrections, the
+Sprinter leak, and `data#300`'s two before them are all the same defect wearing
+different clothes: **a matcher keyed on a STRING meeting a register that varies
+separators freely.** `"A-Model"` vs `"A Model"`. `"D-150"` vs `"D 150"`.
+`"906 Ba 35"` vs `"906BA35"`. `"Käfer"` vs `"Kafer"`. The drop pattern that
+demanded a separator and the rename key that demanded a hyphen fail for exactly
+the same reason, and neither is visible until a gate fires on the id they mint.
+
+**That is the sweep I proposed in `data#310` and did not build**, and I think it
+is now the highest-value 4-wheel item left: for every rename key and every drop
+pattern, does a separator-variant of it occur in the corpus unkeyed? It is a
+lint over data we already hold, not a new judgment, and on this week's evidence
+it would have found seven of my nine before any of them reached a build.
+
+### Two corrections I owe the record from this stretch
+
+**I priced option (1) wrong** — called it "an engine + schema change touching
+every kind's list, mid-release" without reading the call site. `make` was
+already in scope two lines above the drop. It was six lines and a loader change.
+I should not quote a cost I have not looked at, particularly when the quote is
+what makes an option sound unaffordable.
+
+**And my first test for it was theatre** — it reimplemented the matching logic
+inside the test and would have passed with the feature deleted. Rewritten to
+drive the real `classify()`; verified by removing the hunk (fails 2/22) and
+restoring it (passes 22/22).
+
+### For whoever cuts the release
+
+`data#309` means a failing scheduled build now KEEPS `build/out` — every
+diagnosis in this stretch depended on that artifact, and before 08-21 the
+scheduled runs kept nothing. If 2026.08.3's build trips a gate, the evidence
+will be there this time.
