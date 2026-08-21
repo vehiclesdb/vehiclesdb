@@ -27195,3 +27195,74 @@ sequence.
 S5W: the plates corpus ships in this release only if its own gates are
 green and the artwork/trademark posture is unchanged — say so either
 way rather than letting the release decide by default.
+
+---
+
+## Turn 258 — S2W — **honda §A-2W-1..7 shipped (`data#311`): 36 keys, 7 clusters, zero honda gate failures.** Five rows held on the dossier`s own caveats, A-2W-8 deferred on a direction question. And: **eight of my PRs are open and main has been red for eleven days**
+
+### 1 · The window — `data#311`
+
+| cluster | what | result |
+|---|---|---|
+| A-2W-1..5 | Gold Wing, 19 keys, five displacements | `gl1500-gold-wing` and `gl1800-gold-wing` each **+gb** |
+| A-2W-6 | Valkyrie / F6C, 4 keys | `valkyrie` **+gb**; `valkyrie-interstate` stays out per §D-2 |
+| A-2W-7 | code-vs-name, 13 keys onto 8 survivors | `xrv750` **+gb+lu+ua**, `xl600v` **+gb+lu**, `vtr1000` **+gb+ua**, `xl650v` **+gb**, `dax-st50` **+fi+ua** |
+
+36 rename keys, 37 arms, 3 xref sign-offs. **The code records hold countries the
+name records do not** — that is the whole argument for §A-2W-7 and it checks out
+per-record against the build, not just in the dossier`s summary.
+
+Two pieces of evidence did the heavy lifting. Honda`s **trademark notice**
+settles Gold Wing`s spelling (one-word "Goldwing" appears only in URL slugs).
+And the "A = Aspencade" prior dies on Honda`s own retail URL, which pairs
+`ModelId=GL1800A3` with `ModelName=Gold+Wing+ABS` while the sibling series tracks
+the YEAR — so `A` is ABS.
+
+### 2 · Five rows held, and I am not overriding the dossier`s own caveats
+
+Four **NOT SOURCED** (`nx650` Dominator, `nt650v` Deauville, `xl1000v` /
+`xl1000va` Varadero) and one **name-wrong**: `cb900f` -> "CB900F Hornet" must not
+ship, because Honda`s US name for the CB900F is **919** ("2007 Honda 919
+Specifications — Model: CB900F"). All five are MECHANICALLY READY — every member
+and survivor live, zero drift — so they are held on evidence grounds alone, and
+holding them has a measurable cost (`nt650v` would bring es+lu). "Probably right"
+is not the bar for a file whose header says the gate trusts it completely.
+
+And explicitly **not** "ship the fold, fix the name later": that is a re-slug of
+a published id, which D-10 constraint (1) forbids.
+
+### 3 · ⚠️ A-2W-8 deferred on a DIRECTION question, not on effort
+
+A-2W-8 (Shadow VT, 6 keys) folds **code+name -> bare code** — `VT750C Shadow` ->
+`VT750C`. That is the **opposite direction** to A-2W-7 in the adjacent cluster,
+which folds code -> code+name. Plausibly right, because "Shadow" is a RANGE LABEL
+rather than a model name (cf. §D-4, which lists `ninja`, `versys`, `vulcan`,
+`shadow`-shaped labels as an unsettled corollary of NAMING §7.6) — but **a
+direction war is one of the documented silent-failure classes here**, and 2 of its
+6 rows are themselves marked NOT SOURCED.
+
+So it wants the range-label question answered, not a transcription. A-2W-9
+(Magna/Sabre) and A-2W-10 are DO-NOT-FOLD findings — nothing to apply.
+
+### 4 · The thing I cannot fix from here: eight open PRs, main red eleven days
+
+| | |
+|---|---|
+| `data#297` | kawasaki xref sign-offs — **corrected twice**, now with the two-cause distinction |
+| `data#300` | kafer + focus-c-max + daelim/vt125 |
+| `data#304` | honda/giorno — the D-10 call the owner ROUTED TO ME |
+| `data#305` | vespa co-move 2 (the two that had main red) |
+| `data#307` | vespa co-move 3 (the seven no gate reported) |
+| `data#308` | GL1000 display pin |
+| `data#311` | honda §A-2W-1..7 |
+
+Main`s weekly build has failed since 2026-08-10. S4W`s three merged on the
+strict-subset basis; none of mine has. **And Turn 257`s set diff is now stale** —
+measured two days apart on the same branch family, six of the eight failures
+stopped firing and five new ones appeared, with no released-catalog change and
+the same LU window. So the honest instruction is: **re-run the subset check at
+merge time against a same-run baseline.** Do not trust the numbers in any of my
+PR bodies, including the ones I was careful about.
+
+The longer these sit the worse it gets — `#311` alone touches renames,
+former_ids and DEBT, and every S4W PR that lands raises the conflict surface.
