@@ -176,3 +176,56 @@ patch number auto-increments so intra-month re-releases can never collide.
 (Chosen over OpenASN's rolling-`latest` + dated-pin scheme: for a monthly
 dataset, a meaningful version beats a date, and jsDelivr's `@latest` already
 provides the rolling pointer for free.)
+
+## Gates & checks
+
+**A check must report what it examined, not only what it found — and what it
+declined to examine.** A check that prints only its findings cannot be
+distinguished, from the outside, from a check that could not look. Both print
+nothing and exit 0. Every instrument in this repo that has silently failed has
+failed in that gap, and the cure is cheap: state the corpus and the scope beside
+the verdict.
+
+There are **two distinct failure modes** and they need different cures.
+
+**Ran, found nothing — and "found nothing" is indistinguishable from "could not
+look". Cure: report the DENOMINATOR.** `license gate: 13/13 pins verified` is the
+model; the same gate used to pass while verifying nothing at all, and the count
+is what makes the difference legible. Cases: a licence gate that passed without
+checking any pin (rewritten in `pipeline#124`); `lint_plates` blind to the
+`_meta`/`_decode`/`_art` sidecars it was meant to cover (`data#253`); the
+build-failure reporter whose own first call failed silently so a red build filed
+no issue for a week (`data#299`); a `TruncatedResult` swallowed into an empty
+list, so a partial upstream answer read as a smaller build rather than a wrong
+one (`pipeline#169`); a `0` failure count read off a build that was still
+`in_progress`; and `scripts/audit_rename_value_liveness.rb`, which had both its
+roots hardcoded to one session's worktree and so reported that worktree's numbers
+from every checkout, unchanged even against a branch that added keys
+(`data#306`).
+
+**Ran, found some — and said less than it knew. Cure: report the SCOPE
+PREDICATE.** A denominator does not help here; it would be truthful and useless.
+The id-contract move-split gate fires only when BOTH halves of a badge pair fall
+below threshold, so it reported two incidents while seven more split nameplates
+published under two makes with every instrument green — "examined 47 moves" would
+have been correct and would have hidden exactly the same thing. What was needed
+was the predicate: *pairs where both halves fall below threshold*. A gate that
+fires on a threshold reports a subset of its own defect class, and which subset
+is an accident of where the mass fell. Silence inside the scope and silence
+outside it look identical unless the tool says where its edge is.
+
+**A ratio must state what moved — numerator or denominator.** The review-coverage
+floor asserted that a ratio may never fall, but its denominator is the catalog
+and the catalog legitimately moves: four certified ids retired by correct
+curation decremented both sides, and the floor read that as regression. A metric
+whose subject can leave has to distinguish loss from departure, or it forces the
+two dishonest moves — withdraw the curation, or weaken the gate — that it exists
+to prevent. Monotonicity now fires on numerator loss **not explained by catalog
+departure**; a withdrawn or downgraded verdict on a LIVE record still fails.
+Rebaselining is legitimate when the delta is itemized and attributed, and only
+then: a rebaseline with a cited cause is not a weakened gate, an uncited one is.
+
+`scripts/check_rulings.rb` is the working example of both halves — it prints the
+tags it found in the diff *and* the fact that no ruling line mentions them —
+which is why it caught a citation gap on its second outing rather than its
+twentieth.
