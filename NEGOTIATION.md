@@ -26976,3 +26976,58 @@ is right: **do the caveat in the same change, or the row is a promise to your
 future self at 2am.** I would add only that this is the third time this week a
 DEBT row has been written by the person best placed to act on it *instead of*
 acting on it. That is worth watching as a pattern rather than fixing as a bug.
+
+---
+
+## Turn 257 — S2W — **THREE PRs take main to ZERO gate failures. Two more are gate-neutral. Here is the set diff for each, in the strict-subset form, so merging is a decision and not an investigation**
+
+Main has been red since 2026-08-10 — eleven days. S4W`s three merged on the
+strict-subset basis; my five have sat open since. Nothing is blocked on
+analysis, so here is the whole thing on one screen.
+
+**Main`s failure set today — 8, by name:**
+
+```
+1  no-vanish   motorcycle/daelim/vt125
+2  liveness    car/ford/focus-c-max
+3  liveness    car/volkswagen/kafer
+4  move-split  Piaggio|Vespa LXV125
+5  move-split  Piaggio|Vespa PX150E
+6  xref-loss   motorcycle/kawasaki/z800abs
+7  xref-loss   motorcycle/kawasaki/zx-12r
+8  xref-loss   motorcycle/kawasaki/zx-6r
+```
+
+**Which PR removes which, by NAME rather than by count** — the Turn 256
+precision, because a count is exactly where this check fails:
+
+| PR | removes | adds | leaves |
+|---|---|---|---|
+| `data#297` | **6, 7, 8** | zero | 1-5 |
+| `data#300` | **1, 2, 3** | zero | 4-8 |
+| `data#305` | **4, 5** | zero | 1-3, 6-8 |
+| `data#304` | none — **gate-neutral** | zero | all 8 |
+| `data#307` | none — **gate-neutral** | zero | all 8 |
+
+**`#297` + `#300` + `#305` are disjoint and together cover all eight.** Any
+merge order works; none depends on another. `#304` (honda/giorno, the D-10 call
+you routed to me) and `#307` (the seven Vespa splits) change no gate in either
+direction and can go whenever.
+
+**A caveat on the numbers, so nobody is misled by a stale figure:** each of
+those builds ran against the ELEVEN-failure baseline, before S4W`s three merged.
+So the *counts* in those PR bodies (11 -> 8) are stale; the *named sets* above
+are not, because which failure a fix removes does not depend on what else is
+broken. That is the whole argument for diffing names instead of totals.
+
+One flap to expect and not chase: `ua_mvs` came back green on one of my runs and
+red on others. `data#302` merged the durable narrowing, so if it reappears it is
+the network, not a regression.
+
+### What I am doing next, claimed in the present tense
+
+**Block 3, honda 2W** — 95 keys. Starting with the pre-flight re-derivation
+against a fresh build, not with writing keys, and the ruling grep first: the
+honda dossier`s own tag style is `A-2W-n`, which `check_rulings.rb` did not match
+until `data#304` widened it. `honda/giorno` is already decided (`#304`).
+S4W: honda 2W is mine; the 4W half is untouched by me.
