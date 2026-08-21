@@ -221,7 +221,15 @@ checks:
     exists: false
     reason: "KBA FZ10 numeric type-codes are not nameplates (Tesla 512 precedent); seat/468 held DE rank 33 and polluted popularity"
   - id: seat/127
-    availability_includes: [es]
+    # es -> nl 2026-08-18. Same DGT window expiry: "127 SPORT" appears in
+    # es_dgt_202604 ONLY (1 row), zero in 03/05/06/07. The row is NOT weakened,
+    # because nl carries the SAME Sport variant and more of it — nl_rdw
+    # personenauto holds "127 SPORT COUPE 1430" x7 and "127 SPORT COUPE 1430"
+    # (accented) x1 beside bare "127" x4. So the fold this row guards is still
+    # exercised by live evidence, from a source with EIGHT Sport rows against
+    # Spain's one. Dropping es to [] would have left the row asserting nothing;
+    # moving it to nl keeps the guard pointed at what the fold actually does.
+    availability_includes: [nl]
     reason: "'127 Sport' -> '127' fold intentionally creates the classic supermini nameplate with its ES evidence"
   - id: cupra/tavascan
     availability_includes: [gb]
@@ -730,7 +738,16 @@ checks:
     availability_includes: [de, es, fi, gb, lu, nl]
     reason: "…and the ICE Combo must lose NO country to that split. Measured control-vs-treatment at (country, SOURCE) level: the same six (country, source) pairs before and after, 27,529 -> 25,205 vehicles. de/gb are the proof of no over-reach — neither KBA's Modellreihe nor DfT's GenModel ever writes a -E suffix."
   - id: opel/ampera-e
-    availability_includes: [nl, fi, es, ua]
+    # es DROPPED 2026-08-18 — EXPIRY, not regression, and `ua` still carries the
+    # tripwire this row exists for. Measured in cache/es_dgt_2026*.txt: the exact
+    # string AMPERA-E appears in 202604 ONLY (2 rows); 202603/05/06/07 are zero,
+    # and DGT serves a rolling three-month window now standing at 05-07. The
+    # record is LIVE on fi,nl,ua. THE TRAP THIS ROW SHOULD WARN THE NEXT READER
+    # ABOUT: bare AMPERA is present in EVERY month (8/5/2/2/10) — that is
+    # car/opel/ampera, the range-extender, a different nameplate, and grepping it
+    # yields a confident wrong answer. The reason text below still stands as the
+    # record of why es and ua were the tripwire; ua alone now proves the pin fires.
+    availability_includes: [nl, fi, ua]
     reason: "D-2 closes the cross-repo lockstep item filed in aux dossier-citroen-opel §5.1: the 2,856 AMPERA-E vehicles finally reach the Ampera-e record instead of car/opel/ampera. es and ua are NEW here and are the tripwire — they only arrive if the pin fires. Display must read 'Ampera-e' (overrides/styling.yml AMPERA-E pin), not 'Ampera-E'."
   - id: opel/ampera
     availability_includes: [es, fi, nl, ua]

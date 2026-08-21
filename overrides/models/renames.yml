@@ -3750,6 +3750,12 @@ Ford:
   C-Max Energi:   C-Max                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: "C-MAX Energi Plug-In Hybrid" and "C-MAX Hybrid FWD" both base at C-MAX
   C-Max Trend:    C-Max                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: "C-MAX Energi Plug-In Hybrid" and "C-MAX Hybrid FWD" both base at C-MAX
   Focus C-Max:    C-Max                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: "C-MAX Energi Plug-In Hybrid" and "C-MAX Hybrid FWD" both base at C-MAX
+  # The HYPHEN key above never matched the register: es_dgt writes "FOCUS C MAX"
+  # with spaces, producing "Focus C Max" -> car/ford/focus-c-max [es,nl].
+  # former_ids.yml already aliased that id to c-max, so the record sat ALIVE
+  # under a live alias — same gate failure as Kafer, same cause: a key in any
+  # spelling but the PRODUCED one is silently inert.
+  "Focus C Max":  C-Max                     # BOTH sources write the spaced form, measured 2026-08-18: cache/es_dgt_202607.txt raw "FOCUS C MAX" (1) AND cache/nl_rdw_personenauto.json (1) — which is exactly why the resurrected id carried [es,nl]. Folds to the published ford/c-max
   Focus 2:     Focus                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: Focus RS/ST/Electric/Station Wagon all base at Focus
   Focus Se:    Focus                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: Focus RS/ST/Electric/Station Wagon all base at Focus
   Focus ZX3:   Focus                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: Focus RS/ST/Electric/Station Wagon all base at Focus
@@ -10852,7 +10858,19 @@ Volkswagen:
   Classica: Beetle  # Beetle 'Classic'/'Classica' special edition — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   De Luxe: Beetle  # Beetle De Luxe/Export trim; nl raw `VOLKSWAGEN DE LUXE SEDAN`. The existing `Deluxe: De Luxe` line already normalises the fused spelling into this key — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   Kaefer: Beetle  # 'Käfer' (ASCII-folded) is German for Beetle — "der Käfer" — https://en.wikipedia.org/wiki/Volkswagen_Beetle
-  Käfer: Beetle  # German name of the Beetle — "der Käfer"; lu_snca writes the umlaut, ua_mvs the folded form — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Käfer: Beetle  # German name of the Beetle — "der Käfer" — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  # THREE spellings, not two — measured against cache/lu_delta_202607.xml on
+  # 2026-08-18: KAEFER (3 rows), KÄFER (1), KAFER (1). The plain-ASCII KAFER
+  # had no key, so it produced "Kafer" -> car/volkswagen/kafer [lu,ua] and sat
+  # there ALIVE while former_ids.yml already aliased that id to beetle — which
+  # the id-contract liveness gate reports as "an alias may never name a live
+  # id". One of main"s eleven gate failures on 2026-08-10/12/17.
+  #
+  # The comment here used to say "lu_snca writes the umlaut, ua_mvs the folded
+  # form". The register does not split that way — LU writes all three — and the
+  # correction matters because that sentence is what made a third key look
+  # unnecessary. Prose drift with a cost attached.
+  Kafer: Beetle  # diacritic dropped entirely — neither umlaut nor ae-digraph. Bare KAFER occurs in cache/lu_delta_202607.xml ONLY (1 row); no nl_rdw, es_dgt, uk_dft or ua file carries it. The id`s ua half arrives through KAEFER, which is the form the original comment attributed to ua_mvs
   Newbeetle: Beetle  # EPA/DOE `vehicles.csv`: model "New Beetle" baseModel **Beetle** (61 rows) and "New Beetle Convertible" baseModel **Beetle** — https://www.fueleconomy.gov/feg/download.shtml
   Special: Beetle  # Beetle 'Special'/'Special Bug' trim; bare in es_dgt and nz_nzta — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   Super Beetle: Beetle  # "In English-speaking countries, the name 'Super Beetle' — alongside '1600' — was included" — the 1302/1303 marketing name — https://en.wikipedia.org/wiki/Volkswagen_Beetle

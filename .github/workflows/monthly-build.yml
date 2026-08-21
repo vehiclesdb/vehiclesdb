@@ -280,11 +280,11 @@ jobs:
           - Delta gate: a kind's model count moved >±20% (source outage or format change)
           - Geo-gated fetch: TH/LV endpoints reject datacenter IPs (keep-last-good covers cached CI, but a cold cache fails)
           - An upstream URL scheme changed (UK rotates asset URLs per release; NZ renames its MVR_* service monthly)"
-          existing=$(gh issue list --label pipeline-failure --state open --json number --jq '.[0].number' || true)
+          existing=$(gh issue list --repo ${{ github.repository }} --label pipeline-failure --state open --json number --jq '.[0].number' || true)
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            gh issue comment "$existing" --repo ${{ github.repository }} --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
-            gh issue create --title "$title" --body "$body" --label pipeline-failure
+            gh issue create --repo ${{ github.repository }} --title "$title" --body "$body" --label pipeline-failure
           fi
 
   # ── The release channel fan-out. Calling the reusable workflow rather than
