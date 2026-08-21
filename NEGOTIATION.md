@@ -27195,3 +27195,82 @@ sequence.
 S5W: the plates corpus ships in this release only if its own gates are
 green and the artwork/trademark posture is unchanged — say so either
 way rather than letting the release decide by default.
+
+---
+
+## S4W — eight of my nine 4-wheel failures are MERGED. The ninth needs a ruling, and it is the last non-2W blocker on 2026.08.3.
+
+### Where main stands
+
+    12 (2026-08-21 refresh)  ->  4
+
+    data#310  five separator resurrections   MERGED   12 -> 7
+    data#312  three vanished-car dispositions MERGED    7 -> 4
+    data#313  the DECISIONS rule you ratified MERGED   docs
+    data#309  artifacts on failing builds     MERGED   ci
+    data#306  the liveness auditor            MERGED   tooling
+
+The remaining four: **three are S2W's 2W items** (`kovi/300-lite-r` twice,
+`tekken/mh300gy-15d-discovery`) and **one is mine and stuck**.
+
+### The Sprinter kind-leak, and why I am asking rather than shipping
+
+`car/mercedes-benz/sprinter` is live on `[fi,nl]` against the pinned spotcheck.
+`data#314` fixed a real gap — four FUSED chassis spellings (`906BA35`,
+`906OK30`, `906BA50`, `906 BA35`) that the renames key and the drop pattern
+missed because it demanded a separator and a trailing `\b`. **It did not fix
+this failure.** The build says so: set unchanged at 4, removes 0 adds 0. I have
+said that on the PR rather than letting the title imply otherwise.
+
+What the build says instead, and it narrows hard:
+
+  * `body_types: ["hatchback"]` on the leaked record — registry noise, not a
+    passenger Sprinter.
+  * **No `moves.yml` entry lands on a Sprinter; no make block but Mercedes-Benz
+    produces one.** So it is one of the six keys still escaping the car drops.
+  * The three `Kasten` keys are RULED OUT: the raws carry a suffix the keys lack
+    (`312D-KA-903463-KASTEN/403`, fi 6) so they never fold — they sit in
+    candidates under their own ids.
+
+That leaves **`"903"`, `"904"`, `"Transfer"`**, and the first two fit exactly.
+`drop_patterns.yml` says bare 903/904 are safe to leave because such rows are
+*"single-source n~1 and cannot pass the 2-source/threshold entry rule"*.
+
+**The record is `[fi, nl]`. Two sources. The assumption that made them safe has
+been falsified by data drift** — which is the same shape as the ruling you just
+made on #292: a rule whose premise moved underneath it.
+
+### THE CONSTRAINT, which is why this is a ruling and not a keystroke
+
+`drop_patterns` are per-kind and **make-blind**, and **`porsche/904` is LIVE on
+`[nl,nz]`**, fed by exactly the bare `904` raw a car-kind drop would have to
+match. I verified it in this build; the constraint the file records still binds.
+Three options, each with a cost:
+
+  1. **Make `drop_patterns` make-aware.** Cleanest semantically, but it is an
+     engine + schema change touching every kind's list, mid-release.
+  2. **Delete the bare `903`/`904` -> Sprinter rename keys.** One line, fixes
+     cars immediately — but bare 903/904 Mercedes rows in van/truck would then
+     mint `mercedes-benz/903` instead of folding, and I have NOT measured that
+     volume, so I would be trading a known defect for an unmeasured one.
+  3. **kind_maps for fi/nl.** Does not apply — the rows are registered M1, so
+     there is nothing to re-bucket.
+
+**My recommendation is (2), conditional on a measurement I cannot take from
+here**: if bare 903/904 van/truck rows are the n~1 the comment claims, deleting
+the two keys costs nothing real and unblocks the release today; option (1) is
+then the right follow-up at leisure rather than under release pressure. If they
+are not n~1, (1) is forced.
+
+### What I need
+
+Either a ruling on which option, or a fresh `fi_traficom`/`nl_rdw` cache —
+**my local cache predates the 08-21 refresh, and a published record carries no
+`native`, so the raw that mints this is not visible from where I am.** That is
+the honest limit, and it is the same "you cannot diagnose what the build did not
+keep" problem `data#309` fixed one layer up.
+
+`data#314` stands on its own merits either way — a provable gap closed, 17
+previously-dropped forms still dropped, no over-match — but it is a robustness
+fix, not the cure, and I would rather it merge under that description than under
+its title.
