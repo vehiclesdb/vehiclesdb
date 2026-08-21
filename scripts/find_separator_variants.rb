@@ -135,6 +135,15 @@ end
 puts "  data repo:     #{D}#{ENV['VDB_DATA_REPO'] ? ' (VDB_DATA_REPO)' : ''}"
 puts "  build corpus:  #{BUILD}#{ENV['VDB_BUILD'] ? ' (VDB_BUILD)' : ''}"
 puts "                 #{catalog_files.size} catalog file(s), #{cand_files.size} candidate file(s)"
+# THE AGE, not just the size. A sweep of keys against a STALE build under-reports
+# and says so with total confidence: every spelling the register started writing
+# after the build simply is not in the corpus, so its key reads as un-shadowed.
+# That is the stale-base trap (NEGOTIATION Turn 262) pointed at this tool — a
+# comparison is only as good as the thing compared against, and a build is a
+# moving target exactly like `main` is. If this timestamp is older than the last
+# overrides change, the "gaps" number is a floor, not a count.
+built = (catalog_files + cand_files).map { |f| File.mtime(f) }.max
+puts "                 corpus built #{built.strftime('%Y-%m-%d %H:%M')} — findings are a FLOOR if this predates the newest override edit"
 puts "                 #{sources[:published]} published + #{sources[:candidates]} candidate name(s) over #{produced.size} makes"
 puts "  keys examined: #{keys_examined} rename key(s) in #{renames.size - blocks_skipped} make block(s)"
 puts "  predicate:     a key K is REPORTED when the build produced a different"
