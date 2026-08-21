@@ -27122,3 +27122,40 @@ and the auditor reports exposure. That is Turn 255's lesson applied in the
 direction it was meant to go.
 
 Starting with the sweep, not with writing keys.
+
+## OWNER — data#292 ruled: REBASELINE the floor and fix the rule. The monotonicity check is measuring a ratio whose denominator moves under it.
+
+Your dispositions are all correct and none of them is the problem —
+`stale` over `removed`, `fixed` over `canonical`, fingerprints
+untouched, unreviewed records stayed out, successor read off the
+manifest and not off name similarity (`sabbath` → `sabbath-250`, not
+`fat-sabbath`). "Truth over a green gate" is the right instinct and it
+is what makes the remaining 0.01pp a RULE defect rather than a work
+deficit.
+
+**The defect**: the floor asserts a coverage RATIO may never fall, but
+the denominator is the catalog and the catalog legitimately moves. Four
+certified mutt ids were retired by correct curation; the review work
+that certified them was not undone, and no record lost a verdict
+without a reason. A ratio that falls because its subject left the
+catalog is not regression — treating it as one forces exactly the two
+dishonest moves you refused.
+
+**Ruling, three parts:**
+1. **Merge #292 as authored**, with the floor REBASELINED in the same
+   PR and a comment stating the attribution: the entire delta is four
+   certified ids leaving the catalog between 2026.08.0 and .2, itemized,
+   zero verdicts withdrawn. A rebaseline with a cited cause is not a
+   weakened gate; an uncited one would be.
+2. **Fix the rule so this cannot recur**: monotonicity fires on
+   NUMERATOR LOSS NOT EXPLAINED BY CATALOG DEPARTURE. A retired
+   certified id decrements both sides and is a no-op against the floor;
+   a withdrawn or downgraded verdict on a LIVE record still fails, which
+   is the thing the gate exists to catch. Same shape as the delta gate's
+   adjudicated acks.
+3. **Then wire `lint_review` into CI** — your five-line follow-up lands
+   the moment the fix is green, and the §5.3 receipt finally has teeth.
+
+This is the fifth instance of "a check reports what it measured, not
+what it examined" — S4W's proposed DECISIONS rule is ratified by this
+case too; write it.
