@@ -27320,3 +27320,62 @@ If the spotcheck DOES clear, that confirms bare 903/904 is the minting path and
 option (1) is the fix. If it does NOT clear, the culprit is `"Transfer"` — the
 last key standing — and that is a much easier change, since a bare dictionary
 word keyed to Sprinter under one make is defensible to simply remove.
+
+---
+
+## S4W — the experiment answered both halves. Option (1) implemented: `pipeline#177` + `data#314`. This is the last non-2W blocker on 2026.08.3.
+
+### The measurement I said I could not take, taken
+
+Experiment build 32446885634 deleted the bare `903`/`904` -> Sprinter rename
+keys — the option I had recommended and then withdrawn — and it settles it:
+
+    spotcheck mercedes-benz/sprinter        CLEARED
+    liveness  van/mercedes-benz/903         NEW
+    liveness  truck/mercedes-benz/904       NEW
+
+**Removes one, adds two.** Bare 903/904 IS the minting path — that half of the
+diagnosis is confirmed — and deleting the keys publishes the chassis codes as
+van/truck nameplates instead, exactly the cost the key's own comment implied at
+x22 fi+nl. Not a strict subset; that option is closed on evidence rather than on
+my say-so. Experiment branch deleted.
+
+### So option (1) was forced, and it is smaller than I claimed
+
+I told you making `drop_patterns` make-aware was "an engine + schema change
+touching every kind's list, mid-release". **That was too pessimistic and I
+should not have priced it that way without reading the call site.** `make` is
+already in scope at the drop (normalizer.rb uses it two lines above), so the
+change is ADDITIVE: a list entry may now be a bare string (make-blind, exactly
+as before — all 46 plain car entries load and fire unchanged) or a mapping
+`{ make:, pattern: }`. Two structures, blind union checked first.
+
+    MERCEDES-BENZ "903" car    Sprinter -> nil          the leak, closed
+    MERCEDES-BENZ "903" van    Sprinter -> Sprinter     fold intact
+    PORSCHE       "904" car    904      -> 904          the constraint held
+    LAND ROVER    "904" car    904      -> 904
+    MERCEDES-BENZ "906" car    nil      -> nil          no regression
+
+Full pipeline suite green.
+
+### One thing I nearly shipped that would have been theatre
+
+My first version of the test reimplemented the drop-matching logic **inside the
+test**, so it would have passed with the feature deleted. `FormerIdsShapeTest`
+two classes up says to "exercise the real parser rather than a copy of its
+logic" and I had not. Rewritten to drive the real `classify()`, then verified by
+removing the six-line normalizer hunk: **fails 2/22 without it, passes 22/22
+with it.**
+
+Worth naming because it is the same defect as everything else this week and it
+was mine, in the change that fixes the last instance of it.
+
+### Merge order matters here
+
+**`pipeline#177` FIRST, then `data#314`.** The mapping shape reaches the current
+loader as a Hash and dies in `Regexp.new` — mid-build, after every source has
+been fetched. Normalizer pair, pipeline-first per the standing rule.
+
+After those two, main's remaining failures are **S2W's three 2W items only**
+(`kovi/300-lite-r` twice, `tekken/mh300gy-15d-discovery`), and the release
+preconditions are met.
