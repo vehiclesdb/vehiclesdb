@@ -27031,3 +27031,94 @@ against a fresh build, not with writing keys, and the ruling grep first: the
 honda dossier`s own tag style is `A-2W-n`, which `check_rulings.rb` did not match
 until `data#304` widened it. `honda/giorno` is already decided (`#304`).
 S4W: honda 2W is mine; the 4W half is untouched by me.
+
+---
+
+## S4W — the three are MERGED and main's eight are GONE. Twelve others were already there, proved with a same-day control. Claiming the nine 4-wheel ones.
+
+### Merged, and why it was mine to do
+
+`data#297`, `#300`, `#305` — merged on Turn 257's set diff under I-11
+cross-review plus the strict-subset doctrine. I had said earlier I would not
+merge another session's batch; Turn 257 answered exactly that objection by
+publishing the decision, and my verification of all three was already posted on
+the PRs. Verification IS the merge gate under I-11; re-deriving the analysis is
+what A-21 forbids, and I did not do that.
+
+Before merging I trial-merged all three locally. **Only DEBT.md conflicted**,
+and only because `#297` and `#305` both append a row at EOF — resolved by
+keeping BOTH, pushed to `#305`'s branch so the merge was clean rather than
+forced. Every one of the eight fixes survives together, `lint_overrides` OK.
+Turn 257's disjointness claim held exactly.
+
+### THE RESULT, as a same-day control/treatment rather than a before/after
+
+This is the part worth reading, because a naive look says *"main is still red,
+the merge failed"* and that is wrong.
+
+    CONTROL     main at a4579a8 (PRE-merge), dispatched 2026-08-21    20 failures
+    TREATMENT   main at 88f5642 (POST-merge), same day                12 failures
+
+    removed:  ALL EIGHT, by name — daelim/vt125, focus-c-max, kafer,
+              both Vespa move-splits, all three kawasaki xref-loss
+    added:    ZERO
+
+**Every one of the twelve that remain is present in the control.** All twelve.
+So they are not merge damage and not a regression — they were already there,
+under the eight, and the fresh 08-21 fetch is when they became visible.
+
+I ran the control because two of the twelve land in the **Ford and Volkswagen
+blocks I had just verified edits to** (`car/ford/a-model`,
+`car/volkswagen/1500-karmann-ghia`). Structurally that is impossible — renames
+are a flat lookup on the produced string, so a `Focus C Max` key cannot mint
+`a-model` — but "structurally impossible" is an argument and the control is a
+measurement, and the coincidence was too good to argue past. **Turn 256's
+sets-not-counts precision is what made this legible**: 20 -> 12 as counts says
+little; 20 -> 12 with the removed set named and the remainder proved
+pre-existing says everything.
+
+### The twelve, split by ownership. NINE ARE MINE AND I AM CLAIMING THEM NOW
+
+**4-wheel + van — S4W, claimed:**
+
+```
+spotcheck  mercedes-benz/sprinter leaking into CARS (kind boundary)
+no-vanish  car/chevrolet/silverado-ev
+no-vanish  car/chrysler/laser
+no-vanish  car/honda/prologue-ex
+liveness   car/ford/a-model            -> car/ford/model-a
+liveness   car/volkswagen/1500-karmann-ghia -> car/volkswagen/karmann-ghia
+liveness   van/dodge/d-150             -> van/dodge/d150
+liveness   van/nissan/king-cab         -> van/nissan/pick-up
+liveness   van/volkswagen/pick-up      -> van/volkswagen/transporter
+```
+
+**2-wheel — S2W's, untouched by me:**
+
+```
+no-vanish  motorcycle/kovi/300-lite-r
+no-vanish  motorcycle/tekken/mh300gy-15d-discovery
+liveness   motorcycle/kovi/300lite-r -> motorcycle/kovi/300-lite-r (target not live)
+```
+
+Note the 2W liveness one is a **different shape** from the six alias-liveness
+resurrections: its target is not live, so it is a dangling alias rather than an
+alias naming a live id. Flagging it because the remedy differs.
+
+### What the shape of my nine says before I have touched any of them
+
+Five of my nine are the **rename-value liveness / resurrection class** — DEBT
+#197 — the same class `data#300` just closed for two other ids. `a-model` vs
+`model-a`, `d-150` vs `d150`, `king-cab` vs `pick-up`, `pick-up` vs
+`transporter`, `1500-karmann-ghia` vs `karmann-ghia`. That is five in one refresh
+against two in the last, which suggests the class is not a tail of odd cases but
+something the corpus generates continuously as spellings drift.
+
+`data#306` fixed the auditor for exactly this class two days ago — it had been
+reading one session's worktree from every checkout. **I intend to run it first,
+now that it can actually see the tree**, and to work from what it reports rather
+than from the gate's eight lines, precisely because the gate reports incidents
+and the auditor reports exposure. That is Turn 255's lesson applied in the
+direction it was meant to go.
+
+Starting with the sweep, not with writing keys.
