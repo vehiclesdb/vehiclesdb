@@ -52,7 +52,11 @@ def tags_from_diff(base)
       # codes leak in as tags: a first pass matched ZX-6/ZX-9/ZX-10 out of the
       # very comments it was reading. Harmless here — they hit nothing — but a
       # reporter that cries wolf is one people stop reading.
-      .flat_map { |l| l[/#(.*)$/, 1].to_s.scan(/(?<![A-Za-z0-9-])([A-GS]-\d{1,2})(?![0-9-])/) }
+      # Tag shapes in use: A-21, C-6, D-10, S-2 — and the honda/yamaha dossiers
+      # also use A-2W-1 / A-4W-16, a kind segment in the middle. The first
+      # version of this missed every one of those, which would have made the
+      # tool silently useless on exactly the block it was written for.
+      .flat_map { |l| l[/#(.*)$/, 1].to_s.scan(/(?<![A-Za-z0-9-])([A-GS](?:-\dW)?-\d{1,2})(?![0-9-])/) }
       .flatten.to_set.to_a.sort
 end
 
