@@ -47,8 +47,17 @@ OUTPUT CONTRACT: data/review/audit-v2026.08.3/SCHEMA.md. Read it before you
 start. Every claim is one row in `claims:`; the aggregator reads those rows and
 nothing else. Prose outside the rows is welcome but is not counted.
 
-FOR EVERY RECORD, in this order, one verdict PER CLAIM
-(correct | defective(<D-class>) | unverifiable/source-gap | unverifiable/not-attempted):
+FOR EVERY RECORD, in this order, one verdict PER CLAIM. The four OUTCOMES are
+correct / defective(<D-class>) / unverifiable-source-gap / unverifiable-not-attempted,
+but WRITE THEM AS SCHEMA.md SPECIFIES — three separate YAML fields, never one
+combined string:
+    verdict: correct | defective | unverifiable      <- the bare word, nothing else
+    defect_class: D6                                  <- iff defective
+    unverifiable_subtype: source-gap | not-attempted  <- iff unverifiable
+Writing `verdict: defective(D6)` or `verdict: unverifiable/source-gap` is a
+PARSE FAILURE and the aggregator will reject the ledger (it used to count such a
+row in the denominator and in no bucket, publishing real defects as a 0.00%
+defect rate — found by adversarial verification of the aggregator, 2026-09-05):
 
 1. id-canonical — enumerate ALL live candidate twins in-make (same kind):
    NFKD-fold equality, token subset/permutation, edit-distance-1, shared raw
