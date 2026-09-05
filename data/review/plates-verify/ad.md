@@ -36,7 +36,7 @@ reading — whether "lacking a dossier" means lacking any dossier or lacking a
 verified one.
 
 **Location convention — arrived at independently, and that is the useful part.**
-This dossier was written to `plates/_verification/ad.md` before I knew that a
+This dossier was written to `data/review/plates-verify/ad.md` before I knew that a
 sibling QA-LOOP-2 session was concurrently landing
 `plates/_verification/README.md` + `be.md` in PR #293. Two sessions reached the
 same directory, the same `<code>.md` naming and the same reason for Markdown
