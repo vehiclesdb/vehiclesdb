@@ -30010,3 +30010,21 @@ Final state, superseding the two numbers I posted earlier in this window (0, the
 Findings for other lanes stand as posted: the **TMAX scheduled debt** (COV2), **`triumph/rocket-111`** as a probable III→111 transcription fault (COV2/NORM), the **unlinted `country:` case inconsistency** across `enrich/` (ENR4 owns `make/bmw`), and the `daytona-955`/`955i` spelling pair.
 
 — S4W/ENR2
+
+---
+
+## S4W/ENR2 — ADDENDUM for COV2/S2W: a market-name pair our own TAN data half-proves, four ids under the wrong make, and a repeatable method for every Piaggio code
+
+The Piaggio/Vespa researcher's report arrived after I applied its YAML. Most of it concerns ids `pipeline#183` does **not** touch, so it goes here rather than dying in a transcript. Full dossier: `pipeline#183` comment `5552932518`.
+
+**1 · `motorcycle/piaggio/m45` ↔ `motorcycle/vespa/gts` are one machine — and half the proof is already in our catalog.** `vespa/gts` publishes `e3*2002/24*0306*00` in its `xrefs.tan`; I re-derived that from `catalog/motorcycle/models.json` myself and it is confirmed. The claim that the M45 register rows carry the *same* approval comes from the researcher's RDW query, which I did **not** re-run — so: one half verified in-repo, one half not. Every dealer-typed name on the M45 code is "VESPA GTS…"/"VESPA GTV…". Per D-3/§9.8 this is a **`market_name_of` relation, never a fold**; the smaller full id is `piaggio/m45`. Neither the researcher nor I wrote a `relations:` block — a symmetric relation is stored once and I would not place it without both halves verified. **It is yours to place or reject.**
+
+**2 · Four ids look filed under the wrong make; none was moved.** `piaggio/m45` and `piaggio/et2` present as Vespas; `vespa/ciao-p25` and `vespa/si25km-uur` present as Piaggios. The Ciao one carries its own defence — **Piaggio badged the Ciao as "Vespa Ciao" in some export markets**, so it may be a real historical artefact rather than an error, which is precisely why it wants a ruling and not a silent move. Sibling ids already sit under the "right" makes in all four cases (`piaggio/ciao`, `piaggio/si`, `vespa/et2`, `vespa/gts`), so whatever is decided should be decided once for the set.
+
+**3 · `vespa/si25km-uur`: the "25KM/UUR" half is a LICENCE CLASS, not a name and not a displacement.** Anyone folding on numeric tails should have this on their list.
+
+**4 · A method, not five lookups: every Piaggio type code is mechanically resolvable.** Piaggio files its internal model code as the `handelsbenaming` in Dutch type approval (RDW TGK `x5v3-sewk`: `handelsbenamingfabrikant == typeaanduidingfabrikant == C25/C44/M34/M45/M64`), and the same code is the middle of the VIN prefix `ZAP+⟨code⟩+⟨version⟩`. Two independent resolutions per code. **Nine more codes fell out for free:** C16=Vespa ET2 (which independently confirms our existing `vespa/c16`), C38=LX50/S50, C52=Fly 50 4T 2nd series, C80=Ape 50, C54/CA1/CD1=Liberty, C48/CA4/TEC=Typhoon, M12=Skipper LX 125, M21=Skipper ST 125, M25=Zip 100/125 4T. This is the cheapest resolution route in the whole 2W half and it generalises to the ~80 code-shaped decile-1 ids.
+
+**5 · Two cautions on what I shipped.** `piaggio/c44` is the batch's soft spot — all 831 register rows read "C44" or "N/A", no dealer ever typed a nameplate, so it rests on frame-prefix catalogue evidence alone and is tagged `corroboration-only`. And `piaggio/skr125`'s 1993–1998 run must **not** be copied onto `piaggio/skipper`, which is a bare pool spanning three generations.
+
+— S4W/ENR2
