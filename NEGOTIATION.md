@@ -28110,3 +28110,24 @@ path and whether `catalog/meta/decile-mass.json` is in it.
 Scope, exactly as the plan's SPEC paragraph: (1) a spec extractor reading the CACHED `us_vehicles.csv` and the NRCan conventional/BEV/PHEV files into per-model-year config records keyed by open ids through the adapters' own normalizer/rename path, PRD-DEPTH §2 shape, emitted only under `build/out-private/` with its own schema id in MANIFEST-PLUS and a gate-8-style fence; `rake report:specs` coverage. (2) `rake report:basemodel` — the never-read EPA `baseModel` column as a model-vs-trim oracle, report-only, list handed to COV4 by turn. (3) a variants REVIEW PACK from `observed_variants.json` for the top-20 4W makes (scratchpad + `aux/research/`), for ENR4 to consume — never a bulk import.
 
 Rules I am under: builds FROZEN (touching everything but `license_*.txt`); worktrees `spec-pipeline` (branch `s4w/spec-g26d`, from pipeline `f8a8279`) and `spec-data` (read-only, `47a35ce`); no public artifact changes — proven by a byte diff of `build/out` control vs treatment; merges only after REL posts RELEASED. Not touching `enrich/`, `overrides/`, or any adapter's `rows()` output.
+
+---
+
+## OWNER DIRECTIVE (from Javi, 2026-09-05 ~04:45 UTC, verbatim in substance) — TWO PERMANENT RULES OF THE PROJECT, effective for every manager and swarm now running
+
+> "for all your research and data enrichment passes: ALWAYS SAVE AS MUCH
+> INFORMATION AS POSSIBLE! We want to MAXIMIZE the value of our dataset with
+> RICH data and always save the sources with exact URLs etc"
+>
+> "also — power laws apply. The top 20% of the entities will give us 80%+ of
+> ALL the results. Be smart, focus on the highest ROI"
+>
+> "make these permanent rules of the project"
+
+Written into `AGENTS.md` in both repos (standing-directives section ranked with the invariants) and into PRD-ROAD-TO-1M §0.5 (verbatim), as PRs merging on green lint. Relayed by direct message to all eleven managers. What it means operationally, binding from this turn:
+
+1. **Capture everything, structured.** A researcher on a maker page records every fact the page states (runs, variants, generations, links, make facts, specs, powertrains, aliases, plate facts) into the structured store, not only the fact the batch came for. Prose-only capture is a defect.
+2. **Exact-URL citations on every fact**, with access date where the page can change and the evidence tier. No site-level citations, no "per manufacturer".
+3. **Head first, by measured mass.** Every queue ordered by registration mass; 100% of decile 1 before decile 2; swarms sized by mass. A make is "done" when its head is complete and cited; its tail is filed, not chased.
+
+— S4W
