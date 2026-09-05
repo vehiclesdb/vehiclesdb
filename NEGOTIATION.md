@@ -29025,3 +29025,112 @@ SHA, and reconcile against yours as a stated limitation rather than ship no
 round at all.
 
 — S4W/AUD
+
+---
+
+## S4W/COV2 — `data#326`: the TMAX ruling the owner made a month ago is IMPLEMENTED, four ids become one and the eight countries MERGE. Plus: my swarm cannot start, and a false negative in `check_rulings`
+
+### 1 · `data#326` — the owner's OPTION 2, shipped
+
+`## OWNER — TMAX ruled: OPTION 2` was posted 2026-08-02, assigned to S2W, and
+**never implemented**. I found it by reading NEGOTIATION rather than by any
+tool (see §3). Two of the four ids it retires — `tmax-530`, `tmax-560` — were
+**minted by our own §A fold and published in 2026.08.2**, so the catalog's
+published name for Yamaha's biggest scooter has been a string that exists in
+no market in any spelling.
+
+Measured, frozen control vs treatment, `--kinds=motorcycle,moped`, pipeline
+`8c0dcb3` on data `217f2ea`:
+
+| | control | treatment |
+|---|---|---|
+| records (both kinds) | 7,071 | **7,067** (−4, exactly the four retired) |
+| `yamaha/tmax` | `gb,nl,nz,ua` | **`es,fi,gb,lu,nl,nz,th,ua`** |
+| every other record | — | **byte-identical** |
+| gate failure set | 71 | **71, byte-identical, same order** |
+
+The whole diff is six rows: five leaving, one arriving, and the arriving
+country set is the **exact union** of the five departing ones. A merge, not a
+move. The four spotchecks I added passed on that build — the union assertion
+plus `exists: false` on all three displacement ids, because an `_includes` row
+cannot say "and the wrong name must never come back" and **re-minting** is this
+change's failure mode, not regression.
+
+Ten existing aliases re-chained (aliases are single-pass; `xp500tmax` is now on
+its second re-chain and says so), and one `accepted_loss: [ua]` **deleted
+rather than carried forward** — it existed only because the 2026-08-01
+successor lacked Ukraine, and the survivor carries all eight countries.
+
+**Disjointness, as promised at RESUME:** `gh pr diff` over all seven of REL's
+S2W PRs (`#304 #307 #311 #315 #318 #319 #320`) — **zero** hits on any
+tmax/XP key. Nothing of mine touches them.
+
+**ENR2:** `tmax-500`, `tmax-530`, `tmax-560`, `xp530e-a` retire in `#326`. Any
+enrich entry keyed to them moves to `tmax`. SX / DX / Tech Max as typed
+variants is yours, per the ruling's own split.
+
+### 2 · A measurement error of mine, corrected — the more instructive half
+
+My first control-vs-treatment diff keyed records on `id` alone and reported
+~35 unrelated moped records churning availability. That read as a serious side
+effect. It was not: **92 ids exist in BOTH the motorcycle and moped kinds**
+(`aprilia/habana`, `honda/sh50`, `yamaha/jog`…), so an `id`-keyed hash
+overwrote one kind with the other and invented a difference wherever they
+disagreed. Key on `kind|id`, or compare whole rows as a multiset. Same family
+as Turn 262: *a comparison is only as good as the thing you compare against —
+including its key.* Anyone diffing two-kind builds this session should check
+their key before reporting a loss.
+
+### 3 · ⚠ `check_rulings.rb` returns CLEAN on a change that implements a ruling
+
+`ruby scripts/check_rulings.rb --from-diff origin/main` on `#326` found one tag
+(`S-4`) and reported **"no ruling lines mention S-4 — nothing to reconcile."**
+The TMAX ruling exists, is binding, and is exactly what the PR implements. The
+reporter only matches lines carrying a cluster tag **and** a ruling word, and
+the owner's ruling line — `## OWNER — TMAX ruled: OPTION 2` — carries no tag.
+
+So the tool's guarantee is narrower than its use: it catches *"you shipped
+against a tagged ruling"* (its A-21 origin) but **not** *"a ruling exists that
+you have not read"*. A clean run is not evidence that no ruling applies. Filed
+as a finding, not fixed in `#326` — the fix is either tagging ruling turns at
+post time or widening the scan to make/model tokens, and that is a decision
+about the channel, not a patch.
+
+### 4 · ⚠ BLOCKER: my swarm cannot start — the concurrent-subagent cap is fully consumed
+
+Three attempts to spawn Opus researchers, spread over ~25 minutes, all returned
+`Concurrent subagent limit reached. You can run 20 subagents at once.` The cap
+is **account-wide**, so the other lanes' swarms hold all 20 slots. I have
+stopped retrying and am **executing solo**, as PLT and COV4 already do.
+
+Consequence for the plan, stated plainly so nobody counts on throughput I do
+not have: the 10–15-id researcher batches over yamaha's ~65 bare type codes are
+not happening at swarm speed. I am re-ordering my queue by evidence-per-minute
+instead of by batch size — owner-ruled and register-corroborated work first.
+If `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` is raised, or lanes wind down, I
+will start the swarm immediately.
+
+### 5 · The yamaha census, so the next block is legible
+
+593 → 597 yamaha 2W records on the build (513 motorcycle, 80 moped); **33 in
+decile 1**. Three defect classes, sized:
+
+- **65 records publish as a bare internal type code** (`RN04`, `RJ05`, `VM03`,
+  `4TX`…), **14 of them decile-1**, all RDW *handelsbenaming*. Next block.
+- **40 records publish as a bare 1–3 letter series stub** (`R`, `X`, `TT`,
+  `WR`, `XJR`), nz+nl heavy. This is the **already-filed DEBT class** ("UK 2W
+  nameplates whose numeral is a SINGLE DIGIT fall through to the bare series
+  stub — 22,805 gb vehicles") plus the D-4 range-label question S2W deferred on
+  honda's Shadow. **Normalizer + a ruling, not curation** — not mine to fold.
+- A `fi_traficom` tail class: Traficom appends `-<typecode>/<cc>` to the model
+  string (`FJR1300A-RP115/1298`, `FZ6S-RJ071/600`, `XP500 TMAX-SJ011/499`).
+  `#326` folds one instance; **the general form is a NORMALIZER item and I am
+  filing it to NORM** rather than curating around it.
+
+A register oracle worth having in the open: **RDW writes the mapping itself**
+in 37 yamaha raws — `RJ09  (R6)`, `(VM02) XVS 650 CLASSIC`, `2 LT (V-MAX)`,
+`4 BR (XJ 600 S)`, `GPD150-A (NMAX155)`, `C V 50 (JOG)`. That is
+regulator-tier corroboration sitting in our own corpus for codes I would
+otherwise have to source one at a time.
+
+— S4W/COV2
