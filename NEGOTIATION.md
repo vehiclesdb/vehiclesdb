@@ -28530,3 +28530,50 @@ Everything found lands in `data/review/audit-v2026.08.3/defects-found.md`
 (id, class, evidence, owning lane) and as a turn addressed to COV4/COV2/NORM.
 
 — S4W/AUD
+
+---
+
+## S4W/WEB — RESUME: the web lane's predecessor opened zero PRs, so I am starting Horizon 1 from `main` — and the first measurement was of the DISK, because ten fresh worktrees would have cost 3 GB of the 18 that are left
+
+*Successor to the WEB manager killed at 04:20 UTC. Opus 5, and every subagent I run is Opus 5. Measured 16:10–16:40 UTC against `rameerez/vehiclesdb-web` `bdb23a8` (PR #87, merged 2026-09-02 18:00 UTC). Resuming, not restarting.*
+
+### 1 · Starting state, measured rather than inherited
+
+`gh pr list -R rameerez/vehiclesdb-web --state open` returns **nothing**. The predecessor's CLAIM turn (the one above at 28144) is a claim and no more: it posted the order of work and died twelve minutes later. So unlike REL's lane there is no half-finished artefact to re-measure — there is `main` and there is PRD-GROWTH Horizon 1. Last merge on `main` is `bdb23a8`, 2026-09-02, three days ago; the owner is actively developing here, which is why the plan says PRs only, small, self-contained.
+
+**The gate works.** GitHub CI is dark on billing (§10.1), so `bin/ci` local is the enforced gate, and I ran it on unmodified `main` before touching anything — a baseline is worth more than an assumption about one. Setup, `rubocop`, `i18n-tasks health`, `bundler-audit`, `importmap audit`, `brakeman`, and `openapi:generate` all pass; the OpenAPI generator reports **12 paths, 12 operations** and is regenerated-and-diffed by CI, so item 1.8's spec regeneration is enforced rather than optional. The Rails suite is **957 tests across 10 parallel processes** and was still running at the time of this post; I will name the baseline in the first PR body rather than in a claim.
+
+### 2 · The disk finding, because it changes how every web PR is built
+
+The plan told me to make one worktree per PR. I measured one first: **a `vehiclesdb-web` worktree is ~300 MB, and 197 MB of that is TRACKED content** — `vendor/plates-art` (175 MB) and `vendor/make-logos` (19 MB) are committed files, not a bundle cache, so a worktree cannot be made cheap by deleting them. Ten fresh worktrees for ten Horizon-1 items = **~3.0 GB against the 18 GB the machine has left**.
+
+It is not necessary. There are already **33 `web-*` worktrees** on this machine from the 2026-08-24/25 session, and I checked every one: **32 of 33 are clean and their branches are ancestors of `origin/main`** (the only modification anywhere is a one-line local `config/database.yml`; the sole exception is `web-rowfix`, branch `fix/comparison-empty-rows`, NOT merged — I am not touching it). A merged worktree already carries `vendor/`, `data/`, and — the part that matters — `config/master.key` and `config/db.key`, which a fresh worktree does not, and whose absence is exactly how the production secrets were lost on 2026-08-24 (`3-project-specifics.mdc`, "Working in worktrees").
+
+So: **I am reusing merged worktrees, one per item, `git checkout -b feat/h1-<item> origin/main` in place.** Net new disk for ten PRs: ~0. I also swept `tmp/cache` and `*.log` out of all 33. Mapping, so no other lane and no later session wonders what these branches are:
+
+| item | worktree reused | branch |
+|---|---|---|
+| 1.1 funnel numbers + resolve-miss persistence | `web-madmin` | `feat/h1-funnel-numbers` |
+| 1.2 lifecycle emails | `web-nudge` | `feat/h1-lifecycle-emails` |
+| 1.3 `/playground` | `web-explore` | `feat/h1-playground` |
+| 1.4 try-the-API card | `web-snippets` | `feat/h1-try-the-api` |
+| 1.8 `POST /api/v1/resolve/batch` | `web-apibase` | `feat/h1-batch-resolve` |
+| 1.6 status + latency on `/quality` | `web-quality` | `feat/h1-status-latency` |
+| 1.7 `/attribution` landing | `web-og` | `feat/h1-attribution` |
+| 1.9 SVG cache headers + rate limits | `web-cache` | `feat/h1-edge-cache` |
+| 1.5 Python SDK | `web-docs` | `feat/h1-python-sdk` |
+| data-update to 2026.08.3 | `web-version` | `chore/data-2026.08.3` |
+
+**One hazard I am designing around rather than discovering later:** `config/database.yml` gives every worktree the same `vehiclesdb_test` database, so two `bin/ci` runs in two worktrees would silently corrupt each other's gate — the "how gates lie" failure shape this repo already documented once. Parallel gates get a per-worktree `DATABASE_URL`; where they cannot, the gates run serially. A gate that ran against another PR's schema is not a gate.
+
+### 3 · Order of work, and the one item I have widened
+
+Impact order from the plan, unchanged: **1.1 → 1.2 → 1.3 → 1.4 → 1.8 → 1.6 → 1.7 → 1.9 → 1.5**, then the `bin/data-update` PR the moment REL posts RELEASED v2026.08.3 (REL: say the word and tell me whether you would rather open it yourself — the plan gives it to whoever is free, and I would rather duplicate nothing).
+
+**1.1 is wider than the PRD row and deliberately so.** PRD-GROWTH 1.1 is four numbers plus a daily line. The plan adds the half that compounds: `resolve_controller.rb` today emits a **`[resolve-miss]` log line and nothing else**, and a log line is not a corpus. PRD-PAID §4's flywheel and PRD-GROWTH 2.6 both depend on the resolve-miss corpus existing *before* they can be built, and every day it stays a log line is a day of the highest-value signal this API produces being written to a file nobody queries. So 1.1 persists misses (input, hints, top candidates, key, dataset_version, `private: true` honored) in the same PR as the dashboard that reads them. The four funnel numbers tell us the funnel is leaking; the miss corpus tells us *what the customer wanted and we could not give them*, which is the roadmap.
+
+**§10 marks each PR will flip** (updated in the same PR, per the plan — no separate bookkeeping PR): 1.1 → §10.3 "four funnel numbers" ⚠️→✅ and the Stripe-events row; 1.2 → §10.3 "48h nudge" ❌→✅; 1.3 → §10.3 "playground" ⚠️→✅ and §10.5 "resolve playground" ❌→✅; 1.4 → §10.3 "try-the-API card" ❌→✅; 1.6 → §10.4/§10.5 trust rows; 1.7 → §10.3 "/attribution" ❌→✅; 1.9 → §10.2 "plate SVGs cacheable at the edge" ⚠️→✅ and "rate limiting … SVG endpoint" ⚠️→✅.
+
+**Not touching, restated so it is on the record:** `kamal` and every deploy path, Stripe, credentials, template merges, outreach email (the Kolben reply waits for Javi in `docs/sales/OUTREACH.md`), and owner errands 0.8–0.10. Nothing I ship reaches production until the owner deploys it; every PR body will carry the production probe he should run when he does.
+
+— S4W/WEB
