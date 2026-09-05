@@ -28226,3 +28226,62 @@ Two standing notes for the other lanes: (a) S2W's PRs were re-verified on pipeli
 **Disk:** 18 Gi free. My one private cache copy (`~/GitHub/.vdb-worktrees/rel-cache`, ~1.5 GB) is the only upstream-fetching copy in the stretch and I will delete it after the release build. No lane copies `cache/` or `archive/` again.
 
 — S4W/REL
+
+---
+
+## S4W/COV2 — RESUME: continuing S2W's queue from Turn 262; REL owns their six PRs; the four Yamaha type codes re-measured on today's catalog (two are DECILE 1-2, not tail)
+
+I am **COV2**, resuming (not restarting) the 2W half after the 04:20 UTC session
+limit. My predecessor's CLAIM turn stands verbatim; nothing was committed on
+`s4w/cov2-yamaha` before the cut, so my starting state is a control build in
+`$S/cov2/build-control/` and an empty branch, now rebased onto `217f2ea`.
+
+**Hands off, stated first.** `data#304` `#307` `#311` `#315` `#318` `#319` `#320`
+are S2W's and **REL's to merge** — I will not rebase, comment on, or duplicate a
+single key in them. Anything I ship is disjoint from those six by construction:
+I diff my keys against each PR's before opening.
+
+**Queue, in S2W's order** (pipeline `aux/popularity-queue-2026-08.md`, 2W table):
+yamaha (425,403 mass, "spot fixes only — full pass QUEUED") → suzuki (304,745,
+never touched) → honda 2W remainder (629,934, PARTIAL) → kawasaki (256,505,
+"spot fixes only") → harley remainder (165,122, PARTIAL) → th/my/ua/nz/ar 2W
+coverage sweeps by COV4's method.
+
+**First measurement, and it re-prioritises the head.** On `catalog/motorcycle/models.json`
+at `217f2ea`, yamaha holds **513 motorcycle records, 32 of them decile-1**. The
+four type codes S2W flagged as still publishing as nameplates:
+
+| id | name published | decile | availability |
+|---|---|---|---|
+| `yamaha/mtn850d` | `MTN850D` | **1–2 band (2)** | fi, nl |
+| `yamaha/mtt850` | `MTT850` | **2** | fi, nl |
+| `yamaha/mtm690d-u` | `MTM690D-U` | 8 | es, nl |
+| `yamaha/tracer-900` | `Tracer 900` | 6 | gb, nl, nz, th |
+
+Two corrections to the inherited framing: (1) `mtt890d-k` / `mtt890d-sk` — the
+"`+` row" — **are not in the published catalog at all**, so that row is a
+candidate-queue question, not a rename; (2) `mtn850d` and `mtt850` sit at decile
+**2** while their nameplate twins sit at 6 — i.e. the type codes carry the mass
+and the names carry the countries, the same asymmetry S2W proved for honda's
+§A-2W-7. That is an argument about fold DIRECTION and I will answer it with
+evidence (Yamaha type-approval/market pages, per-record country sets from the
+build) before writing a key, not by analogy.
+
+**Binding on me and checked mechanically:** D-2, D-3, D-10 per-record, **A-21
+NO-FOLD**, TMAX naming OPEN (no id of mine re-spells it), piaggio-vs-vespa routes
+PENDING and not mine to resolve; `scripts/check_rulings.rb` before every PR,
+plus `lint_overrides`, `lint_curation`, `reorg_make_blocks --check`; the
+DECISIONS fold safeguard; the disposition pair rule; `former_ids` for every
+retired id; 2W displacement granularity; NAMING §6 decimals. Per Turn 262 I
+diff against the **merge-base**, never current main.
+
+**Owner directive applied to my swarm:** every researcher records *every* fact a
+maker page states — type code → nameplate, displacement, model years, market
+names, licence class — with page-level URLs and access dates, into a structured
+dossier, so **ENR2 can bank the same research** rather than re-fetch it. I will
+name each retired id in a turn so the enrich twin moves with it.
+
+Builds frozen against the shared cache, `--kinds=motorcycle,moped`, one output at
+a time. PRs merge post-RELEASED. Heartbeat ≤2 h.
+
+— S4W/COV2
