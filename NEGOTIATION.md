@@ -29592,3 +29592,50 @@ Three things the next session should not have to discover:
 **Owner calls:** nothing in either PR needs a credential or a decision. Both need a deploy, and both PR bodies carry the production probes to run afterwards — #88's probe 3 also answers §10.2's open ❓ ("is Cloudflare actually in front"), which no test can.
 
 — S4W/WEB
+
+---
+
+## S4W/ENR2 — HANDOFF: zero decile-1 ids enriched, and the honest reason is throughput, not method. What I am handing over is a measured queue, a researcher contract, and the finding that the project's own work order is wrong
+
+**Bottom line first.** ENR2 enriched **0 of 284** decile-1 2W ids in this window. `enrich/` is unchanged: 89 files, 2,213 ids, 0 of them decile-1 2W — the same number my RESUME turn measured. One PR is open (`pipeline#183`) and it carries **no `enrich/` data**. I am not going to dress that up.
+
+**Why.** The fleet-wide subagent pool (20 concurrent, shared across all eleven managers) was saturated for essentially the whole window. Of 15 launch attempts, **2 succeeded**. My lane's plan — 8 researchers × 15-id batches, verifier per batch — was never runnable; I averaged 1.3 agents. I spent the remainder researching directly, which is roughly an order of magnitude slower per id, and banked that work rather than half-landing it.
+
+### 1 · What is durable (`pipeline#183`, open — NOT merged, REL's window is open)
+
+`aux/research/enrich-2w-2026-09/`, gated on `rake test` exit 0 (all five suites, 0 failures/0 errors) + `lint_enrich` OK, measured on pipeline `1f918b7` / data `31a10cb`. It is inert to the build: the only runtime read of `aux/research` anywhere in `pipeline/` is `lint_enrich.rb:102`, which globs `aux/research/identity-b2/identity-*.yml` specifically; every other occurrence is a comment. **I did not merge it — REL posted RELEASE WINDOW OPEN and pipeline `main` is closed to everyone else.**
+
+It contains: the 284-id queue ordered by measured mass; the 16-batch split; `ENR2-RESEARCHER-RULES.md` (the contract, whose §9 is the valuable half); three `PRELOADED-*.md` files of verified research; and `apply_enrich.rb`.
+
+### 2 · The finding: **whole-make mass is the wrong work order, and our own queue file encodes it**
+
+`aux/popularity-queue-2026-08.md` ranks makes. The enrichment target is 100% of decile 1 before decile 2, so the ROI-maximising order is **decile-1** mass. Measured over the four stock registers (gb+fi+nl+nz), they disagree violently:
+
+    by make mass          by decile-1 mass        d1 mass   d1 ids
+    3  suzuki    305k     3  sym   (#9 by make)    55,841      12
+    5  kawasaki  257k     4  triumph               55,591       5
+    8  harley    165k     5  tomos (#15 by make)   51,861       9
+    9  sym       150k     8  la-souris (#17)       33,285       8
+                          10 suzuki   (#3)         25,174      15
+                          12 kawasaki (#5)         16,187      11
+                          34 harley-davidson (#8)   3,045       4
+
+The big Japanese fours carry their mass in a long mid-decile body; the Dutch and Taiwanese moped marques carry theirs in three or four ids each. **`tomos/a3` alone (21,574) outweighs all eleven of kawasaki's decile-1 ids combined, and 7x all four of harley's.** Anyone who dequeues by make mass spends the first hours on records that are not in decile 1 at all. ENR4: this is worth checking on the 4W side — your half may not have the same shape, and if it does not, that asymmetry is itself the interesting fact.
+
+### 3 · Two defects I found and did not cause
+
+**(a) The TMAX enrich entries are scheduled debt.** `enrich/yamaha.yml` carries `motorcycle/yamaha/tmax-530` and `tmax-560`. All four TMAX ids (`tmax`, `tmax-500`, `tmax-530`, `tmax-560`) are **still live** — the owner's Option-2 ruling (one nameplate, `tmax`) has not been implemented. The moment that fold ships, both entries go liveness-red: precisely the v2026.07.5 kreidler/velocette regression that `lint_enrich.rb`'s duplicate-insurance sweep exists to catch, and nothing is watching this transition either. The ruling-compliant fix is to consolidate onto `motorcycle/yamaha/tmax` (which has no entry at all today), and it should land **with or before** the fold. **COV2 — this is in your path, not mine.**
+
+**(b) `enrich/` make-entry coverage is inverted against mass.** Only honda, yamaha, suzuki, kawasaki, bmw, triumph, harley-davidson, ducati and puch have a file, and six of those hold *only* a make entry. piaggio, vespa, sym, kymco, ktm, aprilia, moto-guzzi, royal-enfield, husqvarna, benelli, beta, gilera, tomos, derbi, niu and every Dutch importer marque have none — including makes carrying 30k–125k of decile-1 mass.
+
+### 4 · A method note worth more than my output
+
+`apply_enrich.rb` is **textual, not a YAML round-trip**, and that is load-bearing: every citation in `enrich/` is a trailing `#` comment, and `lint_enrich`'s provenance gate reads raw lines. A parse-and-dump apply would silently delete the entire evidence base while leaving the data looking intact and the lint counting the same ids. Its dry run is also what caught **my own briefing error** — I told a researcher "Triumph has no enrich file"; `enrich/triumph.yml` exists and defines `make/triumph`. A duplicate make key would have been kept-last silently. I corrected the researcher mid-flight and then audited all 40 makes in the lane for file state before issuing another brief.
+
+### 5 · Exact next batch, in order
+
+`dutch` (24 ids, 125,174 mass) → `mopeds` (16, 80,688) → `symkymco` (16, 71,415) → `yamaha-A` (12, 64,759) → `honda-A` (15, 55,520) → `suzuki` (15, 25,174) → `kawasaki` (11, 16,187) → `ktm-husq` (9) → `italian` (9) → `harley-re` (6) → `honda-B` (27) → `yamaha-B` (13) → `thai` (21 — zero stock mass but the cleanest nameplates and the best sources in the whole set) → `tail` (68). Then decile 2 (396 ids).
+
+Two researchers (piaggio+vespa, triumph+bmw) were still in flight at wrap; if their YAML lands it is in the session scratchpad and applies with one `apply_enrich.rb` invocation each. **Do not re-brief a researcher without reading §9 of the contract first** — six rulings in it are things a careful researcher gets wrong by default (`dissolved:` is production cessation not corporate death; a register may never source a production year; a bare Kawasaki code covers eight nameplates so it is a pool, not a resolution; TMAX facts go only on `tmax`; `+`-slugs are grandfathered; an untagged Wikipedia fact is the one violation).
+
+— S4W/ENR2
