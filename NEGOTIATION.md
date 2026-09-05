@@ -29856,3 +29856,46 @@ That batch was the **highest mass-per-id batch in the decile-1 set**, so 3.9% of
 Everything else in the HANDOFF stands, including the queue, the contract and the TMAX debt.
 
 — S4W/ENR2
+
+## S4W/SPEC — HANDOFF: G26d ships as `pipeline#185` (WIP), and its 8.3% decile-1 coverage is a SOURCING fact, not an extractor defect
+
+### Shipped — `pipeline#185`, branch `s4w/spec-g26d`, 3 commits, WIP/do-not-merge
+
+**Columns captured.** `us_fueleconomy.rb` read **4 of 84** columns; `ca_nrcan.rb` 4 of ~15. Both now read **every** column: ~45 map to a CLOSED, declared fact vocabulary (canonical cc / kW / km / L/100km / g/km) and the remainder ride a verbatim columnar capture sibling, so nothing the pipeline sees is discarded unrecorded.
+
+**Measured** (pipeline `8c0dcb3` + branch, data `0784c1d`, frozen cache):
+
+```
+80,819 source rows → 61,008 joined (75.5%) → 60,425 configs on 1,269 ids
+3,018 conflicts recorded (stored with both citations, never averaged)
+1,337 unmatched strings · 18,474 classified-but-unpublished
+```
+
+**No public artifact changed, proven not asserted.** `manifest.json` carries `built_at`, so I ran TWO IDENTICAL controls first to establish what moves on its own: 19 of 20 public files byte-identical, `manifest.json` differing only in the timestamp (normalized `3930441a…`). Control-vs-treatment then produced **the same 19 hashes and the same normalized manifest hash `3930441a…`** — the treatment's public tree differs from the control's by exactly the delta two identical builds produce, and nothing else. `grep -rl 'model-year-specs' build/out` → **0**.
+
+**The join is `classify()` itself**, on the same `Normalizer` INSTANCE the build's ids came from (`run.rb` passes `reconciler.n`) — so every rename, alias, make-drop and `drop_patterns` change applies to specs the day it merges, and a fold that merges two ids merges their configs with it. **The fence is the schema**: `model-year-specs/1` joins `validate.rb`'s `PRIVATE_SCHEMAS`, the seam increment 3 built for exactly this ("a new private artifact adds its schema here and is fenced from the day it is written"), because a spec artifact's keys — `configs`, `records`, `rows` — are far too generic to ban across the public tree. Tests assert the emitted schemas ARE the fenced ones, and that the gate fires on a planted leak.
+
+### THE FINDING THAT MATTERS MOST, and it is not a good number
+
+**Decile-1 four-wheel coverage: 12 / 145 = 8.3%** (car 12/83; van, truck, bus **0**). Overall decile-1: 2.7%. Coverage **peaks at deciles 3–4 (12.2% / 11.4%) and FALLS at the head.**
+
+That shape is structural and no amount of matching work will move it. These are **US and Canadian** sources; our popularity mass comes from **es/gb/nl/lu/nz/ua** registers. Our decile-1 is European nameplates largely never certified in North America, so fueleconomy.gov and NRCan **cannot** cover the head we actually have. Head-first spec coverage needs a **European type-approval / homologation source** (the TAN → whole-vehicle-approval route PRD-DEPTH §3 already calls the gold standard, joining our existing `xrefs.tan`). Recorded loudly so nobody spends a day "fixing" an 8.3% that is not broken. **SRC**: this is a concrete, revenue-shaped reason to prioritise an EU approval source.
+
+### Unmatched-string classes (1,337; head-ranked, at `$S/spec/unmatched-head.txt`) — for COV4 and NORM
+
+1. **US body/trim tails on real nameplates** — the biggest class: `Chevrolet | Express 1500/2500/3500 Cargo|Passenger|AWD|Conv`, `Ford | Transit Connect Van|Wagon|LWB|FWD|FFV`, `Nissan | NV200 Cargo Van`. Alias/rename candidates.
+2. **Slash-joined nameplate PAIRS in one row** — `Volvo | 740/760`, `Audi | 80/90`, `Mercedes-Benz | 190 D 2.2/190 E 2.3`, `Dodge | Neon/SRT-4/SX 2.0`. EPA lists two models per row; `split_slashes` does not reach these.
+3. **Door-count / drive suffixes** — `Mazda | 3 4-Door`, `3 5-Door 2WD`, `3 4-Door 4WD`. This is NORM's `\A\d[A-Z]\b` door-count DEBT row, visible from a second angle.
+4. **Displacement-suffixed trims** — `Toyota | GR Supra 3.0`, `Jaguar | S-Type 3.0 Litre`, `Mercedes-Benz | 190E 2.6`.
+
+### Two bugs the work found in itself
+* **Gate 6 failed my own build**: a local named `vin` (from `vintages.for_file`) tripped the per-vehicle-identifier grep, by file and line. The gate was right; renamed.
+* **NRCan transmission codes** parsed at **2,656 / 30,824** because the first parser knew only EPA prose and read `A4`/`AS6`/`AM7` as untyped. Fixed → 30,824 (100%).
+
+### NOT done — hand these on
+* **G26(b) variants review pack: NOT STARTED.** The fleet's subagent pool was at its 20-agent ceiling for my entire window; I chose to finish G26(d) properly over half-doing both. `build/observed_variants.json` (4.0 MB, ids → folded-away strings) is the input; the design I had settled on is in my RESUME turn, and `gen_review_pack.rb` already carries the corpus-replay machinery to reuse ("do not hand-roll a fifth copy of this proxy"). **ENR4 consumes it; nothing is blocked on me for it.**
+* **`rake report:basemodel` written, never run end-to-end.** The `baseModel` oracle (col 66, **0-based 65** — the plan's "col 66" is the 1-based position) is a free second opinion on our folds: 5,601 EPA `model` strings collapse to 1,500 `baseModel` values.
+* **Before merging #185**: re-run one full frozen build (the last two commits postdate the proof build — a no-op rename and private-only formatting, but "by construction" is not "by measurement"), and run both reports.
+* **Owner call**: the product shards are 156 MB because each of 60,425 configs repeats its full locator (url + sha256). A file-level source dictionary removes most of it. Private-artifact size, not correctness — but it rides every `plus-` release.
+
+— S4W/SPEC
