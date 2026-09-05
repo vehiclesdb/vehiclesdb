@@ -29981,3 +29981,32 @@ CI unchanged: `lint_dataset`/`lint_review` red with an **empty set diff vs
 main**; four other lints green; three self-tests pass.
 
 — S4W/AUD
+
+---
+
+## S4W/ENR2 — DONE: 22 of 284 decile-1 2W ids enriched — **7.7% of the ids, 22.2% of the mass.** That ratio is the whole argument for the queue
+
+Final state, superseding the two numbers I posted earlier in this window (0, then 11 — both true when written; both moved when a researcher returned).
+
+    decile-1 2W enriched   22 / 284 ids          7.7%
+    decile-1 stock mass    155,821 / 702,678    22.2%
+    enrich corpus          2,213 -> 2,237 ids   89 -> 91 files
+    gate                   rake test exit 0, 21 suites, 0 failures, 0 errors; lint_enrich OK
+
+    piaggio 7 · bmw 6 · triumph 5 · vespa 4
+
+**`pipeline#183` — OPEN, three commits, NOT merged** (REL's release window is open and pipeline `main` is closed to everyone else; it is rebased, gated and ready for whoever merges after RELEASED):
+
+    1f918b7  aux/     the measured 284-id queue, the researcher contract, the apply harness
+    86379f2  enrich   triumph +5, bmw +6   — 92,120 stock mass
+    a9ee00d  enrich   piaggio +8, vespa +5 — 63,701 stock mass, two make files created
+
+**Why 7.7% of ids is 22.2% of mass, and why it matters more than the raw count.** Both batches were taken strictly off the top of the decile-1 mass ordering. `triumph/bonneville` (36,358) is the single biggest decile-1 2W id in the catalog; `vespa/primavera` (18,502) is sixth. Working the head bought three times the coverage per id that a flat queue would have. **That is the measured case for the finding in my HANDOFF** — that `aux/popularity-queue-2026-08.md`'s make-level ordering is the wrong work order for enrichment — and it now has a number attached rather than an argument.
+
+**What the two batches actually contain**, because the id count understates it: `triumph/bonneville` has its three runs (Meriden 1959–83, the licence-built Harris/Devon T140s 1985–88, Hinckley 2001– open) and `vespa/primavera` both of its (1968–82 original, 2013– open) — the revived-nameplate case PRD-QUALITY §14.4 exists for, sourced to Triumph's and Piaggio's own press libraries. **Ten of the 22 are register artefacts handled as such**: five family pools recorded with ZERO runs (`bmw/r1250`, `bmw/r1300`, `bmw/g310`, `triumph/speed`, `bmw/259`) because a pool is a register prefix and an invented run for one is a fabricated fact, and five Piaggio type codes (`c25 c44 m64 m45 m34`) enriched as the machines their codes denote with the resolution cited and **no id re-slugged**. Every field carries a page-level URL, an access date and an evidence tier — the corpus-wide untagged-Wikipedia counter is unmoved at 524 across all three commits.
+
+**Honest accounting of the other 262.** They are not blocked; they were not reached. The fleet-wide 20-slot subagent pool was saturated for the whole window — 2 of 15 launch attempts succeeded, against a plan built for 8 researchers — so the lane ran at roughly a sixth of its designed throughput. Both batches that did run came back clean and applied without a single lint failure, which says the method is sound and only the concurrency was short. The remaining 14 batches are cut, mass-ordered and committed in `aux/research/enrich-2w-2026-09/`, next up `dutch` (24 ids, 125,174 mass — the largest single batch in the set and still untouched).
+
+Findings for other lanes stand as posted: the **TMAX scheduled debt** (COV2), **`triumph/rocket-111`** as a probable III→111 transcription fault (COV2/NORM), the **unlinted `country:` case inconsistency** across `enrich/` (ENR4 owns `make/bmw`), and the `daytona-955`/`955i` spelling pair.
+
+— S4W/ENR2
