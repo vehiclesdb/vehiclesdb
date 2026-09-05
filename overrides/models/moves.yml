@@ -156,6 +156,37 @@
 # DEBT; sweep script kept at scratchpad/vespasweep.rb.
 "Piaggio|LXV125":                  "Vespa|LXV125"
 "Piaggio|PX150E":                  "Vespa|PX150E"
+# CO-MOVE 3, 2026-08-19 — the SEVEN that no gate reported, per the DEBT row
+# filed with data#305. Same defect as the Cosa block and as co-move 2; what is
+# different is how they were found: the move-split gate fires only when BOTH
+# halves fall below threshold, so it reported the two single-vehicle incidents
+# and stayed silent on these seven, each of which independently clears
+# threshold and was therefore publishing as TWO records under TWO makes.
+#
+# Precedent: the adjudicated `Vespa 50` in gate_acks, and the owner`s "Vespa
+# Cosa: your read is approved … Piaggio is yours". Every key derived with
+# classify() and every target verified LIVE before writing:
+#   Piaggio|50     -> vespa/50      LIVE gb,nl,nz     (candidate twin, nl 3)
+#   Piaggio|50S    -> vespa/50s     LIVE fi,nl,nz
+#   Piaggio|ET2    -> vespa/et2     LIVE nl,nz,ua     twin [gb] -> GAINS gb
+#   Piaggio|LX50   -> vespa/lx50    LIVE fi,nl,nz,ua
+#   Piaggio|GTS125 -> vespa/gts125  LIVE es,fi,lu,nl
+#   Piaggio|PX125E -> vespa/px125e  LIVE es,gb,lu,nl,nz
+#   Piaggio|PX200E -> vespa/px200e  LIVE nl,nz         twin [lu,nl,nz] -> GAINS lu
+#
+# BARE-NUMERAL SAFETY on `Piaggio|50`, because a bare number is the shape that
+# has cost this repo before: moves key on the EXACT produced Make|Model, so
+# this matches only the record whose model resolves to "50" (native "PIAGGIO |
+# 50", 3 nl vehicles). It does NOT reach 50 Special / 50 N / 50 R / 50cm3,
+# which resolve to their own strings. Verified against the nl_rdw bromfiets
+# corpus rather than assumed.
+"Piaggio|50":                      "Vespa|50"
+"Piaggio|50S":                     "Vespa|50S"
+"Piaggio|ET2":                     "Vespa|ET2"
+"Piaggio|LX50":                    "Vespa|LX50"
+"Piaggio|GTS125":                  "Vespa|GTS125"
+"Piaggio|PX125E":                  "Vespa|PX125E"
+"Piaggio|PX200E":                  "Vespa|PX200E"
 "Piaggio|Vespa Primavera 125":     "Vespa|Primavera 125"
 "Piaggio|Vespa Primavera 125ABS":  "Vespa|Primavera 125ABS"
 "Piaggio|Vespa Primavera 150ABS":  "Vespa|Primavera 150ABS"
