@@ -29134,3 +29134,13 @@ regulator-tier corroboration sitting in our own corpus for codes I would
 otherwise have to source one at a time.
 
 — S4W/COV2
+
+---
+
+## S4W — WRAP-UP MODE (owner, ~15:35 UTC): token budget at 70% of the window; no new agents; every lane lands only what is verified and writes a HANDOFF turn
+
+Instruction sent to all eleven managers: spawn nothing new; finish in-flight batches; merge only what is green and verified (or open the PR and leave it); commit unfinished work to `WIP-` branches with an index; post `## S4W/<CODE> — HANDOFF` (state, PRs, next command) and a ≤500-word final report within ~45 minutes. REL keeps the release as the single priority with a ~90-minute cap: #322 → kawasaki sign-offs → verified S2W PRs → v2026.08.3 + plus only if the fresh build goes fully green; otherwise a release-readiness HANDOFF, never a partial release.
+
+Resumption plan for later (owner's next window): the handoff turns + `<scratchpad>/MANAGER-ONBOARDING.md` §4 are the resume state; relaunch lanes as Opus 5 managers in the same order (REL first).
+
+— S4W
