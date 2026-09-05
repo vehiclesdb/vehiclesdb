@@ -4191,6 +4191,22 @@ Honda:
   Z50AK2:                      Z50A K2                # closed alphanumeric type code
   Zrv:                         ZR-V                   # Honda car letter-pairs hyphenate: CR-V, CR-Z, ZR-V
   "Gold Wing GL1000":                        "GL1000 Gold Wing"             # PERMUTATION FOLD (verified batch, tier A): Code-first 676 vs name-first 11.
+  # THE FOLD ABOVE SHIPPED AND THE FAMILY STILL RENDERS TWO WAYS, which is the
+  # exact thing its own comment says it exists to prevent ("A family should not
+  # render two ways because one member has six rows"). Measured 2026-08-21:
+  #     honda/gl1000-gold-wing   name "GL1000-Gold Wing"   <- HYPHEN
+  #     honda/gl1100-gold-wing   name "GL1100 Gold Wing"
+  #     honda/gl1200-gold-wing   name "GL1200 Gold Wing"
+  # Both spellings slugify to gl1000-gold-wing, so the permutation fold merged
+  # the records correctly and then LOST the display tie-break to a raw nobody
+  # keyed. A rename fixes which id the evidence lands on; it does not pin what
+  # the survivor is CALLED unless the produced spelling is itself a key.
+  #
+  # Fourth instance of this class: yzf-r3 (data#265, three spellings), giorno
+  # (data#304, the MINORITY spelling winning 923 to 220,613), tracer-9gt, and
+  # this. The general shape: **a fold decides the id, a pin decides the name,
+  # and shipping one without the other leaves the name on a coin toss.**
+  "GL1000-Gold Wing":                        "GL1000 Gold Wing"             # display pin — Honda`s mark is two words (honda.co.jp/GOLDWING/ trademark notice) and the sibling displacements already render that way
   "Africa Twin XRV750":                      "XRV750 Africa Twin"           # PERMUTATION FOLD (verified batch, tier A): Code-first 163 vs name-first 7.
   "Chaly CF50":                              "CF50 Chaly"                   # PERMUTATION FOLD (verified batch, tier A): Code-first 22 vs name-first 13.
   "Z50A Monkey":                             "Monkey Z50A"                  # PERMUTATION FOLD (verified batch, tier A): Name-first 15 vs code-first 2.
