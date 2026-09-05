@@ -29144,3 +29144,55 @@ Instruction sent to all eleven managers: spawn nothing new; finish in-flight bat
 Resumption plan for later (owner's next window): the handoff turns + `<scratchpad>/MANAGER-ONBOARDING.md` §4 are the resume state; relaunch lanes as Opus 5 managers in the same order (REL first).
 
 — S4W
+
+---
+
+## S4W/COV4 — HANDOFF: `data#327` is open and MEASURED — 9,823 Argentine registrations folded onto ten published nameplates, id diff EMPTY. Plus the fold that was worth REFUSING
+
+**Shipped (open, not merged — REL's window).** [`data#327`](https://github.com/vehiclesdb/vehiclesdb/pull/327) `s4w/cov4-ar-folds`, 64 `renames.yml` keys, lint job GREEN.
+
+Control vs treatment, frozen shared cache, `--kinds=car,van,truck,bus`, pipeline `f8a8279`, data `002f3dc`:
+
+| assertion | result |
+|---|---|
+| id diff | **EMPTY** — 6,876 → 6,876 |
+| (country,source) pairs lost on surviving ids | **0** |
+| `ar` records | **146 → 155** (+9 ids newly carry `ar`) |
+| car candidates | 62,987 → 62,947 (−40 junk trim slugs) |
+| FAIL set | **byte-identical** (30) |
+| vehicles | **9,823** |
+
+ford/territory 1,622 · peugeot/208 1,172 · chevrolet/tracker 1,149 · toyota/yaris-cross 1,093 · toyota/yaris 1,020 · toyota/hilux 969 · volkswagen/polo 793 · volkswagen/taos 765 · fiat/strada 622 · jeep/compass 618.
+
+**I applied Turn 262's stale-base rule before trusting the control.** My control was built at data `ae96477` and the treatment at `002f3dc`; the diff between those two SHAs touches only CI, AGENTS.md, plates and review files — **`overrides/` and `spotchecks.yml` are byte-identical** — so the control stays valid and the only build-relevant delta is my own 64 lines. Had `overrides/` moved I would have owed a rebuilt control, and the +9 would have been partly invented.
+
+**Re-derivation (I-11), and it is the check that matters.** Replaying the whole corpus against the *treatment* catalog: all 64 keys fire, **zero inert**, every one lands `LIVE` with `ar`. Keys were written from a replay that records the string probed at the `@o.model_renames[make]` site — after `family_nameplate` and both `collapse_variant` passes — so inertness was excluded by construction and then confirmed by measurement.
+
+**The refusal I am proudest of.** `Onix 1.0T At Ltz` (303) and `Onix Plus 1.0T Lt MT` (170) are separate strings, and Chevrolet Argentina publishes **two separate model pages** (`/autos-0km/onix-auto-moderno`, `/autos-0km/onix-plus`; 4.16 m/303 l vs 4.47 m/500 l). Folded correctly they are two nameplates of **731 and 384** vehicles and **neither clears the 1,000-car threshold**. Folded together they make **1,115 and publish**. I took the smaller, correct answer: DECISIONS' fold safeguard says a published record contradicting the fold beats any pattern rule, and the threshold is not a target to be reached by merging two real nameplates.
+
+**Measured but NOT shipped — the ranked queue is on disk and it is the next manager's head start.** `$S/cov4/` (3.6 MB, build outputs deleted): `ar-folds.tsv`, `th-car-folds.tsv`, `th-van-folds.tsv`, `my-car-folds.tsv`, `ua-car-folds.tsv`, `ua-bus-folds.tsv`, `nz-car-folds.tsv`, `nz-bus-folds.tsv`, `ie-car-folds.tsv`; per-make packets in `packets/`; `COV4-RESEARCHER-RULES.md`; the dossier in `dossiers/ar-batch-1.md`; the replay + fold + diff tools (`replay_country.rb`, `fold_table.rb`, `diff_builds.rb`).
+
+Recoverable S4W mass still on the table, per country (vehicles / fold groups):
+
+| country | kind | recoverable | groups | already matching a LIVE nameplate |
+|---|---|---:|---:|---:|
+| nz | car | 65,336 | 10,615 | 5,484 |
+| ua | car | 49,576 | 1,513 | 3,560 |
+| ar | car | 36,337 | 1,092 | 19,516 (9,823 now shipped) |
+| th | car | 19,159 | 317 | 8,661 |
+| my | car | 5,834 | 108 | 242 |
+| nz | bus | 4,278 | 588 | 0 |
+| ua | bus | 2,365 | 564 | 0 |
+| th | van | 1,982 | 112 | 262 |
+| ie | car | 218 | 2 | 0 |
+
+**Next step, in order.** (1) AR batch 2, the id-MINTING half: `fiat/cronos` 1,992, `volkswagen/tera` 1,156, `volkswagen/amarok` (car-kind) 1,258 and `chevrolet/onix` 1,115-as-two clear or approach the 1,000 threshold and each needs its own id-diff-is-exactly-this review; Cronos is Argentina's **#2 car** (ACARA H1-2026: 12,058 registrations) and we publish it nowhere. (2) TH: 8,661 vehicles already match live nameplates, but the head is Chinese EV marques (XPeng X9 973+275 with `xpeng/x9` live and no `th`; Aion, Deepal, Jaecoo, Omoda, Avatr) — and **`BYD Seal 5` is NOT a `byd/seal` trim**, it is a distinct nameplate, so that 650-vehicle row is a trap, not a fold. (3) NZ carries the most mass but the longest tail (10,615 groups); it is a swarm job, not a solo one.
+
+**Three things the owner may want to rule on.**
+1. **Flow sources are threshold-compared on whatever window happened to parse.** DNRPA currently exposes ONE monthly CSV, so `ar` nameplates are judged against the 1,000-car floor on **one month** of registrations. Cronos clears it at 2× on one month and would clear at ~24× on a year. The floor was calibrated against RDW *stock*. This is a live decision, not a defect I should fix inside a coverage lane.
+2. **`volkswagen/amarok` exists as a `van` and Argentina files it as a car.** That is not an anomaly — `car/ford/ranger` + `van/ford/ranger`, `car/chevrolet/s10` + `van/chevrolet/s10` and `car/fiat/strada` + `van/fiat/strada` all already coexist. Worth stating as policy rather than leaving it as precedent.
+3. **Argentine manufacturer sites hard-block automated fetch** (ford, peugeot, toyota: 403 to WebFetch *and* curl with a browser UA). Chevrolet and VW do not, and manufacturer `ficha técnica` PDFs and Stellantis press pages are reachable and are the best citations available — Chevrolet's own spec sheet prints `Tracker MY26 | 1.2T LT AT | 1.2T LTZ AT | 1.2T Premier AT | 1.2T RS AT`, the exact strings the register writes. Every citation in `#327` is labelled by how it was verified — fetched directly, or verified through the search index — and no citation claims a page I could not open.
+
+I ran solo: the account-wide 20-agent ceiling was saturated by other lanes for the whole window, so every fold above was researched, applied and re-derived by me. That is why this is one country and not six.
+
+— S4W/COV4
