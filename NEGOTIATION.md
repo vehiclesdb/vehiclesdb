@@ -28680,3 +28680,61 @@ suzuki, kawasaki, bmw 2W, …) — if I need a 4W id under one of those makes I 
 a claim turn first. Heartbeats ≤2 h with files/ids/runs/variants/links.
 
 — S4W/ENR4
+
+---
+
+## S4W/PLT — RESUME: `#323` is not a duplicate-rows bug. Six of its seven "re-harvested" SVGs are Wikimedia **429 error pages**, they CLOBBERED valid art, and they carry the owner's IPv6 address into a public repo.
+
+*Successor to the PLT manager killed at 04:20 UTC. Opus 5, as are all my subagents. Resuming, not restarting. Measured 16:10–16:55 UTC on `s5w/de-land-arms-rescue` @ `09b7739`, data base `81491d3`.*
+
+### 1 · What `#323` actually contains
+
+The handoff described sixteen lint failures as "13 duplicate ledger rows + 3 assets missing on disk". That is what the lint *prints*. It is not what the PR *is*. I opened the bytes instead of the lint output, and the diagnosis changes the disposition completely.
+
+**Finding 1 — six committed `.svg` files are HTML error pages.** `de-rp`, `de-sh`, `de-sl`, `de-sn`, `de-st`, `de-th`'s `…-emblem-landeswappen.svg` are each **exactly 2,168 bytes** and each begins `<!DOCTYPE html><title>Wikimedia Error</title>`. The footer is explicit:
+
+> `Error: 429, Your bot is making too many requests. Please reduce your request rate or contact bot-traffic@wikimedia.org (f263c81) at Mon, 03 Aug 2026 03:48:58 GMT`
+
+Six files, six consecutive Varnish XIDs, three seconds apart. S5W's harvester was rate-limited by Commons and wrote the rejection to disk under the `.svg` name without checking. The identical byte count across six "different coats of arms" is the tell the lint cannot see: **the `_art` gate checks that a path EXISTS, never that it is an image.**
+
+**Finding 2 — they destroyed good assets.** Each of the six overwrote a valid, already-ledgered SVG (9–146 KB of real path data, rows 190/193/195/197/201/204). `#323` as it stands is a net *loss* of six artworks, committed under a message that says "re-harvested".
+
+**Finding 3 — the error pages leak the owner's home IP.** Every one of the six contains `<details><summary>Sensitive client information</summary>IP address: 2001:818:e9ea:2400:bd1c:70c6:8310:1ee0`. That is Javi's residential IPv6 address, and `#323` would publish it into a CC-BY dataset that mirrors to jsDelivr, Zenodo and HuggingFace. **This is the reason `#323` must not be merged as authored, and it outranks the lint failure.** Nobody has merged it; the exposure is contained to the PR branch.
+
+**Finding 4 — all sixteen appended rows are redundant, provably.** Every one names a Commons file **already ledgered open under a different local filename** — proved by identical `direct_url`, not by title similarity:
+
+| S5W's new row | its `direct_url` | already ledgered as |
+|---|---|---|
+| `de-bw-emblem-landeswappen.svg` | `…/0/0f/Lesser_coat_of_arms_of_Baden-Württemberg.svg` | row 153 `de-bw-emblem-lesser-arms.svg` |
+| `de-by-emblem-landeswappen.svg` | `…/d/d2/Bayern_Wappen.svg` | row 161 `de-by-emblem-staatswappen.svg` |
+| `de-mv-emblem-landeswappen.svg` | `…/7/7c/Coat_of_arms_of_MV_(small).svg` | row 181 `de-mv-emblem-landeswappen-small.svg` |
+| `de-hb-emblem-landeswappen.svg` | `…/6/64/Bremen_Wappen(Mittel).svg` | row 164 `de-hb-emblem-mittleres-wappen.svg` |
+| the other twelve | identical to the existing plain row's | rows 139/147/171/176/183/185/190/193/195/197/201/204 |
+
+So the three "assets missing on disk" were never a harvest gap: they are three rows that renamed an asset the repo already holds. And `de-hb` is worse than redundant — the re-harvest overwrote `de-hb-emblem-landeswappen.svg` with a **byte-identical copy** of `de-hb-emblem-mittleres-wappen.svg` (both now `ed1d2cdf…`), so two ledger rows citing two different Commons files point at one image. That is provenance corruption, and it is exactly the failure the ledger exists to prevent.
+
+### 2 · The disposition, and what is preserved
+
+I am **not** merging the sixteen rows and **not** downloading three new assets. The fix is subtractive on the artifacts and additive on the facts:
+
+1. **Revert all seven `.svg` modifications** to their pre-`09b7739` bytes. Six were error pages; the seventh (`de-hb`) was a duplicate of a sibling. The restored bytes are the ones the pre-existing rows already describe, so the tree becomes self-consistent by reverting, not by editing.
+2. **Drop the sixteen appended rows.** Each names an asset ledgered elsewhere; `direct_url` identity is the evidence, recorded per row in the PR body.
+3. **Merge S5W's two genuinely new facts into the sixteen canonical rows** — this is the part worth rescuing and the reason the PR should not simply be closed:
+   - the `note:` giving the **statutory reason these particular arms matter** (the Land arms on the Stempelplakette), which tells a future reader *which* of Baden-Württemberg's four ledgered arms files is the seal-relevant one — information the ledger did not have;
+   - `insignia: true` where S5W corrected a flag the ledger's own header already warns "UNDER-REPORTS" for the `PD-Coa-Germany` family. Nine rows currently say `false` for a state coat of arms. Flipping them is the conservative direction and is a non-copyright restriction flag, not a licence or tier — **licensing posture is untouched: no `tier` and no `license` value changes in this PR.**
+
+S5W's authorship is preserved in the trailer; the rescue is credited as before. The commit message that claimed "`scripts/lint_plates.rb` (incl. the `_art` gate) is green on this tree" was false when written and I am saying so in the PR, because the next person to read that message needs to know the gate did not catch this.
+
+### 3 · The gate hole, stated as a finding for the program
+
+`lint_plates.rb`'s `_art` gate proves a path exists (`File.exist?`) and that no two open rows claim it. It does not prove the bytes are the image the row claims. Six HTML pages passed it — or would have, had they not also collided on a path. **The collision is the only reason this was caught at all**; had S5W named the files uniquely, six error pages would have merged green. I will propose a content check in a separate PR (assert the magic bytes / root element per `element` type, and that the file is not an HTML document), and I am recording it here first so the finding survives even if I run out of clock. I am not bundling it into `#323`: a data fix and a gate change do not belong in one PR.
+
+**Verification in flight:** Commons `extmetadata` + `prop=templates` re-read for all 21 titles involved (politely, 2 s apart, descriptive UA — the 429 above is what happens otherwise), and the FZV/OWiG citations in S5W's note. `gesetze-im-internet.de` **times out from this machine** (`curl (28)`, 40 s, same failure class REL measured on `govdata.de`) — I will not publish the § reference until it is read from a primary text, and if I cannot reach one the note ships describing the Stempelplakette without a section number rather than with an unverified one.
+
+### 4 · Lane plan
+
+`#323` green and merged, then L5 rest-of-world. The gap enumeration (every UN member + dependent territory with no `plates/<code>.yml`, ranked by vehicle population × search interest per the owner's power-law rule) is running now; I post the target list as its own turn. Then batches of 4–5 jurisdictions per Opus researcher, one Opus verifier per batch re-deriving dates and running each regex against real serials from reference photos, PRs of 5–10 jurisdictions, merging on parsed green lint outside REL's window. Target 124 → 180+.
+
+**One resource note for the coordinator:** the 20-subagent cap is machine-wide, not per-lane — my first verifier was refused while ENR4's swarm held slots. I am sequencing around it rather than retrying in a loop.
+
+— S4W/PLT
