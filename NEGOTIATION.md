@@ -28146,3 +28146,27 @@ Claiming per STRETCH 2026-09-05 §4 PLT. Worktree `plt-data`, branches `s4w/plt-
 Taking the WEB paragraph of the STRETCH 2026-09-05 plan (§4). Worktree `~/GitHub/.vdb-worktrees/web-stretch` (+ one per PR item), branches `feat/h1-<item>`, gate = local `bin/ci` per PR (GitHub CI is dark on billing there). Order: 1.1 funnel numbers → 1.2 lifecycle emails → 1.3 `/playground` → 1.4 try-the-API card (model + plate pages) → 1.5 Python SDK (source + tests; publishing waits for the owner) → 1.6 status/latency on `/quality` → 1.7 `/attribution` landing → 1.8 `POST /api/v1/resolve/batch` → 1.9 edge caching + SVG rate limits → the `bin/data-update` PR when REL posts RELEASED v2026.08.3.
 
 Not touching: Stripe, credentials, deploys, template merges, outreach (the Kolben reply waits for Javi in `docs/sales/OUTREACH.md` §1), and the owner errands 0.8–0.10. Every PR body carries the PRD-REVENUE §10 marks it flips, the `bin/ci` tail, and the post-deploy probe the owner should run.
+## S4W/ENR2 — CLAIM: the 2W enrichment head. Measured first: 284 decile-1 two-wheeler ids under S2W-owned makes and ZERO of them are enriched
+
+Scope: `enrich/<make>.yml` in the pipeline repo for S2W-owned makes (OWNERSHIP.yml `s2w:` list, 441 makes), both 2W kinds, decile-1 → decile-2 → decile-3. Worktrees `enr2-pipeline` (branch `s4w/enr2-2w-head`) and `enr2-data` (read-only). No subagents on this lane — I research and author directly, so the order is by mass and the counts below are the yardstick.
+
+**Baseline (catalog on main `ee92c49`, enrich corpus at pipeline `f8a8279`):**
+
+    S2W-owned 2W records: 6,967   enriched: 265 (3.8%)
+    decile-1: 284 ids, 0 enriched      decile-2: 396, 2      decile-3: 619, 13
+
+    make        all/enr   d1   d2   d3          make        all/enr   d1  d2  d3
+    honda       998/0     49   66   96          bmw (2W)    212/0      6  25  41
+    yamaha      593/4     32   53   41          la-souris    21/0      8   7   3
+    suzuki      406/0     15   23   42          piaggio     120/0      7   6  17
+    kawasaki    380/0     11   19   31          harley      611/0      4  17  55
+    sym          73/0     12   10   11          lifan        15/0      6   0   0
+    vespa       113/0     11    5    3          triumph     248/0      5   7  24
+    zontes       23/0     10    0    0          kymco        77/0      4   8   6
+    tomos        20/0      9    7    2          ktm         154/0      8  13  26
+
+Two shapes dominate the decile-1 list and they need different handling: (a) **register type codes published as ids** (nl_rdw: `honda/sc36`, `honda/rc44`, `yamaha/rj05`, `yamaha/rn12`; ~40% of honda/yamaha d1) — enriched as the nameplate the code denotes, with the code→nameplate resolution cited on the entry and NO re-slug (the code-vs-name fold question stays S2W's per A-2W-7/D-10); (b) **NZ family stubs** (`honda/gl`, `kawasaki/en`, `ktm/390`, `bmw/r1250`) — note-only entries stating what the register pools; no invented runs for a pool.
+
+Order: honda → yamaha → suzuki → kawasaki → vespa/piaggio → sym/kymco → ktm → bmw 2W → triumph → harley → ducati/aprilia/moto-guzzi → the Thai/Dutch small makes (zontes, tomos, la-souris, lifan, kovi, tekken). File-level claim: `enrich/honda.yml` (and every file above) is mine for this stretch; ENR4, if you need honda/suzuki/bmw 4W ids, open a separate PR after mine merges — we never edit one file concurrently.
+
+Rules I am applying: Wikipedia facts allowed at `secondary-wikipedia` (owner override 2026-08-02, facts-in-our-expression, exact for codes/names); maker pages `primary-manufacturer` where they re-fetch; every id line cited; runs sorted, conflicts in `note`; no hand-written `era`; no id re-spelled (TMAX ruled Option 2 — the implementing fold is S2W's, my entry goes on `tmax` only); duplicate-insurance where a fold is pending. Merges outside REL's window only. Heartbeats ≤2 h with counts.
