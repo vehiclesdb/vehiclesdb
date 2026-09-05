@@ -28373,3 +28373,43 @@ Successor to the COV4 that died at 04:20. I read its disk state rather than rest
 Replays for th / my / ua / nz / ie are running now against the same control; per-country gain numbers land in my next heartbeat. Coordination unchanged: S4W-owned makes only, curation layer only, no make block another manager has claimed, PRs merge post-RELEASED.
 
 — S4W/COV4
+## S4W/SPEC — RESUME: the G26d join is `classify` itself, the control build survived the outage, and gate 8 already has the exact seam a spec artifact needs
+
+*Successor manager for the SPEC lane (Opus 5; swarms Opus 5, verifiers xhigh). My predecessor died at ~04:20 UTC with a CLAIM posted and one artifact on disk. I am resuming, not restarting.*
+
+### What survived on disk (measured, not assumed)
+
+- **A full frozen CONTROL build, all gates green**, at `$S/spec/ctrl-build` (96 MB) + its snapshot store (`$S/spec/ctrl-store`, 7 MB): pipeline SHA **`c4b999e`**, build id 2026.09.0, 14 sources, `emit: PRIVATE dist-plus at build/out-private (2135 enriched records, 13936 with registrations, 18 with relations, 8982 with powertrain)`, `validate: ALL GATES GREEN`, `EXIT=0`. That is 3.5 minutes of build I do not have to spend again — but `c4b999e` is now **three commits behind** pipeline `origin/main` (`8c0dcb3`; #174/#175/#176 are evidence-tier enrich backfills), so it is a control for the OLD base. Per the stale-base lesson of Turn 262 / `data#316` I will not diff a treatment against it: I will re-cut control and treatment on the SAME base and diff those.
+- Worktrees `spec-pipeline` (`s4w/spec-g26d`, zero commits), `spec-pipeline-ctrl`, `spec-data`. No PRs. No extractor code exists yet.
+
+### The design question the brief turns on, answered by reading the engine rather than guessing
+
+**"Key by OPEN ids via the same normalizer/rename path the adapters use, never a parallel matcher."** There is exactly one such path and it is two lines in `reconciler.rb:307-312`:
+
+```ruby
+mk_np = @n.classify(row.raw_make, row.raw_model, kind: kind)   # Normalizer#classify
+key   = "#{Support.slugify(make_name)}/#{Support.slugify(model_name)}"
+```
+
+Every source in the build reaches an id through that call and nothing else. So the spec extractor does not get its own matcher, its own casing rules, or its own alias table: it calls `Normalizer#classify` with the **verbatim** `raw_make`/`raw_model` strings the adapter already passes, and slugifies with `Support.slugify`. Renames, aliases, make-drops, `drop_patterns`, the series collapse, the make-scoped drops added by `#177` — all of it applies by construction, including anything merged after I write this. A fold that merges two ids merges their spec configs on the same day, for free. **Both my sources are already in the build** (`ca_nrcan: 5267 (make,model) catalog pairs from 6 files`, `us_fueleconomy` in the 14-source line), so every string I will key on has already been through `classify` in a green build — the join is not a new risk surface, it is the existing one, reused.
+
+The corollary is a rule for my own swarm: **no researcher writes a string-matching heuristic.** An unmatched fueleconomy string is not a thing to fuzzy-match, it is a finding — it goes in the coverage report head-ranked by row count, and it becomes an `aliases.yml`/`renames.yml` candidate for COV4, adjudicated with evidence, or it stays unmatched and honest.
+
+### Gate 8 already has the seam; I do not need to invent a fence
+
+`validate.rb:582` — `PRIVATE_SCHEMAS = ["catalog-plus/", "registrations-snapshot/", "registrations-history/", "registrations-store-index/"]`, with the comment that says exactly what I need to hear: *"A new private artifact adds its schema here and is fenced from the day it is written, without anyone having to guess its key names."* Increment 3 built that seam for the snapshot store because its count-bearing key was `records`, too generic to ban by name. My artifact has the same shape of problem (`configs`, `power`, `range` are all far too generic to ban across the public tree), so it gets fenced the way the seam intends: **one declared schema id, `model-year-specs/1`, added to `PRIVATE_SCHEMAS`**, plus the one key form that is unique enough to ban by name. The gate-8-style spec lint my brief asks for is therefore three lines in an existing list plus a unit test, not a new gate — which is the correct size, and it means the fence exists in the same commit as the first byte of spec data.
+
+Storage: `build/out-private/specs/<kind>/<make>.json` declared in `MANIFEST-PLUS.json` alongside `registrations`. `write_dist_plus!` `rm -rf`s `build/out-private` on every build (`emit.rb:591`), so the specs write must land inside that method, after the wipe — the same ordering trap increment 3 documents for the snapshot store.
+
+### Plan, in merge order
+
+1. `pipeline/lib/specs.rb` + per-source `spec_rows(kind)` on `us_fueleconomy.rb` / `ca_nrcan.rb` — **every column** per model-year (owner rule), each numeric fact carrying download URL + file vintage + row locator + model-year + market; kW canonical with PS/hp derived only where given; WLTP vs EPA labelled, never mixed; conflicts stored with both citations, never averaged; per-kind range sanity. `Row` is NOT widened (the closed field list is the GDPR boundary — pipeline AGENTS.md); the spec payload never touches a `Row`.
+2. The gate-8 fence + `rake test` unit tests (unit conversions, conflict recording, the id join).
+3. `rake report:specs` (ids with ≥1 config, % of decile-1 4W, per-source unmatched strings head-ranked) and `rake report:basemodel` (col 66 as a model-vs-trim granularity oracle per make — report-only, handed to COV4 by turn).
+4. G26(b) variants REVIEW PACK from `build/observed_variants.json`, top-20 4W makes → `aux/research/`, for ENR4 to consume. Not a bulk import: a raw variant string is evidence of existence, not of the official variant name (PRD-QUALITY G26b).
+
+**No public artifact may change byte-wise, and I will prove it rather than assert it**: control and treatment builds on one base, compared as a per-file sha256 manifest of `build/out` (a checksum manifest is ~1 MB, so the proof does not cost me a second 96 MB tree on a machine with 18 GB free). Pipeline PRs merge on the local suite + a full frozen build, never inside REL's release window.
+
+A cache-inventory agent is running now over both cached sources (every column, distinct values, encodings, the `baseModel` index, the NRCan EV/conventional file split) so the extractor is written against measurements instead of against the field docs.
+
+— S4W/SPEC
