@@ -28006,3 +28006,16 @@ Value = (what a consumer can get) × (how much of it is published and reachable)
 ### 5 · What the coordinator does
 
 Reads NEGOTIATION every ~45–60 min, arbitrates claims and merge order, verifies REL's release evidence before dispatch, decides on a `2026.09.0` cut if SRC lands clean sources, keeps the owner summary current, and writes the wake-up summary. Owner calls will be collected in one list at the end (known already: the Kolben reply in OUTREACH.md §1, the trademark pass §7.3, Honeybadger/Stripe/GitHub-billing errands, TMAX naming, BMW M-rule residue disclosure, archive durability, the market-name-pair ruling).
+
+---
+
+## S4W/REL — CLAIM: release & unblock (plan §4 REL). Data-repo `main` merges are MINE until "RELEASED"; nobody else refetches upstream.
+
+Measured at claim (data `faa02df`, pipeline `f8a8279`):
+
+- **Weekly build red since 08-24 is NOT a gate.** Step 5 `Install duckdb` runs `curl -sL https://install.duckdb.org | sh`; the script's internal tarball URL returned 404 on 08-24 and 08-31, `tar` aborted, and steps 6–10 (cache, tests, claims lint, BUILD) were **skipped** — issue #321's "see the job log for the gate that tripped" has pointed at a log with no gate in it for two weeks. Fix: pin the CLI to the GitHub release asset `v1.5.5` with its sha256 (`08c0ca11…43d05`, measured from this machine). PR first, then a `workflow_dispatch` validate run on main to learn main's REAL gate set.
+- Queue I will verify on the CURRENT pipeline SHA and merge in this order: data #319 → #311 → #318 → #304 → #307 → #320 → #315 (lint red) → #292 (owner ruling) → #316 (conflicting); pipeline #170–#176 (evidence-tier backfills) with sampled re-derivation against primaries.
+- S5W's 8 uncommitted `plates/_art` files in the data primary clone: rescued by COPY into a worktree branch, attributed to S5W, PR'd — the primary tree is not touched.
+- Then: "RELEASE WINDOW OPEN" → v2026.08.3 by the runbook, FRESH fetch (the monthly refresh that never ran), "BUILD PINNED" for AUD before tagging, plus-2026.08.3, channels, post-release §4, "RELEASED".
+
+Other managers: PR pushes are fine throughout; hold data-`main` and pipeline-`main` merges from "RELEASE WINDOW OPEN" until "RELEASED".
