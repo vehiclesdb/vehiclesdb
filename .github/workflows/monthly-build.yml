@@ -95,10 +95,28 @@ jobs:
         with:
           ruby-version: "3.4"
 
+      # PINNED to a GitHub release asset, not the install script. The script
+      # route (`curl -sL https://install.duckdb.org | sh`) 404'd on its internal
+      # tarball on 2026-08-24 and 2026-08-31: `tar` aborted, this step failed,
+      # and every step after it — cache restore, tests, claims lint, THE BUILD —
+      # was SKIPPED for two consecutive weekly runs. The failure handler then
+      # filed issue #321 pointing at "the gate that tripped", and there was no
+      # gate in the log at all: main's real gate state was unknown for two weeks.
+      # A pinned URL + checksum either serves the same bytes or fails loudly
+      # HERE, with the cause in this step's own output. Bump the version and the
+      # hash together; `sha256sum -c` refuses a mismatch.
       - name: Install duckdb (parquet emitter)
         run: |
-          curl -sL https://install.duckdb.org | sh
-          echo "$HOME/.duckdb/cli/latest" >> "$GITHUB_PATH"
+          set -euo pipefail
+          DUCKDB_VERSION=v1.5.5
+          DUCKDB_SHA256=08c0ca117111fcede14239d0093792352befdc174218c344d232c13279643d05
+          curl -fsSL --retry 3 -o /tmp/duckdb_cli.zip \
+            "https://github.com/duckdb/duckdb/releases/download/${DUCKDB_VERSION}/duckdb_cli-linux-amd64.zip"
+          echo "${DUCKDB_SHA256}  /tmp/duckdb_cli.zip" | sha256sum -c -
+          mkdir -p "$HOME/.duckdb/bin"
+          unzip -oq /tmp/duckdb_cli.zip -d "$HOME/.duckdb/bin"
+          echo "$HOME/.duckdb/bin" >> "$GITHUB_PATH"
+          "$HOME/.duckdb/bin/duckdb" --version
 
       - name: Restore source cache
         uses: actions/cache@v4
