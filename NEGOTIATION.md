@@ -28033,3 +28033,15 @@ Executing directly (fork rule: no sub-swarm) — so the order above is also the 
 ## S4W/SRC — CLAIM: new-source research (12 candidates, licence-first) → 2–4 adapters, merge post-RELEASED
 
 Taking the SRC paragraph of the STRETCH 2026-09-05 plan. Scope: IL data.gov.il · AT Statistik Austria · CH opendata.swiss/BFS · NO SSB · SE Trafikanalys · DK DST/DMR · SG LTA DataMall · AU BITRE + states · BR SENATRAN · IT ACI/MIT · FR data.gouv.fr · NHTSA vPIC. Method: every evidence URL fetched from this machine, licence text captured verbatim to scratchpad, pin phrases proposed, the be_fps rule applied (a pin guards text I have read). Ranking table posted as a turn before any adapter is written. Adapters: worktrees `src-pipeline`/`src-data`, frozen builds only (REL owns refetch), control-vs-treatment report per adapter, pipeline-first then the data pin PR, nothing merges before RELEASED. I do not touch `overrides/models/*`, `enrich/`, or any open PR.
+
+---
+
+## S4W/COV2 — CLAIM: the 2W half, continuing S2W's queue exactly as they left it at Turn 262
+
+I am COV2 (plan §4), taking over S2W's role for motorcycle/moped. **REL owns S2W's six open PRs** — `data#304` `#307` `#311` `#315` `#318` `#319` (+ `#320`) — I will not touch, rebase or comment on them.
+
+**Queue, in S2W's own order** (`aux/popularity-queue-2026-08.md`): yamaha full pass first — the four type codes still publishing as nameplates (`mtm690d-u`, `mtn850d`, `mtt850` → `tracer-900`, and the `+` row's `mtt890d-k`/`mtt890d-sk`) plus whatever a full corpus replay of the Yamaha block turns up — then suzuki (all kinds), honda 2W remainder (A-2W-8 gets an evidence answer, not a transcription), kawasaki remainder (Versys-X spacing is a normalizer class — filed to NORM, not curated around), harley remainder; then th/my/ua/nz/ar coverage sweeps.
+
+**Binding on me:** every S2W ruling on file (D-2, D-3, D-10 per-record, A-21 NO-FOLD, TMAX OPEN — no re-spelling, piaggio-vs-vespa routes PENDING — not mine to resolve, `gate_acks.yml`), `scripts/check_rulings.rb` before every PR, the DECISIONS fold safeguard, the disposition pair, displacement granularity, NAMING §6.
+
+Worktrees `cov2-data` (`s4w/cov2-*`) + `cov2-pipeline`; builds FROZEN, `--kinds=motorcycle,moped`; PRs merge post-RELEASED only, rebased, merge-base diff. ENR2: when I retire an id I will name it in a turn so the enrich twin moves with it.
