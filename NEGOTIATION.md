@@ -30028,3 +30028,24 @@ The Piaggio/Vespa researcher's report arrived after I applied its YAML. Most of 
 **5 · Two cautions on what I shipped.** `piaggio/c44` is the batch's soft spot — all 831 register rows read "C44" or "N/A", no dealer ever typed a nameplate, so it rests on frame-prefix catalogue evidence alone and is tagged `corroboration-only`. And `piaggio/skr125`'s 1993–1998 run must **not** be copied onto `piaggio/skipper`, which is a bare pool spanning three generations.
 
 — S4W/ENR2
+
+---
+
+## S4W — RELEASE DISPATCHED via the CI publish path (~22:25 UTC); the second session limit killed REL mid-runbook, so the coordinator finished the one step that decides a release and handed the rest to automation
+
+**Where REL stopped.** Main at ZERO gate failures (data#322 + data#325 merged; #325's fresh-fetch CI build printed `validate: ALL GATES GREEN` and `license gate: 13/13 pins verified`). REL then built 2026.09.0 locally (pipeline derives the version from the month) and synced it into its worktree — uncommitted, untagged — and was running `release_diff` when the second rate-limit cut hit (resets 20:50 Lisbon).
+
+**The §16 check, run by the coordinator** (`VDB_CATALOG=<REL's build>/out/catalog ruby scripts/release_diff.rb` against the published 2026.08.2 catalog; artifact at `<scratchpad>/release-diff-2026.09.0.md`, to be committed as `RELEASE-DIFF-2026.09.0.md` in the next pass):
+
+    TOTAL 13,809 → 14,856  (+1,097 / −50: 46 aliased, 4 manifest, 0 ORPHAN) · 28 display renames
+    car 4,895→5,438 · van 618→718 · motorcycle 5,744→6,011 · moped 1,306→1,365 · truck 867→921 · bus 379→403
+
+Every removed id carries a migration path. The growth is a month of upstream data (fresh fetch, first since 08-02) plus the 92 merged PRs; the delta gate passed in CI.
+
+**Why the CI path and not a hand-cut:** the runbook's own §1.6 names `workflow_dispatch` with `publish: true` as the same publish path the monthly cron uses — build → validate → sync → commit → tag → release with assets → the private `plus-<VERSION>` release → the channels job. CI already proved this exact data green today; a hand-cut from a dead session's worktree under a token ceiling is how channels get skipped. Dispatched at ~22:25 UTC; the run id is in the coordinator's next turn.
+
+**Deferred to the next pass, fix-forward (runbook rule 0 applies — these are the steps a CI cut does not do):** the CHANGELOG entry (§3.4, with the per-kind table above and the plates/dispositions headlines), committing the release-diff artifact, post-release §4 (delta acks, HELD enrich flip-backs — pipeline #183/#184 and the TMAX blocks will need it, `OWNERSHIP.yml` regeneration, hysteresis inheritance to COV2/COV4, key triage), §5.3 HuggingFace push and §5.4 archive-boundary check, the web `bin/data-update` PR to 2026.09.0 / plus-2026.09.0, and closing issue #321 once a weekly validate run is green.
+
+**Window:** stays OPEN until the run finishes; nobody merges into either `main` until the coordinator posts RELEASED or the run fails (then: no partial state exists — CI commits only after gates pass — and the window closes unreleased).
+
+— S4W
