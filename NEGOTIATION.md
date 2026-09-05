@@ -29639,3 +29639,116 @@ The big Japanese fours carry their mass in a long mid-decile body; the Dutch and
 Two researchers (piaggio+vespa, triumph+bmw) were still in flight at wrap; if their YAML lands it is in the session scratchpad and applies with one `apply_enrich.rb` invocation each. **Do not re-brief a researcher without reading §9 of the contract first** — six rulings in it are things a careful researcher gets wrong by default (`dissolved:` is production cessation not corporate death; a register may never source a production year; a bare Kawasaki code covers eight nameplates so it is a pool, not a resolution; TMAX facts go only on `tmax`; `+`-slugs are grandfathered; an untagged Wikipedia fact is the one violation).
 
 — S4W/ENR2
+
+---
+
+## S4W/COV2 — HANDOFF: the owner's TMAX ruling is implemented and measured (`data#326` + `pipeline#184`, a coupled pair). Yamaha's remaining 65 type codes are mapped, not folded — parked on `s4w/cov2-yamaha` with the register oracle that makes them cheap
+
+### 1 · Shipped, fully measured, OPEN — not merged
+
+**`data#326`** — the owner's `OPTION 2` TMAX ruling of 2026-08-02, assigned to
+S2W and never implemented. Two of the four ids it retires (`tmax-530`,
+`tmax-560`) were **minted by our own §A fold and published in 2026.08.2**, so
+the catalog's published name for Yamaha's biggest scooter has been a string
+that exists in no market in any spelling.
+
+Frozen control vs treatment, `--kinds=motorcycle,moped`, pipeline `8c0dcb3`,
+data `217f2ea`:
+
+| | control | treatment |
+|---|---|---|
+| records, both kinds | 7,071 | **7,067** (−4, exactly the four retired) |
+| `yamaha/tmax` | `gb,nl,nz,ua` | **`es,fi,gb,lu,nl,nz,th,ua`** |
+| every other record | — | **byte-identical** |
+| gate FAILSET | 71 | **71, byte-identical, same order** |
+
+The whole diff is six rows and the arriving country set is the **exact union**
+of the five departing ones — a merge, not a move. Four spotchecks added and
+passing: the union assertion plus `exists: false` on all three displacement
+ids, because an `_includes` row cannot say *"and the wrong name must never come
+back"* and re-minting is this change's failure mode. Ten aliases re-chained; one
+`accepted_loss: [ua]` deleted rather than carried forward, because the survivor
+now carries all eight countries.
+
+**`pipeline#184`** — the coupled half, and the best thing that happened today:
+`lint_enrich` **failed the build by name**, saying `tmax-530` and `tmax-560`
+were aliased to a `tmax` with no enrich entry and their facts would be lost on
+publish. The data-side fold was correct and complete and would still have
+destroyed enrichment. Blocks merged verbatim, `rake test` green.
+**Pipeline-first: `data#326`'s build stays red until `#184` lands.**
+
+CI on `#326`: **lint pass**, build red on exactly that coupled dependency.
+
+Disjointness verified as promised: `gh pr diff` across all seven of REL's S2W
+PRs — **zero** hits on any tmax/XP key.
+
+### 2 · Parked: `s4w/cov2-yamaha`, commit `c89953f`, `WIP-yamaha-typecodes`
+
+NOTHING APPLIED — no key, no `former_ids`, no build. A map, so the next session
+does not restart from `catalog/`. Dossier at
+`data/review/cov2-yamaha-typecodes-2026-09.md` + the 37-row oracle beside it.
+
+**The finding worth reusing beyond yamaha: RDW writes the code → nameplate
+mapping ITSELF**, in 37 raw strings already in our corpus — `RJ09  (R6)`,
+`(VM02) XVS 650 CLASSIC`, `2 LT (V-MAX)`, `C V 50 (JOG)` (372 nz),
+`GPD150-A (NMAX155)` (184 nl), `4 BR (XJ 600 S)`. Regulator-tier corroboration
+sitting inside the dataset for codes that would otherwise be sourced one at a
+time. It is corroboration, not a source — each still needs a maker page.
+
+Census: 597 yamaha 2W records, **33 decile-1**; **65 publish as a bare type
+code** (14 decile-1), 40 as a bare series stub.
+
+### 3 · Three traps found BEFORE folding — do not fold these blind
+
+1. **A shipped key looks wrong.** `"YZF1000": "YZF-R1"` — but `4SV (YZF1000)` is
+   the YZF1000R **Thunderace**, not the R1. If that holds, a live key pools two
+   different motorcycles. Verify; do not drive-by reverse it.
+2. **`GPD150-A`: the register and a shipped key disagree across displacements.**
+   RDW writes `(NMAX155)`; `renames.yml` ships `"GPD150A": "NMAX 150"`. 2W
+   displacement granularity is binding.
+3. **`VM02`'s honest target does not exist as an id.** Raw says `XVS 650
+   CLASSIC`; only `xvs650` is live. Folding merges a trim into its base, minting
+   creates an id — the **D-4 range-label question**, which wants a ruling.
+
+### 4 · Rulings needed (filed, not improvised)
+
+- **D-4 range labels**, still open from S2W's honda A-2W-8. It now blocks
+  yamaha's 40 bare series stubs (`R`, `X`, `TT`, `WR`, `XJR`) as well as
+  Shadow. One ruling unblocks two makes.
+- **`data#326` §2:** `xp530e-a` is one row beyond the ruling's literal three-id
+  list — same class, flagged so a reviewer can strike it. The union is
+  unaffected either way.
+
+### 5 · To NORM (not curation; I did not paper over either)
+
+- **Bare 2W series stubs** — the existing DEBT row (*22,805 gb vehicles*) plus
+  D-4. A curation key would hide a rule bug.
+- **`fi_traficom` appends `-<typecode>/<cc>`** to the model string
+  (`FJR1300A-RP115/1298`, `FZ6S-RJ071/600`). `#326` folds one instance; the
+  general form is a parser rule.
+
+### 6 · ⚠ Two things the next manager should know
+
+- **`check_rulings.rb` returned CLEAN on `#326`** — a change that implements a
+  ruling. It only matches lines carrying a cluster tag *and* a ruling word, and
+  the owner's `## OWNER — TMAX ruled: OPTION 2` carries no tag. **A clean run is
+  not evidence that no ruling applies.** I found the ruling by reading
+  NEGOTIATION.
+- **My swarm never started.** Four attempts over ~40 minutes, all
+  `Concurrent subagent limit reached … 20 subagents`; the cap is account-wide
+  and other lanes held every slot. I executed solo and re-ordered by
+  evidence-per-minute rather than batch size. The queue below assumes a swarm.
+
+### 7 · Queue, unchanged in S2W's order
+
+yamaha type codes (mapped, §2–3) → **suzuki, 304,745 mass, never touched by any
+wave** → honda 2W remainder → kawasaki → harley → th/my/ua/nz/ar 2W sweeps.
+Cheapest real win left in yamaha: the NZ **LAMS `LA`** rows — `MT03LA`/`MT07LA`
+(both d1) plus `YZF-R7LA` (293 nz) and `MTM660LA` (117 nz); one Yamaha NZ page
+sources all four, it dedups two decile-1 records and gains `nz` on `yzf-r7`.
+Note the counter-example that stops it becoming a regex: `honda/crf250la` and
+`crf300la` are REAL Honda nameplates.
+
+Build outputs deleted; one control snapshot kept (6.6 MB).
+
+— S4W/COV2
