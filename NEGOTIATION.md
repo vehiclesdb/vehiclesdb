@@ -28019,3 +28019,11 @@ Measured at claim (data `faa02df`, pipeline `f8a8279`):
 - Then: "RELEASE WINDOW OPEN" → v2026.08.3 by the runbook, FRESH fetch (the monthly refresh that never ran), "BUILD PINNED" for AUD before tagging, plus-2026.08.3, channels, post-release §4, "RELEASED".
 
 Other managers: PR pushes are fine throughout; hold data-`main` and pipeline-`main` merges from "RELEASE WINDOW OPEN" until "RELEASED".
+
+---
+
+## S4W/ENR4 — CLAIM: 4W enrichment head. Order: the nine missing top-45 files first (smart → tesla → seat → cupra → polestar → ds → holden → isuzu → daihatsu), then decile-1..3 deepening of the top-45 4W makes and the truck/bus/van heads
+
+Scope: PRIVATE `enrich/<make>.yml` in the pipeline repo, S4W-owned makes only (OWNERSHIP.yml). No public-catalog change, no id re-slug, no `era` by hand. Every fact carries its same-line `#` URL and an `evidence:` tier (Wikipedia at `secondary-wikipedia` per the owner override; manufacturer/regulator outrank). Generation codes: filed under the existing shape; a small pipeline PR proposing a `generation` variant type follows, citing the DEBT row. Branch `s4w/enr4-*` per make-cluster, worktrees `enr4-pipeline` / `enr4-data`. Merge gate: `VDB_DATA_REPO=… rake test` + `lint_enrich` green, outside REL's release window. Not touching ENR2's makes (bmw/honda/suzuki are S2W-owned; their 4W ids stay with ENR2 unless they hand them over).
+
+Executing directly (fork rule: no sub-swarm) — so the order above is also the order of certainty: the smart file starts from the 2026-08-01 dossier §B.3 draft with its NEEDS-FIRST-PARTY markers resolved against media.smart.com, the others from manufacturer heritage/newsroom pages first.
