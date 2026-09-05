@@ -29752,3 +29752,23 @@ Note the counter-example that stops it becoming a regex: `honda/crf250la` and
 Build outputs deleted; one control snapshot kept (6.6 MB).
 
 — S4W/COV2
+
+---
+
+## S4W/SRC — ADDENDUM (fleet-wide, 60 seconds to read): **a national portal is asserting CC-BY-4.0 over a host that does not resolve.** Plus Sweden closes as a REJECT
+
+Two late results landed after the HANDOFF turn; both are in `pipeline#182` (updated).
+
+**1 · A LIVE be_fps hazard, and it is a shape none of our gates can see.** `data.norge.no` advertises **nine CC-BY-4.0 CSV distributions** for *Teknisk kjøretøyinformasjon* — including a bulk `Kjøretøyopplysninger` file and a make-code table — and **every one of their `accessURL`/`downloadURL` values points at `hotell.difi.no`, which is NXDOMAIN.** The portal is confidently asserting an open licence over a decommissioned host.
+
+Why this matters beyond Norway: **a licence assertion and a reachable file are two separate facts, and a portal will keep asserting the first long after the second is gone.** Our `pins.json` guards licence TEXT and nothing in the build guards that the DATA host still exists — so a source could pass gate 1 green forever while its data URL has been dead for a year, and we would find out only from keep-last-good quietly serving an ageing cache. Cheap check worth running fleet-wide: resolve every distribution host we depend on and fail loudly on NXDOMAIN. Offering it as a finding, not claiming a fix — I did not write one.
+
+Sweden supplied the mirror image: the trafa.se dataset page has **zero** occurrences of `licens`, `Creative` or `CC0` in 73,861 characters and its terms-of-use link 404s in both directions — a textbook be_fps page, found and closed rather than pinned.
+
+**2 · 🇸🇪 Sweden — REJECT, and comprehensively so.** All **57** Trafikanalys API products with every dimension enumerated, all **59** tables of *Fordon 2025*, all four SCB `TK1001A` tables, and Transportstyrelsen's own open `Fordonsstatistik` (four columns) carry **zero** `fabrikat`/`märke`/`modell`. The single apparent hit, `armodell`, is *model year*. Make-level Swedish data exists only behind **Fordonsurval**, quoted verbatim: *"mot avgift … bilmärke … Villkor för nyttjande: Avgift"* — fee-bearing and permission-gated, so Sweden is rejected on **licence as well as granularity**. That is four of the twelve now closed on granularity (SG, DK, SE, and CH-federal/NO-SSB), two of them with licences that would have passed comfortably.
+
+**3 · 🇳🇴 Norway's yield, now measured** rather than asserted: on 448,406 rows of one quarter, reconciliation lift **5,522 pairs (65.1%), covering 92.8% of rows**, plus **2,965 new-model** and **120 new-make** candidates. **Norway has no presence in our catalog at all today**, and **18.5% of inspections are pure electric** — it lands directly on the EV gap. 203 columns, schema byte-identical across 2023Q1 and 2025Q4, **zero identifier columns** (the publisher already applied k-anonymity and odometer rounding), 13 quarterly zips totalling 175.5 MB with none over 18 MB.
+
+**Correction to my own HANDOFF turn:** I mis-addressed the vPIC brief to the NO/SE researcher, who correctly refused to act on it and flagged the misroute back. vPIC was never researched — its launch was one of the five refused by the fleet-wide agent cap — so it stays UNFINISHED, and our own 2026-07-04 dossier's note that *"vPIC: explicit license text absent"* remains unverified on the candidate we are most likely to want next.
+
+— S4W/SRC
