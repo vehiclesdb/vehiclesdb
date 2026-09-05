@@ -29492,3 +29492,53 @@ not publish a weighted bound from these scripts until that question is
 answered.** Everything else in them is self-tested.
 
 — S4W/AUD
+
+---
+
+## S4W/SRC — HANDOFF: the ranked licence table. **Three ACCEPTs, three REJECTs — and every rejection is on GRANULARITY, not licence.** `pipeline#182` carries the dossier
+
+Wrap-up called mid-Phase-1; no adapter was written and no licence was pinned, per the coordinator's instruction. Everything below was fetched from the owner's Mac on 2026-09-05, HTTP status recorded for failures as well as successes, licence text captured verbatim, and every proposed pin phrase **proved against the fetched bytes**. I-11: researchers proposed, I re-derived.
+
+**Dossier: `vehiclesdb/vehiclesdb-pipeline#182`** (`aux/research/sources-2026-09/`) — 5 reports, `INDEX.md` with the full table, `IMPLEMENTATION-NOTES.md`, and 298 licence/metadata evidence files.
+
+### The finding that shapes the whole lane
+
+**Granularity killed more candidates than licensing did, and it killed two with immaculate licences.** Our `Row` needs a `(make, model)` pair; a register publishing `Marke`/`mærke`/`merke` totals with no model column cannot produce a Row at all. Singapore's Open Data Licence grants worldwide perpetual commercial reuse, attribution-only — and Singapore is still a reject, because `year,make,fuel_type,number` has no model column. **§13.2 should be re-ordered to ask "does it reach model level?" before "what is the licence?"** — it is the cheaper question and it settles more cases.
+
+### Ranked
+
+| # | candidate | licence (the dataset's OWN field) | granularity | from this machine | verdict |
+|---|---|---|---|---|---|
+| 1 | 🇦🇺 **AU** BITRE *Road Vehicles Australia* | `license_id: "cc-by"` · CC BY 3.0 AU · SA/NC/ND measured **ABSENT** | make+model+YOM+motive power, **national** via NEVDIS | 200, no UA needed | **INGEST** |
+| 2 | 🇮🇱 **IL** data.gov.il register | `other-open` on all 8 vehicle datasets *individually*; site licence grants commercial use, attribution-only | per-vehicle, 4,176,920 rows; make Hebrew, **model already Latin** | HTML behind AWS WAF; **CKAN API stable 200** | **INGEST-WITH-CAVEAT** |
+| 3 | 🇳🇴 **NO** Statens vegvesen *Periodisk kjøretøykontroll* | `CC-BY-4.0` on the distribution, asserted twice (publisher CKAN + data.norge.no DCAT) | per-vehicle make+model, +EU category, fuel, first-reg year | 200 | **INGEST** — key `no_svv_pkk` |
+| 4 | 🇨🇭 **CH** cantonal (`data.tg.ch` …) | `#terms_by` / opendefinition cc-by | per-vehicle; `typ2` pre-split model **+ TAN + body type + EU category** | **403 default curl → 200 browser UA** | **PROMISING**, needs cantonal coverage |
+| R | 🇸🇬 **SG** LTA | SODL-1.0 — immaculate, irrelevant | **make-only** | 200, no key needed | **REJECT** |
+| R | 🇩🇰 **DK** Danmarks Statistik | moot | **0 of 52 vehicle tables carry make or model** | 200 | **REJECT** |
+| R | 🇨🇭 CH federal · 🇳🇴 NO SSB | clean | **make-only** (`Fahrzeugmodell` → 0 datasets) | — | **REJECT** |
+
+**Australia is the one to build.** One 6,077,032-byte CSV gives `kind`, `history`, `powertrain`, `raw_make`, `raw_model`, `count` — six Row fields, **zero identifier columns**, so no GDPR positional machinery. Yield measured through the **real `Normalizer#classify` with the real overrides**, not a spreadsheet: **2,455 published-id matches (+`au` availability on 17.8% of the catalog), 677 candidate promotions, 366 mintable above threshold → ~1,043 new published records, +7.6%** — and **350 of the 677 promotions are motorcycle/truck/bus**, the thin kinds. My first pass used naive slugify and was wrong (`MAZDA 3` → `mazda/mazda-3`, but the catalog publishes `mazda/mazda3`); that is recorded in the dossier because the error class matters more than the number.
+
+### Two corrections to standing documents
+
+1. **SOURCES.md's watch-list is misleading on Switzerland.** "In progress — next spine addition" reads as a licence matter. The licence is fine (`#terms_by` is attribution-only, commercial allowed); the **federal statistics are make-only and cannot produce a Row**. The live Swiss route is **cantonal** — Thurgau alone is 227,181 per-vehicle rows carrying **TAN and body type**, the two Row fields supplied today by exactly one source each (LU and NL). That row needs rewriting.
+2. **Three "failures" in the inherited evidence were not failures.** CH's 403, IL's 404 and NO's 404 were **User-Agent artifacts or a dead URL**, not geo-gating — all resolve to 200 with a browser UA or a corrected path. Worth internalising fleet-wide: an unauthenticated curl failure is a hypothesis, not a finding.
+
+### Owner/coordinator calls, none of which I made
+
+- **AU "Light commercial vehicles" → `van`?** Consistent with UK's "Light goods vehicles", but the Australian class is dominated by **utes** (Holden Colorado 176,325; Rodeo 108,647). A ute is not a panel van.
+- **AU `Battery/Fuel-cell electric` is ONE merged bucket** (259,762 vehicles) against our closed vocabulary with no `unknown`. Mapping to `bev` costs ≲0.002% of fleet — cheap, but someone must sign it.
+- **CH/NO counting.** A canton is ~3% of Switzerland and PKK is the *inspected* fleet, not the registered one. Publishing either as national stock would imply what it is not. I recommend **presence-only (`count: nil`)** first cut for both — the availability, TAN, body-type and powertrain evidence is the value; popularity is already carried by fourteen registers.
+- **AU is not merge-ready as a bare adapter**: the mintable set contains registry classes, not nameplates — `holden/utility` and the Harley family codes `fxd-series`/`fxs-series`/`flh-series`/`cru-series` (23,372 / 22,450 / 19,461 / 17,993 vehicles). They need drops/renames first or they publish as models.
+
+### Engine facts the next implementer needs (in `IMPLEMENTATION-NOTES.md`)
+
+`Reconciler::CONTINENTS` **needs `il` and `sg` added or the emit gate fails**. A **presence-only source can never meet a `KIND_THRESHOLD`** (`nil.to_i == 0`) so it can only corroborate, never mint — that is the honest framing for vPIC. **All 146,800 candidates are single-source** (multi-source is zero by construction), so any corroborating source promotes them, which makes hits-against-the-candidate-queue the right yield metric and "new makes" the least useful one. And `us_fueleconomy.rb` already references **`us_vpic.rb`, a file that does not exist**.
+
+### Not done, labelled as such
+
+**BR · IT · FR · SE · vPIC were still fetching when wrap-up was called and have no report.** Raw evidence is committed; **nothing about them is certified and none should be quoted.** The two open questions that matter most: whether Italy is **IODL 2.0 (acceptable) or 1.0 (ShareAlike, instant reject)**, and whether **vPIC has any readable licence text at all** — our own 2026-07-04 dossier records *"vPIC: explicit license text absent"*, a be_fps risk on the candidate we are most likely to want. Brazil's 113 MB of evidence is on disk and its 2W nameplates (CG 160, Biz, Pop, Fan, Bros) remain the biggest unexplored prize.
+
+Control build on pipeline `8c0dcb3` / data `021bdbf` was **green, exit 0, 13/13 pins verified** — the measurement rig works and the cache **symlink farm** (237 symlinks, 0 bytes, shared cache structurally protected from writes) is reusable by any lane needing isolation without a 1.5 GB copy.
+
+— S4W/SRC
