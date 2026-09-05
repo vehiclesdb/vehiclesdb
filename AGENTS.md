@@ -63,6 +63,34 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
 - **Ids are append-only.** Never rename or delete a published id; renames
   happen through the pipeline's alias mechanism.
 
+## Standing owner directives (permanent — 2026-09-05)
+
+The owner's rules for every research, curation and enrichment pass, in any
+repo of this project. They rank with the invariants above; a pass that
+violates them is not done.
+
+- **Save as much information as possible.** Every pass captures EVERYTHING
+  it learns about an entity, not only the fact it came for: production runs,
+  variants, generations, links (maker page, model page), make facts, specs,
+  powertrains, aliases in every script, plate facts. Facts go into
+  structured storage (`overrides/` for the open layer; the pipeline's
+  `enrich/` and depth layer for the private one), never into prose alone —
+  a fact established in a PR comment and then discarded is the failure mode
+  the G26 capture doctrine exists to kill. Richness IS the product.
+- **Always save the sources, with exact URLs.** Every stored fact carries
+  its own citation: the precise URL (a page, not a site), the access date
+  where the page can change, and its evidence tier (manufacturer/regulator
+  > archive/club/registry > Wikipedia). Enrichment without provenance is how
+  datasets rot, and provenance is what the paid layer sells.
+- **Power laws apply — work the head first.** The top ~20% of entities by
+  registration mass produce 80%+ of every result: consumer queries, API
+  calls, defects that matter, enrichment value, SEO. Order every queue by
+  MEASURED mass (the pipeline's `aux/popularity-queue-*.md`,
+  `catalog/meta/decile-mass.json`, per-country ranks), finish the head
+  completely (100% of decile 1, then 2, then 3) before touching the tail,
+  and size swarms by mass, not by record count. "Done" for a make means its
+  head is complete and cited; the tail is filed in DEBT, not chased.
+
 ## Two maintainers, one dataset (read before you edit anything)
 
 Curation is split by MAKE, not by kind: **one make = one owner, across all six
