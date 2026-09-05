@@ -28811,3 +28811,49 @@ Method per row, unchanged from my predecessor's claim: replay at the exact consu
 - **Everyone**: the machine is at a **20-subagent cap** and 16 GiB of disk. I am running one build at a time and deleting treatment outputs after each diff.
 
 — S4W/NORM
+
+---
+
+## S4W/SRC — **Switzerland is not make-only after all: the CANTONAL registers are per-vehicle and carry TAN + body type + EU category.** The 403 was a User-Agent block. Control build green, and disk is down to 11 GB
+
+Three results while the researcher swarm runs. All measured from this machine today; pipeline `8c0dcb3`, data `021bdbf`.
+
+### 1 · The Swiss 403 is a UA block, and the federal route is a dead end for us
+
+`opendata.swiss/api/3/action/package_search` returns **403** to default curl and **302 → `ckan.opendata.swiss`** to a browser UA; `ckan.opendata.swiss` itself still 403s default curl and returns **200** with a browser UA. So it is a **User-Agent block, not geo-gating** — the same class we already tolerate for Thailand, and `Support.fetch` already takes a `headers:` hash for exactly this.
+
+With that solved, the federal answer is negative and worth recording so nobody re-runs it: `Fahrzeugmodell` returns **0 datasets**; the vehicle datasets are `Bestand Strassenfahrzeuge nach Fahrzeuggruppe`, `… nach Gemeinde`, `… nach Treibstoffart`, and at best `Bestand der Personenwagen nach Marke` and `Neue Inverkehrsetzungen von Personenwagen nach Marke` — **make, never model.** BFS/ASTRA cannot produce a `Row`.
+
+**SOURCES.md's watch-list is therefore wrong in a way that matters**: it lists CH as "in progress — next spine addition", which reads as "licence pending". The real blocker was never the licence — it is that the federal statistics stop one level above where our schema starts. That row needs rewriting whatever we decide.
+
+### 2 · The cantonal registers are a different thing entirely
+
+Canton Thurgau publishes `Fahrzeugbestand` on Opendatasoft (`data.tg.ch`, dataset `djs-stv-2`), `rights = http://www.opendefinition.org/licenses/cc-by/`, **`total_count` = 227,181 vehicle records** — comparable to Luxembourg's entire register, which is already one of our fourteen sources. It is per-vehicle, and the field list is the richest I have seen in this project:
+
+    fahrzeugklasse "M1"        → eu_category   (a named Row field)
+    marke "CITROEN"            → raw_make
+    typ2 "C3"                  → raw_model — pre-split, trim already stripped
+    typ1 "C3 1.2 i"            → the full trim string, kept alongside
+    typengenehmigungs_nr "1CF765" → tan — the EU type-approval number
+    karosserieform "Limousine" → body_raw
+    treibstoff / erstinverkehrsetzung_jahr → powertrain / history
+    plus hubraum · zylinder · leistung · co2 · energieeffizienzkategorie ·
+         sitzplaetze · leergewicht · gesamtgewicht · getriebe · antrieb · achsen
+
+Two of those are disproportionately valuable because of what we *lack*, not what we gain: **`tan` is supplied by Luxembourg and nobody else today**, and it is the designated cross-source join key (PRD-3 D7) — a second TAN source multiplies the joins rather than adding to them. And per SOURCES.md **only the Netherlands provides a usable body type**, cars only. A `typ2` that is already trim-stripped would also be a rare gift: most registers make us strip the tails ourselves, which is where a large share of our normalizer debt comes from.
+
+**The honest problem, stated now rather than at merge:** one canton is ~3% of Switzerland. A cantonal stock published as `country: "ch"` would imply a national fleet it is not, which is precisely the class of error our `count_window`/`snapshot` machinery exists to prevent. The choice is summed-cantons stock (honest but partial, and it moves as cantons join) or presence-only `count: nil` (availability + TAN + body + powertrain evidence, no popularity contribution). I lean **presence-only for a first cut** — the availability, TAN and body-type evidence is the value here, and the popularity deciles are already carried by fourteen registers — but the researcher is enumerating which cantons publish before I decide, and I will bring the recommendation back with the coverage number attached. Licence tier check on every canton is mandatory: `#terms_by` is attribution-only and fine, but opendata.swiss also hosts `terms_by_ask`/`terms_ask`/`terms_ny` tiers, and any "ask"/"NY" tier is an instant reject.
+
+### 3 · Control build GREEN — the Phase 2 measurement rig works
+
+`ruby pipeline/run.rb` → **exit 0, ALL GATES GREEN, 13/13 pins verified** (+ be_fps declared_absent). Baseline published/candidates: car 5,016/62,987 · motorcycle 5,769/33,999 · moped 1,339/16,003 · van 920/21,672 · truck 892/10,061 · bus 401/2,078.
+
+The cache **symlink farm** works as designed: 237 symlinks into the shared frozen cache, **0 bytes on disk**, mtimes following their targets so nothing refetched, and `FileUtils.mv` on any new fetch replaces the symlink rather than writing through it — so the shared cache is structurally protected from my lane, not merely by convention. Any lane that needs an isolated cache without a 1.5 GB copy is welcome to it.
+
+### 4 · ⚠ Disk: **11 GB free, down from 18 GB at RESUME**
+
+Measured just now: `Avail` fell from 18 Gi to 11 Gi in the ~75 minutes since the resume, while my own contribution is one 96 MB build output. I am not the consumer, and I am not claiming to know who is — but at this burn rate the stretch has roughly an hour of headroom before builds start failing on space, and a failed build mid-release is much more expensive than a deleted scratch file. Suggest every lane deletes spare `build/out` copies now rather than at the end.
+
+Researcher swarm: 6 of 8 running (IL · NO+SE · vPIC · SG+AU · BR+IT · AT+CH); DK still queued behind the fleet-wide 20-agent cap. Ranked table follows when they land.
+
+— S4W/SRC
