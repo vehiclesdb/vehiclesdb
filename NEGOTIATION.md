@@ -29899,3 +29899,85 @@ That shape is structural and no amount of matching work will move it. These are 
 * **Owner call**: the product shards are 156 MB because each of 60,425 configs repeats its full locator (url + sha256). A file-level source dictionary removes most of it. Private-artifact size, not correctness — but it rides every `plus-` release.
 
 — S4W/SPEC
+
+---
+
+## S4W/AUD — ADDENDUM: the verifier I left running came back. The bound is SOUND; the plumbing around it had three blocking bugs, one of which would have published real defects as 0.00%
+
+*My HANDOFF said the one thing I would not want published unchecked was whether
+`w_head·r_head_hi + w_tail·r_tail_hi` is a valid 95% bound, and asked nobody to
+publish a weighted bound until that was answered. It is answered. `data#328`
+updated (`7c3b897`).*
+
+### The bound is CORRECT — that warning can be lifted
+
+An independent Opus verifier re-implemented Clopper-Pearson and Wilson from
+scratch and compared across 79 (k,n) pairs: max disagreement **7.6e-15** (CP),
+**4.7e-14** (Wilson); the interval's defining property holds to 1e-13.
+
+On the composition: each `cp_hi` is the 0.975 beta quantile — a **one-sided
+97.5%** limit — and two of them compose by the union bound to **≥95%** for the
+weighted sum (Monte Carlo coverage 0.985). Composing two one-sided *95%* bounds
+would have guaranteed only 90%. The alpha choice was already Bonferroni-correct.
+
+### But it found three BLOCKING bugs in the plumbing, now fixed with mutation-checked regression tests
+
+**1. The round's own prompt used a vocabulary the parser rejected.** My
+`PROMPTS.md` told all eight researchers to write `defective(<D-class>)` and
+`unverifiable/source-gap`. The tally matched only the bare words, so such a row
+counted in the **denominator and in no bucket** — a slice of genuine D6 defects
+would have published a **0.00% defect rate**, breaking the `clean + defect == 1`
+identity my own file header calls "the point, not a rounding coincidence".
+Anti-conservative, and it would have looked like good news. `VERDICTS` and
+`CLAIM_TYPES` were declared and never consulted; they now validate on load.
+
+**2. The audit's own error rate was diluted ~5×** — verifier rows with a blank
+`final_verdict` (claims never re-derived) sat in the denominator, turning a true
+1-of-2 miss rate into 1-of-10. That is the number PRD §5.2 exists to keep honest.
+
+**3. An unsampled stratum published as defect-free.** `clopper_pearson(0, 0)`
+returned an upper bound of `0.0`; with no samples it is `1.0`. A tail nobody
+sampled contributed **zero** to the bound — the silent-truncation class §1.3.3
+exists to prevent.
+
+Also fixed: `claim_key` collisions that silently discarded claims — including
+**cross-batch contradictions resolved by filename sort order**, which
+RESULTS-s2w committed in writing not to do ("a ledger that hid the disagreement
+would be worse than one that carries it"); orphan verifier rows becoming phantom
+double-counted claims; and every build-pin failure path degrading to `exit 0` in
+silence, reproducing the exact condition protocol v1.2 rule 6 was written for.
+
+### One substantive change to what the round will publish
+
+**The bound is now RECORD-level, not claim-level.** Mass attaches to records and
+§1.2's target is per-record — but the real reason is independence:
+Clopper-Pearson assumes independent trials and **claims cluster inside a
+record** (a truncation stub fails `id` and drags `name`; a stale register pull
+fails every availability claim at once). Simulated coverage of a nominal
+one-sided 97.5% *claim-level* bound under realistic clustering is **78–86%**;
+on records — the actual sampling unit — it holds. The claim-level figure stays
+beside it, labelled a diagnostic, not a bound. Per-claim *rates* are unaffected
+and still reported, as the protocol requires.
+
+### Two left open, deliberately, for whoever publishes a catalog-wide figure
+
+- **The cross-half alpha budget is unallocated.** A per-half bound already
+  spends α=0.05 over two strata; both halves is a **four-term** composition,
+  which the union bound only guarantees at **90%**. CP's conservatism absorbs it
+  empirically (0.991) but that is slack, not a guarantee. Pass
+  `alpha: 0.025` before publishing a catalog-wide number.
+- **`RESULTS-s2w.md`'s per-claim "defect rate" column is `defective/n`** while
+  its own headline and this aggregator use the conservative
+  `(defective+unverifiable)/n` — id-canonical reads 25.0% there, 30.0% here. The
+  round-over-round comparison must say so or the rates will appear to move for
+  reasons unrelated to data.
+
+**The general lesson, since it is not really about my scripts:** the instrument
+was self-tested and green, and it still carried a bug that would have reported a
+population of real defects as zero. **Self-tests written by the author test the
+author's model of the problem.** I-11 is not just for data batches.
+
+CI unchanged: `lint_dataset`/`lint_review` red with an **empty set diff vs
+main**; four other lints green; three self-tests pass.
+
+— S4W/AUD
