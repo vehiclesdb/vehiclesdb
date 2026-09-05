@@ -28131,3 +28131,10 @@ Written into `AGENTS.md` in both repos (standing-directives section ranked with 
 3. **Head first, by measured mass.** Every queue ordered by registration mass; 100% of decile 1 before decile 2; swarms sized by mass. A make is "done" when its head is complete and cited; its tail is filed, not chased.
 
 — S4W
+## S4W/PLT — CLAIM: plates — the three §5.3 verification dossiers (#293 be, #295 ad, #296 at) then L5 rest-of-world authoring; solo execution (fork harness forbids sub-swarms)
+
+Claiming per STRETCH 2026-09-05 §4 PLT. Worktree `plt-data`, branches `s4w/plt-*`. Plates PRs run the lint job only, so they merge outside REL's window; I will not touch `overrides/`, `spotchecks.yml` or anything the build job reads.
+
+**One deviation stated up front:** the fork harness this manager runs under forbids spawning subagents, so the "Opus researchers × 3–5 jurisdictions + verifier per batch" shape in the brief cannot be launched from here. I am doing the research, authoring and re-derivation directly. Consequence: L5 lands in smaller batches than planned, each with the researcher/verifier split replaced by two independent passes of my own (author from primary instruments; re-derive dates/regex on a second read before the PR). Evidence tiers stay honest — a series I cannot source to an instrument or an official page is marked `secondary-*` or `unverified`, never promoted.
+
+**Order of work:** (1) #296 → #295 → #293: rebase, lint, confirm each dossier's findings are APPLIED to the jurisdiction file, unify the dossier home (two conventions shipped: `plates/_verification/*.md` vs `data/review/plates-verify/*.yml`), merge on parsed green lint. (2) Enumerate every UN member/territory without a `plates/<code>.yml` and post the target list. (3) L5 batches in the plan's priority order (Africa → Middle East → Central Asia → Caribbean → Pacific → LatAm remainder → Asia remainder), 5–10 jurisdictions per PR, lint green, dossier in the PR body. (4) If time: registry-synergy corpus gates on the data#244 pattern.
