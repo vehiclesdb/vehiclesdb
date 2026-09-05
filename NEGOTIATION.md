@@ -29542,3 +29542,53 @@ Wrap-up called mid-Phase-1; no adapter was written and no licence was pinned, pe
 Control build on pipeline `8c0dcb3` / data `021bdbf` was **green, exit 0, 13/13 pins verified** — the measurement rig works and the cache **symlink farm** (237 symlinks, 0 bytes, shared cache structurally protected from writes) is reusable by any lane needing isolation without a 1.5 GB copy.
 
 — S4W/SRC
+
+---
+
+## S4W/WEB — HANDOFF: two PRs open and `bin/ci`-green (#88, #89), and the re-audit found that THREE of Horizon 1's rows were already shipped — the ❌ marks were stale, not the work
+
+*Wrap-up at the coordinator's call. Measured against `rameerez/vehiclesdb-web` `bdb23a8`. Every number below came from a run on this machine, not from a plan.*
+
+### 1 · Shipped
+
+| PR | Item | Gate |
+|---|---|---|
+| [#88](https://github.com/rameerez/vehiclesdb-web/pull/88) — the plate renderer gets an abuse ceiling | 1.9 (rate-limit half) | `bin/ci` green, 1m32s, 965 runs |
+| [#89](https://github.com/rameerez/vehiclesdb-web/pull/89) — resolve misses become a corpus | 1.1 (miss-corpus half) | `bin/ci` green, 2m51s, 970 runs |
+
+Baseline on unmodified `main` first, so "green" means something: **957 runs / 9,002 assertions / 0 failures / 1m26s**. Local `bin/ci` is the enforced gate there (GitHub CI dark on billing) and it is *cheap* — 86 seconds — which is worth knowing for whoever picks this up: there is no excuse for an ungated web PR.
+
+**#88** puts a 600/min per-address ceiling on `plates#svg`. The number is derived, not chosen: the index renders 50 featured `<img>` hits and the largest federation hub 56 (measured on this dataset), so a reader browsing hard is worth ~110 in a minute and one NAT is one address for hundreds of readers. Renders measured at 0.43–1.51 ms. The load-bearing header on the refusal is `no-store`, **not** `Retry-After`: successful renders are `public, s-maxage=86400`, so a shared cache holding one address's 429 would blank the plates for everyone behind that edge. Tests were made to fail once first (three red, exactly the three about the ceiling).
+
+**#89** turns `[resolve-miss]` from a log line into a ranked table — one row per QUESTION, with occurrences AND distinct askers, because one importer can top a request count alone. It also fixes a consent bug: `params[:private] != true` only worked for genuine JSON, so form-encoded `private=true` (what `curl -d` sends) was recorded anyway. **A consent flag that silently fails open is worse than no flag.** And a savepoint that the *test* found, not reasoning: a failed statement aborts its transaction and Postgres then refuses every later command on that connection, so the rescue without a savepoint would have turned our bookkeeping failure into the customer's 500.
+
+### 2 · The finding that matters most: three Horizon-1 rows were already done
+
+I re-audited before building, and PRD-REVENUE §10's marks are **stale in three places**. Nobody should spend a session re-shipping these:
+
+- **§10.2 "Plate SVGs cacheable at the edge" ⚠️ → already ✅.** `expires_in … public: true, "s-maxage": 86400, stale_while_revalidate` plus `Vary: Accept-Encoding` shipped with the jurisdiction-page caching work, guarded by `plate_svg_caching_test.rb`. The ⚠️ describes a world that ended weeks ago.
+- **§10.3 "Key-issued-no-request-in-48h nudge" ❌ → already ✅.** `ApiKeyGoodmailer#first_request_nudge` + `ApiKeyFirstRequestNudgeJob`, recurring daily 10am Europe/Lisbon, stamped once-ever into `api_keys.metadata`.
+- **PRD-GROWTH 1.2(b)(c) credit emails → already ✅.** `CreditsGoodmailer#running_low` / `#out_of_credits`, wired to the usage_credits threshold callbacks, once per crossing.
+
+What 1.2 actually still owes is the monthly digest and — the real gap, and it is a compliance one — **an unsubscribe**. `railsfast.yml`'s `unsubscribe_url` is blank, `show_footer_unsubscribe_link` is off, so **no lifecycle mail we send today carries `List-Unsubscribe`**. The goodmail plumbing is already there and free; it needs a token mechanism chosen (`generate_token_for` would be new to this codebase — the existing precedent is DB-stored opaque tokens).
+
+### 3 · Not started, and the order I would take them in
+
+Branches exist locally at `origin/main` with **no commits** — there is no WIP to rescue, so I have left them rather than pushing empty `WIP-` branches that would only add noise to the owner's branch list: `feat/h1-lifecycle-emails`, `feat/h1-playground`, `feat/h1-try-the-api`, `feat/h1-batch-resolve`, `feat/h1-status-latency`, `feat/h1-attribution`, `feat/h1-python-sdk`, `chore/data-2026-08-3`.
+
+Order for next time, changed from the plan by what the audit found: **1.1b (the four funnel numbers) → 1.8 batch → 1.3 playground → 1.4 try-the-API card → 1.2 (digest + unsubscribe only) → 1.7 → 1.6 → 1.5.**
+
+Three things the next session should not have to discover:
+
+1. **`requests/day/key` is not currently recoverable for free endpoints**, and the PRDs are wrong about why. The Solid Cache counter they describe is *gone* (`base_controller.rb`: "the usage_credits ledger IS the per-key/per-month meter now"), and the ledger writes **no row for a 0-credit operation** — so all widget/catalog traffic is invisible to the database. `api_keys.requests_count` counts every authenticated request but has no time dimension. Cheapest exact fix: a **daily snapshot of `requests_count` per key** — the delta between snapshots IS the day's requests across all endpoints, at one write per key per day instead of one per request. Do not add a request-log table on a single box.
+2. **`first_request_within_24h` is exactly computable**, but only from `api_keys.metadata->>'first_request_notified_at'` minus `created_at`. `last_used_at` is the *latest* request and cannot answer it for any key used twice.
+3. **1.8's gate already exists**: `:batch_api` is declared on `:business`/`:scale`/`:enterprise` in `pricing_plans.rb` with **no consumer** — `billing_organization.plan_allows?(:batch_api)` is ready. `/pricing` currently advertises it as "coming soon", so that copy must change in the same PR.
+
+### 4 · Two operational notes for the other lanes
+
+- **Disk.** A `vehiclesdb-web` worktree is ~300 MB and **197 MB of that is tracked content** (`vendor/plates-art`), so it cannot be slimmed. I created none: all ten items reused the owner's existing merged `web-*` worktrees (32 of 33 are clean ancestors of `main`; `web-rowfix` is NOT merged and I did not touch it). Net new disk for this lane: ~0.
+- **A trap the next session will hit.** All worktrees share `config/database.yml`, so two `bin/ci` runs in two worktrees corrupt each other's gate silently — the exact "how gates lie" shape this repo already documented. Every worktree I used now carries an **uncommitted** local `database.yml` pointing at its own database. That file must never be staged; both PRs above were checked for it before commit.
+
+**Owner calls:** nothing in either PR needs a credential or a decision. Both need a deploy, and both PR bodies carry the production probes to run afterwards — #88's probe 3 also answers §10.2's open ❓ ("is Cloudflare actually in front"), which no test can.
+
+— S4W/WEB
