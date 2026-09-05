@@ -591,11 +591,56 @@
 "motorcycle/kawasaki/z1000abs": "motorcycle/kawasaki/z1000"  # kawasaki A-1
 "motorcycle/kawasaki/z650abs": "motorcycle/kawasaki/z650"  # kawasaki A-1
 "motorcycle/kawasaki/z750abs": "motorcycle/kawasaki/z750"  # kawasaki A-1
-"motorcycle/kawasaki/z800abs": "motorcycle/kawasaki/z800"  # kawasaki A-1
+# ── XREF-LOSS SIGN-OFF, 2026-08-18 · the FIRST use of `accepted_xref_loss:` ──
+# Main's weekly build has been red since 2026-08-10 and three of its eleven
+# gate failures are these aliases. Read the measurement before adding a fourth
+# entry here, because the bar this sets is "the evidence left upstream", not
+# "the fold was inconvenient to re-cut".
+#
+# WHAT THE GATE SAW. Each retired id published `tan` values in release
+# 2026.08.x that its successor does not publish now, and the gate reports them
+# as leaving the catalog entirely. That is true, and it is not the fold.
+#
+# WHAT ACTUALLY HAPPENED, measured four ways:
+#   1. All four approvals are LU-ONLY — `grep -rlF` over the whole cache tree
+#      returns lu_snca files and nothing else. No fi, nl, es, gb or ua row
+#      carries any of them.
+#   2. Within LU they appear in exactly ONE monthly delta, April 2026
+#      (lu_delta_202604.xml / lu_delta_2026-05.xml, the two naming schemes for
+#      the same month). The May, June and July deltas carry zero of the four.
+#   3. lu_snca serves a ROLLING THREE-MONTH WINDOW. The release that published
+#      these ids ran on `lu 2026-04…2026-06`; today's build derives
+#      `lu 2026-05…2026-07`. April has rolled out of the window, so the rows
+#      that carried these approvals are gone from the source.
+#   4. The freshly fetched lu_delta_202607.xml (39 MB, fetched 2026-08-18)
+#      carries none of them either.
+#
+# WHY RE-CUTTING THE FOLD CANNOT HELP, which is the gate's other option: an
+# unfolded `z800abs` would be rebuilt from the SAME current rows, and those
+# rows no longer exist. It would publish on fi+nl without these approvals and
+# the catalog would lose them identically. The gate's own diagnosis proves the
+# counterfactual: it computed "leave the CATALOG entirely" over this build, so
+# no live record carries them under any id. The fold is where the loss is
+# NOTICED, not where it is caused.
+#
+# ⚠ THE STRUCTURAL QUESTION THIS RAISES IS FILED IN DEBT, and it matters more
+# than these three lines: a rolling-window source means EVERY future fold of an
+# LU-sourced id will need a sign-off like this, for approvals that were real
+# when we published them. Type approvals are the cross-source join key
+# (PRD-3 D7) — arguably they should ACCUMULATE across releases the way
+# archive/registrations accumulates snapshots, instead of being recomputed from
+# whatever window the source happens to serve today. Until that is ruled on,
+# sign-offs like these are the honest record; they are not a pattern to spread
+# without reading the four measurements above for the case at hand.
+"motorcycle/kawasaki/z800abs":
+  to: "motorcycle/kawasaki/z800"
+  accepted_xref_loss: ["RTI*2002/24*2909*02"]  # A-1 · ABS fold. 1 of 4 tan. LU-April only.
 "motorcycle/kawasaki/z900abs": "motorcycle/kawasaki/z900"  # kawasaki A-1
 "motorcycle/kawasaki/zzr1400abs": "motorcycle/kawasaki/zzr1400"  # kawasaki A-1
 "motorcycle/kawasaki/z300abs": "motorcycle/kawasaki/z300"  # kawasaki A-1 RE-KEY — mints z300, no survivor exists
-"motorcycle/kawasaki/zx-6r": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
+"motorcycle/kawasaki/zx-6r":
+  to: "motorcycle/kawasaki/ninja-zx-6r"
+  accepted_xref_loss: ["RTI*92/61*0042*00", "e1-92/61-0141/00"]  # A-2 · Ninja prefix. 2 of 5 tan. LU-April only.
 "motorcycle/kawasaki/zx636": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
 "motorcycle/kawasaki/zx636b1h": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
 "motorcycle/kawasaki/ninja-636": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
@@ -604,7 +649,9 @@
 "motorcycle/kawasaki/zx-9r": "motorcycle/kawasaki/ninja-zx-9r"  # kawasaki A-5
 "motorcycle/kawasaki/ninja-zx-9": "motorcycle/kawasaki/ninja-zx-9r"  # kawasaki A-5
 "motorcycle/kawasaki/zx-7r": "motorcycle/kawasaki/ninja-zx-7r"  # kawasaki A-6
-"motorcycle/kawasaki/zx-12r": "motorcycle/kawasaki/ninja-zx-12r"  # kawasaki A-7
+"motorcycle/kawasaki/zx-12r":
+  to: "motorcycle/kawasaki/ninja-zx-12r"
+  accepted_xref_loss: ["e1-92/61-00065/02"]  # A-7 · Ninja prefix. 1 of 4 tan. LU-April only.
 "motorcycle/kawasaki/zx1100-hsfnn": "motorcycle/kawasaki/ninja-1100sx"  # kawasaki A-8
 "motorcycle/kawasaki/klz1100-asfnn": "motorcycle/kawasaki/versys-1100"  # kawasaki A-9
 "motorcycle/kawasaki/klz1000": "motorcycle/kawasaki/versys-1000"  # kawasaki A-10
@@ -2608,6 +2655,7 @@
 # --- 2026-07-25, S2W: G9 spec/drivetrain token fold -------------------------
 "car/honda/hr-v-exl-cvt": "car/honda/hr-v" # "HR-V Exl Cvt" -> "HR-V"
 "car/honda/legend-sh-awd": "car/honda/legend" # "Legend Sh-Awd" -> "Legend"
+"car/honda/prologue-ex": "car/honda/prologue" # "Prologue EX" -> "Prologue". PUBLISHED in 2026.08.2 on [ca,ua]; ua_mvs no longer carries it and ca_nrcan is a catalogue listing at counts {"ca"=>0}, so the id left the build and the no-vanish gate stopped it. Successor is LIVE on [ua,us]; the rename key lands in the same change so the id cannot be re-minted under a live alias
 "moped/ligier/ixo-dci": "moped/ligier/ixo" # "Ixo Dci" -> "IXO"
 "moped/ligier/xtoo-r-dci": "moped/ligier/xtoo-r" # "Xtoo R Dci" -> "Xtoo R"
 "moped/ligier/xtoo-rs-dci": "moped/ligier/xtoo-rs" # "Xtoo RS Dci" -> "Xtoo RS"
