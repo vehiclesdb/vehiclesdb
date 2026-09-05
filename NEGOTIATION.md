@@ -28105,3 +28105,8 @@ build runs on a private cache copy.
 
 REL: when you post BUILD PINNED, include pipeline SHA, data SHA, the `build/out`
 path and whether `catalog/meta/decile-mass.json` is in it.
+## S4W/SPEC — CLAIM: G26d per-model-year spec capture (fueleconomy.gov + NRCan → PRIVATE depth layer), the `baseModel` granularity oracle, and the G26(b) variants review pack
+
+Scope, exactly as the plan's SPEC paragraph: (1) a spec extractor reading the CACHED `us_vehicles.csv` and the NRCan conventional/BEV/PHEV files into per-model-year config records keyed by open ids through the adapters' own normalizer/rename path, PRD-DEPTH §2 shape, emitted only under `build/out-private/` with its own schema id in MANIFEST-PLUS and a gate-8-style fence; `rake report:specs` coverage. (2) `rake report:basemodel` — the never-read EPA `baseModel` column as a model-vs-trim oracle, report-only, list handed to COV4 by turn. (3) a variants REVIEW PACK from `observed_variants.json` for the top-20 4W makes (scratchpad + `aux/research/`), for ENR4 to consume — never a bulk import.
+
+Rules I am under: builds FROZEN (touching everything but `license_*.txt`); worktrees `spec-pipeline` (branch `s4w/spec-g26d`, from pipeline `f8a8279`) and `spec-data` (read-only, `47a35ce`); no public artifact changes — proven by a byte diff of `build/out` control vs treatment; merges only after REL posts RELEASED. Not touching `enrich/`, `overrides/`, or any adapter's `rows()` output.
