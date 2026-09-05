@@ -106,7 +106,7 @@
 "moped/haibike/sduro-trekking-s9-0herren":     "moped/haibike/sduro-trekking-s9-0-herren"     # Sduro Trekking S9.0HERREN -> Sduro Trekking S9.0 Herren  [fi,nl]
 "moped/honda/benly50":                         "moped/honda/benly-50"                         # BENLY50 -> Benly 50  [nl,ua]
 "moped/honda/c50deluxe":                       "moped/honda/c50-deluxe"                       # C50DELUXE -> C50 Deluxe  [nl,nz]
-"moped/honda/cl50benley":                      "moped/honda/cl50-benley"                      # CL50BENLEY -> CL50 Benley  [nl,nz]
+"moped/honda/cl50benley":                      "moped/honda/cl50-benly"                      # CL50BENLEY -> CL50 Benley  [nl,nz] — chain flattened
 "moped/honda/cl50benly":                       "moped/honda/cl50-benly"                       # CL50BENLY -> CL50 Benly  [nl,nz]
 "moped/honda/magna50":                         "moped/honda/magna-50"                         # MAGNA50 -> Magna 50  [nl,nz]
 "moped/honda/tact50":                          "moped/honda/tact-50"                          # TACT50 -> Tact 50  [nz,ua]
@@ -482,6 +482,81 @@
 "motorcycle/harley-davidson/xlh883sportster-hugger": "motorcycle/harley-davidson/xlh883-sportster-hugger" # XLH883SPORTSTER Hugger -> XLH883 Sportster Hugger  [nl]
 "motorcycle/harley-davidson/xlh900sportster":  "motorcycle/harley-davidson/xlh900-sportster"  # XLH900SPORTSTER -> XLH900 Sportster  [fi,nl]
 "motorcycle/heinkel/tourist103a2":             "motorcycle/heinkel/tourist-103a2"             # TOURIST103A2 -> Tourist 103A2  [fi,nl]
+# HONDA GOLD WING §A-2W-1..5 arms, 2026-08-21. Eighteen ids retire into five
+# survivors. Every arm was DERIVED, not hand-written: released name -> Honda
+# rename value -> slug, i.e. the same route the pipeline takes, so an arm
+# cannot disagree with the fold that caused its retirement. 18/18 resolved.
+# Country gains, and they are why the folds are worth doing: gl1500-gold-wing
+# and gl1800-gold-wing each GAIN gb, which exists only on a record being folded
+# away (gl1800a [fi,gb,nl] and the GL1500 side) — leaving them unfolded is what
+# loses evidence. No accepted_loss anywhere: every union is a superset.
+# A-2W-6 Valkyrie arms, 2026-08-21. Derived the same way as the Gold Wing set:
+# released name -> Honda rename value -> slug. The survivor GAINS gb, which
+# exists only on f6c [gb,nl] and gl1500c [fi,gb,nl] — the records being folded.
+# valkyrie-interstate is NOT here: §D-2 keeps it separate and it stays live.
+# A-2W-7 code-vs-name arms, 2026-08-21, BOTH KINDS. Kinds are separate id
+# namespaces, so chaly and dax each need an arm under motorcycle AND moped —
+# the no-vanish gate listed them twice and it was right to.
+# Derived: released name -> Honda rename value -> slug, per kind.
+"motorcycle/honda/chaly": "motorcycle/honda/cf50-chaly"  # Chaly -> CF50 Chaly
+"motorcycle/honda/dax": "motorcycle/honda/dax-st50"  # Dax -> Dax ST50
+"motorcycle/honda/vtr1000": "motorcycle/honda/vtr1000-firestorm"  # VTR1000 -> VTR1000 Firestorm
+"motorcycle/honda/xl600v": "motorcycle/honda/xl600v-transalp"  # XL600V -> XL600V Transalp
+"motorcycle/honda/xl650v": "motorcycle/honda/xl650v-transalp"  # XL650V -> XL650V Transalp
+"motorcycle/honda/xrv650": "motorcycle/honda/xrv650-africa-twin"  # XRV650 -> XRV650 Africa Twin
+# xrv750 · xref sign-off, CAUSE A (expired upstream), corrected method:
+#   92/6535  ->  <PVRNUM>92/6535</PVRNUM> in lu_delta_2026-05.xml and
+#                lu_delta_202604.xml ONLY (the two April files);
+#                0 inside es/fi/ua zips, 0 in the current lu_delta_202607.xml.
+# Context checked rather than assumed — a 7-character string like this can
+# false-positive anywhere, so the LU hit was read in place to confirm it is a
+# type-approval field and not a substring of something else.
+# LU serves a rolling 3-month window now reading 2026-05…2026-07, so April is
+# gone and no fold decision reaches it.
+"motorcycle/honda/xrv750":
+  to: "motorcycle/honda/xrv750-africa-twin"
+  accepted_xref_loss: ["92/6535"]  # XRV750 -> XRV750 Africa Twin; LU April-only, expired with the window
+"moped/honda/cf50": "moped/honda/cf50-chaly"  # CF50 -> CF50 Chaly
+"moped/honda/chaly": "moped/honda/cf50-chaly"  # Chaly -> CF50 Chaly
+"moped/honda/cl50": "moped/honda/cl50-benly"  # CL50 -> CL50 Benly
+"moped/honda/cl50-benley": "moped/honda/cl50-benly"  # CL50 Benley -> CL50 Benly
+"moped/honda/dax": "moped/honda/dax-st50"  # Dax -> Dax ST50
+"moped/honda/dax50": "moped/honda/dax-st50"  # DAX50 -> Dax ST50
+"moped/honda/st50": "moped/honda/dax-st50"  # ST50 -> Dax ST50
+"moped/honda/st50dax": "moped/honda/dax-st50"  # ST50DAX -> Dax ST50
+"motorcycle/honda/f6c": "motorcycle/honda/valkyrie"  # F6C -> Valkyrie
+"motorcycle/honda/f6c-valkyrie": "motorcycle/honda/valkyrie"  # F6C Valkyrie -> Valkyrie
+"motorcycle/honda/gl1500c": "motorcycle/honda/valkyrie"  # GL1500C -> Valkyrie
+"motorcycle/honda/gl1500c-f6c": "motorcycle/honda/valkyrie"  # GL1500C F6C -> Valkyrie
+"motorcycle/honda/gl1000": "motorcycle/honda/gl1000-gold-wing"  # GL1000 -> GL1000 Gold Wing
+"motorcycle/honda/gl1100": "motorcycle/honda/gl1100-gold-wing"  # GL1100 -> GL1100 Gold Wing
+# gl1200 · xref sign-off, CAUSE A (expired upstream), and the method is the
+# corrected one — searched the uncompressed caches AND inside every zip, which
+# is what data#297 failed to do:
+#   1000000000103054@AE  ->  lu_delta_2026-05.xml + lu_delta_202604.xml ONLY
+#                            (the two April files), 0 hits in any .zip,
+#                            0 in the current lu_delta_202607.xml
+# LU serves a rolling 3-month window now reading 2026-05…2026-07, so April is
+# gone and no fold decision reaches it. Distinct from the zx-12r case in the
+# kawasaki block, which is present-but-unpublished and therefore recoverable.
+"motorcycle/honda/gl1200":
+  to: "motorcycle/honda/gl1200-gold-wing"
+  accepted_xref_loss: ["1000000000103054@AE"]  # GL1200 -> GL1200 Gold Wing; LU April-only, expired with the window
+"motorcycle/honda/gl1200-gold-wing-aspencade": "motorcycle/honda/gl1200-gold-wing"  # GL1200 Gold Wing Aspencade -> GL1200 Gold Wing
+"motorcycle/honda/gl1500": "motorcycle/honda/gl1500-gold-wing"  # GL1500 -> GL1500 Gold Wing
+"motorcycle/honda/gl1500-goldwing": "motorcycle/honda/gl1500-gold-wing"  # GL1500 Goldwing -> GL1500 Gold Wing
+"motorcycle/honda/gl1500-goldwing-se": "motorcycle/honda/gl1500-gold-wing"  # GL1500 Goldwing Se -> GL1500 Gold Wing
+"motorcycle/honda/gl1500-interstate": "motorcycle/honda/gl1500-gold-wing"  # GL1500 Interstate -> GL1500 Gold Wing
+"motorcycle/honda/gl1500se": "motorcycle/honda/gl1500-gold-wing"  # GL1500SE -> GL1500 Gold Wing
+"motorcycle/honda/gl1500se-goldwing": "motorcycle/honda/gl1500-gold-wing"  # GL1500SE Goldwing -> GL1500 Gold Wing
+"motorcycle/honda/gl1800": "motorcycle/honda/gl1800-gold-wing"  # GL1800 -> GL1800 Gold Wing
+"motorcycle/honda/gl1800-goldwing": "motorcycle/honda/gl1800-gold-wing"  # GL1800 Goldwing -> GL1800 Gold Wing
+"motorcycle/honda/gl1800a": "motorcycle/honda/gl1800-gold-wing"  # GL1800A -> GL1800 Gold Wing
+"motorcycle/honda/gold-wing-1500": "motorcycle/honda/gl1500-gold-wing"  # Gold Wing 1500 -> GL1500 Gold Wing
+"motorcycle/honda/gold-wing-1800": "motorcycle/honda/gl1800-gold-wing"  # Gold Wing 1800 -> GL1800 Gold Wing
+"motorcycle/honda/gold-wing-gl1500": "motorcycle/honda/gl1500-gold-wing"  # Gold Wing GL1500 -> GL1500 Gold Wing
+"motorcycle/honda/gold-wing-gl1500se": "motorcycle/honda/gl1500-gold-wing"  # Gold Wing GL1500SE -> GL1500 Gold Wing
+"motorcycle/honda/gold-wing-gl1800": "motorcycle/honda/gl1800-gold-wing"  # Gold Wing GL1800 -> GL1800 Gold Wing
 "motorcycle/honda/50sport-c110":               "motorcycle/honda/50-sport-c110"               # 50SPORT C110 -> 50 Sport C110  [fi,nl]
 "motorcycle/honda/benly125":                   "motorcycle/honda/benly-125"                   # BENLY125 -> Benly 125  [nl,nz]
 "motorcycle/honda/bros400":                    "motorcycle/honda/bros-400"                    # BROS400 -> Bros 400  [nl,ua]
@@ -504,14 +579,14 @@
 "motorcycle/honda/forza750":                   "motorcycle/honda/forza-750"                   # FORZA750 -> Forza 750  [th]
 "motorcycle/honda/gl1100gold-wing":            "motorcycle/honda/gl1100-gold-wing"            # GL1100GOLD Wing -> GL1100 Gold Wing  [nl,nz]
 "motorcycle/honda/gl1200aspencade":            "motorcycle/honda/gl1200-aspencade"            # GL1200ASPENCADE -> GL1200 Aspencade  [fi,nl]
-"motorcycle/honda/gl1200gold-wing-aspencade":  "motorcycle/honda/gl1200-gold-wing-aspencade"  # GL1200GOLD Wing Aspencade -> GL1200 Gold Wing Aspencade  [fi,nl]
-"motorcycle/honda/gl1500goldwing":             "motorcycle/honda/gl1500-goldwing"             # GL1500GOLDWING -> GL1500 Goldwing  [fi,nl,nz]
-"motorcycle/honda/gl1500goldwing-se":          "motorcycle/honda/gl1500-goldwing-se"          # GL1500GOLDWING Se -> GL1500 Goldwing Se  [nl,nz]
-"motorcycle/honda/gl1500interstate":           "motorcycle/honda/gl1500-interstate"           # GL1500INTERSTATE -> GL1500 Interstate  [nl,nz]
-"motorcycle/honda/gl1800goldwing":             "motorcycle/honda/gl1800-goldwing"             # GL1800GOLDWING -> GL1800 Goldwing  [fi,nl]
+"motorcycle/honda/gl1200gold-wing-aspencade":  "motorcycle/honda/gl1200-gold-wing"  # GL1200GOLD Wing Aspencade -> GL1200 Gold Wing Aspencade  [fi,nl] — chain flattened 2026-08-21, was gl1200-gold-wing-aspencade
+"motorcycle/honda/gl1500goldwing":             "motorcycle/honda/gl1500-gold-wing"             # GL1500GOLDWING -> GL1500 Goldwing  [fi,nl,nz] — chain flattened 2026-08-21, was gl1500-goldwing
+"motorcycle/honda/gl1500goldwing-se":          "motorcycle/honda/gl1500-gold-wing"          # GL1500GOLDWING Se -> GL1500 Goldwing Se  [nl,nz] — chain flattened 2026-08-21, was gl1500-goldwing-se
+"motorcycle/honda/gl1500interstate":           "motorcycle/honda/gl1500-gold-wing"           # GL1500INTERSTATE -> GL1500 Interstate  [nl,nz] — chain flattened 2026-08-21, was gl1500-interstate
+"motorcycle/honda/gl1800goldwing":             "motorcycle/honda/gl1800-gold-wing"             # GL1800GOLDWING -> GL1800 Goldwing  [fi,nl] — chain flattened 2026-08-21, was gl1800-goldwing
 "motorcycle/honda/gl500interstate":            "motorcycle/honda/gl500-interstate"            # GL500INTERSTATE -> GL500 Interstate  [nl,nz]
-"motorcycle/honda/gold-wing1500":              "motorcycle/honda/gold-wing-1500"              # Gold WING1500 -> Gold Wing 1500  [fi,nl]
-"motorcycle/honda/gold-wing1800":              "motorcycle/honda/gold-wing-1800"              # Gold WING1800 -> Gold Wing 1800  [fi,nl]
+"motorcycle/honda/gold-wing1500":              "motorcycle/honda/gl1500-gold-wing"              # Gold WING1500 -> Gold Wing 1500  [fi,nl] — chain flattened 2026-08-21, was gold-wing-1500
+"motorcycle/honda/gold-wing1800":              "motorcycle/honda/gl1800-gold-wing"              # Gold WING1800 -> Gold Wing 1800  [fi,nl] — chain flattened 2026-08-21, was gold-wing-1800
 "motorcycle/honda/hornet600":                  "motorcycle/honda/hornet-600"                  # HORNET600 -> Hornet 600  [nl,ua]
 "motorcycle/honda/hornet900":                  "motorcycle/honda/hornet-900"                  # HORNET900 -> Hornet 900  [nl,ua]
 "motorcycle/honda/lead125":                    "motorcycle/honda/lead-125"                    # LEAD125 -> Lead 125  [nl,nz,th,ua]
@@ -2455,8 +2530,8 @@
 "motorcycle/honda/fire-blade": "motorcycle/honda/fireblade" # "Fire Blade" -> "Fireblade"
 "motorcycle/honda/goldwing": "motorcycle/honda/gold-wing" # "Goldwing" -> "Gold Wing"
 "motorcycle/honda/gl1200-goldwing": "motorcycle/honda/gl1200-gold-wing" # "GL1200 Goldwing" -> "GL1200 Gold Wing"
-"motorcycle/honda/goldwing-gl1500": "motorcycle/honda/gold-wing-gl1500" # "Goldwing GL1500" -> "Gold Wing GL1500"
-"motorcycle/honda/goldwing-gl1800": "motorcycle/honda/gold-wing-gl1800" # "Goldwing GL1800" -> "Gold Wing GL1800"
+"motorcycle/honda/goldwing-gl1500": "motorcycle/honda/gl1500-gold-wing" # "Goldwing GL1500" -> "Gold Wing GL1500" — chain flattened 2026-08-21, was gold-wing-gl1500
+"motorcycle/honda/goldwing-gl1800": "motorcycle/honda/gl1800-gold-wing" # "Goldwing GL1800" -> "Gold Wing GL1800" — chain flattened 2026-08-21, was gold-wing-gl1800
 "moped/honda/gyrox": "moped/honda/gyro-x" # "Gyrox" -> "Gyro X"
 "moped/honda/ac0-1": "moped/honda/ac01" # "AC0 1" -> "AC01"
 "moped/honda/ns1": "moped/honda/ns-1" # "NS1" -> "NS-1"
