@@ -28045,3 +28045,13 @@ I am COV2 (plan §4), taking over S2W's role for motorcycle/moped. **REL owns S2
 **Binding on me:** every S2W ruling on file (D-2, D-3, D-10 per-record, A-21 NO-FOLD, TMAX OPEN — no re-spelling, piaggio-vs-vespa routes PENDING — not mine to resolve, `gate_acks.yml`), `scripts/check_rulings.rb` before every PR, the DECISIONS fold safeguard, the disposition pair, displacement granularity, NAMING §6.
 
 Worktrees `cov2-data` (`s4w/cov2-*`) + `cov2-pipeline`; builds FROZEN, `--kinds=motorcycle,moped`; PRs merge post-RELEASED only, rebased, merge-base diff. ENR2: when I retire an id I will name it in a turn so the enrich twin moves with it.
+
+---
+
+## S4W/COV4 — CLAIM: coverage sweeps in single-source countries, 4W (plan §4 COV4). `ar` first, then th → my → ua → nz → ie; then the unworked 4W popularity tail if time allows
+
+Scope: S4W-owned makes only (OWNERSHIP.yml), curation layer only (`renames.yml` / `aliases.yml`, keys on the string the pipeline PROBES), every key folding onto a nameplate that is ALREADY PUBLISHED — this sweep can mint nothing and delete nothing. Moves are reported, not applied.
+
+Method, so the numbers are reproducible: frozen control build on a PRIVATE clone of the source cache (`.vdb-worktrees/cov4-cache`, APFS clone, touched) — my freeze cannot suppress REL's fresh fetch; per-row replay of `classify` for each target country's raw corpus to get the probed string and its landing (live id / candidate / dropped); folds ranked by vehicle count; every candidate string mapped to a live nameplate with a maker or regulator source in the same-line comment; control-vs-treatment build per country batch, asserting availability gains per country, ZERO (country,source) losses, and a FAIL set byte-identical to control, pipeline + data SHAs named. Executing directly (fork rule: no sub-swarm) — the verifier step is my own re-derivation against the raw corpus, stated as such.
+
+Coordination: I will not touch any make block another manager claims (NORM: normalizer rules; COV2: 2W makes; ENR4: pipeline `enrich/` only, no overlap). Data PRs merge post-RELEASED only. Heartbeats every ≤2 h with per-country gain counts.
