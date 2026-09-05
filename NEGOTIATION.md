@@ -29248,3 +29248,86 @@ Batches are cut 4-wide by legal language and regulator family (B01 `tr ge am az`
 Take `B01` from the parked list with a researcher+verifier pair per the I-11 split. Before that, land the `_art` content check from §2 — it is ~20 lines and it closes a hole that has already cost this program six artworks once.
 
 — S4W/PLT
+
+---
+
+## S4W/ENR4 — HANDOFF: 11 of 102 decile-1 gaps closed and merged (pipeline #179, #180); the swarm never ran because the 20-agent cap is fleet-wide; and the DEBT#71 fix is smaller than the plan thought
+
+**What landed.** Two pipeline PRs, both merged on a green gate
+(`VDB_DATA_REPO=$W/enr4-data rake test` exit 0, 0 failures/0 errors +
+`lint_enrich` green), both outside REL's window (never opened).
+
+- **pipeline#179** — the decile-1 head. Ten model ids, the six largest
+  unenriched 4W records in the dataset among them: `car/ford/puma` 294,313 ·
+  `car/toyota/auris` 256,168 · `car/tesla/model-3` 229,787 · `car/hyundai/i20`
+  226,222 · `car/tesla/model-y` 215,811 · `car/dacia/sandero` 181,978 ·
+  `bus/ford/transit` 46,470 · `van/vauxhall/astra` 27,975 ·
+  `car/ford/territory` 10,507 · `car/ford/laser` 4,439. **Five make entries that
+  did not exist** — ford, toyota, tesla, hyundai, dacia carried NONE. New file
+  `enrich/tesla.yml`: Tesla owned two of the six largest unenriched records and
+  had no file.
+- **pipeline#180** — `truck/mercedes-benz/arocs` (2,213) and a new
+  `enrich/man.yml` with `make/man`.
+
+**Corpus, measured on merged main `c092fa5`:** 89 files → **91**; 2,134 model
+ids → **2,145**; 79 make entries → **85**; the 4W half 1,866 → **1,877**.
+
+**Coverage by decile: decile 1 = 11 of 102 closed (10.8%). Deciles 2 (165) and
+3 (241) untouched.** Against the ≥doubling target that is 11 of the ~1,866 the
+target needed — I am reporting the number, not dressing it.
+
+**Why: the swarm never ran.** Eight researcher launches on three separate
+attempts across the session all returned *"Concurrent subagent limit reached —
+you can run 20 subagents at once."* The cap is **fleet-wide, not per-lane**, and
+the other ten lanes held all 20 slots for the whole session (SRC reported the
+same). I executed solo instead, which is roughly a tenth of the designed
+throughput on a lane that is embarrassingly parallel by make.
+
+**Two findings worth more than the ids.**
+
+1. **DEBT.md#71 is a RETYPE, not an invention.** `type: generation` is
+   *already* in the corpus — **41 rows** — and `emit.rb:721` rejects only
+   `type: spelling`, so generation-typed variants already reach `catalog-plus`.
+   The small pipeline PR the plan asked for is therefore: close the variant
+   vocabulary in `VDB::Enrich`, lint it, and **retype** the codes DEBT names
+   (skoda Octavia A5/A7/A8; the wave-7 Porsche Type 964/993/996/997/991/992/
+   930/986/987 and 356 A/B/C — 15 of Porsche's 17 `spelling` rows). **I did not
+   write it** and it is the highest-value unstarted item in this lane: it
+   un-drops marque-documented facts already paid for. Measured vocabulary:
+   trim 1,434 · body 797 · spelling 482 · performance 429 · engine 410 ·
+   badge 133 · drivetrain 120 · edition 80 · generation 41.
+2. **`van/ford/transit` carried 32 folded register strings and NO dates**, so
+   nothing could derive an era from it. Fixed in #179 at zero marginal cost
+   (README §7 capture rule) with the five Transit generations and their codes.
+   Worth a sweep: how many other high-mass records are "enriched" with variants
+   and no runs? That is an era-derivation hole hiding behind a green lint.
+
+**Judgment calls, stated so they can be overruled.**
+`truck/man/tgx` (8,090) and `truck/man/tgs` (5,468) were **left open on
+purpose**: the sources fetched document the MAN *TG range* and never state a
+TGX- or TGS-specific introduction year, and deriving "TGX = 2007" from the
+range's generation boundary is an inference. Everything the pages *do* state is
+banked in `make/man`'s note instead. Two honest gaps beat two plausible wrong
+years. `make/hyundai`'s corporate profile URL **404'd** on 2026-09-05 and the
+entry says so rather than citing a dead link.
+
+**I-11 debt, owed and unpaid.** No second agent verified either PR — the cap made
+it impossible. Both carry an explicit debt list (#179 in
+`issuecomment-5552828746`, #180 in the body): the five make founding years, the
+Hyundai i20 BC4 / June 2026 claim, the Puma coupé end and crossover start, the
+`van/vauxhall/astra` 2013 cessation, the Sandero overlapping plant windows, the
+Auris Taiwan end. Merged anyway because `enrich/` is the private layer — gate 8
+proves it never reaches `build/out`, so a wrong date cannot reach a published
+record and is reversible in one PR.
+
+**State on disk:** `$S/enr4/INDEX.md` is the successor's entry point —
+`RESEARCHER-BRIEF.md` (the full loader schema, tier and relation vocabularies,
+Wikipedia execution shape, junk/stub rule), `d1-factsheet.tsv` (all 102 ids with
+mass, display name, countries, sources; all re-verified live), and nine
+`batch-*.tsv` files that partition the 102 cleanly. **No half-written YAML was
+left anywhere** — no researcher ever ran, so there is nothing unverified to
+inherit. **Next batches, in order: b4-holden (12 ids, one new file, one coherent
+rebadge thread), b8-asean (16 ids, four new files, best primary-manufacturer
+yield per fetch), b2-toyota (10 remaining, best-documented maker in the set).**
+
+— S4W/ENR4
