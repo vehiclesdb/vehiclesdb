@@ -29196,3 +29196,55 @@ Recoverable S4W mass still on the table, per country (vehicles / fold groups):
 I ran solo: the account-wide 20-agent ceiling was saturated by other lanes for the whole window, so every fold above was researched, applied and re-derived by me. That is why this is one country and not six.
 
 — S4W/COV4
+
+---
+
+## S4W/PLT — HANDOFF: `#323` MERGED. It was not a duplicate-rows bug — it was six Wikimedia 429 error pages committed as artwork, over the top of six valid SVGs, carrying the owner's home IP into a public CC-BY repo.
+
+*Wrap-up on the coordinator's call. Data `main` verified green after merge: `plates lint: OK`, 124 files / 1381 series / `_art` ledger 6060 rows / 412 open assets.*
+
+### 1 · Shipped
+
+**`data#323` MERGED** (squash, 2026-09-05 15:32 UTC, lint pass on the rebased head `866d73e`; remote branch deleted). What the merge actually contains: **272 insertions, zero deletions — sixteen `note:` blocks and nothing else.**
+
+The handoff described sixteen lint failures as "13 duplicate rows + 3 assets missing". That was the lint's output, not the PR's content. Opening the bytes instead:
+
+- **Six committed `.svg` files were HTML.** `de-rp`, `de-sh`, `de-sl`, `de-sn`, `de-st`, `de-th` were each **exactly 2,168 bytes** of `<!DOCTYPE html><title>Wikimedia Error</title>` — `Error: 429, Your bot is making too many requests`, six consecutive Varnish XIDs three seconds apart. The identical byte count across six different coats of arms was the tell.
+- **They had overwritten valid art** (9–146 KB SVGs, already ledgered). The PR as authored was a **net loss of six artworks** under a commit message reading "re-harvested".
+- **Every one embedded the harvesting machine's IPv6 address** in a `Sensitive client information` block. This repo mirrors to jsDelivr/Zenodo/HuggingFace. That barred the merge ahead of the lint failure. Merged by squash so only the final tree landed; branch deleted so the blob is gone. `grep -rl 'Wikimedia Error' plates/_art/` and `grep -rl '2001:818:' plates/_art/` are both **0 on main**.
+- **All sixteen appended rows were redundant** — each named a Commons file already ledgered open under a different local filename, proved by identical `direct_url` and, for the two redirect cases, by the API resolving both titles to one `sha1`. So the three "assets missing on disk" were never a harvest gap; they were renames of assets the repo already holds. **Nothing needed downloading.**
+
+**What was preserved**, because it was the one real thing in S5W's work: which arms file is the *seal-relevant* one for each Land — merged into the sixteen canonical rows. Recorded at the tier it earns: S5W asserted it without pinning an instrument, so the note says so and says "do not promote to `instrument-in-force` until Anlage 5 is read directly".
+
+**Two corrections I made to my own earlier turn, before acting on them:**
+1. I said I would adopt S5W's uniform `insignia: true`. **I did not.** Re-reading all 21 files through the Commons API showed every existing row already mirrors Commons `Restrictions=insignia` exactly — the field's documented meaning in this ledger's header. Flipping nine rows would have broken the mirror and made `license_verified_via: extmetadata` false for a value extmetadata does not carry. The family-wide caution belongs in the header and is already there.
+2. S5W's note cited "§ 12 Abs. 3 FZV". **Not reproduced.** Unverifiable from here — `gesetze-im-internet.de` times out (`curl` 28 at 40 s; WebFetch ECONNRESET), the same failure class REL measured on `govdata.de`. Our own pinned EU dossier (§2.2, which captured the FZV 2023 Anlagen index) shows the Stempelplakette provision is **Anlage 5**. The note cites Anlage 5's *title* from that capture and flags its *text* as not-read.
+
+Licensing posture untouched: zero `tier` changes, zero `license` changes. Verification: all 21 Commons titles re-read live — all `PD-Coa-Germany`, all "Public domain", **none CC-BY/BY-SA**; all 8 restored assets proved byte-identical to their row's Commons file by SHA-1, 8/8.
+
+### 2 · ⚠ A gate hole the program should close (not mine to bundle into a data PR)
+
+`lint_plates.rb`'s `_art` gate proves a path **exists** and that no two open rows claim it. **It does not prove the bytes are an image.** Six HTML error pages would have merged green had S5W named them uniquely — the path collision is the only reason any of this surfaced. Proposed fix: assert the root element / magic bytes per `element` type and reject HTML documents. Filing it here so the finding survives; a data fix and a gate change do not belong in one PR.
+
+### 3 · L5: enumerated and ranked, zero jurisdiction files authored
+
+Honest accounting — **124 jurisdictions in, 124 out.** The `#323` diagnosis consumed the window, and I judged it right to: a merge would have published the owner's IP address. No jurisdiction file reached lint-green, so under the wrap-up rule **nothing was landed on `main`**.
+
+The target list is parked, not lost: branch **`WIP-plt-l5-targets`**, file **`plates/_research/L5-TARGET-LIST.md`** (pushed, not for merge).
+
+**Manager-verified** (re-derived from the repo, not taken from the researcher): 124 files = **47 sovereign + 8 `au-*` + 13 `ca-*` + 56 `us-*`**; **all 35 owner seeds genuinely missing**; **all five US insular areas already covered** as `us-*` (do not re-add as `pr`/`gu`/`vi`/`as`/`mp`); `va` covered, `ps` not. Fleet/penetration figures are the researcher's and are **marked unverified** in the file — a verifier pass is owed.
+
+**Gap size: ~196 files to close L5** (144 UN members + `ps` + 44 dependencies + 7 flagged de-facto entities). 180+ needs ~56.
+
+**Three things for whoever takes this next:**
+- **PRD-PLATES §2.1 is STALE.** It documents `plates/us/<suffix>.yml`; the repo is flat `us-fl.yml`, and the `us.yml` "federation-level frame" the PRD promises **was never created** (same for `ca`/`au`). A consumer asking for "US plates" gets nothing.
+- **Seven de-facto entities need a code ruling before any file lands** (Kosovo, TRNC, Transnistria, Abkhazia, South Ossetia, Somaliland, SMOM) — the repo has no `x-` precedent. Nagorno-Karabakh is excluded: dissolved January 2024.
+- **Four "one jurisdiction = one file" breakages** need a decision: `bq` (three plate systems under one ISO code), `sh` (three series), `gg` (Alderney's own `AY`), `eh` (two issuing authorities).
+
+Batches are cut 4-wide by legal language and regulator family (B01 `tr ge am az` → B10 `tw hk mo kh`), with one constraint recorded: **`il` and `ps` must be sourced in the same batch, never split.**
+
+### 4 · Next step
+
+Take `B01` from the parked list with a researcher+verifier pair per the I-11 split. Before that, land the `_art` content check from §2 — it is ~20 lines and it closes a hole that has already cost this program six artworks once.
+
+— S4W/PLT
