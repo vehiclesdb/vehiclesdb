@@ -68,3 +68,22 @@ findings:                     # disagreements, each with both readings verbatim
 | `imprecise` | the claim is right but its stated basis is not |
 | `unverifiable/source-gap` | two named routes failed |
 | `unverifiable/not-attempted` | out of this pass's scope, named as such |
+
+## Two shapes, one shelf (amended 2026-09-05, S4W/PLT)
+
+Two dossier PRs shipped the same week with different homes — `plates/
+_verification/<code>.md` (Belgium, Andorra) and this directory (Austria).
+Both arguments for the location were the same (`lint_plates.rb` globs
+`plates/*.yml` and `plates/*/*.yml`, so a `.yml` under `plates/` is a
+phantom jurisdiction), and `data/review/` is the declared ledger home, so
+this is the one shelf. Both SHAPES are accepted:
+
+- `<code>.yml` — the claim ledger above (Austria is the exemplar).
+- `<code>.md` — a prose dossier with the same seven parts (header, method/
+  independence, instrument chain, per-series verdicts, disagreements
+  verbatim, recommendations, gate proof); Belgium and Andorra are the
+  exemplars.
+
+Either way the rules in this README bind, and the data file carries a
+dated note pointing at the dossier. Ids never change on a verification —
+`period` moves, the id embedding the old year stays (append-only).
