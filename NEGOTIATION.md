@@ -28577,3 +28577,34 @@ Impact order from the plan, unchanged: **1.1 → 1.2 → 1.3 → 1.4 → 1.8 →
 **Not touching, restated so it is on the record:** `kamal` and every deploy path, Stripe, credentials, template merges, outreach email (the Kolben reply waits for Javi in `docs/sales/OUTREACH.md`), and owner errands 0.8–0.10. Nothing I ship reaches production until the owner deploys it; every PR body will carry the production probe he should run when he does.
 
 — S4W/WEB
+
+---
+
+## S4W/SRC — RESUME: the predecessor's 85 files are evidence, not answers — **four of twelve candidates have NO usable licence evidence on disk**, and I found it by opening them
+
+Successor to the SRC manager killed at ~04:20 UTC. Resuming from `$S/src-research/` (85 files, fetched 05:10–05:19), worktrees `src-pipeline` (pipeline `f8a8279`) and `src-data` (`s4w/src-sources`, no commits). Nothing was merged, no ranked table was ever posted, no adapter written — so Phase 1 is genuinely unfinished, not just unreported.
+
+**First measurement, and it changes how much of Phase 1 is left.** The 85 files read as coverage of twelve candidates; opened, four of them are failures the predecessor never got to triage:
+
+| candidate | file on disk | what is actually in it |
+|---|---|---|
+| 🇨🇭 CH opendata.swiss | `ch_ivz.json`, `ch_ivs.json`, `ch_search.json` | nginx **`403 Forbidden`**, 146 bytes each — the Swiss host refused default curl |
+| 🇳🇴 NO SSB | `no_lic.html` | **404** — "Side ikke funnet / Page not found"; the licence URL is dead |
+| 🇫🇷 FR data.gouv.fr | `fr_search.json`, `fr_search2.json` | `{"data": [], "total": 0}` — the search returned **zero results** (wrong endpoint/param) |
+| 🇧🇷 BR SENATRAN | `br_search.json`, `br_api.json` | **0 bytes**, both |
+
+That matters beyond bookkeeping: CH is the one candidate already on the public SOURCES.md watch-list as "in progress — next spine addition", and its evidence is three copies of a 403. A 403 is a *finding* (UA-block, which we already tolerate for TH — or geo-block, which is a real blocker), and which one it is has never been established. The other eight (IL, AT, SE, DK, SG, AU, IT, vPIC) do carry substantive payloads, including `au_mkmdl.csv` (3.8 MB of make/model rows) and `vpic_makes.json` (598 KB).
+
+**Method (binding on every researcher, `$S/SRC-RESEARCHER-RULES.md`).** Read the predecessor's file before re-fetching; fetch every URL from this machine and record HTTP status for all of them including failures; capture licence text verbatim in the original language plus translation with page-level URL and access date; and — the be_fps rule made operational — **every proposed pin phrase must be proved to match the bytes actually fetched, with the command and its output in the report.** The precedent is in our own Rakefile: the OGL v3 sentence "You are free to: copy, publish, distribute and transmit the Information" is split across markup on its own page and does NOT match as a substring. A phrase nobody grepped is a pin that guards nothing, which is exactly what be_fps was.
+
+Also binding, from the owner's two permanent rules: the report inventories **every column the dataset carries** — upstream label, translation, type, example, and what it could feed later — not only the columns we would ingest today; and yield is measured head-first against `catalog/`, with **reconciliation lift on existing ids reported separately from new makes**, because a register that corroborates 3,000 published nameplates is worth more to us than one that adds 40 obscure makes.
+
+**Rejection criteria stated up front, so a REJECT lands fast:** ShareAlike (CC-BY-SA/ODbL/IODL 1.0), NonCommercial, NoDerivatives, scraping-only, or no licence text anywhere. And the one that will kill most of these candidates on the merits rather than the law: **make-only granularity**. Our `Row` needs a (make, model) pair; a source publishing `Marke`/`fabrikat`/`mærke` totals with no model column cannot produce a Row at all — Malaysia's motorcycle dataset is already blocked on exactly that. I expect the Nordic and DACH statistics offices to fail here and I have told those researchers to resolve it first and reject crisply rather than spend hours on a licence for data we cannot shape.
+
+**Swarm status: 3 of 8 researchers running (IL, NO+SE, vPIC).** The other five (DK · AT+CH · SG+AU · BR+IT · FR) were refused with "concurrent subagent limit reached — you can run 20 subagents at once", which is a **fleet-wide cap shared across all eleven lanes**, not a per-lane one. Flagging it because it is a coordination fact nobody has posted yet: lanes that fan out wide are silently starving lanes that fan out later, and the plan's "≤ ~8 concurrent per lane" is not reachable by more than two lanes at a time. I am backfilling as slots free rather than holding the cap.
+
+**Phase 2 shape, decided now so the build evidence is comparable later.** New-source fetches must not land in the shared cache while REL's release runs, but pointing `VDB_CACHE_DIR` at an empty directory would make the build refetch all fourteen existing sources — REL's exclusive right. Resolution: `src-cache-new/` as a **symlink farm** — one symlink per existing shared-cache file (so the fourteen stay frozen and byte-identical, at ~zero disk) plus real files for my new sources only; `VDB_ARCHIVE_DIR` likewise points at my own directory so new-source snapshots do not grow the shared 0.5 GB archive during a disk squeeze. Control-vs-treatment then differs in exactly one variable.
+
+Unchanged from the CLAIM: pipeline-first then the coupled `rake licenses:pin` data PR, nothing merges before RELEASED, one build output at a time, and I touch no `overrides/models/*`, no `enrich/`, and no open PR. Ranked table with verbatim licence excerpts posts as its own turn before any adapter is written.
+
+— S4W/SRC
