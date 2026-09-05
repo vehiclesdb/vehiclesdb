@@ -42,8 +42,11 @@ module AuditAggregate
   VERDICTS = %w[correct defective unverifiable].freeze
   SUBTYPES = %w[source-gap not-attempted].freeze
   # Head = deciles 1-6 (PRD-FIVE-NINES §1.3.1 option (i)); tail = 7-10 + none.
-  # The boundary is MASS-defined and read from decile-mass.json, never asserted.
-  HEAD_BANDS = (1..6).map(&:to_s).freeze
+  # The BOUNDARY is a program decision and is hardcoded here; what is read from
+  # decile-mass.json and never asserted is the MASS on either side of it. (The
+  # earlier comment claimed the boundary itself was read from the artifact,
+  # which was simply false.)
+  HEAD_MAX_DECILE = 6
 
   # ── statistics ────────────────────────────────────────────────────────────
   # Clopper-Pearson is what the protocol asks for ("95% Clopper-Pearson
@@ -110,15 +113,23 @@ module AuditAggregate
     end
 
     # Exact binomial 95% interval for k of n.
+    #
+    # n = 0 returns [0.0, 1.0], NOT [0.0, 0.0]. With no samples the 95% upper
+    # bound on the rate is 1, and an unsampled stratum that reports an upper
+    # bound of zero contributes NOTHING to the weighted bound — it publishes as
+    # a stratum with no defects because nobody looked at it. That is the exact
+    # silent-truncation failure PRD-FIVE-NINES §1.3.3 exists to prevent ("a
+    # stratum which cannot be sampled is reported rather than dropped"), and
+    # `rule_of_three(0)` below already got this right.
     def clopper_pearson(k, n, alpha: 0.05)
-      return [0.0, 0.0] if n.zero?
+      return [0.0, 1.0] if n.zero?
       lower = k.zero? ? 0.0 : beta_quantile(alpha / 2.0, k, n - k + 1)
       upper = k == n ? 1.0 : beta_quantile(1.0 - alpha / 2.0, k + 1, n - k)
       [lower, upper]
     end
 
     def wilson(k, n, z: 1.959963985)
-      return [0.0, 0.0] if n.zero?
+      return [0.0, 1.0] if n.zero?
       phat = k.to_f / n
       denom = 1 + z**2 / n
       centre = (phat + z**2 / (2 * n)) / denom
@@ -154,7 +165,7 @@ module AuditAggregate
     def band_of(id)
       d = @decile_of[id]
       return "none" if d.nil?
-      d <= 6 ? "head" : "tail"
+      d <= HEAD_MAX_DECILE ? "head" : "tail"
     end
 
     # w_head / w_tail WITHIN a half, read from the published artifact.
@@ -168,7 +179,11 @@ module AuditAggregate
       kinds.each do |k|
         next unless @mass["kinds"][k]
         @mass["kinds"][k].each do |band, x|
-          if band != "none" && band.to_i <= 6 then head += x["mass_share"] else tail += x["mass_share"] end
+          if band != "none" && band.to_i.between?(1, HEAD_MAX_DECILE)
+            head += x["mass_share"]
+          else
+            tail += x["mass_share"]
+          end
         end
       end
       total = head + tail
@@ -179,9 +194,60 @@ module AuditAggregate
   end
 
   # ── ledgers ───────────────────────────────────────────────────────────────
-  # A claim's identity is (id, claim, country). `country` is nil for
-  # everything but availability, where there is one claim PER entry.
-  def self.claim_key(c) = [c["id"], c["claim"], c["country"]].join("|")
+  # A claim's identity is (id, claim, country, run). `country` is nil for
+  # everything but availability, where there is one claim PER entry; `run` is
+  # nil except for enrichment, where the protocol re-derives EACH production
+  # run from its cited source, so one record legitimately carries several
+  # enrichment claims.
+  #
+  # Joined on \x00, not "|", and blank countries normalised to nil. With "|" a
+  # ledger id containing a pipe collides with a different (id, claim) pair, and
+  # `nil` vs `""` country produce the same key — in both cases the Hash silently
+  # keeps the last writer. That is protocol v1.2 rule 7's own lesson ("YAML
+  # last-wins silently discards audit history") reappearing one layer up.
+  def self.claim_key(c)
+    country = c["country"].to_s.strip
+    run = c["run"].to_s.strip
+    [c["id"].to_s, c["claim"].to_s, country.empty? ? nil : country,
+     run.empty? ? nil : run].join("\x00")
+  end
+
+  # Validation, run on every loaded row. These constants existed from the first
+  # draft and were never consulted, which was not a tidiness problem: the
+  # round's own researcher prompt (PROMPTS.md) hands agents the vocabulary
+  # "defective(<D-class>)" and "unverifiable/source-gap", and the tally below
+  # recognises neither — such a row incremented `total` and NO bucket, so a
+  # slice of genuine D6 defects would publish a 0.00% defect rate. The direction
+  # is anti-conservative, and it breaks the clean+defect==1 identity this file's
+  # header calls "the point, not a rounding coincidence". SCHEMA.md already says
+  # a ledger that does not parse does not publish; this enforces it.
+  def self.validate_row!(c, file, problems)
+    where = "#{file} → #{c['id']} #{c['claim']}"
+    unless CLAIM_TYPES.include?(c["claim"].to_s)
+      problems << "#{where}: unknown claim type #{c['claim'].inspect} (allowed: #{CLAIM_TYPES.join(', ')})"
+    end
+    v = c["verdict"].to_s
+    unless VERDICTS.include?(v)
+      problems << "#{where}: unknown verdict #{v.inspect} — write the bare word " \
+                  "(#{VERDICTS.join(', ')}); the D-class goes in `defect_class:` and the " \
+                  "unverifiable sub-type in `unverifiable_subtype:`"
+    end
+    if v == "defective" && c["defect_class"].to_s.strip.empty?
+      problems << "#{where}: defective without a `defect_class:`"
+    end
+    if v == "unverifiable" && !SUBTYPES.include?(c["unverifiable_subtype"].to_s)
+      # Protocol v1.3 rule 8: the sub-types mean opposite things — source-gap is
+      # a fact about the domain, not-attempted a fact about our effort — and
+      # RESULTS must print the split. Defaulting a missing one to
+      # not-attempted (the previous behaviour) silently corrupts that split and
+      # misroutes the source-gap queue.
+      problems << "#{where}: unverifiable needs `unverifiable_subtype:` " \
+                  "(#{SUBTYPES.join(' | ')}) — protocol v1.3 rule 8"
+    end
+    if c["unverifiable_subtype"].to_s == "source-gap" && Array(c["routes_failed"]).size < 2
+      problems << "#{where}: source-gap requires TWO named failed routes (protocol rule 1)"
+    end
+  end
 
   def self.load_ledgers(tag, half)
     dir = File.join(ROOT, "data", "review", "audit-#{tag}", "ledger")
@@ -190,6 +256,8 @@ module AuditAggregate
     abort "no researcher ledgers in #{dir}" if r_files.empty?
     researcher = {}
     verifier = {}
+    problems = []
+    contradictions = []
     meta = { "researcher_files" => r_files.map { |f| File.basename(f) },
              "verifier_files" => v_files.map { |f| File.basename(f) },
              "slices" => {} }
@@ -199,9 +267,25 @@ module AuditAggregate
       meta["slices"][slice] ||= {}
       meta["slices"][slice]["researcher"] = doc["researcher"]
       meta["slices"][slice]["build_pin"] = doc["build_pin"]
-      (doc["claims"] || []).each do |c|
+      claims = doc["claims"] || []
+      stated = doc.dig("SUMMARY", "claims_total")
+      if stated && stated.to_i != claims.size
+        problems << "#{File.basename(f)}: SUMMARY.claims_total #{stated} != #{claims.size} rows in `claims:`"
+      end
+      claims.each do |c|
+        validate_row!(c, File.basename(f), problems)
         c = c.merge("slice" => slice)
-        researcher[claim_key(c)] = c
+        k = claim_key(c)
+        # A duplicate key across batches is a CROSS-BATCH CONTRADICTION, and
+        # RESULTS-s2w.md committed in writing that these are "NOT silently
+        # resolved... A ledger that hid the disagreement would be worse than one
+        # that carries it." Last-write-wins hid them; now they are reported.
+        if (prev = researcher[k])
+          contradictions << "#{c['id']} #{c['claim']}#{c['country'] ? "/#{c['country']}" : ''}: " \
+                            "slice #{prev['slice']} says #{prev['verdict']}, " \
+                            "slice #{slice} says #{c['verdict']}"
+        end
+        researcher[k] = c
       end
     end
     v_files.each do |f|
@@ -210,9 +294,20 @@ module AuditAggregate
       meta["slices"][slice] ||= {}
       meta["slices"][slice]["verifier"] = doc["verifier"]
       (doc["verdicts"] || []).each do |v|
-        verifier[claim_key(v)] = v.merge("slice" => slice)
+        k = claim_key(v)
+        # An orphan verifier row is a typo in id/claim/country. Left alone it
+        # does not overwrite anything — it becomes its OWN resolved claim,
+        # counting one underlying claim twice AND hiding the real overturn.
+        unless researcher.key?(k)
+          problems << "#{File.basename(f)}: verdict for #{v['id']} #{v['claim']}" \
+                      "#{v['country'] ? "/#{v['country']}" : ''} matches no researcher claim " \
+                      "— check id/claim/country spelling"
+        end
+        verifier[k] = v.merge("slice" => slice)
       end
     end
+    meta["problems"] = problems
+    meta["contradictions"] = contradictions
     [researcher, verifier, meta]
   end
 
@@ -310,11 +405,48 @@ module AuditAggregate
       out["strata"][name] = r
     end
     if w
-      rh = out["strata"]["head"]["cp_hi"]   # upper bounds, so the sum is a bound
+      # THE PUBLISHED BOUND IS RECORD-LEVEL, and the claim-level one is carried
+      # beside it as a diagnostic. Two reasons, both load-bearing:
+      #
+      #  1. UNITS. w_head/w_tail are registration-MASS shares and mass attaches
+      #     to records. PRD-FIVE-NINES §1.2's target is per-record
+      #     (P(defective | a record a consumer touches)) and §1.3.1's whole
+      #     budget is in record units ("one defective head record is
+      #     1/2648 = 3.8e-4"). Weighting record mass by a claim rate mixes units.
+      #  2. INDEPENDENCE. Clopper-Pearson assumes n independent Bernoulli
+      #     trials. Claims CLUSTER inside a record — a truncation stub fails id
+      #     and drags name; a stale register pull fails every availability claim
+      #     at once — so a claim-level interval is anticonservative: simulated
+      #     coverage of a nominal one-sided 97.5% claim-level bound under
+      #     realistic clustering runs 78-86%, while the same construction on
+      #     records (the actual sampling unit) holds its nominal level.
+      #
+      # The composition itself is correct and was verified independently: each
+      # `cp_hi` is the 0.975 beta quantile, i.e. a ONE-SIDED 97.5% bound, and
+      # two of them combine by the union bound to >= 95% for the weighted sum
+      # (Monte Carlo coverage 0.985 on a realistic head/tail configuration).
+      # Composing two one-sided 95% bounds instead would guarantee only 90%.
+      rec_h = Stats.clopper_pearson(out["strata"]["head"]["records_defective"],
+                                    out["strata"]["head"]["records"])[1]
+      rec_t = Stats.clopper_pearson(out["strata"]["tail"]["records_defective"],
+                                    out["strata"]["tail"]["records"])[1]
+      rh = out["strata"]["head"]["cp_hi"]
       rt = out["strata"]["tail"]["cp_hi"]
-      out["bound"] = { "w_head" => w["w_head"], "r_head_hi" => rh,
-                       "w_tail" => w["w_tail"], "r_tail_hi" => rt,
-                       "weighted_upper_bound" => w["w_head"] * rh + w["w_tail"] * rt }
+      out["bound"] = {
+        "unit" => "record",
+        "w_head" => w["w_head"], "r_head_hi" => rec_h,
+        "w_tail" => w["w_tail"], "r_tail_hi" => rec_t,
+        "weighted_upper_bound" => w["w_head"] * rec_h + w["w_tail"] * rec_t,
+        "alpha_note" => "each stratum bound is one-sided 97.5%; union bound gives >=95% " \
+                        "for the weighted sum. Combining BOTH halves adds two more terms — " \
+                        "allocate alpha across all four before publishing a catalog-wide figure.",
+        "claim_level_diagnostic" => {
+          "r_head_hi" => rh, "r_tail_hi" => rt,
+          "weighted_upper_bound" => w["w_head"] * rh + w["w_tail"] * rt,
+          "caveat" => "claims cluster within records, so this is NOT a valid 95% bound; " \
+                      "reported for comparison with the baseline round only"
+        }
+      }
     end
     out
   end
@@ -322,14 +454,24 @@ module AuditAggregate
   # The audit's own error rate (§5.2): of the researcher `correct` claims the
   # verifier re-derived, how many moved? Published, because a measurement
   # instrument without a published error rate is a marketing number.
-  def self.audit_error_rates(researcher, verifier, resolved)
-    sampled = verifier.values.select { |v| researcher[claim_key(v)] &&
-                                           researcher[claim_key(v)]["verdict"].to_s == "correct" }
-    missed = sampled.count { |v| v["final_verdict"].to_s != "correct" && !v["final_verdict"].to_s.empty? }
+  def self.audit_error_rates(researcher, verifier, _resolved)
+    # A verifier row with a BLANK `final_verdict` is a row the verifier did not
+    # re-derive. It must not sit in the denominator: a verifier that lists every
+    # claim and fills final_verdict only where it actually worked would
+    # otherwise dilute the miss rate by however completely it listed rows
+    # (measured on a fixture: a true 1-of-2 = 50% published as 1-of-10 = 10%).
+    # This is the program's OWN error rate — the number §5.2 exists to keep
+    # honest — so the denominator is "claims the verifier re-derived", nothing
+    # else. `resolve` already treats a blank as "the verifier did not speak";
+    # this makes the two agree.
+    rederived = verifier.values.select { |v| !v["final_verdict"].to_s.empty? }
+    sampled = rederived.select { |v| researcher[claim_key(v)] &&
+                                     researcher[claim_key(v)]["verdict"].to_s == "correct" }
+    missed = sampled.count { |v| v["final_verdict"].to_s != "correct" }
     cp = Stats.clopper_pearson(missed, sampled.size)
     # Defect verdicts: did adversarial re-derivation hold them?
-    dv = verifier.values.select { |v| researcher[claim_key(v)] &&
-                                      researcher[claim_key(v)]["verdict"].to_s == "defective" }
+    dv = rederived.select { |v| researcher[claim_key(v)] &&
+                                researcher[claim_key(v)]["verdict"].to_s == "defective" }
     held = dv.count { |v| v["final_verdict"].to_s == "defective" }
     # Class labels: confirmed defective, but under a different D-class.
     moved = dv.count do |v|
@@ -338,7 +480,10 @@ module AuditAggregate
         !v["final_defect_class"].to_s.empty? &&
         v["final_defect_class"].to_s != r["defect_class"].to_s
     end
-    { "corrects_sampled" => sampled.size, "corrects_missed" => missed,
+    { "verifier_rows" => verifier.size,
+      "verifier_rows_rederived" => rederived.size,
+      "verifier_rows_blank" => verifier.size - rederived.size,
+      "corrects_sampled" => sampled.size, "corrects_missed" => missed,
       "miss_rate" => sampled.empty? ? 0.0 : missed.to_f / sampled.size,
       "miss_cp_lo" => cp[0], "miss_cp_hi" => cp[1],
       "defect_verdicts_reviewed" => dv.size, "defect_verdicts_held" => held,
@@ -357,10 +502,36 @@ module AuditAggregate
     researcher, verifier, meta = load_ledgers(tag, half)
     resolved = resolve(researcher, verifier)
     build_pin = meta["slices"].values.map { |s| s["build_pin"] }.compact.uniq
-    build = build_pin.size == 1 ? Build.new(build_pin.first) : nil
+    # Protocol v1.2 rule 6 exists BECAUSE auditing across a moving build
+    # produced three disagreeing population figures. Slices that disagree about
+    # which build they measured, or a pin that is not on disk, previously
+    # degraded to build=nil, no strata, no bound, exit 0 — silence in exactly
+    # the place the rule was written for.
+    if build_pin.size > 1
+      meta["problems"] << "slices disagree about build_pin (#{build_pin.join(' vs ')}) — " \
+                          "a round measures ONE pinned build (protocol v1.2 rule 6)"
+    elsif build_pin.empty?
+      meta["problems"] << "no build_pin recorded in any ledger — the round is unpinned"
+    elsif !File.directory?(build_pin.first)
+      meta["problems"] << "build_pin #{build_pin.first} is not on disk — strata and weights " \
+                          "cannot be derived, so no bound can be published"
+    end
+    build = build_pin.size == 1 && File.directory?(build_pin.first) ? Build.new(build_pin.first) : nil
+    if build
+      missing = researcher.values.map { |c| c["id"] }.uniq.reject { |id| build.decile_of.key?(id) }
+      unless missing.empty?
+        # "No decile" (a real band, 288 records) and "not in the pinned build"
+        # (a ledger typo or a record retired since the pin) both used to land in
+        # tail, indistinguishably.
+        meta["problems"] << "#{missing.size} audited id(s) are absent from the pinned build " \
+                            "(e.g. #{missing.first(3).join(', ')}) — these are NOT the " \
+                            "no-decile band; they are unresolvable against this build"
+      end
+    end
     {
       "tag" => tag, "half" => half, "meta" => meta,
       "build_pin" => build_pin,
+      "problems" => meta["problems"], "contradictions" => meta["contradictions"],
       "i11" => check_i11(meta),
       "by_claim" => tally(resolved).transform_values { |r| rates(r) },
       "overall" => rates(tally(resolved).values.reduce({ "correct" => 0, "defective" => 0,
@@ -435,11 +606,13 @@ module AuditAggregate
     raise "betai(1)" unless Stats.betai(2, 3, 1.0) == 1.0
     raise "betai monotone" unless Stats.betai(2, 3, 0.3) < Stats.betai(2, 3, 0.7)
     # Resolution rule: verifier wins where it spoke, researcher elsewhere.
-    r = { "car/a/b|id|" => { "id" => "car/a/b", "claim" => "id", "verdict" => "correct", "slice" => "1" },
-          "car/a/c|id|" => { "id" => "car/a/c", "claim" => "id", "verdict" => "defective",
-                             "defect_class" => "D6", "slice" => "1" } }
-    v = { "car/a/b|id|" => { "id" => "car/a/b", "claim" => "id", "final_verdict" => "defective",
-                             "final_defect_class" => "D8", "slice" => "1" } }
+    rc1 = { "id" => "car/a/b", "claim" => "id", "verdict" => "correct", "slice" => "1" }
+    rc2 = { "id" => "car/a/c", "claim" => "id", "verdict" => "defective",
+            "defect_class" => "D6", "slice" => "1" }
+    vc1 = { "id" => "car/a/b", "claim" => "id", "final_verdict" => "defective",
+            "final_defect_class" => "D8", "slice" => "1" }
+    r = { claim_key(rc1) => rc1, claim_key(rc2) => rc2 }
+    v = { claim_key(vc1) => vc1 }
     res = resolve(r, v)
     b_row = res.find { |x| x.id == "car/a/b" }
     c_row = res.find { |x| x.id == "car/a/c" }
@@ -457,10 +630,72 @@ module AuditAggregate
     # I-11 assertion fires on a self-signed slice.
     bad = { "slices" => { "1" => { "researcher" => "x", "verifier" => "x" } } }
     raise "I-11 check silent" if check_i11(bad).empty?
+
+    # ── regressions, each from an adversarial verification of this file ──────
+    # (1) The round's OWN prompt spells verdicts "defective(D6)" and
+    # "unverifiable/source-gap". Those used to increment `total` and no bucket,
+    # publishing a slice of real defects as a 0.00% defect rate.
+    probs = []
+    validate_row!({ "id" => "car/a/b", "claim" => "id", "verdict" => "defective(D6)" }, "f", probs)
+    raise "prompt-spelled verdict accepted silently" if probs.empty?
+    probs.clear
+    validate_row!({ "id" => "car/a/b", "claim" => "id", "verdict" => "unverifiable/source-gap" }, "f", probs)
+    raise "sub-typed verdict string accepted silently" if probs.empty?
+    probs.clear
+    validate_row!({ "id" => "car/a/b", "claim" => "availability", "verdict" => "unverifiable" }, "f", probs)
+    raise "unverifiable without a sub-type accepted" if probs.empty?
+    probs.clear
+    validate_row!({ "id" => "car/a/b", "claim" => "id", "verdict" => "defective",
+                    "defect_class" => "D6" }, "f", probs)
+    raise "valid row rejected: #{probs.inspect}" unless probs.empty?
+
+    # (2) An unsampled stratum must bound at 1.0, not 0.0 — otherwise it
+    # publishes as defect-free because nobody looked at it.
+    raise "n=0 upper bound is not 1.0" unless Stats.clopper_pearson(0, 0) == [0.0, 1.0]
+    raise "n=0 Wilson upper is not 1.0" unless Stats.wilson(0, 0) == [0.0, 1.0]
+
+    # (3) The audit's own error rate must count only claims the verifier
+    # actually re-derived. A verifier listing rows it did not touch used to
+    # dilute the denominator (a true 1-of-2 published as 1-of-10).
+  r2 = (1..10).to_h do |i|
+    c = { "id" => "car/a/m#{i}", "claim" => "id", "verdict" => "correct" }
+    [claim_key(c), c]
+  end
+  v2 = {}
+  [{ "id" => "car/a/m1", "claim" => "id", "final_verdict" => "defective",
+     "final_defect_class" => "D6" },                                    # re-derived, overturned
+   { "id" => "car/a/m2", "claim" => "id", "final_verdict" => "correct" } # re-derived, confirmed
+  ].each { |c| v2[claim_key(c)] = c }
+  # listed but NOT re-derived — must stay OUT of the denominator
+  (3..10).each { |i| c = { "id" => "car/a/m#{i}", "claim" => "id" }; v2[claim_key(c)] = c }
+    ae2 = audit_error_rates(r2, v2, nil)
+    unless ae2["corrects_sampled"] == 2 && ae2["corrects_missed"] == 1
+      raise "blank final_verdict diluted the miss rate: #{ae2['corrects_missed']}/#{ae2['corrects_sampled']}"
+    end
+    raise "blank rows not reported" unless ae2["verifier_rows_blank"] == 8
+
+    # (4) claim_key must not collide across a separator in an id, and must
+    # treat nil and "" country identically.
+    k1 = claim_key({ "id" => "car/a/x|y", "claim" => "id" })
+    k2 = claim_key({ "id" => "car/a/x", "claim" => "y|id" })
+    raise "claim_key separator collision" if k1 == k2
+    raise "nil vs empty country differ" unless claim_key({ "id" => "c/a/b", "claim" => "availability", "country" => nil }) ==
+                                               claim_key({ "id" => "c/a/b", "claim" => "availability", "country" => "" })
+    raise "enrichment runs collapse" if claim_key({ "id" => "c/a/b", "claim" => "enrichment", "run" => "1" }) ==
+                                        claim_key({ "id" => "c/a/b", "claim" => "enrichment", "run" => "2" })
+
+    # (5) The 2W baseline as a second reproduction anchor: 2,063/2,559 clean
+    # means 496 against, 19.38%.
+    raise "2W clean rate" unless ((2063.0 / 2559) - 0.80617).abs < 1e-4
+    lo2, hi2 = Stats.clopper_pearson(496, 2559)
+    raise "2W CP" unless (lo2 - 0.1787).abs < 5e-4 && (hi2 - 0.2097).abs < 5e-4
     puts "self-test: OK (Clopper-Pearson vs 4 textbook intervals AND its defining property at " \
          "4 round-realistic sizes via an independent binomial-tail path; Wilson reproducing the " \
          "published baseline CI from the defective+unverifiable numerator; resolution rule; " \
-         "audit-error accounting; conservative-bound identity; I-11 assertion)"
+         "audit-error accounting; conservative-bound identity; I-11 assertion; and 5 REGRESSIONS from " \
+         "an adversarial verification: prompt-spelled verdicts rejected, n=0 bounds at 1.0, " \
+         "blank final_verdict excluded from the audit-error denominator, claim_key collisions, " \
+         "the 2W baseline as a second anchor)"
   end
 end
 

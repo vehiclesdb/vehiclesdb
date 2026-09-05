@@ -86,3 +86,97 @@ expired. The gate class is fresh-fetch-dependent by construction.
 control-vs-treatment build, and that method **cannot see this defect class at
 all**. "My frozen build is green" is not evidence about it. Worth one line in
 RELEASE-RUNBOOK.md and in any lane's PR that leans on a frozen control.
+
+---
+
+## Addendum — adversarial verification of the aggregator itself (2026-09-05)
+
+*An independent Opus verifier (researcher ≠ verifier, applied to the instrument
+rather than to data) attacked `scripts/audit_aggregate.rb`. It re-implemented
+Clopper-Pearson and Wilson from scratch and compared on 79 (k,n) pairs. Findings
+6–13 below are its; all blocking ones are FIXED in this branch, each with a
+regression test that was mutation-checked (reverting the fix fails the suite).*
+
+**Cleared.** The statistics are correct: max disagreement vs an independent
+implementation **7.6e-15** (CP) and **4.7e-14** (Wilson); the interval's
+defining property holds to 1e-13. And the composition question I flagged as
+unresolved in the handoff is **answered YES** — `w_head·r_head_hi +
+w_tail·r_tail_hi` IS a valid 95% bound, because each `cp_hi` is a *one-sided
+97.5%* limit and two of them compose by the union bound to ≥95% (Monte Carlo
+coverage 0.985). Composing two one-sided *95%* bounds would have guaranteed only
+90% — the code's alpha choice was already the Bonferroni-correct one.
+
+**6. BLOCKING (fixed) — the round's own prompt used a verdict vocabulary the
+parser rejected.** `PROMPTS.md` told every researcher to write
+`defective(<D-class>)` and `unverifiable/source-gap`. `tally` matched only the
+bare words, so such a row incremented the denominator and **no bucket**: a slice
+of genuine D6 defects would have published a **0.00% defect rate**, and the
+`clean + defect == 1` identity this file's header calls "the point, not a
+rounding coincidence" would silently break. Anti-conservative. *Fixed:*
+`VERDICTS`/`CLAIM_TYPES`/`SUBTYPES` were dead constants and are now enforced on
+load; unknown verdicts, missing `defect_class`, missing `unverifiable_subtype`,
+and a `source-gap` without its two named failed routes are all hard errors.
+`PROMPTS.md` now spells the three-field YAML form explicitly.
+
+**7. BLOCKING (fixed) — the audit's own error rate was diluted ~5×.**
+`audit_error_rates` put every verifier row over a researcher `correct` in the
+denominator, including rows with a blank `final_verdict` — i.e. claims the
+verifier never re-derived. A true 1-of-2 miss rate published as 1-of-10. This is
+the number PRD §5.2 exists to keep honest. *Fixed:* the denominator is now
+"claims the verifier actually re-derived", and `verifier_rows_blank` is reported
+so silent under-filling is visible.
+
+**8. BLOCKING (fixed) — an unsampled stratum published as defect-free.**
+`clopper_pearson(0, 0)` returned upper bound `0.0`; with no samples the 95%
+upper bound is `1.0`. A tail nobody sampled therefore contributed **zero** to
+the weighted bound. Exactly the silent-truncation class §1.3.3 exists to
+prevent. *Fixed* in both CP and Wilson.
+
+**9. (fixed) — `claim_key` collisions silently discarded claims.** Joined on
+`"|"`, so an id containing a pipe collided with a different (id, claim) pair;
+`nil` and `""` country merged; and two enrichment runs on one record — which the
+protocol explicitly requires re-deriving separately — collapsed to one. Worse,
+a **cross-batch contradiction** (the same claim called `defective` by one slice
+and `correct` by another) was resolved silently by filename sort order, when
+RESULTS-s2w committed in writing that such disagreements are "NOT silently
+resolved". *Fixed:* `\x00` separator, blank-country normalisation, a `run` field
+in the key, and contradictions are now collected and reported.
+
+**10. (fixed) — orphan verifier rows became phantom extra claims.** A one-letter
+typo in a verifier row's id/claim/country made it match no researcher row, so it
+became its *own* resolved claim — double-counting the underlying claim while
+hiding the genuine overturn. *Fixed:* orphans are reported as problems.
+
+**11. (fixed) — the published bound is now RECORD-level.** Two reasons. Units:
+`w_head`/`w_tail` are registration-*mass* shares and mass attaches to records,
+while PRD §1.2's target and §1.3.1's whole budget are per-record. Independence:
+Clopper-Pearson assumes independent trials, but **claims cluster inside a
+record** — a truncation stub fails `id` and drags `name`; a stale register pull
+fails every availability claim at once. Simulated coverage of a nominal
+one-sided 97.5% *claim-level* bound under realistic clustering is **78–86%**,
+while the same construction on records (the actual sampling unit) holds its
+level. *Fixed:* the bound is computed on `records_defective / records`; the
+claim-level figure is retained beside it, explicitly labelled a diagnostic and
+not a valid bound.
+
+**12. (fixed) — every build-pin failure degraded silently.** Slices disagreeing
+about `build_pin`, a pin not on disk, and ids absent from the pinned build all
+produced `exit 0` with no bound and no complaint — reproducing the very
+condition protocol v1.2 rule 6 was written for. *Fixed:* all three are reported.
+
+**13. NOTE (open, for whoever publishes a catalog-wide figure) — the cross-half
+alpha budget is unallocated.** A per-half bound already spends α=0.05 across two
+strata; combining both halves is a **four-term** composition, which by the union
+bound guarantees only 90%. CP's conservatism absorbs it empirically (measured
+0.991) but that is slack, not a guarantee. Allocate α across all four terms
+(`clopper_pearson(..., alpha: 0.025)` — the keyword exists) before publishing a
+catalog-wide number.
+
+**14. NOTE — RESULTS-s2w.md's per-claim "defect rate" column is `defective/n`,
+while its own headline and this aggregator use the conservative
+`(defective+unverifiable)/n`.** So id-canonical reads 25.0% there and would read
+30.0% here. The aggregator matches the protocol; the discrepancy is in the
+published document. Round 2's round-over-round comparison must say so, or the
+rates will appear to move for reasons unrelated to data. (The 2W aggregate,
+496/2559 = 19.38%, CP [17.87%, 20.97%], is now a second reproduction anchor in
+the self-test.)
