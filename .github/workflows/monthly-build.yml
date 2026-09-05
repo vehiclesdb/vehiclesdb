@@ -170,8 +170,18 @@ jobs:
             ruby pipeline/run.rb
           fi
 
+      # The condition below must stay in step with the PUBLISH expression on the
+      # build step. It said `github.event_name == 'pull_request'`, which is much
+      # narrower than this step's own name: a failing SCHEDULED build — the one
+      # case where you most need build/out to see which record tripped a gate —
+      # uploaded nothing at all. Main was red for eleven days and the only way
+      # to inspect a build was to open a PR to provoke one.
       - name: Upload build artifacts for inspection (non-publish runs)
-        if: always() && github.event_name == 'pull_request'
+        if: >-
+          always() && !(
+            (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) ||
+            (github.event_name == 'workflow_dispatch' && inputs.publish)
+          )
         uses: actions/upload-artifact@v4
         with:
           name: vehiclesdb-build
@@ -280,11 +290,11 @@ jobs:
           - Delta gate: a kind's model count moved >±20% (source outage or format change)
           - Geo-gated fetch: TH/LV endpoints reject datacenter IPs (keep-last-good covers cached CI, but a cold cache fails)
           - An upstream URL scheme changed (UK rotates asset URLs per release; NZ renames its MVR_* service monthly)"
-          existing=$(gh issue list --label pipeline-failure --state open --json number --jq '.[0].number' || true)
+          existing=$(gh issue list --repo ${{ github.repository }} --label pipeline-failure --state open --json number --jq '.[0].number' || true)
           if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            gh issue comment "$existing" --repo ${{ github.repository }} --body "Failed again: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
-            gh issue create --title "$title" --body "$body" --label pipeline-failure
+            gh issue create --repo ${{ github.repository }} --title "$title" --body "$body" --label pipeline-failure
           fi
 
   # ── The release channel fan-out. Calling the reusable workflow rather than

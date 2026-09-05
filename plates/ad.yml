@@ -1,6 +1,15 @@
 # plates/ad.yml — Andorra (PRD-PLATES gate L1, microstates group).
-# DRAFT for verification. All primary text fetched from the BOPA document store
+# All primary text fetched from the BOPA document store
 # (bopadocuments.blob.core.windows.net), 2026-08-02.
+#
+# §5.3 VERIFICATION PASS RAN 2026-08-08 — dossier at data/review/plates-verify/ad.md.
+# Every series' period boundaries, format regex, class and colours were
+# re-derived from the pinned instruments read as RAW TEXT (not through a
+# summariser) plus an independent route per claim. Eleven corrections landed;
+# the two that change matching behaviour are ad-historic-passed-itv's block and
+# ad-dealer-prova's digit count. The verification entries are RESEARCHER-ONLY
+# (I-11: the author never certifies their own work) — see `verification:` at the
+# foot of this file. Nothing in the art/render lane was touched.
 #
 # ---------------------------------------------------------------------------
 # THE INSTRUMENTS, and two corrections to the obvious assumptions
@@ -13,8 +22,12 @@
 #   * Llei del Codi de la circulació, de 10-6-99 — BOPA núm. 40, any 1999,
 #     published 13 July 1999, in force fifteen days later. REPEALED. Its
 #     art. 147 is historically important because it put the PLATE CATALOGUE
-#     INSIDE THE LAW: "Aquest Codi inclou el catàleg de plaques de matrícula
-#     vigents a Andorra."
+#     INSIDE THE LAW *and delegated its amendment to the Govern in the same
+#     breath*: "Aquest Codi inclou el catàleg de plaques de matrícula vigents a
+#     Andorra. No obstant això, el Govern pot modificar o afegir altres
+#     modalitats de matrícula, d'acord amb la disposició addicional primera."
+#     (The second sentence was missing from the draft; it is the delegation on
+#     which every 2011-dated series in this file rests.)
 #   * Decret 456/2022, del 9-11-2022 — BOPA núm. 135, any 2022, published
 #     15 November 2022, IN FORCE 16 NOVEMBER 2022. THE PLATE REGULATION IN
 #     FORCE, and the source of nearly every design fact below.
@@ -36,8 +49,9 @@
 # because here the instrument's date and the reported series start AGREE — and
 # citing the instrument would still be wrong.
 #
-# The numbering rule, art. 3.2 of the 2011 Decret and re-enacted verbatim as
-# art. 6.2 of Decret 456/2022:
+# The numbering rule, art. 3.2 of the 2011 Decret, re-enacted in substance (NOT
+# word for word — see common.numbering.quote_correction_2026_08_08) as art. 6.2
+# of Decret 456/2022. The 2011 text, which is the one quoted here:
 #   "A les plaques de matrícula s'inscriu un grup de 5 caràcters que va des del
 #    00000 fins al 99999. A continuació, la primera xifra se substitueix per una
 #    lletra de la A a la Z, i es manté el caràcter numèric dels 4 darrers
@@ -108,35 +122,127 @@ binding_note: >-
   Llei 12/2021 art. 96(1): "Per posar en circulació els vehicles de motor, els
   ciclomotors, els remolcs i els semiremolcs, cal haver-los matriculat i que
   portin les plaques de matrícula amb els caràcters que els assigni el Registre
-  de Vehicles" — the characters are assigned to the VEHICLE by the Registre de
-  Vehicles. No provision reserves a number to a person across vehicles.
+  de Vehicles, d'acord amb el que es determini reglamentàriament" — the
+  characters are assigned to the VEHICLE by the Registre de Vehicles, and
+  art. 96(5) makes the pairing constitutive: "El certificat de matriculació i
+  les plaques de matrícula formen conjuntament un document compost que
+  identifica el vehicle". `vehicle` is therefore the right value for the
+  ORDINARY marks, and Decret 456/2022 art. 24.2 nails it shut in four words:
+  "Queda totalment prohibit cedir una matrícula."
+binding_correction: >-
+  THE §5.3 PASS DELETED A FALSE SENTENCE HERE. The draft asserted "No provision
+  reserves a number to a person across vehicles." Two provisions do, and both
+  are in instruments this file already pins.
+  (1) Decret 456/2022 art. 24 is titled "Reserva de matrícula ordinària" and
+      opens: "Una persona física o una persona jurídica pot reservar una
+      matrícula ordinària sempre que el vehicle que es vulgui matricular estigui
+      al mateix nom de la persona que fa la reserva." A person reserves. What
+      art. 24 does NOT do is make the mark portable — arts. 24.4-24.6 bound the
+      reservation to a moving window (requestable within 1,000 of the current
+      mark, usable within 100, lapsing at +50) and art. 24.2 forbids cession —
+      so the reservation is a queue right over a not-yet-issued mark, and
+      `binding: vehicle` survives it.
+  (2) PERSONALISED MARKS ARE GENUINELY PERSON-BOUND, and this is the real
+      exception. Llei 24/2014 art. 6.3: "La reserva i l'atribució d'una
+      matrícula personalitzada tenen sempre caràcter personal i intransferible.
+      Està prohibida qualsevol comercialització, donació, venda o cessió de
+      matrícula personalitzada. Únicament s'exceptua la transmissió de la
+      matrícula per successió." And Decret 456/2022 art. 26.5 contemplates the
+      mark's "reserva, atribució, baixa o AFECTACIÓ A UN ALTRE VEHICLE". Read
+      together: person-bound and vehicle-portable, inheritable by succession,
+      sellable never.
+  The two readings are not averaged and neither is dropped: the file-level
+  `binding` stays `vehicle` because it describes the ordinary marks that carry
+  the whole numbering scheme, and because Llei 24/2014 art. 4.1 requires the
+  personalised plate to sit on a vehicle that ALREADY holds an ordinary mark
+  ("La placa s'ha de col·locar obligatòriament en el vehicle autoritzat a
+  portar-la, que ha d'estar donat d'alta al Registre de Vehicles del Govern amb
+  una matrícula ordinària atribuïda"). An Andorran personalised vehicle holds
+  TWO marks, one bound to it and one bound to its owner. SCHEMA NOTE for the
+  maintainer: PRD-PLATES §2.1 gives `binding` at file scope, so this jurisdiction
+  cannot express the split; a per-series `binding` override is the clean fix and
+  is left as a proposal, not taken unilaterally.
 instrument:
   code:
     citation: "Llei 12/2021, del 13 de maig, del Codi de la circulació"
     gazette: "BOPA núm. 62, any 2021"
-    published: "2021-06-01"
-    entry_in_force: "three months after publication (disposició final novena)"
+    published: "2021-06-02"
+    entry_in_force: "2021-09-02 — three months after publication (disposició final novena, verbatim: 'Aquesta Llei entrarà en vigor al cap de tres mesos de publicar-se al Butlletí Oficial del Principat d'Andorra.')"
     url: "https://bopadocuments.blob.core.windows.net/bopa-documents/033062/html/CGL20210528_13_01_20.html"
     delegation: "art. 108(1): dimensions and characteristics are regulated by reglament; art. 96(1): the Registre de Vehicles assigns the characters"
-    repeals: "the Llei del Codi de la circulació of 10 June 1999 and its successive modifications, expressly"
-    recorded_discrepancy: >-
-      BOPA's index metadata gives publication as 1 June 2021, while the preamble
-      of Decret 456/2022 refers to the law as "publicada al Butlletí Oficial del
-      Principat d'Andorra del 2 de juny del 2021". A one-day disagreement
-      between two official sources, recorded rather than resolved; `published`
-      carries BOPA's own date.
+    repeals: >-
+      the Llei del Codi de la circulació of 10 June 1999 and its successive
+      modifications, expressly — BUT NOT ENTIRELY. The disposició derogatòria
+      carves out one article verbatim: "excepció feta de les previsions
+      contingudes al seu article 209, que restaran vigents fins al moment en que
+      entri en vigor el reglament previst a la Disposició final quarta". Art. 209
+      is not plate-related (disposició final quarta is the pleasure-boat
+      register, PRD-PLATES §7 gate L6 territory), so nothing in this file rests
+      on it — but "repealed the 1999 Codi" is not the whole sentence.
+    retracted_discrepancy: >-
+      RETRACTED BY THE §5.3 PASS — THE DISAGREEMENT DID NOT EXIST. The draft
+      recorded "a one-day disagreement between two official sources": BOPA index
+      metadata giving 1 June 2021 against Decret 456/2022's preamble saying
+      "publicada al Butlletí Oficial del Principat d'Andorra del 2 de juny del
+      2021". Re-derivation from the gazette itself settles it — the sumari of
+      BOPA núm. 62, any 2021 prints "Núm. 62 / 2 de juny del 2021" in the header
+      of every one of its 15 pages. Both official sources say 2 June; only the
+      draft said 1 June. `published` is corrected to 2021-06-02 and the
+      "discrepancy" is withdrawn rather than averaged, because averaging a
+      disagreement that is really a transcription slip would have manufactured a
+      permanent fake uncertainty in the record (PRD-PLATES §5.3).
+      Sumari: https://bopadocuments.blob.core.windows.net/bopa-documents/sumaris/033/033062.pdf
   plate_reglament:
     citation: "Decret 456/2022, del 9-11-2022, d'aprovació del Reglament de la fabricació i la instal·lació de les plaques de matrícula en vehicles i ginys mecànics no aptes per a la via pública"
     gazette: "BOPA núm. 135, any 2022"
-    published: "2022-11-15"
-    entry_in_force: "2022-11-16"
+    published: "2022-11-16"
+    entry_in_force: "2022-11-17"
     in_force_clause: "article únic: '…que entrarà en vigor l'endemà de ser publicat al Butlletí Oficial del Principat d'Andorra'"
     url: "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html"
-    recorded_typo: >-
-      BOPA's own sumari mistypes this decree as "Decret 456/2011, del 9-11-2022".
-      The document header reads 456/2022 and that is the correct citation.
-      Recorded because the erroneous form is in an official index and a verifier
-      will meet it.
+    date_correction: >-
+      CORRECTED BY THE §5.3 PASS, AND IT MOVED THE COMMENCEMENT. The draft had
+      published 2022-11-15 / in force 2022-11-16. BOPA núm. 135, any 2022 is
+      dated 16 NOVEMBER 2022 — printed in the page header of all 13 pages of its
+      sumari — and the Correcció d'errata de l'1-3-2023 independently describes
+      the decree as "publicat al Butlletí Oficial del Principat d'Andorra (BOPA)
+      núm. 135, del 16 de novembre del 2022". Two official routes agree. Since
+      the article únic commences the Reglament "l'endemà de ser publicat", the
+      current plate regulation entered into force on 17 NOVEMBER 2022.
+      Sumari: https://bopadocuments.blob.core.windows.net/bopa-documents/sumaris/034/034135.pdf
+    title_erratum: >-
+      NOT A SUMARI TYPO — A TITLE ERROR IN THE DECREE ITSELF, SINCE OFFICIALLY
+      CORRECTED. The draft recorded that "BOPA's own sumari mistypes this decree
+      as 'Decret 456/2011, del 9-11-2022'" and reasoned that "the document header
+      reads 456/2022". The header as published does NOT: the Correcció d'errata
+      de l'1-3-2023 (BOPA núm. 33, any 2023) quotes the published title under
+      "On hi diu:" as "Decret 456/2011, del 9-11-2022, d'aprovació del Reglament
+      de la fabricació i la instal·lació de les plaques de matrícula en vehicles
+      i ginys mecànics no aptes per a la via pública." and prescribes under
+      "Hi ha de dir:" the identical sentence reading "Decret 456/2022". So the
+      wrong year was in the instrument's own title, the sumari merely reproduced
+      it, and the citation is now settled BY AN INSTRUMENT rather than by
+      inference. Third-party legal databases still carry the uncorrected form
+      (leslleis.com/DR20221109C prints "Decret 456/2011, del 9 de novembre del
+      2022"), which is the practical reason to keep this note.
+      Errata: https://bopadocuments.blob.core.windows.net/bopa-documents/035033/html/GV20230303_12_27_52.html
+    as_published_caveat: >-
+      THE PINNED URL SERVES THE UNCORRECTED TEXT. The blob store carries the
+      as-published document, so it still prints the two cross-reference errors
+      that the Correcció d'errata del 30-11-2022 fixed: arts. 3.6 and 4.2 cite
+      "l'article 24 del Reglament" where the adhesive-plate article is art. 25
+      (art. 24 is Reserva de matrícula ordinària). Neither error touches any
+      series in this file, but a consumer reading the pinned URL alone is
+      reading text the Govern has formally amended.
+      Errata: https://bopadocuments.blob.core.windows.net/bopa-documents/034142/html/GD20221201_12_12_06.html
+  numbering_defect: >-
+      RECORDED SO A VERIFIER DOES NOT THINK THEY MISREAD IT: the 2011 Reglament
+      NUMBERS TWO CONSECUTIVE ARTICLES "Article 8" — the first "Matrícula per als
+      administratius i tècnics d'ambaixades", the second "Matrícula del cos
+      consular" — and then resumes at article 9. Its article count is therefore
+      18 headings over 17 numbers. Citations to "2011 art. 8" must say which one.
+      The defect is in the as-published text on BOPA and was never corrected by
+      the errata of 9-3-2011; Decret 456/2022 renumbers cleanly (A-staff art. 12,
+      consular art. 11).
   chain:
     - "Decret del 23-02-2011 (base) — BOPA núm. 14/2011, published 1 March 2011, in force 2 March 2011"
     - "Correcció d'errata del 9-03-2011 — BOPA núm. 16/2011, 15 March 2011"
@@ -149,6 +255,13 @@ instrument:
   related:
     - "Decret 534/2022, del 14-12-2022, Reglament relatiu a la matriculació i al Registre de Vehicles — BOPA núm. 148/2022, 21 December 2022"
     - "Decret 11/2024, del 10-1-2024, Reglament de vehicles històrics — BOPA núm. 7/2024, 16 January 2024"
+    - >-
+      Decret del 24-11-2010, Reglament regulador del procediment de reserva de
+      matrícules del Registre de Vehicles — REPEALED by Decret 456/2022,
+      disposició derogatòria segona. Added by the §5.3 pass: the draft's chain
+      omitted it, and it matters because the reservation regime it governed is
+      what moved into arts. 24 and 26 of the current Reglament, which is where
+      the `binding` question is decided.
 
 # ---------------------------------------------------------------------------
 # Jurisdiction-wide facts.
@@ -156,13 +269,33 @@ instrument:
 common:
   numbering:
     rule: >-
-      Decret 456/2022 art. 6.2, re-enacting art. 3.2 of the 2011 Decret verbatim:
-      "A les plaques de matrícula s'inscriu un grup de 5 caràcters que va des del
+      Decret 456/2022 art. 6.2, verbatim and in force: "A les plaques de
+      matrícula s'hi inscriu un grup de cinc caràcters numèrics que va des del
       00000 fins al 99999. A continuació, la primera xifra se substitueix per una
-      lletra de la A a la Z, i es manté el caràcter numèric dels 4 darrers
+      lletra de la A a la Z, i es manté el caràcter numèric dels quatre darrers
       caràcters (A0000-Z9999), sense utilitzar les lletres de l'alfabet que puguin
-      crear confusió, combinant dues lletres i tres números (AA000-ZZ999), i així
+      crear confusió, i es combinen dos lletres i tres números (AA000-ZZ999), i
+      així successivament."
+    rule_2011: >-
+      Decret del 23-02-2011 art. 3.2, verbatim and repealed: "A les plaques de
+      matrícula s'inscriu un grup de 5 caràcters que va des del 00000 fins al
+      99999. A continuació, la primera xifra se substitueix per una lletra de la
+      A a la Z, i es manté el caràcter numèric dels 4 darrers caràcters
+      (A0000-Z9999), sense utilitzar les lletres de l'alfabet que puguin crear
+      confusió, combinant dues lletres i tres números (AA000-ZZ999), i així
       successivament."
+    quote_correction_2026_08_08: >-
+      THE DRAFT PRINTED ONE QUOTE UNDER TWO ATTRIBUTIONS. It billed the sentence
+      above as "Decret 456/2022 art. 6.2, re-enacting art. 3.2 of the 2011 Decret
+      verbatim" and then printed the 2011 wording. The re-enactment is faithful in
+      substance but is NOT verbatim — "s'inscriu" became "s'hi inscriu", "5
+      caràcters" became "cinc caràcters NUMÈRICS", "4 darrers" became "quatre
+      darrers", and "combinant dues lletres" became "i es combinen dos lletres".
+      Both texts are now carried separately so neither is quoted as the other.
+      THE CORRECTION STRENGTHENS THE FILE'S CENTRAL FINDING RATHER THAN DENTING
+      IT: the word the base-stage claim leans on — "numèrics" — is in the 2022
+      text and NOT in the 2011 text, so the current instrument states the
+      five-digit grammar even more plainly than the draft could show.
     three_stages:
       - { stage: 1, grammar: "00000-99999", modelled_as: ad-standard-numeric }
       - { stage: 2, grammar: "A0000-Z9999", modelled_as: ad-standard-letter }
@@ -215,10 +348,29 @@ common:
       "s'ha incorporat l'indicatiu AND, en la forma que preveu el punt 3 de
       l'annex 3 de la Convenció sobre la circulació vial… feta l'any 1968 a
       Viena, en la versió consolidada de l'any 2006."
+    scope_limit: >-
+      ADDED BY THE §5.3 PASS — THE 2011 INCORPORATION IS SCOPED, AND THE SCOPE
+      EXPLAINS THE CATALOGUE. The same paragraph of the 2011 exposició de motius
+      closes: "Aquesta modificació sols s'aplica a les matrícules destinades a
+      vehicles que són aptes per a la circulació internacional." That single
+      sentence predicts exactly which series carry AND and which do not, and the
+      current Reglament bears it out: AND is inscribed on the ordinary plate
+      (art. 6.1), the motorcycle plates (art. 7.2, 7.4), the four diplomatic and
+      consular series (arts. 9-12) and the temporary MT plate (art. 13) — and is
+      absent from the moped (art. 8), both historic series (arts. 14-15), the
+      dealer PROVA plate (art. 16), the special-vehicle plate (art. 17), the
+      snowmobile (art. 18) and the giny mecànic (art. 19). Every one of those
+      omissions is a vehicle that does not travel internationally. The design
+      blocks below already match this pattern; it was inferred there and is now
+      sourced.
     legacy_rule: >-
       Decret 456/2022 art. 20.3: plates of a model earlier than the current one,
       which do not carry the inscribed AND, must display the separate oval AND
       sticker. So both arrangements are lawfully on the road simultaneously.
+      Corroborated for the pre-2011 world by the 1999 Codi art. 147, which had
+      ACA hand over the oval with the plates: "l'Automòbil Club d'Andorra lliura
+      al titular un joc de plaques de matrícula, corresponent al número de
+      matrícula concedit pel Registre, i el distintiu nacional AND."
     treaty_note: >-
       The 2006 CONSOLIDATED version of Vienna Annex 3 is what permits the sign
       to be incorporated into the plate. PRD-PLATES §4 records that the 1968
@@ -253,7 +405,7 @@ common:
       in the plate decree, and the referenced graphic annex was not extractable.
       Recorded gap.
   annex_gap:
-    status: RECORDED GAP
+    status: RECORDED GAP — NARROWED BY THE §5.3 PASS, NOT CLOSED
     detail: >-
       Decret 456/2022 refers to an annex, "Catàleg oficial de plaques de matrícula
       i distintius del Principat d'Andorra", as figures 1-18. IT IS A GRAPHICS
@@ -264,6 +416,65 @@ common:
       circuit and hazmat placards). SO NO PLATE ARTWORK OR GLYPH SPECIFICATION
       FROM EITHER CATALOGUE IS AVAILABLE, and every layout fact in this file
       comes from the articles' prose rather than from the figures.
+    verification_2026_08_08: >-
+      TWO THINGS CHANGED AND ONE DID NOT.
+      (a) THE 2011 ANNEX IS REACHABLE. The repealed 2011 Reglament's "Annex 1.
+          Dimensions i característiques de les diverses plaques de matrícula" is
+          a live 1.83 MB, 15-page PDF on the BOPA blob store — the gap note
+          implied otherwise. It is figure pairs 1a/1b through 14a/14b (with 4
+          split 4.1/4.2), one pair per plate type, and it is PURE VECTOR
+          GRAPHICS: a text extraction returns only running heads and the figure
+          captions. So the draft's characterisation is CONFIRMED for content and
+          CORRECTED for availability. Per PRD-PLATES §6 the drawings are cited
+          and never embedded.
+          https://bopadocuments.blob.core.windows.net/bopa-documents/annexos/023014_plaques.pdf
+      (b) THE 2022 ANNEX IS NOT PUBLISHED AT ITS OWN LINK. Decret 456/2022's page
+          advertises an associated document "Plaques 2021.pdf" at
+          /bopa/034135/Documents/Plaques%202021_GR20221110_09_12_43.pdf; the blob
+          store answers BlobNotFound (HTTP 404) for that path. A searched-for
+          negative with the exact URL tried, so the next reader does not repeat
+          the search.
+      (c) THE ANNEX IS NORMATIVE FOR THE GLYPHS, which raises the cost of the
+          gap: art. 21 provides that "Les especificacions de les plaques de
+          matrícula i dels distintius del Principat d'Andorra, els colors i els
+          caràcters alfabètics i numèrics són els que s'indiquen en l'annex del
+          Reglament." The character shapes are IN the unreachable annex.
+  character_rights:
+    status: ADVERSE STATUTORY SIGNAL — recorded, not acted on
+    claim: >-
+      ANDORRA AFFIRMATIVELY CLAIMS PROPERTY IN THE PLATE CHARACTERS AND THE STATE
+      SYMBOLS, in two instruments, in nearly identical words.
+      Llei 12/2021 art. 108(3): "Els caràcters que figuren en les matrícules, així
+      com els símbols d'Estat que han de portar els vehicles, són propietat del
+      Govern, que cedeix en cada cas el dret a usar-los, d'acord amb les
+      condicions que es determinin per la via reglamentària."
+      Decret 456/2022 art. 3.5: "Els caràcters que figuren en les matrícules, i
+      els símbols d'Estat que han de portar els vehicles, són propietat del
+      Govern, que cedeix en cada cas el dret a usar-los, d'acord amb les
+      condicions que es determinen en la normativa vigent."
+    why_it_matters: >-
+      PRD-PLATES §6 records, from the EU dossier, that "No surveyed country claims
+      copyright in the plate design itself" — expressly flagged there as a SAMPLE
+      finding rather than an exhaustive survey. Andorra is a counter-example to
+      that sample and should be carried back into §6 as one. This is the same
+      shape of fact that `artwork_risk:` exists to record for US states under
+      PRD-PLATES §7.1: a statutory signal adverse to free reuse, sitting beside
+      an art route that looks clean.
+    scope_and_limits: >-
+      READ NARROWLY, AND DO NOT OVER-READ IT. The provisions assert ownership of
+      the characters AS THEY APPEAR ON MATRÍCULES and of the state symbols
+      vehicles must carry, and they set up a case-by-case licensing mechanism.
+      They are not a copyright registration, they do not speak to the underlying
+      historic coat of arms, and Andorran law is not searched here for what
+      "propietat del Govern" grants against a third party. What they do establish
+      is that the "no country claims the design" line cannot be repeated for
+      Andorra without qualification.
+    handling: >-
+      RECORDED AND ESCALATED, NOT ACTED ON. `common.emblem` and every `design:`
+      block are untouched by this pass — the emblem posture is the owner's visual
+      lane and the licensing call is counsel's, not a verifier's. The §3
+      placeholder default is what ships today regardless, so nothing renders
+      differently either way.
   font:
     name: null
     note: "No typeface is named in any Andorran instrument read, and the graphic annex that might carry a Schriftmuster is unextractable (see annex_gap). Per PRD-PLATES §6 the render layer uses the schematic fallback."
@@ -438,6 +649,34 @@ series:
       the two series is undated, while the AND MARK change that accompanied it
       is dated by the 2011 Decret. Overlaps ad-standard-letter, which is
       genuine — plates already issued stayed valid.
+    verifier_note_2026_08_08: >-
+      THE BEST CLAIM IN THIS FILE SURVIVES RE-DERIVATION, AND A SECOND ROUTE
+      REACHES IT. `national_mark.present: false` for the pre-2011 plate is
+      confirmed three ways: the 2011 exposició de motius lists the AND among that
+      instrument's innovations; the 2011 art. 3.1 introduces it on the ordinary
+      plate ("A la matrícula ordinària, al costat esquerre inferior, amb lletres
+      de color blau hi figura el distintiu nacional AND"); and INDEPENDENTLY the
+      1999 Codi art. 147 shows the AND being handed over as a SEPARATE OVAL with
+      the plates — "l'Automòbil Club d'Andorra lliura al titular un joc de
+      plaques de matrícula […] i el distintiu nacional AND". A 1999 instrument
+      describing the oval and a 2011 instrument claiming the inscription is as
+      clean as this kind of dating gets.
+      ONE QUOTE IS TRUNCATED WHERE IT STOPS HELPING. The file cites art. 147 for
+      "Aquest Codi inclou el catàleg de plaques de matrícula vigents a Andorra."
+      The attribution is CORRECT (the sentence is the penultimate paragraph of
+      art. 147, which runs to the "Article 148" heading), but the sentence does
+      not end there: "…vigents a Andorra. No obstant això, el Govern pot
+      modificar o afegir altres modalitats de matrícula, d'acord amb la
+      disposició addicional primera." The omitted half is the DELEGATION, and it
+      is load-bearing — it is the mechanism by which a 2011 Govern decree could
+      lawfully add plate types while the 1999 Codi was still in force, and the
+      2011 preamble says so in terms: "El legislador […] va atribuir al Govern
+      mitjançant l'article 147 i la disposició addicional de la llei, la capacitat
+      de modificar les plaques de matrícula incloses en el catàleg o afegir-hi
+      altres modalitats." The `instrument-in-force-upper-bound` dating of every
+      2011 series in this file depends on that delegation being real, so quoting
+      only the first half understated the file's own foundation.
+      START BOUND UNCHANGED: 1999 remains an upper bound and the reasoning holds.
     sources:
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 6.2 — the 00000-99999 base stage"
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/023014/html/6BEF6.html  # Decret del 23-02-2011 art. 3.2 and exposició de motius — the same grammar, and the AND mark as a 2011 innovation"
@@ -457,7 +696,41 @@ series:
       format_note: >-
         THE SAME SERIAL GRAMMAR AS CARS — art. 7 gives motorcycles their own
         SIZES but not their own numbering. There is no dedicated motorcycle
-        letter block, contrary to some secondary accounts.
+        letter block, contrary to some secondary accounts. Verified verbatim
+        against art. 7.3, which repeats art. 6.2's sentence for the horizontal
+        plate word for word.
+      charset:
+        excluded: [I, O, Q]
+        notes: >-
+          ADDED BY THE §5.3 PASS — regex_strict was carrying the 23-letter
+          alphabet with no source of its own, and art. 6.3's exclusion is drafted
+          narrowly enough that borrowing it would have been an inference: it
+          suppresses I, O and Q "de la placa de matrícula ordinària per a
+          vehicles automòbils, remolcs i semiremolcs, i de la placa de matrícula
+          ordinària reduïda per a vehicles de tipus turisme (categoria M1)" —
+          motorcycles are not in that list. The motorcycle plates have their OWN
+          exclusion, art. 7.5, verbatim: "Se suprimeixen les lletres I, O i Q del
+          sistema de numeració de les plaques horitzontal i vertical de matrícula
+          ordinària per a motocicleta, a fi d'evitar tota confusió amb els
+          números 1 i 0, respectivament." So regex_strict is statutory here, and
+          it is statutory for the VERTICAL variant too. Same 2011-vs-2022 caveat
+          as the car series: the 2011 text stated only the principle, so a plate
+          from the lettered stage before 17 November 2022 might carry I, O or Q,
+          which is why `regex` keeps [A-Z].
+      numeric_stage_not_modelled: >-
+        COVERAGE GAP FOUND BY THE §5.3 PASS. art. 7.3 gives motorcycles the SAME
+        two-stage scheme as cars, base stage included: "A la placa horitzontal
+        s'hi inscriu un grup de cinc caràcters numèrics que va des del 00000 fins
+        al 99999 i, a continuació, la primera xifra se substitueix per una
+        lletra…". This series models only the lettered stage, and
+        ad-standard-numeric — which models the five-digit stage — lists
+        categories [car, van, truck, bus, trailer, semitrailer] with motorcycle
+        absent. A five-digit Andorran MOTORCYCLE plate from the numeric stage is
+        therefore matched by no series in this file, which is a
+        jurisdiction-completeness miss under PRD-PLATES §5.1. The fix is one word
+        (add `motorcycle` to ad-standard-numeric's categories) or one new ended
+        series; either is a claim change, so it is proposed in
+        data/review/plates-verify/ad.md rather than taken by the researcher alone.
     design:
       plate: { w: 225, h: 115, unit: mm, note: "horizontal motorcycle plate (art. 7)" }
       background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
@@ -473,10 +746,25 @@ series:
           plate: { w: 100, h: 168, unit: mm }
           note: >-
             art. 7.4 — a PORTRAIT plate in two zones split by a blue band, the
-            letter or letters above and the four digits below. The 2011 Decret
-            introduced plastic and rubber enduro/trial plates specifically, per
-            its exposició de motius, which is a genuinely unusual material
-            provision.
+            letter or letters above and the four digits below. NOTE THE VARIANT'S
+            GRAMMAR IS NOT THIS SERIES': art. 7.4 skips the numeric stage
+            entirely and starts at a letter — "Immediatament a sota de l'escut hi
+            apareix una lletra de la A a la Z […] i es combinen dos lletres
+            (AA-ZZ), i així successivament. Sota de la lletra o les lletres hi ha
+            quatre caràcters numèrics (0000-9999)" — so it reaches AA0000 (two
+            letters over four digits), a six-character form the parent series
+            cannot express. Recorded; not modelled, on the same "no evidence of
+            issuance" ground as common.numbering.stage_three_not_modelled.
+          material_note: >-
+            THE PLASTIC/RUBBER ALLOWANCE IS HISTORIC, NOT CURRENT — corrected by
+            the §5.3 pass, which found it in the repealed instrument only. Decret
+            del 23-02-2011 art. 1, second paragraph: "Per a les motocicletes
+            aptes per circular per terrenys accidentats (enduro o trial), la base
+            de la placa de matrícula pot ser de plàstic o de goma dura." Decret
+            456/2022 art. 4 does not re-enact it — its two paragraphs allow
+            aluminium as the norm and an adhesive plate for art. 25 cases, and
+            nothing else. So the provision ran 2011 to 16 November 2022 and the
+            draft's present tense was out of date by one instrument.
     region_encoding: none
     notes: >-
       MOTORCYCLES. Two shapes — a 225x115 mm horizontal plate and a 100x168 mm
@@ -517,6 +805,20 @@ series:
       ANDORRA in blue on a yellow panel, and the flag shield at the bottom left
       rather than the national arms at the top left. It is the one Andorran
       series that does not follow the common layout.
+    verifier_note_2026_08_08: >-
+      COLOUR RE-DERIVED, AND ONE DATED CHANGE FOUND. art. 8.1 in force confirms
+      every colour recorded: white retroreflective ground, matt black characters,
+      "El bordó és de color blau mat", "A la part superior hi figura la llegenda
+      'ANDORRA' amb lletres blaves sobre un quadre amb fons groc", flag shield
+      lower left. BUT THE LEGEND WAS BLACK BEFORE 2022 — the 2011 art. 5.1 reads
+      "amb lletres NEGRES sobre un quadre amb fons groc". This series is dated
+      from 2011 and the design block records the post-2022 blue, so the first
+      eleven years of its period carry a colour the file does not state. The
+      design block is deliberately NOT edited by this pass (owner's visual lane);
+      the finding is recorded for whoever owns the fix.
+      Also verified: art. 8.1 says the moped's characters are "pintats" and not
+      "estampats en relleu" — mopeds are the one Andorran plate whose characters
+      are painted rather than embossed, in both the 2011 and 2022 texts.
     sources:
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 8"
 
@@ -590,6 +892,19 @@ series:
       regex: '\ACC[- ]?\d{3}[- ]?[A-Z]\z'
       format_evidence: statutory
       format_note: "art. 11: CC, THREE digits (000-999), then the State letter — the widest block in the diplomatic family"
+      period_scoped_change: >-
+        THE DIGIT COUNT CHANGED IN 2022 AND THE REGEX ONLY DESCRIBES THE SECOND
+        HALF OF THIS SERIES' PERIOD. The 2011 Reglament gave the consular series
+        TWO digits, not three — art. 8 (the second article so numbered; see
+        instrument.numbering_defect), verbatim: "el primer grup el formen les
+        lletres CC; el segon grup el formen DOS caràcters numèrics que van des
+        del 00 fins al 99". Decret 456/2022 art. 11.2 widened it to "TRES
+        caràcters numèrics que van des del 000 fins al 999". So a CC plate issued
+        between 2011 and 16 November 2022 reads CC + 2 digits + letter and will
+        NOT match this series' regex. Recorded, not averaged and not widened: the
+        regex carries the instrument in force, and the clean fix is the same
+        §2.2 series split proposed for ad-historic-passed-itv, which a researcher
+        may not make alone under I-11.
     design:
       plate: { w: 340, h: 120, unit: mm }
       background: { color: "#1F3A93", finish: retroreflective, hex_basis: pantone-converted, spec_note: "Pantone 2945" }
@@ -667,6 +982,32 @@ series:
         in Arabic numerals, in a red field at the upper right. That is a
         validity device, not a serial component, and it does not appear in the
         pattern.
+      verifier_dissent_2026_08_08: >-
+        THE TWO PRIMARY ROUTES DISAGREE ABOUT WHETHER "MT" IS SERIAL, AND THE
+        DRAFT ONLY CITES ONE OF THEM. Recorded verbatim, unresolved.
+        ROUTE A — the plate regulation, which structurally treats MT as furniture.
+        Decret 456/2022 art. 13.1 places MT in a panel and then states the serial
+        separately: "Al costat esquerre superior, sobre fons vermell (fons
+        Pantone 485), hi figuren els caràcters MT de color negre mat. […] A les
+        plaques de matrícula s'hi inscriu un grup de quatre caràcters numèrics
+        que va des del 0000 fins al 9999." That is the SAME two-part shape art.
+        16.1 uses for PROVA — legend in one sentence, "un grup de N caràcters
+        numèrics" in another — and this file reads art. 16 as making PROVA a
+        legend. Applied consistently, art. 13 makes MT a legend too and the
+        serial is four bare digits.
+        ROUTE B — the personalisation statute, which treats MT as a serial prefix.
+        Llei 24/2014 art. 7.1(i) forbids a personalised mark consisting of "les
+        lletres 'MT', 'CD', 'CMD', 'A', 'CC', seguides de xifres o la paraula
+        'PROVA'" — grouping MT with the unambiguous diplomatic prefixes and
+        setting PROVA apart as "la paraula". That is the draft's basis and it is
+        real.
+        WHY THE DATA IS LEFT AS IT IS: keeping MT in `regex` costs nothing under
+        §2.7 (it is narrower than the issuing grammar, never wider) and buys
+        discrimination that four bare digits cannot give, whereas dropping it
+        would make this series collide with ad-special-vehicle, ad-snow-vehicle
+        and ad-giny-mecanic, which are all '\A\d{4}\z'. The disagreement is
+        recorded rather than resolved because it is a reading of two instruments,
+        not a fact either one states.
     design:
       plate: { w: 340, h: 120, unit: mm, note: "225x115 mm for motorcycles" }
       background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
@@ -699,8 +1040,18 @@ series:
     matching: strict
     format:
       pattern: "999"
-      regex: '\A\d{1,3}\z'
+      regex: '\A\d{3}\z'
       printed_form: "PROVA 999"
+      corrected_2026_08_08: >-
+        regex was '\A\d{1,3}\z', which is wider than the instrument. Decret
+        456/2022 art. 16.1, verbatim: "A les plaques de matrícula s'hi inscriu un
+        grup de TRES caràcters numèrics que va des del 000 fins al 999" — a group
+        of three, and the range is written with leading zeros, so 000 and 007 are
+        forms the block contains and "7" is not. Narrowed to exactly three.
+        DATED NOTE: the count is a 2022 addition. The 2011 art. 13.1 said only
+        "un grup de caràcters numèrics que van des del 000 fins al 999", with no
+        number word — the range still implies three places, but the draft's
+        one-to-three reading has no basis in either text.
       format_evidence: statutory
       format_note: >-
         THE SERIAL IS THE THREE DIGITS; "PROVA" IS A LEGEND. art. 16.1 says so
@@ -761,6 +1112,19 @@ series:
       ITV OUTCOME rather than by vehicle age, giving red plates to vehicles that
       failed and white ones to those that passed. That is a genuinely unusual
       design decision and it is why two historic series appear here.
+    verifier_note_2026_08_08: >-
+      FORMAT, CLASS AND COLOUR ALL CONFIRMED against art. 14 in force: Pantone
+      485 red ground, matt black embossed characters, 330 x 140 mm, one letter
+      then two digits 00-99. Two things to record.
+      (a) THE LEGEND WAS RENAMED. 2011 art. 11.1 printed "VEHICLE ANTIC" and the
+          article was headed "vehicle antic o de museu"; 2022 art. 14.1 prints
+          "VEHICLE HISTÒRIC". The design block carries the current word for a
+          series dated from 2011. Not edited here (visual lane); recorded.
+      (b) THE ABSENCE OF regex_strict IS CORRECT AND DELIBERATE, and the pass
+          confirms it rather than "fixing" it: art. 14.2 says only "una lletra de
+          la A a la Z, sense utilitzar les lletres de l'alfabet que puguin crear
+          confusió" and — unlike arts. 6.3 and 7.5 — never names I, O and Q. An
+          enumerated strict twin here would be an inference dressed as a statute.
     sources:
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 14"
 
@@ -772,15 +1136,40 @@ series:
     matching: strict
     format:
       pattern: "58999"
-      regex: '\A5[89]\d{3}\z'
+      regex: '\A58\d{3}\z'
       format_evidence: statutory
       format_note: >-
-        A RESERVED NUMERIC BLOCK, 58001 to 59999 (art. 15) — carved out of the
-        ordinary five-digit space rather than given its own prefix. The human
-        pattern spells a representative value from the 58xxx half because the
-        pattern DSL cannot express a numeric range; `regex` covers the whole
-        block. The lower bound 58001 is not encoded, so the regex accepts 58000,
-        which the block does not contain.
+        A RESERVED NUMERIC BLOCK, 58001 to 58999 under the instrument in force
+        (art. 15.1) — carved out of the ordinary five-digit space rather than
+        given its own prefix. The human pattern spells a representative value
+        because the pattern DSL cannot express a numeric range. The lower bound
+        58001 is not encoded, so the regex accepts 58000, which the block does
+        not contain — one string of slack, and the only slack left.
+      corrected_2026_08_08: >-
+        THE HEADLINE §5.3 CATCH. The draft recorded the block as "58001 to 59999"
+        with regex '\A5[89]\d{3}\z'. THE TWO INSTRUMENTS SAY DIFFERENT THINGS AND
+        NEITHER SAYS THAT.
+          Decret del 23-02-2011, art. 12.1, verbatim: "A les plaques de matrícula
+          s'inscriu un grup de 5 caràcters que va des del 58001 final al 99999."
+          ("final al" is the instrument's own slip for "fins al".)
+          Decret 456/2022, art. 15.1, verbatim: "A les plaques de matrícula s'hi
+          inscriu un grup de cinc caràcters numèrics que va des del 58001 fins al
+          58999."
+        So the block was 58001-99999 from 2011 and was NARROWED to 58001-58999
+        when the current Reglament commenced on 17 November 2022. The draft's
+        59999 is between the two and matches neither instrument — the precise
+        failure mode PRD-PLATES §5.3 names ("never average them"). The regex now
+        carries the CURRENT statutory block and over-accepted 1,000 strings
+        before this pass (59000-59999) plus 58000.
+        THE PERIOD CONSEQUENCE IS LEFT TO THE MAINTAINER: on the §2.2 rule that a
+        differing format is a differing series, the 2011-2022 wide block deserves
+        its own ended series (ad-historic-passed-itv-2011 or similar) and this
+        one should start 2022. That would be a series ADDITION, which the
+        append-only rule permits but which a researcher must not make alone under
+        I-11, so it is proposed in data/review/plates-verify/ad.md and not taken here.
+        The period on this series is therefore left at 2011 and is KNOWN to be
+        wider than the format it now carries — flagged rather than quietly
+        re-cut.
     design:
       plate: { w: 330, h: 140, unit: mm }
       background: { color: "#FFFFFF", finish: retroreflective, hex_basis: observed }
@@ -798,6 +1187,15 @@ series:
       the one case where a bare five-digit string can be attributed with
       confidence. Note the consequence for ad-moped, whose 00000-99999 space
       nominally includes this block.
+    verifier_note_2026_08_08: >-
+      ONE PROVISION THE DRAFT MISSED, AND IT IS A SOURCED NEGATIVE WORTH HAVING:
+      art. 15.3 provides that historic MOPEDS keep the ordinary moped plate —
+      "La placa de matrícula per als ciclomotors que es registrin com a vehicles
+      històrics és la mateixa que la placa de matrícula ordinària per als
+      ciclomotors." So a historic ciclomotor is NOT in this series and NOT in
+      ad-historic-failed-itv; it is in ad-moped. No new series is warranted (the
+      instrument says the plate is the same one), and the block-overlap note
+      above gains a second reason to exist.
     sources:
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 15"
 
@@ -838,6 +1236,14 @@ series:
       blue Pantone 300 legends. Two corrections to the secondary record are
       carried here: the ground is white and not sky blue, and the serial is FOUR
       digits and not three. Both come from art. 17.1 verbatim.
+    verifier_note_2026_08_08: >-
+      BOTH OF THE DRAFT'S CORRECTIONS TO THE SECONDARY RECORD ARE UPHELD on the
+      raw text of art. 17.1: "El fons de les plaques és retroreflector, de color
+      blanc" and "un grup de quatre caràcters numèrics que va des del 0000 fins
+      al 9999". Pantone 485 characters and Pantone 300 legends confirmed. One
+      dated detail: the top legend was plural before 2022 — 2011 art. 14.1 prints
+      "VEHICLES ESPECIALS", 2022 art. 17.1 prints "VEHICLE ESPECIAL". Recorded,
+      design block not edited.
     sources:
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 17.1"
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/011040/html/199A6.html  # Llei del Codi de la circulació de 10-6-99 art. 204.7"
@@ -867,6 +1273,13 @@ series:
       Pyrenean microstate having a statutory snowmobile plate is exactly the
       kind of jurisdiction-specific series a general dataset misses; it shares
       the special-vehicle design and differs only in its legend.
+    verifier_note_2026_08_08: >-
+      Confirmed verbatim against art. 18.1 — white retroreflective ground,
+      Pantone 485 red border and characters, "MOTO DE NEU" in Pantone 300 blue,
+      four digits 0000-9999, 225 x 115 mm. Same dated plural as the
+      special-vehicle series: 2011 art. 15.1 printed "MOTOS DE NEU".
+      Placement fact available if wanted (art. 22.5): a snowmobile carries a
+      single rear plate.
     sources:
       - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 18"
 
@@ -913,10 +1326,17 @@ series:
     period_evidence: instrument-in-force
     period_note: >-
       Llei 24/2014, del 30 d'octubre, BOPA núm. 67, any 2014, published
-      25 November 2014. Note that Andorra puts personalised plates in a LAW
-      passed by the Consell General and sanctioned by both Co-Princes, where
-      San Marino uses a decree — a markedly higher instrument for the same
-      subject.
+      26 November 2014 (the sumari of BOPA núm. 67, any 26 is dated 26.11.2014;
+      the draft's 25 November was the third instance of the same off-by-one and
+      is corrected). Note that Andorra puts personalised plates in a LAW passed
+      by the Consell General and sanctioned by both Co-Princes, where San Marino
+      uses a decree — a markedly higher instrument for the same subject.
+      COMMENCEMENT, which the draft did not state: disposició final segona,
+      verbatim — "Aquesta Llei entra en vigor al cap d'un mes de ser publicada al
+      Butlletí Oficial del Principat d'Andorra." One month from 26 November 2014
+      is 26 DECEMBER 2014, so `period.start: 2014` is correct but rests on the
+      last six days of the year; no personalised plate can predate 26 December
+      2014 and first issuance in 2015 would not contradict anything here.
     matching: recall-only
     format:
       pattern: "LL999"
@@ -932,6 +1352,49 @@ series:
         lletres" (h). The regex enforces the length bound and the letters-then-
         digits ordering but accepts a five-character string with only one
         letter, which (h) forbids. A match is therefore a shape hit.
+      unexpressed_constraints_2026_08_08: >-
+        THE §5.3 PASS FOUND THREE MORE CONSTRAINTS IN art. 7.1 THAT THE DRAFT DID
+        NOT LIST, one of which the regex actively violates. `recall-only` was
+        already the right call; these widen the gap it declares.
+        (d) "No s'accepten combinacions que coincideixin o puguin coincidir amb
+            la numeració de les matrícules ordinàries." A personalised mark may
+            not look like an ordinary one — yet the regex accepts A0000, which is
+            precisely the ordinary lettered grammar of art. 6.2, and AA000, which
+            is its next stage. The single most over-accepting case, and it is
+            forbidden in terms.
+        (f) "No s'accepten combinacions que continguin la menció 'AND' i altres
+            pròpies de l'Estat o dels poders públics andorrans." AND is barred as
+            a substring; the regex accepts it.
+        (e) and (j) are discretionary or registry-state rules — combinations that
+            blur letters against digits, and combinations already reserved or
+            attributed — and are unexpressible in a regex by nature.
+        None of these is encoded, because a regex that excluded the ordinary
+        grammar would be asserting a negative the dataset cannot verify per
+        plate; they are recorded so the `recall-only` declaration is honest about
+        WHAT it is recalling.
+      eligibility_disagreement_2026_08_08: >-
+        LAW AND REGLAMENT DISAGREE ON WHICH VEHICLES MAY CARRY ONE. Recorded
+        verbatim, not averaged, and the narrower `categories` list is left alone
+        pending the maintainer's call.
+        Llei 24/2014 art. 3.1 admits four categories: "a) Categoria 'L' […] amb
+        excepció dels de la categoria 'L1' (ciclomotors). b) Categoria 'M' […]
+        c) Categoria 'N' o la que correspongui a vehicles de motor destinats al
+        transport de mercaderies […] d) Categoria 'O' o la que correspongui a
+        remolcs i semiremolcs." That is motorcycles, cars, GOODS VEHICLES and
+        TRAILERS.
+        Decret 456/2022 art. 26.1 is narrower: the personalised mark "s'aplica a
+        la placa de matrícula ordinària i a la placa de matrícula ordinària
+        reduïda dels vehicles automòbils, així com a la placa de matrícula
+        ordinària de les motocicletes" — cars and motorcycles only, no mention of
+        N or O.
+        This series lists [car, van, motorcycle], which follows the reglament and
+        omits truck, trailer and semitrailer. A law outranks a decree, so the
+        wider list is probably right; but "probably" is not the standard, the
+        reglament is the instrument the rest of this file is built on, and
+        MAJORITY IS NOT AUTHORITY cuts against quietly picking one.
+        Confirmed on both routes: art. 3.2 excludes the diplomatic, consular,
+        embassy-staff, temporary, prova, special, snowmobile, giny and museum
+        vehicles, so no personalised plate can appear on those series.
       reserved_strings:
         rule: >-
           art. 7.1(i): a personalised plate may not consist only of the letters
@@ -958,4 +1421,44 @@ series:
       art. 7.1(i) is the cleanest statutory statement in this whole dossier of
       which alphabetic markers Andorra regards as serial prefixes.
     sources:
-      - "https://bopadocuments.blob.core.windows.net/bopa-documents/026067/html/lo26067002.html  # Llei 24/2014, del 30 d'octubre, art. 7.1 lit. a-i"
+      - "https://bopadocuments.blob.core.windows.net/bopa-documents/026067/html/lo26067002.html  # Llei 24/2014, del 30 d'octubre, arts. 2, 3.1-3.2, 4.1, 6.3, 7.1 lit. a-j, disposició final segona"
+      - "https://bopadocuments.blob.core.windows.net/bopa-documents/034135/html/GR20221110_09_12_43.html  # Decret 456/2022 art. 26 — the reglament's own personalised-plate article, incl. 26.1 (eligible vehicles) and 26.5 (afectació a un altre vehicle)"
+
+# ===========================================================================
+# §5.3 VERIFICATION — researcher-only, per I-11.
+# ===========================================================================
+verification:
+  protocol: "PRD-PLATES §5.3"
+  status: awaiting_verification
+  verifier: null
+  researcher_pass:
+    date: "2026-08-08"
+    role: researcher
+    loop: QA-LOOP-2
+    dossier: data/review/plates-verify/ad.md
+    method: >-
+      Every series' period boundaries, format regex, class and colours were
+      re-derived from the PRIMARY instruments already pinned in this file, read
+      as raw gazette text rather than through a summariser (the BOPA blob store
+      serves UTF-16 HTML; it was fetched, decoded and tag-stripped locally, so
+      every quote above is a byte-for-byte extract), PLUS one independent route
+      per claim — the BOPA sumari PDFs for gazette dates, the two Correccions
+      d'errata for the citation and the as-published caveat, the repealed 2011
+      Reglament for period-scoped drift, the Automòbil Club d'Andorra's
+      concession page for the agency-stated date, and leslleis.com as a
+      third-party check on the decree's title.
+  signing_rule: >-
+    THIS SESSION RESEARCHED AND MAY NOT CERTIFY. I-11: the author never certifies
+    their own work — in the correction pass, not one of five major wrong
+    conclusions was caught by its author. `verifier` stays null and `status`
+    stays awaiting_verification until a second session re-derives. The
+    corrections landed here are themselves claims and inherit that status.
+  disagreements_recorded_not_resolved:
+    - "MT as serial prefix vs MT as legend — Decret 456/2022 art. 13.1 against Llei 24/2014 art. 7.1(i). See ad-temporary-mt.format.verifier_dissent_2026_08_08."
+    - "Personalised-plate eligibility — Llei 24/2014 art. 3.1 (categories L, M, N, O) against Decret 456/2022 art. 26.1 (cars and motorcycles). See ad-personalized.format.eligibility_disagreement_2026_08_08."
+  open_for_the_verifier:
+    - "ad-historic-passed-itv: the block narrowed 58001-99999 → 58001-58999 at the 2022 commencement. Proposed §2.2 series split; period left at 2011 and knowingly wider than the format."
+    - "ad-consular-cc: CC carried TWO digits under the 2011 Reglament and three from 2022. Same proposed split."
+    - "ad-standard-numeric / ad-motorcycle: art. 7.3 gives motorcycles the five-digit base stage, and no series in this file matches a five-digit motorcycle plate. One-word categories fix or one new ended series."
+    - "common.character_rights: Llei 12/2021 art. 108(3) and Decret 456/2022 art. 3.5 claim the plate characters and state symbols as Govern property. Counter-example to the PRD-PLATES §6 sample finding; needs carrying back into §6 and, separately, a counsel view. Art/emblem posture deliberately untouched."
+    - "annex_gap: the 2022 annex is 404 at its advertised path while the repealed 2011 annex is live. art. 21 makes the annex normative for the character shapes, so the glyph spec is reachable only in the repealed instrument."
