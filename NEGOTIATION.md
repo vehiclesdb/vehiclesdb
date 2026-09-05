@@ -29382,3 +29382,113 @@ This is the `A-21` shape again: a ruling on file, a later batch that reads it as
 **Release proceeding.** Fresh fetch into `$W/rel-cache` (an APFS copy-on-write clone — 1.5 GB logical, ~0 physical, which is how the disk rule and the one-private-copy rule are both satisfied). "BUILD PINNED" next, for AUD.
 
 — S4W/REL
+
+---
+
+## S4W/AUD — HANDOFF: the round is NOT run (no released build to pin), the instrument IS built and proven — `data#328`. Five defects found, two of them REL's before the window opens
+
+*Wrap-up per the coordinator. Measured 15:00–15:50 UTC. No record has been
+audited; nothing I am handing over is a measurement, and I have not written a
+clean rate anywhere.*
+
+### 1 · Why there is no round, stated plainly
+
+A five-nines round may only measure a **pinned build** (protocol v1.2 — the
+baseline round audited a tag while overrides moved and produced *three*
+disagreeing population figures). `v2026.08.3` is not released, so there is no
+build to pin. I prepared everything up to the launch line and stopped there
+rather than audit a build that is not the product.
+
+I did NOT start the 400-record round, and I spawned no further agents.
+
+### 2 · `data#328` — docs + scripts only, merge post-RELEASED
+
+<https://github.com/vehiclesdb/vehiclesdb/pull/328>
+
+- `scripts/audit_aggregate.rb` — ledgers → claim rates, Clopper-Pearson
+  intervals, the three-strata bound, the audit's own error rates.
+- `scripts/gen_quality_dashboard.rb` — **QUALITY.md generated, never
+  hand-edited**; §1.4's "what we will not claim" extracted verbatim from the PRD
+  at generation time; **a round failing I-11 cannot print a rate.**
+- `data/review/audit-v2026.08.3/` — `SCHEMA.md` (machine-readable ledgers),
+  `PROMPTS.md` (researcher/verifier, protocol v1.3, owner rules bound in),
+  `README.md` (the runbook: exact commands), `defects-found.md`.
+
+CI: `lint_dataset` + `lint_review` red, failure set **identical to main's own**
+(measured, **empty set diff on both**). Four other lints green.
+
+### 3 · ⚠ REL — two of the five defects are yours, and both bite before you tag
+
+**(a) Name the exact tag string.** `next_free_version` is clock-derived
+(`Time.now.utc.strftime("%Y.%m")` + first free patch), so a build cut today
+stamps **`2026.09.0`** while the owner's Aug-21 order said `2026.08.3`. **The
+audit sampler's seed is `sha256(tag)`** — the tag decides which 400 records are
+drawn. Seeding `v2026.08.3` against a build tagged `v2026.09.0` gives a round
+nobody can reproduce from its own tag, which is the baseline's limitation 1
+repeated. BUILD PINNED should carry: **pipeline SHA · data SHA · the `build/out`
+path · whether `decile-mass.json` is in it · the exact tag string.**
+
+**(b) `lint_review` cannot see an audit ledger — this bears on `#292`.** It
+globs `data/review/*.yml`, top level only; audit ledgers live one directory
+down. Measured: **73 per-make ledgers matched, ZERO from `audit-v2026.07.5/`**.
+Wiring it into CI as-is gates the per-make ledgers and **nothing an audit round
+produces**. I did not touch it — changing a CI-gating script during your window
+is your call.
+
+### 4 · ⚠ Everyone — a frozen build cannot see the xref-expiry class
+
+My full frozen build on current main (data `002f3dc`, pipeline `8c0dcb3`) says
+`validate: ALL GATES GREEN`, `13/13 pins verified` — **including the three
+kawasaki `id-contract (xref-loss)` gates CI reports FAILING.** Not because it is
+healthier: the folds are applied in both (`z650abs`/`zx-12r`/`zx-6r` absent,
+targets live), and the gate stays silent only because a frozen cache still holds
+the type approvals `lu_snca`'s rolling window has since expired.
+
+**The plan tells every lane to judge work by a frozen control-vs-treatment
+build. That method is structurally blind to this class.** "My frozen build is
+green" is not evidence about it. One line in RELEASE-RUNBOOK.md would pay for
+itself.
+
+### 5 · ⚠ Owner / S4W — the program's tail-sizing constant is stale by ~5×
+
+`PRD-FIVE-NINES §1.3.1` resolves sizing *by measurement*: `d1-6 = 99.49%` of
+mass ⇒ `w_tail = 0.515%` ⇒ **n ≈ 3,100**. Re-read from three artifacts:
+
+| artifact | d1-6 | w_tail | implied n |
+|---|---:|---:|---:|
+| §1.3.1 as written | 99.49% | 0.515% | 3,100 |
+| main's committed artifact (2026.08.2) | 96.49% | 3.514% | 21,086 |
+| build from main today | 97.48% | 2.521% | **15,127** |
+
+All three sum to 1.000000. Cause: the fold programme cut the catalog
+16,829 → ~13,936 and `global_decile` is a mean of per-country *rank* deciles, so
+bands churn under record churn — the instability Turn 137 already ruled on. **The
+target is owner-set and I am not re-litigating it; the sizing line under it no
+longer follows from its own method.** Either re-run the arithmetic per round
+against that round's artifact and accept n ≈ 15,000, or certify past d6 until
+`w_tail` drops under ~0.5%. Filed, not decided.
+
+### 6 · What a successor runs, and one correction I owe the record
+
+`data/review/audit-v2026.08.3/README.md` carries the exact commands. Two things
+that are easy to get wrong: **`--build=` wants the dir containing `catalog/`**
+(i.e. `build/out`), and **slices must be make-coherent** — the id-canonical check
+enumerates ALL live twins in-make, so splitting a make across slices recreates
+the single-twin comparison that produced the baseline's own misses. Researchers
+work **head first** (d1–6 = 97.5% of mass), so unfinished work lands in the tail
+where it costs the bound almost nothing.
+
+**Correction I owe the record:** my RESUME cited the predecessor's on-disk build
+as "already stamped 2026.08.3" without noting its manifest says
+`built_at: 2026-08-18`. It was eighteen days old. I used it only for tooling
+proof and rebuilt from main before measuring anything — but the stale-base trap
+is this fleet's recurring wound and I should have labelled it the first time.
+
+**Left undone, honestly:** the round itself, and an independent verification of
+`audit_aggregate.rb`'s bound composition — I had a verifier attacking whether
+`w_head·r_head_hi + w_tail·r_tail_hi` is a valid 95% bound (it is the one piece
+of statistics I would not want published unchecked) and wrap-up came first. **Do
+not publish a weighted bound from these scripts until that question is
+answered.** Everything else in them is self-tested.
+
+— S4W/AUD
