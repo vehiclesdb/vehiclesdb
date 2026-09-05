@@ -29772,3 +29772,55 @@ Sweden supplied the mirror image: the trafa.se dataset page has **zero** occurre
 **Correction to my own HANDOFF turn:** I mis-addressed the vPIC brief to the NO/SE researcher, who correctly refused to act on it and flagged the misroute back. vPIC was never researched — its launch was one of the five refused by the fleet-wide agent cap — so it stays UNFINISHED, and our own 2026-07-04 dossier's note that *"vPIC: explicit license text absent"* remains unverified on the candidate we are most likely to want next.
 
 — S4W/SRC
+
+---
+
+## S4W/NORM — HANDOFF: two PRs open (`pipeline#181` instruments, `pipeline#186` the rescue), and the id diff **refuted my own safety argument** before the build did
+
+Wrap-up. All numbers on **pipeline `8c0dcb3` + data `c614c4e`**, whole corpus 380,245 rows / 77,271,801 vehicles, shared frozen cache, 2026-09-05. Nothing merged; nothing pushed to any `main` but this file.
+
+### The finding worth carrying forward
+
+I built the rescue on a proof I believed: *it can only emit strings the build already produced, so it cannot invent a nameplate.* That is TRUE and it is NOT ENOUGH. The first treatment build **added 160 published ids** — `peugeot/306-xn`, `honda/civic-dx`, `ford/escort-clx` (trim stubs), `toyota/corola`, `chevrolet/corvette-stringray`, `mercury/montery` (register misspellings), `fiat/dethleffs-a5881`, `fiat/knaus-sun-traveller` (motorhome converter codes) — and removed one.
+
+The mechanism generalises past my lane: **thousands of produced nameplates sit BELOW the kind threshold in `build/candidates/`, which is where corroboration wants them. Adding vehicles to a candidate PROMOTES it.** So a rule that cannot invent a nameplate can still manufacture a RECORD. This is DEBT's refuted adapter-strip warning ("6,621 pairs MINT NEW NAMEPLATES") wearing a second costume, and a set-level argument about strings walked straight past it. Anyone whose change moves vehicles onto existing records — folds, alias repoints, coverage rescues — has this exposure and the only instrument that sees it is the control-vs-treatment **id diff**. My set-level reasoning did not; `rake test` did not; the gates caught only the downstream symptom.
+
+Fixed by pruning the registry to nameplates that already PUBLISH on pass-1 evidence alone. The guarantee then holds where the catalog is measured: *the rescue can only move vehicles onto records that publish without it.*
+
+### Rows, in measured-population order
+
+| # | row | measured population | state | branch / PR |
+|---|---|---|---|---|
+| 1+2 | `junk?` litre + door-count, ONE mechanism | litre **117,253 veh / 8,696 keys**; door-count **39,923 / 7,862** (16,825 of them unrecoverable bare `4D`/`5D`) | **MEASURED, RED, not mergeable** | `s4w/norm-rescue` → **`pipeline#186`** |
+| — | `VARIANT_SUFFIXES` `GTC` | 479 Bentley GTCs | **ALREADY SHIPPED** in `pipeline#128`; `car/bentley/continental-gtc` is live (ca,es,fi,lu,nl,th,ua,us). DEBT row is stale | DEBT correction unfiled |
+| 3 | pre-rename-lookup class | **3,287,544 veh / 28,907 raw strings** invisible to `report_junk_drops` | researcher in flight at cut-off | `s4w/norm-junkdrops` |
+| 4 | `report_junk_drops` third list (BYD) | 12,377 Thai Dolphins | researcher in flight at cut-off | `s4w/norm-junkdrops` |
+| 5 | rename-VALUE liveness lint | not measured | NOT STARTED (agent cap) | `s4w/norm-data-lint` (empty) |
+| 6 | `test_override_key_reachability` per-kind | not measured | NOT STARTED (agent cap) | `s4w/norm-reach` (empty) |
+| 7 | Kia RDW comma-split | not measured | NOT STARTED | — |
+| 8 | BMW spaced M-badges | not measured | NOT STARTED | — |
+| 9 | 2W short-token spacing | not measured | NOT STARTED — **COV2's makes, still unclaimed by me** | — |
+
+### `pipeline#186` — measured, and why it must NOT be merged as it stands
+
+```
+car:  4982 → 4981 | +0 −1 | pairs lost 0 gained 56 | renamed 0 | xref Δ 75
+van:   630 →  632 | +2 −0 | pairs lost 0 gained  2 | renamed 0 | xref Δ 10
+truck/bus/motorcycle/moped: +0 −0 on every axis
+```
+5,486 car rows + 1,664 van rows recovered. **Zero availability pairs lost anywhere**; 58 gained; 85 xref/TAN deltas, all gains. Two-wheelers untouched (litre clause is kind-exempt, NAMING §6 — and measured: zero 2W keys die on it).
+
+**The build is RED on one gate**: `FAIL id-contract gate (no-vanish) car: car/nissan/kubistar — no former_ids alias and no removals.yml entry`. All three moving ids are `cross_kind_prune!` re-deciding after the rescue shifts mass between kinds (`van/jeep/wrangler` and `van/mercedes-benz/vaneo` return; `car/nissan/kubistar` goes). It needs a **paired data PR** — alias or removal — and I did not attribute Kubistar's mass per-record, so I am not guessing which.
+
+### Two DEBT.md corrections owed (unfiled — next session, please)
+
+1. The **GTC row is closed** and has been since `pipeline#128`. A stale DEBT row is how a fleet spends a day re-fixing something.
+2. The **litre row is scoped wrong**: filed as "the Saab 9000 ~300", actually 117,253 vehicles — Saab is 0.4% of it. Its real head is `Kangoo 1.5` (2,217), `Kangoo Express 1.5` (2,015), `Starlet 1.3 E2` (1,448).
+
+### Also worth knowing
+
+`overrides/models/renames.yml` already carries **1,147 door-prefixed keys** (`"4D A4": A4  # 350 veh/64 rows -> live audi/a4`) — a previous pass derived my exact rule by hand and applied it key by key. That is NAMING §4's rule-first threshold cleared many times over, and it is the strongest argument in `#186`. None of those keys go inert: renames are consulted *before* `junk?`, so the rescue only ever sees strings nobody has ruled on.
+
+Disk left clean: ONE control build (`$S/norm/ctrl2`, 96M) + the census. Treatment outputs deleted.
+
+— S4W/NORM
