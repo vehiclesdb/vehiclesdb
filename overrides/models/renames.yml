@@ -2888,6 +2888,7 @@ Dodge:
   A 100: A100                                 # spelling variant of "A100" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   Wc 56: WC56                                 # spelling variant of "WC56" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   D-150: D150                                 # spelling variant of "D150" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  "D 150": D150                               # SPACED twin of the hyphen key above. build/out of run 32440213490 publishes van/dodge/d-150 name "D 150" [fi,nl]; classify("DODGE","D 150", kind: :van) -> Dodge|D 150, unkeyed, and it slugs to d-150 exactly as the hyphenated raw does — so the two spellings compete for one id and only one had a key
   # ── wave-4 marque CLEAN (2026-08-01, dossier-w4-iveco-dodge §A): Dodge's US trim tail.
   # PRIMARY ORACLE: the EPA/DOE fueleconomy.gov bulk file's `baseModel` column (col 66 of
   # cache/us_vehicles.csv, https://www.fueleconomy.gov/feg/download.shtml) — a regulator's
@@ -3655,6 +3656,7 @@ Ford:
   A Town:           Model A                   # Ford's own Model A body-style names (Fordor, Tudor, Phaeton, Roadster, Town) — https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
   A Tudor:          Model A                   # Ford's own Model A body-style names (Fordor, Tudor, Phaeton, Roadster, Town) — https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
   A-Model:          Model A                   # Ford's own Model A body-style names (Fordor, Tudor, Phaeton, Roadster, Town) — https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
+  "A Model":        Model A                   # SPACED twin of the hyphenated key above, and it is the one the register actually writes: build/out of run 32440213490 publishes car/ford/a-model name "A Model" [fi,nz]. classify("FORD","A MODEL") -> Ford|A Model (unkeyed) while classify("FORD","A-MODEL") -> Ford|Model A. Both slug to a-model/model-a respectively, so the hyphen key never fired on this row and former_ids' a-model -> model-a arm was left naming a LIVE id
   A1930:            Model A                   # Ford's own Model A body-style names (Fordor, Tudor, Phaeton, Roadster, Town) — https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
   Model A Fordor:   Model A                   # Ford's own Model A body-style names (Fordor, Tudor, Phaeton, Roadster, Town) — https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
   Model A Tudor:    Model A                   # Ford's own Model A body-style names (Fordor, Tudor, Phaeton, Roadster, Town) — https://en.wikipedia.org/wiki/Ford_Model_A_(1927%E2%80%931931)
@@ -3750,6 +3752,12 @@ Ford:
   C-Max Energi:   C-Max                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: "C-MAX Energi Plug-In Hybrid" and "C-MAX Hybrid FWD" both base at C-MAX
   C-Max Trend:    C-Max                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: "C-MAX Energi Plug-In Hybrid" and "C-MAX Hybrid FWD" both base at C-MAX
   Focus C-Max:    C-Max                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: "C-MAX Energi Plug-In Hybrid" and "C-MAX Hybrid FWD" both base at C-MAX
+  # The HYPHEN key above never matched the register: es_dgt writes "FOCUS C MAX"
+  # with spaces, producing "Focus C Max" -> car/ford/focus-c-max [es,nl].
+  # former_ids.yml already aliased that id to c-max, so the record sat ALIVE
+  # under a live alias — same gate failure as Kafer, same cause: a key in any
+  # spelling but the PRODUCED one is silently inert.
+  "Focus C Max":  C-Max                     # BOTH sources write the spaced form, measured 2026-08-18: cache/es_dgt_202607.txt raw "FOCUS C MAX" (1) AND cache/nl_rdw_personenauto.json (1) — which is exactly why the resurrected id carried [es,nl]. Folds to the published ford/c-max
   Focus 2:     Focus                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: Focus RS/ST/Electric/Station Wagon all base at Focus
   Focus Se:    Focus                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: Focus RS/ST/Electric/Station Wagon all base at Focus
   Focus ZX3:   Focus                     # us_fueleconomy vehicles.csv baseModel — https://www.fueleconomy.gov/feg/download.shtml: Focus RS/ST/Electric/Station Wagon all base at Focus
@@ -4095,6 +4103,29 @@ Hillman:
   "4D Super Minx": Super Minx                       # 1 veh/1 rows (fi, fi_traficom) -> live hillman/super-minx; raw "4D SUPER MINX III/2560-65"
 
 Honda:
+  # ── Prologue trim/drivetrain ladder -> the nameplate (2026-08-21) ──────────
+  # `car/honda/prologue-ex` was PUBLISHED in 2026.08.2 on [ca,ua] and is absent
+  # from the current build, which is what the no-vanish gate reports. The cause
+  # is not curation: `ua_mvs` no longer carries it (Ukraine is healthy and GREW
+  # this build — 1599 -> 1824 ua-bearing car ids — so this is a per-nameplate
+  # loss, not a source outage), and the only source left is ca_nrcan with
+  # counts {"ca" => 0}, a CATALOGUE listing rather than registrations.
+  #
+  # The successor is unambiguous and live: `honda/prologue` [ua,us]. EX, EX-L
+  # and Touring are Honda's standard trim ladder and FWD is a drivetrain, so all
+  # four are qualifiers on ONE nameplate — the same call as the `HR-V Exl Cvt`
+  # and `Legend Sh-Awd` arms already in former_ids.yml.
+  #
+  # All four are keyed, not just the one the gate named. Three of them sit in
+  # build/candidates at zero counts today; keying only `Prologue EX` would leave
+  # the others to mint the same defect the moment ca_nrcan counts move, which is
+  # exactly the resurrection shape data#310 just cleared five of. Produced names
+  # derived with classify() first — "PROLOGUE EX AWD" produces "Prologue EX",
+  # so the AWD form folds through the same key.
+  "Prologue EX":      Prologue   # Honda trim — ca_nrcan "Prologue EX AWD"/"Prologue EX"; the published id's successor
+  "Prologue EX-L":    Prologue   # Honda trim (EX-L sits above EX) — ca_nrcan, candidate at ca 0
+  "Prologue Touring": Prologue   # Honda trim (top of the ladder) — ca_nrcan, candidate at ca 0
+  "Prologue Fwd":     Prologue   # DRIVETRAIN, not a trim — us_fueleconomy, candidate at us 0
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -7668,6 +7699,19 @@ Nissan:
   "Juke Nismo": "Juke"  # us_fueleconomy: models "Juke Nismo RS"/"Juke Nismo RS AWD" baseModel "Juke" — https://www.fueleconomy.gov/feg/download.shtml
   "Kicks Play": "Kicks"  # "In August 2024, the Kicks in Mexico and Canada continued to be sold alongside the new model as the Kicks Play" — a run-out badge for the P15; us_fueleconomy "Kicks Play" baseModel "Kicks" — https://en.wikipedia.org/wiki/Nissan_Kicks
   "King Cab": "Pick-Up"  # King Cab is Nissan's extended-CAB configuration of the Pick Up/Navara — https://en.wikipedia.org/wiki/Nissan_Navara
+  # HYPHENATED twin of the key above — the MIRROR of the other four in this
+  # change: here the SPACED spelling was keyed and the hyphenated one was not.
+  # build/out of run 32440213490 publishes van/nissan/king-cab name "King-Cab"
+  # [fi,nl]; classify("NISSAN","KING-CAB", kind: :van) -> Nissan|King-Cab.
+  #
+  # VALUE IS "Pick Up", NOT "Pick-Up", and the difference is deliberate: the
+  # live record van/nissan/pick-up publishes as "Pick Up" (spaced), fed by the
+  # `Pickup: Pick Up` key. Both spellings slug to pick-up so the id is the same
+  # either way, but the VALUE is what competes to become the display name —
+  # writing "Pick-Up" here would add mass to the spelling that currently LOSES
+  # the tie-break and could silently flip the published name. Same class as the
+  # giorno display defect in data#304, where the minority spelling was winning.
+  "King-Cab": "Pick Up"
   "King Cab 2.5DI": "Pick-Up"  # cab configuration + displacement — NAMING.md §6
   "Leaf 24KWH": "Leaf"  # battery capacity is a per-trim option, never a nameplate — the in-block "Leaf 30 Kwh / Leaf 40KWH / Leaf 62KWH: Leaf" precedent; us_fueleconomy "Leaf (24 kW-hr battery pack)" baseModel "Leaf" — https://www.fueleconomy.gov/feg/download.shtml
   "Leaf 40 Kwh": "Leaf"  # SPACED sibling of the already-folded "Leaf 40KWH" key — same class, key never written — https://www.fueleconomy.gov/feg/download.shtml
@@ -10786,6 +10830,7 @@ Volkswagen:
   Microbus: Caravelle                         # REPOINTED 2026-07-26 (wave-3): was "Micro Bus", now a fold source — the Microbus is the passenger T-series body, catalogued as Caravelle ("Known officially (depending on body type) as the Transporter, Kombi or Microbus") — https://en.wikipedia.org/wiki/Volkswagen_Type_2
   Tiguan 4MOTION: Tiguan                      # REPOINTED 2026-07-26 (wave-3): was "Tiguan 4 Motion", now a fold source. 4MOTION is the AWD system; EPA "Tiguan 4motion" baseModel Tiguan — https://www.fueleconomy.gov/feg/download.shtml
   Pickup: Transporter                         # REPOINTED 2026-07-26 (wave-3): was "Pick-Up", now a fold source — the pickup (Pritsche) body of the Transporter (GATE-1 resolution 1, dossier §3.0) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  "Pick Up": Transporter                      # SPACED twin of `Pickup` and `Pick-Up`, both of which are keyed here — this third spacing was not, and it is the one nl_rdw writes: the candidate row's native is literally "VOLKSWAGEN | PICK UP", and build/out of run 32440213490 publishes van/volkswagen/pick-up name "Pick Up" [fi,nl]. Three spacings of one body word, two keyed; the unkeyed one resurrected the id under the live `pick-up -> transporter` arm
   Transporter Doublecab: Transporter          # REPOINTED 2026-07-26 (wave-3): was "Transporter Double Cab", now a fold source (double-cab body of the Transporter) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
   Volkswagen: null                            # registry rows where the make was written into the model column (car+truck+van kinds) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   K 70: K70                                   # spelling variant of "K70" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -10852,7 +10897,19 @@ Volkswagen:
   Classica: Beetle  # Beetle 'Classic'/'Classica' special edition — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   De Luxe: Beetle  # Beetle De Luxe/Export trim; nl raw `VOLKSWAGEN DE LUXE SEDAN`. The existing `Deluxe: De Luxe` line already normalises the fused spelling into this key — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   Kaefer: Beetle  # 'Käfer' (ASCII-folded) is German for Beetle — "der Käfer" — https://en.wikipedia.org/wiki/Volkswagen_Beetle
-  Käfer: Beetle  # German name of the Beetle — "der Käfer"; lu_snca writes the umlaut, ua_mvs the folded form — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  Käfer: Beetle  # German name of the Beetle — "der Käfer" — https://en.wikipedia.org/wiki/Volkswagen_Beetle
+  # THREE spellings, not two — measured against cache/lu_delta_202607.xml on
+  # 2026-08-18: KAEFER (3 rows), KÄFER (1), KAFER (1). The plain-ASCII KAFER
+  # had no key, so it produced "Kafer" -> car/volkswagen/kafer [lu,ua] and sat
+  # there ALIVE while former_ids.yml already aliased that id to beetle — which
+  # the id-contract liveness gate reports as "an alias may never name a live
+  # id". One of main"s eleven gate failures on 2026-08-10/12/17.
+  #
+  # The comment here used to say "lu_snca writes the umlaut, ua_mvs the folded
+  # form". The register does not split that way — LU writes all three — and the
+  # correction matters because that sentence is what made a third key look
+  # unnecessary. Prose drift with a cost attached.
+  Kafer: Beetle  # diacritic dropped entirely — neither umlaut nor ae-digraph. Bare KAFER occurs in cache/lu_delta_202607.xml ONLY (1 row); no nl_rdw, es_dgt, uk_dft or ua file carries it. The id`s ua half arrives through KAEFER, which is the form the original comment attributed to ua_mvs
   Newbeetle: Beetle  # EPA/DOE `vehicles.csv`: model "New Beetle" baseModel **Beetle** (61 rows) and "New Beetle Convertible" baseModel **Beetle** — https://www.fueleconomy.gov/feg/download.shtml
   Special: Beetle  # Beetle 'Special'/'Special Bug' trim; bare in es_dgt and nz_nzta — https://en.wikipedia.org/wiki/Volkswagen_Beetle
   Super Beetle: Beetle  # "In English-speaking countries, the name 'Super Beetle' — alongside '1600' — was included" — the 1302/1303 marketing name — https://en.wikipedia.org/wiki/Volkswagen_Beetle
@@ -10926,6 +10983,7 @@ Volkswagen:
   "1200 Karmann Ghia": Karmann Ghia  # engine designation prefixed to the nameplate (`1200 KARMANN-GHIA COUPE 14/2400`) — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
   "1300 Karmann Ghia": Karmann Ghia  # engine designation prefixed to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
   "1500-Karmann Ghia": Karmann Ghia  # the 1500 Karmann Ghia is the Type 34 — "the 1500 Karmann Ghia, or Type 34" — a body of the same nameplate on the Type 3 floorpan — https://en.wikipedia.org/wiki/Volkswagen_Type_3
+  "1500 Karmann Ghia": Karmann Ghia  # SPACED twin of the key above, and the odd one out in its OWN family: the 1200/1300/1600 siblings a few lines up are all keyed with a SPACE and only the 1500 was written with a hyphen, so the one spelling the register actually produces had no key. build/out of run 32440213490 publishes car/volkswagen/1500-karmann-ghia name "1500 Karmann Ghia" [fi,nl]; classify("VOLKSWAGEN","1500 KARMANN GHIA") -> Volkswagen|1500 Karmann Ghia. Same Type 34 nameplate — https://en.wikipedia.org/wiki/Volkswagen_Type_3
   "1600 Karmann Ghia": Karmann Ghia  # engine designation prefixed to the nameplate — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
   Ghia: Karmann Ghia  # bare coachbuilder half of Karmann Ghia (`GHIA CABRIOLET`); the only VW nameplate carrying the token. Make-scoped, so Ford's Ghia trim is untouched — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
   Karman: Karmann Ghia  # MISSPELLING (single-n) of Karmann — https://en.wikipedia.org/wiki/Volkswagen_Karmann_Ghia
