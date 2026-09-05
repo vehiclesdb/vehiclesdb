@@ -589,7 +589,8 @@
 "motorcycle/kawasaki/ninja-650abs": "motorcycle/kawasaki/ninja-650"  # kawasaki A-1
 "motorcycle/kawasaki/versys-650abs": "motorcycle/kawasaki/versys-650"  # kawasaki A-1
 "motorcycle/kawasaki/z1000abs": "motorcycle/kawasaki/z1000"  # kawasaki A-1
-"motorcycle/kawasaki/z650abs": "motorcycle/kawasaki/z650"  # kawasaki A-1
+# "motorcycle/kawasaki/z650abs" was here (kawasaki A-1). It MOVED into the
+# 2026-09-05 xref-loss sign-off block below, where its measurement lives.
 "motorcycle/kawasaki/z750abs": "motorcycle/kawasaki/z750"  # kawasaki A-1
 # ── XREF-LOSS SIGN-OFF, 2026-08-18 · the FIRST use of `accepted_xref_loss:` ──
 # Main's weekly build has been red since 2026-08-10 and three of its eleven
@@ -640,7 +641,8 @@
 "motorcycle/kawasaki/z300abs": "motorcycle/kawasaki/z300"  # kawasaki A-1 RE-KEY — mints z300, no survivor exists
 "motorcycle/kawasaki/zx-6r":
   to: "motorcycle/kawasaki/ninja-zx-6r"
-  accepted_xref_loss: ["RTI*92/61*0042*00", "e1-92/61-0141/00"]  # A-2 · Ninja prefix. 2 of 5 tan. LU-April only.
+  accepted_xref_loss: ["RTI*92/61*0042*00", "e1-92/61-0141/00",  # A-2 · Ninja prefix. 2 of 5 tan. LU-April(202604) only.
+                       "RTI*2002/24*0229*00"]  # A-2 · 2026-09-05 cohort. 1 of 5 tan. LU-May(202605) only — see the second header below.
 "motorcycle/kawasaki/zx636": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
 "motorcycle/kawasaki/zx636b1h": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
 "motorcycle/kawasaki/ninja-636": "motorcycle/kawasaki/ninja-zx-6r"  # kawasaki A-2
@@ -651,7 +653,66 @@
 "motorcycle/kawasaki/zx-7r": "motorcycle/kawasaki/ninja-zx-7r"  # kawasaki A-6
 "motorcycle/kawasaki/zx-12r":
   to: "motorcycle/kawasaki/ninja-zx-12r"
-  accepted_xref_loss: ["e1-92/61-00065/02"]  # A-7 · Ninja prefix. 1 of 4 tan. LU-April only.
+  accepted_xref_loss: ["e1-92/61-00065/02",  # A-7 · Ninja prefix. 1 of 4 tan. LU-April(202604) only.
+                       "KAW23600751", "e1-92/61-00065/04"]  # A-7 · 2026-09-05 cohort. 2 of 4 tan. LU-May(202605) only — see the second header below.
+# ── XREF-LOSS SIGN-OFF, 2026-09-05 · the SECOND cohort, one window rotation on ──
+# The DEBT row that accompanied the first three sign-offs predicted this: "every
+# future fold of an LU-sourced id will need one, forever … the fourth, fifth and
+# hundredth will be noise." Here are the fourth, fifth, sixth and seventh, 18
+# days later. They are signed off because the measurement says upstream expiry,
+# NOT because the class is now routine — read the numbers before adding an
+# eighth, exactly as the 2026-08-18 header demands.
+#
+# WHAT THE GATE SAW (CI run 33943788008, a FRESH-fetch build, four FAILs):
+#   z650abs -> z650          delists e1*168/2013*00038*00        (1 of 2 tan; successor publishes 10)
+#   zx-12r  -> ninja-zx-12r  delists KAW23600751, e1-92/61-00065/04 (2 of 4; successor publishes 3)
+#   zx-6r   -> ninja-zx-6r   delists RTI*2002/24*0229*00         (1 of 5; successor publishes 7)
+#
+# MEASURED FOUR WAYS, and one of them corrects a hazard in how the first
+# measurement was counted:
+#   1. ALL FOUR ARE LU-ONLY. `grep -rlF` for each value over the entire 1.5 GB
+#      cache tree returns lu_delta_*.xml files and nothing else — no fi, nl, es,
+#      gb, ua, de, ar, th, my, nz, ie, ca or us row carries any of them.
+#   2. ⚠ THE CACHE HOLDS SIX LU FILENAMES BUT ONLY THREE DISTINCT MONTHS, and
+#      a per-FILENAME count double-counts. Verified by md5:
+#        lu_delta_202604.xml == lu_delta_2026-05.xml    e11e8dfe2625…
+#        lu_delta_202605.xml == lu_delta_2026-06.xml == lu_delta_latest.xml  9bff1116720c…
+#        lu_delta_202606.xml == lu_delta_2026-07.xml    6a6d3a5ad199…
+#      The two schemes differ by one because one names the DATA month and the
+#      other the PUBLICATION month (upstream `operations-delta-202606.xml` is
+#      published 2026-07-07). Collapsed to data months, the four values sit in:
+#        e1*168/2013*00038*00   → 202604 and 202605
+#        KAW23600751            → 202605 only
+#        e1-92/61-00065/04      → 202605 only
+#        RTI*2002/24*0229*00    → 202605 only
+#   3. THE WINDOW HAS ROLLED TWO MONTHS since the first sign-off. lu_snca serves
+#      a rolling three-month window (MONTHS_BACK = 3). Today's CI build resolved
+#      `lu_snca: 3 month(s) 202608,202607,202606`. Both 202604 and 202605 are
+#      outside it. The OLDEST month still inside it, 202606, is in this cache and
+#      greps CLEAN for all four values — so the expiry is verifiable locally and
+#      does not rest on the fetch alone.
+#   4. THE FRESH FETCH AGREES. 202607 and 202608 were fetched from
+#      download.data.public.lu at 04:19 UTC on 2026-09-05 and the gate still
+#      fired, so neither carries these values either.
+#
+# WHY RE-CUTTING THE FOLD CANNOT HELP — the gate's other option, answered rather
+# than preferred: an unfolded `z650abs` rebuilds from the SAME current rows,
+# publishes without these approvals, and the catalog loses them identically. The
+# gate proves its own counterfactual by computing "leave the CATALOG entirely"
+# over this build: no live record holds them under any id.
+#
+# ⚠ ESCALATED, NOT JUST SIGNED. The owner call in the DEBT row (should xrefs
+# ACCUMULATE across releases, the way archive/registrations accumulates
+# snapshots?) is now overdue rather than hypothetical: cohort one was three
+# values, cohort two is four, and the arrival rate is set by how many LU-sourced
+# ids get folded, not by anything a curator controls. Every one of these seven
+# approvals was REAL when we published it, and an approval is a durable fact
+# about a machine — it does not stop existing because a registrations feed
+# rolled forward. Until that is ruled, a sign-off here is a record of an upstream
+# expiry and nothing more; it is not permission to wave the gate through.
+"motorcycle/kawasaki/z650abs":
+  to: "motorcycle/kawasaki/z650"
+  accepted_xref_loss: ["e1*168/2013*00038*00"]  # A-1 · ABS fold. 1 of 2 tan. LU 202604+202605, out of window since 202606.
 "motorcycle/kawasaki/zx1100-hsfnn": "motorcycle/kawasaki/ninja-1100sx"  # kawasaki A-8
 "motorcycle/kawasaki/klz1100-asfnn": "motorcycle/kawasaki/versys-1100"  # kawasaki A-9
 "motorcycle/kawasaki/klz1000": "motorcycle/kawasaki/versys-1000"  # kawasaki A-10
