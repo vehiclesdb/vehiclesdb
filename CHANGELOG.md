@@ -2,6 +2,63 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.09.1] - 2026-09-12 — the id-contract release
+
+**14,886 models across 918 makes (14,856 → 14,886, +30).** Small by volume and
+large by correctness. The 2026-09-07 weekly validate failed on **202** unique
+gate failures, almost all of them id-contract LIVENESS: `former_ids` alias
+targets that the fresh fetch had brought back to life, and *an alias may never
+name a live id*. The fix was structural rather than curatorial — publication
+hysteresis now reads each id's entry class from a sidecar the release cannot
+destroy, so an edge id's grace no longer depends on a file the build overwrites.
+That took the gate set **202 → 0**, and this release is the first build to pass
+on that path.
+
+| kind | 2026.09.0 | 2026.09.1 | Δ |
+|---|---:|---:|---:|
+| car | 5,438 | 5,455 | +17 |
+| van | 718 | 720 | +2 |
+| motorcycle | 6,011 | 6,015 | +4 |
+| moped | 1,365 | 1,370 | +5 |
+| truck | 921 | 923 | +2 |
+| bus | 403 | 403 | ±0 |
+
+**Nothing was retired.** +30 ids added, **0 removed**, so the dist-diff section
+that must always be empty — ids removed with no migration path — is empty for
+the trivial reason as well as the gated one. Hysteresis holds 210 edge ids
+through upstream count churn (car 71 · motorcycle 76 · bus 17 · truck 17 ·
+moped 16 · van 13).
+
+Decile-1 movements, the records consumers actually look at: `car/bmw/5-series`,
+`car/hyundai/tucson`, `car/toyota/yaris` and `motorcycle/vespa/sprint-tech-150`
+entered decile 1; `motorcycle/aprilia/sm` and `moped/la-souris/trendy-retro`
+left it and remain published. One display rename on a surviving id:
+`car/changan/e-star` "E Star" → "E-Star".
+
+Cut by CI run 34697443600 — `validate: ALL GATES GREEN`, `license gate: 13/13
+pins verified` (+1 declared absent and asserted not ingested), all seven release
+assets attached. **`plus-2026.09.1` was not cut:** the `PIPELINE_RELEASE_TOKEN`
+secret is absent, so the private layer stays on its previous version until it is
+cut by hand (RELEASE-RUNBOOK.md §5.5).
+
+### A lint that was lying, and two PRs that would have shipped a live id
+
+Worth recording because the failure mode generalises. `scripts/lint_curation.rb`
+validated rename-block headings against `catalog/*/makes.json` display names.
+The pipeline does not key renames that way — it keys them by the **post-alias
+display string of the row being classified**, which is a function of the raw
+register spelling. Two raw spellings that slugify the same land on one make id
+and produce two live headings: raw `AUTO UNION` → `"Auto Union"` (which
+`renames.yml` keys) and raw `AUTO-UNION` → `"Auto-Union"` (which the catalog
+shows). The lint called the first one inert; it is not.
+
+Both attempted fixes edited the data instead of the lint, and `renames.yml` is a
+**build input**: each took the build from 202 gate failures to 203 by stopping a
+load-bearing fold and minting `car/auto-union/1000s` live while `former_ids.yml`
+still aliased it. The check now ports the pipeline's own reachability predicate,
+and the catalog — a build output that lags the override layer — is no longer
+treated as the authority on which keys the pipeline accepts.
+
 ## [2026.09.0] - 2026-09-05 — the fresh-data release
 
 **14,856 models across 916 makes (13,809 → 14,856, +1,047). The first fresh
