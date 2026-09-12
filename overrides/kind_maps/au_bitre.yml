@@ -1,0 +1,91 @@
+# AU BITRE *Road Vehicles Australia* source mapping — vehicle_type → kind.
+# Dataset: https://data.gov.au/data/dataset/road-vehicles-australia-january-2025
+# Resource: "Registered road vehicles by vehicle type, year of manufacture,
+#           motive power, make and model, 31 January 2025" (CSV, 6,077,032 B)
+# Licence:  CC BY 3.0 AU (pinned as au_bitre).
+#
+# The whole vocabulary, MEASURED over all 102,502 data rows on 2026-09-12
+# (vehicles = summed no_vehicles; rows = CSV cells):
+#
+#   Total                          22,305,347       1 row    ← AGGREGATE, skipped
+#   Passenger vehicles             16,079,749  39,533 rows
+#   Light commercial vehicles       4,195,963  11,498 rows
+#   Motorcycles                       981,893  18,602 rows
+#   Heavy rigid trucks                403,860  11,558 rows
+#   Light rigid trucks                263,339   2,550 rows
+#   Articulated trucks                128,592   4,925 rows
+#   Campervans                        103,551   4,545 rows
+#   Light buses                        55,760   1,125 rows
+#   Heavy buses                        48,963   2,772 rows
+#   Non-freight-carrying vehicles      43,677   5,393 rows
+#   ─────────────────────────────────────────────────────
+#   sum excluding Total            22,305,347  = the Total row exactly
+#
+# Ten real values plus `Total`. EVERY ONE IS MAPPED — nothing here routes to
+# null, which is unusual for this project and is explained under
+# "Non-freight-carrying vehicles" below.
+#
+# `Total` IS NOT IN THIS MAP ON PURPOSE. It is an aggregate row carrying the
+# national fleet with make/model = "-", and the adapter skips it by name before
+# consulting this file. Ingesting it would mint a 22.3-million-vehicle phantom
+# nameplate — the same defect class as KBA's 70 "totals" rows. A key here with
+# no value is treated as "declared and deliberately unmapped"; a key MISSING
+# entirely raises a build warning, because that means BITRE's vocabulary moved
+# and a human has to look.
+#
+# ── moped: AUSTRALIA CONTRIBUTES ZERO, and this is a sourcing fact ───────────
+#
+# `Motorcycles` is not subdivided and BITRE publishes NO engine-capacity column
+# against make and model in any of its 18 resources — the attribute exists in
+# NEVDIS and is simply never crossed with the nameplate. There is therefore no
+# cc threshold to split on, and inferring one from model strings would be
+# fabrication. All 981,893 two-wheelers land as `motorcycle`. Moped identities
+# continue to come from NL/FI/ES.
+#
+# ── Non-freight-carrying vehicles → truck, decided by reading the rows ───────
+#
+# The source research contradicted itself here — the country report mapped this
+# class to `truck` and the yield analysis mapped it to `null (plant/special)`,
+# a 43,677-vehicle disagreement. Settled empirically rather than by preference,
+# by listing what is actually in the class:
+#
+#   ISUZU FTS 1,860 · HINO FD 1,255 · HINO GT 1,212 · SCANIA P SERIES 1,124
+#   ISUZU FRR 1,079 · HINO FG 1,061 · ISUZU FVZ 955 · FUSO FK 802
+#   ISUZU FSR 796 · IVECO ACCO 751 · VOLVO FM 700 · DAF CF RANGE 652 …
+#
+# Those are real truck nameplates wearing special-purpose bodies (tippers,
+# cranes, fire tenders), not plant. The genuine plant makes in the class —
+# FRANNA 2,668 · TEREX 1,141 · LIEBHERR 898 · TADANO 688 — all publish
+# `model = "UNKNOWN"` and are therefore already removed by the adapter's
+# null-token filter, with no mapping decision required.
+#
+# Measured split: of the 43,677 vehicles, 9,365 (21.4%) are dropped by the
+# UNKNOWN/null filter and 34,312 survive as 580 real (make, model) pairs.
+# Mapping the class to null would have discarded those 580 pairs — including
+# `volvo/fm`, a nameplate the catalog already publishes — to avoid plant that
+# the null filter removes anyway. So: `truck`.
+#
+# ── Light commercial vehicles → van: CONSISTENT, AND STILL AN OPEN RULING ────
+#
+# 4,195,963 vehicles, the second-largest class. `van` follows the house
+# precedent: uk_dft maps "Light goods vehicles" → van, and the Australian class
+# is the same regulatory bracket. But the Australian LCV fleet is dominated by
+# UTES — body-on-frame pickups (HILUX, RANGER, TRITON, NAVARA, D-MAX) — and a
+# ute is not a panel van. The mapping is recorded as the consistent default and
+# flagged to the owner as a ruling request rather than presented as settled.
+# Note it is partly self-correcting: our catalog already files toyota/hilux and
+# ford/ranger under several kinds, and the reconciler keeps the dominant kind
+# per make, so a wrong call here degrades to cross-kind noise rather than a
+# wrong publish.
+
+kinds:
+  Passenger vehicles: car
+  Light commercial vehicles: van    # utes dominate this class — OPEN RULING, see header
+  Campervans: van
+  Motorcycles: motorcycle           # no moped split exists in this source — see header
+  Heavy rigid trucks: truck
+  Light rigid trucks: truck
+  Articulated trucks: truck
+  Non-freight-carrying vehicles: truck  # real truck nameplates; the plant in here is model=UNKNOWN
+  Light buses: bus
+  Heavy buses: bus
