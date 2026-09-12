@@ -32985,3 +32985,159 @@ This lane's standing headline — **"74/284 = 26.1% of decile-1 ids"** — descr
 `$S/enr2/INDEX.md`. **Two researchers were still running: `honda-A` (15 ids) and `new-yamaha` (8). If either writes its file after this session, it appears as `$S/enr2/honda-A.yml` / `new-yamaha.yml`** — dry-run `apply_enrich.rb`, apply, `rake test` + `lint_enrich`. **Do not apply either without an I-11 verifier first**: tonight's found a §9.6 violation the gate structurally cannot see. Then, in current-decile order: `new-jp` (9/9) · `new-eu-misc` (15/15) · `new-ua` (9/9), all cut and committed.
 
 — S4W/ENR2
+
+## S4W/PLT — CLAIM+HANDOFF (one turn): `eg` lands as #339, `sa` is researched-but-unwritten on a WIP branch — and THREE L5 jurisdictions in a row have an instrument that regulates everything about the plate except its grammar
+
+CLAIM and HANDOFF are folded because my CLAIM was written at 14:0x and **held
+off main unpushed**: REL-3's freeze was live, a publish run was in flight
+(`34697443600`), and two runs had already died on NEGOTIATION-only pushes. I
+checked for a publish run before writing this turn, as the brief requires —
+`v2026.09.1` now exists (`a480b99`), so the freeze is discharged and this is
+safe to post. **Holding the turn cost nothing; pushing it could have cost a
+third ten-minute run.**
+
+**CLAIMED AND LANDED: `eg`.** **CLAIMED, RESEARCHED, NOT WRITTEN: `sa`.**
+**CLAIMED, RESEARCH IN FLIGHT WHEN I WAS STOPPED: `ae`.** I did not touch
+`tr`/`ng` (#335).
+
+- **`data#339`** — `plates/eg.yml`, **11 series**, branch `s4w/plt-l5-arabic`
+  off `ab7fe03`. `lint_plates.rb` green: **125 files, 1392 series**. NOT merged.
+- **`WIP-plt-l5-sa-research`** — `plates/_research/sa-FACTSHEET.md`, statute
+  tier, ~200 lines with every canonical URL, the 17-letter codepoint table, the
+  fee schedule and a verification corpus of eight dated photographs. **No
+  `plates/sa.yml`.** The next taker writes YAML from sources, not from search.
+
+### THE FINDING, and it is a pattern rather than a fact about Egypt
+
+**Nigeria, Egypt and Saudi Arabia all have instruments that regulate the plate
+in detail and NEVER PRINT THE SERIAL MASK.** My predecessor found it in `ng`
+and reported it as that jurisdiction's quirk. It is not a quirk.
+
+- **`eg`** — Law 66/1973 art. 13, as replaced by Law 121/2008, delegates
+  «شكل اللوحات، **والبيانات التى تتضمنها**» — the shape *and the data the plates
+  contain* — to a Minister's decision. Law 17/2024 re-delegated the identical
+  list to "the executive regulation". The only regulation the Ministry
+  publishes, Decision 2777/**2000**, predates the design by eight years and
+  describes a **different, legacy** plate.
+- **`sa`** — Law art. 7 delegates specifications to the Regulation, and the
+  Regulation's own specification article **delegates again**: 7/2/2 hands
+  dimensions to the GDT («وللإدارة العامة للمرور تحديد مقاسات تلك اللوحات»),
+  7/2/3 hands the registration-type indication to the GDT. **No millimetre
+  appears in any Saudi instrument.**
+
+**So "the instrument does not print the mask" is the NORMAL case outside Europe,
+and a lane that treats it as a research failure will keep mis-reporting a
+finding as a gap.** The right output is `matching: recall-only` plus the
+delegation quoted on the file's face — which is what #339 does, eleven times.
+The European corpus made "statute contains a regex" feel like the baseline; it
+is a regional accident.
+
+### THE GATE CONSTRAINT THAT GOVERNS EVERY NON-LATIN FILE L5 WILL EVER SHIP
+
+Measured in `scripts/lint_plates.rb` **before** any data was written:
+`serials_from` generates the `L` token from a hardcoded **`("A".."Z").to_a.sample`
+and ignores a declared `serial_alphabet:` entirely**, while `class_members`
+expands `[A-Z]` into **26 individual Latin letters**, each required to be in the
+effective alphabet.
+
+**A file that declares its alphabet as the Arabic letters alone makes every
+regex in it a lint failure, and a `pattern` can never say "any Arabic letter" —
+the DSL has one letter token and it is Latin.** The honest answer is a **union**
+declaration: these plates genuinely print both renderings, so the exact
+characters they print *is* the union, and the correspondence lives in a
+`script:` block on the `ua.yml` precedent. Anyone taking `ir`, `iq`, `il+ps`,
+`ma`, `dz` or the Gulf should read this before authoring, not after.
+
+### TWO RESEARCHERS, TWO JURISDICTIONS, ONE STRUCTURAL FACT NOBODY HAD
+
+Independently, photographically, glyph by glyph, on `eg` and on `sa`:
+
+> **The Latin line is POSITION-ALIGNED with the Arabic line, not
+> sequence-aligned. Reading the Latin left-to-right yields the Arabic letter
+> sequence REVERSED. Digits are NOT reversed.**
+
+Two lanes converging on the same load-bearing fact from different sources is the
+strongest evidence either produced. **Consequence for the dataset: a dual-script
+file must PIN which rendering it stores and say so on the face of the series**,
+or a consumer comparing our serial against an Arabic-order OCR gets a reversed
+string and concludes we are wrong. #339 pins the Latin rendering and publishes
+the reversal rule.
+
+**And it is not folding.** The `eg` map is **injective** — 17 Arabic letters to
+17 *distinct* Latin letters — so the Croatian ŠI→SI test passes; and unlike
+`ua.yml`, where the Latin form is *our* homoglyph transliteration, here the
+Latin form **is printed on the plate by the issuing authority**. Stronger
+precedent, not weaker. ⚠ But `sa`'s map is **a CODE, not a transliteration** —
+ح→J, ص→X, ع→E, ق→G, م→Z, ى→V, seven of seventeen phonetically wrong. Any
+pipeline that "romanises" Saudi Arabic produces the wrong string.
+
+**And the two alphabets differ in exactly the places that corrupt silently:**
+`sa` uses bare ALEF **U+0627** and ALEF MAKSURA **U+0649**; `eg` uses ALEF WITH
+HAMZA **U+0623** and YEH **U+064A**. **The two files must never share an
+alphabet declaration.** Both sources write ه as U+0647 **+ U+0640 TATWEEL**,
+which is presentational and must never enter a character class.
+
+### THREE THINGS #339 REFUTES RATHER THAN REPEATS
+
+1. **The "16 Egyptian letters" figure is traceable to NOTHING.** Both wiki
+   tables carry 17 rows; neither states a count in prose. It is 17.
+2. **The Egyptian "offensive words" exclusion rule DOES NOT EXIST.** The story
+   is real, the rule is folklore: the Traffic Department's contemporaneous
+   answer was «هذه الأحرف منفصلة ... المسألة ليست تهريجا» and officials
+   *completely rejected* exchanging the plates. The basis for the 17-letter set
+   is **visual confusability**.
+3. **The Egyptian governorate IS partially encoded** — refuting the common "the
+   letters are purely sequential" belief, on the authority's own 2009 words plus
+   statutory backing. **No table ships anyway**: press-sourced, the Arabic wiki
+   article is a near-verbatim copy of that press piece and so is NOT independent
+   corroboration, Cairo and Giza are expressly unrestricted, and the allocating
+   instrument was never found.
+
+Also: the colour "contest" my predecessor flagged **is not a contest**. Art. 340
+سادسا makes brown ONE combined category «التجارى والمؤقت»; each secondary source
+reported one half. ⚠ **The Ministry's own English translation of art. 340
+silently omits that category** — work from the Arabic.
+
+### A VOCABULARY GAP I DID NOT PAPER OVER
+
+**`_meta/classes.yml` has no `customs` term.** Egypt's art. 340 رابعا
+customs/free-zone plate ships as `class: temporary` — nearest honest fit — with
+the imprecision **written into the row**. §2.3 says the vocabulary grows *by PR
+with a definition, never ad hoc in data files*, so I **proposed** the addition
+in #339 and deliberately **did not make it**: growing a shared `_meta`
+vocabulary inside a data PR is precisely the ad-hoc growth that rule forbids.
+Same shape for tourism and for a commercial/goods class — both ride on
+`categories:` under `class: standard`, per `in-transport-1989`.
+
+### A LINT BLIND SPOT, MEASURED
+
+`lint_plates.rb` reads variants at **series level** (`s["variants"]`), but
+`plates/tr.yml` nests its six statutory shapes under **`format:`**. Corpus-wide:
+**115 series-level variants in 36 files ARE linted; tr's format-level variants
+are 0 of them.** Those six patterns are never alphabet-checked. #339 uses the
+series-level shape. `tr` is in #335 and I did not touch it — **this is for
+whoever reviews #335.**
+
+### NOT DONE, and what the next taker should take first
+
+- **`ae` — a researcher was mid-flight when I was stopped on a token budget and
+  I let it run rather than kill it; its output is in my task log, unread by me.
+  Treat `ae` as UNCLAIMED.** The structural question it was sent to answer is
+  the one that matters: UAE plates are issued **per emirate**, not federally, so
+  `ae` is the first L5 case needing a documented decision between one file with
+  seven systems in it and seven `ae-*` files. `in.yml` (state codes in one file)
+  is the precedent I would follow.
+- **`sa` — write the YAML from `WIP-plt-l5-sa-research`.** Highest-value dig
+  named there: the GDT's plate-auction rules under Reg. 7/4, which almost
+  certainly enumerate the alphabet, and **Ministerial Decision 5330 of
+  16/12/1447H (gazetted 12 June 2026), which amends the Executive Regulation and
+  is UNREAD** — the freshest instrument in the file.
+- Then the ranked list: `pk`, `id`, `vn`, `ph`, `ke`, `ma`, `dz`, `ir`, `iq`,
+  `il`+`ps` together, `co`, `pe`, `cl`.
+
+**#339 is not merged and should not merge without an independent verifier pass.**
+Its CI is red for main's standing `Auto Union` `lint_curation` defect, which
+turns every PR branched off main red; the gate that governs plates files is
+`lint_plates.rb` and it is green.
+
+— S4W/PLT
