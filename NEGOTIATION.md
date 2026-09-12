@@ -30065,3 +30065,20 @@ Every removed id carries a migration path. The growth is a month of upstream dat
 ## S4W — correction to the RELEASED turn: the `plus-2026.09.0` private release does NOT exist; CI step 13 reported success and produced nothing (same as 2026.08.2, whose plus was never cut either — `plus-2026.08.1` is still the latest). NEXT PASS item 0: cut it by hand per RELEASE-RUNBOOK §5.5 from a build of tag `v2026.09.0` (version-locked ids), then fix step 13 so a no-op fails loudly (the DECISIONS rule: a check reports what it examined). Until then the web must stay on 2026.08.0/plus-2026.08.1 — do not run `bin/data-update` to 2026.09.0. Primary data clone restored to `main` @ v2026.09.0 (S5W's superseded uncommitted `_art` files reverted; their content is preserved in commit 09b7739 in worktree `rel-artrescue`). — S4W
 
 ## S4W — cause of the missing plus release, from the run log: `PIPELINE_RELEASE_TOKEN not set — plus-2026.09.0 NOT cut` (CI step 13 warns and passes). OWNER ACTION: add a fine-grained PAT with Contents:write on vehiclesdb-pipeline as the data repo Actions secret `PIPELINE_RELEASE_TOKEN`; then re-dispatch or hand-cut per §5.5. Also make the step FAIL when the token is absent on a publish run. — S4W
+
+---
+
+## S4W — NIGHT 2 (2026-09-12 01:30 UTC → ~09:00 UTC): four Opus 5 managers, ≤4 subagents each; the monthly publish cron fires at 04:23 UTC — no pushes to either `main` from 04:10 until REL-2 posts "CRON DONE"
+
+State a week after v2026.09.0: nothing merged since; `plus-2026.09.0` still not cut (secret missing, owner action); weekly validate 09-07 red (#329) on 11 alias-liveness failures the fresh fetch produced; the whole lane PR queue from 09-05 still open and verified. Disk restored to 15 GB by removing 40 clean, fully-pushed worktrees.
+
+| lane | manager | mission tonight |
+|---|---|---|
+| REL-2 | Opus | fix #329's liveness set (dispositions PR, target before 04:10 so the cron publishes 2026.09.1 green — else fix after and dispatch); post-release for 2026.09.0 (CHANGELOG, release-diff artifact, §4 steps, README counts); hand-cut `plus-2026.09.0` per §5.5 only if a build from the tag reproduces the published catalog byte-identically; merge the verified queue in order (pipeline #184 → data #326, #183, #181, #182, #186 re-verified, then data #327/#328, S2W's six per f1fba29, #292, #316) |
+| ENR4 | Opus, 4 researchers | the remaining 91 decile-1 4W gaps by mass, then decile 2 (`$S/enr4/INDEX.md`) |
+| ENR2 | Opus, 4 researchers | the 262 remaining decile-1 2W ids in the 14 mass-ordered batches (after #183 merges; stacked branch until then) |
+| SRC-2 | Opus, 3 researchers | implement AU BITRE (aggregate, CC BY 3.0 AU) as a source, then CH cantonal or NO PKK; pins, kind maps, SOURCES.md, tests, control-vs-treatment report; merge only after the cron outcome, pipeline-first |
+
+Lessons applied from 09-05: fresh `claude` agents (forks cannot spawn); Opus everywhere; ≤4 subagents per lane (20 fleet-wide); HANDOFF turns every 2 h; one build output per lane; nothing pushed during a publish run.
+
+— S4W
