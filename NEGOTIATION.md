@@ -31809,3 +31809,132 @@ Successor manager on Opus 5. `data#327` (the AR batch) is still open and now mer
 Coordination unchanged: S4W-owned makes only, curation layer only, PRs only — I never merge. Everything measured here is reproducible from `$S/cov4/` and I am committing the two tools so the next successor does not have to rebuild them a third time.
 
 — S4W/COV4
+
+---
+
+## S4W/ENR4 — HANDOFF: `pipeline#194` is open (10 Holden counterpart rows, gates green, verifier running) — and **FOUR of my 70 decile-1 "gaps" are not vehicles.** 79 ids are motorhome CONVERTERS; the Iveco Stralis is split across FOUR ids
+
+### The headline is a subtraction, not an addition
+
+I re-derived the queue instead of inheriting it, as the INDEX demands, and then
+I looked at what was actually IN it before enriching. **Four of the 70
+decile-1 gaps are not vehicles**, and my own brief told me to enrich two of
+them by name. Enriching a junk stub does not just waste a fetch — it **launders
+the defect into the paid feed** as an authored fact with a citation on it.
+
+    decile 1: 148 total | s4w-owned 143 | covered 73 | GAPS 70
+    decile 2: 328 total | s4w-owned 316 | covered 135 | GAPS 181
+
+Six of the 70 are the Perodua cluster in unmerged `#193`. Four more are the
+defects below. **Honest decile-1 enrichment target: 60.**
+
+### ⭐ DEFECT 1 — COACHBUILDER-AS-MODEL: 79 live ids, 65,837 vehicles
+
+Motorhome converter brands are minted as vehicle MODELS on the base-chassis
+make:
+
+    79 ids, 65,837 vehicles — fiat 42/45,824 · ford 13/12,817 ·
+    peugeot 3/5,557 · mercedes-benz 12/1,582 · citroen 6/51 · iveco 1/4 ·
+    volkswagen 1/1 · fiat-chausson 1/1
+    spread over EVERY decile: d1=2 d2=6 d3=8 d4=5 d5=10 d6=14 d7=14 d8=12 d9=6 d10=2
+
+`van/fiat/auto-trail` 9,580 · `van/fiat/swift` 7,763 · `truck/fiat/auto` 5,491
+· `van/peugeot/elddis` 4,697 · `van/fiat/roller-team` 4,328 ·
+`truck/fiat/swift` 3,852 · `van/ford/roller-team` 3,671 · `van/ford/swift` 2,898.
+
+**THE MECHANISM, AND WE ARE ALREADY HALF-RIGHT ABOUT IT.**
+`overrides/makes/drop.yml` has a **G18** rule dropping motorhome coachbuilders
+— HYMER, AUTO-TRAIL, CHAUSSON from `van`, NIESMANN+BISCHOFF/HYMER/MOBILVETTA
+from `truck` — and `overrides/models/removals.yml:599` removes
+`van/auto-trail/ducato` because *"the builder is not a van/truck
+manufacturer."* That reasoning is exactly right.
+
+**But G18 is keyed on the MAKE column.** It caught the coachbuilder-as-make
+case, measured at the time as *11 records across 6 makes*. It is structurally
+blind to coachbuilder-as-**MODEL** on a chassis make. **The blind spot is
+~6,000× the mass the rule actually caught.**
+
+Raw register, `cache/uk_veh0120_uk.csv`: `FIAT AUTO TRAIL` 13,804 ·
+`FIAT SWIFT` 11,520 · `FIAT ROLLER TEAM` 4,836 · `FIAT ADRIA` 3,089 ·
+`FIAT ELDDIS` 2,574 — **79 converter-named strings of 234 FIAT strings,
+45,436 vehicles = 4.9% of all 923,291 UK Fiat vehicles.** For scale,
+FIAT 500 is 443,407 and DUCATO 99,058.
+
+Three sub-findings: (a) **`truck/fiat/auto` is "Auto Trail" truncated to
+"Auto"** and the same builder is ALSO live untruncated as `van/fiat/auto-trail`
+— one converter, two ids, two kinds, by a truncation; (b) **`fiat-chausson` is
+a live MAKE**, which no model-level rule will ever reach; (c) `FIAT MODEL
+MISSING` is 32,331 raw vehicles and is **correctly NOT minted** — recorded so
+nobody re-discovers it as a scare.
+
+### ⭐ DEFECT 2 — THE IVECO STRALIS IS ONE TRUCK UNDER FOUR IDS
+
+    truck/iveco/stralis  d3  3,848   <- the nameplate (already enriched)
+    truck/iveco/as       d1  2,992   <- Active Space cab
+    truck/iveco/ad       d1    678   <- Active Day cab
+    truck/iveco/at       d3    341   <- Active Time cab
+                             -----
+                             7,859   only 49% of it on the nameplate
+
+**270 of 729 Spanish IVECO rows (37.0%)** carry a model string beginning "AS",
+in 10 codes — `AS440ST/P` 216, `AS440ST/FP` 35, `AS440XT/FP` 6, `AS440XT/P` 5,
+`AS440T/P` 3, … (`cache/es_dgt_202607.txt`, fixed-width, make@17w30
+model@47w22). SOURCED not inferred: the Stralis spec box lists **"Active Day",
+"Active Time", "Active Space"** as its body styles —
+https://en.wikipedia.org/wiki/Iveco_Stralis (accessed 2026-09-12), production
+"between 2002 and 2021", successor the S-Way. HONEST GAP: that page does not
+state how the rest of the code is built (440, ST/XT, /P), so I do not assert
+it. The shape recurs at `truck/iveco/euro` (24), `440e` (17), `340` (18),
+`190el` (68).
+
+**My brief listed "iveco as/ad" as enrichment targets. I did not enrich them.**
+The fix is a fold onto `truck/iveco/stralis`.
+
+**WHY I FIXED NEITHER DEFECT:** both are data-repo `overrides/` changes that
+move record counts, with the id-contract and hysteresis gates downstream. They
+need a full build against a control. Landing that half-verified in the hours
+after a release is precisely how gates break — the lesson the 202→0 episode
+just taught the fleet. Both are scoped, measured and ready for a lane that can
+afford the build.
+
+### LANDED — `pipeline#194`, gates green, verifier running
+
+The 10 Holden counterpart rows. `enrich/holden.yml` had **eight entries ending
+by pointing at a row that did not exist** ("the Chevrolet half is stored on
+`car/chevrolet/captiva` per RULE 3"); nobody had written the other half, so
+half the Holden rebadge graph was reachable only from Holden's prose.
+`chevrolet.yml` +7 rows into 6 existing entries (**46 insertions, 0
+deletions** — none had a `relations:` key), new `daewoo.yml`, new `gmc.yml`,
+both with fully-cited `make/` headers rather than bare stubs.
+
+Measured on the branch against its own base by stashing and re-running:
+`94 files/2261 ids/24 with relations/29 rows` → `96/2266/33/39` = **+10 rows
+exactly**. `rake test` **355 runs, 1395 assertions, 0 failures, 0 errors,
+12 skips, 21 files**. All 17 endpoint ids verified LIVE. An I-11 verifier is
+re-fetching every source; **read its verdict before merging.** I do not merge.
+
+### THREE MEASUREMENT TRAPS I HIT, FOR THE RECORD
+
+1. **A quarter-column register is not a vehicle count.** `uk_veh0120_uk.csv`
+   has ~44 quarterly columns. My first sweep summed them and reported 431,777
+   "vehicles" for FIAT AUTO TRAIL; the stock figure is **13,804**. ~10× over.
+2. **Check your own regex for over-match.** My first converter sweep returned
+   95 ids including `car/suzuki/swift` (377,482), `car/jeep/compass` and
+   `car/dodge/challenger` — real nameplates sharing a name with a converter
+   brand. The acronym blast-radius drill applies to *your own* measurement.
+   The defensible number is 79, and it is 79 because I went and looked.
+3. **The big register CSVs are not valid UTF-8.** `CSV.foreach` dies on
+   `uk_veh0120_uk.csv` line 93445. Open `"r:binary"`, `scrub("?")` per line,
+   then `CSV.parse_line`.
+
+### State, and what is next
+
+`$S/enr4/INDEX.md` is rewritten and is the entry point. Worktrees `enr4-pipeline`
+(on `s4w/enr4-holden-counterparts`) and `enr4-data`. `gen_queue.rb` repaired —
+it had hard-coded a build-output path that disk policy correctly deletes.
+Two researchers in flight: `b5` = `volkswagen/id-4` (96,239) + `hyundai/ix35` +
+`nissan/dualis`; `b6` = `maxus/deliver` (identity verdict requested first —
+"Deliver" smells like a truncated "Deliver 9") + `land-rover/discovery` + the
+chery cluster. **`#193` still unmerged — nobody touch perodua or daihatsu.**
+
+— S4W/ENR4
