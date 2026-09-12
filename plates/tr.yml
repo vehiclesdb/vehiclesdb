@@ -1,253 +1,432 @@
-# plates/tr.yml — Türkiye (PRD-PLATES gate L5, first pass).
+# plates/tr.yml — Türkiye (PRD-PLATES gate L5).
 #
-# WHAT THIS FILE IS AND IS NOT. This is a FIRST pass authored inside a
-# 35-minute sprint. Every series here carries its evidence tier on its face,
-# and where the tier is weak the file says so in the series' own note rather
-# than in a header nobody reads. Nothing in this file is asserted at a higher
-# confidence than it was sourced at. A verifier pass is owed and §VERIFIER
-# below names the exact open questions, in priority order.
+# THE ONE THING TO READ FIRST: **ON 2025-11-04 TÜRKİYE REPEALED ITS ENTIRE
+# PLATE-FORMAT APPARATUS OUT OF THE KARAYOLLARI TRAFİK YÖNETMELİĞİ, AND WHAT
+# REPLACED IT IS NOT SOURCED IN THIS PASS.** The amending regulation
+# (Resmî Gazete 4 Kasım 2025, sayı 33067) MADDE 4 repeals KTY Maddeler 54-59 —
+# the letter/digit groups, the colour table, the serial-allocation rules, the
+# special-allocation plates and the vanity-plate regime — and MADDE 5 repeals
+# the engineering drawings Ek-12 through Ek:12/Y. In the current consolidated
+# text every one of Maddeler 54-59 now reads `(Mülga:RG-4/11/2025-33067)`.
 #
-# FOUR STRUCTURAL FACTS THAT SHAPE THIS FILE
+# WHAT THAT MEANS FOR EVERY SERIES BELOW, STATED ONCE:
+#   * The format, colour and letter-group facts are `statute` tier FOR THE
+#     PERIOD ENDING 2025-11-03. They are quoted from the pre-repeal text.
+#   * For issuance TODAY they are DE FACTO ONLY. Plates in the street are
+#     unchanged, but no in-force instrument was read. Presumably an İçişleri or
+#     EGM-level instrument now governs; it was not opened and is NOT guessed.
+#   * So no series here is closed. A repeal of the article that DESCRIBES a
+#     format is not evidence that the format stopped being issued, and this
+#     file must not turn a legal-basis change into a fake era boundary. Each
+#     series carries `period.start` from its enabling instrument, stays open,
+#     and records the repeal in `legal_basis_note`.
+# KTY **Madde 53 (physical qualities and dimensions) SURVIVED** the repeal and
+# is still in force — it is not in the repeal list. That is why the dimension
+# claims here are at a higher tier than the format claims.
 #
-# 1. THE TURKISH PLATE IS PROVINCE-CODE + SERIAL, AND THE SERIAL HAS SEVERAL
-#    LAWFUL SHAPES RATHER THAN ONE. The leading two digits are the province
-#    (il) code; what follows is a letter group and a figure group whose widths
-#    trade off against each other. A single `pattern` cannot carry that, so the
-#    shapes are cut as SUB-VARIANTS on one series (§2.3: a variant is its own
-#    series iff format OR design OR period differs — these share design and
-#    period and differ only in group widths, so they are `variants:`), and
-#    `format.regex` on the parent is the union of the lawful shapes.
+# FIVE MORE STRUCTURAL FACTS
 #
-# 2. THE SERIAL ALPHABET IS LATIN-WITHOUT-THE-TURKISH-DIACRITICS, AND THAT IS
-#    A FACT ABOUT TÜRKIYE, NOT A CONVENIENCE. Turkish orthography has Ç Ğ İ Ö
-#    Ş Ü; the plate does not print them. Under the owner's 2026-08-02 ruling a
-#    jurisdiction declares its own alphabet in EXACT CODEPOINTS, so this file
-#    declares `serial_alphabet:` explicitly rather than inheriting the global
-#    A-Z 0-9 and leaving a reader to wonder whether the diacritics were
-#    excluded deliberately or never considered. Declaring REPLACES rather than
-#    extends, which is why the digits are spelled out alongside the letters.
+# 1. THE SIX SERIAL SHAPES ARE A CLOSED STATUTORY LIST, NOT AN OBSERVATION.
+#    KTY Madde 55 ¶1 (as amended RG-19/2/2014-28918), verbatim: "Tescil
+#    plakalarında; il kod numarasından sonra ikili harf üçlü rakam, tekli harf
+#    dörtlü rakam ve üçlü harf ikili rakam ile ikili harf dörtlü rakam, tekli
+#    harf beşli rakam ve üçlü harf üçlü rakamdan oluşan harf ve rakam grupları
+#    bulunur." The regulation states the COUNTS IN WORDS and gives no example
+#    plate, so the masks in `variants` are this file's rendering of the counts.
 #
-# 3. THERE IS NO SEPARATOR GLYPH. The gap between the province code, the
-#    letter group and the figure group is SPACING, not punctuation. Every
-#    `pattern` here renders that gap as the emitted SPACE of §2.6 and every
-#    regex accepts it as optional, which is the same treatment `za.yml` gives
-#    the South African gap and for the same reason: the spacing is prescribed
-#    in millimetres by a standard, the separator character is prescribed
-#    nowhere, and writing a hyphen would invent a fact.
+# 2. THE SERIAL ALPHABET IS GENUINELY UNSOURCED, AND THIS FILE SAYS SO RATHER
+#    THAN GUESSING. The KTY nowhere enumerates the permitted letters: Madde 55
+#    ¶2 and Madde 57 delegate the character inventory to "Emniyet Genel
+#    Müdürlüğünce belirlenecek listeler" (EGM-determined lists), which were not
+#    obtained. The widely-repeated claim that Ç Ğ İ Ö Ş Ü and Q W X are
+#    excluded is TERTIARY ONLY. This file therefore does NOT declare a narrowed
+#    `serial_alphabet:` — declaring the 23-letter set would assert as fact the
+#    exact thing that could not be sourced. It inherits the global A-Z 0-9,
+#    which is the WIDER set, because a too-narrow alphabet silently fails real
+#    plates while a too-wide one merely under-rejects.
+#    Weak corroboration, recorded as corroboration and not as proof: every
+#    letter group the regulation itself names (A, AA, AAA, CC, CD, CG, CM,
+#    MA-MZ, T, G, GMR, JAA-JZZ, SGH, CB, TBMM) is ASCII and none contains
+#    Q, W or X.
 #
-# 4. THE PROVINCE CODE IS A DECODE TABLE THIS FILE DELIBERATELY DOES NOT SHIP.
-#    The 01-81 code → province mapping is the single most reproducible fact
-#    about Turkish plates and the single most tempting thing to paste from an
-#    enthusiast site. It is first-class cited data under §2.4 and it ships when
-#    the allocating instrument is pinned, not before. `region_encoding` below
-#    therefore names the MECHANISM and records the table as an open gap.
+# 3. THERE IS NO SEPARATOR GLYPH, AND THAT IS NOW A STRONGER CLAIM THAN USUAL.
+#    The regulation specifies no character between the province code and the
+#    serial — no hyphen, no dot. Positioning lived ENTIRELY in the Ek-12/*
+#    engineering drawings, which are repealed and were not retrieved. So "no
+#    hyphen, no dot" is safe; the exact millimetre gap is unverified. Every
+#    pattern renders the gap as the emitted SPACE of §2.6 and every regex
+#    accepts it as optional.
 #
-# 5. EVERY SERIES IN THIS FILE IS `secondary-wikipedia` AND THAT IS THE WHOLE
-#    TRUTH ABOUT ITS EVIDENCE. The sprint's web-search budget was exhausted
-#    session-wide (200/200) before the primary sources could be reached, so
-#    NOT ONE statute, Resmî Gazete number or Emniyet Genel Müdürlüğü page was
-#    pinned in this pass. `secondary-wikipedia` is an existing tier in this
-#    corpus (plates/za.yml uses it) and it is used here exactly as it is meant
-#    to be used: to ship a shape at a stated low confidence rather than to
-#    launder one at a high one. The Karayolları Trafik Kanunu (No. 2918) and
-#    the Karayolları Trafik Yönetmeliği govern this jurisdiction; this pass did
-#    NOT read them and therefore does not cite them.
+# 4. THE PROVINCE-CODE RANGE IS NOT SOURCED AND IS DELIBERATELY NOT ENCODED.
+#    Madde 55 ¶2 delegates the il-kod list to EGM; no official list page was
+#    opened. The familiar 01-81 range is TERTIARY ONLY, so this file does NOT
+#    narrow the province code in any regex — an unsourced narrowing would
+#    reject real plates, which is the one failure mode worse than accepting too
+#    many. Statute DOES confirm a two-digit province index exists: Madde 58/c
+#    prefixes a two-digit province order number to governors' plates.
+#    No decode table ships. That is V2.
 #
-# §VERIFIER — the open questions, in priority order
-#   V1. Pin the Yönetmelik article that enumerates the six serial shapes. Until
-#       then `format.regex` is a union reconstructed from a tertiary list.
-#   V2. RESOLVE THE ALPHABET AMBIGUITY (see `serial_alphabet_note`). The source
-#       sentence parses two ways and the two readings differ by three letters.
-#   V3. Pin the 01-81 province-code allocation instrument, then ship
-#       plates/_decode/tr-province-codes.yml. Not before.
-#   V4. Colour hexes. NO hex is asserted anywhere in this file because none was
-#       sourced; `design` carries prose colour claims instead of invented hex.
-#   V5. Motorcycle plates are recorded as a DIMENSION fact on the standard
-#       series, not as their own series, because no distinct FORMAT was sourced
-#       — and §2.3 makes a series out of a format/design/period difference, not
-#       out of a size difference alone.
+# 5. TÜRKİYE HAS NO HISTORIC/CLASSIC PLATE SERIES, AND THAT IS A FINDING.
+#    Searching the full pre-repeal KTY for klasik / tarihi araç / antika returns
+#    NOTHING. Same for "serbest bölge" (free zone). These are recorded as
+#    ABSENT rather than as not-yet-researched, which is a different and more
+#    useful claim. Military plates are likewise absent from the KTY entirely —
+#    they are governed by MSB/TSK instruments outside this regulation.
+#
+# §VERIFIER — open questions in priority order
+#   V1. THE BIG ONE: what instrument governs plate format and colour after
+#       2025-11-04? Everything below is pre-repeal text until this is answered.
+#   V2. The EGM letter-group lists and the il-kod table — then, and only then,
+#       ship plates/_decode/tr-province-codes.yml.
+#   V3. Colour hexes. NO hex is asserted anywhere in this file: Madde 56 names
+#       colours in words ("mavi", "yeşil", "sarı") and words are not hex.
+#   V4. Ek-12/* glyph geometry, stroke widths and inter-group gaps (repealed;
+#       retrieve from an archived copy).
+#   V5. Digit widths for the A/AA/AAA office series and the CB/TBMM special
+#       allocations — named in statute, widths not stated, so NOT shipped.
 jurisdiction: tr
 authority:
-  name: "Emniyet Genel Müdürlüğü (General Directorate of Security), Trafik Hizmetleri Başkanlığı"
-  url: "https://www.egm.gov.tr/"
+  name: "Emniyet Genel Müdürlüğü (General Directorate of Security)"
+  url: "https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf"
   authority_evidence: >-
-    NAMED, NOT CITED. The EGM is the traffic-registration authority in Türkiye;
-    this pass did not fetch an EGM page establishing its plate-issuing role, so
-    the url is the agency root rather than a page-level citation. Replacing it
-    with a deep link is part of V1.
-serial_alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-serial_alphabet_note: >-
-  DECLARED DELIBERATELY, AND THE DECLARATION IS THE WIDER OF TWO READINGS.
-  The source sentence is "The serial letters use the Turkish letters except Ç,
-  Ş, İ, Ö, Ü, Ğ and Latin letters Q, W and X." That parses two ways: (a) the
-  alphabet is the Turkish letters minus the six diacritic letters, PLUS Q, W
-  and X — which is exactly Latin A-Z; or (b) Q, W and X are excluded alongside
-  the diacritics, leaving 23 letters. Reading (a) is the more natural parse of
-  the English and is the one declared here, because it is the WIDER set and a
-  too-wide strict alphabet under-rejects while a too-narrow one silently fails
-  real plates (the hr.yml folding lesson, inverted). What is certain under both
-  readings, and is the reason this key is declared at all rather than left to
-  inherit the global default: Ç Ğ İ Ö Ş Ü are NOT printed on Turkish plates,
-  and a reader of this file should not have to wonder whether that was decided
-  or overlooked. V2 resolves which reading is right.
+    KTY Madde 55 ¶2 assigns plate-number allocation to the EGM ("Emniyet Genel
+    Müdürlüğünce belirlenecek listelerdeki ... sıra esasına göre tahsis
+    edilir"), and Madde 57 routes district letter-group allocation through the
+    provincial police chief and governor. The url is the consolidated
+    regulation that says so, not an EGM marketing page. Printing and
+    distribution of plates is carried out by the Türkiye Şoförler ve
+    Otomobilciler Federasyonu per a further KTY article whose heading was seen
+    but whose full text was not read — recorded as partial.
 binding: vehicle
 binding_note: >-
-  RECORDED AS THE DEFAULT, NOT AS A SOURCED FACT. Turkish registration is
-  understood to attach to the vehicle, but no instrument was read in this pass
-  and the CH-style owner-binding question was not put to a source. Treated as
-  `vehicle` because that is the dataset's unmarked case; a verifier should
-  confirm rather than assume this line was checked.
+  Kanun 2918 Madde 21: a registered vehicle may not be used without a "Tescil
+  Belgesi" and a "Tescil Plakası" — the plate is an attribute of the registered
+  VEHICLE. Note Madde 28 separately provides that state-owned vehicles' plates
+  differ in COLOUR, which is a class marker on the vehicle, not owner-binding
+  in the Swiss sense.
+instrument:
+  act:
+    citation: "Karayolları Trafik Kanunu No. 2918"
+    url: "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2918.pdf"
+    relevant_articles: >-
+      Madde 21 (registration document + plate mandatory), Madde 26
+      (distinguishing marks incl. plate, colour, shape, symbol), Madde 28
+      (state-owned vehicles' plates are a different colour — the statutory
+      basis for the Madde 56 colour table).
+  regulation:
+    citation: "Karayolları Trafik Yönetmeliği, promulgated 18/7/1997, RG 23053 mükerrer"
+    url: "https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf"
+    pre_repeal_text_url: "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf"
+  repeal:
+    citation: "Karayolları Trafik Yönetmeliğinde Değişiklik Yapılmasına Dair Yönetmelik, RG 4/11/2025 sayı 33067"
+    url: "https://www.resmigazete.gov.tr/eskiler/2025/11/20251104-4.htm"
+    effect: >-
+      MADDE 4 repeals KTY Maddeler 54-59; MADDE 5 repeals Ek-12 through
+      Ek:12/Y. Madde 53 (physical qualities/dimensions) is NOT repealed.
 series:
 
   # =========================================================================
-  # THE ORDINARY MARK. Province code + letter group + figure group, with the
-  # letter and figure widths trading off against each other. One series, six
-  # lawful shapes, carried as variants (§2.3) because design and period are
-  # shared and only the group widths differ.
+  # THE ORDINARY MARK. Province code + one of six statutory letter/digit
+  # groups. One series, six shapes as variants (§2.3: shared design and
+  # period, differing only in group widths).
   # =========================================================================
-  - id: tr-standard
+  - id: tr-standard-2014
     class: standard
     categories: [car, van, truck, bus, motorcycle, trailer]
-    period: { start: 1983 }
-    period_evidence: secondary-wikipedia
+    period: { start: 2014 }
+    period_evidence: enabling-instrument
+    period_note: >-
+      2014 is the date of RG-19/2/2014-28918, the amendment that SUBSTITUTED
+      the six-group enumeration into Madde 55 — an enabling-instrument date, in
+      the za.yml sense, expressly not a first-issue date. The parent regulation
+      dates from 1997 and earlier Turkish plates of this general shape long
+      predate both; the date on which each shape began to be issued is a
+      separate and weaker fact that this pass did not establish.
+    legal_basis_note: >-
+      Madde 55 was REPEALED on 2025-11-04 (RG 33067). The shapes are still
+      issued; the article describing them is gone. See the file header.
     matching: strict
     format:
       pattern: "99 LL 9999"
-      # The union of the six sourced shapes. Written in PRINTED form (§2.6
-      # rule 2) with the gap optional at both positions.
+      # The union of the six statutory groups, written in PRINTED form (§2.6
+      # rule 2) with the gap optional. The province code is NOT narrowed — see
+      # header fact 4.
       regex: '\A\d{2} ?(?:[A-Z] ?\d{4,5}|[A-Z]{2} ?\d{3,4}|[A-Z]{3} ?\d{2,3})\z'
-      # The only narrowing this pass can defend: the province code runs 01-81,
-      # so 00 and 82-99 are not allotted. The ALPHABET is NOT narrowed here —
-      # see serial_alphabet_note; narrowing it under the unresolved reading (b)
-      # would reject real plates.
-      regex_strict: '\A(?:0[1-9]|[1-7]\d|8[01]) ?(?:[A-Z] ?\d{4,5}|[A-Z]{2} ?\d{3,4}|[A-Z]{3} ?\d{2,3})\z'
       variants:
-        - { pattern: "99 L 9999",   note: "one letter, four figures" }
-        - { pattern: "99 L 99999",  note: "one letter, five figures" }
-        - { pattern: "99 LL 999",   note: "two letters, three figures" }
-        - { pattern: "99 LL 9999",  note: "two letters, four figures (the canonical rendering on the parent pattern)" }
-        - { pattern: "99 LLL 99",   note: "three letters, two figures" }
-        - { pattern: "99 LLL 999",  note: "three letters, three figures" }
+        - { pattern: "99 LL 999",   note: "ikili harf üçlü rakam — two letters, three figures" }
+        - { pattern: "99 L 9999",   note: "tekli harf dörtlü rakam — one letter, four figures" }
+        - { pattern: "99 LLL 99",   note: "üçlü harf ikili rakam — three letters, two figures" }
+        - { pattern: "99 LL 9999",  note: "ikili harf dörtlü rakam — two letters, four figures (rendered on the parent pattern)" }
+        - { pattern: "99 L 99999",  note: "tekli harf beşli rakam — one letter, five figures" }
+        - { pattern: "99 LLL 999",  note: "üçlü harf üçlü rakam — three letters, three figures" }
       progression: >-
-        NOT SOURCED. The order in which a province exhausts one shape and moves
-        to the next is the single most useful era-inference fact about this
-        jurisdiction and this pass established none of it. Recorded as a gap so
-        no consumer mistakes silence for "no progression".
+        Madde 55 ¶2: numbers are allotted "sıra esasına göre" (in sequence)
+        from EGM-determined lists of province codes and letter/digit groups.
+        Madde 57 adds that each district registration office receives its own
+        DISTINCT letter groups, allotted on the provincial police chief's
+        proposal with the governor's approval, and that a letter group given to
+        one district may not be given to another.
+        FOLKLORE, FLAGGED AND NOT ASSERTED: the enthusiast claim that letter
+        series run alphabetically in national registration order is NOT
+        supported by the text — sequence is within per-province/per-district
+        EGM lists, which is a much weaker era signal.
     design:
       plate: { w: 520, h: 110, unit: mm }
       plate_variants:
-        - { w: 240, h: 150, unit: mm, note: "motorcycle, rear only — the sourced dimension is 150x240 mm" }
-      background_note: "white; no hex asserted — none was sourced (V4)"
+        - { w: 240, h: 150, unit: mm, note: "motorised bicycle, motorcycle, load motorcycle, rubber-tyred tractor — 15x24 cm, one plate, rear (Madde 53/b as amended RG-21/3/2012-28240)" }
+        - { w: 320, h: 210, unit: mm, note: "car/van/minibus/truck/tractor unit/bus REAR alternative — 21x32 cm" }
+        - { w: 300, h: 150, unit: mm, note: "15x30 cm where the vehicle's recess fits neither standard size" }
+      background_note: "white (Madde 56 ¶1(b), 'resmi olmayan' vehicles) — colour named in words; no hex asserted (V3)"
       foreground_note: "black characters"
-      band: { side: left, content: "blue stripe carrying the country code TR" }
+      band:
+        side: left
+        content: "(TR) national identification mark inside a 4 x 10 cm blue rectangle"
       band_note: >-
-        Described in the source as "Euroband like", which is a comparison and
-        not a claim of EU membership or of conformity to the EU band spec.
-        Recorded with the hedge intact.
-      rear_differs: false
+        Madde 55 ¶3: the (TR) mark shown in Ek:12/V is carried BEFORE the
+        province code inside a 4x10 cm blue rectangle, applied as a reflective
+        layer during manufacture and not removable physically or chemically
+        without damaging the plate. This is a STATUTORY band, not an EU band —
+        Türkiye is not an EU member and the regulation does not reference the
+        EU specification. Descriptions of it as a "Euroband" are a comparison
+        and are not repeated here as a claim. The commonly-cited 1996
+        introduction date is tertiary and is NOT asserted.
+      material: >-
+        Madde 53 (STILL IN FORCE): aluminium 0.97 mm, DIN 1745, AL 99,5 F11
+        half-hard; tensile 100-150 N/mm; elongation >= 6%. Characters and
+        border embossed 1-3 mm; corners radiused 10 mm; border width 5 mm.
+      security: >-
+        Madde 56 final paragraphs: reflective foil printed with repeating
+        crescent-and-star and "TR" security marks (Ek:12/U) fitting a 10x10 mm
+        area and repeating every 100 mm horizontally / 50 mm vertically,
+        designed to be visible from ~1.8 m at a 30 degree angle and
+        deliberately NOT visible closer than 1 m or beyond 4 m (Ek:12/Y).
+        Plastic and cardboard plates are exempt.
+      rear_differs: true
+      rear_differs_note: >-
+        Madde 53/b: front 11x52 cm; rear 11x52 OR 21x32 cm. The rear may
+        legitimately be the taller two-line format while the front is not.
+      mounting: >-
+        Madde 54 (repealed 2025-11-04): motorcycles/mopeds one plate, rear,
+        20-150 cm above ground; trailers/semi-trailers one, rear, 30-120 cm;
+        all other motor vehicles two (front and rear), 30-120 cm; tractors two,
+        30-400 cm.
     region_encoding: none
     region_encoding_mechanism: >-
-      THE FIRST TWO DIGITS ARE THE PROVINCE (il) CODE, 01-81, AND THE DECODE
-      TABLE IS DELIBERATELY ABSENT. `region_encoding: none` here means "no
-      table shipped", not "no geography encoded" — the mechanism is real and
-      the table is V3. Shipping the mapping from a tertiary list would make the
-      most reproducible fact about Turkish plates also the least sourced thing
-      in the file.
+      The leading two digits are the province (il) code, placed after the blue
+      (TR) box. `none` here means NO TABLE SHIPPED, not "no geography encoded":
+      Madde 55 ¶2 delegates the list to EGM and no official list was opened, so
+      the mapping is V2. See header fact 4 for why the range is not encoded.
     notes: >-
-      The ordinary Turkish mark. Six lawful shapes, one design era as far as
-      this pass could establish. period.start 1983 is recorded at
-      secondary-wikipedia tier and should be read as "the era this shape is
-      associated with", not as a first-issue date.
+      The ordinary Turkish mark, six statutory shapes, one design era.
     sources:
-      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # the six serial shapes, the alphabet sentence, colours, band, motorcycle dimension — accessed 2026-09-12; TERTIARY, cites no instrument for any of it"
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # KTY Madde 55 para 1 six-group enumeration; para 2 EGM sequential allotment; Madde 57 district letter groups; Madde 53 dimensions/material; Madde 56 colours and security foil — pre-repeal consolidated text, accessed 2026-09-12"
+      - "https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # current consolidated KTY confirming Maddeler 54-59 now read (Mulga:RG-4/11/2025-33067) and that Madde 53 survives — accessed 2026-09-12"
+      - "https://www.resmigazete.gov.tr/eskiler/2025/11/20251104-4.htm  # the repealing regulation, RG 4/11/2025 sayi 33067, MADDE 4 and MADDE 5 — accessed 2026-09-12"
+      - "https://www.mevzuat.gov.tr/mevzuatmetin/1.5.2918.pdf  # Kanun 2918 Madde 21 plate mandatory, Madde 26 distinguishing marks, Madde 28 state vehicles differ in colour — accessed 2026-09-12"
 
-  - id: tr-diplomatic-cd
+  - id: tr-diplomatic-cd-cm
     class: diplomatic
     categories: [car, van]
-    period: { start: 1983 }
-    period_evidence: secondary-wikipedia
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    period_note: >-
+      2007 = RG-18/05/2007-26526, the amendment that set the CD/CM colour rule
+      in Madde 56. The groups themselves are older; this is the date of the
+      instrument that governs the entry, not a first-issue date.
+    legal_basis_note: "Maddeler 55, 56 and 58 all repealed 2025-11-04 (RG 33067)."
     matching: strict
     format:
-      pattern: "99 CD 999"
-      regex: '\A\d{2} ?CD ?\d{3}\z'
+      pattern: "99 CD 9999"
+      regex: '\A\d{2} ?C[DM] ?\d{4}\z'
     design:
-      background_note: "white ground, green characters, per the source's '(green on white)'"
-      foreground_note: "green — no hex asserted (V4)"
+      background_note: "white ground (Madde 56) — no hex asserted (V3)"
+      foreground_note: "green characters"
     region_encoding: none
     notes: >-
-      Diplomatic corps. The CD token is a literal in both pattern and regex, so
-      this series is `strict` with no twin needed — the mandated letters ARE
-      the grammar (the §2.7 case where 29 of 31 twinless series are strict).
-      The figure width is sourced as three and was not cross-checked.
+      Embassy staff enjoying diplomatic immunity, letter groups CD and CM
+      (Madde 55 para 4). The four-digit width is the regulation's OWN range
+      text in Madde 58: leased-vehicle allocations run CD 0001-CD 9999 and
+      CM 0001-CM 9999, on written proposal of the Ministry of Foreign Affairs
+      with Ministry of Interior approval, on a reciprocity basis, and are
+      returned at expiry. Those are statutory RANGES, not observed plates.
+      CORRECTION OF RECORD: an earlier draft of this file gave three digits
+      here on tertiary evidence. The statute says four.
     sources:
-      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # CD format and colours — accessed 2026-09-12; TERTIARY"
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 CD/CM groups; Madde 56 white ground green characters as amended RG-18/05/2007-26526; Madde 58 the CD/CM 0001-9999 leased-vehicle ranges — accessed 2026-09-12"
 
-  - id: tr-consular-cc
+  - id: tr-consular-cc-cg
     class: consular
     categories: [car, van]
-    period: { start: 1983 }
-    period_evidence: secondary-wikipedia
+    period: { start: 2007 }
+    period_evidence: enabling-instrument
+    legal_basis_note: "Maddeler 55, 56 and 58 all repealed 2025-11-04 (RG 33067)."
     matching: strict
     format:
       pattern: "99 CC 9999"
-      regex: '\A\d{2} ?CC ?\d{4}\z'
+      regex: '\A\d{2} ?C[CG] ?\d{4}\z'
     design:
-      background_note: "green ground, white characters, per the source's '(white on green)'"
-      foreground_note: "white — no hex asserted (V4)"
+      background_note: "green ground (Madde 56) — no hex asserted (V3)"
+      foreground_note: "white characters"
     region_encoding: none
     notes: >-
-      Consular corps, and note that its colour polarity is the INVERSE of the
-      diplomatic series above (white on green vs green on white) and its figure
-      group is four wide rather than three. Both asymmetries are as the source
-      gives them; neither was cross-checked, and a verifier who finds them
-      transposed should expect the error to be in this file, not on the plate.
+      Consulate-general staff, letter groups CC and CG. The colour polarity is
+      the deliberate INVERSE of the diplomatic series above — white on green
+      here, green on white there — and both are verbatim in the Madde 56 table,
+      which is why this file states an asymmetry it would otherwise suspect of
+      being a transcription error. Four-digit width from the Madde 58 ranges
+      CC 0001-CC 9999 and CG 0001-CG 9999.
     sources:
-      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # CC format and colours — accessed 2026-09-12; TERTIARY"
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 CC/CG groups; Madde 56 green ground white characters; Madde 58 CC/CG 0001-9999 ranges — accessed 2026-09-12"
+
+  - id: tr-foreigner-ma-mz
+    class: standard
+    categories: [car, van]
+    period: { start: 2000 }
+    period_evidence: enabling-instrument
+    period_note: "RG-02/11/2000-24218, the amendment carrying the MA-MZ entry in the Madde 56 colour table."
+    legal_basis_note: "Maddeler 55 and 56 repealed 2025-11-04 (RG 33067)."
+    matching: strict
+    format:
+      pattern: "99 ML 9999"
+      regex: '\A\d{2} ?M[A-Z] ?\d{3,4}\z'
+    design:
+      background_note: "white ground — the SAME colours as an ordinary plate (Madde 56); no hex asserted (V3)"
+      foreground_note: "black characters"
+    region_encoding: none
+    notes: >-
+      Vehicles of foreigners resident abroad and temporarily in Türkiye, letter
+      groups MA to MZ (Madde 55 para 4). Classed `standard` rather than given a
+      class of its own because it is an ordinary white/black plate drawn from a
+      reserved letter block, not a distinct design. The digit width is NOT
+      stated for this group, so the regex admits the three- and four-figure
+      widths the Madde 55 two-letter shapes allow, and no more. Overlaps
+      tr-standard-2014 by construction: an MA-MZ plate IS a two-letter standard
+      shape, and a consumer matching both is seeing the truth, not a conflict.
+    sources:
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 MA-MZ group; Madde 56 white/black as amended RG-02/11/2000-24218 — accessed 2026-09-12"
 
   - id: tr-temporary-g
     class: temporary
     categories: [car, van, truck, bus]
-    period: { start: 1983 }
-    period_evidence: secondary-wikipedia
+    period: { start: 2014 }
+    period_evidence: instrument-in-force
+    legal_basis_note: "Maddeler 55 and 56 repealed 2025-11-04 (RG 33067)."
     matching: strict
     format:
       pattern: "99 G 9999"
       regex: '\A\d{2} ?G ?\d{4}\z'
     design:
-      background_note: "yellow ground, black characters, per the source's 'black on yellow'"
-      foreground_note: "black — no hex asserted (V4)"
+      background_note: "yellow ground (Madde 56, 'geçici') — no hex asserted (V3)"
+      foreground_note: "black characters"
     region_encoding: none
     notes: >-
-      Temporary transportation. The G is a literal, not the pattern DSL's
-      letter token — but it is spelled bare rather than escaped because the
-      escape exists only for the tokens `9` and `L` (owner ruling 2026-08-02)
-      and G is neither. Contrast za.yml's Limpopo mark, which is a literal L
-      and DOES need `\L`.
+      Temporary traffic document (geçici trafik belgesi), general case — the G
+      group plus four figures, for every temporary purpose other than trial and
+      demonstration. Distinct from tr-temporary-t, which covers trial and
+      demonstration vehicles only. Plates issued for six days or fewer may be
+      plastic or cardboard and then additionally carry a 2 cm white band
+      running top-left to bottom-right (Madde 53, still in force).
+      The G is a plain literal, not the pattern DSL's letter token; it needs no
+      escape because the escape exists only for the tokens `9` and `L` (owner
+      ruling 2026-08-02).
     sources:
-      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # G temporary format and colours — accessed 2026-09-12; TERTIARY"
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 G group four figures; Madde 56 yellow/black for gecici; Madde 53 plastic/cardboard six-day plates and the 2 cm diagonal band — accessed 2026-09-12"
 
-  - id: tr-taxi-istanbul
-    class: taxi
-    categories: [car]
-    period: { start: 1983 }
-    period_evidence: secondary-wikipedia
-    matching: recall-only
+  - id: tr-temporary-t
+    class: temporary
+    categories: [car, van, truck, bus]
+    period: { start: 2014 }
+    period_evidence: instrument-in-force
+    legal_basis_note: "Maddeler 55 and 56 repealed 2025-11-04 (RG 33067)."
+    matching: strict
     format:
-      pattern: "99 TLL 99"
-      regex: '\A\d{2} ?T[A-Z]{2} ?\d{2}\z'
+      pattern: "99 T 9999"
+      regex: '\A\d{2} ?T ?\d{4}\z'
     design:
-      background_note: "not sourced"
-      foreground_note: "not sourced"
+      background_note: "yellow ground (Madde 56, 'geçici') — no hex asserted (V3)"
+      foreground_note: "black characters"
     region_encoding: none
     notes: >-
-      `recall-only`, and the reason is a generalisation this file refuses to
-      make silently. The ONLY sourced fact is an ISTANBUL range — province code
-      34, with the letter pair running across a sourced sub-range. This regex
-      accepts the T-prefixed shape in EVERY province, which is wider than any
-      grammar established for it: a match is a shape hit and nothing more. Per
-      §2.7 a recall-only series carries no `regex_strict`, and none is written
-      here. If a verifier pins the national taxi rule, this becomes two series
-      (a national one and, if the Istanbul letter range is real, a narrower
-      strict twin) rather than one widened one.
+      Temporary traffic document for TRIAL AND DEMONSTRATION vehicles
+      specifically — the T group plus four figures. Separated from
+      tr-temporary-g because the regulation separates them, and because the
+      distinction is the one a consumer actually wants: a T plate marks a
+      vehicle being tested or demonstrated, not merely one awaiting
+      registration.
+      NOT A TAXI SERIES. The widely-repeated "T = taksi" reading, and the
+      Istanbul TAA-TKZ taxi block, appear NOWHERE in the KTY; see the file's
+      commercial-plate note under tr-standard-2014's sources and V5.
     sources:
-      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # Istanbul taxi letter range — accessed 2026-09-12; TERTIARY, and generalised here only as recall-only"
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 T group, deneme ve teshir, four figures; Madde 56 yellow/black — accessed 2026-09-12"
+
+  - id: tr-temporary-customs-gmr
+    class: temporary
+    categories: [car, van, truck, bus]
+    period: { start: 2014 }
+    period_evidence: instrument-in-force
+    legal_basis_note: "Maddeler 55 and 56 repealed 2025-11-04 (RG 33067)."
+    matching: strict
+    format:
+      pattern: "99 GMR 999"
+      regex: '\A\d{2} ?GMR ?\d{3}\z'
+    design:
+      background_note: "green ground (Madde 56, 'geçici gümrük') — no hex asserted (V3)"
+      foreground_note: "red characters"
+    region_encoding: none
+    notes: >-
+      Temporary CUSTOMS plates — GMR plus three figures, and the only plate in
+      the Turkish table printed red-on-green. A third temporary series, kept
+      separate from both tr-temporary-g and tr-temporary-t because its colour
+      pair and its letter group both differ. Customs temporary plates may be
+      plastic or cardboard (Madde 53) and then carry the 2 cm diagonal band.
+    sources:
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 GMR group three figures; Madde 56 green ground red characters for gecici gumruk — accessed 2026-09-12"
+
+  - id: tr-jandarma-2017
+    class: military
+    categories: [car, van, truck, bus]
+    period: { start: 2017 }
+    period_evidence: enabling-instrument
+    period_note: >-
+      The Jandarma and Sahil Güvenlik entries were ADDED to Madde 55 para 4 and
+      the Madde 56 colour table by RG-31/3/2017-30024. That is a real birth
+      date for the series, not merely the governing instrument — and it is 2017,
+      correcting the 2018 date that circulates in tertiary sources.
+    legal_basis_note: "Maddeler 55 and 56 repealed 2025-11-04 (RG 33067)."
+    matching: strict
+    format:
+      pattern: "99 JLL 999"
+      regex: '\A\d{2} ?J[A-Z]{2} ?\d{3}\z'
+    design:
+      background_note: "blue ground (Madde 56) — no hex asserted (V3)"
+      foreground_note: "white characters"
+    region_encoding: none
+    notes: >-
+      Jandarma Genel Komutanlığı — letter groups JAA to JZZ plus three figures.
+      Classed `military` because the Jandarma is a gendarmerie under military
+      command structure; it shares the blue/white colour pair with the police
+      and the Sahil Güvenlik.
+    sources:
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 JAA-JZZ added by RG-31/3/2017-30024; Madde 56 blue/white — accessed 2026-09-12"
+
+  - id: tr-coastguard-sgh-2017
+    class: military
+    categories: [car, van, truck]
+    period: { start: 2017 }
+    period_evidence: enabling-instrument
+    legal_basis_note: "Maddeler 55 and 56 repealed 2025-11-04 (RG 33067)."
+    matching: strict
+    format:
+      pattern: "99 SGH 999"
+      regex: '\A\d{2} ?SGH ?\d{3}\z'
+    design:
+      background_note: "blue ground (Madde 56) — no hex asserted (V3)"
+      foreground_note: "white characters"
+    region_encoding: none
+    notes: >-
+      Sahil Güvenlik Komutanlığı (Coast Guard) — the fixed group SGH plus three
+      figures, added by the same 2017 amendment as the Jandarma series. A
+      separate series from tr-jandarma-2017 because the letter group is a fixed
+      literal rather than a range, even though colour and period coincide.
+    sources:
+      - "https://web.archive.org/web/20250108225320/https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.8182.pdf  # Madde 55 para 4 SGH added by RG-31/3/2017-30024; Madde 56 blue/white — accessed 2026-09-12"
