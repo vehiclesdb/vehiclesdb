@@ -1,0 +1,71 @@
+2 make-name collision groups (distinct ids folding to one name)
+
+amc  << CROSS-OWNER: coordinate before merging (I-8) 
+    S4W  amc                        "AMC"                    12 models  [car]
+    ?    a-m-c                      "A.m.c."                  1 models  [car]
+irisbus
+    S4W  irisbus                    "Irisbus"                 5 models  [bus]
+    S4W  iris-bus                   "Iris.bus"                2 models  [bus]
+
+Nothing was written. Each group needs a verdict: MERGE (same marque —
+makes/aliases.yml maps the raw string to the surviving display name),
+DISTINCT (different marques that happen to fold together — record why),
+or MOVE/DROP (one side is a registry placeholder, not a marque — and read
+the trap note at the top of this file before dropping anything).
+
+
+44 legal-entity / conflated make ids (93 records)
+
+=== two_makes_joined (10) ===
+  S4W  leyland-daf                "Leyland Daf"            -> leyland + daf         6 models [bus+truck+van]
+  S4W  steyr-puch                 "Steyr-Puch"             -> steyr + puch          4 models [car]
+  S4W  bmw-alpina                 "Bmw Alpina"             -> bmw + alpina          3 models [car]
+  S4W  austin-morris              "Austin-Morris"          -> austin + morris       2 models [car+van]
+  S4W  chevrolet-gmc              "Chevrolet GMC"          -> chevrolet + gmc       2 models [car]
+  S4W  vdl-bova                   "Vdl Bova"               -> vdl + bova            2 models [bus]
+  ?    audi-porsche               "Audi-Porsche"           -> audi + porsche        1 models [car]
+  S4W  opel-vauxhall              "Opel-Vauxhall"          -> opel + vauxhall       1 models [van]
+  ?    peugeot-lamar              "Peugeot/Lamar"          -> peugeot + lamar       1 models [van]
+  S4W  tadano-faun                "Tadano Faun"            -> tadano + faun         1 models [truck]
+
+=== corporate_suffix (28) ===
+  S2W  fantic-motor               "Fantic Motor"                                    8 models [moped+motorcycle]
+  S4W  lynk-co                    "Lynk & Co"                                       5 models [car]
+  S2W  dayi-motor                 "Dayi Motor"                                      4 models [moped+motorcycle]
+  S2W  grecav-spa                 "Grecav Spa"                                      3 models [moped]
+  S2W  romet-motors               "Romet Motors"                                    2 models [moped]
+  S2W  i-motor                    "I-Motor"                                         2 models [motorcycle]
+  S2W  winora-staiger-gmbh        "Winora-Staiger Gmbh"                             2 models [moped]
+  S4W  caterham-cars-ltd          "Caterham Cars Ltd"                               2 models [car]
+  S4W  iris-bus                   "Iris.bus"                                        2 models [bus]
+  S4W  junge-fahrzeugbau          "Junge Fahrzeugbau"                               1 models [truck]
+  S4W  eder-gmbh                  "Eder Gmbh"                                       1 models [truck]
+  S4W  volta-trucks               "Volta Trucks"                                    1 models [truck]
+  ?    cento-bus                  "Cento Bus"                                       1 models [bus]
+  S4W  heuliez-bus                "Heuliez Bus"                                     1 models [bus]
+  S4W  iles-automotive            "Iles Automotive"                                 1 models [bus]
+  S2W  tnt-motor                  "Tnt Motor"                                       1 models [moped]
+  ?    hecht-motors               "Hecht Motors"                                    1 models [moped]
+  ?    emo-bike-gmbh-co-kg        "Emo-Bike Gmbh & Co. Kg"                          1 models [moped]
+  S2W  club-car                   "Club Car"                                        1 models [moped]
+  ?    barton-motors              "Barton Motors"                                   1 models [moped]
+  ?    alpha-motors               "Alpha Motors"                                    1 models [motorcycle]
+  S4W  zago-automotive            "Zago Automotive"                                 1 models [van]
+  S4W  sommer-gmbh                "Sommer Gmbh"                                     1 models [van]
+  S4W  evum-motors                "Evum Motors"                                     1 models [van]
+  S4W  westfalia-mobil-gmbh       "Westfalia Mobil Gmbh"                            1 models [car]
+  ?    westfalen-mobil-gmbh       "Westfalen Mobil Gmbh"                            1 models [car]
+  S4W  micro-compact-car          "Micro Compact Car"                               1 models [car]
+  S4W  burstner-gmbh              "Bürstner Gmbh"                                   1 models [car]
+
+=== suffix_of_existing (6) ===
+  S4W  junge-fahrzeugbau-gmbh     "Junge Fahrzeugbau Gmbh" -> junge-fahrzeugbau    11 models [truck+van]
+  S4W  renault-trucks             "Renault Trucks"         -> renault               4 models [truck]
+  S4W  leyland-cars               "Leyland Cars"           -> leyland               2 models [car+van]
+  S4W  iveco-bus                  "Iveco Bus"              -> iveco                 2 models [bus]
+  S4W  kia-motors                 "Kia Motors"             -> kia                   1 models [car]
+  S2W  quadro-vehicles            "Quadro Vehicles"        -> quadro                1 models [motorcycle]
+
+A `?` owner means the make is absent from OWNERSHIP.yml — it appeared in a
+build after the split was cut, so NOBODY is assigned to it. Assign it before
+working it, or two sides will both (or neither) pick it up.

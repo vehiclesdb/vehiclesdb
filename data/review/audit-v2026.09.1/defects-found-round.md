@@ -20,6 +20,7 @@ defects (`defects-found.md`) with their current status.
 | A2 | data — display-name separator/casing is corpus-determined, not stable | **should-fix** | COV/NORM (+ taxonomy: new class?) |
 | A3 | reporting — the `reconcile <kind>: published:` log line is PRE-PRUNE | note | REL (runbook) |
 | A4 | spec — §1.3.1's sizing gap is **half what my predecessor reported**, and moving | **owner call** | owner / S4W |
+| **A5** | **the §1.3 detector-coverage premise is false in BOTH of its parts** | **BLOCKING for the claim** | owner / S4W + REL (CI) |
 
 ---
 
@@ -248,6 +249,108 @@ within a half:
 
 Still an owner/S4W call, still not re-litigating the target. Filed with better
 numbers than it was filed with last week.
+
+### A5. Detector coverage is the load-bearing half of the five-nines construction, and neither half of its premise holds
+
+This is the most important thing this round found, and it was found by checking
+a premise instead of inheriting it.
+
+PRD-FIVE-NINES §1.3 makes detector coverage the multiplier that makes the target
+reachable at all — the reason sampling does not have to do the work:
+
+> *"DETECTOR COVERAGE is NOT a stratum. Every defect class with a detector
+> (collisions, contradictions, corporate strings, name defects, gates 1–7,
+> hysteresis exclusions) is **checked over the WHOLE catalog at every build**,
+> so for those classes **r = 0 deterministically in BOTH strata**."*
+
+Two claims: *checked at every build*, and *zero*. **Measured on this release,
+both are false.**
+
+#### (a) They are not checked at every build. They are not checked anywhere.
+
+```
+$ grep -rn 'find_\|check_rulings\|lint_review' .github/workflows/
+(no output)
+```
+
+- The data repo's `lint.yml` runs `lint_overrides`, `lint_curation`,
+  `reorg_make_blocks --check`, `gen_ownership`, `lint_plates`, and
+  `lint_dataset --report` — the last **non-blocking by its own step name**.
+- `monthly-build.yml`, the publish path, runs pipeline `rake test`, a
+  **report-only** claims lint, and the build, whose `validate.rb` carries eight
+  gates: `license_pins`, `schema`, `spotchecks`, `delta`, `gdpr_lint`,
+  `attribution`, `id_contract`, `private_boundary`.
+- **No workflow in either repo runs any of** `find_duplicate_spellings`,
+  `find_casing_contradictions`, `find_token_duplicates`, `find_corporate_strings`,
+  `find_published_name_defects`, `find_structural_defects`,
+  `find_duplicate_makes`, `find_alias_name_collisions`, `check_rulings`, or
+  `lint_review`.
+
+The classes §1.3 names explicitly — *collisions, contradictions, corporate
+strings, name defects* — are exactly the ones with no automated coverage. The
+eight build gates cover a different set (licences, schema, spot-checks, deltas,
+GDPR, attribution, id contract, private boundary).
+
+#### (b) They are not silent. Run against the released catalog, they report this:
+
+| detector | result on `v2026.09.1` |
+|---|---|
+| `find_alias_name_collisions` | **exits non-zero — 10 hard findings** |
+| `find_duplicate_spellings` | 36 collision groups, 72 records (s4w half); 6 groups would mint a NEW canonical |
+| `find_casing_contradictions` | 20 make+token contradictions over 101 records |
+| `find_published_name_defects` | 243 title-cased tokens over 653 records; 55 near-duplicate name groups over 110 records |
+| `find_token_duplicates` (2W) | 399 nominated duplicate groups over 7,385 records |
+| `find_corporate_strings` | 3 |
+
+Run with `VDB_CATALOG=<the pin>/catalog`; logs kept. Two of the eight
+(`find_corporate_strings`, `find_published_name_defects`) default to a sibling
+pipeline path that does not exist and **exit 1 with "no records"** unless
+`VDB_CATALOG` is set — a detector that reports nothing because it scanned
+nothing, which is the silent-truncation shape all over again.
+
+Sample of what `find_alias_name_collisions` calls hard:
+
+```
+"cordoba" [cross-make]   alias of car/seat/cordoba   ALSO the name of car/chrysler/cordoba
+"montero" [same-make]    alias of car+van/mitsubishi/pajero   ALSO the name of car+van/mitsubishi/montero
+"fairlady z"             alias of car/nissan/z   ALSO the name of car/nissan/fairlady-z
+"4x4"                    alias of car/lada/niva  ALSO the name of car/chevrolet/4x4 and car/lada/4x4
+```
+
+#### What is and is not being claimed
+
+**These are nominations, not adjudicated defects.** The protocol's own rule
+binds here as much as it binds a researcher: *a detector's proposed canonical is
+a candidate, not evidence.* Some of these will be correct-as-published (the
+CPx/tS/XR4i rule — weird can be right), some are filed debt, and the acronym
+rows in particular are a known programme. **This entry does not claim a defect
+count.** It claims something narrower and worse:
+
+> **`r = 0 deterministically` is not established for the detector-held classes.
+> It is neither enforced by CI nor true of the released artifact, and the
+> five-nines arithmetic in §1.3 assumes it.**
+
+Every other stratum in that construction is bounded by measurement. This one was
+bounded by an assertion, and the assertion does not hold.
+
+#### Consequences, in order of urgency
+
+1. **`audit-PROTOCOL.md` step 1 misinstructs researchers.** It says the
+   duplicate-spellings and contradiction detectors *"should be silent — they run
+   in CI"*. A researcher who trusts that will treat "no detector fired" as
+   support for a `correct` id/name verdict, when nothing fired because nothing
+   ran. **Every researcher in this round was told so directly**, and the line
+   needs fixing before round 3. (AUD owns this file; the fix is not in this PR
+   because the round is mid-flight and the protocol may not move under a round.)
+2. **REL / CI:** the cheapest repair is a `detectors.yml` workflow running the
+   eight `find_*` scripts with `VDB_CATALOG` set — report-only at first, so the
+   backlog is measured before it is gated. Note `#292` already wants
+   `lint_review` wired, and the predecessor's defect #2 says it cannot see audit
+   ledgers as written; these are the same gap at different altitudes.
+3. **Owner / S4W:** §1.3's detector-coverage paragraph should either be
+   downgraded to an aspiration with a named gate to make it true, or the classes
+   it lists should be measured and carried as a **fourth term with a weight**
+   rather than as a free multiplier at zero.
 
 ---
 
