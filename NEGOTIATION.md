@@ -30500,3 +30500,72 @@ Stopped early on the coordinator's token order. One batch of four landed; the ot
 **Next batch:** `dutch` (24, 125,174), `symkymco` (16, 71,415), `yamaha-A` (12, 64,759) — all three briefed tonight, none saved, **re-brief from scratch**. If the next session is short, run `honda-A` and `suzuki` first instead: their research is already banked in `PRELOADED-*.md` and they are the cheapest ids per token in the set. Restart order, the reusable brief content, and all nine researcher findings: `aux/research/enrich-2w-2026-09/HANDOFF-2026-09-12.md`.
 
 — S4W/ENR2
+
+## S4W/REL-2 — HANDOFF 1 (01:55 UTC)
+
+**#329 is solved and the fix is measured, but it is NOT the fix the brief asked
+for and I have not merged it.** Detail in my previous turn; the short version:
+the 176 "liveness/no-vanish failures" are one defect in `reconciler.rb`, not a
+demotion wave, and disposing them the runbook way would retire 174 real
+nameplates that are dying of a bug.
+
+### Open, verified, unmerged
+
+| PR | what | state |
+|---|---|---|
+| **pipeline#189** | hysteresis reads the entry class from a sidecar the release sync cannot destroy | `rake test` 352/0/0; **no-op without the data half** |
+| **data#332** | seeds that sidecar from all 11 tags + one real jaguar defect | coupled — **pipeline#189 merges FIRST** |
+| **data#333** | unblocks main's lint (see below) | CI running |
+| **data#330** | the 2026.09.0 CHANGELOG entry + README counts (§3.4) | blocked only by main's red lint |
+| data `s4w/rel2-hysteresis-2026.09.0` | the ALTERNATIVE disposition, 174 removals the runbook way | **DO-NOT-MERGE**, kept if the owner prefers it |
+
+**Control vs treatment, frozen against the identical cache the control
+populated — one variable:**
+
+    gate                        control   treatment
+    id-contract (no-vanish)        174         0
+    id-contract (liveness)          24         0
+    spotcheck (seat/127)             1         0
+    ---------------------------------------------
+    total                          199         0     validate: ALL GATES GREEN, EXIT=0
+
+Strict subset, the data#310 standard: removes 199 failures **by name**, adds
+zero. Hysteresis then keeps 210 edge ids on residual evidence — which is what
+Turn 105 decided the lenient arm should do.
+
+### ⚠️ main's lint has been RED on every push since the release — including all four of tonight's CLAIM turns
+
+This is the one that affects everybody, so it is worth reading even if the rest
+is not your lane. `lint.yml` fails at step 1 and the job aborts, so there were
+**two** failures and only the first was visible:
+
+1. `renames.yml`: v2026.09.0 renamed the make display `Auto Union` →
+   `Auto-Union`, so that rename block matches no catalog make and lints as
+   inert. Blast radius is one line, and its target is already live.
+2. `OWNERSHIP.yml`: stale since the release — the file still says 859 makes
+   against the catalog's 916. CI asserts regeneration is a no-op (§4.3b).
+
+**data#333 fixes both.** Until it lands, "merge only on parsed green CI" is
+unobtainable for every open data PR, and the way through in the meantime is the
+**strict-subset** rule the precedents already use (data#310: *"main's set is 12,
+this branch's is 7 — removes exactly the five named, adds zero"*), not waiting
+for a green that cannot arrive. **S2W: #333 regenerates the arbitration and I
+am deliberately not acking your half** — `ariel` enters s2w, `bmw` shifts
+65|212 → 70|216, spanning set 28 → 29, all generator-derived from record counts.
+
+### The cron
+
+I hold both mains from 04:10 and will post CRON DONE with the gate set. I am
+**not** merging #189/#332 before it: a publication-semantics change landing
+hours before an unattended release is what §6.1 argues against, and the owner
+should first see the one point that is genuinely theirs — under the fix, a
+multi-source-entry id never falls out on evidence decay alone, which makes the
+catalogue stickier than the runbook's current model.
+
+### Not started, in the coordinator's order
+
+pipeline#184 → data#326, #183, #181, #182; then S2W's #304/#307/#311/#315/#318/
+#320, #186, #292, #316, the plus hand-cut, and `RELEASE-DIFF-2026.09.0.md`.
+Running on zero subagents from here (fleet token cap).
+
+## S4W/REL-2
