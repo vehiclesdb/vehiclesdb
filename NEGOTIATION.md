@@ -32423,3 +32423,114 @@ target is 57; the other thirteen are curation work.** Full evidence and the
 raw-register method notes are in `$S/enr4/INDEX.md`.
 
 — S4W/ENR4
+
+---
+
+## S4W/SRC-3 — HANDOFF: Norway is BUILT and green on the suite; the control build is running. Five dossier refutations, and the `licenses:pin` fix repaired Ukraine on disk the moment it ran
+
+**Pipeline `s4w/src-no-svv-pkk`** @ `c6a43ba` (worktree `src-pipeline`):
+`167d25e` carries #188's `licenses:pin` fix (without AU's pin entry),
+`c6a43ba` is the adapter + `Emit::COUNT_BASIS`/`POWERTRAIN_BASIS` + 21 tests.
+**Data `s4w/src-no-svv-pkk-data`** (worktree `src3-data`): generated licence
+pin, kind map, SOURCES.md. Neither PR opened yet — opening them with the
+measured build, per the template.
+
+**Gate: `rake test` 22 files, 376 runs, 8,250 assertions, 0 failures, 0 errors,
+0 skips, EXIT=0** · `lint_enrich: OK` · **gdpr lint clean** (0 forbidden tokens
+in code *and* in comments; Norway has no identifier column at all, so the
+boundary is satisfied by construction).
+
+### The `licenses:pin` fix is not theoretical — it repaired Ukraine on first run
+
+I carried #188's fix because adding a pin forces the task to run. It ran, and
+**`data/licenses/ua_mvs.txt` went 35,170 bytes → 172 bytes**, from the stale
+whole-`result` extract to exactly the four narrowed licence keys its `why`
+describes. `pins.json`'s ua_mvs **sha256 did not change** — it was already the
+narrowed hash, hand-edited on 2026-08-18, so the on-disk text had been lying
+next to a correct hash for three weeks. The generator now reproduces the file
+instead of damaging it, exactly as SRC-2 predicted.
+
+**All 13 existing pins re-verified against fresh bytes: ZERO sha256 changes.**
+My diff does churn every `pinned_at` — that is the generator's behaviour and
+the timestamps are *true* (they were genuinely re-fetched just now), and
+AGENTS.md forbids hand-editing `pins.json`, so I am keeping it rather than
+faking a minimal diff. Reviewers: the only substantive lines are the new
+`no_svv_pkk` block and the ua_mvs repair.
+
+### Five things the dossier got wrong, all measured on the full 12-quarter corpus
+
+1. **"A plain quoted CSV" — it is MIXED-quoted.** Strings quoted, numerics
+   bare. The obvious fast path parses the all-quoted header and then
+   mis-parses **448,406 of 448,406** data rows. Replacement scanner reads the
+   first 22 of 203 columns at 63,372 rows/s (vs Ruby CSV's 12,606) and is
+   cross-checked against `CSV` over a real quarter — 1,118 rows, 0 mismatches,
+   asserted in the tests.
+2. **"42 vehicle-group values" — there are 47 corpus-wide.** 42 is what ONE
+   quarter shows. Anyone re-deriving the kind map from a single file silently
+   drops five. The map declares all 47; an undeclared 48th is warned, a
+   declared skip is silent.
+3. **`KOMBINERT BIL` is not a car.** Recorded as M1; measured it is
+   N1-dominant (13,122 of 15,483) and splits van/truck on EU category.
+4. **PKK is not a "stock proxy".** Covered in my CLAIM; now also: there is **no
+   identifier column**, so deduplicating quarters into a stock is impossible
+   in principle, not merely awkward. Filed `flow-roadworthiness-inspections`.
+5. **The powertrain recommendation was too narrow, and the reason is our own
+   semantics.** The dossier said decline petrol and diesel, because the column
+   has no hybrid code and a PHEV is filed as `Bensin`. That is right for a
+   SCALAR field. `Row#powertrain` is a union-accumulated DISTRIBUTION —
+   emitting `ice-petrol` for a petrol-engined PHEV asserts something TRUE; what
+   we lose is the ability to evidence `phev` from Norway, which is a coverage
+   gap the absence rule already covers. Mapping them keeps **98.2% of periodic
+   rows** carrying a code instead of 14.6%. `Gass` still maps to NEITHER lpg
+   nor cng, per source.rb's standing ruling on fused gas.
+
+### Two structural facts worth having outside my lane
+
+**Header identity: ONE layout across all 12 files and three years** (203
+columns, byte-identical names). That is what makes positional addressing safe,
+and the adapter re-asserts it per file per build because `run.rb` swallows a
+generic adapter exception with a WARN and drops the source silently.
+
+**Identical rows are DIFFERENT vehicles.** No identifier + upstream
+k-anonymity means two same-model/year/fuel/county vehicles inspected in the
+same month with no faults are byte-identical: 72,873 July-2024 rows carry
+68,932 distinct fingerprints. Content-dedup would delete 3,941 real vehicles.
+The publisher's quarters also overlap by **exactly one row** in 4.3 million,
+so summing the 12 files is safe.
+
+### Deliberately NOT done, and why
+
+**No `history`, though the first-registration column is right there.**
+`Emit::HISTORY_BASIS` is a CLOSED two-value vocabulary and Norway's curve is
+neither: the 4-year inspection deferral makes its most-consumed recent end an
+artefact. Filing it `stock-survival` is the exact silent mislabel
+`test_registration_basis.rb` exists to prevent, and minting a fourth label
+collides with **#188, which is already opening those same two lines** for
+AU's `stock-manufacture-year`. Reported, not emitted; proposed follow-up label
+is `inspection-cohort-survival`. A test pins the absence so it reads as a
+decision, not an oversight.
+
+**Motorhomes/ambulances/hearses skipped pending ONE owner ruling** (85,014 of
+6.59M rows, 1.3%). PKK carries the COACHBUILDER as the make (`HYMER`,
+`DETHLEFFS`), which would mint `hymer/*` as a new make — while the catalog
+already ships those as models under the chassis make (`fiat/hymer`,
+`citroen/burstner`) and files them **inconsistently: 18 under car, 11 van, 11
+truck, 1 moped**. There is no convention to follow, so I did not invent one.
+Ingesting Norway does not depend on the answer.
+
+### Next, in order
+
+Control build running now (`src-ctl` @ `96a798b` = origin/main, same data
+worktree, frozen cache, adapter the ONLY variable). Then treatment, then the
+diff: new records, availability gains, candidate promotions, delta-gate
+impact, kind migrations. **Watch item flagged in advance:** `fi_traficom`'s own
+header warns that two registers agreeing on the same Nordic type-approval
+strings publishes junk through `publishable?`'s `sources.size >= 2` arm.
+Norway beside Finland is precisely that shape, so I will measure at the
+PUBLISHED level, not the candidate level.
+
+Disk **7.4 GiB** — tight. Norway's cache is 167 MB in a private farm
+(`src3-cache`, 240 symlinks + 26 real files); the shared 1.5 GB cache is
+untouched.
+
+— S4W/SRC-3
