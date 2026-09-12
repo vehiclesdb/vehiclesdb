@@ -33190,3 +33190,29 @@ stop and will leave their files in `$S/enr4/` as `b7-isuzu.yml` and
 `b8-man-bus.yml`. Nothing of mine is merged; I never merge.
 
 — S4W/ENR4
+
+---
+
+## S4W/COV4 — ADDENDUM to my HANDOFF: packet 2 landed after I posted. **130 keys / 14,609 Thai vehicles** are now verified on the WIP branch, and Thailand has a tier-1 regulator source nobody was using
+
+Committed, not lost — still **no PR**, because the control-vs-treatment build was not run before the stop. Branch `s4w/cov4-th-folds` @ `59c4d77`, lints green.
+
+**THE FIND, and it outlives this batch: the Thai Excise Department's ECO Sticker certification register (`ecosticker.go.th`).** Its `model` field is the certified commercial designation and it matches DLT's model column **character for character** — `G6 RWD Long Range`, `S05 REEV MAX`, `V23 2WD PLAY`, `H6 HEV ULTRA`, `Eletre S`, `BRZ 2.4 RWD EyeSight 6AT`. **The DLT model column is evidently populated from it.** That makes it the natural oracle for every future Thai sweep, and it is a regulator, not a maker. SRC should look at it as an ingest candidate in its own right: it carries body, dimensions, weight, battery, range, consumption, CO2, price, model year, certifying company and factory.
+
+*Provenance, disclosed on every line using it:* the `/detail/<id>` pages are client-rendered SPAs and were **not** rendered; the records were read from the register's public unauthenticated JSON API on the same origin. Per the `ar` batch precedent the citation says how it was verified rather than implying a page was opened. (Warning for consumers: the register's `battery_capacity` is in **amp-hours, not kWh**.)
+
+**Two grade-vocabulary facts proven rather than assumed.** Aion's number is **range in km** — the register's `driving_range` equals the badge to the decimal across three nameplates (UT 420/500, Y Plus 410/490, V 500/602). And **`ES` is EyeSight**, by natural experiment: the register holds `XV 2.0i-P` (2017) *and* `XV 2.0i-P ES` (2021) — same grade, same 1,995 cc, same CVT.
+
+**16 ids would gain `th` as a NEW country** (5,299 veh): `xpeng/x9` 1,248 · `omoda/omoda-e5` 1,124 · `aion/ut` 947 · `deepal/s05` 779 · `jaecoo/jaecoo-7` 352 · `subaru/forester` 339 · `subaru/xv` 194 · `leapmotor/c10` 96 …
+
+**A ruling somebody owes, surfaced deliberately rather than resolved.** Thai "OMODA C5 EV" **is** the vehicle we publish as `omoda/omoda-e5` — dimensionally identical to Omoda's own UK page (4424×1830×1588, 2630 wheelbase), both BEV, both Chery-built, and no petrol C5 exists in the Thai register at all. So the 1,124 vehicles fold onto a live record; nothing is minted. **But Omoda publishes no separate E5 page** — it is `/omoda-5/?model=e5-electric`, ONE page carrying Petrol, E5 Electric and SHS-H as three powertrains. That is structurally identical to Deepal S05 BEV/REEV and Haval H6 HEV/PHEV, which this same batch folds as one nameplate each. **Applied consistently, the maker evidence says `omoda/omoda-5` and `omoda/omoda-e5` are ONE nameplate; our catalog publishes TWO.** The published records win under the DECISIONS safeguard, so I folded to `omoda-e5` and restructured nothing — but the inconsistency is in our catalog, not the register.
+
+**`Seal 5` REFUSED on three independent legs** (650 veh): BYD Thailand publishes `/car/seal` and `/car/seal5dmi` as separate model pages; they are different machines (imported BEV 4800×1875×1460 vs Rayong-built PHEV with a 1,498 cc engine, 4780×1837×1495, half the price, different excise class); and `byd/seal-5` went LIVE in `v2026.09.1` carrying exactly those 650, so the fold would have **deleted a published id**. BYD TH also sells a **SEALION 5 DM-i** — a prefix rule on "Seal" swallows five real nameplates.
+
+**Traps for the next Thai sweep.** `Jaecoo 6T` is a SEPARATE nameplate from `Jaecoo 6` (4433×1916×1741 vs 4406×1910×1715, separate pages). Subaru **XV became Crosstrek** in TH. And the register's brand field is case- and whitespace-dirty, so a `brand=` filter **silently under-returns** — confirm every negative with `search=`. Seven maker domains in my own researcher brief were NXDOMAIN; the real ones are `byd.com/en-th`, `subaru.asia/th/`, `changan.co.th/th/deepal/*`, `omodajaecoo.co.th`, `gwm.co.th`, `xpeng.co.th`.
+
+**5 rows left UNRESOLVED rather than guessed** (5 veh): the STI complete cars (S207, S208 NBR, BRZ Cup Car Basic) have no STI product page naming a base model, and both Leapmotor T03 rows have no reachable maker page — the 300/400 range-badge pattern is obvious and stays unrecorded.
+
+To finish: build control at the merge-base and treatment on the branch (`--kinds=car,van,truck,bus`, frozen cache), `diff_builds.rb`, assert id diff EMPTY / 0 pairs lost / FAIL set byte-identical, then open the PR.
+
+— S4W/COV4
