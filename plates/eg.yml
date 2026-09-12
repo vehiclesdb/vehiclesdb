@@ -1,0 +1,708 @@
+# plates/eg.yml — Egypt (PRD-PLATES gate L5).
+#
+# THE ONE THING TO READ FIRST: **NO EGYPTIAN INSTRUMENT PRINTS THE SERIAL MASK
+# OF THE CURRENT PLATE, AND THAT IS A SOURCED STRUCTURAL CONCLUSION RATHER THAN
+# A RESEARCH FAILURE.** Article 13 of the Traffic Law, as replaced by Law
+# 121/2008, expressly DELEGATES "شكل اللوحات، والبيانات التى تتضمنها" — the
+# shape of the plates and THE DATA THEY CONTAIN — to a decision of the Minister
+# of Interior. Law 17/2024 re-delegated the same list to "the executive
+# regulation of this Law". The only executive regulation the Ministry actually
+# publishes is Interior Minister's Decision 2777 of **2000**, which predates the
+# current design by eight years and describes a DIFFERENT, LEGACY plate.
+#
+# So every mask-bearing series in this file is `matching: recall-only`. This is
+# the Nigeria shape from `plates/ng.yml` — an instrument that regulates colour,
+# material, mounting, dimensions and deposits in detail and never once prints
+# the grammar — and Egypt is the second jurisdiction in this corpus to show it.
+#
+# SEVEN STRUCTURAL FACTS
+#
+# 1. THE LATIN LINE IS A POSITIONAL GLOSS, NOT A TRANSLITERATION OF THE STRING.
+#    Egyptian plates print the Arabic serial on top and a smaller Latin/Western
+#    rendering beneath. Each Latin letter sits DIRECTLY BENEATH the Arabic
+#    letter occupying the same physical slot. Arabic reads right-to-left, so:
+#        **the Arabic letter sequence read RTL is the exact REVERSE of the
+#        Latin letter sequence read LTR.**
+#    Established photographically, twice, glyph by glyph (corpus D-1 and D-3 in
+#    the dossier). DIGITS ARE NOT REVERSED — Arabic-Indic numerals are written
+#    most-significant-first in both scripts, confirmed on the same photographs.
+#    THIS FILE STORES THE LATIN RENDERING IN PRINTED LEFT-TO-RIGHT ORDER, and
+#    `script:` below carries the map and the reversal rule. See fact 2 for why
+#    that is a recording choice and not a fold.
+#
+# 2. WHY THE LATIN RENDERING IS THE RECORDED ONE, AND WHY THAT IS NOT FOLDING.
+#    `plates/ua.yml` records a HOMOGLYPH fold: its Latin form is our own
+#    transliteration of Cyrillic letters that happen to be drawn identically.
+#    Egypt is a stronger case, not a weaker one — the Latin rendering is not
+#    ours at all, it is PRINTED ON THE PLATE BY THE ISSUING AUTHORITY. We record
+#    one of two official renderings and publish the other beside it.
+#    Three further reasons, stated so a reviewer can attack them:
+#      (a) the map is INJECTIVE — 17 Arabic letters to 17 DISTINCT Latin letters
+#          (A B C D E F G H K L M N R S T W Y), so nothing is destroyed and the
+#          reverse map below is exact. This was checked, not assumed; it is the
+#          Croatian ŠI→SI test and Egypt passes it.
+#      (b) the pattern DSL cannot express the alternative. `L` generates from a
+#          hardcoded Latin A-Z in `scripts/lint_plates.rb` and `[A-Z]` expands
+#          to 26 Latin letters that must be in the declared alphabet, so a file
+#          whose regexes were Arabic would fail its own gate on every line.
+#      (c) the Latin line is OPTIONAL and is being dropped — corpus D-4, an
+#          in-service plate, has no Latin line at all. So a regex must never
+#          REQUIRE it, and none here does; what is recorded is the rendering,
+#          not a claim that both lines are always present.
+#
+# 3. THE LETTER SET IS 17, AND THE "16" IN CIRCULATION IS TRACEABLE TO NOTHING.
+#    Both the English and Arabic Wikipedia tables carry exactly 17 rows and
+#    neither article states a count in prose. No source asserting 16 was found.
+#    Corroborating arithmetic, recorded as corroboration and NOT as a sourced
+#    rule: the Arabic alphabet has 28 letters, 28 − 17 = 11 excluded, and ten of
+#    those eleven are precisely the dotted twin of a retained letter
+#    (ب keeps / ت ث drop; ج / ح خ; د / ذ; ر / ز; س / ش; ص / ض; ط / ظ; ع / غ),
+#    leaving only ك unexplained. The set is internally consistent with a
+#    one-letter-per-visually-confusable-group rule. NO INSTRUMENT ENUMERATES IT.
+#
+# 4. THE "OFFENSIVE WORDS" EXCLUSION RULE DOES NOT EXIST. FOLKLORE, REFUTED.
+#    The story is real and the rule is not. Because the new plates print three
+#    SEPARATE letters, Egyptians read them as joined words, and in 2009 owners
+#    threatened litigation over the results. The Traffic Department's answer,
+#    quoted contemporaneously: «هذه الأحرف منفصلة، ولا ينبغي اعتبارها متصلة ...
+#    المسألة ليست تهريجا، ونحن لا نمزح في عملنا» — the letters are separate,
+#    they should not be treated as joined, and officials COMPLETELY REJECTED
+#    exchanging the plates. The stated basis for the 17-letter restriction is
+#    VISUAL CONFUSABILITY, not decency. No regex here excludes any combination.
+#
+# 5. THE GOVERNORATE IS PARTIALLY ENCODED — WHICH REFUTES THE COMMON BELIEF —
+#    BUT NO DECODE TABLE SHIPS. The widely repeated claim that Egyptian letters
+#    are purely sequential and carry no geography is WRONG. The General Traffic
+#    Department described the semantics itself in 2009: one letter for the
+#    governorate of the owner's RESIDENCE, one for the traffic unit, one for the
+#    registration. Law 66/1973 art. 2(2), as replaced in 2008, ties the
+#    competent traffic department to the governorate of the applicant's
+#    residence — statutory backing for the link. Photographic corroboration
+#    exists in exactly one case (corpus D-4, an Aswan tourist bus whose letters
+#    read RTL are ص و ن, matching ص و = Aswan).
+#    IT STILL DOES NOT SHIP. The only letter→governorate table is a 2014 press
+#    article, the Arabic Wikipedia article is a near-verbatim copy of it and is
+#    therefore NOT independent corroboration, and the allocating instrument was
+#    never found. The encoding is also PARTIAL by its own terms: Cairo and Giza
+#    are expressly unrestricted («لا تتقيد بأحرف معينة»). A table that is
+#    press-sourced, partially inapplicable and unpinned is exactly the kind of
+#    reproducible-everywhere artifact §2.4 forbids. V5.
+#
+# 6. THE COLOUR "CONTEST" IS NOT A CONTEST — IT IS TWO ERAS AND ONE OMISSION.
+#    Sources appear to disagree about brown: a 2014 press piece calls it
+#    "commercial", the Mint's own specimen labels it «مؤقت» (temporary), and
+#    English Wikipedia lists neither. Decision 2777 art. 340 سادسا settles it —
+#    the brown plate is ONE combined statutory category, «لوحات التجارى
+#    والمؤقت», commercial AND temporary. Each secondary source was reporting one
+#    half of one category. Recorded here because a reviewer who meets the two
+#    halves separately will otherwise "fix" the file in the wrong direction.
+#    ⚠ AND: the Ministry's OWN ENGLISH TRANSLATION of art. 340 SILENTLY OMITS
+#    category سادسا. Anyone working from the English page concludes brown does
+#    not exist. Use the Arabic.
+#
+# 7. NO HEX IS ASSERTED ANYWHERE IN THIS FILE. Article 340 names colours in
+#    words («أبيض» «أحمر» «أخضر» «أصفر ليمونى» «برتقالى» «بنى» «رمادى») and
+#    words are not hex. The modern band colours have no instrument at all —
+#    only the Egyptian Mint's ten specimen images. RGB values sampled from those
+#    JPEGs are recorded in `band_color_observed:` notes as a reproducibility aid
+#    for the verifier, deliberately NOT in `design.band.color`, because a value
+#    sampled off a JPEG render of a specimen is not a published colour spec and
+#    must not enter the dataset wearing one's clothes.
+#
+# §VERIFIER — open questions in priority order
+#   V1. THE BIG ONE: the post-2008 implementing decision required by art. 13.
+#       Between 2008 and 2024 it was a Minister-of-Interior decision; the MOI
+#       portal publishes only 2777/2000. Find it and most of this file rises a
+#       tier. manshurat.org search returns 403; cc.gov.eg is now subscription-
+#       gated.
+#   V2. An instrument for the 17-letter set. Wikipedia-tier only today.
+#   V3. Current plate DIMENSIONS. Decision 2777 gives 40x16 cm for the LEGACY
+#       plate; 35x17 cm for the current one is Wikipedia-only. Unreconciled, so
+#       NO dimension ships on the 2008 series.
+#   V4. The ي / ى / ی codepoint question — both Wikipedia tables print
+#       ی U+06CC (Farsi yeh), the underlying Arabic press writes ي U+064A, and
+#       Egyptian print commonly uses ى U+0649. Declared as U+064A here; the
+#       ambiguity is unresolved AT SOURCE and is recorded, not hidden.
+#   V5. The letter→governorate table and its allocating instrument (fact 5).
+#   V6. The diplomatic 2-digit right-hand group — presumably a mission/country
+#       code. No decode table sourced.
+#   V7. Export, dealer/trade, historic and military series — not investigated
+#       for want of any source. The plate VALIDITY PERIOD is delegated by
+#       art. 13 («مدة صلاحيتها») and its value is unknown.
+#   V8. «تحت الطلب» is CONTESTED and therefore ships as NO series: Decision 2777
+#       art. 340 files it under passenger vehicles meaning «سيارات نقل الموتى»
+#       (HEARSES), while the Mint's black specimen glosses it "on-call". One
+#       term, two incompatible readings, no instrument for the modern plate.
+#   V9. Live-site access: `www.moi.gov.eg` is a parked placeholder and
+#       `traffic.moi.gov.eg` returns a 246-byte stub from outside Egypt. Use the
+#       Wayback timestamps cited on each source line, not the live URLs.
+jurisdiction: eg
+
+# The EXACT characters Egyptian plates print, as a union of BOTH official
+# renderings — §2.6 decision 2 says this key declares what the plate shows, and
+# an Egyptian plate shows all four blocks below. Declaring REPLACES the global
+# set, so the Latin A-Z and 0-9 must be present or every regex in this file
+# would fail its own gate (see header fact 2b).
+#   Latin A-Z + Western 0-9 .... the lower sub-line, and the recorded rendering
+#   Arabic letters (17) ........ أ U+0623  ب U+0628  ج U+062C  د U+062F
+#                                ر U+0631  س U+0633  ص U+0635  ط U+0637
+#                                ع U+0639  ف U+0641  ق U+0642  ل U+0644
+#                                م U+0645  ن U+0646  ه U+0647  و U+0648
+#                                ي U+064A
+#   Arabic-Indic digits ........ ٠-٩ U+0660-U+0669 (NOT the Extended
+#                                Arabic-Indic U+06F0-U+06F9 Persian/Urdu forms)
+# TWO CODEPOINT TRAPS, both measured rather than transcribed by eye:
+#   * ه is U+0647 ALONE. Both Wikipedia tables write it «هـ» = U+0647 followed
+#     by U+0640 ARABIC TATWEEL. The tatweel is PRESENTATIONAL — it forces the
+#     initial form so the isolated letter prints with a tail. U+0640 is NOT part
+#     of the letter and must never enter a character class or a key.
+#   * ي is declared as U+064A, and this is UNRESOLVED AT SOURCE (V4).
+serial_alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789أبجدرسصطعفقلمنهوي٠١٢٣٤٥٦٧٨٩"
+serial_alphabet_evidence: >-
+  The Latin and Western halves are directly observed on the plate and are not in
+  doubt. The 17 Arabic letters are `secondary-wikipedia` — no Egyptian
+  instrument enumerates them (V2), and the corroborating dotted-twin arithmetic
+  in header fact 3 is arithmetic, not authority. The declaration is deliberately
+  WIDER than the issuing grammar in its Latin half: all 26 Latin letters are
+  declared although only the 17 in `script.correspondence` are believed to
+  appear, because a too-narrow alphabet silently rejects real plates while a
+  too-wide one merely under-rejects, and the narrowing is the direction that
+  cannot be sourced.
+
+script:
+  printed: "Arabic letters + Arabic-Indic digits (upper line); Latin letters + Western digits (lower sub-line)"
+  recorded_as: "the LATIN rendering, in printed left-to-right order (digits group, then letters group)"
+  recorded_as_rationale: >-
+    See header facts 1 and 2. The Latin rendering is printed by the authority,
+    is what OCR and a consumer's keyboard produce, and is the only rendering the
+    pattern DSL can express. It is NOT a transliteration produced by us.
+  letter_order_warning: >-
+    READ THIS BEFORE COMPARING OUR SERIAL TO ANY ARABIC-ORDER SOURCE. The Latin
+    letters are POSITION-ALIGNED with the Arabic letters, not sequence-aligned.
+    Reading the Latin line left-to-right therefore yields the Arabic letter
+    sequence REVERSED. A consumer that OCRs the Arabic line and reads it in
+    proper right-to-left order will produce the reverse of the string this file
+    records, and both strings are correct renderings of the same registration.
+    Digits are NOT affected — numerals run most-significant-first in both
+    scripts.
+  block_order: >-
+    Printed left-to-right the DIGIT group is on the left and the LETTER group on
+    the right, separated by a holographic security strip on current production.
+    In proper Arabic reading order (right-to-left) the LETTERS come first. Both
+    statements are true; they describe different axes.
+  correspondence:
+    # Arabic letter (codepoint) -> the Latin letter printed beneath it.
+    # INJECTIVE over all 17 — verified, and that is what makes the recorded
+    # rendering lossless (header fact 2a). Latin letters NEVER used: I J O P Q
+    # U V X Z.
+    "أ U+0623": A
+    "ب U+0628": B
+    "ج U+062C": G
+    "د U+062F": D
+    "ر U+0631": R
+    "س U+0633": S
+    "ص U+0635": C
+    "ط U+0637": T
+    "ع U+0639": E
+    "ف U+0641": F
+    "ق U+0642": K
+    "ل U+0644": L
+    "م U+0645": M
+    "ن U+0646": N
+    "ه U+0647": H
+    "و U+0648": W
+    "ي U+064A": Y
+  correspondence_evidence: "secondary-wikipedia (en + ar, identical tables), corroborated glyph-by-glyph on the photographs in the dossier corpus"
+
+authority:
+  name: "الإدارة العامة للمرور — General Department of Traffic, Ministry of Interior (وزارة الداخلية)"
+  url: "https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx"
+  authority_evidence: >-
+    Law 66/1973 art. 13 vests issuance in «إدارة المرور المختصة» and makes the
+    plates STATE PROPERTY sealed with the State seal. The url is the Traffic
+    Department's own publication of Interior Minister's Decision 2777/2000,
+    not a ministry landing page. It is geo-restricted — use the Wayback
+    timestamps on the source lines. Note the ministry root www.moi.gov.eg
+    currently serves a parked placeholder.
+  manufacturer:
+    name: "مصلحة سك العملة — Egyptian Mint Authority, Ministry of Finance"
+    url: "http://www.egyptmint.gov.eg/Home/Plates"
+    note: >-
+      A SEPARATE body from the issuing authority, and the best available source
+      for the modern band colours because it publishes ten blank class
+      specimens. Its own page states the plates are coded «وفق نظام تكويد معين
+      تم الأتفاق عليه بين وزارة المالية ... ووزارة الداخلية» — according to a
+      coding system AGREED BETWEEN the two ministries. That sentence is itself
+      evidence that the serial grammar is an inter-ministerial administrative
+      arrangement rather than a published legal rule, which is header fact 0
+      restated by the body that makes the plates.
+
+binding: vehicle
+binding_note: >-
+  Law 66/1973 art. 13: the plates are «ملك الدولة» — State property, sealed with
+  the State seal. Art. 14, as replaced by Law 121/2008: «لا يجوز استعمال اللوحات
+  إلا للمركبة المنصرفة لها» — plates may be used only for the vehicle they were
+  issued to, may not be swapped, and their data may not be altered. Art. 12(1):
+  the licence is valid only for the vehicle it was issued for.
+
+instrument:
+  act:
+    citation: "قانون المرور الصادر بالقانون رقم 66 لسنة 1973 — Traffic Law, Law No. 66 of 1973"
+    url: "https://manshurat.org/sites/default/files/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2066%20%D9%84%D8%B3%D9%86%D8%A9%2073%20-%D8%A7%D9%84%D9%85%D8%B1%D9%88%D8%B1.pdf"
+    relevant_articles: >-
+      Art. 13 (two metal plates; State property; the Minister determines shape,
+      DATA CONTAINED, security marks, validity, mounting, deposit) — the
+      delegation that is the whole reason this file is recall-only. Art. 14
+      (plates usable only on the vehicle issued to). Art. 2(2) (competent
+      traffic department = that of the applicant's governorate of residence).
+      Art. 12 (licence vehicle-specific; vehicle may travel countrywide).
+  amendment_2008:
+    citation: "القانون رقم 121 لسنة 2008 — Law No. 121 of 2008, الجريدة الرسمية العدد 23 مكرر، 9 يونية 2008"
+    url: "https://manshurat.org/sites/default/files/docs/pdf/015473.pdf"
+    effect: >-
+      REPLACED art. 13 in its entirety and re-delegated the shape, the data, the
+      security marks, the validity period and the mounting to a decision of the
+      Minister of Interior, raising the deposit ceiling to EGP 100. This is the
+      legal act that enables the current design. It does NOT describe the
+      design.
+  amendment_2024:
+    citation: "القانون رقم 17 لسنة 2024 — Law No. 17 of 2024, الجريدة الرسمية العدد 13 تابع (أ)، 28 مارس 2024"
+    url: "https://manshurat.org/sites/default/files/ldd_13tb_-_mwmn-2-7.pdf"
+    effect: >-
+      Moved the delegatee from "the Minister of Interior by his decision" to
+      "the executive regulation of this Law", and introduced a plate-development
+      charge of up to EGP 600. THE DELEGATION STILL ENUMERATES NO LETTERS AND NO
+      DIGITS. Also globally replaces «نارية» with «آلية» for motorcycles. This
+      is a live change inside the last three years and is recorded as such; it
+      is NOT an era boundary, because a change in who writes the specification
+      is not evidence that the specification changed.
+  regulation:
+    citation: "قرار وزير الداخلية رقم 2777 لسنة 2000 — Interior Minister's Decision No. 2777 of 2000"
+    url: "https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx"
+    relevant_articles: "340 (colours, dimensions, classes) · 341 (issued per vehicle type/use) · 342 (material and layout) · 343 (deposits) · 344-345 (mounting) · 346-348 (surrender)"
+    caution: >-
+      ⚠ THE INSTRUMENT IN FORCE DESCRIBES A PLATE THAT IS NO LONGER ISSUED.
+      Art. 342's layout — licence type + issuing authority + numbers in Arabic
+      on the RIGHT, licence type + numbers + «مدلول المحافظة باللغة الإنجليزية»
+      (governorate indicator in ENGLISH) on the LEFT — is the PRE-2008 plate,
+      confirmed exactly by a photographed legacy plate. Art. 340's whole-plate
+      background colours and 40x16 cm dimensions are likewise legacy. DO NOT
+      derive the modern mask, the modern colours or the modern dimensions from
+      Decision 2777. Its non-repeal is not evidence the legacy format is still
+      issued; it is an un-updated regulation.
+
+series:
+
+  # =========================================================================
+  # THE ORDINARY MARK, 2008-. One layout, one grammar, one period; the
+  # civilian classes below differ from it only in the colour of the top band
+  # and in which vehicles they are issued to. Each is its own series because
+  # `class:` is a first-class per-series field and these are distinct legal
+  # licence classes — the `in-transport-1989` precedent, where the goods
+  # distinction rides on `categories:` rather than on a new class term.
+  # =========================================================================
+  - id: eg-standard-2008
+    class: standard
+    categories: [car, van]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    period_note: >-
+      2008 = Law 121/2008, gazetted 9 June 2008, which replaced art. 13 and
+      enabled the redesign. AN ENABLING-INSTRUMENT DATE, NOT A FIRST-ISSUE DATE,
+      and the two are deliberately kept apart. The separate and weaker
+      first-issue claim is "August 2008" (secondary-wikipedia), corroborated by
+      contemporaneous press in August 2009 describing the plates as adopted
+      «منذ ما يقرب من عام» — about a year earlier — and by the Egyptian Mint
+      dating the secure-plate manufacturing award to December 2007. None of
+      those is instrument-grade and none is recorded as the period start.
+    matching: recall-only
+    matching_note: >-
+      recall-only for TWO independent reasons, either of which alone would be
+      enough. (1) No instrument prints the mask — art. 13 delegates "البيانات
+      التى تتضمنها" away and Decision 2777/2000 describes the legacy plate
+      (header fact 0). (2) The regex is a genuine UNION across three
+      governorate-specific shapes, so it accepts combinations no governorate
+      issues — 3 digits with 2 letters, for instance, is matched here and is not
+      an issued shape anywhere. A match is a shape hit and nothing more.
+    format:
+      # Recorded in the LATIN rendering, printed left-to-right: digits group
+      # then letters group (see `script:`). The gap is the emitted SPACE of
+      # §2.6 and is optional in the regex, because the two groups are separated
+      # by a holographic strip rather than by a printed character.
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+      charset:
+        used: "A B C D E F G H K L M N R S T W Y"
+        excluded: [I, J, O, P, Q, U, V, X, Z]
+        excluded_basis: >-
+          These nine Latin letters are absent because no Arabic letter in the
+          17-letter set maps to them (see `script.correspondence`), NOT because
+          any instrument excludes them. The restriction is therefore carried
+          here as documentation and NOT in a `regex_strict` — `matching:
+          recall-only` forbids a strict twin, and rightly so: narrowing on a
+          Wikipedia-tier alphabet is exactly the unsourced narrowing that
+          silently rejects real plates.
+      progression: >-
+        Not sourced. The General Traffic Department described the three letters
+        in 2009 as a code — one for the owner's governorate of residence, one
+        for the traffic unit, one for the registration — but no allocating rule
+        or sequence was published. FOLKLORE, FLAGGED AND NOT ASSERTED: the
+        common claim that the letters simply advance alphabetically nationwide
+        is unsupported and is inconsistent with the governorate semantics the
+        authority itself gave.
+    variants:
+      - format: { pattern: "999 LLL" }
+        note: >-
+          CAIRO (القاهرة) — three digits, three letters. Cairo and Giza are
+          expressly NOT restricted to particular letters; officials choose
+          freely subject only to non-repetition.
+      - format: { pattern: "9999 LL" }
+        note: >-
+          GIZA (الجيزة) — four digits, TWO letters. The only shape in the file
+          with a two-letter group, and the reason the parent regex quantifies
+          [A-Z]{2,3} rather than fixing three.
+    design:
+      band:
+        side: top
+        content: "coloured band bearing EGYPT (left), the national emblem (centre) and مصر (right)"
+      band_note: >-
+        The class-distinguishing colour of the modern plate lives in this TOP
+        BAND, not in the plate ground — which is the structural difference
+        between the 2008 design and the art. 340 legacy design, where the whole
+        plate carried the colour.
+      band_color_words: "light blue (الملاكى / private) — the Egyptian Mint's own class label on its specimen"
+      band_color_observed: >-
+        RGB ~ABD6E8 sampled from the Mint's blank specimen JPEG. RECORDED HERE
+        AND DELIBERATELY NOT IN `design.band.color`: a value sampled off a JPEG
+        render of a specimen is not a published colour spec (header fact 7).
+      background_note: "white ground, black characters — observed; art. 340's white/black is for the LEGACY passenger plate and is not carried over as a claim about this design"
+      material: >-
+        Decision 2777 art. 342 (still in force, and consistent with current
+        practice): pure aluminium, thickness not less than 1 mm, covered with a
+        reflective layer. The Egyptian Mint independently describes reflective
+        security marks and a capacity of roughly 2,000 pairs a day.
+      security: "a holographic strip divides the digit and letter groups on current production — observed on the dossier corpus, no instrument"
+      dimensions_note: >-
+        NO DIMENSION SHIPS. Decision 2777 art. 340 gives 40 x 16 cm, but for the
+        LEGACY plate; 35 x 17 cm for the current plate is Wikipedia-only and has
+        no instrument. Unreconciled — V3.
+      rear_differs: false
+      mounting: "Law 66/1973 art. 13: one plate front, one rear. Trailers and semi-trailers carry ONE plate, at the rear."
+    region_encoding: none
+    region_encoding_mechanism: >-
+      `none` here means NO TABLE SHIPPED, not "no geography encoded" — the
+      distinction matters and header fact 5 sets out why the common "no
+      geography" belief is refuted and why the table still cannot ship. The
+      encoding is partial (Cairo and Giza are unrestricted), press-sourced, and
+      its allocating instrument was never found. V5.
+    notes: >-
+      The ordinary Egyptian mark. Issuance is NATIONAL, administered by
+      governorate traffic offices — this is expressly NOT the UAE emirate-level
+      model: one national law, one national authority, and art. 12 makes the
+      registration valid countrywide.
+    sources:
+      - "https://manshurat.org/sites/default/files/docs/pdf/015473.pdf  # Law 121/2008 replacing art. 13: the Minister determines the shape and THE DATA THE PLATES CONTAIN — the delegation that makes this series recall-only; Official Gazette 23 bis, 9 June 2008, p.5 — accessed 2026-09-12"
+      - "https://manshurat.org/sites/default/files/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2066%20%D9%84%D8%B3%D9%86%D8%A9%2073%20-%D8%A7%D9%84%D9%85%D8%B1%D9%88%D8%B1.pdf  # Law 66/1973 arts. 2(2), 12, 13, 14 — plates are State property, vehicle-bound, governorate of residence determines the competent office — accessed 2026-09-12"
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 arts. 340, 342, 343 — legacy colours and dimensions, aluminium >= 1 mm reflective; the Arabic text, because the ministry's own English omits category سادسا — accessed 2026-09-12"
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Egyptian Mint Authority: the ten class specimens and the inter-ministerial coding statement — accessed 2026-09-12"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Egypt  # secondary-wikipedia: the 17-letter table and its Latin correspondence; the abandonment of the Latin sub-line for legibility — accessed 2026-09-12"
+      - "https://web.archive.org/web/20181001220455/http://www.masrawy.com/Autos/autos_news/details/2014/12/3/401710/  # press, 3 Dec 2014: the letter-group shapes per governorate (Cairo 3+3, Giza 4+2, others 4+3) and the Cairo/Giza non-restriction — the ONLY source for the masks, which is why this series is recall-only — accessed 2026-09-12"
+
+  - id: eg-transport-2008
+    class: standard
+    categories: [truck, van, trailer, tractor, machine]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    period_note: "as eg-standard-2008 — Law 121/2008, an enabling-instrument date"
+    matching: recall-only
+    matching_note: "as eg-standard-2008: no instrument prints the mask, and the regex unions the governorate shapes"
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "red band bearing EGYPT / emblem / مصر" }
+      band_color_words: "red (النقل / goods transport) — Mint class label «ترخيص نقل»"
+      band_color_observed: "RGB ~DC2804 sampled from the Mint specimen JPEG — not a colour spec, see header fact 7"
+      legacy_note: >-
+        Decision 2777 art. 340 ثانيا put this class on a RED GROUND with WHITE
+        characters at 40 x 16 cm, grouping goods transport with trailers, heavy
+        equipment (الآلات under art. 30 of Law 66/1973), agricultural tractors
+        and agricultural trailers. The red survives the redesign as the band
+        colour; the whole-plate red does not.
+    region_encoding: none
+    notes: >-
+      Goods transport («نقل»). Egypt treats this as a distinct licence class,
+      but the PRD-PLATES §2.3 vocabulary has no term for a commercial/goods
+      class, so — following `in-transport-1989` — the class stays `standard` and
+      the distinction rides on `categories:`. AGRICULTURAL TRACTORS AND TRAILERS
+      ARE INSIDE THIS CATEGORY under art. 340 ثانيا rather than in a separate
+      agricultural series; that is the instrument's own grouping and it is not
+      second-guessed here.
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 art. 340 ثانيا — goods transport, trailers, heavy equipment, agricultural tractors and trailers on one red/white plate — accessed 2026-09-12"
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص نقل», red band — accessed 2026-09-12"
+
+  - id: eg-taxi-2008
+    class: taxi
+    categories: [car, van]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "orange band bearing EGYPT / emblem / مصر" }
+      band_color_words: "orange (الأجرة / taxi) — art. 340 خامسا «برتقالى» with black characters; Mint class label «ترخيص اجره»"
+      band_color_observed: "RGB ~E28236 sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: "For-hire vehicles, including «أجرة سياحة» (tourist hire) under art. 340 خامسا. Orange is one of the colours that survives the 2008 redesign from whole-plate ground to top band."
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 art. 340 خامسا — taxi and tourist-hire, orange ground, black characters — accessed 2026-09-12"
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص اجره», orange band — accessed 2026-09-12"
+
+  - id: eg-government-2008
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2008 }
+    period_evidence: secondary-first-issue
+    period_evidence_note: >-
+      Weaker than the civilian series above. Decision 2777 art. 340 has NO grey
+      category at all — it files government and governorate vehicles under the
+      white passenger class — so the grey band is known only from the Egyptian
+      Mint's specimen. The 2008 start is inherited from the redesign, not
+      independently sourced for this class.
+    matching: recall-only
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "grey band bearing EGYPT / emblem / مصر" }
+      band_color_words: "grey (الحكومة / government) — Mint class label «ترخيص حكومه»"
+      band_color_observed: "RGB ~A29E9B sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: "Civil government and governorate fleets. One of four modern classes (with tourism, police and on-call) that have NO counterpart in Decision 2777 — evidence that the 2008 redesign re-cut the class list and that the un-updated regulation cannot be used to enumerate it."
+    sources:
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص حكومه», grey band — the only source for this class — accessed 2026-09-12"
+
+  - id: eg-tourism-2008
+    class: standard
+    categories: [bus, car, van]
+    period: { start: 2008 }
+    period_evidence: secondary-first-issue
+    period_evidence_note: "as eg-government-2008 — no art. 340 counterpart; the Mint specimen is the only source"
+    matching: recall-only
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "beige band bearing EGYPT / emblem / مصر" }
+      band_color_words: "beige (السياحة / tourism) — Mint class label «ترخيص سياحه»"
+      band_color_observed: "RGB ~EFD3A3 sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: >-
+      Tourism vehicles, principally tour buses. `class: standard` because the
+      §2.3 vocabulary has no tourism term; the distinction rides on
+      `categories:` and on this note. A photographed in-service plate of this
+      class (an Aswan tour bus) is the file's single piece of photographic
+      corroboration for the governorate encoding — and it carries NO LATIN LINE,
+      which is why no regex here requires one.
+    sources:
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص سياحه», beige band — accessed 2026-09-12"
+      - "https://upload.wikimedia.org/wikipedia/commons/0/0a/License_plate_Egypt_tourist_bus.jpg  # photographic: beige-band tour-bus plate, four digits + three letters, NO Latin sub-line; letters read RTL are ص و ن, corroborating ص و = Aswan — Commons 2015-01-03, accessed 2026-09-12"
+
+  - id: eg-police-2008
+    class: police
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2008 }
+    period_evidence: secondary-first-issue
+    matching: recall-only
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "dark blue band whose legend reads POLICE / الشرطة — it does NOT read EGYPT / مصر" }
+      band_color_words: "dark blue with white text (الشرطة / police) — Mint class label «ترخيص شرطه»"
+      band_color_observed: "RGB ~304989 sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: >-
+      The only modern class whose band legend replaces the country name. Note a
+      secondary caution recorded and not resolved: Wikipedia states the
+      governorate letter-coding does not apply to army, police and diplomatic
+      vehicles, which would mean the letters on this series are not geographic
+      even to the partial extent described in header fact 5.
+    sources:
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص شرطه», dark blue band, POLICE/الشرطة legend — accessed 2026-09-12"
+
+  - id: eg-diplomatic-2008
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    period_note: "Law 121/2008 as for the civilian series; the green diplomatic colour itself long predates it — art. 340 ثالثا gave diplomatic and consular vehicles a green ground with black characters."
+    matching: recall-only
+    matching_note: >-
+      No instrument prints this mask either. Unlike the civilian series the
+      regex here is not a union across governorates — it is a single shape on
+      secondary and photographic evidence — but the reason for recall-only is
+      the same and the stronger one: the grammar is not in any instrument.
+    format:
+      # DIGITS IN BOTH GROUPS — the diplomatic series carries no letters at all,
+      # which is why its pattern cannot be shared with the civilian ones.
+      pattern: "999 99"
+      regex: '\A\d{3} ?\d{2}\z'
+    design:
+      band: { side: top, content: "green band bearing EGYPT / emblem / مصر" }
+      band_color_words: "green (الدبلوماسي / diplomatic) — art. 340 ثالثا «أخضر» with black characters; Mint class label «ترخيص دبلوماسى»"
+      band_color_observed: "RGB ~5B9936 sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: >-
+      Diplomatic and consular missions. The right-hand two-digit group is
+      presumably a mission or country code; NO DECODE TABLE IS SOURCED and none
+      ships (V6). Decision 2777 art. 340 ثالثا treats diplomatic and consular as
+      ONE category, so this file does not invent a separate consular series —
+      recording a distinction the instrument does not draw would be as much an
+      error as folding one it does.
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 art. 340 ثالثا — diplomatic and consular as one category, green ground, black characters — accessed 2026-09-12"
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Egypt  # secondary-wikipedia: diplomatic plates carry numbers in place of letters, ###-## — accessed 2026-09-12"
+      - "https://upload.wikimedia.org/wikipedia/commons/2/21/Egypt_-_License_Plate_-_Diplomatic.png  # photographic corroboration of the all-digit shape — Commons 2020-03-11, accessed 2026-09-12"
+
+  - id: eg-temporary-commercial-2008
+    class: temporary
+    categories: [car, van, truck, bus, trailer]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "brown band, white text" }
+      band_color_words: "brown (التجارى والمؤقت / commercial and temporary) — art. 340 سادسا «بنى» ground with «أبيض» characters; Mint class label «ترخيص مؤقت»"
+      band_color_observed: "RGB ~6F5C4A sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: >-
+      THE CLASS THE SOURCES APPEAR TO FIGHT OVER, AND THEY DO NOT. Art. 340
+      سادسا creates ONE combined category «لوحات التجارى والمؤقت» — trade licence
+      and temporary licence together. A 2014 press piece reports only the
+      commercial half; the Mint labels its brown specimen only the temporary
+      half; English Wikipedia reports neither. See header fact 6. `class:
+      temporary` is chosen because it is the half the issuing authority's own
+      manufacturer names, and because the §2.3 vocabulary has `dealer` and
+      `temporary` but no combined term; the commercial half is recorded here
+      rather than lost.
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 art. 340 سادسا — «لوحات التجارى والمؤقت», brown ground, white characters. NOTE the ministry's own English rendering of art. 340 omits this category entirely — accessed 2026-09-12"
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص مؤقت», brown band with white text — accessed 2026-09-12"
+
+  - id: eg-customs-2008
+    class: temporary
+    categories: [car, van, truck]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      pattern: "9999 LLL"
+      regex: '\A\d{3,4} ?[A-Z]{2,3}\z'
+    design:
+      band: { side: top, content: "yellow band" }
+      band_color_words: "lemon yellow (الجمارك والمنطقة الحرة / customs and free zone) — art. 340 رابعا «أصفر ليمونى» ground with «أحمر» characters; Mint class label «ترخيص جمرك»"
+      band_color_observed: "RGB ~E6C72F sampled from the Mint specimen JPEG"
+    region_encoding: none
+    notes: >-
+      Customs and free-zone vehicles — art. 340 رابعا covers «جمرك أجانب»
+      (foreigners' customs), «جمرك مصريين» (Egyptians' customs) and «منطقة حرة»
+      (free zone). ⚠ A DELIBERATE IMPRECISION, WRITTEN INTO THE ROW RATHER THAN
+      SMOOTHED OVER: the PRD-PLATES §2.3 vocabulary HAS NO `customs` TERM.
+      `temporary` is the nearest honest fit — these are duty-unpaid vehicles on
+      time-limited authority — but it is not what the instrument calls them, and
+      it collides with the genuinely temporary brown series above. The right fix
+      is a vocabulary addition by PR with a definition, per §2.3; that is
+      proposed in the dossier and deliberately NOT made here, because growing
+      the shared vocabulary inside a data PR is the ad-hoc growth §2.3 forbids.
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 art. 340 رابعا — customs (foreign and Egyptian) and free zone, lemon-yellow ground, red characters — accessed 2026-09-12"
+      - "http://www.egyptmint.gov.eg/Home/Plates  # Mint specimen «ترخيص جمرك», yellow band — accessed 2026-09-12"
+
+  - id: eg-motorcycle-2008
+    class: motorcycle
+    categories: [motorcycle, moped]
+    period: { start: 2008 }
+    period_evidence: enabling-instrument
+    matching: recall-only
+    format:
+      # PORTRAIT PLATE: the letters sit ABOVE the digits rather than beside
+      # them, so the printed reading order differs from every other series in
+      # this file. Recorded letters-first to match what the plate shows.
+      pattern: "LLL 9999"
+      regex: '\A[A-Z]{2,3} ?\d{3,4}\z'
+    design:
+      plate_note: "portrait format with the coloured band across the top, letters above digits"
+      band_color_words: "light blue — secondary-wikipedia"
+      legacy_dimensions: "Decision 2777 art. 340 gives 19 x 17.5 cm with a white ground and black characters for the LEGACY motorcycle plate; not carried over as a claim about the current one"
+      mounting: "Law 66/1973 art. 13: motorcycles carry a single plate at the rear"
+    region_encoding: none
+    notes: >-
+      Law 17/2024 globally replaced «دراجة نارية» with «دراجة آلية» in the
+      Traffic Law — a terminology change, not a format change, and recorded so
+      a later reader meeting both terms does not infer two regimes.
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 art. 340 — legacy motorcycle plate 19 x 17.5 cm, white ground, black characters — accessed 2026-09-12"
+      - "https://upload.wikimedia.org/wikipedia/commons/d/df/Egypt_-_License_Plate_-_Motorcycle.png  # photographic/diagram: portrait plate, letters above digits — Commons 2020-03-11, accessed 2026-09-12"
+
+  # =========================================================================
+  # THE CLOSED LEGACY SERIES. This is the plate Decision 2777 art. 342 actually
+  # describes, and it is the reason that article must not be read as evidence
+  # about the modern plate.
+  # =========================================================================
+  - id: eg-legacy-2000
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 2000, end: 2008 }
+    period_evidence: instrument-in-force
+    period_note: >-
+      BOTH ENDS ARE WEAK AND BOTH SAY SO. 2000 is the date of Decision 2777, the
+      instrument that DESCRIBES this plate — the za.yml `instrument-in-force`
+      sense, expressly not a first-issue date; plates of this general shape are
+      far older. 2008 is the introduction of the replacement design, not a
+      sourced cessation of issue: no instrument states when the legacy series
+      stopped being issued, and legacy plates remained valid and in circulation
+      afterwards.
+    matching: recall-only
+    matching_note: >-
+      The regex covers the NUMERIC SERIAL ONLY. The plate also prints the
+      licence type and the governorate as WORDS, and those cannot be carried by
+      a serial regex at all — see `notes`. A match is therefore a shape hit
+      against a bare number, which is about as weak a claim as this dataset
+      makes, and it is marked accordingly.
+    format:
+      pattern: "9999"
+      regex: '\A\d{1,6}\z'
+    design:
+      layout: >-
+        Decision 2777 art. 342, verbatim in structure: the RIGHT side carries
+        the licence type, the issuing authority and the numbers IN ARABIC; the
+        LEFT side carries the licence type, the numbers, and «مدلول المحافظة
+        باللغة الإنجليزية» — the governorate indicator IN ENGLISH.
+      background_note: "whole-plate colour by class per art. 340 — white/black passenger, red/white goods, green/black diplomatic, lemon-yellow/red customs, orange/black taxi, brown/white commercial-and-temporary, grey/white for slow-transit carts, at 40 x 16 cm"
+      material: "pure aluminium, not less than 1 mm, reflective (art. 342)"
+    region_encoding: none
+    region_encoding_mechanism: >-
+      The legacy plate encoded the governorate EXPLICITLY and in Latin letters,
+      not through the serial — a photographed Aswan cart plate reads «C.ASN»
+      on its left side, where ASN is Aswan. No table ships: the abbreviation
+      list was never located, and this series is closed.
+    notes: >-
+      WHAT THE SCHEMA CANNOT CARRY, RECORDED HERE INSTEAD. The legacy plate
+      spelled the vehicle's activity out in words — «أجرة» «ملاكي» «نقل» «هيئة
+      دبلوماسية» «شرطة» «أتوبيس خاص» «أتوبيس عام» «رحلات» «جرار زراعي» — beside
+      the governorate name. Those words are part of the plate's identity but are
+      not part of the SERIAL, so they appear in no pattern. They were «ألغيت
+      تماما» — abolished entirely — in the 2008 design, which replaced them with
+      the single word «مصر» in the band. That abolition is the clearest single
+      marker of the era boundary.
+    sources:
+      - "https://web.archive.org/web/20251010130322/https://traffic.moi.gov.eg/Arabic/OurServices/InfoServices/InteriorMinisterDecision/Pages/license-plates-taxes-traffic-fees.aspx  # Decision 2777/2000 arts. 340 and 342 — the legacy layout, the whole-plate class colours, 40 x 16 cm, aluminium >= 1 mm — accessed 2026-09-12"
+      - "https://upload.wikimedia.org/wikipedia/commons/3/3d/License_plates_of_Egypt_1129a.jpg  # photographic: a legacy Aswan plate confirming art. 342 exactly — Arabic class word + governorate + numerals right, «C.ASN» + numerals left — Commons 2019-10-21, accessed 2026-09-12"
+      - "https://web.archive.org/web/20181001220455/http://www.masrawy.com/Autos/autos_news/details/2014/12/3/401710/  # press, 3 Dec 2014: the activity words were abolished entirely in the new plates and replaced by «مصر» — accessed 2026-09-12"
