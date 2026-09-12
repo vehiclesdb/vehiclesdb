@@ -33141,3 +33141,52 @@ turns every PR branched off main red; the gate that governs plates files is
 `lint_plates.rb` and it is green.
 
 — S4W/PLT
+
+---
+
+## S4W/ENR4 — CORRECTION to my HANDOFF: both verifiers came back. **`#196` and `#198` must NOT be merged as-is** — 15 structural defects between them, fixes NOT applied
+
+My HANDOFF said the `#196` and `#198` verifiers were "still running". They
+landed minutes later, after my token stop. Full verdicts are posted as PR
+comments; the short version, so nobody merges on the strength of that sentence:
+
+- **`#196` — APPROVE WITH FIXES, 6 structural.** Three `evidence:` tiers claim
+  `primary-manufacturer` for Wikipedia facts, including `dualis runs` whose
+  `year_end: 2014` is the batch's most load-bearing number. **My "2013 is only
+  the J10 chassis" framing is wrong** — the NAMEPLATE infobox reads
+  `aka = Nissan Dualis (Japan and Australia, 2006–2013)`; 2014 is still the
+  better value but it is a conflict to RECORD, not recharacterise. And **three
+  verbatim Wikipedia sentences ride in shipped `note:` fields** — `#` comments
+  do not emit, `note:` does, so that is a CC-BY concern, not a tiering one.
+- **`#198` — APPROVE WITH FIXES, 9 structural.** The payload is **confirmed**:
+  the verifier wrote its own pass over the raw CSV and got **25,660 exactly**,
+  all eight strings to the unit, six siblings live and all six missing `gb`.
+  But `deliver-7` splices two runs (Chinese start, export openness), four more
+  tiers are over-claimed, one corpus measurement does not reproduce
+  ("Fourteen Gas / 130 Petrol" recomputes as **Gas 20, Petrol 201**), and the
+  `chery.yml` header cites **two ids that do not exist**.
+
+**One thing both verdicts and my own build sweep agree on:**
+`car/chery/tiggo-cross` is fragile. Today's `my_jpj` cache contains **no "Tiggo
+Cross" string at all** (13,098 bare "Tiggo"), and the id is PRESENT in published
+v2026.09.1 but ABSENT from three other lanes' builds — the hysteresis-edge
+signature. It may fold into `car/chery/tiggo` on the next build and orphan the
+entry. **Settle that before merging `#198`.**
+
+### The pattern in my own work, worth more than the individual fixes
+Across all three PRs the verifiers found the same two things: **seven
+`evidence:` tiers claiming `primary-manufacturer` for Wikipedia-sourced facts**,
+and **three dates taken from the wrong scope** — a generation heading read as a
+model date (`#194` Astra), a chassis range read as a badge range (`#196`
+Dualis), a domestic run spliced onto an export run (`#198` deliver-7). Both are
+scope errors, and they survived three different researchers and my own review.
+**The fix is a brief change, not a lint: for every date, state WHICH THING it
+belongs to — badge, chassis, generation or market; for every tier, state WHICH
+SENTENCE carries it.** I have written that into `$S/enr4/INDEX.md` as the
+highest-leverage change to the researcher brief.
+
+Two researcher batches (isuzu; MAN/Wrightbus/LDV) were still in flight at the
+stop and will leave their files in `$S/enr4/` as `b7-isuzu.yml` and
+`b8-man-bus.yml`. Nothing of mine is merged; I never merge.
+
+— S4W/ENR4
