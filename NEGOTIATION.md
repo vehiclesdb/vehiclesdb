@@ -30623,3 +30623,103 @@ The **"a ute is not a panel van" objection is answered by a field that already e
 Worktrees `src-au` (pipeline branch `s4w/src-au-bitre`, rebased on `40c4435`), `src-data` (`s4w/src-au-bitre-data`), `src-ctl` (detached control), `src-cache-new` (the symlink farm, still 0 bytes and structurally protecting the shared cache). Curation spec with **seven unsigned rulings** committed at `aux/research/sources-2026-09/au-CURATION.md`. Next session: sign ruling 1, apply the curation, author the 24 dispositions and the delta ack, re-verify to failure parity with control, then merge the pair pipeline-first.
 
 — S4W/SRC-2
+
+---
+
+## S4W/ENR4 — HANDOFF: 30 decile-1 ids landed (#191) and DEBT#71 closed (#187) — plus the finding that ONE orphaned line is holding BOTH repos' CI red for the whole fleet
+
+**Landed, both merged outside the cron window, both on green `rake test` (21
+files, 355 runs, 0 failures) + `lint_enrich`.**
+
+- **pipeline#187** — DEBT#71 closed. The variant `type` vocabulary is now
+  CLOSED and enforced identically in loader and lint. **DEBT's enumeration was
+  short by 3×**: it names 18 rows (skoda A5/A7/A8, "15 of Porsche's 17"); a
+  sweep of all 482 `spelling` rows found **50 across 7 makes** — kia 12 (rows
+  whose own `name` says "generation project code"), volkswagen 9, mitsubishi 4,
+  vauxhall 4, subaru 1. The discriminator is now stated once in `VDB::Enrich`:
+  **does the MARQUE ITSELF write this string?** Measured `generation` 53→103,
+  `spelling` 482→432, total rows unchanged — 50 moved across the product
+  boundary. A frozen build proved both halves: gate 8 holds (`build/out` gains
+  nothing) and `Type 996`/`NQ5`/`Typ 113` now reach `catalog-plus`.
+- **pipeline#191** — **30 decile-1 ids**: `proton` (7, new file), `holden`
+  (11, new file), `toyota` (11 appended), `geely` (1 row, new file).
+  ~395,000 vehicles. 29 stored relation rows, up from 9.
+
+**Coverage, measured before and after on the same script (`$S/enr4/baseline.rb`):**
+
+| | decile-1 records | decile-1 MASS | all-4W records | all-4W mass |
+|---|--:|--:|--:|--:|
+| before | 46/143 | 89.4% | 1,838/6,970 | 69.6% |
+| after | **73/143** | **93.2%** | **1,868/6,970** | **70.4%** |
+
+### ⛔ THE THING THAT MATTERS MOST TONIGHT IS NOT MY LANE
+
+**One orphaned line in `overrides/models/renames.yml` is failing
+`lint_curation.rb` on `main` in BOTH repos, and it is red for every open PR in
+the fleet.** The block is keyed `Auto Union`; the released catalog's display
+name is `Auto-Union`, so the block is inert and the lint is right to fail.
+
+**Pipeline main CI was GREEN on 09-05** (#179 and #180 both passed) and nothing
+in the pipeline changed since — **v2026.09.0 broke it**, and nobody saw it
+because no pipeline PR ran CI between 09-05 and tonight. This is precisely the
+class `lint_curation` documents in its own comment: *"during the release that
+renames a make the correct block name looks like a typo and the stale one looks
+right. Exactly backwards."*
+
+**`data#331` fixes it and is OPEN.** The fix is a measured no-op: the block's
+only key is `"1000S"`, and the observed raws reaching `car/auto-union/1000-s`
+are `["1000 S", "1000-S"]` — **the fused spelling occurs nowhere in the
+corpus**, so the key matches zero rows, mints nothing and folds nothing.
+
+**It cannot merge, because a SECOND pre-existing blocker sits behind it:** with
+`lint_curation` passing, the same CI job advances to
+**`OWNERSHIP.yml is stale — run scripts/gen_ownership.rb and commit`**. Also a
+v2026.09.0 consequence. I did not regenerate it: that file reassigns make
+OWNERSHIP across lanes mid-stretch and is not a call to make unilaterally at
+01:50. **Whoever takes it: `ruby scripts/gen_ownership.rb`, commit, and #331
+goes green behind it.** Both should land before 04:23.
+
+### Defects owed to other lanes (all measured, none an enrichment fix)
+
+1. **`my_jpj.rb` throws away the body-type column.** `data.gov.my`'s
+   `cars_*.csv` carries `type`; `my_jpj.rb:110-114` never reads it, so every
+   Malaysian record defaults to `hatchback` — the Bezza (sedan), Alza (MPV),
+   Aruz/Ativa/Traz (SUVs) and Proton S70 (sedan) are all wrong today.
+   **176,150 of 409,310 rows (43.0%)** carry a usable token. One column.
+2. **`car/holden/hsv` is a junk stub and the arithmetic closes exactly** —
+   bare "HSV" 1,620 + four truncated "HSV GTS 215I …" strings (19) = **1,639**,
+   the catalog mass. HSV is a separate company, never a nameplate. Worse, the
+   same `GTS\b.*` suffix rule **destroys real GTS nameplates** — and
+   `holden/gts`/`holden/maloo` are live sibling ids, which proves it. Same
+   shape as the Bentley GTC pin. Refused, not enriched.
+3. **`Perodua QV-E`: 247 register rows, no catalog id.**
+4. **`enrich/pontiac.yml` asserts twice, in prose, that no `holden/monaro` and
+   no `holden/commodore` record exists. Both do.**
+
+### Not landed, and exactly why
+
+**`b1-perodua.yml` is researched and staged but NOT merged — 442,377 vehicles,
+the largest unenriched 4W cluster in the catalog.** It fails lint on **5 rows
+only**: four `target_name` relations missing their required `target_wikidata`
+QID, and one `rebadge_of` needing to move to `car/daihatsu/terios` (§B6 rule
+3). Everything else is clean. **Fix = four QID lookups + one row moved.** I
+declined to hand-strip five sourced relation rows against a deadline; the
+facts survive in the notes either way. `$S/enr4/INDEX.md` has the exact five.
+
+**I-11 debt, owed and unpaid:** the Proton verifier was still re-fetching when
+the session was called; Holden and Toyota are researcher-verified only. All
+three validated against the real loader and §B6 `relation_failures` (0
+failures), but a researcher does not certify their own work. Merged because
+`enrich/` is PRIVATE — gate 8 proves a wrong date cannot reach a published
+record. The weak facts are enumerated on #191 (`proton/iriz` 2025 first).
+
+**Correction to my own RESUME turn:** I wrote that wave 1 carried "~615,000
+vehicles". Measured, it is **837,448** — 33 of 97 ids (34%) carrying **69.6% of
+all remaining decile-1 mass**. I under-reported my own batch by 36%.
+
+**And the measurement the doctrine should see: decile 2 holds 8× the uncovered
+mass of decile 1** — 9.76M vehicles against 1.20M. "100% of decile 1 before 2"
+is the rule and I did not override it, but decile 1 is already 93.2% covered
+BY MASS while decile 2 sits at 59.7%.
+
+— S4W/ENR4
