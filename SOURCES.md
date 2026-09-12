@@ -25,6 +25,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `th_dlt` | 🇹🇭 TH | DLT first registrations by brand/model (incl. motorcycles) | [TH gov open data](https://gdcatalog.dlt.go.th/) | yearly file | ✓ new reg. |
 | `ua_mvs` | 🇺🇦 UA | Registration operations register (the CIS spine) | [CC-BY](https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0) | ~monthly | ✓ new reg. |
 | `ar_dnrpa` | 🇦🇷 AR | DNRPA vehicle registrations (LatAm spine) | [CC-BY 4.0 (datos.gob.ar)](https://datos.gob.ar/) | monthly | ✓ new reg. |
+| `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -46,6 +47,7 @@ about coverage.
 | `lu_snca` | `CODCRB` | the full vocabulary, incl. bifuel pairs — the cleanest of any source |
 | `my_jpj` | `fuel` | petrol · diesel · BEV · hybrid |
 | `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
+| `no_svv_pkk` | `Drivstofftype` | petrol · diesel · BEV · CNG · LPG · ethanol · FCEV — **never a hybrid code**: the column has none, so plug-in hybrids are filed under their combustion fuel and NO can evidence neither `hev` nor `phev`. `Gass` fuses LPG+CNG and maps to neither |
 | `us_fueleconomy` | `atvType` | the full vocabulary, as **approval** evidence (certified configurations, not vehicles) |
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
@@ -98,6 +100,65 @@ propulsion coverage would require RDW to publish a combined view.
 - **ie_cso** — PxStat labels are `"MAKE MODEL"` concatenated; the pipeline
   splits by longest-known-make prefix and logs the (few) unsplittable
   leftovers rather than guessing.
+- **no_svv_pkk** — **this is an INSPECTION register, not a fleet, and the
+  distinction is not pedantic.** Norway defers a vehicle's first PKK to its
+  *fourth year* and then inspects light vehicles every second year (heavy
+  vehicles and buses every year). Measured on 2025 Q4, the first-registration
+  histogram of the inspected population peaks at **2021 (53,265)** and
+  collapses through 2022 (12,342) to 2025 (554). So: recent cohorts are
+  essentially absent, any single year is one side of a cohort-parity
+  sawtooth, and over any window long enough to catch every light vehicle once
+  the heavy ones are counted twice. There is **no identifier column at all**,
+  so deduplicating to distinct vehicles is impossible in principle. Counts
+  are therefore `flow-roadworthiness-inspections` and Norway never enters
+  `total_stock_observed`.
+  **This also undercuts the obvious reason to want Norway.** The inspected
+  fleet is 18.5% pure electric, which is why the source was proposed as the
+  EV gap-filler — but the 2022-2025 EV wave is exactly the part the deferral
+  hides, so a BEV share read off this register *understates* the real one.
+  - **Mixed quoting.** The file is *not* a plain quoted CSV: strings are
+    quoted and numerics are bare. A `split('","')` fast path parses the
+    all-quoted header correctly and then mis-parses **448,406 of 448,406**
+    data rows. ISO-8859-1 with CRLF; `Kjøretøymerke` in the header is the
+    canary for a decoding mistake.
+  - **203 columns, one layout, three years.** Proven byte-identical across all
+    12 quarterly files, which is what makes positional addressing safe; the
+    adapter re-asserts it per file and raises on drift.
+  - **`Etterkontroll` is 34.1% of rows** (2,250,087 of 6,591,286) and is
+    excluded — it is a *re*-inspection of a vehicle already present as a
+    `Periodisk` row, so counting it would inflate every number by half again
+    *and do it in proportion to how often a model FAILS*.
+  - **Identical rows are different vehicles.** With no identifier and
+    k-anonymity applied upstream, two same-model/year/fuel/county vehicles
+    inspected in the same month with no faults produce byte-identical rows —
+    72,873 July-2024 rows carry only 68,932 distinct fingerprints. Never
+    deduplicate by content; 3,941 real vehicles would vanish.
+  - **47 vehicle-group values corpus-wide, only 42 in any one quarter.**
+    Re-deriving `overrides/kind_maps/no_svv_pkk.yml` from a single file will
+    silently drop five. Trailers (O1–O4), tractors (T1/T5) and cranes are
+    declared skips; motorhomes, ambulances and hearses are skipped pending an
+    owner ruling, because PKK carries the *coachbuilder* as the make
+    (`HYMER`, `DETHLEFFS`…) while the catalog already files those as models
+    under the chassis make (`fiat/hymer`, `citroen/burstner`) — and files
+    them inconsistently, across car, van, truck and even moped.
+  - **`KOMBINERT BIL` is not a car.** The research dossier recorded it as M1;
+    measured, it is N1-dominant (13,122 of 15,483) and is split on EU
+    category into van/truck.
+  - **No motorcycles or mopeds, ever.** Norway does not subject two-wheelers
+    to PKK; there is no motorcycle group among the 47 values.
+  - **The licence is not in the bytes.** The GitHub repository that serves the
+    CSVs returns `"license": null` and has no LICENSE file. CC BY 4.0 is
+    asserted by the publisher's own CKAN record (which is what is pinned) and
+    mirrored by data.norge.no. Do not read the GitHub repo as evidence of
+    terms. Three neighbouring Statens vegvesen packages are `notspecified`,
+    so the portal genuinely mixes licences and this one is licensed.
+  - **Publication has stalled.** The newest file is 2025 Q4 and the repo's
+    last commit is 2026-01-21, so as of 2026-09-12 the publisher is two
+    quarters behind its own quarterly cadence. The zips are immutable once
+    published; the adapter re-reads only the small contents listing often.
+  - **Filenames rotate case** (`PKK-2023-…` upper, `pkk-2025-…` lower), so the
+    file list is read from the GitHub contents API and never templated.
+  - **`N/A` is a literal model string** (ISUZU ships it), not a blank.
 - **de_kba_fz10** — Germany's per-vehicle register is closed by statute
   (§39 StVG); FZ 10 is the open model-level signal and is already
   series-normalized by KBA. The site answers missing months with HTTP 200 +
@@ -158,6 +219,8 @@ propulsion coverage would require RDW to publish a combined view.
 | 🇰🇷 KR KOTSA API | API key + per-request quota; planned |
 | 🇯🇵 JP MLIT | model-level stats behind per-prefecture PDFs; e-Stat customs data planned as origin-mix proxy instead |
 | 🇪🇪 EE register | CC-BY-**SA** — quarantined by rule R2 (ShareAlike never merges) |
+| 🇳🇴 NO SSB (Statistics Norway) | **REJECTED on granularity, not licence — do not re-research.** Every vehicle table stops at MAKE: the finest identity axis in the whole catalogue is `merke`/`bilmerke` (2,569 values in table 07832, 531 in 07847). `?query=bilmodell` returns 0 results and `?query=modell` returns exactly one non-vehicle table. A make-only source cannot produce a Row. Norway ships via `no_svv_pkk` instead. |
+| 🇳🇴 NO "Teknisk kjøretøyinformasjon" | Advertises nine CC-BY-4.0 CSV distributions incl. a bulk vehicle-data file and a make-code lookup — **every `accessURL` points at `hotell.difi.no`, which is NXDOMAIN.** A national-portal record asserting an open licence over a decommissioned host; recorded as a live example of the hazard the `be_fps` rule guards against. |
 | Wikidata | CC0, planned as xref layer (QIDs), never as a primary fact source |
 
 If you know an official, openly-licensed make/model-level source we're
