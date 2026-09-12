@@ -32195,3 +32195,120 @@ enrichment sub-check measures a locally built `catalog-plus`, and I will say so
 in RESULTS rather than let it pass as the paid layer.
 
 — S4W/AUD
+
+---
+
+## S4W/REL-4 — HANDOFF 1: **eleven PRs merged, main's lint is GREEN for the first time since 02:03, and the 15,295-vs-14,886 question is settled — both numbers are right and they measure different stages**
+
+*All measured 13:50–14:40 UTC. No publish run in flight at any merge.*
+
+### 1 · Merged, with named SHAs
+
+**Pipeline** (rebased onto current main first, gated on the REBASED head — the
+pipeline-SHA clause; all three were on `8c0dcb3`/`96a798b`, i.e. stale):
+
+| PR | landed | gate at the rebased head |
+|---|---|---|
+| `#183` 2W decile-1 head | `d7cce0a` | 355 runs / 1395 assertions / 0F 0E / 12 skips, 21 files · `lint_enrich: OK` (96 files, 2285 ids) |
+| `#190` moped+yamaha-A+dutch | `5a19154` | same suite green · `lint_enrich: OK` |
+| `#193` perodua/daihatsu | `2d0b991` | same suite green · `lint_enrich: OK` (115 files, 2362 ids) |
+
+**Data:** `#336` → `84dfe68` (lint fix) · `#328` → `eba26fb` · `#335` → `6579743`
+(tr+ng) · `#330` → `77b9dd7` · `#316` → `b949d5d` · `#326` → `94f60a9` (TMAX,
+`validate: ALL GATES GREEN`, `license gate: 13/13`). `#333`/`#331` CLOSED with
+the mechanism. **Main's `lint.yml` is GREEN** — run `34698602291`.
+
+### 2 · ⚠ A PROCESS RULE THIS FLEET DOES NOT HAVE, AND I LEARNED IT THE EXPENSIVE WAY
+
+**Deleting a merged branch that is another PR's BASE silently CLOSES that PR.**
+`#190` was stacked on `#183`'s branch. I merged `#183`, deleted
+`s4w/enr2-2w-head` per the mechanics, and `#190` went `CLOSED` — and then
+refused to reopen, twice, for two different reasons:
+
+- `PATCH base=main` → *"Cannot change the base branch of a closed pull request."*
+- `PATCH state=open` → *"The `s4w/enr2-2w-batch2` branch was force-pushed or
+  recreated."* (I had already force-pushed my rebase.)
+
+Recovery, in this order and no other: **push the old base SHA back to the
+deleted base branch → push the ORIGINAL head SHA back to the head branch →
+`PATCH state=open` → `PATCH base=main` → force-push the rebased head again.**
+Net effect zero, cost ~6 minutes. **The rule: retarget every dependent PR to
+`main` BEFORE deleting a base branch.** For a stacked pair, retarget first,
+merge parent, then delete.
+
+Also: `gh pr edit --base` fails on these repos with a Projects-classic GraphQL
+deprecation error. `gh api -X PATCH repos/<o>/<r>/pulls/<n> -f base=main` works.
+
+### 3 · 🟢 The 15,295 vs 14,886 question — I was too quick, and REL-3 was right
+
+My RELEASED turn flagged REL-3's "published 15,122 → **15,295**" as a number
+nobody should quote. **The first half of that was unfair and I withdraw it.**
+Every one of REL-3's figures reproduces EXACTLY in this release's own log:
+
+    reconcile car:        published=5489  hysteresis_kept=71  makes=309
+    reconcile motorcycle: published=6042  hysteresis_kept=76  makes=265
+    reconcile moped:      published=1390  hysteresis_kept=16  makes=311
+    reconcile van:        published=1015  hysteresis_kept=13  makes=138
+    reconcile truck:      published=937   hysteresis_kept=17  makes=90
+    reconcile bus:        published=422   hysteresis_kept=17  makes=95
+                          ───────────────────────────────────
+                          Σ published = 15,295 · Σ hysteresis = 210
+
+Both of REL-3's numbers, to the unit. **They are the RECONCILER's counts, and
+the catalog is measured one stage later.** The missing 409 is named in the same
+log and is not a discrepancy at all:
+
+    cross-kind prune van: -295 · car: -34 · motorcycle: -27
+                   moped: -20 · bus: -19 · truck: -14      = -409
+
+    15,295 − 409 = 14,886 = manifest.json = my release_diff = catalog count. ✅
+
+The prune is legitimate — `audi/a3` reconciled into the van kind, `honda/jazz`
+into moped and motorcycle, `citroen/relay` into car, truck AND bus — and one
+nameplate must publish under one kind. **The lesson is not that anyone was
+wrong; it is that this pipeline has two defensible "published" counts one stage
+apart, and van is where they diverge most (1,015 → 720, a 29% prune).** So:
+quote `manifest.json` for any public model count, quote `reconcile` only when
+you say "pre-prune". I have written that distinction into the CHANGELOG commit
+so the next person does not re-litigate it.
+
+### 4 · The release, and the one thing still owed by the owner
+
+`v2026.09.1`, run `34697443600`, `ab7fe03..a480b99`, 7 assets, `validate: ALL
+GATES GREEN`, `license gate: 13/13 pins verified`. Dist-diff **14,856 → 14,886
+(+30 / −0), zero orphans**, 1 display rename. `#329` was already closed.
+
+⚠ **`plus-2026.09.1` was NOT cut — `PIPELINE_RELEASE_TOKEN` is still missing.**
+This is now **two consecutive releases** with the paid feed stranded. It is a
+one-secret owner action (fine-grained PAT, `Contents: Write` on
+`vehiclesdb/vehiclesdb-pipeline`) and no agent can do it.
+
+### 5 · State, and what the next operator picks up
+
+- **In flight:** `#327` (ar folds) — rebased onto current main and re-pushed as
+  `9304993`, a fresh validate build running. I re-ran it deliberately: its first
+  build was measured against a base that predates `#326`, and `renames.yml` is a
+  build input. No make-block overlap (Yamaha vs Chrysler/Ford/Gas Gas/Joint/
+  Piaggio/Trabant/Volvo), so I expect green — but expecting is not measuring.
+- **A verifier is running** on S2W's `#304/#311/#318/#320/#315` against the
+  current pipeline SHA. Nothing of theirs merges until it reports.
+- **Not started:** `#292` (owner ruling, three parts — the rule fix is real work,
+  see below), `#186` (needs its control-vs-treatment build), `#194` (NEW, ENR4's
+  Holden counterparts — not mine, unverified by me).
+- **Untouched by design:** `#185` WIP, `#188`/`#334` owner-blocked, `#307`
+  (gate_acks conflict, gets a comment), `#319` declined.
+
+**`#292` note for whoever takes it:** the owner's part 2 — *monotonicity fires
+on numerator loss NOT explained by catalog departure* — cannot be implemented
+from `_coverage.yml` as it stands, because the baseline stores only three
+percentages. Telling a **withdrawn verdict on a live id** (must fail) from a
+**certified id that left the catalog** (must be a no-op) needs the certified id
+SET, not a ratio. The cheapest honest implementation is a base-ref diff of the
+ledgers — `lint_curation.rb` already does exactly this for its added-line
+provenance check and already handles the "no base ref" case with a note — so the
+machinery exists and should be reused rather than reinvented with a new sidecar.
+
+**Anyone may push to main.** The only freeze is a publish run, and the next one
+is announced before dispatch.
+
+— S4W/REL-4
