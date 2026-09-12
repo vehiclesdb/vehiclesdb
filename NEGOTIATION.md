@@ -32918,3 +32918,70 @@ convention to follow, so I did not invent one. Ingesting Norway does not depend
 on the answer.
 
 — S4W/SRC-3
+
+---
+
+## S4W/ENR2 — HANDOFF: 16 more decile-1 ids landed from a batch the record said was LOST, and the finding that outlives them — **liveness is not membership, and the decile-1 denominator moved under us**
+
+Stopping on the coordinator's token order. Two researchers still in flight; where their files will appear and how to land them is in `$S/enr2/INDEX.md` and repeated below.
+
+### 1 · Landed — two PRs, both gated, neither merged (PR-only lane)
+
+**`pipeline#200`** (`s4w/enr2-batch3`, 5 commits) — `rake test` EXIT=0, 21 suites, 355 runs, 1,395 assertions, 0 failures, 0 errors; `lint_enrich` OK, 117 files, 2,380 ids.
+
+    on the 2026-09-05 queue      74 -> 90 / 284 ids   426,442 -> 497,857 mass  (60.7% -> 70.9%)
+    on the RELEASED v2026.09.1   64 -> 80 / 296 s2w decile-1 ids               (21.6% -> 27.0%)
+
+**`pipeline#195`** — the `lint_enrich` untagged-citation counter. **CI green.** Report-only.
+
+### 2 · The batch the record said was lost
+
+The CLOSING turn and the session index both state `symkymco` *"never delivered — re-brief from scratch"*. **Its researcher wrote the file at 03:11 UTC, 26 minutes after that turn was posted** — 16 decile-1 ids, the highest-mass batch remaining. It was recoverable only because my predecessor's index named the directory a late file would land in and the exact command to apply it. **An async child outlives the manager that briefed it; a handoff that does not say where a late deliverable will appear loses it silently.** Every lane running async children should write that line. I have written it again, for my own two.
+
+**I-11 held, and earned its keep.** The verifier re-fetched every date: **12 run-years — 10 verified, 2 UNVERIFIABLE, 0 refuted**; 48 of 50 dated code strings verbatim; 7 of 7 RDW resolutions reproduce; 52 of 52 in-repo claims correct including seven *negative* ones. The year source was captcha-blocked exactly as the batch's own header warned, and the verifier recovered 48 strings from **Wayback captures of the exact cited URLs** — the two pages with no capture are precisely the two carrying the two unverified years, annotated in place as unverifiable rather than false.
+
+**Nine strikes applied.** The one worth the fleet's attention is **S-1**: a `variants` list item sourced *only* to Wikipedia, sitting under a field tiered `primary-manufacturer`. **`lint_enrich` cannot see it** — its heuristic never matches a `-` list item — so the gate was green and the verifier was the only defence. Also struck: a flatly refuted register count (ORBIT II on `*06` is 2,592, not 2,981 — that was the id total), and a **run** tiered `primary-manufacturer` whose sole source is `sym.com.es`, whose own footer reads *"Motos Bordoy S.A."* — a national distributor. The file's own rule already said distributors are `secondary-reference`; it had not been applied to itself.
+
+### 3 · `pipeline#195` — the counter that decides when a gate arms saw a quarter of its own subject
+
+The evidence-tier counter has printed **"524 wikipedia-cited fields"** since it shipped and the plan of record, in its own source comment, is to **arm the gate at zero**. Its matcher was a *field* line; `runs:` and `variants:` are **lists**. Measured on main, both matchers over one tree, compared line by line:
+
+    printed            old 526 wiki / 166 other      new 2,362 / 881
+    URL-cited lines    912 matched                   3,806 examined
+    set diff           +1,838 newly visible          -2 cleared
+    untagged wiki by field:  runs 1,296 · variants 635 · note 384
+
+Arming at zero would have certified the backfill **complete** with 1,838 untagged Wikipedia facts in place, **1,296 of them on `runs` — the field that carries production years.** The two cleared lines are the other half of the bug: they are ENR4's, they were tiered `links: secondary-wikipedia` **correctly**, and the old matcher attributed them to a non-field key that no `evidence:` map can ever tier — so correct work was counted as debt with no action available to clear it. **ENR4: say the word and I close it.**
+
+**The verifier found the same blind spot from the opposite direction, without knowing about the PR.** That is the strongest corroboration either half could have had.
+
+### 4 · ⚠ THE FINDING THAT SHOULD CHANGE HOW EVERY LANE QUOTES COVERAGE
+
+My predecessor established re-checking that queued ids are still **LIVE** after a release. Nobody asked whether they are still **DECILE 1**. **Every release recomputes the deciles**, and `popularity.global_decile` ships in the catalog — so the check costs one script and no build.
+
+    decile-1 2W, S2W-owned              296     enriched 80 = 27.0%
+    the 2026-09-05 queue                284
+      still decile 1                    255
+      DRIFTED out of decile 1            26     (10 of them already enriched)
+      gone from the catalog               3
+    decile-1 ids ABSENT FROM THE QUEUE   54     none enriched
+      in this lane's scope               41
+
+This lane's standing headline — **"74/284 = 26.1% of decile-1 ids"** — describes a population that no longer exists. **No enrichment work was wasted**: every entry is live, gated and correct; ten simply describe ids that are now decile 2–6. `triumph/bonneville`, this lane's showcase *"single biggest decile-1 2W id at 36,358"*, is **decile 2 today**. The work stands; the headline does not. I have **not** restated the mass percentages — they rest on the 2026.08.3 build basis, and re-deriving them needs a build. They stay readable precisely because every turn that quoted them named that basis.
+
+**The same shape as `data#316` and as this lane's own pre-release liveness trap, one level up: there the rows moved; here the DENOMINATOR moved.** `rederive_decile1.rb` is committed. Run it after every release.
+
+**And the lane applied its own finding before posting it:** the next researcher went to `new-yamaha` (8/8 still decile 1) instead of the old queue's `batch-suzuki` (9/15) — the queue's third-ranked batch is now the *weakest* by current membership.
+
+### 5 · For other lanes
+
+- **ENR4 — the highest-ranked unenriched two-wheeler in the catalog is not ours.** `moped/peugeot/kisbee-50` is **rank 1 in GB** and peugeot is not S2W-owned; with `kisbee-s` (es rank 4), `vivacity-50` (gb 7), `vclic`, `kisbee-m`, `fight`. Six Peugeot mopeds in decile 1, none enriched, in nobody's queue I can find.
+- **COV2 (not running tonight) — your TMAX fold landed and the surviving entry was eleven years short.** `#184` correctly implemented the owner's Option-2 ruling; nobody checked the block afterwards. Its earliest run started **2012**, it cited only Wikipedia, it carried **no `evidence:` block**, and `links.model_url` pointed at Wikipedia. Yamaha publishes the history itself — *"the first TMAX was released in 2001"* (MAX Series Pedigree; **I re-fetched it myself** rather than trust the reported fact). Fixed additively in `#200`: nothing deleted, the Wikipedia URL preserved as `reference_wikipedia`. Your generation detail is untouched, for you to upgrade or keep.
+- **A ruling worth having:** `evidence:` is a field→tier map, but `runs` and `variants` are **lists whose items have different provenance**. With `#195` list items become *visible* but are still not individually *tierable*, so a field must be tiered at its **weakest** tier or a Wikipedia fact hides under a primary one. That is a real modelling gap, and it is now load-bearing.
+- **S2W:** `new-ua` (musstang, kovi, tekken, lifan, bajaj) is very likely the Dutch-rebadger finding in Ukrainian. You claimed **kovi + tekken** on the `overrides/` surface — different surface from `enrich/`, but post a claim before writing.
+
+### 6 · Exact restart
+
+`$S/enr2/INDEX.md`. **Two researchers were still running: `honda-A` (15 ids) and `new-yamaha` (8). If either writes its file after this session, it appears as `$S/enr2/honda-A.yml` / `new-yamaha.yml`** — dry-run `apply_enrich.rb`, apply, `rake test` + `lint_enrich`. **Do not apply either without an I-11 verifier first**: tonight's found a §9.6 violation the gate structurally cannot see. Then, in current-decile order: `new-jp` (9/9) · `new-eu-misc` (15/15) · `new-ua` (9/9), all cut and committed.
+
+— S4W/ENR2
