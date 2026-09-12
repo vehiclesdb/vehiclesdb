@@ -1,0 +1,253 @@
+# plates/tr.yml — Türkiye (PRD-PLATES gate L5, first pass).
+#
+# WHAT THIS FILE IS AND IS NOT. This is a FIRST pass authored inside a
+# 35-minute sprint. Every series here carries its evidence tier on its face,
+# and where the tier is weak the file says so in the series' own note rather
+# than in a header nobody reads. Nothing in this file is asserted at a higher
+# confidence than it was sourced at. A verifier pass is owed and §VERIFIER
+# below names the exact open questions, in priority order.
+#
+# FOUR STRUCTURAL FACTS THAT SHAPE THIS FILE
+#
+# 1. THE TURKISH PLATE IS PROVINCE-CODE + SERIAL, AND THE SERIAL HAS SEVERAL
+#    LAWFUL SHAPES RATHER THAN ONE. The leading two digits are the province
+#    (il) code; what follows is a letter group and a figure group whose widths
+#    trade off against each other. A single `pattern` cannot carry that, so the
+#    shapes are cut as SUB-VARIANTS on one series (§2.3: a variant is its own
+#    series iff format OR design OR period differs — these share design and
+#    period and differ only in group widths, so they are `variants:`), and
+#    `format.regex` on the parent is the union of the lawful shapes.
+#
+# 2. THE SERIAL ALPHABET IS LATIN-WITHOUT-THE-TURKISH-DIACRITICS, AND THAT IS
+#    A FACT ABOUT TÜRKIYE, NOT A CONVENIENCE. Turkish orthography has Ç Ğ İ Ö
+#    Ş Ü; the plate does not print them. Under the owner's 2026-08-02 ruling a
+#    jurisdiction declares its own alphabet in EXACT CODEPOINTS, so this file
+#    declares `serial_alphabet:` explicitly rather than inheriting the global
+#    A-Z 0-9 and leaving a reader to wonder whether the diacritics were
+#    excluded deliberately or never considered. Declaring REPLACES rather than
+#    extends, which is why the digits are spelled out alongside the letters.
+#
+# 3. THERE IS NO SEPARATOR GLYPH. The gap between the province code, the
+#    letter group and the figure group is SPACING, not punctuation. Every
+#    `pattern` here renders that gap as the emitted SPACE of §2.6 and every
+#    regex accepts it as optional, which is the same treatment `za.yml` gives
+#    the South African gap and for the same reason: the spacing is prescribed
+#    in millimetres by a standard, the separator character is prescribed
+#    nowhere, and writing a hyphen would invent a fact.
+#
+# 4. THE PROVINCE CODE IS A DECODE TABLE THIS FILE DELIBERATELY DOES NOT SHIP.
+#    The 01-81 code → province mapping is the single most reproducible fact
+#    about Turkish plates and the single most tempting thing to paste from an
+#    enthusiast site. It is first-class cited data under §2.4 and it ships when
+#    the allocating instrument is pinned, not before. `region_encoding` below
+#    therefore names the MECHANISM and records the table as an open gap.
+#
+# 5. EVERY SERIES IN THIS FILE IS `secondary-wikipedia` AND THAT IS THE WHOLE
+#    TRUTH ABOUT ITS EVIDENCE. The sprint's web-search budget was exhausted
+#    session-wide (200/200) before the primary sources could be reached, so
+#    NOT ONE statute, Resmî Gazete number or Emniyet Genel Müdürlüğü page was
+#    pinned in this pass. `secondary-wikipedia` is an existing tier in this
+#    corpus (plates/za.yml uses it) and it is used here exactly as it is meant
+#    to be used: to ship a shape at a stated low confidence rather than to
+#    launder one at a high one. The Karayolları Trafik Kanunu (No. 2918) and
+#    the Karayolları Trafik Yönetmeliği govern this jurisdiction; this pass did
+#    NOT read them and therefore does not cite them.
+#
+# §VERIFIER — the open questions, in priority order
+#   V1. Pin the Yönetmelik article that enumerates the six serial shapes. Until
+#       then `format.regex` is a union reconstructed from a tertiary list.
+#   V2. RESOLVE THE ALPHABET AMBIGUITY (see `serial_alphabet_note`). The source
+#       sentence parses two ways and the two readings differ by three letters.
+#   V3. Pin the 01-81 province-code allocation instrument, then ship
+#       plates/_decode/tr-province-codes.yml. Not before.
+#   V4. Colour hexes. NO hex is asserted anywhere in this file because none was
+#       sourced; `design` carries prose colour claims instead of invented hex.
+#   V5. Motorcycle plates are recorded as a DIMENSION fact on the standard
+#       series, not as their own series, because no distinct FORMAT was sourced
+#       — and §2.3 makes a series out of a format/design/period difference, not
+#       out of a size difference alone.
+jurisdiction: tr
+authority:
+  name: "Emniyet Genel Müdürlüğü (General Directorate of Security), Trafik Hizmetleri Başkanlığı"
+  url: "https://www.egm.gov.tr/"
+  authority_evidence: >-
+    NAMED, NOT CITED. The EGM is the traffic-registration authority in Türkiye;
+    this pass did not fetch an EGM page establishing its plate-issuing role, so
+    the url is the agency root rather than a page-level citation. Replacing it
+    with a deep link is part of V1.
+serial_alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+serial_alphabet_note: >-
+  DECLARED DELIBERATELY, AND THE DECLARATION IS THE WIDER OF TWO READINGS.
+  The source sentence is "The serial letters use the Turkish letters except Ç,
+  Ş, İ, Ö, Ü, Ğ and Latin letters Q, W and X." That parses two ways: (a) the
+  alphabet is the Turkish letters minus the six diacritic letters, PLUS Q, W
+  and X — which is exactly Latin A-Z; or (b) Q, W and X are excluded alongside
+  the diacritics, leaving 23 letters. Reading (a) is the more natural parse of
+  the English and is the one declared here, because it is the WIDER set and a
+  too-wide strict alphabet under-rejects while a too-narrow one silently fails
+  real plates (the hr.yml folding lesson, inverted). What is certain under both
+  readings, and is the reason this key is declared at all rather than left to
+  inherit the global default: Ç Ğ İ Ö Ş Ü are NOT printed on Turkish plates,
+  and a reader of this file should not have to wonder whether that was decided
+  or overlooked. V2 resolves which reading is right.
+binding: vehicle
+binding_note: >-
+  RECORDED AS THE DEFAULT, NOT AS A SOURCED FACT. Turkish registration is
+  understood to attach to the vehicle, but no instrument was read in this pass
+  and the CH-style owner-binding question was not put to a source. Treated as
+  `vehicle` because that is the dataset's unmarked case; a verifier should
+  confirm rather than assume this line was checked.
+series:
+
+  # =========================================================================
+  # THE ORDINARY MARK. Province code + letter group + figure group, with the
+  # letter and figure widths trading off against each other. One series, six
+  # lawful shapes, carried as variants (§2.3) because design and period are
+  # shared and only the group widths differ.
+  # =========================================================================
+  - id: tr-standard
+    class: standard
+    categories: [car, van, truck, bus, motorcycle, trailer]
+    period: { start: 1983 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "99 LL 9999"
+      # The union of the six sourced shapes. Written in PRINTED form (§2.6
+      # rule 2) with the gap optional at both positions.
+      regex: '\A\d{2} ?(?:[A-Z] ?\d{4,5}|[A-Z]{2} ?\d{3,4}|[A-Z]{3} ?\d{2,3})\z'
+      # The only narrowing this pass can defend: the province code runs 01-81,
+      # so 00 and 82-99 are not allotted. The ALPHABET is NOT narrowed here —
+      # see serial_alphabet_note; narrowing it under the unresolved reading (b)
+      # would reject real plates.
+      regex_strict: '\A(?:0[1-9]|[1-7]\d|8[01]) ?(?:[A-Z] ?\d{4,5}|[A-Z]{2} ?\d{3,4}|[A-Z]{3} ?\d{2,3})\z'
+      variants:
+        - { pattern: "99 L 9999",   note: "one letter, four figures" }
+        - { pattern: "99 L 99999",  note: "one letter, five figures" }
+        - { pattern: "99 LL 999",   note: "two letters, three figures" }
+        - { pattern: "99 LL 9999",  note: "two letters, four figures (the canonical rendering on the parent pattern)" }
+        - { pattern: "99 LLL 99",   note: "three letters, two figures" }
+        - { pattern: "99 LLL 999",  note: "three letters, three figures" }
+      progression: >-
+        NOT SOURCED. The order in which a province exhausts one shape and moves
+        to the next is the single most useful era-inference fact about this
+        jurisdiction and this pass established none of it. Recorded as a gap so
+        no consumer mistakes silence for "no progression".
+    design:
+      plate: { w: 520, h: 110, unit: mm }
+      plate_variants:
+        - { w: 240, h: 150, unit: mm, note: "motorcycle, rear only — the sourced dimension is 150x240 mm" }
+      background_note: "white; no hex asserted — none was sourced (V4)"
+      foreground_note: "black characters"
+      band: { side: left, content: "blue stripe carrying the country code TR" }
+      band_note: >-
+        Described in the source as "Euroband like", which is a comparison and
+        not a claim of EU membership or of conformity to the EU band spec.
+        Recorded with the hedge intact.
+      rear_differs: false
+    region_encoding: none
+    region_encoding_mechanism: >-
+      THE FIRST TWO DIGITS ARE THE PROVINCE (il) CODE, 01-81, AND THE DECODE
+      TABLE IS DELIBERATELY ABSENT. `region_encoding: none` here means "no
+      table shipped", not "no geography encoded" — the mechanism is real and
+      the table is V3. Shipping the mapping from a tertiary list would make the
+      most reproducible fact about Turkish plates also the least sourced thing
+      in the file.
+    notes: >-
+      The ordinary Turkish mark. Six lawful shapes, one design era as far as
+      this pass could establish. period.start 1983 is recorded at
+      secondary-wikipedia tier and should be read as "the era this shape is
+      associated with", not as a first-issue date.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # the six serial shapes, the alphabet sentence, colours, band, motorcycle dimension — accessed 2026-09-12; TERTIARY, cites no instrument for any of it"
+
+  - id: tr-diplomatic-cd
+    class: diplomatic
+    categories: [car, van]
+    period: { start: 1983 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "99 CD 999"
+      regex: '\A\d{2} ?CD ?\d{3}\z'
+    design:
+      background_note: "white ground, green characters, per the source's '(green on white)'"
+      foreground_note: "green — no hex asserted (V4)"
+    region_encoding: none
+    notes: >-
+      Diplomatic corps. The CD token is a literal in both pattern and regex, so
+      this series is `strict` with no twin needed — the mandated letters ARE
+      the grammar (the §2.7 case where 29 of 31 twinless series are strict).
+      The figure width is sourced as three and was not cross-checked.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # CD format and colours — accessed 2026-09-12; TERTIARY"
+
+  - id: tr-consular-cc
+    class: consular
+    categories: [car, van]
+    period: { start: 1983 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "99 CC 9999"
+      regex: '\A\d{2} ?CC ?\d{4}\z'
+    design:
+      background_note: "green ground, white characters, per the source's '(white on green)'"
+      foreground_note: "white — no hex asserted (V4)"
+    region_encoding: none
+    notes: >-
+      Consular corps, and note that its colour polarity is the INVERSE of the
+      diplomatic series above (white on green vs green on white) and its figure
+      group is four wide rather than three. Both asymmetries are as the source
+      gives them; neither was cross-checked, and a verifier who finds them
+      transposed should expect the error to be in this file, not on the plate.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # CC format and colours — accessed 2026-09-12; TERTIARY"
+
+  - id: tr-temporary-g
+    class: temporary
+    categories: [car, van, truck, bus]
+    period: { start: 1983 }
+    period_evidence: secondary-wikipedia
+    matching: strict
+    format:
+      pattern: "99 G 9999"
+      regex: '\A\d{2} ?G ?\d{4}\z'
+    design:
+      background_note: "yellow ground, black characters, per the source's 'black on yellow'"
+      foreground_note: "black — no hex asserted (V4)"
+    region_encoding: none
+    notes: >-
+      Temporary transportation. The G is a literal, not the pattern DSL's
+      letter token — but it is spelled bare rather than escaped because the
+      escape exists only for the tokens `9` and `L` (owner ruling 2026-08-02)
+      and G is neither. Contrast za.yml's Limpopo mark, which is a literal L
+      and DOES need `\L`.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # G temporary format and colours — accessed 2026-09-12; TERTIARY"
+
+  - id: tr-taxi-istanbul
+    class: taxi
+    categories: [car]
+    period: { start: 1983 }
+    period_evidence: secondary-wikipedia
+    matching: recall-only
+    format:
+      pattern: "99 TLL 99"
+      regex: '\A\d{2} ?T[A-Z]{2} ?\d{2}\z'
+    design:
+      background_note: "not sourced"
+      foreground_note: "not sourced"
+    region_encoding: none
+    notes: >-
+      `recall-only`, and the reason is a generalisation this file refuses to
+      make silently. The ONLY sourced fact is an ISTANBUL range — province code
+      34, with the letter pair running across a sourced sub-range. This regex
+      accepts the T-prefixed shape in EVERY province, which is wider than any
+      grammar established for it: a match is a shape hit and nothing more. Per
+      §2.7 a recall-only series carries no `regex_strict`, and none is written
+      here. If a verifier pins the national taxi rule, this becomes two series
+      (a national one and, if the Istanbul letter range is real, a narrower
+      strict twin) rather than one widened one.
+    sources:
+      - "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Turkey  # Istanbul taxi letter range — accessed 2026-09-12; TERTIARY, and generalised here only as recall-only"
