@@ -32621,3 +32621,116 @@ Full evidence, raw-register method notes and the five defect write-ups:
 verifiers were still in flight at the stop; their files land in `$S/enr4/`.
 
 — S4W/ENR4
+
+---
+
+## S4W/AUD — HANDOFF (final, 14:35 UTC): **ZERO records audited.** The instrument is pinned, proven and loaded; the round itself did not start in time
+
+*Coordinator called the token limit mid-round. Stopping honestly: I am not
+publishing a rate, a bound, or a `QUALITY.md`, because no verified ledger
+exists. What a successor gets is a round that is one command from starting.*
+
+### 1 · Records and claims processed — stated plainly
+
+| | |
+|---|---|
+| records audited to a verified standard | **0 of 400** |
+| verified ledgers (researcher + verifier pairs) | **0** |
+| researcher slices launched | 1 (`s4w-b1`, 50 records / ~335 claims) — **in flight when I stopped, no ledger written** |
+| pre-round defects found and filed | **5** (A1–A5) |
+| `RESULTS.md` / `RESULTS-s2w.md` / `QUALITY.md` | **not written — deliberately** |
+
+**⚠️ If `ledger/researcher-s4w-b1.yml` appears after this turn, it is
+RESEARCHER-ONLY and must not be treated as a measurement.** I could not stop the
+agent (ownership). `audit_aggregate.rb` will refuse to print a rate for it —
+I-11 is unsatisfied — and that refusal is correct. Either verify it with an
+independent agent or delete it; do not aggregate it.
+
+### 2 · Exact resume command
+
+**Check no publish run is in flight first** —
+`gh run list -R vehiclesdb/vehiclesdb --limit 10 --json status,workflowName --jq '.[]|select(.status!="completed")'`
+(a `Build & publish data` row means do not push `main`).
+
+The pin is **gone from disk if the worktrees were cleaned**, and it is
+reproducible in one command because it is content-addressed by the tag:
+
+```sh
+# 0. the pin — the RELEASED bytes, not a rebuild (see A1)
+git -C ~/GitHub/vehiclesdb worktree add --detach ~/GitHub/.vdb-worktrees/aud-tag v2026.09.1
+PIN=~/GitHub/.vdb-worktrees/aud-tag       # contains catalog/ + catalog/meta/decile-mass.json
+
+# 1. the sample is already drawn AND COMMITTED on main — do not redraw
+#    data/review/audit-v2026.09.1/SAMPLE-<half>.yml          registered n=400
+#    data/review/audit-v2026.09.1/slices/slice-<half>-b<N>.yml        8 slices x 50, make-coherent, head-first
+#    data/review/audit-v2026.09.1/slices/slice-<half>-b<N>-records.json  THE CLAIM UNDER AUDIT (released bytes)
+#    data/review/audit-v2026.09.1/slices/slice-<half>-b<N>-enriched.txt  43 of 400 get the 6.2 sub-check
+
+# 2. review packs (~12 min for 181 makes; needs a completed local build first)
+cd ~/GitHub/.vdb-worktrees/aud-pipeline && git checkout --detach 96a798b
+find ~/GitHub/vehiclesdb-pipeline/cache -type f ! -name 'license_*.txt' -exec touch {} +
+VDB_DATA_REPO=$PIN VDB_CACHE_DIR=~/GitHub/vehiclesdb-pipeline/cache ruby pipeline/run.rb > build.log 2>&1
+VDB_DATA_REPO=$PIN VDB_CACHE_DIR=~/GitHub/vehiclesdb-pipeline/cache VDB_BUILD_DIR=$PWD/build \
+  ruby pipeline/tools/gen_review_pack.rb $(ruby -ryaml -e 'm=[];Dir["'"$PIN"'/../aud-data/data/review/audit-v2026.09.1/slices/slice-*.yml"].each{|f| m.concat(YAML.load_file(f)["makes"].map{|x| x.split("/")[1]})};puts m.uniq.sort.join(" ")')
+
+# 3. agents: researcher then INDEPENDENT verifier per slice (I-11), 8 slices.
+#    Hand every agent data/review/audit-v2026.09.1/ROUND-BRIEF.md + SCHEMA.md
+#    + audit-PROTOCOL.md + PROMPTS.md 1/2. build_pin: "<the PIN path>" verbatim.
+
+# 4. aggregate — and mind the alpha budget
+ruby scripts/audit_aggregate.rb --tag=v2026.09.1 --half=s4w                 # per-half = 2 terms, alpha 0.05
+ruby scripts/audit_aggregate.rb --tag=v2026.09.1 --half=s2w
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1 --results=s4w        # -> RESULTS.md block
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1 --results=s2w        # -> RESULTS-s2w.md block
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1                      # -> QUALITY.md, alpha 0.025 (4 terms)
+```
+
+`ROUND-BRIEF.md` carries the one trap that will otherwise cost a successor a
+slice: **the packs come from a frozen rebuild that does not reproduce the
+release, so the pack is EVIDENCE and `-records.json` is the CLAIM.**
+
+### 3 · What is merged, and what is open
+
+- **`#328` MERGED** (`eba26fb`, 14:19:50) — instrument, runbook, the pin, the
+  drawn sample, the slices, the `--alpha` budget fix, `ROUND-BRIEF.md`,
+  `defects-found-round.md` A1–A4.
+- **`#337` OPEN, now marked WIP** — A5 plus the committed detector-run logs.
+  It is docs + scripts only; it touches no override, no catalog, no data file.
+  `lint` CI **passes**. `lint_review`'s 7 `mutt.yml` failures are `#292`'s
+  blocked ruling — measured against main's own run, **empty set diff**.
+
+### 4 · The one thing to read if you read nothing else
+
+**A5.** `PRD-FIVE-NINES` §1.3 makes detector coverage the free multiplier that
+makes five nines reachable without auditing everything — *"checked over the
+WHOLE catalog at every build, so for those classes r = 0 deterministically in
+BOTH strata."* **No workflow in either repo runs any `find_*` detector,
+`check_rulings`, or `lint_review`**, and run against the released catalog they
+are not silent (`find_alias_name_collisions` **exits non-zero, 10 hard
+findings**; 36 duplicate-spelling groups; 20 casing contradictions over 101
+records; 653 records of title-case/acronym nominations). Two of the eight
+**exit 1 with "no records"** unless `VDB_CATALOG` is set, because they default
+to a path that does not exist.
+
+No defect count is claimed — detector output is nomination, not adjudication.
+The claim is that **the one term in the construction that was never measured is
+also the one that does not hold**, and it is the term carrying the most weight.
+
+It also means `audit-PROTOCOL.md` step 1 currently misinstructs researchers
+(*"should be silent — they run in CI"*). I did not patch it: the protocol must
+not move under a round measuring against it. **Round 3 should fix that line
+first.**
+
+### 5 · Honest accounting of my own time
+
+I spent the window on the pin and on checking premises, and the round did not
+start. Both halves of that were choices and only one was right. Pinning was
+forced — auditing an unpinned build is the failure protocol v1.2 exists to
+prevent, and the frozen-rebuild divergence (A1) had to be measured before any
+verdict could mean anything. Checking the detector premise was not forced, and
+it produced A5, which I think is worth more than 200 audited records. But a
+successor inherits **zero rows of the thing this lane exists to produce**, and
+that is the cost. **Round 3 should launch slice 1 within ten minutes of having a
+tag** and do its premise-checking with whatever is left over, not before.
+
+— S4W/AUD
