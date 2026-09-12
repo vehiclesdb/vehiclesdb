@@ -32734,3 +32734,63 @@ that is the cost. **Round 3 should launch slice 1 within ten minutes of having a
 tag** and do its premise-checking with whatever is left over, not before.
 
 — S4W/AUD
+
+---
+
+## S4W/COV4 — HANDOFF: the instrument is rebuilt AND COMMITTED, `data#327` re-verified on the post-release base, and the tool caught a 94-vehicle fold with an **8,155-vehicle blast radius**
+
+Stopping on the coordinator's token call. Nothing unmeasured is claimed as measured.
+
+### Open work
+
+| | state |
+|---|---|
+| **`pipeline#197`** | tools: `replay_country.rb` + `fold_table.rb`. `rake test` 21 files / 355 runs / 8,123 assertions / **0 failures, 0 errors**. Not on the build path. **Ready.** |
+| **`data#327`** (ar) | **re-verified on the POST-RELEASE base** and rebased. **Ready to merge; I never merge.** |
+| **`data/s4w/cov4-th-folds`** | `WIP-th`, 85 keys / 6,711 vehicles, **deliberately NO PR** — the control-vs-treatment build was not run before the stop. Do not merge. Everything to finish it is in the commit. |
+
+### `data#327` — the stale-base trap, applied to my own PR
+
+Its green CI was from 09-05, against a base `v2026.09.1` has since rewritten (`catalog/**` is a build input). I re-ran both sides rather than trust the checkmarks: **id diff EMPTY** (car 5,442 · van 718 · truck 923 · bus 403), **0 pairs lost**, **9 gained — exactly the intended nine**, **FAIL set byte-identical (47)**, car candidates −40. It reproduces the 09-05 numbers *exactly* on a base whose catalog moved underneath it. All four lints green (`#336` fixed main's red lint).
+
+### The finding: a 94-vehicle fold that would have deleted 8,155 vehicles
+
+`Hilux Champ` is 94 Thai car vehicles and reads like an ordinary trim tail. My researcher argued FOLD from Toyota Thailand's own SSR series catalogue — soundly: Toyota TH has no model level, and "Hilux Revo Z Edition" and "Fortuner Legender" are peer *series*, so series ≠ nameplate. I had guessed REFUSE for a weaker reason.
+
+Neither of us was reasoning from the thing that settles it: **`van/toyota/hilux-champ` is LIVE with 8,155 vehicles.** Rename keys are looked up per MAKE and are **kind-blind**, so the car key fires on the van catalog too — the fold would have deleted a published nameplate *to gain nothing*, since `toyota/hilux` already carries `th`.
+
+It is now a tool feature. Over the Thai car corpus the guard finds **five**: `mg/extender` (473), `toyota/hilux-champ` (94), `suzuki/carry-1-5l-mt` (69), `farizon/sv`, `byd/t3`. The hand-check I wrote first found only Champ — it only looked at rows that already had a suggested target. **That gap is the argument for instruments over judgement.**
+
+### Correction to my own CLAIM
+
+I cited **`Nissan Caravan` (900 nz) as a sub-threshold NZ-only nameplate D21 correctly withholds. Wrong** — `bus/nissan/caravan` is LIVE, as is `bus/toyota/regius` (529). They are car-kind rows of nameplates we publish in another kind. The other nine examples stand; the conclusion is unchanged.
+
+### The lane, re-measured (post-release control, incl. two classes the first cut could not see)
+
+| corpus | DESTROY | **foldable** | groups | **veh/key** | C · mint-or-candidate |
+|---|---:|---:|---:|---:|---:|
+| **th car** | 638 / 5 | **14,017** | 239 | **58.6** | 8,318 / 129 |
+| nz car | 1,968 / 26 | 6,780 | 2,168 | **3.1** | 61,455 / 9,026 |
+| ua car | 678 / 27 | 5,028 | 321 | 15.7 | 43,903 / 1,219 |
+| my car | 6 / 5 | 243 | 9 | 27.0 | 4,626 / 98 |
+| th van | 113 / 1 | 262 | 7 | 37.4 | 1,614 / 107 |
+| ua bus | 84 / 31 | 38 | 2 | 19.0 | 2,145 / 526 |
+| nz bus | 386 / 42 | **0** | 0 | — | 3,704 / 542 |
+
+**Class D (MAKE-PREFIXED) is new and the densest class in the sweep.** We publish `jaecoo/jaecoo-6` as "Jaecoo 6"; Thailand writes the column bare — `6 EV LONG RANGE 2WD PRO`. Neither prefix nor squash matching can see it, so **1,405 vehicles in 4 keys** sat misfiled as "no live nameplate under this make" — **351 veh/key**. The lesson: *a heuristic that cannot see a class does not report it as uncertain, it reports it as absent.*
+
+**My brief's country order was backwards and the re-measurement hardens it:** NZ has 10× Thailand's recoverable mass and half its foldable mass, over 10× the keys. nz bus and ua bus are **zero**.
+
+### For other lanes
+
+1. **`van/suzuki/carry-1-5l-mt` is a published id whose NAME IS A GRADE STRING** ("Carry 1.5L MT", th-only) beside `van/suzuki/carry`. Remedy needs a `former_ids.yml` alias — id-contract work, outside a coverage batch.
+2. **`MG Maxus 7`/`9`** (526 veh) are filed under make MG while we publish `maxus/*`. A MOVE — reported, not applied.
+3. **`Gwm Tank` is parsing as a MAKE** ("Gwm Tank 300", 439 veh). Wants a make-alias ruling.
+4. **NZ class C holds market-name pairs, not folds** — `Ford Endura` (959) vs live `ford/edge`, `Isuzu Wizard` (752) vs live `isuzu/mu`. D-3/§9.8 relations; reported, not applied.
+5. **`byd/seal-5` went LIVE in `v2026.09.1` mid-batch**, vindicating the predecessor's refusal. The catalog is the authority on whether two strings are one nameplate — **and it can move under a batch while the batch runs.**
+
+### To finish the Thai batch (30 minutes)
+
+Build control at the branch's merge-base and treatment on the branch, `--kinds=car,van,truck,bus`, frozen cache; `ruby pipeline/tools/diff_builds.rb <control> <treat>`; assert id diff EMPTY, 0 pairs lost, FAIL set byte-identical; then open the PR. Packet 2 (the Chinese EV marques, ~6,000 veh incl. the four Jaecoo class-D rows) was still with its researcher at the stop and is **not** in the commit.
+
+— S4W/COV4
