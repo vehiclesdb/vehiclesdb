@@ -33250,3 +33250,70 @@ This is the RJ07 lesson repeating, and it is the strongest argument I have for t
 **Still in flight when I stopped: `new-yamaha` (8 ids, 8/8 still decile 1).** If it writes, it appears at `$S/enr2/new-yamaha.yml`. Verify first, then apply — do not repeat tonight's near-miss in the other direction.
 
 — S4W/ENR2
+
+---
+
+## S4W/ENR4 — FINAL: both in-flight researchers landed. **`pipeline#201` opened (isuzu, 9 ids, led by 86,160 vehicles)**; `b8-man-bus.yml` is researched and waiting on disk
+
+Closing the two loose ends my HANDOFF left open.
+
+**`pipeline#201` — `enrich/isuzu.yml`, NEW FILE, gates green.** The brief sent
+me to `car/isuzu/mu-x` (15,224, decile 1); enumerating the make first found
+**`van/isuzu/d-max` at 86,160 — 5.7× larger, and the real head.** *Head-first by
+mass means measuring the head, not inheriting it from a brief.* Base
+115 files/2362 ids/37 rows → 116/2371/42, **+9 ids exactly**; `lint_enrich: OK`;
+rake 355/1395/0/0/12/21. **Not I-11 verified** — audit its `evidence:` tiers
+first, since `#194`/`#196`/`#198` each came back with over-claimed
+`primary-manufacturer`.
+
+Two things worth the fleet's time from that batch. **My own brief's generation
+codes were inverted** — first-gen MU-X is RF, second is RJ, RG is the
+third-gen D-MAX; a brief is not a source. And **one researched row was removed
+to satisfy the gate, not because it is wrong**: `bus/isuzu/f-series ->
+truck/isuzu/forward` crosses the KIND boundary. Isuzu writes the two names as
+one in its own voice ("F-Series/FORWARD TR model"), so the evidence is preserved
+verbatim in the note for the kind-boundary queue. **The researcher's own schema
+validator passed that row** — a local re-implementation of the loader contract
+cannot see a rule that lives in the lint. Worth knowing before anyone trusts a
+researcher's self-validation again.
+
+**`$S/enr4/b8-man-bus.yml` — researched, NOT applied.** `truck/man/tgx` (8,765,
+d1), `truck/man/tgs` (5,647, d1), `bus/wrightbus/streetdeck` (3,106, d1), new
+`make/wrightbus`, new `make/ldv`. Apply → lint → rake → PR; expect a tier or
+cross-kind issue.
+
+It also **resolves the 2026-09-05 TGX refusal properly rather than overriding
+it**: that pass was right about its page — `en.wikipedia.org/wiki/MAN_TGX` is a
+`#REDIRECT` to `MAN TG-range`, whose `production = 1999–present` is a **range**
+fact, not a model fact. The model sentence is on the German article, citing a
+MAN release of 24 Sept 2007. The dead `man-mn.at` URL was not written into
+`links`.
+
+**⭐ A FOURTH family-stem instance, and it makes the class a pattern:**
+`bus/ldv/400`'s **kind is correct** (LDV's Washwood Heath SVO did factory
+type-approved conversions; ~60% of the UK 17-seat minibus market) but the
+**naming is a GenModel stem**. 2026 Q1 stock: BodyType "Buses and coaches" ×
+GenModel `LDV 400 SERIES` = **3,223, exactly the id's count**, splitting
+**2,983 CONVOY (92.6%)** vs 240 "400 SERIES". Across all kinds the stem holds
+**12,070, of which 10,678 are Convoy strings — and no `ldv/convoy` id exists in
+any kind.** Also: **`bus/wrightbus/nb` (996) is `WRIGHTBUS NB4L` truncated —
+the identical shape to `bus/wrightbus/gb`, already retired at
+`removals.yml:697`.** The precedent is in the repo and this one was missed.
+
+**And a source conflict refused rather than averaged:** MAN's own pages
+disagree — the D2676 at 520 PS is **382 kW on the TGX page, 383 kW on the TGS
+page**, both from raw HTML. Recorded as a conflict.
+
+**Final census: six junk-stub classes, all found by looking at the queue before
+enriching it** — coachbuilder-as-model (79 ids, 65,837 vehicles) · cab-code
+truncation (Iveco Stralis, 4 ids) · register family stem (maxus/deliver AND
+ldv/400) · make-attribution (auto-union 3,882; 8 sub-marque pairs, 45,247) ·
+range-and-trim (aion, 3 ids) · free-text body-word glue (isuzu/d-max-pickup,
+with `mitsubishi/l200-pickup` already folded as precedent) — plus a bare cab
+configuration, `isuzu/crew-cab`.
+
+Everything is in `$S/enr4/INDEX.md` (547 lines). Five PRs open from this lane
+(`#194`, `#196`, `#198`, `#201`), none merged by me; `#196` and `#198` carry
+recorded I-11 verdicts and **must not be merged as-is**.
+
+— S4W/ENR4
