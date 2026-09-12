@@ -2,6 +2,83 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.09.0] - 2026-09-05 — the fresh-data release
+
+**14,856 models across 916 makes (13,809 → 14,856, +1,047). The first fresh
+upstream data since 2026-08-02**, and the largest single release the catalogue
+has had. 2026.08.2 was deliberately frozen — a correctness release that held the
+data axis still so the identity axis could be measured — so a month of register
+movement lands here all at once: +1,097 ids added, 50 retired, every retirement
+carrying a migration path (93 new `former_ids` aliases, 6 removal manifests).
+
+| kind | 2026.08.2 | 2026.09.0 | Δ |
+|---|---:|---:|---:|
+| car | 4,895 | 5,438 | +543 |
+| van | 618 | 718 | +100 |
+| motorcycle | 5,744 | 6,011 | +267 |
+| moped | 1,306 | 1,365 | +59 |
+| truck | 867 | 921 | +54 |
+| bus | 379 | 403 | +24 |
+
+Cut by CI run 33996838981 with all eight gates green and all seven release
+assets attached.
+
+### The plate corpus lands — 4 jurisdictions to 124
+
+The registration-plate programme moved from a 4-file sketch to **124
+jurisdiction files carrying 1,381 plate series**, plus **253 open-tier SVG
+assets** with a normative licence ledger. Europe (L1/L2 waves), the United
+States state by state, and an Asia/Americas/Oceania/Africa wave: Austria's
+closed Anlage 5d district table, Poland's 380-row powiat annex, Germany re-dated
+to its BGBl instruments, Spain re-dated to Decreto 2046/1971, Florida re-dated
+to the Laws of Florida, South Korea's hangul use-syllable and authority-mark
+decode tables. Two spec decisions came out of it: a pattern escape (`\9`, `\L`)
+for plates that *print* a 9 or an L, and per-jurisdiction `serial_alphabet`
+declared in exact codepoints. Several findings were settled **photographically**
+rather than by inference — the Portuguese 2005-window separator is an embossed
+square dot, and the 2020 national format genuinely has no separator.
+
+### Dispositions: the id contract held under a month of drift
+
+Every retirement in this release names its evidence. Kawasaki §A folded 41 ids
+and *gained* 17 country claims while losing nothing (#297); the Vespa/Piaggio
+co-move closed the last two gates holding main red (#305); `lancia/coupe` folded
+onto `lancia/beta` as the third adjudicated body-word case; three published cars
+whose evidence expired were disposed one fold and two demotions (#312), and the
+Mercedes `cabriolet` rescue was **retracted after measurement refuted both
+routes** rather than trimmed. Five alias resurrections turned out to share one
+mechanism — a separator variant that slugifies to an existing id but is a
+different rename key (#310). Seven type approvals expired out of Luxembourg's
+rolling three-month window and were signed off with the measurement, not waved
+through (#297, #325); those sign-offs are deliberately **not** precedent.
+
+### Powertrains, evidence tiers, and what is deliberately absent
+
+Powertrain coverage ships for all six kinds (car 76.8%, truck 88.8%, van 76.6%,
+bus 71.2%, motorcycle 59.5%, moped 51.2%). Unmapped upstream fuel codes are
+reported **loudly and left unmapped** rather than guessed — Traficom's
+`kayttovoima` 13/38/40/48 (26,589 rows) produce no powertrain entry until the
+koodisto is fetched and pinned, and Ukraine's 42,027 "X or electric" rows are
+DECLINED by owner ruling rather than minted as a coarse `hybrid` umbrella.
+Bentley's enrichment was re-sourced from Wikipedia to primaries (605 → 586
+fields) under the evidence-tier rule.
+
+### CI that can report its own failures
+
+Three fixes, each for a silence rather than an error. The DuckDB CLI is pinned
+to a release asset with a checksum — the install script 404'd on its own tarball
+and **every gate step was skipped for two consecutive weekly runs**, so main's
+real state was unknown for two weeks while the failure handler pointed at "the
+gate that tripped" (#322). A failing scheduled build now uploads its artifacts:
+the upload condition was narrower than its own step name, so the one case where
+you most need `build/out` produced nothing. And the build-failure handler could
+not file its own issue — three `gh` calls, no `--repo`.
+
+**Known at publication:** the private `plus-2026.09.0` layer was NOT cut. The
+release step reported success and produced nothing, because
+`PIPELINE_RELEASE_TOKEN` is absent and the step exits 0 with a warning. Paid
+consumers stay on `plus-2026.08.1` until it is cut by hand.
+
 ## [2026.08.2] - 2026-08-02 — the false-green release
 
 **13,809 models across 859 makes (14,069 → 13,809, −260). The count fell and no
