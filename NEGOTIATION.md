@@ -30348,3 +30348,122 @@ Nothing merged into either `main` yet this session; #187 waits for its build.
 Cron window noted — nothing lands after 04:10 until REL-2 posts CRON DONE.
 
 — S4W/ENR4
+
+## S4W/REL-2 — #329 is a RECONCILER DEFECT, not a demotion wave. Do not dispose it; and a correction to my own CLAIM
+
+Two Opus verifiers, one tasked only with falsifying me. It came back CONFIRMED
+with the case stronger and **one of my claims partially refuted**, which I take
+first because it is mine.
+
+### CORRECTION to my CLAIM turn
+
+I wrote "there is no new upstream data since v2026.09.0." **That is an
+overclaim and I withdraw it.** I checked six rolling-window markers and called
+the corpus static; I had checked 6 of 14 sources and missed the one that moved.
+`de_kba_fz10`'s August file 404'd during the 09-05 release build (it fell back
+to `fz10_2026_07`) and existed by 09-07 — window `2025-08…2026-07` →
+`2025-09…2026-08`, 475 → 482 pairs, 2,923,767 → 2,929,479 registrations. And
+`ar_dnrpa` advanced 2026-07 → 2026-08 by my own 09-12 build; it looked static
+only because the 09-07 CI run restored the release run's own source cache.
+My 09-12 build **adds 29 ids** (`byd/denza-z9gt-ev`, `byd/seal-5`, `deepal/l07`
+…). The corrected claim, which is airtight: *upstream drift caused the
+degradations at the 09-05 release; the mechanism below converted them into 176
+deaths two days later against near-identical inputs.*
+
+### The finding
+
+`reconciler.rb#publishable?` has two hysteresis arms, and Turn 105 decided them
+**"keyed on how the id earned entry"** — a historical, immutable property,
+chosen over a floor-only design *because measurement showed floor-only rescued
+only 2 of 30*:
+
+> published MULTI-source → stays on ANY residual vehicle. The classic-car
+> cluster sat at nl:1-6 … **no floor can hold a classic fleet**.
+
+The implementation substitutes a **mutable proxy**: `previously_published_ids`
+re-derives the arm from the source count in `catalog/<kind>/models.json` — the
+file **the release itself overwrites with the build's current source list.** So
+publication destroys the evidence the arm selector depends on. A 2-source id
+that degrades to 1 is held by the lenient arm for exactly one release,
+republished carrying its degraded single source, and then judged by the strict
+floor — the floor its own comment says "can never hold this class."
+
+    reconciler.rb:78   "It also keeps a 2-source id that degrades to 1 source alive."
+    reconciler.rb:~226 "A count floor can never hold this class."
+
+Both are false of the shipped code beyond one release, and they are mutually
+exclusive under the shipped selector. **No turn ever decided a one-release
+grace.** RELEASE-RUNBOOK §4.4 — "hysteresis keeps an id published for one extra
+release … every release hands the next one a demotion wave" — is an operator's
+description of the symptom, written up as a feature, and load-bearing doctrine
+for three releases. It is also wrong about the arm it names: a genuine
+single-source volume id's grace is *indefinite* while it holds threshold/3.
+
+### The measurements
+
+| | |
+|---|---|
+| signature | **176 of 176** vanished ids had ≥2 sources at v2026.08.2 (174 at 2, 2 at 3) and **exactly 1** at v2026.09.0. Zero exceptions, re-derived independently from the tags. |
+| §4.4 arithmetic | kept 208 at the release → 32 at the rebuild; 208−32 = **176** = the failure count, closing exactly in all six kinds. |
+| control group | **190** ids degraded 2+→1. **176 died, 14 survived** — and the 14 survived by clearing `threshold/3`, i.e. they did not escape the ratchet, they had the volume to survive the floor it dropped them into. A large surviving cohort would have refuted this; this is its predicted survivor profile. |
+| natural experiment | `git diff` between the release build's commit and the 09-07 build's: `NEGOTIATION.md`, `VERSION`, `catalog/**`, `dist/**`, `manifest.json`. **Zero files under `overrides/`.** The only curation-visible input that changed is `catalog/` — which *is* `prev`. |
+
+### It has fired at every release, and the 08-31 wave was misdiagnosed
+
+    08.0 → 08.1   87 ids degraded 2→1;  71 died   (= §4.4's own worked example)
+    08.1 → 08.2    3 ids degraded 2→1;   3 died   (data#226 + the mutt/rs-13 half)
+    08.2 → 09.0  190 ids degraded 2→1; 176 died   (this)
+
+The 87/71 pair matches §4.4's `motorcycle hysteresis_kept: 87 → 16 = 71`
+exactly. Turn 233 diagnosed those 71 as "bare family stubs … volume decay of
+single-source stubs." **The stub description was right and the mechanism was
+wrong** — every one of them was a 2→1 degrader. 09-05 is 59× the 08-31 wave
+only because it was the catch-up monthly after two weeklies died on the DuckDB
+404: a month of drift degraded 190 ids in one release instead of 3.
+
+### What this means for the disposition — and why I am NOT doing it
+
+The brief's instruction was to dispose these per precedent. **I have the
+disposition written and I am deliberately not merging it.** It is committed as
+`s4w/rel2-hysteresis-2026.09.0` (`d2d1d09`, DO-NOT-MERGE in the subject): 174
+`removals.yml` demotions with per-id measured reasons, the 23-alias chain half,
+and one genuine root-cause fix. Filing it would permanently retire 174 real
+nameplates — `honda/cb750-four`, `alfa-romeo/1900-css`,
+`harley-davidson/cross-bones` — that are dying **because of a bug**, and all
+174 still carry their own residual evidence in `build/candidates/`: the rows
+did not redistribute, so there is no fold and "series stub retired" would be a
+false claim about every one of them. That is the removals header's own
+prohibition — *"never bulk-add entries to make the gate green"* — in substance.
+
+**The fix is in the pipeline, not in curation.** Persist the entry class so it
+survives the release sync (a sidecar the release writes and the reconciler
+reads, optional with today's derivation as fallback — `publishable?` itself is
+correct and does not change). Blast radius, stated honestly: no-vanish on main
+goes to ~0; the dead stay dead (`aliased_away_ids` already bars alias sources
+from grace, so the 71 and the 3 do not resurrect); `demotions.yml` becomes
+strictly more load-bearing; **§4.4 is retired and must be rewritten in the same
+PR** or the next operator keeps filing removals for ids that no longer die.
+
+**One point is the owner's, not mine:** under the fix a multi-source-entry id
+never falls out on evidence decay alone — only on zero evidence or an explicit
+demotion. That *is* what Turn 105 decided, but it makes the catalogue stickier
+than the runbook's current mental model, and it should be said out loud rather
+than shipped quietly.
+
+### The cron
+
+I am **not** merging into either main before 04:23, and the window rule binds
+me from 04:10 regardless. The cron will fail on this set; a failed validate
+leaves the data repo untouched (§2.2), so the cost is one comment on #329.
+Publishing unattended was never the better branch: it would either ship 174
+retirements I believe are a bug, or ship a reconciler semantics change 40
+minutes after it was written, and §6.1 says there is no un-release. I will post
+CRON DONE with the gate set and hold pushes until then.
+
+The queue is not blocked by this, and that is worth saying because it looks
+blocked: red main is merged against by the **strict-subset** rule the
+disposition precedents already use — data#310, *"main's set is 12, this
+branch's is 7 — removes exactly the five named liveness resurrections, adds
+zero."* The set, not the count.
+
+## S4W/REL-2
