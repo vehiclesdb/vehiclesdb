@@ -29,7 +29,7 @@
 # construction — that is the point, not a rounding coincidence.
 #
 # Usage:
-#   ruby scripts/audit_aggregate.rb --tag=v2026.08.3 --half=s4w [--json]
+#   ruby scripts/audit_aggregate.rb --tag=v2026.09.1 --half=s4w [--json]
 #   ruby scripts/audit_aggregate.rb --self-test
 
 require "yaml"
@@ -128,7 +128,23 @@ module AuditAggregate
       [lower, upper]
     end
 
-    def wilson(k, n, z: 1.959963985)
+    # Two-sided normal quantile for a given alpha, by bisection on Math.erf —
+    # no z-table, so an unusual alpha (0.025 for the four-term cross-half
+    # composition) cannot silently fall back to the 1.96 default.
+    def z_for(alpha)
+      target = 1.0 - alpha / 2.0
+      lo = 0.0; hi = 40.0
+      200.times do
+        mid = (lo + hi) / 2.0
+        if 0.5 * (1.0 + Math.erf(mid / Math.sqrt(2))) < target then lo = mid else hi = mid end
+      end
+      (lo + hi) / 2.0
+    end
+
+    # `alpha:` overrides `z:` when given, so callers thread ONE alpha through
+    # both interval families rather than keeping a z-table in sync by hand.
+    def wilson(k, n, z: 1.959963985, alpha: nil)
+      z = z_for(alpha) if alpha
       return [0.0, 1.0] if n.zero?
       phat = k.to_f / n
       denom = 1 + z**2 / n
@@ -366,12 +382,12 @@ module AuditAggregate
     t
   end
 
-  def self.rates(row)
+  def self.rates(row, alpha: 0.05)
     n = row["total"]
     unver = row["source-gap"] + row["not-attempted"]
     bad = row["defective"] + unver
-    cp = Stats.clopper_pearson(bad, n)
-    wl = Stats.wilson(bad, n)
+    cp = Stats.clopper_pearson(bad, n, alpha: alpha)
+    wl = Stats.wilson(bad, n, alpha: alpha)
     { "n" => n, "correct" => row["correct"], "defective" => row["defective"],
       "source_gap" => row["source-gap"], "not_attempted" => row["not-attempted"],
       "unverifiable" => unver, "bad" => bad,
@@ -384,7 +400,7 @@ module AuditAggregate
   # weighted_defect_rate <= w_head * r_head + w_tail * r_tail.
   # Detector coverage is NOT a stratum (it spans all deciles and would push
   # the weights past 1); it reduces both r's and carries no weight.
-  def self.stratified(resolved, build, half)
+  def self.stratified(resolved, build, half, alpha: 0.05)
     w = build.weights_for(half)
     groups = { "head" => [], "tail" => [] }
     resolved.each { |c| groups[build.band_of(c.id) == "head" ? "head" : "tail"] << c }
@@ -395,7 +411,7 @@ module AuditAggregate
                                           "not-attempted" => 0, "total" => 0 }) do |a, b|
         a.merge(b) { |_, x, y| x + y }
       end
-      r = rates(row)
+      r = rates(row, alpha: alpha)
       # Record-level: a record is defective if ANY of its claims is bad.
       bad_ids = claims.reject { |c| c.verdict == "correct" }.map(&:id).uniq
       r["records"] = recs.size
@@ -427,9 +443,9 @@ module AuditAggregate
       # (Monte Carlo coverage 0.985 on a realistic head/tail configuration).
       # Composing two one-sided 95% bounds instead would guarantee only 90%.
       rec_h = Stats.clopper_pearson(out["strata"]["head"]["records_defective"],
-                                    out["strata"]["head"]["records"])[1]
+                                    out["strata"]["head"]["records"], alpha: alpha)[1]
       rec_t = Stats.clopper_pearson(out["strata"]["tail"]["records_defective"],
-                                    out["strata"]["tail"]["records"])[1]
+                                    out["strata"]["tail"]["records"], alpha: alpha)[1]
       rh = out["strata"]["head"]["cp_hi"]
       rt = out["strata"]["tail"]["cp_hi"]
       out["bound"] = {
@@ -437,9 +453,16 @@ module AuditAggregate
         "w_head" => w["w_head"], "r_head_hi" => rec_h,
         "w_tail" => w["w_tail"], "r_tail_hi" => rec_t,
         "weighted_upper_bound" => w["w_head"] * rec_h + w["w_tail"] * rec_t,
-        "alpha_note" => "each stratum bound is one-sided 97.5%; union bound gives >=95% " \
-                        "for the weighted sum. Combining BOTH halves adds two more terms — " \
-                        "allocate alpha across all four before publishing a catalog-wide figure.",
+        "alpha" => alpha,
+        "terms" => 2,
+        "family_confidence" => 1.0 - 2.0 * (alpha / 2.0),
+        "alpha_note" => format(
+          "alpha=%.4f, so each stratum bound is a one-sided %.3f%% limit and the union " \
+          "bound gives >=%.1f%% for this half's two-term weighted sum. A CATALOG-WIDE " \
+          "figure composes BOTH halves = FOUR terms and needs alpha=0.025 " \
+          "(4 x 0.0125 = 0.05 => >=95%%); at the default 0.05 four terms guarantee only 90%%.",
+          alpha, 100.0 * (1.0 - alpha / 2.0), 100.0 * (1.0 - 2.0 * (alpha / 2.0))
+        ),
         "claim_level_diagnostic" => {
           "r_head_hi" => rh, "r_tail_hi" => rt,
           "weighted_upper_bound" => w["w_head"] * rh + w["w_tail"] * rt,
@@ -498,7 +521,7 @@ module AuditAggregate
             .transform_values(&:size).sort_by { |_, n| -n }.to_h
   end
 
-  def self.run(tag, half)
+  def self.run(tag, half, alpha: 0.05)
     researcher, verifier, meta = load_ledgers(tag, half)
     resolved = resolve(researcher, verifier)
     build_pin = meta["slices"].values.map { |s| s["build_pin"] }.compact.uniq
@@ -533,11 +556,13 @@ module AuditAggregate
       "build_pin" => build_pin,
       "problems" => meta["problems"], "contradictions" => meta["contradictions"],
       "i11" => check_i11(meta),
-      "by_claim" => tally(resolved).transform_values { |r| rates(r) },
+      "alpha" => alpha,
+      "by_claim" => tally(resolved).transform_values { |r| rates(r, alpha: alpha) },
       "overall" => rates(tally(resolved).values.reduce({ "correct" => 0, "defective" => 0,
                                                         "source-gap" => 0, "not-attempted" => 0,
-                                                        "total" => 0 }) { |a, b| a.merge(b) { |_, x, y| x + y } }),
-      "stratified" => build ? stratified(resolved, build, half) : nil,
+                                                        "total" => 0 }) { |a, b| a.merge(b) { |_, x, y| x + y } },
+                         alpha: alpha),
+      "stratified" => build ? stratified(resolved, build, half, alpha: alpha) : nil,
       "audit_error" => audit_error_rates(researcher, verifier, resolved),
       "defect_classes" => defect_classes(resolved),
       "resolved_count" => resolved.size,
@@ -559,6 +584,36 @@ module AuditAggregate
       raise "CP(#{k}/#{n}) lo #{a.round(5)} != #{lo}" if (a - lo).abs > 1e-4
       raise "CP(#{k}/#{n}) hi #{b.round(5)} != #{hi}" if (b - hi).abs > 1e-4
     end
+
+    # (a-bis) THE ALPHA BUDGET IS REAL PLUMBING, NOT A LABEL.
+    #
+    # A per-half bound composes TWO one-sided stratum limits; a catalog-wide
+    # bound composes FOUR (head+tail x s4w+s2w), which the union bound only
+    # guarantees at 1 - 4*(alpha/2). At the default alpha=0.05 that is 90%, not
+    # 95% — the open note this round had to close before publishing a
+    # catalog-wide figure. `--alpha=0.025` restores >=95% for four terms.
+    #
+    # The failure mode being regression-tested is a FLAG THAT DOES NOTHING: an
+    # alpha that is accepted, printed in the note, and never reaches the
+    # quantile. So assert the intervals actually MOVE, in the conservative
+    # direction, on every path a published number travels.
+    hi95 = Stats.clopper_pearson(20, 200)[1]
+    hi9875 = Stats.clopper_pearson(20, 200, alpha: 0.025)[1]
+    raise "alpha= does not reach clopper_pearson (#{hi95} vs #{hi9875})" unless hi9875 > hi95
+    raise "alpha=0.025 CP upper moved the wrong way" unless hi9875 > 0.10 && hi9875 < 0.20
+    # z_for is the independent check on the Wilson side: alpha 0.05 must
+    # reproduce the hardcoded 1.959963985 the default z: argument carries.
+    raise "z_for(0.05) != 1.95996" if (Stats.z_for(0.05) - 1.959963985).abs > 1e-6
+    raise "z_for(0.025) not wider" unless Stats.z_for(0.025) > 2.2
+    wl95 = Stats.wilson(20, 200)[1]
+    wl9875 = Stats.wilson(20, 200, alpha: 0.025)[1]
+    raise "alpha= does not reach wilson (#{wl95} vs #{wl9875})" unless wl9875 > wl95
+    # And the union-bound arithmetic the note publishes must be the arithmetic
+    # the flag implements: four terms at alpha/2 each.
+    raise "four-term family confidence at alpha=0.025 is not >=95%" unless
+      (1.0 - 4.0 * (0.025 / 2.0)) >= 0.95 - 1e-12
+    raise "four-term family confidence at alpha=0.05 is not 90%" unless
+      ((1.0 - 4.0 * (0.05 / 2.0)) - 0.90).abs < 1e-12
     #
     # (b) The DEFINING PROPERTY, at the sizes this round actually reports.
     #     A remembered constant is not a reference — the first draft of this
@@ -692,7 +747,9 @@ module AuditAggregate
     puts "self-test: OK (Clopper-Pearson vs 4 textbook intervals AND its defining property at " \
          "4 round-realistic sizes via an independent binomial-tail path; Wilson reproducing the " \
          "published baseline CI from the defective+unverifiable numerator; resolution rule; " \
-         "audit-error accounting; conservative-bound identity; I-11 assertion; and 5 REGRESSIONS from " \
+         "audit-error accounting; conservative-bound identity; I-11 assertion; the --alpha budget " \
+         "reaching BOTH quantile paths (CP + Wilson via z_for) and the four-term union arithmetic; " \
+         "and 5 REGRESSIONS from " \
          "an adversarial verification: prompt-spelled verdicts rejected, n=0 bounds at 1.0, " \
          "blank final_verdict excluded from the audit-error denominator, claim_key collisions, " \
          "the 2W baseline as a second anchor)"
@@ -707,11 +764,12 @@ if $PROGRAM_NAME == __FILE__
     when /\A--tag=(.+)/ then opts["tag"] = $1
     when /\A--half=(s4w|s2w)\z/ then opts["half"] = $1
     when "--json" then opts["json"] = true
+    when /\A--alpha=(.+)/ then opts["alpha"] = Float($1)
     else abort "unknown arg #{a}"
     end
   end
   abort "need --tag= and --half= (or --self-test)" unless opts["tag"] && opts["half"]
-  out = AuditAggregate.run(opts["tag"], opts["half"])
+  out = AuditAggregate.run(opts["tag"], opts["half"], alpha: opts.fetch("alpha", 0.05))
   if opts["json"]
     puts JSON.pretty_generate(out)
   else

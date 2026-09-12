@@ -31,8 +31,8 @@
 #     together or not at all.
 #
 # Usage:
-#   ruby scripts/gen_quality_dashboard.rb --tag=v2026.08.3           # write QUALITY.md
-#   ruby scripts/gen_quality_dashboard.rb --tag=v2026.08.3 --check   # CI: fail if stale
+#   ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1           # write QUALITY.md
+#   ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1 --check   # CI: fail if stale
 #   ruby scripts/gen_quality_dashboard.rb --self-test
 
 require "yaml"
@@ -322,19 +322,25 @@ if $PROGRAM_NAME == __FILE__
     when "--check" then opts["check"] = true
     when /\A--results=(s4w|s2w)\z/ then opts["results"] = $1
     when /\A--tag=(.+)/ then opts["tag"] = $1
+    when /\A--alpha=(.+)/ then opts["alpha"] = Float($1)
     else abort "unknown arg #{a}"
     end
   end
   abort "need --tag=<release tag> (or --self-test)" unless opts["tag"]
+  # QUALITY.md renders BOTH halves, i.e. a FOUR-term union composition, so the
+  # dashboard's default alpha is 0.025 (4 x 0.0125 = 0.05 => >=95%). A per-half
+  # RESULTS block composes two terms and takes the plain 0.05. Same flag both
+  # ways, so a publisher can say which budget produced the number.
+  alpha = opts.fetch("alpha", opts["results"] ? 0.05 : 0.025)
   if opts["results"]
-    puts QualityDashboard.results_block(AuditAggregate.run(opts["tag"], opts["results"]))
+    puts QualityDashboard.results_block(AuditAggregate.run(opts["tag"], opts["results"], alpha: alpha))
     exit 0
   end
   aggs = {}
   %w[s4w s2w].each do |h|
     dir = File.join(QualityDashboard::ROOT, "data", "review", "audit-#{opts['tag']}", "ledger")
     next if Dir[File.join(dir, "researcher-#{h}-b*.yml")].empty?
-    aggs[h] = AuditAggregate.run(opts["tag"], h)
+    aggs[h] = AuditAggregate.run(opts["tag"], h, alpha: alpha)
   end
   abort "no ledgers found for #{opts['tag']} — nothing to generate from" if aggs.empty?
   rendered = QualityDashboard.render(opts["tag"], aggs)

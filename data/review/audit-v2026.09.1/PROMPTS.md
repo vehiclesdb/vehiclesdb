@@ -1,4 +1,4 @@
-# Audit round 2 (tag v2026.08.3) — researcher and verifier prompts
+# Audit round 2 (tag v2026.09.1) — researcher and verifier prompts
 
 *Adapted from PRD-QUALITY §8.3/§8.4 and `audit-PROTOCOL.md` v1.3 for the A2
 re-round. These are the exact instructions an agent is handed. Nothing in this
@@ -9,7 +9,7 @@ stated that ledgers would ship `awaiting_verification` because its harness could
 not spawn subagents. **That limitation is gone.** The successor manager runs
 four Opus researcher + four Opus verifier pairs per half, so every ledger this
 round ships is dual-signed and I-11 is satisfied in substance, not merely in
-form. The output schema below is new: `data/review/audit-v2026.08.3/SCHEMA.md`
+form. The output schema below is new: `data/review/audit-v2026.09.1/SCHEMA.md`
 is now normative and machine-readable, because RESULTS.md and QUALITY.md are
 GENERATED from these ledgers rather than transcribed by hand.*
 
@@ -17,7 +17,7 @@ GENERATED from these ledgers rather than transcribed by hand.*
 
 - **`SCHEMA.md` in this directory — read it first.** It is the output contract.
   A ledger that does not parse does not publish.
-- `SAMPLE-<half>.yml` from `scripts/audit_sample.rb --tag=v2026.08.3
+- `SAMPLE-<half>.yml` from `scripts/audit_sample.rb --tag=v2026.09.1
   --half=<half> --n=400 --build=<pinned build>`; the manifest carries
   `build_pin`. **Audit the pinned build only** (protocol rule 6) — never the
   repo checkout, never the tag rebuilt later. Copy `build_pin` into your ledger
@@ -37,13 +37,13 @@ GENERATED from these ledgers rather than transcribed by hand.*
 
 ```
 You are auditing published VehiclesDB records for the five-nines program
-(PRD-FIVE-NINES §2, round 2, tag v2026.08.3). Your verdicts are a MEASUREMENT,
+(PRD-FIVE-NINES §2, round 2, tag v2026.09.1). Your verdicts are a MEASUREMENT,
 not curation: you fix nothing, you file. Your output becomes a permanent ledger
 that an independent verifier will attack. Effort: high.
 
 INPUT: SAMPLE-<half>.yml (your slice), the review packs for those makes, the
 pinned build's catalog, decile-mass.json, the taxonomy, NAMING.md.
-OUTPUT CONTRACT: data/review/audit-v2026.08.3/SCHEMA.md. Read it before you
+OUTPUT CONTRACT: data/review/audit-v2026.09.1/SCHEMA.md. Read it before you
 start. Every claim is one row in `claims:`; the aggregator reads those rows and
 nothing else. Prose outside the rows is welcome but is not counted.
 
@@ -166,8 +166,8 @@ never be this slice's researcher (I-11).
 Run by the manager, not by an agent:
 
 ```
-ruby scripts/audit_aggregate.rb --tag=v2026.08.3 --half=s4w
-ruby scripts/gen_quality_dashboard.rb --tag=v2026.08.3
+ruby scripts/audit_aggregate.rb --tag=v2026.09.1 --half=s4w
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1
 ```
 
 Per claim type: correct / defective / source-gap / not-attempted / total; the

@@ -1,4 +1,4 @@
-# Round-2 ledger schema (audit-v2026.08.3)
+# Round-2 ledger schema (audit-v2026.09.1)
 
 *The baseline round wrote its verdicts as prose lists and computed the
 aggregate by hand. RESULTS-s2w.md said why that was the honest choice at the
@@ -15,7 +15,7 @@ from these files.** A ledger that does not parse does not publish.
 ## Files
 
 ```
-data/review/audit-v2026.08.3/
+data/review/audit-v2026.09.1/
   SAMPLE-s4w.yml            # sampler output, carries build_pin
   SAMPLE-s2w.yml
   ledger/
@@ -33,13 +33,13 @@ always (I-11). The verifier of slice N may not be the researcher of slice N.
 ## Researcher ledger
 
 ```yaml
-round: v2026.08.3
+round: v2026.09.1
 half: s4w
 slice: 1
 role: researcher
 researcher: "opus5/aud-r-s4w-b1"     # your agent id — be specific
 verifier: null                        # you NEVER sign this field
-tag: v2026.08.3
+tag: v2026.09.1
 build_pin: "/abs/path/to/build/out"   # copy from SAMPLE-<half>.yml, verbatim
 protocol: data/review/audit-PROTOCOL.md
 reviewed_at: 2026-09-05
@@ -83,13 +83,13 @@ claims:
 ## Verifier ledger
 
 ```yaml
-round: v2026.08.3
+round: v2026.09.1
 half: s4w
 slice: 1
 role: verifier
 researcher: "opus5/aud-r-s4w-b1"   # who you are checking
 verifier: "opus5/aud-v-s4w-b1"     # you — MUST differ from researcher
-tag: v2026.08.3
+tag: v2026.09.1
 build_pin: "/abs/path/to/build/out"
 reviewed_at: 2026-09-05
 
