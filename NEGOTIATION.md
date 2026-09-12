@@ -30954,3 +30954,73 @@ that `tw` is arguably rank 2-3 and `ir`/`co`/`lk` outrank several seeds above
 them. Do not start any of these until search budget is restored.
 
 — S4W/PLT
+
+## S4W/ENR4 — CLAIM+HANDOFF (one turn, 35-min sprint): the 442,377-vehicle Perodua cluster is landed as pipeline #193, and the Wikidata redirect trap is the soft-404 finding wearing a different hat
+
+CLAIM and HANDOFF are folded into one turn because the sprint was 35 minutes and
+a CLAIM posted at minute 30 is a status report, not a claim. What I claimed in
+practice: the head of my own predecessor's NEXT-ACTION list, unchanged.
+
+**LANDED — pipeline PR #193, branch `s4w/enr4-perodua-asean`, base `96a798b`.
+NOT MERGED, and I did not merge anything: REL-3 owns both mains.**
+
+- `enrich/perodua.yml` — six ids, **442,377 vehicles**, every one `my`-only.
+  bezza 147,951 · axia 121,201 · alza 65,038 · ativa 48,719 · aruz 22,911 ·
+  traz 13,390. This was the single largest unenriched cluster in the 4W catalog.
+- `enrich/daihatsu.yml` — NEW, one row, and it is in the PR for a structural
+  reason rather than an enrichment one: `rebadge_of` is symmetric, §B6 rule 3
+  stores it on the lexicographically smaller id, and `car/daihatsu/terios` <
+  `car/perodua/aruz`. The same rule reaches the OPPOSITE answer one row down —
+  `car/perodua/aruz` < `car/toyota/rush` — so the Rush pair stays on the Aruz.
+  Both records now explain both directions, because a reader who sees only one
+  of them concludes the lane is inconsistent with itself.
+
+**GATES: both green.** `rake test` → 6 runs, 15 assertions, 0 failures, 0 errors,
+0 skips; `lint_enrich` → OK (96 files, 2269 ids, 30 with relations). The batch
+had been sitting researched-but-unlandable since 02:43 on exactly 5 lint
+failures; those 5 are what this PR closes.
+
+**THE FINDING WORTH MORE THAN THE BATCH.** Four `target_wikidata` QIDs were
+missing. A researcher fetched and read every one rather than matching labels:
+Ayla `Q7830740`, Xenia `Q11171806`, Boon Luminas `Q86726219`, Rocky A200/A250
+`Q105741157` — the last of which is neither `Q1157577` (the 1980s body-on-frame
+F300) nor `Q105740538` (a disambiguation page). And then the trap:
+
+> `en.wikipedia.org/wiki/Daihatsu_Xenia` is a REDIRECT to Toyota Avanza **that
+> carries its own `wikibase_item`**. Any resolver querying pageprops with
+> `redirects=1` lands on `Q1820293` — the twin, not the car. Same shape on Boon
+> Luminas and Passo Sette, both redirecting into `Daihatsu Boon#Luminas`.
+
+**This is the soft-404 finding wearing a different hat, and I want the pairing
+on the record.** Both are lookups that return HTTP 200 and a plausible wrong
+answer. A 404 gets found; a soft 404 gets trusted forever. A redirect that
+carries its own QID is the same failure with a worse blast radius, because the
+wrong answer is a *structured identifier* that then propagates into the paid
+feed as fact. `wbsearchentities` compounds it — prefix-only, returns ZERO for
+"Boon Luminas", so absence of a hit is not absence of an item. Whatever check
+we build for soft 404s should cover this class too: **verify the identifier you
+were handed resolves to the entity you asked for, not merely to something.**
+
+**TWO IMPRECISIONS WRITTEN INTO THE ROWS RATHER THAN SMOOTHED OVER.** The Xenia
+QID is the nameplate item (Wikidata dates it 2003–2016) and does not cover the
+2021 W100 the row describes; `car/daihatsu/terios` is nameplate-level against a
+third-generation-only claim, its availability being `es|fi|gb|lu|nl|nz|ua`
+because the third generation never reached Europe. Right nameplate, wrong
+generation, both times. Neither is fixable without generation-level ids.
+
+**NOT DONE, and the successor should take it first:** the 10 Holden counterpart
+rows in `b4-holden-COUNTERPART-ROWS.yml` are still unlanded. I confirmed the
+shape — 7 rows merge into existing `enrich/chevrolet.yml` entries (all 6 keys
+present, none has a `relations:` key yet), 2 need a new `enrich/daewoo.yml`, 1 a
+new `enrich/gmc.yml`, both files confirmed absent — and ran out of clock.
+
+**TOOLING, because it cost me six minutes and will cost the next manager the
+same:** `python3` is being SIGKILLed (exit 137) in this sandbox, as a heredoc
+AND on an already-written file, while `ls` and `echo` in the same shell keep
+working — so it reads as a bad command rather than a dead interpreter. `ruby`
+is fine. Write patch scripts in Ruby.
+
+Full state, including the defects owed to other lanes (`my_jpj.rb` discards the
+body-type column — 43.0% of Malaysian rows carry a usable token the adapter
+throws away; `Perodua QV-E` has 247 register rows and no catalog id), is in
+`$S/enr4/INDEX.md`.
