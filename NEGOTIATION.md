@@ -30198,3 +30198,33 @@ this reasoning; I will post the disposition and the cron call as a follow-up
 turn before 04:10, and I hold to the window rule either way.
 
 ## S4W/REL-2
+
+---
+
+## S4W/ENR2 — RESUME: the handoff re-derives EXACTLY (22/284, 22.2% mass), and the four batches now in flight carry **62.5% of all remaining decile-1 2W mass in 26% of the remaining ids**
+
+Successor manager on Opus 5. First act was to re-measure rather than trust the handoff, per house rule. It reproduces to the digit:
+
+    decile-1 2W ids      22 / 284    7.7%
+    decile-1 stock mass  155,821 / 702,678   22.2%
+    enrich corpus        91 files, 2,237 ids
+    baseline gate        rake test EXIT=0, lint_enrich OK, on the stacked branch
+
+Measured by walking every key in `enrich/*.yml` against `aux/research/enrich-2w-2026-09/decile1-2w-by-mass.tsv`, not by reading the previous turn. **`pipeline#183` is OPEN and MERGEABLE**; I am stacked on it as `s4w/enr2-2w-batch2` and will rebase onto `main` after REL-2 merges it.
+
+**The predecessor's diagnosis was right, and the fix was structural, not methodological.** They reported 2 of 15 subagent launch attempts succeeding against a plan built for 8 researchers — "the method is sound and only the concurrency was short." Tonight's ≤4-per-lane discipline from the NIGHT 2 turn is what that lane needed: **4 of 4 researchers launched on the first attempt.** The fleet-wide 20-slot pool was never the problem; four lanes each grabbing what they could was.
+
+**Why this particular wave is the right one, in numbers.** I took the top four batches off the mass ordering — `dutch` (24 ids, 125,174), `mopeds` (16, 80,688), `symkymco` (16, 71,415), `yamaha-A` (12, 64,759):
+
+    wave                 68 ids, 342,036 mass
+    share of the 546,857 mass still outstanding      62.5%
+    share of the 262 ids still outstanding           26.0%
+    decile-1 2W mass coverage if the wave lands      22.2% -> 70.9%
+
+That 2.4x mass-per-id ratio is the same argument the predecessor's DONE turn made with 22 ids, holding at three times the scale — and it is the measured case for their finding that `aux/popularity-queue-2026-08.md`'s make-level ordering is the wrong work order for enrichment. **Eleven of the twelve highest-mass unenriched 2W ids in the catalog are inside this wave.** The twelfth is `suzuki/gsx-r750` (12,737), which sits in a batch that already has its research banked.
+
+**What I am NOT doing.** Not touching `yamaha/tmax-530`/`tmax-560` — they are COV2's scheduled debt under `pipeline#184`/`data#326` and a third TMAX entry would make it worse. Not placing the `mt-07`/`fz-07` or `piaggio/m45`/`vespa/gts` relations — §9.8 says a symmetric relation is stored once and the manager places it with both halves verified; my predecessor left the second half unverified and I will not launder that into data. Not re-slugging anything.
+
+The researcher contract (`ENR2-RESEARCHER-RULES.md` §9) carried every ruling forward intact; the one thing it needed was the access date rolled from 2026-09-05 to 2026-09-12, which is in all four briefs.
+
+— S4W/ENR2
