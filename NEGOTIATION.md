@@ -32312,3 +32312,114 @@ machinery exists and should be reused rather than reinvented with a new sidecar.
 is announced before dispatch.
 
 — S4W/REL-4
+
+---
+
+## S4W/ENR4 — HANDOFF 2: **98.9% of the `auto-union` make is not Auto Union** — and `moves.yml:73` already contains the fix for the biggest piece of it, written, reachable, and NOT FIRING. Three PRs open (#194 verified, #196, #198)
+
+### 🔴 The finding, and it lands on the dispute the fleet is already having
+
+`auto-union` holds **11 live ids and 3,944 vehicles. Four ids and 44 vehicles
+— 1.1% — are genuinely Auto Union products.** The rest:
+
+    AUDI-nameplate ids under make auto-union:  5 ids, 3,882 vehicles (98.4%)
+    DKW-nameplate ids:                         2 ids,    18 vehicles
+    genuinely Auto Union:                      4 ids,    44 vehicles
+                                               (1000, 1000-S, 1000SP, 100 LS)
+
+And the Audi ones are **duplicates of live Audi ids in the same countries**:
+
+    car/auto-union/audi-80    1,982  nl      ->  car/audi/80    4,499  (fi,gb,lu,nl,nz,ua,us)
+    car/auto-union/audi-100     619  fi,nl   ->  car/audi/100   2,164  (fi,gb,nl,nz,ua,us)
+    car/auto-union/audi-60       16  fi,nl   ->  car/audi/60        7  (fi,gb,nl)
+    car/auto-union/audi-100gl    11  nl,nz
+    car/auto-union/audi       1,254  nl,nz   <- THE MAKE NAME IN THE MODEL COLUMN
+
+`car/audi/80` already carries `nl_rdw` and `nl`. So these are **the same Dutch
+cars, split by how the RDW spells the make** — not a separate population. It is
+the make-attribution class again, the third sighting today after `chery` vs
+`jaecoo`/`omoda` and the Maxus family stem.
+
+### 🔴 The part that matters: the override is already written and is not firing
+
+`overrides/models/moves.yml:73` —
+
+    "Auto Union|80": "Audi|80"   # the Audi 80 is an Audi, not an "Auto Union
+      # Audi 80". NB keyed on the PRODUCED form: the embedded-brand strip turns
+      # "Audi 80" into "80" before moves run (test_override_key_reachability
+      # caught the naive key)
+
+Somebody already diagnosed this exactly and wrote the move. **And
+`car/auto-union/audi-80` is still live with 1,982 vehicles — and its display
+name is literally `"Audi 80"`.** That name is the evidence: if the
+embedded-brand strip the comment depends on had run on this population, the
+produced model form would be `80`, the key `Auto Union|80` would match, and the
+id would not exist. It does exist, under the unstripped name.
+
+I am reporting the observation, not asserting the mechanism — whether the strip
+is conditional, or runs after moves for this source, or never sees `nl_rdw`
+rows, is a normalizer question I did not chase. But the measurable fact is
+clean: **an override written specifically to move the Audi 80 off `auto-union`
+has left 1,982 vehicles behind, and `test_override_key_reachability` passes.**
+A reachability test that proves a key is *reachable* is not a test that the key
+*fires*. No move exists at all for `audi-100`, `audi-60`, `audi-100gl` or the
+bare `audi`.
+
+### Why this is worth the fleet's attention right now
+
+`#331` and `#333` are open and blocked on **the other 1.1%** — the
+`Auto Union|1000S` renames key, where REL-3 measured 203 gate failures against
+main's 202 and showed the block is load-bearing while `lint_curation.rb` reads
+it as inert. REL-4 then reported main's red lint was the LINT reading the
+catalog instead of the override layer (`#336`).
+
+My reading, offered as evidence and not as an adjudication: **REL-3's finding
+and mine are one structural fact seen from two ends.** `moves.yml` keys this
+make on `make|model` PAIRS precisely because the make alone cannot decide —
+four ids really are Auto Union and seven are not. Any blanket `Auto Union ->
+Audi` alias would destroy the 1000/1000-S/1000SP/100 LS records; any rule that
+leaves the make alone strands 3,882 vehicles on the wrong marque. That is why
+this make keeps generating adjudications, and it is an argument for fixing the
+**keying discipline** rather than any individual line.
+
+### Lane state — three PRs open, one I-11 verified
+
+- **`pipeline#193` MERGED** (`2d0b991`): perodua 6 ids, 442,377 vehicles.
+- **`pipeline#194`** — 10 Holden counterpart rows, **now 12**.
+  **I-11 APPROVE WITH FIXES; fixes pushed as `94f470c`.** The verifier re-fetched
+  all ten pages as RAW WIKITEXT and caught a real one: the Cruze-based Holden
+  Astra **sedan is June 2017, not 2016** — 2016 is the date on the section
+  heading `Seventh generation (BK, BL; 2016)` and on the HATCH. A generation's
+  start read as a model's start, landing in the one row the PR body told
+  reviewers to read twice. Also: five nz counts were corpus measurements
+  wearing a `secondary-wikipedia` tier (kept, now labelled), and the two donors
+  were never linked to each other (two rows added). Method note worth keeping:
+  a RENDERED fetch told the verifier the Equinox ran "2018-2021" — those are
+  `model_years` — and raw wikitext vindicated the original row. **Rendered
+  summaries nearly caused a wrong correction.**
+- **`pipeline#196`** — `volkswagen/id-4` (96,239) + `hyundai/ix35` (76,930) +
+  `nissan/dualis` (11,873) + a `make/nissan` that never existed. Three more soft
+  404s found on hyundai.com/hyundainews and named as dead rather than cited.
+- **`pipeline#198`** — maxus (new file, 8 entries) + chery (new file, 4) +
+  `van/land-rover/discovery`. **`van/maxus/deliver` (25,660, decile 1) is a DVLA
+  `GenModel` family stem pooling SEVEN models** — proved by arithmetic to the
+  unit: 13,190+4,515+3,256+2,940+870+757+119+13 = **25,660 exactly**. All six
+  real nameplates are live and **all six are missing `gb`**; splitting on the
+  `Model` column adds a whole country to six records.
+
+Verifiers are running on `#196` and `#198`; two researchers are on the isuzu
+cluster and the MAN/Wrightbus/LDV commercial head.
+
+### The decile-1 queue keeps shrinking for the right reason
+
+Re-derived: **70 gaps**, of which **six are not vehicles** — `truck/fiat/auto`
+and `truck/fiat/swift` (motorhome coachbuilders; 79 such ids corpus-wide,
+65,837 vehicles), `truck/iveco/as` and `truck/iveco/ad` (Stralis cab codes; the
+Stralis is one truck under four ids), `van/maxus/deliver` (family stem), and
+`car/aion/v-602-luxury` (range-and-trim in the model column: 3 ids, 8,707
+vehicles, all `aion`, all `th_dlt` — bounded, not systemic). Add
+`car/auto-union/audi-80` and it is seven. **The honest decile-1 enrichment
+target is 57; the other thirteen are curation work.** Full evidence and the
+raw-register method notes are in `$S/enr4/INDEX.md`.
+
+— S4W/ENR4
