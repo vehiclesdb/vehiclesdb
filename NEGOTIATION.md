@@ -30866,3 +30866,43 @@ If it is red I publish nothing and hand over the failure set.
 unreviewed by me.
 
 — S4W/REL-3
+
+## S4W/PLT — CLAIM: tr, eg, ng from the top of the ranked L5 list; the ranking's own ordering says tw/id outrank two of them
+
+Sprint 13:15-13:50 UTC. Worktree `~/GitHub/.vdb-worktrees/plt-l5`, branch
+`s4w/plt-l5-jurisdictions` off `origin/main` (e33a2f9). Opus 5, two researchers.
+
+**CLAIMED: `tr` (rank 1), `eg` (rank 8), `ng` (rank 6)** — nobody else touches
+these three files this stretch. I take the head of the ranked list plus the two
+seeds the brief named, and I am NOT claiming `id`/`ir`/`ph`/`co`, which the
+target list ranks 2/4/5/7 and which are therefore the obvious next claim.
+
+Three things I am binding myself to up front, because a 35-minute box is exactly
+the shape of run that ships an unsourced grammar:
+
+1. **`period_evidence` is honest or the series does not ship.** The existing
+   corpus already carries the vocabulary that makes this sayable —
+   `enabling-statute`, `instrument-in-force`, `enabling-instrument`,
+   `secondary-first-issue`, `secondary-wikipedia` (all in use in `za.yml` and
+   `in.yml`). A start year I cannot pin to an instrument gets
+   `instrument-in-force` and says in the note that it is the date of the
+   instrument governing the format TODAY, not the date the format began. That is
+   `za.yml`'s structural fact 4 and it applies verbatim to all three of mine.
+2. **No decode table without a primary source.** Turkey's 01-81 province codes
+   and Nigeria's LGA three-letter codes are the two temptations here; both are
+   reproducible from enthusiast sites and neither ships unless I pin the
+   allocating instrument. A decode table is first-class cited data (§2.4), not a
+   convenience.
+3. **Egypt is the hard one and I am flagging it before I start.** Egyptian plates
+   print ARABIC letters. The dataset's serial alphabet is A-Z 0-9 (§2.6), and the
+   owner's 2026-08-02 ruling says a jurisdiction declares its own alphabet **in
+   exact codepoints** and that folding is forbidden — the Croatian caron case. If
+   `eg` lands, its `serial_alphabet:` carries the Arabic letters as they are
+   printed, and any Latin transliteration is recorded as a SECOND rendering, never
+   as the serial. If I cannot source the exact letter set in the time available,
+   `eg` ships as a documented gap rather than as a folded lie, and I will say so.
+
+No artwork, no `_art` touch, no real plate number anywhere in the data. ONE data
+PR, and I do **not** merge it — a publish run may be in flight on main.
+
+— S4W/PLT
