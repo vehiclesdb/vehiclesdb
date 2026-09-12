@@ -30569,3 +30569,57 @@ pipeline#184 → data#326, #183, #181, #182; then S2W's #304/#307/#311/#315/#318
 Running on zero subagents from here (fleet token cap).
 
 ## S4W/REL-2
+
+---
+
+## S4W/SRC-2 — HANDOFF: Australia is built and measured (+904 records, +6.1%) — and the measurement is the deliverable, because it says AU cannot merge until one owner ruling is signed
+
+Two PRs open, **neither merged and neither mergeable tonight**: `pipeline#188` (adapter, tests, emit basis, Rakefile fix, curation spec) and `data#334` (licence pin, kind map, SOURCES.md). Per the coordinator's wrap-up: AU only, no second source.
+
+### Measured, control vs treatment, frozen
+
+Both builds on data `b61d5d1` / pipeline `c092fa5`; control = shared cache untouched via the 237-symlink farm, treatment adds **only** this source's two files. One variable.
+
+| | control | treatment | Δ |
+|---|---:|---:|---:|
+| published | 14,786 | 15,690 | **+904 (+6.1%)** |
+| — candidate promotions | | | **560** |
+| — single-source mints | | | 368 |
+| records gaining `au` availability | | | **3,403 (23.0%)** |
+| moped | 1,359 | 1,357 | **+0 from AU, as predicted** |
+
+**I re-ran control on the newer main (`40c4435`, incl. `#187`) and it is byte-identical** — 14,786 published, 77 failures, same per-kind split. The stale-base risk is closed by measurement, not assumed. The 2026-09-05 dossier's estimate (677 promotions / ~1,043 records / 2,455 availability) was taken against the **pre-release 13,809 catalog**; re-measured through a real build it is **560 / +904 / 3,403** — promotions and records over-estimated, availability under-estimated.
+
+### 🔴 Why it cannot merge: 33 new gate failures, every one explained
+
+Main sits at 77 pre-existing failures; treatment goes to 110. **Zero are adapter defects and zero are data loss:**
+
+- **24 ids migrate between kinds — 0 genuinely lost.** And the shape is better than "AU moves things": AU is **consolidating pre-existing cross-kind duplication.** `ford/ranger` is published in control under **car, truck AND van simultaneously**; treatment leaves one. `nissan/navara` the same. `hyundai/iload` was published as a **bus**. Four SUVs move `van→car` (`pajero`, `4-runner`, `fj-cruiser`, `nitro`) — corrections. The pre-existing defect is larger than AU: `toyota/hilux` is published under **four kinds** and AU does not fix it.
+- **1 delta-gate failure** (truck 921→1183, +28%) — expected for a new source, needs an adjudicated ack with a ceiling.
+- **The registry-class mints the dossier predicted DO publish**: `harley-davidson/fxd-series`, `holden/utility`, plus a wider `*-series` family.
+
+**I deliberately did NOT author the 24 dispositions.** The LCV→van ruling *determines which ids move*, so writing them now would quietly encode an unsigned owner decision. That is the one thing I was told not to do.
+
+### The ruling, with the evidence that I think settles it
+
+**`Light commercial vehicles` → `van`** (4,195,963 vehicles). `van` absorbs **76.0%** of the class onto ids we already publish and mints 58; `truck` absorbs 48.7% and mints **116**; `car` absorbs 84.8% but would file every panel van as a car, colliding with ~40 shipped `drop_patterns`.
+
+The **"a ute is not a panel van" objection is answered by a field that already exists**: `car/toyota/hilux` carries `body_types: ["pickup"]`. `kind` is the registration class; the ute-ness rides on the **body axis**. Every source that maps a light-commercial class maps it to `van` — including `th_dlt`, and **Thailand is the world's pickup factory**. `volkswagen/amarok`, a pure ute with no passenger sibling, exists in our catalog under `van` and nowhere else. Owner's call regardless, because it breaks 16 published ids.
+
+### Five refutations, three of them fleet-relevant
+
+1. **`rake licenses:pin` was DESTRUCTIVE and is fixed in `#188`.** The Rakefile `PINS` constant still held `ua_mvs`'s pre-2026-08-18 whole-`result` extract while `pins.json` held the narrowed four keys — the next run would have silently reverted Ukraine's pin and **deleted the `why` recording why it was narrowed**. Visible on disk the whole time as a 34 KB `ua_mvs.txt` beside `ar_dnrpa.txt`'s 159 bytes. `why` is now preserved for every entry, not only `declared_absent` ones.
+2. **The dossier's three CC-deed pin phrases all MISS** the real bytes — the deed splits them across markup, the exact OGL v3 precedent the same document quotes as a warning. A pin built on it fails gate 1 on day one, or gets re-pinned from the failing extract and "verifies" a broken pin forever. **Also: in `phrases` mode the gate hashes the pin's own phrase list, so such a sha proves nothing about upstream drift.**
+3. **A blanket `\bSERIES\b` drop would DELETE EIGHT LIVE RECORDS** (`truck/scania/r-series`, `car/land-rover/series-3`, `car/bmw/3-series`…). Every proposed drop is make-scoped.
+4. **"CH cantonal registers" is a plural that does not exist** — exactly ONE canton (Thurgau). And its pre-split model column `typ2` went from 273,807 filled to **zero** between the 2024 and 2025 editions, so CH now needs a trim-collapse stage. **NO is the cleaner second source**; both rows rewritten in `data#334`.
+5. **`FUSO` and `GASGAS` aliases already ship and `MAHINDRA` is already a catalog make** — so 63% of the mass the dossier attributes to "new makes" is not new, and its "279 distinct makes" is really 886.
+
+### For REL-2, before the cron
+
+**Data `main` is red on `lint_dataset` and `lint_curation`** — 41 name-shape suspects, five grown debt rows, and an inert `"Auto Union"` rename block. Verified on a pristine `origin/main` tree by stashing my changes; my PR adds no new failure. Flagging because it is not my lane and the cron is at 04:23.
+
+### State on disk
+
+Worktrees `src-au` (pipeline branch `s4w/src-au-bitre`, rebased on `40c4435`), `src-data` (`s4w/src-au-bitre-data`), `src-ctl` (detached control), `src-cache-new` (the symlink farm, still 0 bytes and structurally protecting the shared cache). Curation spec with **seven unsigned rulings** committed at `aux/research/sources-2026-09/au-CURATION.md`. Next session: sign ruling 1, apply the curation, author the 24 dispositions and the delta ack, re-verify to failure parity with control, then merge the pair pipeline-first.
+
+— S4W/SRC-2
