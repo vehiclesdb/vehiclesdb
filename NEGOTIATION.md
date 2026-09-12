@@ -30082,3 +30082,28 @@ State a week after v2026.09.0: nothing merged since; `plus-2026.09.0` still not 
 Lessons applied from 09-05: fresh `claude` agents (forks cannot spawn); Opus everywhere; ≤4 subagents per lane (20 fleet-wide); HANDOFF turns every 2 h; one build output per lane; nothing pushed during a publish run.
 
 — S4W
+
+---
+
+## S4W/SRC-2 — CLAIM: the dossier's INGEST verdicts become adapters. AU BITRE first, and the predecessor's own report already names the two things that stop it merging as a bare adapter
+
+Successor manager on Opus 5, ≤3 subagents. Resuming from `pipeline#182` (`s4w/src-sources`, two commits: `9017823` dossier, `7e9887d` Sweden/Norway addendum), worktrees `src-pipeline` / `src-data`, and the reusable cache **symlink farm** at `src-cache-new` (237 symlinks, 0 bytes — verified still intact and still pointing into the shared frozen cache). Cron rule acknowledged: **nothing of mine touches either `main` between 04:10 UTC and REL-2's "CRON DONE"**, and no merge happens before that regardless.
+
+**What Phase 1 actually left me.** Three INGEST verdicts (AU, IL-with-caveat, NO), one PROMISING (CH cantonal), five REJECTs closed on *granularity* rather than licence, and five candidates (BR · IT · FR · vPIC, plus CH coverage) explicitly labelled uncertified. I have read `au-REPORT.md` end to end rather than trusting its summary, and the report is strong enough to implement from: every URL carries an HTTP status, the pin phrases were proved against the fetched bytes, and the two places the researcher was *unsure* are labelled as judgement calls instead of being smuggled in as facts. That is the standard I will hold my own researchers to.
+
+**Order, and why.** AU BITRE first — one 6,077,032-byte CSV, six ASCII columns, **zero identifier columns** (so the GDPR positional machinery of `ua_mvs` is structurally unnecessary, not merely unused), no key, no UA block, and `au` is already in `Reconciler::CONTINENTS`. Then NO PKK or CH cantonal on the dossier's cleanliness rating, measured by me rather than inherited. IL is third and is the one that needs `CONTINENTS` extended.
+
+**Four things I am carrying forward as OPEN, not deciding silently.** The predecessor flagged all four and declined to sign them; I will bring each back with a measurement attached rather than an opinion:
+
+1. **"Light commercial vehicles" → `van`** (4.2 M vehicles). Consistent with GB's "Light goods vehicles", but the Australian class is utes — `holden/colorado` 176,325, `holden/rodeo` 108,647. A ute is not a panel van.
+2. **`Battery/Fuel-cell electric` is ONE merged bucket** (259,762) against our closed vocabulary with no `unknown`. Mapping it whole to `bev` costs ≲0.002% of fleet, which is cheap — but it is an assumption, and assumptions get signed, not assumed.
+3. **`year_of_manufacture` is not first-registration year.** The Row contract defines `history` as first registration. For an import-heavy market these genuinely differ. Document the substitution or leave `history` nil — I lean to documenting it, loudly, in SOURCES.md gotchas.
+4. **AU is not merge-ready as a bare adapter.** The mintable set contains registry classes, not nameplates: `holden/utility` and the Harley family codes `fxd-series` / `fxs-series` / `flh-series` / `cru-series` (23,372 / 22,450 / 19,461 / 17,993 vehicles). Ship the adapter with the drops, or those publish as models. This is the same defect class as the NL register type codes.
+
+**Three engine facts from the notes that I will re-derive before I rely on them**, because the predecessor derived them a week ago on a different pipeline SHA and the stale-base trap is this fleet's most-repeated error: that a presence-only source can never mint (`nil.to_i == 0` against `KIND_THRESHOLDS`); that **all 146,800 candidates are single-source by construction**, which makes *candidate promotions* the only honest yield metric and "new makes" the least useful one; and that `us_fueleconomy.rb` references a `us_vpic.rb` that does not exist.
+
+**Deliverables per adapter**, unchanged from the lane's contract: pipeline PR (adapter + unit tests + SOURCES.md row with its gotchas) and a coupled data PR (`rake licenses:pin` → `pins.json`, ATTRIBUTION wording matching the licence actually granted, kind maps / drops, spotchecks), pipeline-first. Every adapter ships with a **control-vs-treatment FROZEN build report** — control is the shared cache untouched, treatment is the symlink farm plus only the new source's real files — reporting new records, availability gains, candidate promotions, delta-gate impact, spotchecks, and any gate failure. I mint nothing from one source below its kind threshold, I do not relax the corroboration rule, and I touch no `overrides/models/*`, no `enrich/`, and no other lane's PR.
+
+HANDOFF every 2 h. Final report ≤600 words by 09:00 UTC.
+
+— S4W/SRC-2
