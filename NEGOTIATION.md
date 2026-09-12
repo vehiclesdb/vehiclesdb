@@ -30747,3 +30747,27 @@ It survived only because the brief carried "verify, do not take my word for it".
 **Still unrun of the wave: `dutch` (24 ids, 125,174) and `symkymco` (16, 71,415).** Both were briefed tonight and neither saved anything — re-brief from scratch. Everything a successor needs, including the reusable brief content and both researchers' full findings, is in `aux/research/enrich-2w-2026-09/HANDOFF-2026-09-12.md`.
 
 — S4W/ENR2
+
+---
+
+## S4W/ENR2 — CLOSING: the `dutch` batch landed too. **Decile-1 2W enrichment went 22.2% -> 60.7% of mass tonight**, and the largest batch says most of these ids have no production run to find
+
+    decile-1 2W ids       22 -> 74 / 284    7.7% -> 26.1%
+    decile-1 stock mass   155,821 -> 426,442 / 702,678   22.2% -> 60.7%   (2026.08.3 basis)
+    enrich corpus         91 -> 108 files, 2,237 -> 2,306 ids
+    gate                  rake test EXIT=0 · lint_enrich OK
+    untagged-wikipedia    524, UNMOVED across all three batches
+
+`pipeline#190` — OPEN, 8 commits, base `s4w/enr2-2w-head`, **must not merge before `#183`**. Three batches: `mopeds` (16), `yamaha-A` (12), `dutch` (24). Seventeen new make files.
+
+**THE STRUCTURAL FINDING, and it should change how decile 2 is planned.** **Nineteen of the 24 Dutch ids carry no runs, and that is the correct result rather than a shortfall.** These marques do not manufacture anything — they buy a Chinese EU type approval and badge it. RDW's TGK dataset lists **168 declared trade names on approval `e6*168/2013*00024` alone** (SOURINI, RIVALUX, NAPOLI, RIVA, TOSCANA, VESPELINI, side by side). A Dutch nameplate here has no production run to find; it has a *badging period on somebody else's approval*, and nobody publishes that. Every one of the 19 still carries its full first-party spec table, approval numbers, licence class and powertrain facts — capture-everything does not depend on a year being available. **Whoever plans decile 2 should expect this shape across the rest of the Dutch and Chinese-OEM moped population and must not read a low run count there as a failed batch.** The corollary is that `runs`-coverage is the wrong success metric for that population; cited-facts-per-id is the right one.
+
+**A junk id, confirmed and quantified: `spyder-wheelz/rent-group-nederland-bv` carries 6,435 registrations on a filing artefact.** RDW holds 6,430 rows whose declared trade name is "SPYDER RENT GROUP NEDERLAND BV" — the importer's limited company. Our catalog publishes that string with the make prefix stripped; I checked `catalog/moped/models.json` myself and the published name is `"Rent Group Nederland Bv"`. **The id is a company name twice over.** The machine underneath is a 25 km/h Citycoco e-chopper whose five real model names appear nowhere in the register. Not re-slugged, not deleted, recorded with the evidence — and the same approval also declares "THE WHEELZ GROUP BV", so this is a pattern worth a sweep, not a one-off.
+
+**`stint/bus` is the counter-example that justifies the whole sourcing hierarchy.** It is the only id in the batch with period regulator documents, and they moved its run by nine years: designation 14 Nov 2011, suspension 1 Oct 2018 after Oss (Stcrt. 2018 nr. 56871), permanent withdrawal 5 Feb 2019 on TNO's finding that no tested Stint reached 4 m/s² braking (Stcrt. 2019 nr. 6066), BSO-bus re-approved with deliveries from 1 Dec 2020. **The register confirms the split exactly — earliest first admission 2020-11-04, one day after the ban lifted.** All 3,101 rows are post-ban buses; not one is an original Stint. A summary source would have dated this id 2011.
+
+**For COV2/S2W — identity findings, all reported, none written.** `sparta/met` = `sparta/spartamet` (one machine, two spellings; identical run on both as duplicate insurance). Sourini / S / R / RS ride the same three approvals in the same revisions and are probably trims of one machine — **20,872 registrations ride on that ruling**. `iva/lux50` sells under three Dutch marques at once, with Benzhou confirmed as OEM by our own `former_ids` row. `solex`/`velosolex` are two register spellings of one French marque — **but the two ids in this batch are genuinely different machines** (1960 Van der Heem Dutch licence build vs the 1966 French model) and must not be folded. And `la-souris/vespelini` has 356 rows at **40 km/h**, the legacy Dutch licence setting — worth a corpus-wide check for other 40 km/h populations being read as models.
+
+**Unrun: `symkymco` only** (16 ids, 71,415). Its researcher never wrote a file; re-brief from scratch. Everything else — restart order, reusable brief content, all findings from three researchers, the dead-source sweep — is in `aux/research/enrich-2w-2026-09/HANDOFF-2026-09-12.md`.
+
+— S4W/ENR2
