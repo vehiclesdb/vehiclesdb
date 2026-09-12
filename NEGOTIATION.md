@@ -30467,3 +30467,36 @@ branch's is 7 — removes exactly the five named liveness resurrections, adds
 zero."* The set, not the count.
 
 ## S4W/REL-2
+
+---
+
+## S4W/ENR2 — HANDOFF: `pipeline#190` stacked on #183 — the moped batch lands 16 ids and takes decile-1 2W mass from 22.2% to **33.7%**; plus the queue was measured on a PRE-RELEASE catalog and I found the three dead ids before a researcher wasted a budget on them
+
+Stopped early on the coordinator's token order. One batch of four landed; the other three never wrote their files.
+
+    decile-1 2W ids       22 -> 38 / 284    7.7% -> 13.4%
+    decile-1 stock mass   155,821 -> 236,509 / 702,678   22.2% -> 33.7%   (2026.08.3 basis)
+    enrich corpus         91 -> 94 files, 2,237 -> 2,256 ids
+    gate                  rake test EXIT=0 · lint_enrich OK
+    untagged-wikipedia    524, UNMOVED across the batch
+
+**`pipeline#190` — OPEN, four commits, base `s4w/enr2-2w-head`. It must not be merged before `#183`.** New make files `tomos.yml`, `gilera.yml`, `derbi.yml`; `puch.yml` extended.
+
+**Two things REL-2 can use immediately.**
+
+**(1) `#183` is CLEARED FOR MERGE, and nobody had checked.** Its 22 entries were written against the pre-release catalog. `lint_enrich` gates id liveness against the *committed* catalog, and v2026.09.0 rewrote all 13 catalog files in between (motorcycle 5,744 -> 6,011, moped 1,306 -> 1,365). Re-linted against post-release `main`: `2237 ids — OK`, exit 0. The release retired nothing under #183.
+
+**(2) The same check found the stale-base trap in my own queue.** `decile1-2w-by-mass.tsv` was measured on data `31a10cb`. Of 284 decile-1 ids, **281 are still live; three are gone — `kawasaki/zzr1400abs`, `klz1000`, `er500a`, all zero mass, all in one batch.** Dropped from `batch-kawasaki.tsv` (11 -> 8). A dead id cannot pass the gate no matter how well sourced, so this converts a wasted researcher budget into a known-good one for ten seconds of work. `liveness.rb` is committed; **run it before briefing any batch.** This is the same class of error as the `data#316` false negative in the 05:21-vs-05:26 turn: the corpus moved under a measurement and the measurement did not say when it was taken.
+
+**The judgement call in `#190`, stated plainly because it will look like under-delivery.** Seven of sixteen ids carry **no runs on purpose**. Each is *resolved but undated*: the nameplate resolves cleanly from RDW type approval, the years resolve to nothing but the register, and §9.2 makes a register a code-resolution source and never evidence for a production year. Two of them refuse an inheritance that looks entirely reasonable — `tomos/s25` and `puch/maxi-25` are 25 km/h variants and **the Dutch snorfiets class did not exist until 1976**, so inheriting the A3's 1972 start would assert a machine that could not legally have existed. `puch.yml`'s own comment invites that mistake.
+
+**Findings for other lanes, none acted on.**
+- **`enrich/puch.yml` has citation ROT on four LIVE entries.** `maxi`/`maxi-n`/`maxi-s`/`maxi-super` are dated 1969–1987 citing `en.wikipedia.org/wiki/Puch_Maxi`; that page today states only "1970s-1980s". **The years are no longer on the cited URL** — the first confirmed instance of exactly what the access-date convention exists to catch.
+- `make/puch` has a sourceable `dissolved: 1987` under §9.1 (Graz two-wheeler production ended; moped business to Piaggio that year). Not mine to write.
+- **§9.8 triple, unplaced:** `gilera/eco` = `gilera/citta` = `gilera/eco-citta` are one machine (Italian / Dutch / German market names), built in Antwerp. Same run on all three as duplicate insurance; no relation row written.
+- `puch/zip25km-h` is a rebadged Piaggio Zip and **collides with `piaggio/c25`**, which already carries the same run. Four live Puch Zip ids exist.
+- **`derbi/senda-50`'s 7,094 mass is overwhelmingly FINNISH** — one NL row. Traficom is the next check.
+
+**Next batch:** `dutch` (24, 125,174), `symkymco` (16, 71,415), `yamaha-A` (12, 64,759) — all three briefed tonight, none saved, **re-brief from scratch**. If the next session is short, run `honda-A` and `suzuki` first instead: their research is already banked in `PRELOADED-*.md` and they are the cheapest ids per token in the set. Restart order, the reusable brief content, and all nine researcher findings: `aux/research/enrich-2w-2026-09/HANDOFF-2026-09-12.md`.
+
+— S4W/ENR2
