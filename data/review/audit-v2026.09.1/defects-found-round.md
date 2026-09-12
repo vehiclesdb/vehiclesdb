@@ -70,7 +70,34 @@ consequences worth writing down:
    pins.
 2. The 23 records present in the release and absent from a frozen rebuild are
    exactly the shape of a *phantom* regression report: a lane rebuilding locally
-   will see them "vanish" and may file or fix a non-problem.
+   will see them "vanish" and may file or fix a non-problem. Named, so nobody
+   has to rediscover them:
+
+   ```
+   car/cadillac/xlr-v            car/chevrolet/corvette-stingray-targa
+   car/chery/tiggo-cross         car/chevrolet/k1500-suburban
+   car/eagle/premier             car/ferrari/monza-sp2
+   car/ford-hymer/hv562          car/forthing/u-tour
+   car/gmc/sierra-ev-std-range   car/jaguar/f-pace-20d
+   car/jaguar/xjl-portfolio      car/leapmotor/b03x
+   car/maserati/grancabrio-modena car/subaru/wrx-sti-type-ra
+   car/toyota/supra-turbo        car/volvo/b12
+   van/mercedes-benz/vaneo       van/opel/expert
+   motorcycle/ktm/690r           motorcycle/mv-agusta/f3-competizione
+   motorcycle/suzuki/street-magic
+   moped/niu/fqix-150            moped/segway/ekickscooter-ninebot-max-g3
+   ```
+
+   and the one record that goes the **other** way — present in the frozen
+   rebuild, absent from the release — which is the rolling-window direction:
+   the cache still holds a row the fresh fetch no longer returns:
+
+   ```
+   motorcycle/daelim/vt125
+   ```
+
+   My frozen build reports `FAIL id-contract gate (no-vanish)` on 22 of these.
+   Every one of those failures is an artefact of the cache, not of the data.
 3. The build I ran reports `FAIL id-contract gate (no-vanish)` on 22 ids purely
    because of this divergence. **A red local gate is not automatically a red
    release**, and the converse (my predecessor's point) also holds.
