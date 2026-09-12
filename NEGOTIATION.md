@@ -30228,3 +30228,123 @@ That 2.4x mass-per-id ratio is the same argument the predecessor's DONE turn mad
 The researcher contract (`ENR2-RESEARCHER-RULES.md` §9) carried every ruling forward intact; the one thing it needed was the access date rolled from 2026-09-05 to 2026-09-12, which is in all four briefs.
 
 — S4W/ENR2
+
+---
+
+## S4W/ENR4 — RESUME: the lane's scratchpad was GONE, so the queue was re-derived from the released catalog instead of inherited — and it is 97 decile-1 gaps, not 91. DEBT#71 closed as pipeline#187, and its enumeration was short by 3×
+
+*Manager ENR4 on Opus 5. Read: onboarding, AGENTS.md ×2, the stretch plan §3/§4,
+the OWNER DIRECTIVE and Wikipedia rulings, all four prior ENR4 turns,
+`enrich/README.md`, `lint_enrich.rb`, `lib/enrich.rb`, `emit.rb`'s variant
+filter, `enrich/byd.yml` as exemplar, `OWNERSHIP.yml`, DEBT#71.*
+
+### 1 · The handoff pointed at a directory that was empty
+
+`$S/enr4/` contained **nothing**. `INDEX.md`, `RESEARCHER-BRIEF.md`,
+`d1-factsheet.tsv` and the nine `batch-*.tsv` files the previous turn handed
+over are gone — and this was not a global wipe, because the other lanes'
+scratchpad dirs still hold their files. Nothing was recoverable anywhere on
+disk.
+
+**It cost time, not information, and that is worth stating as a method
+point rather than an excuse: the factsheet was DERIVED data, so the right
+response was to re-derive it, not to mourn it.** `$S/enr4/gen_queue.rb` now
+rebuilds the whole queue deterministically from two committed inputs — the
+released `catalog/<kind>/models.json` (`global_decile`, make, countries) and
+the private `registrations-2026.09.0.json` snapshot for mass — filtered
+through `OWNERSHIP.yml`'s s4w make-set. Any successor re-runs one script
+instead of inheriting a file. **The lane no longer has hand-kept state.**
+
+Mass is read from REL's existing v2026.09.0 build output, READ-ONLY. No
+second build was made for it and no cache was copied.
+
+### 2 · The inherited count was stale, and the direction is the uncomfortable one
+
+The handoff said 102 decile-1 ids, 11 closed, **91 left**. Measured against
+the catalog that is actually live today:
+
+| | decile 1 | decile 2 |
+|---|--:|--:|
+| 4W records at that decile | 148 | 328 |
+| s4w-owned | 143 | 316 |
+| already enriched | 46 | 135 |
+| **GAPS** | **97** | **181** |
+
+**97, not 91 — the head GREW.** v2026.09.0 published 1,047 new records and
+decile 1 went from ~113 s4w ids to 143. Eleven were closed and six more
+appeared behind them. This is the stale-base trap that S4W already logged
+against data#316, arriving as a *false positive* this time: an inherited
+number that flattered the lane. The queue is re-derived per session from now
+on, for exactly this reason.
+
+### 3 · pipeline#187 — DEBT#71 closed, and the row understated it by 3×
+
+The predecessor's finding was right: `type: generation` was **already** in the
+corpus (53 rows) and `emit.rb` already kept it, so this was a RETYPE, never an
+invention. What the row did not say is how far the defect reached.
+
+`variants:` was the one axis never closed — the loader validated `name` and
+ignored `type`. That is priced, not cosmetic, because one value is
+load-bearing: `emit.rb:721` drops `type: spelling` from the paid feed by
+agreement (Turns 139/140, "register-artifact capture … never product facts").
+With the vocabulary open, a typo'd `speling` silently SHIPS a withheld row and
+a mis-filed code silently WITHHOLDS a marque fact.
+
+**The discriminator, now stated once in `VDB::Enrich` so no pass re-derives
+it: does the MARQUE ITSELF write this string?** `Boxter`, `Felica`, `Kodaiq`,
+`Citigi` — no marque ever wrote those; they stay `spelling`, correctly.
+Porsche's `Type 996`, Kia's `NQ5`, VW's `Typ 113`, Škoda's `A7` are the
+manufacturer's own designations, and arriving through a register fold is how
+they were FOUND, not what they ARE.
+
+I swept all 482 `spelling` rows rather than trusting the row. DEBT names
+Škoda's A5/A7/A8 and "15 of Porsche's 17" — **18**. The true set is **50 rows
+across 7 makes**: porsche 15 · **kia 12** (rows whose own `name` says
+"generation project code") · **volkswagen 9** (Beetle/Karmann-Ghia factory type
+numbers) · skoda 5 · **mitsubishi 4** (Lancer Evo generations) · **vauxhall 4**
+(Velox LIP/EIP/PA/PB) · subaru 1.
+
+Doing only DEBT's 18 would have left Porsche's `Type 996` typed `generation`
+while Kia's `NQ5` stayed `spelling` — **the "third improvisation" this project
+files debt to avoid.** So the axis was made coherent in one pass.
+
+**Left alone, each a judgement:** `U9`/`K9` (bentley, kia, mazda, skoda) are
+RDW *register* series codes — genuine artifacts; the "N Series" rows in
+rover/jaguar/cadillac/aston-martin/volvo are register spellings of a nameplate;
+VW `1110`/`1202` are bare register numbers I could not confirm as factory
+codes; subaru `E10` is a sibling model, not a generation.
+
+Measured: `generation` 53 → **103**, `spelling` 482 → **432**, total variant
+rows **3,983 → 3,983** — nothing added, nothing lost, 50 moved across the
+product boundary. Gates: `rake test` **21 files / 355 runs / 0 failures / 0
+errors**; `lint_enrich` **91 files, 2230 ids, OK**; the YAML diff contains ONLY
+`type:` lines. **The gate arms clean** — `VARIANT_TYPES` is exactly the nine
+types the corpus already measured, so it cost zero retro-fixes. A frozen build
+is running to prove the last claim directly: `catalog-plus` gains the 50 rows
+and `build/out` is untouched (gate 8).
+
+### 4 · The swarm is RUNNING — four Opus researchers, which is the thing that did not happen last session
+
+The 20-slot cap that blocked every launch last session cleared. Four batches
+in flight, cut by mass from the re-derived queue, 33 ids carrying **~615,000
+vehicles**: **perodua** (6 ids, 442k — the largest unenriched cluster in the
+4W catalog, and it has no file at all), **proton** (7 ids, 124k, no file),
+**toyota** ASEAN + the JDM-import tail NZ buys used (9 ids, 208k), **holden**
+(11 ids, 62k, no file — and structurally the richest, because late Holden is a
+rebadging operation end to end, so it is mostly `relations` rows).
+
+`RESEARCHER-BRIEF.md` was rewritten from the loader contract itself rather than
+from memory — schema, closed vocabularies, tiers, the citation rule, the
+Wikipedia override and its "facts in our expression / copy a code exactly"
+clarification, and **the junk-stub rule**, which matters immediately: the
+decile-1 queue contains `car/holden/hsv` (a sub-brand in the model column),
+`car/mercedes-benz/clase`, `truck/fiat/auto`, `truck/fiat/swift`,
+`car/volkswagen/2dsedan-1300-11-2400`, `car/citroen/berlingoatalla-m-blueh`.
+**Researchers are instructed to REFUSE these and report them as defects, never
+to enrich them** — writing production runs onto a parser artifact dresses a
+defect as a fact. Those go to the normalization lane.
+
+Nothing merged into either `main` yet this session; #187 waits for its build.
+Cron window noted — nothing lands after 04:10 until REL-2 posts CRON DONE.
+
+— S4W/ENR4
