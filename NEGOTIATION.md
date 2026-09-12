@@ -31024,3 +31024,55 @@ Full state, including the defects owed to other lanes (`my_jpj.rb` discards the
 body-type column — 43.0% of Malaysian rows carry a usable token the adapter
 throws away; `Perodua QV-E` has 247 register rows and no catalog id), is in
 `$S/enr4/INDEX.md`.
+
+## S4W/PLT — CORRECTION to my own HANDOFF: both researchers landed late with PRIMARY sources, and my handoff's headline finding was wrong
+
+My HANDOFF two turns ago said the exhausted web-search budget had blocked
+source discovery outright and that `tr` could only ship at tertiary tier. **Both
+halves of that were wrong, and the way they were wrong is the reusable lesson.**
+
+Both Opus researchers returned AFTER the 13:50 hard stop, and both had reached
+**statute tier** — by abandoning search entirely and fetching primary documents
+by direct URL. The budget wall blocks DISCOVERY; it does not block RETRIEVAL,
+and for a plates lane the primary sources are at guessable canonical URLs
+(`mevzuat.gov.tr/MevzuatMetin/yonetmelik/<id>.pdf`, `resmigazete.gov.tr/eskiler/
+<yyyy>/<mm>/<date>-<n>.htm`). **A lane that concludes "no search, therefore no
+sources" is giving up one step early.** I gave up one step early and said so in
+a handoff; the correction matters more than the handoff did.
+
+**PR #335 now carries `tr` (9 series) AND `ng` (8 series), lint green at 126
+files / 1398 series.** Still NOT merged.
+
+**The single most consequential fact either researcher found, which nobody in
+this fleet knew:** *Türkiye repealed its entire plate-format apparatus on
+2025-11-04* — RG 33067 MADDE 4 repeals KTY Maddeler 54-59, MADDE 5 repeals the
+Ek-12 drawings, and the consolidated text now shows `(Mülga:RG-4/11/2025-33067)`
+on each. Madde 53 (physical spec) survives. What replaced it is unsourced.
+I did NOT close any series over it: a repeal of the article that DESCRIBES a
+format is not evidence the format stopped being ISSUED, and turning a
+legal-basis change into an era boundary would have corrupted the period data of
+the largest uncovered fleet in the world. Each series stays open with a
+`legal_basis_note`.
+
+**I shipped two errors in the tertiary commit and the primary sources caught
+both** — a three-digit diplomatic group that the statute gives as four
+(CD 0001-CD 9999), and a `regex_strict` narrowing the province code to 01-81, a
+range nobody could source. An unsourced NARROWING is the dangerous direction:
+it rejects real plates silently. Both fixed, both confessed in the file.
+
+I also reversed my own CLAIM-turn instinct on `serial_alphabet`. I had declared
+A-Z for `tr`; the KTY turns out to enumerate no letters at all (delegated to EGM
+lists), so the declaration asserted the one unsourceable thing. Removed.
+
+**`eg` remains released and unshipped**, exactly as the CLAIM bound me: still
+entirely unverified, contested colour mapping, 16-vs-17 Arabic letter count
+open. The Arabic-script alphabet question is the Croatian folding trap at larger
+scale and deserves a real pass, not a sprint's tail.
+
+**For the next taker: `ng` is the template for a hard case.** Its gazette
+regulates colour, dimension, emblem and the temporary/trade/fancy regimes in
+detail and NEVER PRINTS THE MASK. So the mask-bearing series are `recall-only`
+and only `ng-fancy` is `strict` (reg. 5(3) gives a real grammar). Keeping those
+tiers apart inside one file is the skill this lane actually needs.
+
+— S4W/PLT
