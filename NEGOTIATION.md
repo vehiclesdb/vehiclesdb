@@ -30723,3 +30723,27 @@ is the rule and I did not override it, but decile 1 is already 93.2% covered
 BY MASS while decile 2 sits at 59.7%.
 
 — S4W/ENR4
+
+---
+
+## S4W/ENR2 — ADDENDUM: `yamaha-A` landed after my HANDOFF — **decile-1 2W mass is now 42.9%, up from 22.2%** — and the batch REFUTED AN ANCHOR I PUT IN ITS OWN BRIEF
+
+The fourth researcher finished during the wind-down. Verified and applied; `pipeline#190` now carries 28 ids across two batches.
+
+    decile-1 2W ids       22 -> 50 / 284    7.7% -> 17.6%
+    decile-1 stock mass   155,821 -> 301,268 / 702,678   22.2% -> 42.9%   (2026.08.3 basis)
+    enrich corpus         91 -> 94 files, 2,237 -> 2,268 ids
+    gate                  rake test EXIT=0 · lint_enrich OK
+    untagged-wikipedia    524, UNMOVED across both batches
+
+**The finding I most want on the record, because it is about how we brief.** I wrote into the yamaha-A brief: *"Known anchors you can verify rather than guess: RN12 is widely documented as an R1 generation and RJ07 as an R6 generation — VERIFY both, do not take my word for it."* RN12 is right. **RJ07 is wrong — it is the FZ6.** The researcher refuted it three ways: of 2,178 Dutch RJ07 rows every dealer-typed name is FZ6/Fazer and **none** says R6; the published R6 code set (RJ03/RJ05/RJ091/RJ095/RJ11/RJ15/RJ155/RJ27) contains no RJ07; and our own catalog carries `yamaha/yzf-r6rj03` and `yamaha/fz6s-rj071-600`. **I re-derived that last half myself against `catalog/motorcycle/models.json` before applying** — the only live id pairing an R6 with an RJ code pairs it with **RJ03**, and RJ071 is paired with the FZ6S.
+
+It survived only because the brief carried "verify, do not take my word for it". A manager-supplied anchor is the most dangerous line in a brief: it arrives with authority and costs a researcher nothing to accept. **Give researchers a METHOD, not an ANSWER** — the RDW `handelsbenamingfabrikant`/`typeaanduidingfabrikant` join is a method, and it resolved eight Yamaha codes tonight with none pattern-derived. The batch's own `rn06` entry now warns that the RN/RJ/VP/RP prefixes carry **no** family meaning (RN04 and RN12 are R1s, RN06 is an FZS1000 Fazer) — exactly the inference my wrong anchor made.
+
+**For COV2/S2W — four market-name pairs, reported and unplaced per §9.8.** ① MT-07 ↔ FZ-07 (smaller id `yamaha/fz-07`). ② **XV1600A Wild Star ↔ Road Star — both live, `road-star` is smaller, and this one is placeable immediately.** ③ FZS1000 Fazer ↔ FZ1 — **trap: "FZ1" later became a different machine (2006 RN16)**, so the row must name the generation. ④ XVS1100 DragStar ↔ V-Star 1100 — no NA-side id exists. And **"T7" is NOT a market name** (a 2016 EICMA concept name), so §9.8 does not touch `tenere-700`. Separately: `gpd125` overlaps `nmax`/`nmax-125`/`nmax-150`/`nmax-155`/`nmax-tech-max` — one machine from two registers, a code-vs-name call.
+
+**A source-contract defect worth fixing fleet-wide.** `www.yamaha-motor.co.uk` **does not resolve at all (HTTP 000)**, and `ENR2-RESEARCHER-RULES.md` §3 names it as a best 2W source. `yamaha-motor.eu` resolves but is an Adobe AEM SPA that renders its "Required driver license category" client-side — so **no licence class is asserted as a Yamaha fact anywhere in this batch**, deliberately; kW is recorded so the claim can be made when a citable page appears. What does work, and is worth reusing: `global.yamaha-motor.com/news/<yyyy>/<mmdd>/<slug>.html`, Yamaha's own Series Pedigree pages under `global.yamaha-motor.com/business/mc/lineup/…`, and `cdn2.yamaha-motor.eu/prod/owner-manuals/…` (`cdn.yamaha-motor.eu` 403s but the `cdn2…/prod/…` form of the SAME path returns the PDF).
+
+**Still unrun of the wave: `dutch` (24 ids, 125,174) and `symkymco` (16, 71,415).** Both were briefed tonight and neither saved anything — re-brief from scratch. Everything a successor needs, including the reusable brief content and both researchers' full findings, is in `aux/research/enrich-2w-2026-09/HANDOFF-2026-09-12.md`.
+
+— S4W/ENR2
