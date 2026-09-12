@@ -32012,3 +32012,186 @@ today I am not starting them uninvited. S4W / owner: say which.
 | open, mine | `#297` `#300` `#304` `#305` `#307` `#308` `#311` `#315` — **nine** counting `#315` |
 | main | red since 08-10; failure set drifts between runs, so re-verify subsets at merge time |
 | next unblocked | the 2W manufacturer-lowercase suffix class (i-get / 125i / 300i), one evidence pass rather than three guessed keys |
+
+---
+
+## S4W/AUD — HANDOFF 1 (14:25 UTC): the round is RUNNING against `v2026.09.1`, and it has already found that **the five-nines construction's free multiplier is neither free nor enforced**
+
+*Records audited so far: **0 of 400** — the first researcher pair is in flight on
+50 records / ~335 claims. Everything below was found by the manager while
+pinning the release, before a single record was audited, which is what a
+pre-round is for. `#328` merged at 14:19:50; the round's work continues on
+**`#337`**.*
+
+### 0 · The pin, published so the round is reproducible from this turn alone
+
+```
+tag           v2026.09.1        released 13:58:38Z, run 34697443600, 7 assets
+data SHA      a480b99           the release commit
+pipeline SHA  96a798b           from the publish run's own checkout log
+build_pin     a git worktree detached at v2026.09.1
+weights       catalog/meta/decile-mass.json, committed at the tag
+```
+
+`build_pin` is a local path but it is **content-addressed by the tag** —
+`git worktree add --detach <dir> v2026.09.1` reproduces it byte-for-byte.
+`git diff --name-only ab7fe03 a480b99` is outputs only (`VERSION`, `catalog/**`,
+`dist/**`, `manifest.json`; **zero override files**), so "data at the tag" and
+"data the run built from" are the same build inputs.
+
+### 1 · ⚠️ A5 — the headline, and it is not about my lane
+
+`PRD-FIVE-NINES` §1.3 says detector coverage is what makes five nines reachable
+without auditing everything: *"Every defect class with a detector (collisions,
+contradictions, corporate strings, name defects…) is **checked over the WHOLE
+catalog at every build**, so for those classes **r = 0 deterministically in BOTH
+strata**."* Two claims. **Measured on the released artifact, neither holds.**
+
+**(a) Not checked at every build — not checked anywhere.**
+`grep -rn 'find_\|check_rulings\|lint_review' .github/workflows/` → nothing.
+`lint.yml` runs six lints, one of them non-blocking by its own step name. The
+publish path runs `rake test`, a **report-only** claims lint, and the build's
+eight `validate.rb` gates (`license_pins`, `schema`, `spotchecks`, `delta`,
+`gdpr_lint`, `attribution`, `id_contract`, `private_boundary`). The classes
+§1.3 names by name have **no automated coverage at all**.
+
+**(b) Not silent.** Run against the pin with `VDB_CATALOG` set (logs committed):
+
+| detector | on `v2026.09.1` |
+|---|---|
+| `find_alias_name_collisions` | **exits non-zero — 10 hard findings** |
+| `find_duplicate_spellings` | 36 groups / 72 records (s4w); 6 mint a NEW canonical |
+| `find_casing_contradictions` | 20 contradictions / 101 records |
+| `find_published_name_defects` | 243 tokens / 653 records; 55 near-dup groups / 110 records |
+| `find_token_duplicates` (2W) | 399 nominated groups |
+| `find_corporate_strings` | 3 |
+
+Two of the eight **exit 1 with "no records"** unless `VDB_CATALOG` is set — they
+default to a sibling pipeline path that does not exist. A detector reporting
+nothing because it scanned nothing is the silent-truncation shape this programme
+was written to remove, and it was sitting inside the programme's own toolbox.
+
+**I am not claiming a defect count.** Detector output is nomination, not
+adjudication — the protocol's own rule. Some of those rows are correct as
+published, some are filed debt, and the acronym rows are a known programme. The
+claim is narrower and worse: **`r = 0 deterministically` is neither enforced nor
+true, and §1.3's arithmetic assumes it.** Every other term in that construction
+is bounded by measurement; this one was bounded by an assertion.
+
+**REL/CI, cheapest repair:** a `detectors.yml` running the eight `find_*` scripts
+with `VDB_CATALOG` set, **report-only first** so the backlog is measured before
+it is gated. It is the same gap `#292` is stuck on, one altitude up.
+**Owner/S4W:** §1.3 either gets a gate that makes the sentence true, or those
+classes become a **fourth weighted term** rather than a free multiplier at zero.
+
+**And it misinstructs researchers right now.** `audit-PROTOCOL.md` step 1 says
+those detectors *"should be silent — they run in CI"*. Both halves are false, so
+a researcher reads "nothing fired" as support for `correct`. Every researcher in
+this round has been told directly. I am **not** patching the protocol mid-round:
+it must not move under a round that is measuring against it.
+
+### 2 · A1 — you cannot verify a release by rebuilding it, and every lane is told to
+
+I built **frozen** from the exact inputs the publish run used. Against the
+released `catalog/`:
+
+| | |
+|---|---|
+| records: released / frozen rebuild | 14,886 / 14,864 |
+| in the release, absent from the rebuild | **23** (named in the PR) |
+| in the rebuild, absent from the release | **1** (`motorcycle/daelim/vt125`) |
+| common records differing on ≥1 field | **13,876 (93.2%)** |
+
+`decile-mass.json` — the artifact the bound reads its weights from — differs
+too. Fields: `popularity` 5,229 · `xrefs` 1,246 · `availability` 1,056 ·
+`name` 33 (car). None of it is a bug; `popularity` is a *rank* and churns
+catalog-wide from any count change.
+
+This **enlarges** my predecessor's defect #5. A frozen build is not merely blind
+to xref-window expiry — **it cannot verify a release at all**, and the plan tells
+every lane to judge work by exactly that method. It is sound for *differential*
+questions and it is not evidence for *absolute* ones. My own frozen build
+reports `FAIL id-contract (no-vanish)` on 22 ids, and **every one of those
+failures is an artefact of the cache**. A lane rebuilding locally will see them
+vanish and may fix a non-problem. One line in `RELEASE-RUNBOOK.md`: to verify a
+release, diff the tag's committed `catalog/`.
+
+### 3 · A3 — ⚠️ REL-3, your published counts are the PRE-PRUNE row
+
+The build log prints `reconcile <kind>: {… published: N …}` and then, seconds
+later, `cross-kind prune <kind>: -M`. All six kinds check out exactly:
+
+| | car | motorcycle | moped | van | truck | bus | total |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| reconcile line | 5,489 | 6,042 | 1,390 | **1,015** | 937 | 422 | **15,295** |
+| after prune (**shipped**) | 5,455 | 6,015 | 1,370 | **720** | 923 | 403 | **14,886** |
+
+REL-3's HANDOFF reports *"Published moves 15,122 → 15,295"*. That overstates the
+catalog by **409 records (2.7%)**, and **van by 41%**. **No harm reached the
+artifact** — `manifest.json` at the tag carries the correct post-prune counts,
+and so does the log's own `dist-plus … 14886` line. The defect is in what the
+log makes easy to quote, and `#330` was writing public README counts from a
+release this week. Remedy: quote `manifest.json`, or emit one post-prune line
+per kind.
+
+### 4 · A2 and A4, briefly
+
+**A2 — display names drift without curation.** 64 records (0.43%) change `name`
+between two builds of the same data and pipeline SHA; **all 64 separator/
+punctuation/casing, zero token changes**. Then I checked incidence rather than
+sensitivity: between the two *released* catalogs `v2026.09.0` → `v2026.09.1`,
+exactly **one** name moved — `car/changan/e-star`, `"E Star"` → `"E-Star"` — and
+`git diff v2026.09.0..v2026.09.1 -- overrides/` is **one unrelated Geely line**.
+So a published name changed with nothing curated behind it. The id is slugged,
+so no id-contract gate can see it. 64 is the exposure, 1 is the incidence;
+quoting either alone misleads in opposite directions. Candidate taxonomy class
+(I-15); it hands `#316` and S2W's `#315` a measured population.
+
+**A4 — `w_tail` is a moving quantity, not a stale constant.** From this
+release's own weights (sum `1.00000000`): `d1-6 = 98.94%`, **`w_tail = 1.064%`**,
+implied tail n ≈ **6,387**. My predecessor measured 2.521% a week ago and filed
+§1.3.1 as *"stale by ~5×"*. It is **~2× and closing**. The remedy is not to
+patch `3,100` to `6,387` — it is to state sizing as arithmetic
+(`n ≥ 3·w_tail / 5e-6`) and let each round print its own number. This round does.
+
+### 5 · Method notes worth stealing
+
+- **The alpha budget is closed in code**, not in prose. `--alpha=` threaded
+  through `rates` → `stratified` → `run` and **both** quantile families
+  (`z_for()` by bisection on `Math.erf`, so Wilson cannot keep its hardcoded
+  1.96 while Clopper-Pearson moves). `QUALITY.md` renders both halves — a
+  **four-term** union composition — so the dashboard defaults to `0.025`
+  (4 × 0.0125 = 0.05 ⇒ ≥95%); at the old default four terms guaranteed only 90%.
+  Regression-tested against *a flag that is accepted, printed, and never reaches
+  the quantile*.
+- **The 200 → 400 extension was pre-registered and then measured.** The sampler
+  seeds each stratum from `sha256(tag)|stratum` and takes `.first(alloc)` of one
+  fixed shuffle, so `n` changes only the allocation — the n=200 draw should be a
+  per-stratum *prefix* of the n=400 draw. Measured on both halves: **subset
+  true, zero strata shrank.** Extending is therefore honest by construction
+  rather than a second look at a sample I had already seen.
+- **My branch was 55 commits behind main** and `lint_review` on that base
+  measured a 13,809-record catalog. The stale-base trap does not only produce
+  false negatives in diffs — it silently changes the *denominator* of a
+  published coverage percentage.
+
+### 6 · State, and what a successor runs
+
+`#337` open (A5 + detector logs). Round artifacts on main via `#328`:
+`data/review/audit-v2026.09.1/` — `README.md` (the pin, the recipe, the caveats),
+`ROUND-BRIEF.md` (what every agent is handed), `slices/` (the make-coherent
+50-record slices, head-first, plus `-records.json` = the released bytes under
+audit and `-enriched.txt` = the 43 of 400 that get the §6.2 sub-check).
+
+Researcher/verifier pairs run one at a time (≤2 children), researcher ≠ verifier
+always. Aggregation is `ruby scripts/audit_aggregate.rb --tag=v2026.09.1
+--half=<h>` then `gen_quality_dashboard.rb`. **No rate is published until I-11 is
+satisfied — the generator refuses.**
+
+One limitation I owe the record up front: **there is no released `plus` artifact
+for this tag.** The latest is `plus-2026.08.1` (2026-08-01) — *three* public
+releases back, `PIPELINE_RELEASE_TOKEN` still missing since 09-05. So the
+enrichment sub-check measures a locally built `catalog-plus`, and I will say so
+in RESULTS rather than let it pass as the paid layer.
+
+— S4W/AUD
