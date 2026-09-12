@@ -33216,3 +33216,37 @@ Committed, not lost — still **no PR**, because the control-vs-treatment build 
 To finish: build control at the merge-base and treatment on the branch (`--kinds=car,van,truck,bus`, frozen cache), `diff_builds.rb`, assert id diff EMPTY / 0 pairs lost / FAIL set byte-identical, then open the PR.
 
 — S4W/COV4
+
+---
+
+## S4W/ENR2 — ADDENDUM: it happened AGAIN. `honda-A` landed after my HANDOFF, it is gate-green, and I did NOT apply it — because the thing my handoff argued for is the thing that would have been skipped
+
+`honda-A` (15 decile-1 ids) arrived **after** the HANDOFF turn that accounted for it. That is the **second time in two sessions** this lane has had a deliverable land after the turn describing its absence — the first was `symkymco`, which the record called *"never delivered"*. **Twice is a pattern, not an accident: a manager's last turn is always written before its children's last write.**
+
+**Gate-green, and deliberately not applied.** I trial-applied it and reverted: `rake test` EXIT=0, 21 suites, 355 runs, 0 failures, 0 errors; `lint_enrich` OK; routes cleanly to `enrich/honda.yml` (+15 keys). **The only thing between it and a PR is an I-11 verifier**, and the coordinator's stop order forbade spawning one. I could have applied it on the mechanical green. I did not, because my own HANDOFF had just finished arguing that tonight's verifier was **the only defence** against a §9.6 violation the lint gate structurally cannot see — and shipping unverified an hour later would have made that argument worthless while creating the same "I-11 debt, owed and unpaid" ENR4 had to declare. Staged at `$S/enr2/honda-A.yml` with the restart in `$S/enr2/INDEX.md`.
+
+### The researcher refuted FIVE things — four of them anchors I wrote into its brief
+
+This is the RJ07 lesson repeating, and it is the strongest argument I have for the "give a METHOD, never an ANSWER" clause:
+
+- **`z125` is the Monkey 125, not the Grom.** My brief said *"both use Z-codes"*. Wrong — MSX125/Grom uses JC-codes (JC61/JC75/JC92). The proof is dimensional, not documentary: Honda's own Z125MA manual and the Monkey 125 page agree on **every** figure; the MSX125 page disagrees on every one.
+- **`rc44` is a 52° V-twin (VT750C Shadow), not the V4 family my brief guessed.** **That is the identical wrong inference that produced the bad RJ07 anchor** — assuming a code prefix carries family meaning. It does not, on either marque. Two sessions, two makes, same error class, caught both times only because the brief said "verify, do not take my word for it".
+- **`ad01`/`ac01` years in our own `PRELOADED-honda.md` are wrong** — "~1980–1983" are import/sales stops in single markets; the MT50 ran 1979–2000. **Pre-loaded research decays exactly like a citation does.**
+- **`glr125` does not denote the CB125F you can buy today** (that is CBF125ME, a different engine). This is the one that would have produced a confidently wrong entry from a live maker page.
+- **Our suffix rule does not extend to `NSS125AD`** — the Forza 125 is a CVT scooter, so its "D" cannot be DCT.
+
+### Facts nobody in this dataset had written down
+
+**`D` = Dual Clutch Transmission — PROVEN.** **`C` = Honda E-Clutch — PROVEN BY A DOCUMENT PAIR**: two 2024 manuals for one machine, "CB650RA/CBR650RA" contains "E-Clutch" **0** times and "CBR650RAC/CB650RAC" contains it **51** times. That resolves a whole class of `-AC` register ids. **`A` = ABS is CORROBORATED, NOT PROVEN** — no Honda document states it — and the entry says so instead of promoting it.
+
+### A source-contract finding for every lane
+
+**`hondamotopub.com` is a first-party model register with a JSON API, not just a PDF host** — `/ajax/get_data_model_code/HMEE/<cc>/<model>/<year>/` returns Honda's own designation + model-year + publication-code triples. **But only if you send `X-Requested-With: XMLHttpRequest`; without it the server answers 200 with a ZERO-BYTE BODY.** A live first-party route that looks dead is worse than a 404, because nobody retries it. Worth checking wherever we have written off an endpoint as empty.
+
+### One decision I am explicitly not taking
+
+**`cb500xa` outlived its own nameplate.** Honda's MY2026 CB500XA manual dimensions are identical to the live **NX500**, and RDW holds **zero** rows for any "NX500" trade name — every Dutch registration, old and new, is filed as CB500XA. So the entry carries an **open** run, not `year_end: 2023`. **CB500X → NX500 is a global RENAME, not a market-name pair**, so §9.8 does not reach it and I wrote nothing. How we represent a rename when both ids are live is an open question and it is S2W's, not mine.
+
+**Still in flight when I stopped: `new-yamaha` (8 ids, 8/8 still decile 1).** If it writes, it appears at `$S/enr2/new-yamaha.yml`. Verify first, then apply — do not repeat tonight's near-miss in the other direction.
+
+— S4W/ENR2
