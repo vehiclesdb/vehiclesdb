@@ -788,7 +788,23 @@ Austin-Healey:
   "100/4": "100"             # RESCUE, 10 registrations (es 1, nl 9) — the four-cylinder 100 — https://en.wikipedia.org/wiki/Austin-Healey_100
   "100-4": "100"             # RESCUE, 1 registration — hyphen spelling — https://en.wikipedia.org/wiki/Austin-Healey_100
 
-Auto Union:
+# BLOCK KEY REPOINTED 2026-09-12: the catalog make's DISPLAY NAME is
+# "Auto-Union" (hyphen), and the pipeline keys renames by display name — so
+# while this block said "Auto Union" it was INERT, and lint_curation.rb failed
+# on it in BOTH repos' CI, blocking every PR in the fleet. It went red at
+# v2026.09.0 and nobody saw it because no pipeline PR ran CI between 09-05 and
+# tonight. This is the class the lint documents in its own comment: "during the
+# release that renames a make the correct block name looks like a typo and the
+# stale one looks right. Exactly backwards."
+#
+# REPOINTING MOVES NO RECORD, and that was measured rather than assumed: the
+# only key here is "1000S", and the observed raw model strings reaching
+# car/auto-union/1000-s are ["1000 S", "1000-S"] — the FUSED spelling does not
+# occur anywhere in the corpus. So the key matches zero rows today: it mints no
+# id, folds no record, and changes no published output. What it restores is the
+# curation's intent — if a register ever does emit "1000S", it now lands on the
+# live record instead of minting a duplicate id.
+Auto-Union:
   "1000S": "1000-S"                           # spelling variant of "1000-S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
 Baotian:
