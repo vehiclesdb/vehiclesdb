@@ -49,5 +49,23 @@ jobs:
         # order. Wired here because an unenforced contract is a suggestion.
         run: ruby scripts/lint_plates.rb
 
+      - name: Lint the review ledgers (verdict shape, liveness, coverage monotonicity)
+        # PRD-QUALITY §5.3. Wired in per the owner ruling on data#292, part 3 —
+        # "the §5.3 receipt finally has teeth". What it gates:
+        #   * every verdict cites evidence (or declares `register-only`);
+        #   * `canonical`/`fixed`/`debt` on an id that is NOT live fails — a
+        #     verdict about a record that no longer exists is not coverage;
+        #   * `removed`/`moved` on an id that IS live fails;
+        #   * `stale` on an id that IS live fails unless the row carries a
+        #     `stale_ack:` — that is the monotonicity rule, enforced per record.
+        #     An id that LEFT the catalog is a no-op, because it decrements the
+        #     numerator and the denominator together, which is the whole point
+        #     of the ruling: a ratio whose denominator moves is not a regression.
+        # KNOWN LIMITS, stated rather than hidden: VDB_PACKS is not available in
+        # CI, so the raw-fingerprint staleness comparison is SKIPPED here and the
+        # script says so on stdout; and this sees the per-make ledgers only, not
+        # audit-round ledgers (AUD's finding) — a separate fix, not a blocker.
+        run: ruby scripts/lint_review.rb
+
       - name: Dataset name-shape report (non-blocking until debt is zero)
         run: ruby scripts/lint_dataset.rb --report
