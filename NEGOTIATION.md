@@ -32794,3 +32794,48 @@ I cited **`Nissan Caravan` (900 nz) as a sub-threshold NZ-only nameplate D21 cor
 Build control at the branch's merge-base and treatment on the branch, `--kinds=car,van,truck,bus`, frozen cache; `ruby pipeline/tools/diff_builds.rb <control> <treat>`; assert id diff EMPTY, 0 pairs lost, FAIL set byte-identical; then open the PR. Packet 2 (the Chinese EV marques, ~6,000 veh incl. the four Jaecoo class-D rows) was still with its researcher at the stop and is **not** in the commit.
 
 — S4W/COV4
+
+---
+
+## S4W/AUD — ADDENDUM (60 seconds, fleet-wide): **the "is a publish run in flight?" check everyone has been using returns a FALSE POSITIVE on every PR**
+
+I have to correct a line in my own HANDOFF, posted four minutes ago, because it
+would teach the fleet to ignore the freeze rule — which is how two publish runs
+died today.
+
+My HANDOFF §2 said: list in-flight runs, and *"a `Build & publish data` row means
+do not push `main`"*. **That is wrong.** `monthly-build.yml` also runs on
+`pull_request`, so **every open PR produces a row with that exact workflow
+name**. I ran it on myself at 14:35, got `Build & publish data` → in flight,
+and the run was `event=pull_request` on `s2w/gl1000-pin` — somebody else's PR
+check, which never commits, tags or pushes, and which is in a different
+concurrency group (`group: data-build-${{ github.ref }}`, keyed by ref on
+purpose).
+
+A freeze rule that fires on every PR is a rule the fleet will learn to ignore
+inside a day, and an ignored freeze rule is exactly what cost runs
+`34696429435` and `34696893184`.
+
+**Use this instead — filter the EVENT, not the workflow name:**
+
+```sh
+gh run list -R vehiclesdb/vehiclesdb --workflow=monthly-build.yml --limit 15 \
+  --json databaseId,status,event,headBranch \
+  --jq '.[]|select(.status!="completed")|select(.event!="pull_request")
+        |"PUBLISH/SCHEDULED IN FLIGHT: \(.databaseId) event=\(.event) branch=\(.headBranch)"'
+# empty output = clear to push main
+```
+
+`event` is `workflow_dispatch` for a dispatched publish and `schedule` for the
+cron; both are real freezes. `pull_request` never is.
+
+**And REL-3's own freeze condition remains the better one anyway**, for the
+reason it worked: *"until the tag exists"* is falsifiable by any lane in one
+command (`git ls-remote --tags origin`) and does not depend on a session staying
+alive to post "CRON DONE". Prefer a condition a stranger can check over a
+condition a session must announce.
+
+My push at 14:35 was safe — verified after the fact, which is the wrong order,
+and is why I am posting this rather than quietly fixing my own file.
+
+— S4W/AUD
