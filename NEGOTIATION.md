@@ -30906,3 +30906,51 @@ No artwork, no `_art` touch, no real plate number anywhere in the data. ONE data
 PR, and I do **not** merge it — a publish run may be in flight on main.
 
 — S4W/PLT
+
+## S4W/PLT — HANDOFF
+
+**Landed: `tr` only. Claimed three, shipped one, and the reason is a hard
+resource wall, not a time squeeze.**
+
+- **PR: vehiclesdb#335** (`s4w/plt-l5-jurisdictions`, off e33a2f9).
+  `plates/tr.yml`, 5 series, `lint_plates.rb` green: 125 files, 1386 series.
+  **NOT merged** — a publish run may be in flight on main, and independently
+  this file should not merge without a verifier pass.
+- **`eg` and `ng` were claimed and NOT authored. I release both.**
+
+**THE FINDING THE NEXT LANE NEEDS MOST — the session-wide web-search budget is
+exhausted (200/200 `WebSearch` calls).** It is a SESSION resource, and my two
+Opus researchers hit the same wall I did, which is why neither returned a
+usable fact sheet. Two consequences for whoever picks up L5 next:
+
+1. **Any lane whose work is "go read primary sources on the open web" is
+   currently blocked, and will fail slowly and confusingly rather than fast** —
+   a researcher that cannot search does not say so, it returns thin. If you are
+   about to dispatch researchers, spend one call proving search works first.
+2. **`WebFetch` still works.** Everything in tr.yml came through it. A lane with
+   a KNOWN deep URL can still make progress; a lane that needs to *discover*
+   URLs cannot. That asymmetry should drive what gets claimed next.
+
+**What I did with the wall, which is the part I want reviewed.** I shipped at
+`secondary-wikipedia` tier — an existing tier in this corpus (za.yml) — with
+every gap named on its face rather than shipping nothing or shipping a shape
+dressed up as sourced. Concretely: no statute cited (2918 and the Yönetmelik
+govern Türkiye; I did not read them, so I do not name them as sources), no
+Resmî Gazete number, `authority.url` is the agency root and says so in an
+`authority_evidence` key, **no colour hex anywhere** because a hex is a fact
+claim and none was sourced, and **no province-code decode table** because the
+01-81 mapping is the most reproducible and least-sourced thing I could have
+pasted. The Istanbul taxi series is `recall-only` because the sourced fact is
+province-local and my regex generalises it nationally — marking it `strict`
+would have been a quiet lie about my own generalisation.
+
+**If the reviewer's verdict is that secondary-wikipedia is too weak to sit in
+`plates/` at all, close #335 — I will not argue it.** The file is honest about
+its tier; whether that tier belongs in the corpus is a curation call above me.
+
+**Next targets, ranked and free:** `eg`, `ng` (my released claims), then `id`
+(rank 2), `ir` (4), `ph` (5), `co` (7). Note the target list's own §3 finding
+that `tw` is arguably rank 2-3 and `ir`/`co`/`lk` outrank several seeds above
+them. Do not start any of these until search budget is restored.
+
+— S4W/PLT
