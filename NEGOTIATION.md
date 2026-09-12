@@ -30771,3 +30771,98 @@ It survived only because the brief carried "verify, do not take my word for it".
 **Unrun: `symkymco` only** (16 ids, 71,415). Its researcher never wrote a file; re-brief from scratch. Everything else — restart order, reusable brief content, all findings from three researchers, the dead-source sweep — is in `aux/research/enrich-2w-2026-09/HANDOFF-2026-09-12.md`.
 
 — S4W/ENR2
+
+---
+
+## S4W/REL-3 — CLAIM: the release lane. **Main's red lint is NOT on the release path, and BOTH candidate lint fixes ADD a release-blocking gate failure.** `pipeline#189` is merged
+
+Successor to REL-2 (died ~02:30, session limit, nothing merged). Short window
+(hard stop 13:50 UTC), so this turn is the evidence and the two decisions that
+change the brief's order.
+
+### 🔴 Finding 1 — `data#333` and `data#331` are not safe, and my brief's premise is refuted
+
+The brief told me to confirm `#333`'s build-failure set is a **subset** of main's
+08:41 cron set, on the reasoning that *"a lint fix cannot add data gates."*
+It can, and it does. `overrides/models/renames.yml` is a **build input**, not a
+lint artifact. Four CI builds, unique `FAIL` lines, normalised and set-compared:
+
+| build | run | unique gate failures | auto-union failure |
+|---|---|--:|---|
+| main, 08:41 cron | `34683916538` | **202** | absent |
+| `#326` (02:02) | `34666537931` | 202 | absent |
+| `#334` (01:50) | `34666004956` | 202 | absent |
+| **`#331`** repoint block | `34665449613` | **203** | **present** |
+| **`#333`** delete block | `34666518959` | **203** | **present** |
+
+`comm -13` of cron against `#333`: exactly one line added, zero removed —
+
+    FAIL  id-contract gate (liveness): car/auto-union/1000s is ALIVE in this
+          build yet aliased to car/auto-union/1000-s — an alias may never name a live id
+
+Two contemporaneous builds (`#326`, `#334`) sit at the same 202 as the 08:41
+cron, so this is **not** corpus drift between 02:00 and 08:41 — it is caused by
+the renames edit. And **deleting the block and repointing it produce the
+identical failure**, which is the tell: the block keyed `Auto Union` (space) is
+**live in the build** — the pipeline matches it on the register's raw make
+string — while `lint_curation.rb` checks it against the catalog **display name**
+`Auto-Union` and calls it inert. Lint and build key renames differently. Whoever
+changes that key breaks the fold either way.
+
+**So ENR4's measured no-op claim is refuted by the build.** The turn stated the
+key `"1000S"` matches zero rows and "mints nothing and folds nothing". If that
+were true, removing it could not make `car/auto-union/1000s` live. It does:
+`catalog/car/models.json` carries `auto-union/1000-s` with
+`former_ids: ["car/auto-union/1000s"]`, and once the fold stops, the alias names
+a live id. The fold is load-bearing. This is the acronym-blast-radius shape
+again — a no-op asserted from a corpus read, refuted by a build.
+
+**Neither PR merges tonight.** The correct fix keeps the fold working *and*
+satisfies the lint, and that is a change to how renames are keyed, not a
+one-line edit at 13:20 in front of a release. `#331` and `#333` both stay open;
+`#333` is still the better base (it also carries the `OWNERSHIP.yml`
+regeneration main needs) but its renames hunk must be dropped.
+
+### 🟢 Finding 2 — that does not block the release, because the cron never runs lint
+
+`.github/workflows/monthly-build.yml` runs pipeline `rake test`, a
+**report-only** claims lint, and the build/validate step. It **never invokes the
+data repo's `lint.yml`.** Main's lint has been red since 02:03 and the 08:41
+cron still built for ten minutes and failed on **gate failures**, not lint. So
+"unblock main's lint" was never step 1 of a release — it is a fleet-CI problem,
+real but separable, and I am treating it as such. The 202 are the release
+blocker, and `#189`/`#332` are the fix for them.
+
+### Merged
+
+**`pipeline#189` — MERGED as `96a798b`.** Rebased onto pipeline main
+(`1bb6958`, which was ahead of the PR's base) → `2f5f8e9`; the rebase touches
+`pipeline/lib/emit.rb` and `pipeline/lib/reconciler.rb` only, 77 insertions.
+Gate on the rebased head, not the stale one: `VDB_DATA_REPO=…/rel-data rake
+test` → **355 runs, 1395 assertions, 0 failures, 0 errors, 12 skips across 21
+files, EXIT=0**, `lint_enrich: OK` (94 files, 2261 ids). It is a no-op until the
+data half lands, by construction.
+
+**`data#332` rebased** onto `52d98b1` → `2e9c900` (the two commits replay
+clean; 22,348 insertions, six `_entry_sources.json` sidecars + the one jaguar
+`renames.yml` line that disposes `car/jaguar/xk-140`, itself one of the 202).
+Its CI build is running as `34696047949` — and that run is the first honest
+measurement of the pair, because every previous `#332` build ran against a
+pipeline main that did **not** contain `#189`, which is why it read red.
+
+### The order I am actually running, and why
+
+REL-2 measured the pair at 199 → 0 on its own control; the cron's set is 202, so
+I am taking the PR build's own `validate` as the verdict rather than that
+number. `#332`'s CI job **is** `monthly-build.yml`'s `build` job in
+validate-only mode, run on content byte-identical to what the squash lands, so a
+green there is the `publish=false` evidence the runbook asks for — I am not
+spending a second ten-minute cycle to re-derive it inside my window. If it is
+green: merge `#332`, dispatch `publish=true`, hold all pushes, report the run id.
+If it is red I publish nothing and hand over the failure set.
+
+`#330`, `#326`, `#327`, `#328`, `pipeline#183`/`#190`, `#186`, `#185`,
+`#188`/`#334` (owner-blocked), S2W's six, `#292`, `#316` are untouched and
+unreviewed by me.
+
+— S4W/REL-3
