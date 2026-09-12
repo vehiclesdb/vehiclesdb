@@ -31076,3 +31076,92 @@ and only `ng-fancy` is `strict` (reg. 5(3) gives a real grammar). Keeping those
 tiers apart inside one file is the skill this lane actually needs.
 
 — S4W/PLT
+
+---
+
+## S4W/REL-3 — HANDOFF: **the release is BUILD-GREEN and TWICE BLOCKED BY A PUSH RACE, not by data.** `pipeline#189` + `data#332` are merged; 202 gate failures → 0
+
+### ⛔ FLEET: STOP PUSHING TO `vehiclesdb` MAIN UNTIL THE TAG EXISTS
+
+This is the whole handoff. **Two publish runs built perfectly and both died on
+the same line** — the publish commit could not be pushed because a lane had
+pushed a NEGOTIATION turn while the run was in flight.
+
+| run | dispatched on | build verdict | step 12 (commit/tag/release) |
+|---|---|---|---|
+| `34696429435` | `a3734d4` | `validate: ALL GATES GREEN`, `license gate: 13/13` | `! [rejected] main -> main (fetch first)` |
+| `34696893184` | `21013a6` | `validate: ALL GATES GREEN`, `license gate: 13/13` | `! [rejected] main -> main (fetch first)` |
+
+The interfering commits were **`NEGOTIATION.md` only** — `8b32bee` + `21013a6`
+(13:27:59, 13:28:35 UTC) killed the first; `3a1c88d` (≈13:46 UTC) killed the
+second. `git diff --name-only a3734d4..21013a6` = one file, zero build inputs.
+So **nothing is wrong with the data or the pipeline**: the same tree validated
+green twice, nine minutes apart. This is the exact runbook lesson from 09-05 —
+*no pushes to main during a publish run* — and it has now cost two ten-minute
+runs in twenty minutes because the window was never announced to the fleet. I
+posted my CLAIM before dispatching and held every push of my own; that was not
+enough, because the rule only works if the lanes doing the pushing know.
+
+**Next operator: announce the freeze, wait for lanes to ack, THEN dispatch.**
+The re-dispatch is one command and needs no further verification —
+
+    gh workflow run monthly-build.yml -R vehiclesdb/vehiclesdb --ref main -f publish=true
+
+Then verify tag `v2026.09.1`, 7 release assets, and expect step 13 to WARN
+(`PIPELINE_RELEASE_TOKEN not set — plus-2026.09.1 NOT cut`; owner action, still
+outstanding from 09-05). `VDB_CATALOG=<build/out/catalog> ruby
+scripts/release_diff.rb` for the record was not run — no local build output.
+
+### Merged, with named SHAs
+
+- **`pipeline#189` → `96a798b`.** Rebased off its stale base onto pipeline main
+  `1bb6958` → `2f5f8e9` (the PR's base was behind; the pipeline-SHA clause
+  matters). Gate on the *rebased* head: **355 runs, 1395 assertions, 0 failures,
+  0 errors, 12 skips, 21 files, EXIT=0**, `lint_enrich: OK`.
+- **`data#332` → `a3734d4`.** Rebased `3ad88ea` → `2e9c900`; 22,348 insertions,
+  six `_entry_sources.json` sidecars + the jaguar `renames.yml` line.
+
+**REL-2's fix is confirmed by CI, not just by a local control.** Main's 08:41
+cron: **202** unique gate failures. PR build `34696047949`, first run ever to
+see `#189` and `#332` together: **0** — `validate: ALL GATES GREEN`. Hysteresis
+now keeps **210** edge ids (car 71, motorcycle 76, bus 17, truck 17, moped 16,
+van 13) — REL-2 predicted exactly 210. Published moves 15,122 → **15,295**
+(car 5,489 · motorcycle 6,042 · moped 1,390 · van 1,015 · truck 937 · bus 422).
+CI checks out the pipeline's **default branch with no `ref:`**, so merging the
+pipeline half first is what made this measurable at all.
+
+### 🔴 `data#333` and `data#331` must NOT be merged as they stand — both ADD a gate failure
+
+My brief said a lint fix cannot add data gates. **It can.** `renames.yml` is a
+build input. Set-compared unique `FAIL` lines: main's cron 202; `#326` 202;
+`#334` 202; **`#331` 203; `#333` 203** — each adds the identical line
+
+    FAIL  id-contract gate (liveness): car/auto-union/1000s is ALIVE ... aliased to car/auto-union/1000-s
+
+**and the block is NOT inert, so the fix belongs in the LINT, not the data.**
+`overrides.rb:93` states rename blocks are keyed by the **alias-resolved** make,
+not the raw. The corroborating witness is `moves.yml:73`, which keys
+`"Auto Union|80"` with the **same space spelling** and whose comment records
+that `test_override_key_reachability` caught the naive key. So `Auto Union` is
+the *correct* build key; `lint_curation.rb` compares it against the catalog
+**display** name `Auto-Union` and wrongly reports it inert. Deleting the block
+(`#333`) or repointing it (`#331`) both stop the fold, mint `car/auto-union/1000s`
+live, and collide with `former_ids.yml:1366`. That is why both measure 203.
+
+ENR4's "matches zero rows, mints nothing, folds nothing" was asserted from a
+corpus read and is **refuted by the build**. Recommendation: keep `#333` for its
+`OWNERSHIP.yml` regeneration, **drop its renames hunk**, close `#331`, and fix
+`lint_curation.rb` to compare against the produced make form.
+
+**And main's red lint never blocked the release.** `monthly-build.yml` runs
+pipeline `rake test`, a report-only claims lint and the build — it **never
+invokes the data repo's `lint.yml`**. The 08:41 cron failed on gates, not lint.
+
+### Left for the next pass
+
+`#330`, `#326` (now safe — `pipeline#184` merged), `#327`, `#328`,
+`pipeline#183`→`#190`, `#186`, `#185`, `#188`/`#334` (owner-blocked),
+S2W's `#304/#307/#311/#315/#318/#320`, `#292`, `#316`, the `plus` hand-cut, and
+`RELEASE-DIFF-2026.09.0.md`. None touched or reviewed by me.
+
+— S4W/REL-3
