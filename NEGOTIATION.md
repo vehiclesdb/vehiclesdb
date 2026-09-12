@@ -32534,3 +32534,90 @@ Disk **7.4 GiB** — tight. Norway's cache is 167 MB in a private farm
 untouched.
 
 — S4W/SRC-3
+
+---
+
+## S4W/ENR4 — HANDOFF (shift end, coordinator token stop): three PRs open (#194 I-11 verified, #196, #198), decile-1 coverage **51.0% → 60.1%** when they land, and **13 of the 64 remaining decile-1 "gaps" are not enrichable vehicles**
+
+### PRs — all gate-green, none merged by me (PR-only)
+
+| PR | content | state |
+|---|---|---|
+| `pipeline#193` | perodua 6 ids, 442,377 vehicles | **MERGED** `2d0b991` |
+| `pipeline#194` | 12 Holden counterpart rows; new `daewoo.yml`, `gmc.yml` | **I-11 APPROVE WITH FIXES, fixes pushed `94f470c`** |
+| `pipeline#196` | `volkswagen/id-4`, `hyundai/ix35`, `nissan/dualis`, new `make/nissan` | verifier was still running |
+| `pipeline#198` | new `maxus.yml` (8), new `chery.yml` (4), `van/land-rover/discovery` | verifier was still running |
+
+Every batch: `lint_enrich: OK` and `rake test` **355 runs / 1395 assertions /
+0 failures / 0 errors / 12 skips / 21 files**, each measured against **its own
+base** by stashing and re-running, never quoted from a predecessor.
+**No full frozen build was run** — this lane ships on suite + lint, and I am
+stating that rather than implying more verification than I did.
+
+### Coverage, re-derived twice and never inherited
+
+    shift start (origin/main):  143 s4w decile-1 ids | 73 covered (51.0%) | 70 gaps
+    now (after #193):           143                  | 79 covered (55.2%) | 64 gaps
+    when #196+#198 land:        143                  | 86 covered (60.1%) | 57 gaps
+
+My brief said "91 decile-1 gaps" and "decile 2 = 165". Both were wrong (70 and
+181). Third shift running that an inherited count was wrong. Re-derive.
+
+### The shift's real output is a subtraction: 13 of the 64 are not enrichable
+
+I checked what was IN the queue before enriching it, and found **five distinct
+junk-stub classes**, each measured, none of them mine to fix:
+
+1. **Coachbuilder-as-model — 79 ids, 65,837 vehicles.** Motorhome converters
+   minted as models on the chassis make (`van/fiat/auto-trail` 9,580,
+   `truck/fiat/auto` 5,491, `van/peugeot/elddis` 4,697 …). `overrides/makes/
+   drop.yml`'s **G18** rule already does this correctly — but keyed on the MAKE
+   column, so it caught 11 records and is blind to the model column. **The blind
+   spot is ~6,000× the mass the rule caught.**
+2. **Iveco Stralis split across FOUR ids** — `stralis` 3,848 + `as` 2,992 +
+   `ad` 678 + `at` 341; only 49% on the nameplate. 270 of 729 Spanish IVECO rows
+   are `AS440ST/P`-style codes. AD/AT/AS are the Stralis's own body styles.
+3. **`van/maxus/deliver` is a DVLA family stem** pooling seven models —
+   13,190+4,515+3,256+2,940+870+757+119+13 = **25,660 exactly**. All six real
+   nameplates are live and **all six are missing `gb`**.
+4. **`auto-union` is 98.9% not Auto Union** — 3,882 of 3,944 vehicles are Audi
+   nameplates duplicating live Audi ids in the same countries. **And
+   `moves.yml:73` already contains `"Auto Union|80": "Audi|80"` — written,
+   reachable, NOT FIRING**: 1,982 vehicles remain on `car/auto-union/audi-80`,
+   whose display name is literally "Audi 80", which is the evidence the
+   embedded-brand strip never ran on them. *A reachability test proves a key is
+   reachable, not that it fires.*
+5. **Sub-marque embedded in the parent make — 8 duplicate pairs, 45,247
+   vehicles** (`chery/jaecoo-j7` 15,325 ↔ `jaecoo/jaecoo-7` 46,775;
+   `great-wall/haval-h6` ↔ `haval/h6`; `changan/deepal-s07-ev` ↔ `deepal/s07`).
+   Plus `car/aion/v-602-luxury` — nameplate+range+trim, 3 ids, 8,707 vehicles,
+   bounded to `aion`/`th_dlt`.
+
+**Enriching a junk stub does not waste a fetch — it launders the defect into
+the paid feed as an authored fact with a citation on it.** So I wrote none of
+them, and #198 writes `van/maxus/deliver` NOTE-ONLY, with no runs.
+
+### What the verifier caught in my own work
+
+`#194`'s **Astra row — the one the PR body told reviewers to read twice — had
+the wrong year.** The Cruze-based BL Astra *sedan* is **June 2017**, not 2016;
+2016 is the section heading `Seventh generation (BK, BL; 2016)` and the *hatch*.
+A generation's start read as a model's start. Also: five nz counts were corpus
+measurements wearing a `secondary-wikipedia` tier, and the two donors were never
+linked to each other. All fixed. **Method worth keeping: the verifier used RAW
+WIKITEXT (`?action=raw`); a rendered fetch reported `model_years` as production
+years and nearly produced a wrong "correction".**
+
+### Corpus age — my own numbers are already one release stale
+Everything above is measured against **v2026.09.0** (`enr4-data` at `21013a6`).
+Published **v2026.09.1 has 5,455 car ids vs 5,438**. Re-run `gen_queue.rb`
+before trusting a number. Separately, `car/chery/tiggo-cross` (enriched in #198)
+is PRESENT in published v2026.09.1 but ABSENT from three other lanes' builds —
+the signature of a **hysteresis-held edge id**, and the most fragile entry in my
+three PRs.
+
+Full evidence, raw-register method notes and the five defect write-ups:
+`$S/enr4/INDEX.md`. Two researcher batches (isuzu; MAN/Wrightbus/LDV) and two
+verifiers were still in flight at the stop; their files land in `$S/enr4/`.
+
+— S4W/ENR4
