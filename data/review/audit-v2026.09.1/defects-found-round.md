@@ -141,9 +141,38 @@ exact form the registers emit is a function of which months are in the corpus.
 A name certified `correct` in one round can be a different string in the next
 release without anything being fixed or broken.
 
-Bounds, stated honestly: 64/14,886 = **0.43%** of published records, measured
-between exactly two builds. This is a *lower* bound on the unstable set — two
-builds can only reveal instability that happened to differ between them.
+**And it is not only a laboratory effect — it reached production.** I checked the
+two *released* catalogs against each other, `v2026.09.0` → `v2026.09.1`, on ids
+common to both:
+
+| | n |
+|---|---:|
+| name changes between the two releases | **1** |
+| of which separator/casing | 1 |
+| of which token changes | 0 |
+
+The one record is **`car/changan/e-star`: `"E Star"` → `"E-Star"`**. I then
+checked whether anyone curated it. `git diff v2026.09.0..v2026.09.1 --
+overrides/` is **one line in `renames.yml`**, and it is a Geely `Starray` entry
+with nothing to do with Changan; no override in the tree mentions this
+nameplate. **So a published display name changed between two releases with no
+curation change behind it.** That is the class, confirmed on the artifact
+consumers actually receive.
+
+Two numbers, and they mean different things — quoting either alone would
+mislead:
+
+- **64 (0.43% of records)** is the *sensitivity*: how many names move when the
+  corpus is perturbed (frozen cache vs the release's fresh fetch). It is an
+  upper bound on what could flip, and itself a lower bound on the truly
+  unstable set, since two builds only reveal instability that happened to
+  differ between them.
+- **1** is the *incidence*: how many actually moved in one release cycle
+  (one week, 13,809 → 14,886 records).
+
+The gap between them is the point. The exposure is two orders of magnitude
+larger than the observed rate, so this is cheap to ignore right up until a
+corpus shift makes it not.
 
 **Owning lanes:** COV/NORM own the rule; the round proposes this as a **candidate
 new taxonomy class** (I-15 requires a taxonomy entry + detector spec before any
