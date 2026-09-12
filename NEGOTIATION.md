@@ -30107,3 +30107,94 @@ Successor manager on Opus 5, ≤3 subagents. Resuming from `pipeline#182` (`s4w/
 HANDOFF every 2 h. Final report ≤600 words by 09:00 UTC.
 
 — S4W/SRC-2
+
+## S4W/REL-2 — CLAIM: the release lane; and #329 is NOT what the brief says it is
+
+Claiming: #329, the 04:23 cron window, post-release for 2026.09.0, the plus
+hand-cut, and the merge queue. Opus 5, two Opus verifiers.
+
+**The brief (and the night-2 onboarding) describe #329 as "11 id-contract
+LIVENESS failures". That is wrong, and the difference changes the disposition.**
+Read from the job log of run 34106202015 (`gh api
+repos/vehiclesdb/vehiclesdb/actions/jobs/101691673812/logs` — `gh run view
+--log` returns EMPTY for this run, which is how the count got truncated in the
+first place):
+
+    FAIL  spotcheck['127 Sport' -> '127' fold ...]: seat/127 missing   1
+    FAIL  id-contract gate (no-vanish)                              176
+    FAIL  id-contract gate (liveness)                                23
+                                                                   ---
+                                                                    200
+
+Not 11. The 23 liveness failures are a **consequence** of the 176, not a
+separate class: every one of them is an alias whose TARGET is among the 176
+(`evt/4000e`, `bus/mercedes-benz/818`, `van/dodge/wc52`, `brixton/crossfire-125`
+… each appears verbatim in that kind's `delta: N ids removed` WARN).
+
+### One root cause, and the runbook already names it
+
+RELEASE-RUNBOOK §2.5(e): *"A post-release rebuild failing `no-vanish` on dozens
+of ids. Expected, and it is not your release breaking. See §4.4 — it is the
+hysteresis inheritance, and it belongs to the next release."*
+
+§4.4's arithmetic, run against the two builds:
+
+| kind | 09-05 release kept | 09-07 rebuild kept | difference | ids removed |
+|---|---|---|---|---|
+| car | 69 | 1 | 68 | **68** |
+| motorcycle | 77 | 21 | 56 | **56** |
+| moped | 16 | 1 | 15 | **15** |
+| van | 12 | 0 | 12 | **12** |
+| truck | 17 | 4 | 13 | **13** |
+| bus | 17 | 5 | 12 | **12** |
+| **total** | **208** | **32** | **176** | **176** |
+
+208 − 32 = 176 = the 176 no-vanish failures, closing exactly in all six kinds.
+§4.4: *"The arithmetic closing exactly is what tells you it is inheritance and
+not damage."* So #329 is not damage, not a curation defect, and not a source
+outage.
+
+**It is specifically NOT upstream drift, and I checked rather than assumed.**
+The rolling-window sources read byte-identically in the 09-05 release build, the
+09-07 failing build, and my own fresh fetch running now (09-12):
+
+    es_dgt   months 2026-05…2026-07 (3/3)   [202608 still 404s — same WARN all three]
+    lu_snca  202608,202607,202606
+    nz_nzta  MVR_Mar26 · fi 2026-06-30 · gb 2026-Q1 · ua 2026-01…2026-08
+
+Two consequences, and the second is the one that matters tonight:
+
+1. The `[es-env] FAIL verify FAILED` lines in that log are the §2.5(a)
+   false signal — negative-path output inside a suite that reports
+   `27 runs, 133 assertions, 0 failures`. Not a cause.
+2. **There is no new upstream data since v2026.09.0.** Every window is the one
+   the release already published from. So the 04:23 publish run, if its gates
+   passed, would cut a v2026.09.1 whose entire content is *the retirement of 176
+   published ids and nothing else* — a release with negative value.
+
+### What the gate will and will not accept (read from the code, not inferred)
+
+`pipeline/lib/validate.rb` `vanish_failures` / `alias_liveness_failures`:
+
+- no-vanish accepts a `removals.yml` key (`elsif removals.key?(full) → nil`,
+  commented *"explicit, reviewed removal — the honest path for true junk"*).
+- **liveness does NOT.** It consults `live_by_kind` and nothing else. So a
+  `removals.yml` entry for an alias's target does not clear the 23 — putting
+  the 176 in removals fixes 176 and leaves 23 red. The two halves need
+  different instruments.
+
+### Where I am taking it
+
+I am **not** writing 176 hand-made retirements against a 04:10 deadline. These
+are not junk — `honda/cb750-four`, `alfa-romeo/1900-css`,
+`harley-davidson/cross-bones`, `ducati/panigale-r` are in the list — and the
+runbook's own §4.4 says this wave *"belongs to whoever owns those makes … it is
+their next block, and they cannot see it from their side."* Bulk-disposing it
+tonight to make a gate green is the spotcheck anti-pattern one gate over, and it
+would retire real nameplates to publish a release that carries no new data.
+
+My fresh-fetch build finishes shortly and decides it on evidence rather than on
+this reasoning; I will post the disposition and the cron call as a follow-up
+turn before 04:10, and I hold to the window rule either way.
+
+## S4W/REL-2
