@@ -101,6 +101,13 @@ car:
   - { make: Mercedes-Benz, pattern: '\A90[34]\z' }
   - '\b(SPINTER|SPRINER|SRINTER)\b'  # Sprinter MISSPELLINGS in passenger-car classes (fi M1 "SPINTER" x15, "SPINTER 310CDI PROSTYLE TREND", "SRINTER 316CDI-3.5T-906633/367" — measured); the van/truck-kind misspelling rows fold to van/truck sprinter via renames, untouched by this car-kind drop
 
+  # ── it_aci (ACI Autoritratto 2025, https://aci.gov.it//app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip).
+  # MAKE-SCOPED and EXACT (\A…\z) so no other register row can match by accident. ──
+  - { make: Fiat, pattern: '\A35\z' }            # it_aci 2,367 cars, Serie "10 VAN"/"8 VAN"/"F8" — the Daily 35.8/35.10 VAN in the car table; vans are excluded from car (DUCATO/SCUDO above) and a bare 35 is no nameplate
+  - { make: Volkswagen, pattern: '\ATRANSPORTE\z' } # it_aci 123 cars + es_dgt 1 — TRANSPORTER cut at 10 chars; the full word is dropped from car above, the cut form must follow it
+  - { make: Opel, pattern: '\A(2000|2300|CARAVAN)\z' } # it_aci 2,454 + 1,185 cars with Serie "D" only, and 210 "CARAVAN" (+ nl_rdw 4) — engine size and a body word with no model (Rekord, Commodore and Senator all carried 2.0/2.3 diesels); unresolvable per NAMING.md §7.5, so dropped rather than guessed
+  - { make: Renault, pattern: '\AR\z' }          # it_aci 136 cars + nz_nzta 5 — a bare "R" (no Serie) is a placeholder, not a nameplate (NAMING.md §8.1)
+  - { make: Ford, pattern: '\ASCORPION\z' }      # it_aci 356 cars + nz_nzta 1, no Serie — Ford sold no "Scorpion"; reading it as the Scorpio would be a guess by resemblance (NAMING.md §7.5)
 van: []
 motorcycle: []
 moped: []
