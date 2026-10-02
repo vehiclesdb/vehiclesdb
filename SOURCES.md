@@ -25,7 +25,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `th_dlt` | 🇹🇭 TH | DLT first registrations by brand/model (incl. motorcycles) | [TH gov open data](https://gdcatalog.dlt.go.th/) | yearly file | ✓ new reg. |
 | `ua_mvs` | 🇺🇦 UA | Registration operations register (the CIS spine) | [CC-BY](https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0) | ~monthly | ✓ new reg. |
 | `ar_dnrpa` | 🇦🇷 AR | DNRPA vehicle registrations (LatAm spine) | [CC-BY 4.0 (datos.gob.ar)](https://datos.gob.ar/) | monthly | ✓ new reg. |
-| `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet** |
+| `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet; attach-only** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -136,11 +136,49 @@ propulsion coverage would require RDW to publish a combined view.
   - **47 vehicle-group values corpus-wide, only 42 in any one quarter.**
     Re-deriving `overrides/kind_maps/no_svv_pkk.yml` from a single file will
     silently drop five. Trailers (O1–O4), tractors (T1/T5) and cranes are
-    declared skips; motorhomes, ambulances and hearses are skipped pending an
-    owner ruling, because PKK carries the *coachbuilder* as the make
-    (`HYMER`, `DETHLEFFS`…) while the catalog already files those as models
-    under the chassis make (`fiat/hymer`, `citroen/burstner`) — and files
-    them inconsistently, across car, van, truck and even moped.
+    declared skips.
+  - **ATTACH-ONLY: Norway enriches what publishes and decides nothing.**
+    `Kjøretøy Modell` is free text typed at registration. Measured
+    2026-10-02 (frozen corpus, control vs treatment, adapter the only
+    variable): allowed to mint, Norway published **+2,602 ids** (car 1,573 ·
+    van 439 · truck 484 · bus 106), **2,534 of them only as the second source**
+    beside a 1–6 vehicle NL/FI/NZ tail — `chevrolet/tahoe-lt`,
+    `mitsubishi/pajero-gls`, `toyota/ra4a`, `nissan/qashqai-nissannenv`,
+    `citroen/berl-92fap-plus`, `toyota/lexus` — and made six ids vanish by
+    shifting cross-kind dominance. So `no_svv_pkk` declares
+    `Source#attach_only?`: its evidence never counts toward publishing,
+    corroboration, cross-kind dominance or the hysteresis entry class. As
+    shipped: **+0 ids in every kind; `no` availability on 2,897 published ids
+    (car 1,979 · van 282 · truck 476 · bus 160), carrying 3,980,040 of
+    4,341,199 periodic inspections (91.7%)**; gate failures identical to
+    control. Lifting attach-only needs a curation pass that keys the tail.
+  - **Motorhomes (`CAMPINGBIL`) map to `car`, by precedent** (coordinator
+    ruling 4, 2026-10-02: a coachbuilder is not promoted to a make by one
+    register). PKK carries the coachbuilder as make (`HYMER`, `DETHLEFFS`…)
+    exactly like FI and ES, whose coachbuilder makes `overrides/makes/drop.yml`
+    already drops from `car`; chassis-make rows (`VOLKSWAGEN|CALIFORNIA`,
+    `FIAT|DUCATO`) land under the chassis make. 49,189 periodic rows / 9,887
+    keys / 232 raw makes (FIAT 4,995 · HYMER 4,844 · BURSTNER 4,654 ·
+    DETHLEFFS 3,967 · CAPRON 3,871 · CHALLENGER 2,831 · VOLKSWAGEN 2,689 ·
+    RAPIDO 2,392 · ADRIA 1,983 · KNAUS 1,663 · HOBBY 1,366 · CARTHAGO 1,055 ·
+    MERCEDES-BENZ 1,052 · EURA MOBIL 926 · PILOTE 923 · LMC 865 · WEINSBERG 598
+    · BENIMAR 589 · POESSL 559 · FORD 479). Attach-only means none of it can
+    mint. Ambulances, hearses and patient-transport vans stay declared skips
+    (2,852 periodic rows): their model cells describe the conversion
+    (`CRAFTER 2,0 TDI 4X4 AMBULANSE`), not a nameplate.
+  - **Chassis numbers are typed into the make and model cells.** No
+    identifier COLUMN exists, but real 17-character VINs appear as free text
+    (a Scania WMI in a truck model cell, a Renault WMI in a bus model cell,
+    Fiat WMIs as motorhome makes, more among trailers). The adapter drops any
+    row whose make or model carries a VIN-shaped token (15 rows in the build)
+    and logs the count. The normalizer's VIN-ish filter only catches strings
+    that START with digits, so it does not see these.
+  - **Two first-registration dates, and they differ for 8% of the fleet.**
+    `Første gang registrert` is first registration ANYWHERE;
+    `Første gang registrert i Norge` is first registration IN NORWAY. They
+    differ on 348,454 of 4,341,199 periodic rows (8.0%, the used imports; gap
+    1 year on 139,758). A Norway-market curve must use the second. Neither is
+    emitted: the inspection deferral makes the recent end an artefact.
   - **`KOMBINERT BIL` is not a car.** The research dossier recorded it as M1;
     measured, it is N1-dominant (13,122 of 15,483) and is split on EU
     category into van/truck.
