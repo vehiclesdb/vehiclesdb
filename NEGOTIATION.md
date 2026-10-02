@@ -31938,3 +31938,1398 @@ Two researchers in flight: `b5` = `volkswagen/id-4` (96,239) + `hyundai/ix35` +
 chery cluster. **`#193` still unmerged — nobody touch perodua or daihatsu.**
 
 — S4W/ENR4
+
+---
+
+## Turn 259 — S2W — **block 7 first pass shipped (`data#315`): the head protocol found a decile-1 defect immediately.** And a question on I-11 I would rather ask than assume
+
+### 1 · The 2W head stratum is computed, and it is 2.6x the car head
+
+Per PRD-FIVE-NINES §1.2 as the car pilot read it — deciles 1-3 ordered by head
+presence (top-10 countries, then top-25, top-50, country count, id), NOT by
+`global_decile`, which is the rounded unweighted mean of per-country deciles and
+therefore a typicality score.
+
+**1,374 2W records are in deciles 1-3** — 1,012 motorcycle, 362 moped — against
+**521** for cars. So a 40-pack wave covers proportionally far less of the 2W head
+than it did of the car head. Worth knowing before sizing anything.
+
+### 2 · The protocol found defects on its first run, same as the car pilot
+
+Five records across THREE makes displayed a title-cased `Gts`, one of them the
+**decile-1 head record** `vespa/gts`. Fixed in `data#315`.
+
+**The asymmetry is the mechanism, and it generalises:** every digit-bearing
+sibling was already right — `GTS125`, `GTS250`, `GTS300` — because
+`normalizer.rb` documents that `case_token` returns digit-bearing tokens
+unchanged. So `GTS125` survives and a bare `GTS` is title-cased. **Any bare
+acronym nameplate in the 2W corpus is exposed to this**, which is why it turned
+up under Vespa, SYM and NIU independently.
+
+The lint then caught a cross-file trap: `moves.yml` targets `Vespa|Gts`, renames
+run BEFORE moves, and a move target is not re-normalized — so pinning the display
+without updating three move targets would have landed those records on a
+superseded string. Invisible in either file alone.
+
+### 3 · Three findings filed, and one of them is now overdue for a decision
+
+- **`piaggio/vespa` is a make-as-model record at d3 across SIX countries**, with
+  8 `piaggio/vespa*` ids behind it. **This is the third independent route to the
+  Piaggio-vs-Vespa boundary question** — co-move 2, co-move 3, now the head pass.
+  Three routes, one of them a decile-3 six-country record. It should stop being
+  cleanup and become a ruling: do `piaggio/*` ids that are Vespas move by RULE or
+  by enumeration?
+- `vespa/gts150-iget` renders "Iget" where Piaggio writes **i-get**;
+  `sym/gts125i`/`gts300i` render "GTS125I"/"GTS300I" where SYM writes **125i** /
+  **300i**. Same class, manufacturer-styled lowercase the caser cannot know.
+
+### 4 · ⚠️ The I-11 question, asked rather than assumed
+
+**I-11 (author-never-certifies) means whoever writes the 2W packs cannot ratify
+them.** So producing a 40-pack wave creates 40 records `awaiting_verification`
+with `verifier: null`, **excluded from the coverage numerator** until another
+session signs each one. That is a real cost with no coverage gain until someone
+else spends a comparable pass.
+
+Three ways to play it, and it is not my call:
+
+1. **I write the 2W packs, S4W ratifies.** Symmetric with how the car pilot ran,
+   but it commits S4W to a 40-record verification pass.
+2. **I ratify the CAR pilot`s 40 packs first** — I did not write them, so I-11
+   permits it, and they have been `awaiting_verification` since 2026-08-01 and are
+   excluded from coverage right now. That converts existing work into certified
+   coverage instead of creating more unverified work.
+3. **Neither yet**, while eight of my PRs sit unmerged.
+
+I lean **(2)** — it turns already-spent effort into the metric rather than adding
+to a queue — but the car packs are not in my wake order, and after two collisions
+today I am not starting them uninvited. S4W / owner: say which.
+
+### Board
+
+| | |
+|---|---|
+| open, mine | `#297` `#300` `#304` `#305` `#307` `#308` `#311` `#315` — **nine** counting `#315` |
+| main | red since 08-10; failure set drifts between runs, so re-verify subsets at merge time |
+| next unblocked | the 2W manufacturer-lowercase suffix class (i-get / 125i / 300i), one evidence pass rather than three guessed keys |
+
+---
+
+## S4W/AUD — HANDOFF 1 (14:25 UTC): the round is RUNNING against `v2026.09.1`, and it has already found that **the five-nines construction's free multiplier is neither free nor enforced**
+
+*Records audited so far: **0 of 400** — the first researcher pair is in flight on
+50 records / ~335 claims. Everything below was found by the manager while
+pinning the release, before a single record was audited, which is what a
+pre-round is for. `#328` merged at 14:19:50; the round's work continues on
+**`#337`**.*
+
+### 0 · The pin, published so the round is reproducible from this turn alone
+
+```
+tag           v2026.09.1        released 13:58:38Z, run 34697443600, 7 assets
+data SHA      a480b99           the release commit
+pipeline SHA  96a798b           from the publish run's own checkout log
+build_pin     a git worktree detached at v2026.09.1
+weights       catalog/meta/decile-mass.json, committed at the tag
+```
+
+`build_pin` is a local path but it is **content-addressed by the tag** —
+`git worktree add --detach <dir> v2026.09.1` reproduces it byte-for-byte.
+`git diff --name-only ab7fe03 a480b99` is outputs only (`VERSION`, `catalog/**`,
+`dist/**`, `manifest.json`; **zero override files**), so "data at the tag" and
+"data the run built from" are the same build inputs.
+
+### 1 · ⚠️ A5 — the headline, and it is not about my lane
+
+`PRD-FIVE-NINES` §1.3 says detector coverage is what makes five nines reachable
+without auditing everything: *"Every defect class with a detector (collisions,
+contradictions, corporate strings, name defects…) is **checked over the WHOLE
+catalog at every build**, so for those classes **r = 0 deterministically in BOTH
+strata**."* Two claims. **Measured on the released artifact, neither holds.**
+
+**(a) Not checked at every build — not checked anywhere.**
+`grep -rn 'find_\|check_rulings\|lint_review' .github/workflows/` → nothing.
+`lint.yml` runs six lints, one of them non-blocking by its own step name. The
+publish path runs `rake test`, a **report-only** claims lint, and the build's
+eight `validate.rb` gates (`license_pins`, `schema`, `spotchecks`, `delta`,
+`gdpr_lint`, `attribution`, `id_contract`, `private_boundary`). The classes
+§1.3 names by name have **no automated coverage at all**.
+
+**(b) Not silent.** Run against the pin with `VDB_CATALOG` set (logs committed):
+
+| detector | on `v2026.09.1` |
+|---|---|
+| `find_alias_name_collisions` | **exits non-zero — 10 hard findings** |
+| `find_duplicate_spellings` | 36 groups / 72 records (s4w); 6 mint a NEW canonical |
+| `find_casing_contradictions` | 20 contradictions / 101 records |
+| `find_published_name_defects` | 243 tokens / 653 records; 55 near-dup groups / 110 records |
+| `find_token_duplicates` (2W) | 399 nominated groups |
+| `find_corporate_strings` | 3 |
+
+Two of the eight **exit 1 with "no records"** unless `VDB_CATALOG` is set — they
+default to a sibling pipeline path that does not exist. A detector reporting
+nothing because it scanned nothing is the silent-truncation shape this programme
+was written to remove, and it was sitting inside the programme's own toolbox.
+
+**I am not claiming a defect count.** Detector output is nomination, not
+adjudication — the protocol's own rule. Some of those rows are correct as
+published, some are filed debt, and the acronym rows are a known programme. The
+claim is narrower and worse: **`r = 0 deterministically` is neither enforced nor
+true, and §1.3's arithmetic assumes it.** Every other term in that construction
+is bounded by measurement; this one was bounded by an assertion.
+
+**REL/CI, cheapest repair:** a `detectors.yml` running the eight `find_*` scripts
+with `VDB_CATALOG` set, **report-only first** so the backlog is measured before
+it is gated. It is the same gap `#292` is stuck on, one altitude up.
+**Owner/S4W:** §1.3 either gets a gate that makes the sentence true, or those
+classes become a **fourth weighted term** rather than a free multiplier at zero.
+
+**And it misinstructs researchers right now.** `audit-PROTOCOL.md` step 1 says
+those detectors *"should be silent — they run in CI"*. Both halves are false, so
+a researcher reads "nothing fired" as support for `correct`. Every researcher in
+this round has been told directly. I am **not** patching the protocol mid-round:
+it must not move under a round that is measuring against it.
+
+### 2 · A1 — you cannot verify a release by rebuilding it, and every lane is told to
+
+I built **frozen** from the exact inputs the publish run used. Against the
+released `catalog/`:
+
+| | |
+|---|---|
+| records: released / frozen rebuild | 14,886 / 14,864 |
+| in the release, absent from the rebuild | **23** (named in the PR) |
+| in the rebuild, absent from the release | **1** (`motorcycle/daelim/vt125`) |
+| common records differing on ≥1 field | **13,876 (93.2%)** |
+
+`decile-mass.json` — the artifact the bound reads its weights from — differs
+too. Fields: `popularity` 5,229 · `xrefs` 1,246 · `availability` 1,056 ·
+`name` 33 (car). None of it is a bug; `popularity` is a *rank* and churns
+catalog-wide from any count change.
+
+This **enlarges** my predecessor's defect #5. A frozen build is not merely blind
+to xref-window expiry — **it cannot verify a release at all**, and the plan tells
+every lane to judge work by exactly that method. It is sound for *differential*
+questions and it is not evidence for *absolute* ones. My own frozen build
+reports `FAIL id-contract (no-vanish)` on 22 ids, and **every one of those
+failures is an artefact of the cache**. A lane rebuilding locally will see them
+vanish and may fix a non-problem. One line in `RELEASE-RUNBOOK.md`: to verify a
+release, diff the tag's committed `catalog/`.
+
+### 3 · A3 — ⚠️ REL-3, your published counts are the PRE-PRUNE row
+
+The build log prints `reconcile <kind>: {… published: N …}` and then, seconds
+later, `cross-kind prune <kind>: -M`. All six kinds check out exactly:
+
+| | car | motorcycle | moped | van | truck | bus | total |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| reconcile line | 5,489 | 6,042 | 1,390 | **1,015** | 937 | 422 | **15,295** |
+| after prune (**shipped**) | 5,455 | 6,015 | 1,370 | **720** | 923 | 403 | **14,886** |
+
+REL-3's HANDOFF reports *"Published moves 15,122 → 15,295"*. That overstates the
+catalog by **409 records (2.7%)**, and **van by 41%**. **No harm reached the
+artifact** — `manifest.json` at the tag carries the correct post-prune counts,
+and so does the log's own `dist-plus … 14886` line. The defect is in what the
+log makes easy to quote, and `#330` was writing public README counts from a
+release this week. Remedy: quote `manifest.json`, or emit one post-prune line
+per kind.
+
+### 4 · A2 and A4, briefly
+
+**A2 — display names drift without curation.** 64 records (0.43%) change `name`
+between two builds of the same data and pipeline SHA; **all 64 separator/
+punctuation/casing, zero token changes**. Then I checked incidence rather than
+sensitivity: between the two *released* catalogs `v2026.09.0` → `v2026.09.1`,
+exactly **one** name moved — `car/changan/e-star`, `"E Star"` → `"E-Star"` — and
+`git diff v2026.09.0..v2026.09.1 -- overrides/` is **one unrelated Geely line**.
+So a published name changed with nothing curated behind it. The id is slugged,
+so no id-contract gate can see it. 64 is the exposure, 1 is the incidence;
+quoting either alone misleads in opposite directions. Candidate taxonomy class
+(I-15); it hands `#316` and S2W's `#315` a measured population.
+
+**A4 — `w_tail` is a moving quantity, not a stale constant.** From this
+release's own weights (sum `1.00000000`): `d1-6 = 98.94%`, **`w_tail = 1.064%`**,
+implied tail n ≈ **6,387**. My predecessor measured 2.521% a week ago and filed
+§1.3.1 as *"stale by ~5×"*. It is **~2× and closing**. The remedy is not to
+patch `3,100` to `6,387` — it is to state sizing as arithmetic
+(`n ≥ 3·w_tail / 5e-6`) and let each round print its own number. This round does.
+
+### 5 · Method notes worth stealing
+
+- **The alpha budget is closed in code**, not in prose. `--alpha=` threaded
+  through `rates` → `stratified` → `run` and **both** quantile families
+  (`z_for()` by bisection on `Math.erf`, so Wilson cannot keep its hardcoded
+  1.96 while Clopper-Pearson moves). `QUALITY.md` renders both halves — a
+  **four-term** union composition — so the dashboard defaults to `0.025`
+  (4 × 0.0125 = 0.05 ⇒ ≥95%); at the old default four terms guaranteed only 90%.
+  Regression-tested against *a flag that is accepted, printed, and never reaches
+  the quantile*.
+- **The 200 → 400 extension was pre-registered and then measured.** The sampler
+  seeds each stratum from `sha256(tag)|stratum` and takes `.first(alloc)` of one
+  fixed shuffle, so `n` changes only the allocation — the n=200 draw should be a
+  per-stratum *prefix* of the n=400 draw. Measured on both halves: **subset
+  true, zero strata shrank.** Extending is therefore honest by construction
+  rather than a second look at a sample I had already seen.
+- **My branch was 55 commits behind main** and `lint_review` on that base
+  measured a 13,809-record catalog. The stale-base trap does not only produce
+  false negatives in diffs — it silently changes the *denominator* of a
+  published coverage percentage.
+
+### 6 · State, and what a successor runs
+
+`#337` open (A5 + detector logs). Round artifacts on main via `#328`:
+`data/review/audit-v2026.09.1/` — `README.md` (the pin, the recipe, the caveats),
+`ROUND-BRIEF.md` (what every agent is handed), `slices/` (the make-coherent
+50-record slices, head-first, plus `-records.json` = the released bytes under
+audit and `-enriched.txt` = the 43 of 400 that get the §6.2 sub-check).
+
+Researcher/verifier pairs run one at a time (≤2 children), researcher ≠ verifier
+always. Aggregation is `ruby scripts/audit_aggregate.rb --tag=v2026.09.1
+--half=<h>` then `gen_quality_dashboard.rb`. **No rate is published until I-11 is
+satisfied — the generator refuses.**
+
+One limitation I owe the record up front: **there is no released `plus` artifact
+for this tag.** The latest is `plus-2026.08.1` (2026-08-01) — *three* public
+releases back, `PIPELINE_RELEASE_TOKEN` still missing since 09-05. So the
+enrichment sub-check measures a locally built `catalog-plus`, and I will say so
+in RESULTS rather than let it pass as the paid layer.
+
+— S4W/AUD
+
+---
+
+## S4W/REL-4 — HANDOFF 1: **eleven PRs merged, main's lint is GREEN for the first time since 02:03, and the 15,295-vs-14,886 question is settled — both numbers are right and they measure different stages**
+
+*All measured 13:50–14:40 UTC. No publish run in flight at any merge.*
+
+### 1 · Merged, with named SHAs
+
+**Pipeline** (rebased onto current main first, gated on the REBASED head — the
+pipeline-SHA clause; all three were on `8c0dcb3`/`96a798b`, i.e. stale):
+
+| PR | landed | gate at the rebased head |
+|---|---|---|
+| `#183` 2W decile-1 head | `d7cce0a` | 355 runs / 1395 assertions / 0F 0E / 12 skips, 21 files · `lint_enrich: OK` (96 files, 2285 ids) |
+| `#190` moped+yamaha-A+dutch | `5a19154` | same suite green · `lint_enrich: OK` |
+| `#193` perodua/daihatsu | `2d0b991` | same suite green · `lint_enrich: OK` (115 files, 2362 ids) |
+
+**Data:** `#336` → `84dfe68` (lint fix) · `#328` → `eba26fb` · `#335` → `6579743`
+(tr+ng) · `#330` → `77b9dd7` · `#316` → `b949d5d` · `#326` → `94f60a9` (TMAX,
+`validate: ALL GATES GREEN`, `license gate: 13/13`). `#333`/`#331` CLOSED with
+the mechanism. **Main's `lint.yml` is GREEN** — run `34698602291`.
+
+### 2 · ⚠ A PROCESS RULE THIS FLEET DOES NOT HAVE, AND I LEARNED IT THE EXPENSIVE WAY
+
+**Deleting a merged branch that is another PR's BASE silently CLOSES that PR.**
+`#190` was stacked on `#183`'s branch. I merged `#183`, deleted
+`s4w/enr2-2w-head` per the mechanics, and `#190` went `CLOSED` — and then
+refused to reopen, twice, for two different reasons:
+
+- `PATCH base=main` → *"Cannot change the base branch of a closed pull request."*
+- `PATCH state=open` → *"The `s4w/enr2-2w-batch2` branch was force-pushed or
+  recreated."* (I had already force-pushed my rebase.)
+
+Recovery, in this order and no other: **push the old base SHA back to the
+deleted base branch → push the ORIGINAL head SHA back to the head branch →
+`PATCH state=open` → `PATCH base=main` → force-push the rebased head again.**
+Net effect zero, cost ~6 minutes. **The rule: retarget every dependent PR to
+`main` BEFORE deleting a base branch.** For a stacked pair, retarget first,
+merge parent, then delete.
+
+Also: `gh pr edit --base` fails on these repos with a Projects-classic GraphQL
+deprecation error. `gh api -X PATCH repos/<o>/<r>/pulls/<n> -f base=main` works.
+
+### 3 · 🟢 The 15,295 vs 14,886 question — I was too quick, and REL-3 was right
+
+My RELEASED turn flagged REL-3's "published 15,122 → **15,295**" as a number
+nobody should quote. **The first half of that was unfair and I withdraw it.**
+Every one of REL-3's figures reproduces EXACTLY in this release's own log:
+
+    reconcile car:        published=5489  hysteresis_kept=71  makes=309
+    reconcile motorcycle: published=6042  hysteresis_kept=76  makes=265
+    reconcile moped:      published=1390  hysteresis_kept=16  makes=311
+    reconcile van:        published=1015  hysteresis_kept=13  makes=138
+    reconcile truck:      published=937   hysteresis_kept=17  makes=90
+    reconcile bus:        published=422   hysteresis_kept=17  makes=95
+                          ───────────────────────────────────
+                          Σ published = 15,295 · Σ hysteresis = 210
+
+Both of REL-3's numbers, to the unit. **They are the RECONCILER's counts, and
+the catalog is measured one stage later.** The missing 409 is named in the same
+log and is not a discrepancy at all:
+
+    cross-kind prune van: -295 · car: -34 · motorcycle: -27
+                   moped: -20 · bus: -19 · truck: -14      = -409
+
+    15,295 − 409 = 14,886 = manifest.json = my release_diff = catalog count. ✅
+
+The prune is legitimate — `audi/a3` reconciled into the van kind, `honda/jazz`
+into moped and motorcycle, `citroen/relay` into car, truck AND bus — and one
+nameplate must publish under one kind. **The lesson is not that anyone was
+wrong; it is that this pipeline has two defensible "published" counts one stage
+apart, and van is where they diverge most (1,015 → 720, a 29% prune).** So:
+quote `manifest.json` for any public model count, quote `reconcile` only when
+you say "pre-prune". I have written that distinction into the CHANGELOG commit
+so the next person does not re-litigate it.
+
+### 4 · The release, and the one thing still owed by the owner
+
+`v2026.09.1`, run `34697443600`, `ab7fe03..a480b99`, 7 assets, `validate: ALL
+GATES GREEN`, `license gate: 13/13 pins verified`. Dist-diff **14,856 → 14,886
+(+30 / −0), zero orphans**, 1 display rename. `#329` was already closed.
+
+⚠ **`plus-2026.09.1` was NOT cut — `PIPELINE_RELEASE_TOKEN` is still missing.**
+This is now **two consecutive releases** with the paid feed stranded. It is a
+one-secret owner action (fine-grained PAT, `Contents: Write` on
+`vehiclesdb/vehiclesdb-pipeline`) and no agent can do it.
+
+### 5 · State, and what the next operator picks up
+
+- **In flight:** `#327` (ar folds) — rebased onto current main and re-pushed as
+  `9304993`, a fresh validate build running. I re-ran it deliberately: its first
+  build was measured against a base that predates `#326`, and `renames.yml` is a
+  build input. No make-block overlap (Yamaha vs Chrysler/Ford/Gas Gas/Joint/
+  Piaggio/Trabant/Volvo), so I expect green — but expecting is not measuring.
+- **A verifier is running** on S2W's `#304/#311/#318/#320/#315` against the
+  current pipeline SHA. Nothing of theirs merges until it reports.
+- **Not started:** `#292` (owner ruling, three parts — the rule fix is real work,
+  see below), `#186` (needs its control-vs-treatment build), `#194` (NEW, ENR4's
+  Holden counterparts — not mine, unverified by me).
+- **Untouched by design:** `#185` WIP, `#188`/`#334` owner-blocked, `#307`
+  (gate_acks conflict, gets a comment), `#319` declined.
+
+**`#292` note for whoever takes it:** the owner's part 2 — *monotonicity fires
+on numerator loss NOT explained by catalog departure* — cannot be implemented
+from `_coverage.yml` as it stands, because the baseline stores only three
+percentages. Telling a **withdrawn verdict on a live id** (must fail) from a
+**certified id that left the catalog** (must be a no-op) needs the certified id
+SET, not a ratio. The cheapest honest implementation is a base-ref diff of the
+ledgers — `lint_curation.rb` already does exactly this for its added-line
+provenance check and already handles the "no base ref" case with a note — so the
+machinery exists and should be reused rather than reinvented with a new sidecar.
+
+**Anyone may push to main.** The only freeze is a publish run, and the next one
+is announced before dispatch.
+
+— S4W/REL-4
+
+---
+
+## S4W/ENR4 — HANDOFF 2: **98.9% of the `auto-union` make is not Auto Union** — and `moves.yml:73` already contains the fix for the biggest piece of it, written, reachable, and NOT FIRING. Three PRs open (#194 verified, #196, #198)
+
+### 🔴 The finding, and it lands on the dispute the fleet is already having
+
+`auto-union` holds **11 live ids and 3,944 vehicles. Four ids and 44 vehicles
+— 1.1% — are genuinely Auto Union products.** The rest:
+
+    AUDI-nameplate ids under make auto-union:  5 ids, 3,882 vehicles (98.4%)
+    DKW-nameplate ids:                         2 ids,    18 vehicles
+    genuinely Auto Union:                      4 ids,    44 vehicles
+                                               (1000, 1000-S, 1000SP, 100 LS)
+
+And the Audi ones are **duplicates of live Audi ids in the same countries**:
+
+    car/auto-union/audi-80    1,982  nl      ->  car/audi/80    4,499  (fi,gb,lu,nl,nz,ua,us)
+    car/auto-union/audi-100     619  fi,nl   ->  car/audi/100   2,164  (fi,gb,nl,nz,ua,us)
+    car/auto-union/audi-60       16  fi,nl   ->  car/audi/60        7  (fi,gb,nl)
+    car/auto-union/audi-100gl    11  nl,nz
+    car/auto-union/audi       1,254  nl,nz   <- THE MAKE NAME IN THE MODEL COLUMN
+
+`car/audi/80` already carries `nl_rdw` and `nl`. So these are **the same Dutch
+cars, split by how the RDW spells the make** — not a separate population. It is
+the make-attribution class again, the third sighting today after `chery` vs
+`jaecoo`/`omoda` and the Maxus family stem.
+
+### 🔴 The part that matters: the override is already written and is not firing
+
+`overrides/models/moves.yml:73` —
+
+    "Auto Union|80": "Audi|80"   # the Audi 80 is an Audi, not an "Auto Union
+      # Audi 80". NB keyed on the PRODUCED form: the embedded-brand strip turns
+      # "Audi 80" into "80" before moves run (test_override_key_reachability
+      # caught the naive key)
+
+Somebody already diagnosed this exactly and wrote the move. **And
+`car/auto-union/audi-80` is still live with 1,982 vehicles — and its display
+name is literally `"Audi 80"`.** That name is the evidence: if the
+embedded-brand strip the comment depends on had run on this population, the
+produced model form would be `80`, the key `Auto Union|80` would match, and the
+id would not exist. It does exist, under the unstripped name.
+
+I am reporting the observation, not asserting the mechanism — whether the strip
+is conditional, or runs after moves for this source, or never sees `nl_rdw`
+rows, is a normalizer question I did not chase. But the measurable fact is
+clean: **an override written specifically to move the Audi 80 off `auto-union`
+has left 1,982 vehicles behind, and `test_override_key_reachability` passes.**
+A reachability test that proves a key is *reachable* is not a test that the key
+*fires*. No move exists at all for `audi-100`, `audi-60`, `audi-100gl` or the
+bare `audi`.
+
+### Why this is worth the fleet's attention right now
+
+`#331` and `#333` are open and blocked on **the other 1.1%** — the
+`Auto Union|1000S` renames key, where REL-3 measured 203 gate failures against
+main's 202 and showed the block is load-bearing while `lint_curation.rb` reads
+it as inert. REL-4 then reported main's red lint was the LINT reading the
+catalog instead of the override layer (`#336`).
+
+My reading, offered as evidence and not as an adjudication: **REL-3's finding
+and mine are one structural fact seen from two ends.** `moves.yml` keys this
+make on `make|model` PAIRS precisely because the make alone cannot decide —
+four ids really are Auto Union and seven are not. Any blanket `Auto Union ->
+Audi` alias would destroy the 1000/1000-S/1000SP/100 LS records; any rule that
+leaves the make alone strands 3,882 vehicles on the wrong marque. That is why
+this make keeps generating adjudications, and it is an argument for fixing the
+**keying discipline** rather than any individual line.
+
+### Lane state — three PRs open, one I-11 verified
+
+- **`pipeline#193` MERGED** (`2d0b991`): perodua 6 ids, 442,377 vehicles.
+- **`pipeline#194`** — 10 Holden counterpart rows, **now 12**.
+  **I-11 APPROVE WITH FIXES; fixes pushed as `94f470c`.** The verifier re-fetched
+  all ten pages as RAW WIKITEXT and caught a real one: the Cruze-based Holden
+  Astra **sedan is June 2017, not 2016** — 2016 is the date on the section
+  heading `Seventh generation (BK, BL; 2016)` and on the HATCH. A generation's
+  start read as a model's start, landing in the one row the PR body told
+  reviewers to read twice. Also: five nz counts were corpus measurements
+  wearing a `secondary-wikipedia` tier (kept, now labelled), and the two donors
+  were never linked to each other (two rows added). Method note worth keeping:
+  a RENDERED fetch told the verifier the Equinox ran "2018-2021" — those are
+  `model_years` — and raw wikitext vindicated the original row. **Rendered
+  summaries nearly caused a wrong correction.**
+- **`pipeline#196`** — `volkswagen/id-4` (96,239) + `hyundai/ix35` (76,930) +
+  `nissan/dualis` (11,873) + a `make/nissan` that never existed. Three more soft
+  404s found on hyundai.com/hyundainews and named as dead rather than cited.
+- **`pipeline#198`** — maxus (new file, 8 entries) + chery (new file, 4) +
+  `van/land-rover/discovery`. **`van/maxus/deliver` (25,660, decile 1) is a DVLA
+  `GenModel` family stem pooling SEVEN models** — proved by arithmetic to the
+  unit: 13,190+4,515+3,256+2,940+870+757+119+13 = **25,660 exactly**. All six
+  real nameplates are live and **all six are missing `gb`**; splitting on the
+  `Model` column adds a whole country to six records.
+
+Verifiers are running on `#196` and `#198`; two researchers are on the isuzu
+cluster and the MAN/Wrightbus/LDV commercial head.
+
+### The decile-1 queue keeps shrinking for the right reason
+
+Re-derived: **70 gaps**, of which **six are not vehicles** — `truck/fiat/auto`
+and `truck/fiat/swift` (motorhome coachbuilders; 79 such ids corpus-wide,
+65,837 vehicles), `truck/iveco/as` and `truck/iveco/ad` (Stralis cab codes; the
+Stralis is one truck under four ids), `van/maxus/deliver` (family stem), and
+`car/aion/v-602-luxury` (range-and-trim in the model column: 3 ids, 8,707
+vehicles, all `aion`, all `th_dlt` — bounded, not systemic). Add
+`car/auto-union/audi-80` and it is seven. **The honest decile-1 enrichment
+target is 57; the other thirteen are curation work.** Full evidence and the
+raw-register method notes are in `$S/enr4/INDEX.md`.
+
+— S4W/ENR4
+
+---
+
+## S4W/SRC-3 — HANDOFF: Norway is BUILT and green on the suite; the control build is running. Five dossier refutations, and the `licenses:pin` fix repaired Ukraine on disk the moment it ran
+
+**Pipeline `s4w/src-no-svv-pkk`** @ `c6a43ba` (worktree `src-pipeline`):
+`167d25e` carries #188's `licenses:pin` fix (without AU's pin entry),
+`c6a43ba` is the adapter + `Emit::COUNT_BASIS`/`POWERTRAIN_BASIS` + 21 tests.
+**Data `s4w/src-no-svv-pkk-data`** (worktree `src3-data`): generated licence
+pin, kind map, SOURCES.md. Neither PR opened yet — opening them with the
+measured build, per the template.
+
+**Gate: `rake test` 22 files, 376 runs, 8,250 assertions, 0 failures, 0 errors,
+0 skips, EXIT=0** · `lint_enrich: OK` · **gdpr lint clean** (0 forbidden tokens
+in code *and* in comments; Norway has no identifier column at all, so the
+boundary is satisfied by construction).
+
+### The `licenses:pin` fix is not theoretical — it repaired Ukraine on first run
+
+I carried #188's fix because adding a pin forces the task to run. It ran, and
+**`data/licenses/ua_mvs.txt` went 35,170 bytes → 172 bytes**, from the stale
+whole-`result` extract to exactly the four narrowed licence keys its `why`
+describes. `pins.json`'s ua_mvs **sha256 did not change** — it was already the
+narrowed hash, hand-edited on 2026-08-18, so the on-disk text had been lying
+next to a correct hash for three weeks. The generator now reproduces the file
+instead of damaging it, exactly as SRC-2 predicted.
+
+**All 13 existing pins re-verified against fresh bytes: ZERO sha256 changes.**
+My diff does churn every `pinned_at` — that is the generator's behaviour and
+the timestamps are *true* (they were genuinely re-fetched just now), and
+AGENTS.md forbids hand-editing `pins.json`, so I am keeping it rather than
+faking a minimal diff. Reviewers: the only substantive lines are the new
+`no_svv_pkk` block and the ua_mvs repair.
+
+### Five things the dossier got wrong, all measured on the full 12-quarter corpus
+
+1. **"A plain quoted CSV" — it is MIXED-quoted.** Strings quoted, numerics
+   bare. The obvious fast path parses the all-quoted header and then
+   mis-parses **448,406 of 448,406** data rows. Replacement scanner reads the
+   first 22 of 203 columns at 63,372 rows/s (vs Ruby CSV's 12,606) and is
+   cross-checked against `CSV` over a real quarter — 1,118 rows, 0 mismatches,
+   asserted in the tests.
+2. **"42 vehicle-group values" — there are 47 corpus-wide.** 42 is what ONE
+   quarter shows. Anyone re-deriving the kind map from a single file silently
+   drops five. The map declares all 47; an undeclared 48th is warned, a
+   declared skip is silent.
+3. **`KOMBINERT BIL` is not a car.** Recorded as M1; measured it is
+   N1-dominant (13,122 of 15,483) and splits van/truck on EU category.
+4. **PKK is not a "stock proxy".** Covered in my CLAIM; now also: there is **no
+   identifier column**, so deduplicating quarters into a stock is impossible
+   in principle, not merely awkward. Filed `flow-roadworthiness-inspections`.
+5. **The powertrain recommendation was too narrow, and the reason is our own
+   semantics.** The dossier said decline petrol and diesel, because the column
+   has no hybrid code and a PHEV is filed as `Bensin`. That is right for a
+   SCALAR field. `Row#powertrain` is a union-accumulated DISTRIBUTION —
+   emitting `ice-petrol` for a petrol-engined PHEV asserts something TRUE; what
+   we lose is the ability to evidence `phev` from Norway, which is a coverage
+   gap the absence rule already covers. Mapping them keeps **98.2% of periodic
+   rows** carrying a code instead of 14.6%. `Gass` still maps to NEITHER lpg
+   nor cng, per source.rb's standing ruling on fused gas.
+
+### Two structural facts worth having outside my lane
+
+**Header identity: ONE layout across all 12 files and three years** (203
+columns, byte-identical names). That is what makes positional addressing safe,
+and the adapter re-asserts it per file per build because `run.rb` swallows a
+generic adapter exception with a WARN and drops the source silently.
+
+**Identical rows are DIFFERENT vehicles.** No identifier + upstream
+k-anonymity means two same-model/year/fuel/county vehicles inspected in the
+same month with no faults are byte-identical: 72,873 July-2024 rows carry
+68,932 distinct fingerprints. Content-dedup would delete 3,941 real vehicles.
+The publisher's quarters also overlap by **exactly one row** in 4.3 million,
+so summing the 12 files is safe.
+
+### Deliberately NOT done, and why
+
+**No `history`, though the first-registration column is right there.**
+`Emit::HISTORY_BASIS` is a CLOSED two-value vocabulary and Norway's curve is
+neither: the 4-year inspection deferral makes its most-consumed recent end an
+artefact. Filing it `stock-survival` is the exact silent mislabel
+`test_registration_basis.rb` exists to prevent, and minting a fourth label
+collides with **#188, which is already opening those same two lines** for
+AU's `stock-manufacture-year`. Reported, not emitted; proposed follow-up label
+is `inspection-cohort-survival`. A test pins the absence so it reads as a
+decision, not an oversight.
+
+**Motorhomes/ambulances/hearses skipped pending ONE owner ruling** (85,014 of
+6.59M rows, 1.3%). PKK carries the COACHBUILDER as the make (`HYMER`,
+`DETHLEFFS`), which would mint `hymer/*` as a new make — while the catalog
+already ships those as models under the chassis make (`fiat/hymer`,
+`citroen/burstner`) and files them **inconsistently: 18 under car, 11 van, 11
+truck, 1 moped**. There is no convention to follow, so I did not invent one.
+Ingesting Norway does not depend on the answer.
+
+### Next, in order
+
+Control build running now (`src-ctl` @ `96a798b` = origin/main, same data
+worktree, frozen cache, adapter the ONLY variable). Then treatment, then the
+diff: new records, availability gains, candidate promotions, delta-gate
+impact, kind migrations. **Watch item flagged in advance:** `fi_traficom`'s own
+header warns that two registers agreeing on the same Nordic type-approval
+strings publishes junk through `publishable?`'s `sources.size >= 2` arm.
+Norway beside Finland is precisely that shape, so I will measure at the
+PUBLISHED level, not the candidate level.
+
+Disk **7.4 GiB** — tight. Norway's cache is 167 MB in a private farm
+(`src3-cache`, 240 symlinks + 26 real files); the shared 1.5 GB cache is
+untouched.
+
+— S4W/SRC-3
+
+---
+
+## S4W/ENR4 — HANDOFF (shift end, coordinator token stop): three PRs open (#194 I-11 verified, #196, #198), decile-1 coverage **51.0% → 60.1%** when they land, and **13 of the 64 remaining decile-1 "gaps" are not enrichable vehicles**
+
+### PRs — all gate-green, none merged by me (PR-only)
+
+| PR | content | state |
+|---|---|---|
+| `pipeline#193` | perodua 6 ids, 442,377 vehicles | **MERGED** `2d0b991` |
+| `pipeline#194` | 12 Holden counterpart rows; new `daewoo.yml`, `gmc.yml` | **I-11 APPROVE WITH FIXES, fixes pushed `94f470c`** |
+| `pipeline#196` | `volkswagen/id-4`, `hyundai/ix35`, `nissan/dualis`, new `make/nissan` | verifier was still running |
+| `pipeline#198` | new `maxus.yml` (8), new `chery.yml` (4), `van/land-rover/discovery` | verifier was still running |
+
+Every batch: `lint_enrich: OK` and `rake test` **355 runs / 1395 assertions /
+0 failures / 0 errors / 12 skips / 21 files**, each measured against **its own
+base** by stashing and re-running, never quoted from a predecessor.
+**No full frozen build was run** — this lane ships on suite + lint, and I am
+stating that rather than implying more verification than I did.
+
+### Coverage, re-derived twice and never inherited
+
+    shift start (origin/main):  143 s4w decile-1 ids | 73 covered (51.0%) | 70 gaps
+    now (after #193):           143                  | 79 covered (55.2%) | 64 gaps
+    when #196+#198 land:        143                  | 86 covered (60.1%) | 57 gaps
+
+My brief said "91 decile-1 gaps" and "decile 2 = 165". Both were wrong (70 and
+181). Third shift running that an inherited count was wrong. Re-derive.
+
+### The shift's real output is a subtraction: 13 of the 64 are not enrichable
+
+I checked what was IN the queue before enriching it, and found **five distinct
+junk-stub classes**, each measured, none of them mine to fix:
+
+1. **Coachbuilder-as-model — 79 ids, 65,837 vehicles.** Motorhome converters
+   minted as models on the chassis make (`van/fiat/auto-trail` 9,580,
+   `truck/fiat/auto` 5,491, `van/peugeot/elddis` 4,697 …). `overrides/makes/
+   drop.yml`'s **G18** rule already does this correctly — but keyed on the MAKE
+   column, so it caught 11 records and is blind to the model column. **The blind
+   spot is ~6,000× the mass the rule caught.**
+2. **Iveco Stralis split across FOUR ids** — `stralis` 3,848 + `as` 2,992 +
+   `ad` 678 + `at` 341; only 49% on the nameplate. 270 of 729 Spanish IVECO rows
+   are `AS440ST/P`-style codes. AD/AT/AS are the Stralis's own body styles.
+3. **`van/maxus/deliver` is a DVLA family stem** pooling seven models —
+   13,190+4,515+3,256+2,940+870+757+119+13 = **25,660 exactly**. All six real
+   nameplates are live and **all six are missing `gb`**.
+4. **`auto-union` is 98.9% not Auto Union** — 3,882 of 3,944 vehicles are Audi
+   nameplates duplicating live Audi ids in the same countries. **And
+   `moves.yml:73` already contains `"Auto Union|80": "Audi|80"` — written,
+   reachable, NOT FIRING**: 1,982 vehicles remain on `car/auto-union/audi-80`,
+   whose display name is literally "Audi 80", which is the evidence the
+   embedded-brand strip never ran on them. *A reachability test proves a key is
+   reachable, not that it fires.*
+5. **Sub-marque embedded in the parent make — 8 duplicate pairs, 45,247
+   vehicles** (`chery/jaecoo-j7` 15,325 ↔ `jaecoo/jaecoo-7` 46,775;
+   `great-wall/haval-h6` ↔ `haval/h6`; `changan/deepal-s07-ev` ↔ `deepal/s07`).
+   Plus `car/aion/v-602-luxury` — nameplate+range+trim, 3 ids, 8,707 vehicles,
+   bounded to `aion`/`th_dlt`.
+
+**Enriching a junk stub does not waste a fetch — it launders the defect into
+the paid feed as an authored fact with a citation on it.** So I wrote none of
+them, and #198 writes `van/maxus/deliver` NOTE-ONLY, with no runs.
+
+### What the verifier caught in my own work
+
+`#194`'s **Astra row — the one the PR body told reviewers to read twice — had
+the wrong year.** The Cruze-based BL Astra *sedan* is **June 2017**, not 2016;
+2016 is the section heading `Seventh generation (BK, BL; 2016)` and the *hatch*.
+A generation's start read as a model's start. Also: five nz counts were corpus
+measurements wearing a `secondary-wikipedia` tier, and the two donors were never
+linked to each other. All fixed. **Method worth keeping: the verifier used RAW
+WIKITEXT (`?action=raw`); a rendered fetch reported `model_years` as production
+years and nearly produced a wrong "correction".**
+
+### Corpus age — my own numbers are already one release stale
+Everything above is measured against **v2026.09.0** (`enr4-data` at `21013a6`).
+Published **v2026.09.1 has 5,455 car ids vs 5,438**. Re-run `gen_queue.rb`
+before trusting a number. Separately, `car/chery/tiggo-cross` (enriched in #198)
+is PRESENT in published v2026.09.1 but ABSENT from three other lanes' builds —
+the signature of a **hysteresis-held edge id**, and the most fragile entry in my
+three PRs.
+
+Full evidence, raw-register method notes and the five defect write-ups:
+`$S/enr4/INDEX.md`. Two researcher batches (isuzu; MAN/Wrightbus/LDV) and two
+verifiers were still in flight at the stop; their files land in `$S/enr4/`.
+
+— S4W/ENR4
+
+---
+
+## S4W/AUD — HANDOFF (final, 14:35 UTC): **ZERO records audited.** The instrument is pinned, proven and loaded; the round itself did not start in time
+
+*Coordinator called the token limit mid-round. Stopping honestly: I am not
+publishing a rate, a bound, or a `QUALITY.md`, because no verified ledger
+exists. What a successor gets is a round that is one command from starting.*
+
+### 1 · Records and claims processed — stated plainly
+
+| | |
+|---|---|
+| records audited to a verified standard | **0 of 400** |
+| verified ledgers (researcher + verifier pairs) | **0** |
+| researcher slices launched | 1 (`s4w-b1`, 50 records / ~335 claims) — **in flight when I stopped, no ledger written** |
+| pre-round defects found and filed | **5** (A1–A5) |
+| `RESULTS.md` / `RESULTS-s2w.md` / `QUALITY.md` | **not written — deliberately** |
+
+**⚠️ If `ledger/researcher-s4w-b1.yml` appears after this turn, it is
+RESEARCHER-ONLY and must not be treated as a measurement.** I could not stop the
+agent (ownership). `audit_aggregate.rb` will refuse to print a rate for it —
+I-11 is unsatisfied — and that refusal is correct. Either verify it with an
+independent agent or delete it; do not aggregate it.
+
+### 2 · Exact resume command
+
+**Check no publish run is in flight first** —
+`gh run list -R vehiclesdb/vehiclesdb --limit 10 --json status,workflowName --jq '.[]|select(.status!="completed")'`
+(a `Build & publish data` row means do not push `main`).
+
+The pin is **gone from disk if the worktrees were cleaned**, and it is
+reproducible in one command because it is content-addressed by the tag:
+
+```sh
+# 0. the pin — the RELEASED bytes, not a rebuild (see A1)
+git -C ~/GitHub/vehiclesdb worktree add --detach ~/GitHub/.vdb-worktrees/aud-tag v2026.09.1
+PIN=~/GitHub/.vdb-worktrees/aud-tag       # contains catalog/ + catalog/meta/decile-mass.json
+
+# 1. the sample is already drawn AND COMMITTED on main — do not redraw
+#    data/review/audit-v2026.09.1/SAMPLE-<half>.yml          registered n=400
+#    data/review/audit-v2026.09.1/slices/slice-<half>-b<N>.yml        8 slices x 50, make-coherent, head-first
+#    data/review/audit-v2026.09.1/slices/slice-<half>-b<N>-records.json  THE CLAIM UNDER AUDIT (released bytes)
+#    data/review/audit-v2026.09.1/slices/slice-<half>-b<N>-enriched.txt  43 of 400 get the 6.2 sub-check
+
+# 2. review packs (~12 min for 181 makes; needs a completed local build first)
+cd ~/GitHub/.vdb-worktrees/aud-pipeline && git checkout --detach 96a798b
+find ~/GitHub/vehiclesdb-pipeline/cache -type f ! -name 'license_*.txt' -exec touch {} +
+VDB_DATA_REPO=$PIN VDB_CACHE_DIR=~/GitHub/vehiclesdb-pipeline/cache ruby pipeline/run.rb > build.log 2>&1
+VDB_DATA_REPO=$PIN VDB_CACHE_DIR=~/GitHub/vehiclesdb-pipeline/cache VDB_BUILD_DIR=$PWD/build \
+  ruby pipeline/tools/gen_review_pack.rb $(ruby -ryaml -e 'm=[];Dir["'"$PIN"'/../aud-data/data/review/audit-v2026.09.1/slices/slice-*.yml"].each{|f| m.concat(YAML.load_file(f)["makes"].map{|x| x.split("/")[1]})};puts m.uniq.sort.join(" ")')
+
+# 3. agents: researcher then INDEPENDENT verifier per slice (I-11), 8 slices.
+#    Hand every agent data/review/audit-v2026.09.1/ROUND-BRIEF.md + SCHEMA.md
+#    + audit-PROTOCOL.md + PROMPTS.md 1/2. build_pin: "<the PIN path>" verbatim.
+
+# 4. aggregate — and mind the alpha budget
+ruby scripts/audit_aggregate.rb --tag=v2026.09.1 --half=s4w                 # per-half = 2 terms, alpha 0.05
+ruby scripts/audit_aggregate.rb --tag=v2026.09.1 --half=s2w
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1 --results=s4w        # -> RESULTS.md block
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1 --results=s2w        # -> RESULTS-s2w.md block
+ruby scripts/gen_quality_dashboard.rb --tag=v2026.09.1                      # -> QUALITY.md, alpha 0.025 (4 terms)
+```
+
+`ROUND-BRIEF.md` carries the one trap that will otherwise cost a successor a
+slice: **the packs come from a frozen rebuild that does not reproduce the
+release, so the pack is EVIDENCE and `-records.json` is the CLAIM.**
+
+### 3 · What is merged, and what is open
+
+- **`#328` MERGED** (`eba26fb`, 14:19:50) — instrument, runbook, the pin, the
+  drawn sample, the slices, the `--alpha` budget fix, `ROUND-BRIEF.md`,
+  `defects-found-round.md` A1–A4.
+- **`#337` OPEN, now marked WIP** — A5 plus the committed detector-run logs.
+  It is docs + scripts only; it touches no override, no catalog, no data file.
+  `lint` CI **passes**. `lint_review`'s 7 `mutt.yml` failures are `#292`'s
+  blocked ruling — measured against main's own run, **empty set diff**.
+
+### 4 · The one thing to read if you read nothing else
+
+**A5.** `PRD-FIVE-NINES` §1.3 makes detector coverage the free multiplier that
+makes five nines reachable without auditing everything — *"checked over the
+WHOLE catalog at every build, so for those classes r = 0 deterministically in
+BOTH strata."* **No workflow in either repo runs any `find_*` detector,
+`check_rulings`, or `lint_review`**, and run against the released catalog they
+are not silent (`find_alias_name_collisions` **exits non-zero, 10 hard
+findings**; 36 duplicate-spelling groups; 20 casing contradictions over 101
+records; 653 records of title-case/acronym nominations). Two of the eight
+**exit 1 with "no records"** unless `VDB_CATALOG` is set, because they default
+to a path that does not exist.
+
+No defect count is claimed — detector output is nomination, not adjudication.
+The claim is that **the one term in the construction that was never measured is
+also the one that does not hold**, and it is the term carrying the most weight.
+
+It also means `audit-PROTOCOL.md` step 1 currently misinstructs researchers
+(*"should be silent — they run in CI"*). I did not patch it: the protocol must
+not move under a round measuring against it. **Round 3 should fix that line
+first.**
+
+### 5 · Honest accounting of my own time
+
+I spent the window on the pin and on checking premises, and the round did not
+start. Both halves of that were choices and only one was right. Pinning was
+forced — auditing an unpinned build is the failure protocol v1.2 exists to
+prevent, and the frozen-rebuild divergence (A1) had to be measured before any
+verdict could mean anything. Checking the detector premise was not forced, and
+it produced A5, which I think is worth more than 200 audited records. But a
+successor inherits **zero rows of the thing this lane exists to produce**, and
+that is the cost. **Round 3 should launch slice 1 within ten minutes of having a
+tag** and do its premise-checking with whatever is left over, not before.
+
+— S4W/AUD
+
+---
+
+## S4W/COV4 — HANDOFF: the instrument is rebuilt AND COMMITTED, `data#327` re-verified on the post-release base, and the tool caught a 94-vehicle fold with an **8,155-vehicle blast radius**
+
+Stopping on the coordinator's token call. Nothing unmeasured is claimed as measured.
+
+### Open work
+
+| | state |
+|---|---|
+| **`pipeline#197`** | tools: `replay_country.rb` + `fold_table.rb`. `rake test` 21 files / 355 runs / 8,123 assertions / **0 failures, 0 errors**. Not on the build path. **Ready.** |
+| **`data#327`** (ar) | **re-verified on the POST-RELEASE base** and rebased. **Ready to merge; I never merge.** |
+| **`data/s4w/cov4-th-folds`** | `WIP-th`, 85 keys / 6,711 vehicles, **deliberately NO PR** — the control-vs-treatment build was not run before the stop. Do not merge. Everything to finish it is in the commit. |
+
+### `data#327` — the stale-base trap, applied to my own PR
+
+Its green CI was from 09-05, against a base `v2026.09.1` has since rewritten (`catalog/**` is a build input). I re-ran both sides rather than trust the checkmarks: **id diff EMPTY** (car 5,442 · van 718 · truck 923 · bus 403), **0 pairs lost**, **9 gained — exactly the intended nine**, **FAIL set byte-identical (47)**, car candidates −40. It reproduces the 09-05 numbers *exactly* on a base whose catalog moved underneath it. All four lints green (`#336` fixed main's red lint).
+
+### The finding: a 94-vehicle fold that would have deleted 8,155 vehicles
+
+`Hilux Champ` is 94 Thai car vehicles and reads like an ordinary trim tail. My researcher argued FOLD from Toyota Thailand's own SSR series catalogue — soundly: Toyota TH has no model level, and "Hilux Revo Z Edition" and "Fortuner Legender" are peer *series*, so series ≠ nameplate. I had guessed REFUSE for a weaker reason.
+
+Neither of us was reasoning from the thing that settles it: **`van/toyota/hilux-champ` is LIVE with 8,155 vehicles.** Rename keys are looked up per MAKE and are **kind-blind**, so the car key fires on the van catalog too — the fold would have deleted a published nameplate *to gain nothing*, since `toyota/hilux` already carries `th`.
+
+It is now a tool feature. Over the Thai car corpus the guard finds **five**: `mg/extender` (473), `toyota/hilux-champ` (94), `suzuki/carry-1-5l-mt` (69), `farizon/sv`, `byd/t3`. The hand-check I wrote first found only Champ — it only looked at rows that already had a suggested target. **That gap is the argument for instruments over judgement.**
+
+### Correction to my own CLAIM
+
+I cited **`Nissan Caravan` (900 nz) as a sub-threshold NZ-only nameplate D21 correctly withholds. Wrong** — `bus/nissan/caravan` is LIVE, as is `bus/toyota/regius` (529). They are car-kind rows of nameplates we publish in another kind. The other nine examples stand; the conclusion is unchanged.
+
+### The lane, re-measured (post-release control, incl. two classes the first cut could not see)
+
+| corpus | DESTROY | **foldable** | groups | **veh/key** | C · mint-or-candidate |
+|---|---:|---:|---:|---:|---:|
+| **th car** | 638 / 5 | **14,017** | 239 | **58.6** | 8,318 / 129 |
+| nz car | 1,968 / 26 | 6,780 | 2,168 | **3.1** | 61,455 / 9,026 |
+| ua car | 678 / 27 | 5,028 | 321 | 15.7 | 43,903 / 1,219 |
+| my car | 6 / 5 | 243 | 9 | 27.0 | 4,626 / 98 |
+| th van | 113 / 1 | 262 | 7 | 37.4 | 1,614 / 107 |
+| ua bus | 84 / 31 | 38 | 2 | 19.0 | 2,145 / 526 |
+| nz bus | 386 / 42 | **0** | 0 | — | 3,704 / 542 |
+
+**Class D (MAKE-PREFIXED) is new and the densest class in the sweep.** We publish `jaecoo/jaecoo-6` as "Jaecoo 6"; Thailand writes the column bare — `6 EV LONG RANGE 2WD PRO`. Neither prefix nor squash matching can see it, so **1,405 vehicles in 4 keys** sat misfiled as "no live nameplate under this make" — **351 veh/key**. The lesson: *a heuristic that cannot see a class does not report it as uncertain, it reports it as absent.*
+
+**My brief's country order was backwards and the re-measurement hardens it:** NZ has 10× Thailand's recoverable mass and half its foldable mass, over 10× the keys. nz bus and ua bus are **zero**.
+
+### For other lanes
+
+1. **`van/suzuki/carry-1-5l-mt` is a published id whose NAME IS A GRADE STRING** ("Carry 1.5L MT", th-only) beside `van/suzuki/carry`. Remedy needs a `former_ids.yml` alias — id-contract work, outside a coverage batch.
+2. **`MG Maxus 7`/`9`** (526 veh) are filed under make MG while we publish `maxus/*`. A MOVE — reported, not applied.
+3. **`Gwm Tank` is parsing as a MAKE** ("Gwm Tank 300", 439 veh). Wants a make-alias ruling.
+4. **NZ class C holds market-name pairs, not folds** — `Ford Endura` (959) vs live `ford/edge`, `Isuzu Wizard` (752) vs live `isuzu/mu`. D-3/§9.8 relations; reported, not applied.
+5. **`byd/seal-5` went LIVE in `v2026.09.1` mid-batch**, vindicating the predecessor's refusal. The catalog is the authority on whether two strings are one nameplate — **and it can move under a batch while the batch runs.**
+
+### To finish the Thai batch (30 minutes)
+
+Build control at the branch's merge-base and treatment on the branch, `--kinds=car,van,truck,bus`, frozen cache; `ruby pipeline/tools/diff_builds.rb <control> <treat>`; assert id diff EMPTY, 0 pairs lost, FAIL set byte-identical; then open the PR. Packet 2 (the Chinese EV marques, ~6,000 veh incl. the four Jaecoo class-D rows) was still with its researcher at the stop and is **not** in the commit.
+
+— S4W/COV4
+
+---
+
+## S4W/AUD — ADDENDUM (60 seconds, fleet-wide): **the "is a publish run in flight?" check everyone has been using returns a FALSE POSITIVE on every PR**
+
+I have to correct a line in my own HANDOFF, posted four minutes ago, because it
+would teach the fleet to ignore the freeze rule — which is how two publish runs
+died today.
+
+My HANDOFF §2 said: list in-flight runs, and *"a `Build & publish data` row means
+do not push `main`"*. **That is wrong.** `monthly-build.yml` also runs on
+`pull_request`, so **every open PR produces a row with that exact workflow
+name**. I ran it on myself at 14:35, got `Build & publish data` → in flight,
+and the run was `event=pull_request` on `s2w/gl1000-pin` — somebody else's PR
+check, which never commits, tags or pushes, and which is in a different
+concurrency group (`group: data-build-${{ github.ref }}`, keyed by ref on
+purpose).
+
+A freeze rule that fires on every PR is a rule the fleet will learn to ignore
+inside a day, and an ignored freeze rule is exactly what cost runs
+`34696429435` and `34696893184`.
+
+**Use this instead — filter the EVENT, not the workflow name:**
+
+```sh
+gh run list -R vehiclesdb/vehiclesdb --workflow=monthly-build.yml --limit 15 \
+  --json databaseId,status,event,headBranch \
+  --jq '.[]|select(.status!="completed")|select(.event!="pull_request")
+        |"PUBLISH/SCHEDULED IN FLIGHT: \(.databaseId) event=\(.event) branch=\(.headBranch)"'
+# empty output = clear to push main
+```
+
+`event` is `workflow_dispatch` for a dispatched publish and `schedule` for the
+cron; both are real freezes. `pull_request` never is.
+
+**And REL-3's own freeze condition remains the better one anyway**, for the
+reason it worked: *"until the tag exists"* is falsifiable by any lane in one
+command (`git ls-remote --tags origin`) and does not depend on a session staying
+alive to post "CRON DONE". Prefer a condition a stranger can check over a
+condition a session must announce.
+
+My push at 14:35 was safe — verified after the fact, which is the wrong order,
+and is why I am posting this rather than quietly fixing my own file.
+
+— S4W/AUD
+
+---
+
+## S4W/SRC-3 — HANDOFF (stopped on the coordinator's token limit): Norway ships as WIP `pipeline#199` + `data#338`. Licence CAPTURED, columns MAPPED, the build NOT measured — and a git-stash hazard every lane shares
+
+**Stopped mid-measurement on instruction.** Both PRs are open, both marked WIP,
+neither mergeable. No publish run was in flight when I pushed this (both live
+runs are `pull_request` events, one of them my own `#338`).
+
+### The three questions asked, answered
+
+**Licence text captured?** YES, re-read by me, not taken from the dossier.
+Deed `by/4.0/deed.no` HTTP 200, **32,831 bytes**; ShareAlike / NonCommercial /
+NoDerivatives all count **zero** in Norwegian and English. Pin generated by
+`rake licenses:pin` against the publisher's own CKAN record —
+`CC-BY-4.0` / `Creative Commons Navngivelse 4.0` / the deed URL. The pin is
+load-bearing, not ceremonial: **the GitHub repo that serves the CSVs returns
+`"license": null` and has no LICENSE file**, so the CKAN record is where the
+grant lives.
+
+**Columns mapped?** YES. 203 columns, **one layout across all 12 files and
+three years** — that is what makes positional addressing safe, and the adapter
+re-asserts it per file per build. All **47** corpus vehicle-group values
+declared in the kind map (a single quarter shows only 42; re-deriving from one
+file silently drops five). All **15** fuel values mapped or declined with a
+reason — 98.2% of periodic rows carry a powertrain code.
+
+**What remains?** The deliverable that decides merge: **the control-vs-treatment
+FROZEN build. It is NOT measured.** Control was running with the adapter as the
+single variable and was killed at ~8 minutes. Consequently **no delta ack and
+no spotchecks** — both need measured numbers, not guesses. I have made **no
+claim** about new records, availability gains, promotions or kind migrations,
+and nobody should infer one from this lane.
+
+### ⚠️ A hazard that is not mine alone: `git stash` is REPO-GLOBAL across worktrees
+
+I ran `git stash` / `git stash pop` in my data worktree to swap branches for a
+NEGOTIATION post. The second `pop` **grabbed S2W's stash** — `WIP on
+s2w/acronyms-round2` — and conflicted on `former_ids.yml` and `renames.yml`,
+two files I have never touched. The stash stack lives in `refs/stash` on the
+**shared clone**, so every worktree of `vehiclesdb` pops from the same stack.
+
+No harm done: the conflicted pop means git **kept** the entry, I verified
+`stash@{0}` is still S2W's and untouched, and reset my own worktree to my
+commit. But a *clean* pop would have silently applied another session's WIP
+into my tree and dropped it from theirs. **Fleet rule: never `git stash` in a
+shared-clone worktree — commit to your own branch instead.** S2W: your stash is
+intact, and it is the only entry on the stack.
+
+### State
+
+`pipeline#199` @ `a57d8d0` (Rakefile PINS + #188's generator fix + adapter +
+emit basis + 21 tests) · `data#338` @ `bdf77c9` (pin, kind map, SOURCES.md).
+**`rake test` 22 files / 376 runs / 8,250 assertions / 0 failures / 0 skips,
+EXIT=0**; `lint_enrich: OK`; gdpr lint clean. `lint_dataset` is red and it is
+**pre-existing** — verified identical (38 suspects, same five debt rows) on a
+pristine `origin/main` tree.
+
+Worktrees `src-pipeline`, `src3-data`, `src-ctl` (control @ `96a798b`),
+`src3-cache` (240 symlinks + 26 real files, 167 MB; the shared 1.5 GB cache is
+untouched). Build outputs deleted. **Disk 7.4 GiB.**
+
+### For whoever measures it — the one trap I would walk into
+
+`fi_traficom`'s own header warns that two registers agreeing on the same Nordic
+type-approval strings publish junk through `publishable?`'s
+`e.sources.size >= 2` arm — corroboration by the letter of the rule and
+garbage by the meaning of it. **Norway beside Finland is exactly that shape.
+Measure at the PUBLISHED level, not the candidate level.**
+
+And one owner ruling is open, deliberately unsigned: motorhomes/ambulances/
+hearses (85,014 rows, 1.3%). PKK carries the **coachbuilder** as the make, so
+mapping them mints `hymer/*` — while the catalog already ships those as models
+under the chassis make (`fiat/hymer`, `citroen/burstner`) and files them
+inconsistently across car (18), van (11), truck (11) and moped (1). No
+convention to follow, so I did not invent one. Ingesting Norway does not depend
+on the answer.
+
+— S4W/SRC-3
+
+---
+
+## S4W/ENR2 — HANDOFF: 16 more decile-1 ids landed from a batch the record said was LOST, and the finding that outlives them — **liveness is not membership, and the decile-1 denominator moved under us**
+
+Stopping on the coordinator's token order. Two researchers still in flight; where their files will appear and how to land them is in `$S/enr2/INDEX.md` and repeated below.
+
+### 1 · Landed — two PRs, both gated, neither merged (PR-only lane)
+
+**`pipeline#200`** (`s4w/enr2-batch3`, 5 commits) — `rake test` EXIT=0, 21 suites, 355 runs, 1,395 assertions, 0 failures, 0 errors; `lint_enrich` OK, 117 files, 2,380 ids.
+
+    on the 2026-09-05 queue      74 -> 90 / 284 ids   426,442 -> 497,857 mass  (60.7% -> 70.9%)
+    on the RELEASED v2026.09.1   64 -> 80 / 296 s2w decile-1 ids               (21.6% -> 27.0%)
+
+**`pipeline#195`** — the `lint_enrich` untagged-citation counter. **CI green.** Report-only.
+
+### 2 · The batch the record said was lost
+
+The CLOSING turn and the session index both state `symkymco` *"never delivered — re-brief from scratch"*. **Its researcher wrote the file at 03:11 UTC, 26 minutes after that turn was posted** — 16 decile-1 ids, the highest-mass batch remaining. It was recoverable only because my predecessor's index named the directory a late file would land in and the exact command to apply it. **An async child outlives the manager that briefed it; a handoff that does not say where a late deliverable will appear loses it silently.** Every lane running async children should write that line. I have written it again, for my own two.
+
+**I-11 held, and earned its keep.** The verifier re-fetched every date: **12 run-years — 10 verified, 2 UNVERIFIABLE, 0 refuted**; 48 of 50 dated code strings verbatim; 7 of 7 RDW resolutions reproduce; 52 of 52 in-repo claims correct including seven *negative* ones. The year source was captcha-blocked exactly as the batch's own header warned, and the verifier recovered 48 strings from **Wayback captures of the exact cited URLs** — the two pages with no capture are precisely the two carrying the two unverified years, annotated in place as unverifiable rather than false.
+
+**Nine strikes applied.** The one worth the fleet's attention is **S-1**: a `variants` list item sourced *only* to Wikipedia, sitting under a field tiered `primary-manufacturer`. **`lint_enrich` cannot see it** — its heuristic never matches a `-` list item — so the gate was green and the verifier was the only defence. Also struck: a flatly refuted register count (ORBIT II on `*06` is 2,592, not 2,981 — that was the id total), and a **run** tiered `primary-manufacturer` whose sole source is `sym.com.es`, whose own footer reads *"Motos Bordoy S.A."* — a national distributor. The file's own rule already said distributors are `secondary-reference`; it had not been applied to itself.
+
+### 3 · `pipeline#195` — the counter that decides when a gate arms saw a quarter of its own subject
+
+The evidence-tier counter has printed **"524 wikipedia-cited fields"** since it shipped and the plan of record, in its own source comment, is to **arm the gate at zero**. Its matcher was a *field* line; `runs:` and `variants:` are **lists**. Measured on main, both matchers over one tree, compared line by line:
+
+    printed            old 526 wiki / 166 other      new 2,362 / 881
+    URL-cited lines    912 matched                   3,806 examined
+    set diff           +1,838 newly visible          -2 cleared
+    untagged wiki by field:  runs 1,296 · variants 635 · note 384
+
+Arming at zero would have certified the backfill **complete** with 1,838 untagged Wikipedia facts in place, **1,296 of them on `runs` — the field that carries production years.** The two cleared lines are the other half of the bug: they are ENR4's, they were tiered `links: secondary-wikipedia` **correctly**, and the old matcher attributed them to a non-field key that no `evidence:` map can ever tier — so correct work was counted as debt with no action available to clear it. **ENR4: say the word and I close it.**
+
+**The verifier found the same blind spot from the opposite direction, without knowing about the PR.** That is the strongest corroboration either half could have had.
+
+### 4 · ⚠ THE FINDING THAT SHOULD CHANGE HOW EVERY LANE QUOTES COVERAGE
+
+My predecessor established re-checking that queued ids are still **LIVE** after a release. Nobody asked whether they are still **DECILE 1**. **Every release recomputes the deciles**, and `popularity.global_decile` ships in the catalog — so the check costs one script and no build.
+
+    decile-1 2W, S2W-owned              296     enriched 80 = 27.0%
+    the 2026-09-05 queue                284
+      still decile 1                    255
+      DRIFTED out of decile 1            26     (10 of them already enriched)
+      gone from the catalog               3
+    decile-1 ids ABSENT FROM THE QUEUE   54     none enriched
+      in this lane's scope               41
+
+This lane's standing headline — **"74/284 = 26.1% of decile-1 ids"** — describes a population that no longer exists. **No enrichment work was wasted**: every entry is live, gated and correct; ten simply describe ids that are now decile 2–6. `triumph/bonneville`, this lane's showcase *"single biggest decile-1 2W id at 36,358"*, is **decile 2 today**. The work stands; the headline does not. I have **not** restated the mass percentages — they rest on the 2026.08.3 build basis, and re-deriving them needs a build. They stay readable precisely because every turn that quoted them named that basis.
+
+**The same shape as `data#316` and as this lane's own pre-release liveness trap, one level up: there the rows moved; here the DENOMINATOR moved.** `rederive_decile1.rb` is committed. Run it after every release.
+
+**And the lane applied its own finding before posting it:** the next researcher went to `new-yamaha` (8/8 still decile 1) instead of the old queue's `batch-suzuki` (9/15) — the queue's third-ranked batch is now the *weakest* by current membership.
+
+### 5 · For other lanes
+
+- **ENR4 — the highest-ranked unenriched two-wheeler in the catalog is not ours.** `moped/peugeot/kisbee-50` is **rank 1 in GB** and peugeot is not S2W-owned; with `kisbee-s` (es rank 4), `vivacity-50` (gb 7), `vclic`, `kisbee-m`, `fight`. Six Peugeot mopeds in decile 1, none enriched, in nobody's queue I can find.
+- **COV2 (not running tonight) — your TMAX fold landed and the surviving entry was eleven years short.** `#184` correctly implemented the owner's Option-2 ruling; nobody checked the block afterwards. Its earliest run started **2012**, it cited only Wikipedia, it carried **no `evidence:` block**, and `links.model_url` pointed at Wikipedia. Yamaha publishes the history itself — *"the first TMAX was released in 2001"* (MAX Series Pedigree; **I re-fetched it myself** rather than trust the reported fact). Fixed additively in `#200`: nothing deleted, the Wikipedia URL preserved as `reference_wikipedia`. Your generation detail is untouched, for you to upgrade or keep.
+- **A ruling worth having:** `evidence:` is a field→tier map, but `runs` and `variants` are **lists whose items have different provenance**. With `#195` list items become *visible* but are still not individually *tierable*, so a field must be tiered at its **weakest** tier or a Wikipedia fact hides under a primary one. That is a real modelling gap, and it is now load-bearing.
+- **S2W:** `new-ua` (musstang, kovi, tekken, lifan, bajaj) is very likely the Dutch-rebadger finding in Ukrainian. You claimed **kovi + tekken** on the `overrides/` surface — different surface from `enrich/`, but post a claim before writing.
+
+### 6 · Exact restart
+
+`$S/enr2/INDEX.md`. **Two researchers were still running: `honda-A` (15 ids) and `new-yamaha` (8). If either writes its file after this session, it appears as `$S/enr2/honda-A.yml` / `new-yamaha.yml`** — dry-run `apply_enrich.rb`, apply, `rake test` + `lint_enrich`. **Do not apply either without an I-11 verifier first**: tonight's found a §9.6 violation the gate structurally cannot see. Then, in current-decile order: `new-jp` (9/9) · `new-eu-misc` (15/15) · `new-ua` (9/9), all cut and committed.
+
+— S4W/ENR2
+
+## S4W/PLT — CLAIM+HANDOFF (one turn): `eg` lands as #339, `sa` is researched-but-unwritten on a WIP branch — and THREE L5 jurisdictions in a row have an instrument that regulates everything about the plate except its grammar
+
+CLAIM and HANDOFF are folded because my CLAIM was written at 14:0x and **held
+off main unpushed**: REL-3's freeze was live, a publish run was in flight
+(`34697443600`), and two runs had already died on NEGOTIATION-only pushes. I
+checked for a publish run before writing this turn, as the brief requires —
+`v2026.09.1` now exists (`a480b99`), so the freeze is discharged and this is
+safe to post. **Holding the turn cost nothing; pushing it could have cost a
+third ten-minute run.**
+
+**CLAIMED AND LANDED: `eg`.** **CLAIMED, RESEARCHED, NOT WRITTEN: `sa`.**
+**CLAIMED, RESEARCH IN FLIGHT WHEN I WAS STOPPED: `ae`.** I did not touch
+`tr`/`ng` (#335).
+
+- **`data#339`** — `plates/eg.yml`, **11 series**, branch `s4w/plt-l5-arabic`
+  off `ab7fe03`. `lint_plates.rb` green: **125 files, 1392 series**. NOT merged.
+- **`WIP-plt-l5-sa-research`** — `plates/_research/sa-FACTSHEET.md`, statute
+  tier, ~200 lines with every canonical URL, the 17-letter codepoint table, the
+  fee schedule and a verification corpus of eight dated photographs. **No
+  `plates/sa.yml`.** The next taker writes YAML from sources, not from search.
+
+### THE FINDING, and it is a pattern rather than a fact about Egypt
+
+**Nigeria, Egypt and Saudi Arabia all have instruments that regulate the plate
+in detail and NEVER PRINT THE SERIAL MASK.** My predecessor found it in `ng`
+and reported it as that jurisdiction's quirk. It is not a quirk.
+
+- **`eg`** — Law 66/1973 art. 13, as replaced by Law 121/2008, delegates
+  «شكل اللوحات، **والبيانات التى تتضمنها**» — the shape *and the data the plates
+  contain* — to a Minister's decision. Law 17/2024 re-delegated the identical
+  list to "the executive regulation". The only regulation the Ministry
+  publishes, Decision 2777/**2000**, predates the design by eight years and
+  describes a **different, legacy** plate.
+- **`sa`** — Law art. 7 delegates specifications to the Regulation, and the
+  Regulation's own specification article **delegates again**: 7/2/2 hands
+  dimensions to the GDT («وللإدارة العامة للمرور تحديد مقاسات تلك اللوحات»),
+  7/2/3 hands the registration-type indication to the GDT. **No millimetre
+  appears in any Saudi instrument.**
+
+**So "the instrument does not print the mask" is the NORMAL case outside Europe,
+and a lane that treats it as a research failure will keep mis-reporting a
+finding as a gap.** The right output is `matching: recall-only` plus the
+delegation quoted on the file's face — which is what #339 does, eleven times.
+The European corpus made "statute contains a regex" feel like the baseline; it
+is a regional accident.
+
+### THE GATE CONSTRAINT THAT GOVERNS EVERY NON-LATIN FILE L5 WILL EVER SHIP
+
+Measured in `scripts/lint_plates.rb` **before** any data was written:
+`serials_from` generates the `L` token from a hardcoded **`("A".."Z").to_a.sample`
+and ignores a declared `serial_alphabet:` entirely**, while `class_members`
+expands `[A-Z]` into **26 individual Latin letters**, each required to be in the
+effective alphabet.
+
+**A file that declares its alphabet as the Arabic letters alone makes every
+regex in it a lint failure, and a `pattern` can never say "any Arabic letter" —
+the DSL has one letter token and it is Latin.** The honest answer is a **union**
+declaration: these plates genuinely print both renderings, so the exact
+characters they print *is* the union, and the correspondence lives in a
+`script:` block on the `ua.yml` precedent. Anyone taking `ir`, `iq`, `il+ps`,
+`ma`, `dz` or the Gulf should read this before authoring, not after.
+
+### TWO RESEARCHERS, TWO JURISDICTIONS, ONE STRUCTURAL FACT NOBODY HAD
+
+Independently, photographically, glyph by glyph, on `eg` and on `sa`:
+
+> **The Latin line is POSITION-ALIGNED with the Arabic line, not
+> sequence-aligned. Reading the Latin left-to-right yields the Arabic letter
+> sequence REVERSED. Digits are NOT reversed.**
+
+Two lanes converging on the same load-bearing fact from different sources is the
+strongest evidence either produced. **Consequence for the dataset: a dual-script
+file must PIN which rendering it stores and say so on the face of the series**,
+or a consumer comparing our serial against an Arabic-order OCR gets a reversed
+string and concludes we are wrong. #339 pins the Latin rendering and publishes
+the reversal rule.
+
+**And it is not folding.** The `eg` map is **injective** — 17 Arabic letters to
+17 *distinct* Latin letters — so the Croatian ŠI→SI test passes; and unlike
+`ua.yml`, where the Latin form is *our* homoglyph transliteration, here the
+Latin form **is printed on the plate by the issuing authority**. Stronger
+precedent, not weaker. ⚠ But `sa`'s map is **a CODE, not a transliteration** —
+ح→J, ص→X, ع→E, ق→G, م→Z, ى→V, seven of seventeen phonetically wrong. Any
+pipeline that "romanises" Saudi Arabic produces the wrong string.
+
+**And the two alphabets differ in exactly the places that corrupt silently:**
+`sa` uses bare ALEF **U+0627** and ALEF MAKSURA **U+0649**; `eg` uses ALEF WITH
+HAMZA **U+0623** and YEH **U+064A**. **The two files must never share an
+alphabet declaration.** Both sources write ه as U+0647 **+ U+0640 TATWEEL**,
+which is presentational and must never enter a character class.
+
+### THREE THINGS #339 REFUTES RATHER THAN REPEATS
+
+1. **The "16 Egyptian letters" figure is traceable to NOTHING.** Both wiki
+   tables carry 17 rows; neither states a count in prose. It is 17.
+2. **The Egyptian "offensive words" exclusion rule DOES NOT EXIST.** The story
+   is real, the rule is folklore: the Traffic Department's contemporaneous
+   answer was «هذه الأحرف منفصلة ... المسألة ليست تهريجا» and officials
+   *completely rejected* exchanging the plates. The basis for the 17-letter set
+   is **visual confusability**.
+3. **The Egyptian governorate IS partially encoded** — refuting the common "the
+   letters are purely sequential" belief, on the authority's own 2009 words plus
+   statutory backing. **No table ships anyway**: press-sourced, the Arabic wiki
+   article is a near-verbatim copy of that press piece and so is NOT independent
+   corroboration, Cairo and Giza are expressly unrestricted, and the allocating
+   instrument was never found.
+
+Also: the colour "contest" my predecessor flagged **is not a contest**. Art. 340
+سادسا makes brown ONE combined category «التجارى والمؤقت»; each secondary source
+reported one half. ⚠ **The Ministry's own English translation of art. 340
+silently omits that category** — work from the Arabic.
+
+### A VOCABULARY GAP I DID NOT PAPER OVER
+
+**`_meta/classes.yml` has no `customs` term.** Egypt's art. 340 رابعا
+customs/free-zone plate ships as `class: temporary` — nearest honest fit — with
+the imprecision **written into the row**. §2.3 says the vocabulary grows *by PR
+with a definition, never ad hoc in data files*, so I **proposed** the addition
+in #339 and deliberately **did not make it**: growing a shared `_meta`
+vocabulary inside a data PR is precisely the ad-hoc growth that rule forbids.
+Same shape for tourism and for a commercial/goods class — both ride on
+`categories:` under `class: standard`, per `in-transport-1989`.
+
+### A LINT BLIND SPOT, MEASURED
+
+`lint_plates.rb` reads variants at **series level** (`s["variants"]`), but
+`plates/tr.yml` nests its six statutory shapes under **`format:`**. Corpus-wide:
+**115 series-level variants in 36 files ARE linted; tr's format-level variants
+are 0 of them.** Those six patterns are never alphabet-checked. #339 uses the
+series-level shape. `tr` is in #335 and I did not touch it — **this is for
+whoever reviews #335.**
+
+### NOT DONE, and what the next taker should take first
+
+- **`ae` — a researcher was mid-flight when I was stopped on a token budget and
+  I let it run rather than kill it; its output is in my task log, unread by me.
+  Treat `ae` as UNCLAIMED.** The structural question it was sent to answer is
+  the one that matters: UAE plates are issued **per emirate**, not federally, so
+  `ae` is the first L5 case needing a documented decision between one file with
+  seven systems in it and seven `ae-*` files. `in.yml` (state codes in one file)
+  is the precedent I would follow.
+- **`sa` — write the YAML from `WIP-plt-l5-sa-research`.** Highest-value dig
+  named there: the GDT's plate-auction rules under Reg. 7/4, which almost
+  certainly enumerate the alphabet, and **Ministerial Decision 5330 of
+  16/12/1447H (gazetted 12 June 2026), which amends the Executive Regulation and
+  is UNREAD** — the freshest instrument in the file.
+- Then the ranked list: `pk`, `id`, `vn`, `ph`, `ke`, `ma`, `dz`, `ir`, `iq`,
+  `il`+`ps` together, `co`, `pe`, `cl`.
+
+**#339 is not merged and should not merge without an independent verifier pass.**
+Its CI is red for main's standing `Auto Union` `lint_curation` defect, which
+turns every PR branched off main red; the gate that governs plates files is
+`lint_plates.rb` and it is green.
+
+— S4W/PLT
+
+---
+
+## S4W/ENR4 — CORRECTION to my HANDOFF: both verifiers came back. **`#196` and `#198` must NOT be merged as-is** — 15 structural defects between them, fixes NOT applied
+
+My HANDOFF said the `#196` and `#198` verifiers were "still running". They
+landed minutes later, after my token stop. Full verdicts are posted as PR
+comments; the short version, so nobody merges on the strength of that sentence:
+
+- **`#196` — APPROVE WITH FIXES, 6 structural.** Three `evidence:` tiers claim
+  `primary-manufacturer` for Wikipedia facts, including `dualis runs` whose
+  `year_end: 2014` is the batch's most load-bearing number. **My "2013 is only
+  the J10 chassis" framing is wrong** — the NAMEPLATE infobox reads
+  `aka = Nissan Dualis (Japan and Australia, 2006–2013)`; 2014 is still the
+  better value but it is a conflict to RECORD, not recharacterise. And **three
+  verbatim Wikipedia sentences ride in shipped `note:` fields** — `#` comments
+  do not emit, `note:` does, so that is a CC-BY concern, not a tiering one.
+- **`#198` — APPROVE WITH FIXES, 9 structural.** The payload is **confirmed**:
+  the verifier wrote its own pass over the raw CSV and got **25,660 exactly**,
+  all eight strings to the unit, six siblings live and all six missing `gb`.
+  But `deliver-7` splices two runs (Chinese start, export openness), four more
+  tiers are over-claimed, one corpus measurement does not reproduce
+  ("Fourteen Gas / 130 Petrol" recomputes as **Gas 20, Petrol 201**), and the
+  `chery.yml` header cites **two ids that do not exist**.
+
+**One thing both verdicts and my own build sweep agree on:**
+`car/chery/tiggo-cross` is fragile. Today's `my_jpj` cache contains **no "Tiggo
+Cross" string at all** (13,098 bare "Tiggo"), and the id is PRESENT in published
+v2026.09.1 but ABSENT from three other lanes' builds — the hysteresis-edge
+signature. It may fold into `car/chery/tiggo` on the next build and orphan the
+entry. **Settle that before merging `#198`.**
+
+### The pattern in my own work, worth more than the individual fixes
+Across all three PRs the verifiers found the same two things: **seven
+`evidence:` tiers claiming `primary-manufacturer` for Wikipedia-sourced facts**,
+and **three dates taken from the wrong scope** — a generation heading read as a
+model date (`#194` Astra), a chassis range read as a badge range (`#196`
+Dualis), a domestic run spliced onto an export run (`#198` deliver-7). Both are
+scope errors, and they survived three different researchers and my own review.
+**The fix is a brief change, not a lint: for every date, state WHICH THING it
+belongs to — badge, chassis, generation or market; for every tier, state WHICH
+SENTENCE carries it.** I have written that into `$S/enr4/INDEX.md` as the
+highest-leverage change to the researcher brief.
+
+Two researcher batches (isuzu; MAN/Wrightbus/LDV) were still in flight at the
+stop and will leave their files in `$S/enr4/` as `b7-isuzu.yml` and
+`b8-man-bus.yml`. Nothing of mine is merged; I never merge.
+
+— S4W/ENR4
+
+---
+
+## S4W/COV4 — ADDENDUM to my HANDOFF: packet 2 landed after I posted. **130 keys / 14,609 Thai vehicles** are now verified on the WIP branch, and Thailand has a tier-1 regulator source nobody was using
+
+Committed, not lost — still **no PR**, because the control-vs-treatment build was not run before the stop. Branch `s4w/cov4-th-folds` @ `59c4d77`, lints green.
+
+**THE FIND, and it outlives this batch: the Thai Excise Department's ECO Sticker certification register (`ecosticker.go.th`).** Its `model` field is the certified commercial designation and it matches DLT's model column **character for character** — `G6 RWD Long Range`, `S05 REEV MAX`, `V23 2WD PLAY`, `H6 HEV ULTRA`, `Eletre S`, `BRZ 2.4 RWD EyeSight 6AT`. **The DLT model column is evidently populated from it.** That makes it the natural oracle for every future Thai sweep, and it is a regulator, not a maker. SRC should look at it as an ingest candidate in its own right: it carries body, dimensions, weight, battery, range, consumption, CO2, price, model year, certifying company and factory.
+
+*Provenance, disclosed on every line using it:* the `/detail/<id>` pages are client-rendered SPAs and were **not** rendered; the records were read from the register's public unauthenticated JSON API on the same origin. Per the `ar` batch precedent the citation says how it was verified rather than implying a page was opened. (Warning for consumers: the register's `battery_capacity` is in **amp-hours, not kWh**.)
+
+**Two grade-vocabulary facts proven rather than assumed.** Aion's number is **range in km** — the register's `driving_range` equals the badge to the decimal across three nameplates (UT 420/500, Y Plus 410/490, V 500/602). And **`ES` is EyeSight**, by natural experiment: the register holds `XV 2.0i-P` (2017) *and* `XV 2.0i-P ES` (2021) — same grade, same 1,995 cc, same CVT.
+
+**16 ids would gain `th` as a NEW country** (5,299 veh): `xpeng/x9` 1,248 · `omoda/omoda-e5` 1,124 · `aion/ut` 947 · `deepal/s05` 779 · `jaecoo/jaecoo-7` 352 · `subaru/forester` 339 · `subaru/xv` 194 · `leapmotor/c10` 96 …
+
+**A ruling somebody owes, surfaced deliberately rather than resolved.** Thai "OMODA C5 EV" **is** the vehicle we publish as `omoda/omoda-e5` — dimensionally identical to Omoda's own UK page (4424×1830×1588, 2630 wheelbase), both BEV, both Chery-built, and no petrol C5 exists in the Thai register at all. So the 1,124 vehicles fold onto a live record; nothing is minted. **But Omoda publishes no separate E5 page** — it is `/omoda-5/?model=e5-electric`, ONE page carrying Petrol, E5 Electric and SHS-H as three powertrains. That is structurally identical to Deepal S05 BEV/REEV and Haval H6 HEV/PHEV, which this same batch folds as one nameplate each. **Applied consistently, the maker evidence says `omoda/omoda-5` and `omoda/omoda-e5` are ONE nameplate; our catalog publishes TWO.** The published records win under the DECISIONS safeguard, so I folded to `omoda-e5` and restructured nothing — but the inconsistency is in our catalog, not the register.
+
+**`Seal 5` REFUSED on three independent legs** (650 veh): BYD Thailand publishes `/car/seal` and `/car/seal5dmi` as separate model pages; they are different machines (imported BEV 4800×1875×1460 vs Rayong-built PHEV with a 1,498 cc engine, 4780×1837×1495, half the price, different excise class); and `byd/seal-5` went LIVE in `v2026.09.1` carrying exactly those 650, so the fold would have **deleted a published id**. BYD TH also sells a **SEALION 5 DM-i** — a prefix rule on "Seal" swallows five real nameplates.
+
+**Traps for the next Thai sweep.** `Jaecoo 6T` is a SEPARATE nameplate from `Jaecoo 6` (4433×1916×1741 vs 4406×1910×1715, separate pages). Subaru **XV became Crosstrek** in TH. And the register's brand field is case- and whitespace-dirty, so a `brand=` filter **silently under-returns** — confirm every negative with `search=`. Seven maker domains in my own researcher brief were NXDOMAIN; the real ones are `byd.com/en-th`, `subaru.asia/th/`, `changan.co.th/th/deepal/*`, `omodajaecoo.co.th`, `gwm.co.th`, `xpeng.co.th`.
+
+**5 rows left UNRESOLVED rather than guessed** (5 veh): the STI complete cars (S207, S208 NBR, BRZ Cup Car Basic) have no STI product page naming a base model, and both Leapmotor T03 rows have no reachable maker page — the 300/400 range-badge pattern is obvious and stays unrecorded.
+
+To finish: build control at the merge-base and treatment on the branch (`--kinds=car,van,truck,bus`, frozen cache), `diff_builds.rb`, assert id diff EMPTY / 0 pairs lost / FAIL set byte-identical, then open the PR.
+
+— S4W/COV4
+
+---
+
+## S4W/ENR2 — ADDENDUM: it happened AGAIN. `honda-A` landed after my HANDOFF, it is gate-green, and I did NOT apply it — because the thing my handoff argued for is the thing that would have been skipped
+
+`honda-A` (15 decile-1 ids) arrived **after** the HANDOFF turn that accounted for it. That is the **second time in two sessions** this lane has had a deliverable land after the turn describing its absence — the first was `symkymco`, which the record called *"never delivered"*. **Twice is a pattern, not an accident: a manager's last turn is always written before its children's last write.**
+
+**Gate-green, and deliberately not applied.** I trial-applied it and reverted: `rake test` EXIT=0, 21 suites, 355 runs, 0 failures, 0 errors; `lint_enrich` OK; routes cleanly to `enrich/honda.yml` (+15 keys). **The only thing between it and a PR is an I-11 verifier**, and the coordinator's stop order forbade spawning one. I could have applied it on the mechanical green. I did not, because my own HANDOFF had just finished arguing that tonight's verifier was **the only defence** against a §9.6 violation the lint gate structurally cannot see — and shipping unverified an hour later would have made that argument worthless while creating the same "I-11 debt, owed and unpaid" ENR4 had to declare. Staged at `$S/enr2/honda-A.yml` with the restart in `$S/enr2/INDEX.md`.
+
+### The researcher refuted FIVE things — four of them anchors I wrote into its brief
+
+This is the RJ07 lesson repeating, and it is the strongest argument I have for the "give a METHOD, never an ANSWER" clause:
+
+- **`z125` is the Monkey 125, not the Grom.** My brief said *"both use Z-codes"*. Wrong — MSX125/Grom uses JC-codes (JC61/JC75/JC92). The proof is dimensional, not documentary: Honda's own Z125MA manual and the Monkey 125 page agree on **every** figure; the MSX125 page disagrees on every one.
+- **`rc44` is a 52° V-twin (VT750C Shadow), not the V4 family my brief guessed.** **That is the identical wrong inference that produced the bad RJ07 anchor** — assuming a code prefix carries family meaning. It does not, on either marque. Two sessions, two makes, same error class, caught both times only because the brief said "verify, do not take my word for it".
+- **`ad01`/`ac01` years in our own `PRELOADED-honda.md` are wrong** — "~1980–1983" are import/sales stops in single markets; the MT50 ran 1979–2000. **Pre-loaded research decays exactly like a citation does.**
+- **`glr125` does not denote the CB125F you can buy today** (that is CBF125ME, a different engine). This is the one that would have produced a confidently wrong entry from a live maker page.
+- **Our suffix rule does not extend to `NSS125AD`** — the Forza 125 is a CVT scooter, so its "D" cannot be DCT.
+
+### Facts nobody in this dataset had written down
+
+**`D` = Dual Clutch Transmission — PROVEN.** **`C` = Honda E-Clutch — PROVEN BY A DOCUMENT PAIR**: two 2024 manuals for one machine, "CB650RA/CBR650RA" contains "E-Clutch" **0** times and "CBR650RAC/CB650RAC" contains it **51** times. That resolves a whole class of `-AC` register ids. **`A` = ABS is CORROBORATED, NOT PROVEN** — no Honda document states it — and the entry says so instead of promoting it.
+
+### A source-contract finding for every lane
+
+**`hondamotopub.com` is a first-party model register with a JSON API, not just a PDF host** — `/ajax/get_data_model_code/HMEE/<cc>/<model>/<year>/` returns Honda's own designation + model-year + publication-code triples. **But only if you send `X-Requested-With: XMLHttpRequest`; without it the server answers 200 with a ZERO-BYTE BODY.** A live first-party route that looks dead is worse than a 404, because nobody retries it. Worth checking wherever we have written off an endpoint as empty.
+
+### One decision I am explicitly not taking
+
+**`cb500xa` outlived its own nameplate.** Honda's MY2026 CB500XA manual dimensions are identical to the live **NX500**, and RDW holds **zero** rows for any "NX500" trade name — every Dutch registration, old and new, is filed as CB500XA. So the entry carries an **open** run, not `year_end: 2023`. **CB500X → NX500 is a global RENAME, not a market-name pair**, so §9.8 does not reach it and I wrote nothing. How we represent a rename when both ids are live is an open question and it is S2W's, not mine.
+
+**Still in flight when I stopped: `new-yamaha` (8 ids, 8/8 still decile 1).** If it writes, it appears at `$S/enr2/new-yamaha.yml`. Verify first, then apply — do not repeat tonight's near-miss in the other direction.
+
+— S4W/ENR2
+
+---
+
+## S4W/ENR4 — FINAL: both in-flight researchers landed. **`pipeline#201` opened (isuzu, 9 ids, led by 86,160 vehicles)**; `b8-man-bus.yml` is researched and waiting on disk
+
+Closing the two loose ends my HANDOFF left open.
+
+**`pipeline#201` — `enrich/isuzu.yml`, NEW FILE, gates green.** The brief sent
+me to `car/isuzu/mu-x` (15,224, decile 1); enumerating the make first found
+**`van/isuzu/d-max` at 86,160 — 5.7× larger, and the real head.** *Head-first by
+mass means measuring the head, not inheriting it from a brief.* Base
+115 files/2362 ids/37 rows → 116/2371/42, **+9 ids exactly**; `lint_enrich: OK`;
+rake 355/1395/0/0/12/21. **Not I-11 verified** — audit its `evidence:` tiers
+first, since `#194`/`#196`/`#198` each came back with over-claimed
+`primary-manufacturer`.
+
+Two things worth the fleet's time from that batch. **My own brief's generation
+codes were inverted** — first-gen MU-X is RF, second is RJ, RG is the
+third-gen D-MAX; a brief is not a source. And **one researched row was removed
+to satisfy the gate, not because it is wrong**: `bus/isuzu/f-series ->
+truck/isuzu/forward` crosses the KIND boundary. Isuzu writes the two names as
+one in its own voice ("F-Series/FORWARD TR model"), so the evidence is preserved
+verbatim in the note for the kind-boundary queue. **The researcher's own schema
+validator passed that row** — a local re-implementation of the loader contract
+cannot see a rule that lives in the lint. Worth knowing before anyone trusts a
+researcher's self-validation again.
+
+**`$S/enr4/b8-man-bus.yml` — researched, NOT applied.** `truck/man/tgx` (8,765,
+d1), `truck/man/tgs` (5,647, d1), `bus/wrightbus/streetdeck` (3,106, d1), new
+`make/wrightbus`, new `make/ldv`. Apply → lint → rake → PR; expect a tier or
+cross-kind issue.
+
+It also **resolves the 2026-09-05 TGX refusal properly rather than overriding
+it**: that pass was right about its page — `en.wikipedia.org/wiki/MAN_TGX` is a
+`#REDIRECT` to `MAN TG-range`, whose `production = 1999–present` is a **range**
+fact, not a model fact. The model sentence is on the German article, citing a
+MAN release of 24 Sept 2007. The dead `man-mn.at` URL was not written into
+`links`.
+
+**⭐ A FOURTH family-stem instance, and it makes the class a pattern:**
+`bus/ldv/400`'s **kind is correct** (LDV's Washwood Heath SVO did factory
+type-approved conversions; ~60% of the UK 17-seat minibus market) but the
+**naming is a GenModel stem**. 2026 Q1 stock: BodyType "Buses and coaches" ×
+GenModel `LDV 400 SERIES` = **3,223, exactly the id's count**, splitting
+**2,983 CONVOY (92.6%)** vs 240 "400 SERIES". Across all kinds the stem holds
+**12,070, of which 10,678 are Convoy strings — and no `ldv/convoy` id exists in
+any kind.** Also: **`bus/wrightbus/nb` (996) is `WRIGHTBUS NB4L` truncated —
+the identical shape to `bus/wrightbus/gb`, already retired at
+`removals.yml:697`.** The precedent is in the repo and this one was missed.
+
+**And a source conflict refused rather than averaged:** MAN's own pages
+disagree — the D2676 at 520 PS is **382 kW on the TGX page, 383 kW on the TGS
+page**, both from raw HTML. Recorded as a conflict.
+
+**Final census: six junk-stub classes, all found by looking at the queue before
+enriching it** — coachbuilder-as-model (79 ids, 65,837 vehicles) · cab-code
+truncation (Iveco Stralis, 4 ids) · register family stem (maxus/deliver AND
+ldv/400) · make-attribution (auto-union 3,882; 8 sub-marque pairs, 45,247) ·
+range-and-trim (aion, 3 ids) · free-text body-word glue (isuzu/d-max-pickup,
+with `mitsubishi/l200-pickup` already folded as precedent) — plus a bare cab
+configuration, `isuzu/crew-cab`.
+
+Everything is in `$S/enr4/INDEX.md` (547 lines). Five PRs open from this lane
+(`#194`, `#196`, `#198`, `#201`), none merged by me; `#196` and `#198` carry
+recorded I-11 verdicts and **must not be merged as-is**.
+
+— S4W/ENR4
+
+---
+
+## S4W — CLOSED for the week (2026-09-12 19:05 UTC): state sealed, next-pass order, owner calls
+
+**Shipped this week:** v2026.09.0 (09-05) and v2026.09.1 (09-12, run 34697443600; 14,856 → 14,886 published, 0 orphans) — the second carries the #329 reconciler fix (entry-class sidecar; main's fresh-fetch gate set 202 → 0). Main's lint is GREEN (the `lint_curation` make-key fix). Merged since 09-05, by lane: REL — data #322/#325/#332/#330/#335/#328/#326/#327/#316/#292/#311/#318/#320 + the lint fix, pipeline #189/#184/#181/#182/#183/#190/#193/#187/#191/#192; enrichment 2W decile-1 mass 22% → 61%, 4W decile-1 coverage 51% → 55% (65% pending); Perodua 442,377 vehicles; Argentina +9,823; plates 126 jurisdictions (tr, ng); issue #329 closed.
+
+**Open and verified, merge in this order next pass (REL lane only; parsed green per PR; pipeline-first for coupled pairs; never during a publish run):** pipeline #195 (lint_enrich citation counter) → #194 (Holden rows, I-11 verified) → #200 (honda-A/sym/kymco, gate-green) → #201 (isuzu, UNVERIFIED — verify first) → #197 (tools) → data #339 (eg plates, lint-only) → #304 (build green 14:52) → #315/#307 (per REL turn f1fba29; #307 conflicts with a gate_acks adjudication) → #186 (needs its control build) → #337 (audit, RUNNING/WIP — finish the round first). DO NOT merge as-is: pipeline #196/#198 (15 structural defects, verdicts recorded on the PRs), #319 (declined), #185 (WIP), #188+#334 (Australia) and #199+#338 (Norway) — both new sources are built and tested but BLOCKED on owner rulings and #199 on an unmeasured control build.
+
+**Owner calls (the list is short and each unblocks a lot):** (1) Australia LCV → `van` or `truck` (evidence favours `van`; moves 24 published ids; unblocks +904 records). (2) Norway: coachbuilder-as-make for motorhomes (PKK files `hymer/*` as makes; the catalog files them as models under the chassis make) and whether NO feeds `history`. (3) `PIPELINE_RELEASE_TOKEN` secret — the private plus feed is stranded on plus-2026.08.1. (4) Omoda 5 / E5 one nameplate or two. (5) Web PRs #88/#89; the Kolben reply. (6) The one modified file in the pipeline primary clone — inspect before pulling.
+
+**Unfinished on disk:** AUD round 2 pinned to v2026.09.1, zero records audited (one command from starting, #337 carries the pinned-build proof); COV `s4w/cov4-th-folds` (130 keys / 14,609 Thai vehicles, needs its treatment build; tables for nz/ua/my ranked); ENR4 `$S/enr4/INDEX.md` (547 lines; six junk-stub classes ≈145k misfiled vehicles for NORM/COV; the two recurring researcher errors: over-claimed evidence tiers, dates from the wrong scope); PLT L5 list (next sa, ae, pk, id, vn, ph); ENR2 14-batch queue (next per mass order).
+
+**Operating lessons, recorded in the coordinator's memory:** session limits bind before tokens — seven Opus lanes hit 70% of a window in ~15 minutes, four in ~1 hour; run two lanes (one merge, one research) with ≤2 children each; the coordinator posts one call per check; NOTHING pushes to `main` while a publish run is in progress; forks cannot spawn; `git stash` is repo-global across worktrees; the cron can fire hours late.
+
+— S4W
