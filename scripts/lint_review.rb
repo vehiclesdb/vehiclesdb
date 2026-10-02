@@ -197,6 +197,35 @@ ledgers.sort.each do |abs|
     when "moved"
       fail! "#{label}: verdict moved but the id is STILL LIVE" if is_live
       fail! "#{label}: moved without a former_ids alias — the migration path is missing" unless former.key?(id)
+    when "stale"
+      # ── THE MONOTONICITY RULE (owner ruling on data#292) ──────────────────
+      #
+      # `stale` is the ONE verdict that drops a record OUT of the coverage
+      # numerator while leaving its row in place, so it is the only way to make
+      # coverage fall without deleting anything. Whether that is legitimate
+      # turns on exactly one fact: is the record still in the catalog?
+      #
+      #   id NOT live — the certified id LEFT the catalog. That decrements the
+      #                 numerator AND the denominator, so it is a no-op against
+      #                 the floor, not a regression. Firing here is what forced
+      #                 the two dishonest moves #292 refused: delete the review
+      #                 evidence, or re-certify a record nobody re-reviewed.
+      #
+      #   id IS live  — a certified verdict on a LIVE record was downgraded.
+      #                 THAT is the loss this gate exists to catch, because the
+      #                 alternative is coverage walked down one row at a time
+      #                 with no trace.
+      #
+      # The escape hatch is an ADJUDICATED ACK — the same shape the delta gate
+      # uses for its accepted losses. State the cause on the row and it passes;
+      # a silent downgrade does not.
+      if is_live && r["stale_ack"].to_s.strip.empty?
+        fail! "#{label}: verdict downgraded to `stale` while the id is STILL LIVE — a numerator " \
+              "loss NOT explained by catalog departure, which is precisely what the coverage " \
+              "gate exists to catch. If the raw evidence genuinely changed and this record is " \
+              "queued for re-review, say so on the row: `stale_ack: <cause + date>`. If the " \
+              "record was demoted and has since RETURNED, reinstate the preserved verdict."
+      end
     end
 
     # Only VALID, non-stale, VERIFIED verdicts count toward coverage — an
@@ -223,17 +252,66 @@ total_pub = published.values.sum
 total_rev = reviewed.values.sum
 coverage["total"] = total_pub.zero? ? 0.0 : (100.0 * total_rev / total_pub).round(2)
 
+# ── the floor: RECORDED, and no longer the thing that fires ──────────────────
+#
+# This used to `fail!` whenever a coverage RATIO fell. The owner's ruling on
+# data#292 retired that rule, and the reasoning generalises past this file:
+#
+#   the floor asserted that a ratio may never fall, but the DENOMINATOR is the
+#   catalog and the catalog legitimately moves.
+#
+# Four certified mutt ids were retired by correct curation and the ratio fell.
+# Nothing had regressed: no verdict was withdrawn, no record lost a verdict
+# without a reason. The only ways to get the number green again were to delete
+# review evidence or to re-certify records nobody had re-reviewed — so a gate
+# meant to protect honesty was manufacturing dishonesty.
+#
+# The gate now lives where the loss actually is, one screen up: a verdict
+# downgraded to `stale` on a LIVE id fails, `removed`/`moved` on a live id
+# already failed, and an id that left the catalog is a no-op. That is the
+# owner's rule — NUMERATOR LOSS NOT EXPLAINED BY CATALOG DEPARTURE — enforced
+# per record, where the explanation is actually available.
+#
+# The ratio is still computed, recorded and REPORTED when it moves, because
+# "coverage fell and here is why" is information. It is not a gate.
 baseline_path = File.join(ROOT, "data/review/_coverage.yml")
 baseline = (YAML.safe_load_file(baseline_path) rescue nil) || {}
 coverage.each do |o, pct|
-  prev = baseline[o].to_f
-  if pct < prev
-    fail! "coverage for #{o} DECREASED: #{prev}% → #{pct}% — verdicts may go stale (re-review) " \
-          "but coverage on main may never silently drop (PRD §5.3)"
-  end
+  prev_entry = baseline[o]
+  prev = prev_entry.is_a?(Hash) ? prev_entry["pct"].to_f : prev_entry.to_f
+  next unless pct < prev
+  prev_rev = prev_entry.is_a?(Hash) ? prev_entry["reviewed"] : nil
+  prev_pub = prev_entry.is_a?(Hash) ? prev_entry["published"] : nil
+  now_rev = (o == "total") ? total_rev : reviewed[o]
+  now_pub = (o == "total") ? total_pub : published[o]
+  detail =
+    if prev_rev && prev_pub
+      format("numerator %d → %d (%+d), denominator %d → %d (%+d)",
+             prev_rev, now_rev, now_rev - prev_rev, prev_pub, now_pub, now_pub - prev_pub)
+    else
+      format("numerator now %d, denominator now %d (the recorded floor predates numerator tracking)",
+             now_rev, now_pub)
+    end
+  puts "NOTE: coverage for #{o} fell #{prev}% → #{pct}% — #{detail}. NOT a failure: a ratio whose " \
+       "denominator moved is not a regression. A numerator loss on a LIVE record fails per record " \
+       "above. Run with --update to rebaseline once the cause is stated."
 end
+
+# The record carries the numerator and denominator, not just the ratio. A bare
+# percentage cannot distinguish "four certified ids left the catalog" from "four
+# verdicts were withdrawn", which is the distinction the whole ruling turns on.
 if ARGV.include?("--update") && FAILURES.empty?
-  File.write(baseline_path, "# GENERATED by lint_review.rb --update — the coverage floor (monotonicity baseline).\n" + coverage.to_yaml)
+  stamped = coverage.to_h do |o, pct|
+    [o, { "pct" => pct,
+          "reviewed"  => ((o == "total") ? total_rev : reviewed[o]),
+          "published" => ((o == "total") ? total_pub : published[o]) }]
+  end
+  File.write(baseline_path,
+             "# GENERATED by lint_review.rb --update — the coverage RECORD.\n" \
+             "# NOT a gate: see the monotonicity comment in scripts/lint_review.rb. The gate is\n" \
+             "# per-record — a verdict downgraded on a LIVE id fails; an id that left the catalog\n" \
+             "# is a no-op. `reviewed`/`published` are recorded so that a fall can be ATTRIBUTED.\n" +
+             stamped.to_yaml)
 end
 
 puts format("review coverage: total %s%% (%d/%d) · s4w %s%% (%d/%d) · s2w %s%% (%d/%d) · " \

@@ -1,0 +1,346 @@
+# plates/ng.yml — Nigeria (PRD-PLATES gate L5).
+#
+# THE CENTRAL FINDING, AND IT IS AN AWKWARD ONE: **THE GAZETTE DOES NOT CONTAIN
+# THE PLATE MASK.** The National Road Traffic Regulations 2012 (S.I. No. 61,
+# Government Notice No. 270, Official Gazette Vol. 99 No. 101, Lagos,
+# 25 December 2012) regulates plate COLOUR, DIMENSION, EMBLEM PLACEMENT,
+# REFLECTIVITY, FIELD CONTENT and the temporary/trade/fancy regimes in detail —
+# and never once prints a format mask. The familiar `AAA-NNNAA` shape
+# (three letters, three figures, two letters) is TERTIARY ONLY.
+#
+# THIS FILE KEEPS THOSE TWO TIERS APART ON PURPOSE. The design and colour data
+# below is `statute`, quoted to regulation number. The SHAPE is not, and every
+# series whose regex rests on the unverified mask is marked `recall-only` so
+# that a match is a shape hit and nothing more (§2.7). The temptation this file
+# is built to resist is letting the statute-tier badge on the surrounding
+# fields bleed onto the mask sitting between them.
+#
+# WHAT THE STATUTE DOES ESTABLISH ABOUT ORDERING — reg. 39(4)(f), verbatim:
+# "Local Government Area codes shall come first in respect of Private,
+# Commercial and Local Government Area vehicles". So LGA-FIRST IS STATUTORY,
+# and it is the strongest confirmation available of the 2011 redesign's shape.
+# Reg. 3(1) assigns a plate "within the Local Government Code"; reg. 39(2)(a)
+# lists a private plate's fields as the State name, "the licensing office code
+# number, the vehicle registration number and Local Government code number".
+# Reg. 39(5) then delegates the code TABLES entirely: "The Commission shall
+# determine, from time to time, the appropriate number codes for all categories
+# of vehicles." The tables are FRSC's, not the gazette's — which is exactly why
+# no decode table ships here (see V2).
+#
+# FOUR MORE STRUCTURAL FACTS
+#
+# 1. COLOUR IS THE CLASS MARKER AND THE BACKGROUND IS ALWAYS WHITE. Every
+#    Nigerian class shares a white ground and is distinguished by LETTERING
+#    COLOUR (reg. 39(2), Schedule 5 Figs 6-8). The widely-repeated "black on
+#    white" description of the ordinary Nigerian plate is wrong: a private
+#    plate letters in BLUE.
+# 2. THE EMBLEM IS A CORNER DEVICE, NOT A SEPARATOR. National FLAG top-left for
+#    private and commercial (reg. 39(3)(a)); national COAT OF ARMS top-left for
+#    government and LGA (39(3)(b)) and for military and para-military
+#    (39(3)(c)). Under §2.6's never_separator reasoning this is a design
+#    element carried in `design.emblem` and never in the serial.
+# 3. NO SEPARATOR IS PRESCRIBED ANYWHERE. The statute regulates field content
+#    and emblem position and says nothing about hyphens, spaces or dividers. So
+#    every regex here spells the group boundaries as the SEPARATOR-ONLY CLASS
+#    `[- ]?` sanctioned by §2.8 — the honest encoding of a real gap in the
+#    authority's text, exactly as `es-consular-cc-1999` does, rather than an
+#    invented hyphen.
+# 4. NIGERIA HAS NO HISTORIC/CLASSIC PLATE CLASS. NRTR 2012 contains no such
+#    category. Recorded as ABSENT rather than as not-yet-researched — a
+#    different and more useful claim. "Keke"/tricycle likewise never appears as
+#    a plate class in the instrument.
+#
+# §VERIFIER — open questions in priority order
+#   V1. THE MASK. Pin an FRSC instrument or gazette amendment that states the
+#       3+3+2 shape, then flip the recall-only series to strict.
+#   V2. The LGA -> three-letter code table and the 774 LGA count. Delegated to
+#       FRSC by reg. 39(5); the Schedule 5 code tables in the gazette PDF are
+#       UN-EXTRACTABLE IMAGES. No decode table ships until this is pinned.
+#   V3. DIPLOMATIC AND CONSULAR ARE ENTIRELY ABSENT FROM THIS FILE and the
+#       reason is specific: reg. 39(4)(e) points to "figure 11 of Schedule 5",
+#       and Schedule 5 in the gazette PDF ENDS AT FIGURE 10. Figure 11 is
+#       missing from the instrument as published. The purple/green CD/CC
+#       description in circulation is tertiary and is NOT recorded here.
+#   V4. Serial alphabet, and specifically whether I, O and Q are excluded.
+#       NO EVIDENCE EITHER WAY was found, so no `serial_alphabet:` is declared
+#       and the global A-Z 0-9 is inherited. Declaring an exclusion nobody
+#       sourced would be the Croatian folding error in a new costume.
+#   V5. Security features. NO hologram, barcode or NVIS chip is described
+#       anywhere in the instrument — only reflectivity. Recorded as absent.
+jurisdiction: ng
+authority:
+  name: "Federal Road Safety Commission (FRSC)"
+  url: "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf"
+  authority_evidence: >-
+    Reg. 39(5) gives the Commission the power to determine number codes for all
+    categories of vehicles, and reg. 39(10) gives FRSC the production monopoly
+    for the Federation. The url is the gazetted instrument that says so.
+    NOTE ON THE HOST: frsc.gov.ng has no reachable deep page on the plate
+    scheme (sitemap.xml and robots.txt both 404), so the instrument is cited to
+    a third-party host whose scan preserves the gazette pagination B 1531-B
+    1680 intact. The pagination is why this is treated as `statute` and not as
+    a secondary retelling; a verifier with access to an official Federal
+    Government Press copy should re-point these URLs.
+binding: vehicle
+series:
+
+  # =========================================================================
+  # THE ORDINARY MARK — flag emblem, colour-by-use. Private and commercial
+  # share format, period, dimensions and emblem and differ ONLY in lettering
+  # colour, which under §2.3 makes them SUB-ENTRIES on one series rather than
+  # two series.
+  # =========================================================================
+  - id: ng-standard-2011
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2011 }
+    period_evidence: secondary-first-issue
+    period_note: >-
+      2011 is the commonly-given first-issue year of the national uniform
+      scheme and is NOT statutory — the instrument that gazettes the design is
+      dated 2012 and does not state a rollout date. Recorded at
+      secondary-first-issue tier for that reason. The 2012 regulations are the
+      instrument in force over the format; the 2011 date describes issuance.
+    matching: recall-only
+    format:
+      pattern: "LLL999LL"
+      # RECALL-ONLY, and this is the file's central honesty point. The mask is
+      # TERTIARY: the gazette never prints it. What IS statutory is that the
+      # LGA code comes first (reg. 39(4)(f)). Separator positions are spelled
+      # as the sanctioned separator-only class of §2.8 because the statute
+      # prescribes no separator glyph at all.
+      regex: '\A[A-Z]{3}[- ]?\d{3}[- ]?[A-Z]{2}\z'
+    design:
+      plate: { w: 308, h: 155.6, unit: mm }
+      plate_note: "reg. 39(1): 12.125 in x 6.125 in for vehicles"
+      background_note: "white ground for every class (reg. 39(2)) — colour named in words; no hex asserted"
+      foreground_note: "varies BY USE, not by design era — see colour_by_use"
+      colour_by_use:
+        - { use: private,       lettering: blue,  cite: "reg. 39(2)(a); State name in black, 'Federal Republic of Nigeria' in black" }
+        - { use: commercial,    lettering: red,   cite: "reg. 39(2)(b); State name in black" }
+      emblem: { present: true, device: "national flag, top left", cite: "reg. 39(3)(a)" }
+      layout: >-
+        Top: the State name. Bottom: "FEDERAL REPUBLIC OF NIGERIA" in black.
+        Schedule 5 Figs 1-2 add that the plate "shall in addition contain
+        graphics as may be determined by the Commission" — which is why the
+        Nigeria map outline and the State slogans that appear on real plates
+        are FRSC-determined and NOT gazetted. Those are recorded here as
+        FRSC-determined, not as statutory design.
+      reflectivity: "reg. 37(4): legible day and night in clear weather at not less than 60 m"
+      rear_differs: false
+    region_encoding: none
+    region_encoding_mechanism: >-
+      The leading group is the Local Government Area code and it comes FIRST by
+      statute (reg. 39(4)(f)). `none` means NO TABLE SHIPPED: reg. 39(5)
+      delegates the code tables to FRSC and the Schedule 5 tables are
+      un-extractable images in the gazette scan. See V2.
+    notes: >-
+      The ordinary Nigerian plate. Private and commercial are one series with
+      two lettering colours. A Vehicle Identification Tag (Form MVA 25, reg. 38)
+      carrying the same number is displayed on the rear windscreen — a second
+      carrier of the registration, not a second series.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 39(4)(f) LGA-first ordering; reg. 39(2)(a)-(b) private blue / commercial red on white; reg. 39(1) 12.125x6.125 in; reg. 39(3)(a) flag top-left; reg. 37(4) 60 m legibility; reg. 38 Form MVA 25 tag; Schedule 5 Figs 1-2 FRSC-determined graphics — Official Gazette Vol. 99 No. 101, 25 Dec 2012, pagination B 1531-B 1680 intact; accessed 2026-09-12"
+      - "https://sabilaw.org/national-road-traffic-regulations-2012-with-2016-amendments/  # landing page establishing the instrument identity and the 2016 amendments — accessed 2026-09-12"
+
+  - id: ng-government-2011
+    class: government
+    categories: [car, van, truck, bus]
+    period: { start: 2011 }
+    period_evidence: secondary-first-issue
+    matching: recall-only
+    format:
+      pattern: "LLL999LL"
+      regex: '\A[A-Z]{3}[- ]?\d{3}[- ]?[A-Z]{2}\z'
+    design:
+      plate: { w: 308, h: 155.6, unit: mm }
+      background_note: "white ground — no hex asserted"
+      foreground_note: "green lettering"
+      colour_by_use:
+        - { use: "federal and state government", lettering: green, cite: "reg. 39(2)(c), Schedule 5 Fig. 7(a)" }
+        - { use: "local government / area council", lettering: green, cite: "reg. 39(2)(d)" }
+      emblem: { present: true, device: "national Coat of Arms, top left", cite: "reg. 39(3)(b)" }
+      layout: "top line carries the Ministry or Parastatal name rather than a State name"
+    region_encoding: none
+    notes: >-
+      Federal, State and Local Government fleets. A SEPARATE SERIES from
+      ng-standard-2011 rather than a colour sub-entry of it, because the
+      difference is not colour alone: the corner device changes from the
+      national flag to the Coat of Arms and the top line changes from a State
+      name to a Ministry or Parastatal name. Under §2.3 that is a DESIGN
+      difference, and a design difference makes a series.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 39(2)(c)-(d) green lettering for federal/state government and LGA; reg. 39(3)(b) Coat of Arms top-left; Schedule 5 Fig. 7(a) — accessed 2026-09-12"
+
+  - id: ng-forces-2011
+    class: military
+    categories: [car, van, truck, bus]
+    period: { start: 2011 }
+    period_evidence: secondary-first-issue
+    matching: recall-only
+    format:
+      pattern: "LLL999LL"
+      regex: '\A[A-Z]{3}[- ]?\d{3}[- ]?[A-Z]{2}\z'
+    design:
+      plate: { w: 308, h: 155.6, unit: mm }
+      background_note: "white ground — no hex asserted"
+      foreground_note: "black lettering"
+      colour_by_use:
+        - { use: "armed forces", lettering: black, cite: "reg. 39(2)(e), Schedule 5 Fig. 7(b)" }
+        - { use: "para-military, including the police", lettering: black, cite: "Schedule 5 Fig. 8" }
+      emblem: { present: true, device: "national Coat of Arms, top left", cite: "reg. 39(3)(c)" }
+      layout: "top line carries the Armed Forces or para-military body's name"
+    region_encoding: none
+    notes: >-
+      Armed forces and para-military bodies. THE POLICE SHARE THIS SERIES
+      rather than having their own: the instrument groups them under the
+      para-military black-lettering figure (Schedule 5 Fig. 8) with the same
+      Coat of Arms device, so splitting out a `police` class here would invent
+      a distinction the statute does not draw.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 39(2)(e) black lettering for military; reg. 39(3)(c) Coat of Arms; Schedule 5 Fig. 7(b) military and Fig. 8 para-military — accessed 2026-09-12"
+
+  - id: ng-motorcycle-2011
+    class: motorcycle
+    categories: [motorcycle]
+    period: { start: 2011 }
+    period_evidence: secondary-first-issue
+    matching: recall-only
+    format:
+      pattern: "LLL999LL"
+      regex: '\A[A-Z]{3}[- ]?\d{3}[- ]?[A-Z]{2}\z'
+    design:
+      plate: { w: 229, h: 102, unit: mm }
+      plate_note: "reg. 39(1): 9 in x 4 in for motorcycles"
+      background_note: "white ground — no hex asserted"
+      foreground_note: "lettering colour follows the vehicle's use, exactly as for four-wheelers"
+      colour_by_use:
+        - { use: private,     lettering: blue,  cite: "reg. 37(2)(c)" }
+        - { use: commercial,  lettering: red,   cite: "reg. 37(2)(c)" }
+        - { use: government,  lettering: green, cite: "reg. 37(2)(c)" }
+        - { use: "armed forces", lettering: black, cite: "reg. 37(2)(c)" }
+      reflectivity: "reg. 37(4): 30 m for motorcycles, against 60 m for other vehicles"
+    region_encoding: none
+    notes: >-
+      Its own series on DIMENSION grounds — 9x4 in against 12.125x6.125 in — and
+      on a second, sourced ground that is easy to miss: the reflectivity
+      requirement is HALVED for motorcycles, 30 m rather than 60 m (reg. 37(4)).
+      Format is assumed to follow the ordinary mask and is therefore
+      recall-only like every other series resting on it.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 39(1) 9x4 in motorcycle plate; reg. 37(2)(c) per-use lettering colours; reg. 37(4) 30 m motorcycle legibility — accessed 2026-09-12"
+
+  - id: ng-dealer
+    class: dealer
+    categories: [car, van, truck, bus]
+    period: { start: 2012 }
+    period_evidence: enabling-statute
+    matching: recall-only
+    format:
+      pattern: "LL L999 9"
+      regex: '\A[A-Z]{2}[- ]?[A-Z][- ]?\d{3}[- ]?\d\z'
+    design:
+      background_note: "not separately specified for dealer plates"
+      emblem: { present: true, device: "national flag symbol", cite: "reg. 31" }
+    region_encoding: none
+    notes: >-
+      Trade and dealer plates, issued to motor dealers and mechanic workshop
+      operators (regs. 26(4), 30-32, Form MVA 10). Reg. 31 enumerates the
+      FIELDS verbatim — national flag symbol, dealer name, dealer's code, State
+      code, dealer's number (alphanumeric), individual vehicle code
+      (alphanumeric), "Federal Republic of Nigeria" — but again gives no mask;
+      the shape here approximates Schedule 5 Fig. 10 and is therefore
+      recall-only.
+      TWO STATUTORY RESTRICTIONS WORTH CARRYING because they are conditions of
+      validity rather than design: a dealer plate may not carry fee-paying
+      passengers, and it MAY NOT BE USED BETWEEN 18:00 AND 06:00. Workshop
+      plates are road-test only.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # regs. 26(4), 30-32 dealer and workshop plates, Form MVA 10, no fee-paying passengers, 18:00-06:00 prohibition; reg. 31 field list; Schedule 5 Fig. 10 layout — accessed 2026-09-12"
+
+  - id: ng-temporary-wooden
+    class: temporary
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2012 }
+    period_evidence: enabling-statute
+    matching: recall-only
+    format:
+      pattern: "LLL999LL"
+      regex: '\A[A-Z]{3}[- ]?\d{3}[- ]?[A-Z]{2}\z'
+    design:
+      material: "wood — reg. 39(7)-(8) expressly contemplates an owner-constructed wooden plate"
+      background_note: "same colouring and lettering codes as the lost plate it replaces"
+    region_encoding: none
+    notes: >-
+      THE MOST UNUSUAL SERIES IN THIS FILE AND IT IS ENTIRELY STATUTORY. On
+      reporting a plate lost, the owner MAY CONSTRUCT A TEMPORARY PLATE IN THE
+      FORM OF WOOD, carrying the same colouring and lettering codes, until the
+      replacement issues — which must be within 14 days of payment of the fee
+      (reg. 39(7)-(8)). It reproduces the EXISTING registration rather than
+      carrying a serial of its own, which is the `nl-export` situation: the
+      regex is a shape union and a match is emphatically not a claim that the
+      string is a valid temporary registration. recall-only for that reason as
+      well as for the mask.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 39(7)-(8) owner-constructed wooden temporary plate, same colouring/lettering codes, replacement within 14 days of fee payment — accessed 2026-09-12"
+
+  - id: ng-fancy
+    class: personalized
+    categories: [car, van, truck, bus, motorcycle]
+    period: { start: 2012 }
+    period_evidence: enabling-statute
+    matching: strict
+    format:
+      pattern: "LLLLLLLL"
+      # THE ONLY CHARACTER-COUNT RULE IN THE ENTIRE INSTRUMENT, so this is the
+      # one series in the file whose regex IS the sourced grammar.
+      regex: '\A[A-Z0-9]{1,8}\z'
+    design:
+      background_note: "not separately specified; the fancy regime governs the SERIAL, not a distinct design"
+    region_encoding: none
+    notes: >-
+      Special or fancy numbers. `strict`, and it is the only strict series here,
+      because reg. 5(3) states an actual grammar: a special or fancy number
+      "shall not exceed eight digits made up of alphabets, numerals or
+      combination of both". That is a real statutory bound and the regex is
+      exactly it — note it is the OUTER bound, so a match is a well-formedness
+      claim under §2.7 even though FRSC approves individual combinations "as it
+      deems fit" on payment.
+      Transfer between vehicles is permitted but requires POLICE CLEARANCE plus
+      an application to the State of last registration (reg. 6) — a condition
+      on the serial following a person, and the Nigerian analogue of the za.yml
+      personalised-number case.
+      FRSC's own 2024 Service Level Agreements to PEBEC price the classes
+      (production / State disposal, in naira): standard private 5,000/12,500;
+      MV fancy 40,000/80,000; motorcycle 1,500/3,000; articulated 10,000/20,000;
+      out-of-series 20,000/40,000; government fancy MV 20,000/20,000. Recorded
+      as `official` tier and as context, not as schema data — PRD-PLATES §2.5
+      excludes fees from the model.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 5(3) not exceeding eight alphanumeric characters; reg. 6 transfer requires police clearance and application to the State of last registration — accessed 2026-09-12"
+      - "https://frsc.gov.ng/wp-content/uploads/2024/05/SLAs-TO-PEBEC.pdf  # FRSC 2024 Service Level Agreements to PEBEC: number-plate price table and issuance chain — OFFICIAL tier, published on frsc.gov.ng; accessed 2026-09-12"
+
+  - id: ng-out-of-series
+    class: standard
+    categories: [car, van, truck, bus]
+    period: { start: 2012 }
+    period_evidence: enabling-statute
+    matching: recall-only
+    format:
+      pattern: "LLL999LL"
+      regex: '\A[A-Z]{3}[- ]?\d{3}[- ]?[A-Z]{2}\z'
+    design:
+      background_note: "not separately specified"
+    region_encoding: none
+    notes: >-
+      Out-of-series allocations: reg. 5(1) provides for a code "not in the
+      series being issued at the time, but in the control of the Central Motor
+      Registry", applied for via Schedule 5 Fig. 9 and Form MVA2. Recorded as
+      its own series because it is a distinct ALLOCATION regime with its own
+      form and its own controlling body, and priced separately in the FRSC
+      schedule. Overlaps ng-standard-2011 in shape by construction — the whole
+      point of an out-of-series number is that it looks ordinary while coming
+      from a reserved pool — which is why both are recall-only and why this
+      note differs from that one.
+    sources:
+      - "https://sabilaw.org/wp-content/uploads/2021/12/National-Road-Traffic-Regulations-2012.pdf  # reg. 5(1) out-of-series codes under Central Motor Registry control, Schedule 5 Fig. 9, Form MVA2 — accessed 2026-09-12"
