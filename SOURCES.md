@@ -113,7 +113,8 @@ propulsion coverage would require RDW to publish a combined view.
   are therefore `flow-roadworthiness-inspections` and Norway never enters
   `total_stock_observed`.
   **This also undercuts the obvious reason to want Norway.** The inspected
-  fleet is 18.5% pure electric, which is why the source was proposed as the
+  fleet is 18.5% pure electric in the 2025 Q4 file (12.7% corpus-wide, 14.3%
+  of periodic rows), which is why the source was proposed as the
   EV gap-filler — but the 2022-2025 EV wave is exactly the part the deferral
   hides, so a BEV share read off this register *understates* the real one.
   - **Mixed quoting.** The file is *not* a plain quoted CSV: strings are
