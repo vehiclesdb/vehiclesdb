@@ -463,94 +463,127 @@ ownership_path = File.join(ROOT, "OWNERSHIP.yml")
 own = File.exist?(ownership_path) ? (YAML.safe_load_file(ownership_path, permitted_classes: [], aliases: false) || {}) : {}
 owner_of = ((own["s4w"] || []).to_h { |m| [m, "s4w"] }).merge((own["s2w"] || []).to_h { |m| [m, "s2w"] })
 
-# CRITICAL: the pipeline looks renames up by the make's canonical DISPLAY NAME
-# (`@o.model_renames[make]` in normalizer.rb, where `make` is the post-alias
-# display string) — NOT by slug. So "Mercedes Benz:" is inert even though it
-# slugifies to the correct `mercedes-benz`, and "SEAT:" is required over
-# "Seat:". Compare against catalog display names, exactly.
+# CRITICAL — AND THIS CHECK WAS WRONG UNTIL 2026-09-12. The pipeline looks
+# renames up by `@o.model_renames[make]` (normalizer.rb:385) where `make` is the
+# POST-ALIAS display string of the row being classified:
 #
-# IMPORTANT — the catalog LAGS the override layer. `catalog/` is a build output
-# and the build only runs monthly, so a make renamed by an alias merged today
-# still shows its old display name in catalog/*/makes.json for weeks. PR #1
-# added identity casing pins (`MITT: MITT`, `TRS: TRS`, `EBRO: EBRO`,
-# `UNVI: UNVI`) plus rename blocks keyed by the NEW names; against the current
-# catalog those keys look inert, but they are merely pending a build.
+#     make = @o.make_aliases.fetch(raw_make) { smart_case(raw_make) }
 #
-# So the valid key set is: catalog display names ∪ makes/aliases.yml values.
-display_names = {} # display name => slug (or "pending" for alias-only names)
+# That string is a function of the RAW REGISTER SPELLING, not of the make's
+# catalog display name. Two raw spellings that slugify the same land on ONE make
+# id but produce TWO different display strings, and a rename block keyed by
+# either of them is LIVE:
+#
+#     raw "AUTO UNION"  → smart_case → "Auto Union"   ← renames.yml:791 keys this
+#     raw "AUTO-UNION"  → smart_case → "Auto-Union"   ← the catalog's display name
+#
+# This lint used to compare block keys against `catalog/*/makes.json` display
+# names and fail anything that only NEAR-MISSED one. Against `Auto Union` that
+# is a FALSE POSITIVE, and it cost the project real damage: it made main's lint
+# red for a week, and both attempted "fixes" (data#331 repointed the block to
+# "Auto-Union", data#333 deleted it) ADDED a release-blocking gate failure —
+# 202 → 203 — because stopping the fold mints `car/auto-union/1000s` live while
+# `former_ids.yml:1366` still aliases it. Measured on four CI builds; the
+# diagnosis is in NEGOTIATION.md (S4W/REL-3, 2026-09-12).
+#
+# THE CORRECT PREDICATE is the pipeline's own, and the pipeline already states
+# it hermetically in `test_rename_make_blocks_are_reachable`:
+#
+#     a block heading M is reachable iff feeding M.upcase back through the
+#     make-resolution path yields exactly M, OR M is a VALUE in the alias
+#     layer (some other raw string produces it — "Car-bus.net" only ever
+#     comes from raw "CAR-BUS.NET").
+#
+# So this file now ports that path — `make_aliases` (makes/aliases.yml merged
+# with search_aliases.yml upcased, exactly as overrides.rb:54 builds it) and
+# `smart_case`/`split_slashes`/`case_token`, whose only tables are the DATA
+# repo's own overrides/styling.yml. The port is 15 lines and hermetic; keep it
+# in sync with pipeline/lib/normalizer.rb if that casing path ever changes.
+# The catalog is still read, but ONLY to attribute an owner and to say whether
+# the make has published yet — it is a build output that lags the override
+# layer and it is not the authority on what keys the pipeline accepts.
+#
+# What still FAILS, unchanged in strength: a block orphaned by an alias edit.
+# `Emax:` went inert on 2026-07-25 when raw EMAX was merged into the E-Max
+# marque; `make_aliases["EMAX"] == "E-Max" != "Emax"`, so it fails here. So does
+# a pure casing error — `Bmw:` (smart_case("BMW") is the acronym "BMW"),
+# `smart:` (→ "Smart"), `Mercedes Benz:` when that raw is aliased away.
+styling = begin
+  YAML.safe_load_file(File.join(ROOT, "overrides/styling.yml"), permitted_classes: [], aliases: false) || {}
+rescue StandardError
+  {}
+end
+STYLINGS = (styling["stylings"] || {}).freeze
+ACRONYMS = (styling["acronyms"] || []).map(&:to_s).to_set.freeze
+
+def case_token(w)
+  return w if w =~ /\d/          # tokens with digits stay as-is: A3, 208, XC40
+  return w if ACRONYMS.include?(w)
+  w.capitalize
+end
+
+def split_slashes(word)
+  return yield(word) if word =~ /\d/
+  # -1 keeps trailing empties so "TAXI/" stays "Taxi/" rather than "Taxi".
+  word.split("/", -1).map { |part| yield(part) }.join("/")
+end
+
+def smart_case(str)
+  return STYLINGS[str.upcase] if STYLINGS.key?(str.upcase)
+  str.split(/\s+/).map { |word|
+    split_slashes(word) { |part| part.split("-").map { |seg| case_token(seg) }.join("-") }
+  }.reject(&:empty?).join(" ")
+end
+
+# overrides.rb:54 — `cleanup.merge(search_aliases.transform_keys(&:upcase))`.
+make_aliases = (YAML.safe_load_file(File.join(ROOT, "overrides/makes/aliases.yml"),
+                                    permitted_classes: [], aliases: false) || {})
+search_aliases_path = File.join(ROOT, "overrides/makes/search_aliases.yml")
+if File.exist?(search_aliases_path)
+  sa = YAML.safe_load_file(search_aliases_path, permitted_classes: [], aliases: false) || {}
+  make_aliases = make_aliases.merge(sa.transform_keys { |k| k.to_s.upcase })
+end
+alias_values = make_aliases.values.compact.map(&:to_s).to_set
+
+# display name => slug, from the LAST RELEASE. Attribution only (see above).
+display_names = {}
 %w[car van motorcycle moped truck bus].each do |kind|
   path = File.join(ROOT, "catalog", kind, "makes.json")
   next unless File.exist?(path)
   require "json"
   JSON.parse(File.read(path)).each { |m| display_names[m["name"]] = m["id"] }
 end
-(YAML.safe_load_file(File.join(ROOT, "overrides/makes/aliases.yml"),
-                     permitted_classes: [], aliases: false) || {}).each_value do |canonical|
-  display_names[canonical] ||= slugify(canonical)
-end
 
-# Display names the OVERRIDE LAYER declares, which may not be in the catalog
-# yet. `makes/aliases.yml` maps raw UPPERCASE registry strings to display names,
-# so its VALUES are exactly the set of names the next build can produce.
-pending_display_names = begin
-  (YAML.safe_load_file(File.join(ROOT, "overrides/makes/aliases.yml"), permitted_classes: [], aliases: false) || {})
-    .values.compact.map(&:to_s).to_set
-rescue
-  Set.new
-end
+{ "overrides/models/renames.yml" => "rename block",
+  "overrides/models/aliases.yml" => "alias block" }.each do |rel, what|
+  doc = YAML.safe_load_file(File.join(ROOT, rel), permitted_classes: [], aliases: false) || {}
+  doc.each do |make, map|
+    make = make.to_s
+    # An empty/nil block holds no lines, so it cannot be "inert curation".
+    # (lint_overrides.rb owns the nil-block crash guard.)
+    next unless map.is_a?(Hash) && !map.empty?
 
-if display_names.empty?
-  note! "no catalog/*/makes.json found — skipping make-key validation"
-else
-  { "overrides/models/renames.yml" => "rename block",
-    "overrides/models/aliases.yml" => "alias block" }.each do |rel, what|
-    doc = YAML.safe_load_file(File.join(ROOT, rel), permitted_classes: [], aliases: false) || {}
-    doc.each_key do |make|
-      if display_names.key?(make)
-        note! "#{rel}: #{what} #{make.inspect} → #{display_names[make]} (owner: #{owner_of[display_names[make]] || '?'})"
-        next
-      end
+    resolved = make_aliases.key?(make.upcase) ? make_aliases[make.upcase].then { |v| v&.to_s } : smart_case(make.upcase)
 
-      # Two very different situations, and only one is a bug:
-      #
-      #   NEAR-MISS — a make with the same SLUG but a different display form
-      #   exists ("Mercedes Benz" vs "Mercedes-Benz", "smart" vs "Smart"). That
-      #   is a typo, the block is inert forever, and it must fail.
-      #
-      #   ABSENT ENTIRELY — no make with that slug is published at all. That is
-      #   a legitimate FORWARD-LOOKING block: curation written for a make that
-      #   has not cleared the publish threshold yet (S2W's `Unu:` block is the
-      #   live example — unu is measured in the RDW raws but not yet published).
-      #   Inert today, correct tomorrow, so it gets a note rather than a failure.
-      #   PENDING AN ALIAS — the near-miss is the display name the CATALOG still
-      #   carries, but makes/aliases.yml already declares the new one. This lint
-      #   reads catalog/, which is the LAST RELEASE, so during the release that
-      #   renames a make the correct block name looks like a typo and the stale
-      #   one looks right. Exactly backwards.
-      #
-      #   This is not hypothetical: it is why this lint stayed green while the
-      #   `Emax:` block went inert under the E-Max merge (2026-07-25). The block
-      #   matched the stale catalog perfectly. A rename block is only safe if it
-      #   matches what the pipeline WILL produce, so consult the override layer's
-      #   own declared display names too. The pipeline-side hermetic version of
-      #   this check is `test_rename_make_blocks_are_reachable`; the two are
-      #   complementary — that one computes the name from the override layer,
-      #   this one sees the built reality.
-      if pending_display_names.include?(make)
-        note! "#{rel}: #{what} #{make.inspect} matches a makes/aliases.yml display name not yet in the " \
-              "catalog — correct for the build that lands the rename; verify it after the next build."
-        next
-      end
-
-      near = display_names.keys.select { |n| slugify(n) == slugify(make) }
-      if near.empty?
-        note! "#{rel}: #{what} #{make.inspect} matches no published make — inert until that make " \
-              "publishes. Fine for forward-looking curation; check the spelling if it was meant to be live."
+    if resolved == make || alias_values.include?(make)
+      slug = display_names[make]
+      if slug
+        note! "#{rel}: #{what} #{make.inspect} → #{slug} (owner: #{owner_of[slug] || '?'})"
       else
-        fail! "#{rel}: #{what} #{make.inspect} does not match any catalog make DISPLAY NAME — " \
-              "the pipeline keys renames by display name, so this block is inert. " \
-              "Did you mean #{near.first.inspect}?"
+        near = display_names.keys.find { |n| slugify(n) == slugify(make) }
+        note! "#{rel}: #{what} #{make.inspect} is REACHABLE (the pipeline produces this exact string " \
+              "from raw #{make.upcase.inspect}) but is not a catalog display name" \
+              "#{near ? " — the catalog spells this make #{near.inspect}, which is a DIFFERENT raw spelling of the same make id (#{slugify(make)}); both are live" : ", so the make has not published yet — fine for forward-looking curation"}."
       end
+    elsif resolved.nil?
+      fail! "#{rel}: #{what} #{make.inspect} is UNREACHABLE — overrides/makes/aliases.yml DROPS raw " \
+            "#{make.upcase.inspect} (maps it to null), so no row ever reaches this block and every line " \
+            "in it is inert."
+    else
+      fail! "#{rel}: #{what} #{make.inspect} is UNREACHABLE — the pipeline resolves raw " \
+            "#{make.upcase.inspect} to #{resolved.inspect}, so every line in this block is inert. " \
+            "Rekey the heading to #{resolved.inspect}. DO NOT REKEY BLINDLY: an orphaned block has never " \
+            "been exercised, so switching it on deploys unreviewed curation — read its lines first."
     end
   end
 end
