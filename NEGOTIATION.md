@@ -33317,3 +33317,40 @@ Everything is in `$S/enr4/INDEX.md` (547 lines). Five PRs open from this lane
 recorded I-11 verdicts and **must not be merged as-is**.
 
 — S4W/ENR4
+
+---
+
+## S4W — CLOSED for the week (2026-09-12 19:05 UTC): state sealed, next-pass order, owner calls
+
+**Shipped this week:** v2026.09.0 (09-05) and v2026.09.1 (09-12, run 34697443600; 14,856 → 14,886 published, 0 orphans) — the second carries the #329 reconciler fix (entry-class sidecar; main's fresh-fetch gate set 202 → 0). Main's lint is GREEN (the `lint_curation` make-key fix). Merged since 09-05, by lane: REL — data #322/#325/#332/#330/#335/#328/#326/#327/#316/#292/#311/#318/#320 + the lint fix, pipeline #189/#184/#181/#182/#183/#190/#193/#187/#191/#192; enrichment 2W decile-1 mass 22% → 61%, 4W decile-1 coverage 51% → 55% (65% pending); Perodua 442,377 vehicles; Argentina +9,823; plates 126 jurisdictions (tr, ng); issue #329 closed.
+
+**Open and verified, merge in this order next pass (REL lane only; parsed green per PR; pipeline-first for coupled pairs; never during a publish run):** pipeline #195 (lint_enrich citation counter) → #194 (Holden rows, I-11 verified) → #200 (honda-A/sym/kymco, gate-green) → #201 (isuzu, UNVERIFIED — verify first) → #197 (tools) → data #339 (eg plates, lint-only) → #304 (build green 14:52) → #315/#307 (per REL turn f1fba29; #307 conflicts with a gate_acks adjudication) → #186 (needs its control build) → #337 (audit, RUNNING/WIP — finish the round first). DO NOT merge as-is: pipeline #196/#198 (15 structural defects, verdicts recorded on the PRs), #319 (declined), #185 (WIP), #188+#334 (Australia) and #199+#338 (Norway) — both new sources are built and tested but BLOCKED on owner rulings and #199 on an unmeasured control build.
+
+**Owner calls (the list is short and each unblocks a lot):** (1) Australia LCV → `van` or `truck` (evidence favours `van`; moves 24 published ids; unblocks +904 records). (2) Norway: coachbuilder-as-make for motorhomes (PKK files `hymer/*` as makes; the catalog files them as models under the chassis make) and whether NO feeds `history`. (3) `PIPELINE_RELEASE_TOKEN` secret — the private plus feed is stranded on plus-2026.08.1. (4) Omoda 5 / E5 one nameplate or two. (5) Web PRs #88/#89; the Kolben reply. (6) The one modified file in the pipeline primary clone — inspect before pulling.
+
+**Unfinished on disk:** AUD round 2 pinned to v2026.09.1, zero records audited (one command from starting, #337 carries the pinned-build proof); COV `s4w/cov4-th-folds` (130 keys / 14,609 Thai vehicles, needs its treatment build; tables for nz/ua/my ranked); ENR4 `$S/enr4/INDEX.md` (547 lines; six junk-stub classes ≈145k misfiled vehicles for NORM/COV; the two recurring researcher errors: over-claimed evidence tiers, dates from the wrong scope); PLT L5 list (next sa, ae, pk, id, vn, ph); ENR2 14-batch queue (next per mass order).
+
+**Operating lessons, recorded in the coordinator's memory:** session limits bind before tokens — seven Opus lanes hit 70% of a window in ~15 minutes, four in ~1 hour; run two lanes (one merge, one research) with ≤2 children each; the coordinator posts one call per check; NOTHING pushes to `main` while a publish run is in progress; forks cannot spawn; `git stash` is repo-global across worktrees; the cron can fire hours late.
+
+— S4W
+
+---
+
+## S4W — STRETCH 2026-10-02 OPEN: owner-delegated autonomous stretch; REL is the only merger; five rulings
+
+The owner (Javi) is AFK and has delegated every decision to the coordinator for this stretch. Lanes running now: **REL** (release + merge queue), **ENR4** (repair/verify pipeline #196/#198/#201), **ENR2** (2W enrichment queue), **COV** (Thai folds / coverage), **SRC** (Norway #199/#338). **AUD** and **WEB** start later.
+
+**Rules for the stretch.** Only **REL** merges to `main` in either repo and only REL dispatches builds/publishes. Every other lane works on `s4w/<lane>-<topic>` branches in `~/GitHub/.vdb-worktrees/`, opens a PR with a complete body, gates it locally, and records it as READY-FOR-REL with its verification evidence in its handoff file. Nobody pushes to data `main` while a `monthly-build.yml` run (schedule/workflow_dispatch) is in flight. Lane turns go to handoff files, not here; REL posts this opening and one closing turn.
+
+**Coordinator rulings (owner-delegated, binding; each is recorded in the PR that implements it):**
+1. **Kadett tripwire (#340):** the spotcheck asserts what it guards — no `opel/kadett-[a-g]*` id may exist — and stops pinning `es`, a rolling-window source.
+2. **`motorcycle/motron-motorrad/revolver`:** `removals.yml` DEMOTED entry (daelim/vt125 and motron cubertino precedents) with per-source counts from a build; never hand-restore.
+3. **Australia:** LCV → `van`. The 24-id kind migration goes through the alias mechanism (ids are append-only); control-vs-treatment build; merge pipeline#188 → data#334.
+4. **Norway:** keep the catalog's convention — motorhomes are models under the chassis make; a coachbuilder is not promoted to a make by one register. NO does not feed `history` until its basis is measured. If evidence contradicts either, say so with the measurement and follow the evidence.
+5. **Omoda 5 / E5 and similar:** decide from NAMING.md + the closed electric-nameplate table precedent, and cite it.
+
+**Fleet-wide hazard found at open (REL):** the documented "offline" build (`VDB_CACHE_DIR=~/GitHub/vehiclesdb-pipeline/cache ruby pipeline/run.rb`) is **not offline** — `Support.fetch` refetches anything older than 20 h, so every build rewrites the shared cache. Use a private `cp -c` clone of the cache plus a no-network fetch shim (COV's or REL's, under the stretch scratchpad).
+
+**Also found at open (REL), both fleet-relevant.** (a) DfT republished VEH0120 with **2026 Q2**, and DVLA re-filed and re-spelled GenModels in the same release. That broke three pipeline tests (fixed: pipeline#203, I-11 verified, merged) and, behind them, about 69 build gates on gb-sourced ids. A curation pass to restore those ids is in flight on data#341, so every data PR's `build` check stays red until it lands. (b) **Identity rule (coordinator, binding):** before any merge, every commit author on the PR must be `4920956+rameerez@users.noreply.github.com` (`noreply@anthropic.com` only as a trailer). A squash merge of a PR with a foreign-authored commit embeds that email in `main` as a `Co-authored-by` trailer. data#339 was re-cut as #348 for that reason.
+
+— S4W
