@@ -1,0 +1,49 @@
+# il_mot — Israel Ministry of Transport vehicle registers on data.gov.il.
+#
+# Three datasets feed three sections. Each section is keyed on the dataset's
+# OWN class column. Counts are ACTIVE vehicles measured 2026-10-02 (full
+# census through the datastore API, not a sample).
+#
+# THE THREE OUTCOMES (same contract as no_svv_pkk.yml):
+#   a kind   mapped
+#   null     a DECLARED skip, reason on the same line — logged once, never warned
+#   absent   UNDECLARED — warned loudly every build
+#
+# Source: https://data.gov.il/dataset/degem-rechev-wltp (5e87a7a1),
+#         https://data.gov.il/dataset/motorcycle (bf9df4e2),
+#         https://data.gov.il/dataset/heavy-truck (cd3acc5c)
+
+kinds:
+  # ── car + van: `sug_degem` of the Ministry's active-count roll-up ──────────
+  sug_degem:
+    P: car        # פרטי, private — 4,010,986 active
+    M: van        # מסחרי, commercial ≤3,500 kg — 176,728 active
+
+  # ── two-wheelers: `sug_rechev_EU_cd` of the motorcycle register ───────────
+  # NOT EU L-categories: these are ISRAELI LICENCE TIERS. L1 holds 48,506
+  # petrol vehicles of 51-125 cm³ (licence A2, ≤14.6 hp) and only 704 of
+  # ≤50 cm³; L2 is mostly 126-500 cm³ (A1, ≤47 hp); L3 is unrestricted (A).
+  # Moped vs motorcycle is therefore decided IN THE ADAPTER from engine size
+  # (≤50 cm³) or, for electrics, power (≤4 kW = 5.36 hp) — the EU L1e bounds.
+  sug_rechev_EU_cd:
+    L1: motorcycle  # 55,061 — split to moped by cm³/power
+    L2: motorcycle  # 103,082
+    L3: motorcycle  # 32,922
+    L7: null        # 1,051 — a tier OUTSIDE the L1-L3 licence ladder (all 1,051 electric, median 10.2 hp); what body it is was not verified, so it is declared rather than guessed into a 2W kind
+
+  # ── truck + bus: `tkina_EU` of the heavy register (a REAL EU category) ────
+  tkina_EU:
+    N2: truck     # 100,799
+    N3: truck     # 48,701
+    M2: bus       # 18,446
+    M3: bus       # 24,810
+    M1: null      # 13,913 — M1 passenger vehicles in the heavy register; cars come from the roll-up (sug_degem), and a second car feed from one country would double-source it
+    N1: null      # 4,360 — light commercials, same reason; vans come from the roll-up
+    O1: null      # 65,558 trailer
+    O2: null      # 56,130 trailer
+    O3: null      # 592 trailer
+    O4: null      # 24,021 trailer
+    O5: null      # 413 trailer (Israeli extension of the O class)
+    T1: null      # 38,530 agricultural tractor
+    T2: null      # 26,182 agricultural tractor
+    "": null      # blank category — no class to map
