@@ -25,6 +25,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `th_dlt` | 🇹🇭 TH | DLT first registrations by brand/model (incl. motorcycles) | [TH gov open data](https://gdcatalog.dlt.go.th/) | yearly file | ✓ new reg. |
 | `ua_mvs` | 🇺🇦 UA | Registration operations register (the CIS spine) | [CC-BY](https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0) | ~monthly | ✓ new reg. |
 | `ar_dnrpa` | 🇦🇷 AR | DNRPA vehicle registrations (LatAm spine) | [CC-BY 4.0 (datos.gob.ar)](https://datos.gob.ar/) | monthly | ✓ new reg. |
+| `il_mot` | 🇮🇱 IL | MoT active-vehicle roll-up (car/van) + motorcycle and heavy registers, via the datastore API | [data.gov.il Licence of Use](https://data.gov.il/he/terms-of-use) (`other-open`) | daily | ✓ fleet (active) — **attach-only** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -46,6 +47,7 @@ about coverage.
 | `lu_snca` | `CODCRB` | the full vocabulary, incl. bifuel pairs — the cleanest of any source |
 | `my_jpj` | `fuel` | petrol · diesel · BEV · hybrid |
 | `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
+| `il_mot` | car/van: the approval catalogue's `technologiat_hanaa_nm` (+ `delek_nm`); 2W/truck/bus: register `sug_delek_nm` | car/van: BEV · PHEV · **HEV** (the only Israeli field that separates a regular hybrid from a plug-in) · petrol · diesel · LPG; 2W/heavy: petrol · diesel · BEV · LPG · CNG — the register's electric+petrol value maps to neither hybrid code |
 | `us_fueleconomy` | `atvType` | the full vocabulary, as **approval** evidence (certified configurations, not vehicles) |
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
@@ -98,6 +100,56 @@ propulsion coverage would require RDW to publish a combined view.
 - **ie_cso** — PxStat labels are `"MAKE MODEL"` concatenated; the pipeline
   splits by longest-known-make prefix and logs the (few) unsplittable
   leftovers rather than guessing.
+- **il_mot** — Israel's Ministry of Transport registers on data.gov.il,
+  measured 2026-10-02. **Only the CKAN API works**: every bulk route (the
+  `/download/*.csv` links, `/datastore/dump`, the `e.data.gov.il` resource
+  URLs) answers a CloudFront WAF challenge, a 403 or a Google sign-in, so the
+  adapter pages `datastore_search` 100,000 rows at a time and proves each read
+  contiguous (`_id` 1..N, N = the server total).
+  - **Identifiers are never requested.** Three of the four datasets are
+    per-vehicle and carry the plate, the chassis number and the engine number;
+    the API projects `fields=`, so only an allow-list of non-identifier
+    columns ever leaves the server. Car and van come from the Ministry's own
+    roll-up (`5e87a7a1`, active count by make, model code, year and commercial
+    name), which has no per-vehicle row at all. Model cells of nothing but 7–8
+    digits — an Israeli plate's shape — are dropped and counted (13 vehicles).
+  - **Stock = ACTIVE vehicles**: licence valid or lapsed ≤13 months,
+    deregistrations excluded; the car/van roll-up starts at manufacture year
+    1996/1998. Basis `stock-active`. No `by_year` series: `shnat_yitzur` is
+    the MANUFACTURE year, and the on-road date beside it is not an Israel
+    first-registration date (used imports show gap 0 in 100% of 21,834 rows).
+  - **Makes are written in Hebrew only.** The map is curation, in
+    `overrides/makes/aliases.yml` (145 keys, 98.75% of active mass);
+    `ג'אקו` is **Jaecoo**, not JAC (`ג'אק`). Multi-marque register labels
+    (`דיימלר קרייזלר`, `קרייזלר` — filed on Ram trucks too — `רובר`) stay
+    unmapped and are dropped with their mass logged.
+  - **The motorcycle register's L1/L2/L3 are LICENCE TIERS, not EU
+    categories** (A2 ≤14.6 hp / A1 ≤47 hp / A): L1 is mostly 125 cm³
+    scooters. Moped is decided by the EU L1e bound — ≤50 cm³, or ≤4 kW
+    electric (`hespek` is horsepower). The heavy register's `tkina_EU` IS a
+    real EU category: N2/N3 truck, M2/M3 bus; trailers, tractors and its
+    M1/N1 rows are declared skips (`overrides/kind_maps/il_mot.yml`).
+  - **ATTACH-ONLY.** Allowed to mint (control vs treatment on a frozen
+    corpus, adapter the only variable), Israel published **+821 ids** (car
+    159 · van 37 · truck 178 · bus 61 · motorcycle 372 · moped 14) and **12
+    new gate failures** (alias-liveness resurrections like `van/mazda/bt-50`;
+    no-vanish via cross-kind dominance like `car/fiat/250`, displaced by
+    Israel's Fiat "250" trucks). The head was junk: tails fused into
+    commercial names (`toyota/corolla-hsd-sdn` 33,309, `hyundai/elantra-hev`)
+    and, on 2W/truck/bus, TYPE CODES rather than names (`honda/nf13`,
+    `ktm/gsa20`, `chevrolet/ck`). As shipped: **+0 ids, 0 renames, gate
+    failures identical to control; `il` on 1,483 published ids** (car 772 ·
+    van 98 · truck 170 · bus 34 · motorcycle 394 · moped 15) carrying
+    3,638,204 of 4,507,113 ingested active vehicles (80.7%; car 85.6%,
+    motorcycle 6.0% — the type-code cells rarely meet a catalog name).
+  - **Licence.** Every package read is `other-open` with no text; the site
+    licence (https://data.gov.il/he/terms-of-use) governs and permits copy,
+    distribution, derivatives and commercial use. Its prohibitions pass
+    through to users of the Israeli-derived part (no misleading use, no
+    unlawful use, **no use that harms a person's privacy, including by
+    cross-referencing**). The terms page is WAF-blocked to the pipeline, so
+    the pin guards the CKAN licence fields and the text is quoted in the
+    adapter; re-read it by hand with a browser on each release.
 - **de_kba_fz10** — Germany's per-vehicle register is closed by statute
   (§39 StVG); FZ 10 is the open model-level signal and is already
   series-normalized by KBA. The site answers missing months with HTTP 200 +
