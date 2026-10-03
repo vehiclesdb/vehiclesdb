@@ -4140,6 +4140,10 @@ Great Wall:
   "Ora 03-400":  Ora 03  # 3 veh/1 rows (ar, ar_dnrpa) -> live great-wall/ora-03; raw "ORA 03-400"; https://gwm.com.ar/modelos (accessed 2026-10-02) [manufacturer; opened directly]
 
 Harley-Davidson:
+  "Fxe":                   "FXE"                  # Harley model code (FX + E for electric start) — codes render uppercase, same basis as the Flstn/FLSTN pins. NOTE: uppercase is the in-make MINORITY here (1 vs 2); the detector`s own "majority is not authority" warning applies and the basis is the code convention, not the count
+  "Superglide Fxe":        "Super Glide FXE"      # same code, and Harley writes the name as TWO words — "Super Glide" throughout h-d.com heritage copy
+  "Fxsts Springer":        "FXSTS Springer"       # Harley model code uppercase; FXSTS attested x2 in-make
+  Flstn 103:                 FLSTN 103          # Harley model code, uppercase — same basis as the Flstn/Flstn Softail pins above; 103 is the Twin Cam displacement; 4:1 in-make
   "Flhtk": "Flhtk Electra Glide Ultra Limited" # HARLEY CODE CLUSTER: 4 spellings of one motorcycle. Harley: "FLHTK - Electra Glide(R) Ultra Limited". The I-suffix is FUEL INJECTION, not a distinct model (2002 Softail parts catalog lists the code and its /I as one entry; VIN table separates them only by "Engine type Y=...carbureted... B=...fuel injected").
   "Flhtk Electra Glide": "Flhtk Electra Glide Ultra Limited" # same cluster
   "Flhtk Ultra Limited": "Flhtk Electra Glide Ultra Limited" # same cluster
@@ -8343,6 +8347,14 @@ Nissan:
 # runs first. ──
   Coupe: null                             # body class in the model column: coupe — 33 v, nz_nzta MODEL ×28, nl_rdw handelsbenaming ×5; raw "COUPE"×33. Nissan keeps 106 live records (almera, almera-classic, almera-tino, altima…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
+Niu:
+  # 2W head certification, 2026-08-21. Same standalone-acronym defect as the
+  # Vespa/SYM GTS records — normalizer`s `case_token` leaves digit-bearing
+  # tokens alone and title-cases bare ones, so "GTS" became "Gts". NIU also
+  # writes its ranges with a lowercase i (NQi / MQi / UQi), which the same pass
+  # flattens to "Nqi" — two defects in one display string.
+  "Nqi Gts Pro":       NQi GTS Pro      # niu.com range pages write NQi GTS PRO; d6
+
 Norton:
   Norton: null                            # motorcycle nl|nz
   "Commando 850MK III":                      Commando 850 Mk III      # Ungluing "850MK" and casing MK the British way. nl_rdw carries "850 COMMANDO MKIII" and "850 COMMANDO MK3 ROADSTER" — the 850 is always spaced off in the register, and MK is Mark, which British usage writes "Mk III" not "MK III". Word order preserved as published rather than reordered to match the raw: this display comes from another source and reordering would be a second, unevidenced change.
@@ -10888,6 +10900,7 @@ SWM:
   Sixdays: Six Days                      # SWM Six Days — two words (the ISDE reference), from the tail batch
 
 SYM:
+  "Gts":               GTS                # SYM GTS 300i — same acronym, different marque, same caser defect
   "N.a.": null   # small placeholder block against SYM's 56 real names (FIDDLE alone is 36,746 registrations)
   "JET14EVO125LC Abs":               JET14EVO125LC              # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   Xpro:                      X Pro                # SYM writes X Pro with a space
@@ -11482,6 +11495,23 @@ Velocette:
   200LE: LE200                              # same string reversed. Folds into LE200, and DELIBERATELY NOT into bare "LE": the LE came in 149cc (Mk I/II) and 192cc (Mk III), so the 200 distinguishes a real machine. Merging it away would destroy that with no variant layer to catch it.
 
 Vespa:
+  # ── 2W HEAD CERTIFICATION finding, 2026-08-21 · the GTS acronym ────────────
+  # Found on the FIRST pass of the 2W head stratum (deciles 1-3 ordered by head
+  # presence, PRD-FIVE-NINES §1.2), exactly as the car pilot found head defects
+  # on its first run. FIVE records across THREE makes display "Gts":
+  #   vespa/gts            d1  <- the head record
+  #   vespa/gts-supertech  d5
+  #   vespa/gts-super-300  d9
+  #   sym/gts              d6
+  #   niu/nqi-gts-pro      d6
+  # while every digit-bearing sibling stays correct: GTS125, GTS250, GTS300,
+  # GTS300 Super, GTS150 Iget. That asymmetry IS the mechanism — normalizer.rb
+  # documents that `case_token` returns any digit-bearing token unchanged, so
+  # "GTS125" survives while a standalone "GTS" is title-cased. Not a Vespa quirk
+  # and not a register defect: it is the caser meeting a bare acronym.
+  "Gts":               GTS                # Gran Turismo Sport, an acronym — Piaggio writes "Vespa GTS" throughout its own range pages; d1 head record
+  "Gts Supertech":     GTS SuperTech      # Piaggio`s own trim styling is SuperTech (camelCase), cf. the GTS SuperSport
+  "Gts Super 300":     GTS Super 300      # same acronym, spaced trim
   Vespa: null                             # motorcycle es|nl AND moped nl|nz
   "GTS150 Iget Abs":                 GTS150 Iget                # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   "LX150 Iget Abs":                  LX150 Iget                 # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
@@ -12752,6 +12782,20 @@ XPeng:
   "G6 Rwd Long Range":  G6  # 263 veh/1 rows (th, th_dlt) -> live, was candidate xpeng/g6-rwd-long-range; raw "G6 RWD Long Range"; https://car.ecosticker.go.th/detail/6ec43a69-a117-42e0-8ff6-f888228f04a5 (accessed 2026-10-02) [ECO #026630 XPENG "G6 RWD Long Range"]
 
 Yamaha:
+  # ── 2W head pass, 2026-08-21 · A PIN SET ENUMERATED BY HAND GOES STALE ────
+  # scripts/find_casing_contradictions.rb reports THREE intra-make casing
+  # contradictions in 2W, and all three have the same shape: the family already
+  # HAS pins, and one suffixed sibling sits outside the enumeration.
+  #     Nmax / Nmax 150 / Nmax Tech Max pinned  ->  "Nmax 155" slipped through
+  #     Vmax / V-Max / V Max pinned             ->  "Vmax 1700" slipped through
+  #     Flstn / Flstn Softail / … pinned        ->  "Flstn 103" slipped through
+  # Nobody was careless: each pin set enumerated the spellings visible when it
+  # was written, and a later displacement or engine suffix arrived outside it.
+  # The keys below close today`s three. The STRUCTURAL point is filed in DEBT —
+  # this class wants a make-scoped token rule, not an enumeration that has to be
+  # re-audited every time the corpus grows.
+  Nmax 155:                  NMAX 155           # MAX series — all-caps closed, same citation as the Nmax/Nmax 150 pins above (global.yamaha-motor.com MAX-series page); 4:1 in-make
+  Vmax 1700:                 VMAX 1700          # MAX series — same citation as the Vmax/V-Max pins above; the 1700 is the second-generation VMAX; 2:1 in-make
 # ── S-1 UNWIND, 2026-08-02: the "-D is a trim" premise was WRONG and five keys
 # were removed. Yamaha prints a distinct COMMERCIAL NAME on each -D manual
 # cover — MTN1000D (MT-10 SP), MTM890D (XSR900 GP), MTT890D-K (Tracer 9 GT+) —
@@ -13149,6 +13193,7 @@ Zeekr:
   "7X": "7X"                # https://en.wikipedia.org/wiki/Zeekr_7X — battery-electric mid-size crossover SUV, in production since 2024-09-17; raws "7X" (5,453), "ZEEKR 7X" (344), "7X 100KW 4WD"
 
 Zero Motorcycles:
+  "Sr/F ZF14.4":           "SR/F ZF14.4"          # Zero writes SR/F, SR/S, DS/R uppercase — SR attested x10 in-make against this single Sr
   # Residue of a SINGULAR/PLURAL mismatch between the two columns, not a naming
   # choice. RDW writes merk="ZERO MOTORCYCLES" (plural) but handelsbenaming
   # "ZERO MOTORCYCLE XB"/"XE" (singular). strip_make_prefix tries the exact raw
