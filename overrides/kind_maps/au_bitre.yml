@@ -65,22 +65,28 @@
 # `volvo/fm`, a nameplate the catalog already publishes — to avoid plant that
 # the null filter removes anyway. So: `truck`.
 #
-# ── Light commercial vehicles → van: CONSISTENT, AND STILL AN OPEN RULING ────
+# ── Light commercial vehicles → van: RULED (coordinator ruling 3, 2026-10-02) ─
 #
 # 4,195,963 vehicles, the second-largest class. `van` follows the house
-# precedent: uk_dft maps "Light goods vehicles" → van, and the Australian class
-# is the same regulatory bracket. But the Australian LCV fleet is dominated by
-# UTES — body-on-frame pickups (HILUX, RANGER, TRITON, NAVARA, D-MAX) — and a
-# ute is not a panel van. The mapping is recorded as the consistent default and
-# flagged to the owner as a ruling request rather than presented as settled.
-# Note it is partly self-correcting: our catalog already files toyota/hilux and
-# ford/ranger under several kinds, and the reconciler keeps the dominant kind
-# per make, so a wrong call here degrades to cross-kind noise rather than a
-# wrong publish.
+# precedent (uk_dft maps "Light goods vehicles" → van; same regulatory
+# bracket), and the owner's delegate ruled it so. The class is dominated by
+# UTES (HILUX, RANGER, TRITON, NAVARA, D-MAX) — the catalog already files
+# those as van ids (van/toyota/hilux, van/ford/ranger …), and AU attaches to
+# them: van/toyota/hilux gains au 915,472.
+#
+# THE 24-ID KIND MIGRATION DOES NOT HAPPEN, measured 2026-10-03. It was a
+# property of AU MINTING: with AU's mass voting in cross-kind dominance, 16
+# utes moved car→van and 4 SUVs van→car. au_bitre ships ATTACH-ONLY (see the
+# adapter), and attach-only evidence does not vote in dominance (_mint_counts),
+# so 0 ids move, 0 vanish, and 0 former_ids aliases are written — an alias may
+# never name a live id. The cost of the ruling under attach-only: an LCV row
+# whose nameplate the catalog files only as `car` (holden/colorado) attaches
+# nowhere; the classified list of such kind twins is the spec for the PR that
+# lifts attach-only.
 
 kinds:
   Passenger vehicles: car
-  Light commercial vehicles: van    # utes dominate this class — OPEN RULING, see header
+  Light commercial vehicles: van    # ruling 3 (2026-10-02); utes dominate — see header
   Campervans: van
   Motorcycles: motorcycle           # no moped split exists in this source — see header
   Heavy rigid trucks: truck

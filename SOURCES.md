@@ -26,7 +26,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `ua_mvs` | 🇺🇦 UA | Registration operations register (the CIS spine) | [CC-BY](https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0) | ~monthly | ✓ new reg. |
 | `ar_dnrpa` | 🇦🇷 AR | DNRPA vehicle registrations (LatAm spine) | [CC-BY 4.0 (datos.gob.ar)](https://datos.gob.ar/) | monthly | ✓ new reg. |
 | `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet; attach-only** |
-| `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet |
+| `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet — **attach-only** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -248,7 +248,22 @@ propulsion coverage would require RDW to publish a combined view.
 - **ar_dnrpa** — resource files resolved via CKAN; model strings are messy
   uppercase (`descripcion` concatenations), so AR contributes mostly
   corroboration and LatAm-only nameplates rather than primary spellings.
-- **au_bitre** — one national file, and deliberately not a union of states:
+- **au_bitre** — **ATTACH-ONLY** (pipeline DECISIONS.md, measured
+  2026-10-03 on the frozen 48q corpus, adapter the only variable). Allowed to
+  mint: +919 ids / −23 (+30 gate FAILs); classified 605 clean (65.8%), 127
+  kind twins of live ids (mostly LCV→van ute twins), 109 near-prefixes of live
+  ids, 62 registry classes (`harley-davidson/*-series`, `holden/utility`), 16
+  spelling variants of live ids — headed by `toyota/landcruiser-prado`
+  (356,514) against the live `toyota/land-cruiser-prado`. Shipped: **+0 ids;
+  `au` availability on 2,498 published ids (car 1,347 · van 131 · truck 110 ·
+  bus 58 · motorcycle 852), carrying 19,484,646 of 21,983,634 vehicles
+  (88.6%)**; gate failures identical to control. Ruling 3 (LCV → `van`) is in
+  the kind map; its 24-id kind migration only happens when AU mints, so none
+  is written. Licence: CC BY **3.0 AU** (not 4.0) — see the pipeline PR for
+  the compatibility reading. The census date is parsed strictly
+  (`strptime`), after fuzzy `Date.parse` turned "31 Smarch 2025" into today's
+  month on 2026-10-03.
+- **au_bitre** (data facts) — one national file, and deliberately not a union of states:
   BITRE already aggregates every state and territory via NEVDIS, so unioning
   the state portals on top would double-count 100% of the overlap. (The
   Victorian `Whole Fleet … by Model` set is also space-padded to six
