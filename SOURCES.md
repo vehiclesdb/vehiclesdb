@@ -293,9 +293,11 @@ propulsion coverage would require RDW to publish a combined view.
   describe the same thing; **advancing it is a deliberate act that must move
   the pin too** — per-edition licence drift is real, the January 2024 edition
   being CC-BY **2.5** AU rather than 3.0.
-  **(5) `Light commercial vehicles` → `van` is an OPEN RULING.** 4,195,963
-  vehicles; consistent with `uk_dft`'s "Light goods vehicles" → van, but the
-  Australian class is dominated by utes and a ute is not a panel van.
+  **(5) `Light commercial vehicles` → `van` — RULED (coordinator ruling 3,
+  2026-10-02).** 4,195,963 vehicles; consistent with `uk_dft`'s "Light goods
+  vehicles" → van, though the class is dominated by utes. Under attach-only it
+  moves no id (see the attach-only paragraph above); its car→van migration is
+  deferred to the PR that lifts attach-only.
 
 ## Watch-list (evaluated, not yet merged — with the blocker)
 
