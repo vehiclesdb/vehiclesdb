@@ -26,6 +26,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `ua_mvs` | 🇺🇦 UA | Registration operations register (the CIS spine) | [CC-BY](https://data.gov.ua/dataset/06779371-308f-42d7-895e-5a39833375f0) | ~monthly | ✓ new reg. |
 | `ar_dnrpa` | 🇦🇷 AR | DNRPA vehicle registrations (LatAm spine) | [CC-BY 4.0 (datos.gob.ar)](https://datos.gob.ar/) | monthly | ✓ new reg. |
 | `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet; attach-only** |
+| `ch_tg` | 🇨🇭 CH | Kanton Thurgau registered-vehicle stock (Strassenverkehrsamt TG, via data.tg.ch), aggregated server-side to make × model × class × fuel | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | yearly (stock at 1 Jan) | presence only — **one canton (3.9% of CH); attach-only; count nil** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -48,6 +49,7 @@ about coverage.
 | `my_jpj` | `fuel` | petrol · diesel · BEV · hybrid |
 | `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
 | `no_svv_pkk` | `Drivstofftype` | petrol · diesel · BEV · CNG · LPG · ethanol · FCEV — **never a hybrid code**: the column has none, so plug-in hybrids are filed under their combustion fuel and NO can evidence neither `hev` nor `phev`. `Gass` fuses LPG+CNG and maps to neither |
+| `ch_tg` | `treibstoff_code` + `hybridcode` | petrol · diesel · BEV · CNG · LPG · FCEV, and `hev`/`phev` from `hybridcode` (NOVC-HEV / OVC-HEV). Petrol/diesel-electric vehicles with no hybridcode contribute nothing (electrified, plug unknown). **One canton**, so presence of a code, never a Swiss share |
 | `us_fueleconomy` | `atvType` | the full vocabulary, as **approval** evidence (certified configurations, not vehicles) |
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
@@ -100,6 +102,33 @@ propulsion coverage would require RDW to publish a combined view.
 - **ie_cso** — PxStat labels are `"MAKE MODEL"` concatenated; the pipeline
   splits by longest-known-make prefix and logs the (few) unsplittable
   leftovers rather than guessing.
+- **ch_tg** — **one canton of twenty-six, read presence-only and
+  attach-only.** Kanton Thurgau's *Fahrzeugbestand am 01.01.2026* (280,363
+  vehicles; 254,616 motor vehicles = 3.9% of Switzerland's 6.6 M per BFS).
+  A count would publish a canton's rank as Switzerland's popularity
+  (`by_country.ch`, confidence "measured"), so `count` is nil and
+  `COUNT_BASIS["ch"]` starts `catalog-` (= contributes no counts); availability,
+  powertrain and EU category still attach.
+  - **Nothing per-vehicle is downloaded.** The export is per vehicle (62
+    columns), but Opendatasoft's export endpoint takes `select=` and
+    `group_by=`: the canton returns one row per (Fahrzeugart, Fahrzeugklasse,
+    Marke, Typ1, Typ2, Treibstoff, Hybridcode) with `count(*)` — 51,484 groups,
+    summing exactly to `records_count`, re-checked every build. Stammnummer,
+    Kontrollschild and chassis fields are in the GDPR lint's forbidden list.
+  - **`typ2` is EMPTY in 2026** (it held the split model on 227,100 of
+    227,181 rows in 2021). The model comes from `typ1`, which carries trims
+    ("Golf VII 1.4TSI 5"); car/van models are cut at the first litre token, as
+    the normalizer would otherwise junk the whole string.
+  - **TAN declined:** `typengenehmigungs_nr` is a SWISS type-approval number
+    ("1SC842"; `X` and `IVI` = individual import are common), not the EU
+    e-number `xrefs.tan` is defined as. **Body declined:** `karosserieform`
+    "Limousine" means *closed car*, not sedan (Golf: 5,107 Limousine).
+    Both refute the 2026-09 dossier, which sold Thurgau as a second TAN and
+    body-type source.
+  - **No other canton publishes an equivalent**, and ASTRA's national
+    per-vehicle file (the canton's own upstream) carries no licence text
+    anywhere — UNRESOLVED, not ingested.
+  - Measured build: CH_BUILD_NUMBERS
 - **no_svv_pkk** — **this is an INSPECTION register, not a fleet, and the
   distinction is not pedantic.** Norway defers a vehicle's first PKK to its
   *fourth year* and then inspects light vehicles every second year (heavy
@@ -251,7 +280,7 @@ propulsion coverage would require RDW to publish a combined view.
 
 | Source | Blocker |
 |---|---|
-| 🇨🇭 CH ASTRA / opendata.swiss | in progress — next spine addition |
+| 🇨🇭 CH ASTRA national per-vehicle file (`opendata.astra.admin.ch/ivzod/`, BEST.txt) | **UNRESOLVED (licence)** — 'Lizenz', 'licence', 'Creative Commons', 'CC BY', 'CC0' occur ZERO times on every ASTRA page and in its overview PDF ('frei verfügbar (Open Data)' is not a licence). Federal BFS tables are make-only. Switzerland ships one canton via `ch_tg` (presence-only) meanwhile. |
 | 🇧🇪 BE FPS Mobility | yearly XLS only, no license statement on the file — needs clearance |
 | 🇨🇿 CZ vehicle register | bulk dump paused upstream; privacy review pending |
 | 🇵🇱 PL CEPiK | bulk exports frozen upstream |
