@@ -33354,3 +33354,35 @@ The owner (Javi) is AFK and has delegated every decision to the coordinator for 
 **Also found at open (REL), both fleet-relevant.** (a) DfT republished VEH0120 with **2026 Q2**, and DVLA re-filed and re-spelled GenModels in the same release. That broke three pipeline tests (fixed: pipeline#203, I-11 verified, merged) and, behind them, about 69 build gates on gb-sourced ids. A curation pass to restore those ids is in flight on data#341, so every data PR's `build` check stays red until it lands. (b) **Identity rule (coordinator, binding):** before any merge, every commit author on the PR must be `4920956+rameerez@users.noreply.github.com` (`noreply@anthropic.com` only as a trailer). A squash merge of a PR with a foreign-authored commit embeds that email in `main` as a `Co-authored-by` trailer. data#339 was re-cut as #348 for that reason.
 
 — S4W
+
+---
+
+## S4W — STRETCH 2026-10-02 RELEASED v2026.10.0 (2026-10-03 ~05:30 UTC): 14,886 → 14,997 models, 0 orphans, Norway attach-only, the UK 2026-Q2 re-file absorbed and disclosed
+
+**Released.** `v2026.10.0`, cut by CI run 37088690540 (workflow_dispatch, publish), on data `fae9243` and pipeline `a06b197`. Release commit `794c27b`. `validate: ALL GATES GREEN`; `license gate: 14/14`; 7 assets; archive boundary holds; CDN serving 2026.10.0; HuggingFace mirror ran (established release-channels path). **14,886 → 14,997 models** (+218 / −107: 101 aliased, 6 manifest, **0 ORPHAN**). Per kind: car 5,455→5,510, van 720→732, motorcycle 6,015→6,016, moped 1,370→1,393, truck 923→940, bus 403→406. Makes 918→925; countries 14→15. Windows: es 2026-06…08, my 2025-01…2026-08 (`car/chery/tiggo-cross` present), uk 2026-Q2, no 2023-01…2025-12. Before the publish dispatch, a supervised validate-only run (37087957887) + `release_diff` gave the same numbers (§16).
+
+**plus-2026.10.0 hand-cut (RUNBOOK §5.5) and verified.** CI step 13 still has no token. The tarball comes from a local rebuild on the **exact** release inputs, fetched fresh into an empty private cache seeded like CI. All six public `models.json` files of that rebuild are **byte-identical** to the tag. Round-trip sha256 `c207d192…2b4c`, MANIFEST-PLUS 2026.10.0, 2,483 enriched records. **Step 13 now fails loudly** without the token (data#353), and the public fan-out is protected by `always()`.
+
+**What blocked the build, in order, and how each was fixed (every fix I-11 verified):**
+1. es_dgt window roll (#340) → data#341: revolver DEMOTED; the Kadett tripwire asserts exact-id absence of `kadett-a…e` / `kadett-electric`; six rolling-window pins dropped.
+2. **DfT VEH0120 gained 2026 Q2** and DVLA re-filed GenModels. Three pipeline tests broke (pipeline#203). About 69 gates broke (pipeline#215 + data#341, pass 1). And, **invisible to every gate**, gb was silently stripped from 365 ids. Pass 2 (pipeline#220 `GENMODEL_REFILE` + data#352) brought it to 227 ids / 53,189 gb, in-scope 75→3. Pass 3 (pipeline#225) split the CFMOTO 700 stub. The remainder is disclosed in CHANGELOG + `RELEASE-DIFF-2026.10.0.md`.
+
+**Merged this stretch (all on parsed-green CI at the exact head, identity checked).** Data: #341 #347 #343 #344 #345 #348 (re-cut of #339) #304 #315 #352 #346 #351 #307 #338 #354 #353, plus this turn. Pipeline (REL): #195 #194 #200 #197 #203 #215 #220 #225 #199. REL-P merged the enrich-only stream, including #223 and #226, which unblocked #346/#351/#307. REL fixes made on others' PRs while merging: #315 superglide-fxe alias (a casing pin that was really a respell), #344 fi badge-free twin co-moves, #307 Piaggio|50 arm withdrawn per gate_acks, and conflict resolutions on #344/#345/#346/#347/#351/#307.
+
+**Rulings applied:** 1 Kadett (#341). 2 revolver (#341). 4 Norway attach-only (#199/#338, included after REL's pre-release build: id diff empty, 0 pairs lost, licence 14/14). 5 Omoda 5/E5 (#351). Coordinator: release held until UK-Q2 pass 2, with a gate exception for 3 label ids (bmw/r-series, daf/ftg, daf/fad); 4 moped kind-migrations ship; ty125-4e + ecollect ship disclosed.
+
+**Not done / residual — merge order for whoever is next:**
+- **Australia (ruling 3) NOT attempted this stretch**: REL's time went to the two UK blockers. pipeline#188 → data#334 still needs the LCV→`van` 24-id alias migration, a control-vs-treatment build, and an independent licence verification of BITRE CC BY 3.0 AU at its exact URL. Merge pipeline-first only if the orphans are 0.
+- **REL-P (enrich-only):** pipeline#230 (flip back the HELD vespa/et2 block; it ships unenriched in 2026.10.0), then ENR2/ENR4 READY: #221 #231 #232 #233 #234 #235.
+- **Owner-held:** IL #210/#349, IT #211/#350 (licence integrity clauses); `PIPELINE_RELEASE_TOKEN`; web deploy.
+- **Web:** rameerez/vehiclesdb-web#97 (`b2f0af9`) moves the app to public v2026.10.0 + plus-2026.10.0. It is opened and NOT merged. Local `bin/rails test`: 957 runs, 0F/0E on the branch and on the main baseline. Fixtures fixed at the cause (toyota now has make facts → ktm). The social card was re-rendered; the site copy still says "14 countries" (dataset: 15), flagged on the PR. Deploys are manual (`bin/kamal deploy`, owner); merging never deploys; web Actions CI is blocked by account billing.
+- **Not merged by design:** #186 (needs its control-vs-treatment build), #185 (WIP), #337 (AUD), #319 (declined), #213 (research dossier).
+- **DEBT filed:** ty125-4e G-1 split; dennis-eagle make + `aliases.yml:169`. **Next UK pass:** the 224 small gb-losers, if worth it by mass.
+
+**Hazards found (fleet-wide):**
+- (a) The onboarding's "offline" build was not offline: `Support.fetch` max_age is 20 h. Today's shared-cache mutations are recorded in REL's handoff: `nl_rdw_personenauto.json` and `lu_snca_api.json` were rewritten.
+- (b) A `cp -c` clone gives files a fresh mtime, so a "fresh" rebuild on a cloned cache silently reuses stale data. Start from an EMPTY cache dir when you need fresh.
+- (c) **Identity:** squash-merging a PR that has a foreign-authored commit embeds that email in a `Co-authored-by` trailer on main. Pipeline main has 9 such trailers (one from #197 this stretch). Data main has 13 pre-stretch commits whose author or committer is the foreign address. Fixing either means rewriting shared history, which is an owner call.
+- (d) Offline builds must now use the 48-quarter VEH0120. The 47-quarter frozen file shows ~61 inherent liveness failures against pass-1 aliases.
+
+— S4W
