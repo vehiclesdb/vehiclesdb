@@ -2,6 +2,36 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.10.0] - 2026-10-03 — the UK re-file release (and Norway, attach-only)
+
+**14,997 models across 925 makes in 15 countries (14,886 → 14,997, +111).** +218 ids added and −107 retired, **every retirement with a migration path**: 101 `former_ids` aliases and 6 `removals.yml` entries; the dist-diff ORPHAN section is empty in all six kinds (`RELEASE-DIFF-2026.10.0.md`).
+
+| kind | 2026.09.1 | 2026.10.0 | Δ |
+|---|---:|---:|---:|
+| car | 5,455 | 5,510 | +55 |
+| van | 720 | 732 | +12 |
+| motorcycle | 6,015 | 6,016 | +1 |
+| moped | 1,370 | 1,393 | +23 |
+| truck | 923 | 940 | +17 |
+| bus | 403 | 406 | +3 |
+
+**Why it took three weeks.** The weekly build was red from 2026-09-21. The es_dgt 3-month window rolled, taking the last Spanish evidence of `motorcycle/motron-motorrad/revolver` and an `es` spotcheck pin on the 1980s Opel Kadett (#340, fixed in #341). Then, on 2026-10-02, the UK DfT republished VEH0120 with **2026 Q2**, and DVLA re-filed and re-spelled GenModels in the same release. That broke three pipeline tests (pipeline#203) and about 69 build gates (pipeline#215 + #341). Behind the gates it also **silently** stripped gb from 365 published ids. Two more passes restored the head (pipeline#220 `GENMODEL_REFILE` + #352; pipeline#225 CFMOTO 700). Every pass had an independent I-11 verifier.
+
+### UK 2026-Q2 re-file — disclosed, because no gate sees it
+- **227 published ids lost `gb`** (53,189 gb vehicles in the 2026-Q1 column; full list with decile and mass in `RELEASE-DIFF-2026.10.0.md`). None is decile 1–2 and none has ≥1,000 gb vehicles, **except three range/configuration labels**, which are a routing *improvement*: `motorcycle/bmw/r-series` (6,773; its R nineT / R 12 / R 18 rows now reach the live `r-ninet` 4,811 / `r12` 1,129 / `r18` 960), `truck/daf/ftg` (1,917) and `truck/daf/fad` (1,237) (DAF wheel-configuration prefixes; their rows now reach `daf/xf` 1,060 and `daf/cf` 2,077). Granted as a gate exception by the coordinator.
+- Pass 2 restored gb on 72 of the 75 ids in scope (decile 1–2 or ≥1,000 gb): 314,746 gb vehicles, e.g. Suzuki SX4, Ford Mustang Mach-E, BMW R/S/F series, Triumph Street/Speed Triple, KTM Dukes. BYD Seal / Seal U / Seal 6 / Sealion 5 / Sealion 7 now each get their own British rows. Before, 50,601 sat on the bucket id `car/byd/seal-design-ev`, now retired to `car/byd/seal`.
+- **Two uk_dft-only ids ship as known-imprecise**, with the fix named (see DEBT): `motorcycle/yamasaki/ty125-4e` (309; DVLA pools TY 125-4E 180 + TY 50 Q-2E 129, two models; needs a G-1 split) and `truck/alexander-dennis/ecollect` (150; the car is the Dennis Eagle eCollect, https://www.dennis-eagle.co.uk/products/ecollect/; `aliases.yml:169` maps make DENNIS → Alexander Dennis).
+- **Four kind migrations, not new nameplates:** `ajs/modena-50`, `lexmoto/aspire-50`, `lexmoto/fmr50` and `lexmoto/scout-49` move motorcycle → moped. The re-filed GenModel no longer hides their ≤50 cc. Each old motorcycle id aliases to its moped id. Citations: aspire-50, manufacturer page https://www.lexmoto.com/models/TD50Q-2 ("Aspire 50 E4", same type code, accessed 2026-10-03). The other three rest on register type-code evidence (VEH0120 Model strings "MODENA 50", "FMR 50 WY 50 QT-58", "SCOUT 49"), **registry tier**: the AJS page exists only as an archived capture that could not be read (HTTP 429), and Lexmoto now sells the WY50QT-58 as the "Pulse Lightspeed 2 50".
+- Two uk_dft-only new ids carry manufacturer citations: `lexmoto/xdv125` and `lexmoto/ls-z125` (lexmoto.com model pages).
+
+### Norway (pipeline#199 + #338): the 15th country, attach-only
+Statens vegvesen periodic-inspection (PKK) data, CC BY 4.0, 2023-01…2025-12. **Attach-only: 0 ids minted.** 2,899 published ids gain `no`. Licence gate 14/14 pins.
+
+### Curation and coverage carried by this release
+th_dlt coverage sweeps (#347, #343), ar_dnrpa sweep 2 (#345), auto-union → audi (#344), sub-brands under their own marques per NAMING §8 (#346: Jaecoo, Haval, Omoda …), Omoda 5 / E5 as two nameplates (#351, ruling 5), Vespa co-move 3 (#307), 2W head casing pins (#315), Honda Giorno D-10 (#304), Egypt plates (#348), plus everything merged after 2026.09.1 (#311, #318, #320 …). Pipeline: 30+ enrichment batches (private layer), the hysteresis sidecar (#189), lint_enrich citation counter (#195), coverage tools (#197).
+
+Cut by CI run 37088690540: `validate: ALL GATES GREEN`, `license gate: 14/14 pins verified` (+1 declared absent, asserted not ingested), 7 release assets, archive boundary holds, CDN serving 2026.10.0, HuggingFace mirror ran. Windows: es_dgt 2026-06…08, my_jpj 2025-01…2026-08, uk_dft 2026-Q2, no_svv_pkk 2023-01…2025-12. **`plus-2026.10.0`** is cut by hand per RELEASE-RUNBOOK §5.5, because CI still has no `PIPELINE_RELEASE_TOKEN`. Its status is recorded in the plus release notes.
+
 ## [2026.09.1] - 2026-09-12 — the id-contract release
 
 **14,886 models across 918 makes (14,856 → 14,886, +30).** Small by volume and
