@@ -3609,6 +3609,14 @@ Fiat:
   "500 1937":                              "500"          # 1 veh/1 rows (ar, ar_dnrpa) -> live fiat/500; raw "500 1937"; https://www.media.stellantis.com/em-en/heritage-hub-italy/press/at-the-heritage-hub-la-fiat-topolino-va-ai-90 (accessed 2026-10-02) [maker-press; verified through the search index]
   # ── ua_mvs COVERAGE SWEEP (2026-10-03, S4W/COV-2) — keys = the string probed at the renames consultation site (replay_country.rb), values = the live record's own name; corpus = FRESH MVS register extract fetched 2026-10-03; mints no id.
   "Fiorino Combi":           Fiorino  # 36 veh (ua, ua_mvs) -> live fiat/fiorino; raw "FIORINO COMBI"; https://www.whatcar.com/news/fiat-launches-fiorino-combi-mini-mpv/n3838 (accessed 2026-10-03) [tier 2 trade press/archive; verified through the search index: trade-press title "Fiat launches Fiorino Combi mini-MPV"]
+  # ── UK truck-kind coachbuilder truncation (2026-10-03, S4W/COV-2) — pair: vehiclesdb-pipeline uk_dft coachbuilder stub splits.
+  # series_collapse keeps only the first token of a truck-kind name, so HGV-body "AUTO TRAIL" / "ROLLER TEAM" publish as
+  # truck/<make>/auto and /roller. uk_dft routes those GenModels as the register's own one-token spelling; these keys give it
+  # the van record's display name. Renames are KIND-BLIND (NAMING.md §3): today exactly one row already probes them — nl car
+  # "FIAT ROLLERTEAM" (1 veh), which moves from the candidate car/fiat/rollerteam onto car/fiat/roller-team; no published id
+  # changes (control build, verified). Kind-blind tripwire: spotchecks.yml (paired data B PR) asserts the van AND truck ids.
+  Autotrail: Auto Trail  # truck-kind truncation fix: GenModel FIAT AUTO TRAIL holds Model strings spelled AUTO TRAIL… / AUTO-TRAIL… / AUTOTRAIL… (2026 Q2: e.g. HGV "AUTOTRAIL FRONTIER COMANCHE SA" 209) — one coachbuilder — the van record fiat/auto-trail spells it "Auto Trail"; https://assets.publishing.service.gov.uk/media/6a54d2e0c3d64d94cacab854/df_VEH0120_UK.csv (VEH0120, 2026 Q2 file, accessed 2026-10-03) [regulator: DfT/DVLA]
+  Rollerteam: Roller Team  # truck-kind truncation fix: FIAT ROLLER TEAM holds Model strings spelled ROLLERTEAM… and ROLLER TEAM… — the van record fiat/roller-team spells it "Roller Team"; https://assets.publishing.service.gov.uk/media/6a54d2e0c3d64d94cacab854/df_VEH0120_UK.csv (VEH0120, 2026 Q2 file, accessed 2026-10-03) [regulator: DfT/DVLA]
 
 Ford:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -4083,6 +4091,14 @@ Ford:
   "Territory Sel 1.8L At":               Territory      # 67 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY SEL 1.8L AT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/
   "Territory Sel 1.5L Hibrida At":       Territory      # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY SEL 1.5L HIBRIDA AT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/
   "Territory 1.5 Aut":                   Territory      # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY 1.5 AUT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/
+  # ── UK truck-kind coachbuilder truncation (2026-10-03, S4W/COV-2) — pair: vehiclesdb-pipeline uk_dft coachbuilder stub splits.
+  # series_collapse keeps only the first token of a truck-kind name, so HGV-body "AUTO TRAIL" / "ROLLER TEAM" publish as
+  # truck/<make>/auto and /roller. uk_dft routes those GenModels as the register's own one-token spelling; these keys give it
+  # the van record's display name. Renames are KIND-BLIND (NAMING.md §3): today exactly one row already probes them — nl car
+  # "FIAT ROLLERTEAM" (1 veh), which moves from the candidate car/fiat/rollerteam onto car/fiat/roller-team; no published id
+  # changes (control build, verified). Kind-blind tripwire: spotchecks.yml (paired data B PR) asserts the van AND truck ids.
+  Autotrail: Auto Trail  # truck-kind truncation fix: GenModel FORD AUTO TRAIL (HGV rows spell it AUTO TRAIL / AUTO-TRAIL; the one-token form is the pipeline routing key, not a Ford register spelling) — the van record ford/auto-trail spells it "Auto Trail"; https://assets.publishing.service.gov.uk/media/6a54d2e0c3d64d94cacab854/df_VEH0120_UK.csv (VEH0120, 2026 Q2 file, accessed 2026-10-03) [regulator: DfT/DVLA]
+  Rollerteam: Roller Team  # truck-kind truncation fix: FORD ROLLER TEAM holds ROLLERTEAM… and ROLLER TEAM… — the van record ford/roller-team spells it "Roller Team"; https://assets.publishing.service.gov.uk/media/6a54d2e0c3d64d94cacab854/df_VEH0120_UK.csv (VEH0120, 2026 Q2 file, accessed 2026-10-03) [regulator: DfT/DVLA]
 
 Forthing:
   # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
