@@ -904,3 +904,29 @@ checks:
     availability_includes: [de, es, gb, lu, my, nl, nz]
     availability_excludes: [th]
     reason: "RULING 5, DECLARED EVIDENCE MOVE. car/omoda/omoda-5's ONLY th evidence was th_dlt 'C5 EV Long Range Max' x1,495 — a battery-electric car (Thailand has no petrol C5). That pair now belongs to omoda-e5, so th must NOT come back here via a re-merge. es/nl/lu keep their petrol/HEV rows. de (KBA series '5') and my (JPJ 'Omoda 5' with fuel electric) cannot split the EV by name and stay here — the accepted residual, stated in the PR."
+  # ── UK truck-kind coachbuilder truncation (2026-10-03, S4W/COV-2). The Autotrail/Rollerteam rename keys are
+  # KIND-BLIND (NAMING.md §3), so every kind they can touch is asserted, and the truncated stubs must never return.
+  - id: fiat/auto-trail
+    kind: truck
+    availability_includes: [gb]
+    reason: "HGV-body Auto Trail motorhomes (uk_dft 'FIAT AUTO TRAIL', 5,514 gb 2026 Q2) — routed by uk_dft GENMODEL_REFILE + the Autotrail rename. Missing = the routing or the rename went inert and the rows fell back to the truncated stub."
+  - id: fiat/auto-trail
+    kind: van
+    availability_includes: [gb]
+    reason: "the van half (LGV rows) must be untouched by the kind-blind Autotrail key."
+  - id: fiat/roller-team
+    kind: truck
+    availability_includes: [gb]
+    reason: "HGV-body Roller Team motorhomes (uk_dft 'FIAT ROLLER TEAM', 554 gb) — same mechanism as fiat/auto-trail (truck)."
+  - id: fiat/roller-team
+    kind: van
+    availability_includes: [gb]
+    reason: "the van half must be untouched by the kind-blind Rollerteam key."
+  - id: fiat/auto
+    kind: truck
+    exists: false
+    reason: "series_collapse truncation of 'Auto Trail' (and it also swept 35 Auto-Sleepers HGV rows). Retired with an alias to truck/fiat/auto-trail; it must never republish."
+  - id: fiat/roller
+    kind: truck
+    exists: false
+    reason: "series_collapse truncation of 'Roller Team'. Retired with an alias to truck/fiat/roller-team; it must never republish."
