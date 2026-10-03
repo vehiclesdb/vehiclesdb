@@ -1063,6 +1063,26 @@
 "motorcycle/norton/model99":                   "motorcycle/norton/model-99"                   # MODEL99 -> Model 99  [nl,nz]
 "motorcycle/nsu/prima3":                       "motorcycle/nsu/prima-3"                       # PRIMA3 -> Prima 3  [fi,nl]
 "motorcycle/peugeot/django125":                "motorcycle/peugeot/django-125"                # DJANGO125 -> Django 125  [gb]
+# CO-MOVE 3 arms, 2026-08-19. Seven Vespa nameplates were publishing as two
+# records under two makes; the moves in moves.yml relocate the badge-free half
+# and these arms keep the retired ids resolvable. NO accepted_loss on any of
+# them — every retiring id`s countries are a SUBSET of its target`s, checked
+# one by one against build/out rather than assumed:
+#   piaggio/et2    [gb]        -> vespa/et2    [gb,nl]          gb carried, and vespa/et2 GAINS gb
+#   piaggio/gts125 [es,fi,nl]  -> vespa/gts125 [es,fi,lu,nl]
+#   piaggio/px125e [gb,lu,nl]  -> vespa/px125e [es,gb,lu,nl,nz]
+#   piaggio/px200e [lu,nl,nz]  -> vespa/px200e [lu,nl,nz]       vespa/px200e GAINS lu
+#   piaggio/50s    [nl,nz]     -> vespa/50s    [fi,nl,nz]       (moped)
+#   piaggio/lx50   [fi,nl,nz]  -> vespa/lx50   [fi,nl,nz,ua]    (moped)
+# piaggio/50 needs no arm: it was a CANDIDATE (nl 3), never published.
+# The ET2 exists in BOTH kinds — moped/vespa/et2 [nl,nz,ua] is a separate
+# record and is untouched; kinds are separate id namespaces.
+"motorcycle/piaggio/et2": "motorcycle/vespa/et2"  # co-move 3
+"motorcycle/piaggio/gts125": "motorcycle/vespa/gts125"  # co-move 3
+"motorcycle/piaggio/px125e": "motorcycle/vespa/px125e"  # co-move 3
+"motorcycle/piaggio/px200e": "motorcycle/vespa/px200e"  # co-move 3
+"moped/piaggio/50s": "moped/vespa/50s"  # co-move 3
+"moped/piaggio/lx50": "moped/vespa/lx50"  # co-move 3
 "motorcycle/piaggio/ape-calessino200":         "motorcycle/piaggio/ape-calessino-200"         # Ape CALESSINO200 -> Ape Calessino 200  [fi,nl]
 "motorcycle/piaggio/beverly250":               "motorcycle/piaggio/beverly-250"               # BEVERLY250 -> Beverly 250  [fi,nl,ua]
 "motorcycle/piaggio/beverly300hpe":            "motorcycle/piaggio/beverly-300hpe"            # BEVERLY300HPE -> Beverly 300HPE  [es,nl]
@@ -1945,10 +1965,10 @@
 "car/omoda/5-noble-auto": "car/omoda/omoda-5"
 "car/omoda/9-noble": "car/omoda/omoda-9"
 "car/omoda/c5": "car/omoda/omoda-5"
-"car/omoda/c5-ev-long-range-max": "car/omoda/omoda-5"
+"car/omoda/c5-ev-long-range-max": "car/omoda/omoda-e5"   # REPOINTED by RULING 5 (2026-10-02): published th-only (data d3642f5) for the BEV th_dlt string; omoda-5 now excludes th, so HARD RULE 4 requires the BEV successor
 "car/omoda/e5-comfort": "car/omoda/omoda-e5"
 "car/omoda/omoda5": "car/omoda/omoda-5"
-"car/omoda/omoda5-ev": "car/omoda/omoda-5"
+"car/omoda/omoda5-ev": "car/omoda/omoda-e5"   # REPOINTED by RULING 5 (2026-10-02): published es|nl (data d3642f5) for the BEV string 'OMODA5 EV'; omoda-e5 carries es,nl — superset holds and the id keeps its BEV meaning
 "car/omoda/omoda7": "car/omoda/omoda-7"
 "car/omoda/omoda9": "car/omoda/omoda-9"
 "car/panhard/pl-17": "car/panhard/pl17"
@@ -7145,3 +7165,14 @@
 
 # ── data#315 (2W head casing pins), alias added by REL 2026-10-03 ──
 "motorcycle/harley-davidson/superglide-fxe": "motorcycle/harley-davidson/super-glide-fxe"  # renames.yml Harley-Davidson "Superglide Fxe": "Super Glide FXE" (Harley writes Super Glide as two words, h-d.com heritage copy) is a RESPELL, not a casing pin: the space changes the slug, so the published id would 404 — the fresh-fetch CI build of #315 (run 37082740345) failed the no-vanish gate on exactly this id. Same vehicles (nl_rdw, nz_nzta), same countries [nl,nz]
+
+# ── 2026-10-02 (S4W/COV) — sub-brand-under-parent MOVES (moves.yml block of the same date): cross-make aliases for cross-make moves, the seat/formentor -> cupra/formentor precedent; every successor already carries or gains the retired id's countries.
+"car/chery/jaecoo-j7": "car/jaecoo/jaecoo-7"          # moves.yml "Chery|Jaecoo J7" -> "Jaecoo|Jaecoo 7"; JPJ files Jaecoo under Chery (my n=15325); seat/formentor cross-make precedent
+"car/great-wall/haval-h6": "car/haval/h6"             # moves.yml "Great Wall|Haval H6" -> "Haval|H6"; my,nl,nz,ua n=10621
+"car/chery/omoda-9": "car/omoda/omoda-9"              # moves.yml "Chery|Omoda 9" -> "Omoda|Omoda 9"; MY Omoda C9 (my n=6834)
+"car/chery/omoda-5": "car/omoda/omoda-5"              # moves.yml "Chery|Omoda 5" -> "Omoda|Omoda 5"; my,ua n=5433
+"car/great-wall/haval-jolion": "car/haval/jolion"     # moves.yml "Great Wall|Haval Jolion" -> "Haval|Jolion"; nz n=2502
+"car/chery/jaecoo-j5": "car/jaecoo/jaecoo-5"          # moves.yml "Chery|Jaecoo J5" -> "Jaecoo|Jaecoo 5"; my n=2396
+"car/chery/jaecoo-j8": "car/jaecoo/jaecoo-8"          # moves.yml "Chery|Jaecoo J8" -> "Jaecoo|Jaecoo 8"; my n=1094
+"car/changan/deepal-s07-ev": "car/deepal/s07"         # moves.yml "Changan|Deepal S07 EV" -> "Deepal|S07"; gb n=1042, EV is a powertrain badge
+"car/byd/denza-z9gt-ev": "car/denza/z9gt"             # moves.yml "BYD|Denza Z9GT EV" -> "Denza|Z9GT"; es,nl n=2, EV is a powertrain
