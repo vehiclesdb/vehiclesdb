@@ -773,8 +773,8 @@ checks:
     availability_includes: [nl, fi, ua]
     reason: "D-2 closes the cross-repo lockstep item filed in aux dossier-citroen-opel §5.1: the 2,856 AMPERA-E vehicles finally reach the Ampera-e record instead of car/opel/ampera. es and ua are NEW here and are the tripwire — they only arrive if the pin fires. Display must read 'Ampera-e' (overrides/styling.yml AMPERA-E pin), not 'Ampera-E'."
   - id: opel/ampera
-    availability_includes: [es, fi, nl, ua]
-    reason: "…and the Volt-based Ampera EREV keeps all four countries after shedding those 2,856 vehicles (4,983 -> 2,127). Every one of the four still has non-electric raws: es 'OPEL AMPERA'/'AMPERA', fi 'AMPERA' x726, nl 'AMPERA' x1,365, ua 'AMPERA' x25."
+    availability_includes: [fi, nl, ua]
+    reason: "es dropped 2026-10-02 (data#340 sweep): es_dgt counts only the last 3 months of NEW registrations and carried 2 Amperas in the 2026-09-12 build, for a car out of production since 2015 — the pin would fire on attrition, not on the D-2 split; fi/nl/ua still prove the split shed no ICE country. Original reason: …and the Volt-based Ampera EREV keeps all four countries after shedding those 2,856 vehicles (4,983 -> 2,127). Every one of the four still has non-electric raws: es 'OPEL AMPERA'/'AMPERA', fi 'AMPERA' x726, nl 'AMPERA' x1,365, ua 'AMPERA' x25."
   - id: opel/mokka-electric
     availability_includes: [ua, fi]
     reason: "D-2: 22 vehicles, ua_mvs 21 + fi_traficom 1 — a TWO-SOURCE record, which is why it publishes while its Vauxhall twin does not. Mokka has no generation letter series at all (Mokka / Mokka X / Mokka), so -E here cannot be a generation."
@@ -795,12 +795,45 @@ checks:
   - id: opel/corsa
     availability_includes: [de, es, fi, gb, ie, lu, nl, nz, ua]
     reason: "…and the ICE Corsa keeps all nine countries, unchanged by D-2. This is the volume tripwire for the negative ruling: 37,332 vehicles stayed put. Any drop here means someone added CORSA to the pin."
+  # THE COLLISION TRIPWIRE, narrowed to what it guards (data#340, coordinator
+  # ruling 1 of 2026-10-02). The row used to pin `es` and `lu`, whose only
+  # Kadett evidence is a ROLLING-WINDOW source (es_dgt = last 3 months of NEW
+  # registrations, 1 vehicle in the 2026-09-12 build; lu_snca = last 3 months of
+  # register operations, 10). A 1984-91 car's presence there is attrition noise,
+  # and it fired on 2026-09-21/28 with no fragmentation anywhere. The stock
+  # registers (fi 764, gb 385, nl 6,653, nz 12, ua 490 vehicles) carry the
+  # positive half; the six `exists: false` rows below carry the negative half.
+  # The validator has no glob, so the negative ids are the EXACT ids each
+  # failure mode would mint (normalizer.rb collapse_variant):
+  #   - KADETT added to ELECTRIC_NAMEPLATES  -> car/opel/kadett-electric
+  #   - the `-[A-G]` strip narrowed/dropped    -> car/opel/kadett-a..kadett-e
+  #     (Kadett generations A 1962 to E 1991; "Kadett F" was sold as Astra F).
+  # A literal kadett-[a-g]* glob would be WRONG: car/opel/kadett-gt-e (the
+  # Kadett GT/E, es+nl) is a legitimate published id that starts with "g".
   - id: opel/kadett
-    availability_includes: [es, fi, gb, lu, nl, nz, ua]
-    reason: "THE COLLISION TRIPWIRE. -E is also Opel's generation letter (Kadett E, 1984-91). If Kadett ever fragments into kadett-e*, someone widened ELECTRIC_NAMEPLATES or narrowed the -[A-G] class instead of using the closed product table."
-  - id: opel/rekord
     availability_includes: [fi, gb, nl, nz, ua]
-    reason: "Same collision, second nameplate (Rekord E, 1977-86; the corpus also carries 'RECORD-E', folded by renames.yml `Record: Rekord`)."
+    reason: "THE COLLISION TRIPWIRE. -E is also Opel's generation letter (Kadett E, 1984-91). If Kadett ever fragments into kadett-e*, someone widened ELECTRIC_NAMEPLATES or narrowed the -[A-G] class instead of using the closed product table. Pins only STOCK registers: es/lu were dropped 2026-10-02 (data#340) because their only Kadett source is a rolling window that sees a 1980s car by chance."
+  - id: opel/kadett-a
+    exists: false
+    reason: "COLLISION TRIPWIRE, negative half: 'KADETT-A' is Kadett generation A, and collapse_variant's -[A-G] strip must fold it into car/opel/kadett. If this id exists, the generation-letter class was narrowed or bypassed (data#340)."
+  - id: opel/kadett-b
+    exists: false
+    reason: "COLLISION TRIPWIRE, negative half: 'KADETT-B' is Kadett generation B, and collapse_variant's -[A-G] strip must fold it into car/opel/kadett. If this id exists, the generation-letter class was narrowed or bypassed (data#340)."
+  - id: opel/kadett-c
+    exists: false
+    reason: "COLLISION TRIPWIRE, negative half: 'KADETT-C' is Kadett generation C, and collapse_variant's -[A-G] strip must fold it into car/opel/kadett. If this id exists, the generation-letter class was narrowed or bypassed (data#340)."
+  - id: opel/kadett-d
+    exists: false
+    reason: "COLLISION TRIPWIRE, negative half: 'KADETT-D' is Kadett generation D, and collapse_variant's -[A-G] strip must fold it into car/opel/kadett. If this id exists, the generation-letter class was narrowed or bypassed (data#340)."
+  - id: opel/kadett-e
+    exists: false
+    reason: "COLLISION TRIPWIRE, negative half: 'KADETT-E' is Kadett generation E, and collapse_variant's -[A-G] strip must fold it into car/opel/kadett. If this id exists, the generation-letter class was narrowed or bypassed (data#340)."
+  - id: opel/kadett-electric
+    exists: false
+    reason: "COLLISION TRIPWIRE, negative half: KADETT must never enter ELECTRIC_NAMEPLATES — there was never an electric Kadett; 'KADETT-E' is the 1984-91 generation E. If this id exists, someone widened the closed product table (data#340)."
+  - id: opel/rekord
+    availability_includes: [fi, gb, nl, nz]
+    reason: "Same collision, second nameplate (Rekord E, 1977-86; the corpus also carries 'RECORD-E', folded by renames.yml `Record: Rekord`). ua dropped 2026-10-02 (data#340 sweep): its only ua source is ua_mvs, a year-to-date window of register operations (33 vehicles in the 2026-09-12 build, ~4/month, and the window resets every January) — attrition noise for a car out of production since 1986. The four stock registers carry the tripwire."
   - id: opel/rocks-e
     kind: moped
     availability_includes: [es, nl]
@@ -817,12 +850,12 @@ checks:
     reason: "O 530 / O 530 G / O 530 L fold here. The register attests it in both directions (o530 held 'O 530 CITARO', citaro holds 'CITARO O530 G') and Mercedes lists Citaro/K/G/LE/hybrid as variants of one model. es and ua arrive ONLY via the folded O-number ids — if either disappears, a key went inert or the fold regressed."
   - id: mercedes-benz/tourino
     kind: bus
-    availability_includes: [fi, nl, ua]
-    reason: "nl is the country the O 510 fold ADDS (it had fi+ua only). This is the block's lowest-confidence key — marque confirmation was never obtained, only three register spellings of 'O 510 TOURINO' — so it is the one most worth watching."
+    availability_includes: [fi, nl]
+    reason: "ua dropped 2026-10-02 (data#340 sweep): ua_mvs is a year-to-date window of register operations (5 vehicles in the 2026-09-12 build) and ua is not the load-bearing country of this row. Original reason: nl is the country the O 510 fold ADDS (it had fi+ua only). This is the block's lowest-confidence key — marque confirmation was never obtained, only three register spellings of 'O 510 TOURINO' — so it is the one most worth watching."
   - id: mercedes-benz/o303
     kind: bus
-    availability_includes: [fi, nl, nz, ua]
-    reason: "nz and ua arrive from the digit-zero spelling (bus/mercedes-benz/0303, raws 'BENZ 0303', '0303/3 MAJESTIC') and the bare '303'. O 303 is PRE-1994 and keeps its type number by Mercedes' own account — this row asserts both halves at once: the merge happened AND the number survived."
+    availability_includes: [fi, nl, nz]
+    reason: "ua dropped 2026-10-02 (data#340 sweep): ua_mvs is a year-to-date window of register operations (9 vehicles in the 2026-09-12 build, ~1/month) for a pre-1994 coach; nz (stock register) still proves the digit-zero merge happened. Original reason: nz and ua arrive from the digit-zero spelling (bus/mercedes-benz/0303, raws 'BENZ 0303', '0303/3 MAJESTIC') and the bare '303'. O 303 is PRE-1994 and keeps its type number by Mercedes' own account — this row asserts both halves at once: the merge happened AND the number survived."
   - id: mercedes-benz/o405
     kind: bus
     reason: "The control half of the date boundary. O 405 (nl first registrations 1988-1997) is pre-1994 and has no nameplate; it must NEVER be folded onto a named coach. If this record disappears, someone widened the O-number rule past 1994."
@@ -855,8 +888,8 @@ checks:
     exists: false
     reason: "The retired half of the fold. 79 veh (gb 61 uk_dft GenModel 'LANCIA COUPE'; nz 18 nz_nzta 'COUPE'/'COUPE V.X') are Beta Coupés. If this record returns, either the `Coupe: Beta` key went inert or a register grew a new spelling that needs keying — NOT a second product."
   - id: lancia/beta
-    availability_includes: [fi, gb, nl, nz, ua]
-    reason: "The surviving half. Its country set is a strict SUPERSET of the folded id's {gb,nz}, which is why the fold loses no evidence; if any of the five drops, the fold moved evidence instead of merging it."
+    availability_includes: [fi, gb, nl, nz]
+    reason: "ua dropped 2026-10-02 (data#340 sweep): its only ua source is ua_mvs (year-to-date register operations; 1 vehicle in the 2026-09-12 build) for a 1972-84 car — attrition noise, and ua is not in the folded id's {gb,nz}, so the superset assertion does not need it. Original reason: The surviving half. Its country set is a strict SUPERSET of the folded id's {gb,nz}, which is why the fold loses no evidence; if any of the five drops, the fold moved evidence instead of merging it."
   - id: lancia/hpe
     availability_includes: [gb, nz]
     reason: "THE NEIGHBOUR THAT MUST NOT MOVE. The Beta HPE was 'renamed the H.P.Executive (without the Beta) from 1979' (https://en.wikipedia.org/wiki/Lancia_Beta) — a DOCUMENTED de-Beta rename, which the Coupé does not have. That asymmetry is the whole reason one folds and the other does not; if hpe ever disappears, someone generalised the Coupé fold past its evidence."

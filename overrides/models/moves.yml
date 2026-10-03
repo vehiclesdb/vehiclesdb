@@ -91,7 +91,47 @@
 # Auto Union was the pre-1985 corporate name of the group that became Audi AG;
 # registers that kept the entity name emit it as the make while the model string
 # names the actual marque. https://en.wikipedia.org/wiki/Auto_Union
-"Auto Union|80": "Audi|80"          # the Audi 80 is an Audi, not an "Auto Union Audi 80". NB keyed on the PRODUCED form: the embedded-brand strip turns "Audi 80" into "80" before moves run (test_override_key_reachability caught the naive key)
+"Auto Union|80": "Audi|80"          # the Audi 80 is an Audi, not an "Auto Union Audi 80". NB keyed on the PRODUCED form: the embedded-brand strip turns "Audi 80" into "80" before moves run (test_override_key_reachability caught the naive key)  [2026-10-02 NB: no such embedded-brand strip exists for this make: strip_make_prefix removes only the RAW make, so this key matches only a bare raw "80" (see the block below)]
+# ── 2026-10-02 (S4W/COV): the line above is REAL but covers only a bare raw "80".
+# The RDW writes make "AUTO UNION" + model "AUDI 80"; strip_make_prefix
+# (normalizer.rb:299) strips only the RAW make ("AUTO UNION"), never "AUDI", so
+# that row reaches this lookup (normalizer.rb:414) as `Auto Union|Audi 80` —
+# probed: classify("AUTO UNION","AUDI 80") => ["Auto Union","Audi 80"] — and the
+# key above never sees it. 2,621 registrations (frozen offline build; per-id counts on each line below) sat on four auto-union ids that
+# duplicate live Audi ids. Keys below are on the PRODUCED form; targets are the
+# live Audi display names (moves are applied after renames and not re-normalized).
+# Source for all four (manufacturer, Audi AG press release, accessed 2026-10-02):
+# "Auto Union GmbH once again adopted the traditional Audi brand name" (1965);
+# "the new Audi was joined by the Audi 80, Audi Super 90, Audi 75, and Audi 60";
+# "the Audi 100, which had been in production since 1968" —
+# https://www.audi.com/en/press-releases/a-new-era-for-the-four-rings-60-years-since-the-first-post-war-audi-16734
+"Auto Union|Audi 80": "Audi|80"     # 1,977 veh nl (raw "AUDI 80" under make AUTO UNION) -> car/audi/80 (already nl); Audi-marque nameplate built by Auto Union GmbH and its successors (most rows are 1983-95 B2-B4 cars) — audi.com press release above [manufacturer]
+"Auto Union|Audi 100": "Audi|100"   # 617 veh (nl 616, fi 1) -> car/audi/100 (already fi,nl); "the Audi 100, which had been in production since 1968" — audi.com press release above [manufacturer]
+"Auto Union|Audi 60": "Audi|60"     # 16 veh fi,nl -> car/audi/60 (already fi,nl); "the new Audi was joined by the Audi 80, Audi Super 90, Audi 75, and Audi 60" — audi.com press release above [manufacturer]
+"Auto Union|Audi 100GL": "Audi|100" # 11 veh nl,nz -> car/audi/100 (already nl,nz); GL is an Audi 100 equipment grade, no audi/100-gl id is live — audi.com press release above [manufacturer]
+# fi_traficom spells the make with a HYPHEN, so its rows probe `Auto-Union|…` —
+# measured in the first treatment build: the two fi vehicles below were left as
+# fi-only candidates auto-union/audi-100 and auto-union/audi-60 (fi net −2).
+"Auto-Union|Audi 100": "Audi|100"   # 1 veh fi (raw make "AUTO-UNION") -> car/audi/100 (already fi); same nameplate/source as "Auto Union|Audi 100" above [manufacturer]
+"Auto-Union|Audi 60": "Audi|60"     # 1 veh fi (raw make "AUTO-UNION") -> car/audi/60 (already fi); same nameplate/source as "Auto Union|Audi 60" above [manufacturer]
+"Auto-Union|60": "Audi|60"          # 1 veh fi (raw "AUTO-UNION | 60", fi_traficom) -> car/audi/60 (already fi); badge-free twin of "Auto-Union|Audi 60" — co-moved because the move-split gate (2026-10-03 CI run 37079741871) found it stranded in the candidate queue; Auto Union had no "60" of its own (its cars were the 1000/1000 S/1000 SP) — audi.com press release above [manufacturer]
+"Auto-Union|100 LS": "Audi|100 LS"  # 1 veh fi (raw "AUTO-UNION | 100 LS", fi_traficom) -> car/audi/100-ls (already fi,nl); badge-free fi twin of "Auto Union|Audi 100 LS" — same move-split gate finding; an Audi 100 grade — audi.com press release above [manufacturer]
+# BADGE-FREE TWINS, required by validate's move-split gate (the 17-Vespa shape):
+# moving only the badge-prefixed spelling strands the bare one below threshold.
+# Same relationship as line 73 (`Auto Union|80`) has to `Auto Union|Audi 80`.
+"Auto Union|100": "Audi|100"        # 21 veh nl (raw "100" under make AUTO UNION) -> car/audi/100; there is no Auto Union model "100" (Auto Union's own cars are the 1000/1000 S/1000 SP) — audi.com press release above [manufacturer]
+"Auto Union|100GL": "Audi|100"      # 1 veh nl -> car/audi/100; GL grade of the Audi 100, twin of "Auto Union|Audi 100GL" above [manufacturer]
+# The Audi 100 LS (an Audi 100 grade) is ALSO filed under the make, and
+# car/audi/100-ls is LIVE (nl) beside a live car/auto-union/100-ls (nl 2): found
+# by the I-11 verifier. Four produced spellings, each probed with classify:
+"Auto Union|100 LS": "Audi|100 LS"      # 2 veh nl -> car/audi/100-ls (already nl); an Audi 100 grade ("the Audi 100", press release above) [manufacturer]
+"Auto Union|100LS": "Audi|100 LS"       # 1 veh nz (candidate) -> car/audi/100-ls; spacing twin of the line above [manufacturer]
+"Auto Union|Audi 100 LS": "Audi|100 LS" # 1 veh nl (candidate) -> car/audi/100-ls; badge-prefixed twin [manufacturer]
+"Auto Union|Audi 100LS": "Audi|100 LS"  # 3 veh nl (candidate) -> car/audi/100-ls; badge-prefixed spacing twin [manufacturer]
+# NOT moved, deliberately: `Auto Union|Audi` (1,240 veh nl, 2 nz — the make in the
+# model column). Per the same release the first 1965 car was sold simply as
+# "Audi" ("Only the first Audi was denied the '72' designation"), i.e. the F103
+# Audi 72, and no live Audi id denotes it; a move would assert a nameplate. Filed.
 
 
 "Piaggio|Vespa 50":                "Vespa|50"
@@ -140,9 +180,14 @@
 "Piaggio|Vespa GTS250":            "Vespa|GTS250"
 "Piaggio|Vespa GTS300 Super":      "Vespa|GTS300 Super"
 "Piaggio|Vespa GTV125":            "Vespa|GTV125"
-"Piaggio|Vespa Gts":               "Vespa|Gts"
-"Piaggio|Vespa Gts Super 300":     "Vespa|Gts Super 300"
-"Piaggio|Vespa Gts Supertech":     "Vespa|Gts Supertech"
+# ⚠ THESE THREE TARGETS TRACK THE Vespa GTS CASING PINS in renames.yml. The
+# lint caught the interaction and it is worth stating: RENAMES RUN BEFORE
+# MOVES, so a move target is NOT re-normalized afterwards. Pin `Gts -> GTS`
+# without touching these and the moved records land on a display the rename
+# has already superseded. Cross-file ordering, invisible in either file alone.
+"Piaggio|Vespa Gts":               "Vespa|GTS"
+"Piaggio|Vespa Gts Super 300":     "Vespa|GTS Super 300"
+"Piaggio|Vespa Gts Supertech":     "Vespa|GTS SuperTech"
 "Piaggio|Vespa Gtv":               "Vespa|Gtv"
 "Piaggio|Vespa LX125":             "Vespa|LX125"
 "Piaggio|Vespa LX125I.E.":         "Vespa|LX125I.E."
@@ -218,6 +263,8 @@
 "Piaggio|GTS250": "Vespa|GTS250"
 "Piaggio|GTV125": "Vespa|GTV125"
 "Piaggio|LX125": "Vespa|LX125"
+"Piaggio|PK50": "Vespa|PK50XL"   # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "PIAGGIO PK50 XL" (25 veh in Q1) -> "PIAGGIO PK50", which G-1 GUARD 1 holds as "PK50" (Model "PK 50 XL" 26 veh in Q2, uk_dft). Without this the gb half of the spotchecked reunion (spotchecks.yml vespa/pk50xl: gb + nl "PK50XL" 27) is stranded on motorcycle/piaggio/pk50 and the record falls below threshold. KNOWN COST: the same GenModel now also holds Model "PK 50 S" (13 veh, Q2), and nl_rdw's "PIAGGIO | PK50" (5) shares the key — both ride along; separating them needs uk_dft, not overrides
+"Shineray|Starray": "Geely|Starray EM-i"   # WRONG MAKE in DVLA VEH0120 2026 Q2: make SHINERAY, model STARRAY, 4,184 veh in the 2026 Q2 column, uk_dft-only — the car is the Geely Starray EM-i (https://www.geelyauto.co.uk/starray-em-i, accessed 2026-10-03, manufacturer); Shineray has no link to it. Moves the gb rows onto the live car/geely/starray-em-i (de,es,lu,nl,nz) instead of publishing car/shineray/starray
 "Piaggio|PK50XL": "Vespa|PK50XL"
 "Piaggio|PX150": "Vespa|PX150"
 "Piaggio|Primavera": "Vespa|Primavera"
