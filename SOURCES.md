@@ -27,6 +27,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `ar_dnrpa` | 🇦🇷 AR | DNRPA vehicle registrations (LatAm spine) | [CC-BY 4.0 (datos.gob.ar)](https://datos.gob.ar/) | monthly | ✓ new reg. |
 | `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet; attach-only** |
 | `ch_tg` | 🇨🇭 CH | Kanton Thurgau registered-vehicle stock (Strassenverkehrsamt TG, via data.tg.ch), aggregated server-side to make × model × class × fuel | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | yearly (stock at 1 Jan) | presence only — **one canton (3.9% of CH); attach-only; count nil** |
+| `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet — **attach-only** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -47,6 +48,7 @@ about coverage.
 | `fi_traficom` | `kayttovoima` | petrol · diesel · BEV (other codes await Traficom's separately-published code list) |
 | `lu_snca` | `CODCRB` | the full vocabulary, incl. bifuel pairs — the cleanest of any source |
 | `my_jpj` | `fuel` | petrol · diesel · BEV · hybrid |
+| `au_bitre` | `motive_power` | petrol · diesel · hybrid · BEV (**fused with FCEV upstream — one `Battery/Fuel-cell electric` bucket, 259,762 vehicles, not splittable**) · bifuel petrol+LPG. `Other` (52,060) maps to nothing, so these never sum to the fleet |
 | `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
 | `no_svv_pkk` | `Drivstofftype` | petrol · diesel · BEV · CNG · LPG · ethanol · FCEV — **never a hybrid code**: the column has none, so plug-in hybrids are filed under their combustion fuel and NO can evidence neither `hev` nor `phev`. `Gass` fuses LPG+CNG and maps to neither |
 | `ch_tg` | `treibstoff_code` + `hybridcode` | petrol · diesel · BEV · CNG · LPG · FCEV, and `hev`/`phev` from `hybridcode` (NOVC-HEV / OVC-HEV). Petrol/diesel-electric vehicles with no hybridcode contribute nothing (electrified, plug unknown). **One canton**, so presence of a code, never a Swiss share |
@@ -275,12 +277,61 @@ propulsion coverage would require RDW to publish a combined view.
 - **ar_dnrpa** — resource files resolved via CKAN; model strings are messy
   uppercase (`descripcion` concatenations), so AR contributes mostly
   corroboration and LatAm-only nameplates rather than primary spellings.
+- **au_bitre** — **ATTACH-ONLY** (pipeline DECISIONS.md, measured
+  2026-10-03 on the frozen 48q corpus, adapter the only variable). Allowed to
+  mint: +919 ids / −23 (+30 gate FAILs); classified 605 clean (65.8%), 127
+  kind twins of live ids (mostly LCV→van ute twins), 109 near-prefixes of live
+  ids, 62 registry classes (`harley-davidson/*-series`, `holden/utility`), 16
+  spelling variants of live ids — headed by `toyota/landcruiser-prado`
+  (356,514) against the live `toyota/land-cruiser-prado`. Shipped: **+0 ids;
+  `au` availability on 2,498 published ids (car 1,347 · van 131 · truck 110 ·
+  bus 58 · motorcycle 852), carrying 19,484,646 of 21,983,634 vehicles
+  (88.6%)**; gate failures identical to control. Ruling 3 (LCV → `van`) is in
+  the kind map; its 24-id kind migration only happens when AU mints, so none
+  is written. Licence: CC BY **3.0 AU** (not 4.0) — see the pipeline PR for
+  the compatibility reading. The census date is parsed strictly
+  (`strptime`), after fuzzy `Date.parse` turned "31 Smarch 2025" into today's
+  month on 2026-10-03.
+- **au_bitre** (data facts) — one national file, and deliberately not a union of states:
+  BITRE already aggregates every state and territory via NEVDIS, so unioning
+  the state portals on top would double-count 100% of the overlap. (The
+  Victorian `Whole Fleet … by Model` set is also space-padded to six
+  characters and renders Hyundai as `HYNDAI`; do not ingest it.) Five things
+  to know before reading an AU number:
+  **(1) Counts are confidentialised.** BITRE suppresses cells under 3 units
+  and perturbs secondary cells, and states that interior estimates "may not
+  sum to the totals reported" — so **no validator may assert that AU rows sum
+  to the national total**, and a `no_vehicles` of 0 means *withheld*, not
+  *absent* (19,218 such cells, kept as corroborating evidence that can never
+  mint).
+  **(2) `history` is MANUFACTURE year, not first registration** — the only
+  source where this is true, which is why it carries its own
+  `stock-manufacture-year` basis. An import built in 2007 and first registered
+  in Australia in 2015 sits in the 2007 bucket here and would sit in 2015 in
+  Finland; the two curves must not be aligned year-for-year.
+  **(3) No moped.** `Motorcycles` is not subdivided and engine capacity is
+  never crossed with make+model in any of the 18 resources, so Australia
+  contributes 981,893 vehicles to `motorcycle` and zero to `moped`. There is
+  no cc column to split on.
+  **(4) The resource is resolved by NAME PREFIX through `package_show`, never
+  by URL or index** — both UUIDs rotate annually, and the name itself has
+  moved three ways across editions (2021-24 "Registered *motor* vehicles … 
+  motive power, year of manufacture"; 2025 "Registered *road* vehicles … year
+  of manufacture, motive power …, 31 January 2025"). The package id is pinned
+  to one edition on purpose so the licence pin and the ingested bytes always
+  describe the same thing; **advancing it is a deliberate act that must move
+  the pin too** — per-edition licence drift is real, the January 2024 edition
+  being CC-BY **2.5** AU rather than 3.0.
+  **(5) `Light commercial vehicles` → `van` is an OPEN RULING.** 4,195,963
+  vehicles; consistent with `uk_dft`'s "Light goods vehicles" → van, but the
+  Australian class is dominated by utes and a ute is not a panel van.
 
 ## Watch-list (evaluated, not yet merged — with the blocker)
 
 | Source | Blocker |
 |---|---|
 | 🇨🇭 CH ASTRA national per-vehicle file (`opendata.astra.admin.ch/ivzod/`, BEST.txt) | **UNRESOLVED (licence)** — 'Lizenz', 'licence', 'Creative Commons', 'CC BY', 'CC0' occur ZERO times on every ASTRA page and in its overview PDF ('frei verfügbar (Open Data)' is not a licence). Federal BFS tables are make-only. Switzerland ships one canton via `ch_tg` (presence-only) meanwhile. |
+| 🇨🇭 CH ASTRA / BFS (federal) | **not a licence problem — a granularity one.** Measured 2026-09-05: `Fahrzeugmodell` returns 0 datasets; the federal vehicle statistics stop at `…nach Marke` (make), one level above where our schema starts, so they cannot produce a `Row`. The licence is fine (`#terms_by`, attribution-only). The live Swiss route is **cantonal**, not federal — see below. (The portal also 403s default curl and needs a browser UA; that is a User-Agent block, not geo-gating.) |
 | 🇧🇪 BE FPS Mobility | yearly XLS only, no license statement on the file — needs clearance |
 | 🇨🇿 CZ vehicle register | bulk dump paused upstream; privacy review pending |
 | 🇵🇱 PL CEPiK | bulk exports frozen upstream |
