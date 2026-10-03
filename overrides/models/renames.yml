@@ -1,6 +1,25 @@
 Aima:
   Aima: null                              # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
+Aion:
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "Ut 500 Premium":      Ut  # 947 veh/1 rows (th, th_dlt) -> live, was candidate aion/ut-500-premium; raw "AION UT 500 PREMIUM"; https://car.ecosticker.go.th/detail/08c2a0e6-b0e0-42bf-ae1a-4eea399db94c (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Y Plus 490 Premium":  Y Plus  # 154 veh/1 rows (th, th_dlt) -> live, was candidate aion/y-plus-490-premium; raw "AION Y PLUS 490 PREMIUM"; https://car.ecosticker.go.th/detail/2558d4e8-a7d2-4f99-b513-baf08070c26f (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+
 Aixam:
   Aixam: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
@@ -208,6 +227,10 @@ Alfa Romeo:
   "15SL": null                          # 1 vehicle (nz) → car/alfa-romeo/15sl
   "157": null                           # 1 vehicle (fi) → car/alfa-romeo/157
   "Giulietta Spider 10103": null        # 3 vehicles (fi,nl) — PUBLISHED RECORD → car/alfa-romeo/giulietta-spider-10103
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Stelvio Veloce":       Stelvio  # 4 veh/1 rows (ar, ar_dnrpa) -> live alfa-romeo/stelvio; raw "STELVIO VELOCE"; https://www.alfaromeo.com.ar/modelos/stelvio (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Giulia 280CV Veloce":  Giulia  # 1 veh/1 rows (ar, ar_dnrpa) -> live alfa-romeo/giulia; raw "GIULIA 280CV VELOCE"; https://www.alfaromeo.com.ar/content/dam/alfa/ar/brochure-pdf/Alfa-Romeo-Giulia-Veloce.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); verified through the search index]
+  "Tonale Veloce 160CV":  Tonale  # 1 veh/1 rows (ar, ar_dnrpa) -> live alfa-romeo/tonale; raw "TONALE VELOCE 160CV"; https://www.alfaromeo.com.ar/modelos/tonale (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Alvis:
   Tc 21: TC21                                 # spelling variant of "TC21" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -232,6 +255,7 @@ Ariel:
 
 Askoll:
   "N.a.": null   # ALL 179 NL registrations are literal N/A (164 "N/A" + 8 "N.A" + 7 "N.A."), zero real names. NB this ERASES the askoll make from moped: its only record was the placeholder. Askoll's real lineup is eS1/eS2/eS3 (https://www.askoll.com/eva/) — it returns the moment any source emits one. Recorded as candidate-queue debt, not a silent loss.
+  Espro Series: Espro                    # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "ASKOLL ESPRO" -> "ASKOLL ESPRO SERIES" (Model "02 ESPRO 70" 435 + "01 ESPRO K1-K2" 1 + "01 ESPRO 45" 1 = 437 veh in the 2026 Q2 column, uk_dft). Same rows as the 2026 Q1 file (436+1+1); "SERIES" is register filler, not a nameplate. Keeps motorcycle/askoll/espro live and stops a gb-only askoll/espro-series mint
 
 Aston Martin:
   Dbx 707: DBX707                             # Aston Martin writes it closed — heading + infobox "DBX707" (https://en.wikipedia.org/wiki/Aston_Martin_DBX); nl_rdw DBX707 n=66, zero spaced rows. NOTE: adding DBX/DBS styling acronyms later would orphan this key (stylings run first) — rekey in the same commit if that ever happens
@@ -745,6 +769,7 @@ Austin:
   A-40: A40                                   # spelling variant of "A40" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   A 40: A40                                   # third raw shape (spaced) — found live as "A 40" by the direction-war resolution build; Austin badged the A40 closed
   A 50: A50                                   # spelling variant of "A50" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+  "6": "6CWT"                                 # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "AUSTIN 6CWT" -> "AUSTIN 6" (Model "6 CWT VAN" unchanged, 351 veh in the 2026 Q2 column vs 350 in Q1, uk_dft). The bare "6" dies in junk? (single digit) before it can become a record; this key is consulted first and returns it to van/austin/6cwt. "6 cwt" is the payload class the register names the van by; van/austin/6cwt is the record already published from it. KNOWN COST (renames are kind-blind): nl_rdw raws "AUSTIN | 6" (car, 1 veh) and "AUSTIN | 6 KBF"/"AUSTIN | 6 KBN" (truck, 2), which junk? dropped before, now also produce 6CWT and sit in build/candidates as car/austin/6cwt nl 1 and truck/austin/6cwt nl 2; nothing published
 
 Austin-Healey:
   # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
@@ -1275,6 +1300,24 @@ BMW:
   "Activehybrid 3":  ActiveHybrid 3    # same casing class, display-only (dossier §5)
   "Activehybrid 5":  ActiveHybrid 5    # same casing class, display-only (dossier §5)
   "Activehybrid X6": ActiveHybrid X6   # same casing class, display-only (dossier §5)
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "Xm 50E Rhd":    XM  # 72 veh/1 rows (th, th_dlt) -> live, was candidate bmw/xm-50e-rhd; raw "XM 50e RHD"; https://car.ecosticker.go.th/detail/4ca15955-33e6-4432-9b6c-c06d098fa07c (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Xm Label Rhd":  XM  # 2 veh/1 rows (th, th_dlt) -> live, was candidate bmw/xm-label-rhd; raw "XM Label RHD"; https://car.ecosticker.go.th/detail/c5c43185-7560-49a5-bdde-104f8e128319 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Xm Rhd":        XM  # 2 veh/1 rows (th, th_dlt) -> live, was candidate bmw/xm-rhd; raw "XM RHD"; https://car.ecosticker.go.th/detail/b18e6b26-7106-4afd-b1ec-a777422c97e5 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
 
 Bricklin:
   Sv-1: SV1                                   # spelling variant of "SV1" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -1469,6 +1512,10 @@ BYD:
   # produced string and would move 35,397 vehicles of two other nameplates onto
   # car/byd/seal, so no line is written here; the fix belongs in the source.
   # Reported in DEBT.md with its measurements. ──
+  # RESOLVED 2026-10-02 by DVLA itself: VEH0120 2026 Q2 drops "BYD SEAL DESIGN EV"
+  # and files the Model strings under "BYD SEAL" / "BYD SEALION"; the uk_dft pools
+  # (pipeline) + the 13 trim keys below route each to its nameplate, and
+  # car/byd/seal-design-ev retires to car/byd/seal in former_ids.yml. ──
 # Dolphin · 8 keys, 19500 vehicles, 9 rows
   "Dolphin (435KM-Std)":            Dolphin                 # junk?-RESCUE: `junk?`'s paren rule deletes this row on every build today — 10233v 1r th/th_dlt
   Dolphin Comfort EV:               Dolphin                 # trim/engine/body designation of the Dolphin — 3798v 1r gb/uk_dft
@@ -1511,6 +1558,19 @@ BYD:
   Seal U Dmi:                       Seal U                  # trim/engine/body designation of the Seal U — 13v 2r nl/nl_rdw
   "Seal U (dmi-Premium)":           Seal U                  # junk?-RESCUE: `junk?`'s paren rule deletes this row on every build today — 7v 1r th/th_dlt
   Seal U Dm:                        Seal U                  # trim/engine/body designation of the Seal U — 3v 1r nl/nl_rdw
+  Seal U Boost:                     Seal U                  # trim of the Seal U — 15,110v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal U Comfort:                   Seal U                  # trim of the Seal U — 13,102v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal U Design:                    Seal U                  # trim of the Seal U — 2,816v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal Excellence EV:               Seal                    # trim of the Seal — 12,461v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal Design EV:                   Seal                    # trim of the Seal — 5,526v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal 6 Comfort:                   Seal 6                  # trim of the Seal 6 — 1,288v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal 6 Boost:                     Seal 6                  # trim of the Seal 6 — 1,202v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Seal 6 Comfort Lte:               Seal 6                  # trim of the Seal 6 — 309v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Sealion 7 Comfort EV:             Sealion 7               # trim of the Sealion 7 — 4,137v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Sealion 7 Excellence EV:          Sealion 7               # trim of the Sealion 7 — 3,657v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Sealion 7 Design EV:              Sealion 7               # trim of the Sealion 7 — 2,291v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Sealion 5 Comfort:                Sealion 5               # trim of the Sealion 5 — 3,602v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
+  Sealion 5 Design:                 Sealion 5               # trim of the Sealion 5 — 1,661v gb (Model column, 2026 Q2); uk_dft VEH0120 2026 Q2: DVLA re-filed the BYD saloons/SUVs under the stub GenModels "BYD SEAL" / "BYD SEALION", so the Model column is the only carrier of the nameplate; reached through the uk_dft FW_POOLS entries of the same change (pipeline)
 
   # Dolphin Surf · 3 keys, 5 vehicles, 3 rows
   Dolphinsurf:                      Dolphin Surf            # misspelling of Dolphin Surf — 3v 1r nl/nl_rdw
@@ -1802,8 +1862,33 @@ Caterham:
 # runs first. ──
   Convertible: null                       # body class in the model column: convertible — 3 v, nl_rdw handelsbenaming ×2, fi_traficom ×1; raw "CONVERTIBLE"×3. Caterham keeps 3 live records (s3, seven, super-seven…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
+Changan:
+  Deepal: Deepal S07 EV                    # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "CHANGAN DEEPAL S07 EV" (1,042 veh in Q1) -> "CHANGAN DEEPAL", which now holds Model "DEEPAL S07 EV" 1,757 + "DEEPAL S05 MAX EV" 101 + "DEEPAL S05 MAX EV 4X4" 51 in the 2026 Q2 column (uk_dft). 92% S07, so this keeps car/changan/deepal-s07-ev live; KNOWN COST: the 152 S05 MAX ride along until a uk_dft FW_POOLS entry for "CHANGAN DEEPAL" can split them (PIPELINE follow-up, data#340 UK-Q2 report). Without it a gb-only sub-brand stub car/changan/deepal is minted
+
 Chery:
   Icaur 03: iCAUR 03                      # official styling of Chery's off-road EV sub-brand is iCAUR (https://www.icaur.com/); the default caser yields "Icaur"
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "V23 2WD Plus":  V23  # 321 veh/1 rows (th, th_dlt) -> live, was candidate chery/v23-2wd-plus; raw "V23 2WD PLUS"; https://car.ecosticker.go.th/detail/016949d2-1c24-498f-b260-770868d75e7b (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "V23 2WD Play":  V23  # 136 veh/1 rows (th, th_dlt) -> live, was candidate chery/v23-2wd-play; raw "V23 2WD PLAY"; https://car.ecosticker.go.th/detail/9c332876-c63b-4692-b812-d888e85d4cd8 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Tiggo 2 Pro Max 1.5L MT Comfort":    Tiggo 2 Pro  # 15 veh/1 rows (ar, ar_dnrpa) -> live chery/tiggo-2-pro; raw "TIGGO 2 PRO MAX 1.5L MT COMFORT"; https://chery.com.ar/tiggo-2-pro-max/ (accessed 2026-10-02) [manufacturer; opened directly]
+  "Tiggo 8 Pro 290T 1.6T 7DCT Luxury":  Tiggo 8 Pro  # 6 veh/1 rows (ar, ar_dnrpa) -> live chery/tiggo-8-pro; raw "TIGGO 8 PRO 290T 1.6T 7DCT LUXURY"; https://chery.com.ar/wp-content/uploads/2026/01/20260108_CHERY-ARG-PUBLICA-ENE26.pdf (accessed 2026-10-02) [manufacturer price list (PDF); opened directly]
+  "Tiggo 2 Pro Max 1.5L Cvt Comfort":   Tiggo 2 Pro  # 4 veh/1 rows (ar, ar_dnrpa) -> live chery/tiggo-2-pro; raw "TIGGO 2 PRO MAX 1.5L CVT COMFORT"; https://chery.com.ar/tiggo-2-pro-max/ (accessed 2026-10-02) [manufacturer; opened directly]
+  "Tiggo 2 Pro Max GL1.5":              Tiggo 2 Pro  # 1 veh/1 rows (ar, ar_dnrpa) -> live chery/tiggo-2-pro; raw "TIGGO 2 PRO MAX GL1.5"; https://chery.com.ar/tiggo-2-pro-max/ (accessed 2026-10-02) [manufacturer; opened directly]
 
 Chevrolet:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -2128,6 +2213,16 @@ Chevrolet:
   Trans-Sport:               Trans Sport  # DISPLAY-ONLY: observed_model_names car/chevrolet/trans-sport = "Trans Sport | Trans-Sport"
   Fleetside Pick Up:         Fleetside Pick-Up  # DISPLAY-ONLY: observed_model_names van/chevrolet/fleetside-pick-up = "Fleetside Pick Up | Fleetside Pick-Up | Fleetside Pickup"; the existing `Fleetside Pickup:` line pins only one of the two twins
   Chev:                      null  # the make's NICKNAME written into the model column — the identical class the settled `Chevrolet: null` line already covers. Raws: nl_rdw "CHEV" ×1, nz_nzta "CHEV" ×1 (car); truck rows "CHEV K2500", "CHEV-FLEETWOOD JAMBAREE" carry a model that this key cannot reach and are separately noted in §E.2. No honest survivor: the string names the marque, not a vehicle.
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "S10 Cd 2.8 Td":                         S10            # 439 veh/6 rows (ar, ar_dnrpa) -> live chevrolet/s10; raw "S10 CD 2.8 TD 4X4 WT AT"; https://www.chevrolet.com.ar/content/dam/chevrolet/sa/argentina/espanol/index/pickups-and-trucks/s10-myr-2026/03-versiones/pdf/Ficha-tecnica-S10-MY26-Argentina.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Sonic 1.0T Premier At":                 Sonic          # 171 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/sonic; raw "SONIC 1.0T PREMIER AT"; https://news.chevrolet.com.ar/newsroom.detail.html/Pages/news/ar/es/2026/may/0513-sonic.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Sonic 1.0T":                            Sonic          # 148 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/sonic; raw "SONIC 1.0T RS AT"; https://news.chevrolet.com.ar/newsroom.detail.html/Pages/news/ar/es/2026/may/0513-sonic.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "S10 Cd 2.8 Td 4X2 Wt":                  S10            # 131 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/s10; raw "S10 CD 2.8 TD 4X2 WT"; https://www.chevrolet.com.ar/content/dam/chevrolet/sa/argentina/espanol/index/pickups-and-trucks/s10-myr-2026/03-versiones/pdf/Ficha-tecnica-S10-MY26-Argentina.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "S10 Cs 2.8 Td 4X2 Wt":                  S10            # 33 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/s10; raw "S10 CS 2.8 TD 4X2 WT"; https://www.chevrolet.com.ar/content/dam/chevrolet/sa/argentina/espanol/index/pickups-and-trucks/s10-myr-2026/03-versiones/pdf/Ficha-tecnica-S10-MY26-Argentina.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Silverado Z71 Trail Boss":              Silverado      # 28 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/silverado; raw "SILVERADO Z71 TRAIL BOSS"; https://www.chevrolet.com.ar/content/dam/chevrolet/sa/argentina/espanol/index/crossover-and-suvs/silverado-refresh/ficha-tecnica/1-pdf/Ficha-tecnica-silverado-my26-argentina.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Silverado High Country":                Silverado      # 15 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/silverado; raw "SILVERADO HIGH COUNTRY"; https://www.chevrolet.com.ar/content/dam/chevrolet/sa/argentina/espanol/index/crossover-and-suvs/silverado-refresh/ficha-tecnica/1-pdf/Ficha-tecnica-silverado-my26-argentina.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "S10 Cs 2.8 Td":                         S10            # 14 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/s10; raw "S10 CS 2.8 TD 4X4 WT MT"; https://www.chevrolet.com.ar/content/dam/chevrolet/sa/argentina/espanol/index/pickups-and-trucks/s10-myr-2026/03-versiones/pdf/Ficha-tecnica-S10-MY26-Argentina.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Silverado 3500":                        Silverado      # 1 veh/1 rows (ar, ar_dnrpa) -> live chevrolet/silverado; raw "SILVERADO 3500"; https://www.chevrolet.com/trucks/silverado/2500hd-3500hd (accessed 2026-10-02) [maker-US; verified through the search index]
 
 # ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
 # the model column and it published as a nameplate. Measured on a
@@ -2488,6 +2583,15 @@ Citroën:
   Nemo 1: Nemo                       # displacement fragment (raws "Nemo 1,4 HDi", "NEMO 1,3")
   Nemo 1.4HDI: Nemo                  # engine spec suffix (1,066 NL registrations)
   AK400: Ak                          # the "400" is the 400 kg payload rating of the 2CV Fourgonnette AK — https://en.wikipedia.org/wiki/Citro%C3%ABn_2CV
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "C3 T200 Feel Pk You! MY26":      C3  # 151 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3; raw "C3 T200 FEEL PK YOU! MY26"; https://www.citroen.com.ar/content/dam/citroen/argentina/fichas-tecnicas/c3/20251006_ft_c3_2026.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "C3 Vti At Feel Pk MY26":         C3  # 132 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3; raw "C3 VTI AT FEEL PK MY26"; https://www.citroen.com.ar/content/dam/citroen/argentina/fichas-tecnicas/c3/20251006_ft_c3_2026.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "C3 Vti At Xtr MY26":             C3  # 118 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3; raw "C3 VTI AT XTR MY26"; https://www.citroen.com.ar/content/dam/citroen/argentina/fichas-tecnicas/c3/20251006_ft_c3_2026.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "C3 Vti Feel MY26":               C3  # 81 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3; raw "C3 VTI FEEL MY26"; https://www.citroen.com.ar/content/dam/citroen/argentina/fichas-tecnicas/c3/20251006_ft_c3_2026.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "C5 Aircross Max":                C5 Aircross  # 20 veh/1 rows (ar, ar_dnrpa) -> live citroen/c5-aircross; raw "C5 AIRCROSS MAX"; https://www.media.stellantis.com/ar-es/citroen/press/citroen-presenta-el-nuevo-c5-aircross-la-maxima-expresion-del-confort-la-tecnologia-y-la-ingenieria-aplicada-al-bienestar (accessed 2026-10-02) [manufacturer press; verified through the search index]
+  "C3 Aircross T200 Feel Pk MY25":  C3 Aircross  # 2 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3-aircross; raw "C3 AIRCROSS T200 FEEL PK MY25"; https://www.citroen.com.ar/content/dam/citroen/argentina/c3-aircross/nuevoc3aircross/2407_FT_C3_AIRCROSS.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "C3 Aircross T200 Shine":         C3 Aircross  # 1 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3-aircross; raw "C3 AIRCROSS T200 SHINE"; https://www.citroen.com.ar/content/dam/citroen/argentina/c3-aircross/nuevoc3aircross/2407_FT_C3_AIRCROSS.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "C3 Aircross T200 Shine MY25":    C3 Aircross  # 1 veh/1 rows (ar, ar_dnrpa) -> live citroen/c3-aircross; raw "C3 AIRCROSS T200 SHINE MY25"; https://www.citroen.com.ar/content/dam/citroen/argentina/c3-aircross/nuevoc3aircross/2407_FT_C3_AIRCROSS.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
 
 # ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
 # the model column and it published as a nameplate. Measured on a
@@ -2806,6 +2910,27 @@ De Soto:
   Roadster: null                          # body class in the model column: roadster — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "ROADSTER"×3. De Soto keeps 14 live records (adventurer, airflow, cf, custom…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
   Sedan: null                             # body class in the model column: sedan — 17 v, nz_nzta MODEL ×15, nl_rdw handelsbenaming ×2; raw "SEDAN"×17. De Soto keeps 14 live records (adventurer, airflow, cf, custom…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
+Deepal:
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "S05 Reev Max":  S05  # 602 veh/1 rows (th, th_dlt) -> live, was candidate deepal/s05-reev-max; raw "S05 REEV MAX"; https://www.changan.co.th/th/deepal/s05-reev-th/ (accessed 2026-09-12)
+  "S07 L":         S07  # 319 veh/1 rows (th, th_dlt) -> live, was candidate deepal/s07-l; raw "S07 L"; https://car.ecosticker.go.th/detail/afcb91d9-e74c-47d7-a1a6-a2e9db6c333f (accessed 2026-10-02) [regulator: Thai Excise Dept ECO Sticker record #023218, read via its public JSON API]
+  "S05 Plus":      S05  # 177 veh/1 rows (th, th_dlt) -> live, was candidate deepal/s05-plus; raw "S05 PLUS"; https://www.changan.co.th/th/deepal/s05-th/ (accessed 2026-09-12)
+  "L07 S":         L07  # 31 veh/1 rows (th, th_dlt) -> live, was candidate deepal/l07-s; raw "L07 S"; https://car.ecosticker.go.th/detail/76117c9d-4828-4503-9a09-4771db05d68e (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+
 Derbi:
   # moped Senda 50 — one nameplate: every 50cc trim/edition/registry-code row
   # folds here. TAN families each prove one approved type: e9*2002/24*0001
@@ -3059,6 +3184,8 @@ DS:
   DS3 Crossback E-Tense: DS 3             # pre-facelift name + E-Tense powertrain badge
   "7 Crossback": DS 7                     # pre-facelift name of the same car
   DS7 Crossback: DS 7                     # pre-facelift name, fused form
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "3 Etoile":  DS 3  # 2 veh/1 rows (ar, ar_dnrpa) -> live ds/ds-3; raw "DS 3 ETOILE HYBRID MY 25.5"; https://www.dsautomobiles.com.ar/modelos/ds3-hybrid.html (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Ducati:
   Ducati: null                            # motorcycle nl|nz
@@ -3116,6 +3243,9 @@ E-Max:
 
 E-Solex:
   Es: ES                                    # raw is "ES" in every row; "Es" is smart_case title-casing a two-letter type code into a non-word. Which words ES abbreviates is NOT established — e-Solex's own range was numbered (S2200, S3300) — so this fixes the casing only.
+
+Easy Rider:
+  CJ50: CJ50K                              # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "EASY RIDER CJ 50K" -> "EASY RIDER CJ 50" (Model "CJ50K" 605 + "CJ 50" 7 = 612 veh in the 2026 Q2 column vs CJ50K 615 in Q1, uk_dft). GUARD 1 keeps a GenModel with digits, so the produced name is "CJ50"; same scooter, keeps motorcycle/easy-rider/cj50k live
 
 EBRO:
   S400 Hev: S400         # HEV is the powertrain badge, not the nameplate — official lineup is s400/s700/s800 (sold as "s400 HEV"; sibling records are already powertrain-bare); folds like Leaf 40KWH (https://www.ebroauto.com/)
@@ -3459,6 +3589,10 @@ Fiat:
   "Strada Ranch T200 Cvt":               Strada         # 42 veh/1 rows (ar, ar_dnrpa) -> live fiat/strada; raw "STRADA RANCH T200 CVT"; https://www.media.stellantis.com/ar-es/fiat/press/nueva-fiat-strada-ultra-t200-se-completa-la-renovacion-de-la-pick-up-lider-de-su-categoria
   "Strada Ultra T200 Cvt":               Strada         # 33 veh/1 rows (ar, ar_dnrpa) -> live fiat/strada; raw "STRADA ULTRA T200 CVT"; https://www.media.stellantis.com/ar-es/fiat/press/nueva-fiat-strada-ultra-t200-se-completa-la-renovacion-de-la-pick-up-lider-de-su-categoria
   "Strada Freedom 1.3 Cs":               Strada         # 26 veh/1 rows (ar, ar_dnrpa) -> live fiat/strada; raw "STRADA FREEDOM 1.3 CS"; https://www.media.stellantis.com/ar-es/fiat/press/nueva-fiat-strada-ultra-t200-se-completa-la-renovacion-de-la-pick-up-lider-de-su-categoria
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Fiorino Endurance 1.3 MT":              Fiorino        # 521 veh/1 rows (ar, ar_dnrpa) -> live fiat/fiorino; raw "FIORINO ENDURANCE 1.3 MT"; https://fiorino.fiat.com.ar/content/dam/fiat/argentina/ficha-tecnica/FT-Fiorino-MY27.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Strada Endurance 1.3 Cs":               Strada         # 1 veh/1 rows (ar, ar_dnrpa) -> live fiat/strada; raw "STRADA ENDURANCE 1.3 CS"; https://www.fiat.com.ar/content/dam/fiat/argentina/ficha-tecnica/Ficha-Tecnica-NuevaStrada-MY21.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "500 1937":                              "500"          # 1 veh/1 rows (ar, ar_dnrpa) -> live fiat/500; raw "500 1937"; https://www.media.stellantis.com/em-en/heritage-hub-italy/press/at-the-heritage-hub-la-fiat-topolino-va-ai-90 (accessed 2026-10-02) [maker-press; verified through the search index]
 
 Ford:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -3863,6 +3997,33 @@ Ford:
 
   "New Anglia":                    Anglia                 # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=2, dup of car/ford/anglia
   "New Prefect":                   Prefect                # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=1, dup of car/ford/prefect
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Ranger Dc":                             Ranger         # 477 veh/3 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC XL 2.0L T 4X2 MT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Xls 3.0L V6":                 Ranger         # 278 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC XLS 3.0L V6 4X4 10AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Ltd+ 3.0L V6":                Ranger         # 230 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC LTD+ 3.0L V6 4X4 10AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Bronco Sport Badlands 2.0L":            Bronco Sport   # 176 veh/1 rows (ar, ar_dnrpa) -> live ford/bronco-sport; raw "BRONCO SPORT BADLANDS 2.0L"; https://www.ford.com.ar/crossovers-suvs-4x4/bronco-sport/models/badlands/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Xlt 3.0L V6":                 Ranger         # 161 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC XLT 3.0L V6 4WD AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Everest Titanium":                      Everest        # 144 veh/1 rows (ar, ar_dnrpa) -> live ford/everest; raw "EVEREST TITANIUM"; https://www.ford.com.ar/crossovers-suvs-4x4/everest/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Xls 2.0L T 4X2 MT D":         Ranger         # 120 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC XLS 2.0L T 4X2 MT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Black 2.0L T 4X2 At D":       Ranger         # 86 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC BLACK 2.0L T 4X2 AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Xlt 2.0L Bit 4X2 10AT D":     Ranger         # 77 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC XLT 2.0L BIT 4X2 10AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Maverick Xlt 2.0L Gtdi":                Maverick       # 71 veh/1 rows (ar, ar_dnrpa) -> live ford/maverick; raw "MAVERICK XLT 2.0L GTDI 4X4 AT"; https://www.ford.com.ar/crossovers-suvs-4x4/maverick/xlt/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Xlt 2.0L Bit":                Ranger         # 48 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC XLT 2.0L BIT 4X4 10AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Territory Platinum 1.8L At":            Territory      # 37 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY PLATINUM 1.8L AT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/modelos/territory-platinum/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Bronco Sport Big Bend 1.5L":            Bronco Sport   # 36 veh/1 rows (ar, ar_dnrpa) -> live ford/bronco-sport; raw "BRONCO SPORT BIG BEND 1.5L"; https://www.ford.com.ar/crossovers-suvs-4x4/bronco-sport/models/big-bend/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Maverick Tremor 2.0L Gtdi":             Maverick       # 34 veh/1 rows (ar, ar_dnrpa) -> live ford/maverick; raw "MAVERICK TREMOR 2.0L GTDI AWD AT"; https://www.ford.com.ar/crossovers-suvs-4x4/maverick/tremor/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "F-150 Tremor 5.0L V8":                  F-150          # 29 veh/1 rows (ar, ar_dnrpa) -> live ford/f-150; raw "F-150 TREMOR 5.0L V8 4X4 AT"; https://www.ford.com.ar/crossovers-suvs-4x4/f-150-tremor/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Ltd 2.0L Bit":                Ranger         # 23 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC LTD 2.0L BIT 4X4 10AT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Ranger Dc Black 2.0L T":                Ranger         # 21 veh/1 rows (ar, ar_dnrpa) -> live ford/ranger; raw "RANGER DC BLACK 2.0L T 4X4 MT D"; https://www.ford.com.ar/crossovers-suvs-4x4/nueva-ranger/comparar-modelos/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Maverick Lariat 2.5L HEV":              Maverick       # 13 veh/1 rows (ar, ar_dnrpa) -> live ford/maverick; raw "MAVERICK LARIAT 2.5L HEV AWD AT"; https://www.ford.com.ar/crossovers-suvs-4x4/maverick/lariat-hibrida/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "F-150 Lariat Luxury 3.5L V6 Hibrida":   F-150          # 5 veh/1 rows (ar, ar_dnrpa) -> live ford/f-150; raw "F-150 LARIAT LUXURY 3.5L V6 HIBRIDA 4X4 AT"; https://www.ford.com.ar/crossovers-suvs-4x4/f-150-lariat/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Mustang Dark Horse 5.0L 10AT":          Mustang        # 5 veh/1 rows (ar, ar_dnrpa) -> live ford/mustang; raw "MUSTANG DARK HORSE 5.0L 10AT"; https://www.ford.com.ar/autos/mustang/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Bronco Badlands 2.7L V6":               Bronco         # 3 veh/1 rows (ar, ar_dnrpa) -> live ford/bronco; raw "BRONCO BADLANDS 2.7L V6 4X4 AT"; https://www.ford.com.ar/crossovers-suvs-4x4/bronco-badlands/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "E-450 Super Duty":                      E-450          # 2 veh/1 rows (ar, ar_dnrpa) -> live ford/e-450; raw "E-450 SUPER DUTY"; https://www.ford.com/commercial-trucks/e-series-cutaway/2026/models/e450-cutaway-drw/ (accessed 2026-10-02) [maker-US; verified through the search index]
+  "Focus 5P 1.6L N MT S":                  Focus          # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/focus; raw "FOCUS 5P 1.6L N MT S"; https://www.ford.com.ar/content/dam/Ford/website-assets/latam/ar/nameplate/focus/far-focus5p-ficha-tecnica.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Mustang GT 5.0":                        Mustang        # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/mustang; raw "MUSTANG GT 5.0"; https://www.ford.com.ar/autos/mustang/gt-performance/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Focus 5P 2.0L N MT Se Plus":            Focus          # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/focus; raw "FOCUS 5P 2.0L N MT SE PLUS"; https://www.ford.com.ar/content/dam/Ford/website-assets/latam/ar/nameplate/focus/far-focus5p-ficha-tecnica.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Territory Titanium":                    Territory      # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY TITANIUM"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/modelos/titanium/ (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 # ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
 # the model column and it published as a nameplate. Measured on a
@@ -3904,6 +4065,10 @@ Ford:
   "Territory Sel 1.8L At":               Territory      # 67 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY SEL 1.8L AT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/
   "Territory Sel 1.5L Hibrida At":       Territory      # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY SEL 1.5L HIBRIDA AT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/
   "Territory 1.5 Aut":                   Territory      # 1 veh/1 rows (ar, ar_dnrpa) -> live ford/territory; raw "TERRITORY 1.5 AUT"; https://www.ford.com.ar/crossovers-suvs-4x4/territory/
+
+Forthing:
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "U-Tour HEV":  U-Tour  # 3 veh/1 rows (ar, ar_dnrpa) -> live forthing/u-tour; raw "U-TOUR HEV"; https://forthing.com.ar/u-tour-hev/ (accessed 2026-10-02) [manufacturer; opened directly]
 
 Gas Gas:
   Enducross: EC          # same nameplate: EC is short for Enducross — shared TAN e9*92/61*0062*09 with gas-gas/ec (https://en.wikipedia.org/wiki/Gas_Gas)
@@ -3969,6 +4134,10 @@ Govecs:
   GO!S1.2: GO! S1.2                         # THE REGISTER IS RIGHT AND THE PIPELINE IS WRONG here: every nl_rdw raw is correctly formed ("GO! S1.2", "GO! S2.4", "GO! S3.4", "GO! T1.2", "GO! T2.4"). smart_case then title-cases the "GO!" token because it is pure-alpha and unlisted, and the published set ends up internally inconsistent. Manufacturer form: https://www.govecs.com/
   Go! S2.4: GO! S2.4                        # same make, same series, published with a DIFFERENT mangling ("Go!" vs "GO!") — the inconsistency inside one make is what makes this findable
   Go! T2.4: GO! T2.4                        # T-series sibling of the above
+
+Great Wall:
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Ora 03-400":  Ora 03  # 3 veh/1 rows (ar, ar_dnrpa) -> live great-wall/ora-03; raw "ORA 03-400"; https://gwm.com.ar/modelos (accessed 2026-10-02) [manufacturer; opened directly]
 
 Harley-Davidson:
   "Fxe":                   "FXE"                  # Harley model code (FX + E for electric start) — codes render uppercase, same basis as the Flstn/FLSTN pins. NOTE: uppercase is the in-make MINORITY here (1 vs 2); the detector`s own "majority is not authority" warning applies and the basis is the code convention, not the count
@@ -4150,6 +4319,30 @@ Harley-Davidson:
   "Softail Springer":                        "Springer Softail"             # PERMUTATION FOLD (verified batch, tier A): Springer-first 10 vs Softail-first 7, AND H-D's code page writes 'FXSTS: Springer™ Softail®'.
   "Road Glide Special Fltrxs":               "Fltrxs Road Glide Special"    # PERMUTATION FOLD (verified batch, tier A): Code-first 7 vs name-first 2, and H-D's code page pairs FLTRXS with Road Glide Special.
 
+Haval:
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "H6 HEV Ultra":  H6  # 304 veh/1 rows (th, th_dlt) -> live, was candidate haval/h6-hev-ultra; raw "H6 HEV ULTRA"; https://www.gwm.co.th/en/models/haval-h6 (accessed 2026-10-02) + https://car.ecosticker.go.th/detail/ffc0a649-ce6c-4224-9bd3-a20697d3492c (accessed 2026-10-02) [ECO #016689 "H6 HEV ULTRA"; grade no longer on maker page]
+  "H6 HEV Pro":    H6  # 18 veh/1 rows (th, th_dlt) -> live, was candidate haval/h6-hev-pro; raw "H6 HEV PRO"; https://www.gwm.co.th/en/models/haval-h6 (accessed 2026-09-12)
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Jolion HEV Supreme":        Jolion  # 104 veh/1 rows (ar, ar_dnrpa) -> live haval/jolion; raw "JOLION HEV SUPREME"; https://gwm.com.ar/modelos/jolion-hev (accessed 2026-10-02) [manufacturer; opened directly]
+  "Jolion 1.5T 7DCT Supreme":  Jolion  # 6 veh/1 rows (ar, ar_dnrpa) -> live haval/jolion; raw "JOLION 1.5T 7DCT SUPREME"; https://gwm.com.ar/modelos/jolion-hev (accessed 2026-10-02) [manufacturer; opened directly]
+  "H6 2.0T":                   H6  # 2 veh/1 rows (ar, ar_dnrpa) -> live haval/h6; raw "H6 2.0T 4WD"; https://gwm.com.ar/modelos/h6 (accessed 2026-10-02) [manufacturer; opened directly]
+  "Jolion 1.5T 7DCT Deluxe":   Jolion  # 1 veh/1 rows (ar, ar_dnrpa) -> live haval/jolion; raw "JOLION 1.5T 7DCT DELUXE"; https://gwm.com.ar/modelos/jolion-hev (accessed 2026-10-02) [manufacturer; opened directly]
+
 Hillman:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
@@ -4284,6 +4477,60 @@ Honda:
   "ST50":              "Dax ST50"                 # same
   "ST50DAX":           "Dax ST50"                 # same
   "DAX50":             "Dax ST50"                 # same; member holds fi
+  # ── honda/giorno · D-10, the owner-assigned per-record call ────────────────
+  # OWNER (NEGOTIATION "the `+` ruling (D-10) … giorno routed"): "S2W`s
+  # per-record call, honda window, dossier-grade note required … There may be a
+  # register detail that settles it. Do not drive-by it."
+  #
+  # THE REGISTER DETAIL, and it does settle it. cache/th_dlt_2568.csv, the only
+  # source this id has:
+  #     HONDA,GIORNO+   220,560 + 53 public-hire  = 220,613
+  #     HONDA,GIORNO +      922 +  1 public-hire  =     923
+  #     HONDA,GIORNO                                     ZERO
+  # Thailand has NO plain-Giorno registration at all. The id is 100% Giorno+
+  # evidence — 221,536 vehicles, global decile 1, Thailand RANK 2 — published
+  # under a slug that names a different machine.
+  #
+  # A THIRD DEFECT nobody had noticed: both spellings slug to `giorno` and
+  # NOTHING pins the display, so the published name is decided by whichever raw
+  # wins the tie-break — and the MINORITY spelling ("Giorno +", 923 vehicles) is
+  # currently beating the majority ("Giorno+", 220,613). Same class as YZF-R3:
+  # mass is not a decision, and here it is not even winning.
+  #
+  # WHY OPTION A (mint giorno-plus, alias giorno -> it) RATHER THAN B (defer):
+  #  1. B waits for plain-Giorno evidence that CANNOT come from the source we
+  #     have. Thailand sells the Giorno+ as its own product and registers no
+  #     plain Giorno; the plain scooter is a JP/US machine and we ingest no 2W
+  #     source in either market.
+  #  2. **The "burn" is not a differentiator, which the option framing implies
+  #     it is.** A spends `giorno` as an alias; B leaves `giorno` OCCUPIED by
+  #     the Giorno+ record. Either way a future plain Giorno cannot have it —
+  #     B just spends it on the wrong machine while looking like it preserved it.
+  #  4. **The ruling already names B`s end state as a hazard.** Approving the
+  #     D-10 mechanism the owner restated why the watchlist lint must ship with
+  #     it: "the deferred case — a plus-model minting FIRST on a free plain
+  #     slug, then the plain model arriving and silently pooling into it — is
+  #     caught only by the lint, never by the mint-time rule". That IS option B
+  #     for giorno, described as the thing to guard against. A avoids it.
+  #     (The mint rule itself is a no-op here: it fires on collision with a
+  #     DIFFERENT live id, and the collision is with this same record — which is
+  #     exactly why the owner routed this as a per-record call, not a D-10
+  #     consequence.)
+  #  3. Slugs are frozen by D-10 constraint (1); DISPLAY names are not. So A
+  #     gets the PERMANENT thing right now and leaves the correctable thing
+  #     (the display) for later. B does the reverse, permanently.
+  #
+  # DISPLAY: "Giorno Plus" is INTERIM and is not what Honda prints. D-10 rules
+  # that a `+` nameplate keeps the `+` in the NAME and renders `-plus` in the
+  # SLUG, at mint time, via the collision-triggered mechanism S4W specified —
+  # which is not implemented yet (no `-plus` mint rule exists in the pipeline,
+  # and truck/daf/xg-plus, the ruling`s own example, is still unminted). Until
+  # it ships, spelling "Plus" in the display is the ONLY route to the ruled
+  # slug, and it is the route all six existing `-plus` records already take.
+  # When the mechanism lands, correct this display to "Giorno+" and leave the
+  # slug alone. Filed in DEBT so it is not lost.
+  "Giorno+":       Giorno Plus                # th_dlt "GIORNO+" — 220,613 vehicles, the majority spelling
+  "Giorno +":      Giorno Plus                # th_dlt "GIORNO +" — 923 vehicles; the spacing variant that was winning the display
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -4518,6 +4765,14 @@ Hyundai:
   # unpatched pipeline republishes the fabricated nameplate on 7,967 vehicles
   # (measured, see the PR body).
   "I45": i45       # the i-series is lowercase-i by settled convention (i10/i20/i30/i40, ix20/ix35/ix55); the family rule's /(\d0)/ misses I45 so the casing never applies. Display-only: slug unchanged, no id moves. STILL LIVE after the 2026-08-02 regex fix: /^I\s?(\d+0)(?!\d)/ requires the digit run to END IN 0, so "I45" still falls through to this key (verified by whole-corpus replay — car/hyundai/i45, nz_nzta, 1,462 vehicles, unchanged).
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Creta 1.5":          Creta  # 97 veh/1 rows (ar, ar_dnrpa) -> live hyundai/creta; raw "CRETA 1.5"; https://www.hyundai.com.ar/publicfiles/datasheets/fichatecnicaall-newcreta_1736781247.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Santa FE 2.5 T":     Santa FE  # 13 veh/1 rows (ar, ar_dnrpa) -> live hyundai/santa-fe; raw "SANTA FE 2.5 T 4WD"; https://www.hyundai.com.ar/modelo/santafe (accessed 2026-10-02) [manufacturer; opened directly]
+  "Tucson 1.6T":        Tucson  # 12 veh/1 rows (ar, ar_dnrpa) -> live hyundai/tucson; raw "TUCSON 1.6T"; https://www.hyundai.com.ar/publicfiles/datasheets/fichatecnicanewtucsoncomparativahibrida_1753717529.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Staria 2.2D":        Staria  # 6 veh/1 rows (ar, ar_dnrpa) -> live hyundai/staria; raw "STARIA 2.2D 4WD"; https://www.hyundai.com.ar/publicfiles/datasheets/fichatecnicaall-newstariasafetycomparativa_1750680146.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Tucson 2WD 2.0 At":  Tucson  # 5 veh/1 rows (ar, ar_dnrpa) -> live hyundai/tucson; raw "TUCSON 2WD 2.0 AT"; https://www.hyundai.com.ar/publicfiles/datasheets/fichatecnicanewtucsoncomparativahibrida_1753717529.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Tucson 1.6 Tgdi":    Tucson  # 2 veh/1 rows (ar, ar_dnrpa) -> live hyundai/tucson; raw "TUCSON 1.6 TGDI HYBRID"; https://www.hyundai.com.ar/publicfiles/datasheets/fichatecnicanewtucsoncomparativahibrida_1753717529.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Staria 2.2D 2WD":    Staria  # 1 veh/1 rows (ar, ar_dnrpa) -> live hyundai/staria; raw "STARIA 2.2D 2WD"; https://www.hyundai.com.ar/publicfiles/datasheets/fichatecnicaall-newstariasafetycomparativa_1750680146.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
 
 I-Coco:
   Lt-018:                    LT018                # closed type code
@@ -4815,6 +5070,10 @@ Iveco:
   # kinds, grouped by landing slug. NAMING §7.6 rule 2 — key every spelling in one change.
   "50C-35":                      Daily        # hyphenated twin of the "50C/35" key above: it lands on the SAME slug, van/iveco/50c-35 [nl], which this batch retires — keyed so the fold is complete rather than complete-by-threshold — https://en.wikipedia.org/wiki/Iveco_Daily
 
+JAC:
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "JS4 Flagship 1.5 Cvt":  JS4  # 5 veh/1 rows (ar, ar_dnrpa) -> live jac/js4; raw "JS4 FLAGSHIP 1.5 CVT"; https://jacargentina.com.ar/modelos/jacjs4/ (accessed 2026-10-02) [manufacturer; opened directly]
+
 Jaecoo:
   "7": Jaecoo 7                           # official European name is "Jaecoo 7" (https://www.omodajaecoo-auto.de/modelle/jaecoo-7); "J7" is the China-market designation. Bare "7" is not self-identifying so the marque word stays (NAMING.md §1).
   JAECOO5 HEV: Jaecoo 5                   # es_dgt form: marque fused + powertrain badge (HEV); folds into the 5-source Jaecoo 5 id like the OMODA5 EV precedent below
@@ -4830,6 +5089,25 @@ Jaecoo:
   "5 EV Long Range Max": Jaecoo 5         # powertrain + range + trim tokens fold
   "6 EV Long Range": Jaecoo 6             # as above, for the 6
   JAECOO8: Jaecoo 8                       # marque fused; official spelling is spaced
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "6 EV Long Range 2WD Pro":  Jaecoo 6  # 577 veh/1 rows (th, th_dlt) -> live, was candidate jaecoo/6-ev-long-range-2wd-pro; raw "6 EV Long Range 2WD PRO"; https://www.omodajaecoo.co.th/en/model/jaecoo-6-ev (accessed 2026-10-02) + https://car.ecosticker.go.th/detail/a8426cc0-4b74-4f31-b9f7-6b900d73fd21 (accessed 2026-10-02) [ECO #026895]
+  "6 EV Long Range 2WD":      Jaecoo 6  # 371 veh/1 rows (th, th_dlt) -> live, was candidate jaecoo/6-ev-long-range-2wd; raw "6 EV Long Range 2WD"; https://www.omodajaecoo.co.th/en/model/jaecoo-6-ev (accessed 2026-10-02) + https://car.ecosticker.go.th/detail/6d109de9-8d63-43b3-ba91-3597144dca19 (accessed 2026-10-02) [ECO #022247]
+  "7 Shs Max":                Jaecoo 7  # 352 veh/1 rows (th, th_dlt) -> live, was candidate jaecoo/7-shs-max; raw "7 SHS Max"; https://www.omodajaecoo.co.th/th/model/jaecoo-7-shs (accessed 2026-09-12)
+  "5 EV Long Range Dynamic":  Jaecoo 5  # 105 veh/1 rows (th, th_dlt) -> live, was candidate jaecoo/5-ev-long-range-dynamic; raw "5 EV Long Range Dynamic"; https://www.omodajaecoo.co.th/en/model/jaecoo-5-ev (accessed 2026-10-02) + https://car.ecosticker.go.th/detail/d744d9f3-d393-4ac3-b441-17a022098fed (accessed 2026-10-02) [ECO #024621]
 
 Jaguar:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -5205,6 +5483,25 @@ Jeep:
   "Compass Blackhawk 2.0L Gme AT9":      Compass        # 96 veh/1 rows (ar, ar_dnrpa) -> live jeep/compass; raw "COMPASS BLACKHAWK 2.0L GME AT9 4X4"; https://www.jeep.com.ar/compass.html
   "Compass Sport 1.3T AT6 4X2":          Compass        # 59 veh/1 rows (ar, ar_dnrpa) -> live jeep/compass; raw "COMPASS SPORT 1.3T AT6 4X2"; https://www.jeep.com.ar/compass.html
   "Compass Longitude 1.3T AT6 4X2":      Compass        # 1 veh/1 rows (ar, ar_dnrpa) -> live jeep/compass; raw "COMPASS LONGITUDE 1.3T AT6 4X2"; https://www.jeep.com.ar/compass.html
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Renegade Sahara 1.3T AT6 Fwd":          Renegade       # 222 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE SAHARA 1.3T AT6 FWD"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Renegade Altitude 1.3T AT6 Fwd":        Renegade       # 156 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE ALTITUDE 1.3T AT6 FWD"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Renegade Willys T270 AT9":              Renegade       # 53 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE WILLYS T270 AT9 4X4"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Commander Blackhawk 2.0L Gme AT9":      Commander      # 28 veh/1 rows (ar, ar_dnrpa) -> live jeep/commander; raw "COMMANDER BLACKHAWK 2.0L GME AT9 4X4"; https://www.media.stellantis.com/ar-es/jeep/press/nuevo-jeep-commander-2026-llega-con-mas-diseno-tecnologia-capacidad-off-road-y-performance (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Commander Limited 1.3T AT6 4X2":        Commander      # 21 veh/1 rows (ar, ar_dnrpa) -> live jeep/commander; raw "COMMANDER LIMITED 1.3T AT6 4X2"; https://www.media.stellantis.com/ar-es/jeep/press/nuevo-jeep-commander-2026-llega-con-mas-diseno-tecnologia-capacidad-off-road-y-performance (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Renegade Longitude T270 AT6 Fwd":       Renegade       # 18 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE LONGITUDE T270 AT6 FWD"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Renegade Serie-S T270 AT6 Fwd":         Renegade       # 16 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE SERIE-S T270 AT6 FWD"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Renegade Sport T270 AT6 Fwd":           Renegade       # 6 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE SPORT T270 AT6 FWD"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Commander Limited Gse 1.3T AT6 4X2":    Commander      # 6 veh/1 rows (ar, ar_dnrpa) -> live jeep/commander; raw "COMMANDER LIMITED GSE 1.3T AT6 4X2"; https://www.media.stellantis.com/ar-es/jeep/press/nuevo-jeep-commander-2026-llega-con-mas-diseno-tecnologia-capacidad-off-road-y-performance (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Commander Overland 2.0L Gme AT9":       Commander      # 5 veh/1 rows (ar, ar_dnrpa) -> live jeep/commander; raw "COMMANDER OVERLAND 2.0L GME AT9 4X4"; https://www.media.stellantis.com/ar-es/jeep/press/nuevo-jeep-commander-2026-llega-con-mas-diseno-tecnologia-capacidad-off-road-y-performance (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Wrangler Rubicon 2.0T AT8":             Wrangler       # 2 veh/1 rows (ar, ar_dnrpa) -> live jeep/wrangler; raw "JEEP WRANGLER RUBICON 2.0T AT8 4X4"; https://www.jeep.com.ar/content/dam/cross-regional/latam/jeep/es_ar/wrangler/vlp/modelizer/rubicon4/2025/FT_Jeep_Wrangler_Rubicon_2025.pdf (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Wrangler Rubicon 2.0L AT8":             Wrangler       # 2 veh/1 rows (ar, ar_dnrpa) -> live jeep/wrangler; raw "WRANGLER RUBICON 2.0L AT8 4X4 2P"; https://www.media.stellantis.com/ar-es/jeep/press/jeep-presenta-la-version-3-puertas-del-nuevo-wrangler-rubicon (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Renegade Willys 1.3T AT9":              Renegade       # 1 veh/1 rows (ar, ar_dnrpa) -> live jeep/renegade; raw "RENEGADE WILLYS 1.3T AT9 4X4"; https://www.media.stellantis.com/ar-es/jeep/press/la-evolucion-del-jeep-renegade-llega-con-mas-diseno-y-tecnologias-que-lo-reafirman-como-un-icono-de-la-aventura (accessed 2026-10-02) [manufacturer; verified through the search index]
+
+Jetour:
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Dashing 1.6 T":  Dashing  # 8 veh/1 rows (ar, ar_dnrpa) -> live jetour/dashing; raw "DASHING 1.6 T"; https://jetour.com.ar/dashing/ (accessed 2026-10-02) [manufacturer; opened directly]
+  "Dashing 1.5 T":  Dashing  # 5 veh/1 rows (ar, ar_dnrpa) -> live jetour/dashing; raw "DASHING 1.5 T"; https://jetour.com.ar/dashing/ (accessed 2026-10-02) [manufacturer; opened directly]
 
 Joint:
   E 33: E33                                   # spelling variant of "E33" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
@@ -5333,6 +5630,11 @@ Kia:
   Cee'd: Ceed                               # Kia dropped the apostrophe with the 3rd gen in 2018 (ceed.kia.com); old spelling folds
 
   "New Picanto":                   Picanto                # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=1, dup of car/kia/picanto
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Carnival Sx 2.2":              Carnival  # 9 veh/1 rows (ar, ar_dnrpa) -> live kia/carnival; raw "CARNIVAL SX 2.2 CRDI A/T"; https://www.kia.com.ar/carnival (accessed 2026-10-02) [manufacturer; opened directly]
+  "Sportage X-Line 2.0":          Sportage  # 8 veh/1 rows (ar, ar_dnrpa) -> live kia/sportage; raw "SPORTAGE X-LINE 2.0 CRDI AWD A/T"; https://www.kia.com.ar/sportage (accessed 2026-10-02) [manufacturer; opened directly]
+  "Seltos LX 1.5 A/T":            Seltos  # 8 veh/1 rows (ar, ar_dnrpa) -> live kia/seltos; raw "SELTOS LX 1.5 A/T"; https://www.kia.com.ar/seltos (accessed 2026-10-02) [manufacturer; opened directly]
+  "Sportage EX 2.0 Mpi A/T 4X2":  Sportage  # 1 veh/1 rows (ar, ar_dnrpa) -> live kia/sportage; raw "SPORTAGE EX 2.0 MPI A/T 4X2"; https://www.kia.com.ar/sportage (accessed 2026-10-02) [manufacturer; opened directly]
 # Final per-make nameplate corrections, applied AFTER the pipeline's
 # normalization. `null` drops the entry; a string renames/merges it into
 # another nameplate. Keys are canonical make display names; sub-keys are the
@@ -5612,6 +5914,9 @@ Lada:
   "4D Samara": Samara                               # 65 veh/1 rows (fi, fi_traficom) -> live lada/samara; raw "4D SAMARA HATCHBACK 1.5I-210930/246"
   "1200S": "1200 S"                           # spelling variant of "1200 S" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
 
+Lambretta:
+  V: V Special                             # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "LAMBRETTA V SPECIAL" -> "LAMBRETTA V" (Model "V SPECIAL 125" unchanged, 230 veh in the 2026 Q2 column vs 228 in Q1, uk_dft). G-1 cannot parse "V SPECIAL 125" (word between family and cc) and falls back to the bare stub "V"; this returns the rows to motorcycle/lambretta/v-special
+
 Lancia:
   # ── `car/lancia/coupe` is the BODY-WORD 92 class, disposition FOLD (not NULL,
   # not KEEP). Third adjudication of this id; the first two were both wrong, so
@@ -5868,8 +6173,35 @@ Land Rover:
   "New Range Rover Sport P400":  Range Rover Sport  # raw "New Range Rover Sport P400 MHEV" us_fueleconomy MY2023. Twin: "Range Rover Sport P400 MHEV" MY2022,2024,2025,2026. ca_nrcan writes the pair as one value — "Range Rover Sport P360/P400" (…2015-2024….csv:6992)
   "New Range Rover Sport P440":  Range Rover Sport  # raw "New Range Rover Sport P440 PHEV" us_fueleconomy MY2023. ca_nrcan rates the same plug-in Sport "Range Rover Sport P460e PHEV" (MY2025) — the number moved, the car did not
 
+Leapmotor:
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "C10 EV":          C10  # 96 veh/1 rows (th, th_dlt) -> live, was candidate leapmotor/c10-ev; raw "C10 EV"; https://car.ecosticker.go.th/detail/26a828cb-5bf0-4c3f-b8b3-1d94d2548478 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "B10 Design Bev":  B10  # 25 veh/1 rows (th, th_dlt) -> live, was candidate leapmotor/b10-design-bev; raw "B10 Design BEV"; https://car.ecosticker.go.th/detail/442a7226-8a53-4597-9c63-cca82a61301d (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "B10 Life Bev":    B10  # 1 veh/1 rows (th, th_dlt) -> live, was candidate leapmotor/b10-life-bev; raw "B10 Life BEV"; https://car.ecosticker.go.th/detail/aecfc824-acdb-4025-8f8d-f0d5cc7711d9 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "B10 Reev Design":  B10  # 87 veh/1 rows (ar, ar_dnrpa) -> live leapmotor/b10; raw "B10 REEV DESIGN"; https://www.media.stellantis.com/ar-es/leapmotor/press/leapmotor-inicia-la-preventa-en-argentina-del-nuevo-b10 (accessed 2026-10-02) [manufacturer press; verified through the search index — the earlier cited release predates the Argentine trims; I-11 fix]
+  "C10 Reev Design":  C10  # 29 veh/1 rows (ar, ar_dnrpa) -> live leapmotor/c10; raw "C10 REEV DESIGN"; https://www.media.stellantis.com/ar-es/leapmotor/press/tecnologia-avanzada-y-accesibilidad-las-claves-de-la-propuesta-de-leapmotor-en-argentina (accessed 2026-10-02) [manufacturer press; verified through the search index]
+
 Leike:
   Leike: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
+
+Lexmoto:
+  RX1: RX1 125                             # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "LEXMOTO RX1 125" -> "LEXMOTO RX1" (Model "RX1 125" unchanged, 400 veh in the 2026 Q2 column vs 360 in Q1, uk_dft). Keeps motorcycle/lexmoto/rx1-125 live; stops a gb-only lexmoto/rx1 mint
+  Viper: Viper 125                         # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "LEXMOTO VIPER 125" -> "LEXMOTO VIPER" (Model "VIPER SK 125-22A" unchanged, 385 veh in the 2026 Q2 column vs 392 in Q1, uk_dft). Keeps motorcycle/lexmoto/viper-125 live; stops a gb-only lexmoto/viper mint
 
 Lexus:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -6109,6 +6441,14 @@ Lexus:
   # slugify("Lfa") == "lfa"). NOT styling.yml entries, per §C.4.
   Lfa: LFA                                # published car/lexus/lfa displays "Lfa" (dist/vehicles.csv v2026.08.0) — measured classify("LEXUS","LFA") -> ["Lexus","Lfa"]. Register attestation, not just marque styling: uk_veh0120_uk.csv writes GenModel "LEXUS LFA" with Model "LFA F S-A" — both halves caps. Every other Lexus record in the catalog is all-caps
   Lm: LM                                  # published car/lexus/lm displays "Lm" (dist/vehicles.csv v2026.08.0) — build/observed_model_names.json flags car/lexus/lm as flapping ["LM","Lm"], i.e. the published name is decided by SOURCE ITERATION ORDER (reconciler.rb:246 keeps the first spelling to arrive). The keyed raws ("LM350H", "LM500H", "Lm 350H") already emit LM; bare "LEXUS LM" does not. This pin makes it deterministic. The dossier §C.4 states LM "is already fixed" — the released catalog refutes that
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Gx 550 Luxury":                         GX             # 3 veh/1 rows (ar, ar_dnrpa) -> live lexus/gx; raw "GX 550 LUXURY"; https://www.lexus.com.ar/en/models/gx/gx-luxury.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "LBX Active HEV":                        LBX            # 3 veh/1 rows (ar, ar_dnrpa) -> live lexus/lbx; raw "LBX ACTIVE HEV"; https://www.lexus.com.ar/en/models/lbx/lbx-active.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "NX 350H Luxury ML":                     NX             # 2 veh/1 rows (ar, ar_dnrpa) -> live lexus/nx; raw "NX 350H LUXURY ML"; https://www.lexus.com.ar/en/models/nx/nx-350h-luxury.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "RX 500H F-Sport+ ML":                   RX             # 2 veh/1 rows (ar, ar_dnrpa) -> live lexus/rx; raw "RX 500H F-SPORT+ ML"; https://www.lexus.com.ar/en/models/rx/rx-500h-fsport-performance.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "IS 300H F-Sport":                       IS             # 2 veh/1 rows (ar, ar_dnrpa) -> live lexus/is; raw "IS 300H F-SPORT"; https://www.lexus.com.ar/en/models/is/is-300h-fsport.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "NX 350 F-Sport ML":                     NX             # 1 veh/1 rows (ar, ar_dnrpa) -> live lexus/nx; raw "NX 350 F-SPORT ML"; https://www.lexus.com.ar/en/models/nx/nx-350-fsport.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "RX 450H+ Luxury":                       RX             # 1 veh/1 rows (ar, ar_dnrpa) -> live lexus/rx; raw "RX 450H+ LUXURY"; https://www.lexus.com.ar/en/models/rx/rx-450h-plus.html (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Leyland Daf:
   # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §A-L1/§A-L2).
@@ -6203,6 +6543,28 @@ Lincoln:
 
 Livewire:
   S2DEL Mar: S2 Del Mar                     # LiveWire's own model page writes "S2 Del Mar" (https://www.livewire.com/s2-del-mar-electric-motorcycle) and the nl_rdw raw is correctly spaced "S2 DEL MAR" — the glued form arrives from another source and won the canonical pick. Sibling records S2 Alpinista / S2 Mulholland already carry the spaced form, so this one was the odd record out inside its own series.
+
+Lotus:
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "Eletre S":                Eletre  # 53 veh/1 rows (th, th_dlt) -> live, was candidate lotus/eletre-s; raw "ELETRE S"; https://car.ecosticker.go.th/detail/dfd41df4-1181-4113-b916-a777e3ee8e49 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Eletre R":                Eletre  # 32 veh/1 rows (th, th_dlt) -> live, was candidate lotus/eletre-r; raw "ELETRE R"; https://car.ecosticker.go.th/detail/bc1ae94b-6db1-4644-96dd-fba2214c3229 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Emeya R":                 Emeya  # 6 veh/1 rows (th, th_dlt) -> live, was candidate lotus/emeya-r; raw "EMEYA R"; https://car.ecosticker.go.th/detail/d7af9040-28dc-4d70-a793-ccbcdccd9c58 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Emira V6 First Edition":  Emira  # 1 veh/1 rows (th, th_dlt) -> live, was candidate lotus/emira-v6-first-edition; raw "EMIRA V6 FIRST EDITION"; https://www.lotuscars.com/en-GB/emira (accessed 2026-09-12)
+  "Emira I4 First Edition":  Emira  # 1 veh/1 rows (th, th_dlt) -> live, was candidate lotus/emira-i4-first-edition; raw "EMIRA I4 FIRST EDITION"; https://www.lotuscars.com/en-GB/emira (accessed 2026-09-12)
 
 Luqi:
   Luqi: null                              # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
@@ -7947,6 +8309,27 @@ Nissan:
   "Z350": "350 Z"  # TOKEN INVERSION of 350Z in fi/nl free text — https://en.wikipedia.org/wiki/Nissan_350Z
 
   "New Urvan":           Urvan        # New-guard pre-positioning, UK replay (S2W handover): pipeline#111 rescued `NEW <x>` from junk? and this make already publishes the stripped nameplate, so without this key the next build MINTS A DUPLICATE. classify-derived both ways — classify(raw)="New X", classify(stripped)=the live nameplate. — uk_dft n=4; car/nissan/urvan and bus/nissan/urvan are both live
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Kicks Sense Dct 1.0T":          Kicks  # 107 veh/1 rows (ar, ar_dnrpa) -> live nissan/kicks; raw "KICKS SENSE DCT 1.0T"; https://latam.nissannews.com/es/releases/latam-argentina-el-nuevo-nissan-kicks-llego-con-mas-actitud-a-argentina (accessed 2026-10-02) [manufacturer press; opened directly]
+  "Kicks Exclusive Dct 1.0T":      Kicks  # 73 veh/1 rows (ar, ar_dnrpa) -> live nissan/kicks; raw "KICKS EXCLUSIVE DCT 1.0T"; https://latam.nissannews.com/es/releases/latam-argentina-el-nuevo-nissan-kicks-llego-con-mas-actitud-a-argentina (accessed 2026-10-02) [manufacturer press; opened directly]
+  "Versa 1.6 Advance Cvt":         Versa  # 72 veh/1 rows (ar, ar_dnrpa) -> live nissan/versa; raw "VERSA 1.6 ADVANCE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/nuevo-versa.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "X-Trail 2.5 Exclusive Cvt":     X-Trail  # 68 veh/1 rows (ar, ar_dnrpa) -> live nissan/x-trail; raw "X-TRAIL 2.5 EXCLUSIVE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/nueva-xtrail.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Frontier S 4X2 MT 2.3 D Cd":    Frontier  # 50 veh/1 rows (ar, ar_dnrpa) -> live nissan/frontier; raw "FRONTIER S 4X2 MT 2.3 D CD"; https://www.nissan.com.ar/vehiculos/nuevos/frontier.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "X-Trail 2.5 Advance Cvt":       X-Trail  # 50 veh/1 rows (ar, ar_dnrpa) -> live nissan/x-trail; raw "X-TRAIL  2.5 ADVANCE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/nueva-xtrail.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Sentra 2.0 Exclusive Cvt":      Sentra  # 47 veh/1 rows (ar, ar_dnrpa) -> live nissan/sentra; raw "SENTRA 2.0 EXCLUSIVE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/sentra.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "X-Trail Epower Exclusive Cvt":  X-Trail  # 42 veh/1 rows (ar, ar_dnrpa) -> live nissan/x-trail; raw "X-TRAIL EPOWER EXCLUSIVE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/x-trail-epower.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Frontier S":                    Frontier  # 29 veh/1 rows (ar, ar_dnrpa) -> live nissan/frontier; raw "FRONTIER S 4X4 MT 2.3 D CD"; https://www.nissan.com.ar/vehiculos/nuevos/frontier.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Kicks Advance Dct 1.0T":        Kicks  # 24 veh/1 rows (ar, ar_dnrpa) -> live nissan/kicks; raw "KICKS ADVANCE DCT 1.0T"; https://latam.nissannews.com/es/releases/latam-argentina-el-nuevo-nissan-kicks-llego-con-mas-actitud-a-argentina (accessed 2026-10-02) [manufacturer press; opened directly]
+  "Sentra 2.0 Advance Cvt":        Sentra  # 18 veh/1 rows (ar, ar_dnrpa) -> live nissan/sentra; raw "SENTRA 2.0 ADVANCE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/sentra.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Sentra 2.0 Sr Cvt":             Sentra  # 13 veh/1 rows (ar, ar_dnrpa) -> live nissan/sentra; raw "SENTRA 2.0 SR CVT"; https://www.nissan.com.ar/vehiculos/nuevos/sentra.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Versa 1.6 Sr Cvt":              Versa  # 9 veh/1 rows (ar, ar_dnrpa) -> live nissan/versa; raw "VERSA 1.6 SR CVT"; https://www.nissan.com.ar/vehiculos/nuevos/nuevo-versa.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Versa 1.6 Exclusive Cvt":       Versa  # 9 veh/1 rows (ar, ar_dnrpa) -> live nissan/versa; raw "VERSA 1.6 EXCLUSIVE CVT"; https://www.nissan.com.ar/vehiculos/nuevos/nuevo-versa.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Frontier S 4X2 At 2.3 D Cd":    Frontier  # 6 veh/1 rows (ar, ar_dnrpa) -> live nissan/frontier; raw "FRONTIER S 4X2 AT 2.3 D CD"; https://www.nissan.com.ar/vehiculos/nuevos/frontier.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Frontier X-Gear":               Frontier  # 4 veh/1 rows (ar, ar_dnrpa) -> live nissan/frontier; raw "FRONTIER X-GEAR 4X4 AT 2.3 D CD"; https://www.nissan.com.ar/vehiculos/nuevos/frontier.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Versa 1.6 Sense MT":            Versa  # 3 veh/1 rows (ar, ar_dnrpa) -> live nissan/versa; raw "VERSA 1.6 SENSE MT"; https://www.nissan.com.ar/vehiculos/nuevos/nuevo-versa.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Frontier Se 4.0":               Frontier  # 1 veh/1 rows (ar, ar_dnrpa) -> live nissan/frontier; raw "FRONTIER SE 4.0"; https://usa.nissannews.com/en-US/releases/release-6c19a5e8b2154f3dbb2de06e2e9bb142-us-2011-nissan-frontier-press-kit (accessed 2026-10-02) [manufacturer press; opened directly]
+  "Titan V8 5.6":                  Titan  # 1 veh/1 rows (ar, ar_dnrpa) -> live nissan/titan; raw "TITAN V8 5.6"; https://usa.nissannews.com/en-US/releases/new-tennessee-sourced-5-6-liter-endurance-v8-gasoline-engine-to-power-nissan-titan-and-titan-xd (accessed 2026-10-02) [manufacturer press; opened directly]
+  "Frontier Xe 4X2 MT 2.3 D Cd":   Frontier  # 1 veh/1 rows (ar, ar_dnrpa) -> live nissan/frontier; raw "FRONTIER XE 4X2 MT 2.3 D CD"; https://www.nissan.com.ar/vehiculos/nuevos/frontier.html (accessed 2026-10-02) [manufacturer; opened directly]
 
 # ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
 # the model column and it published as a nameplate. Measured on a
@@ -8039,6 +8422,24 @@ Omoda:
   OMODA9: Omoda 9                         # registry form with the marque fused
   "9 Noble": Omoda 9                      # trim level folds
   E5 Comfort: Omoda E5                    # trim folds; the E5 is the electric sibling sold under its own name
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "C5 EV Long Range Ultimate":  Omoda E5  # 976 veh/1 rows (th, th_dlt) -> live, was candidate omoda/c5-ev-long-range-ultimate; raw "C5 EV Long Range Ultimate"; https://car.ecosticker.go.th/detail/c04497f3-ba14-4cba-ae36-3bd40f96ced5 (accessed 2026-10-02) [ECO #022309 OMODA "C5 EV Long Range Ultimate" 4424x1830x1588] + https://omodaauto.co.uk/omoda-5/?model=e5-electric (accessed 2026-10-02) [corroboration: E5 Electric 4424/1830/1588, wb 2630; identity by dimensional match]
+  "C5 EV Long Range Plus":      Omoda E5  # 115 veh/1 rows (th, th_dlt) -> live, was candidate omoda/c5-ev-long-range-plus; raw "C5 EV Long Range Plus"; https://omodaauto.co.uk/omoda-5/?model=e5-electric (accessed 2026-09-12)
+  "C5 EV Long Range Dynamic":   Omoda E5  # 33 veh/1 rows (th, th_dlt) -> live, was candidate omoda/c5-ev-long-range-dynamic; raw "C5 EV Long Range Dynamic"; https://omodaauto.co.uk/omoda-5/?model=e5-electric (accessed 2026-09-12)
 
 Opel:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -8336,6 +8737,10 @@ Peugeot:
   "3008 GT":                  "3008"     # ES "3008 GT HYBRID 145 E-D" + GB "PEUGEOT 3008 GT PHEV AUTO"
   "5008 GT":                  "5008"     # ES "5008 GT HYBRID 145 EDC" / "5008 GT PLUG-IN HYBRID"
   "E-5008 Allure":            "E-5008"   # trim strips, the e- product survives (citroen-e-prefix-verdict.md); MINTS car/peugeot/e-5008 (gb 5,289 — publishes)
+  "E-5008 GT":                "E-5008"   # DVLA VEH0120 2026 Q2 RE-FILE: GenModels "PEUGEOT E-5008 ALLURE"/"PEUGEOT E-5008" (5,289 veh in Q1 -> car/peugeot/e-5008) are gone; every E-5008 now sits under GenModel "PEUGEOT 5008" with Model "E-5008 GT" 5,971 veh in Q2 (uk_dft). Trim strips, the e- product survives (citroen-e-prefix-verdict.md). Reached ONLY through the uk_dft FW_POOLS entry ["Cars","PEUGEOT","PEUGEOT 5008"] => ["E-5008"] (vehiclesdb-pipeline#215); inert without it: the rows fall back to the 5008 stub and car/peugeot/e-5008 vanishes on the 48-quarter file, so pipeline#215 merges first
+  "E-5008 GT Premium":        "E-5008"   # same re-file: Model "E-5008 GT PREMIUM" 298 veh in Q2 (uk_dft) under GenModel "PEUGEOT 5008"; same pool dependency
+  "E-5008 Allure Premium":    "E-5008"   # same re-file: Model "E-5008 ALLURE PREMIUM" 202 veh in Q2 (uk_dft) under GenModel "PEUGEOT 5008"; same pool dependency ("E-5008 ALLURE" 1,307 already classifies to E-5008)
+  "E-5008 Lnch Ed Dual Motor": "E-5008"  # same re-file: Model "E-5008 LNCH ED DUAL MOTOR 4X4" 16 veh in Q2 (uk_dft) — launch edition + AWD trim; same pool dependency
   # — 405 / 504 / 505 / 604 / 605: the rear-drive-era GR/SR/TI/SL ladder,
   # Mi16/V6 engine badges, Familiale body. 13 EDITs — every settled spelling
   # ruling of the 2026-07-26 collision batch relocates to enrich, none reversed. —
@@ -8467,6 +8872,25 @@ Peugeot:
   "208 Allure MT AM25.5":                "208"          # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 ALLURE MT AM25.5"; https://www.peugeot.com.ar/gama/208.html
   "208 Allure At AM25.5":                "208"          # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 ALLURE AT AM25.5"; https://www.peugeot.com.ar/gama/208.html
   "208 GT T200 AM25":                    "208"          # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 GT T200 AM25"; https://www.peugeot.com.ar/gama/208.html
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "2008 GT T200 AM26.5":             "2008"  # 212 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 GT T200 AM26.5"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 GT T200 AM26":               "2008"  # 175 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 GT T200 AM26"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 Allure T200 AM26.5":         "2008"  # 147 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 ALLURE T200 AM26.5"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 Active T200 AM26.5":         "2008"  # 145 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 ACTIVE T200 AM26.5"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 Allure T200 AM26":           "2008"  # 43 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 ALLURE T200 AM26"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 Active T200 AM26":           "2008"  # 27 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 ACTIVE T200 AM26"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 Allure T200 AM27":           "2008"  # 10 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 ALLURE T200 AM27"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 GT T200 AM27":               "2008"  # 8 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 GT T200 AM27"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "2008 GT T200 AM25":               "2008"  # 3 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 GT T200 AM25"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "208 Allure 1.6":                  "208"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 ALLURE 1.6"; https://www.media.stellantis.com/ar-es/peugeot/press/nuevo-peugeot-208 (accessed 2026-10-02) [manufacturer press; verified through the search index]
+  "2008 GT T200 AM24":               "2008"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 GT T200 AM24"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "3008 Active 1.6 At":              "3008"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/3008; raw "3008 ACTIVE 1.6 AT"; https://www.peugeot.com.ar/gama/nuevo-3008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "208 New Like 1.2L AM23.5":        "208"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 NEW LIKE 1.2L AM23.5"; https://www.media.stellantis.com/ar-es/peugeot/press/ya-esta-a-la-venta-el-nuevo-peugeot-208-en-argentina (accessed 2026-10-02) [manufacturer press; verified through the search index — lists "208 LIKE 1.2"; I-11 fix]
+  "208 Feline Tiptronic 1.6L AM23":  "208"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 FELINE TIPTRONIC 1.6L AM23"; https://www.media.stellantis.com/ar-es/peugeot/press/nuevo-peugeot-208 (accessed 2026-10-02) [manufacturer press; verified through the search index]
+  "208 GT T200 AM25.5":              "208"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/208; raw "208 GT T200 AM25.5"; https://www.peugeot.com.ar/gama/208.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "408 Allure+ Tiptronic 2.0N":      "408"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/408; raw "408 ALLURE+ TIPTRONIC 2.0N"; https://www.media.stellantis.com/ar-es/peugeot/press/evolucion-en-la-familia-de-peugeot-308-y-408-nueva-configuracion-de-la-gama (accessed 2026-10-02) [manufacturer press; verified through the search index]
+  "2008 Feline 1.6 AM23":            "2008"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 FELINE 1.6 AM23"; https://www.media.stellantis.com/ar-es/peugeot/press/peugeot-2008-renueva-su-equipamiento (accessed 2026-10-02) [manufacturer press; verified through the search index]
+  "2008 Active T200 AM24":           "2008"  # 1 veh/1 rows (ar, ar_dnrpa) -> live peugeot/2008; raw "2008 ACTIVE T200 AM24"; https://www.peugeot.com.ar/gama/2008.html (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Piaggio:
   Piaggio: null                           # moped fi|nl
@@ -9267,6 +9691,18 @@ Renault:
   Renault: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
   "New Twingo":                    Twingo                 # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate n=2, dup of car/renault/twingo
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Duster Iconic 1.3T Cvt":     Duster  # 84 veh/1 rows (ar, ar_dnrpa) -> live renault/duster; raw "DUSTER ICONIC 1.3T CVT"; https://www.renault.com.ar/automoviles/nuevo-duster.html (accessed 2026-10-02) [manufacturer; opened directly] + https://www.renault.com.ar/duster-videos/zen.html (accessed 2026-10-02) [manufacturer; opened directly — names the Iconic 1.3T grade; I-11 fix]
+  "Duster Iconic 1.3T":         Duster  # 76 veh/1 rows (ar, ar_dnrpa) -> live renault/duster; raw "DUSTER ICONIC 1.3T 4X4 MT"; https://www.renault.com.ar/automoviles/nuevo-duster.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Duster Intens 1.6 MT":       Duster  # 70 veh/1 rows (ar, ar_dnrpa) -> live renault/duster; raw "DUSTER INTENS 1.6 MT"; https://www.renault.com.ar/duster-videos/zen.html (accessed 2026-10-02) [manufacturer; opened directly — lists "Zen 1.6 / Intens 1.6 CVT / Outsider 1.3T CVT / Iconic 1.3T 4x4" as Duster versions; previous gradeCode URL returns HTTP 410 — I-11 fix]
+  "Koleos Techno":              Koleos  # 16 veh/1 rows (ar, ar_dnrpa) -> live renault/koleos; raw "KOLEOS TECHNO"; https://www.renault.com.ar/automoviles/renault-koleos.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Logan Intens 1.6":           Logan  # 13 veh/1 rows (ar, ar_dnrpa) -> live renault/logan; raw "LOGAN INTENS 1.6"; https://www.renault.com.ar/automoviles/logan/prix-offres.html?gradeCode=ENS_MDL2P1 (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Sandero Life 1.6":           Sandero  # 4 veh/1 rows (ar, ar_dnrpa) -> live renault/sandero; raw "SANDERO LIFE 1.6"; https://www.renault.com.ar/automoviles/sandero/precios-y-versiones.html?gradeCode=ENS_MDL2PSL1SERIELIM2 (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Koleos Esprit Alpine Full":  Koleos  # 3 veh/1 rows (ar, ar_dnrpa) -> live renault/koleos; raw "KOLEOS ESPRIT ALPINE FULL HYBRID E-TECH"; https://www.renault.com.ar/automoviles/renault-koleos.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Logan Life 1.6":             Logan  # 1 veh/1 rows (ar, ar_dnrpa) -> live renault/logan; raw "LOGAN LIFE 1.6"; https://www.renault.com.ar/automoviles/logan/prix-offres.html?gradeCode=ENS_MDL2P1 (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Duster Zen":                 Duster  # 1 veh/1 rows (ar, ar_dnrpa) -> live renault/duster; raw "DUSTER ZEN 4X4 2.0"; https://www.renault.com.ar/duster-videos/zen.html (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Koleos 2.5":                 Koleos  # 1 veh/1 rows (ar, ar_dnrpa) -> live renault/koleos; raw "KOLEOS 2.5"; https://www.renault.com.ar/automoviles/renault-koleos.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "Sandero Intens 1.6":         Sandero  # 1 veh/1 rows (ar, ar_dnrpa) -> live renault/sandero; raw "SANDERO INTENS 1.6"; https://www.renault.com.ar/automoviles/sandero/precios-y-versiones.html?gradeCode=ENS_MDL2PSL1SERIELIM2 (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Rewaco:
   Rewaco: null                            # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
@@ -10051,6 +10487,8 @@ Smart:
   Smart: null                                 # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
   Mc 01: MC01                                 # spelling variant of "MC01" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
   HX11: null                              # type-approval code, not a nameplate — smart's lineup is Fortwo/Forfour/Roadster/#1/#3/#5 and there has never been an HX11 (single ie-only row)
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "#1 Pro":  "#1"  # 2 veh/2 rows (ar, ar_dnrpa) -> live smart/1; raw "SMART #1 PRO (BEV)"; https://ar.smart.com/smart-1/ (accessed 2026-10-02) [manufacturer; opened directly]
 
 Smc:
   Smc: null      # moped es|fi. Make survives on motorcycle/ram. Raws are karts and ATVs ("F KART", "M KART", "CRS170") — not road vehicles in any kind we publish
@@ -10237,6 +10675,39 @@ Subaru:
   # reported-not-verified. If a car/subaru/libero record is ever minted on
   # first-party evidence, this line is the one to revisit. ──
   Libero E12: E12       # `LIBERO E12` is the badge-prefixed compound of the same nameplate — the Kia "Picanto Morning → Picanto" shape. Survivor chosen on register majority (fi 13:0, nl 25:1 — see the block above), NOT on marque attestation, which is absent for `E12` and reported-but-unverified for `Libero` — https://en.wikipedia.org/wiki/Subaru_Libero
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "Forester 2.0I-S Es":        Forester  # 248 veh/1 rows (th, th_dlt) -> live, was candidate subaru/forester-2-0i-s-es; raw "FORESTER 2.0i-S ES"; https://car.ecosticker.go.th/detail/9337be4e-fe81-4ced-95e3-864beb1426e2 (accessed 2026-10-02) [ECO #016505 SUBARU "Forester 2.0i-S ES"]
+  "Xv 2.0I-P Es":              Xv  # 189 veh/1 rows (th, th_dlt) -> live, was candidate subaru/xv-2-0i-p-es; raw "XV 2.0i-P ES"; https://car.ecosticker.go.th/detail/9d1fdc40ccf54776b0fb1e8a9ee0c35b (accessed 2026-10-02) [ECO #014031 SUBARU "XV 2.0i-P ES"]
+  "Forester 2.0I-L Es":        Forester  # 90 veh/1 rows (th, th_dlt) -> live, was candidate subaru/forester-2-0i-l-es; raw "FORESTER 2.0i-L ES"; https://car.ecosticker.go.th/detail/22d882e7-6178-4849-a8fb-34e40c33dd4e (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Outback 2.5I-T Eyesight":   Outback  # 6 veh/1 rows (th, th_dlt) -> live, was candidate subaru/outback-2-5i-t-eyesight; raw "OUTBACK 2.5i-T EyeSight"; https://car.ecosticker.go.th/detail/9f177938-dd8e-4faa-bf38-fc0a67a0e519 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Xv 2.0I-P":                 Xv  # 5 veh/1 rows (th, th_dlt) -> live, was candidate subaru/xv-2-0i-p; raw "XV 2.0i-P"; https://car.ecosticker.go.th/detail/81f7acd1fad441eaaf1d9082c4150171 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Brz 2.4 Rwd Eyesight 6AT":  Brz  # 4 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "BRZ 2.4 RWD EyeSight 6AT"; https://car.ecosticker.go.th/detail/73dfb128-4d2b-4db9-90db-fac75c1d473e (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Wrx Wagon 2.4 Eyesight":    Wrx  # 3 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "WRX Wagon 2.4 EyeSight AWD CVT"; https://car.ecosticker.go.th/detail/5f60b86f-d47f-4fac-b770-0ef00026e37b (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Brz 2.4 Eyesight Rwd 6AT":  Brz  # 3 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "BRZ 2.4 EyeSight RWD 6AT"; https://car.ecosticker.go.th/detail/c5719ab7-36e1-4972-977e-60dc0580ad0d (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Wrx 4D 2.4 Eyesight":       Wrx  # 3 veh/2 rows (th, th_dlt) -> live, DROPPED by junk?; raw "WRX 4D 2.4 EyeSight AWD 6MT"; https://car.ecosticker.go.th/detail/bb4b866b-4b35-4c5d-af68-8d7768886ef0 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Brz 2.4 Eyesight Rwd 6MT":  Brz  # 2 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "BRZ 2.4 EyeSight RWD 6MT"; https://car.ecosticker.go.th/detail/05e705aa-ca1f-4192-87e8-3d08d9895abc (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Wrx 4D 2.4":                Wrx  # 2 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "WRX 4D 2.4 AWD 6MT"; https://car.ecosticker.go.th/detail/9ecb54cc-4720-4418-8682-9369c3053b32 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Brz 2.4 Rwd 6MT":           Brz  # 1 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "BRZ 2.4 RWD 6MT"; https://car.ecosticker.go.th/detail/23173ac3-85ef-49e7-8fe1-432865249f92 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Forester 2.0I-S":           Forester  # 1 veh/1 rows (th, th_dlt) -> live, was candidate subaru/forester-2-0i-s; raw "FORESTER 2.0i-S"; https://car.ecosticker.go.th/detail/9337be4e-fe81-4ced-95e3-864beb1426e2 (accessed 2026-09-12) [Thai Excise Dept ECO Sticker certification record; the /detail page is a client-rendered SPA — the record was read from the register public JSON API on the same origin, not rendered]
+  "Wrx S4 Sti Sport R EX":     Wrx  # 1 veh/1 rows (th, th_dlt) -> live, was candidate subaru/wrx-s4-sti-sport-r-ex; raw "WRX S4 STI SPORT R EX AWD"; https://www.subaru.jp/wrx/s4/ (accessed 2026-09-12)
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Crosstrek 2.0I":                        Crosstrek      # 7 veh/1 rows (ar, ar_dnrpa) -> live subaru/crosstrek; raw "CROSSTREK 2.0I AWD CVT LIMITED ES"; https://www.subaru.com.ar/subaru-crosstrek (accessed 2026-10-02) [manufacturer; opened directly]
+  "Wrx 2.4T":                              Wrx            # 6 veh/2 rows (ar, ar_dnrpa) -> live subaru/wrx; raw "WRX 2.4T AWD 6MT PERFORMANCE ES"; https://www.subaru.com.ar/all-new-wrx (accessed 2026-10-02) [manufacturer; opened directly]
+  "Crosstrek 2.0":                         Crosstrek      # 1 veh/1 rows (ar, ar_dnrpa) -> live subaru/crosstrek; raw "CROSSTREK 2.0 HYBRID AWD CVT LIMITED ES"; https://www.subaru.com.ar/subaru-crosstrek-hibrida (accessed 2026-10-02) [manufacturer; opened directly]
 
 Sunbeam:
   Sunbeam: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
@@ -10381,6 +10852,49 @@ Suzuki:
   # ── "New <nameplate>" batch (2026-08-01) — see the Chrysler block header. ──
   New SX4: SX4                                # 299 vehicles (fi+nl+ua) — the 2010 facelift, sold as "New SX4" in Europe; car/suzuki/sx4 is live off those same three registers (10 countries). Closed alphanumeric, per this block's own SX4 convention above — https://www.globalsuzuki.com/automobile/lineup/
   New SX4 S-Cross: SX4 S-Cross                # 196 vehicles (nl) — same prefix on the S-Cross body; car/suzuki/sx4-s-cross is live. Folded in the same pass so the two SX4 keys cannot fork differently
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "Swift Glx 1.2L Cvt":       Swift  # 893 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/swift-glx-1-2l-cvt; raw "SWIFT GLX 1.2L CVT"; https://www.suzuki.co.th/en/model/swift/specification (accessed 2026-09-12)
+  "Swift GL Next 1.2L Cvt":   Swift  # 785 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/swift-gl-next-1-2l-cvt; raw "SWIFT GL NEXT 1.2L CVT"; https://www.suzuki.co.th/en/model/swift/specification (accessed 2026-09-12)
+  "Celerio Gx 1.0L Cvt":      Celerio  # 775 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-gx-1-0l-cvt; raw "CELERIO GX 1.0L CVT"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "Swift GL 1.2L Cvt":        Swift  # 538 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/swift-gl-1-2l-cvt; raw "SWIFT GL 1.2L CVT"; https://www.suzuki.co.th/en/model/swift/specification (accessed 2026-09-12)
+  "Celerio GL 1.0L Cvt":      Celerio  # 296 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-gl-1-0l-cvt; raw "CELERIO GL 1.0L CVT"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "XL7 1.5L":                 XL7  # 271 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/xl7-1-5l; raw "XL7 1.5L"; https://www.suzuki.co.th/en/model/xl7/specification (accessed 2026-09-12)
+  "Celerio Ga 1.0L MT":       Celerio  # 158 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-ga-1-0l-mt; raw "CELERIO GA 1.0L MT"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "Fronx 1.5L":               Fronx  # 98 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/fronx-1-5l; raw "FRONX 1.5L"; https://www.suzuki.co.th/model/fronx/ (accessed 2026-09-12)
+  "Jimny Sierra Jc":          Jimny Sierra  # 73 veh/2 rows (th, th_dlt) -> live, was candidate suzuki/jimny-sierra-jc; raw "JIMNY SIERRA JC"; https://www.suzuki.co.jp/car/jimny_sierra/ (accessed 2026-09-12)
+  "Celerio GL Up 1.0L Cvt":   Celerio  # 60 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-gl-up-1-0l-cvt; raw "CELERIO GL UP 1.0L CVT"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "Jimny 1.5L 4AT":           Jimny  # 48 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-1-5l-4at; raw "JIMNY 1.5L 4AT"; https://www.suzuki.co.th/model/jimny/ (accessed 2026-09-12)
+  "Jimny Sierra Jc 1.5L":     Jimny Sierra  # 13 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-sierra-jc-1-5l; raw "JIMNY SIERRA JC 1.5L"; https://www.suzuki.co.jp/car/jimny_sierra/ (accessed 2026-09-12)
+  "Ciaz GL Cvt":              Ciaz  # 13 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/ciaz-gl-cvt; raw "CIAZ GL CVT"; https://www.suzuki.co.th/en/model/CIAZ/specification (accessed 2026-09-12)
+  "Celerio GL 1.0L":          Celerio  # 11 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-gl-1-0l; raw "CELERIO GL 1.0L"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "Swift GL Plus 1.2L Cvt":   Swift  # 11 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/swift-gl-plus-1-2l-cvt; raw "SWIFT GL PLUS 1.2L CVT"; https://www.suzuki.co.th/en/model/swift/specification (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Jimny Alpha 5":            Jimny  # 8 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-alpha-5; raw "JIMNY ALPHA 5 DOOR"; https://www.nexaexperience.com/jimny/ (accessed 2026-09-12)
+  "Celerio Gx 1.0L":          Celerio  # 3 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-gx-1-0l; raw "CELERIO GX 1.0L"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "Swift Glx-Navi 1.2L Cvt":  Swift  # 3 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/swift-glx-navi-1-2l-cvt; raw "SWIFT GLX-Navi 1.2L CVT"; https://www.suzuki.co.th/en/model/swift/specification (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Spacia Custom":            Spacia  # 3 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/spacia-custom; raw "SPACIA CUSTOM HYBRID XS TURBO"; https://www.suzuki.co.jp/car/spacia/ (accessed 2026-10-02) [spacia_custom/ redirects here]
+  "Celerio Ga 1.0L":          Celerio  # 3 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/celerio-ga-1-0l; raw "CELERIO GA 1.0L"; https://www.suzuki.co.th/en/model/CELERIO/specification (accessed 2026-09-12)
+  "Jimny XG MT":              Jimny  # 2 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-xg-mt; raw "JIMNY XG MT 4WD"; https://www.suzuki.co.jp/car/jimny/ (accessed 2026-09-12)
+  "Jimny XC":                 Jimny  # 2 veh/2 rows (th, th_dlt) -> live, was candidate suzuki/jimny-xc; raw "JIMNY XC"; https://www.suzuki.co.jp/car/jimny/ (accessed 2026-09-12)
+  "Ciaz Glx Cvt":             Ciaz  # 2 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/ciaz-glx-cvt; raw "CIAZ GLX CVT"; https://www.suzuki.co.th/en/model/CIAZ/specification (accessed 2026-09-12)
+  "Jimny Alpha":              Jimny  # 2 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-alpha; raw "JIMNY ALPHA 4WD"; https://www.nexaexperience.com/jimny/ (accessed 2026-09-12)
+  "Ciaz GL MT":               Ciaz  # 1 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/ciaz-gl-mt; raw "CIAZ GL MT"; https://www.suzuki.co.th/en/model/CIAZ/specification (accessed 2026-09-12)
+  "Ciaz Glx 1.25L Cvt":       Ciaz  # 1 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/ciaz-glx-1-25l-cvt; raw "CIAZ GLX 1.25L CVT"; https://www.suzuki.co.th/en/model/CIAZ/specification (accessed 2026-09-12)
+  "Jimny Sierra Jl":          Jimny Sierra  # 1 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-sierra-jl; raw "JIMNY SIERRA JL 4WD"; https://www.suzuki.co.jp/car/jimny_sierra/ (accessed 2026-09-12)
+  "Jimny XC MT":              Jimny  # 1 veh/1 rows (th, th_dlt) -> live, was candidate suzuki/jimny-xc-mt; raw "JIMNY XC MT 4WD"; https://www.suzuki.co.jp/car/jimny/ (accessed 2026-09-12)
 
 SWM:
   Sixdays: Six Days                      # SWM Six Days — two words (the ISDE reference), from the tail batch
@@ -10391,6 +10905,7 @@ SYM:
   "JET14EVO125LC Abs":               JET14EVO125LC              # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   Xpro:                      X Pro                # SYM writes X Pro with a space
   "Fiddle 2":                                "Fiddle II"                    # PERMUTATION FOLD (verified batch, tier A): Roman beats Arabic ~2900:1 in-corpus.
+  Symnh: Nh                                # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "SYM NH" -> "SYM SYMNH" (Models "SYMNH T 125" 156 + "SYMNH X 125" 129 + "SYMNH R 125" 36 = 321 veh in the 2026 Q2 column, uk_dft; Q1 file had the same T/X rows, 158+120, under "SYM NH"). Status quo: keeps motorcycle/sym/nh live and stops a gb-only sym/symnh mint; the T/X split stays with symnh-t/symnh-x from the other registers
 
 Talaria:
   TL3000: Sting   # type code for the Sting: raws "TL3000, STING" (53) and "TL3000 STING" (14) pair them explicitly, and bare "STING" (42) + "STING PRO" (54) are the same line (https://talaria.bike/)
@@ -10611,6 +11126,78 @@ Toyota:
   "Supra Twin Turbo": "Supra"  # engine designation of the A80 Supra — NAMING.md §6
   "Yaris Grmn": "Yaris"  # Yaris GRMN was a 400-unit limited edition of the XP130 Yaris, not a nameplate — https://en.wikipedia.org/wiki/Toyota_Yaris
   "Yaris Ia": "Yaris"  # us_fueleconomy: model "Yaris iA" baseModel "Yaris" — https://www.fueleconomy.gov/feg/download.shtml
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "Hilux Travo":                   Hilux  # 732 veh/1 rows (th, th_dlt) -> live, was candidate toyota/hilux-travo; raw "HILUX TRAVO"; https://www.toyota.co.th/en/model/hilux_travo_prerunner_4trex (accessed 2026-10-02) [Toyota Motor Thailand]
+  "Alphard Z 2WD":                 Alphard  # 728 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-z-2wd; raw "ALPHARD Z 2WD"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12)
+  "Alphard Z 2.5L":                Alphard  # 147 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-z-2-5l; raw "ALPHARD Z 2.5L"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12)
+  "Vellfire Z Premier":            Vellfire  # 116 veh/3 rows (th, th_dlt) -> live, was candidate toyota/vellfire-z-premier; raw "VELLFIRE Z PREMIER"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12)
+  "Alphard 2.5":                   Alphard  # 94 veh/7 rows (th, th_dlt) -> live, DROPPED by junk?; raw "ALPHARD 2.5 HYBRID EXECUTIVE"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Alphard 2.5 Sc Package":        Alphard  # 91 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "ALPHARD 2.5 SC PACKAGE"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Alphard Z 2WD 2.5L":            Alphard  # 88 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-z-2wd-2-5l; raw "ALPHARD Z 2WD 2.5L"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12)
+  "Alphard 2.5 Z":                 Alphard  # 87 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "ALPHARD 2.5 Z"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12)
+  "Alphard Z":                     Alphard  # 86 veh/5 rows (th, th_dlt) -> live, was candidate toyota/alphard-z; raw "ALPHARD Z"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12)
+  "Alphard Sc Package 2.5L":       Alphard  # 70 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-sc-package-2-5l; raw "ALPHARD SC PACKAGE 2.5L"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Alphard Sc Package":            Alphard  # 53 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-sc-package; raw "ALPHARD SC PACKAGE"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "GR86 Rc":                       GR86  # 44 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-rc; raw "GR86 RC"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12)
+  "Vellfire 2.5":                  Vellfire  # 40 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "VELLFIRE 2.5 HYBRID Z PREMIER"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12)
+  "Gr Yaris RZ High Performance":  Gr Yaris  # 28 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr-yaris-rz-high-performance; raw "GR YARIS RZ HIGH PERFORMANCE"; https://toyota.jp/pages/contents/gryaris/001_p_002/pdf/gryaris_spec_202603.pdf (accessed 2026-09-12)
+  "Crown Crossover":               Crown  # 25 veh/2 rows (th, th_dlt) -> live, was candidate toyota/crown-crossover; raw "CROWN CROSSOVER RS ADVANCE"; https://toyota.jp/pages/contents/crowncrossover/001_p_001/pdf/crowncrossover_spec_202609.pdf (accessed 2026-09-12)
+  "Gr Yaris Rc":                   Gr Yaris  # 18 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr-yaris-rc; raw "GR YARIS RC"; https://toyota.jp/pages/contents/gryaris/001_p_002/pdf/gryaris_spec_202603.pdf (accessed 2026-09-12)
+  "Alphard 2.5L Sc Package":       Alphard  # 15 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-2-5l-sc-package; raw "ALPHARD 2.5L SC PACKAGE"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser ZX":               Land Cruiser  # 15 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-zx; raw "LAND CRUISER ZX"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Vellfire Z Premier 2.4L":       Vellfire  # 13 veh/1 rows (th, th_dlt) -> live, was candidate toyota/vellfire-z-premier-2-4l; raw "VELLFIRE Z PREMIER  2.4L"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12)
+  "Land Cruiser 300 ZX":           Land Cruiser  # 13 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-300-zx; raw "LAND CRUISER 300 ZX"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser 300 ZX 3.3L":      Land Cruiser  # 12 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-300-zx-3-3l; raw "LAND CRUISER 300 ZX 3.3L"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "GR86 Cup Car Basic":            GR86  # 11 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-cup-car-basic; raw "GR86 CUP CAR BASIC"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Crown Sport Z":                 Crown  # 10 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-sport-z; raw "CROWN SPORT Z"; https://toyota.jp/pages/contents/crownsport/001_p_001/pdf/crownsport_spec_202609.pdf (accessed 2026-09-12)
+  "Vellfire Z Premier E-Four":     Vellfire  # 9 veh/1 rows (th, th_dlt) -> live, was candidate toyota/vellfire-z-premier-e-four; raw "VELLFIRE Z PREMIER E-FOUR"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12)
+  "GR86 RZ 2WD":                   GR86  # 8 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-rz-2wd; raw "GR86 RZ 2WD"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12)
+  "GR86 RZ Ridge Green Limited":   GR86  # 7 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-rz-ridge-green-limited; raw "GR86 RZ RIDGE GREEN LIMITED"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Alphard Executive Lounge":      Alphard  # 7 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-executive-lounge; raw "ALPHARD EXECUTIVE LOUNGE"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12)
+  "GR86 RZ":                       GR86  # 6 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-rz; raw "GR86 RZ"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12)
+  "Voxy Sz":                       Voxy  # 6 veh/1 rows (th, th_dlt) -> live, was candidate toyota/voxy-sz; raw "VOXY SZ HYBRID 1.8L"; https://toyota.jp/pages/contents/voxy/004_p_001/pdf/voxy_spec_202609.pdf (accessed 2026-09-12)
+  "Land Cruiser Gr Sport":         Land Cruiser  # 6 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-gr-sport; raw "LAND CRUISER GR SPORT"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser Ax":               Land Cruiser  # 5 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-ax; raw "LAND CRUISER AX"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Alphard X":                     Alphard  # 5 veh/1 rows (th, th_dlt) -> live, was candidate toyota/alphard-x; raw "ALPHARD X HYBRID 2.5L"; https://toyota.jp/pages/contents/alphard/004_p_001/pdf/alphard_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Crown Crossover G Advanced":    Crown  # 4 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-crossover-g-advanced; raw "CROWN CROSSOVER G ADVANCED"; https://toyota.jp/pages/contents/crowncrossover/001_p_001/pdf/crowncrossover_spec_202609.pdf (accessed 2026-09-12)
+  "Voxy S-Z 2WD":                  Voxy  # 3 veh/1 rows (th, th_dlt) -> live, was candidate toyota/voxy-s-z-2wd; raw "VOXY S-Z 2WD"; https://toyota.jp/pages/contents/voxy/004_p_001/pdf/voxy_spec_202609.pdf (accessed 2026-09-12)
+  "Gr Yaris Rc At":                Gr Yaris  # 3 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr-yaris-rc-at; raw "GR YARIS RC AT"; https://toyota.jp/pages/contents/gryaris/001_p_002/pdf/gryaris_spec_202603.pdf (accessed 2026-09-12)
+  "Gr Corolla RZ":                 Gr Corolla  # 3 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr-corolla-rz; raw "GR COROLLA RZ"; https://toyota.jp/pages/contents/grcorolla/001_p_004/pdf/grcorolla_spec_202509.pdf (accessed 2026-09-12)
+  "Crown Z":                       Crown  # 3 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-z; raw "CROWN Z"; https://toyota.jp/pages/contents/crown/013_p_001/pdf/crown_spec_202609.pdf (accessed 2026-09-12)
+  "Crown 2.5L Sport Z":            Crown  # 3 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-2-5l-sport-z; raw "CROWN 2.5L SPORT Z HYBRID"; https://toyota.jp/pages/contents/crownsport/001_p_001/pdf/crownsport_spec_202609.pdf (accessed 2026-09-12)
+  "GR86 RZ 10TH Anniversary":      GR86  # 2 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-rz-10th-anniversary; raw "GR86 RZ 10th ANNIVERSARY"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Crown Sport Z 2.5L":            Crown  # 2 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-sport-z-2-5l; raw "CROWN SPORT Z 2.5L"; https://toyota.jp/pages/contents/crownsport/001_p_001/pdf/crownsport_spec_202609.pdf (accessed 2026-09-12)
+  "Noah X 2WD":                    Noah  # 2 veh/1 rows (th, th_dlt) -> live, was candidate toyota/noah-x-2wd; raw "NOAH X 2WD"; https://toyota.jp/pages/contents/noah/004_p_001/pdf/noah_spec_202609.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Roomy Custom GT":               Roomy  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/roomy-custom-gt; raw "ROOMY CUSTOM GT"; https://toyota.jp/pages/contents/roomy/001_p_006/pdf/roomy_spec_202608.pdf (accessed 2026-09-12)
+  "Vellfire Z G Edition":          Vellfire  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/vellfire-z-g-edition; raw "VELLFIRE Z G EDITION"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Vellfire 250":                  Vellfire  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/vellfire-250; raw "VELLFIRE 250"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Vellfire 2.5ZG Edition":        Vellfire  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/vellfire-2-5zg-edition; raw "VELLFIRE 2.5ZG EDITION"; https://toyota.jp/pages/contents/vellfire/003_p_001/pdf/vellfire_spec_202606.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser 300 Sahara 3.3L":  Land Cruiser  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-300-sahara-3-3l; raw "LAND CRUISER 300 SAHARA 3.3L"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser 300 Sahara ZX":    Land Cruiser  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-300-sahara-zx; raw "LAND CRUISER 300 SAHARA ZX"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser 300 ZX Diesel":    Land Cruiser  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-300-zx-diesel; raw "LAND CRUISER 300 ZX DIESEL"; https://toyota.jp/landcruiser300/ (accessed 2026-10-02)
+  "Land Cruiser Gr":               Land Cruiser  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-gr; raw "LAND CRUISER GR"; https://toyota.jp/landcruiser300/ (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "Land Cruiser Gx 3.5L":          Land Cruiser  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/land-cruiser-gx-3-5l; raw "LAND CRUISER GX 3.5L"; https://toyota.jp/landcruiser300/ (accessed 2026-10-02) [tier B: GX is a current LC300 grade but now 3.3L diesel only; the 3.5L petrol GX is a retired grade/engine pairing - the generation page is live]
+  "Crown Sport":                   Crown  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-sport; raw "CROWN SPORT RS"; https://toyota.jp/pages/contents/crownsport/001_p_001/pdf/crownsport_spec_202609.pdf (accessed 2026-09-12)
+  "Crown Z 2.5L":                  Crown  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/crown-z-2-5l; raw "CROWN Z 2.5L"; https://toyota.jp/pages/contents/crown/013_p_001/pdf/crown_spec_202609.pdf (accessed 2026-09-12)
+  "Gr Yaris Rc M/T":               Gr Yaris  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr-yaris-rc-m-t; raw "GR YARIS RC M/T 4WD"; https://toyota.jp/pages/contents/gryaris/001_p_002/pdf/gryaris_spec_202603.pdf (accessed 2026-09-12)
+  "GR86 RZ Greddy":                GR86  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-rz-greddy; raw "GR86 RZ GREDDY"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12) [tier B: nameplate sourced, grade belongs to a generation whose maker page is retired]
+  "GR86 Sz":                       GR86  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/gr86-sz; raw "GR86 SZ"; https://toyota.jp/pages/contents/gr86/001_p_001/pdf/gr86_spec_202608.pdf (accessed 2026-09-12)
+  "Harrier 2.5":                   Harrier  # 1 veh/1 rows (th, th_dlt) -> live, DROPPED by junk?; raw "HARRIER 2.5 HYBRID Z LEATHER"; https://toyota.jp/pages/contents/harrier/004_p_001/pdf/harrier_spec_202608.pdf (accessed 2026-09-12)
+  "Century 5.0L":                  Century  # 1 veh/1 rows (th, th_dlt) -> live, was candidate toyota/century-5-0l; raw "CENTURY 5.0L"; https://toyota.jp/pages/contents/century/003_p_001/pdf/century_spec_202512.pdf (accessed 2026-09-12)
   # ── ar_dnrpa COVERAGE SWEEP (2026-09-05, COV4). Argentina is a SINGLE-SOURCE
   # country, so its spellings never meet a second register and every trim-tailed
   # string it writes lands in build/candidates/ or dies in `junk?` — the
@@ -10644,6 +11231,31 @@ Toyota:
   "Hilux 4X2 D/C Dx 2.4":                Hilux          # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/hilux; raw "HILUX 4X2 D/C DX 2.4 TDI 6 M/T"; https://www.toyota.com.ar/modelos/hilux-srvsrx
   "Hilux 4X2 C/D Dx Pack":               Hilux          # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/hilux; raw "HILUX 4X2 C/D DX PACK ELECTRICO 2.5 TDI - H3"; https://www.toyota.com.ar/modelos/hilux-srvsrx
   "Hilux 4X2 D/C Srv Pack 2.8":          Hilux          # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/hilux; raw "HILUX 4X2 D/C SRV PACK 2.8 TDI 6 M/T"; https://www.toyota.com.ar/modelos/hilux-srvsrx
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 above (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "Corolla Cross Seg HEV 1.8 Ecvt":        Corolla Cross  # 306 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla-cross; raw "COROLLA CROSS SEG HEV 1.8 ECVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-en-argentina-la-renovacion-del-corolla-cross-nueva-imagen-exterior-mayor-tecnologia-y-seguridad (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla Cross Xei HEV 1.8 Ecvt":        Corolla Cross  # 237 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla-cross; raw "COROLLA CROSS XEI HEV 1.8 ECVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-en-argentina-la-renovacion-del-corolla-cross-nueva-imagen-exterior-mayor-tecnologia-y-seguridad (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla Cross Seg 2.0 Cvt":             Corolla Cross  # 163 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla-cross; raw "COROLLA CROSS SEG 2.0 CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-en-argentina-la-renovacion-del-corolla-cross-nueva-imagen-exterior-mayor-tecnologia-y-seguridad (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla Cross Xei 2.0 Cvt":             Corolla Cross  # 138 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla-cross; raw "COROLLA CROSS XEI 2.0 CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-en-argentina-la-renovacion-del-corolla-cross-nueva-imagen-exterior-mayor-tecnologia-y-seguridad (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla HEV 1.8 Xei Ecvt":              Corolla        # 114 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla; raw "COROLLA HEV 1.8 XEI ECVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/mayor-seguridad-y-tecnologia-asi-es-el-nuevo-corolla (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla Cross Xli 2.0 Cvt":             Corolla Cross  # 113 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla-cross; raw "COROLLA CROSS XLI 2.0 CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-en-argentina-la-renovacion-del-corolla-cross-nueva-imagen-exterior-mayor-tecnologia-y-seguridad (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla HEV 1.8 Seg Ecvt":              Corolla        # 100 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla; raw "COROLLA HEV 1.8 SEG ECVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/mayor-seguridad-y-tecnologia-asi-es-el-nuevo-corolla (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla 2.0 Xei Cvt":                   Corolla        # 94 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla; raw "COROLLA 2.0 XEI CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/mayor-seguridad-y-tecnologia-asi-es-el-nuevo-corolla (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla 2.0 Xli Cvt":                   Corolla        # 52 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla; raw "COROLLA 2.0 XLI CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/mayor-seguridad-y-tecnologia-asi-es-el-nuevo-corolla (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla 2.0 Seg Cvt":                   Corolla        # 52 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla; raw "COROLLA 2.0 SEG CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/mayor-seguridad-y-tecnologia-asi-es-el-nuevo-corolla (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Hiace L1H1 2.8":                        Hiace          # 37 veh/1 rows (ar, ar_dnrpa) -> live toyota/hiace; raw "HIACE L1H1 2.8 TDI 6AT 3A"; https://legado.toyota.com.ar/modelos/hiace/2022/hiace-furgon (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla Gr-Sport 2.0 Cvt":              Corolla        # 20 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla; raw "COROLLA GR-SPORT 2.0 CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-gazoo-racing-presenta-el-nuevo-corolla-gr-s-diseno-renovado-mejoras-de-performance-y-mas-tecnologia (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Hiace Furgon L2H2 2.8":                 Hiace          # 17 veh/1 rows (ar, ar_dnrpa) -> live toyota/hiace; raw "HIACE FURGON L2H2 2.8 TDI 6AT 3A"; https://legado.toyota.com.ar/modelos/hiace/2022/hiace-furgon (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Corolla Cross Gr-Sport 2.0 Cvt":        Corolla Cross  # 16 veh/1 rows (ar, ar_dnrpa) -> live toyota/corolla-cross; raw "COROLLA CROSS GR-SPORT 2.0 CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-en-argentina-la-renovacion-del-corolla-cross-nueva-imagen-exterior-mayor-tecnologia-y-seguridad (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Hiace Wagon 2.8":                       Hiace          # 14 veh/1 rows (ar, ar_dnrpa) -> live toyota/hiace; raw "HIACE WAGON 2.8 TDI 6AT 10A"; https://www.toyota.com.ar/toyota-inicio-la-produccion-del-utilitario-hiace-en-argentina (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "BZ4X Bev":                              bZ4X           # 9 veh/1 rows (ar, ar_dnrpa) -> live toyota/bz4x; raw "BZ4X BEV 4WD"; https://www.toyota.com.ar/modelos/bz4x (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "RAV4 HEV 2.5":                          RAV4           # 6 veh/1 rows (ar, ar_dnrpa) -> live toyota/rav4; raw "RAV4 HEV 2.5 AWD LIMITED CVT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presento-la-nueva-generacion-de-rav4-con-motorizacion-hibrida-e-hibrida-enchufable-mas-aventura-para-el-suv-mas-famoso-del-mundo (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Gr Yaris At":                           Gr Yaris       # 3 veh/1 rows (ar, ar_dnrpa) -> live toyota/gr-yaris; raw "GR YARIS AT"; https://www.toyota.com.ar/modelos/gr-yaris (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Hilux 4X2 Cabina Doble Dx 2.5 Td":      Hilux          # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/hilux; raw "HILUX 4X2 CABINA DOBLE DX 2.5 TD"; https://landings.toyota.com.ar/fichas-tecnicas/hilux-dxsr/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Crown HEV 2.4T":                        Crown          # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/crown; raw "CROWN HEV 2.4T 4WD 6AT"; https://www.toyota.com.ar/descubri/newsroom/noticias-de-argentina/toyota-presenta-el-crown-en-argentina-un-nuevo-concepto-en-performance-diseno-y-tecnologia (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Land Cruiser Prado 2.7 A/T":            Land Cruiser Prado # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/land-cruiser-prado; raw "LAND CRUISER PRADO 2.7 A/T"; https://www.toyota.com.ar/descubri/newsroom/hub-de-recursos/modelos/land-cruiser-prado-media-kit (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "Tacoma Iforce Max Trailhunter":         Tacoma         # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/tacoma; raw "TACOMA IFORCE MAX TRAILHUNTER"; https://pressroom.toyota.com/the-2026-toyota-tacoma-adventure-awaits/ (accessed 2026-10-02) [maker-US; opened directly]
+  "Celica GT4 ST165":                      Celica         # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/celica; raw "CELICA GT4 ST165"; https://www.toyota-global.com/company/history_of_toyota/75years/vehicle_lineage/car/id60010071/index.html (accessed 2026-10-02) [maker-global; opened directly]
+  "RAV4 4X2 A/T":                          RAV4           # 1 veh/1 rows (ar, ar_dnrpa) -> live toyota/rav4; raw "RAV4 4X2 A/T"; https://www.toyota.com.ar/descubri/newsroom/hub-de-recursos/modelos/rav4-hub-de-recursos (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Trabant:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -11607,6 +12219,18 @@ Volkswagen:
   "Taos Highline 250":                   Taos           # 2 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/taos; raw "TAOS HIGHLINE 250 TSI AT"; https://www.volkswagen.com.ar/es/modelos/nuevo-taos.html
   "Taos Comfortline 250":                Taos           # 2 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/taos; raw "TAOS COMFORTLINE 250 TSI AT"; https://www.volkswagen.com.ar/es/modelos/nuevo-taos.html
   "Taos Highline Bitono 250TSI At":      Taos           # 1 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/taos; raw "TAOS HIGHLINE BITONO 250TSI AT"; https://www.volkswagen.com.ar/es/modelos/nuevo-taos.html
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "T-Cross Comfortline 200TSI At G1":      T-Cross  # 160 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS COMFORTLINE 200TSI AT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "T-Cross Trendline 200TSI At G1":        T-Cross  # 82 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS TRENDLINE 200TSI AT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Vento Gli 350TSI Dsg G2":               Vento  # 61 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/vento; raw "VENTO GLI 350TSI DSG G2"; https://www.volkswagen.com.ar/es/modelos/vento.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "T-Cross Highline 200TSI At G1":         T-Cross  # 56 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS HIGHLINE 200TSI AT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "T-Cross Sense 170TSI MT G1":            T-Cross  # 24 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS SENSE 170TSI MT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "T-Cross Highline Bitono 200TSI At G1":  T-Cross  # 21 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS HIGHLINE BITONO 200TSI AT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "T-Cross Trendline 170TSI MT G1":        T-Cross  # 18 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS TRENDLINE 170TSI MT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "T-Cross Extreme 200TSI At G1":          T-Cross  # 5 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T-CROSS EXTREME 200TSI AT G1"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Taos Comfortline 250TSI At":            Taos  # 4 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/taos; raw "TAOS COMFORTLINE 250TSI AT"; https://www.volkswagen.com.ar/es/modelos/nuevo-taos.html (accessed 2026-10-02) [manufacturer; opened directly]
+  "T Cross 200":                           T-Cross  # 1 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/t-cross; raw "T CROSS 200 TSI CONFORT"; https://www.volkswagen.com.ar/idhub/content/dam/onehub_pkw/importers/ar/modelos/t-cross/2026/Flyer_TCross_MY26.pdf (accessed 2026-10-02) [manufacturer spec sheet (PDF); opened directly]
+  "Tiguan Life 250TSI Dsg":                Tiguan  # 1 veh/1 rows (ar, ar_dnrpa) -> live volkswagen/tiguan; raw "TIGUAN LIFE 250TSI DSG"; https://www.volkswagen.com.ar/es/modelos/tiguan.html (accessed 2026-10-02) [manufacturer; opened directly]
 
 Volvo:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -12081,6 +12705,10 @@ Volvo:
   Vvn:                               null  # 3-letter registry stub, no resolvable nameplate
 
   "New C70":                       C70                    # New-guard pre-positioning (owner dispatch): pipeline#111 rescued `NEW <x>` rows from junk?, and this make already publishes the stripped nameplate — without this key the next build MINTS A DUPLICATE. Test per data#151: same make, live record at the stripped name, same registers. — candidate, dup of car/volvo/c70 (native "New C70 Convertible")
+  # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
+  "EX30 Plus E60":   EX30  # 4 veh/1 rows (ar, ar_dnrpa) -> live volvo/ex30; raw "EX30 PLUS E60"; https://www.volvocars.com/ar/cars/ex30-electric/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "EX30 Core E40":   EX30  # 4 veh/1 rows (ar, ar_dnrpa) -> live volvo/ex30; raw "EX30 CORE E40"; https://www.volvocars.com/ar/cars/ex30-electric/ (accessed 2026-10-02) [manufacturer; verified through the search index]
+  "EX30 Ultra E60":  EX30  # 2 veh/1 rows (ar, ar_dnrpa) -> live volvo/ex30; raw "EX30 ULTRA E60"; https://www.volvocars.com/ar/cars/ex30-electric/ (accessed 2026-10-02) [manufacturer; verified through the search index]
 
 Wartburg:
   "353W": "353 W"                             # spelling variant of "353 W" — same nameplate, different spacing/casing; merging keeps one id and one set of evidence
@@ -12129,6 +12757,29 @@ Wolseley:
 # `renames&.key?(nameplate)`), not the raw register strings — collapse_variant
 # runs first. ──
   Saloon: null                            # body class in the model column: saloon — 4 v, nz_nzta MODEL ×3, nl_rdw handelsbenaming ×1; raw "SALOON"×4. Wolseley keeps 9 live records (hornet, hornet-special, six, wasp…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
+
+Wrightbus:
+  Wrightbus: Nb                            # DVLA VEH0120 2026 Q2 RE-SPELL: GenModel "WRIGHTBUS NB4L" -> bare "WRIGHTBUS" (Model "NEW BUS FOR LONDON" unchanged, 996 veh in the 2026 Q2 column and in Q1, uk_dft); it is the ONLY Model under the bare GenModel. NB4L = New Bus for London (https://en.wikipedia.org/wiki/New_Routemaster). Keeps bus/wrightbus/nb live; stops a make-in-model bus/wrightbus/wrightbus mint. Re-measure if DVLA files another Wrightbus Model under the bare GenModel
+
+XPeng:
+  # ── th_dlt COVERAGE SWEEP (2026-09-12, COV4). Thailand is a SINGLE-SOURCE
+  # country, so a grade-tailed spelling never meets a second register: it lands
+  # in build/candidates/ under its own long slug or dies in `junk?`, and the
+  # catalog is simply missing `th` on a nameplate it already publishes.
+  # Method: a per-row replay of `classify` over the whole th_dlt corpus
+  # recording the string ACTUALLY PROBED at the `@o.model_renames[make]`
+  # consultation site (after family_nameplate and both collapse_variant passes),
+  # so every key below is the exact string the pipeline looks up and none can be
+  # inert. Renames are consulted BEFORE `junk?` (normalizer.rb ORDER FIX), which
+  # is why the `DROPPED` rows in this batch are rescuable at all.
+  # SAFETY: every value below is the name of a record ALREADY PUBLISHED in this
+  # catalog, spelled as that record spells it — this batch mints no id, creates
+  # no new spelling and deletes nothing. It only adds `th` availability to
+  # nameplates that already exist.
+  # Verified (I-11): 47-key mass-weighted sample re-derived 2026-10-02 — 32 confirmed, 15 citation fixes applied, 0 refuted; build-measured th +14,845 (incl. 236 van/toyota/hilux via the kind-blind Hilux Travo key), id diff empty.
+  "X9 Long Range":      X9  # 973 veh/3 rows (th, th_dlt) -> live, was candidate xpeng/x9-long-range; raw "X9 LONG RANGE"; https://xpeng.co.th/x9/ (accessed 2026-10-02) [single X9 model page; the Long/Standard Range tail is an unsourced battery descriptor - identity rests on X9 being XPeng's only X9]
+  "X9 Standard Range":  X9  # 275 veh/1 rows (th, th_dlt) -> live, was candidate xpeng/x9-standard-range; raw "X9 STANDARD RANGE"; https://xpeng.co.th/x9/ (accessed 2026-10-02) [tail unsourced; as X9 Long Range]
+  "G6 Rwd Long Range":  G6  # 263 veh/1 rows (th, th_dlt) -> live, was candidate xpeng/g6-rwd-long-range; raw "G6 RWD Long Range"; https://car.ecosticker.go.th/detail/6ec43a69-a117-42e0-8ff6-f888228f04a5 (accessed 2026-10-02) [ECO #026630 XPENG "G6 RWD Long Range"]
 
 Yamaha:
   # ── 2W head pass, 2026-08-21 · A PIN SET ENUMERATED BY HAND GOES STALE ────
