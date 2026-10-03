@@ -2,6 +2,170 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.10.0] - 2026-10-03 — the UK re-file release (and Norway, attach-only)
+
+**14,997 models across 925 makes in 15 countries (14,886 → 14,997, +111).** +218 ids added and −107 retired, **every retirement with a migration path**: 101 `former_ids` aliases and 6 `removals.yml` entries; the dist-diff ORPHAN section is empty in all six kinds (`RELEASE-DIFF-2026.10.0.md`).
+
+| kind | 2026.09.1 | 2026.10.0 | Δ |
+|---|---:|---:|---:|
+| car | 5,455 | 5,510 | +55 |
+| van | 720 | 732 | +12 |
+| motorcycle | 6,015 | 6,016 | +1 |
+| moped | 1,370 | 1,393 | +23 |
+| truck | 923 | 940 | +17 |
+| bus | 403 | 406 | +3 |
+
+**Why it took three weeks.** The weekly build was red from 2026-09-21. The es_dgt 3-month window rolled, taking the last Spanish evidence of `motorcycle/motron-motorrad/revolver` and an `es` spotcheck pin on the 1980s Opel Kadett (#340, fixed in #341). Then, on 2026-10-02, the UK DfT republished VEH0120 with **2026 Q2**, and DVLA re-filed and re-spelled GenModels in the same release. That broke three pipeline tests (pipeline#203) and about 69 build gates (pipeline#215 + #341). Behind the gates it also **silently** stripped gb from 365 published ids. Two more passes restored the head (pipeline#220 `GENMODEL_REFILE` + #352; pipeline#225 CFMOTO 700). Every pass had an independent I-11 verifier.
+
+### UK 2026-Q2 re-file — disclosed, because no gate sees it
+- **227 published ids lost `gb`** (53,189 gb vehicles in the 2026-Q1 column; full list with decile and mass in `RELEASE-DIFF-2026.10.0.md`). None is decile 1–2 and none has ≥1,000 gb vehicles, **except three range/configuration labels**, which are a routing *improvement*: `motorcycle/bmw/r-series` (6,773; its R nineT / R 12 / R 18 rows now reach the live `r-ninet` 4,811 / `r12` 1,129 / `r18` 960), `truck/daf/ftg` (1,917) and `truck/daf/fad` (1,237) (DAF wheel-configuration prefixes; their rows now reach `daf/xf` 1,060 and `daf/cf` 2,077). Granted as a gate exception by the coordinator.
+- Pass 2 restored gb on 72 of the 75 ids in scope (decile 1–2 or ≥1,000 gb): 314,746 gb vehicles, e.g. Suzuki SX4, Ford Mustang Mach-E, BMW R/S/F series, Triumph Street/Speed Triple, KTM Dukes. BYD Seal / Seal U / Seal 6 / Sealion 5 / Sealion 7 now each get their own British rows. Before, 50,601 sat on the bucket id `car/byd/seal-design-ev`, now retired to `car/byd/seal`.
+- **Two uk_dft-only ids ship as known-imprecise**, with the fix named (see DEBT): `motorcycle/yamasaki/ty125-4e` (309; DVLA pools TY 125-4E 180 + TY 50 Q-2E 129, two models; needs a G-1 split) and `truck/alexander-dennis/ecollect` (150; the car is the Dennis Eagle eCollect, https://www.dennis-eagle.co.uk/products/ecollect/; `aliases.yml:169` maps make DENNIS → Alexander Dennis).
+- **Four kind migrations, not new nameplates:** `ajs/modena-50`, `lexmoto/aspire-50`, `lexmoto/fmr50` and `lexmoto/scout-49` move motorcycle → moped. The re-filed GenModel no longer hides their ≤50 cc. Each old motorcycle id aliases to its moped id. Citations: aspire-50, manufacturer page https://www.lexmoto.com/models/TD50Q-2 ("Aspire 50 E4", same type code, accessed 2026-10-03). The other three rest on register type-code evidence (VEH0120 Model strings "MODENA 50", "FMR 50 WY 50 QT-58", "SCOUT 49"), **registry tier**: the AJS page exists only as an archived capture that could not be read (HTTP 429), and Lexmoto now sells the WY50QT-58 as the "Pulse Lightspeed 2 50".
+- Two uk_dft-only new ids carry manufacturer citations: `lexmoto/xdv125` and `lexmoto/ls-z125` (lexmoto.com model pages).
+
+### Norway (pipeline#199 + #338): the 15th country, attach-only
+Statens vegvesen periodic-inspection (PKK) data, CC BY 4.0, 2023-01…2025-12. **Attach-only: 0 ids minted.** 2,899 published ids gain `no`. Licence gate 14/14 pins.
+
+### Curation and coverage carried by this release
+th_dlt coverage sweeps (#347, #343), ar_dnrpa sweep 2 (#345), auto-union → audi (#344), sub-brands under their own marques per NAMING §8 (#346: Jaecoo, Haval, Omoda …), Omoda 5 / E5 as two nameplates (#351, ruling 5), Vespa co-move 3 (#307), 2W head casing pins (#315), Honda Giorno D-10 (#304), Egypt plates (#348), plus everything merged after 2026.09.1 (#311, #318, #320 …). Pipeline: 30+ enrichment batches (private layer), the hysteresis sidecar (#189), lint_enrich citation counter (#195), coverage tools (#197).
+
+Cut by CI run 37088690540: `validate: ALL GATES GREEN`, `license gate: 14/14 pins verified` (+1 declared absent, asserted not ingested), 7 release assets, archive boundary holds, CDN serving 2026.10.0, HuggingFace mirror ran. Windows: es_dgt 2026-06…08, my_jpj 2025-01…2026-08, uk_dft 2026-Q2, no_svv_pkk 2023-01…2025-12. **`plus-2026.10.0`** is cut by hand per RELEASE-RUNBOOK §5.5, because CI still has no `PIPELINE_RELEASE_TOKEN`. Its status is recorded in the plus release notes.
+
+## [2026.09.1] - 2026-09-12 — the id-contract release
+
+**14,886 models across 918 makes (14,856 → 14,886, +30).** Small by volume and
+large by correctness. The 2026-09-07 weekly validate failed on **202** unique
+gate failures, almost all of them id-contract LIVENESS: `former_ids` alias
+targets that the fresh fetch had brought back to life, and *an alias may never
+name a live id*. The fix was structural rather than curatorial — publication
+hysteresis now reads each id's entry class from a sidecar the release cannot
+destroy, so an edge id's grace no longer depends on a file the build overwrites.
+That took the gate set **202 → 0**, and this release is the first build to pass
+on that path.
+
+| kind | 2026.09.0 | 2026.09.1 | Δ |
+|---|---:|---:|---:|
+| car | 5,438 | 5,455 | +17 |
+| van | 718 | 720 | +2 |
+| motorcycle | 6,011 | 6,015 | +4 |
+| moped | 1,365 | 1,370 | +5 |
+| truck | 921 | 923 | +2 |
+| bus | 403 | 403 | ±0 |
+
+**Nothing was retired.** +30 ids added, **0 removed**, so the dist-diff section
+that must always be empty — ids removed with no migration path — is empty for
+the trivial reason as well as the gated one. Hysteresis holds 210 edge ids
+through upstream count churn (car 71 · motorcycle 76 · bus 17 · truck 17 ·
+moped 16 · van 13).
+
+Decile-1 movements, the records consumers actually look at: `car/bmw/5-series`,
+`car/hyundai/tucson`, `car/toyota/yaris` and `motorcycle/vespa/sprint-tech-150`
+entered decile 1; `motorcycle/aprilia/sm` and `moped/la-souris/trendy-retro`
+left it and remain published. One display rename on a surviving id:
+`car/changan/e-star` "E Star" → "E-Star".
+
+Cut by CI run 34697443600 — `validate: ALL GATES GREEN`, `license gate: 13/13
+pins verified` (+1 declared absent and asserted not ingested), all seven release
+assets attached. **`plus-2026.09.1` was not cut:** the `PIPELINE_RELEASE_TOKEN`
+secret is absent, so the private layer stays on its previous version until it is
+cut by hand (RELEASE-RUNBOOK.md §5.5).
+
+### A lint that was lying, and two PRs that would have shipped a live id
+
+Worth recording because the failure mode generalises. `scripts/lint_curation.rb`
+validated rename-block headings against `catalog/*/makes.json` display names.
+The pipeline does not key renames that way — it keys them by the **post-alias
+display string of the row being classified**, which is a function of the raw
+register spelling. Two raw spellings that slugify the same land on one make id
+and produce two live headings: raw `AUTO UNION` → `"Auto Union"` (which
+`renames.yml` keys) and raw `AUTO-UNION` → `"Auto-Union"` (which the catalog
+shows). The lint called the first one inert; it is not.
+
+Both attempted fixes edited the data instead of the lint, and `renames.yml` is a
+**build input**: each took the build from 202 gate failures to 203 by stopping a
+load-bearing fold and minting `car/auto-union/1000s` live while `former_ids.yml`
+still aliased it. The check now ports the pipeline's own reachability predicate,
+and the catalog — a build output that lags the override layer — is no longer
+treated as the authority on which keys the pipeline accepts.
+
+## [2026.09.0] - 2026-09-05 — the fresh-data release
+
+**14,856 models across 916 makes (13,809 → 14,856, +1,047). The first fresh
+upstream data since 2026-08-02**, and the largest single release the catalogue
+has had. 2026.08.2 was deliberately frozen — a correctness release that held the
+data axis still so the identity axis could be measured — so a month of register
+movement lands here all at once: +1,097 ids added, 50 retired, every retirement
+carrying a migration path (93 new `former_ids` aliases, 6 removal manifests).
+
+| kind | 2026.08.2 | 2026.09.0 | Δ |
+|---|---:|---:|---:|
+| car | 4,895 | 5,438 | +543 |
+| van | 618 | 718 | +100 |
+| motorcycle | 5,744 | 6,011 | +267 |
+| moped | 1,306 | 1,365 | +59 |
+| truck | 867 | 921 | +54 |
+| bus | 379 | 403 | +24 |
+
+Cut by CI run 33996838981 with all eight gates green and all seven release
+assets attached.
+
+### The plate corpus lands — 4 jurisdictions to 124
+
+The registration-plate programme moved from a 4-file sketch to **124
+jurisdiction files carrying 1,381 plate series**, plus **253 open-tier SVG
+assets** with a normative licence ledger. Europe (L1/L2 waves), the United
+States state by state, and an Asia/Americas/Oceania/Africa wave: Austria's
+closed Anlage 5d district table, Poland's 380-row powiat annex, Germany re-dated
+to its BGBl instruments, Spain re-dated to Decreto 2046/1971, Florida re-dated
+to the Laws of Florida, South Korea's hangul use-syllable and authority-mark
+decode tables. Two spec decisions came out of it: a pattern escape (`\9`, `\L`)
+for plates that *print* a 9 or an L, and per-jurisdiction `serial_alphabet`
+declared in exact codepoints. Several findings were settled **photographically**
+rather than by inference — the Portuguese 2005-window separator is an embossed
+square dot, and the 2020 national format genuinely has no separator.
+
+### Dispositions: the id contract held under a month of drift
+
+Every retirement in this release names its evidence. Kawasaki §A folded 41 ids
+and *gained* 17 country claims while losing nothing (#297); the Vespa/Piaggio
+co-move closed the last two gates holding main red (#305); `lancia/coupe` folded
+onto `lancia/beta` as the third adjudicated body-word case; three published cars
+whose evidence expired were disposed one fold and two demotions (#312), and the
+Mercedes `cabriolet` rescue was **retracted after measurement refuted both
+routes** rather than trimmed. Five alias resurrections turned out to share one
+mechanism — a separator variant that slugifies to an existing id but is a
+different rename key (#310). Seven type approvals expired out of Luxembourg's
+rolling three-month window and were signed off with the measurement, not waved
+through (#297, #325); those sign-offs are deliberately **not** precedent.
+
+### Powertrains, evidence tiers, and what is deliberately absent
+
+Powertrain coverage ships for all six kinds (car 76.8%, truck 88.8%, van 76.6%,
+bus 71.2%, motorcycle 59.5%, moped 51.2%). Unmapped upstream fuel codes are
+reported **loudly and left unmapped** rather than guessed — Traficom's
+`kayttovoima` 13/38/40/48 (26,589 rows) produce no powertrain entry until the
+koodisto is fetched and pinned, and Ukraine's 42,027 "X or electric" rows are
+DECLINED by owner ruling rather than minted as a coarse `hybrid` umbrella.
+Bentley's enrichment was re-sourced from Wikipedia to primaries (605 → 586
+fields) under the evidence-tier rule.
+
+### CI that can report its own failures
+
+Three fixes, each for a silence rather than an error. The DuckDB CLI is pinned
+to a release asset with a checksum — the install script 404'd on its own tarball
+and **every gate step was skipped for two consecutive weekly runs**, so main's
+real state was unknown for two weeks while the failure handler pointed at "the
+gate that tripped" (#322). A failing scheduled build now uploads its artifacts:
+the upload condition was narrower than its own step name, so the one case where
+you most need `build/out` produced nothing. And the build-failure handler could
+not file its own issue — three `gh` calls, no `--repo`.
+
+**Known at publication:** the private `plus-2026.09.0` layer was NOT cut. The
+release step reported success and produced nothing, because
+`PIPELINE_RELEASE_TOKEN` is absent and the step exits 0 with a warning. Paid
+consumers stay on `plus-2026.08.1` until it is cut by hand.
+
 ## [2026.08.2] - 2026-08-02 — the false-green release
 
 **13,809 models across 859 makes (14,069 → 13,809, −260). The count fell and no

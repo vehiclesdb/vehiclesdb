@@ -133,6 +133,15 @@ end
 
 # ── classify every record ────────────────────────────────────────────────────
 suspects = []
+# ATTACH-ONLY sources (pipeline Source#attach_only?) enrich records that publish
+# without them and are never corroboration — not in the build, and not here.
+# A `min_sources`/`min_countries` allowlist entry that a record satisfies only
+# because an attach-only register attached to it would turn that register into
+# the very corroboration the build refuses it (measured 2026-10-02: attaching
+# no_svv_pkk moved 19 suspects to "legit" and 7 out of "debt" with no record or
+# name changing). Keep this list in step with the pipeline's attach_only? sources.
+ATTACH_ONLY = { "no_svv_pkk" => "no" }.freeze
+
 models.each do |m|
   make_name = makes[[m["_kind"], m["make_id"]]]
   next if OWNER && owner_of[m["make_id"]] != OWNER
@@ -142,8 +151,9 @@ models.each do |m|
     suspects << { id: m["id"], kind: m["_kind"], make_id: m["make_id"], name: m["name"],
                   category: category, reason: reason,
                   owner: owner_of[m["make_id"]] || "?",
-                  countries: (m["availability"] || []).map { |a| a["country"] }.uniq,
-                  sources: m["sources"] || [] }
+                  countries: (m["availability"] || []).reject { |a| ATTACH_ONLY.key?(a["source"]) }
+                                                       .map { |a| a["country"] }.uniq,
+                  sources: (m["sources"] || []) - ATTACH_ONLY.keys }
     break
   end
 end
