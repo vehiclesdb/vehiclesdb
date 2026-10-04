@@ -336,7 +336,6 @@ propulsion coverage would require RDW to publish a combined view.
 | Source | Blocker |
 |---|---|
 | 🇨🇭 CH ASTRA national per-vehicle file (`opendata.astra.admin.ch/ivzod/`, BEST.txt) | **UNRESOLVED (licence)** — 'Lizenz', 'licence', 'Creative Commons', 'CC BY', 'CC0' occur ZERO times on every ASTRA page and in its overview PDF ('frei verfügbar (Open Data)' is not a licence). Federal BFS tables are make-only. Switzerland ships one canton via `ch_tg` (presence-only) meanwhile. |
-| 🇨🇭 CH ASTRA / BFS (federal) | **not a licence problem — a granularity one.** Measured 2026-09-05: `Fahrzeugmodell` returns 0 datasets; the federal vehicle statistics stop at `…nach Marke` (make), one level above where our schema starts, so they cannot produce a `Row`. The licence is fine (`#terms_by`, attribution-only). The live Swiss route is **cantonal**, not federal — see below. (The portal also 403s default curl and needs a browser UA; that is a User-Agent block, not geo-gating.) |
 | 🇧🇪 BE FPS Mobility | yearly XLS only, no license statement on the file — needs clearance |
 | 🇨🇿 CZ vehicle register | bulk dump paused upstream; privacy review pending |
 | 🇵🇱 PL CEPiK | bulk exports frozen upstream |
