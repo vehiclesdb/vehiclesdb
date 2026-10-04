@@ -130,7 +130,10 @@ propulsion coverage would require RDW to publish a combined view.
   - **No other canton publishes an equivalent**, and ASTRA's national
     per-vehicle file (the canton's own upstream) carries no licence text
     anywhere — UNRESOLVED, not ingested.
-  - Measured build: CH_BUILD_NUMBERS
+  - Measured build (S4W/FINISH 2026-10-04, offline, control = the AU pair):
+    ids +0/−0 in every kind; 3,876 ids gain `ch` availability (car 1,570 ·
+    van 201 · truck 143 · bus 37 · motorcycle 1,805 · moped 120); pairs lost 0,
+    renamed 0, orphans 0; FAIL set identical; licence gate 16/16.
 - **no_svv_pkk** — **this is an INSPECTION register, not a fleet, and the
   distinction is not pedantic.** Norway defers a vehicle's first PKK to its
   *fourth year* and then inspects light vehicles every second year (heavy
