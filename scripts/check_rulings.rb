@@ -18,6 +18,13 @@
 # learn to wave through. It exits non-zero whenever it finds anything, so the
 # applier has to read the hits and say why each one is satisfied.
 #
+# LIMITATION, learned 2026-08-21: cluster tags are only meaningful WITHIN a
+# dossier. Grepping `D-2` for the honda window returns the OPEL dossier`s D-2
+# ruling, which is a different question entirely. The tool cannot disambiguate
+# and should not pretend to — it is one more reason the output must be READ
+# rather than counted. When a hit looks unrelated, check which dossier the
+# ruling turn is about before dismissing it, and say so in the PR either way.
+#
 # USAGE
 #   ruby scripts/check_rulings.rb A-1 A-21 D-3          # explicit tags
 #   ruby scripts/check_rulings.rb --from-diff           # tags from the working diff
@@ -52,7 +59,11 @@ def tags_from_diff(base)
       # codes leak in as tags: a first pass matched ZX-6/ZX-9/ZX-10 out of the
       # very comments it was reading. Harmless here — they hit nothing — but a
       # reporter that cries wolf is one people stop reading.
-      .flat_map { |l| l[/#(.*)$/, 1].to_s.scan(/(?<![A-Za-z0-9-])([A-GS]-\d{1,2})(?![0-9-])/) }
+      # Tag shapes in use: A-21, C-6, D-10, S-2 — and the honda/yamaha dossiers
+      # also use A-2W-1 / A-4W-16, a kind segment in the middle. The first
+      # version of this missed every one of those, which would have made the
+      # tool silently useless on exactly the block it was written for.
+      .flat_map { |l| l[/#(.*)$/, 1].to_s.scan(/(?<![A-Za-z0-9-])([A-GS](?:-\dW)?-\d{1,2})(?![0-9-])/) }
       .flatten.to_set.to_a.sort
 end
 

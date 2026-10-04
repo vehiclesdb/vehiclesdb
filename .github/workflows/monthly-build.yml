@@ -95,10 +95,28 @@ jobs:
         with:
           ruby-version: "3.4"
 
+      # PINNED to a GitHub release asset, not the install script. The script
+      # route (`curl -sL https://install.duckdb.org | sh`) 404'd on its internal
+      # tarball on 2026-08-24 and 2026-08-31: `tar` aborted, this step failed,
+      # and every step after it — cache restore, tests, claims lint, THE BUILD —
+      # was SKIPPED for two consecutive weekly runs. The failure handler then
+      # filed issue #321 pointing at "the gate that tripped", and there was no
+      # gate in the log at all: main's real gate state was unknown for two weeks.
+      # A pinned URL + checksum either serves the same bytes or fails loudly
+      # HERE, with the cause in this step's own output. Bump the version and the
+      # hash together; `sha256sum -c` refuses a mismatch.
       - name: Install duckdb (parquet emitter)
         run: |
-          curl -sL https://install.duckdb.org | sh
-          echo "$HOME/.duckdb/cli/latest" >> "$GITHUB_PATH"
+          set -euo pipefail
+          DUCKDB_VERSION=v1.5.5
+          DUCKDB_SHA256=08c0ca117111fcede14239d0093792352befdc174218c344d232c13279643d05
+          curl -fsSL --retry 3 -o /tmp/duckdb_cli.zip \
+            "https://github.com/duckdb/duckdb/releases/download/${DUCKDB_VERSION}/duckdb_cli-linux-amd64.zip"
+          echo "${DUCKDB_SHA256}  /tmp/duckdb_cli.zip" | sha256sum -c -
+          mkdir -p "$HOME/.duckdb/bin"
+          unzip -oq /tmp/duckdb_cli.zip -d "$HOME/.duckdb/bin"
+          echo "$HOME/.duckdb/bin" >> "$GITHUB_PATH"
+          "$HOME/.duckdb/bin/duckdb" --version
 
       - name: Restore source cache
         uses: actions/cache@v4
@@ -244,8 +262,17 @@ jobs:
           set -euo pipefail
           V="${VERSION#v}"
           if [ -z "${GH_TOKEN:-}" ]; then
-            echo "::warning::PIPELINE_RELEASE_TOKEN not set — plus-${V} NOT cut. The paid feed will be stranded on the previous version until it is cut by hand (RELEASE-RUNBOOK.md §5.5). Mint a fine-grained PAT with Contents:Write on vehiclesdb/vehiclesdb-pipeline."
-            exit 0
+            # FAIL LOUDLY (2026-10-03). This used to warn and exit 0, so every CI
+            # publish since 2026-08 went GREEN while the paid feed stayed stranded
+            # (plus-2026.08.1 was still the latest on 2026-10-02). The public
+            # release above has already been created and tagged; failing here
+            # does not undo it, and the `channels` job below runs on `always()`
+            # so the public fan-out (HF / jsDelivr / Zenodo verify) is unaffected.
+            # What it changes: the run is RED, which is the honest state until a
+            # human cuts plus-${V} by hand from the same session (RUNBOOK §5.5) or
+            # the owner mints the token.
+            echo "::error::PIPELINE_RELEASE_TOKEN not set — plus-${V} NOT cut. The public release v${V} IS published; the private paid feed is now stranded on the previous plus-* until it is cut by hand (RELEASE-RUNBOOK.md §5.5). Owner action: mint a fine-grained PAT with Contents:Write on vehiclesdb/vehiclesdb-pipeline as secret PIPELINE_RELEASE_TOKEN."
+            exit 1
           fi
           OUT=pipeline-repo/build/out-private
           [ -d "$OUT" ] || { echo "::error::$OUT missing — the build did not emit the private layer"; exit 1; }
@@ -308,7 +335,10 @@ jobs:
   # runs and no-data-change runs skip this entirely.
   channels:
     needs: build
-    if: needs.build.outputs.released_tag != ''
+    # always(): the build job can now end RED after a successful public release
+    # (the plus step fails loudly without its token). The fan-out keys on
+    # released_tag, which is only set once the public release exists.
+    if: always() && needs.build.outputs.released_tag != ''
     uses: ./.github/workflows/release-channels.yml
     with:
       tag: ${{ needs.build.outputs.released_tag }}
