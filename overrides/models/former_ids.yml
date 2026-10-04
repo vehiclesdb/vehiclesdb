@@ -106,7 +106,7 @@
 "moped/haibike/sduro-trekking-s9-0herren":     "moped/haibike/sduro-trekking-s9-0-herren"     # Sduro Trekking S9.0HERREN -> Sduro Trekking S9.0 Herren  [fi,nl]
 "moped/honda/benly50":                         "moped/honda/benly-50"                         # BENLY50 -> Benly 50  [nl,ua]
 "moped/honda/c50deluxe":                       "moped/honda/c50-deluxe"                       # C50DELUXE -> C50 Deluxe  [nl,nz]
-"moped/honda/cl50benley":                      "moped/honda/cl50-benley"                      # CL50BENLEY -> CL50 Benley  [nl,nz]
+"moped/honda/cl50benley":                      "moped/honda/cl50-benly"                      # CL50BENLEY -> CL50 Benley  [nl,nz] — chain flattened
 "moped/honda/cl50benly":                       "moped/honda/cl50-benly"                       # CL50BENLY -> CL50 Benly  [nl,nz]
 "moped/honda/magna50":                         "moped/honda/magna-50"                         # MAGNA50 -> Magna 50  [nl,nz]
 "moped/honda/tact50":                          "moped/honda/tact-50"                          # TACT50 -> Tact 50  [nz,ua]
@@ -199,7 +199,7 @@
 "motorcycle/ajs/model20":                      "motorcycle/ajs/model-20"                      # MODEL20 -> Model 20  [nl,nz]
 "motorcycle/ajs/model31":                      "motorcycle/ajs/model-31"                      # MODEL31 -> Model 31  [nl,nz]
 "motorcycle/ajs/modena125":                    "motorcycle/ajs/modena-125"                    # MODENA125 -> Modena 125  [gb]
-"motorcycle/ajs/modena50":                     "motorcycle/ajs/modena-50"                     # MODENA50 -> Modena 50  [gb]
+"motorcycle/ajs/modena50":                     "moped/ajs/modena-50"                     # MODENA50 -> Modena 50  [gb] [REPOINTED 2026-10-02 (UK Q2): was -> motorcycle/ajs/modena-50, which DVLA's 2026 Q2 re-file sends to moped/ajs/modena-50 (UK-Q2 block at the end of this file); no chain left]
 "motorcycle/aprilia/atlantic500":              "motorcycle/aprilia/atlantic-500"              # ATLANTIC500 -> Atlantic 500  [fi,nl]
 "motorcycle/aprilia/classic125":               "motorcycle/aprilia/classic-125"               # CLASSIC125 -> Classic 125  [gb,nl]
 "motorcycle/aprilia/dorsoduro1200":            "motorcycle/aprilia/dorsoduro-1200"            # DORSODURO1200 -> Dorsoduro 1200  [nl,ua]
@@ -482,6 +482,82 @@
 "motorcycle/harley-davidson/xlh883sportster-hugger": "motorcycle/harley-davidson/xlh883-sportster-hugger" # XLH883SPORTSTER Hugger -> XLH883 Sportster Hugger  [nl]
 "motorcycle/harley-davidson/xlh900sportster":  "motorcycle/harley-davidson/xlh900-sportster"  # XLH900SPORTSTER -> XLH900 Sportster  [fi,nl]
 "motorcycle/heinkel/tourist103a2":             "motorcycle/heinkel/tourist-103a2"             # TOURIST103A2 -> Tourist 103A2  [fi,nl]
+# HONDA GOLD WING §A-2W-1..5 arms, 2026-08-21. Eighteen ids retire into five
+# survivors. Every arm was DERIVED, not hand-written: released name -> Honda
+# rename value -> slug, i.e. the same route the pipeline takes, so an arm
+# cannot disagree with the fold that caused its retirement. 18/18 resolved.
+# Country gains, and they are why the folds are worth doing: gl1500-gold-wing
+# and gl1800-gold-wing each GAIN gb, which exists only on a record being folded
+# away (gl1800a [fi,gb,nl] and the GL1500 side) — leaving them unfolded is what
+# loses evidence. No accepted_loss anywhere: every union is a superset.
+# A-2W-6 Valkyrie arms, 2026-08-21. Derived the same way as the Gold Wing set:
+# released name -> Honda rename value -> slug. The survivor GAINS gb, which
+# exists only on f6c [gb,nl] and gl1500c [fi,gb,nl] — the records being folded.
+# valkyrie-interstate is NOT here: §D-2 keeps it separate and it stays live.
+# A-2W-7 code-vs-name arms, 2026-08-21, BOTH KINDS. Kinds are separate id
+# namespaces, so chaly and dax each need an arm under motorcycle AND moped —
+# the no-vanish gate listed them twice and it was right to.
+# Derived: released name -> Honda rename value -> slug, per kind.
+"motorcycle/honda/chaly": "motorcycle/honda/cf50-chaly"  # Chaly -> CF50 Chaly
+"motorcycle/honda/dax": "motorcycle/honda/dax-st50"  # Dax -> Dax ST50
+"motorcycle/honda/vtr1000": "motorcycle/honda/vtr1000-firestorm"  # VTR1000 -> VTR1000 Firestorm
+"motorcycle/honda/xl600v": "motorcycle/honda/xl600v-transalp"  # XL600V -> XL600V Transalp
+"motorcycle/honda/xl650v": "motorcycle/honda/xl650v-transalp"  # XL650V -> XL650V Transalp
+"motorcycle/honda/xrv650": "motorcycle/honda/xrv650-africa-twin"  # XRV650 -> XRV650 Africa Twin
+# xrv750 · xref sign-off, CAUSE A (expired upstream), corrected method:
+#   92/6535  ->  <PVRNUM>92/6535</PVRNUM> in lu_delta_2026-05.xml and
+#                lu_delta_202604.xml ONLY (the two April files);
+#                0 inside es/fi/ua zips, 0 in the current lu_delta_202607.xml.
+# Context checked rather than assumed — a 7-character string like this can
+# false-positive anywhere, so the LU hit was read in place to confirm it is a
+# type-approval field and not a substring of something else.
+# LU serves a rolling 3-month window now reading 2026-05…2026-07, so April is
+# gone and no fold decision reaches it.
+"motorcycle/honda/xrv750":
+  to: "motorcycle/honda/xrv750-africa-twin"
+  accepted_xref_loss: ["92/6535"]  # XRV750 -> XRV750 Africa Twin; LU April-only, expired with the window
+"moped/honda/cf50": "moped/honda/cf50-chaly"  # CF50 -> CF50 Chaly
+"moped/honda/chaly": "moped/honda/cf50-chaly"  # Chaly -> CF50 Chaly
+"moped/honda/cl50": "moped/honda/cl50-benly"  # CL50 -> CL50 Benly
+"moped/honda/cl50-benley": "moped/honda/cl50-benly"  # CL50 Benley -> CL50 Benly
+"moped/honda/dax": "moped/honda/dax-st50"  # Dax -> Dax ST50
+"moped/honda/dax50": "moped/honda/dax-st50"  # DAX50 -> Dax ST50
+"moped/honda/st50": "moped/honda/dax-st50"  # ST50 -> Dax ST50
+"moped/honda/st50dax": "moped/honda/dax-st50"  # ST50DAX -> Dax ST50
+"motorcycle/honda/f6c": "motorcycle/honda/valkyrie"  # F6C -> Valkyrie
+"motorcycle/honda/f6c-valkyrie": "motorcycle/honda/valkyrie"  # F6C Valkyrie -> Valkyrie
+"motorcycle/honda/gl1500c": "motorcycle/honda/valkyrie"  # GL1500C -> Valkyrie
+"motorcycle/honda/gl1500c-f6c": "motorcycle/honda/valkyrie"  # GL1500C F6C -> Valkyrie
+"motorcycle/honda/gl1000": "motorcycle/honda/gl1000-gold-wing"  # GL1000 -> GL1000 Gold Wing
+"motorcycle/honda/gl1100": "motorcycle/honda/gl1100-gold-wing"  # GL1100 -> GL1100 Gold Wing
+# gl1200 · xref sign-off, CAUSE A (expired upstream), and the method is the
+# corrected one — searched the uncompressed caches AND inside every zip, which
+# is what data#297 failed to do:
+#   1000000000103054@AE  ->  lu_delta_2026-05.xml + lu_delta_202604.xml ONLY
+#                            (the two April files), 0 hits in any .zip,
+#                            0 in the current lu_delta_202607.xml
+# LU serves a rolling 3-month window now reading 2026-05…2026-07, so April is
+# gone and no fold decision reaches it. Distinct from the zx-12r case in the
+# kawasaki block, which is present-but-unpublished and therefore recoverable.
+"motorcycle/honda/gl1200":
+  to: "motorcycle/honda/gl1200-gold-wing"
+  accepted_xref_loss: ["1000000000103054@AE"]  # GL1200 -> GL1200 Gold Wing; LU April-only, expired with the window
+"motorcycle/honda/gl1200-gold-wing-aspencade": "motorcycle/honda/gl1200-gold-wing"  # GL1200 Gold Wing Aspencade -> GL1200 Gold Wing
+"motorcycle/honda/gl1500": "motorcycle/honda/gl1500-gold-wing"  # GL1500 -> GL1500 Gold Wing
+"motorcycle/honda/gl1500-goldwing": "motorcycle/honda/gl1500-gold-wing"  # GL1500 Goldwing -> GL1500 Gold Wing
+"motorcycle/honda/gl1500-goldwing-se": "motorcycle/honda/gl1500-gold-wing"  # GL1500 Goldwing Se -> GL1500 Gold Wing
+"motorcycle/honda/gl1500-interstate": "motorcycle/honda/gl1500-gold-wing"  # GL1500 Interstate -> GL1500 Gold Wing
+"motorcycle/honda/gl1500se": "motorcycle/honda/gl1500-gold-wing"  # GL1500SE -> GL1500 Gold Wing
+"motorcycle/honda/gl1500se-goldwing": "motorcycle/honda/gl1500-gold-wing"  # GL1500SE Goldwing -> GL1500 Gold Wing
+"motorcycle/honda/gl1800": "motorcycle/honda/gl1800-gold-wing"  # GL1800 -> GL1800 Gold Wing
+"motorcycle/honda/gl1800-goldwing": "motorcycle/honda/gl1800-gold-wing"  # GL1800 Goldwing -> GL1800 Gold Wing
+"motorcycle/honda/gl1800a": "motorcycle/honda/gl1800-gold-wing"  # GL1800A -> GL1800 Gold Wing
+"motorcycle/honda/gold-wing-1500": "motorcycle/honda/gl1500-gold-wing"  # Gold Wing 1500 -> GL1500 Gold Wing
+"motorcycle/honda/gold-wing-1800": "motorcycle/honda/gl1800-gold-wing"  # Gold Wing 1800 -> GL1800 Gold Wing
+"motorcycle/honda/gold-wing-gl1500": "motorcycle/honda/gl1500-gold-wing"  # Gold Wing GL1500 -> GL1500 Gold Wing
+"motorcycle/honda/gold-wing-gl1500se": "motorcycle/honda/gl1500-gold-wing"  # Gold Wing GL1500SE -> GL1500 Gold Wing
+"motorcycle/honda/gold-wing-gl1800": "motorcycle/honda/gl1800-gold-wing"  # Gold Wing GL1800 -> GL1800 Gold Wing
+"motorcycle/honda/giorno": "motorcycle/honda/giorno-plus"  # D-10 owner-assigned call, 2026-08-18: the id was 100% Giorno+ evidence (th_dlt has ZERO plain-GIORNO rows) under a slug naming a different machine. See the note in renames.yml Honda for the register measurement and why option A beats B. 221,536 vehicles, decile 1 — the largest single id this project has re-slugged
 "motorcycle/honda/50sport-c110":               "motorcycle/honda/50-sport-c110"               # 50SPORT C110 -> 50 Sport C110  [fi,nl]
 "motorcycle/honda/benly125":                   "motorcycle/honda/benly-125"                   # BENLY125 -> Benly 125  [nl,nz]
 "motorcycle/honda/bros400":                    "motorcycle/honda/bros-400"                    # BROS400 -> Bros 400  [nl,ua]
@@ -504,14 +580,14 @@
 "motorcycle/honda/forza750":                   "motorcycle/honda/forza-750"                   # FORZA750 -> Forza 750  [th]
 "motorcycle/honda/gl1100gold-wing":            "motorcycle/honda/gl1100-gold-wing"            # GL1100GOLD Wing -> GL1100 Gold Wing  [nl,nz]
 "motorcycle/honda/gl1200aspencade":            "motorcycle/honda/gl1200-aspencade"            # GL1200ASPENCADE -> GL1200 Aspencade  [fi,nl]
-"motorcycle/honda/gl1200gold-wing-aspencade":  "motorcycle/honda/gl1200-gold-wing-aspencade"  # GL1200GOLD Wing Aspencade -> GL1200 Gold Wing Aspencade  [fi,nl]
-"motorcycle/honda/gl1500goldwing":             "motorcycle/honda/gl1500-goldwing"             # GL1500GOLDWING -> GL1500 Goldwing  [fi,nl,nz]
-"motorcycle/honda/gl1500goldwing-se":          "motorcycle/honda/gl1500-goldwing-se"          # GL1500GOLDWING Se -> GL1500 Goldwing Se  [nl,nz]
-"motorcycle/honda/gl1500interstate":           "motorcycle/honda/gl1500-interstate"           # GL1500INTERSTATE -> GL1500 Interstate  [nl,nz]
-"motorcycle/honda/gl1800goldwing":             "motorcycle/honda/gl1800-goldwing"             # GL1800GOLDWING -> GL1800 Goldwing  [fi,nl]
+"motorcycle/honda/gl1200gold-wing-aspencade":  "motorcycle/honda/gl1200-gold-wing"  # GL1200GOLD Wing Aspencade -> GL1200 Gold Wing Aspencade  [fi,nl] — chain flattened 2026-08-21, was gl1200-gold-wing-aspencade
+"motorcycle/honda/gl1500goldwing":             "motorcycle/honda/gl1500-gold-wing"             # GL1500GOLDWING -> GL1500 Goldwing  [fi,nl,nz] — chain flattened 2026-08-21, was gl1500-goldwing
+"motorcycle/honda/gl1500goldwing-se":          "motorcycle/honda/gl1500-gold-wing"          # GL1500GOLDWING Se -> GL1500 Goldwing Se  [nl,nz] — chain flattened 2026-08-21, was gl1500-goldwing-se
+"motorcycle/honda/gl1500interstate":           "motorcycle/honda/gl1500-gold-wing"           # GL1500INTERSTATE -> GL1500 Interstate  [nl,nz] — chain flattened 2026-08-21, was gl1500-interstate
+"motorcycle/honda/gl1800goldwing":             "motorcycle/honda/gl1800-gold-wing"             # GL1800GOLDWING -> GL1800 Goldwing  [fi,nl] — chain flattened 2026-08-21, was gl1800-goldwing
 "motorcycle/honda/gl500interstate":            "motorcycle/honda/gl500-interstate"            # GL500INTERSTATE -> GL500 Interstate  [nl,nz]
-"motorcycle/honda/gold-wing1500":              "motorcycle/honda/gold-wing-1500"              # Gold WING1500 -> Gold Wing 1500  [fi,nl]
-"motorcycle/honda/gold-wing1800":              "motorcycle/honda/gold-wing-1800"              # Gold WING1800 -> Gold Wing 1800  [fi,nl]
+"motorcycle/honda/gold-wing1500":              "motorcycle/honda/gl1500-gold-wing"              # Gold WING1500 -> Gold Wing 1500  [fi,nl] — chain flattened 2026-08-21, was gold-wing-1500
+"motorcycle/honda/gold-wing1800":              "motorcycle/honda/gl1800-gold-wing"              # Gold WING1800 -> Gold Wing 1800  [fi,nl] — chain flattened 2026-08-21, was gold-wing-1800
 "motorcycle/honda/hornet600":                  "motorcycle/honda/hornet-600"                  # HORNET600 -> Hornet 600  [nl,ua]
 "motorcycle/honda/hornet900":                  "motorcycle/honda/hornet-900"                  # HORNET900 -> Hornet 900  [nl,ua]
 "motorcycle/honda/lead125":                    "motorcycle/honda/lead-125"                    # LEAD125 -> Lead 125  [nl,nz,th,ua]
@@ -731,7 +807,7 @@
 "motorcycle/kawasaki/ej650-a1": "motorcycle/kawasaki/w650"  # kawasaki A-19
 "motorcycle/kawasaki/klx230se": "motorcycle/kawasaki/klx230"  # kawasaki A-22
 "motorcycle/kawasaki/versys-x300abs": "motorcycle/kawasaki/versys-x300"  # kawasaki A-23 (ABS half only — see DEBT for the spacing)
-"motorcycle/kawasaki/zx400-srfan-40th-anniversary": "motorcycle/kawasaki/ninja-zx-4rr"  # kawasaki A-24
+"motorcycle/kawasaki/zx400-srfan-40th-anniversary": "motorcycle/kawasaki/ninja-zx-4r"  # kawasaki A-24 [REPOINTED 2026-10-02 (UK Q2) to ninja-zx-4r by identity (O1, verifier v215): was -> ninja-zx-4rr, now itself an alias to zx400; no chain left]
 "motorcycle/kawasaki/900dohc":                 "motorcycle/kawasaki/900-dohc"                 # 900DOHC -> 900 Dohc  [nl]
 "motorcycle/kawasaki/concours14":              "motorcycle/kawasaki/concours-14"              # CONCOURS14 -> Concours 14  [fi,nl]
 "motorcycle/kawasaki/d-tracker125":            "motorcycle/kawasaki/d-tracker-125"            # D-TRACKER125 -> D-Tracker 125  [fi,nl,th]
@@ -785,7 +861,7 @@
 "motorcycle/kawasaki/zephyr750":               "motorcycle/kawasaki/zephyr-750"               # ZEPHYR750 -> Zephyr 750  [nl,nz,ua]
 "motorcycle/kawasaki/zl900eliminator":         "motorcycle/kawasaki/zl900-eliminator"         # ZL900ELIMINATOR -> ZL900 Eliminator  [fi,nl,nz]
 "motorcycle/kawasaki/zx1100hsfnn":             "motorcycle/kawasaki/ninja-1100sx"             # ZX1100HSFNN -> ZX1100 Hsfnn  [gb] — chain repair 2026-08-03, was zx1100-hsfnn
-"motorcycle/kawasaki/zx400srfan40th-anniversary": "motorcycle/kawasaki/ninja-zx-4rr" # ZX400SRFAN40TH Anniversary -> ZX400 Srfan 40TH Anniversary  [gb] — chain repair 2026-08-03, was zx400-srfan-40th-anniversary
+"motorcycle/kawasaki/zx400srfan40th-anniversary": "motorcycle/kawasaki/ninja-zx-4r" # ZX400SRFAN40TH Anniversary -> ZX400 Srfan 40TH Anniversary  [gb] — chain repair 2026-08-03, was zx400-srfan-40th-anniversary [REPOINTED 2026-10-02 (UK Q2) to ninja-zx-4r by identity (O1, verifier v215): was -> ninja-zx-4rr, now itself an alias to zx400; no chain left]
 "motorcycle/kove/450rally":                    "motorcycle/kove/450-rally"                    # 450RALLY -> 450 Rally  [es,fi,gb,nl]
 "motorcycle/kove/800rally":                    "motorcycle/kove/800-rally"                    # 800RALLY -> 800 Rally  [fi,nl,ua]
 "motorcycle/kovi/300lite":                     "motorcycle/kovi/300-lite"                     # 300LITE -> 300 Lite  [ua]
@@ -809,7 +885,7 @@
 "motorcycle/ktm/1390super-adventure-s-evo":    "motorcycle/ktm/1390-super-adventure-s-evo"    # 1390SUPER Adventure S Evo -> 1390 Super Adventure S Evo  [nl,ua]
 "motorcycle/ktm/1390super-duke-r":             "motorcycle/ktm/1390-super-duke-r"             # 1390SUPER Duke R -> 1390 Super Duke R  [es,fi,lu,nl,ua]
 "motorcycle/ktm/1390super-duke-rr":            "motorcycle/ktm/1390-super-duke-rr"            # 1390SUPER Duke RR -> 1390 Super Duke RR  [es,nl]
-"motorcycle/ktm/1390superduke-r24":            "motorcycle/ktm/1390-superduke-r24"            # 1390SUPERDUKE R24 -> 1390 Superduke R24  [gb]
+"motorcycle/ktm/1390superduke-r24":            "motorcycle/ktm/1390"            # 1390SUPERDUKE R24 -> 1390 Superduke R24  [gb] [REPOINTED 2026-10-02 (UK Q2): was -> motorcycle/ktm/1390-superduke-r24, now itself an alias to motorcycle/ktm/1390; no chain left]
 "motorcycle/ktm/200duke":                      "motorcycle/ktm/200-duke"                      # 200DUKE -> 200 Duke  [fi,gb,nl,th,ua]
 "motorcycle/ktm/250duke":                      "motorcycle/ktm/250-duke"                      # 250DUKE -> 250 Duke  [th,ua]
 "motorcycle/ktm/350freeride":                  "motorcycle/ktm/350-freeride"                  # 350FREERIDE -> 350 Freeride  [fi,nl,ua]
@@ -870,10 +946,10 @@
 "motorcycle/lambretta/v200special-flex":       "motorcycle/lambretta/v200-special-flex"       # V200SPECIAL Flex -> V200 Special Flex  [nl,th]
 "motorcycle/laverda/750strike":                "motorcycle/laverda/750-strike"                # 750STRIKE -> 750 Strike  [gb,nl]
 "motorcycle/lexmoto/adrenaline125":            "motorcycle/lexmoto/adrenaline-125"            # ADRENALINE125 -> Adrenaline 125  [gb]
-"motorcycle/lexmoto/aspire50":                 "motorcycle/lexmoto/aspire-50"                 # ASPIRE50 -> Aspire 50  [gb]
+"motorcycle/lexmoto/aspire50":                 "moped/lexmoto/aspire-50"                 # ASPIRE50 -> Aspire 50  [gb] [REPOINTED 2026-10-02 (UK Q2): was -> motorcycle/lexmoto/aspire-50, now itself an alias to moped/lexmoto/aspire-50; no chain left]
 "motorcycle/lexmoto/assault125":               "motorcycle/lexmoto/assault-125"               # ASSAULT125 -> Assault 125  [gb]
 "motorcycle/lexmoto/isca125":                  "motorcycle/lexmoto/isca-125"                  # ISCA125 -> Isca 125  [gb]
-"motorcycle/lexmoto/scout49":                  "motorcycle/lexmoto/scout-49"                  # SCOUT49 -> Scout 49  [gb]
+"motorcycle/lexmoto/scout49":                  "moped/lexmoto/scout-49"                  # SCOUT49 -> Scout 49  [gb] [REPOINTED 2026-10-02 (UK Q2): was -> motorcycle/lexmoto/scout-49, now itself an alias to moped/lexmoto/scout-49; no chain left]
 "motorcycle/lexmoto/tempest125":               "motorcycle/lexmoto/tempest-125"               # TEMPEST125 -> Tempest 125  [gb]
 "motorcycle/lexmoto/venom125":                 "motorcycle/lexmoto/venom-125"                 # VENOM125 -> Venom 125  [gb]
 "motorcycle/lexmoto/viper125":                 "motorcycle/lexmoto/viper-125"                 # VIPER125 -> Viper 125  [gb]
@@ -987,6 +1063,26 @@
 "motorcycle/norton/model99":                   "motorcycle/norton/model-99"                   # MODEL99 -> Model 99  [nl,nz]
 "motorcycle/nsu/prima3":                       "motorcycle/nsu/prima-3"                       # PRIMA3 -> Prima 3  [fi,nl]
 "motorcycle/peugeot/django125":                "motorcycle/peugeot/django-125"                # DJANGO125 -> Django 125  [gb]
+# CO-MOVE 3 arms, 2026-08-19. Seven Vespa nameplates were publishing as two
+# records under two makes; the moves in moves.yml relocate the badge-free half
+# and these arms keep the retired ids resolvable. NO accepted_loss on any of
+# them — every retiring id`s countries are a SUBSET of its target`s, checked
+# one by one against build/out rather than assumed:
+#   piaggio/et2    [gb]        -> vespa/et2    [gb,nl]          gb carried, and vespa/et2 GAINS gb
+#   piaggio/gts125 [es,fi,nl]  -> vespa/gts125 [es,fi,lu,nl]
+#   piaggio/px125e [gb,lu,nl]  -> vespa/px125e [es,gb,lu,nl,nz]
+#   piaggio/px200e [lu,nl,nz]  -> vespa/px200e [lu,nl,nz]       vespa/px200e GAINS lu
+#   piaggio/50s    [nl,nz]     -> vespa/50s    [fi,nl,nz]       (moped)
+#   piaggio/lx50   [fi,nl,nz]  -> vespa/lx50   [fi,nl,nz,ua]    (moped)
+# piaggio/50 needs no arm: it was a CANDIDATE (nl 3), never published.
+# The ET2 exists in BOTH kinds — moped/vespa/et2 [nl,nz,ua] is a separate
+# record and is untouched; kinds are separate id namespaces.
+"motorcycle/piaggio/et2": "motorcycle/vespa/et2"  # co-move 3
+"motorcycle/piaggio/gts125": "motorcycle/vespa/gts125"  # co-move 3
+"motorcycle/piaggio/px125e": "motorcycle/vespa/px125e"  # co-move 3
+"motorcycle/piaggio/px200e": "motorcycle/vespa/px200e"  # co-move 3
+"moped/piaggio/50s": "moped/vespa/50s"  # co-move 3
+"moped/piaggio/lx50": "moped/vespa/lx50"  # co-move 3
 "motorcycle/piaggio/ape-calessino200":         "motorcycle/piaggio/ape-calessino-200"         # Ape CALESSINO200 -> Ape Calessino 200  [fi,nl]
 "motorcycle/piaggio/beverly250":               "motorcycle/piaggio/beverly-250"               # BEVERLY250 -> Beverly 250  [fi,nl,ua]
 "motorcycle/piaggio/beverly300hpe":            "motorcycle/piaggio/beverly-300hpe"            # BEVERLY300HPE -> Beverly 300HPE  [es,nl]
@@ -1246,7 +1342,7 @@
 "motorcycle/yamaha/xj6diversion":              "motorcycle/yamaha/xj6-diversion"              # XJ6DIVERSION -> XJ6 Diversion  [fi,ua]
 "motorcycle/yamaha/xj750seca":                 "motorcycle/yamaha/xj750-seca"                 # XJ750SECA -> XJ750 Seca  [nl,nz]
 "motorcycle/yamaha/xmax300":                   "motorcycle/yamaha/xmax-300"                   # XMAX300 -> Xmax 300  [nl,th]
-"motorcycle/yamaha/xp500tmax": "motorcycle/yamaha/tmax-500" # RE-CHAINED 2026-08-01 (§A fold): pointed at motorcycle/yamaha/xp500-tmax, which this change retires into motorcycle/yamaha/tmax-500. Aliases are single-pass.
+"motorcycle/yamaha/xp500tmax": "motorcycle/yamaha/tmax" # RE-CHAINED TWICE: 2026-08-01 (§A fold) onto tmax-500, and 2026-09-05 onto `tmax` when the TMAX COLLAPSE (owner ruling OPTION 2) retired tmax-500. Aliases are single-pass, so each retirement must re-point every alias that named the retiree.
 "motorcycle/yamaha/xs650special":              "motorcycle/yamaha/xs650-special"              # XS650SPECIAL -> XS650 Special  [fi,nl,nz]
 "motorcycle/yamaha/xtz690tenere700": "motorcycle/yamaha/tenere-700" # RE-CHAINED 2026-08-01 (§A fold): pointed at motorcycle/yamaha/xtz690-tenere-700, which this change retires into motorcycle/yamaha/tenere-700. Aliases are single-pass.
 "motorcycle/yamaha/xv1000virago":              "motorcycle/yamaha/xv1000-virago"              # XV1000VIRAGO -> XV1000 Virago  [nl,nz]
@@ -1869,10 +1965,10 @@
 "car/omoda/5-noble-auto": "car/omoda/omoda-5"
 "car/omoda/9-noble": "car/omoda/omoda-9"
 "car/omoda/c5": "car/omoda/omoda-5"
-"car/omoda/c5-ev-long-range-max": "car/omoda/omoda-5"
+"car/omoda/c5-ev-long-range-max": "car/omoda/omoda-e5"   # REPOINTED by RULING 5 (2026-10-02): published th-only (data d3642f5) for the BEV th_dlt string; omoda-5 now excludes th, so HARD RULE 4 requires the BEV successor
 "car/omoda/e5-comfort": "car/omoda/omoda-e5"
 "car/omoda/omoda5": "car/omoda/omoda-5"
-"car/omoda/omoda5-ev": "car/omoda/omoda-5"
+"car/omoda/omoda5-ev": "car/omoda/omoda-e5"   # REPOINTED by RULING 5 (2026-10-02): published es|nl (data d3642f5) for the BEV string 'OMODA5 EV'; omoda-e5 carries es,nl — superset holds and the id keeps its BEV meaning
 "car/omoda/omoda7": "car/omoda/omoda-7"
 "car/omoda/omoda9": "car/omoda/omoda-9"
 "car/panhard/pl-17": "car/panhard/pl17"
@@ -2434,25 +2530,20 @@
 "motorcycle/yamaha/neos": "motorcycle/yamaha/neo-s" # "Neos" -> "Neo's"
 "motorcycle/yamaha/neos-100": "motorcycle/yamaha/neo-s-100" # "Neos 100" -> "Neo's 100"
 "motorcycle/yamaha/roadstar": "motorcycle/yamaha/road-star" # "Roadstar" -> "Road Star"
-# ACCEPTED LOSS (ua). The successor does not carry Ukraine, so the strict
-# superset rule (rule 4) would reject this alias. Recording the exception
-# rather than dropping the alias, because a consumer holding t-max500 still
-# deserves to be pointed at tmax-500.
+# ACCEPTED LOSS RESOLVED, 2026-09-05. This entry carried `accepted_loss: [ua]`
+# because its 2026-08-01 successor `tmax-500` was reached by a spelling route
+# that did not carry Ukraine, and the alias would otherwise have failed the
+# strict-superset rule (rule 4). The TMAX COLLAPSE (owner ruling OPTION 2)
+# retires tmax-500 into `tmax`, whose country set is the UNION of all four
+# TMAX records — Ukraine included — so the exception is no longer needed and
+# is deleted rather than carried forward. The original note is kept below
+# because it records a real property of ua_mvs worth knowing:
 #
-# VERIFIED: Ukraine's Yamaha TMAX evidence has NOT left the dataset —
-# yamaha/tmax carries ua (gb,nl,nz,ua) and yamaha/xp500-tmax carries ua
-# (fi,nl,ua). What changed is WHICH TMAX record the single Ukrainian row lands
-# on, because the spelling normalisation moved: UA writes "T MAX", "T-MAX",
-# "TMAX", "T MAX 500", "TMAX 500" and "T-MAX 530" as one row each, and those
-# now fold differently than they did.
-#
-# NOT VERIFIED: which specific UA row moved where. ua_mvs is a deduped ~710k
-# vehicle register delivered as a 35 MB zip and every TMAX spelling in it is a
-# single row, so isolating one is disproportionate to a one-country flag on one
-# record. Left as a stated unknown rather than a guess.
-"motorcycle/yamaha/t-max500":
-  to: "motorcycle/yamaha/tmax-500"
-  accepted_loss: [ua]
+#   UA writes "T MAX", "T-MAX", "TMAX", "T MAX 500", "TMAX 500" and
+#   "T-MAX 530" as one row each, so which TMAX record a Ukrainian row lands
+#   on moves whenever the spelling normalisation moves. Under the collapse
+#   every one of those spellings lands on the same id, which is the point.
+"motorcycle/yamaha/t-max500": "motorcycle/yamaha/tmax" # RE-CHAINED by the TMAX COLLAPSE; strict superset now holds
 "motorcycle/yamaha/t-max": "motorcycle/yamaha/tmax" # "T Max" -> "TMAX"
 "motorcycle/yamaha/tzr-250": "motorcycle/yamaha/tzr250" # "Tzr-250" -> "TZR250"
 "motorcycle/yamaha/v-max1200": "motorcycle/yamaha/vmax-1200" # "V-MAX1200" -> "VMAX 1200"
@@ -2516,8 +2607,8 @@
 "motorcycle/honda/fire-blade": "motorcycle/honda/fireblade" # "Fire Blade" -> "Fireblade"
 "motorcycle/honda/goldwing": "motorcycle/honda/gold-wing" # "Goldwing" -> "Gold Wing"
 "motorcycle/honda/gl1200-goldwing": "motorcycle/honda/gl1200-gold-wing" # "GL1200 Goldwing" -> "GL1200 Gold Wing"
-"motorcycle/honda/goldwing-gl1500": "motorcycle/honda/gold-wing-gl1500" # "Goldwing GL1500" -> "Gold Wing GL1500"
-"motorcycle/honda/goldwing-gl1800": "motorcycle/honda/gold-wing-gl1800" # "Goldwing GL1800" -> "Gold Wing GL1800"
+"motorcycle/honda/goldwing-gl1500": "motorcycle/honda/gl1500-gold-wing" # "Goldwing GL1500" -> "Gold Wing GL1500" — chain flattened 2026-08-21, was gold-wing-gl1500
+"motorcycle/honda/goldwing-gl1800": "motorcycle/honda/gl1800-gold-wing" # "Goldwing GL1800" -> "Gold Wing GL1800" — chain flattened 2026-08-21, was gold-wing-gl1800
 "moped/honda/gyrox": "moped/honda/gyro-x" # "Gyrox" -> "Gyro X"
 "moped/honda/ac0-1": "moped/honda/ac01" # "AC0 1" -> "AC01"
 "moped/honda/ns1": "moped/honda/ns-1" # "NS1" -> "NS-1"
@@ -6890,14 +6981,28 @@
 "motorcycle/yamaha/yzf-r125a": "motorcycle/yamaha/yzf-r125"  # fi,nl
 "motorcycle/yamaha/r6": "motorcycle/yamaha/yzf-r6"  # es,gb,nl,nz
 "motorcycle/yamaha/yzf-6r": "motorcycle/yamaha/yzf-r6"  # fi,nl
-"motorcycle/yamaha/xp500": "motorcycle/yamaha/tmax-500"  # es,fi,gb,lu,nl,nz,ua
-"motorcycle/yamaha/xp500a": "motorcycle/yamaha/tmax-500"  # nl,ua
-"motorcycle/yamaha/xp500-tmax": "motorcycle/yamaha/tmax-500"  # fi,nl,ua
-"motorcycle/yamaha/xp530-a": "motorcycle/yamaha/tmax-530"  # lu,nl
-"motorcycle/yamaha/xp530d-a": "motorcycle/yamaha/tmax-530"  # es,lu,nl
-"motorcycle/yamaha/xp560": "motorcycle/yamaha/tmax-560"  # es,fi,gb,lu,nl
-"motorcycle/yamaha/xp560d": "motorcycle/yamaha/tmax-560"  # es,fi,lu,nl
-"motorcycle/yamaha/xp560e": "motorcycle/yamaha/tmax-560"  # es,fi,nl,nz
+"motorcycle/yamaha/xp500": "motorcycle/yamaha/tmax"  # es,fi,gb,lu,nl,nz,ua — RE-CHAINED 2026-09-05: named tmax-500, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp500a": "motorcycle/yamaha/tmax"  # nl,ua — RE-CHAINED 2026-09-05: named tmax-500, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp500-tmax": "motorcycle/yamaha/tmax"  # fi,nl,ua — RE-CHAINED 2026-09-05: named tmax-500, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp530-a": "motorcycle/yamaha/tmax"  # lu,nl — RE-CHAINED 2026-09-05: named tmax-530, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp530d-a": "motorcycle/yamaha/tmax"  # es,lu,nl — RE-CHAINED 2026-09-05: named tmax-530, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp560": "motorcycle/yamaha/tmax"  # es,fi,gb,lu,nl — RE-CHAINED 2026-09-05: named tmax-560, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp560d": "motorcycle/yamaha/tmax"  # es,fi,lu,nl — RE-CHAINED 2026-09-05: named tmax-560, retired by the TMAX COLLAPSE
+"motorcycle/yamaha/xp560e": "motorcycle/yamaha/tmax"  # es,fi,nl,nz — RE-CHAINED 2026-09-05: named tmax-560, retired by the TMAX COLLAPSE
+# ── TMAX COLLAPSE, 2026-09-05 — the four retiring ids ────────────────────────
+# Owner ruling OPTION 2 ("One nameplate, the marque's own posture in the
+# evidence markets"): Yamaha Europe sells ONE nameplate, TMAX, with SX / DX /
+# Tech Max as trims. `tmax` survives (it predates the §A fold and is the
+# published record the DECISIONS fold safeguard points at); the three
+# displacement ids retire into it. tmax-530 and tmax-560 were MINTED by the
+# §A fold and published in 2026.08.2, which is exactly why they need aliases:
+# a consumer pinned to a released id must keep resolving (SCHEMA.md
+# §Versioning). Country sets below are the CONTROL build's, so the union
+# assertion in the PR can be checked against them line by line.
+"motorcycle/yamaha/tmax-500": "motorcycle/yamaha/tmax"  # es,fi,gb,lu,nl,nz,ua — "TMAX 500" never existed in any market in any spelling (DEBT row, audit S-4)
+"motorcycle/yamaha/tmax-530": "motorcycle/yamaha/tmax"  # es,fi,lu,nl — minted by the §A fold, published 2026.08.2; JP writes it CLOSED (TMAX530), recorded as a JP-market spelling, never as an id
+"motorcycle/yamaha/tmax-560": "motorcycle/yamaha/tmax"  # es,fi,gb,lu,nl,nz,th — minted by the §A fold, published 2026.08.2; Yamaha EU PDP title is "TMAX" and the string "560" does not appear on it
+"motorcycle/yamaha/xp530e-a": "motorcycle/yamaha/tmax"  # es,fi,nl — the third XP530 code, still publishing as a bare type code; same class as XP530-A/XP530D-A, flagged in the PR as one row beyond the ruling's literal three-id list
 "motorcycle/yamaha/mwd300": "motorcycle/yamaha/tricity-300"  # es,fi,lu,nl
 "motorcycle/yamaha/mwd300d": "motorcycle/yamaha/tricity-300"  # es,lu,nl
 "motorcycle/yamaha/mws125-c": "motorcycle/yamaha/tricity-125"  # es,nl
@@ -6974,3 +7079,116 @@
 #    carried no xrefs and no source the survivor lacks).
 "car/mini/coopper-s": "car/mini/cooper"   # renames.yml Mini: Coopper S -> Cooper  [es,nl] — 2 veh, raw "COOPPER S"; target already holds es:es_dgt + nl:nl_rdw
 "car/mini/hatch":     "car/mini/cooper"   # renames.yml Mini: Hatch -> Cooper  [nz] — 3,587 veh, raw "HATCH"; NZTA writes the BODY WORD where the nameplate belongs (th_dlt/fi_traficom write "Cooper … Hatch …" and already resolve to Cooper). Target already holds nz:nz_nzta 7,568; retired id carried no xrefs
+
+# ── UK VEH0120 2026 Q2 RE-FILE (2026-10-02, S4W, lane rel-340-unblock) ────────
+# DVLA re-published VEH0120 with a 48th quarter (2026 Q2) and RE-SPELLED many
+# GenModel strings in the same release: trim-flavoured GenModels collapsed to
+# their nameplate ("ALPINE A290 GT EV" -> "ALPINE A290"), typos were corrected
+# ("VDL VUTURA" -> "VDL FUTURA", "TVR CHIMERA" -> "TVR CHIMAERA"), range
+# aggregates were split into their real model numbers ("MERCEDES 300" ->
+# 307/308/310/311/312), and two-wheeler GenModels lost the displacement or
+# variant ("APRILIA SR 50" -> "APRILIA SR", "DUCATI M796" -> "DUCATI MONSTER"),
+# which hands those rows to uk_dft's G-1 Model-column parse. Measured per row
+# on BOTH vintages through the real adapter routing + Normalizer#classify
+# (frozen caches: 47-quarter file = what main was built from, 48-quarter file
+# = what CI fetches); counts below are vehicles in the 2026 Q2 column for the
+# SAME Model strings that fed the old id in the 2026 Q1 column.
+#
+# Every line below: the old id's gb evidence now lands on the named LIVE
+# successor, and the successor carries a superset of the old id's countries
+# unless an accepted_loss says otherwise. Ids DVLA re-spelled WITHOUT moving
+# them onto another record are kept live by renames.yml instead (same change);
+# range labels split into several live successors are in removals.yml.
+#
+# CROSS-KIND lines (motorcycle -> moped): the re-filed GenModel no longer
+# carries digits, so G-1 GUARD 1 no longer holds the row on the GenModel and
+# the Model column's displacement (<=50cc, EU L1e) routes it to moped
+# (uk_dft.rb MOPED_CC_MAX) — the motorcycle id only ever existed because GUARD
+# 1 kept the cc unparsed. Precedent: motorcycle/aprilia/sxr, lexmoto/hunter.
+"car/alpine/a290-gt-ev":              "car/alpine/a290"            # GenModel "ALPINE A290 GT EV" -> "ALPINE A290" (gb); the A290 Models that fed it (A290 GTS EV, GT EV, GT PERFORMANCE EV, …) carry 3,213 veh in Q2 on car/alpine/a290 (de,es,lu,nl + gb). GT is the trim, A290 the nameplate
+"car/byd/seal-design-ev":             "car/byd/seal"               # GenModel "BYD SEAL DESIGN EV" (50,601 veh in 2026 Q1, a pooled label: Seal U 26,923 + Seal 15,204 + Sealion 7 8,474) is gone in VEH0120 2026 Q2; DVLA now files "BYD SEAL" (Seal, Seal U, Seal 6) and "BYD SEALION" (Sealion 5, Sealion 7), routed per Model by the uk_dft pools + BYD renames of this change. Successor chosen by IDENTITY, not volume: the id names the Seal Design EV, i.e. the Seal (Seal U was the larger share, so a consumer holding this id for the Seal U lands on its sibling — stated, not hidden). car/byd/seal live in 10 countries + gb.
+"car/jaecoo/5-pure":                  "car/jaecoo/jaecoo-5"        # GenModel "JAECOO 5 PURE" -> "JAECOO 5" (Models "5 PURE AUTO", "5 PURE EV": 3,134 veh in Q2, gb); Pure is the trim — car/jaecoo/jaecoo-5 live on de,es,gb,lu,nl,th
+"car/jaguar/fp-rd":                   "car/jaguar/f-pace"          # GenModel "JAGUAR FP RD" (DVLA's abbreviation of F-PACE R-DYNAMIC) -> "JAGUAR F-PACE" (Models "FP RD SE/HSE … MHEV/PHEV AWD": 1,706 veh in Q2, gb); same car, R-Dynamic is the trim
+"car/peugeot/2008-gt-premium-ev":     "car/peugeot/2008"           # GenModel "PEUGEOT 2008 GT PREMIUM EV" (it also pooled PureTech and MHEV rows) -> "PEUGEOT 2008" (8,221 veh in Q2 on those Models, gb); GT Premium is the trim, car/peugeot/2008 live in 10 countries
+"car/tvr/chimera":                    "car/tvr/chimaera"           # GenModel "TVR CHIMERA" (typo; the Model column always read "CHIMAERA") -> "TVR CHIMAERA", 3,746 veh in Q2 (gb); car/tvr/chimaera already live on nl,nz — the correct spelling (https://en.wikipedia.org/wiki/TVR_Chimaera)
+"bus/peugeot/cvm":                    "bus/peugeot/boxer"          # GenModel "PEUGEOT CVM WLD BXR CANDRIVE MAXI+BHDI" (a wheelchair-accessible Boxer conversion) -> "PEUGEOT BOXER" (63 veh in Q2 on those Models, gb); bus/peugeot/boxer live on fi,gb,nl,ua
+"bus/vdl/vutura":                     "bus/vdl/futura"             # GenModel "VDL VUTURA" (typo; Models always read "VDL FUTURA FHD2-…") -> "VDL FUTURA", 101 veh in Q2 (gb); bus/vdl/futura live on es,fi,gb,nl,ua
+"van/volkswagen/t-sportr-t32-comm-pro": "van/volkswagen/transporter" # GenModel "VOLKSWAGEN T-SPORTR T32 COMM PRO TDI 4M A" (a whole trim string) -> "VOLKSWAGEN TRANSPORTER" (528 veh in Q2 on that Model, gb); T-SPORTR = Transporter Sportline, live in 6 countries
+"motorcycle/ducati/m796":             "motorcycle/ducati/monster-796" # GenModel "DUCATI M796" -> "DUCATI MONSTER" (Models "M796", "M796 ART", "M796 20TH ANNIVERSARY": 567 veh in Q2, gb); M796 is DVLA's code for the Monster 796, live on fi,nl + gb
+"motorcycle/ducati/m797":             "motorcycle/ducati/monster-797" # GenModel "DUCATI M797" -> "DUCATI MONSTER" (Models "M797", "M797 +": 357 veh in Q2, gb); Monster 797, live on fi,lu,nl,ua + gb
+"motorcycle/ducati/m821":             "motorcycle/ducati/monster-821" # GenModel "DUCATI M821" -> "DUCATI MONSTER" (Models "M821", "M821 DARK", "M821 STEALTH": 1,167 veh in Q2, gb); Monster 821, live on fi,lu,nl,ua + gb
+"motorcycle/ducati/m1200s":           "motorcycle/ducati/m1200"    # GenModel "DUCATI M1200 S" -> "DUCATI M1200" (Model "M1200 S" 627 veh in Q2, gb); G-1 GUARD 1 holds a digit-bearing GenModel, so the S variant joins its displacement family — uk_dft.rb's "same-displacement variants merge" KNOWN AND ACCEPTED LOSS. m1200 live on nl + gb
+"motorcycle/harley-davidson/eglide":  "motorcycle/harley-davidson/electra-glide" # GenModel "HARLEY-DAVIDSON EGLIDE" -> "HARLEY-DAVIDSON ELECTRA GLIDE" (Models "EGLIDE UL FLHTK 1690 14", …: 339 veh in Q2, gb); EGLIDE is DVLA's abbreviation of Electra Glide, live in 6 countries
+"motorcycle/honda/vtr1000s":          "motorcycle/honda/vtr1000-firestorm" # GenModel "HONDA VTR1000S" -> bare "HONDA VTR" (Models "VTR 1000 S-2..S-5": 582 veh in Q2, gb); G-1 reads VTR1000, which the Honda block already renames to VTR1000 Firestorm — live on fi,nl,ua + gb
+"motorcycle/honda/xbr500h":           "motorcycle/honda/xbr500"    # GenModel "HONDA XBR500H" -> bare "HONDA XBR" (Model "XBR500-H" 397 veh in Q2, gb); G-1 reads XBR500 (-H is the model-year letter); xbr500 live on nl + gb in this build
+"motorcycle/kawasaki/ninja-zx-4rr":   # GenModel "KAWASAKI ZX 400 SRFAN 40TH ANNIVERSARY" -> bare "KAWASAKI ZX" in VEH0120 2026 Q2 (Models "ZX 400 SSFAN" 240, "ZX 400 SRFAN 40TH ANNIVERSARY" 182, "ZX 400 STFAN" 64 = 486, gb); G-1 cuts them to ZX400. Aliased by IDENTITY to the live ninja-zx-4r (es,fi,nl,th,ua): the Kawasaki A-24 ruling reads "ZX400 SRFAN 40th" as the ZX-4RR, and zx400 also holds the 1990s ZXR400 (ZX400-L1..L9) — a worse car for a consumer holding this id
+  to: "motorcycle/kawasaki/ninja-zx-4r"
+  accepted_loss: [gb] # the gb rows land on motorcycle/kawasaki/zx400 via G-1 (no honest rename key: "ZX400" also names the ZXR400); authored, not silent
+"motorcycle/ktm/1390-superduke-r24":  "motorcycle/ktm/1390"        # GenModel "KTM 1390 SUPERDUKE R 24" -> "KTM 1390" (Models "1390 SUPERDUKE R [EVO] 24/25/26": 542 veh in Q2, gb); GUARD 1 holds the digit-bearing GenModel, so it joins the 1390 displacement family (G-1 accepted merge); ktm/1390 live on nz + gb
+"motorcycle/ktm/250sx":               "motorcycle/ktm/250"         # GenModel "KTM 250 SX" -> "KTM 250" (Models "250 SXF" 530 + "250 SX" 238 = 768 in Q2, gb); same G-1 displacement-family merge; ktm/250 live on nl,nz + gb
+"motorcycle/moto-guzzi/v7iii":        "motorcycle/moto-guzzi/v7"   # GenModel "MOTO GUZZI V7 III" -> "MOTO GUZZI V7" (Models "V7 III STONE/SPECIAL/…": 563 veh in Q2, gb); V7 III is the third V7 generation; v7 live in 6 countries
+"motorcycle/moto-guzzi/v7iv":         "motorcycle/moto-guzzi/v7"   # GenModel "MOTO GUZZI V7 IV" -> "MOTO GUZZI V7" (Models "V7 IV STONE/SPECIAL/STONE CENTENARY": 985 veh in Q2, gb); fourth V7 generation, same successor
+"motorcycle/aprilia/rs4":             "motorcycle/aprilia/rs"      # GenModel "APRILIA RS4" -> bare "APRILIA RS" (Models "RS4 125" 754 + "RS4 50" 316 = 1,070 in Q2, gb); G-1 cannot parse "RS4 125" (one digit after the family) and falls back to the stub RS, live on nl,nz + gb. PIPELINE follow-up (UK-Q2 report): keeping the Model's leading token would restore RS4 — this alias must then be retired
+"motorcycle/aprilia/sr-gt":   # GenModel "APRILIA SR GT" -> bare "APRILIA SR" in VEH0120 2026 Q2 (Models "SR GT 125 [SPORT|E5+|S E5+]", "SR GT 200 [SPORT]": 1,163 veh, gb; SR GT 125 = 1,126); G-1 cannot parse a word between family and cc and falls back to the SR stub. Aliased by IDENTITY to the live sr-gt125 (es,lu,nl), the same scooter, not to motorcycle/aprilia/sr
+  to: "motorcycle/aprilia/sr-gt125"
+  accepted_loss: [gb] # the gb rows land on motorcycle/aprilia/sr via the stub; authored, not silent (O1, verifier v215)
+"moped/aprilia/sr":                   "motorcycle/aprilia/sr"      # CROSS-KIND (prune displacement): moped/aprilia/sr is unchanged on nl,nz, but motorcycle/aprilia/sr gained 1,851 gb (the SR GT/SR MOTARD/SR MAX rows) and now holds >=97% of aprilia/sr, so Reconciler.cross_kind_prune! drops the moped record whole. Successor carries nl,nz + gb — superset
+"motorcycle/ajs/modena-50":           "moped/ajs/modena-50"        # CROSS-KIND: GenModel "AJS MODENA 50" -> "AJS MODENA" (Model "MODENA 50" 306 veh in Q2, gb) — G-1 now reads 50cc and routes it to moped; moped/ajs/modena-50 live on gb in this build
+"motorcycle/aprilia/rx50":            "moped/aprilia/rx50"         # CROSS-KIND: GenModel "APRILIA RX50" -> "APRILIA RX" (Models "RX50", "RX 50 MY06", "RX 50 RACING": 322 veh in Q2, gb, 50cc); moped/aprilia/rx50 live on fi,nl,nz + gb
+"motorcycle/aprilia/sr50":            "moped/aprilia/sr50"         # CROSS-KIND: GenModel "APRILIA SR 50" -> "APRILIA SR" (Models "SR 50 R/FACTORY/DI TEC/…": 2,609 veh in Q2 routed 50cc -> moped; "SR MOTARD 50" 197 falls back to the SR stub); the old nz row is pruned with the minority kind. moped/aprilia/sr50 live on fi,nl,nz,ua + gb — superset of gb,nz
+"motorcycle/aprilia/sx50":            "moped/aprilia/sx50"         # CROSS-KIND: GenModel "APRILIA SX 50" -> "APRILIA SX" (Models "SX 50 MY06", "SX 50": 457 veh in Q2, gb); moped/aprilia/sx50 live on fi,nl + gb
+"motorcycle/honda/nps50":             "moped/honda/nps50"          # CROSS-KIND: GenModel "HONDA NPS50" -> "HONDA NPS" (Models "NPS 50-6", "NPS 50-5": 554 veh in Q2, gb); moped/honda/nps50 (Zoomer) live on es,fi,nl,nz + gb
+"motorcycle/honda/sa50j":             "moped/honda/sa50"           # CROSS-KIND: GenModel "HONDA SA50J" -> "HONDA SA" (Model "SA50-J" 330 veh in Q2, gb); G-1 reads SA50 (J = model-year letter); moped/honda/sa50 live on nl + gb in this build
+"motorcycle/honda/mt50":              "moped/honda/mt50"           # CROSS-KIND (prune displacement): motorcycle/honda/mt50 (nl,nz) is unchanged, but GenModel "HONDA MT50SG" -> bare "HONDA MT" sends Model "MT 50 SG" (135 veh in Q2, gb) to moped/honda/mt50 at 50cc, which then holds >=97% and prunes the motorcycle record. Successor carries nl,nz + gb — superset
+"motorcycle/lexmoto/aspire-50":       "moped/lexmoto/aspire-50"    # CROSS-KIND: GenModel "LEXMOTO ASPIRE 50" -> "LEXMOTO ASPIRE" (Model "ASPIRE 50 TD 50 Q-2" 317 veh in Q2, gb, 50cc); live on gb in this build
+"motorcycle/lexmoto/fmr50":           "moped/lexmoto/fmr50"        # CROSS-KIND: GenModel "LEXMOTO FMR 50" -> "LEXMOTO FMR" (Model "FMR 50 WY 50 QT-58" 375 veh in Q2, gb, 50cc); live on gb in this build
+"motorcycle/lexmoto/scout-49":        "moped/lexmoto/scout-49"     # CROSS-KIND: GenModel "LEXMOTO SCOUT 49" -> "LEXMOTO SCOUT" (Model "SCOUT 49" 346 veh in Q2, gb, 49cc); live on gb in this build
+"motorcycle/suzuki/ap50":             "moped/suzuki/ap50"          # CROSS-KIND: GenModel "SUZUKI AP 50" -> "SUZUKI AP" (Model "AP 50" 568 veh in Q2, gb); moped/suzuki/ap50 live on nl + gb
+"motorcycle/suzuki/ay50":             "moped/suzuki/ay50"          # CROSS-KIND: GenModel "SUZUKI AY 50" -> "SUZUKI AY" (Models "AY 50 WV/AK5/…": 1,181 veh in Q2, gb); moped/suzuki/ay50 (Katana 50) live on nl,nz + gb
+"motorcycle/suzuki/ts50":             "moped/suzuki/ts50"          # CROSS-KIND: GenModel "SUZUKI TS 50" -> "SUZUKI TS" (Model "TS 50 ERKX" 458 + "TS 50 ERT" 2 = 460 in Q2, gb); moped/suzuki/ts50 live on nl,nz + gb — superset of the old nl,gb
+"motorcycle/aprilia/rs50":            # CROSS-KIND: GenModel "APRILIA RS50" -> "APRILIA RS" (Models "RS 50 MY06", "RS50", "RS 50": 1,339 veh in Q2, gb, 50cc) -> moped/aprilia/rs50 (fi,nl,nz,ua + gb), which then prunes the motorcycle record's lu,nl rows as the <3% minority kind
+  to: "moped/aprilia/rs50"
+  accepted_loss: [lu] # lu_snca filed it as a motorcycle and the moped record has no lu row to inherit (authored, not silent); nl survives on the successor
+  accepted_xref_loss: ["APR2460MM015976"]  # the ONE tan on motorcycle/aprilia/rs50, carried by its lu_snca row; it leaves with the lu row this entry already accepts losing (moped/aprilia/rs50 has no lu row to inherit, and keeps its own tan). Measured 2026-10-02 in the VEH0120 2026 Q2 build (xref-loss gate, 1 of 1 tan)
+
+# ── 2026-10-02 (S4W/COV) — auto-union -> audi: CROSS-MAKE aliases for cross-make
+# MOVES (moves.yml "Auto Union|Audi 80/100/60/100GL"), same shape as
+# car/volkswagen/porsche-914 and bus/mercedes-benz/midcity: auto-union stays a
+# live make (1000, 1000-S, 1000SP are real Auto Union products), the
+# models are relocated, the alias only keeps the old ids resolvable. Every
+# successor already carries all of the old id's countries — no accepted_loss.
+"car/auto-union/audi-80":    "car/audi/80"    # moves.yml Auto Union|Audi 80 -> Audi|80  [nl 1,977]; audi/80 already nl — https://www.audi.com/en/press-releases/a-new-era-for-the-four-rings-60-years-since-the-first-post-war-audi-16734
+"car/auto-union/audi-100":   "car/audi/100"   # moves.yml Auto Union|Audi 100 -> Audi|100  [fi 1, nl 616]; audi/100 already fi,nl — same source
+"car/auto-union/audi-60":    "car/audi/60"    # moves.yml Auto Union|Audi 60 -> Audi|60  [fi 1, nl 15]; audi/60 already fi,nl — same source
+"car/auto-union/audi-100gl": "car/audi/100"   # moves.yml Auto Union|Audi 100GL -> Audi|100  [nl 10, nz 1]; audi/100 already nl,nz — same source
+"car/auto-union/100-ls":     "car/audi/100-ls" # moves.yml Auto Union|100 LS -> Audi|100 LS  [nl 2]; audi/100-ls already nl; same source. NB this file's rule 3 reads as allowing cross-make aliases only when the old make is gone; aliases for cross-make MOVES whose source make stays alive are the established practice (car/volkswagen/porsche-914, bus/mercedes-benz/midcity, the 17 vespa lines) but the header was never amended (flagged in the PR)
+
+# ── data#315 (2W head casing pins), alias added by REL 2026-10-03 ──
+"motorcycle/harley-davidson/superglide-fxe": "motorcycle/harley-davidson/super-glide-fxe"  # renames.yml Harley-Davidson "Superglide Fxe": "Super Glide FXE" (Harley writes Super Glide as two words, h-d.com heritage copy) is a RESPELL, not a casing pin: the space changes the slug, so the published id would 404 — the fresh-fetch CI build of #315 (run 37082740345) failed the no-vanish gate on exactly this id. Same vehicles (nl_rdw, nz_nzta), same countries [nl,nz]
+
+# ── 2026-10-02 (S4W/COV) — sub-brand-under-parent MOVES (moves.yml block of the same date): cross-make aliases for cross-make moves, the seat/formentor -> cupra/formentor precedent; every successor already carries or gains the retired id's countries.
+"car/chery/jaecoo-j7": "car/jaecoo/jaecoo-7"          # moves.yml "Chery|Jaecoo J7" -> "Jaecoo|Jaecoo 7"; JPJ files Jaecoo under Chery (my n=15325); seat/formentor cross-make precedent
+"car/great-wall/haval-h6": "car/haval/h6"             # moves.yml "Great Wall|Haval H6" -> "Haval|H6"; my,nl,nz,ua n=10621
+"car/chery/omoda-9": "car/omoda/omoda-9"              # moves.yml "Chery|Omoda 9" -> "Omoda|Omoda 9"; MY Omoda C9 (my n=6834)
+"car/chery/omoda-5": "car/omoda/omoda-5"              # moves.yml "Chery|Omoda 5" -> "Omoda|Omoda 5"; my,ua n=5433
+"car/great-wall/haval-jolion": "car/haval/jolion"     # moves.yml "Great Wall|Haval Jolion" -> "Haval|Jolion"; nz n=2502
+"car/chery/jaecoo-j5": "car/jaecoo/jaecoo-5"          # moves.yml "Chery|Jaecoo J5" -> "Jaecoo|Jaecoo 5"; my n=2396
+"car/chery/jaecoo-j8": "car/jaecoo/jaecoo-8"          # moves.yml "Chery|Jaecoo J8" -> "Jaecoo|Jaecoo 8"; my n=1094
+"car/changan/deepal-s07-ev": "car/deepal/s07"         # moves.yml "Changan|Deepal S07 EV" -> "Deepal|S07"; gb n=1042, EV is a powertrain badge
+"car/byd/denza-z9gt-ev": "car/denza/z9gt"             # moves.yml "BYD|Denza Z9GT EV" -> "Denza|Z9GT"; es,nl n=2, EV is a powertrain
+# ── 2026-10-03 (S4W/COV-2) — th_dlt Aion range-and-trim ids folded onto their nameplates (renames.yml Aion block, same date).
+# Same make, same kind; each successor already carries or gains th, the old ids' only country.
+"car/aion/ut-420-standard": "car/aion/ut"   # "UT 420 STANDARD": 420 = range km, Standard = grade [th 2,782]
+"car/aion/v-602-luxury": "car/aion/v"       # "V 602 LUXURY": 602 = range km, Luxury = grade [th 4,086]
+# ── 2026-10-03 (S4W/COV-2) — UK FAMILY STEMS, cross-KIND prune alias. uk_dft now routes the
+# "DISCOVERY SPORT…" rows of the GenModel family label "LAND ROVER DISCOVERY" (135,238 gb, 2026 Q2) onto
+# car/land-rover/discovery-sport, which takes it past Reconciler.cross_kind_prune!'s 97% dominance bar, so the
+# van-kind twin (grijs-kenteken / Finnish N1 filings of the same SUV) is pruned whole — the mechanism working
+# as designed, same shape as car/nissan/pick-up and the 912 prune aliases above. The successor already carries
+# both of the old id's countries (fi, nl), so no accepted_loss.
+"van/land-rover/discovery-sport": "car/land-rover/discovery-sport" # pruned van twin [fi 5, nl 255]; car record holds fi 733, nl 3,970 + gb 135,238
+# ── 2026-10-03 (S4W/COV-2) — UK truck-kind coachbuilder TRUNCATION fixed (pair: vehiclesdb-pipeline uk_dft coachbuilder
+# stub splits + the Autotrail/Rollerteam renames). series_collapse cut the HGV-body names to their first token; the
+# rows now reach the full coachbuilder name in the truck kind. Same make, same kind, gb-only old ids, successors carry gb.
+"truck/fiat/auto": "truck/fiat/auto-trail"     # HGV "FIAT AUTO TRAIL" (5,514 gb 2026 Q2) — "Auto" was a truncation of Auto Trail
+"truck/fiat/roller": "truck/fiat/roller-team"  # HGV "FIAT ROLLER TEAM" (554 gb 2026 Q2) — "Roller" was a truncation of Roller Team

@@ -81,6 +81,12 @@ verbatim as required (CC-BY 4.0 §3(a); OGL v3; and siblings).
 - License: [Public Domain (CC0)](https://data.overheid.nl/dataset/11441-open-data-rdw--gekentekende-voertuigen)
 - Statement: Contains public data from the Dutch vehicle register (CC0).
 
+## Statens vegvesen — Periodisk kjøretøykontroll (PKK)
+
+- Source: https://dataut.vegvesen.no/dataset/periodisk-kjoretoy-kontroll
+- License: [Creative Commons Navngivelse 4.0 Internasjonal (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.no)
+- Statement: Contains data from Statens vegvesen — Periodisk kjøretøykontroll, licensed CC BY 4.0. Licence asserted by the publisher's own catalogue record (dataut.vegvesen.no) and mirrored by data.norge.no; the GitHub distribution itself carries no LICENSE file.
+
 ## New Zealand Motor Vehicle Register (Waka Kotahi NZTA open data)
 
 - Source: https://opendata-nzta.opendata.arcgis.com/datasets/NZTA::motor-vehicle-register/about

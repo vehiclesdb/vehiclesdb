@@ -1,0 +1,122 @@
+# ch_tg — Strassenverkehrsamt Kanton Thurgau, "Fahrzeugbestand Kanton Thurgau
+# am 01.01.2026" (data.tg.ch dataset djs-stv-7, CC BY 4.0). ONE CANTON — 3.9%
+# of the Swiss fleet — ingested presence-only and attach-only (see the adapter
+# header, pipeline/sources/ch_tg.rb).
+#
+# Keyed on `fahrzeugart`, the register's own vehicle-type string (ASTRA's
+# Fahrzeugart), split on `fahrzeugklasse` (the EU category, written WITHOUT the
+# trailing `e`: L3, not L3e) only where one Fahrzeugart genuinely spans kinds.
+#
+# MEASURED 2026-10-02 over the WHOLE snapshot — 280,363 vehicles, the
+# dataset's own `records_count`, summed back from the adapter's server-side
+# group_by — 43 distinct Fahrzeugart values, every one declared below. Counts on each line are vehicles;
+# "·" separates the fahrzeugklasse split ("—" = the class cell is empty).
+#
+# THE THREE OUTCOMES (same contract as no_svv_pkk.yml):
+#   a kind   mapped
+#   null     a DECLARED skip with its reason on the line. Reported in one
+#            census line per build, never warned.
+#   absent   UNDECLARED — censused and WARNED every build. Under by_eu_category
+#            an undeclared class is likewise warned, because it means the
+#            Fahrzeugart spans a kind nobody decided.
+#
+# L-CATEGORY CONVENTION, by precedent (lu_snca.rb, es_dgt.rb, fi_traficom.rb):
+# L1/L2/L6/L7 -> moped, L3/L4/L5 -> motorcycle. MOTORHOMES follow coordinator
+# ruling 4 (2026-10-02, no_svv_pkk.yml): an M1 motorhome is a `car` under its
+# CHASSIS make — and Thurgau already files the chassis as `marke` (VW
+# "T6 California TDI", FIAT "Carthago Chic C-Line I"), so no coachbuilder is
+# ever offered as a make by this source.
+
+kinds:
+  # ── car (M1) ─────────────────────────────────────────────────────────────
+  Personenwagen: car                       # 184,154 · M1 181,677 / — 2,473 / N1 3 / M2 1 — the passenger fleet
+  Schwerer Personenwagen: car              #      31 · M1 25 / — 6 — M1 over 3.5 t: Sprinter-based motorhomes, US HD pickups
+
+  # "Light motor vehicle" (<= 3.5 t) that is neither Personenwagen nor
+  # Lieferwagen: in Thurgau it is overwhelmingly CAMPER VANS (VW T6 California
+  # 168+139+73, Mercedes Marco Polo 35) — M1 -> car by ruling 4; its N1 rows are
+  # goods vans.
+  Leichter Motorwagen:                     #   4,556
+    by_eu_category:
+      M1: car                              #   2,973 — camper vans (ruling 4)
+      N1: van                              #   1,326
+      "": null                             #     257 — no EU class; the Fahrzeugart spans car and van, so an empty class cannot be placed
+  # "Heavy motor vehicle" (> 3.5 t) that is not a Lastwagen: heavy motorhomes
+  # (FIAT "Carthago Chic …") as M1, rigid N2/N3 bodies otherwise.
+  Schwerer Motorwagen:                     #     470
+    by_eu_category:
+      M1: car                              #     241 — heavy motorhomes (ruling 4)
+      N1: van                              #       1
+      N2: truck                            #     175
+      N3: truck                            #      31
+      "": null                             #      22 — no EU class; spans car and truck
+
+  # ── van (N1) ─────────────────────────────────────────────────────────────
+  Lieferwagen:                             #  18,037
+    by_eu_category:
+      N1: van                              #  17,669
+      "": van                              #     358 — a Lieferwagen is by definition a goods vehicle <= 3.5 t, so the empty class is still a van
+      N2: truck                            #       4
+      M1: null                             #       6 — a passenger class on a goods type; contradictory, 6 vehicles
+
+  # ── truck (N2/N3) ────────────────────────────────────────────────────────
+  Lastwagen: truck                         #   1,699 · N3 1,394 / N2 276 / — 29 — rigid goods vehicle > 3.5 t
+  Schweres Sattelmotorfahrzeug: truck      #       3 · N3 3
+  Sattelschlepper:                         #     745 — tractor units (the prime mover)
+    by_eu_category:
+      N3: truck                            #     642
+      N2: truck                            #       7
+      N1: van                              #      95 — light tractor units on van platforms (IVECO "50C21T Daily" 21); N1 -> van as everywhere else
+      "": null                             #       1 — no EU class
+
+  # ── bus (M2/M3) ──────────────────────────────────────────────────────────
+  Gesellschaftswagen: bus                  #     134 · M3 116 / M2 13 / — 5 — coach / bus
+  Gelenkbus: bus                           #      22 · M3 22 — articulated bus
+  Kleinbus: bus                            #     154 · M2 115 / — 36 / N1 2 / M1 1 — minibus (Transit 350L, Master, Sprinter 31x)
+
+  # ── motorcycle (L3/L4/L5) ────────────────────────────────────────────────
+  Motorrad: motorcycle                     #  27,196 · L3 21,046 / — 6,150
+  Motorrad-Seitenwagen: motorcycle         #     208 · L4 91 / — 117 — sidecar rigs fold into motorcycle (nl_rdw precedent)
+  Dreirädr. Motorfahrzeug: motorcycle      #     242 · L5 152 / — 90 — trikes (Piaggio Ape, Can-Am Spyder) -> motorcycle, D4
+  Motorrad-Dreirad:                        #      17
+    by_eu_category:
+      L3: motorcycle                       #       1
+      L2: moped                            #       2
+      "": motorcycle                       #      14 — legacy three-wheelers (Twike III 7, Messerschmitt KR 200 2); the Fahrzeugart is a motorcycle class
+
+  # ── moped (L1/L2/L6/L7) ──────────────────────────────────────────────────
+  Kleinmotorrad: moped                     #     703 · L1 504 / — 199 — <= 50 cc / 45 km/h
+  Kleinmotorrad-Dreirad: moped             #     220 · L2 71 / — 149
+  Leichtmotorfahrzeug: moped               #      45 · L6 45 — light quadricycle (Citroën AMI)
+  Kleinmotorfahrzeug: moped                #     787 · L7 686 / — 101 — heavy quadricycle / quad (CF Moto CForce, Renault Twizy, Microlino)
+
+  # ── DECLARED SKIPS: no kind exists for these ─────────────────────────────
+  # Trailers and semi-trailers (O1–O4, R/S agricultural trailers). We have no
+  # trailer kind.
+  Sachentransportanhänger: null            #  16,185 — goods trailer
+  Wohnanhänger: null                       #   2,313 — caravan
+  Sportgeräteanhänger: null                #   1,684 — boat / sport-equipment trailer
+  Landw. Anhänger: null                    #   1,465 — agricultural trailer
+  Arbeitsanhänger: null                    #   1,372 — trailer carrying a machine
+  Landw. Arbeitsanhänger: null             #     962
+  Sattel-Sachentransportanhänger: null     #   1,138 — semi-trailer
+  Anhänger: null                           #     477
+  Motorradanhänger: null                   #     111
+  Sattel-Arbeitsanhänger: null             #      17
+  Sattel-Wohnanhänger: null                #      10
+  Sattel-Anhänger: null                    #       9
+  Personentransportanhänger: null          #       2
+  Sattel-Sportgeräteanhänger: null         #       2
+  # Agricultural and forestry tractors and self-propelled farm machinery (T/C).
+  Landwirt. Traktor: null                  #   9,893
+  Traktor: null                            #     385 — non-agricultural tractor (T1/T2/C1)
+  Landw. Motorkarren: null                 #     504
+  Landw. Arbeitskarren: null               #     692
+  Landw. Motoreinachser: null              #     293 — single-axle tractor
+  Landw. Kombinations-Fahrzeug: null       #       2
+  Motoreinachser: null                     #      17
+  # Industrial machinery and site/yard carts — work machines, not road-vehicle
+  # nameplates (sweepers, cranes, Unimog implement carriers, forklifts).
+  Arbeitsmaschine: null                    #     690 · — 579 / N2 51 / N1 29 / N3 25 / M1 4 / T1 2
+  Arbeitskarren: null                      #   1,650 — yard cart / forklift
+  Motorkarren: null                        #   1,067 — industrial motor cart (T2 312)
