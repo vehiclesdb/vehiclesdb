@@ -33386,3 +33386,21 @@ The owner (Javi) is AFK and has delegated every decision to the coordinator for 
 - (d) Offline builds must now use the 48-quarter VEH0120. The 47-quarter frozen file shows ~61 inherent liveness failures against pass-1 aliases.
 
 — S4W
+
+## S4W — STRETCH 2026-10-02 CLOSED (2026-10-03 ~06:00 UTC): weekly token limit; state sealed for next week
+
+**Shipped:** v2026.10.0 (02:16 UTC, run 37088690540; 14,886 → 14,997 models, 925 makes, 15 countries incl. Norway attach-only, 0 orphans) + plus-2026.10.0 hand-cut (checksum-verified). #340 closed. ~50 PRs merged across both repos: UK DVLA 2026-Q2 re-file curated in three passes (pipeline #203/#215/#220/#225, data #341/#352; `GENMODEL_REFILE` + `FW_POOLS`); coverage (TH/AR/UA/MY sweeps, auto-union→audi, sub-brands #346, Omoda two nameplates #351, UK family stems #241/#355, coachbuilder truncation #359/#246/#360, Thai Aion #361); enrichment: 4W 71% → 95% of registration mass (ENR4, 19 PRs), 2W decile-1 83.8% → ~90% (ENR2). Web: 11 PRs READY-FOR-OWNER, nothing deployed (deploys are manual `bin/kamal deploy`; merge #92–#95 first, then #88/#89/#98/#100, then #97+#99 together).
+
+**Full per-lane record (handoff files + onboarding + rulings):** `~/GitHub/.vdb-worktrees/STRETCH-2026-10-02-handoff/` (copied out of the session scratchpad). Read REL.md, RELP.md, COV2.md, ENR2.md, ENR4.md, SRC.md, WEB.md before touching anything.
+
+**Open, verified, merge next (REL-P checklist: identity, verdict on PR, plate/VIN grep, parsed green, pipeline-first for pairs; never during a publish run):** pipeline #242, #243, #247, #244, #245 (independent), #248 (yamaha-2; check stack note), #213 (dossier). Data: none left except owner items.
+
+**Owner rulings needed:** (1) Israel/Italy licences — pipeline #210/#211 + data #349/#350 (integrity clauses); (2) `PIPELINE_RELEASE_TOKEN` secret (with #353 every monthly publish ends RED until it exists or plus is hand-cut); (3) pipeline #205 — published `global_decile` is not mass-ordered (drives web /resolve kind tie-break); (4) web security items in WEB.md (config.hosts unset in prod, Cloudflare-only origin, IPv6 /128 limiter buckets); (5) commit-email history (`medenen62@mitomail.com` on 13 data + 9 pipeline trailer commits — leave or rewrite); (6) Hyptec HT as a make; Iveco AS/AD/AT needs year-aware routing; Ora 03; Crown Crossover/Sport; `former_ids` rule-3 header wording.
+
+**Unfinished on disk (uncommitted, never pushed — inspect before building on):** Australia attach-only measurement (`src-au-attach`, SRC was mid final re-measurement; ruling LCV→van stands; pipeline #188 + data #334 open); Switzerland Thurgau `ch_tg` adapter (`src-ch-pipeline`/`src-ch-data`, stacked on the now-merged Norway branch — rebase); ENR2 d2-bmw (verifier killed) and d2-suzuki worktrees; `cov2-ukstem-pipeline` (superseded by #241 — discard after checking); `norm-junkdrops`. Primary clones carry stray untracked files — inspect, do not commit.
+
+**Not done:** audit round 2 (#337, zero records audited), #186 (needs control build), #185 (WIP specs), #319 (declined), next 4W queue heads in `q-10-final.tsv` (317 ids reach 99%), ENR2 batches past ~90%, UK stub-split increment 2 (Nissan 350Z, C5 Aircross, eSprinter), Argentine folds blocked on duplicate ids.
+
+**Harness lessons (also in coordinator memory):** session limit at ~2h20 with 7 Opus managers; 3–4 managers × ≤2 children sustained ~7 h; then the WEEKLY limit ended the stretch. Sonnet for research/mechanical children, Opus for managers + verifiers (owner rule 2026-10-03). The "frozen cache offline build" refetches after 20 h — use `$S/cov/build.sh`-style hard-linked copy + network-refusing shim (copies in the handoff dir). `find_inert_override_keys.rb` is not offline either. Monthly cron Oct 12 04:23 UTC will publish 2026.10.1 from whatever is on main.
+
+— S4W (coordinator)
