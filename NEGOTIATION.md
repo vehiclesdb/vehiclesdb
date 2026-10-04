@@ -33404,3 +33404,23 @@ The owner (Javi) is AFK and has delegated every decision to the coordinator for 
 **Harness lessons (also in coordinator memory):** session limit at ~2h20 with 7 Opus managers; 3–4 managers × ≤2 children sustained ~7 h; then the WEEKLY limit ended the stretch. Sonnet for research/mechanical children, Opus for managers + verifiers (owner rule 2026-10-03). The "frozen cache offline build" refetches after 20 h — use `$S/cov/build.sh`-style hard-linked copy + network-refusing shim (copies in the handoff dir). `find_inert_override_keys.rb` is not offline either. Monthly cron Oct 12 04:23 UTC will publish 2026.10.1 from whatever is on main.
 
 — S4W (coordinator)
+
+## S4W — FINISH 2026-10-04 (lane S4W/FINISH, ~22:00 UTC): verified queue merged, Australia + Thurgau shipped attach-only, no uncommitted WIP left in my scope
+
+**Merged (squash; each gated: every commit canonical, verifier verdict on the PR, VIN/plate grep, merge-from-main with no force, lint_enrich + rake EXIT 0, every CI check SUCCESS on the exact head, main unmoved since the gate, tree-equal):**
+- pipeline enrich: #242 `44b5ada` · #243 `270ddfb` · #247 `485bf19` · #244 `db5c6cb` · #245 `ecd14c2` · #248 `68e85cf` · #213 dossier `60c75e9`.
+- ENR2 decile-2: **#249 suzuki `35540a1`** (15 ids, 67,372 stock; 8 verdict fixes confirmed applied) and **#250 bmw `d304366`** (15 ids, 51,080 stock). The bmw verifier "killed before a verdict" had in fact finished (14 fixes). A second fresh Opus round found 7 more, and the applied file is byte-identical to that verifier's own simulation.
+- **#252 `463ac53`** report_junk_drops reconcile + source-pin test (tools-only). It re-cuts #251, which I closed because it inherited the unsquashed #181 commit `8a41764`, mis-authored with a non-canonical email.
+- **Australia, attach-only:** pipeline **#188 `a74c13a`** → data **#334 `f4251a3`**. Measured junk rate ≈43–49%, so attach-only per the Norway precedent. Control vs treatment: ids +0/−0 in every kind; 2,498 ids gain `au` (19,484,646 vehicles); pairs lost 0; orphans 0; FAIL set identical; lint_dataset byte-identical. **Ruling 3 (LCV→van) is in the kind map, but the 24-id migration does not happen under attach-only, and no alias is written (an alias may not name a live id). The ute move is deferred to the PR that lifts AU's attach-only status.** Licence: CC BY 3.0 AU, pin byte-equal on 2026-10-04, §4B attribution in the adapter. Two Opus rounds; round 2's R1 removed an unrelated CH rewrite from #334.
+- **Switzerland / Thurgau `ch_tg`, presence-only + attach-only:** pipeline **#253 `5f5d5f9`** → data **#362 `aa52c80`**. CC BY 4.0 confirmed at the exact URL. ids +0/−0; 3,876 ids gain `ch` (count 0, no ch rank); orphans 0; FAIL set identical. One Opus verifier, 3 prose fixes applied. Each data `build` check was re-run after its pipeline half merged, and no publish run was in flight.
+- Post-batch on bare main (pipeline `5f5d5f9` + data `aa52c80`, 48q cache): lint_enrich EXIT 0; rake EXIT 0, 460 runs, 0F/0E.
+
+**Closed out (no WIP left):** rel-t315 (its change is on main); cov2-ukstem (superseded by #241/#215/#220 and data renames; branch never pushed, now deleted); Thurgau v1 worktrees and src-au-attach (content identical to what shipped); 18 finished worktrees removed. **#186 measured and left open:** on current main it adds 31 ids (stubs, nearly all corroborated only by `no`/`au` attach-only rows), kubistar still vanishes, and it creates a new alias-liveness FAIL. Its commits are also mis-authored. The comment on #186 has the numbers and the path to land it.
+
+**With the owner (bodies say exactly what to decide):** #210/#349 Israel and #211/#350 Italy, licence rulings. Each conflicts with main because their own attach-only code copy predates the generic mechanism; re-cut after the ruling. #185 specs is WIP (current with main). #337 audit round 2: run or close (current with main). #319 declined: close or re-measure (current with main). Carried over from the CLOSED turn: PIPELINE_RELEASE_TOKEN, #205 global_decile, the web items, and commit-email history (add `8a41764`/`adfe7e0` to that list).
+
+**Unverified / residual:** bitre.gov.au/copyright is unreachable (HTTP 000; the © wording comes from secondary sources). The Thurgau "3.9% of the Swiss fleet" denominator was not independently verified. #213's dossier text is as of 2026-10-03.
+
+**Process slips, recorded:** (1) a failed `ruby -i` blanked #188's body for about 5 min; it was restored from GitHub's edit history. (2) One no-commit trial merge in a scratch worktree ran with `-c user.*`; it was aborted and redone without, and nothing was committed. Full record: `~/GitHub/.vdb-worktrees/STRETCH-2026-10-02-handoff/handoff/FINISH.md`.
+
+— S4W/FINISH
