@@ -140,7 +140,7 @@ suspects = []
 # the very corroboration the build refuses it (measured 2026-10-02: attaching
 # no_svv_pkk moved 19 suspects to "legit" and 7 out of "debt" with no record or
 # name changing). Keep this list in step with the pipeline's attach_only? sources.
-ATTACH_ONLY = { "no_svv_pkk" => "no", "au_bitre" => "au" }.freeze
+ATTACH_ONLY = { "no_svv_pkk" => "no", "au_bitre" => "au", "ch_tg" => "ch" }.freeze
 
 models.each do |m|
   make_name = makes[[m["_kind"], m["make_id"]]]
