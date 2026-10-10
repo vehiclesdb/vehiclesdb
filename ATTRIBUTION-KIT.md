@@ -10,15 +10,16 @@ the CC-BY 4.0 license (§3(a)) — every public use of this data must visibly
 credit VehiclesDB with a link."*
 
 In practice: wherever people can see data that came from VehiclesDB, show the
-line below with a working link to `https://vehiclesdb.com`. That is all.
+line below with a working link to `https://vehiclesdb.com`.
 
 Two notes, also from the files that govern this:
 
 - The **upstream register notices** in [ATTRIBUTION.md](ATTRIBUTION.md) (KBA,
   DVLA, Traficom and the others) apply to every consumer under every
-  VehiclesDB licence. The simplest way to honour them is to link
-  ATTRIBUTION.md from your credits or about page, or to ship it beside the
-  data if you redistribute the files.
+  VehiclesDB licence. ATTRIBUTION.md reproduces each register's prescribed statement verbatim;
+  carry those statements as their licences require (for example on your
+  credits or about page, or by shipping ATTRIBUTION.md beside the data if you
+  redistribute the files).
 - A commercial license (vehiclesdb.com) waives only the VehiclesDB credit;
   upstream register notices (ATTRIBUTION.md) always apply.
 
@@ -29,7 +30,7 @@ Two notes, also from the files that govern this:
 ```
 
 Better still, link the page you actually used, e.g. on a SEAT León page:
-`<a href="https://vehiclesdb.com/cars/seat/leon">SEAT León — VehiclesDB</a>`.
+`Vehicle data: <a href="https://vehiclesdb.com/cars/seat/leon">SEAT León — VehiclesDB</a>`.
 
 ## The same line in 12 languages
 
@@ -44,7 +45,7 @@ copy (text, HTML, Markdown and app form for every language):
 | `es` | Español | Datos de vehículos por VehiclesDB | `<a href="https://vehiclesdb.com">Datos de vehículos por VehiclesDB</a>` |
 | `fr` | Français | Données véhicules fournies par VehiclesDB | `<a href="https://vehiclesdb.com">Données véhicules fournies par VehiclesDB</a>` |
 | `de` | Deutsch | Fahrzeugdaten von VehiclesDB | `<a href="https://vehiclesdb.com">Fahrzeugdaten von VehiclesDB</a>` |
-| `pt` | Português | Dados de veículos por VehiclesDB | `<a href="https://vehiclesdb.com">Dados de veículos por VehiclesDB</a>` |
+| `pt` | Português | Dados de veículos fornecidos por VehiclesDB | `<a href="https://vehiclesdb.com">Dados de veículos fornecidos por VehiclesDB</a>` |
 | `it` | Italiano | Dati sui veicoli forniti da VehiclesDB | `<a href="https://vehiclesdb.com">Dati sui veicoli forniti da VehiclesDB</a>` |
 | `ro` | Română | Date despre vehicule furnizate de VehiclesDB | `<a href="https://vehiclesdb.com">Date despre vehicule furnizate de VehiclesDB</a>` |
 | `tr` | Türkçe | Araç verileri: VehiclesDB | `<a href="https://vehiclesdb.com">Araç verileri: VehiclesDB</a>` |
