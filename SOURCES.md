@@ -28,6 +28,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet; attach-only** |
 | `ch_tg` | 🇨🇭 CH | Kanton Thurgau registered-vehicle stock (Strassenverkehrsamt TG, via data.tg.ch), aggregated server-side to make × model × class × fuel | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | yearly (stock at 1 Jan) | presence only — **one canton (3.9% of CH); attach-only; count nil** |
 | `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet — **attach-only** |
+| `il_mot` | 🇮🇱 IL | MoT active-vehicle roll-up (car/van) + motorcycle and heavy registers, via the datastore API | Facts with credit to data.gov.il, under the [data.gov.il Terms of Use](https://data.gov.il/he/terms-of-use) (`other-open`) — **not relicensed CC BY** | daily | ✓ fleet (active) — **attach-only** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -52,6 +53,7 @@ about coverage.
 | `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
 | `no_svv_pkk` | `Drivstofftype` | petrol · diesel · BEV · CNG · LPG · ethanol · FCEV — **never a hybrid code**: the column has none, so plug-in hybrids are filed under their combustion fuel and NO can evidence neither `hev` nor `phev`. `Gass` fuses LPG+CNG and maps to neither |
 | `ch_tg` | `treibstoff_code` + `hybridcode` | petrol · diesel · BEV · CNG · LPG · FCEV, and `hev`/`phev` from `hybridcode` (NOVC-HEV / OVC-HEV). Petrol/diesel-electric vehicles with no hybridcode contribute nothing (electrified, plug unknown). **One canton**, so presence of a code, never a Swiss share |
+| `il_mot` | car/van: the approval catalogue's `technologiat_hanaa_nm` (+ `delek_nm`); 2W/truck/bus: register `sug_delek_nm` | car/van: BEV · PHEV · **HEV** (the only Israeli field that separates a regular hybrid from a plug-in) · petrol · diesel · LPG; 2W/heavy: petrol · diesel · BEV · LPG · CNG — the register's electric+petrol value maps to neither hybrid code |
 | `us_fueleconomy` | `atvType` | the full vocabulary, as **approval** evidence (certified configurations, not vehicles) |
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
@@ -232,6 +234,88 @@ propulsion coverage would require RDW to publish a combined view.
   - **Filenames rotate case** (`PKK-2023-…` upper, `pkk-2025-…` lower), so the
     file list is read from the GitHub contents API and never templated.
   - **`N/A` is a literal model string** (ISUZU ships it), not a blank.
+- **il_mot** — Israel's Ministry of Transport registers on data.gov.il,
+  measured 2026-10-02. **Only the CKAN API works**: every bulk route (the
+  `/download/*.csv` links, `/datastore/dump`, the `e.data.gov.il` resource
+  URLs) answers a CloudFront WAF challenge, a 403 or a Google sign-in, so the
+  adapter pages `datastore_search` 100,000 rows at a time and proves each read
+  contiguous (`_id` 1..N, N = the server total).
+  - **Identifiers are never requested.** Three of the four datasets are
+    per-vehicle and carry the plate, the chassis number and the engine number;
+    the API projects `fields=`, so only an allow-list of non-identifier
+    columns ever leaves the server. Car and van come from the Ministry's own
+    roll-up (`5e87a7a1`, active count by make, model code, year and commercial
+    name), which has no per-vehicle row at all. Model cells of nothing but 7–8
+    digits — an Israeli plate's shape — are dropped and counted (13 vehicles).
+  - **Stock = ACTIVE vehicles**: licence valid or lapsed ≤13 months,
+    deregistrations excluded; the car/van roll-up starts at manufacture year
+    1996/1998. Basis `stock-active`. No `by_year` series: `shnat_yitzur` is
+    the MANUFACTURE year, and the on-road date beside it is not an Israel
+    first-registration date (used imports show gap 0 in 100% of 21,834 rows).
+  - **Makes are written in Hebrew only.** The map is curation, in
+    `overrides/makes/aliases.yml` (145 keys, 98.75% of active mass);
+    `ג'אקו` is **Jaecoo**, not JAC (`ג'אק`). Multi-marque register labels
+    (`דיימלר קרייזלר`, `קרייזלר` — filed on Ram trucks too — `רובר`) stay
+    unmapped and are dropped with their mass logged.
+  - **The motorcycle register's L1/L2/L3 are LICENCE TIERS, not EU
+    categories** (A2 ≤14.6 hp / A1 ≤47 hp / A): L1 is mostly 125 cm³
+    scooters. Moped is decided by the EU L1e bound — ≤50 cm³, or ≤4 kW
+    electric (`hespek` is horsepower). The heavy register's `tkina_EU` IS a
+    real EU category: N2/N3 truck, M2/M3 bus; trailers, tractors and its
+    M1/N1 rows are declared skips (`overrides/kind_maps/il_mot.yml`).
+  - **ATTACH-ONLY.** Allowed to mint (control vs treatment on a frozen
+    corpus, adapter the only variable), Israel published **+821 ids** (car
+    159 · van 37 · truck 178 · bus 61 · motorcycle 372 · moped 14) and **12
+    new gate failures** (alias-liveness resurrections like `van/mazda/bt-50`;
+    no-vanish via cross-kind dominance like `car/fiat/250`, displaced by
+    Israel's Fiat "250" trucks). The head was junk: tails fused into
+    commercial names (`toyota/corolla-hsd-sdn` 33,309, `hyundai/elantra-hev`)
+    and, on 2W/truck/bus, TYPE CODES rather than names (`honda/nf13`,
+    `ktm/gsa20`, `chevrolet/ck`). As shipped: **+0 ids, 0 renames, gate
+    failures identical to control; `il` on 1,483 published ids** (car 772 ·
+    van 98 · truck 170 · bus 34 · motorcycle 394 · moped 15) carrying
+    3,638,204 of 4,507,113 ingested active vehicles (80.7%; car 85.6%,
+    motorcycle 6.0% — the type-code cells rarely meet a catalog name).
+  - **Licence — coordinator ruling R1 (2026-10-10, owner-delegated):
+    ACCEPT on path (b): facts with credit, never relabelled CC BY.** Every
+    package read is `other-open` with no text; the site licence governs
+    (https://data.gov.il/he/terms-of-use, read 2026-10-10 with a browser UA:
+    HTTP 200, 39,416 B, sha256 `4aa08bee…7eff6b`, "updated 30/08/2025"). It
+    permits copying, distribution, derivatives and commercial use, but it is
+    not CC BY:
+    - **Pass-through clause (value-added products), verbatim:** «זכויות יוצרים
+      במוצרי ערך מוסף יהיו שייכות לך או למי שאתה מייעד אותן. אולם, זכויות
+      היוצרים במידע שבו נעשה שימוש לפי רישיון זה, הכלול במוצר ערך מוסף, ככל
+      שהן קיימות, יהיו שייכות למדינת ישראל, כאשר השימוש במידע יהיה בכפוף
+      לרישיון שימוש זה.» ("Copyright in value-added products belongs to you.
+      However, copyright in the Information used under this licence that is
+      included in a value-added product, to the extent it exists, belongs to
+      the State of Israel, and use of the Information remains subject to this
+      licence.") There is no sublicensing grant, so the State's Information
+      cannot be relicensed CC BY 4.0 inside our product.
+    - **The basis we publish on — the facts carve-out, verbatim:** «רישיון זה
+      אינו גורע משימושים המותרים על פי חוק, לרבות הגנת השימוש ההוגן ולרבות
+      שימוש בעובדות ובנתונים לכשעצמם, בדרך שאינה מפרה את ההגנה על בחירת
+      הנתונים, הסדר והארגון שלהם.» ("This licence does not derogate from uses
+      permitted by law, including fair use and the use of facts and data
+      themselves, in a way that does not infringe the protection of the
+      selection, order and arrangement of the data.") VehiclesDB publishes
+      only aggregate make/model/kind facts re-keyed to its own ids — neither
+      the Ministry's selection nor its arrangement — so `il_mot`'s manifest
+      `license` is `facts-credit-data.gov.il-terms-of-use` and its
+      ATTRIBUTION line reads "published as facts, with credit to data.gov.il,
+      under the data.gov.il Terms of Use … not relicensed under CC BY 4.0".
+    - **Prohibited uses** that still bind us as users (not relicensed, so
+      stated here for downstream readers): no misleading presentation or
+      false representation, no alteration that distorts the information, no
+      harm to the dignity or name of the copyright holder, **no use that
+      harms a person's privacy, including by cross-referencing**, no unlawful
+      use. Breach terminates the licence; exclusive Jerusalem jurisdiction.
+      Argument and counter-argument: vehiclesdb-pipeline#210.
+    - **Pin.** The terms page is WAF-blocked to the pipeline's UA, so the pin
+      guards the CKAN licence fields (`other-open`, isopen true) of
+      `degem-rechev-wltp` and the text is quoted in the adapter; re-read it by
+      hand with a browser on each release.
 - **de_kba_fz10** — Germany's per-vehicle register is closed by statute
   (§39 StVG); FZ 10 is the open model-level signal and is already
   series-normalized by KBA. The site answers missing months with HTTP 200 +
