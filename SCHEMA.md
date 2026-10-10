@@ -132,7 +132,7 @@ appears only where we hold a source for it (see `manifest.json.countries`).
 
 ```json
 "popularity": {
-  "global_decile": 2,
+  "global_decile": 5,
   "mass_decile": 1,
   "by_country": {
     "nl": { "rank": 1, "decile": 1, "confidence": "measured" },
@@ -158,8 +158,8 @@ appears only where we hold a source for it (see `manifest.json.countries`).
   ordered by id). Present exactly when `popularity` is. Use it when you mean
   "how many exist"; use `global_decile` when you mean "popular in many
   places". **Denominator caveat:** the sum mixes stock registers (the whole
-  fleet: NL/FI/GB/NZ …) and flow registers (registrations or register
-  operations over a window: DE/ES/IE …) — see SOURCES.md for each
+  fleet: NL/FI/GB/NZ …) and flow registers (registrations, register
+  operations or roadworthiness inspections over a window: DE/ES/IE/NO …) — see SOURCES.md for each
   country's basis — so a big stock-register market weighs more than a
   flow-register one of the same size; catalog-only sources (`ca`, `us`) and
   presence-only registers (e.g. `ch`) contribute 0. The counts
