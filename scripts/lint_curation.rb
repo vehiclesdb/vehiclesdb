@@ -441,8 +441,30 @@ Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].sort.each do |abs|
   # no vehicle-class column at all. Germany's KBA FZ 10.1 is the case: every row
   # is EU class M1 by construction, and M1 includes the passenger versions of
   # vans, so the kind has to come from the nameplate.
-  unknown = doc.keys - %w[kinds body_types by_model notes]
-  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/notes)" unless unknown.empty?
+  # `make_splits` (il_mot only so far): a register label that files a SECOND
+  # marque (Israel's BMW label carries MINI). Each rule must name a make and a
+  # compilable `match`; `kinds`, `strip`, `rewrite` are optional and checked.
+  unknown = doc.keys - %w[kinds body_types by_model make_splits notes]
+  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/make_splits/notes)" unless unknown.empty?
+  (doc["make_splits"] || {}).each do |label, rules|
+    unless rules.is_a?(Array) && rules.all? { |r| r.is_a?(Hash) }
+      fail! "#{rel}: make_splits #{label.inspect} must be a list of rules"
+      next
+    end
+    rules.each do |r|
+      extra = r.keys - %w[match make kinds strip rewrite]
+      fail! "#{rel}: make_splits #{label.inspect} rule has unknown key(s) #{extra.inspect}" unless extra.empty?
+      fail! "#{rel}: make_splits #{label.inspect} rule needs `make` and `match`" unless r["make"].to_s.strip != "" && r["match"].is_a?(String)
+      (r["kinds"] || []).each { |k| fail! "#{rel}: make_splits #{label.inspect} kind #{k.inspect} is not a known kind" unless %w[car van motorcycle moped truck bus].include?(k.to_s) }
+      pats = [r["match"], *Array(r["strip"]), *Array(r["rewrite"]).map { |x| x.is_a?(Array) ? x[0] : x }]
+      pats.compact.each do |re|
+        Regexp.new(re.to_s)
+      rescue RegexpError => e
+        fail! "#{rel}: make_splits #{label.inspect} regex #{re.inspect} does not compile (#{e.message})"
+      end
+      Array(r["rewrite"]).each { |x| fail! "#{rel}: make_splits #{label.inspect} rewrite #{x.inspect} must be [regex, replacement]" unless x.is_a?(Array) && x.size == 2 }
+    end
+  end
   fail! "#{rel}: missing the `kinds:` map" unless doc.key?("kinds")
   (doc["by_model"] || {}).each do |model, kind|
     next if %w[car van motorcycle moped truck bus].include?(kind.to_s)
