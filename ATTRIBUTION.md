@@ -75,6 +75,12 @@ verbatim as required (CC-BY 4.0 §3(a); OGL v3; and siblings).
 - License: [Creative Commons Attribution 4.0](https://www.cso.ie/en/aboutus/whoweare/copyrightpolicy/)
 - Statement: Contains Central Statistics Office (Ireland) data (table TEM20), licensed under Creative Commons Attribution 4.0 (© Government of Ireland).
 
+## Israel Ministry of Transport — vehicle register (data.gov.il)
+
+- Source: https://data.gov.il/dataset/degem-rechev-wltp
+- License: [Facts with credit to data.gov.il, under the data.gov.il Terms of Use (רישיון שימוש; dataset license_id other-open) — not relicensed CC BY 4.0](https://data.gov.il/he/terms-of-use)
+- Statement: Israel: aggregate vehicle counts derived from the vehicle register datasets of the Ministry of Transport and Road Safety (משרד התחבורה והבטיחות בדרכים), published on data.gov.il (Israel National Digital Agency). These counts are published as facts, with credit to data.gov.il, under the data.gov.il Terms of Use (https://data.gov.il/he/terms-of-use); they are not relicensed under CC BY 4.0.
+
 ## Luxembourg vehicle register operations (SNCA)
 
 - Source: https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/
