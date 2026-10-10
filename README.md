@@ -141,14 +141,15 @@ by row.
 
 ```bash
 curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/latest/download/catalog.sqlite
-# The car models on Ukraine's register, most widespread first
+# Ukraine's 20 most registered car models: sort by the per-country rank
+# (the deciles on `models` are global, never a per-country order)
 sqlite3 catalog.sqlite "
-  SELECT mk.name, m.name
-  FROM models m
-  JOIN makes mk        ON mk.id = m.make_id   AND mk.kind = m.kind
-  JOIN availability a  ON a.model_id = m.id   AND a.kind = m.kind
-  WHERE m.kind = 'car' AND a.country = 'ua'
-  ORDER BY m.global_popularity_decile, mk.name
+  SELECT p.rank, mk.name, m.name
+  FROM popularity p
+  JOIN models m  ON m.id = p.model_id  AND m.kind = p.kind
+  JOIN makes mk  ON mk.id = m.make_id  AND mk.kind = m.kind
+  WHERE p.kind = 'car' AND p.country = 'ua'
+  ORDER BY p.rank
   LIMIT 20"
 ```
 
