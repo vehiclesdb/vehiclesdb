@@ -2,6 +2,22 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.10.3] - 2026-10-10 — Israel joins (attach-only), and the specs layer ships in the paid feed
+
+**15068 models across 934 makes in 18 countries.** The third cut of the owner-authorised stretch of 2026-10-10 (CI publish run 38070378780; `validate: ALL GATES GREEN`; licence pins **17/17** verified). Public ids and names are unchanged apart from the cache-state class noted in `RELEASE-DIFF-2026.10.3.md`; what changed is availability: **Israel (`il`, MoT / data.gov.il) joins as the 18th register, attach-only** (pipeline#254 + #364, ruling R1): ~1,494 published ids gain `il` availability from 3.64 M of 4.5 M Israeli vehicles, published as facts with credit to data.gov.il under its Terms of Use (not relicensed CC BY — see SOURCES.md and ATTRIBUTION.md). No new ids are minted from the Israeli register.
+
+### Also in this release
+- **Romania (`ro_drpciv`, DRPCIV Parc auto, OGL-ROU-1.0)** is wired in but ships **disabled** behind an expired `*.gov.ro` TLS certificate (pipeline#267 + data#378); its licence pin is `declared_absent`, the build is byte-identical with it off, and the enable procedure is in pipeline#267.
+- Curation: "Mercedes" is a published search alias of Mercedes-Benz (#379); the Vespa GT125 co-move and the Romanian kind map (#378).
+- Builder-facing docs and tools (PKG lane): attribution kit with a credit line in 12 languages, badge and footers (#372); the README for builders with generated per-country counts and `scripts/gen_readme_stats.rb` (#371); `scripts/release_diff_by_country.rb` (#374); `scripts/package_release.sh` relational SQLite + Parquet package script (#375; the release-channels step that would attach it is deferred, data#382).
+- DEBT: the Civic NL 1920 junk cohort and the registration-year floor proposal (pipeline#268); the Traficom extract vintage.
+
+### Depth (private layer)
+- **Model-year specs (G26d)** from fueleconomy.gov + NRCan land in catalog-plus as a fenced `model-year-specs/1` layer (pipeline#185), beside the provenance and generations sidecars; ships in the hand-cut `plus-2026.10.3`. ENR4W Lexus/Daihatsu batch (pipeline#270).
+
+### Known
+- `plus-2026.10.3` hand-cut again (`PIPELINE_RELEASE_TOKEN` still unset).
+
 ## [2026.10.2] - 2026-10-10 — the provenance release (paid layer) and the developer-quality batch
 
 **15,068 models across 934 makes in 17 countries (15,069 → 15,068, −1).** One id retired with a migration path (`car/volkswagen/2dsedan-1300-11-2400` → `car/volkswagen/beetle`; see Curation), 0 added, ORPHAN section empty (`RELEASE-DIFF-2026.10.2.md`). Second cut of the owner-authorised stretch of 2026-10-10, through the CI publish path (run 38040238666; `validate: ALL GATES GREEN`, licence pins 16/16; same windows as 2026.10.1).

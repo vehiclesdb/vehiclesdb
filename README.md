@@ -15,7 +15,7 @@ All numbers below are generated from this release's `manifest.json` and
 `catalog/` by `scripts/gen_readme_stats.rb`. Nobody types them by hand.
 
 <!-- BEGIN GENERATED: stats (scripts/gen_readme_stats.rb) -->
-**Dataset `2026.10.2`** (built 2026-10-10) — **15,068 models · 934 makes · 6 kinds · 17 countries**
+**Dataset `2026.10.3`** (built 2026-10-10) — **15,068 models · 934 makes · 6 kinds · 18 countries**
 
 | kind | models | makes |
 |---|---:|---:|
@@ -41,6 +41,7 @@ Models with evidence in each country (a model counts once per country it is foun
 | Spain (`es`) | [Spanish vehicle registrations (DGT microdata, MATRABA)](https://www.dgt.es/menusecundario/dgt-en-cifras/matraba-listados/matriculaciones-automoviles-mensual.html) | [Ley-37/2007](https://datos.gob.es/es/aviso-legal) | registration | 2,690 | 1,222 | 906 | 121 | 192 | 193 | 56 |
 | Australia (`au`) | [Australian registered road vehicles by make and model (BITRE Road Vehicles Australia)](https://data.gov.au/data/dataset/road-vehicles-australia-january-2025) | [CC-BY-3.0-AU](https://creativecommons.org/licenses/by/3.0/au/) | registration | 2,499 | 1,347 | 852 | — | 132 | 110 | 58 |
 | Luxembourg (`lu`) | [Luxembourg vehicle register operations (SNCA)](https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/) | [CC0-1.0](https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/) | registration | 2,412 | 1,121 | 967 | 50 | 154 | 97 | 23 |
+| Israel (`il`) | [Israel Ministry of Transport — vehicle register (data.gov.il)](https://data.gov.il/dataset/degem-rechev-wltp) | [facts-credit-data.gov.il-terms-of-use](https://data.gov.il/he/terms-of-use) | registration | 1,495 | 784 | 392 | 14 | 98 | 171 | 36 |
 | United States (`us`) | [US EPA/DOE fuel economy vehicle catalog (fueleconomy.gov)](https://www.fueleconomy.gov/feg/download.shtml) | [US-PD](https://www.energy.gov/web-policies) | approval | 1,212 | 1,212 | — | — | — | — | — |
 | Canada (`ca`) | [Canadian fuel consumption ratings (Natural Resources Canada)](https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64) | [OGL-Canada-2.0](https://open.canada.ca/en/open-government-licence-canada) | approval | 984 | 984 | — | — | — | — | — |
 | Thailand (`th`) | [Thai new vehicle registrations by brand and model (DLT)](https://gdcatalog.dlt.go.th/dataset/59a045dc-3ec4-4908-b035-ba789101b7f5) | [TH-OpenDataCommon](https://gdcatalog.dlt.go.th/dataset/59a045dc-3ec4-4908-b035-ba789101b7f5) | registration | 803 | 355 | 431 | — | 17 | — | — |
@@ -95,7 +96,7 @@ Release assets are the top-level files (`vehicles.csv`, `catalog.sqlite`,
 
 <!-- BEGIN GENERATED: load-postgres (scripts/gen_readme_stats.rb) -->
 ```bash
-curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.10.2/vehicles.csv
+curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.10.3/vehicles.csv
 psql "$DATABASE_URL" <<'SQL'
 CREATE TABLE vehiclesdb_models (
   kind                     text NOT NULL,
@@ -116,7 +117,7 @@ CREATE TABLE vehiclesdb_models (
 SQL
 ```
 
-The column list above is generated from `v2026.10.2`'s CSV header. Since 2026.07.2, columns
+The column list above is generated from `v2026.10.3`'s CSV header. Since 2026.07.2, columns
 are only ever appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
 ADD COLUMN` the new ones (see CHANGELOG.md) and reload. `countries`, `regions`,
 `body_types`, `aliases` and `former_ids` are `|`-separated lists
@@ -382,7 +383,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
 
 <!-- BEGIN GENERATED: cite (scripts/gen_readme_stats.rb) -->
 > VehiclesDB. (2026). *VehiclesDB: The open source vehicle database*
-> (Version 2026.10.2) [Data set]. Zenodo.
+> (Version 2026.10.3) [Data set]. Zenodo.
 > https://doi.org/10.5281/zenodo.21744943
 
 ```bibtex
@@ -392,7 +393,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
   year         = {2026},
   howpublished = {\url{https://github.com/vehiclesdb/vehiclesdb}},
   doi          = {10.5281/zenodo.21744943},
-  note         = {Open dataset, CC BY 4.0, version 2026.10.2}
+  note         = {Open dataset, CC BY 4.0, version 2026.10.3}
 }
 ```
 
