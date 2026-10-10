@@ -278,7 +278,7 @@ reach every builder in your country, and every next release.
   register, a type-approval list, or the manufacturer's own page. Spellings
   and aliases go straight into `overrides/`. A new model publishes once an
   official open source corroborates it; until then it is filed in
-  [DEBT.md](DEBT.md) with your evidence, and your list tells us which
+  [DEBT.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/DEBT.md) with your evidence, and your list tells us which
   country's register to ingest next.
 - **An official open source we're missing**, especially outside Europe →
   open an issue with the URL and its licence text. That is the
@@ -351,8 +351,11 @@ any use, including commercial. The licence condition, as
 
 Where it fits, link the specific make/model page you used (e.g.
 `https://vehiclesdb.com/cars/seat/leon`) instead of the homepage: more
-useful for your readers, and for us. Ready-made snippets (HTML, Markdown,
-BibTeX, README badge):
+useful for your readers, and for us.
+
+**Copy-paste kit:** [ATTRIBUTION-KIT.md](ATTRIBUTION-KIT.md) has the line
+in 12 languages (en es fr de pt it ro tr pl uk hu nl), an SVG badge and a
+machine-readable `footers.json`. More forms (BibTeX, API consumers):
 [vehiclesdb.com/attribution](https://vehiclesdb.com/attribution).
 
 Prefer not to credit **VehiclesDB**, or need the enriched private layer
