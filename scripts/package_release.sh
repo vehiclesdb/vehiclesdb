@@ -14,6 +14,7 @@
 #   OUT_DIR/vehiclesdb-<version>-parquet/<table>.parquet   one file per table (zstd)
 #   OUT_DIR/vehiclesdb-<version>-parquet/schema.sql  the DDL (also documents the Parquet columns)
 #   OUT_DIR/vehiclesdb-<version>-parquet/README.md   what each table is, how to load it
+#   OUT_DIR/vehiclesdb-<version>-parquet/ATTRIBUTION.md   the upstream register notices (when DATA_ROOT has it)
 #   OUT_DIR/vehiclesdb-<version>-parquet.zip         the directory above, for a release asset
 #   OUT_DIR/SHA256SUMS
 #
@@ -195,12 +196,15 @@ fi
 sqlite3 "$DB" 'VACUUM'
 
 cp "$SCHEMA" "$PQ/schema.sql"
+# The upstream register statements must travel with the data (some licences require it).
+if [ -f "$DATA_ROOT/ATTRIBUTION.md" ]; then cp "$DATA_ROOT/ATTRIBUTION.md" "$PQ/ATTRIBUTION.md"; fi
 sed -e "s/{{VERSION}}/$VERSION/g" -e "s/{{BUILT_AT}}/$BUILT_AT/g" "$README_TPL" > "$PQ/README.md"
 
 # Pin mtimes to the release's build time so the zip is reproducible.
 STAMP="$(echo "$BUILT_AT" | sed -E 's/^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2}).*/\1\2\3\4\5.\6/')"
 TZ=UTC touch -t "$STAMP" "$PQ"/* "$PQ" "$DB"
-( cd "$OUT_DIR" && TZ=UTC zip -q -X -r -D "$NAME-parquet.zip" "$NAME-parquet" )
+# Sorted entry list: zip -r would store readdir order, which differs between filesystems.
+( cd "$OUT_DIR" && find "$NAME-parquet" -type f | LC_ALL=C sort | TZ=UTC zip -q -X -D "$NAME-parquet.zip" -@ )
 TZ=UTC touch -t "$STAMP" "$OUT_DIR/$NAME-parquet.zip"
 ( cd "$OUT_DIR" && $SHA "$NAME.sqlite" "$NAME-parquet.zip" "$NAME-parquet"/* > SHA256SUMS )
 

@@ -38,5 +38,5 @@ models = pd.read_parquet("models.parquet")
 ```
 
 **Attribution is required** (CC BY 4.0 §3(a)): "Vehicle data by VehiclesDB" with a link to
-https://vehiclesdb.com. The upstream register notices in ATTRIBUTION.md apply to every use.
+https://vehiclesdb.com. The upstream register notices in ATTRIBUTION.md (in this directory) apply to every use.
 See `meta` (`attribution_text`, `attribution_note`) and https://github.com/vehiclesdb/vehiclesdb.

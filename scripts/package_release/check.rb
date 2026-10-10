@@ -11,7 +11,9 @@
 #    + manifest.json, Ruby stdlib only — no DuckDB involved) and requires the
 #    SQLite and Parquet row counts to equal it.
 # 3. Spot-checks values: for 50 deterministic sample models, the SQLite rows for
-#    availability / popularity / former_ids / xrefs equal the JSON record's.
+#    availability / popularity / former_ids / global+mass decile equal the JSON record's.
+# 4. Fails on any make/model/popularity/availability key the package has no home
+#    for (read_json(columns = …) and from_json would drop it silently).
 #
 # Exit 0 = all hold. Needs the same tools as package_release.sh.
 
@@ -32,6 +34,18 @@ end
 def sqlite(db, sql) = sh!("sqlite3", "-separator", "\t", db, sql)
 def fail!(msg) = (warn "check: FAIL — #{msg}"; exit 1)
 
+# Every key the package stores or derives. read_json(columns = …) and from_json drop
+# any other key SILENTLY, so a field added to the catalog must fail here first.
+MODEL_KEYS = %w[id make_id slug name kind body_types regions sources aliases former_ids availability popularity xrefs].freeze
+MAKE_KEYS  = %w[id slug name aliases countries kinds].freeze # kinds == [file kind]: makes.kind
+POP_KEYS   = %w[global_decile mass_decile by_country].freeze
+CELL_KEYS  = %w[rank decile confidence].freeze
+AVAIL_KEYS = %w[country evidence source].freeze
+def unpackaged!(where, keys, known)
+  extra = keys - known
+  fail!("#{where}: field(s) #{extra.join(', ')} have no home in the package (add them to schema.sql + package_release.sh)") unless extra.empty?
+end
+
 manifest = JSON.parse(File.read(File.join(ROOT, "manifest.json")))
 version = manifest.fetch("version")
 
@@ -50,12 +64,17 @@ Dir.mktmpdir("vdbpkg-check") do |tmp|
   models = {}
   manifest.fetch("catalog").each do |kind, paths|
     JSON.parse(File.read(File.join(ROOT, paths.fetch("makes")))).each do |mk|
+      unpackaged!("make #{kind}/#{mk['id']}", mk.keys, MAKE_KEYS)
       want["makes"] += 1
       want["make_aliases"] += (mk["aliases"] || []).uniq.size
       want["make_countries"] += (mk["countries"] || []).uniq.size
     end
     JSON.parse(File.read(File.join(ROOT, paths.fetch("models")))).each do |m|
       models["#{kind}\t#{m['id']}"] = m
+      unpackaged!("model #{kind}/#{m['id']}", m.keys, MODEL_KEYS)
+      unpackaged!("model #{kind}/#{m['id']} popularity", (m["popularity"] || {}).keys, POP_KEYS)
+      (m.dig("popularity", "by_country") || {}).each_value { |c| unpackaged!("model #{kind}/#{m['id']} by_country", c.keys, CELL_KEYS) }
+      m["availability"].each { |x| unpackaged!("model #{kind}/#{m['id']} availability", x.keys, AVAIL_KEYS) }
       want["models"] += 1
       want["availability"] += m["availability"].size
       want["popularity"] += (m.dig("popularity", "by_country") || {}).size

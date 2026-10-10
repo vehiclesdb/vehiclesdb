@@ -1,8 +1,12 @@
 -- VehiclesDB relational release package — schema (vehiclesdb-package/1)
 --
 -- One table per entity, normalised from the published catalog/ tree
--- (catalog/<kind>/{makes,models}.json + manifest.json). Lossless: every field
--- the open catalog publishes has a home here. Written by
+-- (catalog/<kind>/{makes,models}.json + manifest.json). Lossless for those
+-- records: every field of the model and make files, and the manifest's release
+-- facts, has a home here (makes.json "kinds" is always [file kind] = makes.kind).
+-- Not carried: catalog/meta/decile-mass.json (aggregate mass shares, published
+-- beside the catalog), manifest "dist" (asset paths), attribution.required.
+-- check.rb fails on any model/make field this schema has no home for. Written by
 -- scripts/package_release.sh into vehiclesdb-<version>.sqlite and, one
 -- Parquet file per table, into vehiclesdb-<version>-parquet/.
 --
