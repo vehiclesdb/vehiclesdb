@@ -5,8 +5,9 @@
 #   scripts/package_release.sh [DATA_ROOT] [OUT_DIR]
 #     DATA_ROOT  a tree holding manifest.json + catalog/ (default: this repo;
 #                in the release workflow: the data checkout right after emit,
-#                or the pipeline's build/out)
-#     OUT_DIR    where to write (default: ${TMPDIR:-/tmp}/vehiclesdb-package; created).
+#                or the pipeline's build/out once ATTRIBUTION.md is copied into it)
+#     OUT_DIR    where to write (default: ${TMPDIR:-/tmp}/vehiclesdb-package; created; a relative
+#                path is taken from the caller's directory, never from DATA_ROOT).
 #                Never inside the data checkout in CI: the publish step runs `git add -A`.
 #
 # Writes, for the manifest's <version>:
@@ -31,11 +32,15 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DATA_ROOT="$(cd "${1:-$HERE/..}" && pwd)"
 OUT_DIR="${2:-${TMPDIR:-/tmp}/vehiclesdb-package}"
+case "$OUT_DIR" in /*) ;; *) OUT_DIR="$PWD/$OUT_DIR" ;; esac   # before the cd below (codex r3 P2)
 SCHEMA="$HERE/package_release/schema.sql"
 README_TPL="$HERE/package_release/README.md"
 
 die() { echo "package_release: $*" >&2; exit 1; }
 [ -f "$DATA_ROOT/manifest.json" ] || die "no manifest.json in $DATA_ROOT"
+# The upstream register statements must travel with the data (some licences require it):
+# refuse before building anything, so a bad root leaves no partial OUT_DIR.
+[ -f "$DATA_ROOT/ATTRIBUTION.md" ] || die "no ATTRIBUTION.md in $DATA_ROOT — the upstream register notices must travel with the data"
 command -v duckdb >/dev/null || die "duckdb CLI not found (brew install duckdb / see monthly-build.yml)"
 command -v zip >/dev/null || die "zip not found"
 if command -v sha256sum >/dev/null; then SHA="sha256sum"; else SHA="shasum -a 256"; fi
@@ -196,8 +201,6 @@ fi
 sqlite3 "$DB" 'VACUUM'
 
 cp "$SCHEMA" "$PQ/schema.sql"
-# The upstream register statements must travel with the data (some licences require it).
-[ -f "$DATA_ROOT/ATTRIBUTION.md" ] || die "no ATTRIBUTION.md in $DATA_ROOT — the upstream register notices must travel with the data"
 cp "$DATA_ROOT/ATTRIBUTION.md" "$PQ/ATTRIBUTION.md"
 sed -e "s/{{VERSION}}/$VERSION/g" -e "s/{{BUILT_AT}}/$BUILT_AT/g" "$README_TPL" > "$PQ/README.md"
 
