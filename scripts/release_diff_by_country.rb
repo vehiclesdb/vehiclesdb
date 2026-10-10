@@ -280,7 +280,7 @@ def render_md(d, ids_cap)
 end
 
 def render_tsv(d)
-  lines = [%w[country kind before after delta new gained lost renamed retired].join("\t")]
+  lines = [(%w[country kind before after delta] + CATEGORIES.map(&:to_s)).join("\t")]
   d[:countries].each do |r|
     d[:kinds].each do |k|
       v = r[:kinds][k]
