@@ -15,24 +15,24 @@ All numbers below are generated from this release's `manifest.json` and
 `catalog/` by `scripts/gen_readme_stats.rb`. Nobody types them by hand.
 
 <!-- BEGIN GENERATED: stats (scripts/gen_readme_stats.rb) -->
-**Dataset `2026.10.1`** (built 2026-10-10) — **15,069 models · 934 makes · 6 kinds · 17 countries**
+**Dataset `2026.10.2`** (built 2026-10-10) — **15,068 models · 934 makes · 6 kinds · 17 countries**
 
 | kind | models | makes |
 |---|---:|---:|
-| car | 5,542 | 315 |
+| car | 5,541 | 315 |
 | motorcycle | 6,033 | 266 |
 | moped | 1,399 | 315 |
 | van | 739 | 130 |
 | truck | 947 | 95 |
 | bus | 409 | 94 |
-| **all** | **15,069** | **934** distinct |
+| **all** | **15,068** | **934** distinct |
 
 Models with evidence in each country (a model counts once per country it is found in, so the column does not sum to the total):
 
 | country | official source | licence | evidence | models | car | motorcycle | moped | van | truck | bus |
 |---|---|---|---|---:|---:|---:|---:|---:|---:|---:|
-| Netherlands (`nl`) | [Dutch vehicle register (RDW Open Data)](https://opendata.rdw.nl/Voertuigen/Open-Data-RDW-Gekentekende_voertuigen/m9d7-ebf2) | [CC0-1.0](https://data.overheid.nl/dataset/11441-open-data-rdw--gekentekende-voertuigen) | registration | 12,920 | 4,714 | 5,201 | 1,267 | 654 | 860 | 224 |
-| Finland (`fi`) | [Finnish vehicle register open data (Traficom)](https://tieto.traficom.fi/en/datatraficom/open-data) | [CC-BY-4.0](https://tieto.traficom.fi/en/datatraficom/open-data) | registration | 7,850 | 3,150 | 2,650 | 557 | 473 | 802 | 218 |
+| Netherlands (`nl`) | [Dutch vehicle register (RDW Open Data)](https://opendata.rdw.nl/Voertuigen/Open-Data-RDW-Gekentekende_voertuigen/m9d7-ebf2) | [CC0-1.0](https://data.overheid.nl/dataset/11441-open-data-rdw--gekentekende-voertuigen) | registration | 12,919 | 4,714 | 5,201 | 1,267 | 654 | 859 | 224 |
+| Finland (`fi`) | [Finnish vehicle register open data (Traficom)](https://tieto.traficom.fi/en/datatraficom/open-data) | [CC-BY-4.0](https://tieto.traficom.fi/en/datatraficom/open-data) | registration | 7,849 | 3,149 | 2,650 | 557 | 473 | 802 | 218 |
 | New Zealand (`nz`) | [New Zealand Motor Vehicle Register (Waka Kotahi NZTA open data)](https://opendata-nzta.opendata.arcgis.com/datasets/NZTA::motor-vehicle-register/about) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/legalcode.en) | registration | 6,145 | 3,156 | 2,426 | 434 | — | — | 129 |
 | United Kingdom (`gb`) | [UK vehicle licensing statistics (DfT/DVLA table VEH0120)](https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files) | [OGL-UK-3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) | registration | 4,073 | 1,651 | 1,814 | 116 | 275 | 121 | 96 |
 | Switzerland (`ch`) | [Strassenverkehrsamt Kanton Thurgau — Fahrzeugbestand Kanton Thurgau am 01.01.2026](https://data.tg.ch/explore/dataset/djs-stv-7/) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) | registration | 3,885 | 1,573 | 1,810 | 121 | 201 | 143 | 37 |
@@ -95,7 +95,7 @@ Release assets are the top-level files (`vehicles.csv`, `catalog.sqlite`,
 
 <!-- BEGIN GENERATED: load-postgres (scripts/gen_readme_stats.rb) -->
 ```bash
-curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.10.1/vehicles.csv
+curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.10.2/vehicles.csv
 psql "$DATABASE_URL" <<'SQL'
 CREATE TABLE vehiclesdb_models (
   kind                     text NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE vehiclesdb_models (
 SQL
 ```
 
-The column list above is generated from `v2026.10.1`'s CSV header. Since 2026.07.2, columns
+The column list above is generated from `v2026.10.2`'s CSV header. Since 2026.07.2, columns
 are only ever appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
 ADD COLUMN` the new ones (see CHANGELOG.md) and reload. `countries`, `regions`,
 `body_types`, `aliases` and `former_ids` are `|`-separated lists
@@ -381,7 +381,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
 
 <!-- BEGIN GENERATED: cite (scripts/gen_readme_stats.rb) -->
 > VehiclesDB. (2026). *VehiclesDB: The open source vehicle database*
-> (Version 2026.10.1) [Data set]. Zenodo.
+> (Version 2026.10.2) [Data set]. Zenodo.
 > https://doi.org/10.5281/zenodo.21744943
 
 ```bibtex
@@ -391,7 +391,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
   year         = {2026},
   howpublished = {\url{https://github.com/vehiclesdb/vehiclesdb}},
   doi          = {10.5281/zenodo.21744943},
-  note         = {Open dataset, CC BY 4.0, version 2026.10.1}
+  note         = {Open dataset, CC BY 4.0, version 2026.10.2}
 }
 ```
 
