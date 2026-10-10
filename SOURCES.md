@@ -272,15 +272,16 @@ propulsion coverage would require RDW to publish a combined view.
     commercial names (`toyota/corolla-hsd-sdn` 33,309, `hyundai/elantra-hev`)
     and, on 2W/truck/bus, TYPE CODES rather than names (`honda/nf13`,
     `ktm/gsa20`, `chevrolet/ck`). As shipped (re-cut measured 2026-10-10 on
-    the 2026-10-09 load, frozen control vs treatment,
-    vehiclesdb-pipeline#254): **+0 ids, 0 renames, gate failures identical
-    to control; `il` on 1,492 published ids** (car 782 · van 98 · truck 170 ·
-    bus 36 · motorcycle 392 · moped 14) carrying 3,641,614 of 4,506,115
+    the 2026-10-09 load, frozen control vs treatment against main
+    c3297c2/181cfea, vehiclesdb-pipeline#254): **+0 ids, 0 renames, gate failures identical
+    to control; `il` on 1,495 published ids** (car 784 · van 98 · truck 171 ·
+    bus 36 · motorcycle 392 · moped 14) carrying 3,642,612 of 4,506,115
     ingested active vehicles (80.8%; car 85.8%, motorcycle 6.0% — the
     type-code cells rarely meet a catalog name).
   - **Make splits.** Three Hebrew labels file a second marque: `ב מ וו`
     (BMW) carries MINI (7,256 active), `ניסאן` (Nissan) carries Infiniti
-    (2,880) and `פיאט` (Fiat) carries Abarth (670). Without a split they
+    (2,880, plus 365 prefix-less QX/Q cells) and `פיאט` (Fiat) carries Abarth (670)
+    and the Jeep Renegade (464); `ב מ וו` also carries the MINI Aceman. Without a split they
     attached to `car/bmw/cooper*`, `car/nissan/infiniti` and
     `car/fiat/*-abarth` (found by the I-11 verifier on #254). The rules
     live in `overrides/kind_maps/il_mot.yml` `make_splits`, are applied by
