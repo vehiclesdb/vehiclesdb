@@ -29,6 +29,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `ch_tg` | 🇨🇭 CH | Kanton Thurgau registered-vehicle stock (Strassenverkehrsamt TG, via data.tg.ch), aggregated server-side to make × model × class × fuel | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | yearly (stock at 1 Jan) | presence only — **one canton (3.9% of CH); attach-only; count nil** |
 | `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet — **attach-only** |
 | `il_mot` | 🇮🇱 IL | MoT active-vehicle roll-up (car/van) + motorcycle and heavy registers, via the datastore API | Facts with credit to data.gov.il, under the [data.gov.il Terms of Use](https://data.gov.il/he/terms-of-use) (`other-open`) — **not relicensed CC BY** | daily | ✓ fleet (active) — **attach-only** |
+| `ro_drpciv` | 🇷🇴 RO | DRPCIV/DGPCI *Parc auto* — national register stock at 31.12, county × national class × EU class × make × commercial description × fuel | [OGL-ROU-1.0](https://data.gov.ro/base/images/logoinst/OGL-ROU-1.0.pdf) | yearly (31.12, published ~January) | ✓ fleet — **attach-only; DISABLED until data.gov.ro's TLS certificate is renewed** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -50,6 +51,7 @@ about coverage.
 | `lu_snca` | `CODCRB` | the full vocabulary, incl. bifuel pairs — the cleanest of any source |
 | `my_jpj` | `fuel` | petrol · diesel · BEV · hybrid |
 | `au_bitre` | `motive_power` | petrol · diesel · hybrid · BEV (**fused with FCEV upstream — one `Battery/Fuel-cell electric` bucket, 259,762 vehicles, not splittable**) · bifuel petrol+LPG. `Other` (52,060) maps to nothing, so these never sum to the fleet |
+| `ro_drpciv` | `VALUE_NAME` (fuel file) | petrol · diesel · BEV · LPG · CNG · ethanol, bi-fuels as both codes. **Never hev/phev**: the six `HIBRID 01`–`06` codes (381,002 vehicles) have no published code list saying which are plug-in, so they contribute nothing (the ua ruling); LNG has no code |
 | `ua_mvs` | `FUEL` | petrol · diesel · BEV · LPG · bifuel pairs · hydrogen |
 | `no_svv_pkk` | `Drivstofftype` | petrol · diesel · BEV · CNG · LPG · ethanol · FCEV — **never a hybrid code**: the column has none, so plug-in hybrids are filed under their combustion fuel and NO can evidence neither `hev` nor `phev`. `Gass` fuses LPG+CNG and maps to neither |
 | `ch_tg` | `treibstoff_code` + `hybridcode` | petrol · diesel · BEV · CNG · LPG · FCEV, and `hev`/`phev` from `hybridcode` (NOVC-HEV / OVC-HEV). Petrol/diesel-electric vehicles with no hybridcode contribute nothing (electrified, plug unknown). **One canton**, so presence of a code, never a Swiss share |
@@ -433,6 +435,56 @@ propulsion coverage would require RDW to publish a combined view.
   vehicles" → van, though the class is dominated by utes. Under attach-only it
   moves no id (see the attach-only paragraph above); its car→van migration is
   deferred to the PR that lifts attach-only.
+- **ro_drpciv** — Romania's national register, DRPCIV/DGPCI *Parc auto*
+  (https://data.gov.ro/dataset/parc-auto-romania), the stock at 31.12.
+  Researched and built 2026-10-10. The dossier is in pipeline
+  `aux/research/sources-2026-10/ro-REPORT.md`.
+  - **Ships DISABLED.** data.gov.ro's TLS certificate (RapidSSL, CN
+    `*.gov.ro`) expired 2026-10-09 23:59:59 UTC and was still expired on
+    2026-10-10. The pipeline never disables verification, so the adapter
+    (`RoDrpciv::ENABLED = false`) is left out of every build. Its pin is
+    `declared_absent`, which asserts that it is not ingested; the licence gate
+    fails if it ever is. To enable it: swap `RO_DRPCIV_PIN` into the Rakefile
+    PINS, re-pin over valid TLS, and set `ENABLED = true`. Every data.gov.ro
+    byte read so far came over an unverified connection. The totals match
+    DGPCI's own year-end note, fetched over verified TLS (dgpci.mai.gov.ro): an
+    11,222,292 register total, Bucharest 1,691,056, and 70,826 electric, each
+    to the unit.
+  - **Licence: OGL-ROU-1.0** (Licența pentru o Guvernare Deschisă v1.0,
+    Secretariatul General al Guvernului, 2014). CKAN calls it `uk-ogl`, which is
+    a mislabel; the title says `OGL-ROU-1.0`.
+    - It is attribution-only. With no licensor text published, the statement
+      must be «Conține informații publice în baza Licenței pentru Guvernare
+      Deschisa v1.0».
+    - Its other conditions: no implied official status, no distortion, and no
+      creation or re-identification of personal data. Termination is on breach,
+      under Romanian law. There is no ShareAlike, NonCommercial or
+      NoDerivatives term.
+    - That is the UK OGL v3 shape `uk_dft` ships under, so it is CC
+      BY-compatible by precedent, with no ruling needed.
+  - **One file is read: the fuel file.** Per (category, make, model) it equals
+    the no-fuel file on every non-trailer row except 9 special vehicles with a
+    blank EU class, which are declared skips anyway. It totals 10,532,424,
+    which is the register total minus 689,859 trailers. The cells are
+    single-byte legacy text with stray C1 control bytes. The delimiter changed
+    from `,` in 2024 to `;` in 2025. 59 cells are quoted with the delimiter
+    inside.
+  - **Kind comes from the EU class** (the fi/lu mapping). The national class
+    decides only for blank-EU rows: trailers, tractors and special machinery,
+    all declared skips (`overrides/kind_maps/ro_drpciv.yml`).
+  - **Attach-only, measured.** This was a frozen control vs treatment against
+    main d828faa / 37f9d12, with the source force-enabled.
+    - Ids +0/−0 in every kind, and 0 non-`ro` count changes.
+    - **`ro` lands on 5,397 published ids** (car 1,836 · van 307 · truck 392 ·
+      bus 170 · motorcycle 2,531 · moped 161).
+    - Those ids carry **8,156,936** of the 8,573,329 vehicles in named pairs
+      (95.1%), out of 10,532,424 read.
+    - **21.1% of the stock has a blank commercial description** (Dacia 44.8%,
+      ARO 99.4%), so it names no nameplate and is dropped.
+    - The premium marques write trims and engine codes (BMW `320D`,
+      `X3 XDRIVE20D`). Minting would publish those, so attach-only is the policy.
+    - Enabling it surfaced one move-split twin, `Piaggio|GT125`, which is now
+      co-moved to Vespa.
 
 ## Watch-list (evaluated, not yet merged — with the blocker)
 
