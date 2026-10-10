@@ -18,7 +18,8 @@
 -- the release does not carry yet is NULL (e.g. models.mass_decile before 2026.10.1).
 
 CREATE TABLE meta (
-  key   TEXT PRIMARY KEY,           -- version, built_at, schema_version, license, attribution_text, …
+  key   TEXT PRIMARY KEY,           -- version, built_at, schema_version, license, attribution_text, …;
+                                    -- attribution_notices = the release's ATTRIBUTION.md, verbatim
   value TEXT
 );
 

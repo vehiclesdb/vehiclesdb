@@ -86,7 +86,7 @@ Dir.mktmpdir("vdbpkg-check") do |tmp|
       want["xrefs"] += (m["xrefs"] || {}).values.sum { |v| v.uniq.size }
     end
   end
-  want["meta"] = 11
+  want["meta"] = 12 # 11 manifest facts + attribution_notices (ATTRIBUTION.md verbatim)
   want["sources"] = manifest["sources"].size
   want["countries"] = manifest["countries"].size
   fail!("manifest kinds total != catalog records") unless manifest["kinds"].values.sum { |v| v["models"] } == want["models"]
@@ -99,6 +99,15 @@ Dir.mktmpdir("vdbpkg-check") do |tmp|
     fail!("#{table}: json #{n}, sqlite #{got_l}, parquet #{got_p}") unless got_l == n && got_p == n
     puts format("  %-17s %8d rows  json = sqlite = parquet", table, n)
   end
+
+  # ── the upstream notices travel inside each format, byte for byte ──────
+  notices = File.binread(File.join(ROOT, "ATTRIBUTION.md"))
+  lite_hex = sqlite(db, "SELECT hex(CAST(value AS BLOB)) FROM meta WHERE key = 'attribution_notices'").strip
+  fail!("sqlite meta.attribution_notices != ATTRIBUTION.md") unless lite_hex == notices.unpack1("H*").upcase
+  pq_hex = sh!("duckdb", "-noheader", "-list", "-c",
+               "SELECT hex(encode(value)) FROM '#{pq}/meta.parquet' WHERE key = 'attribution_notices'").strip
+  fail!("parquet meta.attribution_notices != ATTRIBUTION.md") unless pq_hex == notices.unpack1("H*").upcase
+  puts "notices: meta.attribution_notices == ATTRIBUTION.md (#{notices.bytesize} B) in sqlite and parquet"
 
   # ── value spot-check ────────────────────────────────────────────────────
   keys = models.keys.sort

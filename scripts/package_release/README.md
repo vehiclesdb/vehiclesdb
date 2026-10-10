@@ -7,7 +7,7 @@ Built {{BUILT_AT}} from the release's own `catalog/` tree by
 
 | table | one row per |
 |---|---|
-| `meta` | release fact (version, built_at, licence, attribution text) |
+| `meta` | release fact (version, built_at, licence, attribution text; `attribution_notices` = ATTRIBUTION.md verbatim) |
 | `sources` | official source (licence, evidence type, count window) |
 | `countries` | country in this release |
 | `makes` | (kind, make) |
@@ -39,4 +39,4 @@ models = pd.read_parquet("models.parquet")
 
 **Attribution is required** (CC BY 4.0 §3(a)): "Vehicle data by VehiclesDB" with a link to
 https://vehiclesdb.com. The upstream register notices in ATTRIBUTION.md (in this directory) apply to every use.
-See `meta` (`attribution_text`, `attribution_note`) and https://github.com/vehiclesdb/vehiclesdb.
+See `meta` (`attribution_text`, `attribution_note`, `attribution_notices`) and https://github.com/vehiclesdb/vehiclesdb.

@@ -102,6 +102,7 @@ SELECT * FROM (VALUES
   ('homepage',            (SELECT json_extract_string(j, '\$.homepage') FROM m)),
   ('attribution_text',    (SELECT json_extract_string(j, '\$.attribution.text') FROM m)),
   ('attribution_url',     (SELECT json_extract_string(j, '\$.attribution.url') FROM m)),
+  ('attribution_notices', (SELECT content FROM read_text('ATTRIBUTION.md'))),  -- the upstream register statements, verbatim, so the .sqlite alone carries them
   ('attribution_note',    (SELECT json_extract_string(j, '\$.attribution.note') FROM m))
 ) t(key, value) ORDER BY key;
 
