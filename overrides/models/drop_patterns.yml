@@ -9,7 +9,7 @@
 # via kind_maps instead. Dropping here ≠ dropping from the dataset.
 
 car:
-  - '\A[2-5]D?(SEDAN|SENDAN|SED|STATION|STW|KOMBI|LIMOUSINE|CONVERTIBLE|COUPE|HARDTOP)\b' # FUSED door+body PREFIX (pipeline#67): fi_traficom writes "2DSEDAN 1300-11/2400", "3DSTATION Wagon…", "5DKOMBI 200T…", and classify returns the raw string verbatim, so it publishes as a nameplate (car/volkswagen/2dsedan-1300-11-2400 at global_decile 1 in v2026.10.0). Word list DERIVED from the corpus 2026-10-10 (frozen build candidates: 1,376 car + 13 van rows; SEDAN 1,363, STATION 10, STW 5, KOMBI 4, + register typos SED/SENDAN/"4SEDAN"); door digit 2-5. Door-count + real NAMEPLATE ("4DFLEETWOOD", "5DGOLF") deliberately NOT matched — stripping needs fi_traficom.rb code (#131 measured the stripper minting 105 type-approval ids). The SPACED "2D SEDAN" half is data#179 renames, untouched (no \b after the digit here).
+  - '\A[2-5]D?(?:SEDAN|SENDAN|STATION|STW|KOMBI|LIMOUSINE|CONVERTIBLE|COUPE|HARDTOP)(?![A-Z])|\A[2-5]D?SED\b|\A[2-5]DHT\b' # FUSED door+body PREFIX (pipeline#67): fi_traficom writes "2DSEDAN 1300-11/2400", "3DSTATION Wagon…", "5DKOMBI 200T…", and classify returns the raw string verbatim, so it publishes as a nameplate (car/volkswagen/2dsedan-1300-11-2400 at global_decile 1 in v2026.10.0). (?![A-Z]) not \b, so a grade fused straight on ("4DSEDAN220A/2820-55", "5DSTW740GLE") still matches; + the hardtop abbreviation 2DHT/4DHT — widened per the Opus I-11 re-measurement (16 more rows, nothing else). Word list DERIVED from the corpus 2026-10-10 (frozen build candidates: 1,376 car + 13 van rows; SEDAN 1,363, STATION 10, STW 5, KOMBI 4, + register typos SED/SENDAN/"4SEDAN"); door digit 2-5. Door-count + real NAMEPLATE ("4DFLEETWOOD", "5DGOLF") deliberately NOT matched — stripping needs fi_traficom.rb code (#131 measured the stripper minting 105 type-approval ids). The SPACED "2D SEDAN" half is data#179 renames, untouched (no \b after the digit here).
   - '\bSPRINTER'      # Mercedes van. No trailing \b: fi_traficom writes FUSED grades ("SPRINTER313 CDI" — R→3 is no word boundary, so the bounded form missed 5 M1 raw shapes, measured wave 3); prefix-bounded is still safe, no nameplate contains the word
   - '\bTRANSIT\b'     # Ford van family (incl. TOURNEO CONNECT etc. below)
   - '\bTRANSPORTER\b' # VW T-series van. NB 2026-07-26: car/volkswagen/transporter now EXISTS deliberately — it is the wave-3 fold target for T1–T6/KASTENWAGEN/BESTEL/KOMBIWAGEN/SYNCRO raws, which never contain TRANSPORTER and so never trip this drop (dossier-trims-vw-seat.md §3.0, GATE-1 resolution 1). Do NOT extend this drop to those raw shapes: drop_patterns fire on the RAW before renames (normalizer.rb:114), so the extension would kill the folds and orphan the minted id.
@@ -103,7 +103,7 @@ car:
   - '\b(SPINTER|SPRINER|SRINTER)\b'  # Sprinter MISSPELLINGS in passenger-car classes (fi M1 "SPINTER" x15, "SPINTER 310CDI PROSTYLE TREND", "SRINTER 316CDI-3.5T-906633/367" — measured); the van/truck-kind misspelling rows fold to van/truck sprinter via renames, untouched by this car-kind drop
 
 van:
-  - '\A[2-5]D?(SEDAN|SENDAN|SED|STATION|STW|KOMBI|LIMOUSINE|CONVERTIBLE|COUPE|HARDTOP)\b' # same fi fused door+body prefix class as the car entry (13 van rows measured 2026-10-10)
+  - '\A[2-5]D?(?:SEDAN|SENDAN|STATION|STW|KOMBI|LIMOUSINE|CONVERTIBLE|COUPE|HARDTOP)(?![A-Z])|\A[2-5]D?SED\b|\A[2-5]DHT\b' # same fi fused door+body prefix class as the car entry (13 van rows measured 2026-10-10)
 motorcycle: []
 moped: []
 truck:
