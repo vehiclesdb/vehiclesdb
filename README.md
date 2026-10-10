@@ -7,7 +7,7 @@ types, popularity, and where in the world each model is actually found —
 reconciled from **official registers of 14 countries on 4 continents**,
 versioned, and free forever under CC-BY 4.0.
 
-> **Dataset `2026.10.0`** — 14,997 models · 925 makes · 6 kinds · 15 countries
+> **Dataset `2026.10.1`** — 15,069 models · 934 makes · 6 kinds · 17 countries
 > *(the 2026.07–08 correction pass traded volume for identity: parser-fabricated
 > names, duplicates and non-vehicles are gone, and trim levels no longer publish
 > as if they were nameplates — see CHANGELOG.md)*
