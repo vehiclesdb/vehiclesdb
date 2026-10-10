@@ -200,8 +200,18 @@ optional and additive):
 ```
 
 Per-model: `body_type` (primary only; absent where the catalog has none),
-`global_decile` (absent when unranked), `availability` (bare country codes —
-the evidence detail lives in `catalog/`).
+`global_decile` (absent when unranked), `country_ranks` (`{"gb": 2, "nl": 1, …}`
+— the model's rank among ALL models of its kind in that country, copied
+verbatim from `catalog/` `popularity.by_country[cc].rank`; absent when the
+model has no rank anywhere; added 2026-10, schema v2 growth rule),
+`availability` (bare country codes — the evidence detail lives in `catalog/`).
+
+`global_decile` is the mean of per-country deciles with equal country weight,
+i.e. "popular in many places" — it is NOT a per-country ordering. Anything
+that lists "the most popular models in country X" should sort by
+`country_ranks[X]` (the `vehicles` gem's `top_models(country:)` does from
+0.7.8). Countries whose sources record presence only (us, ca for cars) have no
+ranks.
 
 ## `dist/catalog.sqlite`
 
