@@ -76,13 +76,22 @@ def facts
   per_country = Hash.new { |h, k| h[k] = Hash.new(0) }
   models_total = 0
   kinds.each do |kind|
-    read_json(catalog.dig(kind, "makes")).each { |mk| make_ids[mk.fetch("id")] = true }
+    kind_makes = read_json(catalog.dig(kind, "makes"))
+    kind_makes.each { |mk| make_ids[mk.fetch("id")] = true }
     models = read_json(catalog.dig(kind, "models"))
     models_total += models.size
+    want = m["kinds"][kind]
+    if want["models"] != models.size || want["makes"] != kind_makes.size
+      abort "gen_readme_stats: manifest.json kinds.#{kind} says #{want['models']} models / #{want['makes']} makes " \
+            "but catalog/ holds #{models.size} / #{kind_makes.size} — refusing to write numbers from it"
+    end
     models.each do |rec|
       (rec["availability"] || []).map { |a| a["country"] }.uniq.each { |cc| per_country[cc][kind] += 1 }
     end
   end
+
+  stray = per_country.keys - m.fetch("countries")
+  abort "gen_readme_stats: availability names countries absent from manifest.json countries: #{stray.sort.join(', ')}" if stray.any?
 
   manifest_total = m["kinds"].values.sum { |v| v.fetch("models") }
   if manifest_total != models_total
@@ -194,8 +203,8 @@ def render_postgres(f)
     SQL
     ```
 
-    The column list above is generated from `v#{v}`'s CSV header. Columns are only ever
-    appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
+    The column list above is generated from `v#{v}`'s CSV header. Since 2026.07.2, columns
+    are only ever appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
     ADD COLUMN` the new ones (see CHANGELOG.md) and reload. `countries`, `regions`,
     `body_types`, `aliases` and `former_ids` are `|`-separated lists
     (`string_to_array(countries, '|')`).
@@ -260,6 +269,8 @@ def splice(text, name, body, file)
 end
 
 def main(argv)
+  bad = argv - %w[--check --print]
+  abort "gen_readme_stats: unknown argument(s) #{bad.join(' ')} (use --check or --print)" if bad.any?
   mode = argv.include?("--check") ? :check : argv.include?("--print") ? :print : :write
   f = facts
   stale = []

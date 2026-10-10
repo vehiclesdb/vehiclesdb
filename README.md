@@ -2,8 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21744943.svg)](https://doi.org/10.5281/zenodo.21744943)
 
-**Every make and model found in official vehicle registers, with one stable id
-per nameplate, per-country evidence and popularity — as one CC BY 4.0 dataset
+**The makes and models that official vehicle registers and type-approval
+catalogues agree on, with one stable id per nameplate, per-country evidence and popularity — as one CC BY 4.0 dataset
 you can load into your own database in five minutes.** Builders use it for
 parts catalogues with a compatibility filter, marketplaces, garage and booking
 forms, fleet and plate apps — above all in markets that have no clean local
@@ -58,9 +58,10 @@ nameplates and non-vehicles are reconciled away before anything publishes.
 
 ## Load it into your database in 5 minutes
 
-Pick the file for the job. Every file ships in each
-[GitHub release](https://github.com/vehiclesdb/vehiclesdb/releases) as an
-asset, on jsDelivr, in this repo, and on
+Pick the file for the job. Every file below is in this repo and on jsDelivr.
+The `dist/` files, `manifest.json` and `ATTRIBUTION.md` are also assets of each
+[GitHub release](https://github.com/vehiclesdb/vehiclesdb/releases), and the CSV,
+Parquet, JSON and SQLite files are mirrored on
 [Hugging Face](https://huggingface.co/datasets/vehiclesdb/vehiclesdb).
 
 | you want | use | shape |
@@ -112,8 +113,8 @@ CREATE TABLE vehiclesdb_models (
 SQL
 ```
 
-The column list above is generated from `v2026.10.0`'s CSV header. Columns are only ever
-appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
+The column list above is generated from `v2026.10.0`'s CSV header. Since 2026.07.2, columns
+are only ever appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
 ADD COLUMN` the new ones (see CHANGELOG.md) and reload. `countries`, `regions`,
 `body_types`, `aliases` and `former_ids` are `|`-separated lists
 (`string_to_array(countries, '|')`).
@@ -168,13 +169,14 @@ const { makes } = await res.json();   // [{ name, slug, kinds, models: [{ name, 
 ```
 
 Pin a version (`@v<version>`) when you need the list not to change under you,
-and cache the response. The file changes once a month at most.
+and cache the response. Data releases are versioned `YYYY.MM.PATCH`: usually
+one a month, plus patch releases when a fix can't wait.
 
 ### Ruby / Rails
 
 ```ruby
 gem "vehicles"            # data ships inside the gem; works offline
-Vehicles.models("VW")     # => ["Golf", "Polo", "Tiguan", …]
+Vehicles.models("VW")     # alias-aware: "VW" → Volkswagen's model names
 ```
 
 ### Keeping your copy current
@@ -184,10 +186,10 @@ Vehicles.models("VW")     # => ["Golf", "Polo", "Tiguan", …]
   `former_ids`, kind-prefixed, e.g. `car/alfa-romeo/alfa147`). On upgrade,
   repoint any row you stored under a former id, then upsert on
   `(kind, make_slug, model_slug)`.
-- **Columns and fields are only ever appended.** A new release never renames
+- **Columns and fields are only ever appended** (since 2026.07.2). A new release never renames
   or reorders a CSV column, and absent JSON keys mean *not catalogued yet*.
 - **What changed** is in each release's [CHANGELOG.md](CHANGELOG.md) section.
-  Watch this repo with *Custom → Releases* to get one notification a month.
+  Watch this repo with *Custom → Releases* to be notified of each release.
 
 ## The files
 
@@ -219,16 +221,16 @@ Details: [SCHEMA.md](SCHEMA.md).
 
 A model's presence means we found evidence of it in at least one covered
 market's official sources (registration, type approval, or verified sales
-reporting); see each record's `sources` and `availability.evidence`. Absence
+reporting) — see each record's `sources` and `availability.evidence`. Absence
 means *we haven't catalogued it yet*, not that it doesn't exist.
 `availability` is evidence of presence, **not** proof a vehicle was officially
-marketed there (grey imports count: they're real vehicles on real roads).
+marketed there (grey imports count — they're real vehicles on real roads).
 Year ranges from registration data are accurate to ±1 year by construction.
 Nameplate granularity: one model covers its trims unless `variants` says
 otherwise; two-wheelers keep displacement granularity (`Wave110i` and
 `Wave125i` are how riders and registers both speak). Popularity deciles are
 measured from real registration/fleet counts where `confidence: "measured"`
-and proxied from public-attention signals where `confidence: "proxy"`; the
+and proxied from public-attention signals where `confidence: "proxy"` — the
 biases of each are documented in SCHEMA.md.
 
 **Wrong users:** if you need VIN decoding (use [NHTSA vPIC](https://vpic.nhtsa.dot.gov/api/)),
@@ -237,25 +239,24 @@ dataset.
 
 ## Built with VehiclesDB
 
-Public projects that build on the open data and say so in their code or
-docs. Listed by repository; each one credits VehiclesDB.
+Public projects that use the open data and name VehiclesDB in their code or
+docs. Listed by repository.
 
 | project | what it is | how it loads the data |
 |---|---|---|
-| [Kolben](https://kolben.store) ([#308](https://github.com/vehiclesdb/vehiclesdb/issues/308)) | auto-parts catalogue for Paraguay with a brand → model compatibility filter | snapshot imported into its own database; uses Argentina's availability as a regional proxy |
-| https://github.com/zamansepeti43/Parca-avcisi | Turkish auto-parts marketplace (Parça Avcısı), brand → model → year → version filter | VehiclesDB as the base catalogue, extended locally for Turkey |
-| https://github.com/antracitweb-svg/pieseauro | Romanian auto-parts marketplace (AutoPiese) | make/model catalogue synced into Postgres |
-| https://github.com/Krak86/carplates-v2 | Ukrainian licence-plate and VIN lookup app | ingests into Postgres; uses availability, popularity and aliases |
-| https://github.com/Denys9Ri/VIN-matrix | CRM for auto-service and parts workflows | make/model combobox over the car, van and truck catalogues |
-| https://github.com/Mirkl213/parts-ai | Telegram parts bot: VIN (WMI) decoding and OEM cross-references | listed as a data source |
-| https://github.com/axionaut/MotorAtlas | vehicle comparison and evidence app | seed catalogue built from VehiclesDB at build time |
-| https://github.com/multiservismalaga-cpu/AutoTech-Europe | European vehicle identification with source traceability | model base from VehiclesDB |
-| https://github.com/Arjunarunachalan/dealnbuy-vehicle-data | vehicle-marketplace data package for a web and a React Native app | bundled JSON snapshot, no runtime dependency |
-| https://github.com/Delightsheriff/Flexride-web | car-rental marketplace | seed script pulls the taxonomy |
-| https://github.com/lrgroup-bot/lrs-motors-mini-app | Telegram Mini App for dealership management | proxies `dist/vehicles.json` from jsDelivr |
-| https://github.com/jaaaneves-art/otiodojoca | vehicle site with a catalogue sync script | fetches `catalog/car/makes.json` from jsDelivr |
-| https://github.com/timileyin42/RideSeat-Backend | ride-sharing / seat-booking backend | fetches `catalog/<kind>/makes.json` at runtime |
-| https://github.com/theaquarium/plates.quest | licence-plate spotting site | uses the `plates/` dataset (plate colours) |
+| [Kolben](https://kolben.store) ([#308](https://github.com/vehiclesdb/vehiclesdb/issues/308)) | auto-parts catalogue for Paraguay with a brand → model compatibility filter | uses Argentina's availability as a regional proxy (per #308); make/model list served from its own backend |
+| [Parca-avcisi](https://github.com/zamansepeti43/Parca-avcisi) | Turkish auto-parts marketplace (Parça Avcısı), brand → model → year → version filter | VehiclesDB as the base catalogue, extended locally for Turkey |
+| [carplates-v2](https://github.com/Krak86/carplates-v2) | Ukrainian licence-plate and VIN lookup app | ingests into Postgres; uses availability, popularity and aliases |
+| [VIN-matrix](https://github.com/Denys9Ri/VIN-matrix) | CRM for auto-service and parts workflows | make/model combobox over the car, van and truck catalogues |
+| [parts-ai](https://github.com/Mirkl213/parts-ai) | Telegram parts bot: VIN (WMI) decoding and OEM cross-references | listed as a data source |
+| [MotorAtlas](https://github.com/axionaut/MotorAtlas) | vehicle comparison and evidence app | seed catalogue built from VehiclesDB at build time |
+| [AutoTech-Europe](https://github.com/multiservismalaga-cpu/AutoTech-Europe) | European vehicle identification with source traceability | model base from VehiclesDB |
+| [dealnbuy-vehicle-data](https://github.com/Arjunarunachalan/dealnbuy-vehicle-data) | vehicle-marketplace data package for a web and a React Native app | bundled JSON snapshot, no runtime dependency |
+| [Flexride-web](https://github.com/Delightsheriff/Flexride-web) | car-rental marketplace | seed script pulls the taxonomy |
+| [lrs-motors-mini-app](https://github.com/lrgroup-bot/lrs-motors-mini-app) | Telegram Mini App for dealership management | proxies `dist/vehicles.json` from jsDelivr |
+| [otiodojoca](https://github.com/jaaaneves-art/otiodojoca) | Portuguese rural-culture portal (O Tio do Joca) whose marketplace syncs a car catalogue | fetches `catalog/car/makes.json` and `models.json` from jsDelivr into Supabase |
+| [RideSeat-Backend](https://github.com/timileyin42/RideSeat-Backend) | ride-sharing / seat-booking backend | fetches `catalog/<kind>/makes.json` at runtime |
+| [plates.quest](https://github.com/theaquarium/plates.quest) | licence-plate spotting site | uses the `plates/` dataset (plate colours) |
 
 Built something on VehiclesDB? Open a PR adding one row here. Listed and
 would rather not be? Open an issue and we will remove the row.
@@ -276,8 +277,9 @@ reach every builder in your country, and every next release.
   want upstream. Open an issue listing the makes and models you added, the
   spellings you mapped, and, for each, the official source that shows it: a
   register, a type-approval list, or the manufacturer's own page. Spellings
-  and aliases go straight into `overrides/`. A new model publishes once an
-  official open source corroborates it; until then it is filed in
+  and aliases go straight into `overrides/`. A new model publishes once it
+  meets the publish rule (two independent official sources, or one official
+  count no typo could produce); until then it is filed in
   [DEBT.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/DEBT.md) with your evidence, and your list tells us which
   country's register to ingest next.
 - **An official open source we're missing**, especially outside Europe →
@@ -304,7 +306,7 @@ are: [DECISIONS.md](DECISIONS.md)
    support. Paid never means crippling open. Commercial inquiries:
    `commercial@vehiclesdb.com`.
 3. **Trademark:** "VehiclesDB" is the project's mark; forks must rename (the
-   OpenStreetMap precedent: data open, brand protected). Some company and
+   OpenStreetMap precedent — data open, brand protected). Some company and
    product names in this dataset may be trademarks or registered trademarks
    of individual companies and are respectfully acknowledged; they appear as
    plain-text facts, with no logos and no implied endorsement.
@@ -348,6 +350,8 @@ any use, including commercial. The licence condition, as
 > source registers' own license terms (OGL v3, CC-BY, dl-de/by-2-0)
 > and apply to every consumer of this data, under every VehiclesDB
 > license, commercial included.
+
+The upstream notices it refers to are in [ATTRIBUTION.md](ATTRIBUTION.md).
 
 Where it fits, link the specific make/model page you used (e.g.
 `https://vehiclesdb.com/cars/seat/leon`) instead of the homepage: more
