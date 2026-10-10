@@ -80,11 +80,42 @@ overrides:
   EBRO|S400: suv                 # compact SUV (Chery Tiggo 4 Pro base) — key is the post-rename nameplate (S400 Hev → S400)
   # --- Lexus TX (2026-08-02, S4W; dossier §A.2 L1 mints car/lexus/tx) ---
   Lexus|TX: suv                  # "This three-row SUV provides seating for up to seven passengers" — https://pressroom.lexus.com/a-new-era-of-three-row-luxury-the-first-ever-lexus-tx/ (fetched 2026-08-02). REQUIRED, not cosmetic: normalizer.rb's Lexus family rule tests /\A(NX|RX|UX|GX|LX|RZ|LBX)/ for :suv and has no TX arm, the TX has no nl_rdw rows so the registry-signal layer never fires, and the record therefore falls to the default :hatchback — which is what car/lexus/tx-350 and car/lexus/tx-500h publish TODAY (measured, dist/vehicles.csv v2026.08.0). Curated here rather than in the Ruby family rule per AGENTS.md ("string FACTS are overrides"); layer 1 outranks the family rule either way
+  # --- DEVQ A2 (2026-10-10, S4W): category errors in the top-300 cars by registration mass ---
+  # Root cause unless the line says otherwise: no override/keyword/set matched and there was no registry body
+  # signal (US/AU/Asian-register-only rows), so body_type_for fell to its default :hatchback
+  # (normalizer.rb:459) — the Lexus TX class above. Make-scoped on purpose: a name-only set entry
+  # would also retype Fiat/MG/Triumph "1500". Sweep: top-300 by registrations-2026.10.0 mass;
+  # evidence tier in [brackets]; Wikipedia only where the maker page 403/404d or states no body.
+  Honda|CR-V: suv                  # car/honda/cr-v was hatchback: Opens 'compact crossover SUV'; infobox body style '5-door SUV' — https://en.wikipedia.org/wiki/Honda_CR-V (fetched 2026-10-10) [wikipedia]
+  MG|ZS: suv                       # car/mg/zs was hatchback: 2017+ ZS 'a subcompact crossover'; the 2001-05 ZS was a small family car (2017+ dominates) — https://en.wikipedia.org/wiki/MG_ZS (fetched 2026-10-10) [wikipedia] — the record also holds the 2001-05 ZS saloon/hatch, but the 2017+ crossover dominates the live fleet
+  Perodua|Bezza: sedan             # car/perodua/bezza was hatchback: Infobox body style '4-door sedan'; 'a city car' — https://en.wikipedia.org/wiki/Perodua_Bezza (fetched 2026-10-10) [wikipedia]
+  Ford|EcoSport: suv               # car/ford/ecosport was hatchback: Opens 'subcompact crossover SUV'; infobox body style '5-door SUV' — https://en.wikipedia.org/wiki/Ford_EcoSport (fetched 2026-10-10) [wikipedia]
+  Proton|Saga: sedan               # car/proton/saga was hatchback: 2008-present (2nd/3rd gen) infobox '4-door saloon'; hatchback only 2003-08 LMST — https://en.wikipedia.org/wiki/Proton_Saga (fetched 2026-10-10) [wikipedia]
+  Toyota|Land Cruiser: suv         # car/toyota/land-cruiser was hatchback,wagon: Toyota UK page title 'The Ultimate SUV' (accessed 2026-10-10); Wikipedia class 'Full-size SUV' — https://www.toyota.co.uk/new-cars/land-cruiser (fetched 2026-10-10) [manufacturer]
+  Mitsubishi|ASX: suv              # car/mitsubishi/asx was hatchback,wagon: 'The ASX is the perfect family SUV, with 5 seats...' (accessed 2026-10-10) — https://www.mitsubishi-motors.co.uk/asx (fetched 2026-10-10) [manufacturer]
+  Volkswagen|ID.4: suv             # car/volkswagen/id-4 was hatchback,wagon: 'The 2026 ID.4 all-electric SUV' (accessed 2026-10-10) — https://www.vw.com/en/models/id-4.html (fetched 2026-10-10) [manufacturer]
+  Hyundai|Santa FE: suv            # car/hyundai/santa-fe was hatchback,wagon: Page title: 'The Adventurous Compact SUV' (2027 Santa Fe; accessed 2026-10-10) — https://www.hyundaiusa.com/us/en/vehicles/santa-fe (fetched 2026-10-10) [manufacturer]
+  Perodua|Alza: mpv                # car/perodua/alza was hatchback: Opens 'B-segment multi-purpose vehicle (MPV)'; infobox lists '5-door wagon' — https://en.wikipedia.org/wiki/Perodua_Alza (fetched 2026-10-10) [wikipedia]
+  Jaecoo|Jaecoo 7: suv             # car/jaecoo/jaecoo-7 was hatchback: Page title 'Bold, Premium SUV' (accessed 2026-10-10) — https://www.jaecoo.co.uk/jaecoo-7 (fetched 2026-10-10) [manufacturer]
+  Toyota|Yaris Ativ: sedan         # car/toyota/yaris-ativ was hatchback: Yaris Ativ redirects to Vios page; 4th-gen (Thai Yaris Ativ) infobox '4-door saloon' — https://en.wikipedia.org/wiki/Toyota_Vios (fetched 2026-10-10) [wikipedia]
+  Perodua|Ativa: suv               # car/perodua/ativa was hatchback: Redirects to Daihatsu Rocky page: 'subcompact crossover SUV'; infobox '5-door SUV' — https://en.wikipedia.org/wiki/Perodua_Ativa (fetched 2026-10-10) [wikipedia]
+  Toyota|Vios: sedan               # car/toyota/vios was hatchback: Infobox '4-door saloon'; hatchback 'Vios FS' sold only in China 2016-23 — https://en.wikipedia.org/wiki/Toyota_Vios (fetched 2026-10-10) [wikipedia]
+  Proton|X50: suv                  # car/proton/x50 was hatchback: Opens 'subcompact crossover SUV'; infobox body style '5-door SUV' — https://en.wikipedia.org/wiki/Proton_X50 (fetched 2026-10-10) [wikipedia]
+  Toyota|Alphard: mpv              # car/toyota/alphard was hatchback: Opens 'a large MPV'; infobox body style '5-door MPV' — https://en.wikipedia.org/wiki/Toyota_Alphard (fetched 2026-10-10) [wikipedia]
+  Mitsubishi|Shogun: suv           # car/mitsubishi/shogun was hatchback,wagon: Pajero/Shogun page: 'a full-size SUV'; 4th gen infobox '3-door SUV','5-door SUV' — https://en.wikipedia.org/wiki/Mitsubishi_Pajero (fetched 2026-10-10) [wikipedia]
+  "Lynk & Co|01": suv              # car/lynk-co/01 was hatchback,wagon: Opens 'a compact crossover SUV'; infobox body style '5-door SUV' — https://en.wikipedia.org/wiki/Lynk_%26_Co_01 (fetched 2026-10-10) [wikipedia]
+  Isuzu|D-Max: pickup              # car/isuzu/d-max was mpv — NOT the default: the keyword [mpv, 'Max\b'] (written for Ford B/C/S-Max) catches it. Isuzu D-Max opens 'compact/mid-size pickup truck'; infobox '4-door pickup truck','2-door pickup truck' — https://en.wikipedia.org/wiki/Isuzu_D-Max (fetched 2026-10-10) [wikipedia]
+  Ford|F-150: pickup               # car/ford/f-150 was hatchback,wagon: ford.com titles it '2026 Ford F-150® Truck' and says 'F-150® pickups have got your back' — https://www.ford.com/trucks/f150/ (fetched 2026-10-10) [manufacturer]; every generation is the half-ton F-Series pickup — https://en.wikipedia.org/wiki/Ford_F-Series_(thirteenth_generation) [wikipedia]
+  Ram|1500: pickup                 # car/ram/1500 was hatchback: Opens 'a full-size pickup truck manufactured by Stellantis North America' — https://en.wikipedia.org/wiki/Ram_1500 (fetched 2026-10-10) [wikipedia]
+  GMC|1500: pickup                 # car/gmc/1500 was hatchback: Chevrolet Silverado/GMC Sierra range of trucks; infobox '4-door crew cab (...2004-present for 1500)' — https://en.wikipedia.org/wiki/GMC_Sierra (fetched 2026-10-10) [wikipedia]
+  Xiaomi|SU7 Max: sedan            # car/xiaomi/su7-max was mpv via the same [mpv, 'Max\b'] keyword; Max is a trim of the SU7, 'a full-size four-door sedan EV', infobox '4-door sedan' — https://en.wikipedia.org/wiki/Xiaomi_SU7 (fetched 2026-10-10) [wikipedia; mi.com 403]
+  Xiaomi|YU7 Max: suv              # car/xiaomi/yu7-max was mpv via the [mpv, 'Max\b'] keyword; YU7 'a battery electric mid-size SUV', infobox '5-door coupe SUV', Max = top variant — https://en.wikipedia.org/wiki/Xiaomi_YU7 (fetched 2026-10-10) [wikipedia]
+  Deepal|S05 Max: suv              # car/deepal/s05-max was mpv via the [mpv, 'Max\b'] keyword; S05 'a compact crossover SUV', infobox '5-door SUV', Max = a trim (TH/ID launches) — https://en.wikipedia.org/wiki/Deepal_S05 (fetched 2026-10-10) [wikipedia]
 
 keywords:                        # [type, ruby-regex] — checked before the sets
   - [suv, '\b(Aircross|Crossback|Cross)\b']   # *Cross / Aircross / Crossback crossovers
   - [mpv, '\b(Picasso|Spacetourer)\b']
-  - [mpv, 'Max\b']                            # C-Max / S-Max / B-Max / Grand C-Max
+  - [mpv, 'Max\b']                            # C-Max / S-Max / B-Max / Grand C-Max — CAUTION: also matches Isuzu D-Max / Xiaomi SU7 Max / YU7 Max / Deepal S05 Max, pinned in overrides (DEVQ 2026-10-10)
 
 suv:                             # exact nameplate matches (post-normalization)
   - Stelvio
