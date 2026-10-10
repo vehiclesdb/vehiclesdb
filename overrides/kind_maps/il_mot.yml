@@ -47,3 +47,33 @@ kinds:
     T1: null      # 38,530 agricultural tractor
     T2: null      # 26,182 agricultural tractor
     "": null      # blank category — no class to map
+
+# ── make splits: a Hebrew make label that also files ANOTHER marque ──────────
+# Applied by il_mot ONLY (pipeline/sources/il_mot.rb#make_split), car/van rows,
+# after the model cell is cleaned. `match` selects the cells, `make` is the
+# marque they belong to (a Latin raw make, resolved like any source's), `strip`
+# removes the marque words from the cell, `rewrite` repairs the register's
+# 15-character truncations so normalizer.rb#mini folds them. An empty model
+# after stripping is dropped and logged. Found by the I-11 verifier on
+# vehiclesdb-pipeline#254 (2026-10-10): 5,365 vehicles were attaching to
+# car/bmw/cooper* and car/nissan/infiniti. Raw cells and active counts below are
+# from the 2026-10-09 roll-up (5e87a7a1).
+make_splits:
+  "ב מ וו":   # BMW label; MINI is a BMW Group marque and Israel files it here: COOPER S 1,171, COOPER 1,141, MINI ONE 788, MINI COOPER 679, ONE 664, COUNTRYMAN COOP 582, COOPER SE 410, JOHN COOPER WOR 295 … (6,556 of 58,411) — https://www.mini.com/en_MS/home/range.html (accessed 2026-10-10) [manufacturer]
+    - match: '\A(?:MINI|COOPER|ONE\b|COUNTRYMAN|CLUBMAN|PACEMAN|JCW|JOHN COOPER|M C S COUNTRY)'   # every BMW-label cell naming a MINI model; no BMW nameplate starts with these words (checked over all ב מ וו cells 2026-10-10)
+      make: MINI
+      kinds: [car, van]
+      rewrite:
+        - ['COUNTRYM\w*|CONTRYM\w*|\bCOUNTR\b', 'COUNTRYMAN']   # truncations: "MINI S COUNTRYM" 54, "MINICOUNTRYMAN" 52, "MINI C S COUNTR" 16, "MINI S CONTRYM"
+        - ['PACEMA\b', 'PACEMAN']                              # "MINI JCW PACEMA" 1
+        - ['\bCAB\b', 'CABRIO']                                # "MINI COOPER CAB" 89, "MINI COOP S CAB" 31 → normalizer folds CABRIO to Convertible
+  "ניסאן":    # Nissan label; Infiniti is Nissan's premium marque and Israel files it here: INFINITI 825, INFINITI Q50 561, INFINITI Q30 513, INFINITI QX60 294 … — https://www.infiniti-global.com/ (accessed 2026-10-10) [manufacturer]
+    - match: '\AINFIN(?:ITI|TTI|ITY)\b'   # 2,876 active incl. the misspellings INFINTTI, INFINTTI M, INFINITY HYBRID; the model follows the marque word
+      make: Infiniti
+      kinds: [car, van]
+      strip: ['\AINFIN(?:ITI|TTI|ITY)\b']   # bare "INFINITI" (825) and "INFINITI HYBRID" carry no nameplate → dropped / unattached, never a Nissan
+  "פיאט":     # Fiat label; Abarth is a Stellantis marque registered under Fiat in Israel: ABARTH 500 362, FIAT 500 ABARTH 238, 500 ABARTH 30, ABARTH124SPIDER 13, PUNTO ABARTH 15 — https://www.abarth.com/ (accessed 2026-10-10) [manufacturer]
+    - match: 'ABARTH?'   # incl. the truncation "ABART 500E"
+      make: Abarth
+      kinds: [car, van]
+      strip: ['\AFIAT\b', 'ABARTH?']   # "FIAT 500 ABARTH" → 500, "ABARTH500" → 500, "PUNTO ABARTH" → PUNTO

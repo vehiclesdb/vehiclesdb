@@ -271,11 +271,23 @@ propulsion coverage would require RDW to publish a combined view.
     Israel's Fiat "250" trucks). The head was junk: tails fused into
     commercial names (`toyota/corolla-hsd-sdn` 33,309, `hyundai/elantra-hev`)
     and, on 2W/truck/bus, TYPE CODES rather than names (`honda/nf13`,
-    `ktm/gsa20`, `chevrolet/ck`). As shipped: **+0 ids, 0 renames, gate
-    failures identical to control; `il` on 1,483 published ids** (car 772 ·
-    van 98 · truck 170 · bus 34 · motorcycle 394 · moped 15) carrying
-    3,638,204 of 4,507,113 ingested active vehicles (80.7%; car 85.6%,
-    motorcycle 6.0% — the type-code cells rarely meet a catalog name).
+    `ktm/gsa20`, `chevrolet/ck`). As shipped (re-cut measured 2026-10-10 on
+    the 2026-10-09 load, frozen control vs treatment,
+    vehiclesdb-pipeline#254): **+0 ids, 0 renames, gate failures identical
+    to control; `il` on 1,492 published ids** (car 782 · van 98 · truck 170 ·
+    bus 36 · motorcycle 392 · moped 14) carrying 3,641,614 of 4,506,115
+    ingested active vehicles (80.8%; car 85.8%, motorcycle 6.0% — the
+    type-code cells rarely meet a catalog name).
+  - **Make splits.** Three Hebrew labels file a second marque: `ב מ וו`
+    (BMW) carries MINI (7,256 active), `ניסאן` (Nissan) carries Infiniti
+    (2,880) and `פיאט` (Fiat) carries Abarth (670). Without a split they
+    attached to `car/bmw/cooper*`, `car/nissan/infiniti` and
+    `car/fiat/*-abarth` (found by the I-11 verifier on #254). The rules
+    live in `overrides/kind_maps/il_mot.yml` `make_splits`, are applied by
+    `il_mot` only, and land the vehicles on `car/mini/cooper` (5,788),
+    `car/mini/countryman` (1,096), `car/abarth/500` (631),
+    `car/infiniti/q50` (561) and so on. A bare `INFINITI` cell (825) names no
+    nameplate and is dropped and logged.
   - **Licence — coordinator ruling R1 (2026-10-10, owner-delegated):
     ACCEPT on path (b): facts with credit, never relabelled CC BY.** Every
     package read is `other-open` with no text; the site licence governs
@@ -316,6 +328,12 @@ propulsion coverage would require RDW to publish a combined view.
       guards the CKAN licence fields (`other-open`, isopen true) of
       `degem-rechev-wltp` and the text is quoted in the adapter; re-read it by
       hand with a browser on each release.
+    - **Scope exclusion.** The licence does not cover information «שהושג שלא
+      כדין ו/או שלא ברשות, לרבות תוך עקיפת אמצעים טכנולוגיים» (obtained
+      unlawfully or without permission, including by circumventing technological
+      measures). The adapter reads only the published CKAN API with the
+      pipeline's own User-Agent; it never works around the WAF that blocks the
+      bulk routes.
 - **de_kba_fz10** — Germany's per-vehicle register is closed by statute
   (§39 StVG); FZ 10 is the open model-level signal and is already
   series-normalized by KBA. The site answers missing months with HTTP 200 +
