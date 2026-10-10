@@ -67,6 +67,7 @@ delete its line in the same PR. S2W's half keeps its own ledger in
 
 | item | source of record | what resolves it |
 |---|---|---|
+| **Enrich citation rot — 64 of 3,539 cited URLs no longer reach their page** (2026-10-10 sweep, non-OK rows re-probed with GET-on-404 after review: 40 rot = 404/410, dead DNS or a malformed cited RDW SoQL query; 24 moved = deep link now redirects to the site root). The facts are not known wrong; their provenance is. Heaviest clusters: 11 mgownersclub.co.uk MG guides (moved), 7 sym-global.com pages, 4 skoda-auto.com /models/*, 4 RDW aggregate queries without `$group` (never valid) | vehiclesdb-pipeline#262 `aux/research/url-liveness-2026-10-10.tsv` (private; per-URL class + reason + first occurrence) and `pipeline/tools/url_liveness.rb` | per-fact re-source (maker page > regulator > archive/Wayback), head-first by the record's mass; NOT the 117 `blocked` rows (403/429/redirect walls to a scripted client — alive in a browser). Re-run the tool each release and diff |
 | **G26c Wikidata bulk import** — the next major enrichment program | PRD-QUALITY §14, PRD-PAID §2 | CC0 bulk source; staging + graduation through lint_enrich; conflicts lose to curation. Unbuilt. |
 | G26d fueleconomy.gov per-year-per-trim specs | PRD-PAID §2 | spec'd, unbuilt; feeds catalog-plus |
 | Coverage: 4W enrich sweep beyond the ~30 makes done | pipeline enrich/ (39 files, 506 ids) | continue the swarm pattern (research → verify → land) per marque |
