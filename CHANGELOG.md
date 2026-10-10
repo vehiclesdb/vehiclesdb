@@ -2,6 +2,26 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.10.2] - 2026-10-10 — the provenance release (paid layer) and the developer-quality batch
+
+**15,068 models across 934 makes in 17 countries (15,069 → 15,068, −1).** One id retired with a migration path (`car/volkswagen/2dsedan-1300-11-2400` → `car/volkswagen/beetle`; see Curation), 0 added, ORPHAN section empty (`RELEASE-DIFF-2026.10.2.md`). Second cut of the owner-authorised stretch of 2026-10-10, through the CI publish path (run 38040238666; `validate: ALL GATES GREEN`, licence pins 16/16; same windows as 2026.10.1).
+
+### Schema (additive)
+- `dist/vehicles.json` model entries gain an optional `country_ranks` object (the catalog's `popularity.by_country` rank, verbatim, per country code) so a flat-file consumer can rank by one country without loading `catalog/` (pipeline#261; documented in SCHEMA.md by #369). No schema version string moved.
+
+### Curation (DEVQ developer-quality batch, each with an independent Opus I-11 verdict on the PR)
+- **Resolver aliases** (#366): 63 alias strings on 35 car records so typed forms resolve on the first try — `Mazda3` / `Mazda 3`, `Octavia Combi`, `Cee'd`, `i30 Fastback`, … — every line with its source URL and tier; `ProCeed` lands on the live `car/kia/pro-ceed`.
+- **Body types** (#367): 25 category errors in the top-300 cars by mass corrected with manufacturer sources (F-150, Ram 1500, CR-V and the `Max`-keyword victims were typed hatchback).
+- **Make twins** (#368): SCANIA VABIS and POLSKI-FIAT pinned as spellings of Scania-Vabis / Polski Fiat, with the two folds the pin unlocks (L7650/L7642 → L76, LB80S dropped).
+- **fi fused door+body prefix** (#376): the register string class `<2-5>D<BODY>…` ("2DSEDAN 1300-11/2400") can no longer publish — a `drop_patterns` class rule (1,399 car + 15 van sub-threshold candidates gone, 0 new) and the one published victim aliased to `beetle`.
+
+### Depth (private layer)
+- **Per-fact provenance and structured generations in catalog-plus** (pipeline#258, ruling R4; three Opus I-11 rounds, final MERGEABLE): every enrich fact carries its source rows (url, accessed, tier) in a `provenance[]` sidecar with stable row ids, and `generations[]` is a structured field derived only where the curated runs already state it. Public tree proven byte-unchanged. Ships in the hand-cut `plus-2026.10.2`.
+- ENR4W enrichment tail continues: Citroën 14 ids / 132,757 vehicles (pipeline#264), Nissan 14 / 107,265 (#266), Fiat 11 / 77,255 (#265); enrich comment hygiene + a URL-liveness sweep of every cited URL (#262, 64 rot/moved rows filed in DEBT by #373).
+
+### Known
+- `plus-2026.10.2` hand-cut again (`PIPELINE_RELEASE_TOKEN` still unset).
+
 ## [2026.10.1] - 2026-10-10 — the mass-decile release (and the first owner-AFK autonomous cut)
 
 **15,069 models across 934 makes in 17 countries (14,997 → 15,069, +72).** +82 ids added and −10 retired, **every retirement with a migration path**: 8 `former_ids` aliases and 2 `removals.yml` entries; the dist-diff ORPHAN section is empty in all six kinds (`RELEASE-DIFF-2026.10.1.md`). Cut by the owner-authorised stretch of 2026-10-10 through the CI publish path (run 38024625148; `validate: ALL GATES GREEN`, licence pins 16/16 verified; windows es 2026-06…08, uk 2026-Q2, my 2025-01…2026-08, lu 2026-07…09, fi snapshot 2026-06-30).
