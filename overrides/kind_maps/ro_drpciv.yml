@@ -1,0 +1,65 @@
+# ro_drpciv — Romania, DRPCIV/DGPCI "Parc auto" (national fleet at 31.12),
+# https://data.gov.ro/dataset/parc-auto-romania, fuel file of the 31.12.2025
+# edition (resource 3e30eb2a). Counts are vehicles in that file, measured
+# 2026-10-10.
+#
+# THE KIND COMES FROM THE EU CATEGORY (CATEGORIE_COMUNITARA) — the same M/N/L
+# mapping as fi_traficom and lu_snca (L6e/L7e quadricycles → moped by the
+# es_dgt/lu_snca/fi_traficom convention). The NATIONAL category decides only
+# when the EU category is BLANK (trailers, tractors, special machinery).
+#
+# THE THREE OUTCOMES (same contract as il_mot.yml / no_svv_pkk.yml):
+#   a kind   mapped
+#   null     a DECLARED skip, reason on the same line — logged, never warned
+#   absent   UNDECLARED — warned loudly every build
+
+kinds:
+  categorie_comunitara:
+    M1: car          # 8,402,251 (AUTOTURISM 8,398,633; AUTOUTILITARA 1,830; AUTORULOTA 266 …)
+    M1G: car         # 372,550 off-road M1 (AUTOTURISM 372,535)
+    M1S: car         # 6 special-purpose M1
+    M1GS: car        # 1
+    N1: van          # 930,741 (AUTOUTILITARA 883,815; AUTOMOBIL MIXT 36,324; AUTOSPECIALIZATA 10,497)
+    N1G: van         # 51,438
+    N1S: van         # 1
+    N2: truck        # 54,387
+    N2G: truck       # 570
+    N2GS: truck      # 1
+    N3: truck        # 267,694 (AUTOUTILITARA 236,899; AUTOSPECIALIZATA 29,435)
+    N3G: truck       # 16,326
+    N: truck         # 21,200 — every row is AUTOTRACTOR (road tractor unit), a truck
+    M2: bus          # 28,868 (MICROBUZ 27,949)
+    M2G: bus         # 4
+    M3: bus          # 29,666 (AUTOBUZ 27,628; MICROBUZ 1,670)
+    M3G: bus         # 2
+    L1e: moped       # 6,526 — EU L1e is the moped class
+    L2e: moped       # 29 three-wheel moped
+    L3e: motorcycle  # 199,712
+    L3e-A1: motorcycle  # 2
+    L3e-A2: motorcycle  # 1
+    L3e-A3: motorcycle  # 2
+    L3: motorcycle   # 259 (pre-2016 L3)
+    L4e: motorcycle  # 2,369 motorcycle with sidecar
+    L5e: motorcycle  # 2,767 powered tricycle (fi/lu convention)
+    L5e-A: motorcycle   # 1
+    L5: motorcycle   # 1
+    L6e: moped       # 719 light quadricycle (moped by the es/lu/fi convention)
+    L7e: moped       # 45,852 heavy quadricycle — overwhelmingly ATVs filed as MOTOCICLU (45,837)
+    L7: moped        # 3
+  # Only when CATEGORIE_COMUNITARA is blank (788,343 vehicles in the no-fuel file;
+  # the fuel file carries no trailers at all):
+  categorie_nationala_without_eu:
+    REMORCA: null                          # trailer
+    SEMIREMORCA: null                      # semi-trailer
+    REMORCA SPECIALA: null                 # special trailer
+    REMORCA AGRICOLA SAU FORESTIERA: null  # agricultural/forestry trailer
+    SEMIREMORCA SPECIALA: null             # special semi-trailer
+    REMORCA LENTA: null                    # slow trailer
+    AUTOVEHICUL SPECIAL: null              # 52,027 special machinery (cranes, pumps) — not a road-vehicle kind
+    TRACTOR RUTIER: null                   # 29,342 agricultural road tractor
+    TRACTOR: null                          # 8,010 tractor
+    AUTOSPECIALA: null                     # 8,483 special vehicle without EU class
+    AUTOPROPULSATA LUCRARI: null           # 576 self-propelled works machine
+    MASINA AUTOPROPULSATA PENTRU LUCRARI: null  # 1 idem
+    AUTOMOBIL MIXT: null                   # 43 mixed-use without EU class — kind undecidable
+    VEHICUL INCOMPLET: null                # 2 incomplete vehicle
