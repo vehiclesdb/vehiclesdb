@@ -2,6 +2,13 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [Unreleased] — lands with 2026.10.1
+
+### Schema (additive; no schema version string changes)
+- **`popularity.mass_decile`** (pipeline ruling R3, pipeline#205): a mass-ordered companion to `global_decile`. It is the per-kind rank-decile of a record's registration counts summed across all measured countries (1 = top 10% of the kind's ranked records by mass). Present exactly when `popularity` is. **`global_decile` keeps its meaning** (a presence average of per-country deciles), and SCHEMA.md now says what that costs: on v2026.09.1, car decile 1 = 90 records / 14.0% of catalog mass (17.2% of car mass), against 29.7% (36.6%) for decile 2. The counts stay private and only the decile ships. SCHEMA.md *Popularity* documents both fields and the denominator caveat: stock and flow registers mix, and presence-only registers (`ch`) add 0.
+- Flat projections: `dist/vehicles.json` models gain `mass_decile`. `dist/vehicles.csv` and `dist/vehicles.parquet` gain `mass_popularity_decile` as an **appended** last column. `dist/catalog.sqlite` `models` gains `mass_popularity_decile`.
+- `catalog/meta/decile-mass.json` gains a sibling `kinds_by_mass_decile`, with the same `{records, mass_share}` bands keyed by `mass_decile`. `kinds` and `schema: "decile-mass/1"` are unchanged.
+
 ## [2026.10.0] - 2026-10-03 — the UK re-file release (and Norway, attach-only)
 
 **14,997 models across 925 makes in 15 countries (14,886 → 14,997, +111).** +218 ids added and −107 retired, **every retirement with a migration path**: 101 `former_ids` aliases and 6 `removals.yml` entries; the dist-diff ORPHAN section is empty in all six kinds (`RELEASE-DIFF-2026.10.0.md`).
