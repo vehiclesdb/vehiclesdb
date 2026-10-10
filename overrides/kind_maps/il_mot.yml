@@ -60,8 +60,8 @@ kinds:
 # from the 2026-10-09 roll-up (5e87a7a1).
 make_splits:
   "ב מ וו":   # BMW label; MINI is a BMW Group marque and Israel files it here: COOPER S 1,171, COOPER 1,141, MINI ONE 788, MINI COOPER 679, ONE 664, COUNTRYMAN COOP 582, COOPER SE 410, JOHN COOPER WOR 295 … (6,556 of 58,411) — https://www.mini.com/en_MS/home/range.html (accessed 2026-10-10) [manufacturer]
-    - match: '\A(?:MINI|COOPER|ONE\b|COUNTRYMAN|CLUBMAN|PACEMAN|JCW|JOHN COOPER|M C S COUNTRY)'   # every BMW-label cell naming a MINI model; no BMW nameplate starts with these words (checked over all ב מ וו cells 2026-10-10)
-      make: MINI
+    - match: '\A(?:MINI|COOPER|ONE\b|COUNTRYMAN|CLUBMAN|PACEMAN|ACEMAN|JCW|JOHN COOPER|M C S COUNTRY)'   # BMW-label cells naming a MINI model; no BMW nameplate starts with these words (checked over all ב מ וו car/van cells 2026-10-10)
+      make: MINI          # ACEMAN added (I-11 round 2, S-5): ACEMAN SE 114, ACEMAN E 4 — the 2024 MINI Aceman, live as car/mini/aceman
       kinds: [car, van]
       rewrite:
         - ['COUNTRYM\w*|CONTRYM\w*|\bCOUNTR\b', 'COUNTRYMAN']   # truncations: "MINI S COUNTRYM" 54, "MINICOUNTRYMAN" 52, "MINI C S COUNTR" 16, "MINI S CONTRYM"
@@ -72,8 +72,14 @@ make_splits:
       make: Infiniti
       kinds: [car, van]
       strip: ['\AINFIN(?:ITI|TTI|ITY)\b']   # bare "INFINITI" (825) and "INFINITI HYBRID" carry no nameplate → dropped / unattached, never a Nissan
+    - match: '\AQX?\d\d\b'   # Infiniti nameplates filed WITHOUT the marque word (I-11 round 2, S-5): QX55 194, QX50 81, QX60 74, Q50 HYBRID 15, Q70 HYBRID 1; Nissan sells no Q<digits> model (QASHQAI does not match) — https://www.infiniti-global.com/ (accessed 2026-10-10) [manufacturer]
+      make: Infiniti
+      kinds: [car, van]
   "פיאט":     # Fiat label; Abarth is a Stellantis marque registered under Fiat in Israel: ABARTH 500 362, FIAT 500 ABARTH 238, 500 ABARTH 30, ABARTH124SPIDER 13, PUNTO ABARTH 15 — https://www.abarth.com/ (accessed 2026-10-10) [manufacturer]
     - match: 'ABARTH?'   # incl. the truncation "ABART 500E"
       make: Abarth
       kinds: [car, van]
       strip: ['\AFIAT\b', 'ABARTH?']   # "FIAT 500 ABARTH" → 500, "ABARTH500" → 500, "PUNTO ABARTH" → PUNTO
+    - match: '\ARENEGADE\b'   # the Jeep Renegade (464 active) is filed under the Fiat label — built by FCA at Melfi beside the Fiat 500X (I-11 round 2, S-5); live as car/jeep/renegade — https://www.jeep.com/renegade.html (accessed 2026-10-10) [manufacturer]
+      make: Jeep
+      kinds: [car, van]
