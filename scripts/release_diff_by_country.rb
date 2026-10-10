@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 #
 # release_diff_by_country.rb — what a release changed, PER COUNTRY and PER KIND,
-# in the words a builder in that country needs ("Norway: +2,899 models, new
+# in the words a builder in that country needs ("Norway: +2,900 models, new
 # source"). Companion to release_diff.rb (which is the per-kind §16 publish
 # review); this one writes the CHANGELOG's per-country section.
 #
@@ -23,13 +23,14 @@
 #   renamed   id present in FROM, absent from TO, and listed in some TO record's
 #             former_ids (the release's own migration alias) -> counted in FROM's
 #             countries; its successor is not also counted as new
+#   renamed_in  the NEW id a renamed id now lives under      -> TO's countries
+#             (a rename onto a fresh slug: one renamed out, one renamed in)
 #   retired   id present in FROM, absent from TO, no alias  -> FROM's countries
 #   gained    id in both, C in TO's availability but not FROM's
 #   lost      id in both, C in FROM's availability but not TO's
 #   before / after / delta   number of models in C in FROM / TO
-#   delta = new + gained − lost − retired + (renamed successors that keep C −
-#           renamed predecessors) — the identity is checked per country, and
-#           the script exits 2 if it does not hold.
+#   delta = new + gained − lost − renamed + renamed_in − retired — checked for
+#           every (country, kind); the script exits 2 if it does not hold.
 #   new source  a source id in TO's manifest that FROM's manifest lacks (its
 #               country is flagged); a dropped source is flagged the same way.
 #
@@ -57,7 +58,7 @@ COUNTRY_NAME = {
   "tr" => "Turkey", "ua" => "Ukraine", "us" => "United States", "za" => "South Africa"
 }.freeze
 
-CATEGORIES = %i[new gained lost renamed retired].freeze
+CATEGORIES = %i[new gained lost renamed renamed_in retired].freeze
 
 def fmt(n) = n.to_s.reverse.scan(/\d{1,3}/).join(",").reverse
 def signed(n) = n.zero? ? "0" : (n.positive? ? "+#{fmt(n)}" : "−#{fmt(-n)}")
@@ -98,7 +99,7 @@ class GitTree < Tree
 end
 
 class DirTree < Tree
-  def initialize(dir, label: dir)
+  def initialize(dir, label: File.basename(File.expand_path(dir)))
     @dir = File.expand_path(dir)
     @label = label
     @flag = "-dir"
@@ -122,7 +123,12 @@ def diff(from, to)
   fm = from.models
   tm = to.models
   successor = {} # old "<kind>/<id>" -> new "<kind>/<id>"
-  tm.each { |key, rec| (rec["former_ids"] || []).each { |old| successor[old] = key } }
+  tm.each do |key, rec|
+    (rec["former_ids"] || []).each do |old|
+      warn "release_diff_by_country: #{old} is aliased by both #{successor[old]} and #{key}" if successor.key?(old) && successor[old] != key
+      successor[old] = key
+    end
+  end
 
   removed = fm.keys - tm.keys
   added = tm.keys - fm.keys
@@ -155,9 +161,7 @@ def diff(from, to)
   before = count[fm]
   after = count[tm]
 
-  # Renamed predecessors leave C; their successors may or may not carry C.
-  succ_in = Hash.new { |h, cc| h[cc] = Hash.new(0) }
-  successors.each_key { |k| countries_of(tm[k]).each { |cc| succ_in[cc][kind_of[k]] += 1 } }
+  successors.each_key { |k| countries_of(tm[k]).each { |cc| cell[cc][kind_of[k]][:renamed_in] << k } }
 
   kinds = (from.manifest["kinds"].keys | to.manifest["kinds"].keys)
   ccs = (before.keys | after.keys | cell.keys).sort
@@ -169,7 +173,7 @@ def diff(from, to)
       c = cell[cc][kind]
       b = before[cc][kind]
       a = after[cc][kind]
-      expect = c[:new].size + c[:gained].size - c[:lost].size - c[:retired].size - c[:renamed].size + succ_in[cc][kind]
+      expect = c[:new].size + c[:gained].size - c[:lost].size - c[:retired].size - c[:renamed].size + c[:renamed_in].size
       if a - b != expect
         warn "release_diff_by_country: identity broken for #{cc}/#{kind}: before #{b} after #{a} but categories give #{expect}"
         exit 2
@@ -189,7 +193,7 @@ def diff(from, to)
   { from: { label: from.label, flag: from.flag, version: from.version, models: fm.size },
     to: { label: to.label, flag: to.flag, version: to.version, models: tm.size },
     kinds: kinds,
-    totals: { new: fresh.size, renamed: renamed.size, retired: retired.size },
+    totals: { new: fresh.size, renamed: renamed.size, renamed_in: successors.size, retired: retired.size },
     countries: rows }
 end
 
@@ -202,10 +206,11 @@ def headline(r)
   why = []
   why << "new source: #{r[:new_sources].map { |s| s[:name] }.join(', ')}" if r[:new_sources].any?
   why << "source dropped: #{r[:dropped_sources].map { |s| s[:name] }.join(', ')}" if r[:dropped_sources].any?
-  why << n_of(t[:new], "new id") if t[:new].positive?
+  why << "#{n_of(t[:new], "new id")} seen here" if t[:new].positive?
   why << "#{n_of(t[:gained], "existing id")} newly seen here" if t[:gained].positive?
   why << "#{fmt(t[:lost])} no longer seen here" if t[:lost].positive?
   why << "#{fmt(t[:renamed])} renamed (aliased)" if t[:renamed].positive?
+  why << "#{n_of(t[:renamed_in], "renamed id")} now under a new id here" if t[:renamed_in].positive?
   why << "#{fmt(t[:retired])} retired" if t[:retired].positive?
   "- **#{r[:name]}** (`#{r[:country]}`): #{parts.join}#{why.any? ? " — #{why.join('; ')}" : ''}"
 end
@@ -217,24 +222,25 @@ def render_md(d, ids_cap)
   out << "Generated by `scripts/release_diff_by_country.rb --from#{d[:from][:flag]} #{d[:from][:label]} --to#{d[:to][:flag]} #{d[:to][:label]}`. " \
          "A model counts in a country when its record carries availability evidence there; " \
          "*new* = new id, *gained*/*lost* = an existing id started/stopped being seen there, " \
-         "*renamed* = id retired with a `former_ids` alias to its successor, *retired* = id removed without one."
+         "*renamed* = id retired with a `former_ids` alias to its successor, *renamed in* = that successor when it is a new id, *retired* = id removed without one. Each row adds up: before + new + gained − lost − renamed + renamed in − retired = after."
   out << ""
   tt = d[:totals]
   out << "Catalog: #{fmt(d[:from][:models])} → #{fmt(d[:to][:models])} models " \
          "(#{signed(d[:to][:models] - d[:from][:models])}): #{fmt(tt[:new])} new ids, " \
+         "#{fmt(tt[:renamed_in])} new ids that succeed renamed ones, " \
          "#{fmt(tt[:renamed])} renamed with an alias, #{fmt(tt[:retired])} retired."
   out << ""
   changed = d[:countries].reject { |r| CATEGORIES.all? { |c| r[:total][c].zero? } && r[:total][:delta].zero? && r[:new_sources].empty? && r[:dropped_sources].empty? }
   changed.sort_by { |r| [-r[:total][:delta].abs, r[:country]] }.each { |r| out << headline(r) }
   out << "- No country changed." if changed.empty?
   out << ""
-  out << "| country | before | after | Δ | new | gained | lost | renamed | retired |"
-  out << "|---|---:|---:|---:|---:|---:|---:|---:|---:|"
+  out << "| country | before | after | Δ | new | gained | lost | renamed | renamed in | retired |"
+  out << "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|"
   d[:countries].sort_by { |r| [-r[:total][:after], r[:country]] }.each do |r|
     t = r[:total]
     flag = r[:new_sources].any? ? " **new source**" : ""
     out << "| #{r[:name]} (`#{r[:country]}`)#{flag} | #{fmt(t[:before])} | #{fmt(t[:after])} | #{signed(t[:delta])} | " \
-           "#{fmt(t[:new])} | #{fmt(t[:gained])} | #{fmt(t[:lost])} | #{fmt(t[:renamed])} | #{fmt(t[:retired])} |"
+           "#{fmt(t[:new])} | #{fmt(t[:gained])} | #{fmt(t[:lost])} | #{fmt(t[:renamed])} | #{fmt(t[:renamed_in])} | #{fmt(t[:retired])} |"
   end
   out << ""
   out << "<details><summary>Δ per country and kind</summary>"
