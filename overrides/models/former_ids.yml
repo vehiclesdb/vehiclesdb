@@ -7192,3 +7192,20 @@
 # rows now reach the full coachbuilder name in the truck kind. Same make, same kind, gb-only old ids, successors carry gb.
 "truck/fiat/auto": "truck/fiat/auto-trail"     # HGV "FIAT AUTO TRAIL" (5,514 gb 2026 Q2) — "Auto" was a truncation of Auto Trail
 "truck/fiat/roller": "truck/fiat/roller-team"  # HGV "FIAT ROLLER TEAM" (554 gb 2026 Q2) — "Roller" was a truncation of Roller Team
+# ── REL no-vanish, 2026-10-10 (S4W, lane REL, stretch 2026-10-10) — three published TRIM ids retire onto
+# their nameplates after the rolling windows rolled: lu_snca 2026-06…2026-08 (v2026.10.0) -> 2026-07…2026-09
+# and ar_dnrpa 2026-08 -> 2026-09. Measured on the frozen register cache AND on the fresh-fetch CI build
+# vehiclesdb run 38018474491 (2026-10-10, pipeline main, fi snapshot 2026-06-30), which fails no-vanish on
+# exactly these three ids. Each line pairs with a renames.yml key of the same date that folds the trim
+# spelling onto the nameplate, so a stray future row cannot republish an alias SOURCE (it would otherwise
+# re-enter on two sources — ca_nrcan+lu_snca, or ar_dnrpa+any — and trip the liveness gate).
+"car/acura/integra-type-s":   # published v2026.10.0 on [ca (ca_nrcan approval), lu (lu_snca: ONE op "ACURA | INTEGRA TYPE S", lu_delta_202606.xml = lu_delta_2026-07.xml, md5-identical)]; the fresh lu window 202607/202608/202609 holds 0 Acura Integra rows of any spelling and ca_nrcan alone is a count-0 catalogue listing (candidate {"ca"=>0}, raw "Acura | Integra Type S"). Type S is the Integra's top grade — Acura: "Most powerful, best performing Integra ever" (https://acuranews.com/en-US/releases/release-f61ab7d13cb83fb181b8bc22df06ecde-highly-anticipated-2024-acura-integra-type-s-delivers-ultimate-street-performance-on-sale-in-june, release 2023-04-11, accessed 2026-10-10, manufacturer). Successor car/acura/integra live on ca,nl,ua,us in both builds. 2026-10-10
+  to: "car/acura/integra"
+  accepted_loss: [lu]  # the lu row left with the 2026-06 data month; no live record carries an lu Acura Integra row to inherit (lu files 202607-202609: 0 ops). Authored, not silent. 2026-10-10
+  accepted_xref_loss: ["RTI*95*ACU2601DE5G0148"]  # the id's ONE tan, carried by that same lu_snca op (PVRNUM); `grep -lF` over the frozen cache finds it ONLY in lu_delta_202606.xml / lu_delta_2026-07.xml (0 in fi/es zips, 0 in lu 202607-202609), and neither build's catalog carries it on any id — it leaves with the window, not with the fold. 2026-10-10
+"car/smart/1-brabus":   # published v2026.10.0 on [ar] only (ar_dnrpa 2026-08, rank 217, decile 10): ar_autos_202608.csv carries 1 "SMART | SMART #1 BRABUS (BEV)"; ar_autos_202609.csv (the fresh window) carries 0 smart #1 rows of any version — its only smart row is 1 "SMART #3 PRO (BEV)". BRABUS is a version of the #1: ar.smart.com lists "Línea Pure Pro Pro+ BRABUS" (https://ar.smart.com/smart-1/, accessed 2026-10-10, manufacturer). Same fold as car/smart/1-pro and 1-premium -> car/smart/1 above. Successor live in 10 countries (au,ch,de,es,fi,gb,lu,nl,nz,ua). 2026-10-10
+  to: "car/smart/1"
+  accepted_loss: [ar]  # ar_dnrpa 2026-09 has no smart #1 row at all, so car/smart/1 itself drops ar in this build — the loss is the window's, not the fold's. Authored, not silent. 2026-10-10
+"car/smart/3-brabus":   # published v2026.10.0 on [ar] only (ar_dnrpa 2026-08, rank 218, decile 10): ar_autos_202608.csv carries 1 "SMART | SMART #3 BRABUS (BEV)"; ar_autos_202609.csv carries 0 (its one smart row is "SMART #3 PRO (BEV)", which lands on the live hysteresis edge id car/smart/3-pro). BRABUS is a version of the #3: ar.smart.com "Elegí tu versión" lists Pro, Pro+ and BRABUS (https://ar.smart.com/smart-3/, accessed 2026-10-10, manufacturer). Successor car/smart/3 live in 10 countries (au,ch,de,es,fi,gb,lu,nl,nz,ua). 2026-10-10
+  to: "car/smart/3"
+  accepted_loss: [ar]  # car/smart/3 carries no ar in this build either (the only ar #3 row is the Pro, on car/smart/3-pro); authored, not silent. 2026-10-10
