@@ -231,8 +231,16 @@ optional and additive):
 
 Per-model: `body_type` (primary only; absent where the catalog has none),
 `global_decile` and `mass_decile` (both absent when unranked; see
-*Popularity*), `availability` (bare country codes — the evidence detail lives
-in `catalog/`).
+*Popularity*), `country_ranks` (`{"gb": 2, "nl": 1, …}` — the model's rank
+among ALL models of its kind in that country, copied verbatim from `catalog/`
+`popularity.by_country[cc].rank`; absent when the model has no rank anywhere;
+added 2026-10, schema v2 growth rule), `availability` (bare country codes —
+the evidence detail lives in `catalog/`).
+
+Neither decile is a per-country ordering. Anything that lists "the most
+popular models in country X" should sort by `country_ranks[X]` (the `vehicles`
+gem's `top_models(country:)` does from 0.7.8). Countries whose sources record
+presence only (us, ca for cars) have no ranks.
 
 ## `dist/vehicles.csv` / `dist/vehicles.parquet`
 
