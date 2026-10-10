@@ -129,8 +129,10 @@ generates the `vehiclesdb_models` model with its composite
 `@@id([kind, make_slug, model_slug])`. With TypeORM, map
 `@Entity("vehiclesdb_models")` with three `@PrimaryColumn()`s (`kind`,
 `make_slug`, `model_slug`), `text` columns for the rest and `smallint` for
-`*_decile`. Load the data with the `\copy` above, or with your ORM's raw-SQL
-escape hatch (`prisma db execute`, `queryRunner.query`), not row by row.
+`*_decile`. Load the data with the `\copy` above from `psql` (`\copy` is a psql
+command, not SQL, so `prisma db execute` or `queryRunner.query` cannot run it),
+or with your Postgres driver's `COPY … FROM STDIN` support. Avoid inserting row
+by row.
 
 ### SQLite
 
