@@ -40,6 +40,7 @@
 require "json"
 require "open3"
 require "optparse"
+require "pathname"
 require "shellwords"
 
 ROOT = File.expand_path("..", __dir__)
@@ -70,7 +71,7 @@ def country_name(cc) = COUNTRY_NAME.fetch(cc, cc.upcase)
 
 # A release as published: manifest.json + the catalog files it indexes.
 class Tree
-  attr_reader :label, :flag, :arg # arg = the ref/dir as given, for the replay command
+  attr_reader :label, :flag, :arg # arg = the ref, or the dir relative to the repo root, for the replay command
 
   def manifest = @manifest ||= JSON.parse(read("manifest.json"))
   def version = manifest.fetch("version")
@@ -104,7 +105,9 @@ class DirTree < Tree
   def initialize(dir, label: File.basename(File.expand_path(dir)))
     @dir = File.expand_path(dir)
     @label = label
-    @arg = dir
+    # Relative to the repo root, where the replay command runs: replayable, and never a
+    # machine-local absolute path in a public CHANGELOG (I-11 R3 + codex r3 P3).
+    @arg = Pathname.new(@dir).relative_path_from(Pathname.new(ROOT)).to_s
     @flag = "-dir"
     abort "release_diff_by_country: no manifest.json in #{@dir}" unless File.file?(File.join(@dir, "manifest.json"))
   end
