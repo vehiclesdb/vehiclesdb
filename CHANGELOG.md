@@ -2,6 +2,35 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.10.1] - 2026-10-10 — the mass-decile release (and the first owner-AFK autonomous cut)
+
+**15,069 models across 934 makes in 17 countries (14,997 → 15,069, +72).** +82 ids added and −10 retired, **every retirement with a migration path**: 8 `former_ids` aliases and 2 `removals.yml` entries; the dist-diff ORPHAN section is empty in all six kinds (`RELEASE-DIFF-2026.10.1.md`). Cut by the owner-authorised stretch of 2026-10-10 through the CI publish path (run 38024625148; `validate: ALL GATES GREEN`, licence pins 16/16 verified; windows es 2026-06…08, uk 2026-Q2, my 2025-01…2026-08, lu 2026-07…09, fi snapshot 2026-06-30).
+
+| kind | 2026.10.0 | 2026.10.1 | Δ |
+|---|---:|---:|---:|
+| car | 5,510 | 5,542 | +32 |
+| van | 732 | 739 | +7 |
+| motorcycle | 6,016 | 6,033 | +17 |
+| moped | 1,393 | 1,399 | +6 |
+| truck | 940 | 947 | +7 |
+| bus | 406 | 409 | +3 |
+
+### Schema (additive; no schema version string changes)
+- **`popularity.mass_decile`** (pipeline ruling R3, pipeline#205): a mass-ordered companion to `global_decile`. It is the per-kind rank-decile of a record's registration counts summed across all measured countries (1 = top 10% of the kind's ranked records by mass). Present exactly when `popularity` is. **`global_decile` keeps its meaning** (a presence average of per-country deciles), and SCHEMA.md now says what that costs: on v2026.09.1, car decile 1 = 90 records / 14.0% of catalog mass (17.2% of car mass), against 29.7% (36.6%) for decile 2. The counts stay private and only the decile ships. SCHEMA.md *Popularity* documents both fields and the denominator caveat: stock and flow registers mix, and presence-only registers (`ch`) add 0.
+- Flat projections: `dist/vehicles.json` models gain `mass_decile`. `dist/vehicles.csv` and `dist/vehicles.parquet` gain `mass_popularity_decile` as an **appended** last column. `dist/catalog.sqlite` `models` gains `mass_popularity_decile`.
+- `catalog/meta/decile-mass.json` gains a sibling `kinds_by_mass_decile`, with the same `{records, mass_share}` bands keyed by `mass_decile`. `kinds` and `schema: "decile-mass/1"` are unchanged.
+
+### Curation
+- **Three published trim ids retired onto their nameplates** after the 2026-09 window rolls (data#370, independent Opus I-11 MERGEABLE): `car/acura/integra-type-s` → `car/acura/integra` (its one lu_snca op left with the 2026-06 data month; Acura: Type S is the Integra's top grade), `car/smart/1-brabus` → `car/smart/1` and `car/smart/3-brabus` → `car/smart/3` (ar_dnrpa 2026-09 carries no BRABUS rows; BRABUS is a version per ar.smart.com). Each with an authored `accepted_loss` and a paired `renames.yml` key so the alias source cannot republish. The `truck/mercedes-benz/esprinter` spotcheck pin follows lu out of the window (the fold alias is intact).
+- Documentation carried from two closed PRs (data#363): pipeline#186's measured residual on the door-code/litre rescue, and data#337's finding that the detector-coverage premise of PRD-FIVE-NINES §1.3 is false in both parts (DEBT.md "Audit instrument: detector coverage"; QUALITY.md corrected).
+
+### Depth (private layer; counts unchanged in the open data)
+- ENR4W 4W enrichment tail, every batch Sonnet-researched and Opus-verified (FINAL APPROVE on each PR): heads-A 10 ids / 303,209 vehicles (pipeline#256), Audi tail 12 ids / 244,542 (#257), Ford tail 9 ids / 129,020 (#259), Mercedes-Benz tail 14 ids / 134,206 (#263), Toyota tail 14 ids / 179,868 (#260). s4w-owned 4W enrichment by registration mass (v2026.09.1 basis): 95.03% → ≈96.4% (each batch states its own measured before→after on its PR).
+
+### Known
+- `plus-2026.10.1` was not cut by CI (`PIPELINE_RELEASE_TOKEN` is still unset — owner action); it is hand-cut from a rebuild of the exact release inputs per RELEASE-RUNBOOK §5.5 and its coherence with the public catalog is stated on the plus release.
+- A fresh fetch of Traficom's open-data endpoint from a residential client returned the 2026-03-31 extract while CI reads 2026-06-30 (DEBT.md); the release is built from CI's vintage.
+
 ## [2026.10.0] - 2026-10-03 — the UK re-file release (and Norway, attach-only)
 
 **14,997 models across 925 makes in 15 countries (14,886 → 14,997, +111).** +218 ids added and −107 retired, **every retirement with a migration path**: 101 `former_ids` aliases and 6 `removals.yml` entries; the dist-diff ORPHAN section is empty in all six kinds (`RELEASE-DIFF-2026.10.0.md`).

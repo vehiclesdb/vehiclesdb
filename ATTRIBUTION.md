@@ -33,11 +33,23 @@ verbatim as required (CC-BY 4.0 §3(a); OGL v3; and siblings).
 - License: [Creative Commons Attribution 4.0](https://datos.gob.ar/acerca/seccion/marco-legal)
 - Statement: Contains DNRPA vehicle registration data (Ministerio de Justicia, Argentina) from datos.jus.gob.ar, licensed under Creative Commons Attribution 4.0.
 
+## Australian registered road vehicles by make and model (BITRE Road Vehicles Australia)
+
+- Source: https://data.gov.au/data/dataset/road-vehicles-australia-january-2025
+- License: [Creative Commons Attribution 3.0 Australia](https://creativecommons.org/licenses/by/3.0/au/)
+- Statement: © Commonwealth of Australia 2025. Source: Bureau of Infrastructure and Transport Research Economics (BITRE), Road vehicles Australia, January 2025 (data.gov.au), licensed under Creative Commons Attribution 3.0 Australia (https://creativecommons.org/licenses/by/3.0/au/). VehiclesDB aggregated, normalised and reconciled these counts to its make/model records; this is not endorsed by BITRE or the Commonwealth.
+
 ## Canadian fuel consumption ratings (Natural Resources Canada)
 
 - Source: https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64
 - License: [Open Government Licence – Canada](https://open.canada.ca/en/open-government-licence-canada)
 - Statement: Contains information licensed under the Open Government Licence – Canada (Natural Resources Canada fuel consumption ratings).
+
+## Strassenverkehrsamt Kanton Thurgau — Fahrzeugbestand Kanton Thurgau am 01.01.2026
+
+- Source: https://data.tg.ch/explore/dataset/djs-stv-7/
+- License: [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)
+- Statement: Contains data from the Strassenverkehrsamt Kanton Thurgau — "Fahrzeugbestand Kanton Thurgau am 01.01.2026" (data.tg.ch, dataset djs-stv-7; originally from the Open Data stock of the Swiss Federal Roads Office ASTRA), licensed CC BY 4.0. One canton only; aggregated, presence-only.
 
 ## German new car registrations by make and model series (KBA FZ10)
 
