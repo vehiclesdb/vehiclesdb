@@ -112,7 +112,9 @@ zeros + a bounded sampled tail — the construction is in PRD-FIVE-NINES §1.3
 and every number in it is recomputable from published artifacts
 (`catalog/meta/decile-mass.json` + the audit ledgers).
 
-## Detector suite (held at zero in CI, every build)
+## Detector suite (NOT yet run in CI — measured 2026-10-10, see the round-2 section above)
+
+*Correction 2026-10-10: the heading used to read "held at zero in CI, every build". data#337 measured that none of the `find_*` detectors runs in any workflow, and that they are not silent on v2026.09.1. Until `detectors.yml` exists (DEBT.md, "Audit instrument: detector coverage"), this list is the suite we HAVE, not a gate we RUN.*
 
 duplicate-spellings · casing-contradictions · corporate-strings ·
 published-name-defects (with recorded verdicts) · curation lint (direction
