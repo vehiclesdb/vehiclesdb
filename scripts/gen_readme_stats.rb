@@ -231,7 +231,7 @@ def render_llms_stats(f)
     "Open, CC-BY 4.0 vehicle taxonomy: #{fmt(f[:models])} models across #{fmt(f[:makes])} makes and " \
     "#{f[:kinds].size} kinds (#{kinds}), reconciled from official vehicle registers and type-approval " \
     "catalogues of #{f[:countries].size} countries (#{names}). Stable ids, per-country availability " \
-    "evidence, measured popularity deciles. Versioned monthly (current: #{f[:version]}, built #{f[:built]}). " \
+    "evidence, measured popularity deciles. Versioned releases, usually monthly (current: #{f[:version]}, built #{f[:built]}). " \
     "A model is published only when two independent official sources corroborate it or one shows a " \
     "decisive registration count."
   )
