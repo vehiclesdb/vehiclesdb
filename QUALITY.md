@@ -79,6 +79,28 @@ are part of the product.*
   published for either half until a round runs against a build carrying
   `catalog/meta/decile-mass.json`.
 
+## Audit round 2 (v2026.09.1) — not run; detector-coverage premise measured false (2026-10-10)
+
+- **Zero records were audited in round 2.** The round (data#337) was closed
+  unmerged before any researcher/verifier pair finished, so no rate is
+  published for it and none is implied.
+- **Finding A5: the detector-coverage premise of PRD-FIVE-NINES §1.3 is false
+  in both of its parts.** (a) None of the eight `scripts/find_*` detectors runs
+  in `lint.yml` or `monthly-build.yml`; the classes §1.3 names are exactly the
+  ones with no automated coverage. (b) Run against `v2026.09.1` with
+  `VDB_CATALOG` set, the detectors are not silent: `find_alias_name_collisions`
+  exits non-zero with 10 hard findings; duplicate spellings 36 groups over 72
+  records (6 would mint a new canonical); casing contradictions 20 over 101
+  records; published-name defects 243 tokens over 653 records plus 55 near-dup
+  groups over 110; token duplicates 399 groups over 7,385 records; corporate
+  strings 3. These are nominations, not adjudicated defects, and no defect
+  count is claimed; the claim is only that `r = 0 deterministically` is neither
+  enforced by CI nor true of the released artifact. Full finding and the
+  resolving work: DEBT.md, "Audit instrument: detector coverage".
+- **What remains on main:** the instrument scripts and the round's briefs under
+  `data/review/audit-v2026.09.1/`. The detector logs and ledger that lived only
+  on the PR branch are recoverable from branch `s4w/aud-round2-results`.
+
 ## What we will not claim (verbatim from the PRD)
 
 Not uniform per-record five nines; not correctness of upstream registers
@@ -90,7 +112,9 @@ zeros + a bounded sampled tail — the construction is in PRD-FIVE-NINES §1.3
 and every number in it is recomputable from published artifacts
 (`catalog/meta/decile-mass.json` + the audit ledgers).
 
-## Detector suite (held at zero in CI, every build)
+## Detector suite (NOT yet run in CI — measured 2026-10-10, see the round-2 section above)
+
+*Correction 2026-10-10: the heading used to read "held at zero in CI, every build". data#337 measured that none of the `find_*` detectors runs in any workflow, and that they are not silent on v2026.09.1. Until `detectors.yml` exists (DEBT.md, "Audit instrument: detector coverage"), this list is the suite we HAVE, not a gate we RUN.*
 
 duplicate-spellings · casing-contradictions · corporate-strings ·
 published-name-defects (with recorded verdicts) · curation lint (direction
