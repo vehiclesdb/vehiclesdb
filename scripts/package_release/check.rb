@@ -14,6 +14,8 @@
 #    availability / popularity / former_ids / global+mass decile equal the JSON record's.
 # 4. Fails on any make/model/popularity/availability key the package has no home
 #    for (read_json(columns = …) and from_json would drop it silently).
+# 5. Requires meta.attribution_notices to equal DATA_ROOT/ATTRIBUTION.md byte for byte,
+#    in the SQLite file and in meta.parquet (the standalone .sqlite carries the notices).
 #
 # Exit 0 = all hold. Needs the same tools as package_release.sh.
 
