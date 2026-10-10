@@ -14,7 +14,7 @@
 #   OUT_DIR/vehiclesdb-<version>-parquet/<table>.parquet   one file per table (zstd)
 #   OUT_DIR/vehiclesdb-<version>-parquet/schema.sql  the DDL (also documents the Parquet columns)
 #   OUT_DIR/vehiclesdb-<version>-parquet/README.md   what each table is, how to load it
-#   OUT_DIR/vehiclesdb-<version>-parquet/ATTRIBUTION.md   the upstream register notices (when DATA_ROOT has it)
+#   OUT_DIR/vehiclesdb-<version>-parquet/ATTRIBUTION.md   the upstream register notices (required in DATA_ROOT)
 #   OUT_DIR/vehiclesdb-<version>-parquet.zip         the directory above, for a release asset
 #   OUT_DIR/SHA256SUMS
 #
@@ -197,7 +197,8 @@ sqlite3 "$DB" 'VACUUM'
 
 cp "$SCHEMA" "$PQ/schema.sql"
 # The upstream register statements must travel with the data (some licences require it).
-if [ -f "$DATA_ROOT/ATTRIBUTION.md" ]; then cp "$DATA_ROOT/ATTRIBUTION.md" "$PQ/ATTRIBUTION.md"; fi
+[ -f "$DATA_ROOT/ATTRIBUTION.md" ] || die "no ATTRIBUTION.md in $DATA_ROOT — the upstream register notices must travel with the data"
+cp "$DATA_ROOT/ATTRIBUTION.md" "$PQ/ATTRIBUTION.md"
 sed -e "s/{{VERSION}}/$VERSION/g" -e "s/{{BUILT_AT}}/$BUILT_AT/g" "$README_TPL" > "$PQ/README.md"
 
 # Pin mtimes to the release's build time so the zip is reproducible.
