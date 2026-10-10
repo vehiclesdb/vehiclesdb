@@ -95,6 +95,23 @@ jobs:
         with:
           ruby-version: "3.4"
 
+      # bsdtar (libarchive) for it_aci: ACI ships the Autoritratto Open Data
+      # edition as a RAR5 archive (Autoritratto-2025-OD.rar), and the adapter
+      # extracts it with bsdtar ONLY — p7zip 17.05 lists RAR5 and then writes
+      # every member as a 0-byte file (measured 2026-10-10), so there is no 7z
+      # fallback by design. ubuntu-latest does not ship it: the Ubuntu 24.04
+      # runner image's installed-apt-packages list (image 20261004.327.1,
+      # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md,
+      # read 2026-10-10) has tar, unzip, zip, p7zip-full and p7zip-rar, and no
+      # libarchive-tools/bsdtar. Without this step it_aci fails loudly and the
+      # build continues without Italy (run.rb's per-source rescue) and the id-contract
+      # no-vanish gate then fails on every id that only Italy holds.
+      - name: Install bsdtar (libarchive-tools) for the it_aci RAR5 archive
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libarchive-tools
+          bsdtar --version
+
       # PINNED to a GitHub release asset, not the install script. The script
       # route (`curl -sL https://install.duckdb.org | sh`) 404'd on its internal
       # tarball on 2026-08-24 and 2026-08-31: `tar` aborted, this step failed,

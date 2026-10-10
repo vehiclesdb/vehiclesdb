@@ -101,7 +101,22 @@ car:
   - { make: Mercedes-Benz, pattern: '\A90[34]\z' }
   - '\b(SPINTER|SPRINER|SRINTER)\b'  # Sprinter MISSPELLINGS in passenger-car classes (fi M1 "SPINTER" x15, "SPINTER 310CDI PROSTYLE TREND", "SRINTER 316CDI-3.5T-906633/367" — measured); the van/truck-kind misspelling rows fold to van/truck sprinter via renames, untouched by this car-kind drop
 
-van: []
+  # ── it_aci (ACI Autoritratto 2025 Open Data, Circolante_FTS_Autovetture_2025.ods national sheet — https://aci.gov.it//app/uploads/2026/06/Autoritratto-2025-OD.rar, fetched 2026-10-10; counts re-measured on the .ods 2026-10-10).
+  # MAKE-SCOPED and EXACT (\A…\z) so no other register row can match by accident. ──
+  - { make: Fiat, pattern: '\A35\z' }            # it_aci 2,367 cars, Serie "10 VAN"/"8 VAN"/"F8" — the Daily 35.8/35.10 VAN in the car table; vans are excluded from car (DUCATO/SCUDO above) and a bare 35 is no nameplate
+  - { make: Volkswagen, pattern: '\ATRANSPORTE\z' } # it_aci 123 cars + es_dgt 1 — TRANSPORTER cut at 10 chars; the full word is dropped from car above, the cut form must follow it
+  - { make: Opel, pattern: '\A(2000|2300|CARAVAN)\z' } # it_aci 2,454 + 1,185 cars with Serie "D" only, and 210 "CARAVAN" (+ nl_rdw 4) — engine size and a body word with no model (Rekord, Commodore and Senator all carried 2.0/2.3 diesels); unresolvable per NAMING.md §7.5, so dropped rather than guessed
+  - { make: Renault, pattern: '\AR\z' }          # it_aci 136 cars + nz_nzta 5 — a bare "R" (no Serie) is a placeholder, not a nameplate (NAMING.md §8.1)
+  - { make: Ford, pattern: '\ASCORPION\z' }      # it_aci 356 cars + nz_nzta 1, no Serie — Ford sold no "Scorpion"; reading it as the Scorpio would be a guess by resemblance (NAMING.md §7.5)
+van:
+  # ── it_aci side effect, CONTAINED (2026-10-10). renames.yml is per MAKE across every kind, so the car-kind rescue
+  # `Citroën: 2CV: Az 2CV` (it_aci, bare "2CV" 21,766 cars) also reached the VAN rows that junk? used to kill: nl_rdw
+  # "2CV" 17 + "2CV4" 1 and uk_dft "CITROEN 2CV" 243 (replay_country.rb --kind=van on the frozen corpus, 2026-10-10) —
+  # and minted van/citroen/az-2cv [gb,nl] in the treatment build. "Az 2CV" is the SALOON's type code (AZ); the 2CV van is
+  # the AZU / AK Fourgonnette, so that id would publish the van under the wrong name, and ids are append-only. Dropping
+  # exactly those raw strings in `van` restores the control build's van kind (the rows were already dropped there; no
+  # candidate changes). A real van/citroen record for the Fourgonnette needs its own naming evidence. MAKE-SCOPED + EXACT.
+  - { make: Citroën, pattern: '\A(CITROEN )?2CV4?\z' }  # nl_rdw "2CV" 17 + "2CV4" 1, uk_dft "CITROEN 2CV" 243 van rows (frozen corpus, replay 2026-10-10) — keep the car-kind 2CV rescue out of van; https://en.wikipedia.org/wiki/Citro%C3%ABn_2CV (accessed 2026-10-10; the page names the van the AZU fourgonnette and the AK 400 Fourgonette) [tier 5 encyclopaedic]
 motorcycle: []
 moped: []
 truck:

@@ -28,6 +28,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `no_svv_pkk` | 🇳🇴 NO | Periodic roadworthiness inspections (PKK), per-vehicle rows with make + model | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | quarterly | ✓ inspections — **not a fleet; attach-only** |
 | `ch_tg` | 🇨🇭 CH | Kanton Thurgau registered-vehicle stock (Strassenverkehrsamt TG, via data.tg.ch), aggregated server-side to make × model × class × fuel | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | yearly (stock at 1 Jan) | presence only — **one canton (3.9% of CH); attach-only; count nil** |
 | `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet — **attach-only** |
+| `it_aci` | 🇮🇹 IT | ACI *Autoritratto* **Open Data** edition — national car fleet by make × model × series (Pubblico Registro Automobilistico), `Circolante_FTS_Autovetture_<YEAR>.ods` | [CC-BY 4.0](https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/open-data/) (Open Data section; + a disclosed site term, below) | yearly (stock at 31 Dec, published ~June) | ✓ fleet — **cars only** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
 attribution wording: see `ATTRIBUTION.md` (generated per release) and
@@ -56,7 +57,7 @@ about coverage.
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
 | `nz_nzta` | `MOTIVE_POWER` (present, **not yet read**) | blocked — see the gotcha below |
-| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` | none | nothing, permanently or for now |
+| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` `it_aci` | none | nothing, permanently or for now (`it_aci`: no fuel column; `Serie` text is not mapped — see its gotcha) |
 
 **The Netherlands can never contribute, and that is worth stating plainly**
 because `nl_rdw` is the largest single source in the catalog. Probed
@@ -330,6 +331,143 @@ propulsion coverage would require RDW to publish a combined view.
   vehicles" → van, though the class is dominated by utes. Under attach-only it
   moves no id (see the attach-only paragraph above); its car→van migration is
   deferred to the PR that lifts attach-only.
+
+- **it_aci** — **ACI *Autoritratto*, Open Data edition**: the 2025 archive
+  [`Autoritratto-2025-OD.rar`](https://aci.gov.it//app/uploads/2026/06/Autoritratto-2025-OD.rar)
+  (12,552,608 B, sha256 `1e93f155…`, fetched 2026-10-10), member
+  `Circolante_FTS_Autovetture_2025.ods`, sheet `1_Riepilogo_Nazionale` —
+  "PARCO VEICOLARE AUTOVETTURE PER FABBRICA TIPO SERIE - 31/12/2025", columns
+  `Fabbrica | Tipo | Serie | Totale Veicoli`. Italy's car fleet on the PRA at
+  31/12 of the edition year, aggregates only (no identifier column exists).
+  9,591 data rows summing to **41,795,962** cars, which **equals the sheet's own
+  `TOTALE NAZIONALE` row** — the adapter re-asserts that every build and raises
+  on drift. Series are summed per (Fabbrica, Tipo): 1,493 pairs, 41,401,925
+  cars kept. Basis `stock-circulating-pra`; the snapshot date is read from the
+  sheet title, never from the file name. Measured 2026-10-10 on a frozen
+  control-vs-treatment build: **+76 car ids** (each one is checked by an
+  independent corroboration pass before it ships — coordinator ruling R2), −1
+  (`car/mercedes-benz/clase`, a pooled-junk record; see `removals.yml`), `it`
+  availability gained on 1,053 already-published car ids, and **40,824,412
+  Italian cars (97.68% of the national total) on published ids**.
+  - **Licence — the Open Data section, verbatim** (https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/open-data/,
+    fetched 2026-10-10, pinned as `it_aci`): «I dati statistici della presente
+    sezione sono liberamente fruibili da chiunque nel rispetto dei termini
+    previsti dalla licenza di utilizzo Creative Commons CC-BY 4.0 (cfr.
+    https://creativecommons.org/licenses/by/4.0/).» The archive is linked from
+    that section, so this sentence is the grant for the file we ingest.
+  - **Why the Open Data archive and NOT the Autoritratto page's zip** (the
+    endpoint switch required by ruling R2). The same table also ships as
+    `Autoritratto2025_Parco_veicolare.zip` (xlsx) on the *Autoritratto* report
+    page, which has no dataset licence sentence. ACI's own access regulation —
+    *Regolamento di accesso telematico ai dati e servizi contenuti nel sito
+    istituzionale dell'ACI*, linked from the Open Data page
+    (https://aci.gov.it//app/uploads/2024/06/REGOLAMENTO_accesso_telematico_2017.pdf,
+    71,369 B, sha256 `077ed431…`, fetched 2026-10-10) — splits the licence by
+    where a thing is published, art. 3: c.1 «I dati statistici, desunti
+    dall'archivio del PRA e pubblicati sul sito istituzionale nella sezione
+    "Dati statistici/Open Data", sono liberamente fruibili da chiunque nel
+    rispetto dei termini previsti dalla licenza di utilizzo Creative Commons 4.0
+    (CC-BY 4.0).»; c.2 «I rapporti statistici e le opere dell'ingegno saranno
+    aperti al solo riutilizzo nel rispetto dei termini previsti dalla licenza
+    di utilizzo Creative Commons 4.0 (CC-BY-ND 4.0) …». A table shipped as part
+    of the *report* could be read under c.2 — **NoDerivatives, which this
+    dataset can never ingest** — so we read the Open Data copy, which sits
+    squarely under c.1. The data did not change: the OD `.ods` and the report's
+    `.xlsx` are cell-identical on all 27 data sheets (same rows, same
+    whitespace, same total; compared 2026-10-10).
+  - **The site's AI clause, verbatim, and our disclosure.** ACI's
+    [Note legali](https://aci.gov.it/informazioni-per-la-navigazione/note-legali/)
+    (fetched 2026-10-10, page dated 17 July 2026, pinned as
+    `it_aci_note_legali`) put the site under CC BY 4.0 «a condizione che sia
+    citata la fonte e – dove possibile – riportato l'indirizzo web della
+    pagina originale» and add: «È vietata da parte dell'utente la
+    manipolazione tramite IA delle informazioni testuali, degli elementi
+    multimediali e del patrimonio conoscitivo presenti su questo sito web che
+    vadano ad alterarne il senso e a ledere l'immagine e le finalità
+    istituzionali dell'Ente.» ("The user may not use AI to manipulate the
+    site's texts, media and knowledge in ways that alter their meaning and harm
+    the image and institutional purposes of the Entity.") The clause is pinned
+    verbatim, so any change to it fails the licence gate. It binds *us* as the
+    site's user and is conjunctive (meaning altered **and** ACI harmed); it
+    does not pass to recipients of this CC BY dataset. **Disclosure: VehiclesDB's
+    normalisation of this table is partly AI-agent-assisted** — the adapter and
+    the override lines below are written with AI coding agents and reviewed by
+    humans and by independent verifier passes. Everything it does to ACI's
+    numbers is listed, never silent:
+    - **Folds and renames** (every one is a line in `overrides/` with its reason,
+      source URL and evidence tier): 100 model renames in `models/renames.yml`
+      (98 nameplate folds — Italian range labels, 2WD/4X2 Tipo, 12-character
+      cuts, typos, Excel date serials — and 2 display-only casings, Citroën `LN`
+      and Infiniti `FX`), 4 make aliases (`AUSTINHEALEY`, `TATA ENG`, `EMC`,
+      `EVO`; `MERCEDES` was already aliased), 3 cross-make moves (`GREAT WALL |
+      HAVAL H2` → Haval, `RENAULT | A110/A290` → Alpine), 5 car-kind drop
+      patterns (Fiat `35`, VW `TRANSPORTE`, Opel `2000|2300|CARAVAN`, Renault
+      `R`, Ford `SCORPION` — van rows or no nameplate), 1 van-kind containment pattern (Citroën `2CV`, so the car-kind 2CV rescue cannot mint a mis-named van record), and 2 pipeline family
+      rules (Mercedes `CLASSE`/`SERIE` words; Land Rover's 12-character cuts).
+    - **What does not reach a published id, by count** (2025 edition, 41,795,962
+      cars): **394,037 (0.94%) in ACI's own residual buckets**, which name no
+      model and are skipped — `Fabbrica = NON DEFINITO` 30 rows / 290,735;
+      `Tipo = ALTRI TIPI` 121 / 72,927; blank `Tipo` 21 / 16,231; `ALTRE
+      FABBRICHE` 2 / 8,432; `Tipo = ALTRI` + `Serie = TIPI` (the same bucket
+      split across two cells) 19 / 5,712. Then **548,489 (1.31%) dropped by the
+      normalizer**, 139 rows, almost all M1-registered vans that the car kind
+      excludes everywhere (Doblò 86,593, Kangoo 49,953, Berlingo 37,157, Caddy
+      27,422, Tourneo Courier 25,217, Tourneo Custom 18,879, Scudo 18,358, …),
+      plus Mercedes `200` (17,876 — a pre-existing `null` rename: bare W123/W124
+      engine code) and Sportequipe `6`/`7`/`8`. Then **29,024 (0.07%) on 86
+      model strings that classify but do not publish** (below the car threshold
+      without a second register, or pruned as another kind — `fiat/topolino`,
+      `mitsubishi/l200`, `piaggio/porter`, `nissan/pick-up`).
+  - **RAR5, read with `bsdtar` only.** The 2025 archive is RAR v5. libarchive's
+    `bsdtar` extracts it; p7zip 17.05 lists it and then writes every member as
+    a **0-byte file** ("Unsupported Method") — so there is no 7z fallback, and
+    the build workflow installs `libarchive-tools` (ubuntu-latest does not ship
+    it). Older editions are `.zip` and go through the same path.
+  - **The file is `.ods`, not xlsx**, read by the pipeline's own stdlib ODS
+    reader. ACI writes every trailing space as `<text:s/>` and every count as a
+    float cell whose display text is Italian-formatted (`1.172.439`); the
+    reader returns the cell value, never the display.
+  - **The archive URL rotates every year** (`/app/uploads/YYYY/MM/`) and so do
+    the name and the format (`Autoritratto-2025-OD.rar`,
+    `Autoritratto-2024-OD.zip`, `Autoritratto_2022_OD-1.zip`). The adapter reads
+    the link from the Open Data page, takes the newest edition, raises if none
+    matches or if one edition has two archives, and never falls back to a
+    hard-coded URL.
+  - **Tipo is cut at about 12 characters**, and the cut drops the marque word:
+    `COROLLA VERS`, `DS7 CROSSBAC`, `TOURNEO COUR`, `DISCOVERY SP`, `RANGE
+    EVOQUE`. Without the Land Rover rule extension, `DISCOVERY SP` published
+    26,883 Discovery Sports as the Discovery. Every value also carries a
+    trailing space, which the adapter strips.
+  - **Italian range words**: `CLASSE A` (Mercedes, 944,487 cars across the
+    classes — the normalizer's Mercedes rule, which also fixes Spain's `CLASE
+    A`), `SERIE 3` / `SERIE 4 GC` / `SERIE 3 GT` (BMW, renames), `SERIE 200`
+    (Rover, renames), `SERIE W123` (Mercedes chassis families). Drivetrain
+    markers are their own Tipo: `JUKE 2WD` alone is 140,904 cars.
+  - **EXCEL DATE CORRUPTION in ACI's own data**: three Tipo cells hold date
+    serials — Saab `46090` (= "9-3", read as 9 March; 12,772 cars), `46151` (=
+    "9-5"; 1,905) and Morgan `46116` (= "4-4"; 402). The `.ods` carries the
+    same numbers the xlsx did (float cells, display "46090"), and no other Tipo
+    or Serie cell in the national sheet is a date-shaped number (checked
+    2026-10-10). They are rescued by rename keys. **The serials are specific to
+    this edition**: a new file can carry new numbers, so re-check the next
+    edition for bare 5-digit Tipo values.
+  - **Brand quirks**: `MERCEDES` (already aliased), `AUSTINHEALEY`, `TATA ENG`.
+    ACI files Daewoo-era cars under `CHEVROLET` (Lanos, Nexia), Haval H2 under
+    `GREAT WALL`, and the Alpine A110/A290 under `RENAULT` (moves.yml). DR, EVO,
+    EMC, Sportequipe and Tiger are Italian rebadgers that no other register
+    carries in volume; DR/EVO model names repeat the make (`DR 5.0`, `EVO 5`),
+    so prefix-stripping leaves `5.0`/`5`, which junk? kills — rename keys
+    rescue them. Sportequipe `6`/`7`/`8` (3,628 cars) are still dropped.
+  - **Cars only, and no vote on kind.** ACI's other kind sheets are make-only,
+    so Italy contributes to `car` only — and for that reason it has **no vote in
+    the cross-kind dominance prune** (`Source#kind_dominance_vote?`): measured on
+    the first build (2026-10-02), Italy's car-only volume alone pruned 22 van
+    ids (`suzuki/jimny`, `mitsubishi/pajero`, …). Its counts still drive
+    publication, popularity and availability.
+  - **No powertrain.** There is no fuel column. `Serie` free text is not mapped:
+    an absent token does not mean petrol, and FIAT's `1.0 HYBRID` (493,791
+    Pandas) is a mild hybrid, which the closed vocabulary deliberately cannot
+    express. No history either (no year column).
 
 ## Watch-list (evaluated, not yet merged — with the blocker)
 
