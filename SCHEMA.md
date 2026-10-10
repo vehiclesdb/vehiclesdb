@@ -75,7 +75,7 @@ shapes below) and fill in over time.
 | `aliases` | string[]? | documented alternate names — native scripts, market names, nicknames (`["Rabbit"]` for the Golf); absent when none curated |
 | `availability` | object[] | where the model is evidenced — see below |
 | `regions` | string[] | continents rolled up from `availability` — `eu`,`na`,`sa`,`as`,`oc`,`af` (the cheap continent filter) |
-| `popularity` | object? | measured popularity — see below; absent = no counts yet |
+| `popularity` | object? | measured popularity (`global_decile`, `mass_decile`, `by_country`) — see below; absent = no counts yet |
 | `sources` | string[] | ids of the sources that evidence this record (see SOURCES.md) |
 | `xrefs` | object? | crosswalks; today `{"tan": [...]}` EU type-approval numbers where measured |
 | `year_start` / `year_end` | int? | nameplate lifespan *(optional, future)* |
@@ -133,6 +133,7 @@ appears only where we hold a source for it (see `manifest.json.countries`).
 ```json
 "popularity": {
   "global_decile": 2,
+  "mass_decile": 1,
   "by_country": {
     "nl": { "rank": 1, "decile": 1, "confidence": "measured" },
     "th": { "rank": 305, "decile": 9, "confidence": "measured" }
@@ -143,7 +144,26 @@ appears only where we hold a source for it (see `manifest.json.countries`).
 - `rank` — position among all models of that kind in that country, from real
   registration/fleet counts. `decile` — 1 (top 10%) … 10.
 - `global_decile` — the mean of the model's per-country deciles, equal
-  country weight, rounded to a decile.
+  country weight, rounded to a decile. It is a **presence average, not a
+  mass ranking**: it rewards a model that places well in many countries, so
+  the band "1" is not the head of the registration power law. Measured on
+  v2026.09.1 (`catalog/meta/decile-mass.json`, pipeline#205): car decile 1
+  = 90 records / 14.0% of catalog mass (17.2% of car mass); decile 2 =
+  29.7% (36.6% of car); decile 3 = 22.3% (27.5% of car). Decile 2 outweighs
+  decile 1. Its meaning is unchanged.
+- `mass_decile` — per-**kind** rank-decile of the record's registration
+  counts **summed across all measured countries**: 1 = top 10% of the
+  kind's ranked records by that mass … 10 = the bottom 10%
+  (`ceil(rank × 10 / n)`, n = ranked records in the kind; equal masses are
+  ordered by id). Present exactly when `popularity` is. Use it when you mean
+  "how many exist"; use `global_decile` when you mean "popular in many
+  places". **Denominator caveat:** the sum mixes stock registers (the whole
+  fleet: NL/FI/GB/NZ …) and flow registers (registrations or register
+  operations over a window: DE/ES/IE …) — see SOURCES.md for each
+  country's basis — so a big stock-register market weighs more than a
+  flow-register one of the same size; catalog-only sources (`ca`, `us`) and
+  presence-only registers (e.g. `ch`) contribute 0. The counts
+  themselves stay private; only the decile is published.
 - `confidence` — `"measured"` = derived from official counts we hold;
   `"proxy"` (future tier) = public-attention signals calibrated on measured
   markets.
@@ -157,12 +177,22 @@ appears only where we hold a source for it (see `manifest.json.countries`).
 2. *Equal country weight:* Luxembourg's deciles count as much as the UK's.
    This is deliberate (fleet-weighting would just re-derive "Europe"), but it
    means `global_decile` answers "is this model popular in many places?", not
-   "how many exist?".
+   "how many exist?" — `mass_decile` answers the second question.
 3. *Fleet vs. new-registration mix:* some sources count the whole fleet
    (NL/FI/NZ — vintage models rank), others only recent registrations
    (ES/DE/IE — recency-biased). Per-country semantics: SOURCES.md.
 4. *Absolute counts are not open:* deciles/ranks are honest at this layer's
    accuracy; exact counts and time series are the depth layer.
+
+**How much mass each band holds** is published, as shares only, in
+`catalog/meta/decile-mass.json` (`schema: "decile-mass/1"`): `kinds` maps
+kind → `global_decile` band (`"1"`…`"10"`, plus `"none"` for records without
+popularity) → `{records, mass_share}`, and `kinds_by_mass_decile` has the
+same shape keyed by `mass_decile`. Both share one whole-catalog denominator,
+so each map sums to 1.0 on its own; within one kind, a band's share of that
+kind's mass is its `mass_share` divided by the sum of that kind's
+`mass_share`s. This is where
+the caveat above is measurable by anyone.
 
 ## Generation / Variant (reserved open layers)
 
@@ -200,13 +230,23 @@ optional and additive):
 ```
 
 Per-model: `body_type` (primary only; absent where the catalog has none),
-`global_decile` (absent when unranked), `availability` (bare country codes —
-the evidence detail lives in `catalog/`).
+`global_decile` and `mass_decile` (both absent when unranked; see
+*Popularity*), `availability` (bare country codes — the evidence detail lives
+in `catalog/`).
+
+## `dist/vehicles.csv` / `dist/vehicles.parquet`
+
+One row per model: `kind, make_slug, make_name, model_slug, model_name,
+body_types, countries, regions, global_popularity_decile, aliases,
+former_ids, mass_popularity_decile` (multi-valued cells `|`-joined; empty =
+absent). New columns are only ever **appended**, so positional readers keep
+working. The parquet file is converted from the CSV and has the same columns.
 
 ## `dist/catalog.sqlite`
 
 Tables: `meta` (key/value), `makes (id, kind, name)`, `models (id, kind,
-make_id, slug, name, body_types, global_popularity_decile)`, `availability
+make_id, slug, name, body_types, regions, global_popularity_decile,
+mass_popularity_decile)`, `availability
 (model_id, kind, country, evidence, source)`, `popularity (model_id, kind,
 country, rank, decile, confidence)`. Ids match the JSON ids exactly.
 
