@@ -93,6 +93,8 @@ if File.exist?(File.join(ROOT, pv_path)) && (pv = load_yaml(pv_path))
   fail! "#{pv_path}: gate.min_car_count must be a positive integer" unless gate["min_car_count"].is_a?(Integer) && gate["min_car_count"].positive?
   fail! "#{pv_path}: gate.min_car_share must be in (0, 1]" unless gate["min_car_share"].is_a?(Numeric) && gate["min_car_share"].positive? && gate["min_car_share"] <= 1
   fail! "#{pv_path}: gate.split_countries must be a non-empty list of ISO codes" unless gate["split_countries"].is_a?(Array) && !gate["split_countries"].empty? && gate["split_countries"].all? { |c| c.to_s.match?(/\A[a-z]{2}\z/) }
+  bad = pv.keys - %w[gate car]
+  fail! "#{pv_path}: only `car:` lifts exist (the gate measures car share against van); got #{bad.inspect}" unless bad.empty?
   plain_by_kind = (pats || {}).transform_values { |l| (l || []).select { |p| p.is_a?(String) } }
   pv_lines = File.readlines(File.join(ROOT, pv_path))
   pv.each do |kind, entries|

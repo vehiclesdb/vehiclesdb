@@ -20,8 +20,9 @@
 # reconciler.rb#passenger_gate!):
 #   1. Each entry is MAKE-SCOPED and names one drop_patterns.yml `car:` source
 #      string VERBATIM (`lift:`). For that make only, the car drop union becomes
-#      "every car pattern except the lifted ones" — "TRANSIT TOURNEO" still hits
-#      \bTRANSIT\b and stays dropped. A `lift:` that is not verbatim a car drop
+#      "every car pattern except the lifted ones": a raw hitting a lifted AND an
+#      un-lifted pattern stays dropped ("TOURNEO CONNECT" needs both Ford's
+#      TOURNEO and CONNECT lifts). A `lift:` that is not verbatim a car drop
 #      pattern makes the build RAISE (an inert lift reads like a gate "no").
 #   2. `publish:` is the CLOSED list of nameplates the lifted rows may resolve to
 #      after renames/moves; anything else is dropped exactly as before and
@@ -54,16 +55,16 @@ car:
   # ── compact MPV-vans: the factory passenger version carries the nameplate ──
   - { make: Volkswagen, lift: '\bCADDY\b', publish: [Caddy] }      # Caddy Life/Style/Maxi Kombi. ES DGT Jul–Sep 2026: M1 1,465 / N1 697 (67.8% M1); M1 RD 2822 code 10 turismo 950, 31 mixto 509, 32 autocaravana 4. FI M1 7,417 / N1 8,912 stock
   - { make: Volkswagen, lift: '\bCADDYMAXI\b', publish: [Caddy] }  # fused UK-DfT genmodel of the same nameplate (drop_patterns.yml note); renames.yml `Caddymaxi: Caddy` folds it, so it publishes nowhere else
-  - { make: Citroën, lift: '\bBERLINGO\b', publish: [Berlingo, E-Berlingo] }  # ES M1 1,633 / N1 2,169 (43.0%), M1 = "BERLINGO TALLA M/XL" passenger trims (RD 2822 10: 1,318). UK Cars 61,123 + "Berlingo Multispace" 99% Cars. FI 55% M1. E-Berlingo = the electric passenger Berlingo (van/citroen/e-berlingo exists)
+  - { make: Citroën, lift: '\bBERLINGO\b', publish: [Berlingo, E-Berlingo] }  # ES M1 1,633 / N1 2,169 (43.0%), M1 = "BERLINGO TALLA M/XL" passenger trims (RD 2822 10: 1,318). UK Cars: uk_dft's GenModel pools the Multispace into CITROEN BERLINGO (58,458 Cars rows land on this record). FI 55% M1. E-Berlingo = the electric passenger Berlingo (van/citroen/e-berlingo exists)
   - { make: Citroën, lift: '\bJUMPY\b', publish: [Jumpy] }        # Jumpy Combi (M1 9-seat). ES M1 150 / N1 1,216 (11.0%) — expected to FAIL the gate; listed so the evidence, not a hand-pick, decides. Its passenger twin publishes as car/citroen/spacetourer already
   - { make: Peugeot, lift: '\bRIFTER\b', publish: [Rifter, E-Rifter] }  # passenger-only nameplate (the Partner's MPV). ES M1 1,366 / N1 1,238 (52.5%); UK Cars 19,018 / LGV 4 (100%); NL Personenauto 99.7%; FI M1 98.8%. Published only as van/peugeot/rifter until now
-  - { make: Peugeot, lift: '\bPARTNER\b', publish: [Partner] }    # Partner Tepee (passenger, to 2018). ES M1 212 / N1 1,376 (13.4%); FI M1 718 / N1 1,359 (34.6%); UK Cars 21,680 (10.9%). Gate decides
+  - { make: Peugeot, lift: '\bPARTNER\b', publish: [Partner] }    # Partner (passenger Partner/Partner Tepee to 2018; uk_dft pools Tepee into PEUGEOT PARTNER, 21,680 Cars). ES M1 212 / N1 1,376 (13.4%); FI M1 718 / N1 1,359 (34.6%); UK Cars 21,680 (10.9%). Gate decides
   - { make: Peugeot, lift: '\bEXPERT\b', publish: [Expert] }      # Expert Combi (M1). ES M1 124 / N1 868 (12.5%) — expected to FAIL; passenger twin is car/peugeot/traveller (exists)
   - { make: Renault, lift: '\bKANGOO\b', publish: [Kangoo] }      # Kangoo (passenger) vs Kangoo Van/Express. ES M1 818 / N1 1,774 (31.6%); M1 RD 2822 31 mixto 599, 10 turismo 219. UK Cars 17.4%, NL Personenauto 32.8% stock
   - { make: Renault, lift: '\bTRAFIC\b', publish: [Trafic] }      # Trafic Combi/SpaceClass (M1). ES M1 325 / N1 1,695 (16.1%) — expected to FAIL the 25% share
   - { make: Renault, lift: '\bEXPRESS\b', publish: [Express] }    # Express (2021-) is van-only in ES (M1 0 / N1 11); listed for completeness of the evidence test — expected to FAIL
   # ── Ford: Tourneo is the passenger brand, Transit the commercial one ──
-  - { make: Ford, lift: '\bTOURNEO\b', publish: [Tourneo Courier, Tourneo Custom, Tourneo Connect, Grand Tourneo Connect, Tourneo] }  # Tourneo = Ford's passenger line. ES M1/N1 Jul–Sep 2026: Tourneo Courier 756/0, Tourneo Custom 441/0, Tourneo Connect 191/0 — 100% M1 and ZERO `es` on the van records
+  - { make: Ford, lift: '\bTOURNEO\b', publish: [Tourneo Courier, Tourneo Custom, Tourneo Connect, Grand Tourneo Connect, Tourneo] }  # Tourneo = Ford's passenger line. `Tourneo` (bare) is the Transit Tourneo, the factory 8/9-seat M1 big-Transit passenger version (car/ford/tourneo was already published): because \bTRANSIT\b is lifted for Ford too, raw "TRANSIT TOURNEO" resolves to Tourneo and IS admitted — a passenger product, not a camper conversion; camper Transits resolve to "Transit" and stay dropped. ES M1/N1 Jul–Sep 2026: Tourneo Courier 756/0, Tourneo Custom 441/0, Tourneo Connect 191/0 — 100% M1 and ZERO `es` on the van records
   - { make: Ford, lift: '\bCONNECT\b', publish: [Tourneo Connect, Grand Tourneo Connect] }  # "TOURNEO CONNECT" hits \bCONNECT\b as well as \bTOURNEO\b; lifting only TOURNEO would leave the residual CONNECT pattern dropping it. "TRANSIT CONNECT" stays dropped (it still hits \bTRANSIT\b, which is lifted for Transit Custom only)
   - { make: Ford, lift: '\bTRANSIT\b', publish: [Transit Custom] }  # Transit Custom Kombi (factory 9-seat M1). ES M1 625 / N1 1,049 (37.3%); M1 RD 2822 31 mixto 398, 10 turismo 226, 0 autocaravana. ONLY Transit Custom is published: the big Transit (M1 8.8%, 22 autocaravana) and Transit Connect/Courier still resolve outside `publish:` and stay dropped
   # ── mid-size: the M1 version is a factory people-carrier ──
@@ -77,7 +78,7 @@ car:
   - { make: Opel, lift: '\bVIVARO\b', publish: [Vivaro, Vivaro Electric] }  # Vivaro Combi (M1). ES M1 182 / N1 460 (28.3%). The passenger twin Zafira Life already publishes as car/opel/zafira-life
   - { make: Vauxhall, lift: '\bVIVARO\b', publish: [Vivaro, Vivaro Electric] }  # UK twin of the Opel entry above
   - { make: Nissan, lift: '\bTOWNSTAR\b', publish: [Townstar] }   # Townstar (5/7-seat Kombi). ES M1 365 / N1 102 (78.2%); DE FZ 4.2 2,862 Pkw in 2025 (de_kba_fz10.yml)
-  - { make: Nissan, lift: '\bNV\d', publish: [NV200] }            # NV200 Combi / Evalia (M1). ES M1 46 / N1 19 — below the count floor in ES; gate decides on the other split registers
+  - { make: Nissan, lift: '\bNV\d', publish: [NV200] }            # NV200 Combi (M1). NB the "NV200 EVALIA" spelling resolves to "NV200 Evalia" (outside publish:, 0 published ids, a handful of rows). ES M1 46 / N1 19 — below the count floor in ES; gate decides on the other split registers
   - { make: Dacia, lift: '\bLODGY\b', publish: [Lodgy] }          # Lodgy is a passenger-only MPV (2012-2022): NL Personenauto 3,531 / Bedrijfsauto 0 (100%), FI M1 454 / N1 4 (99.1%), ES M1 32 / N1 0. Published in NO kind before this file
   - { make: Dacia, lift: '\bDOKKER\b', publish: [Dokker] }        # Dokker (passenger) vs Dokker Van. NL Personenauto 1,868 / N1 4,121 (31.2% stock); ES M1 29 / N1 4
   - { make: Fiat, lift: '\bDOBLO\b', publish: [Doblo] }           # Doblo (passenger). ES M1 57 / N1 717 (7.4%); UK Cars 12,846 / LGV 35,376 (26.6%). Gate decides

@@ -162,6 +162,10 @@ checks:
     exists: false
     reason: "The Ford \\bTRANSIT\\b lift publishes ONLY Transit Custom (passenger_variants.yml `publish:`); the big Transit is a camper/ambulance base (es_dgt M1 8.8%, 22 autocaravana) and must stay out of cars"
   - id: volkswagen/multivan
+    kind: van
+    skip_if_kind_absent: true
+    reason: "Target of the retargeted van/volkswagen/multi-van and multivan-startline aliases (former_ids.yml, 2026-11-09). car/volkswagen/multivan is NOT a passenger_variants lift, so this pair has no prune exemption: if the car side ever holds >= 97% of the mass the van id is pruned and those aliases dangle — this row fails first"
+  - id: volkswagen/multivan
     kind: car
     availability_includes: [es]
     reason: "VW Multivan had no record in any kind (bare `Multivan: null` was kind-blind) while Spain registered 812 M1 Multivans Jul–Sep 2026. Its own nameplate since the T4; the T7 is an MQB passenger car"
