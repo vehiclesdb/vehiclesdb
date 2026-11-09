@@ -237,6 +237,19 @@ among ALL models of its kind in that country, copied verbatim from `catalog/`
 added 2026-10, schema v2 growth rule), `availability` (bare country codes —
 the evidence detail lives in `catalog/`).
 
+`forms` (added 2026-11, schema v2 growth rule) — curated, **make-scoped**
+spellings that registries and people write for this record and that fold into
+it: `"forms": ["Tucson IX35", "Tucson / IX35"]` on `hyundai/ix35`,
+`["Focus C-Max", "Focus C Max"]` on `ford/c-max`, `["Nuevo Citroën C3 Aircr"]`
+on `citroen/c3-aircross`. They are the keys of `overrides/models/renames.yml`,
+projected onto the live record their target lands on (the slug, or the
+successor named by `former_ids`). A form is only meaningful **with its make**
+("Marco" is the Mercedes-Benz Marco Polo, not a bare nameplate); it never
+equals the record's own name or alias, never equals another record's name in
+the make, and a spelling that would land on two different records of one make
+is dropped. Resolvers should try `name` → `aliases` → `forms`, all
+make-scoped. Absent when the record has none.
+
 Neither decile is a per-country ordering. Anything that lists "the most
 popular models in country X" should sort by `country_ranks[X]` (the `vehicles`
 gem's `top_models(country:)` does from 0.7.8). Countries whose sources record
