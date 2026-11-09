@@ -2,6 +2,37 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.0] - 2026-11-09 — the resolution release: curated `forms`, one contract for every surface, fresh registers
+
+**15,629 models across 953 makes in 18 countries (15,068 → 15,629, +561).** November refresh from freshly fetched registers (fi snapshot 2026-09-30, de flow 2025-11…2026-10, es through 2026-09, uk 2026-Q2) plus the dogfooding work below; hand-cut locally (`validate: ALL GATES GREEN`, licence pins **17/17** verified; GitHub's scheduled publish is not relied on this month). 13 ids retired, **every one with a migration path** (former_ids alias or removals manifest).
+
+| kind | 2026.10.4 | 2026.11.0 | Δ |
+|---|---:|---:|---:|
+| car | 5,541 | 5,877 | +336 |
+| motorcycle | 6,033 | 6,149 | +116 |
+| moped | 1,399 | 1,430 | +31 |
+| van | 739 | 769 | +30 |
+| truck | 947 | 988 | +41 |
+| bus | 409 | 416 | +7 |
+
+### Schema (additive)
+- **`forms`** on `dist/vehicles.json` model entries: curated, make-scoped spellings that registers and people write for a record and that fold into it — the keys of `overrides/models/renames.yml`, projected onto the live record their target lands on, only on the kinds where the key actually fired this build. 7,574 spellings on 2,344 records ("Tucson IX35" → `hyundai/ix35`, "Focus C-Max" → `ford/c-max`, "Megane Conquest" → `renault/arkana`, "Marco" → `mercedes-benz/marco-polo`). See SCHEMA.md. Found by dogfooding: 36 of the 41 make/model strings CarHey drivers typed that no VehiclesDB surface could resolve were already curated here (pipeline#271).
+
+### Contract
+- **RESOLUTION.md** — one binding contract for turning a typed vehicle name into a record across the `vehicles` gem, `/api/v1/resolve`, the dropdown widget and the JS/Python SDKs (normalization, ladder, typo rules, ambiguity, "only published data counts"), and **`conformance/resolve.json`**, its executable form: 79 cases, passing in the gem, both SDKs and the web resolver on this release (#388).
+
+### Curation
+- "Landrover" is a published make alias (it was a Ruby-only built-in in the gem).
+- Volkswagen "Sirocco" — a registry misspelling that had minted a junk twin record — folds into Scirocco (rename + former_ids; replaces its 2026-07 demotion manifest).
+- `van/mitsubishi/pajero-sport` → `car/mitsubishi/pajero-sport` (no van rows left on today's registers; xref loss of 2 N1 type approvals signed off).
+
+### Pipeline
+- Attach-only residual hysteresis: a previously published id whose minting source decays stays while an attach-only register still shows its fleet at the hysteresis floor (never mints). Holds `car/holden/colorado` (NZ files Colorado utes as goods vehicles; Australia's attach-only register shows 8,323 passenger Colorados) (pipeline#271).
+
+### Known
+- New Zealand's GOODS VAN/TRUCK/UTILITY class (926k vehicles) is still not ingested; a per-nameplate kind split is needed.
+- The CI build check on #388 ran on an older restored source cache and flagged the Pajero Sport alias as live; both local builds on current sources agree it is required.
+
 ## [2026.10.3] - 2026-10-10 — Israel joins (attach-only), and the specs layer ships in the paid feed
 
 **15068 models across 934 makes in 18 countries.** The third cut of the owner-authorised stretch of 2026-10-10 (CI publish run 38070378780; `validate: ALL GATES GREEN`; licence pins **17/17** verified). Public ids and names are unchanged apart from the cache-state class noted in `RELEASE-DIFF-2026.10.3.md`; what changed is availability: **Israel (`il`, MoT / data.gov.il) joins as the 18th register, attach-only** (pipeline#254 + #364, ruling R1): ~1,494 published ids gain `il` availability from 3.64 M of 4.5 M Israeli vehicles, published as facts with credit to data.gov.il under its Terms of Use (not relicensed CC BY — see SOURCES.md and ATTRIBUTION.md). No new ids are minted from the Israeli register.
