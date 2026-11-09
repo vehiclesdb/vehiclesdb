@@ -154,7 +154,7 @@ if File.exist?(File.join(ROOT, at_path)) && (at = load_yaml(at_path))
           cm = line.split(/\s#\s/, 2).last.to_s
           fail! "#{where}: comment must name the tier as [tier 1] or [tier 2]" unless cm.match?(/\[tier [12]\b/)
           fail! "#{where}: comment must carry the access date (accessed YYYY-MM-DD)" unless cm.match?(/accessed \d{4}-\d{2}-\d{2}/)
-          fail! "#{where}: comment must cite at least one register vehicle (e.g. `nl_rdw 4`, `es_dgt 666 M1`)" unless cm.match?(/\b[a-z]{2}_[a-z0-9]+\b[^;]*\d/)
+          fail! "#{where}: comment must cite at least one register vehicle (e.g. `nl_rdw 4`, `es_dgt 666 M1`)" unless cm.match?(/\b[a-z]{2}_[a-z0-9_]+\b[^;]*\d/) # [a-z0-9_]: source keys may carry a second underscore (de_kba_fz10, no_svv_pkk)
         end
         next unless build
         id = "#{slug.(make)}/#{slug.(plate)}"
