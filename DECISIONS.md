@@ -69,6 +69,63 @@ coverage, not on the make.** Disjoint availability identified exactly the two
 Honda pairs that were genuinely different machines — and fired zero times on
 Harley, where `nl_rdw` covers 622 of 633 records so every pair intersects.
 
+**Passenger versions of van-based MPVs publish in kind `car` (2026-11-09).**
+A Berlingo, a Caddy Life, a Rifter or a Tourneo Courier bought as a family car
+is registered as EU category **M1** — and until this date it was findable only
+under `kind: van`, or, for Spain, nowhere at all. `drop_patterns.yml` dropped
+every van nameplate from the car build on the premise "they belong to kind
+van, whose build ingests them via kind_maps", but the ES van build ingests N1
+only, so Spain's M1 rows reached no kind: 756 Tourneo Courier, 441 Tourneo
+Custom and 191 Tourneo Connect registrations in Jul–Sep 2026 alone, with zero
+`es` on any Tourneo record. Measured across the registers (research
+passenger-vans.md, 2026-11-09): ES DGT M1 share Caddy 67.8%, Rifter 52.5%,
+Vito 50.1%, Berlingo 43.0%, Kangoo 31.6%; UK Rifter 100% Cars, NL 99.7%
+Personenauto, FI 98.8% M1.
+
+Three rulings already decided this; the drop list was an implementation
+shortcut that never consulted them:
+
+- **NAMING.md §3:** "`kind` is a dimension, not a guess. The same nameplate may
+  exist in several kinds; each kind's files stand alone."
+- **The V-Class precedent:** `car/mercedes-benz/v-class` publishes beside
+  `van/mercedes-benz/v-class` (and `car/peugeot/traveller`,
+  `car/citroen/spacetourer`, `car/opel/zafira-life` beside their van twins)
+  because the V-Class was simply never on the drop list.
+- **PROPOSAL-kind-boundary.md, Q1 (decided 2026-07-25):** `kind` is the LEGAL
+  axis — "derive `kind` from the EU category; treat the register's own word as a
+  hint, never as truth."
+
+**Mechanism — evidence decides, not a hand list.** `overrides/models/
+passenger_variants.yml` lifts ONE drop pattern for ONE make, with a closed
+`publish:` list of the nameplates the lifted rows may become. Whether the car
+record then publishes is decided at build time by the registers themselves
+(pipeline `Reconciler.passenger_gate!`): in at least one register whose car/van
+line IS the M1/N1 category at row level (es, fi, gb, lu, nl — not nz, whose
+"PASSENGER CAR/VAN" is one class, and not car-only sources, which read 100%
+"car" by construction), the car record must hold ≥ 100 vehicles and ≥ 25% of
+that country's car+van total. Every verdict is logged. First run: 34 lifted
+ids examined, 22 pass, 1 held (`t-class`, already published), 11 pruned — Jumpy,
+Expert, Trafic, Vivaro, Scudo, Talento, NV200, Express and the UK Vauxhall
+twins fail on share (their passenger versions are already their own
+nameplates: SpaceTourer, Traveller, Zafira Life, Ulysse, or simply rare).
+
+**What stays out:** the camper/ambulance CONVERSION bases — Sprinter, Crafter,
+Ducato, Master, Boxer, Jumper, Movano, Daily, TGE, the big Transit, Transporter.
+Their M1 rows are motorhomes (ES RD 2822 code 32 "autocaravana": 86 of 109 M1
+Ducatos) and a 1-4% share of the nameplate. They are not lifted, and the Ford
+`\bTRANSIT\b` lift publishes Transit Custom only — the big Transit resolves
+outside `publish:` and stays dropped (spotcheck `car/ford/transit exists: false`).
+
+**What it costs, and why it is still additive:** no id changes meaning and no
+`van/...` id is removed — lifted pairs are exempt from the 97% cross-kind
+dominance prune, which would otherwise have pruned `van/peugeot/rifter` the
+moment its 100%-passenger car twin appeared. Germany's KBA FZ 10.1 is an
+all-M1 table, so `de_kba_fz10.yml` now routes the M1 rows of the 11 nameplates
+whose car twin publishes to `car`; the van twins keep their ids but no longer
+carry `de` from that table. That is an availability MOVE under the rule below
+— the evidence lands on the car twin, asserted by `spotchecks.yml`
+(`opel/combo` kind car `de`).
+
 ## Sources & evidence
 
 **A model is published when ≥2 independent sources agree, or when a single

@@ -81,6 +81,35 @@ if (pats = load_yaml("overrides/models/drop_patterns.yml"))
   end
 end
 
+# --- 3b: passenger_variants.yml (data/es-completeness, 2026-11-09) ---------------
+# Mirrors the pipeline loader (overrides.rb#load_passenger_variants!), which
+# RAISES on the same shapes — this lint gives the same answer in seconds.
+# A `lift:` that is not VERBATIM a drop_patterns.yml entry of the same kind is
+# silently inert, and an inert lift reads exactly like the evidence gate saying
+# "no"; so is a typo'd key. Every entry needs a same-line `#` evidence comment.
+pv_path = "overrides/models/passenger_variants.yml"
+if File.exist?(File.join(ROOT, pv_path)) && (pv = load_yaml(pv_path))
+  gate = pv["gate"] || {}
+  fail! "#{pv_path}: gate.min_car_count must be a positive integer" unless gate["min_car_count"].is_a?(Integer) && gate["min_car_count"].positive?
+  fail! "#{pv_path}: gate.min_car_share must be in (0, 1]" unless gate["min_car_share"].is_a?(Numeric) && gate["min_car_share"].positive? && gate["min_car_share"] <= 1
+  fail! "#{pv_path}: gate.split_countries must be a non-empty list of ISO codes" unless gate["split_countries"].is_a?(Array) && !gate["split_countries"].empty? && gate["split_countries"].all? { |c| c.to_s.match?(/\A[a-z]{2}\z/) }
+  plain_by_kind = (pats || {}).transform_values { |l| (l || []).select { |p| p.is_a?(String) } }
+  pv_lines = File.readlines(File.join(ROOT, pv_path))
+  pv.each do |kind, entries|
+    next if kind == "gate"
+    (entries || []).each do |e|
+      unknown = e.keys - %w[make lift publish]
+      fail! "#{pv_path}(#{kind}): unknown key(s) #{unknown.inspect} in #{e.inspect}" unless unknown.empty?
+      fail! "#{pv_path}(#{kind}): #{e.inspect} needs make, lift and a non-empty publish list" unless e["make"] && e["lift"] && Array(e["publish"]).any?
+      unless (plain_by_kind[kind] || []).include?(e["lift"])
+        fail! "#{pv_path}(#{kind}): lift #{e['lift'].inspect} (#{e['make']}) is not verbatim a drop_patterns.yml #{kind}: entry — it would lift nothing"
+      end
+      line = pv_lines.find { |l| l.include?("lift: '#{e['lift']}'") && l.include?("make: #{e['make']},") }
+      fail! "#{pv_path}(#{kind}): #{e['make']} #{e['lift']} has no same-line `#` evidence comment (say why, with the register numbers)" unless line&.match?(/\}\s+#\s*\S/)
+    end
+  end
+end
+
 if (body = load_yaml("overrides/body_types/body_types.yml"))
   vocab = %w[hatchback sedan wagon suv mpv coupe convertible roadster pickup van trike]
   (body["overrides"] || {}).each do |k, v|

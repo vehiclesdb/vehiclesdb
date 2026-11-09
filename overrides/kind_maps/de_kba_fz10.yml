@@ -47,34 +47,46 @@ kinds:
   Personenkraftwagen: car
 
 by_model:
-  # --- passenger versions of vans: route to the van kind, where the nameplate
-  # already exists and Germany is currently absent ---
+  # --- passenger versions of vans ---
+  # Originally all routed to `van`, "where the nameplate already exists and
+  # Germany is currently absent". Since 2026-11-09 (DECISIONS.md "Passenger
+  # versions of van-based MPVs publish in kind car"; PROPOSAL-kind-boundary.md (decided 2026-07-25)
+  # Q1: kind follows the EU category) every row of this M1-only table goes to
+  # `car` when the nameplate's car record publishes under the passenger-variant
+  # evidence gate (overrides/models/passenger_variants.yml). The DE evidence
+  # MOVES with it: the van twin keeps its id but no longer carries `de` from
+  # this table (KBA's N1 tables are not ingested). Rows whose car twin does not
+  # publish (Jumpy, Expert, Trafic, Vivaro, Scudo — gate FAIL) or whose KBA
+  # Modellreihe names the commercial nameplate (TRANSIT, TRANSIT CONNECT,
+  # TRANSIT COURIER — the car `publish:` list for Ford excludes them) and the
+  # camper bases (DUCATO, SPRINTER, CRAFTER, BOXER, MASTER, MOVANO, DAILY, TGE,
+  # TRANSPORTER) stay `van`.
   DUCATO: van            # 16,040 — Fiat Ducato; also the single most-registered German motorhome base
   TRANSPORTER: van       # 15,042 — absorbs Multivan/Caravelle/California (KBA has no separate rows for those)
-  TRANSIT CUSTOM: van    #  8,438
-  CADDY: van             #  7,914 — Caddy Life/Style/Maxi; disjoint Pkw TSNs from Caddy Cargo
+  TRANSIT CUSTOM: car    #  8,438 — FLIPPED van→car 2026-11-09: FZ 10.1 rows are all M1, and car/ford/transit-custom now publishes (passenger_variants.yml; gate PASS es 623 M1 = 39.0%). KBA files the Tourneo Custom inside this Modellreihe, so the row cannot be split further
+  CADDY: car             #  7,914 — Caddy Life/Style/Maxi; disjoint Pkw TSNs from Caddy Cargo. FLIPPED van→car 2026-11-09: car/volkswagen/caddy publishes (gate PASS es 69.0% M1, fi 45.5%, lu 58.3%)
   TRANSIT: van           #  4,835 — the "TRANSIT, TOURNEO" row resolves here (Tourneo is the passenger Transit)
   SPRINTER: van          #  3,969
   TRANSIT CONNECT: van   #  3,086
-  CITAN: van             #  2,557
+  CITAN: car             #  2,557 — FLIPPED van→car 2026-11-09: M1 Citan Tourer; car/mercedes-benz/citan publishes (gate PASS es 43.7% M1)
   JUMPY: van             #  2,227
-  VITO: van              #  2,194
+  VITO: car              #  2,194 — FLIPPED van→car 2026-11-09: M1 Vito Tourer; car/mercedes-benz/vito publishes (gate PASS es 51.8% M1) — the V-Class precedent
   EXPERT: van            #  1,726
   TRANSIT COURIER: van   #  1,710
-  PROACE: van            #  1,498
-  KANGOO: van            #  1,408
+  PROACE: car            #  1,498 — FLIPPED van→car 2026-11-09: M1 Proace (City) Verso; resolves to car/toyota/proace (gate PASS es 47.5% M1)
+  KANGOO: car            #  1,408 — FLIPPED van→car 2026-11-09: car/renault/kangoo publishes (gate PASS es 33.4%, nl 37.5%, lu 27.4% passenger)
   CRAFTER: van           #  1,345
   BOXER: van             #    977
-  TOWNSTAR: van          #    857 — genuine M1 model: 2,862 Pkw registrations in FZ 4.2 for 2025, 5/7-seat Kombi, priced incl. VAT
-  BERLINGO: van          #    722
+  TOWNSTAR: car          #    857 — genuine M1 model: 2,862 Pkw registrations in FZ 4.2 for 2025, 5/7-seat Kombi, priced incl. VAT. FLIPPED van→car 2026-11-09: car/nissan/townstar publishes (gate PASS es 80.0% M1)
+  BERLINGO: car          #    722 — FLIPPED van→car 2026-11-09: car/citroen/berlingo publishes (gate PASS es/fi/lu/nl)
   TRAFIC: van            #    688
-  COMBO: van             #    497
+  COMBO: car             #    497 — FLIPPED van→car 2026-11-09: M1 Combo Life; car/opel/combo publishes once the ES trim folds land (gate: es 35.6% M1 Jul–Sep 2026)
   TGE: van               #    489 — MAN TGE, the VW Crafter twin (a van, unlike MAN's TG* trucks)
   MASTER: van            #    455
   DAILY: van             #    426
-  RIFTER: van            #    282
+  RIFTER: car            #    282 — FLIPPED van→car 2026-11-09: the Rifter is a passenger-only nameplate (gb 100%, nl 99.7%, fi 98.5% passenger); car/peugeot/rifter publishes
   MOVANO: van            #    124
-  DOBLO: van             #     13
+  DOBLO: car             #     13 — FLIPPED van→car 2026-11-09: car/fiat/doblo publishes (gate PASS gb 26.7% Cars)
   INTERSTAR: van         #      6 — no factory Pkw version (0 in FZ 4.2); these are bodybuilder conversions, but the nameplate is a van
   VIVARO: van            #      4
   SCUDO: van             #      4

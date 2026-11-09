@@ -128,10 +128,43 @@ checks:
     kind: car
 
   # --- van leakage (the RDW Personenauto camper/kombi quirk) ------------------
+  # 2026-11-09: the Caddy row below was `exists: false` ("Caddy is kind=van; must
+  # not leak into cars"). REVERSED by DECISIONS.md "Passenger versions of
+  # van-based MPVs publish in kind car": Spain registers 67.8% of new Caddys as
+  # M1 (es_dgt Jul–Sep 2026: 1,465 M1 / 697 N1), so the passenger Caddy now
+  # publishes in `car` beside van/volkswagen/caddy, via
+  # overrides/models/passenger_variants.yml and its build-time evidence gate.
+  # The CONVERSION-base tripwire (Sprinter) keeps its `exists: false`.
   - id: volkswagen/caddy
     kind: car
+    availability_includes: [es, fi]
+    reason: "Passenger-variant lift (passenger_variants.yml): the M1 Caddy (Life/Style/Maxi Kombi) publishes in car on register evidence — es 67.8% / fi 45.5% M1. If es or fi disappears, the lift or its evidence gate stopped firing and Spain's M1 Caddys are back to reaching no kind"
+  - id: volkswagen/caddy
+    kind: van
+    skip_if_kind_absent: true
+    availability_includes: [es, fi, gb, nl]
+    reason: "…and the van id is UNTOUCHED (additive only): lifted pairs are exempt from the 97% cross-kind prune. If this fails, a passenger twin pruned or starved its own published van record"
+  - id: peugeot/rifter
+    kind: car
+    availability_includes: [es, gb, nl]
+    reason: "Rifter is a passenger-only nameplate (gb 100% Cars, nl 99.7% Personenauto) that was published ONLY as van until 2026-11-09. es comes from the ES-TRIM FOLDS (`Rifter Allure`/`Rifter GT`: 1,262 M1) — if es drops, those renames went inert"
+  - id: peugeot/rifter
+    kind: van
+    skip_if_kind_absent: true
+    availability_includes: [es]
+    reason: "the van Rifter keeps its N1 evidence (es_dgt 1,238 N1 Jul–Sep 2026) — the M1/N1 split must not move N1 rows into car"
+  - id: ford/tourneo-courier
+    kind: car
+    availability_includes: [es]
+    reason: "THE headline gap: 756 ES M1 Tourneo Courier registrations (Jul–Sep 2026, 100% M1) reached NO kind because the car build dropped \\bTOURNEO\\b and the ES van build ingests N1 only. es here means Spain's passenger Tourneos are in the dataset"
+  - id: ford/transit
+    kind: car
     exists: false
-    reason: "Caddy is kind=van; must not leak into cars (drop_patterns.yml)"
+    reason: "The Ford \\bTRANSIT\\b lift publishes ONLY Transit Custom (passenger_variants.yml `publish:`); the big Transit is a camper/ambulance base (es_dgt M1 8.8%, 22 autocaravana) and must stay out of cars"
+  - id: volkswagen/multivan
+    kind: car
+    availability_includes: [es]
+    reason: "VW Multivan had no record in any kind (bare `Multivan: null` was kind-blind) while Spain registered 812 M1 Multivans Jul–Sep 2026. Its own nameplate since the T4; the T7 is an MQB passenger car"
   - id: mercedes-benz/sprinter
     kind: car
     exists: false
@@ -759,10 +792,19 @@ checks:
     kind: van
     availability_includes: [nl, fi, lu]
     reason: "D-2, the largest operation: 2,324 vehicles across nl_rdw 2,233 / fi_traficom 85 / lu_snca 6 split off van/opel/combo. If this row fails, the ELECTRIC_NAMEPLATES pin stopped firing and the -[A-G] strip folded Combo Electric back onto the ICE van."
+  # 2026-11-09: `de` REMOVED from this van row and asserted on the car twin below
+  # instead. DE KBA FZ 10.1 is an all-M1 table; de_kba_fz10.yml now routes COMBO
+  # to `car` because car/opel/combo publishes (passenger_variants.yml, gate PASS
+  # es 459 M1 = 41.5%). The DE evidence MOVED, it was not lost (DECISIONS.md
+  # availability-removal rule) — the car row is the proof.
+  - id: opel/combo
+    kind: car
+    availability_includes: [de, es]
+    reason: "Passenger Combo (Combo Life) in kind car: de is the KBA FZ 10.1 M1 COMBO row that used to sit on the van record (de_kba_fz10.yml flip, 2026-11-09); es is the ES-TRIM FOLDS (`Combo 100 Cv 1.5 Td S` …). If de leaves BOTH Combo records, the flip went inert"
   - id: opel/combo
     kind: van
-    availability_includes: [de, es, fi, gb, lu, nl]
-    reason: "…and the ICE Combo must lose NO country to that split. Measured control-vs-treatment at (country, SOURCE) level: the same six (country, source) pairs before and after, 27,529 -> 25,205 vehicles. de/gb are the proof of no over-reach — neither KBA's Modellreihe nor DfT's GenModel ever writes a -E suffix."
+    availability_includes: [es, fi, gb, lu, nl]
+    reason: "…and the ICE Combo must lose NO country to that split. Measured control-vs-treatment at (country, SOURCE) level: the same six (country, source) pairs before and after, 27,529 -> 25,205 vehicles. de/gb are the proof of no over-reach — neither KBA's Modellreihe nor DfT's GenModel ever writes a -E suffix. (2026-11-09: de moved to car/opel/combo with the KBA COMBO kind_map flip; gb remains the proof here.)"
   - id: opel/ampera-e
     # es DROPPED 2026-08-18 — EXPIRY, not regression, and `ua` still carries the
     # tripwire this row exists for. Measured in cache/es_dgt_2026*.txt: the exact
