@@ -983,3 +983,20 @@ checks:
     kind: car
     availability_includes: [nl]
     reason: "the car kind is the one the kind-blind Rollerteam key ACTUALLY touches (nl 'FIAT ROLLERTEAM' camper registered as a car). The record publishes because the truck twin (554) drops van's cross-kind share to 89.5% (<97%), not because of the key; if nl vanishes here the key went inert or a prune re-engaged."
+  # --- Germany N1 (de_kba_nfz: KBA FZ 2.8 / FZ 4.8, presence-only, attach-only) ---
+  - id: citroen/jumper
+    kind: van
+    availability_includes: [de]
+    reason: "N1-only nameplate with no M1 version in FZ 10: its `de` comes from de_kba_nfz ('CITROEN (F) | JUMPER', 16,922 Lkw at 2026-01-01). If de vanishes, the Lkw source stopped resolving or stopped running."
+  - id: peugeot/partner
+    kind: van
+    availability_includes: [de]
+    reason: "Resolved through by_trade_name twin rows ('STELLANTIS (F) | Doblo,Partner,Rifter,Berl', 9,737 Lkw in 2025) and PEUGEOT (F)'s own rows — tripwire for the explicit-target tier."
+  - id: peugeot/vivaro
+    kind: van
+    availability_excludes: [de]
+    reason: "'PEUGEOT (F) | SCUDO,VIVARO,EXPERT' is the Opel Vivaro twin on Peugeot's approval; by_trade_name sends it to opel/vivaro. If de appears HERE, the explicit tier stopped overriding the holder-marque default."
+  - id: mercedes-benz/atego
+    kind: truck
+    availability_includes: [de]
+    reason: "by_model routes ATEGO to the truck kind ('DAIMLER (D) | Atego', 5,757 Lkw); without the route the name is only offered to van, where no record exists."

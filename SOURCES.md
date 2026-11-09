@@ -18,6 +18,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `lu_snca` | 🇱🇺 LU | Registered-vehicle inventory (XML via CKAN) | [CC0](https://data.public.lu/) | monthly | ✓ fleet |
 | `ie_cso` | 🇮🇪 IE | New private car registrations by make/model (PxStat) | [CC-BY 4.0](https://www.cso.ie/en/aboutus/lgdp/csodatapolicies/dataforresearchers/rdmpolicy/) | monthly | ✓ new reg. |
 | `de_kba_fz10` | 🇩🇪 DE | New car registrations by make + model series (FZ 10) | [DL-DE/BY-2.0](https://www.govdata.de/dl-de/by-2-0) | monthly | ✓ new reg. |
+| `de_kba_nfz` | 🇩🇪 DE | Lkw (N1+N2+N3) by type-approval holder + trade name — stock FZ 2.8 and new registrations FZ 4.8 | [DL-DE/BY-2.0](https://www.govdata.de/dl-de/by-2-0) | yearly (FZ 2.8 stock at 1 Jan, published ~July; FZ 4.8 year, ~February) | presence only — **attach-only; count nil** (`de` counts stay FZ 10's) |
 | `us_fueleconomy` | 🇺🇸 US | EPA fuel-economy vehicle catalog, MY1984→ | [US Gov public domain](https://www.fueleconomy.gov/feg/download.shtml) | ~monthly | — approval |
 | `ca_nrcan` | 🇨🇦 CA | NRCan fuel-consumption ratings catalog (incl. EV files) | [OGL-Canada 2.0](https://open.canada.ca/en/open-government-licence-canada) | yearly+ | — approval |
 | `nz_nzta` | 🇳🇿 NZ | Motor Vehicle Register fleet (ArcGIS aggregates) | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | monthly | ✓ fleet |
@@ -60,7 +61,7 @@ about coverage.
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
 | `nz_nzta` | `MOTIVE_POWER` (present, **not yet read**) | blocked — see the gotcha below |
-| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` | none | nothing, permanently or for now |
+| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` `de_kba_nfz` | none | nothing, permanently or for now (FZ 2.8 / 4.8 carry no fuel column) |
 
 **The Netherlands can never contribute, and that is worth stating plainly**
 because `nl_rdw` is the largest single source in the catalog. Probed
@@ -341,6 +342,32 @@ propulsion coverage would require RDW to publish a combined view.
   (§39 StVG); FZ 10 is the open model-level signal and is already
   series-normalized by KBA. The site answers missing months with HTTP 200 +
   an HTML 404 page — the pipeline verifies zip magic and walks back a month.
+- **de_kba_nfz** — KBA's only model-level Lkw tables, both annual:
+  [FZ 2.8](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html)
+  (stock at 1 January, column *Lastkraftwagen*) and
+  [FZ 4.8](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz4_n_uebersicht.html)
+  (new registrations in the year, column *Deutschland*). No monthly Lkw-by-model
+  table exists (FZ 10/11 are Pkw-only; FZ 8/9 stop at the manufacturer). Gotchas,
+  all measured on `fz2_2026.xlsx` / `fz4_2025.xlsx`:
+    - **Hersteller is the type-approval holder, not the marque** — `DAIMLER (D)`
+      is Mercedes-Benz, `PEUGEOT (F)` approves the Fiat Scudo and Opel Vivaro,
+      `STELLANTIS (F)` is four brands. Mapped in `overrides/kind_maps/de_kba_nfz.yml`.
+    - **Handelsname is cut at 25 characters** and often lists every brand's twin
+      (`Doblo,Partner,Rifter,Berl`); the truncated last name is dropped.
+    - **The trade-name cell is vertically merged across TSN rows**, and a make's
+      first row can have an EMPTY trade name (Volkswagen's TSN 001). A parser that
+      keys make rows on B *and* C attributes VW's whole lineup to VALTRA, the tractor
+      maker listed just before it. Make rows are keyed on B alone.
+    - **Conservation is checked on every parse**: each make's rows must sum to its
+      `ZUSAMMEN` row and those to `INSGESAMT` (both tables reconcile to the vehicle).
+    - **The sheet is resolved by tab name** (`FZ 2.8`, `FZ 4.8`), not by member
+      number; the licence (`Datenlizenz Deutschland - Namensnennung - Version 2.0`)
+      is asserted from each workbook's own Impressum tab.
+    - **Presence-only**: Lkw stock and annual Lkw registrations are different
+      measures and periods from FZ 10's monthly Pkw flow, so they never enter the
+      `de` count, rank or decile — see DECISIONS.md.
+    - Same soft-404 behaviour as FZ 10 (HTTP 200 + HTML page): zip magic checked,
+      payload deleted, previous year tried.
 - **us_fueleconomy** — catalog (approval evidence), no counts: it proves a
   model was certified for the US market, not how many are on the road.
 - **ca_nrcan** — CSVs are Windows-1252 encoded (French column headers) and

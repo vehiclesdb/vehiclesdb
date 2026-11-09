@@ -444,8 +444,24 @@ Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].sort.each do |abs|
   # `make_splits` (il_mot only so far): a register label that files a SECOND
   # marque (Israel's BMW label carries MINI). Each rule must name a make and a
   # compilable `match`; `kinds`, `strip`, `rewrite` are optional and checked.
-  unknown = doc.keys - %w[kinds body_types by_model make_splits notes]
-  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/make_splits/notes)" unless unknown.empty?
+  # `hersteller` + `by_trade_name` (de_kba_nfz only so far): KBA's commercial-
+  # vehicle tables key rows by TYPE-APPROVAL HOLDER and a free-text trade-name
+  # cell, not by marque and model. `hersteller` maps a holder to its marque
+  # (null = several marques, resolve only through by_trade_name);
+  # `by_trade_name` maps "<Hersteller> | <Handelsname>" to explicit
+  # "Make | Model" targets ([] = deliberately unresolved).
+  unknown = doc.keys - %w[kinds body_types by_model make_splits notes hersteller by_trade_name]
+  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/make_splits/notes/hersteller/by_trade_name)" unless unknown.empty?
+  (doc["hersteller"] || {}).each do |holder, marque|
+    next if marque.nil? || (marque.is_a?(String) && !marque.strip.empty?)
+    fail! "#{rel}: hersteller #{holder.inspect} → #{marque.inspect} must be a marque name or null"
+  end
+  (doc["by_trade_name"] || {}).each do |cell, targets|
+    fail! "#{rel}: by_trade_name key #{cell.inspect} must read \"<Hersteller> | <Handelsname>\"" unless cell.to_s.include?(" | ")
+    unless targets.is_a?(Array) && targets.all? { |t| t.is_a?(String) && t.split("|", 2).map(&:strip).all? { |x| !x.empty? } && t.include?("|") }
+      fail! "#{rel}: by_trade_name #{cell.inspect} must be a list of \"Make | Model\" strings ([] = unresolved)"
+    end
+  end
   (doc["make_splits"] || {}).each do |label, rules|
     unless rules.is_a?(Array) && rules.all? { |r| r.is_a?(Hash) }
       fail! "#{rel}: make_splits #{label.inspect} must be a list of rules"

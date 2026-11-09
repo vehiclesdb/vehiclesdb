@@ -177,6 +177,55 @@ fails the build if an identifier-shaped field name reaches source code. Only
 aggregated taxonomy + derived signals ship. Published data is anonymous
 aggregate statistics under GDPR (C-319/22, WP29 Opinion 05/2014, Recital 26).
 
+**Germany N1 (KBA FZ 2.8 / FZ 4.8) is ATTACH-ONLY and PRESENCE-ONLY** (source
+`de_kba_nfz`, 2026-11). Until then Germany's only source was FZ 10, a
+passenger-car (EU M1) table, so a van record carried `de` only when its
+nameplate also had an M1 version: Citroën Jumper, Peugeot Partner, Toyota Hilux,
+Ford Ranger, VW Amarok, the Nissan NV range and ~80 more had no German evidence
+although Germany registers them by the tens of thousands. KBA publishes no
+monthly Lkw-by-model table; its only model-level Lkw tables are annual — FZ 2.8
+(stock at 1 January, column *Lastkraftwagen*) and FZ 4.8 (new registrations in
+the year, column *Deutschland*), both DL-DE/BY-2.0 like FZ 10. Both are read: FZ
+4.8 carries nameplates too new for an FZ 2.8 row (Kia PV5, INEOS Grenadier, Maxus
+T60, KGM Musso EV…).
+
+*Why attach-only, not minting.* The row identity is (Hersteller, Handelsname),
+and neither is a marque or a model. Hersteller is the **type-approval holder**
+("DAIMLER (D)" for Mercedes-Benz vans; "PEUGEOT (F)" for the Fiat Scudo and Opel
+Vivaro twins it approves; "STELLANTIS (F)" for four brands in one row).
+Handelsname is free text **cut at 25 characters** ("Doblo,Partner,Rifter,Berl"),
+often a list of every brand's twin, sometimes a type code ("MKD**-L-I"). That is
+the shape that made Norway's PKK publish trims and type codes as models when it
+was allowed to mint (pipeline#199): minting here would have published
+`daimler/sprinter`, `peugeot/vivaro`, `stellantis/doblo`. Attach-only bounds the
+worst case to adding `de` to an id that publishes anyway, and the curated map
+(`overrides/kind_maps/de_kba_nfz.yml`: holder → marque, explicit twin targets,
+`[]` for type codes, the truck routes) keeps even that to the listed names. The
+cost is nil: every N1 nameplate worth a record already publishes from NL, FI,
+GB, ES and the other registers.
+
+*Why presence-only, not counts.* Germany's `de` count is FZ 10's monthly Pkw
+FLOW with a derived window (year-to-date). FZ 2.8 is a STOCK and FZ 4.8 a FLOW
+over a different, whole year. Adding either into the same per-country number
+would put three measures and two periods behind one `count_window` — the error
+COUNT_BASIS exists to stop — so the source decides `availability` and nothing
+else: no rank, no decile, no mass, no snapshot. A record that only this source
+places in Germany therefore has `de` in `availability` and no `de` in
+`popularity.by_country`. Publishing N1 popularity needs a per-source count split
+in emit (one basis and window per source, not per country) and is an open owner
+decision.
+
+*What a name in the cell is taken to mean.* KBA lists the trade names of the
+approval, so every listed name is a nameplate registered in Germany as a Lkw
+under it — with three exclusions applied by the adapter: the truncated last name
+of a 25-character cell (a prefix can resolve to the wrong record), the part after
+"oder"/"ou"/"od." (another market's badge for the same van: Relay, Dispatch,
+Ranch), and later parts without two letters ("LT 26,28,32" — variants of the
+first name). The kind is `van` unless the nameplate is routed to `truck` by name
+(Actros, Atego, TGL…): the Lkw tables are N1+N2+N3 with no class column, and the
+heavy-kind series fold is too coarse to offer every van name to the truck kind
+("Transit Custom" would land on truck `ford/transit`).
+
 ## Popularity & availability
 
 **Popularity ships as ranks and deciles, not raw counts.** Deciles are

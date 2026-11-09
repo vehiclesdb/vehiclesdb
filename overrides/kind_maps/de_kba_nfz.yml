@@ -1,0 +1,142 @@
+# DE KBA commercial-vehicle source mapping — (Hersteller, Handelsname) → marque, model, kind.
+#
+# Datasets (Kraftfahrt-Bundesamt, both DL-DE/BY-2.0 — pinned as de_kba, and the
+# licence is also asserted from each workbook's own Impressum tab at build time):
+#   FZ 2.8 "Bestand an Nutzfahrzeugen am 1. Januar <Y> nach Herstellern, Handelsnamen
+#          und Fahrzeugarten" — column Lastkraftwagen (stock)
+#          https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html
+#   FZ 4.8 "Lastkraftwagen im Jahr <Y> nach Herstellern, Handelsnamen und Bundesländern"
+#          — column Deutschland (new registrations)
+#          https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz4_n_uebersicht.html
+#
+# ── WHY THIS FILE EXISTS ─────────────────────────────────────────────────────
+# de_kba_fz10 reads the PASSENGER-CAR (M1) table, so a van record got `de` only
+# when its nameplate also has an M1 version. N1-only vans — Citroën Jumper,
+# Peugeot Partner, Toyota Hilux, Ford Ranger, VW Amarok, Nissan NV400… — had no
+# German evidence. KBA's only model-level Lkw tables are FZ 2.8 and FZ 4.8.
+#
+# Their row identity is NOT (marque, model):
+#   * Hersteller is the TYPE-APPROVAL HOLDER ("DAIMLER (D)" for Mercedes-Benz;
+#     "PEUGEOT (F)" for the Fiat Scudo and Opel Vivaro twins it type-approves;
+#     "STELLANTIS (F)" for four brands at once).
+#   * Handelsname is free text, cut at 25 characters, often listing every
+#     brand's twin on one approval ("Doblo,Partner,Rifter,Berl").
+# The source is therefore ATTACH-ONLY (it can add `de` to an id that already
+# publishes, never create one) and PRESENCE-ONLY (no counts: Germany's `de` count
+# is FZ 10's monthly Pkw flow, a different measure and period). See
+# DECISIONS.md "Germany N1 (KBA FZ 2.8 / FZ 4.8)" and
+# pipeline/sources/de_kba_nfz.rb in the private pipeline.
+#
+# ── HOW A ROW RESOLVES (first tier that answers wins) ────────────────────────
+#  1. by_trade_name["<Hersteller> | <Handelsname>"] — explicit "Make | Model"
+#     targets, exactly as the cell is printed. `[]` = deliberately unresolved.
+#  2. hersteller["<Hersteller>"] — the marque behind an approval holder;
+#     null = the holder builds several marques, so ONLY tier 1 resolves it.
+#     Absent = the holder name minus its " (XX)" country suffix
+#     ("VOLKSWAGEN (D)" → Volkswagen, "FORD (AUS)" → Ford).
+#  3. The cell split into names: "," and ";" separate names; a 25-character
+#     cell's last name is truncated and dropped; "X oder/ou/od. Y" keeps X (Y is
+#     another market's badge: Dispatch, Relay); later parts without two letters
+#     ("28", "-D") are variants of the first name.
+# Every name then goes through the normal normalizer (aliases, renames, folds)
+# exactly like any other register's string.
+#
+# Kind: `van` unless `by_model` routes the name (whole name or first word,
+# upper-cased) elsewhere. Never `truck` by default: the heavy-kind series
+# collapse is coarse ("Transit Custom" resolves to truck ford/transit).
+
+kinds:
+  # FZ 2.8 / 4.8 have no EU-category column: "Lastkraftwagen" is N1+N2+N3, so the
+  # kind comes from the nameplate (by_model) with van as the default.
+  Lastkraftwagen: van
+
+hersteller:
+  DAIMLER (D): Mercedes-Benz            # rows: Sprinter, Vito, Citan, eVito, Atego, Actros — Mercedes-Benz nameplates; https://www.mercedes-benz.de/vans/de/sprinter
+  TOYOTA EUROPE (B): Toyota             # rows: TOYOTA HILUX, PROACE, Proace City, PROACE MAX; https://www.toyota.de/nutzfahrzeuge
+  TOYOTA (J): Toyota                    # Toyota Motor Corporation (only a SONSTIGE row today)
+  NISSAN AUTOMOTIVE (F): Nissan         # rows: TOWNSTAR, PRIMASTAR, INTERSTAR, NISSAN NAVARA; https://www.nissan.de/fahrzeuge/neuwagen.html
+  FCA (I): Fiat                         # rows: FIAT DUCATO, TALENTO, FIAT FIORINO, Fiat Fullback — FCA Italy is Fiat Professional's approval holder; https://www.fiatprofessional.com/de
+  STELLANTIS (I): Fiat                  # row: FIAT DUCATO (Ducato approvals moved from FCA Italy to Stellantis Italy); https://www.fiatprofessional.com/de/ducato
+  FCA (USA): Jeep                       # row: GLADIATOR — the Jeep Gladiator pickup; https://www.jeep.de/gladiator
+  STELLANTIS (F): ~                     # PSA-side approvals shared by Citroën, Fiat, Opel, Peugeot (Doblo,Partner,Rifter,Berlingo) — only by_trade_name may resolve these
+  MAN TRUCK & BUS: MAN                  # rows: TGE, TGL, TGS, TGX — MAN Truck & Bus SE; https://www.mantruckandbus.com/de/
+  SAIC MAXUS (RC): Maxus                # rows: DELIVER 9, eDELIVER 3, T90 EV — sold as MAXUS; https://www.maxus.de/
+  JAGUAR LAND ROVER (UK): Land Rover    # rows: Defender (N1 "Hard Top"/commercial); https://www.landrover.de/vehicles/defender/index.html
+  HYUNDAI MOTOR (ROK): Hyundai          # rows: H350, H-1/STAREX; https://www.hyundai.de/
+  KGM (ROK): KGM                        # KG Mobility, formerly SsangYong (renamed 2023); https://www.kgm-mobility.de/
+  INEOS AUTOMOTIVE (UK): INEOS          # row: INEOS GRENADIER (N1 Utility Wagon); https://ineosgrenadier.com/de-de
+  BYD AUTO (RC): BYD                    # row: ETP3 (BYD's electric panel van); https://www.byd.com/de
+  EVUM MOTORS: EVUM                     # rows: aCar, aCar XL — EVUM Motors GmbH, Munich; https://evum-motors.com/
+  HAKO: Multicar                        # rows: MULTICAR M2510, M 25, FUMO — Hako GmbH builds the Multicar range; https://www.multicar.de/
+  SONSTIGE HERSTELLER: ~                # "other manufacturers" bucket — not a marque
+
+by_trade_name:
+  # ── Stellantis K0 mid-size twins under PEUGEOT's approval: Fiat Scudo, Opel
+  # Vivaro, Peugeot Expert are one van (Hordain). Without these lines tier 3 would
+  # put Germany on peugeot/vivaro and peugeot/scudo — ids that should not exist.
+  # https://en.wikipedia.org/wiki/Peugeot_Expert#Third_generation_(2016)
+  "PEUGEOT (F) | SCUDO,VIVARO,EXPERT": ["Fiat | Scudo", "Opel | Vivaro", "Peugeot | Expert"]   # 2022+ Scudo is the K0 twin; https://www.fiatprofessional.com/de/scudo
+  "PEUGEOT (F) | SCUDO,EXPERT,VIVARO": ["Fiat | Scudo", "Opel | Vivaro", "Peugeot | Expert"]   # same approval family, names in another order
+  "PEUGEOT (F) | VIVARO,EXPERT,SCUDO": ["Fiat | Scudo", "Opel | Vivaro", "Peugeot | Expert"]   # same approval family, names in another order
+  "PEUGEOT (F) | VIVARO,EXPERT": ["Opel | Vivaro", "Peugeot | Expert"]                         # pre-Scudo K0 approvals (Vivaro-C 2019+)
+  "PEUGEOT (F) | VIVARO e-HYDROGEN": ["Opel | Vivaro"]                                           # Opel Vivaro-e Hydrogen (fuel cell), PSA-approved; https://www.opel.de/fahrzeuge/vivaro-e-hydrogen.html
+  # ── Large van: Opel Movano C (2021+) is the Ducato/Boxer twin under Peugeot's approval.
+  # https://en.wikipedia.org/wiki/Opel_Movano#Third_generation_(2021)
+  "PEUGEOT (F) | BOXER,MOVANO": ["Peugeot | Boxer", "Opel | Movano"]                           # Boxer + Movano C share the approval
+  "PEUGEOT (F) | MOVANO,BOXER": ["Peugeot | Boxer", "Opel | Movano"]                           # same, other order
+  # ── Stellantis K9 compact twins (Citroën Berlingo, Peugeot Partner/Rifter, Opel
+  # Combo, Fiat Doblò 2022+). https://en.wikipedia.org/wiki/Citro%C3%ABn_Berlingo#Third_generation_(K9;_2018)
+  # The truncated tail ("Berl", "D", "Ri", "e-") is completed from the fuller spellings of the same cell.
+  "STELLANTIS (F) | Doblo,Partner,Rifter,Berl": ["Fiat | Doblo", "Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]   # FZ 4.8 2025: 9,737 Lkw
+  "STELLANTIS (F) | Doblo,Rifter,Partner,Berl": ["Fiat | Doblo", "Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]   # same family, other order
+  "STELLANTIS (F) | Doblo,Berlingo,Partner,Ri": ["Fiat | Doblo", "Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]   # same family, other order
+  "STELLANTIS (F) | Partner,Rifter,Berlingo,D": ["Fiat | Doblo", "Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]   # same family; "D" = Doblo, truncated
+  "STELLANTIS (F) | Rifter,Partner,Berlingo,D": ["Fiat | Doblo", "Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]   # same family, other order
+  "STELLANTIS (F) | PARTNER,RIFTER,BERLINGO": ["Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]                    # pre-Doblò K9 approvals (2018-2021)
+  "STELLANTIS (F) | RIFTER,PARTNER,BERLINGO": ["Peugeot | Partner", "Peugeot | Rifter", "Citroen | Berlingo"]                    # same, other order
+  # Battery-electric K9 versions; the catalog keeps them as separate e- records. https://www.peugeot.de/modelle/unsere-fahrzeuge/e-partner.html
+  "STELLANTIS (F) | e-Doblo,e-Berlingo VAN,e-": ["Fiat | e-Doblo", "Citroen | e-Berlingo", "Peugeot | e-Partner"]                 # truncated tail = e-Partner/e-Rifter
+  "STELLANTIS (F) | e-Doblo,e-Rifter,e-Partne": ["Fiat | e-Doblo", "Peugeot | e-Rifter", "Peugeot | e-Partner", "Citroen | e-Berlingo"]   # FZ 4.8 2025: 714 Lkw
+  "STELLANTIS (F) | e-Rifter,e-Partner,e-Berl": ["Peugeot | e-Rifter", "Peugeot | e-Partner", "Citroen | e-Berlingo"]            # tail "e-Berl" = ë-Berlingo
+  "STELLANTIS (F) | e-C3 VAN": ["Citroen | e-C3"]                                                                                # Citroën ë-C3 Van (N1 two-seater); https://www.citroen.de/modelle/e-c3.html
+  # ── Rebadges approved by another group's holder.
+  "RENAULT (F) | NV250": ["Nissan | NV250"]                     # Nissan NV250 is the Renault Kangoo built and type-approved by Renault; https://en.wikipedia.org/wiki/Nissan_NV250
+  # ── Cells whose tier-3 split would name the wrong record.
+  "FORD (D) | Transit/Tourneo Connect": ["Ford | Transit Connect", "Ford | Tourneo Connect"]   # "Transit/Tourneo Connect" = Transit Connect + Tourneo Connect, not "Transit"
+  "FORD (D) | TRANSIT CONNECT T200S": ["Ford | Transit Connect"]                             # T200S/T230L are wheelbase/roof variant codes of the Transit Connect; https://de.wikipedia.org/wiki/Ford_Transit_Connect
+  "FORD (D) | TRANSIT CONNECT T230L": ["Ford | Transit Connect"]                             # same
+  "DAIMLER (D) | Kerstner Kühlsprinter": ["Mercedes-Benz | Sprinter"]                        # Kerstner refrigerated body on the Sprinter; https://www.kerstner.de/
+  "DAIMLER (D) | U 1300 L": ["Mercedes-Benz | Unimog"]                                       # Unimog U 1300 L (435 series); https://de.wikipedia.org/wiki/Unimog_435
+  "DAIMLER (D) | UNIMOG U 1300 L": ["Mercedes-Benz | Unimog"]                                # same
+  "DAIMLER (D) | UNIMOG S 404.1": ["Mercedes-Benz | Unimog"]                                 # Unimog 404 S; https://de.wikipedia.org/wiki/Unimog_404
+  "IVECO (F/I) | 140E,FF140E,120EL": ["Iveco | Eurocargo"]                                    # 120E/140E are Eurocargo type designations; https://de.wikipedia.org/wiki/Iveco_Eurocargo
+  "KGM (ROK) | KG Mobility MUSSO GRAND,K": ["KGM | Musso"]                                    # Musso Grand = long-bed Musso pickup; https://www.kgm-mobility.de/musso
+  "KGM (ROK) | Ssangyong MUSSO GRAND,Ssa": ["KGM | Musso"]                                    # same nameplate under the pre-2023 SsangYong name
+  "KGM (ROK) | MUSSO GRAND": ["KGM | Musso"]                                                  # same
+  "KGM (ROK) | KG Mobility MUSSO EV": ["KGM | Musso EV"]                                      # battery-electric Musso; https://www.kgm-mobility.de/musso-ev
+  "MAN TRUCK & BUS | LE 6.,8.,9.,10.,11.,12.,1": ["MAN | LE"]                                 # MAN L2000 "LE" light-truck range (LE 8.180…); the truck catalog files it as man/le; https://de.wikipedia.org/wiki/MAN_L2000
+  "MAN TRUCK & BUS | LE 110,140,160,170,180,22": ["MAN | LE"]                                 # same range, older numbering
+  # ── Type-approval CODES, not names: "MKD**" is a multi-stage/incomplete-vehicle family code
+  # shared by several holders. Deliberately unresolved — guessing a nameplate is worse than none.
+  "DAIMLER (D) | MKD-L-I/E/C/N/U": []                          # approval code, no nameplate
+  "DAIMLER (D) | MKD**-M,MKD**-M-E": []                        # approval code, no nameplate
+  "DAIMLER (D) | MKD**-M/MKD**-E": []                          # approval code, no nameplate
+  "DAIMLER (D) | MKD**-M,MKD**-S": []                          # approval code, no nameplate
+  "DAIMLER (D) | MKD**-L-I": []                                # approval code, no nameplate
+  "DAIMLER (D) | MPB**-M": []                                  # approval code, no nameplate
+
+by_model:
+  # Heavy nameplates the Lkw tables carry (N2/N3): routed to the truck kind, where the
+  # record already exists. Anything not listed stays van.
+  ACTROS: truck        # Mercedes-Benz heavy truck; https://www.mercedes-benz-trucks.com/de_DE/models/new-actros.html
+  ANTOS: truck         # Mercedes-Benz heavy distribution truck
+  AROCS: truck         # Mercedes-Benz construction truck
+  ATEGO: truck         # Mercedes-Benz medium truck
+  ECONIC: truck        # Mercedes-Benz low-entry municipal truck
+  UNIMOG: truck        # Mercedes-Benz implement carrier (the van-kind record is a register artefact)
+  TGL: truck           # MAN light truck (7.5-12 t); https://www.mantruckandbus.com/de/
+  TGM: truck           # MAN medium truck
+  TGS: truck           # MAN heavy truck
+  TGX: truck           # MAN long-haul truck
+  LE: truck            # MAN L2000 "LE" series (1990s light truck)
+  EUROCARGO: truck     # Iveco medium truck
