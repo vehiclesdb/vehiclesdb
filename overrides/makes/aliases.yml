@@ -153,7 +153,7 @@ MAN: MAN
 SCANIA: Scania
 SCANIA VABIS: Scania-Vabis           # fi_traficom writes the space, nl_rdw writes SCANIA-VABIS: both slugify to scania-vabis, so ONE record set carried TWO display names and renames.yml keys (keyed by display name) reached only the nl half — measured 85 vs 59 vehicles, see the renames.yml Scania-Vabis block, which names this pin as the cure. Hyphen = the company name, "AB Scania-Vabis was established" (1911-1968) — https://en.wikipedia.org/wiki/Scania_AB (fetched 2026-10-10) [wikipedia]; period trade press spells it the same — https://archive.commercialmotor.com/article/19th-july-1968/41/scania-vabis-110-arrives-in-britain [archive]
 IVECO: Iveco
-RENAULT TRUCKS: Renault Trucks
+RENAULT TRUCKS: Renault                  # MAKE MERGE (owner directive, release 2026.11.2): the Renault Trucks range (C/D/K/T/Master/Maxity) folds into make `renault`, whose truck kind already carries every one of these nameplates (truck/renault/{c,d,maxity,t} live beside truck/renault-trucks/{c,d,maxity,t}); the four retired ids keep resolving via former_ids.yml, the make name via search_aliases.yml "Renault Trucks"
 VOLVO TRUCKS: Volvo Trucks
 MERCEDES-BENZ TRUCKS: Mercedes-Benz
 HINO: Hino
@@ -563,3 +563,40 @@ DONG FENG: Dongfeng  # spaced spelling of the Dongfeng make in JPJ; measured eff
 "למבורגיני": Lamborghini   # IL MoT tozar; 36 active (car 36)
 "הוסקוורנה": Husqvarna   # IL MoT tozar; 35 active (2W 35) — spelling variant
 "אינטרנשיונל": International   # IL MoT tozar; 34 active (truck 31 / bus 3)
+
+# --- 2026.11.2 completeness: corporate-entity / spacing make strings ----------
+# Raw strings are the exact MARCA/merk/make values measured in the 2026.11.1
+# frozen candidates (build/candidates/*.jsonl natives, vehicles summed across
+# sources) or, where noted, in the es_dgt Mar–Sep 2026 microdata. Each folds a
+# register's spelling of ONE marque into the canonical make; none merges two
+# marques.
+"VOLKSWAGEN V W": Volkswagen          # es_dgt spaced initialism; 287 candidate veh (Golf, Touran, Tiguan …) minted volkswagen-v-w/* stubs; same marque as the existing "VOLKSWAGEN VW" line
+"VOLKSWAGEN AG": Volkswagen           # corporate-entity string (Volkswagen AG, Wolfsburg); 103 candidate veh (Golf, Touran, Tiguan)
+"AUDI AG": Audi                       # corporate-entity string (AUDI AG, Ingolstadt); es_dgt 31 veh Mar–Sep 2026 (A3 11)
+"AUTOMOBILI LAMBORGHINI S.": Lamborghini      # Automobili Lamborghini S.p.A. cut at the register's field width; 355 candidate veh (nl Urus, Huracán …)
+"AUTOMOBILI LAMBORGHINI S.P.A.": Lamborghini  # full corporate name; 77 candidate veh (es Urus/Revuelto)
+"SSANG YONG": SsangYong               # spaced spelling of the marque; 2,394 candidate veh (ua Rexton 501, Kyron 416, Korando 407, Actyon 247)
+"JAGUAR CARS": Jaguar                 # Jaguar Cars Ltd, the marque's corporate name 1945–2012; 3,121 candidate veh (nl "JAGUAR XK CONVERTIBLE", S-Type, XKR)
+"FORD (D)": Ford                      # Ford-Werke (Germany) origin suffix; 1,286 candidate veh (lu Focus 348, Fiesta 292)
+"FORD (USA)": Ford                    # Ford Motor Company (US) origin suffix; 102 candidate veh
+"TOYOTA LEXUS": Lexus                 # NZ files Lexus under "TOYOTA LEXUS"; 490 candidate veh (ES 144, LS 131) — every row is a Lexus nameplate
+"DATSUN-NISSAN": Nissan               # fi "Datsun-Nissan | SUNNY" 365 candidate veh — the Sunny is published as nissan/sunny
+"GM DAEWOO": Daewoo                   # GM Daewoo (2002–2011 corporate name of Daewoo Motor); 504 candidate veh (fi Nubira 110 …)
+"TQ WULING": Wuling                   # my_jpj importer-prefixed make (TQ = the Malaysian distributor); 714 candidate veh — the Wuling Binguo ("Bingo")
+"KTM AG": KTM                         # corporate-entity string (KTM AG, Mattighofen); 28 candidate veh
+"DI PIAGGIO & C. S.P.A.": Piaggio     # Piaggio & C. S.p.A. corporate name; 57 candidate veh
+"HERO MOTOCORP LTD": Hero             # Hero MotoCorp Ltd is the corporate name of the published make Hero; 196 candidate veh
+"SAXAS NUTZFAHR. WERDAU AG": Saxas Nutzfahrzeuge Werdau      # same East-German trailer/LCV body maker as the existing "SAXAS NUTZFAHR WRDAU GMBH" line; 541 candidate veh
+"SAXAS NUTZFAHRZEUGE WERDAU GMBH": Saxas Nutzfahrzeuge Werdau # same; 80 candidate veh
+"SAXAS NUTZFAHRZEUGE WERDAU AG": Saxas Nutzfahrzeuge Werdau   # same; 57 candidate veh
+
+# ── IL MoT respellings seen in the 2026-11-09 register snapshot (il_mot "Hebrew
+# make NOT in aliases" WARN of the 2026.11.2 curation build; vehicles = active rows
+# of that snapshot that produced NO row). Each re-spells a marque the IL block above
+# already maps, or is an unambiguous letter-by-letter transliteration.
+"מ.ג'י": MG                  # IL MoT tozar, new spelling of "מ.ג" (mapped above); 44,735 car vehicles dropped
+"ג'ילי": Geely               # IL MoT tozar "Jili" = Geely; 28,165 car vehicles dropped
+"קיי ג'י מובילי": KGM        # IL MoT tozar, cut form of KG Mobility (mapped above as KGM); 4,662 car vehicles dropped
+"אף איי דבליו": FAW          # IL MoT tozar, letter-by-letter "F-A-W"; 1,708 car vehicles dropped
+"רויאל אנפילד": Royal Enfield # IL MoT tozar, new spelling of "רויאל אנפלד" (mapped above); 1,445 motorcycle vehicles dropped
+"אס ווי אמ": SWM             # IL MoT tozar, letter-by-letter "S-W-M" on the motorcycle register (SWM Motorcycles); 8,389 motorcycle vehicles dropped

@@ -394,8 +394,12 @@
 # The HEAVY-range boundary (truck c/d/t, maxity) is deliberately NOT decided
 # here — it is one policy decision spanning four companion pairs
 # (renault-trucks, scania-vabis, leyland-daf, mitsubishi-fuso); see PR worklist.
-"Renault Trucks|Master": "Renault|Master"   # van: a Renault nameplate on a Renault type approval, distributed by Renault Trucks UK
-"Renault Trucks|Trafic": "Renault|Trafic"   # same (renault-trucks.co.uk/l/renault-trucks-trafic-ultimate)
+# 2026.11.2: SUPERSEDED by the make merge (makes/aliases.yml `RENAULT TRUCKS: Renault`,
+# owner directive) — every Renault Trucks row now resolves to make Renault before
+# this file is consulted, so the two keys that lived here ("Renault Trucks|Master",
+# "Renault Trucks|Trafic") could never match again and were removed rather than
+# left inert. The heavy-range question above is decided for renault-trucks only;
+# scania-vabis, leyland-daf and mitsubishi-fuso stay open.
 # ── wave-3 VW+SEAT boundary moves (2026-07-26, dossier §7) ──────────────────
 "Volkswagen|Porsche 914": "Porsche|914"   # car/volkswagen/porsche-914 (nl n=1, nz n=1) — raws are literally `PORSCHE 914`; the 914/4 was sold in Europe as the VW-Porsche 914 and the registers split it both ways. car/porsche/914 already exists, so this is a pure re-attachment — https://en.wikipedia.org/wiki/Porsche_914
 "Volkswagen|914": "Porsche|914"           # the badge-free twin of the line above (candidate volkswagen/914) — the move-split gate named it in the verification build (the 17-Vespa incident shape: moving only the badge-prefixed spelling leaves both halves sub-threshold). Same vehicle, same target — https://en.wikipedia.org/wiki/Porsche_914
@@ -545,3 +549,53 @@
 # bus/mercedes-benz/mid, reported rather than mis-moved; nl_rdw also holds
 # "SPRINTER MID CITY" (2011), so the spaced form is not unambiguously VDL either.
 "Mercedes-Benz|Midcity": "VDL|Midcity"   # target is the CANONICAL DISPLAY (moves.yml rule "TARGET IS THE CANONICAL, not the raw form" — moves are not re-normalized against the destination make): bus/vdl/midcity publishes the name "Midcity", so "VDL|MidCity" would have minted a second record on the same slug
+
+# ── 2026.11.2 completeness moves (research 2026-11-09; counts = 2026.11.1 frozen
+# candidates, every target a live 2026.11.1 id unless marked NEW) ─────────────
+# Brand words filed in the make column (AU/TH/IL/NZ/NL/GB registers), one marque each.
+"Tank|300": "Great Wall|Tank 300"         # au_bitre "TANK | 300" 6,110 veh; owner ruling 2026-11-09: Tank 300/500 stay under Great Wall (the published great-wall/tank-300 structure)
+"Tank|500": "Great Wall|Tank 500"         # au_bitre "TANK | 500" 1,770 veh; same ruling
+"Gwm Tank|300": "Great Wall|Tank 300"     # th_dlt "GWM TANK | 300 HYBRID" 439 veh; same ruling
+"Gwm Tank|500": "Great Wall|Tank 500"     # th_dlt "GWM TANK | 500 HYBRID" 115 veh; same ruling
+"Chery|Omoda": "Omoda|Omoda 5"            # au_bitre/nz "CHERY | OMODA" 4,320 veh: Chery sold the Omoda 5 in Australia before the Omoda brand split (CarExpert brand overview)
+"Ora|ES11": "Great Wall|Ora"              # au_bitre "ORA | ES11" 1,761 veh: ES11 is GWM's series code for the Ora hatch sold in AU (CarExpert/CarsGuide)
+"Honda|Mdx": "Acura|Mdx"                  # au_bitre/nz "HONDA | MDX" 1,365 veh: the Acura MDX was sold Honda-badged in Australia (2003–06)
+"Hyundai|Genesis GV60": "Genesis|GV60"    # il_mot "יונדאי | GENESIS GV60" 1,027 veh: Genesis brand word in the model column, Hyundai in the make column
+"Hyundai|Genesis GV70": "Genesis|GV70"    # il_mot 923 veh; same
+"Hyundai|Genesis GV80": "Genesis|GV80"    # il_mot 571 veh; same
+"Hyundai|Genesis G80": "Genesis|G80"      # il_mot 247 veh; same
+"Hyundai|Genesis G70": "Genesis|G70"      # il_mot 106 veh; same
+"Hyundai|G70": "Genesis|G70"              # co-move (id-contract move-split gate): the badge-free il_mot/nl twin hyundai/g70 — the G70 is a Genesis model (genesis.com), so both spellings move together
+"Hyundai|Genesis GV70EV": "Genesis|Electrified GV70"  # il_mot 127 veh; Genesis names the BEV "Electrified GV70" (the published record)
+"LDV|Mifa": "Maxus|Mifa 9"                # au_bitre/nz "LDV | MIFA" 976 veh: LDV is SAIC Maxus' AU/NZ badge; the Mifa sold there is the Mifa 9
+"MG|Maxus 9": "Maxus|Mifa 9"              # th_dlt "MG | MAXUS 9" 252 veh: MG-distributed Maxus Mifa 9 in Thailand
+"MG|Maxus 7": "Maxus|Mifa 7"              # th_dlt "MG | MAXUS 7" 274 veh: MG-distributed Maxus Mifa 7 (attested in this release, completecar.ie)
+"Chrysler Jeep|Cherokee": "Jeep|Cherokee"             # nz "CHRYSLER JEEP | CHEROKEE" 675 veh — the make string pools two marques, so moves are per model (moves rule 3)
+"Chrysler Jeep|Grand Cherokee": "Jeep|Grand Cherokee" # nz 271 veh; same
+"Chrysler Jeep|Wrangler": "Jeep|Wrangler"             # nz 271 veh; same
+"Land Rover|Rover 75": "Rover|75"         # au_bitre "LAND ROVER | ROVER 75" 576 veh: the Rover 75 (BMW-era Rover), brand word in the model column
+"Land Rover|75": "Rover|75"                 # co-move (move-split gate): the badge-free twin land-rover/75 — Land Rover never built a "75"; the rows are the Rover 75 filed under the BMW-era group make
+"Nekaf|M38A1": "Jeep|M38A1"               # nl_rdw "NEKAF | M38A1" 453 veh: Nekaf built the Willys M38A1 under licence for the Dutch army
+"Nekaf|Jeep": "Jeep|M38A1"                # nl_rdw "NEKAF | JEEP" 352 veh; Nekaf built only the M38A1
+"Nekaf|M 38 A1": "Jeep|M38A1"             # nl_rdw 281 veh; spacing variant
+"Nekaf|M38 A1": "Jeep|M38A1"              # nl_rdw 178 veh; spacing variant
+"Chevrolet GMC|Belair": "Chevrolet|Bel Air"  # uk_dft "CHEVROLET GMC | CHEVROLET GMC BELAIR" 399 veh — DVLA pools Chevrolet+GMC, so per model
+"Chevrolet GMC|Impala": "Chevrolet|Impala"   # uk_dft 246 veh; same
+"Chevrolet GMC|Blazer": "Chevrolet|Blazer"   # uk_dft 185 veh; same
+"Great Wall|Gwm Haval Jolion Pro A": "Haval|Jolion"  # uk_dft "GWM | GWM GWM HAVAL JOLION PRO A" 316 veh: Haval brand word in the model column
+"Toyota|Lexus IS 250": "Lexus|IS"         # il_mot "טויוטה | LEXUS IS 250" 298 veh: Lexus brand word in the model column
+"Toyota|Lexus GS 300": "Lexus|GS"         # il_mot 213 veh; same
+"Toyota|Lexus RX 350": "Lexus|RX"         # il_mot 180 veh; same
+"Toyota|Daihatsu Charade": "Daihatsu|Charade"  # nl_rdw "TOYOTA | DAIHATSU CHARADE" 212 veh: Daihatsu (Toyota-owned) brand word in the model column
+"Auto Union|Audi 90": "Audi|90"           # nl_rdw "AUTO UNION | AUDI 90" 213 veh: Auto Union GmbH was the type-approval holder of early Audis; the model column names the marque
+"Auto Union|Audi 100 CC": "Audi|100"      # nl_rdw 139 veh; same
+"Auto Union|90": "Audi|90"                  # co-move (move-split gate): badge-free twin auto-union/90 (nl_rdw) — Auto Union never sold a "90"; the Audi 90 (B2/B3)
+"Auto Union|100 CC": "Audi|100"             # co-move (move-split gate): badge-free twin auto-union/100-cc (nl_rdw) — the Audi 100 Coupé S/CC (C1)
+"Auto Union|Audi 80 Diesel": "Audi|80"    # nl_rdw 108 veh; same
+"Austin-Morris|Maxi": "Austin|Maxi"       # uk_dft "AUSTIN-MORRIS | AUSTIN-MORRIS MAXI" 234 veh: Austin-Morris was the BL division; the Maxi is an Austin
+"Austin-Morris|Princess": "Austin|Princess"  # uk_dft 105 veh; same (18-22 Series Princess)
+"Ecoauto|Terramar": "Cupra|Terramar"      # es_dgt "ECOAUTO | TERRAMAR E-HYBRID" 141 veh: Spanish importer entity in the make column; the Terramar is a Cupra
+"IZh|412": "Moskvich|412"                 # ua_mvs "ИЖ | 412" 105 veh: the IZh-412 is the Izhevsk-built Moskvich 412 (Za Rulem)
+"Niva|1600": "Lada|Niva 1600"             # fi_traficom "Niva | 1600" 111 veh: Lada Niva 1600, Finnish import string
+# Owner corrections from the 2026.11.2 evidence pass:
+"FAW|T77": "Bestune|T77"                  # es_dgt "FAW | T77" Mar–Sep 2026 109 veh: owner ruling 2026-11-09 "FAW T77 is Bestune" — km77 lists the T77 under Bestune (https://www.km77.com/coches/bestune, accessed 2026-11-09); attested in this release
