@@ -1,0 +1,24 @@
+# models/display.yml — DISPLAY-ONLY name pins (release 2026.11.2).
+#
+# Shape:  "<kind>/<make-slug>/<model-slug>": "<published name>"   # source
+#
+# NAMING.md: the manufacturer's own material is the authority on how a name is
+# WRITTEN. Some names cannot be restyled through renames.yml or styling.yml,
+# because both change the produced nameplate and the id is that nameplate's
+# slug: "500 X" → "500X" would turn fiat/500-x into fiat/500x, the one breaking
+# change SCHEMA.md forbids. A pin here sets the NAME of an existing id and
+# nothing else — the id never moves (pipeline Overrides#load_display_pins!,
+# Reconciler#author_display). Every key must be a published id; every value
+# carries the manufacturer URL it was read from.
+#
+# Considered and NOT pinned (2026-11-09): Jaecoo 7 / Omoda 5 keep the marque
+# word (renames.yml Jaecoo block: bare "7" is not self-identifying; the
+# European model page names it "Jaecoo 7" — omodajaecoo-auto.de/modelle/jaecoo-7 — the all-caps JAECOO/OMODA is the
+# logotype), and make EBRO already matches the brand (ebroauto.com writes
+# "EBRO" throughout, 42/42 occurrences, fetched 2026-11-09).
+
+"car/fiat/500-x": "500X"        # Fiat writes "500X" — https://www.fiat.ie/models/500x/base (model page; JS-rendered, verified through the search index 2026-11-09)
+"car/fiat/500-e": "500e"        # Fiat writes "500e" — https://www.fiat.co.uk/500e (fetched 2026-11-09, "500e")
+"car/fiat/600-e": "600e"        # Fiat writes "600e" — https://www.fiat.de/600e (fetched 2026-11-09, "600e")
+"car/kia/x-ceed": "XCeed"       # Kia writes "XCeed" — https://www.kia.com/uk/new-cars/xceed/ (fetched 2026-11-09); styling.yml already pins the fused XCEED form
+"car/kia/pro-ceed": "ProCeed"   # Kia writes "ProCeed" — the styling.yml PROCEED pin ("Kia official casing") covers the fused form; this covers the spaced register form "PRO CEED"
