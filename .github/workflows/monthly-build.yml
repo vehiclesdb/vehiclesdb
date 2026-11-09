@@ -122,8 +122,21 @@ jobs:
         uses: actions/cache@v4
         with:
           path: pipeline-repo/cache
-          key: source-cache-${{ github.run_id }}
-          restore-keys: source-cache-
+          # v2 (2026-11-09): CACHE NAMESPACE BUMP. Every run restored the newest
+          # `source-cache-*` entry, and that lineage still carried NZ ArcGIS chunk
+          # files (nz_<type>_<letter>.json) cached from an EARLIER NZ snapshot
+          # service. The chunk cache name does not include the service, and the
+          # chunks live 25 days (nz_nzta.rb max_age), so a service rotation left
+          # stale, pre-recovery F/H/… chunks in place: the 2026.11.0/11.1 PR builds
+          # logged `nz_nzta car: 17447 pairs` (only C and M recovered by
+          # pagination) against 24,566 locally on the same inputs, and reported
+          # ~14 NZ-only ids as "vanishing" (data#389, #390, #392 — verified false
+          # locally each time). A new key prefix starts one clean lineage; the
+          # geo-gated files come back from the ci-cache-seed release below.
+          # Durable fix (pipeline follow-up): scope the NZ chunk cache name by the
+          # snapshot service so a rotation can never reuse old chunks.
+          key: source-cache-v2-${{ github.run_id }}
+          restore-keys: source-cache-v2-
           # save-always: actions/cache skips its post-job SAVE step when the job
           # FAILED. Measured consequence during the 2026-07-12→25 outage: the
           # repo held exactly ONE cache entry (source-cache-28779105628,
