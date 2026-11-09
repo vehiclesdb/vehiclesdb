@@ -2,6 +2,90 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.1] - 2026-11-09 — the completeness release: passenger van variants, attested admission, Spain to 96.5%
+
+**15,635 models across 953 makes in 18 countries (15,629 → 15,635; 37 added, 31 retired, every retirement with a migration path).**
+
+Frozen correctness release on the same register snapshots as 2026.11.0: fi 2026-09-30, es 2026-07…09, de 2026-01…10, uk 2026-Q2, nz MVR_Mar26. The diff is attributable to curation and pipeline changes alone, and a control build of 2026.11.0's code and data on the same inputs reproduces 2026.11.0 exactly. `validate: ALL GATES GREEN`; licence pins **17/17**.
+
+**Spain.** New M1 registrations (Jul–Sep 2026, 323,685) that land on a published car record:
+- **90.17% → 96.54%** (+20,624);
+- measured by replaying every DGT car-kind row through the real normalizer;
+- models with Spanish evidence: 2,744 → 2,770 (car 1,275 → 1,301).
+
+| kind | 2026.11.0 | 2026.11.1 | Δ |
+|---|---:|---:|---:|
+| car | 5,877 | 5,888 | +11 |
+| motorcycle | 6,149 | 6,142 | −7 |
+| moped | 1,430 | 1,429 | −1 |
+| van | 769 | 772 | +3 |
+| truck | 988 | 989 | +1 |
+| bus | 416 | 415 | −1 |
+
+The car count rises by only 11 because the 34 car records added are offset by 23 junk/misspelt car ids folded away. The motorcycle/moped/bus drops are typo twins and one bus minority folded into their real records; every retired id is aliased.
+
+### Passenger versions of van-based MPVs now publish in kind `car` (data#389, pipeline#272)
+
+**The gap.** A Berlingo, a Caddy Life, a Rifter or a Tourneo bought as a family car is registered M1, but it was findable only under `van`. In Spain it was findable nowhere: the ES van build ingests N1 only, so Spain's M1 rows reached no kind at all (Tourneo Courier/Custom/Connect: 1,388 M1 in 3 months).
+
+**The mechanism.**
+- `overrides/models/passenger_variants.yml` lifts single drop patterns per make, each with a closed list of names the lifted rows may publish as.
+- A build-time evidence gate decides publication: ≥ 100 vehicles and ≥ 25% car share in one M1/N1 split register (es, fi, gb, lu, nl). Owner ruling: threshold kept.
+- Outcome: 22 records publish, 11 are pruned.
+- Conversion bases stay out (Sprinter, Ducato, Master, big Transit …).
+- Van ids are untouched.
+
+**New car records (22):**
+- car/citroen/berlingo, car/citroen/e-berlingo
+- car/dacia/dokker, car/dacia/lodgy
+- car/fiat/doblo
+- car/ford/tourneo-courier, car/ford/tourneo-custom, car/ford/tourneo-connect, car/ford/transit-custom
+- car/mercedes-benz/vito, car/mercedes-benz/viano, car/mercedes-benz/citan
+- car/nissan/townstar
+- car/opel/combo
+- car/peugeot/rifter, car/peugeot/e-rifter, car/peugeot/partner
+- car/renault/kangoo
+- car/toyota/proace, car/toyota/proace-city
+- car/volkswagen/caddy
+
+**Germany.** KBA FZ 10.1 is an all-M1 table, so it now routes those 11 nameplates' rows to the car twin (`de` moves from van to car).
+
+### Attested admission, a new general mechanism (data#389, pipeline#272)
+- **What it does:** `overrides/models/attested.yml` publishes a real nameplate that the per-kind floor holds back.
+- **What an entry needs:** at least one minting register vehicle, plus a tier-1 (manufacturer) or tier-2 (trade/official) source.
+- **Guarantees:** it never mints without register evidence, and the build fails on an entry no register row reaches.
+- **First 12 entries:**
+  - car/ebro/s800, car/ebro/s900 (Spain-only brand);
+  - eight pre-war Alfa Romeo 6C/8C (car/alfa-romeo/6c-1500, 6c-1750, 6c-2300b, 6c-2500, 8c-2300, 8c-2600, 8c-2900b, 8c-monza; Museo Alfa Romeo);
+  - van/kia/k2700, van/kia/k2900.
+
+### Spain coverage curation (data#389)
+- **VW Multivan:** car/volkswagen/multivan and van/volkswagen/multivan. A kind-blind `Multivan: null` had removed it from every kind (812 ES M1 in 3 months).
+- **GWM Ora 5:** car/great-wall/ora-5 (es, de, ar, il converge).
+- **Spanish 22-character truncated trim strings** now fold onto their nameplates: Opel Frontera, ë-C3, ë-C3 Aircross, e-2008, e-208, e-5008, 2008, 208, C3, C3 Aircross, Rifter, Combo, Berlingo, plus 51 "Nuevo/New …" filler spellings.
+- **Mercedes "CLASE X":** DGT's Spanish class-first spellings ("CLASE V/GLC/C …") now resolve to the real class. The junk car/mercedes-benz/clase record (≈15 models pooled together) is retired via removals.yml.
+
+### Retired ids, all aliased unless noted
+- **ES junk/truncation stubs:**
+  - car/citroen/nuevo-c3-aircross-hybr → c3-aircross
+  - car/citroen/berlingoatalla-m-blueh → berlingo
+  - car/citroen/c → 5-cv (the 1920s Type C)
+  - car/citroen/c-3 → c3
+  - car/volkswagen/t4-multivan → multivan
+  - bus/ford/tourneo → car/ford/tourneo
+  - car/mercedes-benz/clase (manifested, no single successor)
+- **24 typo twins**, each source re-verified (e.g. Quashqai → Qashqai, Bonnevile → Bonneville, Intercepter → Interceptor, Ligth Bee → Light Bee).
+
+### Trucks
+- **New record:** truck/leyland-daf/65. The UK DfT FA pool now declares 60/65; 65 = 159 HGVs.
+- **Fixes:**
+  - "220 Se Automatic" → 220 SE;
+  - "1841LS" → Actros;
+  - BMW bare "CE" → null.
+- **Moves and repoints:**
+  - Jeep CJ-3B → Willys CJ-3B;
+  - Sherco 500 SEF-R → the published sherco/500.
+
 ## [2026.11.0] - 2026-11-09 — the resolution release: curated `forms`, one contract for every surface, fresh registers
 
 **15,629 models across 953 makes in 18 countries (15,068 → 15,629, +561).** November refresh from freshly fetched registers (fi snapshot 2026-09-30, de flow 2025-11…2026-10, es through 2026-09, uk 2026-Q2) plus the dogfooding work below; hand-cut locally (`validate: ALL GATES GREEN`, licence pins **17/17** verified; GitHub's scheduled publish is not relied on this month). 13 ids retired, **every one with a migration path** (former_ids alias or removals manifest).
