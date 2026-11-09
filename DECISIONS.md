@@ -177,7 +177,7 @@ fails the build if an identifier-shaped field name reaches source code. Only
 aggregated taxonomy + derived signals ship. Published data is anonymous
 aggregate statistics under GDPR (C-319/22, WP29 Opinion 05/2014, Recital 26).
 
-**Germany N1 (KBA FZ 2.8 / FZ 4.8) is ATTACH-ONLY and PRESENCE-ONLY** (source
+**Germany N1 (KBA FZ 2.8 / FZ 4.8; later FZ 2.2 and the bus column) is ATTACH-ONLY and PRESENCE-ONLY** (source
 `de_kba_nfz`, 2026-11). Until then Germany's only source was FZ 10, a
 passenger-car (EU M1) table, so a van record carried `de` only when its
 nameplate also had an M1 version: Citroën Jumper, Peugeot Partner, Toyota Hilux,
@@ -225,6 +225,25 @@ first name). The kind is `van` unless the nameplate is routed to `truck` by name
 (Actros, Atego, TGL…): the Lkw tables are N1+N2+N3 with no class column, and the
 heavy-kind series fold is too coarse to offer every van name to the truck kind
 ("Transit Custom" would land on truck `ford/transit`).
+
+*Extended the same day (coordinator ruling, owner completeness directive) to
+buses and the car fleet*, same adapter, same pin, same two properties:
+- **FZ 2.8 column *Kraftomnibusse*** → bus kind. EvoBus / Daimler Buses build
+  Setra and Mercedes-Benz on one holder; Setra is the holder default and the
+  Mercedes names (Citaro, Tourismo, Intouro, Travego) are routed by name.
+- **FZ 2.2 *Bestand an Personenkraftwagen*** (stock at 1 January) → car kind.
+  FZ 10 only sees cars first registered in the last twelve months, so a
+  Mercedes 280 SL, a Saab 9-3 or a Fiat Punto on German roads had no `de`.
+  Motorhomes are M1 Pkw too (1,046,383 of 49.5M), so the motorhome column is
+  subtracted, and a trade name that is ≥50% motorhomes is dropped whole (camper
+  bases and their body names are not cars on German roads).
+- FZ 2.2 holders build several marques far more often than the Lkw holders, so
+  the map adds three small tiers: `name_marques` (a leading marque word wins —
+  "ALFA GIULIETTA" under FCA Italy), `marque_by_name` (a nameplate word unique
+  to one marque — MINI's Cooper/One on the BMW holder), and `ignore_names`
+  (trims, body words and the four high-volume alternate-market badges —
+  Kauai, Morning, Sedona, Montero; the general "keep shared cells" ruling
+  stands for the rest).
 
 ## Popularity & availability
 

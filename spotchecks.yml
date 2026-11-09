@@ -1000,3 +1000,13 @@ checks:
     kind: truck
     availability_includes: [de]
     reason: "by_model routes ATEGO to the truck kind ('DAIMLER (D) | Atego', 5,757 Lkw); without the route the name is only offered to van, where no record exists."
+  - id: mercedes-benz/citaro
+    kind: bus
+    availability_includes: [de]
+    reason: "FZ 2.8 Kraftomnibusse ('EVOBUS | Citaro…', 8,162 buses) routed to Mercedes-Benz by marque_by_name. If de vanishes, the bus column or the name tier broke."
+  - id: alfa-romeo/giulietta
+    availability_includes: [de]
+    reason: "FZ 2.2 Pkw fleet: 'FCA (I) | ALFA GIULIETTA' (17,474) resolves through name_marques ALFA. Tripwire for the leading-marque tier."
+  - id: bmw/cooper
+    availability_excludes: [de]
+    reason: "FZ 2.2 lists MINI's Cooper under the BMW holder; marque_by_name sends it to mini/cooper. If de appears on bmw/cooper the name tier stopped winning over the holder default."

@@ -56,8 +56,7 @@ hersteller:
   TOYOTA (J): Toyota                    # Toyota Motor Corporation (only a SONSTIGE row today)
   NISSAN AUTOMOTIVE (F): Nissan         # rows: TOWNSTAR, PRIMASTAR, INTERSTAR, NISSAN NAVARA; https://www.nissan.de/fahrzeuge/neuwagen.html
   FCA (I): Fiat                         # rows: FIAT DUCATO, TALENTO, FIAT FIORINO, Fiat Fullback — FCA Italy is Fiat Professional's approval holder; https://www.fiatprofessional.com/de
-  STELLANTIS (I): Fiat                  # row: FIAT DUCATO (Ducato approvals moved from FCA Italy to Stellantis Italy); https://www.fiatprofessional.com/de/ducato
-  FCA (USA): Jeep                       # row: GLADIATOR — the Jeep Gladiator pickup; https://www.jeep.de/gladiator
+  FCA (USA): ~                          # Jeep, Chrysler and Dodge on one holder (FZ 2.2: RENEGADE, 300C, Nitro…) — names resolve via marque_by_name / name_marques only
   STELLANTIS (F): ~                     # PSA-side approvals shared by Citroën, Fiat, Opel, Peugeot (Doblo,Partner,Rifter,Berlingo) — only by_trade_name may resolve these
   MAN TRUCK & BUS: MAN                  # rows: TGE, TGL, TGS, TGX — MAN Truck & Bus SE; https://www.mantruckandbus.com/de/
   SAIC MAXUS (RC): Maxus                # rows: DELIVER 9, eDELIVER 3, T90 EV — sold as MAXUS; https://www.maxus.de/
@@ -69,6 +68,141 @@ hersteller:
   EVUM MOTORS: EVUM                     # rows: aCar, aCar XL — EVUM Motors GmbH, Munich; https://evum-motors.com/
   HAKO: Multicar                        # rows: MULTICAR M2510, M 25, FUMO — Hako GmbH builds the Multicar range; https://www.multicar.de/
   SONSTIGE HERSTELLER: ~                # "other manufacturers" bucket — not a marque
+  # ── Bus holders (FZ 2.8 column Kraftomnibusse). EvoBus / Daimler Buses build BOTH
+  # Setra (S 4xx/5xx) and Mercedes-Benz (Citaro, Tourismo, Intouro, Travego) — Setra is
+  # the default, the Mercedes names are routed by marque_by_name. https://www.daimlertruck.com/en/brands/daimler-buses
+  EVOBUS: Setra                         # EvoBus GmbH (Daimler Buses' legal entity until 2023)
+  DAIMLER BUSES: Setra                  # Daimler Buses GmbH (renamed EvoBus); same split
+  # ── Pkw holders (FZ 2.2 car fleet) whose name is not the marque.
+  MERCEDES-BENZ (E): Mercedes-Benz      # Vitoria plant: VITO / V 220 CDI rows
+  AMPERE (F): Renault                   # Renault's EV company: RENAULT 5/4 E-TECH (the Alpine A290 row stays unresolved under Renault); https://www.renaultgroup.com/en/ampere/
+  KIA MOTORS (ROK): Kia                 # Kia Corporation
+  KIA MOTORS (SK): Kia                  # Kia Slovakia (Žilina): cee'd, Sportage
+  HONDA MOTOR (J): Honda                # Honda Motor Co.
+  HYUNDAI MOTOR (CZ): Hyundai           # Hyundai Nošovice (i30, Kona)
+  HYUNDAI MOTOR (IND): Hyundai          # Hyundai India (i10, i20)
+  HYUNDAI (TR): Hyundai                 # Hyundai Assan (i10, i20)
+  MAGYAR SUZUKI (H): Suzuki             # Esztergom plant (Swift, Vitara, SX4 S-Cross)
+  MARUTI (IND): Suzuki                  # Maruti Suzuki India (Alto, Baleno)
+  SANTANA (E): Suzuki                   # Santana Motor built Suzuki SJ/Samurai/Jimny/Vitara under licence; names say SUZUKI; https://en.wikipedia.org/wiki/Santana_Motor
+  SAIC (RC): MG                         # SAIC Motor's European brand (MG4, MG ZS, MG HS…); https://www.mgmotor.de/
+  SACHSENRING: Trabant                  # VEB Sachsenring Zwickau built the Trabant; https://de.wikipedia.org/wiki/Trabant_(Pkw)
+  AUTOMOB-EISENACH-AWE: Wartburg        # Automobilwerk Eisenach built the Wartburg; https://de.wikipedia.org/wiki/Automobilwerk_Eisenach
+  VAZ-LADA (RUS): Lada                  # AvtoVAZ
+  GREAT WALL MOTOR (RC): Great Wall     # ORA / WEY names are routed by name_marques
+  SAAB, -SCANIA (S): Saab               # Saab-Scania AB (Saab cars to 1990)
+  ALPINA: Alpina                        # names read "BMW ALPINA B3…"; name_marques strips "BMW ALPINA"
+  NETHERLANDS CAR (NL): ~               # NedCar Born: Mitsubishi and Volvo on one holder; names carry the marque
+  MG ROVER (UK): ~                      # MG, Rover, Mini, Land Rover, Jaguar, Triumph on one historic holder; names carry the marque or resolve nowhere
+  GENERAL MOTORS (E): ~                 # GM España (Opel Corsa trims "LS,GL,SWING") — trim words, not names
+  GENERAL MOTORS (USA): ~               # Chevrolet + Cadillac + Hummer; marque_by_name routes Corvette/Camaro/Escalade/XT4…
+  STELLANTIS (I): ~                     # Fiat, Jeep, Alfa Romeo, Abarth plus motorhome bodies (FZ 2.2); its Lkw row "FIAT DUCATO" resolves through name_marques FIAT
+  CHRYSLER (CDN): ~                     # Chrysler / Dodge minivans; prefixed names only
+
+# A name that STARTS with one of these words takes that marque (the word is stripped):
+# "FCA (I) | ALFA GIULIETTA" → Alfa Romeo / Giulietta. Longest match first.
+name_marques:
+  ALFA ROMEO: Alfa Romeo     # FZ 2.2 "ALFA ROMEO JUNIOR" (STELLANTIS (I))
+  ALFA: Alfa Romeo           # FZ 2.2 "ALFA GIULIETTA", "ALFA MITO" (FCA (I))
+  ABARTH: Abarth             # "ABARTH 500" (FCA (I), STELLANTIS (I))
+  FIAT: Fiat                 # "FIAT 500" under FCA/Stellantis Italy
+  JEEP: Jeep                 # "Jeep Compass" (FCA (USA))
+  LEXUS: Lexus               # "LEXUS NX350H" (TOYOTA (J))
+  TOYOTA: Toyota             # "TOYOTA HILUX" under TOYOTA EUROPE (B)
+  MITSUBISHI: Mitsubishi     # "MITSUBISHI SPACE STAR" (NETHERLANDS CAR (NL)), "Mitsubishi L200"
+  VOLVO: Volvo               # "VOLVO 480" (NETHERLANDS CAR (NL))
+  ROVER: Rover               # "ROVER 75" (MG ROVER (UK))
+  MG: MG                     # "MG TF", "MG ZS" (MG ROVER, SAIC)
+  JAGUAR: Jaguar             # "JAGUAR XJ6C" (MG ROVER (UK))
+  SUZUKI: Suzuki             # "SUZUKI SAMURAI" (SANTANA (E))
+  RENAULT: Renault           # "RENAULT 5 E-TECH ELECTRIC" (AMPERE (F))
+  NISSAN: Nissan             # "NISSAN NAVARA" under NISSAN (CH)
+  CITROEN: Citroen           # "CITROEN JUMPER"
+  PEUGEOT: Peugeot           # "PEUGEOT BOXER"
+  CHEVROLET: Chevrolet       # "CHEVROLET TAHOE 4 DR" (GENERAL MOTORS (USA))
+  BMW ALPINA: Alpina         # "BMW ALPINA B3 BITURBO" (ALPINA) — must beat a bare "BMW"
+  CUPRA: Cupra               # "CUPRA FORMENTOR" (SEAT (E))
+  ORA: Ora                   # "ORA 03" (GREAT WALL MOTOR (RC))
+  WEY: Wey                   # "WEY 05" (GREAT WALL MOTOR (RC))
+  TRABANT: Trabant           # "TRABANT P 601" (SACHSENRING)
+  WARTBURG: Wartburg         # "WARTBURG 1.3" (AUTOMOB-EISENACH-AWE)
+  LANCIA: Lancia             # "LANCIA MUSA", "LANCIA YPSILON" (FCA (I))
+  MINI: MINI                 # "MINI COOPER", "MINI ONE" (BMW holder)
+
+# A nameplate word unique to ONE marque although its holder builds several; the name is
+# kept whole. Keyed on the name's first word.
+marque_by_name:
+  CITARO: Mercedes-Benz      # EvoBus/Daimler Buses city bus; https://www.mercedes-benz-bus.com/de_DE/models/citaro.html
+  ECITARO: Mercedes-Benz     # battery-electric Citaro
+  TOURISMO: Mercedes-Benz    # Mercedes-Benz coach
+  INTOURO: Mercedes-Benz     # Mercedes-Benz intercity bus
+  TRAVEGO: Mercedes-Benz     # Mercedes-Benz coach (to 2017)
+  CONECTO: Mercedes-Benz     # Mercedes-Benz city bus (Türk)
+  GLADIATOR: Jeep            # FCA (USA) pickup (FZ 2.8 Lkw); https://www.jeep.de/gladiator
+  RENEGADE: Jeep             # FCA (USA) / FCA (I) Melfi
+  COMPASS: Jeep              # FCA (USA) / FCA (I)
+  AVENGER: Jeep              # STELLANTIS (I) Tychy
+  WRANGLER: Jeep             # FCA (USA)
+  CHEROKEE: Jeep             # FCA (USA)
+  COMMANDER: Jeep            # FCA (USA)
+  PATRIOT: Jeep              # FCA (USA)
+  STELVIO: Alfa Romeo        # FCA (I) Cassino
+  GIULIA: Alfa Romeo         # FCA (I) Cassino
+  GIULIETTA: Alfa Romeo      # FCA (I)
+  TONALE: Alfa Romeo         # FCA (I)
+  300C: Chrysler             # FCA (USA)
+  SEBRING: Chrysler          # FCA (USA)
+  CROSSFIRE: Chrysler        # FCA (USA)
+  NITRO: Dodge               # FCA (USA)
+  JOURNEY: Dodge             # FCA (USA)
+  CORVETTE: Chevrolet        # GENERAL MOTORS (USA)
+  CAMARO: Chevrolet          # GENERAL MOTORS (USA)
+  ESCALADE: Cadillac         # GENERAL MOTORS (USA)
+  XT4: Cadillac              # GENERAL MOTORS (USA)
+  XT5: Cadillac              # GENERAL MOTORS (USA)
+  LYRIQ: Cadillac            # GENERAL MOTORS (USA)
+  F-PACE: Jaguar             # JAGUAR LAND ROVER (UK) builds both marques
+  E-PACE: Jaguar             # same
+  I-PACE: Jaguar             # same
+  F-TYPE: Jaguar             # same
+  XE: Jaguar                 # same
+  XF: Jaguar                 # same
+  XJ: Jaguar                 # same
+  XK: Jaguar                 # same
+  X-TYPE: Jaguar             # same
+  S-TYPE: Jaguar             # same
+  COOPER: MINI               # FZ 2.2 "BMW | Cooper", "Cooper S" — MINI models on the BMW holder; without this they land on bmw/cooper; https://www.mini.de/
+  ONE: MINI                  # "BMW | One" (MINI One)
+  CLUBMAN: MINI              # "BMW | Clubman Cooper"
+  COUNTRYMAN: MINI           # MINI Countryman
+  PACEMAN: MINI              # MINI Paceman
+  JOHN: MINI                 # "BMW | John Cooper Works" (MINI JCW)
+  POLESTAR: Polestar         # "VOLVO (S) | Polestar 2" — Polestar is its own marque since 2017; https://www.polestar.com/de/
+
+# Whole names (upcased) KBA lists in a trade-name cell that are trims or body words,
+# not nameplates. Exact match after the cell is split.
+ignore_names:
+  - SEL                      # "300 SE,SEL" — Mercedes long-wheelbase trim
+  - SEC                      # Mercedes coupé trim
+  - CITY                     # "CITY,ECO,SWING,GLS,JOY" — Opel Corsa trim list
+  - ECO                      # same
+  - SWING                    # same
+  - JOY                      # same
+  - GLS                      # trim
+  - GL                       # trim
+  - LS                       # trim
+  - XL                       # "TAUNUS 1,3 L,XL" — trim
+  - KOMPRESSOR                # "E 200,KOMPRESSOR" — engine word
+  - PKW                      # "HOCHRAUMKOMBI;PKW KOMBI" — body word
+  - PKW KOMBI                # same
+  - ELECTRIC DRIVE           # "DAIMLER (D) | electric drive" — the smart fortwo ed, not a Mercedes model
+  - MINI                     # "BMW | One,MINI" — the bare marque word, not a model (MINI models resolve via marque_by_name)
+  # Alternate-MARKET names listed beside the German one in the same cell (coordinator
+  # ruling keeps shared cells in general; these are foreign badges with their own record):
+  - KAUAI                    # "Kona, Kauai" — Kona's name in Portugal; https://en.wikipedia.org/wiki/Hyundai_Kona
+  - MORNING                  # "Picanto, Morning" — Picanto's Korean name; https://en.wikipedia.org/wiki/Kia_Picanto
+  - SEDONA                   # "Carnival,Sedona" — Carnival's North American name; https://en.wikipedia.org/wiki/Kia_Carnival
+  - MONTERO                  # "Pajero/Montero" — Pajero's Spanish/American name; https://en.wikipedia.org/wiki/Mitsubishi_Pajero
 
 by_trade_name:
   # ── Stellantis K0 mid-size twins under PEUGEOT's approval: Fiat Scudo, Opel
@@ -116,6 +250,10 @@ by_trade_name:
   "KGM (ROK) | KG Mobility MUSSO EV": ["KGM | Musso EV"]                                      # battery-electric Musso; https://www.kgm-mobility.de/musso-ev
   "MAN TRUCK & BUS | LE 6.,8.,9.,10.,11.,12.,1": ["MAN | LE"]                                 # MAN L2000 "LE" light-truck range (LE 8.180…); the truck catalog files it as man/le; https://de.wikipedia.org/wiki/MAN_L2000
   "MAN TRUCK & BUS | LE 110,140,160,170,180,22": ["MAN | LE"]                                 # same range, older numbering
+  "DAIMLER (D) | Mercedes-AMG GT,AMG GT": ["Mercedes-Benz | AMG GT"]         # tier 3 would land on mercedes-benz/mercedes (FZ 2.2)
+  # ── Motorhome-body names on FCA's Ducato approvals that survive the motorhome filter as residue.
+  "FCA (I) | Twin;Sport;Compact;...": []                                     # camper body names (Adria/Rimor ranges), not Fiat cars
+  "FCA (I) | Sport,Coral,Matrix, Lido": []                                   # same
   # ── Type-approval CODES, not names: "MKD**" is a multi-stage/incomplete-vehicle family code
   # shared by several holders. Deliberately unresolved — guessing a nameplate is worse than none.
   "DAIMLER (D) | MKD-L-I/E/C/N/U": []                          # approval code, no nameplate

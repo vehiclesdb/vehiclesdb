@@ -18,7 +18,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `lu_snca` | 🇱🇺 LU | Registered-vehicle inventory (XML via CKAN) | [CC0](https://data.public.lu/) | monthly | ✓ fleet |
 | `ie_cso` | 🇮🇪 IE | New private car registrations by make/model (PxStat) | [CC-BY 4.0](https://www.cso.ie/en/aboutus/lgdp/csodatapolicies/dataforresearchers/rdmpolicy/) | monthly | ✓ new reg. |
 | `de_kba_fz10` | 🇩🇪 DE | New car registrations by make + model series (FZ 10) | [DL-DE/BY-2.0](https://www.govdata.de/dl-de/by-2-0) | monthly | ✓ new reg. |
-| `de_kba_nfz` | 🇩🇪 DE | Lkw (N1+N2+N3) by type-approval holder + trade name — stock FZ 2.8 and new registrations FZ 4.8 | [DL-DE/BY-2.0](https://www.govdata.de/dl-de/by-2-0) | yearly (FZ 2.8 stock at 1 Jan, published ~July; FZ 4.8 year, ~February) | presence only — **attach-only; count nil** (`de` counts stay FZ 10's) |
+| `de_kba_nfz` | 🇩🇪 DE | Vehicles by type-approval holder + trade name: Lkw stock + buses (FZ 2.8), Pkw stock minus motorhomes (FZ 2.2), Lkw new registrations (FZ 4.8) | [DL-DE/BY-2.0](https://www.govdata.de/dl-de/by-2-0) | yearly (FZ 2.8 stock at 1 Jan, published ~July; FZ 4.8 year, ~February) | presence only — **attach-only; count nil** (`de` counts stay FZ 10's) |
 | `us_fueleconomy` | 🇺🇸 US | EPA fuel-economy vehicle catalog, MY1984→ | [US Gov public domain](https://www.fueleconomy.gov/feg/download.shtml) | ~monthly | — approval |
 | `ca_nrcan` | 🇨🇦 CA | NRCan fuel-consumption ratings catalog (incl. EV files) | [OGL-Canada 2.0](https://open.canada.ca/en/open-government-licence-canada) | yearly+ | — approval |
 | `nz_nzta` | 🇳🇿 NZ | Motor Vehicle Register fleet (ArcGIS aggregates) | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | monthly | ✓ fleet |
@@ -342,7 +342,12 @@ propulsion coverage would require RDW to publish a combined view.
   (§39 StVG); FZ 10 is the open model-level signal and is already
   series-normalized by KBA. The site answers missing months with HTTP 200 +
   an HTML 404 page — the pipeline verifies zip magic and walks back a month.
-- **de_kba_nfz** — KBA's only model-level Lkw tables, both annual:
+- **de_kba_nfz** — also reads FZ 2.8's *Kraftomnibusse* column (bus kind) and
+  [FZ 2.2](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html)
+  (Pkw stock at 1 January, column *Insgesamt* minus *Wohnmobile*; car kind). FZ 2.2
+  splits each TSN into kW/fuel/body sub-rows and merges the TSN cell too, so a row
+  with B, C and D all empty but a count is a real row — 30 of them in the 2026
+  file, found by the conservation check. KBA's only model-level Lkw tables, both annual:
   [FZ 2.8](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html)
   (stock at 1 January, column *Lastkraftwagen*) and
   [FZ 4.8](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz4_n_uebersicht.html)
