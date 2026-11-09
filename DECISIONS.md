@@ -126,6 +126,30 @@ carry `de` from that table. That is an availability MOVE under the rule below
 — the evidence lands on the car twin, asserted by `spotchecks.yml`
 (`opel/combo` kind car `de`).
 
+**Owner rulings on the passenger gate (2026-11-09).**
+- **Threshold kept at ≥ 100 vehicles / ≥ 25% car share** in one of es, fi, gb, lu and nl. The owner accepted the threshold that best fits the production data: it admits every factory passenger version measured (Proace City passes at es 25.6%) and keeps out the commercial-first nameplates whose passenger twin already has its own name (Jumpy/SpaceTourer, Expert/Traveller, Vivaro/Zafira Life). Stock registers vote alongside flow (Doblo gb 26.7%, Dokker nl 31.3%, Partner fi 42.8%).
+- **Transit Custom publishes in kind car.** Its M1 Kombi is a factory 9-seat passenger vehicle (es 39% M1). Germany's "TRANSIT CUSTOM" FZ 10.1 row, which KBA also uses for the Tourneo Custom, routes there too.
+
+**Attested admission: a source-backed entry can publish a real nameplate below the floor (owner ruling 2026-11-09).**
+
+*Why.* The publication rule (≥ 2 minting sources, or one source above the per-kind floor: car 1,000, van/motorcycle/moped 300, truck 150, bus 50) keeps register noise out. It also keeps out real nameplates that the evidence simply cannot carry:
+- a single-market brand. Ebro S800 and S900 have 666 and 504 Spanish M1 registrations in the 3-month DGT window, and only DGT carries Ebro;
+- a car of which only a handful survive. The Alfa Romeo 8C 2300 has 5 in the Dutch register.
+
+Both kinds of record are true, both are useful to a consumer resolving what is on the road, and neither will ever clear the floor.
+
+*Mechanism.* `overrides/models/attested.yml`, keyed kind → canonical make → published nameplate → source URL:
+- **Every entry needs both:**
+  - at least one MINTING register vehicle, named in the comment. Attach-only rows (au, ch, il, no) cannot attest, the same rule as minting;
+  - a tier-1 (manufacturer, including its heritage site) or tier-2 (trade press, auction house, official body) source, with the tier and access date in the same-line comment. Wikipedia (tier 3) cannot attest.
+- **It never conjures a record.** The pipeline (`Reconciler#attested?`) admits the id only when a register row reaches it through the normal classify path, so drop/kind rules still apply.
+- **It never revives an id curation retired.** A `former_ids` alias source stays dead.
+- **An inert entry fails the build** (validate gate `attested`). `scripts/lint_overrides.rb` checks the shape, the URL, the tier, the date and the register citation. With `VDB_BUILD_DIR` set, it also checks that each target exists in that build.
+- **It is general:** any kind, any market.
+- **First users:** Ebro S800 / S900, the nine pre-war Alfa Romeo 6C/8C nameplates on the Dutch register, and Kia K2700 / K2900 (kind van; nl rows, with the AU fleet attached).
+
+*Why the floor is not simply lowered:* it is the only thing between the catalog and tens of thousands of register spellings. Each attestation is reviewed, cited and grounded in a register; a lower floor is none of those.
+
 ## Sources & evidence
 
 **A model is published when ≥2 independent sources agree, or when a single

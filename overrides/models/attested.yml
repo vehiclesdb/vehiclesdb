@@ -1,0 +1,44 @@
+# attested.yml — ATTESTED ADMISSION (owner ruling 2026-11-09; DECISIONS.md
+# "Attested admission").
+#
+# A real nameplate that the register evidence cannot carry over the publication
+# floor (car 1,000 single-source, van/motorcycle/moped 300, truck 150, bus 50)
+# publishes when BOTH hold:
+#   1. at least one MINTING register vehicle reaches it through the normal
+#      classify path (attach-only au/ch/il/no rows do not count) — name it in
+#      the comment as `<source> <count>`;
+#   2. a tier-1 (manufacturer, incl. its heritage site/museum) or tier-2 (trade
+#      press, auction house, official body) source names the model. Wikipedia
+#      is tier 3 and cannot attest.
+# The build FAILS (validate gate `attested`) on an entry no minting register
+# row reaches; scripts/lint_overrides.rb checks the shape below. An entry never
+# mints a record, never revives a former_ids alias source, and never bypasses
+# drop/kind rules.
+#
+# SHAPE (append freely; keep makes alphabetical inside a kind):
+#   <kind>:
+#     <canonical make, as renames.yml spells the block>:
+#       <published nameplate>: <source URL>  # <source> <n> …; <what the page says>; (accessed YYYY-MM-DD) [tier 1|2]
+#
+# Not attested yet (no tier-1/2 source found, 2026-11-09): Alfa Romeo 8C 2900A
+# (nl_rdw 1, "ALFA 8C 2900A BOTTICELLA") — only book titles and a private
+# museum name it.
+
+car:
+  Alfa Romeo:
+    6C 1500: https://www.museoalfaromeo.com/it-it/collezione/Pages/6C-1500-Super-Sport.aspx  # nl_rdw 2 ("6 C 1500", "6C 1500 SS"); Museo Alfa Romeo collection: "6C 1500 SS, 1928-1929" (accessed 2026-11-09) [tier 1]
+    6C 1750: https://www.museoalfaromeo.com/it-it/collezione/Pages/6C-1750-Gran-Sport.aspx  # nl_rdw 8 (Gran Sport, Gran Turismo Compressore, GT Zagato Spider, Super Sport …); museum page "6C 1750 Gran Sport" (accessed 2026-11-09) [tier 1]
+    6C 2300B: https://www.museoalfaromeo.com/it-it/collezione/Pages/6C-2300-B-Mille-Miglia.aspx  # nl_rdw 1 ("6C 2300B TURISMO BERLINA"); museum page "6C 2300 B Mille Miglia" (accessed 2026-11-09) [tier 1]
+    6C 2500: https://www.museoalfaromeo.com/it-it/collezione/Pages/6C-2500-Sport.aspx  # nl_rdw 32 (nine spellings incl. "6C2500S", "6 C 2500 SS"); museum page "6C 2500 Sport" (accessed 2026-11-09) [tier 1]
+    8C 2300: https://www.museoalfaromeo.com/it-it/collezione/Pages/8C-2300-Le-Mans.aspx  # nl_rdw 5 ("8C 2300", "8C 2300 SPIDER", "8C-2300 SPYDER LUNGO LE MANS", + renames.yml "8 C 2300 Supercharged Le Mans"); museum page "8C 2300 Le Mans" (accessed 2026-11-09) [tier 1]
+    8C 2600: https://cars.bonhams.com/auction/28011/lot/25/1933-alfa-romeo-8c-2600-monza-two-seater-special-engine-no-2211083/  # nl_rdw 1 ("8C 2600 MULETTO"); Bonhams lot "1933 Alfa Romeo 8C 2600 'Monza' Two Seater Special … bored out to 1934 Monza, 2.6 liter specifications" — the 2.6-litre 8C designation is named; this lot is a special built to it (accessed 2026-11-09) [tier 2]
+    8C 2900B: https://www.museoalfaromeo.com/it-it/collezione/Pages/8C-2900-B-Speciale-Tipo-Le-Mans.aspx  # nl_rdw 2 ("8C 2900B LUNGO", "8C 2900B SPIDER AERODINAMICO SPERIMENTALE"); museum page "8C 2900 B Speciale Tipo Le Mans" (accessed 2026-11-09) [tier 1]
+    8C Monza: https://www.museoalfaromeo.com/it-it/collezione/Pages/8C-2300-Monza.aspx  # nl_rdw 1 ("8C MONZA"); museum collection entry "Alfa 8C 2300 Monza" (accessed 2026-11-09) [tier 1]
+  EBRO:
+    S800: https://www.motor.es/ebro/s800/  # es_dgt 666 M1 Jul–Sep 2026 ("S800 PHEV" 621, "S800" 45), Ebro is Spain-only so no second register exists; Motor.es "EBRO S800 PHEV, el SUV de siete plazas" (accessed 2026-11-09) [tier 2]
+    S900: https://es.motor1.com/news/777755/ebro-s900-4x4-425cv-autonomia/  # es_dgt 504 M1 Jul–Sep 2026 ("S900 PHEV"); Motor1 España "El s900 PHEV es el nuevo buque insignia de la marca española" (accessed 2026-11-09) [tier 2]
+
+van:
+  Kia:
+    K2700: https://goauto.com.au/amp/kia/new-kia-k2700-makes-its-mark/2005-05-11/19211.html  # nl_rdw 9 (K2700 7, "Driezijdige Kipper" 1, "Pick-Up Alu" 1; au_bitre 1,941 attaches but cannot attest); GoAuto "Kia maintains a winning small truck formula with its new K2700" (accessed 2026-11-09) [tier 2]
+    K2900: https://www.carsguide.com.au/car-reviews/kia-k2900-a-tempting-little-truck-9798  # nl_rdw 6 ("K2900CRDI" 2, "K2900 CRDI" 4; au_bitre 1,366 attaches); CarsGuide "the new Kia K2900 CRDi, which replaces the underpowered K2700" (accessed 2026-11-09) [tier 2]

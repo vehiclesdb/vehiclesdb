@@ -96,6 +96,12 @@ Body types are **kind-aware**: cars always carry them; two-wheelers only for
 `trike`; vans/trucks/buses don't yet (no honest vocabulary derivable from
 registers — absent, per the absence rule, until one exists).
 
+### How a record enters the catalog
+
+A model publishes when its register evidence corroborates it: ≥ 2 minting sources, or one source above the per-kind floor (car 1,000, van/motorcycle/moped 300, truck 150, bus 50). Publication hysteresis holds an existing id through ordinary churn.
+
+Since 2026-11-09 a curated **attested admission** (`overrides/models/attested.yml`) can also publish a real nameplate below that floor, for example a single-market brand or a rare classic. It needs at least one minting register vehicle and a tier-1/tier-2 source. Nothing in the record shape changes: an attested record carries exactly the availability and popularity its register rows give it. See DECISIONS.md.
+
 ### Availability
 
 ```json

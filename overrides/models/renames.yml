@@ -2402,6 +2402,19 @@ Chrysler:
   Limousine: null                         # body class in the model column: limousine — 6 v, nz_nzta MODEL ×5, nl_rdw handelsbenaming ×1, us_fueleconomy model ×0; raw "LIMOUSINE"×6 "Limousine"×0. Chrysler keeps 72 live records (airstream, alpine, aspen, avenger…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Citroën:
+  # ── ES "NUEVO/NEW" FILLER FOLDS (data/es-completeness, 2026-11-09; owner ruling "fold the remaining Nuevo …"). DGT
+  # MODELO_ITV often opens with "NUEVO"/"NUEVA"/"NEW" (+ the make again) before the nameplate and a 22-char-truncated
+  # trim. Derived mechanically from replay_country.rb probes: strip the filler, take the LONGEST token prefix that is a
+  # LIVE record of the same make, and accept only if every leftover token is a trim/body/powertrain word; an electric
+  # tail (Eléctrico/Elec/El) folds ONLY onto an electric nameplate (ë-C4, E-5008 …), never onto the ICE record. ──
+  "Nuevo C4X": "C4X"  # NUEVO-FILLER FOLD (block note above): 115 veh/2 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c4x) -> citroen/c4x; raw "NUEVO C4X HYBRID 145 Ë"
+  "Nuevo Ë-C4 Eléctrico 1": "ë-C4"  # NUEVO-FILLER FOLD (block note above): 77 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c4-electrico-1) -> citroen/e-c4; raw "NUEVO Ë-C4 ELÉCTRICO 1"
+  "Nuevo C5 Aircross Plug": "C5 Aircross"  # NUEVO-FILLER FOLD (block note above): 48 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c5-aircross-plug) -> citroen/c5-aircross; raw "NUEVO C5 AIRCROSS PLUG"
+  "New C5 Aircross Plug-I": "C5 Aircross"  # NUEVO-FILLER FOLD (block note above): 20 veh/1 rows (es, es_dgt 2026-07…09; was citroen/new-c5-aircross-plug-i) -> citroen/c5-aircross; raw "NEW C5 AIRCROSS PLUG-I"
+  "Nuevo Ë-C4 Eléctrico E": "ë-C4"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c4-electrico-e) -> citroen/e-c4; raw "NUEVO Ë-C4 ELÉCTRICO E"
+  "Nuevo C4 Gasolina 130": "C4"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c4-gasolina-130) -> citroen/c4; raw "NUEVO C4 GASOLINA 130"
+  "Nuevo Ë-C3 Aircross E": "E-C3 Aircross"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c3-aircross-e) -> citroen/e-c3-aircross; raw "NUEVO Ë-C3 AIRCROSS  E"
+  "Nuevo C-Elysée": "C-Elysee"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c-elysee) -> citroen/c-elysee; raw "NUEVO C-ELYSÉE BLUEHDI"
   # ── car/citroen/c and car/citroen/c-3 (data/es-completeness, 2026-11-09). Bare-letter / spaced-digit
   # stubs, NOT nameplates. Measured on nl_rdw personenauto_by_year (frozen 2026-11-09 cache): "C" = 5 vehicles
   # first registered 1920/1922/1924/1925 + "C 5 HP" 1926 (power strip leaves "C") — Citroën's Type C, the 5 CV
@@ -7178,6 +7191,7 @@ Mazda:
   "3 Select":                MAZDA3  # 9 veh (ua, ua_mvs) -> live mazda/mazda3; raw "3 SELECT"; https://www.cars.com/research/mazda-mazda3-2025/specs/459760/ (accessed 2026-10-03) [tier 2 trade press/archive; verified through the search index: "2025 Mazda Mazda3 2.5 S Select Sport" (Select = trim of the Mazda3)]
 
 Mercedes-Benz:
+  Clase: null   # bare "CLASE" (Spanish "class") with the designation missing: unidentifiable (NAMING §8.1). The class-first form "CLASE V/GLC/C…" is resolved by normalizer.rb#mercedes (pipeline#272); this null retires the residue so car/mercedes-benz/clase stays dead (removals.yml)
   "Acros": "Actros"  # TYPO TWIN of truck/mercedes-benz/actros: lu 'ACROS' 2; fi 'ACROS 5046 12809cm3' 1; es 'ACROS 2642 L' 1; the register itself attests the type numbers as Actros: nl_rdw bedrijfsauto 'ACTROS 5046 AK', fi_traficom 'ACTROS 2641/2646LS/2648LS' (frozen 2026-11-09 cache) [regulator] — https://en.wikipedia.org/wiki/Mercedes-Benz_Actros (accessed 2026-11-09); the misspelt form never published
   # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
   # + control-vs-treatment build). When the adapter removes the leading body
@@ -8626,6 +8640,21 @@ Omoda:
   E5: Omoda E5                            # nz_nzta writes the BEV bare as 'E5' under make OMODA (268 in nz_passenger-car-van_O.json); no other Omoda record in any kind uses 'E5', so this kind-blind key is safe. RULING 5 (ENR4, 2026-10-02): Omoda 5 / E5 are TWO nameplates — the BEV keeps its own record per the owner directive (no electric line folds into its ICE sibling) and the D-2/Opel-Electric precedent. NOTE "E5" is ALSO a different Chery car — ua_mvs "CHERY";"E5" (2012-14 petrol sedan) — so this key must never be copied into the Chery block nor paired with a Chery|E5 move.
 
 Opel:
+  # ── ES "NUEVO/NEW" FILLER FOLDS (data/es-completeness, 2026-11-09; owner ruling "fold the remaining Nuevo …"). DGT
+  # MODELO_ITV often opens with "NUEVO"/"NUEVA"/"NEW" (+ the make again) before the nameplate and a 22-char-truncated
+  # trim. Derived mechanically from replay_country.rb probes: strip the filler, take the LONGEST token prefix that is a
+  # LIVE record of the same make, and accept only if every leftover token is a trim/body/powertrain word; an electric
+  # tail (Eléctrico/Elec/El) folds ONLY onto an electric nameplate (ë-C4, E-5008 …), never onto the ICE record. ──
+  "Nuevo Grandland GS 1.2": "Grandland"  # NUEVO-FILLER FOLD (block note above): 153 veh/1 rows (es, es_dgt 2026-07…09; was DROPPED) -> opel/grandland; raw "NUEVO GRANDLAND GS 1.2"
+  "Nuevo Grandland Ultima": "Grandland"  # NUEVO-FILLER FOLD (block note above): 26 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-grandland-ultima) -> opel/grandland; raw "NUEVO GRANDLAND ULTIMA"
+  "Nuevo Grandland Editio": "Grandland"  # NUEVO-FILLER FOLD (block note above): 19 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-grandland-editio) -> opel/grandland; raw "NUEVO GRANDLAND EDITIO"
+  "Nuevo Astra 5P GS Hybr": "Astra"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-gs-hybr) -> opel/astra; raw "NUEVO ASTRA 5P GS HYBR"
+  "Nuevo Astra": "Astra"  # NUEVO-FILLER FOLD (block note above): 16 veh/3 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra) -> opel/astra; raw "NUEVO ASTRA ST GS DIES"
+  "Nuevo Astra 5P Ultimat": "Astra"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-ultimat) -> opel/astra; raw "NUEVO ASTRA 5P ULTIMAT"
+  "Nuevo Grandland GS 1.6": "Grandland"  # NUEVO-FILLER FOLD (block note above): 12 veh/1 rows (es, es_dgt 2026-07…09; was DROPPED) -> opel/grandland; raw "NUEVO GRANDLAND GS 1.6"
+  "Nuevo Astra 5P Edition": "Astra"  # NUEVO-FILLER FOLD (block note above): 9 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-edition) -> opel/astra; raw "NUEVO ASTRA 5P EDITION"
+  "Nuevo Combo": "Combo"  # NUEVO-FILLER FOLD (block note above): 3 veh/2 rows (es, es_dgt 2026-07…09; was DROPPED) -> opel/combo; raw "NUEVO COMBO ELECTRIC G"
+  "Nuevo Astra 5P GS Plug": "Astra"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-gs-plug) -> opel/astra; raw "NUEVO ASTRA 5P GS PLUG"
   "Commodre": "Commodore"  # TYPO TWIN of car/opel/commodore: nl 'COMMODRE COUPE' 2; gb row — https://en.wikipedia.org/wiki/Opel_Commodore (accessed 2026-11-09); retires car/opel/commodre (former_ids.yml)
   # ── ES-TRIM FOLDS (data/es-completeness, 2026-11-09). Spain's DGT MODELO_ITV is a
   # 22-char free-text cell (es_dgt.rb [47,22)): what follows the nameplate is trim
@@ -8855,6 +8884,44 @@ Panther:
   Panther: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Peugeot:
+  # ── ES "NUEVO/NEW" FILLER FOLDS (data/es-completeness, 2026-11-09; owner ruling "fold the remaining Nuevo …"). DGT
+  # MODELO_ITV often opens with "NUEVO"/"NUEVA"/"NEW" (+ the make again) before the nameplate and a 22-char-truncated
+  # trim. Derived mechanically from replay_country.rb probes: strip the filler, take the LONGEST token prefix that is a
+  # LIVE record of the same make, and accept only if every leftover token is a trim/body/powertrain word; an electric
+  # tail (Eléctrico/Elec/El) folds ONLY onto an electric nameplate (ë-C4, E-5008 …), never onto the ICE record. ──
+  "Nuevo 308 5P Allure Bl": "308"  # NUEVO-FILLER FOLD (block note above): 124 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-allure-bl) -> peugeot/308; raw "NUEVO 308 5P ALLURE BL"
+  "Nuevo 308 5P GT": "308"  # NUEVO-FILLER FOLD (block note above): 120 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt) -> peugeot/308; raw "NUEVO 308 5P GT HYBRID"
+  "Nuevo 308 5P Allure Hy": "308"  # NUEVO-FILLER FOLD (block note above): 97 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-allure-hy) -> peugeot/308; raw "NUEVO 308 5P ALLURE HY"
+  "Nuevo 408 Allure Hybri": "408"  # NUEVO-FILLER FOLD (block note above): 72 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-allure-hybri) -> peugeot/408; raw "NUEVO 408 ALLURE HYBRI"
+  "Nuevo 308 5P GT Exclus": "308"  # NUEVO-FILLER FOLD (block note above): 47 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt-exclus) -> peugeot/308; raw "NUEVO 308 5P GT EXCLUS"
+  "Nuevo 408 GT Exclusive": "408"  # NUEVO-FILLER FOLD (block note above): 46 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-gt-exclusive) -> peugeot/408; raw "NUEVO 408 GT EXCLUSIVE"
+  "Nuevo 408 GT": "408"  # NUEVO-FILLER FOLD (block note above): 32 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-gt) -> peugeot/408; raw "NUEVO 408 GT HYBRID 14"
+  "Nuevo 308 Sw Allure Bl": "308"  # NUEVO-FILLER FOLD (block note above): 29 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-allure-bl) -> peugeot/308; raw "NUEVO 308 SW ALLURE BL"
+  "Nuevo 308 Sw GT Exclus": "308"  # NUEVO-FILLER FOLD (block note above): 24 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt-exclus) -> peugeot/308; raw "NUEVO 308 SW GT EXCLUS"
+  "Nuevo 308 5P GT Bluehd": "308"  # NUEVO-FILLER FOLD (block note above): 22 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt-bluehd) -> peugeot/308; raw "NUEVO 308 5P GT BLUEHD"
+  "Nuevo 308 5P Style Hyb": "308"  # NUEVO-FILLER FOLD (block note above): 22 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-style-hyb) -> peugeot/308; raw "NUEVO 308 5P STYLE HYB"
+  "Nuevo 308 5P Style Blu": "308"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-style-blu) -> peugeot/308; raw "NUEVO 308 5P STYLE BLU"
+  "Nuevo 308 Sw GT": "308"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt) -> peugeot/308; raw "NUEVO 308 SW GT HYBRID"
+  "Nuevo 308 Sw Style Hyb": "308"  # NUEVO-FILLER FOLD (block note above): 14 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-style-hyb) -> peugeot/308; raw "NUEVO 308 SW STYLE HYB"
+  "Nuevo 308 Sw Allure Hy": "308"  # NUEVO-FILLER FOLD (block note above): 9 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-allure-hy) -> peugeot/308; raw "NUEVO 308 SW ALLURE HY"
+  "Nuevo 308 5P Allure Pl": "308"  # NUEVO-FILLER FOLD (block note above): 8 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-allure-pl) -> peugeot/308; raw "NUEVO 308 5P ALLURE PL"
+  "Nuevo 408 Allure Plug": "408"  # NUEVO-FILLER FOLD (block note above): 6 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-allure-plug) -> peugeot/408; raw "NUEVO 408 ALLURE PLUG-"
+  "Nuevo 3008 Allure Hybr": "3008"  # NUEVO-FILLER FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-3008-allure-hybr) -> peugeot/3008; raw "NUEVO 3008 ALLURE HYBR"
+  "Nuevo 308 Sw Style Blu": "308"  # NUEVO-FILLER FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-style-blu) -> peugeot/308; raw "NUEVO 308 SW STYLE BLU"
+  "Nuevo 308 Sw GT Plug-I": "308"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt-plug-i) -> peugeot/308; raw "NUEVO 308 SW GT PLUG-I"
+  "Nuevo 5008 GT": "5008"  # NUEVO-FILLER FOLD (block note above): 3 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-5008-gt) -> peugeot/5008; raw "NUEVO 5008 GT PLUG-IN"
+  "Nuevo E-5008 Allure El": "E-5008"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-5008-allure-el) -> peugeot/e-5008; raw "NUEVO E-5008 ALLURE EL"
+  "Nuevo 5008 Allure Hybr": "5008"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-5008-allure-hybr) -> peugeot/5008; raw "NUEVO 5008 ALLURE HYBR"
+  "Nuevo 308 Sw Allure Pl": "308"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-allure-pl) -> peugeot/308; raw "NUEVO 308 SW ALLURE PL"
+  "Nuevo 308 5P Style Plu": "308"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-style-plu) -> peugeot/308; raw "NUEVO 308 5P STYLE PLU"
+  "Nuevo 3008 GT": "3008"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-3008-gt) -> peugeot/3008; raw "NUEVO 3008 GT PLUG-IN"
+  "Nuevo Rifter Allure Bl": "Rifter"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was DROPPED) -> peugeot/rifter; raw "NUEVO RIFTER ALLURE BL"
+  "Nuevo E-208 5P GT Eléc": "E-208"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-208-5p-gt-elec) -> peugeot/e-208; raw "NUEVO E-208 5P GT ELÉC"
+  "Nuevo E-208 5P Active": "E-208"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-208-5p-active) -> peugeot/e-208; raw "NUEVO E-208 5P ACTIVE"
+  "Nuevo E-5008 GT Eléctr": "E-5008"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-5008-gt-electr) -> peugeot/e-5008; raw "NUEVO E-5008 GT ELÉCTR"
+  "Nuevo 308 5P Business": "308"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-business) -> peugeot/308; raw "NUEVO 308 5P BUSINESS"
+  "Nuevo 308 Sw GT Bluehd": "308"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt-bluehd) -> peugeot/308; raw "NUEVO 308 SW GT BLUEHD"
+  "Nuevo 308 5P GT Plug-I": "308"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt-plug-i) -> peugeot/308; raw "NUEVO 308 5P GT PLUG-I"
   # ── ES-TRIM FOLDS (data/es-completeness, 2026-11-09). Spain's DGT MODELO_ITV is a
   # 22-char free-text cell (es_dgt.rb [47,22)): what follows the nameplate is trim
   # (Allure/GT/Style/Edition/Ultimate/GS/Max/Plus/You), body (5P = 5 doors, Talla M/XL
@@ -10669,7 +10736,7 @@ Sherco:
   250SEF-R: 250 SEF      # SEF = the 4T enduro line; Racing trim folds
   300SEF-R: 300 SEF      # same
   450SEF-R: 450 SEF      # same
-  500SEF-R: 500 SEF      # same
+  500SEF-R: "500"        # REPOINTED 2026-11-09 (owner ruling: no id churn; was "500 SEF", a demoted candidate holding nl 12 alone): the same 478 cc four-stroke is PUBLISHED as motorcycle/sherco/500 [gb,nl,nz] — uk_dft GenModel "SHERCO 500" carries Models "500 SEF", "500 SEF FACTORY", "500 SEF-R FACTORY" (2026 Q2); the nl "500 SEF-R" x12 join it. https://www.bikesales.com.au/bikes/details/2021-sherco-500-sef-r/SSE-AD-20061383/ (accessed 2026-11-09) [tier 2-3 dealer listing]
   300SE-F: 300 SE        # NOT the SEF 4T: TAN e13*168/2013*00113*07 + RDW 293cc prove the 2-stroke SE — trailing F is the FACTORY trim
   250 2ST: 250 SE        # "2ST" = registry shorthand for 2-stroke; Sherco's only 250 2T enduro is the SE (RDW 249cc, e13*2002/24*0620)
   300 2ST: 300 SE        # same — RDW 293cc = SE 300 2T
