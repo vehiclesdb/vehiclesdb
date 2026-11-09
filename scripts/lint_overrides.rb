@@ -18,6 +18,8 @@
 # Run: ruby scripts/lint_overrides.rb   (exit 1 on any failure)
 
 require "yaml"
+require "json"
+require "set"
 
 ROOT = File.expand_path("..", __dir__)
 FAILURES = []
@@ -76,6 +78,87 @@ if (pats = load_yaml("overrides/models/drop_patterns.yml"))
         Regexp.new(src)
       rescue RegexpError => e
         fail! "drop_patterns.yml(" + kind.to_s + "): " + src.inspect + " does not compile -- " + e.message
+      end
+    end
+  end
+end
+
+# --- 3b: passenger_variants.yml (data/es-completeness, 2026-11-09) ---------------
+# Mirrors the pipeline loader (overrides.rb#load_passenger_variants!), which
+# RAISES on the same shapes — this lint gives the same answer in seconds.
+# A `lift:` that is not VERBATIM a drop_patterns.yml entry of the same kind is
+# silently inert, and an inert lift reads exactly like the evidence gate saying
+# "no"; so is a typo'd key. Every entry needs a same-line `#` evidence comment.
+pv_path = "overrides/models/passenger_variants.yml"
+if File.exist?(File.join(ROOT, pv_path)) && (pv = load_yaml(pv_path))
+  gate = pv["gate"] || {}
+  fail! "#{pv_path}: gate.min_car_count must be a positive integer" unless gate["min_car_count"].is_a?(Integer) && gate["min_car_count"].positive?
+  fail! "#{pv_path}: gate.min_car_share must be in (0, 1]" unless gate["min_car_share"].is_a?(Numeric) && gate["min_car_share"].positive? && gate["min_car_share"] <= 1
+  fail! "#{pv_path}: gate.split_countries must be a non-empty list of ISO codes" unless gate["split_countries"].is_a?(Array) && !gate["split_countries"].empty? && gate["split_countries"].all? { |c| c.to_s.match?(/\A[a-z]{2}\z/) }
+  bad = pv.keys - %w[gate car]
+  fail! "#{pv_path}: only `car:` lifts exist (the gate measures car share against van); got #{bad.inspect}" unless bad.empty?
+  plain_by_kind = (pats || {}).transform_values { |l| (l || []).select { |p| p.is_a?(String) } }
+  pv_lines = File.readlines(File.join(ROOT, pv_path))
+  pv.each do |kind, entries|
+    next if kind == "gate"
+    (entries || []).each do |e|
+      unknown = e.keys - %w[make lift publish]
+      fail! "#{pv_path}(#{kind}): unknown key(s) #{unknown.inspect} in #{e.inspect}" unless unknown.empty?
+      fail! "#{pv_path}(#{kind}): #{e.inspect} needs make, lift and a non-empty publish list" unless e["make"] && e["lift"] && Array(e["publish"]).any?
+      unless (plain_by_kind[kind] || []).include?(e["lift"])
+        fail! "#{pv_path}(#{kind}): lift #{e['lift'].inspect} (#{e['make']}) is not verbatim a drop_patterns.yml #{kind}: entry — it would lift nothing"
+      end
+      line = pv_lines.find { |l| l.include?("lift: '#{e['lift']}'") && l.include?("make: #{e['make']},") }
+      fail! "#{pv_path}(#{kind}): #{e['make']} #{e['lift']} has no same-line `#` evidence comment (say why, with the register numbers)" unless line&.match?(/\}\s+#\s*\S/)
+    end
+  end
+end
+
+# --- 3c: attested.yml (owner ruling 2026-11-09, attested admission) ---------------
+# Shape kind → canonical make → published nameplate → source URL (the value),
+# with a same-line `#` comment carrying the REGISTER evidence (at least one
+# register vehicle, named), the TIER (`[tier 1]` manufacturer, `[tier 2]`
+# trade/official) and the ACCESS DATE. Wikipedia (tier 3) cannot attest.
+# The pipeline loader mirrors the URL rule and the build's `attested` gate fails
+# on an entry that reaches no minting register row. With VDB_BUILD_DIR set,
+# this lint also checks every entry against that build's candidates + catalog
+# ("target must exist") so a contributor learns it before a 10-minute build.
+at_path = "overrides/models/attested.yml"
+if File.exist?(File.join(ROOT, at_path)) && (at = load_yaml(at_path))
+  kinds_ok = %w[car van motorcycle moped truck bus]
+  at_lines = File.readlines(File.join(ROOT, at_path))
+  slug = ->(s) { s.to_s.downcase.unicode_normalize(:nfkd).gsub(/\p{Mn}/, "").gsub(/[^a-z0-9]+/, "-").gsub(/\A-|-\z/, "") }
+  build = ENV["VDB_BUILD_DIR"]
+  known = Hash.new { |h, k| h[k] = Set.new }
+  if build
+    kinds_ok.each do |k|
+      cand = File.join(build, "candidates", "#{k}.jsonl")
+      File.foreach(cand) { |l| known[k] << JSON.parse(l)["id"] } if File.exist?(cand)
+      cat = File.join(build, "out", "catalog", k, "models.json")
+      JSON.parse(File.read(cat)).each { |m| known[k] << m["id"] } if File.exist?(cat)
+    end
+  end
+  at.each do |kind, makes|
+    fail! "#{at_path}: unknown kind #{kind.inspect}" unless kinds_ok.include?(kind.to_s)
+    fail! "#{at_path}(#{kind}): expected make → nameplate → URL mapping" unless makes.is_a?(Hash)
+    (makes || {}).each do |make, plates|
+      fail! "#{at_path}(#{kind}/#{make}): expected nameplate → URL mapping" unless plates.is_a?(Hash)
+      (plates || {}).each do |plate, url|
+        where = "#{at_path}(#{kind}/#{make}/#{plate})"
+        fail! "#{where}: value must be the http(s) source URL" unless url.to_s.match?(%r{\Ahttps?://\S+\z})
+        fail! "#{where}: Wikipedia is tier 3 and cannot attest — cite the manufacturer (tier 1) or trade/official press (tier 2)" if url.to_s.include?("wikipedia.org")
+        line = at_lines.find { |l| l.include?(url.to_s) && l =~ /\A\s+["']?#{Regexp.escape(plate.to_s)}["']?\s*:/ }
+        if line.nil? || line !~ /#\s*\S/
+          fail! "#{where}: needs a same-line `#` comment (register evidence, tier, access date)"
+        else
+          cm = line.split(/\s#\s/, 2).last.to_s
+          fail! "#{where}: comment must name the tier as [tier 1] or [tier 2]" unless cm.match?(/\[tier [12]\b/)
+          fail! "#{where}: comment must carry the access date (accessed YYYY-MM-DD)" unless cm.match?(/accessed \d{4}-\d{2}-\d{2}/)
+          fail! "#{where}: comment must cite at least one register vehicle (e.g. `nl_rdw 4`, `es_dgt 666 M1`)" unless cm.match?(/\b[a-z]{2}_[a-z0-9]+\b[^;]*\d/)
+        end
+        next unless build
+        id = "#{slug.(make)}/#{slug.(plate)}"
+        fail! "#{where}: #{kind}/#{id} is neither a candidate nor a published record in #{build} — the attestation would be inert" unless known[kind.to_s].include?(id)
       end
     end
   end

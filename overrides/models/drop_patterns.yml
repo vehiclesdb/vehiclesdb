@@ -7,6 +7,17 @@
 # quirk — Dossier §4.2; same pattern seen in UK VEH0120 and LU). Those
 # nameplates are real — they belong to kind `van`, whose build ingests them
 # via kind_maps instead. Dropping here ≠ dropping from the dataset.
+#
+# CORRECTED 2026-11-09: that premise holds for the CONVERSION bases (Sprinter,
+# Ducato, Master, Crafter, Boxer, Jumper, Movano, the big Transit…) and is FALSE
+# for the factory PASSENGER versions (Berlingo, Caddy Life, Rifter, Tourneo,
+# Vito Tourer…): the ES van build ingests N1 only, so Spain's M1 rows of those
+# nameplates reached no kind at all (Tourneo Courier/Custom/Connect: 1,388 M1
+# regs Jul–Sep 2026, zero `es` anywhere). The make-blind patterns below stay;
+# overrides/models/passenger_variants.yml LIFTS individual ones for one make,
+# with a closed `publish:` list and a build-time M1-evidence gate. Read that
+# file before adding or removing a van nameplate here — a pattern a lift names
+# must stay verbatim, or the build raises.
 
 car:
   - '\A[2-5]D?(?:SEDAN|SENDAN|STATION|STW|KOMBI|LIMOUSINE|CONVERTIBLE|COUPE|HARDTOP)(?![A-Z])|\A[2-5]D?SED\b|\A[2-5]DHT\b' # FUSED door+body PREFIX (pipeline#67): fi_traficom writes "2DSEDAN 1300-11/2400", "3DSTATION Wagon…", "5DKOMBI 200T…", and classify returns the raw string verbatim, so it publishes as a nameplate (car/volkswagen/2dsedan-1300-11-2400 at global_decile 1 in v2026.10.0). (?![A-Z]) not \b, so a grade fused straight on ("4DSEDAN220A/2820-55", "5DSTW740GLE") still matches; + the hardtop abbreviation 2DHT/4DHT — widened per the Opus I-11 re-measurement (16 more rows, nothing else). Word list DERIVED from the corpus 2026-10-10 (frozen build candidates: 1,376 car + 13 van rows; SEDAN 1,363, STATION 10, STW 5, KOMBI 4, + register typos SED/SENDAN/"4SEDAN"); door digit 2-5. Door-count + real NAMEPLATE ("4DFLEETWOOD", "5DGOLF") deliberately NOT matched — stripping needs fi_traficom.rb code (#131 measured the stripper minting 105 type-approval ids). The SPACED "2D SEDAN" half is data#179 renames, untouched (no \b after the digit here).
@@ -16,7 +27,7 @@ car:
   - '\bCRAFTER\b'     # VW van
   - '\bCADDY\b'       # VW van — RDW even has "CADDY MODIFIED PARTITION WALL" (25,250 rows measured)
   - '\bCADDYMAXI\b'   # fused UK-DfT genmodel of the same van; without this the kind-blind Caddymaxi->Caddy fold mints car/volkswagen/caddy in pre-drift cache states (the cross-kind prune has a >=100 guard these few rows sit under) — caught by the pinned Caddy spotcheck on #67
-  - '\bBERLINGO\b'    # Citroën van (passenger Berlingo handled under van kind)
+  - '\bBERLINGO\b'    # Citroën van. The passenger Berlingo is LIFTED for Citroën by passenger_variants.yml (2026-11-09) — the old note "passenger Berlingo handled under van kind" was false for Spain's M1 rows
   - '\bKANGOO\b'      # Renault van
   - '\bPARTNER\b'     # Peugeot van
   - '\bRIFTER\b'      # Peugeot van (passenger)

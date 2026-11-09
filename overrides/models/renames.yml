@@ -36,6 +36,7 @@ Aixam:
   Aixam: null                             # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Alfa Romeo:
+  "8 C 2300 Supercharged Le Mans": "8C 2300"   # (dead-targets.md, I-11 re-verified 2026-11-09) 1 veh (nl_rdw personenauto) raw "8 C 2300 SUPERCHARGED LE MANS SPORTS TOURER": the Le Mans sports-tourer body of the 1931-35 8C 2300 — https://en.wikipedia.org/wiki/Alfa_Romeo_8C (accessed 2026-11-09) [tier 3]
   # ── fi_traficom body-first prefix, the residue folds (pipeline PR
   # "fi_traficom: strip the register's body-word prefix"). Finland writes a
   # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -264,6 +265,9 @@ Aprilia:
 
 Ariel:
   Redhunter:                 Red Hunter           # Ariel Red Hunter — two words. DEFUNCT marque — badge evidence
+
+Armstrong Siddeley:
+  "Saphire": "Sapphire"  # TYPO TWIN of car/armstrong-siddeley/sapphire: nl 'ARMSTRONG SIDD SAPHIRE' 4 + 'SIDDELEY SAPHIRE MARK I' 2; nz 'SAPHIRE' 1, '346 SAPHIRE' 2 — https://en.wikipedia.org/wiki/Armstrong_Siddeley_Sapphire_(motor_car) (accessed 2026-11-09); retires car/armstrong-siddeley/saphire (former_ids.yml)
 
 Askoll:
   "N.a.": null   # ALL 179 NL registrations are literal N/A (164 "N/A" + 8 "N.A" + 7 "N.A."), zero real names. NB this ERASES the askoll make from moped: its only record was the placeholder. Askoll's real lineup is eS1/eS2/eS3 (https://www.askoll.com/eva/) — it returns the moment any source emits one. Recorded as candidate-queue debt, not a silent loss.
@@ -1227,7 +1231,7 @@ BMW:
   R90 / S: R90S                           # third raw shape (spaced slash) — the one-id-many-names flap set includes slash spacing too
   SERIE3:                      3 Series               # RETARGET, was "Serie 3" — register family label WITH the digit resolves to the nameplate (see the SETTLED-LINE NOTICE above); raw "SERIE3" es_dgt (dossier §1a; renames are single-pass, so this key moves WITH the "Serie 3" key below)
   Z 3:                         Z3                     # closed/spaced per BMW usage
-  "Ce":                                  "CE"                                   # uniformly-wrong casing (invisible to the contradiction detector): BMW CE 04 and CE 02, the electric scooters (bmw-motorrad.com) (bmw/ce)
+  "Ce":                                  null                                   # REPOINTED 2026-11-09 (was "CE") (dead-targets.md, I-11 re-verified 2026-11-09): bare "CE" is BMW's e-scooter prefix, not a nameplate (CE 02 / CE 04 are live ids, removals.yml motorcycle/bmw/ce); no 2026-11-09 row in nl, uk, fi or es carries bare "CE" since uk_dft stopped pooling "BMW CE" — https://en.wikipedia.org/wiki/BMW_CE_04 (accessed 2026-11-09) [tier 3]
   # ── 2026-07-26 trim-fold dossier (BMW+Audi wave 2; full evidence at
   # aux/research/trims-2026-07/dossier-bmw-audi.md in the pipeline repo).
   # CARS. Register GROUP LABELS carrying the family DIGIT resolve to the
@@ -1905,6 +1909,7 @@ Chery:
   "Icaur 03 Iwd":        iCAUR 03  # 546 veh (my, my_jpj) -> live chery/icaur-03; raw "iCAUR 03 iWD"; https://www.carlist.my/news/2026-icaur-03-ev-debuts-in-malaysia-starting-at-rm-2-variants-up-279ps-355km-range-145063/145063/ (accessed 2026-10-03) [tier 2 trade press; verified through the search index: iCAUR 03 launched with 2WD and AWD "(termed as iWD)" dual-motor 279 PS variants]
 
 Chevrolet:
+  "Sportsvan": "Sportvan"  # TYPO TWIN of car/chevrolet/sportvan: nl 'SPORTSVAN' 3, 'G10 SPORTSVAN' 3, 'BEAUVILLE SPORTSVAN 30' 2; fi 1 — https://en.wikipedia.org/wiki/Chevrolet_Van (accessed 2026-11-09); the misspelt form never published
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -2397,6 +2402,67 @@ Chrysler:
   Limousine: null                         # body class in the model column: limousine — 6 v, nz_nzta MODEL ×5, nl_rdw handelsbenaming ×1, us_fueleconomy model ×0; raw "LIMOUSINE"×6 "Limousine"×0. Chrysler keeps 72 live records (airstream, alpine, aspen, avenger…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Citroën:
+  # ── ES "NUEVO/NEW" FILLER FOLDS (data/es-completeness, 2026-11-09; owner ruling "fold the remaining Nuevo …"). DGT
+  # MODELO_ITV often opens with "NUEVO"/"NUEVA"/"NEW" (+ the make again) before the nameplate and a 22-char-truncated
+  # trim. Derived mechanically from replay_country.rb probes: strip the filler, take the LONGEST token prefix that is a
+  # LIVE record of the same make, and accept only if every leftover token is a trim/body/powertrain word; an electric
+  # tail (Eléctrico/Elec/El) folds ONLY onto an electric nameplate (ë-C4, E-5008 …), never onto the ICE record. ──
+  "Nuevo C4X": "C4X"  # NUEVO-FILLER FOLD (block note above): 115 veh/2 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c4x) -> citroen/c4x; raw "NUEVO C4X HYBRID 145 Ë"
+  "Nuevo Ë-C4 Eléctrico 1": "ë-C4"  # NUEVO-FILLER FOLD (block note above): 77 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c4-electrico-1) -> citroen/e-c4; raw "NUEVO Ë-C4 ELÉCTRICO 1"
+  "Nuevo C5 Aircross Plug": "C5 Aircross"  # NUEVO-FILLER FOLD (block note above): 48 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c5-aircross-plug) -> citroen/c5-aircross; raw "NUEVO C5 AIRCROSS PLUG"
+  "New C5 Aircross Plug-I": "C5 Aircross"  # NUEVO-FILLER FOLD (block note above): 20 veh/1 rows (es, es_dgt 2026-07…09; was citroen/new-c5-aircross-plug-i) -> citroen/c5-aircross; raw "NEW C5 AIRCROSS PLUG-I"
+  "Nuevo Ë-C4 Eléctrico E": "ë-C4"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c4-electrico-e) -> citroen/e-c4; raw "NUEVO Ë-C4 ELÉCTRICO E"
+  "Nuevo C4 Gasolina 130": "C4"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c4-gasolina-130) -> citroen/c4; raw "NUEVO C4 GASOLINA 130"
+  "Nuevo Ë-C3 Aircross E": "E-C3 Aircross"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c3-aircross-e) -> citroen/e-c3-aircross; raw "NUEVO Ë-C3 AIRCROSS  E"
+  "Nuevo C-Elysée": "C-Elysee"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c-elysee) -> citroen/c-elysee; raw "NUEVO C-ELYSÉE BLUEHDI"
+  # ── car/citroen/c and car/citroen/c-3 (data/es-completeness, 2026-11-09). Bare-letter / spaced-digit
+  # stubs, NOT nameplates. Measured on nl_rdw personenauto_by_year (frozen 2026-11-09 cache): "C" = 5 vehicles
+  # first registered 1920/1922/1924/1925 + "C 5 HP" 1926 (power strip leaves "C") — Citroën's Type C, the 5 CV
+  # (1922-26), published as car/citroen/5-cv [nl,nz]; "C 3" = 1920/1925/1926 (x3, the 5 CV Type C3 "Trèfle"),
+  # 1963, 1972, 2004, "C-3" 1926, and es_dgt "C 3" 1 M1 Jul–Sep 2026 (a NEW registration = the modern C3).
+  # A source-blind rename cannot split by year; C3 is chosen for "C 3" because es — the only country the stub
+  # adds — is a modern registration, and C3 already carries nl. Aliased in former_ids.yml. ──
+  "C": "5 Cv"     # Type C = the 5 CV (Citroën 5CV, 1922-1926: "Type C", then C2/C3) — nl "C" 1920-25 x5, "C 5 HP" 1926 x1, nz "C" x1, ch "CITROEN C" (presence); https://en.wikipedia.org/wiki/Citro%C3%ABn_5CV
+  "C 3": "C3"     # spaced spelling — es_dgt "C 3" (2026 M1 registration, the modern C3) + nl "C 3" x6 (mixed 1920s 5 CV Type C3 and 1963-2004 rows; see block note); was the stub car/citroen/c-3 [es,nl]
+  "C-3": "C3"     # hyphenated twin of "C 3" (nl 1926 x1); was the stub car/citroen/c-3
+  # ── ES-TRIM FOLDS (data/es-completeness, 2026-11-09). Spain's DGT MODELO_ITV is a
+  # 22-char free-text cell (es_dgt.rb [47,22)): what follows the nameplate is trim
+  # (Allure/GT/Style/Edition/Ultimate/GS/Max/Plus/You), body (5P = 5 doors, Talla M/XL
+  # = body length), powertrain (Turbo/Hybrid/Eléctrico/BlueHDi/Cv/Td) or "Nuevo" (new),
+  # cut mid-word. Probed with pipeline/tools/replay_country.rb --source=es_dgt --kind=car
+  # (the EXACT string at the rename lookup) over the frozen 2026-11-09 cache; only
+  # probes whose head IS the published nameplate and >= 5 vehicles. Kind-blind: the
+  # same strings in kind van fold to the same nameplate there. ──
+  "Nuevo C3 Aircross Hybr": "C3 Aircross"  # ES-TRIM FOLD (block note above): 1410 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c3-aircross-hybr) -> citroen/c3-aircross; raw "NUEVO C3 AIRCROSS HYBR"
+  "Berlingoátalla M Blueh": "Berlingo"  # ES-TRIM FOLD (block note above): 519 veh/1 rows (es, es_dgt 2026-07…09; was citroen/berlingoatalla-m-blueh) -> citroen/berlingo; raw "BERLINGOáTALLA M BLUEH" — the á/ã/â bytes are DGT mojibake for the separator the register writes between nameplate and trim
+  "Ë-C3 Eléctrico Max": "ë-C3"  # ES-TRIM FOLD (block note above): 339 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-max) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO MAX"
+  "C3 TURBO100 S&s 6V Max": "C3"  # ES-TRIM FOLD (block note above): 305 veh/1 rows (es, es_dgt 2026-07…09; was citroen/c3-turbo100-s-s-6v-max) -> citroen/c3; raw "C3 TURBO100 S&S 6V MAX"
+  "C3 Turbo 100 S&s 6V Pl": "C3"  # ES-TRIM FOLD (block note above): 281 veh/1 rows (es, es_dgt 2026-07…09; was citroen/c3-turbo-100-s-s-6v-pl) -> citroen/c3; raw "C3 TURBO 100 S&S 6V PL"
+  "Berlingoátalla": "Berlingo"  # ES-TRIM FOLD (block note above): 274 veh/1 rows (es, es_dgt 2026-07…09; was citroen/berlingoatalla) -> citroen/berlingo; raw "BERLINGOáTALLA XL BLUE" — the á/ã/â bytes are DGT mojibake for the separator the register writes between nameplate and trim
+  "Nuevo C3 Aircross Turb": "C3 Aircross"  # ES-TRIM FOLD (block note above): 246 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c3-aircross-turb) -> citroen/c3-aircross; raw "NUEVO C3 AIRCROSS TURB"
+  "Nuevo Citroën C3 Turbo": "C3"  # ES-TRIM FOLD (block note above): 206 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-citroen-c3-turbo) -> citroen/c3; raw "NUEVO CITROËN C3 TURBO"
+  "Ë-C3 Eléctrico Max Con": "ë-C3"  # ES-TRIM FOLD (block note above): 181 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-max-con) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO MAX CON"
+  "Nuevo Citroën C3 Hybri": "C3"  # ES-TRIM FOLD (block note above): 128 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-citroen-c3-hybri) -> citroen/c3; raw "NUEVO CITROËN C3 HYBRI"
+  "Nuevo Ë-C3 Aircross El": "E-C3 Aircross"  # ES-TRIM FOLD (block note above): 124 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-e-c3-aircross-el) -> citroen/e-c3-aircross; raw "NUEVO Ë-C3 AIRCROSS EL"
+  "Ë-C3 Eléctrico Plus": "ë-C3"  # ES-TRIM FOLD (block note above): 115 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-plus) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO PLUS"
+  "C3 Turbo 100 S&s 6V Bu": "C3"  # ES-TRIM FOLD (block note above): 77 veh/1 rows (es, es_dgt 2026-07…09; was citroen/c3-turbo-100-s-s-6v-bu) -> citroen/c3; raw "C3 TURBO 100 S&S 6V BU"
+  "Nuevo Citroën Ë-C3 Elé": "ë-C3"  # ES-TRIM FOLD (block note above): 69 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-citroen-e-c3-ele) -> citroen/e-c3; raw "NUEVO CITROËN Ë-C3 ELÉ"
+  "C3 Turbo 100 S&s 6V Yo": "C3"  # ES-TRIM FOLD (block note above): 58 veh/1 rows (es, es_dgt 2026-07…09; was citroen/c3-turbo-100-s-s-6v-yo) -> citroen/c3; raw "C3 TURBO 100 S&S 6V YO"
+  "Ë-C3 Eléctrico Plus Co": "ë-C3"  # ES-TRIM FOLD (block note above): 46 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-plus-co) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO PLUS CO"
+  "Ë-Berlingoátalla M Elé": "E-Berlingo"  # ES-TRIM FOLD (block note above): 44 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-berlingoatalla-m-ele) -> citroen/e-berlingo; raw "Ë-BERLINGOáTALLA M ELÉ" — the á/ã/â bytes are DGT mojibake for the separator the register writes between nameplate and trim
+  "C3 Turbo 100 S&s 6V Co": "C3"  # ES-TRIM FOLD (block note above): 38 veh/1 rows (es, es_dgt 2026-07…09; was citroen/c3-turbo-100-s-s-6v-co) -> citroen/c3; raw "C3 TURBO 100 S&S 6V CO"
+  "Nuevo C3 Aircross Eléc": "C3 Aircross"  # ES-TRIM FOLD (block note above): 36 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-c3-aircross-elec) -> citroen/c3-aircross; raw "NUEVO C3 AIRCROSS ELÉC"
+  "Nuevo Citroën Ë-C3 Air": "E-C3 Aircross"  # ES-TRIM FOLD (block note above): 33 veh/1 rows (es, es_dgt 2026-07…09; was citroen/nuevo-citroen-e-c3-air) -> citroen/e-c3-aircross; raw "NUEVO CITROËN Ë-C3 AIR"
+  "Ë-C3 Eléctrico 200 Plu": "ë-C3"  # ES-TRIM FOLD (block note above): 20 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-200-plu) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO 200 PLU"
+  "Ë-Berlingoátalla": "E-Berlingo"  # ES-TRIM FOLD (block note above): 19 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-berlingoatalla) -> citroen/e-berlingo; raw "Ë-BERLINGOáTALLA XL EL" — the á/ã/â bytes are DGT mojibake for the separator the register writes between nameplate and trim
+  "Ë-C3 Eléctrico 200 You": "ë-C3"  # ES-TRIM FOLD (block note above): 14 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-200-you) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO 200 YOU"
+  "Ë-C3 Eléctrico You": "ë-C3"  # ES-TRIM FOLD (block note above): 13 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-you) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO YOU"
+  "Ë-C3 Eléctrico You Urb": "ë-C3"  # ES-TRIM FOLD (block note above): 13 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-you-urb) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO YOU URB"
+  "Berlingoãéâátalla M Bl": "Berlingo"  # ES-TRIM FOLD (block note above): 11 veh/1 rows (es, es_dgt 2026-07…09; was citroen/berlingoaeaatalla-m-bl) -> citroen/berlingo; raw "BERLINGOÃéÂáTALLA M BL" — the á/ã/â bytes are DGT mojibake for the separator the register writes between nameplate and trim
+  "C3 Origin Puretech 83": "C3"  # ES-TRIM FOLD (block note above): 11 veh/1 rows (es, es_dgt 2026-07…09; was citroen/c3-origin-puretech-83) -> citroen/c3; raw "C3 ORIGIN PURETECH 83"
+  "Ë-C3 Eléctrico You Con": "ë-C3"  # ES-TRIM FOLD (block note above): 6 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-you-con) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO YOU CON"
+  "Ë-C3 Eléctrico Tonic": "ë-C3"  # ES-TRIM FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was citroen/e-c3-electrico-tonic) -> citroen/e-c3; raw "Ë-C3 ELÉCTRICO  TONIC"
+  "C3 1.4": "C3"  # ES-TRIM FOLD (block note above): 5 veh/4 rows (es, es_dgt 2026-07…09; was dropped) -> citroen/c3; raw "C3 1.4 HDI FAP"
   "Saloon":      null   # body word exposed by the C-1 parenthetical strip: raw "(II CV BL) SALOON" nl 1 (+ nz) — stripping the bracket leaves the BODY, not a nameplate. "SALOON" appears across Aston Martin, Bentley, Bristol, Cadillac, Crossley and Daimler in the same column the same way, so it is a register habit rather than a Citroen model (removals.yml carries the ledger line)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
@@ -3329,6 +3395,7 @@ FAW:
   EHS9: E-HS9                                 # Hongqi E-HS9 is hyphenated (https://en.wikipedia.org/wiki/Hongqi_E-HS9); nl_rdw E-HS9 n=133 vs EHS9 n=14. Hongqi-vs-FAW make attribution filed as a moves.yml question, not handled here
 
 Ferrari:
+  "512BB": "512 BB"        # (dead-targets.md, I-11 re-verified 2026-11-09) fused twin: 3 veh (nl "512BB" x2 + "FERRARI 512BB") forked candidate ferrari/512bb away from the published ferrari/512-bb [fi,nl]; BB = Berlinetta Boxer, 512 BB 1976-81 — https://en.wikipedia.org/wiki/Ferrari_512_BB (accessed 2026-11-09) [tier 3]
   "F355 Berlinetta/Gts": F355 Berlinetta/GTS  # POST-#36 KEY (pre-#36 …/gts form would be inert). Mixed-case raw decides both halves: "Ferrari F355 Berlinetta/GTS" (ca_nrcan) — https://en.wikipedia.org/wiki/Ferrari_F355
   # ── italian dossier §4a/4b (sibling alignment; #62 follow-up): the caps
   # family the collision batch fixed for 308/348, completed for the rest —
@@ -3477,6 +3544,7 @@ Ferrari:
   "Ferrari": null                       # 2 vehicles (nl) → car/ferrari/ferrari
 
 Fiat:
+  "Adria Win": "Adria Twin"  # TYPO TWIN of car/fiat/adria-twin: nl 'ADRIA WIN' 2 + 'ADRIA WIN D' 2; fi 'ADRIA WIN' 2 — https://au.adria-mobil.com/twin-campervan (accessed 2026-11-09); retires car/fiat/adria-win (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -3638,6 +3706,7 @@ Fiat:
   Rollerteam: Roller Team  # truck-kind truncation fix: FIAT ROLLER TEAM holds Model strings spelled ROLLERTEAM… and ROLLER TEAM… — the van record fiat/roller-team spells it "Roller Team"; https://assets.publishing.service.gov.uk/media/6a54d2e0c3d64d94cacab854/df_VEH0120_UK.csv (VEH0120, 2026 Q2 file, accessed 2026-10-03) [regulator: DfT/DVLA]
 
 Ford:
+  "Prefekt": "Prefect"  # TYPO TWIN of car/ford/prefect: nl 'PREFEKT' 2; fi 'PREFEKT DE LUXE 4DSEDAN 2210' 1, 'PREFEKT 4D SEDAN E493AF' 1 (E493A = the Prefect's Ford type code) — https://en.wikipedia.org/wiki/Ford_Prefect_(car) (accessed 2026-11-09); retires car/ford/prefekt (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -4208,8 +4277,12 @@ Govecs:
 Great Wall:
   # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
   "Ora 03-400":  Ora 03  # 3 veh/1 rows (ar, ar_dnrpa) -> live great-wall/ora-03; raw "ORA 03-400"; https://gwm.com.ar/modelos (accessed 2026-10-02) [manufacturer; opened directly]
+  "Gwm Ora 5 SUV": Ora 5  # 264 veh/1 rows (es, es_dgt Jul–Sep 2026, M1) -> great-wall/ora-5 (candidate today on de 141 "GWM | ORA 5"); raw "GWM ORA 5 SUV" = sub-brand + nameplate + body word; https://www.km77.com/coches/gwm/ora-5/informacion (accessed 2026-11-09) [motoring press: "GWM ORA 5 (2026) - El estreno de GWM en España", one SUV in gasolina / híbrido / eléctrico versions]
+  "Ora 5 HEV": Ora 5  # 73 veh/1 rows (ar, ar_dnrpa) -> great-wall/ora-5; HEV is the hybrid powertrain of the one Ora 5 nameplate (the Ebro "S400 HEV" -> S400 fold precedent, spotchecks.yml); https://www.km77.com/coches/gwm/ora-5/informacion (accessed 2026-11-09) [motoring press: "GWM ORA 5 (2026) - El estreno de GWM en España", one SUV in gasolina / híbrido / eléctrico versions]
 
 Harley-Davidson:
+  "Softail Duece": "Softail Deuce"  # TYPO TWIN of motorcycle/harley-davidson/softail-deuce: nl 'FXSTDI SOFTAIL DUECE (EFI)' 16, 'SOFTAIL DUECE' 1; nz 'SOFTAIL DUECE' 1; FXSTD = Softail Deuce — https://www.harley-davidson.com/us/en/content/expert-advice/harley-davidson-model-codes.html (accessed 2026-11-09); retires motorcycle/harley-davidson/softail-duece (former_ids.yml)
+  "Flhx Sreet Glide": "FLHX Street Glide"  # TYPO TWIN of motorcycle/harley-davidson/flhx-street-glide: nl 'FLHX SREET GLIDE' 1; letter transposition — https://www.harley-davidson.com/us/en/content/expert-advice/harley-davidson-model-codes.html (accessed 2026-11-09); retires motorcycle/harley-davidson/flhx-sreet-glide (former_ids.yml)
   "Fxe":                   "FXE"                  # Harley model code (FX + E for electric start) — codes render uppercase, same basis as the Flstn/FLSTN pins. NOTE: uppercase is the in-make MINORITY here (1 vs 2); the detector`s own "majority is not authority" warning applies and the basis is the code convention, not the count
   "Superglide Fxe":        "Super Glide FXE"      # same code, and Harley writes the name as TWO words — "Super Glide" throughout h-d.com heritage copy
   "Fxsts Springer":        "FXSTS Springer"       # Harley model code uppercase; FXSTS attested x2 in-make
@@ -5393,6 +5466,9 @@ Jawa:
   Jawa: null                              # motorcycle fi|nl
 
 Jeep:
+  "Renagade": "Renegade"  # TYPO TWIN of car/jeep/renegade: nl 'RENAGADE' 2, 'RENAGADE CJ5' 2, 'CJ 7 RENAGADE' 2; lu rows — https://en.wikipedia.org/wiki/Jeep_CJ (accessed 2026-11-09); retires car/jeep/renagade (former_ids.yml)
+  CJ6:  CJ-6   # (dead-targets.md, I-11 re-verified 2026-11-09) fused twin of "Cj-6": nl "CJ6" car + van + "CJ6 CABRIOLET" forked candidate jeep/cj6 — https://en.wikipedia.org/wiki/Jeep_CJ (CJ-6 1955-1981, accessed 2026-11-09) [tier 3]
+  CJ3B: CJ-3B  # (dead-targets.md, I-11 re-verified 2026-11-09) fused twin of "Cj-3B": nl "CJ3B" x2 + "CJ3B CABRIOLET" forked candidate jeep/cj3b — https://en.wikipedia.org/wiki/Jeep_CJ (CJ-3B 1953-1968, accessed 2026-11-09) [tier 3]
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -5580,6 +5656,9 @@ Jeep:
   "Renegade Sport":          Renegade  # 29 veh (ua, ua_mvs) -> live jeep/renegade; raw "RENEGADE SPORT"; https://en.wikipedia.org/wiki/Jeep_Renegade (accessed 2026-10-03) [tier 3 Wikipedia; quote: "The base Sport model includes a 1.4L MultiAir Turbocharged" / "The mid-level Latitude model includes the Sport's standard equipment"]
   "Compass Trailhawk":       Compass  # 27 veh (ua, ua_mvs) -> live jeep/compass; raw "COMPASS TRAILHAWK"; https://en.wikipedia.org/wiki/Jeep_Compass (accessed 2026-10-03) [tier 3 Wikipedia; quote: Latitude: "the mid-level Latitude"; Trailhawk: "the off-road-focused Trailhawk" (Compass trims)]
   "Patriot 4Х4":             Patriot  # 26 veh (ua, ua_mvs) -> live jeep/patriot; raw "PATRIOT 4Х4"; https://en.wikipedia.org/wiki/Jeep_Patriot (accessed 2026-10-03) [tier 3 Wikipedia; quote: "Both front-wheel drive and four-wheel drive are available" (4x4 = drivetrain of the Patriot)]
+
+Jensen:
+  "Intercepter": "Interceptor"  # TYPO TWIN of car/jensen/interceptor: nz 'INTERCEPTER' 4; nl 'INTERCEPTER III' 2, 'INTERCEPTER 111' 2 — https://en.wikipedia.org/wiki/Jensen_Interceptor (accessed 2026-11-09); retires car/jensen/intercepter (former_ids.yml)
 
 Jetour:
   # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
@@ -6604,6 +6683,8 @@ Ligier:
   "Xtoo RS Dci":                 Xtoo RS                # dCi is Renault's diesel ENGINE badge, not part of the nameplate — folds like any engine variant
 
 Lincoln:
+  "Premier": "Premiere"  # TYPO TWIN of car/lincoln/premiere: nl 'PREMIER' 2 + 'PREMIER LANDAU' 1; nz 'PREMIER' 1 (vs PREMIERE nl 24, nz 8) — https://en.wikipedia.org/wiki/Lincoln_Premiere (accessed 2026-11-09); retires car/lincoln/premier (former_ids.yml)
+  "Navicator": "Navigator"  # TYPO TWIN of car/lincoln/navigator: nl 'LINCOLN NAVICATOR' 2; fi 'NAVICATOR' 1, 'Navicator L ... 5408cm3' 1 — https://en.wikipedia.org/wiki/Lincoln_Navigator (accessed 2026-11-09); retires car/lincoln/navicator (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -7110,6 +7191,8 @@ Mazda:
   "3 Select":                MAZDA3  # 9 veh (ua, ua_mvs) -> live mazda/mazda3; raw "3 SELECT"; https://www.cars.com/research/mazda-mazda3-2025/specs/459760/ (accessed 2026-10-03) [tier 2 trade press/archive; verified through the search index: "2025 Mazda Mazda3 2.5 S Select Sport" (Select = trim of the Mazda3)]
 
 Mercedes-Benz:
+  Clase: null   # bare "CLASE" (Spanish "class") with the designation missing: unidentifiable (NAMING §8.1). The class-first form "CLASE V/GLC/C…" is resolved by normalizer.rb#mercedes (pipeline#272); this null retires the residue so car/mercedes-benz/clase stays dead (removals.yml)
+  "Acros": "Actros"  # TYPO TWIN of truck/mercedes-benz/actros: lu 'ACROS' 2; fi 'ACROS 5046 12809cm3' 1; es 'ACROS 2642 L' 1; the register itself attests the type numbers as Actros: nl_rdw bedrijfsauto 'ACTROS 5046 AK', fi_traficom 'ACTROS 2641/2646LS/2648LS' (frozen 2026-11-09 cache) [regulator] — https://en.wikipedia.org/wiki/Mercedes-Benz_Actros (accessed 2026-11-09); the misspelt form never published
   # ── junk?-rescue, fi_traficom body-first prefix (2026-08-01, per-row replay
   # + control-vs-treatment build). When the adapter removes the leading body
   # word the remainder is sometimes GLUED to Traficom's type code with a
@@ -7396,7 +7479,9 @@ Mercedes-Benz:
   "220 Ce": 220 CE                        # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
   "220 SB": 220 Sb                        # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
   "220 Se": 220 SE                        # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
-  "220 Se Automatic": 220 SE Automatic    # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
+  "220 Se Automatic": 220 SE    # REPOINTED 2026-11-09 (was "220 SE Automatic", a demoted candidate) (dead-targets.md, I-11 re-verified 2026-11-09): 3 veh (nl_rdw personenauto, first registered 1962/1965); automatic was a gearbox OPTION of the W111 220 SE, not a nameplate — https://en.wikipedia.org/wiki/Mercedes-Benz_W111 (accessed 2026-11-09) [tier 3]
+  "220 Se Aut": 220 SE          # 1 veh (nl) raw "220 SE AUT" — the same option, truncated; same source
+  "220 Se Automaat": 220 SE     # 1 veh (nl) raw "220 SE AUTOMAAT" (Dutch for automatic) — same source
   "220 Se B": 220 SEb                     # REPOINT (was → 220 SE B). W111 series letter is lowercase — "220 b, 220 Sb, 220 SEb" (https://en.wikipedia.org/wiki/Mercedes-Benz_W111); the block held two targets that normalize identically, so the pair could never merge
   "220 Se B/C": "220 SE B/c"              # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
   "220 Te": 220 TE                        # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
@@ -7572,7 +7657,8 @@ Mercedes-Benz:
   "1517L": "1517"    # REPOINT (was → "1517 L"). → truck/mercedes-benz/1517 (holds "1517 L-97027/416"); config letter — https://mercedes-benz-publicarchive.com/marsClassic/
   "1832L": "1832"    # REPOINT (was → "1832 L"). → truck/mercedes-benz/1832 (holds "1832 L"); config letter — https://mercedes-benz-publicarchive.com/marsClassic/
   "1836L": "1836"    # REPOINT (was → "1836 L"). → truck/mercedes-benz/1836 (holds "1836 L"); config letter — https://mercedes-benz-publicarchive.com/marsClassic/
-  "1841LS": 1841 LS                       # Mercedes writes classic car designations as "<number> <UPPERCASE letters>" with a lowercase series letter (220 SEb) and a hyphenated valve-count suffix (300 CE-24) — verified against https://mercedes-benz-publicarchive.com/marsClassic/ (Mercedes' own heritage archive)
+  "1841LS": Actros   # REPOINTED 2026-11-09 (was "1841 LS", a demoted candidate) (dead-targets.md, I-11 re-verified 2026-11-09): 1 veh (nl, first reg 2006) = the Actros 1841 LS tractor — nl also writes "ACTROS 1841 LS" x38 and fi_traficom carries type approval 93403/360 "ACTROS 18(32,36,41,44,46)LS" (fi_traficom_register.zip, frozen 2026-11-09 cache) [regulator]
+  "1841": Actros     # post-series_collapse form of truck raw "1841 LS" (nl x2, first reg 2008/2012) — same tractor, same source; no other Mercedes "1841" raw exists in any kind of the frozen cache
   "2532L": "2532"    # REPOINT (was → "2532 L"). → truck/mercedes-benz/2532 (holds "2532 L 6X2"); config letter — https://mercedes-benz-publicarchive.com/marsClassic/
   "2533L": "2533"    # REPOINT (was → "2533 L"). → truck/mercedes-benz/2533 (holds "2533 L"); config letter — https://mercedes-benz-publicarchive.com/marsClassic/
   "2544L": "2544"    # REPOINT (was → "2544 L"). → truck/mercedes-benz/2544 (holds "2544 L 6X2" x6); config letter — https://mercedes-benz-publicarchive.com/marsClassic/
@@ -8230,6 +8316,7 @@ Moskvich:
   "412ИЭ":                   "412"  # 27 veh (ua, ua_mvs) -> live moskvich/412; raw "412ИЭ"; https://en.wikipedia.org/wiki/Moskvitch_412 (accessed 2026-10-03) [tier 3 Wikipedia; quote: "received a factory code M-412IE" (modernized 412, 1970-76)]
 
 Moto Guzzi:
+  "Grismo": "Griso"  # TYPO TWIN of motorcycle/moto-guzzi/griso: nl 'GRISMO' 1 — https://en.wikipedia.org/wiki/List_of_Moto_Guzzi_motorcycles (accessed 2026-11-09); retires motorcycle/moto-guzzi/grismo (former_ids.yml)
   Moto-Guzzi: null                        # motorcycle es|nl — hyphenated by the caser from raw "MOTO-GUZZI"
   "1200 Sport 8V Abs":               1200 Sport 8V              # ABS is EQUIPMENT and folds into the nameplate (NAMING.md trim policy); same class as spec-token-4w
   MGX21:                     MGX-21               # Moto Guzzi MGX-21 Flying Fortress, hyphenated
@@ -8270,6 +8357,8 @@ Nio:
   ES8: EL8                                # NIO renamed ES6→EL6 and ES8→EL8 for Europe; the German lineup is ET5 / ET5 Touring / EL6 / EL8 (https://www.chinaelektro.de/nio/). The catalog already carries EL6, so this keeps the family consistent.
 
 Nissan:
+  "Quashqai": "Qashqai"  # TYPO TWIN of car/nissan/qashqai: nl 'QUASHQAI' 6, 'NISSAN QUASHQAI' 2, 'QUASHQAI +2' 2; ch 2; es 1 — https://en.wikipedia.org/wiki/Nissan_Qashqai (accessed 2026-11-09); retires car/nissan/quashqai (former_ids.yml)
+  "Qashkai": "Qashqai"  # TYPO TWIN of car/nissan/qashqai: nl 'QASHKAI' 2; es 'NISSAN QASHKAI' 1 — https://en.wikipedia.org/wiki/Nissan_Qashqai (accessed 2026-11-09); retires car/nissan/qashkai (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -8473,6 +8562,8 @@ NSU:
   LUX200: Lux                     # NSU never used "Lux 200": the model is the Lux (1951-54, 198cc), upgraded as the Superlux. "produced from 1951-54 ... a capacity of 198cc" — https://www.motorcyclespecifications.com/nsu-lux-superlux-1951-54/ . LUX200 is a register artifact gluing a ROUNDED displacement (198 -> 200) onto the nameplate, so this is NOT the two-wheeler displacement-stays-separate case: dropping it is correct, "Lux 200" would be inventing a designation. Also unblocks the B2 identity match to Q927073 NSU Lux, unreachable from "lux200" because prefix containment is token-based (pipeline#54 finding f)
 
 Oldsmobile:
+  "Ninty Eight": "Ninety-Eight"  # TYPO TWIN of car/oldsmobile/ninety-eight: nl 'NINTY EIGHT' 2, 'NINTY EIGHT 98' 2; fi 1 — https://en.wikipedia.org/wiki/Oldsmobile_98 (accessed 2026-11-09); retires car/oldsmobile/ninty-eight (former_ids.yml)
+  "Cutlas": "Cutlass"  # TYPO TWIN of car/oldsmobile/cutlass: nl 'CUTLAS' 3, 'OLDSMOBILE CUTLAS' 2; nz/no rows — https://en.wikipedia.org/wiki/Oldsmobile_Cutlass (accessed 2026-11-09); retires car/oldsmobile/cutlas (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -8549,6 +8640,40 @@ Omoda:
   E5: Omoda E5                            # nz_nzta writes the BEV bare as 'E5' under make OMODA (268 in nz_passenger-car-van_O.json); no other Omoda record in any kind uses 'E5', so this kind-blind key is safe. RULING 5 (ENR4, 2026-10-02): Omoda 5 / E5 are TWO nameplates — the BEV keeps its own record per the owner directive (no electric line folds into its ICE sibling) and the D-2/Opel-Electric precedent. NOTE "E5" is ALSO a different Chery car — ua_mvs "CHERY";"E5" (2012-14 petrol sedan) — so this key must never be copied into the Chery block nor paired with a Chery|E5 move.
 
 Opel:
+  # ── ES "NUEVO/NEW" FILLER FOLDS (data/es-completeness, 2026-11-09; owner ruling "fold the remaining Nuevo …"). DGT
+  # MODELO_ITV often opens with "NUEVO"/"NUEVA"/"NEW" (+ the make again) before the nameplate and a 22-char-truncated
+  # trim. Derived mechanically from replay_country.rb probes: strip the filler, take the LONGEST token prefix that is a
+  # LIVE record of the same make, and accept only if every leftover token is a trim/body/powertrain word; an electric
+  # tail (Eléctrico/Elec/El) folds ONLY onto an electric nameplate (ë-C4, E-5008 …), never onto the ICE record. ──
+  "Nuevo Grandland GS 1.2": "Grandland"  # NUEVO-FILLER FOLD (block note above): 153 veh/1 rows (es, es_dgt 2026-07…09; was DROPPED) -> opel/grandland; raw "NUEVO GRANDLAND GS 1.2"
+  "Nuevo Grandland Ultima": "Grandland"  # NUEVO-FILLER FOLD (block note above): 26 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-grandland-ultima) -> opel/grandland; raw "NUEVO GRANDLAND ULTIMA"
+  "Nuevo Grandland Editio": "Grandland"  # NUEVO-FILLER FOLD (block note above): 19 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-grandland-editio) -> opel/grandland; raw "NUEVO GRANDLAND EDITIO"
+  "Nuevo Astra 5P GS Hybr": "Astra"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-gs-hybr) -> opel/astra; raw "NUEVO ASTRA 5P GS HYBR"
+  "Nuevo Astra": "Astra"  # NUEVO-FILLER FOLD (block note above): 16 veh/3 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra) -> opel/astra; raw "NUEVO ASTRA ST GS DIES"
+  "Nuevo Astra 5P Ultimat": "Astra"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-ultimat) -> opel/astra; raw "NUEVO ASTRA 5P ULTIMAT"
+  "Nuevo Grandland GS 1.6": "Grandland"  # NUEVO-FILLER FOLD (block note above): 12 veh/1 rows (es, es_dgt 2026-07…09; was DROPPED) -> opel/grandland; raw "NUEVO GRANDLAND GS 1.6"
+  "Nuevo Astra 5P Edition": "Astra"  # NUEVO-FILLER FOLD (block note above): 9 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-edition) -> opel/astra; raw "NUEVO ASTRA 5P EDITION"
+  "Nuevo Combo": "Combo"  # NUEVO-FILLER FOLD (block note above): 3 veh/2 rows (es, es_dgt 2026-07…09; was DROPPED) -> opel/combo; raw "NUEVO COMBO ELECTRIC G"
+  "Nuevo Astra 5P GS Plug": "Astra"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was opel/nuevo-astra-5p-gs-plug) -> opel/astra; raw "NUEVO ASTRA 5P GS PLUG"
+  "Commodre": "Commodore"  # TYPO TWIN of car/opel/commodore: nl 'COMMODRE COUPE' 2; gb row — https://en.wikipedia.org/wiki/Opel_Commodore (accessed 2026-11-09); retires car/opel/commodre (former_ids.yml)
+  # ── ES-TRIM FOLDS (data/es-completeness, 2026-11-09). Spain's DGT MODELO_ITV is a
+  # 22-char free-text cell (es_dgt.rb [47,22)): what follows the nameplate is trim
+  # (Allure/GT/Style/Edition/Ultimate/GS/Max/Plus/You), body (5P = 5 doors, Talla M/XL
+  # = body length), powertrain (Turbo/Hybrid/Eléctrico/BlueHDi/Cv/Td) or "Nuevo" (new),
+  # cut mid-word. Probed with pipeline/tools/replay_country.rb --source=es_dgt --kind=car
+  # (the EXACT string at the rename lookup) over the frozen 2026-11-09 cache; only
+  # probes whose head IS the published nameplate and >= 5 vehicles. Kind-blind: the
+  # same strings in kind van fold to the same nameplate there. ──
+  "Frontera GS 1.2 T Xht": "Frontera"  # ES-TRIM FOLD (block note above): 615 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/frontera; raw "FRONTERA GS 1.2 T XHT"
+  "Frontera GS": "Frontera"  # ES-TRIM FOLD (block note above): 394 veh/2 rows (es, es_dgt 2026-07…09; was opel/frontera-gs) -> opel/frontera; raw "FRONTERA GS ELECTRIC E"
+  "Combo 100 Cv 1.5 Td S": "Combo"  # ES-TRIM FOLD (block note above): 229 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/combo; raw "COMBO 100 CV 1.5 TD S/"
+  "Frontera Ultimate Hybr": "Frontera"  # ES-TRIM FOLD (block note above): 120 veh/1 rows (es, es_dgt 2026-07…09; was opel/frontera-ultimate-hybr) -> opel/frontera; raw "FRONTERA ULTIMATE HYBR"
+  "Frontera Edition 1.2 T": "Frontera"  # ES-TRIM FOLD (block note above): 119 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/frontera; raw "FRONTERA EDITION 1.2 T"
+  "Combo Ultimate 130 Cv": "Combo"  # ES-TRIM FOLD (block note above): 56 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/combo; raw "COMBO ULTIMATE 130 CV"
+  "Combo GS 130 Cv 1.5 Td": "Combo"  # ES-TRIM FOLD (block note above): 39 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/combo; raw "COMBO GS 130 CV 1.5 TD"
+  "Frontera Edition Elect": "Frontera"  # ES-TRIM FOLD (block note above): 31 veh/1 rows (es, es_dgt 2026-07…09; was opel/frontera-edition-elect) -> opel/frontera; raw "FRONTERA EDITION ELECT"
+  "Combo GS 100 Cv 1.5 Td": "Combo"  # ES-TRIM FOLD (block note above): 15 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/combo; raw "COMBO GS 100 CV 1.5 TD"
+  "Combo Ultimate 100 Cv": "Combo"  # ES-TRIM FOLD (block note above): 13 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> opel/combo; raw "COMBO ULTIMATE 100 CV"
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -8759,6 +8884,82 @@ Panther:
   Panther: null                           # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
 
 Peugeot:
+  # ── ES "NUEVO/NEW" FILLER FOLDS (data/es-completeness, 2026-11-09; owner ruling "fold the remaining Nuevo …"). DGT
+  # MODELO_ITV often opens with "NUEVO"/"NUEVA"/"NEW" (+ the make again) before the nameplate and a 22-char-truncated
+  # trim. Derived mechanically from replay_country.rb probes: strip the filler, take the LONGEST token prefix that is a
+  # LIVE record of the same make, and accept only if every leftover token is a trim/body/powertrain word; an electric
+  # tail (Eléctrico/Elec/El) folds ONLY onto an electric nameplate (ë-C4, E-5008 …), never onto the ICE record. ──
+  "Nuevo 308 5P Allure Bl": "308"  # NUEVO-FILLER FOLD (block note above): 124 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-allure-bl) -> peugeot/308; raw "NUEVO 308 5P ALLURE BL"
+  "Nuevo 308 5P GT": "308"  # NUEVO-FILLER FOLD (block note above): 120 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt) -> peugeot/308; raw "NUEVO 308 5P GT HYBRID"
+  "Nuevo 308 5P Allure Hy": "308"  # NUEVO-FILLER FOLD (block note above): 97 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-allure-hy) -> peugeot/308; raw "NUEVO 308 5P ALLURE HY"
+  "Nuevo 408 Allure Hybri": "408"  # NUEVO-FILLER FOLD (block note above): 72 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-allure-hybri) -> peugeot/408; raw "NUEVO 408 ALLURE HYBRI"
+  "Nuevo 308 5P GT Exclus": "308"  # NUEVO-FILLER FOLD (block note above): 47 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt-exclus) -> peugeot/308; raw "NUEVO 308 5P GT EXCLUS"
+  "Nuevo 408 GT Exclusive": "408"  # NUEVO-FILLER FOLD (block note above): 46 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-gt-exclusive) -> peugeot/408; raw "NUEVO 408 GT EXCLUSIVE"
+  "Nuevo 408 GT": "408"  # NUEVO-FILLER FOLD (block note above): 32 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-gt) -> peugeot/408; raw "NUEVO 408 GT HYBRID 14"
+  "Nuevo 308 Sw Allure Bl": "308"  # NUEVO-FILLER FOLD (block note above): 29 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-allure-bl) -> peugeot/308; raw "NUEVO 308 SW ALLURE BL"
+  "Nuevo 308 Sw GT Exclus": "308"  # NUEVO-FILLER FOLD (block note above): 24 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt-exclus) -> peugeot/308; raw "NUEVO 308 SW GT EXCLUS"
+  "Nuevo 308 5P GT Bluehd": "308"  # NUEVO-FILLER FOLD (block note above): 22 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt-bluehd) -> peugeot/308; raw "NUEVO 308 5P GT BLUEHD"
+  "Nuevo 308 5P Style Hyb": "308"  # NUEVO-FILLER FOLD (block note above): 22 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-style-hyb) -> peugeot/308; raw "NUEVO 308 5P STYLE HYB"
+  "Nuevo 308 5P Style Blu": "308"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-style-blu) -> peugeot/308; raw "NUEVO 308 5P STYLE BLU"
+  "Nuevo 308 Sw GT": "308"  # NUEVO-FILLER FOLD (block note above): 16 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt) -> peugeot/308; raw "NUEVO 308 SW GT HYBRID"
+  "Nuevo 308 Sw Style Hyb": "308"  # NUEVO-FILLER FOLD (block note above): 14 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-style-hyb) -> peugeot/308; raw "NUEVO 308 SW STYLE HYB"
+  "Nuevo 308 Sw Allure Hy": "308"  # NUEVO-FILLER FOLD (block note above): 9 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-allure-hy) -> peugeot/308; raw "NUEVO 308 SW ALLURE HY"
+  "Nuevo 308 5P Allure Pl": "308"  # NUEVO-FILLER FOLD (block note above): 8 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-allure-pl) -> peugeot/308; raw "NUEVO 308 5P ALLURE PL"
+  "Nuevo 408 Allure Plug": "408"  # NUEVO-FILLER FOLD (block note above): 6 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-408-allure-plug) -> peugeot/408; raw "NUEVO 408 ALLURE PLUG-"
+  "Nuevo 3008 Allure Hybr": "3008"  # NUEVO-FILLER FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-3008-allure-hybr) -> peugeot/3008; raw "NUEVO 3008 ALLURE HYBR"
+  "Nuevo 308 Sw Style Blu": "308"  # NUEVO-FILLER FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-style-blu) -> peugeot/308; raw "NUEVO 308 SW STYLE BLU"
+  "Nuevo 308 Sw GT Plug-I": "308"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt-plug-i) -> peugeot/308; raw "NUEVO 308 SW GT PLUG-I"
+  "Nuevo 5008 GT": "5008"  # NUEVO-FILLER FOLD (block note above): 3 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-5008-gt) -> peugeot/5008; raw "NUEVO 5008 GT PLUG-IN"
+  "Nuevo E-5008 Allure El": "E-5008"  # NUEVO-FILLER FOLD (block note above): 3 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-5008-allure-el) -> peugeot/e-5008; raw "NUEVO E-5008 ALLURE EL"
+  "Nuevo 5008 Allure Hybr": "5008"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-5008-allure-hybr) -> peugeot/5008; raw "NUEVO 5008 ALLURE HYBR"
+  "Nuevo 308 Sw Allure Pl": "308"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-allure-pl) -> peugeot/308; raw "NUEVO 308 SW ALLURE PL"
+  "Nuevo 308 5P Style Plu": "308"  # NUEVO-FILLER FOLD (block note above): 2 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-style-plu) -> peugeot/308; raw "NUEVO 308 5P STYLE PLU"
+  "Nuevo 3008 GT": "3008"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-3008-gt) -> peugeot/3008; raw "NUEVO 3008 GT PLUG-IN"
+  "Nuevo Rifter Allure Bl": "Rifter"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was DROPPED) -> peugeot/rifter; raw "NUEVO RIFTER ALLURE BL"
+  "Nuevo E-208 5P GT Eléc": "E-208"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-208-5p-gt-elec) -> peugeot/e-208; raw "NUEVO E-208 5P GT ELÉC"
+  "Nuevo E-208 5P Active": "E-208"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-208-5p-active) -> peugeot/e-208; raw "NUEVO E-208 5P ACTIVE"
+  "Nuevo E-5008 GT Eléctr": "E-5008"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-e-5008-gt-electr) -> peugeot/e-5008; raw "NUEVO E-5008 GT ELÉCTR"
+  "Nuevo 308 5P Business": "308"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-business) -> peugeot/308; raw "NUEVO 308 5P BUSINESS"
+  "Nuevo 308 Sw GT Bluehd": "308"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-sw-gt-bluehd) -> peugeot/308; raw "NUEVO 308 SW GT BLUEHD"
+  "Nuevo 308 5P GT Plug-I": "308"  # NUEVO-FILLER FOLD (block note above): 1 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/nuevo-308-5p-gt-plug-i) -> peugeot/308; raw "NUEVO 308 5P GT PLUG-I"
+  # ── ES-TRIM FOLDS (data/es-completeness, 2026-11-09). Spain's DGT MODELO_ITV is a
+  # 22-char free-text cell (es_dgt.rb [47,22)): what follows the nameplate is trim
+  # (Allure/GT/Style/Edition/Ultimate/GS/Max/Plus/You), body (5P = 5 doors, Talla M/XL
+  # = body length), powertrain (Turbo/Hybrid/Eléctrico/BlueHDi/Cv/Td) or "Nuevo" (new),
+  # cut mid-word. Probed with pipeline/tools/replay_country.rb --source=es_dgt --kind=car
+  # (the EXACT string at the rename lookup) over the frozen 2026-11-09 cache; only
+  # probes whose head IS the published nameplate and >= 5 vehicles. Kind-blind: the
+  # same strings in kind van fold to the same nameplate there. ──
+  "Rifter Allure": "Rifter"  # ES-TRIM FOLD (block note above): 658 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> peugeot/rifter; raw "RIFTER ALLURE BLUEHDI"
+  "Rifter GT": "Rifter"  # ES-TRIM FOLD (block note above): 604 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> peugeot/rifter; raw "RIFTER GT BLUEHDI 130"
+  "2008 GT": "2008"  # ES-TRIM FOLD (block note above): 577 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/2008-gt) -> peugeot/2008; raw "2008 GT HYBRID 145 EDC"
+  "2008 Style": "2008"  # ES-TRIM FOLD (block note above): 527 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/2008-style) -> peugeot/2008; raw "2008 STYLE HYBRID 110"
+  "2008 Style Turbo 100 S": "2008"  # ES-TRIM FOLD (block note above): 463 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/2008-style-turbo-100-s) -> peugeot/2008; raw "2008 STYLE TURBO 100 S"
+  "208 5P Edition Turbo 1": "208"  # ES-TRIM FOLD (block note above): 249 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-edition-turbo-1) -> peugeot/208; raw "208 5P EDITION TURBO 1"
+  "2008 Edition Turbo 100": "2008"  # ES-TRIM FOLD (block note above): 188 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/2008-edition-turbo-100) -> peugeot/2008; raw "2008 EDITION TURBO 100"
+  "208 5P GT": "208"  # ES-TRIM FOLD (block note above): 153 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-gt) -> peugeot/208; raw "208 5P GT HYBRID 145 E"
+  "2008 Edition": "2008"  # ES-TRIM FOLD (block note above): 142 veh/2 rows (es, es_dgt 2026-07…09; was peugeot/2008-edition) -> peugeot/2008; raw "2008 EDITION HYBRID 11"
+  "2008 GT Exclusive Hybr": "2008"  # ES-TRIM FOLD (block note above): 95 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/2008-gt-exclusive-hybr) -> peugeot/2008; raw "2008 GT EXCLUSIVE HYBR"
+  "208 5P Edition": "208"  # ES-TRIM FOLD (block note above): 92 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-edition) -> peugeot/208; raw "208 5P EDITION HYBRID"
+  "E-2008 Allure Eléctric": "E-2008"  # ES-TRIM FOLD (block note above): 74 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-2008-allure-electric) -> peugeot/e-2008; raw "E-2008 ALLURE ELÉCTRIC"
+  "2008 Allure Gasolina 1": "2008"  # ES-TRIM FOLD (block note above): 52 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/2008-allure-gasolina-1) -> peugeot/2008; raw "2008 ALLURE GASOLINA 1"
+  "208 5P Style Turbo 100": "208"  # ES-TRIM FOLD (block note above): 49 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-style-turbo-100) -> peugeot/208; raw "208 5P STYLE TURBO 100"
+  "208 5P Allure Gasolina": "208"  # ES-TRIM FOLD (block note above): 40 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-allure-gasolina) -> peugeot/208; raw "208 5P ALLURE GASOLINA"
+  "E-2008 GT Eléctrico 15": "E-2008"  # ES-TRIM FOLD (block note above): 39 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-2008-gt-electrico-15) -> peugeot/e-2008; raw "E-2008 GT ELÉCTRICO 15"
+  "E-208 5P Allure Eléctr": "E-208"  # ES-TRIM FOLD (block note above): 37 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-208-5p-allure-electr) -> peugeot/e-208; raw "E-208 5P ALLURE ELÉCTR"
+  "208 5P GT Exclusive Hy": "208"  # ES-TRIM FOLD (block note above): 35 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-gt-exclusive-hy) -> peugeot/208; raw "208 5P GT EXCLUSIVE HY"
+  "E-Rifter GT Standard 1": "E-Rifter"  # ES-TRIM FOLD (block note above): 27 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> peugeot/e-rifter; raw "E-RIFTER GT STANDARD 1"
+  "2008 Style Gasolina 10": "2008"  # ES-TRIM FOLD (block note above): 25 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/2008-style-gasolina-10) -> peugeot/2008; raw "2008 STYLE GASOLINA 10"
+  "E-Rifter Allure Standa": "E-Rifter"  # ES-TRIM FOLD (block note above): 24 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> peugeot/e-rifter; raw "E-RIFTER ALLURE STANDA"
+  "E-208 5P Style Eléctri": "E-208"  # ES-TRIM FOLD (block note above): 13 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-208-5p-style-electri) -> peugeot/e-208; raw "E-208 5P STYLE ELÉCTRI"
+  "E-Rifter Allure Long 1": "E-Rifter"  # ES-TRIM FOLD (block note above): 13 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> peugeot/e-rifter; raw "E-RIFTER ALLURE LONG 1"
+  "E-208 5P GT Eléctrico": "E-208"  # ES-TRIM FOLD (block note above): 12 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-208-5p-gt-electrico) -> peugeot/e-208; raw "E-208 5P GT ELÉCTRICO"
+  "E-2008 Style Eléctrico": "E-2008"  # ES-TRIM FOLD (block note above): 10 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-2008-style-electrico) -> peugeot/e-2008; raw "E-2008 STYLE ELÉCTRICO"
+  "E-Rifter GT Long 100 K": "E-Rifter"  # ES-TRIM FOLD (block note above): 6 veh/1 rows (es, es_dgt 2026-07…09; was dropped) -> peugeot/e-rifter; raw "E-RIFTER GT LONG 100 K"
+  "E-2008 GT Exclusive El": "E-2008"  # ES-TRIM FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-2008-gt-exclusive-el) -> peugeot/e-2008; raw "E-2008 GT EXCLUSIVE EL"
+  "208 Edition": "208"  # ES-TRIM FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-edition) -> peugeot/208; raw "208 EDITION HYBRID 110"
+  "208 5P Style Gasolina": "208"  # ES-TRIM FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/208-5p-style-gasolina) -> peugeot/208; raw "208 5P STYLE GASOLINA"
+  "E-208 5P GT Exclusive": "E-208"  # ES-TRIM FOLD (block note above): 5 veh/1 rows (es, es_dgt 2026-07…09; was peugeot/e-208-5p-gt-exclusive) -> peugeot/e-208; raw "E-208 5P GT EXCLUSIVE"
   # ── fi_traficom body-first prefix, the residue folds (pipeline PR
   # "fi_traficom: strip the register's body-word prefix"). Finland writes a
   # slice of the older fleet "<BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -9015,6 +9216,8 @@ Piaggio:
   New Skipper: Skipper                        # 516 vehicles (gb) — the facelifted Skipper; motorcycle/piaggio/skipper is live off uk_dft + nl_rdw + nz_nzta, and uk_dft writes BOTH forms. Generation marker, not a nameplate (same ruling as the Kymco block) — https://en.wikipedia.org/wiki/Piaggio_Skipper
 
 Plymouth:
+  "Belverdere": "Belvedere"  # TYPO TWIN of car/plymouth/belvedere: nz 'BELVERDERE' 3; nl 'BELVERDERE' 2 — https://en.wikipedia.org/wiki/Plymouth_Belvedere (accessed 2026-11-09); retires car/plymouth/belverdere (former_ids.yml)
+  "Baracuda": "Barracuda"  # TYPO TWIN of car/plymouth/barracuda: nl 'BARACUDA' 2; nz 'BARACUDA' 1 — https://en.wikipedia.org/wiki/Plymouth_Barracuda (accessed 2026-11-09); retires car/plymouth/baracuda (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -9977,6 +10180,9 @@ Rover:
   "Range-Rover": Range Rover  # hyphenated spelling (nl x10 car/x3 van, nz x1) — SAME SLUG as Range Rover already; pinned so the display cannot flap by row count (the Scania G-Series precedent). FIRES IN car AND van (https://en.wikipedia.org/wiki/Range_Rover)
   "3.5 Litre": "3.5 Litre"   # INTERIM — superseded by the junk? dot-decimal rule fix (DEBT hygiene-2 "comma-decimal + 2.0T junk rules"). Renames are consulted BEFORE junk? (normalizer.rb:178-186), so this identity key RESCUES 1,272 vehicles in fi+gb+nl+nz that the rule currently deletes outright: the Rover P5B 3.5-Litre (1967-73), the V8 sibling of the published car/rover/3-litre — https://en.wikipedia.org/wiki/Rover_P5 . Scoped to this ONE real nameplate; the other 6,713 vehicles of the same class stay filed as the rule defect they are (dossier §E-7)
 
+Royal Enfield:
+  "Bullett": "Bullet"  # TYPO TWIN of motorcycle/royal-enfield/bullet: nl 'ROYAL ENFIELD BULLETT' 1 + 'ENFIELD BULLETT' 1; nz 'BULLETT' 1 — https://en.wikipedia.org/wiki/Royal_Enfield_Bullet (accessed 2026-11-09); retires motorcycle/royal-enfield/bullett (former_ids.yml)
+
 Ryuka:
   "Save-II S Fi":                            Save-II S FI             # FI is fuel injection, an initialism in every marque that uses it. Two tokens fixed in one record.
   "Classic Fi":                                "Classic FI"                               # resolves an intra-make casing contradiction: FI attested x1 in-make (ryuka/classic-fi)
@@ -10530,7 +10736,7 @@ Sherco:
   250SEF-R: 250 SEF      # SEF = the 4T enduro line; Racing trim folds
   300SEF-R: 300 SEF      # same
   450SEF-R: 450 SEF      # same
-  500SEF-R: 500 SEF      # same
+  500SEF-R: "500"        # REPOINTED 2026-11-09 (owner ruling: no id churn; was "500 SEF", a demoted candidate holding nl 12 alone): the same 478 cc four-stroke is PUBLISHED as motorcycle/sherco/500 [gb,nl,nz] — uk_dft GenModel "SHERCO 500" carries Models "500 SEF", "500 SEF FACTORY", "500 SEF-R FACTORY" (2026 Q2); the nl "500 SEF-R" x12 join it. https://www.bikesales.com.au/bikes/details/2021-sherco-500-sef-r/SSE-AD-20061383/ (accessed 2026-11-09) [tier 2-3 dealer listing]
   300SE-F: 300 SE        # NOT the SEF 4T: TAN e13*168/2013*00113*07 + RDW 293cc prove the 2-stroke SE — trailing F is the FACTORY trim
   250 2ST: 250 SE        # "2ST" = registry shorthand for 2-stroke; Sherco's only 250 2T enduro is the SE (RDW 249cc, e13*2002/24*0620)
   300 2ST: 300 SE        # same — RDW 293cc = SE 300 2T
@@ -10579,6 +10785,7 @@ Singer:
   Saloon: null                            # body class in the model column: saloon — 3 v, nl_rdw handelsbenaming ×2, nz_nzta MODEL ×1; raw "SALOON"×3. Singer keeps 15 live records (bantam, chamois, gazelle, hunter…) that the row cannot be assigned to, so no alias target is honest (body-word 92 class; DECISIONS.md fold safeguard)
 
 Smart:
+  "Fourtwo": "Fortwo"  # TYPO TWIN of car/smart/fortwo: fi 'FOURTWO Coupe (AD) 698cm3' 1; es 'FOURTWO CABRIO' 1 — https://en.wikipedia.org/wiki/Smart_Fortwo (accessed 2026-11-09); retires car/smart/fourtwo (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -10858,6 +11065,9 @@ Super Soco:
   Cpxpro: CPx Pro                           # register glued the trim onto the type code; marque sells it as the Pro version of the CPx
   Ts Street Hunter: TS Street Hunter        # TS is Super Soco's model line (3rd-gen TS), caps at the marque and in press: https://www.motorcyclenews.com/news/new-bikes/super-soco-tc-wanderer-ts-street-hunter/
 
+Sur-Ron:
+  "Ligth Bee": "Light Bee"  # TYPO TWIN of moped/sur-ron/light-bee: nl 'LIGTH BEE' 2; es 'SURRON LIGTH BEE' 1 — https://sur-ron.co.uk/light-bee (accessed 2026-11-09); retires moped/sur-ron/ligth-bee (former_ids.yml)
+
 Suzuki:
   # ── ua_mvs COVERAGE SWEEP (2026-10-03, S4W/COV-2) — keys = the string probed at the renames consultation site (replay_country.rb), values = the live record's own name; corpus = FRESH MVS register extract fetched 2026-10-03; mints no id.
   "Sx-4 S-Cross":            SX4 S-Cross  # 9 veh (ua, ua_mvs) -> live suzuki/sx4-s-cross; raw "SX-4 S-CROSS"; https://en.wikipedia.org/wiki/Suzuki_SX4_S-Cross (accessed 2026-10-03) [tier 3 Wikipedia; quote: model is "SX4 S-Cross"; the register spelling SX-4 is a hyphenated variant (not on the page)]
@@ -11042,6 +11252,7 @@ Tol:
   "TOL1500":                   "1500"                 # embedded make prefix — strip_make_prefix needs [\s,]+ after the prefix, so a hyphenated or fused badge survives (the IVA pilot's diagnosis)
 
 Toyota:
+  "Corrolla": "Corolla"  # TYPO TWIN of car/toyota/corolla: nl 'CORROLLA' 2, 'CORROLLA 1.6' 2; es 'TOYOTA CORROLLA' 1 — https://en.wikipedia.org/wiki/Toyota_Corolla (accessed 2026-11-09); retires car/toyota/corrolla (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -11407,6 +11618,9 @@ Trigano:
   Trigano: null                               # registry rows where the make was written into the model column (car kind) — not a nameplate. Multi-source, but corroboration does not clear this class: several registers share the same fallback habit.
 
 Triumph:
+  "Tiger Club": "Tiger Cub"  # TYPO TWIN of motorcycle/triumph/tiger-cub: nl 'TIGER CLUB' 1; nz 'TIGER CLUB' 1 (Triumph built the Tiger Cub 1954-68, no 'Tiger Club') — https://en.wikipedia.org/wiki/Triumph_Tiger_Cub (accessed 2026-11-09); retires motorcycle/triumph/tiger-club (former_ids.yml)
+  "Bonnevile": "Bonneville"  # TYPO TWIN of motorcycle/triumph/bonneville: nz 'BONNEVILE' 3, '650 BONNEVILE' 1; nl 1 — https://en.wikipedia.org/wiki/Triumph_Bonneville (accessed 2026-11-09); retires motorcycle/triumph/bonnevile (former_ids.yml)
+  "Bonnerville": "Bonneville"  # TYPO TWIN of motorcycle/triumph/bonneville: nz 'BONNERVILLE' 2 + 'BONNERVILLE T120R' 1; nl 1 — https://en.wikipedia.org/wiki/Triumph_Bonneville (accessed 2026-11-09); retires motorcycle/triumph/bonnerville (former_ids.yml)
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
   # of classify; same method as pipeline/tools/report_junk_drops.rb). Finland's
   # kaupallinenNimi is "<door><BODY> <model> <engine>-<typecode>/<wheelbase>",
@@ -11841,7 +12055,8 @@ Volkswagen:
   Buggy: null            # kit-car/beach-buggy registrations on Beetle base
   Volkswagen-Vw: null    # fi/nl rows whose model column literally reads "VOLKSWAGEN-VW" — the make twice, zero model information. Unlike make-as-model keeps (van/uaz/uaz), there is no single-model marque hypothesis to preserve; removal manifest: removals.yml
   Kever: null            # Dutch for Beetle — classic-era rows; Beetle nameplate covers it
-  Multivan: null         # van kind (T-series passenger)
+  # Multivan: null — RETIRED 2026-11-09 (data/es-completeness). The bare form was nulled KIND-BLIND as "van kind (T-series passenger)", which killed it in the van kind too, so VW's passenger Multivan had no record anywhere: 812 ES M1 registrations Jul–Sep 2026 (es_dgt "MULTIVAN", 100% M1, RD 2822 code 10 turismo 712) were dropped. The Multivan is its own nameplate: sold beside the Caravelle since the T4, and the T7 Multivan (2021-) is an MQB passenger car, "not to be confused with the new Volkswagen Transporter panel van" — https://en.wikipedia.org/wiki/Volkswagen_Multivan . With no key it now publishes as car/volkswagen/multivan (DECISIONS.md, passenger versions of van-based MPVs).
+  T4 Multivan: Multivan  # generation prefix + nameplate (NAMING.md §6: generations fold into the nameplate); was the stub car/volkswagen/t4-multivan [ch,fi,nl], aliased in former_ids.yml — https://en.wikipedia.org/wiki/Volkswagen_Multivan
   Kombi: null            # van kind
   Passat CC: Passat      # CC marketed as Passat CC then standalone; folded (dropdown UX)
   Touareg R: Touareg     # R is a trim
@@ -12042,11 +12257,11 @@ Volkswagen:
   Kleinbuss: Caravelle  # MISSPELLING of Kleinbus — https://en.wikipedia.org/wiki/Volkswagen_Transporter
   Kleinbuss 1600-22: Caravelle  # Kleinbus plus engine + factory type 22 (Microbus) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
   Micro Bus: Caravelle  # "Known officially (depending on body type) as the Transporter, Kombi or Microbus" — the passenger body, which the catalog carries as Caravelle. KIND-BLIND: serves car+bus. The existing `Microbus: Micro Bus` line points at this key and must be REPOINTED — https://en.wikipedia.org/wiki/Volkswagen_Transporter
-  Multi Van: Caravelle  # spaced spelling of Multivan, the passenger T-series. KIND-BLIND: serves car+van. SEE §5: the settled `Multivan: null` line kills the BARE form in every kind — https://en.wikipedia.org/wiki/Volkswagen_Transporter
-  Multivan Starline: Caravelle  # MISSPELLING of Startline (a Multivan trim) — https://en.wikipedia.org/wiki/Volkswagen_Transporter
-  Multivan Startline: Caravelle  # Startline is the entry trim of the Multivan. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Transporter
-  Multivan Syncro: Caravelle  # Multivan with the Syncro 4WD system — https://en.wikipedia.org/wiki/Volkswagen_Transporter
-  Multivan-T6: Caravelle  # Multivan, T6 generation — trim + generation, no new nameplate — https://en.wikipedia.org/wiki/Volkswagen_Transporter
+  Multi Van: Multivan  # RETARGETED 2026-11-09 (was Caravelle, while bare Multivan was nulled): spaced spelling of the Multivan nameplate, which now publishes on its own. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Multivan
+  Multivan Starline: Multivan  # RETARGETED 2026-11-09 (was Caravelle): MISSPELLING of Startline, a Multivan trim — the row is a Multivan — https://en.wikipedia.org/wiki/Volkswagen_Multivan
+  Multivan Startline: Multivan  # RETARGETED 2026-11-09 (was Caravelle): Startline is the entry trim of the Multivan. KIND-BLIND: serves car+van — https://en.wikipedia.org/wiki/Volkswagen_Multivan
+  Multivan Syncro: Multivan  # RETARGETED 2026-11-09 (was Caravelle): Multivan with the Syncro 4WD system — https://en.wikipedia.org/wiki/Volkswagen_Multivan
+  Multivan-T6: Multivan  # RETARGETED 2026-11-09 (was Caravelle): Multivan, T6 generation — generation suffix, same nameplate — https://en.wikipedia.org/wiki/Volkswagen_Multivan
   Vw Caravelle 2: Caravelle  # make abbreviation + the same comma-decimal artifact — https://en.wikipedia.org/wiki/Volkswagen_Transporter
   Vw-Campingwagen: Caravelle  # 'Campingwagen' is a body/conversion word on the passenger T-series — https://en.wikipedia.org/wiki/Volkswagen_Transporter
   # car/volkswagen/tiguan:
@@ -13569,8 +13784,8 @@ Zundapp Famel:
   "12OLS":        "120 LS"  # OCR/keying error: the letter O for the digit 0 (nz ×1) — https://en.wikipedia.org/wiki/%C5%A0koda_105/120
   "120GLS":       "120 GLS" # spacing normalised; this ADDS fi to the GLS trim record
   "136L":         "136 L"   # spacing normalised on the 136 (the 1984-90 1.3-litre) — https://en.wikipedia.org/wiki/%C5%A0koda_130
-  "1000 Mb":      "1000 MB" # MB = "motor vzadu, blok" — Škoda's own suffix, always capitals — https://en.wikipedia.org/wiki/%C5%A0koda_1000_MB
-  "1000 Mb De Luxe": "1000 MB"  # the De Luxe trim of the same car (nl)
+  "1000 Mb":      "1000 MB" # MB = Mladá Boleslav, the works town (COMMENT CORRECTED 2026-11-09: it previously glossed MB as "motor vzadu, blok") — https://en.wikipedia.org/wiki/%C5%A0koda_1000_MB (accessed 2026-11-09) [tier 3]; 1964-69, De Luxe Type 721 from 1966
+  "1000 Mb De Luxe": "1000 MB"  # the De Luxe trim of the same 1000 MB (MB = Mladá Boleslav) (nl) — https://en.wikipedia.org/wiki/%C5%A0koda_1000_MB (accessed 2026-11-09) [tier 3]
   "1100 Mb":      "1100 MB" # the 1.1-litre member of the same range — https://en.wikipedia.org/wiki/%C5%A0koda_1000_MB
   "1100 Mb De Luxe": "1100 MB"  # De Luxe trim (nl)
   "1100MB":       "1100 MB" # unspaced register form (nz)

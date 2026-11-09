@@ -60,6 +60,11 @@ comment.
    agreeing. This is the dataset's publish rule (`DECISIONS.md`), and it doubles
    as a shape test: two registers do not invent the same odd string by accident.
    Used by `scripts/lint_dataset.rb` to separate real nameplates from artifacts.
+   **Exception, never a shortcut: attested admission** (`overrides/models/attested.yml`,
+   DECISIONS.md 2026-11-09). A real nameplate that one register shows below the
+   floor publishes when a tier-1/tier-2 source names it AND at least one minting
+   register row reaches it. The register still decides THAT it exists here; the
+   attestation decides that it is a real model rather than an artifact.
 5. **Encyclopaedic sources** — fine for history and model years, never for
    "what the register says".
 
