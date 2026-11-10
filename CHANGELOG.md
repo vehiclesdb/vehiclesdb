@@ -2,6 +2,86 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.4] - 2026-11-10 — register-native kinds, Israel type codes, Spain two-wheelers, Australian trucks, name cleanup
+
+**16,225 models across 981 makes (16,032 → 16,225; 243 added, 50 retired, every retirement aliased to a live successor).**
+
+Same frozen register snapshots as 2026.11.2 and 2026.11.3. The diff comes from curation (data#400) and pipeline changes (pipeline#280, #281) alone. All registers: 94.17% → 94.34% of vehicles land on a published record (+177,601).
+
+### Coverage (share of each register's vehicles on a published record, 11.3 → 11.4)
+
+| | 2026.11.3 | 2026.11.4 |
+|---|---:|---:|
+| Spain motorcycle | 92.41% | 97.46% |
+| Spain moped | 62.06% | 70.60% |
+| Spain van | 94.92% | 96.65% |
+| Spain bus | 69.20% | 87.34% |
+| Spain car | 97.99% | 98.06% |
+| Spain truck | 95.57% | 95.54% |
+| Israel motorcycle | 5.79% | 27.41% |
+| Australia truck | 81.74% | 95.28% |
+| Argentina car | 70.19% | 80.29% |
+| Argentina van / truck / bus | (all in car before) | 87.28% / 49.59% / 100% |
+| all registers | 94.17% | 94.34% |
+
+Spain and Argentina denominators move slightly. Rows that had no kind now get one from the register's own type field, and Argentina's trailers leave the car denominator.
+
+| kind | 2026.11.3 | 2026.11.4 | Δ |
+|---|---:|---:|---:|
+| car | 5,997 | 6,025 | +28 |
+| motorcycle | 6,196 | 6,266 | +70 |
+| moped | 1,459 | 1,482 | +23 |
+| van | 795 | 806 | +11 |
+| truck | 1,159 | 1,209 | +50 |
+| bus | 426 | 437 | +11 |
+
+### Register-native kinds (pipeline)
+- **Spain (DGT):**
+  - A row with a blank EU category takes its kind from COD_TIPO (the register's vehicle-type code), but only for codes that the categorised rows agree on at ≥ 99.7%. That covers 2,099 used imports over Jul–Sep 2026.
+  - Bodybuilder re-homing (converter make → base-vehicle make) now covers plain-body cars (e.g. KG Mobility Rexton conversions, LPG Cupra Terramar) and minibuses (Sprinter, Transit and Master minibus conversions, Castrosua bodies on Scania).
+  - A van conversion of a car with no van record (Zago "SANDERO VAN") lands on the car record.
+- **Argentina (DNRPA):**
+  - The "autos" file holds every non-motorcycle vehicle, and kind now comes from its body-type field.
+  - Trailers, caravans and UTVs no longer count as cars. Vans, trucks and minibuses get their own kind.
+  - Pick-ups follow the kind the catalog already publishes the nameplate in. Amarok is van; Hilux, Ranger, Toro and others stay car.
+- **Australia (BITRE):** curated per-nameplate routes move cab-over light trucks filed as light commercials to truck: Isuzu NPS/Elf, Hyundai Mighty, Nissan Atlas, Mazda Titan.
+
+### Israel motorcycles: type codes
+The Israeli two-wheeler register names a machine by its manufacturer **type code** (Honda NF13, Yamaha SJ18), and the Ministry publishes no code-to-name table. The Dutch RDW register (CC0, already a source) pairs the same type codes with commercial names. 173 high-confidence codes (exact code, ≥ 5 RDW vehicles, ≥ 90% one name, target already published) now resolve **+39,115** Israeli motorcycles. Separately, the Hebrew make label read as SWM is SYM (Ministry plant countries, shared type codes, RDW).
+
+### Curation
+- **attested.yml grows from 395 to 612 entries (186 attach-only).** Every new entry carries a fetched tier-1/2 URL:
+  - Spanish two-wheelers: Kove, Efun, Next, QJMotor, MITT, Morbidelli, Zontes, Letbe, Zairon, Hero, TVS and others;
+  - Stellantis electric names: E-308, E-408, E-Traveller, ë-C5 Aircross, ë-Jumpy;
+  - Spanish buses: King Long, Irizar, Unvi;
+  - Australian trucks: Hino 500/700 codes, Kenworth T610/T909/T409/T659/T359/T360/T410/C509, Western Star, International T-Line, Sterling LT/AT, Caterpillar CT;
+  - items verified from the held list: MG VS, Proton Compact, Mack Fleetliner, Mercedes-Benz LK, Dangel, Foton eTunland, Mazda B2200.
+- **Owner rulings applied:**
+  - SYM displacements are separate records where SYM markets them separately (ADX 125 / ADX 300, Symphony ST 125 / 200, Cruisym 125 / 300, Joymax Z 125 / 300).
+  - About 40 junk motorcycle names (Euro-norm tails, fused ABS/kW, truncations) fold onto their clean records.
+  - `great-wall/tank` folds into Tank 300. The NZ line pools Tank 300 and 500.
+  - Electric names in the manufacturer spelling: ID. Buzz, ID. Polo, e-Golf, bZ4X Touring, RS / S e-tron GT, E-Doblò.
+  - Converter makes Zago and Mebauto retire onto the base vehicle.
+  - Mercedes Atego/Axor car ids (Argentine chassis rows) alias to their truck records.
+- **New curation files:**
+  - `overrides/models/series_keep.yml`: coded heavy designations that are their own nameplates.
+  - `overrides/models/rename_kinds.yml`: a rename scoped to some kinds.
+  - `overrides/makes/converters.yml`.
+  - `type_codes` in `kind_maps/il_mot.yml` and `by_model` in `kind_maps/au_bitre.yml`.
+- **Known-held items** are recorded in DECISIONS.md:
+  - Australian UD chassis codes spanning generations;
+  - Mercedes "96X";
+  - Hino FF/FB/GS;
+  - Ford Trader and Daihatsu Delta;
+  - Spanish two-wheeler type codes with no proven commercial name;
+  - Isuzu NPR/NQR/NKR in Australia's light-commercial class.
+
+### Checks
+- Frozen build: ALL GATES GREEN.
+- Lints: overrides, curation (with new `type_codes` / `by_model` shape checks), id history, make-block order.
+- Gem 0.9.1 conformance: 170/170. The 12 kind-collision cases wait for gem 0.9.2.
+- Codex Astra review, two rounds; every finding is fixed.
+
 ## [2026.11.3] - 2026-11-10 — attach-only attestation, GWM sub-brands, Opel Electric records, and dataset fields for safe refresh
 
 **16,032 models across 970 makes (15,845 → 16,032; 204 added, 17 retired, every retirement aliased to a live successor).**
