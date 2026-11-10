@@ -527,6 +527,14 @@ Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].sort.each do |abs|
   end
   fail! "#{rel}: missing the `kinds:` map" unless doc.key?("kinds")
   (doc["by_model"] || {}).each do |model, kind|
+    # au_bitre scopes its routes by the class kind they correct: {van: {"MAKE|MODEL": truck}}
+    if kind.is_a?(Hash) && %w[car van motorcycle moped truck bus].include?(model.to_s)
+      kind.each do |pair, to|
+        next if %w[car van motorcycle moped truck bus].include?(to.to_s)
+        fail! "#{rel}: by_model #{model}/#{pair.inspect} → #{to.inspect} is not a known kind"
+      end
+      next
+    end
     next if %w[car van motorcycle moped truck bus].include?(kind.to_s)
     fail! "#{rel}: by_model #{model.inspect} → #{kind.inspect} is not a known kind"
   end
