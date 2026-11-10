@@ -148,6 +148,13 @@ Both kinds of record are true, both are useful to a consumer resolving what is o
 - **It is general:** any kind, any market.
 - **First users:** Ebro S800 / S900, the nine pre-war Alfa Romeo 6C/8C nameplates on the Dutch register, and Kia K2700 / K2900 (kind van; nl rows, with the AU fleet attached).
 
+**Attested admission on attach-only evidence (owner ruling 2026-11-10).** The 2026-11-09 rule above required a MINTING register row, which left ~140 verified, sourced nameplates unpublishable because their only register evidence is in an attach-only register (Australia's BITRE census, Israel's MoT, Norway, Switzerland): Kenworth T409/T610/T909, Isuzu FRR/FTR/NPS, Hino 300, Mack Granite, Freightliner Columbia, LDV G10, Great Wall Cannon … The owner ruled that a real nameplate with a manufacturer or trade source is curated knowledge, not register noise, and may publish on attach-only evidence.
+- **Shape — explicit and auditable.** The entry's value becomes a mapping: `T409: {url: https://…, evidence: attach_only}  # au_bitre 3,546; attach-only evidence … [tier 2]`. A plain URL entry keeps the strict minting rule; only the flagged form relaxes it, so `grep "evidence: attach_only" overrides/models/attested.yml` lists every such admission.
+- **Still never conjures a record.** An attach-only register row must reach the id through the normal classify path (the build fails an entry no register row reaches at all), and a `former_ids` alias source stays dead.
+- **Still curated, not automatic.** Attach-only registers themselves remain attach-only (they never mint on their own — DECISIONS "A new register is ATTACH-ONLY until its junk rate is measured"); only a reviewed attested.yml line, with a tier-1/2 URL fetched and confirmed, can publish on their evidence.
+- `scripts/lint_overrides.rb` accepts the mapping only with `evidence: attach_only` and requires the comment to say "attach-only evidence"; the pipeline loader rejects any other `evidence` value.
+- **Owner exclusions kept:** no van ids for Australian utes whose nameplate is a car record (Colorado, Falcon, Rodeo); family labels (Kenworth K/W-series, Mack CSMR/CMMT/CMMR) and the UD codes sourced only from a sales atlas are not nameplates.
+
 *Why the floor is not simply lowered:* it is the only thing between the catalog and tens of thousands of register spellings. Each attestation is reviewed, cited and grounded in a register; a lower floor is none of those.
 
 ## Sources & evidence

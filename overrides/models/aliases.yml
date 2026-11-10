@@ -41,18 +41,11 @@ Citroën:
   Az 2CV: [Deux Chevaux, Ente, 2CV]                  # FR spoken form; DE nickname ("duck"); bare 2CV is what a user actually searches for
   DS3: [DS3 Cabrio]                                # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): DS3 Cabrio = body name, "Citroën unveiled the DS3 Cabrio at the Paris Motor Show" — https://en.wikipedia.org/wiki/Citro%C3%ABn_DS3 (fetched 2026-10-10) [wikipedia]
 
-Cupra:
-  # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. `car/seat/leon`
-  # publishes "León" too, so bare "leon" is a rung-4 multi-id REFUSAL
-  # (resolver.rb:192-199; find_alias_name_collisions.rb class B). Retiring ONE
-  # side would make bare "leon" resolve, and that was proposed — DECLINED: the
-  # two are a D-3 rebadge pair of near-equal reach (seat 9 countries/d2, cupra
-  # 8/d3, measured on dist 2026.08.1) and both opt-ins are sourced, so a silent
-  # 0.90 pick of one badge is worse than a refusal that returns both as
-  # alternates — the same reasoning this repo applies to classes C/D/E. The
-  # durable fix is a `rebadge_of` relation row, not deleting a sourced fact.
-  León: [León]                  # ES official spelling — Cupra's Spanish site writes "CUPRA León" (https://www.cupraofficial.es/coches/leon)
-
+# Cupra / SEAT León (2026.11.3): the former `León: [León]` opt-ins on BOTH records were retired. Since
+# 2026.11.2 the manufacturer spelling "León" IS each record's published name, so the alias duplicated the
+# name, re-created the class-B collision and tripped lint_enrich's relations check (an alias of one record
+# equal to the name of its rebadge twin). Bare "leon"/"león" still refuses between the two badges, by the
+# accepted 2026-08-02 ruling; the rebadge relation is the durable link.
 Dacia:
   # Dacia↔Renault rebadges: the same vehicle wears two badges in two market
   # sets — cross-references, NOT duplicates (the Pajero/Montero/Shogun
@@ -209,7 +202,6 @@ Santana:
   PS10: [Aníbal]                # ES market name — the Santana Aníbal / PS-10 utility 4x4 (Linares, 2003-2011; https://autopista.es/noticias-motor/articulo/mot11298.htm)
 
 SEAT:
-  León: [León]                  # ES official spelling — seat.es titles "SEAT León"; international sites drop the accent — see the Cupra block: KNOWN class-B collision, both opt-ins deliberately kept
   # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. "Córdoba" folds
   # to "cordoba", which is also the NAME of `car/chrysler/cordoba` (d5, fi,nl,
   # nz), so this bare-resolution opt-in (§1.5 mechanism, resolver.rb:177-179) is

@@ -57,6 +57,7 @@ shapes below) and fill in over time.
 | `slug` | string | lowercase ASCII (NFKD-folded — `škoda` → `skoda`) |
 | `name` | string | `"BMW"` |
 | `aliases` | string[]? | published alternate names — nicknames, initialisms, native scripts (`["Chevy"]`, `["比亚迪"]`); absent when none curated |
+| `former_slugs` | string[]? | make slugs that no longer exist because that make was merged into or renamed to this one (`["renault-trucks"]` on `renault`; added 2026.11.3). A resolver that receives a former slug answers this make. Derived from the make-merge entries of `overrides/models/former_ids.yml`; absent when none |
 | `country` | string? | ISO-3166 alpha-2 of origin *(optional, future)* |
 | `aliases` | string[]? | alternate spellings *(optional, future)* |
 
@@ -78,6 +79,7 @@ shapes below) and fill in over time.
 | `popularity` | object? | measured popularity (`global_decile`, `mass_decile`, `by_country`) — see below; absent = no counts yet |
 | `sources` | string[] | ids of the sources that evidence this record (see SOURCES.md) |
 | `xrefs` | object? | crosswalks; today `{"tan": [...]}` EU type-approval numbers where measured |
+| `registration_years` | object? | `{"first": 1998, "last": 2026}` — a HINT: the earliest and latest FIRST-REGISTRATION year seen for this record in the registers whose year series is first-registration based (fi, nl), counting only years with ≥ 2 vehicles in one register. Registration, not production: never use it as a validation bound (imports, re-registrations and register typos sit at both ends). Absent when no such series (added 2026.11.3) |
 | `year_start` / `year_end` | int? | nameplate lifespan *(optional, future)* |
 | `generations` | object[]? | reserved layer — shape below |
 | `variants` | object[]? | reserved layer — shape below |
@@ -256,6 +258,8 @@ the make, and a spelling that would land on two different records of one make
 is dropped. Resolvers should try `name` → `aliases` → `forms`, all
 make-scoped. Absent when the record has none.
 
+`registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them.
+
 Neither decile is a per-country ordering. Anything that lists "the most
 popular models in country X" should sort by `country_ranks[X]` (the `vehicles`
 gem's `top_models(country:)` does from 0.7.8). Countries whose sources record
@@ -271,11 +275,15 @@ working. The parquet file is converted from the CSV and has the same columns.
 
 ## `dist/catalog.sqlite`
 
-Tables: `meta` (key/value), `makes (id, kind, name)`, `models (id, kind,
+Tables: `meta` (key/value), `makes (id, kind, name, former_slugs)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3), `models (id, kind,
 make_id, slug, name, body_types, regions, global_popularity_decile,
 mass_popularity_decile)`, `availability
 (model_id, kind, country, evidence, source)`, `popularity (model_id, kind,
 country, rank, decile, confidence)`. Ids match the JSON ids exactly.
+
+## `manifest.json` checksums
+
+The release `manifest.json` keeps its `dist` map (name → path) and, from 2026.11.3, carries `dist_files`: `{"dist/vehicles.json": {"sha256": "…", "bytes": 8143727, "records": 15845}, …}` for every file in `dist/` — `sha256` (hex) and `bytes` of the exact published file, and `records` (model records; CSV rows without the header) where countable. A refresher should fetch `manifest.json` first, skip when `version` is unchanged, and verify `sha256` and `bytes` before swapping a downloaded file in.
 
 ## Versioning
 

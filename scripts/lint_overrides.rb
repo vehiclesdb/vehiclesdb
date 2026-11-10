@@ -143,11 +143,25 @@ if File.exist?(File.join(ROOT, at_path)) && (at = load_yaml(at_path))
     fail! "#{at_path}(#{kind}): expected make → nameplate → URL mapping" unless makes.is_a?(Hash)
     (makes || {}).each do |make, plates|
       fail! "#{at_path}(#{kind}/#{make}): expected nameplate → URL mapping" unless plates.is_a?(Hash)
-      (plates || {}).each do |plate, url|
+      (plates || {}).each do |plate, val|
         where = "#{at_path}(#{kind}/#{make}/#{plate})"
+        # ATTACH-ONLY ADMISSION (owner ruling 2026-11-10): the value may be a
+        # mapping {url:, evidence: attach_only} — the only other accepted shape.
+        # It admits a tier-1/2 nameplate whose register evidence is attach-only
+        # (au/il/ch/no/ro), which a plain URL entry never does; the flag keeps
+        # those admissions auditable (grep `evidence: attach_only`).
+        if val.is_a?(Hash)
+          extra = val.keys.map(&:to_s) - %w[url evidence]
+          fail! "#{where}: unknown key(s) #{extra.inspect} — the mapping form is {url:, evidence: attach_only}" unless extra.empty?
+          fail! "#{where}: evidence must be attach_only (got #{val["evidence"].inspect})" unless val["evidence"].to_s == "attach_only"
+          url = val["url"]
+        else
+          url = val
+        end
         fail! "#{where}: value must be the http(s) source URL" unless url.to_s.match?(%r{\Ahttps?://\S+\z})
         fail! "#{where}: Wikipedia is tier 3 and cannot attest — cite the manufacturer (tier 1) or trade/official press (tier 2)" if url.to_s.include?("wikipedia.org")
         line = at_lines.find { |l| l.include?(url.to_s) && l =~ /\A\s+["']?#{Regexp.escape(plate.to_s)}["']?\s*:/ }
+        fail! "#{where}: an attach_only entry must say so in its comment (`attach-only evidence`)" if val.is_a?(Hash) && line && line !~ /attach-only/
         if line.nil? || line !~ /#\s*\S/
           fail! "#{where}: needs a same-line `#` comment (register evidence, tier, access date)"
         else
