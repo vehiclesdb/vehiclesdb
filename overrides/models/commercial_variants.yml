@@ -1,0 +1,66 @@
+# Commercial versions of car nameplates — the passenger gate's MIRROR, and the
+# cross-kind ATTACH for rows that publish in neither kind.
+#
+# RULING: DECISIONS.md "Commercial versions of car nameplates, and cross-kind
+# attach" (owner, 2026-11-10, "Nordic kind policy (NO/FI)"). Sits next to
+# passenger_variants.yml, whose header explains the gate this one mirrors.
+#
+# WHY THIS FILE EXISTS. Norway and Finland register tens of thousands of car
+# nameplates as vans (EU N1: a Touran, a Fiesta, an Octavia with the rear seats
+# out and a cargo grille, sold as a tax-class van). Those rows reach the van
+# build; until 2026-11-10 they either minted a thin van/<make>/<model> record
+# or — far more often — were thrown away by the 97% cross-kind dominance prune
+# or sat below the floor, and so counted NOWHERE (~38k vehicles, NO/FI). The
+# mirror case: car rows of van nameplates whose passenger lift FAILS the gate
+# (Trafic, Vivaro, Jumpy, Expert …, ~16k NO/FI/NL/GB) were pruned and vanished.
+#
+# HOW IT WORKS (pipeline: overrides.rb#load_commercial_variants!,
+# reconciler.rb#commercial_gate! and #cross_kind_attach!, wired in run.rb):
+#   1. GATE. A van record of a CAR nameplate — its car twin publishes in the
+#      same build and out-weighs it — publishes only if, in at least one
+#      register of `split_countries`, it holds >= min_van_count vehicles AND
+#      >= min_van_share of that country's car+van total. Minting counts only
+#      (attach-only registers never decide), every verdict logged ("commercial
+#      gate van/<id>: PASS fi 412 van (31.0%)"). An id already published in
+#      kind van is HELD, never removed. A PASS pair's car and van halves are
+#      never pruned by the 97% dominance prune; unlike a passenger lift, the
+#      pair does NOT vote as one mass, so bus/truck records are judged exactly
+#      as without this gate (merging pruned 5 published bus/truck ids in the
+#      first replay — bus/toyota/land-cruiser, bus/nissan/patrol …).
+#   2. ATTACH. A car or van row whose nameplate has NO published record in its
+#      own kind (gate FAIL, passenger-gate FAIL, dominance prune, or below the
+#      floor) but HAS one in the other kind counts on that record, for the
+#      registers in `attach.countries` only: the twin's registrations
+#      by_country, availability, sources, year histograms and powertrain grow;
+#      its MINTING evidence does not (attached rows never vote in a later gate,
+#      prune or hysteresis decision). It never mints and never applies when a
+#      record exists in the row's own kind. Rows with no published record in
+#      either kind stay where they were (build/candidates/).
+#
+# NO MAKE LIST, deliberately — unlike passenger_variants.yml. The passenger
+# lift needs a closed, make-scoped list because it RE-ADMITS rows that
+# drop_patterns.yml throws away, and must keep the camper/ambulance conversion
+# bases (Sprinter, Ducato, Master …) out of `car`. Nothing drops a car
+# nameplate's N1 rows: they reach the van build already, so a list would only
+# be a hand-picked subset of "car nameplates that have N1 rows" — the evidence
+# test is the whole gate. Car rows that drop_patterns.yml drops WITHOUT a lift
+# (the conversion bases) are not rows of any car record and are untouched: they
+# stay dropped, as that file and passenger_variants.yml rule.
+
+gate:
+  min_van_count: 100    # = passenger_variants.yml gate.min_car_count. The ruling is "same thresholds": the pipeline RAISES if the two files diverge
+  min_van_share: 0.25   # = passenger_variants.yml gate.min_car_share
+  split_countries: [es, fi, gb, lu, nl]  # = passenger_variants.yml gate.split_countries — the registers whose car/van kind is the M1/N1 line at ROW level; see the reasons there (no de, nz, no, car-only sources)
+
+attach:
+  # Registers whose rows may land on the OTHER kind's record. The five split
+  # registers, plus Norway: PKK's PERSONBIL / VAREBIL groups ARE the M1 / N1
+  # line (kind_maps/no_svv_pkk.yml: PERSONBIL = M1+M1G, VAREBIL KL 1/2 = N1+N1G,
+  # KOMBINERT BIL split on the EU category). Norway cannot VOTE in the gate (it
+  # is attach-only, it cannot decide membership), but its rows can be
+  # recognised on a published record — that is what attach-only means.
+  # NOT listed: au (BITRE's LCV class is curated nameplate by nameplate in
+  # kind_maps/au_bitre.yml `by_model` — a generic "no van record → car" rule was
+  # reverted there after review), nz ("PASSENGER CAR/VAN" is one class), de
+  # (FZ 10.1 is all-M1, NFZ routes by_model), and the car-only registers.
+  countries: [es, fi, gb, lu, nl, "no"]   # "no" QUOTED: bare no is YAML 1.1 boolean false
