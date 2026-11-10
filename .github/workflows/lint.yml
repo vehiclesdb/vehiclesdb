@@ -29,6 +29,11 @@ jobs:
         # block whose key matches no display name (inert forever), and curation
         # added without a stated reason.
         run: ruby scripts/lint_curation.rb --base=origin/${{ github.base_ref || 'main' }}
+      - name: Historical gem ids still resolve; display pins name live ids
+        # Every id a published vehicles-gem release shipped must be live, aliased
+        # (former_ids) or manifested (removals) — ids retired before the no-vanish
+        # gate existed were never checked (CarHey trace, 2026-11-09).
+        run: ruby scripts/lint_id_history.rb
       - name: Verify make blocks are alphabetical
         # Alphabetical order is what lets two maintainers append concurrently
         # without conflicting, and what stops a second `Honda:` block appearing.
