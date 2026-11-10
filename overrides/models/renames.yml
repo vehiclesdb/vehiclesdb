@@ -475,7 +475,7 @@ Alfa Romeo:
 Alpina:
   # ── 2026.11.2 junk-beside-real folds (published <nameplate> + engine/body token; former_ids keep ids resolving) ──
   "B3 Touring": "B3"  # R1102 JUNK-BESIDE-REAL sweep: published car/alpina/b3-touring (ch,fi,nl) is the B3 plus an engine/body token ("Touring"), not a nameplate — folds onto the live alpina/b3; former_ids keeps the old id resolving
-  "Bmw Alpina D5 Biturbo Touring": "Bmw Alpina D5 Biturbo"  # R1102 JUNK-BESIDE-REAL sweep: published car/alpina/bmw-alpina-d5-biturbo-touring (fi,nl) is the Bmw Alpina D5 Biturbo plus an engine/body token ("Touring"), not a nameplate — folds onto the live alpina/bmw-alpina-d5-biturbo; former_ids keeps the old id resolving
+  "D5 Biturbo Touring": "D5 Biturbo"  # REKEYED 2026.11.6 (was "Bmw Alpina D5 Biturbo Touring": "Bmw Alpina D5 Biturbo"): the pipeline's parent-make echo rule strips "BMW ALPINA" before renames, so the produced string and its target lose the echo too (car/alpina/bmw-alpina-d5-biturbo → car/alpina/d5-biturbo, former_ids.yml). R1102 junk-beside-real fold otherwise unchanged
 
 Alpine:
   # ── 2026.11.2 completeness folds (research 2026-11-09, replay-probed keys; targets live in 2026.11.1) ──
@@ -483,6 +483,12 @@ Alpine:
 
 Alvis:
   Tc 21: TC21                                 # spelling variant of "TC21" — a short letter prefix glued to digits IS the nameplate for this make (Audi A3, Citroën C1, Chevrolet C10), so the fused form is canonical
+
+AMC:
+  # ── 2026.11.6: "A.M.C." now aliases to AMC. AMC owned Jeep 1970–87, so registers write
+  # "A.M.C. | JEEP" / "AMC | JEEP" for an AMC-era Jeep without saying WHICH one: the marque
+  # name in the model column, not a nameplate (it would mint car/amc/jeep from nl+no+nz).
+  Jeep: null  # RDW "A.M.C. | JEEP" 2, "AMC JEEP | JEEP" 1, nz/no "AMC | JEEP"; the named ones (JEEP CJ7, JEEP CHEROKEE) are untouched
 
 Aprilia:
   ETV1000 Capo Nord:         ETV1000 Caponord     # Caponord is ONE word; ETV1000 is the type code
@@ -2206,6 +2212,9 @@ Capri:
   CL50: CL                                  # same moped as the "CL"/"CL 50" rows — one nameplate published under two ids because "CL50" keeps its caps (alphanumeric token) while bare "CL" gets title-cased. brommer.nl files them together: https://www.brommer.nl/merk/capri/cl/
 
 Caterham:
+  # ── 2026.11.6 register artefacts: "CATERHAM CARS LTD" now aliases to Caterham (aliases.yml) ──
+  "Seven S3": Seven  # es_dgt/nl_rdw "CATERHAM CARS LTD | SEVEN S3" -> live car/caterham/seven; "The Caterham 7 range was based exclusively on this Series 3 chassis until 2000" — https://en.wikipedia.org/wiki/Caterham_Seven (accessed 2026-11-10) [wikipedia]: S3 is the chassis, not a nameplate
+  "Seven Sv": Seven  # nl_rdw "CATERHAM CARS LTD | SEVEN SV"; "The SV chassis offers an extra 110 mm (4.3 in) of width across the cockpit" — same page [wikipedia]
 # ── BODY-WORD 92 CLASS (2026-08-02). The register wrote a BODY CLASS into
 # the model column and it published as a nameplate. Measured on a
 # control-vs-treatment build against a frozen cache: the closed 13-word
@@ -6278,6 +6287,7 @@ Iveco:
   "150E21CCMC1A": "Tector"  # R1105 ES/AR: ar_dnrpa 4; raw iveco/150e21ccmc1a -> published truck/iveco/tector; 150E21 = Tector (https://www.16valvulas.com.ar/?p=196636, accessed 2026-11-10)
   "AD260T": "Ad"  # R1105 ES/AR: es_dgt 5; raw iveco/ad260t -> published truck/iveco/ad; AD260T = Iveco AD-series (Trakker/Stralis AD) code; family "Ad" published truck/iveco/ad
   "38S16": "Daily"  # R1105 IL: il_mot 96; raw iveco/38s16 -> published truck/iveco/daily; VIN ZCFCE38B.. (Iveco Italy 2025-26, 2,287 cm3 F1A, GVW 3,800): Daily naming '<GVW><S|C><hp>' (cf. 35S16, 50C16). truck/iveco/daily published. NOTE: the catalog also publ
+  Igloocar: Daily  # 2026.11.6, pending owner confirmation (coordinator ruling: fold): RDW "IVECO/IGLOOCAR | IGLOOCAR" 47 vans (published van/iveco-igloocar/igloocar) — Igloocar is the refrigerated body, the register carries no nameplate; the Daily is the Iveco van chassis it is fitted to -> live van/iveco/daily
 
 JAC:
   # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
@@ -6527,6 +6537,9 @@ Jaguar:
   V12:         null   # ENGINE designation (nl x3, nz x7; raws "JAGUAR V12"/"V12 COUPE"/"V12 CONVERTIBLE") — shared by the E-type S3, XJ12, XJ-S, Double Six and Sovereign V12; unresolvable (https://en.wikipedia.org/wiki/Jaguar_XJ)
   Daimler:     null   # a different MARQUE written into the model column (fi x1, nl x6, nz x42). Daimler is a live make in this catalog (41 records) but the row names no Daimler MODEL, so moves.yml has no target and a move is impossible — the SEAT `Cupra: null` precedent exactly (https://en.wikipedia.org/wiki/Daimler_Company)
   Daimler 8:   null   # same class, plus a truncated "Double Six"/"Eight" fragment; still no Daimler MODEL to move to (https://en.wikipedia.org/wiki/Daimler_Company)
+  # ── 2026.11.6: "JAGUAR CARS LTD/LIMITED" now reaches Jaguar (pipeline company-registrant rule), giving these es rows a second source beside fi — fold the engine/trim tails onto the published X-Type instead of minting ──
+  "X-Type 2.2D": X-Type            # es "JAGUAR CARS LTD | X-TYPE 2.2D" + fi; 2.2D = the 2.2-litre diesel engine (same reading as the "X-Type 2" line above)
+  "X-Type 2.2D Executive": X-Type  # es "JAGUAR CARS LIMITED | X-TYPE 2.2D EXECUTIVE" + fi; engine + the Executive trim (see the Executive null above)
 
 Jawa:
   Jawa: null                              # motorcycle fi|nl
@@ -6749,6 +6762,17 @@ Joint:
 
 Jonway:
   "N.a.": null   # 377 of 404 NL registrations are the placeholder; the make survives on EVO-MAXX E-LINE / MNY / X-JET / JSD50QT-27
+
+Junge Fahrzeugbau:
+  # ── 2026.11.6: the bodybuilder's OWN body codes ("JF/DC KST03" = a Junge body type on a
+  # DaimlerChrysler chassis) are not vehicle nameplates; the chassis nameplates move to their
+  # makers in moves.yml. Published junge-fahrzeugbau-gmbh/jf-dc-kst03 → removals.yml.
+  "Jf/Dc KST03": null   # RDW/FI "JUNGE FAHRZEUGBAU GMBH | JF/DC KST03" 8 veh — body code
+  "Jf/Dc KST02": null   # same series, 3 veh
+  "Jf/Dc KSDT03": null  # same series, 1 veh
+  "Jf/Man KST01": null  # Junge body code on a MAN chassis, 5 veh
+  "Jf/Iveco KST01": null  # Junge body code on an Iveco chassis, 2 veh
+  Jf: null              # truncated "JF…" body code, 16 truck veh
 
 Kaiyi:
   # ── 2026.11.5 completeness folds (research 2026-11-10, curation agents per region) ──
@@ -10962,6 +10986,7 @@ Peugeot:
   "208 Allure Pk T200 AM27": "208"  # R1105 ES/AR: ar_dnrpa 12; raw peugeot/208-allure-pk-t200-am27 -> published car/peugeot/208; grade/engine/MY tail
   "Boxer Furgon": "Boxer"  # R1105 ES/AR: es_dgt 7; raw peugeot/boxer-furgon -> published van/peugeot/boxer; body word
   "Ylg": "Boxer"  # R1105 IL: il_mot 175; raw peugeot/ylg -> published truck/peugeot/boxer; YLG8V (Peugeot Poland = Gliwice, VIN VF3YLG8V.., 2025-26, 2,184 cm3): Boxer type code (RDW type 'Y' -> BOXER). truck/peugeot/boxer published
+  "Boxer Lambox": Boxer  # 2026.11.6: RDW/FI "PEUGEOT/LAMAR | BOXER LAMBOX" (published van/peugeot-lamar/boxer-lambox) -> live van/peugeot/boxer; LAMBox is the Polish bodybuilder Lamar's box body "integrated with the driver's cab" — https://issuu.com/lamar-bodies/docs/lamar-courier-trucks (accessed 2026-11-10) [manufacturer]
 
 Piaggio:
   Piaggio: null                           # moped fi|nl
@@ -11928,7 +11953,7 @@ Rieju:
   # ── 2026.11.4 completeness folds (research 2026-11-10, replay-probed keys) ──
   "Xplora 707S": "Xplora 707"  # R1104 es two-wheelers: es_dgt motorcycle 17 (Jul–Sep 2026); raw rieju/xplora-707s -> published motorcycle/rieju/xplora-707; S = touring trim of the Xplora 707 (Rieju menu "XPLORA 707 X ... XPLORA 707 S")
 
-Riese Und Mueller:
+"Riese & Müller":  # REKEYED 2026.11.6: aliases.yml now resolves RIESE UND MUELLER and RIESE & MUELLER to "Riese & Müller" (one maker, two former make ids). Reviewed: the single line below folds "New Charger" onto Charger, as before.
   "New Charger": "Charger"  # NEW-GUARD gap: moped/riese-und-mueller/charger is live (nl); "NEW CHARGER" (170) would duplicate it.
 
 Riley:
@@ -12797,6 +12822,14 @@ Socage:
 Spark:
   # ── 2026.11.5 completeness folds (research 2026-11-10, curation agents per region) ──
   "SP125C-2CFО": "SP125C-2CFO"  # R1105 NO/FI/UA/NZ: ua_mvs 177; maker spelling of the attested nameplate (https://spark-moto.com/mototehnika/mototsikly-do-125-kub-sm/mototsikl-sp125c-2cfo, accessed 2026-11-10)
+
+Spyder Wheelz:
+  # ── 2026.11.6, pending owner confirmation (coordinator ruling: retire unless a reliable
+  # source names the model). RDW bromfiets "SPYDER WHEELZ | SPYDER RENT GROUP NEDERLAND BV"
+  # (6,422 veh): the model column holds the RENTAL COMPANY's legal name. Spyder Wheelz rents
+  # and sells e-choppers, but no manufacturer, regulator or trade source names the model
+  # (only marketplace listings: "EE-chopper 2.5"), so there is no honest nameplate to rename to.
+  "Rent Group Nederland Bv": null  # company name, not a nameplate; moped/spyder-wheelz/rent-group-nederland-bv → removals.yml
 
 SsangYong:
   # ── 2026.11.2 completeness folds (research 2026-11-09, replay-probed keys; targets live in 2026.11.1) ──
