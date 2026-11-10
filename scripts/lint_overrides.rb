@@ -114,6 +114,27 @@ if File.exist?(File.join(ROOT, pv_path)) && (pv = load_yaml(pv_path))
   end
 end
 
+# --- 3b': commercial_variants.yml (owner ruling 2026-11-10, Nordic kind policy) ----
+# Mirrors overrides.rb#load_commercial_variants!, which RAISES on the same
+# shapes. The ruling is "same thresholds" as the passenger gate, so a gate that
+# drifts from passenger_variants.yml's fails here first.
+cv_path = "overrides/models/commercial_variants.yml"
+if File.exist?(File.join(ROOT, cv_path)) && (cv = load_yaml(cv_path))
+  bad = cv.keys - %w[gate attach]
+  fail! "#{cv_path}: unknown top-level key(s) #{bad.inspect}" unless bad.empty?
+  cg = cv["gate"] || {}
+  fail! "#{cv_path}: unknown gate key(s) #{(cg.keys - %w[min_van_count min_van_share split_countries]).inspect}" unless (cg.keys - %w[min_van_count min_van_share split_countries]).empty?
+  fail! "#{cv_path}: unknown attach key(s) #{((cv['attach'] || {}).keys - %w[countries]).inspect}" unless ((cv["attach"] || {}).keys - %w[countries]).empty?
+  iso = ->(l) { l.is_a?(Array) && l.all? { |c| c.to_s.match?(/\A[a-z]{2}\z/) } }
+  fail! "#{cv_path}: gate.split_countries must be a non-empty list of ISO codes" unless iso.(cg["split_countries"]) && !cg["split_countries"].empty?
+  fail! "#{cv_path}: attach.countries must be a list of ISO codes" unless iso.(Array((cv["attach"] || {})["countries"]))
+  pg = (File.exist?(File.join(ROOT, pv_path)) && load_yaml(pv_path)&.dig("gate")) || {}
+  unless [cg["min_van_count"], cg["min_van_share"], Array(cg["split_countries"]).sort] ==
+         [pg["min_car_count"], pg["min_car_share"], Array(pg["split_countries"]).sort]
+    fail! "#{cv_path}: gate must equal #{pv_path} gate (min count, min share, split_countries) — the 2026-11-10 ruling makes the two gates symmetric"
+  end
+end
+
 # --- 3c: attested.yml (owner ruling 2026-11-09, attested admission) ---------------
 # Shape kind → canonical make → published nameplate → source URL (the value),
 # with a same-line `#` comment carrying the REGISTER evidence (at least one
