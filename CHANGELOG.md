@@ -2,6 +2,47 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.3] - 2026-11-10 — attach-only attestation, GWM sub-brands, Opel Electric records, and dataset fields for safe refresh
+
+**16,032 models across 970 makes (15,845 → 16,032; 204 added, 17 retired, every retirement aliased to a live successor).**
+
+Same frozen register snapshots as 2026.11.2. The diff is attributable to curation (data#398) and pipeline changes (pipeline#279) alone.
+
+### New fields (additive; `schema_version` unchanged; see SCHEMA.md)
+- **`former_slugs` on makes** (dist, catalog, sqlite `makes.former_slugs`).
+  - These are make slugs merged or renamed into this make, so a client can follow a make rename without scanning every model's `former_ids`.
+  - 11 makes carry them, e.g. renault ← renault-trucks, daewoo ← gm-daewoo, saxas ← saxas-nutzfahrzeuge-werdau, mg ← mg-roewe.
+- **`manifest.json` → `dist_files`:** `sha256`, `bytes` and `records` for every dist file. Refreshers can verify a download before swapping it in.
+- **`registration_years` `{first, last}` on model records.**
+  - It is the earliest and latest first-registration year in the Finnish and Dutch registers, counting years with ≥ 2 vehicles.
+  - It is a **hint**, registration not production, never a validation bound.
+  - Present on 9,908 records.
+
+### Curation
+- **Attested admission on attach-only evidence** (owner ruling).
+  - A sourced nameplate whose only register evidence is in an attach-only register (Australia, Israel, Norway, Switzerland) can now publish through an explicit `{url, evidence: attach_only}` entry.
+  - 138 such admissions: Kenworth T409/T610/T909, Isuzu FRR/FTR/NPS/NKR, Hino 300, Mack Granite/Qantum, Freightliner Columbia/Century Class, International ACCO, LDV G10, GWM Cannon …
+- **attested.yml grows from 206 to 395 entries.**
+  - 18 Holden series codes (EH…WB), where the code is the name buyers used. VY Commodore is a form of Commodore.
+  - 27 Spanish and Alfa Romeo heritage nameplates, verified this release: Macbor, Motorhispania, Keeway, Zontes, MITT, Evo, SWM, Tiger, Alfa 1900 / Junior Z / Giulietta SZ / Arna / Matta.
+- **Electric variants are their own records, consistently.**
+  - Spelled-out "… ELECTRIC" Opel/Vauxhall rows reach Frontera / Corsa / Astra / Grandland / Mokka / Combo / Vivaro / Movano Electric.
+  - Renault "Mégane E-Tech Electric" (nl 9,493) reaches `renault/megane-e-tech`, and Fiat "500 Electric" reaches `fiat/500-e`.
+  - The 2014–19 Corsa-E (an ICE generation letter) stays on the Corsa.
+- **GWM sub-brands Ora, Tank and Wey get their own makes** (the #346 Haval/Jaecoo/Omoda rule). Ten `great-wall/*` ids alias to `ora/*`, `tank/*` and `wey/*`.
+- **Make merge:** `saxas-nutzfahrzeuge-werdau` → `saxas`.
+- **Mercedes forms:** "Clase/Classe/Klasse X" are now published forms, so "Clase A" resolves on every surface.
+- **León aliases:** the duplicate "León" aliases on SEAT/Cupra Leon are retired; the spelling is the name since 2026.11.2.
+
+| kind | 2026.11.2 | 2026.11.3 | Δ |
+|---|---:|---:|---:|
+| car | 5,961 | 5,997 | +36 |
+| motorcycle | 6,179 | 6,196 | +17 |
+| moped | 1,459 | 1,459 | 0 |
+| van | 775 | 795 | +20 |
+| truck | 1,046 | 1,159 | +113 |
+| bus | 425 | 426 | +1 |
+
 ## [2026.11.2] - 2026-11-10 — completeness: Spain van/truck to 95%, 194 attested nameplates, manufacturer spellings, junk folded
 
 **15,845 models across 965 makes (15,635 → 15,845; 291 added, 81 retired, every retirement with a migration path).**
