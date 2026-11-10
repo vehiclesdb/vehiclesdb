@@ -34,6 +34,7 @@
 require "psych"
 require "yaml"
 require "set"
+require "json"
 
 ROOT = File.expand_path("..", __dir__)
 FAILURES = []
@@ -452,8 +453,8 @@ Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].sort.each do |abs|
   # "Make | Model" targets ([] = deliberately unresolved).
   # `name_marques` / `marque_by_name` (same source): a leading marque word in
   # the name, or a nameplate word unique to one marque — both String → String.
-  unknown = doc.keys - %w[kinds body_types by_model make_splits notes hersteller by_trade_name name_marques marque_by_name ignore_names]
-  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/make_splits/notes/hersteller/by_trade_name/name_marques/marque_by_name/ignore_names)" unless unknown.empty?
+  unknown = doc.keys - %w[kinds body_types by_model make_splits type_codes notes hersteller by_trade_name name_marques marque_by_name ignore_names]
+  fail! "#{rel}: unexpected top-level key(s) #{unknown.inspect} (expected kinds/body_types/by_model/make_splits/type_codes/notes/hersteller/by_trade_name/name_marques/marque_by_name/ignore_names)" unless unknown.empty?
   ign = doc["ignore_names"]
   fail! "#{rel}: ignore_names must be a list of Strings" unless ign.nil? || (ign.is_a?(Array) && ign.all? { |x| x.is_a?(String) })
   %w[name_marques marque_by_name].each do |sec|
@@ -489,6 +490,39 @@ Dir[File.join(ROOT, "overrides/kind_maps/*.yml")].sort.each do |abs|
         fail! "#{rel}: make_splits #{label.inspect} regex #{re.inspect} does not compile (#{e.message})"
       end
       Array(r["rewrite"]).each { |x| fail! "#{rel}: make_splits #{label.inspect} rewrite #{x.inspect} must be [regex, replacement]" unless x.is_a?(Array) && x.size == 2 }
+    end
+  end
+  # `type_codes` (il_mot): register → Hebrew make label → EXACT type code →
+  # nameplate. Every target must be the NAME of a published record of that
+  # make in a kind the register feeds (moto: motorcycle/moped, heavy:
+  # truck/bus), so a line can only re-attach a row, never invent a name.
+  if (tc = doc["type_codes"])
+    feeds = { "moto" => %w[motorcycle moped], "heavy" => %w[truck bus] }
+    aliases = (YAML.load_file(File.join(ROOT, "overrides/makes/aliases.yml")) rescue {}) || {}
+    names = Hash.new { |h, k| h[k] = Set.new } # [kind, make_slug] => names
+    dist = File.join(ROOT, "dist/vehicles.json")
+    if File.exist?(dist)
+      JSON.parse(File.read(dist))["makes"].each { |m| m["models"].each { |x| names[[x["kind"], m["slug"]]] << x["name"] } }
+    end
+    tc.each do |reg, by_make|
+      unless feeds.key?(reg) && by_make.is_a?(Hash)
+        fail! "#{rel}: type_codes section #{reg.inspect} must be one of #{feeds.keys.inspect} holding a map"
+        next
+      end
+      by_make.each do |label, codes|
+        latin = aliases[label] || aliases[label.to_s.upcase]
+        fail! "#{rel}: type_codes #{reg}/#{label.inspect} — make label has no makes/aliases.yml entry" if latin.nil?
+        (codes || {}).each do |code, name|
+          unless name.is_a?(String) && !name.strip.empty?
+            fail! "#{rel}: type_codes #{reg}/#{label}/#{code.inspect} needs a nameplate string"
+            next
+          end
+          next if latin.nil? || names.empty?
+          ms = latin.to_s.unicode_normalize(:nfkd).gsub(/\p{Mn}/, "").downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-|-\z/, "")
+          next if feeds[reg].any? { |k| names[[k, ms]].include?(name) }
+          fail! "#{rel}: type_codes #{reg}/#{label}/#{code} → #{name.inspect} is not a published #{feeds[reg].join('/')} record of #{latin}"
+        end
+      end
     end
   end
   fail! "#{rel}: missing the `kinds:` map" unless doc.key?("kinds")
