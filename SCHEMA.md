@@ -275,7 +275,7 @@ working. The parquet file is converted from the CSV and has the same columns.
 
 ## `dist/catalog.sqlite`
 
-Tables: `meta` (key/value), `makes (id, kind, name)`, `models (id, kind,
+Tables: `meta` (key/value), `makes (id, kind, name, former_slugs)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3), `models (id, kind,
 make_id, slug, name, body_types, regions, global_popularity_decile,
 mass_popularity_decile)`, `availability
 (model_id, kind, country, evidence, source)`, `popularity (model_id, kind,
