@@ -2,6 +2,63 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.6] - 2026-11-10 — commercial-variant gate, register artefacts cleaned, Israeli GM order codes, Kyburz as one make
+
+**16,327 models across 966 makes (16,355 → 16,327; 47 added, 75 retired: 59 aliased to a live successor, 16 removed with a removals.yml entry).**
+
+Same frozen register snapshots as 2026.11.2–11.5. All registers: 95.16% → 95.36% of vehicles land on a published record (+210,019). Fewer, cleaner records: register artefacts (legal-form suffixes, converter compounds, company names written as models) no longer mint their own makes and models.
+
+### Coverage (11.5 → 11.6)
+
+| | 2026.11.5 | 2026.11.6 |
+|---|---:|---:|
+| Israel truck | 79.39% | 91.47% |
+| Argentina car | 96.67% | 98.32% |
+| Spain van | 97.83% | 99.34% |
+| Finland car | 96.62% | 97.63% |
+| UK van | 93.86% | 94.85% |
+| Netherlands van | 91.84% | 93.07% |
+| Norway car / van | 97.30% / 94.79% | 97.78% / 95.50% |
+| Luxembourg van | 96.33% | 97.98% |
+| Netherlands moped | 76.57% | 76.13% |
+| all registers | 95.16% | 95.36% |
+
+Netherlands moped falls because 6,422 rental scooters were registered with the rental company's name as their model. They are no longer attributed to a made-up model.
+
+| kind | 2026.11.5 | 2026.11.6 | Δ |
+|---|---:|---:|---:|
+| car | 6,088 | 6,072 | −16 |
+| motorcycle | 6,316 | 6,318 | +2 |
+| moped | 1,481 | 1,481 | +0 |
+| van | 813 | 806 | −7 |
+| truck | 1,220 | 1,214 | −6 |
+| bus | 437 | 436 | −1 |
+
+### Commercial-variant gate and cross-kind attach
+- **Gate.** The passenger-variant gate is now symmetric: a car nameplate also publishes a **van** record when one register with a row-level M1/N1 split (Spain, Finland, UK, Luxembourg, Netherlands) shows at least 100 N1 rows and at least a 25% N1 share.
+- **New van records:** Austin Maestro, Jeep CJ-7, Land Rover Freelander, Mitsubishi Pajero Sport.
+- **Attach.** Below the threshold, a car or van row whose nameplate has no record in its own kind counts on the published record of the other kind, without minting a thin record:
+  - 118,495 van-class vehicles now count on car records (e.g. Ford Fiesta vans);
+  - 75,982 car-class vehicles count on van records (e.g. Renault Trafic passenger versions).
+- Country rankings and make country lists are recomputed after attach.
+
+### Israel
+GM order codes in the heavy-vehicle register (e.g. Chevrolet CK20743) resolve where a code decodes to exactly one nameplate: Silverado, Express, Suburban, Sierra. About 17.9k trucks. The evidence is partial-VIN decodes (maker and model-code positions only). Codes that span two models or change with the model year stay unresolved.
+
+### Makes and identity
+- **Kyburz is one make.** `moped/kyburz-switzerland/*` aliases to `moped/kyburz/*`. Both `moped/kyburz/dxp` (European registers) and `motorcycle/kyburz/dxp` (Australia, registered as a motor tricycle) are kept. An attested record now always survives the cross-kind prune.
+- **Register-artefact cleanup:**
+  - company names merge into their brands (e.g. Riese & Müller, Grecav, Caterham);
+  - parent-make echoes are stripped (Alpina "BMW ALPINA …");
+  - body-converter compounds are re-homed onto the base vehicle, but only where the register names the base (an Igloocar conversion with no base type stays unattributed).
+- **Corrected ids keep their publication history,** so identity corrections (e.g. Alpina B3 GT) stay published instead of being demoted.
+- **Correction to 2026.11.5:** `car/holden/hsv` was listed as retired but was still published. Bare "HOLDEN | HSV" rows name only the marque, so they are no longer attributed, and the record is now retired.
+
+### Checks
+- Frozen build: ALL GATES GREEN.
+- Lints, id-history against the built dist, and gem 0.9.1 conformance 170/170.
+- Codex Astra review, two rounds; every finding is fixed.
+
 ## [2026.11.5] - 2026-11-10 — all-register residual curation, HSV as a make, Australian utes on their car records
 
 **16,355 models across 991 makes (16,225 → 16,355; 132 added, 2 retired, every retirement aliased to a live successor).**
