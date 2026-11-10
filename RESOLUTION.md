@@ -45,7 +45,8 @@ norm(s) = NFKD(s) → drop combining marks (\p{Mn}) → lowercase
 `c3 aircross`, "Lynk & Co" → `lynk co`. **Spacing-blind** comparison is
 `norm(s)` with spaces removed (`xceed` = "X Ceed", `a 5` = "A5", `v ette` =
 the alias "Vette"); it applies to names, aliases and forms alike, each at its
-own rung, and is only accepted when it lands on exactly one record. Every surface — including
+own rung, and is only accepted when it lands on exactly one nameplate (one record, or
+one make + model slug in several kinds — a kind collision, §3a). Every surface — including
 the widget's client-side filter — uses this function.
 
 ## 3. The ladder
@@ -57,8 +58,10 @@ Two entry points, same rungs:
   taken as the **longest** leading token run that resolves as a make; the rest
   is the model. Rungs 1, 2 and 6 below may answer a whole text without a make.
 
-Make resolution: canonical `slug` / `name` → published make `aliases` (all by
-`norm`) → **make typo** (bounded edit distance, §4). Model resolution inside
+Make resolution: canonical `slug` / `name` → a published make `former_slugs`
+value (a make merged into this one; `via` `former_make_slug:old→new`; releases
+from 2026.11.3) → published make `aliases` (all by `norm`) → **make typo**
+(bounded edit distance, §4). Model resolution inside
 the resolved make, strongest first; **the first rung that answers wins, and an
 ambiguous rung stops the ladder** (no weaker rung may override it):
 
@@ -91,11 +94,67 @@ is not.
 **Nothing resolves without a make** except rungs 1, 2 and 6: `resolve("golf")`
 and `resolve("Rabbit")` are null (SDK adjudication 2026-07-27).
 
-**Kind collisions are not ambiguity.** "Iveco Daily" as van and truck is the
-dataset working. Pass `kind` to choose; without it the gem's `Vehicles.model`
-keeps its historical car preference and the API/SDKs use the tie-break
-(lowest `global_decile` → wider availability → kind order → id). Conformance
-cases with a kind collision always pass `kind`.
+**Kind collisions are not ambiguity** — §3a.
+
+## 3a. Kinds: scope, constraint, and collisions (one rule, every surface)
+
+Added 2026-11-10 after dogfooding: unhinted "Iveco Daily" answered
+`bus/iveco/daily` in the gem, `truck/iveco/daily` in the SDKs, while the
+registers say van. This section replaces every earlier per-surface preference
+(the gem's "car wins" in `Vehicles.model` is retired). It applies to every
+entry point (pair, text, the gem's `Vehicles.model`/`Make#model`/
+`match_model`/`identify`, `/resolve`, SDK `resolve`/`modelMatch`/id lookups,
+widget preselection) and every rung.
+
+**Eligibility, before any rung.**
+
+- `kinds` (a list) is a **constraint** on every rung, ids included: a record
+  of another kind never answers, and when the only answer is out of scope the
+  result is null (no match). `kinds: []` means nothing is eligible.
+- `kind` (one kind) is a **scope** for the name rungs 3–8 (intersected with
+  `kinds`). On rungs 1–2 an id is explicit and answers whatever `kind` says,
+  unless `kinds` excludes it. `via` records `kind_hint:<kind>`.
+
+**Collision vs ambiguity.** Look at the candidates a rung *itself* selected —
+its hits; for rung 6, after the named-record veto; for rung 8, only the
+minimum-distance candidates. Never widen a hit to sibling kinds that did not
+match it.
+
+- All of them are **one nameplate** (same make slug + same model slug) in more
+  than one kind → a **kind collision**. The tie-break below picks one; the
+  rung's `method` and confidence stand; the others are `alternates`. Not
+  ambiguous.
+- They span **more than one** make slug + model slug → **ambiguous**, as in §5.
+- A former id claimed by several records follows the same two cases: records
+  of more than one nameplate are ambiguous; records of one nameplate are a
+  collision — with `kind`, the record of that kind when there is one,
+  otherwise (no `kind`, or none of that kind) the tie-break.
+
+**The tie-break** (published fields only; string comparisons are ordinal,
+code point by code point, never locale-aware):
+
+1. lowest `mass_decile` (absent = unranked = last);
+2. kind precedence **van, car, bus, truck, moped, motorcycle**, then any
+   other kind in ordinal order;
+3. canonical id, ordinal.
+
+*Why this rule.* Backtested on 2026.11.0, the last release with a matching
+register snapshot (481 nameplates published in more than one kind, scored
+against which kind holds the most registrations across all measured
+countries; the counts themselves stay private): this rule picks that kind for
+424 (88%) and its answers cover 72% of those registrations. The former
+car-first rule: 43% / 29%; the former SDK tie-break (`global_decile` first):
+74% / 68%; kind precedence alone: 57% / 66%. On `mass_decile` ties the van
+holds more registrations than the car in 35 of 49 nameplates, than the truck
+in 28 of 28, and the moped more than the motorcycle in 11 of 15. Every
+popularity field is per kind, so this approximates cross-kind volume; the
+known miss is Toyota Land Cruiser (answers van; the car holds more). Pass
+`kind` (or `kinds`) whenever you know it.
+
+*Stability.* An unhinted answer can move when a release moves `mass_decile`,
+adds or removes a record, or changes aliases or forms. Such a release updates
+the affected conformance cases in the same PR (§6). Stored ids never move —
+this rule only decides what an unhinted *string* means.
 
 ## 4. Typo tolerance — two rule sets, on purpose
 
@@ -126,9 +185,10 @@ full of near-identical codes):
   side ("2008"≠"208", "308"≠"3008", "TRX250R"≠"TLR250R"), and be ≥ 4 letters on
   both sides ("Passat GT" is not "Passat GL"; "Cdi", "Xgt" are nothing);
 - 1 edit per differing word, 2 from 9 letters; total within the make budget;
-- candidates: the make's model names, aliases and forms; the closest **model
-  record** must be unique — a tie is **ambiguous** (Toyota "Corola": Corolla
-  and Corona).
+- candidates: the make's model names, aliases and forms; the closest
+  **nameplate** must be unique — a tie between nameplates is **ambiguous**
+  (Toyota "Corola": Corolla and Corona); a tie between kinds of one nameplate
+  is a kind collision (§3a: Iveco "Dialy" → the van Daily).
 
 ## 5. Results
 
@@ -141,7 +201,7 @@ below-floor suggestions only).
 ## 6. Conformance
 
 `conformance/resolve.json` holds the cases: entry point (`pair`/`text`),
-input, optional `kind`, expected id (or `null`, or `"ambiguous"`), expected
+input, optional `kind`, optional `kinds` (§3a), expected id (or `null`, or `"ambiguous"`), expected
 `method`, and the minimum dataset version. **Every implementation runs it in
 its own test suite against the dataset version it ships**, and a release that
 changes an expected answer updates the case in the same PR with the reason.

@@ -1,6 +1,6 @@
 {
   "contract": "RESOLUTION.md",
-  "about": "Executable form of RESOLUTION.md. Every VehiclesDB surface (vehicles gem, /api/v1/resolve, make-model-dropdown, JS/Python SDKs) runs these cases against the dataset version it ships. expect: canonical id, null (no match / correct abstention), or \"ambiguous\". method: the rung label (exact, former_id, fold, alias, form, cleaned, fuzzy); absent when expect is null. A dataset release that changes an answer updates the case in the same PR, with the reason in note.",
+  "about": "Executable form of RESOLUTION.md. Every VehiclesDB surface (vehicles gem, /api/v1/resolve, make-model-dropdown, JS/Python SDKs) runs these cases against the dataset version it ships. kinds (optional): the hard kind constraint of RESOLUTION.md §3a, applied to every rung (an empty list matches nothing). expect: canonical id, null (no match / correct abstention), or \"ambiguous\". method: the rung label (exact, former_id, fold, alias, form, cleaned, fuzzy); absent when expect is null. A dataset release that changes an answer updates the case in the same PR, with the reason in note.",
   "cases": [
     {
       "entry": "pair",
@@ -781,6 +781,115 @@
       "method": "fold",
       "min_dataset": "2026.11.2",
       "note": "CarHey dogfooding 2026-11-09: 2026.11.2 manufacturer spelling (display only, id unchanged): a mark-less / spacing-variant input still resolves"
+    },
+    {
+      "entry": "text",
+      "input": "iveco daily",
+      "expect": "van/iveco/daily",
+      "method": "fold",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; bus/truck/van all mass_decile 1 → van"
+    },
+    {
+      "entry": "pair",
+      "make": "Mercedes-Benz",
+      "model": "Sprinter",
+      "expect": "van/mercedes-benz/sprinter",
+      "method": "fold",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; bus/truck/van all mass_decile 1 → van"
+    },
+    {
+      "entry": "pair",
+      "make": "Volkswagen",
+      "model": "Caddy",
+      "expect": "van/volkswagen/caddy",
+      "method": "fold",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; car/van both mass_decile 1 → van"
+    },
+    {
+      "entry": "pair",
+      "make": "Mercedes-Benz",
+      "model": "V-Class",
+      "expect": "car/mercedes-benz/v-class",
+      "method": "fold",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; car mass_decile 1 beats van 2"
+    },
+    {
+      "entry": "text",
+      "input": "yamaha aerox",
+      "expect": "moped/yamaha/aerox",
+      "method": "fold",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; moped/motorcycle both mass_decile 1 → moped"
+    },
+    {
+      "entry": "pair",
+      "make": "Iveco",
+      "model": "Turbodaily",
+      "expect": "van/iveco/daily",
+      "method": "form",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; a form published on the bus, truck and van Daily is one nameplate, not ambiguity"
+    },
+    {
+      "entry": "pair",
+      "make": "Iveco",
+      "model": "Turbo",
+      "expect": "bus/iveco/daily",
+      "method": "form",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; the form is on the bus and truck Daily only (never widened to the van) → bus before truck"
+    },
+    {
+      "entry": "pair",
+      "make": "Iveco",
+      "model": "Dialy",
+      "expect": "van/iveco/daily",
+      "method": "fuzzy",
+      "min_dataset": "2026.11.2",
+      "note": "Kind collision, unhinted (RESOLUTION §3a, 2026-11-10): tie-break = lowest mass_decile, then van, car, bus, truck, moped, motorcycle, then id; a model-typo tie between kinds of one nameplate is a collision, not ambiguity (§4)"
+    },
+    {
+      "entry": "text",
+      "input": "iveco daily",
+      "kinds": [
+        "truck",
+        "bus"
+      ],
+      "expect": "bus/iveco/daily",
+      "method": "fold",
+      "min_dataset": "2026.11.2",
+      "note": "kinds is a hard filter (§3a); within it the tie-break still applies (bus before truck)"
+    },
+    {
+      "entry": "text",
+      "input": "bus/iveco/daily",
+      "kinds": [
+        "car"
+      ],
+      "expect": null,
+      "min_dataset": "2026.11.2",
+      "note": "kinds constrains the id rungs too: an out-of-scope id is no match (§3a)"
+    },
+    {
+      "entry": "text",
+      "input": "iveco daily",
+      "kinds": [],
+      "expect": null,
+      "min_dataset": "2026.11.2",
+      "note": "kinds: [] means nothing is eligible (§3a)"
+    },
+    {
+      "entry": "text",
+      "input": "bus/iveco/daily",
+      "kind": "car",
+      "expect": "bus/iveco/daily",
+      "method": "exact",
+      "min_dataset": "2026.11.2",
+      "note": "kind scopes name rungs only; an explicit id answers whatever kind says (§3a)"
     }
   ]
 }
