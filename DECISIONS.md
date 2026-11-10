@@ -149,11 +149,11 @@ The owner's words: "Make the passenger-variant gate symmetric. Add a 'commercial
   - Australia is excluded. Its light-commercial class is routed nameplate by nameplate in `kind_maps/au_bitre.yml` `by_model`, and a generic rule was reverted there after review.
   - Car rows that `drop_patterns.yml` drops with no lift (the conversion bases) stay dropped.
 
-*Measured* (frozen-cache replay against 2026.11.5, 2026-11-10):
-- **Gate verdicts:** 441 van ids of car nameplates were examined. 37 passed, 103 were held (already published) and 301 were withheld. All 301 were records the dominance prune removed before this ruling, so none would have published.
-- **Records created:** 2 new van records, `van/land-rover/freelander` (nl 883 N1, 28.0%) and `van/mitsubishi/pajero-sport` (fi 144 N1, 55.8%). The dominance prune used to remove them. No published id is removed in any kind.
-- **Recovered vehicles:** 195,020 vehicles now count on published records.
-  - 119,038 van rows moved onto 1,143 car records: gb 60,964, fi 27,821, no 16,578, nl 13,588, es 51, lu 36. Top records: Ford Fiesta 33,936, Toyota Corolla 7,161, VW Touran 5,754.
+*Measured* (frozen-cache replay against 2026.11.5, 2026-11-10; refreshed after the Astra round-1 fixes — candidates gated, popularity and make countries recomputed after attach, attested records exempt from the cross-kind prune):
+- **Gate verdicts:** 443 van ids of car nameplates were examined. 39 passed, 103 were held (already published) and 301 were withheld. 715 below-floor van candidates were also judged and 2 promoted (Astra review: the gate evidence replaces the publish floor, as for the passenger gate). All 301 were records the dominance prune removed before this ruling, so none would have published.
+- **Records created:** 4 new van records: `van/austin/maestro` (gb 282 N1, 37.3%) and `van/jeep/cj-7` (nl 261 N1, 27.5%), promoted from candidates, plus `van/land-rover/freelander` (nl 883 N1, 28.0%) and `van/mitsubishi/pajero-sport` (fi 144 N1, 55.8%). The dominance prune used to remove them. No published id is removed in any kind.
+- **Recovered vehicles:** 194,477 vehicles now count on published records.
+  - 118,495 van rows moved onto 1,142 car records: gb 60,682, fi 27,821, no 16,576, nl 13,329, es 51, lu 36. Top records: Ford Fiesta 33,936, Toyota Corolla 7,161, VW Touran 5,754.
   - 75,982 car rows moved onto 127 van records: gb 56,185, nl 13,584, no 4,231, fi 1,348, es 547, lu 87. Top records: Renault Trafic 20,042, Vauxhall Combo 16,358, Vauxhall Vivaro 11,861.
 
 **Attested admission: a source-backed entry can publish a real nameplate below the floor (owner ruling 2026-11-09).**
