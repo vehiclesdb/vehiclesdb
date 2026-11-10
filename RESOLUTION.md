@@ -125,8 +125,10 @@ match it.
   rung's `method` and confidence stand; the others are `alternates`. Not
   ambiguous.
 - They span **more than one** make slug + model slug → **ambiguous**, as in §5.
-- A former id claimed by several records: with `kind`, the record of that
-  kind; otherwise the tie-break.
+- A former id claimed by several records follows the same two cases: records
+  of more than one nameplate are ambiguous; records of one nameplate are a
+  collision — with `kind`, the record of that kind when there is one,
+  otherwise (no `kind`, or none of that kind) the tie-break.
 
 **The tie-break** (published fields only; string comparisons are ordinal,
 code point by code point, never locale-aware):
