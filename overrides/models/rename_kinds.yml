@@ -1,0 +1,19 @@
+# models/rename_kinds.yml — renames.yml keys that apply only to some kinds.
+#
+# Shape:  <make>: { <renames.yml key>: [<kind>, ...] }
+#
+# Renames are kind-blind (a produced string means the same nameplate in every
+# kind) except where a string names different vehicles in different kinds. A
+# key listed here applies only to the listed kinds (pipeline
+# Normalizer#rename_applies?); every key must exist in renames.yml (the loader
+# raises otherwise).
+#
+# Astra review r1 (2026-11-10): Mazda's T-codes are Titan payload codes on the
+# truck, but au_bitre also files a T3500 people-mover under Light/Heavy buses
+# (82 buses), which must keep its own designation.
+Mazda:
+  T3000: [truck]
+  T3500: [truck]
+  T4000: [truck]
+  T4100: [truck]
+  T4600: [truck]

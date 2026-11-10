@@ -159,6 +159,18 @@ Both kinds of record are true, both are useful to a consumer resolving what is o
 
 ## Sources & evidence
 
+- **Known-held nameplates (owner rulings 2026-11-10, release 2026.11.4).** Accuracy first: when the evidence cannot name the model, the row stays unresolved rather than guessed. Revisit each only with the source named.
+  - Australian UD / Nissan Diesel chassis codes (CWB, GWB and siblings, ~7.3k au_bitre vehicles): the codes span the pre-Quon CW/CK series and the Quon, so folding them onto Quon would be wrong for the 1990s trucks. Revisit if a source maps code → model by year.
+  - Mercedes-Benz "96X" (au 574): the code covers both Actros and Arocs.
+  - Hino FF / FB / GS: named only by classifieds.
+  - Ford Trader and Daihatsu Delta (au): no tier-1/2 page names them (sales-database and brochure-scan pages only).
+  - Spanish two-wheeler TYPE CODES with no proven commercial name (79 candidates, ~1.05k vehicles Jul–Sep 2026, e.g. MITT TY125T-*, Letbe HJ125T-5B): held until the importer's commercial name is sourced.
+  - Isuzu NPR/NQR/NKR in Australia's light-commercial class: not routed to truck (van/isuzu/npr is a published N1 record elsewhere); needs its own ruling.
+- **Converter makes and conversions (owner rulings 2026-11-10).** A body converter that is published as a make is still re-homed onto the base vehicle when its rows are conversions (overrides/makes/converters.yml, with the evidence per make); its own records retire with former_ids to the base. A genuine manufacturer with its own nameplates stays a make (Socage, the bus coachbuilders, the camper builders). A van conversion of a car whose base model has no van record lands on the existing car record rather than minting a van id (Zago "SANDERO VAN" → Dacia Sandero).
+- **Wrong-kind nameplates in a register class are routed by curated kind maps** (kind_maps/<source>.yml `by_model`, exact raw pair, evidence per line). Wrong kind is an accuracy bug; the class decides only when no route names the pair.
+- **Coded heavy designations that are their own nameplates** stay whole (overrides/models/series_keep.yml: Sterling LT7500/LT9500/AT9500, Caterpillar CT610/CT630). Distinct real nameplates are separate records.
+
+
 **A model is published when ≥2 independent sources agree, or when a single
 source shows a fleet/registration count above a per-kind threshold.**
 Everything else waits in the pipeline's candidate queue. Rationale: every raw
