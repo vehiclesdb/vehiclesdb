@@ -2,6 +2,74 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.2] - 2026-11-10 — completeness: Spain van/truck to 95%, 194 attested nameplates, manufacturer spellings, junk folded
+
+**15,845 models across 965 makes (15,635 → 15,845; 291 added, 81 retired, every retirement with a migration path).**
+
+**Inputs.** Frozen correctness release on the same register snapshots as 2026.11.1: fi 2026-09-30, es 2026-07…09, uk 2026-Q2, nz MVR_Mar26. The KBA FZ 2.2/2.8/4.8 workbooks are added for `de_kba_nfz` (#391).
+- That source changes no ids; it adds `de` to 829 records, measured separately.
+- The rest of the diff is attributable to curation (data#394) and pipeline changes (pipeline#277, #278).
+
+**Coverage.** Share of each register's vehicles that now land on a published record, before → after:
+
+| | before | after |
+|---|---:|---:|
+| Spain, all mapped DGT categories (Jul–Sep 2026) | 92.52% | 95.73% |
+| Spain van (N1) | 78.27% | 94.92% |
+| Spain truck (N2/N3) | 78.25% | 95.57% |
+| Spain car (M1) | 96.54% | 97.95% |
+| Spain motorcycle | 87.26% | 90.15% |
+| Spain moped | 56.64% | 62.06% |
+| Israel car | 86.59% | 96.26% |
+| Australia car | 95.59% | 98.16% |
+| Norway van | 85.61% | 93.99% |
+| Netherlands van | 88.07% | 91.02% |
+| Argentina car | 56.18% | 70.19% |
+| all registers | 92.75% | 93.80% (+1.24 M vehicles) |
+
+| kind | 2026.11.1 | 2026.11.2 | Δ |
+|---|---:|---:|---:|
+| car | 5,888 | 5,961 | +73 |
+| motorcycle | 6,142 | 6,179 | +37 |
+| moped | 1,429 | 1,459 | +30 |
+| van | 772 | 775 | +3 |
+| truck | 989 | 1,046 | +57 |
+| bus | 415 | 425 | +10 |
+
+### What changed
+- **DGT bodybuilder rows** (pipeline#277).
+  - Converter rows now take the base vehicle's make (`MARCA_VEHICULO_BASE`, DGT layout field 56, bytes 463–492) and drop the converter token, e.g. "ERKE | PARTNER ERKE" → Peugeot Partner.
+  - A row is re-homed only when it lands on a published record.
+  - Plain `L1`/`L3`/`L4` categories map to moped/motorcycle.
+- **Folds onto published records only.** These never mint a new id:
+  - litre tails such as "MOKKA GS 1.2 T XHT HYB" → Mokka;
+  - Spanish trim words ("Nuevo", Allure, Talla M …);
+  - spec suffixes on van/truck/bus (axle 4X2/6X2*4, power, L2H1);
+  - Scania/Volvo `*` axle configs.
+- **Make merges.**
+  - `renault-trucks` → `renault` (owner directive) and `gm-daewoo` → `daewoo`. Old ids resolve through `former_ids`; "Renault Trucks" stays a make alias.
+  - 26 entity or spelling make aliases (VOLKSWAGEN V W, AUDI AG, SSANG YONG, JAGUAR CARS, FORD (D) …) and 6 Hebrew respellings in the Israeli register.
+- **Attested admission grows from 12 to 206 entries.** Every entry has a fetched tier-1/2 source and a minting register row.
+  - Examples: Toyota Axio/Premio/Opa, Honda Orthia/Domani, Holden Belmont/Camira/Premier, Chevrolet Onix/Onix Plus/Montana, VW Nivus/Tera, Fiat Cronos/Toro, BYD Song L/Atto 1, Scania 110/164/G/T, Freightliner Argosy/Cascadia, Kenworth K100/T600, Isuzu NKR/FSR/Elf, MAN NL, Volvo B8RLE …
+- **Electric variants are their own records,** following the e-208/ë-C3 precedent.
+  - Spanish E-308/E-3008/E-408/E-5008, ë-C4 X, ë-C5 Aircross and ë-C3 Aircross trims fold onto the electric record, never onto the ICE one.
+- **Manufacturer spellings (display only; ids unchanged).**
+  - Accents and casing: SEAT/Cupra León, Fiat Doblò, Renault Mégane/Scénic/Mégane E-Tech, Lamborghini Huracán (EVO, STO, Tecnica, Sterrato, Spyder)/Murciélago, Citroën ë-Berlingo/ë-C3 Aircross/ë-C4 X.
+  - `overrides/models/display.yml` pins fused codes without moving their id: 500X, 500e, 600e, XCeed, ProCeed.
+  - Mark-less input ("leon", "500x") still resolves; there are new conformance cases for it.
+- **Junk beside real records.**
+  - 59 `<nameplate> + engine/body token` records fold onto their nameplate, with `former_ids` (Leon 1.9TDI, Leon Sporttourer, Civic 1.6VTI, 159 SW …).
+  - `car/mercedes-benz/classe` (Italian "CLASSE C/E/B") now re-classifies to the real class.
+  - 7 make-echo records (datsun/datsun, morris/morris …) are retired to `removals.yml`.
+- **Historical gem ids.**
+  - `data/gem_history_ids.txt` lists 21,530 ids shipped by gem data 0.1.0–0.8.0.
+  - `scripts/lint_id_history.rb`, in CI, keeps every one of them live, aliased or manifested. Three that resolved nowhere now alias.
+- **CI.** The source-cache namespace was bumped (#393); stale NZ chunks had caused false NZ vanishes.
+
+### Migration surface
+- 81 ids retired: 73 via `former_ids` (same vehicle), 8 manifested in `removals.yml`.
+- Full list: RELEASE-DIFF-2026.11.2.md (post-release PR).
+
 ## [2026.11.1] - 2026-11-09 — the completeness release: passenger van variants, attested admission, Spain to 96.5%
 
 **15,635 models across 953 makes in 18 countries (15,629 → 15,635; 37 added, 31 retired, every retirement with a migration path).**
