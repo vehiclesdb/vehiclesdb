@@ -2,6 +2,70 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.5] - 2026-11-10 — all-register residual curation, HSV as a make, Australian utes on their car records
+
+**16,355 models across 991 makes (16,225 → 16,355; 132 added, 2 retired, every retirement aliased to a live successor).**
+
+Data-only release (data#403), on the same frozen register snapshots as 2026.11.2–11.4. All registers: 94.34% → 95.16% of vehicles land on a published record (+907,555).
+
+### Coverage (11.4 → 11.5)
+
+| | 2026.11.4 | 2026.11.5 |
+|---|---:|---:|
+| Argentina car | 80.29% | 96.67% |
+| Argentina truck | 49.59% | 79.17% |
+| Australia car | 98.16% | 99.63% |
+| Australia motorcycle | 72.41% | 80.65% |
+| Australia bus | 50.11% | 89.47% |
+| Australia van | 79.11% | 85.78% |
+| Israel car | 96.35% | 99.00% |
+| Israel van | 80.62% | 93.88% |
+| Israel motorcycle | 27.41% | 38.24% |
+| Israel truck | 70.48% | 79.39% |
+| Ukraine motorcycle | 53.29% | 62.30% |
+| Spain van | 96.65% | 97.83% |
+| Spain truck | 95.54% | 95.92% |
+| all registers | 94.34% | 95.16% |
+
+**Reading these numbers.**
+- Some register rows carry no model at all, and they can never land on a model record:
+  - the UK DfT's "<MAKE> MODEL MISSING" covers ≈851k motorcycles, ≈647k trucks, ≈520k cars and ≈273k vans;
+  - Spain's DGT writes "N.A." for ≈1,060 Rieju/Beta mopeds.
+- So UK motorcycle (67.6%) and UK truck (19.4%) coverage reads against a ceiling, not a gap. Over *attributable* vehicles they are at ≈95.9% and ≈94.8%. See DECISIONS.md, "Unattributable register rows set a coverage ceiling".
+- Australia car includes the utes that the owner ruling attaches to their car records (below). Their light-commercial rows leave the van denominator.
+
+| kind | 2026.11.4 | 2026.11.5 | Δ |
+|---|---:|---:|---:|
+| car | 6,025 | 6,088 | +63 |
+| motorcycle | 6,266 | 6,316 | +50 |
+| moped | 1,482 | 1,481 | −1 |
+| van | 806 | 813 | +7 |
+| truck | 1,209 | 1,220 | +11 |
+| bus | 437 | 437 | 0 |
+
+### Owner rulings
+- **HSV is its own make.** Holden Special Vehicles products filed under HOLDEN move to HSV: Clubsport, Senator, Maloo, GTO, Avalanche, Grange and Manta. `car/holden/maloo` aliases to `car/hsv/maloo`. GTS stays with Holden, because a bare "HOLDEN GTS" may be the Monaro GTS.
+- **Electric names in the maker's spelling:** Abarth 600e, Mercedes-Benz EQT, Honda e / e:Ny1 / e:N1, Audi Q4 e-tron / Q6 e-tron.
+- **Australian utes count on their car records:** Holden Colorado, Ford Falcon, Commodore and Crewman, by an explicit, cited list in `kind_maps/au_bitre.yml`. Nameplates whose light commercials include panel vans, or whose Australian code means another model (Mazda B3000 = BT-50), are not routed.
+- **Israeli motorcycle type codes shared by several models stay unresolved.** Accuracy beats coverage.
+
+### Curation
+Every register was replayed through the real normalizer to separate unattributable rows, normalizer drops and unpublished candidates. The largest fixable buckets were then curated with fetched tier-1/2 sources:
+- **Australia:** Subaru Liberty, Toyota Tarago, Mitsubishi Magna and 380, Holden Statesman / Caprice / Jackaroo / Viva / Adventra, MG ZST, LDV D90, Mahindra XUV700 (attach-only evidence). Harley-Davidson's FXD/XLH census codes fold onto Dyna/Sportster.
+- **Israel:** Hyundai i25 / i35, Geely Geometry C, Chery FX / Arrizo 8. Ford W2B/W3B fold onto F-250/F-350, and Chevrolet CT onto the Silverado EV. The Ministry's Peugeot plants filed under Piaggio move to Peugeot.
+- **Argentina:** Fiat Mobi / Argo / Pulse, Renault Kwid, Nissan Kait, Citroën Basalt, Ram Dakota, VW Constellation, Mercedes-Benz Accelo, plus grade and engine tails folded.
+- **Elsewhere:** NZ Japanese-market names, Ukrainian brands, UK 125cc motorcycles, Spanish long-tail vans and trucks.
+- **attested.yml grows from 612 to 745 entries** (207 attach-only).
+- **`rename_kinds.yml`** scopes rename keys that are also published names in another kind (e.g. a UK "Corsa" van row → Corsavan, never the Corsa car).
+
+### Checks
+- Frozen build: ALL GATES GREEN.
+- Lints, `lint_enrich`, and gem 0.9.1 conformance 170/170.
+- Codex Astra review, two rounds; every finding is fixed:
+  - a generic Australian light-commercial rule that also moved real vans was replaced by the explicit ute list;
+  - per-vehicle VINs in citation URLs became partial-VIN queries;
+  - Harley-Davidson FXS → Softail was held, because the code also covers 1977–82 Low Riders.
+
 ## [2026.11.4] - 2026-11-10 — register-native kinds, Israel type codes, Spain two-wheelers, Australian trucks, name cleanup
 
 **16,225 models across 981 makes (16,032 → 16,225; 243 added, 50 retired, every retirement aliased to a live successor).**
