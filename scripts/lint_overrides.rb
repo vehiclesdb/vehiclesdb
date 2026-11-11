@@ -205,6 +205,11 @@ if (body = load_yaml("overrides/body_types/body_types.yml"))
     fail! "body_types.yml overrides: #{k} → #{v} not in vocabulary" unless vocab.include?(v.to_s)
     fail! "body_types.yml overrides: key #{k.inspect} must be 'Make|Model'" unless k.include?("|")
   end
+  (body["secondary"] || {}).each do |k, v|
+    fail! "body_types.yml secondary: key #{k.inspect} must be 'Make|Model'" unless k.include?("|")
+    fail! "body_types.yml secondary: #{k} value must be a non-empty list" unless v.is_a?(Array) && v.any?
+    Array(v).each { |t| fail! "body_types.yml secondary: #{k} → #{t} not in vocabulary" unless vocab.include?(t.to_s) }
+  end
   (body["keywords"] || []).each do |t, re|
     fail! "body_types.yml keywords: #{t} not in vocabulary" unless vocab.include?(t.to_s)
     begin
