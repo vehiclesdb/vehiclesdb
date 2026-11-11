@@ -2,7 +2,18 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
-## [Unreleased] — model lifecycle (lane LIFE)
+## [2026.11.8] - 2026-11-11 — model lifecycle: status and years from manufacturer evidence; Tesla Cybercab and Semi
+
+**16,448 models across 974 makes (16,446 → 16,448; 2 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.7. Register coverage is unchanged: the two new records are admitted on manufacturer evidence and carry no register vehicles. No other record changed except as listed below: Cybertruck `body_types`, Roadster `aliases`, and the new optional `lifecycle` key on 205 records.
+
+| kind | 2026.11.7 | 2026.11.8 | Δ |
+|---|---:|---:|---:|
+| car | 6,083 | 6,084 | +1 (`tesla/cybercab`) |
+| truck | 1,214 | 1,215 | +1 (`tesla/semi`) |
+| motorcycle / moped / van / bus | 6,393 / 1,511 / 809 / 436 | unchanged | 0 |
+
+`lifecycle` (open) is on 205 records: 134 `in_production`, 69 `ended`, 1 `ending` (Tesla Cybertruck, planned 2027), 1 `announced` (Tesla Roadster, new generation planned 2028). Manifest: `car.unregistered` 102 (Cybercab + 101 approval-only records), `car.announced` 1, `truck.unregistered` 1. PRs: vehiclesdb#411, vehiclesdb-pipeline#291, #292.
+
 
 - **New optional `lifecycle` object** on every model where it is catalogued. It holds `status` (`announced`, `in_production`, `ending`, `ended`, `cancelled`), `year_start`, `year_end`, `year_start_planned` and `year_end_planned` (each with a `*_planned_basis`: company filing, company statement or executive statement), `announced` and `unveiled`.
   - It appears in `catalog/`, in `dist/vehicles.json`, as five appended CSV/parquet columns and as five appended `catalog.sqlite` `models` columns.

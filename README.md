@@ -15,17 +15,17 @@ All numbers below are generated from this release's `manifest.json` and
 `catalog/` by `scripts/gen_readme_stats.rb`. Nobody types them by hand.
 
 <!-- BEGIN GENERATED: stats (scripts/gen_readme_stats.rb) -->
-**Dataset `2026.11.7`** (built 2026-11-11) — **16,446 models · 974 makes · 6 kinds · 18 countries**
+**Dataset `2026.11.8`** (built 2026-11-11) — **16,448 models · 974 makes · 6 kinds · 18 countries**
 
 | kind | models | makes |
 |---|---:|---:|
-| car | 6,083 | 321 |
+| car | 6,084 | 321 |
 | motorcycle | 6,393 | 289 |
 | moped | 1,511 | 327 |
 | van | 809 | 133 |
-| truck | 1,214 | 110 |
+| truck | 1,215 | 111 |
 | bus | 436 | 96 |
-| **all** | **16,446** | **974** distinct |
+| **all** | **16,448** | **974** distinct |
 
 Models with evidence in each country (a model counts once per country it is found in, so the column does not sum to the total):
 
@@ -96,7 +96,7 @@ Release assets are the top-level files (`vehicles.csv`, `catalog.sqlite`,
 
 <!-- BEGIN GENERATED: load-postgres (scripts/gen_readme_stats.rb) -->
 ```bash
-curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.11.7/vehicles.csv
+curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.11.8/vehicles.csv
 psql "$DATABASE_URL" <<'SQL'
 CREATE TABLE vehiclesdb_models (
   kind                     text NOT NULL,
@@ -111,13 +111,18 @@ CREATE TABLE vehiclesdb_models (
   aliases                  text,
   former_ids               text,
   mass_popularity_decile   smallint,
+  lifecycle_status         text,
+  year_start               text,
+  year_end                 text,
+  year_start_planned       text,
+  year_end_planned         text,
   PRIMARY KEY (kind, make_slug, model_slug)
 );
 \copy vehiclesdb_models FROM 'vehicles.csv' WITH (FORMAT csv, HEADER true)
 SQL
 ```
 
-The column list above is generated from `v2026.11.7`'s CSV header. Since 2026.07.2, columns
+The column list above is generated from `v2026.11.8`'s CSV header. Since 2026.07.2, columns
 are only ever appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
 ADD COLUMN` the new ones (see CHANGELOG.md) and reload. `countries`, `regions`,
 `body_types`, `aliases` and `former_ids` are `|`-separated lists
@@ -383,7 +388,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
 
 <!-- BEGIN GENERATED: cite (scripts/gen_readme_stats.rb) -->
 > VehiclesDB. (2026). *VehiclesDB: The open source vehicle database*
-> (Version 2026.11.7) [Data set]. Zenodo.
+> (Version 2026.11.8) [Data set]. Zenodo.
 > https://doi.org/10.5281/zenodo.21744943
 
 ```bibtex
@@ -393,7 +398,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
   year         = {2026},
   howpublished = {\url{https://github.com/vehiclesdb/vehiclesdb}},
   doi          = {10.5281/zenodo.21744943},
-  note         = {Open dataset, CC BY 4.0, version 2026.11.7}
+  note         = {Open dataset, CC BY 4.0, version 2026.11.8}
 }
 ```
 
