@@ -152,14 +152,16 @@ Semi in 2026.11). Such a record has the ordinary shape with
 a `lifecycle`. With no counts it has no rank or decile, adds nothing to any
 mass share, and sits in the `"none"` band of `decile-mass.json`.
 `manifest.json` carries two counts per kind, each absent when zero:
-`kinds.<kind>.unregistered` — records no register carries
-(`availability: []`), whatever their status; "models on the road" =
+`kinds.<kind>.unregistered` — records with no `registration` evidence in
+any country, whatever their status: records admitted on manufacturer evidence
+(`availability: []`) and records evidenced only by type approval or sales
+(US/Canadian catalogue-only models); "models on the road" =
 `models − unregistered`. `kinds.<kind>.announced` — records whose lifecycle
 status is `announced`; this includes a registered nameplate whose new
 generation is announced (Tesla Roadster), so never subtract it from a
-registered count. In 2026.11.8, car: Cybercab is unregistered
-(`in_production`), the Roadster is announced (registered); truck: the Semi is
-unregistered (`in_production`). When
+registered count. Among them in 2026.11.8: the Tesla Cybercab
+(car, `in_production`) and Semi (truck, `in_production`) are unregistered; the
+Roadster is announced but registered. When
 register rows arrive they land on the same id. Admission rule: DECISIONS.md
 "Lifecycle".
 
