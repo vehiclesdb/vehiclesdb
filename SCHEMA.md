@@ -80,7 +80,7 @@ shapes below) and fill in over time.
 | `sources` | string[] | ids of the sources that evidence this record (see SOURCES.md) |
 | `xrefs` | object? | crosswalks; today `{"tan": [...]}` EU type-approval numbers where measured |
 | `registration_years` | object? | `{"first": 1998, "last": 2026}` — a HINT: the earliest and latest FIRST-REGISTRATION year seen for this record in the registers whose year series is first-registration based (fi, nl), counting only years with ≥ 2 vehicles in one register. Registration, not production: never use it as a validation bound (imports, re-registrations and register typos sit at both ends). Absent when no such series (added 2026.11.3) |
-| `year_start` / `year_end` | int? | nameplate lifespan *(optional, future)* |
+| `lifecycle` | object? | the model's lifecycle — status and years, from manufacturer/press evidence; see *Lifecycle* below. Absent = not catalogued yet (added 2026-11, lane LIFE). It replaces the never-populated reserved `year_start`/`year_end` pair, which will not be emitted |
 | `generations` | object[]? | reserved layer — shape below |
 | `variants` | object[]? | reserved layer — shape below |
 
@@ -102,7 +102,68 @@ registers — absent, per the absence rule, until one exists).
 
 A model publishes when its register evidence corroborates it: ≥ 2 minting sources, or one source above the per-kind floor (car 1,000, van/motorcycle/moped 300, truck 150, bus 50). Publication hysteresis holds an existing id through ordinary churn.
 
+Since 2026-11-11 the same file has a **manufacturer** form: a named production vehicle that its manufacturer has officially announced publishes with no register vehicle at all, on a tier-1 source and a dated announcement, and always with a `lifecycle` (see *Records admitted on manufacturer evidence*).
+
 Since 2026-11-09 a curated **attested admission** (`overrides/models/attested.yml`) can also publish a real nameplate below that floor, for example a single-market brand or a rare classic. It needs at least one minting register vehicle and a tier-1/tier-2 source. Nothing in the record shape changes: an attested record carries exactly the availability and popularity its register rows give it. See DECISIONS.md.
+
+### Lifecycle
+
+```json
+"lifecycle": { "status": "ending", "year_start": 2023, "year_end_planned": 2027, "announced": "2019-11-21" }
+```
+
+| key | type | meaning |
+|---|---|---|
+| `status` | string | `announced` — officially announced, production not started (including a nameplate whose return is announced) · `in_production` · `ending` — in production with a stated end · `ended` · `cancelled` — announced, then cancelled by the manufacturer |
+| `year_start` | int? | first year the nameplate was actually produced |
+| `year_end` | int? | last year of production. Present only when nothing is in production and every run's end is dated (an ended model whose end year is unsourced has no `year_end`) |
+| `year_start_planned` | int? | the stated production start of an `announced` model |
+| `year_start_planned_basis` | string? | what that start date rests on (see `*_planned_basis` below) |
+| `year_end_planned` | int? | the stated end of an `ending` model. A plan, not a fact: someone said it, and it can move |
+| `year_end_planned_basis` | string? | what that end date rests on: `company_filing` (a filing, shareholder letter or regulator file), `company_statement` (the manufacturer's press release, website or official account) or `executive_statement` (an executive speaking — a CEO post, interview or event remark) |
+| `announced` | string? | the manufacturer's first announcement, `YYYY`, `YYYY-MM` or `YYYY-MM-DD` (for `announced`, the first announcement of the coming model) |
+| `unveiled` | string? | `announced` status only: the latest public unveiling of the coming model, when it differs from the first announcement (Tesla's Next Gen Roadster: announced 2017-11-16, unveiled 2026-10-15) |
+
+Reading it: `in_production` 2017 → "2017–now"; `ending` 2023/2027 →
+"2023–2027 (planned)" — and say who planned it from
+`year_end_planned_basis`; `ended` 2012/2026 → "2012–2026"; `announced` 2028 →
+"Coming 2028". An `announced` record that ALSO has `year_start`/`year_end` is
+a nameplate whose earlier production ended and whose new generation is
+announced: Tesla Roadster `{status: announced, year_start: 2008, year_end:
+2012, year_start_planned: 2028, year_start_planned_basis:
+"executive_statement", unveiled: "2026-10-15", announced: "2017-11-16"}` →
+"2008–2012 · new generation unveiled 15 Oct 2026, planned 2028". **Lifecycle is not registration.** `registration_years` is
+when vehicles were first registered (imports and late registrations sit at
+both ends); `lifecycle` is when the maker built them.
+
+Every fact behind it is curated from evidence outside the registers — the
+manufacturer's own filings and pages first, reputable press second — and a
+lifecycle is published only when its years rest on such a source: a
+Wikipedia-only fact never reaches this object. Who stated a planned date and
+when, the citations and the notes are the enriched layer. The status is
+*derived* from those facts at build time; it is never typed by hand.
+
+### Records admitted on manufacturer evidence
+
+A model the manufacturer has officially announced, or is already building,
+can be in the catalog before any register carries it (the Tesla Cybercab and
+Semi in 2026.11). Such a record has the ordinary shape with
+`availability: []`, `regions: []`, `sources: []`, no `popularity`, and always
+a `lifecycle`. With no counts it has no rank or decile, adds nothing to any
+mass share, and sits in the `"none"` band of `decile-mass.json`.
+`manifest.json` carries two counts per kind, each absent when zero:
+`kinds.<kind>.unregistered` — records with no `registration` evidence in
+any country, whatever their status: records admitted on manufacturer evidence
+(`availability: []`) and records evidenced only by type approval or sales
+(US/Canadian catalogue-only models); "models on the road" =
+`models − unregistered`. `kinds.<kind>.announced` — records whose lifecycle
+status is `announced`; this includes a registered nameplate whose new
+generation is announced (Tesla Roadster), so never subtract it from a
+registered count. Among them in 2026.11.8: the Tesla Cybercab
+(car, `in_production`) and Semi (truck, `in_production`) are unregistered; the
+Roadster is announced but registered. When
+register rows arrive they land on the same id. Admission rule: DECISIONS.md
+"Lifecycle".
 
 ### Availability
 
@@ -258,6 +319,8 @@ the make, and a spelling that would land on two different records of one make
 is dropped. Resolvers should try `name` → `aliases` → `forms`, all
 make-scoped. Absent when the record has none.
 
+`lifecycle` (added 2026-11, schema v2 growth rule) — the same object as in `catalog/` (see *Lifecycle*); absent when not catalogued.
+
 `registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them.
 
 Neither decile is a per-country ordering. Anything that lists "the most
@@ -269,15 +332,17 @@ presence only (us, ca for cars) have no ranks.
 
 One row per model: `kind, make_slug, make_name, model_slug, model_name,
 body_types, countries, regions, global_popularity_decile, aliases,
-former_ids, mass_popularity_decile` (multi-valued cells `|`-joined; empty =
-absent). New columns are only ever **appended**, so positional readers keep
+former_ids, mass_popularity_decile, lifecycle_status, year_start, year_end,
+year_start_planned, year_end_planned` (multi-valued cells `|`-joined; empty =
+absent; the five lifecycle columns appended 2026-11 — they flatten `lifecycle`). New columns are only ever **appended**, so positional readers keep
 working. The parquet file is converted from the CSV and has the same columns.
 
 ## `dist/catalog.sqlite`
 
 Tables: `meta` (key/value), `makes (id, kind, name, former_slugs)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3), `models (id, kind,
 make_id, slug, name, body_types, regions, global_popularity_decile,
-mass_popularity_decile)`, `availability
+mass_popularity_decile, lifecycle_status, year_start, year_end, year_start_planned,
+year_end_planned)` (lifecycle columns appended 2026-11, NULL when absent), `availability
 (model_id, kind, country, evidence, source)`, `popularity (model_id, kind,
 country, rank, decile, confidence)`. Ids match the JSON ids exactly.
 
