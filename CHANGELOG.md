@@ -2,6 +2,23 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [Unreleased] — model lifecycle (lane LIFE)
+
+- **New optional `lifecycle` object** on every model where it is catalogued. It holds `status` (`announced`, `in_production`, `ending`, `ended`, `cancelled`), `year_start`, `year_end`, `year_start_planned`, `year_end_planned` and `announced`.
+  - It appears in `catalog/`, in `dist/vehicles.json`, as five appended CSV/parquet columns and as five appended `catalog.sqlite` `models` columns.
+  - It is additive, so schema versions do not move. SCHEMA.md *Lifecycle* has the details.
+- **Records without a register.** `overrides/models/attested.yml` has a `manufacturer` form, for officially announced production vehicles that no register carries yet. Such records have no availability or popularity, and `manifest.json` `kinds.<kind>.announced` counts them. DECISIONS.md *Lifecycle* has the admission bar and the review rule.
+- **Tesla.** Every record now carries its lifecycle, sourced to Tesla's filings and quarterly updates:
+  - Model S 2012–2026 ended
+  - Model X 2015–2026 ended
+  - Model 3 2017–now
+  - Model Y 2020–now
+  - Cybertruck 2023–2027 (ending; stated by Elon Musk on X, 2026-11-11)
+  - Roadster 2008–2012, next generation announced for 2028
+  - new: `car/tesla/cybercab` (in production since 2026) and `truck/tesla/semi` (since 2022)
+
+  The Cybertruck's body type is corrected from `hatchback` to `pickup`.
+
 ## [2026.11.6] - 2026-11-10 — commercial-variant gate, register artefacts cleaned, Israeli GM order codes, Kyburz as one make
 
 **16,327 models across 966 makes (16,355 → 16,327; 47 added, 75 retired: 59 aliased to a live successor, 16 removed with a removals.yml entry).**

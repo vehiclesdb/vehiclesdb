@@ -171,10 +171,20 @@ if File.exist?(File.join(ROOT, at_path)) && (at = load_yaml(at_path))
         # It admits a tier-1/2 nameplate whose register evidence is attach-only
         # (au/il/ch/no/ro), which a plain URL entry never does; the flag keeps
         # those admissions auditable (grep `evidence: attach_only`).
+        # MANUFACTURER EVIDENCE (lane LIFE, 2026-11-11; DECISIONS.md "Lifecycle"):
+        # {url:, evidence: manufacturer, announced: "YYYY-MM-DD"} admits an
+        # officially announced production vehicle with NO register vehicle.
+        # Tier 1 only, dated, and the comment says `manufacturer evidence`.
+        maker = val.is_a?(Hash) && val["evidence"].to_s == "manufacturer"
         if val.is_a?(Hash)
-          extra = val.keys.map(&:to_s) - %w[url evidence]
-          fail! "#{where}: unknown key(s) #{extra.inspect} — the mapping form is {url:, evidence: attach_only}" unless extra.empty?
-          fail! "#{where}: evidence must be attach_only (got #{val["evidence"].inspect})" unless val["evidence"].to_s == "attach_only"
+          extra = val.keys.map(&:to_s) - %w[url evidence announced]
+          fail! "#{where}: unknown key(s) #{extra.inspect} — the mapping forms are {url:, evidence: attach_only} and {url:, evidence: manufacturer, announced:}" unless extra.empty?
+          fail! "#{where}: evidence must be attach_only or manufacturer (got #{val["evidence"].inspect})" unless %w[attach_only manufacturer].include?(val["evidence"].to_s)
+          if maker
+            fail! "#{where}: evidence: manufacturer needs announced: \"YYYY-MM-DD\" (quoted)" unless val["announced"].is_a?(String) && val["announced"].match?(/\A\d{4}-\d{2}-\d{2}\z/)
+          elsif val.key?("announced")
+            fail! "#{where}: announced: is only for evidence: manufacturer"
+          end
           url = val["url"]
         else
           url = val
@@ -182,16 +192,21 @@ if File.exist?(File.join(ROOT, at_path)) && (at = load_yaml(at_path))
         fail! "#{where}: value must be the http(s) source URL" unless url.to_s.match?(%r{\Ahttps?://\S+\z})
         fail! "#{where}: Wikipedia is tier 3 and cannot attest — cite the manufacturer (tier 1) or trade/official press (tier 2)" if url.to_s.include?("wikipedia.org")
         line = at_lines.find { |l| l.include?(url.to_s) && l =~ /\A\s+["']?#{Regexp.escape(plate.to_s)}["']?\s*:/ }
-        fail! "#{where}: an attach_only entry must say so in its comment (`attach-only evidence`)" if val.is_a?(Hash) && line && line !~ /attach-only/
+        fail! "#{where}: an attach_only entry must say so in its comment (`attach-only evidence`)" if val.is_a?(Hash) && !maker && line && line !~ /attach-only/
+        fail! "#{where}: a manufacturer entry must say so in its comment (`manufacturer evidence`)" if maker && line && line !~ /manufacturer evidence/
         if line.nil? || line !~ /#\s*\S/
           fail! "#{where}: needs a same-line `#` comment (register evidence, tier, access date)"
         else
           cm = line.split(/\s#\s/, 2).last.to_s
           fail! "#{where}: comment must name the tier as [tier 1] or [tier 2]" unless cm.match?(/\[tier [12]\b/)
+          fail! "#{where}: a manufacturer entry admits on the maker's own word: [tier 1] only" if maker && !cm.match?(/\[tier 1\b/)
           fail! "#{where}: comment must carry the access date (accessed YYYY-MM-DD)" unless cm.match?(/accessed \d{4}-\d{2}-\d{2}/)
-          fail! "#{where}: comment must cite at least one register vehicle (e.g. `nl_rdw 4`, `es_dgt 666 M1`)" unless cm.match?(/\b[a-z]{2}_[a-z0-9_]+\b[^;]*\d/) # [a-z0-9_]: source keys may carry a second underscore (de_kba_fz10, no_svv_pkk)
+          unless maker # no register vehicle exists — that is the point of the form
+            fail! "#{where}: comment must cite at least one register vehicle (e.g. `nl_rdw 4`, `es_dgt 666 M1`)" unless cm.match?(/\b[a-z]{2}_[a-z0-9_]+\b[^;]*\d/) # [a-z0-9_]: source keys may carry a second underscore (de_kba_fz10, no_svv_pkk)
+          end
         end
         next unless build
+        next if maker # conjured by the build itself; the pipeline fails it without a lifecycle
         id = "#{slug.(make)}/#{slug.(plate)}"
         fail! "#{where}: #{kind}/#{id} is neither a candidate nor a published record in #{build} — the attestation would be inert" unless known[kind.to_s].include?(id)
       end
