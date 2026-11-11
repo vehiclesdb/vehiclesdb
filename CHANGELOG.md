@@ -2,6 +2,51 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.7] - 2026-11-11 — residual regional curation, Aixam pick-up, Datsun 1200, Méhari, Israeli motorcycle codes
+
+**16,446 models across 974 makes (16,327 → 16,446; 123 added, 4 retired: 3 aliased to a live successor, 1 removed with a removals.yml entry).**
+
+Same frozen register snapshots as 2026.11.2–11.6. All registers: 95.36% → 95.67% of vehicles land on a published record (+342,405).
+
+### Coverage (11.6 → 11.7)
+
+| | 2026.11.6 | 2026.11.7 |
+|---|---:|---:|
+| Israel motorcycle | 38.24% | 47.91% |
+| Australia van | 85.78% | 90.42% |
+| Ukraine car | 91.56% | 94.30% |
+| Netherlands moped | 76.13% | 78.15% |
+| Australia motorcycle | 80.65% | 81.68% |
+| UK motorcycle | 67.61% | 68.19% |
+| Australia car | 99.63% | 99.81% |
+| all registers | 95.36% | 95.67% |
+
+| kind | 2026.11.6 | 2026.11.7 | Δ |
+|---|---:|---:|---:|
+| car | 6,072 | 6,083 | +11 |
+| motorcycle | 6,318 | 6,393 | +75 |
+| moped | 1,481 | 1,511 | +30 |
+| van | 806 | 809 | +3 |
+| truck | 1,214 | 1,214 | +0 |
+| bus | 436 | 436 | +0 |
+
+### Residual curation (Australia, Netherlands, UK, Spain, Nordics, Israel)
+- Renames, moves and attested admissions for register strings that reached no record: Israeli motorcycle type codes (+377), Australian utes and classics (Holden Rodeo, Nova, Gemini, Apollo; Mitsubishi Verada; Toyota Lexcen, Rukus, Spacia; Proton Preve, S16; Mahindra XUV500), Dutch mopeds and e-mopeds, UK and Nordic spelling variants.
+- Body types for the new Australian records as their sources state them (Rodeo pickup, XUV500 SUV, Verada/Preve/S16 sedan, Apollo sedan and wagon).
+- Make alias JUNGE FAHRZEUGBAU GMBH → Junge Fahrzeugbau, so the 2026.11.6 bodybuilder moves keep resolving.
+- Gilera Runner rows filed under Piaggio move to Gilera (`motorcycle/piaggio/runner`, `moped/piaggio/gilera-runner` aliased).
+
+### Vehicle fixes
+- **Aixam 500**: body types `[hatchback, pickup]` (the 500.4/500.5 Pick-Up is a body of this record) and aliases "500.4", "500.5", "500 Pick-Up", "500.4 Pick-Up". New `secondary:` section in `overrides/body_types/body_types.yml` for a second body the registers cannot show.
+- **Datsun 1200**: body type sedan (was coupe); the register's plain "1200" is the B110 saloon.
+- **Datsun Sunny 1200 De Luxe** (Dutch 1980–81 rows, wheelbase 234 cm) is the B310 and now counts on `car/datsun/sunny`; it was never part of `car/datsun/1200-de-luxe`.
+- **Méhari**: published as "Méhari" (car and van), Citroën's spelling; ids unchanged.
+- **Datsun Fairlady**: the Nissan-make "Datsun Fairlady" row (the 1963 roadster) moves to `car/datsun/fairlady`; `car/nissan/datsun-fairlady` aliased.
+
+### Retired
+- `moped/cfmoto/cforce-520l`: cross-kind prune; the CForce 520 L publishes as `motorcycle/cfmoto/cforce-520l`.
+- Open items recorded in DEBT.md: the bare Nissan "Datsun" records, the B120 ute, remaining B310 strings, attestations withdrawn because no register row reaches them, and retired ids that still get traffic.
+
 ## [2026.11.6] - 2026-11-10 — commercial-variant gate, register artefacts cleaned, Israeli GM order codes, Kyburz as one make
 
 **16,327 models across 966 makes (16,355 → 16,327; 47 added, 75 retired: 59 aliased to a live successor, 16 removed with a removals.yml entry).**
