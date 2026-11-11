@@ -2,6 +2,23 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [Unreleased] — model lifecycle (lane LIFE)
+
+- **New optional `lifecycle` object** on every model where it is catalogued. It holds `status` (`announced`, `in_production`, `ending`, `ended`, `cancelled`), `year_start`, `year_end`, `year_start_planned` and `year_end_planned` (each with a `*_planned_basis`: company filing, company statement or executive statement), `announced` and `unveiled`.
+  - It appears in `catalog/`, in `dist/vehicles.json`, as five appended CSV/parquet columns and as five appended `catalog.sqlite` `models` columns.
+  - It is additive, so schema versions do not move. SCHEMA.md *Lifecycle* has the details.
+- **Records without a register.** `overrides/models/attested.yml` has a `manufacturer` form, for officially announced production vehicles that no register carries yet. Such records have no availability or popularity. `manifest.json` gains `kinds.<kind>.unregistered` (no register carries the record) and `kinds.<kind>.announced` (derived status announced). DECISIONS.md *Lifecycle* has the admission bar and the review rule.
+- **Tesla.** Every record now carries its lifecycle, sourced to Tesla's filings and quarterly updates:
+  - Model S 2012–2026 ended
+  - Model X 2015–2026 ended
+  - Model 3 2017–now
+  - Model Y 2020–now
+  - Cybertruck 2023–2027 (ending; a planned end stated by Elon Musk on X, 2026-11-11, `year_end_planned_basis: executive_statement`, not a company filing)
+  - Roadster 2008–2012, next generation unveiled 2026-10-15 and planned for 2028 (alias "Next Gen Roadster")
+  - new: `car/tesla/cybercab` (in production since 2026) and `truck/tesla/semi` (since 2022)
+
+  The Cybertruck's body type is corrected from `hatchback` to `pickup`.
+
 ## [2026.11.7] - 2026-11-11 — residual regional curation, Aixam pick-up, Datsun 1200, Méhari, Israeli motorcycle codes
 
 **16,446 models across 974 makes (16,327 → 16,446; 123 added, 4 retired: 3 aliased to a live successor, 1 removed with a removals.yml entry).**
