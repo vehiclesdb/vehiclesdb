@@ -181,7 +181,7 @@ if File.exist?(File.join(ROOT, at_path)) && (at = load_yaml(at_path))
           fail! "#{where}: unknown key(s) #{extra.inspect} — the mapping forms are {url:, evidence: attach_only} and {url:, evidence: manufacturer, announced:}" unless extra.empty?
           fail! "#{where}: evidence must be attach_only or manufacturer (got #{val["evidence"].inspect})" unless %w[attach_only manufacturer].include?(val["evidence"].to_s)
           if maker
-            fail! "#{where}: evidence: manufacturer needs announced: \"YYYY-MM-DD\" (quoted)" unless val["announced"].is_a?(String) && val["announced"].match?(/\A\d{4}-\d{2}-\d{2}\z/)
+            fail! "#{where}: evidence: manufacturer needs announced: \"YYYY-MM-DD\" (quoted)" unless val["announced"].is_a?(String) && val["announced"].match?(/\A\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\z/)
           elsif val.key?("announced")
             fail! "#{where}: announced: is only for evidence: manufacturer"
           end

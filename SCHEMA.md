@@ -118,12 +118,21 @@ Since 2026-11-09 a curated **attested admission** (`overrides/models/attested.ym
 | `year_start` | int? | first year the nameplate was actually produced |
 | `year_end` | int? | last year of production. Present only when nothing is in production and every run's end is dated (an ended model whose end year is unsourced has no `year_end`) |
 | `year_start_planned` | int? | the stated production start of an `announced` model |
+| `year_start_planned_basis` | string? | what that start date rests on (see `*_planned_basis` below) |
 | `year_end_planned` | int? | the stated end of an `ending` model. A plan, not a fact: someone said it, and it can move |
-| `announced` | string? | the manufacturer's announcement date, `YYYY`, `YYYY-MM` or `YYYY-MM-DD` (for `announced`, the announcement of the coming model) |
+| `year_end_planned_basis` | string? | what that end date rests on: `company_filing` (a filing, shareholder letter or regulator file), `company_statement` (the manufacturer's press release, website or official account) or `executive_statement` (an executive speaking — a CEO post, interview or event remark) |
+| `announced` | string? | the manufacturer's first announcement, `YYYY`, `YYYY-MM` or `YYYY-MM-DD` (for `announced`, the first announcement of the coming model) |
+| `unveiled` | string? | `announced` status only: the latest public unveiling of the coming model, when it differs from the first announcement (Tesla's Next Gen Roadster: announced 2017-11-16, unveiled 2026-10-15) |
 
 Reading it: `in_production` 2017 → "2017–now"; `ending` 2023/2027 →
-"2023–2027 (planned)"; `ended` 2012/2026 → "2012–2026"; `announced` 2028 →
-"Coming 2028". **Lifecycle is not registration.** `registration_years` is
+"2023–2027 (planned)" — and say who planned it from
+`year_end_planned_basis`; `ended` 2012/2026 → "2012–2026"; `announced` 2028 →
+"Coming 2028". An `announced` record that ALSO has `year_start`/`year_end` is
+a nameplate whose earlier production ended and whose new generation is
+announced: Tesla Roadster `{status: announced, year_start: 2008, year_end:
+2012, year_start_planned: 2028, year_start_planned_basis:
+"executive_statement", unveiled: "2026-10-15", announced: "2017-11-16"}` →
+"2008–2012 · new generation unveiled 15 Oct 2026, planned 2028". **Lifecycle is not registration.** `registration_years` is
 when vehicles were first registered (imports and late registrations sit at
 both ends); `lifecycle` is when the maker built them.
 
@@ -142,9 +151,15 @@ Semi in 2026.11). Such a record has the ordinary shape with
 `availability: []`, `regions: []`, `sources: []`, no `popularity`, and always
 a `lifecycle`. With no counts it has no rank or decile, adds nothing to any
 mass share, and sits in the `"none"` band of `decile-mass.json`.
-`manifest.json` `kinds.<kind>.announced` counts the records whose status is
-`announced`, so "models on the road" = `models − announced` (records already
-in production but not yet registered are visible as `availability: []`). When
+`manifest.json` carries two counts per kind, each absent when zero:
+`kinds.<kind>.unregistered` — records no register carries
+(`availability: []`), whatever their status; "models on the road" =
+`models − unregistered`. `kinds.<kind>.announced` — records whose lifecycle
+status is `announced`; this includes a registered nameplate whose new
+generation is announced (Tesla Roadster), so never subtract it from a
+registered count. In 2026.11.8, car: Cybercab is unregistered
+(`in_production`), the Roadster is announced (registered); truck: the Semi is
+unregistered (`in_production`). When
 register rows arrive they land on the same id. Admission rule: DECISIONS.md
 "Lifecycle".
 
