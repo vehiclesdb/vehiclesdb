@@ -2,6 +2,14 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [Unreleased] — country of origin per make (targeted at 2026.11.9)
+
+- **New optional make fields: `country` + `country_tier`, or `country_disputed`.** `country` is the make's country of origin: the lower-case ISO 3166-1 alpha-2 code of the country where the marque was founded (not where it is built, not its headquarters, not its owner's country). `country_tier` says what it rests on: `manufacturer`, `regulator` or `archive`. A marque genuinely identified with two countries carries `country_disputed` instead. SCHEMA.md *Country of origin* has the definition and the rules for former states, sub-brands and revivals; DECISIONS.md "Country of origin" has the ruling. The current owner / parent group stays out of the open dataset.
+  - It appears on `catalog/<kind>/makes.json`, on the make objects of `dist/vehicles.json` and as three appended `catalog.sqlite` `makes` columns (`country`, `country_tier`, `country_disputed`). It is not in the per-model CSV/parquet or in `vehicles.min.json`.
+  - It is additive, so schema versions do not move.
+- **First coverage:** 125 makes, 98.7% of registration mass, every one of the 50 most-registered makes. 124 have a `country` (96 on the manufacturer's own words, 22 on a regulator or securities filing, 6 on a public archive) and 1 a `country_disputed` (Leyland DAF gb/nl). Each source quote was re-fetched and found verbatim before admission; no value rests on Wikipedia or the press.
+- **SCHEMA.md** now documents the make fields `kinds` and `countries` (markets, not origin), and drops the stale "future" `country` and duplicate `aliases` rows. `scripts/lint_schema_doc.rb` (CI) fails when a published make key has no SCHEMA.md row, when the documented schema versions differ from `manifest.json`, or when an origin value is malformed.
+
 ## [2026.11.8] - 2026-11-11 — model lifecycle: status and years from manufacturer evidence; Tesla Cybercab and Semi
 
 **16,448 models across 974 makes (16,446 → 16,448; 2 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.7. Register coverage is unchanged: the two new records are admitted on manufacturer evidence and carry no register vehicles. No other record changed except as listed below: Cybertruck `body_types`, Roadster `aliases`, and the new optional `lifecycle` key on 205 records.
