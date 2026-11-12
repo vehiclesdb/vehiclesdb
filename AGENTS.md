@@ -139,6 +139,7 @@ therefore defined per make-set, never per kind-set.
 | `lint_dataset.rb` | name-SHAPE defects in the published catalog + drop-list effectiveness; `legit`/`debt` buckets in `data/name_shapes.yml` |
 | `reorg_make_blocks.rb` | keeps make blocks alphabetical (`--check` in CI) |
 | `gen_ownership.rb` | regenerates `OWNERSHIP.yml` from the catalog |
+| `gen_readme_stats.rb` | writes every count in `README.md` + `llms.txt` from `manifest.json`/`catalog/` (`--check` runs in CI). Never type a size number by hand; the pipeline's `build:publish` runs it after the sync |
 
 All five run in CI on every PR (`.github/workflows/lint.yml`) and in seconds
 locally. `lint_dataset.rb` is report-only until the `debt` section is empty.
