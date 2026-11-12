@@ -2,6 +2,18 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.9] - 2026-11-12 — lifecycle for ten head models; DeLorean DMC-12 production run
+
+**16,448 models across 974 makes (unchanged; 0 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.8. Register coverage is unchanged: every catalog file is identical to 2026.11.8 except for the `lifecycle` objects below.
+
+`lifecycle` is now on 215 records (205 → 215): 142 `in_production`, 71 `ended`, 1 `ending`, 1 `announced`. New:
+
+- `car/audi/a3` 1996–now, `car/audi/a6` 1994–now, `car/fiat/500` 1936–now, `car/hyundai/i30` 2007–now, `car/mercedes-benz/a-class` 1997–now, `car/mini/cooper` 1961–now, `car/toyota/camry` 1982–now, `van/ford/transit-connect` 2002–now
+- `car/toyota/aygo` 2005–2021 (ended)
+- `car/de-lorean/dmc-12` 1981–1982 (ended): the production run, not the registration years (1981–2015)
+
+PR: vehiclesdb-pipeline#297.
+
 ## [2026.11.8] - 2026-11-11 — model lifecycle: status and years from manufacturer evidence; Tesla Cybercab and Semi
 
 **16,448 models across 974 makes (16,446 → 16,448; 2 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.7. Register coverage is unchanged: the two new records are admitted on manufacturer evidence and carry no register vehicles. No other record changed except as listed below: Cybertruck `body_types`, Roadster `aliases`, and the new optional `lifecycle` key on 205 records.
