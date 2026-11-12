@@ -225,6 +225,13 @@ if (body = load_yaml("overrides/body_types/body_types.yml"))
     fail! "body_types.yml secondary: #{k} value must be a non-empty list" unless v.is_a?(Array) && v.any?
     Array(v).each { |t| fail! "body_types.yml secondary: #{k} → #{t} not in vocabulary" unless vocab.include?(t.to_s) }
   end
+  # commercial: "<kind>/<make>/<slug>" → van|pickup, van and truck records only
+  # (lane DQ 2026-11-12; pipeline BodyEvidence.commercial). Id-keyed because the
+  # "Make|Model" keys above are kind-blind.
+  (body["commercial"] || {}).each do |k, v|
+    fail! "body_types.yml commercial: key #{k.inspect} must be '<van|truck>/<make>/<slug>'" unless k.to_s =~ %r{\A(van|truck)/[a-z0-9-]+/[a-z0-9-]+\z}
+    fail! "body_types.yml commercial: #{k} → #{v} must be van or pickup" unless %w[van pickup].include?(v.to_s)
+  end
   (body["keywords"] || []).each do |t, re|
     fail! "body_types.yml keywords: #{t} not in vocabulary" unless vocab.include?(t.to_s)
     begin
