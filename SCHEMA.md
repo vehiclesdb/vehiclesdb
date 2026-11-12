@@ -58,8 +58,62 @@ shapes below) and fill in over time.
 | `name` | string | `"BMW"` |
 | `aliases` | string[]? | published alternate names — nicknames, initialisms, native scripts (`["Chevy"]`, `["比亚迪"]`); absent when none curated |
 | `former_slugs` | string[]? | make slugs that no longer exist because that make was merged into or renamed to this one (`["renault-trucks"]` on `renault`; added 2026.11.3). A resolver that receives a former slug answers this make. Derived from the make-merge entries of `overrides/models/former_ids.yml`; absent when none |
-| `country` | string? | ISO-3166 alpha-2 of origin *(optional, future)* |
-| `aliases` | string[]? | alternate spellings *(optional, future)* |
+| `kinds` | string[] | the kinds this make is published in; in `catalog/<kind>/makes.json` always `[<kind>]` (the file's own kind) |
+| `countries` | string[] | where the make's models are evidenced: the union of its models' `availability` countries (lower-case ISO 3166-1 alpha-2). **Markets, not origin** — see `country` |
+| `country` | string? | the make's **country of origin**: lower-case ISO 3166-1 alpha-2 of the country where the marque was founded (`"de"` on `bmw`, `"gb"` on `mg`). Present only on a manufacturer, regulator or archive source; always with `country_tier`. See *Country of origin* below (added 2026.11.10) |
+| `country_tier` | string? | what `country` rests on: `manufacturer` (the maker's or its group's own words: history page, annual report, press kit, its own museum), `regulator` (an official register or securities filing) or `archive` (a public archive, national museum or heritage trust holding the marque's records). Present exactly when `country` is |
+| `country_disputed` | string[]? | a marque whose FOUNDING spans two countries (a cross-border joint venture or merger that created the name): the candidate codes, sorted, each backed by a manufacturer, regulator or archive source (`["gb", "nl"]` on `leyland-daf`). Never beside `country` |
+
+### Country of origin
+
+```json
+{ "id": "bmw", "slug": "bmw", "name": "BMW", "kinds": ["car"], "countries": ["au", "ch", "…"],
+  "country": "de", "country_tier": "manufacturer" }
+```
+
+**Definition.** The country where the **marque was founded**: the seat of the
+company or division that first put vehicles on sale under that name, as the
+**present-day** ISO 3166-1 alpha-2 code of that place.
+
+- It is **not** where the vehicles are built today, **not** the
+  headquarters and **not** the current owner's country: MG is `gb` (founded
+  in Oxford) although a Chinese group owns it.
+- A **sub-brand** launched by an existing manufacturer takes the country of
+  the company that created it (Lexus `jp`, Cupra `es`).
+- A **renamed or revived** marque keeps the original marque's origin when the
+  revival claims continuity of the same name.
+- **Former states** map to the present-day state that contains the founding
+  seat: Mladá Boleslav, Austria-Hungary → `cz`; Tolyatti, USSR → `ru`;
+  Kragujevac, Yugoslavia → `rs`; Zwickau, GDR → `de`. Withdrawn codes (`cs`,
+  `su`, `yu`, `dd`) never appear, and the United Kingdom is `gb`.
+- A marque whose **founding spans two countries** (a cross-border joint
+  venture or merger that created the name) carries `country_disputed`
+  (the candidates) instead of a guessed `country`. A marque founded in one
+  country and continued in another is not disputed: it keeps the founding
+  country (Royal Enfield, Redditch 1901 → `gb`). A headquarters or an owner
+  is never a candidate.
+- **Out of scope:** ownership, headquarters, plants and markets. Where a
+  make is registered is `countries`, a different fact; who owns it today is
+  not in the open dataset (it goes stale between releases).
+
+**How it is sourced.** Each value rests on the manufacturer's (or its
+group's) own words, on a regulator or official filing, or on a public
+archive or national museum that holds the marque's records, quoted
+verbatim and re-checked on the live page when it was admitted. Press
+articles, reference works, enthusiast sites and Wikipedia never publish a
+country of origin. The
+citation itself (URL and quote) is part of the enriched layer; the open
+record says which kind of source it is in `country_tier`.
+
+**Reading it.** Absent means *not catalogued yet* (the absence rule), never
+"no country". A published value is never silently removed or changed: the
+build fails on it, and a correction of a wrong value is an adjudicated
+entry (`overrides/models/gate_acks.yml` `origin:`) noted in the CHANGELOG. Coverage starts with the makes that carry most registrations;
+the tail fills in over releases. "German car brands" is
+`makes.filter(m => m.country === "de")`; to include disputed marques, also
+match `country_disputed`. Make identity is kind-independent, so a make has
+the same origin in every `catalog/<kind>/makes.json` and in
+`dist/vehicles.json`.
 
 ## Model (nameplate)
 
@@ -321,7 +375,7 @@ make-scoped. Absent when the record has none.
 
 `lifecycle` (added 2026-11, schema v2 growth rule) — the same object as in `catalog/` (see *Lifecycle*); absent when not catalogued.
 
-`registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them.
+`registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them. From 2026.11.10 they also carry the country of origin, `country` + `country_tier` or `country_disputed` (see *Country of origin*), absent when not catalogued.
 
 Neither decile is a per-country ordering. Anything that lists "the most
 popular models in country X" should sort by `country_ranks[X]` (the `vehicles`
@@ -335,11 +389,11 @@ body_types, countries, regions, global_popularity_decile, aliases,
 former_ids, mass_popularity_decile, lifecycle_status, year_start, year_end,
 year_start_planned, year_end_planned` (multi-valued cells `|`-joined; empty =
 absent; the five lifecycle columns appended 2026-11 — they flatten `lifecycle`). New columns are only ever **appended**, so positional readers keep
-working. The parquet file is converted from the CSV and has the same columns.
+working. The parquet file is converted from the CSV and has the same columns. The CSV is one row per model and does not repeat make-level fields such as `former_slugs` or the country of origin; join on `make_slug` against `vehicles.json` or `catalog.sqlite` `makes`.
 
 ## `dist/catalog.sqlite`
 
-Tables: `meta` (key/value), `makes (id, kind, name, former_slugs)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3), `models (id, kind,
+Tables: `meta` (key/value), `makes (id, kind, name, former_slugs, country, country_tier, country_disputed)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3; the three origin columns appended 2026.11.10, `country_disputed` `|`-joined, NULL when absent), `models (id, kind,
 make_id, slug, name, body_types, regions, global_popularity_decile,
 mass_popularity_decile, lifecycle_status, year_start, year_end, year_start_planned,
 year_end_planned)` (lifecycle columns appended 2026-11, NULL when absent), `availability
