@@ -60,7 +60,7 @@ shapes below) and fill in over time.
 | `former_slugs` | string[]? | make slugs that no longer exist because that make was merged into or renamed to this one (`["renault-trucks"]` on `renault`; added 2026.11.3). A resolver that receives a former slug answers this make. Derived from the make-merge entries of `overrides/models/former_ids.yml`; absent when none |
 | `kinds` | string[] | the kinds this make is published in; in `catalog/<kind>/makes.json` always `[<kind>]` (the file's own kind) |
 | `countries` | string[] | where the make's models are evidenced: the union of its models' `availability` countries (lower-case ISO 3166-1 alpha-2). **Markets, not origin** — see `country` |
-| `country` | string? | the make's **country of origin**: lower-case ISO 3166-1 alpha-2 of the country where the marque was founded (`"de"` on `bmw`, `"gb"` on `mg`). Present only on a manufacturer, regulator or archive source; always with `country_tier`. See *Country of origin* below (added 2026.11.9) |
+| `country` | string? | the make's **country of origin**: lower-case ISO 3166-1 alpha-2 of the country where the marque was founded (`"de"` on `bmw`, `"gb"` on `mg`). Present only on a manufacturer, regulator or archive source; always with `country_tier`. See *Country of origin* below (added 2026.11.10) |
 | `country_tier` | string? | what `country` rests on: `manufacturer` (the maker's or its group's own words: history page, annual report, press kit, its own museum), `regulator` (an official register or securities filing) or `archive` (a public archive, national museum or heritage trust holding the marque's records). Present exactly when `country` is |
 | `country_disputed` | string[]? | a marque whose FOUNDING spans two countries (a cross-border joint venture or merger that created the name): the candidate codes, sorted, each backed by a manufacturer, regulator or archive source (`["gb", "nl"]` on `leyland-daf`). Never beside `country` |
 
@@ -375,7 +375,7 @@ make-scoped. Absent when the record has none.
 
 `lifecycle` (added 2026-11, schema v2 growth rule) — the same object as in `catalog/` (see *Lifecycle*); absent when not catalogued.
 
-`registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them. From 2026.11.9 they also carry the country of origin, `country` + `country_tier` or `country_disputed` (see *Country of origin*), absent when not catalogued.
+`registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them. From 2026.11.10 they also carry the country of origin, `country` + `country_tier` or `country_disputed` (see *Country of origin*), absent when not catalogued.
 
 Neither decile is a per-country ordering. Anything that lists "the most
 popular models in country X" should sort by `country_ranks[X]` (the `vehicles`
@@ -393,7 +393,7 @@ working. The parquet file is converted from the CSV and has the same columns. Th
 
 ## `dist/catalog.sqlite`
 
-Tables: `meta` (key/value), `makes (id, kind, name, former_slugs, country, country_tier, country_disputed)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3; the three origin columns appended 2026.11.9, `country_disputed` `|`-joined, NULL when absent), `models (id, kind,
+Tables: `meta` (key/value), `makes (id, kind, name, former_slugs, country, country_tier, country_disputed)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3; the three origin columns appended 2026.11.10, `country_disputed` `|`-joined, NULL when absent), `models (id, kind,
 make_id, slug, name, body_types, regions, global_popularity_decile,
 mass_popularity_decile, lifecycle_status, year_start, year_end, year_start_planned,
 year_end_planned)` (lifecycle columns appended 2026-11, NULL when absent), `availability

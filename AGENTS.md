@@ -52,6 +52,13 @@ break and expensive to discover broken. (Pattern from OpenASN's AGENTS.md.)
 - **Never add a source here.** Sources live in the private pipeline with
   license verification and pinning. If you know a good open source, open an
   issue with the URL and its license text.
+- **Restricted sources never reach this repo.** The private pipeline also holds
+  *restricted* sources: data it may use in the private product but not
+  redistribute (no licence, all rights reserved, ShareAlike, NonCommercial).
+  Nothing derived from them may appear here — not in `catalog/`, `dist/`,
+  `manifest.json`, `ATTRIBUTION.md` or `overrides/` — and none may be cited as
+  evidence for an override. The pipeline's build gate proves the published
+  outputs are byte-identical with and without them.
 - **Never commit anything derived from a ShareAlike (CC-BY-SA/ODbL),
   NonCommercial, or scraped source.** This composite is CC-BY 4.0; one
   ShareAlike ingredient infects the whole dataset. No exceptions, including
