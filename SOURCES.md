@@ -30,6 +30,7 @@ reporting. Counts marked ✓ feed the popularity deciles ("measured" tier).
 | `ch_tg` | 🇨🇭 CH | Kanton Thurgau registered-vehicle stock (Strassenverkehrsamt TG, via data.tg.ch), aggregated server-side to make × model × class × fuel | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | yearly (stock at 1 Jan) | presence only — **one canton (3.9% of CH); attach-only; count nil** |
 | `au_bitre` | 🇦🇺 AU | BITRE *Road Vehicles Australia* — national fleet census, type × year of manufacture × motive power × make/model | [CC-BY 3.0 AU](https://creativecommons.org/licenses/by/3.0/au/) | yearly (ref. 31 Jan, published ~Oct) | ✓ fleet — **attach-only** |
 | `il_mot` | 🇮🇱 IL | MoT active-vehicle roll-up (car/van) + motorcycle and heavy registers, via the datastore API | Facts with credit to data.gov.il, under the [data.gov.il Terms of Use](https://data.gov.il/he/terms-of-use) (`other-open`) — **not relicensed CC BY** | daily | ✓ fleet (active) — **attach-only** |
+| `it_aci` | 🇮🇹 IT | ACI Autoritratto open data — car fleet by make × model × series (Pubblico Registro Automobilistico, national table) | [CC-BY 4.0](https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/open-data/) (+ [Note legali](https://aci.gov.it/informazioni-per-la-navigazione/note-legali/), AI clause quoted below) | yearly | ✓ fleet (31/12) — **attach-only** |
 | `ro_drpciv` | 🇷🇴 RO | DRPCIV/DGPCI *Parc auto* — national register stock at 31.12, county × national class × EU class × make × commercial description × fuel | [OGL-ROU-1.0](https://data.gov.ro/base/images/logoinst/OGL-ROU-1.0.pdf) | yearly (31.12, published ~January) | ✓ fleet — **attach-only; DISABLED until data.gov.ro's TLS certificate is renewed** |
 
 Exact dataset URLs, resolution mechanics, and each license's prescribed
@@ -61,7 +62,7 @@ about coverage.
 | `ca_nrcan` | `Fuel type` + resource split | same, as approval evidence |
 | `uk_dft` | `Fuel` (present, **not yet read**) | blocked — see the gotcha below |
 | `nz_nzta` | `MOTIVE_POWER` (present, **not yet read**) | blocked — see the gotcha below |
-| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` `de_kba_nfz` | none | nothing, permanently or for now (FZ 2.8 / 4.8 carry no fuel column) |
+| `nl_rdw` `ie_cso` `th_dlt` `ar_dnrpa` `de_kba_nfz` `it_aci` | none | nothing, permanently or for now (FZ 2.8 / 4.8 carry no fuel column; ACI has none) |
 
 **The Netherlands can never contribute, and that is worth stating plainly**
 because `nl_rdw` is the largest single source in the catalog. Probed
@@ -467,6 +468,90 @@ propulsion coverage would require RDW to publish a combined view.
   vehicles" → van, though the class is dominated by utes. Under attach-only it
   moves no id (see the attach-only paragraph above); its car→van migration is
   deferred to the PR that lifts attach-only.
+- **it_aci** — **ACI Autoritratto open data, table "Circolante FTS
+  Autovetture", sheet `1_Riepilogo_Nazionale`**: Italy's car fleet at 31/12
+  of the edition year, by `Fabbrica | Tipo | Serie | Totale Veicoli`, read
+  from the yearly archive on ACI's Open Data page
+  (https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/open-data/; 2025
+  edition `Autoritratto-2025-OD.rar`, member
+  `Circolante_FTS_Autovetture_2025.ods`). Aggregates only; no identifier
+  column exists. The 2025 table carries 9,591 data rows summing to
+  41,795,962 cars, which **equals the table's own `TOTALE NAZIONALE` row**;
+  the adapter re-asserts that every build and raises on drift. Series are
+  summed per (Fabbrica, Tipo): 1,493 pairs, 41,401,925 cars kept (99.06%).
+  Basis `stock-circulating-pra`; the snapshot date is read from the table
+  title, never from the file name. **Attach-only** (DECISIONS.md): Italy adds
+  `it` availability and counts to records that publish without it and mints
+  nothing (see DEBT.md for the nameplates only ACI carries).
+  - **Licence: CC BY 4.0, open** (both pages re-read and pinned 2026-11-12).
+    The Open Data page, which links the file we read: "I dati statistici della
+    presente sezione sono liberamente fruibili da chiunque nel rispetto dei
+    termini previsti dalla licenza di utilizzo Creative Commons CC-BY 4.0".
+    The site Note legali
+    (https://aci.gov.it/informazioni-per-la-navigazione/note-legali/, updated
+    17 July 2026): "dove non diversamente specificato, sono liberamente
+    scaricabili, distribuibili e riutilizzabili a condizione che sia citata la
+    fonte e – dove possibile – riportato l'indirizzo web della pagina
+    originale." The same page carries this clause, quoted verbatim:
+    "È vietata da parte dell'utente la manipolazione tramite IA delle
+    informazioni testuali, degli elementi multimediali e del patrimonio
+    conoscitivo presenti su questo sito web che vadano ad alterarne il senso e
+    a ledere l'immagine e le finalità istituzionali dell'Ente."
+    **How VehiclesDB honours it:** ACI's figures are reconciled and
+    attributed, never restated as something else. The only transformations
+    are summing ACI's own series rows per (make, model) and leaving out ACI's
+    own residual buckets; nothing is reweighted, imputed or relabelled, and
+    every `it` count carries the basis and the ACI attribution. **Two pins**
+    (`it_aci`, `it_aci_note_legali`, phrases mode) guard both pages; the AI
+    clause is pinned verbatim, so any edit to it reddens gate 1. The phrases
+    are in the pages' raw entity form (`&rsquo;`, `&Egrave;`), because the
+    gate decodes no entities. History: pipeline#211 / data#350 read the 2025
+    xlsx linked from the Autoritratto page (outside the Open Data section) and
+    were parked on a licence ruling; the CC BY-ND seen then covers ACI's
+    "rapporti statistici" (reports), not these open-data files. The same table
+    from the Open Data archive gives identical figures.
+  - **The archive name and URL change every edition** (`/app/uploads/YYYY/MM/`;
+    `Autoritratto-2025-OD.rar`, `Autoritratto-2024-OD.zip`,
+    `Autoritratto_2022_OD-1.zip`). The adapter reads the links from the Open
+    Data page, takes the newest year, and raises if none matches. RAR and ZIP
+    are both opened with `bsdtar` (libarchive).
+  - **Residual buckets are not models** and are skipped with a logged census.
+    2025 figures: `Fabbrica = NON DEFINITO` 30 rows / 290,735 cars (its Tipo
+    values T03, 5, 7, GRENADIER… have no make). `ALTRI TIPI` 121 / 72,927.
+    Blank Tipo 21 / 16,231. `ALTRE FABBRICHE` 2 / 8,432. **`ALTRI` + Serie
+    `TIPI`** 19 / 5,712: the same bucket split across two cells, which is why
+    the test is not simply "ALTRI TIPI". `Serie = ALTRE SERIE` is kept, because
+    it is a real model's series below the floor. Every series row is at least
+    100 cars (ACI's floor).
+  - **Tipo is cut at about 12 characters**, and the cut drops the marque word
+    (`COROLLA VERS`, `DS7 CROSSBAC`, `DISCOVERY SP`, `RANGE EVOQUE`). The
+    pipeline's Land Rover rule reads the cut forms; without it `DISCOVERY SP`
+    published 26,883 Discovery Sports as the Discovery. Every value carries a
+    trailing space, which the adapter strips.
+  - **Italian range words**: `CLASSE A` (Mercedes, handled by the
+    normaliser's class-word rule shared with Spain's `CLASE A`), `SERIE 3` /
+    `SERIE 4 GC` (BMW, renames), `SERIE 200` (Rover, renames), `SERIE W123`
+    (Mercedes chassis families, normaliser). Drivetrain markers are their own
+    Tipo (`JUKE 2WD`).
+  - **Excel date serials in ACI's own file**: three Tipo cells hold date
+    serials, in the .ods as in the xlsx. Saab `46090` (= 9-3), `46151` (= 9-5)
+    and Morgan `46116` (= 4-4) are rescued by rename keys. **The serials are
+    specific to this edition**: re-check the next edition for bare 5-digit
+    Tipo values.
+  - **Brand quirks**: `MERCEDES` (already aliased), `AUSTINHEALEY`,
+    `TATA ENG`, and the all-caps `EVO` and `EMC` (aliases). ACI files
+    Daewoo-era cars under `CHEVROLET`, Haval H2 under `GREAT WALL`, and the
+    Alpine A110/A290 under `RENAULT` (moves.yml). DR, EVO, EMC, Sportequipe
+    and Tiger are Italian rebadgers few other registers carry; their model
+    names repeat the make (`DR 5.0`, `EVO 5`), and rename keys rescue the bare
+    remainders.
+  - **Vans are in the car table** (M1 people-carriers). The existing car-kind
+    `drop_patterns` exclude them. ACI's other kind sheets are make-only, so
+    Italy contributes to `car` only.
+  - **No powertrain.** There is no fuel column. `Serie` free text is not
+    mapped: an absent token does not mean petrol, and FIAT's `1.0 HYBRID`
+    (493,791 Pandas) is a mild hybrid, which the closed vocabulary
+    deliberately cannot express.
 - **ro_drpciv** — Romania's national register, DRPCIV/DGPCI *Parc auto*
   (https://data.gov.ro/dataset/parc-auto-romania), the stock at 31.12.
   Researched and built 2026-10-10. The dossier is in pipeline

@@ -10,6 +10,14 @@ Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 - **First coverage:** 125 makes, 98.7% of registration mass, every one of the 50 most-registered makes. 124 have a `country` (96 on the manufacturer's own words, 22 on a regulator or securities filing, 6 on a public archive) and 1 a `country_disputed` (Leyland DAF gb/nl). Each source quote was re-fetched and found verbatim before admission; no value rests on Wikipedia or the press.
 - **SCHEMA.md** now documents the make fields `kinds` and `countries` (markets, not origin), and drops the stale "future" `country` and duplicate `aliases` rows. `scripts/lint_schema_doc.rb` (CI) fails when a published make key has no SCHEMA.md row, when the documented schema versions differ from `manifest.json`, or when an origin value is malformed.
 
+## [Unreleased] — Italy (ACI Autoritratto open data)
+
+- **New country: Italy (`it`), an open register source.** `it_aci` reads ACI's *Autoritratto* open-data table "Circolante FTS Autovetture" (Italy's car fleet at 31/12/2025 by make, model and series; CC BY 4.0, https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/open-data/). Basis `stock-circulating-pra`. Fonte: ACI – Automobile Club d'Italia, Autoritratto 2025.
+- **Attach-only.** Italy adds `it` availability, counts and per-country ranks to 1,084 car records that publish without it: 40,748,135 of the table's 41,795,962 cars (97.49%). It mints no id. 145 nameplates (421,002 cars) wait for independent corroboration (DEBT.md).
+- **Two ids folded, with `former_ids`:** `car/fiat/141` → `car/fiat/panda` (Tipo 141 is the first-generation Panda) and `car/land-rover/range` → `car/land-rover/range-rover` (the marque word cut from "RANGE ROVER").
+- **Other registers gain from the Italian naming work:** bare "2CV" rows now attach to `car/citroen/az-2cv` (au, ch, es, gb, lu, my, no, nz added); `car/dfsk/580` gains ar, `car/fiat/900` ch, `car/renault/r15` gb; display names `FX` (Harley-Davidson, Zero) and `LN` (Lambretta) take their badge casing. Per-country ranks of other records move only by the positions these folds open or fill.
+- **Licence gate:** the build now fails when an ingested source has no licence pin.
+
 ## [2026.11.9] - 2026-11-12 — lifecycle for ten head models; DeLorean DMC-12 production run
 
 **16,448 models across 974 makes (unchanged; 0 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.8. Register coverage is unchanged: every catalog file is identical to 2026.11.8 except for the `lifecycle` objects below.
