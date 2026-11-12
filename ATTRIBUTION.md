@@ -57,6 +57,12 @@ verbatim as required (CC-BY 4.0 §3(a); OGL v3; and siblings).
 - License: [Datenlizenz Deutschland – Namensnennung – Version 2.0](https://www.govdata.de/dl-de/by-2-0)
 - Statement: Datenquelle: Kraftfahrt-Bundesamt (KBA), Neuzulassungen von Personenkraftwagen nach Marken und Modellreihen (FZ 10); dl-de/by-2-0. Data reconciled/normalized by VehiclesDB (changes marked per license).
 
+## German vehicle fleet and Lkw registrations by manufacturer and trade name (KBA FZ 2.2, FZ 2.8, FZ 4.8)
+
+- Source: https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html
+- License: [Datenlizenz Deutschland – Namensnennung – Version 2.0](https://www.govdata.de/dl-de/by-2-0)
+- Statement: Datenquelle: Kraftfahrt-Bundesamt (KBA), Bestand an Personenkraftwagen (FZ 2.2) und an Nutzfahrzeugen (FZ 2.8) nach Herstellern und Handelsnamen sowie Neuzulassungen von Lastkraftwagen nach Herstellern und Handelsnamen (FZ 4.8); dl-de/by-2-0. Data reconciled/normalized by VehiclesDB (changes marked per license).
+
 ## Spanish vehicle registrations (DGT microdata, MATRABA)
 
 - Source: https://www.dgt.es/menusecundario/dgt-en-cifras/matraba-listados/matriculaciones-automoviles-mensual.html

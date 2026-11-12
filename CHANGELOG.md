@@ -2,6 +2,409 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [Unreleased] — country of origin per make (targeted at 2026.11.10)
+
+- **New optional make fields: `country` + `country_tier`, or `country_disputed`.** `country` is the make's country of origin: the lower-case ISO 3166-1 alpha-2 code of the country where the marque was founded (not where it is built, not its headquarters, not its owner's country). `country_tier` says what it rests on: `manufacturer`, `regulator` or `archive`. A marque genuinely identified with two countries carries `country_disputed` instead. SCHEMA.md *Country of origin* has the definition and the rules for former states, sub-brands and revivals; DECISIONS.md "Country of origin" has the ruling. The current owner / parent group stays out of the open dataset.
+  - It appears on `catalog/<kind>/makes.json`, on the make objects of `dist/vehicles.json` and as three appended `catalog.sqlite` `makes` columns (`country`, `country_tier`, `country_disputed`). It is not in the per-model CSV/parquet or in `vehicles.min.json`.
+  - It is additive, so schema versions do not move.
+- **First coverage:** 125 makes, 98.7% of registration mass, every one of the 50 most-registered makes. 124 have a `country` (96 on the manufacturer's own words, 22 on a regulator or securities filing, 6 on a public archive) and 1 a `country_disputed` (Leyland DAF gb/nl). Each source quote was re-fetched and found verbatim before admission; no value rests on Wikipedia or the press.
+- **SCHEMA.md** now documents the make fields `kinds` and `countries` (markets, not origin), and drops the stale "future" `country` and duplicate `aliases` rows. `scripts/lint_schema_doc.rb` (CI) fails when a published make key has no SCHEMA.md row, when the documented schema versions differ from `manifest.json`, or when an origin value is malformed.
+
+## [2026.11.9] - 2026-11-12 — lifecycle for ten head models; DeLorean DMC-12 production run
+
+**16,448 models across 974 makes (unchanged; 0 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.8. Register coverage is unchanged: every catalog file is identical to 2026.11.8 except for the `lifecycle` objects below.
+
+`lifecycle` is now on 215 records (205 → 215): 142 `in_production`, 71 `ended`, 1 `ending`, 1 `announced`. New:
+
+- `car/audi/a3` 1996–now, `car/audi/a6` 1994–now, `car/fiat/500` 1936–now, `car/hyundai/i30` 2007–now, `car/mercedes-benz/a-class` 1997–now, `car/mini/cooper` 1961–now, `car/toyota/camry` 1982–now, `van/ford/transit-connect` 2002–now
+- `car/toyota/aygo` 2005–2021 (ended)
+- `car/de-lorean/dmc-12` 1981–1982 (ended): the production run, not the registration years (1981–2015)
+
+PR: vehiclesdb-pipeline#297.
+
+## [2026.11.8] - 2026-11-11 — model lifecycle: status and years from manufacturer evidence; Tesla Cybercab and Semi
+
+**16,448 models across 974 makes (16,446 → 16,448; 2 added, 0 retired).** Same frozen register snapshots as 2026.11.2–11.7. Register coverage is unchanged: the two new records are admitted on manufacturer evidence and carry no register vehicles. No other record changed except as listed below: Cybertruck `body_types`, Roadster `aliases`, and the new optional `lifecycle` key on 205 records.
+
+| kind | 2026.11.7 | 2026.11.8 | Δ |
+|---|---:|---:|---:|
+| car | 6,083 | 6,084 | +1 (`tesla/cybercab`) |
+| truck | 1,214 | 1,215 | +1 (`tesla/semi`) |
+| motorcycle / moped / van / bus | 6,393 / 1,511 / 809 / 436 | unchanged | 0 |
+
+`lifecycle` (open) is on 205 records: 134 `in_production`, 69 `ended`, 1 `ending` (Tesla Cybertruck, planned 2027), 1 `announced` (Tesla Roadster, new generation planned 2028). Manifest: `car.unregistered` 102 (Cybercab + 101 approval-only records), `car.announced` 1, `truck.unregistered` 1. PRs: vehiclesdb#411, vehiclesdb-pipeline#291, #292.
+
+
+- **New optional `lifecycle` object** on every model where it is catalogued. It holds `status` (`announced`, `in_production`, `ending`, `ended`, `cancelled`), `year_start`, `year_end`, `year_start_planned` and `year_end_planned` (each with a `*_planned_basis`: company filing, company statement or executive statement), `announced` and `unveiled`.
+  - It appears in `catalog/`, in `dist/vehicles.json`, as five appended CSV/parquet columns and as five appended `catalog.sqlite` `models` columns.
+  - It is additive, so schema versions do not move. SCHEMA.md *Lifecycle* has the details.
+- **Records without a register.** `overrides/models/attested.yml` has a `manufacturer` form, for officially announced production vehicles that no register carries yet. Such records have no availability or popularity. `manifest.json` gains `kinds.<kind>.unregistered` (no register carries the record) and `kinds.<kind>.announced` (derived status announced). DECISIONS.md *Lifecycle* has the admission bar and the review rule.
+- **Tesla.** Every record now carries its lifecycle, sourced to Tesla's filings and quarterly updates:
+  - Model S 2012–2026 ended
+  - Model X 2015–2026 ended
+  - Model 3 2017–now
+  - Model Y 2020–now
+  - Cybertruck 2023–2027 (ending; a planned end stated by Elon Musk on X, 2026-11-11, `year_end_planned_basis: executive_statement`, not a company filing)
+  - Roadster 2008–2012, next generation unveiled 2026-10-15 and planned for 2028 (alias "Next Gen Roadster")
+  - new: `car/tesla/cybercab` (in production since 2026) and `truck/tesla/semi` (since 2022)
+
+  The Cybertruck's body type is corrected from `hatchback` to `pickup`.
+
+## [2026.11.7] - 2026-11-11 — residual regional curation, Aixam pick-up, Datsun 1200, Méhari, Israeli motorcycle codes
+
+**16,446 models across 974 makes (16,327 → 16,446; 123 added, 4 retired: 3 aliased to a live successor, 1 removed with a removals.yml entry).**
+
+Same frozen register snapshots as 2026.11.2–11.6. All registers: 95.36% → 95.67% of vehicles land on a published record (+342,405).
+
+### Coverage (11.6 → 11.7)
+
+| | 2026.11.6 | 2026.11.7 |
+|---|---:|---:|
+| Israel motorcycle | 38.24% | 47.91% |
+| Australia van | 85.78% | 90.42% |
+| Ukraine car | 91.56% | 94.30% |
+| Netherlands moped | 76.13% | 78.15% |
+| Australia motorcycle | 80.65% | 81.68% |
+| UK motorcycle | 67.61% | 68.19% |
+| Australia car | 99.63% | 99.81% |
+| all registers | 95.36% | 95.67% |
+
+| kind | 2026.11.6 | 2026.11.7 | Δ |
+|---|---:|---:|---:|
+| car | 6,072 | 6,083 | +11 |
+| motorcycle | 6,318 | 6,393 | +75 |
+| moped | 1,481 | 1,511 | +30 |
+| van | 806 | 809 | +3 |
+| truck | 1,214 | 1,214 | +0 |
+| bus | 436 | 436 | +0 |
+
+### Residual curation (Australia, Netherlands, UK, Spain, Nordics, Israel)
+- Renames, moves and attested admissions for register strings that reached no record: Israeli motorcycle type codes (+377), Australian utes and classics (Holden Rodeo, Nova, Gemini, Apollo; Mitsubishi Verada; Toyota Lexcen, Rukus, Spacia; Proton Preve, S16; Mahindra XUV500), Dutch mopeds and e-mopeds, UK and Nordic spelling variants.
+- Body types for the new Australian records as their sources state them (Rodeo pickup, XUV500 SUV, Verada/Preve/S16 sedan, Apollo sedan and wagon).
+- Make alias JUNGE FAHRZEUGBAU GMBH → Junge Fahrzeugbau, so the 2026.11.6 bodybuilder moves keep resolving.
+- Gilera Runner rows filed under Piaggio move to Gilera (`motorcycle/piaggio/runner`, `moped/piaggio/gilera-runner` aliased).
+
+### Vehicle fixes
+- **Aixam 500**: body types `[hatchback, pickup]` (the 500.4/500.5 Pick-Up is a body of this record) and aliases "500.4", "500.5", "500 Pick-Up", "500.4 Pick-Up". New `secondary:` section in `overrides/body_types/body_types.yml` for a second body the registers cannot show.
+- **Datsun 1200**: body type sedan (was coupe); the register's plain "1200" is the B110 saloon.
+- **Datsun Sunny 1200 De Luxe** (Dutch 1980–81 rows, wheelbase 234 cm) is the B310 and now counts on `car/datsun/sunny`; it was never part of `car/datsun/1200-de-luxe`.
+- **Méhari**: published as "Méhari" (car and van), Citroën's spelling; ids unchanged.
+- **Datsun Fairlady**: the Nissan-make "Datsun Fairlady" row (the 1963 roadster) moves to `car/datsun/fairlady`; `car/nissan/datsun-fairlady` aliased.
+
+### Retired
+- `moped/cfmoto/cforce-520l`: cross-kind prune; the CForce 520 L publishes as `motorcycle/cfmoto/cforce-520l`.
+- Open items recorded in DEBT.md: the bare Nissan "Datsun" records, the B120 ute, remaining B310 strings, attestations withdrawn because no register row reaches them, and retired ids that still get traffic.
+
+## [2026.11.6] - 2026-11-10 — commercial-variant gate, register artefacts cleaned, Israeli GM order codes, Kyburz as one make
+
+**16,327 models across 966 makes (16,355 → 16,327; 47 added, 75 retired: 59 aliased to a live successor, 16 removed with a removals.yml entry).**
+
+Same frozen register snapshots as 2026.11.2–11.5. All registers: 95.16% → 95.36% of vehicles land on a published record (+210,019). Fewer, cleaner records: register artefacts (legal-form suffixes, converter compounds, company names written as models) no longer mint their own makes and models.
+
+### Coverage (11.5 → 11.6)
+
+| | 2026.11.5 | 2026.11.6 |
+|---|---:|---:|
+| Israel truck | 79.39% | 91.47% |
+| Argentina car | 96.67% | 98.32% |
+| Spain van | 97.83% | 99.34% |
+| Finland car | 96.62% | 97.63% |
+| UK van | 93.86% | 94.85% |
+| Netherlands van | 91.84% | 93.07% |
+| Norway car / van | 97.30% / 94.79% | 97.78% / 95.50% |
+| Luxembourg van | 96.33% | 97.98% |
+| Netherlands moped | 76.57% | 76.13% |
+| all registers | 95.16% | 95.36% |
+
+Netherlands moped falls because 6,422 rental scooters were registered with the rental company's name as their model. They are no longer attributed to a made-up model.
+
+| kind | 2026.11.5 | 2026.11.6 | Δ |
+|---|---:|---:|---:|
+| car | 6,088 | 6,072 | −16 |
+| motorcycle | 6,316 | 6,318 | +2 |
+| moped | 1,481 | 1,481 | +0 |
+| van | 813 | 806 | −7 |
+| truck | 1,220 | 1,214 | −6 |
+| bus | 437 | 436 | −1 |
+
+### Commercial-variant gate and cross-kind attach
+- **Gate.** The passenger-variant gate is now symmetric: a car nameplate also publishes a **van** record when one register with a row-level M1/N1 split (Spain, Finland, UK, Luxembourg, Netherlands) shows at least 100 N1 rows and at least a 25% N1 share.
+- **New van records:** Austin Maestro, Jeep CJ-7, Land Rover Freelander, Mitsubishi Pajero Sport.
+- **Attach.** Below the threshold, a car or van row whose nameplate has no record in its own kind counts on the published record of the other kind, without minting a thin record:
+  - 118,495 van-class vehicles now count on car records (e.g. Ford Fiesta vans);
+  - 75,982 car-class vehicles count on van records (e.g. Renault Trafic passenger versions).
+- Country rankings and make country lists are recomputed after attach.
+
+### Israel
+GM order codes in the heavy-vehicle register (e.g. Chevrolet CK20743) resolve where a code decodes to exactly one nameplate: Silverado, Express, Suburban, Sierra. About 17.9k trucks. The evidence is partial-VIN decodes (maker and model-code positions only). Codes that span two models or change with the model year stay unresolved.
+
+### Makes and identity
+- **Kyburz is one make.** `moped/kyburz-switzerland/*` aliases to `moped/kyburz/*`. Both `moped/kyburz/dxp` (European registers) and `motorcycle/kyburz/dxp` (Australia, registered as a motor tricycle) are kept. An attested record now always survives the cross-kind prune.
+- **Register-artefact cleanup:**
+  - company names merge into their brands (e.g. Riese & Müller, Grecav, Caterham);
+  - parent-make echoes are stripped (Alpina "BMW ALPINA …");
+  - body-converter compounds are re-homed onto the base vehicle, but only where the register names the base (an Igloocar conversion with no base type stays unattributed).
+- **Corrected ids keep their publication history,** so identity corrections (e.g. Alpina B3 GT) stay published instead of being demoted.
+- **Correction to 2026.11.5:** `car/holden/hsv` was listed as retired but was still published. Bare "HOLDEN | HSV" rows name only the marque, so they are no longer attributed, and the record is now retired.
+
+### Checks
+- Frozen build: ALL GATES GREEN.
+- Lints, id-history against the built dist, and gem 0.9.1 conformance 170/170.
+- Codex Astra review, two rounds; every finding is fixed.
+
+## [2026.11.5] - 2026-11-10 — all-register residual curation, HSV as a make, Australian utes on their car records
+
+**16,355 models across 991 makes (16,225 → 16,355; 132 added, 2 retired, every retirement aliased to a live successor).**
+
+Data-only release (data#403), on the same frozen register snapshots as 2026.11.2–11.4. All registers: 94.34% → 95.16% of vehicles land on a published record (+907,555).
+
+### Coverage (11.4 → 11.5)
+
+| | 2026.11.4 | 2026.11.5 |
+|---|---:|---:|
+| Argentina car | 80.29% | 96.67% |
+| Argentina truck | 49.59% | 79.17% |
+| Australia car | 98.16% | 99.63% |
+| Australia motorcycle | 72.41% | 80.65% |
+| Australia bus | 50.11% | 89.47% |
+| Australia van | 79.11% | 85.78% |
+| Israel car | 96.35% | 99.00% |
+| Israel van | 80.62% | 93.88% |
+| Israel motorcycle | 27.41% | 38.24% |
+| Israel truck | 70.48% | 79.39% |
+| Ukraine motorcycle | 53.29% | 62.30% |
+| Spain van | 96.65% | 97.83% |
+| Spain truck | 95.54% | 95.92% |
+| all registers | 94.34% | 95.16% |
+
+**Reading these numbers.**
+- Some register rows carry no model at all, and they can never land on a model record:
+  - the UK DfT's "<MAKE> MODEL MISSING" covers ≈851k motorcycles, ≈647k trucks, ≈520k cars and ≈273k vans;
+  - Spain's DGT writes "N.A." for ≈1,060 Rieju/Beta mopeds.
+- So UK motorcycle (67.6%) and UK truck (19.4%) coverage reads against a ceiling, not a gap. Over *attributable* vehicles they are at ≈95.9% and ≈94.8%. See DECISIONS.md, "Unattributable register rows set a coverage ceiling".
+- Australia car includes the utes that the owner ruling attaches to their car records (below). Their light-commercial rows leave the van denominator.
+
+| kind | 2026.11.4 | 2026.11.5 | Δ |
+|---|---:|---:|---:|
+| car | 6,025 | 6,088 | +63 |
+| motorcycle | 6,266 | 6,316 | +50 |
+| moped | 1,482 | 1,481 | −1 |
+| van | 806 | 813 | +7 |
+| truck | 1,209 | 1,220 | +11 |
+| bus | 437 | 437 | 0 |
+
+### Owner rulings
+- **HSV is its own make.** Holden Special Vehicles products filed under HOLDEN move to HSV: Clubsport, Senator, Maloo, GTO, Avalanche, Grange and Manta. `car/holden/maloo` aliases to `car/hsv/maloo`. GTS stays with Holden, because a bare "HOLDEN GTS" may be the Monaro GTS.
+- **Electric names in the maker's spelling:** Abarth 600e, Mercedes-Benz EQT, Honda e / e:Ny1 / e:N1, Audi Q4 e-tron / Q6 e-tron.
+- **Australian utes count on their car records:** Holden Colorado, Ford Falcon, Commodore and Crewman, by an explicit, cited list in `kind_maps/au_bitre.yml`. Nameplates whose light commercials include panel vans, or whose Australian code means another model (Mazda B3000 = BT-50), are not routed.
+- **Israeli motorcycle type codes shared by several models stay unresolved.** Accuracy beats coverage.
+
+### Curation
+Every register was replayed through the real normalizer to separate unattributable rows, normalizer drops and unpublished candidates. The largest fixable buckets were then curated with fetched tier-1/2 sources:
+- **Australia:** Subaru Liberty, Toyota Tarago, Mitsubishi Magna and 380, Holden Statesman / Caprice / Jackaroo / Viva / Adventra, MG ZST, LDV D90, Mahindra XUV700 (attach-only evidence). Harley-Davidson's FXD/XLH census codes fold onto Dyna/Sportster.
+- **Israel:** Hyundai i25 / i35, Geely Geometry C, Chery FX / Arrizo 8. Ford W2B/W3B fold onto F-250/F-350, and Chevrolet CT onto the Silverado EV. The Ministry's Peugeot plants filed under Piaggio move to Peugeot.
+- **Argentina:** Fiat Mobi / Argo / Pulse, Renault Kwid, Nissan Kait, Citroën Basalt, Ram Dakota, VW Constellation, Mercedes-Benz Accelo, plus grade and engine tails folded.
+- **Elsewhere:** NZ Japanese-market names, Ukrainian brands, UK 125cc motorcycles, Spanish long-tail vans and trucks.
+- **attested.yml grows from 612 to 745 entries** (207 attach-only).
+- **`rename_kinds.yml`** scopes rename keys that are also published names in another kind (e.g. a UK "Corsa" van row → Corsavan, never the Corsa car).
+
+### Checks
+- Frozen build: ALL GATES GREEN.
+- Lints, `lint_enrich`, and gem 0.9.1 conformance 170/170.
+- Codex Astra review, two rounds; every finding is fixed:
+  - a generic Australian light-commercial rule that also moved real vans was replaced by the explicit ute list;
+  - per-vehicle VINs in citation URLs became partial-VIN queries;
+  - Harley-Davidson FXS → Softail was held, because the code also covers 1977–82 Low Riders.
+
+## [2026.11.4] - 2026-11-10 — register-native kinds, Israel type codes, Spain two-wheelers, Australian trucks, name cleanup
+
+**16,225 models across 981 makes (16,032 → 16,225; 243 added, 50 retired, every retirement aliased to a live successor).**
+
+Same frozen register snapshots as 2026.11.2 and 2026.11.3. The diff comes from curation (data#400) and pipeline changes (pipeline#280, #281) alone. All registers: 94.17% → 94.34% of vehicles land on a published record (+177,601).
+
+### Coverage (share of each register's vehicles on a published record, 11.3 → 11.4)
+
+| | 2026.11.3 | 2026.11.4 |
+|---|---:|---:|
+| Spain motorcycle | 92.41% | 97.46% |
+| Spain moped | 62.06% | 70.60% |
+| Spain van | 94.92% | 96.65% |
+| Spain bus | 69.20% | 87.34% |
+| Spain car | 97.99% | 98.06% |
+| Spain truck | 95.57% | 95.54% |
+| Israel motorcycle | 5.79% | 27.41% |
+| Australia truck | 81.74% | 95.28% |
+| Argentina car | 70.19% | 80.29% |
+| Argentina van / truck / bus | (all in car before) | 87.28% / 49.59% / 100% |
+| all registers | 94.17% | 94.34% |
+
+Spain and Argentina denominators move slightly. Rows that had no kind now get one from the register's own type field, and Argentina's trailers leave the car denominator.
+
+| kind | 2026.11.3 | 2026.11.4 | Δ |
+|---|---:|---:|---:|
+| car | 5,997 | 6,025 | +28 |
+| motorcycle | 6,196 | 6,266 | +70 |
+| moped | 1,459 | 1,482 | +23 |
+| van | 795 | 806 | +11 |
+| truck | 1,159 | 1,209 | +50 |
+| bus | 426 | 437 | +11 |
+
+### Register-native kinds (pipeline)
+- **Spain (DGT):**
+  - A row with a blank EU category takes its kind from COD_TIPO (the register's vehicle-type code), but only for codes that the categorised rows agree on at ≥ 99.7%. That covers 2,099 used imports over Jul–Sep 2026.
+  - Bodybuilder re-homing (converter make → base-vehicle make) now covers plain-body cars (e.g. KG Mobility Rexton conversions, LPG Cupra Terramar) and minibuses (Sprinter, Transit and Master minibus conversions, Castrosua bodies on Scania).
+  - A van conversion of a car with no van record (Zago "SANDERO VAN") lands on the car record.
+- **Argentina (DNRPA):**
+  - The "autos" file holds every non-motorcycle vehicle, and kind now comes from its body-type field.
+  - Trailers, caravans and UTVs no longer count as cars. Vans, trucks and minibuses get their own kind.
+  - Pick-ups follow the kind the catalog already publishes the nameplate in. Amarok is van; Hilux, Ranger, Toro and others stay car.
+- **Australia (BITRE):** curated per-nameplate routes move cab-over light trucks filed as light commercials to truck: Isuzu NPS/Elf, Hyundai Mighty, Nissan Atlas, Mazda Titan.
+
+### Israel motorcycles: type codes
+The Israeli two-wheeler register names a machine by its manufacturer **type code** (Honda NF13, Yamaha SJ18), and the Ministry publishes no code-to-name table. The Dutch RDW register (CC0, already a source) pairs the same type codes with commercial names. 173 high-confidence codes (exact code, ≥ 5 RDW vehicles, ≥ 90% one name, target already published) now resolve **+39,115** Israeli motorcycles. Separately, the Hebrew make label read as SWM is SYM (Ministry plant countries, shared type codes, RDW).
+
+### Curation
+- **attested.yml grows from 395 to 612 entries (186 attach-only).** Every new entry carries a fetched tier-1/2 URL:
+  - Spanish two-wheelers: Kove, Efun, Next, QJMotor, MITT, Morbidelli, Zontes, Letbe, Zairon, Hero, TVS and others;
+  - Stellantis electric names: E-308, E-408, E-Traveller, ë-C5 Aircross, ë-Jumpy;
+  - Spanish buses: King Long, Irizar, Unvi;
+  - Australian trucks: Hino 500/700 codes, Kenworth T610/T909/T409/T659/T359/T360/T410/C509, Western Star, International T-Line, Sterling LT/AT, Caterpillar CT;
+  - items verified from the held list: MG VS, Proton Compact, Mack Fleetliner, Mercedes-Benz LK, Dangel, Foton eTunland, Mazda B2200.
+- **Owner rulings applied:**
+  - SYM displacements are separate records where SYM markets them separately (ADX 125 / ADX 300, Symphony ST 125 / 200, Cruisym 125 / 300, Joymax Z 125 / 300).
+  - About 40 junk motorcycle names (Euro-norm tails, fused ABS/kW, truncations) fold onto their clean records.
+  - `great-wall/tank` folds into Tank 300. The NZ line pools Tank 300 and 500.
+  - Electric names in the manufacturer spelling: ID. Buzz, ID. Polo, e-Golf, bZ4X Touring, RS / S e-tron GT, E-Doblò.
+  - Converter makes Zago and Mebauto retire onto the base vehicle.
+  - Mercedes Atego/Axor car ids (Argentine chassis rows) alias to their truck records.
+- **New curation files:**
+  - `overrides/models/series_keep.yml`: coded heavy designations that are their own nameplates.
+  - `overrides/models/rename_kinds.yml`: a rename scoped to some kinds.
+  - `overrides/makes/converters.yml`.
+  - `type_codes` in `kind_maps/il_mot.yml` and `by_model` in `kind_maps/au_bitre.yml`.
+- **Known-held items** are recorded in DECISIONS.md:
+  - Australian UD chassis codes spanning generations;
+  - Mercedes "96X";
+  - Hino FF/FB/GS;
+  - Ford Trader and Daihatsu Delta;
+  - Spanish two-wheeler type codes with no proven commercial name;
+  - Isuzu NPR/NQR/NKR in Australia's light-commercial class.
+
+### Checks
+- Frozen build: ALL GATES GREEN.
+- Lints: overrides, curation (with new `type_codes` / `by_model` shape checks), id history, make-block order.
+- Gem 0.9.1 conformance: 170/170. The 12 kind-collision cases wait for gem 0.9.2.
+- Codex Astra review, two rounds; every finding is fixed.
+
+## [2026.11.3] - 2026-11-10 — attach-only attestation, GWM sub-brands, Opel Electric records, and dataset fields for safe refresh
+
+**16,032 models across 970 makes (15,845 → 16,032; 204 added, 17 retired, every retirement aliased to a live successor).**
+
+Same frozen register snapshots as 2026.11.2. The diff is attributable to curation (data#398) and pipeline changes (pipeline#279) alone.
+
+### New fields (additive; `schema_version` unchanged; see SCHEMA.md)
+- **`former_slugs` on makes** (dist, catalog, sqlite `makes.former_slugs`).
+  - These are make slugs merged or renamed into this make, so a client can follow a make rename without scanning every model's `former_ids`.
+  - 11 makes carry them, e.g. renault ← renault-trucks, daewoo ← gm-daewoo, saxas ← saxas-nutzfahrzeuge-werdau, mg ← mg-roewe.
+- **`manifest.json` → `dist_files`:** `sha256`, `bytes` and `records` for every dist file. Refreshers can verify a download before swapping it in.
+- **`registration_years` `{first, last}` on model records.**
+  - It is the earliest and latest first-registration year in the Finnish and Dutch registers, counting years with ≥ 2 vehicles.
+  - It is a **hint**, registration not production, never a validation bound.
+  - Present on 9,908 records.
+
+### Curation
+- **Attested admission on attach-only evidence** (owner ruling).
+  - A sourced nameplate whose only register evidence is in an attach-only register (Australia, Israel, Norway, Switzerland) can now publish through an explicit `{url, evidence: attach_only}` entry.
+  - 138 such admissions: Kenworth T409/T610/T909, Isuzu FRR/FTR/NPS/NKR, Hino 300, Mack Granite/Qantum, Freightliner Columbia/Century Class, International ACCO, LDV G10, GWM Cannon …
+- **attested.yml grows from 206 to 395 entries.**
+  - 18 Holden series codes (EH…WB), where the code is the name buyers used. VY Commodore is a form of Commodore.
+  - 27 Spanish and Alfa Romeo heritage nameplates, verified this release: Macbor, Motorhispania, Keeway, Zontes, MITT, Evo, SWM, Tiger, Alfa 1900 / Junior Z / Giulietta SZ / Arna / Matta.
+- **Electric variants are their own records, consistently.**
+  - Spelled-out "… ELECTRIC" Opel/Vauxhall rows reach Frontera / Corsa / Astra / Grandland / Mokka / Combo / Vivaro / Movano Electric.
+  - Renault "Mégane E-Tech Electric" (nl 9,493) reaches `renault/megane-e-tech`, and Fiat "500 Electric" reaches `fiat/500-e`.
+  - The 2014–19 Corsa-E (an ICE generation letter) stays on the Corsa.
+- **GWM sub-brands Ora, Tank and Wey get their own makes** (the #346 Haval/Jaecoo/Omoda rule). Ten `great-wall/*` ids alias to `ora/*`, `tank/*` and `wey/*`.
+- **Make merge:** `saxas-nutzfahrzeuge-werdau` → `saxas`.
+- **Mercedes forms:** "Clase/Classe/Klasse X" are now published forms, so "Clase A" resolves on every surface.
+- **León aliases:** the duplicate "León" aliases on SEAT/Cupra Leon are retired; the spelling is the name since 2026.11.2.
+
+| kind | 2026.11.2 | 2026.11.3 | Δ |
+|---|---:|---:|---:|
+| car | 5,961 | 5,997 | +36 |
+| motorcycle | 6,179 | 6,196 | +17 |
+| moped | 1,459 | 1,459 | 0 |
+| van | 775 | 795 | +20 |
+| truck | 1,046 | 1,159 | +113 |
+| bus | 425 | 426 | +1 |
+
+## [2026.11.2] - 2026-11-10 — completeness: Spain van/truck to 95%, 194 attested nameplates, manufacturer spellings, junk folded
+
+**15,845 models across 965 makes (15,635 → 15,845; 291 added, 81 retired, every retirement with a migration path).**
+
+**Inputs.** Frozen correctness release on the same register snapshots as 2026.11.1: fi 2026-09-30, es 2026-07…09, uk 2026-Q2, nz MVR_Mar26. The KBA FZ 2.2/2.8/4.8 workbooks are added for `de_kba_nfz` (#391).
+- That source changes no ids; it adds `de` to 829 records, measured separately.
+- The rest of the diff is attributable to curation (data#394) and pipeline changes (pipeline#277, #278).
+
+**Coverage.** Share of each register's vehicles that now land on a published record, before → after:
+
+| | before | after |
+|---|---:|---:|
+| Spain, all mapped DGT categories (Jul–Sep 2026) | 92.52% | 95.73% |
+| Spain van (N1) | 78.27% | 94.92% |
+| Spain truck (N2/N3) | 78.25% | 95.57% |
+| Spain car (M1) | 96.54% | 97.95% |
+| Spain motorcycle | 87.26% | 90.15% |
+| Spain moped | 56.64% | 62.06% |
+| Israel car | 86.59% | 96.26% |
+| Australia car | 95.59% | 98.16% |
+| Norway van | 85.61% | 93.99% |
+| Netherlands van | 88.07% | 91.02% |
+| Argentina car | 56.18% | 70.19% |
+| all registers | 92.75% | 93.80% (+1.24 M vehicles) |
+
+| kind | 2026.11.1 | 2026.11.2 | Δ |
+|---|---:|---:|---:|
+| car | 5,888 | 5,961 | +73 |
+| motorcycle | 6,142 | 6,179 | +37 |
+| moped | 1,429 | 1,459 | +30 |
+| van | 772 | 775 | +3 |
+| truck | 989 | 1,046 | +57 |
+| bus | 415 | 425 | +10 |
+
+### What changed
+- **DGT bodybuilder rows** (pipeline#277).
+  - Converter rows now take the base vehicle's make (`MARCA_VEHICULO_BASE`, DGT layout field 56, bytes 463–492) and drop the converter token, e.g. "ERKE | PARTNER ERKE" → Peugeot Partner.
+  - A row is re-homed only when it lands on a published record.
+  - Plain `L1`/`L3`/`L4` categories map to moped/motorcycle.
+- **Folds onto published records only.** These never mint a new id:
+  - litre tails such as "MOKKA GS 1.2 T XHT HYB" → Mokka;
+  - Spanish trim words ("Nuevo", Allure, Talla M …);
+  - spec suffixes on van/truck/bus (axle 4X2/6X2*4, power, L2H1);
+  - Scania/Volvo `*` axle configs.
+- **Make merges.**
+  - `renault-trucks` → `renault` (owner directive) and `gm-daewoo` → `daewoo`. Old ids resolve through `former_ids`; "Renault Trucks" stays a make alias.
+  - 26 entity or spelling make aliases (VOLKSWAGEN V W, AUDI AG, SSANG YONG, JAGUAR CARS, FORD (D) …) and 6 Hebrew respellings in the Israeli register.
+- **Attested admission grows from 12 to 206 entries.** Every entry has a fetched tier-1/2 source and a minting register row.
+  - Examples: Toyota Axio/Premio/Opa, Honda Orthia/Domani, Holden Belmont/Camira/Premier, Chevrolet Onix/Onix Plus/Montana, VW Nivus/Tera, Fiat Cronos/Toro, BYD Song L/Atto 1, Scania 110/164/G/T, Freightliner Argosy/Cascadia, Kenworth K100/T600, Isuzu NKR/FSR/Elf, MAN NL, Volvo B8RLE …
+- **Electric variants are their own records,** following the e-208/ë-C3 precedent.
+  - Spanish E-308/E-3008/E-408/E-5008, ë-C4 X, ë-C5 Aircross and ë-C3 Aircross trims fold onto the electric record, never onto the ICE one.
+- **Manufacturer spellings (display only; ids unchanged).**
+  - Accents and casing: SEAT/Cupra León, Fiat Doblò, Renault Mégane/Scénic/Mégane E-Tech, Lamborghini Huracán (EVO, STO, Tecnica, Sterrato, Spyder)/Murciélago, Citroën ë-Berlingo/ë-C3 Aircross/ë-C4 X.
+  - `overrides/models/display.yml` pins fused codes without moving their id: 500X, 500e, 600e, XCeed, ProCeed.
+  - Mark-less input ("leon", "500x") still resolves; there are new conformance cases for it.
+- **Junk beside real records.**
+  - 59 `<nameplate> + engine/body token` records fold onto their nameplate, with `former_ids` (Leon 1.9TDI, Leon Sporttourer, Civic 1.6VTI, 159 SW …).
+  - `car/mercedes-benz/classe` (Italian "CLASSE C/E/B") now re-classifies to the real class.
+  - 7 make-echo records (datsun/datsun, morris/morris …) are retired to `removals.yml`.
+- **Historical gem ids.**
+  - `data/gem_history_ids.txt` lists 21,530 ids shipped by gem data 0.1.0–0.8.0.
+  - `scripts/lint_id_history.rb`, in CI, keeps every one of them live, aliased or manifested. Three that resolved nowhere now alias.
+- **CI.** The source-cache namespace was bumped (#393); stale NZ chunks had caused false NZ vanishes.
+
+### Migration surface
+- 81 ids retired: 73 via `former_ids` (same vehicle), 8 manifested in `removals.yml`.
+- Full list: RELEASE-DIFF-2026.11.2.md (post-release PR).
+
 ## [2026.11.1] - 2026-11-09 — the completeness release: passenger van variants, attested admission, Spain to 96.5%
 
 **15,635 models across 953 makes in 18 countries (15,629 → 15,635; 37 added, 31 retired, every retirement with a migration path).**

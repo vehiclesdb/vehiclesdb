@@ -57,8 +57,63 @@ shapes below) and fill in over time.
 | `slug` | string | lowercase ASCII (NFKD-folded — `škoda` → `skoda`) |
 | `name` | string | `"BMW"` |
 | `aliases` | string[]? | published alternate names — nicknames, initialisms, native scripts (`["Chevy"]`, `["比亚迪"]`); absent when none curated |
-| `country` | string? | ISO-3166 alpha-2 of origin *(optional, future)* |
-| `aliases` | string[]? | alternate spellings *(optional, future)* |
+| `former_slugs` | string[]? | make slugs that no longer exist because that make was merged into or renamed to this one (`["renault-trucks"]` on `renault`; added 2026.11.3). A resolver that receives a former slug answers this make. Derived from the make-merge entries of `overrides/models/former_ids.yml`; absent when none |
+| `kinds` | string[] | the kinds this make is published in; in `catalog/<kind>/makes.json` always `[<kind>]` (the file's own kind) |
+| `countries` | string[] | where the make's models are evidenced: the union of its models' `availability` countries (lower-case ISO 3166-1 alpha-2). **Markets, not origin** — see `country` |
+| `country` | string? | the make's **country of origin**: lower-case ISO 3166-1 alpha-2 of the country where the marque was founded (`"de"` on `bmw`, `"gb"` on `mg`). Present only on a manufacturer, regulator or archive source; always with `country_tier`. See *Country of origin* below (added 2026.11.10) |
+| `country_tier` | string? | what `country` rests on: `manufacturer` (the maker's or its group's own words: history page, annual report, press kit, its own museum), `regulator` (an official register or securities filing) or `archive` (a public archive, national museum or heritage trust holding the marque's records). Present exactly when `country` is |
+| `country_disputed` | string[]? | a marque whose FOUNDING spans two countries (a cross-border joint venture or merger that created the name): the candidate codes, sorted, each backed by a manufacturer, regulator or archive source (`["gb", "nl"]` on `leyland-daf`). Never beside `country` |
+
+### Country of origin
+
+```json
+{ "id": "bmw", "slug": "bmw", "name": "BMW", "kinds": ["car"], "countries": ["au", "ch", "…"],
+  "country": "de", "country_tier": "manufacturer" }
+```
+
+**Definition.** The country where the **marque was founded**: the seat of the
+company or division that first put vehicles on sale under that name, as the
+**present-day** ISO 3166-1 alpha-2 code of that place.
+
+- It is **not** where the vehicles are built today, **not** the
+  headquarters and **not** the current owner's country: MG is `gb` (founded
+  in Oxford) although a Chinese group owns it.
+- A **sub-brand** launched by an existing manufacturer takes the country of
+  the company that created it (Lexus `jp`, Cupra `es`).
+- A **renamed or revived** marque keeps the original marque's origin when the
+  revival claims continuity of the same name.
+- **Former states** map to the present-day state that contains the founding
+  seat: Mladá Boleslav, Austria-Hungary → `cz`; Tolyatti, USSR → `ru`;
+  Kragujevac, Yugoslavia → `rs`; Zwickau, GDR → `de`. Withdrawn codes (`cs`,
+  `su`, `yu`, `dd`) never appear, and the United Kingdom is `gb`.
+- A marque whose **founding spans two countries** (a cross-border joint
+  venture or merger that created the name) carries `country_disputed`
+  (the candidates) instead of a guessed `country`. A marque founded in one
+  country and continued in another is not disputed: it keeps the founding
+  country (Royal Enfield, Redditch 1901 → `gb`). A headquarters or an owner
+  is never a candidate.
+- **Out of scope:** ownership, headquarters, plants and markets. Where a
+  make is registered is `countries`, a different fact; who owns it today is
+  not in the open dataset (it goes stale between releases).
+
+**How it is sourced.** Each value rests on the manufacturer's (or its
+group's) own words, on a regulator or official filing, or on a public
+archive or national museum that holds the marque's records, quoted
+verbatim and re-checked on the live page when it was admitted. Press
+articles, reference works, enthusiast sites and Wikipedia never publish a
+country of origin. The
+citation itself (URL and quote) is part of the enriched layer; the open
+record says which kind of source it is in `country_tier`.
+
+**Reading it.** Absent means *not catalogued yet* (the absence rule), never
+"no country". A published value is never silently removed or changed: the
+build fails on it, and a correction of a wrong value is an adjudicated
+entry (`overrides/models/gate_acks.yml` `origin:`) noted in the CHANGELOG. Coverage starts with the makes that carry most registrations;
+the tail fills in over releases. "German car brands" is
+`makes.filter(m => m.country === "de")`; to include disputed marques, also
+match `country_disputed`. Make identity is kind-independent, so a make has
+the same origin in every `catalog/<kind>/makes.json` and in
+`dist/vehicles.json`.
 
 ## Model (nameplate)
 
@@ -78,7 +133,8 @@ shapes below) and fill in over time.
 | `popularity` | object? | measured popularity (`global_decile`, `mass_decile`, `by_country`) — see below; absent = no counts yet |
 | `sources` | string[] | ids of the sources that evidence this record (see SOURCES.md) |
 | `xrefs` | object? | crosswalks; today `{"tan": [...]}` EU type-approval numbers where measured |
-| `year_start` / `year_end` | int? | nameplate lifespan *(optional, future)* |
+| `registration_years` | object? | `{"first": 1998, "last": 2026}` — a HINT: the earliest and latest FIRST-REGISTRATION year seen for this record in the registers whose year series is first-registration based (fi, nl), counting only years with ≥ 2 vehicles in one register. Registration, not production: never use it as a validation bound (imports, re-registrations and register typos sit at both ends). Absent when no such series (added 2026.11.3) |
+| `lifecycle` | object? | the model's lifecycle — status and years, from manufacturer/press evidence; see *Lifecycle* below. Absent = not catalogued yet (added 2026-11, lane LIFE). It replaces the never-populated reserved `year_start`/`year_end` pair, which will not be emitted |
 | `generations` | object[]? | reserved layer — shape below |
 | `variants` | object[]? | reserved layer — shape below |
 
@@ -100,7 +156,68 @@ registers — absent, per the absence rule, until one exists).
 
 A model publishes when its register evidence corroborates it: ≥ 2 minting sources, or one source above the per-kind floor (car 1,000, van/motorcycle/moped 300, truck 150, bus 50). Publication hysteresis holds an existing id through ordinary churn.
 
+Since 2026-11-11 the same file has a **manufacturer** form: a named production vehicle that its manufacturer has officially announced publishes with no register vehicle at all, on a tier-1 source and a dated announcement, and always with a `lifecycle` (see *Records admitted on manufacturer evidence*).
+
 Since 2026-11-09 a curated **attested admission** (`overrides/models/attested.yml`) can also publish a real nameplate below that floor, for example a single-market brand or a rare classic. It needs at least one minting register vehicle and a tier-1/tier-2 source. Nothing in the record shape changes: an attested record carries exactly the availability and popularity its register rows give it. See DECISIONS.md.
+
+### Lifecycle
+
+```json
+"lifecycle": { "status": "ending", "year_start": 2023, "year_end_planned": 2027, "announced": "2019-11-21" }
+```
+
+| key | type | meaning |
+|---|---|---|
+| `status` | string | `announced` — officially announced, production not started (including a nameplate whose return is announced) · `in_production` · `ending` — in production with a stated end · `ended` · `cancelled` — announced, then cancelled by the manufacturer |
+| `year_start` | int? | first year the nameplate was actually produced |
+| `year_end` | int? | last year of production. Present only when nothing is in production and every run's end is dated (an ended model whose end year is unsourced has no `year_end`) |
+| `year_start_planned` | int? | the stated production start of an `announced` model |
+| `year_start_planned_basis` | string? | what that start date rests on (see `*_planned_basis` below) |
+| `year_end_planned` | int? | the stated end of an `ending` model. A plan, not a fact: someone said it, and it can move |
+| `year_end_planned_basis` | string? | what that end date rests on: `company_filing` (a filing, shareholder letter or regulator file), `company_statement` (the manufacturer's press release, website or official account) or `executive_statement` (an executive speaking — a CEO post, interview or event remark) |
+| `announced` | string? | the manufacturer's first announcement, `YYYY`, `YYYY-MM` or `YYYY-MM-DD` (for `announced`, the first announcement of the coming model) |
+| `unveiled` | string? | `announced` status only: the latest public unveiling of the coming model, when it differs from the first announcement (Tesla's Next Gen Roadster: announced 2017-11-16, unveiled 2026-10-15) |
+
+Reading it: `in_production` 2017 → "2017–now"; `ending` 2023/2027 →
+"2023–2027 (planned)" — and say who planned it from
+`year_end_planned_basis`; `ended` 2012/2026 → "2012–2026"; `announced` 2028 →
+"Coming 2028". An `announced` record that ALSO has `year_start`/`year_end` is
+a nameplate whose earlier production ended and whose new generation is
+announced: Tesla Roadster `{status: announced, year_start: 2008, year_end:
+2012, year_start_planned: 2028, year_start_planned_basis:
+"executive_statement", unveiled: "2026-10-15", announced: "2017-11-16"}` →
+"2008–2012 · new generation unveiled 15 Oct 2026, planned 2028". **Lifecycle is not registration.** `registration_years` is
+when vehicles were first registered (imports and late registrations sit at
+both ends); `lifecycle` is when the maker built them.
+
+Every fact behind it is curated from evidence outside the registers — the
+manufacturer's own filings and pages first, reputable press second — and a
+lifecycle is published only when its years rest on such a source: a
+Wikipedia-only fact never reaches this object. Who stated a planned date and
+when, the citations and the notes are the enriched layer. The status is
+*derived* from those facts at build time; it is never typed by hand.
+
+### Records admitted on manufacturer evidence
+
+A model the manufacturer has officially announced, or is already building,
+can be in the catalog before any register carries it (the Tesla Cybercab and
+Semi in 2026.11). Such a record has the ordinary shape with
+`availability: []`, `regions: []`, `sources: []`, no `popularity`, and always
+a `lifecycle`. With no counts it has no rank or decile, adds nothing to any
+mass share, and sits in the `"none"` band of `decile-mass.json`.
+`manifest.json` carries two counts per kind, each absent when zero:
+`kinds.<kind>.unregistered` — records with no `registration` evidence in
+any country, whatever their status: records admitted on manufacturer evidence
+(`availability: []`) and records evidenced only by type approval or sales
+(US/Canadian catalogue-only models); "models on the road" =
+`models − unregistered`. `kinds.<kind>.announced` — records whose lifecycle
+status is `announced`; this includes a registered nameplate whose new
+generation is announced (Tesla Roadster), so never subtract it from a
+registered count. Among them in 2026.11.8: the Tesla Cybercab
+(car, `in_production`) and Semi (truck, `in_production`) are unregistered; the
+Roadster is announced but registered. When
+register rows arrive they land on the same id. Admission rule: DECISIONS.md
+"Lifecycle".
 
 ### Availability
 
@@ -256,6 +373,10 @@ the make, and a spelling that would land on two different records of one make
 is dropped. Resolvers should try `name` → `aliases` → `forms`, all
 make-scoped. Absent when the record has none.
 
+`lifecycle` (added 2026-11, schema v2 growth rule) — the same object as in `catalog/` (see *Lifecycle*); absent when not catalogued.
+
+`registration_years` (added 2026.11.3, schema v2 growth rule) — the same hint as in `catalog/` (see *Model*): `{"first": 1998, "last": 2026}`, first-registration years, never a validation bound. Absent when unknown. Make objects carry `former_slugs` (see *Make*) when a merged make's slug now resolves to them. From 2026.11.10 they also carry the country of origin, `country` + `country_tier` or `country_disputed` (see *Country of origin*), absent when not catalogued.
+
 Neither decile is a per-country ordering. Anything that lists "the most
 popular models in country X" should sort by `country_ranks[X]` (the `vehicles`
 gem's `top_models(country:)` does from 0.7.8). Countries whose sources record
@@ -265,17 +386,23 @@ presence only (us, ca for cars) have no ranks.
 
 One row per model: `kind, make_slug, make_name, model_slug, model_name,
 body_types, countries, regions, global_popularity_decile, aliases,
-former_ids, mass_popularity_decile` (multi-valued cells `|`-joined; empty =
-absent). New columns are only ever **appended**, so positional readers keep
-working. The parquet file is converted from the CSV and has the same columns.
+former_ids, mass_popularity_decile, lifecycle_status, year_start, year_end,
+year_start_planned, year_end_planned` (multi-valued cells `|`-joined; empty =
+absent; the five lifecycle columns appended 2026-11 — they flatten `lifecycle`). New columns are only ever **appended**, so positional readers keep
+working. The parquet file is converted from the CSV and has the same columns. The CSV is one row per model and does not repeat make-level fields such as `former_slugs` or the country of origin; join on `make_slug` against `vehicles.json` or `catalog.sqlite` `makes`.
 
 ## `dist/catalog.sqlite`
 
-Tables: `meta` (key/value), `makes (id, kind, name)`, `models (id, kind,
+Tables: `meta` (key/value), `makes (id, kind, name, former_slugs, country, country_tier, country_disputed)` (`former_slugs` `|`-joined, NULL when none; added 2026.11.3; the three origin columns appended 2026.11.10, `country_disputed` `|`-joined, NULL when absent), `models (id, kind,
 make_id, slug, name, body_types, regions, global_popularity_decile,
-mass_popularity_decile)`, `availability
+mass_popularity_decile, lifecycle_status, year_start, year_end, year_start_planned,
+year_end_planned)` (lifecycle columns appended 2026-11, NULL when absent), `availability
 (model_id, kind, country, evidence, source)`, `popularity (model_id, kind,
 country, rank, decile, confidence)`. Ids match the JSON ids exactly.
+
+## `manifest.json` checksums
+
+The release `manifest.json` keeps its `dist` map (name → path) and, from 2026.11.3, carries `dist_files`: `{"dist/vehicles.json": {"sha256": "…", "bytes": 8143727, "records": 15845}, …}` for every file in `dist/` — `sha256` (hex) and `bytes` of the exact published file, and `records` (model records; CSV rows without the header) where countable. A refresher should fetch `manifest.json` first, skip when `version` is unchanged, and verify `sha256` and `bytes` before swapping a downloaded file in.
 
 ## Versioning
 

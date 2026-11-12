@@ -1,3 +1,6 @@
+Aixam:
+  "500": ["500.4", "500.5", "500 Pick-Up", "500.4 Pick-Up"]   # owner ruling 2026-11-11 (pick-up is a body of this record): Aixam names the range by engine size ("500 cm³" — https://www.aixam.com/en/french-brand/history/about-us, accessed 2026-11-11); 500.4 = Kubota 400 cc, 500.5 = 479 cc; "500.4 Pick-Up" / "500-5 Pick-Up" are the pick-up names — Swiss type approval 8AA706 "AIXAM 500-5 Pick-Up" https://swisscarinfo.ch/en/vehicle/8aa706-aixam-500-5-pick-up (accessed 2026-11-11) [register]; period brochure "Aixam Pick-up 500-4 / 500-5" (2003) https://www.lemasterbrockers.com/auto-moto-brochures-fiches/brochures-catalogues-auto-1/aixam-pick-up-500-4-500-5.html (accessed 2026-11-11) [tier 2]
+
 Audi:
   A3: [A3 Sportback, A3 Saloon, A3 Cabriolet]      # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): A3 Sportback = 5-door body name, "The Audi A3 Sportback includes a wheelbase 58 mm" — https://en.wikipedia.org/wiki/Audi_A3 (fetched 2026-10-10) [wikipedia] · A3 Saloon = saloon body name, "The A3 Saloon includes a body 11 mm wider" — https://en.wikipedia.org/wiki/Audi_A3 (fetched 2026-10-10) [wikipedia] · A3 Cabriolet = cabriolet body name, "Audi A3 Cabriolet in Vegas Yellow" — https://en.wikipedia.org/wiki/Audi_A3 (fetched 2026-10-10) [wikipedia]
   A4: [A4 Avant]                                   # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): A4 Avant = Audi's estate body name, "2001-2005 Audi A4 Avant (B6)" — https://en.wikipedia.org/wiki/Audi_A4 (fetched 2026-10-10) [wikipedia]
@@ -41,18 +44,11 @@ Citroën:
   Az 2CV: [Deux Chevaux, Ente, 2CV]                  # FR spoken form; DE nickname ("duck"); bare 2CV is what a user actually searches for
   DS3: [DS3 Cabrio]                                # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): DS3 Cabrio = body name, "Citroën unveiled the DS3 Cabrio at the Paris Motor Show" — https://en.wikipedia.org/wiki/Citro%C3%ABn_DS3 (fetched 2026-10-10) [wikipedia]
 
-Cupra:
-  # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. `car/seat/leon`
-  # publishes "León" too, so bare "leon" is a rung-4 multi-id REFUSAL
-  # (resolver.rb:192-199; find_alias_name_collisions.rb class B). Retiring ONE
-  # side would make bare "leon" resolve, and that was proposed — DECLINED: the
-  # two are a D-3 rebadge pair of near-equal reach (seat 9 countries/d2, cupra
-  # 8/d3, measured on dist 2026.08.1) and both opt-ins are sourced, so a silent
-  # 0.90 pick of one badge is worse than a refusal that returns both as
-  # alternates — the same reasoning this repo applies to classes C/D/E. The
-  # durable fix is a `rebadge_of` relation row, not deleting a sourced fact.
-  Leon: [León]                  # ES official spelling — Cupra's Spanish site writes "CUPRA León" (https://www.cupraofficial.es/coches/leon)
-
+# Cupra / SEAT León (2026.11.3): the former `León: [León]` opt-ins on BOTH records were retired. Since
+# 2026.11.2 the manufacturer spelling "León" IS each record's published name, so the alias duplicated the
+# name, re-created the class-B collision and tripped lint_enrich's relations check (an alias of one record
+# equal to the name of its rebadge twin). Bare "leon"/"león" still refuses between the two badges, by the
+# accepted 2026-08-02 ruling; the rebadge relation is the durable link.
 Dacia:
   # Dacia↔Renault rebadges: the same vehicle wears two badges in two market
   # sets — cross-references, NOT duplicates (the Pajero/Montero/Shogun
@@ -197,7 +193,7 @@ Renault:
   "9":     [Renault Alliance]   # the AMC-built Alliance is the R9 (car/renault/alliance kept as its own id — EPA baseModel "Alliance/Encore")
   "11":    [Renault Encore]     # the R11's US name, per the same EPA baseModel pairing
   Clio: [Clio Grandtour]                           # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): Clio Grandtour = estate body name, "Clio HB and Clio Grandtour" — https://en.wikipedia.org/wiki/Renault_Clio (fetched 2026-10-10) [wikipedia]
-  Megane: [Mégane Sport Tourer]                    # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): Mégane Sport Tourer = estate body name, "Mégane Sport Tourer/Grandtour, codenamed KFB" — https://en.wikipedia.org/wiki/Renault_M%C3%A9gane (fetched 2026-10-10) [wikipedia]
+  Mégane: [Mégane Sport Tourer]                    # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): Mégane Sport Tourer = estate body name, "Mégane Sport Tourer/Grandtour, codenamed KFB" — https://en.wikipedia.org/wiki/Renault_M%C3%A9gane (fetched 2026-10-10) [wikipedia]
 
 Rieju:
   Aventura Rally 307: [Rally 307]  # documented short form — press and the ES registry drop the family prefix (https://advhead.com/fr/rieju-307-rally-first-ride-review/)
@@ -209,7 +205,6 @@ Santana:
   PS10: [Aníbal]                # ES market name — the Santana Aníbal / PS-10 utility 4x4 (Linares, 2003-2011; https://autopista.es/noticias-motor/articulo/mot11298.htm)
 
 SEAT:
-  Leon: [León]                  # ES official spelling — seat.es titles "SEAT León"; international sites drop the accent — see the Cupra block: KNOWN class-B collision, both opt-ins deliberately kept
   # KNOWN COLLISION, ACCEPTED 2026-08-02 — do not re-litigate. "Córdoba" folds
   # to "cordoba", which is also the NAME of `car/chrysler/cordoba` (d5, fi,nl,
   # nz), so this bare-resolution opt-in (§1.5 mechanism, resolver.rb:177-179) is
@@ -245,6 +240,9 @@ Silence:
 
 Smart:
   Fortwo: [Fortwo Coupe, Fortwo Cabrio]            # DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): Fortwo Coupe = body name, "the third generation Smart Fortwo Coupe (C453) launched" — https://en.wikipedia.org/wiki/Smart_Fortwo (fetched 2026-10-10) [wikipedia] · Fortwo Cabrio = body name, "the redesigned 2017 Smart Fortwo Cabrio (A453)" — https://en.wikipedia.org/wiki/Smart_Fortwo (fetched 2026-10-10) [wikipedia]
+
+Tesla:
+  Roadster: ["Next Gen Roadster"]   # lane LIFE 2026-11-11: Tesla's own name for the coming generation of this nameplate (a planned run on car/tesla/roadster, not a new id) — "unveiled the Next Gen Roadster on October 15", https://assets-ir.tesla.com/tesla-contents/IR/TSLA-Q3-2026-Update.pdf (accessed 2026-11-11) [tier 1]. NOT added: "Roadster 2" — no source names it, and Tesla's 2008-2010 original carried "Roadster 2.0/2.5" versions, so it would mislead
 
 Toyota:
   Corolla: [カローラ, Corolla Touring Sports]                                # JP katakana · DEVQ A1 2026-10-10 (top-200 resolver sweep; each alias re-run through the verbatim web resolver): Corolla Touring Sports = estate body name, "called the Corolla Touring Sports" — https://en.wikipedia.org/wiki/Toyota_Corolla (fetched 2026-10-10) [wikipedia]

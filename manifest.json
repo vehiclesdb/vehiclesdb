@@ -1,7 +1,7 @@
 {
-  "version": "2026.11.1",
+  "version": "2026.11.9",
   "edition": "open",
-  "built_at": "2026-11-09T20:56:57Z",
+  "built_at": "2026-11-12T01:07:42Z",
   "schema_version": 3,
   "dist_schema_version": 2,
   "license": "CC-BY-4.0",
@@ -14,28 +14,31 @@
   "homepage": "https://vehiclesdb.com",
   "kinds": {
     "car": {
-      "makes": 323,
-      "models": 5888
+      "makes": 321,
+      "models": 6084,
+      "unregistered": 102,
+      "announced": 1
     },
     "motorcycle": {
-      "makes": 267,
-      "models": 6142
+      "makes": 289,
+      "models": 6393
     },
     "moped": {
-      "makes": 317,
-      "models": 1429
+      "makes": 327,
+      "models": 1511
     },
     "van": {
-      "makes": 134,
-      "models": 772
+      "makes": 133,
+      "models": 809
     },
     "truck": {
-      "makes": 97,
-      "models": 989
+      "makes": 111,
+      "models": 1215,
+      "unregistered": 1
     },
     "bus": {
-      "makes": 97,
-      "models": 415
+      "makes": 96,
+      "models": 436
     }
   },
   "countries": [
@@ -94,6 +97,32 @@
     "catalog_sqlite": "dist/catalog.sqlite",
     "vehicles_parquet": "dist/vehicles.parquet"
   },
+  "dist_files": {
+    "dist/vehicles.json": {
+      "sha256": "0814bcad7c4d003df92e0ea3fb0b248bce4073139c40a3da992c08d840696c12",
+      "bytes": 9458808,
+      "records": 16448
+    },
+    "dist/vehicles.min.json": {
+      "sha256": "b9c779adb1197da2ae3afc4a15fd5d051689867c21e1b6ed1a5434dac3d36e9a",
+      "bytes": 823021,
+      "records": 16448
+    },
+    "dist/vehicles.csv": {
+      "sha256": "258427056343f3b576bcddaf87b864083188358d878d76015b4dacb60de83dc4",
+      "bytes": 1384078,
+      "records": 16448
+    },
+    "dist/catalog.sqlite": {
+      "sha256": "4e111696cba3825566cf6ade3133f545b6a71dbec5ffc2e5396b37aa086b7839",
+      "bytes": 10526720
+    },
+    "dist/vehicles.parquet": {
+      "sha256": "d930668417202d1e79a93a4627d5e92448f9672c43045bd247c40ac5b479a3ab",
+      "bytes": 282477,
+      "records": 16448
+    }
+  },
   "sources": [
     {
       "id": "ar_dnrpa",
@@ -104,7 +133,7 @@
       "license_url": "https://datos.gob.ar/acerca/seccion/marco-legal",
       "evidence": "registration",
       "count_window": {
-        "measure": "initial car registrations in the month (DNRPA inscripciones iniciales, one row per registration)",
+        "measure": "initial registrations in the month (DNRPA inscripciones iniciales de autos, one row per registration; kind from automotor_tipo_descripcion)",
         "from": "2026-09",
         "to": "2026-09",
         "months": 1
@@ -151,6 +180,15 @@
         "to": "2026-10",
         "months": 10
       }
+    },
+    {
+      "id": "de_kba_nfz",
+      "country": "de",
+      "name": "German vehicle fleet and Lkw registrations by manufacturer and trade name (KBA FZ 2.2, FZ 2.8, FZ 4.8)",
+      "url": "https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html",
+      "license": "DL-DE-BY-2.0",
+      "license_url": "https://www.govdata.de/dl-de/by-2-0",
+      "evidence": "registration"
     },
     {
       "id": "es_dgt",

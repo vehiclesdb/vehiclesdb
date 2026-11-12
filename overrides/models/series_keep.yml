@@ -1,0 +1,23 @@
+# models/series_keep.yml — heavy-vehicle designations that are distinct NAMEPLATES.
+#
+# Shape:  <make, canonical display>: [<designation>, ...]
+#
+# series_collapse (pipeline normalizer.rb) keeps the LETTER STEM of a bus/truck
+# designation ("XF105" → "XF", "TGX 18.440" → "TGX"), which is right for model
+# ranges filed under axle/power codes and wrong where the coded designation IS
+# the nameplate and the stem pools several trucks into one stub id. A listed
+# designation is matched against the first token of the model string, exactly,
+# and returned whole (pipeline Normalizer#series_keep_hit). Every entry needs
+# a source naming the designation as a model.
+#
+# Owner ruling 2026-11-10 (2026.11.4 held item 2): "make the pipeline exception
+# so they become separate records — distinct real nameplates belong in separate
+# records."
+
+Sterling:   # au_bitre LT9500 1,151 / LT7500 543 / AT9500 248 were pooled as "Lt"/"At". "Sterling will sell its LT7500, LT9500, and AT9500 conventional trucks" — https://www.trucknews.com/transportation/sterling-begins-operations-in-australia/1003112971 (accessed 2026-11-10) [tier 2]
+  - LT7500
+  - LT9500
+  - AT9500
+Caterpillar:   # au_bitre CT630 255 / CT610 167 were pooled as "Ct". "Cat CT630 6x4 and Cat CT610 6X4 truck review" — https://www.fullyloaded.com.au/cat-ct630-6x4-and-cat-ct610-6x4-truck-reviews/ (accessed 2026-11-10) [tier 2]. A bare "CT" row (92) stays unresolved: it cannot tell the two apart
+  - CT610
+  - CT630
