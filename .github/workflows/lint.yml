@@ -34,6 +34,12 @@ jobs:
         # (former_ids) or manifested (removals) — ids retired before the no-vanish
         # gate existed were never checked (CarHey trace, 2026-11-09).
         run: ruby scripts/lint_id_history.rb
+      - name: SCHEMA.md documents every published make key; country of origin shape
+        # The growth contract is only a contract if SCHEMA.md names every field
+        # the build emits (a new make key fails here until it has a row), the
+        # manifest's schema versions match the doc, and every make's country of
+        # origin is a valid ISO code with its tier, one origin per make.
+        run: ruby scripts/lint_schema_doc.rb
       - name: Verify make blocks are alphabetical
         # Alphabetical order is what lets two maintainers append concurrently
         # without conflicting, and what stops a second `Honda:` block appearing.
