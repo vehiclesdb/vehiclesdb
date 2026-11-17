@@ -2,6 +2,47 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.12] - 2026-11-17 — country of origin for 164 more makes; models that leave a rolling register window stay published
+
+**16,440 models across 978 makes (16,438 → 16,440; 3 added, 1 renamed with an alias, 0 retired).**
+
+Every register was fetched fresh, and each one reads the same window or snapshot as v2026.11.11. Ukraine (2026-01…08) and Finland (2026-09-30) are carried from the last good download: data.gov.ua refuses the build machine, and Traficom's unchanged file (same size and date as the cached copy) did not finish downloading within the time limit. The Ukraine licence pin was verified from a copy of the pinned URL fetched on GitHub's network; the licence is unchanged (CC BY, open).
+
+| kind | 2026.11.11 | 2026.11.12 | Δ |
+|---|---:|---:|---:|
+| car | 6,042 | 6,042 | 0 |
+| motorcycle | 6,395 | 6,397 | +2 |
+| moped | 1,528 | 1,529 | +1 |
+| van | 811 | 811 | 0 |
+| truck | 1,223 | 1,223 | 0 |
+| bus | 439 | 438 | −1 (renamed) |
+
+### Country of origin: 125 → 289 makes
+
+- **164 more makes** now carry their country of origin: 162 with `country` and 2 (`smart`, `mcc`) with `country_disputed` `["ch", "de"]`, a cross-border joint-venture founding.
+- **Cars: 89 → 193 of 321 makes.** Motorcycles 32 → 63, trucks 36 → 64, vans 52 → 72, buses 29 → 46, mopeds 33 → 50.
+- The definition, tiers and rules are unchanged from 2026.11.10 (SCHEMA.md *Country of origin*). Each value rests on a manufacturer, regulator or archive quote that was re-fetched and found verbatim; none rests on Wikipedia or the press. Of the 286 makes with a `country`, 193 rest on the manufacturer, 41 on a regulator or securities filing and 52 on a public archive.
+- Former states map to the present-day country of the founding seat. For example, GAZ is RU, Zastava RS, Trabant DE and Bugatti FR.
+- No published origin changed; every change is an addition.
+
+### Rolling register windows: the last evidence is carried
+
+Spain, Argentina, Germany's year-to-date file, Ireland, Luxembourg, Malaysia, Thailand and Ukraine count only the registrations of a recent window. Until now, a model whose last registration fell out of the window lost that country, or the whole record, although its vehicles are still on the road.
+
+- **Now that country stays in `availability` for 12 months, marked `last_observed`** with the window that last counted it, and a record that no flow register counts now stays published. A record the current window still counts is judged exactly as before. vehiclesdb#422; DECISIONS.md "Rolling register windows".
+- **This release carries 360 Spanish entries**, all last counted in 2026-07…09: car 152, motorcycle 127, van 31, moped 24, truck 21, bus 5. Spain goes from 3,140 to 3,500 models; these are the models v2026.11.11 lost when the window moved to 2026-08…10.
+- **Two models return:** `motorcycle/brixton/felsberg-250` and `motorcycle/sym/joymax-z-125`, demoted in v2026.11.11, are back under their old ids, evidenced only by that window.
+- **A carried entry claims nothing current:** it has no rank or decile in that country, and a record evidenced only that way has no `popularity`.
+- **New file `catalog/<kind>/_last_evidence.json`** (`schema: "last-evidence/1"`). It holds, per published id, the window labels it was last counted in and the register spellings that landed on it, with no counts. The next build reads it, so a build from a fresh clone carries exactly what this release carries.
+- **Where it appears:** `last_observed` is on `catalog/<kind>/models.json` availability entries and in two new `catalog.sqlite` `availability` columns, `last_observed_from` and `last_observed_to`. `dist/vehicles.json`, `vehicles.min.json`, the CSV and the parquet list the country without the marker. All of this is additive, so schema versions do not move.
+
+### Other changes
+
+- **`bus/mercedes-benz/609-d` is renamed to `bus/mercedes-benz/609`** (alias in `former_ids`; the older `bus/mercedes-benz/609d` alias now points at `609` too). One Mercedes-Benz 609 D bus fleet had been split over two ids by spelling alone ("609 D" and "609D"). Nothing is lost: the record keeps `nl` and `ua`. vehiclesdb#423.
+- **New make Pure Electric** with `moped/pure-electric/air6pro-suspension`. It is the Pure Air6 Pro+ Suspension, an e-step with an RDW type approval that is now registered in the Netherlands in enough numbers to publish.
+- `truck/scania/p360b` is now also evidenced in Israel, where the register restated its 2026-11-17 snapshot.
+- **Releases are cut on a trusted machine.** The scheduled build now only validates, and opens a "release due" issue when a release is due. vehiclesdb#421.
+
 ## [2026.11.11] - 2026-11-17 — Spain's October registrations; six window-expired ids disposed of; misspellings, motorhomes and wrong makes kept out
 
 **16,438 models across 977 makes (16,381 → 16,438; 63 added, 6 retired: 1 aliased to a live successor, 5 with a removals.yml entry).**
