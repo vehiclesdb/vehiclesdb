@@ -128,7 +128,7 @@ the same origin in every `catalog/<kind>/makes.json` and in
 | `kind` | string | `car` · `motorcycle` · `moped` · `van` · `truck` · `bus` |
 | `body_types` | string[]? | see *Body types* below — **absent = not catalogued** |
 | `aliases` | string[]? | documented alternate names — native scripts, market names, nicknames (`["Rabbit"]` for the Golf); absent when none curated |
-| `availability` | object[] | where the model is evidenced — see below |
+| `availability` | object[] | where the model is evidenced — see below; an entry carried from an earlier window of a rolling register carries `last_observed` |
 | `regions` | string[] | continents rolled up from `availability` — `eu`,`na`,`sa`,`as`,`oc`,`af` (the cheap continent filter) |
 | `popularity` | object? | measured popularity (`global_decile`, `mass_decile`, `by_country`) — see below; absent = no counts yet |
 | `sources` | string[] | ids of the sources that evidence this record (see SOURCES.md) |
@@ -157,6 +157,8 @@ registers — absent, per the absence rule, until one exists).
 A model publishes when its register evidence corroborates it: ≥ 2 minting sources, or one source above the per-kind floor (car 1,000, van/motorcycle/moped 300, truck 150, bus 50). Publication hysteresis holds an existing id through ordinary churn.
 
 Since 2026-11-11 the same file has a **manufacturer** form: a named production vehicle that its manufacturer has officially announced publishes with no register vehicle at all, on a tier-1 source and a dated announcement, and always with a `lifecycle` (see *Records admitted on manufacturer evidence*).
+
+Since 2026-11 (the release after 2026.11.11) a published record also survives a **rolling register window that moves past it**. Flow registers (Spain, Argentina, Germany's year-to-date file, Ireland, Luxembourg, Malaysia, Thailand, Ukraine; `manifest.json` `sources[].count_window`) count only the registrations of a recent window, so a model registered in July drops out of a window that starts in August although its vehicles are still on the road. Such a record stays published for **12 months** after the last window that counted it, and the country stays in its `availability` marked `last_observed` (see *Availability*). Nothing current is claimed for it: it has no rank or decile in that country, and a record evidenced only that way has no `popularity`. Stock registers (a fleet snapshot: NL, FI, GB, NZ, …) are not carried, because a model absent from a fleet snapshot has no vehicle left there. A removal (`removals.yml`), a former id (`former_ids.yml`) or a demotion always wins over the carry. See DECISIONS.md "Rolling register windows".
 
 Since 2026-11-09 a curated **attested admission** (`overrides/models/attested.yml`) can also publish a real nameplate below that floor, for example a single-market brand or a rare classic. It needs at least one minting register vehicle and a tier-1/tier-2 source. Nothing in the record shape changes: an attested record carries exactly the availability and popularity its register rows give it. See DECISIONS.md.
 
@@ -233,6 +235,26 @@ register rows arrive they land on the same id. Admission rule: DECISIONS.md
 | `registration` | vehicles of this model are registered / on the road there |
 | `approval` | type-approved / certified for sale there (catalog evidence) |
 | `sales` | verified sales reporting |
+
+`last_observed` (added 2026-11, after 2026.11.11) appears **only** on an entry that a rolling
+(flow) register no longer counts in its current window but did within the last
+12 months. It is that register's count window, `{"from": "YYYY-MM", "to":
+"YYYY-MM"}`, in which it last counted the model:
+
+```json
+{ "country": "es", "evidence": "registration", "source": "es_dgt",
+  "last_observed": { "from": "2026-07", "to": "2026-09" } }
+```
+
+Read it as "vehicles of this model were registered there during that window
+and are still registered; the register's current window does not include
+them". An entry without `last_observed` was counted in the source's current
+window (`manifest.json` `sources[].count_window`). A `last_observed` country
+has no `popularity.by_country` entry, because there is no current count to
+rank. The window labels each published id last held are kept in
+`catalog/<kind>/_last_evidence.json` (`schema: "last-evidence/1"`; ids,
+display names and window labels, no counts), which the next build reads, so
+a build from a fresh clone carries exactly what the release carried.
 
 Availability is **evidence of presence, not marketing history**: New
 Zealand's grey-imported JDM models are correctly listed as available in `nz`.
@@ -358,7 +380,8 @@ Per-model: `body_type` (primary only; absent where the catalog has none),
 among ALL models of its kind in that country, copied verbatim from `catalog/`
 `popularity.by_country[cc].rank`; absent when the model has no rank anywhere;
 added 2026-10, schema v2 growth rule), `availability` (bare country codes —
-the evidence detail lives in `catalog/`).
+the evidence detail lives in `catalog/`, including which countries are carried
+with `last_observed`).
 
 `forms` (added 2026-11, schema v2 growth rule) — curated, **make-scoped**
 spellings that registries and people write for this record and that fold into
@@ -397,7 +420,7 @@ Tables: `meta` (key/value), `makes (id, kind, name, former_slugs, country, count
 make_id, slug, name, body_types, regions, global_popularity_decile,
 mass_popularity_decile, lifecycle_status, year_start, year_end, year_start_planned,
 year_end_planned)` (lifecycle columns appended 2026-11, NULL when absent), `availability
-(model_id, kind, country, evidence, source)`, `popularity (model_id, kind,
+(model_id, kind, country, evidence, source, last_observed_from, last_observed_to)` (the two `last_observed` columns appended 2026-11, NULL when the source counts the model in its current window), `popularity (model_id, kind,
 country, rank, decile, confidence)`. Ids match the JSON ids exactly.
 
 ## `manifest.json` checksums

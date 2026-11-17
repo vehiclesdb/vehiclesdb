@@ -429,8 +429,8 @@ checks:
   - id: ebroh/bravo-gle
     kind: motorcycle
     skip_if_kind_absent: true
-    availability_includes: [nl]
-    reason: "es dropped 2026-11-17 (release 2026.11.11): es left with the es_dgt window roll, not with the rename. es_dgt carries 'E-BROH | BRAVO GLE' (*05) 2 in 202604, 2 in 202605, 5 in 202607 and 0 in 202608, 202609 and 202610, so the window 2026-08…10 has nothing to attach; v2026.11.10 still read 2026-07…09. The rename itself is still guarded by the two `make: e-broh exists: false` rows above, and nl (nl_rdw) is the load-bearing register. Same disposition as the unu and Rocks-e es drops of data#385. Original reason: Bravo GLE keeps its evidence across the E-BROH -> Ebroh rename"
+    availability_includes: [es, nl]
+    reason: "Bravo GLE keeps its evidence across the E-BROH -> Ebroh rename. es was dropped in 2026.11.11 when the es_dgt window rolled past its last rows (2 in 202604, 2 in 202605, 5 in 202607, 0 in 202608-202610); from the last-evidence carry (DECISIONS.md 'Rolling register windows') es stays, marked last_observed 2026-07…09, until 12 months after that window. Pinned again so a regression of either the rename or the carry fails here."
   - id: mitt/gt-max-300
     kind: motorcycle
     skip_if_kind_absent: true
