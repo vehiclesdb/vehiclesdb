@@ -2,7 +2,68 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
-## [Unreleased] — country of origin per make (targeted at 2026.11.10)
+## [2026.11.11] - 2026-11-17 — Spain's October registrations; six window-expired ids disposed of; misspellings, motorhomes and wrong makes kept out
+
+**16,438 models across 977 makes (16,381 → 16,438; 63 added, 6 retired: 1 aliased to a live successor, 5 with a removals.yml entry).**
+
+Every register was fetched fresh.
+- **Spain (es_dgt)** is a rolling three-month window of new registrations. v2026.11.10 read 2026-07…09 because DGT had not yet published October when it was built; this release reads **2026-08…10**.
+- **Israel** moves from its 2026-11-12 snapshot to 2026-11-17.
+- **Every other register** reads the same snapshot as v2026.11.10. Ukraine (2026-01…08) is carried from the last good download because data.gov.ua refuses the build machine. Its licence pin was verified from a copy of the pinned URL fetched on GitHub's network; the licence is unchanged (CC BY, open).
+
+| kind | 2026.11.10 | 2026.11.11 | Δ |
+|---|---:|---:|---:|
+| car | 6,036 | 6,042 | +6 (+9 −3) |
+| motorcycle | 6,381 | 6,395 | +14 (+16 −2) |
+| moped | 1,508 | 1,528 | +20 |
+| van | 805 | 811 | +6 |
+| truck | 1,215 | 1,223 | +8 (+9 −1) |
+| bus | 436 | 439 | +3 |
+
+New makes: Golden Lion, HDK and Regal Raptor.
+
+### Retired: their last Spanish rows were in July
+
+- `truck/daf/xb230f` is **aliased** to `truck/daf/xb`. "XB 230 FA" is a power rating plus DAF's FA axle configuration, the same case as the existing XB230 → XB fold.
+- `car/fiat/rapido-af5`, `car/fiat/ts-6249` and `car/mercedes-benz/levoyageur` are **removed**.
+  - They are motorhomes (Rapido, Dethleffs and Le Voyageur) filed under the make of their base chassis.
+  - The Dutch register files each of them under the builder, as a motorhome (`kampeerwagen`).
+  - There is no car successor.
+- `motorcycle/brixton/felsberg-250` and `motorcycle/sym/joymax-z-125` are **demoted**.
+  - Both are real models, but no register in this window carries a vehicle for them.
+  - Manufacturer-evidence admission does not apply: neither maker gives a dated announcement for these models.
+  - They return automatically when a register carries them again.
+
+### Kept out of the catalog
+
+The October rows would have minted 45 strings that are not model names. Each now lands on its live record or is dropped:
+
+- **Misspellings, trims and engine grades** now land on their live record. Examples:
+  - Grand Cheroke → Grand Cherokee, Rang Rover Sport → Range Rover Sport, Tranist → Transit, Premuim → Premium, Contryman Jcw → Countryman
+  - Continental FL → Continental Flying Spur (the Spanish model field is 22 characters long and truncates the name)
+  - Suburban Lt → Suburban, Yaris Tr → Yaris, V40 D2 → V40, T6 Business Van → Transporter
+  - duplicate spellings such as T-430/T430, X-30/X30, P601K/P601 K and 150LI/LI150 now share one id
+- **Filed under the wrong make**, now moved to the real make:
+  - Chrysler-filed Wrangler Unlimited → Jeep
+  - Lexus-filed Land Cruiser → Toyota
+  - "Daimler Benz" 230 E → Mercedes-Benz
+  - body builder Plandex's Sprinter → Mercedes-Benz Sprinter
+- **Dropped:**
+  - make echoes (Hyundai "Hyundai", Puch "Puch", Lambretta "Lambretta") and a bare Audi "A"
+  - a Porsche 911 filed as a BMW "9 Series"
+  - eight motorhome or body-builder strings: Dethleffs Globetrotter, 280 Ma 65 Kampeerauto, Ford "Challenger", Mercedes-Benz "Pilote", Campster 001, P719, HV 522 and DAF "Mkd"
+
+PR: vehiclesdb#419 (each decision with its evidence).
+
+## [2026.11.10] - 2026-11-12 — country of origin per make; duplicate folds; fresh register fetch
+
+**16,381 models across 974 makes (16,448 → 16,381; 3 added, 70 retired, every one aliased to a live successor).**
+
+This release was cut by the scheduled CI build, which fetched every register fresh:
+- Spain read 2026-07…09.
+- Ireland and Malaysia moved to …2026-10.
+
+The 70 retirements are the duplicate folds of vehiclesdb#413, for example the Jaguar Mark/Mk spellings and Corvette "Stringray". The three additions are `car/cadillac/fleetwood-60`, `car/dacia/striker` and `motorcycle/bimota/bx450`.
 
 - **New optional make fields: `country` + `country_tier`, or `country_disputed`.** `country` is the make's country of origin: the lower-case ISO 3166-1 alpha-2 code of the country where the marque was founded (not where it is built, not its headquarters, not its owner's country). `country_tier` says what it rests on: `manufacturer`, `regulator` or `archive`. A marque genuinely identified with two countries carries `country_disputed` instead. SCHEMA.md *Country of origin* has the definition and the rules for former states, sub-brands and revivals; DECISIONS.md "Country of origin" has the ruling. The current owner / parent group stays out of the open dataset.
   - It appears on `catalog/<kind>/makes.json`, on the make objects of `dist/vehicles.json` and as three appended `catalog.sqlite` `makes` columns (`country`, `country_tier`, `country_disputed`). It is not in the per-model CSV/parquet or in `vehicles.min.json`.
