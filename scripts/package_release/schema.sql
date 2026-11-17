@@ -95,6 +95,8 @@ CREATE TABLE availability (
   country  TEXT NOT NULL,
   evidence TEXT NOT NULL,
   source   TEXT NOT NULL,                  -- sources.id
+  last_observed_from TEXT,                 -- carried from an earlier flow window (SCHEMA.md Availability); NULL = current
+  last_observed_to   TEXT,
   PRIMARY KEY (kind, model_id, country, source)
 );
 

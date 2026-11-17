@@ -143,9 +143,10 @@ CREATE TABLE model_regions AS
   SELECT DISTINCT kind, id AS model_id, unnest(regions) AS region FROM raw_models WHERE regions IS NOT NULL ORDER BY ALL;
 
 CREATE TABLE availability AS
-SELECT kind, model_id, a.country AS country, a.evidence AS evidence, a.source AS source FROM (
+SELECT kind, model_id, a.country AS country, a.evidence AS evidence, a.source AS source,
+       a.last_observed."from" AS last_observed_from, a.last_observed."to" AS last_observed_to FROM (
   SELECT kind, id AS model_id,
-         unnest(from_json(availability, '[{"country":"VARCHAR","evidence":"VARCHAR","source":"VARCHAR"}]')) AS a
+         unnest(from_json(availability, '[{"country":"VARCHAR","evidence":"VARCHAR","source":"VARCHAR","last_observed":{"from":"VARCHAR","to":"VARCHAR"}}]')) AS a
   FROM raw_models WHERE availability IS NOT NULL)
 ORDER BY kind, model_id, country, source;
 

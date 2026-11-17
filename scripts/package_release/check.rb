@@ -42,7 +42,7 @@ MODEL_KEYS = %w[id make_id slug name kind body_types regions sources aliases for
 MAKE_KEYS  = %w[id slug name aliases countries kinds].freeze # kinds == [file kind]: makes.kind
 POP_KEYS   = %w[global_decile mass_decile by_country].freeze
 CELL_KEYS  = %w[rank decile confidence].freeze
-AVAIL_KEYS = %w[country evidence source].freeze
+AVAIL_KEYS = %w[country evidence source last_observed].freeze
 def unpackaged!(where, keys, known)
   extra = keys - known
   fail!("#{where}: field(s) #{extra.join(', ')} have no home in the package (add them to schema.sql + package_release.sh)") unless extra.empty?
@@ -119,8 +119,11 @@ Dir.mktmpdir("vdbpkg-check") do |tmp|
     m = models[key]
     esc = id.gsub("'", "''")
     where = "kind = '#{kind}' AND model_id = '#{esc}'"
-    av = sqlite(db, "SELECT country, evidence, source FROM availability WHERE #{where} ORDER BY 1, 3").lines.map(&:chomp)
-    exp = m["availability"].map { |x| [x["country"], x["evidence"], x["source"]].join("\t") }.sort_by { |l| l.split("\t").values_at(0, 2) }
+    av = sqlite(db, "SELECT country, evidence, source, coalesce(last_observed_from, ''), coalesce(last_observed_to, '') " \
+                    "FROM availability WHERE #{where} ORDER BY 1, 3").lines.map(&:chomp)
+    exp = m["availability"].map { |x|
+      [x["country"], x["evidence"], x["source"], x.dig("last_observed", "from").to_s, x.dig("last_observed", "to").to_s].join("\t")
+    }.sort_by { |l| l.split("\t").values_at(0, 2) }
     fail!("availability differs for #{kind}/#{id}") unless av == exp
     pop = sqlite(db, "SELECT country, rank, decile, confidence FROM popularity WHERE #{where} ORDER BY 1").lines.map(&:chomp)
     expp = (m.dig("popularity", "by_country") || {}).sort.map { |cc, p| [cc, p["rank"], p["decile"], p["confidence"]].join("\t") }
