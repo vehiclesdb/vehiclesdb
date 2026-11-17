@@ -396,8 +396,9 @@ spine sources update monthly (ES/DE/MY/TH/AR/UA) or quarterly (UK); nightly
 would be theater. The scheduled runs (weekly, and monthly on the 12th) build
 and validate through every gate and publish nothing; failures open a
 `pipeline-failure` issue, and a green monthly run opens a `release-due` issue.
-The release itself — commit, tag, GitHub release — is cut by a maintainer with
-the pipeline's release script on a trusted machine, because every release has
+The release itself is cut on a trusted machine: the pipeline's release script
+builds, validates and syncs, and a maintainer then runs the commit, tag and
+`gh release create` it prints, because every release has
 a private counterpart that must come from the same build and cannot be built
 on a public CI runner (2026-11-18; until then the monthly run released on its
 own, and v2026.11.10's private counterpart came out incomplete). The release

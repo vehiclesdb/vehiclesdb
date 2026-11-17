@@ -13,8 +13,9 @@ name: Release channels
 #
 # TRIGGER DESIGN — read this before changing it:
 #   * `release: [published]` covers HAND-CUT releases — and since 2026-11-18
-#     every release is hand-cut: monthly-build.yml only validates, and the
-#     pipeline repo's release script creates the release with a maintainer's
+#     every release is hand-cut: monthly-build.yml only validates; the
+#     pipeline repo's release script builds, syncs and PRINTS the release
+#     commands, and the maintainer runs `gh release create` with their own
 #     token, which fires this event. (It does NOT fire for releases created
 #     with the default GITHUB_TOKEN — GitHub's workflow-loop prevention.)
 #   * `workflow_call` was how the old CI publish path reached this. Nothing

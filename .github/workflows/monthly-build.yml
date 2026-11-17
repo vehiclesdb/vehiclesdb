@@ -295,6 +295,8 @@ jobs:
           fi
 
 # The release channel fan-out is NOT invoked from here any more: nothing here
-# creates a release. release-channels.yml fires on `release: published`, which
-# the trusted release script's `gh release create` triggers (a release made with
-# a personal token fires the event; only the default GITHUB_TOKEN suppresses it).
+# creates a release. The trusted release script builds and syncs, then PRINTS
+# the commit/tag/`gh release create` commands; the maintainer runs them. That
+# human-run `gh release create` (a maintainer's token, not the default
+# GITHUB_TOKEN, which would suppress the event) fires `release: published`, and
+# that event triggers release-channels.yml.
