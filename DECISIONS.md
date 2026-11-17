@@ -348,9 +348,14 @@ surviving records lost Spain, every one of them still registered there; the
 release needed hand-written removals for real models (data#418, #419).
 
 - **The rule.** For each published id the build remembers the latest window of
-  each flow register that counted it (`catalog/<kind>/_last_evidence.json`).
-  For **12 months** after that window ends, the id stays published and the
-  country stays in `availability`, marked `last_observed: {from, to}`.
+  each flow register that counted it, and the register's raw spellings that
+  landed on it (`catalog/<kind>/_last_evidence.json`). For **12 months** after
+  that window ends, a register that no longer counts the id keeps its country
+  in `availability`, marked `last_observed: {from, to}`, and an id that no
+  flow register counts now stays published.
+- **Only for ids the register does NOT count now.** An id the current window
+  still counts, however few vehicles, is judged by the ordinary publication
+  rules and hysteresis floors, unchanged; the carry never lowers a floor.
 - **Nothing current is claimed.** A carried country has no rank or decile and
   adds nothing to any mass share; a record evidenced only that way has no
   `popularity`. The last known count travels only in the private feed, labelled
@@ -359,17 +364,23 @@ release needed hand-written removals for real models (data#418, #419).
   model absent from it has no vehicle left there; it is not carried.
 - **It never mints, and curation always wins.** The sidecar is written only
   from published records. `removals.yml`, `former_ids.yml` (renames and moves
-  retire through an alias) and `demotions.yml` beat it, and so does a
-  spotcheck `availability_excludes` row (the required companion of an
-  availability correction, below). An id with no row at all is carried only
-  while curation still maps its own name to that id: a new rename or drop
-  pattern is a curation decision, and the id-contract gate still sees it.
+  retire through an alias) and `demotions.yml` beat it and drop the id from
+  the sidecar, so deleting a removal later resurrects nothing. A spotcheck
+  `availability_excludes` row (the required companion of an availability
+  correction, below) beats it too.
+- **Spellings, not names.** A country is carried only while curation still
+  routes at least one of the register's recorded raw spellings to the record.
+  A rename, move or drop pattern that sends them elsewhere (a duplicate fix,
+  a partial correction) stops the carry at once, and the id-contract gate sees
+  the vanish as before. Only an entry with no recorded spellings (the first
+  build with this mechanism) falls back to the record's own name, strictly.
 - **A source outage is not a window.** A register that fed no rows to a build
   carries nothing, so a dead upstream still fails the delta and spotcheck gates.
 - **Cold builds behave like warm ones.** The sidecar is published with the
   catalog, so a fresh clone (CI) carries exactly what the release carried;
   without one, it is derived from the published catalog and `manifest.json`'s
-  count windows. It holds no counts.
+  count windows. It holds no counts: ids, names, window labels and the raw
+  register spellings, all public.
 - **After 12 months** without a sighting the carry ends and the id takes the
   usual path: it publishes on its own evidence, or the no-vanish gate asks for
   an alias or a removal.

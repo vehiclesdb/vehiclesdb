@@ -158,7 +158,7 @@ A model publishes when its register evidence corroborates it: ≥ 2 minting sour
 
 Since 2026-11-11 the same file has a **manufacturer** form: a named production vehicle that its manufacturer has officially announced publishes with no register vehicle at all, on a tier-1 source and a dated announcement, and always with a `lifecycle` (see *Records admitted on manufacturer evidence*).
 
-Since 2026-11 (the release after 2026.11.11) a published record also survives a **rolling register window that moves past it**. Flow registers (Spain, Argentina, Germany's year-to-date file, Ireland, Luxembourg, Malaysia, Thailand, Ukraine; `manifest.json` `sources[].count_window`) count only the registrations of a recent window, so a model registered in July drops out of a window that starts in August although its vehicles are still on the road. Such a record stays published for **12 months** after the last window that counted it, and the country stays in its `availability` marked `last_observed` (see *Availability*). Nothing current is claimed for it: it has no rank or decile in that country, and a record evidenced only that way has no `popularity`. Stock registers (a fleet snapshot: NL, FI, GB, NZ, …) are not carried, because a model absent from a fleet snapshot has no vehicle left there. A removal (`removals.yml`), a former id (`former_ids.yml`) or a demotion always wins over the carry. See DECISIONS.md "Rolling register windows".
+Since 2026-11 (the release after 2026.11.11) a published record also survives a **rolling register window that moves past it**. Flow registers (Spain, Argentina, Germany's year-to-date file, Ireland, Luxembourg, Malaysia, Thailand, Ukraine; `manifest.json` `sources[].count_window`) count only the registrations of a recent window, so a model registered in July drops out of a window that starts in August although its vehicles are still on the road. For **12 months** after the last window that counted it, the country stays in its `availability` marked `last_observed` (see *Availability*), and a record no flow register counts now stays published. A record the current window still counts is judged by the ordinary rules above. Nothing current is claimed for it: it has no rank or decile in that country, and a record evidenced only that way has no `popularity`. Stock registers (a fleet snapshot: NL, FI, GB, NZ, …) are not carried, because a model absent from a fleet snapshot has no vehicle left there. A removal (`removals.yml`), a former id (`former_ids.yml`) or a demotion always wins over the carry. See DECISIONS.md "Rolling register windows".
 
 Since 2026-11-09 a curated **attested admission** (`overrides/models/attested.yml`) can also publish a real nameplate below that floor, for example a single-market brand or a rare classic. It needs at least one minting register vehicle and a tier-1/tier-2 source. Nothing in the record shape changes: an attested record carries exactly the availability and popularity its register rows give it. See DECISIONS.md.
 
@@ -253,8 +253,9 @@ window (`manifest.json` `sources[].count_window`). A `last_observed` country
 has no `popularity.by_country` entry, because there is no current count to
 rank. The window labels each published id last held are kept in
 `catalog/<kind>/_last_evidence.json` (`schema: "last-evidence/1"`; ids,
-display names and window labels, no counts), which the next build reads, so
-a build from a fresh clone carries exactly what the release carried.
+display names, window labels and the register's raw spellings that landed on
+each id; no counts), which the next build reads, so a build from a fresh
+clone carries exactly what the release carried.
 
 Availability is **evidence of presence, not marketing history**: New
 Zealand's grey-imported JDM models are correctly listed as available in `nz`.
