@@ -12,11 +12,14 @@ name: Release channels
 # ran. Nothing was broken; the release was just quietly incomplete.
 #
 # TRIGGER DESIGN — read this before changing it:
-#   * `release: [published]` covers HAND-CUT releases. It does NOT fire for
-#     releases created with the default GITHUB_TOKEN (GitHub's workflow-loop
-#     prevention), which is exactly how monthly-build.yml creates them.
-#   * `workflow_call` is therefore how the CI path reaches this, invoked as a
-#     dependent job in the same run.
+#   * `release: [published]` covers HAND-CUT releases — and since 2026-11-18
+#     every release is hand-cut: monthly-build.yml only validates; the
+#     pipeline repo's release script builds, syncs and PRINTS the release
+#     commands, and the maintainer runs `gh release create` with their own
+#     token, which fires this event. (It does NOT fire for releases created
+#     with the default GITHUB_TOKEN — GitHub's workflow-loop prevention.)
+#   * `workflow_call` was how the old CI publish path reached this. Nothing
+#     calls it today; it stays so a future automated path has one entry point.
 #   * `workflow_dispatch` is for backfilling a release that predates this.
 # Each path fires exactly once. Every step is idempotent anyway, so a double
 # run is harmless.
@@ -26,8 +29,8 @@ name: Release channels
 # is wiped by the next one. It cannot be reconstructed from a tag — a rebuild
 # is not byte-identical (~37-record variance from cache state alone), and a
 # mismatched catalog-plus/dist pair is the precise incoherence the
-# DATA-CONTRACT version-lock exists to prevent. It belongs in the build job.
-# See RELEASE-RUNBOOK.md §5.5 for the manual procedure.
+# DATA-CONTRACT version-lock exists to prevent. It is cut by the same trusted
+# run that built the release (the pipeline repo's release script).
 
 on:
   release:
