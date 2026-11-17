@@ -391,13 +391,18 @@ the five above don't serve better).
 
 ## Cadence
 
-**Monthly automated releases, weekly validate-only runs.** The spine sources
-update monthly (ES/DE/MY/TH/AR/UA) or quarterly (UK); nightly would be
-theater. The monthly scheduled run builds, validates through all six gates,
-and — only when every gate is green AND the data actually changed — commits,
-tags, and cuts the GitHub release itself. The weekly validate run catches
-upstream drift (license pins, URL rotations, format changes) within days
-instead of at release time; failures open a `pipeline-failure` issue.
+**Monthly releases, cut by a maintainer; scheduled runs validate only.** The
+spine sources update monthly (ES/DE/MY/TH/AR/UA) or quarterly (UK); nightly
+would be theater. The scheduled runs (weekly, and monthly on the 12th) build
+and validate through every gate and publish nothing; failures open a
+`pipeline-failure` issue, and a green monthly run opens a `release-due` issue.
+The release itself — commit, tag, GitHub release — is cut by a maintainer with
+the pipeline's release script on a trusted machine, because every release has
+a private counterpart that must come from the same build and cannot be built
+on a public CI runner (2026-11-18; until then the monthly run released on its
+own, and v2026.11.10's private counterpart came out incomplete). The release
+event still fans out to release assets, jsDelivr, Hugging Face and Zenodo
+automatically (`release-channels.yml`).
 Versioning is `YYYY.MM.PATCH` — the version tells you the freshness, and the
 patch number auto-increments so intra-month re-releases can never collide.
 (Chosen over OpenASN's rolling-`latest` + dated-pin scheme: for a monthly

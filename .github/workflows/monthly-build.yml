@@ -1,8 +1,33 @@
 name: Build & publish data
 
-# The data build. Lives in THIS repo (not the pipeline repo) on purpose:
-# releases publish here, so the repo's own GITHUB_TOKEN can upload assets and
-# open failure issues — the same layout OpenASN runs in production.
+# The data build — a CANARY. It builds and validates; it NEVER publishes.
+# (The workflow keeps its name so existing run history, badges and links stay
+# valid; "publish" now happens only through a trusted release, see below.)
+#
+# ── WHY THE SCHEDULED BUILD NO LONGER PUBLISHES (2026-11-18) ────────────────
+#
+# A release has two halves that must come from ONE build: this repo's open
+# dataset and the project's private feed (`plus-<VERSION>`, RELEASE-RUNBOOK
+# §5.5 — a rebuild is not byte-identical, so "the same inputs" is not "the same
+# build"). Part of the private feed's inputs may never be present on a
+# GitHub-hosted runner, in this repo, or in its logs and artifacts. A build on
+# this runner is therefore ALWAYS an incomplete private feed: when the monthly
+# cron published v2026.11.10 it also shipped a private feed missing those
+# inputs (and built on a fresh, non-accumulated history store); the website
+# correctly refused it and stayed on the previous version until a release was
+# cut by hand.
+#
+# Publishing only the public half here and the private half elsewhere cannot
+# satisfy "one build" either. So no unattended run publishes anything. Every
+# release — public and private — is cut by the pipeline repo's release script
+# on a trusted machine, from a single build (RELEASE-RUNBOOK §0.1). This
+# workflow's job is to say when one is DUE and to keep main honest.
+#
+# What did NOT change for consumers: release-channels.yml still fans every
+# release out to release assets, jsDelivr, Hugging Face and Zenodo on the
+# `release: published` event, which a hand-cut release fires. What changed is
+# the cadence: releases now appear when a maintainer cuts one (monthly target),
+# not automatically on the 12th.
 #
 # While vehiclesdb/vehiclesdb-pipeline is PRIVATE, checking it out needs one secret:
 #   PIPELINE_REPO_TOKEN — a fine-grained PAT that can READ vehiclesdb/vehiclesdb-pipeline
@@ -14,8 +39,11 @@ name: Build & publish data
 #   * weekly VALIDATE-ONLY run (Mondays 04:23 UTC) — catches upstream drift
 #     (license pins, URL rotations, format changes) within days, publishes
 #     nothing;
-#   * monthly PUBLISH run (12th, 04:23 UTC) — after the month's uploads land
-#     upstream (KOTSA ~2nd, KBA ~5th, JPJ ~10th).
+#   * monthly RELEASE-DUE run (12th, 04:23 UTC) — after the month's uploads
+#     land upstream (KOTSA ~2nd, KBA ~5th, JPJ ~10th). Validates exactly like
+#     the weekly run and, when GREEN, opens/updates one `release-due` issue
+#     with the per-kind counts this build would ship vs the committed catalog.
+#     It still publishes nothing.
 #   Cron minutes/hours are deliberately off-round: GitHub delays on-the-hour
 #   crons under load, and upstreams appreciate the jitter.
 #
@@ -27,13 +55,10 @@ name: Build & publish data
 on:
   schedule:
     - cron: "23 4 * * 1"   # weekly validate-only
-    - cron: "23 4 12 * *"  # monthly publish
+    - cron: "23 4 12 * *"  # monthly release-due canary (validate-only)
+  # Validate-only on demand; also refreshes the release-due issue when green.
+  # There is deliberately no `publish` input any more (see the header).
   workflow_dispatch:
-    inputs:
-      publish:
-        description: "Publish this build (sync + release)"
-        type: boolean
-        default: false
   pull_request:
     paths:
       - "overrides/**"
@@ -61,20 +86,16 @@ concurrency:
   # share refs/heads/main — while letting PR checks run. That is the original
   # intent; it was only accidentally coupled to PR traffic.
   group: data-build-${{ github.ref }}
-  cancel-in-progress: false # never kill a publish mid-release
+  cancel-in-progress: false # never kill a build mid-run
 
 permissions:
-  contents: write # push the release commit + tag
-  issues: write   # open pipeline-failure issues
+  contents: read # nothing is pushed, tagged or released from here
+  issues: write  # pipeline-failure and release-due issues
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90 # FI (190MB) + UA (36MB) + full parses fit comfortably
-    outputs:
-      # Consumed by the `channels` job below. Empty on a validate-only run,
-      # which is how that job knows to skip.
-      released_tag: ${{ steps.release.outputs.released_tag }}
     steps:
       - name: Checkout data repo (this repo)
         uses: actions/checkout@v4
@@ -187,32 +208,19 @@ jobs:
           VDB_DATA_REPO: ${{ github.workspace }}/data-repo
         run: ruby pipeline/tools/lint_claims.rb
 
-      - name: Build (validate always; sync only when publishing)
+      # Validate only, always: no --publish, so nothing is synced into this
+      # checkout, let alone committed. A release is cut by the trusted script.
+      - name: Build and validate
         working-directory: pipeline-repo
         env:
           VDB_DATA_REPO: ${{ github.workspace }}/data-repo
-          # The monthly cron (day 12) and dispatch-with-publish sync + release;
-          # weekly cron and PRs validate only.
-          PUBLISH: ${{ (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish) }}
-        run: |
-          if [ "$PUBLISH" = "true" ]; then
-            ruby pipeline/run.rb --publish
-          else
-            ruby pipeline/run.rb
-          fi
+        run: ruby pipeline/run.rb
 
-      # The condition below must stay in step with the PUBLISH expression on the
-      # build step. It said `github.event_name == 'pull_request'`, which is much
-      # narrower than this step's own name: a failing SCHEDULED build — the one
-      # case where you most need build/out to see which record tripped a gate —
-      # uploaded nothing at all. Main was red for eleven days and the only way
-      # to inspect a build was to open a PR to provoke one.
-      - name: Upload build artifacts for inspection (non-publish runs)
-        if: >-
-          always() && !(
-            (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) ||
-            (github.event_name == 'workflow_dispatch' && inputs.publish)
-          )
+      # Every run uploads build/out — there is no publish run any more to
+      # exclude. (History: this condition once excluded the scheduled runs too,
+      # and a red main went eleven days with nothing to inspect.)
+      - name: Upload build artifacts for inspection
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: vehiclesdb-build
@@ -223,96 +231,45 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
-      - name: Commit, tag and release (publish runs)
-        id: release
-        if: (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) || (github.event_name == 'workflow_dispatch' && inputs.publish)
-        working-directory: data-repo
+      # ── RELEASE DUE. On the monthly cron (or a manual dispatch) a GREEN build
+      # means "a release can be cut now". Say so in ONE issue, updated in place,
+      # with what the build would ship per kind against the committed catalog.
+      # Opening an issue is the whole action: the release itself is cut by the
+      # pipeline repo's release script on a trusted machine (RELEASE-RUNBOOK
+      # §0.1), which also produces the private feed from the same build.
+      - name: Open/update release-due issue (green monthly/dispatch runs)
+        if: >-
+          success() && (
+            (github.event_name == 'schedule' && startsWith(github.event.schedule, '23 4 12')) ||
+            github.event_name == 'workflow_dispatch'
+          )
         env:
           GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
-          VERSION=$(cat VERSION)
-          git config user.name "vehiclesdb-pipeline"
-          git config user.email "pipeline@vehiclesdb.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No data changes this cycle — skipping release."
-            exit 0
-          fi
-          # The pipeline already derived a version whose tag is FREE (it reads
-          # this clone's tags), so tag/release collisions mean a real bug —
-          # no `|| true` blindfolds here; fail loud instead of half-releasing.
-          git commit -m "Release ${VERSION}"
-          git tag "v${VERSION}"
-          git push && git push --tags
-          MODELS=$(ruby -rjson -e 'puts JSON.parse(File.read("manifest.json"))["kinds"].sum { |_, v| v["models"] }')
-          PARQUET=""
-          [ -f dist/vehicles.parquet ] && PARQUET="dist/vehicles.parquet"
-          gh release create "v${VERSION}" --title "VehiclesDB ${VERSION}" \
-            --notes "Automated data release: ${MODELS} models. Sources, licenses and provenance: manifest.json + ATTRIBUTION.md; changes: CHANGELOG.md." \
-            dist/vehicles.json dist/vehicles.csv dist/vehicles.min.json dist/catalog.sqlite ${PARQUET} manifest.json ATTRIBUTION.md
-          # Hand the tag to the `channels` job. Only set when a release really
-          # happened — the no-data-changes path above exits 0 without one.
-          echo "released_tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+          table=$(ruby -rjson -e '
+            built = JSON.parse(File.read("pipeline-repo/build/out/manifest.json"))
+            live  = JSON.parse(File.read("data-repo/manifest.json"))
+            kinds = (built["kinds"].keys | live["kinds"].keys).sort
+            puts "| kind | committed (#{live["version"]}) | this build | delta |", "|---|---:|---:|---:|"
+            kinds.each do |k|
+              a = live.dig("kinds", k, "models").to_i; b = built.dig("kinds", k, "models").to_i
+              puts "| #{k} | #{a} | #{b} | #{format("%+d", b - a)} |"
+            end')
+          body="The monthly build is GREEN: ${RUN_URL}
 
-      # ── The PRIVATE plus-<VERSION> release. It MUST be cut here, in the job
-      # that ran the build: `build/out-private` exists only on this runner and
-      # is wiped by the next build. It cannot be reconstructed from a tag —
-      # a rebuild is not byte-identical (~37-record variance from cache state
-      # alone), and a mismatched catalog-plus/dist pair is exactly the
-      # incoherence the DATA-CONTRACT version-lock exists to prevent.
-      #
-      # Skips cleanly (loudly) without a write-scoped token, so the release
-      # itself is never blocked on a missing secret. PIPELINE_REPO_TOKEN is
-      # Contents:READ and cannot create a release; this needs its own
-      # Contents:WRITE PAT on vehiclesdb/vehiclesdb-pipeline.
-      - name: Cut the private plus-<VERSION> release
-        if: success() && steps.release.outputs.released_tag != ''
-        env:
-          GH_TOKEN: ${{ secrets.PIPELINE_RELEASE_TOKEN }}
-          VERSION: ${{ steps.release.outputs.released_tag }}
-        run: |
-          set -euo pipefail
-          V="${VERSION#v}"
-          if [ -z "${GH_TOKEN:-}" ]; then
-            # FAIL LOUDLY (2026-10-03). This used to warn and exit 0, so every CI
-            # publish since 2026-08 went GREEN while the paid feed stayed stranded
-            # (plus-2026.08.1 was still the latest on 2026-10-02). The public
-            # release above has already been created and tagged; failing here
-            # does not undo it, and the `channels` job below runs on `always()`
-            # so the public fan-out (HF / jsDelivr / Zenodo verify) is unaffected.
-            # What it changes: the run is RED, which is the honest state until a
-            # human cuts plus-${V} by hand from the same session (RUNBOOK §5.5) or
-            # the owner mints the token.
-            echo "::error::PIPELINE_RELEASE_TOKEN not set — plus-${V} NOT cut. The public release v${V} IS published; the private paid feed is now stranded on the previous plus-* until it is cut by hand (RELEASE-RUNBOOK.md §5.5). Owner action: mint a fine-grained PAT with Contents:Write on vehiclesdb/vehiclesdb-pipeline as secret PIPELINE_RELEASE_TOKEN."
-            exit 1
-          fi
-          OUT=pipeline-repo/build/out-private
-          [ -d "$OUT" ] || { echo "::error::$OUT missing — the build did not emit the private layer"; exit 1; }
-          PLUS=$(ruby -rjson -e 'puts JSON.parse(File.read(ARGV[0]))["version"]' "$OUT/MANIFEST-PLUS.json")
-          [ "$PLUS" = "$V" ] || { echo "::error::version-lock: MANIFEST-PLUS=$PLUS but release=$V"; exit 1; }
-          [ -n "$(ls -A "$OUT/catalog-plus")" ] || { echo "::error::catalog-plus is empty"; exit 1; }
-          [ -f "$OUT/registrations-${V}.json" ] || { echo "::error::missing registrations-${V}.json"; exit 1; }
-          tar czf "/tmp/catalog-plus-${V}.tar.gz" -C pipeline-repo/build out-private
-          gh release create "plus-${V}" -R vehiclesdb/vehiclesdb-pipeline \
-            --title "catalog-plus ${V} (private — vehiclesdb-web feed)" \
-            --notes "Private enriched layer for public release v${V}. Version-locked: MANIFEST-PLUS.json version == public VERSION == ${V}. Cut from the same build that produced v${V}. Ingest: bin/data-update ${V}" \
-            "/tmp/catalog-plus-${V}.tar.gz"
-          # Round-trip the PUBLISHED artifact, not the local copy.
-          T=$(mktemp -d)
-          gh release download "plus-${V}" -R vehiclesdb/vehiclesdb-pipeline -D "$T" --clobber
-          tar xzf "$T"/*.tar.gz -C "$T"
-          RT=$(ruby -rjson -e 'puts JSON.parse(File.read(ARGV[0]))["version"]' "$T/out-private/MANIFEST-PLUS.json")
-          [ "$RT" = "$V" ] || { echo "::error::round-trip says $RT, expected $V"; exit 1; }
-          echo "plus-${V} published and verified"
+          ${table}
 
-      # The HuggingFace mirror and the jsDelivr purge USED TO LIVE HERE, gated
-      # on this workflow's own event. That made them invisible to any release
-      # not cut by this workflow — and v2026.08.0 and v2026.08.1 were both cut
-      # by hand, so neither ran, and v2026.08.1 also shipped with zero release
-      # assets. They now live in release-channels.yml, keyed to the RELEASE
-      # rather than to who produced it, and are invoked by the `channels` job
-      # below. One implementation, two entry points, no drift.
+          Next step: cut the release with the pipeline repo's release script (a trusted run produces the open dataset and the private feed from one build — RELEASE-RUNBOOK §0.1). Close this issue once the release is out. This workflow publishes nothing by design."
+          gh label create release-due --repo "${{ github.repository }}" --color 0e8a16 \
+            --description "A green monthly build: a release can be cut (opened/updated by monthly-build.yml)" 2>/dev/null || true
+          existing=$(gh issue list --repo "${{ github.repository }}" --label release-due --state open --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "${{ github.repository }}" --body "$body"
+          else
+            gh issue create --repo "${{ github.repository }}" --title "Release due" --body "$body" --label release-due
+          fi
 
       # A failed scheduled build must page a human. One issue, updated — never
       # a new issue per failure night (the OpenASN pattern, verbatim).
@@ -337,22 +294,7 @@ jobs:
             gh issue create --repo ${{ github.repository }} --title "$title" --body "$body" --label pipeline-failure
           fi
 
-  # ── The release channel fan-out. Calling the reusable workflow rather than
-  # duplicating its steps means the CI path and the hand-cut path run the SAME
-  # code. It cannot be reached by `on: release` from here: a release created
-  # with the default GITHUB_TOKEN does not fire `release` events (GitHub's
-  # workflow-loop prevention), which is precisely why the mirror silently
-  # stopped covering releases this workflow did not create.
-  #
-  # `released_tag` is empty unless a release actually happened, so validate-only
-  # runs and no-data-change runs skip this entirely.
-  channels:
-    needs: build
-    # always(): the build job can now end RED after a successful public release
-    # (the plus step fails loudly without its token). The fan-out keys on
-    # released_tag, which is only set once the public release exists.
-    if: always() && needs.build.outputs.released_tag != ''
-    uses: ./.github/workflows/release-channels.yml
-    with:
-      tag: ${{ needs.build.outputs.released_tag }}
-    secrets: inherit
+# The release channel fan-out is NOT invoked from here any more: nothing here
+# creates a release. release-channels.yml fires on `release: published`, which
+# the trusted release script's `gh release create` triggers (a release made with
+# a personal token fires the event; only the default GITHUB_TOKEN suppresses it).
