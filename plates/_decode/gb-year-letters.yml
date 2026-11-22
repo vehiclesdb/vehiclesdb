@@ -1,0 +1,154 @@
+# plates/_decode/gb-year-letters.yml — the British year letters, 1963 to 2001.
+#
+# THE SOURCE FINDING: DVLA published a one-page leaflet, "Registration suffix
+# letters were first introduced in 1963" (PDF title; author "DSD"; created
+# 2007-01-03), that tabulates every year letter of both pre-2001 systems month
+# by month: suffix A to Y (ABC 123A) and prefix A to Y (A123 ABC). It is an
+# authority publication, so PRIMARY under PRD-PLATES § 4, like INF104 for the
+# current format. DVLA has since removed it from its own site; it survives in
+# two Internet Archive captures of DVLA's server whose text is identical (diffed
+# 2026-11-22, and six rows checked by hand against both: suffix A, E, K, S, T, Y
+# and prefix A, E, K, S, T, Y). A live DVLA page (dvla-help) states the two
+# boundaries and the letters never used. This table REPLACES the statement in
+# gb.yml that the prefix start (August 1983) and the suffix start (1963) were
+# folklore: DVLA itself states both.
+#
+# THE RULE:
+#   suffix system (the year letter LAST, ABC 123A): Feb 1963 to Jul 1983.
+#     Until the end of 1966 the letter changed every 1 January (A = Feb to Dec
+#     1963, B = 1964, C = 1965, D = 1966). E ran January to July 1967 (7
+#     months); from F on, the letter changes on 1 August.
+#   prefix system (the year letter FIRST, A123 ABC): Aug 1983 to Aug 2001.
+#     The letter changed on 1 August through R (Aug 1997 to Jul 1998); S ran
+#     Aug 1998 to Feb 1999; from T (Mar 1999) the change is twice a year, on
+#     1 March and 1 September, which is the rhythm the 2001 age identifier
+#     inherited.
+#   Letters never used as a year letter: I, O, Q, U, Z, in both systems.
+#
+# LIMITS, recorded and not smoothed over:
+#   * MONTH precision only. The leaflet gives months, not days. The changeover
+#     days come from other statements: 1 August for 1967 onward (national
+#     archive catalogue entries) and for 1986 (Hansard); 1 March and
+#     1 September from 1999 (the leaflet's own header sentence, which is
+#     garbled in the original but agrees with its table). No document found
+#     gives the exact day of the first 1 August 1983 change or of the first
+#     1 March 1999 change.
+#   * Suffix A starts in February 1963 NATIONALLY. The roll-out was staggered:
+#     Middlesex was first, most councils joined in 1964 with a B suffix, Kent
+#     was allocated September 1964 and Gloucestershire moved on 1 February
+#     1964 (National Archives catalogue entries written by the record offices).
+#     So a suffix A or B plate can come from a later local start than the
+#     table's month; the table is the national scheme, not every office.
+#   * This is a year-of-ISSUE letter for a mark, not a build year: the same
+#     one-sided rule as the age identifier (gb-age-identifiers.yml) applies.
+#   * The first paragraph of the leaflet is garbled ("Until March 1999 when the
+#     age identifier changed twice a year"); the table itself is unambiguous.
+#   * SMMT pages say the twice-a-year change began "in September 1998" with an
+#     "S registration"; the leaflet (DVLA, the issuer) says S began in August
+#     1998 and the twice-a-year rhythm began with T in March 1999. The leaflet
+#     wins; SMMT is not cited for any date.
+#
+# Referenced by: gb-prefix-1984 (plates/gb.yml) via year_encoding.
+jurisdiction: gb
+topic: year-letters
+authority:
+  name: Driver and Vehicle Licensing Agency (DVLA)
+  url: "https://dvlaregistrations.dvla.gov.uk/help/search.html?id=1&search_text=prefix"
+licence: "Crown copyright, Open Government Licence v3.0 for DVLA and Hansard material; The National Archives catalogue descriptions are by the holding record offices"
+period: { start: 1963, end: 2001 }
+period_evidence: agency-stated-date
+period_note: >-
+  Suffix system February 1963 to July 1983, prefix system August 1983 to
+  August 2001, both stated by DVLA (dvla-leaflet, dvla-help). Month precision.
+
+sources:
+  - id: dvla-leaflet
+    tier: authority
+    url: "http://web.archive.org/web/20121003014909id_/https://www.dvla.gov.uk/dvla/forms/~/media/pdf/leaflets/suffix_prefix_marks.ashx"
+    original: "https://www.dvla.gov.uk/dvla/forms/~/media/pdf/leaflets/suffix_prefix_marks.ashx"
+    second_copy: "http://web.archive.org/web/20090506154739id_/http://www.dvla.gov.uk/media/pdf/leaflets/suffix_and_prefix.pdf"
+    accessed: "2026-11-22"
+    quote: "Registration suffix letters were first introduced in 1963. They ran from January to December. Since 1967 they have run from 1 August - 31 July. SUFFIX LETTERS A Feb 1963 - Dec 1963 ... Y Aug 1982 - July 1983. PREFIX LETTERS A Aug 1983 - July 1984 ... Y Mar 2001 - Aug 2001."
+    note: "Archived copies of DVLA's own server (Wayback captures 2012-10-03 and 2009-05-06, identical text). No longer on the live DVLA or gov.uk site."
+  - id: dvla-help
+    tier: authority
+    url: "https://dvlaregistrations.dvla.gov.uk/help/search.html?id=1&search_text=prefix"
+    accessed: "2026-11-22"
+    quote: "Prefix: These were issued to new vehicles between August 1983 and August 2001. ... Suffix: These were issued to new vehicles between February 1963 and July 1983. ... Prefix Style registrations cannot contain an 'I','Z' or 'Q', and cannot contain a 'O' or 'U' as the first letter. ... Suffix Style registrations cannot contain an 'I','Z' or 'Q', and cannot contain a 'O' or 'U' as the last letter."
+  - id: hansard-2000
+    tier: parliament
+    url: "https://api.parliament.uk/historic-hansard/written_answers/2000/nov/22/crushed-cars"
+    accessed: "2026-11-22"
+    quote: "DVLA-Wheelclamping scheme Breakdown of vehicles crushed-age identifier (HC Deb 22 November 2000 vol 357 cc177-8W): Suffix M 1973-74 ... Y 1982-83; Prefix A 1983-84 ... R 1997-98."
+    note: "DVLA data in a ministerial answer; year spans without months; covers only letters for which crushed cars were listed. Agrees with the leaflet everywhere and contradicts nothing."
+  - id: hansard-1986
+    tier: parliament
+    url: "https://api.parliament.uk/historic-hansard/written-answers/1986/may/12/vehicle-registration-prefix"
+    accessed: "2026-11-22"
+    quote: "We have received 605 letters, mainly from motor dealers, opposing the move to October in 1987. (HC Deb 12 May 1986 vol 97 c311W, on the move of the prefix letter change 'from 1 August to 1 October')"
+    note: "Confirms the prefix letter changed on 1 August in 1986. The proposed move to October did not happen (the leaflet has E from August 1987)."
+  - id: nat-archives-kent
+    tier: archive
+    url: "https://discovery.nationalarchives.gov.uk/details/r/dffb4e67-3c2a-4567-93a5-413290582c2e"
+    accessed: "2026-11-22"
+    quote: "The suffix letter series commenced in 1963, Middlesex being the first county to adopt the new system. ... in August 1967, at the request of the motor trade, the date on which the letter changes annually was altered from 1 January to 1 August. In 1967, therefore, the suffix letters E and F were both used. ... I, O and Q were excluded from the series proposed for use as suffix letters."
+    note: "Kent History and Library Centre (ref CC/C-F/L/1). Also: Kent was allocated September 1964 as its commencement date."
+  - id: nat-archives-gloucestershire
+    tier: archive
+    url: "https://discovery.nationalarchives.gov.uk/details/r/24533781-1dfb-4f15-acf5-cab227e571af"
+    accessed: "2026-11-22"
+    quote: "Most councils were brought into the scheme in 1964, identified by a B suffix. Until 1967, the year suffix letter changed on 1 January, but thereafter they changed on 1 August each year. Suffix E thus covered only 7 months (Jan to July 1967)."
+    note: "Gloucestershire Archives (ref K/264). Gloucestershire moved from reversed series to the suffix system on 1 February 1964 (AAD 1B)."
+
+rule:
+  suffix_changeover: "1 January until the end of 1966; 1 August from F (1967)"
+  prefix_changeover: "1 August through R (1997); S ran Aug 1998 to Feb 1999; 1 March and 1 September from T (Mar 1999)"
+  precision: month
+  letters_never_used: ["I", "O", "Q", "U", "Z"]
+  systems:
+    suffix: { shape: "ABC 123A", from: "1963-02", to: "1983-07" }
+    prefix: { shape: "A123 ABC", from: "1983-08", to: "2001-08" }
+
+letters:
+  - { system: suffix, letter: "A", from: "1963-02", to: "1963-12", sources: [dvla-leaflet, dvla-help, nat-archives-kent] }
+  - { system: suffix, letter: "B", from: "1964-01", to: "1964-12", sources: [dvla-leaflet, nat-archives-gloucestershire] }
+  - { system: suffix, letter: "C", from: "1965-01", to: "1965-12", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "D", from: "1966-01", to: "1966-12", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "E", from: "1967-01", to: "1967-07", sources: [dvla-leaflet, nat-archives-gloucestershire, nat-archives-kent] }
+  - { system: suffix, letter: "F", from: "1967-08", to: "1968-07", sources: [dvla-leaflet, nat-archives-gloucestershire, nat-archives-kent] }
+  - { system: suffix, letter: "G", from: "1968-08", to: "1969-07", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "H", from: "1969-08", to: "1970-07", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "J", from: "1970-08", to: "1971-07", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "K", from: "1971-08", to: "1972-07", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "L", from: "1972-08", to: "1973-07", sources: [dvla-leaflet] }
+  - { system: suffix, letter: "M", from: "1973-08", to: "1974-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "N", from: "1974-08", to: "1975-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "P", from: "1975-08", to: "1976-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "R", from: "1976-08", to: "1977-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "S", from: "1977-08", to: "1978-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "T", from: "1978-08", to: "1979-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "V", from: "1979-08", to: "1980-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "W", from: "1980-08", to: "1981-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "X", from: "1981-08", to: "1982-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: suffix, letter: "Y", from: "1982-08", to: "1983-07", sources: [dvla-leaflet, dvla-help, hansard-2000] }
+  - { system: prefix, letter: "A", from: "1983-08", to: "1984-07", sources: [dvla-leaflet, dvla-help, hansard-2000] }
+  - { system: prefix, letter: "B", from: "1984-08", to: "1985-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "C", from: "1985-08", to: "1986-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "D", from: "1986-08", to: "1987-07", sources: [dvla-leaflet, hansard-2000, hansard-1986] }
+  - { system: prefix, letter: "E", from: "1987-08", to: "1988-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "F", from: "1988-08", to: "1989-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "G", from: "1989-08", to: "1990-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "H", from: "1990-08", to: "1991-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "J", from: "1991-08", to: "1992-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "K", from: "1992-08", to: "1993-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "L", from: "1993-08", to: "1994-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "M", from: "1994-08", to: "1995-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "N", from: "1995-08", to: "1996-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "P", from: "1996-08", to: "1997-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "R", from: "1997-08", to: "1998-07", sources: [dvla-leaflet, hansard-2000] }
+  - { system: prefix, letter: "S", from: "1998-08", to: "1999-02", sources: [dvla-leaflet] }
+  - { system: prefix, letter: "T", from: "1999-03", to: "1999-08", sources: [dvla-leaflet] }
+  - { system: prefix, letter: "V", from: "1999-09", to: "2000-02", sources: [dvla-leaflet] }
+  - { system: prefix, letter: "W", from: "2000-03", to: "2000-08", sources: [dvla-leaflet] }
+  - { system: prefix, letter: "X", from: "2000-09", to: "2001-02", sources: [dvla-leaflet] }
+  - { system: prefix, letter: "Y", from: "2001-03", to: "2001-08", sources: [dvla-leaflet, dvla-help] }

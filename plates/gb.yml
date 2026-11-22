@@ -53,22 +53,28 @@
 #    Part 2 (optional specification for 1.1.1973-31.8.2001 vehicles, BS AU
 #    145a). `rear_differs: true` therefore appears on every road series here.
 #
-# 4. PERIOD CLAIMS ARE INSTRUMENT-DATED, AND THE ONE FOLKLORE YEAR IS NAMED.
-#    The current format's start is PRIMARY twice over: INF104 § 03 — "The
-#    current vehicle registration format was introduced on 1 September 2001" —
-#    and S.I. 2001/561 reg. 1(1)(b), which brings the Regulations into force
-#    "for all other purposes, on 1st September 2001". The PREFIX system's start
-#    is not. It is recorded here as 1984, the year of The Road Vehicles
-#    (Registration and Licensing) (Amendment) Regulations 1984 (S.I. 1984/814),
-#    which S.I. 2001/561's own marginal citation M2 identifies as one of the
-#    "relevant amendments" to regulations 17 to 22 of the 1971 Regulations (the
-#    revoked format-and-display provisions) — an instrument date, carrying
-#    `period_evidence: instrument-in-force`, and stated in terms in that
-#    series' notes. S.I. 1984/814 is available on legislation.gov.uk ONLY as a
-#    scanned PDF with no text layer; it was fetched and could not be read. The
-#    universally repeated "August 1983" A-prefix start is NOT asserted here:
-#    no primary for it was secured, and it is logged as folklore in the
-#    jurisdiction dossier.
+# 4. PERIOD CLAIMS ARE INSTRUMENT-DATED OR AUTHORITY-DATED, AND THE LIMITS ARE
+#    NAMED. The current format's start is PRIMARY twice over: INF104 § 03 —
+#    "The current vehicle registration format was introduced on 1 September
+#    2001" — and S.I. 2001/561 reg. 1(1)(b), which brings the Regulations into
+#    force "for all other purposes, on 1st September 2001". The PREFIX system's
+#    start (August 1983) and the SUFFIX system's start (February 1963) are
+#    stated by DVLA itself: its personalised-registrations help page ("Prefix:
+#    ... issued to new vehicles between August 1983 and August 2001"; "Suffix:
+#    ... between February 1963 and July 1983") and its leaflet "Registration
+#    suffix letters were first introduced in 1963", which tabulates every year
+#    letter A to Y of both systems by month (plates/_decode/gb-year-letters.yml,
+#    sources and quotes there). An earlier pass of this file recorded the
+#    prefix start as 1984, from S.I. 1984/814 (an instrument in the right chain
+#    whose text could not be read: a scan with no text layer), and called both
+#    the August 1983 and the 1963 starts folklore because no primary had been
+#    secured. DVLA's own table is that primary, so the start is now 1983 and
+#    the series id `gb-prefix-1984` is kept only because ids are stable. LIMITS
+#    that stay: the leaflet gives MONTHS, not days; the 1963 start is national,
+#    and some local offices began the suffix system later (National Archives
+#    catalogue entries: Kent September 1964, most councils with B in 1964); the
+#    leaflet survives only as archived copies of DVLA's server (Internet
+#    Archive, 2009 and 2012 captures), the live site states just the boundaries.
 #
 # 5. NORTHERN IRELAND LIVES INSIDE THIS FILE, NOT BESIDE IT. ISO 3166-1 gives
 #    the United Kingdom one code; Northern Ireland has no ISO 3166-1 code of
@@ -461,13 +467,14 @@ legacy_layouts_not_modelled: >-
   issued before 1963 and that survive in enormous numbers on personalised and
   historic vehicles. They are DELIBERATELY not authored as series in this L1
   pass: PRD-PLATES scopes L1 at the current standard series plus ONE series
-  back, and no primary dating ANY of them was secured (the suffix system's
-  1963 start and the prefix system's 1983 start are both folklore in this
-  pass). Their SHAPES are nevertheless fully sourced in `common.layouts` above
-  and are carried in the union regex of gb-historic-blacksilver, so a parse
-  API can already recognise them as British without this file inventing a
-  period for them. Authoring them is L4 work (PRD-PLATES § 7, "Historical
-  depth (the pre-2000 world)").
+  back. The suffix system's DATES are now sourced (February 1963 to July 1983,
+  year letters A to Y by month in plates/_decode/gb-year-letters.yml, from
+  DVLA's leaflet and help page); what is still missing for authoring it as a
+  series is its format grammar and plate design, not its dates. Their SHAPES
+  are nevertheless fully sourced in `common.layouts` above and are carried in
+  the union regex of gb-historic-blacksilver, so a parse API can already
+  recognise them as British. Authoring them is L4 work (PRD-PLATES § 7,
+  "Historical depth (the pre-2001 world)").
 
 series:
 
@@ -807,8 +814,8 @@ series:
   - id: gb-prefix-1984
     class: standard
     categories: [car, van, truck, bus, motorcycle]
-    period: { start: 1984, end: 2001 }
-    period_evidence: instrument-in-force
+    period: { start: 1983, end: 2001 }
+    period_evidence: agency-stated-date
     matching: strict
     format:
       pattern: "L999 LLL"
@@ -836,6 +843,7 @@ series:
       font: { name: "prescribed font, or a style substantially similar", mandatory: false, note: "reg 15(2): plates outside reg 15(1) may use a style 'substantially similar to the prescribed font'; reg 15(4) still forbids italics, non-vertical fonts, multiple or broken strokes and lookalike formations. A REPLACEMENT plate fitted from 1.9.2001 must use the prescribed font (reg 15(1)(b))." }
       band: { side: left, optional: true, max_width_mm: 50 }
       rear_differs_history: "the yellow rear plate is the 1.1.1973 boundary the Regulations use throughout (Sch 2 Parts 2 and 3, reg 18), not a 2001 innovation"
+    year_encoding: "character 1; decode via plates/_decode/gb-year-letters.yml (prefix rows: A = Aug 1983 to Jul 1984 ... Y = Mar 2001 to Aug 2001, month precision)"
     region_encoding: mechanism-only
     region_encoding_mechanism: >-
       The final two of the three trailing letters were the LOCAL OFFICE code
@@ -844,29 +852,26 @@ series:
       current memory tags — so no decode file is authored and the mechanism is
       recorded instead.
     sources:
+      - "http://web.archive.org/web/20121003014909id_/https://www.dvla.gov.uk/dvla/forms/~/media/pdf/leaflets/suffix_prefix_marks.ashx  # DVLA leaflet 'Registration suffix letters were first introduced in 1963' (archived copy of DVLA's server, accessed 2026-11-22): the prefix table, 'A Aug 1983 - July 1984' to 'Y Mar 2001 - Aug 2001'"
+      - "https://dvlaregistrations.dvla.gov.uk/help/search.html?id=1&search_text=prefix  # DVLA, accessed 2026-11-22: 'Prefix: These were issued to new vehicles between August 1983 and August 2001.'"
       - "https://www.legislation.gov.uk/uksi/2001/561/schedule/3  # Sch 3 Table A row 2, verbatim: 'A group consisting of a single letter and not more than 3 numbers followed by a group of 3 letters (for example A123 ABC).' Table B column (2) for the 89 mm metrics"
       - "https://www.legislation.gov.uk/uksi/2001/561/regulation/13  # reg 13(3): diagram 2c unavailable to plates fixed from 1.9.2001"
       - "https://www.legislation.gov.uk/uksi/2001/561/regulation/14  # reg 14(2): 89 mm characters permitted on pre-1.9.2001 vehicles, but not on a replacement plate"
       - "https://www.legislation.gov.uk/uksi/2001/561  # reg 17 marginal citation M2: 'S.I. 1971/450. The Relevant amendments are by S.I. 1972/1865, 1975/1089 and 1984/814' — the instrument trail for the pre-2001 format provisions; Sch 1 revokes S.I. 1984/814 in whole"
       - "https://assets.publishing.service.gov.uk/media/6694e379fc8e12ac3edafc60/inf104-vehicle-registration-numbers-and-number-plates.pdf  # INF104 § 03: the current format 'was introduced on 1 September 2001' — which dates the END of prefix issuance to 31 August 2001"
     notes: >-
-      THE PREFIX SYSTEM — the format Britain replaced on 1 September 2001, and
-      the one series in this file whose START IS NOT PRIMARY-SOURCED. The END is
-      firm: INF104 § 03 dates the current format to 1 September 2001, so prefix
-      issuance stopped on 31 August 2001. The START is recorded as 1984 on
-      INSTRUMENT EVIDENCE ONLY: S.I. 2001/561's own marginal citation M2 names
-      The Road Vehicles (Registration and Licensing) (Amendment) Regulations
-      1984 (S.I. 1984/814) as a relevant amendment to regulations 17 to 22 of
-      the 1971 Regulations — the format-and-display provisions these Regulations
-      revoked — and Schedule 1 revokes it in whole. THE TEXT OF S.I. 1984/814
-      COULD NOT BE READ: legislation.gov.uk carries it only as a scanned PDF
-      with no text layer ("This item of legislation is only available to
-      download and view as PDF"), it was fetched (401 KB) and `pdftotext`
-      extracted four bytes. So 1984 is the year of an instrument in the right
-      chain, not a quoted commencement, and it is flagged for the verifier. The
-      universally repeated "August 1983" A-prefix start is NOT asserted here —
-      it is logged as folklore in the dossier. A verifier who pins 1983 from a
-      primary should move this start and say so in the PR.
+      THE PREFIX SYSTEM — the format Britain replaced on 1 September 2001. The
+      END is firm (INF104 § 03: prefix issuance stopped on 31 August 2001) and
+      the START is August 1983, stated by DVLA in its help page and in its
+      leaflet, which also dates every prefix letter by month (A = Aug 1983 to
+      Jul 1984 ... R = Aug 1997 to Jul 1998, S = Aug 1998 to Feb 1999, then
+      T, V, W, X, Y every six months from March 1999; plates/_decode/
+      gb-year-letters.yml). An earlier pass recorded 1984 on instrument
+      evidence only (S.I. 1984/814, whose text could not be read) and treated
+      August 1983 as folklore; DVLA's own table replaced that, which is why
+      the id still says 1984. Limits: month precision, no exact days; the
+      leaflet is available only as archived copies of DVLA's server. The
+      letters I, O, Q, U and Z were never used as the year letter.
 
   # =========================================================================
   # 'Q' MARKS — Table A row 2 with a literal Q. Age unknown by design.
