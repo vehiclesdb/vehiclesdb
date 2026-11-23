@@ -1,0 +1,32 @@
+name: Wrong data
+description: A record in the dataset is wrong (name, kind, years, countries, a junk model, a bad alias).
+title: "Wrong data: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the correction. Name fixes, junk models and aliases can also be made directly in `overrides/` in a pull request (every line carries a `#` comment saying why, with a source URL for anything non-obvious; `ruby scripts/lint_overrides.rb` checks it). The build outputs (`catalog/`, `dist/`, `manifest.json`, `ATTRIBUTION.md`) are generated, so please don't edit those.
+  - type: input
+    id: record
+    attributes:
+      label: Record id
+      description: The make or model id as it appears in the data, kind-prefixed for models.
+      placeholder: car/alfa-romeo/alfa147
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: What the dataset says now, and what it should say.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: A register, type-approval list or manufacturer page that shows the correct value.
+      placeholder: https://
+    validations:
+      required: true
