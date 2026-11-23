@@ -2,6 +2,46 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.13] - 2026-11-23 — register refresh; two misspelling guards; Israel licence pin re-verified
+
+**16,441 models across 978 makes (16,440 → 16,441; 1 added, 0 renamed, 0 retired).**
+
+Every register was fetched fresh. Each one reads the same window or snapshot as v2026.11.12, except Israel's active register, which is dated by its fetch (2026-11-23). Two registers restated a period they had already published: Malaysia (2025-01…2026-10) and New Zealand (2026-03). Both versions are kept in the snapshot archive.
+
+Ukraine is carried from the last good download, because data.gov.ua refuses the build machine and GitHub's runners. Its licence pin was last verified on 2026-11-17 (CC BY, open). The data it governs was downloaded on 2026-11-11, before that verification, and nothing was refetched (DECISIONS.md "Licence pins for carried data").
+
+| kind | 2026.11.12 | 2026.11.13 | Δ |
+|---|---:|---:|---:|
+| car | 6,042 | 6,042 | 0 |
+| motorcycle | 6,397 | 6,398 | +1 |
+| moped | 1,529 | 1,529 | 0 |
+| van | 811 | 811 | 0 |
+| truck | 1,223 | 1,223 | 0 |
+| bus | 438 | 438 | 0 |
+
+### Per country
+
+- **Netherlands +4 (13,533 → 13,537):**
+  - new `motorcycle/matchless/super-clubman` (also New Zealand);
+  - newly registered there: `car/byd/sealion-5`, `car/toyota/grand-highlander` and `motorcycle/kove/800x-gt`.
+- **New Zealand +1 (6,602 → 6,603):** `motorcycle/matchless/super-clubman`, from the restated 2026-03 snapshot.
+- **Malaysia −1 (556 → 555):** JPJ restated the same 2025-01…2026-10 window, and it no longer counts `car/chery/v23`. The record stays published through Thailand. It is not carried as `last_observed`, because the window did not move: that period's own register no longer counts the model.
+- **Israel ±0 (1,897):**
+  - newly counted: `car/toyota/bz4x-touring`, `motorcycle/aprilia/sxv550`, `motorcycle/honda/125` and `motorcycle/honda/250`;
+  - no longer counted: `car/chevrolet/bolt-euv`, `motorcycle/bmw/r65`, `motorcycle/harley-davidson/flhrci` and `motorcycle/kawasaki/klr250`.
+  
+  This is the active-vehicle register moving between snapshots.
+- Every other country is unchanged.
+
+### Other changes
+
+- **Two misspelling guards** (`overrides/models/renames.yml`, vehiclesdb#426). Without them, this build would have minted two ids that are not new nameplates:
+  - RDW's single `MITSUBISHI SPACE WAG` (1999) is a truncation, so it folds onto `car/mitsubishi/space-wagon`;
+  - E-Motocar's make-name-only rows publish nothing.
+- **Israel's licence pin** follows data.gov.il's CKAN licence label, which switched from "Other (Open)" to Hebrew and back. The classification it guards (`other-open`, open) never changed. vehiclesdb#428, vehiclesdb#431.
+- **UK plates:** the year-letter table (suffix 1963–83, prefix 1983–2001) now comes from DVLA's own leaflet. vehiclesdb#427.
+- New issue forms and contact links. vehiclesdb#429.
+
 ## [2026.11.12] - 2026-11-17 — country of origin for 164 more makes; models that leave a rolling register window stay published
 
 **16,440 models across 978 makes (16,438 → 16,440; 3 added, 1 renamed with an alias, 0 retired).**
