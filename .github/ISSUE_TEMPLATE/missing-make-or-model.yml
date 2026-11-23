@@ -1,0 +1,72 @@
+name: Missing make or model
+description: A make or model that is sold or registered but not in VehiclesDB.
+title: "Missing: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks: fixes made upstream reach every builder in your country, and every next release.
+
+        Each make and model needs an **official source** that shows it: a register, a type-approval list, or the manufacturer's own page. A new model publishes once it meets the publish rule (two independent official sources, or one official count no typo could produce); until then it is filed in [DEBT.md](https://github.com/vehiclesdb/vehiclesdb/blob/main/DEBT.md) with your evidence.
+
+        Only a missing spelling or alias of a model we already have? You can also edit `overrides/` directly in a pull request (see "Send corrections back" in the README).
+  - type: input
+    id: make
+    attributes:
+      label: Make
+      placeholder: Volkswagen
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: Leave empty if the whole make is missing.
+      placeholder: ID. Buzz
+    validations:
+      required: false
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - car
+        - van
+        - truck
+        - bus
+        - motorcycle
+        - moped
+        - not sure
+    validations:
+      required: true
+  - type: input
+    id: countries
+    attributes:
+      label: Countries
+      description: Where it is sold or registered (country names or ISO codes).
+      placeholder: de, fr, es
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Official source
+      description: A URL to a register, a type-approval list, or the manufacturer's own page that shows this make or model. One per line if you have several.
+      placeholder: https://
+    validations:
+      required: true
+  - type: textarea
+    id: spellings
+    attributes:
+      label: Spellings and aliases (optional)
+      description: Other ways the name is written in registers or by your users, and what each should map to.
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else (optional)
+      description: Added several models locally? List them all here, each with its source.
+    validations:
+      required: false
