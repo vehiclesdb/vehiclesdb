@@ -2753,6 +2753,7 @@ Chevrolet:
   "Ct": "Silverado"  # R1105 IL: il_mot 2255; raw chevrolet/ct -> published truck/chevrolet/silverado; Every CT35843 VIN (2,231 veh, 2024-26, nefach_manoa 0) decodes as Chevrolet Silverado BEV (vPIC: 'CHEVROLET Silverado 2026 Pickup BEV'); 'SILVERADO EV ...' cells already , accessed 2026-11-10) [Astra r1/r2: no per-vehicle identifier recorded; reproducible with a PARTIAL-VIN decode (maker + model-code positions only, no serial): https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/1GC10WEL*?format=json]
   "Savana": "Express"  # R1105 IL: il_mot 136; raw chevrolet/savana -> published truck/chevrolet/express; Cells 'SAVANA CG 21405' / 'SAVANA 21405' (90 veh 1999-2002) + CG21705/G23408: VINs are Chevrolet (WMI 1GC), vPIC 'CHEVROLET Express 2002 2500 (3/4 ton) Cargo Van'. Savana , accessed 2026-11-10) [Astra r1/r2: no per-vehicle identifier recorded; reproducible with a PARTIAL-VIN decode (maker + model-code positions only, no serial): https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/1GCGG25F*?format=json]
   "Silvrado": "Silverado"  # R1105 IL: il_mot 114; raw chevrolet/silvrado -> published truck/chevrolet/silverado; Misspelling: 'SILVRADO EV', 'SILVRADO EV LT/WT8/TB/RST' cells; same series as SILVERADO EV. truck/chevrolet/silverado
+  "Camaro 2 Ss": Camaro  # 2026.11.14 additions review: ar_dnrpa 'CHEVROLET|CAMARO 2 SS' (2026-10 window) + nl_rdw; 2SS is the Camaro's top V8 trim, not a nameplate. Would otherwise mint car/chevrolet/camaro-2-ss; live target car/chevrolet/camaro
 
 Chrysler:
   # ── junk?-rescue: fi_traficom door-count prefix (2026-08-01, per-row replay
@@ -5124,10 +5125,12 @@ Ford:
   "Falcon Gli": "Falcon"  # R1105 NO/FI/UA/NZ: nz_nzta 100; raw ford/falcon-gli -> published car/ford/falcon; GLi is a Falcon grade (trim fold)
   "Laser Ghia": "Laser"  # R1105 NO/FI/UA/NZ: nz_nzta 99; raw ford/laser-ghia -> published car/ford/laser; Ghia is a trim
   "Escort 1.3L": "Escort"  # R1105 NO/FI/UA/NZ: nz_nzta 99; raw ford/escort-1-3l -> published car/ford/escort; 1.3L = engine/trim tail (car kind collapses engine size)
+  "Mustang Hard Top": Mustang  # 2026.11.14 additions review: ar_dnrpa 'FORD|MUSTANG HARD TOP' (2026-10) + no_svv_pkk + nz_nzta; hardtop is a body style of the Mustang. Would otherwise mint car/ford/mustang-hard-top; live target car/ford/mustang
 
 Forthing:
   # ── ar_dnrpa COVERAGE SWEEP 2 (2026-10-02, S4W/COV) — same method as sweep 1 (#327): keys = the string probed at normalizer.rb:385 (replay_country.rb, pipeline#197), values = the published record's own name; corpus DNRPA 2026-08; mints no id, deletes nothing.
   "U-Tour HEV":  U-Tour  # 3 veh/1 rows (ar, ar_dnrpa) -> live forthing/u-tour; raw "U-TOUR HEV"; https://forthing.com.ar/u-tour-hev/ (accessed 2026-10-02) [manufacturer; opened directly]
+  "U-Tour V9": V9  # 2026.11.14 additions review: ar_dnrpa 'FORTHING|U-TOUR V9' (2026-10) + lu_snca 'U-TOUR V9' / 'U-TOUR V9 PHEV'. The V9 is its own MPV, sold beside the U-Tour: forthing.lu lists 'V9 HEV' and 'V9 PHEV' (type_code V9) next to 'U-Tour HEV'/'U-Tour PHEV' (https://forthing.lu/models/v9-hev, accessed 2026-11-24) [manufacturer]. Keyed to the maker's name so the id is car/forthing/v9, not car/forthing/u-tour-v9
 
 Fosti:
   # ── 2026.11.7 residual curation (region agents, research 2026-11-10) ──
@@ -8390,6 +8393,7 @@ MAN:
   "10.224": "L2000"  # R1102: 10.224 = L2000 heaviest variant (same Commercial Motor 1997 source)
   # ── 2026.11.5 completeness folds (research 2026-11-10, curation agents per region) ──
   "N.L.323F": "NL"  # R1105 IL: il_mot 580; raw man/n-l-323f -> published bus/man/nl; 'N.L.323F' / 'NL323F' (VIN WMAA22ZZ.., MAN Germany/Poland 2009-22, 10.5 L): MAN NL 323 F low-floor city bus chassis; the punctuation-less 'NL323F' and published bus/man/n
+  "LE18": Le  # 2026.11.14 additions review: ar_dnrpa 'MAN|LE 18.220', 'MAN|LE 18.280' (2026-10) + fi_traficom + il_mot; 18.220/18.280 = 18 t, 220/280 hp, the weight.power designation of the L2000/LE light-to-medium range (cf. "8.163": "L2000" above). Would otherwise mint truck/man/le18; live target truck/man/le
 
 Maserati:
   # ── italian dossier §4c/4d: completes the Gran Turismo family the MA-2
@@ -12339,6 +12343,7 @@ Renault:
   "Kwid Iconic Outsider 1.0": "Kwid"  # R1105 (k2 gate): ar_dnrpa car 406 (Sep 2026, raw "Kwid Iconic Outsider 1.0"); keyed on the pre-rescue string so the row is CURATED and reaches the attested Kwid (a litre-rescued row never mints — Normalizer litre rescue); grade/engine/gearbox tail of the Kwid
   # ── 2026.11.7 residual curation (region agents, research 2026-11-10) ──
   "Master T 33 L2/H2": "Master"  # R1105 NL: nl_rdw 195; raw renault/master-t-33-l2-h2 -> published van/renault/master; Litre-rescued head 'Master T 33 L2/H2' = Master 3.3t GVW, L2 length, H2 roof (body/weight trims); published van/renault/master
+  "260": null  # 2026.11.14 additions review, TRUCK kind only (rename_kinds.yml): ar_dnrpa 'RENAULT|260' (2026-10) + nl_rdw. A bare power figure that Renault Trucks used on several ranges (Premium 260, Midlum/Manager-era 260 ratings), so it cannot be tied to one nameplate; held out rather than minting truck/renault/260
 
 Rewaco:
   Rewaco: null                            # registry row where the make was written into the model column — not a nameplate (restored from a flow-style entry)
@@ -12963,6 +12968,8 @@ Scania:
   "L Series": "L"  # R1102 truck_renames.yml: 26 veh (au 26) -> truck candidate scania/l-series; raw "SCANIA | L SERIES"
   # ── 2026.11.5 completeness folds (research 2026-11-10, curation agents per region) ──
   "K410C": "K410"  # R1105 IL: il_mot 377; raw scania/k410c -> published bus/scania/k410; 'K410C B4X2NB/NI' (VIN YS2K4X20.., Scania 2023-26, 12.7 L): K 410 chassis, C = coach-type suffix. bus/scania/k410 published (near:prefix match)
+  "114G": "114"  # 2026.11.14 additions review: ar_dnrpa 'SCANIA|114G 340' (2026-10) + fi_traficom + no_svv_pkk; 4-series 114 plus G chassis letter, same fold as "124G": "124". Would otherwise mint truck/scania/114g; live target truck/scania/114
+  "K280": null  # 2026.11.14 additions review, TRUCK kind only (rename_kinds.yml): ar_dnrpa 'SCANIA|K280 B4X2' / 'K280 B4X2 (GAS)' (2026-10) + fi_traficom. K is Scania's bus/coach chassis (published as bus/scania/k280: fi, no, nz); these rows are buses filed under trucks, and no cross-kind move exists, so they are held out rather than minting truck/scania/k280
 
 Scania-Vabis:
   # ── wave-4 heavy-vehicle clean (2026-08-01; Scania+DAF dossier §E-1, the
