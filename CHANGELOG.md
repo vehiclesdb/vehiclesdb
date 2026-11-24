@@ -2,7 +2,47 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
-## [2026.11.13] - 2026-11-23 — register refresh; two misspelling guards; Israel licence pin re-verified
+## [2026.11.14] - 2026-11-24 — Argentina's October registrations; Forthing V9; seven new-id spellings reviewed
+
+**16,442 models across 978 makes (16,441 → 16,442; 1 added, 0 renamed, 0 retired).**
+
+Every register was fetched fresh. Argentina moves to its 2026-10 month (DNRPA initial registrations). Israel's active register is dated by its fetch (2026-11-24). Every other window and snapshot is the same as in v2026.11.13.
+
+Ukraine is carried from the last good download, because data.gov.ua refuses the build machine and GitHub's runners. Its licence pin was last verified on 2026-11-17 (CC BY, open). The data it governs was downloaded on 2026-11-11, before that verification, and nothing was refetched (DECISIONS.md "Licence pins for carried data").
+
+| kind | 2026.11.13 | 2026.11.14 | Δ |
+|---|---:|---:|---:|
+| car | 6,042 | 6,043 | +1 |
+| motorcycle | 6,398 | 6,398 | 0 |
+| moped | 1,529 | 1,529 | 0 |
+| van | 811 | 811 | 0 |
+| truck | 1,223 | 1,223 | 0 |
+| bus | 438 | 438 | 0 |
+
+### Per country
+
+- **Argentina +60 (348 → 408):** the October month counts 59 existing models that September did not, including `car/chevrolet/camaro` (see below), and the new `car/forthing/v9`. Under the 12-month last-evidence carry (2026.11.12), 54 models last counted in 2026-09 stay listed in Argentina, marked `last_observed`: car 39, truck 14, van 1.
+- **Netherlands +3 (13,537 → 13,540):**
+  - newly registered there: `car/lotus/emira-turbo-se`, `car/skoda/peaq-90x`, `car/toyota/supra-turbo` and `motorcycle/yamaha/it`;
+  - no longer counted there: `car/nilsson/s80`, which stays published through Finland and Norway.
+- **Luxembourg +1:** `car/forthing/v9`.
+- Every other country is unchanged.
+
+### New-id review (vehiclesdb#433)
+
+Argentina's October file and the other registers would have minted seven ids. Only one is a new nameplate:
+
+- **`car/forthing/v9`** is the Forthing V9, an MPV sold beside the U-Tour. Registers file it as "U-TOUR V9", and it takes the maker's own name.
+- **Four spellings fold onto live records:**
+  - "Camaro 2 SS" (a trim) onto `car/chevrolet/camaro`;
+  - "Mustang Hard Top" (a body style) onto `car/ford/mustang`;
+  - MAN "LE 18.220/18.280" (weight.power designations) onto `truck/man/le`;
+  - Scania "114G" (G chassis letter) onto `truck/scania/114`.
+- **Two truck-filed strings are held out:**
+  - Scania "K280" is the K bus chassis, published as `bus/scania/k280`;
+  - Renault "260" is a bare power rating that cannot be tied to one model range.
+
+
 
 **16,441 models across 978 makes (16,440 → 16,441; 1 added, 0 renamed, 0 retired).**
 

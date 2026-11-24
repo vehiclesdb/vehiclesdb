@@ -15,23 +15,23 @@ All numbers below are generated from this release's `manifest.json` and
 `catalog/` by `scripts/gen_readme_stats.rb`. Nobody types them by hand.
 
 <!-- BEGIN GENERATED: stats (scripts/gen_readme_stats.rb) -->
-**Dataset `2026.11.13`** (built 2026-11-23) — **16,441 models · 978 makes · 6 kinds · 18 countries**
+**Dataset `2026.11.14`** (built 2026-11-24) — **16,442 models · 978 makes · 6 kinds · 18 countries**
 
 | kind | models | makes |
 |---|---:|---:|
-| car | 6,042 | 321 |
+| car | 6,043 | 321 |
 | motorcycle | 6,398 | 290 |
 | moped | 1,529 | 330 |
 | van | 811 | 133 |
 | truck | 1,223 | 111 |
 | bus | 438 | 96 |
-| **all** | **16,441** | **978** distinct |
+| **all** | **16,442** | **978** distinct |
 
 Models with evidence in each country (a model counts once per country it is found in, so the column does not sum to the total):
 
 | country | official source | licence | evidence | models | car | motorcycle | moped | van | truck | bus |
 |---|---|---|---|---:|---:|---:|---:|---:|---:|---:|
-| Netherlands (`nl`) | [Dutch vehicle register (RDW Open Data)](https://opendata.rdw.nl/Voertuigen/Open-Data-RDW-Gekentekende_voertuigen/m9d7-ebf2) | [CC0-1.0](https://data.overheid.nl/dataset/11441-open-data-rdw--gekentekende-voertuigen) | registration | 13,537 | 4,979 | 5,314 | 1,366 | 694 | 948 | 236 |
+| Netherlands (`nl`) | [Dutch vehicle register (RDW Open Data)](https://opendata.rdw.nl/Voertuigen/Open-Data-RDW-Gekentekende_voertuigen/m9d7-ebf2) | [CC0-1.0](https://data.overheid.nl/dataset/11441-open-data-rdw--gekentekende-voertuigen) | registration | 13,540 | 4,981 | 5,315 | 1,366 | 694 | 948 | 236 |
 | Finland (`fi`) | [Finnish vehicle register open data (Traficom)](https://tieto.traficom.fi/en/datatraficom/open-data) | [CC-BY-4.0](https://tieto.traficom.fi/en/datatraficom/open-data) | registration | 7,688 | 3,056 | 2,542 | 551 | 469 | 842 | 228 |
 | New Zealand (`nz`) | [New Zealand Motor Vehicle Register (Waka Kotahi NZTA open data)](https://opendata-nzta.opendata.arcgis.com/datasets/NZTA::motor-vehicle-register/about) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/legalcode.en) | registration | 6,603 | 3,478 | 2,554 | 439 | — | — | 132 |
 | United Kingdom (`gb`) | [UK vehicle licensing statistics (DfT/DVLA table VEH0120)](https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files) | [OGL-UK-3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) | registration | 4,267 | 1,712 | 1,925 | 118 | 288 | 127 | 97 |
@@ -40,14 +40,14 @@ Models with evidence in each country (a model counts once per country it is foun
 | Spain (`es`) | [Spanish vehicle registrations (DGT microdata, MATRABA)](https://www.dgt.es/menusecundario/dgt-en-cifras/matraba-listados/matriculaciones-automoviles-mensual.html) | [Ley-37/2007](https://datos.gob.es/es/aviso-legal) | registration | 3,500 | 1,448 | 1,267 | 230 | 231 | 228 | 96 |
 | Norway (`no`) | [Statens vegvesen — Periodisk kjøretøykontroll (PKK)](https://dataut.vegvesen.no/dataset/periodisk-kjoretoy-kontroll) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.no) | registration | 3,093 | 2,099 | — | — | 310 | 518 | 166 |
 | Australia (`au`) | [Australian registered road vehicles by make and model (BITRE Road Vehicles Australia)](https://data.gov.au/data/dataset/road-vehicles-australia-january-2025) | [CC-BY-3.0-AU](https://creativecommons.org/licenses/by/3.0/au/) | registration | 2,846 | 1,444 | 894 | — | 159 | 289 | 60 |
-| Luxembourg (`lu`) | [Luxembourg vehicle register operations (SNCA)](https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/) | [CC0-1.0](https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/) | registration | 2,371 | 1,170 | 884 | 42 | 147 | 105 | 23 |
+| Luxembourg (`lu`) | [Luxembourg vehicle register operations (SNCA)](https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/) | [CC0-1.0](https://data.public.lu/en/datasets/operations-delta-des-vehicules-au-luxembourg/) | registration | 2,372 | 1,171 | 884 | 42 | 147 | 105 | 23 |
 | Israel (`il`) | [Israel Ministry of Transport — vehicle register (data.gov.il)](https://data.gov.il/dataset/degem-rechev-wltp) | [facts-credit-data.gov.il-terms-of-use](https://data.gov.il/he/terms-of-use) | registration | 1,897 | 855 | 650 | 14 | 105 | 226 | 47 |
 | Germany (`de`) | [German new car registrations by make and model series (KBA FZ10)](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz10/fz10_gentab.html)<br>[German vehicle fleet and Lkw registrations by manufacturer and trade name (KBA FZ 2.2, FZ 2.8, FZ 4.8)](https://www.kba.de/DE/Statistik/Produktkatalog/produkte/Fahrzeuge/fz2_b_uebersicht.html) | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0) | registration | 1,259 | 1,112 | — | — | 122 | 11 | 14 |
 | United States (`us`) | [US EPA/DOE fuel economy vehicle catalog (fueleconomy.gov)](https://www.fueleconomy.gov/feg/download.shtml) | [US-PD](https://www.energy.gov/web-policies) | approval | 1,211 | 1,211 | — | — | — | — | — |
 | Canada (`ca`) | [Canadian fuel consumption ratings (Natural Resources Canada)](https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64) | [OGL-Canada-2.0](https://open.canada.ca/en/open-government-licence-canada) | approval | 980 | 980 | — | — | — | — | — |
 | Thailand (`th`) | [Thai new vehicle registrations by brand and model (DLT)](https://gdcatalog.dlt.go.th/dataset/59a045dc-3ec4-4908-b035-ba789101b7f5) | [TH-OpenDataCommon](https://gdcatalog.dlt.go.th/dataset/59a045dc-3ec4-4908-b035-ba789101b7f5) | registration | 820 | 370 | 431 | — | 19 | — | — |
 | Malaysia (`my`) | [Malaysian car registration transactions (JPJ via data.gov.my)](https://data.gov.my/data-catalogue/registration_transactions_car) | [CC-BY-4.0](https://data.gov.my/data-catalogue/registration_transactions_car) | registration | 555 | 555 | — | — | — | — | — |
-| Argentina (`ar`) | [Argentine initial car registrations (DNRPA microdata)](https://datos.jus.gob.ar/dataset/inscripciones-iniciales-de-autos) | [CC-BY-4.0](https://datos.gob.ar/acerca/seccion/marco-legal) | registration | 348 | 260 | — | — | 19 | 67 | 2 |
+| Argentina (`ar`) | [Argentine initial car registrations (DNRPA microdata)](https://datos.jus.gob.ar/dataset/inscripciones-iniciales-de-autos) | [CC-BY-4.0](https://datos.gob.ar/acerca/seccion/marco-legal) | registration | 408 | 307 | — | — | 21 | 78 | 2 |
 | Ireland (`ie`) | [Irish new private car licensing statistics (CSO table TEM20)](https://data.cso.ie/table/TEM20) | [CC-BY-4.0](https://www.cso.ie/en/aboutus/whoweare/copyrightpolicy/) | registration | 241 | 241 | — | — | — | — | — |
 
 `registration` = the vehicle is on that country's register; `approval` = type-approved or certified for sale there. Full per-source notes: [SOURCES.md](SOURCES.md).
@@ -96,7 +96,7 @@ Release assets are the top-level files (`vehicles.csv`, `catalog.sqlite`,
 
 <!-- BEGIN GENERATED: load-postgres (scripts/gen_readme_stats.rb) -->
 ```bash
-curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.11.13/vehicles.csv
+curl -sSLO https://github.com/vehiclesdb/vehiclesdb/releases/download/v2026.11.14/vehicles.csv
 psql "$DATABASE_URL" <<'SQL'
 CREATE TABLE vehiclesdb_models (
   kind                     text NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE vehiclesdb_models (
 SQL
 ```
 
-The column list above is generated from `v2026.11.13`'s CSV header. Since 2026.07.2, columns
+The column list above is generated from `v2026.11.14`'s CSV header. Since 2026.07.2, columns
 are only ever appended between releases, never renamed or reordered; when you upgrade, `ALTER TABLE …
 ADD COLUMN` the new ones (see CHANGELOG.md) and reload. `countries`, `regions`,
 `body_types`, `aliases` and `former_ids` are `|`-separated lists
@@ -388,7 +388,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
 
 <!-- BEGIN GENERATED: cite (scripts/gen_readme_stats.rb) -->
 > VehiclesDB. (2026). *VehiclesDB: The open source vehicle database*
-> (Version 2026.11.13) [Data set]. Zenodo.
+> (Version 2026.11.14) [Data set]. Zenodo.
 > https://doi.org/10.5281/zenodo.21744943
 
 ```bibtex
@@ -398,7 +398,7 @@ Use GitHub's "Cite this repository" button (powered by [CITATION.cff](CITATION.c
   year         = {2026},
   howpublished = {\url{https://github.com/vehiclesdb/vehiclesdb}},
   doi          = {10.5281/zenodo.21744943},
-  note         = {Open dataset, CC BY 4.0, version 2026.11.13}
+  note         = {Open dataset, CC BY 4.0, version 2026.11.14}
 }
 ```
 
