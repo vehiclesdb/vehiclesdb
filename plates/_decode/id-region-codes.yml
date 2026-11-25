@@ -1,0 +1,3181 @@
+# plates/_decode/id-region-codes.yml — Indonesian region codes (kode wilayah),
+# registration codes (kode registrasi) and the other decodable parts of an
+# Indonesian registration number (NRKB). Referenced by plates/id.yml.
+#
+# ===========================================================================
+# THE SOURCE, AND WHY THIS TABLE IS PRIMARY WHEN MOST OF id.yml IS NOT
+# ===========================================================================
+# Peraturan Kepolisian Negara Republik Indonesia Nomor 7 Tahun 2021 tentang
+# Registrasi dan Identifikasi Kendaraan Bermotor (Perpol 7/2021), set and
+# promulgated 5 May 2021, Berita Negara 2021 No. 476, in force on promulgation
+# (Pasal 92). Pasal 6(3): the region code "diterbitkan berdasarkan wilayah
+# registrasi Ranmor"; Pasal 6(8) puts the format of the region code, the number
+# and the series letters "dalam Lampiran yang merupakan bagian tidak
+# terpisahkan" of the regulation. Lampiran A ("Penentuan kode wilayah
+# berdasarkan wilayah Regident Ranmor", PDF pages 81-95) is that table: 34
+# provinces, 57 codes, each with the regencies and cities it covers.
+#
+# Every row in `codes` was checked line by line against the page images of
+# Korlantas' own copy of the regulation (PDF pages 81-95), not only against a
+# text extraction. Area names are kept EXACTLY AS PRINTED, typos included
+# ("Kab. Malajengka", "Kab. Serdang Begadai", "Provinsi Kalimatan Barat"),
+# because the printed string is the evidence; what each odd string means is
+# said in that row's `printed_text_notes`, never by silently correcting it.
+#
+# ===========================================================================
+# WHAT THE ANNEX DOES NOT CONTAIN — READ BEFORE USING THIS FOR A PARSE API
+# ===========================================================================
+# 1. NO SUB-AREA (SUFFIX-LETTER) TABLE. The letters after the number are a
+#    progressive series in the regulation (Lampiran C.3: A to Z, then AA, then
+#    AAA). Which letters a Polda reserves for which regency is set by each
+#    Kapolda (Pasal 6(7): letter series beyond two letters "dan wilayah
+#    penggunaannya ditetapkan dengan Keputusan Kepala Kepolisian Daerah atas
+#    persetujuan Kakorlantas Polri"; Lampiran E.1, F.4 and G.3: "seri huruf
+#    yang diatur oleh Kapolda"). None of those Kapolda decisions was found
+#    published, and no police-published table exists for any Polda. From
+#    the annex alone a decoder can name the PROVINCE and the LIST of regencies
+#    a code covers. Section 6 (`sub_area_suffixes`) adds the per-regency
+#    letters at SECONDARY tier, from id.wikipedia, under the owner's
+#    PRD-PLATES §4 override, compared row by row with a 2024 press table.
+#    Use it as reported practice, never as law.
+# 2. NOT EVERY MUNICIPALITY IS LISTED. Several cities that exist are absent as
+#    lines of their own (Kota Batu, Kota Mojokerto, Kota Pasuruan, Kota
+#    Probolinggo, Kota Blitar among them); the annex lists a city only where it
+#    chose to. Absence from `areas_printed` is not evidence that a place uses
+#    another code.
+# 3. THE ANNEX PREDATES THE 2022 PAPUA PROVINCES. It lists only PA and PB.
+#    The codes the four new provinces issue are in `post_annex_codes`, each
+#    with its own (non-regulation) source and tier.
+#
+# Withdrawn codes (section 9), the colonial residency codes (section 10) and
+# non-motorised codes (section 11) are carried at secondary tier, tagged
+# `secondary-wikipedia` with the article revision, plus press where found.
+#
+# WIKIPEDIA ROWS IN THIS FILE (PRD-PLATES §4, owner override 2026-08-02):
+# every such fact sits in sections 6, 9, 10 or 11, carries `evidence:
+# secondary-wikipedia` (or a stronger tier where press or police corroborate),
+# and cites one of these two revisions:
+#   https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020
+#   https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720
+# Sections 1-5, 7 and 8 contain none.
+jurisdiction: id
+topic: region-codes
+authority:
+  name: "Kepolisian Negara Republik Indonesia — Korps Lalu Lintas (Korlantas Polri), Direktorat Registrasi dan Identifikasi"
+  url: "https://korlantas.polri.go.id/"
+sources:
+  - "https://korlantas.polri.go.id/wp-content/uploads/2021/05/PERATURAN-POLRI-NOMOR-7-TAHUN-2021-TTG-REGIDENT-RANMOR-TGL-5-MEI-2021.pdf  # Perpol 7/2021, Korlantas' own copy, 107 pp: Pasal 6 (grammar), Lampiran A (region codes, PDF pp. 81-95), B (registration codes, p. 95), C (number blocks and letter series, pp. 96-98), D (CD/CC, pp. 98-103), E-J (special allocations, pp. 103-106), K (trial series, p. 106), L (cross-border operating codes, p. 107, image). Accessed 2026-11-25. Evidence: primary (statute)"
+  - "https://bapenda.jabarprov.go.id/JDIH/Peraturan_Polri/PERATURAN_POLRI_NOMOR_7_TAHUN_2021.pdf  # second complete copy of the same regulation (West Java revenue agency JDIH), used for the text layer. Accessed 2026-11-25"
+  - "https://oto.detik.com/berita/d-7501604/kode-pelat-nomor-di-3-provinsi-papua-diubah  # detikOto, 21 Aug 2024, citing the Korlantas website: PB -> PY for Papua Barat Daya (May 2024), PA -> PS for Papua Selatan (from July 2024), PT for Papua Tengah (plate 'PT 1' handed to the acting governor). Evidence: secondary press citing the agency. Accessed 2026-11-25"
+period: { start: 2021 }
+period_evidence: instrument-in-force
+period_note: >-
+  2021 is the regulation now in force, not the date any code was first
+  allotted. Most codes are far older (Perkap 4/2006 Lampiran A printed the same
+  kind of table; its scan's text layer is unreadable and it was not image-read
+  in this pass). Treat every row as "in force when read" and do not infer an
+  allotment year from it.
+
+# ---------------------------------------------------------------------------
+# 1. REGISTRATION CODES (kode registrasi) — Lampiran B, PDF p. 95.
+#    These take the place of the region code for four kinds of user, per
+#    Pasal 6(4): "Kode registrasi ... diterbitkan berdasarkan kepentingan
+#    pengguna Ranmor". Each has its own series in plates/id.yml.
+# ---------------------------------------------------------------------------
+registration_codes:
+  - code: CD
+    meaning: "NRKB Ranmor Korps Diplomatik — diplomatic corps"
+    series: id-diplomatic-cd-2006
+  - code: CC
+    meaning: "NRKB Ranmor Korps Konsulat — consular corps"
+    series: id-consular-cc-2006
+  - code: CH
+    meaning: "NRKB STNK/TNKB Khusus Ranmor Konsul Kehormatan — honorary consuls (issued as a 'special' registration)"
+    series: id-honorary-consul-ch-2021
+  - code: RI
+    meaning: "NRKB STNK/TNKB Khusus Ranmor Dinas Presiden, Wakil Presiden, Ketua Lembaga Tinggi Negara dan Pejabat Setingkat Menteri — President, Vice-President, heads of the high state bodies and officials of ministerial rank"
+    series: id-state-ri-2006
+
+# ---------------------------------------------------------------------------
+# 2. NUMBER BLOCKS BY VEHICLE TYPE — Lampiran C.1 and C.2, PDF p. 96.
+#    Pasal 6(5): the number has 1 to 4 digits "yang ditentukan berdasarkan
+#    jenis Ranmor". The blocks below are the ALLOCATION ORDER the annex
+#    prescribes. They tell a reader what a number most likely is; they are not
+#    printed as a validity rule, and vanity numbers (Pasal 7) can be chosen.
+# ---------------------------------------------------------------------------
+number_blocks:
+  national:
+    - { from: 1,    to: 1999, vehicle: "Mobil Penumpang — passenger car" }
+    - { from: 2000, to: 6999, vehicle: "Sepeda Motor — motorcycle" }
+    - { from: 7000, to: 7999, vehicle: "Mobil Bus — bus" }
+    - { from: 8000, to: 8999, vehicle: "Mobil Barang — goods vehicle" }
+    - { from: 9000, to: 9999, vehicle: "Kendaraan Khusus — special-purpose vehicle" }
+  polda_metro_jaya:
+    note: >-
+      Lampiran C.2, "Khusus untuk wilayah hukum Polda Metro Jaya" — the Jakarta
+      police area, which issues B. The fourth row is PRINTED as "Mobil
+      Penumpang" for 8000-8999, a second passenger-car block; read in context
+      (the national table, and the fifth row "Mobil barang dan Kendaraan
+      Khusus") it is very probably a slip for goods vehicles. Kept as printed;
+      see §VERIFIER in plates/id.yml.
+    blocks:
+      - { from: 1,    to: 2999, vehicle: "Mobil Penumpang — passenger car" }
+      - { from: 3000, to: 6999, vehicle: "Sepeda Motor — motorcycle" }
+      - { from: 7000, to: 7999, vehicle: "Mobil Bus — bus" }
+      - { from: 8000, to: 8999, vehicle: "Mobil Penumpang (as printed)" }
+      - { from: 9000, to: 9999, vehicle: "Mobil barang dan Kendaraan Khusus — goods and special-purpose vehicles" }
+  earlier_instrument: >-
+    Perkap 4/2006 Pasal 6(3)-(4) already allocated the number "sesuai kelompok
+    jenis kendaraan bermotor" through its Lampiran B (and Lampiran C for Polda
+    Metro Jaya). The scan's table is not legible enough to transcribe; its four
+    readable rows match the national split above with 8000-9999 as one block.
+    Not tabulated.
+
+# ---------------------------------------------------------------------------
+# 3. THE LETTER SERIES — Lampiran C.3, PDF pp. 96-98.
+# ---------------------------------------------------------------------------
+letter_series:
+  rule: >-
+    When the numbers of a block are used up, numbering restarts at the start of
+    the block with a series letter, in order A to Z ("sesuai urutan huruf A
+    sampai dengan Z"). After Z, two letters may be used ("apabila seri huruf
+    telah sampai pada huruf Z, maka penomoran dapat menggunakan 2 (dua) seri
+    huruf"): AA, AB, ... After ZZ, three letters ("apabila seri huruf telah
+    sampai pada huruf ZZ, maka penomoran dapat menggunakan 3 (tiga) seri
+    huruf"): AAA, AAB, ... Pasal 6(7) adds that series of more than two
+    letters, and where they are used, are fixed by Kapolda decision with
+    Korlantas approval.
+  per_series_capacity:
+    passenger_car: "1-1999 per letter series (1-2999 in Polda Metro Jaya)"
+    motorcycle: "2000-6999 per letter series, i.e. 5000 registrations"
+    bus: "7000-7999, 1000 per series"
+    goods_vehicle: "8000-8999, 1000 per series"
+    special_vehicle: "9000-9999, 1000 per series"
+  worked_examples_printed:
+    - "Kode Wil.-1 s.d. 1999, then Kode Wil.-1 A s.d. 1999 A, then 1 B ... (passenger cars)"
+    - "Kode Wil.-2000 s.d. 6999, then 2000 A s.d. 6999 A (motorcycles)"
+    - "1 Z s.d. 1999 Z, then 1 AA, then 1 AB (two letters)"
+    - "1 ZZ s.d. 1999 ZZ, then 1 AAA, then 1 AAB (three letters)"
+  printed_slips: >-
+    The 'Kode Wil.-' hyphen in the worked examples joins a placeholder to the
+    number; it is not evidence of a printed separator. The two-letter and
+    three-letter examples reuse the same registration-count ranges
+    (51.974-53.973 ...), which cannot both be right; the arithmetic of the
+    examples is illustrative only.
+  alphabet: >-
+    No letter is excluded anywhere in the regulation ("A sampai dengan Z").
+    The trial-plate combinations in section 5 are reserved by Lampiran K, which
+    implies an ordinary series does not use them; no other reservation is
+    printed.
+
+# ---------------------------------------------------------------------------
+# 4. NUMBERS RESERVED FOR OFFICE-HOLDERS — Lampiran H, I and J (PDF pp.
+#    105-106), with the 2006 predecessor. These ride on government (red)
+#    registrations; see id-government-red-1993.
+# ---------------------------------------------------------------------------
+office_numbers:
+  province:
+    source: "Perpol 7/2021 Lampiran H"
+    rows:
+      - { number: 1, letters: none, holder: "Gubernur — governor" }
+      - { number: 2, letters: none, holder: "Wakil Gubernur — vice-governor" }
+      - { number: 3, letters: none, holder: "Ketua DPRD Provinsi — speaker of the provincial assembly" }
+      - { number: "4-99", letters: none, holder: "other provincial officials in order of precedence" }
+  dki_jakarta:
+    source: "Perpol 7/2021 Lampiran I"
+    rows:
+      - { number: 1, letters: DKI, holder: "Gubernur" }
+      - { number: 2, letters: DKI, holder: "Wakil Gubernur" }
+      - { number: 3, letters: DKI, holder: "Ketua DPRD Provinsi" }
+      - { number: "4-150", letters: DKI, holder: "other officials of DKI Jakarta in order of precedence" }
+  regency_city:
+    source: "Perpol 7/2021 Lampiran J"
+    rows:
+      - { number: 1, letters: "the regency's or city's allocated series", holder: "Bupati / Walikota" }
+      - { number: 2, letters: "the regency's or city's allocated series", holder: "Wakil Bupati / Wakil Walikota" }
+      - { number: 3, letters: "the regency's or city's allocated series", holder: "Ketua DPRD Kabupaten/Kota" }
+      - { number: "4-30", letters: "the regency's or city's first allocated series", holder: "other officials in order of precedence" }
+    note: >-
+      Lampiran J is the one place the regulation itself says a regency or city
+      HAS its own allocated letter series ("seri huruf alokasi
+      kabupaten/kota") — confirming that sub-area letters exist, without
+      saying what they are.
+  state:
+    source: "Perpol 7/2021 Lampiran F.2-F.3; Perkap 4/2006 Pasal 10(1)"
+    rows:
+      - { number: 1, code: RI, holder: "Presiden — President (Lampiran F.2 prints 'RI 1'; Perkap 4/2006 Pasal 10(1)a)" }
+      - { number: 2, code: RI, holder: "Wakil Presiden — Vice-President (Perkap 4/2006 Pasal 10(1)b)" }
+    note: >-
+      Further RI numbers go to the heads of the high state bodies and officials
+      of ministerial rank and are "dikoordinasikan dengan Kementerian
+      Sekretariat Negara" (Lampiran F.3); no allocation list is published.
+  earlier_2006:
+    source: "Perkap 4/2006 Pasal 10(2)-(3)"
+    note: >-
+      The 2006 order differed: in a province 1 governor, 2 speaker of the
+      provincial assembly, 3 head of the high prosecutor's office, 4 chief
+      judge of the high court, 5 onward other officials, all without series
+      letters; in a regency or city the same order with the regency's series
+      letters. The vice-governor had no reserved number in 2006.
+
+# ---------------------------------------------------------------------------
+# 5. SERIES LETTERS THAT MARK A CLASS, NOT A PLACE
+# ---------------------------------------------------------------------------
+class_letters:
+  trial_tckb:
+    source: "Perpol 7/2021 Lampiran K.1 and K.3; Perkap 4/2006 Pasal 14(2)"
+    two_letter: [XX, XY, YY, YX]
+    three_letter: [XXX, XYY, YYX, YXY, YYY, YXX]
+    note: >-
+      The three-letter set is printed exactly as above — six of the eight X/Y
+      combinations; XXY and XYX are not in it. It is for a Polda "yang telah
+      diizinkan menggunakan 3 (tiga) huruf seri" once the two-letter series
+      are used up. See id-trial-tckb-2006.
+  customs_deferred_2006:
+    source: "Perkap 4/2006 Pasal 13(3)"
+    letters: "AX to ZX — the letters after the number 'menggunakan kode AX sampai dengan ZX'"
+    period: { start: 2006, end: 2021 }
+    note: >-
+      Vehicles imported with customs duty deferred (Formulir B). Perpol 7/2021
+      (Lampiran E.1) no longer fixes these letters and leaves the series to the
+      Kapolda. See id-customs-deferred-2006.
+  cross_border_operating_codes:
+    source: "Perpol 7/2021 Lampiran L, PDF p. 107 (printed as an image; read from the page image)"
+    codes:
+      AK: "Angkutan antar negara — international transport"
+      MK: "Misi kemanusiaan — humanitarian mission"
+      PN: "Pertemuan antar negara — intergovernmental meeting"
+      MS: "Pariwisata, olahraga, misi sosial — tourism, sport, social mission"
+      PAM: "Pengamanan pejabat negara asing — security for a visiting foreign official"
+    note: "Printed on the silver TNKB LBN of a foreign vehicle temporarily operated in Indonesia. See id-crossborder-lbn-2021."
+
+# ---------------------------------------------------------------------------
+# 6. SUB-AREA SUFFIX LETTERS — SHIPPED AT SECONDARY TIER
+#    EVERY ROW IN THIS SECTION IS `secondary-wikipedia`. Under the owner's
+#    PRD-PLATES §4 override (2026-08-02) encyclopaedia facts may be carried,
+#    tagged and cited per revision; they never claim instrument tier, and
+#    wherever the regulation speaks it wins (see `annex_conflicts`).
+#
+#    WHY THIS IS NOT IN THE REGULATION: Perpol 7/2021 Pasal 6(7) delegates
+#    the letter series beyond two letters, and the area each is used in, to
+#    a Kapolda decision approved by Korlantas; Lampiran E.1, F.4 and G.3 say
+#    "seri huruf yang diatur oleh Kapolda"; Lampiran J confirms each regency
+#    or city has an allocated series. No such Kapolda decision was found
+#    published, and no police-published table was found for any Polda.
+# ---------------------------------------------------------------------------
+sub_area_suffixes:
+  shipped: true
+  evidence: secondary-wikipedia
+  source: "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # id.wikipedia 'Tanda Nomor Kendaraan Bermotor Indonesia', revision 30232020 (2026-11-25), section 'Kode nomor polisi > Kewilayahan', tables 'Golongan roda dua' and 'Golongan roda empat atau lebih'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+  en_wikipedia: >-
+    The English article (revision 1386292720, 2026-11-17) carries no
+    per-regency suffix letters: its area table stops at prefix and regency
+    list. So there is nothing to compare row by row; where the two articles
+    describe the same code's AREA they agree except as noted in
+    `annex_conflicts`.
+  delegation: "Perpol 7/2021 Pasal 6(7); Lampiran E.1, F.4, G.3, J (statute). The allocation is a Kapolda decision; no police table is published."
+  vehicle_groups:
+    two_wheel: "motorcycles and three-wheelers (the article's 'Golongan roda dua')"
+    four_wheel_plus: "cars, vans, trucks and buses (the article's 'Golongan roda empat atau lebih')"
+    why_two_tables: >-
+      Many Polda allocate differently by vehicle group — in the article,
+      often a three-letter series for motorcycles where cars of the same
+      regency get two letters. Both tables are kept; a decoder must know the
+      vehicle group to use them.
+  notation: >-
+    Letters are copied exactly as the article writes them (PRD-PLATES §4
+    condition 3: grammar is copied, not paraphrased). Our reading of the
+    notation, which the article does not define in one place: a fixed letter
+    is the locality letter and each `*` stands for one further series letter,
+    so `A**` is a three-letter series beginning with A and `A*` a two-letter
+    one; a leading `*` (`*A`, `**A`) puts the locality letter LAST, as the
+    article does for Central Java and parts of other provinces; `XA-XJ` and
+    `VAA–VZA` are ranges. Treat this reading as interpretation.
+  area_names: >-
+    Area names are given as the article names them (current regency and city
+    names, which often differ from the annex's printed forms in section 7).
+    "Kota X" is the city; a bare name is the regency. A " / " joins a city to
+    one of its Samsat service areas where the article splits a city.
+  coverage:
+    codes: 61
+    rows_two_wheel: 517
+    rows_four_wheel_plus: 517
+  press_comparison:
+    source: "https://oto.detik.com/berita/d-7309433/kode-plat-nomor-belakang-kendaraan-komponen-dan-wilayahnya  # detikOto, 25 Apr 2024, 'Kode Plat Nomor Belakang Kendaraan: Komponen dan Wilayahnya' — a 465-row regency-to-letters table over 56 codes, which the article says is 'dikutip dari laman Daihatsu dan Auto 2000' (a carmaker's and a dealer group's websites), not from the police. Evidence: secondary-press. Accessed 2026-11-25"
+    method: >-
+      Each press row was matched to the Wikipedia row of the same code and the
+      same regency or city (city and regency kept distinct), in either vehicle
+      group. `relation` on each press row: `same` — identical letter set to one
+      of the Wikipedia groups; `overlaps` — shares at least one letter series
+      but not all; `differs` — no letter series in common; `no-wikipedia-row`
+      — the press names an area the article does not (old names such as Kab.
+      Toba Samosir and Kab. Mamuju Utara, or pre-2022 Papua regencies still
+      under PA).
+    result: { same: 224, overlaps: 171, differs: 55, no_wikipedia_row: 15 }
+    reading: >-
+      Agreement is broad but not independent proof: the press table is
+      undated and visibly older than the article in places (it still lists
+      Jayawijaya, Paniai, Mimika and Nabire under PA), and either may descend
+      from the other or from a common source. Treat `same` as weak
+      corroboration and `differs` as a real disagreement, not as an error in
+      either. The press table does not distinguish motorcycles from cars.
+  other_press_notes:
+    - code: L
+      source: "https://www.detik.com/jatim/berita/d-7905660/daftar-pelat-nomor-kendaraan-di-jatim  # detikJatim, 8 May 2025, citing 'situs Samsat Info'. Evidence: secondary-press. Accessed 2026-11-25"
+      note: >-
+        Surabaya's suffix by Samsat office, by the FIRST letter: A-F Samsat
+        Surabaya Timur; G-M Surabaya Selatan; N-U Surabaya Pusat and Utara;
+        V-Z Surabaya Barat; and "Kode belakang berawalan huruf I/O/U
+        menandakan kendaraan yang dimutasi dari daerah lain" (I, O or U first
+        marks a vehicle transferred in from another region). Note the overlap:
+        O and U appear both in an office range and in the transfer rule as
+        printed. The Wikipedia rows for L give only letter patterns, no
+        offices, so this neither confirms nor contradicts them.
+    - code: AB
+      source: "https://oto.detik.com/berita/d-5889177/ini-daftar-area-pelat-nomor-kendaraan-di-seluruh-wilayah-indonesia  # detikOto, 8 Jan 2022. Evidence: secondary-press. Accessed 2026-11-25"
+      note: >-
+        DISAGREEMENT ON LETTER POSITION. Both detik tables (2022 and 2024) put
+        Yogyakarta's locality letter LAST ("Yogyakarta menggunakan kode A/H/F
+        di akhir pelat nomor"; 2024: "*A/*F/*H/*I/*S"), while the Wikipedia
+        rows for AB put it FIRST (A*, F*, H*, I*, S*). Same letters per
+        regency, opposite position. Not resolved; both kept.
+  annex_conflicts:
+    - code: B
+      note: >-
+        The article lists part of Kab. Tangerang (Samsat Kelapa Dua: the
+        districts Cisauk, Curug, Kelapa Dua, Kosambi, Legok, Pagedangan,
+        Pakuhaji, Sepatan, Sepatan Timur and Teluknaga) under B with J**,
+        and the rest of the regency under A (Samsat Balaraja). Perpol 7/2021
+        Lampiran A lists Kab. Tangerang under A only. The regulation is the
+        instrument and wins as law; the article's rows are kept as reported
+        practice.
+    - code: S
+      note: >-
+        The article's region heading for S includes Kab./Kota Mojokerto,
+        Lamongan and Jombang, while Lampiran A puts Mojokerto and Jombang
+        under W. The regulation wins; the rows are kept as reported.
+  rf_in_ordinary_series:
+    code: B
+    note: >-
+      The article notes, for Jakarta Timur (R**), that the series RFA-RFZ,
+      RKA-RKZ, ROA-ROZ and RZA-RZY are used for compact SUVs and city cars
+      with particular number ranges — i.e. RF also occurs in ORDINARY
+      Jakarta series. A plate ending RF* is therefore not by itself a special
+      (khusus) plate. See id-special-rf-2012.
+  by_code:
+    A:
+      two_wheel:
+        - { area: "Kota Serang", letters: ["A**", "B*", "C*", "D*"] }
+        - { area: "Serang", letters: ["E*", "F*", "G*", "H*", "I*"] }
+        - { area: "Pandeglang", letters: ["J*", "K*", "L*", "M*"] }
+        - { area: "Lebak", letters: ["N*", "O*", "P*", "Q*"] }
+        - { area: "Kota Cilegon", letters: ["R*", "S*", "T*", "U*"] }
+        - { area: "Tangerang dibawah wilayah pelayanan Samsat Balaraja", letters: ["V**", "W**", "X**", "Y*", "Z*"], wikipedia_note: "Kecuali Kecamatan Cisauk, Curug, Kelapa Dua, Kosambi, Legok, Pagedangan, Pakuhaji, Sepatan, Sepatan Timur, dan Teluknaga yang masuk wilayah hukum Polda Metro Jaya" }
+      four_wheel_plus:
+        - { area: "Kota Serang", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Serang", letters: ["E*", "F*", "G*", "H*"] }
+        - { area: "Pandeglang", letters: ["J*", "K*", "L*", "M*"] }
+        - { area: "Lebak", letters: ["N*", "O*", "P*", "Q*"] }
+        - { area: "Kota Cilegon", letters: ["R*", "S*", "T*", "U*"] }
+        - { area: "Tangerang dibawah wilayah pelayanan Samsat Balaraja", letters: ["VAA–VZA", "VAB-VBB", "XLA–XLK"], wikipedia_note: "Kecuali Kecamatan Cisauk, Curug, Kelapa Dua, Kosambi, Legok, Pagedangan, Pakuhaji, Sepatan, Sepatan Timur, dan Teluknaga yang masuk wilayah hukum Polda Metro Jaya" }
+      press_detik_2024:
+        - { area: "Kota Serang", letters: ["A*", "B*", "C*", "D*"], relation: same }
+        - { area: "Kabupaten Serang", letters: ["E*", "F*", "G*", "H*", "I*"], relation: same }
+        - { area: "Kabupaten Pandeglang", letters: ["J*", "K*", "L*", "M*", "N*"], relation: overlaps }
+        - { area: "Kota Cilegon", letters: ["O*", "U*"], relation: overlaps }
+        - { area: "Kabupaten Lebak", letters: ["P*", "R*", "S*", "T*"], relation: overlaps }
+        - { area: "Kabupaten Tangerang", letters: ["V*", "W*", "X*", "Y*", "Z*"], relation: overlaps }
+    B:
+      two_wheel:
+        - { area: "Jakarta Pusat", letters: ["P**"] }
+        - { area: "Jakarta Utara", letters: ["U**"], wikipedia_note: "Termasuk seluruh Kabupaten Kepulauan Seribu" }
+        - { area: "Jakarta Barat", letters: ["B**"] }
+        - { area: "Jakarta Selatan", letters: ["S**"] }
+        - { area: "Jakarta Timur", letters: ["R**", "T**"] }
+        - { area: "Kabupaten Bekasi", letters: ["F**", "Y**"] }
+        - { area: "Kota Bekasi", letters: ["K**"] }
+        - { area: "Kota Depok / Wilayah pelayanan Samsat Depok I", letters: ["E**"], wikipedia_note: "Hanya mencakup Kecamatan Beji, Cimanggis, Cilodong, Cipayung, Sukmajaya, dan Tapos" }
+        - { area: "Kota Depok / Wilayah pelayanan Samsat Depok II", letters: ["Z**"], wikipedia_note: "Hanya mencakup Kecamatan Bojongsari, Cinere,  Limo, Pancoran Mas, dan Sawangan" }
+        - { area: "Kabupaten Tangerang dibawah wilayah pelayanan Samsat Kelapa Dua", letters: ["J**"], wikipedia_note: "Hanya mencakup Kecamatan Kosambi, Pakuhaji, Sepatan, Sepatan Timur, Teluknaga di wilayah hukum Polres Metro Tangerang Kota dan Kecamatan Cisauk, Curug, Kelapa Dua, Legok, serta Pagedangan di wilayah hukum Polres Tangerang Selatan" }
+        - { area: "Kota Tangerang / Wilayah pelayanan Samsat Cikokol", letters: ["C**"], wikipedia_note: "Hanya mencakup Kecamatan Batuceper, Benda, Cibodas, Jatiuwung, Karawaci, Neglasari, Periuk, dan Tangerang" }
+        - { area: "Kota Tangerang / Wilayah pelayanan Samsat Ciledug", letters: ["V**"], wikipedia_note: "Hanya mencakup Kecamatan Ciledug, Cipondoh, Karang Tengah, Larangan, dan Pinang" }
+        - { area: "Kota Tangerang Selatan / Wilayah pelayanan Samsat Serpong", letters: ["N**"], wikipedia_note: "Hanya mencakup Kecamatan Serpong, Serpong Utara, dan Setu" }
+        - { area: "Kota Tangerang Selatan / Wilayah pelayanan Samsat Ciputat", letters: ["W**"], wikipedia_note: "Hanya mencakup Kecamatan Ciputat, Ciputat Timur, Pamulang, dan Pondok Aren" }
+      four_wheel_plus:
+        - { area: "Jakarta Pusat", letters: ["P**"] }
+        - { area: "Jakarta Utara", letters: ["U**"] }
+        - { area: "Jakarta Barat", letters: ["B**", "H**"], wikipedia_note: "Kode HFA–HFZ, HKA–HKZ, HOA–HOZ, serta HZA–HZZ hanya berlaku bagi pengguna kendaraan ''compact SUV'' dan ''city car'' dengan nomor 1000 s.d. 1999" }
+        - { area: "Jakarta Selatan", letters: ["D**", "S**"], wikipedia_note: "Kode DFA–DFZ, DKA–DKZ, DOA–DOZ, serta DZA–DZZ hanya berlaku bagi pengguna kendaraan ''compact SUV'' dan ''city car'' dengan nomor 1000 s.d. 1999" }
+        - { area: "Jakarta Timur", letters: ["R**", "T**"], wikipedia_note: "Kode RFA–RFZ, RKA–RKZ, ROA–ROZ, serta RZA–RZY hanya berlaku bagi pengguna kendaraan ''compact SUV'' dan ''city car'' dengan nomor 1000 s.d. 1999" }
+        - { area: "Kabupaten Bekasi", letters: ["F**"] }
+        - { area: "Kota Bekasi", letters: ["K**"] }
+        - { area: "Kota Depok / Wilayah pelayanan Samsat Depok I", letters: ["E**"], wikipedia_note: "Hanya mencakup Kecamatan Beji, Cimanggis, Cilodong, Cipayung, Sukmajaya, dan Tapos" }
+        - { area: "Kota Depok / Wilayah pelayanan Samsat Depok II", letters: ["Z**"], wikipedia_note: "Hanya mencakup Kecamatan Bojongsari, Cinere,  Limo, Pancoran Mas, dan Sawangan" }
+        - { area: "Kabupaten Tangerang dibawah wilayah pelayanan Samsat Kelapa Dua", letters: ["J**"], wikipedia_note: "Hanya mencakup Kecamatan Kosambi, Pakuhaji, Sepatan, Sepatan Timur, Teluknaga di wilayah hukum Polres Metro Tangerang Kota dan Kecamatan Cisauk, Curug, Kelapa Dua, Legok, serta Pagedangan di wilayah hukum Polres Tangerang Selatan" }
+        - { area: "Kota Tangerang / Wilayah pelayanan Samsat Cikokol", letters: ["C**"], wikipedia_note: "Hanya mencakup Kecamatan Batuceper, Benda, Cibodas, Jatiuwung, Karawaci, Neglasari, Periuk, dan Tangerang" }
+        - { area: "Kota Tangerang / Wilayah pelayanan Samsat Ciledug", letters: ["V**"], wikipedia_note: "Hanya mencakup Kecamatan Ciledug, Cipondoh, Karang Tengah, Larangan, dan Pinang" }
+        - { area: "Kota Tangerang Selatan / Wilayah pelayanan Samsat Serpong", letters: ["N**"], wikipedia_note: "Hanya mencakup Kecamatan Serpong, Serpong Utara, dan Setu" }
+        - { area: "Kota Tangerang Selatan / Wilayah pelayanan Samsat Ciputat", letters: ["W**"], wikipedia_note: "Hanya mencakup Kecamatan Ciputat, Ciputat Timur, Pamulang, dan Pondok Aren" }
+      press_detik_2024:
+        - { area: "Kota Administrasi Jakarta Barat", letters: ["B**"], relation: same }
+        - { area: "Kota Tangerang", letters: ["C**", "V**"], relation: overlaps }
+        - { area: "Kota Depok", letters: ["E**", "Z**"], relation: overlaps }
+        - { area: "Kabupaten Bekasi", letters: ["F**"], relation: same }
+        - { area: "Kabupaten Tangerang", letters: ["G**", "N**"], relation: differs }
+        - { area: "Kota Bekasi", letters: ["K**"], relation: same }
+        - { area: "Kota Administrasi Jakarta Pusat", letters: ["P**"], relation: same }
+        - { area: "Kota Administrasi Jakarta Selatan", letters: ["S**"], relation: same }
+        - { area: "Kota Administrasi Jakarta Timur", letters: ["T**"], relation: overlaps }
+        - { area: "Kota Administrasi Jakarta Utara", letters: ["U**"], relation: same }
+        - { area: "Kota Tangerang Selatan", letters: ["W**"], relation: differs }
+    D:
+      two_wheel:
+        - { area: "Kota Bandung", letters: ["A**", "B*", "C*", "D*", "E*", "F*", "G*", "H*", "I*", "J*", "K*", "L*", "M*", "N*", "O*", "P*", "Q*", "R*"] }
+        - { area: "Kota Cimahi", letters: ["S**", "T*"] }
+        - { area: "Bandung Barat", letters: ["U**", "X**"] }
+        - { area: "Kabupaten Bandung", letters: ["V**", "W*", "Y**", "Z**"] }
+      four_wheel_plus:
+        - { area: "Kota Bandung", letters: ["A**"] }
+        - { area: "Kota Cimahi", letters: ["S**"] }
+        - { area: "Bandung Barat", letters: ["U**", "X**"] }
+        - { area: "Kabupaten Bandung", letters: ["V**", "Y**", "Z**"] }
+      press_detik_2024:
+        - { area: "Kota Bandung", letters: ["A**", "B*", "C*", "D*", "E*", "F*", "M*", "N*", "O*", "P*", "R*", "G*", "H*", "I*", "J*", "K*", "L*"], relation: overlaps }
+        - { area: "Kota Cimahi", letters: ["S**", "T*"], relation: same }
+        - { area: "Kabupaten Bandung Barat", letters: ["U**", "X**", "Z**"], relation: overlaps }
+        - { area: "Kabupaten Bandung", letters: ["V**", "W*", "Y**"], relation: overlaps }
+    E:
+      two_wheel:
+        - { area: "Kota Cirebon", letters: ["A*", "B**", "C*", "D*", "E*", "F*", "G*"] }
+        - { area: "Kabupaten Cirebon", letters: ["H**", "I*", "J*", "K*", "L*", "M**", "N*", "O*"] }
+        - { area: "Indramayu", letters: ["P**", "Q**", "R*", "S*", "T*"] }
+        - { area: "Majalengka", letters: ["U**", "V*", "W*", "X*"] }
+        - { area: "Kuningan", letters: ["Y**", "Z**"] }
+      four_wheel_plus:
+        - { area: "Kota Cirebon", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Kabupaten Cirebon", letters: ["H*", "I*", "J*", "K*"] }
+        - { area: "Indramayu", letters: ["P*", "Q*", "R*", "S*"] }
+        - { area: "Majalengka", letters: ["U*", "V*", "W*", "X*"] }
+        - { area: "Kuningan", letters: ["Y*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kota Cirebon", letters: ["A*", "B*", "C*", "D*", "E*", "F*", "G*"], relation: overlaps }
+        - { area: "Kabupaten Cirebon", letters: ["H*", "I*", "J*", "K*", "L*", "M*", "N*", "O*"], relation: overlaps }
+        - { area: "Kabupaten Indramayu", letters: ["P**", "Q*", "R*", "S*", "T*"], relation: overlaps }
+        - { area: "Kabupaten Majalengka", letters: ["U*", "V*", "W*", "X*"], relation: same }
+        - { area: "Kabupaten Kuningan", letters: ["Y**", "Z*"], relation: overlaps }
+    F:
+      two_wheel:
+        - { area: "Kota Bogor", letters: ["A**", "B*", "C*", "D*", "E*"] }
+        - { area: "Kabupaten Bogor", letters: ["F**", "G*", "H*", "I*", "J*", "K*", "L*", "M*", "N*", "P*", "R*"] }
+        - { area: "Kota Sukabumi", letters: ["O*", "S**", "T**"] }
+        - { area: "Kabupaten Sukabumi", letters: ["Q*", "U**", "V*"] }
+        - { area: "Cianjur", letters: ["W**", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Bogor", letters: ["A**"] }
+        - { area: "Kabupaten Bogor", letters: ["F**"] }
+        - { area: "Kota Sukabumi", letters: ["O*", "S*", "T*"] }
+        - { area: "Kabupaten Sukabumi", letters: ["Q*", "U*", "V*"] }
+        - { area: "Cianjur", letters: ["W*", "X*", "Y*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kota Bogor", letters: ["A*", "B*", "C*", "D*", "E*"], relation: overlaps }
+        - { area: "Kabupaten Bogor", letters: ["F**", "G*", "H*", "I*", "J*", "K*", "L*", "M*", "N*", "O*", "P*", "R*"], relation: overlaps }
+        - { area: "Kabupaten Sukabumi", letters: ["Q*", "U**", "V*"], relation: same }
+        - { area: "Kota Sukabumi", letters: ["S*", "T*"], relation: overlaps }
+        - { area: "Kabupaten Cianjur", letters: ["W*", "X*", "Y*", "Z*"], relation: same }
+    G:
+      two_wheel:
+        - { area: "Kota Pekalongan", letters: ["*A", "*H", "*S"] }
+        - { area: "Kabupaten Pekalongan", letters: ["**B", "*K", "*O", "*T"] }
+        - { area: "Batang", letters: ["**C", "*L", "*V"] }
+        - { area: "Pemalang", letters: ["**D", "*I", "*M", "*W"] }
+        - { area: "Kota Tegal", letters: ["**E", "*N", "*Y"] }
+        - { area: "Kabupaten Tegal", letters: ["**F", "*P", "*Q", "*Z"] }
+        - { area: "Brebes", letters: ["**G", "*J", "*R", "*U"] }
+      four_wheel_plus:
+        - { area: "Kota Pekalongan", letters: ["*A", "*H", "*S"] }
+        - { area: "Kabupaten Pekalongan", letters: ["*B", "*K", "*O", "*T"] }
+        - { area: "Batang", letters: ["*C", "*L", "*V"] }
+        - { area: "Pemalang", letters: ["*D", "*I", "*M", "*W"] }
+        - { area: "Kota Tegal", letters: ["*E", "*N", "*Y"] }
+        - { area: "Kabupaten Tegal", letters: ["*F", "*P", "*Q", "*Z"] }
+        - { area: "Brebes", letters: ["*G", "*J", "*R", "*U"] }
+      press_detik_2024:
+        - { area: "Kota Pekalongan", letters: ["*A", "*H", "*S"], relation: same }
+        - { area: "Kabupaten Pekalongan", letters: ["*B", "*K", "*O", "*T"], relation: same }
+        - { area: "Kabupaten Batang", letters: ["*C", "*L", "*V", "*X"], relation: overlaps }
+        - { area: "Kabupaten Pemalang", letters: ["*D", "*I", "*M", "*W"], relation: same }
+        - { area: "Kota Tegal", letters: ["*E", "*N", "*Y"], relation: same }
+        - { area: "Kabupaten Tegal", letters: ["*F", "*P", "*Q", "*Z"], relation: same }
+        - { area: "Kabupaten Brebes", letters: ["**G", "*J", "*R", "*U"], relation: same }
+    H:
+      two_wheel:
+        - { area: "Kota Semarang", letters: ["**A", "*F", "**G", "*H", "*P", "*Q", "*R", "*S", "**W", "*Y", "*Z"] }
+        - { area: "Kota Salatiga", letters: ["**B", "*K", "*O", "*T"] }
+        - { area: "Kabupaten Semarang", letters: ["**C", "*I", "*L", "*V"] }
+        - { area: "Kendal", letters: ["**D", "*M", "*U"] }
+        - { area: "Demak", letters: ["**E", "*J", "*N"] }
+      four_wheel_plus:
+        - { area: "Kota Semarang", letters: ["*A", "AAG–FAG", "*O", "*X"] }
+        - { area: "Kota Salatiga", letters: ["*B", "*K", "*T"] }
+        - { area: "Kabupaten Semarang", letters: ["*C", "*I", "*L", "*V"] }
+        - { area: "Kendal", letters: ["*D", "*M", "*U"] }
+        - { area: "Demak", letters: ["*E", "*J", "*N"] }
+      press_detik_2024:
+        - { area: "Kota Semarang", letters: ["*A", "*F", "**G", "*H", "*P", "*Q", "*R", "*S", "**W", "*X", "*Y", "*Z"], relation: overlaps }
+        - { area: "Kota Salatiga", letters: ["*B", "*K", "*O", "*T"], relation: overlaps }
+        - { area: "Kabupaten Semarang", letters: ["**C", "*I", "*L", "*V"], relation: same }
+        - { area: "Kabupaten Kendal", letters: ["**D", "*M", "*U"], relation: same }
+        - { area: "Kabupaten Demak", letters: ["**E", "*J", "*N"], relation: same }
+    K:
+      two_wheel:
+        - { area: "Pati", letters: ["**A", "*G", "*H", "*S", "*U"] }
+        - { area: "Kudus", letters: ["**B", "*K", "*O", "*R", "*T"] }
+        - { area: "Jepara", letters: ["**C", "*L", "*Q", "*V"] }
+        - { area: "Rembang", letters: ["**D", "*M", "*W"] }
+        - { area: "Blora", letters: ["**E", "*N", "*Y"] }
+        - { area: "Grobogan", letters: ["**F", "*J", "*P", "*Z"] }
+      four_wheel_plus:
+        - { area: "Pati", letters: ["*A", "*G", "*H", "*S"] }
+        - { area: "Kudus", letters: ["*B", "*K", "*O", "*R"] }
+        - { area: "Jepara", letters: ["*C", "*L", "*Q", "*V"] }
+        - { area: "Rembang", letters: ["*D", "*I", "*M", "*W"] }
+        - { area: "Blora", letters: ["*E", "*N", "*Y"] }
+        - { area: "Grobogan", letters: ["*F", "*J", "*P", "*Z"] }
+      press_detik_2024:
+        - { area: "Kabupaten Pati", letters: ["*A", "*G", "*H", "*S", "*U"], relation: overlaps }
+        - { area: "Kabupaten Kudus", letters: ["*B", "*K", "*O", "*R", "*T"], relation: overlaps }
+        - { area: "Kabupaten Jepara", letters: ["**C", "*L", "*Q", "*V"], relation: same }
+        - { area: "Kabupaten Rembang", letters: ["*D", "*I", "*M", "*W"], relation: same }
+        - { area: "Kabupaten Blora", letters: ["*E", "*N", "*X", "*Y"], relation: overlaps }
+        - { area: "Kabupaten Grobogan", letters: ["**F", "*J", "*P", "*Z"], relation: same }
+    L:
+      two_wheel:
+        - { area: "Kota Surabaya", letters: ["A**", "B**", "C**", "D**", "E*", "F*", "G*", "H*", "I*", "J*", "K*", "L*", "M*", "N*", "O*", "P**", "Q*", "R*", "S*", "T*", "U**", "V*", "W*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Surabaya", letters: ["A**", "B**", "C**", "D**"] }
+      press_detik_2024:
+        - { area: "Kota Surabaya", letters: ["A* hingga Z*"], relation: differs }
+    M:
+      two_wheel:
+        - { area: "Pamekasan", letters: ["A*", "B*", "C*", "D*", "E*", "F*"] }
+        - { area: "Bangkalan", letters: ["G*", "H*", "I*", "J*", "K*", "L*", "M*"] }
+        - { area: "Sampang", letters: ["N*", "O*", "P*", "Q*", "R*", "S*"] }
+        - { area: "Sumenep", letters: ["T*", "U*", "V*", "W*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Pamekasan", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Bangkalan", letters: ["G*", "H*", "I*", "J*"] }
+        - { area: "Sampang", letters: ["N*", "O*", "P*", "Q*"] }
+        - { area: "Sumenep", letters: ["T*", "U*", "V*", "W*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Pamekasan", letters: ["A*", "B*", "C*", "D*", "E*", "F*", "G*"], relation: overlaps }
+        - { area: "Kabupaten Bangkalan", letters: ["H*", "I*", "J*", "K*", "L*", "M*", "N*"], relation: overlaps }
+        - { area: "Kabupaten Sampang", letters: ["O*", "P*", "Q*", "R*", "S*", "T*"], relation: overlaps }
+        - { area: "Kabupaten Sumenep", letters: ["U*", "V*", "W*", "X*", "Y*", "Z*"], relation: overlaps }
+    N:
+      two_wheel:
+        - { area: "Kota Malang", letters: ["A**", "B**", "C**", "D**"] }
+        - { area: "Kabupaten Malang", letters: ["E**", "F**", "G**", "H**", "I*"] }
+        - { area: "Kota Batu", letters: ["J*", "K*", "L*"] }
+        - { area: "Kabupaten Probolinggo", letters: ["M*", "N**", "O*"] }
+        - { area: "Kota Probolinggo", letters: ["P**", "Q*", "R*"] }
+        - { area: "Kabupaten Pasuruan", letters: ["T**"] }
+        - { area: "Lumajang", letters: ["U*", "Y**", "Z*"] }
+        - { area: "Kota Pasuruan", letters: ["V**", "W*", "X*"] }
+      four_wheel_plus:
+        - { area: "Kota Malang", letters: ["A**"] }
+        - { area: "Kabupaten Malang", letters: ["E**", "F*", "G*", "H*"] }
+        - { area: "Kota Batu", letters: ["J*", "K*", "L*"] }
+        - { area: "Kabupaten Probolinggo", letters: ["M*", "N*", "O*"] }
+        - { area: "Kota Probolinggo", letters: ["P*", "Q*", "R*"] }
+        - { area: "Kabupaten Pasuruan", letters: ["T*"] }
+        - { area: "Lumajang", letters: ["U*", "Y*", "Z*"] }
+        - { area: "Kota Pasuruan", letters: ["V*", "W*", "X*"] }
+      press_detik_2024:
+        - { area: "Kota Malang", letters: ["A**", "B*", "C*", "E**"], relation: overlaps }
+        - { area: "Kabupaten Malang", letters: ["D**", "F*", "G*", "H*", "I*", "J*"], relation: overlaps }
+        - { area: "Kota Batu", letters: ["K**", "L*"], relation: overlaps }
+        - { area: "Kabupaten Probolinggo", letters: ["M**", "N*", "P*"], relation: overlaps }
+        - { area: "Kota Probolinggo", letters: ["Q**", "R*", "S*"], relation: overlaps }
+        - { area: "Kabupaten Pasuruan", letters: ["O*", "T**", "W*"], relation: overlaps }
+        - { area: "Kota Pasuruan", letters: ["V**", "X*"], relation: overlaps }
+        - { area: "Kabupaten Lumajang", letters: ["U**", "Y*", "Z*"], relation: overlaps }
+    P:
+      two_wheel:
+        - { area: "Bondowoso", letters: ["A*", "B*", "C*"] }
+        - { area: "Situbondo", letters: ["D*", "E*", "F*"] }
+        - { area: "Jember", letters: ["G*", "H*", "I*", "J*", "K*", "L*", "M*", "N*", "O*", "P*"] }
+        - { area: "Banyuwangi", letters: ["Q**", "R*", "S*", "T*", "U*", "V*", "W*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Bondowoso", letters: ["A*", "B*", "C*"] }
+        - { area: "Situbondo", letters: ["D*", "E*", "F*"] }
+        - { area: "Jember", letters: ["G*", "H*", "I*", "J*"] }
+        - { area: "Banyuwangi", letters: ["Q*", "R*", "S*", "T*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Bondowoso", letters: ["A*", "B*", "C*", "D*"], relation: overlaps }
+        - { area: "Kabupaten Situbondo", letters: ["E*", "F*", "G*", "H*", "I*", "J*"], relation: overlaps }
+        - { area: "Kabupaten Jember", letters: ["K*", "L*", "M*", "N*", "O*", "P*", "Q*", "R*", "S*", "T*"], relation: overlaps }
+        - { area: "Kabupaten Banyuwangi", letters: ["U*", "V*", "W*", "X*", "Y*", "Z*"], relation: overlaps }
+    R:
+      two_wheel:
+        - { area: "Banyumas", letters: ["*A", "*E", "*G", "*H", "*J", "*R", "*S"] }
+        - { area: "Cilacap", letters: ["**B", "*F", "*K", "*N", "*P", "*T"] }
+        - { area: "Purbalingga", letters: ["**C", "*L", "*Q", "*U", "*V", "*Z"] }
+        - { area: "Banjarnegara", letters: ["**D", "*I", "*M", "*O", "*W", "*Y"] }
+      four_wheel_plus:
+        - { area: "Banyumas", letters: ["*A", "*E", "*G", "*H"] }
+        - { area: "Cilacap", letters: ["*B", "*F", "*K", "*N"] }
+        - { area: "Purbalingga", letters: ["*C", "*L", "*Q", "*U"] }
+        - { area: "Banjarnegara", letters: ["*D", "*I", "*M", "*O"] }
+      press_detik_2024:
+        - { area: "Kabupaten Banyumas", letters: ["*A", "*E", "*G", "*H", "*J", "*S", "*X"], relation: overlaps }
+        - { area: "Kabupaten Cilacap", letters: ["*B", "*F", "*K", "*N", "*P", "*R", "*T"], relation: overlaps }
+        - { area: "Kabupaten Purbalingga", letters: ["*C", "*L", "*Q", "*U", "*V", "*Z"], relation: overlaps }
+        - { area: "Kabupaten Banjarnegara", letters: ["*D", "*I", "*M", "*O", "*W", "*Y"], relation: overlaps }
+    S:
+      two_wheel:
+        - { area: "Bojonegoro", letters: ["A**", "B*", "C*", "D*"] }
+        - { area: "Tuban", letters: ["E**", "F*", "G*", "H*", "I*"] }
+        - { area: "Lamongan", letters: ["J**", "K*", "L*", "M*"] }
+        - { area: "Kabupaten Mojokerto", letters: ["N**", "P*", "Q*", "R*"] }
+        - { area: "Jombang", letters: ["O**", "W**", "X*", "Y*", "Z*"] }
+        - { area: "Kota Mojokerto", letters: ["S*", "T*", "U*", "V*"] }
+      four_wheel_plus:
+        - { area: "Bojonegoro", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Tuban", letters: ["E*", "F*", "G*", "H*"] }
+        - { area: "Lamongan", letters: ["J*", "K*", "L*", "M*"] }
+        - { area: "Kabupaten Mojokerto", letters: ["N*", "P*", "Q*", "R*"] }
+        - { area: "Jombang", letters: ["O*", "W*", "X*", "Y*"] }
+        - { area: "Kota Mojokerto", letters: ["S*", "T*", "U*", "V*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Bojonegoro", letters: ["A*", "B*", "C*", "D*"], relation: same }
+        - { area: "Kabupaten Tuban", letters: ["E*", "F*", "G*", "H*"], relation: same }
+        - { area: "Kabupaten Lamongan", letters: ["I*", "J*", "K*", "L*"], relation: overlaps }
+        - { area: "Kabupaten Mojokerto", letters: ["M*", "N*", "O*", "P*", "Q*", "R*"], relation: overlaps }
+        - { area: "Kota Mojokerto", letters: ["S*", "T*", "U*", "V*[7]"], relation: overlaps }
+        - { area: "Kabupaten Jombang", letters: ["W*", "X*", "Y*", "Z*[7]"], relation: overlaps }
+    T:
+      two_wheel:
+        - { area: "Purwakarta", letters: ["A*", "B*", "C*", "I*", "J*"] }
+        - { area: "Karawang", letters: ["D*", "E*", "F*", "G*", "H*", "K*", "L*", "M*", "N*", "O*", "P*", "Q*", "R*", "S*"] }
+        - { area: "Subang", letters: ["T**", "U*", "V*", "W*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Purwakarta", letters: ["A*", "B*", "C*", "I*", "J*"] }
+        - { area: "Karawang", letters: ["D*", "E*", "F*", "G*", "H*", "K*", "R*"] }
+        - { area: "Subang", letters: ["T*", "U*", "V*", "W*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Purwakarta", letters: ["A*", "B*", "C*"], relation: overlaps }
+        - { area: "Kabupaten Karawang", letters: ["D*", "E*", "F*", "G*", "H*", "I*", "J*", "K*", "L*", "M*", "N*", "O*", "P*", "Q*", "R*", "S*"], relation: overlaps }
+        - { area: "Sebagian Kabupaten Bekasi & Subang", letters: ["T*", "U*", "V*", "W*", "X*", "Y*", "Z*"], relation: no-wikipedia-row }
+    W:
+      two_wheel:
+        - { area: "Gresik", letters: ["A*", "B*", "C*", "D*", "E*", "F*", "G*", "H*", "I*", "J*", "K*", "L*", "M*"] }
+        - { area: "Sidoarjo", letters: ["N**", "O*", "P*", "Q*", "R*", "S*", "T*", "U*", "V*", "W*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Gresik", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Sidoarjo", letters: ["N*", "O*", "P*", "Q*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Gresik", letters: ["A*", "B*", "C*", "D*", "E*", "F*", "G*", "H*", "I*", "J*", "K*", "L*", "M*"], relation: same }
+        - { area: "Kabupaten Sidoarjo", letters: ["N*", "O*", "P*", "Q*", "R*", "S*", "T*", "U*", "V*", "W*", "X*", "Y*", "Z*"], relation: overlaps }
+    Z:
+      two_wheel:
+        - { area: "Sumedang", letters: ["A**", "B*", "C*"] }
+        - { area: "Garut", letters: ["D**", "E*", "F*", "G**"] }
+        - { area: "Kota Tasikmalaya", letters: ["H**", "I*", "J*", "K*", "L*", "M*"] }
+        - { area: "Kabupaten Tasikmalaya", letters: ["N*", "O*", "P*", "Q*", "R*", "S*"] }
+        - { area: "Ciamis", letters: ["T**", "V*", "W*"] }
+        - { area: "Pangandaran", letters: ["U*"] }
+        - { area: "Kota Banjar", letters: ["X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Sumedang", letters: ["A*", "B*", "C*"] }
+        - { area: "Garut", letters: ["D*", "E*", "F*", "G*"] }
+        - { area: "Kota Tasikmalaya", letters: ["H*", "I*", "J*", "K*"] }
+        - { area: "Kabupaten Tasikmalaya", letters: ["N*", "O*", "P*", "Q*"] }
+        - { area: "Ciamis", letters: ["T*", "V*", "W*"] }
+        - { area: "Pangandaran", letters: ["U*"] }
+        - { area: "Kota Banjar", letters: ["X*", "Y*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Sumedang", letters: ["A*", "B*", "C*"], relation: same }
+        - { area: "Kabupaten Garut", letters: ["D**", "E*", "F*", "G*"], relation: overlaps }
+        - { area: "Kota Tasikmalaya", letters: ["H*", "I*", "J*"], relation: overlaps }
+        - { area: "Kabupaten Tasikmalaya", letters: ["K*", "L*", "M*", "N*", "O*", "P*", "Q*", "R*", "S*"], relation: overlaps }
+        - { area: "Kabupaten Ciamis", letters: ["T*", "U*", "V*"], relation: overlaps }
+        - { area: "Kabupaten Pangandaran", letters: ["W*"], relation: differs }
+        - { area: "Kota Banjar", letters: ["X*", "Y*", "Z*"], relation: same }
+    AA:
+      two_wheel:
+        - { area: "Kota Magelang", letters: ["*A", "*H", "*S", "*U"] }
+        - { area: "Kabupaten Magelang", letters: ["**B", "*G", "*K", "*O", "*T"] }
+        - { area: "Purworejo", letters: ["**C", "*L", "*Q", "*V"] }
+        - { area: "Kebumen", letters: ["**D", "*J", "**M", "*W"] }
+        - { area: "Temanggung", letters: ["**E", "*N", "*Y"] }
+        - { area: "Wonosobo", letters: ["**F", "*P", "*Z"] }
+      four_wheel_plus:
+        - { area: "Kota Magelang", letters: ["*A", "*H", "*S", "*U"] }
+        - { area: "Kabupaten Magelang", letters: ["*B", "*G", "*K", "*O"] }
+        - { area: "Purworejo", letters: ["*C", "*L", "*Q", "*V"] }
+        - { area: "Kebumen", letters: ["*D", "*J", "*M", "*W"] }
+        - { area: "Temanggung", letters: ["*E", "*N", "*Y"] }
+        - { area: "Wonosobo", letters: ["*F", "*P", "*Z"] }
+      press_detik_2024:
+        - { area: "Kota Magelang", letters: ["*A", "*H", "*S", "*U"], relation: same }
+        - { area: "Kabupaten Magelang", letters: ["*B", "*G", "*K", "*O", "*T"], relation: overlaps }
+        - { area: "Kabupaten Purworejo", letters: ["*C", "*L", "*Q", "*V"], relation: same }
+        - { area: "Kabupaten Kebumen", letters: ["*D", "*J", "*M", "*W"], relation: same }
+        - { area: "Kabupaten Temanggung", letters: ["*E", "*N", "*Y"], relation: same }
+        - { area: "Kabupaten Wonosobo", letters: ["*F", "*P", "*Z"], relation: same }
+    AB:
+      two_wheel:
+        - { area: "Kota Yogyakarta", letters: ["A*", "F*", "H*", "I*", "S*"] }
+        - { area: "Bantul", letters: ["B**", "G*", "J*", "K*", "T*"] }
+        - { area: "Kulon Progo", letters: ["C*", "L*", "O*", "P*", "V*"] }
+        - { area: "Gunungkidul", letters: ["D*", "M*", "R*", "W*"] }
+        - { area: "Sleman", letters: ["E**", "N*", "Q*", "U*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Yogyakarta", letters: ["A*", "F*", "H*", "I*"] }
+        - { area: "Bantul", letters: ["B*", "G*", "J*", "K*"] }
+        - { area: "Kulon Progo", letters: ["C*", "L*", "O*", "P*"] }
+        - { area: "Gunungkidul", letters: ["D*", "M*", "R*", "W*"] }
+        - { area: "Sleman", letters: ["E*", "N*", "Q*", "U*"] }
+      press_detik_2024:
+        - { area: "Kota Yogyakarta", letters: ["*A", "*F", "*H", "*I", "*S"], relation: differs }
+        - { area: "Kabupaten Bantul", letters: ["*B", "*G", "*J", "*K", "*T"], relation: differs }
+        - { area: "Kabupaten Kulon Progo", letters: ["*C", "*L", "*P", "*V"], relation: differs }
+        - { area: "Kabupaten GunungKidul", letters: ["*D", "*M", "*W"], relation: differs }
+        - { area: "Kabupaten Sleman", letters: ["*E", "*N", "*Q", "*U", "*Y", "*Z"], relation: differs }
+    AD:
+      two_wheel:
+        - { area: "Kota Surakarta", letters: ["**A", "*H", "*S", "*U"] }
+        - { area: "Sukoharjo", letters: ["**B", "*K", "*O", "*T"] }
+        - { area: "Klaten", letters: ["**C", "*J", "*L", "*Q", "*V"] }
+        - { area: "Boyolali", letters: ["**D", "*M", "*W"] }
+        - { area: "Sragen", letters: ["**E", "*N", "*Y"] }
+        - { area: "Karanganyar", letters: ["**F", "*P", "*Z"] }
+        - { area: "Wonogiri", letters: ["**G", "*I", "*R"] }
+      four_wheel_plus:
+        - { area: "Kota Surakarta", letters: ["*A", "*H", "*S", "*U"] }
+        - { area: "Sukoharjo", letters: ["*B", "*K", "*O", "*T"] }
+        - { area: "Klaten", letters: ["*C", "*J", "*L", "*Q"] }
+        - { area: "Boyolali", letters: ["*D", "*M", "*W"] }
+        - { area: "Sragen", letters: ["*E", "*N", "*Y"] }
+        - { area: "Karanganyar", letters: ["*F", "*P", "*Z"] }
+        - { area: "Wonogiri", letters: ["*G", "*I", "*R"] }
+      press_detik_2024:
+        - { area: "Kota Surakarta", letters: ["**A", "*H", "*S", "*U"], relation: same }
+        - { area: "Kabupaten Sukoharjo", letters: ["**B", "*K", "*O", "*T"], relation: same }
+        - { area: "Kabupaten Klaten", letters: ["**C", "*L", "*J", "*Q", "*V"], relation: same }
+        - { area: "Kabupaten Boyolali", letters: ["**D", "*M", "*W"], relation: same }
+        - { area: "Kabupaten Sragen", letters: ["**E", "*N", "*Y"], relation: same }
+        - { area: "Kabupaten Karanganyar", letters: ["**F", "*P", "*Z"], relation: same }
+        - { area: "Kabupaten Wonogiri", letters: ["**G", "*I", "*R"], relation: same }
+    AE:
+      two_wheel:
+        - { area: "Kota Madiun", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Kabupaten Madiun", letters: ["E*", "F*", "G*", "H*", "I*"] }
+        - { area: "Ngawi", letters: ["J**", "K*", "L*", "M*"] }
+        - { area: "Magetan", letters: ["N*", "O*", "P*", "Q*", "R*"] }
+        - { area: "Ponorogo", letters: ["S**", "T*", "U*", "V*", "W*"] }
+        - { area: "Pacitan", letters: ["X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Madiun", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Kabupaten Madiun", letters: ["E*", "F*", "G*", "H*"] }
+        - { area: "Ngawi", letters: ["J*", "K*", "L*", "M*"] }
+        - { area: "Magetan", letters: ["N*", "O*", "P*", "Q*"] }
+        - { area: "Ponorogo", letters: ["S*", "T*", "U*", "V*"] }
+        - { area: "Pacitan", letters: ["X*", "Y*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kota Madiun", letters: ["A*", "B*", "C*"], relation: overlaps }
+        - { area: "Kabupaten Madiun", letters: ["D*", "E*", "F*", "G*"], relation: overlaps }
+        - { area: "Kabupaten Ngawi", letters: ["H*", "I*", "J*", "K*", "L*"], relation: overlaps }
+        - { area: "Kabupaten Magetan", letters: ["M*", "N*", "O*", "P*", "Q*", "R*"], relation: overlaps }
+        - { area: "Kabupaten Ponorogo", letters: ["S*", "T*", "U*", "V*"], relation: same }
+        - { area: "Kabupaten Pacitan", letters: ["W*", "X*", "Y*", "Z*"], relation: overlaps }
+    AG:
+      two_wheel:
+        - { area: "Kota Kediri", letters: ["A**", "B*", "C*", "D*"] }
+        - { area: "Kabupaten Kediri", letters: ["E**", "F*", "G*", "H*", "J*", "O*"] }
+        - { area: "Kabupaten Blitar", letters: ["I*", "K**", "L*", "M*", "O**", "P**"] }
+        - { area: "Kota Blitar", letters: ["K**", "N*", "Q*"] }
+        - { area: "Tulungagung", letters: ["R**", "S*", "T*"] }
+        - { area: "Nganjuk", letters: ["U*", "V**", "W*", "X*"] }
+        - { area: "Trenggalek", letters: ["Y**", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Kediri", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Kabupaten Kediri", letters: ["E*", "F*", "G*", "H*"] }
+        - { area: "Kabupaten Blitar", letters: ["I*", "L*", "M*"] }
+        - { area: "Kota Blitar", letters: ["K*", "N*", "Q*"] }
+        - { area: "Tulungagung", letters: ["R*", "S*", "T*"] }
+        - { area: "Nganjuk", letters: ["U*", "V*", "W*", "X*"] }
+        - { area: "Trenggalek", letters: ["Y*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kota Kediri", letters: ["A**", "B*", "C*"], relation: overlaps }
+        - { area: "Kabupaten Kediri", letters: ["D**", "E*", "F*", "G*", "H*", "J*"], relation: overlaps }
+        - { area: "Kabupaten Blitar", letters: ["I*", "K**", "L*", "M*", "N*"], relation: overlaps }
+        - { area: "Kabupaten Tulungagung", letters: ["O*", "R**", "S*", "T*"], relation: overlaps }
+        - { area: "Kota Blitar", letters: ["P**", "Q*"], relation: overlaps }
+        - { area: "Kabupaten Nganjuk", letters: ["U**", "V*", "W*", "X*"], relation: overlaps }
+        - { area: "Kabupaten Trenggalek", letters: ["Y**", "Z*"], relation: same }
+    BA:
+      two_wheel:
+        - { area: "Kota Padang", letters: ["A**", "B*", "O*", "Q**"] }
+        - { area: "Lima Puluh Kota", letters: ["C**", "X*"] }
+        - { area: "Pasaman", letters: ["D**"] }
+        - { area: "Tanah Datar", letters: ["E**"] }
+        - { area: "Padang Pariaman", letters: ["F**"] }
+        - { area: "Pesisir Selatan", letters: ["G**", "I*"] }
+        - { area: "Solok", letters: ["H**"] }
+        - { area: "Kota Sawahlunto", letters: ["J**"] }
+        - { area: "Sijunjung", letters: ["K**"] }
+        - { area: "Kota Bukittinggi", letters: ["L**"] }
+        - { area: "Kota Payakumbuh", letters: ["M**"] }
+        - { area: "Kota Padang Panjang", letters: ["N**"] }
+        - { area: "Kota Solok", letters: ["P**"] }
+        - { area: "Pasaman Barat", letters: ["S*"] }
+        - { area: "Agam", letters: ["T**", "Z*"] }
+        - { area: "Kepulauan Mentawai", letters: ["U**"] }
+        - { area: "Dharmasraya", letters: ["V**"] }
+        - { area: "Kota Pariaman", letters: ["W**"] }
+        - { area: "Solok Selatan", letters: ["Y**"] }
+      four_wheel_plus:
+        - { area: "Kota Padang", letters: ["A**"] }
+        - { area: "Lima Puluh Kota", letters: ["C*", "X*"] }
+        - { area: "Pasaman", letters: ["D*"] }
+        - { area: "Tanah Datar", letters: ["E*"] }
+        - { area: "Padang Pariaman", letters: ["F*"] }
+        - { area: "Pesisir Selatan", letters: ["G*", "I*"] }
+        - { area: "Solok", letters: ["H*"] }
+        - { area: "Kota Sawahlunto", letters: ["J*"] }
+        - { area: "Sijunjung", letters: ["K*"] }
+        - { area: "Kota Bukittinggi", letters: ["L*"] }
+        - { area: "Kota Payakumbuh", letters: ["M*"] }
+        - { area: "Kota Padang Panjang", letters: ["N*"] }
+        - { area: "Kota Solok", letters: ["P*"] }
+        - { area: "Pasaman Barat", letters: ["S*"] }
+        - { area: "Agam", letters: ["T*", "Z*"] }
+        - { area: "Kepulauan Mentawai", letters: ["U*"] }
+        - { area: "Dharmasraya", letters: ["V*"] }
+        - { area: "Kota Pariaman", letters: ["W*"] }
+        - { area: "Solok Selatan", letters: ["Y*"] }
+      press_detik_2024:
+        - { area: "Kota Padang", letters: ["A*", "B*", "O*", "Q*", "R*"], relation: overlaps }
+        - { area: "Kabupaten Lima Puluh Kota", letters: ["C*", "X*"], relation: same }
+        - { area: "Kabupaten Pasaman", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Tanah Datar", letters: ["E*"], relation: same }
+        - { area: "Kabupaten Padang Pariaman", letters: ["F*"], relation: same }
+        - { area: "Kabupaten Pesisir Selatan", letters: ["G*", "I*"], relation: same }
+        - { area: "Kabupaten Solok", letters: ["H*"], relation: same }
+        - { area: "Kota Sawahlunto", letters: ["J*"], relation: same }
+        - { area: "Kabupaten Sijunjung", letters: ["K*"], relation: same }
+        - { area: "Kota Bukittinggi", letters: ["L*"], relation: same }
+        - { area: "Kota Payakumbuh", letters: ["M*"], relation: same }
+        - { area: "Kota Padang Panjang", letters: ["N*"], relation: same }
+        - { area: "Kota Solok", letters: ["P*"], relation: same }
+        - { area: "Kabupaten Pasaman Barat", letters: ["S*"], relation: same }
+        - { area: "Kabupaten Agam", letters: ["T*", "Z*"], relation: same }
+        - { area: "Kabupaten Kepulauan Mentawai", letters: ["U*"], relation: same }
+        - { area: "Kabupaten Dharmasraya", letters: ["V*"], relation: same }
+        - { area: "Kota Pariaman", letters: ["W*"], relation: same }
+        - { area: "Kabupaten Solok Selatan", letters: ["Y*"], relation: same }
+    BB:
+      two_wheel:
+        - { area: "Kota Sibolga", letters: ["A*", "L*", "N*"] }
+        - { area: "Tapanuli Utara", letters: ["B*"] }
+        - { area: "Samosir", letters: ["C*"] }
+        - { area: "Humbang Hasundutan", letters: ["D*"] }
+        - { area: "Toba", letters: ["E*"] }
+        - { area: "Kota Padang Sidempuan", letters: ["F*", "H*"] }
+        - { area: "Tapanuli Selatan", letters: ["G*"] }
+        - { area: "Padang Lawas Utara", letters: ["J*"] }
+        - { area: "Padang Lawas", letters: ["K*"] }
+        - { area: "Tapanuli Tengah", letters: ["M*"] }
+        - { area: "Nias Utara", letters: ["Q*"] }
+        - { area: "Mandailing Natal", letters: ["R*"] }
+        - { area: "Kota Gunungsitoli", letters: ["T*"] }
+        - { area: "Nias Barat", letters: ["U*"] }
+        - { area: "Nias", letters: ["V*"] }
+        - { area: "Nias Selatan", letters: ["W*"] }
+        - { area: "Dairi", letters: ["Y*"] }
+        - { area: "Pakpak Bharat", letters: ["Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Sibolga", letters: ["A*", "L*"] }
+        - { area: "Tapanuli Utara", letters: ["B*"] }
+        - { area: "Samosir", letters: ["C*"] }
+        - { area: "Humbang Hasundutan", letters: ["D*"] }
+        - { area: "Toba", letters: ["E*"] }
+        - { area: "Kota Padang Sidempuan", letters: ["F*", "H*"] }
+        - { area: "Tapanuli Selatan", letters: ["G*"] }
+        - { area: "Padang Lawas Utara", letters: ["J*"] }
+        - { area: "Padang Lawas", letters: ["K*"] }
+        - { area: "Tapanuli Tengah", letters: ["M*"] }
+        - { area: "Nias Utara", letters: ["Q*"] }
+        - { area: "Mandailing Natal", letters: ["R*"] }
+        - { area: "Kota Gunungsitoli", letters: ["T*"] }
+        - { area: "Nias Barat", letters: ["U*"] }
+        - { area: "Nias", letters: ["V*"] }
+        - { area: "Nias Selatan", letters: ["W*"] }
+        - { area: "Dairi", letters: ["Y*"] }
+        - { area: "Pakpak Bharat", letters: ["Z*"] }
+      press_detik_2024:
+        - { area: "Kota Sibolga", letters: ["A*", "L*", "M*"], relation: overlaps }
+        - { area: "Kabupaten Tapanuli Utara", letters: ["B*"], relation: same }
+        - { area: "Kabupaten Samosir", letters: ["C*"], relation: same }
+        - { area: "Kabupaten Humbang Hasundutan", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Toba Samosir", letters: ["E*"], relation: no-wikipedia-row }
+        - { area: "Kota Padang Sidempuan", letters: ["F*", "H*"], relation: same }
+        - { area: "Kabupaten Tapanuli Selatan", letters: ["G*"], relation: same }
+        - { area: "Kabupaten Padang Lawas", letters: ["J*"], relation: differs }
+        - { area: "Kabupaten Padang Lawas Utara", letters: ["K*"], relation: differs }
+        - { area: "Kabupaten Tapanuli Tengah", letters: ["N*"], relation: differs }
+        - { area: "Kabupaten Nias Utara", letters: ["Q*"], relation: same }
+        - { area: "Kabupaten Mandailing Natal", letters: ["R*"], relation: same }
+        - { area: "Kota Gunungsitoli", letters: ["T*"], relation: same }
+        - { area: "Kabupaten Nias Barat", letters: ["U*"], relation: same }
+        - { area: "Kabupaten Nias", letters: ["V*"], relation: same }
+        - { area: "Kabupaten Nias Selatan", letters: ["W*"], relation: same }
+        - { area: "Kabupaten Dairi", letters: ["Y*"], relation: same }
+        - { area: "Kabupaten Pakpak Bharat", letters: ["Z*"], relation: same }
+    BD:
+      two_wheel:
+        - { area: "Kota Bengkulu", letters: ["A*", "C*", "E*", "I*", "U*", "V*"] }
+        - { area: "Bengkulu Selatan", letters: ["B*", "M*"] }
+        - { area: "Bengkulu Utara", letters: ["D*", "Q*", "S*"] }
+        - { area: "Rejang Lebong", letters: ["F*", "K*"] }
+        - { area: "Kepahiang", letters: ["G*"] }
+        - { area: "Lebong", letters: ["H*"] }
+        - { area: "Muko Muko", letters: ["N*", "T*"] }
+        - { area: "Seluma", letters: ["P*", "R*"] }
+        - { area: "Kaur", letters: ["W*"] }
+        - { area: "Bengkulu Tengah", letters: ["Y*"] }
+      four_wheel_plus:
+        - { area: "Kota Bengkulu", letters: ["A*", "C*", "E*", "I*"] }
+        - { area: "Bengkulu Selatan", letters: ["B*", "M*"] }
+        - { area: "Bengkulu Utara", letters: ["D*", "Q*", "S*"] }
+        - { area: "Rejang Lebong", letters: ["F*", "K*"] }
+        - { area: "Kepahiang", letters: ["G*"] }
+        - { area: "Lebong", letters: ["H*"] }
+        - { area: "Muko Muko", letters: ["N*", "T*"] }
+        - { area: "Seluma", letters: ["P*", "R*"] }
+        - { area: "Kaur", letters: ["W*"] }
+        - { area: "Bengkulu Tengah", letters: ["Y*"] }
+      press_detik_2024:
+        - { area: "Kota Bengkulu", letters: ["A*", "C*", "E*", "L*"], relation: overlaps }
+        - { area: "Kabupaten Bengkulu Selatan", letters: ["B*", "M*"], relation: same }
+        - { area: "Kabupaten Bengkulu Utara", letters: ["D*", "S*"], relation: overlaps }
+        - { area: "Kabupaten Kepahiang", letters: ["G*"], relation: same }
+        - { area: "Kabupaten Lebong", letters: ["H*"], relation: same }
+        - { area: "Kabupaten Rejang Lebong", letters: ["K*"], relation: overlaps }
+        - { area: "Kabupaten Muko Muko", letters: ["N*"], relation: overlaps }
+        - { area: "Kabupaten Seluma", letters: ["P*"], relation: overlaps }
+        - { area: "Kabupaten Kaur", letters: ["W*"], relation: same }
+        - { area: "Kabupaten Bengkulu Tengah", letters: ["Y*"], relation: same }
+    BE:
+      two_wheel:
+        - { area: "Kota Bandar Lampung", letters: ["A**", "B*", "C*"] }
+        - { area: "Lampung Selatan", letters: ["D**", "E*", "O*"] }
+        - { area: "Kota Metro", letters: ["F**"] }
+        - { area: "Lampung Tengah", letters: ["G**", "H*", "I*"] }
+        - { area: "Lampung Utara", letters: ["J**", "K*"] }
+        - { area: "Mesuji", letters: ["L**"] }
+        - { area: "Lampung Barat", letters: ["M**"] }
+        - { area: "Lampung Timur", letters: ["N**", "P*"] }
+        - { area: "Tulang Bawang Barat", letters: ["Q**"] }
+        - { area: "Pesawaran", letters: ["R**"] }
+        - { area: "Tulang Bawang", letters: ["S**", "T*"] }
+        - { area: "Pringsewu", letters: ["U**"] }
+        - { area: "Tanggamus", letters: ["V**", "Z*"] }
+        - { area: "Way Kanan", letters: ["W**"] }
+        - { area: "Pesisir Barat", letters: ["X**"] }
+      four_wheel_plus:
+        - { area: "Kota Bandar Lampung", letters: ["A**"] }
+        - { area: "Lampung Selatan", letters: ["D*", "E*", "O*"] }
+        - { area: "Kota Metro", letters: ["F*"] }
+        - { area: "Lampung Tengah", letters: ["G*", "H*", "I*"] }
+        - { area: "Lampung Utara", letters: ["J*", "K*"] }
+        - { area: "Mesuji", letters: ["L*"] }
+        - { area: "Lampung Barat", letters: ["M*"] }
+        - { area: "Lampung Timur", letters: ["N*", "P*"] }
+        - { area: "Tulang Bawang Barat", letters: ["Q*"] }
+        - { area: "Pesawaran", letters: ["R*"] }
+        - { area: "Tulang Bawang", letters: ["S*", "T*"] }
+        - { area: "Pringsewu", letters: ["U*"] }
+        - { area: "Tanggamus", letters: ["V*", "Z*"] }
+        - { area: "Way Kanan", letters: ["W*"] }
+        - { area: "Pesisir Barat", letters: ["X*"] }
+      press_detik_2024:
+        - { area: "Kota Bandar Lampung", letters: ["A**", "B*", "C*", "Y**"], relation: overlaps }
+        - { area: "Kabupaten Lampung Selatan", letters: ["D**", "E*", "O*"], relation: same }
+        - { area: "Kota Metro", letters: ["F**"], relation: same }
+        - { area: "Kabupaten Lampung Tengah", letters: ["G**", "H*", "I*"], relation: same }
+        - { area: "Kabupaten Lampung Utara", letters: ["J**", "K*"], relation: same }
+        - { area: "Kabupaten Mesuji", letters: ["L**"], relation: same }
+        - { area: "Kabupaten Lampung Barat", letters: ["M**"], relation: same }
+        - { area: "Kabupaten Lampung Timur", letters: ["N**", "P*"], relation: same }
+        - { area: "Kabupaten Tulang Bawang Barat", letters: ["Q**"], relation: same }
+        - { area: "Kabupaten Pesawaran", letters: ["R**"], relation: same }
+        - { area: "Kabupaten Tulang Bawang", letters: ["S**", "T*"], relation: same }
+        - { area: "Kabupaten Tanggamus", letters: ["V**", "Z*"], relation: same }
+        - { area: "Kabupaten Pringsewu", letters: ["U**"], relation: same }
+        - { area: "Kabupaten WayKanan", letters: ["W**"], relation: same }
+        - { area: "Kabupaten Pesisir Barat", letters: ["X**"], relation: same }
+    BG:
+      two_wheel:
+        - { area: "Kota Palembang", letters: ["A**", "I*", "M*", "N*", "O*", "R*", "U*", "Z*"] }
+        - { area: "Musi Banyuasin", letters: ["B**"] }
+        - { area: "Kota Prabumulih", letters: ["C*"] }
+        - { area: "Muara Enim", letters: ["D**"] }
+        - { area: "Lahat", letters: ["E**"] }
+        - { area: "Ogan Komering Ulu", letters: ["F**"] }
+        - { area: "Musi Rawas", letters: ["G**"] }
+        - { area: "Kota Lubuk Linggau", letters: ["H**"] }
+        - { area: "Banyuasin", letters: ["J**"] }
+        - { area: "Ogan Komering Ilir", letters: ["K**"] }
+        - { area: "Penukal Abab Lematang Ilir", letters: ["P**"] }
+        - { area: "Musi Rawas Utara", letters: ["Q**"] }
+        - { area: "Empat Lawang", letters: ["S*"] }
+        - { area: "Ogan Ilir", letters: ["T**"] }
+        - { area: "Ogan Komering Ulu Selatan", letters: ["V*"] }
+        - { area: "Kota Pagaralam", letters: ["W**"] }
+        - { area: "Ogan Komering Ulu Timur", letters: ["Y**"] }
+      four_wheel_plus:
+        - { area: "Kota Palembang", letters: ["A**"] }
+        - { area: "Musi Banyuasin", letters: ["B*"] }
+        - { area: "Kota Prabumulih", letters: ["C*"] }
+        - { area: "Muara Enim", letters: ["D*"] }
+        - { area: "Lahat", letters: ["E*"] }
+        - { area: "Ogan Komering Ulu", letters: ["F*"] }
+        - { area: "Musi Rawas", letters: ["G*"] }
+        - { area: "Kota Lubuk Linggau", letters: ["H*"] }
+        - { area: "Banyuasin", letters: ["J*"] }
+        - { area: "Ogan Komering Ilir", letters: ["K*"] }
+        - { area: "Penukal Abab Lematang Ilir", letters: ["P*"] }
+        - { area: "Musi Rawas Utara", letters: ["Q*"] }
+        - { area: "Empat Lawang", letters: ["S*"] }
+        - { area: "Ogan Ilir", letters: ["T*"] }
+        - { area: "Ogan Komering Ulu Selatan", letters: ["V*"] }
+        - { area: "Kota Pagaralam", letters: ["W*"] }
+        - { area: "Ogan Komering Ulu Timur", letters: ["Y*"] }
+      press_detik_2024:
+        - { area: "Kota Palembang", letters: ["A**", "I*", "L**", "M*", "N*", "P*", "Q*", "R*", "U*", "X*", "Z*"], relation: overlaps }
+        - { area: "Kabupaten Musi Banyuasin", letters: ["B**"], relation: same }
+        - { area: "Kota Prabumulih", letters: ["C**"], relation: differs }
+        - { area: "Kabupaten Muara Enim", letters: ["D**"], relation: same }
+        - { area: "Kabupaten Lahat", letters: ["E**"], relation: same }
+        - { area: "Kabupaten Ogan Komering Ulu", letters: ["F**"], relation: same }
+        - { area: "Kabupaten Musi Rawas", letters: ["G**"], relation: same }
+        - { area: "Kota Lubuk Linggau", letters: ["H**"], relation: same }
+        - { area: "Kabupaten Banyuasin", letters: ["J**"], relation: same }
+        - { area: "Kabupaten Ogan Komering Ilir", letters: ["K**"], relation: same }
+        - { area: "Kabupaten Penukal Abab Lematang Ilir", letters: ["O**"], relation: differs }
+        - { area: "Kabupaten Empat Lawang", letters: ["S**"], relation: differs }
+        - { area: "Kabupaten Ogan Ilir", letters: ["T**"], relation: same }
+        - { area: "Kabupaten Ogan Komering Ulu Selatan", letters: ["V**"], relation: differs }
+        - { area: "Kota Pagaralam", letters: ["W**"], relation: same }
+        - { area: "Kabupaten Ogan Komering Ulu Timur", letters: ["Y**"], relation: same }
+    BH:
+      two_wheel:
+        - { area: "Kota Jambi", letters: ["A*", "H*", "M*", "N*", "Y*", "Z*"] }
+        - { area: "Batanghari", letters: ["B*", "V*"] }
+        - { area: "Tebo", letters: ["C*", "W*"] }
+        - { area: "Kerinci", letters: ["D*"] }
+        - { area: "Tanjung Jabung Barat", letters: ["E*", "O*"] }
+        - { area: "Merangin", letters: ["F*", "P*", "X*"] }
+        - { area: "Muaro Jambi", letters: ["G*", "I*"] }
+        - { area: "Tanjung Jabung Timur", letters: ["J*", "T*"] }
+        - { area: "Bungo", letters: ["K*", "U*"] }
+        - { area: "Sarolangun", letters: ["Q*", "S*"] }
+        - { area: "Kota Sungai Penuh", letters: ["R*"] }
+      four_wheel_plus:
+        - { area: "Kota Jambi", letters: ["A*", "H*", "M*", "N*"] }
+        - { area: "Batanghari", letters: ["B*", "V*"] }
+        - { area: "Tebo", letters: ["C*", "W*"] }
+        - { area: "Kerinci", letters: ["D*"] }
+        - { area: "Tanjung Jabung Barat", letters: ["E*", "O*"] }
+        - { area: "Merangin", letters: ["F*", "P*", "X*"] }
+        - { area: "Muaro Jambi", letters: ["G*", "I*"] }
+        - { area: "Tanjung Jabung Timur", letters: ["J*", "T*"] }
+        - { area: "Bungo", letters: ["K*", "U*"] }
+        - { area: "Sarolangun", letters: ["Q*", "S*"] }
+        - { area: "Kota Sungai Penuh", letters: ["R*"] }
+      press_detik_2024:
+        - { area: "Kota Jambi", letters: ["A*", "L*", "M*", "N*", "Y*", "Z*"], relation: overlaps }
+        - { area: "Kabupaten Batanghari", letters: ["B*", "V*"], relation: same }
+        - { area: "Kabupaten Tebo", letters: ["C*", "W*"], relation: same }
+        - { area: "Kabupaten Kerinci", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Tanjung Jabung Barat", letters: ["E*"], relation: overlaps }
+        - { area: "Kabupaten Merangin", letters: ["F*", "P*"], relation: overlaps }
+        - { area: "Kabupaten Muaro Jambi", letters: ["G*", "H*"], relation: overlaps }
+        - { area: "Kabupaten Bungo", letters: ["K*", "U*"], relation: same }
+        - { area: "Kota Sungai Penuh", letters: ["R*"], relation: same }
+        - { area: "Kabupaten Sarolangun", letters: ["Q*", "S*"], relation: same }
+        - { area: "Kabupaten Tanjung Jabung Timur", letters: ["T*"], relation: overlaps }
+    BK:
+      two_wheel:
+        - { area: "Kota Medan", letters: ["A**", "B*", "C*", "D*", "E*", "F*", "G*", "H*", "I*", "K**", "L**", "U*"] }
+        - { area: "Labuhanbatu Utara", letters: ["J**"] }
+        - { area: "Deli Serdang", letters: ["M**"] }
+        - { area: "Kota Tebing Tinggi", letters: ["N**"] }
+        - { area: "Batubara", letters: ["O**"] }
+        - { area: "Langkat", letters: ["P**"] }
+        - { area: "Kota Tanjung Balai", letters: ["Q**"] }
+        - { area: "Kota Binjai", letters: ["R**"] }
+        - { area: "Karo", letters: ["S**"] }
+        - { area: "Simalungun", letters: ["T**"] }
+        - { area: "Asahan", letters: ["V**"] }
+        - { area: "Kota Pematang Siantar", letters: ["W**"] }
+        - { area: "Serdang Bedagai", letters: ["X**"] }
+        - { area: "Labuhanbatu", letters: ["Y**"] }
+        - { area: "Labuhanbatu Selatan", letters: ["Z**"] }
+      four_wheel_plus:
+        - { area: "Kota Medan", letters: ["A**", "L**"] }
+        - { area: "Labuhanbatu Utara", letters: ["J*"] }
+        - { area: "Deli Serdang", letters: ["M**"] }
+        - { area: "Kota Tebing Tinggi", letters: ["N*"] }
+        - { area: "Batubara", letters: ["O*"] }
+        - { area: "Langkat", letters: ["P*"] }
+        - { area: "Kota Tanjung Balai", letters: ["Q*"] }
+        - { area: "Kota Binjai", letters: ["R*"] }
+        - { area: "Karo", letters: ["S**"] }
+        - { area: "Simalungun", letters: ["T*"] }
+        - { area: "Asahan", letters: ["V**"] }
+        - { area: "Kota Pematang Siantar", letters: ["W*"] }
+        - { area: "Serdang Bedagai", letters: ["X*"] }
+        - { area: "Labuhanbatu", letters: ["Y*"] }
+        - { area: "Labuhanbatu Selatan", letters: ["Z*"] }
+      press_detik_2024:
+        - { area: "Kota Medan", letters: ["A**", "B*", "C*", "D*", "E*", "F*", "G*", "H*", "I*", "K*", "L**"], relation: overlaps }
+        - { area: "Kabupaten Labuhanbatu Utara", letters: ["J**"], relation: same }
+        - { area: "Kabupaten Deli Serdang", letters: ["M**"], relation: same }
+        - { area: "Kota Tebing Tinggi", letters: ["N**"], relation: same }
+        - { area: "Kabupaten Batubara", letters: ["O**"], relation: same }
+        - { area: "Kabupaten Langkat", letters: ["P**"], relation: same }
+        - { area: "Kota Tanjung Balai", letters: ["Q**"], relation: same }
+        - { area: "Kota Binjai", letters: ["R**"], relation: same }
+        - { area: "Kabupaten Karo", letters: ["S**"], relation: same }
+        - { area: "Kabupaten Simalungun", letters: ["T**", "U*"], relation: overlaps }
+        - { area: "Kabupaten Asahan", letters: ["V**"], relation: same }
+        - { area: "Kota Pematang Siantar", letters: ["W**"], relation: same }
+        - { area: "Kabupaten Serdang Bedagai", letters: ["X**"], relation: same }
+        - { area: "Kabupaten Labuhanbatu", letters: ["Y**"], relation: same }
+        - { area: "Kabupaten Labuhanbatu Selatan", letters: ["Z**"], relation: same }
+    BL:
+      two_wheel:
+        - { area: "Kota Banda Aceh", letters: ["A**", "J*"] }
+        - { area: "Gayo Lues", letters: ["B**"] }
+        - { area: "Aceh Barat Daya", letters: ["C**"] }
+        - { area: "Aceh Timur", letters: ["D**"] }
+        - { area: "Aceh Barat", letters: ["E**"] }
+        - { area: "Kota Langsa", letters: ["F**"] }
+        - { area: "Aceh Tengah", letters: ["G**"] }
+        - { area: "Aceh Tenggara", letters: ["H**"] }
+        - { area: "Kota Subulussalam", letters: ["I**"] }
+        - { area: "Aceh Utara", letters: ["K**", "Q*"] }
+        - { area: "Aceh Besar", letters: ["L**"] }
+        - { area: "Kota Sabang", letters: ["M**"] }
+        - { area: "Kota Lhokseumawe", letters: ["N**"] }
+        - { area: "Pidie Jaya", letters: ["O**"] }
+        - { area: "Pidie", letters: ["P**"] }
+        - { area: "Aceh Singkil", letters: ["R**"] }
+        - { area: "Simeulue", letters: ["S**"] }
+        - { area: "Aceh Selatan", letters: ["T**"] }
+        - { area: "Aceh Tamiang", letters: ["U**"] }
+        - { area: "Nagan Raya", letters: ["V**"] }
+        - { area: "Aceh Jaya", letters: ["W**"] }
+        - { area: "Bener Meriah", letters: ["Y**"] }
+        - { area: "Bireuen", letters: ["Z**"] }
+      four_wheel_plus:
+        - { area: "Kota Banda Aceh", letters: ["A*", "J*"] }
+        - { area: "Gayo Lues", letters: ["B*"] }
+        - { area: "Aceh Barat Daya", letters: ["C*"] }
+        - { area: "Aceh Timur", letters: ["D*"] }
+        - { area: "Aceh Barat", letters: ["E*"] }
+        - { area: "Kota Langsa", letters: ["F*"] }
+        - { area: "Aceh Tengah", letters: ["G*"] }
+        - { area: "Aceh Tenggara", letters: ["H*"] }
+        - { area: "Kota Subulussalam", letters: ["I*"] }
+        - { area: "Aceh Utara", letters: ["K*", "Q*"] }
+        - { area: "Aceh Besar", letters: ["L*"] }
+        - { area: "Kota Sabang", letters: ["M*"] }
+        - { area: "Kota Lhokseumawe", letters: ["N*"] }
+        - { area: "Pidie Jaya", letters: ["O*"] }
+        - { area: "Pidie", letters: ["P*"] }
+        - { area: "Aceh Singkil", letters: ["R*"] }
+        - { area: "Simeulue", letters: ["S*"] }
+        - { area: "Aceh Selatan", letters: ["T*"] }
+        - { area: "Aceh Tamiang", letters: ["U*"] }
+        - { area: "Nagan Raya", letters: ["V*"] }
+        - { area: "Aceh Jaya", letters: ["W*"] }
+        - { area: "Bener Meriah", letters: ["Y*"] }
+        - { area: "Bireuen", letters: ["Z*"] }
+      press_detik_2024:
+        - { area: "Kota Banda Aceh", letters: ["A**", "J*", "L**"], relation: overlaps }
+        - { area: "Kabupaten Aceh Besar", letters: ["B**"], relation: differs }
+        - { area: "Kabupaten Aceh Barat Daya", letters: ["C**"], relation: same }
+        - { area: "Kabupaten Aceh Timur", letters: ["D**"], relation: same }
+        - { area: "Kabupaten Aceh Barat", letters: ["E**"], relation: same }
+        - { area: "Kota Langsa", letters: ["F**"], relation: same }
+        - { area: "Kabupaten Aceh Tengah", letters: ["G**"], relation: same }
+        - { area: "Kabupaten Gayo Lues", letters: ["H**"], relation: differs }
+        - { area: "Kota Subulussalam", letters: ["I**"], relation: same }
+        - { area: "Kabupaten Aceh Utara", letters: ["K**", "Q*"], relation: same }
+        - { area: "Kota Sabang", letters: ["M**"], relation: same }
+        - { area: "Kota Lhokseumawe", letters: ["N**"], relation: same }
+        - { area: "Kabupaten Pidie Jaya", letters: ["O**"], relation: same }
+        - { area: "Kabupaten Pidie", letters: ["P**"], relation: same }
+        - { area: "Kabupaten Aceh Singkil", letters: ["R**"], relation: same }
+        - { area: "Kabupaten Simeulue", letters: ["S**"], relation: same }
+        - { area: "Kabupaten Aceh Selatan", letters: ["T**"], relation: same }
+        - { area: "Kabupaten Aceh Tamiang", letters: ["U**"], relation: same }
+        - { area: "Kabupaten Nagan Raya", letters: ["V**"], relation: same }
+        - { area: "Kabupaten Aceh Jaya", letters: ["W**"], relation: same }
+        - { area: "Kabupaten Aceh Tenggara", letters: ["X**"], relation: differs }
+        - { area: "Kabupaten Bener Meriah", letters: ["Y**"], relation: same }
+        - { area: "Kabupaten Bireuen", letters: ["Z**"], relation: same }
+    BM:
+      two_wheel:
+        - { area: "Kota Pekanbaru", letters: ["A**", "J*", "L*", "N*", "O*", "Q*", "T*", "V*"] }
+        - { area: "Indragiri Hulu", letters: ["B**"] }
+        - { area: "Pelalawan", letters: ["C**", "I**"] }
+        - { area: "Bengkalis", letters: ["D**", "E**"] }
+        - { area: "Kampar", letters: ["F**", "Z**"] }
+        - { area: "Indragiri Hilir", letters: ["G**"] }
+        - { area: "Kota Dumai", letters: ["H**", "R**"] }
+        - { area: "Kuantan Singingi", letters: ["K**", "XK-XZ"] }
+        - { area: "Rokan Hulu", letters: ["M**", "U**"] }
+        - { area: "Rokan Hilir", letters: ["P**", "W**"] }
+        - { area: "Siak", letters: ["S**", "Y**"] }
+        - { area: "Kepulauan Meranti", letters: ["XA-XJ"] }
+      four_wheel_plus:
+        - { area: "Kota Pekanbaru", letters: ["A**"] }
+        - { area: "Indragiri Hulu", letters: ["B*"] }
+        - { area: "Pelalawan", letters: ["C*", "I*"] }
+        - { area: "Bengkalis", letters: ["D*", "E*"] }
+        - { area: "Kampar", letters: ["F*", "Z*"] }
+        - { area: "Indragiri Hilir", letters: ["G*"] }
+        - { area: "Kota Dumai", letters: ["H*", "R*"] }
+        - { area: "Kuantan Singingi", letters: ["K*", "XK-XZ"] }
+        - { area: "Rokan Hulu", letters: ["M*", "U*"] }
+        - { area: "Rokan Hilir", letters: ["P*", "W*"] }
+        - { area: "Siak", letters: ["S*", "Y*"] }
+        - { area: "Kepulauan Meranti", letters: ["XA-XJ"] }
+      press_detik_2024:
+        - { area: "Kota Pekanbaru", letters: ["A**", "J*", "L**", "N*", "Q*", "T*"], relation: overlaps }
+        - { area: "Kabupaten Indragiri Hulu", letters: ["B**", "V*"], relation: overlaps }
+        - { area: "Kabupaten Pelalawan", letters: ["C**", "I*"], relation: overlaps }
+        - { area: "Kabupaten Bengkalis", letters: ["D**", "E*"], relation: overlaps }
+        - { area: "Kabupaten Kampar", letters: ["F**", "O*", "Z*"], relation: overlaps }
+        - { area: "Kabupaten Indragiri Hilir", letters: ["G**"], relation: same }
+        - { area: "Kota Dumai", letters: ["H**", "R*"], relation: overlaps }
+        - { area: "Kabupaten Kuantan Singingi", letters: ["K**", "X*"], relation: overlaps }
+        - { area: "Kabupaten Rokan Hulu", letters: ["M**", "U*"], relation: overlaps }
+        - { area: "Kabupaten Rokan Hilir", letters: ["P**", "W*"], relation: overlaps }
+        - { area: "Kabupaten Siak", letters: ["S**", "Y*"], relation: overlaps }
+        - { area: "Kabupaten Kepulauan Meranti", letters: ["X**"], relation: differs }
+    BN:
+      two_wheel:
+        - { area: "Kota Pangkal Pinang", letters: ["A*", "P*"] }
+        - { area: "Bangka", letters: ["B*", "Q*"] }
+        - { area: "Bangka Tengah", letters: ["C*", "T*"] }
+        - { area: "Bangka Barat", letters: ["D*", "R*"] }
+        - { area: "Bangka Selatan", letters: ["E*", "V*"] }
+        - { area: "Belitung", letters: ["F*", "W*"] }
+        - { area: "Belitung Timur", letters: ["G*", "X*"] }
+      four_wheel_plus:
+        - { area: "Kota Pangkal Pinang", letters: ["A*", "P*"] }
+        - { area: "Bangka", letters: ["B*", "Q*"] }
+        - { area: "Bangka Tengah", letters: ["C*", "T*"] }
+        - { area: "Bangka Barat", letters: ["D*", "R*"] }
+        - { area: "Bangka Selatan", letters: ["E*", "V*"] }
+        - { area: "Belitung", letters: ["F*", "W*"] }
+        - { area: "Belitung Timur", letters: ["G*", "X*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Belitung Timur", letters: ["G*"], relation: overlaps }
+        - { area: "Kota Pangkal Pinang", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Bangka", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Bangka Tengah", letters: ["C*"], relation: overlaps }
+        - { area: "Kabupaten Bangka Barat", letters: ["D*"], relation: overlaps }
+        - { area: "Kabupaten Bangka Selatan", letters: ["E*"], relation: overlaps }
+        - { area: "Kabupaten Belitung", letters: ["F*"], relation: overlaps }
+    BP:
+      two_wheel:
+        - { area: "Kota Tanjung Pinang", letters: ["A*", "P*", "*P", "T*", "*T", "W*", "*W"] }
+        - { area: "Bintan", letters: ["B*", "*B"] }
+        - { area: "Kota Batam", letters: ["C*", "D*", "E*", "F*", "G*", "H*", "I*", "J*", "M*", "O*", "Q*", "R*", "U*", "V*", "X*", "*Z"] }
+        - { area: "Karimun", letters: ["K*", "*K"] }
+        - { area: "Lingga", letters: ["L*"] }
+        - { area: "Natuna", letters: ["N*"] }
+        - { area: "Kepulauan Anambas", letters: ["S*"] }
+      four_wheel_plus:
+        - { area: "Kota Tanjung Pinang", letters: ["A*", "T*"] }
+        - { area: "Bintan", letters: ["B*", "*B"] }
+        - { area: "Kota Batam", letters: ["C*", "D*", "E*", "F*"] }
+        - { area: "Karimun", letters: ["K*", "*K"] }
+        - { area: "Lingga", letters: ["L*"] }
+        - { area: "Natuna", letters: ["N*"] }
+        - { area: "Kepulauan Anambas", letters: ["S*"] }
+      press_detik_2024:
+        - { area: "Kota Tanjung Pinang", letters: ["A*", "T*"], relation: same }
+        - { area: "Kabupaten Bintan", letters: ["B*"], relation: overlaps }
+        - { area: "Kota Batam", letters: ["C*", "D*", "E*", "F*", "G*", "H*", "I*", "J*", "M*", "P*", "Q*", "R*", "Z*"], relation: overlaps }
+        - { area: "Kabupaten Karimun", letters: ["K*"], relation: overlaps }
+        - { area: "Kabupaten Natuna", letters: ["N*"], relation: same }
+        - { area: "Kabupaten Lingga", letters: ["O*"], relation: differs }
+        - { area: "Kabupaten Kepulauan Anambas", letters: ["S*"], relation: same }
+    DA:
+      two_wheel:
+        - { area: "Kota Banjarmasin", letters: ["A**", "C**", "I**", "J**", "N**", "S**", "V**", "X*"] }
+        - { area: "Banjar", letters: ["B**", "O**", "Q**"] }
+        - { area: "Hulu Sungai Selatan", letters: ["D**"] }
+        - { area: "Hulu Sungai Tengah", letters: ["E**"] }
+        - { area: "Hulu Sungai Utara", letters: ["F**"] }
+        - { area: "Kota Baru", letters: ["G**"] }
+        - { area: "Tabalong", letters: ["H**", "U**"] }
+        - { area: "Tapin", letters: ["K**"] }
+        - { area: "Tanah Laut", letters: ["L**"] }
+        - { area: "Barito Kuala", letters: ["M**"] }
+        - { area: "Kota Banjarbaru", letters: ["P**", "R**", "W**"] }
+        - { area: "Balangan", letters: ["Y**"] }
+        - { area: "Tanah Bumbu", letters: ["Z**"] }
+      four_wheel_plus:
+        - { area: "Kota Banjarmasin", letters: ["A*", "C*", "I*", "J*"] }
+        - { area: "Banjar", letters: ["B*", "O*", "Q*"] }
+        - { area: "Hulu Sungai Selatan", letters: ["D*"] }
+        - { area: "Hulu Sungai Tengah", letters: ["E*"] }
+        - { area: "Hulu Sungai Utara", letters: ["F*"] }
+        - { area: "Kota Baru", letters: ["G*"] }
+        - { area: "Tabalong", letters: ["H*", "U*"] }
+        - { area: "Tapin", letters: ["K*"] }
+        - { area: "Tanah Laut", letters: ["L*"] }
+        - { area: "Barito Kuala", letters: ["M*"] }
+        - { area: "Kota Banjarbaru", letters: ["P*", "R*", "W*"] }
+        - { area: "Balangan", letters: ["Y*"] }
+        - { area: "Tanah Bumbu", letters: ["Z**"] }
+      press_detik_2024:
+        - { area: "Kota Banjarmasin", letters: ["A**", "C*", "I*", "J*", "N*", "O*", "S*", "T**", "V*", "W*", "X*"], relation: overlaps }
+        - { area: "Kabupaten Banjar", letters: ["B**", "Q*"], relation: overlaps }
+        - { area: "Kabupaten Hulu Sungai Selatan", letters: ["D**"], relation: same }
+        - { area: "Kabupaten Hulu Sungai Tengah", letters: ["E**"], relation: same }
+        - { area: "Kabupaten Hulu Sungai Utara", letters: ["F**"], relation: same }
+        - { area: "Kabupaten Kota Baru", letters: ["G**"], relation: same }
+        - { area: "Kabupaten Tabalong", letters: ["H**", "U*"], relation: overlaps }
+        - { area: "Kabupaten Tapin", letters: ["K**"], relation: same }
+        - { area: "Kabupaten Tanah Laut", letters: ["L**"], relation: same }
+        - { area: "Kabupaten Barito Kuala", letters: ["M**"], relation: same }
+        - { area: "Kota Banjarbaru", letters: ["P**", "R*"], relation: overlaps }
+        - { area: "Kabupaten Balangan", letters: ["Y*"], relation: same }
+        - { area: "Kabupaten Tanah Bumbu", letters: ["Z**"], relation: same }
+    DB:
+      two_wheel:
+        - { area: "Kota Manado", letters: ["A*", "L*", "M*", "R*", "T*", "V*"] }
+        - { area: "Minahasa", letters: ["B*", "Q*"] }
+        - { area: "Kota Bitung", letters: ["C*", "O*"] }
+        - { area: "Bolaang Mongondow", letters: ["D*"] }
+        - { area: "Minahasa Selatan", letters: ["E*"] }
+        - { area: "Minahasa Utara", letters: ["F*", "W*"] }
+        - { area: "Kota Tomohon", letters: ["G*"] }
+        - { area: "Bolaang Mongondow Utara", letters: ["H*"] }
+        - { area: "Minahasa Tenggara", letters: ["J*"] }
+        - { area: "Kota Kotamobagu", letters: ["K*"] }
+        - { area: "Bolaang Mongondow Timur", letters: ["N*"] }
+        - { area: "Bolaang Mongondow Selatan", letters: ["P*"] }
+      four_wheel_plus:
+        - { area: "Kota Manado", letters: ["A*", "L*", "M*", "R*"] }
+        - { area: "Minahasa", letters: ["B*", "Q*"] }
+        - { area: "Kota Bitung", letters: ["C*", "O*"] }
+        - { area: "Bolaang Mongondow", letters: ["D*"] }
+        - { area: "Minahasa Selatan", letters: ["E*"] }
+        - { area: "Minahasa Utara", letters: ["F*", "W*"] }
+        - { area: "Kota Tomohon", letters: ["G*"] }
+        - { area: "Bolaang Mongondow Utara", letters: ["H*"] }
+        - { area: "Minahasa Tenggara", letters: ["J*"] }
+        - { area: "Kota Kotamobagu", letters: ["K*"] }
+        - { area: "Bolaang Mongondow Timur", letters: ["N*"] }
+        - { area: "Bolaang Mongondow Selatan", letters: ["P*"] }
+      press_detik_2024:
+        - { area: "Kota Manado", letters: ["A*", "L*", "M*", "R*"], relation: same }
+        - { area: "Kabupaten Minahasa", letters: ["B*"], relation: overlaps }
+        - { area: "Kota Bitung", letters: ["C*"], relation: overlaps }
+        - { area: "Kabupaten Bolaang Mongondow", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Minahasa Selatan", letters: ["E*"], relation: same }
+        - { area: "Kabupaten Minahasa Utara", letters: ["F*"], relation: overlaps }
+        - { area: "Kota Tomohon", letters: ["G*"], relation: same }
+        - { area: "Kabupaten Bolaang Mongondow Utara", letters: ["H*"], relation: same }
+        - { area: "Kabupaten Minahasa Tenggara", letters: ["J*"], relation: same }
+        - { area: "Kota Kotamobagu", letters: ["K*"], relation: same }
+        - { area: "Kabupaten Bolaang Mongondow Timur", letters: ["N*"], relation: same }
+        - { area: "Kabupaten Bolaang Mongondow Selatan", letters: ["P*"], relation: same }
+    DC:
+      two_wheel:
+        - { area: "Mamuju", letters: ["A*", "G*", "L*", "P*"] }
+        - { area: "Majene", letters: ["B*", "Q*"] }
+        - { area: "Polewali Mandar", letters: ["C*", "N*"] }
+        - { area: "Mamasa", letters: ["D*"] }
+        - { area: "Pasangkayu", letters: ["E*", "X*"] }
+        - { area: "Mamuju Tengah", letters: ["F*"] }
+      four_wheel_plus:
+        - { area: "Mamuju", letters: ["A*", "G*", "L*", "P*"] }
+        - { area: "Majene", letters: ["B*", "Q*"] }
+        - { area: "Polewali Mandar", letters: ["C*", "N*"] }
+        - { area: "Mamasa", letters: ["D*"] }
+        - { area: "Pasangkayu", letters: ["E*", "X*"] }
+        - { area: "Mamuju Tengah", letters: ["F*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Mamuju", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Majene", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Polewali Mandar", letters: ["C*"], relation: overlaps }
+        - { area: "Kabupaten Mamasa", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Mamuju Utara", letters: ["E*"], relation: no-wikipedia-row }
+    DD:
+      two_wheel:
+        - { area: "Kota Makassar", letters: ["A**", "I*", "K**", "M*", "O*", "Q*", "R**", "S**", "U*", "V*", "X**"] }
+        - { area: "Gowa", letters: ["B*", "L*", "N**", "Y**"] }
+        - { area: "Takalar", letters: ["C**", "P**"] }
+        - { area: "Maros", letters: ["D**", "T*"] }
+        - { area: "Pangkajene dan Kepulauan", letters: ["E**", "W*"] }
+        - { area: "Bantaeng", letters: ["F**"] }
+        - { area: "Jeneponto", letters: ["G*"] }
+        - { area: "Bulukumba", letters: ["H*", "Z**"] }
+        - { area: "Selayar", letters: ["J**"] }
+      four_wheel_plus:
+        - { area: "Kota Makassar", letters: ["X**"] }
+        - { area: "Gowa", letters: ["B*", "L*", "N*", "Y*"] }
+        - { area: "Takalar", letters: ["C*", "P*"] }
+        - { area: "Maros", letters: ["D*", "T*"] }
+        - { area: "Pangkajene dan Kepulauan", letters: ["E*", "W*"] }
+        - { area: "Bantaeng", letters: ["F**"] }
+        - { area: "Jeneponto", letters: ["G*"] }
+        - { area: "Bulukumba", letters: ["H*", "Z*"] }
+        - { area: "Selayar", letters: ["J*"] }
+      press_detik_2024:
+        - { area: "Kota Makassar", letters: ["A*", "K*", "Q*"], relation: overlaps }
+        - { area: "Kabupaten Gowa", letters: ["B*", "L*"], relation: overlaps }
+        - { area: "Kabupaten Takalar", letters: ["C*"], relation: overlaps }
+        - { area: "Kabupaten Maros", letters: ["D*"], relation: overlaps }
+        - { area: "Kabupaten Pangkajene dan Kepulauan", letters: ["E*"], relation: overlaps }
+        - { area: "Kabupaten Bantaeng", letters: ["F*"], relation: differs }
+        - { area: "Kabupaten Jeneponto", letters: ["G*"], relation: same }
+        - { area: "Kabupaten Bulukumba", letters: ["H*"], relation: overlaps }
+        - { area: "Kabupaten Selayar", letters: ["J*"], relation: same }
+    DE:
+      two_wheel:
+        - { area: "Kota Ambon", letters: ["A*", "L*", "N*"] }
+        - { area: "Maluku Tengah", letters: ["B*"] }
+        - { area: "Maluku Tenggara", letters: ["C*"] }
+        - { area: "Buru", letters: ["D*"] }
+        - { area: "Kepulauan Tanimbar", letters: ["E*"] }
+        - { area: "Kepulauan Aru", letters: ["F*"] }
+        - { area: "Seram Bagian Barat", letters: ["G*", "O*"] }
+        - { area: "Seram Bagian Timur", letters: ["H*"] }
+        - { area: "Kota Tual", letters: ["I*"] }
+        - { area: "Maluku Barat Daya", letters: ["J*"] }
+        - { area: "Buru Selatan", letters: ["K*"] }
+      four_wheel_plus:
+        - { area: "Kota Ambon", letters: ["A*", "L*", "N*"] }
+        - { area: "Maluku Tengah", letters: ["B*"] }
+        - { area: "Maluku Tenggara", letters: ["C*"] }
+        - { area: "Buru", letters: ["D*"] }
+        - { area: "Kepulauan Tanimbar", letters: ["E*"] }
+        - { area: "Kepulauan Aru", letters: ["F*"] }
+        - { area: "Seram Bagian Barat", letters: ["G*", "O*"] }
+        - { area: "Seram Bagian Timur", letters: ["H*"] }
+        - { area: "Kota Tual", letters: ["I*"] }
+        - { area: "Maluku Barat Daya", letters: ["J*"] }
+        - { area: "Buru Selatan", letters: ["K*"] }
+      press_detik_2024:
+        - { area: "Kota Ambon", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Maluku Tengah", letters: ["B*"], relation: same }
+        - { area: "Kabupaten Buru", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Maluku Tenggara", letters: ["E*"], relation: differs }
+        - { area: "Kabupaten Buru Selatan", letters: ["F*"], relation: differs }
+        - { area: "Kabupaten Maluku Barat Daya", letters: ["J*K*"], relation: differs }
+        - { area: "Kabupaten Seram Bagian Timur", letters: ["L*"], relation: differs }
+        - { area: "Kabupaten Kepulauan Aru", letters: ["N*"], relation: differs }
+        - { area: "Kabupaten Seram Bagian Barat", letters: ["O*"], relation: overlaps }
+        - { area: "Kota Tual", letters: ["T*"], relation: differs }
+    DG:
+      two_wheel:
+        - { area: "Kota Ternate", letters: ["A*", "K*", "Q*"] }
+        - { area: "Kota Tidore Kepulauan", letters: ["B*", "L*"] }
+        - { area: "Pulau Taliabu", letters: ["H*"] }
+        - { area: "Pulau Morotai", letters: ["J*"] }
+        - { area: "Halmahera Barat", letters: ["M*"] }
+        - { area: "Halmahera Utara", letters: ["N*"] }
+        - { area: "Halmahera Selatan", letters: ["P*"] }
+        - { area: "Kepulauan Sula", letters: ["R*"] }
+        - { area: "Halmahera Tengah", letters: ["S*"] }
+        - { area: "Halmahera Timur", letters: ["T*"] }
+      four_wheel_plus:
+        - { area: "Kota Ternate", letters: ["A*", "K*", "Q*"] }
+        - { area: "Kota Tidore Kepulauan", letters: ["B*", "L*"] }
+        - { area: "Pulau Taliabu", letters: ["H*"] }
+        - { area: "Pulau Morotai", letters: ["J*"] }
+        - { area: "Halmahera Barat", letters: ["M*"] }
+        - { area: "Halmahera Utara", letters: ["N*"] }
+        - { area: "Halmahera Selatan", letters: ["P*"] }
+        - { area: "Kepulauan Sula", letters: ["R*"] }
+        - { area: "Halmahera Tengah", letters: ["S*"] }
+        - { area: "Halmahera Timur", letters: ["T*"] }
+      press_detik_2024:
+        - { area: "Kota Ternate", letters: ["A*"], relation: overlaps }
+        - { area: "Kota Tidore Kepulauan", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Halmahera Timur", letters: ["D*"], relation: differs }
+        - { area: "Kabupaten Kepulauan Sula", letters: ["E*"], relation: differs }
+        - { area: "Kabupaten Halmahera Selatan", letters: ["K*"], relation: differs }
+        - { area: "Kabupaten Halmahera Tengah", letters: ["L*"], relation: differs }
+        - { area: "Kabupaten Halmahera Barat", letters: ["M*"], relation: same }
+        - { area: "Kabupaten Halmahera Utara", letters: ["N*"], relation: same }
+        - { area: "Kabupaten Pulau Morotai", letters: ["U*"], relation: differs }
+    DH:
+      two_wheel:
+        - { area: "Kota Kupang", letters: ["A*", "H*", "K*"] }
+        - { area: "Kupang", letters: ["B*", "L*", "N*"] }
+        - { area: "Timor Tengah Selatan", letters: ["C*"] }
+        - { area: "Timor Tengah Utara", letters: ["D*", "M*"] }
+        - { area: "Belu", letters: ["E*", "T*"] }
+        - { area: "Sabu Raijua", letters: ["F*"] }
+        - { area: "Rote Ndao", letters: ["G*"] }
+        - { area: "Malaka", letters: ["J*"] }
+      four_wheel_plus:
+        - { area: "Kota Kupang", letters: ["A*", "H*", "K*"] }
+        - { area: "Kupang", letters: ["B*", "L*", "N*"] }
+        - { area: "Timor Tengah Selatan", letters: ["C*"] }
+        - { area: "Timor Tengah Utara", letters: ["D*", "M*"] }
+        - { area: "Belu", letters: ["E*", "T*"] }
+        - { area: "Sabu Raijua", letters: ["F*"] }
+        - { area: "Rote Ndao", letters: ["G*"] }
+        - { area: "Malaka", letters: ["J*"] }
+      press_detik_2024:
+        - { area: "Kabupaten/Kota Kupang", letters: ["A*", "B*", "C*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Timor Tengah Utara", letters: ["D*"], relation: overlaps }
+        - { area: "Kabupaten Timor Tengah Selatan", letters: ["E*"], relation: differs }
+        - { area: "Kabupaten Alor", letters: ["F*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Belu", letters: ["G*"], relation: differs }
+        - { area: "Kabupaten Rote Ndao", letters: ["U*"], relation: differs }
+    DK:
+      two_wheel:
+        - { area: "Kota Denpasar", letters: ["A**", "B**", "C*", "D*", "E*", "I*", "X*"] }
+        - { area: "Badung", letters: ["F**", "J*", "O*", "Q*"] }
+        - { area: "Tabanan", letters: ["G**", "H*"] }
+        - { area: "Gianyar", letters: ["K**", "L*"] }
+        - { area: "Klungkung", letters: ["M**", "N*"] }
+        - { area: "Bangli", letters: ["P*", "R*"] }
+        - { area: "Karangasem", letters: ["S**", "T*"] }
+        - { area: "Buleleng", letters: ["U**", "V*"] }
+        - { area: "Jembrana", letters: ["W*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Denpasar", letters: ["A**"] }
+        - { area: "Badung", letters: ["F**", "J**"] }
+        - { area: "Tabanan", letters: ["G*", "H*"] }
+        - { area: "Gianyar", letters: ["K**"] }
+        - { area: "Klungkung", letters: ["M*", "N*"] }
+        - { area: "Bangli", letters: ["P*", "R*"] }
+        - { area: "Karangasem", letters: ["S*", "T*"] }
+        - { area: "Buleleng", letters: ["U*", "V*"] }
+        - { area: "Jembrana", letters: ["W*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kota Denpasar", letters: ["A**", "B*", "C*", "D*", "E*", "I*", "Q*", "X*"], relation: overlaps }
+        - { area: "Kabupaten Badung", letters: ["F**", "J*", "O*"], relation: overlaps }
+        - { area: "Kabupaten Tabanan", letters: ["G**", "H*"], relation: same }
+        - { area: "Kabupaten Gianyar", letters: ["K**", "L*"], relation: same }
+        - { area: "Kabupaten Klungkung", letters: ["M**", "N*"], relation: same }
+        - { area: "Kabupaten Bangli", letters: ["P**", "R*"], relation: overlaps }
+        - { area: "Kabupaten Karangasem", letters: ["S**", "T*"], relation: same }
+        - { area: "Kabupaten Buleleng", letters: ["U**", "V*"], relation: same }
+        - { area: "Kabupaten Jembrana", letters: ["W**", "Z*"], relation: overlaps }
+    DL:
+      two_wheel:
+        - { area: "Kepulauan Sangihe", letters: ["A*"] }
+        - { area: "Kepulauan Talaud", letters: ["B*"] }
+        - { area: "Kepulauan Siau Tagulandang Biaro", letters: ["C*"] }
+      four_wheel_plus:
+        - { area: "Kepulauan Sangihe", letters: ["A*"] }
+        - { area: "Kepulauan Talaud", letters: ["B*"] }
+        - { area: "Kepulauan Siau Tagulandang Biaro", letters: ["C*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Kepulauan Sangihe", letters: ["A*"], relation: same }
+        - { area: "Kabupaten Kepulauan Talaud", letters: ["B*"], relation: same }
+        - { area: "Kabupaten Kepulauan Sitaro", letters: ["C*"], relation: no-wikipedia-row }
+    DM:
+      two_wheel:
+        - { area: "Kota Gorontalo", letters: ["A*", "J*", "R*", "S*", "X*"] }
+        - { area: "Gorontalo", letters: ["B*", "H*"] }
+        - { area: "Boalemo", letters: ["C*"] }
+        - { area: "Pohuwato", letters: ["D*"] }
+        - { area: "Bone Bolango", letters: ["E*"] }
+        - { area: "Gorontalo Utara", letters: ["F*"] }
+      four_wheel_plus:
+        - { area: "Kota Gorontalo", letters: ["A*", "J*", "R*", "S*", "X*"] }
+        - { area: "Gorontalo", letters: ["B*", "H*"] }
+        - { area: "Boalemo", letters: ["C*"] }
+        - { area: "Pohuwato", letters: ["D*"] }
+        - { area: "Bone Bolango", letters: ["E*"] }
+        - { area: "Gorontalo Utara", letters: ["F*"] }
+      press_detik_2024:
+        - { area: "Kota Gorontalo", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Gorontalo", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Boalemo", letters: ["C*"], relation: same }
+        - { area: "Kabupaten Pohuwato", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Bone Bolango", letters: ["E*"], relation: same }
+        - { area: "Kabupaten Gorontalo Utara", letters: ["F*"], relation: same }
+    DN:
+      two_wheel:
+        - { area: "Kota Palu", letters: ["A*", "I*", "N*", "V*", "Y*"] }
+        - { area: "Donggala", letters: ["B*", "J*"] }
+        - { area: "Banggai", letters: ["C*", "R*"] }
+        - { area: "Toli-Toli", letters: ["D*"] }
+        - { area: "Poso", letters: ["E*"] }
+        - { area: "Buol", letters: ["F*"] }
+        - { area: "Morowali", letters: ["G*"] }
+        - { area: "Banggai Kepulauan", letters: ["H*"] }
+        - { area: "Parigi Moutong", letters: ["K*", "P*"] }
+        - { area: "Tojo Una-Una", letters: ["L*"] }
+        - { area: "Sigi", letters: ["M*"] }
+        - { area: "Banggai Laut", letters: ["Q*"] }
+        - { area: "Morowali Utara", letters: ["U*"] }
+      four_wheel_plus:
+        - { area: "Kota Palu", letters: ["A*", "I*", "N*", "V*"] }
+        - { area: "Donggala", letters: ["B*", "J*"] }
+        - { area: "Banggai", letters: ["C*", "R*"] }
+        - { area: "Toli-Toli", letters: ["D*"] }
+        - { area: "Poso", letters: ["E*"] }
+        - { area: "Buol", letters: ["F*"] }
+        - { area: "Morowali", letters: ["G*"] }
+        - { area: "Banggai Kepulauan", letters: ["H*"] }
+        - { area: "Parigi Moutong", letters: ["K*", "P*"] }
+        - { area: "Tojo Una-Una", letters: ["L*"] }
+        - { area: "Sigi", letters: ["M*"] }
+        - { area: "Banggai Laut", letters: ["Q*"] }
+        - { area: "Morowali Utara", letters: ["U*"] }
+      press_detik_2024:
+        - { area: "Kota Palu", letters: ["A*", "V*", "Y*"], relation: overlaps }
+        - { area: "Kabupaten Donggala", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Banggai", letters: ["C*", "R*"], relation: same }
+        - { area: "Kabupaten Toli-Toli", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Poso", letters: ["E*"], relation: same }
+        - { area: "Kabupaten Buol", letters: ["F*"], relation: same }
+        - { area: "Kabupaten Morowali", letters: ["G*"], relation: same }
+        - { area: "Kabupaten Banggai Kepulauan", letters: ["H*"], relation: same }
+        - { area: "Kabupaten Parigi Moutong", letters: ["J*", "K*"], relation: overlaps }
+        - { area: "Kabupaten Tojo Una-Una", letters: ["L*"], relation: same }
+        - { area: "Kabupaten Sigi", letters: ["M*"], relation: same }
+        - { area: "Kabupaten Banggai Laut", letters: ["Q*"], relation: same }
+        - { area: "Kabupaten Morowali Utara", letters: ["U*"], relation: same }
+    DP:
+      two_wheel:
+        - { area: "Kota Parepare", letters: ["A*", "L*", "M*"] }
+        - { area: "Barru", letters: ["B*", "O*"] }
+        - { area: "Sidenreng Rappang", letters: ["C*", "P*", "Q*"] }
+        - { area: "Pinrang", letters: ["D*", "R*", "S*"] }
+        - { area: "Kota Palopo", letters: ["E*", "T*"] }
+        - { area: "Luwu", letters: ["F*", "U*"] }
+        - { area: "Luwu Timur", letters: ["G*", "V*"] }
+        - { area: "Luwu Utara", letters: ["H*", "W*"] }
+        - { area: "Tana Toraja", letters: ["J*", "Y*"] }
+        - { area: "Toraja Utara", letters: ["K*", "Z*"] }
+        - { area: "Enrekang", letters: ["N*", "X*"] }
+      four_wheel_plus:
+        - { area: "Kota Parepare", letters: ["A*", "L*", "M*"] }
+        - { area: "Barru", letters: ["B*", "O*"] }
+        - { area: "Sidenreng Rappang", letters: ["C*", "P*", "Q*"] }
+        - { area: "Pinrang", letters: ["D*", "R*", "S*"] }
+        - { area: "Kota Palopo", letters: ["E*", "T*"] }
+        - { area: "Luwu", letters: ["F*", "U*"] }
+        - { area: "Luwu Timur", letters: ["G*", "V*"] }
+        - { area: "Luwu Utara", letters: ["H*", "W*"] }
+        - { area: "Tana Toraja", letters: ["J*", "Y*"] }
+        - { area: "Toraja Utara", letters: ["K*", "Z*"] }
+        - { area: "Enrekang", letters: ["N*", "X*"] }
+      press_detik_2024:
+        - { area: "Kota Parepare", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Barru", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Sidenreng Rappang", letters: ["C*", "M*"], relation: overlaps }
+        - { area: "Kabupaten Pinrang", letters: ["D*", "R*"], relation: overlaps }
+        - { area: "Kota Palopo", letters: ["E*"], relation: overlaps }
+        - { area: "Kabupaten Luwu", letters: ["F*"], relation: overlaps }
+        - { area: "Kabupaten Luwu Timur", letters: ["G*"], relation: overlaps }
+        - { area: "Kabupaten Luwu Utara", letters: ["H*"], relation: overlaps }
+        - { area: "Kabupaten Enrekang", letters: ["I*"], relation: differs }
+        - { area: "Kabupaten Tana Toraja", letters: ["J*"], relation: overlaps }
+        - { area: "Kabupaten Toraja Utara", letters: ["K*"], relation: overlaps }
+    DR:
+      two_wheel:
+        - { area: "Kota Mataram", letters: ["A*", "B*", "C*", "D*", "E*", "F*", "N*", "O*", "P*", "R*", "X*"] }
+        - { area: "Lombok Utara", letters: ["D*", "G*", "M*"] }
+        - { area: "Lombok Barat", letters: ["H*", "J*", "K*", "T*", "W*"] }
+        - { area: "Lombok Timur", letters: ["L*", "Q*", "Y*"] }
+        - { area: "Lombok Tengah", letters: ["S*", "U*", "V*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Mataram", letters: ["A*", "B*", "C*", "D*"] }
+        - { area: "Lombok Utara", letters: ["D*", "G*", "M*"] }
+        - { area: "Lombok Barat", letters: ["H*", "J*", "K*", "T*"] }
+        - { area: "Lombok Timur", letters: ["L*", "Q*", "Y*"] }
+        - { area: "Lombok Tengah", letters: ["S*", "U*", "V*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kota Mataram", letters: ["A*", "B*", "C*", "D*", "E*"], relation: overlaps }
+        - { area: "Kabupaten Lombok Barat", letters: ["H*", "J*", "K*"], relation: overlaps }
+        - { area: "Kabupaten Lombok Timur", letters: ["L*"], relation: overlaps }
+        - { area: "Kabupaten Lombok Tengah", letters: ["S*"], relation: overlaps }
+    DT:
+      two_wheel:
+        - { area: "Konawe", letters: ["*A"] }
+        - { area: "Kolaka", letters: ["*B"] }
+        - { area: "Buton", letters: ["*C"] }
+        - { area: "Muna", letters: ["*D"] }
+        - { area: "Kota Kendari", letters: ["*E", "*F", "*I"] }
+        - { area: "Kota Baubau", letters: ["*G"] }
+        - { area: "Konawe Selatan", letters: ["*H"] }
+        - { area: "Kolaka Utara", letters: ["*J"] }
+        - { area: "Bombana", letters: ["*K"] }
+        - { area: "Wakatobi", letters: ["*L"] }
+        - { area: "Konawe Utara", letters: ["*M"] }
+        - { area: "Buton Utara", letters: ["*N"] }
+        - { area: "Konawe Kepulauan", letters: ["*O"] }
+        - { area: "Muna Barat", letters: ["*R"] }
+        - { area: "Kolaka Timur", letters: ["*T"] }
+        - { area: "Buton Selatan", letters: ["*W"] }
+        - { area: "Buton Tengah", letters: ["*Y"] }
+      four_wheel_plus:
+        - { area: "Konawe", letters: ["*A"] }
+        - { area: "Kolaka", letters: ["*B"] }
+        - { area: "Buton", letters: ["*C"] }
+        - { area: "Muna", letters: ["*D"] }
+        - { area: "Kota Kendari", letters: ["*E", "*F", "*I"] }
+        - { area: "Kota Baubau", letters: ["*G"] }
+        - { area: "Konawe Selatan", letters: ["*H"] }
+        - { area: "Kolaka Utara", letters: ["*J"] }
+        - { area: "Bombana", letters: ["*K"] }
+        - { area: "Wakatobi", letters: ["*L"] }
+        - { area: "Konawe Utara", letters: ["*M"] }
+        - { area: "Buton Utara", letters: ["*N"] }
+        - { area: "Konawe Kepulauan", letters: ["*O"] }
+        - { area: "Muna Barat", letters: ["*R"] }
+        - { area: "Kolaka Timur", letters: ["*T"] }
+        - { area: "Buton Selatan", letters: ["*W"] }
+        - { area: "Buton Tengah", letters: ["*Y"] }
+      press_detik_2024:
+        - { area: "Kabupaten Konawe", letters: ["A*"], relation: differs }
+        - { area: "Kabupaten Kolaka Utara", letters: ["B*"], relation: differs }
+        - { area: "Kabupaten Wakatobi", letters: ["C*"], relation: differs }
+        - { area: "Kota Kendari", letters: ["E*"], relation: differs }
+        - { area: "Kabupaten Buton Utara", letters: ["F*"], relation: differs }
+        - { area: "Kabupaten Buton", letters: ["G*"], relation: differs }
+        - { area: "Kabupaten Konawe Selatan", letters: ["H*"], relation: differs }
+        - { area: "Kabupaten Kolaka", letters: ["J*"], relation: differs }
+        - { area: "Kabupaten Bombana", letters: ["K*"], relation: differs }
+        - { area: "Kabupaten Konawe Utara", letters: ["M*"], relation: differs }
+    DW:
+      two_wheel:
+        - { area: "Bone", letters: ["A*", "E*", "F*", "G*", "H*"] }
+        - { area: "Wajo", letters: ["B*", "L*", "M*", "N*", "O*", "P*"] }
+        - { area: "Soppeng", letters: ["C*", "Q*", "Y*"] }
+        - { area: "Sinjai", letters: ["D*", "V*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Bone", letters: ["A*", "E*", "F*", "G*"] }
+        - { area: "Wajo", letters: ["B*", "L*", "M*", "N*"] }
+        - { area: "Soppeng", letters: ["C*", "Q*", "Y*"] }
+        - { area: "Sinjai", letters: ["D*", "V*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Bone", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Wajo", letters: ["B*"], relation: overlaps }
+        - { area: "Kabupaten Soppeng", letters: ["C*", "Y*"], relation: overlaps }
+        - { area: "Kabupaten Sinjai", letters: ["D*", "Z*"], relation: overlaps }
+    EA:
+      two_wheel:
+        - { area: "Sumbawa", letters: ["A*", "C*", "D*", "E*", "F*", "P*"] }
+        - { area: "Sumbawa Barat", letters: ["H*", "K*"] }
+        - { area: "Kota Bima", letters: ["L*", "S*"] }
+        - { area: "Dompu", letters: ["M*", "N*", "Q*", "R*", "T*"] }
+        - { area: "Bima", letters: ["W*", "X*", "Y*", "Z*"] }
+      four_wheel_plus:
+        - { area: "Sumbawa", letters: ["A*", "C*", "D*", "E*"] }
+        - { area: "Sumbawa Barat", letters: ["H*", "K*"] }
+        - { area: "Kota Bima", letters: ["L*", "S*"] }
+        - { area: "Dompu", letters: ["M*", "N*", "Q*", "R*"] }
+        - { area: "Bima", letters: ["W*", "X*", "Y*", "Z*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Sumbawa", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Sumbawa Barat", letters: ["H*"], relation: overlaps }
+        - { area: "Kabupaten Dompu", letters: ["R*"], relation: overlaps }
+        - { area: "Kota Bima", letters: ["S*"], relation: overlaps }
+        - { area: "Kabupaten Bima", letters: ["X*", "Y*"], relation: overlaps }
+    EB:
+      two_wheel:
+        - { area: "Ende", letters: ["A*"] }
+        - { area: "Sikka", letters: ["B*"] }
+        - { area: "Flores Timur", letters: ["C*"] }
+        - { area: "Ngada", letters: ["D*"] }
+        - { area: "Manggarai", letters: ["E*"] }
+        - { area: "Lembata", letters: ["F*"] }
+        - { area: "Manggarai Barat", letters: ["G*"] }
+        - { area: "Nagekeo", letters: ["H*"] }
+        - { area: "Alor", letters: ["J*", "K*"] }
+        - { area: "Manggarai Timur", letters: ["P*"] }
+      four_wheel_plus:
+        - { area: "Ende", letters: ["A*"] }
+        - { area: "Sikka", letters: ["B*"] }
+        - { area: "Flores Timur", letters: ["C*"] }
+        - { area: "Ngada", letters: ["D*"] }
+        - { area: "Manggarai", letters: ["E*"] }
+        - { area: "Lembata", letters: ["F*"] }
+        - { area: "Manggarai Barat", letters: ["G*"] }
+        - { area: "Nagekeo", letters: ["H*"] }
+        - { area: "Alor", letters: ["J*", "K*"] }
+        - { area: "Manggarai Timur", letters: ["P*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Ende", letters: ["A*"], relation: same }
+        - { area: "Kabupaten Sikka", letters: ["B*"], relation: same }
+        - { area: "Kabupaten Ngada", letters: ["C*"], relation: differs }
+        - { area: "Kabupaten Flores Timur", letters: ["D*"], relation: differs }
+        - { area: "Kabupaten Manggarai Barat", letters: ["E*"], relation: differs }
+        - { area: "Kabupaten Lembata", letters: ["F*"], relation: same }
+        - { area: "Kabupaten Manggarai", letters: ["G*"], relation: differs }
+    ED:
+      two_wheel:
+        - { area: "Sumba Timur", letters: ["A*"] }
+        - { area: "Sumba Barat", letters: ["B*"] }
+        - { area: "Sumba Barat Daya", letters: ["C*"] }
+        - { area: "Sumba Tengah", letters: ["D*"] }
+      four_wheel_plus:
+        - { area: "Sumba Timur", letters: ["A*"] }
+        - { area: "Sumba Barat", letters: ["B*"] }
+        - { area: "Sumba Barat Daya", letters: ["C*"] }
+        - { area: "Sumba Tengah", letters: ["D*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Sumba Barat", letters: ["A*"], relation: differs }
+        - { area: "Kabupaten Sumba Timur", letters: ["B*"], relation: differs }
+    KB:
+      two_wheel:
+        - { area: "Kota Pontianak", letters: ["A*", "H*", "O*", "Q*", "S**", "W*"] }
+        - { area: "Mempawah", letters: ["B*"] }
+        - { area: "Kota Singkawang", letters: ["C*", "Y*"] }
+        - { area: "Sanggau", letters: ["D*", "U*"] }
+        - { area: "Sintang", letters: ["E*"] }
+        - { area: "Kapuas Hulu", letters: ["F*"] }
+        - { area: "Ketapang", letters: ["G*"] }
+        - { area: "Melawi", letters: ["J*"] }
+        - { area: "Bengkayang", letters: ["K*"] }
+        - { area: "Landak", letters: ["L*"] }
+        - { area: "Kubu Raya", letters: ["M**", "N*"] }
+        - { area: "Sambas", letters: ["P**", "T*"] }
+        - { area: "Sekadau", letters: ["V*"] }
+        - { area: "Kayong Utara", letters: ["Z*"] }
+      four_wheel_plus:
+        - { area: "Kota Pontianak", letters: ["A*", "H*", "O*", "Q*"] }
+        - { area: "Mempawah", letters: ["B*"] }
+        - { area: "Kota Singkawang", letters: ["C*", "Y*"] }
+        - { area: "Sanggau", letters: ["D*", "U*"] }
+        - { area: "Sintang", letters: ["E*"] }
+        - { area: "Kapuas Hulu", letters: ["F*"] }
+        - { area: "Ketapang", letters: ["G*"] }
+        - { area: "Melawi", letters: ["J*"] }
+        - { area: "Bengkayang", letters: ["K*"] }
+        - { area: "Landak", letters: ["L*"] }
+        - { area: "Kubu Raya", letters: ["M*", "N*"] }
+        - { area: "Sambas", letters: ["P*", "T*"] }
+        - { area: "Sekadau", letters: ["V*"] }
+        - { area: "Kayong Utara", letters: ["Z*"] }
+      press_detik_2024:
+        - { area: "Kota Pontianak", letters: ["A*", "Q*", "S*", "W*"], relation: overlaps }
+        - { area: "Kabupaten Mempawah", letters: ["B*"], relation: same }
+        - { area: "Kota Singkawang", letters: ["C*"], relation: overlaps }
+        - { area: "Kabupaten Sanggau", letters: ["D*"], relation: overlaps }
+        - { area: "Kabupaten Sintang", letters: ["E*"], relation: same }
+        - { area: "Kabupaten Kapuas Hulu", letters: ["F*"], relation: same }
+        - { area: "Kabupaten Ketapang", letters: ["G*"], relation: same }
+        - { area: "Kabupaten Melawi", letters: ["H*"], relation: differs }
+        - { area: "Kabupaten Bengkayang", letters: ["K*"], relation: same }
+        - { area: "Kabupaten Landak", letters: ["L*"], relation: same }
+        - { area: "Kabupaten Kubu Raya", letters: ["M*"], relation: overlaps }
+        - { area: "Kabupaten Sambas", letters: ["P*"], relation: overlaps }
+        - { area: "Kabupaten Sekadau", letters: ["V*"], relation: same }
+        - { area: "Kabupaten Kayong Utara", letters: ["Z*"], relation: same }
+    KH:
+      two_wheel:
+        - { area: "Kota Palangkaraya", letters: ["A*", "Q*", "T*", "Y*"] }
+        - { area: "Kapuas", letters: ["B*", "C*", "U*"] }
+        - { area: "Barito Selatan", letters: ["D*"] }
+        - { area: "Barito Utara", letters: ["E*"] }
+        - { area: "Kotawaringin Timur", letters: ["F*", "L*", "W*"] }
+        - { area: "Kotawaringin Barat", letters: ["G*", "V*"] }
+        - { area: "Gunung Mas", letters: ["H*"] }
+        - { area: "Pulang Pisau", letters: ["J*"] }
+        - { area: "Barito Timur", letters: ["K*"] }
+        - { area: "Murung Raya", letters: ["M*"] }
+        - { area: "Katingan", letters: ["N*"] }
+        - { area: "Seruyan", letters: ["P*"] }
+        - { area: "Lamandau", letters: ["R*"] }
+        - { area: "Sukamara", letters: ["S*"] }
+      four_wheel_plus:
+        - { area: "Kota Palangkaraya", letters: ["A*", "Q*", "T*", "Y*"] }
+        - { area: "Kapuas", letters: ["B*", "C*", "U*"] }
+        - { area: "Barito Selatan", letters: ["D*"] }
+        - { area: "Barito Utara", letters: ["E*"] }
+        - { area: "Kotawaringin Timur", letters: ["F*", "L*", "W*"] }
+        - { area: "Kotawaringin Barat", letters: ["G*", "V*"] }
+        - { area: "Gunung Mas", letters: ["H*"] }
+        - { area: "Pulang Pisau", letters: ["J*"] }
+        - { area: "Barito Timur", letters: ["K*"] }
+        - { area: "Murung Raya", letters: ["M*"] }
+        - { area: "Katingan", letters: ["N*"] }
+        - { area: "Seruyan", letters: ["P*"] }
+        - { area: "Lamandau", letters: ["R*"] }
+        - { area: "Sukamara", letters: ["S*"] }
+      press_detik_2024:
+        - { area: "Kota Palangkaraya", letters: ["A*", "T*", "Y*"], relation: overlaps }
+        - { area: "Kabupaten Kapuas", letters: ["B*", "C*"], relation: overlaps }
+        - { area: "Kabupaten Barito Selatan", letters: ["D*"], relation: same }
+        - { area: "Kabupaten Barito Utara", letters: ["E*"], relation: same }
+        - { area: "Kabupaten Kotawaringin Timur", letters: ["F*", "L*", "W*"], relation: same }
+        - { area: "Kabupaten Kotawaringin Barat", letters: ["G*", "V*"], relation: same }
+        - { area: "Kabupaten Gunung Mas", letters: ["H*"], relation: same }
+        - { area: "Kabupaten Pulang Pisau", letters: ["J*"], relation: same }
+        - { area: "Kabupaten Barito Timur", letters: ["K*"], relation: same }
+        - { area: "Kabupaten Murung Raya", letters: ["M*"], relation: same }
+        - { area: "Kabupaten Katingan", letters: ["N*", "U*"], relation: overlaps }
+        - { area: "Kabupaten Seruyan", letters: ["P*"], relation: same }
+        - { area: "Kabupaten Lamandau", letters: ["R*"], relation: same }
+        - { area: "Kabupaten Sukamara", letters: ["S*"], relation: same }
+    KT:
+      two_wheel:
+        - { area: "Kota Balikpapan", letters: ["A**", "H*", "K*", "L*", "Y*", "Z*"] }
+        - { area: "Kota Samarinda", letters: ["B**", "F*", "I*", "M*", "N*", "S*", "W*"] }
+        - { area: "Kutai Kartanegara", letters: ["C**", "J*", "O*", "S*", "U*"] }
+        - { area: "Kota Bontang", letters: ["D**", "Q*"] }
+        - { area: "Paser", letters: ["E**", "J*", "S*"] }
+        - { area: "Berau", letters: ["G**"] }
+        - { area: "Kutai Timur", letters: ["J*", "R**", "S*"] }
+        - { area: "Kutai Barat", letters: ["P**"] }
+        - { area: "Mahakam Ulu", letters: ["T*"] }
+        - { area: "Penajam Paser Utara", letters: ["V*"] }
+      four_wheel_plus:
+        - { area: "Kota Balikpapan", letters: ["A*", "H*", "K*", "L*"] }
+        - { area: "Kota Samarinda", letters: ["B*", "F*", "I*", "M*"] }
+        - { area: "Kutai Kartanegara", letters: ["C*", "J*", "O*", "S*"] }
+        - { area: "Kota Bontang", letters: ["D**Q*"] }
+        - { area: "Paser", letters: ["E*", "J*", "S*"] }
+        - { area: "Berau", letters: ["G*"] }
+        - { area: "Kutai Timur", letters: ["J*", "R*", "S*"] }
+        - { area: "Kutai Barat", letters: ["P*"] }
+        - { area: "Mahakam Ulu", letters: ["T*"] }
+        - { area: "Penajam Paser Utara", letters: ["V*"] }
+      press_detik_2024:
+        - { area: "Kota Balikpapan", letters: ["A**", "K*", "L*", "Y*", "Z*"], relation: overlaps }
+        - { area: "Kota Samarinda", letters: ["B**", "I*", "M*", "N*", "W*", "X*"], relation: overlaps }
+        - { area: "Kabupaten Kutai Kartanegara", letters: ["C**", "O*", "U*"], relation: overlaps }
+        - { area: "Kota Bontang", letters: ["D**", "Q*"], relation: same }
+        - { area: "Kabupaten Paser", letters: ["E**"], relation: overlaps }
+        - { area: "Kabupaten Berau", letters: ["G**"], relation: same }
+        - { area: "Kabupaten Kutai Barat", letters: ["P**"], relation: same }
+        - { area: "Kabupaten Kutai Timur", letters: ["R**"], relation: overlaps }
+        - { area: "Kabupaten Penajam Paser Utara", letters: ["V*"], relation: same }
+    KU:
+      two_wheel:
+        - { area: "Bulungan", letters: ["A*", "B*"] }
+        - { area: "Kota Tarakan", letters: ["G*", "J*"] }
+        - { area: "Tana Tidung", letters: ["H*"] }
+        - { area: "Nunukan", letters: ["N*", "P*"] }
+        - { area: "Malinau", letters: ["S*"] }
+      four_wheel_plus:
+        - { area: "Bulungan", letters: ["A*", "B*"] }
+        - { area: "Kota Tarakan", letters: ["G*"] }
+        - { area: "Tana Tidung", letters: ["H*"] }
+        - { area: "Nunukan", letters: ["N*"] }
+        - { area: "Malinau", letters: ["S*"] }
+    PA:
+      two_wheel:
+        - { area: "Kota Jayapura", letters: ["A*", "F*", "R*"] }
+        - { area: "Biak Numfor", letters: ["C*"] }
+        - { area: "Jayapura", letters: ["J*"] }
+        - { area: "Kepulauan Yapen", letters: ["L*"] }
+        - { area: "Waropen", letters: ["N*"] }
+        - { area: "Keerom", letters: ["Q*"] }
+        - { area: "Sarmi", letters: ["S*"] }
+        - { area: "Supiori", letters: ["U*"] }
+        - { area: "Mamberamo Raya", letters: ["X*"] }
+      four_wheel_plus:
+        - { area: "Kota Jayapura", letters: ["A*", "F*", "R*"] }
+        - { area: "Biak Numfor", letters: ["C*"] }
+        - { area: "Jayapura", letters: ["J*"] }
+        - { area: "Kepulauan Yapen", letters: ["L*"] }
+        - { area: "Waropen", letters: ["N*"] }
+        - { area: "Keerom", letters: ["Q*"] }
+        - { area: "Sarmi", letters: ["S*"] }
+        - { area: "Supiori", letters: ["U*"] }
+        - { area: "Mamberamo Raya", letters: ["X*"] }
+      press_detik_2024:
+        - { area: "Kota Jayapura", letters: ["A*"], relation: overlaps }
+        - { area: "Kabupaten Jayawijaya", letters: ["B*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Paniai", letters: ["C*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Mimika", letters: ["D*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Nabire", letters: ["E*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Merauke", letters: ["G*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Jayapura", letters: ["J*"], relation: same }
+        - { area: "Kabupaten Biak Numfor", letters: ["K*"], relation: differs }
+        - { area: "Kabupaten Kepulauan Yapen", letters: ["L*"], relation: same }
+        - { area: "Kabupaten Puncak Jaya", letters: ["P*"], relation: no-wikipedia-row }
+    PB:
+      two_wheel:
+        - { area: "Teluk Bintuni", letters: ["B*"] }
+        - { area: "Pegunungan Arfak", letters: ["D*"] }
+        - { area: "Fakfak", letters: ["F*"] }
+        - { area: "Manokwari", letters: ["G*", "H*", "M*"] }
+        - { area: "Kaimana", letters: ["K*"] }
+        - { area: "Manokwari Selatan", letters: ["L*"] }
+        - { area: "Teluk Wondama", letters: ["W*"] }
+      four_wheel_plus:
+        - { area: "Teluk Bintuni", letters: ["B*"] }
+        - { area: "Pegunungan Arfak", letters: ["D*"] }
+        - { area: "Fakfak", letters: ["F*"] }
+        - { area: "Manokwari", letters: ["G*", "H*", "M*"] }
+        - { area: "Kaimana", letters: ["K*"] }
+        - { area: "Manokwari Selatan", letters: ["L*"] }
+        - { area: "Teluk Wondama", letters: ["W*"] }
+      press_detik_2024:
+        - { area: "Kabupaten Teluk Bintuni", letters: ["B*"], relation: same }
+        - { area: "Kabupaten Fakfak", letters: ["F*"], relation: same }
+        - { area: "Kabupaten Kaimana", letters: ["K*"], relation: same }
+        - { area: "Kabupaten Manokwari", letters: ["M*"], relation: overlaps }
+        - { area: "Kota Sorong", letters: ["S*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Sorong Selatan", letters: ["T*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Maybrat", letters: ["V*"], relation: no-wikipedia-row }
+        - { area: "Kabupaten Teluk Wondama", letters: ["W*"], relation: same }
+    PG:
+      two_wheel:
+        - { area: "Jayawijaya", letters: ["A*"] }
+        - { area: "Mamberamo Tengah", letters: ["-*"] }
+        - { area: "Pegunungan Bintang", letters: ["F*"] }
+        - { area: "Yahukimo", letters: ["J*"] }
+        - { area: "Tolikara", letters: ["N*"] }
+        - { area: "Lanny Jaya", letters: ["W*"] }
+        - { area: "Nduga", letters: ["X*"] }
+        - { area: "Yalimo", letters: ["-*"] }
+      four_wheel_plus:
+        - { area: "Jayawijaya", letters: ["A*"] }
+        - { area: "Mamberamo Tengah", letters: ["-*"] }
+        - { area: "Pegunungan Bintang", letters: ["F*"] }
+        - { area: "Yahukimo", letters: ["J*"] }
+        - { area: "Tolikara", letters: ["N*"] }
+        - { area: "Lanny Jaya", letters: ["W*"] }
+        - { area: "Nduga", letters: ["X*"] }
+        - { area: "Yalimo", letters: ["-*"] }
+    PS:
+      two_wheel:
+        - { area: "Merauke", letters: ["A*"] }
+        - { area: "Asmat", letters: ["-*"] }
+        - { area: "Mappi", letters: ["-*"] }
+        - { area: "Boven Digoel", letters: ["V*"] }
+      four_wheel_plus:
+        - { area: "Merauke", letters: ["A*"] }
+        - { area: "Asmat", letters: ["-*"] }
+        - { area: "Mappi", letters: ["-*"] }
+        - { area: "Boven Digoel", letters: ["V*"] }
+    PT:
+      two_wheel:
+        - { area: "Nabire", letters: ["A*"] }
+        - { area: "Dogiyai", letters: ["E*"] }
+        - { area: "Deiyai", letters: ["K*"] }
+        - { area: "Mimika", letters: ["L*", "M*", "N*"] }
+        - { area: "Paniai", letters: ["P*"] }
+        - { area: "Puncak Jaya", letters: ["S*"] }
+        - { area: "Intan Jaya", letters: ["V*"] }
+        - { area: "Puncak", letters: ["Y*"] }
+      four_wheel_plus:
+        - { area: "Nabire", letters: ["A*"] }
+        - { area: "Dogiyai", letters: ["E*"] }
+        - { area: "Deiyai", letters: ["K*"] }
+        - { area: "Mimika", letters: ["L*", "M*", "N*"] }
+        - { area: "Paniai", letters: ["P*"] }
+        - { area: "Puncak Jaya", letters: ["S*"] }
+        - { area: "Intan Jaya", letters: ["V*"] }
+        - { area: "Puncak", letters: ["Y*"] }
+    PY:
+      two_wheel:
+        - { area: "Kota Sorong", letters: ["A*"] }
+        - { area: "Sorong", letters: ["E*"] }
+        - { area: "Raja Ampat", letters: ["K*"] }
+        - { area: "Maybrat", letters: ["M*"] }
+        - { area: "Tambrauw", letters: ["Q*"] }
+        - { area: "Sorong Selatan", letters: ["T*"] }
+      four_wheel_plus:
+        - { area: "Kota Sorong", letters: ["A*"] }
+        - { area: "Sorong", letters: ["E*"] }
+        - { area: "Raja Ampat", letters: ["K*"] }
+        - { area: "Maybrat", letters: ["M*"] }
+        - { area: "Tambrauw", letters: ["Q*"] }
+        - { area: "Sorong Selatan", letters: ["T*"] }
+
+# ---------------------------------------------------------------------------
+# 7. REGION CODES IN THE ANNEX — Lampiran A, PDF pp. 81-95, 57 codes.
+#    `province` is the province's name today; `printed_region` is the column
+#    "DAERAH PENOMORAN" exactly as printed; `areas_printed` is the column
+#    "LINGKUP WILAYAH" exactly as printed, in printed order.
+# ---------------------------------------------------------------------------
+codes:
+  - code: BL
+    province: Aceh
+    printed_region: Provinsi Aceh
+    annex_row: 1
+    annex_pdf_page: 81
+    areas_printed:
+    - Kota Banda Aceh
+    - Kota Subulussalam
+    - Kota Langsa
+    - Kota Lhokseumawe
+    - Kota Sabang
+    - Kab. Aceh Barat
+    - Kab. Aceh Barat Daya
+    - Kab. Aceh Besar
+    - Kab. Aceh Jaya
+    - Kab. Aceh Selatan
+    - Kab. Aceh Singkil
+    - Kab. Aceh Tamiang
+    - Kab. Aceh Tengah
+    - Kab. Aceh Tenggara
+    - Kab. Aceh Timur
+    - Kab. Aceh Utara
+    - Kab. Bener Meriah
+    - Kab. Bireun
+    - Kab. Gayo Lues
+    - Kab. Nagan Raya
+    - Kab. Pidie
+    - Kab. Pidie Jaya
+    - Kab. Simeulue
+  - code: BK
+    province: Sumatera Utara
+    printed_region: Provinsi Sumatera Utara
+    annex_row: 2
+    annex_pdf_page: 82
+    areas_printed:
+    - Kodya Medan
+    - Kab. Deli Serdang
+    - Kota Tebing Tinggi
+    - Kab. Langkat
+    - Kota Binjai
+    - Kab. Simalungun
+    - Kota Pematang Siantar
+    - Kab. Tanah Karo
+    - Kab. Asahan
+    - Kab. Labuhan Batu
+    - Kab. Serdang Begadai
+    - Kab. Batubara
+    - Kota Tanjung Balai
+    - Kab. Labuhan Batu Utara
+    - Kab. Labuhan Batu Selatan
+    printed_text_notes:
+    - "'Kodya Medan' is Kota Medan in the pre-1999 'kotamadya' style the annex uses in several rows."
+    - "'Kab. Serdang Begadai' is printed with two letters transposed; the regency is Serdang Bedagai."
+  - code: BB
+    province: Sumatera Utara
+    printed_region: Provinsi Sumatera Utara
+    annex_row: 2
+    annex_pdf_page: 82
+    areas_printed:
+    - Kab. Tapanuli Utara
+    - Kab. Tapanuli Tengah
+    - Kota Sibolga
+    - Kab. Tapanuli Selatan
+    - Kab. Dairi
+    - Kab. Nias
+    - Kab. Humbang Hasundutan
+    - Kab. Samosir
+    - Kab. Toba Samosir
+    - Kota Padang Sidempuan
+    - Kab. Paluta
+    - Kab. Palas
+    - Kab. Mandailing Natal
+    - Kota Gunung Sitoli
+    - Kab. Nias Barat
+    - Kab. Nias Utara
+    - Kab. Nias Selatan
+    - Kab. Sidikalang
+    - Kab. Pakpak Barat
+    printed_text_notes:
+    - "'Kab. Paluta' and 'Kab. Palas' are the printed abbreviations of Kab. Padang Lawas Utara and Kab. Padang Lawas."
+    - "'Kab. Sidikalang' is listed as a regency but Sidikalang is the seat of Kab. Dairi, which is listed separately."
+    - "'Kab. Toba Samosir' is the regency's earlier name."
+  - code: BA
+    province: Sumatera Barat
+    printed_region: Provinsi Sumatera Barat
+    annex_row: 3
+    annex_pdf_page: 83
+    areas_printed:
+    - Kota Padang
+    - Kota Bukit Tinggi
+    - Kota Pandang Panjang
+    - Kota Pariaman
+    - Kota Payakumbuh
+    - Kota Sawahlunto
+    - Kota Solok
+    - Kab. Agam
+    - Kab. Dharmasraya
+    - Kab. Limapuluhkota
+    - Kab. Kep. Mentawai
+    - Kab. Padang Pariaman
+    - Kab. Pasaman
+    - Kab. Pasaman Barat
+    - Kab. Pesisir Selatan
+    - Kab. Sawah lunto Sijunjung
+    - Kab. Solok
+    - Kab. Solok Selatan
+    - Kab. Tanah Datar
+    printed_text_notes:
+    - "'Kota Pandang Panjang' is printed with an extra letter; the city is Padang Panjang."
+    - "'Kab. Sawah lunto Sijunjung' is the earlier name of Kab. Sijunjung."
+  - code: BM
+    province: Riau
+    printed_region: Provinsi Riau
+    annex_row: 4
+    annex_pdf_page: 83
+    areas_printed:
+    - Kota Pekanbaru
+    - Kab. Indragiri Hulu
+    - Kab. Indragiri Hilir
+    - Kab. Kampar
+    - Kab. Bengkalis
+    - Kota Dumai
+    - Kab. Siak
+    - Kab. Rokan Hulu
+    - Kab. Rokan Hilir
+    - Kab. Pelalawan
+    - Kab. Kuantan Singingi
+    - Kab. Kep Meranti
+  - code: BP
+    province: Kepulauan Riau
+    printed_region: Provinsi Kepulauan Riau
+    annex_row: 5
+    annex_pdf_page: 83
+    areas_printed:
+    - Kab. Karimun
+    - Kab. Bintan (Kep Riau)
+    - Kab. Natuna
+    - Kab. Lingga
+    - Kota Batam
+    - Kota Tanjungpinang
+    - Kab. Kep. Anambas
+  - code: BG
+    province: Sumatera Selatan
+    printed_region: Provinsi Sumatera Selatan
+    annex_row: 6
+    annex_pdf_page: 84
+    areas_printed:
+    - Kota Palembang
+    - Kota Lubuk Linggau
+    - Kota Pagar Alam
+    - Kota Prabumulih
+    - Kab. Banyuasin
+    - Kab. Lahat
+    - Kab. Empat Lawang
+    - Kab. Muara Enim
+    - Kab. Musi Banyuasin
+    - Kab. Musi Rawas
+    - Kab. Musi Rawas Utara
+    - Kab. Ogan Ilir
+    - Kab. Ogan Komering Ilir
+    - Kab. Ogan Komering Ulu
+    - Kab. OKU Selatan
+    - Kab. OKU Timur
+    - Kab. Penukal Abab Lematang Ilir (PALI)
+  - code: BN
+    province: Kepulauan Bangka Belitung
+    printed_region: Provinsi Kepulauan Bangka-Belitung
+    annex_row: 7
+    annex_pdf_page: 84
+    areas_printed:
+    - Kota Pangkalpinang
+    - Kab. Bangka
+    - Kab. Belitung
+    - Kab. Bangka Barat
+    - Kab. Bangka Selatan
+    - Kab. Bangka Tengah
+    - Kab. Belitung Timur
+  - code: BE
+    province: Lampung
+    printed_region: Provinsi Lampung
+    annex_row: 8
+    annex_pdf_page: 84
+    areas_printed:
+    - Kota Bandar Lampung
+    - Kota Metro
+    - Kab. Lampung Selatan
+    - Kab. Lampung Tengah
+    - Kab. Lampung Utara
+    - Kab. Lampung Barat
+    - Kab. Lampung Timur
+    - Kab. Tanggamus
+    - Kab. Tulang Bawang
+    - Kab. Way Kanan
+    - Kab. Pesawaran
+    - Kab. Pringsewu
+    - Kab. Mesuji
+  - code: BD
+    province: Bengkulu
+    printed_region: Provinsi Bengkulu
+    annex_row: 9
+    annex_pdf_page: 85
+    areas_printed:
+    - Kota Bengkulu
+    - Kab. Bengkulu Utara
+    - Kab. Bengkulu Selatan
+    - Kab. Rejang Lebong
+    - Kab. Kaur
+    - Kab. Kepahiang
+    - Kab. Muko-Muko
+    - Kab. Lebong
+    - Kab. Seluma
+    - Kab. Bengkulu Tengah
+  - code: BH
+    province: Jambi
+    printed_region: Provinsi Jambi
+    annex_row: 10
+    annex_pdf_page: 85
+    areas_printed:
+    - Kota Jambi
+    - Kota Sungai Penuh
+    - Kab. Batanghari
+    - Kab. Bungo
+    - Kab. Tebo
+    - Kab. Kerinci
+    - Kab. Tanjung Jabung Barat
+    - Kab. Tanjung Jabung Timur
+    - Kab. Sarolangun
+    - Kab. Merangin
+    - Kab. Muaro Jambi
+  - code: B
+    province: DKI Jakarta
+    printed_region: Provinsi DKI Jakarta
+    annex_row: 11
+    annex_pdf_page: 85
+    areas_printed:
+    - Daerah Khusus Ibukota Jakarta
+    - Kab. Kepulauan Seribu
+    - Kota Depok
+    - Kota Bekasi
+    - Kab. Bekasi
+    - Kota Tangerang
+    - Kota Tangerang Selatan
+    printed_text_notes:
+    - >-
+      The code crosses provincial boundaries: the annex puts Kota Depok and Kota/Kab. Bekasi (Jawa Barat) and Kota Tangerang and Kota Tangerang Selatan (Banten) under B, while Kab. Tangerang is listed under
+      A.
+  - code: A
+    province: Banten
+    printed_region: Provinsi Banten
+    annex_row: 12
+    annex_pdf_page: 85
+    areas_printed:
+    - Kota Serang
+    - Kota Cilegon
+    - Kab. Serang
+    - Kab. Pandeglang
+    - Kab. Lebak
+    - Kab. Tangerang
+    printed_text_notes:
+    - Kab. Tangerang is listed here, under A, not under B.
+  - code: D
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kota Bandung
+    - Kota Cimahi
+    - Kab. Bandung
+    - Kab. Bandung Barat
+  - code: F
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kota Bogor
+    - Kab. Bogor
+    - Kab. Cianjur
+    - Kab. Sukabumi
+    - Kota Sukabumi
+  - code: T
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kab. Purwakarta
+    - Kab. Karawang
+    - Kab. Subang
+  - code: E
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kota Cirebon
+    - Kab. Cirebon
+    - Kab. Indramayu
+    - Kab. Malajengka
+    - Kab. Kuningan
+    printed_text_notes:
+    - "'Kab. Malajengka' is printed with two letters transposed; the regency is Majalengka."
+  - code: Z
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kab. Garut
+    - Kab. Sumedang
+    - Kota Tasikmalaya
+    - Kab. Tasikmalaya
+    - Kab. Ciamis
+    - Kota Banjar
+    - Kab. Pangandaran
+  - code: H
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 86
+    areas_printed:
+    - Kodya Semarang
+    - Kab. Salatiga
+    - Kab. Kendal
+    - Kab. Demak
+    - Kab. Semarang
+    printed_text_notes:
+    - "'Kab. Salatiga' is printed as a regency; Salatiga is a city (kota)."
+    - "'Kodya Semarang' is Kota Semarang."
+  - code: G
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 86
+    areas_printed:
+    - Kodya Pekalongan
+    - Kab. Pekalongan
+    - Kab. Brebes
+    - Kodya Tegal
+    - Kab. Tegal
+    - Kab. Batang
+    - Kab. Pemalang
+  - code: K
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kab. Pati
+    - Kab. Kudus
+    - Kab. Jepara
+    - Kab. Rembang
+    - Kab. Blora
+    - Kab. Grobogan
+  - code: R
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kab. Banyumas
+    - Kab. Cilacap
+    - Kab. Purbalingga
+    - Kab. Banjarnegara
+  - code: AA
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kodya Magelang
+    - Kab. Magelang
+    - Kab. Purworejo
+    - Kab. Kebumen
+    - Kab. Temanggung
+    - Kab. Wonosobo
+  - code: AD
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kodya Surakarta
+    - Kab. Sukoharjo
+    - Kab. Boyolali
+    - Kab. Sragen
+    - Kab. Karanganyar
+    - Kab. Wonogiri
+    - Kab. Klaten
+  - code: AB
+    province: DI Yogyakarta
+    printed_region: Provinsi Daerah Istimewa Yogyakarta
+    annex_row: 15
+    annex_pdf_page: 87
+    areas_printed:
+    - Kota Yogyakarta
+    - Kab. Bantul
+    - Kab. Gunung Kidul
+    - Kab. Sleman
+    - Kab. Kulon Progo
+  - code: L
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 87
+    areas_printed:
+    - Kodya Surabaya
+  - code: W
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 87
+    areas_printed:
+    - Kab. Gresik
+    - Kab. Sidoarjo
+    - Kab. Mojokerto
+    - Kab. Jombang
+  - code: "N"
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kodya Malang
+    - Kab. Malang
+    - Kab. Probolinggo
+    - Kab. Pasuruan
+    - Kab. Lumajang
+  - code: P
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kab. Besuki
+    - Kab. Situbondo
+    - Kab. Bondowoso
+    - Kab. Jember
+    - Kab. Banyuwangi
+    printed_text_notes:
+    - "'Kab. Besuki' is printed as a regency; Besuki is the name of the old residency the code descends from, not a current regency."
+  - code: AG
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kodya Kediri
+    - Kab. Kediri/Pare
+    - Kab. Blitar
+    - Kab. Tulungagung
+    - Kab. Nganjuk
+    - Kab. Trenggalek
+    printed_text_notes:
+    - "'Kab. Kediri/Pare' names the regency together with its town Pare."
+  - code: AE
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kodya Madiun
+    - Kab. Madiun
+    - Kab. Ngawi
+    - Kab. Magetan
+    - Kab. Ponorogo
+    - Kab. Pacitan
+  - code: S
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kab. Bojonegoro
+    - Kab. Tuban
+    - Kab. Lamongan
+  - code: M
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kab. Pamekasan
+    - Kab. Bangkalan
+    - Kab. Sampang
+    - Kab. Sumenep
+  - code: DK
+    province: Bali
+    printed_region: Provinsi Bali
+    annex_row: 17
+    annex_pdf_page: 88
+    areas_printed:
+    - Kota Denpasar
+    - Kab. Badung
+    - Kab. Buleleng
+    - Kab. Tabanan
+    - Kab. Gianyar
+    - Kab. Klungkung
+    - Kab. Bangli
+    - Kab. Karangasem
+    - Kab. Jembrana
+  - code: DR
+    province: Nusa Tenggara Barat
+    printed_region: Provinsi Nusa Tenggara Barat
+    annex_row: 18
+    annex_pdf_page: 89
+    areas_printed:
+    - Kota Mataram
+    - Kab. Lombok Barat
+    - Kab. Lombok Tengah
+    - Kab. Lombok Timur
+    - Kab. Lombok Utara
+  - code: EA
+    province: Nusa Tenggara Barat
+    printed_region: Provinsi Nusa Tenggara Barat
+    annex_row: 18
+    annex_pdf_page: 89
+    areas_printed:
+    - Kota Bima
+    - Kab. Bima
+    - Kab. Sumbawa
+    - Kab. Sumbawa Barat
+    - Kab. Dompu
+  - code: DH
+    province: Nusa Tenggara Timur
+    printed_region: Provinsi Nusa Tenggara Timur
+    annex_row: 19
+    annex_pdf_page: 89
+    areas_printed:
+    - Kota Kupang
+    - Kab. Timor Tengah Selatan
+    - Kab. Timor Tengah Utara
+    - Kab. Belu
+    - Kab. Kupang
+    - Kab. Sabu Raijua
+    - Kab. Rote Ndao
+    - Kab. Malaka
+  - code: EB
+    province: Nusa Tenggara Timur
+    printed_region: Provinsi Nusa Tenggara Timur
+    annex_row: 19
+    annex_pdf_page: 89
+    areas_printed:
+    - Kab. Ende
+    - Kab. Sikka
+    - Kab. Flores Timur
+    - Kab. Ngada
+    - Kab. Manggarai
+    - Kab. Alor
+    - Kab. Lembata
+    - Kab. Manggarai Barat
+    - Kab. Nagekeo
+    - Kab. Manggarai Timur
+  - code: ED
+    province: Nusa Tenggara Timur
+    printed_region: Provinsi Nusa Tenggara Timur
+    annex_row: 19
+    annex_pdf_page: 89
+    areas_printed:
+    - Kab. Sumba Timur
+    - Kab. Sumba Barat
+    - Kab. Sumba Barat Daya
+    - Kab. Sumba Tengah
+  - code: KB
+    province: Kalimantan Barat
+    printed_region: Provinsi Kalimatan Barat
+    annex_row: 20
+    annex_pdf_page: 90
+    areas_printed:
+    - Kota Pontianak
+    - Kab. Pontianak
+    - Kab. Sambas
+    - Kab. Sanggau
+    - Kab. Sintang
+    - Kab. Kapuas Hulu
+    - Kab. Ketapang
+    - Kab. Kubu Raya
+    - Kota Singkawang
+    - Kab. Bengkayang
+    - Kab. Landak
+    - Kab. Sekadau
+    - Kab. Melawi
+    - Kab. Kayong Utara
+    printed_text_notes:
+    - The printed region reads 'Kalimatan Barat' (a dropped letter).
+    - "'Kab. Pontianak' is the regency's earlier name (now Kab. Mempawah)."
+  - code: DA
+    province: Kalimantan Selatan
+    printed_region: Provinsi Kalimantan Selatan
+    annex_row: 21
+    annex_pdf_page: 90
+    areas_printed:
+    - Kota Banjarmasin
+    - Kota Banjar Baru
+    - Kab. Balangan
+    - Kab. Banjar
+    - Kab. Barito Kuala
+    - Kab. Hulu Sungai Utara
+    - Kab. Hulu Sungai Selatan
+    - Kab. Hulu Sungai Tengah
+    - Kab. Kotabaru
+    - Kab. Tabalong
+    - Kab. Tanah Bumbu
+    - Kab. Tanah Laut
+    - Kab. Tapin
+  - code: KH
+    province: Kalimantan Tengah
+    printed_region: Provinsi Kalimantan Tengah
+    annex_row: 22
+    annex_pdf_page: 90
+    areas_printed:
+    - Kota Palangkaraya
+    - Kab. Barito Selatan
+    - Kab. Barito Timur
+    - Kab. Barito Utara
+    - Kab. Gunung Mas
+    - Kab. Kapuas
+    - Kab. Katingan
+    - Kab. Kotawaringin Barat
+    - Kab. Kotawaringin Timur
+    - Kab. Lamandau
+    - Kab. Murung Raya
+    - Kab. Pulang Pisau
+    - Kab. Seruyan
+    - Kab. Sukamara
+  - code: KT
+    province: Kalimantan Timur
+    printed_region: Provinsi Kalimantan Timur
+    annex_row: 23
+    annex_pdf_page: 91
+    areas_printed:
+    - Kodya Balikpapan
+    - Kodya Samarinda
+    - Kab. Kutai Kartanegara
+    - Kab. Kutai Timur
+    - Kab. Berau
+    - Kab. Kutai Barat
+    - Kab. Mahakam Ulu
+    - Kodya Bontang
+    - Kab. Paser Penajam Utara
+    - Kab. Paser
+    printed_text_notes:
+    - "'Kab. Paser Penajam Utara' is printed with two words in the reverse order; the regency is Penajam Paser Utara."
+  - code: KU
+    province: Kalimantan Utara
+    printed_region: Provinsi Kalimantan Utara
+    annex_row: 24
+    annex_pdf_page: 91
+    areas_printed:
+    - Kotamadya Tarakan
+    - Kab. Nunukan
+    - Kab. Bulungan
+    - Kab. Malinau
+    - Kab. Tana Tidung
+  - code: DB
+    province: Sulawesi Utara
+    printed_region: Provinsi Sulawesi Utara
+    annex_row: 25
+    annex_pdf_page: 91
+    areas_printed:
+    - Kota Manado
+    - Kota Kotamobagu
+    - Kota Bitung
+    - Kota Tomohon
+    - Kab. Bolaang Mongondow
+    - Kab. Bolaang Mongondow Utara
+    - Kab. Bolaang Mongondow Timur
+    - Kab. Bolaang Mongondow Selatan
+    - Kab. Minahasa
+    - Kab. Minahasa Tenggara
+    - Kab. Minahasa Selatan
+    - Kab. Minahsa Utara
+    printed_text_notes:
+    - "'Kab. Minahsa Utara' is printed with a dropped letter; the regency is Minahasa Utara."
+  - code: DL
+    province: Sulawesi Utara
+    printed_region: Provinsi Sulawesi Utara
+    annex_row: 25
+    annex_pdf_page: 91
+    areas_printed:
+    - Kab. Sangie Talaud
+    - Kab. Kep. Talaud
+    - Kab. Kep. Siau Tagulandang Biaro
+    printed_text_notes:
+    - "'Kab. Sangie Talaud' is printed for the old combined Sangihe Talaud regency name; Kab. Kep. Talaud is listed separately."
+  - code: DM
+    province: Gorontalo
+    printed_region: Provinsi Gorontalo
+    annex_row: 26
+    annex_pdf_page: 92
+    areas_printed:
+    - Kota Gorontalo
+    - Kab. Gorontalo
+    - Kab. Boalemo
+    - Kab. Pohuwato
+    - Kab. Bone Bolango
+    - Kab. Gorontalo Utara
+  - code: DN
+    province: Sulawesi Tengah
+    printed_region: Provinsi Sulawesi Tengah
+    annex_row: 27
+    annex_pdf_page: 92
+    areas_printed:
+    - Kota Palu
+    - Kab. Banggai
+    - Kab. Banggai Kepulauan
+    - Kab. Buol
+    - Kab. Donggala
+    - Kab. Morowali
+    - Kab. Parigi Mountong
+    - Kab. Poso
+    - Kab. Tojo Una-Una
+    - Kab. Toli-Toli
+    - Kab. Sigi
+    - Kab. Banggai Laut
+    printed_text_notes:
+    - "'Kab. Parigi Mountong' is printed with an extra letter; the regency is Parigi Moutong."
+  - code: DD
+    province: Sulawesi Selatan
+    printed_region: Provinsi Sulawesi Selatan
+    annex_row: 28
+    annex_pdf_page: 92
+    areas_printed:
+    - Kodya Makassar
+    - Kab. Gowa
+    - Kab. Takalar
+    - Kab. Maros
+    - Kab. Pangkajene kep
+    - Kab. Bantaeng
+    - Kab. Jeneponto
+    - Kab. Bulukumba
+    - Kab. Selayar
+    printed_text_notes:
+    - "'Kab. Pangkajene kep' abbreviates Pangkajene dan Kepulauan."
+    - "'Kab. Selayar' is Kab. Kepulauan Selayar."
+  - code: DP
+    province: Sulawesi Selatan
+    printed_region: Provinsi Sulawesi Selatan
+    annex_row: 28
+    annex_pdf_page: 92
+    areas_printed:
+    - Kodya Pare-Pare
+    - Kab. Barru
+    - Kab. Sidrap
+    - Kab. Pinrang
+    - Kab. Palopo
+    - Kab. Luwu
+    - Kab. Luwu Timur
+    - Kab. Luwu Utara
+    - Kab. Tana Toraja
+    - Kab. Enrekang
+    - Kab. Toraja Utara
+    printed_text_notes:
+    - "'Kab. Palopo' is printed as a regency; Palopo is a city (kota)."
+    - "'Kab. Sidrap' abbreviates Sidenreng Rappang."
+  - code: DW
+    province: Sulawesi Selatan
+    printed_region: Provinsi Sulawesi Selatan
+    annex_row: 28
+    annex_pdf_page: 93
+    areas_printed:
+    - Kab. Bone
+    - Kab. Wajo
+    - Kab. Sopeng
+    - Kab. Sinjai
+    - Kab. Watampone
+    printed_text_notes:
+    - "'Kab. Sopeng' is printed with a dropped letter; the regency is Soppeng."
+    - "'Kab. Watampone' is printed as a regency; Watampone is the seat of Kab. Bone, which is listed separately."
+  - code: DC
+    province: Sulawesi Barat
+    printed_region: Provinsi Sulawesi Barat
+    annex_row: 29
+    annex_pdf_page: 93
+    areas_printed:
+    - Kab. Majene
+    - Kab. Mamuju
+    - Kab. Polewali Mandar
+    - Kab. Mamasa
+    - Kab. Mamuju Utara
+    - Kab. Mamuju Tengah
+    printed_text_notes:
+    - "'Kab. Mamuju Utara' is the regency's earlier name (now Kab. Pasangkayu)."
+  - code: DT
+    province: Sulawesi Tenggara
+    printed_region: Provinsi Sulawesi Tenggara
+    annex_row: 30
+    annex_pdf_page: 93
+    areas_printed:
+    - Kota Kendari
+    - Kota Bau-Bau
+    - Kab. Bombana
+    - Kab. Buton
+    - Kab. Konawe
+    - Kab. Kolaka
+    - Kab. Kolaka Utara
+    - Kab. Konawe Selatan
+    - Kab. Muna
+    - Kab. Wakatobi
+    - Kab. Konawe Utara
+    - Kab. Buton Utara
+    - Kab. Kolaka Timur
+  - code: DE
+    province: Maluku
+    printed_region: Provinsi Maluku
+    annex_row: 31
+    annex_pdf_page: 93
+    areas_printed:
+    - Kota Ambon
+    - Kota Tual
+    - Kab. Buru
+    - Kab. Kepulauan Aru
+    - Kab. Seram Bagian Barat
+    - Kab. Seram Bagian Timur
+    - Kab. Maluku Tengah
+    - Kab. Maluku Tenggara
+    - Kab. Maluku Tenggara Barat
+    - Kab. Maluku Barat Daya
+    - Kab. Buru Selatan
+  - code: DG
+    province: Maluku Utara
+    printed_region: Provinsi Maluku Utara
+    annex_row: 32
+    annex_pdf_page: 94
+    areas_printed:
+    - Kota Ternate
+    - Kota Tidore
+    - Kab. Halmahera Utara
+    - Kab. Halmahera Barat
+    - Kab. Halmahera Selatan
+    - Kab. Halmahera Tengah
+    - Kab. Halmahera Timur
+    - Kab. Pulau Morotai
+    - Kab. Kepulauan Sula
+    - Kab. Pulau Taliabu
+  - code: PA
+    province: Papua
+    printed_region: Provinsi Papua
+    annex_row: 33
+    annex_pdf_page: 94
+    areas_printed:
+    - Kab. Jayapura
+    - Kota Jayapura
+    - Kab. Jayawijaya
+    - Kab. Biak Numfor
+    - Kab. Merauke
+    - Kab. Paniai
+    - Kab. Yapen Waropen
+    - Kab. Tolikara
+    - Kab. Mimika
+    - Kab. Yahukimo
+    - Kab. Nabire
+    - Kab. Mappi
+    - Kab. Boven Digoel
+    - Kab. Asmat
+    - Kab. Sarmi
+    - Kab. Mamberamo Raya
+    - Kab. Waropen
+    - Kab. Keerom
+    - Kab. Pegunungan Bintang
+    - Kab. Puncak Jaya
+    - Kab. Supiori
+    - Kab. Mamberamo Tengah
+    - Kab. Yalimo
+    - Kab. Lanny Jaya
+    - Kab. Nduga
+    - Kab. Puncak
+    - Kab. Dogiyai
+    - Kab. Deiyai
+    - Kab. Intan Jaya
+    printed_text_notes:
+    - "'Kab. Yapen Waropen' is the earlier name of Kab. Kepulauan Yapen (Kab. Waropen is listed separately)."
+    - >-
+      Since 2022 part of this list belongs to the new provinces Papua Selatan, Papua Tengah and Papua Pegunungan, which issue their own codes (see post_annex_codes). Which regency moved where is set by the
+      2022 province-creation statutes, not opened in this pass, so it is not tabulated here.
+  - code: PB
+    province: Papua Barat
+    printed_region: Provinsi Papua Barat
+    annex_row: 34
+    annex_pdf_page: 95
+    areas_printed:
+    - Kab. Manokwari
+    - Kab. Teluk Bintuni
+    - Kab. Teluk Wondama
+    - Kota Sorong
+    - Kab. Sorong
+    - Kab. Sorong Selatan
+    - Kab. Kep. Raja Ampat
+    - Kab. Fak-Fak
+    - Kab. Kaimana
+    - Kab. Tambrauw
+    - Kab. Maybrat
+    - Kab. Manokwari Selatan
+    - Kab. Pegunungan Arfak
+    printed_text_notes:
+    - >-
+      Since 2022 part of this list belongs to the new province Papua Barat Daya, which issues PY (see post_annex_codes). The regencies that moved are set by the 2022 province-creation statute, not opened in
+      this pass, so they are not tabulated here.
+
+# ---------------------------------------------------------------------------
+# 8. CODES CREATED AFTER THE ANNEX — the 2022 Papua provinces.
+#    NOT IN PERPOL 7/2021. Each is sourced to the police or to press quoting
+#    them, and tiered accordingly. Perpol 7/2021 has not been amended to add
+#    them as far as this pass found (see §VERIFIER in plates/id.yml).
+# ---------------------------------------------------------------------------
+post_annex_codes:
+  - code: PY
+    province: Papua Barat Daya
+    replaces: PB
+    since: "2024-05"
+    since_precision: month
+    evidence: secondary-press-citing-agency
+    source: "https://oto.detik.com/berita/d-7501604/kode-pelat-nomor-di-3-provinsi-papua-diubah  # detikOto 21 Aug 2024: 'Dikutip situs resmi Korlantas Polri, Pemprov Papua Barat Daya pada bulan Mei lalu menjelaskan kode awal pelat nomor provinsi yang sebelumnya PB berubah menjadi PY. Sedangkan kode PB masih difungsikan untuk pelat nomor kendaraan di Papua Barat.' The Korlantas page quoted was not located. Accessed 2026-11-25"
+  - code: PS
+    province: Papua Selatan
+    replaces: PA
+    since: "2024-07"
+    since_precision: month
+    evidence: secondary-press-citing-agency
+    source: "https://oto.detik.com/berita/d-7501604/kode-pelat-nomor-di-3-provinsi-papua-diubah  # detikOto 21 Aug 2024: 'sejak Juli, pelat nomor kendaraan di Papua Selatan berubah dari PA menjadi PS. Sedangkan PA masih dipakai di provinsi Papua.' Accessed 2026-11-25"
+  - code: PT
+    province: Papua Tengah
+    replaces: PA
+    since: "2024-08-19"
+    since_precision: day
+    evidence: secondary-press-citing-agency
+    source: "https://papua.antaranews.com/berita/727031/pemprov-papua-tengah-hadirkan-plat-nomor-kendaraan-kode-pt  # ANTARA Papua 20 Aug 2024: 'penyerahan plat kendaraan nomor \"PT 1\" oleh Dirlantas Polda Papua kepada Penjabat Gubernur Papua Tengah Ribka Haluk ... Senin (19/8)'; detikOto d-7501604 (21 Aug 2024) corroborates PA -> PT. Accessed 2026-11-25"
+  - code: PG
+    province: Papua Pegunungan
+    replaces: PA
+    since: "2024-10-24"
+    since_precision: day
+    evidence: secondary-press-quoting-police
+    source: "https://rri.co.id/wamena/regional/1070172/pemprov-papua-pegunungan-launching-plat-nomor-kendaraan-pg  # RRI Wamena (the state broadcaster) 25 Oct 2024: 'Pemerintah Provinsi Papua Pegunungan resmi melaunching nomor registrasi kendaraan bermotor dari PA menjadi PG' on Thursday 24/10/2024, with the Direktur Lalu Lintas Polda Papua, Kombes Pol Abrianto Pardede, quoted: 'hari ini resmi bahwa Provinsi Papua Pegunungan adalah PG'. Accessed 2026-11-25"
+    corroboration: "https://www.ceposonline.com/papua-pegununungan/1995235616/hari-ini-provinsi-papua-pegunungan-resmi-gunakan-kode-kendaraan-pg  # Cenderawasih Pos 25 Oct 2024, same ceremony and the same police quote. Accessed 2026-11-25"
+
+# ---------------------------------------------------------------------------
+# 9. WITHDRAWN CODES — no longer issued. Rows are closed, never deleted, so
+#    old plates stay decodable. Secondary tier unless stated.
+# ---------------------------------------------------------------------------
+withdrawn_codes:
+  - code: DS
+    area: "Papua (the whole of western New Guinea, later the provinces Papua and Papua Barat)"
+    replaced_by:
+      - { code: PB, area: "Papua Barat", when: "2013-05", evidence: secondary-wikipedia }
+      - { code: PA, area: "Papua", when: "2016-07-01", evidence: official-press }
+    origin: "added in the 1920s for western Papua, per both articles (secondary-wikipedia)"
+    sources:
+      - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # 'DS: Papua (sebelum Juli 2016) dan Papua Barat (sebelum Mei 2013)'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # 'DS – Papua, prior to 2016'; no date for Papua Barat. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://www.jpnn.com/news/resmi-nomor-polisi-di-papua-bukan-ds-lagi  # JPNN, 2 Jul 2016: Papua's code changed 'Dari semula DS, kini menjadi PA', marked by the Kapolda Papua handing plate PA 1 to the provincial government on Friday 1 July 2016 (the police's 70th anniversary). Evidence: official-press (a police ceremony reported by press). Accessed 2026-11-25"
+    disagreement: "The two articles agree on DS -> PA in 2016; only id.wikipedia dates the Papua Barat change (May 2013). No source for the PB date was read."
+  - code: DF
+    area: "Timor Timur (East Timor), as an Indonesian province"
+    ended: "with the territory's separation from Indonesia; neither article gives a date"
+    sources:
+      - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # 'DF: Timor Timur (telah menjadi negara sendiri)'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # 'DF – East Timor'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+  - code: BR
+    area: "Kalimantan Barat (the western Borneo residency)"
+    replaced_by:
+      - { code: KB, area: "Kalimantan Barat", when: "not dated in either article", evidence: secondary-wikipedia }
+    sources:
+      - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # 'BR: Kalimantan Barat (telah berganti menjadi KB)'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # 'BR – ex Borneo Residency, Western region'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+withdrawn_codes_note: >-
+  The province-split codes of 2024 (PY, PS, PT, PG) did NOT withdraw PA or
+  PB, which remain in use for the rump provinces (section 8). Other code
+  reassignments the articles mention in passing (for example the colonial
+  DA covering both South and East Kalimantan before KT, KH and KU existed)
+  are recorded in section 10, not here, because no withdrawal date is
+  given for them.
+
+# ---------------------------------------------------------------------------
+# 10. COLONIAL AND EARLY CODES — history, secondary tier throughout.
+#     Both articles give the residency-based code list of the 1917 system,
+#     citing the Java Motor Club's handbook (KITLV copy, not downloaded in
+#     this pass). They differ in several rows; both readings are kept.
+# ---------------------------------------------------------------------------
+colonial_codes:
+  evidence: secondary-wikipedia
+  sources:
+    - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # section 'Sejarah'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+    - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # section 'History > Colonial era'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+  cited_primary_not_read: "https://kitlv-docs.library.leiden.edu/open/371342406.pdf  # Java Motor Club, 'Handboek voor automobilisten en motorwielrijders', cited by both articles for the list. Not downloaded; a verifier should read it and replace this section's tier."
+  before_1917:
+    period: { start: 1900, end: 1917 }
+    note: >-
+      Plates appear in the Dutch East Indies in 1900 with a regional code and
+      a number but no official standard, not always front and rear (some on
+      the side). Example codes given: CH Cirebon, SB Surabaya, SOK the east
+      coast of Sumatra; and IN for government vehicles, on an elliptical plate
+      with the number on a rectangular plate below.
+  system_1917:
+    note: >-
+      From 1917, under the "Voorschriften omtrent den inhoud der aanvragen om
+      nummer- en rijbewijzen ..." (the regulation on applications for number
+      and driving licences, the assignment of numbers and letters, and the
+      registers), codes follow the residency (karesidenan), first on Java and
+      then elsewhere. The current region codes descend from this list.
+    codes:
+      - { code: A,  area: "Banten" }
+      - { code: B,  area: "Batavia" }
+      - { code: D,  area: "Priangan (Preanger Regencies)" }
+      - { code: E,  area: "Cirebon" }
+      - { code: G,  area: "Pekalongan" }
+      - { code: H,  area: "Semarang" }
+      - { code: K,  area: "Rembang", id_wikipedia: "Rembang/Pati", en_wikipedia: "Rembang" }
+      - { code: L,  area: "Surabaya", id_wikipedia: "L/W Surabaya", en_wikipedia: "L Surabaya; W not listed" }
+      - { code: M,  area: "Madura" }
+      - { code: N,  area: "Pasuruan", id_wikipedia: "Pasuruan", en_wikipedia: "Pasuruan, Malang" }
+      - { code: P,  area: "Besuki" }
+      - { code: R,  area: "Banyumas" }
+      - { code: T,  area: "Karawang", id_wikipedia: "Karawang", en_wikipedia: "not listed" }
+      - { code: AA, area: "Kedu" }
+      - { code: AB, area: "Yogyakarta" }
+      - { code: AD, area: "Surakarta" }
+      - { code: AE, area: "Madiun" }
+      - { code: AG, area: "Kediri" }
+      - { code: BA, area: "the west coast of Sumatra" }
+      - { code: BB, area: "Tapanuli" }
+      - { code: BD, area: "Bengkulu" }
+      - { code: BE, area: "Lampung" }
+      - { code: BG, area: "Palembang" }
+      - { code: BH, area: "Jambi" }
+      - { code: BK, area: "East Sumatra" }
+      - { code: BL, area: "Aceh" }
+      - { code: BM, area: "Riau" }
+      - { code: BN, area: "Bangka" }
+      - { code: BP, area: "disputed", id_wikipedia: "Belitung", en_wikipedia: "Riau Islands" }
+      - { code: BR, area: "West Kalimantan (withdrawn, see section 9)" }
+      - { code: DA, area: "South and East Kalimantan" }
+      - { code: DB, area: "Manado" }
+      - { code: DD, area: "Sulawesi" }
+      - { code: DE, area: "Ambon" }
+      - { code: DG, area: "Ternate" }
+      - { code: DH, area: "Timor" }
+      - { code: DK, area: "Bali and Lombok" }
+    disagreements:
+      - "K: id.wikipedia 'Rembang/Pati', en.wikipedia 'Rembang'."
+      - "L/W: id.wikipedia lists W with L for Surabaya; en.wikipedia lists only L."
+      - "N: en.wikipedia adds Malang; id.wikipedia gives Pasuruan only."
+      - "T (Karawang): in id.wikipedia's list, absent from en.wikipedia's."
+      - "BP: id.wikipedia Belitung, en.wikipedia Riau Islands (today BP is Kepulauan Riau and Belitung is under BN)."
+  added_by_1920s:
+    note: "Until the 1920s codes were added as residencies were split; both articles give F for Bogor, S for Bojonegoro and DS for western Papua as examples."
+    codes:
+      - { code: F,  area: "Bogor" }
+      - { code: S,  area: "Bojonegoro" }
+      - { code: DS, area: "western Papua (withdrawn 2013/2016, see section 9)" }
+  after_1945: >-
+    Both articles say the colonial format and codes stayed in use after
+    independence, the expiry line being added in the early 1980s (see
+    plates/id.yml common.history).
+
+# ---------------------------------------------------------------------------
+# 11. NON-MOTORISED VEHICLE CODES — municipal, outside Perpol 7/2021 (which
+#     covers only Kendaraan Bermotor). Secondary tier; listed so a decoder
+#     does not mistake them for region codes.
+# ---------------------------------------------------------------------------
+non_motorised_codes:
+  evidence: secondary-wikipedia
+  source: "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # section 'Kode nomor polisi > Lain-lain' and 'Kendaraan tidak bermotor'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+  codes:
+    - { code: SB, area: "Kota Surabaya", vehicle: "becak (pedicab)", note: "white letters on blue, per the article" }
+    - { code: YB, area: "DI Yogyakarta", vehicle: "becak" }
+    - { code: YK, area: "DI Yogyakarta", vehicle: "andong/kusir (horse carriage)" }
+    - { code: KS, area: "Kota Surakarta", vehicle: "becak" }
+    - { code: BS, area: "Kota Banjarmasin", vehicle: "becak", note: "printed as a SUFFIX after a DA registration, not as a prefix" }
