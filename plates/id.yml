@@ -60,14 +60,24 @@
 #   secondary-press      — press without an attributed police source
 #   secondary-quote      — an instrument known only through a secondary
 #                          quotation of it (Perkap 5/2012, via hukumonline)
-# NOTHING IN THIS FILE OR ITS DECODE TABLES IS DERIVED FROM A SHAREALIKE
-# SOURCE (AGENTS.md). Several facts in circulation exist only in
-# encyclopaedia articles under CC BY-SA — the per-regency suffix letters, the
-# pre-1993 history and colonial codes, codes withdrawn before 2021, the
-# military and police code lists, the RF suffix table beyond RFP, a 460 mm
-# plate length and a named typeface for the 2022 plate. None of them is
-# carried. Where one bears on a reader's question it is listed in §VERIFIER
-# as an open question, not as data.
+#   secondary-wikipedia  — taken from id.wikipedia or en.wikipedia under the
+#                          owner's PRD-PLATES §4 override (2026-08-02), cited
+#                          to a fixed revision:
+#     id: https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020
+#     en: https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720
+#
+# WIKIPEDIA-DERIVED FACTS, AND WHERE THEY ARE. Under the §4 override they are
+# carried, each tagged `secondary-wikipedia` with its revision URL, in our own
+# structure, never at instrument tier, and the regulation wins wherever both
+# speak. They are confined to: the per-regency suffix letters, the withdrawn
+# codes, the colonial codes and the non-motorised codes
+# (plates/_decode/id-region-codes.yml sections 6, 9, 10, 11); the RF letters,
+# RI numbers, parliament scheme and military/police codes
+# (plates/_decode/id-service-codes.yml); and in this file `common.history`,
+# the `recorded_claims` under common.dimensions and common.typeface, the RF
+# letters on id-special-rf-2012, and the two series id-state-ri-subnumbered-2024
+# and id-state-indonesia-ceremonial. Where the two articles disagree with each
+# other, or with press, both readings are kept and the disagreement is said.
 #
 # ===========================================================================
 # MODELLING DECISIONS
@@ -112,8 +122,9 @@
 #     pilihan) is an ordinary-looking plate. Dealers use the trial plate
 #     (TCKB); there is no separate dealer plate.
 #   * Non-motorised vehicles (becak, delman) are outside Perpol 7/2021, which
-#     covers only "Kendaraan Bermotor"; any local plates they carry are
-#     municipal and not modelled.
+#     covers only "Kendaraan Bermotor"; their municipal codes (SB, YB, YK, KS,
+#     BS) are listed at secondary tier in plates/_decode/id-region-codes.yml
+#     section 11, not modelled as series.
 #
 # ===========================================================================
 # §VERIFIER — OPEN QUESTIONS, IN ORDER OF HOW MUCH THEY MATTER TO A READER
@@ -121,15 +132,18 @@
 #   V1. THE SIZE AND TYPEFACE OF TODAY'S WHITE PLATE. No instrument and no
 #       police statement located gives the dimensions of the 2022 white plate
 #       or names its typeface. The last dated size is 430 x 135 mm (car) and
-#       275 x 110 mm (motorcycle), from press in May 2011. A longer car plate
-#       and a named German-style typeface are claimed only by an encyclopaedia
-#       article and are not adopted. Pin the Kakorlantas specification decision
-#       for the white plate (none was found by number).
+#       275 x 110 mm (motorcycle), from press in May 2011. en.wikipedia's
+#       460 x 135 mm car plate and both articles' FE-Schrift are recorded as
+#       unconfirmed claims (common.dimensions, common.typeface), not adopted.
+#       Pin the Kakorlantas specification decision for the white plate (none
+#       was found by number).
 #   V2. WHICH SUFFIX LETTERS MEAN WHICH REGENCY. Allocated per Polda by Kapolda
 #       decision (Pasal 6(7)); confirmed to exist by Lampiran J; no Kapolda
-#       decision found published. Leads saved but not used: a detikOto 2024
-#       table attributed to carmaker dealer pages, and a detikJatim 2025
-#       Surabaya-by-Samsat-office list attributed to an unofficial site.
+#       decision found published. Shipped at secondary tier from id.wikipedia
+#       and compared with a 2024 detikOto table (224 rows the same, 171
+#       overlapping, 55 different); the two disagree on whether Yogyakarta's
+#       locality letter comes first or last. A police table for any Polda
+#       would replace these rows.
 #   V3. WHEN THE WHITE PLATE ACTUALLY STARTED, AND WHEN THE BLACK ONE STOPPED.
 #       Korlantas targeted mid-June 2022 for the first white plates and 2027 for
 #       full coverage; issuance waited for old black stock to run out region by
@@ -140,22 +154,25 @@
 #       Polda Metro Jaya officer said in 2021 that white with blue is the trial
 #       plate (STCK) and not diplomatic, which does not square with Pasal 80(5)
 #       (trial plates are white with red letters). Pin the decision's drawings.
-#   V5. MILITARY AND POLICE PLATES. Formats and colours appear only in the press
-#       and in ShareAlike encyclopaedia tables. Pin the TNI and Polri internal
-#       instruments, or record their absence formally.
+#   V5. MILITARY AND POLICE PLATES. Formats, colours and unit codes are now
+#       carried as a secondary table (plates/_decode/id-service-codes.yml), with
+#       the id/en disagreements marked (navy 02 and 03, police XXXV). Pin the
+#       TNI and Polri internal instruments before modelling them as series.
 #   V6. DIPLOMATIC COLOUR HISTORY AND LAYOUT. Blue letters on white for CD/CC
 #       between 2012 and 2021 rest on one secondary quotation of Perkap 5/2012
 #       Pasal 39(3). That CC shares the CD country table rests on one example
 #       (CC 12 10). The printed arrangement (spacing, one or two rows) of CD, CC,
 #       CH and RI plates is not stated anywhere read.
 #   V7. COLOURS OF THE RI, CH AND ZZ PLATES. Not in Perpol 7/2021. RI white is
-#       from a Korlantas post quoted in 2026; CH and ZZ unknown.
+#       from a Korlantas post quoted in 2026; id.wikipedia says RI plates are
+#       "always black, like private plates" and INDONESIA plates red, which
+#       probably describes the pre-2022 state. CH and ZZ unknown.
 #   V8. INSTRUMENT STATUS OF THE 2024 PAPUA CODES. PY, PS, PT and PG are known
 #       from the press quoting police; whether Perpol 7/2021's Lampiran A has
 #       been amended to add them was not established (peraturan.go.id was
-#       unreachable). Also open: whether part of Kab. Tangerang, which Lampiran
-#       A puts under A, is registered under B in practice, as secondary sources
-#       report.
+#       unreachable). Also open: part of Kab. Tangerang, which Lampiran A puts
+#       under A, is registered under B (J**) according to id.wikipedia; the
+#       regulation is kept as the law and the article's rows as practice.
 #   V9. THE 2011 AND 2014 DIMENSIONS. detikOto (May 2011) gives 430 x 135 /
 #       275 x 110 mm from April 2011 and "old" sizes of 395 x 135 / 240 x 100
 #       mm; PP 44/1993 gave the old motorcycle size as 250 x 105 mm; and the
@@ -169,6 +186,9 @@
 #       depend on them are tagged.
 #   V12. THE CROSS-BORDER (LBN) PLATE LAYOUT. Pasal 72(1) lists its content but
 #       not its order; the series is recall-only until a drawing is found.
+#   V13. THE COLONIAL CODE LIST. Both articles cite the Java Motor Club
+#       handbook (KITLV) and still differ on K, L/W, N, T and BP; read the
+#       handbook and replace the secondary rows.
 jurisdiction: id
 authority:
   name: "Kepolisian Negara Republik Indonesia (Polri) — Korps Lalu Lintas (Korlantas Polri), Direktorat Registrasi dan Identifikasi; issued through the regional police (Polda) and the Samsat offices"
@@ -324,8 +344,16 @@ common:
         No instrument, police statement or Indonesian press account located
         gives the dimensions of the 2022 white plate. Nothing is asserted.
         A renderer that needs a size should use the 2011 figures and label the
-        render schematic; a longer car plate is claimed only by a ShareAlike
-        encyclopaedia article and is not adopted (§VERIFIER V1).
+        render schematic (§VERIFIER V1).
+      recorded_claims:
+        - claim: "car plate 460 x 135 mm since 2022, lengthened from 430 mm 'to accommodate the new wider FE-Schrift typeface and the suffix extension to three letters'; motorcycle plate unchanged"
+          evidence: secondary-wikipedia
+          source: "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # section '21st century' and the infobox ('Cars: 460 x 135 mm'). The passage cites no source for 460 mm. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+          status: "UNCONFIRMED. No police statement or Indonesian press account read gives 460 mm; id.wikipedia does not give it either. Not adopted as this plate's size."
+        - claim: "motorcycle plate 275 x 115 mm (2011 onward)"
+          evidence: secondary-wikipedia
+          source: "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # section '21st century' and infobox. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+          status: "DISAGREES with the detikOto article en.wikipedia itself cites ('lebar 11 cm', i.e. 110 mm) and with id.wikipedia (275 x 110 mm). Not adopted."
     render_default:
       car_and_other: { w: 430, h: 135, unit: mm }
       motorcycle: { w: 275, h: 110, unit: mm }
@@ -341,8 +369,9 @@ common:
     - when: "2011-04"
       what: >-
         Redesign, Jakarta first and then nationally: longer plates (and a
-        taller motorcycle plate), per the press; the line that separated the number from the expiry is removed;
-        an edge line in the letter colour runs round the plate; larger police
+        taller motorcycle plate), per the press; the line that separated the
+        number from the expiry is removed; an edge line in the letter colour
+        runs round the plate; larger police
         emblems at lower left and upper right with "Korlantas Polri" lower
         right (replacing "Ditlantas Polri"); lettering "agak langsing".
       evidence: secondary-press
@@ -391,6 +420,51 @@ common:
       shape — slimmer lettering in 2011, and different letters and digits for
       Jakarta's chosen-number plates from 1 August 2019 — without naming a
       face. PRD-PLATES §6's schematic fallback applies.
+    recorded_claims:
+      - claim: "FE-Schrift on chosen-number (vanity) plates from August 2019"
+        evidence: secondary-wikipedia
+        sources:
+          - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # image captions in 'Abad ke-21' and 'Pelat nomor cantik': vanity plates with 'tulisan jenis FE-Schrift' from August 2019. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+          - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # 'a vanity plate in Indonesia using the FE-Schrift typeface since 2019'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+        status: >-
+          UNCONFIRMED BY NAME. The Kompas report both articles cite (2 Sep
+          2019, Ditlantas Polda Metro Jaya) confirms different letter shapes
+          from 1 August 2019 but does not name the typeface; the
+          identification as FE-Schrift is the articles' own.
+      - claim: "FE-Schrift on ordinary plates from November 2022"
+        evidence: secondary-wikipedia
+        sources:
+          - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # 'FE-Schrift typeface was first implemented for regular personal four-wheel plates only since November 2022'; yellow and red plates 'began to use FE-Schrift at the same time'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+          - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # caption: 'pada November 2022, TNKB dengan menggunakan huruf tersebut telah digunakan untuk plat nomor konvensional'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+        status: >-
+          UNCONFIRMED. No police statement or press account read says so.
+          The articles also disagree on scope: en.wikipedia says private
+          four-wheel plates plus yellow and red plates; id.wikipedia says
+          "konvensional" plates generally, while its electric-vehicle caption
+          says FE-Schrift is used ONLY on chosen-number plates. Not adopted
+          as this plate's typeface.
+
+  history:
+    evidence: secondary-wikipedia
+    note: >-
+      Everything in this block is from the two articles unless a stronger
+      source is named. Codes are in plates/_decode/id-region-codes.yml
+      sections 9 and 10.
+    sources:
+      - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # section 'Sejarah'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # section 'History'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+    events:
+      - { when: "1900", what: "First plates in the Dutch East Indies: a regional code and a number, no standard, sometimes mounted on the side. Examples CH (Cirebon), SB (Surabaya), SOK (east coast of Sumatra); IN for government cars on an elliptical plate." }
+      - { when: "1917", what: "A regulation on number and driving licences introduces residency-based letter codes, on Java first; the list survives as today's region codes (decode table section 10)." }
+      - { when: "1920s", what: "Codes added as residencies split, for example F (Bogor), S (Bojonegoro), DS (western Papua)." }
+      - { when: "after 1945", what: "The colonial format and codes remain in use after independence." }
+      - { when: "early 1980s", what: "The expiry is added as a second row, month and year, with a dot or dash between (en.wikipedia's example 06•87); during the New Order the expiry row sat either above or below the number. Embossed characters." }
+      - { when: "2000s to April 2011", what: "Design set by the police traffic directorate (Ditlantas Polri): 395 x 135 mm (four wheels or more) and 250 x 105 mm (two or three wheels), wide letters, a stripe between number and expiry, the traffic-police emblem at lower left and upper right and 'DIRLANTAS POLRI' at the other corners (en.wikipedia). The sizes agree with PP 44/1993 (statute)." }
+      - { when: "2011-04", what: "Redesign (see design_history, press tier): both articles say 5 cm longer, slimmer letters, the fuller Korlantas emblem, 'DITLANTAS' becomes 'KORLANTAS', 1 mm aluminium with an edge line." }
+      - { when: "2022-06", what: "White plates for private and RENTAL vehicles, per both articles ('kendaraan pribadi dan persewaan'); Perpol 7/2021 Pasal 45(1)a names private and legal-entity vehicles, not rental, and PP 44/1993 had put rental cars on the private plate." }
+    disagreements:
+      - "Expiry separator: id.wikipedia 'tanda pisah atau titik tengah' (dash or middle dot); en.wikipedia a dot (06•87); the Korlantas website quoted by hukumonline (2016) '01.20'. All describe the second row; none is an instrument."
+      - "Colonial codes: see the decode table, section 10."
   expiry_row:
     evidence: statute
     rule: >-
@@ -425,7 +499,12 @@ not_modelled:
       forces and the police under internal rules not found published. Press
       accounts (for example CNN Indonesia, 22 Apr 2024, on the TNI number and
       unit-code layout) were read but are not a basis for a series without the
-      instrument.
+      instrument. The formats, colours and unit codes reported by the press and
+      by both Wikipedia articles are carried as a secondary table in
+      plates/_decode/id-service-codes.yml (military_police), with the
+      articles' disagreements marked; still not matchable series, because the
+      number part's length rests on one article for the military and on none
+      for the police.
     sources:
       - "https://korlantas.polri.go.id/wp-content/uploads/2021/05/PERATURAN-POLRI-NOMOR-7-TAHUN-2021-TTG-REGIDENT-RANMOR-TGL-5-MEI-2021.pdf  # Pasal 70(1)-(2), 9(2)a. Accessed 2026-11-25"
       - "https://www.cnnindonesia.com/otomotif/20240422140626-584-1089008/mengenal-kode-pelat-dinas-tni  # CNN Indonesia, 22 Apr 2024: 'Nomor kendaraan TNI terbagi menjadi dua bagian yang dipisahkan oleh tanda strip (-)'; unit codes 00 Mabes TNI, 01 Sesko TNI, 02 Akademi TNI, 09 Babinkum, 10 Babek. Secondary-press, not adopted as a series. Accessed 2026-11-25"
@@ -1040,7 +1119,70 @@ series:
       President, RI 2 for the Vice-President, and further numbers for the
       heads of the high state bodies and officials of ministerial rank. RI
       replaces the region code entirely, like CD and CC; it is one of four
-      "registration codes" in Lampiran B.
+      "registration codes" in Lampiran B. Holders of further RI numbers, and
+      the hyphenated sub-numbers used in practice, are in
+      plates/_decode/id-service-codes.yml (secondary-wikipedia) and in
+      id-state-ri-subnumbered-2024.
+
+  - id: id-state-ri-subnumbered-2024
+    class: government
+    categories: [car]
+    period: { start: 2024 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      2024 is the as-of date of id.wikipedia's list ("per Oktober 2024"), not
+      when sub-numbers began; no earlier date is given.
+    # RECALL-ONLY: the regulation's RI grammar is "nomor urut registrasi tanpa
+    # seri huruf" — a single number. The hyphenated sub-number is reported
+    # practice from one article; the digit bounds are the list's own range.
+    matching: recall-only
+    format:
+      pattern: "RI 99-9"
+      regex: '\ARI[ -]?\d{1,2}-\d{1,2}\z'
+      examples_reported: ["RI 5-1", "RI 24-2"]
+      examples_synthetic: ["RI 15-2"]
+    design:
+      colour_note: "As id-state-ri-2006; not stated separately."
+      rear_differs: false
+    region_encoding: "plates/_decode/id-service-codes.yml"
+    sources:
+      - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # section 'Presiden dan pejabat pemerintahan pusat': RI numbers with sub-numbers, e.g. 'RI 5-1: Wakil Ketua Majelis Permusyawaratan Rakyat', 'RI 24-2: Menteri Ketenagakerjaan', list 'per Oktober 2024'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://korlantas.polri.go.id/wp-content/uploads/2021/05/PERATURAN-POLRI-NOMOR-7-TAHUN-2021-TTG-REGIDENT-RANMOR-TGL-5-MEI-2021.pdf  # Lampiran F.2-F.3, the statutory RI grammar this practice goes beyond. Accessed 2026-11-25. Evidence: statute"
+    notes: >-
+      RI PLATES WITH A SUB-NUMBER: RI, a number, a hyphen and a second number
+      — RI 5-1 to RI 5-7 for the deputy speakers of the People's Consultative
+      Assembly, RI 24-2 onward for ministers grouped under a coordinating
+      minister, and so on. Reported by id.wikipedia only; outside the
+      regulation's words, hence its own recall-only series rather than a
+      widening of id-state-ri-2006.
+
+  - id: id-state-indonesia-ceremonial
+    class: government
+    categories: [car]
+    period: { start: 2024 }
+    period_evidence: secondary-wikipedia
+    period_note: >-
+      2024 is the as-of date of the articles, not the start: both associate
+      the INDONESIA 1 plate with a car used by Presidents Soeharto, Habibie
+      and Abdurrahman Wahid, so it is decades older. No dated source.
+    # RECALL-ONLY: only INDONESIA 1 and INDONESIA 2 are reported; the regex
+    # accepts any single digit so that it round-trips its pattern.
+    matching: recall-only
+    format:
+      pattern: "INDONESIA 9"
+      regex: '\AINDONESIA[ -]?\d\z'
+      examples_reported: ["INDONESIA 1", "INDONESIA 2"]
+    design:
+      colour_note: "id.wikipedia: INDONESIA plates are always red, like government plates. Not confirmed elsewhere."
+      rear_differs: false
+    region_encoding: none
+    sources:
+      - "https://id.wikipedia.org/w/index.php?title=Tanda_Nomor_Kendaraan_Bermotor_Indonesia&oldid=30232020  # 'Dalam acara khusus, plat nomor kendaraan dinas Presiden Indonesia tidak menggunakan format RI 1, melainkan INDONESIA 1'; 'RI 1/INDONESIA 1: Presiden', 'RI 2/INDONESIA 2: Wakil Presiden'; INDONESIA plates 'selalu berwarna merah'. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+      - "https://en.wikipedia.org/w/index.php?title=Vehicle_registration_plates_of_Indonesia&oldid=1386292720  # 'INDONESIA 1 and INDONESIA 2 for the president and vice president, respectively', used on ceremonial occasions. Accessed 2026-11-25. period_evidence: secondary-wikipedia"
+    notes: >-
+      THE CEREMONIAL STATE PLATES: INDONESIA 1 (the President) and INDONESIA
+      2 (the Vice-President), used on special occasions in place of RI 1 and
+      RI 2, per both articles. Nothing in Perpol 7/2021 provides for them.
 
   - id: id-special-zz-2023
     class: government
@@ -1101,8 +1243,21 @@ series:
       pattern: "L 9999 RFL"
       regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?RF[A-Z]\z'
       known_third_letters:
-        P: "Polri (police) — RFP, the only RF combination named by a police source read"
-      examples_synthetic: ["B 1234 RFP"]
+        P: "Polri (police) — official-press (the Dirregident Korlantas named RFP in 2023) and both articles"
+        S: "civil officials — secondary-wikipedia"
+        O: "civil officials below echelon II — secondary-wikipedia"
+        H: "civil officials below echelon II — secondary-wikipedia"
+        Q: "civil officials below echelon II — secondary-wikipedia"
+        T: "armed forces (TNI) — secondary-wikipedia"
+        D: "army — secondary-wikipedia"
+        L: "navy — secondary-wikipedia"
+        U: "air force — secondary-wikipedia"
+      known_third_letters_note: >-
+        id.wikipedia and en.wikipedia agree on all eight combinations; table in
+        plates/_decode/id-service-codes.yml (rf_letters). CAUTION: id.wikipedia
+        also reports RFA-RFZ in Jakarta Timur's ORDINARY series, so this
+        recall-only regex matches some ordinary plates too.
+      examples_synthetic: ["B 1234 RFP", "B 1234 RFS"]
     design:
       colour_note: "Not stated. Perkap 4/2006 Pasal 15(1)b gave Rahasia/Khusus plates a black ground with white letters."
       rear_differs: false
@@ -1117,9 +1272,8 @@ series:
       ordinary-looking registration whose series letters began with RF,
       given to echelon I-III officials. Misuse made them notorious, which the
       police gave as the reason for replacing them with ZZ and narrowing
-      eligibility to echelon I-II. Only RFP is attributed to a police source
-      in anything read; the other RF combinations in circulation are not
-      carried.
+      eligibility to echelon I-II. Only RFP is attributed to a police source;
+      the other seven RF combinations are carried at secondary-wikipedia tier.
 
   # =========================================================================
   # TRIAL PLATES — the dealer and manufacturer plate.
