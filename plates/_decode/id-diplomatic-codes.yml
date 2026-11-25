@@ -1,0 +1,191 @@
+# plates/_decode/id-diplomatic-codes.yml — the country and organisation codes
+# printed after CD (and, by the regulation's own example, CC) on Indonesian
+# diplomatic and consular plates.
+#
+# SOURCE: Perpol 7/2021 Lampiran D.4, PDF pp. 99-103 — "susunan kode negara
+# dengan kode registrasi CD untuk Korps diplomatik dan perwakilan tetap ASEAN".
+# A CLOSED, PRIMARY list of 130 rows, printed in the regulation itself, which
+# is why it is a _decode file (PRD-PLATES §2.4) on the model of
+# se-diplomatic.yml. Codes and printed names were taken from the annex text
+# layer and checked against the page images (p. 102 in full); the text layer's
+# OCR noise in the organisation names ("Proaramme", "Omanization", "Or9anization",
+# "ClFOR\", "lOM") is repaired to what the page shows. Every other printed
+# spelling is kept, including the regulation's own slips ("Kazakhtan",
+# "Inter-Paliamentary").
+#
+# HOW A CODE IS USED (Lampiran D.1-D.2), verbatim examples:
+#   "Contoh: Ranmor Korps Diplomatik Amerika Serikat" -> CD | 12 | 5
+#   "Contoh: Ranmor Korps Konsulat Amerika Serikat"   -> CC | 12 | 10
+# i.e. registration code, country code, then a running number. The CC example
+# reuses the CD table's code for the United States; the table's heading names
+# only CD. That CC always takes the same code as CD is therefore an INFERENCE
+# from one example, recorded as such (see §VERIFIER in plates/id.yml). The
+# honorary-consul example in Lampiran F.5 ("CH 130 1", Azerbaijan) likewise
+# uses this table's code 130.
+#
+# THE GAPS ARE PRINTED, NOT TRANSCRIPTION LOSSES. The table's row numbers run
+# 1 to 130 without a break while the codes skip 46, 91, 119 and 124 (Iran 45 is
+# followed by Malaysia 47, and so on). The regulation does not say why. Codes 1
+# to 11 are not used either. A decoder should treat these as unassigned in the
+# 2021 table, not as errors.
+#
+# WHAT IS ON THE LIST BESIDES STATES: 29 rows are international organisations
+# or missions, including the UN agencies with offices in Jakarta, the ASEAN
+# Secretariat (100), the ASEAN Foundation (111), the European Union (99), the
+# ICRC (97) — and Indonesia's own permanent mission to ASEAN (92, "Perutusan
+# Tetap Republik Indonesia (PTRI) ASEAN"), which the heading's words
+# "perwakilan tetap ASEAN" explain: Jakarta hosts the ASEAN Secretariat, so the
+# permanent missions to ASEAN register here too.
+#
+# THE ASSIGNING AUTHORITY: Lampiran D.3 — CD and CC registrations
+# "dikoordinasikan dengan Kementerian Luar Negeri" (the foreign ministry). A
+# code that later leaves the list does not make older plates undecodable; rows
+# are closed by period, never deleted.
+jurisdiction: id
+topic: diplomatic-codes
+authority:
+  name: "Korlantas Polri, in coordination with Kementerian Luar Negeri (Lampiran D.3)"
+  url: "https://korlantas.polri.go.id/"
+sources:
+  - "https://korlantas.polri.go.id/wp-content/uploads/2021/05/PERATURAN-POLRI-NOMOR-7-TAHUN-2021-TTG-REGIDENT-RANMOR-TGL-5-MEI-2021.pdf  # Perpol 7/2021 Lampiran D.1-D.4, PDF pp. 98-103 (examples 'CD 12 5', 'CC 12 10'; the 130-row code table); Lampiran F.5, p. 105 ('CH 130 1'). Accessed 2026-11-25. Evidence: primary (statute)"
+period: { start: 2021 }
+period_evidence: instrument-in-force
+period_note: >-
+  2021 is the regulation read. Perkap 4/2006 Pasal 11(4) already put the
+  diplomatic and consular codes in an annex (its Lampiran C), which was not
+  legible in the scan obtained; whether the numbering was the same in 2006 is
+  open.
+unassigned_in_table: [46, 91, 119, 124]
+# kind: state | organisation. iso: ISO 3166-1 alpha-2 for states (our
+# addition, for joining; not printed). name_en: our English rendering.
+codes:
+  12: { printed: "Amerika Serikat", name_en: "United States", kind: state, iso: "US" }
+  13: { printed: "India", name_en: "India", kind: state, iso: "IN" }
+  14: { printed: "Perancis", name_en: "France", kind: state, iso: "FR" }
+  15: { printed: "Inggris", name_en: "United Kingdom", kind: state, iso: "GB" }
+  16: { printed: "Filipina", name_en: "Philippines", kind: state, iso: "PH" }
+  17: { printed: "Vatikan", name_en: "Holy See", kind: state, iso: "VA" }
+  18: { printed: "Australia", name_en: "Australia", kind: state, iso: "AU" }
+  19: { printed: "Norwegia", name_en: "Norway", kind: state, iso: "NO" }
+  20: { printed: "Irak", name_en: "Iraq", kind: state, iso: "IQ" }
+  21: { printed: "Pakistan", name_en: "Pakistan", kind: state, iso: "PK" }
+  22: { printed: "Belgia", name_en: "Belgium", kind: state, iso: "BE" }
+  23: { printed: "Myanmar", name_en: "Myanmar", kind: state, iso: "MM" }
+  24: { printed: "Uni Emirat Arab", name_en: "United Arab Emirates", kind: state, iso: "AE" }
+  25: { printed: "China", name_en: "China", kind: state, iso: "CN" }
+  26: { printed: "Swedia", name_en: "Sweden", kind: state, iso: "SE" }
+  27: { printed: "Saudi Arabia", name_en: "Saudi Arabia", kind: state, iso: "SA" }
+  28: { printed: "Thailand", name_en: "Thailand", kind: state, iso: "TH" }
+  29: { printed: "Mesir", name_en: "Egypt", kind: state, iso: "EG" }
+  30: { printed: "Italia", name_en: "Italy", kind: state, iso: "IT" }
+  31: { printed: "Swiss", name_en: "Switzerland", kind: state, iso: "CH" }
+  32: { printed: "Jerman", name_en: "Germany", kind: state, iso: "DE" }
+  33: { printed: "Srilanka", name_en: "Sri Lanka", kind: state, iso: "LK" }
+  34: { printed: "Denmark", name_en: "Denmark", kind: state, iso: "DK" }
+  35: { printed: "Kanada", name_en: "Canada", kind: state, iso: "CA" }
+  36: { printed: "Brazil", name_en: "Brazil", kind: state, iso: "BR" }
+  37: { printed: "Rusia", name_en: "Russia", kind: state, iso: "RU" }
+  38: { printed: "Afganistan", name_en: "Afghanistan", kind: state, iso: "AF" }
+  39: { printed: "Serbia", name_en: "Serbia", kind: state, iso: "RS" }
+  40: { printed: "Ceko", name_en: "Czechia", kind: state, iso: "CZ" }
+  41: { printed: "Finlandia", name_en: "Finland", kind: state, iso: "FI" }
+  42: { printed: "Meksiko", name_en: "Mexico", kind: state, iso: "MX" }
+  43: { printed: "Hungaria", name_en: "Hungary", kind: state, iso: "HU" }
+  44: { printed: "Polandia", name_en: "Poland", kind: state, iso: "PL" }
+  45: { printed: "Iran", name_en: "Iran", kind: state, iso: "IR" }
+  47: { printed: "Malaysia", name_en: "Malaysia", kind: state, iso: "MY" }
+  48: { printed: "Turki", name_en: "Türkiye", kind: state, iso: "TR" }
+  49: { printed: "Jepang", name_en: "Japan", kind: state, iso: "JP" }
+  50: { printed: "Bulgaria", name_en: "Bulgaria", kind: state, iso: "BG" }
+  51: { printed: "Kamboja", name_en: "Cambodia", kind: state, iso: "KH" }
+  52: { printed: "Argentina", name_en: "Argentina", kind: state, iso: "AR" }
+  53: { printed: "Rumania", name_en: "Romania", kind: state, iso: "RO" }
+  54: { printed: "Yunani", name_en: "Greece", kind: state, iso: "GR" }
+  55: { printed: "Yordania", name_en: "Jordan", kind: state, iso: "JO" }
+  56: { printed: "Austria", name_en: "Austria", kind: state, iso: "AT" }
+  57: { printed: "Syria", name_en: "Syria", kind: state, iso: "SY" }
+  58: { printed: "United Nations Development Programme (UNDP)", name_en: "United Nations Development Programme", kind: organisation }
+  59: { printed: "Selandia Baru", name_en: "New Zealand", kind: state, iso: "NZ" }
+  60: { printed: "Belanda", name_en: "Netherlands", kind: state, iso: "NL" }
+  61: { printed: "Yaman", name_en: "Yemen", kind: state, iso: "YE" }
+  62: { printed: "Universal Postal Union (UPU)", name_en: "Universal Postal Union", kind: organisation }
+  63: { printed: "Portugal", name_en: "Portugal", kind: state, iso: "PT" }
+  64: { printed: "Aljazair", name_en: "Algeria", kind: state, iso: "DZ" }
+  65: { printed: "Korea Utara", name_en: "North Korea (DPRK)", kind: state, iso: "KP" }
+  66: { printed: "Vietnam", name_en: "Viet Nam", kind: state, iso: "VN" }
+  67: { printed: "Singapura", name_en: "Singapore", kind: state, iso: "SG" }
+  68: { printed: "Spanyol", name_en: "Spain", kind: state, iso: "ES" }
+  69: { printed: "Bangladesh", name_en: "Bangladesh", kind: state, iso: "BD" }
+  70: { printed: "Panama", name_en: "Panama", kind: state, iso: "PA" }
+  71: { printed: "United Nations International Children's Emergency Fund (UNICEF)", name_en: "UNICEF", kind: organisation }
+  72: { printed: "United Nations Educational, Scientific and Cultural Organization (UNESCO)", name_en: "UNESCO", kind: organisation }
+  73: { printed: "Food and Agriculture Organization (FAO)", name_en: "Food and Agriculture Organization", kind: organisation }
+  74: { printed: "World Health Organization (WHO)", name_en: "World Health Organization", kind: organisation }
+  75: { printed: "Korea Selatan", name_en: "South Korea", kind: state, iso: "KR" }
+  76: { printed: "Asian Development Bank (ADB)", name_en: "Asian Development Bank", kind: organisation }
+  77: { printed: "International Bank for Reconstruction and Development (IBRD)/Bank Dunia", name_en: "World Bank (IBRD)", kind: organisation }
+  78: { printed: "International Monetary Fund (IMF)", name_en: "International Monetary Fund", kind: organisation }
+  79: { printed: "International Labour Organisation (ILO)", name_en: "International Labour Organization", kind: organisation }
+  80: { printed: "Papua Nugini", name_en: "Papua New Guinea", kind: state, iso: "PG" }
+  81: { printed: "Nigeria", name_en: "Nigeria", kind: state, iso: "NG" }
+  82: { printed: "Chili", name_en: "Chile", kind: state, iso: "CL" }
+  83: { printed: "United Nations High Commissioner for Refugees (UNHCR)", name_en: "UNHCR", kind: organisation }
+  84: { printed: "World Food Programme (WFP)", name_en: "World Food Programme", kind: organisation }
+  85: { printed: "Venezuela", name_en: "Venezuela", kind: state, iso: "VE" }
+  86: { printed: "Economic and Social Commission for Asia and the Pacific (ESCAP)", name_en: "UN ESCAP", kind: organisation }
+  87: { printed: "Kolombia", name_en: "Colombia", kind: state, iso: "CO" }
+  88: { printed: "Brunei Darussalam", name_en: "Brunei", kind: state, iso: "BN" }
+  89: { printed: "United Nations Information Center (UNIC)", name_en: "UN Information Centre", kind: organisation }
+  90: { printed: "International Finance Corporation (IFC)", name_en: "International Finance Corporation", kind: organisation }
+  92: { printed: "Perutusan Tetap Republik Indonesia (PTRI) ASEAN", name_en: "Permanent Mission of the Republic of Indonesia to ASEAN", kind: organisation }
+  93: { printed: "Fiji", name_en: "Fiji", kind: state, iso: "FJ" }
+  94: { printed: "Belarus", name_en: "Belarus", kind: state, iso: "BY" }
+  95: { printed: "Kazakhtan", name_en: "Kazakhstan", kind: state, iso: "KZ" }
+  96: { printed: "United Nations Industrial Development Organization (UNIDO)", name_en: "UNIDO", kind: organisation }
+  97: { printed: "International Committee of the Red Cross (ICRC)", name_en: "International Committee of the Red Cross", kind: organisation }
+  98: { printed: "Maroko", name_en: "Morocco", kind: state, iso: "MA" }
+  99: { printed: "Uni Eropa", name_en: "European Union", kind: organisation }
+  100: { printed: "Association of Southeast Asian Nations (ASEAN)", name_en: "ASEAN", kind: organisation }
+  101: { printed: "Tunisia", name_en: "Tunisia", kind: state, iso: "TN" }
+  102: { printed: "Kuait", name_en: "Kuwait", kind: state, iso: "KW" }
+  103: { printed: "Laos", name_en: "Laos", kind: state, iso: "LA" }
+  104: { printed: "Palestina", name_en: "Palestine", kind: state, iso: "PS" }
+  105: { printed: "Kuba", name_en: "Cuba", kind: state, iso: "CU" }
+  106: { printed: "ASEAN Inter-Paliamentary Organization (AIPA)", name_en: "ASEAN Inter-Parliamentary Assembly", kind: organisation }
+  107: { printed: "Libya", name_en: "Libya", kind: state, iso: "LY" }
+  108: { printed: "Peru", name_en: "Peru", kind: state, iso: "PE" }
+  109: { printed: "Slovakia", name_en: "Slovakia", kind: state, iso: "SK" }
+  110: { printed: "Sudan", name_en: "Sudan", kind: state, iso: "SD" }
+  111: { printed: "ASEAN Foundation", name_en: "ASEAN Foundation", kind: organisation }
+  112: { printed: "Utusan Sekjen PBB", name_en: "Envoy of the UN Secretary-General", kind: organisation }
+  113: { printed: "Center for International Forestry Research (CIFOR)", name_en: "CIFOR", kind: organisation }
+  114: { printed: "Bosnia Herzegovina", name_en: "Bosnia and Herzegovina", kind: state, iso: "BA" }
+  115: { printed: "Lebanon", name_en: "Lebanon", kind: state, iso: "LB" }
+  116: { printed: "Afrika Selatan", name_en: "South Africa", kind: state, iso: "ZA" }
+  117: { printed: "Kroasia", name_en: "Croatia", kind: state, iso: "HR" }
+  118: { printed: "Ukraina", name_en: "Ukraine", kind: state, iso: "UA" }
+  120: { printed: "Uzbekistan", name_en: "Uzbekistan", kind: state, iso: "UZ" }
+  121: { printed: "Qatar", name_en: "Qatar", kind: state, iso: "QA" }
+  122: { printed: "United Nations Population Fund (UNFPA)", name_en: "UNFPA", kind: organisation }
+  123: { printed: "Mozambique", name_en: "Mozambique", kind: state, iso: "MZ" }
+  125: { printed: "Timor Leste", name_en: "Timor-Leste", kind: state, iso: "TL" }
+  126: { printed: "Suriname", name_en: "Suriname", kind: state, iso: "SR" }
+  127: { printed: "Ecuador", name_en: "Ecuador", kind: state, iso: "EC" }
+  128: { printed: "Zimbabwe", name_en: "Zimbabwe", kind: state, iso: "ZW" }
+  129: { printed: "Perwakilan International Organization for Migration (IOM)", name_en: "IOM mission", kind: organisation }
+  130: { printed: "Azerbaijan", name_en: "Azerbaijan", kind: state, iso: "AZ" }
+  131: { printed: "Somalia", name_en: "Somalia", kind: state, iso: "SO" }
+  132: { printed: "Georgia", name_en: "Georgia", kind: state, iso: "GE" }
+  133: { printed: "Paraguay", name_en: "Paraguay", kind: state, iso: "PY" }
+  134: { printed: "Oman", name_en: "Oman", kind: state, iso: "OM" }
+  135: { printed: "Armenia", name_en: "Armenia", kind: state, iso: "AM" }
+  136: { printed: "Bahrain", name_en: "Bahrain", kind: state, iso: "BH" }
+  137: { printed: "Mongolia", name_en: "Mongolia", kind: state, iso: "MN" }
+  138: { printed: "San Marino", name_en: "San Marino", kind: state, iso: "SM" }
+  139: { printed: "Irlandia", name_en: "Ireland", kind: state, iso: "IE" }
+  140: { printed: "United Nations Office for REDD+ Coordination in Indonesia (UNORCID)", name_en: "UNORCID", kind: organisation }
+  141: { printed: "Islamic Development Bank (IDB)", name_en: "Islamic Development Bank", kind: organisation }
+  142: { printed: "Guinea Bissau", name_en: "Guinea-Bissau", kind: state, iso: "GW" }
+  143: { printed: "Ethiopia", name_en: "Ethiopia", kind: state, iso: "ET" }
+  144: { printed: "Kep Solomon", name_en: "Solomon Islands", kind: state, iso: "SB" }
+  145: { printed: "International Fund for Agricultural Development (IFAD)", name_en: "IFAD", kind: organisation }

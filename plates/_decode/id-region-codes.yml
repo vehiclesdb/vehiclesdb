@@ -1,0 +1,1198 @@
+# plates/_decode/id-region-codes.yml — Indonesian region codes (kode wilayah),
+# registration codes (kode registrasi) and the other decodable parts of an
+# Indonesian registration number (NRKB). Referenced by plates/id.yml.
+#
+# ===========================================================================
+# THE SOURCE, AND WHY THIS TABLE IS PRIMARY WHEN MOST OF id.yml IS NOT
+# ===========================================================================
+# Peraturan Kepolisian Negara Republik Indonesia Nomor 7 Tahun 2021 tentang
+# Registrasi dan Identifikasi Kendaraan Bermotor (Perpol 7/2021), set and
+# promulgated 5 May 2021, Berita Negara 2021 No. 476, in force on promulgation
+# (Pasal 92). Pasal 6(3): the region code "diterbitkan berdasarkan wilayah
+# registrasi Ranmor"; Pasal 6(8) puts the format of the region code, the number
+# and the series letters "dalam Lampiran yang merupakan bagian tidak
+# terpisahkan" of the regulation. Lampiran A ("Penentuan kode wilayah
+# berdasarkan wilayah Regident Ranmor", PDF pages 81-95) is that table: 34
+# provinces, 57 codes, each with the regencies and cities it covers.
+#
+# Every row in `codes` was checked line by line against the page images of
+# Korlantas' own copy of the regulation (PDF pages 81-95), not only against a
+# text extraction. Area names are kept EXACTLY AS PRINTED, typos included
+# ("Kab. Malajengka", "Kab. Serdang Begadai", "Provinsi Kalimatan Barat"),
+# because the printed string is the evidence; what each odd string means is
+# said in that row's `printed_text_notes`, never by silently correcting it.
+#
+# ===========================================================================
+# WHAT THE ANNEX DOES NOT CONTAIN — READ BEFORE USING THIS FOR A PARSE API
+# ===========================================================================
+# 1. NO SUB-AREA (SUFFIX-LETTER) TABLE. The letters after the number are a
+#    progressive series in the regulation (Lampiran C.3: A to Z, then AA, then
+#    AAA). Which letters a Polda reserves for which regency is set by each
+#    Kapolda (Pasal 6(7): letter series beyond two letters "dan wilayah
+#    penggunaannya ditetapkan dengan Keputusan Kepala Kepolisian Daerah atas
+#    persetujuan Kakorlantas Polri"; Lampiran E.1, F.4 and G.3: "seri huruf
+#    yang diatur oleh Kapolda"). None of those Kapolda decisions was found
+#    published. The only complete suffix tables in circulation are
+#    encyclopaedia tables under a ShareAlike licence, which this dataset cannot
+#    carry (AGENTS.md). So a decoder can name the PROVINCE and the LIST of
+#    regencies a code covers, and nothing finer. `sub_area_suffixes` below
+#    records the gap.
+# 2. NOT EVERY MUNICIPALITY IS LISTED. Several cities that exist are absent as
+#    lines of their own (Kota Batu, Kota Mojokerto, Kota Pasuruan, Kota
+#    Probolinggo, Kota Blitar among them); the annex lists a city only where it
+#    chose to. Absence from `areas_printed` is not evidence that a place uses
+#    another code.
+# 3. THE ANNEX PREDATES THE 2022 PAPUA PROVINCES. It lists only PA and PB.
+#    The codes the four new provinces issue are in `post_annex_codes`, each
+#    with its own (non-regulation) source and tier.
+#
+# Historic codes (the colonial residency letters, codes withdrawn with
+# province changes before 2021) are NOT carried: every account of them found
+# in this pass rests on a ShareAlike encyclopaedia article. Recorded gap.
+jurisdiction: id
+topic: region-codes
+authority:
+  name: "Kepolisian Negara Republik Indonesia — Korps Lalu Lintas (Korlantas Polri), Direktorat Registrasi dan Identifikasi"
+  url: "https://korlantas.polri.go.id/"
+sources:
+  - "https://korlantas.polri.go.id/wp-content/uploads/2021/05/PERATURAN-POLRI-NOMOR-7-TAHUN-2021-TTG-REGIDENT-RANMOR-TGL-5-MEI-2021.pdf  # Perpol 7/2021, Korlantas' own copy, 107 pp: Pasal 6 (grammar), Lampiran A (region codes, PDF pp. 81-95), B (registration codes, p. 95), C (number blocks and letter series, pp. 96-98), D (CD/CC, pp. 98-103), E-J (special allocations, pp. 103-106), K (trial series, p. 106), L (cross-border operating codes, p. 107, image). Accessed 2026-11-25. Evidence: primary (statute)"
+  - "https://bapenda.jabarprov.go.id/JDIH/Peraturan_Polri/PERATURAN_POLRI_NOMOR_7_TAHUN_2021.pdf  # second complete copy of the same regulation (West Java revenue agency JDIH), used for the text layer. Accessed 2026-11-25"
+  - "https://oto.detik.com/berita/d-7501604/kode-pelat-nomor-di-3-provinsi-papua-diubah  # detikOto, 21 Aug 2024, citing the Korlantas website: PB -> PY for Papua Barat Daya (May 2024), PA -> PS for Papua Selatan (from July 2024), PT for Papua Tengah (plate 'PT 1' handed to the acting governor). Evidence: secondary press citing the agency. Accessed 2026-11-25"
+period: { start: 2021 }
+period_evidence: instrument-in-force
+period_note: >-
+  2021 is the regulation now in force, not the date any code was first
+  allotted. Most codes are far older (Perkap 4/2006 Lampiran A printed the same
+  kind of table; its scan's text layer is unreadable and it was not image-read
+  in this pass). Treat every row as "in force when read" and do not infer an
+  allotment year from it.
+
+# ---------------------------------------------------------------------------
+# 1. REGISTRATION CODES (kode registrasi) — Lampiran B, PDF p. 95.
+#    These take the place of the region code for four kinds of user, per
+#    Pasal 6(4): "Kode registrasi ... diterbitkan berdasarkan kepentingan
+#    pengguna Ranmor". Each has its own series in plates/id.yml.
+# ---------------------------------------------------------------------------
+registration_codes:
+  - code: CD
+    meaning: "NRKB Ranmor Korps Diplomatik — diplomatic corps"
+    series: id-diplomatic-cd-2006
+  - code: CC
+    meaning: "NRKB Ranmor Korps Konsulat — consular corps"
+    series: id-consular-cc-2006
+  - code: CH
+    meaning: "NRKB STNK/TNKB Khusus Ranmor Konsul Kehormatan — honorary consuls (issued as a 'special' registration)"
+    series: id-honorary-consul-ch-2021
+  - code: RI
+    meaning: "NRKB STNK/TNKB Khusus Ranmor Dinas Presiden, Wakil Presiden, Ketua Lembaga Tinggi Negara dan Pejabat Setingkat Menteri — President, Vice-President, heads of the high state bodies and officials of ministerial rank"
+    series: id-state-ri-2006
+
+# ---------------------------------------------------------------------------
+# 2. NUMBER BLOCKS BY VEHICLE TYPE — Lampiran C.1 and C.2, PDF p. 96.
+#    Pasal 6(5): the number has 1 to 4 digits "yang ditentukan berdasarkan
+#    jenis Ranmor". The blocks below are the ALLOCATION ORDER the annex
+#    prescribes. They tell a reader what a number most likely is; they are not
+#    printed as a validity rule, and vanity numbers (Pasal 7) can be chosen.
+# ---------------------------------------------------------------------------
+number_blocks:
+  national:
+    - { from: 1,    to: 1999, vehicle: "Mobil Penumpang — passenger car" }
+    - { from: 2000, to: 6999, vehicle: "Sepeda Motor — motorcycle" }
+    - { from: 7000, to: 7999, vehicle: "Mobil Bus — bus" }
+    - { from: 8000, to: 8999, vehicle: "Mobil Barang — goods vehicle" }
+    - { from: 9000, to: 9999, vehicle: "Kendaraan Khusus — special-purpose vehicle" }
+  polda_metro_jaya:
+    note: >-
+      Lampiran C.2, "Khusus untuk wilayah hukum Polda Metro Jaya" — the Jakarta
+      police area, which issues B. The fourth row is PRINTED as "Mobil
+      Penumpang" for 8000-8999, a second passenger-car block; read in context
+      (the national table, and the fifth row "Mobil barang dan Kendaraan
+      Khusus") it is very probably a slip for goods vehicles. Kept as printed;
+      see §VERIFIER in plates/id.yml.
+    blocks:
+      - { from: 1,    to: 2999, vehicle: "Mobil Penumpang — passenger car" }
+      - { from: 3000, to: 6999, vehicle: "Sepeda Motor — motorcycle" }
+      - { from: 7000, to: 7999, vehicle: "Mobil Bus — bus" }
+      - { from: 8000, to: 8999, vehicle: "Mobil Penumpang (as printed)" }
+      - { from: 9000, to: 9999, vehicle: "Mobil barang dan Kendaraan Khusus — goods and special-purpose vehicles" }
+  earlier_instrument: >-
+    Perkap 4/2006 Pasal 6(3)-(4) already allocated the number "sesuai kelompok
+    jenis kendaraan bermotor" through its Lampiran B (and Lampiran C for Polda
+    Metro Jaya). The scan's table is not legible enough to transcribe; its four
+    readable rows match the national split above with 8000-9999 as one block.
+    Not tabulated.
+
+# ---------------------------------------------------------------------------
+# 3. THE LETTER SERIES — Lampiran C.3, PDF pp. 96-98.
+# ---------------------------------------------------------------------------
+letter_series:
+  rule: >-
+    When the numbers of a block are used up, numbering restarts at the start of
+    the block with a series letter, in order A to Z ("sesuai urutan huruf A
+    sampai dengan Z"). After Z, two letters may be used ("apabila seri huruf
+    telah sampai pada huruf Z, maka penomoran dapat menggunakan 2 (dua) seri
+    huruf"): AA, AB, ... After ZZ, three letters ("apabila seri huruf telah
+    sampai pada huruf ZZ, maka penomoran dapat menggunakan 3 (tiga) seri
+    huruf"): AAA, AAB, ... Pasal 6(7) adds that series of more than two
+    letters, and where they are used, are fixed by Kapolda decision with
+    Korlantas approval.
+  per_series_capacity:
+    passenger_car: "1-1999 per letter series (1-2999 in Polda Metro Jaya)"
+    motorcycle: "2000-6999 per letter series, i.e. 5000 registrations"
+    bus: "7000-7999, 1000 per series"
+    goods_vehicle: "8000-8999, 1000 per series"
+    special_vehicle: "9000-9999, 1000 per series"
+  worked_examples_printed:
+    - "Kode Wil.-1 s.d. 1999, then Kode Wil.-1 A s.d. 1999 A, then 1 B ... (passenger cars)"
+    - "Kode Wil.-2000 s.d. 6999, then 2000 A s.d. 6999 A (motorcycles)"
+    - "1 Z s.d. 1999 Z, then 1 AA, then 1 AB (two letters)"
+    - "1 ZZ s.d. 1999 ZZ, then 1 AAA, then 1 AAB (three letters)"
+  printed_slips: >-
+    The 'Kode Wil.-' hyphen in the worked examples joins a placeholder to the
+    number; it is not evidence of a printed separator. The two-letter and
+    three-letter examples reuse the same registration-count ranges
+    (51.974-53.973 ...), which cannot both be right; the arithmetic of the
+    examples is illustrative only.
+  alphabet: >-
+    No letter is excluded anywhere in the regulation ("A sampai dengan Z").
+    The trial-plate combinations in section 5 are reserved by Lampiran K, which
+    implies an ordinary series does not use them; no other reservation is
+    printed.
+
+# ---------------------------------------------------------------------------
+# 4. NUMBERS RESERVED FOR OFFICE-HOLDERS — Lampiran H, I and J (PDF pp.
+#    105-106), with the 2006 predecessor. These ride on government (red)
+#    registrations; see id-government-red-1993.
+# ---------------------------------------------------------------------------
+office_numbers:
+  province:
+    source: "Perpol 7/2021 Lampiran H"
+    rows:
+      - { number: 1, letters: none, holder: "Gubernur — governor" }
+      - { number: 2, letters: none, holder: "Wakil Gubernur — vice-governor" }
+      - { number: 3, letters: none, holder: "Ketua DPRD Provinsi — speaker of the provincial assembly" }
+      - { number: "4-99", letters: none, holder: "other provincial officials in order of precedence" }
+  dki_jakarta:
+    source: "Perpol 7/2021 Lampiran I"
+    rows:
+      - { number: 1, letters: DKI, holder: "Gubernur" }
+      - { number: 2, letters: DKI, holder: "Wakil Gubernur" }
+      - { number: 3, letters: DKI, holder: "Ketua DPRD Provinsi" }
+      - { number: "4-150", letters: DKI, holder: "other officials of DKI Jakarta in order of precedence" }
+  regency_city:
+    source: "Perpol 7/2021 Lampiran J"
+    rows:
+      - { number: 1, letters: "the regency's or city's allocated series", holder: "Bupati / Walikota" }
+      - { number: 2, letters: "the regency's or city's allocated series", holder: "Wakil Bupati / Wakil Walikota" }
+      - { number: 3, letters: "the regency's or city's allocated series", holder: "Ketua DPRD Kabupaten/Kota" }
+      - { number: "4-30", letters: "the regency's or city's first allocated series", holder: "other officials in order of precedence" }
+    note: >-
+      Lampiran J is the one place the regulation itself says a regency or city
+      HAS its own allocated letter series ("seri huruf alokasi
+      kabupaten/kota") — confirming that sub-area letters exist, without
+      saying what they are.
+  state:
+    source: "Perpol 7/2021 Lampiran F.2-F.3; Perkap 4/2006 Pasal 10(1)"
+    rows:
+      - { number: 1, code: RI, holder: "Presiden — President (Lampiran F.2 prints 'RI 1'; Perkap 4/2006 Pasal 10(1)a)" }
+      - { number: 2, code: RI, holder: "Wakil Presiden — Vice-President (Perkap 4/2006 Pasal 10(1)b)" }
+    note: >-
+      Further RI numbers go to the heads of the high state bodies and officials
+      of ministerial rank and are "dikoordinasikan dengan Kementerian
+      Sekretariat Negara" (Lampiran F.3); no allocation list is published.
+  earlier_2006:
+    source: "Perkap 4/2006 Pasal 10(2)-(3)"
+    note: >-
+      The 2006 order differed: in a province 1 governor, 2 speaker of the
+      provincial assembly, 3 head of the high prosecutor's office, 4 chief
+      judge of the high court, 5 onward other officials, all without series
+      letters; in a regency or city the same order with the regency's series
+      letters. The vice-governor had no reserved number in 2006.
+
+# ---------------------------------------------------------------------------
+# 5. SERIES LETTERS THAT MARK A CLASS, NOT A PLACE
+# ---------------------------------------------------------------------------
+class_letters:
+  trial_tckb:
+    source: "Perpol 7/2021 Lampiran K.1 and K.3; Perkap 4/2006 Pasal 14(2)"
+    two_letter: [XX, XY, YY, YX]
+    three_letter: [XXX, XYY, YYX, YXY, YYY, YXX]
+    note: >-
+      The three-letter set is printed exactly as above — six of the eight X/Y
+      combinations; XXY and XYX are not in it. It is for a Polda "yang telah
+      diizinkan menggunakan 3 (tiga) huruf seri" once the two-letter series
+      are used up. See id-trial-tckb-2006.
+  customs_deferred_2006:
+    source: "Perkap 4/2006 Pasal 13(3)"
+    letters: "AX to ZX — the letters after the number 'menggunakan kode AX sampai dengan ZX'"
+    period: { start: 2006, end: 2021 }
+    note: >-
+      Vehicles imported with customs duty deferred (Formulir B). Perpol 7/2021
+      (Lampiran E.1) no longer fixes these letters and leaves the series to the
+      Kapolda. See id-customs-deferred-2006.
+  cross_border_operating_codes:
+    source: "Perpol 7/2021 Lampiran L, PDF p. 107 (printed as an image; read from the page image)"
+    codes:
+      AK: "Angkutan antar negara — international transport"
+      MK: "Misi kemanusiaan — humanitarian mission"
+      PN: "Pertemuan antar negara — intergovernmental meeting"
+      MS: "Pariwisata, olahraga, misi sosial — tourism, sport, social mission"
+      PAM: "Pengamanan pejabat negara asing — security for a visiting foreign official"
+    note: "Printed on the silver TNKB LBN of a foreign vehicle temporarily operated in Indonesia. See id-crossborder-lbn-2021."
+
+# ---------------------------------------------------------------------------
+# 6. SUB-AREA SUFFIX LETTERS — NOT SHIPPED
+# ---------------------------------------------------------------------------
+sub_area_suffixes:
+  shipped: false
+  reason: >-
+    The allocation of letter series to regencies is a Kapolda decision under
+    Pasal 6(7) (and Lampiran J confirms each regency has one) but no such
+    decision was found published by the police. The tables in circulation
+    are ShareAlike-licensed encyclopaedia content and cannot enter this
+    CC-BY dataset. A Polda's table will be added here, per Polda, when it can
+    be cited to the police or to press that attributes it to them.
+
+# ---------------------------------------------------------------------------
+# 7. REGION CODES IN THE ANNEX — Lampiran A, PDF pp. 81-95, 57 codes.
+#    `province` is the province's name today; `printed_region` is the column
+#    "DAERAH PENOMORAN" exactly as printed; `areas_printed` is the column
+#    "LINGKUP WILAYAH" exactly as printed, in printed order.
+# ---------------------------------------------------------------------------
+codes:
+  - code: BL
+    province: Aceh
+    printed_region: Provinsi Aceh
+    annex_row: 1
+    annex_pdf_page: 81
+    areas_printed:
+    - Kota Banda Aceh
+    - Kota Subulussalam
+    - Kota Langsa
+    - Kota Lhokseumawe
+    - Kota Sabang
+    - Kab. Aceh Barat
+    - Kab. Aceh Barat Daya
+    - Kab. Aceh Besar
+    - Kab. Aceh Jaya
+    - Kab. Aceh Selatan
+    - Kab. Aceh Singkil
+    - Kab. Aceh Tamiang
+    - Kab. Aceh Tengah
+    - Kab. Aceh Tenggara
+    - Kab. Aceh Timur
+    - Kab. Aceh Utara
+    - Kab. Bener Meriah
+    - Kab. Bireun
+    - Kab. Gayo Lues
+    - Kab. Nagan Raya
+    - Kab. Pidie
+    - Kab. Pidie Jaya
+    - Kab. Simeulue
+  - code: BK
+    province: Sumatera Utara
+    printed_region: Provinsi Sumatera Utara
+    annex_row: 2
+    annex_pdf_page: 82
+    areas_printed:
+    - Kodya Medan
+    - Kab. Deli Serdang
+    - Kota Tebing Tinggi
+    - Kab. Langkat
+    - Kota Binjai
+    - Kab. Simalungun
+    - Kota Pematang Siantar
+    - Kab. Tanah Karo
+    - Kab. Asahan
+    - Kab. Labuhan Batu
+    - Kab. Serdang Begadai
+    - Kab. Batubara
+    - Kota Tanjung Balai
+    - Kab. Labuhan Batu Utara
+    - Kab. Labuhan Batu Selatan
+    printed_text_notes:
+    - "'Kodya Medan' is Kota Medan in the pre-1999 'kotamadya' style the annex uses in several rows."
+    - "'Kab. Serdang Begadai' is printed with two letters transposed; the regency is Serdang Bedagai."
+  - code: BB
+    province: Sumatera Utara
+    printed_region: Provinsi Sumatera Utara
+    annex_row: 2
+    annex_pdf_page: 82
+    areas_printed:
+    - Kab. Tapanuli Utara
+    - Kab. Tapanuli Tengah
+    - Kota Sibolga
+    - Kab. Tapanuli Selatan
+    - Kab. Dairi
+    - Kab. Nias
+    - Kab. Humbang Hasundutan
+    - Kab. Samosir
+    - Kab. Toba Samosir
+    - Kota Padang Sidempuan
+    - Kab. Paluta
+    - Kab. Palas
+    - Kab. Mandailing Natal
+    - Kota Gunung Sitoli
+    - Kab. Nias Barat
+    - Kab. Nias Utara
+    - Kab. Nias Selatan
+    - Kab. Sidikalang
+    - Kab. Pakpak Barat
+    printed_text_notes:
+    - "'Kab. Paluta' and 'Kab. Palas' are the printed abbreviations of Kab. Padang Lawas Utara and Kab. Padang Lawas."
+    - "'Kab. Sidikalang' is listed as a regency but Sidikalang is the seat of Kab. Dairi, which is listed separately."
+    - "'Kab. Toba Samosir' is the regency's earlier name."
+  - code: BA
+    province: Sumatera Barat
+    printed_region: Provinsi Sumatera Barat
+    annex_row: 3
+    annex_pdf_page: 83
+    areas_printed:
+    - Kota Padang
+    - Kota Bukit Tinggi
+    - Kota Pandang Panjang
+    - Kota Pariaman
+    - Kota Payakumbuh
+    - Kota Sawahlunto
+    - Kota Solok
+    - Kab. Agam
+    - Kab. Dharmasraya
+    - Kab. Limapuluhkota
+    - Kab. Kep. Mentawai
+    - Kab. Padang Pariaman
+    - Kab. Pasaman
+    - Kab. Pasaman Barat
+    - Kab. Pesisir Selatan
+    - Kab. Sawah lunto Sijunjung
+    - Kab. Solok
+    - Kab. Solok Selatan
+    - Kab. Tanah Datar
+    printed_text_notes:
+    - "'Kota Pandang Panjang' is printed with an extra letter; the city is Padang Panjang."
+    - "'Kab. Sawah lunto Sijunjung' is the earlier name of Kab. Sijunjung."
+  - code: BM
+    province: Riau
+    printed_region: Provinsi Riau
+    annex_row: 4
+    annex_pdf_page: 83
+    areas_printed:
+    - Kota Pekanbaru
+    - Kab. Indragiri Hulu
+    - Kab. Indragiri Hilir
+    - Kab. Kampar
+    - Kab. Bengkalis
+    - Kota Dumai
+    - Kab. Siak
+    - Kab. Rokan Hulu
+    - Kab. Rokan Hilir
+    - Kab. Pelalawan
+    - Kab. Kuantan Singingi
+    - Kab. Kep Meranti
+  - code: BP
+    province: Kepulauan Riau
+    printed_region: Provinsi Kepulauan Riau
+    annex_row: 5
+    annex_pdf_page: 83
+    areas_printed:
+    - Kab. Karimun
+    - Kab. Bintan (Kep Riau)
+    - Kab. Natuna
+    - Kab. Lingga
+    - Kota Batam
+    - Kota Tanjungpinang
+    - Kab. Kep. Anambas
+  - code: BG
+    province: Sumatera Selatan
+    printed_region: Provinsi Sumatera Selatan
+    annex_row: 6
+    annex_pdf_page: 84
+    areas_printed:
+    - Kota Palembang
+    - Kota Lubuk Linggau
+    - Kota Pagar Alam
+    - Kota Prabumulih
+    - Kab. Banyuasin
+    - Kab. Lahat
+    - Kab. Empat Lawang
+    - Kab. Muara Enim
+    - Kab. Musi Banyuasin
+    - Kab. Musi Rawas
+    - Kab. Musi Rawas Utara
+    - Kab. Ogan Ilir
+    - Kab. Ogan Komering Ilir
+    - Kab. Ogan Komering Ulu
+    - Kab. OKU Selatan
+    - Kab. OKU Timur
+    - Kab. Penukal Abab Lematang Ilir (PALI)
+  - code: BN
+    province: Kepulauan Bangka Belitung
+    printed_region: Provinsi Kepulauan Bangka-Belitung
+    annex_row: 7
+    annex_pdf_page: 84
+    areas_printed:
+    - Kota Pangkalpinang
+    - Kab. Bangka
+    - Kab. Belitung
+    - Kab. Bangka Barat
+    - Kab. Bangka Selatan
+    - Kab. Bangka Tengah
+    - Kab. Belitung Timur
+  - code: BE
+    province: Lampung
+    printed_region: Provinsi Lampung
+    annex_row: 8
+    annex_pdf_page: 84
+    areas_printed:
+    - Kota Bandar Lampung
+    - Kota Metro
+    - Kab. Lampung Selatan
+    - Kab. Lampung Tengah
+    - Kab. Lampung Utara
+    - Kab. Lampung Barat
+    - Kab. Lampung Timur
+    - Kab. Tanggamus
+    - Kab. Tulang Bawang
+    - Kab. Way Kanan
+    - Kab. Pesawaran
+    - Kab. Pringsewu
+    - Kab. Mesuji
+  - code: BD
+    province: Bengkulu
+    printed_region: Provinsi Bengkulu
+    annex_row: 9
+    annex_pdf_page: 85
+    areas_printed:
+    - Kota Bengkulu
+    - Kab. Bengkulu Utara
+    - Kab. Bengkulu Selatan
+    - Kab. Rejang Lebong
+    - Kab. Kaur
+    - Kab. Kepahiang
+    - Kab. Muko-Muko
+    - Kab. Lebong
+    - Kab. Seluma
+    - Kab. Bengkulu Tengah
+  - code: BH
+    province: Jambi
+    printed_region: Provinsi Jambi
+    annex_row: 10
+    annex_pdf_page: 85
+    areas_printed:
+    - Kota Jambi
+    - Kota Sungai Penuh
+    - Kab. Batanghari
+    - Kab. Bungo
+    - Kab. Tebo
+    - Kab. Kerinci
+    - Kab. Tanjung Jabung Barat
+    - Kab. Tanjung Jabung Timur
+    - Kab. Sarolangun
+    - Kab. Merangin
+    - Kab. Muaro Jambi
+  - code: B
+    province: DKI Jakarta
+    printed_region: Provinsi DKI Jakarta
+    annex_row: 11
+    annex_pdf_page: 85
+    areas_printed:
+    - Daerah Khusus Ibukota Jakarta
+    - Kab. Kepulauan Seribu
+    - Kota Depok
+    - Kota Bekasi
+    - Kab. Bekasi
+    - Kota Tangerang
+    - Kota Tangerang Selatan
+    printed_text_notes:
+    - >-
+      The code crosses provincial boundaries: the annex puts Kota Depok and Kota/Kab. Bekasi (Jawa Barat) and Kota Tangerang and Kota Tangerang Selatan (Banten) under B, while Kab. Tangerang is listed under
+      A.
+  - code: A
+    province: Banten
+    printed_region: Provinsi Banten
+    annex_row: 12
+    annex_pdf_page: 85
+    areas_printed:
+    - Kota Serang
+    - Kota Cilegon
+    - Kab. Serang
+    - Kab. Pandeglang
+    - Kab. Lebak
+    - Kab. Tangerang
+    printed_text_notes:
+    - Kab. Tangerang is listed here, under A, not under B.
+  - code: D
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kota Bandung
+    - Kota Cimahi
+    - Kab. Bandung
+    - Kab. Bandung Barat
+  - code: F
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kota Bogor
+    - Kab. Bogor
+    - Kab. Cianjur
+    - Kab. Sukabumi
+    - Kota Sukabumi
+  - code: T
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kab. Purwakarta
+    - Kab. Karawang
+    - Kab. Subang
+  - code: E
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kota Cirebon
+    - Kab. Cirebon
+    - Kab. Indramayu
+    - Kab. Malajengka
+    - Kab. Kuningan
+    printed_text_notes:
+    - "'Kab. Malajengka' is printed with two letters transposed; the regency is Majalengka."
+  - code: Z
+    province: Jawa Barat
+    printed_region: Provinsi Jawa Barat
+    annex_row: 13
+    annex_pdf_page: 86
+    areas_printed:
+    - Kab. Garut
+    - Kab. Sumedang
+    - Kota Tasikmalaya
+    - Kab. Tasikmalaya
+    - Kab. Ciamis
+    - Kota Banjar
+    - Kab. Pangandaran
+  - code: H
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 86
+    areas_printed:
+    - Kodya Semarang
+    - Kab. Salatiga
+    - Kab. Kendal
+    - Kab. Demak
+    - Kab. Semarang
+    printed_text_notes:
+    - "'Kab. Salatiga' is printed as a regency; Salatiga is a city (kota)."
+    - "'Kodya Semarang' is Kota Semarang."
+  - code: G
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 86
+    areas_printed:
+    - Kodya Pekalongan
+    - Kab. Pekalongan
+    - Kab. Brebes
+    - Kodya Tegal
+    - Kab. Tegal
+    - Kab. Batang
+    - Kab. Pemalang
+  - code: K
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kab. Pati
+    - Kab. Kudus
+    - Kab. Jepara
+    - Kab. Rembang
+    - Kab. Blora
+    - Kab. Grobogan
+  - code: R
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kab. Banyumas
+    - Kab. Cilacap
+    - Kab. Purbalingga
+    - Kab. Banjarnegara
+  - code: AA
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kodya Magelang
+    - Kab. Magelang
+    - Kab. Purworejo
+    - Kab. Kebumen
+    - Kab. Temanggung
+    - Kab. Wonosobo
+  - code: AD
+    province: Jawa Tengah
+    printed_region: Provinsi Jateng
+    annex_row: 14
+    annex_pdf_page: 87
+    areas_printed:
+    - Kodya Surakarta
+    - Kab. Sukoharjo
+    - Kab. Boyolali
+    - Kab. Sragen
+    - Kab. Karanganyar
+    - Kab. Wonogiri
+    - Kab. Klaten
+  - code: AB
+    province: DI Yogyakarta
+    printed_region: Provinsi Daerah Istimewa Yogyakarta
+    annex_row: 15
+    annex_pdf_page: 87
+    areas_printed:
+    - Kota Yogyakarta
+    - Kab. Bantul
+    - Kab. Gunung Kidul
+    - Kab. Sleman
+    - Kab. Kulon Progo
+  - code: L
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 87
+    areas_printed:
+    - Kodya Surabaya
+  - code: W
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 87
+    areas_printed:
+    - Kab. Gresik
+    - Kab. Sidoarjo
+    - Kab. Mojokerto
+    - Kab. Jombang
+  - code: "N"
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kodya Malang
+    - Kab. Malang
+    - Kab. Probolinggo
+    - Kab. Pasuruan
+    - Kab. Lumajang
+  - code: P
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kab. Besuki
+    - Kab. Situbondo
+    - Kab. Bondowoso
+    - Kab. Jember
+    - Kab. Banyuwangi
+    printed_text_notes:
+    - "'Kab. Besuki' is printed as a regency; Besuki is the name of the old residency the code descends from, not a current regency."
+  - code: AG
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kodya Kediri
+    - Kab. Kediri/Pare
+    - Kab. Blitar
+    - Kab. Tulungagung
+    - Kab. Nganjuk
+    - Kab. Trenggalek
+    printed_text_notes:
+    - "'Kab. Kediri/Pare' names the regency together with its town Pare."
+  - code: AE
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kodya Madiun
+    - Kab. Madiun
+    - Kab. Ngawi
+    - Kab. Magetan
+    - Kab. Ponorogo
+    - Kab. Pacitan
+  - code: S
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kab. Bojonegoro
+    - Kab. Tuban
+    - Kab. Lamongan
+  - code: M
+    province: Jawa Timur
+    printed_region: Provinsi Jawa Timur
+    annex_row: 16
+    annex_pdf_page: 88
+    areas_printed:
+    - Kab. Pamekasan
+    - Kab. Bangkalan
+    - Kab. Sampang
+    - Kab. Sumenep
+  - code: DK
+    province: Bali
+    printed_region: Provinsi Bali
+    annex_row: 17
+    annex_pdf_page: 88
+    areas_printed:
+    - Kota Denpasar
+    - Kab. Badung
+    - Kab. Buleleng
+    - Kab. Tabanan
+    - Kab. Gianyar
+    - Kab. Klungkung
+    - Kab. Bangli
+    - Kab. Karangasem
+    - Kab. Jembrana
+  - code: DR
+    province: Nusa Tenggara Barat
+    printed_region: Provinsi Nusa Tenggara Barat
+    annex_row: 18
+    annex_pdf_page: 89
+    areas_printed:
+    - Kota Mataram
+    - Kab. Lombok Barat
+    - Kab. Lombok Tengah
+    - Kab. Lombok Timur
+    - Kab. Lombok Utara
+  - code: EA
+    province: Nusa Tenggara Barat
+    printed_region: Provinsi Nusa Tenggara Barat
+    annex_row: 18
+    annex_pdf_page: 89
+    areas_printed:
+    - Kota Bima
+    - Kab. Bima
+    - Kab. Sumbawa
+    - Kab. Sumbawa Barat
+    - Kab. Dompu
+  - code: DH
+    province: Nusa Tenggara Timur
+    printed_region: Provinsi Nusa Tenggara Timur
+    annex_row: 19
+    annex_pdf_page: 89
+    areas_printed:
+    - Kota Kupang
+    - Kab. Timor Tengah Selatan
+    - Kab. Timor Tengah Utara
+    - Kab. Belu
+    - Kab. Kupang
+    - Kab. Sabu Raijua
+    - Kab. Rote Ndao
+    - Kab. Malaka
+  - code: EB
+    province: Nusa Tenggara Timur
+    printed_region: Provinsi Nusa Tenggara Timur
+    annex_row: 19
+    annex_pdf_page: 89
+    areas_printed:
+    - Kab. Ende
+    - Kab. Sikka
+    - Kab. Flores Timur
+    - Kab. Ngada
+    - Kab. Manggarai
+    - Kab. Alor
+    - Kab. Lembata
+    - Kab. Manggarai Barat
+    - Kab. Nagekeo
+    - Kab. Manggarai Timur
+  - code: ED
+    province: Nusa Tenggara Timur
+    printed_region: Provinsi Nusa Tenggara Timur
+    annex_row: 19
+    annex_pdf_page: 89
+    areas_printed:
+    - Kab. Sumba Timur
+    - Kab. Sumba Barat
+    - Kab. Sumba Barat Daya
+    - Kab. Sumba Tengah
+  - code: KB
+    province: Kalimantan Barat
+    printed_region: Provinsi Kalimatan Barat
+    annex_row: 20
+    annex_pdf_page: 90
+    areas_printed:
+    - Kota Pontianak
+    - Kab. Pontianak
+    - Kab. Sambas
+    - Kab. Sanggau
+    - Kab. Sintang
+    - Kab. Kapuas Hulu
+    - Kab. Ketapang
+    - Kab. Kubu Raya
+    - Kota Singkawang
+    - Kab. Bengkayang
+    - Kab. Landak
+    - Kab. Sekadau
+    - Kab. Melawi
+    - Kab. Kayong Utara
+    printed_text_notes:
+    - The printed region reads 'Kalimatan Barat' (a dropped letter).
+    - "'Kab. Pontianak' is the regency's earlier name (now Kab. Mempawah)."
+  - code: DA
+    province: Kalimantan Selatan
+    printed_region: Provinsi Kalimantan Selatan
+    annex_row: 21
+    annex_pdf_page: 90
+    areas_printed:
+    - Kota Banjarmasin
+    - Kota Banjar Baru
+    - Kab. Balangan
+    - Kab. Banjar
+    - Kab. Barito Kuala
+    - Kab. Hulu Sungai Utara
+    - Kab. Hulu Sungai Selatan
+    - Kab. Hulu Sungai Tengah
+    - Kab. Kotabaru
+    - Kab. Tabalong
+    - Kab. Tanah Bumbu
+    - Kab. Tanah Laut
+    - Kab. Tapin
+  - code: KH
+    province: Kalimantan Tengah
+    printed_region: Provinsi Kalimantan Tengah
+    annex_row: 22
+    annex_pdf_page: 90
+    areas_printed:
+    - Kota Palangkaraya
+    - Kab. Barito Selatan
+    - Kab. Barito Timur
+    - Kab. Barito Utara
+    - Kab. Gunung Mas
+    - Kab. Kapuas
+    - Kab. Katingan
+    - Kab. Kotawaringin Barat
+    - Kab. Kotawaringin Timur
+    - Kab. Lamandau
+    - Kab. Murung Raya
+    - Kab. Pulang Pisau
+    - Kab. Seruyan
+    - Kab. Sukamara
+  - code: KT
+    province: Kalimantan Timur
+    printed_region: Provinsi Kalimantan Timur
+    annex_row: 23
+    annex_pdf_page: 91
+    areas_printed:
+    - Kodya Balikpapan
+    - Kodya Samarinda
+    - Kab. Kutai Kartanegara
+    - Kab. Kutai Timur
+    - Kab. Berau
+    - Kab. Kutai Barat
+    - Kab. Mahakam Ulu
+    - Kodya Bontang
+    - Kab. Paser Penajam Utara
+    - Kab. Paser
+    printed_text_notes:
+    - "'Kab. Paser Penajam Utara' is printed with two words in the reverse order; the regency is Penajam Paser Utara."
+  - code: KU
+    province: Kalimantan Utara
+    printed_region: Provinsi Kalimantan Utara
+    annex_row: 24
+    annex_pdf_page: 91
+    areas_printed:
+    - Kotamadya Tarakan
+    - Kab. Nunukan
+    - Kab. Bulungan
+    - Kab. Malinau
+    - Kab. Tana Tidung
+  - code: DB
+    province: Sulawesi Utara
+    printed_region: Provinsi Sulawesi Utara
+    annex_row: 25
+    annex_pdf_page: 91
+    areas_printed:
+    - Kota Manado
+    - Kota Kotamobagu
+    - Kota Bitung
+    - Kota Tomohon
+    - Kab. Bolaang Mongondow
+    - Kab. Bolaang Mongondow Utara
+    - Kab. Bolaang Mongondow Timur
+    - Kab. Bolaang Mongondow Selatan
+    - Kab. Minahasa
+    - Kab. Minahasa Tenggara
+    - Kab. Minahasa Selatan
+    - Kab. Minahsa Utara
+    printed_text_notes:
+    - "'Kab. Minahsa Utara' is printed with a dropped letter; the regency is Minahasa Utara."
+  - code: DL
+    province: Sulawesi Utara
+    printed_region: Provinsi Sulawesi Utara
+    annex_row: 25
+    annex_pdf_page: 91
+    areas_printed:
+    - Kab. Sangie Talaud
+    - Kab. Kep. Talaud
+    - Kab. Kep. Siau Tagulandang Biaro
+    printed_text_notes:
+    - "'Kab. Sangie Talaud' is printed for the old combined Sangihe Talaud regency name; Kab. Kep. Talaud is listed separately."
+  - code: DM
+    province: Gorontalo
+    printed_region: Provinsi Gorontalo
+    annex_row: 26
+    annex_pdf_page: 92
+    areas_printed:
+    - Kota Gorontalo
+    - Kab. Gorontalo
+    - Kab. Boalemo
+    - Kab. Pohuwato
+    - Kab. Bone Bolango
+    - Kab. Gorontalo Utara
+  - code: DN
+    province: Sulawesi Tengah
+    printed_region: Provinsi Sulawesi Tengah
+    annex_row: 27
+    annex_pdf_page: 92
+    areas_printed:
+    - Kota Palu
+    - Kab. Banggai
+    - Kab. Banggai Kepulauan
+    - Kab. Buol
+    - Kab. Donggala
+    - Kab. Morowali
+    - Kab. Parigi Mountong
+    - Kab. Poso
+    - Kab. Tojo Una-Una
+    - Kab. Toli-Toli
+    - Kab. Sigi
+    - Kab. Banggai Laut
+    printed_text_notes:
+    - "'Kab. Parigi Mountong' is printed with an extra letter; the regency is Parigi Moutong."
+  - code: DD
+    province: Sulawesi Selatan
+    printed_region: Provinsi Sulawesi Selatan
+    annex_row: 28
+    annex_pdf_page: 92
+    areas_printed:
+    - Kodya Makassar
+    - Kab. Gowa
+    - Kab. Takalar
+    - Kab. Maros
+    - Kab. Pangkajene kep
+    - Kab. Bantaeng
+    - Kab. Jeneponto
+    - Kab. Bulukumba
+    - Kab. Selayar
+    printed_text_notes:
+    - "'Kab. Pangkajene kep' abbreviates Pangkajene dan Kepulauan."
+    - "'Kab. Selayar' is Kab. Kepulauan Selayar."
+  - code: DP
+    province: Sulawesi Selatan
+    printed_region: Provinsi Sulawesi Selatan
+    annex_row: 28
+    annex_pdf_page: 92
+    areas_printed:
+    - Kodya Pare-Pare
+    - Kab. Barru
+    - Kab. Sidrap
+    - Kab. Pinrang
+    - Kab. Palopo
+    - Kab. Luwu
+    - Kab. Luwu Timur
+    - Kab. Luwu Utara
+    - Kab. Tana Toraja
+    - Kab. Enrekang
+    - Kab. Toraja Utara
+    printed_text_notes:
+    - "'Kab. Palopo' is printed as a regency; Palopo is a city (kota)."
+    - "'Kab. Sidrap' abbreviates Sidenreng Rappang."
+  - code: DW
+    province: Sulawesi Selatan
+    printed_region: Provinsi Sulawesi Selatan
+    annex_row: 28
+    annex_pdf_page: 93
+    areas_printed:
+    - Kab. Bone
+    - Kab. Wajo
+    - Kab. Sopeng
+    - Kab. Sinjai
+    - Kab. Watampone
+    printed_text_notes:
+    - "'Kab. Sopeng' is printed with a dropped letter; the regency is Soppeng."
+    - "'Kab. Watampone' is printed as a regency; Watampone is the seat of Kab. Bone, which is listed separately."
+  - code: DC
+    province: Sulawesi Barat
+    printed_region: Provinsi Sulawesi Barat
+    annex_row: 29
+    annex_pdf_page: 93
+    areas_printed:
+    - Kab. Majene
+    - Kab. Mamuju
+    - Kab. Polewali Mandar
+    - Kab. Mamasa
+    - Kab. Mamuju Utara
+    - Kab. Mamuju Tengah
+    printed_text_notes:
+    - "'Kab. Mamuju Utara' is the regency's earlier name (now Kab. Pasangkayu)."
+  - code: DT
+    province: Sulawesi Tenggara
+    printed_region: Provinsi Sulawesi Tenggara
+    annex_row: 30
+    annex_pdf_page: 93
+    areas_printed:
+    - Kota Kendari
+    - Kota Bau-Bau
+    - Kab. Bombana
+    - Kab. Buton
+    - Kab. Konawe
+    - Kab. Kolaka
+    - Kab. Kolaka Utara
+    - Kab. Konawe Selatan
+    - Kab. Muna
+    - Kab. Wakatobi
+    - Kab. Konawe Utara
+    - Kab. Buton Utara
+    - Kab. Kolaka Timur
+  - code: DE
+    province: Maluku
+    printed_region: Provinsi Maluku
+    annex_row: 31
+    annex_pdf_page: 93
+    areas_printed:
+    - Kota Ambon
+    - Kota Tual
+    - Kab. Buru
+    - Kab. Kepulauan Aru
+    - Kab. Seram Bagian Barat
+    - Kab. Seram Bagian Timur
+    - Kab. Maluku Tengah
+    - Kab. Maluku Tenggara
+    - Kab. Maluku Tenggara Barat
+    - Kab. Maluku Barat Daya
+    - Kab. Buru Selatan
+  - code: DG
+    province: Maluku Utara
+    printed_region: Provinsi Maluku Utara
+    annex_row: 32
+    annex_pdf_page: 94
+    areas_printed:
+    - Kota Ternate
+    - Kota Tidore
+    - Kab. Halmahera Utara
+    - Kab. Halmahera Barat
+    - Kab. Halmahera Selatan
+    - Kab. Halmahera Tengah
+    - Kab. Halmahera Timur
+    - Kab. Pulau Morotai
+    - Kab. Kepulauan Sula
+    - Kab. Pulau Taliabu
+  - code: PA
+    province: Papua
+    printed_region: Provinsi Papua
+    annex_row: 33
+    annex_pdf_page: 94
+    areas_printed:
+    - Kab. Jayapura
+    - Kota Jayapura
+    - Kab. Jayawijaya
+    - Kab. Biak Numfor
+    - Kab. Merauke
+    - Kab. Paniai
+    - Kab. Yapen Waropen
+    - Kab. Tolikara
+    - Kab. Mimika
+    - Kab. Yahukimo
+    - Kab. Nabire
+    - Kab. Mappi
+    - Kab. Boven Digoel
+    - Kab. Asmat
+    - Kab. Sarmi
+    - Kab. Mamberamo Raya
+    - Kab. Waropen
+    - Kab. Keerom
+    - Kab. Pegunungan Bintang
+    - Kab. Puncak Jaya
+    - Kab. Supiori
+    - Kab. Mamberamo Tengah
+    - Kab. Yalimo
+    - Kab. Lanny Jaya
+    - Kab. Nduga
+    - Kab. Puncak
+    - Kab. Dogiyai
+    - Kab. Deiyai
+    - Kab. Intan Jaya
+    printed_text_notes:
+    - "'Kab. Yapen Waropen' is the earlier name of Kab. Kepulauan Yapen (Kab. Waropen is listed separately)."
+    - >-
+      Since 2022 part of this list belongs to the new provinces Papua Selatan, Papua Tengah and Papua Pegunungan, which issue their own codes (see post_annex_codes). Which regency moved where is set by the
+      2022 province-creation statutes, not opened in this pass, so it is not tabulated here.
+  - code: PB
+    province: Papua Barat
+    printed_region: Provinsi Papua Barat
+    annex_row: 34
+    annex_pdf_page: 95
+    areas_printed:
+    - Kab. Manokwari
+    - Kab. Teluk Bintuni
+    - Kab. Teluk Wondama
+    - Kota Sorong
+    - Kab. Sorong
+    - Kab. Sorong Selatan
+    - Kab. Kep. Raja Ampat
+    - Kab. Fak-Fak
+    - Kab. Kaimana
+    - Kab. Tambrauw
+    - Kab. Maybrat
+    - Kab. Manokwari Selatan
+    - Kab. Pegunungan Arfak
+    printed_text_notes:
+    - >-
+      Since 2022 part of this list belongs to the new province Papua Barat Daya, which issues PY (see post_annex_codes). The regencies that moved are set by the 2022 province-creation statute, not opened in
+      this pass, so they are not tabulated here.
+
+# ---------------------------------------------------------------------------
+# 8. CODES CREATED AFTER THE ANNEX — the 2022 Papua provinces.
+#    NOT IN PERPOL 7/2021. Each is sourced to the police or to press quoting
+#    them, and tiered accordingly. Perpol 7/2021 has not been amended to add
+#    them as far as this pass found (see §VERIFIER in plates/id.yml).
+# ---------------------------------------------------------------------------
+post_annex_codes:
+  - code: PY
+    province: Papua Barat Daya
+    replaces: PB
+    since: "2024-05"
+    since_precision: month
+    evidence: secondary-press-citing-agency
+    source: "https://oto.detik.com/berita/d-7501604/kode-pelat-nomor-di-3-provinsi-papua-diubah  # detikOto 21 Aug 2024: 'Dikutip situs resmi Korlantas Polri, Pemprov Papua Barat Daya pada bulan Mei lalu menjelaskan kode awal pelat nomor provinsi yang sebelumnya PB berubah menjadi PY. Sedangkan kode PB masih difungsikan untuk pelat nomor kendaraan di Papua Barat.' The Korlantas page quoted was not located. Accessed 2026-11-25"
+  - code: PS
+    province: Papua Selatan
+    replaces: PA
+    since: "2024-07"
+    since_precision: month
+    evidence: secondary-press-citing-agency
+    source: "https://oto.detik.com/berita/d-7501604/kode-pelat-nomor-di-3-provinsi-papua-diubah  # detikOto 21 Aug 2024: 'sejak Juli, pelat nomor kendaraan di Papua Selatan berubah dari PA menjadi PS. Sedangkan PA masih dipakai di provinsi Papua.' Accessed 2026-11-25"
+  - code: PT
+    province: Papua Tengah
+    replaces: PA
+    since: "2024-08-19"
+    since_precision: day
+    evidence: secondary-press-citing-agency
+    source: "https://papua.antaranews.com/berita/727031/pemprov-papua-tengah-hadirkan-plat-nomor-kendaraan-kode-pt  # ANTARA Papua 20 Aug 2024: 'penyerahan plat kendaraan nomor \"PT 1\" oleh Dirlantas Polda Papua kepada Penjabat Gubernur Papua Tengah Ribka Haluk ... Senin (19/8)'; detikOto d-7501604 (21 Aug 2024) corroborates PA -> PT. Accessed 2026-11-25"
+  - code: PG
+    province: Papua Pegunungan
+    replaces: PA
+    since: "2024-10-24"
+    since_precision: day
+    evidence: secondary-press-quoting-police
+    source: "https://rri.co.id/wamena/regional/1070172/pemprov-papua-pegunungan-launching-plat-nomor-kendaraan-pg  # RRI Wamena (the state broadcaster) 25 Oct 2024: 'Pemerintah Provinsi Papua Pegunungan resmi melaunching nomor registrasi kendaraan bermotor dari PA menjadi PG' on Thursday 24/10/2024, with the Direktur Lalu Lintas Polda Papua, Kombes Pol Abrianto Pardede, quoted: 'hari ini resmi bahwa Provinsi Papua Pegunungan adalah PG'. Accessed 2026-11-25"
+    corroboration: "https://www.ceposonline.com/papua-pegununungan/1995235616/hari-ini-provinsi-papua-pegunungan-resmi-gunakan-kode-kendaraan-pg  # Cenderawasih Pos 25 Oct 2024, same ceremony and the same police quote. Accessed 2026-11-25"
