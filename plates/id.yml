@@ -31,8 +31,11 @@
 # WHAT IT DOES NOT PRINT, AND THIS FILE THEREFORE DOES NOT CLAIM AT THAT TIER.
 #   * NO MASK AND NO SEPARATOR. "Ditulis berurutan" (Pasal 6(2)) is all it
 #     says about layout. Every regex below spells the group boundaries as the
-#     separator-only class `[- ]?` sanctioned by PRD-PLATES §2.8 — the honest
+#     separator-only class `[ -]?` sanctioned by PRD-PLATES §2.8 — the honest
 #     encoding of a gap in the authority's text, as plates/ng.yml does. The
+#     space comes first in the class because a consumer that re-prints a
+#     serial prints the class's first member, and Indonesian plates print a
+#     space. The
 #     `pattern` shows the space Indonesian plates print, which is observation,
 #     not law.
 #   * NO DIMENSIONS, NO TYPEFACE, NO SECURITY MARKS, NO ELECTRIC-VEHICLE MARK
@@ -476,8 +479,8 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LLL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
-      regex_strict: '\A(?:A|AA|AB|AD|AE|AG|B|BA|BB|BD|BE|BG|BH|BK|BL|BM|BN|BP|D|DA|DB|DC|DD|DE|DG|DH|DK|DL|DM|DN|DP|DR|DT|DW|E|EA|EB|ED|F|G|H|K|KB|KH|KT|KU|L|M|N|P|PA|PB|PG|PS|PT|PY|R|S|T|W|Z)[- ]?[1-9]\d{0,3}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
+      regex_strict: '\A(?:A|AA|AB|AD|AE|AG|B|BA|BB|BD|BE|BG|BH|BK|BL|BM|BN|BP|D|DA|DB|DC|DD|DE|DG|DH|DK|DL|DM|DN|DP|DR|DT|DW|E|EA|EB|ED|F|G|H|K|KB|KH|KT|KU|L|M|N|P|PA|PB|PG|PS|PT|PY|R|S|T|W|Z)[ -]?[1-9]\d{0,3}[ -]?[A-Z]{0,3}\z'
       grammar_evidence: statute
       grammar: >-
         Region code (1 or 2 letters) + number (1 to 4 digits) + series (no
@@ -558,7 +561,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LLL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
       grammar_evidence: >-
         statute from 2006 (Perkap 4/2006 Pasal 5(2) region code of 1 or 2
         letters, Pasal 6(2) number of 1 to 4 digits) and from 2021 (Perpol
@@ -613,7 +616,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LLL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
       grammar_evidence: "statute (Perpol 7/2021 Pasal 6; Perkap 4/2006 Pasal 5-6) — the same grammar as every other plate on a region code"
       examples_synthetic: ["B 7123 TGA", "D 1543 AB", "N 8012 UA"]
     design:
@@ -649,7 +652,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LLL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
       grammar_evidence: "statute (Perpol 7/2021 Pasal 6)"
       office_numbers: >-
         Low numbers identify office-holders (Perpol 7/2021 Lampiran H-J; full
@@ -705,7 +708,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LLL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
       grammar_evidence: "statute — the registration is ordinary; the plate differs only by the mark (Pasal 45(2))"
       examples_synthetic: ["B 1234 EV", "D 2001 ABC"]
     design:
@@ -770,7 +773,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LLL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
       grammar_evidence: >-
         statute — Pasal 7(2): the choice covers "nomor registrasi dan/atau seri
         huruf/tanpa seri huruf" inside the ordinary grammar; which numbers are
@@ -826,7 +829,7 @@ series:
     matching: recall-only
     format:
       pattern: "LL 9999 LL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]{0,3}\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]{0,3}\z'
       examples_synthetic: ["BP 1234 AB"]
     design:
       background: { color: "#00843D", hex_basis: nominal, evidence: statute }
@@ -865,8 +868,8 @@ series:
     matching: strict
     format:
       pattern: "CD 99 9"
-      regex: '\ACD[- ]?\d{2,3}[- ]?\d{1,4}\z'
-      regex_strict: '\ACD[- ]?(?:10\d|11[0-8]|12[0-35-9]|13\d|14[0-5]|1[2-9]|[235-8]\d|4[0-57-9]|9[02-9])[- ]?[1-9]\d{0,3}\z'
+      regex: '\ACD[ -]?\d{2,3}[ -]?\d{1,4}\z'
+      regex_strict: '\ACD[ -]?(?:10\d|11[0-8]|12[0-35-9]|13\d|14[0-5]|1[2-9]|[235-8]\d|4[0-57-9]|9[02-9])[ -]?[1-9]\d{0,3}\z'
       grammar_evidence: statute
       grammar: >-
         Lampiran D.1: "NRKB untuk Ranmor Korps Diplomatik terdiri dari Kode
@@ -929,7 +932,7 @@ series:
     matching: strict
     format:
       pattern: "CC 99 99"
-      regex: '\ACC[- ]?\d{2,3}[- ]?\d{1,4}\z'
+      regex: '\ACC[ -]?\d{2,3}[ -]?\d{1,4}\z'
       grammar_evidence: statute
       grammar: >-
         Lampiran D.2: "NRKB untuk Ranmor Korps Konsulat terdiri dari Kode
@@ -969,7 +972,7 @@ series:
     matching: strict
     format:
       pattern: "CH 999 9"
-      regex: '\ACH[- ]?\d{2,3}[- ]?\d{1,4}\z'
+      regex: '\ACH[ -]?\d{2,3}[ -]?\d{1,4}\z'
       grammar_evidence: statute
       grammar: >-
         Lampiran F.5: "NRKB untuk Ranmor Pejabat Konsul kehormatan dengan kode
@@ -1006,8 +1009,8 @@ series:
     matching: strict
     format:
       pattern: "RI 9"
-      regex: '\ARI[- ]?\d{1,4}\z'
-      regex_strict: '\ARI[- ]?[1-9]\d{0,3}\z'
+      regex: '\ARI[ -]?\d{1,4}\z'
+      regex_strict: '\ARI[ -]?[1-9]\d{0,3}\z'
       grammar_evidence: statute
       grammar: >-
         Lampiran F.2: "NRKB untuk Ranmor Dinas Presiden, Wakil Presiden, Ketua
@@ -1055,7 +1058,7 @@ series:
     matching: recall-only
     format:
       pattern: "L 1999 ZZL"
-      regex: '\A[A-Z]{1,2}[- ]?1\d{0,3}[- ]?ZZ[A-Z]\z'
+      regex: '\A[A-Z]{1,2}[ -]?1\d{0,3}[ -]?ZZ[A-Z]\z'
       known_third_letters:
         P: "Polri (police)"
         H: "pemerintah (civil government)"
@@ -1096,7 +1099,7 @@ series:
     matching: recall-only
     format:
       pattern: "L 9999 RFL"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?RF[A-Z]\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?RF[A-Z]\z'
       known_third_letters:
         P: "Polri (police) — RFP, the only RF combination named by a police source read"
       examples_synthetic: ["B 1234 RFP"]
@@ -1130,7 +1133,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 XX"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?(?:XX|XY|YY|YX|XXX|XYY|YYX|YXY|YYY|YXX)\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?(?:XX|XY|YY|YX|XXX|XYY|YYX|YXY|YYY|YXX)\z'
       grammar_evidence: statute
       grammar: >-
         Pasal 80(1): the TCKB carries "a. kode wilayah; b. nomor/angka; dan c.
@@ -1175,7 +1178,7 @@ series:
     matching: recall-only
     format:
       pattern: "LL 9999 AK"
-      regex: '\A[A-Z]{1,2}[- ]?[A-Z0-9]{1,10}[- ]?(?:AK|MK|PN|MS|PAM)\z'
+      regex: '\A[A-Z]{1,2}[ -]?[A-Z0-9]{1,10}[ -]?(?:AK|MK|PN|MS|PAM)\z'
       operating_codes:
         AK: "angkutan antar negara — international transport"
         MK: "misi kemanusiaan — humanitarian mission"
@@ -1216,7 +1219,7 @@ series:
     matching: strict
     format:
       pattern: "L 9999 LX"
-      regex: '\A[A-Z]{1,2}[- ]?\d{1,4}[- ]?[A-Z]X\z'
+      regex: '\A[A-Z]{1,2}[ -]?\d{1,4}[ -]?[A-Z]X\z'
       grammar_evidence: statute
       grammar: >-
         Perkap 4/2006 Pasal 13: numbering of vehicles whose import duty is
