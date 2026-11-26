@@ -260,6 +260,19 @@ common:
       this file, and the restriction is recorded as an open question rather than
       asserted. A verifier who pins the notice should add the twins then.
     source: "https://laws.e-gov.go.jp/api/1/lawdata/345M50000800007  # 別表第二 verbatim; https://laws.e-gov.go.jp/api/1/lawdata/326M50000800074  # 別表第二の四 verbatim; both accessed 2026-08-02"
+    issued_letters:
+      letters: [A, C, F, H, K, L, M, P, X, Y]
+      evidence: agency-stated
+      text: "分類番号下２字「００」～「０９」は昇順で使用し、払底した場合は、アラビア数字とＡ，Ｃ，Ｆ，Ｈ，Ｋ，Ｌ，Ｍ，Ｐ，Ｘ，Ｙのローマ字を組み合わせて払い出します。"
+      note: >-
+        Added 2026-11-26. An MLIT regional bureau states the subset of Roman
+        letters actually issued in class codes, which `alphabet_gap` above
+        records as unsourced: ten letters, used once the 00-09 tail of a
+        class-code block runs out. This is an agency statement, not the
+        ordinance (別表第二 still permits Ａ-Ｚ), so it stays out of the
+        regexes; a `regex_strict` built on it belongs in its own PR
+        (PRD-PLATES §2.6 decision rule on narrowing).
+      source: "https://wwwtb.mlit.go.jp/tohoku/jg/jg-sub29_1.html  # 東北運輸局「ナンバープレートの見方」, 自動車の種別による分類番号; accessed 2026-11-26"
   colours:
     registered_private: "白地に緑文字 — green characters on white (Form No. 1 remark (3))"
     registered_forhire: "緑地に白文字 — white characters on green (Form No. 1 remark (3))"
@@ -277,6 +290,37 @@ common:
       notice that Form No. 1 remark (3) and Form No. 12 remark (3) both defer to
       (「国土交通大臣の定めるところによる」), which was not pinned — recorded gap.
     source: "https://laws.e-gov.go.jp/law/326M50000800074  # Forms No. 1, 1-2, 3, 5, 12, 13, 14, 15 and their 備考"
+    delegated_notice:
+      citation: "自動車登録番号標及び車両番号標の塗色を定める告示（平成29年2月13日国土交通省告示第99号）"
+      evidence: agency-stated
+      note: >-
+        Added 2026-11-26. The notice that Form No. 1 remark (3) and Form No. 12
+        remark (3) defer to is now IDENTIFIED by name, date and number: an MLIT
+        regional bureau names it as the instrument that sets the colours of
+        the figure plates (図柄入りナンバープレート). Its TEXT is still not pinned
+        (it is not in e-Gov's law database; the 官報 copy was not obtained), so
+        hex_basis stays observed and no colour, 字光式 or figure-plate rule is
+        read from it here.
+      source: "https://wwwtb.mlit.go.jp/tohoku/jg/jg-sub29_1.html  # 東北運輸局「ナンバープレートの見方」, 塗色: 「上記の他、自動車登録番号標及び車両番号標の塗色を定める告示（平成29年2月13日国土交通省告示第99号）により様々な塗色（図柄入りナンバープレート）が定められています。」; accessed 2026-11-26"
+    measured:
+      evidence: photographic-observed
+      note: >-
+        Colours sampled as medians on photographed plates by a render pass
+        (2026-11-25) from its reference set (the Commons files and marketplace
+        photographs listed below; which photograph gave which median is not
+        recorded), for comparison with the nominal hexes the series carry.
+        Same statutory colour names; measured values are darker and greener
+        than the nominal ones, which are themselves observed, not statutory.
+      registered_private: { background: "#FAFAF8", foreground: "#234D33" }
+      registered_forhire: { background: "#3C5E45", foreground: "#FFFFFF" }
+      kei_private: { background: "#EFB527", foreground: "#181715" }
+      kei_forhire: { background: "#17181A", foreground: "#FFCF31" }
+      nominal_in_series: { registered: "#FFFFFF / #00693E", kei: "#FFD400 / #000000" }
+      sources:
+        - "Commons 'Japanese vehicle registration plate green and white.jpg' (Gzzz, CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_green_and_white.jpg  # photograph not copied"
+        - "Commons 'Japanese vehicle registration plate yellow and black.jpg' (Gzzz, CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_yellow_and_black.jpg  # photograph not copied"
+        - "Commons 'Japanese vehicle registration plate black and yellow.jpg' (Gzzz, CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_black_and_yellow.jpg  # photograph not copied"
+        - "marketplace photographs (no known licence, reference only, not reproduced); Commons 'Japanese vehicle registration plate white and black.jpg' is a greyscale image and is not a colour source"
   dimensions:
     large: { w: 440, h: 220, unit: mm, name: "大型番号標" }
     medium: { w: 330, h: 165, unit: mm, name: "中型番号標" }
@@ -284,6 +328,161 @@ common:
     source_primary: "https://laws.e-gov.go.jp/law/326M50000800074  # the Form drawings themselves carry the figures: Form No. 1 shows 330 (440) x 165 (220); Form No. 12 shows 330 x 165; Forms No. 13 and 14 show 230 x 125"
     source_corroboration: "https://www.n-p.or.jp/plate_size.html  # 一般社団法人全国自動車標板協議会 (National Automobile License Plate Council) size chart: 大型標板 44 cm x 22 cm, 中型標板 33 cm x 16.5 cm, 小型標板 23 cm x 12.5 cm — an exact match to the drawings, from the body that manufactures the plates"
     threshold: "The 440 x 220 mm plate is not optional and not a size class the owner picks: Form No. 1 remark (4) proviso ties it to 普通自動車 of >= 8,000 kg gross vehicle weight, >= 5,000 kg maximum load, or >= 30 seats."
+  # -------------------------------------------------------------------------
+  # PLATE GEOMETRY (added 2026-11-26). Two tiers, kept apart on purpose:
+  #   form_geometry  — STATUTE: every number is printed on a Form drawing of
+  #                    道路運送車両法施行規則 or in its 備考, read from the
+  #                    drawing; millimetres, origin top-left of the plate.
+  #   measured_geometry — PHOTOGRAPHIC-OBSERVED: what the Forms do not
+  #                    dimension, measured on photographed plates.
+  # Where a Form shows something without a dimension, the scaled reading is
+  # recorded under `as_drawn` with evidence form-drawing-scaled (never statute).
+  # -------------------------------------------------------------------------
+  form_geometry:
+    evidence: instrument-in-force
+    read_from: >-
+      The Form figures attached to 道路運送車両法施行規則 in its consolidation of
+      2026-10-20 (revision 326M50000800074_20261020_508M60000800080): 第一号様式
+      ./pict/2FH00000020737.pdf (その一 to その四), 第十二号様式 2FH00000020738,
+      第十三号様式 2FH00000087917, 第十四号様式 2FH00000087918, fetched through
+      the e-Gov API v2 attachment endpoint. Every figure below was read off
+      those drawings and checked to sum to the plate width and height.
+    sources:
+      - "https://laws.e-gov.go.jp/api/2/attachment/326M50000800074_20261020_508M60000800080?src=./pict/2FH00000020737.pdf  # 第一号様式 (registered), drawings + 備考 (1)-(7); accessed 2026-11-26"
+      - "https://laws.e-gov.go.jp/api/2/attachment/326M50000800074_20261020_508M60000800080?src=./pict/2FH00000020738.pdf  # 第十二号様式 (kei); accessed 2026-11-26"
+      - "https://laws.e-gov.go.jp/api/2/attachment/326M50000800074_20261020_508M60000800080?src=./pict/2FH00000087917.pdf  # 第十三号様式 (二輪の小型自動車, over 250 cc); accessed 2026-11-26"
+      - "https://laws.e-gov.go.jp/api/2/attachment/326M50000800074_20261020_508M60000800080?src=./pict/2FH00000087918.pdf  # 第十四号様式 (検査対象外軽自動車, 126-250 cc); accessed 2026-11-26"
+    form_1_registered:
+      applies_to: "自動車登録番号標 — 第十一条. Medium 330 x 165; large 440 x 220 (the drawing's figures in parentheses, remark (7)) for the remark (4) proviso vehicles."
+      rows_top_to_bottom:
+        medium: [15, 40, 15, 80, 15]
+        large: [22.5, 40, 15, 120, 22.5]
+        meaning: "margin, row 1 (office mark + class code), gap, row 2 (use kana + serial), margin; sums 165 / 220"
+      top_holes:
+        medium: { x: [60, 270], y: 25, drawn_as: "60 | 210 | 60" }
+        large: { x: [70, 345], y: 35, drawn_as: "(70) | (275) | (95)" }
+      lower_holes:
+        medium: none_dimensioned
+        large: { x: [70, 345], y: 197.5, drawn_as: "(70) | (275) | (95)", on: "the foot line of the serial row" }
+        note: >-
+          Two lower holes are drawn on the foot line of the serial row, but
+          their positions are dimensioned ONLY in parentheses, i.e. for the
+          440 x 220 plate. The 330 x 165 plate has no dimensioned lower hole,
+          and Form No. 12 (kei, same size) draws none at all. Consistent with
+          measured_geometry.lower_holes.
+      row_1:
+        height: 40
+        mark_cell_width: { two_characters: 40, three_characters: 30, three_characters_large: 40, four_characters_class2: 27, four_characters_class3: 22, four_characters_class2_large: 35, four_characters_class3_large: 33 }
+        ke_rule: "Three-character mark whose second character is ケ: ケ 28 wide x 33 tall, the others 30 wide (large: ケ 30 x 35, others 40) — remark (5)"
+        class_cell_width: { two_digit: 30, three_character: 23, three_character_large: 30, with_four_character_mark_class2: 27, with_four_character_mark_class3: 23, with_four_character_mark_large: 30 }
+        exception: "Remark (4): the 30 mm three-character width does not apply when the class code is ONE digit (the 30 mm rule is written for two- and three-character codes); the Form gives no other figure for that case."
+        positions: "Widths only. The drawing does not dimension where the mark block or the class block sits on the row: see as_drawn and measured_geometry.row_1."
+      row_2:
+        kana_box: { medium: { x: 20, y: 90, w: 40, h: 40 }, large: { x: 25, y: 117.5, w: 40, h: 40 }, drawn_as: "20 (25) | 40 (40) across; 20 (40) | 40 (40) | 20 (40) down the serial row" }
+        digit_cells: { medium: { w: 40, h: 80, centres_x: [95, 150, 235, 290] }, large: { w: 60, h: 120, centres_x: [112.5, 192.5, 305, 385] } }
+        widths_across: { medium: "20 | 40 | 15 | 40 | 15 | 40 | 12.5 | 20 | 12.5 | 40 | 15 | 40 | 20", large: "25 | 40 | 17.5 | 60 | 20 | 60 | 15 | 22.5 | 15 | 60 | 20 | 60 | 25" }
+        centres_across: { medium: "40 | 55 | 55 | 42.5 | 42.5 | 55 | 40", large: "45 | 67.5 | 80 | 56.25 | 56.25 | 80 | 55" }
+        hyphen: { medium: { x: 182.5, y: 104, w: 20, h: 12, above_below: 34 }, large: { x: 237.5, y: 130, w: 22.5, h: 15, above_below: 52.5 } }
+        serial_stroke: { medium: 12, large: 18 }
+        dot: { medium: 12, large: 18, shape: circle, placement: "centred on each EMPTY leading digit cell, at mid-height of the serial row (40 (60) from its top)" }
+        hyphen_and_dot_rule: >-
+          Remark (1): four digits print as その一/その二 (with the hyphen between
+          the second and third digit); three or fewer as その三/その四, where
+          each empty leading position carries a dot and NO hyphen is printed
+          (その三 draws 「・・46」 with dots at the centres 95 and 150).
+      remarks_verbatim:
+        "(1)": "自動車登録番号は、図示の例により表示すること。この場合において、数字が四けたであるときは図(その一)又は図(その二)、数字が三けた以下であるときは図(その三)又は図(その四)の例によること。"
+        "(2)": "自動車登録番号は、浮出しとすること。"
+        "(4)": "運輸監理部、運輸支局又は自動車検査登録事務所を表示する文字が三文字の場合((5)に規定する場合以外の場合であつて、自動車の種別及び用途による分類番号(以下この備考において「分類番号」という。)が一けたであるときを除く。)は、当該文字の横の長さは30ミリメートルとすること。ただし、普通自動車であつて、車両総重量が8,000キログラム以上のもの、最大積載量が5,000キログラム以上のもの又は乗車定員が30人以上のものに取り付ける自動車登録番号標については、この限りでない。"
+        "(5)": "運輸監理部、運輸支局又は自動車検査登録事務所を表示する文字が三文字の場合(第二文字目がケであるときに限る。)は、当該ケの縦の長さは33ミリメートル、横の長さは28ミリメートルとし、それ以外の文字の横の長さは30ミリメートルとすること。ただし、(4)ただし書に規定する自動車に取り付ける自動車登録番号標については、当該ケの縦の長さは35ミリメートル、横の長さは30ミリメートルとし、それ以外の文字の横の長さは40ミリメートルとすること。"
+        "(6)": "運輸監理部、運輸支局又は自動車検査登録事務所を表示する文字が四文字の場合は、当該文字の横の長さは分類番号が二字であるときは27ミリメートル、分類番号が三字であるときは22ミリメートルとし、分類番号を表示するアラビア数字又はローマ字の横の長さは分類番号が二字であるときは27ミリメートル、分類番号が三字であるときは23ミリメートルとすること。ただし、(4)ただし書に規定する自動車に取り付ける自動車登録番号標については、運輸監理部、運輸支局又は自動車検査登録事務所を表示する文字の横の長さは分類番号が二字であるときは35ミリメートル、分類番号が三字であるときは33ミリメートルとし、分類番号を表示するアラビア数字又はローマ字の横の長さは30ミリメートルとすること。"
+        "(7)": "寸法の単位は、「ミリメートル」とする。この場合において、括弧内に示す寸法は、(4)ただし書に規定する自動車に取り付ける自動車登録番号標における寸法とする。"
+      as_drawn:
+        evidence: form-drawing-scaled
+        note: >-
+          Not dimensioned, so not statute: read by scaling the drawing between
+          the plate edges (about ±1 mm). Two-character mark block (品川) centred
+          at about x 124.5 in その二 and その三; two-digit class block (52)
+          centred at about 216.5 with about 7.3 between its cells (その三);
+          three-digit class block (599) centred at about 215 with 3.4-3.7
+          between cells (その二). Compare measured_geometry.row_1, where
+          photographed plates put a two-character mark at about 128.4.
+    form_12_kei:
+      applies_to: "車両番号標 of 検査対象軽自動車 — 第四十五条. 330 x 165 only (no large size)."
+      geometry: "Identical to Form No. 1 medium in every dimensioned figure: rows 15 / 40 / 15 / 80 / 15, top holes 60 | 210 | 60 at 25, kana box, digit cells 40 x 80 at the same centres, hyphen 20 x 12 with 34 above and below, stroke 12, mark cells 40 / class cells 30."
+      lower_holes: "None drawn."
+      remarks: "(1), (2), (4)-(6) as Form No. 1 without the large-plate provisos; (3) the yellow/black colours (common.colours); (7) unit mm."
+    form_13_motorcycle_over_250:
+      applies_to: "車両番号標 of 二輪の小型自動車 — 第四十五条. 230 x 125."
+      rows_top_to_bottom: [13, 30, 10, 60, 12]
+      frame: { inset: 8, colour: "the character colour (remark (3))" }
+      top_holes: { x: [55, 175], y: 20, drawn_as: "55 | 120 | 55" }
+      lower_holes: "None drawn."
+      row_1: "Office mark cells 25 wide (two characters); then two further cells 16 wide each (the drawing fills them with two Roman letters); the use kana in a 25-wide cell at the right of row 1, past the right hole. Remark (4): 20 for three characters, 14.5 for four; remark (5): ケ 20 x 24, others 20."
+      digit_cells: { w: 35, h: 60, centres_x: [34, 80, 150, 196] }
+      widths_across: "16.5 | 35 | 11 | 35 | 10 | 15 | 10 | 35 | 11 | 35 | 16.5"
+      hyphen: { x: 107.5, w: 15, h: 10, above_below: 25 }
+      serial_stroke: 10
+      dot: { diameter: 12, placement: "centre of each empty leading cell, mid-height (30 / 30)" }
+      kana_position: "Not dimensioned along the row (the cell width only): see measured_geometry.form_13."
+    form_14_motorcycle_126_250:
+      applies_to: "車両番号標 of 検査対象外軽自動車 — 第六十三条の二. 230 x 125, no frame."
+      rows_top_to_bottom: [13, 30, 10, 60, 12]
+      top_holes: { x: [55, 175], y: 20, drawn_as: "55 | … | 55" }
+      row_1: "Class digit FIRST in a 22-wide cell, then the office mark (25-wide cells in the two-character example), then the kana (25) at the right past the right hole. Remark (4): with three characters the mark is 22 wide for a one-digit class code and 20 for a two-digit one; with four characters 17 / 14.5; remark (5): ケ 24 tall, 19 / 20 wide."
+      digit_cells: { w: 35, h: 60, centres_x: [34, 80, 150, 196] }
+      widths_across: "16.5 | 35 | 11 | 35 | 10 | 15 | 10 | 35 | 11 | 35 | 16.5"
+      hyphen: { w: 15, h: 10, above_below: 25 }
+      note: "The 第十四号様式 figure is a poor scan; every figure here is legible on it, the serial stroke is not and is left out."
+  measured_geometry:
+    evidence: photographic-observed
+    note: >-
+      Measured on photographed plates by a render pass (2026-11-25/26), for
+      the things the Forms do not dimension. Plates were registered on their
+      statutory top bolt holes (x 60 / 270, y 25) and serial cells before
+      measuring. Not statute; treat as ± about 1 mm.
+    statute_corroboration: >-
+      Four frontal Commons photographs (green, yellow, black and the greyscale
+      white plate below) agree with every form_geometry figure for Form No. 1
+      medium / Form No. 12 to about 0.5 mm.
+    row_1:
+      three_character_mark: { mark_block_centre_x: 125.5, mark_cell_gap: 4.1, class3_block_centre_x: 218.75, class3_cell_gap: 4.25, class3_block_right_edge: 258.6, gap_mark_to_class: 4.5 }
+      two_character_mark: { mark_block_centre_x: 128.4, mark_cell_gap: 7.5, class3_block_centre_x: 216.9, class3_cell_gap: 3.6, class3_cells_span: [178.8, 254.9], gap_mark_to_class: 8 }
+      two_digit_class: "Not photographed; the render uses the as-drawn reading (centre 216.5, cell gap 7.6)."
+      four_character_mark: "No plate photographed squarely enough to register; not measured."
+      large_440x220: { mark_cell_gap: 8, mark_block_centre_x: 164, class3_cell_pitch: 34.5, class3_block_centre_x: 267, basis: "one photographed museum specimen, registered on its serial cells and holes" }
+      basis: "two-character figures: seven white plates registered on their bolt holes (品川 ×2, 神戸 ×2, 湘南, 札幌, 大阪; marketplace photographs). Three-character figures: 宇都宮 plates (Commons, below) and marketplace photographs."
+    strokes:
+      class_code: 5.3
+      office_mark: { range: [3.4, 4.2], note: "ten plates; 品川 3.8, 札幌 3.7" }
+      serial: "12 (statute, form_geometry); photographs agree"
+    holes:
+      diameter: { medium: 7, large: 8 }
+    lower_holes: "No photographed 330 x 165 plate (registered or kei) shows the two lower holes; matches the Form, which dimensions them only for the 440 x 220 plate."
+    seal:
+      statute: "封印 on the rear registration plate's LEFT fixing point, marked with the 運輸監理部 or 運輸支局 (施行規則 第八条第一項・第二項); applied under 道路運送車両法 第十一条, which governs 自動車登録番号標 only. 第七十三条 (kei and motorcycle vehicle-number plates) imposes no seal."
+      measured: { diameter: 27, position: "over the upper-left bolt hole (x 60, y 25) of the rear plate" }
+      kei_and_motorcycle: "No seal: statute (above) and every photographed kei plate."
+    form_13:
+      mark_block_centre_x: 115
+      kana_box: { x: 185, y: 15.5, w: 25, h: 25 }
+      basis: "one photograph, Commons 'Japanese vehicle registration plate white and green.jpg'"
+    sources:
+      - "Commons 'Japanese vehicle registration plate green and white.jpg' (Gzzz, CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_green_and_white.jpg  # photograph not copied"
+      - "Commons 'Japanese vehicle registration plate yellow and black.jpg' (Gzzz, CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_yellow_and_black.jpg  # photograph not copied"
+      - "Commons 'Japanese vehicle registration plate black and yellow.jpg' (Gzzz, CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_black_and_yellow.jpg  # photograph not copied"
+      - "Commons 'Japanese vehicle registration plate white and black.jpg' (Gzzz, CC BY-SA 4.0; a greyscale image, geometry only) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_white_and_black.jpg  # photograph not copied"
+      - "Commons 'Japanese vehicle registration plate white and green.jpg' (Gzzz, CC BY-SA 4.0; motorcycle, Form No. 13) — https://commons.wikimedia.org/wiki/File:Japanese_vehicle_registration_plate_white_and_green.jpg  # photograph not copied"
+      - "marketplace and web photographs of cancelled plates (row-1 registration, holes, seal, large plate; no known licence, reference only, not reproduced)"
+      - "https://laws.e-gov.go.jp/law/326M50000800074  # 施行規則 第八条 (封印); accessed 2026-11-26"
+      - "https://laws.e-gov.go.jp/law/326AC0000000185  # 道路運送車両法 第十一条, 第七十三条; revision 326AC0000000185_20260401_508AC0000000002; accessed 2026-11-26"
+  gaps_2026_11:
+    note: >-
+      Facts a consumer needs that this pass could NOT source at statute or
+      official tier, so none is modelled. Each lists what was found.
+    diplomatic_plates: "外交官等 (blue) plates: no instrument or MLIT/MOFA page pinned. Not in 別表第三 (jp-use-marks). Not modelled."
+    illuminated_jikoshiki: "字光式 (illuminated) plates: the delegated colour notice is identified (common.colours.delegated_notice) but its text is not pinned; the kibou-number.jp service names 字光式 as an option (https://www.kibou-number.jp/html/pdf/guidance_code.pdf) without rules. Not modelled."
+    figure_plates_as_designs: "The figure plates stay modelled as their own specialty series (jp-figure-*). Their colours are set by 告示第99号 (identified, text not pinned); re-cutting them as designs of the base series waits for that text."
   decode:
     office_marks: "plates/_decode/jp-office-marks.yml"
     use_marks: "plates/_decode/jp-use-marks.yml"
