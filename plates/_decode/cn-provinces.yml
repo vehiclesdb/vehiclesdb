@@ -1,4 +1,13 @@
 # plates/_decode/cn-provinces.yml — the leading Han character of a Chinese
+#
+# VERIFIED 2026-11-26 (PRD-PLATES § 5.3) against the CURRENT edition: all 31
+# rows below are identical, character for character and in order, to GA 36-2018
+# § 5.7 表 2 (read in full from the Wikimedia Commons republication of the
+# published standard, File:GA_36-2018.pdf), and GA 36-92 表 2 (read as a page
+# image) has the same rows minus 渝 — 30 rows, Chongqing not yet a municipality.
+# The sections below written in the first wave say the current text was withheld;
+# that is superseded by this paragraph and the `verification` block, and kept
+# because it records what the first wave could and could not see.
 # registration number: 省、自治区、直辖市简称, the abbreviation of the province,
 # autonomous region or directly-administered municipality.
 #
@@ -91,6 +100,8 @@ authority:
   name: 公安部 (Ministry of Public Security) — GA 36 《中华人民共和国机动车号牌》 § 5.7 表 2；技术归口 公安部道路交通管理标准化技术委员会
   url: "https://hbba.sacinfo.org.cn/stdDetail/328b77ee80fdee1dee33d20e83d01d2ad128f380aa93c7dbe5c58c67d9d2075e"
 sources:
+  - "https://upload.wikimedia.org/wikipedia/commons/0/00/GA_36-2018.pdf  # GA 36-2018 FULL TEXT (Commons republication; the Ministry's portal does not serve the text): § 5.7 表 2 — all 31 rows identical to those below; § 5.10 (the nine classification characters, unchanged from 2007); 图 2/图 3 and Annex B.6/B.7 (使 and 领 positions on the 2018 diplomatic plates). Accessed 2026-11-26"
+  - "https://upload.wikimedia.org/wikipedia/commons/7/76/GA_36-1992.pdf  # GA 36-92 (scan, read as page images): 表 2 — 30 rows, the same characters minus 渝; § 3.3 figure 使014·578 (使 already on the 1992 embassy plate); § 3.5 境; § 3.22 临. Accessed 2026-11-26"
   - "https://web.archive.org/web/20150701102419/http://www.hngy.gov.cn/sitepublish/site1/wsbs/lyfwzl/jtfw/jdc/jdcfw/content_25106.html  # GA 36-2007 《中华人民共和国机动车号牌》 FULL TEXT as republished by 巩义市人民政府 (published 2012-11-15): § 5.7 and 表 2 省、自治区、直辖市简称 — all 31 rows below, in the table's own 序号 order; § 5.10 号牌分类用汉字 — the classification characters listed under `classification_han`; § 5.11 间隔符; the 前言 change list carrying the 渝 addition. Note the page is GB18030 mis-declared as UTF-8. Accessed 2026-08-02"
   - "https://hbba.sacinfo.org.cn/stdDetail/12b7710b682f0e13dfc423a325751920  # 全国标准信息公共服务平台 register entry for GA 36-2007: 发布 2007-09-28, 实施 2007-11-01, 代替 GA 36-1992, 状态 废止 — the provenance of the text above, and the evidence that GA 36-1992 existed. Accessed 2026-08-02"
   - "https://hbba.sacinfo.org.cn/stdDetail/328b77ee80fdee1dee33d20e83d01d2ad128f380aa93c7dbe5c58c67d9d2075e  # register entry for the CURRENT GA 36-2018: 发布 2018-04-20, 实施 2018-05-01, 代替 GA 36-2014. Metadata only — the text is withheld ('尚未公开')， so this table cannot be re-verified against the edition actually in force. Accessed 2026-08-02"
@@ -108,6 +119,14 @@ period_note: >-
   claim that the 92-pattern was trialled in 1992 and rolled out nationwide in
   July 1994 is NOT asserted here or in plates/cn.yml — see the dossier's
   folklore section.
+verification:
+  date: "2026-11-26"
+  result: "31 of 31 rows verified against GA 36-2018 表 2 (instrument in force); 30 of 31 also in GA 36-92 表 2 (渝 absent, as the 2007 foreword says)"
+  row_evidence: instrument-in-force
+  classification_corrections:
+    - "使: row_period_start 2007 -> 1992 and position 'leading' -> 'leading 1992-2018, trailing since 2018'. GA 36-92 § 3.3 draws 使014·578; GA 36-2018 图 2 draws 224·578使. The 2007 foreword's '增加了…“使”…' refers to the character annex, not to the plate."
+    - "境 and 临 added as ENDED characters (GA 36-92 only)."
+    - "split_note corrected: the 2018 consulate plate has no office letter, and the 2018 consulate motorcycle plate puts 领 on the top line beside the province."
 decode_direction: "leading Han character -> the provincial-level division whose vehicle-management office issued the mark"
 split_note: >-
   FIXED WIDTH, AND THE CLEANEST SPLIT IN THIS DATASET. The province character
@@ -116,11 +135,14 @@ split_note: >-
   takes `mark[0]`, looks it up here, and hands the remainder to
   plates/cn.yml's regexes — there is no greedy-match problem and no ambiguity
   with the Latin tail, because the two alphabets are disjoint by construction.
-  TWO EXCEPTIONS, both instrument-sourced and both recorded below in
-  `classification_han`: the embassy mark opens with 使 instead of a province
-  character (GA 36-2007 § 5.10), and the emergency-rescue MOTORCYCLE mark opens
-  with the two-character pair 应急 before its province character
-  (国办发〔2018〕114号 附件 一（二）).
+  EXCEPTIONS, all instrument-sourced (corrected 2026-11-26): the embassy mark
+  carries NO province character — 1992-2018 it opened with 使 (GA 36-92 § 3.3,
+  使014·578), since GA 36-2018 it opens with a three-digit mission number and
+  ends with 使 (图 2, 224·578使); the 2018 consulate mark has a province
+  character but NO office letter — a mission number follows it (图 3, 沪224·78领),
+  and on the 2018 consulate MOTORCYCLE plate 领 sits on the top line beside the
+  province (图 11, 沪·领 / 22478); the emergency-rescue MOTORCYCLE mark opens with
+  应急 before its province character (国办发〔2018〕114号 附件 一（二）).
 scope_note: >-
   HONG KONG, MACAU AND TAIWAN HAVE NO ROW, and their absence is the standard's,
   not ours: Table 2 has exactly 31 rows and stops at 新疆维吾尔自治区. 港 and 澳
@@ -467,21 +489,21 @@ classification_han:
   - char: "使"
     codepoint: "U+4F7F"
     pinyin: shi
-    position: leading
+    position: "leading on the 1992-2018 embassy plates (使014·578); trailing since GA 36-2018 (224·578使)"
     position_note: >-
-      THE ONE CLASSIFICATION CHARACTER THAT REPLACES THE PROVINCE CHARACTER
-      rather than following the serial: an embassy mark carries no geography at
-      all. § 5.10 does not say so in terms; the position is taken from
-      GA 36-2007's own 附录 C 号牌效果图 and from plates/cn.yml's embassy series.
+      CORRECTED 2026-11-26. On the 1992-2018 plates 使 stands where a province
+      character would (the embassy plate encodes no geography) — GA 36-92 § 3.3,
+      GA 36-2007 图 2 and GA 36-2014 图 2 all draw 使014·578. GA 36-2018 图 2 and
+      Annex B.6 move it to the END after a three-digit mission number and a
+      three-digit serial: 224·578使.
     class_zh: 使馆汽车号牌和摩托车号牌
-    class_en: "diplomatic mission (embassy) — car and motorcycle plates"
-    evidence: enabling-instrument
-    row_period_start: 2007
+    class_en: "embassy and international-organisation diplomatic vehicles — car and motorcycle plates"
+    evidence: instrument-in-force
+    row_period_start: 1992
     row_period_note: >-
-      GA 36-2007 前言, verbatim: "――增加了"渝"、"港"、"澳"、"使"、"警"、"超"等
-      省、自治区、直辖市简称及号牌分类用汉字；" — 使 was ADDED by the 2007
-      edition. A pre-2007 embassy mark used a different construction and this
-      pass located no primary describing it.
+      CORRECTED from 2007. GA 36-2007's foreword lists 使 among the characters it
+      "增加了", but GA 36-92 § 3.3 already prints 使 on the embassy plate; the 2007
+      line refers to the character set the 2007 edition specified.
   - char: "警"
     codepoint: "U+8B66"
     pinyin: jing
@@ -546,6 +568,26 @@ classification_han:
     evidence: enabling-instrument
     row_period_start: 2007
     row_period_note: "added by the 2007 edition (前言, same change line)"
+  - char: "境"
+    codepoint: "U+5883"
+    pinyin: jing
+    position: trailing
+    class_zh: 境外汽车号牌和摩托车号牌
+    class_en: "vehicles from outside the border, 1992-2007"
+    evidence: instrument-dated-both-ends
+    row_period_start: 1992
+    row_period_end: 2007
+    row_period_note: "GA 36-92 表 1 rows 5 and 11 and § 3.5 figure 京A·F023境; no such class in GA 36-2007. plates/cn.yml cn-overseas-car-1992."
+  - char: "临"
+    codepoint: "U+4E34"
+    pinyin: lin
+    position: trailing
+    class_zh: 临时行驶车号牌 (1992 form)
+    class_en: "temporary-travel plate, 1992-2007"
+    evidence: instrument-dated-both-ends
+    row_period_start: 1992
+    row_period_end: 2007
+    row_period_note: "GA 36-92 § 3.22 figure (a '临' character on the temporary plate); GA 36-2007 修改了临时行驶车号牌式样 and the later plates carry none. Also drawn on the temporary TRACTOR plate (GA 36-2018 Annex B.27), which is NY 345.1's, not GA 36's."
   - token: "应急"
     chars: ["应", "急"]
     codepoints: ["U+5E94", "U+6025"]
@@ -591,24 +633,15 @@ limits:
     dataset with the British mark, which names the six-month period of first
     registration to 2050.
   cross_file_divergences: >-
-    RECORDED, NOT AVERAGED (PRD-PLATES § 5.3). Two `row_period_start` values in
-    `classification_han` above disagree with the period on the plates/cn.yml
-    series that uses the same character, and the disagreement is left standing
-    for the verifier rather than reconciled by one file overwriting the other.
-    (1) 使 — this file dates it 2007 on GA 36-2007's 前言, which lists 使 among
-    the classification characters that edition ADDED; plates/cn.yml dates
-    `cn-embassy-car-1992` and `cn-embassy-motorcycle-1992` to 1992 with
-    `period_evidence: instrument-in-force`. Both can be true at once — an
-    embassy plate almost certainly existed before 2007 in a construction the
-    2007 edition then standardised — but nothing secured by either pass proves
-    it, and the foreword is the harder evidence. (2) 超 — this file dates it
-    2007 on the same foreword line; plates/cn.yml carries it as one of the two
-    suffixes on `cn-temporary-travel-1992`, whose other suffix 试 is a 1992
-    character. A verifier resolving these should either split the affected
-    series or move the starts, and should say which in the PR.
+    RESOLVED 2026-11-26. (1) 使 — both files now date it 1992: GA 36-92 § 3.3
+    draws it on the embassy plate, so the first wave's 2007 date in this file was
+    wrong and plates/cn.yml's 1992 was right; the 1992-2018 embassy form and the
+    2018 form are now separate series (cn-embassy-car-1992 ended 2018,
+    cn-embassy-car-2018). (2) 超 — 2007 stands (GA 36-92 has no 超); in
+    plates/cn.yml it is a variant of cn-temporary-travel-1992, whose own start is
+    the 1992 temporary plate, and the variant's note says it is the 2007-and-later
+    special-vehicle plate.
   edition_caveat: >-
-    Every row is GA 36-2007's Table 2. GA 36-2014 and GA 36-2018 each reissued
-    the standard and neither text is public, so this table cannot be re-verified
-    against the edition actually in force. No provincial-level division has been
-    created, merged or abolished since 1997, so the risk of a stale row is
-    genuinely low — but it is a risk, and it is stated rather than assumed away.
+    SUPERSEDED 2026-11-26: every row was checked against GA 36-2018 表 2, the
+    edition in force, and matches. Neither amendment (第1号修改单 2022, 第2号修改单
+    2026) touches 表 2.
