@@ -2,6 +2,21 @@
 
 Dataset releases. Versioned `YYYY.MM.PATCH`; each release is a git tag.
 
+## [2026.11.15] - 2026-11-26 — register refresh; two builder-as-make guards
+
+**16,442 models across 978 makes (unchanged; 0 added, 0 renamed, 0 retired).**
+
+Every register was fetched fresh. Israel's active register is dated 2026-11-25; every other window and snapshot is the same as in v2026.11.14, so no country gains or loses a model. The day's register counts move `popularity` on 3,502 records and `registration_years` on 3.
+
+Ukraine is carried from the last good download, because data.gov.ua refuses the build machine and GitHub's runners. Its licence pin was last verified on 2026-11-17 (CC BY, open). The data it governs was downloaded on 2026-11-11, before that verification, and nothing was refetched (DECISIONS.md "Licence pins for carried data").
+
+### New-id review (vehiclesdb#437)
+
+This build would have minted two ids, and neither is a vehicle nameplate. Both are now kept out:
+
+- **"Opel Movano" and "Movano" filed under the make SOVAB** now land on `van/opel/movano`. SOVAB is Renault's Batilly plant, which builds the Master and the Movano; some registers record the plant as the make (Netherlands 7 vehicles, Finland 1).
+- **HVM "Kr" is held out.** HVM is a horsebox and box body builder that converts Renault Master, Opel Movano, MAN TGE and Ford vans. Its "KR-…" conversions collapse to "Kr", which names no vehicle.
+
 ## [2026.11.14] - 2026-11-24 — Argentina's October registrations; Forthing V9; seven new-id spellings reviewed
 
 **16,442 models across 978 makes (16,441 → 16,442; 1 added, 0 renamed, 0 retired).**
